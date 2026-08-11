@@ -531,7 +531,9 @@ def build_source_decision(
             "candidate_frame_record_sha256": candidate["content_sha256"],
             "candidate_highres_depth_array_sha256": adapter.canonical_sha256(highres),
             "anchored_candidate_depth_array_sha256": anchored_hash,
-            "intrinsics_highres_sha256": adapter.canonical_sha256(source["intrinsics_highres"]["matrix_3x3"]),
+            "intrinsics_highres_sha256": adapter.canonical_sha256(
+                adapter._intrinsics_matrix(source["intrinsics_highres"]["matrix_3x3"])
+            ),
             "gravity_up_camera_xyz_sha256": adapter.canonical_sha256(adapter._normalize_vector(source["gravity_up_camera_xyz"], "GRAVITY_INVALID")),
             "scale_record": scale,
             "source_support_available": available,
@@ -888,13 +890,26 @@ def _prepared_and_plane(candidate: Mapping[str, Any], native_depth_m: np.ndarray
     if not choice["source_support_available"]:
         return prepared, None
     block = choice["direct_support_plane"]
+    matrix_value = candidate_record["candidate_input_receipt"]["intrinsics_highres"]["matrix_3x3"]
+    matrix = adapter._intrinsics_matrix(matrix_value)
+    legacy_list_hash = adapter.canonical_sha256(matrix_value)
+    normalized_array_hash = adapter.canonical_sha256(matrix)
+    require(
+        choice["intrinsics_highres_sha256"] in {legacy_list_hash, normalized_array_hash},
+        "R5_QUERY_CAMERA_BINDING_DRIFT",
+        "Phase-A intrinsics binding matches neither the legacy list nor normalized array representation",
+    )
     plane = r3.DirectAppleSupportPlane(
         parent_id=choice["parent_id"], physical_frame_id=choice["physical_frame_id"],
         direct_source_receipt_sha256=choice["source_frame_receipt_sha256"],
         source_scale_record_sha256=scale["content_sha256"],
         candidate_binding_sha256=candidate_record["content_sha256"],
         anchored_depth_array_sha256=anchored_hash,
-        intrinsics_highres_sha256=choice["intrinsics_highres_sha256"],
+        # The consumed R5 Phase-A decisions sealed the numerically identical K
+        # as a JSON list, while the extractor hashes normalized float64 arrays.
+        # Accept the sealed legacy hash above, then bridge to the extractor's
+        # representation without changing any K value or branch decision.
+        intrinsics_highres_sha256=normalized_array_hash,
         gravity_up_camera_xyz_sha256=choice["gravity_up_camera_xyz_sha256"],
         normal_camera_xyz=_immutable(block["normal_camera_xyz"], np.float64),
         camera_height_m=float(block["camera_height_m"]), support_count=int(block["support_count"]),

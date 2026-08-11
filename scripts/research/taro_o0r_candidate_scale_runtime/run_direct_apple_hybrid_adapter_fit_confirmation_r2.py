@@ -15,7 +15,7 @@ import time
 import zipfile
 from collections import Counter
 from pathlib import Path
-from typing import Any, Mapping, Sequence
+from typing import Any, Callable, Mapping, Sequence
 
 import psutil
 
@@ -196,13 +196,18 @@ def _write_failure(writer: FactorEvidenceWriter, error: Exception) -> dict[str, 
     return failure
 
 
-def execute(execution_lock_path: Path) -> dict[str, Any]:
-    lock = validate_execution_lock(execution_lock_path.resolve())
+def execute(
+    execution_lock_path: Path,
+    *,
+    lock_validator: Callable[[Path], dict[str, Any]] = validate_execution_lock,
+) -> dict[str, Any]:
+    lock = lock_validator(execution_lock_path.resolve())
     roots = lock["roots"]
     source_root = Path(roots["source_root"]).resolve()
     r3_root = Path(roots["r3_evidence_root"]).resolve()
     predecessor_root = Path(roots["r5_predecessor_root"]).resolve()
-    evidence_root = Path(roots["r5_r2_evidence_root"]).resolve()
+    output_root_key = "r5_r3_evidence_root" if "r5_r3_evidence_root" in roots else "r5_r2_evidence_root"
+    evidence_root = Path(roots[output_root_key]).resolve()
     require(source_root.is_dir() and r3_root.is_dir() and predecessor_root.is_dir() and not evidence_root.exists(), "R5_R2_ROOT_PREFLIGHT_INVALID", "R2 roots do not satisfy one-shot preflight")
     frames = r5io.load_exact_cohort(Path(lock["frame_plan_path"]).resolve(), r3_root, source_root, verify_containers=True)
     require(len(frames) == r5.EXPECTED_FRAME_COUNT, "R5_R2_COHORT_PREFLIGHT_INVALID", "R2 cohort differs from frozen 211 frames")

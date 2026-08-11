@@ -312,6 +312,19 @@ class R5ConfirmationTests(unittest.TestCase):
         self.assertEqual(list(range(9)), [row["grid_index"] for row in records])
         self.assertTrue(all(row["phase_a_completion_sha256"] == phase_a["content_sha256"] for row in records))
         self.assertTrue(all(row["phase_a_selected_branch"] == self.decision["selected_branch"] for row in records))
+        self.assertGreater(sum(row["direct_apple_support"]["extraction_evaluable"] for row in records), 0)
+
+    def test_consumed_phase_a_list_hash_bridges_to_normalized_camera_array(self) -> None:
+        phase_a = _phase_a_completion()
+        legacy = copy.deepcopy(self.decision)
+        matrix_value = self.candidate["candidate_input_receipt"]["intrinsics_highres"]["matrix_3x3"]
+        legacy["intrinsics_highres_sha256"] = adapter.canonical_sha256(matrix_value)
+        legacy.pop("content_sha256")
+        legacy = r5._seal(legacy)
+        geometry = r5.derive_faro_geometry(self.faro, self.source, legacy, phase_a)
+        records = r5.evaluate_frame(self.source, self.candidate, self.native, legacy, geometry)
+        self.assertGreater(sum(row["direct_apple_support"]["extraction_evaluable"] for row in records), 0)
+        self.assertTrue(all("DIRECT_APPLE_CAMERA_BINDING_DRIFT" not in row["direct_apple_support"]["reason_codes"] for row in records))
 
     def test_support_unobservable_faro_retains_nine_unknown_slots(self) -> None:
         phase_a = _phase_a_completion()
