@@ -62,6 +62,54 @@ class AgStMaskedStudentTest(unittest.TestCase):
         self.assertEqual(1, sum(parent.startswith("tum_") for parent in canary))
         self.assertIn("SOURCE_STRATIFIED", receipt["method"])
 
+    def test_three_source_split_keeps_bonn_fit_held_parents(self) -> None:
+        descriptors = [
+            FrameDescriptor(
+                parent_id=f"arkit_p{index}",
+                frame_index=0,
+                frame_stem=f"arkit_p{index}_0",
+                output_hw=(336, 252) if index < 8 else (252, 336),
+                label_path=Path("unused.npz"),
+                video={},
+            )
+            for index in range(16)
+        ]
+        descriptors.extend(
+            FrameDescriptor(
+                parent_id=f"tum_p{index}",
+                frame_index=0,
+                frame_stem=f"tum_p{index}_0",
+                output_hw=(252, 336),
+                label_path=Path("unused.npz"),
+                video={},
+                source_id="tum_rgbd",
+            )
+            for index in range(7)
+        )
+        descriptors.extend(
+            FrameDescriptor(
+                parent_id=f"bonn_p{index}",
+                frame_index=0,
+                frame_stem=f"bonn_p{index}_0",
+                output_hw=(480, 640),
+                label_path=Path("unused.npz"),
+                video={},
+                source_id="bonn_rgbd_fit",
+            )
+            for index in range(8)
+        )
+
+        train, selection, canary, receipt = select_multisource_parent_split(descriptors)
+
+        self.assertEqual((23, 4, 4), (len(train), len(selection), len(canary)))
+        self.assertEqual(1, sum(parent.startswith("bonn_") for parent in selection))
+        self.assertEqual(1, sum(parent.startswith("bonn_") for parent in canary))
+        self.assertIn("BONN_6_1_1", receipt["method"])
+        self.assertEqual(
+            {"arkitscenes", "tum_rgbd", "bonn_rgbd_fit"},
+            set(receipt["by_source"]),
+        )
+
     def test_source_balanced_epoch_order_equalizes_visits(self) -> None:
         sources = ["arkitscenes"] * 6 + ["tum_rgbd"] * 2
         order = build_epoch_order(

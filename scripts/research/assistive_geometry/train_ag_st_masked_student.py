@@ -95,6 +95,7 @@ DEFAULT_ANGULAR_BOUNDARY_LABEL_RESULT = (
 
 SPLIT_TOKEN = "AG_ST_MASKED_STUDENT_R0"
 SOURCE_BOUNDARY_SPLIT_TOKEN = "AG_ST_SOURCE_BOUNDARY_STUDENT_R0"
+BONN_ANGULAR_SPLIT_TOKEN = "AG_ST_BONN_FIT_ANGULAR_R20"
 IMAGENET_MEAN = np.asarray((0.485, 0.456, 0.406), dtype=np.float32)
 IMAGENET_STD = np.asarray((0.229, 0.224, 0.225), dtype=np.float32)
 TIER_WEIGHTS = torch.tensor((0.0, 0.25, 0.60, 1.0), dtype=torch.float32)
@@ -343,14 +344,18 @@ def select_multisource_parent_split(
     *,
     split_token: str = SPLIT_TOKEN,
 ) -> tuple[tuple[str, ...], tuple[str, ...], tuple[str, ...], dict[str, Any]]:
-    """Keep held parents in both ARKitScenes and TUM without reading labels."""
+    """Keep held parents in every consumed source without reading labels."""
     by_source: dict[str, dict[str, tuple[int, int]]] = defaultdict(dict)
     for row in descriptors:
         previous = by_source[row.source_id].setdefault(row.parent_id, row.output_hw)
         require(previous == row.output_hw, "within-source parent shape drift")
+    sources = set(by_source)
     require(
-        set(by_source) == {"arkitscenes", "tum_rgbd"},
-        "multisource split requires ARKitScenes and TUM RGB-D",
+        sources in (
+            {"arkitscenes", "tum_rgbd"},
+            {"arkitscenes", "tum_rgbd", "bonn_rgbd_fit"},
+        ),
+        "multisource split requires ARKitScenes/TUM with optional Bonn FIT",
     )
     arkit_train, arkit_selection, arkit_canary, arkit_receipt = select_parent_split(
         by_source["arkitscenes"],
@@ -366,11 +371,27 @@ def select_multisource_parent_split(
     tum_train = tuple(tum_ranked[:5])
     tum_selection = (tum_ranked[5],)
     tum_canary = (tum_ranked[6],)
-    train = tuple(sorted((*arkit_train, *tum_train)))
-    selection = tuple(sorted((*arkit_selection, *tum_selection)))
-    canary = tuple(sorted((*arkit_canary, *tum_canary)))
+    bonn_train: tuple[str, ...] = ()
+    bonn_selection: tuple[str, ...] = ()
+    bonn_canary: tuple[str, ...] = ()
+    bonn_ranked: list[str] = []
+    if "bonn_rgbd_fit" in by_source:
+        bonn_ranked = sorted(
+            by_source["bonn_rgbd_fit"],
+            key=lambda parent: stable_hash(
+                f"{BONN_ANGULAR_SPLIT_TOKEN}:bonn_rgbd_fit:{parent}"
+            ),
+        )
+        require(len(bonn_ranked) == 8, "Bonn FIT multisource parent count drift")
+        bonn_train = tuple(bonn_ranked[:6])
+        bonn_selection = (bonn_ranked[6],)
+        bonn_canary = (bonn_ranked[7],)
+    train = tuple(sorted((*arkit_train, *tum_train, *bonn_train)))
+    selection = tuple(sorted((*arkit_selection, *tum_selection, *bonn_selection)))
+    canary = tuple(sorted((*arkit_canary, *tum_canary, *bonn_canary)))
+    expected = (23, 4, 4) if bonn_ranked else (17, 3, 3)
     require(
-        (len(train), len(selection), len(canary)) == (17, 3, 3),
+        (len(train), len(selection), len(canary)) == expected,
         "multisource split cardinality drift",
     )
     require(
@@ -379,35 +400,56 @@ def select_multisource_parent_split(
         and not (set(selection) & set(canary)),
         "multisource split overlap",
     )
+    by_source_receipt: dict[str, Any] = {
+        "arkitscenes": {
+            "train_parents": list(arkit_train),
+            "selection_parents": list(arkit_selection),
+            "canary_parents": list(arkit_canary),
+            "receipt": arkit_receipt,
+        },
+        "tum_rgbd": {
+            "train_parents": list(tum_train),
+            "selection_parents": list(tum_selection),
+            "canary_parents": list(tum_canary),
+            "rankings": [
+                {
+                    "parent_id": parent,
+                    "rank_sha256": stable_hash(
+                        f"{SOURCE_BOUNDARY_SPLIT_TOKEN}:tum_rgbd:{parent}"
+                    ),
+                }
+                for parent in tum_ranked
+            ],
+        },
+    }
+    if bonn_ranked:
+        by_source_receipt["bonn_rgbd_fit"] = {
+            "train_parents": list(bonn_train),
+            "selection_parents": list(bonn_selection),
+            "canary_parents": list(bonn_canary),
+            "rankings": [
+                {
+                    "parent_id": parent,
+                    "rank_sha256": stable_hash(
+                        f"{BONN_ANGULAR_SPLIT_TOKEN}:bonn_rgbd_fit:{parent}"
+                    ),
+                }
+                for parent in bonn_ranked
+            ],
+        }
     return train, selection, canary, {
-        "method": "SOURCE_STRATIFIED_ARKIT_12_2_2_TUM_5_1_1_WITHOUT_LABEL_CONTENT",
+        "method": (
+            "SOURCE_STRATIFIED_ARKIT_12_2_2_TUM_5_1_1_BONN_6_1_1_WITHOUT_LABEL_CONTENT"
+            if bonn_ranked
+            else "SOURCE_STRATIFIED_ARKIT_12_2_2_TUM_5_1_1_WITHOUT_LABEL_CONTENT"
+        ),
         "split_token": split_token,
         "source_boundary_split_token": SOURCE_BOUNDARY_SPLIT_TOKEN,
+        "bonn_angular_split_token": BONN_ANGULAR_SPLIT_TOKEN if bonn_ranked else None,
         "train_parents": list(train),
         "selection_parents": list(selection),
         "canary_parents": list(canary),
-        "by_source": {
-            "arkitscenes": {
-                "train_parents": list(arkit_train),
-                "selection_parents": list(arkit_selection),
-                "canary_parents": list(arkit_canary),
-                "receipt": arkit_receipt,
-            },
-            "tum_rgbd": {
-                "train_parents": list(tum_train),
-                "selection_parents": list(tum_selection),
-                "canary_parents": list(tum_canary),
-                "rankings": [
-                    {
-                        "parent_id": parent,
-                        "rank_sha256": stable_hash(
-                            f"{SOURCE_BOUNDARY_SPLIT_TOKEN}:tum_rgbd:{parent}"
-                        ),
-                    }
-                    for parent in tum_ranked
-                ],
-            },
-        },
+        "by_source": by_source_receipt,
     }
 
 
@@ -587,6 +629,78 @@ def build_tum_bound_frame_descriptors(
     }
 
 
+def build_bonn_bound_frame_descriptors(
+    label_dir: Path,
+    rgb_binding_path: Path,
+) -> tuple[list[FrameDescriptor], dict[str, Any]]:
+    label_dir = label_dir.resolve()
+    label_result_path = (label_dir / "result.json").resolve()
+    rgb_binding_path = rgb_binding_path.resolve()
+    require(label_result_path.is_file(), "Bonn FIT angular label result missing")
+    require(rgb_binding_path.is_file(), "Bonn FIT RGB binding missing")
+    label_result = load_json(label_result_path)
+    binding = load_json(rgb_binding_path)
+    require(
+        label_result.get("status") == "BONN_FIT_ANGULAR_FACTOR_LABELS_PASS",
+        "Bonn FIT angular labels incomplete",
+    )
+    require(
+        binding.get("status") == "BONN_FIT_ANGULAR_RGB_BINDING_PASS",
+        "Bonn FIT RGB binding incomplete",
+    )
+    require(
+        binding.get("result_sha256") == sha256_file(label_result_path),
+        "Bonn FIT result/RGB binding SHA drift",
+    )
+    label_rows = {str(row["frame_id"]): row for row in label_result["frames"]}
+    binding_rows = {str(row["frame_id"]): row for row in binding["frames"]}
+    require(
+        len(label_rows) == len(binding_rows) == 24 and set(label_rows) == set(binding_rows),
+        "Bonn FIT label/RGB identity drift",
+    )
+    descriptors: list[FrameDescriptor] = []
+    for frame_id in sorted(label_rows):
+        label_row = label_rows[frame_id]
+        rgb_row = binding_rows[frame_id]
+        label_path = (label_dir / f"{frame_id}.npz").resolve()
+        require(label_path.is_file(), f"Bonn FIT factor label missing: {label_path}")
+        require(
+            sha256_file(label_path) == label_row["output_sha256"] == rgb_row["label_sha256"],
+            "Bonn FIT factor label SHA drift",
+        )
+        output_hw = tuple(int(value) for value in label_row["shape_hw"])
+        require(
+            output_hw == tuple(int(value) for value in rgb_row["label_shape_hw"]),
+            "Bonn FIT RGB/label shape binding drift",
+        )
+        require(
+            str(label_row["parent_id"]) == str(rgb_row["parent_id"]),
+            "Bonn FIT RGB/label parent binding drift",
+        )
+        descriptors.append(
+            FrameDescriptor(
+                parent_id=str(label_row["parent_id"]),
+                frame_index=len(descriptors),
+                frame_stem=frame_id,
+                output_hw=(output_hw[0], output_hw[1]),
+                label_path=label_path,
+                video={},
+                source_id="bonn_rgbd_fit",
+                rgb_binding=rgb_row,
+            )
+        )
+    return descriptors, {
+        "source": "bonn_rgbd_fit",
+        "factor_label_result_path": str(label_result_path),
+        "factor_label_result_sha256": sha256_file(label_result_path),
+        "rgb_binding_path": str(rgb_binding_path),
+        "rgb_binding_sha256": sha256_file(rgb_binding_path),
+        "parent_count": len({row.parent_id for row in descriptors}),
+        "frame_count": len(descriptors),
+        "parents": sorted({row.parent_id for row in descriptors}),
+    }
+
+
 def aggregate_label_digest(paths: Iterable[Path]) -> dict[str, Any]:
     digest = hashlib.sha256()
     count = 0
@@ -613,7 +727,7 @@ def bind_angular_boundary_labels(
     descriptors: list[FrameDescriptor],
     result_path: Path,
 ) -> tuple[list[FrameDescriptor], dict[str, Any]]:
-    """Rebind ARKit/TUM descriptors to the R16 package without consuming ICL."""
+    """Rebind ARKit/TUM to R16 while retaining embedded Bonn angular fields."""
 
     result_path = result_path.resolve()
     require(result_path.is_file(), "R16 angular boundary result missing")
@@ -629,7 +743,23 @@ def bind_angular_boundary_labels(
     }
     require(len(indexed) == 81, "R16 angular frame identities are not unique")
     rebound: list[FrameDescriptor] = []
+    embedded_angular_frames = 0
     for descriptor in descriptors:
+        if descriptor.source_id == "bonn_rgbd_fit":
+            with np.load(descriptor.label_path, allow_pickle=False) as payload:
+                require(
+                    {
+                        "boundary_core_probability_hw",
+                        "boundary_angular_soft_probability_hw",
+                        "boundary_truth_valid_hw",
+                        "boundary_quality_tier_hw",
+                    }
+                    <= set(payload.files),
+                    "Bonn FIT embedded angular fields incomplete",
+                )
+            rebound.append(descriptor)
+            embedded_angular_frames += 1
+            continue
         identity = (descriptor.source_id, descriptor.frame_stem)
         require(identity in indexed, f"R16 angular label missing: {identity}")
         row = indexed[identity]
@@ -639,9 +769,13 @@ def bind_angular_boundary_labels(
         require(label_path.is_file(), f"R16 angular payload missing: {label_path}")
         require(sha256_file(label_path) == row["output_sha256"], "R16 angular payload SHA drift")
         rebound.append(replace(descriptor, angular_boundary_path=label_path))
+    sources = {row.source_id for row in rebound}
     require(
-        {row.source_id for row in rebound} == {"arkitscenes", "tum_rgbd"},
-        "R18 training sources must be exactly ARKit/TUM",
+        sources in (
+            {"arkitscenes", "tum_rgbd"},
+            {"arkitscenes", "tum_rgbd", "bonn_rgbd_fit"},
+        ),
+        "angular training source set invalid",
     )
     return rebound, {
         "kind": "R16_CAMERA_ANGULAR_SOFT_BOUNDARY",
@@ -653,6 +787,8 @@ def bind_angular_boundary_labels(
         "icl_consumed": False,
         "teacher_filled_pixels": False,
         "angular_soft_sigma_rad": float(result["angular_soft_sigma_rad"]),
+        "r16_overlay_frame_count": len(rebound) - embedded_angular_frames,
+        "embedded_angular_frame_count": embedded_angular_frames,
     }
 
 
@@ -827,8 +963,7 @@ def preprocess_rgb(
     from mapanything.utils.cropping import crop_resize_if_necessary
 
     height, width = descriptor.output_hw
-    if descriptor.source_id == "tum_rgbd":
-        require(descriptor.rgb_binding is not None, "TUM RGB binding missing")
+    if descriptor.rgb_binding is not None:
         processed_image = crop_resize_if_necessary(
             image=load_bound_rgb(descriptor.rgb_binding),
             resolution=(width, height),
@@ -2303,6 +2438,30 @@ def execute(args: argparse.Namespace) -> int:
         )
         descriptors.extend(tum_descriptors)
         source_batches.append(tum_receipt)
+    bonn_label_dir = getattr(args, "bonn_label_dir", None)
+    if bonn_label_dir is not None:
+        require(
+            bool(getattr(args, "source_stratified_split", False)),
+            "Bonn FIT angular factors require source-stratified split",
+        )
+        bonn_rgb_binding = getattr(args, "bonn_rgb_binding", None)
+        require(bonn_rgb_binding is not None, "Bonn FIT RGB binding argument missing")
+        bonn_descriptors, bonn_receipt = build_bonn_bound_frame_descriptors(
+            Path(bonn_label_dir),
+            Path(bonn_rgb_binding),
+        )
+        existing_parents = {row.parent_id for row in descriptors}
+        existing_stems = {row.frame_stem for row in descriptors}
+        require(
+            not (existing_parents & {row.parent_id for row in bonn_descriptors}),
+            "existing/Bonn parent overlap",
+        )
+        require(
+            not (existing_stems & {row.frame_stem for row in bonn_descriptors}),
+            "existing/Bonn frame identity overlap",
+        )
+        descriptors.extend(bonn_descriptors)
+        source_batches.append(bonn_receipt)
     angular_label_receipt: dict[str, Any] | None = None
     if angular_label_result is not None:
         require(
@@ -2914,6 +3073,18 @@ def parse_args() -> argparse.Namespace:
         "--source-rgb-binding",
         type=Path,
         default=DEFAULT_SOURCE_RGB_BINDING,
+    )
+    parser.add_argument(
+        "--bonn-label-dir",
+        type=Path,
+        default=None,
+        help="Optional R19 Bonn FIT source-depth/angular factor-label directory.",
+    )
+    parser.add_argument(
+        "--bonn-rgb-binding",
+        type=Path,
+        default=None,
+        help="RGB binding paired with --bonn-label-dir.",
     )
     parser.add_argument("--source-stratified-split", action="store_true")
     parser.add_argument("--source-balanced-sampling", action="store_true")

@@ -452,6 +452,20 @@ UNKNOWN，而不是负样本；不需要完整真值。
 ARKit/TUM/Bonn FIT 的 31 parent/93 帧。下一步是把该目录作为第三个 source 接入 source-balanced boundary-only
 训练；ICL、原 Bonn fixed8、mixed evaluation8 和 reserve2 继续不进入 optimization/selection。
 
+三源接入与训练已由
+[R20 DepthART trisource angular result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R20_DEPTHART_TRISOURCE_ANGULAR_BOUNDARY_RESULT_2026-08-11.json)
+完成。93 帧真实数据 preflight 与 21/21 tests PASS；R14 初始化后只训练 136,257 个 boundary 参数，三源各
+720 visits、20 epochs/2,160 steps，总耗时 `357.82 s`。这次结果同时给出一个正信号和一个明确失败：
+封存 Bonn evaluation8 的 AP/F1 从 R18 的 `0.07426/0.55183` 升到 `0.08166/0.71915`，ICL AP
+仍有 `0.12228 > 0.09206` prevalence，说明新增 Bonn incomplete factors 确实可学习、可跨 parent 转移；
+但 ARKit/TUM/Bonn 的内部 selection/canary angular-soft BCE 全部恶化，Bonn 外评 BCE 也达 `1.268`，
+预测激活 `4,146,712 / 6,027,582` 像素，概率明显过度激活。
+
+原因不是“缺完整真值”，而是统一 loss 没有处理 source target-density 差异：固定 angular band rate 在
+ARKit/TUM/Bonn FIT 分别约为 `0.38%/13.37%/44.76%`；等量 frame visits 无法等量梯度。R19 corpus
+继续保留，R20 checkpoint 不作为统一 successor。下一步先做 target-mass-normalized angular loss 的解析/CPU
+canary，只调整每帧正负梯度质量，不改标签、不改 UNKNOWN、不再盲目增加 GPU 训练轮次。
+
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
 模型只训练 `11,109` 参数 factor head，固定 `12/2/2` parent split、80 epochs、2,880 steps，总耗时
