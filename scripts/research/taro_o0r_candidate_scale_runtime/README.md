@@ -77,3 +77,37 @@ records remained valid). `reconcile_source_factor_evidence.py` validates every
 original manifest/query/frame seal and writes a small R1A reconciliation root;
 it never reopens source arrays or recomputes geometry. `_seal` now canonicalizes
 before returning, and the focused test covers summary round-trip stability.
+
+## R2 Apple-seeded candidate refit
+
+`apple_support_seed.py` tested whether a confidence-bound AppleDepth support
+plane could seed a new plane fit on the source-scaled candidate. On the 14 R1
+lost frames it recovered only one frame / two queries, with zero height-and-
+normal no-regret queries. Candidate refit/veto is rejected. The result is
+`docs/research/taro/TARO_O0R_ARKITSCENES_APPLE_SEEDED_SUPPORT_RECOVERY_R2_RESULT_2026-08-11.md`.
+
+## R3 direct Apple SUPPORT
+
+`direct_apple_support.py` gives SUPPORT directly to confidence-2 AppleDepth and
+keeps the source-scaled candidate only for dense boundary/query geometry. The
+Apple SUPPORT mask does not depend on candidate range; invalid final height or
+slope remains `UNKNOWN`.
+
+Phase A rebuilds K/pose from the raw `.pincam` and trajectory instead of
+opening compact truth. R1 query records, FARO and compact truth are read only
+after the source-phase completion seal.
+
+Focused validation:
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  -m unittest `
+  scripts.research.taro_o0r_candidate_scale_runtime.test_direct_apple_support `
+  scripts.research.taro_o0r_candidate_scale_runtime.test_run_direct_apple_support_canary -v
+```
+
+The consumed R3 execution accounted for 14 frames / 112 queries, retained
+eight source SUPPORT frames, made 58 queries support-evaluable and found 20
+height-and-normal no-regret queries. It remains descriptive partial headroom;
+the authoritative result is
+`docs/research/taro/TARO_O0R_ARKITSCENES_DIRECT_APPLE_SUPPORT_R3_RESULT_2026-08-11.md`.

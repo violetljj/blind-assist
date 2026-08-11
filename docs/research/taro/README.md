@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / O0R_NOT_EVALUABLE_SOURCE_TRUTH_OR_INTERFACE / DEPTHART_CANDIDATES_239_SEALED / PARTIAL_FACTOR_CANARY_COMPLETE / APPLE_SCALE_SOURCE_CANARY_COMPLETE / SOURCE_ANCHORED_FACTOR_CANARY_R1_COMPLETE / UNCONDITIONAL_PRE_SCALE_NOT_ADOPTED / SOURCE_SCALE_239_OF_239 / ORACLE_PAIRED_166 / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / O0R_NOT_EVALUABLE_SOURCE_TRUTH_OR_INTERFACE / DEPTHART_CANDIDATES_239_SEALED / PARTIAL_FACTOR_CANARY_COMPLETE / APPLE_SCALE_SOURCE_CANARY_COMPLETE / SOURCE_ANCHORED_FACTOR_CANARY_R1_COMPLETE / UNCONDITIONAL_PRE_SCALE_NOT_ADOPTED / APPLE_SEEDED_SUPPORT_RECOVERY_R2_COMPLETE / CANDIDATE_REFIT_REJECTED / DIRECT_APPLE_SUPPORT_R3_COMPLETE / DIRECT_APPLE_SUPPORT_PARTIAL_HEADROOM / SOURCE_SCALE_239_OF_239 / ORACLE_PAIRED_166 / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -96,6 +96,12 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 - [TARO O0R source-anchored factor canary R1 result](TARO_O0R_ARKITSCENES_SOURCE_ANCHORED_FACTOR_CANARY_R1_RESULT_2026-08-11.md)：
   171 frames / 1,539 queries；尺度后 SUPPORT height 与 BOUNDARY error 显著改善，但新增 112 个
   extractor loss、恢复 0，故不采用 unconditional pre-scale；R1A 仅修正 canonical summary round-trip；
+- [TARO O0R Apple-seeded support recovery R2 result](TARO_O0R_ARKITSCENES_APPLE_SEEDED_SUPPORT_RECOVERY_R2_RESULT_2026-08-11.md)：
+  在 R1 的 14 lost frames / 112 queries 上仅恢复 1 frame / 2 queries，height+normal no-regret 为 0；
+  拒绝让 monocular candidate refit 或 veto Apple metric support；
+- [TARO O0R direct Apple SUPPORT R3 result](TARO_O0R_ARKITSCENES_DIRECT_APPLE_SUPPORT_R3_RESULT_2026-08-11.md)：
+  strict raw-source Phase A 下 8/14 frames 获得物理可信 Apple SUPPORT，58/112 queries 可评估、
+  20 queries 同时 height+normal no-regret；normal parent-macro 仍变差，故只建立 partial headroom；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -106,7 +112,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`APPLE_SEEDED_SUPPORT_RECOVERY_CANARY_R2`
+`DIRECT_APPLE_SUPPORT_FULL_COHORT_R4`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -166,6 +172,19 @@ unconditional pre-extraction injection 不采用。唯一 successor 改为先在
 source-only Apple support seed recovery；无法恢复或一致性不足必须继续 UNKNOWN，不得从同一 eval
 cohort 事后选部署阈值。原 R1 summary 的 12-decimal round-trip 末位漂移已由不重算几何的 R1A
 reconciliation 封闭；逐帧/query 证据未变。
+
+Apple-seeded candidate refit R2 随后只在这 14 个 lost frames 上完成：13/14 source frames 仍失败，
+仅 2/112 queries 可作 post-hoc 比较，且 height+normal no-regret 为 0。该方法已拒绝；R2 虽未 hydrate
+FARO/query arrays，但曾为 source metadata 解析 compact-truth package，因此不声称 strict byte-level
+source-only。R3 已用 raw AppleDepth/confidence、exact `.pincam` 与 trajectory 重建窄 source receipt，
+在 source completion seal 前不读取 R1 query records、compact truth 或 FARO。
+
+direct Apple SUPPORT R3 在同一 lost cohort 上保留 8/14 物理可信 source planes，使 58/112 queries
+恢复 SUPPORT evaluability，20 queries / 3 frames 同时不劣于 R1 baseline 的 height 与 normal；但 normal
+parent-macro reduction 为 `-0.03906 rad`，6 frames 继续 UNKNOWN，且该 cohort 的 truth query knownness
+本身均不满足，所以不能形成 final clearance claim。当前唯一 successor 是把同一冻结、无阈值的 factor
+ownership 扩到全部 171 frames / 1,539 queries，先量化完整 coverage 与 height-normal tradeoff；不得从
+这 16 个已观察 eval parents 事后选择 selector/threshold。
 
 P0 的 analytic fixture 不是标签清单：validator 会从 measurement-only Jacobian 重算强/弱子空间、
 finite task ambiguity 与非光滑分支，并重算 `8 arms × 2 modes × 6 cases = 96` 份
