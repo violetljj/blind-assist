@@ -1,6 +1,6 @@
 # TARO O0R ARKitScenes direct Apple hybrid R5 result and R6 factor split canary
 
-状态：`R5_TASK_METRIC_CONFIRMATION_FAIL / R6_FACTOR_SPLIT_POST_HOC_CANARY_COMPLETE / NO_ACTIVE_EXECUTION`
+状态：`R5_TASK_METRIC_CONFIRMATION_FAIL / R6_PROTOCOL_FROZEN / R6_FACTOR_COMPOSITOR_IMPLEMENTATION_FROZEN / UNTOUCHED_EXECUTION_FALSE`
 
 ## R5 正式终态
 
@@ -61,10 +61,26 @@ candidate gates would pass。
 - canary result file SHA-256：`96A66A67F77CA13E37F0F8E74E5FC9120FA666AD0810FEB8AB5A97D43693989E`
 - sealed content SHA-256：`539F54174B22C7D91D503F8C67C13C7B9F505A3EF1013F3442AC47E3D327AE4C`
 
+## R6 协议与实现锁
+
+R6 factor ownership 已冻结为正式协议，并实现 roster-independent component schema、factor-specific depth
+lineage、exact-copy compositor、formation/untouched role firewall、最少 8-parent confirmation gate 和
+query→frame→parent reducer。错误 query owner 即使重新自封也会被 validator 拒绝。
+
+实现随后对 consumed R5 R3 evidence 重放 1,899/1,899 records；extraction `1,522 → 1,566`、boundary
+`112 → 129`、query knownness `7 → 7`，8/8 parents 仍 jointly positive。该 replay 只证明实现忠实性，
+`confirmation_eligible=false`、`promotion_allowed=false`。
+
+- [R6 protocol lock](TARO_O0R_R6_FACTOR_SPLIT_UNTOUCHED_PARENT_CONFIRMATION_PROTOCOL_LOCK_2026-08-11.md)
+- [R6 implementation lock](TARO_O0R_R6_FACTOR_SPLIT_IMPLEMENTATION_LOCK_2026-08-11.md)
+- implementation replay result file SHA-256：`21B2506A226BC960FE27393103DF482780E405F0446E35B852BFD618F60DC336`
+- implementation replay sealed content SHA-256：`2D6D6CA54DF37EAD029E5221E6E9EB0AC79C39AE090AAD7884F3A6A72CDF220F`
+
 ## 唯一科学后继
 
-先把 `R5_SELECTED_SUPPORT_BOUNDARY_PLUS_ALWAYS_R1_QUERY_CLEARANCE_V1` 冻结为 R6 factor-level candidate，
-再在未参与 R4/R5/R6 形成的 parent-disjoint source/truth 上做一次独立确认。当前授权的 24 个
+`R5_SELECTED_SUPPORT_BOUNDARY_PLUS_ALWAYS_R1_QUERY_CLEARANCE_V1` 的 protocol 和 factor compositor 已冻结。
+现在唯一允许的是先签 `TARO_O0R_R6_UNTOUCHED_COHORT_AND_DATA_USE_LOCK`，再在未参与 R4/R5/R6 形成的
+parent-disjoint source/truth 上做一次独立确认。当前授权的 24 个
 ARKitScenes Training parents 已分别用于旧 16-parent route 与本次 8-parent R5，不能再伪装成 untouched
 confirmation。未获得新的数据 authority 前，不得把 R6 canary 写成 PASS。
 

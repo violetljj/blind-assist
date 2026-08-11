@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_FACTOR_SPLIT_POST_HOC_CANARY_COMPLETE / R6_UNTOUCHED_CONFIRMATION_REQUIRED / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_PROTOCOL_FROZEN / R6_FACTOR_COMPOSITOR_IMPLEMENTATION_FROZEN / R6_UNTOUCHED_DATA_AUTHORITY_REQUIRED / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -121,6 +121,13 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
   R5 在 8 parents / 211 frames / 1,899 slots 上有效执行并以 query-knownness `7 → 5` 触发正式 FAIL；
   SUPPORT/BOUNDARY 的 8/8 parent 正向 headroom 保留。固定 `QUERY_CLEARANCE=R1 baseline` 的 R6
   factor-split post-hoc landscape 消除该 regret，但 promotion=false，必须在 untouched parents 独立确认；
+- [R6 factor-split protocol lock](TARO_O0R_R6_FACTOR_SPLIT_UNTOUCHED_PARENT_CONFIRMATION_PROTOCOL_LOCK_2026-08-11.md)：
+  outcome 后形成的候选已在下一版本中冻结；SUPPORT/BOUNDARY 与 QUERY_CLEARANCE 分别绑定 selected component
+  和 R1 baseline，至少 8 个 untouched parents，24 个 formation parents 全部禁止复用；
+- [R6 factor-split implementation lock](TARO_O0R_R6_FACTOR_SPLIT_IMPLEMENTATION_LOCK_2026-08-11.md)：
+  roster-independent factor schema、depth lineage、exact-copy compositor、role firewall 和 parent-macro reducer
+  已实现；15 个 focused tests 与 4 个 lock mutation tests 通过，1,899-query formation replay PASS，但
+  `promotion_allowed=false`；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -131,7 +138,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_O0R_R6_FACTOR_SPLIT_UNTOUCHED_PARENT_CONFIRMATION_PROTOCOL_LOCK`
+`TARO_O0R_R6_UNTOUCHED_COHORT_AND_DATA_USE_LOCK`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -216,10 +223,11 @@ R5 已在 8 个 visit-disjoint former `ADAPTER_FIT` parents / 211 source frames 
 恢复 5、丢失 7，冻结门 `QUERY_KNOWN_COVERAGE_NO_REGRET` 失败；正式终态因此是
 `TARO_O0R_DIRECT_APPLE_HYBRID_R5_TASK_METRIC_CONFIRMATION_FAIL`。R4A frame-level policy 不得晋级。
 
-R6 post-hoc canary 把 ownership 拆到 factor level：SUPPORT/BOUNDARY 沿用 R5 source-only branch，
-QUERY_CLEARANCE 固定沿用 R1 baseline。该 landscape 保留 R5 的正向几何 headroom，并把 knownness 保持为
-`7 → 7`；但它是在读取 R5 outcome 后形成，只是 candidate，不是 fresh PASS。当前 24 个已授权 Training
-parents 均已被旧 16-parent route 或 R5 消费，唯一科学后继是先冻结 R6，再取得 untouched parent authority。
+R6 把 ownership 拆到 factor level：SUPPORT/BOUNDARY 沿用 R5 source-only branch，QUERY_CLEARANCE 固定沿用
+R1 baseline。protocol 与 factor compositor 已冻结并通过 1,899-query formation replay：extraction
+`1,522 → 1,566`、boundary `112 → 129`、knownness `7 → 7`。但策略是在读取 R5 outcome 后形成，重放只证明
+实现忠实性，不是 fresh PASS。当前 24 个已授权 Training parents 均已被旧 16-parent route 或 R5 消费；
+唯一科学后继是取得至少 8 个 untouched parents 的 exact cohort/source/truth authority。
 
 原 amendment 的两条 candidate transform 描述与已封存 DepthART runner 不一致；该歧义已由
 pre-implementation transform-ID repair 在任何 R5 inference/metric/root 产生前关闭。实现锁必须同时绑定
@@ -273,8 +281,8 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 - 重放 P0/O0M 静态 validator、mutation tests 与 O0M runtime unit tests；
 - 对已签署 O0M evidence 做只读 hash、manifest、record 与 replay 审计；
 - 只读审计已消费 R4/R4A evidence 的 manifest、逐 query 外部绑定与 canonical summary replay；
-- R5 唯一执行、两项忠实实现修复、manifest replay 和正式 FAIL 已完成；R6 factor-split 仅有 post-hoc
-  landscape。下一步只允许 outcome 前冻结 R6 protocol，并在获得 untouched parent/data authority 后执行；
+- R5 唯一执行、两项忠实实现修复、manifest replay 和正式 FAIL 已完成；R6 protocol、factor compositor、
+  validator 和 formation replay 已锁定。下一步只允许签至少 8 个新 parents 的 untouched cohort/data-use lock；
 - 只读引用历史负结果、数据能力、现有 reducer 和运行时 receipt 的已签署结论。
 
 ## 当前禁止

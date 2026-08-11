@@ -196,3 +196,32 @@ implementation lock remains `execution=false`: no R5 evidence root, inference,
 source decision or truth score has been created. Its only successor is the
 one-shot R5 execution lock carrying explicit user model/task execution
 authority.
+
+R5 was subsequently executed on its exact 8-parent / 211-frame cohort and
+terminated with `TARO_O0R_DIRECT_APPLE_HYBRID_R5_TASK_METRIC_CONFIRMATION_FAIL`:
+SUPPORT/BOUNDARY improved on all eight parents, but query knownness changed
+from 7 to 5. The consumed R5 result must not be rerun or promoted.
+
+## R6 factor-level ownership
+
+`r6_factor_split.py` implements the frozen successor policy without another
+selector: SUPPORT and BOUNDARY exact-copy the Phase-A selected component, while
+QUERY_CLEARANCE always exact-copies R1 baseline. Factor blocks carry separate
+depth hashes, and validators reject a wrong-owner block even if it is resealed.
+
+`FORMATION_REPLAY` can only emit a non-promotable landscape. Formal
+`UNTOUCHED_CONFIRMATION` rejects all 24 formation parents and fewer than eight
+new parents. The 1,899-query formation replay passed implementation checks but
+does not authorize untouched execution. The only successor is a hash-bound
+untouched cohort and data-use lock.
+
+Focused validation:
+
+```powershell
+E:\codex-tools\venvs\riskseg-r0-py311\Scripts\python.exe `
+  -m unittest `
+  scripts.research.taro_o0r_candidate_scale_runtime.test_r5_confirmation `
+  scripts.research.taro_o0r_candidate_scale_runtime.test_factor_split_canary `
+  scripts.research.taro_o0r_candidate_scale_runtime.test_r6_factor_split `
+  scripts.research.taro_o0r_candidate_scale_runtime.test_validate_r6_implementation_lock
+```
