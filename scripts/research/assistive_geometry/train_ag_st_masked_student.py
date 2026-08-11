@@ -134,6 +134,11 @@ ANGULAR_BOUNDARY_ONLY_LOSS_WEIGHTS = {
     "boundary_angular_soft_bce": 1.0,
     "boundary_angular_soft_dice": 0.5,
 }
+TARGET_MASS_NORMALIZED_ANGULAR_LOSS_WEIGHTS = {
+    "boundary_angular_soft_bce": 1.0,
+    "boundary_angular_soft_dice": 0.0,
+}
+ANGULAR_LOSS_PROFILES = {"legacy_heat_dice", "target_mass_normalized_bce"}
 UNIFIED_CONTINUOUS_BOUNDARY_LOSS_WEIGHTS = {
     "depth_log_huber": LOSS_WEIGHTS["depth_log_huber"],
     "support_bce": LOSS_WEIGHTS["support_bce"],
@@ -1763,35 +1768,54 @@ def compute_boundary_only_losses(
 def compute_angular_boundary_only_losses(
     outputs: dict[str, torch.Tensor],
     targets: dict[str, torch.Tensor],
+    *,
+    loss_profile: str = "legacy_heat_dice",
 ) -> dict[str, torch.Tensor]:
     """Optimize only the camera-angular soft boundary field from R16."""
 
+    require(loss_profile in ANGULAR_LOSS_PROFILES, "angular loss profile invalid")
     require("boundary_angular_soft" in targets, "angular boundary target missing")
     target = targets["boundary_angular_soft"].clamp(0.0, 1.0)
     logits = outputs["boundary_logits"]
     probability = torch.sigmoid(logits)
     valid = targets["boundary_valid"].bool()
     evidence_weights = tier_weights(targets["boundary_tier"])
-    heat_weights = evidence_weights * (0.05 + 20.0 * target)
-    bce_raw = F.binary_cross_entropy_with_logits(logits, target, reduction="none")
-    bce = masked_weighted_mean(bce_raw, valid, heat_weights)
-
     selected_weights = evidence_weights * valid
-    numerator = 2.0 * torch.sum(selected_weights * probability * target) + 1.0
-    denominator = (
-        torch.sum(selected_weights * probability)
-        + torch.sum(selected_weights * target)
-        + 1.0
-    )
-    dice = 1.0 - numerator / denominator.clamp_min(1e-12)
+    if loss_profile == "target_mass_normalized_bce":
+        positive_mass = torch.sum(selected_weights * target)
+        negative_mass = torch.sum(selected_weights * (1.0 - target))
+        has_positive = bool((positive_mass > 0.0).item())
+        has_negative = bool((negative_mass > 0.0).item())
+        require(has_positive or has_negative, "angular target supervision mass empty")
+        positive = torch.sum(selected_weights * target * F.softplus(-logits))
+        negative = torch.sum(selected_weights * (1.0 - target) * F.softplus(logits))
+        active_classes = float(int(has_positive) + int(has_negative))
+        bce = (
+            (positive / positive_mass.clamp_min(1e-12) if has_positive else positive * 0.0)
+            + (negative / negative_mass.clamp_min(1e-12) if has_negative else negative * 0.0)
+        ) / active_classes
+        dice = logits.sum() * 0.0
+    else:
+        heat_weights = evidence_weights * (0.05 + 20.0 * target)
+        bce_raw = F.binary_cross_entropy_with_logits(logits, target, reduction="none")
+        bce = masked_weighted_mean(bce_raw, valid, heat_weights)
+        numerator = 2.0 * torch.sum(selected_weights * probability * target) + 1.0
+        denominator = (
+            torch.sum(selected_weights * probability)
+            + torch.sum(selected_weights * target)
+            + 1.0
+        )
+        dice = 1.0 - numerator / denominator.clamp_min(1e-12)
     raw = {
         "boundary_angular_soft_bce": bce,
         "boundary_angular_soft_dice": dice,
     }
-    weighted = {
-        name: raw[name] * ANGULAR_BOUNDARY_ONLY_LOSS_WEIGHTS[name]
-        for name in raw
-    }
+    weights = (
+        TARGET_MASS_NORMALIZED_ANGULAR_LOSS_WEIGHTS
+        if loss_profile == "target_mass_normalized_bce"
+        else ANGULAR_BOUNDARY_ONLY_LOSS_WEIGHTS
+    )
+    weighted = {name: raw[name] * weights[name] for name in raw}
     total = sum(weighted.values(), logits.sum() * 0.0)
     return {
         "total": total,
@@ -1953,6 +1977,7 @@ def train_student(
     seed: int,
     objective_profile: str = "multifactor",
     source_balanced: bool = False,
+    angular_loss_profile: str = "legacy_heat_dice",
 ) -> tuple[list[dict[str, float]], dict[str, Any]]:
     require(epochs > 0 and learning_rate > 0, "training configuration invalid")
     model.train()
@@ -2007,7 +2032,11 @@ def train_student(
             if objective_profile == "boundary_only":
                 losses = compute_boundary_only_losses(outputs, targets)
             elif objective_profile == "angular_boundary_only":
-                losses = compute_angular_boundary_only_losses(outputs, targets)
+                losses = compute_angular_boundary_only_losses(
+                    outputs,
+                    targets,
+                    loss_profile=angular_loss_profile,
+                )
             elif objective_profile == "unified_continuous_boundary":
                 losses = compute_unified_continuous_boundary_losses(
                     outputs,
@@ -2053,6 +2082,7 @@ def train_student(
         "elapsed_seconds": time.perf_counter() - started,
         "optimizer_steps": optimizer_steps,
         "source_balanced_sampling": source_balanced,
+        "angular_loss_profile": angular_loss_profile,
         "source_optimizer_visits": dict(sorted(source_visits.items())),
         "peak_cuda_allocated_bytes": int(torch.cuda.max_memory_allocated()),
     }
@@ -2369,6 +2399,7 @@ def execute(args: argparse.Namespace) -> int:
     head_hidden_channels = int(args.head_hidden_channels)
     use_base_depth_feature = bool(args.use_base_depth_feature)
     depth_gate_profile = str(args.depth_gate_profile)
+    angular_loss_profile = str(getattr(args, "angular_loss_profile", "legacy_heat_dice"))
     angular_label_result = getattr(args, "angular_boundary_label_result", None)
     initial_head_checkpoint = getattr(args, "initial_head_checkpoint", None)
     stage0a_results = [args.stage0a_result.resolve()] + [
@@ -2636,6 +2667,7 @@ def execute(args: argparse.Namespace) -> int:
         seed=args.seed,
         objective_profile=objective_profile,
         source_balanced=bool(getattr(args, "source_balanced_sampling", False)),
+        angular_loss_profile=angular_loss_profile,
     )
     support_calibration: dict[str, Any] | None = None
     if int(args.support_calibration_steps) > 0:
@@ -2691,6 +2723,7 @@ def execute(args: argparse.Namespace) -> int:
             "epochs": args.epochs,
             "learning_rate": args.learning_rate,
             "objective_profile": objective_profile,
+            "angular_loss_profile": angular_loss_profile,
             "support_calibration": support_calibration,
             "source_balanced_sampling": bool(
                 getattr(args, "source_balanced_sampling", False)
@@ -2901,6 +2934,7 @@ def execute(args: argparse.Namespace) -> int:
             "use_base_depth_feature": use_base_depth_feature,
             "depth_gate_profile": depth_gate_profile,
             "objective_profile": objective_profile,
+            "angular_loss_profile": angular_loss_profile,
             "encoder_trainable_parameters": 0,
             "head_total_parameters": sum(parameter.numel() for parameter in model.parameters()),
             "head_trainable_parameters": sum(
@@ -2934,7 +2968,11 @@ def execute(args: argparse.Namespace) -> int:
             "priors_from_train_only": priors,
             "class_weights_from_train_only": class_weights,
             "loss_weights": (
-                ANGULAR_BOUNDARY_ONLY_LOSS_WEIGHTS
+                (
+                    TARGET_MASS_NORMALIZED_ANGULAR_LOSS_WEIGHTS
+                    if angular_loss_profile == "target_mass_normalized_bce"
+                    else ANGULAR_BOUNDARY_ONLY_LOSS_WEIGHTS
+                )
                 if objective_profile == "angular_boundary_only"
                 else BOUNDARY_ONLY_LOSS_WEIGHTS
                 if objective_profile == "boundary_only"
@@ -3088,6 +3126,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--source-stratified-split", action="store_true")
     parser.add_argument("--source-balanced-sampling", action="store_true")
+    parser.add_argument(
+        "--angular-loss-profile",
+        choices=tuple(sorted(ANGULAR_LOSS_PROFILES)),
+        default="legacy_heat_dice",
+    )
     parser.add_argument(
         "--encoder",
         choices=("mobilenet_v3_small", "depthart_s"),

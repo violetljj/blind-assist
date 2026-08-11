@@ -1,0 +1,140 @@
+{
+  "schema": "blindassist.assistive_geometry.ag_st_r21_target_mass_normalized_angular_boundary_result.v1",
+  "artifact_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R21_TARGET_MASS_NORMALIZED_ANGULAR_BOUNDARY_RESULT_2026-08-11",
+  "date": "2026-08-11",
+  "mode": "WILD_LAB_TARGET_MASS_NORMALIZED_TRISOURCE_ANGULAR_BOUNDARY",
+  "status": "EXTERNAL_CALIBRATION_SUPPORTED_INTERNAL_SOFT_BCE_NOT_SUPPORTED",
+  "question": "Can per-frame target-mass normalization remove the ARKit/TUM/Bonn boundary-density bias without requiring complete truth or changing any factor label?",
+  "loss_canary": {
+    "artifact": "artifacts.local/experiments/ag-st-angular-loss-mass-normalization-canary-r0/result.json",
+    "artifact_sha256": "A027DECB45B91497DB3FCD6E7BA63067C77947C30E3EF2DE8FBD47384D7D1A9A",
+    "status": "TARGET_MASS_NORMALIZED_ANGULAR_LOSS_CANARY_PASS",
+    "frames": 93,
+    "source_frame_counts": {
+      "arkitscenes": 48,
+      "tum_rgbd": 21,
+      "bonn_rgbd_fit": 24
+    },
+    "dual_class_frames": 91,
+    "single_class_fallback_frames": 2,
+    "gates": "8/8 PASS",
+    "unknown_gradient_max_abs": 0.0,
+    "component_gradient_mass_per_frame": 0.5,
+    "minimum_dual_class_balance_ratio": 0.999999582767586,
+    "contract": "For dual-class soft targets, positive and negative BCE components each receive half of objective mass. A frame with one absent class uses only the normalized active class. Dice is disabled and UNKNOWN remains zero-gradient."
+  },
+  "training": {
+    "artifact": "artifacts.local/experiments/ag-st-depthart-angular-boundary-trisource-massnorm-r1/result.json",
+    "artifact_sha256": "48ECB205F8806FE73530305FA391E6AF7A2A6116DF96B5B4AEA1FD6BD0CD9DA0",
+    "checkpoint": "artifacts.local/experiments/ag-st-depthart-angular-boundary-trisource-massnorm-r1/masked-factor-head.pt",
+    "checkpoint_sha256": "72B18AC946CC70CE73E053119C00764768E02B34697DF7DA9ADB635C469D6786",
+    "initial_checkpoint": "R14 DepthART multi-source factor head",
+    "angular_loss_profile": "target_mass_normalized_bce",
+    "effective_loss_weights": {
+      "boundary_angular_soft_bce": 1.0,
+      "boundary_angular_soft_dice": 0.0
+    },
+    "sources": [
+      "arkitscenes",
+      "tum_rgbd",
+      "bonn_rgbd_fit"
+    ],
+    "total_parents": 31,
+    "total_frames": 93,
+    "parent_split": {
+      "fit": 23,
+      "selection": 4,
+      "canary": 4
+    },
+    "epochs": 20,
+    "optimizer_steps": 2160,
+    "source_optimizer_visits": {
+      "arkitscenes": 720,
+      "tum_rgbd": 720,
+      "bonn_rgbd_fit": 720
+    },
+    "trainable_parameters": 136257,
+    "elapsed_seconds": 265.30915449999975,
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "complete_truth_required": false
+  },
+  "replay_stability": {
+    "first_checkpoint_sha256": "27252FF14688A28C352994CE0D013B62AA06C17C7289386AA7B6CDD2F89FF017",
+    "receipt_corrected_checkpoint_sha256": "72B18AC946CC70CE73E053119C00764768E02B34697DF7DA9ADB635C469D6786",
+    "maximum_state_tensor_abs_difference": 2.384185791015625e-07,
+    "metric_difference_scale": "approximately 1e-8 on internal parent-macro metrics",
+    "interpretation": "The receipt-only replay is numerically stable at CUDA floating-point kernel scale; it is not bitwise deterministic."
+  },
+  "internal_held_parent_result": {
+    "status": "NOT_A_UNIFIED_INTERNAL_SOFT_BCE_SUCCESSOR",
+    "selection_soft_bce_relative_improvement": {
+      "arkitscenes": -1.716180277729158,
+      "tum_rgbd": -0.3518609058554587,
+      "bonn_rgbd_fit": 0.06384531798489892
+    },
+    "canary_soft_bce_relative_improvement": {
+      "arkitscenes": -1.0293635713584353,
+      "tum_rgbd": -0.5164211104511593,
+      "bonn_rgbd_fit": -1.1314814097163315
+    },
+    "interpretation": "Mass normalization fixes the known gradient-scale confound but does not make the angular soft field a uniformly calibrated probability target on every held source."
+  },
+  "external_confirmation": {
+    "checkpoint_replay": "The immediately preceding R21 r0 replay used the identical labels, loss, seed, split and hyperparameters; r1 differs by at most 2.384185791015625e-07 in any state tensor because its only code change corrected the emitted loss-weight receipt.",
+    "exact_r1_reexecution": "COMPLETE_AFTER_TRANSIENT_CONCURRENT_GPU_ENVIRONMENT_BLOCK_CLEARED",
+    "icl_exact": {
+      "artifact": "artifacts.local/experiments/ag-st-depthart-angular-boundary-trisource-massnorm-r1/icl-exact-boundary.json",
+      "artifact_sha256": "F5634C568DD651B1FDD0C5D75675F5D09B565A930C0BC850498B3CD999934993",
+      "fitting_or_threshold_selection": false,
+      "prevalence": 0.09205986457714951,
+      "average_precision": 0.12417372561854771,
+      "r20_average_precision": 0.12228470982491077,
+      "f1_within_2px": 0.2651249734006132,
+      "r20_f1_within_2px": 0.033253754456148275,
+      "student_bce": 0.4455297217388999,
+      "predicted_pixels": 27286,
+      "valid_pixels": 224039,
+      "interpretation": "Ranking remains above prevalence and fixed-threshold localization improves 7.97 times over R20."
+    },
+    "bonn_evaluation8": {
+      "artifact": "artifacts.local/experiments/ag-st-depthart-angular-boundary-trisource-massnorm-r1/bonn-mixed-evaluation8-boundary.json",
+      "artifact_sha256": "7B5E596BC3485C9C5FE151303E5824B3A676B513A50C427602470359A28DB820",
+      "fitting_or_threshold_selection": false,
+      "fit_parent_overlap": false,
+      "prevalence": 0.04420910408186898,
+      "average_precision": 0.08026324850688064,
+      "r20_average_precision": 0.08166416457112444,
+      "f1_within_4px": 0.7552287684128687,
+      "r20_f1_within_4px": 0.719151420238973,
+      "student_bce": 0.8489402119533814,
+      "r20_student_bce": 1.2679977312140462,
+      "predicted_pixels": 3275425,
+      "r20_predicted_pixels": 4146712,
+      "valid_pixels": 6027582,
+      "interpretation": "AP remains above prevalence and close to R20 while F1 improves, BCE falls 33.0 percent, and over-activation falls 21.0 percent."
+    }
+  },
+  "implementation": {
+    "trainer": "scripts/research/assistive_geometry/train_ag_st_masked_student.py",
+    "trainer_sha256": "52500C2CA75E8DC1EFEAA5844228B5568BD5E34E4700DA9B5C5B91DFED7DD122",
+    "trainer_test": "scripts/research/assistive_geometry/test_train_ag_st_masked_student.py",
+    "trainer_test_sha256": "5E0454E61FD7B3204745B4EB6B6AB6126C3EB6760B9766548B4892735E9F7716",
+    "loss_canary_runner": "scripts/research/assistive_geometry/run_ag_st_target_mass_normalized_angular_loss_canary.py",
+    "loss_canary_runner_sha256": "17377298AD6BA5F5212B4A4167533E7BD4C36D0B284E9EA8B05080C1690BF3A8",
+    "loss_canary_test": "scripts/research/assistive_geometry/test_run_ag_st_target_mass_normalized_angular_loss_canary.py",
+    "loss_canary_test_sha256": "33D6C81FDA777F8B257815DADEFA823B8B8720C0E51CA2C4B5712A3C70BAF12F",
+    "focused_tests": "25/25 PASS",
+    "real_data_preflight": "93 frames / 31 parents / 3 sources / 8 of 8 gradient gates PASS"
+  },
+  "decision": {
+    "retain_r19_bonn_factor_corpus": true,
+    "target_mass_normalization_supported": true,
+    "incomplete_angular_factor_learnability_supported": true,
+    "boundary_external_localization_candidate_supported": true,
+    "r21_checkpoint_is_unified_successor": false,
+    "complete_truth_required": false,
+    "formal_f1_authority_changed": false,
+    "next_execution": "Stop boundary-loss competition. Retain R21 as boundary transfer evidence and return SuperTeacher capacity to the next missing factor: multi-view/source-anchored uncertainty and support evidence, while keeping external ICL/Bonn out of fitting."
+  },
+  "claim_boundary": "WILD_LAB evidence that incomplete source-anchored angular factors can train a more transferable and less over-active boundary head without complete truth. Internal soft-target calibration remains source-dependent, and this does not establish complete geometry truth, a unified factor model, task utility, formal F1 authorization, safety, deployment, or product performance."
+}

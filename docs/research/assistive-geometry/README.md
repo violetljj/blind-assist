@@ -466,6 +466,24 @@ ARKit/TUM/Bonn FIT 分别约为 `0.38%/13.37%/44.76%`；等量 frame visits 无�
 继续保留，R20 checkpoint 不作为统一 successor。下一步先做 target-mass-normalized angular loss 的解析/CPU
 canary，只调整每帧正负梯度质量，不改标签、不改 UNKNOWN、不再盲目增加 GPU 训练轮次。
 
+该修复已由
+[R21 target-mass-normalized angular result](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R21_TARGET_MASS_NORMALIZED_ANGULAR_BOUNDARY_RESULT_2026-08-11.json)
+完成。真实 93 帧 CPU canary 为 8/8 gates PASS：91 个双类帧的正负 BCE 分量各占一半，2 个无正类
+ARKit 帧采用单类归一化，所有帧总分量梯度质量为 `0.5`，UNKNOWN 梯度严格为 `0`。随后 RTX 5060
+完成同一三源 20 epochs/2,160 steps 训练；三源仍各 720 visits，实际 loss 为 BCE `1.0`、Dice `0.0`，
+不修改 R16/R19 标签、tier 或 validity。
+
+结果证明这不是单纯“和 base 比赛”：ICL 的 AP/F1 为 `0.12417/0.26512`，其中固定阈值 F1 是 R20 的
+`7.97×`；Bonn evaluation8 的 F1 从 `0.71915` 升到 `0.75523`，BCE 从 `1.2680` 降到 `0.8489`，
+预测激活像素下降 `21.0%`，同时 AP `0.08026` 仍高于 prevalence `0.04421`。因此 incomplete angular
+factor 的跨域可学习性和 target-mass normalization 的降过激活作用得到支持，不需要完整真值。
+
+但内部 held-source soft BCE 仍非统一改善，说明 soft field 不是跨源已校准概率；R21 只保留为 boundary
+transfer evidence/candidate，不是统一 factor successor。receipt 修正后的 r1 与首次 r0 两次 CUDA 重放权重最大差
+仅 `2.38e-7`；并发 GPU 环境短暂阻塞解除后，r1 已完成 ICL/Bonn exact external re-run，指标与 r0 只在
+`1e-6` 量级浮动。这里停止继续做 boundary loss 竞赛；SuperTeacher 下一步回到真正缺失的 factor，优先扩
+multi-view/source-anchored uncertainty 与 support evidence，ICL/Bonn external 继续不进入拟合。
+
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
 模型只训练 `11,109` 参数 factor head，固定 `12/2/2` parent split、80 epochs、2,880 steps，总耗时

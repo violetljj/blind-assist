@@ -510,6 +510,51 @@ class AgStMaskedStudentTest(unittest.TestCase):
         first["total"].backward()
         self.assertTrue(torch.isfinite(outputs["boundary_logits"].grad).all())
 
+    def test_target_mass_normalized_angular_loss_balances_gradient_mass(self) -> None:
+        gradient_l1_by_density: list[float] = []
+        for positive_pixels in (1, 50):
+            logits = torch.zeros((1, 1, 1, 101), requires_grad=True)
+            target = torch.zeros_like(logits)
+            target[..., :positive_pixels] = 1.0
+            valid = torch.ones_like(logits, dtype=torch.bool)
+            valid[..., -1] = False
+            targets = {
+                "boundary_angular_soft": target,
+                "boundary_valid": valid,
+                "boundary_tier": torch.full_like(logits, TIER_A_SOURCE, dtype=torch.uint8),
+            }
+            loss = compute_angular_boundary_only_losses(
+                {"boundary_logits": logits},
+                targets,
+                loss_profile="target_mass_normalized_bce",
+            )["total"]
+            loss.backward()
+            gradient = logits.grad.detach()
+            positive_mass = torch.clamp(-gradient, min=0.0).sum()
+            negative_mass = torch.clamp(gradient, min=0.0).sum()
+            torch.testing.assert_close(positive_mass, negative_mass)
+            self.assertEqual(float(gradient[..., -1].abs().max()), 0.0)
+            gradient_l1_by_density.append(float(gradient.abs().sum()))
+        self.assertAlmostEqual(gradient_l1_by_density[0], gradient_l1_by_density[1], places=6)
+
+    def test_target_mass_normalized_angular_loss_supports_single_class_frame(self) -> None:
+        logits = torch.zeros((1, 1, 2, 2), requires_grad=True)
+        targets = {
+            "boundary_angular_soft": torch.zeros_like(logits),
+            "boundary_valid": torch.tensor([[[[True, True], [True, False]]]]),
+            "boundary_tier": torch.tensor(
+                [[[[TIER_A_SOURCE, TIER_A_SOURCE], [TIER_A_SOURCE, TIER_UNKNOWN]]]]
+            ),
+        }
+        loss = compute_angular_boundary_only_losses(
+            {"boundary_logits": logits},
+            targets,
+            loss_profile="target_mass_normalized_bce",
+        )["total"]
+        loss.backward()
+        self.assertAlmostEqual(float(logits.grad.abs().sum()), 0.5, places=6)
+        self.assertEqual(float(logits.grad[..., 1, 1]), 0.0)
+
     def test_angular_gradient_firewall_only_opens_boundary_probability_branch(self) -> None:
         model = MaskedFactorStudent(
             channels=192,
