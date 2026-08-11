@@ -1,0 +1,100 @@
+{
+  "schema": "blindassist.taro.o0r.r6_factor_split_protocol_lock.v1",
+  "lock_id": "TARO_O0R_R6_FACTOR_SPLIT_UNTOUCHED_PARENT_CONFIRMATION_PROTOCOL_LOCK",
+  "date": "2026-08-11",
+  "status": "PROTOCOL_FROZEN_IMPLEMENTATION_ALLOWED_EXECUTION_NOT_AUTHORIZED",
+  "formation_evidence": {
+    "r5_terminal": "TARO_O0R_DIRECT_APPLE_HYBRID_R5_TASK_METRIC_CONFIRMATION_FAIL",
+    "r5_result_sha256": "5508EC6851ADD6069914D70A643534245426A3DFA256A301DCA5504AB4B46A39",
+    "r6_posthoc_canary_file_sha256": "96A66A67F77CA13E37F0F8E74E5FC9120FA666AD0810FEB8AB5A97D43693989E",
+    "r6_posthoc_canary_content_sha256": "539F54174B22C7D91D503F8C67C13C7B9F505A3EF1013F3442AC47E3D327AE4C",
+    "formation_only_not_confirmation": true
+  },
+  "frozen_algorithm": {
+    "policy_id": "R5_SELECTED_SUPPORT_BOUNDARY_PLUS_ALWAYS_R1_QUERY_CLEARANCE_V1",
+    "phase_a_support_boundary_owner": "DIRECT_APPLE_SUPPORT_WHEN_SOURCE_SUPPORT_AVAILABLE_ELSE_R1_BASELINE",
+    "phase_a_query_clearance_owner": "ALWAYS_R1_BASELINE",
+    "support_block": "COPY_FROM_PHASE_A_SELECTED_SUPPORT_BOUNDARY_COMPONENT",
+    "boundary_block": "COPY_FROM_PHASE_A_SELECTED_SUPPORT_BOUNDARY_COMPONENT",
+    "query_clearance_block": "COPY_FROM_R1_BASELINE_COMPONENT",
+    "extraction_status": "COPY_FROM_PHASE_A_SELECTED_SUPPORT_BOUNDARY_COMPONENT",
+    "factor_depth_lineage": {
+      "SUPPORT": "PHASE_A_SELECTED_COMPONENT_DEPTH_SHA256",
+      "BOUNDARY": "PHASE_A_SELECTED_COMPONENT_DEPTH_SHA256",
+      "QUERY_CLEARANCE": "R1_BASELINE_DEPTH_SHA256"
+    },
+    "learned_parameters": 0,
+    "thresholds": 0,
+    "outcome_dependent_reselection": false,
+    "fallback_after_truth": false
+  },
+  "schemas": {
+    "component_record": "blindassist.taro.o0r.r6_factor_components.v1",
+    "composite_query_record": "blindassist.taro.o0r.r6_factor_split_query.v1",
+    "roster_independent": true,
+    "required_component_roles": ["R1_BASELINE", "PHASE_A_SELECTED_SUPPORT_BOUNDARY"],
+    "required_factor_blocks": ["SUPPORT", "BOUNDARY", "QUERY_CLEARANCE"]
+  },
+  "phase_firewall": {
+    "before_truth_open": [
+      "SEAL_CANDIDATE_OUTPUT",
+      "SEAL_SOURCE_SUPPORT_AVAILABILITY",
+      "SEAL_SUPPORT_BOUNDARY_OWNER",
+      "SEAL_QUERY_CLEARANCE_OWNER_ALWAYS_R1_BASELINE"
+    ],
+    "after_truth_open": [
+      "BUILD_BASELINE_AND_SELECTED_FACTOR_COMPONENTS",
+      "BUILD_R6_COMPOSITE_BY_EXACT_COPY",
+      "SCORE_WITHOUT_RESELECTION"
+    ],
+    "forbidden_selection_reads": ["FARO", "TASK_METRIC", "KNOWNNESS_OUTCOME", "PRIOR_EVAL_OUTCOME"]
+  },
+  "untouched_confirmation_admission": {
+    "minimum_parent_count": 8,
+    "exact_roster_and_frame_counts_must_be_frozen_before_any_model_or_truth_read": true,
+    "parent_disjoint_from_all_r4_r5_r6_formation_data": true,
+    "forbidden_parent_ids": [
+      "410690", "411257", "411536", "414297", "415639", "421113", "424461", "433755",
+      "442420", "450420", "452612", "456632", "466965", "467246", "471342", "472345",
+      "423614", "438794", "467346", "467370", "469216", "469460", "470974", "472473"
+    ],
+    "source_truth_assets_must_be_hash_bound": true,
+    "data_use_authority_required": true,
+    "network_during_execution": false,
+    "training_steps": 0
+  },
+  "aggregation": {
+    "query_slots_per_frame": 9,
+    "frame_effect": "MEDIAN_OF_PAIRED_EVALUABLE_QUERY_EFFECTS",
+    "parent_effect": "MEDIAN_OF_FRAME_EFFECTS",
+    "global_effect": "MEDIAN_OF_PARENT_MEDIANS",
+    "unknown_is_not_negative": true,
+    "missing_parent_metric_makes_result_not_evaluable": true
+  },
+  "gates": [
+    "EXACT_COHORT_AND_LINEAGE",
+    "PHASE_FIREWALL",
+    "PARENT_METRIC_DENOMINATORS",
+    "HEIGHT_PARENT_MACRO_POSITIVE",
+    "NORMAL_PARENT_MACRO_POSITIVE",
+    "ALL_PARENTS_JOINTLY_POSITIVE",
+    "EXTRACTION_COVERAGE_NO_REGRET",
+    "BOUNDARY_EVALUABILITY_NO_REGRET",
+    "QUERY_KNOWN_COVERAGE_NO_REGRET"
+  ],
+  "terminals": {
+    "pass": "TARO_O0R_R6_FACTOR_SPLIT_UNTOUCHED_CONFIRMATION_PASS",
+    "fail": "TARO_O0R_R6_FACTOR_SPLIT_UNTOUCHED_CONFIRMATION_FAIL",
+    "not_evaluable": "TARO_O0R_R6_FACTOR_SPLIT_UNTOUCHED_CONFIRMATION_NOT_EVALUABLE",
+    "execution_invalid": "TARO_O0R_R6_FACTOR_SPLIT_EXECUTION_INVALID"
+  },
+  "successors": {
+    "allowed_now": "TARO_O0R_R6_FACTOR_SPLIT_IMPLEMENTATION_LOCK",
+    "requires_new_data_authority": "TARO_O0R_R6_UNTOUCHED_COHORT_AND_DATA_USE_LOCK",
+    "execution_requires_both": true
+  },
+  "claim_ceiling": {
+    "maximum_if_pass": "WILD_LAB_PARENT_DISJOINT_FACTOR_LEVEL_TASK_METRIC_CONFIRMATION",
+    "excluded": ["FORMAL_O0R", "EXTERNAL_GENERALIZATION", "DEPLOYMENT", "PRODUCT", "SAFETY", "DEFAULT_APP_CHANGE"]
+  }
+}
