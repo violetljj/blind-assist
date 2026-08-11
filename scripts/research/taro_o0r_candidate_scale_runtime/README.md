@@ -157,3 +157,30 @@ none; both height and normal parent-macro errors improved on 16/16 parents.
 Known point-clearance still lost two baseline-known queries, so this remains
 retrospective factor/extraction headroom. The authoritative result is
 `docs/research/taro/TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_R4A_RESULT_2026-08-11.md`.
+
+## R5 parent-disjoint task-metric confirmation amendment
+
+The R5 amendment freezes the same zero-parameter policy on the eight former
+`ADAPTER_FIT` parents / 211 exact frames / 1,899 query slots. It introduces an
+independent `R5_TASK_METRIC_CONFIRMATION` role instead of weakening the old
+ADAPTER_FIT validators. Phase A must seal all model/source decisions with zero
+FARO/task/prior-eval reads before Phase B can score the same frames.
+
+Validate the amendment and all predecessor/source bindings:
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  -m scripts.research.taro_o0r_candidate_scale_runtime.validate_r5_amendment
+```
+
+Focused mutation tests:
+
+```powershell
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe `
+  -m unittest `
+  scripts.research.taro_o0r_candidate_scale_runtime.test_validate_r5_amendment -v
+```
+
+The amendment is `execution=false`. Its unique successor is the R5
+implementation lock; no R5 evidence root, inference or truth scoring is
+authorized by the amendment alone.

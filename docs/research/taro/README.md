@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / O0R_NOT_EVALUABLE_SOURCE_TRUTH_OR_INTERFACE / DEPTHART_CANDIDATES_239_SEALED / PARTIAL_FACTOR_CANARY_COMPLETE / APPLE_SCALE_SOURCE_CANARY_COMPLETE / SOURCE_ANCHORED_FACTOR_CANARY_R1_COMPLETE / UNCONDITIONAL_PRE_SCALE_NOT_ADOPTED / APPLE_SEEDED_SUPPORT_RECOVERY_R2_COMPLETE / CANDIDATE_REFIT_REJECTED / DIRECT_APPLE_SUPPORT_R3_COMPLETE / DIRECT_APPLE_SUPPORT_R4_COMPLETE / DIRECT_APPLE_HYBRID_R4A_COMPLETE / ZERO_PARAMETER_HYBRID_RETROSPECTIVE_HEADROOM / SOURCE_SCALE_239_OF_239 / ORACLE_PAIRED_166 / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / O0R_NOT_EVALUABLE_SOURCE_TRUTH_OR_INTERFACE / DEPTHART_CANDIDATES_239_SEALED / PARTIAL_FACTOR_CANARY_COMPLETE / APPLE_SCALE_SOURCE_CANARY_COMPLETE / SOURCE_ANCHORED_FACTOR_CANARY_R1_COMPLETE / UNCONDITIONAL_PRE_SCALE_NOT_ADOPTED / APPLE_SEEDED_SUPPORT_RECOVERY_R2_COMPLETE / CANDIDATE_REFIT_REJECTED / DIRECT_APPLE_SUPPORT_R3_COMPLETE / DIRECT_APPLE_SUPPORT_R4_COMPLETE / DIRECT_APPLE_HYBRID_R4A_COMPLETE / ZERO_PARAMETER_HYBRID_RETROSPECTIVE_HEADROOM / R5_TASK_METRIC_CONFIRMATION_AMENDMENT_FROZEN / SOURCE_SCALE_239_OF_239 / ORACLE_PAIRED_166 / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -108,6 +108,9 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 - [TARO O0R direct Apple hybrid R4A result](TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_R4A_RESULT_2026-08-11.md)：
   source-only plane 有效则 direct、否则回退 R1 baseline；零参数、零阈值、零训练，恢复 36、丢失 0，
   高度与法向均为 16/16 parents 改善，但仍是同 cohort retrospective headroom；
+- [TARO O0R direct Apple hybrid R5 amendment](TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_AMENDMENT_2026-08-11.md)：
+  outcome 前冻结 8 个 parent-disjoint former ADAPTER_FIT identities / 211 frames / 1,899 slots、
+  Phase-A/Phase-B firewall 与确认门；execution=false，唯一后继为 hash-bound implementation lock；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -118,7 +121,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_AMENDMENT`
+`TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_IMPLEMENTATION_LOCK`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -198,12 +201,12 @@ extraction-evaluable 达到 1,530/1,539，相对 baseline 恢复 36、丢失 0�
 parent-macro 均为 16/16 parents 改善。仍有 2 个 baseline-known query 的 knownness 损失，且全部结果
 来自已观察的同一 16-parent cohort，所以不能写成 fresh confirmation 或 final clearance 增益。
 
-当前唯一 successor 是先签
-`DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_AMENDMENT`，再在 8 个 visit-disjoint
-`ADAPTER_FIT` parents / 211 source frames 上独立确认已经冻结的 R4A policy。旧合同只授权这些 parents
-做 uncertainty fit，明确不授权 model output/task metric，因此不能借旧 role 直接执行。新版本必须先封存
-truth-blind DepthART/source Phase A，再打开同一 211 frames 的 FARO Phase B；不得读取或枚举现有
-16-parent eval truth，也不得训练 selector 或修改 policy。
+R5 amendment 现已 outcome 前冻结：它为 8 个 visit-disjoint former `ADAPTER_FIT` parents / 211
+source frames 建立一次性 `R5_TASK_METRIC_CONFIRMATION` role，独立确认已经冻结的 R4A policy。旧合同
+不被改写；新版本必须先封存 truth-blind DepthART/source Phase A，再打开同一 211 frames 的 FARO
+Phase B，不得读取或枚举现有 16-parent eval truth，也不得训练 selector 或修改 policy。该 amendment
+本身 execution=false；当前唯一 successor 是实现独立 R5 role API/runner/tests，并签 hash-bound
+implementation lock。
 
 P0 的 analytic fixture 不是标签清单：validator 会从 measurement-only Jacobian 重算强/弱子空间、
 finite task ambiguity 与非光滑分支，并重算 `8 arms × 2 modes × 6 cases = 96` 份
@@ -253,8 +256,9 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 - 重放 P0/O0M 静态 validator、mutation tests 与 O0M runtime unit tests；
 - 对已签署 O0M evidence 做只读 hash、manifest、record 与 replay 审计；
 - 只读审计已消费 R4/R4A evidence 的 manifest、逐 query 外部绑定与 canonical summary replay；
-- outcome 前设计和冻结 `DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_AMENDMENT`；在该 amendment
-  与后续 implementation/execution lock 生效前，不得创建 R5 evidence root；
+- 实现和验证 R5 独立 role API、Phase-A/Phase-B runner、证据 writer 与聚合器，并生成 hash-bound
+  implementation lock；在后续 one-shot execution lock 与用户 model/task execution authority 生效前，
+  不得创建 R5 evidence root；
 - 只读引用历史负结果、数据能力、现有 reducer 和运行时 receipt 的已签署结论。
 
 ## 当前禁止
