@@ -1,0 +1,69 @@
+{
+  "schema": "blindassist.taro.o1r.r7_fresh_confirmation_head_execution_lock.v1",
+  "lock_id": "TARO_O1R_R7_FRESH_CONFIRMATION_CONTENT_LENGTH_HEAD_ONE_SHOT_EXECUTION_LOCK",
+  "date": "2026-08-12",
+  "status": "AUTHORIZED_UNCONSUMED",
+  "consumed": false,
+  "argv": [
+    "scripts/research/taro_o1r_r7_canary_runtime/run_fresh_head.py",
+    "--execution-lock",
+    "docs/research/taro/TARO_O1R_R7_FRESH_CONFIRMATION_CONTENT_LENGTH_HEAD_ONE_SHOT_EXECUTION_LOCK_2026-08-12.json"
+  ],
+  "bindings": [
+    {
+      "role": "R7_DATA_LOCK",
+      "path": "docs/research/taro/TARO_O1R_R7_FRESH_CONFIRMATION_COHORT_AND_DATA_USE_LOCK_2026-08-12.json",
+      "bytes": 7157,
+      "sha256": "4CC1C00ACB049C0622CCB834EF4709DCEE88343E2702EB02187DD2311B2957AB"
+    },
+    {
+      "role": "R7_COHORT_PLANNER",
+      "path": "scripts/research/taro_o1r_r7_canary_runtime/fresh_confirmation_cohort.py",
+      "bytes": 10553,
+      "sha256": "FD54353CF0B8EF2A3152CCE33BFD5D5880B9F2A82B36E8C775DEB429BD00FBA9"
+    },
+    {
+      "role": "R7_DATA_LOCK_VALIDATOR",
+      "path": "scripts/research/taro_o1r_r7_canary_runtime/validate_fresh_data_lock.py",
+      "bytes": 4645,
+      "sha256": "1CECE3F15B4EE241DF1BC08371959F8360EDDA1A560A630C34D7479893774F0B"
+    },
+    {
+      "role": "HEAD_TRANSPORT",
+      "path": "scripts/research/taro_o0r_truth_materializer_runtime/materializer.py",
+      "bytes": 81498,
+      "sha256": "2D03BAFA691FD8C1919854581C68D0460BC943E54E6BB83486F5E867497139F2"
+    },
+    {
+      "role": "R7_HEAD_RUNNER",
+      "path": "scripts/research/taro_o1r_r7_canary_runtime/run_fresh_head.py",
+      "bytes": 14734,
+      "sha256": "D78277D87805DE17AFEE470893D4E8E5B59050E63BC756C238E2648E30D7F5CC"
+    }
+  ],
+  "request_plan_sha256": "EEBA09BDC67EA81975C5C13C5E1F16C902D6CFE832BF8E68C346AD6932DFF7A0",
+  "resource_budget": {
+    "maximum_compressed_source_bytes": 2147483648,
+    "head_timeout_seconds": 30,
+    "head_retries": 2,
+    "maximum_request_attempts": 48,
+    "head_response_body_bytes": 0
+  },
+  "output_root": "artifacts.local/evidence/taro/o1r-r7-fresh-confirmation-head-r0",
+  "output_receipt": "artifacts.local/evidence/taro/o1r-r7-fresh-confirmation-head-r0/head-receipt.json",
+  "overwrite": false,
+  "rerun": false,
+  "execution_authority": {
+    "head_only": true,
+    "response_body_bytes_allowed": 0,
+    "source_download": false,
+    "source_decode": false,
+    "model_execution": false,
+    "truth_scoring": false,
+    "training": false,
+    "device": false,
+    "product": false,
+    "safety": false
+  },
+  "claim_ceiling": "One-shot zero-body availability and Content-Length evidence for the exact eight-parent R7 fresh confirmation cohort only."
+}

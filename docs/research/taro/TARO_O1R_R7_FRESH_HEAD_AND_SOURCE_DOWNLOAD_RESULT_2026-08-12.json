@@ -1,0 +1,58 @@
+{
+  "schema": "blindassist.taro.o1r.r7_fresh_head_and_source_download_result.v1",
+  "result_id": "TARO_O1R_R7_FRESH_HEAD_AND_SOURCE_DOWNLOAD_RESULT",
+  "date": "2026-08-12",
+  "terminal": "TARO_O1R_R7_FRESH_SOURCE_DOWNLOAD_INTEGRITY_PASS",
+  "execution_valid": true,
+  "passed": true,
+  "cohort": {
+    "parent_count": 8,
+    "asset_count": 24,
+    "official_fold": "Training",
+    "replacement_allowed": false
+  },
+  "head": {
+    "terminal": "TARO_O1R_R7_FRESH_ASSET_HEADERS_AVAILABLE_MEDIA_UNOPENED",
+    "available_asset_count": 24,
+    "request_attempt_count": 24,
+    "total_content_length_bytes": 494703329,
+    "response_body_bytes_read": 0,
+    "receipt": {
+      "path": "artifacts.local/evidence/taro/o1r-r7-fresh-confirmation-head-r0/head-receipt.json",
+      "bytes": 15622,
+      "sha256": "F0A25D359171385CE9A76F896721772BD7EB92A6C1225E77261E600782BC9032"
+    },
+    "evidence_validation": "TARO_O1R_R7_FRESH_HEAD_EVIDENCE_VALID"
+  },
+  "download": {
+    "asset_count": 24,
+    "network_get_requests": 24,
+    "source_bytes": 494703329,
+    "source_root": "artifacts.local/datasets/taro/o1r-r7-fresh-confirmation-source-r0",
+    "receipts": {
+      "path": "artifacts.local/evidence/taro/o1r-r7-fresh-confirmation-source-r0/download-receipts.json",
+      "bytes": 13165,
+      "sha256": "621643329F267E078DBBABA40C66C4BDC0185C193659199E9459E676445EE34B"
+    },
+    "result": {
+      "bytes": 368,
+      "sha256": "30163771E9D882C09A66F6EC016A91272D77DD8AFC9B94C71FBD89AF7D8054BC"
+    },
+    "manifest": {
+      "bytes": 710,
+      "sha256": "3F3B206E876A71EA3267F4C4A5094C85CDAE63F587231D5C1084E9F2142C3934"
+    },
+    "evidence_validation": "TARO_O1R_R7_FRESH_SOURCE_DOWNLOAD_EVIDENCE_VALID"
+  },
+  "firewall": {
+    "archive_decode": false,
+    "source_frame_decode": false,
+    "model_execution": false,
+    "truth_scoring": false,
+    "training": false,
+    "device_or_app_changed": false
+  },
+  "claim_ceiling": "Exact source availability and byte/hash integrity only; no decoded frame, model, truth, confirmation, deployment, product, or safety evidence.",
+  "unique_successor": "TARO_O1R_R7_FRESH_SOURCE_INVENTORY_AND_FRAME_PLAN_ONE_SHOT_EXECUTION_LOCK",
+  "content_sha256": "F8E959336E94B63ED48D62F5E161104A52DB6938BE776EB90DF4A90F0D9DB548"
+}
