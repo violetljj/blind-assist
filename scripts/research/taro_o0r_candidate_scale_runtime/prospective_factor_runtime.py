@@ -67,6 +67,12 @@ def _seal(value: Mapping[str, Any]) -> dict[str, Any]:
     return record
 
 
+def _canonical_record(value: Mapping[str, Any]) -> dict[str, Any]:
+    """Freeze source-derived scalars before they influence query/factor geometry."""
+
+    return json.loads(adapter.canonical_json_bytes(dict(value)).decode("utf-8"))
+
+
 def _validate_seal(value: Any, schema: str) -> dict[str, Any]:
     require(isinstance(value, dict), "R6_RUNTIME_RECORD_INVALID", "runtime record must be an object", schema=schema)
     record = copy.deepcopy(value)
@@ -419,15 +425,15 @@ def build_prospective_factor_bundle(
     require(conf.shape == adapter.APPLE_SHAPE_HW and conf.dtype == np.uint8 and bool(np.all(conf <= 2)), "R6_RUNTIME_CONFIDENCE_INVALID", "confidence must be uint8 0..2 at 192x256")
     raw64 = np.ascontiguousarray(raw, dtype=np.float64)
     raw_depth_sha = adapter.canonical_sha256(raw64)
-    scale = apple_scale.estimate_source_metric_scale(apple, conf, apple_scale.sample_candidate_at_apple_centers(raw64))
+    scale = _canonical_record(apple_scale.estimate_source_metric_scale(apple, conf, apple_scale.sample_candidate_at_apple_centers(raw64)))
     if scale["evaluable"]:
         anchored = np.ascontiguousarray(raw64 * float(scale["metric_scale"]), dtype=np.float64)
-        direct_plane = _fit_direct_plane(apple, conf, low_k, gravity)
+        direct_plane = _canonical_record(_fit_direct_plane(apple, conf, low_k, gravity))
     else:
         anchored = np.ascontiguousarray(raw64, dtype=np.float64)
-        direct_plane = _failed_plane(str(scale["reason_codes"][0]))
+        direct_plane = _canonical_record(_failed_plane(str(scale["reason_codes"][0])))
     anchored_depth_sha = adapter.canonical_sha256(anchored)
-    baseline_plane = _fit_depth_plane(raw64, high_k, gravity)
+    baseline_plane = _canonical_record(_fit_depth_plane(raw64, high_k, gravity))
     direct_available = bool(scale["evaluable"] and direct_plane["evaluable"])
     baseline_available = bool(baseline_plane["evaluable"])
     selected_owner = "DIRECT_APPLE_SUPPORT" if direct_available else "R1_BASELINE"

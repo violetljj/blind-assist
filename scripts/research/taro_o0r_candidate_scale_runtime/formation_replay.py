@@ -55,6 +55,31 @@ def _normal_angle(left: Any, right: Any) -> float:
     return float(math.acos(max(-1.0, min(1.0, float(np.dot(a, b))))))
 
 
+def _source_record_close(replayed: Mapping[str, Any], committed: Mapping[str, Any], *, tolerance: float = 5e-11) -> bool:
+    if set(replayed) != set(committed):
+        return False
+    for key in replayed:
+        left, right = replayed[key], committed[key]
+        if isinstance(left, Mapping) and isinstance(right, Mapping):
+            if not _source_record_close(left, right, tolerance=tolerance):
+                return False
+        elif isinstance(left, list) and isinstance(right, list):
+            if len(left) != len(right):
+                return False
+            for a, b in zip(left, right, strict=True):
+                if isinstance(a, (int, float)) and not isinstance(a, bool) and isinstance(b, (int, float)) and not isinstance(b, bool):
+                    if abs(float(a) - float(b)) > tolerance:
+                        return False
+                elif a != b:
+                    return False
+        elif isinstance(left, float) and isinstance(right, (int, float)) and not isinstance(right, bool):
+            if abs(float(left) - float(right)) > tolerance:
+                return False
+        elif left != right:
+            return False
+    return True
+
+
 def _boundary_metrics(
     truth_ids: np.ndarray,
     truth_points: np.ndarray,
@@ -217,18 +242,18 @@ def score_frame(
     replay_baseline = runtime._fit_depth_plane(raw, matrix, gravity)
     replay_direct = runtime._fit_direct_plane(apple, conf, low_matrix, gravity) if replay_scale["evaluable"] else runtime._failed_plane(str(replay_scale["reason_codes"][0]))
     require(
-        adapter.canonical_sha256(replay_scale) == adapter.canonical_sha256(bundle["source_scale"])
-        and adapter.canonical_sha256(replay_baseline) == adapter.canonical_sha256(bundle["baseline_support"])
-        and adapter.canonical_sha256(replay_direct) == adapter.canonical_sha256(bundle["direct_support"]),
+        _source_record_close(replay_scale, bundle["source_scale"])
+        and _source_record_close(replay_baseline, bundle["baseline_support"])
+        and _source_record_close(replay_direct, bundle["direct_support"]),
         "FORMATION_PHASE_A_SOURCE_STATE_REPLAY_DRIFT",
         "Phase-A source scale/support commitments do not replay from bound inputs",
     )
-    baseline_plane = replay_baseline if replay_baseline["evaluable"] else None
+    baseline_plane = bundle["baseline_support"] if bundle["baseline_support"]["evaluable"] else None
     baseline_geometry = runtime._build_geometry(raw, raw_hash, matrix) if baseline_plane is not None else None
     if bundle["selected_support_boundary_owner"] == "DIRECT_APPLE_SUPPORT":
         require(replay_scale["evaluable"] and replay_direct["evaluable"], "FORMATION_PHASE_A_OWNER_REPLAY_DRIFT", "sealed DIRECT owner is unavailable on source replay")
-        selected_depth = np.ascontiguousarray(raw * float(replay_scale["metric_scale"]), dtype=np.float64)
-        selected_plane = replay_direct
+        selected_depth = np.ascontiguousarray(raw * float(bundle["source_scale"]["metric_scale"]), dtype=np.float64)
+        selected_plane = bundle["direct_support"]
         selected_geometry = runtime._build_geometry(selected_depth, adapter.canonical_sha256(selected_depth), matrix)
     else:
         require(not (replay_scale["evaluable"] and replay_direct["evaluable"]), "FORMATION_PHASE_A_OWNER_REPLAY_DRIFT", "sealed R1 owner differs from source replay")

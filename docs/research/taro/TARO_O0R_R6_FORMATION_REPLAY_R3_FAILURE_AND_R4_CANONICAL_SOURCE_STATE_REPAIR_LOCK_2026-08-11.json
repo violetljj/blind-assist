@@ -1,0 +1,87 @@
+{
+  "schema": "blindassist.taro.o0r.r6_formation_canonical_source_state_repair_lock.v1",
+  "lock_id": "TARO_O0R_R6_FORMATION_REPLAY_R3_FAILURE_AND_R4_CANONICAL_SOURCE_STATE_REPAIR_LOCK",
+  "date": "2026-08-11",
+  "status": "R3_FAILURE_PRESERVED_R4_CANONICAL_CONSTRUCTION_FROZEN_TESTED",
+  "r3_failure": {
+    "output_root": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r3",
+    "phase_b_only": true,
+    "completed_phase_b_frame_count": 4,
+    "failure_code": "FORMATION_PHASE_A_SOURCE_STATE_REPLAY_DRIFT",
+    "failure_message": "Phase-A source scale/support commitments do not replay from bound inputs",
+    "first_failing_physical_frame_id": "47332075:251491.427",
+    "failure_receipt": {
+      "path": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r3/failure.json",
+      "bytes": 373,
+      "sha256": "382896481FCCC76DC64427764B804053B3340A6460A021C812614396FB37A887"
+    },
+    "manifest": {
+      "path": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r3/manifest.json",
+      "bytes": 1342,
+      "sha256": "386823CB8735CFD04EF2BACD2B65DB1AB35BC794688DED880456A9DF3F58AC25"
+    },
+    "scientific_interpretation": "NONE_EXECUTION_INVALID"
+  },
+  "root_cause": {
+    "same_input_direct_support_slope_phase_a": 0.582301184323,
+    "same_input_direct_support_slope_phase_b": 0.582301184324,
+    "difference_rad_or_degree_scalar": 1e-12,
+    "cause": "PARALLEL_SVD_LAST_DIGIT_VARIATION_BEFORE_CANONICAL_PERSISTENCE",
+    "implication": "EXACT_RECOMPUTATION_OF_UNPERSISTED_FULL_PRECISION_PLANE_IS_NOT_A_VALID_HASH_CONTRACT",
+    "truth_or_outcome_involved": false
+  },
+  "repair": {
+    "phase_a_scale_is_canonicalized_before_branch_or_depth_scaling": true,
+    "phase_a_direct_and_baseline_planes_are_canonicalized_before_query_and_factor_construction": true,
+    "persisted_plane_equals_factor_construction_plane": true,
+    "phase_b_factor_blocks_replay_exactly_from_persisted_canonical_plane": true,
+    "phase_b_source_recomputation_is_bounded_integrity_check_only": true,
+    "source_recomputation_absolute_tolerance": 5e-11,
+    "factor_block_hash_tolerance_or_bypass": false,
+    "owner_reselection": false,
+    "numeric_threshold_change": false,
+    "cohort_denominator_or_unknown_policy_change": false
+  },
+  "implementation": {
+    "prospective_runtime": {
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/prospective_factor_runtime.py",
+      "bytes": 37796,
+      "sha256": "75E4CB46AF3D3A4ECBB461E79B48CFFE4CEFF6981DE5AB62E4DAE827E618E407"
+    },
+    "formation_scorer": {
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/formation_replay.py",
+      "bytes": 22384,
+      "sha256": "91EC5572E482DF845B353278E09D780968871DCA6F37EC2189681771DFDE521E"
+    },
+    "base_runner": {
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/run_formation_replay.py",
+      "bytes": 15053,
+      "sha256": "15FAAE0E341345AE2277B07F15938F3886D34CEB78D34BD732E1FD5C03403E1E"
+    },
+    "tests": {
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/test_prospective_factor_runtime.py",
+      "bytes": 9227,
+      "sha256": "8F8FD3A647F62F98EEE2215D5F41216CD95E944F77B478B0B91B2D844CB24936"
+    }
+  },
+  "verification": {
+    "focused_tests_passed": 14,
+    "synthetic_persisted_canonical_plane_exact_block_replay_passed": true,
+    "known_r3_failure_frame_new_bundle_query_records": 9,
+    "known_r3_failure_frame_source_integrity_check_passed": true,
+    "known_r3_failure_frame_exact_block_replay_passed": true,
+    "known_r3_failure_frame_faro_score_passed": true,
+    "py_compile_passed": true,
+    "git_diff_check_passed": true
+  },
+  "r4_execution": {
+    "new_phase_a_required": true,
+    "new_output_root": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r4",
+    "prior_output_reuse": false,
+    "prior_output_overwrite": false,
+    "same_24_parent_450_frame_4050_slot_cohort": true,
+    "same_phase_firewall_statistics_and_claim_ceiling": true,
+    "unique_successor": "TARO_O0R_R6_FORMATION_REPLAY_R4_ONE_SHOT_EXECUTION_LOCK"
+  },
+  "claim_ceiling": "Canonical construction repair only; R4 remains post-hoc non-promotable WILD_LAB formation replay."
+}

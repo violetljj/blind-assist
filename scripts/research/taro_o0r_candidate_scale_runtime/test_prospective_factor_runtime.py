@@ -69,6 +69,24 @@ class ProspectiveFactorRuntimeTest(unittest.TestCase):
                 if block["evaluable"]:
                     self.assertRegex(block["validity"]["source_surface_pixel_ids_sha256"], r"^[0-9A-F]{64}$")
 
+    def test_blocks_replay_exactly_from_persisted_canonical_planes(self) -> None:
+        fixture = self.fixture
+        bundle = self.bundle
+        matrix = np.asarray(fixture["intrinsics_highres_3x3"], dtype=np.float64)
+        raw = np.ascontiguousarray(fixture["candidate_highres_depth_m"], dtype=np.float64)
+        raw_hash = bundle["input_bindings"]["candidate_highres_depth_sha256"]
+        baseline_plane = bundle["baseline_support"] if bundle["baseline_support"]["evaluable"] else None
+        baseline_geometry = runtime._build_geometry(raw, raw_hash, matrix) if baseline_plane is not None else None
+        selected_depth = np.ascontiguousarray(raw * float(bundle["source_scale"]["metric_scale"]), dtype=np.float64)
+        selected_plane = bundle["direct_support"]
+        selected_geometry = runtime._build_geometry(selected_depth, bundle["input_bindings"]["anchored_candidate_depth_sha256"], matrix)
+        for slot in bundle["query_slots"]:
+            replay = runtime._query_blocks(
+                slot["query_receipt"], matrix, bundle["selected_support_boundary_owner"], selected_geometry, selected_plane,
+                baseline_geometry, baseline_plane, "SOURCE_SELECTED_SUPPORT_UNAVAILABLE", "SOURCE_BASELINE_SUPPORT_UNAVAILABLE", raw_hash,
+            )
+            self.assertEqual(adapter.canonical_sha256(slot["factor_blocks"]), adapter.canonical_sha256(replay))
+
     def test_wrong_factor_depth_lineage_is_rejected(self) -> None:
         changed = copy.deepcopy(self.bundle)
         slot = changed["query_slots"][0]
