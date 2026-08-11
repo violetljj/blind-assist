@@ -35,6 +35,9 @@ DEFAULT_MOBILENET = Path(
     "C:/Users/26442/.cache/torch/hub/checkpoints/mobilenet_v3_small-047dcff4.pth"
 )
 DEFAULT_OUTPUT_DIR = REPO_ROOT / "artifacts.local/experiments/ag-st-source-boundary-student-r1"
+DEFAULT_ANGULAR_LABEL_RESULT = (
+    REPO_ROOT / "artifacts.local/experiments/ag-st-continuous-boundary-factors-angular-r0/result.json"
+)
 SPLIT_SALT = "AG_ST_SOURCE_BOUNDARY_STUDENT_R0"
 SPLIT_COUNTS = {
     "arkitscenes": {"fit": 12, "selection": 2, "canary": 2},
@@ -49,7 +52,9 @@ def deterministic_split(rows: list[dict[str, Any]]) -> dict[str, list[tuple[str,
     for row in rows:
         parents_by_source[str(row["source"])].add(str(row["parent_id"]))
     output = {"fit": [], "selection": [], "canary": []}
-    for source, counts in SPLIT_COUNTS.items():
+    for source in sorted(parents_by_source):
+        require(source in SPLIT_COUNTS, f"unsupported split source: {source}")
+        counts = SPLIT_COUNTS[source]
         parents = sorted(
             parents_by_source[source],
             key=lambda parent: hashlib.sha256(
@@ -66,6 +71,57 @@ def deterministic_split(rows: list[dict[str, Any]]) -> dict[str, list[tuple[str,
     require(not (set(output["fit"]) & set(output["canary"])), "fit/canary overlap")
     require(not (set(output["selection"]) & set(output["canary"])), "selection/canary overlap")
     return output
+
+
+def bind_label_package(
+    rows: list[dict[str, Any]],
+    *,
+    sources: tuple[str, ...],
+    target_mode: str,
+    label_result: Path | None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Filter RGB bindings and optionally replace pixel labels with R16 angular labels."""
+
+    require(len(set(sources)) == len(sources), "duplicate source selection")
+    selected = [dict(row) for row in rows if str(row["source"]) in sources]
+    require(selected, "source selection produced no frames")
+    require({str(row["source"]) for row in selected} == set(sources), "selected source missing")
+    if target_mode == "pixel":
+        require(label_result is None, "pixel target must not provide an angular label result")
+        return selected, {"kind": "R6_SOURCE_NATIVE_PIXEL", "result": None, "result_sha256": None}
+
+    require(target_mode == "angular", f"unsupported target mode: {target_mode}")
+    require(label_result is not None and label_result.is_file(), "angular label result missing")
+    package = json.loads(label_result.read_text(encoding="utf-8"))
+    require(package.get("frame_count") == 81, "angular label package frame count drift")
+    require(
+        package.get("contract", {}).get("teacher_filled_pixels") == "absent",
+        "angular package teacher-fill contract drift",
+    )
+    indexed = {
+        (str(frame["source"]), str(frame["frame_id"])): frame
+        for frame in package["frames"]
+    }
+    require(len(indexed) == 81, "angular label package identities are not unique")
+    for row in selected:
+        identity = (str(row["source"]), str(row["frame_id"]))
+        require(identity in indexed, f"angular label missing: {identity}")
+        frame = indexed[identity]
+        require(str(frame["parent_id"]) == str(row["parent_id"]), "angular parent drift")
+        require(tuple(frame["shape_hw"]) == tuple(row["label_shape_hw"]), "angular shape drift")
+        label_path = Path(frame["output"])
+        require(label_path.is_file(), f"angular label payload missing: {label_path}")
+        require(sha256_file(label_path) == frame["output_sha256"], "angular label digest drift")
+        row["label_path"] = str(label_path)
+        row["label_sha256"] = str(frame["output_sha256"])
+        row["intrinsics"] = frame["intrinsics"]
+    return selected, {
+        "kind": "R16_CAMERA_ANGULAR_SOFT_BOUNDARY",
+        "result": str(label_result.resolve()),
+        "result_sha256": sha256_file(label_result),
+        "soft_sigma_rad": float(package["angular_soft_sigma_rad"]),
+        "icl_excluded_from_fit_selection_canary": "icl_exact" not in sources,
+    }
 
 
 def average_precision(target: np.ndarray, score: np.ndarray) -> float:
@@ -212,53 +268,29 @@ def _load_bound_rgb(row: dict[str, Any], tar_reader: TarImageReader) -> np.ndarr
     return output
 
 
-def _load_target(row: dict[str, Any]) -> dict[str, np.ndarray]:
+def _load_target(row: dict[str, Any], target_mode: str = "pixel") -> dict[str, np.ndarray]:
     with np.load(row["label_path"]) as values:
-        probability = np.asarray(values["boundary_probability_hw"], dtype=np.float32)
+        if target_mode == "angular":
+            probability = np.asarray(values["boundary_angular_soft_probability_hw"], dtype=np.float32)
+            core = np.asarray(values["boundary_core_probability_hw"], dtype=np.float32)
+        else:
+            probability = np.asarray(values["boundary_probability_hw"], dtype=np.float32)
+            core = probability
         valid = np.asarray(values["boundary_truth_valid_hw"], dtype=np.bool_)
-    require(probability.shape == valid.shape == tuple(row["label_shape_hw"]), "target shape drift")
+    require(probability.shape == core.shape == valid.shape == tuple(row["label_shape_hw"]), "target shape drift")
     return {
         "probability": probability,
-        "positive": valid & (probability >= 0.5),
+        "positive": valid & (core >= 0.5),
         "valid": valid,
     }
 
 
-def run(args: argparse.Namespace) -> dict[str, Any]:
+def build_decoder() -> Any:
+    """Build the frozen contract's small multiscale boundary decoder."""
+
     import torch
     import torch.nn as nn
     import torch.nn.functional as functional
-    from torchvision.models import mobilenet_v3_small
-
-    require(torch.cuda.is_available(), "boundary student requires CUDA")
-    require(args.binding.is_file() and args.mobilenet_checkpoint.is_file(), "student input missing")
-    require(not args.output_dir.exists(), f"boundary student output exists: {args.output_dir}")
-    binding = json.loads(args.binding.read_text(encoding="utf-8"))
-    require(binding.get("status") == "SOURCE_NATIVE_BOUNDARY_RGB_BINDING_PASS", "RGB binding invalid")
-    descriptors = list(binding["frames"])
-    require(len(descriptors) == 81, "boundary student frame count drift")
-    split = deterministic_split(descriptors)
-    role_by_parent = {
-        identity: role
-        for role, identities in split.items()
-        for identity in identities
-    }
-    indices_by_role: dict[str, list[int]] = {role: [] for role in split}
-    for index, row in enumerate(descriptors):
-        identity = (str(row["source"]), str(row["parent_id"]))
-        indices_by_role[role_by_parent[identity]].append(index)
-
-    random.seed(args.seed)
-    np.random.seed(args.seed)
-    torch.manual_seed(args.seed)
-    torch.cuda.manual_seed_all(args.seed)
-    device = torch.device("cuda")
-    backbone_model = mobilenet_v3_small(weights=None)
-    state = torch.load(args.mobilenet_checkpoint, map_location="cpu", weights_only=True)
-    backbone_model.load_state_dict(state, strict=True)
-    backbone = backbone_model.features.eval().to(device)
-    for parameter in backbone.parameters():
-        parameter.requires_grad_(False)
 
     class Decoder(nn.Module):
         def __init__(self) -> None:
@@ -281,6 +313,50 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             value = functional.interpolate(value, size=c4.shape[-2:], mode="bilinear", align_corners=False)
             value = self.b4(torch.cat((value, self.p4(c4)), dim=1))
             return functional.interpolate(self.output(value), size=output_hw, mode="bilinear", align_corners=False)[:, 0]
+
+    return Decoder()
+
+
+def run(args: argparse.Namespace) -> dict[str, Any]:
+    import torch
+    import torch.nn.functional as functional
+    from torchvision.models import mobilenet_v3_small
+
+    require(args.binding.is_file() and args.mobilenet_checkpoint.is_file(), "student input missing")
+    require(not args.output_dir.exists(), f"boundary student output exists: {args.output_dir}")
+    binding = json.loads(args.binding.read_text(encoding="utf-8"))
+    require(binding.get("status") == "SOURCE_NATIVE_BOUNDARY_RGB_BINDING_PASS", "RGB binding invalid")
+    all_descriptors = list(binding["frames"])
+    require(len(all_descriptors) == 81, "boundary student frame count drift")
+    descriptors, label_contract = bind_label_package(
+        all_descriptors,
+        sources=tuple(args.sources),
+        target_mode=args.target_mode,
+        label_result=args.label_result,
+    )
+    split = deterministic_split(descriptors)
+    role_by_parent = {
+        identity: role
+        for role, identities in split.items()
+        for identity in identities
+    }
+    indices_by_role: dict[str, list[int]] = {role: [] for role in split}
+    for index, row in enumerate(descriptors):
+        identity = (str(row["source"]), str(row["parent_id"]))
+        indices_by_role[role_by_parent[identity]].append(index)
+
+    random.seed(args.seed)
+    np.random.seed(args.seed)
+    torch.manual_seed(args.seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(args.seed)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    backbone_model = mobilenet_v3_small(weights=None)
+    state = torch.load(args.mobilenet_checkpoint, map_location="cpu", weights_only=True)
+    backbone_model.load_state_dict(state, strict=True)
+    backbone = backbone_model.features.eval().to(device)
+    for parameter in backbone.parameters():
+        parameter.requires_grad_(False)
 
     started = time.monotonic()
     feature_cache: dict[int, tuple[torch.Tensor, ...]] = {}
@@ -305,11 +381,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     del backbone, backbone_model
     torch.cuda.empty_cache()
 
-    fit_targets = {index: _load_target(descriptors[index]) for index in indices_by_role["fit"]}
+    fit_targets = {index: _load_target(descriptors[index], args.target_mode) for index in indices_by_role["fit"]}
     selection_targets = {
-        index: _load_target(descriptors[index]) for index in indices_by_role["selection"]
+        index: _load_target(descriptors[index], args.target_mode) for index in indices_by_role["selection"]
     }
-    decoder = Decoder().to(device)
+    decoder = build_decoder().to(device)
     optimizer = torch.optim.AdamW(decoder.parameters(), lr=args.learning_rate, weight_decay=1e-4)
     trainable_parameters = sum(parameter.numel() for parameter in decoder.parameters())
 
@@ -317,7 +393,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         features = tuple(value.to(device=device, dtype=torch.float32) for value in feature_cache[index])
         target = fit_targets.get(index) or selection_targets.get(index)
         if target is None:
-            target = _load_target(descriptors[index])
+            target = _load_target(descriptors[index], args.target_mode)
         with torch.no_grad():
             logits = decoder(features, target["probability"].shape)
         return torch.sigmoid(logits)[0].cpu().numpy().astype(np.float32)
@@ -398,7 +474,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     selected_threshold = float(selected_threshold_row["threshold"])
 
     # Canary labels are opened only after checkpoint and threshold selection.
-    canary_targets = {index: _load_target(descriptors[index]) for index in indices_by_role["canary"]}
+    canary_targets = {index: _load_target(descriptors[index], args.target_mode) for index in indices_by_role["canary"]}
     canary = evaluate(indices_by_role["canary"], canary_targets, selected_threshold)
     fit_prevalence: dict[str, float] = {}
     for source, indices in fit_by_source.items():
@@ -415,10 +491,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "constant_average_precision": prevalence,
             "constant_bce": float(-prevalence * math.log(prior) - (1.0 - prevalence) * math.log(1.0 - prior)),
         }
+    expected_canary_parents = sum(SPLIT_COUNTS[source]["canary"] for source in args.sources)
+    expected_canary_frames = expected_canary_parents * 3
     gates = {
-        "canary_source_count_eq_2": len(canary["by_source"]) == 2,
-        "canary_parent_count_eq_3": len(indices_by_role["canary"]) == 9
-        and len({descriptors[index]["parent_id"] for index in indices_by_role["canary"]}) == 3,
+        "canary_source_count_matches_contract": len(canary["by_source"]) == len(args.sources),
+        "canary_parent_and_frame_counts_match_contract": len(indices_by_role["canary"]) == expected_canary_frames
+        and len({descriptors[index]["parent_id"] for index in indices_by_role["canary"]}) == expected_canary_parents,
         "each_source_positive_pixels_ge_20": all(
             int(metrics["positive_pixels"]) >= 20 for metrics in canary["by_source"].values()
         ),
@@ -439,20 +517,24 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "selected_threshold": selected_threshold,
             "split": split,
             "mobilenet_checkpoint_sha256": sha256_file(args.mobilenet_checkpoint),
+            "target_mode": args.target_mode,
+            "label_contract": label_contract,
         },
         checkpoint_path,
     )
     result = {
         "schema": "blindassist_ag_st_source_boundary_student_result_v1",
         "status": "SOURCE_BOUNDARY_LEARNABILITY_PASS" if passed else "SOURCE_BOUNDARY_LEARNABILITY_FAIL",
-        "question": "Can a frozen pretrained encoder plus a small source-balanced decoder learn source-native/exact boundary labels across held-out ARKitScenes and TUM parents?",
+        "question": "Can a frozen pretrained encoder plus a small source-balanced decoder learn camera-angular soft boundary supervision while preserving source-native/exact core evaluation?" if args.target_mode == "angular" else "Can a frozen pretrained encoder plus a small source-balanced decoder learn source-native/exact boundary labels across held-out ARKitScenes and TUM parents?",
         "inputs": {
             "binding": str(args.binding.resolve()),
             "binding_sha256": sha256_file(args.binding),
             "mobilenet_checkpoint": str(args.mobilenet_checkpoint.resolve()),
             "mobilenet_checkpoint_sha256": sha256_file(args.mobilenet_checkpoint),
             "frame_count": len(descriptors),
-            "parent_count": 24,
+            "parent_count": len({(row["source"], row["parent_id"]) for row in descriptors}),
+            "sources": list(args.sources),
+            "label_contract": label_contract,
         },
         "model": {
             "backbone": "torchvision MobileNetV3-Small features frozen",
@@ -489,6 +571,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         },
         "execution": {
             "elapsed_seconds": time.monotonic() - started,
+            "device": str(device),
             "peak_cuda_allocated_bytes": int(torch.cuda.max_memory_allocated()),
         },
         "decision": {
@@ -497,7 +580,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "formal_f1_authority_changed": False,
             "if_failed": "Retain the corpus and diagnose source imbalance/representation; do not relabel UNKNOWN or tune on canary.",
         },
-        "claim_boundary": "Boundary-only WILD_LAB learnability on held-out TRAIN-source parents; no reducer/task, formal F1, fresh real-world, safety, deployment, or product claim.",
+        "claim_boundary": "Boundary-only WILD_LAB learnability on held-out TRAIN-source parents; ICL is excluded when using the angular contract and remains external; no reducer/task, formal F1, fresh real-world, safety, deployment, or product claim.",
     }
     result_path = args.output_dir / "result.json"
     with result_path.open("x", encoding="utf-8", newline="\n") as stream:
@@ -511,6 +594,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--binding", type=Path, default=DEFAULT_BINDING)
     parser.add_argument("--mobilenet-checkpoint", type=Path, default=DEFAULT_MOBILENET)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument("--target-mode", choices=("pixel", "angular"), default="pixel")
+    parser.add_argument("--label-result", type=Path)
+    parser.add_argument(
+        "--sources",
+        nargs="+",
+        choices=tuple(SPLIT_COUNTS),
+        default=list(SPLIT_COUNTS),
+    )
     parser.add_argument("--seed", type=int, default=20260811)
     parser.add_argument("--epochs", type=int, default=40)
     parser.add_argument("--selection-interval", type=int, default=5)

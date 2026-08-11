@@ -408,6 +408,21 @@ boundary，也不在 ICL 上调阈值；先给 label factory 增加 scale-normal
 人为放宽。旧 pixel fields 暂不删除；下一步用冻结 source/parent split 训练一次 angular boundary specialist，
 并在 Bonn/ICL 上原样复核，不在 external truth 上选阈值。
 
+该执行已由
+[R17 angular boundary specialist](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R17_ANGULAR_BOUNDARY_SPECIALIST_RESULT_2026-08-11.json)
+完成。训练只消费 ARKit/TUM 的 23 parent/69 帧，ICL 完全不进入 fit/selection/canary；冻结
+MobileNetV3-Small 仅训练 boundary decoder，使用 R16 angular soft field，但评估 truth 始终是原
+source-native/exact core。内部 `17/3/3` parent split 的 40-epoch 训练在 epoch 20、threshold 0.8 冻结，
+canary source-macro AP/F1 为 `0.0341/0.1933`，5/5 gate PASS。
+
+冻结 checkpoint 在未见 ICL exact 上不拟合、不选阈值，2 px F1 从 R15 的 `0.0302` 提升到 `0.3260`
+（`10.78×`），AP `0.1164` 仍高于 prevalence `0.0921`。这直接支持 angular label 修复了低分辨率
+localization 机制，而不要求完整 truth。Bonn 8 parent/24 帧仍保留 AP `0.0664 > 0.0442` prevalence、
+4 px F1 `0.3369` 的第三域信号，但低于 R14 的 AP `0.0736`、F1 `0.5606`，因此预先声明的 Bonn
+no-regret gate 未通过。晋级的是 R16 angular factor contract，不是这个小 MobileNet checkpoint；下一步把
+angular target 接入更强的冻结 DepthART boundary representation，depth/support 与 external threshold 保持不变，
+不在 Bonn/ICL 上继续调这个 specialist。
+
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
 模型只训练 `11,109` 参数 factor head，固定 `12/2/2` parent split、80 epochs、2,880 steps，总耗时

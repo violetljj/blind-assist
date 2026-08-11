@@ -21,6 +21,17 @@ class SourceBoundaryStudentTest(unittest.TestCase):
         self.assertEqual(3, len(first["canary"]))
         self.assertFalse(set(first["fit"]) & set(first["canary"]))
 
+    def test_split_can_exclude_icl_for_external_evaluation(self) -> None:
+        rows = []
+        for source, count in (("arkitscenes", 16), ("tum_rgbd", 7)):
+            for index in range(count):
+                rows.append({"source": source, "parent_id": f"p{index}"})
+        split = deterministic_split(rows)
+        self.assertEqual(17, len(split["fit"]))
+        self.assertEqual(3, len(split["selection"]))
+        self.assertEqual(3, len(split["canary"]))
+        self.assertNotIn("icl_exact", {source for values in split.values() for source, _ in values})
+
     def test_average_precision_rewards_correct_ranking(self) -> None:
         target = np.asarray([0, 1, 0, 1], dtype=np.bool_)
         good = average_precision(target, np.asarray([0.1, 0.9, 0.2, 0.8]))
