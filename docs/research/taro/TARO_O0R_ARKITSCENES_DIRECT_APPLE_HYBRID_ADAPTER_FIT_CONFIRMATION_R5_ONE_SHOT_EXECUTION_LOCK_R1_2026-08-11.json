@@ -1,0 +1,35 @@
+{
+  "schema": "blindassist.taro.o0r.r5_confirmation_one_shot_execution_lock_r1.v1",
+  "lock_id": "TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_ONE_SHOT_EXECUTION_LOCK_R1",
+  "date": "2026-08-11",
+  "status": "ONE_SHOT_EXECUTION_AUTHORIZED_NOT_YET_CONSUMED",
+  "base_execution_lock_binding": {
+    "path": "docs/research/taro/TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_ONE_SHOT_EXECUTION_LOCK_2026-08-11.json",
+    "bytes": 4016,
+    "sha256": "F37688A913A80101B9523007DADB0293E0FBE965C312A56D24AE63CB717F687F"
+  },
+  "pre_activation_repair_binding": {
+    "path": "docs/research/taro/TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_PRE_ACTIVATION_ARGV_REPAIR_2026-08-11.json",
+    "bytes": 2728,
+    "sha256": "7D87A190E4B3D3F6D3E3335695E2BC850E697068354EF93190753FB212ED1A91"
+  },
+  "unique_argv": [
+    "E:/codex-tools/tools/venvs/blindassist-venv-export312/Scripts/python.exe",
+    "-m",
+    "scripts.research.taro_o0r_candidate_scale_runtime.run_direct_apple_hybrid_adapter_fit_confirmation_r1",
+    "--execution-lock",
+    "docs/research/taro/TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_ONE_SHOT_EXECUTION_LOCK_R1_2026-08-11.json"
+  ],
+  "argv_alternatives": [],
+  "activation": {
+    "root_must_be_absent": true,
+    "one_shot_consumed_on_root_creation": true,
+    "overwrite": false,
+    "rerun": false
+  },
+  "authority_carry_forward": {
+    "authorization_sha256": "6CF2531AB1119B67AD2010040AE1AC73F817785684FCCC26111B3B70EF5FCBE5",
+    "scope_unchanged": true
+  },
+  "claim_ceiling": "All model, cohort, transform, algorithm, phase, gate, resource and claim fields are inherited unchanged from the bound base one-shot execution lock. R1 repairs only Python -m argv reconstruction before activation."
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "blindassist.taro.o0r.r5.pre_activation_argv_repair.v1",
+  "repair_id": "TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_PRE_ACTIVATION_ARGV_REPAIR",
+  "date": "2026-08-11",
+  "status": "PRE_ACTIVATION_ARGV_VALIDATOR_REPAIR_EXECUTION_NOT_CONSUMED",
+  "base_implementation_lock_binding": {
+    "path": "docs/research/taro/TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_IMPLEMENTATION_LOCK_2026-08-11.json",
+    "bytes": 8801,
+    "sha256": "DFBB29E414498F3660D5866FB57879EBF37F594143669E845907A5DD19D88D73"
+  },
+  "base_execution_lock_binding": {
+    "path": "docs/research/taro/TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_ONE_SHOT_EXECUTION_LOCK_2026-08-11.json",
+    "bytes": 4016,
+    "sha256": "F37688A913A80101B9523007DADB0293E0FBE965C312A56D24AE63CB717F687F"
+  },
+  "defect": {
+    "failure_code": "R5_EXEC_ACTUAL_ARGV_DRIFT",
+    "cause": "Python removes the consumed -m module pair from sys.argv; the V0 validator compared sys.argv directly to the external unique argv instead of reconstructing that pair from the frozen module identity.",
+    "first_launcher_attempt": "PTY_CREATE_PROCESS_ACCESS_DENIED_BEFORE_PYTHON_START",
+    "second_launcher_attempt": "PYTHON_STARTED_VALIDATOR_FAILED_BEFORE_PREFLIGHT_OR_MODEL_LOAD",
+    "python_process_started": true,
+    "model_loaded": false,
+    "evidence_root_created": false
+  },
+  "repair_files": [
+    {"role": "R1_EXECUTION_LOCK_VALIDATOR", "path": "scripts/research/taro_o0r_candidate_scale_runtime/validate_r5_execution_lock_r1.py", "bytes": 8201, "sha256": "E676C6E0C262CA435377BCAAF6A1979767EF8C92E17D40FEB3D9E5C120AE10C0"},
+    {"role": "R1_EXECUTION_ENTRYPOINT", "path": "scripts/research/taro_o0r_candidate_scale_runtime/run_direct_apple_hybrid_adapter_fit_confirmation_r1.py", "bytes": 1289, "sha256": "15FC809E31633B900A50525BA00DC0E36CA979F4A817BD57D2F6D6756FCD2C41"}
+  ],
+  "evidence_state": {
+    "r5_evidence_root_absent": true,
+    "r5_inference_count": 0,
+    "r5_source_decision_count": 0,
+    "r5_task_metric_count": 0,
+    "one_shot_consumed": false
+  },
+  "authority_carry_forward": {
+    "authorization_sha256": "6CF2531AB1119B67AD2010040AE1AC73F817785684FCCC26111B3B70EF5FCBE5",
+    "scope_unchanged": true,
+    "model_or_data_identity_changed": false,
+    "algorithm_or_gate_changed": false
+  },
+  "claim_ceiling": "This repair changes only reconstruction of the external Python -m argv for validator comparison. It creates no evidence and changes no cohort, model, transform, algorithm, phase firewall, gate, resource budget or claim ceiling.",
+  "unique_successor": "TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_ONE_SHOT_EXECUTION_LOCK_R1"
+}
