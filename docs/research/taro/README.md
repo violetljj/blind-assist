@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_PROTOCOL_FROZEN / R6_FACTOR_COMPOSITOR_IMPLEMENTATION_FROZEN / R6_UNTOUCHED_DATA_AUTHORITY_REQUIRED / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_PROTOCOL_FROZEN / R6_FACTOR_COMPOSITOR_IMPLEMENTATION_FROZEN / R6_UNTOUCHED_8_PARENTS_120_FRAMES_SOURCE_PREFLIGHT_PASS / R6_EXECUTOR_IMPLEMENTATION_REQUIRED / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -128,6 +128,10 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
   roster-independent factor schema、depth lineage、exact-copy compositor、role firewall 和 parent-macro reducer
   已实现；15 个 focused tests 与 4 个 lock mutation tests 通过，1,899-query formation replay PASS，但
   `promotion_allowed=false`；
+- [R6 untouched cohort/data-use lock](TARO_O0R_R6_UNTOUCHED_COHORT_AND_DATA_USE_LOCK_2026-08-11.md)：
+  用户授权已约束到 exact 8 个新 Training parents 与 24 个 source assets；授权不自动激活执行；
+- [R6 untouched source preflight result](TARO_O0R_R6_UNTOUCHED_SOURCE_PREFLIGHT_RESULT_2026-08-11.md)：
+  HEAD 24/24、下载完整性 24/24、container CRC 与 exact pose plan 均 PASS；冻结 120 frames，模型与 truth 未运行；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -138,7 +142,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_O0R_R6_UNTOUCHED_COHORT_AND_DATA_USE_LOCK`
+`TARO_O0R_R6_UNTOUCHED_CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -224,10 +228,10 @@ R5 已在 8 个 visit-disjoint former `ADAPTER_FIT` parents / 211 source frames 
 `TARO_O0R_DIRECT_APPLE_HYBRID_R5_TASK_METRIC_CONFIRMATION_FAIL`。R4A frame-level policy 不得晋级。
 
 R6 把 ownership 拆到 factor level：SUPPORT/BOUNDARY 沿用 R5 source-only branch，QUERY_CLEARANCE 固定沿用
-R1 baseline。protocol 与 factor compositor 已冻结并通过 1,899-query formation replay：extraction
-`1,522 → 1,566`、boundary `112 → 129`、knownness `7 → 7`。但策略是在读取 R5 outcome 后形成，重放只证明
-实现忠实性，不是 fresh PASS。当前 24 个已授权 Training parents 均已被旧 16-parent route 或 R5 消费；
-唯一科学后继是取得至少 8 个 untouched parents 的 exact cohort/source/truth authority。
+R1 baseline。protocol 与 factor compositor 已冻结并通过 1,899-query formation replay。新的 untouched cohort
+已从 1,757 个 eligible Training rows outcome-blind 选出；8 parents / 120 exact frames 的 HEAD、source download、
+SHA/CRC 与 pose-bounded inventory 均 PASS。当前没有运行新 cohort 的模型或 truth scoring；唯一后继是实现并
+hash-bind roster-independent R6 two-phase executor。
 
 原 amendment 的两条 candidate transform 描述与已封存 DepthART runner 不一致；该歧义已由
 pre-implementation transform-ID repair 在任何 R5 inference/metric/root 产生前关闭。实现锁必须同时绑定
@@ -281,8 +285,8 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 - 重放 P0/O0M 静态 validator、mutation tests 与 O0M runtime unit tests；
 - 对已签署 O0M evidence 做只读 hash、manifest、record 与 replay 审计；
 - 只读审计已消费 R4/R4A evidence 的 manifest、逐 query 外部绑定与 canonical summary replay；
-- R5 唯一执行、两项忠实实现修复、manifest replay 和正式 FAIL 已完成；R6 protocol、factor compositor、
-  validator 和 formation replay 已锁定。下一步只允许签至少 8 个新 parents 的 untouched cohort/data-use lock；
+- R5 正式 FAIL 已完成；R6 protocol、factor compositor、8-parent data-use authority、24/24 HEAD/download integrity
+  和 120-frame exact inventory 已锁定。下一步只允许实现 R6 two-phase executor，仍不得提前读新 truth；
 - 只读引用历史负结果、数据能力、现有 reducer 和运行时 receipt 的已签署结论。
 
 ## 当前禁止

@@ -215,6 +215,13 @@ new parents. The 1,899-query formation replay passed implementation checks but
 does not authorize untouched execution. The only successor is a hash-bound
 untouched cohort and data-use lock.
 
+The exact successor cohort is now frozen at eight new Training visits and 120
+pose-bounded frames. All 24 source URLs passed zero-body HEAD; 318,241,411
+bytes were downloaded once and verified against HEAD, SHA-256 and CRC. ZIP
+inventory and trajectory planning passed without decoding pixel arrays or
+reading model/truth values. The next implementation surface is the
+roster-independent two-phase R6 confirmation executor.
+
 Focused validation:
 
 ```powershell
