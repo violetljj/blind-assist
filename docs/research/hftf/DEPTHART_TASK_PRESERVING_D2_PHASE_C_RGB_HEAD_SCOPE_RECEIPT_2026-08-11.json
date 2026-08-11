@@ -1,0 +1,42 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d2_phase_c_rgb_head_scope_receipt_v1",
+  "receipt_id": "DEPTHART_TASK_PRESERVING_D2_PHASE_C_RGB_HEAD_SCOPE_2026-08-11",
+  "created_at": "2026-08-11",
+  "authorization": {
+    "actor": "user",
+    "channel": "current Codex task",
+    "verbatim_text": "授权 D2 Phase-C RGB HEAD-only",
+    "interpretation": "Authorize exactly eight HEAD requests for lowres_wide.zip on the frozen D2 role identities; no response body or downstream execution."
+  },
+  "scope_protocol": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2_PHASE_C_RGB_HEAD_SCOPE_PROTOCOL_2026-08-11.json",
+    "bytes": 2086,
+    "sha256": "266107B258267D8DC84A2ECC1CA341E9157CCF5D5E9491DAF5F1EBD2874DC634"
+  },
+  "d2r1_result": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2R1_RESULT_2026-08-11.json",
+    "bytes": 2667,
+    "sha256": "522096B1D4D05D1FA64F1BB0653668BFA0A6052CC5179A12984C32A8065CBA74"
+  },
+  "request": {
+    "method": "HEAD",
+    "asset": "lowres_wide.zip",
+    "identity_count": 8,
+    "body_bytes_read": false,
+    "redistribution": false
+  },
+  "authority": {
+    "phase_c_rgb_head": true,
+    "phase_c_rgb_body": false,
+    "depth_confidence_intrinsics_body": false,
+    "model_output": false,
+    "training": false,
+    "development_outcome": false,
+    "r2_access": false,
+    "performance": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  },
+  "status": "AUTHORIZED_PHASE_C_RGB_HEAD_ONLY"
+}
