@@ -1,0 +1,74 @@
+{
+  "schema": "blindassist.taro.o0r.r5_camera_hash_repair_one_shot_execution_lock.v1",
+  "lock_id": "TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_CAMERA_HASH_REPAIR_ONE_SHOT_EXECUTION_LOCK",
+  "date": "2026-08-11",
+  "status": "ONE_SHOT_EXECUTION_AUTHORIZED_NOT_YET_CONSUMED",
+  "repair_authority_binding": {
+    "path": "docs/research/taro/TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_CAMERA_HASH_REPAIR_2026-08-11.json",
+    "bytes": 2328,
+    "sha256": "5747492F0A1B18CB70A8ADEA43A47DFC0DE3CFCC2562776B78F6ABD30E4547D6"
+  },
+  "implementation_lock_binding": {
+    "path": "docs/research/taro/TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_CAMERA_HASH_REPAIR_IMPLEMENTATION_LOCK_2026-08-11.json",
+    "bytes": 2533,
+    "sha256": "24230D2463983CA6D9885A67C5670C36B3A92539F45383F1645D8C828D3FEB74"
+  },
+  "code_bindings": [
+    {"role": "R5_CONFIRMATION", "path": "scripts/research/taro_o0r_candidate_scale_runtime/r5_confirmation.py", "bytes": 86374, "sha256": "31F5D585AA903485767FDD9202FE0F66C7F0297B7BE7607CF5AE5EC2363E5380"},
+    {"role": "R5_SHARED_PHASE_B_RUNNER", "path": "scripts/research/taro_o0r_candidate_scale_runtime/run_direct_apple_hybrid_adapter_fit_confirmation_r2.py", "bytes": 14726, "sha256": "AF6924BB6ACFDD154214E69AE70DDF1880A025C713CE2BAAC94E4DBEE4339723"},
+    {"role": "R5_R3_ENTRYPOINT", "path": "scripts/research/taro_o0r_candidate_scale_runtime/run_direct_apple_hybrid_adapter_fit_confirmation_r3.py", "bytes": 1322, "sha256": "BEA74DB9A03441D3DF1B4656A5ECF871424B694B0CA94578F702CA610CF45443"},
+    {"role": "R5_R3_LOCK_VALIDATOR", "path": "scripts/research/taro_o0r_candidate_scale_runtime/validate_r5_camera_hash_repair_execution_lock.py", "bytes": 7677, "sha256": "69CBCF634D5886B92A1B2105945D3D0576AA9465A0F98D092E150A79C6C0F03B"},
+    {"role": "R5_CONFIRMATION_TEST", "path": "scripts/research/taro_o0r_candidate_scale_runtime/test_r5_confirmation.py", "bytes": 17782, "sha256": "FA3A15A502EA4F2F861FA5761B046A7C46E6D622B4FFFDB729FA9542A8294BF5"}
+  ],
+  "predecessor_evidence_binding": {
+    "manifest_sha256": "0E7D9C906AA41650062236C53D23ADA02156C5A57B87C43E0AAD48E156E04733",
+    "failure_sha256": "D31B96F83FB740C4D49A94F9FA0A5590AEF593C1E543C268DF509A1AA9DFF60D",
+    "candidate_phase_completion_sha256": "59A971B694BF229588B229B8F1CF831ED091EE5E2CEAAB2AEDE32F68F2231C74",
+    "phase_a_completion_sha256": "16B9EE3B5E98900A5C9DC485FEC888EFF44035053F3A241CF00A67B0B7288D13"
+  },
+  "r2_diagnostic_evidence_bindings": [
+    {"role": "R2_MANIFEST", "path": "artifacts.local/evidence/taro/o0r-arkitscenes-direct-apple-hybrid-adapter-fit-r5-r2/manifest.json", "bytes": 45855, "sha256": "8A50BC7A6906487192CFEB6CCAD950494625A591228B766224257843C957A5B8"},
+    {"role": "R2_RESULT", "path": "artifacts.local/evidence/taro/o0r-arkitscenes-direct-apple-hybrid-adapter-fit-r5-r2/result.json", "bytes": 1518, "sha256": "1B4B388004DCBC297A81DD381A3E167BDB221B393C941CBED327CE8F4A292CAF"},
+    {"role": "R2_SUMMARY", "path": "artifacts.local/evidence/taro/o0r-arkitscenes-direct-apple-hybrid-adapter-fit-r5-r2/summary.json", "bytes": 3117, "sha256": "53C9E22B0553FD64F77D0C210DFC22512FA70BD890E904D92AE9A256885B84AC"}
+  ],
+  "frame_plan_path": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3/exact-frame-plan.json.gz",
+  "roots": {
+    "source_root": "E:/linnan/linnan/artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r3",
+    "r3_evidence_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3",
+    "r5_predecessor_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-direct-apple-hybrid-adapter-fit-r5",
+    "r5_r2_diagnostic_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-direct-apple-hybrid-adapter-fit-r5-r2",
+    "r5_r3_evidence_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-direct-apple-hybrid-adapter-fit-r5-r3"
+  },
+  "resource_budget": {
+    "maximum_wall_seconds": 28800,
+    "maximum_peak_rss_bytes": 17179869184,
+    "maximum_evidence_bytes": 2147483648
+  },
+  "unique_argv": [
+    "E:/codex-tools/tools/venvs/blindassist-venv-export312/Scripts/python.exe",
+    "-m",
+    "scripts.research.taro_o0r_candidate_scale_runtime.run_direct_apple_hybrid_adapter_fit_confirmation_r3",
+    "--execution-lock",
+    "docs/research/taro/TARO_O0R_ARKITSCENES_DIRECT_APPLE_HYBRID_ADAPTER_FIT_CONFIRMATION_R5_CAMERA_HASH_REPAIR_ONE_SHOT_EXECUTION_LOCK_2026-08-11.json"
+  ],
+  "argv_alternatives": [],
+  "activation": {
+    "root_must_be_absent": true,
+    "one_shot_consumed_on_root_creation": true,
+    "overwrite": false,
+    "rerun": false
+  },
+  "authority_carry_forward": {
+    "authorization_sha256": "6CF2531AB1119B67AD2010040AE1AC73F817785684FCCC26111B3B70EF5FCBE5",
+    "scope_unchanged": true
+  },
+  "frozen_repair_semantics": {
+    "legacy_phase_a_k_hash": "CANONICAL_JSON_LIST",
+    "extractor_k_hash": "CANONICAL_FLOAT64_ARRAY",
+    "numeric_k_change": false,
+    "phase_a_branch_change": false,
+    "model_inference_new": 0,
+    "threshold_or_gate_change": false
+  },
+  "claim_ceiling": "WILD_LAB parent-disjoint task-metric confirmation on the exact eight former ADAPTER_FIT ARKitScenes Training parents only; not formal O0R, external validation, deployment, product, or safety evidence."
+}
