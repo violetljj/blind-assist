@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_UNTOUCHED_CONFIRMATION_PASS / R6_FACTOR_POLICY_PROMOTION_ALLOWED / R6_EVIDENCE_VERIFIED / R6_PROSPECTIVE_RUNTIME_PROTOCOL_FROZEN / R6_PROSPECTIVE_RUNTIME_IMPLEMENTATION_FROZEN / R6_FORMATION_REPLAY_COMPLETE / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_UNTOUCHED_CONFIRMATION_PASS / R6_FACTOR_POLICY_PROMOTION_ALLOWED / R6_EVIDENCE_VERIFIED / R6_PROSPECTIVE_RUNTIME_PROTOCOL_FROZEN / R6_PROSPECTIVE_RUNTIME_IMPLEMENTATION_FROZEN / R6_FORMATION_REPLAY_COMPLETE / R6_REDUCER_INTEGRATION_NOT_EVALUABLE_ALL_UNKNOWN / R6_REDUCER_EVIDENCE_VERIFIED / R7_TASK_FROZEN / NO_ACTIVE_EXECUTION / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -156,6 +156,18 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
   24 parents / 450 frames / 4,050 slots 的 source-first 两阶段 replay 已有效完成；16 个 eval parents 上
   support height 为 16/16 正向、normal 为 15 正/1 平，boundary XYZ 为 12/12 正向；clearance 严格沿用
   R1，effect 为 0/UNKNOWN。该结果支持 research factor extractor adoption，但不产生 final state 或产品权限；
+- [R6 prospective factor-reducer integration protocol](TARO_O1R_R6_PROSPECTIVE_FACTOR_REDUCER_INTEGRATION_PROTOCOL_LOCK_2026-08-11.md)：
+  冻结 source-only uncertainty lookup、区间合成、九 query retention、独立 seal 与 UNKNOWN/abort 边界；
+- [R6 reducer integration implementation lock](TARO_O1R_R6_PROSPECTIVE_FACTOR_REDUCER_INTEGRATION_IMPLEMENTATION_LOCK_2026-08-12.md)：
+  绑定真实 8-parent/211-frame uncertainty artifact、source-only runtime 与 13 个 focused tests；
+- [R6 reducer integration one-shot execution lock](TARO_O1R_R6_PROSPECTIVE_FACTOR_REDUCER_INTEGRATION_ONE_SHOT_EXECUTION_LOCK_2026-08-12.md)：
+  精确绑定 16 eval parents / 239 frames / 2,151 queries、唯一 argv 与 absent evidence root；该 one-shot 已消费；
+- [R6 reducer integration result](TARO_O1R_R6_PROSPECTIVE_FACTOR_REDUCER_INTEGRATION_RESULT_2026-08-12.json)：
+  执行与 243 个 evidence 文件验签有效，但 2,151/2,151 final states 全为 UNKNOWN；29 个数值区间也因
+  clearance 下限 -0.30 m 与最小 uncertainty 0.4595 m 无法形成 occupied，正式终态为 NOT_EVALUABLE；
+- [R7 positive occupancy and clear coverage task lock](TARO_O1R_R7_POSITIVE_OCCUPANCY_AND_CLEAR_COVERAGE_TASK_LOCK_2026-08-12.md)：
+  冻结独立正占用证据与 far-censored clear coverage 两个可证伪假设，只允许在 8 个 ADAPTER_FIT parents
+  上做留一父级 CPU canary；已观察的 16 eval parents 不得用于 R7 promotion；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -166,7 +178,7 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_O1R_R6_PROSPECTIVE_FACTOR_REDUCER_INTEGRATION_PROTOCOL_LOCK`
+`TARO_O1R_R7_POSITIVE_OCCUPANCY_AND_CLEAR_COVERAGE_CANARY_IMPLEMENTATION_LOCK`
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -273,8 +285,11 @@ binding、九 slot retention、candidate mutation rejection 与 deterministic ro
 formation replay 随后先封存 4,050 个 source-only slots，再打开 FARO 评分；最终 R6 evidence 全量完成且执行有效。
 16 个 eval parents 上 support height 为 16/16 正向、normal 为 15 正/1 平，boundary XYZ 为 12/12 正向；
 boundary Jaccard 为 7 正/5 负/1 平，故不声明 no-regret。clearance 始终沿用 R1，最终 effect 只能为 0/UNKNOWN。
-唯一后继改为冻结 prospective factor 到 uncertainty/deterministic reducer 的 integration protocol；不得从这 24 个
-formation parents 事后拟合阈值或宣称 fresh confirmation。
+prospective factor 到 uncertainty/deterministic reducer 的 integration protocol、实现与 one-shot replay 均已完成。
+执行有效且 evidence 全量验签，但 2,151/2,151 final states 全为 UNKNOWN；这不是效果 PASS。旧 clearance
+区间的数值下限与真实 uncertainty 使 occupied 结构性不可达，因此不得重跑同一 reducer 或事后缩小 uncertainty。
+唯一后继是 R7：在 8 个 ADAPTER_FIT parents 上以留一父级方式检验 positive occupancy 与 far-censored clear
+coverage；已观察的 16 eval parents 仅作诊断，不能为 R7 promotion 背书。
 
 原 amendment 的两条 candidate transform 描述与已封存 DepthART runner 不一致；该歧义已由
 pre-implementation transform-ID repair 在任何 R5 inference/metric/root 产生前关闭。实现锁必须同时绑定

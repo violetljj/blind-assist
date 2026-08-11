@@ -1,0 +1,128 @@
+{
+  "schema": "blindassist.taro.o1r.r6_prospective_factor_reducer_integration_protocol_lock.v1",
+  "lock_id": "TARO_O1R_R6_PROSPECTIVE_FACTOR_REDUCER_INTEGRATION_PROTOCOL_LOCK",
+  "status": "FROZEN",
+  "date": "2026-08-11",
+  "authority": {
+    "user_authorized_locked_arkitscenes_training_videos": 24,
+    "authorized_assets": [
+      "upsampling.zip",
+      "lowres_wide_intrinsics.zip",
+      "lowres_wide.traj"
+    ],
+    "r6_result": {
+      "path": "docs/research/taro/TARO_O0R_R6_PROSPECTIVE_RUNTIME_FORMATION_REPLAY_RESULT_2026-08-11.json",
+      "bytes": 7364,
+      "sha256": "BD94EDB851A8B40BFF4FD6F62B6E6A7CE534061DFC08373CF52917F0742C215E",
+      "terminal": "TARO_O0R_R6_FORMATION_REPLAY_COMPLETE_NON_PROMOTABLE"
+    },
+    "r6_runtime": {
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/prospective_factor_runtime.py",
+      "bytes": 37796,
+      "sha256": "75E4CB46AF3D3A4ECBB461E79B48CFFE4CEFF6981DE5AB62E4DAE827E618E407",
+      "policy_id": "R5_SELECTED_SUPPORT_BOUNDARY_PLUS_ALWAYS_R1_QUERY_CLEARANCE_V1"
+    },
+    "fit_only_uncertainty": {
+      "artifact_path": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3/uncertainty-model-artifact.json.gz",
+      "artifact_bytes": 58084,
+      "artifact_sha256": "833CA7074E178D3D2FE6FEB66A386985C0CAEB8AA6878089E7C1B08984FD5E59",
+      "receipt_path": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3/uncertainty-model-receipt.json",
+      "receipt_bytes": 14820,
+      "receipt_sha256": "8E1C97C0961DEF6C4E7B3FCF2EADA6ECA022F0DFF2140221D221FB4C8B6A8CAE",
+      "model_sha256": "3FB93AC1A7FF4F21456766E9D0CC5D4EA37AC15D2F8DF0DDD49F936C7AF65365",
+      "fit_role": "ADAPTER_FIT",
+      "fit_parent_count": 8,
+      "fit_frame_count": 211,
+      "eval_residuals_allowed": false
+    },
+    "taro_geometry_constants": {
+      "path": "scripts/research/taro_o0r_source_adapter_runtime/source_adapter.py",
+      "bytes": 164498,
+      "sha256": "EC9E3C2D4D122AFC5939183B9FA4E00411EC1C9BEAD324831406F159DBB7E91F",
+      "reused_constants": [
+        "PATH_LATERAL_OFFSETS_M",
+        "PATH_YAW_DEGREES",
+        "MINIMUM_FORWARD_M",
+        "HORIZON_M",
+        "CAPSULE_RADIUS_M",
+        "CLEAR_MARGIN_M",
+        "OCCUPIED_MARGIN_M",
+        "MINIMUM_QUERY_SUPPORT_POINTS"
+      ]
+    }
+  },
+  "integration_contract": {
+    "public_builder": "integrate_prospective_factor_bundle",
+    "required_inputs": [
+      "prospective_bundle",
+      "candidate_highres_depth_m",
+      "confidence",
+      "intrinsics_apple_3x3",
+      "uncertainty_model"
+    ],
+    "forbidden_public_input_tokens": [
+      "faro",
+      "truth",
+      "outcome",
+      "task_metric"
+    ],
+    "exact_query_slots": 9,
+    "source_only_query_lookup": {
+      "depth_source": "R1_BASELINE_CANDIDATE_AT_REGISTERED_APPLE_CENTERS",
+      "confidence_source": "BOUND_CONFIDENCE_RASTER",
+      "corridor": "MINIMUM_FORWARD_THROUGH_HORIZON_INCLUSIVE_CAPSULE_GROUND_PROJECTION_NO_HEIGHT_GATE",
+      "confidence_rule": "MODE_WITH_HIGHEST_INDEX_TIE_BREAK",
+      "range_rule": "MEDIAN_CANDIDATE_OPTICAL_AXIS_Z_METERS",
+      "minimum_support_points": "SOURCE_ADAPTER_MINIMUM_QUERY_SUPPORT_POINTS",
+      "caller_supplied_confidence_or_range_scalar_allowed": false
+    },
+    "uncertainty_targets": [
+      "scale_log_abs_residual",
+      "support_height_abs_residual_m",
+      "support_normal_abs_residual_rad",
+      "boundary_localization_abs_residual_m"
+    ],
+    "uncertainty_composition_m": "HORIZON_M*(exp(scale_q95_log)-1)+height_q95_m+HORIZON_M*tan(min(normal_q95_rad,45deg))+boundary_q95_m",
+    "query_value": "R6_QUERY_CLEARANCE_R1_BASELINE_CLEARANCE_M",
+    "state_rule": {
+      "clear_observed": "value_m-uncertainty_m>CLEAR_MARGIN_M",
+      "occupied_observed": "value_m+uncertainty_m<=OCCUPIED_MARGIN_M",
+      "otherwise": "UNKNOWN"
+    },
+    "sole_final_state_producer": "TARO_O1R_R6_SOURCE_ONLY_INTERVAL_REDUCER_V1",
+    "r6_factor_builder_may_emit_final_state": false
+  },
+  "fail_closed_contract": {
+    "structural_or_hash_binding_error": "ABORT_WITHOUT_RESULT",
+    "query_frame_missing": "UNKNOWN",
+    "factor_not_evaluable": "UNKNOWN",
+    "uncertainty_resolution_invalid": "UNKNOWN",
+    "query_support_insufficient": "UNKNOWN",
+    "nonfinite_or_negative_uncertainty": "UNKNOWN",
+    "unknown_is_negative": false,
+    "uncertainty_worsening_may_create_definite_state": false
+  },
+  "firewalls": {
+    "faro_reads_during_integration": 0,
+    "training_steps_during_integration": 0,
+    "network_requests_during_integration": 0,
+    "eval_threshold_tuning": false,
+    "r6_bundle_mutation": false,
+    "default_app_changed": false,
+    "device_claim_allowed": false,
+    "product_or_safety_claim_allowed": false
+  },
+  "implementation_acceptance": [
+    "protocol validator passes",
+    "public builder has no forbidden result-side argument",
+    "all input array and bundle seals are recomputed before reduction",
+    "query-clearance owner is exactly R1_BASELINE",
+    "nine ordered query results are retained",
+    "missing or invalid uncertainty returns UNKNOWN",
+    "larger uncertainty cannot strengthen a state",
+    "deterministic canonical replay is byte-identical",
+    "focused tests and py_compile pass"
+  ],
+  "claim_ceiling": "Source-only O1R reducer-integration mechanics on the locked ARKitScenes landscape route; no final effectiveness, deployment, device, product, or safety claim.",
+  "unique_successor": "TARO_O1R_R6_PROSPECTIVE_FACTOR_REDUCER_INTEGRATION_IMPLEMENTATION_LOCK"
+}

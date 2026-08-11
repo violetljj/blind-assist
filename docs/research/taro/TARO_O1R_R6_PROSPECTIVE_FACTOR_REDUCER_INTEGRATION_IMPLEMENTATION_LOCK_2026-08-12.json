@@ -1,0 +1,70 @@
+{
+  "schema": "blindassist.taro.o1r.r6_prospective_factor_reducer_integration_implementation_lock.v1",
+  "lock_id": "TARO_O1R_R6_PROSPECTIVE_FACTOR_REDUCER_INTEGRATION_IMPLEMENTATION_LOCK",
+  "status": "FROZEN",
+  "date": "2026-08-12",
+  "protocol_binding": {
+    "path": "docs/research/taro/TARO_O1R_R6_PROSPECTIVE_FACTOR_REDUCER_INTEGRATION_PROTOCOL_LOCK_2026-08-11.json",
+    "bytes": 5500,
+    "sha256": "B7FE9BBC120BB53FA976ED637E8F8BE22D86B1F2A257300BE1F82BDF78D5D056"
+  },
+  "implementation_files": {
+    "runtime": {
+      "path": "scripts/research/taro_o1r_reducer_integration_runtime/reducer_integration.py",
+      "bytes": 28171,
+      "sha256": "46E35199B847D198A5C6B3A3EF745136E78DBEA9FB718D88700FAF744BF9616E"
+    },
+    "locked_uncertainty_loader": {
+      "path": "scripts/research/taro_o1r_reducer_integration_runtime/locked_uncertainty.py",
+      "bytes": 2547,
+      "sha256": "D14C774115596C50C1E02F0C0341A146DC63899F0A607CA4229A84D6AF92D68C"
+    },
+    "tests": {
+      "path": "scripts/research/taro_o1r_reducer_integration_runtime/test_reducer_integration.py",
+      "bytes": 11156,
+      "sha256": "D2CA49E64B6D613A34BFE527A7C3AA0E1ABA23D942C6C6F4E97A20BB8B61F8F3"
+    },
+    "protocol_validator": {
+      "path": "scripts/research/taro_o1r_reducer_integration_runtime/validate_protocol_lock.py",
+      "bytes": 4547,
+      "sha256": "ED9E5DC21A1EBF5313B7D851BC6FC19394CF4477D1968AA3075C24E015D8FD6A"
+    }
+  },
+  "public_api": {
+    "builder": "integrate_prospective_factor_bundle",
+    "validator": "validate_reducer_bundle",
+    "locked_model_loader": "load_locked_uncertainty_model",
+    "forbidden_result_side_arguments_absent": true,
+    "exact_query_count": 9
+  },
+  "implemented_invariants": {
+    "query_clearance_owner": "R1_BASELINE",
+    "sole_final_state_producer": "TARO_O1R_R6_SOURCE_ONLY_INTERVAL_REDUCER_V1",
+    "nested_lookup_uncertainty_and_result_seals": true,
+    "source_only_confidence_and_range_lookup": true,
+    "factory_bound_fit_only_uncertainty_required": true,
+    "structural_or_hash_drift_aborts": true,
+    "ordinary_missing_evidence_returns_unknown": true,
+    "uncertainty_monotonicity_enforced": true,
+    "r6_bundle_immutable": true,
+    "training_steps": 0,
+    "network_requests": 0
+  },
+  "verification": {
+    "protocol_validation_terminal": "TARO_O1R_R6_REDUCER_INTEGRATION_PROTOCOL_VALID",
+    "focused_unittest_count": 13,
+    "focused_unittest_passed": 13,
+    "py_compile_passed": true,
+    "git_diff_check_passed": true,
+    "real_locked_uncertainty_model_rehydrated": true,
+    "real_locked_uncertainty_model_sha256": "3FB93AC1A7FF4F21456766E9D0CC5D4EA37AC15D2F8DF0DDD49F936C7AF65365",
+    "synthetic_real_model_mechanics_state_counts": {
+      "CLEAR_OBSERVED": 2,
+      "OCCUPIED_OBSERVED": 0,
+      "UNKNOWN": 7
+    }
+  },
+  "execution_not_authorized_by_this_lock": true,
+  "claim_ceiling": "Implementation mechanics only; no final effectiveness, deployment, device, product, or safety claim.",
+  "unique_successor": "TARO_O1R_R6_PROSPECTIVE_FACTOR_REDUCER_INTEGRATION_ONE_SHOT_EXECUTION_LOCK"
+}

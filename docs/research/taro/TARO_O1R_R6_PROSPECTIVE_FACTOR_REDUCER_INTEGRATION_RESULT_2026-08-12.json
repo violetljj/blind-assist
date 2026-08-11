@@ -1,0 +1,94 @@
+{
+  "schema": "blindassist.taro.o1r.r6_prospective_factor_reducer_integration_result.v1",
+  "result_id": "TARO_O1R_R6_PROSPECTIVE_FACTOR_REDUCER_INTEGRATION_RESULT",
+  "date": "2026-08-12",
+  "terminal": "TARO_O1R_R6_REDUCER_INTEGRATION_NOT_EVALUABLE_ALL_UNKNOWN",
+  "execution_valid": true,
+  "scientific_status": "NOT_EVALUABLE_FINAL_STATE_COVERAGE",
+  "passed": false,
+  "promotion_authorized": false,
+  "cohort": {
+    "role": "O0R_EVAL_CANDIDATE",
+    "parent_count": 16,
+    "frame_count": 239,
+    "query_count": 2151
+  },
+  "state_counts": {
+    "CLEAR_OBSERVED": 0,
+    "OCCUPIED_OBSERVED": 0,
+    "UNKNOWN": 2151
+  },
+  "reason_counts": {
+    "SOURCE_BOUNDARY_LOCAL_VALID_FRACTION_INSUFFICIENT": 1298,
+    "SOURCE_QUERY_FRAME_UNAVAILABLE": 432,
+    "QUERY_KNOWNNESS_GATE_FAILED": 390,
+    "INTERVAL_STRADDLES_DECISION_MARGINS": 29,
+    "SUPPORT_SLOPE_EXCEEDED": 2
+  },
+  "numeric_interval_diagnosis": {
+    "query_count": 29,
+    "clearance_value_m": {
+      "minimum": -0.299999990102,
+      "median": -0.299871581315,
+      "q95": 0.030459714794,
+      "maximum": 0.050582717224
+    },
+    "uncertainty_m": {
+      "minimum": 0.459513215588,
+      "median": 0.459513215588,
+      "q95": 0.739804524667,
+      "maximum": 0.739804524667
+    },
+    "component_medians": {
+      "scale_m": 0.09166475982,
+      "support_m": 0.288477414369,
+      "boundary_m": 0.079371041399
+    },
+    "occupied_interval_structural_limit": "The frozen clearance value is lower-bounded by -CAPSULE_RADIUS_M=-0.30 m, while every valid query uncertainty is at least 0.4595 m; upper<=0 is therefore unreachable for this evidence.",
+    "clear_interval_observation": "No fully-known query has clearance above 0.0506 m, so lower>CLEAR_MARGIN_M is also unreachable in this replay."
+  },
+  "execution_firewall": {
+    "source_payload_reads": {
+      "confidence": 239
+    },
+    "faro_payload_reads": 0,
+    "training_steps": 0,
+    "network_requests": 0,
+    "threshold_tuning": false,
+    "app_or_device_changed": false
+  },
+  "evidence": {
+    "root": "artifacts.local/evidence/taro/o1r-r6-reducer-integration-r0",
+    "file_count": 243,
+    "total_bytes": 1010098,
+    "result": {
+      "bytes": 1157,
+      "sha256": "87F9B572F625FFF1BABB73E19502FB458A53D21A2CB3081E96FBCD8C294C68EF",
+      "content_sha256": "69C9A9C7D93E9027829B4328974DAA4F71DA68CF632A67B73A7B25C3B197B228"
+    },
+    "summary": {
+      "bytes": 2792,
+      "sha256": "BCA93749591BFDF696F09D56FAE0738FB5FF0FF7ED8AE2E8DC47FE8F1F4204EF",
+      "content_sha256": "BD56A59D1A46E3C4C88423FAC37665EA8CACFCCC8CCE81E36AECD38637B2393F"
+    },
+    "manifest": {
+      "bytes": 47927,
+      "sha256": "412D926734807770A19561E034C7AA9EB018EA84D02711A4FF4CDAF9EB394C40"
+    },
+    "execution_receipt": {
+      "bytes": 703,
+      "sha256": "E19BF09F94A4CEA2D3EBA57DD61E98397435EE2192BC716A7141E5AC19A46039"
+    },
+    "replay_validation_terminal": "TARO_O1R_R6_REDUCER_INTEGRATION_EVIDENCE_VALID"
+  },
+  "decision": {
+    "repeat_same_reducer": false,
+    "preserve_r6_factor_builder": true,
+    "preserve_unknown_semantics": true,
+    "next_problem": "Decouple positive occupied evidence from clearance-radius interval saturation and treat finite far depth as censored line-of-sight coverage without fabricating near geometry.",
+    "existing_16_eval_parents_can_promote_r7": false
+  },
+  "claim_ceiling": "Locked ARKitScenes source-only O1R reducer result; no final effectiveness, deployment, device, product, or safety claim.",
+  "unique_successor": "TARO_O1R_R7_POSITIVE_OCCUPANCY_AND_CLEAR_COVERAGE_TASK_LOCK",
+  "content_sha256": "2282DCA08FAE5C7E80FF306534F065E447C085B658986F0946C4A47A21E66C82"
+}
