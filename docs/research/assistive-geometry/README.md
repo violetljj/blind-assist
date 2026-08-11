@@ -484,6 +484,20 @@ transfer evidence/candidate，不是统一 factor successor。receipt 修正后�
 `1e-6` 量级浮动。这里停止继续做 boundary loss 竞赛；SuperTeacher 下一步回到真正缺失的 factor，优先扩
 multi-view/source-anchored uncertainty 与 support evidence，ICL/Bonn external 继续不进入拟合。
 
+这一步已由
+[R22 trisource uncertainty factor corpus](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R22_TRISOURCE_UNCERTAINTY_FACTOR_CORPUS_RESULT_2026-08-11.json)
+直接完成，而不是等待“完全 uncertainty 真值”。ARKit/TUM/Bonn FIT 共 31 parent/93 帧全部物化独立的
+depth uncertainty、support uncertainty 和 camera-angular boundary uncertainty mask/tier/provenance；8/8
+materialization gates 与 5/5 analytic tests PASS。有效覆盖为 depth `11,901,278` 像素、boundary-angular
+`11,273,296` 像素、support `3,427,129` 像素。
+
+boundary uncertainty 现由原 pixel localization radius 通过相机 ray 变成 rad，随 raster/K 同步缩放时保持不变；
+support uncertainty 合并 decision margin、metric depth uncertainty 与 gravity-plane residual。Bonn 没有 gravity/
+support-plane evidence，因此其 support uncertainty 仍为 0 valid/全 UNKNOWN，没有用常数或 Teacher 猜测补齐。
+Bonn depth 的 `0.1 mm` 也只表示 source quantization proxy，不冒充实测 error calibration。至此 SuperTeacher
+已经从 boundary learnability 推进到显式 uncertainty label corpus；下一步才是给 student 加 masked uncertainty
+heads，depth/boundary 可用三源，support 只允许 ARKit/TUM，Bonn 的 UNKNOWN 梯度必须继续为零。
+
 因此没有先寻找“完全真值”或等待第二 Teacher，而是直接按 factor validity 与 tier weight 完成了
 [冻结 DepthART masked student](BLINDASSIST_ASSISTIVE_GEOMETRY_AG_ST_R0_MASKED_STUDENT_DEPTHART_WILD_LAB_RESULT_2026-08-10.json)。
 模型只训练 `11,109` 参数 factor head，固定 `12/2/2` parent split、80 epochs、2,880 steps，总耗时
