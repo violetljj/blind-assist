@@ -87,7 +87,7 @@ def load_development_video(manifest: dict[str, Any], protocol: dict[str, Any], s
             "Development frame schedule drift")
     for entries in video["extracted"].values():
         require(len(entries) == 300, "Development modality count drift")
-        require(all("source\\development\\" in str(entry["path"]).lower() for entry in entries),
+        require(all("source\\development_sealed\\" in str(entry["path"]).lower() for entry in entries),
                 "non-Development source path crossed execution scope")
     return video
 

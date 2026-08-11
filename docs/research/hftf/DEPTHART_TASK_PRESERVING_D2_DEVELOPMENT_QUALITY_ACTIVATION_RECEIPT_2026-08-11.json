@@ -11,7 +11,16 @@
   },
   "protocol_path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2_DEVELOPMENT_QUALITY_EXECUTION_PROTOCOL_2026-08-11.json",
   "protocol_bytes": 11390,
-  "protocol_sha256": "698D5857120CA40458677DF486BC116830B1C16FC6EFC97335F55AD0BC7BED88",
+  "protocol_sha256": "CA2A709AE0C3AAFBE9BD6FC195480D4D7E34FE3E6562F37D3B369D989D24CAA2",
+  "pre_access_repair": {
+    "failed_attempt_root": "artifacts.local/evidence/hftf/depthart-task-preserving-d2-development-20260811-r1",
+    "previous_protocol_sha256": "698D5857120CA40458677DF486BC116830B1C16FC6EFC97335F55AD0BC7BED88",
+    "reason": "receipt uses source/development_sealed while the initial path guard expected source/development",
+    "development_frame_decode": false,
+    "device_execution": false,
+    "quality_outcome_access": false,
+    "replacement_attempt_root": "artifacts.local/evidence/hftf/depthart-task-preserving-d2-development-20260811-r2"
+  },
   "execution_authorized": true,
   "authorized": {
     "development_identities": 4,

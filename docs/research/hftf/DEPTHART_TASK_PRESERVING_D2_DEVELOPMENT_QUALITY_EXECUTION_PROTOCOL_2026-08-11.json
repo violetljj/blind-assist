@@ -46,8 +46,8 @@
     },
     "chunk_runner": {
       "path": "scripts/research/hftf/deployment/depthart/run_depthart_task_preserving_d2_development_chunk.py",
-      "bytes": 16952,
-      "sha256": "8FEC4C6B41522C72A53F8C98EECA48B848C0C01A1B06036B800C30C0EE606462"
+      "bytes": 16959,
+      "sha256": "FB82E00881ADCAA3530A72026AB14A51A59DDCD3B9948ABA3834BE9F4F289DA2"
     },
     "finalizer": {
       "path": "scripts/research/hftf/deployment/depthart/finalize_depthart_task_preserving_d2_development_quality.py",
@@ -135,8 +135,8 @@
     ]
   },
   "execution": {
-    "output_root": "artifacts.local/evidence/hftf/depthart-task-preserving-d2-development-20260811-r1",
-    "remote_root": "/data/local/tmp/depthart_d2_development_20260811_r1",
+    "output_root": "artifacts.local/evidence/hftf/depthart-task-preserving-d2-development-20260811-r2",
+    "remote_root": "/data/local/tmp/depthart_d2_development_20260811_r2",
     "chunk_size_frames": 50,
     "chunks_per_identity": 6,
     "total_chunks": 24,
