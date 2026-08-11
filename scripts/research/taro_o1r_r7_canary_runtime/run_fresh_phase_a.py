@@ -43,6 +43,8 @@ PASS_TERMINAL = "TARO_O1R_R7_FRESH_CONFIRMATION_PHASE_A_SEALED_PASS"
 FAIL_TERMINAL = "TARO_O1R_R7_FRESH_CONFIRMATION_PHASE_A_EXECUTION_INVALID"
 FRAME_COUNT = 170
 QUERY_COUNT = FRAME_COUNT * 9
+PARENT_COUNT = 8
+EXPECTED_PARENT_IDENTITIES = cohort.EXPECTED_ROSTER
 FROZEN_POSITIVE_INDEX = (0, 0, 2)
 
 EXPECTED_BINDINGS = {
@@ -360,7 +362,7 @@ def execute(lock_path: Path) -> dict[str, Any]:
             "execution_lock_sha256": materializer.sha256_file(lock["_lock_path"]),
             "started_at_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
             "analysis_role": "FRESH_CONFIRMATION",
-            "expected_parent_count": 8,
+            "expected_parent_count": PARENT_COUNT,
             "expected_frame_count": FRAME_COUNT,
             "expected_query_count": QUERY_COUNT,
             "faro_payload_read": False,
@@ -438,7 +440,7 @@ def execute(lock_path: Path) -> dict[str, Any]:
         prospective_hashes: list[str] = []
         reducer_hashes: list[str] = []
         state_counts: Counter[str] = Counter()
-        parent_state_counts: dict[str, Counter[str]] = {parent: Counter() for parent, _, _ in cohort.EXPECTED_ROSTER}
+        parent_state_counts: dict[str, Counter[str]] = {parent: Counter() for parent, *_ in EXPECTED_PARENT_IDENTITIES}
         completed = 0
 
         def observed_source(role: str, _: str) -> None:
@@ -529,7 +531,7 @@ def execute(lock_path: Path) -> dict[str, Any]:
         completion = _seal(
             {
                 "schema": "blindassist.taro.o1r.r7_fresh_phase_a_completion.v1",
-                "parent_count": 8,
+                "parent_count": PARENT_COUNT,
                 "frame_count": FRAME_COUNT,
                 "query_count": QUERY_COUNT,
                 "source_frame_hash_sequence_sha256": adapter.canonical_sha256(source_hashes),
@@ -555,7 +557,7 @@ def execute(lock_path: Path) -> dict[str, Any]:
             "terminal": PASS_TERMINAL,
             "passed": True,
             "execution_valid": True,
-            "parent_count": 8,
+            "parent_count": PARENT_COUNT,
             "frame_count": FRAME_COUNT,
             "query_count": QUERY_COUNT,
             "candidate_inference_count": FRAME_COUNT,
