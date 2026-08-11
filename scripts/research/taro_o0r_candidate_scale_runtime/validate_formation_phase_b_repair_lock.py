@@ -13,7 +13,7 @@ from typing import Any, Sequence
 
 
 SCHEMA = "blindassist.taro.o0r.r6_formation_phase_b_repair_execution_lock.v1"
-LOCK_ID = "TARO_O0R_R6_FORMATION_PHASE_B_REPAIR_R5_ONE_SHOT_EXECUTION_LOCK"
+LOCK_ID = "TARO_O0R_R6_FORMATION_PHASE_B_REPAIR_R6_ONE_SHOT_EXECUTION_LOCK"
 EXPECTED_ROOTS = {
     "repo_root": "E:/linnan/linnan",
     "frame_plan_path": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3/exact-frame-plan.json.gz",
@@ -22,7 +22,7 @@ EXPECTED_ROOTS = {
     "fit_candidate_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-direct-apple-hybrid-adapter-fit-r5",
     "eval_candidate_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-factor-headroom-r3",
     "phase_a_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-r6-formation-replay-r4",
-    "output_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-r6-formation-replay-r5",
+    "output_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-r6-formation-replay-r6",
 }
 EXPECTED_COHORT = {
     "frame_key_sequence_sha256": "CFAEA2236C5E1EA9A2DC811ECE432F955B680658E8D5D7B94468FEAEECE77653",

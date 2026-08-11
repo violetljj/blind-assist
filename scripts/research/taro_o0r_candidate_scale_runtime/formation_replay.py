@@ -97,6 +97,21 @@ def _factor_replay_failure_codes(
     return selected_failure, baseline_failure
 
 
+def _enforce_factor_owner_policy(
+    bundle: Mapping[str, Any],
+    prospective: Mapping[str, Any],
+    baseline: Mapping[str, Any],
+) -> dict[str, Any]:
+    require(
+        bundle["query_clearance_owner"] == "R1_BASELINE",
+        "FORMATION_QUERY_CLEARANCE_OWNER_DRIFT",
+        "formation replay requires the frozen R1 query-clearance owner",
+    )
+    output = copy.deepcopy(dict(prospective))
+    output["query_clearance"] = copy.deepcopy(dict(baseline["query_clearance"]))
+    return output
+
+
 def _boundary_metrics(
     truth_ids: np.ndarray,
     truth_points: np.ndarray,
@@ -317,6 +332,7 @@ def score_frame(
                 truth_plane=truth_plane,
                 failure_code="SOURCE_BASELINE_SUPPORT_UNAVAILABLE",
             )
+            prospective = _enforce_factor_owner_policy(bundle, prospective, baseline)
             truth_status = {"evaluable": True, "reason_codes": [], "support_plane_sha256": adapter.canonical_sha256(truth_plane)}
         effects = {
             "support_normal_error_reduction_rad": _effect(baseline, prospective, "support", "normal_angular_error_rad"),

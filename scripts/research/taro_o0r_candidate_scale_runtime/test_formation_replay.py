@@ -89,6 +89,20 @@ class FormationReplaySummaryTest(unittest.TestCase):
             formation_replay._factor_replay_failure_codes(bundle, selected_plane),
         )
 
+    def test_query_clearance_always_uses_r1_baseline_owner(self) -> None:
+        bundle = {"query_clearance_owner": "R1_BASELINE"}
+        prospective = {
+            "support": {"evaluable": True},
+            "boundary": {"evaluable": True},
+            "query_clearance": {"evaluable": True, "abs_error_m": 0.5},
+        }
+        baseline = {"query_clearance": {"evaluable": True, "abs_error_m": 0.1}}
+        enforced = formation_replay._enforce_factor_owner_policy(bundle, prospective, baseline)
+        self.assertEqual(prospective["support"], enforced["support"])
+        self.assertEqual(prospective["boundary"], enforced["boundary"])
+        self.assertEqual(baseline["query_clearance"], enforced["query_clearance"])
+        self.assertNotEqual(prospective["query_clearance"], enforced["query_clearance"])
+
 
 if __name__ == "__main__":
     unittest.main()

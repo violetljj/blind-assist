@@ -1,0 +1,189 @@
+{
+  "schema": "blindassist.taro.o0r.r6_formation_phase_b_repair_execution_lock.v1",
+  "lock_id": "TARO_O0R_R6_FORMATION_PHASE_B_REPAIR_R6_ONE_SHOT_EXECUTION_LOCK",
+  "date": "2026-08-11",
+  "status": "AUTHORIZED_UNCONSUMED",
+  "consumed": false,
+  "output_root_must_be_absent": true,
+  "overwrite": false,
+  "rerun": false,
+  "worker_count": 4,
+  "phase_a_completion_sha256": "C3351E6745110850E0CA80267A8A0421E9548CFFF14F3EAED45F2B1F11311F77",
+  "roots": {
+    "repo_root": "E:/linnan/linnan",
+    "frame_plan_path": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3/exact-frame-plan.json.gz",
+    "source_root": "E:/linnan/linnan/artifacts.local/datasets/taro/o0r-arkitscenes-source-adapter-r3",
+    "source_evidence_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-formation-source-r0",
+    "fit_candidate_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-direct-apple-hybrid-adapter-fit-r5",
+    "eval_candidate_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-arkitscenes-factor-headroom-r3",
+    "phase_a_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-r6-formation-replay-r4",
+    "output_root": "E:/linnan/linnan/artifacts.local/evidence/taro/o0r-r6-formation-replay-r6"
+  },
+  "cohort_bindings": {
+    "frame_key_sequence_sha256": "CFAEA2236C5E1EA9A2DC811ECE432F955B680658E8D5D7B94468FEAEECE77653",
+    "source_receipt_hash_sequence_sha256": "E2E6478B3819FF42B158516D8D5E7D862C0069C8172B874B535ED8D4C5DC1A43",
+    "candidate_record_hash_sequence_sha256": "DA22AA6BC8B015B2587A26EB05FA842E6A513A28841838078B89301A3B303E01",
+    "candidate_native_hash_sequence_sha256": "C6A41722142BCCCBC0CAE33BD1BF8FCA2BBA16FC5349C83D57273EABA3E71089"
+  },
+  "execution_authority": {
+    "phase_b_only_repair": true,
+    "predecessor_phase_a_read_only_reuse": true,
+    "source_input_integrity_replay": true,
+    "faro_scoring": true,
+    "factor_owner_policy_enforcement": true,
+    "owner_reselection": false,
+    "phase_a_reexecution": false,
+    "candidate_inference": false,
+    "training": false,
+    "network": false,
+    "device": false,
+    "deployment": false,
+    "product": false,
+    "safety": false
+  },
+  "resource_budget": {
+    "maximum_wall_seconds": 14400,
+    "maximum_peak_rss_bytes": 17179869184,
+    "maximum_evidence_bytes": 536870912,
+    "training_steps": 0,
+    "network_requests": 0
+  },
+  "required_environment": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONHASHSEED": "0",
+    "PYTHONUTF8": "1"
+  },
+  "unique_argv": [
+    "E:/codex-tools/tools/venvs/blindassist-venv-export312/Scripts/python.exe",
+    "-m",
+    "scripts/research/taro_o0r_candidate_scale_runtime/run_formation_phase_b_repair.py",
+    "--execution-lock",
+    "docs/research/taro/TARO_O0R_R6_FORMATION_PHASE_B_REPAIR_R6_ONE_SHOT_EXECUTION_LOCK_2026-08-11.json"
+  ],
+  "required_binding_roles": [
+    "PHASE_B_REPAIR_LOCK",
+    "FORMATION_SCORER",
+    "BASE_RUNNER",
+    "PHASE_B_REPAIR_RUNNER",
+    "PHASE_B_LOCK_VALIDATOR",
+    "PROSPECTIVE_RUNTIME",
+    "FOCUSED_TEST",
+    "R4_PHASE_A_COMPLETION",
+    "R4_MANIFEST",
+    "R5_RESULT",
+    "R5_SUMMARY",
+    "R5_MANIFEST",
+    "FORMATION_SOURCE_RESULT",
+    "FORMATION_SOURCE_MANIFEST",
+    "FIT_CANDIDATE_COMPLETION",
+    "EVAL_CANDIDATE_COMPLETION",
+    "EXACT_FRAME_PLAN"
+  ],
+  "bindings": [
+    {
+      "role": "PHASE_B_REPAIR_LOCK",
+      "path": "docs/research/taro/TARO_O0R_R6_FORMATION_REPLAY_R5_OUTCOME_ATTRIBUTION_FAILURE_AND_R6_CLEARANCE_OWNER_REPAIR_LOCK_2026-08-11.json",
+      "bytes": 4806,
+      "sha256": "89F9149BAEAC715A455DF4AB1B86413C24E744F2D56CF628EA2AA8374D1D0E0E"
+    },
+    {
+      "role": "FORMATION_SCORER",
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/formation_replay.py",
+      "bytes": 23596,
+      "sha256": "79F247280DCBC4A6A15F0CA1E55AF9A186DDBC8D160EE7264C1DD1E7D3752697"
+    },
+    {
+      "role": "BASE_RUNNER",
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/run_formation_replay.py",
+      "bytes": 15053,
+      "sha256": "15FAAE0E341345AE2277B07F15938F3886D34CEB78D34BD732E1FD5C03403E1E"
+    },
+    {
+      "role": "PHASE_B_REPAIR_RUNNER",
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/run_formation_phase_b_repair.py",
+      "bytes": 9948,
+      "sha256": "E1CA36A0A167B3B8591371420BDF46A63E7DD121758FAC6CCF4F9490962B55C0"
+    },
+    {
+      "role": "PHASE_B_LOCK_VALIDATOR",
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/validate_formation_phase_b_repair_lock.py",
+      "bytes": 7221,
+      "sha256": "2DD9EDF7C33047E9245DD8DE4B76FFFC652187730052D76359AD6DE3201FCBDF"
+    },
+    {
+      "role": "PROSPECTIVE_RUNTIME",
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/prospective_factor_runtime.py",
+      "bytes": 37796,
+      "sha256": "75E4CB46AF3D3A4ECBB461E79B48CFFE4CEFF6981DE5AB62E4DAE827E618E407"
+    },
+    {
+      "role": "FOCUSED_TEST",
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/test_formation_replay.py",
+      "bytes": 5311,
+      "sha256": "2782B139A8B57D801CC74AEDBB0008E2490F24352052D6A34D2BBCB77BE5A209"
+    },
+    {
+      "role": "R4_PHASE_A_COMPLETION",
+      "path": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r4/phase-a-completion.json",
+      "bytes": 816,
+      "sha256": "4B284372EF8631C28F3FAA84D2CEB1988449ED88C62940FFAD2F82FDB1048592"
+    },
+    {
+      "role": "R4_MANIFEST",
+      "path": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r4/manifest.json",
+      "bytes": 104790,
+      "sha256": "8B1810CA47B903B30CB1E58C5419D8FFCE3B0A562D4198D578D160311E9C410F"
+    },
+    {
+      "role": "R5_RESULT",
+      "path": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r5/result.json",
+      "bytes": 886,
+      "sha256": "09588B873B241797BD768852D1EAF10D51C5FAE37C0B24B7709FF8B01A412698"
+    },
+    {
+      "role": "R5_SUMMARY",
+      "path": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r5/summary.json",
+      "bytes": 10548,
+      "sha256": "7D674B7DAE2F536B8D0AAA23C1EEAD0A674751B5E3C467A5E4DFBEBCC7BBAEBC"
+    },
+    {
+      "role": "R5_MANIFEST",
+      "path": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r5/manifest.json",
+      "bytes": 96065,
+      "sha256": "CA29F045579E265B5AEF05AD8312E6B8DCA432836BD66B4D796ACE898ED2B4A3"
+    },
+    {
+      "role": "FORMATION_SOURCE_RESULT",
+      "path": "artifacts.local/evidence/taro/o0r-arkitscenes-formation-source-r0/result.json",
+      "bytes": 1093,
+      "sha256": "7F95D25A6A0CC5214551DD5CEA19C7CCABAD19D7A1E82D3320FB26B086D87B62"
+    },
+    {
+      "role": "FORMATION_SOURCE_MANIFEST",
+      "path": "artifacts.local/evidence/taro/o0r-arkitscenes-formation-source-r0/manifest.json",
+      "bytes": 93247,
+      "sha256": "0EE4A3E59DD9A786F37DFAD5FF35A3261A75890D3E0293864B85C034D1519B50"
+    },
+    {
+      "role": "FIT_CANDIDATE_COMPLETION",
+      "path": "artifacts.local/evidence/taro/o0r-arkitscenes-direct-apple-hybrid-adapter-fit-r5/candidate-phase-completion.json",
+      "bytes": 664,
+      "sha256": "59A971B694BF229588B229B8F1CF831ED091EE5E2CEAAB2AEDE32F68F2231C74"
+    },
+    {
+      "role": "EVAL_CANDIDATE_COMPLETION",
+      "path": "artifacts.local/evidence/taro/o0r-arkitscenes-factor-headroom-r3/candidate-phase-completion.json",
+      "bytes": 1481,
+      "sha256": "FEA2A6555A707E05D04770A67E68A798BA287D7D202968A757CEA6DE0775AFFE"
+    },
+    {
+      "role": "EXACT_FRAME_PLAN",
+      "path": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3/exact-frame-plan.json.gz",
+      "bytes": 11228,
+      "sha256": "BBAC08A9832A6CE465E8A8C6532FFF857AF878E6E821E683B24A83981C3C946C"
+    }
+  ],
+  "claim_ceiling": "Post-hoc non-promotable WILD_LAB formation replay only; no untouched reconfirmation, deployment, product, or safety authority."
+}
