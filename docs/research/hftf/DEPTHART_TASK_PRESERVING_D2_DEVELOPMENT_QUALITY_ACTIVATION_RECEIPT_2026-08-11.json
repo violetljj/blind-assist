@@ -1,0 +1,33 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d2_development_quality_activation_receipt_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D2_DEVELOPMENT_BASELINE_AND_FROZEN_HEAD_QUALITY",
+  "created_at": "2026-08-11",
+  "status": "DEVELOPMENT_QUALITY_EXECUTION_ACTIVATED",
+  "authorization": {
+    "verbatim_user_text": "授权",
+    "antecedent_exact_scope_phrase": "授权 D2 Development frozen-head quality screen",
+    "interpretation": "authorize the already-frozen D2 Development baseline-versus-frozen-head screen only",
+    "scope_is_not_expanded_by_generic_wording": true
+  },
+  "protocol_path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2_DEVELOPMENT_QUALITY_EXECUTION_PROTOCOL_2026-08-11.json",
+  "protocol_bytes": 11390,
+  "protocol_sha256": "698D5857120CA40458677DF486BC116830B1C16FC6EFC97335F55AD0BC7BED88",
+  "execution_authorized": true,
+  "authorized": {
+    "development_identities": 4,
+    "frames": 1200,
+    "saved_context_base_output": true,
+    "no_head_baseline": true,
+    "frozen_head_checkpoint_sha256": "7D8897445A118A633B2DCFCC6790BB8CE481A8505114122EC132838DD1B017C8",
+    "one_shot_quality_aggregation": true
+  },
+  "not_authorized": {
+    "training_or_tuning": true,
+    "checkpoint_selection": true,
+    "r2_access": true,
+    "performance": true,
+    "android_default": true,
+    "production": true,
+    "safety": true
+  }
+}

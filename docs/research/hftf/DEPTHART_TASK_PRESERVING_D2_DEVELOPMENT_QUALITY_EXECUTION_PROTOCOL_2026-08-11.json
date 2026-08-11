@@ -1,0 +1,213 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d2_development_quality_execution_protocol_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D2_DEVELOPMENT_BASELINE_AND_FROZEN_HEAD_QUALITY",
+  "frozen_at": "2026-08-11",
+  "status": "FROZEN_DEVELOPMENT_QUALITY_EXECUTION",
+  "bindings": {
+    "activation_scope": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2_DEVELOPMENT_QUALITY_ACTIVATION_SCOPE_PROTOCOL_2026-08-11.json",
+      "bytes": 3436,
+      "sha256": "9B5D8E7B0AE22A7F696E31CB63AD77979A0520E281A2DA16F0368091E6BE0EC6"
+    },
+    "train_result": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2_TRAIN_ONLY_RESULT_2026-08-11.json",
+      "bytes": 2404,
+      "sha256": "8695087DAED626D0584CC4947FE565019113BE8C48267D0212D86386A2A46158"
+    },
+    "head_protocol": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2_TASK_EVIDENCE_HEAD_PROTOCOL_2026-08-11.json",
+      "bytes": 9419,
+      "sha256": "1502F57BAFF14056681BDD21FBA6D7899D78AE7CA50D076734AE16863AAC8034"
+    },
+    "source_manifest": {
+      "path": "artifacts.local/datasets/depthart-task-preserving-d2-phase-c-20260811-r1/manifest.json",
+      "bytes": 77873,
+      "sha256": "2EB5E6113012C2490D0962977C3EA5513DB24C4DBD4B5003E0A371E9D8843F58"
+    },
+    "head_checkpoint": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d2-train-20260811-r1/task-head-step-500.json",
+      "bytes": 9527,
+      "sha256": "7D8897445A118A633B2DCFCC6790BB8CE481A8505114122EC132838DD1B017C8"
+    },
+    "reference_checkpoint": {
+      "path": "artifacts.local/models/depthart/source/checkpoints/metric/depthart_metric_indoor_s_448.pth",
+      "bytes": 32871942,
+      "sha256": "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65"
+    },
+    "reference_preprocess": {
+      "path": "artifacts.local/models/depthart/source/metric/common.py",
+      "bytes": 1854,
+      "sha256": "E1B57A6A42966712C50E6E9C4DC96DB3C814C47AD9052FD2E9221D9DCDCB9830"
+    },
+    "truth_reader": {
+      "path": "scripts/research/assistive_geometry/arkitscenes_truth_reader.py",
+      "bytes": 25728,
+      "sha256": "F50187661E59C438FAC4CAEB4E0BDFA4D638C64A87094C49C369FBEC3B3218C1"
+    },
+    "chunk_runner": {
+      "path": "scripts/research/hftf/deployment/depthart/run_depthart_task_preserving_d2_development_chunk.py",
+      "bytes": 16952,
+      "sha256": "8FEC4C6B41522C72A53F8C98EECA48B848C0C01A1B06036B800C30C0EE606462"
+    },
+    "finalizer": {
+      "path": "scripts/research/hftf/deployment/depthart/finalize_depthart_task_preserving_d2_development_quality.py",
+      "bytes": 13571,
+      "sha256": "DEA6847D493C5C298132F318342C4F9849C8D65916F4F19F2AB4B1477647628A"
+    },
+    "evaluator": {
+      "path": "scripts/research/hftf/deployment/depthart/evaluate_depthart_task_preserving_d2_development_quality.py",
+      "bytes": 7402,
+      "sha256": "62B9E79B9D45A238DBC59038E9099F43AB4F697A2646CE6F78DF761FA52FB3BC"
+    },
+    "head_composition": {
+      "path": "scripts/research/hftf/deployment/depthart/depthart_task_preserving_d2_task_head_canary.py",
+      "bytes": 7256,
+      "sha256": "D50DE7B5DDF1D33C01BBD10A79451353039C77D7F15B303314B19AD389AA51CA"
+    },
+    "metric_implementation": {
+      "path": "scripts/research/hftf/deployment/depthart/evaluate_depthart_task_preserving_d1_quality.py",
+      "bytes": 17651,
+      "sha256": "F3150D9DF77E0290E61AAD9C1C7275019D408C363C1D77136BEACF8890B98769"
+    },
+    "shared_execution_utility": {
+      "path": "scripts/research/hftf/deployment/depthart/run_depthart_task_preserving_d2_train_only.py",
+      "bytes": 31796,
+      "sha256": "C201DB4FB062EE08B3CEF2EF6B57F0790DADB53DC341388493EADAF0946A11D5"
+    },
+    "candidate_dlc": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d1-product-aspect-20260810-r1/depthart-608x448-fixed-mixed-fp32.dlc",
+      "bytes": 31998468,
+      "sha256": "755138FA28FCB937E3D62D45FEC292880DFC690851BF2CB00E2704CC67FA5D42"
+    },
+    "saved_context": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d1-device-preflight-20260810-r1/depthart-d1-608x448-sm8650-v75.bin",
+      "bytes": 22552576,
+      "sha256": "FA5DC9DC4BFA4684BA60EDC84B17F9278C07CCCB4FB359E94C9EFA99841DFC3D"
+    }
+  },
+  "development_scope": [
+    {"role_order": 1, "visit_id": "469596", "video_id": "47430877", "frame_count": 300, "frame_stems_sha256": "6FE4E4D78676CC2CEEA313A7DD0B2734645882BD919EF4DB1D9C32C33653B168", "checkpoint_sha256": "62CF52F15CB344432F03AA1DE2C8F9AEC17EE438F77DAEC6339CD49B8DD3517B"},
+    {"role_order": 2, "visit_id": "434691", "video_id": "42898635", "frame_count": 300, "frame_stems_sha256": "75A1D9BCEAE7848AF7B2BA2463048E9CD616288EE52E20F94CA8445078E92B27", "checkpoint_sha256": "3B9F38A99518668B3A9482C733971C0D754A41379908C7C4A0491C209F50F9BD"},
+    {"role_order": 3, "visit_id": "469646", "video_id": "47430802", "frame_count": 300, "frame_stems_sha256": "54F9E5004E541A79DB91B53981D30AF91C2288EA865D9CC2B9FC03DA2CCFDEE5", "checkpoint_sha256": "1DDA9DFDE1B370097D4406DDF22CF3174D5359704FA5D103BD18ECAC0774DB7C"},
+    {"role_order": 4, "visit_id": "468094", "video_id": "47334356", "frame_count": 300, "frame_stems_sha256": "72A61AF2960A4666A8591A6736D5D3370A513DA5269D3A041CBD45D0CCAB6534", "checkpoint_sha256": "08DA79644AA8364061011832FFC929B826E17B152FB78DFD0F062FEC3D109D9E"}
+  ],
+  "head_checkpoint": {
+    "sha256": "7D8897445A118A633B2DCFCC6790BB8CE481A8505114122EC132838DD1B017C8",
+    "architecture": "Linear(11,16)-SiLU-Linear(16,5)",
+    "parameter_count": 277,
+    "dtype": "float64",
+    "device": "cpu",
+    "seed": 17,
+    "step": 500,
+    "mutable": false
+  },
+  "reference": {
+    "source_root": "artifacts.local/models/depthart/source",
+    "source_git_commit": "0384521b3bcb4c64adf03eeb5d55ebdb1cbdd84c",
+    "checkpoint_sha256": "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65",
+    "host_runtime": {"torch": "2.11.0+cu128", "cuda": "12.8", "opencv": "4.10.0", "numpy": "2.1.3", "pillow": "12.2.0"},
+    "allowed_use": "official preprocess and camera prompt generation only",
+    "reference_model_forward": false,
+    "tf32": false,
+    "cudnn_benchmark": false
+  },
+  "device": {
+    "serial": "R5CX10M8Y8X",
+    "model": "SM-S9280",
+    "device": "e3q",
+    "soc": "SM8650",
+    "abi": "arm64-v8a",
+    "android_release": "16",
+    "sdk": 36,
+    "security_patch": "2026-07-05",
+    "build_fingerprint": "samsung/e3qzcx/e3q:16/BP4A.251205.006/S9280ZCS6DZG1:user/release-keys",
+    "validated_preflight_workspace": "/data/local/tmp/depthart_d1_608x448_v75_20260810_r1",
+    "remote_assets": [
+      {"path": "arm64/qnn-net-run", "sha256": "F41DBF1FA9E8FA33642044AFD50FEE89919B1538BC2CE0D3083C4F25A05C25F9"},
+      {"path": "arm64/libQnnHtp.so", "sha256": "C0488F2DF87932A42CA0A563883E6FBA190896BCA439AD0FDAA2428358AB5092"},
+      {"path": "arm64/libQnnHtpPrepare.so", "sha256": "9988CE10FFEE6813FFD218DF308478F44DBC758CC89AED9CB98CFEBB030CA72E"},
+      {"path": "arm64/libQnnHtpV75Stub.so", "sha256": "B126A79EBEABF09949656BE42326546B03F3216AD671C9C0E4AC935CEFA5A631"},
+      {"path": "arm64/libQnnSystem.so", "sha256": "077A8B20A53B216D006B85B58DD754A9E958E02F98E9C79D46619DB6F8EDFEC9"},
+      {"path": "arm64/libQnnDepthArtSelectiveScanPackage.so", "sha256": "FDF13797794DF976BA1FE5450E6AA5A09E5D6D6AA7E328EE8A07256737A2F0A9"},
+      {"path": "dsp/libQnnHtpV75Skel.so", "sha256": "607BE3D7EC64DF053F019438AD6EEA59DD3EEA5D5F985001709D52D5663479BA"},
+      {"path": "dsp/libQnnDepthArtSelectiveScanPackage.so", "sha256": "A5392F2FA54A0449BF81F164D88C52352038AED1BD2A504B6DDB7275BAB4AFDE"},
+      {"path": "context/depthart-d1-608x448-sm8650-v75.bin", "sha256": "FA5DC9DC4BFA4684BA60EDC84B17F9278C07CCCB4FB359E94C9EFA99841DFC3D"}
+    ]
+  },
+  "execution": {
+    "output_root": "artifacts.local/evidence/hftf/depthart-task-preserving-d2-development-20260811-r1",
+    "remote_root": "/data/local/tmp/depthart_d2_development_20260811_r1",
+    "chunk_size_frames": 50,
+    "chunks_per_identity": 6,
+    "total_chunks": 24,
+    "frame_order": "DEVELOPMENT_ROLE_ORDER_THEN_SELECTED_FRAME_STEMS_0_TO_299",
+    "process_lifetime": "ONE_FRESH_HOST_PYTHON_PROCESS_PER_CHUNK",
+    "candidate_run": "SAVED_CONTEXT_ONLY_NO_DIRECT_DLC_NO_PROFILE",
+    "device_identity_and_remote_hash_reverified_per_chunk": true,
+    "generated_input_cleanup": "ONLY_AFTER_DEVICE_PASS_RECEIPT_AND_OUTPUT_HASHES",
+    "performance_measurement": false
+  },
+  "head_composition_policy": {
+    "horizons_m": [1.0, 1.5, 2.0],
+    "occupancy_threshold": 0.5,
+    "known_probability_threshold": 0.8,
+    "minimum_valid_depth_fraction": 0.05,
+    "minimum_ground_support_fraction": 0.02,
+    "minimum_band_support_points": 20,
+    "maximum_clearance_residual_m": 0.5
+  },
+  "quality_gates": {
+    "known_coverage_min": 0.9,
+    "clearance_mae_m_max": 0.2,
+    "false_clear_all_known_max": 0.08,
+    "false_block_given_clear_max": 0.02,
+    "temporal_clearance_delta_mae_m_max": 0.15,
+    "geometry_transition_agreement_min": 0.9,
+    "valid_to_unknown_rate_max": 0.1,
+    "worst_parent_false_clear_all_known_max": 0.12,
+    "noninferiority_against_baseline": {
+      "known_coverage_decrease_max": 0.02,
+      "clearance_mae_m_increase_max": 0.025,
+      "false_clear_all_known_increase_max": 0.01,
+      "false_clear_given_occupied_increase_max": 0.02,
+      "false_block_given_clear_increase_max": 0.01,
+      "temporal_clearance_delta_mae_m_increase_max": 0.025,
+      "geometry_transition_agreement_decrease_max": 0.02,
+      "valid_to_unknown_rate_increase_max": 0.02
+    },
+    "aggregate_policy": "pooled, parent macro, session macro, worst parent and all 3x3 strata must be finite; any missing denominator fails closed",
+    "unknown_is_negative": false
+  },
+  "truth_reader_policy": {
+    "depth_min_m": 0.25, "depth_max_m": 6.0, "minimum_sensor_confidence": 1, "point_stride": 2,
+    "ground_height_min_m": 0.45, "ground_height_max_m": 2.2, "ground_histogram_bin_m": 0.04,
+    "ground_support_tolerance_m": 0.08, "minimum_ground_support_points": 80,
+    "minimum_ground_support_fraction": 0.02, "obstacle_height_min_m": 0.08,
+    "obstacle_height_max_m": 2.0, "minimum_forward_m": 0.2, "maximum_forward_m": 6.0,
+    "body_half_width_m": 0.32, "lateral_margin_m": 0.1, "clearance_quantile": 0.02,
+    "support_forward_quantile": 0.9, "minimum_band_support_points": 20,
+    "minimum_intrusion_points": 20, "horizons_m": [1.0, 1.5, 2.0],
+    "maximum_pose_bracketing_gap_seconds": 0.25
+  },
+  "stop_conditions": [
+    "activation receipt absent or any frozen binding drifts",
+    "device identity or any remote runtime/context hash drifts",
+    "any Development frame/input/output mapping, shape, dtype, finiteness or SHA check fails",
+    "reference model forward, training, tuning, checkpoint selection, D1 consumed outcome or R2 source is accessed",
+    "candidate, checkpoint, data, features, thresholds, postprocess, metric or denominator changes",
+    "performance is measured or claimed"
+  ],
+  "authority": {
+    "development_source_decode": true,
+    "development_truth": true,
+    "development_saved_context_output": true,
+    "baseline_and_frozen_head_quality": true,
+    "training_or_tuning": false,
+    "r2_access": false,
+    "performance": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  },
+  "terminal_after_evaluation": "PASS_OR_FAIL_STOPS_WITH_R2_STILL_SEALED"
+}
