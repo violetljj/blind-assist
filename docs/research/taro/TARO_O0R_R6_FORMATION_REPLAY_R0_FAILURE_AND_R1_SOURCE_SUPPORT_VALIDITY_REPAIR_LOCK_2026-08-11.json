@@ -1,0 +1,79 @@
+{
+  "schema": "blindassist.taro.o0r.r6_formation_replay_source_support_validity_repair_lock.v1",
+  "lock_id": "TARO_O0R_R6_FORMATION_REPLAY_R0_FAILURE_AND_R1_SOURCE_SUPPORT_VALIDITY_REPAIR_LOCK",
+  "date": "2026-08-11",
+  "status": "R0_FAILURE_PRESERVED_R1_REPAIR_FROZEN_TESTED",
+  "r0_failure": {
+    "output_root": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r0",
+    "completed_phase_a_bundle_count": 36,
+    "faro_reads": 0,
+    "failure_code": "SUPPORT_VALUE_INVALID",
+    "failure_message": "support height must be finite and positive",
+    "first_failing_physical_frame_id": "47332946:20780.622",
+    "failure_receipt": {
+      "path": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r0/failure.json",
+      "bytes": 305,
+      "sha256": "12E5683FDD02C2E03FB668F2015AA2154AFE6EEE9C2FA8FA339051AB87B015DD"
+    },
+    "manifest": {
+      "path": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r0/manifest.json",
+      "bytes": 7795,
+      "sha256": "88A970AF969A35FA2BDD834316E2C16E7517653CF4B8C9F951E749F5B122CCDE"
+    },
+    "scientific_interpretation": "NONE_EXECUTION_INVALID_BEFORE_FARO"
+  },
+  "root_cause": {
+    "layer": "SOURCE_ONLY_PROSPECTIVE_RUNTIME",
+    "observed_source_scale_evaluable": true,
+    "observed_direct_support_evaluable": false,
+    "observed_baseline_fit_evaluable_before_repair": true,
+    "observed_baseline_camera_height_m": -0.03321469039629134,
+    "bug": "BASELINE_PLANE_FIT_SUCCESS_DID_NOT_ENFORCE_THE_ALREADY_FROZEN_POSITIVE_PLAUSIBLE_CAMERA_HEIGHT_RANGE_BEFORE_QUERY_CONSTRUCTION",
+    "truth_or_outcome_involved": false
+  },
+  "repair": {
+    "rule": "AFTER_BASELINE_SUPPORT_FIT_REQUIRE_0_45_LE_CAMERA_HEIGHT_M_LE_2_20_ELSE_RETURN_R6_RUNTIME_BASELINE_HEIGHT_IMPLAUSIBLE_AS_NON_EVALUABLE",
+    "semantic_effect": "RETAIN_NINE_UNKNOWN_SOURCE_QUERY_SLOTS_WHEN_NEITHER_DIRECT_NOR_BASELINE_SUPPORT_IS_SOURCE_VALID",
+    "frame_drop": false,
+    "unknown_coerced_to_negative": false,
+    "selection_threshold_changed": false,
+    "faro_or_task_metric_read": false,
+    "prior_outcome_used_for_selection": false,
+    "cohort_or_denominator_changed": false
+  },
+  "runtime_before": {
+    "bytes": 37207,
+    "sha256": "FCDAEE3D5D343E70D1BAE87CFADF6D4B455D269BF280934F24D8A90AD5AA554D"
+  },
+  "runtime_after": {
+    "path": "scripts/research/taro_o0r_candidate_scale_runtime/prospective_factor_runtime.py",
+    "bytes": 37412,
+    "sha256": "C3F4925314F36801932B0A69C0C1F94DC6933577B0F3DEB1010C8AD24E2105D2"
+  },
+  "verification": {
+    "tests_path": "scripts/research/taro_o0r_candidate_scale_runtime/test_prospective_factor_runtime.py",
+    "tests_bytes": 7135,
+    "tests_sha256": "1AFAA4163BDF058CDEF38941BBF9156D27F950B42E9B80AA707591617C50F62A",
+    "focused_tests_passed": 12,
+    "known_failure_frame_replay": {
+      "physical_frame_id": "47332946:20780.622",
+      "query_frame_owner": "UNAVAILABLE",
+      "baseline_reason_codes": [
+        "R6_RUNTIME_BASELINE_HEIGHT_IMPLAUSIBLE"
+      ],
+      "query_slot_count": 9,
+      "all_final_states": "UNKNOWN"
+    },
+    "py_compile_passed": true,
+    "git_diff_check_passed": true
+  },
+  "r1_execution": {
+    "new_output_root": "artifacts.local/evidence/taro/o0r-r6-formation-replay-r1",
+    "r0_output_reuse": false,
+    "r0_output_overwrite": false,
+    "same_24_parent_450_frame_4050_slot_cohort": true,
+    "same_phase_firewall_and_statistics": true,
+    "unique_successor": "TARO_O0R_R6_FORMATION_REPLAY_R1_ONE_SHOT_EXECUTION_LOCK"
+  },
+  "claim_ceiling": "Implementation repair only; R0 has no scientific interpretation and R1 remains post-hoc non-promotable WILD_LAB formation replay."
+}

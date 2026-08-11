@@ -7,6 +7,7 @@ import copy
 import inspect
 import json
 import unittest
+from unittest import mock
 
 import numpy as np
 
@@ -115,6 +116,25 @@ class ProspectiveFactorRuntimeTest(unittest.TestCase):
         fixture["parent_id"] = "423306"
         with self.assertRaisesRegex(runtime.ProspectiveFactorRuntimeError, "cannot enter prospective"):
             runtime.build_prospective_factor_bundle(**fixture)
+
+    def test_implausible_baseline_height_is_retained_as_unavailable(self) -> None:
+        fitted = {
+            "normal_camera_xyz": np.asarray([0.0, -1.0, 0.0], dtype=np.float64),
+            "camera_height_m": -0.03,
+            "support_count": 100,
+            "sampled_valid_points": 1000,
+            "support_fraction": 0.1,
+            "slope_degrees": 0.0,
+            "median_residual_m": 0.01,
+        }
+        with mock.patch.object(adapter, "_fit_support_plane", return_value=fitted):
+            result = runtime._fit_depth_plane(
+                np.ones(adapter.HIGHRES_SHAPE_HW, dtype=np.float64),
+                np.asarray(self.fixture["intrinsics_highres_3x3"], dtype=np.float64),
+                np.asarray(self.fixture["gravity_up_camera_xyz"], dtype=np.float64),
+            )
+        self.assertFalse(result["evaluable"])
+        self.assertEqual(["R6_RUNTIME_BASELINE_HEIGHT_IMPLAUSIBLE"], result["reason_codes"])
 
 
 if __name__ == "__main__":

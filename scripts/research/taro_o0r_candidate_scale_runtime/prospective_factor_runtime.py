@@ -138,7 +138,8 @@ def _fit_depth_plane(depth_m: np.ndarray, matrix: np.ndarray, gravity: np.ndarra
     points, _ = _unproject_valid(depth_m, valid, matrix, adapter.SUPPORT_POINT_STRIDE)
     try:
         plane = adapter._fit_support_plane(points, gravity)
-    except adapter.AdapterError as error:
+        require(0.45 <= float(plane["camera_height_m"]) <= 2.2, "R6_RUNTIME_BASELINE_HEIGHT_IMPLAUSIBLE", "baseline support height leaves the frozen source-support range")
+    except (adapter.AdapterError, ProspectiveFactorRuntimeError) as error:
         return _failed_plane(error.code)
     return _plane_record(plane)
 
