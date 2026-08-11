@@ -1,0 +1,87 @@
+{
+  "schema": "blindassist.taro.o0r.r6_formation_replay_implementation_lock.v1",
+  "lock_id": "TARO_O0R_R6_FORMATION_REPLAY_IMPLEMENTATION_LOCK",
+  "date": "2026-08-11",
+  "status": "IMPLEMENTATION_FROZEN_TESTED_READY_FOR_ONE_SHOT",
+  "protocol_lock": {
+    "path": "docs/research/taro/TARO_O0R_R6_FORMATION_REPLAY_PROTOCOL_LOCK_2026-08-11.json",
+    "bytes": 6735,
+    "sha256": "AE27F6A6BCDE24C622B9C9657EA0C7789CEA791316E0C8C415B0BBD12ED76F04"
+  },
+  "implementation": [
+    {
+      "role": "FORMATION_SCORER",
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/formation_replay.py",
+      "bytes": 19191,
+      "sha256": "40DFA5529003A46EA733FFF56D8DAE08765BCC8BC7092051AEDF814D19DFD473"
+    },
+    {
+      "role": "FORMATION_IO",
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/formation_replay_io.py",
+      "bytes": 17388,
+      "sha256": "ABC0211471D294769CC2085CD451BD51BADACAB5E322861CD74FD7C8C9D6B5BA"
+    },
+    {
+      "role": "FORMATION_RUNNER",
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/run_formation_replay.py",
+      "bytes": 14823,
+      "sha256": "419BE2AE816209FFD4F3E862E77BB87F4C734FDA69D40357BBB66FD02BEFBA9D"
+    },
+    {
+      "role": "EXECUTION_LOCK_VALIDATOR",
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/validate_formation_replay_execution_lock.py",
+      "bytes": 8598,
+      "sha256": "C01901DA69CD56E3C704B09BAFB2DAA5B54B29BB5C73E7387396C718B4B29545"
+    },
+    {
+      "role": "FORMATION_TESTS",
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/test_formation_replay.py",
+      "bytes": 3952,
+      "sha256": "87AB2976FE681D33283270F818F1980A2BD1C99DC2A559044B56A018285CB683"
+    },
+    {
+      "role": "FROZEN_PROSPECTIVE_RUNTIME",
+      "path": "scripts/research/taro_o0r_candidate_scale_runtime/prospective_factor_runtime.py",
+      "bytes": 37207,
+      "sha256": "FCDAEE3D5D343E70D1BAE87CFADF6D4B455D269BF280934F24D8A90AD5AA554D"
+    }
+  ],
+  "behavioral_guarantees": {
+    "phase_a_has_no_faro_argument_or_read": true,
+    "all_450_prospective_bundles_are_persisted_before_phase_b": true,
+    "phase_a_completion_is_reloaded_before_faro": true,
+    "phase_b_replays_and_hash_checks_every_factor_block": true,
+    "same_source_defined_query_frame_is_used_for_prospective_baseline_and_faro": true,
+    "faro_support_unobservable_retains_nine_unknown_slots": true,
+    "fixed_24_parent_450_frame_4050_query_denominators": true,
+    "parent_first_aggregation": true,
+    "scientific_pass_fail_is_not_assigned": true,
+    "promotion_is_not_authorized": true,
+    "r6_untouched_parent_overlap_is_rejected_by_preflight": true
+  },
+  "verification": {
+    "unit_command": "E:/codex-tools/tools/venvs/blindassist-venv-export312/Scripts/python.exe -m unittest scripts.research.taro_o0r_candidate_scale_runtime.test_formation_replay -v",
+    "unit_tests_passed": 3,
+    "py_compile_passed": true,
+    "git_diff_check_passed": true,
+    "real_frame_canary": {
+      "physical_frame_id": "47332075:251475.434",
+      "bundle_seconds": 4.7891623973846436,
+      "score_seconds": 12.3629469871521,
+      "query_records": 9,
+      "selected_owner": "DIRECT_APPLE_SUPPORT",
+      "factor_block_replay_hash_check_passed": true
+    },
+    "complete_source_candidate_preflight": {
+      "parent_count": 24,
+      "frame_count": 450,
+      "all_source_receipts_valid": true,
+      "all_source_containers_bound": true,
+      "all_candidates_truth_blind_and_bound": true,
+      "faro_payload_reads": 0,
+      "r6_untouched_parent_overlap": []
+    }
+  },
+  "unique_successor": "TARO_O0R_R6_FORMATION_REPLAY_ONE_SHOT_EXECUTION_LOCK",
+  "claim_ceiling": "Implementation readiness for post-hoc non-promotable WILD_LAB formation replay only."
+}
