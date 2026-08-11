@@ -8,6 +8,8 @@
 | --- | --- | --- |
 | [PROJECT_STATE.md](PROJECT_STATE.md) | current | 新窗口 30 秒冷启动、任务分类与最小读取路径 |
 | [CODE_MAP.md](CODE_MAP.md) | current | 编码任务的模块职责、实现入口和默认跳过路径 |
+| [OPEN_SOURCE_PUBLIC_VALUE.md](OPEN_SOURCE_PUBLIC_VALUE.md) | current | 开源公共价值、受益对象、证据边界与维护资源使用计划 |
+| [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) | current | 根许可证适用范围、第三方模型与依赖许可边界 |
 | [NEW_COMPUTER_HANDOFF.md](NEW_COMPUTER_HANDOFF.md) | current | 新电脑与开发环境交接 |
 | [RELEASE_AND_VERIFICATION.md](RELEASE_AND_VERIFICATION.md) | current | 发布和验证总流程 |
 | [DEMO_GUIDE.md](DEMO_GUIDE.md) | current | 课程、阶段检查与答辩演示流程；演示前重新核验版本与设备状态 |

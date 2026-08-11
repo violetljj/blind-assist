@@ -4,6 +4,12 @@ BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本
 
 > BlindAssist 仍是辅助原型，不是安全认证设备，不能替代盲杖、导盲犬、人工判断或专业出行训练。
 
+## 为什么公开
+
+BlindAssist 公开可运行的 Android 端侧感知实现、可复核的测试与评测入口，以及对失败结果同样留痕的研究治理方法，目标是降低无障碍技术学习、复现和审查的门槛。项目优先保留本地推理、来源记录和证据边界，不把模型输出或实验结果包装成真实用户安全证明。
+
+项目欢迎围绕 Android 无障碍、端侧视觉、可复现评测、文档和安全审查的 issue 与 pull request。更完整的受益对象、公共产出、限制和开源维护计划见[开源公共价值说明](docs/OPEN_SOURCE_PUBLIC_VALUE.md)。
+
 ## 当前状态
 
 <!-- research-status-owner: docs/research/README.md -->
@@ -120,3 +126,9 @@ E:\codex-tools\tools\android-sdk\platform-tools\adb.exe install -r app\build\out
 - `docs/SANPO_CURRENT_STATUS.md`：SANPO 当前研究状态、硬门与下一步。
 - `docs/DOCUMENT_GOVERNANCE.md`：文档职责、真源与归档规则。
 - `docs/*_YYYY-MM-DD.*`：日期化快照，不覆盖当前协议。
+
+## 开源许可
+
+除文件或目录另有说明外，BlindAssist 贡献者原创的源代码与文档按 [GNU Affero General Public License v3.0 only](LICENSE)（`AGPL-3.0-only`）许可。分发修改版或通过网络向用户提供修改版时，需要遵守该许可证相应的源代码提供义务。
+
+仓库中的第三方依赖、预训练或导出模型、数据集、标签、媒体和硬件参考材料继续受各自来源条款约束，不因本项目许可证而被重新授权。当前已知边界和来源见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
