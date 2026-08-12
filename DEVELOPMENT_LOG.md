@@ -33,6 +33,16 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   `F31AA068937AB3533BC26011ACF406A363161FC92B10771658F714E168D094F9`，runner 完整复验通过；source/
   evidence roots 仍 absent。本步 GET/source body/DepthART/FARO/truth/training 均为 0；唯一 successor 是锁
   推送并确认 `HEAD == origin/master` 后消费固定 argv 一次。
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。用户在 D3R1 Phase-B r0
+  `INVALID_INCOMPLETE` 收口后授权另立恢复版本；已冻结 D3R2 source-coverage scope、protocol、
+  stdlib producer、独立 validator 与 14 项 synthetic tests。D3R2 保持原 exact-32 顺序和 exact-9,600
+  stems，未来 census 仍为 exact-64 全新 bodies / `5,580,879,686 bytes`，但只解析 ZIP central
+  directory/member names：member payload read、`testzip`/CRC、pixel decode、truth/support 与 selection
+  全为 false。官方 RAW README 已 SHA 绑定其“同步 60FPS family 不保证每 timestamp 全资产存在”事实；
+  推荐的 fixed-exact-300 + `SOURCE_UNAVAILABLE_UNKNOWN` 仍只是未激活候选，coverage evaluability gate
+  等完整 census 后另行登记。当前正式 D3R2 root 保持 absent，没有 HEAD/GET/Range、旧 r0 body read/hash
+  或 archive access；唯一 successor 为
+  `EXPLICIT_D3R2_PHASE_B_EXACT64_COVERAGE_ONLY_CENSUS_ACTIVATION`。
 
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。TARO O1R R11 source download Attempt 01 在正式
   root/GET 前的无副作用入口检查中停止：锁冻结 direct script，但绑定 Python 导入时报
