@@ -122,6 +122,28 @@ class Top8SelectionTests(unittest.TestCase):
         with self.assertRaises(runner.FreshTop8SelectionError):
             runner.validate_parent_scores(mutated)
 
+    def test_repeating_fraction_survives_canonical_seal(self) -> None:
+        scores = []
+        for parent_id, video_id in runner.EXPECTED_PARENT_IDENTITIES:
+            queries = [feature(True)]
+            for _ in range(8):
+                query = feature(True)
+                query["far_valid_anchor_count"] = 0
+                queries.append(query)
+            source = {
+                "parent_id": parent_id,
+                "video_id": video_id,
+                "timestamp_token": "000000",
+                "physical_frame_id": f"{video_id}:000000",
+                "query_features": queries,
+                "content_sha256": adapter.canonical_sha256([parent_id, video_id]),
+            }
+            score = runner.score_parent([source], runner.FROZEN_RULE)
+            self.assertEqual(score["eligible_fraction_of_available"], round(1 / 9, 12))
+            scores.append(score)
+        sealed_scores = runner._seal({"scores": scores})["scores"]
+        self.assertEqual(len(runner.rank_parent_scores(sealed_scores)), runner.PARENT_COUNT)
+
     def test_public_api_has_no_result_side_parameter(self) -> None:
         runner.assert_public_api_source_only()
         self.assertFalse(runner.EXPECTED_AUTHORITY["faro_read"])

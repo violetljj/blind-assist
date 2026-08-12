@@ -280,6 +280,12 @@ def _score_tie(parent_id: str, video_id: str) -> str:
     return adapter.canonical_sha256([parent_id, video_id])
 
 
+def _canonical_fraction(numerator: int, denominator: int) -> float:
+    if denominator == 0:
+        return 0.0
+    return round(float(numerator / denominator), adapter.FLOAT_DECIMALS)
+
+
 def score_parent(
     source_frame_records: Sequence[Mapping[str, Any]],
     rule: Mapping[str, Any],
@@ -331,7 +337,7 @@ def score_parent(
         "query_count": len(rows) * 9,
         "available_query_count": int(available),
         "eligible_query_count": int(eligible),
-        "eligible_fraction_of_available": float(eligible / available) if available else 0.0,
+        "eligible_fraction_of_available": _canonical_fraction(eligible, available),
         "source_frame_hash_sequence_sha256": adapter.canonical_sha256(source_hashes),
         "tie_break_sha256": _score_tie(parent_id, video_id),
         "faro_reads": 0,
@@ -373,10 +379,9 @@ def rank_parent_scores(parent_scores: Sequence[Mapping[str, Any]]) -> list[dict[
     identities = [(str(row.get("parent_id")), str(row.get("video_id"))) for row in scores]
     require(len(set(identities)) == PARENT_COUNT, "R10_SELECTION_PARENT_DUPLICATE", "R10 parent score identities are not unique")
     for row, identity in zip(scores, identities, strict=True):
-        expected_fraction = (
-            float(row["eligible_query_count"] / row["available_query_count"])
-            if row.get("available_query_count")
-            else 0.0
+        expected_fraction = _canonical_fraction(
+            int(row["eligible_query_count"]),
+            int(row["available_query_count"]),
         )
         require(
             set(row) == _SCORE_FIELDS
