@@ -27,6 +27,7 @@
 | [HOST_RESEARCH_COMPUTE.md](HOST_RESEARCH_COMPUTE.md) | current | 本机电脑端算法开发、CPU/GPU 并发、内存与长任务调度；不适用于 Android/边缘端 |
 | [RESEARCH_PROTOCOL_TEMPLATE.md](RESEARCH_PROTOCOL_TEMPLATE.md) | current | LITE/STANDARD/STRICT 分级协议模板；机器合同默认留给高风险或确认性阶段 |
 | [DEVICE_REGRESSION.md](DEVICE_REGRESSION.md) | current | 真机功能回归 |
+| [ANDROID_RESEARCH_PREVIEW_ADMISSION.md](ANDROID_RESEARCH_PREVIEW_ADMISSION.md) | current | DA2/A2-392 候选进入隔离 Android research-preview flavor 的版本化机器准入合同；不授予默认 App 或产品权限 |
 | [AI_REVIEW_GOVERNANCE.md](AI_REVIEW_GOVERNANCE.md) | current | 端到端无人化：自主采集、标注、复核、裁决、准入、验收与发布证据总规则 |
 
 ## 产品、硬件与评测基线
