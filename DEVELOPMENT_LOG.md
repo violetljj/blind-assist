@@ -61,6 +61,21 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   receipt 144 行 attempt→final、request identity、三个 premanifest 文件与 manifest 的 size/SHA 已独立重算
   一致。正式状态 `TARO_O1R_R11_FRESH_POOL_ASSET_HEADERS_AVAILABLE_MEDIA_UNOPENED`，scientific outcome 仍
   `NOT_RUN`。唯一 successor 是以真实字节数冻结 bounded source download implementation；不得直接发送 GET。
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。完成 Assistive Geometry R2 独立跨传感器
+  factor-level Confirmation executor implementation lock，科学状态保持 `NOT_RUN`。实现严格 opaque
+  archive byte/SHA/direct-child binding 与受预算 ZIP preflight、metadata-only 12 calibration + 12 score
+  roster、只接收 RGB+K 的 model-only extractor、raw prediction 全量 seal/reload 后才开放 calibration source、
+  conditioned factor 全量 seal/reload 后才开放 score truth 的 phase firewall，以及 source geometry、27-gate
+  factor-only metrics、exclusive evidence writer 和独立重算 validator。相机/IMU 整数纳秒只转 camera seconds，
+  仅 pose 查询应用 mocap scale/anchor/offset，IMU 不应用该变换；support uncertainty 对 signed
+  point-to-frozen-support-plane residual 米制误差评分。独立 validator 不导入 producer/source adapter/recipe/
+  metrics/reducer，并对 key/type/float64/UNKNOWN/terminal/manifest mutation fail closed。45/45 synthetic/metadata
+  focused tests、ruff、compile、implementation-lock validator 与 diff check 通过。真实 ETH3D archive bytes/member、
+  RGB/depth/IMU/trajectory/calibration payload、checkpoint、model inference、evidence root 和 Confirmation run
+  均为 0；实现锁不构成 accuracy PASS/FAIL。唯一 successor 是另行授权、另行 hash-bound 的
+  `BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_ONE_SHOT_EXECUTION_LOCK`；本步未创建
+  或授权它。执行前仍须冻结 exact camera-IMU calibration member/encoding/keys 和经官方或独立验证的 IMU
+  column/axis/specific-force sign convention，任何不匹配一律 fail closed。
 
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。记录 TARO O1R R11 exact 48-parent 数据使用授权，
   并完成 zero-body HEAD implementation。授权 receipt 精确绑定 Training 48 parents、`upsampling.zip /

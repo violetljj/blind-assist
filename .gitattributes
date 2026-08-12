@@ -80,6 +80,12 @@
 /docs/research/assistive-geometry-data-upgrade/** text eol=lf
 /scripts/research/assistive_geometry_data_upgrade/** text eol=lf
 
+# AG R2 cross-sensor factor-confirmation locks bind raw implementation bytes.
+/docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_* text eol=lf
+/scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/** text eol=lf whitespace=-blank-at-eof
+/scripts/research/assistive_geometry/tests_ag_r2_cross_sensor_confirmation/** text eol=lf whitespace=-blank-at-eof
+/scripts/research/assistive_geometry/run_ag_r2_cross_sensor_factor_accuracy_confirmation.py text eol=lf
+
 # Immutable historical-reference exceptions are SHA256-bound and must survive clean checkout byte-for-byte.
 /configs/ustrf_route_target_evidence_closure_r1_camera_source_prescreen_0327.json text eol=lf
 /configs/ustrf_route_target_evidence_closure_r1_camera_source_prescreen_transport_safety_amendment.json text eol=lf

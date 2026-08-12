@@ -1,6 +1,6 @@
 # BlindAssist Assistive Geometry
 
-状态：`current / B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / FACTORTENSOR_ADAPTER_SYNTHETIC_CANARY_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_F2_FROZEN / CONFIRMATION_OUTCOMES_UNOPENED / DEFAULT_APP_UNCHANGED`
+状态：`current / B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / FACTORTENSOR_ADAPTER_SYNTHETIC_CANARY_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK_PASS_SYNTHETIC_ONLY / SCIENTIFIC_NOT_RUN / CONFIRMATION_OUTCOMES_UNOPENED / DEFAULT_APP_UNCHANGED`
 
 本路线把 DepthART-S 从研究终点降为可替换的轻量 encoder/initialization 候选，核心问题改为：
 
@@ -77,6 +77,7 @@
 - [Geometry R2 SuperTeacher-to-AG final V2 landing result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_SUPERTEACHER_TO_AG_LANDING_RESULT_2026-08-12.json)
 - [Geometry R2 cross-sensor factor confirmation data identity](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_DATA_IDENTITY_2026-08-12.json)
 - [Geometry R2 cross-sensor factor confirmation F2 lock](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_LOCK_2026-08-12.json)
+- [Geometry R2 cross-sensor factor confirmation executor implementation lock](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK_2026-08-12.json)
 - [Geometry R2 F1 FactorTensorAdapter gap audit](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_GAP_AUDIT_2026-08-10.md)
 - [Geometry R2 F1 FactorTensorAdapter machine audit](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_GAP_AUDIT_2026-08-10.json)
 - [Geometry R2 F1 FactorTensorAdapter protocol lock](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_PROTOCOL_LOCK_2026-08-10.md)
@@ -120,6 +121,8 @@
 
 ## 唯一 successor
 
+当前已完成：
+
 `BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK`
 
 跨传感器 F2 已冻结到 ETH3D SLAM 自定义 global-shutter active-stereo RGB-D/IMU rig：
@@ -127,11 +130,22 @@
 RGB-D/IMU archive 加一个 camera-IMU calibration archive 共 `721,072,411 bytes`，已按官方 URL、
 byte count 与 SHA-256 绑定。每 parent 由 metadata-only hash rank 预定 `12` 个 session-geometry
 calibration identity 和后续 `12` 个 score identity，二者不得重叠。当前只完成协议、数据身份、
-factor ownership、absolute accuracy/coverage/UNKNOWN/uncertainty 门和失败语义；ZIP member、RGB、depth、
-IMU、trajectory、calibration payload、模型输出及 confirmation metric 全部未打开。唯一后续只允许实现并
-用 synthetic/metadata fixture 验证 source adapter、roster freezer、prediction-before-truth firewall、
-factor-only scorer 与独立 validator；仍不得执行 Confirmation、运行 reducer、在 walking_xyz/sitting_rpy
-上调参，或以任意 baseline 胜负和 task state 作为门。
+factor ownership、absolute accuracy/coverage/UNKNOWN/uncertainty 门和失败语义。实现锁新增严格 archive
+binding/preflight、12+12 roster freezer、只接收 RGB+K 的 model-only predictor、prediction-before-truth
+phase firewall、source geometry、27-gate factor-only scorer、exclusive evidence writer 与不导入 producer/source
+adapter/recipe/metrics/reducer 的独立 validator。`45/45` synthetic/metadata focused tests、ruff、compile 与
+binding validator 均通过；支持面 uncertainty 明确对 signed point-to-frozen-support-plane residual（米）
+评分，UNKNOWN 仍为 NaN 且永不转 negative。
+
+ZIP member、RGB、depth、IMU、trajectory、calibration payload、checkpoint、模型输出及 Confirmation metric
+仍全部未打开，真实 archive byte read/member enumeration、model inference、evidence root 与 Confirmation run
+均为 `0`。当前科学状态只能是 `SCIENTIFIC_NOT_RUN`，不是 factor accuracy PASS/FAIL。
+
+唯一 successor 是另行冻结并另行授权的
+`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_ONE_SHOT_EXECUTION_LOCK`；本实现锁
+没有创建它，也不授予其 execution authority。该 future lock 还必须精确绑定官方 camera-IMU calibration
+member/encoding/keys，以及经官方或独立验证的 IMU column/axis/specific-force sign convention；任何布局或
+约定不匹配都必须 fail closed。继续禁止 reducer、walking_xyz/sitting_rpy 调参、baseline 胜负门与 task state。
 
 ## 2026-08-12 SuperTeacher → AG 真实闭环
 

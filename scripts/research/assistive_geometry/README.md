@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_F2_FROZEN / CONFIRMATION_OUTCOMES_UNOPENED`
+状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK_PASS_SYNTHETIC_ONLY / SCIENTIFIC_NOT_RUN / CONFIRMATION_OUTCOMES_UNOPENED`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -11,6 +11,10 @@ session-height scale anchor，经 `FactorTensorAdapterV2` 在 checkpoint-unseen 
 12-frame seam。最终为 12/12 valid、12/12 deterministic、11/11 gates、`CLEAR=18 / UNKNOWN=90`；
 推理 `targets_loaded=false`，UNKNOWN 未转 negative，也没有任意 baseline 胜负门。Attempt17 与无锚
 walking_xyz 负结果保持冻结；当前只支持 research-pipeline mechanics，不是跨传感器或移动部署结论。
+
+同日完成的 `ag_r2_cross_sensor_confirmation/` 只冻结跨传感器 factor-level Confirmation executor
+implementation：45 个 synthetic/metadata tests 已通过，真实 ETH3D archive、checkpoint、source truth 和
+Confirmation 均未运行。future one-shot execution lock 仍需独立授权和 exact calibration/IMU binding。
 
 ## 稳定 Interface
 
@@ -100,6 +104,13 @@ walking_xyz 负结果保持冻结；当前只支持 research-pipeline mechanics�
   每个 frozen case，并只写未存在的版本化 synthetic evidence root。
 - `factor_tensor_adapter_v2.py`：把 global metric-scale sigma 与 local depth-shape sigma 分开传递，
   保留旧 adapter 的 fail-closed reducer ABI，不让任一 uncertainty 分量被另一分量覆盖。
+- `ag_r2_cross_sensor_confirmation/`：冻结 ETH3D opaque binding/preflight、12+12 roster、RGB+K
+  model-only prediction、两次 seal/reload firewall、session source geometry、27-gate factor-only metrics、
+  exclusive evidence 与独立重算 validator；包导入不访问 archive/checkpoint，也不创建 evidence root。
+- `run_ag_r2_cross_sensor_factor_accuracy_confirmation.py`：只接受另行冻结的 exact one-shot execution
+  lock；当前 implementation lock 的全部 execution authority 为 false，不能据此启动真实执行。
+- `ag_r2_cross_sensor_confirmation/validate_implementation_lock.py`：只读 tracked control files，复核
+  predecessor/code/test byte+SHA、45-test receipt、零 payload access、claim ceiling 与不可自授权 successor。
 - `train_ag_r2_multisource_metric_depth_student.py` 与 `train_ag_r2_f1_attempt18_consumed_cross_domain_adaptation.py`：
   只从分级 factor supervision 学 metric depth 与 support/obstacle/boundary/validity，不训练 final task state。
 - `calibrate_ag_r2_session_metric_scale_anchor.py`：只在已消费 factor depth 上从六个预声明物理候选选择
