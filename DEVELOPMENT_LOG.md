@@ -9,8 +9,10 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   新 R11 runner 复用 no-redirect HEAD transport，但使用独立 schema/root/terminal；逐 attempt 校验 retry index、
   success 后不得重试、final row 必须等于 last attempt、Content-Length 总和与 12 GiB ceiling，并在 exclusive
   root 创建时消费 one-shot。5/5 focused synthetic/mutation tests、protocol validator、compile 与 diff check
-  通过；本步 HEAD/GET/body/model/FARO/training 均为 0，R11 scientific status 仍为 `NOT_RUN`。唯一 successor
-  是提交并验证 exact 144-request HEAD execution lock 后消费一次 zero-body HEAD。
+  通过；独立审计发现 authorization request/authority 字段可重封篡改后，已补 exact text 校验与对应
+  mutation tests，最终 6/6 PASS。implementation commit `aebab93d` 与 7 份文件随后被 one-shot lock 精确
+  绑定；本步 HEAD/GET/body/model/FARO/training 均为 0，R11 scientific status 仍为 `NOT_RUN`。唯一
+  successor 是消费一次 exact 144-request zero-body HEAD。
 
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。将 Codex 开源维护用途从申请叙事收口为
   可执行治理：新增 maintainer automation current contract，明确 issue/PR/dependency/release/provenance/
