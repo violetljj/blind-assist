@@ -1,134 +1,115 @@
-# BlindAssist Android 原型
+# BlindAssist
 
-BlindAssist 是使用 Kotlin、Jetpack Compose、CameraX 和 TFLite 构建的本地助盲避障原型。它通过手机摄像头识别前方目标，结合规则层生成方向、相对距离、语音和震动提醒。
+[![Android CI](https://github.com/violetljj/blind-assist/actions/workflows/android.yml/badge.svg?branch=master)](https://github.com/violetljj/blind-assist/actions/workflows/android.yml)
+[![License: AGPL-3.0](https://img.shields.io/github/license/violetljj/blind-assist)](LICENSE)
+![Android API 35](https://img.shields.io/badge/Android-API%2035-3DDC84?logo=android&logoColor=white)
 
-> BlindAssist 仍是辅助原型，不是安全认证设备，不能替代盲杖、导盲犬、人工判断或专业出行训练。
+**On-device assistive perception for Android, with reproducible evaluation and explicit evidence boundaries.**
 
-## 为什么公开
+BlindAssist 是一个使用 Kotlin、Jetpack Compose、CameraX 和 LiteRT/TFLite 构建的本地助盲感知原型。它通过手机摄像头识别前方目标，并用规则层生成方向、相对距离、语音和震动提醒。
 
-BlindAssist 公开可运行的 Android 端侧感知实现、可复核的测试与评测入口，以及对失败结果同样留痕的研究治理方法，目标是降低无障碍技术学习、复现和审查的门槛。项目优先保留本地推理、来源记录和证据边界，不把模型输出或实验结果包装成真实用户安全证明。
+> **Safety boundary / 安全边界：** BlindAssist is a research and accessibility prototype, not a certified safety device. It cannot replace a white cane, guide dog, human judgment, mobility training, or professional advice. BlindAssist 是研究与无障碍原型，不替代盲杖、导盲犬、人工判断或专业出行训练。
 
-项目欢迎围绕 Android 无障碍、端侧视觉、可复现评测、文档和安全审查的 issue 与 pull request。更完整的受益对象、公共产出、限制和开源维护计划见[开源公共价值说明](docs/OPEN_SOURCE_PUBLIC_VALUE.md)。
+<p align="center">
+  <img src="docs/research/assets/group-meeting/app-home-2026-07-22.png" width="360" alt="BlindAssist Android home screen showing camera assistance, glasses simulation, model version, and a safety boundary notice">
+</p>
+
+<p align="center"><em>Real prototype screen / 真实原型界面（v10.9.0；非安全认证证明）</em></p>
+
+## Why this project / 项目公共价值
+
+BlindAssist 公开可运行的 Android 端侧感知实现、可复核的构建与评测入口，以及对失败和不可评估结果同样留痕的研究治理方法。项目希望降低以下工作的学习和审查门槛：
+
+- privacy-preserving, on-device assistive perception；保护隐私的端侧辅助感知；
+- accessible Android interaction, speech and haptic feedback；Android 无障碍交互、语音与震动反馈；
+- reproducible model and device evaluation；可复现的模型与设备评测；
+- evidence-bounded research that preserves `UNKNOWN` and negative results；保留 `UNKNOWN`、负结果和证据边界的研究流程。
+
+完整说明见[开源公共价值](docs/OPEN_SOURCE_PUBLIC_VALUE.md)。
+
+## What is included / 项目能力
+
+- CameraX camera input and optional local glasses-stream adapter。
+- On-device object detection with a bundled YOLO11n LiteRT/TFLite model。
+- Deterministic risk analysis, stabilization, event tracking and feedback policy。
+- Compose UI, TalkBack-oriented semantics, speech and vibration adapters。
+- Reproducible JVM, Android, repository-governance and research-contract checks。
+- Isolated benchmark, canary and experimental applications that do not silently replace the default app path。
+
+## Architecture / 架构
+
+```mermaid
+flowchart LR
+    A["CameraX or local glasses stream"] --> B["feature:assist runtime coordination"]
+    M["Bundled on-device model"] --> C["core:vision detection"]
+    B --> C
+    C --> D["core:assist risk and event policy"]
+    D --> E["core:device speech and haptics"]
+    D --> F["core:ui and Compose state"]
+    E --> G["Assistive feedback"]
+    F --> G
+```
+
+模块职责和稳定入口见[代码地图](docs/CODE_MAP.md)。
 
 ## 当前状态
 
 <!-- research-status-owner: docs/research/README.md -->
 
-- 当前版本：`v10.9.0`，`versionCode=37`。
-- 正式 App 默认模型：`app/src/main/assets/yolo11n_fp16_320.tflite`。
-- 算法、数据、系统与平台研究的动态状态、唯一 successor、禁止动作和证据权限只由
-  [项目研究总入口](docs/research/README.md) 及其分类/路线 current 真源维护；本页不复制研究终态。
-- 任何研究、benchmark、导出或设备结果都不自动改变正式 App、默认模型、产品权限或安全结论。
-- 可并存安装的实验构建与正式 App 隔离；它们只用于研究或诊断，不获得默认产品权限。
-- 正式 App 保持本地推理；眼镜外界硬件入口已能通过局域网连接 AtomS3R-M12 +
-  ToF4M，读取设备/距离状态；实时 MJPEG 采用 latest-only 语义进入现有识别与提醒链路。
-  ToF 仅作逐帧绑定元数据，标定融合仍暂缓。
+- 当前产品版本：`v10.9.0`（`versionCode=37`）。
+- 默认模型：`app/src/main/assets/yolo11n_fp16_320.tflite`。
+- 正式 App 保持本地推理；研究、benchmark、导出或设备结果不会自动改变默认 App、模型、产品权限或安全结论。
+- 动态研究状态、唯一 successor、禁止动作和证据权限只由[研究总入口](docs/research/README.md)及其 current 真源维护。
+- 可并存安装的实验构建与正式 App 隔离，仅用于研究或诊断。
 
-发布变化见 [CHANGELOG.md](CHANGELOG.md)，近期工程过程见
-[DEVELOPMENT_LOG.md](DEVELOPMENT_LOG.md)。研究状态从[项目研究总入口](docs/research/README.md)
-进入；日期化审计和实验报告只代表当时快照，不作为当前状态真源。
+版本变化见 [CHANGELOG.md](CHANGELOG.md)。
 
-研发默认端到端无人化：来源发现/获取、采集编排、标注、复核、裁决、隐私与质量检查、数据准入、实验验收和发布证据复核均由 GPT/Codex、多模态模型或自动 Agent 完成，不建立人工待办；统一 receipt、仲裁和失败关闭规则见 [GPT / Codex 端到端自主工作流治理](docs/AI_REVIEW_GOVERNANCE.md)。
+## Quick start / 快速开始
 
-## 仓库导航
-
-| 路径 | 职责 |
-| --- | --- |
-| `app/` | Android 应用入口、依赖装配和正式资产 |
-| `feature/assist/` | CameraX、检测、反馈与 UI 状态协调 |
-| `core/assist/` | 风险分析、稳定、事件和提醒策略 |
-| `core/vision/` | TFLite 检测、图像处理与视觉候选能力 |
-| `core/device/` | 语音、震动和设备 adapter |
-| `core/ui/` | Compose UI 模型与可视化 |
-| `apps/` | 所有非默认 Android benchmark、canary、demo 和候选 App；见 [Apps 索引](apps/README.md) |
-| `scripts/` | 构建、验证、数据集和研究脚本；见 [脚本索引](scripts/README.md) |
-| `docs/` | 当前协议、操作指南和历史快照；见 [文档索引](docs/README.md) |
-| `artifacts.local/` | 本机下载、数据集、benchmark、训练和临时产物；不提交 Git |
-
-编码任务的最短职责入口见 [代码地图](docs/CODE_MAP.md)。
-
-## 环境要求
-
-- JDK 17
-- Android SDK Platform 35、Build Tools 和 Platform Tools
-- Python 仅用于模型检查、数据集及研究任务
-
-本机通用工具位于 `E:\codex-tools`。`.jdk`、`.android-sdk`、`.android-home` 和 `.kotlin-home` 是指向 canonical toolchain/state 的兼容 junction；`.gradle-local` 是无 tracked 调用方的遗留本地缓存而非 junction，新命令统一使用 `E:\codex-tools\projects\blindassist\state\gradle`。研究 Python 统一通过 `E:\codex-tools\bin\blindassist-python.cmd` 使用 `E:\codex-tools\tools\venvs\blindassist-venv-export312`（Python 3.11.9）。仓库内 `.python311` 仅作遗留兼容，旧 `.venv-export312` 已不存在。新电脑安装见 [新电脑交接说明](docs/NEW_COMPUTER_HANDOFF.md)。
-
-## 构建与验证
-
-Windows/Codex 本地构建只使用 `scripts/run_android_gradle.ps1`。该入口自行锁定仓库根目录和项目声明的 JDK、SDK、Gradle wrapper/state；不要在调用前手工拼接环境变量，也不要直接运行 `gradlew.bat`。
-
-在 `E:\linnan\linnan` 执行：
+本地标准入口当前面向 Windows 11 / PowerShell 7，要求 JDK 17 与 Android SDK Platform 35。Linux 由 GitHub Actions 持续验证；其他开发环境见[新电脑与工具链说明](docs/NEW_COMPUTER_HANDOFF.md)。
 
 ```powershell
+git clone https://github.com/violetljj/blind-assist.git
+cd blind-assist
 pwsh -NoProfile -File scripts/run_android_gradle.ps1 -PreflightOnly
 pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:testDebugUnitTest :app:lintDebug :app:assembleDebug
-pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:assembleUstrfExperiment
 ```
 
-完整无设备验证矩阵：
+输出 APK：`app/build/outputs/apk/debug/app-debug.apk`。发布与校验流程见[发布与验证](docs/RELEASE_AND_VERIFICATION.md)。
+
+无需 Android 设备的仓库与研究合同检查：
 
 ```powershell
-E:\codex-tools\bin\blindassist-python.cmd scripts\inspect_tflite.py
-E:\codex-tools\bin\blindassist-python.cmd scripts\run_research_contract_tests.py
-pwsh -NoProfile -File scripts/run_android_gradle.ps1 :core:assist:test :core:ustrf:test :core:vision:testDebugUnitTest :core:device:testDebugUnitTest :core:ui:testDebugUnitTest :feature:assist:testDebugUnitTest :app:testDebugUnitTest
-pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:lintDebug :core:vision:lintDebug :core:device:lintDebug :core:ui:lintDebug :feature:assist:lintDebug
-pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:assembleDebug :app:assembleDebugAndroidTest :device-benchmark:assembleDebug
+pwsh -NoProfile -File scripts/check_repo_hygiene.ps1 -IncludeStructure
+pwsh -NoProfile -File scripts/check_docs_index.ps1
+python scripts/run_research_contract_tests.py
 ```
 
-设备测试必须显式指定 module：
+## Research governance / 研究治理
 
-- 功能测试：`:app:connectedDebugAndroidTest`
-- benchmark：`:device-benchmark:connectedDebugAndroidTest`
-- 真机回归流程：[DEVICE_REGRESSION.md](docs/DEVICE_REGRESSION.md)
+研究治理标识为 `THESIS_FIRST_RESEARCH_GOVERNANCE_R4`。普通新研究默认进入 `THESIS_DEVELOPMENT`；只有显式的产品晋升工作才进入 `PRODUCTION_PROMOTION`。历史终态、失败和已消费证据不可通过后续包装改写。
 
-## 模型资产
+- [研究治理总则](docs/RESEARCH_GOVERNANCE.md)
+- [研究路线导航](docs/research/README.md)
+- [双环 current 入口](docs/research/dual-loop/README.md)
+- [第三方材料与模型边界](THIRD_PARTY_NOTICES.md)
 
-正式资产：
+Synthetic、pseudo-labeled 或 model-reviewed evidence 不是设备测量、用户结果、同意记录或客观 ground truth。`UNKNOWN` 不得被当作 negative，原型表现不得表述为部署或安全证明。
 
-```text
-app/src/main/assets/yolo11n_fp16_320.tflite
-app/src/main/assets/coco_labels.txt
-```
+## Contributing / 参与贡献
 
-Android 端消费 raw YOLO 输出并自行执行 NMS。重新导出和静态检查入口见 [scripts/README.md](scripts/README.md)；本地模型源文件和导出结果应放入 `artifacts.local/models/`，不得散落在仓库根目录。
+欢迎提交 bug、无障碍改进、文档、测试、可复现评测和边界清晰的研究工具。开始前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md) 与 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)；安全或隐私问题请按 [SECURITY.md](SECURITY.md) 私下报告。
 
-## APK 与安装
+项目不会要求贡献者上传原始相机画面、私人数据、设备凭据、受限数据集或机器本地产物。适合参与的公开任务见 [Issues](https://github.com/violetljj/blind-assist/issues)。
 
-构建输出：
+## Documentation / 文档
 
-```text
-app/build/outputs/apk/debug/app-debug.apk
-app/build/outputs/apk/ustrfExperiment/app-ustrfExperiment.apk
-app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
-apps/benchmarks/device-benchmark/build/outputs/apk/debug/device-benchmark-debug.apk
-```
+- [文档索引](docs/README.md)
+- [构建与代码导航](docs/CODE_MAP.md)
+- [设备回归](docs/DEVICE_REGRESSION.md)
+- [本地产物边界](docs/LOCAL_ARTIFACTS.md)
+- [开放源码公共价值](docs/OPEN_SOURCE_PUBLIC_VALUE.md)
 
-连接已开启 USB 调试的 Android 手机后：
+## License / 许可证
 
-```powershell
-E:\codex-tools\tools\android-sdk\platform-tools\adb.exe devices
-E:\codex-tools\tools\android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk
-E:\codex-tools\tools\android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\ustrfExperiment\app-ustrfExperiment.apk
-```
-
-实验版包名为 `com.linnan.blindassist.ustrf.experimental`，可与正式包并存；应用名和页顶常驻条幅会明确标出 USTRF 实验边界。
-
-正式归档、校验和与 Git 收据规则见 [APK 归档策略](docs/APK_ARCHIVE.md) 和 [发布与验证](docs/RELEASE_AND_VERIFICATION.md)。原始 APK 保留在经校验的外部归档，不再作为 Git 二进制提交。
-
-## 文档职责
-
-- `README.md`：当前产品、构建方式和导航。
-- `CHANGELOG.md`：已发布变化。
-- `DEVELOPMENT_LOG.md`：最近 2–4 周的工程变化与验证索引；更早原文按月归档到 `docs/history/development-log/`。
-- `idea.md`：尚未决定的产品与研究方向；不是实验流水或当前状态真源。
-- `docs/SANPO_CURRENT_STATUS.md`：SANPO 当前研究状态、硬门与下一步。
-- `docs/DOCUMENT_GOVERNANCE.md`：文档职责、真源与归档规则。
-- `docs/*_YYYY-MM-DD.*`：日期化快照，不覆盖当前协议。
-
-## 开源许可
-
-除文件或目录另有说明外，BlindAssist 贡献者原创的源代码与文档按 [GNU Affero General Public License v3.0 only](LICENSE)（`AGPL-3.0-only`）许可。分发修改版或通过网络向用户提供修改版时，需要遵守该许可证相应的源代码提供义务。
-
-仓库中的第三方依赖、预训练或导出模型、数据集、标签、媒体和硬件参考材料继续受各自来源条款约束，不因本项目许可证而被重新授权。当前已知边界和来源见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+除文件或目录另有说明外，BlindAssist 贡献者原创的源代码与文档按 [GNU Affero General Public License v3.0 only](LICENSE)（`AGPL-3.0-only`）许可。第三方依赖、模型、数据、标签、媒体和硬件材料继续受各自来源条款约束，详见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。

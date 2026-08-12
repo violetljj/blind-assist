@@ -1,0 +1,55 @@
+name: Improvement proposal
+description: Propose an accessibility, engineering, documentation or research-tooling improvement.
+title: "[Proposal]: "
+labels:
+  - enhancement
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Proposal area
+      options:
+        - Accessibility or user experience
+        - Reliability or privacy
+        - Build, CI or contributor experience
+        - Documentation
+        - Reproducible evaluation
+        - Evidence-bounded research tooling
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Public problem or maintainer need
+      description: Who benefits, what is difficult today, and what evidence supports the need?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Keep product work distinct from experimental or research-only work.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: textarea
+    id: validation
+    attributes:
+      label: How could it be validated?
+      description: Name tests, accessibility checks, metrics, evidence limits and failure conditions.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I searched existing issues, current documentation and the project map.
+          required: true
+        - label: This proposal does not rely on private data or unlicensed payloads.
+          required: true
+        - label: I am not presenting a research idea or prototype as established user or safety evidence.
+          required: true

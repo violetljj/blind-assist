@@ -1,12 +1,14 @@
+import java.nio.file.Path
 import org.gradle.api.tasks.Sync
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 val qairtRoot = providers.gradleProperty("qairtRoot")
     .orElse(providers.environmentVariable("QAIRT_ROOT"))
     .orElse("E:/codex-tools/qairt/2.47.0.260601")
-val localQairtRuntimeAvailable = file(
-    "${qairtRoot.get()}/lib/aarch64-android/libQnnHtp.so",
-).isFile
+val localQairtRuntimeAvailable = Path.of(qairtRoot.get())
+    .resolve("lib/aarch64-android/libQnnHtp.so")
+    .toFile()
+    .isFile
 val dav2CachedDlc = providers.gradleProperty("dav2CachedDlcPath")
     .orElse(
         rootProject.file(

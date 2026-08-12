@@ -42,6 +42,9 @@
 
 ## SANPO 当前协议与门禁
 
+全项目研究治理默认采用 R4（`THESIS_FIRST_RESEARCH_GOVERNANCE_R4`）：一般新工作进入
+`THESIS_DEVELOPMENT`，只有显式产品晋升才进入 `PRODUCTION_PROMOTION`；历史终态保持不可变。
+
 SANPO 的顶层 current truth 是 `RESEARCH_GOVERNANCE.md`、
 `SANPO_CURRENT_STATUS.md` 和 `AI_REVIEW_GOVERNANCE.md`。其余文件是选择对应
 workflow 后才生效的实施合同、回归基线或日期化证据，不得反向成为所有

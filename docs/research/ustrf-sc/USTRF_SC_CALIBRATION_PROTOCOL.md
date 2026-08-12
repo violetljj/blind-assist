@@ -69,4 +69,5 @@ validUntilNs = <explicit experiment expiry>
 
 当前 SM-S9280 手持刚体的预采集约束单见 [临时手持执行单](USTRF_SC_PROVISIONAL_HANDHELD_CALIBRATION_RUNBOOK.md)。它不是 manifest，也不代替最终胸前或眼镜形态的单独标定。
 
-无现成标定物时可使用仓库生成的 [A4 20 mm 棋盘格靶](../../../artifacts.local/calibration/ustrf-sc/ustrf_sc_checkerboard_a4_20mm_r1.pdf)。它有独立 SHA-256 manifest 和 100 mm 打印核验线；打印核验通过只意味着参考物尺寸可追溯，仍不等于 calibration manifest 或 production authorization。
+无现成标定物时可使用本机生成的 A4 20 mm 棋盘格靶，默认位置为
+`artifacts.local/calibration/ustrf-sc/ustrf_sc_checkerboard_a4_20mm_r1.pdf`。该本地产物不随 Git 分发；它有独立 SHA-256 manifest 和 100 mm 打印核验线。打印核验通过只意味着参考物尺寸可追溯，仍不等于 calibration manifest 或 production authorization。

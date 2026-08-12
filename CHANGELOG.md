@@ -8,6 +8,8 @@
 
 ## v10.9.0 - SANPO 风险事件闭环
 
+- 补齐中英双语开源首页、真实原型截图、架构图、公共价值、贡献、安全、行为准则和 Issue/PR 模板；这些公开入口明确原型与安全认证、synthetic evidence 与真实用户证据之间的边界。
+- 恢复默认分支 CI 的跨平台可配置性和治理一致性；自有 `libblindassist_vision.so` 增加 16KB ELF 对齐，四个 Android ABI 均通过静态发布门禁。该兼容性结果不替代真实 16KB 设备验证。
 - 新增纯 Kotlin `RiskEventTracker`：仅跟踪 SANPO 中心走廊分割候选，首次实际反馈后阻断同一事件重复播报；通过/远离或连续 3 帧消失后清除。YOLO 默认检测与模型资产不变。
 - `generic obstacle` 增加贴边长条边界形态否决，避免平行路沿泛化；紧凑中心障碍和 `stairs` 保留既有候选路径。
 - benchmark 与连续序列标注新增事件阶段、事件 ID/状态、反馈抑制原因、已通过窗口与平行路沿错误提醒统计；`clone_sanpo_event_phase_evalset.py` 为现有已复核集生成不可变事件阶段克隆。固定 90 帧同设备复测仍是训练前硬门禁，尚未在本条记录中宣称通过。

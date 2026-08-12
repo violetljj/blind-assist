@@ -1,5 +1,25 @@
 # TARO O0R candidate-scale canary
 
+状态：`current / TARO_RESEARCH_MODULE / HISTORICAL_EVIDENCE_READ_ONLY / R6_FORMATION_REPLAY_COMPLETE / NO_ACTIVE_EXECUTION`
+
+## 稳定 Interface
+
+- `apple_scale.py` 与 `source_factor.py`：已冻结的 source-anchored scale/factor mechanics。
+- `r6_factor_split.py`、`prospective_factor_runtime.py` 与 `formation_replay.py`：R6 factor ownership、source-defined runtime 和 formation replay 的可复核实现。
+- 本目录的 `test_*.py`、validator 与 verifier：对相应锁和已签署证据执行 focused replay；不得从测试通过推导产品晋升。
+
+## 输出
+
+历史 one-shot 输出与只读验证证据位于调用方显式绑定的 `artifacts.local/evidence/taro/` 子目录；仓库只保留实现、合同与结果摘要，不提交本机证据 payload。
+
+## 安全边界
+
+本 Module 不授权重跑已消费证据、训练、阈值调优、Android 集成、默认 App 变更或安全声明。`UNKNOWN` 必须保留，source/truth 两阶段防火墙不得绕过。
+
+## 停止条件
+
+输入身份、hash、角色、防火墙、coverage 或唯一 successor 任一不一致时立即 fail closed。当前没有活动执行；后续权限只由 [`docs/research/taro/README.md`](../../../docs/research/taro/README.md) 的 current 状态与唯一 successor 授予。
+
 This runtime tests one falsifiable algorithmic step: whether registered
 AppleDepth can recover the metric scale of an already sealed DepthART candidate
 without reading FARO or changing the candidate.
