@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_UNTOUCHED_CONFIRMATION_PASS / R6_FACTOR_POLICY_PROMOTION_ALLOWED / R6_EVIDENCE_VERIFIED / R6_PROSPECTIVE_RUNTIME_PROTOCOL_FROZEN / R6_PROSPECTIVE_RUNTIME_IMPLEMENTATION_FROZEN / R6_FORMATION_REPLAY_COMPLETE / R6_REDUCER_INTEGRATION_NOT_EVALUABLE_ALL_UNKNOWN / R6_REDUCER_EVIDENCE_VERIFIED / R7_FIT_LOPO_CANARY_PASS / R7_POSITIVE_OCCUPANCY_ADVANCES / R7_CLEAR_NOT_EVALUABLE / R7_EVIDENCE_VERIFIED / R7_FRESH_CONFIRMATION_NOT_EVALUABLE_DUAL_CLASS_COVERAGE / R8_SELECTED_PHASE_B_COMPLETE / R8_SPARSE_RAY_INTERFACE_FAIL / R8_DENSE_TRUTH_OWNED_FALLBACK_LOCKED / R8_DENSE_TRUTH_OWNED_FALLBACK_EXECUTION_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_UNTOUCHED_CONFIRMATION_PASS / R6_FACTOR_POLICY_PROMOTION_ALLOWED / R6_EVIDENCE_VERIFIED / R6_PROSPECTIVE_RUNTIME_PROTOCOL_FROZEN / R6_PROSPECTIVE_RUNTIME_IMPLEMENTATION_FROZEN / R6_FORMATION_REPLAY_COMPLETE / R6_REDUCER_INTEGRATION_NOT_EVALUABLE_ALL_UNKNOWN / R6_REDUCER_EVIDENCE_VERIFIED / R7_FIT_LOPO_CANARY_PASS / R7_POSITIVE_OCCUPANCY_ADVANCES / R7_CLEAR_NOT_EVALUABLE / R7_EVIDENCE_VERIFIED / R7_FRESH_CONFIRMATION_NOT_EVALUABLE_DUAL_CLASS_COVERAGE / R8_SELECTED_PHASE_B_COMPLETE / R8_SPARSE_RAY_INTERFACE_FAIL / R8_DENSE_TRUTH_OWNED_FALLBACK_COMPLETE / R9_SOURCE_ONLY_SELECTOR_FROZEN / R10_FRESH_32_PARENT_PIPELINE_COMPLETE / R10_POSITIVE_OCCUPANCY_GATES_PASS / R10_NOT_EVALUABLE_DUAL_CLASS_COVERAGE / R10_NO_PROMOTION / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -195,8 +195,16 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 - [R8 sparse ray-space interface lock](TARO_O1R_R8_FARO_RAY_SPACE_TRUTH_INTERFACE_CANARY_ONE_SHOT_EXECUTION_LOCK_2026-08-12.md)：
   已消费的 V1 得到 54 个 clear labels，但破坏 frozen occupied compatibility，故该接口保持 FAIL；
 - [R8 dense truth-owned fallback lock](TARO_O1R_R8_DENSE_FARO_TRUTH_OWNED_FALLBACK_CANARY_ONE_SHOT_EXECUTION_LOCK_2026-08-12.md)：
-  当前 public committed state 为 `AUTHORIZED_UNCONSUMED`；只允许在同一 8 parents / 133 frames 上消费一次，
-  不读取未选 FARO、不拟合、不训练，也不产生 R8 promotion、部署、产品或安全权限；
+  已消费；同一 8 parents / 133 frames 的 dense fallback 只保留为 R8 证据，不得覆盖或重跑；
+- [R9 clear-enrichment development result](TARO_O1R_R9_CLEAR_ENRICHMENT_DEVELOPMENT_RESULT_2026-08-12.md)：
+  冻结一个仅使用 pre-opened source features 的 parent selector；旧 50-clear 目标不可达，selector 只获准在
+  全新 parent pool 做 outcome-blind 排名；
+- [R10 fresh clear-enriched confirmation protocol](TARO_O1R_R10_FRESH_PARENT_SOURCE_ONLY_CLEAR_ENRICHED_CONFIRMATION_PROTOCOL_LOCK_2026-08-12.md)：
+  冻结 32-parent / 96-asset source-first 流程、top-eight 防泄漏选择、selected-only FARO 与 dual-class 门；
+- [R10 fresh clear-enriched confirmation result](TARO_O1R_R10_FRESH_CLEAR_ENRICHED_CONFIRMATION_RESULT_2026-08-12.md)：
+  完整执行 710 source frames，并只对 sealed top eight 的 260 frames 读取 FARO；正占用侧冻结门全部通过，
+  但 definite `CLEAR` 仅覆盖 3 个 parents 且 Wilson clear-specificity 下界失败，正式终态为 `NOT_EVALUABLE`，
+  不产生路线、部署、产品或安全晋级；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -207,11 +215,20 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 
 ## 唯一 successor
 
-`TARO_O1R_R8_DENSE_FARO_TRUTH_OWNED_FALLBACK_CANARY_ONE_SHOT_EXECUTION_LOCK`
+R10 已消费且正式 `NOT_EVALUABLE`。它保留了强正占用信号，但未完成 dual-class confirmation：
+definite `CLEAR` 为 13 queries / 3 parents，且其中 1 个 false occupied 使单侧 95% Wilson 下界为
+`0.717742`。不得通过修改 R10 selector、threshold、denominator 或 gate 救活该结果。
 
-当前 public committed state 终止在 dense FARO truth-owned fallback 的一次性执行锁：
-`AUTHORIZED_UNCONSUMED`。唯一允许动作是按锁定 argv 在同一已选择 cohort 上消费该 one-shot；
-任何本地未提交结果都不是公开证据，执行后必须另以 result/receipt 提交更新本页。
+继续路线前必须另立 successor：先把基于 consumed R10 的任何 abstention rule 明确标成 development-only
+并冻结，再获得新的 parent-disjoint cohort/data-use 与 one-shot 权限做独立确认；在只有一个 false
+positive 的情形下，至少需要 20 个 definite-clear observations 才能越过同一 Wilson 0.8 门。当前没有
+剩余的 R10 执行权限，也没有 TARO route/deployment/device/product/safety promotion。
+
+唯一 successor 是
+`TARO_O1R_R11_POSITIVE_OCCUPANCY_ABSTENTION_AND_FRESH_DUAL_CLASS_CONFIRMATION_PROTOCOL_LOCK`
+（execution=false）。它只允许把 R10 唯一误报形成 development-only abstention 候选，并在任何新
+outcome 前冻结新的 parent-disjoint cohort、dual-class coverage 和 one-shot 前门；新 source/FARO/model
+执行仍需单独、精确的数据使用授权。
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得

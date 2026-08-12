@@ -2,6 +2,22 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。完成 TARO O1R R10 exact 32-parent
+  fresh clear-enriched confirmation 全链并封存正式结果。zero-body HEAD 与 source download 均为
+  96/96，source 为 `1,945,902,515 bytes`；inventory 冻结 710 frames。Phase A R0 在 inference
+  前因 `timm` 缺失消费为无 candidate 的 implementation stop，R1 在新 root 完整重跑 710 次
+  DepthART、封存 6,390 个 source-only query features 且 FARO=0。top-eight R0 又在任何 score/selection
+  产生前因 round-12 validator parity 停止，R1 在新 root 完整重算并先封存 32 scores、再封存 8 个
+  parents。Phase B 只读取 selected 260/260 `highres_depth`，unselected FARO=0、训练=0、UNKNOWN
+  从未作 negative。2,340 labels 为 1,786 OCCUPIED / 13 CLEAR / 541 UNKNOWN；正占用 precision
+  `0.999435`、Wilson lower `0.997472`、recall `0.990482`、8-parent macro coverage gain
+  `+0.984977` 全过门，但 CLEAR 只跨 3 parents（门为 4），且唯一 false occupied 使 12/13 clear
+  specificity 的 Wilson lower 为 `0.717742 < 0.8`。正式终态为
+  `TARO_O1R_R10_FRESH_CLEAR_ENRICHED_NOT_EVALUABLE_DUAL_CLASS_COVERAGE`，无路线、部署、设备、产品或
+  safety 晋级。260 labels、2,340-query summary 与 manifest 的 263 个 pre-manifest 文件已逐文件重算
+  一致。R10 不得改门、重跑或救活；唯一 successor 为 non-execution R11 abstention + fresh dual-class
+  protocol lock，任何新 source/FARO/model 执行仍需单独授权。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。登记 DepthART-S D3R1 exact-32
   Phase-B depth/confidence source scope。新 receipt 精确绑定 Phase-A governed PASS、32 个 visit/session
   的顺序与 9,600 个冻结 frame stems、D3/D3R1 protocols、manifest/offline validation 及 reviewed

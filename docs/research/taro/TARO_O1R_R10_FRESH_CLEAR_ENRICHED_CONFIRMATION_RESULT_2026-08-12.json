@@ -1,0 +1,139 @@
+{
+  "schema": "blindassist.taro.o1r.r10_fresh_clear_enriched_confirmation_result_record.v1",
+  "terminal": "TARO_O1R_R10_FRESH_CLEAR_ENRICHED_NOT_EVALUABLE_DUAL_CLASS_COVERAGE",
+  "date": "2026-08-12",
+  "execution_valid": true,
+  "passed": false,
+  "scientifically_evaluable": false,
+  "pipeline": {
+    "fresh_parent_count": 32,
+    "asset_count": 96,
+    "head_available_asset_count": 96,
+    "head_response_body_bytes": 0,
+    "source_bytes": 1945902515,
+    "inventory_frame_count": 710,
+    "phase_a_candidate_inference_count": 710,
+    "phase_a_query_count": 6390,
+    "phase_a_faro_reads": 0,
+    "selected_parent_count": 8,
+    "selected_frame_count": 260,
+    "selected_query_count": 2340,
+    "selected_faro_frame_count": 260,
+    "unselected_faro_frame_count": 0,
+    "training_steps": 0,
+    "network_requests_during_phase_b": 0
+  },
+  "selected_parents": [
+    {"parent_id": "421254", "video_id": "42444754", "frame_count": 23, "source_only_eligible_query_count": 9},
+    {"parent_id": "434903", "video_id": "42899259", "frame_count": 15, "source_only_eligible_query_count": 9},
+    {"parent_id": "472622", "video_id": "47430739", "frame_count": 15, "source_only_eligible_query_count": 9},
+    {"parent_id": "468380", "video_id": "45261722", "frame_count": 25, "source_only_eligible_query_count": 7},
+    {"parent_id": "472306", "video_id": "47204818", "frame_count": 14, "source_only_eligible_query_count": 6},
+    {"parent_id": "467152", "video_id": "47333281", "frame_count": 87, "source_only_eligible_query_count": 5},
+    {"parent_id": "471014", "video_id": "47204325", "frame_count": 55, "source_only_eligible_query_count": 4},
+    {"parent_id": "470335", "video_id": "47429663", "frame_count": 26, "source_only_eligible_query_count": 3}
+  ],
+  "label_state_counts": {
+    "CLEAR_OBSERVED": 13,
+    "OCCUPIED_OBSERVED": 1786,
+    "UNKNOWN": 541
+  },
+  "prediction_state_counts": {
+    "CLEAR_OBSERVED": 0,
+    "OCCUPIED_OBSERVED": 1915,
+    "UNKNOWN": 425
+  },
+  "evaluability": {
+    "evaluable_parent_count": 8,
+    "minimum_evaluable_parent_count": 8,
+    "parents_with_definite_occupied_label": 8,
+    "minimum_parents_with_definite_occupied_label": 6,
+    "definite_occupied_query_count": 1786,
+    "minimum_definite_occupied_query_count": 100,
+    "parents_with_definite_clear_label": 3,
+    "minimum_parents_with_definite_clear_label": 4,
+    "definite_clear_query_count": 13,
+    "minimum_definite_clear_query_count": 12,
+    "failed_requirements": [
+      "parents_with_definite_clear_label"
+    ]
+  },
+  "confirmation_gates": {
+    "occupied_precision_on_definite_labels": {"value": 0.999435028249, "minimum": 0.9, "passed": true},
+    "one_sided_95_wilson_occupied_precision_lower_bound": {"value": 0.99747160923, "minimum": 0.8, "passed": true},
+    "occupied_recall": {"value": 0.990481522956, "minimum": 0.9, "passed": true},
+    "parent_macro_definite_occupancy_coverage_increase_absolute": {"value": 0.984977346775, "minimum": 0.05, "parent_denominator": 8, "passed": true},
+    "clear_specificity_on_definite_clear": {"value": 0.923076923077, "minimum": 0.9, "passed": true},
+    "one_sided_95_wilson_clear_specificity_lower_bound": {"value": 0.717741956919, "minimum": 0.8, "passed": false},
+    "maximum_clear_outputs": {"value": 0, "maximum": 0, "passed": true}
+  },
+  "confusion_counts": {
+    "occupied_true_positive": 1769,
+    "occupied_false_positive_against_definite_clear": 1,
+    "occupied_false_negative": 17,
+    "occupied_predictions_on_truth_unknown": 145,
+    "clear_specific_successes": 12
+  },
+  "sole_definite_clear_false_positive": {
+    "physical_frame_id": "42444754:80991.853",
+    "parent_id": "421254",
+    "video_id": "42444754",
+    "query_id": "42444754:80991.853:lat_-0.35_yaw_+10.0",
+    "baseline_state": "UNKNOWN",
+    "positive_obstacle_veto": true,
+    "far_valid_anchor_count": 13,
+    "observed_support_points": 227001,
+    "far_fractions": [0.0, 0.0, 0.0],
+    "true_occupied_cells": [[0, 0, 2], [1, 0, 2], [2, 0, 2]],
+    "post_hoc_threshold_or_selector_change_allowed": false
+  },
+  "verification": {
+    "label_records_validated": 260,
+    "queries_recomputed": 2340,
+    "manifest_entries_verified": 263,
+    "actual_file_count_including_manifest": 264,
+    "bytes_before_manifest": 258481,
+    "summary_matches_sealed_result": true,
+    "label_hash_sequence_sha256": "4EC2BDC5A80B4EE437E5D85432933BADB192F12EA672795311678F0FD767331A",
+    "unknown_is_negative": false
+  },
+  "evidence": {
+    "head_result_sha256": "8E4A3B878C6ECC5FA02140865B41F8D7296F7D9965A563FE9540B3F3F68437E0",
+    "head_manifest_sha256": "F566FF8E7759DF44E09D5989DC2BFFDFC20D56052A2A23784B3C5CE4F8B2B265",
+    "source_result_sha256": "864630E012F4F6D364E85DA40620BD6FB36CDD87209648FC3204868E60CBB14A",
+    "source_manifest_sha256": "39EFA65973BBE4626CC2CE0CF6C9ECA422726B1BAF6B3862A95167FD4B7DC677",
+    "inventory_result_sha256": "B2ED55A65E6BC31E6EE6A113631D3B315FCBA81ACFE9F3EDD9D61B62A71A16B1",
+    "inventory_manifest_sha256": "A9C587765876B5668EC7562EB97F18F19760776D80FBE7953D5FF9771F5C826F",
+    "phase_a_r0_failure_sha256": "336742963E2150C6156B432BBB7C8D061118E78DD1E079B9D94F3DDD7FAD57D0",
+    "phase_a_r1_result_sha256": "1CC47CC79FECB174D7A9CD69291FB579A3DD39389BE24C2AAB3D783858CD25F5",
+    "phase_a_completion_content_sha256": "E36B79805A142EE7F203B8DBD608CB3650A1D538CB2D746A482213DCCD5D53B9",
+    "phase_a_manifest_sha256": "B0250585BFCD3DD0608248F2E4428109F31DC4653E136A81BAD8F3964D12E171",
+    "top8_r0_failure_sha256": "5262A3E21454547C1C3DA938D24EDF7524154180FD99399BE54F468E5B19E1C2",
+    "top8_r1_result_sha256": "56A4689BEF3A3F6D960396058B2D4F0B4C58CF6DA5A116E3DAE8DF1D0F3C8881",
+    "parent_scores_content_sha256": "B35FC1B5742C09EDC7E9F31DFBA63F8743D3E215F412E7C1A09A7772779507CA",
+    "selection_content_sha256": "31C57135CD578C77EBBC1A4836AF06CB79303A87014D246607CE87A4B6A54D9A",
+    "top8_manifest_sha256": "4A55E510115151F35C385ED00CF0025346F40B7CE64D2A65B68EC58CBEAA34F7",
+    "phase_b_label_completion_content_sha256": "8C67C5141092B109A194AD852E1E2766DA96ACBB52121974C409AF9412A49097",
+    "phase_b_label_completion_file_sha256": "9338830032EF4AC56B6C0B7BA63D8D1AB3803C17F36B2FB1D055C2C3EC14F157",
+    "phase_b_result_sha256": "02772027B79DE7D408DEBC29241E8729053C43C5506FFD2472DCA7F5F6BCED36",
+    "phase_b_manifest_sha256": "E03B0D6B9C9A52AFBC85FAF147354E7B78389B055E2D8A94AB988AE812C898D3"
+  },
+  "interpretation": {
+    "positive_occupancy_factor_signal_retained": true,
+    "formal_confirmation_pass": false,
+    "reason": "The frozen positive-occupancy gates all passed, but definite CLEAR labels spanned only three parents instead of four. One false occupied prediction among 13 definite CLEAR labels also left the one-sided 95 percent Wilson lower bound below 0.8.",
+    "minimum_definite_clear_queries_with_one_false_positive_for_wilson_0_8": 20,
+    "r10_consumed_and_not_retargetable": true
+  },
+  "promotion": {
+    "effectiveness": false,
+    "route": false,
+    "deployment": false,
+    "device": false,
+    "product": false,
+    "safety": false
+  },
+  "unique_successor": "TARO_O1R_R11_POSITIVE_OCCUPANCY_ABSTENTION_AND_FRESH_DUAL_CLASS_CONFIRMATION_PROTOCOL_LOCK",
+  "successor_requirement": "A new version must freeze any abstention rule and a fresh parent-disjoint confirmation cohort before outcome access; R10 cannot be rescued by changing its selector, thresholds, denominator, or gates. The protocol lock itself grants no new source, FARO, model, training, device, deployment, product, or safety authority.",
+  "claim_ceiling": "Fresh-parent WILD_LAB confirmation attempt of the positive-occupancy factor and its definite-clear negative control only; no CLEAR output, route promotion, deployment, device, product, or safety claim."
+}
