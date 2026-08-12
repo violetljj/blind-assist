@@ -2,6 +2,16 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。冻结 TARO O1R R11 source inventory one-shot
+  execution lock，状态 `AUTHORIZED_UNCONSUMED`。锁绑定已推送 implementation commit
+  `9c659c3087e9b7d64bd931bf6291ce8d47ce512f`、11 份代码/协议/授权/download evidence、exact
+  pool/request/download seals、central-directory-only policy、30 GiB declared-materialized ceiling、64 MiB
+  evidence ceiling、2 小时 wall ceiling与用户 exact R11 authority。preflight 仅允许 lock/small sealed evidence；
+  exclusive root 与 start receipt 创建后才可重验 144 source files、读取 ZIP central directory 与 trajectory。
+  不预冻结真实 frame count、declared bytes 或 inventory hash；content seal 为 `244D5E16...BB10`，runner 在
+  output root absent 状态完整复验通过。当前 ZIP member payload、pixel、DepthART、FARO value、truth、training
+  均为 0；唯一 successor 是该 lock 推送并确认 `HEAD == origin/master` 后严格消费固定 module argv 一次。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。完成 TARO O1R R11 source inventory
   implementation lock，正式 inventory 与科学结果仍 `NOT_RUN`。独立审计指出旧 materializer 的 `testzip()`
   会解压读取包括 highres depth 在内的 member payload，不满足 sealed top-24 前 FARO payload read=0；正式实现

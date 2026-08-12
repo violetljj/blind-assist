@@ -1,6 +1,6 @@
 # TARO O1R R11 abstention runtime
 
-状态：`current / TARO_RESEARCH_MODULE / R11_WEAK_DISTAL_ABSTENTION_DEVELOPMENT_ONLY / R11_PROTOCOL_LOCKED / R11_EXACT_DATA_USE_AUTHORIZED / R11_HEAD_PASS_ONE_SHOT_CONSUMED / R11_DOWNLOAD_ATTEMPT_01_PRESTART_SUPERSEDED / R11_SOURCE_DOWNLOAD_144_OF_144_INTEGRITY_PASS_ONE_SHOT_CONSUMED / R11_INVENTORY_IMPLEMENTATION_LOCK_PASS / R11_INVENTORY_FORMAL_NOT_RUN / R11_FORMAL_ZIP_MEMBER_PAYLOAD_READS_ZERO / R11_SCIENTIFIC_NOT_RUN / DEFAULT_APP_UNCHANGED`
+状态：`current / TARO_RESEARCH_MODULE / R11_WEAK_DISTAL_ABSTENTION_DEVELOPMENT_ONLY / R11_PROTOCOL_LOCKED / R11_EXACT_DATA_USE_AUTHORIZED / R11_HEAD_PASS_ONE_SHOT_CONSUMED / R11_DOWNLOAD_ATTEMPT_01_PRESTART_SUPERSEDED / R11_SOURCE_DOWNLOAD_144_OF_144_INTEGRITY_PASS_ONE_SHOT_CONSUMED / R11_INVENTORY_IMPLEMENTATION_LOCK_PASS / R11_INVENTORY_ONE_SHOT_LOCK_AUTHORIZED_UNCONSUMED / R11_INVENTORY_FORMAL_NOT_RUN / R11_FORMAL_ZIP_MEMBER_PAYLOAD_READS_ZERO / R11_SCIENTIFIC_NOT_RUN / DEFAULT_APP_UNCHANGED`
 
 ## 稳定 Interface
 
@@ -14,7 +14,7 @@
 
 ## 输出
 
-协议、授权 receipt、development 小型结果和 validator 写入 Git；HEAD evidence 与 Attempt 02 download evidence 均封存在 consumed `artifacts.local/` roots。144 个 source blobs 已完整下载并重验；正式 inventory 尚未运行，ZIP member payload 和 source frame 仍未由正式阶段打开。
+协议、授权 receipt、development 小型结果、inventory implementation 与 authorized-unconsumed execution lock 写入 Git；HEAD evidence 与 Attempt 02 download evidence 均封存在 consumed `artifacts.local/` roots。144 个 source blobs 已完整下载并重验；正式 inventory 尚未运行，ZIP member payload 和 source frame 仍未由正式阶段打开。
 
 ## 安全边界
 
