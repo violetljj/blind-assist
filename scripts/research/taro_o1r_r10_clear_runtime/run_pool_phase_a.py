@@ -7,6 +7,7 @@ import argparse
 import copy
 import datetime as dt
 import json
+import platform
 import subprocess
 import sys
 import time
@@ -362,6 +363,25 @@ def _verify_inventory_evidence() -> dict[str, Any]:
     return inventory
 
 
+def _runtime_environment() -> dict[str, Any]:
+    import cv2
+    import timm
+    import torch
+
+    require(torch.cuda.is_available(), "R10_PHASE_A_CUDA_UNAVAILABLE", "R10 Phase-A requires CUDA")
+    return {
+        "python_executable": Path(sys.executable).resolve().as_posix(),
+        "python_version": platform.python_version(),
+        "torch_version": str(torch.__version__),
+        "timm_version": str(timm.__version__),
+        "numpy_version": str(np.__version__),
+        "opencv_version": str(cv2.__version__),
+        "cuda_available": True,
+        "cuda_version": str(torch.version.cuda),
+        "cuda_device_name": str(torch.cuda.get_device_name(torch.cuda.current_device())),
+    }
+
+
 def validate_execution_lock(path: Path) -> dict[str, Any]:
     lock_path = path.resolve()
     lock = json.loads(lock_path.read_text(encoding="utf-8"))
@@ -423,6 +443,11 @@ def validate_execution_lock(path: Path) -> dict[str, Any]:
     inventory = _verify_inventory_evidence()
     require(inventory["exact_pose_bounded_frame_count"] == FRAME_COUNT, "R10_PHASE_A_INVENTORY_INVALID", "R10 inventory count drift")
     require(lock.get("execution_authority") == EXPECTED_AUTHORITY, "R10_PHASE_A_AUTHORITY_DRIFT", "R10 Phase-A authority drift")
+    require(
+        lock.get("runtime_environment") == _runtime_environment(),
+        "R10_PHASE_A_RUNTIME_ENVIRONMENT_DRIFT",
+        "R10 Phase-A runtime environment drift",
+    )
     require(
         lock.get("resource_budget")
         == {
