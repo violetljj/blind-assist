@@ -1,0 +1,61 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d3r1_phase_a_head_activation_v1",
+  "activation_id": "DEPTHART_TASK_PRESERVING_D3R1_PHASE_A_HEAD_ACTIVATION_2026-08-12",
+  "activated_at": "2026-08-12T16:47:03.7517957+08:00",
+  "activated_by": "user",
+  "authorization_verbatim": "继续",
+  "authorization_context": "The immediately preceding D3R1 handoff named EXPLICIT_D3R1_PHASE_A_INTRINSICS_TRAJECTORY_HEAD_ONLY_PREFLIGHT_ACTIVATION as the sole current successor. The work update then explicitly stated that this continuation freezes the exact-127 protocol and executes exactly 254 zero-body HEAD requests, publishes only availability and declared-byte evidence, performs no GET or Range request and stops at a separate body activation gate. The user's latest instruction was '继续'.",
+  "status": "D3R1_PHASE_A_HEAD_ONLY_EXECUTION_AUTHORIZED_ONCE",
+  "bindings": {
+    "head_protocol": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R1_PHASE_A_HEAD_PROTOCOL_2026-08-12.json",
+      "bytes": 5299,
+      "sha256": "CD6E4BA2986F66A8B23AF07776264E5EA923A9B907D75ED58F442A8AC65E0D5C"
+    },
+    "roster": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R1_FRESH_METADATA_ROSTER_LOCK_2026-08-12.json",
+      "bytes": 8238,
+      "sha256": "67457224E507FA3D501439EF9B7D33CDE6017B2662EA2BBF65C1A36BC6453D13"
+    },
+    "source_scope": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R1_SOURCE_SCOPE_RECEIPT_2026-08-12.json",
+      "bytes": 5693,
+      "sha256": "305E5EB30E39FE7B1E371ECA78ED8AD7A7181E68B12A797C3F45165B74D7DDC7"
+    }
+  },
+  "execution": {
+    "method": "HEAD",
+    "identity_count": 127,
+    "asset_count_per_identity": 2,
+    "expected_request_count": 254,
+    "assets": [
+      "lowres_wide_intrinsics.zip",
+      "lowres_wide.traj"
+    ],
+    "one_shot": true,
+    "fresh_output_root_required": true,
+    "output_overwrite_forbidden": true,
+    "redirect_following_forbidden": true,
+    "response_body_bytes_read_required": 0
+  },
+  "authority": {
+    "phase_a_head": true,
+    "media_body": false,
+    "range_get": false,
+    "archive_member_read": false,
+    "pose_content_read": false,
+    "phase_a_selection": false,
+    "phase_b_depth_confidence": false,
+    "phase_c_rgb": false,
+    "truth": false,
+    "model_output": false,
+    "training": false,
+    "development_outcome": false,
+    "r2": false,
+    "performance": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  },
+  "terminal": "D3R1_PHASE_A_HEAD_ONLY_ACTIVATED_BODY_STILL_FORBIDDEN"
+}
