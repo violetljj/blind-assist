@@ -65,6 +65,102 @@ class AdmissionContractTest(unittest.TestCase):
         )
         validator.validate(receipt)
 
+    def test_schema_rejects_missing_and_extra_surface(self) -> None:
+        for path in (("run_id",), ("contract", "frozen_at"), ("contract", "candidate_id")):
+            receipt = copy.deepcopy(self.receipt)
+            target = receipt
+            for key in path[:-1]:
+                target = target[key]
+            del target[path[-1]]
+            with self.subTest(path=path):
+                self.assert_rejected(receipt)
+        receipt = copy.deepcopy(self.receipt)
+        receipt["unexpected"] = True
+        self.assert_rejected(receipt)
+        receipt = copy.deepcopy(self.receipt)
+        receipt["observed"]["android"]["unexpected"] = True
+        self.assert_rejected(receipt)
+
+    def test_schema_rejects_invalid_freeze_time_and_boolean_denominator(self) -> None:
+        receipt = copy.deepcopy(self.receipt)
+        receipt["contract"]["frozen_at"] = "not-a-date-time"
+        self.assert_rejected(receipt)
+        receipt = copy.deepcopy(self.receipt)
+        receipt["contract"]["frozen_at"] = "2026-08-12T06:52:00"
+        self.assert_rejected(receipt)
+        receipt = copy.deepcopy(self.receipt)
+        receipt["evidence"]["parent_sessions"][0]["denominator"] = True
+        self.assert_rejected(receipt)
+
+    def test_reference_runtime_is_frozen_and_compared(self) -> None:
+        mismatch = copy.deepcopy(self.receipt)
+        mismatch["observed"]["android"]["reference_parity"]["runtime_sha256"] = "7" * 64
+        decision, reasons = validator._android_decision(mismatch)
+        self.assertEqual(validator.FAIL, decision)
+        self.assertIn("REFERENCE_RUNTIME_SHA256_MISMATCH", reasons)
+        self.assert_rejected(mismatch)
+
+        missing = copy.deepcopy(self.receipt)
+        missing["observed"]["android"]["reference_parity"]["runtime_sha256"] = None
+        decision, reasons = validator._android_decision(missing)
+        self.assertEqual(validator.UNKNOWN, decision)
+        self.assertIn("MISSING_REFERENCE_PARITY_EVIDENCE", reasons)
+        self.assert_rejected(missing)
+
+    def test_each_android_threshold_is_derived(self) -> None:
+        violations = {
+            "cold_start_ms": 501.0,
+            "warm_start_ms": 151.0,
+            "latency_p50_ms": 101.0,
+            "latency_p95_ms": 1_000_000_000.0,
+            "peak_memory_mb": 301.0,
+            "thermal_window_seconds": 299.0,
+        }
+        for metric, value in violations.items():
+            receipt = copy.deepcopy(self.receipt)
+            receipt["observed"]["android"][metric] = value
+            decision, reasons = validator._android_decision(receipt)
+            with self.subTest(metric=metric):
+                self.assertEqual(validator.FAIL, decision)
+                self.assertIn(f"{metric.upper()}_THRESHOLD", reasons)
+                self.assert_rejected(receipt)
+
+    def test_quality_decision_is_derived_from_frozen_thresholds(self) -> None:
+        receipt = copy.deepcopy(self.receipt)
+        receipt["contract"]["thresholds"]["values"]["false_clear"] = 0.001
+        decision, reasons = validator._quality_decision(receipt)
+        self.assertEqual(validator.FAIL, decision)
+        self.assertEqual(["FALSE_CLEAR_THRESHOLD"], reasons)
+        self.assert_rejected(receipt)
+
+    def test_fallback_state_must_be_internally_consistent(self) -> None:
+        false_with_backend = copy.deepcopy(self.receipt)
+        false_with_backend["observed"]["android"]["fallback_backend"] = "GPU"
+        decision, reasons = validator._android_decision(false_with_backend)
+        self.assertEqual(validator.FAIL, decision)
+        self.assertIn("FALLBACK_STATE_INCONSISTENT", reasons)
+        self.assert_rejected(false_with_backend)
+
+        true_without_backend = copy.deepcopy(self.receipt)
+        true_without_backend["observed"]["android"]["fallback_observed"] = True
+        decision, reasons = validator._android_decision(true_without_backend)
+        self.assertEqual(validator.FAIL, decision)
+        self.assertIn("BACKEND_FALLBACK", reasons)
+        self.assertIn("FALLBACK_STATE_INCONSISTENT", reasons)
+        self.assert_rejected(true_without_backend)
+
+    def test_parent_session_metric_must_equal_sum_over_denominator(self) -> None:
+        receipt = copy.deepcopy(self.receipt)
+        receipt["evidence"]["parent_sessions"][0]["metrics"]["false_clear"] = 0.99
+        self.assert_rejected(receipt)
+
+    def test_pooled_metrics_are_recomputed_from_parent_session_sums(self) -> None:
+        receipt = copy.deepcopy(self.receipt)
+        receipt["evidence"]["pooled"]["metrics"]["false_clear"] = 0.99
+        self.assert_rejected(receipt)
+        receipt = copy.deepcopy(self.receipt)
+        receipt["evidence"]["parent_sessions"][0]["metric_sums"]["false_clear"] = 0.2
+        self.assert_rejected(receipt)
     def test_rejects_nondeterministic_reason_order(self) -> None:
         receipt = copy.deepcopy(self.receipt)
         receipt["observed"]["identity"]["model_sha256"] = "7" * 64
@@ -79,4 +175,3 @@ class AdmissionContractTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

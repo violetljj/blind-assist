@@ -9,8 +9,10 @@ Scope: issue [#21](https://github.com/violetljj/blind-assist/issues/21)
 This contract governs whether a frozen DA2 or A2-392 candidate may enter the separately labelled Android **research-preview** flavor. It does not reopen the closed DA2 research route, authorize access to protected outcomes, change the default App, or grant production or safety authority. No candidate is admitted by committing this contract.
 
 The protocol, roster roles, thresholds, candidate/export identity, input
-manifest, and supported backend must be frozen by both version and SHA-256
-before any new candidate outcome is opened. A terminal run cannot be rescued
+manifest, supported backend, and reference runtime must be frozen before any
+new candidate outcome is opened. The reference runtime is bound by SHA-256;
+the threshold object freezes both quality limits and the Android startup,
+latency, memory, and thermal-window limits. A terminal run cannot be rescued
 by adding later metrics or post-outcome tuning.
 
 ## Decision model
@@ -42,21 +44,25 @@ simultaneously incomplete evidence.
 ## Required evidence
 
 The receipt retains both the frozen and observed identities, the requested and
-observed backend, any fallback backend, the reference-runtime SHA-256, the
-measured parity error, and its frozen bound. Reports contain actual
-per-parent/session records with denominators plus a pooled aggregate whose
-denominator must equal the session sum.
+observed backend, any fallback backend, the frozen and observed
+reference-runtime SHA-256, the measured parity error, and its frozen bound.
+Reports contain actual per-parent/session records with denominators, metric
+sums, and derived metrics. Each session metric must equal its sum divided by
+its denominator; pooled metrics are recomputed from the session sums and may
+not be supplied as independent claims.
 
 Quality evidence covers false_clear, false_block, known coverage, clearance
 error, and transition consistency. Android evidence covers cold/warm startup,
 p50/p95 latency, peak memory, thermal window, requested/observed backend,
 fallback identity, and output parity against the hash-bound reference runtime.
 
-A claimed PASS is valid only when every required measurement is finite and
-non-null, evidence is complete and denominator-consistent, both subordinate
-gates are PASS, identities and backend match, no fallback occurred, parity is
-within the frozen bound, and the only authorized scope is
-ANDROID_RESEARCH_PREVIEW_ONLY.
+A claimed PASS is valid only when the complete schema surface is present,
+every required measurement is finite and non-null, evidence is complete and
+recomputable, both subordinate gates match the validator's derived decisions,
+identities and backend match, no fallback occurred, every Android feasibility
+threshold passes, parity is within the frozen bound, and the only authorized
+scope is ANDROID_RESEARCH_PREVIEW_ONLY. Contradictory fallback fields are a
+terminal contract failure rather than incomplete evidence.
 
 ## Fixtures
 

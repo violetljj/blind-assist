@@ -14,7 +14,13 @@
         "known_coverage": 0.9,
         "clearance_error": 0.1,
         "transition_consistency": 0.9,
-        "max_reference_parity_error": 0.01
+        "max_reference_parity_error": 0.01,
+        "max_cold_start_ms": 500.0,
+        "max_warm_start_ms": 150.0,
+        "max_latency_p50_ms": 100.0,
+        "max_latency_p95_ms": 150.0,
+        "max_peak_memory_mb": 300.0,
+        "min_thermal_window_seconds": 300.0
       }
     },
     "roster": {
@@ -29,7 +35,8 @@
       "postprocess_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
       "input_manifest_sha256": "5555555555555555555555555555555555555555555555555555555555555555"
     },
-    "supported_backend": "CPU"
+    "supported_backend": "CPU",
+    "reference_runtime_sha256": "6666666666666666666666666666666666666666666666666666666666666666"
   },
   "observed": {
     "identity": {
@@ -64,12 +71,14 @@
         "parent_id": "synthetic-parent-a",
         "session_id": "synthetic-session-a",
         "denominator": 10,
+        "metric_sums": {"false_clear": 0.1, "false_block": 0.2, "known_coverage": 9.5, "clearance_error": 0.5, "transition_consistency": 9.6},
         "metrics": {"false_clear": 0.01, "false_block": 0.02, "known_coverage": 0.95, "clearance_error": 0.05, "transition_consistency": 0.96}
       },
       {
         "parent_id": "synthetic-parent-b",
         "session_id": "synthetic-session-b",
         "denominator": 10,
+        "metric_sums": {"false_clear": 0.2, "false_block": 0.1, "known_coverage": 9.4, "clearance_error": 0.4, "transition_consistency": 9.5},
         "metrics": {"false_clear": 0.02, "false_block": 0.01, "known_coverage": 0.94, "clearance_error": 0.04, "transition_consistency": 0.95}
       }
     ],
@@ -78,8 +87,8 @@
       "metrics": {"false_clear": 0.015, "false_block": 0.015, "known_coverage": 0.945, "clearance_error": 0.045, "transition_consistency": 0.955}
     }
   },
-  "quality": {"decision": "PASS", "reason_codes": []},
-  "android_feasibility": {"decision": "PASS", "reason_codes": []},
+  "quality": {"decision": "PASS", "reason_codes": ["QUALITY_THRESHOLDS_PASSED"]},
+  "android_feasibility": {"decision": "PASS", "reason_codes": ["ANDROID_FEASIBILITY_GATES_PASSED"]},
   "product_authority": {"decision": "DENIED", "authorized_scopes": [], "reason_codes": ["RESEARCH_PREVIEW_HAS_NO_PRODUCT_AUTHORITY"]},
   "admission": {
     "decision": "PASS",

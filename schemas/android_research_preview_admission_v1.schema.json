@@ -11,49 +11,16 @@
     "contract": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["frozen_at", "candidate_id", "protocol", "thresholds", "roster", "identity", "supported_backend"],
+      "required": ["frozen_at", "candidate_id", "protocol", "thresholds", "roster", "identity", "supported_backend", "reference_runtime_sha256"],
       "properties": {
         "frozen_at": {"type": "string", "format": "date-time"},
         "candidate_id": {"enum": ["DA2", "A2-392"]},
         "protocol": {"$ref": "#/$defs/versionedBinding"},
-        "thresholds": {
-          "allOf": [
-            {"$ref": "#/$defs/versionedBinding"},
-            {
-              "type": "object",
-              "required": ["values"],
-              "properties": {
-                "values": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "required": ["false_clear", "false_block", "known_coverage", "clearance_error", "transition_consistency", "max_reference_parity_error"],
-                  "properties": {
-                    "false_clear": {"$ref": "#/$defs/finiteNumber"},
-                    "false_block": {"$ref": "#/$defs/finiteNumber"},
-                    "known_coverage": {"$ref": "#/$defs/finiteNumber"},
-                    "clearance_error": {"$ref": "#/$defs/finiteNumber"},
-                    "transition_consistency": {"$ref": "#/$defs/finiteNumber"},
-                    "max_reference_parity_error": {"$ref": "#/$defs/finiteNumber"}
-                  }
-                }
-              }
-            }
-          ]
-        },
-        "roster": {
-          "allOf": [
-            {"$ref": "#/$defs/versionedBinding"},
-            {
-              "type": "object",
-              "required": ["roles"],
-              "properties": {
-                "roles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
-              }
-            }
-          ]
-        },
+        "thresholds": {"$ref": "#/$defs/thresholdBinding"},
+        "roster": {"$ref": "#/$defs/rosterBinding"},
         "identity": {"$ref": "#/$defs/identity"},
-        "supported_backend": {"type": "string", "minLength": 1}
+        "supported_backend": {"type": "string", "minLength": 1},
+        "reference_runtime_sha256": {"$ref": "#/$defs/sha256"}
       }
     },
     "observed": {
@@ -76,15 +43,15 @@
               "required": ["runtime_sha256", "measured_max_abs_error"],
               "properties": {
                 "runtime_sha256": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
-                "measured_max_abs_error": {"anyOf": [{"$ref": "#/$defs/finiteNumber"}, {"type": "null"}]}
+                "measured_max_abs_error": {"anyOf": [{"$ref": "#/$defs/nonnegativeFiniteNumber"}, {"type": "null"}]}
               }
             },
-            "cold_start_ms": {"anyOf": [{"$ref": "#/$defs/finiteNumber"}, {"type": "null"}]},
-            "warm_start_ms": {"anyOf": [{"$ref": "#/$defs/finiteNumber"}, {"type": "null"}]},
-            "latency_p50_ms": {"anyOf": [{"$ref": "#/$defs/finiteNumber"}, {"type": "null"}]},
-            "latency_p95_ms": {"anyOf": [{"$ref": "#/$defs/finiteNumber"}, {"type": "null"}]},
-            "peak_memory_mb": {"anyOf": [{"$ref": "#/$defs/finiteNumber"}, {"type": "null"}]},
-            "thermal_window_seconds": {"anyOf": [{"$ref": "#/$defs/finiteNumber"}, {"type": "null"}]}
+            "cold_start_ms": {"anyOf": [{"$ref": "#/$defs/nonnegativeFiniteNumber"}, {"type": "null"}]},
+            "warm_start_ms": {"anyOf": [{"$ref": "#/$defs/nonnegativeFiniteNumber"}, {"type": "null"}]},
+            "latency_p50_ms": {"anyOf": [{"$ref": "#/$defs/nonnegativeFiniteNumber"}, {"type": "null"}]},
+            "latency_p95_ms": {"anyOf": [{"$ref": "#/$defs/nonnegativeFiniteNumber"}, {"type": "null"}]},
+            "peak_memory_mb": {"anyOf": [{"$ref": "#/$defs/nonnegativeFiniteNumber"}, {"type": "null"}]},
+            "thermal_window_seconds": {"anyOf": [{"$ref": "#/$defs/nonnegativeFiniteNumber"}, {"type": "null"}]}
           }
         }
       }
@@ -110,7 +77,7 @@
       "properties": {
         "decision": {"const": "DENIED"},
         "authorized_scopes": {"type": "array", "maxItems": 0},
-        "reason_codes": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+        "reason_codes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
       }
     },
     "admission": {
@@ -129,17 +96,49 @@
   "$defs": {
     "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "finiteNumber": {"type": "number"},
+    "nonnegativeFiniteNumber": {"type": "number", "minimum": 0},
     "versionedBinding": {
-      "type": "object",
+      "type": "object", "additionalProperties": false,
       "required": ["version", "sha256"],
+      "properties": {"version": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/sha256"}}
+    },
+    "thresholdBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["version", "sha256", "values"],
       "properties": {
         "version": {"type": "string", "minLength": 1},
-        "sha256": {"$ref": "#/$defs/sha256"}
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "values": {
+          "type": "object", "additionalProperties": false,
+          "required": ["false_clear", "false_block", "known_coverage", "clearance_error", "transition_consistency", "max_reference_parity_error", "max_cold_start_ms", "max_warm_start_ms", "max_latency_p50_ms", "max_latency_p95_ms", "max_peak_memory_mb", "min_thermal_window_seconds"],
+          "properties": {
+            "false_clear": {"$ref": "#/$defs/nonnegativeFiniteNumber"},
+            "false_block": {"$ref": "#/$defs/nonnegativeFiniteNumber"},
+            "known_coverage": {"$ref": "#/$defs/nonnegativeFiniteNumber"},
+            "clearance_error": {"$ref": "#/$defs/nonnegativeFiniteNumber"},
+            "transition_consistency": {"$ref": "#/$defs/nonnegativeFiniteNumber"},
+            "max_reference_parity_error": {"$ref": "#/$defs/nonnegativeFiniteNumber"},
+            "max_cold_start_ms": {"$ref": "#/$defs/nonnegativeFiniteNumber"},
+            "max_warm_start_ms": {"$ref": "#/$defs/nonnegativeFiniteNumber"},
+            "max_latency_p50_ms": {"$ref": "#/$defs/nonnegativeFiniteNumber"},
+            "max_latency_p95_ms": {"$ref": "#/$defs/nonnegativeFiniteNumber"},
+            "max_peak_memory_mb": {"$ref": "#/$defs/nonnegativeFiniteNumber"},
+            "min_thermal_window_seconds": {"$ref": "#/$defs/nonnegativeFiniteNumber"}
+          }
+        }
+      }
+    },
+    "rosterBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["version", "sha256", "roles"],
+      "properties": {
+        "version": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "roles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
       }
     },
     "identity": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["model_sha256", "export_sha256", "preprocess_sha256", "postprocess_sha256", "input_manifest_sha256"],
       "properties": {
         "model_sha256": {"$ref": "#/$defs/sha256"},
@@ -150,8 +149,7 @@
       }
     },
     "nullableIdentity": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["model_sha256", "export_sha256", "preprocess_sha256", "postprocess_sha256", "input_manifest_sha256"],
       "properties": {
         "model_sha256": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
@@ -162,44 +160,39 @@
       }
     },
     "qualityMetrics": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["false_clear", "false_block", "known_coverage", "clearance_error", "transition_consistency"],
       "properties": {
-        "false_clear": {"$ref": "#/$defs/finiteNumber"},
-        "false_block": {"$ref": "#/$defs/finiteNumber"},
-        "known_coverage": {"$ref": "#/$defs/finiteNumber"},
-        "clearance_error": {"$ref": "#/$defs/finiteNumber"},
-        "transition_consistency": {"$ref": "#/$defs/finiteNumber"}
+        "false_clear": {"$ref": "#/$defs/nonnegativeFiniteNumber"},
+        "false_block": {"$ref": "#/$defs/nonnegativeFiniteNumber"},
+        "known_coverage": {"$ref": "#/$defs/nonnegativeFiniteNumber"},
+        "clearance_error": {"$ref": "#/$defs/nonnegativeFiniteNumber"},
+        "transition_consistency": {"$ref": "#/$defs/nonnegativeFiniteNumber"}
       }
     },
+    "metricSums": {"$ref": "#/$defs/qualityMetrics"},
     "aggregate": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["denominator", "metrics"],
-      "properties": {
-        "denominator": {"type": "integer", "minimum": 1},
-        "metrics": {"$ref": "#/$defs/qualityMetrics"}
-      }
+      "properties": {"denominator": {"type": "integer", "minimum": 1}, "metrics": {"$ref": "#/$defs/qualityMetrics"}}
     },
     "parentSession": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["parent_id", "session_id", "denominator", "metrics"],
+      "type": "object", "additionalProperties": false,
+      "required": ["parent_id", "session_id", "denominator", "metric_sums", "metrics"],
       "properties": {
         "parent_id": {"type": "string", "minLength": 1},
         "session_id": {"type": "string", "minLength": 1},
         "denominator": {"type": "integer", "minimum": 1},
+        "metric_sums": {"$ref": "#/$defs/metricSums"},
         "metrics": {"$ref": "#/$defs/qualityMetrics"}
       }
     },
     "subDecision": {
-      "type": "object",
-      "additionalProperties": false,
+      "type": "object", "additionalProperties": false,
       "required": ["decision", "reason_codes"],
       "properties": {
         "decision": {"enum": ["PASS", "FAIL", "UNKNOWN"]},
-        "reason_codes": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+        "reason_codes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
       }
     }
   }
