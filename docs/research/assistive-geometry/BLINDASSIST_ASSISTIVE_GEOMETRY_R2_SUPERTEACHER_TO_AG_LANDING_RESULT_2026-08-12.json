@@ -1,0 +1,128 @@
+{
+  "schema": "blindassist_assistive_geometry_r2_superteacher_to_ag_landing_result_v1",
+  "result_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_SUPERTEACHER_TO_AG_LANDING_RESULT_2026-08-12",
+  "status": "AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS",
+  "passed": true,
+  "evidence_role": {
+    "mode": "BOUNDED_ONE_TIME_RESEARCH_CONFIRMATION",
+    "parent_id": "rgbd_dataset_freiburg3_sitting_rpy",
+    "current_recipe_checkpoint_unseen": true,
+    "globally_unopened": false,
+    "baseline_comparison_gate": false,
+    "task_or_reducer_outcome_used_for_training_selection_or_calibration": false
+  },
+  "superteacher_data_line": {
+    "result_path": "artifacts.local/experiments/ag-r2-tum-sitting-rpy-final-confirmation-labels-r0/result.json",
+    "result_sha256": "405201F53F17AD30E97D3DAFE0CF092A81CB5054DD06197F1DA16B15C169C56E",
+    "frame_count": 12,
+    "metric_depth_tier": "A_SOURCE_NATIVE",
+    "support_boundary_tier": "B_GEOMETRY_ANCHORED_DERIVATION",
+    "complete_truth_required": false,
+    "unknown_is_negative": false,
+    "coverage": {
+      "metric_depth_valid_pixels": 2257443,
+      "support_valid_pixels": 2178147,
+      "support_positive_pixels_ge_0_5": 157455,
+      "evidence_valid_pixels": 2210897,
+      "boundary_seed_pixels": 32801
+    },
+    "gates_passed": 8,
+    "gates_total": 8
+  },
+  "factor_recipe": {
+    "metric_student_result_sha256": "F0703357B0F25C7ABF209EE53DE9B04E588BEDE3629C1B1F5273D9E31D41BFF3",
+    "metric_student_checkpoint_sha256": "980B26D16659BF1AAF47C64C5CBAC63A5E91D60573E93AD23190DFF3BB67E4B7",
+    "factor_student_checkpoint_sha256": "22F9E14C33EAE450874E097A4C8AC3DDFAFBAA6E50FE6EBB4A8415C5AC0613DE",
+    "metric_scale_residual_bank_result_sha256": "68188B00FB4951771443B4706526F6BAAED1AA85E77C4AE4D73958600AB4C0E5",
+    "metric_scale_residual_bank_sha256": "D6B8BE961A9576309097842D264791CD74F74B52B33CD97B0842DDBA47EEC88E",
+    "factor_tensor_adapter_v2_prerequisite_result_sha256": "106E64706632D19BF327513DE927A8BA68277F800F66DA3379EB2298EE724528",
+    "frozen_hybrid_recipe_result_sha256": "5077213EA3B5B0CF0186E755BF1D0FDDF8C25DBB65D415E3A05263A6780A9720",
+    "learned_final_task_head": false
+  },
+  "session_metric_scale_anchor": {
+    "calibration_parent": "rgbd_dataset_freiburg3_walking_xyz",
+    "calibration_result_path": "artifacts.local/experiments/ag-r2-session-metric-scale-anchor-calibration-r0/result.json",
+    "calibration_result_sha256": "12F6AF0D80A3CBF25204D507FE8065B49AAFC6332DD75C57D97D8816D76D1A06",
+    "selected_estimator": "weighted_quantile",
+    "selected_quantile": 0.75,
+    "selected_support_threshold": 0.0,
+    "metric_scale_log_sigma_q90": 0.2606886035091166,
+    "mean_unanchored_log_rmse": 0.41256480469370693,
+    "mean_anchored_log_rmse": 0.2823115132090376,
+    "relative_improvement": 0.31571595541546726,
+    "gates_passed": 6,
+    "gates_total": 6,
+    "sitting_rpy_source_native_session_geometry_used_once": true,
+    "task_or_reducer_outcome_used": false
+  },
+  "consumed_development_prerequisite": {
+    "result_path": "artifacts.local/experiments/ag-r2-tum-walking-xyz-session-anchored-consumed-seam-r0/result.json",
+    "result_sha256": "D1688247CC6ABCCA9941FED34DCF5ADA7C5B22226FD6834C511C613CD8003377",
+    "structurally_valid_frames": 12,
+    "state_counts": {
+      "CLEAR_OBSERVED": 12,
+      "UNKNOWN": 96
+    },
+    "gates_passed": 11,
+    "gates_total": 11,
+    "confirmation_authority": false
+  },
+  "final_ag_seam": {
+    "result_path": "artifacts.local/experiments/ag-r2-tum-sitting-rpy-session-anchored-final-seam-r0/result.json",
+    "result_sha256": "A0D15EC9278E2BB766A5ECCD596F6EDE2793CBA8E1B7BFECB1D0853D11817886",
+    "frame_count": 12,
+    "factor_tensor_count": 12,
+    "valid_adapter_frame_count": 12,
+    "deterministic_reducer_frame_count": 12,
+    "body_swept_cell_count": 108,
+    "state_counts": {
+      "CLEAR_OBSERVED": 18,
+      "UNKNOWN": 90
+    },
+    "reason_counts": {
+      "GEOMETRY_INTERVAL_STRADDLES_DECISION": 90,
+      "NO_POSSIBLE_OCCUPANCY_WITHIN_HORIZON": 18
+    },
+    "gates_passed": 11,
+    "gates_total": 11,
+    "targets_loaded_during_inference": false,
+    "recipe_reopened_or_retuned": false
+  },
+  "preserved_negative_evidence": [
+    {
+      "result_path": "artifacts.local/experiments/ag-r2-tum-walking-xyz-final-ag-seam-r1-recovery/result.json",
+      "result_sha256": "BEA5F85A9C38BAB0A8EA8DCE81C8E851BABB1C2E01D7A65F82EFF14C2CCA0A96",
+      "status": "FROZEN_FAIL",
+      "reason": "Unanchored metric scale caused 11 of 12 frames to lose valid support and all 108 cells to remain UNKNOWN."
+    },
+    {
+      "result_path": "artifacts.local/experiments/ag-r2-post-walking-multisource-metric-depth-student-r0/result.json",
+      "result_sha256": "C33A05EC4E732957EAE3158AFE2CA177252556C48F3833D3CD9659AF89DE214E",
+      "status": "AG_R2_MULTISOURCE_METRIC_DEPTH_STUDENT_FAIL",
+      "reason": "Naive global ERM extension degraded the frozen selection role and was not promoted."
+    }
+  ],
+  "implementation_receipts": {
+    "final_runner_sha256": "1018EE9E250C56BD6EDBD3DF9DA79B35D6328A85B746F32752DF4899D87FCD2F",
+    "factor_tensor_adapter_v2_sha256": "FAD94DB95E9400D7994011F819DE0BBA0017C205C3EFBB0A89A209236AA3ADEE",
+    "deterministic_geometry_reducer_sha256": "2D6C26AD75B98911FD610FE0428D47584C877BA9AC7F091F768D98C035932092",
+    "hybrid_factor_builder_sha256": "AAE3B799620146A34B86FC8E6B24E20746C40C167E89B3F615A4D7AFBAE4EB2E",
+    "session_anchor_calibrator_sha256": "3F50D9E0AE781203ABB6EAC452C071873861CB00F124320BE0A24998F4C0EF0C",
+    "sitting_rpy_label_wrapper_sha256": "5530B2EFD94078FDABC815E052C3CEA877718A73DBD433F9AB5D24D4BEE50E84"
+  },
+  "artifact_audit": {
+    "hash_checks_passed": 48,
+    "hash_checks_total": 48,
+    "code_model_calibration_and_frame_artifact_hashes_exact": true
+  },
+  "decision": {
+    "superteacher_data_branch_complete": true,
+    "learned_factor_to_adapter_v2_to_deterministic_reducer_landed": true,
+    "formal_attempt17_negative_rewritten": false,
+    "default_app_changed": false,
+    "mobile_or_htp_claim": false,
+    "product_or_safety_claim": false,
+    "next_work": "Freeze one independent cross-sensor factor-accuracy confirmation; do not retune on walking_xyz or sitting_rpy and do not require an arbitrary baseline win."
+  },
+  "claim_ceiling": "Research-pipeline mechanics on one current-recipe-checkpoint-unseen real TUM parent using a frozen consumed scale-anchor algorithm and one source-native session geometry factor. This is not global freshness, independent cross-sensor generalization, navigation utility, mobile or HTP deployment, product, or safety evidence."
+}

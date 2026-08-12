@@ -1,6 +1,6 @@
 # BlindAssist Assistive Geometry
 
-状态：`current / B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / FACTORTENSOR_ADAPTER_SYNTHETIC_CANARY_PASS / SUPERVISION_FRONTDOOR_UNSATISFIED / F1_EXECUTION_NOT_AUTHORIZED / ALL_CALIBRATION_AND_CONFIRMATION_SEALED / DEFAULT_APP_UNCHANGED`
+状态：`current / B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / FACTORTENSOR_ADAPTER_SYNTHETIC_CANARY_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / ALL_CALIBRATION_AND_CONFIRMATION_SEALED / DEFAULT_APP_UNCHANGED`
 
 本路线把 DepthART-S 从研究终点降为可替换的轻量 encoder/initialization 候选，核心问题改为：
 
@@ -71,6 +71,10 @@
 - [Geometry R2 F1-P machine protocol](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_TRAIN_ONLY_FACTOR_LEARNABILITY_PROTOCOL_LOCK_2026-08-10.json)
 - [Geometry R2 F1-P lock result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_PROTOCOL_LOCK_RESULT_2026-08-10.md)
 - [Geometry R2 F1-P machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_PROTOCOL_LOCK_RESULT_2026-08-10.json)
+- [Geometry R2 F1 source/continuous-label/provenance/role contract](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_SUPERVISION_SOURCE_AND_LABEL_CONTRACT_LOCK_2026-08-11.json)
+- [Geometry R2 F1 source-native label materialization and frontdoor result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_SOURCE_NATIVE_LABEL_MATERIALIZATION_AND_FRONTDOOR_RESULT_2026-08-11.json)
+- [AG-ST direct SuperTeacher-to-AG real seam result](BLINDASSIST_AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_RESULT_2026-08-12.json)
+- [Geometry R2 SuperTeacher-to-AG final V2 landing result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_SUPERTEACHER_TO_AG_LANDING_RESULT_2026-08-12.json)
 - [Geometry R2 F1 FactorTensorAdapter gap audit](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_GAP_AUDIT_2026-08-10.md)
 - [Geometry R2 F1 FactorTensorAdapter machine audit](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_GAP_AUDIT_2026-08-10.json)
 - [Geometry R2 F1 FactorTensorAdapter protocol lock](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_PROTOCOL_LOCK_2026-08-10.md)
@@ -114,11 +118,37 @@
 
 ## 唯一 successor
 
-`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_SUPERVISION_SOURCE_AND_LABEL_CONTRACT_LOCK`
+`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_LOCK`
 
-该 successor 当前 execution authority=false，只允许另行冻结 pre-outcome supervision source/label
-contract；不得物化标签、读取真实 task outcome、定义模型、训练或分配 R2 Development，也不得启动
-teacher / temporal / mobile。adapter PASS 只移除了 deterministic tensor-to-frame seam blocker。
+SuperTeacher 数据前门、direct reference seam 和 learned-factor V2 seam 已分别闭合。最终一次性
+`sitting_rpy` 链路使用当前 recipe/checkpoint 从未使用的真实 parent；推理不加载标签，以冻结的
+session-height metric-scale anchor、`FactorTensorAdapterV2` 和未改动 reducer 得到 `12/12` valid frames、
+`18 CLEAR / 90 UNKNOWN`、11/11 gates PASS。它不改写 Attempt17 和无锚 walking_xyz 的冻结负结果，也不以
+任意 baseline 胜负作为成功条件。唯一后续只允许先冻结一个独立传感器域的 factor-level accuracy、coverage、
+UNKNOWN 和一次性 session geometry 合同；不得在 walking_xyz/sitting_rpy 上继续调参或用 reducer state 选模型。
+
+## 2026-08-12 SuperTeacher → AG 真实闭环
+
+[冻结结果](BLINDASSIST_AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_RESULT_2026-08-12.json)把两件事明确分开：
+
+- SuperTeacher 数据支线已经完成可执行交付：source depth/K/pose 提供米制锚，确定性几何生成
+  support/boundary；不完整区域保留为带高方差与半概率的 Tier C evidence，而不是伪造真值。
+- AG 已在真实 source-anchored factors 上贯通
+  `factor tensor -> FactorTensorAdapter -> deterministic body-swept reducer`。输出同时出现
+  CLEAR、OCCUPIED 与 UNKNOWN，且 12 帧重复执行哈希完全一致。
+- Attempt17 learned student 只是已冻结的压缩负结果；它不再阻塞 SuperTeacher reference 或
+  deterministic AG mechanics，也不能被改写成该 Attempt 成功。
+
+[最终 V2 落地结果](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_SUPERTEACHER_TO_AG_LANDING_RESULT_2026-08-12.json)
+进一步把 learned metric/factor recipe 接到新 parent：无锚 walking_xyz 首次执行因 metric scale 与 support
+失效而 108/108 UNKNOWN，保留为负结果；随后只从 factor depth 标签选择一个确定性 camera-height
+quantile anchor，在已消费 walking_xyz 上使 mean log-RMSE 从 `0.4126` 降到 `0.2823`，再原样冻结到
+checkpoint-unseen `sitting_rpy`。最终 12 个 factor tensors、adapter frames 和 reducer outputs 全部哈希复核，
+12/12 结构有效且重复执行一致；90 个 interval-straddle cell 继续 UNKNOWN，没有被填成 negative。
+
+该 PASS 的上限是“单个 current-recipe-checkpoint-unseen TUM parent 上的 research-pipeline mechanics 已落地”。
+它不是全局 fresh、跨传感器泛化、导航效用、HTP、Android 默认路径、产品或安全证明；正式 F1 历史终态、
+协议字节与角色权限也不因该并行落地结果被改写。
 
 ARKitScenes `16/8/8` visit/video-disjoint roster 与 9,600-frame integrity 已冻结；B0 reader 又以
 6 个 TRAIN 视频、157 个 AppleDepth/FARO exact-timestamp 对照和主 TRAIN 的 480 个固定 stride
@@ -160,9 +190,13 @@ F1 协议，不构成 factor learnability 或真实任务收益证据。
 F1-P 现已冻结 14 个 factor prediction 字段、13 个独立 loss、`8/2/2` parent-disjoint
 FIT/CHECKPOINT_SELECTION/TRAIN_CANARY 最低角色、factor-only checkpoint Pareto 规则与 8 项 Kill Gate；
 aggregate loss 和 reducer/task metric 均不能选 checkpoint 或拯救 factor failure。AG-DCA 只读能力矩阵
-同时证明当前监督前门未闭合：metric-depth 有 `4,767/16` 支持，但 support 仅 `320/11`，continuous
-boundary truth 与 complete R2 factor schema truth 均为 `0/0`。因此 F1-P 终态是协议已冻结、执行未授权；
-本轮没有 label materializer、factor model、trainer、optimizer step 或 checkpoint。
+同时证明协议冻结时监督前门未闭合：metric-depth 有 `4,767/16` 支持，但 support 仅 `320/11`，
+continuous boundary truth 与 complete R2 factor schema truth 均为 `0/0`。2026-08-11 的独立 successor
+现已关闭“监督来自哪里、如何连续派生、如何分角色、uncertainty 是否回归 proxy”四个合同缺口：正式
+F1 只接收 TUM source-native depth/K/pose/accelerometer 及其确定性几何闭包；AG-ST R22 proxy 只作
+诊断，sigma 通过 held residual proper score 相对 FIT-only homoscedastic baseline 学习。运行结果现已证明
+标签真实存在且九项 supervision frontdoor 满足；该结果本身仍不授权 optimizer，必须先冻结独立的
+F1 factor-learnability execution lock。
 其后静态接口审计确认 F1 tensor 不能直接喂给 F0 reducer：dense `depth_log_sigma_hw` 没有变成
 scalar `scale_sigma_m` 的冻结规则，support 缺 `normal_sigma_rad/height_sigma_m`，dense boundary/evidence
 没有变成 ordered metric obstacle list 的规则，camera receipt 也没有逐字段 frame binding。当前已完成其
@@ -179,7 +213,7 @@ clearance/TTC/compute-gate 输出；单帧候选与新时序 cohort 未就绪，
 移动 M0 只冻结选模后的双 shape ONNX、单 fixed-mixed HTP 候选、新 MOBILE_DEVELOPMENT roster 与
 “质量先于性能”门；当前无选定模型、转换、HTP partition 或任务保持证据。
 
-## AG-ST R0 selective labelability handoff（不改变 successor）
+## AG-ST WILD_LAB selective labelability handoff（正式 successor 已转入 source-native materialization）
 
 AG-ST R0 已冻结为独立并行的 `WILD_LAB / DISCOVERY` 诊断问题：不是让超级 Teacher 直接造
 truth，而是用 source anchor 与隐藏的 registered geometry，研究一个跨未见 parent 的
@@ -576,9 +610,12 @@ expert，再训练 no-regret selector 预测 `error(corrected) < error(base)`；
 这需要至少第三个 metric RGB-D sensor domain，而不是继续在 Bonn EVAL 上调 gate。
 
 这些文件是分级 pseudo-label，不是完整 truth；uncertainty 字段仍是 proxy，dense normal 仍是派生诊断。
-它们足以启动 WILD_LAB masked training，但不把当前正式 `SUPERVISION_FRONTDOOR_UNSATISFIED`、F1、
-跨数据源泛化或 safety 改成 PASS。当前 WILD_LAB 角色合计已消费 52 个互异 ARKitScenes parent；它们
-不能再次被称为 fresh evaluation，下一轮确认必须使用仍未消费的 parent/source。
+它们足以支撑 WILD_LAB masked training，但不直接进入正式 F1。当前 WILD_LAB 角色合计已消费 52 个
+互异 ARKitScenes parent，不能再次被称为 fresh evaluation。正式
+[F1 supervision contract](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_SUPERVISION_SOURCE_AND_LABEL_CONTRACT_LOCK_2026-08-11.json)
+因此另锁 13 个仓库此前零使用的 TUM 环境 parent，只允许 source-native depth/K/pose/accelerometer 的
+确定性几何闭包进入 F1，明确排除 Teacher 像素和 R22 uncertainty proxy target。frontdoor 必须在物化后
+达到至少 12 个 joint-factor parent 且 held roles 全覆盖，才可能另锁模型与 optimizer。
 
 ## 并行 WILD_LAB 数学 canary handoff（不改变 successor）
 

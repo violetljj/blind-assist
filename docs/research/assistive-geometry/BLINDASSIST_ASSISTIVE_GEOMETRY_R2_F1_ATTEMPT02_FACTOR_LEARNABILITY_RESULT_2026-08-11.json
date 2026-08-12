@@ -1,0 +1,64 @@
+{
+  "schema": "blindassist_assistive_geometry_r2_f1_attempt02_factor_learnability_result_record_v1",
+  "result_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT02_FACTOR_LEARNABILITY_RESULT_2026-08-11",
+  "frozen_at": "2026-08-11",
+  "status": "R2_F1_ATTEMPT02_FAIL_8_OF_10_PRIMARY_SUPPORT_GEOMETRY_REQUIRED",
+  "runtime_result": {
+    "path": "artifacts.local/experiments/ag-r2-f1-factor-learnability-attempt02-r0/result.json",
+    "sha256": "5D6194D8FC1BC947994A0191A7421D3286F49966C889171AF87B2C0C505E9B8A"
+  },
+  "execution": {
+    "seeds": [17, 29, 43],
+    "optimizer_steps_per_seed": 2400,
+    "all_composites_selection_eligible_before_canary_open": true,
+    "fresh_canary_parents": [
+      "rgbd_dataset_freiburg2_coke",
+      "rgbd_dataset_freiburg2_flowerbouquet"
+    ],
+    "fresh_canary_frames": 6
+  },
+  "canary_primary_result": {
+    "passed_metric_count_per_seed": 8,
+    "total_metric_count": 10,
+    "passed_for_all_seeds": [
+      "boundary_distance_abs_error_px",
+      "boundary_nll",
+      "depth_nll",
+      "depth_scale_abs_log_error",
+      "depth_shape_abs_log_error",
+      "obstacle_brier",
+      "support_brier",
+      "support_nll"
+    ],
+    "failed_for_all_seeds": [
+      "camera_height_abs_log_error",
+      "support_plane_angular_error_rad"
+    ],
+    "failure_pattern": "The RGB-only global heads were not parent-stable: camera height and support normal each failed the frozen positive-improvement requirement on at least one of two fresh parents for every seed."
+  },
+  "uncertainty_result": {
+    "proper_score_gain_positive_for_all_seeds_and_families": true,
+    "proper_score_gains": {
+      "17": {"depth": 0.3762745162, "support": 0.2653961182, "boundary": 0.3740067085},
+      "29": {"depth": 0.4749470757, "support": 0.2634306451, "boundary": 0.3320972125},
+      "43": {"depth": 0.6644437810, "support": 0.2710148593, "boundary": 0.3658138911}
+    },
+    "frame_mean_four_bin_monotonic_diagnostic_passed": false,
+    "interpretation": "The learned sigma fields improved their bound proper scores. The six-frame mean-sigma/four-bin diagnostic is too coarse to establish residual ordering and remains unproven; no uncertainty pass is claimed."
+  },
+  "decision": {
+    "attempt02_promoted": false,
+    "factor_tensors_serialized": false,
+    "reducer_or_task_outcome_read": false,
+    "preserve_without_retraining": [
+      "depth",
+      "support_probability",
+      "support_residual_uncertainty",
+      "obstacle_evidence",
+      "boundary_probability_and_localization_uncertainty"
+    ],
+    "attempt03_scope": "Replace only support normal and camera height with deployment-available gravity and deterministic depth/K/support geometry; evaluate uncertainty ordering at pixel granularity; use fresh parent-disjoint selection and canary sources."
+  },
+  "unique_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT03_GRAVITY_AND_SUPPORT_GEOMETRY_EXECUTION_LOCK",
+  "claim_boundary": "TRAIN-only factor learnability evidence. Eight factor/proper-score metrics transferred to two fresh parents; full F1 factor learnability, reducer utility, deployment, product and safety remain unproven."
+}

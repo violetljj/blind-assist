@@ -1,0 +1,66 @@
+{
+  "schema": "blindassist_ag_st_direct_teacher_to_ag_real_seam_frozen_result_v1",
+  "result_id": "BLINDASSIST_AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_RESULT_2026-08-12",
+  "status": "AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS",
+  "passed": true,
+  "superteacher_data_line": {
+    "label_result_path": "artifacts.local/experiments/ag-r2-f1-attempt17-pose-anchored-fresh-canary-labels-r1/result.json",
+    "label_result_sha256": "BD8379B653C5F492EC6F740959F1F1A2903A9170F7C9A0FD64CBBC264FD27260",
+    "parent_count": 4,
+    "frame_count": 12,
+    "metric_depth_tier": "A_SOURCE_NATIVE",
+    "support_boundary_tier": "B_GEOMETRY_ANCHORED_TEACHER",
+    "unsupported_completion_tier": "C_CONSERVATIVE_GEOMETRY_PSEUDO_EVIDENCE",
+    "tier_b_or_c_truth_claim": false,
+    "unknown_is_negative": false
+  },
+  "student_compression_line": {
+    "result_path": "artifacts.local/experiments/ag-r2-f1-attempt17-pose-anchored-fresh-canary-r0/result.json",
+    "result_sha256": "308E8CE6BB823ABDF1639E9A9D4AF89B9A84855ABB44BE60A99E7B69054B3072",
+    "status": "ATTEMPT17_FRESH_CANARY_FAIL_NO_PROMOTION",
+    "factor_tensor_count": 0,
+    "interpretation": "The compressed student is not promoted. This does not invalidate the source-anchored SuperTeacher data line or the direct deterministic AG seam."
+  },
+  "real_ag_seam": {
+    "implementation_path": "scripts/research/assistive_geometry/run_ag_st_direct_teacher_to_ag_real_seam.py",
+    "implementation_sha256": "590E67C2CE911C90F8B92B17756826287418BE5B6D98B0DEEA80BDBC388C5F6B",
+    "result_path": "artifacts.local/experiments/ag-st-direct-teacher-to-ag-real-seam-r4/result.json",
+    "result_sha256": "78A2265651948D9C1B26A237308E1B87B11F774275F79C011953C6C26E8A99DC",
+    "factor_tensor_count": 12,
+    "adapter_frame_count": 12,
+    "reducer_output_count": 12,
+    "body_swept_cell_count": 108,
+    "state_counts": {
+      "CLEAR_OBSERVED": 20,
+      "OCCUPIED_OBSERVED": 3,
+      "UNKNOWN": 85
+    },
+    "gates": {
+      "STAG_S01_ALL_SOURCE_LABEL_RECEIPTS_EXACT": true,
+      "STAG_S02_ALL_FACTOR_TENSORS_ROUNDTRIP": true,
+      "STAG_S03_ALL_ADAPTER_FRAMES_VALID": true,
+      "STAG_S04_TIER_C_COMPLETION_EXPLICIT": true,
+      "STAG_S05_REDUCER_DETERMINISTIC_12_OF_12": true,
+      "STAG_S06_NONTRIVIAL_REAL_STATES": true,
+      "STAG_S07_POSITIVE_EVIDENCE_PATH_EXERCISED": true,
+      "STAG_S08_NO_LEARNED_FINAL_TASK_HEAD": true
+    }
+  },
+  "targeted_validation": {
+    "test_path": "scripts/research/assistive_geometry/test_run_ag_st_direct_teacher_to_ag_real_seam.py",
+    "test_sha256": "2AD2F8D15159A2FCB393F78D07F2BB0D6E0F2DBCD7C8A59180F6E7EA5A9C3DEC",
+    "command": "E:\\codex-tools\\tools\\venvs\\blindassist-venv-export312\\Scripts\\python.exe -m unittest scripts.research.assistive_geometry.test_run_ag_st_direct_teacher_to_ag_real_seam scripts.research.assistive_geometry.test_factor_tensor_adapter scripts.research.assistive_geometry.test_geometry_r2_f0",
+    "tests_run": 23,
+    "passed": true
+  },
+  "decision": {
+    "superteacher_data_branch_complete": true,
+    "real_factor_to_adapter_to_reducer_mechanics_complete": true,
+    "learned_student_required_for_this_result": false,
+    "default_app_changed": false,
+    "deployment_claim": false,
+    "product_or_safety_claim": false,
+    "next_work": "Treat student learning as compression/distillation for mobile execution; preserve the direct SuperTeacher seam as the reference factor oracle and regression target."
+  },
+  "claim_ceiling": "Real source-anchored SuperTeacher factor mechanics through FactorTensorAdapter and the deterministic body-swept reducer. This is not mobile inference, HTP deployment, product or safety evidence."
+}

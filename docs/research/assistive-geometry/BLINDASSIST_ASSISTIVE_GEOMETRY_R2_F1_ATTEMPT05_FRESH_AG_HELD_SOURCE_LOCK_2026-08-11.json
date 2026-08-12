@@ -1,0 +1,97 @@
+{
+  "schema": "blindassist_assistive_geometry_r2_f1_attempt05_fresh_ag_held_source_lock_v1",
+  "lock_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT05_FRESH_AG_HELD_SOURCE_LOCK_2026-08-11",
+  "frozen_at": "2026-08-11",
+  "status": "ATTEMPT05_FRESH_AG_F1_HELD_LABEL_MATERIALIZATION_AUTHORIZED",
+  "question": "After calibrating only depth and boundary uncertainty on already-consumed AG F1 evidence, does the unchanged Attempt04 factor body transfer to new parent-disjoint AG F1 selection and canary parents?",
+  "predecessor": {
+    "result": {
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT04_CALIBRATED_FACTOR_RESULT_2026-08-11.json",
+      "sha256": "47EDDBFF11168B44A4DF30F995BCB36F370C69C06DC9D40D5D603FA415424A9B"
+    },
+    "runtime_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-factor-learnability-attempt04-r0/result.json",
+      "sha256": "DD44A01B1BF2547987BBAFEDAD1E1EDE751B867D8ACB8E2B60A2CE92FD5BE396"
+    },
+    "terminal": "PRIMARY_10_OF_10_PASS_DEPTH_AND_BOUNDARY_UNCERTAINTY_ORDERING_FAIL"
+  },
+  "assignment": {
+    "token": "AG_R2_F1_ATTEMPT05_FRESH_HELD_2026-08-11",
+    "candidate_roster_rule": "Use the four preexisting exact TUM archives with source-native RGB, registered depth, public pose and nonzero accelerometer evidence that have no prior AG R2 F1 factor-model optimizer or metric exposure. Sort SHA256(token + ':' + parent_id); first two are CHECKPOINT_SELECTION and last two are TRAIN_CANARY. Within each role the first slot is LANDSCAPE_IDENTITY and the second is PORTRAIT_ROT90_CLOCKWISE.",
+    "expected_archive_bytes": 3781885374,
+    "freshness_scope": "Fresh and parent-disjoint for AG R2 F1 factor training, calibration, selection and canary metrics. Prior read-only AG-ST teacher/source characterization is disclosed and is not claimed fresh."
+  },
+  "roles": {
+    "CHECKPOINT_SELECTION": [
+      {
+        "parent_id": "rgbd_dataset_freiburg1_xyz",
+        "family": "freiburg1",
+        "orientation": "LANDSCAPE_IDENTITY",
+        "assignment_sha256": "116B217DE0675D90479D8F2D18E2E12ADF8C4BFE389A08BFE81DF6E1FB1C239F",
+        "source_path": "artifacts.local/downloads/ag-st-tum-third-teacher-r2/rgbd_dataset_freiburg1_xyz.tgz",
+        "source_url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_xyz.tgz",
+        "source_bytes": 448204271,
+        "source_sha256": "A0236D97B8C30CD93B653656D2B6C293FF7C982A4130EF2A1A8BEECDB124EF98"
+      },
+      {
+        "parent_id": "rgbd_dataset_freiburg1_room",
+        "family": "freiburg1",
+        "orientation": "PORTRAIT_ROT90_CLOCKWISE",
+        "assignment_sha256": "6502F1ED7028B7527B6EBEAA110C3B0348895DA530B59F002654BC50DAA1E2CA",
+        "source_path": "artifacts.local/downloads/ag-st-tum-third-teacher-r2/rgbd_dataset_freiburg1_room.tgz",
+        "source_url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_room.tgz",
+        "source_bytes": 782381450,
+        "source_sha256": "5ACE47A1D2E53696BC939A84999293A04A7226958E848A609666691FD3CC38DA"
+      }
+    ],
+    "TRAIN_CANARY": [
+      {
+        "parent_id": "rgbd_dataset_freiburg2_xyz",
+        "family": "freiburg2",
+        "orientation": "LANDSCAPE_IDENTITY",
+        "assignment_sha256": "C9B619DF268315AC01993F1477C191F8D7A8F58BC762EB03F20B1D275CCB8A69",
+        "source_path": "artifacts.local/downloads/ag-st-tum-third-teacher-r2/rgbd_dataset_freiburg2_xyz.tgz",
+        "source_url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg2/rgbd_dataset_freiburg2_xyz.tgz",
+        "source_bytes": 2201854648,
+        "source_sha256": "A4903027A7FE6BC6573A1CE96A8AFA5689F15D74F4A3F0627E91B5799F62E40B"
+      },
+      {
+        "parent_id": "rgbd_dataset_freiburg1_desk2",
+        "family": "freiburg1",
+        "orientation": "PORTRAIT_ROT90_CLOCKWISE",
+        "assignment_sha256": "DCD502516FE2FB62B16C2E714C8F12C8CD676FDBE902651CD376332994371EFD",
+        "source_path": "artifacts.local/downloads/ag-st-tum-third-teacher-r2/rgbd_dataset_freiburg1_desk2.tgz",
+        "source_url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_desk2.tgz",
+        "source_bytes": 349445005,
+        "source_sha256": "A569E4CB453A3CD9285BC985FCB109E65F055C75B33A4B155ACD9A68D96B77D2"
+      }
+    ]
+  },
+  "source_eligibility_receipt": {
+    "required_archive_members": ["rgb.txt", "depth.txt", "groundtruth.txt", "accelerometer.txt"],
+    "all_four_required_members_present": true,
+    "all_four_nonzero_accelerometer": true,
+    "all_four_nonempty_groundtruth": true,
+    "model_prediction_or_factor_label_read_during_eligibility": false,
+    "prior_source_cohort": {
+      "path": "docs/research/assistive-geometry/BLINDASSIST_AG_ST_TUM_THIRD_TEACHER_COHORT_R2_2026-08-10.json",
+      "sha256": "65E022B08A7299CE53FAADF4CCF77D4B32D4AE933EDD08618F847F79664A4B58"
+    }
+  },
+  "source_and_label_contract": {
+    "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_SUPERVISION_SOURCE_AND_LABEL_CONTRACT_LOCK_2026-08-11.json",
+    "sha256": "166EA9ED5CA1C2234D14308FE43F8A9794BB76CAA29C19E551E1B42A804D5224"
+  },
+  "authority": {
+    "reuse_exact_preexisting_source_archives": true,
+    "materialize_twelve_source_native_label_payloads": true,
+    "validate_parent_level_joint_factor_denominators": true,
+    "read_checkpoint_selection_model_metrics": false,
+    "read_train_canary_model_or_baseline_metrics": false,
+    "optimizer_step": false,
+    "factor_tensor_adapter": false,
+    "reducer_or_task_outcome": false
+  },
+  "unique_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT05_FRESH_AG_HELD_LABEL_RESULT",
+  "claim_boundary": "Source-native label materialization only. The four parents are fresh for AG R2 F1 factor-model evidence, not globally unseen source payloads; no model, reducer, deployment, product or safety claim."
+}

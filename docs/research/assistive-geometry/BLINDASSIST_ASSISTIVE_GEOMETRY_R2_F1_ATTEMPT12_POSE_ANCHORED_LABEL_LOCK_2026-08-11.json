@@ -1,0 +1,83 @@
+{
+  "schema": "blindassist_ag_r2_f1_attempt12_pose_anchored_label_lock_v1",
+  "lock_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT12_POSE_ANCHORED_LABEL_LOCK",
+  "version": "2026-08-11.r0",
+  "status": "ATTEMPT12_POSE_ANCHORED_LABEL_MATERIALIZATION_AUTHORIZED_MODEL_EVALUATION_FORBIDDEN",
+  "question": "Can the already identity-frozen four-parent Freiburg3 cohort obtain complete Tier-B support and boundary supervision from source depth, source pose and an independently evidenced TUM +Z world-up anchor, without opening model outputs?",
+  "bindings": [
+    {
+      "id": "attempt12_source_lock",
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT12_FRESH_CANARY_SOURCE_LOCK_2026-08-11.json",
+      "sha256": "C1CBF186002B2450F73BC7564366AA74B006428CBB0DD4FC91E17796646D562F"
+    },
+    {
+      "id": "attempt12_source_only_result",
+      "path": "artifacts.local/experiments/ag-r2-f1-attempt12-fresh-canary-labels-r0/result.json",
+      "sha256": "FFB1E2CA36CA6918E9C197B453CE1B7860566B2C50CB7B24BFA024EEB5795B93",
+      "admitted_use": "SOURCE_IDENTITY_FRAME_IDENTITY_AND_CONFIRM_MODEL_OUTPUTS_UNOPENED"
+    },
+    {
+      "id": "source_native_anchor_evidence_tum13",
+      "path": "artifacts.local/experiments/ag-r2-f1-source-native-labels-tum13-r0/result.json",
+      "sha256": "521662011D72973BF604E9A190E65504DBAB455559A458AD412A6B8B1FC35422"
+    },
+    {
+      "id": "source_native_anchor_evidence_attempt05",
+      "path": "artifacts.local/experiments/ag-r2-f1-attempt05-fresh-ag-held-labels-r0/result.json",
+      "sha256": "4DBF0E85F45357C613221DF9F2C5A5E3B0971C314EB29D1967C02E0D6FAEB7CC"
+    },
+    {
+      "id": "source_native_anchor_evidence_attempt06",
+      "path": "artifacts.local/experiments/ag-r2-f1-attempt06-fresh-selection-labels-r0/result.json",
+      "sha256": "F67A9A000A4A82C180B9E875DEE976C80E00584AB8A6CEBCC603DFAAEE1E90A5"
+    },
+    {
+      "id": "pose_anchored_materializer",
+      "path": "scripts/research/assistive_geometry/materialize_ag_r2_f1_attempt12_pose_anchored_fresh_canary.py",
+      "sha256": "153AA9DE4E15A546759268BCC4B8436423E804F89A381740BC1A5E45AEFFC816"
+    }
+  ],
+  "frozen_cohort": {
+    "parent_count": 4,
+    "frame_count": 12,
+    "parent_and_frame_identity_rule": "Exactly reuse the Attempt12 source lock and its metadata-only selected frames; no parent or frame replacement is authorized.",
+    "parents": [
+      "rgbd_dataset_freiburg3_walking_static",
+      "rgbd_dataset_freiburg3_sitting_halfsphere",
+      "rgbd_dataset_freiburg3_teddy",
+      "rgbd_dataset_freiburg3_cabinet"
+    ]
+  },
+  "anchor_contract": {
+    "world_up_xyz": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "independent_evidence_rule": "Require exactly 18 prior source-native-gravity parents across the three bound results and require every parent world-up to be within 10 degrees of +Z.",
+    "per_frame_rule": "gravity_up_camera = transpose(R_camera_to_world) * [0,0,1], normalized.",
+    "support_identity_rule": "Reuse the frozen source-depth persistent lowest world-height mode derivation with the pose-conditioned gravity vector.",
+    "metric_depth_tier": "A_SOURCE_NATIVE",
+    "support_and_boundary_tier": "B_GEOMETRY_ANCHORED_TEACHER",
+    "truth_claim_for_tier_b": false,
+    "student_or_task_output_as_input": false
+  },
+  "prelock_evidence": {
+    "source_parent_and_frame_identities_opened": true,
+    "source_depth_pixels_opened_by_source_only_attempt": true,
+    "support_or_boundary_labels_available_before_this_lock": false,
+    "student_model_outputs_opened": false,
+    "reducer_or_task_outputs_opened": false,
+    "world_up_anchor_selected_from_canary_pixels": false
+  },
+  "execution_authority": {
+    "pose_anchored_label_materialization": true,
+    "joint_factor_coverage_check": true,
+    "model_evaluation": false,
+    "optimizer_use_of_attempt12_frames": false,
+    "factor_tensor_serialization": false,
+    "reducer_execution": false
+  },
+  "successor_if_label_frontdoor_passes": "Retrain every learned factor head on consumed parents only, freeze one exact full-factor checkpoint and calibration, then execute one outcome-sealed Attempt12 model canary.",
+  "claim_ceiling": "A Tier-A metric-depth plus Tier-B geometry-anchored SuperTeacher label cohort. It is not complete ground truth, model quality, AG reducer utility, deployment, product or safety evidence."
+}
