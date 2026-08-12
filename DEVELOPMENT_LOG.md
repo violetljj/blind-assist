@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。冻结 TARO O1R R11 exact bounded source download
+  one-shot execution lock，状态 `AUTHORIZED_UNCONSUMED`。锁绑定已推送 implementation commit
+  `399b53ec9cb28efca9512f5e541aee865a7a7e1a`、11 份代码/authorization/HEAD evidence、144-row
+  request-plan SHA、`2,960,390,828` source bytes、300 秒共享 asset deadline、14,400 秒全局 deadline、
+  最多 432 GET 与 64 MiB evidence ceiling；source/evidence 双 root 均保持 absent。内容 seal
+  `8C68922A667BEAFA457ECC1F73A8B8B109DB47FBAA7221CF811618E28AFB56B2` 已由 runner 完整复验。
+  本步 GET/source body/archive decode/source-frame decode/DepthART/FARO/truth/training 均为 0；唯一 successor
+  是在本锁提交推送且 `HEAD == origin/master` 后消费固定 argv 一次。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。正式启动 DepthART-S D3R1 Phase-B
   exact-64 body 与 source-truth-support 后，在第 `2/32` 身份、checkpoint 002 前按冻结 exact-frame
   coverage gate 停止：固定 stem `42898216_694900.389` 不在 source depth inventory。只形成 1 个完整
