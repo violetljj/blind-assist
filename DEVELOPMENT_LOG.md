@@ -2,6 +2,19 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。完成 TARO O1R R11 source inventory
+  implementation lock，正式 inventory 与科学结果仍 `NOT_RUN`。独立审计指出旧 materializer 的 `testzip()`
+  会解压读取包括 highres depth 在内的 member payload，不满足 sealed top-24 前 FARO payload read=0；正式实现
+  因此改为独立 central-directory-only API，只验证 ZIP 路径/symlink/encryption/compression/duplicate、声明尺寸、
+  声明 CRC、video/timestamp identity，并以 exact Decimal timestamp、intrinsics stem 和 source trajectory 形成
+  pose-bounded frame plan。测试将 `ZipFile.testzip/open/read` 设为调用即失败，8/8 inventory focused tests、compile 与
+  download-evidence record replay 通过。implementation 期间曾有一次无输出探针调用旧 `testzip()`；它未创建
+  formal root、未解码/返回/解释像素、未运行模型或产生 score/selection，但 member payload read 非零且未精确
+  计数，因此不作为正式 evidence，所得计数/hash 不进入 execution lock。唯一 successor 是另提交
+  `TARO_O1R_R11_FRESH_48_PARENT_SOURCE_INVENTORY_ONE_SHOT_EXECUTION_LOCK`；其 root 创建后才重验 144 source
+  files 并执行正式 inventory，member payload、DepthART、FARO value、truth、training、device、deployment、
+  product 与 safety 继续关闭。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。正式消费 TARO O1R R11 bounded source download
   Attempt 02。exact 48 Training parents × 3 assets 的 144/144 GET 全部首试成功，network GET/recovered
   asset 为 `144/0`；source 恰好 144 files / `2,960,390,828 bytes`，`.partial=0`，三类分项与 zero-body
