@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/violetljj/blind-assist/schemas/blindassist_yolo_export_receipt_v1.schema.json",
+  "title": "BlindAssist YOLO export provenance receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "receipt_id", "source", "exporter", "parameters", "artifacts", "inspection", "equivalence", "verdicts", "authority"],
+  "properties": {
+    "schema_version": {"const": "blindassist_yolo_export_receipt_v1"},
+    "receipt_id": {"type": "string", "minLength": 1},
+    "source": {"$ref": "#/$defs/source"},
+    "exporter": {"$ref": "#/$defs/exporter"},
+    "parameters": {"type": "object"},
+    "artifacts": {"$ref": "#/$defs/artifacts"},
+    "inspection": {"$ref": "#/$defs/inspection"},
+    "equivalence": {"$ref": "#/$defs/equivalence"},
+    "verdicts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["byte_reproducibility", "structural_equivalence", "numerical_equivalence"],
+      "properties": {
+        "byte_reproducibility": {"$ref": "#/$defs/verdict"},
+        "structural_equivalence": {"$ref": "#/$defs/verdict"},
+        "numerical_equivalence": {"$ref": "#/$defs/verdict"}
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["application_behavior", "accuracy", "accessibility_effectiveness", "product", "safety"],
+      "properties": {
+        "application_behavior": {"const": false},
+        "accuracy": {"const": false},
+        "accessibility_effectiveness": {"const": false},
+        "product": {"const": false},
+        "safety": {"const": false}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nullableSha256": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+    "nullableString": {"type": ["string", "null"]},
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["checkpoint_url", "immutable_revision", "checkpoint_sha256", "upstream_project", "license_expression", "license_evidence_ref"],
+      "properties": {
+        "checkpoint_url": {"$ref": "#/$defs/nullableString"},
+        "immutable_revision": {"$ref": "#/$defs/nullableString"},
+        "checkpoint_sha256": {"$ref": "#/$defs/nullableSha256"},
+        "upstream_project": {"$ref": "#/$defs/nullableString"},
+        "license_expression": {"$ref": "#/$defs/nullableString"},
+        "license_evidence_ref": {"$ref": "#/$defs/nullableString"}
+      }
+    },
+    "exporter": {
+      "type": "object", "additionalProperties": false,
+      "required": ["repository_commit", "script_sha256", "python_version", "platform", "lock_sha256", "packages"],
+      "properties": {
+        "repository_commit": {"$ref": "#/$defs/nullableSha256"},
+        "script_sha256": {"$ref": "#/$defs/nullableSha256"},
+        "python_version": {"$ref": "#/$defs/nullableString"},
+        "platform": {"$ref": "#/$defs/nullableString"},
+        "lock_sha256": {"$ref": "#/$defs/nullableSha256"},
+        "packages": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "artifact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "size_bytes", "sha256"],
+      "properties": {
+        "path": {"type": ["string", "null"]},
+        "size_bytes": {"type": ["integer", "null"], "minimum": 0},
+        "sha256": {"$ref": "#/$defs/nullableSha256"}
+      }
+    },
+    "artifacts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["checkpoint", "labels", "tflite", "pinned_tflite_sha256"],
+      "properties": {
+        "checkpoint": {"$ref": "#/$defs/artifact"},
+        "labels": {"$ref": "#/$defs/artifact"},
+        "tflite": {"$ref": "#/$defs/artifact"},
+        "pinned_tflite_sha256": {"$ref": "#/$defs/nullableSha256"}
+      }
+    },
+    "tensorContract": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["name", "shape", "dtype", "quantization"],
+        "properties": {
+          "name": {"type": "string"},
+          "shape": {"type": "array", "items": {"type": "integer"}},
+          "dtype": {"type": "string"},
+          "quantization": {"type": ["object", "null"]}
+        }
+      }
+    },
+    "inspection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["expected", "observed"],
+      "properties": {
+        "expected": {"$ref": "#/$defs/tensorContract"},
+        "observed": {"$ref": "#/$defs/tensorContract"}
+      }
+    },
+    "equivalence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["fixture_set_sha256", "denominator", "reference_runtime_sha256", "max_abs_error_bound", "outputs"],
+      "properties": {
+        "fixture_set_sha256": {"$ref": "#/$defs/nullableSha256"},
+        "denominator": {"type": ["integer", "null"], "minimum": 1},
+        "reference_runtime_sha256": {"$ref": "#/$defs/nullableSha256"},
+        "max_abs_error_bound": {"type": ["number", "null"]},
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["name", "max_abs_error"],
+            "properties": {"name": {"type": "string"}, "max_abs_error": {"type": ["number", "null"]}}
+          }
+        }
+      }
+    },
+    "verdict": {
+      "type": "object", "additionalProperties": false,
+      "required": ["decision", "reason_codes"],
+      "properties": {
+        "decision": {"enum": ["PASS", "FAIL", "UNKNOWN"]},
+        "reason_codes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}
+      }
+    }
+  }
+}
+

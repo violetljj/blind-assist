@@ -176,6 +176,7 @@ test_run_android_gradle.ps1
 test_validate_host_research_preflight.py
 test_validate_explicit_route_intent_episode.py
 test_validate_research_protocol.py
+test_validate_yolo_export_receipt.py
 test_validate_route_conditioned_event_truth.py
 evaluate_ustrf_sc_u0_teacher_upper_bound.py
 test_evaluate_ustrf_sc_u0_teacher_upper_bound.py
@@ -189,6 +190,7 @@ validate_explicit_route_intent_episode.py
 validate_host_research_preflight.py
 validate_information_ceiling_three_arm_d0.py
 validate_research_protocol.py
+validate_yolo_export_receipt.py
 validate_sanpo_counterfactual_episodes.py
 validate_ustrf_sc_capture_frame_ledger.py
 validate_sanpo_v3_dataset.py
