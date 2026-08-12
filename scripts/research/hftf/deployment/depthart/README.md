@@ -51,6 +51,8 @@ shim 已退役，统一从本目录导入。
 - `depthart_task_preserving_d3_bidirectional_router_canary.py` 以纯 CPU synthetic cases 验证 D3 的 CLEAR release、OCCUPIED veto、冲突转 UNKNOWN、hard-evidence veto 与 horizon-consistent composition；只具 mechanics authority，不读取数据、不训练也不授权候选
 - `plan_depthart_task_preserving_d3_fresh_metadata_roster.py` 从 pinned Apple split 读取 metadata，同时扫描当前 `docs/research`（含 untracked receipts）并按官方 identity 排除全部既有角色，再以固定 hash 顺序锁定 48 个 D3 metadata-only 候选；不请求媒体或读取 truth/model
 - `preflight_depthart_task_preserving_d3_phase_a_assets.py` 在 activation receipt、exact-48 roster、source scope 与 producer SHA 全部匹配后，只对 intrinsics/trajectory 执行 96 个 HEAD 并记录长度/ETag/Last-Modified；禁止 GET、archive/pose 内容和身份选择
+- `materialize_depthart_task_preserving_d3_phase_a.py` 对 exact 48 identity 的 96 个 intrinsics/trajectory body 执行 GET↔HEAD header、bytes/SHA、全 ZIP/`.pincam` 与 trajectory 校验，再按完整 pool order 计算严格 portrait/pose continuity；每 identity 有不可覆盖 checkpoint，少于 32 个合格时必须输出空 selection lock
+- `validate_depthart_task_preserving_d3_phase_a.py` 是预冻结的 PASS-only 离线 validator；Phase-A 合法 FAIL 暴露其 terminal-coverage 缺口后，原文件/hash 保持不变，`audit_depthart_task_preserving_d3_phase_a_terminal.py` 由 repair receipt 限定为只读全 48 body/checkpoint/continuity 复算。当前终态 `21/48` 合格、`0` role、Phase-B 未授权
 - `validate_depthart_task_preserving_r2_activation.py` 只检查 R2 pre-outcome activation manifest 的 cohort 角色、候选/reference 身份、固定任务门与旧 G4-D 排除项；它不读取模型输出，不激活执行，也不签署质量或部署结论
 - `plan_depthart_task_preserving_r2_arkit_roster.py` 在 Apple 官方 split CSV 上，以冻结 Git snapshot 排除全部既有 HFTF ARKit identity，再按固定哈希顺序锁定唯一 visit/session；只读元数据
 - `evaluate_depthart_task_preserving_r2_quality.py` 计算 reference/candidate 对独立 truth 的 pooled、parent-macro、session-macro 与 worst-parent 任务门；CLI 没有显式 activation receipt 会拒绝读取 outcome
