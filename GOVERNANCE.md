@@ -33,11 +33,36 @@ should be recorded publicly without exposing sensitive information.
 
 ## Becoming a maintainer
 
-Sustained contributors may be invited to maintain a bounded area after they
-have demonstrated reliable review, respect for evidence and privacy rules, and
-the ability to keep CI and documentation current. Access is expanded gradually
-and may be withdrawn if it is unused or puts users, contributors, or repository
-integrity at risk.
+Roles recognize demonstrated work; they are not rewards for stars, affiliation,
+or private relationships. Time and pull-request counts are minimum signals, not
+automatic promotion.
+
+| Role | Minimum evidence | Repository authority |
+| --- | --- | --- |
+| Contributor | First qualifying pull request merged | No special access |
+| Regular contributor | At least 3 merged pull requests across at least 4 weeks; responds to review and keeps scope verifiable | No special access; may be invited to own a follow-up issue |
+| Triager / reviewer | Repeatedly reproduces issues, classifies scope, or reviews changes accurately while respecting privacy and evidence boundaries | Bounded issue-triage or review responsibility; no release control |
+| Area maintainer | At least 2–3 months of sustained work, at least 5 high-quality merged pull requests, review of other contributors, and demonstrated understanding of the area's safety and evidence boundaries | Limited ownership through scoped `CODEOWNERS` or equivalent review responsibility |
+| Core maintainer | Sustained cross-module decisions plus participation in releases and security-incident handling | Release, security, and cross-module authority granted explicitly |
+
+The current maintainers evaluate quality, continuity, judgment, conflicts of
+interest, and the project's actual need before each invitation. A candidate may
+remain at a role without write access indefinitely; contribution quality is not
+measured only by code volume.
+
+Access is expanded gradually, scoped to the smallest necessary area, reviewed
+periodically, and may be withdrawn if it is unused or puts users, contributors,
+or repository integrity at risk. Maintainers with repository access must use an
+individual account with two-factor authentication, never share credentials, and
+follow protected-branch, pull-request, required-check, and no-force-push rules.
+Until a second trusted maintainer exists, a pull-request requirement may use zero
+mandatory approvals to avoid deadlocking the sole maintainer; required CI and the
+public review record still apply. The approval count should become at least one
+when an independent trusted reviewer can reliably satisfy it.
+
+After a contributor's first qualifying pull request merges, the maintainer should
+thank them in the relevant release notes and offer one bounded follow-up issue in
+the same area. This is an invitation to continue, not a promise of promotion.
 
 ## Project continuity
 

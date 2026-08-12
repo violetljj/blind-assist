@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。建立面向外部贡献者的社区增长入口：新增英文
+  三分钟 Quick Start、技术发布包、稳定 Android 架构图和“代码证据 → 设备证据 → 产品权限”边界图；发布包
+  明确要求真实设备连续录制与元数据，缺少设备时不得伪造演示或把截图/benchmark 包装成用户效果。治理规则
+  冻结 Contributor、Regular contributor、Triager/reviewer、Area maintainer、Core maintainer 的客观晋升阶梯，
+  仓库权限遵循个人账户 2FA、保护分支、PR、required checks 与禁止 force-push。社区招募目标为 Android
+  accessibility、on-device ML、Linux 构建复现和 reproducible evaluation 贡献者，不组织统一点 star；项目
+  公共利益意图对应 SDG 10，但不据此声称已经取得社会、用户或安全结果。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。依据用户对当前唯一 successor 的授权，完成
   Assistive Geometry R2 独立跨传感器 factor-level Confirmation 的非执行
   `CONTROL_FORMAT_AND_RUNTIME_BINDING_REPAIR_IMPLEMENTATION_LOCK`，科学状态保持 `NOT_RUN`。上一步

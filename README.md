@@ -11,7 +11,7 @@
   <p><strong>An Android prototype for on-device camera inference, accessible feedback, reproducible evaluation, and honest research boundaries.</strong></p>
   <p><strong>端侧助盲感知 Android 原型：本地推理、可复现评测、明确证据边界。</strong></p>
   <p>
-    <a href="#quick-start--快速开始"><strong>Build from source</strong></a> ·
+    <a href="docs/QUICKSTART_EN.md"><strong>3-minute Quick Start</strong></a> ·
     <a href="https://github.com/violetljj/blind-assist/releases/tag/v10.9.0"><strong>Download v10.9.0</strong></a> ·
     <a href="#architecture--架构">Architecture</a> ·
     <a href="#evidence-map--证据地图">Evidence</a> ·
@@ -73,6 +73,10 @@ BlindAssist publishes more than an Android demo. It exposes the maintenance and 
 Forward-looking research follows [`THESIS_FIRST_RESEARCH_GOVERNANCE_R4`](docs/research/dual-loop/README.md): `THESIS_DEVELOPMENT` and `PRODUCTION_PROMOTION` are separate lanes, and production promotion requires explicit scope.
 
 BlindAssist 不只公开演示代码，也公开构建、验证、模型来源、失败结果和维护流程，让贡献者能够真正复核和改进项目。完整说明见[开源公共价值](docs/OPEN_SOURCE_PUBLIC_VALUE.md)。
+
+The project's public-interest intent aligns with UN SDG 10, Reduced Inequalities,
+by making assistive Android engineering and its limitations inspectable. This is
+an intent and contribution direction, not evidence of user or social outcomes.
 
 ## Architecture / 架构
 
@@ -137,6 +141,9 @@ Synthetic, pseudo-labeled, or model-reviewed evidence is never promoted into dev
 
 ## Quick start / 快速开始
 
+New contributor? Start with the standalone
+[English three-minute Quick Start](docs/QUICKSTART_EN.md).
+
 The standard local entry point targets Windows 11 / PowerShell 7 with JDK 17 and Android SDK Platform 35. GitHub Actions continuously validates the Linux path; other environments are tracked in [contributor setup issue #7](https://github.com/violetljj/blind-assist/issues/7).
 
 ```powershell
@@ -161,6 +168,11 @@ python scripts/run_research_contract_tests.py
 
 Contributions are welcome in accessibility, Android engineering, documentation, tests, reproducible evaluation, license/provenance review, and evidence-bounded research tooling.
 
+For bounded starter tasks, use the
+[`good first issue` queue](https://github.com/violetljj/blind-assist/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22).
+Questions, introductions, and early ideas belong in
+[GitHub Discussions](https://github.com/violetljj/blind-assist/discussions).
+
 | Good public workstream | Starting point |
 | --- | --- |
 | Accessibility and TalkBack | [Audit the default flow #9](https://github.com/violetljj/blind-assist/issues/9) |
@@ -176,6 +188,8 @@ The project never asks contributors to commit raw camera footage, private data, 
 ## Project links / 项目入口
 
 - [Documentation index](docs/README.md)
+- [English three-minute Quick Start](docs/QUICKSTART_EN.md)
+- [Community launch kit](docs/COMMUNITY_LAUNCH_KIT.md)
 - [Code and build map](docs/CODE_MAP.md)
 - [Default model card](docs/MODEL_CARD.md)
 - [Codex maintainer automation](docs/CODEX_MAINTAINER_AUTOMATION.md)
