@@ -2,6 +2,17 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。登记 DepthART-S D3R1 exact-32
+  Phase-B depth/confidence source scope。新 receipt 精确绑定 Phase-A governed PASS、32 个 visit/session
+  的顺序与 9,600 个冻结 frame stems、D3/D3R1 protocols、manifest/offline validation 及 reviewed
+  ARKitScenes LICENSE SHA；仅覆盖 `lowres_depth.zip` 与 `confidence.zip` 共 64 assets 的 future
+  transport/source-integrity 与 source-truth-support admission。阈值保持 known `>=1800`、clear
+  `>=270`、occupied `>=900`、每 band-horizon clear/occupied `>=30`、valid band clearances `>=450`；
+  全 32 完整审计前不得形成 first-16 lock。本步只登记 scope、核验本地 hashes 与 selection digest，
+  没有发送 HEAD/GET/Range、没有读取 archive/depth/confidence、truth/model、RGB、角色、Development、
+  R2 或 outcome。唯一 successor 为
+  `EXPLICIT_D3R1_PHASE_B_DEPTH_CONFIDENCE_HEAD_ONLY_PREFLIGHT_ACTIVATION`；仍需单独激活 64 个零正文 HEAD。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。完成 DepthART-S D3R1 exact-127
   Phase-A intrinsics/trajectory body 与 label-blind continuity。新 D3R1 materializer 使用 NoRedirect
   GET、HEAD/GET 三头精确绑定、全池不可早停、3 位 checkpoint、连续前缀 resume 与 retained-source
