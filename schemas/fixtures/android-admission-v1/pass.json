@@ -1,72 +1,91 @@
 {
   "schema_version": "blindassist_android_research_preview_admission_v1",
-  "protocol_version": "1.0.0",
-  "run_id": "pass",
+  "run_id": "synthetic-pass",
   "contract": {
-    "frozen_at": "2026-08-12T12:00:00Z",
-    "candidate_id": "A2-392",
-    "model_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
-    "export_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
-    "preprocess_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
-    "postprocess_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
-    "input_manifest_sha256": "5555555555555555555555555555555555555555555555555555555555555555",
-    "input_shape": [
-      1,
-      392,
-      392,
-      3
-    ],
-    "state_reset": "reset before every parent/session",
+    "frozen_at": "2026-08-12T00:00:00Z",
+    "candidate_id": "DA2",
+    "protocol": {"version": "1.0.0", "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+    "thresholds": {
+      "version": "1.0.0",
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "values": {
+        "false_clear": 0.05,
+        "false_block": 0.05,
+        "known_coverage": 0.9,
+        "clearance_error": 0.1,
+        "transition_consistency": 0.9,
+        "max_reference_parity_error": 0.01
+      }
+    },
+    "roster": {
+      "version": "1.0.0",
+      "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "roles": ["protocol_owner", "independent_reviewer", "android_operator"]
+    },
+    "identity": {
+      "model_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "export_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "preprocess_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+      "postprocess_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+      "input_manifest_sha256": "5555555555555555555555555555555555555555555555555555555555555555"
+    },
     "supported_backend": "CPU"
+  },
+  "observed": {
+    "identity": {
+      "model_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "export_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "preprocess_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+      "postprocess_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+      "input_manifest_sha256": "5555555555555555555555555555555555555555555555555555555555555555"
+    },
+    "android": {
+      "observed_backend": "CPU",
+      "fallback_observed": false,
+      "fallback_backend": null,
+      "reference_parity": {
+        "runtime_sha256": "6666666666666666666666666666666666666666666666666666666666666666",
+        "measured_max_abs_error": 0.001
+      },
+      "cold_start_ms": 420.0,
+      "warm_start_ms": 95.0,
+      "latency_p50_ms": 80.0,
+      "latency_p95_ms": 120.0,
+      "peak_memory_mb": 250.0,
+      "thermal_window_seconds": 300.0
+    }
   },
   "evidence": {
     "complete": true,
-    "parent_session_disjoint": true,
     "opened_after_contract_freeze": true,
-    "denominators_complete": true,
-    "aggregates_finite": true,
-    "per_parent_session_reported": true,
-    "pooled_reported": true
-  },
-  "quality": {
-    "decision": "PASS",
-    "reason_codes": [],
-    "metrics": {
-      "false_clear": 0.01,
-      "false_block": 0.02,
-      "known_coverage": 0.95,
-      "clearance_error": 0.03,
-      "transition_consistency": 0.97
+    "parent_session_disjoint": true,
+    "parent_sessions": [
+      {
+        "parent_id": "synthetic-parent-a",
+        "session_id": "synthetic-session-a",
+        "denominator": 10,
+        "metrics": {"false_clear": 0.01, "false_block": 0.02, "known_coverage": 0.95, "clearance_error": 0.05, "transition_consistency": 0.96}
+      },
+      {
+        "parent_id": "synthetic-parent-b",
+        "session_id": "synthetic-session-b",
+        "denominator": 10,
+        "metrics": {"false_clear": 0.02, "false_block": 0.01, "known_coverage": 0.94, "clearance_error": 0.04, "transition_consistency": 0.95}
+      }
+    ],
+    "pooled": {
+      "denominator": 20,
+      "metrics": {"false_clear": 0.015, "false_block": 0.015, "known_coverage": 0.945, "clearance_error": 0.045, "transition_consistency": 0.955}
     }
   },
-  "android_feasibility": {
-    "decision": "PASS",
-    "reason_codes": [],
-    "requested_backend": "CPU",
-    "observed_backend": "CPU",
-    "fallback_observed": false,
-    "reference_parity_within_bound": true,
-    "cold_start_ms": 500,
-    "warm_start_ms": 120,
-    "latency_p50_ms": 30,
-    "latency_p95_ms": 45,
-    "peak_memory_mb": 180,
-    "thermal_window_seconds": 300
-  },
-  "product_authority": {
-    "decision": "DENIED",
-    "authorized_scopes": [],
-    "reason_codes": [
-      "RESEARCH_PREVIEW_DOES_NOT_GRANT_PRODUCT_AUTHORITY"
-    ]
-  },
+  "quality": {"decision": "PASS", "reason_codes": []},
+  "android_feasibility": {"decision": "PASS", "reason_codes": []},
+  "product_authority": {"decision": "DENIED", "authorized_scopes": [], "reason_codes": ["RESEARCH_PREVIEW_HAS_NO_PRODUCT_AUTHORITY"]},
   "admission": {
     "decision": "PASS",
     "authorized_scope": "ANDROID_RESEARCH_PREVIEW_ONLY",
     "terminal": true,
     "rescue_allowed": false,
-    "reason_codes": [
-      "ALL_RESEARCH_PREVIEW_GATES_PASSED"
-    ]
+    "reason_codes": ["ALL_RESEARCH_PREVIEW_GATES_PASSED"]
   }
 }
