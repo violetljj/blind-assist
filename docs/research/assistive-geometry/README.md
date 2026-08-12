@@ -1,6 +1,6 @@
 # BlindAssist Assistive Geometry
 
-状态：`current / B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / FACTORTENSOR_ADAPTER_SYNTHETIC_CANARY_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / ALL_CALIBRATION_AND_CONFIRMATION_SEALED / DEFAULT_APP_UNCHANGED`
+状态：`current / B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / FACTORTENSOR_ADAPTER_SYNTHETIC_CANARY_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_F2_FROZEN / CONFIRMATION_OUTCOMES_UNOPENED / DEFAULT_APP_UNCHANGED`
 
 本路线把 DepthART-S 从研究终点降为可替换的轻量 encoder/initialization 候选，核心问题改为：
 
@@ -75,6 +75,8 @@
 - [Geometry R2 F1 source-native label materialization and frontdoor result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_SOURCE_NATIVE_LABEL_MATERIALIZATION_AND_FRONTDOOR_RESULT_2026-08-11.json)
 - [AG-ST direct SuperTeacher-to-AG real seam result](BLINDASSIST_AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_RESULT_2026-08-12.json)
 - [Geometry R2 SuperTeacher-to-AG final V2 landing result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_SUPERTEACHER_TO_AG_LANDING_RESULT_2026-08-12.json)
+- [Geometry R2 cross-sensor factor confirmation data identity](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_DATA_IDENTITY_2026-08-12.json)
+- [Geometry R2 cross-sensor factor confirmation F2 lock](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_LOCK_2026-08-12.json)
 - [Geometry R2 F1 FactorTensorAdapter gap audit](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_GAP_AUDIT_2026-08-10.md)
 - [Geometry R2 F1 FactorTensorAdapter machine audit](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_GAP_AUDIT_2026-08-10.json)
 - [Geometry R2 F1 FactorTensorAdapter protocol lock](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_PROTOCOL_LOCK_2026-08-10.md)
@@ -118,14 +120,18 @@
 
 ## 唯一 successor
 
-`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_LOCK`
+`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK`
 
-SuperTeacher 数据前门、direct reference seam 和 learned-factor V2 seam 已分别闭合。最终一次性
-`sitting_rpy` 链路使用当前 recipe/checkpoint 从未使用的真实 parent；推理不加载标签，以冻结的
-session-height metric-scale anchor、`FactorTensorAdapterV2` 和未改动 reducer 得到 `12/12` valid frames、
-`18 CLEAR / 90 UNKNOWN`、11/11 gates PASS。它不改写 Attempt17 和无锚 walking_xyz 的冻结负结果，也不以
-任意 baseline 胜负作为成功条件。唯一后续只允许先冻结一个独立传感器域的 factor-level accuracy、coverage、
-UNKNOWN 和一次性 session geometry 合同；不得在 walking_xyz/sitting_rpy 上继续调参或用 reducer state 选模型。
+跨传感器 F2 已冻结到 ETH3D SLAM 自定义 global-shutter active-stereo RGB-D/IMU rig：
+`plant_scene_2 / motion_1 / mannequin_5` 在冻结前的仓库与全历史 exact-ID 命中均为 0；六个
+RGB-D/IMU archive 加一个 camera-IMU calibration archive 共 `721,072,411 bytes`，已按官方 URL、
+byte count 与 SHA-256 绑定。每 parent 由 metadata-only hash rank 预定 `12` 个 session-geometry
+calibration identity 和后续 `12` 个 score identity，二者不得重叠。当前只完成协议、数据身份、
+factor ownership、absolute accuracy/coverage/UNKNOWN/uncertainty 门和失败语义；ZIP member、RGB、depth、
+IMU、trajectory、calibration payload、模型输出及 confirmation metric 全部未打开。唯一后续只允许实现并
+用 synthetic/metadata fixture 验证 source adapter、roster freezer、prediction-before-truth firewall、
+factor-only scorer 与独立 validator；仍不得执行 Confirmation、运行 reducer、在 walking_xyz/sitting_rpy
+上调参，或以任意 baseline 胜负和 task state 作为门。
 
 ## 2026-08-12 SuperTeacher → AG 真实闭环
 

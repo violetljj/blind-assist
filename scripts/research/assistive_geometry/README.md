@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / CALIBRATION_AND_CONFIRMATION_SEALED`
+状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_F2_FROZEN / CONFIRMATION_OUTCOMES_UNOPENED`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -238,9 +238,12 @@ geometry transition agreement 均为 `0/3` seed 通过，终态为
 Calibration 与 Confirmation 保持封存。R2 F0 已签署
 `BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_PASS`；历史 F1-P frontdoor 和
 adapter blocker 后续均已关闭。当前冻结终态是
-`AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION`。唯一后续是另锁
-student distillation/mobile compression；不得用 reducer state 训练、重跑已消费 fresh canary，或把
-reference mechanics 写成 HTP、默认 App、产品与 safety 结论。
+`AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_F2_FROZEN / CONFIRMATION_OUTCOMES_UNOPENED`。
+唯一后续是 `BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK`：
+只实现并以 synthetic/metadata fixture 验证 ETH3D source adapter、deterministic roster、prediction-before-truth
+firewall、factor-only scorer 和独立 validator。当前不得枚举/解压七个 opaque archive、运行模型或
+Confirmation，也不得用 reducer state 训练、重跑已消费 fresh canary，或把 F2 lock 写成 HTP、默认 App、
+产品与 safety 结论。
 
 验证：
 

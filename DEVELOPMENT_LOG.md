@@ -2,6 +2,27 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。完成 Assistive Geometry R2 独立跨传感器
+  factor-level Confirmation 的 F2 protocol/data/statistics lock，科学状态仍为 `NOT_RUN`。先拒绝
+  `rgbd_bonn_person_tracking / rgbd_bonn_moving_obstructing_box`：二者虽未进入 current recipe，却被既有
+  historical exclusion 明确标为 future formal cohort `DENY`。随后仅按官方文字 metadata 与冻结前
+  repository 全历史 exact-ID 零命中，锁定 ETH3D SLAM custom global-shutter active-stereo RGB-D/IMU rig
+  的 `plant_scene_2 / motion_1 / mannequin_5` 三个 capture session。六个 RGB-D/IMU archive 加一个
+  camera-IMU calibration archive 共 `721,072,411 bytes`，已按 official URL、Content-Length 与 SHA-256
+  绑定；下载只作 opaque byte/hash receipt，未枚举 ZIP member、未解压，也未打开 RGB、depth、IMU、
+  trajectory 或 calibration payload。每 session 的 metadata-only hash rank 固定 `12 calibration + 12 score`
+  identity，角色 overlap=0；一次性 source-native session geometry factor 只能从 calibration role 产生，
+  raw score prediction 与 conditioned factors 必须分别在 calibration/score truth 打开前封存。协议冻结 learned
+  depth/support/obstacle/boundary 的 absolute parent-macro + worst-parent accuracy、known coverage/UNKNOWN 与
+  1σ/2σ calibration/rank-order gates，禁止 baseline 胜负、reducer/task state、walking_xyz/sitting_rpy 调参和
+  partial-factor rescue；K/gravity/support normal/camera height 明确为 source context，不冒充 learned target。
+  data identity / contract SHA-256 为 `E7552882...B345B` / `8BA036E6...D709F`；通用 R4 validator
+  `VALID / 0 warning`，docs index、project structure 与 diff check 通过。当前 model inference、source outcome、
+  factor result 和 Confirmation metric 均未打开；唯一 successor 为
+  `BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK`，
+  只允许以 synthetic/metadata fixture 实现并验证 exact source adapter、roster、firewall、factor-only scorer
+  和独立 validator，不授权执行 Confirmation、训练、reducer、设备、默认 App、产品或 safety。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。完成 DepthART-S D3R1 Phase-B
   exact-32 depth/confidence HEAD-only preflight。冻结 exact-64 request-plan SHA、NoRedirect、HEAD-only、
   三必需响应头、transient-only retry、fresh/exclusive attempt root 与同时覆盖 PASS/UNAVAILABLE/INCOMPLETE

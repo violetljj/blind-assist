@@ -1,0 +1,169 @@
+{
+  "schema_version": "blindassist.data_identity_manifest.v1",
+  "protocol_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_R0",
+  "manifest_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_DATA_IDENTITY_2026-08-12",
+  "frozen_at": "2026-08-12T18:39:57+08:00",
+  "status": "ARCHIVES_HASH_BOUND_PAYLOAD_AND_OUTCOMES_UNOPENED",
+  "source_identity": "ETH3D_SLAM_CUSTOM_GLOBAL_SHUTTER_ACTIVE_STEREO_RGBD_IMU_MOCAP_TRAINING_RIG",
+  "content_identity": "ETH3D_SLAM_AG_R2_CROSS_SENSOR_R0_PLANT_SCENE_2_MOTION_1_MANNEQUIN_5_HASHED_ARCHIVES_AND_DETERMINISTIC_24_FRAME_ROSTERS",
+  "independence_group": "ETH3D_SLAM_CUSTOM_RIG_AG_R2_CROSS_SENSOR_CONFIRMATION_R0",
+  "ancestry": [
+    "ETH3D_OFFICIAL",
+    "ETH3D_SLAM_TRAINING",
+    "ETH3D_SLAM_PLANT_SCENE_2_CAPTURE_SESSION",
+    "ETH3D_SLAM_MOTION_1_CAPTURE_SESSION",
+    "ETH3D_SLAM_MANNEQUIN_5_CAPTURE_SESSION"
+  ],
+  "source_authority": {
+    "dataset_page": "https://www.eth3d.net/slam_datasets",
+    "format_page": "https://www.eth3d.net/slam_documentation",
+    "license_page": "https://www.eth3d.net/",
+    "license": "CC-BY-NC-SA-4.0",
+    "use_scope": "NONCOMMERCIAL_INTERNAL_RESEARCH_ONLY_NO_REDISTRIBUTION_BY_THIS_LOCK",
+    "official_sensor_contract": [
+      "custom synchronized global-shutter camera rig",
+      "active-stereo depth reprojected into the adjacent RGB-camera viewpoint",
+      "synchronized same-viewpoint same-dimension RGB and depth",
+      "uint16 depth divided by 5000 gives metres; zero means no depth estimate",
+      "training sequences include calibration.txt and groundtruth.txt",
+      "imu.txt is the IMU attached to the RGB/depth camera viewpoint"
+    ]
+  },
+  "selection_receipt": {
+    "selection_time_information": "OFFICIAL_TEXT_METADATA_AND_REPOSITORY_ANCESTRY_ONLY",
+    "image_depth_imu_groundtruth_or_model_output_inspected": false,
+    "history_scan_base_commit": "07ab1ba2be7503f2e01875e4dcb5293e5ff501b6",
+    "history_scan_rule": "git log --all --no-textconv -S<exact_sequence_id> -- . plus git grep -F <exact_sequence_id>",
+    "exact_sequence_history_matches_through_base_commit": {
+      "plant_scene_2": 0,
+      "motion_1": 0,
+      "mannequin_5": 0
+    },
+    "admission_rule": "Choose three official non-SfM ETH3D SLAM training capture sessions with RGB-D, IMU and motion-capture trajectory availability, at least 700 published frames, distinct official scene/dynamics descriptions, and zero exact-sequence matches in repository history through the scan base commit.",
+    "selection_is_outcome_blind": true,
+    "reselection_after_payload_or_model_access": false,
+    "rejected_formal_alternative": {
+      "source": "BONN_RGBD_DYNAMIC_RESERVE",
+      "reason": "rgbd_bonn_person_tracking and rgbd_bonn_moving_obstructing_box are explicitly covered by a prior-inspected historical exclusion manifest whose future_formal_cohort_use is DENY; current-recipe non-use cannot erase that ancestry."
+    }
+  },
+  "archives": [
+    {
+      "parent_id": "plant_scene_2",
+      "kind": "RGBD_TRAINING_ARCHIVE",
+      "url": "https://www.eth3d.net/data/slam/datasets/plant_scene_2_rgbd.zip",
+      "bytes": 114249517,
+      "sha256": "9593E01E75741AD4B3ACC96787FEB09B5BFF36209DF9660667390E0F1F9DBF8C"
+    },
+    {
+      "parent_id": "plant_scene_2",
+      "kind": "IMU_ARCHIVE",
+      "url": "https://www.eth3d.net/data/slam/datasets/plant_scene_2_imu.zip",
+      "bytes": 547439,
+      "sha256": "D9CE74AD9DEC1745AD6561BB1B8302D2991FA38140E2F82E8CE076BE42B28BE9"
+    },
+    {
+      "parent_id": "motion_1",
+      "kind": "RGBD_TRAINING_ARCHIVE",
+      "url": "https://www.eth3d.net/data/slam/datasets/motion_1_rgbd.zip",
+      "bytes": 431821234,
+      "sha256": "11D8D8E2CA68F0678811B1E2DCBA416624191FCA55289FF0FBCF5178D1D2B1DD"
+    },
+    {
+      "parent_id": "motion_1",
+      "kind": "IMU_ARCHIVE",
+      "url": "https://www.eth3d.net/data/slam/datasets/motion_1_imu.zip",
+      "bytes": 1727176,
+      "sha256": "F886C84BAFFE5456A3C5C9F94AD399EDA42B3E350167FDED52AF6A71C6CDB745"
+    },
+    {
+      "parent_id": "mannequin_5",
+      "kind": "RGBD_TRAINING_ARCHIVE",
+      "url": "https://www.eth3d.net/data/slam/datasets/mannequin_5_rgbd.zip",
+      "bytes": 168348701,
+      "sha256": "5D47C3D65DC88F92B07481CDDB66DB82AA139E5CAEE030DC2E8F9F71C8330A32"
+    },
+    {
+      "parent_id": "mannequin_5",
+      "kind": "IMU_ARCHIVE",
+      "url": "https://www.eth3d.net/data/slam/datasets/mannequin_5_imu.zip",
+      "bytes": 733056,
+      "sha256": "DCDD96101FCC9D6EB97ED847BE267DF405B5700FA890895CA4B30287886A34D8"
+    },
+    {
+      "parent_id": "ALL_THREE_SESSIONS",
+      "kind": "CAMERA_IMU_CALIBRATION_ARCHIVE",
+      "url": "https://www.eth3d.net/data/slam/camera_imu_calib_radtan.zip",
+      "bytes": 3645288,
+      "sha256": "2588354EFC6BC2E407B0E1EDE4264714F4426D21A0785A595E3A5C78A9DA6437"
+    }
+  ],
+  "local_sealed_archive_root": "artifacts.local/downloads/ag-r2-eth3d-cross-sensor-confirmation-r0",
+  "local_archive_total_bytes": 721072411,
+  "payload_access_receipt": {
+    "archives_downloaded_and_sha256_verified": true,
+    "zip_members_enumerated": false,
+    "archives_extracted": false,
+    "rgb_opened": false,
+    "depth_opened": false,
+    "imu_opened": false,
+    "groundtruth_opened": false,
+    "calibration_payload_opened": false,
+    "model_output_created_or_opened": false,
+    "source_outcome_access_started": false
+  },
+  "future_member_contract": {
+    "required_rgbd_members_per_parent": [
+      "rgb/*.png",
+      "depth/*.png",
+      "associated.txt",
+      "rgb.txt",
+      "depth.txt",
+      "calibration.txt",
+      "groundtruth.txt"
+    ],
+    "required_imu_members_per_parent": [
+      "imu.txt",
+      "sequence_calibration.txt"
+    ],
+    "member_preflight_failure": "NOT_EVALUABLE_SOURCE_CONTRACT",
+    "member_or_frame_substitution": false
+  },
+  "deterministic_roster_contract": {
+    "parent_count": 3,
+    "parent_ids_in_order": [
+      "plant_scene_2",
+      "motion_1",
+      "mannequin_5"
+    ],
+    "metadata_only_eligibility": "Parse associated.txt as finite timestamp and safe relative RGB/depth paths; require the referenced members to exist and require exact same-basename RGB/depth synchronization. Pixel payload, source depth value, pose value, IMU value, model output and task state cannot affect eligibility or ranking.",
+    "rank_token": "SHA256(UTF8(protocol_id + LF + parent_id + LF + canonical_rgb_timestamp + LF + normalized_rgb_relpath + LF + canonical_depth_timestamp + LF + normalized_depth_relpath))",
+    "rank_order": "ascending token, then canonical RGB timestamp, then normalized RGB path",
+    "session_geometry_calibration_count_per_parent": 12,
+    "session_geometry_calibration_selection": "lowest 12 eligible rank-order identities",
+    "confirmation_score_count_per_parent": 12,
+    "confirmation_score_selection": "next 12 eligible rank-order identities after the twelve calibration identities",
+    "calibration_and_score_identity_overlap": 0,
+    "minimum_eligible_pairs_per_parent": 24,
+    "insufficient_or_ambiguous_roster_terminal": "NOT_EVALUABLE_ROSTER",
+    "post_access_reselection": false
+  },
+  "independence_receipt": {
+    "independent_sensor_rig_from_current_ag_fit_selection_and_prior_tum_confirmation": true,
+    "independent_capture_sessions_within_this_manifest": true,
+    "current_ag_recipe_direct_ancestor_domains": [
+      "ICL_NUIM_SYNTHETIC_RGBD",
+      "TUM_RGBD_FREIBURG_REAL_RGBD"
+    ],
+    "selected_eth3d_sequence_ids_used_by_current_ag_recipe": false,
+    "selected_eth3d_sequence_ids_previously_used_anywhere_in_repo_history_through_base_commit": false,
+    "upstream_foundation_pretraining_zero_exposure_proved": false,
+    "independence_claim": "Independent of AG fit, checkpoint selection, calibration, prior confirmation, source sequence and sensor rig at the repository evidence level; upstream foundation-model training ancestry remains unverified and limits the claim ceiling."
+  },
+  "immutability": {
+    "archive_url_byte_count_or_sha_change": "NEW_PROTOCOL_AND_NEW_DATA_IDENTITY_VERSION_REQUIRED",
+    "parent_change": "NEW_PROTOCOL_AND_NEW_DATA_IDENTITY_VERSION_REQUIRED",
+    "roster_rule_change": "NEW_PROTOCOL_AND_NEW_DATA_IDENTITY_VERSION_REQUIRED",
+    "payload_or_outcome_informed_amendment": "FORBIDDEN_FOR_CONFIRMATION"
+  }
+}
