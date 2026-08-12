@@ -1,0 +1,39 @@
+{
+  "schema":"blindassist.taro.o1r.r9_clear_enrichment_development_result_record.v1",
+  "terminal":"TARO_O1R_R9_DEVELOPMENT_OLD_50_CLEAR_GATE_INFEASIBLE_SELECTOR_SIGNAL_RETAINED",
+  "date":"2026-08-12",
+  "execution_valid":true,
+  "passed_old_development_target":false,
+  "development_parent_count":16,
+  "frame_count":269,
+  "query_count":2421,
+  "label_state_counts":{"CLEAR_OBSERVED":14,"OCCUPIED_OBSERVED":1578,"UNKNOWN":829},
+  "parents_with_clear_in_selected_top8":5,
+  "selected_top8_label_state_counts":{"CLEAR_OBSERVED":14,"OCCUPIED_OBSERVED":807,"UNKNOWN":448},
+  "old_development_target":{"minimum_clear_queries":50,"minimum_clear_parents":4,"passed":false},
+  "selector":{
+    "selector_id":"TARO_R9_SOURCE_ONLY_CLEAR_ENRICHMENT_GRID_SEARCH_V1",
+    "selector_sha256":"67FD8430418E23E4C974EBA4D7F49DCBD4DE66164A16491DE76F05AC974796CC",
+    "rule_id":"02CE016D6B0011F0",
+    "chosen_rule":{"state_policy":"UNKNOWN_ONLY","minimum_far_valid_anchor_count":6,"maximum_far_valid_anchor_count":1000000,"far_fraction_index":0,"maximum_far_fraction":0.0,"minimum_observed_support_points":0,"require_query_receipt":true,"require_positive_obstacle_veto_false":true,"require_all_occupied_hits_false":true},
+    "selected_nonzero_score_parent_count":8,
+    "matched_rule_label_state_counts":{"CLEAR_OBSERVED":11,"OCCUPIED_OBSERVED":7,"UNKNOWN":32},
+    "matched_clear_precision_on_definite_labels":0.611111111111,
+    "selection_uses_only_preopened_source_features":true,
+    "confirmation_authority":false
+  },
+  "fresh_protocol_feasibility_gate":{
+    "minimum_definite_clear_queries":12,
+    "minimum_parents_with_definite_clear":4,
+    "derivation":"Twelve independent definite-clear query outcomes with zero false occupied predictions have a one-sided 95 percent Wilson lower bound of 0.816018805253 for clear specificity, above 0.8. Development observed 14 clear queries across five selected parents.",
+    "one_sided_95_wilson_clear_specificity_lower_bound_if_12_of_12":0.816018805253,
+    "minimum_one_sided_95_wilson_clear_specificity_lower_bound":0.8,
+    "minimum_point_clear_specificity":0.9,
+    "unknown_is_negative":false
+  },
+  "evidence":{"result_sha256":"A4E50C943F817910CC9557D0CE1699F39EC0ACD96EC7922A250397118F5DCB4F","selector_file_sha256":"B9B3607C1C5AA503ED0C58AE3ACD790D891F57FD8467F131DF314BE239CA17B1","completion_sha256":"E042BAED82544759E3F34D2C7E693D887A5CA2ACB9917EB359FD16C0B55C11B8","manifest_sha256":"B6DBE690A071F42B1F36CB86686DC1B9D18E374C468ED87F3C3B7BF4CAABFCA3","manifest_file_count":273},
+  "all_r8_parents_consumed":true,
+  "promotion":{"selector_to_fresh_cohort_selection":true,"effectiveness":false,"route":false,"deployment":false,"product":false,"safety":false},
+  "unique_successor":"TARO_O1R_R10_FRESH_PARENT_SOURCE_ONLY_CLEAR_ENRICHED_CONFIRMATION",
+  "claim_ceiling":"Development-only evidence that the frozen source rule can concentrate all 14 observed clear queries into eight consumed parents. Effectiveness and the 12-query fresh gate remain untested on fresh parents."
+}

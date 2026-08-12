@@ -1,0 +1,260 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d3_bidirectional_error_certificate_router_protocol_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D3_BIDIRECTIONAL_ERROR_CERTIFICATE_ROUTER",
+  "owning_route": "DepthART-S",
+  "frozen_at": "2026-08-12",
+  "status": "PRE_OUTCOME_PROTOCOL_FROZEN_MECHANICS_PASS_SOURCE_SCOPE_NOT_ACTIVATED",
+  "name_disambiguation": {
+    "current_version": "DepthART task-preserving D3",
+    "historical_collision": "Archived Stage-C D3-Q0 and D39 labels are unrelated historical stages and confer no authority on this protocol"
+  },
+  "predecessor_terminals": {
+    "d1": {
+      "terminal": "D1_TASK_QUALITY_FAIL_STOP_R2_CANDIDATE_NOT_AUTHORIZED",
+      "result_path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D1_QUALITY_SCREEN_RESULT_2026-08-11.json",
+      "bytes": 4020,
+      "sha256": "61CC4A8C0D4ACB691892AFE3CAEE1CB9EBFD5EF235671A58C6645C7A2B9011CD",
+      "outcome_consumed": true
+    },
+    "d2": {
+      "terminal": "D2_DEVELOPMENT_FROZEN_HEAD_QUALITY_FAIL_STOP",
+      "result_path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2_DEVELOPMENT_QUALITY_RESULT_2026-08-12.json",
+      "bytes": 4502,
+      "sha256": "679520DEB1B559FC359FF26DEFCCCF0A9E5F4C5ADFDA38193113B9D4C6E98C07",
+      "outcome_consumed": true,
+      "failure_structure": [
+        "frozen head improved pooled clearance MAE and false-clear but missed both absolute gates",
+        "false-block increased to 0.3761384 and failed absolute plus noninferiority gates",
+        "known-coverage and valid-to-unknown noninferiority failed",
+        "required grid denominators were empty"
+      ]
+    },
+    "rescue_forbidden": [
+      "fit, calibrate or select using D1 or D2 consumed outcomes",
+      "change a consumed checkpoint, threshold, data row, postprocess, denominator or gate",
+      "describe D3 as a continuation or rerun of D2"
+    ]
+  },
+  "falsifiable_hypothesis": "A selective router that learns two independent error-direction certificates can reduce both baseline false-clear and baseline false-block without the global state-head tradeoff seen in D2: a free-corridor certificate may RELEASE a blocked or unknown baseline to CLEAR, a connected-intrusion certificate may VETO a clear or unknown baseline to OCCUPIED, conflicting strong certificates must become UNKNOWN, and weak or unsupported evidence must preserve the baseline. The hypothesis is false if one frozen router cannot pass all absolute and bidirectional-improvement gates on fresh identity-disjoint D3 Development parents.",
+  "novel_task_definition": {
+    "unit": "one band x one horizon cell",
+    "baseline": "frozen DepthART saved-context depth followed by the frozen task geometry reader",
+    "outputs": [
+      "clear_release_certificate_probability",
+      "occupied_veto_certificate_probability"
+    ],
+    "actions": [
+      "KEEP_BASELINE",
+      "RELEASE_TO_CLEAR",
+      "VETO_TO_OCCUPIED",
+      "CONTRADICTION_TO_UNKNOWN"
+    ],
+    "not_direct_state_prediction": true,
+    "unknown_is_negative": false,
+    "reference_output_available_at_runtime": false
+  },
+  "router_contract": {
+    "horizons_m": [1.0, 1.5, 2.0],
+    "strong_certificate_threshold": 0.9,
+    "opposite_certificate_max": 0.1,
+    "contradiction_threshold": 0.9,
+    "hard_evidence_required_for_override": true,
+    "hard_evidence_floor": {
+      "ground_plane_required": true,
+      "minimum_valid_depth_fraction": 0.05,
+      "minimum_ground_support_fraction": 0.02,
+      "minimum_band_support_points": 20,
+      "factor_availability_required": true
+    },
+    "horizon_projection": {
+      "occupied_certificate": "cumulative maximum in increasing horizon order",
+      "clear_certificate": "cumulative minimum in increasing horizon order",
+      "final_state": "a later CLEAR after an earlier OCCUPIED or UNKNOWN is projected to UNKNOWN"
+    },
+    "neutral_behavior": "weak or ambiguous certificates preserve a known baseline exactly; an unknown baseline remains unknown without one strong supported certificate",
+    "contradiction_behavior": "two strong certificates produce UNKNOWN_GROUND"
+  },
+  "single_router_candidate": {
+    "candidate_count": 1,
+    "feature_unit": "band x horizon",
+    "feature_order": [
+      "baseline_clear",
+      "baseline_occupied",
+      "baseline_unknown",
+      "baseline_clearance_present",
+      "baseline_clearance_m_or_zero",
+      "valid_depth_fraction",
+      "ground_support_fraction",
+      "ground_residual_m_or_zero",
+      "log1p_band_support_points",
+      "log1p_intrusion_points_within_horizon",
+      "connected_intrusion_fraction_within_horizon",
+      "free_corridor_fraction_through_horizon",
+      "observed_forward_m",
+      "horizon_normalized",
+      "band_left",
+      "band_center"
+    ],
+    "feature_count": 16,
+    "architecture": "two non-sharing Linear(16,16)-SiLU-Linear(16,1) heads",
+    "parameter_count": 578,
+    "feature_provenance": "candidate depth and source intrinsics/pose/depth-confidence geometry only; no canonical reference, D1/D2 outcome, Development truth or R2 input",
+    "candidate_hash_rule": "feature extractor, standardization, both head weights and router policy must be sealed as one immutable candidate before Development activation"
+  },
+  "mechanics_canary": {
+    "script": {
+      "path": "scripts/research/hftf/deployment/depthart/depthart_task_preserving_d3_bidirectional_router_canary.py",
+      "bytes": 12971,
+      "sha256": "F8C9EF98D395D080A6C836838209C6D7F0AA08672B5E3C5CC4A2B7AF53E0AE8C"
+    },
+    "test": {
+      "path": "scripts/research/hftf/deployment/depthart/test_depthart_task_preserving_d3_bidirectional_router_canary.py",
+      "bytes": 2577,
+      "sha256": "73383CAFF7F6E2852C67BE7DC460AD3350CB94E4CAA692825A8E45327FF1D5F0"
+    },
+    "result": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3-preoutcome-20260812-r0/d3-router-canary.json",
+      "bytes": 9622,
+      "sha256": "43DDC5883A57B60C894EB49FE3D0A74418D080DEE0DDBEFE19AC9D3AFBBA209B",
+      "status": "PASS"
+    },
+    "authority": "SYNTHETIC_MECHANICS_ONLY_NO_DATA_ACCURACY_MODEL_OR_CANDIDATE_AUTHORITY"
+  },
+  "fresh_data_contract": {
+    "source": "ARKitScenes official Training fold",
+    "metadata_candidate_pool_target": 48,
+    "phase_a_portrait_pose_take": 32,
+    "final_qualified_identity_count": 16,
+    "roles": {
+      "TRAIN": 8,
+      "DEVELOPMENT": 8
+    },
+    "frames_per_identity": 300,
+    "selection_order": "frozen metadata hash order; take first 32 portrait-pose-qualified, then first 16 source-truth-support-qualified; first 8 are TRAIN and next 8 are DEVELOPMENT",
+    "identity_firewall": {
+      "parent_and_session_disjoint_from": [
+        "all D1 primary, reserve, selected and consumed Development identities",
+        "all D2 source pool, Phase-A/B/C, TRAIN and consumed Development identities",
+        "the sealed R2 roster",
+        "all other outcome-bearing BlindAssist research roles"
+      ],
+      "overlap_allowed": false,
+      "replacement_after_any_outcome": false
+    },
+    "phase_a_label_blind_requirements": {
+      "minimum_continuous_portrait_frames": 300,
+      "maximum_adjacent_frame_gap_seconds": 0.5,
+      "maximum_pose_bracketing_gap_seconds": 0.25,
+      "assets": ["lowres_wide_intrinsics.zip", "lowres_wide.traj"]
+    },
+    "phase_b_source_truth_support_requirements_per_identity": {
+      "assets": ["lowres_depth.zip", "confidence.zip"],
+      "minimum_truth_known_cells": 1800,
+      "minimum_truth_clear_cells": 270,
+      "minimum_truth_occupied_cells": 900,
+      "minimum_truth_clear_cells_per_band_horizon": 30,
+      "minimum_truth_occupied_cells_per_band_horizon": 30,
+      "minimum_valid_band_clearances": 450,
+      "model_output_access": false
+    },
+    "phase_c_rgb_rule": "only the exact final 16 identities may receive lowres_wide.zip body access after a separate explicit scope receipt",
+    "insufficient_support_terminal": "D3_DATA_SUPPORT_NOT_EVALUABLE",
+    "development_sealed_until_candidate_hash": true,
+    "r2_access": "NONE"
+  },
+  "training_contract": {
+    "activated": false,
+    "data_role": "D3 TRAIN only",
+    "runtime": "host CPU float64 feasibility",
+    "seed": 31,
+    "standardization": "TRAIN mean/std only with epsilon 1e-6",
+    "optimizer": "AdamW",
+    "learning_rate": 0.005,
+    "weight_decay": 0.0001,
+    "steps": 1000,
+    "batching": "full batch",
+    "early_stopping": false,
+    "checkpoint_selection": "step 1000 only",
+    "loss": {
+      "release_head": "class-balanced BCE only where baseline is not CLEAR; positive iff truth is CLEAR, truth UNKNOWN masked",
+      "veto_head": "class-balanced BCE only where baseline is not OCCUPIED; positive iff truth is OCCUPIED, truth UNKNOWN masked",
+      "contradiction_penalty": "0.1 * mean(p_release * p_veto) on truth-known TRAIN cells"
+    },
+    "development_access": false,
+    "r2_access": false
+  },
+  "development_evaluation": {
+    "activated": false,
+    "frames": 2400,
+    "cells": 21600,
+    "baseline": "same frozen DepthART output and task geometry without D3 routing",
+    "candidate": "same baseline plus the one frozen D3 router",
+    "metric_semantics": "identical D1/D2 semantics; UNKNOWN excluded and never treated as negative",
+    "absolute_gates": {
+      "known_coverage_min": 0.9,
+      "clearance_mae_m_max": 0.2,
+      "false_clear_all_known_max": 0.08,
+      "false_block_given_clear_max": 0.02,
+      "temporal_clearance_delta_mae_m_max": 0.15,
+      "geometry_transition_agreement_min": 0.9,
+      "valid_to_unknown_rate_max": 0.1,
+      "worst_parent_false_clear_all_known_max": 0.12
+    },
+    "bidirectional_improvement_gates": {
+      "false_clear_all_known_improvement_min": 0.01,
+      "false_block_given_clear_improvement_min": 0.01,
+      "known_coverage_decrease_max": 0.02,
+      "clearance_mae_m_increase_max": 0.025,
+      "temporal_clearance_delta_mae_m_increase_max": 0.025,
+      "geometry_transition_agreement_decrease_max": 0.02,
+      "valid_to_unknown_rate_increase_max": 0.02
+    },
+    "aggregate_policy": "pooled thresholds plus finite parent macro, session macro, worst parent and all nine band-horizon strata; any required empty denominator fails closed",
+    "one_shot": true,
+    "pass_authority": "D3_IDENTITY_DISJOINT_FEASIBILITY_ONLY_NOT_R2_CANDIDATE_LOCK"
+  },
+  "phase_order": [
+    "A_SYNTHETIC_MECHANICS_CANARY",
+    "B_FRESH_SOURCE_SCOPE_AND_PARENT_DISJOINT_METADATA_ROSTER_LOCK",
+    "C_EXPLICIT_SOURCE_USE_RECEIPT_AND_HEAD_ONLY_PREFLIGHT",
+    "D_LABEL_BLIND_SOURCE_INTEGRITY_AND_SOURCE_TRUTH_SUPPORT_LOCK",
+    "E_TRAIN_ONLY_FACTOR_MATERIALIZATION_AND_FIXED_RECIPE_TRAINING",
+    "F_SINGLE_ROUTER_HASH_LOCK",
+    "G_EXPLICIT_ONE_SHOT_DEVELOPMENT_ACTIVATION",
+    "H_SEPARATE_R2_CANDIDATE_DECISION_IF_D3_PASSES"
+  ],
+  "stop_conditions": [
+    "any protocol, code, roster, data, feature, recipe, threshold or candidate hash drifts after its gate",
+    "fewer than 16 source-truth-support-qualified fresh identities remain",
+    "a parent or session overlaps D1, D2, sealed R2 or another outcome-bearing role",
+    "media is accessed before exact scope and HEAD authorization",
+    "Development is used for training, standardization, thresholding, checkpoint or candidate selection",
+    "D1 or D2 consumed outcome is used to fit or rescue D3",
+    "any required denominator is empty or any required metric is non-finite",
+    "R2 media, truth or model output is accessed",
+    "mechanics, source-support or Development feasibility is described as performance, Android default, production or safety authority"
+  ],
+  "current_gate": "EXPLICIT_D3_FRESH_SOURCE_SCOPE_AND_PARENT_DISJOINT_METADATA_ROSTER_LOCK",
+  "authority": {
+    "d3_route_established": true,
+    "synthetic_mechanics": true,
+    "metadata_roster": false,
+    "media_head": false,
+    "media_download": false,
+    "source_truth_support": false,
+    "training": false,
+    "development_outcome": false,
+    "r2_candidate_lock": false,
+    "r2_outcome": false,
+    "performance": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  },
+  "r2_protocol_immutable": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2_PROTOCOL_2026-08-09.json",
+    "bytes": 2868,
+    "sha256": "92E321AEE2477BB084A680804A9678E779D8C2516BCA4D2C3625DF9FCC863F38",
+    "access": "NONE"
+  }
+}

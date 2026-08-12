@@ -1,0 +1,66 @@
+{
+  "schema": "blindassist_assistive_geometry_r2_f1_attempt06_fresh_selection_source_lock_v1",
+  "lock_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT06_FRESH_SELECTION_SOURCE_LOCK_2026-08-11",
+  "frozen_at": "2026-08-11",
+  "status": "ATTEMPT06_FRESH_SELECTION_DOWNLOAD_AND_LABEL_MATERIALIZATION_AUTHORIZED",
+  "question": "After recalibrating all three uncertainty fields on consumed evidence, does the unchanged factor body pass a new parent-disjoint selection before the original Attempt05 canary is opened?",
+  "predecessor": {
+    "runtime_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-factor-learnability-attempt05-r0/result.json",
+      "sha256": "DF182357E576E896BC49D3A8CFD86DF2D4FF06F6DB85AC63BCDCDDE47DF1F9BB"
+    },
+    "terminal": "ATTEMPT05_SELECTION_BOUNDARY_AND_SUPPORT_UNCERTAINTY_FAIL_CANARY_UNOPENED"
+  },
+  "assignment": {
+    "token": "AG_R2_F1_ATTEMPT06_FRESH_SELECTION_2026-08-11",
+    "rule": "Use the two source-eligible standard TUM Freiburg1 parents with no prior AG R2 F1 factor-model optimizer or metric exposure. SHA256(token + ':' + parent_id) order assigns the first LANDSCAPE_IDENTITY and the second PORTRAIT_ROT90_CLOCKWISE.",
+    "expected_archive_bytes": 754279784
+  },
+  "checkpoint_selection": [
+    {
+      "parent_id": "rgbd_dataset_freiburg1_desk",
+      "family": "freiburg1",
+      "orientation": "LANDSCAPE_IDENTITY",
+      "assignment_sha256": "695CC09C4392D723457FDCE1166457A0B28940829E9370E722F36201216F15A5",
+      "source_url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_desk.tgz",
+      "resolved_url": "https://webshare.cvg.cit.tum.de/g/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_desk.tgz",
+      "content_length": 344011403,
+      "last_modified": "Fri, 30 Sep 2011 15:14:33 GMT",
+      "etag": "\"1481328b-4ae2a151e2840\""
+    },
+    {
+      "parent_id": "rgbd_dataset_freiburg1_rpy",
+      "family": "freiburg1",
+      "orientation": "PORTRAIT_ROT90_CLOCKWISE",
+      "assignment_sha256": "9C0A554B331C06442F1953B6110EFDD88F9AC71F6B1F2846822FE9D9274CBCE5",
+      "source_url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_rpy.tgz",
+      "resolved_url": "https://webshare.cvg.cit.tum.de/g/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_rpy.tgz",
+      "content_length": 410268381,
+      "last_modified": "Fri, 30 Sep 2011 15:16:06 GMT",
+      "etag": "\"187432dd-4ae2a1aa93980\""
+    }
+  ],
+  "preserved_canary": {
+    "parents": ["rgbd_dataset_freiburg2_xyz", "rgbd_dataset_freiburg1_desk2"],
+    "frames": 6,
+    "label_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-attempt05-fresh-ag-held-labels-r0/result.json",
+      "sha256": "4DBF0E85F45357C613221DF9F2C5A5E3B0971C314EB29D1967C02E0D6FAEB7CC"
+    },
+    "model_or_baseline_metrics_opened": false
+  },
+  "source_and_label_contract": {
+    "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_SUPERVISION_SOURCE_AND_LABEL_CONTRACT_LOCK_2026-08-11.json",
+    "sha256": "166EA9ED5CA1C2234D14308FE43F8A9794BB76CAA29C19E551E1B42A804D5224"
+  },
+  "authority": {
+    "download_two_exact_source_archives": true,
+    "materialize_six_source_native_selection_labels": true,
+    "read_checkpoint_selection_model_metrics": false,
+    "read_preserved_canary_model_or_baseline_metrics": false,
+    "optimizer_step": false,
+    "reducer_or_task_outcome": false
+  },
+  "unique_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT06_FRESH_SELECTION_LABEL_RESULT",
+  "claim_boundary": "Fresh AG F1 checkpoint-selection source lock only. The Attempt05 canary remains sealed; no model, reducer, deployment, product or safety claim."
+}

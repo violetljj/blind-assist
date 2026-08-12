@@ -1,0 +1,155 @@
+{
+  "schema": "blindassist_assistive_geometry_r2_f1_attempt06_uncertainty_recalibration_and_fresh_selection_lock_v1",
+  "lock_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT06_UNCERTAINTY_RECALIBRATION_AND_FRESH_SELECTION_LOCK_2026-08-11",
+  "frozen_at": "2026-08-11",
+  "status": "ATTEMPT06_UNCERTAINTY_RECALIBRATION_AND_FRESH_SELECTION_EXECUTION_AUTHORIZED",
+  "question": "Does the preserved depth calibrator plus newly learned boundary and support calibrators pass a new selection and then the still-sealed Attempt05 canary without changing any point factor?",
+  "predecessor": {
+    "runtime_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-factor-learnability-attempt05-r0/result.json",
+      "sha256": "DF182357E576E896BC49D3A8CFD86DF2D4FF06F6DB85AC63BCDCDDE47DF1F9BB"
+    },
+    "terminal": "ATTEMPT05_SELECTION_DEPTH_UNCERTAINTY_PASS_BOUNDARY_AND_SUPPORT_UNCERTAINTY_FAIL_CANARY_UNOPENED"
+  },
+  "bindings": {
+    "fresh_selection_source_lock": {
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT06_FRESH_SELECTION_SOURCE_LOCK_2026-08-11.json",
+      "sha256": "3A45185338F39947C351A5A4DC699728FF2C8CB34B042A61DE70C52B753F6925"
+    },
+    "selection_label_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-attempt06-fresh-selection-labels-r0/result.json",
+      "sha256": "F67A9A000A4A82C180B9E875DEE976C80E00584AB8A6CEBCC603DFAAEE1E90A5"
+    },
+    "preserved_label_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-attempt05-fresh-ag-held-labels-r0/result.json",
+      "sha256": "4DBF0E85F45357C613221DF9F2C5A5E3B0971C314EB29D1967C02E0D6FAEB7CC"
+    },
+    "attempt05_runtime_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-factor-learnability-attempt05-r0/result.json",
+      "sha256": "DF182357E576E896BC49D3A8CFD86DF2D4FF06F6DB85AC63BCDCDDE47DF1F9BB"
+    },
+    "calibration_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-attempt06-uncertainty-calibration-r0/result.json",
+      "sha256": "A9CC3C9FAB8F13402912EE0BEEF5CDCB6574A17D3D734A1B241A7A3AE45310BC"
+    },
+    "calibrator_checkpoint": {
+      "path": "artifacts.local/experiments/ag-r2-f1-attempt06-uncertainty-calibration-r0/uncertainty_calibrators.pt",
+      "sha256": "7222C85275EB0FF1F5707DDADBBC83C4E6971FDDEECD2F9940FA21FA8D1542DE"
+    },
+    "attempt02_runtime_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-factor-learnability-attempt02-r0/result.json",
+      "sha256": "5D6194D8FC1BC947994A0191A7421D3286F49966C889171AF87B2C0C505E9B8A"
+    },
+    "fit_only_baseline_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-fit-baselines-tum13-r0/result.json",
+      "sha256": "EECD5C9244C6A8A467B7890AF79D7871374AC8B325A87B48AE9E052089908F44"
+    },
+    "depthart_checkpoint": {
+      "path": "artifacts.local/models/depthart/source/checkpoints/metric/depthart_metric_indoor_s_448.pth",
+      "sha256": "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65"
+    },
+    "calibration_runner": {
+      "path": "scripts/research/assistive_geometry/train_ag_r2_f1_attempt06_uncertainty_calibrators.py",
+      "sha256": "EAE7A0DD4E10AE3419BE0089E3D6E50B9508C5DAB12C51C7E0598A59F5E2EE5B"
+    },
+    "execution_runner": {
+      "path": "scripts/research/assistive_geometry/train_ag_r2_f1_factor_learnability_attempt06.py",
+      "sha256": "D2EC38EA6C9BB784FE97CE165056E2900C2BD0E18645868EE2BFDB9F8B6023B5"
+    },
+    "focused_test": {
+      "path": "scripts/research/assistive_geometry/test_train_ag_r2_f1_factor_learnability_attempt06.py",
+      "sha256": "B6AD4400ADE4E8284F9CFCDB68F43792E2E00BC00FE863C2EC6EEC12AE24D7E3"
+    },
+    "validator": {
+      "path": "scripts/research/assistive_geometry/validate_ag_r2_f1_attempt06_execution_lock.py",
+      "sha256": "8F1C0F4FE62E986F5097228C23BC6A15BD319B295801FF713E50BFE0CF92B6B9"
+    }
+  },
+  "roles": {
+    "CALIBRATION_FIT": {
+      "parents": 19,
+      "frames": 57,
+      "includes_consumed_attempt05_selection": true
+    },
+    "CALIBRATION_INTERNAL_VALIDATION": {
+      "parents": 4,
+      "frames": 12,
+      "status": "CONSUMED_FOR_CHECKPOINT_SELECTION"
+    },
+    "CHECKPOINT_SELECTION": {
+      "parents": ["rgbd_dataset_freiburg1_desk", "rgbd_dataset_freiburg1_rpy"],
+      "frames": 6,
+      "model_or_baseline_metrics_opened": false
+    },
+    "TRAIN_CANARY": {
+      "parents": ["rgbd_dataset_freiburg2_xyz", "rgbd_dataset_freiburg1_desk2"],
+      "frames": 6,
+      "model_or_baseline_metrics_opened": false,
+      "open_rule": "The formal runner must pass all ten primary metrics and all three uncertainty gates on the new selection before extracting any preserved-canary feature or target."
+    }
+  },
+  "candidate": {
+    "point_factors": "Attempt04 canonical seed17 point factors, unchanged.",
+    "support_geometry": "Attempt04 IMU/VIO support geometry, unchanged.",
+    "depth_uncertainty": "Attempt05 depth calibrator, byte-for-byte preserved after passing the Attempt05 fresh selection.",
+    "boundary_uncertainty": "Retrained pointwise boundary conditional-scale calibrator using consumed Attempt05 selection evidence.",
+    "support_uncertainty": "New 16-input scalar conditional RMS calibrator evaluated after deterministic support geometry.",
+    "attempt05_depth_calibrator_sha256": "37116A6E115915C082368FE9EC30AB41D3C8B2EB24F24A47D5D158299C6B107E",
+    "support_feature_names": [
+      "attempt04_log_support_sigma",
+      "support_geometry_coverage",
+      "support_probability_mean",
+      "support_probability_std",
+      "support_probability_q25",
+      "support_probability_q75",
+      "support_probability_gradient_mean",
+      "depth_valid_probability_mean",
+      "evidence_valid_probability_mean",
+      "predicted_log_depth_std",
+      "base_log_disagreement_mean",
+      "base_log_disagreement_std",
+      "three_seed_epistemic_mean",
+      "three_seed_epistemic_std",
+      "log_camera_height",
+      "portrait_orientation"
+    ],
+    "internal_validation_residual_bins": {
+      "boundary": [1.9293955579209565, 10.245659378568895, 13.90218483084093, 14.356743329702029],
+      "support": [0.5680830478668213, 0.6678409179051717, 0.6771519978841146, 1.9644135236740112]
+    },
+    "support_internal_proper_score_gain": 0.0920553207397461,
+    "checkpoint_sha256": {
+      "uncertainty_calibrators": "7222C85275EB0FF1F5707DDADBBC83C4E6971FDDEECD2F9940FA21FA8D1542DE",
+      "17": "861D141FBB37B02C25FB22B1721F2D034430812DB1D7743B36024D39F30C8EA2",
+      "29": "E2D875BE57A120E9CF2189D19DE4D1E940AB4826039D28E1FC102648D114E9A4",
+      "43": "BB248B41396C06F63743B739ED56FB0A40C2C8789049B01667CA042008A9A435"
+    },
+    "runtime_inputs": ["RGB", "K", "IMU_GRAVITY_UP_CAMERA", "VIO_CAMERA_TO_WORLD_POSE"],
+    "optimizer_steps_in_formal_execution": 0
+  },
+  "success_gate": {
+    "all_ten_primary_metrics_required": true,
+    "per_metric": "Both held parent improvements must be positive; the frozen 10,000 parent-bootstrap lower bound must be greater than zero and favorable-parent fraction at least 0.75.",
+    "all_three_uncertainty_families_required": true,
+    "proper_score": "Each parent-macro NLL gain over the frozen FIT-only baseline must be positive.",
+    "ordering": "Observed absolute residual must be nondecreasing over four predicted-sigma groups.",
+    "aggregate_compensation": false,
+    "reducer_or_task_rescue": false
+  },
+  "runtime": {
+    "python": "E:/codex-tools/tools/venvs/blindassist-venv-export312/Scripts/python.exe",
+    "torch": "2.11.0+cu128",
+    "device": "cuda:0",
+    "output_dir": "artifacts.local/experiments/ag-r2-f1-factor-learnability-attempt06-r0"
+  },
+  "authority": {
+    "read_checkpoint_selection_metrics": true,
+    "read_preserved_canary_only_after_complete_selection_pass": true,
+    "serialize_factor_tensors_only_after_complete_canary_pass": true,
+    "optimizer_step": false,
+    "factor_tensor_adapter": false,
+    "reducer_or_task_evaluation": false
+  },
+  "unique_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT06_FACTOR_LEARNABILITY_RESULT",
+  "claim_boundary": "TRAIN-only factor availability and uncertainty transfer. No reducer utility, runtime performance, deployment, product or safety claim."
+}

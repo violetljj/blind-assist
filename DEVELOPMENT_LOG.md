@@ -2,6 +2,20 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。完成 Assistive Geometry R2 的
+  SuperTeacher 数据支线与 AG research-pipeline 落地。先保留无锚 `walking_xyz` 的冻结负结果：
+  仅 1/12 帧结构有效、108/108 cells UNKNOWN；naive post-walking global ERM 又因旧 selection
+  退化而不晋级。随后只用 factor depth、六个预声明物理候选和 camera-height geometry 选择
+  `weighted q75` session scale anchor，已消费 walking_xyz 的 mean log-RMSE 从 `0.4126` 降到
+  `0.2823`（31.57%），未读取 task/reducer outcome。该算法原样冻结到 current-recipe-checkpoint-unseen
+  `sitting_rpy`：12 份 source-native metric depth + geometry-anchored support/boundary labels 全部通过，
+  factor-only 推理 `targets_loaded=false`，12/12 adapter V2 frames 与 reducer replay 有效且确定，108 cells
+  得到 `CLEAR=18 / UNKNOWN=90`，11/11 gates PASS；48/48 代码、模型、校准和逐帧 artifact 哈希一致。
+  最终 result SHA-256 为 `A0D15EC9278E2BB766A5ECCD596F6EDE2793CBA8E1B7BFECB1D0853D11817886`。
+  该结果只证明单个 TUM parent 的 SuperTeacher→learned factors→deterministic AG mechanics，不建立全局
+  freshness、跨传感器泛化、导航效用、HTP/Android、默认 App、产品或 safety authority；Attempt17 等
+  历史终态不改写。下一步只允许先冻结独立跨传感器 factor-accuracy confirmation，不在已消费
+  walking_xyz/sitting_rpy 上调参，也不要求任意 baseline 胜负。
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。完成开源申请就绪与默认分支 CI 修复：根 README 收敛为中英双语公共入口，复用真实 v10.9.0 App 截图并明确非安全认证边界；新增贡献、安全、行为准则和 Issue/PR 表单。CI 根因分别修复为 QAIRT Windows 默认路径不再经 Gradle URL 解析、两个既有 TARO Module 补齐 76/76 合同/索引/唯一分类、TARO current 与 R4 导航恢复一致、local-only calibration PDF 不再伪装为公开链接。自有 `libblindassist_vision.so` 按 Android 官方 r27-or-lower CMake linker 合同设置 16KB max/common page size，四 ABI 与最终 APK 的 41 个 native entries 通过仓库静态门禁；这不是实际 16KB 设备运行证明。验证包括 14/14 research contract files、文档 674 链接、完整无设备 Gradle 483 tasks、模型 shape 断言、APK package/version/debug signature 与 16KB 对齐。默认模型、权限和运行逻辑未改变。
 - 时间：2026-08-10（Asia/Hong_Kong）；执行者：violjjet。将 Windows/Codex 本地 Android Gradle 调用收口到 `scripts/run_android_gradle.ps1`：入口从自身路径锁定仓库根目录，从 version catalog、wrapper 与 `local.properties` 读取并校验 JDK/compile SDK/Gradle 合同，统一 machine-local Gradle/Android state，connected test 自动执行 10 秒 ADB 预检，多设备要求显式 serial；环境失败固定返回 `ENV_BLOCKED`，通过后才启动 wrapper。新增 `.editorconfig`，仓库 hygiene 直接执行 Git whitespace check 并覆盖“末尾多一空行”回归；AGENTS 同时固定单层 PowerShell、结构化路径和短锚点补丁规则，避免嵌套 shell、相对脚本路径及转义后的反斜杠继续污染正式验证。
 - 时间：2026-08-10（Asia/Hong_Kong）；执行者：Codex。正式消费 TARO O0R Content-Length HEAD Attempt 02，冻结 72 个 HEAD target 中 `71/72` 返回 200 + positive Content-Length，可用总长度 `1,105,086,109 bytes`；唯一失败是 ADAPTER_FIT video `47333152` 的 `lowres_wide.traj`，3/3 attempts 均为 HTTP 403、无 Content-Length。全程 response body=0、redirect=0，HEAD receipt/start/result/manifest 的 bytes/SHA 与 72-row plan identity 复核为 `VALID_NEGATIVE_TERMINAL`；HEAD root 已消费，source/work/truth/factor 四 root 仍不存在，GET/source body/truth/uncertainty/DepthART/factorial 均为 0，truth one-shot 未消费。按预冻结 no-replacement/no-rerun 规则，终态 `TARO_O0R_ASSET_HEADERS_NOT_AVAILABLE_NO_REPLACEMENT / O0R_NOT_EVALUABLE_SOURCE_ASSET_UNAVAILABLE / NO_ACTIVE_EXECUTION`，当前 successor 为无；不得替换 `47333152` 或继续 source/truth。

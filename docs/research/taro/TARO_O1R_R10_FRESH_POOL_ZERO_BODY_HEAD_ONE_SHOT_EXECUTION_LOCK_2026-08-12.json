@@ -1,0 +1,26 @@
+{
+  "schema":"blindassist.taro.o1r.r10_fresh_pool_head_execution_lock.v1",
+  "lock_id":"TARO_O1R_R10_FRESH_POOL_ZERO_BODY_HEAD_ONE_SHOT_EXECUTION_LOCK",
+  "status":"AUTHORIZED_UNCONSUMED",
+  "consumed":false,
+  "created_at":"2026-08-12",
+  "argv":["scripts/research/taro_o1r_r10_clear_runtime/run_pool_head.py","--execution-lock","docs/research/taro/TARO_O1R_R10_FRESH_POOL_ZERO_BODY_HEAD_ONE_SHOT_EXECUTION_LOCK_2026-08-12.json"],
+  "output_root":"artifacts.local/evidence/taro/o1r-r10-fresh-pool-head-r0",
+  "overwrite":false,
+  "rerun":false,
+  "bindings":[
+    {"role":"R10_PROTOCOL","path":"docs/research/taro/TARO_O1R_R10_FRESH_PARENT_SOURCE_ONLY_CLEAR_ENRICHED_CONFIRMATION_PROTOCOL_LOCK_2026-08-12.json","bytes":2974,"sha256":"20B99582196879E4851C43881AB6296D8B821F75D23F14AC57C4276C3B8D98FA"},
+    {"role":"R10_POOL_PLANNER","path":"scripts/research/taro_o1r_r10_clear_runtime/fresh_pool.py","bytes":9506,"sha256":"E4637F3C797722CF89370D2CA60EF839586A59330F974336477140E3BC13C9F0"},
+    {"role":"R10_POOL_TEST","path":"scripts/research/taro_o1r_r10_clear_runtime/test_fresh_pool.py","bytes":647,"sha256":"5F37F43C89DD4E556F61158E0F72B8D5BBFE387E1AE573379CBF5BC59020F6CF"},
+    {"role":"HEAD_TRANSPORT","path":"scripts/research/taro_o0r_truth_materializer_runtime/materializer.py","bytes":81498,"sha256":"2D03BAFA691FD8C1919854581C68D0460BC943E54E6BB83486F5E867497139F2"},
+    {"role":"R10_HEAD_RUNNER","path":"scripts/research/taro_o1r_r10_clear_runtime/run_pool_head.py","bytes":14279,"sha256":"D801071510FF67D5E52B2485806CFDC47F77A3DE4A181AC835A8E03573672FE9"},
+    {"role":"R10_HEAD_TEST","path":"scripts/research/taro_o1r_r10_clear_runtime/test_run_pool_head.py","bytes":929,"sha256":"9F2D3022A6A4780152F203817823B96A2D4F43DD142A74A2478661597BCA67B3"}
+  ],
+  "request_plan_sha256":"05FC28ED0EFE20E8B86CEF49DF10E774D66683BBCDDBD2E4FAEC4383ADAC6169",
+  "execution_authority":{"head_requests":true,"request_count":96,"response_body_bytes":0,"source_download":false,"source_decode":false,"model_execution":false,"faro_read":false,"truth_scoring":false,"training":false},
+  "resource_budget":{"maximum_compressed_source_bytes":8589934592,"head_timeout_seconds":30,"head_retries":2,"maximum_request_attempts":192,"head_response_body_bytes":0},
+  "user_authority":{"confirmed_by":"user","confirmed_at":"2026-08-12","confirmation_verbatim":"先推动，我授权","scope":"Exact frozen R10 32-parent Training pool and 96-URL plan: zero-body HEAD, bounded source download, source-only Phase A and selector ranking, then FARO only for the sealed top eight; no training, deployment, product, or safety authority."},
+  "authority_required":"Authorize the exact frozen R10 32-parent Training pool and its 96 URLs for zero-body HEAD, bounded source download, source-only Phase A and selector ranking, then FARO only for the sealed top eight. No training, deployment, product, or safety authority.",
+  "consumption_rule":"The lock is consumed when the exclusive output root is created. No overwrite, replacement, resume, repair in place, or rerun is allowed.",
+  "claim_ceiling":"Availability and compressed-byte evidence only; no media body, model, truth, effectiveness, deployment, product, or safety evidence."
+}

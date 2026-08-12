@@ -1,0 +1,76 @@
+{
+  "schema": "blindassist_ag_r2_f1_attempt11_final_canary_execution_lock_v1",
+  "lock_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT11_FINAL_CANARY_EXECUTION_LOCK",
+  "frozen_at": "2026-08-11T23:38:00+08:00",
+  "status": "ATTEMPT11_FINAL_CANARY_EXECUTION_AUTHORIZED",
+  "question": "Does the fully frozen expanded-supervision AG factor system improve every primary factor metric and all three residual-calibrated uncertainty families on two previously unopened source parents, then produce adapter-ready factor tensors?",
+  "bindings": {
+    "implementation": {
+      "path": "scripts/research/assistive_geometry/run_ag_r2_f1_attempt11_final_canary.py",
+      "sha256": "695AFD378E746A10F42BF22717EFC7195A23E1270B8B56F44BD3FA74AB7F786D"
+    },
+    "fresh_label_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-attempt05-fresh-ag-held-labels-r0/result.json",
+      "sha256": "4DBF0E85F45357C613221DF9F2C5A5E3B0971C314EB29D1967C02E0D6FAEB7CC"
+    },
+    "residual_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-attempt09-expanded-residual-depth-r2/result.json",
+      "sha256": "9B022091A409D821AE01779FD8E5266A31C619CE1739A85CAC93166E82F37FAE"
+    },
+    "height_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-attempt10-camera-height-r0/result.json",
+      "sha256": "963CB8D429962F8649B0CA0118C89D66A7C8698A851E0803E5D8958A64D9296A"
+    },
+    "factor_calibration_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-attempt09-final-factor-calibration-r0/result.json",
+      "sha256": "422979BFC2D6DEF65D4F31585C1E74534174EB7136E9C067C7D8A66D0415E0AE"
+    },
+    "baseline_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-fit-baselines-tum13-r0/result.json",
+      "sha256": "EECD5C9244C6A8A467B7890AF79D7871374AC8B325A87B48AE9E052089908F44"
+    },
+    "depthart_checkpoint": {
+      "path": "artifacts.local/models/depthart/source/checkpoints/metric/depthart_metric_indoor_s_448.pth",
+      "sha256": "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65"
+    }
+  },
+  "frozen_factor_system": {
+    "depth": "Attempt09 residual seed 29 with explicit DepthART metric skip, zero-mean local shape residual, pooled global scale residual and raw learned depth sigma",
+    "non_depth": "Attempt09 residual seed 17 inherited support, obstacle, boundary, evidence-validity and boundary-sigma components",
+    "camera_height": "Attempt10 learned global camera-height head at step 1200",
+    "support_normal": "Source-IMU gravity-conditioned deterministic normal",
+    "support_sigma": {
+      "source": "coverage_inverse_sqrt",
+      "multiplier": 0.5
+    },
+    "selection_inputs": "Consumed FIT and internal-validation parents only; no TRAIN_CANARY model metric was read"
+  },
+  "canary": {
+    "role": "TRAIN_CANARY",
+    "parent_count": 2,
+    "frame_count": 6,
+    "parents": [
+      "rgbd_dataset_freiburg1_desk2",
+      "rgbd_dataset_freiburg2_xyz"
+    ],
+    "sample_ids": [
+      "rgbd_dataset_freiburg1_desk2__rgb000050",
+      "rgbd_dataset_freiburg1_desk2__rgb000351",
+      "rgbd_dataset_freiburg1_desk2__rgb000480",
+      "rgbd_dataset_freiburg2_xyz__rgb000239",
+      "rgbd_dataset_freiburg2_xyz__rgb001359",
+      "rgbd_dataset_freiburg2_xyz__rgb003007"
+    ],
+    "execution_count": 1,
+    "no_post_open_selection": true
+  },
+  "success_gates": {
+    "primary": "All ten frozen primary factor metrics pass parent-bootstrap lower greater than zero and favorable-parent fraction at least 0.75",
+    "uncertainty": "Depth, support and boundary each have positive parent-macro proper-score gain and nondecreasing observed residual over predicted-sigma quartiles",
+    "serialization": "Exactly six factor tensors are serialized only after all primary and uncertainty gates pass"
+  },
+  "success_terminal": "ATTEMPT11_FINAL_CANARY_PASS_FACTORS_SERIALIZED_ADAPTER_REQUIRED",
+  "failure_terminal": "ATTEMPT11_FINAL_CANARY_FAIL_NO_PROMOTION",
+  "next_action_on_success": "Run FactorTensorAdapter and the deterministic reducer on every serialized factor tensor.",
+  "claim_boundary": "Train-only factor learnability and a real learned factor-to-adapter seam; not task utility, deployment, product or safety evidence."
+}

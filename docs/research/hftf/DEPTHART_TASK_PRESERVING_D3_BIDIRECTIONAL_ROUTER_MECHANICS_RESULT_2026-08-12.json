@@ -1,0 +1,64 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d3_bidirectional_router_mechanics_result_v1",
+  "result_id": "DEPTHART_TASK_PRESERVING_D3_BIDIRECTIONAL_ROUTER_MECHANICS_RESULT_2026-08-12",
+  "created_at": "2026-08-12",
+  "status": "D3_ROUTE_ESTABLISHED_SYNTHETIC_MECHANICS_PASS_PRE_DATA_STOP",
+  "protocol": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_BIDIRECTIONAL_ERROR_CERTIFICATE_ROUTER_PROTOCOL_2026-08-12.json",
+    "bytes": 12307,
+    "sha256": "52E46A8E16B18BEFD8412874A1571429E95813EDC99A098B8B98194C613E50B2"
+  },
+  "canary": {
+    "script": {
+      "path": "scripts/research/hftf/deployment/depthart/depthart_task_preserving_d3_bidirectional_router_canary.py",
+      "bytes": 12971,
+      "sha256": "F8C9EF98D395D080A6C836838209C6D7F0AA08672B5E3C5CC4A2B7AF53E0AE8C"
+    },
+    "artifact": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3-preoutcome-20260812-r0/d3-router-canary.json",
+      "bytes": 9622,
+      "sha256": "43DDC5883A57B60C894EB49FE3D0A74418D080DEE0DDBEFE19AC9D3AFBBA209B"
+    },
+    "status": "PASS",
+    "checks": {
+      "neutral_preserves_baseline_exactly": true,
+      "clear_release_is_selective": true,
+      "occupied_veto_is_selective": true,
+      "contradiction_fails_to_unknown": true,
+      "missing_evidence_preserves_baseline": true,
+      "strong_evidence_can_promote_unknown": true,
+      "unknown_without_evidence_is_preserved": true,
+      "occupied_certificate_is_cumulative_max": true,
+      "clear_certificate_is_cumulative_min": true,
+      "deterministic_replay_is_exact": true
+    }
+  },
+  "focused_tests": {
+    "command": "python -m unittest scripts.research.hftf.deployment.depthart.test_depthart_task_preserving_d3_bidirectional_router_canary",
+    "tests_run": 7,
+    "status": "PASS"
+  },
+  "interpretation": {
+    "established": [
+      "D3 is a new selective correction task rather than a D2 rerun",
+      "release and veto certificates have deterministic fail-closed composition mechanics",
+      "the pre-outcome data firewall, training recipe and one-shot Development gates are frozen"
+    ],
+    "not_established": [
+      "fresh source data availability or source-truth support",
+      "certificate learnability or task-quality improvement",
+      "an R2 candidate",
+      "device performance, Android default, production or safety authority"
+    ]
+  },
+  "outcome_access": {
+    "new_media_head": false,
+    "new_media_body": false,
+    "source_truth": false,
+    "training": false,
+    "d3_development": false,
+    "r2": false
+  },
+  "current_gate": "EXPLICIT_D3_FRESH_SOURCE_SCOPE_AND_PARENT_DISJOINT_METADATA_ROSTER_LOCK",
+  "authority": "D3_PREOUTCOME_PROTOCOL_AND_SYNTHETIC_MECHANICS_ONLY"
+}
