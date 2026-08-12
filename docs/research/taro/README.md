@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_UNTOUCHED_CONFIRMATION_PASS / R6_FACTOR_POLICY_PROMOTION_ALLOWED / R6_EVIDENCE_VERIFIED / R6_PROSPECTIVE_RUNTIME_PROTOCOL_FROZEN / R6_PROSPECTIVE_RUNTIME_IMPLEMENTATION_FROZEN / R6_FORMATION_REPLAY_COMPLETE / R6_REDUCER_INTEGRATION_NOT_EVALUABLE_ALL_UNKNOWN / R6_REDUCER_EVIDENCE_VERIFIED / R7_FIT_LOPO_CANARY_PASS / R7_POSITIVE_OCCUPANCY_ADVANCES / R7_CLEAR_NOT_EVALUABLE / R7_EVIDENCE_VERIFIED / R7_FRESH_CONFIRMATION_NOT_EVALUABLE_DUAL_CLASS_COVERAGE / R8_SELECTED_PHASE_B_COMPLETE / R8_SPARSE_RAY_INTERFACE_FAIL / R8_DENSE_TRUTH_OWNED_FALLBACK_COMPLETE / R9_SOURCE_ONLY_SELECTOR_FROZEN / R10_FRESH_32_PARENT_PIPELINE_COMPLETE / R10_POSITIVE_OCCUPANCY_GATES_PASS / R10_NOT_EVALUABLE_DUAL_CLASS_COVERAGE / R10_NO_PROMOTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_UNTOUCHED_CONFIRMATION_PASS / R6_FACTOR_POLICY_PROMOTION_ALLOWED / R6_EVIDENCE_VERIFIED / R6_PROSPECTIVE_RUNTIME_PROTOCOL_FROZEN / R6_PROSPECTIVE_RUNTIME_IMPLEMENTATION_FROZEN / R6_FORMATION_REPLAY_COMPLETE / R6_REDUCER_INTEGRATION_NOT_EVALUABLE_ALL_UNKNOWN / R6_REDUCER_EVIDENCE_VERIFIED / R7_FIT_LOPO_CANARY_PASS / R7_POSITIVE_OCCUPANCY_ADVANCES / R7_CLEAR_NOT_EVALUABLE / R7_EVIDENCE_VERIFIED / R7_FRESH_CONFIRMATION_NOT_EVALUABLE_DUAL_CLASS_COVERAGE / R8_SELECTED_PHASE_B_COMPLETE / R8_SPARSE_RAY_INTERFACE_FAIL / R8_DENSE_TRUTH_OWNED_FALLBACK_COMPLETE / R9_SOURCE_ONLY_SELECTOR_FROZEN / R10_FRESH_32_PARENT_PIPELINE_COMPLETE / R10_POSITIVE_OCCUPANCY_GATES_PASS / R10_NOT_EVALUABLE_DUAL_CLASS_COVERAGE / R10_NO_PROMOTION / R11_WEAK_DISTAL_ABSTENTION_DEVELOPMENT_ONLY / R11_FRESH_48_PARENT_PROTOCOL_LOCKED / R11_SCIENTIFIC_NOT_RUN / R11_EXECUTION_FALSE / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -205,6 +205,12 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
   完整执行 710 source frames，并只对 sealed top eight 的 260 frames 读取 FARO；正占用侧冻结门全部通过，
   但 definite `CLEAR` 仅覆盖 3 个 parents 且 Wilson clear-specificity 下界失败，正式终态为 `NOT_EVALUABLE`，
   不产生路线、部署、产品或安全晋级；
+- [R11 weak-distal abstention development result](TARO_O1R_R11_WEAK_DISTAL_ABSTENTION_DEVELOPMENT_RESULT_2026-08-12.md)：
+  在 consumed R10 上只读形成 source-only 候选；抑制唯一 clear false positive，同时损失 1 个 occupied
+  true positive。该结果严格为 development-only，不改写 R10 终态；
+- [R11 positive-occupancy abstention and fresh dual-class protocol](TARO_O1R_R11_POSITIVE_OCCUPANCY_ABSTENTION_AND_FRESH_DUAL_CLASS_CONFIRMATION_PROTOCOL_LOCK_2026-08-12.md)：
+  冻结 48-parent metadata-only fresh pool、top-24 source-only selection、selected-only FARO、frame/parent-aware
+  dual-class gates 与 execution=false 权限；当前无 R11 数据使用或执行授权；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -219,16 +225,15 @@ R10 已消费且正式 `NOT_EVALUABLE`。它保留了强正占用信号，但未
 definite `CLEAR` 为 13 queries / 3 parents，且其中 1 个 false occupied 使单侧 95% Wilson 下界为
 `0.717742`。不得通过修改 R10 selector、threshold、denominator 或 gate 救活该结果。
 
-继续路线前必须另立 successor：先把基于 consumed R10 的任何 abstention rule 明确标成 development-only
-并冻结，再获得新的 parent-disjoint cohort/data-use 与 one-shot 权限做独立确认；在只有一个 false
-positive 的情形下，至少需要 20 个 definite-clear observations 才能越过同一 Wilson 0.8 门。当前没有
-剩余的 R10 执行权限，也没有 TARO route/deployment/device/product/safety promotion。
+R11 已完成该 non-execution successor：弱、低、远端 R7 positive 只有在 16-pixel、0.15 m height 或
+1.5 m forward 三个既有相邻强度 cell 至少一个成立时才保留 `OCCUPIED`，否则变为 `UNKNOWN`；它不输出
+`CLEAR`。consumed R10 replay 只用于 development formation，不能成为 confirmation 或改写 R10。
 
-唯一 successor 是
-`TARO_O1R_R11_POSITIVE_OCCUPANCY_ABSTENTION_AND_FRESH_DUAL_CLASS_CONFIRMATION_PROTOCOL_LOCK`
-（execution=false）。它只允许把 R10 唯一误报形成 development-only abstention 候选，并在任何新
-outcome 前冻结新的 parent-disjoint cohort、dual-class coverage 和 one-shot 前门；新 source/FARO/model
-执行仍需单独、精确的数据使用授权。
+唯一外部前门是用户对协议内 exact 48 个 Training parents × 3 assets 的独立数据使用授权。获得该授权后，
+唯一代码 successor 才是 `TARO_O1R_R11_FRESH_48_PARENT_ZERO_BODY_HEAD_ONE_SHOT_EXECUTION_LOCK`
+（execution=false until separately consumed）：先冻结 144 个 zero-body HEAD 请求、预算、argv 和 exclusive
+root；不得由本协议直接发送 HEAD、读取 source body、运行 DepthART 或打开 FARO。当前没有剩余 R10/R11
+执行权限，也没有 TARO route/deployment/device/product/safety promotion。
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -402,8 +407,9 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 - 重放 P0/O0M 静态 validator、mutation tests 与 O0M runtime unit tests；
 - 对已签署 O0M evidence 做只读 hash、manifest、record 与 replay 审计；
 - 只读审计已消费 R4/R4A evidence 的 manifest、逐 query 外部绑定与 canonical summary replay；
-- R5 正式 FAIL 与 R6 untouched PASS 已完成；prospective runtime 的 24-parent / 450-frame source-first formation replay
-  也已有效完成。下一步只允许冻结 factor-to-uncertainty/reducer integration，不得用 formation outcome 调参；
+- R10 正式 `NOT_EVALUABLE` 保持不可改写；R11 development-only abstention 与 48-parent fresh protocol 已冻结。
+  当前只允许重放 R11 静态 validator、development result 和 metadata-only roster；任何 HEAD、source、模型或
+  FARO 动作必须先取得 exact R11 数据使用授权并另立 one-shot execution lock；
 - 只读引用历史负结果、数据能力、现有 reducer 和运行时 receipt 的已签署结论。
 
 ## 当前禁止

@@ -16,6 +16,18 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   `EXPLICIT_D3R1_PHASE_B_DEPTH_CONFIDENCE_BODY_AND_SOURCE_TRUTH_SUPPORT_ACTIVATION`；必须另行冻结约
   `5.58 GB` body、checkpoint/resume、全 32 support audit 与 fail-closed validator。
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。完成 TARO O1R R11 non-execution
+  abstention development 与 fresh dual-class confirmation protocol lock。consumed R10 的唯一 definite-clear
+  false positive 只用于形成 source-only 候选：R7 2-pixel / 0.08 m / 2.0 m positive 还必须命中既有
+  16-pixel、0.15 m height 或 1.5 m forward 相邻强度 cell 之一，否则 `OCCUPIED → UNKNOWN`；候选不输出
+  `CLEAR`、不接受 identity/truth/result 字段并保留 R6 prior occupied。R10 只读 replay 从 1,769 TP / 1 FP
+  变为 1,768 TP / 0 FP，但严格为 development-only，R10 `NOT_EVALUABLE` 不变。新协议按固定 exclusion
+  commit 和 R10 全 32-parent pool 冻结 48 个 fresh Training parents / 144 URL，未来只允许 source-only
+  排名 top 24 后读取 selected FARO，并新增 definite-clear physical-frame 与 parent-aware gates；18/18 focused
+  tests、协议 validator 与逐文件 compile 均通过。本步 HEAD/GET/source/model/FARO/training 均为 0，R11
+  scientific status 为 `NOT_RUN`、execution=false。唯一外部前门是 exact 48-parent × 3-asset 数据使用授权；
+  获授权后才可另锁 zero-body HEAD one-shot，默认 App、产品与 safety authority 不变。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。完成 TARO O1R R10 exact 32-parent
   fresh clear-enriched confirmation 全链并封存正式结果。zero-body HEAD 与 source download 均为
   96/96，source 为 `1,945,902,515 bytes`；inventory 冻结 710 frames。Phase A R0 在 inference
