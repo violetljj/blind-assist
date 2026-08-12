@@ -55,6 +55,13 @@ EXPECTED_BINDINGS = {
     "R7_CANARY_RUNTIME": "scripts/research/taro_o1r_r7_canary_runtime/r7_canary.py",
     "R8_PHASE_B_RUNNER": "scripts/research/taro_o1r_r8_clear_runtime/run_selected_phase_b.py",
 }
+EXPECTED_USER_AUTHORITY = {
+    "confirmed_by": "user",
+    "confirmed_at": "2026-08-12",
+    "confirmation_verbatim": "授权",
+    "scope": "After the exact R8 top eight are irreversibly sealed from source-only evidence, read highres_depth FARO for exactly those 133 selected frames, construct fixed labels, and evaluate the unchanged dual-class and positive-occupancy gates; no source reselection, threshold fit, or training.",
+}
+EXPECTED_GATES = {"minimum_evaluable_parents": 8, "minimum_parents_with_definite_occupied": 6, "minimum_parents_with_definite_clear": 4, "minimum_definite_occupied_queries": 100, "minimum_definite_clear_queries": 50, "minimum_occupied_precision": 0.9, "minimum_one_sided_95_wilson_precision_lower_bound": 0.8, "minimum_occupied_recall": 0.9, "minimum_parent_macro_occupancy_coverage_increase_absolute": 0.05, "maximum_clear_outputs": 0, "unknown_is_negative": False}
 
 
 class SelectedPhaseBError(RuntimeError):
@@ -175,6 +182,7 @@ def validate_execution_lock(path: Path) -> dict[str, Any]:
     lock_path = path.resolve()
     lock = _read_json(lock_path)
     require(lock.get("schema") == LOCK_SCHEMA and lock.get("lock_id") == LOCK_ID and lock.get("status") == "AUTHORIZED_UNCONSUMED" and lock.get("consumed") is False, "R8_PHASE_B_LOCK_IDENTITY", "Phase-B lock identity drift")
+    require(lock.get("user_authority") == EXPECTED_USER_AUTHORITY, "R8_PHASE_B_USER_AUTHORITY", "Phase-B user authority drift")
     actual_argv = [Path(sys.argv[0]).resolve().relative_to(REPO_ROOT).as_posix(), "--execution-lock", lock_path.relative_to(REPO_ROOT).as_posix()]
     require(lock.get("argv") == actual_argv and lock.get("phase_a_root") == PHASE_A_ROOT and lock.get("selection_root") == SELECTION_ROOT and lock.get("inventory_path") == INVENTORY_PATH and lock.get("output_root") == OUTPUT_ROOT and lock.get("overwrite") is False and lock.get("rerun") is False, "R8_PHASE_B_LOCK_POLICY", "Phase-B root/argv policy drift")
     bindings = lock.get("bindings")
@@ -187,9 +195,18 @@ def validate_execution_lock(path: Path) -> dict[str, Any]:
         require(target.is_file() and target.stat().st_size == row["bytes"] and materializer.sha256_file(target) == row["sha256"], "R8_PHASE_B_BINDING_HASH", f"Phase-B binding drift: {relative}")
         seen.add(role)
     selection = run_top8_selection.validate_selection(_read_json(_repo_path(EXPECTED_BINDINGS["R8_SELECTION"])))
+    selection_result = _read_json(_repo_path(EXPECTED_BINDINGS["R8_SELECTION_RESULT"]))
+    require(selection_result.get("execution_valid") is True and selection_result.get("passed") is True and selection_result.get("terminal") == run_top8_selection.PASS_TERMINAL and selection_result.get("selection_sha256") == selection["content_sha256"] and selection_result.get("faro_reads") == selection_result.get("truth_reads") == selection_result.get("label_reads") == selection_result.get("outcome_reads") == 0, "R8_PHASE_B_SELECTION_RESULT", "selection result not admitted")
+    selection_manifest = _read_json(_repo_path(EXPECTED_BINDINGS["R8_SELECTION_MANIFEST"]))
+    require(selection_manifest.get("schema") == "blindassist.taro.o1r.r8_clear_top8_selection_manifest.v1" and selection_manifest.get("terminal") == run_top8_selection.PASS_TERMINAL and selection_manifest.get("file_count_before_manifest") == len(selection_manifest.get("files", {})) == 3, "R8_PHASE_B_SELECTION_MANIFEST", "selection manifest not admitted")
+    for relative, receipt in selection_manifest["files"].items():
+        target = _repo_path(SELECTION_ROOT) / relative
+        require(target.is_file() and target.stat().st_size == receipt.get("bytes") and materializer.sha256_file(target) == receipt.get("sha256") and receipt.get("path") == relative, "R8_PHASE_B_SELECTION_FILE", f"selection artifact drift: {relative}")
     selected_frames = sum(row["frame_count"] for row in selection["selected_parents"])
     require(lock.get("execution_authority") == {"phase_a_reload": True, "sealed_top8_reload": True, "faro_payload_read": True, "faro_frame_count": selected_frames, "truth_label_construction": True, "fixed_gate_evaluation": True, "source_reselection": False, "threshold_fit": False, "training": False, "network": False, "device": False, "product": False, "safety": False}, "R8_PHASE_B_AUTHORITY", "Phase-B authority drift")
     require(lock.get("selected_cohort") == {"parent_count": SELECTED_PARENT_COUNT, "physical_frame_count": selected_frames, "query_count": selected_frames * 9, "selected_parent_identities": [[row["parent_id"], row["video_id"]] for row in selection["selected_parents"]], "selection_sha256": selection["content_sha256"]}, "R8_PHASE_B_SELECTED_COHORT", "selected cohort drift")
+    require(lock.get("unchanged_gates") == EXPECTED_GATES, "R8_PHASE_B_GATE_DRIFT", "Phase-B gate drift")
+    require(lock.get("phase_firewall") == {"selection_sha256": selection["content_sha256"], "source_reselection": False, "threshold_reselection": False, "only_payload_role_read": "highres_depth", "read_unselected_parent_faro": False}, "R8_PHASE_B_FIREWALL", "Phase-B firewall drift")
     require(lock.get("resource_budget") == {"maximum_wall_seconds": 14400, "maximum_peak_rss_bytes": 17179869184, "maximum_evidence_bytes": 536870912}, "R8_PHASE_B_BUDGET", "Phase-B budget drift")
     require(not _repo_path(OUTPUT_ROOT).exists(), "R8_PHASE_B_ROOT_COLLISION", "Phase-B output root exists")
     lock["_lock_path"] = lock_path
