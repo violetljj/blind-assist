@@ -1,0 +1,64 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d3_phase_a_body_activation_v1",
+  "activation_id": "DEPTHART_TASK_PRESERVING_D3_PHASE_A_BODY_ACTIVATION_2026-08-12",
+  "activated_at": "2026-08-12T15:20:58.2715497+08:00",
+  "activated_by": "user",
+  "authorization_verbatim": "继续",
+  "authorization_context": "The D3 Phase-A HEAD result named EXPLICIT_D3_PHASE_A_INTRINSICS_TRAJECTORY_BODY_AND_LABEL_BLIND_CONTINUITY_ACTIVATION as the sole successor. The immediately preceding work update stated that continuing would download and validate exactly the frozen 96 intrinsics/trajectory assets, process all 48 identities and lock the first 32 continuity-qualified identities, while forbidding RGB, depth, confidence, truth, model output and Phase-B. The user's latest instruction was '继续'.",
+  "status": "D3_PHASE_A_BODY_AND_LABEL_BLIND_CONTINUITY_EXECUTION_AUTHORIZED",
+  "bindings": {
+    "body_protocol": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_PHASE_A_BODY_PROTOCOL_2026-08-12.json",
+      "bytes": 8607,
+      "sha256": "5954A42E954BB3D1B27C1FA613221162A3DEB605084DD796F4B4D6FA9D49BF54"
+    },
+    "roster": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_FRESH_METADATA_ROSTER_LOCK_2026-08-12.json",
+      "bytes": 14590,
+      "sha256": "A502E74A0122B667DF4D9DF8F51A72FD127EBBCB4B2D07F859240E41B1DD6478"
+    },
+    "head_result": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3-phase-a-head-20260812-r0/head-preflight.json",
+      "bytes": 55510,
+      "sha256": "4C4CBC08F218D692601FB697EDBCB61D4B57C6C85A348E106CFE118E9131FF43"
+    },
+    "source_scope": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_SOURCE_SCOPE_AND_METADATA_ROSTER_RECEIPT_2026-08-12.json",
+      "bytes": 3244,
+      "sha256": "08C6A70C4BC82E7144C8E7909D2E381A81D3C67DD610E54A2A2C1DA5AA3E951D"
+    }
+  },
+  "execution": {
+    "method": "GET",
+    "identity_count": 48,
+    "asset_count": 96,
+    "declared_body_bytes": 41979912,
+    "assets": [
+      "lowres_wide_intrinsics.zip",
+      "lowres_wide.traj"
+    ],
+    "full_pool_processing_required": true,
+    "first_qualified_identity_count": 32,
+    "checkpoint_resume_allowed": true,
+    "output_overwrite_forbidden": true
+  },
+  "authority": {
+    "phase_a_body": true,
+    "archive_member_read": true,
+    "pose_content_read": true,
+    "label_blind_continuity_selection": true,
+    "rgb_depth_confidence": false,
+    "source_truth": false,
+    "truth_or_model": false,
+    "train_development_role_assignment": false,
+    "phase_b": false,
+    "training": false,
+    "development_outcome": false,
+    "r2": false,
+    "performance": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  },
+  "terminal": "D3_PHASE_A_BODY_AND_LABEL_BLIND_CONTINUITY_ACTIVATED_PHASE_B_FORBIDDEN"
+}

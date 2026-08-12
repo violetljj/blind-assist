@@ -2,6 +2,22 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。完成 DepthART-S D3 Phase-A exact-48
+  intrinsics/trajectory body 与 label-blind continuity execution。96/96 GET 共 `41,979,912 bytes`，
+  Content-Length/ETag/Last-Modified 全部匹配冻结 HEAD；48/48 checkpoint、`190,028` 个 `.pincam`
+  payload 和 `31,185` 个 trajectory row 经保留源离线复算通过。固定 300-frame、相邻
+  `0 < gap <= 0.5s`、pose bracket `<=0.25s`、portrait index `{1,3}` 门仅有 `21/48` identity
+  合格，少于所需 32，故正式 selection lock、TRAIN/DEVELOPMENT role 与 Phase-B authority 全为空，
+  终态 `D3_PHASE_A_FAIL_FEWER_THAN_32_ELIGIBLE_IDENTITIES`。预冻结 validator 只接受 PASS manifest，
+  合法 FAIL 后才暴露覆盖缺口；保留原协议/validator/manifest/hash，新增 post-terminal read-only repair
+  auditor 对全部 96 bodies 和 48 continuity decisions 独立复核，结果
+  `VALID_WITH_POST_TERMINAL_VALIDATOR_COVERAGE_REPAIR`，未重跑下载、未改 pool/门限/选择。
+  RGB/depth/confidence/truth/model、训练、R2、性能、默认 App、production 与 safety 均未打开；当前
+  D3 version 无 successor，恢复必须另立 pre-outcome fresh roster/source-scope/protocol 版本。16 项
+  D3 focused tests、binding preflight 与 docs index PASS；全局 structure gate 仅被当前分支并行 TARO
+  的 7 个未登记 Module 及 TARO current-status/successor 漂移阻塞，未报告任何 D3/DepthART 缺陷，
+  本次未改写该并行工作。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。完成 Assistive Geometry R2 的
   SuperTeacher 数据支线与 AG research-pipeline 落地。先保留无锚 `walking_xyz` 的冻结负结果：
   仅 1/12 帧结构有效、108/108 cells UNKNOWN；naive post-walking global ERM 又因旧 selection

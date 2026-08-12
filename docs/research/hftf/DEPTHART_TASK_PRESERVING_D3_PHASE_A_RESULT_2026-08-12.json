@@ -1,0 +1,173 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d3_phase_a_result_v1",
+  "result_id": "DEPTHART_TASK_PRESERVING_D3_PHASE_A_RESULT_2026-08-12",
+  "executed_at": "2026-08-12",
+  "status": "FAIL",
+  "operational_status": "COMPLETE",
+  "protocol_status": "VALID_WITH_POST_TERMINAL_VALIDATOR_COVERAGE_REPAIR",
+  "scientific_outcome": "NOT_RUN_SOURCE_ADMISSION_ONLY",
+  "terminal": "D3_PHASE_A_FAIL_FEWER_THAN_32_ELIGIBLE_IDENTITIES",
+  "authority": "D3_PHASE_A_INTRINSICS_TRAJECTORY_SOURCE_INTEGRITY_AND_LABEL_BLIND_CONTINUITY_ONLY",
+  "bindings": {
+    "owning_protocol": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_BIDIRECTIONAL_ERROR_CERTIFICATE_ROUTER_PROTOCOL_2026-08-12.json",
+      "bytes": 12307,
+      "sha256": "52E46A8E16B18BEFD8412874A1571429E95813EDC99A098B8B98194C613E50B2"
+    },
+    "body_protocol": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_PHASE_A_BODY_PROTOCOL_2026-08-12.json",
+      "bytes": 8607,
+      "sha256": "5954A42E954BB3D1B27C1FA613221162A3DEB605084DD796F4B4D6FA9D49BF54"
+    },
+    "activation": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_PHASE_A_BODY_ACTIVATION_2026-08-12.json",
+      "bytes": 2835,
+      "sha256": "508640E39769A65B685BAAE4EABE8ECF5D4B12ECB75868AA22FF5735B5100312"
+    },
+    "roster": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_FRESH_METADATA_ROSTER_LOCK_2026-08-12.json",
+      "bytes": 14590,
+      "sha256": "A502E74A0122B667DF4D9DF8F51A72FD127EBBCB4B2D07F859240E41B1DD6478"
+    },
+    "source_scope": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_SOURCE_SCOPE_AND_METADATA_ROSTER_RECEIPT_2026-08-12.json",
+      "bytes": 3244,
+      "sha256": "08C6A70C4BC82E7144C8E7909D2E381A81D3C67DD610E54A2A2C1DA5AA3E951D"
+    },
+    "head_result": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3-phase-a-head-20260812-r0/head-preflight.json",
+      "bytes": 55510,
+      "sha256": "4C4CBC08F218D692601FB697EDBCB61D4B57C6C85A348E106CFE118E9131FF43"
+    },
+    "terminal_validator_repair": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_PHASE_A_TERMINAL_VALIDATOR_REPAIR_2026-08-12.json",
+      "bytes": 4120,
+      "sha256": "8FA15965F6F3679EAC1336F2B11B455086F46A30BA4D13BD86EB760013FBBA11"
+    },
+    "producer": {
+      "path": "scripts/research/hftf/deployment/depthart/materialize_depthart_task_preserving_d3_phase_a.py",
+      "bytes": 31696,
+      "sha256": "7AA0EF6D9F2094905371091BF1F5953F0F5F5C10E59DEA5B684BAAF4FC838F25"
+    },
+    "terminal_auditor": {
+      "path": "scripts/research/hftf/deployment/depthart/audit_depthart_task_preserving_d3_phase_a_terminal.py",
+      "bytes": 17005,
+      "sha256": "C05982E8017BD4545774124285F0C10C833E3CB5B83F21BF4EF7CA19D8785700"
+    }
+  },
+  "machine_evidence": {
+    "attempt": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3-phase-a-body-20260812-r0/attempt.json",
+      "bytes": 7399,
+      "sha256": "C6CE67669E52FC35F4980E794F3DACC01D1E38BEF47F362F534D902A1664619F"
+    },
+    "manifest": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3-phase-a-body-20260812-r0/manifest.json",
+      "bytes": 366225,
+      "sha256": "C3A8D20B6E94E5F7F5A4DB89EDAD7570D1DA71C311B5C2D2F1188BDF8E4791A4"
+    },
+    "offline_terminal_audit": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3-phase-a-body-20260812-r0/validation.json",
+      "bytes": 1985,
+      "sha256": "36EE786674C820503D75871FC7F2C041AA7BD713E17D86F858A3F5D509E674C4",
+      "status": "D3_PHASE_A_OFFLINE_TERMINAL_AUDIT_PASS"
+    },
+    "stdout_log": {
+      "path": "artifacts.local/work/depthart-d3-phase-a-body-20260812-r0.stdout.log",
+      "bytes": 9895,
+      "sha256": "77B16A4CDF4AF46D21D751BC43C29F8E6C9E3372594F35C83295676C476EA10A"
+    },
+    "stderr_log": {
+      "path": "artifacts.local/work/depthart-d3-phase-a-body-20260812-r0.stderr.log",
+      "bytes": 0,
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    }
+  },
+  "execution_summary": {
+    "frozen_identity_count": 48,
+    "processed_identity_count": 48,
+    "checkpoint_count": 48,
+    "source_asset_count": 96,
+    "declared_body_bytes": 41979912,
+    "downloaded_body_bytes": 41979912,
+    "offline_reverified_body_bytes": 41979912,
+    "validated_intrinsics_payload_count": 190028,
+    "validated_trajectory_row_count": 31185,
+    "get_head_header_match_count": 96,
+    "transport_error_count": 0,
+    "temporary_downloads_remaining": false,
+    "all_48_source_archives_retained_for_offline_validation": true
+  },
+  "continuity_result": {
+    "required_identity_count": 32,
+    "eligible_identity_count": 21,
+    "shortfall_identity_count": 11,
+    "eligible_pool_orders": [
+      1,
+      4,
+      5,
+      6,
+      7,
+      8,
+      10,
+      14,
+      20,
+      21,
+      22,
+      23,
+      25,
+      26,
+      28,
+      31,
+      36,
+      38,
+      41,
+      44,
+      47
+    ],
+    "phase_a_selection_locked": false,
+    "selected_identity_count": 0,
+    "selected_phase_a": [],
+    "train_development_role_assignments": []
+  },
+  "validator_repair_disclosure": {
+    "original_validator_hash_preserved": true,
+    "defect": "The pre-frozen validator accepted only a PASS manifest and therefore lacked coverage for the already-frozen legitimate FAIL terminal.",
+    "repair_timing": "after immutable manifest publication",
+    "repair_scope": "read-only independent terminal and retained-source audit",
+    "materializer_or_manifest_rerun": false,
+    "data_pool_gate_threshold_or_selection_changed": false,
+    "audit_result": "PASS"
+  },
+  "boundaries": {
+    "rgb_read": false,
+    "depth_read": false,
+    "confidence_read": false,
+    "source_truth_read": false,
+    "model_output_read": false,
+    "training": false,
+    "development_outcome_access": "NONE",
+    "r2_cohort_access": "NONE",
+    "phase_b_authorized": false,
+    "performance": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  },
+  "interpretation": {
+    "established": [
+      "all exact 96 intrinsics/trajectory bodies matched their frozen HEAD version and byte count",
+      "all retained trajectories and all 190028 intrinsics payloads independently revalidated",
+      "only 21 of the frozen 48 identities meet the fixed 300-frame portrait/pose continuity gate"
+    ],
+    "not_established": [
+      "a 32-identity Phase-A lock",
+      "any source-truth support",
+      "TRAIN or DEVELOPMENT roles",
+      "D3 model feasibility or task quality",
+      "R2 candidacy, performance, Android default, production or safety"
+    ]
+  },
+  "active_successor": "NONE_D3_PHASE_A_FAIL_TERMINAL",
+  "recharter_rule": "Any future recovery requires a separately named evidence version with a new pre-outcome fresh roster, source scope and protocol. The current pool cannot be expanded, thresholds cannot be relaxed and the 21 eligible identities cannot be promoted as partial roles under this result."
+}
