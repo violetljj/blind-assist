@@ -124,9 +124,9 @@ def _write_imu(
             (
                 f"{PARENT}/sequence_calibration.txt",
                 (
-                    f"mocap_time_scale {mocap_scale}\n"
-                    f"mocap_time_anchor_seconds {mocap_anchor_seconds}\n"
-                    f"mocap_time_offset_seconds {mocap_offset_seconds}\n"
+                    f"mocap_timescaling_camera {mocap_scale}\n"
+                    f"timescaling_anchor {mocap_anchor_seconds}\n"
+                    f"mocap_timeoffset_camera {mocap_offset_seconds}\n"
                 ).encode(),
             ),
         ],
@@ -135,24 +135,30 @@ def _write_imu(
 
 def _write_camera_imu_calibration(root: Path, *, lines: str) -> Path:
     root.mkdir(parents=True, exist_ok=True)
-    return _write_plain_zip(root / "camera_imu_calib_radtan.zip", [("synthetic/chain.txt", lines.encode())])
+    return _write_plain_zip(root / "camera_imu_calib_radtan.zip", [("synthetic/camchain.yaml", lines.encode())])
 
 
 def _calibration_binding(
-    camera_key: str = "camera_from_imu",
+    camera_node_key: str = "cam0",
     *,
     minimum_imu_samples: int = 5,
 ) -> source.CalibrationMemberBinding:
     return source.CalibrationMemberBinding(
-        member="synthetic/chain.txt",
-        camera_from_imu_key=camera_key,
-        mocap_time_scale_key="mocap_time_scale",
-        mocap_time_anchor_seconds_key="mocap_time_anchor_seconds",
-        mocap_time_offset_seconds_key="mocap_time_offset_seconds",
+        member="synthetic/camchain.yaml",
+        camera_node_key=camera_node_key,
+        camera_from_imu_key="T_cam_imu",
+        calibration_encoding="KALIBR_CAMCHAIN_YAML_T_CAM_IMU_NESTED_4X4",
+        camera_from_imu_transform_direction="IMU_TO_CAMERA_T_CAM_IMU",
+        mocap_time_scale_key="mocap_timescaling_camera",
+        mocap_time_anchor_seconds_key="timescaling_anchor",
+        mocap_time_offset_seconds_key="mocap_timeoffset_camera",
         camera_timestamp_to_seconds="INTEGER_NANOSECONDS_TIMES_1E_MINUS_9",
         imu_timestamp_to_seconds="INTEGER_NANOSECONDS_TIMES_1E_MINUS_9",
         imu_clock_domain="CAMERA_CLOCK_NO_MOCAP_TRANSFORM",
         groundtruth_timestamp_unit="SECONDS",
+        imu_delimiter_and_column_order="WHITESPACE_TIMESTAMP_NS_GYRO_XYZ_LINEAR_ACCELERATION_XYZ",
+        imu_axis_and_frame_mapping="IMU_SENSOR_FRAME_ROTATED_BY_T_CAM_IMU_TO_RIGHT_RGB_DEPTH_CAMERA_FRAME",
+        accelerometer_specific_force_sign="STATIONARY_SPECIFIC_FORCE_POINTS_UP_OPPOSITE_GRAVITY",
         maximum_pose_bracket_seconds=Decimal("1.1"),
         imu_half_window_seconds=Decimal("0.05"),
         minimum_imu_samples=minimum_imu_samples,
@@ -514,11 +520,13 @@ def _motion_fixture(tmp_path: Path):
     calibration = _write_camera_imu_calibration(
         tmp_path / "calibration",
         lines=(
-            "camera_from_imu "
-            "1 0 0 0 "
-            "0 0 -1 0 "
-            "0 1 0 0 "
-            "0 0 0 1\n"
+            "cam0:\n"
+            "  camera_model: pinhole\n"
+            "  T_cam_imu:\n"
+            "  - [1, 0, 0, 0]\n"
+            "  - [0, 0, -1, 0]\n"
+            "  - [0, 1, 0, 0]\n"
+            "  - [0, 0, 0, 1]\n"
         ),
     )
     return rgbd, imu, calibration
@@ -641,7 +649,7 @@ def test_pose_and_gravity_fail_closed_on_time_quaternion_imu_and_binding_ambigui
                 phase=source.SourcePhase.CALIBRATION_SOURCE,
                 imu_archive=imu,
                 calibration_archive=calibration,
-                calibration_binding=_calibration_binding("missing_key"),
+                calibration_binding=_calibration_binding("missing_camera"),
             )
         ) == "F2_IMU_CALIBRATION_KEY_AMBIGUOUS_OR_MISSING"
         assert _error_code(

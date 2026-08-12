@@ -21,14 +21,27 @@ DATA_IDENTITY_PATH = REPO_ROOT / (
     "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_"
     "CONFIRMATION_DATA_IDENTITY_2026-08-12.json"
 )
+OFFICIAL_CONTROL_EVIDENCE_PATH = REPO_ROOT / (
+    "docs/research/assistive-geometry/"
+    "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_"
+    "CONFIRMATION_OFFICIAL_CONTROL_EVIDENCE_2026-08-12.json"
+)
 IMPLEMENTATION_LOCK_PATH = REPO_ROOT / (
     "docs/research/assistive-geometry/"
     "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_"
-    "CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK_2026-08-12.json"
+    "CONFIRMATION_CONTROL_FORMAT_AND_RUNTIME_BINDING_REPAIR_IMPLEMENTATION_LOCK_2026-08-12.json"
 )
 PROTOCOL_SHA256 = "8BA036E617531AE886BAAC8DAD60E5445BF8F0F7A2A073B7F8909750478D709F"
 DATA_IDENTITY_SHA256 = "E755288202F4E7189538671F5F8C120F9D6EF68EBE80757844BC5272382B345B"
-EXECUTION_SCHEMA = "blindassist.ag.r2.cross_sensor_factor_confirmation_execution_lock.v1"
+DEPTHART_SOURCE_MANIFEST_SHA256 = "1DA7AE23BA4954FA1CAC44742A33119E9475D6EAC5768A6CCFC9BFB71925111D"
+EXECUTION_SCHEMA = "blindassist.ag.r2.cross_sensor_factor_confirmation_execution_lock.v2"
+OFFICIAL_CONTROL_EVIDENCE_SCHEMA = "blindassist.ag.r2.cross_sensor_factor_confirmation_official_control_evidence.v1"
+CALIBRATION_CONTROL_RESULT_SCHEMA = "blindassist.ag.r2.cross_sensor_factor_confirmation_calibration_control_result.v1"
+CALIBRATION_ENCODING = "KALIBR_CAMCHAIN_YAML_T_CAM_IMU_NESTED_4X4"
+CAMERA_FROM_IMU_DIRECTION = "IMU_TO_CAMERA_T_CAM_IMU"
+IMU_COLUMN_CONTRACT = "WHITESPACE_TIMESTAMP_NS_GYRO_XYZ_LINEAR_ACCELERATION_XYZ"
+IMU_FRAME_CONTRACT = "IMU_SENSOR_FRAME_ROTATED_BY_T_CAM_IMU_TO_RIGHT_RGB_DEPTH_CAMERA_FRAME"
+ACCELEROMETER_SIGN_CONTRACT = "STATIONARY_SPECIFIC_FORCE_POINTS_UP_OPPOSITE_GRAVITY"
 
 
 class ContractError(RuntimeError):
@@ -73,6 +86,39 @@ def load_json(path: Path, code: str) -> dict[str, Any]:
         raise ContractError(code, str(error)) from error
     require(isinstance(value, dict), code)
     return value
+
+
+def verified_absolute_binding(binding: Mapping[str, Any], code: str) -> Path:
+    require(set(binding) == {"role", "path", "bytes", "sha256"}, f"{code}_SCHEMA")
+    require(isinstance(binding["path"], str) and Path(binding["path"]).is_absolute(), f"{code}_PATH")
+    require(type(binding["bytes"]) is int and binding["bytes"] > 0, f"{code}_BYTES")
+    require(isinstance(binding["sha256"], str) and len(binding["sha256"]) == 64, f"{code}_SHA")
+    path = Path(binding["path"]).resolve()
+    require(
+        path.is_file()
+        and path.stat().st_size == binding["bytes"]
+        and sha256_file(path) == str(binding["sha256"]).upper(),
+        f"{code}_FILE_DRIFT",
+    )
+    return path
+
+
+def expected_official_control_contract() -> dict[str, str]:
+    return {
+        "calibration_encoding": CALIBRATION_ENCODING,
+        "camera_from_imu_transform_direction": CAMERA_FROM_IMU_DIRECTION,
+        "camera_from_imu_key": "T_cam_imu",
+        "mocap_time_scale_key": "mocap_timescaling_camera",
+        "mocap_time_anchor_seconds_key": "timescaling_anchor",
+        "mocap_time_offset_seconds_key": "mocap_timeoffset_camera",
+        "camera_timestamp_to_seconds": "INTEGER_NANOSECONDS_TIMES_1E_MINUS_9",
+        "imu_timestamp_to_seconds": "INTEGER_NANOSECONDS_TIMES_1E_MINUS_9",
+        "imu_clock_domain": "CAMERA_CLOCK_NO_MOCAP_TRANSFORM",
+        "groundtruth_timestamp_unit": "SECONDS",
+        "imu_delimiter_and_column_order": IMU_COLUMN_CONTRACT,
+        "imu_axis_and_frame_mapping": IMU_FRAME_CONTRACT,
+        "accelerometer_specific_force_sign": ACCELEROMETER_SIGN_CONTRACT,
+    }
 
 
 def _exact_binding(binding: Mapping[str, Any], expected_path: Path, expected_sha: str, code: str) -> None:
@@ -186,7 +232,11 @@ def validate_execution_lock(
         "F2_EXECUTION_RUNTIME_DRIFT",
     )
     source = lock.get("source_contract")
-    require(isinstance(source, Mapping) and set(source) == {"archive_budget", "calibration_binding"}, "F2_EXECUTION_SOURCE_CONTRACT_SCHEMA")
+    require(
+        isinstance(source, Mapping)
+        and set(source) == {"archive_budget", "calibration_binding", "control_evidence_bindings"},
+        "F2_EXECUTION_SOURCE_CONTRACT_SCHEMA",
+    )
     budget = source["archive_budget"]
     require(
         budget == {
@@ -200,35 +250,144 @@ def validate_execution_lock(
     )
     calibration = source["calibration_binding"]
     expected_calibration_keys = {
-        "member", "camera_from_imu_key", "mocap_time_scale_key",
+        "member", "camera_node_key", "camera_from_imu_key", "calibration_encoding",
+        "camera_from_imu_transform_direction", "mocap_time_scale_key",
         "mocap_time_anchor_seconds_key", "mocap_time_offset_seconds_key",
         "camera_timestamp_to_seconds", "imu_timestamp_to_seconds", "imu_clock_domain",
-        "groundtruth_timestamp_unit",
+        "groundtruth_timestamp_unit", "imu_delimiter_and_column_order",
+        "imu_axis_and_frame_mapping", "accelerometer_specific_force_sign",
         "maximum_pose_bracket_seconds", "imu_half_window_seconds", "minimum_imu_samples",
     }
     require(isinstance(calibration, Mapping) and set(calibration) == expected_calibration_keys, "F2_EXECUTION_CALIBRATION_BINDING_SCHEMA")
     for name in (
-        "member", "camera_from_imu_key", "mocap_time_scale_key",
+        "member", "camera_node_key", "camera_from_imu_key", "mocap_time_scale_key",
         "mocap_time_anchor_seconds_key", "mocap_time_offset_seconds_key",
         "maximum_pose_bracket_seconds", "imu_half_window_seconds",
     ):
         require(isinstance(calibration[name], str) and calibration[name] != "", f"F2_EXECUTION_CALIBRATION_{name.upper()}_INVALID")
+    official_contract = expected_official_control_contract()
     require(
-        calibration["camera_timestamp_to_seconds"] == "INTEGER_NANOSECONDS_TIMES_1E_MINUS_9"
-        and calibration["imu_timestamp_to_seconds"] == "INTEGER_NANOSECONDS_TIMES_1E_MINUS_9"
-        and calibration["imu_clock_domain"] == "CAMERA_CLOCK_NO_MOCAP_TRANSFORM"
-        and calibration["groundtruth_timestamp_unit"] == "SECONDS",
-        "F2_EXECUTION_CALIBRATION_TIME_DOMAIN_DRIFT",
+        all(calibration[name] == value for name, value in official_contract.items()),
+        "F2_EXECUTION_CALIBRATION_OFFICIAL_CONTRACT_DRIFT",
     )
     require(type(calibration["minimum_imu_samples"]) is int and calibration["minimum_imu_samples"] >= 5, "F2_EXECUTION_CALIBRATION_MINIMUM_IMU_SAMPLES_INVALID")
+    control_rows = source["control_evidence_bindings"]
+    require(isinstance(control_rows, list) and len(control_rows) == 5, "F2_EXECUTION_CONTROL_BINDINGS_SCHEMA")
+    control_map: dict[str, Path] = {}
+    for row in control_rows:
+        require(isinstance(row, Mapping), "F2_EXECUTION_CONTROL_BINDING_ROW")
+        role = str(row.get("role"))
+        require(role not in control_map, "F2_EXECUTION_CONTROL_BINDING_ROLE_DUPLICATE")
+        control_map[role] = verified_absolute_binding(row, "F2_EXECUTION_CONTROL_BINDING")
+    require(
+        set(control_map) == {
+            "OFFICIAL_FORMAT_AND_IMU_CONVENTION",
+            "CALIBRATION_CONTROL_LOCK",
+            "CALIBRATION_CONTROL_START_RECEIPT",
+            "CALIBRATION_ARCHIVE_CONTROL_RESULT",
+            "CALIBRATION_CONTROL_MANIFEST",
+        },
+        "F2_EXECUTION_CONTROL_BINDING_ROLE_SET",
+    )
+    require(
+        control_map["OFFICIAL_FORMAT_AND_IMU_CONVENTION"] == OFFICIAL_CONTROL_EVIDENCE_PATH.resolve(),
+        "F2_OFFICIAL_CONTROL_PATH_DRIFT",
+    )
+    official = load_json(control_map["OFFICIAL_FORMAT_AND_IMU_CONVENTION"], "F2_OFFICIAL_CONTROL_READ")
+    require(
+        official.get("schema") == OFFICIAL_CONTROL_EVIDENCE_SCHEMA
+        and official.get("binding_contract") == official_contract,
+        "F2_OFFICIAL_CONTROL_DRIFT",
+    )
+    try:
+        from .calibration_control import validate_control_lock
+
+        control_lock = validate_control_lock(control_map["CALIBRATION_CONTROL_LOCK"])
+    except Exception as error:
+        raise ContractError("F2_CALIBRATION_CONTROL_LOCK_INVALID", str(error)) from error
+    control_root = Path(control_lock["output_root"]).resolve()
+    require(
+        control_map["CALIBRATION_CONTROL_START_RECEIPT"] == control_root / "start-receipt.json"
+        and control_map["CALIBRATION_ARCHIVE_CONTROL_RESULT"] == control_root / "result.json"
+        and control_map["CALIBRATION_CONTROL_MANIFEST"] == control_root / "manifest.json",
+        "F2_CALIBRATION_CONTROL_ROOT_FILE_BINDING_DRIFT",
+    )
+    start = load_json(control_map["CALIBRATION_CONTROL_START_RECEIPT"], "F2_CALIBRATION_CONTROL_START_READ")
+    require(
+        start.get("schema") == "blindassist.ag.r2.cross_sensor_factor_confirmation_calibration_control_start.v1"
+        and start.get("protocol_id") == PROTOCOL_ID
+        and start.get("control_root_consumed_at_start") is True
+        and start.get("archive_bytes_read_before_start") == 0
+        and start.get("archive_members_enumerated_before_start") == 0
+        and start.get("control_lock") == {
+            "path": str(control_map["CALIBRATION_CONTROL_LOCK"]),
+            "sha256": sha256_file(control_map["CALIBRATION_CONTROL_LOCK"]),
+        },
+        "F2_CALIBRATION_CONTROL_START_DRIFT",
+    )
+    control = load_json(control_map["CALIBRATION_ARCHIVE_CONTROL_RESULT"], "F2_CALIBRATION_CONTROL_READ")
+    manifest = load_json(control_map["CALIBRATION_CONTROL_MANIFEST"], "F2_CALIBRATION_CONTROL_MANIFEST_READ")
+    manifest_files = manifest.get("files") if isinstance(manifest.get("files"), Mapping) else {}
+    result_receipt = manifest_files.get("result.json")
+    start_receipt = manifest_files.get("start-receipt.json")
+    require(
+        manifest.get("terminal") == "CALIBRATION_CONTROL_PASS_EXACT_MEMBER_BOUND"
+        and manifest.get("evidence_root_consumed") is True
+        and set(manifest_files) == {"result.json", "start-receipt.json"}
+        and isinstance(result_receipt, Mapping)
+        and result_receipt.get("bytes") == control_map["CALIBRATION_ARCHIVE_CONTROL_RESULT"].stat().st_size
+        and result_receipt.get("sha256") == sha256_file(control_map["CALIBRATION_ARCHIVE_CONTROL_RESULT"])
+        and isinstance(start_receipt, Mapping)
+        and start_receipt.get("bytes") == control_map["CALIBRATION_CONTROL_START_RECEIPT"].stat().st_size
+        and start_receipt.get("sha256") == sha256_file(control_map["CALIBRATION_CONTROL_START_RECEIPT"]),
+        "F2_CALIBRATION_CONTROL_MANIFEST_DRIFT",
+    )
+    selected = control.get("selected_member")
+    identity = load_json(DATA_IDENTITY_PATH, "F2_DATA_IDENTITY_READ_FAILED")
+    calibration_archives = [
+        row for row in identity.get("archives", [])
+        if isinstance(row, Mapping) and row.get("kind") == "CAMERA_IMU_CALIBRATION_ARCHIVE"
+    ]
+    require(
+        control.get("schema") == CALIBRATION_CONTROL_RESULT_SCHEMA
+        and control.get("status") == "CALIBRATION_CONTROL_PASS_EXACT_MEMBER_BOUND"
+        and isinstance(selected, Mapping)
+        and len(calibration_archives) == 1
+        and control.get("archive") == {
+            "filename": "camera_imu_calib_radtan.zip",
+            "bytes": calibration_archives[0]["bytes"],
+            "sha256": calibration_archives[0]["sha256"],
+        },
+        "F2_CALIBRATION_CONTROL_NOT_PASS",
+    )
+    require(
+        selected.get("name") == calibration["member"]
+        and selected.get("camera_node_key") == calibration["camera_node_key"]
+        and selected.get("matrix_key") == calibration["camera_from_imu_key"]
+        and selected.get("encoding") == calibration["calibration_encoding"]
+        and selected.get("transform_direction") == calibration["camera_from_imu_transform_direction"],
+        "F2_CALIBRATION_CONTROL_BINDING_DRIFT",
+    )
+    access = control.get("access_receipt")
+    require(
+        isinstance(access, Mapping)
+        and all(access.get(name) == 0 for name in (
+            "session_rgbd_archive_reads", "session_imu_archive_reads", "model_or_checkpoint_reads",
+            "source_truth_materializations", "factor_scoring_runs", "confirmation_runs",
+        ))
+        and access.get("confirmation_root_created") is False,
+        "F2_CALIBRATION_CONTROL_ACCESS_DRIFT",
+    )
     bindings = lock.get("runtime_bindings")
     require(isinstance(bindings, list) and bindings, "F2_EXECUTION_RUNTIME_BINDINGS_INVALID")
     roles: set[str] = set()
+    runtime_map: dict[str, Mapping[str, Any]] = {}
     for row in bindings:
         require(isinstance(row, Mapping) and set(row) == {"role", "path", "bytes", "sha256"}, "F2_EXECUTION_RUNTIME_BINDING_ROW_INVALID")
         role = str(row["role"])
         require(role not in roles, "F2_EXECUTION_RUNTIME_BINDING_ROLE_DUPLICATE")
         roles.add(role)
+        runtime_map[role] = row
         require(isinstance(row["path"], str) and Path(row["path"]).is_absolute(), "F2_EXECUTION_RUNTIME_BINDING_PATH_INVALID")
         require(type(row["bytes"]) is int and row["bytes"] >= 0, "F2_EXECUTION_RUNTIME_BINDING_BYTES_INVALID")
         require(isinstance(row["sha256"], str) and len(row["sha256"]) == 64, "F2_EXECUTION_RUNTIME_BINDING_SHA_INVALID")
@@ -245,6 +404,10 @@ def validate_execution_lock(
         "METRIC_SCALE_BANK", "FROZEN_HYBRID_RECIPE_RESULT",
     }
     require(roles == required_roles, "F2_EXECUTION_RUNTIME_BINDING_ROLE_DRIFT")
+    require(
+        str(runtime_map["DEPTHART_SOURCE_MANIFEST"]["sha256"]).upper() == DEPTHART_SOURCE_MANIFEST_SHA256,
+        "F2_EXECUTION_DEPTHART_SOURCE_MANIFEST_DRIFT",
+    )
     return lock
 
 

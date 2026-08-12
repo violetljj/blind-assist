@@ -1,0 +1,99 @@
+{
+  "schema": "blindassist.ag.r2.cross_sensor_factor_confirmation_control_repair_implementation_lock.v1",
+  "lock_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CONTROL_FORMAT_AND_RUNTIME_BINDING_REPAIR_IMPLEMENTATION_LOCK",
+  "date": "2026-08-12",
+  "research_mode": "WILD_LAB",
+  "status": "IMPLEMENTATION_LOCK_PASS_SYNTHETIC_CONTROL_ONLY_SCIENTIFIC_NOT_RUN",
+  "predecessor_bindings": [
+    {
+      "role": "EXECUTOR_IMPLEMENTATION_LOCK",
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK_2026-08-12.json",
+      "bytes": 10830,
+      "sha256": "65D6885090F36568196A1D69E2007C94D4A6D8F000DF3671AFA4D73F495F64DD"
+    },
+    {
+      "role": "ACTIVATION_PREFLIGHT_BLOCKER",
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_ONE_SHOT_EXECUTION_ACTIVATION_PREFLIGHT_RESULT_2026-08-12.json",
+      "bytes": 13845,
+      "sha256": "B16E337D72CCBF6FC5E457B00D7C7599761D52DB16646DCB232AB88771107CAB"
+    }
+  ],
+  "implementation_bindings": [
+    {"role": "PACKAGE_INIT", "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/__init__.py", "bytes": 645, "sha256": "A717EFDB8BC8BB3C15E9BCE3F706CC0B56CB9D236DCE71C34C0AB71ACBA463AD"},
+    {"role": "EXECUTION_CONTRACT_V2", "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/contract.py", "bytes": 21051, "sha256": "4FB63A7A2EFEACCBC7A0F8957F81C82EB9FA07A791188B54A5B5D5645C53B5D1"},
+    {"role": "KALIBR_CONTROL_FORMAT", "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/control_format.py", "bytes": 4538, "sha256": "1568D952DC09402DCFB5B7B4391E06D0B1473DD154EE12B9D83D8BD3C3697E18"},
+    {"role": "ETH3D_SOURCE_ADAPTER_V2", "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/eth3d_source.py", "bytes": 50857, "sha256": "5F307E19BA3E5F7500C706F7F3A1667476AC3A6F2753E0178931D68B8EB3E520"},
+    {"role": "CALIBRATION_CONTROL_PREFLIGHT", "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/calibration_control.py", "bytes": 12086, "sha256": "104307201F46B28A9E78ADEF16A34AA08375122B20B18FA1CADE8C7F613DBFB5"},
+    {"role": "CALIBRATION_CONTROL_INDEPENDENT_VALIDATOR", "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/validate_calibration_control.py", "bytes": 8759, "sha256": "347FA7896A493BF04D4F0C18B736F6E483BEAF203F037307EBB693A2B762E801"},
+    {"role": "DEPTHART_SOURCE_MANIFEST_INDEPENDENT_VALIDATOR", "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/validate_depthart_source_manifest.py", "bytes": 4512, "sha256": "DB6C79C7E5C8BE98F410802BF3C8278E5E102170FC1254DC81F84014883CBD15"},
+    {"role": "MODEL_ONLY_PREDICTOR", "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/model_only.py", "bytes": 18112, "sha256": "79100164213A4E6732D7CB588513246402DA199299F19CB9F80018184C4D7BAE"},
+    {"role": "EXECUTOR_V2", "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/runner.py", "bytes": 27485, "sha256": "6EC96B8B983CB80C358A96E5A190ECF59F5E366BCBC16EF8DBEC971CC28B6D54"},
+    {"role": "REPAIR_IMPLEMENTATION_LOCK_VALIDATOR", "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/validate_repair_implementation_lock.py", "bytes": 11986, "sha256": "03CD31BC707C0DF0C8029EF002D94CB6110E213BE385C78AE0F0964A5823CE93"},
+    {"role": "CLI", "path": "scripts/research/assistive_geometry/run_ag_r2_cross_sensor_factor_accuracy_confirmation.py", "bytes": 252, "sha256": "EB07C77CFAD58489137FFFEFD6B4FCE3B9F2AFE871CA1F7000F06FF28F353ED3"},
+    {"role": "OFFICIAL_CONTROL_EVIDENCE", "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_OFFICIAL_CONTROL_EVIDENCE_2026-08-12.json", "bytes": 2816, "sha256": "8DD5488E84FAAA82BCE9EF1D71F3581EAC492DA51F559E4C9B731D84D968BBA2"},
+    {"role": "DEPTHART_SOURCE_MANIFEST", "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_DEPTHART_SOURCE_MANIFEST_2026-08-12.json", "bytes": 4426, "sha256": "1DA7AE23BA4954FA1CAC44742A33119E9475D6EAC5768A6CCFC9BFB71925111D"},
+    {"role": "CONTROL_TEST", "path": "scripts/research/assistive_geometry/tests_ag_r2_cross_sensor_confirmation/test_calibration_control.py", "bytes": 7084, "sha256": "36D03B79316588E2F6C6A04D70459C84A5E9381A188AB089F4B311029E7AC094"},
+    {"role": "SOURCE_MANIFEST_TEST", "path": "scripts/research/assistive_geometry/tests_ag_r2_cross_sensor_confirmation/test_depthart_source_manifest.py", "bytes": 1560, "sha256": "7EA10E20120C40D073BBBB953A113EFB867822B28101AEAF34ABBA365335E745"},
+    {"role": "EXECUTION_CONTRACT_TEST", "path": "scripts/research/assistive_geometry/tests_ag_r2_cross_sensor_confirmation/test_contract_and_evidence.py", "bytes": 12201, "sha256": "256E3A602C8747EFAA4D60B5A7D85467D1208743811E62C27CFFF729423707BB"},
+    {"role": "ETH3D_SOURCE_TEST", "path": "scripts/research/assistive_geometry/tests_ag_r2_cross_sensor_confirmation/test_eth3d_source.py", "bytes": 28486, "sha256": "0FF07D569E3A4C215BC2CC4FFFC80AC336D5D193C3861EE506AFF1C6BB2EE541"},
+    {"role": "REPAIR_IMPLEMENTATION_LOCK_TEST", "path": "scripts/research/assistive_geometry/tests_ag_r2_cross_sensor_confirmation/test_implementation_lock.py", "bytes": 2434, "sha256": "85D0EF9D24176D66B8B9F21CBC4A2006B9966338F93B5109867D4BB4C3F3D606"}
+  ],
+  "runtime_source_manifest_receipt": {
+    "schema": "blindassist.depthart.source_manifest.v1",
+    "file_count": 29,
+    "total_bytes": 160284,
+    "independent_validation": "PASS",
+    "checkpoint_or_model_loaded": false
+  },
+  "test_receipt": {
+    "focused_test_count": 51,
+    "focused_test_failures": 0,
+    "synthetic_control_only": true,
+    "real_archive_access": false,
+    "commands": [
+      "E:/codex-tools/tools/venvs/blindassist-venv-export312/Scripts/python.exe -m pytest scripts/research/assistive_geometry/tests_ag_r2_cross_sensor_confirmation -q",
+      "E:/codex-tools/tools/venvs/blindassist-venv-export312/Scripts/python.exe -m ruff check scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation scripts/research/assistive_geometry/tests_ag_r2_cross_sensor_confirmation scripts/research/assistive_geometry/run_ag_r2_cross_sensor_factor_accuracy_confirmation.py",
+      "E:/codex-tools/tools/venvs/blindassist-venv-export312/Scripts/python.exe -m compileall -q scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation scripts/research/assistive_geometry/run_ag_r2_cross_sensor_factor_accuracy_confirmation.py",
+      "E:/codex-tools/tools/venvs/blindassist-venv-export312/Scripts/python.exe -m scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation.validate_depthart_source_manifest docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_DEPTHART_SOURCE_MANIFEST_2026-08-12.json",
+      "E:/codex-tools/tools/venvs/blindassist-venv-export312/Scripts/python.exe -m scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation.validate_repair_implementation_lock docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CONTROL_FORMAT_AND_RUNTIME_BINDING_REPAIR_IMPLEMENTATION_LOCK_2026-08-12.json --repo-root ."
+    ]
+  },
+  "access_receipt": {
+    "depthart_source_files_hashed": 29,
+    "depthart_source_bytes_hashed": 160284,
+    "checkpoint_reads": 0,
+    "real_archive_file_content_reads": 0,
+    "archive_member_enumerations": 0,
+    "archive_member_reads": 0,
+    "model_inference_runs": 0,
+    "source_truth_materializations": 0,
+    "factor_scoring_runs": 0,
+    "confirmation_runs": 0,
+    "confirmation_evidence_roots_created": 0,
+    "network_requests": 0
+  },
+  "execution_authority": {
+    "calibration_archive_access": false,
+    "session_archive_access": false,
+    "model_inference": false,
+    "source_truth_read": false,
+    "confirmation_scoring": false,
+    "confirmation_evidence_root_creation": false,
+    "training": false,
+    "reducer": false,
+    "network": false,
+    "device": false,
+    "app": false,
+    "product": false,
+    "safety": false
+  },
+  "unique_successor": {
+    "lock_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_PREFLIGHT_ONE_SHOT_EXECUTION_LOCK",
+    "requires_separate_user_authorization": true,
+    "requires_new_hash_bound_lock": true,
+    "calibration_archive_only": true,
+    "execution_authority": false,
+    "created_by_this_lock": false
+  },
+  "claim_ceiling": "This repair lock proves only synthetic control-format mechanics, exact schema expressiveness, and a hash-bound DepthART runtime-source manifest. It is not real calibration archive access, model inference, a scientific Confirmation result, deployment, product, or safety evidence."
+}

@@ -34,7 +34,18 @@ import cv2
 import numpy as np
 
 from . import PROTOCOL_ID
-from .contract import ContractError, canonical_sha256, require, sha256_file
+from .contract import (
+    ACCELEROMETER_SIGN_CONTRACT,
+    CALIBRATION_ENCODING,
+    CAMERA_FROM_IMU_DIRECTION,
+    IMU_COLUMN_CONTRACT,
+    IMU_FRAME_CONTRACT,
+    ContractError,
+    canonical_sha256,
+    require,
+    sha256_file,
+)
+from .control_format import parse_kalibr_camera_from_imu
 
 _HEX_64 = re.compile(r"^[0-9A-Fa-f]{64}$")
 _DECIMAL_TOKEN = re.compile(r"^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$")
@@ -49,6 +60,7 @@ class SourcePhase(str, Enum):
 
     ROSTER_METADATA = "ROSTER_METADATA"
     RAW_SCORE_PREDICTION = "RAW_SCORE_PREDICTION"
+    CALIBRATION_CONTROL = "CALIBRATION_CONTROL"
     CALIBRATION_SOURCE = "CALIBRATION_SOURCE"
     SCORE_SOURCE = "SCORE_SOURCE"
 
@@ -381,7 +393,10 @@ class SafeZipArchive:
                 )
             )
         else:
-            allowed = role is not None and purpose == f"{role}_CAMERA_IMU_CALIBRATION"
+            allowed = (
+                phase is SourcePhase.CALIBRATION_CONTROL
+                and purpose == "DISCOVER_KALIBR_CAMERA_IMU_CONTROL"
+            ) or (role is not None and purpose == f"{role}_CAMERA_IMU_CALIBRATION")
         require(allowed, "F2_SOURCE_MEMBER_PHASE_FIREWALL")
 
     def read_member_bytes(
@@ -785,14 +800,16 @@ class SourceArrays:
 class CalibrationMemberBinding:
     """Execution-lock binding for the otherwise unfrozen calibration layout.
 
-    ``camera_from_imu_key`` is an exact line key in a deliberately small text
-    contract: ``<key>`` followed by 16 row-major finite floats.  Requiring both
-    the member name and key from the future execution lock avoids guessing the
-    official calibration archive's YAML layout or transform direction.
+    The future execution lock must bind the exact Kalibr YAML member, camera
+    node, matrix key, encoding, transform direction, and IMU convention.  The
+    parser accepts no alternate inline-text or generic YAML shape.
     """
 
     member: str
+    camera_node_key: str
     camera_from_imu_key: str
+    calibration_encoding: str
+    camera_from_imu_transform_direction: str
     mocap_time_scale_key: str
     mocap_time_anchor_seconds_key: str
     mocap_time_offset_seconds_key: str
@@ -800,6 +817,9 @@ class CalibrationMemberBinding:
     imu_timestamp_to_seconds: str
     imu_clock_domain: str
     groundtruth_timestamp_unit: str
+    imu_delimiter_and_column_order: str
+    imu_axis_and_frame_mapping: str
+    accelerometer_specific_force_sign: str
     maximum_pose_bracket_seconds: Decimal
     imu_half_window_seconds: Decimal
     minimum_imu_samples: int
@@ -808,10 +828,19 @@ class CalibrationMemberBinding:
         normalized = _normalize_zip_member(self.member)
         require(normalized == self.member and not self.member.endswith("/"), "F2_IMU_CALIBRATION_MEMBER_BINDING")
         require(
+            isinstance(self.camera_node_key, str)
+            and re.fullmatch(r"[A-Za-z][A-Za-z0-9_]*", self.camera_node_key) is not None,
+            "F2_IMU_CALIBRATION_CAMERA_NODE_BINDING",
+        )
+        require(
             isinstance(self.camera_from_imu_key, str)
-            and self.camera_from_imu_key
-            and not any(character.isspace() for character in self.camera_from_imu_key),
+            and self.camera_from_imu_key == "T_cam_imu",
             "F2_IMU_CALIBRATION_KEY_BINDING",
+        )
+        require(
+            self.calibration_encoding == CALIBRATION_ENCODING
+            and self.camera_from_imu_transform_direction == CAMERA_FROM_IMU_DIRECTION,
+            "F2_IMU_CALIBRATION_FORMAT_BINDING",
         )
         time_keys = (
             self.mocap_time_scale_key,
@@ -819,13 +848,11 @@ class CalibrationMemberBinding:
             self.mocap_time_offset_seconds_key,
         )
         require(
-            all(
-                isinstance(key, str)
-                and key
-                and not any(character.isspace() for character in key)
-                for key in time_keys
-            )
-            and len(set(time_keys)) == 3,
+            time_keys == (
+                "mocap_timescaling_camera",
+                "timescaling_anchor",
+                "mocap_timeoffset_camera",
+            ),
             "F2_MOCAP_TIME_KEY_BINDING",
         )
         require(
@@ -834,6 +861,12 @@ class CalibrationMemberBinding:
             and self.imu_clock_domain == "CAMERA_CLOCK_NO_MOCAP_TRANSFORM"
             and self.groundtruth_timestamp_unit == "SECONDS",
             "F2_TIME_DOMAIN_BINDING",
+        )
+        require(
+            self.imu_delimiter_and_column_order == IMU_COLUMN_CONTRACT
+            and self.imu_axis_and_frame_mapping == IMU_FRAME_CONTRACT
+            and self.accelerometer_specific_force_sign == ACCELEROMETER_SIGN_CONTRACT,
+            "F2_IMU_CONVENTION_BINDING",
         )
         require(
             isinstance(self.maximum_pose_bracket_seconds, Decimal)
@@ -965,23 +998,11 @@ def _parse_imu(raw: bytes) -> tuple[_ImuSample, ...]:
 
 
 def _parse_camera_from_imu(raw: bytes, binding: CalibrationMemberBinding) -> np.ndarray:
-    matches: list[np.ndarray] = []
-    for values in _text_rows(raw, "F2_IMU_CALIBRATION"):
-        if values[0] == binding.camera_from_imu_key:
-            matches.append(_finite_floats(values[1:], 16, "F2_IMU_CALIBRATION_MATRIX"))
-    require(len(matches) == 1, "F2_IMU_CALIBRATION_KEY_AMBIGUOUS_OR_MISSING")
-    matrix = matches[0].reshape(4, 4)
-    require(
-        bool(np.allclose(matrix[3], np.asarray((0.0, 0.0, 0.0, 1.0)), rtol=0.0, atol=1e-12)),
-        "F2_IMU_CALIBRATION_HOMOGENEOUS_ROW",
+    return parse_kalibr_camera_from_imu(
+        raw,
+        camera_node_key=binding.camera_node_key,
+        matrix_key=binding.camera_from_imu_key,
     )
-    rotation = matrix[:3, :3]
-    require(
-        bool(np.allclose(rotation.T @ rotation, np.eye(3), rtol=0.0, atol=1e-8))
-        and abs(float(np.linalg.det(rotation)) - 1.0) <= 1e-8,
-        "F2_IMU_CALIBRATION_ROTATION",
-    )
-    return _readonly(np.asarray(matrix, dtype=np.float64))
 
 
 def _parse_mocap_time_transform(

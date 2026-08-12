@@ -1,6 +1,6 @@
 # BlindAssist Assistive Geometry
 
-状态：`current / B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / FACTORTENSOR_ADAPTER_SYNTHETIC_CANARY_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK_PASS_SYNTHETIC_ONLY / AG_R2_CROSS_SENSOR_ACTIVATION_PREFLIGHT_BLOCKED_LOCK_NOT_ISSUED / SCIENTIFIC_NOT_RUN / CONFIRMATION_OUTCOMES_UNOPENED / DEFAULT_APP_UNCHANGED`
+状态：`current / B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / FACTORTENSOR_ADAPTER_SYNTHETIC_CANARY_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_CONTROL_FORMAT_AND_RUNTIME_BINDING_REPAIR_IMPLEMENTATION_LOCK_PASS_SYNTHETIC_ONLY / SCIENTIFIC_NOT_RUN / CONFIRMATION_OUTCOMES_UNOPENED / DEFAULT_APP_UNCHANGED`
 
 本路线把 DepthART-S 从研究终点降为可替换的轻量 encoder/initialization 候选，核心问题改为：
 
@@ -80,6 +80,9 @@
 - [Geometry R2 cross-sensor factor confirmation executor implementation lock](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK_2026-08-12.json)
 - [Geometry R2 cross-sensor factor confirmation activation preflight result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_ONE_SHOT_EXECUTION_ACTIVATION_PREFLIGHT_RESULT_2026-08-12.md)
 - [Geometry R2 cross-sensor factor confirmation activation machine result](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_ONE_SHOT_EXECUTION_ACTIVATION_PREFLIGHT_RESULT_2026-08-12.json)
+- [Geometry R2 cross-sensor official format/IMU control evidence](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_OFFICIAL_CONTROL_EVIDENCE_2026-08-12.json)
+- [Geometry R2 cross-sensor DepthART source manifest](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_DEPTHART_SOURCE_MANIFEST_2026-08-12.json)
+- [Geometry R2 cross-sensor control-format/runtime repair implementation lock](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CONTROL_FORMAT_AND_RUNTIME_BINDING_REPAIR_IMPLEMENTATION_LOCK_2026-08-12.json)
 - [Geometry R2 F1 FactorTensorAdapter gap audit](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_GAP_AUDIT_2026-08-10.md)
 - [Geometry R2 F1 FactorTensorAdapter machine audit](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_GAP_AUDIT_2026-08-10.json)
 - [Geometry R2 F1 FactorTensorAdapter protocol lock](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_PROTOCOL_LOCK_2026-08-10.md)
@@ -123,9 +126,9 @@
 
 ## 唯一 successor
 
-当前终态：
+当前已完成：
 
-`EXECUTION_LOCK_NOT_ISSUED_PRE_ACCESS_IMPLEMENTATION_REPAIR_REQUIRED`
+`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CONTROL_FORMAT_AND_RUNTIME_BINDING_REPAIR_IMPLEMENTATION_LOCK`
 
 跨传感器 F2 已冻结到 ETH3D SLAM 自定义 global-shutter active-stereo RGB-D/IMU rig：
 `plant_scene_2 / motion_1 / mannequin_5` 在冻结前的仓库与全历史 exact-ID 命中均为 0；六个
@@ -139,24 +142,31 @@ adapter/recipe/metrics/reducer 的独立 validator。`45/45` synthetic/metadata 
 binding validator 均通过；支持面 uncertainty 明确对 signed point-to-frozen-support-plane residual（米）
 评分，UNKNOWN 仍为 NaN 且永不转 negative。
 
-用户已授权只创建并冻结唯一 successor 的 one-shot execution lock，但激活前检未通过，所以 lock 没有签发。
-ETH3D 官方文档把该 camera-IMU calibration 说明为 Kalibr 产物；Kalibr 官方格式使用 YAML `T_cam_imu`
-嵌套 `4×4` 矩阵，而冻结 parser 只接受同一文本行的 `<key> + 16 floats`。不读取真实 archive 的
-official-shaped synthetic control 稳定命中 `F2_IMU_CALIBRATION_MATRIX`。冻结 exact-key schema 也不能表达
-calibration encoding、变换方向、IMU column/frame/sign 或相应官方证据 binding；此外 11 个 runtime role
-虽有 10 个本地候选完成 bytes/SHA 核对，但 `DEPTHART_SOURCE_MANIFEST` 尚不存在。
+上一步 activation blocker 保持不可改写；本次只修复它指出的 implementation 前门。execution schema 已升级为
+v2，必须同时绑定 exact YAML member、camera node、`T_cam_imu`、Kalibr nested-4×4 encoding、IMU→camera
+方向、ETH3D timestamp/mocap keys、IMU column/frame 与 stationary specific-force sign，以及官方控制 evidence
+和未来 calibration-control result。inline 16-float 或无法唯一定位 camera node 的布局继续 fail closed。
 
-七个 archive direct-child 的文件名与 `721,072,411 bytes` 仍匹配 data identity；本步没有重哈希 archive。
-ZIP member、RGB、depth、IMU、trajectory 与 calibration payload 的读取/枚举均为 `0`；runtime binding 文件
-只做 hash preflight，checkpoint 未反序列化。model inference、source truth、factor scoring、Confirmation、
-exclusive evidence root 与 one-shot consumption 均为 `0`。当前科学状态只能是 `SCIENTIFIC_NOT_RUN`，不是
-factor accuracy PASS/FAIL。详见[激活前检结果](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_ONE_SHOT_EXECUTION_ACTIVATION_PREFLIGHT_RESULT_2026-08-12.md)。
+新增的 calibration-control-only preflight 只有 camera-IMU calibration archive 一个输入面；未来须以独立
+one-shot lock 消费独立 control root 后，才可 hash/枚举该 archive 并读取最多 32 个、每个最多 4 MiB 的
+YAML candidate。多于一个或没有合法 `camera_node.T_cam_imu` 都形成控制终态，不能选择 first/best。其独立
+validator 不导入 producer/source adapter/control parser，会重哈希 archive、重新枚举并重算 matrix selection。
+DepthART runtime source manifest 另冻结实际可导入的 29 个 metric/selective-scan Python 文件，合计
+`160,284 bytes`，独立逐文件复核通过；checkpoint 与 CUDA extension 仍是分离 binding。
 
-唯一 successor 改为非执行的
-`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CONTROL_FORMAT_AND_RUNTIME_BINDING_REPAIR_IMPLEMENTATION_LOCK`：
-让 schema hash-bind 官方控制证据、实现并合成验证 Kalibr YAML、生成且独立复核 DepthART source manifest，
-并实现一个未来仍需另行授权的 calibration-control-only preflight。该 successor 本身不得枚举/读取真实 member、
-加载模型、创建 Confirmation root 或评分；继续禁止 reducer、walking_xyz/sitting_rpy 调参、baseline 胜负门与 task state。
+上一[激活前检结果](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_ONE_SHOT_EXECUTION_ACTIVATION_PREFLIGHT_RESULT_2026-08-12.md)
+已经 stat-only 核对七个 archive direct-child 的文件名与 `721,072,411 bytes`；本次 repair 没有再次 stat 或
+重哈希真实 archive。
+
+51/51 focused tests、ruff、compile、source-manifest validator 与 repair-lock validator 均通过。真实 archive
+file/member、RGB、depth、IMU、trajectory 与 calibration payload 均未读取；checkpoint/model/source truth/
+factor scoring/Confirmation/evidence root 均为 `0`，科学状态仍是 `NOT_RUN`。
+
+唯一 successor 是另行冻结、另行授权的
+`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_PREFLIGHT_ONE_SHOT_EXECUTION_LOCK`。
+它只能绑定 repair implementation、data identity、official control evidence、exact camera calibration archive、
+独立 control root 与窄预算；不授权 session RGB-D/IMU archive、模型、source truth、Confirmation root 或评分。
+继续禁止 reducer、walking_xyz/sitting_rpy 调参、baseline 胜负门与 task state。
 
 ## 2026-08-12 SuperTeacher → AG 真实闭环
 

@@ -2,6 +2,23 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。依据用户对当前唯一 successor 的授权，完成
+  Assistive Geometry R2 独立跨传感器 factor-level Confirmation 的非执行
+  `CONTROL_FORMAT_AND_RUNTIME_BINDING_REPAIR_IMPLEMENTATION_LOCK`，科学状态保持 `NOT_RUN`。上一步
+  activation blocker 不改写；execution schema 升级为 v2，必须 exact-bind Kalibr camchain YAML 的 camera
+  node/`T_cam_imu` nested `4×4`、IMU→camera 方向、ETH3D mocap/time keys、IMU column/frame 与 stationary
+  specific-force sign，并同时绑定 tracked official control evidence 与未来 calibration-control result。inline
+  16-float、重复 matrix path、非正交旋转或无法唯一定位 camera node 均 fail closed。新增 calibration-control-only
+  preflight：未来须另锁独立 one-shot/control root 后才可 hash/枚举唯一 camera calibration archive，最多读取
+  32 个、每个 4 MiB 的 YAML candidate；没有或多于一个合法 matrix 均终止，不能选 first/best。producer-free
+  validator 独立重哈希 archive、重枚举并重算 selection。另冻结 DepthART 实际可导入的 29 个 metric/
+  selective-scan Python 文件，共 `160,284 bytes`，独立逐文件 bytes/SHA 复核通过；checkpoint/extension 保持
+  分离 binding。51/51 focused tests、ruff、compile、source-manifest 与 repair-lock validator 全部 PASS。本步
+  真实 archive file/member、RGB/depth/IMU/trajectory/calibration payload、checkpoint、model inference、source
+  truth、factor scoring、Confirmation 与 Confirmation evidence root 均为 0。唯一 successor 为另行授权、
+  另行 hash-bound 的 `BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_PREFLIGHT_ONE_SHOT_EXECUTION_LOCK`；
+  它只允许 camera calibration control，不授权三个 session archive、模型、reducer、设备、默认 App、产品或 safety。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。用户授权只创建并冻结 Assistive Geometry R2
   独立跨传感器 factor-level Confirmation 的唯一 one-shot execution lock；activation preflight 在任何
   archive member access、model inference、source truth、scoring 或 evidence-root 创建前 fail closed，lock 未签发且

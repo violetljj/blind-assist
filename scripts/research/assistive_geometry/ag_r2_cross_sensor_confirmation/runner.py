@@ -349,7 +349,10 @@ def execute(execution_lock_path: Path) -> dict[str, Any]:
         calibration_row = lock["source_contract"]["calibration_binding"]
         calibration_binding = CalibrationMemberBinding(
             member=calibration_row["member"],
+            camera_node_key=calibration_row["camera_node_key"],
             camera_from_imu_key=calibration_row["camera_from_imu_key"],
+            calibration_encoding=calibration_row["calibration_encoding"],
+            camera_from_imu_transform_direction=calibration_row["camera_from_imu_transform_direction"],
             mocap_time_scale_key=calibration_row["mocap_time_scale_key"],
             mocap_time_anchor_seconds_key=calibration_row["mocap_time_anchor_seconds_key"],
             mocap_time_offset_seconds_key=calibration_row["mocap_time_offset_seconds_key"],
@@ -357,6 +360,9 @@ def execute(execution_lock_path: Path) -> dict[str, Any]:
             imu_timestamp_to_seconds=calibration_row["imu_timestamp_to_seconds"],
             imu_clock_domain=calibration_row["imu_clock_domain"],
             groundtruth_timestamp_unit=calibration_row["groundtruth_timestamp_unit"],
+            imu_delimiter_and_column_order=calibration_row["imu_delimiter_and_column_order"],
+            imu_axis_and_frame_mapping=calibration_row["imu_axis_and_frame_mapping"],
+            accelerometer_specific_force_sign=calibration_row["accelerometer_specific_force_sign"],
             maximum_pose_bracket_seconds=Decimal(calibration_row["maximum_pose_bracket_seconds"]),
             imu_half_window_seconds=Decimal(calibration_row["imu_half_window_seconds"]),
             minimum_imu_samples=calibration_row["minimum_imu_samples"],
