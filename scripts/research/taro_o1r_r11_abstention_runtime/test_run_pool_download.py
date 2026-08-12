@@ -48,6 +48,17 @@ class PoolDownloadTests(unittest.TestCase):
         for key in ("archive_decode", "source_frame_decode", "model_execution", "faro_read", "truth_scoring", "training", "device", "deployment", "product", "safety"):
             self.assertFalse(authority[key])
 
+    def test_formal_entrypoint_is_importable_module_form(self) -> None:
+        self.assertEqual(
+            runner.EXPECTED_ARGV,
+            [
+                "-m",
+                "scripts.research.taro_o1r_r11_abstention_runtime.run_pool_download",
+                "--execution-lock",
+                runner.LOCK_RELATIVE,
+            ],
+        )
+
     def test_download_receipt_binds_file_hash_crc_and_head(self) -> None:
         row = runner.expanded_download_plan(self.plan)[0]
         payload = b"exact source payload"

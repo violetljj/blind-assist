@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。TARO O1R R11 source download Attempt 01 在正式
+  root/GET 前的无副作用入口检查中停止：锁冻结 direct script，但绑定 Python 导入时报
+  `ModuleNotFoundError: No module named 'scripts'`。未设置未冻结 `PYTHONPATH`，也未以不同 argv 绕过；
+  `GET/source-body/archive-decode/source-frame-decode/DepthART/FARO/truth/training = 0`，source/evidence
+  双 root 均不存在，one-shot 未消费。Attempt 01 锁保留并 supersede，不得原地修改或重跑。runner 现仅把
+  formal argv 改为项目稳定 `-m scripts.research.taro_o1r_r11_abstention_runtime.run_pool_download`，新增入口
+  回归；roster、HEAD evidence、144-row plan、预算和 authority 不变。唯一 successor 是先提交此实现，再另立
+  `TARO_O1R_R11_FRESH_48_PARENT_BOUNDED_SOURCE_DOWNLOAD_ONE_SHOT_EXECUTION_LOCK_ATTEMPT_02`。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。冻结 TARO O1R R11 exact bounded source download
   one-shot execution lock，状态 `AUTHORIZED_UNCONSUMED`。锁绑定已推送 implementation commit
   `399b53ec9cb28efca9512f5e541aee865a7a7e1a`、11 份代码/authorization/HEAD evidence、144-row

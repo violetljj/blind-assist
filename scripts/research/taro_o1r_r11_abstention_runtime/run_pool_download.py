@@ -22,9 +22,15 @@ from scripts.research.taro_o1r_r11_abstention_runtime import run_pool_head
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-LOCK_SCHEMA = "blindassist.taro.o1r.r11_fresh_pool_download_execution_lock.v1"
-LOCK_ID = "TARO_O1R_R11_FRESH_48_PARENT_BOUNDED_SOURCE_DOWNLOAD_ONE_SHOT_EXECUTION_LOCK"
-LOCK_RELATIVE = "docs/research/taro/TARO_O1R_R11_FRESH_48_PARENT_BOUNDED_SOURCE_DOWNLOAD_ONE_SHOT_EXECUTION_LOCK_2026-08-12.json"
+LOCK_SCHEMA = "blindassist.taro.o1r.r11_fresh_pool_download_execution_lock_attempt_02.v1"
+LOCK_ID = "TARO_O1R_R11_FRESH_48_PARENT_BOUNDED_SOURCE_DOWNLOAD_ONE_SHOT_EXECUTION_LOCK_ATTEMPT_02"
+LOCK_RELATIVE = "docs/research/taro/TARO_O1R_R11_FRESH_48_PARENT_BOUNDED_SOURCE_DOWNLOAD_ONE_SHOT_EXECUTION_LOCK_ATTEMPT_02_2026-08-12.json"
+EXPECTED_ARGV = [
+    "-m",
+    "scripts.research.taro_o1r_r11_abstention_runtime.run_pool_download",
+    "--execution-lock",
+    LOCK_RELATIVE,
+]
 SOURCE_ROOT = "artifacts.local/datasets/taro/o1r-r11-fresh-pool-source-r0"
 EVIDENCE_ROOT = "artifacts.local/evidence/taro/o1r-r11-fresh-pool-source-r0"
 PASS_TERMINAL = "TARO_O1R_R11_FRESH_POOL_SOURCE_DOWNLOAD_INTEGRITY_PASS"
@@ -262,8 +268,7 @@ def validate_execution_lock(path: Path, *, require_roots_absent: bool = True) ->
     require(lock_path == _repo_path(LOCK_RELATIVE), "R11_DOWNLOAD_LOCK_PATH", "R11 download lock path drift")
     lock = _validate_content_seal(_read_json(lock_path), "R11_DOWNLOAD_LOCK_HASH")
     require(lock.get("schema") == LOCK_SCHEMA and lock.get("lock_id") == LOCK_ID and lock.get("status") == "AUTHORIZED_UNCONSUMED" and lock.get("consumed") is False, "R11_DOWNLOAD_LOCK_IDENTITY", "R11 download lock identity drift")
-    expected_argv = ["scripts/research/taro_o1r_r11_abstention_runtime/run_pool_download.py", "--execution-lock", LOCK_RELATIVE]
-    require(lock.get("argv") == expected_argv and lock.get("source_root") == SOURCE_ROOT and lock.get("evidence_root") == EVIDENCE_ROOT and lock.get("overwrite") is False and lock.get("rerun") is False, "R11_DOWNLOAD_LOCK_POLICY", "R11 download lock policy drift")
+    require(lock.get("argv") == EXPECTED_ARGV and lock.get("source_root") == SOURCE_ROOT and lock.get("evidence_root") == EVIDENCE_ROOT and lock.get("overwrite") is False and lock.get("rerun") is False, "R11_DOWNLOAD_LOCK_POLICY", "R11 download lock policy drift")
     implementation_commit = lock.get("implementation_commit")
     _validate_implementation_ancestor(implementation_commit)
     bindings = lock.get("bindings")
