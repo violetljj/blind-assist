@@ -2,6 +2,20 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。另立 DepthART-S D3R1 pre-outcome
+  Phase-A recovery version，并完成 metadata-only fresh roster lock。旧 D3 exact-48 及其中 21 个
+  continuity-qualified identity 全部禁止 carry-over，`300 frames / adjacent <=0.5s / pose bracket
+  <=0.25s / portrait {1,3}` 门保持不变。旧 `21/48` 只用于 one-sided 95% Clopper-Pearson
+  resource-sizing heuristic：127 是 `P(X>=32)>=0.95` 的最小 planning pool；该假设不构成质量证据
+  或成功保证。planner 绑定 published pre-recovery commit `8d17a053...` 的 immutable
+  `docs/research` tree（490 official tokens），并以 AST literal、文件 SHA 与 ordered tuple digest
+  额外排除 TARO R10 scripts-only 64 tokens；effective firewall 554。最终锁定 127 个 unique
+  Training visit/session，与 workspace、TARO R10、D1/D2/R2 及旧 D3 overlap 全为 0；eligible
+  capacity 为 3,724 rows / 1,233 unique visits。write-once generation、independent replay 以及
+  roster 写入 docs 后 replay 均 PASS，后两者 byte-identical。没有发 HEAD/GET，没有 source-scope、
+  body、truth/model、selection、TRAIN/DEVELOPMENT、R2、性能、默认 App、production 或 safety 权限。
+  唯一 successor 为 `EXPLICIT_D3R1_SOURCE_SCOPE_REGISTRATION_FOR_EXACT_127_METADATA_ROSTER`。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。完成 DepthART-S D3 Phase-A exact-48
   intrinsics/trajectory body 与 label-blind continuity execution。96/96 GET 共 `41,979,912 bytes`，
   Content-Length/ETag/Last-Modified 全部匹配冻结 HEAD；48/48 checkpoint、`190,028` 个 `.pincam`
