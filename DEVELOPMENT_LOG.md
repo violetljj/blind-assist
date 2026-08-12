@@ -2,6 +2,17 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。正式消费 TARO O1R R11 source inventory
+  one-shot。exact 48/48 parents 均至少接纳 1 个 pose-bounded exact frame，共 `1,043` frames；compressed
+  source `2,960,390,828 bytes`，central-directory 声明展开量 `3,540,113,101 bytes`，无 parent replacement。
+  exclusive evidence root 恰好 4 files / 95,681 bytes。独立复核不导入 producer，重算 content seals、manifest
+  bindings、48-row roster、exact-ns token 排序/唯一性、count/byte sums，并核对 144 container bindings 与 sealed
+  download receipts，全部一致。正式 ZIP/highres member payload reads 均为 0，pixel/source-frame/model/FARO
+  value/truth/training/network 均为 0；declared CRC 未冒充 payload CRC。正式终态
+  `TARO_O1R_R11_FRESH_POOL_INVENTORY_AND_FRAME_PLAN_PASS`，scientific outcome 仍 `NOT_RUN`。唯一 successor 是
+  `TARO_O1R_R11_FRESH_48_PARENT_SOURCE_ONLY_PHASE_A_IMPLEMENTATION_LOCK`，只实现 all-48 source/DepthART Phase A
+  与 FARO=0 firewall，不授权直接执行 Phase A、selection、Phase B、设备、部署、产品或安全动作。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。冻结 TARO O1R R11 source inventory one-shot
   execution lock，状态 `AUTHORIZED_UNCONSUMED`。锁绑定已推送 implementation commit
   `9c659c3087e9b7d64bd931bf6291ce8d47ce512f`、11 份代码/协议/授权/download evidence、exact
