@@ -48,7 +48,7 @@ encoder/initialization、depth baseline 与部署研究载体，不是算法终�
 
 ## 唯一 successor
 
-当前没有 active successor。D2 Development 一次性 screen 已消费并以 FAIL 终止；不得在本版本内
+无。当前没有 active successor。D2 Development 一次性 screen 已消费并以 FAIL 终止；不得在本版本内
 继续训练、调参、换 checkpoint、改阈值/数据/postprocess/denominator/gate，或直接访问 R2。任何新
 假设都必须建立新的路线版本、pre-outcome 合同与 fresh data，并重新取得显式授权。
 
