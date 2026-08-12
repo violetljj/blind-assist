@@ -351,5 +351,346 @@
         "minLength": 1
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "evidence": {
+            "required": [
+              "complete"
+            ],
+            "properties": {
+              "complete": {
+                "const": false
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "admission": {
+            "properties": {
+              "decision": {
+                "const": "UNKNOWN"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "evidence": {
+            "required": [
+              "denominators_complete"
+            ],
+            "properties": {
+              "denominators_complete": {
+                "const": false
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "admission": {
+            "properties": {
+              "decision": {
+                "const": "UNKNOWN"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "evidence": {
+            "required": [
+              "aggregates_finite"
+            ],
+            "properties": {
+              "aggregates_finite": {
+                "const": false
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "admission": {
+            "properties": {
+              "decision": {
+                "const": "UNKNOWN"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "evidence": {
+            "required": [
+              "per_parent_session_reported"
+            ],
+            "properties": {
+              "per_parent_session_reported": {
+                "const": false
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "admission": {
+            "properties": {
+              "decision": {
+                "const": "UNKNOWN"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "evidence": {
+            "required": [
+              "pooled_reported"
+            ],
+            "properties": {
+              "pooled_reported": {
+                "const": false
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "admission": {
+            "properties": {
+              "decision": {
+                "const": "UNKNOWN"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "evidence": {
+            "required": [
+              "parent_session_disjoint"
+            ],
+            "properties": {
+              "parent_session_disjoint": {
+                "const": false
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "admission": {
+            "properties": {
+              "decision": {
+                "const": "FAIL"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "evidence": {
+            "required": [
+              "opened_after_contract_freeze"
+            ],
+            "properties": {
+              "opened_after_contract_freeze": {
+                "const": false
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "admission": {
+            "properties": {
+              "decision": {
+                "const": "FAIL"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "android_feasibility": {
+            "required": [
+              "fallback_observed"
+            ],
+            "properties": {
+              "fallback_observed": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "admission": {
+            "properties": {
+              "decision": {
+                "const": "FAIL"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "android_feasibility": {
+            "required": [
+              "reference_parity_within_bound"
+            ],
+            "properties": {
+              "reference_parity_within_bound": {
+                "const": false
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "admission": {
+            "properties": {
+              "decision": {
+                "const": "FAIL"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "admission": {
+            "required": [
+              "decision"
+            ],
+            "properties": {
+              "decision": {
+                "const": "PASS"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "admission": {
+            "properties": {
+              "authorized_scope": {
+                "const": "ANDROID_RESEARCH_PREVIEW_ONLY"
+              }
+            }
+          },
+          "quality": {
+            "properties": {
+              "decision": {
+                "const": "PASS"
+              }
+            }
+          },
+          "android_feasibility": {
+            "properties": {
+              "decision": {
+                "const": "PASS"
+              }
+            }
+          },
+          "evidence": {
+            "properties": {
+              "complete": {
+                "const": true
+              },
+              "parent_session_disjoint": {
+                "const": true
+              },
+              "opened_after_contract_freeze": {
+                "const": true
+              },
+              "denominators_complete": {
+                "const": true
+              },
+              "aggregates_finite": {
+                "const": true
+              },
+              "per_parent_session_reported": {
+                "const": true
+              },
+              "pooled_reported": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "admission": {
+            "required": [
+              "decision"
+            ],
+            "properties": {
+              "decision": {
+                "enum": [
+                  "FAIL",
+                  "UNKNOWN"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "admission": {
+            "properties": {
+              "authorized_scope": {
+                "const": "NONE"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }
