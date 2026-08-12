@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc">
+  <title id="title">BlindAssist evidence-to-authority boundary</title>
+  <desc id="desc">Code evidence, device evidence, product authority, and user or safety outcomes are separate levels. Each transition requires an explicit gate; no earlier level automatically proves a later one.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#13795b"/>
+    </marker>
+    <style>
+      .title{font:700 30px system-ui,sans-serif;fill:#102a25}.subtitle{font:400 16px system-ui,sans-serif;fill:#46645d}.level{font:700 21px system-ui,sans-serif;fill:#102a25}.body{font:400 15px system-ui,sans-serif;fill:#35534c}.gate{font:700 13px system-ui,sans-serif;fill:#13795b}.box{fill:#f3faf7;stroke:#89b8a8;stroke-width:2}.authority{fill:#e4f6ef;stroke:#13795b;stroke-width:3}.outcome{fill:#fff7ed;stroke:#b5692f;stroke-width:2;stroke-dasharray:8 7}.edge{fill:none;stroke:#13795b;stroke-width:3;marker-end:url(#arrow)}.stop{font:700 15px system-ui,sans-serif;fill:#9b451d}.note{font:600 15px system-ui,sans-serif;fill:#5d4f6d}
+    </style>
+  </defs>
+  <rect width="1200" height="650" rx="24" fill="#ffffff"/>
+  <text x="60" y="62" class="title">Evidence is not automatic authority</text>
+  <text x="60" y="92" class="subtitle">Every rightward transition needs an explicit, reviewable gate.</text>
+
+  <rect class="box" x="60" y="180" width="240" height="220" rx="18"/>
+  <text class="level" x="84" y="222">1 · Code evidence</text>
+  <text class="body" x="84" y="260">Builds, unit tests, lint</text>
+  <text class="body" x="84" y="286">Model identity and hashes</text>
+  <text class="body" x="84" y="312">Synthetic or replay checks</text>
+  <text class="body" x="84" y="338">Research contracts</text>
+  <text class="note" x="84" y="374">Proves only its named scope</text>
+
+  <rect class="box" x="360" y="180" width="240" height="220" rx="18"/>
+  <text class="level" x="384" y="222">2 · Device evidence</text>
+  <text class="body" x="384" y="260">Named device and build</text>
+  <text class="body" x="384" y="286">Bounded runtime receipt</text>
+  <text class="body" x="384" y="312">Reproducible conditions</text>
+  <text class="body" x="384" y="338">Observed failures retained</text>
+  <text class="note" x="384" y="374">Not a product decision</text>
+
+  <rect class="authority" x="660" y="180" width="240" height="220" rx="18"/>
+  <text class="level" x="684" y="222">3 · Product authority</text>
+  <text class="body" x="684" y="260">Explicit admission scope</text>
+  <text class="body" x="684" y="286">Default-app decision</text>
+  <text class="body" x="684" y="312">Release and rollback plan</text>
+  <text class="body" x="684" y="338">Privacy and risk review</text>
+  <text class="note" x="684" y="374">Still not a safety outcome</text>
+
+  <rect class="outcome" x="960" y="180" width="180" height="220" rx="18"/>
+  <text class="level" x="984" y="222">4 · Outcomes</text>
+  <text class="body" x="984" y="260">Target-user benefit</text>
+  <text class="body" x="984" y="286">Mobility or safety</text>
+  <text class="body" x="984" y="312">Certification claims</text>
+  <text class="stop" x="984" y="354">Not established by</text>
+  <text class="stop" x="984" y="378">this repository alone</text>
+
+  <path class="edge" d="M300 290 H360"/>
+  <text class="gate" x="330" y="158" text-anchor="middle">DEVICE GATE</text>
+  <path class="edge" d="M600 290 H660"/>
+  <text class="gate" x="630" y="158" text-anchor="middle">ADMISSION GATE</text>
+  <path class="edge" d="M900 290 H960"/>
+  <text class="gate" x="930" y="158" text-anchor="middle">OUTCOME GATE</text>
+
+  <rect x="60" y="478" width="1080" height="112" rx="16" fill="#f7f6fa" stroke="#c9c1d2" stroke-width="2"/>
+  <text class="level" x="84" y="516">Boundary rule</text>
+  <text class="body" x="84" y="548">`UNKNOWN` is not negative. Synthetic, model-reviewed, build, benchmark, or demo evidence never jumps a gate.</text>
+  <text class="body" x="84" y="574">Failed evidence remains visible; a research merge does not silently change the released default app.</text>
+</svg>

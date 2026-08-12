@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc">
+  <title id="title">BlindAssist stable Android architecture</title>
+  <desc id="desc">Camera or a local glasses stream enters runtime coordination, then vision, deterministic assist policy, device and user-interface adapters, and accessible feedback. Research and benchmark apps remain isolated from the default app.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#13795b"/>
+    </marker>
+    <style>
+      .title{font:700 30px system-ui,sans-serif;fill:#102a25}.subtitle{font:400 16px system-ui,sans-serif;fill:#46645d}.node-title{font:700 18px system-ui,sans-serif;fill:#102a25}.node-text{font:400 14px system-ui,sans-serif;fill:#35534c}.lane{font:700 15px system-ui,sans-serif;fill:#13795b}.box{fill:#f3faf7;stroke:#89b8a8;stroke-width:2}.policy{fill:#e4f6ef;stroke:#13795b;stroke-width:3}.isolated{fill:#f7f6fa;stroke:#756987;stroke-width:2;stroke-dasharray:8 7}.edge{fill:none;stroke:#13795b;stroke-width:3;marker-end:url(#arrow)}.divider{stroke:#c7d8d2;stroke-width:2}.note{font:600 14px system-ui,sans-serif;fill:#665a78}
+    </style>
+  </defs>
+  <rect width="1200" height="650" rx="24" fill="#ffffff"/>
+  <text x="60" y="62" class="title">BlindAssist stable Android architecture</text>
+  <text x="60" y="92" class="subtitle">Stable responsibility flow in the default app; research stays isolated.</text>
+  <text x="60" y="142" class="lane">DEFAULT ANDROID APP</text>
+  <path class="divider" d="M60 156 H1140"/>
+
+  <rect class="box" x="60" y="205" width="170" height="120" rx="16"/>
+  <text class="node-title" x="82" y="242">Input</text>
+  <text class="node-text" x="82" y="272">CameraX</text>
+  <text class="node-text" x="82" y="296">or local stream</text>
+
+  <rect class="box" x="270" y="205" width="170" height="120" rx="16"/>
+  <text class="node-title" x="292" y="242">feature:assist</text>
+  <text class="node-text" x="292" y="272">Runtime and</text>
+  <text class="node-text" x="292" y="296">lifecycle coordination</text>
+
+  <rect class="box" x="480" y="205" width="170" height="120" rx="16"/>
+  <text class="node-title" x="502" y="242">core:vision</text>
+  <text class="node-text" x="502" y="272">On-device detection</text>
+  <text class="node-text" x="502" y="296">and vision contracts</text>
+
+  <rect class="policy" x="690" y="190" width="190" height="150" rx="16"/>
+  <text class="node-title" x="714" y="232">core:assist</text>
+  <text class="node-text" x="714" y="263">Deterministic risk,</text>
+  <text class="node-text" x="714" y="287">stabilization, event</text>
+  <text class="node-text" x="714" y="311">and feedback policy</text>
+
+  <rect class="box" x="930" y="178" width="210" height="78" rx="16"/>
+  <text class="node-title" x="952" y="210">core:device</text>
+  <text class="node-text" x="952" y="235">Speech · vibration · adapters</text>
+  <rect class="box" x="930" y="274" width="210" height="78" rx="16"/>
+  <text class="node-title" x="952" y="306">core:ui</text>
+  <text class="node-text" x="952" y="331">Compose state · semantics</text>
+
+  <path class="edge" d="M230 265 H270"/>
+  <path class="edge" d="M440 265 H480"/>
+  <path class="edge" d="M650 265 H690"/>
+  <path class="edge" d="M880 245 C905 245 905 217 930 217"/>
+  <path class="edge" d="M880 285 C905 285 905 313 930 313"/>
+
+  <rect class="box" x="930" y="386" width="210" height="92" rx="16"/>
+  <text class="node-title" x="952" y="421">Accessible feedback</text>
+  <text class="node-text" x="952" y="449">UI · speech · vibration</text>
+  <path class="edge" d="M1035 352 V386"/>
+
+  <text x="60" y="536" class="lane">ISOLATED ENGINEERING AND RESEARCH SURFACES</text>
+  <path class="divider" d="M60 550 H1140"/>
+  <rect class="isolated" x="60" y="572" width="1080" height="54" rx="14"/>
+  <text class="note" x="82" y="605">apps/ benchmark, canary, demo, and candidate modules · evidence does not silently replace the default app</text>
+</svg>

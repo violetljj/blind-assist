@@ -23,6 +23,11 @@ Maintainer roles, public decision rules and conflict handling are documented in 
 
 ## Development setup
 
+New contributors should begin with the
+[English three-minute Quick Start](docs/QUICKSTART_EN.md). It separates a
+documentation-only first check from the Android build path and states the current
+Linux evidence gap.
+
 The maintained local entrypoint currently targets Windows 11 and PowerShell 7 with JDK 17 and Android SDK Platform 35:
 
 ```powershell
@@ -31,6 +36,12 @@ pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:testDebugUnitTest :app
 ```
 
 GitHub Actions provides the Linux validation path. Machine-local tools, SDKs, datasets and generated evidence belong outside Git or under ignored `artifacts.local/` paths.
+
+Use the
+[`good first issue` queue](https://github.com/violetljj/blind-assist/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22)
+for bounded starter work. Use
+[GitHub Discussions](https://github.com/violetljj/blind-assist/discussions) for
+questions, introductions, and ideas that are not yet actionable issues.
 
 ## Repository boundaries
 

@@ -8,6 +8,8 @@
 | --- | --- | --- |
 | [PROJECT_STATE.md](PROJECT_STATE.md) | current | 新窗口 30 秒冷启动、任务分类与最小读取路径 |
 | [CODE_MAP.md](CODE_MAP.md) | current | 编码任务的模块职责、实现入口和默认跳过路径 |
+| [QUICKSTART_EN.md](QUICKSTART_EN.md) | current | 英文三分钟新手入口、文档与 Android 最小验证路径、明确的 Linux 证据缺口 |
+| [COMMUNITY_LAUNCH_KIT.md](COMMUNITY_LAUNCH_KIT.md) | current | 技术发布叙事、可复用图示、真实设备演示合同、贡献者招募与渠道文案 |
 | [OPEN_SOURCE_PUBLIC_VALUE.md](OPEN_SOURCE_PUBLIC_VALUE.md) | current | 开源公共价值、受益对象、证据边界与维护资源使用计划 |
 | [CODEX_MAINTAINER_AUTOMATION.md](CODEX_MAINTAINER_AUTOMATION.md) | current | Codex/API 开源维护工作流、输入输出、人工权限、密钥边界与额度成效指标 |
 | [THREAT_MODEL.md](THREAT_MODEL.md) | current | Android、眼镜网络、模型/原生库、CI、发布、数据与 AI 维护的威胁边界 |
