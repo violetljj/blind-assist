@@ -1,6 +1,6 @@
 # DepthART 算法路线
 
-状态：`current / DEVELOPMENT_STANDARD / INNOVATION_NOT_EVALUABLE / R1_RESEARCH_MAINLINE / STRICT_G4D_NEGATIVE_TERMINAL / D0_NO_ELIGIBLE_PRECISION_ARM / D1_TASK_QUALITY_FAIL_TERMINAL / D2_DEVELOPMENT_FROZEN_HEAD_QUALITY_FAIL_TERMINAL / D3_BIDIRECTIONAL_ROUTER_MECHANICS_PASS / D3_FRESH_METADATA_POOL_48_CONSUMED / D3_PHASE_A_HEAD_96_OF_96_PASS / D3_PHASE_A_FAIL_21_OF_32_NO_SELECTION / D3_NO_ACTIVE_SUCCESSOR / R2_CANDIDATE_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / DEVELOPMENT_STANDARD / INNOVATION_NOT_EVALUABLE / R1_RESEARCH_MAINLINE / STRICT_G4D_NEGATIVE_TERMINAL / D0_NO_ELIGIBLE_PRECISION_ARM / D1_TASK_QUALITY_FAIL_TERMINAL / D2_DEVELOPMENT_FROZEN_HEAD_QUALITY_FAIL_TERMINAL / D3_BIDIRECTIONAL_ROUTER_MECHANICS_PASS / D3_FRESH_METADATA_POOL_48_CONSUMED / D3_PHASE_A_HEAD_96_OF_96_PASS / D3_PHASE_A_FAIL_21_OF_32_NO_SELECTION / D3R1_RECOVERY_PROTOCOL_FROZEN / D3R1_FRESH_METADATA_POOL_127_LOCKED_MEDIA_UNOPENED / D3R1_SOURCE_SCOPE_AWAITING / R2_CANDIDATE_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
 本页只维护当前摘要、权限和唯一 successor。完整历史已保留在 [archive/README_FULL_HISTORY_2026-08-07.md](archive/README_FULL_HISTORY_2026-08-07.md)，日期化协议、receipt 和结果仍是 snapshot/机器证据。
 
@@ -18,6 +18,7 @@ encoder/initialization、depth baseline 与部署研究载体，不是算法终�
 - DepthART-S 是当前研发主力候选：R0 为 `QUALITY_NOT_ADMITTED`，R1 保持 `RESEARCH_MAINLINE`；strict G4-D 为不可变负终态。Task-preserving D0 三臂已在 outcome 前技术前门关闭。D1 已在冻结的 8-session × 300-frame Development roster、产品比例 `1×3×608×448` fixed-mixed 单候选与 fresh `SM-S9280 / SM8650 / HTP v75 / DZG1` saved context 上完成 48/48 个 device chunk、2400 帧和 21600 cells 的一次性汇总。终态为 `D1_TASK_QUALITY_FAIL_STOP_R2_CANDIDATE_NOT_AUTHORIZED`：候选 pooled clearance MAE `0.38443 m`、false-clear `0.16651`、false-block `0.18648`、geometry transition agreement `0.79365`，均未满足对应绝对门；false-block noninferiority 也失败。另有 required parent aggregates 非 finite，按协议 fail-closed。R2 candidate 不授权，8 个 R2 session 继续 sealed；性能、DA2 替换、默认 App、production 与 safety 均未授权。
 - D2 只把 D1 失败结构转成一个小型 task-evidence head 假设和新的 source-support 路线，没有改写 D1 outcome。TRAIN-only 已完成 24/24 chunks 并锁定 step-500 / 277 参数 head。冻结的 4-identity × 300-frame Development screen 随后完成 24/24 chunks、1,200 帧与 10,800 cells，终态为 `D2_DEVELOPMENT_FROZEN_HEAD_QUALITY_FAIL_STOP`。head 将 pooled clearance MAE 从 `0.43615 m` 降至 `0.27931 m`、false-clear 从 `0.20795` 降至 `0.08599`，但仍未满足绝对门；false-block 升至 `0.37614`，known-coverage/false-block/valid-to-unknown noninferiority 失败，并有 required strata denominator 为空。D2 outcome 已消费，不允许事后修改 checkpoint、阈值、数据、postprocess、denominator 或 gate 回救。
 - D3 已另立为新的 bidirectional error-certificate router，不重跑 D2 direct-state head。它分别学习 `CLEAR release` 与 `OCCUPIED veto`，证据冲突时转 `UNKNOWN_GROUND`，证据不足时保持 baseline；目标是在 fresh identity-disjoint Development 上同时降低 false-clear 与 false-block。纯 CPU mechanics canary 已冻结并 PASS，metadata planner 排除 394 个既有官方 identity 后锁定 48 个全新 Training-fold 候选，与 D1、D2、sealed R2 overlap 均为 0。Phase-A 已完整下载并独立复核 exact 96 个 intrinsics/trajectory body（`41,979,912` bytes、`190,028` 个 `.pincam` payload），但固定 300-frame portrait/pose continuity 仅 `21/48` identity 通过，少于所需 32。终态为 `D3_PHASE_A_FAIL_FEWER_THAN_32_ELIGIBLE_IDENTITIES`；正式 selection lock、TRAIN/DEVELOPMENT role 和 Phase-B authority 均为空，当前 D3 evidence version 关闭。
+- D3R1 是独立 pre-outcome recovery version，不扩大或复用旧 D3 exact-48/合格 21，也不降低 continuity 门。它以旧版 `21/48` 的单侧 95% Clopper-Pearson 下界仅作资源规划，冻结最小 planning pool `127`；该 IID heuristic 不是科学预测、质量门或通过保证。metadata planner 从 published pre-recovery commit 的 immutable `docs/research` tree 排除 490 个官方 token，并额外 SHA 锚定 TARO R10 scripts-only fresh pool 的 64 个 token；effective firewall 554，锁定 127 个 unique visit/session，所有显式 overlap 为 0。pre-lock 与 roster 已写入 docs 后的 replay 均得到同一结果 SHA。本步没有 source-scope、HEAD/body、truth/model、角色或 outcome authority。
 - 既有 DA V2、FRESH-TF、Metric3D、ToF 和 temporal 结果保留为 Development、diagnostic 或 paused 证据，不能互相拼接成晋级结论。
 
 ## 稳定入口
@@ -45,6 +46,7 @@ encoder/initialization、depth baseline 与部署研究载体，不是算法终�
 - [D3 fresh metadata roster](DEPTHART_TASK_PRESERVING_D3_FRESH_METADATA_ROSTER_LOCK_2026-08-12.json) · [metadata result](DEPTHART_TASK_PRESERVING_D3_FRESH_METADATA_ROSTER_RESULT_2026-08-12.md) · [source-scope receipt](DEPTHART_TASK_PRESERVING_D3_SOURCE_SCOPE_AND_METADATA_ROSTER_RECEIPT_2026-08-12.json)
 - [D3 Phase-A HEAD protocol](DEPTHART_TASK_PRESERVING_D3_PHASE_A_HEAD_PROTOCOL_2026-08-12.json) · [activation](DEPTHART_TASK_PRESERVING_D3_PHASE_A_HEAD_ACTIVATION_2026-08-12.json) · [HEAD result](DEPTHART_TASK_PRESERVING_D3_PHASE_A_HEAD_RESULT_2026-08-12.md) · [machine result](DEPTHART_TASK_PRESERVING_D3_PHASE_A_HEAD_RESULT_2026-08-12.json)
 - [D3 Phase-A body protocol](DEPTHART_TASK_PRESERVING_D3_PHASE_A_BODY_PROTOCOL_2026-08-12.json) · [activation](DEPTHART_TASK_PRESERVING_D3_PHASE_A_BODY_ACTIVATION_2026-08-12.json) · [validator repair](DEPTHART_TASK_PRESERVING_D3_PHASE_A_TERMINAL_VALIDATOR_REPAIR_2026-08-12.json) · [terminal result](DEPTHART_TASK_PRESERVING_D3_PHASE_A_RESULT_2026-08-12.md) · [machine result](DEPTHART_TASK_PRESERVING_D3_PHASE_A_RESULT_2026-08-12.json)
+- [D3R1 Phase-A recovery protocol](DEPTHART_TASK_PRESERVING_D3R1_PHASE_A_RECOVERY_PROTOCOL_2026-08-12.md) · [machine protocol](DEPTHART_TASK_PRESERVING_D3R1_PHASE_A_RECOVERY_PROTOCOL_2026-08-12.json) · [metadata activation](DEPTHART_TASK_PRESERVING_D3R1_METADATA_ACTIVATION_2026-08-12.json) · [fresh roster lock](DEPTHART_TASK_PRESERVING_D3R1_FRESH_METADATA_ROSTER_LOCK_2026-08-12.json) · [result](DEPTHART_TASK_PRESERVING_D3R1_FRESH_METADATA_ROSTER_RESULT_2026-08-12.md)
 - [DepthART task-preserving deployment R2 protocol](DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2_PROTOCOL_2026-08-09.md) · [machine contract](DEPTHART_TASK_PRESERVING_DEPLOYMENT_R2_PROTOCOL_2026-08-09.json)
 - [R2 ARKit roster lock](DEPTHART_TASK_PRESERVING_R2_ARKIT_ROSTER_LOCK_2026-08-09.json) · [media HEAD preflight](DEPTHART_TASK_PRESERVING_R2_ARKIT_MEDIA_PREFLIGHT_2026-08-09.json)
 - [DA2 P1/P2 closure](DAV2_P1_P2_EXECUTION_CLOSURE_2026-08-05.md)
@@ -53,10 +55,10 @@ encoder/initialization、depth baseline 与部署研究载体，不是算法终�
 
 ## 唯一 successor
 
-无；当前终态为 `NONE_D3_PHASE_A_FAIL_TERMINAL`。冻结 48 身份只有 21 个达到固定 continuity 门，
-因此没有 32-identity lock，也不允许 Phase-B、训练、D3 Development 或 R2。不得扩大当前 pool、
-降低门限或把 21 个合格身份当作 partial role。若用户未来决定恢复，必须另立新的 evidence version，
-在任何新媒体访问前重新冻结 fresh identity-disjoint roster、source scope 和协议；这不是当前自动 successor。
+`EXPLICIT_D3R1_SOURCE_SCOPE_REGISTRATION_FOR_EXACT_127_METADATA_ROSTER`。它只允许为已冻结的
+exact-127 Training metadata roster 登记 D3R1 future Phase-A intrinsics/trajectory source-use scope；
+不自动授权 254 个 HEAD，更不授权 GET、continuity selection、Phase-B、训练、Development 或 R2。
+旧 D3 exact-48/21-qualified 版本仍保持 fail terminal，不能 carry-over 或扩池回救。
 
 R2 是下游 sealed 路线，不是并列 successor：metadata roster 已冻结但 candidate 尚未选定；
 D2R1 source-support PASS 只建立 D2 数据角色；不能直接访问 R2 outcome，也不产生 scientific

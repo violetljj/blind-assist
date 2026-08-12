@@ -1,0 +1,129 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d3r1_fresh_metadata_roster_lock_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D3R1_PHASE_A_RECOVERY",
+  "frozen_at": "2026-08-12",
+  "status": "D3R1_FRESH_METADATA_POOL_127_LOCKED_MEDIA_UNOPENED",
+  "protocol": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R1_PHASE_A_RECOVERY_PROTOCOL_2026-08-12.json",
+    "bytes": 9457,
+    "sha256": "D300E5A088D0BCEEFD625AA4520CF75DD19E3E55C0D180ECF1A4E413A9FF1B60"
+  },
+  "activation": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R1_METADATA_ACTIVATION_2026-08-12.json",
+    "bytes": 2133,
+    "sha256": "04275EBD636B4BFDC9D7A3B40A40A8806C298409603F670ACE29C7EE5B19BDBB"
+  },
+  "generation_receipt": {
+    "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r1-metadata-roster-20260812-r1/d3r1-fresh-metadata-roster.json",
+    "bytes": 125307,
+    "sha256": "D801D348919AD3B13F76828A960627D0FFE2527214B072D204C0C272719E4AD3"
+  },
+  "independent_replay": {
+    "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r1-metadata-roster-20260812-r1/validation.json",
+    "bytes": 1364,
+    "sha256": "F1682D8C8B10604083A8403BFEDBC3D7CE66216D5C945AAE30641FEFC32D58E3",
+    "status": "D3R1_FRESH_METADATA_ROSTER_INDEPENDENT_REPLAY_PASS"
+  },
+  "post_lock_replay": {
+    "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r1-metadata-roster-20260812-r1/post-lock-validation.json",
+    "bytes": 1364,
+    "sha256": "F1682D8C8B10604083A8403BFEDBC3D7CE66216D5C945AAE30641FEFC32D58E3",
+    "byte_identical_to_pre_lock_replay": true,
+    "purpose": "Proves that governed roster publication does not alter the immutable Git-tree exclusion replay."
+  },
+  "source": {
+    "repository": "https://github.com/apple/ARKitScenes.git",
+    "repository_commit": "7283761bf26c27570ec59a5dc0f8686fbff07726",
+    "metadata_path": "threedod/3dod_train_val_splits.csv",
+    "metadata_bytes": 127263,
+    "metadata_sha256": "06A0686866F186764ED0B92DE1A943529CEBD78B4AF5B671907C40BB2DCD13E1",
+    "official_rows": 5047,
+    "fold": "Training"
+  },
+  "exclusion_snapshot": {
+    "commit": "8d17a053dc6d345a688035cd298c49c70d36288f",
+    "scope": "immutable docs/research JSON and Markdown tree at the published pre-recovery commit",
+    "scanned_file_count": 1516,
+    "matched_file_count": 138,
+    "workspace_official_identity_count": 490,
+    "concurrent_taro_r10_official_identity_count": 64,
+    "workspace_taro_r10_overlap_count": 0,
+    "effective_official_identity_count": 554,
+    "official_identity_set_sha256": "AC06C80BDD70C214825D9BE3096FD0172EECE2126493489DAF91998B3D31A919",
+    "effective_identity_set_sha256": "F55D1C4E5249218260E5BF993BDB86BAE0CA9E4C60B5E6FB0672729776A16848",
+    "file_receipts_sha256": "425D6E7CCCD544EB9FFDCBC646A4414BE3881A481DDB427042DDEE10965EFCFA"
+  },
+  "concurrent_identity_firewall": {
+    "taro_r10_fresh_pool": {
+      "path": "scripts/research/taro_o1r_r10_clear_runtime/fresh_pool.py",
+      "bytes": 9506,
+      "sha256": "E4637F3C797722CF89370D2CA60EF839586A59330F974336477140E3BC13C9F0",
+      "pool_constant": "EXPECTED_POOL",
+      "parent_count": 32,
+      "official_identity_count": 64,
+      "ordered_tuple_sha256": "8C516990939BB84515D44AE0EDA5DDE94D161B62C9E531DE286ECEBDC201A4D8",
+      "selection_overlap_count": 0
+    }
+  },
+  "anchor_firewall": {
+    "d1": {"official_identity_count": 32, "selection_overlap_count": 0},
+    "d2": {"official_identity_count": 64, "selection_overlap_count": 0},
+    "r2": {"official_identity_count": 16, "selection_overlap_count": 0},
+    "d3_predecessor_roster": {"official_identity_count": 96, "selection_overlap_count": 0}
+  },
+  "selection_rule": "official Training rows; exclude the 490 official identities in the immutable pre-recovery Git tree and 64 additional SHA-frozen TARO R10 identities; require unique visit and video; sort by sha256(visit_id:video_id); take the first 127 without replacement",
+  "pool_pair_encoding": "visit_id/video_id in exact pool order",
+  "pool_pairs_sha256": "EA9ECAC4E2195C24959910BD012CC6089328EA2441642184CB327B2237E1C7CB",
+  "pool": [
+    "484262/48458612", "423957/42898342", "422023/42445865", "435671/42899844", "422389/42447264", "426264/42898216", "483324/48018445", "422134/42445707",
+    "470296/47331091", "438359/43896467", "434878/42899325", "470329/47331139", "382143/41098169", "468077/47333815", "467351/47333945", "435663/42899944",
+    "472580/47332636", "382303/41126374", "482633/47895826", "482127/47334907", "423605/42898098", "470886/47331887", "435659/42923208", "482091/47334920",
+    "469447/47333165", "482873/47670291", "469269/47332704", "468779/45662995", "437135/43649452", "472041/47430599", "381542/41048242", "472058/47895231",
+    "422847/42897523", "455343/44358397", "481523/47334627", "470106/47431047", "468111/47334544", "470530/47115482", "423777/42898057", "381810/41069178",
+    "469214/47332954", "469833/47430918", "472030/47332415", "423308/42897936", "472071/47430588", "482111/47895700", "381767/41159394", "421256/42444904",
+    "482624/47895944", "471164/47204451", "434876/42899430", "437524/43828439", "481487/47334669", "468282/47331279", "464980/44796487", "423438/42897436",
+    "380022/41007608", "466238/44796744", "423978/42898141", "437252/43649662", "467292/47333761", "382322/41159762", "437830/43895912", "434690/42898799",
+    "382830/41126783", "435369/42899767", "469446/47333061", "435734/42899811", "420673/42445211", "437680/43828552", "383373/41126786", "472620/47430746",
+    "471156/47430408", "464232/44358630", "382140/41124899", "472036/47430612", "468099/47334345", "468283/47431092", "467125/47333484", "435358/42899533",
+    "435732/42899596", "472339/47895306", "437539/43828361", "471410/47429874", "481664/47669937", "426157/42898655", "422369/42897628", "383343/41126829",
+    "472348/47430651", "466835/47331607", "467138/47333462", "467331/47333722", "483950/48018815", "470309/47331048", "438020/43896117", "383829/41254934",
+    "471000/47430184", "434702/42898716", "435373/42899490", "483077/48018243", "467330/45261600", "421062/42444588", "423964/42898392", "426265/42898162",
+    "471364/47429738", "382456/41125124", "483954/48018800", "426145/42898684", "469627/47115177", "402849/41291635", "470308/47115384", "469410/47333220",
+    "383837/41254954", "472334/47332481", "472353/47430637", "423310/42897877", "467253/45261332", "382116/41098171", "483602/48018722", "421008/42444808",
+    "382457/41125106", "482866/48017888", "470322/47429682", "470866/47331815", "423939/42898420", "438777/44358121", "382305/41159717"
+  ],
+  "planning_only_sizing": {
+    "predecessor_observation": "21/48",
+    "one_sided_95_clopper_pearson_lower_bound": 0.3150044506435995,
+    "planned_probability_at_least_32_of_127": 0.9502686917714296,
+    "scientific_evidence": false,
+    "quality_gate": false,
+    "guarantee": false
+  },
+  "future_stages_not_activated": {
+    "source_scope": "register exact 127-identity Phase-A intrinsics/trajectory use before any HEAD",
+    "phase_a": "process all 127 under unchanged continuity gates and lock the first 32 qualified identities",
+    "phase_b": "take the first 16 source-truth-support-qualified identities only after a valid Phase-A lock",
+    "roles": "first 8 become D3R1 TRAIN and next 8 sealed D3R1 DEVELOPMENT only after Phase-B",
+    "frames_per_identity": 300
+  },
+  "invariants": {
+    "pool_count": 127,
+    "unique_parent_count": 127,
+    "unique_session_count": 127,
+    "selection_overlap_with_workspace_snapshot": 0,
+    "selection_overlap_with_concurrent_identity_firewalls": 0,
+    "selection_overlap_with_d3_predecessor_pool": 0,
+    "media_head_requests": 0,
+    "media_body_bytes_read": 0,
+    "truth_read": false,
+    "model_outputs_read": false,
+    "training": false,
+    "development_outcome_access": "NONE",
+    "r2_cohort_access": "NONE",
+    "source_scope_registered": false,
+    "download_authorized": false
+  },
+  "next_gate": "EXPLICIT_D3R1_SOURCE_SCOPE_REGISTRATION_FOR_EXACT_127_METADATA_ROSTER",
+  "authority": "Exact D3R1 metadata-only pool and identity firewall; no source-use registration, HEAD, body, truth, selection, training, Development, R2, performance, default App, production or safety authority."
+}
