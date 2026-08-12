@@ -1,0 +1,100 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d2_development_quality_governed_result_v1",
+  "created_at": "2026-08-12",
+  "status": "FAIL",
+  "terminal": "D2_DEVELOPMENT_FROZEN_HEAD_QUALITY_FAIL_STOP",
+  "protocol": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2_DEVELOPMENT_QUALITY_EXECUTION_PROTOCOL_2026-08-11.json",
+    "bytes": 11390,
+    "sha256": "CA2A709AE0C3AAFBE9BD6FC195480D4D7E34FE3E6562F37D3B369D989D24CAA2"
+  },
+  "activation_receipt": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D2_DEVELOPMENT_QUALITY_ACTIVATION_RECEIPT_2026-08-11.json",
+    "bytes": 1945,
+    "sha256": "FAD0C8B76617D5E9330E85D2076D30C7B9330359C133C1B3A349E2CE5C8CFB4F"
+  },
+  "machine_evidence": {
+    "attempt": {"path": "artifacts.local/evidence/hftf/depthart-task-preserving-d2-development-20260811-r2/attempt.json", "bytes": 475, "sha256": "B55190D9B0999ABC3496305C69824FF1C2AB9085E3609C0F7A043780D0F41364"},
+    "payload": {"path": "artifacts.local/evidence/hftf/depthart-task-preserving-d2-development-20260811-r2/development-quality-payload.json", "bytes": 6942433, "sha256": "CFB6F15CFF802B07344F42CD3519E9FB56817D532C676D781A2A60EB110B5F54"},
+    "result": {"path": "artifacts.local/evidence/hftf/depthart-task-preserving-d2-development-20260811-r2/development-quality-result.json", "bytes": 32149, "sha256": "B1A24AA0C8BED50BF0F4A5F5D75AADE43C73AE579215BE8C35544908CA0EC8F0"},
+    "validation": {"path": "artifacts.local/evidence/hftf/depthart-task-preserving-d2-development-20260811-r2/validation-result.json", "bytes": 901, "sha256": "0961CD64CC282947B495DFB6F55C617D9F086D9B994346CB96888505B8F842FA"}
+  },
+  "execution": {
+    "device": "SM-S9280 / SM8650 / HTP v75 / DZG1",
+    "chunks": 24,
+    "frames": 1200,
+    "cells": 10800,
+    "identities": 4,
+    "candidate_outputs": 1200,
+    "candidate_output_bytes": 1307443200,
+    "all_output_hashes_reverified": true,
+    "deterministic_evaluation_reproduced": true,
+    "pause_resume": {
+      "completed_before_pause": 17,
+      "interrupted_chunk": 17,
+      "interrupted_device_output_consumed": false,
+      "resumed_from_materialization_receipt": true,
+      "chunk_17_full_device_stage_reexecuted": true
+    }
+  },
+  "pooled": {
+    "baseline": {
+      "known_coverage": 0.991474318985236,
+      "clearance_mae_m": 0.43615308958920074,
+      "false_clear_all_known": 0.2079488255033557,
+      "false_block_given_clear": 0.26273458445040215,
+      "temporal_clearance_delta_mae_m": 0.11262907564309448,
+      "geometry_transition_agreement": 0.7291934791934792,
+      "valid_to_unknown_rate": 0.008525681014763984
+    },
+    "frozen_head": {
+      "known_coverage": 0.9648575587440216,
+      "clearance_mae_m": 0.2793107858403941,
+      "false_clear_all_known": 0.08599137931034483,
+      "false_block_given_clear": 0.3761384335154827,
+      "temporal_clearance_delta_mae_m": 0.0941025892077576,
+      "geometry_transition_agreement": 0.8505263157894737,
+      "valid_to_unknown_rate": 0.035142441255978374,
+      "worst_parent_false_clear_all_known": 0.15950334288443171
+    }
+  },
+  "gates": {
+    "aggregation_complete": true,
+    "required_strata_complete": false,
+    "missing_denominators": [
+      "baseline center@2.0m false_block_given_clear",
+      "baseline left@2.0m false_block_given_clear",
+      "candidate center@2.0m false_block_given_clear",
+      "candidate left@2.0m false_block_given_clear"
+    ],
+    "failed_absolute": [
+      "clearance_mae_m",
+      "false_clear_all_known",
+      "false_block_given_clear",
+      "geometry_transition_agreement",
+      "worst_parent_false_clear_all_known"
+    ],
+    "failed_noninferiority": [
+      "known_coverage",
+      "false_block_given_clear",
+      "valid_to_unknown_rate"
+    ]
+  },
+  "interpretation": {
+    "supported": "the frozen 277-parameter head materially improves several pooled diagnostics versus the same-base no-head baseline",
+    "not_supported": "the frozen head does not meet the pre-registered Development admission contract and is not an R2 candidate",
+    "outcome_is_consumed": true,
+    "rescue_by_post_outcome_changes": false
+  },
+  "authority": {
+    "d2_development_feasibility_pass": false,
+    "r2_candidate_lock": false,
+    "r2_access": false,
+    "performance": false,
+    "da2_replacement": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  },
+  "next_gate": "NONE_D2_TERMINAL_ANY_NEW_HYPOTHESIS_REQUIRES_NEW_VERSION_PRE_OUTCOME_CONTRACT_FRESH_DATA_AND_EXPLICIT_AUTHORIZATION"
+}
