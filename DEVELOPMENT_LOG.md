@@ -4,14 +4,20 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
 
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。完成 TARO O1R R11 all-48 source-only Phase A
   implementation lock，状态 `LOCKED_NON_EXECUTING / SCIENTIFIC_NOT_RUN / FORMAL_PHASE_A_NOT_RUN`。独立 runner
-  冻结 exact `48 parents / 1,043 frames / 9,387 queries` 与 `5F+4=5,219` manifest 前文件数；专用
+  冻结 exact `48 parents / 1,043 frames / 9,387 queries`、`5F+3=5,218` terminal 前文件数与最终 5,219-file root；专用
   `PhaseAFrameRef` 只含 color/intrinsics/lowres/confidence 四种 capability，highres metadata 与 sealed index
   对齐后即丢弃。reader 在 ZIP lookup 前拒绝 highres 与跨 phase role，正式 success ledger 要求四种允许 role
   各 1,043 attempts/completed、highres attempts/completed=0。全部 candidates 先封存，随后逐帧封存 source、
   prospective、public reducer、R7 source/base factor 与 R11 abstention，并重载验证 R11 positive 是 R7 positive
-  子集及 abstention 恒等式；result/manifest/failure 都 content-sealed，VRAM probe/failure sealing 不得静默降级。
+  子集及 abstention 恒等式。独立 blocker 复核后又关闭四个 seam：runner 的全部 repository 传递 import/package
+  closure 均由 implementation commit hash-bind，正式 runtime/candidate identity 精确冻结；trajectory SHA 与 parse
+  复用同一 payload、正式 ledger 为 48 次；RSS 用 OS `peak_wset` 且 terminal 前重验 wall/RSS/CUDA/evidence；成功或
+  失败只允许最后一个原子 `terminal.json`，并以 4 MiB 实体+逻辑 reserve 防止 result/manifest/failure 并存或末端
+  预算耗尽。VRAM probe/failure sealing 不得静默降级。
   R9 selector/rule 只绑定为下一阶段 identity，本阶段 scoring/top-24=false。独立 validator 不导入 producer，
-  将在正式执行后重建 exact file set 并重算全部 candidate/lineage/count/ledger seals。15/15 focused tests 与
+  将在正式执行后重建 exact file set、逐帧 source/inventory binding 并重算全部 candidate/lineage/count/ledger/
+  resource seals；其独立 4,172 次 allowed-payload byte/decode replay 与 producer ledger 分开，highres/FARO=0。
+  19/19 focused tests 与
   py_compile PASS；未读取 source member、未运行模型或创建 formal root，FARO/truth/training/network 均为 0。唯一 successor
   是另提交并推送 `TARO_O1R_R11_FRESH_48_PARENT_SOURCE_ONLY_PHASE_A_ONE_SHOT_EXECUTION_LOCK`。
 

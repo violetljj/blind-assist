@@ -237,7 +237,8 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
   48/48 parents、1,043 exact pose-bounded frames PASS；ZIP/highres member payload、pixel、model、FARO value 均为 0；
 - [R11 all-48 source-only Phase A implementation lock](TARO_O1R_R11_FRESH_48_PARENT_SOURCE_ONLY_PHASE_A_IMPLEMENTATION_LOCK_2026-08-12.md)：
   独立 capability-scoped reader 只保留 color/intrinsics/lowres/confidence；冻结 1,043 DepthART candidates、
-  9,387-query R7/R11 factor seals、完整 read ledger 与 FARO=0 firewall；正式 Phase A 尚未运行；
+  9,387-query R7/R11 factor seals、完整传递 runtime binding、peak-resource/read ledger、原子 terminal 与 FARO=0
+  firewall；正式 Phase A 尚未运行；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；

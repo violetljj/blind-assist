@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import ast
 import copy
 import importlib
 import tempfile
+import types
 import unittest
 import zipfile
 from collections import Counter
@@ -53,10 +55,20 @@ class PoolPhaseATests(unittest.TestCase):
         self.assertEqual(runner.FRAME_COUNT, 1043)
         self.assertEqual(runner.QUERY_COUNT, 9387)
         self.assertEqual(sum(runner.FROZEN_FRAME_COUNTS), runner.FRAME_COUNT)
-        self.assertEqual(runner.PRE_MANIFEST_FILE_COUNT, 5219)
+        self.assertEqual(runner.PRE_TERMINAL_FILE_COUNT, 5218)
+        self.assertEqual(runner.FINAL_FILE_COUNT, 5219)
         self.assertEqual(runner.EXPECTED_AUTHORITY["highres_depth_member_payload_read"], False)
         self.assertEqual(runner.EXPECTED_AUTHORITY["source_only_parent_scoring"], False)
         self.assertEqual(runner.EXPECTED_AUTHORITY["top24_selection"], False)
+        self.assertEqual(
+            runner.EXPECTED_PHASE_CONTRACT["source_payload_read_attempts_on_success"],
+            {"color": 1043, "intrinsics": 1043, "lowres_depth": 1043, "confidence": 1043, "highres_depth": 0},
+        )
+        self.assertFalse(runner.EXPECTED_PHASE_CONTRACT["r9_parent_scoring_performed"])
+        self.assertTrue(runner.EXPECTED_PHASE_CONTRACT["atomic_terminal_bundle"])
+        self.assertEqual(runner.TERMINAL_RESERVE_BYTES, 4_194_304)
+        self.assertEqual(runner.EXPECTED_RUNTIME_ENVIRONMENT["python_version"], "3.11.9")
+        self.assertEqual(runner.EXPECTED_CANDIDATE_IDENTITY["inference_seed"], 0)
 
     def test_inventory_evidence_is_exact_without_source_frame_read(self) -> None:
         with mock.patch.object(runner, "_load_frames", side_effect=AssertionError("source access forbidden")):
@@ -129,6 +141,15 @@ class PoolPhaseATests(unittest.TestCase):
             self.assertEqual(ledger.completed_by_role, Counter({"color": 1}))
             self.assertEqual(ledger.bytes_by_role, Counter({"color": 1}))
 
+    def test_trajectory_payload_can_be_verified_without_a_second_read(self) -> None:
+        path = mock.Mock()
+        path.is_file.return_value = True
+        path.stat.return_value = types.SimpleNamespace(st_size=3)
+        path.read_bytes.side_effect = AssertionError("second read forbidden")
+        binding = {"bytes": 3, "sha256": runner.materializer.sha256_bytes(b"abc")}
+        self.assertEqual(runner._verify_container(path, binding, payload=b"abc"), b"abc")
+        path.read_bytes.assert_not_called()
+
     def test_factor_pair_enforces_candidate_subset_and_abstention_identity(self) -> None:
         def bundle(states: list[str], *, candidate: bool = False) -> dict:
             rows = [
@@ -190,6 +211,87 @@ class PoolPhaseATests(unittest.TestCase):
         self.assertEqual(runner.EXPECTED_NEXT_STAGE_SELECTOR["rule_id"], "02CE016D6B0011F0")
         self.assertFalse(runner.EXPECTED_NEXT_STAGE_SELECTOR["phase_a_scoring_performed"])
 
+    def test_runtime_binding_map_covers_recursive_local_import_closure(self) -> None:
+        root = runner.REPO_ROOT.resolve()
+        pending = [Path(runner.__file__).resolve()]
+        closure: set[Path] = set()
+        while pending:
+            path = pending.pop()
+            if path in closure:
+                continue
+            closure.add(path)
+            tree = ast.parse(path.read_text(encoding="utf-8"))
+            modules: list[str] = []
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Import):
+                    modules.extend(alias.name for alias in node.names)
+                elif isinstance(node, ast.ImportFrom) and node.module:
+                    modules.append(node.module)
+                    modules.extend(f"{node.module}.{alias.name}" for alias in node.names)
+            for module in modules:
+                if not module.startswith("scripts.research."):
+                    continue
+                candidate = root.joinpath(*module.split("."))
+                for imported in (candidate.with_suffix(".py"), candidate / "__init__.py"):
+                    if imported.is_file() and imported.resolve() not in closure:
+                        pending.append(imported.resolve())
+        bound = {
+            (root / relative).resolve()
+            for relative in runner.EXPECTED_BINDINGS.values()
+            if relative.endswith(".py")
+        }
+        self.assertEqual(sorted(path.relative_to(root).as_posix() for path in closure - bound), [])
+
+    def test_peak_rss_and_final_wall_reserve_fail_closed(self) -> None:
+        budget = {
+            "maximum_wall_seconds": 100,
+            "maximum_peak_rss_bytes": 1000,
+        }
+        process = mock.Mock()
+        process.memory_info.return_value = types.SimpleNamespace(rss=10, peak_wset=900)
+        self.assertEqual(
+            runner._resource_snapshot(process, started=10, budget=budget, monotonic_fn=lambda: 40),
+            {"elapsed_seconds": 30.0, "peak_rss_bytes": 900},
+        )
+        process.memory_info.return_value = types.SimpleNamespace(rss=10, peak_wset=1001)
+        with self.assertRaisesRegex(runner.FreshPhaseAError, "peak RSS"):
+            runner._resource_snapshot(process, started=10, budget=budget, monotonic_fn=lambda: 40)
+        process.memory_info.return_value = types.SimpleNamespace(rss=10, peak_wset=900)
+        with self.assertRaisesRegex(runner.FreshPhaseAError, "wall budget"):
+            runner._resource_snapshot(
+                process,
+                started=10,
+                budget=budget,
+                reserve_wall_seconds=60,
+                monotonic_fn=lambda: 60,
+            )
+        process.memory_info.return_value = types.SimpleNamespace(rss=10)
+        with self.assertRaisesRegex(runner.FreshPhaseAError, "peak RSS counter"):
+            runner._resource_snapshot(process, started=10, budget=budget, monotonic_fn=lambda: 40)
+
+    def test_failure_uses_atomic_terminal_and_reclaims_physical_reserve(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            writer = runner.FactorEvidenceWriter(Path(directory) / "evidence", 8_388_608)
+            writer.activate({"schema": "fixture"})
+            runner._allocate_terminal_reserve(writer)
+            reserve = writer.root / runner.TERMINAL_RESERVE_NAME
+            self.assertEqual(reserve.stat().st_size, runner.TERMINAL_RESERVE_BYTES)
+            (writer.root / "terminal.json.partial").write_bytes(b"partial-success-terminal")
+            (writer.root / "candidate-write.partial").write_bytes(b"partial-candidate")
+            runner._write_failure(writer, runner.FreshPhaseAError("FIXTURE_FAILURE", "fixture"))
+            self.assertFalse(reserve.exists())
+            self.assertFalse((writer.root / "terminal.json.partial").exists())
+            self.assertFalse((writer.root / "result.json").exists())
+            self.assertFalse((writer.root / "manifest.json").exists())
+            terminal = runner._validate_seal(
+                runner._load_json(writer.root / "terminal.json"),
+                "blindassist.taro.o1r.r11_fresh_pool_phase_a_terminal.v1",
+            )
+            self.assertEqual(terminal["terminal"], runner.FAIL_TERMINAL)
+            self.assertFalse(terminal["passed"])
+            self.assertIn("invalid-terminal-write.partial", terminal["files"])
+            self.assertIn("candidate-write.partial", terminal["files"])
+
     def test_import_order_does_not_mutate_r7_or_r10_globals(self) -> None:
         before = (shared_r7.PARENT_COUNT, shared_r7.FRAME_COUNT, r10_phase_a.PARENT_COUNT, r10_phase_a.FRAME_COUNT)
         importlib.reload(runner)
@@ -199,9 +301,21 @@ class PoolPhaseATests(unittest.TestCase):
 
     def test_runner_has_no_r6_faro_reader_or_r10_orchestration_import(self) -> None:
         source = Path(runner.__file__).read_text(encoding="utf-8")
+        tree = ast.parse(source)
+        imported_modules = {
+            node.module
+            for node in ast.walk(tree)
+            if isinstance(node, ast.ImportFrom) and node.module is not None
+        }
+        imported_modules.update(
+            alias.name
+            for node in ast.walk(tree)
+            if isinstance(node, ast.Import)
+            for alias in node.names
+        )
         self.assertNotIn("read_faro_frame", source)
-        self.assertNotIn("r6_confirmation_io", source)
-        self.assertNotIn("taro_o1r_r10_clear_runtime import run_pool_phase_a", source)
+        self.assertFalse(any(module.endswith("r6_confirmation_io") for module in imported_modules))
+        self.assertNotIn("scripts.research.taro_o1r_r10_clear_runtime.run_pool_phase_a", imported_modules)
 
 
 if __name__ == "__main__":

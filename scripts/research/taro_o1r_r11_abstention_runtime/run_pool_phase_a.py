@@ -8,8 +8,10 @@ import copy
 import datetime as dt
 import gzip
 import json
+import os
 import platform
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -54,7 +56,12 @@ ANALYSIS_ROLE = "R11_FRESH_CONFIRMATION_SOURCE_ONLY"
 PARENT_COUNT = 48
 FRAME_COUNT = 1043
 QUERY_COUNT = FRAME_COUNT * 9
-PRE_MANIFEST_FILE_COUNT = 5 * FRAME_COUNT + 4
+PRE_TERMINAL_FILE_COUNT = 5 * FRAME_COUNT + 3
+FINAL_FILE_COUNT = PRE_TERMINAL_FILE_COUNT + 1
+TERMINAL_RESERVE_BYTES = 4_194_304
+TERMINAL_WALL_RESERVE_SECONDS = 60
+TERMINAL_RESERVE_NAME = ".terminal-reserve.bin"
+FAILURE_MESSAGE_MAX_CHARS = 4096
 FROZEN_FRAME_COUNTS = [
     20, 14, 23, 24, 29, 7, 12, 14, 10, 21, 28, 15, 11, 28, 29, 72,
     36, 14, 18, 4, 54, 32, 83, 17, 15, 16, 29, 10, 12, 34, 7, 14,
@@ -81,7 +88,10 @@ EXPECTED_ARGV = [
 EXPECTED_BINDINGS = {
     "R11_PROTOCOL": run_pool_head.PROTOCOL_RELATIVE,
     "R11_DATA_USE_AUTHORIZATION": run_pool_head.AUTHORIZATION_RELATIVE,
+    "R11_PROTOCOL_VALIDATOR": "scripts/research/taro_o1r_r11_abstention_runtime/validate_protocol_lock.py",
     "R11_POOL_PLANNER": "scripts/research/taro_o1r_r11_abstention_runtime/fresh_pool.py",
+    "R11_HEAD_RUNTIME": "scripts/research/taro_o1r_r11_abstention_runtime/run_pool_head.py",
+    "R11_DOWNLOAD_RUNTIME": "scripts/research/taro_o1r_r11_abstention_runtime/run_pool_download.py",
     "R11_INVENTORY_IMPLEMENTATION_LOCK": INVENTORY_IMPLEMENTATION_LOCK,
     "R11_INVENTORY_RUNTIME": "scripts/research/taro_o1r_r11_abstention_runtime/run_pool_inventory.py",
     "R11_INVENTORY_PLAN": INVENTORY_PATH,
@@ -90,14 +100,35 @@ EXPECTED_BINDINGS = {
     "R11_INVENTORY_FORMAL_RESULT": INVENTORY_FORMAL_RESULT,
     "DEPTHART_RUNTIME": "scripts/research/taro_o0r_factor_headroom_runtime/depthart_runner.py",
     "CANDIDATE_INPUT_RUNTIME": "scripts/research/taro_o0r_factor_headroom_runtime/candidate_inputs.py",
+    "SOURCE_ADAPTER_RUNTIME": "scripts/research/taro_o0r_source_adapter_runtime/source_adapter.py",
+    "TRUTH_MATERIALIZER_RUNTIME": "scripts/research/taro_o0r_truth_materializer_runtime/materializer.py",
+    "CANDIDATE_SCALE_PACKAGE": "scripts/research/taro_o0r_candidate_scale_runtime/__init__.py",
     "PROSPECTIVE_RUNTIME": "scripts/research/taro_o0r_candidate_scale_runtime/prospective_factor_runtime.py",
+    "SOURCE_FACTOR_RUNTIME": "scripts/research/taro_o0r_candidate_scale_runtime/source_factor.py",
+    "APPLE_SCALE_RUNTIME": "scripts/research/taro_o0r_candidate_scale_runtime/apple_scale.py",
+    "DIRECT_APPLE_SUPPORT_RUNTIME": "scripts/research/taro_o0r_candidate_scale_runtime/direct_apple_support.py",
+    "R5_CONFIRMATION_RUNTIME": "scripts/research/taro_o0r_candidate_scale_runtime/r5_confirmation.py",
+    "R6_CONFIRMATION_RUNTIME": "scripts/research/taro_o0r_candidate_scale_runtime/r6_confirmation.py",
+    "R6_CONFIRMATION_IO_RUNTIME": "scripts/research/taro_o0r_candidate_scale_runtime/r6_confirmation_io.py",
+    "R6_FACTOR_SPLIT_RUNTIME": "scripts/research/taro_o0r_candidate_scale_runtime/r6_factor_split.py",
+    "R6_UNTOUCHED_COHORT_RUNTIME": "scripts/research/taro_o0r_candidate_scale_runtime/r6_untouched_cohort.py",
+    "R6_UNTOUCHED_INVENTORY_RUNTIME": "scripts/research/taro_o0r_candidate_scale_runtime/run_r6_untouched_inventory.py",
+    "FACTOR_HEADROOM_PACKAGE": "scripts/research/taro_o0r_factor_headroom_runtime/__init__.py",
+    "CANDIDATE_PHASE_RUNTIME": "scripts/research/taro_o0r_factor_headroom_runtime/candidate_phase.py",
+    "FACTOR_CANARY_RUNTIME": "scripts/research/taro_o0r_factor_headroom_runtime/factor_canary.py",
+    "FACTOR_HEADROOM_RUNTIME": "scripts/research/taro_o0r_factor_headroom_runtime/factor_headroom.py",
     "R6_REDUCER_RUNTIME": "scripts/research/taro_o1r_reducer_integration_runtime/reducer_integration.py",
+    "R6_REDUCER_PACKAGE": "scripts/research/taro_o1r_reducer_integration_runtime/__init__.py",
     "LOCKED_UNCERTAINTY_LOADER": "scripts/research/taro_o1r_reducer_integration_runtime/locked_uncertainty.py",
+    "UNCERTAINTY_LOADER_RUNTIME": "scripts/research/taro_o0r_factor_headroom_runtime/uncertainty_loader.py",
     "LOCKED_UNCERTAINTY_ARTIFACT": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3/uncertainty-model-artifact.json.gz",
     "LOCKED_UNCERTAINTY_RECEIPT": "artifacts.local/evidence/taro/o0r-arkitscenes-source-adapter-r3/uncertainty-model-receipt.json",
     "R7_SOURCE_FEATURE_RUNTIME": "scripts/research/taro_o1r_r7_canary_runtime/r7_canary.py",
     "R7_POSITIVE_FACTOR_RUNTIME": "scripts/research/taro_o1r_r7_canary_runtime/positive_occupancy_factor.py",
+    "R7_CANARY_PACKAGE": "scripts/research/taro_o1r_r7_canary_runtime/__init__.py",
+    "R11_ABSTENTION_PACKAGE": "scripts/research/taro_o1r_r11_abstention_runtime/__init__.py",
     "R11_ABSTENTION_RUNTIME": "scripts/research/taro_o1r_r11_abstention_runtime/abstention_candidate.py",
+    "R9_CLEAR_PACKAGE": "scripts/research/taro_o1r_r9_clear_runtime/__init__.py",
     "R9_SELECTOR_RUNTIME": "scripts/research/taro_o1r_r9_clear_runtime/clear_enrichment_fit.py",
     "R9_SELECTOR_ARTIFACT": "artifacts.local/evidence/taro/o1r-r9-clear-enrichment-development-r0/selector.json",
     "EVIDENCE_WRITER": "scripts/research/taro_o0r_factor_headroom_runtime/evidence.py",
@@ -106,6 +137,19 @@ EXPECTED_BINDINGS = {
     "R11_PHASE_A_TEST": "scripts/research/taro_o1r_r11_abstention_runtime/test_run_pool_phase_a.py",
     "R11_PHASE_A_INDEPENDENT_VALIDATOR": "scripts/research/taro_o1r_r11_abstention_runtime/validate_pool_phase_a.py",
     "R11_PHASE_A_VALIDATOR_TEST": "scripts/research/taro_o1r_r11_abstention_runtime/test_validate_pool_phase_a.py",
+    "R7_FRESH_COHORT_RUNTIME": "scripts/research/taro_o1r_r7_canary_runtime/fresh_confirmation_cohort.py",
+    "R10_CLEAR_PACKAGE": "scripts/research/taro_o1r_r10_clear_runtime/__init__.py",
+    "R10_FRESH_POOL_RUNTIME": "scripts/research/taro_o1r_r10_clear_runtime/fresh_pool.py",
+    "R10_PHASE_B_METRICS_RUNTIME": "scripts/research/taro_o1r_r10_clear_runtime/phase_b_metrics.py",
+    "R10_DOWNLOAD_RUNTIME": "scripts/research/taro_o1r_r10_clear_runtime/run_pool_download.py",
+    "R10_HEAD_RUNTIME": "scripts/research/taro_o1r_r10_clear_runtime/run_pool_head.py",
+    "R10_INVENTORY_RUNTIME": "scripts/research/taro_o1r_r10_clear_runtime/run_pool_inventory.py",
+    "R10_PHASE_A_RUNTIME": "scripts/research/taro_o1r_r10_clear_runtime/run_pool_phase_a.py",
+    "R10_PHASE_A_R1_RUNTIME": "scripts/research/taro_o1r_r10_clear_runtime/run_pool_phase_a_r1.py",
+    "R10_SELECTED_PHASE_B_RUNTIME": "scripts/research/taro_o1r_r10_clear_runtime/run_selected_phase_b.py",
+    "R10_TOP8_RUNTIME": "scripts/research/taro_o1r_r10_clear_runtime/run_top8_selection.py",
+    "R10_TOP8_R1_RUNTIME": "scripts/research/taro_o1r_r10_clear_runtime/run_top8_selection_r1.py",
+    "R11_DEVELOPMENT_REPLAY_RUNTIME": "scripts/research/taro_o1r_r11_abstention_runtime/development_replay.py",
 }
 ARTIFACT_BINDING_ROLES = {
     "R11_INVENTORY_PLAN",
@@ -143,12 +187,69 @@ EXPECTED_RESOURCE_BUDGET = {
     "maximum_cuda_allocated_bytes": 12_884_901_888,
     "maximum_evidence_bytes": 2_147_483_648,
 }
+EXPECTED_RUNTIME_ENVIRONMENT = {
+    "python_executable": "E:/codex-tools/tools/venvs/blindassist-venv-export312/Scripts/python.exe",
+    "python_version": "3.11.9",
+    "torch_version": "2.11.0+cu128",
+    "timm_version": "1.0.28",
+    "numpy_version": "2.1.3",
+    "opencv_version": "4.10.0",
+    "cuda_available": True,
+    "cuda_version": "12.8",
+    "cuda_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+}
+EXPECTED_CANDIDATE_IDENTITY = {
+    "model_id": "depthart-s-metric-indoor-448-official-fp32",
+    "source_root": "F:/ba-data/blindassist-artifacts-20260805/models/depthart/source",
+    "source_commit": "0384521b3bcb4c64adf03eeb5d55ebdb1cbdd84c",
+    "checkpoint_path": "F:/ba-data/blindassist-artifacts-20260805/models/depthart/source/checkpoints/metric/depthart_metric_indoor_s_448.pth",
+    "checkpoint_bytes": 32_871_942,
+    "checkpoint_sha256": "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65",
+    "preprocess_id": "DEPTHART_OFFICIAL_LOWER_BOUND_448_RGB_CUBIC_IMAGENET_V1",
+    "postprocess_id": "TARO_TORCH_CPU_BILINEAR_ALIGN_CORNERS_TRUE_FLOAT32_448X608_TO_1440X1920_V1",
+    "inference_seed": 0,
+    "device": "cuda",
+    "output_dtype": "float32",
+}
 EXPECTED_NEXT_STAGE_SELECTOR = {
     "selector_id": "TARO_R9_SOURCE_ONLY_CLEAR_ENRICHMENT_GRID_SEARCH_V1",
     "selector_content_sha256": "67FD8430418E23E4C974EBA4D7F49DCBD4DE66164A16491DE76F05AC974796CC",
     "rule_id": "02CE016D6B0011F0",
     "use": "PARENT_RANKING_ONLY_IN_SEPARATE_SUCCESSOR",
     "phase_a_scoring_performed": False,
+}
+EXPECTED_PHASE_CONTRACT = {
+    "parent_count": PARENT_COUNT,
+    "frame_count": FRAME_COUNT,
+    "query_count": QUERY_COUNT,
+    "pre_terminal_file_count": PRE_TERMINAL_FILE_COUNT,
+    "final_file_count": FINAL_FILE_COUNT,
+    "atomic_terminal_bundle": True,
+    "allowed_member_payload_roles_by_phase": {
+        "candidate": ["color", "intrinsics"],
+        "source_feature": ["lowres_depth", "confidence"],
+    },
+    "forbidden_member_payload_roles": ["highres_depth"],
+    "source_payload_read_attempts_on_success": {
+        "color": FRAME_COUNT,
+        "intrinsics": FRAME_COUNT,
+        "lowres_depth": FRAME_COUNT,
+        "confidence": FRAME_COUNT,
+        "highres_depth": 0,
+    },
+    "source_payload_reads_completed_on_success": {
+        "color": FRAME_COUNT,
+        "intrinsics": FRAME_COUNT,
+        "lowres_depth": FRAME_COUNT,
+        "confidence": FRAME_COUNT,
+        "highres_depth": 0,
+    },
+    "all_candidates_sealed_before_source_features": True,
+    "all_source_r7_r11_records_sealed_before_parent_scoring": True,
+    "r9_parent_scoring_performed": False,
+    "top24_selection_performed": False,
+    "faro_reads": 0,
+    "truth_reads": 0,
 }
 
 
@@ -359,15 +460,17 @@ def _verify_inventory_evidence() -> dict[str, Any]:
     return inventory
 
 
-def _verify_container(path: Path, binding: Mapping[str, Any]) -> None:
+def _verify_container(path: Path, binding: Mapping[str, Any], *, payload: bytes | None = None) -> bytes:
+    require(path.is_file(), "R11_PHASE_A_CONTAINER_BINDING_DRIFT", "R11 source container is missing", path=str(path))
+    value = payload if payload is not None else path.read_bytes()
     require(
-        path.is_file()
-        and path.stat().st_size == int(binding["bytes"])
-        and materializer.sha256_file(path) == binding["sha256"],
+        len(value) == path.stat().st_size == int(binding["bytes"])
+        and materializer.sha256_bytes(value) == binding["sha256"],
         "R11_PHASE_A_CONTAINER_BINDING_DRIFT",
         "R11 source container differs from inventory",
         path=str(path),
     )
+    return value
 
 
 def _member_index_sha256(value: Mapping[str, Mapping[str, Any]]) -> str:
@@ -427,7 +530,8 @@ def _load_frames(inventory: Mapping[str, Any]) -> list[PhaseAFrameRef]:
         traj_path = _repo_path(bindings["trajectory"]["path"])
         _verify_container(up_path, bindings["upsampling"])
         _verify_container(intr_path, bindings["intrinsics"])
-        _verify_container(traj_path, bindings["trajectory"])
+        trajectory_payload = traj_path.read_bytes()
+        _verify_container(traj_path, bindings["trajectory"], payload=trajectory_payload)
         up_index, up_declared = run_pool_inventory.index_upsampling_archive_metadata_only(
             up_path,
             identity[1],
@@ -446,7 +550,7 @@ def _load_frames(inventory: Mapping[str, Any]) -> list[PhaseAFrameRef]:
             "R11_PHASE_A_MEMBER_INDEX_DRIFT",
             "R11 source member index differs from sealed inventory",
         )
-        trajectory = tuple(materializer.parse_trajectory_payload(traj_path.read_bytes()))
+        trajectory = tuple(materializer.parse_trajectory_payload(trajectory_payload))
         tokens = parent["frame_plan"]["exact_timestamp_tokens"]
         require(len(tokens) == expected_count, "R11_PHASE_A_FRAME_COUNT_DRIFT", "R11 parent frame count drift")
         for token in tokens:
@@ -702,6 +806,29 @@ def _runtime_environment() -> dict[str, Any]:
     }
 
 
+def _expected_runtime_identity(identity: Mapping[str, Any], environment: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        "source_git_commit": identity["source_commit"],
+        "source_tree_clean": True,
+        "checkpoint_bytes": identity["checkpoint_bytes"],
+        "torch_version": environment["torch_version"],
+        "cuda_version": environment["cuda_version"],
+        "opencv_version": environment["opencv_version"],
+        "numpy_version": environment["numpy_version"],
+        "device": identity["device"],
+        "cuda_device_name": environment["cuda_device_name"],
+        "tf32_matmul": False,
+        "tf32_cudnn": False,
+        "cudnn_benchmark": False,
+        "autocast": False,
+        "inference_dtype": identity["output_dtype"],
+        "seed": identity["inference_seed"],
+        "timm_compat_shim": True,
+        "selective_scan_backend": "depthart_selective_scan.cross_selective_scan",
+        "selective_scan_replaced": "network.tvimblock.cross_selective_scan",
+    }
+
+
 def _git_bytes(commit: str, relative: str) -> bytes:
     completed = subprocess.run(
         ["git", "show", f"{commit}:{relative}"],
@@ -725,7 +852,12 @@ def _validate_implementation_ancestor(value: Any) -> str:
     return value
 
 
-def validate_execution_lock(path: Path, *, require_output_absent: bool = True) -> dict[str, Any]:
+def validate_execution_lock(
+    path: Path,
+    *,
+    require_output_absent: bool = True,
+    require_actual_argv: bool = True,
+) -> dict[str, Any]:
     lock_path = path.resolve()
     require(lock_path == _repo_path(LOCK_RELATIVE), "R11_PHASE_A_LOCK_PATH", "Phase A lock path drift")
     lock = _validate_seal(_load_json(lock_path), LOCK_SCHEMA)
@@ -745,14 +877,15 @@ def validate_execution_lock(path: Path, *, require_output_absent: bool = True) -
         "R11_PHASE_A_ROOT_DRIFT",
         "R11 Phase A argv/root policy drift",
     )
-    original_argv = [str(value) for value in getattr(sys, "orig_argv", [])]
-    require("-m" in original_argv, "R11_PHASE_A_ARGV_DRIFT", "R11 Phase A must use the frozen module-form argv")
-    module_index = original_argv.index("-m")
-    require(
-        original_argv[module_index:] == EXPECTED_ARGV,
-        "R11_PHASE_A_ARGV_DRIFT",
-        "actual R11 Phase A module argv drift",
-    )
+    if require_actual_argv:
+        original_argv = [str(value) for value in getattr(sys, "orig_argv", [])]
+        require("-m" in original_argv, "R11_PHASE_A_ARGV_DRIFT", "R11 Phase A must use the frozen module-form argv")
+        module_index = original_argv.index("-m")
+        require(
+            original_argv[module_index:] == EXPECTED_ARGV,
+            "R11_PHASE_A_ARGV_DRIFT",
+            "actual R11 Phase A module argv drift",
+        )
     implementation_commit = _validate_implementation_ancestor(lock.get("implementation_commit"))
     bindings = lock.get("bindings")
     require(isinstance(bindings, list) and len(bindings) == len(EXPECTED_BINDINGS), "R11_PHASE_A_BINDINGS", "R11 Phase A binding count drift")
@@ -795,6 +928,7 @@ def validate_execution_lock(path: Path, *, require_output_absent: bool = True) -
     )
     require(lock.get("execution_authority") == EXPECTED_AUTHORITY, "R11_PHASE_A_AUTHORITY_DRIFT", "R11 Phase A authority drift")
     require(lock.get("resource_budget") == EXPECTED_RESOURCE_BUDGET, "R11_PHASE_A_BUDGET_DRIFT", "R11 Phase A resource budget drift")
+    require(lock.get("phase_contract") == EXPECTED_PHASE_CONTRACT, "R11_PHASE_A_CONTRACT_DRIFT", "R11 Phase A contract drift")
     require(
         lock.get("next_stage_selector") == EXPECTED_NEXT_STAGE_SELECTOR,
         "R11_PHASE_A_NEXT_STAGE_SELECTOR_DRIFT",
@@ -823,22 +957,29 @@ def validate_execution_lock(path: Path, *, require_output_absent: bool = True) -
         "R11_PHASE_A_USER_AUTHORITY",
         "R11 Phase A user authority drift",
     )
-    require(lock.get("runtime_environment") == _runtime_environment(), "R11_PHASE_A_RUNTIME_ENVIRONMENT_DRIFT", "R11 Phase A runtime environment drift")
+    runtime_environment = _runtime_environment()
+    require(
+        runtime_environment == EXPECTED_RUNTIME_ENVIRONMENT
+        and lock.get("runtime_environment") == EXPECTED_RUNTIME_ENVIRONMENT,
+        "R11_PHASE_A_RUNTIME_ENVIRONMENT_DRIFT",
+        "R11 Phase A runtime environment drift",
+    )
     identity = lock.get("candidate_identity")
-    require(isinstance(identity, dict), "R11_PHASE_A_CANDIDATE_IDENTITY", "R11 candidate identity missing")
+    require(
+        identity == EXPECTED_CANDIDATE_IDENTITY,
+        "R11_PHASE_A_CANDIDATE_IDENTITY",
+        "R11 candidate identity drift",
+    )
     source = Path(str(identity.get("source_root", ""))).resolve()
     checkpoint = Path(str(identity.get("checkpoint_path", ""))).resolve()
     require(
-        identity.get("model_id") == adapter.BASELINE_MODEL_ID
-        and identity.get("source_commit") == depthart_runner.EXPECTED_SOURCE_GIT_COMMIT
-        and identity.get("checkpoint_sha256") == adapter.BASELINE_CHECKPOINT_SHA256
-        and identity.get("preprocess_id") == depthart_runner.PREPROCESS_ID
-        and identity.get("postprocess_id") == depthart_runner.POSTPROCESS_ID
-        and identity.get("inference_seed") == 0
-        and identity.get("device") == "cuda"
-        and identity.get("output_dtype") == "float32",
+        identity["model_id"] == adapter.BASELINE_MODEL_ID
+        and identity["source_commit"] == depthart_runner.EXPECTED_SOURCE_GIT_COMMIT
+        and identity["checkpoint_sha256"] == adapter.BASELINE_CHECKPOINT_SHA256
+        and identity["preprocess_id"] == depthart_runner.PREPROCESS_ID
+        and identity["postprocess_id"] == depthart_runner.POSTPROCESS_ID,
         "R11_PHASE_A_CANDIDATE_IDENTITY",
-        "R11 candidate identity drift",
+        "runtime constants differ from frozen candidate identity",
     )
     require(
         source.is_dir()
@@ -851,6 +992,11 @@ def validate_execution_lock(path: Path, *, require_output_absent: bool = True) -
     commit = subprocess.run(["git", "-C", str(source), "rev-parse", "HEAD"], capture_output=True, text=True, check=True).stdout.strip()
     dirty = subprocess.run(["git", "-C", str(source), "status", "--short"], capture_output=True, text=True, check=True).stdout.strip()
     require(commit == identity["source_commit"] and not dirty, "R11_PHASE_A_CANDIDATE_SOURCE_DRIFT", "R11 candidate source tree drift")
+    require(
+        lock.get("expected_depthart_runtime_identity") == _expected_runtime_identity(identity, runtime_environment),
+        "R11_PHASE_A_RUNTIME_IDENTITY_DRIFT",
+        "expected DepthART runtime identity drift",
+    )
     require(inventory["exact_pose_bounded_frame_count"] == FRAME_COUNT, "R11_PHASE_A_INVENTORY_INVALID", "R11 inventory count drift")
     if require_output_absent:
         require(not _repo_path(OUTPUT_ROOT).exists(), "R11_PHASE_A_ROOT_COLLISION", "R11 Phase A evidence root exists")
@@ -904,55 +1050,156 @@ def _validate_factor_pair(
     return base_counts, candidate_counts, abstained
 
 
+def _adopt_failure_partials(writer: FactorEvidenceWriter) -> None:
+    for partial in sorted(writer.root.rglob("*.partial")):
+        target = partial
+        if partial == writer.root / "terminal.json.partial":
+            target = writer.root / "invalid-terminal-write.partial"
+            require(
+                not target.exists(),
+                "R11_PHASE_A_TERMINAL_PARTIAL_COLLISION",
+                "invalid terminal partial already exists",
+            )
+            partial.replace(target)
+        relative = target.relative_to(writer.root).as_posix()
+        require(
+            relative not in writer.file_receipts,
+            "R11_PHASE_A_FAILURE_PARTIAL_COLLISION",
+            "failure partial collides with a sealed receipt",
+        )
+        payload = target.read_bytes()
+        receipt = {
+            "path": relative,
+            "bytes": len(payload),
+            "sha256": materializer.sha256_bytes(payload),
+        }
+        writer.file_receipts[relative] = receipt
+        writer.bytes_written += len(payload)
+
+
+def _allocate_terminal_reserve(writer: FactorEvidenceWriter) -> None:
+    reserve = writer.root / TERMINAL_RESERVE_NAME
+    require(not reserve.exists(), "R11_PHASE_A_TERMINAL_RESERVE_COLLISION", "terminal reserve already exists")
+    chunk = bytes(1_048_576)
+    with reserve.open("xb") as stream:
+        remaining = TERMINAL_RESERVE_BYTES
+        while remaining:
+            payload = chunk[: min(len(chunk), remaining)]
+            stream.write(payload)
+            remaining -= len(payload)
+        stream.flush()
+        os.fsync(stream.fileno())
+    require(
+        reserve.stat().st_size == TERMINAL_RESERVE_BYTES,
+        "R11_PHASE_A_TERMINAL_RESERVE_INVALID",
+        "terminal reserve size drift",
+    )
+
+
+def _release_terminal_reserve(writer: FactorEvidenceWriter) -> None:
+    reserve = writer.root / TERMINAL_RESERVE_NAME
+    if reserve.exists():
+        reserve.unlink()
+    require(not reserve.exists(), "R11_PHASE_A_TERMINAL_RESERVE_RELEASE", "terminal reserve release failed")
+
+
+def _build_failure_terminal(
+    files: Mapping[str, Mapping[str, Any]],
+    bytes_before_terminal: int,
+    error: BaseException,
+) -> dict[str, Any]:
+    failure = _seal(
+        {
+            "schema": "blindassist.taro.o1r.r11_fresh_pool_phase_a_failure.v1",
+            "terminal": FAIL_TERMINAL,
+            "execution_valid": False,
+            "passed": False,
+            "failure_code": str(getattr(error, "code", type(error).__name__))[:256],
+            "message": str(error)[:FAILURE_MESSAGE_MAX_CHARS],
+            "one_shot_consumed": True,
+        }
+    )
+    return _seal(
+        {
+            "schema": "blindassist.taro.o1r.r11_fresh_pool_phase_a_terminal.v1",
+            "terminal": FAIL_TERMINAL,
+            "passed": False,
+            "execution_valid": False,
+            "result": failure,
+            "files": dict(sorted((key, dict(value)) for key, value in files.items())),
+            "file_count_before_terminal": len(files),
+            "bytes_before_terminal": int(bytes_before_terminal),
+            "one_shot_consumed": True,
+        }
+    )
+
+
 def _write_failure(writer: FactorEvidenceWriter, error: BaseException) -> None:
     if not writer.activated:
         return
+    _release_terminal_reserve(writer)
+    _adopt_failure_partials(writer)
+    require("terminal.json" not in writer.file_receipts and not (writer.root / "terminal.json").exists(), "R11_PHASE_A_TERMINAL_COLLISION", "formal terminal already exists")
+    files = dict(sorted(writer.file_receipts.items()))
+    terminal = _build_failure_terminal(files, writer.bytes_written, error)
+    writer.maximum_bytes = EXPECTED_RESOURCE_BUDGET["maximum_evidence_bytes"]
     writer.write_json(
-        "failure.json",
-        _seal(
-            {
-                "schema": "blindassist.taro.o1r.r11_fresh_pool_phase_a_failure.v1",
-                "terminal": FAIL_TERMINAL,
-                "execution_valid": False,
-                "failure_code": str(getattr(error, "code", type(error).__name__)),
-                "message": str(error),
-                "one_shot_consumed": True,
-            }
-        ),
+        "terminal.json",
+        terminal,
     )
-    writer.write_json(
-        "manifest.json",
-        _seal(
-            {
-                "schema": "blindassist.taro.o1r.r11_fresh_pool_phase_a_failure_manifest.v1",
-                "terminal": FAIL_TERMINAL,
-                "files": dict(sorted(writer.file_receipts.items())),
-                "file_count_before_manifest": len(writer.file_receipts),
-                "bytes_before_manifest": writer.bytes_written,
-                "one_shot_consumed": True,
-            }
-        ),
+
+
+def _resource_snapshot(
+    process: psutil.Process,
+    *,
+    started: float,
+    budget: Mapping[str, Any],
+    reserve_wall_seconds: int = 0,
+    monotonic_fn: Any = time.monotonic,
+) -> dict[str, Any]:
+    elapsed = float(monotonic_fn()) - float(started)
+    memory = process.memory_info()
+    peak_rss = getattr(memory, "peak_wset", None)
+    require(
+        isinstance(peak_rss, int) and peak_rss > 0,
+        "R11_PHASE_A_PEAK_RSS_UNAVAILABLE",
+        "operating-system peak RSS counter unavailable",
     )
+    require(
+        elapsed + reserve_wall_seconds <= float(budget["maximum_wall_seconds"]),
+        "R11_PHASE_A_TIMEOUT",
+        "R11 Phase A wall budget exceeded",
+    )
+    require(
+        peak_rss <= int(budget["maximum_peak_rss_bytes"]),
+        "R11_PHASE_A_RSS_EXCEEDED",
+        "R11 Phase A peak RSS budget exceeded",
+    )
+    return {"elapsed_seconds": round(elapsed, 6), "peak_rss_bytes": peak_rss}
 
 
 def execute(lock_path: Path) -> dict[str, Any]:
     lock = validate_execution_lock(lock_path)
     output = _repo_path(OUTPUT_ROOT)
     budget = lock["resource_budget"]
-    writer = FactorEvidenceWriter(output, int(budget["maximum_evidence_bytes"]))
+    writer = FactorEvidenceWriter(
+        output,
+        int(budget["maximum_evidence_bytes"]) - TERMINAL_RESERVE_BYTES,
+    )
     started = time.monotonic()
     process = psutil.Process()
+    require(
+        shutil.disk_usage(output.parent).free >= int(budget["maximum_evidence_bytes"]),
+        "R11_PHASE_A_DISK_BUDGET_UNAVAILABLE",
+        "insufficient free disk for the bounded evidence root",
+    )
 
-    def guard() -> None:
-        require(
-            time.monotonic() - started <= float(budget["maximum_wall_seconds"]),
-            "R11_PHASE_A_TIMEOUT",
-            "R11 Phase A wall budget exceeded",
-        )
-        require(
-            process.memory_info().rss <= int(budget["maximum_peak_rss_bytes"]),
-            "R11_PHASE_A_RSS_EXCEEDED",
-            "R11 Phase A RSS budget exceeded",
+    def guard(*, reserve_wall_seconds: int = 0) -> dict[str, Any]:
+        return _resource_snapshot(
+            process,
+            started=started,
+            budget=budget,
+            reserve_wall_seconds=reserve_wall_seconds,
         )
 
     try:
@@ -980,6 +1227,7 @@ def execute(lock_path: Path) -> dict[str, Any]:
                 }
             )
         )
+        _allocate_terminal_reserve(writer)
 
         # This is the first source-container access in formal execution. The root
         # already exists, so any source/hash/index failure consumes the one shot.
@@ -990,6 +1238,11 @@ def execute(lock_path: Path) -> dict[str, Any]:
         torch.cuda.reset_peak_memory_stats()
         model, runtime_identity = depthart_runner.load_official_depthart(
             lock["_source_root"], lock["_checkpoint_path"], device="cuda", seed=0
+        )
+        require(
+            runtime_identity == lock["expected_depthart_runtime_identity"],
+            "R11_PHASE_A_RUNTIME_IDENTITY_DRIFT",
+            "loaded DepthART runtime identity differs from execution lock",
         )
         candidate_reads = PayloadReadLedger()
         candidate_input_hashes: list[str] = []
@@ -1282,6 +1535,7 @@ def execute(lock_path: Path) -> dict[str, Any]:
                 identity=identity,
             )
 
+        guard()
         states = ("CLEAR_OBSERVED", "OCCUPIED_OBSERVED", "UNKNOWN")
         completion = _seal(
             {
@@ -1367,6 +1621,19 @@ def execute(lock_path: Path) -> dict[str, Any]:
             "R11_PHASE_A_COMPLETION_RELOAD_DRIFT",
             "R11 Phase A completion reload drift",
         )
+        require(
+            len(writer.file_receipts) == PRE_TERMINAL_FILE_COUNT,
+            "R11_PHASE_A_TERMINAL_COUNT_DRIFT",
+            "R11 Phase A file count before terminal drift",
+            file_count=len(writer.file_receipts),
+        )
+        cuda_peak = int(torch.cuda.max_memory_allocated())
+        require(
+            cuda_peak <= int(budget["maximum_cuda_allocated_bytes"]),
+            "R11_PHASE_A_CUDA_EXCEEDED",
+            "R11 Phase A final CUDA budget exceeded",
+        )
+        resource = guard(reserve_wall_seconds=TERMINAL_WALL_RESERVE_SECONDS)
         result = _seal(
             {
                 "schema": "blindassist.taro.o1r.r11_fresh_pool_phase_a_result.v1",
@@ -1392,38 +1659,52 @@ def execute(lock_path: Path) -> dict[str, Any]:
                 "training_steps": 0,
                 "network_requests": 0,
                 "cuda_peak_allocated_bytes": cuda_peak,
-                "elapsed_seconds": round(time.monotonic() - started, 6),
+                "peak_rss_bytes": resource["peak_rss_bytes"],
+                "elapsed_seconds_before_terminal": resource["elapsed_seconds"],
+                "evidence_bytes_before_terminal": writer.bytes_written,
+                "resource_budget": dict(budget),
                 "one_shot_consumed": True,
                 "unique_successor": "TARO_O1R_R11_SEAL_R7_BASE_R11_CANDIDATE_AND_R9_PARENT_SCORES_IMPLEMENTATION_LOCK",
                 "claim_ceiling": "Sealed R11 all-48 source-only R7/R11 factors ready for frozen R9 parent scoring; no FARO label, task effectiveness, training, deployment, product, or safety evidence.",
             }
         )
+        terminal = _seal(
+            {
+                "schema": "blindassist.taro.o1r.r11_fresh_pool_phase_a_terminal.v1",
+                "terminal": PASS_TERMINAL,
+                "passed": True,
+                "execution_valid": True,
+                "result": result,
+                "files": dict(sorted(writer.file_receipts.items())),
+                "file_count_before_terminal": len(writer.file_receipts),
+                "bytes_before_terminal": writer.bytes_written,
+                "one_shot_consumed": True,
+            }
+        )
+        terminal_bytes = len(adapter.canonical_json_bytes(terminal)) + 1
+        projected_partial = {
+            "path": "invalid-terminal-write.partial",
+            "bytes": terminal_bytes,
+            "sha256": "F" * 64,
+        }
+        projected_files = {**writer.file_receipts, projected_partial["path"]: projected_partial}
+        projected_failure = _build_failure_terminal(
+            projected_files,
+            writer.bytes_written + terminal_bytes,
+            FreshPhaseAError("X" * 256, "X" * FAILURE_MESSAGE_MAX_CHARS),
+        )
+        projected_failure_bytes = len(adapter.canonical_json_bytes(projected_failure)) + 1
         require(
-            len(writer.file_receipts) == PRE_MANIFEST_FILE_COUNT - 1,
-            "R11_PHASE_A_MANIFEST_COUNT_DRIFT",
-            "R11 Phase A file count before result drift",
-            file_count=len(writer.file_receipts),
+            terminal_bytes + projected_failure_bytes <= TERMINAL_RESERVE_BYTES
+            and writer.bytes_written + terminal_bytes + projected_failure_bytes
+            <= int(budget["maximum_evidence_bytes"]),
+            "R11_PHASE_A_TERMINAL_RESERVE_EXCEEDED",
+            "atomic terminal exceeds reserved evidence budget",
         )
-        writer.write_json("result.json", result)
-        require(
-            len(writer.file_receipts) == PRE_MANIFEST_FILE_COUNT,
-            "R11_PHASE_A_MANIFEST_COUNT_DRIFT",
-            "R11 Phase A file count before manifest drift",
-            file_count=len(writer.file_receipts),
-        )
-        writer.write_json(
-            "manifest.json",
-            _seal(
-                {
-                    "schema": "blindassist.taro.o1r.r11_fresh_pool_phase_a_manifest.v1",
-                    "terminal": PASS_TERMINAL,
-                    "files": dict(sorted(writer.file_receipts.items())),
-                    "file_count_before_manifest": len(writer.file_receipts),
-                    "bytes_before_manifest": writer.bytes_written,
-                    "one_shot_consumed": True,
-                }
-            ),
-        )
+        guard(reserve_wall_seconds=TERMINAL_WALL_RESERVE_SECONDS)
+        _release_terminal_reserve(writer)
+        writer.maximum_bytes = int(budget["maximum_evidence_bytes"])
+        writer.write_json("terminal.json", terminal)
         return result
     except Exception as error:
         try:

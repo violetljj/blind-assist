@@ -20,15 +20,16 @@ reducer、R7 source feature、正式 R7 positive factor 与 R11 abstention facto
 - validator tests：`scripts/research/taro_o1r_r11_abstention_runtime/test_validate_pool_phase_a.py`
 - future module argv：`-m scripts.research.taro_o1r_r11_abstention_runtime.run_pool_phase_a`
 - inventory：content SHA `35156C2901A4CBEEDB6D611A56ABE3D711CEB68EF932480C21428BA4FF741600`
-- exact counts：48 parents、1,043 frames、9,387 queries；manifest 前固定 `5F+4 = 5,219` files，最终
-  root 固定 `5,220` files。
+- exact counts：48 parents、1,043 frames、9,387 queries；原子 terminal 前固定 `5F+3 = 5,218` files，最终
+  root 固定 `5,219` files。
 - future exclusive root：`artifacts.local/evidence/taro/o1r-r11-fresh-pool-phase-a-r0`
 - resource ceilings：16 h wall、16 GiB RSS、12 GiB CUDA allocated、2 GiB evidence；network/training=0。
 
 future execution lock 必须精确绑定：R11 protocol/authorization/pool/inventory formal PASS；DepthART source
-commit、checkpoint bytes/SHA、model/preprocess/postprocess、seed 0、CUDA 与 float32 output；candidate input、
-prospective、public reducer、locked uncertainty artifact/receipt、R7 source/R7 positive/R11 abstention、evidence
-writer；以及下一阶段只作 parent ranking 的 R9 selector content SHA
+commit、checkpoint bytes/SHA、model/preprocess/postprocess、seed 0、CUDA 与 float32 output；正式 Python/Torch/
+CUDA/OpenCV/NumPy/timm/device identity；candidate input、prospective、public reducer、locked uncertainty
+artifact/receipt、R7 source/R7 positive/R11 abstention、evidence writer，以及 runner 传递导入闭包内全部 repository
+Python modules/package initializers；下一阶段只作 parent ranking 的 R9 selector content SHA
 `67FD8430418E23E4C974EBA4D7F49DCBD4DE66164A16491DE76F05AC974796CC` 与 rule
 `02CE016D6B0011F0`。Phase A 自身不得调用 selector 或形成排名。
 
@@ -52,21 +53,28 @@ object 前丢弃；`PhaseAFrameRef` 无 highres member。reader 在调用 ZIP `g
 ## Barriers、seals 与 failure semantics
 
 正式执行的 preflight 只验证 lock、小型 predecessor evidence、runtime/checkpoint 与 output-root absence；exclusive
-root 和 sealed execution receipt 创建后，才允许重新 hash 144 个 source containers、读取 96 个 ZIP central
-directories 与 48 个 trajectory payload。之后严格执行：
+root、sealed execution receipt 与 4 MiB 实体 terminal capacity reserve 创建后，才允许重新 hash 144 个 source
+containers、读取 96 个 ZIP central directories 与 48 个 trajectory payload。trajectory 每 parent 只读一次，同一
+bytes 同时用于 SHA/size 验证和 exact-ns parse，不得把 hash pass 与 parse pass 重复记为一次。之后严格执行：
 
 1. 先完成并封存全部 1,043 个 candidate input/native blob/candidate record 与 candidate completion；
 2. 再读取 Apple lowres/confidence，逐帧封存 source receipt 与一个 sealed gzip lineage；lineage 内含 prospective、
    reducer、R7 source、R7 base factor 与 R11 candidate factor；
 3. 每个 candidate/source/lineage 在 completion 前从 evidence root 重载，重验 blob、content seal、nested runtime
    validator、9-query order、R11 subset 与 abstention 恒等式；
-4. Phase-A completion/result/manifest 全部 content-sealed；manifest 写入也受 2 GiB ceiling；success/failure
-   互斥。VRAM probe/reset 失败必须 fail closed，不能降级记录为 0；root reservation 后的异常必须尝试写 sealed
-   failure/manifest，failure sealing 错误不得静默吞掉。
+4. Phase-A completion content-sealed；最后一个写入动作是单一 content-sealed `terminal.json`，其中同时封装 result
+   与此前全部 file receipts。不存在独立 success result/manifest/failure 文件，因此 success/failure 不能共存；若
+   terminal 原子替换前失败，partial 会被改名、hash-bind 进 failure terminal。4 MiB 实体 reserve、4 MiB 逻辑 reserve、
+   截断 failure message 与 final wall/RSS/CUDA/evidence guard 共同为 failure terminal 留出空间。RSS 使用 Windows
+   `peak_wset`，不以当前 RSS 冒充峰值；VRAM probe/reset 失败必须 fail closed，不能降级记录为 0。
 
-独立 validator 不导入 producer；正式运行后它必须从 inventory 重建 5,215 个逐帧预期路径，重新 hash manifest
-全部 5,219 个 bindings，解码并重算每个 native candidate、上采样 candidate depth、nested lineage validators、
-hash sequences、per-parent counts、read ledger、barriers、result 与 exact root file set。
+独立 validator 不导入 producer；正式运行后它必须从 inventory 重建 5,215 个逐帧预期路径，重新 hash terminal
+内全部 5,218 个 prior-file bindings，解码并重算每个 native candidate、上采样 candidate depth、nested lineage
+validators、hash sequences、per-parent counts、read ledger、barriers、result 与 5,219-file exact root set。它还要
+独立复验完整 implementation binding map、predecessor/authority/selector、正式 runtime/candidate identity、source
+commit/checkpoint，以及 source receipt 对 frozen inventory container/member bytes/decoded content、intrinsics、pose
+与水位的逐帧一致性。该 post-execution validator 独立重读/解码 4,172 个允许 source payload，单独报告为 validator
+read，不回写或混入 producer success ledger；highres/FARO payload read 仍严格为 0。
 
 per-parent 统计始终同时保留 `visit_id + video_id`，不只以 visit ID 作 key；parent 迭代按冻结 roster 显式重建，
 不依赖 `groupby` 相邻输入。R9 scoring 与 top-24 selection 字段在 Phase A completion/result 中必须为 false。
@@ -74,10 +82,11 @@ per-parent 统计始终同时保留 `visit_id + video_id`，不只以 visit ID �
 ## 验证
 
 - `python -m py_compile ...run_pool_phase_a.py ...validate_pool_phase_a.py ...tests`：PASS；
-- Phase-A runner + independent-validator focused tests：`15/15 PASS`；
+- Phase-A runner + independent-validator focused tests：`19/19 PASS`；
 - 覆盖 exact counts/file formula、formal inventory seals、record mutation、frame capability、highres/跨 phase role
-  在 ZIP lookup 前拒绝、role/path mismatch、R7→R11 subset/abstention、完整 runtime/R9 next-stage bindings、
-  R7/R10 import-order 无全局污染，以及无 FARO reader/R10 orchestration import。
+  在 ZIP lookup 前拒绝、role/path mismatch、trajectory single-pass、R7→R11 subset/abstention、递归 repository
+  import closure、exact runtime/R9 next-stage bindings、OS peak-RSS/final-wall guard、实体 reserve 与原子 failure
+  terminal、R7/R10 import-order 无全局污染，以及无 FARO reader/R10 orchestration import。
 
 ## 唯一 successor
 
