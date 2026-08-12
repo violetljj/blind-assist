@@ -1,0 +1,86 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d3_phase_a_head_result_v1",
+  "result_id": "DEPTHART_TASK_PRESERVING_D3_PHASE_A_HEAD_RESULT_2026-08-12",
+  "created_at": "2026-08-12",
+  "status": "D3_PHASE_A_ASSET_HEADERS_96_OF_96_AVAILABLE_MEDIA_BODY_UNOPENED",
+  "bindings": {
+    "protocol": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_PHASE_A_HEAD_PROTOCOL_2026-08-12.json",
+      "bytes": 3103,
+      "sha256": "BA127EFBAC94B6E7ABEAB083F3BABF01E85F1129F027A6D181F0FD64B2CEBE9D"
+    },
+    "roster": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_FRESH_METADATA_ROSTER_LOCK_2026-08-12.json",
+      "bytes": 14590,
+      "sha256": "A502E74A0122B667DF4D9DF8F51A72FD127EBBCB4B2D07F859240E41B1DD6478"
+    },
+    "source_scope": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_SOURCE_SCOPE_AND_METADATA_ROSTER_RECEIPT_2026-08-12.json",
+      "bytes": 3244,
+      "sha256": "08C6A70C4BC82E7144C8E7909D2E381A81D3C67DD610E54A2A2C1DA5AA3E951D"
+    },
+    "activation": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_PHASE_A_HEAD_ACTIVATION_2026-08-12.json",
+      "bytes": 2112,
+      "sha256": "9AFDC12457A105D2495117354E2681A5BE0ABB9FFBED9C448B12C372E27874E1"
+    },
+    "producer": {
+      "path": "scripts/research/hftf/deployment/depthart/preflight_depthart_task_preserving_d3_phase_a_assets.py",
+      "bytes": 8837,
+      "sha256": "FE080CAF8730835D8333A9CA4A4640428AEFFDEC8F428537EFCEBA5DBFF205B6"
+    }
+  },
+  "machine_result": {
+    "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3-phase-a-head-20260812-r0/head-preflight.json",
+    "bytes": 55510,
+    "sha256": "4C4CBC08F218D692601FB697EDBCB61D4B57C6C85A348E106CFE118E9131FF43"
+  },
+  "request_summary": {
+    "method": "HEAD",
+    "identity_count": 48,
+    "asset_count": 96,
+    "http_200_count": 96,
+    "positive_content_length_count": 96,
+    "etag_present_count": 96,
+    "last_modified_present_count": 96,
+    "maximum_attempts": 1,
+    "transport_error_row_count": 0,
+    "declared_total_content_length_bytes": 41979912,
+    "by_asset": {
+      "lowres_wide_intrinsics.zip": {
+        "count": 48,
+        "available": 48,
+        "declared_content_length_bytes": 38855860
+      },
+      "lowres_wide.traj": {
+        "count": 48,
+        "available": 48,
+        "declared_content_length_bytes": 3124052
+      }
+    }
+  },
+  "invariants": {
+    "media_body_bytes_read": 0,
+    "archive_member_read": false,
+    "pose_content_read": false,
+    "rgb_depth_confidence_requested": false,
+    "phase_a_selection_made": false,
+    "train_development_role_assignment_made": false,
+    "truth_or_model_output_read": false,
+    "training": false,
+    "development_outcome_access": "NONE",
+    "r2_cohort_access": "NONE"
+  },
+  "interpretation": {
+    "established": "all 96 exact intrinsics/trajectory asset URLs are HEAD-available with positive declared size",
+    "not_established": [
+      "body download or archive integrity",
+      "intrinsics or trajectory parseability",
+      "portrait or pose continuity",
+      "the final Phase-A 32 identities",
+      "source-truth support, training or task quality"
+    ]
+  },
+  "next_gate": "EXPLICIT_D3_PHASE_A_INTRINSICS_TRAJECTORY_BODY_AND_LABEL_BLIND_CONTINUITY_ACTIVATION",
+  "authority": "D3 Phase-A HEAD availability only; no body, continuity, truth, training, Development, R2, performance, production or safety authority."
+}
