@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_UNTOUCHED_CONFIRMATION_PASS / R6_FACTOR_POLICY_PROMOTION_ALLOWED / R6_EVIDENCE_VERIFIED / R6_PROSPECTIVE_RUNTIME_PROTOCOL_FROZEN / R6_PROSPECTIVE_RUNTIME_IMPLEMENTATION_FROZEN / R6_FORMATION_REPLAY_COMPLETE / R6_REDUCER_INTEGRATION_NOT_EVALUABLE_ALL_UNKNOWN / R6_REDUCER_EVIDENCE_VERIFIED / R7_FIT_LOPO_CANARY_PASS / R7_POSITIVE_OCCUPANCY_ADVANCES / R7_CLEAR_NOT_EVALUABLE / R7_EVIDENCE_VERIFIED / R7_FRESH_CONFIRMATION_NOT_EVALUABLE_DUAL_CLASS_COVERAGE / R8_SELECTED_PHASE_B_COMPLETE / R8_SPARSE_RAY_INTERFACE_FAIL / R8_DENSE_TRUTH_OWNED_FALLBACK_COMPLETE / R9_SOURCE_ONLY_SELECTOR_FROZEN / R10_FRESH_32_PARENT_PIPELINE_COMPLETE / R10_POSITIVE_OCCUPANCY_GATES_PASS / R10_NOT_EVALUABLE_DUAL_CLASS_COVERAGE / R10_NO_PROMOTION / R11_WEAK_DISTAL_ABSTENTION_DEVELOPMENT_ONLY / R11_FRESH_48_PARENT_PROTOCOL_LOCKED / R11_EXACT_DATA_USE_AUTHORIZED / R11_HEAD_144_OF_144_PASS_ONE_SHOT_CONSUMED / R11_DOWNLOAD_ATTEMPT_01_PRESTART_SUPERSEDED / R11_SOURCE_DOWNLOAD_144_OF_144_INTEGRITY_PASS_ONE_SHOT_CONSUMED / R11_INVENTORY_IMPLEMENTATION_LOCK_PASS / R11_INVENTORY_ONE_SHOT_CONSUMED_PASS / R11_INVENTORY_48_PARENT_1043_FRAME_PASS / R11_PHASE_A_IMPLEMENTATION_LOCK_PASS_NON_EXECUTING / R11_FORMAL_ZIP_MEMBER_PAYLOAD_READS_ZERO / R11_PHASE_A_EXECUTION_LOCK_AUTHORIZED_UNCONSUMED / R11_SCIENTIFIC_NOT_RUN / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / P0_PASS / O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS / O0R_SOURCE_TRUTH_MATERIALIZED / DEPTHART_CANDIDATES_239_SEALED / SOURCE_SCALE_239_OF_239 / DIRECT_APPLE_HYBRID_R4A_COMPLETE / R5_TASK_METRIC_CONFIRMATION_FAIL / R6_UNTOUCHED_CONFIRMATION_PASS / R6_FACTOR_POLICY_PROMOTION_ALLOWED / R6_EVIDENCE_VERIFIED / R6_PROSPECTIVE_RUNTIME_PROTOCOL_FROZEN / R6_PROSPECTIVE_RUNTIME_IMPLEMENTATION_FROZEN / R6_FORMATION_REPLAY_COMPLETE / R6_REDUCER_INTEGRATION_NOT_EVALUABLE_ALL_UNKNOWN / R6_REDUCER_EVIDENCE_VERIFIED / R7_FIT_LOPO_CANARY_PASS / R7_POSITIVE_OCCUPANCY_ADVANCES / R7_CLEAR_NOT_EVALUABLE / R7_EVIDENCE_VERIFIED / R7_FRESH_CONFIRMATION_NOT_EVALUABLE_DUAL_CLASS_COVERAGE / R8_SELECTED_PHASE_B_COMPLETE / R8_SPARSE_RAY_INTERFACE_FAIL / R8_DENSE_TRUTH_OWNED_FALLBACK_COMPLETE / R9_SOURCE_ONLY_SELECTOR_FROZEN / R10_FRESH_32_PARENT_PIPELINE_COMPLETE / R10_POSITIVE_OCCUPANCY_GATES_PASS / R10_NOT_EVALUABLE_DUAL_CLASS_COVERAGE / R10_NO_PROMOTION / R11_WEAK_DISTAL_ABSTENTION_DEVELOPMENT_ONLY / R11_FRESH_48_PARENT_PROTOCOL_LOCKED / R11_EXACT_DATA_USE_AUTHORIZED / R11_HEAD_144_OF_144_PASS_ONE_SHOT_CONSUMED / R11_DOWNLOAD_ATTEMPT_01_PRESTART_SUPERSEDED / R11_SOURCE_DOWNLOAD_144_OF_144_INTEGRITY_PASS_ONE_SHOT_CONSUMED / R11_INVENTORY_IMPLEMENTATION_LOCK_PASS / R11_INVENTORY_ONE_SHOT_CONSUMED_PASS / R11_INVENTORY_48_PARENT_1043_FRAME_PASS / R11_PHASE_A_IMPLEMENTATION_LOCK_PASS_NON_EXECUTING / R11_FORMAL_ZIP_MEMBER_PAYLOAD_READS_ZERO / R11_PHASE_A_ONE_SHOT_CONSUMED_PRODUCER_PASS / R11_PHASE_A_INDEPENDENT_VALIDATION_ENV_BLOCKED_GPU_CODE_43 / R11_PIPELINE_HOLD / R11_SCIENTIFIC_NOT_RUN / DEFAULT_APP_UNCHANGED`
 
 ## 需求、使用场景与效果合同
 
@@ -238,10 +238,14 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
 - [R11 all-48 source-only Phase A implementation lock](TARO_O1R_R11_FRESH_48_PARENT_SOURCE_ONLY_PHASE_A_IMPLEMENTATION_LOCK_2026-08-12.md)：
   独立 capability-scoped reader 只保留 color/intrinsics/lowres/confidence；冻结 1,043 DepthART candidates、
   9,387-query R7/R11 factor seals、完整传递 runtime binding、peak-resource/read ledger、原子 terminal 与 FARO=0
-  firewall；正式 Phase A 尚未运行；
+  firewall；该 non-executing lock 原样保留，正式运行状态见下；
 - [R11 all-48 source-only Phase A one-shot execution lock](TARO_O1R_R11_FRESH_48_PARENT_SOURCE_ONLY_PHASE_A_ONE_SHOT_EXECUTION_LOCK_2026-08-12.json)：
   绑定已推送 implementation commit `79c976f8`、64 个 exact bindings、正式 CUDA runtime/candidate identity、
-  atomic terminal/resource/read firewall 与用户 R11 authority；当前 `AUTHORIZED_UNCONSUMED`，正式 root 仍不存在；
+  atomic terminal/resource/read firewall 与用户 R11 authority；现已消费且不得重跑；
+- [R11 all-48 source-only Phase A execution status](TARO_O1R_R11_FRESH_48_PARENT_SOURCE_ONLY_PHASE_A_EXECUTION_STATUS_2026-08-13.md)：
+  producer 封存 48 parents / 1,043 frames / 9,387 queries 的 source-only PASS terminal；独立 validator 已重哈希
+  exact 5,219-file root 与 lock bindings，但 GPU Code 43 使 CUDA/runtime 前检环境阻断，完整 lineage/payload replay
+  待主机重启后对同一 root 只读续验，当前不得进入 top-24 或 FARO；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -274,10 +278,17 @@ directory，索引路径、声明尺寸与声明 CRC，并以 trajectory 形成 
 ZIP/highres member payload reads 均为 0。后继
 `TARO_O1R_R11_FRESH_48_PARENT_SOURCE_ONLY_PHASE_A_IMPLEMENTATION_LOCK` 已完成：专用 Phase-A frame 不含 highres
 payload capability，全部 1,043 candidates 必须先封存，之后才读 lowres/confidence 并物化正式 R7 baseline 与
-R11 abstention factor；R9 scoring/top-24 仍不在本阶段。唯一 execution lock 已冻结为
-`TARO_O1R_R11_FRESH_48_PARENT_SOURCE_ONLY_PHASE_A_ONE_SHOT_EXECUTION_LOCK / AUTHORIZED_UNCONSUMED`；仅在该 lock
-提交并推送到 `origin/master` 后可按 exact module argv 消费一次。它不授权 selection 或 Phase B，也没有 TARO
-route/deployment/device/product/safety promotion。
+R11 abstention factor；R9 scoring/top-24 仍不在本阶段。该 execution lock 已正式消费，producer 原子终态为
+`TARO_O1R_R11_FRESH_POOL_PHASE_A_SOURCE_ONLY_SEALED_PASS`，封存 1,043 candidates 与 9,387-query R7/R11 factors；
+highres/FARO/truth/training/network 均为 0。独立 validator 已重建并重哈希 exact 5,219-file root，但在完整
+lineage/payload replay 前因 NVIDIA GPU `Code 43` 命中 `R11_PHASE_A_VALIDATION_CUDA` 环境阻断。正式 root 不得
+重跑；当前唯一动作是主机重启恢复 CUDA 后只读重验，同一验签 PASS 前不得进入 source-only top-24 或 selected
+FARO，也没有 TARO route/deployment/device/product/safety promotion。
+
+当前唯一 successor 是
+`RESTART_HOST_RECOVER_CUDA_AND_RERUN_READ_ONLY_R11_PHASE_A_INDEPENDENT_VALIDATOR`：只允许在 CUDA 恢复后对
+同一 sealed 5,219-file root 执行只读 validator，不重跑模型、不改写 evidence；验签 PASS 后才可另立
+source-only top-24 implementation/execution lock。
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -453,9 +464,9 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 - 只读审计已消费 R4/R4A evidence 的 manifest、逐 query 外部绑定与 canonical summary replay；
 - R10 正式 `NOT_EVALUABLE` 保持不可改写；R11 development-only abstention、48-parent fresh protocol 与
   exact 数据授权已冻结。zero-body HEAD、download Attempt 02 与 inventory one-shot 已消费并 PASS；all-48
-  source-only Phase A implementation lock 已完成，当前只可另立并验证 hash-bound Phase-A one-shot lock，
-  该 lock 提交推送前不得运行模型；R9 scoring/top-24 与 FARO 仍须依阶段另立 successor，且 Phase A FARO 与
-  unselected FARO 必须为 0；
+  source-only Phase A one-shot 已消费并封存 producer PASS terminal，Phase A highres/FARO 为 0；独立 validator
+  因运行后 GPU Code 43 在 CUDA 前检处环境阻断，当前只可在主机重启后对同一 sealed root 做只读重验。验签
+  PASS 前不得执行 R9 scoring/top-24 或 FARO；之后二者仍须依阶段另立 successor，且 unselected FARO 必须为 0；
 - 只读引用历史负结果、数据能力、现有 reducer 和运行时 receipt 的已签署结论。
 
 ## 当前禁止

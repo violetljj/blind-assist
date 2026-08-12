@@ -2,6 +2,21 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。正式消费 TARO O1R R11 all-48 source-only
+  Phase A one-shot。producer 原子终态为 `TARO_O1R_R11_FRESH_POOL_PHASE_A_SOURCE_ONLY_SEALED_PASS`，封存 exact
+  48 parents / 1,043 frames / 9,387 queries、1,043 次 DepthART inference 与对应 R7/R11 factors。R7 state 为
+  `7,315 OCCUPIED / 2,072 UNKNOWN / 0 CLEAR`，R11 state 为 `7,313 OCCUPIED / 2,074 UNKNOWN / 0 CLEAR`，即冻结
+  abstention 将两个 R7 positive 改为 UNKNOWN。evidence root 恰好 5,219 files / 959,553,693 bytes，terminal file
+  SHA-256 为 `C4084BDB...73186`；wall 7,983.922 s、OS peak RSS 1,342,758,912 bytes、CUDA peak allocated
+  140,934,144 bytes 与 terminal 前 evidence 958,520,288 bytes 均在冻结上限内。允许的 color/intrinsics/lowres/
+  confidence payload 各读 1,043 次；highres、FARO、truth、label、outcome、training、network 与 R9 parent scoring/
+  top-24 均为 0。独立 validator 随后只读重建 exact 5,219-file root set、重哈希全部 5,218 个 terminal binding，
+  并验证 control seals、64 个 execution-lock binding 与 authority；但正式运行后 NVIDIA RTX 5060 进入 Windows
+  `Code 43 / CM_PROB_FAILED_POST_START`，CUDA runtime identity 前检以 `R11_PHASE_A_VALIDATION_CUDA` 环境阻断，
+  完整 1,043-frame lineage 与 4,172 次允许 payload decode replay 尚未完成。正式 root 未被 validator 改写且
+  one-shot 不得重跑。当前唯一 successor 是重启主机恢复 CUDA 后对同一 root 只读重验；验签 PASS 前不得进入
+  source-only top-24 或 selected-only FARO。本结果不产生 task、路线、部署、设备、产品或 safety 晋级。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。建立面向外部贡献者的社区增长入口：新增英文
   三分钟 Quick Start、技术发布包、稳定 Android 架构图和“代码证据 → 设备证据 → 产品权限”边界图；发布包
   明确要求真实设备连续录制与元数据，缺少设备时不得伪造演示或把截图/benchmark 包装成用户效果。治理规则
