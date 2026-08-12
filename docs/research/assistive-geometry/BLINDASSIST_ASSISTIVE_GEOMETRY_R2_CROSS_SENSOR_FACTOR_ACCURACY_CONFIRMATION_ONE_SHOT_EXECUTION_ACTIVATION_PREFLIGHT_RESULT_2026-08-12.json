@@ -1,0 +1,290 @@
+{
+  "schema": "blindassist.ag.r2.cross_sensor_factor_confirmation_execution_activation_preflight_result.v1",
+  "result_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_ONE_SHOT_EXECUTION_ACTIVATION_PREFLIGHT_RESULT_2026-08-12",
+  "date": "2026-08-12",
+  "research_mode": "WILD_LAB",
+  "status": "EXECUTION_LOCK_NOT_ISSUED_PRE_ACCESS_IMPLEMENTATION_REPAIR_REQUIRED",
+  "authorization_receipt": {
+    "user_authorization_received": true,
+    "request_text": "授权",
+    "authorized_scope": "CREATE_AND_FREEZE_THE_UNIQUE_SUCCESSOR_ONE_SHOT_EXECUTION_LOCK_ONLY",
+    "same_step_lock_consumption": false,
+    "same_step_archive_member_access": false,
+    "same_step_model_inference": false,
+    "same_step_confirmation_scoring": false,
+    "interpretation": "Authorization permits issuing an AUTHORIZED_UNCONSUMED lock only if every frozen pre-access requirement can be proved. It does not permit guessing a binding or consuming the lock in the same step."
+  },
+  "repository_baseline": {
+    "origin_master_commit": "f4e5e4840a286d57d6946aa18abaa9e974f88a5d",
+    "executor_implementation_commit": "a93a998f4b1248a32da525f4603d31828e8f112c",
+    "executor_implementation_commit_is_ancestor_of_origin_master": true
+  },
+  "predecessor_bindings": [
+    {
+      "role": "EXECUTOR_IMPLEMENTATION_LOCK",
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK_2026-08-12.json",
+      "bytes": 10830,
+      "sha256": "65D6885090F36568196A1D69E2007C94D4A6D8F000DF3671AFA4D73F495F64DD"
+    },
+    {
+      "role": "PROTOCOL_LOCK",
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_LOCK_2026-08-12.json",
+      "bytes": 43919,
+      "sha256": "8BA036E617531AE886BAAC8DAD60E5445BF8F0F7A2A073B7F8909750478D709F"
+    },
+    {
+      "role": "DATA_IDENTITY_LOCK",
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_DATA_IDENTITY_2026-08-12.json",
+      "bytes": 8318,
+      "sha256": "E755288202F4E7189538671F5F8C120F9D6EF68EBE80757844BC5272382B345B"
+    },
+    {
+      "role": "EXECUTION_CONTRACT",
+      "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/contract.py",
+      "bytes": 12400,
+      "sha256": "FD9589C55346782B57C1F2903426C3D90748DDD8DB6384E62066313515FE2058"
+    },
+    {
+      "role": "ETH3D_SOURCE_ADAPTER",
+      "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/eth3d_source.py",
+      "bytes": 50359,
+      "sha256": "EA59AD38BC35135600B511018449E82F09A6BF1D75AACF821A2A45C6C1323487"
+    }
+  ],
+  "official_control_evidence": [
+    {
+      "authority": "ETH3D_SLAM_DOCUMENTATION",
+      "url": "https://www.eth3d.net/slam_documentation",
+      "relevant_facts": [
+        "imu.txt uses timestamp followed by angular velocity xyz and linear acceleration xyz",
+        "camera and IMU integer timestamps are nanoseconds",
+        "mocap time uses camera scale, anchor and offset while IMU remains in the camera clock domain",
+        "the published camera-IMU calibration was obtained with Kalibr"
+      ]
+    },
+    {
+      "authority": "KALIBR_YAML_FORMATS",
+      "url": "https://github.com/ethz-asl/kalibr/wiki/yaml-formats",
+      "relevant_facts": [
+        "camera-IMU calibration is represented as YAML",
+        "T_cam_imu is the transform from IMU coordinates to camera coordinates",
+        "T_cam_imu is encoded as a nested four-by-four matrix rather than one key followed by sixteen same-line scalars"
+      ]
+    },
+    {
+      "authority": "ROS_REP_145_IMU_SENSOR_DRIVERS",
+      "url": "https://ros.org/reps/rep-0145.html",
+      "relevant_facts": [
+        "an accelerometer reports specific force in its sensor frame",
+        "a stationary convention-compliant sensor with z pointing up reports positive g on z"
+      ]
+    }
+  ],
+  "fatal_pre_access_findings": [
+    {
+      "id": "P01_OFFICIAL_KALIBR_YAML_NOT_ACCEPTED_BY_FROZEN_PARSER",
+      "severity": "FATAL",
+      "frozen_parser_contract": "A whitespace text row whose first token exactly equals camera_from_imu_key and is followed on that same row by exactly sixteen finite row-major scalars.",
+      "official_shaped_control": "T_cam_imu: followed by four YAML list rows.",
+      "synthetic_control_result": {
+        "real_archive_used": false,
+        "accepted": false,
+        "error": "ContractError F2_IMU_CALIBRATION_MATRIX"
+      },
+      "consequence": "No value in the current execution lock can make the frozen parser accept the documented Kalibr matrix encoding without changing implementation."
+    },
+    {
+      "id": "P02_EXECUTION_SCHEMA_CANNOT_BIND_REQUIRED_FORMAT_AND_CONVENTION_EVIDENCE",
+      "severity": "FATAL",
+      "frozen_exact_calibration_keys": [
+        "member",
+        "camera_from_imu_key",
+        "mocap_time_scale_key",
+        "mocap_time_anchor_seconds_key",
+        "mocap_time_offset_seconds_key",
+        "camera_timestamp_to_seconds",
+        "imu_timestamp_to_seconds",
+        "imu_clock_domain",
+        "groundtruth_timestamp_unit",
+        "maximum_pose_bracket_seconds",
+        "imu_half_window_seconds",
+        "minimum_imu_samples"
+      ],
+      "required_but_unrepresentable_bindings": [
+        "calibration_encoding",
+        "camera_from_imu_transform_direction",
+        "imu_delimiter_and_column_order",
+        "imu_axis_and_frame_mapping",
+        "accelerometer_specific_force_sign",
+        "official_or_independent_control_evidence_path_bytes_sha256"
+      ],
+      "fail_closed_code_for_extra_keys": "F2_EXECUTION_CALIBRATION_BINDING_SCHEMA",
+      "consequence": "The current exact-key schema cannot hash-bind the evidence required by its own unresolved execution preconditions."
+    },
+    {
+      "id": "P03_EXACT_CALIBRATION_MEMBER_IDENTITY_REMAINS_UNOPENED",
+      "severity": "FATAL",
+      "calibration_archive": "camera_imu_calib_radtan.zip",
+      "exact_member_name_known": false,
+      "reason": "This activation step did not authorize or perform ZIP member enumeration or member reads. A member name or key must not be guessed from public examples.",
+      "consequence": "The required exact member binding cannot be frozen."
+    },
+    {
+      "id": "P04_RUNTIME_BINDING_ROLE_SET_INCOMPLETE",
+      "severity": "FATAL",
+      "required_role_count": 11,
+      "verified_existing_candidate_count": 10,
+      "missing_role": "DEPTHART_SOURCE_MANIFEST",
+      "required_manifest_schema": "blindassist.depthart.source_manifest.v1",
+      "targeted_source_root_exists": true,
+      "targeted_manifest_found": false,
+      "consequence": "contract.py requires the exact eleven-role set and model_only.py requires a per-source-file bytes/SHA manifest; therefore a valid lock cannot be constructed."
+    }
+  ],
+  "runtime_binding_preflight": {
+    "required_role_count": 11,
+    "verified_existing_candidates": [
+      {
+        "role": "DEPTHART_EXTENSION",
+        "path": "E:\\codex-tools\\tools\\venvs\\blindassist-venv-export312\\Lib\\site-packages\\depthart_selective_scan_cuda.cp311-win_amd64.pyd",
+        "bytes": 9039872,
+        "sha256": "F8AF67B697136343A45F9DD9840362F504FE76B8FC1AC569FCB02916539BC600"
+      },
+      {
+        "role": "DEPTHART_CHECKPOINT",
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\depthart\\source\\checkpoints\\metric\\depthart_metric_indoor_s_448.pth",
+        "bytes": 32871942,
+        "sha256": "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65"
+      },
+      {
+        "role": "FACTOR_BASELINE_RESULT",
+        "path": "E:\\linnan\\linnan\\artifacts.local\\experiments\\ag-r2-f1-fit-baselines-tum13-r0\\result.json",
+        "bytes": 9509,
+        "sha256": "EECD5C9244C6A8A467B7890AF79D7871374AC8B325A87B48AE9E052089908F44"
+      },
+      {
+        "role": "FACTOR_STUDENT_RESULT",
+        "path": "E:\\linnan\\linnan\\artifacts.local\\experiments\\ag-r2-f1-attempt18-consumed-cross-domain-adaptation-r0\\result.json",
+        "bytes": 123403,
+        "sha256": "5898A02FC2B475EB6670BFBA8BF9717C1434DCE5F3756DED9698887229DB4BCA"
+      },
+      {
+        "role": "FACTOR_STUDENT_CHECKPOINT",
+        "path": "E:\\linnan\\linnan\\artifacts.local\\experiments\\ag-r2-f1-attempt18-consumed-cross-domain-adaptation-r0\\cross-domain-composite.pt",
+        "bytes": 553143,
+        "sha256": "22F9E14C33EAE450874E097A4C8AC3DDFAFBAA6E50FE6EBB4A8415C5AC0613DE"
+      },
+      {
+        "role": "METRIC_STUDENT_RESULT",
+        "path": "E:\\linnan\\linnan\\artifacts.local\\experiments\\ag-r2-multisource-metric-depth-student-r0\\result.json",
+        "bytes": 455087,
+        "sha256": "F0703357B0F25C7ABF209EE53DE9B04E588BEDE3629C1B1F5273D9E31D41BFF3"
+      },
+      {
+        "role": "METRIC_STUDENT_CHECKPOINT",
+        "path": "E:\\linnan\\linnan\\artifacts.local\\experiments\\ag-r2-multisource-metric-depth-student-r0\\multisource-metric-depth-student.pt",
+        "bytes": 275865,
+        "sha256": "980B26D16659BF1AAF47C64C5CBAC63A5E91D60573E93AD23190DFF3BB67E4B7"
+      },
+      {
+        "role": "METRIC_SCALE_BANK_RESULT",
+        "path": "E:\\linnan\\linnan\\artifacts.local\\experiments\\ag-r2-metric-scale-residual-bank-r2\\result.json",
+        "bytes": 127477,
+        "sha256": "68188B00FB4951771443B4706526F6BAAED1AA85E77C4AE4D73958600AB4C0E5"
+      },
+      {
+        "role": "METRIC_SCALE_BANK",
+        "path": "E:\\linnan\\linnan\\artifacts.local\\experiments\\ag-r2-metric-scale-residual-bank-r2\\metric-scale-residual-bank.npz",
+        "bytes": 77196,
+        "sha256": "D6B8BE961A9576309097842D264791CD74F74B52B33CD97B0842DDBA47EEC88E"
+      },
+      {
+        "role": "FROZEN_HYBRID_RECIPE_RESULT",
+        "path": "E:\\linnan\\linnan\\artifacts.local\\experiments\\ag-r2-hybrid-factor-student-to-ag-seam-r10\\result.json",
+        "bytes": 74433,
+        "sha256": "5077213EA3B5B0CF0186E755BF1D0FDDF8C25DBB65D415E3A05263A6780A9720"
+      }
+    ],
+    "missing": {
+      "role": "DEPTHART_SOURCE_MANIFEST",
+      "required_schema": "blindassist.depthart.source_manifest.v1",
+      "source_root": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\depthart\\source",
+      "source_root_exists": true
+    },
+    "valid_complete_binding_set": false
+  },
+  "archive_container_preflight": {
+    "root": "E:\\linnan\\linnan\\artifacts.local\\downloads\\ag-r2-eth3d-cross-sensor-confirmation-r0",
+    "root_exists": true,
+    "direct_child_count": 7,
+    "direct_child_total_bytes": 721072411,
+    "direct_child_bytes_match_data_identity": true,
+    "archive_sha256_recomputed_in_this_preflight": false,
+    "direct_children": [
+      {"name": "camera_imu_calib_radtan.zip", "bytes": 3645288},
+      {"name": "mannequin_5_imu.zip", "bytes": 733056},
+      {"name": "mannequin_5_rgbd.zip", "bytes": 168348701},
+      {"name": "motion_1_imu.zip", "bytes": 1727176},
+      {"name": "motion_1_rgbd.zip", "bytes": 431821234},
+      {"name": "plant_scene_2_imu.zip", "bytes": 547439},
+      {"name": "plant_scene_2_rgbd.zip", "bytes": 114249517}
+    ]
+  },
+  "access_receipt": {
+    "official_public_control_documents_consulted": 3,
+    "archive_container_stat_only": true,
+    "archive_file_content_reads": 0,
+    "zip_member_enumerations": 0,
+    "zip_member_reads": 0,
+    "rgb_reads": 0,
+    "depth_reads": 0,
+    "imu_payload_reads": 0,
+    "trajectory_reads": 0,
+    "calibration_payload_reads": 0,
+    "runtime_binding_files_hashed": 10,
+    "checkpoint_deserializations": 0,
+    "model_inference_runs": 0,
+    "source_truth_materializations": 0,
+    "factor_scoring_runs": 0,
+    "confirmation_runs": 0,
+    "exclusive_confirmation_root": "E:\\linnan\\linnan\\artifacts.local\\evidence\\assistive-geometry\\ag-r2-cross-sensor-factor-confirmation-r0",
+    "exclusive_confirmation_root_created": false
+  },
+  "decision": {
+    "activation_preflight": "FAIL_CLOSED",
+    "execution_lock_created": false,
+    "execution_lock_status": null,
+    "one_shot_consumed": false,
+    "scientific_status": "NOT_RUN",
+    "confirmation_outcomes_opened": false,
+    "archive_member_access_authority": false,
+    "model_inference_authority": false,
+    "source_truth_materialization_authority": false,
+    "factor_scoring_authority": false,
+    "training_authority": false,
+    "reducer_authority": false,
+    "device_authority": false,
+    "default_app_authority": false,
+    "product_authority": false,
+    "safety_authority": false
+  },
+  "unique_successor": {
+    "lock_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CONTROL_FORMAT_AND_RUNTIME_BINDING_REPAIR_IMPLEMENTATION_LOCK",
+    "execution": false,
+    "real_archive_access": false,
+    "required_scope": [
+      "revise the exact execution schema so it hash-binds calibration encoding, transform direction, IMU columns/frame/sign and their official or independent evidence",
+      "implement and synthetic-test a bounded parser for the documented Kalibr YAML matrix encoding",
+      "create and independently verify the exact DepthART source manifest",
+      "implement a separately lockable calibration-control-only preflight that can later discover and bind the exact member without touching session RGB-D/IMU payload or running a model"
+    ],
+    "forbidden_in_successor": [
+      "enumerate or read a real archive member",
+      "load or run a model",
+      "materialize source truth",
+      "score Confirmation",
+      "create or consume the Confirmation evidence root"
+    ]
+  },
+  "claim_ceiling": "This result proves only that the authorized execution lock could not be issued safely under the frozen implementation. It is not a scientific factor-accuracy PASS or FAIL, source-data evidence, model evidence, deployment evidence, product evidence, or safety evidence."
+}

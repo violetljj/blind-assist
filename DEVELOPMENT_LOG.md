@@ -2,6 +2,21 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。用户授权只创建并冻结 Assistive Geometry R2
+  独立跨传感器 factor-level Confirmation 的唯一 one-shot execution lock；activation preflight 在任何
+  archive member access、model inference、source truth、scoring 或 evidence-root 创建前 fail closed，lock 未签发且
+  one-shot 未消费。官方 ETH3D/Kalibr 控制证据表明 camera-IMU calibration 是 YAML `T_cam_imu` 嵌套
+  `4×4` IMU→camera 矩阵，冻结 parser 却只接受同一文本行的 `<key> + 16 floats`；official-shaped synthetic
+  control 稳定命中 `F2_IMU_CALIBRATION_MATRIX`。当前 exact-key execution schema 也不能表达 calibration
+  encoding、transform direction、IMU column/frame/specific-force sign 或证据 binding，且 exact calibration
+  member 因未枚举 archive 仍未知。11 个 runtime role 中 10 个本地候选完成 bytes/SHA preflight，必需的
+  `blindassist.depthart.source_manifest.v1` 不存在；七个 archive direct-child 名称/bytes 仍与 data identity
+  一致但未重哈希。正式状态为 `EXECUTION_LOCK_NOT_ISSUED_PRE_ACCESS_IMPLEMENTATION_REPAIR_REQUIRED`、
+  `SCIENTIFIC_NOT_RUN`、`CONFIRMATION_OUTCOMES_UNOPENED`。唯一 successor 是非执行的
+  `BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CONTROL_FORMAT_AND_RUNTIME_BINDING_REPAIR_IMPLEMENTATION_LOCK`；
+  只允许修订 schema/parser、合成验证 Kalibr YAML、生成并独立复核 source manifest，以及实现未来另行授权的
+  calibration-control-only preflight，不授权真实 member、模型、Confirmation、reducer、设备、默认 App、产品或 safety。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。冻结 TARO O1R R11 all-48 source-only Phase A
   one-shot execution lock，状态 `AUTHORIZED_UNCONSUMED / FORMAL_PHASE_A_NOT_RUN`。锁精确绑定已推送 implementation
   commit `79c976f8f5c919d4fa70563781eb6db498f69c6a`、64 个完整 repository/import/artifact bindings、48 parents /

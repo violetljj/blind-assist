@@ -8,7 +8,7 @@
 
 | 分类 | 当前重点 | 入口 |
 |---|---|---|
-| 算法 | 当前主线是 BlindAssist Assistive Geometry R2 因子化几何；SuperTeacher→learned-factor V2 seam 已落地，Attempt17 与无锚 walking_xyz 负结果保持冻结。独立跨传感器 F2 已绑定 ETH3D SLAM custom RGB-D/IMU rig 的 3 个仓库历史未消费 session、7 个 opaque archive SHA、每 session `12 calibration + 12 score` deterministic roster，以及 absolute factor accuracy/coverage/UNKNOWN/uncertainty 门；payload、模型输出与 Confirmation outcome 均未打开。下一步只实现和静态验证 exact executor/validator，不执行 Confirmation，也不进入 baseline 竞赛、reducer、HTP 或默认 App；TARO 保持独立并行 WILD_LAB，B1-A0、AG-QSF 与 AG-CBF R0 保持各自终态 | [算法研究入口](ALGORITHM_RESEARCH_CURRENT.md) |
+| 算法 | 当前主线是 BlindAssist Assistive Geometry R2 因子化几何；SuperTeacher→learned-factor V2 seam 已落地，Attempt17 与无锚 walking_xyz 负结果保持冻结。独立跨传感器 F2 已绑定 ETH3D SLAM custom RGB-D/IMU rig 的 3 个仓库历史未消费 session、7 个 opaque archive SHA、每 session `12 calibration + 12 score` deterministic roster，以及 absolute factor accuracy/coverage/UNKNOWN/uncertainty 门。executor synthetic implementation 已完成，但授权后的 activation preflight 发现冻结 parser/schema 无法接收并完整绑定官方 Kalibr YAML/IMU convention，且 11-role runtime 缺 DepthART source manifest；execution lock 因此未签发，payload/model/Confirmation 均未执行。下一步只允许非执行的 control-format/schema/runtime-binding repair；TARO 保持独立并行 WILD_LAB，B1-A0、AG-QSF 与 AG-CBF R0 保持各自终态 | [算法研究入口](ALGORITHM_RESEARCH_CURRENT.md) |
 | 数据 | 数据集、truth、parent/session 独立性、coverage、质量和数据角色治理；AG-DCA R0 已完成 4,800-frame atlas，QSF/CBF 为 `NOT_SUPPORTED_DATA`、FCI 为 `NOT_SUPPORTED_DATA_AND_AUTHORITY`；AG-DUE 的 SANPO Real/Synthetic R0 prescreen 均为 `PARTIAL`，Synthetic exact R1 metadata preflight 因 annotation-type object 404 而 `NOT_EVALUABLE` 并关闭，frame body/Teacher/source support 均未授权 | [数据研究入口](DATA_RESEARCH_CURRENT.md) |
 | 系统与平台 | 通信链路、端到端延迟、性能优化、模型导出、设备部署和稳定性 | [系统与平台研究入口](SYSTEM_RESEARCH_CURRENT.md) |
 
