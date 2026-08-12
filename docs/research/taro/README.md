@@ -235,6 +235,9 @@ TARO 是与 [Assistive Geometry](../assistive-geometry/README.md) 并列的独�
   绑定已推送 implementation commit `9c659c30`、11 份代码/协议/authorization/download evidence、central-directory-only policy 与预算；现已消费且不得重跑；
 - [R11 source inventory result](TARO_O1R_R11_FRESH_48_PARENT_SOURCE_INVENTORY_RESULT_2026-08-12.md)：
   48/48 parents、1,043 exact pose-bounded frames PASS；ZIP/highres member payload、pixel、model、FARO value 均为 0；
+- [R11 all-48 source-only Phase A implementation lock](TARO_O1R_R11_FRESH_48_PARENT_SOURCE_ONLY_PHASE_A_IMPLEMENTATION_LOCK_2026-08-12.md)：
+  独立 capability-scoped reader 只保留 color/intrinsics/lowres/confidence；冻结 1,043 DepthART candidates、
+  9,387-query R7/R11 factor seals、完整 read ledger 与 FARO=0 firewall；正式 Phase A 尚未运行；
 - [算法研究入口](../ALGORITHM_RESEARCH_CURRENT.md)：项目级算法路线登记；
 - [R2 factorized geometry protocol](../assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_FACTORIZED_GEOMETRY_HYPOTHESIS_PROTOCOL_2026-08-09.md)：
   可只读复用的 factor/reducer/UNKNOWN 上游合同；
@@ -264,10 +267,12 @@ hash/CRC/manifest 重验，正式终态为 `TARO_O1R_R11_FRESH_POOL_SOURCE_DOWNL
 directory，索引路径、声明尺寸与声明 CRC，并以 trajectory 形成 exact-ns pose-bounded frame plan；它不调用
 `testzip/open/read`，声明 CRC 不冒充 member payload CRC 验证。独立 one-shot 已正式消费：48/48 parents
 均至少接纳 1 frame，共 1,043 exact pose-bounded frames、声明展开量 `3,540,113,101 bytes`；正式
-ZIP/highres member payload reads 均为 0。唯一 successor 是
-`TARO_O1R_R11_FRESH_48_PARENT_SOURCE_ONLY_PHASE_A_IMPLEMENTATION_LOCK`；只实现 all-48 source/DepthART Phase A
-与 FARO=0 firewall，不授权直接执行 Phase A、selection 或 Phase B，也没有 TARO
-route/deployment/device/product/safety promotion。
+ZIP/highres member payload reads 均为 0。后继
+`TARO_O1R_R11_FRESH_48_PARENT_SOURCE_ONLY_PHASE_A_IMPLEMENTATION_LOCK` 已完成：专用 Phase-A frame 不含 highres
+payload capability，全部 1,043 candidates 必须先封存，之后才读 lowres/confidence 并物化正式 R7 baseline 与
+R11 abstention factor；R9 scoring/top-24 仍不在本阶段。唯一 successor 是另提交
+`TARO_O1R_R11_FRESH_48_PARENT_SOURCE_ONLY_PHASE_A_ONE_SHOT_EXECUTION_LOCK`；当前不授权直接执行 Phase A、
+selection 或 Phase B，也没有 TARO route/deployment/device/product/safety promotion。
 
 O0M implementation、one-shot lock 与唯一正式执行均已完成。正式 `10+80+2` synthetic canary
 终态为 `TARO_O0M_SYNTHETIC_ANALYTIC_MECHANICS_PASS`；exclusive root 已创建并消费，结果不得
@@ -442,9 +447,10 @@ payload/output/common-support hash。通用治理验证的两条 sealed-future-p
 - 对已签署 O0M evidence 做只读 hash、manifest、record 与 replay 审计；
 - 只读审计已消费 R4/R4A evidence 的 manifest、逐 query 外部绑定与 canonical summary replay；
 - R10 正式 `NOT_EVALUABLE` 保持不可改写；R11 development-only abstention、48-parent fresh protocol 与
-  exact 数据授权已冻结。zero-body HEAD 与 download Attempt 02 已消费并 PASS；当前只可实现并锁定本地
-  source inventory/CRC/frame-plan；模型与 FARO 仍须依阶段
-  顺序另立 one-shot lock，且 Phase A FARO 与 unselected FARO 必须为 0；
+  exact 数据授权已冻结。zero-body HEAD、download Attempt 02 与 inventory one-shot 已消费并 PASS；all-48
+  source-only Phase A implementation lock 已完成，当前只可另立并验证 hash-bound Phase-A one-shot lock，
+  该 lock 提交推送前不得运行模型；R9 scoring/top-24 与 FARO 仍须依阶段另立 successor，且 Phase A FARO 与
+  unselected FARO 必须为 0；
 - 只读引用历史负结果、数据能力、现有 reducer 和运行时 receipt 的已签署结论。
 
 ## 当前禁止
