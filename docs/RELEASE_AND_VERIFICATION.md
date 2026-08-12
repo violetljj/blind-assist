@@ -33,6 +33,18 @@
 4. 写入必要的 `CHANGELOG.md`、`DEVELOPMENT_LOG.md` 和用户可见 README 更新，并说明版本判断。
 5. 推送前再次检查 staged diff、分支、upstream 和远端；只有普通非强推到已授权的 `origin` 才能继续。
 
+## GitHub Release 自动化
+
+推送与 `app/build.gradle.kts` 中 `versionName` 完全匹配的 `v*` tag 时，
+`.github/workflows/release.yml` 会执行以下 fail-closed 流程：
+
+1. 构建 debug-signed evaluation APK；
+2. 校验 package、versionCode、versionName、签名可解析性和 16KB 静态兼容性；
+3. 生成 `SHA256SUMS`、`release-manifest.json`、`apk-verification.json` 和证据边界说明；
+4. 仅在同名 Release 尚不存在时创建 GitHub Release，拒绝覆盖不可变资产。
+
+这条自动化不产生生产签名，也不构成真机准确率、用户效果、部署或安全证据。创建 tag 前仍须完成本页与 `DEVICE_REGRESSION.md` 中适用于该版本的验证，并更新 `CHANGELOG.md`。
+
 ## 常用环境和专项入口
 
 - 开发环境与新电脑恢复：[NEW_COMPUTER_HANDOFF.md](NEW_COMPUTER_HANDOFF.md)

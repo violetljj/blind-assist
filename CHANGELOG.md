@@ -4,7 +4,9 @@
 
 ## Unreleased
 
-- 暂无已确认的用户可见发布变化。SANPO 研究候选仍未替换正式 App 默认模型。
+- 开源维护新增公开治理规则、引用元数据、Dependabot、默认模型卡和 SHA256/provenance 机器清单；CI 会拒绝社区文件或默认公开资产身份漂移。
+- 新增 tag 驱动的 fail-closed GitHub Release 工作流，自动校验 debug evaluation APK 并生成 `SHA256SUMS`、机器 manifest 和证据边界说明；不产生生产签名或安全证明。
+- 默认 App 行为和 YOLO11n 模型资产不变；研究候选仍未替换正式 App 默认模型。
 
 ## v10.9.0 - SANPO 风险事件闭环
 

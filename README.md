@@ -98,7 +98,7 @@ Synthetic、pseudo-labeled 或 model-reviewed evidence 不是设备测量、用�
 
 ## Contributing / 参与贡献
 
-欢迎提交 bug、无障碍改进、文档、测试、可复现评测和边界清晰的研究工具。开始前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md) 与 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)；安全或隐私问题请按 [SECURITY.md](SECURITY.md) 私下报告。
+欢迎提交 bug、无障碍改进、文档、测试、可复现评测和边界清晰的研究工具。开始前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)、[GOVERNANCE.md](GOVERNANCE.md) 与 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)；安全或隐私问题请按 [SECURITY.md](SECURITY.md) 私下报告。
 
 项目不会要求贡献者上传原始相机画面、私人数据、设备凭据、受限数据集或机器本地产物。适合参与的公开任务见 [Issues](https://github.com/violetljj/blind-assist/issues)。
 
@@ -106,6 +106,7 @@ Synthetic、pseudo-labeled 或 model-reviewed evidence 不是设备测量、用�
 
 - [文档索引](docs/README.md)
 - [构建与代码导航](docs/CODE_MAP.md)
+- [默认模型卡与可核验身份](docs/MODEL_CARD.md)
 - [设备回归](docs/DEVICE_REGRESSION.md)
 - [本地产物边界](docs/LOCAL_ARTIFACTS.md)
 - [开放源码公共价值](docs/OPEN_SOURCE_PUBLIC_VALUE.md)

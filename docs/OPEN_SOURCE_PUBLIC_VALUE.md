@@ -2,7 +2,7 @@
 
 状态：current
 
-最后核验：2026-08-11
+最后核验：2026-08-12
 
 ## 项目使命
 
@@ -34,6 +34,8 @@ BlindAssist 是一个面向无障碍技术研究与工程学习的 Android 端�
 ## 开源维护与 Codex 使用计划
 
 开源支持将优先用于 issue 分类、pull request 审查、回归测试、依赖与许可证核验、文档同步、安全检查和可复现实验维护。Codex 与其他自动化工具产生的修改仍需要通过仓库门禁和证据边界；模型输出本身不构成许可证、用户同意、设备测量或安全事实。
+
+这些承诺由可执行入口支撑：默认分支 CI 运行仓库、文档和开源就绪门；`configs/public_release_assets.json` 绑定公开模型资产的来源、许可、大小和 SHA-256；tag Release 自动生成校验记录与 checksums。治理文件、模型身份或第三方 notice 独立漂移会使 CI 失败。
 
 ## Application summary (English)
 

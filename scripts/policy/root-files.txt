@@ -30,6 +30,7 @@ build_sanpo_risk_lifecycle_targets.py
 build_sanpo_sequence_evalset.py
 build_sanpo_v3_annotation_queue.py
 check_docs_index.ps1
+check_open_source_readiness.ps1
 check_project_structure.ps1
 check_repo_hygiene.ps1
 clone_sanpo_event_phase_evalset.py
@@ -49,6 +50,7 @@ fetch_remote_zip_members.py
 finalize_sanpo_sequence_evalset.py
 freeze_sanpo_v3_regression.py
 generate_qnn_preprocess_candidate.py
+generate_release_manifest.ps1
 generate_sanpo_counterfactual_capture_plan.py
 generate_ustrf_synthetic_corridor_safety_benchmark.py
 generate_ustrf_synthetic_dynamic_ttc_benchmark.py
@@ -131,6 +133,7 @@ test_build_procedural_tactile_sequences.py
 test_build_public_v3_canonical_dataset.py
 test_build_sanpo_sequence_evalset.py
 test_check_docs_index.ps1
+test_check_open_source_readiness.ps1
 test_check_project_structure.ps1
 test_compare_revel_detector_tiling.py
 test_discover_sanpo_sequence_candidates.py
@@ -143,6 +146,7 @@ test_generate_ustrf_synthetic_corridor_safety_benchmark.py
 test_generate_ustrf_synthetic_dynamic_ttc_benchmark.py
 test_generate_ustrf_synthetic_temporal_geometry_benchmark.py
 test_generate_ustrf_sc_u0_dense_teacher_loso_artifact.py
+test_generate_release_manifest.ps1
 test_plan_sanpo_boundary_aux_candidates.py
 test_plan_sanpo_p3_session_split.py
 test_redact_sanpo_auxiliary_candidate.py

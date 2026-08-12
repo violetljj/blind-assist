@@ -1,0 +1,26 @@
+{
+  "schema": "blindassist_public_release_assets_v1",
+  "last_reviewed": "2026-08-12",
+  "assets": [
+    {
+      "path": "app/src/main/assets/yolo11n_fp16_320.tflite",
+      "role": "default_app_object_detector",
+      "size_bytes": 5359428,
+      "sha256": "00EDB41A528B0A7E709C4AF8CE3E685491492C4539274804E5CFC17A1A867CD2",
+      "license_expression": "AGPL-3.0-only OR LicenseRef-Ultralytics-Enterprise",
+      "upstream_url": "https://github.com/ultralytics/ultralytics",
+      "notice_path": "THIRD_PARTY_NOTICES.md",
+      "packaged_in_default_app": true
+    },
+    {
+      "path": "app/src/main/assets/coco_labels.txt",
+      "role": "default_app_class_name_metadata",
+      "size_bytes": 621,
+      "sha256": "BD17F1EE35D5F3C862A4894605855ABBB9DDA4B0621FDB0AC4C2C8C7BB7E730A",
+      "license_expression": "NOASSERTION",
+      "upstream_url": "https://cocodataset.org/",
+      "notice_path": "THIRD_PARTY_NOTICES.md",
+      "packaged_in_default_app": true
+    }
+  ]
+}

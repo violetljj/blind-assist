@@ -19,6 +19,7 @@ Please do not submit raw camera footage, private user data, credentials, restric
 4. State whether the change affects the default App. Research results do not receive product authority automatically.
 
 Security and privacy reports must follow [SECURITY.md](SECURITY.md), not a public issue.
+Maintainer roles, public decision rules and conflict handling are documented in [GOVERNANCE.md](GOVERNANCE.md).
 
 ## Development setup
 
@@ -60,6 +61,7 @@ Run the narrowest checks that cover your change. All pull requests should includ
 ```powershell
 pwsh -NoProfile -File scripts/check_repo_hygiene.ps1 -IncludeStructure
 pwsh -NoProfile -File scripts/check_docs_index.ps1
+pwsh -NoProfile -File scripts/check_open_source_readiness.ps1
 python scripts/run_research_contract_tests.py
 ```
 

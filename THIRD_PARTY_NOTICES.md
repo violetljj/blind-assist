@@ -13,6 +13,8 @@ The root `LICENSE` applies to original source code and documentation contributed
 
 BlindAssist does not grant an independent license to this model beyond the applicable upstream terms. Converting or exporting the model to TFLite does not, by itself, replace those terms. Users planning a use that is not compatible with AGPL-3.0 must obtain and verify any required upstream commercial license themselves.
 
+The exact distributed asset identity and limitations are recorded in [the default model card](docs/MODEL_CARD.md) and the machine-readable [`public_release_assets.json`](configs/public_release_assets.json). CI verifies the recorded size and SHA-256 against the packaged payload.
+
 ## COCO class-name metadata
 
 - Relevant asset: `app/src/main/assets/coco_labels.txt`

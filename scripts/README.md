@@ -55,10 +55,12 @@
 - `run_public_video_campaign_tests.py`：发现并运行 `scripts/research/public_video/` 的完整测试集。
 - `run_public_video_edge_inference.ps1`：已冻结 campaign 真机闭环的稳定 Adapter；调用方不依赖研究目录内部路径。
 - `check_repo_hygiene.ps1` / `test_repo_hygiene.ps1`：仓库卫生门禁与测试；拒绝变更面中的构建缓存，并扫描根目录中即使已被忽略的 native 编译产物。默认只检查卫生，使用 `-IncludeStructure` 串联项目结构门。
+- `check_open_source_readiness.ps1` / `test_check_open_source_readiness.ps1`：开源维护硬门；校验许可证、治理、安全、贡献、Issue/PR 模板、引用元数据、依赖更新、模型卡，以及默认公开资产的 size/SHA256/provenance 绑定。
 - `check_project_structure.ps1` / `test_check_project_structure.ps1`：脚本根 allowlist、开发日志预算、研究 Module 合同/实时数量、current 真源委托/状态/successor 同步、内部路径和跨 Module import 门禁；需要结构/政策验证时单独运行，避免与卫生门重复执行。
 - `check_docs_index.ps1` / `test_check_docs_index.ps1`：顶层文档、research domain README/index，以及所有非归档 current、路线 README 和 protocol 本地链接门禁。
 - `audit_research_structure.ps1`：只读输出研究 Module 合同、HFTF 角色计数和 support 迁移清单。
-- `archive_apk.ps1`、`verify_release_apk.ps1`、`verify_apk_16kb.ps1`：APK 校验与归档。
+- `archive_apk.ps1`、`verify_release_apk.ps1`、`verify_apk_16kb.ps1`：跨平台 APK 身份、签名、16KB 静态兼容性校验与本地归档。
+- `generate_release_manifest.ps1` / `test_generate_release_manifest.ps1`：从已验证交付物生成不含本机路径的 `SHA256SUMS`、机器 manifest 和 Release 证据边界摘要；tag Release 工作流使用同一入口。
 - `run_npu_candidate_acceptance.ps1`：SM-S9280/SM8650 上的独立 NPU 候选安装、QNN HTP runtime marker、正式包/数据不变式与候选专属卸载回滚门；不清除正式 App 数据。
 - `generate_qnn_preprocess_candidate.py`：生成并自校验隔离的 QNN 预处理候选；只写入 `artifacts.local/experiments/qnn-preprocess-fusion-v1/`，不修改 App assets，也不构成发布、默认路由或生产授权。
 

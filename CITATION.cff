@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use BlindAssist in research or teaching, please cite this repository and the exact release or commit."
+title: "BlindAssist: Evidence-bounded on-device assistive perception for Android"
+type: software
+authors:
+  - family-names: "violetljj"
+repository-code: "https://github.com/violetljj/blind-assist"
+url: "https://github.com/violetljj/blind-assist"
+license: "AGPL-3.0-only"
+version: "10.9.0"
+date-released: "2026-08-11"
+keywords:
+  - accessibility
+  - Android
+  - assistive technology
+  - computer vision
+  - on-device machine learning
+  - reproducible research

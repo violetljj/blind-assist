@@ -1,0 +1,69 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verified-debug-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out tagged source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@c1e323688fd81a25caa38c78aa6df2d33d3e20d9 # v4.8.0
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+
+      - name: Validate tag and assemble evaluation APK
+        shell: pwsh
+        run: |
+          $buildGradle = Get-Content -Raw -LiteralPath './app/build.gradle.kts'
+          $versionName = [regex]::Match($buildGradle, 'versionName\s*=\s*"([^"]+)"').Groups[1].Value
+          if (-not $versionName -or "v$versionName" -ne $env:GITHUB_REF_NAME) {
+            throw "Tag $env:GITHUB_REF_NAME does not match app versionName $versionName."
+          }
+          chmod +x ./gradlew
+          ./gradlew --max-workers=2 '-Dorg.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8' :app:assembleDebug
+          if ($LASTEXITCODE -ne 0) { throw 'Debug APK build failed.' }
+          New-Item -ItemType Directory -Force -Path './release-output' | Out-Null
+          Copy-Item -LiteralPath './app/build/outputs/apk/debug/app-debug.apk' -Destination "./release-output/BlindAssist-$env:GITHUB_REF_NAME-debug.apk"
+
+      - name: Verify APK identity, signature, and 16 KB compatibility
+        shell: pwsh
+        run: |
+          $buildGradle = Get-Content -Raw -LiteralPath './app/build.gradle.kts'
+          $versionCode = [int][regex]::Match($buildGradle, 'versionCode\s*=\s*(\d+)').Groups[1].Value
+          $versionName = [regex]::Match($buildGradle, 'versionName\s*=\s*"([^"]+)"').Groups[1].Value
+          $apk = "./release-output/BlindAssist-$env:GITHUB_REF_NAME-debug.apk"
+          $verification = pwsh -NoProfile -File ./scripts/verify_release_apk.ps1 -ApkPath $apk -ExpectedVersionCode $versionCode -ExpectedVersionName $versionName -AndroidSdkRoot $env:ANDROID_SDK_ROOT
+          if ($LASTEXITCODE -ne 0) { throw 'Release APK verification failed.' }
+          [System.IO.File]::WriteAllText('./release-output/apk-verification.json', ($verification -join "`n") + "`n", [System.Text.UTF8Encoding]::new($false))
+          pwsh -NoProfile -File ./scripts/generate_release_manifest.ps1 -ArtifactPath $apk -OutputDirectory './release-output' -VerificationJsonPath './release-output/apk-verification.json' -SourceCommit $env:GITHUB_SHA
+          if ($LASTEXITCODE -ne 0) { throw 'Release manifest generation failed.' }
+
+      - name: Publish immutable GitHub Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          if (gh release view $env:GITHUB_REF_NAME 2>$null) {
+            throw "Release $env:GITHUB_REF_NAME already exists; refusing to overwrite immutable release assets."
+          }
+          $apk = "./release-output/BlindAssist-$env:GITHUB_REF_NAME-debug.apk"
+          gh release create $env:GITHUB_REF_NAME --verify-tag --title "BlindAssist $env:GITHUB_REF_NAME" --notes-file './release-output/RELEASE_VERIFICATION.md' $apk './release-output/SHA256SUMS' './release-output/release-manifest.json' './release-output/apk-verification.json'
+          if ($LASTEXITCODE -ne 0) { throw 'GitHub Release publication failed.' }

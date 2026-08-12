@@ -28,6 +28,20 @@ function Get-LatestBuildTools([string]$SdkRoot) {
         Select-Object -First 1
 }
 
+function Get-AndroidToolPath([string]$BuildToolsDirectory, [string]$ToolName) {
+    $fileName = if ($env:OS -eq 'Windows_NT') {
+        switch ($ToolName) {
+            'aapt' { 'aapt.exe' }
+            'apksigner' { 'apksigner.bat' }
+            default { $ToolName }
+        }
+    }
+    else {
+        $ToolName
+    }
+    return Join-Path $BuildToolsDirectory $fileName
+}
+
 function Assert-Contains([string]$Text, [string]$Pattern, [string]$Message) {
     if ($Text -notmatch $Pattern) {
         throw $Message
@@ -36,7 +50,15 @@ function Assert-Contains([string]$Text, [string]$Pattern, [string]$Message) {
 
 $repoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..")).Path
 if (-not $AndroidSdkRoot) {
-    $AndroidSdkRoot = Join-Path $repoRoot ".android-sdk"
+    $AndroidSdkRoot = if ($env:ANDROID_SDK_ROOT) {
+        $env:ANDROID_SDK_ROOT
+    }
+    elseif ($env:ANDROID_HOME) {
+        $env:ANDROID_HOME
+    }
+    else {
+        Join-Path $repoRoot ".android-sdk"
+    }
 }
 $resolvedApk = Resolve-RepoPath $ApkPath
 if (-not (Test-Path -LiteralPath $resolvedApk)) {
@@ -45,13 +67,13 @@ if (-not (Test-Path -LiteralPath $resolvedApk)) {
 $resolvedApk = (Resolve-Path -LiteralPath $resolvedApk).Path
 
 $tools = Get-LatestBuildTools (Resolve-RepoPath $AndroidSdkRoot)
-$aapt = Join-Path $tools.FullName "aapt.exe"
-$apksigner = Join-Path $tools.FullName "apksigner.bat"
+$aapt = Get-AndroidToolPath $tools.FullName 'aapt'
+$apksigner = Get-AndroidToolPath $tools.FullName 'apksigner'
 if (-not (Test-Path -LiteralPath $aapt)) {
-    throw "aapt.exe not found in $($tools.FullName)"
+    throw "aapt not found in $($tools.FullName)"
 }
 if (-not (Test-Path -LiteralPath $apksigner)) {
-    throw "apksigner.bat not found in $($tools.FullName)"
+    throw "apksigner not found in $($tools.FullName)"
 }
 
 $badging = (& $aapt dump badging $resolvedApk) -join "`n"
