@@ -2,6 +2,18 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。正式启动 DepthART-S D3R1 Phase-B
+  exact-64 body 与 source-truth-support 后，在第 `2/32` 身份、checkpoint 002 前按冻结 exact-frame
+  coverage gate 停止：固定 stem `42898216_694900.389` 不在 source depth inventory。只形成 1 个完整
+  checkpoint；其 support 未过，但 partial `0/1` 不得升级成整体资格或科学终态。当前 attempt 保留
+  4 个 source bodies 共 `841,796,127 bytes`，无 temp、scientific manifest/validation 或 selection。
+  metadata-only auditor 只复验 attempt/checkpoint seals、root inventory 与 body length=HEAD，不读取/哈希
+  body 或打开 archive，结果 PASS；双 modality 各 16,106 PNG、目标 stem 均缺而邻帧存在的 post-stop
+  观察仅封为 operator diagnostic，不冒充独立科学复验。正式状态为 `INVALID_INCOMPLETE`，不是科学
+  PASS/FAIL 或 `D3_DATA_SUPPORT_NOT_EVALUABLE`；`scientific_terminal=null / next_gate=null`。当前 r0
+  不得 resume、repair、覆盖、换帧、换身份或同版本重跑，RGB、模型、角色、训练、Development、R2、
+  性能、默认 App、production 与 safety 均未授权。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。正式消费 TARO O1R R11 exact 48-parent
   zero-body HEAD one-shot。144/144 冻结 URL 全部首试返回 200 + positive Content-Length，redirect/error 为
   0，ETag/Last-Modified 为 144/144；总声明正文 `2,960,390,828 bytes`，分项为 upsampling
