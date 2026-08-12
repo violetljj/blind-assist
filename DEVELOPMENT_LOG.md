@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。登记 DepthART-S D3R1 exact-127
+  Phase-A source scope。receipt 绑定 frozen recovery protocol、127-parent/session roster 与 reviewed
+  ARKitScenes LICENSE SHA，只覆盖 `lowres_wide_intrinsics.zip` 和 `lowres_wide.traj` 的 future
+  source-integrity、schema 与 label-blind continuity use；不包含 depth/confidence、RGB、身份扩展或
+  redistribution。本步只生成 scope receipt 并复核本地 hashes，没有发 254 个 HEAD、没有 GET、
+  archive/pose content、truth/model、selection、TRAIN/DEVELOPMENT、R2、性能、默认 App、production
+  或 safety 权限。唯一 successor 为
+  `EXPLICIT_D3R1_PHASE_A_INTRINSICS_TRAJECTORY_HEAD_ONLY_PREFLIGHT_ACTIVATION`；它仍需单独激活。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。另立 DepthART-S D3R1 pre-outcome
   Phase-A recovery version，并完成 metadata-only fresh roster lock。旧 D3 exact-48 及其中 21 个
   continuity-qualified identity 全部禁止 carry-over，`300 frames / adjacent <=0.5s / pose bracket
