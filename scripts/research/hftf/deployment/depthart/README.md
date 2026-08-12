@@ -55,6 +55,8 @@ shim 已退役，统一从本目录导入。
 - `validate_depthart_task_preserving_d3_phase_a.py` 是预冻结的 PASS-only 离线 validator；Phase-A 合法 FAIL 暴露其 terminal-coverage 缺口后，原文件/hash 保持不变，`audit_depthart_task_preserving_d3_phase_a_terminal.py` 由 repair receipt 限定为只读全 48 body/checkpoint/continuity 复算。当前终态 `21/48` 合格、`0` role、Phase-B 未授权
 - `plan_depthart_task_preserving_d3r1_fresh_metadata_roster.py` 从 pinned Apple split 与 immutable pre-recovery Git tree 重放 exact exclusions，并以 AST literal + ordered digest 额外封锁 TARO R10 scripts-only pool；它锁定 127 个 unique visit/session，不扫描 live docs，也不请求媒体
 - `validate_depthart_task_preserving_d3r1_fresh_metadata_roster.py` 独立重放 source blob、490+64=554 identity firewall、容量、顺序、role/hash 与 127-parent/session uniqueness；roster 发布入 docs 后仍产生 byte-identical replay，不具 source-use 或媒体 authority
+- `preflight_depthart_task_preserving_d3r1_phase_a_assets.py` 对 exact-127 pool 的 intrinsics/trajectory 执行 254 个 HEAD；显式禁用 redirect、每次重试保持 HEAD、从不调用 response body 接口，并在网络前独占 fresh attempt root。当前 254/254 可用，body 仍未打开
+- `validate_depthart_task_preserving_d3r1_phase_a_head.py` 离线重放 exact request order、三项必需响应头、attempt history、redirect/error 计数与 zero-body 边界；只签署 HEAD availability，不授权 GET、continuity 或 Phase-B
 - `validate_depthart_task_preserving_r2_activation.py` 只检查 R2 pre-outcome activation manifest 的 cohort 角色、候选/reference 身份、固定任务门与旧 G4-D 排除项；它不读取模型输出，不激活执行，也不签署质量或部署结论
 - `plan_depthart_task_preserving_r2_arkit_roster.py` 在 Apple 官方 split CSV 上，以冻结 Git snapshot 排除全部既有 HFTF ARKit identity，再按固定哈希顺序锁定唯一 visit/session；只读元数据
 - `evaluate_depthart_task_preserving_r2_quality.py` 计算 reference/candidate 对独立 truth 的 pooled、parent-macro、session-macro 与 worst-parent 任务门；CLI 没有显式 activation receipt 会拒绝读取 outcome

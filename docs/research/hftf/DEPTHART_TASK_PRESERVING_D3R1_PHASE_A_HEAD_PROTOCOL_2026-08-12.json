@@ -1,0 +1,123 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d3r1_phase_a_head_protocol_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D3R1_PHASE_A_INTRINSICS_TRAJECTORY_HEAD_ONLY_PREFLIGHT",
+  "frozen_at": "2026-08-12T16:47:03.7517957+08:00",
+  "status": "D3R1_PHASE_A_HEAD_ONLY_PROTOCOL_FROZEN_NOT_RUN",
+  "owning_protocol": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R1_PHASE_A_RECOVERY_PROTOCOL_2026-08-12.json",
+    "bytes": 9457,
+    "sha256": "D300E5A088D0BCEEFD625AA4520CF75DD19E3E55C0D180ECF1A4E413A9FF1B60"
+  },
+  "roster": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R1_FRESH_METADATA_ROSTER_LOCK_2026-08-12.json",
+    "bytes": 8238,
+    "sha256": "67457224E507FA3D501439EF9B7D33CDE6017B2662EA2BBF65C1A36BC6453D13",
+    "identity_count": 127,
+    "unique_parent_count": 127,
+    "unique_session_count": 127,
+    "pool_pairs_sha256": "EA9ECAC4E2195C24959910BD012CC6089328EA2441642184CB327B2237E1C7CB",
+    "fold": "Training",
+    "role": "D3R1_METADATA_CANDIDATE_POOL_ONLY"
+  },
+  "source_scope": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R1_SOURCE_SCOPE_RECEIPT_2026-08-12.json",
+    "bytes": 5693,
+    "sha256": "305E5EB30E39FE7B1E371ECA78ED8AD7A7181E68B12A797C3F45165B74D7DDC7"
+  },
+  "base_url": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1/raw",
+  "assets_per_video": [
+    "lowres_wide_intrinsics.zip",
+    "lowres_wide.traj"
+  ],
+  "request_method": "HEAD",
+  "expected_parent_count": 127,
+  "expected_request_count": 254,
+  "timeout_seconds": 20,
+  "workers": 8,
+  "max_attempts": 3,
+  "user_agent": "BlindAssist-DepthART-D3R1-phase-a-head-only",
+  "redirect_policy": {
+    "follow_redirects": false,
+    "redirect_statuses": [301, 302, 303, 307, 308],
+    "redirect_is_terminal": true,
+    "redirect_is_retried": false,
+    "required_redirect_count_for_pass": 0,
+    "required_final_url": "exact_requested_url"
+  },
+  "retry_policy": {
+    "attempt_definition": "max_attempts includes the first request",
+    "retry_transient_transport_errors": true,
+    "retry_http_statuses": [408, 429],
+    "retry_http_status_range": "500-599",
+    "do_not_retry": [
+      "any redirect status",
+      "all other HTTP 4xx statuses",
+      "invalid or missing required headers on an HTTP 200 response"
+    ],
+    "method_on_every_attempt": "HEAD"
+  },
+  "required_success": {
+    "final_asset_count": 254,
+    "available_asset_count": 254,
+    "http_status": 200,
+    "content_length_positive_integer": true,
+    "etag_nonempty": true,
+    "last_modified_nonempty": true,
+    "redirect_count": 0,
+    "response_body_bytes_read": 0,
+    "unresolved_error_row_count": 0
+  },
+  "producer": {
+    "path": "scripts/research/hftf/deployment/depthart/preflight_depthart_task_preserving_d3r1_phase_a_assets.py",
+    "bytes": 17165,
+    "sha256": "A4E4D69137E9F47D13628F963980E47DB978B237746A348EEABB9E751E9D2706"
+  },
+  "tests": {
+    "path": "scripts/research/hftf/deployment/depthart/test_preflight_depthart_task_preserving_d3r1_phase_a_assets.py",
+    "bytes": 6780,
+    "sha256": "00390F46AFD1CE3E1AE6420AE02F43A37405B290414CF063C7F4509DE6F4D950"
+  },
+  "validator": {
+    "path": "scripts/research/hftf/deployment/depthart/validate_depthart_task_preserving_d3r1_phase_a_head.py",
+    "bytes": 6867,
+    "sha256": "AA6C3D440D3AD7700982109894EFDE3AADF0FD44D6C5F8F99D7C3555E0B4A480"
+  },
+  "validator_tests": {
+    "path": "scripts/research/hftf/deployment/depthart/test_validate_depthart_task_preserving_d3r1_phase_a_head.py",
+    "bytes": 3392,
+    "sha256": "A19426FDB7A3707B3E316CB60398187DC138273268C19921976641C283ECD530"
+  },
+  "output": {
+    "attempt_root": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r1-phase-a-head-20260812-r0",
+    "artifact_path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r1-phase-a-head-20260812-r0/head-preflight.json",
+    "validation_path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r1-phase-a-head-20260812-r0/validation.json",
+    "fresh_root_required": true,
+    "overwrite_forbidden": true,
+    "failed_reserved_output_is_not_resumable": true
+  },
+  "invariants": {
+    "response_body_bytes_read": 0,
+    "media_body_bytes_read": 0,
+    "archive_member_read": false,
+    "pose_content_read": false,
+    "truth_or_model_output_read": false,
+    "phase_a_eligibility_decision": false,
+    "role_assignment_allowed": false,
+    "r2_cohort_access": "NONE"
+  },
+  "forbidden": [
+    "GET or Range GET",
+    "following redirects",
+    "calling read, readinto or peek on a response",
+    "opening intrinsics archives or trajectory content",
+    "requesting RGB, depth or confidence assets",
+    "selecting the Phase-A 32 identities from headers",
+    "assigning TRAIN or DEVELOPMENT roles",
+    "reading truth, model output or R2 data",
+    "reusing or overwriting an attempt root"
+  ],
+  "pass_terminal": "D3R1_PHASE_A_ASSET_HEADERS_254_OF_254_AVAILABLE_MEDIA_BODY_UNOPENED",
+  "pass_successor": "EXPLICIT_D3R1_PHASE_A_INTRINSICS_TRAJECTORY_BODY_AND_LABEL_BLIND_CONTINUITY_ACTIVATION",
+  "fail_terminal": "D3R1_PHASE_A_HEAD_PREFLIGHT_STOP_MEDIA_BODY_UNOPENED",
+  "authority": "HEAD availability and declared-size evidence only; no body, integrity, continuity, truth, training, Development, R2, performance, production or safety authority."
+}
