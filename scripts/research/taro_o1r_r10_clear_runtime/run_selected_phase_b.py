@@ -26,13 +26,14 @@ from scripts.research.taro_o1r_r10_clear_runtime import phase_b_metrics
 from scripts.research.taro_o1r_r10_clear_runtime import run_pool_phase_a as phase_a
 from scripts.research.taro_o1r_r10_clear_runtime import run_pool_phase_a_r1 as phase_a_r1
 from scripts.research.taro_o1r_r10_clear_runtime import run_top8_selection as top8
+from scripts.research.taro_o1r_r10_clear_runtime import run_top8_selection_r1 as top8_r1
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 LOCK_SCHEMA = "blindassist.taro.o1r.r10_fresh_pool_selected_phase_b_execution_lock.v1"
 LOCK_ID = "TARO_O1R_R10_FRESH_POOL_SELECTED_TOP8_PHASE_B_FARO_ONE_SHOT_EXECUTION_LOCK"
 PHASE_A_ROOT = phase_a_r1.OUTPUT_ROOT
-SELECTION_ROOT = top8.OUTPUT_ROOT
+SELECTION_ROOT = top8_r1.OUTPUT_ROOT
 INVENTORY_PATH = phase_a.INVENTORY_PATH
 OUTPUT_ROOT = "artifacts.local/evidence/taro/o1r-r10-fresh-pool-selected-phase-b-r0"
 PASS_TERMINAL = phase_b_metrics.PASS_TERMINAL
@@ -50,18 +51,22 @@ EXPECTED_BINDINGS = {
     "R10_PHASE_A_R1_MANIFEST": f"{PHASE_A_ROOT}/manifest.json",
     "R10_PHASE_A_BASE_RUNTIME": "scripts/research/taro_o1r_r10_clear_runtime/run_pool_phase_a.py",
     "R10_PHASE_A_R1_RUNTIME": "scripts/research/taro_o1r_r10_clear_runtime/run_pool_phase_a_r1.py",
-    "R10_TOP8_LOCK": "docs/research/taro/TARO_O1R_R10_FRESH_POOL_TOP8_SOURCE_ONLY_SELECTION_ONE_SHOT_EXECUTION_LOCK_2026-08-12.json",
+    "R10_TOP8_R1_LOCK": "docs/research/taro/TARO_O1R_R10_FRESH_POOL_TOP8_SOURCE_ONLY_SELECTION_R1_ONE_SHOT_EXECUTION_LOCK_2026-08-12.json",
     "R10_TOP8_PARENT_SCORES": f"{SELECTION_ROOT}/parent-scores.json",
     "R10_TOP8_SELECTION": f"{SELECTION_ROOT}/selection.json",
     "R10_TOP8_RESULT": f"{SELECTION_ROOT}/result.json",
     "R10_TOP8_MANIFEST": f"{SELECTION_ROOT}/manifest.json",
-    "R10_TOP8_RUNTIME": "scripts/research/taro_o1r_r10_clear_runtime/run_top8_selection.py",
+    "R10_TOP8_BASE_RUNTIME": "scripts/research/taro_o1r_r10_clear_runtime/run_top8_selection.py",
+    "R10_TOP8_R1_RUNTIME": "scripts/research/taro_o1r_r10_clear_runtime/run_top8_selection_r1.py",
+    "R10_TOP8_R1_TEST": "scripts/research/taro_o1r_r10_clear_runtime/test_run_top8_selection_r1.py",
     "R10_PHASE_B_METRICS": "scripts/research/taro_o1r_r10_clear_runtime/phase_b_metrics.py",
+    "R10_PHASE_B_METRICS_TEST": "scripts/research/taro_o1r_r10_clear_runtime/test_phase_b_metrics.py",
     "R7_LABEL_RUNTIME": "scripts/research/taro_o1r_r7_canary_runtime/r7_canary.py",
     "R6_CONTAINER_IO": "scripts/research/taro_o0r_candidate_scale_runtime/r6_confirmation_io.py",
     "TRUTH_MATERIALIZER": "scripts/research/taro_o0r_truth_materializer_runtime/materializer.py",
     "EVIDENCE_WRITER": "scripts/research/taro_o0r_factor_headroom_runtime/evidence.py",
     "R10_PHASE_B_RUNNER": "scripts/research/taro_o1r_r10_clear_runtime/run_selected_phase_b.py",
+    "R10_PHASE_B_TEST": "scripts/research/taro_o1r_r10_clear_runtime/test_run_selected_phase_b.py",
 }
 EXPECTED_USER_AUTHORITY = {
     "confirmed_by": "user",
@@ -219,7 +224,7 @@ def load_selection_bundle() -> tuple[dict[str, Any], dict[str, Any], dict[str, A
     result = _read_json(root / "result.json")
     require(
         result.get("schema") == "blindassist.taro.o1r.r10_fresh_pool_top8_selection_result.v1"
-        and result.get("terminal") == top8.PASS_TERMINAL
+        and result.get("terminal") == top8_r1.PASS_TERMINAL
         and result.get("passed") is True
         and result.get("execution_valid") is True
         and result.get("parent_scores_sha256") == parent_scores["content_sha256"]
@@ -233,7 +238,7 @@ def load_selection_bundle() -> tuple[dict[str, Any], dict[str, Any], dict[str, A
         root,
         _read_json(root / "manifest.json"),
         "blindassist.taro.o1r.r10_fresh_pool_top8_selection_manifest.v1",
-        top8.PASS_TERMINAL,
+        top8_r1.PASS_TERMINAL,
         {"execution-receipt.json", "parent-scores.json", "selection.json", "result.json"},
     )
     return parent_scores, selection, result

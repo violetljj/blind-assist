@@ -87,6 +87,14 @@ class SelectedPhaseBTests(unittest.TestCase):
         source = runner.Path(runner.__file__).read_text(encoding="utf-8")
         self.assertNotIn("taro_o1r_r8_clear_runtime", source)
         self.assertNotRegex(source, r"(?m)^SELECTED_FRAME_COUNT\s*=")
+        self.assertEqual(
+            runner.SELECTION_ROOT,
+            "artifacts.local/evidence/taro/o1r-r10-fresh-pool-top8-selection-r1",
+        )
+        self.assertEqual(
+            runner.top8_r1.PASS_TERMINAL,
+            "TARO_O1R_R10_FRESH_POOL_TOP8_SOURCE_ONLY_SELECTION_R1_SEALED_PASS",
+        )
 
 
 if __name__ == "__main__":
