@@ -2,7 +2,7 @@
 
 Status: `current`
 
-Last verified: 2026-08-12
+Last verified: 2026-08-13
 
 This kit gives maintainers one honest technical story, reusable visuals, a real-
 device demo contract, and channel-specific copy. Replace every bracketed
@@ -68,9 +68,9 @@ The arrows are gated transitions, not an automatic maturity pipeline.
 
 Keep the live URLs in posts rather than copying issue descriptions:
 
-1. Verify the English three-minute Quick Start on a clean Linux host.
-2. Add regression coverage for documentation entry-page navigation.
-3. Extend the deterministic bilingual accessibility-string guard.
+1. [Add regression fixtures for the community documentation entry pages](https://github.com/violetljj/blind-assist/issues/27).
+2. [Extend the deterministic bilingual accessibility-string guard](https://github.com/violetljj/blind-assist/issues/28).
+3. [Add round-trip tests for every daily usage preset](https://github.com/violetljj/blind-assist/issues/29).
 
 The canonical queue is the
 [`good first issue` search](https://github.com/violetljj/blind-assist/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22).
@@ -113,11 +113,26 @@ input route, whether speech/vibration was enabled, edits made, and a link to the
 limitations section. A video is interface and device-path evidence only; it is not
 user-outcome or safety evidence.
 
+Fill this card before recording and publish it next to the video:
+
+```text
+Device model:
+Android version:
+BlindAssist commit or tag:
+Recording date (UTC):
+Input route: CameraX / isolated local stream
+Speech enabled: yes / no
+Vibration enabled: yes / no
+Video edits: none / loading-only cuts described here
+Limitations: https://github.com/violetljj/blind-assist/blob/master/docs/COMMUNITY_LAUNCH_KIT.md#what-the-public-project-can-and-cannot-claim
+```
+
 ## Pre-publication checklist
 
 - The Quick Start commands pass on the environment claimed in the post.
 - The demo metadata is complete and the file is accessible with captions.
-- All `[DEMO_URL]` and `[GOOD_FIRST_ISSUE_URL]` placeholders are replaced.
+- The remaining `[DEMO_URL]` placeholders are replaced with one public,
+  captioned, metadata-complete real-device recording.
 - The linked issues remain open and unassigned.
 - No screenshot, log, path, device identifier, token, or media leaks private data.
 - The post asks for review, reproduction, or contribution—not coordinated stars.
@@ -135,9 +150,9 @@ user-outcome or safety evidence.
 >
 > 我更想分享的不是“AI 助盲神器”，而是项目如何公开记录模型来源、可复现检查、失败结果和 `UNKNOWN`，并明确区分代码可运行、真机验证、产品权限与安全结论。
 >
-> 三分钟英文 Quick Start：[QUICK_START_URL]
+> 三分钟英文 Quick Start：https://github.com/violetljj/blind-assist/blob/master/docs/QUICKSTART_EN.md
 > 真实设备演示：[DEMO_URL]
-> 新手任务：[GOOD_FIRST_ISSUE_URL]
+> 新手任务：https://github.com/violetljj/blind-assist/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22
 >
 > 目前尤其希望得到 Android accessibility / TalkBack、on-device ML、Linux 构建和 reproducible evaluation 方面的代码审查与贡献。它不是安全认证设备，也不替代盲杖、导盲犬、训练或人工判断。欢迎指出构建复现问题和证据边界问题。
 
@@ -154,9 +169,9 @@ V2EX's promotion area instead of disguising it as discussion.
 >
 > The unusual part is not a claim that the app makes mobility safe. The repository publishes model provenance, deterministic checks, negative research results, and the boundary between code evidence, device evidence, and product authority. Research and benchmark apps cannot silently replace the default app.
 >
-> 3-minute quick start: [QUICK_START_URL]
+> 3-minute quick start: https://github.com/violetljj/blind-assist/blob/master/docs/QUICKSTART_EN.md
 > 60–90 second real-device demo: [DEMO_URL]
-> Good first issues: [GOOD_FIRST_ISSUE_URL]
+> Good first issues: https://github.com/violetljj/blind-assist/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22
 >
 > I would value feedback or contributors in TalkBack/Compose accessibility, on-device ML, Linux build reproducibility, and evaluation tooling. BlindAssist is a research prototype, not a certified mobility device.
 
@@ -171,7 +186,7 @@ self-promotion.
 
 > BlindAssist runs camera inference on-device and maps results into deterministic UI, speech, and vibration feedback. I built it as a graduate research project, but the main reason for sharing it is methodological: the repository preserves provenance, failed experiments, and `UNKNOWN`, and prevents research code from automatically gaining product or safety authority.
 >
-> You can build the default Android app, inspect the packaged model identity, and reproduce the public checks. The short real-device demo is here: [DEMO_URL]. The three-minute source quick start is here: [QUICK_START_URL].
+> You can build the default Android app, inspect the packaged model identity, and reproduce the public checks. The short real-device demo is here: [DEMO_URL]. The three-minute source quick start is here: https://github.com/violetljj/blind-assist/blob/master/docs/QUICKSTART_EN.md.
 >
 > I am looking for technical critique and contributors in Android accessibility, on-device ML, and reproducible evaluation. This is not a certified mobility device and it does not replace established mobility aids or training.
 
@@ -197,9 +212,127 @@ Submit only where the list accepts active open-source Android projects in this
 scope. One normal pull request to one well-matched list is better than bulk
 submissions.
 
+### Ovio submission fallback email
+
+Use this only when the public project-submission form is unavailable. Send it
+from a working contact address to `hello@ovio.org`.
+
+**Subject:** Project submission: BlindAssist Android accessibility research prototype
+
+> Hello Ovio team,
+>
+> I maintain BlindAssist, an open-source Android research prototype for on-device assistive perception, accessible feedback, and reproducible evaluation:
+> https://github.com/violetljj/blind-assist
+>
+> The repository has a contributor guide and bounded newcomer tasks with exact files, acceptance criteria, validation commands, forbidden scope, and effort estimates:
+> https://github.com/violetljj/blind-assist/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22
+>
+> I attempted to use the Ovio project-submission form, but its request failed before the site confirmed receipt. Would you consider adding BlindAssist to the contributor-friendly project portfolio, or advise on the current submission path?
+>
+> BlindAssist is a research prototype and does not claim certified mobility safety or replace established mobility aids, training, or human judgment.
+>
+> Regards,
+> Junjie Lai (`violetljj`)
+
 ### Lab, research institute, or course group
 
-> 我在维护开源项目 BlindAssist，现招募少量代码审查与复现贡献者，不组织统一点 star。适合的任务包括：在干净 Linux 环境验证构建说明、检查 Compose/TalkBack 无障碍语义、补充确定性 Kotlin 单测、复核端侧模型来源。每个任务都有精确文件、验收标准和命令，可独立署名提交 PR。项目是研究原型，不作安全或用户效果承诺。入口：[GOOD_FIRST_ISSUE_URL]
+> 我在维护开源项目 BlindAssist，现招募少量代码审查与复现贡献者，不组织统一点 star。适合的任务包括：检查 Compose/TalkBack 无障碍语义、补充确定性 Kotlin 单测、验证文档导航和复核端侧模型来源。每个任务都有精确文件、验收标准和命令，可独立署名提交 PR。项目是研究原型，不作安全或用户效果承诺。入口：https://github.com/violetljj/blind-assist/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22
+
+English version:
+
+> I maintain BlindAssist, an open-source Android assistive-perception research prototype, and I am looking for a small number of code-review and reproduction contributors—not coordinated stars. Current tasks cover Compose/TalkBack accessibility checks, deterministic Kotlin tests, documentation navigation fixtures, and on-device model provenance. Each issue names exact files, acceptance criteria, validation commands, forbidden scope, and an effort estimate, so contributors can submit an independently attributable PR. The project does not claim certified mobility safety or user outcomes. Start here: https://github.com/violetljj/blind-assist/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22
+
+## English technical article draft
+
+### From CameraX to on-device perception: why BlindAssist publishes what it cannot claim
+
+BlindAssist is an open-source Android research prototype for on-device assistive
+perception. The default application combines CameraX, a packaged LiteRT/TFLite
+model, deterministic risk and stabilization logic, Jetpack Compose UI, speech,
+and vibration feedback. That description says what the code path contains. It
+does not say that the prototype makes independent mobility safe.
+
+This distinction is the central engineering idea behind the project. A camera
+frame reaching a model, a test passing, and an APK running on a phone are useful
+forms of evidence, but they answer different questions. BlindAssist keeps those
+questions separate so that a successful demo cannot silently become a claim
+about user benefit or safety.
+
+#### 1. A small, inspectable default path
+
+The stable Android path is intentionally narrower than the research workspace.
+The app module owns the shell and packaged assets; feature and core modules own
+runtime coordination, pure assistive-risk logic, vision, device adapters, and UI
+state. Experimental benchmark and research applications remain isolated. A
+research result cannot replace the default model or feedback behavior merely
+because it looks promising in a notebook or offline replay.
+
+The public three-minute Quick Start lets a contributor clone the repository,
+run the supported preflight, and build the default app without first learning
+the research history. That is the first reproducibility target: another person
+should be able to identify the supported entry point and report the exact step
+that fails.
+
+Quick Start: https://github.com/violetljj/blind-assist/blob/master/docs/QUICKSTART_EN.md
+
+#### 2. Deterministic feedback does not mean deterministic safety
+
+Model outputs are mapped through explicit state and feedback policies before
+they reach the UI, speech, or vibration surfaces. This makes important behavior
+testable: contributors can inspect preset round trips, accessibility strings,
+state transitions, and the difference between an alert and continued
+monitoring.
+
+But deterministic code cannot remove uncertainty from the camera, scene,
+model, or device. `UNKNOWN` is therefore not treated as a negative observation.
+Likewise, “Monitoring” means that the current policy has not produced an alert;
+it does not mean that the environment is safe.
+
+#### 3. Negative results are part of the public interface
+
+Open research is less useful when only successful experiments survive. The
+BlindAssist repository preserves failed evaluations and the boundary of what
+they invalidate. A candidate can improve one offline metric and still fail
+temporal, state-consistency, latency, or same-device requirements. Such a result
+may teach us something, but it does not receive default-app or product
+authority.
+
+This is also why model provenance matters. The project records the identity and
+hash of packaged assets and keeps dataset or derived-model licensing questions
+separate from whether upstream source code is open. Reproducibility includes
+knowing what cannot yet be redistributed or promoted.
+
+#### 4. Code evidence, device evidence, and product authority
+
+BlindAssist uses three deliberately different questions:
+
+1. **Code evidence:** Can the source, tests, contracts, and packaged asset
+   identity be inspected and reproduced?
+2. **Device evidence:** Did the named commit and APK exercise the intended path
+   on a named Android device under a disclosed protocol?
+3. **Product authority:** Is there sufficient evidence and governance to make a
+   user-outcome, safety, or deployment claim?
+
+These are gated transitions, not an automatic maturity ladder. A real-device
+video can support a claim that a current interface path ran on that device. It
+cannot establish effectiveness for blind users, certify obstacle avoidance, or
+replace a cane, guide dog, orientation and mobility training, or human judgment.
+
+#### 5. What contributors can own
+
+The most useful early contributions are bounded and reviewable: verify the
+Quick Start on a clean host, add deterministic unit tests, extend bilingual
+accessibility checks, improve documentation navigation fixtures, or review
+model provenance. Each newcomer issue includes exact files, acceptance
+criteria, commands, forbidden scope, and an effort estimate.
+
+Good first issues: https://github.com/violetljj/blind-assist/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22
+
+BlindAssist is shared as an inspectable engineering and research project, not
+as an “AI mobility solution.” If you work on Android accessibility, on-device
+ML, reproducible evaluation, or evidence-aware open-source maintenance, the
+most valuable contribution is a reproducible finding or a focused PR—even when
+the finding is that something does not work yet.
 
 ## Maintainer follow-through
 
