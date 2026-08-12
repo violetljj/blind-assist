@@ -3,6 +3,21 @@
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。完成 DepthART-S D3R1 exact-127
+  Phase-A intrinsics/trajectory body 与 label-blind continuity。新 D3R1 materializer 使用 NoRedirect
+  GET、HEAD/GET 三头精确绑定、全池不可早停、3 位 checkpoint、连续前缀 resume 与 retained-source
+  containment；预冻结 validator 从一开始同时覆盖合法 PASS/FAIL。正式下载 254 bodies 共
+  `133,734,849 bytes`，全部一次成功；完整处理 127 identities，校验 `603,634` 个 `.pincam`
+  payload 与 `99,155` trajectory rows。producer 得到 `53/127` eligible，按 frozen pool order 锁定
+  exact first-32；离线 validator 重哈希/重解析全部 bodies 后同结论 PASS。没有 RGB/depth/confidence、
+  task truth/model、TRAIN/DEVELOPMENT、R2、性能、默认 App、production 或 safety authority。因原 source
+  receipt 明确不含 Phase-B assets，唯一 successor 为
+  `EXPLICIT_D3R1_PHASE_B_DEPTH_CONFIDENCE_SOURCE_SCOPE_REGISTRATION_FOR_EXACT_32_PHASE_A_SELECTION`，
+  本步不直接发送 Phase-B HEAD/GET。21 项 focused tests、frozen binding/selected-roster replay、JSON、
+  diff 与 docs-index checks PASS；全局 structure gate 仍只被既有 TARO 的 7 个未登记/contract 不完整
+  runtime module、module count 及 TARO current-status/successor 漂移阻塞，未报告 D3R1/DepthART 缺陷，
+  本步未改写该并行工作。
+
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。完成 DepthART-S D3R1 exact-127
   Phase-A intrinsics/trajectory HEAD-only preflight。新执行器禁止 redirect（避免 urllib 将 HEAD
   自动改为 GET），冻结 max-attempts=3 与 transient-only retry，并在任何网络前独占新 attempt root；
   response `read/readinto/peek` 由定向测试强制不可调用。正式执行 254/254 assets 均为 HTTP 200、
