@@ -2,6 +2,17 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。冻结 TARO O1R R11 all-48 source-only Phase A
+  one-shot execution lock，状态 `AUTHORIZED_UNCONSUMED / FORMAL_PHASE_A_NOT_RUN`。锁精确绑定已推送 implementation
+  commit `79c976f8f5c919d4fa70563781eb6db498f69c6a`、64 个完整 repository/import/artifact bindings、48 parents /
+  1,043 frames / 9,387 queries、正式 Python 3.11.9 + Torch 2.11.0 CUDA 12.8 + RTX 5060 runtime、DepthART
+  source/checkpoint/preprocess/postprocess、R9 successor selector、用户 exact R11 authority、16 h / 16 GiB RSS /
+  12 GiB CUDA / 2 GiB evidence ceilings，以及 `5,218 prior files + atomic terminal = 5,219` 的终态合同。runner
+  static preflight 与不导入 producer 的 independent lock validator 均 PASS，content SHA-256 为
+  `384B956CE67DF23812EA31DFD48B7D94CA2885CA83FA77C2E481BD90EC70B832`；正式 root 仍不存在，未读 source
+  member、未运行模型、FARO/truth/training/network 均为 0。锁推送到 `origin/master` 前不得激活；推送后唯一动作
+  是 formal CUDA 环境下 exact module argv，root 创建即消费，不覆盖、不续跑、不重跑。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。完成 TARO O1R R11 all-48 source-only Phase A
   implementation lock，状态 `LOCKED_NON_EXECUTING / SCIENTIFIC_NOT_RUN / FORMAL_PHASE_A_NOT_RUN`。独立 runner
   冻结 exact `48 parents / 1,043 frames / 9,387 queries`、`5F+3=5,218` terminal 前文件数与最终 5,219-file root；专用
