@@ -45,6 +45,7 @@ $requiredFiles = @(
     '.github/ISSUE_TEMPLATE/feature_request.yml',
     '.github/pull_request_template.md',
     '.github/workflows/android.yml',
+    '.github/workflows/codeql.yml',
     '.github/workflows/release.yml',
     'configs/public_release_assets.json'
 )
@@ -148,6 +149,29 @@ if (Test-Path -LiteralPath $releaseWorkflowPath -PathType Leaf) {
         if ($releaseWorkflow -notmatch [regex]::Escape($requiredReleaseStep)) {
             $failures.Add("Release workflow must run $requiredReleaseStep.")
         }
+    }
+}
+
+$codeqlWorkflowPath = Resolve-PublicPath '.github/workflows/codeql.yml'
+if (Test-Path -LiteralPath $codeqlWorkflowPath -PathType Leaf) {
+    $codeqlWorkflow = Get-Content -Raw -LiteralPath $codeqlWorkflowPath -Encoding UTF8
+    $codeqlActionReferences = [regex]::Matches(
+        $codeqlWorkflow,
+        'uses:\s*github/codeql-action/[^@\s]+@([^\s#]+)'
+    )
+    if ($codeqlActionReferences.Count -lt 2) {
+        $failures.Add('CodeQL workflow must initialize and analyze the repository.')
+    }
+    foreach ($reference in $codeqlActionReferences) {
+        if ($reference.Groups[1].Value -notmatch '^[0-9a-f]{40}$') {
+            $failures.Add("CodeQL action must be pinned to a full commit SHA: $($reference.Value)")
+        }
+    }
+    if ($codeqlWorkflow -notmatch 'build-mode:\s*manual') {
+        $failures.Add('CodeQL must use a manual build for Java and Kotlin sources.')
+    }
+    if ($codeqlWorkflow -notmatch '(?m)^\s*assembleDebug\s*$') {
+        $failures.Add('CodeQL manual analysis must compile Android debug sources with assembleDebug.')
     }
 }
 

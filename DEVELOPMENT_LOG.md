@@ -2,6 +2,13 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。将 GitHub CodeQL 从无法完成 Kotlin
+  autobuild 的默认配置改为仓库内可审查的高级配置：Actions、C/C++ 与 Python 使用无构建分析，
+  Java/Kotlin 使用 JDK 17 和 `assembleDebug` 手动编译，覆盖 push、PR 与每周定时扫描。CodeQL action
+  固定到完整 commit SHA；open-source readiness gate 现在要求该工作流存在、Java/Kotlin 保持 manual
+  build，并用负向 canary 拒绝浮动的 `@v4` action 引用。此变更只建立静态安全扫描证据，不把扫描
+  通过提升为设备、产品或安全结论。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。建立面向外部贡献者的社区增长入口：新增英文
   三分钟 Quick Start、技术发布包、稳定 Android 架构图和“代码证据 → 设备证据 → 产品权限”边界图；发布包
   明确要求真实设备连续录制与元数据，缺少设备时不得伪造演示或把截图/benchmark 包装成用户效果。治理规则
