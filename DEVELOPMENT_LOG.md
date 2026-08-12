@@ -9,7 +9,8 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   4 个 source bodies 共 `841,796,127 bytes`，无 temp、scientific manifest/validation 或 selection。
   metadata-only auditor 只复验 attempt/checkpoint seals、root inventory 与 body length=HEAD，不读取/哈希
   body 或打开 archive，结果 PASS；双 modality 各 16,106 PNG、目标 stem 均缺而邻帧存在的 post-stop
-  观察仅封为 operator diagnostic，不冒充独立科学复验。正式状态为 `INVALID_INCOMPLETE`，不是科学
+  观察没有绑定 probe/log/failure receipt 或 identity-2 body SHA，只记为 unbound operator diagnostic，
+  不冒充独立科学复验。正式状态为 `INVALID_INCOMPLETE`，不是科学
   PASS/FAIL 或 `D3_DATA_SUPPORT_NOT_EVALUABLE`；`scientific_terminal=null / next_gate=null`。当前 r0
   不得 resume、repair、覆盖、换帧、换身份或同版本重跑，RGB、模型、角色、训练、Development、R2、
   性能、默认 App、production 与 safety 均未授权。

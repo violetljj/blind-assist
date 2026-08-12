@@ -73,7 +73,8 @@
     "checkpointed_identity_count": 1,
     "checkpointed_qualified_so_far": 0,
     "qualified_identity_count": null,
-    "partial_source_identity_count": 2,
+    "retained_source_identity_count": 2,
+    "uncheckpointed_source_identity_count": 1,
     "retained_source_asset_count": 4,
     "retained_source_body_bytes": 841796127,
     "attempt_file_count": 7,
@@ -84,7 +85,8 @@
     "selected_phase_b": null
   },
   "producer_stop_observation": {
-    "evidence_class": "EXECUTOR_OBSERVATION_SEALED_BY_THIS_RECEIPT_NOT_INDEPENDENTLY_REPLAYED_BY_THE_METADATA_ONLY_INVENTORY_AUDITOR",
+    "evidence_class": "EXECUTOR_ATTESTATION_RECORDED_BY_THIS_RECEIPT_WITHOUT_BOUND_PROCESS_LOG_NOT_INDEPENDENTLY_REPLAYED",
+    "process_log_or_failure_receipt_bound": false,
     "exception_type": "ValueError",
     "exception_message": "missing selected depth frames: ['42898216_694900.389']",
     "failing_selection_order": 2,
@@ -96,8 +98,11 @@
     "producer_checkpoint_002_written": false
   },
   "post_stop_operator_probe": {
-    "evidence_class": "DIAGNOSTIC_OPERATOR_OBSERVATION_SEALED_BY_THIS_RECEIPT_NOT_AN_INDEPENDENT_SCIENTIFIC_RESULT",
-    "purpose": "exclude a member-name parsing artifact without changing any frame, threshold, identity or selection",
+    "evidence_class": "UNBOUND_POST_STOP_OPERATOR_DIAGNOSTIC_NOT_CANONICAL_EVIDENCE",
+    "purpose": "characterize the reported member-name absence without changing any frame, threshold, identity or selection",
+    "probe_implementation_or_log_bound": false,
+    "identity_2_body_content_sha_bound": false,
+    "not_used_for_execution_status_scientific_terminal_or_selection": true,
     "lowres_depth_zip": {
       "png_frame_member_count": 16106,
       "zip_testzip_result": null,

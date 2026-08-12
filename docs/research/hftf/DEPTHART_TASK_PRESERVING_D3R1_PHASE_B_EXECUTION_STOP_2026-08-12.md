@@ -17,9 +17,10 @@ ineligible。只有完整处理 32 个身份后才允许计算 first-16。因此
 - 没有生成 scientific manifest/validation，没有评价 selection，也没有 first-16 lock；
 - `scientific_terminal = null`，`selected_phase_b = null`，`next_gate = null`。
 
-停止后的诊断探针只用于排除 member-name 解析误差：depth 与 confidence 两个 ZIP 都观察到
+停止后的未绑定 operator 诊断只用于描述报告的 member-name 缺失：depth 与 confidence 两个 ZIP 都观察到
 `16,106` 个 PNG stem、CRC probe 无坏成员，目标 stem 在两种 modality 中都不存在，而相邻
-`...694900.373` 与 `...694900.406` 均存在。该观察已明确标记为 operator diagnostic，
+`...694900.373` 与 `...694900.406` 均存在。该观察没有绑定 probe implementation、stdout/log、
+failure receipt 或 identity-2 body SHA，只作为 `UNBOUND_POST_STOP_OPERATOR_DIAGNOSTIC` 记录；
 metadata-only inventory auditor 没有重新打开 archive 或读取正文，因此它不冒充独立科学结果。
 
 当前 r0 root 保留且不可修改。因为第二个身份已有两个 source body 但无 checkpoint，resume
