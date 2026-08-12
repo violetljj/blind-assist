@@ -1,0 +1,83 @@
+{
+  "schema": "blindassist_assistive_geometry_r2_f1_attempt03_fresh_held_source_lock_r1_v1",
+  "lock_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT03_FRESH_HELD_SOURCE_LOCK_R1_2026-08-11",
+  "frozen_at": "2026-08-11",
+  "status": "ATTEMPT03_FRESH_HELD_R1_DOWNLOAD_AND_LABEL_MATERIALIZATION_AUTHORIZED",
+  "supersedes": {
+    "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT03_FRESH_HELD_SOURCE_LOCK_2026-08-11.json",
+    "sha256": "35B8CCC7486375AC91BCF7C5E5EC09BCABEB8534E50B8754600575D972D2FAAB",
+    "failed_label_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-attempt03-fresh-held-labels-r0/result.json",
+      "sha256": "7EFE32AFC3AA89B14BA22C76C55E3CC5CC389297953169A79AC64EBE669FF510"
+    },
+    "reason": "The identity-fresh Freiburg3 large-cabinet selection parent has no accelerometer samples in any selected frame, so support and boundary evidence correctly remained UNKNOWN. No model or baseline metric was opened."
+  },
+  "question": "Can an IMU-gravity and deterministic support-geometry correction close the two stable Attempt-02 factor gaps without changing the eight already successful factor metrics?",
+  "assignment": {
+    "token": "AG_R2_F1_ATTEMPT03_FRESH_HELD_2026-08-11",
+    "replacement_token": "AG_R2_F1_ATTEMPT03_SELECTION_REPLACEMENT_2026-08-11",
+    "replacement_rule": "Replace only the denominator-invalid CHECKPOINT_SELECTION parent. Among preexisting TUM Freiburg1 archives rostered but never used for AG F1 labels or model metrics, SHA256(replacement_token + ':' + parent_id) selects plant before xyz. TRAIN_CANARY identities and orientations remain byte-for-byte unchanged.",
+    "expected_archive_bytes": 4108735958
+  },
+  "roles": {
+    "CHECKPOINT_SELECTION": [
+      {
+        "parent_id": "rgbd_dataset_freiburg2_metallic_sphere2",
+        "family": "freiburg2",
+        "orientation": "LANDSCAPE_IDENTITY",
+        "assignment_token": "AG_R2_F1_ATTEMPT03_FRESH_HELD_2026-08-11",
+        "assignment_sha256": "7905FB2ABB8BA58800D8E4A3151E2B9A622C7CC87261305CA4D6FEB5C79C994D",
+        "resolved_url": "https://webshare.cvg.cit.tum.de/g/rgbd/dataset/freiburg2/rgbd_dataset_freiburg2_metallic_sphere2.tgz",
+        "content_length": 986107433
+      },
+      {
+        "parent_id": "rgbd_dataset_freiburg1_plant",
+        "family": "freiburg1",
+        "orientation": "PORTRAIT_ROT90_CLOCKWISE",
+        "assignment_token": "AG_R2_F1_ATTEMPT03_SELECTION_REPLACEMENT_2026-08-11",
+        "assignment_sha256": "7EF2C1289CD42B7537C893F0A45CCA15941FFDED37B3BD9B31F817DE049505B0",
+        "resolved_url": "https://webshare.cvg.cit.tum.de/g/rgbd/dataset/freiburg1/rgbd_dataset_freiburg1_plant.tgz",
+        "content_length": 695620135,
+        "source_sha256": "2A5B3DB30AAEC442C5116FB6269F865A33F22DB72263D12FFF3675A0342B9BD0",
+        "last_modified": "Fri, 30 Sep 2011 15:15:04 GMT",
+        "etag": "\"29765227-4ae2a16f72e00\"",
+        "preexisting_source_archive": true,
+        "prior_ag_f1_label_or_model_metric": false
+      }
+    ],
+    "TRAIN_CANARY": [
+      {
+        "parent_id": "rgbd_dataset_freiburg2_metallic_sphere",
+        "family": "freiburg2",
+        "orientation": "LANDSCAPE_IDENTITY",
+        "assignment_token": "AG_R2_F1_ATTEMPT03_FRESH_HELD_2026-08-11",
+        "assignment_sha256": "D62F46BACA36FD60A161939781DDD18F26C487B6078B92F8AB28EAE1EB3F1F77",
+        "resolved_url": "https://webshare.cvg.cit.tum.de/g/rgbd/dataset/freiburg2/rgbd_dataset_freiburg2_metallic_sphere.tgz",
+        "content_length": 1244837550
+      },
+      {
+        "parent_id": "rgbd_dataset_freiburg2_flowerbouquet_brownbackground",
+        "family": "freiburg2",
+        "orientation": "PORTRAIT_ROT90_CLOCKWISE",
+        "assignment_token": "AG_R2_F1_ATTEMPT03_FRESH_HELD_2026-08-11",
+        "assignment_sha256": "FE81057C6B6AFC3F891C210084AA27F751E004A1BF1BE2A5CFA217D72D403DDA",
+        "resolved_url": "https://webshare.cvg.cit.tum.de/g/rgbd/dataset/freiburg2/rgbd_dataset_freiburg2_flowerbouquet_brownbackground.tgz",
+        "content_length": 1182170840
+      }
+    ]
+  },
+  "source_and_label_contract": {
+    "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_SUPERVISION_SOURCE_AND_LABEL_CONTRACT_LOCK_2026-08-11.json",
+    "sha256": "166EA9ED5CA1C2234D14308FE43F8A9794BB76CAA29C19E551E1B42A804D5224"
+  },
+  "authority": {
+    "materialize_twelve_source_native_label_payloads": true,
+    "validate_parent_level_joint_factor_denominators": true,
+    "read_checkpoint_selection_model_metrics": false,
+    "read_train_canary_model_or_baseline_metrics": false,
+    "optimizer_step": false,
+    "reducer_or_task_outcome": false
+  },
+  "unique_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT03_FRESH_HELD_LABEL_RESULT_R1",
+  "claim_boundary": "One source-support replacement in CHECKPOINT_SELECTION only; the two identity-fresh TRAIN_CANARY parents remain unopened for model and baseline metrics."
+}

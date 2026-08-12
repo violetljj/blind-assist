@@ -1,0 +1,74 @@
+{
+  "schema": "blindassist_ag_r2_f1_attempt17_pose_anchored_fresh_canary_execution_lock_v1",
+  "lock_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT17_POSE_ANCHORED_FRESH_CANARY_EXECUTION_LOCK",
+  "version": "2026-08-12.r0",
+  "status": "ATTEMPT17_POSE_ANCHORED_FRESH_CANARY_EXECUTION_AUTHORIZED_ONCE",
+  "question": "Does the frozen cross-domain factor predictor plus consumed-only frame-level geometry calibration produce nontrivial, calibrated factors on four fresh Freiburg3 parents, before any reducer or task outcome is opened?",
+  "bindings": {
+    "implementation": {
+      "path": "scripts/research/assistive_geometry/run_ag_r2_f1_attempt17_pose_anchored_fresh_canary.py",
+      "sha256": "F87FBFC9EB1CBCF36D5FF69575AD67007E52EAE98BB8B22A48D0D5FD68A2E290"
+    },
+    "fresh_labels": {
+      "path": "artifacts.local/experiments/ag-r2-f1-attempt17-pose-anchored-fresh-canary-labels-r1/result.json",
+      "sha256": "BD8379B653C5F492EC6F740959F1F1A2903A9170F7C9A0FD64CBBC264FD27260"
+    },
+    "calibration_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-attempt20-frame-geometry-uncertainty-r2/result.json",
+      "sha256": "50E8BE0A25BD40BB449E84E759912718A5708D43C83E77BFA51A3794E3FAED8D"
+    },
+    "complete_factor_checkpoint": {
+      "path": "artifacts.local/experiments/ag-r2-f1-attempt18-consumed-cross-domain-adaptation-r0/cross-domain-composite.pt",
+      "sha256": "22F9E14C33EAE450874E097A4C8AC3DDFAFBAA6E50FE6EBB4A8415C5AC0613DE"
+    },
+    "baseline_result": {
+      "path": "artifacts.local/experiments/ag-r2-f1-fit-baselines-tum13-r0/result.json",
+      "sha256": "EECD5C9244C6A8A467B7890AF79D7871374AC8B325A87B48AE9E052089908F44"
+    },
+    "depthart_checkpoint": {
+      "path": "artifacts.local/models/depthart/source/checkpoints/metric/depthart_metric_indoor_s_448.pth",
+      "sha256": "597631AC7AEAB8346F4DB013C3C65EF3203DF373E21C7265D7A147093C667E65"
+    }
+  },
+  "canary": {
+    "parent_count": 4,
+    "frame_count": 12,
+    "parents": [
+      "rgbd_dataset_freiburg3_nostructure_texture_far",
+      "rgbd_dataset_freiburg3_sitting_xyz",
+      "rgbd_dataset_freiburg3_structure_texture_far",
+      "rgbd_dataset_freiburg3_walking_halfsphere"
+    ],
+    "sample_ids": [
+      "rgbd_dataset_freiburg3_nostructure_texture_far__rgb000008",
+      "rgbd_dataset_freiburg3_nostructure_texture_far__rgb000203",
+      "rgbd_dataset_freiburg3_nostructure_texture_far__rgb000441",
+      "rgbd_dataset_freiburg3_sitting_xyz__rgb000319",
+      "rgbd_dataset_freiburg3_sitting_xyz__rgb000590",
+      "rgbd_dataset_freiburg3_sitting_xyz__rgb000920",
+      "rgbd_dataset_freiburg3_structure_texture_far__rgb000148",
+      "rgbd_dataset_freiburg3_structure_texture_far__rgb000569",
+      "rgbd_dataset_freiburg3_structure_texture_far__rgb000862",
+      "rgbd_dataset_freiburg3_walking_halfsphere__rgb000063",
+      "rgbd_dataset_freiburg3_walking_halfsphere__rgb000522",
+      "rgbd_dataset_freiburg3_walking_halfsphere__rgb000915"
+    ],
+    "model_outputs_opened_before_lock": false,
+    "optimizer_or_selector_use_before_lock": false,
+    "execution_count_authorized": 1,
+    "reselection_after_outcome": false
+  },
+  "frozen_gates": {
+    "A17_C01_ALL_CORE_POINT_FACTORS_NONTRIVIAL": "For depth shape, depth scale, support Brier, obstacle Brier and boundary distance, require positive four-parent macro improvement over the frozen constant prior and favorable improvement on at least 2 of 4 parents.",
+    "A17_C02_HEIGHT_BOUNDED": "Camera-height absolute log error must be <=0.25 parent macro and <=0.50 on the worst parent.",
+    "A17_C03_RUNTIME_GRAVITY_NORMAL_EXACT": "Runtime gravity support normal must have <=0.01 rad worst-parent error and dot(normal,gravity)>=0.999 on every frame.",
+    "A17_C04_ALL_UNCERTAINTY_FAMILIES_PROPER_AND_ORDERED": "Depth, support and boundary must each improve Gaussian NLL over the frozen homoscedastic prior and have nondecreasing observed absolute residual across four predicted-sigma quantiles.",
+    "A17_C05_VALIDITY_NOT_COLLAPSED": "Every frame must retain metric-scale validity, support validity and at least one evidence-valid pixel.",
+    "A17_C06_EVIDENCE_VALIDITY_NO_MATERIAL_REGRET": "Evidence-validity Brier regret versus the frozen prior must be <=0.02.",
+    "A17_C07_ALL_PARENT_METRICS_FINITE": "Every emitted parent metric is finite.",
+    "A17_C08_TASK_AND_REDUCER_FIREWALL": "No clearance, occupancy, reducer or task outcome is read during canary execution."
+  },
+  "output_rule": "Serialize all twelve factor tensors only if every frozen gate passes; otherwise serialize none and preserve a negative terminal.",
+  "successor_if_pass": "Run FactorTensorAdapter and deterministic reducer seam verification on all twelve serialized factor tensors.",
+  "claim_ceiling": "Fresh cross-parent learnability of Tier-A/Tier-B SuperTeacher factors. It is not final reducer task utility, deployment, product or safety evidence."
+}

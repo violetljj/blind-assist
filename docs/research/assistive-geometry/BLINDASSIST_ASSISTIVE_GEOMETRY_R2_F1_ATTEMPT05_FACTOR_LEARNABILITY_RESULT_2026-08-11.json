@@ -1,0 +1,51 @@
+{
+  "schema": "blindassist_assistive_geometry_r2_f1_attempt05_factor_learnability_result_record_v1",
+  "result_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT05_FACTOR_LEARNABILITY_RESULT_2026-08-11",
+  "frozen_at": "2026-08-11",
+  "status": "ATTEMPT05_SELECTION_DEPTH_UNCERTAINTY_PASS_BOUNDARY_AND_SUPPORT_UNCERTAINTY_FAIL_CANARY_UNOPENED",
+  "runtime_result": {
+    "path": "artifacts.local/experiments/ag-r2-f1-factor-learnability-attempt05-r0/result.json",
+    "sha256": "DF182357E576E896BC49D3A8CFD86DF2D4FF06F6DB85AC63BCDCDDE47DF1F9BB"
+  },
+  "selection_result": {
+    "parents": ["rgbd_dataset_freiburg1_xyz", "rgbd_dataset_freiburg1_room"],
+    "frames": 6,
+    "point_and_geometry_metrics_passed": [
+      "boundary_distance_abs_error_px",
+      "camera_height_abs_log_error",
+      "depth_scale_abs_log_error",
+      "depth_shape_abs_log_error",
+      "obstacle_brier",
+      "support_brier",
+      "support_plane_angular_error_rad"
+    ],
+    "uncertainty_metrics": {
+      "depth": {
+        "passed": true,
+        "proper_score_gain": 0.34282472232977557,
+        "quantile_residual_means": [0.342654961430278, 0.4093966659815582, 0.45000770967647014, 0.4722799104268492]
+      },
+      "boundary": {
+        "passed": false,
+        "proper_score_gain": -0.06339542071024518,
+        "quantile_residual_means": [17.099476544292774, 16.472143338506985, 17.137712578148463, 19.042357199698053]
+      },
+      "support": {
+        "passed": false,
+        "proper_score_gain": -0.2225813269615171,
+        "quantile_residual_means": [0.6914845108985901, 0.7560175061225891, 0.7053650617599487, 1.7937560081481934]
+      }
+    },
+    "failed_primary_nll_metrics": ["boundary_nll", "support_nll"]
+  },
+  "decision": {
+    "attempt05_promoted": false,
+    "train_canary_opened": false,
+    "factor_tensors_serialized": false,
+    "point_factor_change_authorized": false,
+    "selection_parents_reclassified_as_consumed_calibration_evidence": true,
+    "attempt06_scope": "Add the consumed Attempt05 selection to uncertainty calibration, learn boundary pixel sigma and scalar support sigma, freeze two new parent-disjoint selection parents, and preserve the original Attempt05 canary unopened."
+  },
+  "unique_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT06_UNCERTAINTY_RECALIBRATION_AND_FRESH_SELECTION",
+  "claim_boundary": "Selection-only TRAIN evidence. Depth uncertainty transferred; boundary and support uncertainty did not. Point factors remain unchanged and the canary remains sealed."
+}

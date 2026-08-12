@@ -1,9 +1,16 @@
 # Assistive Geometry research scripts
 
-状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / FACTORTENSOR_ADAPTER_SYNTHETIC_CANARY_PASS / SUPERVISION_FRONTDOOR_UNSATISFIED / F1_EXECUTION_NOT_AUTHORIZED / CALIBRATION_AND_CONFIRMATION_SEALED`
+状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / CALIBRATION_AND_CONFIRMATION_SEALED`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
+
+2026-08-12 当前交付分两层：`run_ag_st_direct_teacher_to_ag_real_seam.py` 先把 source-anchored
+SuperTeacher factors 直接接入冻结 adapter/reducer；随后 learned metric/factor recipe 加冻结的
+session-height scale anchor，经 `FactorTensorAdapterV2` 在 checkpoint-unseen `sitting_rpy` 上完成最终
+12-frame seam。最终为 12/12 valid、12/12 deterministic、11/11 gates、`CLEAR=18 / UNKNOWN=90`；
+推理 `targets_loaded=false`，UNKNOWN 未转 negative，也没有任意 baseline 胜负门。Attempt17 与无锚
+walking_xyz 负结果保持冻结；当前只支持 research-pipeline mechanics，不是跨传感器或移动部署结论。
 
 ## 稳定 Interface
 
@@ -91,6 +98,17 @@
   orientation parity、component split/merge、uncertainty monotonicity 与 final-task shortcut 拒绝。
 - `run_factor_tensor_adapter_canary.py`：只接受 SHA-bound implementation lock，用两个独立进程重放
   每个 frozen case，并只写未存在的版本化 synthetic evidence root。
+- `factor_tensor_adapter_v2.py`：把 global metric-scale sigma 与 local depth-shape sigma 分开传递，
+  保留旧 adapter 的 fail-closed reducer ABI，不让任一 uncertainty 分量被另一分量覆盖。
+- `train_ag_r2_multisource_metric_depth_student.py` 与 `train_ag_r2_f1_attempt18_consumed_cross_domain_adaptation.py`：
+  只从分级 factor supervision 学 metric depth 与 support/obstacle/boundary/validity，不训练 final task state。
+- `calibrate_ag_r2_session_metric_scale_anchor.py`：只在已消费 factor depth 上从六个预声明物理候选选择
+  camera-height quantile anchor；选择过程不读取 CLEAR/OCCUPIED/UNKNOWN 或 reducer output。
+- `run_ag_r2_hybrid_factor_student_to_ag_seam.py`：组合冻结 metric/factor checkpoints、可选 session anchor、
+  分解 uncertainty 与 deterministic adapter/reducer；factor-only inference 可显式禁止加载目标。
+- `materialize_ag_r2_tum_sitting_rpy_final_confirmation_labels.py` 与
+  `run_ag_r2_tum_walking_xyz_final_v2_seam.py`：前者物化 source-native/geometry-anchored 12-frame labels，
+  后者是参数化的一次性最终 seam runner；文件名保留 walking_xyz 历史，但 final parent/receipt 由参数锁定。
 - `run_ag_st_stage0a.py`：独立 `WILD_LAB` factor-only runner；source role 参数化，可从 B0 raw manifest
   或 scoped-media manifest 恢复 RGB/K/pose/partial depth，以确定性连续块隐藏 reference，执行
   source-anchored MapAnything，并输出 baseline、校准前后 depth residual 与 confidence risk-coverage。
@@ -200,11 +218,11 @@ support/boundary 仍是 conservative pseudo-label、
 sigma 是 proxy，不产生完整 truth、正式 F1、产品或 safety authority。
 时序模块同样只有未激活 mechanics；没有新 temporal cohort、训练、任务收益或设备性能 authority。
 移动导出受历史 M0 质量先于性能协议约束；现有 DepthART D1 cohort 不得复用为 Assistive Geometry
-选模证据。新 R2 已完成 F0 reducer mechanics，并冻结 F1-P schema/loss/selection/Kill Gate；当前
-continuous boundary 与 complete factor-schema truth 均为 0，F1 supervision frontdoor 不满足；此外
-F1 tensors 与 F0 reducer 之间的 deterministic `FactorTensorAdapter` 已完成 8-case/A01–A10 synthetic
-canary：8/8 cases、10/10 gates、8/8 双进程 replay 与 7/7 sigma mutation PASS。没有 factor model、label materializer、trainer、optimizer、checkpoint、真实任务收益
-或 F1 execution authority。
+选模证据。新 R2 已完成 F0 reducer mechanics、F1-P schema/loss/selection/Kill Gate、正式 source-native
+supervision frontdoor 和 deterministic `FactorTensorAdapter`；adapter synthetic evidence 仍为
+8/8 cases、10/10 gates、8/8 双进程 replay 与 7/7 sigma mutation PASS。其后 direct SuperTeacher
+real seam 又在 12 帧上完成全部 tensor/adapter/reducer receipt。该结果证明 reference factor mechanics，
+不证明 learned student、移动推理或真实任务收益。
 `UNKNOWN` 不得当作负例；synthetic shape 与 benchmark geometry 不得冒充任务质量。
 
 ## 停止条件
@@ -218,12 +236,11 @@ geometry transition agreement 均为 `0/3` seed 通过，终态为
 `B1_A0_DEVELOPMENT_EVALUATION_FAIL_TASK_GATES`。旧 A1 条件 successor 未激活，A1–A4、teacher、
 移动和时序执行继续禁止。只读 failure anatomy 已完成且不可晋级；Selection 已消费且不得复用，
 Calibration 与 Confirmation 保持封存。R2 F0 已签署
-`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_PASS`；F1-P 又签署
-`R2_F1_PROTOCOL_FROZEN_EXECUTION_NOT_AUTHORIZED_SUPERVISION_FRONTDOOR_UNSATISFIED`。后续接口审计签署
-`R2_F1_EXECUTION_BLOCKED_FACTORTENSOR_ADAPTER_ABSENT`；其后 protocol lock 已将缺口收缩为
-`R2_F1_FACTORTENSOR_ADAPTER_SYNTHETIC_CANARY_PASS`。当前唯一 successor 是 execution=false 的
-supervision source/label contract lock；标签物化、模型定义、训练、real outcome
-与 F1 authority 仍为 false，监督源/label contract 仍是后续独立必要门。
+`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_PASS`；历史 F1-P frontdoor 和
+adapter blocker 后续均已关闭。当前冻结终态是
+`AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION`。唯一后续是另锁
+student distillation/mobile compression；不得用 reducer state 训练、重跑已消费 fresh canary，或把
+reference mechanics 写成 HTP、默认 App、产品与 safety 结论。
 
 验证：
 

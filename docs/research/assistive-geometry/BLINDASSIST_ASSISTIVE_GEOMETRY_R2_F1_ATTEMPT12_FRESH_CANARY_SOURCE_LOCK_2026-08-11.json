@@ -1,0 +1,58 @@
+{
+  "schema": "blindassist_ag_r2_f1_attempt12_fresh_canary_source_lock_v1",
+  "lock_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT12_FRESH_CANARY_SOURCE_LOCK",
+  "frozen_at": "2026-08-11T23:47:00+08:00",
+  "status": "ATTEMPT12_FRESH_CANARY_LABEL_MATERIALIZATION_AUTHORIZED_MODEL_EVALUATION_FORBIDDEN",
+  "selection_token": "AG_R2_F1_ATTEMPT12_FRESH_CANARY_2026-08-11",
+  "selection_basis": "Before any Attempt12 model output was computed, choose one identity-hash-leading walking sequence, one identity-hash-leading sitting sequence, and the two locally complete static-object sequences from the six TUM parents absent from all prior AG-F1 label results.",
+  "source_history_boundary": "Archives may have been downloaded for other research routes, but none of these four parent identities entered the AG-F1 optimizer, internal validation, Attempt11 canary, or any AG factor metric.",
+  "parents": [
+    {
+      "parent_id": "rgbd_dataset_freiburg3_walking_static",
+      "category": "DYNAMIC_WALKING",
+      "orientation": "LANDSCAPE_IDENTITY",
+      "archive_path": "artifacts.local/downloads/tum-rgbd/rgbd_dataset_freiburg3_walking_static.tgz",
+      "archive_bytes": 474074105,
+      "archive_sha256": "8ACA832BF01746AA95FCC0B15BF42D78AD3BB8EDEF672BA4CC94A404B194F6C1"
+    },
+    {
+      "parent_id": "rgbd_dataset_freiburg3_sitting_halfsphere",
+      "category": "DYNAMIC_SITTING",
+      "orientation": "PORTRAIT_ROT90_CLOCKWISE",
+      "archive_path": "artifacts.local/downloads/quality-gated-clearance-fusion-r0-1-tum/rgbd_dataset_freiburg3_sitting_halfsphere.tgz",
+      "archive_bytes": 651422497,
+      "archive_sha256": "BA9F0FAB0D07E22F04FBFAE16EB4E3FB44088A32C920AD36C782B5024ED4B767"
+    },
+    {
+      "parent_id": "rgbd_dataset_freiburg3_teddy",
+      "category": "STATIC_OBJECT",
+      "orientation": "LANDSCAPE_IDENTITY",
+      "archive_path": "artifacts.local/downloads/ag-st-tum-third-teacher-r2/rgbd_dataset_freiburg3_teddy.tgz",
+      "archive_bytes": 1245298463,
+      "archive_sha256": "7E25358AB955B9DCAF6CB6FD2D62668345AEE97DFD2F173CB3729F5B4BFD4A5F"
+    },
+    {
+      "parent_id": "rgbd_dataset_freiburg3_cabinet",
+      "category": "STATIC_OBJECT",
+      "orientation": "PORTRAIT_ROT90_CLOCKWISE",
+      "archive_path": "artifacts.local/downloads/ag-st-tum-third-teacher-r2/rgbd_dataset_freiburg3_cabinet.tgz",
+      "archive_bytes": 507027217,
+      "archive_sha256": "2689527652C3443B373C2C016125210BABA32192566CCE76A1D5F04F7C0BA1D4"
+    }
+  ],
+  "frame_selection": {
+    "frames_per_parent": 3,
+    "total_frames": 12,
+    "rule": "Metadata-only RGB-depth-pose eligible pairing, three contiguous time terciles, SHA256 minimum in each tercile using the frozen selection token. Pixel payload and model output cannot affect identity.",
+    "parent_disjoint": true
+  },
+  "firewall": {
+    "attempt12_pixels_opened_before_lock": false,
+    "attempt12_factor_labels_opened_before_lock": false,
+    "attempt12_model_outputs_opened_before_lock": false,
+    "attempt11_consumed_parents_may_enter_future_training": true,
+    "attempt12_parents_may_enter_training_before_canary": false
+  },
+  "next_action": "Materialize source-native labels for these exact four parents, then retrain the complete factor head using only previously consumed parents.",
+  "claim_boundary": "Fresh AG-F1 canary source identity only; no label quality, model performance, reducer, deployment, product or safety claim."
+}

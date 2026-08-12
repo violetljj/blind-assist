@@ -1,0 +1,74 @@
+{
+  "schema": "blindassist_assistive_geometry_r2_f1_attempt02_role_correction_fresh_canary_lock_v1",
+  "lock_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT02_ROLE_CORRECTION_AND_FRESH_CANARY_LOCK_2026-08-11",
+  "frozen_at": "2026-08-11",
+  "status": "ATTEMPT02_ROLE_CORRECTED_NEW_CANARY_DOWNLOAD_AND_LABEL_MATERIALIZATION_AUTHORIZED",
+  "supersedes": {
+    "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT02_FACTOR_SPLIT_AND_FRESH_CANARY_EXTENSION_LOCK_2026-08-11.json",
+    "sha256": "19ADAA5CD5F5B8922CC4EF6EEDA97AD68BFD6B2F55A553493B82FC3753371CBE",
+    "reason": "Attempt 01 computed and serialized TRAIN_CANARY baseline metrics before checkpoint eligibility, so the old canary truth was opened even though no learned checkpoint was evaluated."
+  },
+  "forbidden_old_canary": [
+    "rgbd_dataset_freiburg2_large_with_loop",
+    "rgbd_dataset_freiburg2_pioneer_slam3"
+  ],
+  "corrected_roles": {
+    "FIT": "Original 9-parent / 27-frame FIT role.",
+    "ATTEMPT02_CHECKPOINT_SELECTION": {
+      "label_result": {
+        "path": "artifacts.local/experiments/ag-r2-f1-attempt02-fresh-canary-labels-r2/result.json",
+        "sha256": "7AFB581F30779A53CF1A54C15B06CFE3176D45D3CD5B92F52544283174188CCD"
+      },
+      "parents": [
+        {
+          "parent_id": "rgbd_dataset_freiburg1_teddy",
+          "orientation": "LANDSCAPE_IDENTITY",
+          "model_metric_opened": false
+        },
+        {
+          "parent_id": "rgbd_dataset_freiburg2_dishes",
+          "orientation": "PORTRAIT_ROT90_CLOCKWISE",
+          "model_metric_opened": false
+        }
+      ]
+    },
+    "ATTEMPT02_TRAIN_CANARY": {
+      "assignment_token": "AG_R2_F1_ATTEMPT02_CORRECTED_CANARY_2026-08-11",
+      "parents": [
+        {
+          "parent_id": "rgbd_dataset_freiburg2_coke",
+          "family": "freiburg2",
+          "orientation": "LANDSCAPE_IDENTITY",
+          "assignment_sha256": "6230FCC5B8302FA5116F55DE993BDADC658C4B7A8B0E5935CDA9130ADCC50979",
+          "resolved_url": "https://webshare.cvg.cit.tum.de/g/rgbd/dataset/freiburg2/rgbd_dataset_freiburg2_coke.tgz",
+          "content_length": 1373678230,
+          "last_modified": "Fri, 30 Sep 2011 15:16:24 GMT",
+          "etag": "\"51e0aa96-4ae2a1bbbe200\""
+        },
+        {
+          "parent_id": "rgbd_dataset_freiburg2_flowerbouquet",
+          "family": "freiburg2",
+          "orientation": "PORTRAIT_ROT90_CLOCKWISE",
+          "assignment_sha256": "63026AE7D17F8BAA673E99E3878F3EB8079C80E29CA0DB6A483300346EEEC354",
+          "resolved_url": "https://webshare.cvg.cit.tum.de/g/rgbd/dataset/freiburg2/rgbd_dataset_freiburg2_flowerbouquet.tgz",
+          "content_length": 1692779102,
+          "last_modified": "Fri, 30 Sep 2011 15:18:44 GMT",
+          "etag": "\"64e5c25e-4ae2a24141d00\""
+        }
+      ],
+      "expected_archive_bytes": 3066457332,
+      "fresh_identity_absent_from_repository_before_lock": true
+    }
+  },
+  "authority": {
+    "download_corrected_canary": true,
+    "materialize_six_source_native_labels": true,
+    "check_parent_level_joint_denominators": true,
+    "read_selection_model_metrics": false,
+    "read_corrected_canary_model_or_baseline_metrics": false,
+    "optimizer_step": false,
+    "reducer_or_task_outcome": false
+  },
+  "unique_successor": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_ATTEMPT02_CORRECTED_CANARY_LABEL_MATERIALIZATION_RESULT",
+  "claim_boundary": "Role correction and fresh source lock only; no Attempt-02 model result."
+}
