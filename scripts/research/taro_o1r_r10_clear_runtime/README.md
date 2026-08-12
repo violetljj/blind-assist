@@ -1,6 +1,6 @@
 # TARO O1R R10 fresh-pool runtime
 
-状态：`current / TARO_RESEARCH_MODULE / R10_FRESH_32_PARENT_POOL_FROZEN / R10_ZERO_BODY_HEAD_96_OF_96_PASS / R10_SOURCE_DOWNLOAD_96_OF_96_PASS / R10_INVENTORY_32_PARENT_710_FRAME_PASS / R10_PHASE_A_R0_DEPENDENCY_STOP_NO_CANDIDATES / R10_SOURCE_ONLY_PHASE_A_R1_AUTHORIZED / SOURCE_ONLY_BEFORE_FARO / DEFAULT_APP_UNCHANGED`
+状态：`current / TARO_RESEARCH_MODULE / R10_FRESH_32_PARENT_POOL_FROZEN / R10_ZERO_BODY_HEAD_96_OF_96_PASS / R10_SOURCE_DOWNLOAD_96_OF_96_PASS / R10_INVENTORY_32_PARENT_710_FRAME_PASS / R10_PHASE_A_R0_DEPENDENCY_STOP_NO_CANDIDATES / R10_SOURCE_ONLY_PHASE_A_R1_32_PARENT_710_FRAME_PASS / R10_TOP8_SELECTION_AUTHORIZED / SOURCE_ONLY_BEFORE_FARO / DEFAULT_APP_UNCHANGED`
 
 ## 稳定 Interface
 
@@ -10,6 +10,8 @@
 - `run_pool_inventory.py`：校验 ZIP 容器 CRC、trajectory 和 exact pose-bounded frame plan；不解码像素。
 - `run_pool_phase_a.py`：先完成 710 次注册 RGB/K DepthART inference，再读取 Apple depth/confidence 构造 source-only features；全程 FARO=0。
 - `run_pool_phase_a_r1.py`：仅接纳 R0 的 pre-inference `timm` 依赖停止，在新 root 进行完整重跑；不 resume 或采用任何 R0 candidate。
+- `run_top8_selection.py`：重验完整 Phase A 与冻结的 R9 selector evidence，先封存全部 32 个 source-only scores，再确定性封存 top eight；全程 FARO=0。
+- `run_selected_phase_b.py`：仅在 top eight 已封存后读取 selected `highres_depth`，构造 FARO labels，并调用 `phase_b_metrics.py` 的冻结双类门；不读取 unselected FARO。
 
 ## 输出
 
