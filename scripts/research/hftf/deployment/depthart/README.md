@@ -59,6 +59,8 @@ shim 已退役，统一从本目录导入。
 - `validate_depthart_task_preserving_d3r1_phase_a_head.py` 离线重放 exact request order、三项必需响应头、attempt history、redirect/error 计数与 zero-body 边界；只签署 HEAD availability，不授权 GET、continuity 或 Phase-B
 - `materialize_depthart_task_preserving_d3r1_phase_a.py` 在 fresh/resumable exact-attempt root 内下载并保留 127 identities 的 254 个 intrinsics/trajectory bodies，逐身份锁 checkpoint，完整处理全池后才锁 first-32 continuity-qualified identities；当前 53/127 eligible、exact-32 locked
 - `validate_depthart_task_preserving_d3r1_phase_a.py` 从保留源独立重算合法 PASS/FAIL terminal、全部 ZIP/pincam/trajectory/pose continuity、checkpoint/manifest inventory 与完整 first-32 payload；不需要事后 terminal repair，也不授权 Phase-B assets
+- `preflight_depthart_task_preserving_d3r1_phase_b_assets.py` 对 Phase-A 锁定 exact-32 的 depth/confidence 执行 64 个 HEAD；独立重放 selection/request-plan hash，禁 redirect 与 body read，transient-only retry，并在网络前独占 fresh attempt root
+- `validate_depthart_task_preserving_d3r1_phase_b_head.py` 离线接受并复算合法 PASS/UNAVAILABLE/INCOMPLETE 科学终态、exact-64 plan、retry history、三响应头与 zero-body 边界；只有 availability PASS 才发布 body/source-truth-support activation successor
 - `validate_depthart_task_preserving_r2_activation.py` 只检查 R2 pre-outcome activation manifest 的 cohort 角色、候选/reference 身份、固定任务门与旧 G4-D 排除项；它不读取模型输出，不激活执行，也不签署质量或部署结论
 - `plan_depthart_task_preserving_r2_arkit_roster.py` 在 Apple 官方 split CSV 上，以冻结 Git snapshot 排除全部既有 HFTF ARKit identity，再按固定哈希顺序锁定唯一 visit/session；只读元数据
 - `evaluate_depthart_task_preserving_r2_quality.py` 计算 reference/candidate 对独立 truth 的 pooled、parent-macro、session-macro 与 worst-parent 任务门；CLI 没有显式 activation receipt 会拒绝读取 outcome
