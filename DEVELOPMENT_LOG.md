@@ -14,6 +14,16 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   不得 resume、repair、覆盖、换帧、换身份或同版本重跑，RGB、模型、角色、训练、Development、R2、
   性能、默认 App、production 与 safety 均未授权。
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。完成 TARO O1R R11 bounded source download
+  implementation，尚未执行 GET。runner 只接受另行提交且 hash-bound 的 one-shot lock，绑定 consumed 144-row
+  HEAD evidence、exact request plan 与 `2,960,390,828 bytes`；逐文件复核 Content-Length、ETag/Last-Modified、
+  SHA-256、CRC32，并限制每 asset 最多 3 次、全局最多 432 次 GET，只有 transient transport/指定暂态 HTTP
+  状态可重试，三次重试共享同一个 300 秒 asset deadline，全局 deadline 在 success seal 前复核，最终 manifest
+  也计入 64 MiB evidence ceiling。独立审计发现 evidence/source 双 root 之间的竞争失败原先可能无终态；现改为 evidence root
+  reservation 后先封存 start receipt，第二 root 失败也写 sealed failure 与 manifest，并增加故障注入回归。
+  8/8 focused tests、compile 与 diff check 通过。本步 GET/source body/archive decode/source frame decode/
+  DepthART/FARO/truth/training 均为 0；唯一 successor 是提交独立 download execution lock 后消费一次固定 argv。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。正式消费 TARO O1R R11 exact 48-parent
   zero-body HEAD one-shot。144/144 冻结 URL 全部首试返回 200 + positive Content-Length，redirect/error 为
   0，ETag/Last-Modified 为 144/144；总声明正文 `2,960,390,828 bytes`，分项为 upsampling

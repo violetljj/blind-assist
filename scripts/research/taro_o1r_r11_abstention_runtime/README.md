@@ -1,6 +1,6 @@
 # TARO O1R R11 abstention runtime
 
-状态：`current / TARO_RESEARCH_MODULE / R11_WEAK_DISTAL_ABSTENTION_DEVELOPMENT_ONLY / R11_PROTOCOL_LOCKED / R11_EXACT_DATA_USE_AUTHORIZED / R11_HEAD_PASS_ONE_SHOT_CONSUMED / R11_SOURCE_UNOPENED / R11_SCIENTIFIC_NOT_RUN / DEFAULT_APP_UNCHANGED`
+状态：`current / TARO_RESEARCH_MODULE / R11_WEAK_DISTAL_ABSTENTION_DEVELOPMENT_ONLY / R11_PROTOCOL_LOCKED / R11_EXACT_DATA_USE_AUTHORIZED / R11_HEAD_PASS_ONE_SHOT_CONSUMED / R11_DOWNLOAD_IMPLEMENTATION_READY / R11_SOURCE_UNOPENED / R11_SCIENTIFIC_NOT_RUN / DEFAULT_APP_UNCHANGED`
 
 ## 稳定 Interface
 
@@ -9,14 +9,15 @@
 - `fresh_pool.py`：从固定 Git exclusion snapshot 与 R10 全 32-parent source pool 重算 exact R11 metadata-only pool。
 - `validate_protocol_lock.py`：验证 development lineage、算法、fresh roster、source/FARO firewall、双类门和 execution=false 权限。
 - `run_pool_head.py`：只接受单独提交且 hash-bound 的 R11 execution lock；对 exact 144 URL 执行 no-redirect、zero-body HEAD，并封存逐 attempt receipt。它不能下载正文、解码 source、运行模型或读取 FARO。
+- `run_pool_download.py`：只接受另行提交、绑定 HEAD evidence 与 implementation commit 的 one-shot execution lock；按 144-row 冻结顺序执行受限 GET，逐文件校验 HEAD 长度/validator、SHA-256 与 CRC32。最多三次仅限 transient transport retry；archive/source decode、模型与 FARO 始终关闭。
 
 ## 输出
 
-协议、授权 receipt、development 小型结果和 validator 写入 Git；HEAD evidence 已封存在 consumed `artifacts.local/` exclusive root。任何 source body 只能写入未来 download execution lock 指定的新 root。
+协议、授权 receipt、development 小型结果和 validator 写入 Git；HEAD evidence 已封存在 consumed `artifacts.local/` exclusive root。download implementation 与故障注入测试已经就绪，但 source root 仍不存在；任何 source body 只能写入另行提交的 download execution lock 指定的新 root。
 
 ## 安全边界
 
-R10 只作为 consumed development evidence，不能被改门、重跑或写成 confirmation。R11 候选只有 `OCCUPIED/UNKNOWN`；`UNKNOWN` 永远不是 negative。HEAD 已以 144/144 PASS 消费；source body、模型与 FARO 仍未打开，每个后续阶段仍须独立 one-shot lock。
+R10 只作为 consumed development evidence，不能被改门、重跑或写成 confirmation。R11 候选只有 `OCCUPIED/UNKNOWN`；`UNKNOWN` 永远不是 negative。HEAD 已以 144/144 PASS 消费；download implementation 不等于下载授权激活，source body、模型与 FARO 仍未打开，每个后续阶段仍须独立 one-shot lock。
 
 ## 停止条件
 
