@@ -50,6 +50,14 @@ try {
     Write-FixtureFile 'THIRD_PARTY_NOTICES.md' "$modelPath $labelsPath"
     Write-FixtureFile 'docs/MODEL_CARD.md' "$modelPath $modelHash $labelsPath $labelsHash"
     Write-FixtureFile '.github/workflows/android.yml' 'check_open_source_readiness.ps1'
+    $pinnedCodeqlWorkflow = @'
+build-mode: manual
+uses: github/codeql-action/init@5595ccaf912efad79be6eef63a5619ff05969be3
+run: |
+  assembleDebug
+uses: github/codeql-action/analyze@5595ccaf912efad79be6eef63a5619ff05969be3
+'@
+    Write-FixtureFile '.github/workflows/codeql.yml' $pinnedCodeqlWorkflow
     Write-FixtureFile '.github/workflows/release.yml' 'verify_release_apk.ps1 generate_release_manifest.ps1'
 
     $manifest = [ordered]@{
@@ -78,6 +86,9 @@ try {
     Write-FixtureFile 'configs/public_release_assets.json' ($manifest | ConvertTo-Json -Depth 5)
 
     Assert-Check $true 'complete-public-project'
+    Write-FixtureFile '.github/workflows/codeql.yml' ($pinnedCodeqlWorkflow -replace '@[0-9a-f]{40}', '@v4')
+    Assert-Check $false 'unpinned-codeql-actions'
+    Write-FixtureFile '.github/workflows/codeql.yml' $pinnedCodeqlWorkflow
     Write-FixtureFile $modelPath 'tampered-model-bytes'
     Assert-Check $false 'asset-hash-drift'
 }
