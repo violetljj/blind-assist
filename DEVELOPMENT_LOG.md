@@ -32,6 +32,16 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   两份 current 文档已进入 docs index、README、SECURITY 与 open-source readiness 门禁；不自动提交表单、
   不制造外部贡献，也不把模型输出提升为许可证、设备测量、security acceptance 或 safety 事实。
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。冻结并激活 DepthART-S D3R1
+  Phase-B exact-64 body 与 source-truth-support gate。协议固定 exact-32 × 300 Phase-A stems、
+  `5,580,879,686 bytes`、NoRedirect/无 Range、HEAD→GET Content-Length/ETag/Last-Modified
+  精确绑定、全 ZIP CRC/member safety、3 位 identity checkpoint 与连续前缀 resume；任何传输、
+  CRC、schema 或 decode 错误均为 execution invalid，不可伪装为 support failure。support 聚合显式
+  分离九格 clear/occupied，UNKNOWN 不作 negative；只有完整处理 32 后才可按原顺序锁 first-16，
+  少于 16 必须空 selection 并落 `D3_DATA_SUPPORT_NOT_EVALUABLE`。本记录仅代表协议/执行器已冻结，
+  不提前声明正式 body 或科学终态；RGB、模型、角色、训练、Development、R2、性能、默认 App、
+  production 与 safety 继续禁止。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。完成 Assistive Geometry R2 独立跨传感器
   factor-level Confirmation 的 F2 protocol/data/statistics lock，科学状态仍为 `NOT_RUN`。先拒绝
   `rgbd_bonn_person_tracking / rgbd_bonn_moving_obstructing_box`：二者虽未进入 current recipe，却被既有
