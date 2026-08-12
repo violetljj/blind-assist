@@ -1,6 +1,6 @@
 # TARO O1R R11 abstention runtime
 
-状态：`current / TARO_RESEARCH_MODULE / R11_WEAK_DISTAL_ABSTENTION_DEVELOPMENT_ONLY / R11_PROTOCOL_LOCKED / R11_EXACT_DATA_USE_AUTHORIZED / R11_HEAD_IMPLEMENTATION_READY / R11_HEAD_LOCK_AUTHORIZED_UNCONSUMED / R11_HEAD_NOT_RUN / R11_SCIENTIFIC_NOT_RUN / DEFAULT_APP_UNCHANGED`
+状态：`current / TARO_RESEARCH_MODULE / R11_WEAK_DISTAL_ABSTENTION_DEVELOPMENT_ONLY / R11_PROTOCOL_LOCKED / R11_EXACT_DATA_USE_AUTHORIZED / R11_HEAD_PASS_ONE_SHOT_CONSUMED / R11_SOURCE_UNOPENED / R11_SCIENTIFIC_NOT_RUN / DEFAULT_APP_UNCHANGED`
 
 ## 稳定 Interface
 
@@ -12,11 +12,11 @@
 
 ## 输出
 
-协议、授权 receipt、development 小型结果和 validator 写入 Git；任何 source/evidence 只能写入 execution lock 指定的 `artifacts.local/` exclusive root。当前 HEAD root 尚未创建。
+协议、授权 receipt、development 小型结果和 validator 写入 Git；HEAD evidence 已封存在 consumed `artifacts.local/` exclusive root。任何 source body 只能写入未来 download execution lock 指定的新 root。
 
 ## 安全边界
 
-R10 只作为 consumed development evidence，不能被改门、重跑或写成 confirmation。R11 候选只有 `OCCUPIED/UNKNOWN`；`UNKNOWN` 永远不是 negative。用户已授权 exact R11 source-first 数据范围，但每阶段仍必须由独立 one-shot lock 激活；当前只完成 HEAD implementation，尚未创建或消费 HEAD root。
+R10 只作为 consumed development evidence，不能被改门、重跑或写成 confirmation。R11 候选只有 `OCCUPIED/UNKNOWN`；`UNKNOWN` 永远不是 negative。HEAD 已以 144/144 PASS 消费；source body、模型与 FARO 仍未打开，每个后续阶段仍须独立 one-shot lock。
 
 ## 停止条件
 

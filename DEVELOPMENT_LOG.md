@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。正式消费 TARO O1R R11 exact 48-parent
+  zero-body HEAD one-shot。144/144 冻结 URL 全部首试返回 200 + positive Content-Length，redirect/error 为
+  0，ETag/Last-Modified 为 144/144；总声明正文 `2,960,390,828 bytes`，分项为 upsampling
+  `2,907,505,248`、intrinsics `48,933,412`、trajectory `3,952,168`。response/media body、GET、source
+  decode、DepthART、FARO、truth scoring、training 均为 0。exclusive root 已消费且不得覆盖、替换或重跑；
+  receipt 144 行 attempt→final、request identity、三个 premanifest 文件与 manifest 的 size/SHA 已独立重算
+  一致。正式状态 `TARO_O1R_R11_FRESH_POOL_ASSET_HEADERS_AVAILABLE_MEDIA_UNOPENED`，scientific outcome 仍
+  `NOT_RUN`。唯一 successor 是以真实字节数冻结 bounded source download implementation；不得直接发送 GET。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。记录 TARO O1R R11 exact 48-parent 数据使用授权，
   并完成 zero-body HEAD implementation。授权 receipt 精确绑定 Training 48 parents、`upsampling.zip /
   lowres_wide_intrinsics.zip / lowres_wide.traj` 三类资产、144 URL、pool/request-plan SHA 与 frozen source-first
