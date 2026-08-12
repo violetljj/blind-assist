@@ -1,0 +1,141 @@
+{
+  "schema_version": "blindassist_yolo_export_receipt_v1",
+  "receipt_id": "synthetic-fail",
+  "source": {
+    "checkpoint_url": "https://example.invalid/yolo11n.pt",
+    "immutable_revision": "1111111111111111111111111111111111111111111111111111111111111111",
+    "checkpoint_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+    "upstream_project": "synthetic-ultralytics",
+    "license_expression": "SYNTHETIC-ONLY",
+    "license_evidence_ref": "docs/synthetic-license-evidence"
+  },
+  "exporter": {
+    "repository_url": "https://github.com/example/synthetic-exporter",
+    "repository_commit": "3333333333333333333333333333333333333333",
+    "script_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+    "python_version": "3.synthetic",
+    "platform": "synthetic-platform",
+    "lock_sha256": "5555555555555555555555555555555555555555555555555555555555555555",
+    "packages": [
+      "ultralytics==synthetic",
+      "tensorflow==synthetic"
+    ]
+  },
+  "parameters": {
+    "imgsz": 320,
+    "half": true,
+    "nms": false,
+    "batch": 1,
+    "preprocess_contract": "synthetic-v1",
+    "postprocess_contract": "synthetic-v1"
+  },
+  "artifacts": {
+    "checkpoint": {
+      "path": "synthetic/yolo11n.pt",
+      "size_bytes": 1,
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+    },
+    "labels": {
+      "path": "synthetic/labels.txt",
+      "size_bytes": 1,
+      "sha256": "6666666666666666666666666666666666666666666666666666666666666666"
+    },
+    "tflite": {
+      "path": "synthetic/yolo11n.tflite",
+      "size_bytes": 1,
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "pinned_tflite_sha256": "7777777777777777777777777777777777777777777777777777777777777777"
+  },
+  "inspection": {
+    "expected": [
+      {
+        "name": "images",
+        "role": "input",
+        "shape": [
+          1,
+          320,
+          320,
+          3
+        ],
+        "dtype": "float32",
+        "quantization": null
+      },
+      {
+        "name": "output0",
+        "role": "output",
+        "shape": [
+          1,
+          84,
+          2100
+        ],
+        "dtype": "float32",
+        "quantization": null
+      }
+    ],
+    "observed": [
+      {
+        "name": "images",
+        "role": "input",
+        "shape": [
+          1,
+          320,
+          320,
+          3
+        ],
+        "dtype": "float32",
+        "quantization": null
+      },
+      {
+        "name": "output0",
+        "role": "output",
+        "shape": [
+          1,
+          85,
+          2100
+        ],
+        "dtype": "float32",
+        "quantization": null
+      }
+    ]
+  },
+  "equivalence": {
+    "fixture_set_sha256": "8888888888888888888888888888888888888888888888888888888888888888",
+    "denominator": 2,
+    "reference_runtime_sha256": "9999999999999999999999999999999999999999999999999999999999999999",
+    "max_abs_error_bound": 0.01,
+    "outputs": [
+      {
+        "name": "output0",
+        "max_abs_error": 0.02
+      }
+    ]
+  },
+  "verdicts": {
+    "byte_reproducibility": {
+      "decision": "FAIL",
+      "reason_codes": [
+        "TFLITE_SHA256_MISMATCH"
+      ]
+    },
+    "structural_equivalence": {
+      "decision": "FAIL",
+      "reason_codes": [
+        "TENSOR_CONTRACT_MISMATCH"
+      ]
+    },
+    "numerical_equivalence": {
+      "decision": "FAIL",
+      "reason_codes": [
+        "NUMERICAL_BOUND_EXCEEDED"
+      ]
+    }
+  },
+  "authority": {
+    "application_behavior": false,
+    "accuracy": false,
+    "accessibility_effectiveness": false,
+    "product": false,
+    "safety": false
+  }
+}

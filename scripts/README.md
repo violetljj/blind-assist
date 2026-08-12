@@ -26,6 +26,7 @@
 - `run_dual_loop_production_temporal_ab_device.ps1`：指定 `SM-S9280 / SM8650` 的 build/install/input/prestart/formal/collect 真机入口；formal 需要 `ACTIVATED` receipt，候选 namespace 或远端 one-shot marker 已存在时 fail closed。
 - `monitor_host_research_process.ps1`：电脑端长任务外部监控器；汇总根进程及递归子进程的 CPU/I/O/RSS、子进程数和可用的 NVIDIA GPU 利用率/显存/温度/功耗，把阶段、瓶颈提示、建议动作、疑似停滞和终态写入独立 JSONL/最新状态文件。若 runner 本身不发布完成单元数，它会明确将百分比与 ETA 留空。
 - `validate_host_research_preflight.py`：校验长任务性能准入收据；缺少真实访问机制 pilot、有界耗时、结果等价、进度字段、资源预算或 formal one-shot 合同时返回 `PERFORMANCE_NOT_QUALIFIED`。
+- `validate_yolo_export_receipt.py`：YOLO TFLite export provenance v1 的 fail-closed receipt validator；独立重算 byte、tensor-structure 与 numerical verdict，拒绝 missing-evidence 和 misleading-PASS。
 - `validate_information_ceiling_three_arm_d0.py`：信息上限三臂 D0 的稳定独立 validator 入口；从 canonical SANPO manifest、source masks/source regions 与设备逐帧 risk-input 账本复算三臂 identity、parent-event 指标和冻结终态。
 - `run_research_contract_tests.py`：CI 与本地共用的无 GPU、无设备研究合同回归。
 - `validate_research_protocol.py`：渐进式研究协议和 closure-scope overlay validator；当前默认 R4 采用论文优先的可修复/可重跑 Development、synthetic mapping/decoder canary 和算法选模/平台工程双类 benchmark，只有显式激活才进入最终 Confirmation，并按合同 ID 保留 R1/R2/R3 历史解析；同时校验 policy 最低诚信内核、identity/evidence、GATE、pending outcome、closure 引用/依赖和 question retirement。

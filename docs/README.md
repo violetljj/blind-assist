@@ -14,6 +14,7 @@
 | [CODEX_MAINTAINER_AUTOMATION.md](CODEX_MAINTAINER_AUTOMATION.md) | current | Codex/API 开源维护工作流、输入输出、人工权限、密钥边界与额度成效指标 |
 | [THREAT_MODEL.md](THREAT_MODEL.md) | current | Android、眼镜网络、模型/原生库、CI、发布、数据与 AI 维护的威胁边界 |
 | [MODEL_CARD.md](MODEL_CARD.md) | current | 默认 App 模型的身份、来源、许可证、用途、限制与晋级边界 |
+| [YOLO_EXPORT_PROVENANCE_RECEIPT.md](YOLO_EXPORT_PROVENANCE_RECEIPT.md) | draft | YOLO TFLite export provenance receipt、独立 verdict 与 evidence boundary |
 | [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) | current | 根许可证适用范围、第三方模型与依赖许可边界 |
 | [NEW_COMPUTER_HANDOFF.md](NEW_COMPUTER_HANDOFF.md) | current | 新电脑与开发环境交接 |
 | [RELEASE_AND_VERIFICATION.md](RELEASE_AND_VERIFICATION.md) | current | 发布和验证总流程 |
