@@ -49,6 +49,7 @@ shim 已退役，统一从本目录导入。
 - `materialize/validate_depthart_task_preserving_d2_phase_c_sources.py` 下载精确 32 个 ZIP、验证全成员 CRC、按冻结 stems 提取 9,600 个源文件并全量复验 bytes/SHA；没有图像 decode、truth、模型或训练，Development 路径保持 sealed
 - `run/validate_depthart_task_preserving_d2_train_only.py` 在 4 个 TRAIN identity 上以 24 个可恢复 chunk 生成 1,200 个 saved-context base outputs，冻结 3,600-band dataset 并按唯一固定 recipe 训练/确定性复验 step-500、277 参数 head；Development 和 R2 均未打开
 - `depthart_task_preserving_d3_bidirectional_router_canary.py` 以纯 CPU synthetic cases 验证 D3 的 CLEAR release、OCCUPIED veto、冲突转 UNKNOWN、hard-evidence veto 与 horizon-consistent composition；只具 mechanics authority，不读取数据、不训练也不授权候选
+- `plan_depthart_task_preserving_d3_fresh_metadata_roster.py` 从 pinned Apple split 读取 metadata，同时扫描当前 `docs/research`（含 untracked receipts）并按官方 identity 排除全部既有角色，再以固定 hash 顺序锁定 48 个 D3 metadata-only 候选；不请求媒体或读取 truth/model
 - `validate_depthart_task_preserving_r2_activation.py` 只检查 R2 pre-outcome activation manifest 的 cohort 角色、候选/reference 身份、固定任务门与旧 G4-D 排除项；它不读取模型输出，不激活执行，也不签署质量或部署结论
 - `plan_depthart_task_preserving_r2_arkit_roster.py` 在 Apple 官方 split CSV 上，以冻结 Git snapshot 排除全部既有 HFTF ARKit identity，再按固定哈希顺序锁定唯一 visit/session；只读元数据
 - `evaluate_depthart_task_preserving_r2_quality.py` 计算 reference/candidate 对独立 truth 的 pooled、parent-macro、session-macro 与 worst-parent 任务门；CLI 没有显式 activation receipt 会拒绝读取 outcome

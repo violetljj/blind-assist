@@ -1,0 +1,68 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d3_source_scope_and_metadata_roster_receipt_v1",
+  "receipt_id": "DEPTHART_TASK_PRESERVING_D3_SOURCE_SCOPE_AND_METADATA_ROSTER_RECEIPT_2026-08-12",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D3_BIDIRECTIONAL_ERROR_CERTIFICATE_ROUTER",
+  "confirmed_by": "user",
+  "confirmed_at": "2026-08-12T14:47:32.7997471+08:00",
+  "confirmation_verbatim": "继续",
+  "confirmation_context": "The immediately preceding handoff named EXPLICIT_D3_FRESH_SOURCE_SCOPE_AND_PARENT_DISJOINT_METADATA_ROSTER_LOCK as the sole next gate and explicitly stated that it would only freeze exclusions, a 48-identity metadata pool and source-use scope, with no media HEAD/body authority. This receipt records that exact contextual authorization.",
+  "license": {
+    "path": "artifacts.local/downloads/ARKitScenes-7283761/LICENSE",
+    "bytes": 4816,
+    "sha256": "D8D156565F81B4B56B37A6D5A68A223A0874ED1131BAC6A404B0D5E765189071",
+    "reviewed_source_terms_apply": true
+  },
+  "protocol": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_BIDIRECTIONAL_ERROR_CERTIFICATE_ROUTER_PROTOCOL_2026-08-12.json",
+    "bytes": 12307,
+    "sha256": "52E46A8E16B18BEFD8412874A1571429E95813EDC99A098B8B98194C613E50B2"
+  },
+  "roster": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_FRESH_METADATA_ROSTER_LOCK_2026-08-12.json",
+    "bytes": 14590,
+    "sha256": "A502E74A0122B667DF4D9DF8F51A72FD127EBBCB4B2D07F859240E41B1DD6478",
+    "pool_count": 48,
+    "fold": "Training",
+    "role": "D3_METADATA_CANDIDATE_POOL_ONLY"
+  },
+  "registered_future_asset_scope": {
+    "phase_a_exact_pool": [
+      "lowres_wide_intrinsics.zip",
+      "lowres_wide.traj"
+    ],
+    "phase_b_only_after_phase_a_lock": [
+      "lowres_depth.zip",
+      "confidence.zip"
+    ],
+    "phase_c_only_after_phase_b_lock": [
+      "lowres_wide.zip"
+    ]
+  },
+  "registered_use": "DepthART task-preserving D3 internal source-integrity, label-blind portrait/pose continuity, source-truth-support admission and later TRAIN/Development feasibility for the exact staged descendants of the frozen 48-identity pool.",
+  "current_authorized_operations": [
+    "read the pinned official Training split metadata from the local reviewed ARKitScenes checkout",
+    "scan local research documents for official identity exclusions without opening task outcomes",
+    "deterministically freeze the exact 48-identity metadata candidate pool",
+    "record this source-use scope and identity firewall"
+  ],
+  "current_authority": {
+    "metadata_read": true,
+    "identity_exclusion_scan": true,
+    "metadata_roster_lock": true,
+    "media_head": false,
+    "media_body_download": false,
+    "archive_member_read": false,
+    "source_truth_support": false,
+    "model_output": false,
+    "training": false,
+    "development_outcome": false,
+    "r2_access": false
+  },
+  "redistribution_authorized": false,
+  "candidate_selection_authorized": false,
+  "performance_authorized": false,
+  "android_default_authorized": false,
+  "production_or_safety_authorized": false,
+  "next_gate": "EXPLICIT_D3_PHASE_A_INTRINSICS_TRAJECTORY_HEAD_ONLY_PREFLIGHT_ACTIVATION",
+  "terminal": "D3_SOURCE_SCOPE_REGISTERED_METADATA_ROSTER_LOCKED_MEDIA_NOT_ACTIVATED"
+}
