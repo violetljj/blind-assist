@@ -36,6 +36,8 @@ $requiredFiles = @(
     'GOVERNANCE.md',
     'CITATION.cff',
     'docs/OPEN_SOURCE_PUBLIC_VALUE.md',
+    'docs/CODEX_MAINTAINER_AUTOMATION.md',
+    'docs/THREAT_MODEL.md',
     'docs/MODEL_CARD.md',
     '.github/CODEOWNERS',
     '.github/dependabot.yml',
@@ -104,7 +106,14 @@ if (Test-Path -LiteralPath $manifestPath -PathType Leaf) {
 $readmePath = Resolve-PublicPath 'README.md'
 if (Test-Path -LiteralPath $readmePath -PathType Leaf) {
     $readme = Get-Content -Raw -LiteralPath $readmePath -Encoding UTF8
-    foreach ($requiredLink in @('CONTRIBUTING.md', 'GOVERNANCE.md', 'docs/MODEL_CARD.md', 'SECURITY.md')) {
+    foreach ($requiredLink in @(
+        'CONTRIBUTING.md',
+        'GOVERNANCE.md',
+        'docs/MODEL_CARD.md',
+        'docs/CODEX_MAINTAINER_AUTOMATION.md',
+        'docs/THREAT_MODEL.md',
+        'SECURITY.md'
+    )) {
         if ($readme -notmatch [regex]::Escape($requiredLink)) {
             $failures.Add("README.md must link to $requiredLink.")
         }

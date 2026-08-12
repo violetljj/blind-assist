@@ -2,6 +2,9 @@
 
 BlindAssist processes camera input and produces assistive feedback, so privacy, data handling, permissions, model integrity and device-integration flaws deserve private handling.
 
+The current system, supply-chain, release, local-network, and model-assisted
+maintenance boundaries are documented in [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md).
+
 ## Supported versions
 
 Security fixes target the default `master` branch and the most recent GitHub release. Historical tags and experimental research applications may not receive backports.

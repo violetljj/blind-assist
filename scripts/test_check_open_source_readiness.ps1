@@ -35,10 +35,11 @@ try {
     $modelHash = (Get-FileHash -LiteralPath $modelFile -Algorithm SHA256).Hash
     $labelsHash = (Get-FileHash -LiteralPath $labelsFile -Algorithm SHA256).Hash
 
-    Write-FixtureFile 'README.md' 'CONTRIBUTING.md GOVERNANCE.md docs/MODEL_CARD.md SECURITY.md'
+    Write-FixtureFile 'README.md' 'CONTRIBUTING.md GOVERNANCE.md docs/MODEL_CARD.md docs/CODEX_MAINTAINER_AUTOMATION.md docs/THREAT_MODEL.md SECURITY.md'
     foreach ($file in @(
         'LICENSE', 'CONTRIBUTING.md', 'SECURITY.md', 'CODE_OF_CONDUCT.md',
         'GOVERNANCE.md', 'CITATION.cff', 'docs/OPEN_SOURCE_PUBLIC_VALUE.md',
+        'docs/CODEX_MAINTAINER_AUTOMATION.md', 'docs/THREAT_MODEL.md',
         '.github/CODEOWNERS', '.github/dependabot.yml',
         '.github/ISSUE_TEMPLATE/bug_report.yml',
         '.github/ISSUE_TEMPLATE/feature_request.yml',

@@ -178,6 +178,8 @@ The project never asks contributors to commit raw camera footage, private data, 
 - [Documentation index](docs/README.md)
 - [Code and build map](docs/CODE_MAP.md)
 - [Default model card](docs/MODEL_CARD.md)
+- [Codex maintainer automation](docs/CODEX_MAINTAINER_AUTOMATION.md)
+- [Security threat model](docs/THREAT_MODEL.md)
 - [Research governance](docs/RESEARCH_GOVERNANCE.md)
 - [Release and verification](docs/RELEASE_AND_VERIFICATION.md)
 - [Third-party notices](THIRD_PARTY_NOTICES.md)

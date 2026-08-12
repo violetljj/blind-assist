@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。将 Codex 开源维护用途从申请叙事收口为
+  可执行治理：新增 maintainer automation current contract，明确 issue/PR/dependency/release/provenance/
+  security review 的输入输出、模型仅 advisory、人工 write/merge/release 权限、fork prompt-injection 与
+  API key 边界，并用现有 CI、Dependabot、asset identity 和 release manifest 作为确定性证据；同时新增
+  Android camera、AtomS3R 明文局域网例外、模型/原生库、Actions、debug release、本地产物与 AI 维护的
+  threat model，保留 cleartext、单维护者、无独立安全审计和不可 bit-for-bit 重现 YOLO export 等公开风险。
+  两份 current 文档已进入 docs index、README、SECURITY 与 open-source readiness 门禁；不自动提交表单、
+  不制造外部贡献，也不把模型输出提升为许可证、设备测量、security acceptance 或 safety 事实。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。完成 Assistive Geometry R2 独立跨传感器
   factor-level Confirmation 的 F2 protocol/data/statistics lock，科学状态仍为 `NOT_RUN`。先拒绝
   `rgbd_bonn_person_tracking / rgbd_bonn_moving_obstructing_box`：二者虽未进入 current recipe，却被既有
