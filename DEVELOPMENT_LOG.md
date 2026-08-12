@@ -2,6 +2,16 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。记录 TARO O1R R11 exact 48-parent 数据使用授权，
+  并完成 zero-body HEAD implementation。授权 receipt 精确绑定 Training 48 parents、`upsampling.zip /
+  lowres_wide_intrinsics.zip / lowres_wide.traj` 三类资产、144 URL、pool/request-plan SHA 与 frozen source-first
+  顺序；每阶段仍要求独立 hash-bound one-shot lock，不授予训练、设备、部署、产品、安全或再分发权限。
+  新 R11 runner 复用 no-redirect HEAD transport，但使用独立 schema/root/terminal；逐 attempt 校验 retry index、
+  success 后不得重试、final row 必须等于 last attempt、Content-Length 总和与 12 GiB ceiling，并在 exclusive
+  root 创建时消费 one-shot。5/5 focused synthetic/mutation tests、protocol validator、compile 与 diff check
+  通过；本步 HEAD/GET/body/model/FARO/training 均为 0，R11 scientific status 仍为 `NOT_RUN`。唯一 successor
+  是提交并验证 exact 144-request HEAD execution lock 后消费一次 zero-body HEAD。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。完成 Assistive Geometry R2 独立跨传感器
   factor-level Confirmation 的 F2 protocol/data/statistics lock，科学状态仍为 `NOT_RUN`。先拒绝
   `rgbd_bonn_person_tracking / rgbd_bonn_moving_obstructing_box`：二者虽未进入 current recipe，却被既有
