@@ -13,9 +13,8 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   receipt 明确不含 Phase-B assets，唯一 successor 为
   `EXPLICIT_D3R1_PHASE_B_DEPTH_CONFIDENCE_SOURCE_SCOPE_REGISTRATION_FOR_EXACT_32_PHASE_A_SELECTION`，
   本步不直接发送 Phase-B HEAD/GET。21 项 focused tests、frozen binding/selected-roster replay、JSON、
-  diff 与 docs-index checks PASS；全局 structure gate 仍只被既有 TARO 的 7 个未登记/contract 不完整
-  runtime module、module count 及 TARO current-status/successor 漂移阻塞，未报告 D3R1/DepthART 缺陷，
-  本步未改写该并行工作。
+  diff、docs-index、repository hygiene 与最新 `origin/master` integration structure checks 全部 PASS；
+  structure gate 覆盖 81 个 research Modules，且本步未改写并行 TARO 工作。
 
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。完成 DepthART-S D3R1 exact-127
   Phase-A intrinsics/trajectory HEAD-only preflight。新执行器禁止 redirect（避免 urllib 将 HEAD
