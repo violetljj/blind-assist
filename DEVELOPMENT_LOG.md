@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。正式消费 TARO O1R R11 bounded source download
+  Attempt 02。exact 48 Training parents × 3 assets 的 144/144 GET 全部首试成功，network GET/recovered
+  asset 为 `144/0`；source 恰好 144 files / `2,960,390,828 bytes`，`.partial=0`，三类分项与 zero-body
+  HEAD 完全一致。独立复核重新验证 144 个 URL/identity/path、Content-Length/ETag/Last-Modified、SHA-256/
+  CRC32，并重哈希 manifest 的 147 个文件 binding；evidence 为 148 files / 239,136 bytes，manifest content
+  seal `FCE3E06D...B7A21`。正式终态 `TARO_O1R_R11_FRESH_POOL_SOURCE_DOWNLOAD_INTEGRITY_PASS`，one-shot
+  已消费且不得重跑。archive member/source frame、DepthART、FARO、truth、training 均未打开，scientific
+  outcome 仍 `NOT_RUN`。唯一 successor 是 `TARO_O1R_R11_FRESH_48_PARENT_SOURCE_INVENTORY_IMPLEMENTATION_LOCK`。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。冻结 TARO O1R R11 bounded source download Attempt 02
   execution lock，状态 `AUTHORIZED_UNCONSUMED`。锁绑定已推送 module-entry implementation commit
   `ad609b35444430d526d8d5531976dff2b67ab961` 与 argv
