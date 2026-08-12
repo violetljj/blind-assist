@@ -12,11 +12,18 @@ asset.
 ## Independent verdicts
 
 - byte_reproducibility is PASS only when the generated TFLite SHA-256 equals
-  the pinned public-asset SHA-256 and source/export-environment identity is
-  complete.
+  the pinned public-asset SHA-256; source checkpoint, labels, exporter repository,
+  Git object ID, script, lockfile, and environment identities must all be complete
+  and the source/artifact checkpoint hashes must agree.
 - structural_equivalence compares expected and observed tensor contracts.
-- numerical_equivalence compares finite outputs on a frozen fixture set using
-  a positive denominator, hash-bound reference runtime, and frozen bound.
+- numerical_equivalence compares finite, non-negative errors on a frozen fixture
+  set using a positive non-boolean denominator, hash-bound reference runtime, and
+  frozen bound. Numerical output names must bind exactly and uniquely to the
+  inspected output-tensor inventory.
+
+The executable validator first enforces the complete JSON Schema surface,
+including required and additional properties. Export parameters are a closed,
+non-empty v1 contract; extensions require a new schema version.
 
 A numerical PASS never implies byte identity. Missing checkpoint,
 environment, tensor, fixture, runtime, or denominator evidence produces

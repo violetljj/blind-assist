@@ -10,7 +10,8 @@
     "license_evidence_ref": "docs/synthetic-license-evidence"
   },
   "exporter": {
-    "repository_commit": "3333333333333333333333333333333333333333333333333333333333333333",
+    "repository_url": "https://github.com/example/synthetic-exporter",
+    "repository_commit": "3333333333333333333333333333333333333333",
     "script_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
     "python_version": "3.synthetic",
     "platform": "synthetic-platform",
@@ -50,6 +51,7 @@
     "expected": [
       {
         "name": "images",
+        "role": "input",
         "shape": [
           1,
           320,
@@ -61,6 +63,7 @@
       },
       {
         "name": "output0",
+        "role": "output",
         "shape": [
           1,
           84,
@@ -73,6 +76,7 @@
     "observed": [
       {
         "name": "images",
+        "role": "input",
         "shape": [
           1,
           320,
@@ -84,6 +88,7 @@
       },
       {
         "name": "output0",
+        "role": "output",
         "shape": [
           1,
           85,

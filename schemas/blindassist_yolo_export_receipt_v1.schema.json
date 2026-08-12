@@ -10,7 +10,7 @@
     "receipt_id": {"type": "string", "minLength": 1},
     "source": {"$ref": "#/$defs/source"},
     "exporter": {"$ref": "#/$defs/exporter"},
-    "parameters": {"type": "object"},
+    "parameters": {"$ref": "#/$defs/parameters"},
     "artifacts": {"$ref": "#/$defs/artifacts"},
     "inspection": {"$ref": "#/$defs/inspection"},
     "equivalence": {"$ref": "#/$defs/equivalence"},
@@ -39,8 +39,12 @@
   },
   "$defs": {
     "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "gitObjectId": {"type": "string", "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"},
+    "nullableGitObjectId": {"anyOf": [{"$ref": "#/$defs/gitObjectId"}, {"type": "null"}]},
     "nullableSha256": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
     "nullableString": {"type": ["string", "null"]},
+    "repositoryUrl": {"type": "string", "pattern": "^https://[^\\s]+$"},
+    "nullableRepositoryUrl": {"anyOf": [{"$ref": "#/$defs/repositoryUrl"}, {"type": "null"}]},
     "source": {
       "type": "object", "additionalProperties": false,
       "required": ["checkpoint_url", "immutable_revision", "checkpoint_sha256", "upstream_project", "license_expression", "license_evidence_ref"],
@@ -55,14 +59,27 @@
     },
     "exporter": {
       "type": "object", "additionalProperties": false,
-      "required": ["repository_commit", "script_sha256", "python_version", "platform", "lock_sha256", "packages"],
+      "required": ["repository_url", "repository_commit", "script_sha256", "python_version", "platform", "lock_sha256", "packages"],
       "properties": {
-        "repository_commit": {"$ref": "#/$defs/nullableSha256"},
+        "repository_url": {"$ref": "#/$defs/nullableRepositoryUrl"},
+        "repository_commit": {"$ref": "#/$defs/nullableGitObjectId"},
         "script_sha256": {"$ref": "#/$defs/nullableSha256"},
         "python_version": {"$ref": "#/$defs/nullableString"},
         "platform": {"$ref": "#/$defs/nullableString"},
         "lock_sha256": {"$ref": "#/$defs/nullableSha256"},
         "packages": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "parameters": {
+      "type": "object", "additionalProperties": false,
+      "required": ["imgsz", "half", "nms", "batch", "preprocess_contract", "postprocess_contract"],
+      "properties": {
+        "imgsz": {"type": "integer", "minimum": 1},
+        "half": {"type": "boolean"},
+        "nms": {"type": "boolean"},
+        "batch": {"type": "integer", "minimum": 1},
+        "preprocess_contract": {"type": "string", "minLength": 1},
+        "postprocess_contract": {"type": "string", "minLength": 1}
       }
     },
     "artifact": {
@@ -88,9 +105,10 @@
       "type": "array",
       "items": {
         "type": "object", "additionalProperties": false,
-        "required": ["name", "shape", "dtype", "quantization"],
+        "required": ["name", "role", "shape", "dtype", "quantization"],
         "properties": {
           "name": {"type": "string"},
+          "role": {"enum": ["input", "output"]},
           "shape": {"type": "array", "items": {"type": "integer"}},
           "dtype": {"type": "string"},
           "quantization": {"type": ["object", "null"]}
@@ -112,13 +130,13 @@
         "fixture_set_sha256": {"$ref": "#/$defs/nullableSha256"},
         "denominator": {"type": ["integer", "null"], "minimum": 1},
         "reference_runtime_sha256": {"$ref": "#/$defs/nullableSha256"},
-        "max_abs_error_bound": {"type": ["number", "null"]},
+        "max_abs_error_bound": {"type": ["number", "null"], "minimum": 0},
         "outputs": {
           "type": "array",
           "items": {
             "type": "object", "additionalProperties": false,
             "required": ["name", "max_abs_error"],
-            "properties": {"name": {"type": "string"}, "max_abs_error": {"type": ["number", "null"]}}
+            "properties": {"name": {"type": "string", "minLength": 1}, "max_abs_error": {"type": ["number", "null"], "minimum": 0}}
           }
         }
       }

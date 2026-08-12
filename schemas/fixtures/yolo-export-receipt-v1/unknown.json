@@ -10,6 +10,7 @@
     "license_evidence_ref": null
   },
   "exporter": {
+    "repository_url": null,
     "repository_commit": null,
     "script_sha256": null,
     "python_version": null,
