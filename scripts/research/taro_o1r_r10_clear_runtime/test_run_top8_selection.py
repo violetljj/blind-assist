@@ -61,6 +61,9 @@ class Top8SelectionTests(unittest.TestCase):
     def test_frozen_selector_and_rule_seals_reject_mutation(self) -> None:
         protocol = runner._read_json(runner._repo_path(runner.EXPECTED_BINDINGS["R10_PROTOCOL"]))
         self.assertEqual(runner.validate_protocol(protocol)["frozen_selector"], runner.FROZEN_PROTOCOL_SELECTOR)
+        runner.validate_r9_development_evidence()
+        self.assertIn("R9_DEVELOPMENT_RUNTIME_RESULT", runner.EXPECTED_BINDINGS)
+        self.assertIn("R9_DEVELOPMENT_MANIFEST", runner.EXPECTED_BINDINGS)
         selector = runner._read_json(runner._repo_path(runner.EXPECTED_BINDINGS["R9_FROZEN_SELECTOR"]))
         validated = runner.validate_frozen_selector(selector)
         self.assertEqual(validated["content_sha256"], runner.FROZEN_SELECTOR_CONTENT_SHA256)

@@ -72,6 +72,8 @@ EXPECTED_BINDINGS = {
     "R10_PROTOCOL": "docs/research/taro/TARO_O1R_R10_FRESH_PARENT_SOURCE_ONLY_CLEAR_ENRICHED_CONFIRMATION_PROTOCOL_LOCK_2026-08-12.json",
     "R9_DEVELOPMENT_RESULT": "docs/research/taro/TARO_O1R_R9_CLEAR_ENRICHMENT_DEVELOPMENT_RESULT_2026-08-12.json",
     "R9_FROZEN_SELECTOR": "artifacts.local/evidence/taro/o1r-r9-clear-enrichment-development-r0/selector.json",
+    "R9_DEVELOPMENT_RUNTIME_RESULT": "artifacts.local/evidence/taro/o1r-r9-clear-enrichment-development-r0/result.json",
+    "R9_DEVELOPMENT_MANIFEST": "artifacts.local/evidence/taro/o1r-r9-clear-enrichment-development-r0/manifest.json",
     "R9_SELECTOR_RUNTIME": "scripts/research/taro_o1r_r9_clear_runtime/clear_enrichment_fit.py",
     "R10_POOL_PLANNER": "scripts/research/taro_o1r_r10_clear_runtime/fresh_pool.py",
     "R10_INVENTORY_PLAN": INVENTORY_PATH,
@@ -183,6 +185,66 @@ def validate_frozen_selector(value: Mapping[str, Any]) -> dict[str, Any]:
         "frozen R9 selector identity/rule drift",
     )
     return validated
+
+
+def validate_r9_development_evidence() -> None:
+    record = _read_json(_repo_path(EXPECTED_BINDINGS["R9_DEVELOPMENT_RESULT"]))
+    runtime_result_path = _repo_path(EXPECTED_BINDINGS["R9_DEVELOPMENT_RUNTIME_RESULT"])
+    runtime_result = _read_json(runtime_result_path)
+    manifest_path = _repo_path(EXPECTED_BINDINGS["R9_DEVELOPMENT_MANIFEST"])
+    manifest = _read_json(manifest_path)
+    evidence = record.get("evidence", {})
+    require(
+        record.get("schema") == "blindassist.taro.o1r.r9_clear_enrichment_development_result_record.v1"
+        and record.get("execution_valid") is True
+        and record.get("passed_old_development_target") is False
+        and record.get("selector", {}).get("selector_sha256") == FROZEN_SELECTOR_CONTENT_SHA256
+        and record.get("selector", {}).get("rule_id") == FROZEN_RULE_ID
+        and record.get("promotion", {}).get("selector_to_fresh_cohort_selection") is True
+        and record.get("promotion", {}).get("effectiveness") is False,
+        "R10_SELECTION_R9_RESULT_RECORD_DRIFT",
+        "R9 development result record does not authorize the frozen selector-only successor",
+    )
+    require(
+        runtime_result.get("schema") == "blindassist.taro.o1r.r9_clear_enrichment_development_result.v1"
+        and runtime_result.get("execution_valid") is True
+        and runtime_result.get("passed") is False
+        and runtime_result.get("selector_sha256") == FROZEN_SELECTOR_CONTENT_SHA256
+        and runtime_result.get("confirmation_authority") is False
+        and runtime_result.get("training_steps") == runtime_result.get("network_requests") == 0
+        and evidence.get("result_sha256") == materializer.sha256_file(runtime_result_path),
+        "R10_SELECTION_R9_RUNTIME_RESULT_DRIFT",
+        "R9 development runtime result lineage drift",
+    )
+    files = manifest.get("files")
+    root = manifest_path.parent
+    require(
+        manifest.get("schema") == "blindassist.taro.o1r.r9_clear_enrichment_development_manifest.v1"
+        and manifest.get("terminal") == runtime_result.get("terminal")
+        and isinstance(files, dict)
+        and len(files) == manifest.get("file_count_before_manifest") == evidence.get("manifest_file_count") == 273
+        and evidence.get("manifest_sha256") == materializer.sha256_file(manifest_path),
+        "R10_SELECTION_R9_MANIFEST_DRIFT",
+        "R9 development manifest identity or cardinality drift",
+    )
+    for relative, receipt in files.items():
+        target = materializer.safe_join(root, relative)
+        require(
+            isinstance(receipt, dict)
+            and receipt.get("path") == relative
+            and target.is_file()
+            and target.stat().st_size == receipt.get("bytes")
+            and materializer.sha256_file(target) == receipt.get("sha256"),
+            "R10_SELECTION_R9_MANIFEST_FILE_DRIFT",
+            f"R9 development artifact drift: {relative}",
+        )
+    require(
+        files.get("result.json", {}).get("sha256") == evidence.get("result_sha256")
+        and files.get("selector.json", {}).get("sha256") == evidence.get("selector_file_sha256")
+        and files.get("label-completion.json", {}).get("sha256") == evidence.get("completion_sha256"),
+        "R10_SELECTION_R9_EVIDENCE_RECEIPT_DRIFT",
+        "R9 development evidence summary differs from its manifest receipts",
+    )
 
 
 def validate_protocol(value: Mapping[str, Any]) -> dict[str, Any]:
@@ -614,6 +676,7 @@ def validate_execution_lock(path: Path) -> dict[str, Any]:
         )
     require(seen == set(EXPECTED_BINDINGS), "R10_SELECTION_BINDINGS", "R10 selection binding roles drift")
     validate_protocol(_read_json(_repo_path(EXPECTED_BINDINGS["R10_PROTOCOL"])))
+    validate_r9_development_evidence()
     validate_frozen_selector(_read_json(_repo_path(EXPECTED_BINDINGS["R9_FROZEN_SELECTOR"])))
     phase_result = _read_json(_repo_path(EXPECTED_BINDINGS["R10_PHASE_A_R1_RESULT"]))
     require(
