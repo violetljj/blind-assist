@@ -1,0 +1,76 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d3_phase_a_head_protocol_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D3_PHASE_A_INTRINSICS_TRAJECTORY_HEAD_ONLY_PREFLIGHT",
+  "frozen_at": "2026-08-12",
+  "status": "HEAD_ONLY_PROTOCOL_FROZEN_NOT_RUN",
+  "owning_protocol": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_BIDIRECTIONAL_ERROR_CERTIFICATE_ROUTER_PROTOCOL_2026-08-12.json",
+    "bytes": 12307,
+    "sha256": "52E46A8E16B18BEFD8412874A1571429E95813EDC99A098B8B98194C613E50B2"
+  },
+  "roster": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_FRESH_METADATA_ROSTER_LOCK_2026-08-12.json",
+    "bytes": 14590,
+    "sha256": "A502E74A0122B667DF4D9DF8F51A72FD127EBBCB4B2D07F859240E41B1DD6478",
+    "identity_count": 48,
+    "fold": "Training",
+    "role": "D3_METADATA_CANDIDATE_POOL_ONLY"
+  },
+  "source_scope": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_SOURCE_SCOPE_AND_METADATA_ROSTER_RECEIPT_2026-08-12.json",
+    "bytes": 3244,
+    "sha256": "08C6A70C4BC82E7144C8E7909D2E381A81D3C67DD610E54A2A2C1DA5AA3E951D"
+  },
+  "base_url": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1/raw",
+  "assets_per_video": [
+    "lowres_wide_intrinsics.zip",
+    "lowres_wide.traj"
+  ],
+  "request_method": "HEAD",
+  "expected_parent_count": 48,
+  "expected_request_count": 96,
+  "timeout_seconds": 20,
+  "retries": 3,
+  "workers": 8,
+  "required_success": {
+    "http_status": 200,
+    "content_length_positive": true,
+    "available_asset_count": 96
+  },
+  "recorded_headers": [
+    "Content-Length",
+    "ETag",
+    "Last-Modified"
+  ],
+  "producer": {
+    "path": "scripts/research/hftf/deployment/depthart/preflight_depthart_task_preserving_d3_phase_a_assets.py",
+    "bytes": 8837,
+    "sha256": "FE080CAF8730835D8333A9CA4A4640428AEFFDEC8F428537EFCEBA5DBFF205B6"
+  },
+  "tests": {
+    "path": "scripts/research/hftf/deployment/depthart/test_preflight_depthart_task_preserving_d3_phase_a_assets.py",
+    "bytes": 2208,
+    "sha256": "CB0971512D0B1BFB796D59BAE565C6FEBB7A0B18CE34FAB8E7D8152EB7468F62"
+  },
+  "invariants": {
+    "media_body_bytes_read": false,
+    "archive_member_read": false,
+    "pose_content_read": false,
+    "truth_or_model_output_read": false,
+    "phase_a_eligibility_decision": false,
+    "role_assignment_allowed": false,
+    "r2_cohort_access": "NONE"
+  },
+  "forbidden": [
+    "GET or Range GET during this HEAD-only preflight",
+    "following a response into body streaming",
+    "opening intrinsics archives or trajectory content",
+    "requesting RGB, depth or confidence assets",
+    "selecting the Phase-A 32 identities from headers",
+    "assigning TRAIN or DEVELOPMENT roles",
+    "reading truth, model output or R2 data"
+  ],
+  "pass_successor": "EXPLICIT_D3_PHASE_A_INTRINSICS_TRAJECTORY_BODY_AND_LABEL_BLIND_CONTINUITY_ACTIVATION",
+  "fail_terminal": "D3_PHASE_A_HEAD_PREFLIGHT_STOP_MEDIA_BODY_UNOPENED",
+  "authority": "HEAD availability and declared-size evidence only; no body, integrity, continuity, truth, training, Development, R2, performance, production or safety authority."
+}
