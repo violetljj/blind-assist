@@ -212,6 +212,28 @@ Submit only where the list accepts active open-source Android projects in this
 scope. One normal pull request to one well-matched list is better than bulk
 submissions.
 
+### Ovio submission fallback email
+
+Use this only when the public project-submission form is unavailable. Send it
+from a working contact address to `hello@ovio.org`.
+
+**Subject:** Project submission: BlindAssist Android accessibility research prototype
+
+> Hello Ovio team,
+>
+> I maintain BlindAssist, an open-source Android research prototype for on-device assistive perception, accessible feedback, and reproducible evaluation:
+> https://github.com/violetljj/blind-assist
+>
+> The repository has a contributor guide and bounded newcomer tasks with exact files, acceptance criteria, validation commands, forbidden scope, and effort estimates:
+> https://github.com/violetljj/blind-assist/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22
+>
+> I attempted to use the Ovio project-submission form, but its request failed before the site confirmed receipt. Would you consider adding BlindAssist to the contributor-friendly project portfolio, or advise on the current submission path?
+>
+> BlindAssist is a research prototype and does not claim certified mobility safety or replace established mobility aids, training, or human judgment.
+>
+> Regards,
+> Junjie Lai (`violetljj`)
+
 ### Lab, research institute, or course group
 
 > 我在维护开源项目 BlindAssist，现招募少量代码审查与复现贡献者，不组织统一点 star。适合的任务包括：检查 Compose/TalkBack 无障碍语义、补充确定性 Kotlin 单测、验证文档导航和复核端侧模型来源。每个任务都有精确文件、验收标准和命令，可独立署名提交 PR。项目是研究原型，不作安全或用户效果承诺。入口：https://github.com/violetljj/blind-assist/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22
