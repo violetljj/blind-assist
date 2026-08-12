@@ -1,0 +1,72 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d3r1_phase_b_head_terminal_validator_repair_v1",
+  "repair_id": "DEPTHART_TASK_PRESERVING_D3R1_PHASE_B_HEAD_TERMINAL_VALIDATOR_REPAIR_2026-08-12",
+  "created_at": "2026-08-12T18:31:03.4120045+08:00",
+  "status": "D3R1_PHASE_B_HEAD_VALIDATOR_REPAIR_FROZEN",
+  "reason": "The original offline validator correctly accepted the actual immutable PASS result but did not formally require row-level HTTP/redirect/error fields to equal their attempt-history derivation. A contradictory synthetic PASS could therefore be accepted. The real result remains immutable and is re-audited without new transport.",
+  "bindings": {
+    "protocol": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R1_PHASE_B_HEAD_PROTOCOL_2026-08-12.json",
+      "bytes": 6165,
+      "sha256": "B3DD12B75E235EB856CF00060CFFDAB29ACC2D64E8B7395B55F666101F90D375"
+    },
+    "activation": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R1_PHASE_B_HEAD_ACTIVATION_2026-08-12.json",
+      "bytes": 2750,
+      "sha256": "7CC78449EBFF0E35D0239A5BAF4B58049D99853F3C7121AF0DE55DA4D92708F2"
+    },
+    "source_scope": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R1_PHASE_B_DEPTH_CONFIDENCE_SOURCE_SCOPE_RECEIPT_2026-08-12.json",
+      "bytes": 12041,
+      "sha256": "DBB9DD2B936FEB2B3D653FDFD7FF3EA47122122185CAA470BBAF7CF549D5C074"
+    },
+    "phase_a_result": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R1_PHASE_A_RESULT_2026-08-12.json",
+      "bytes": 6116,
+      "sha256": "6857A001156265DD99A107BE9D9779AA3742CAD549A805559E73881B43F57B4E"
+    },
+    "head_result": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r1-phase-b-head-20260812-r0/head-preflight.json",
+      "bytes": 64935,
+      "sha256": "3C1F7EC0BA09DF15F00B9AE0E3169F142631C84412F951D1D6D64FECF5CFB36E"
+    },
+    "original_validation": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r1-phase-b-head-20260812-r0/validation.json",
+      "bytes": 1505,
+      "sha256": "951618427F2E50260A159158325CC5DCCE68266EC07C83FE352BA11E4D43F885"
+    },
+    "auditor": {
+      "path": "scripts/research/hftf/deployment/depthart/audit_depthart_task_preserving_d3r1_phase_b_head_terminal.py",
+      "bytes": 10903,
+      "sha256": "024ACF7C0B069E6ACBEA311BC9682B484DFACE1F6BDD2B63A92C10AAE1624151"
+    },
+    "tests": {
+      "path": "scripts/research/hftf/deployment/depthart/test_audit_depthart_task_preserving_d3r1_phase_b_head_terminal.py",
+      "bytes": 4001,
+      "sha256": "F72E641477FB745CA16D7BD142E66D81AF858E7716B9B4114C3E421421A49F1E"
+    }
+  },
+  "required_checks": [
+    "exact request plan and order",
+    "contiguous attempt numbering and HEAD method on every attempt",
+    "retry eligibility and exhaustion",
+    "row HTTP status equals the last non-null attempt HTTP status",
+    "redirect count equals the final-attempt 3xx predicate",
+    "availability independently derived from attempt, status, URL, headers and body-zero fields",
+    "unresolved and recovered flags equal independently derived values",
+    "PASS, UNAVAILABLE or INCOMPLETE terminal and PASS-only successor recomputed"
+  ],
+  "immutability": {
+    "original_result_modified": false,
+    "original_validation_modified": false,
+    "head_requests_repeated": false,
+    "network_access_authorized": false,
+    "body_access_authorized": false
+  },
+  "output": {
+    "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r1-phase-b-head-terminal-repair-20260812-r0/post-result-audit.json",
+    "fresh_root_required": true,
+    "overwrite_forbidden": true
+  },
+  "authority": "Read-only post-result consistency audit only; no network, HEAD, GET, media body, decode, source-truth-support, selection, role, outcome, R2 or deployment authority."
+}

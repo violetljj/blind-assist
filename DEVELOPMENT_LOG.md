@@ -2,6 +2,20 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-12（Asia/Hong_Kong）；执行者：violjjet。完成 DepthART-S D3R1 Phase-B
+  exact-32 depth/confidence HEAD-only preflight。冻结 exact-64 request-plan SHA、NoRedirect、HEAD-only、
+  三必需响应头、transient-only retry、fresh/exclusive attempt root 与同时覆盖 PASS/UNAVAILABLE/INCOMPLETE
+  的离线 validator；18 项 synthetic tests 与 frozen binding replay PASS。正式结果 64/64 HTTP 200、
+  Content-Length/ETag/Last-Modified 完整，声明总大小 `5,580,879,686 bytes`（depth
+  `5,329,635,728`，confidence `251,243,958`），全部一次成功，redirect/recovered/unresolved error
+  均为 0。原独立 validator PASS 后审计发现其对 attempt→row 矛盾字段的拒绝不完整；保持冻结 result
+  与 validation 不变，新增纯离线 post-result repair auditor，独立重算 status/redirect/availability/
+  recovered flags，真实 64 行四类 mismatch 均为 0，科学 PASS 保持不变且未重发 HEAD。response/media
+  body 均为 0，没有 GET/Range、archive/decode、source-truth-support、first-16 selection、RGB、角色、模型、
+  Development、R2、性能、默认 App、production 或 safety authority。唯一 successor 为
+  `EXPLICIT_D3R1_PHASE_B_DEPTH_CONFIDENCE_BODY_AND_SOURCE_TRUTH_SUPPORT_ACTIVATION`；必须另行冻结约
+  `5.58 GB` body、checkpoint/resume、全 32 support audit 与 fail-closed validator。
+
 - 时间：2026-08-12（Asia/Hong_Kong）；执行者：Codex。完成 TARO O1R R10 exact 32-parent
   fresh clear-enriched confirmation 全链并封存正式结果。zero-body HEAD 与 source download 均为
   96/96，source 为 `1,945,902,515 bytes`；inventory 冻结 710 frames。Phase A R0 在 inference
