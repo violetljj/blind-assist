@@ -1,0 +1,199 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d3r3_phase_b_source_coverage_census_protocol_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D3R3_PHASE_B_SOURCE_COVERAGE_CENSUS_2026-08-13",
+  "frozen_at": "2026-08-13T12:10:00+08:00",
+  "status": "D3R3_PHASE_B_COVERAGE_CENSUS_PROTOCOL_FROZEN_FRESH_HEAD_BOUND",
+  "problem": "The D3R2 body run ended on a single premature EOF while all fresh D3R3 HEAD metadata remained unchanged. Test whether full-from-zero retry can recover transport and establish exact member-name coverage without changing the 32 identities or 9,600 stems.",
+  "hypothesis": "A premature EOF is a transient transport event. Retrying that complete asset from byte zero, at most three attempts total and without Range, will recover while preserving exact fresh-HEAD bindings.",
+  "meaningful_change": "Classify only a status-200 body shorter than the fresh HEAD Content-Length as TRANSIENT_BODY_SHORT_READ; delete the partial and restart the entire GET from byte zero.",
+  "observable_decision": {
+    "pass": "All 64 fresh downloads finish, every retained archive matches fresh HEAD headers and full length, every ZIP directory is parseable, and exact selected-stem presence is enumerated without opening member payloads.",
+    "stop": "Any terminal header/URL/container error, three exhausted attempts, process interruption, sparse checkpoint, or root inventory drift leaves the root immutable and produces no coverage conclusion.",
+    "scientific_terminal": null
+  },
+  "frozen_files": {
+    "source_scope": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R3_PHASE_B_SOURCE_COVERAGE_SCOPE_RECEIPT_2026-08-13.json",
+      "bytes": 11100,
+      "sha256": "E7709580E4C56752D6EFE72A330080288125FEBF60CBC8F38FCED453159A75D6"
+    },
+    "phase_a_result": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R1_PHASE_A_RESULT_2026-08-12.json",
+      "bytes": 6116,
+      "sha256": "6857A001156265DD99A107BE9D9779AA3742CAD549A805559E73881B43F57B4E"
+    },
+    "phase_a_manifest": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r1-phase-a-body-20260812-r0/manifest.json",
+      "bytes": 1322930,
+      "sha256": "DA53C8BB4A124ACC402DC6A3C0B1A332D900E1C9332B5C8B8A94931D21593FC8"
+    },
+    "head_validation": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r3-phase-b-source-coverage-head-20260813-r0/validation.json",
+      "bytes": 1719,
+      "sha256": "29042A67776B6C2759E0DE3D12E22515FF51B4538A47BF163FAA6E65CEE3D759"
+    },
+    "head_machine_result": {
+      "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r3-phase-b-source-coverage-head-20260813-r0/head-preflight.json",
+      "bytes": 85527,
+      "sha256": "5B77384C571DF195ACB7552A176FF5350D9A6227A31C889221596D9CD728ABCD"
+    },
+    "d3r2_execution_stop": {
+      "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R2_PHASE_B_SOURCE_COVERAGE_EXECUTION_STOP_2026-08-13.json",
+      "bytes": 6508,
+      "sha256": "78913CE76DBD0D4F060ADAB4881393DE64F1CA4FBB33029AB5DBB5A433504D4B"
+    },
+    "producer": {
+      "path": "scripts/research/hftf/deployment/depthart/census_depthart_task_preserving_d3r3_phase_b_source_coverage.py",
+      "bytes": 52833,
+      "sha256": "200B38CCC8261B093EC7B9062B33D36126CAF8215DAE46ED1FDCFD2B37F5FAF6"
+    },
+    "validator": {
+      "path": "scripts/research/hftf/deployment/depthart/validate_depthart_task_preserving_d3r3_phase_b_source_coverage.py",
+      "bytes": 31128,
+      "sha256": "F326AB7557381D838679F7A8F0833DCF136F007AA9556A3898B37EBA74E5878B"
+    },
+    "tests": {
+      "path": "scripts/research/hftf/deployment/depthart/test_d3r3_phase_b_source_coverage.py",
+      "bytes": 20619,
+      "sha256": "6E5498CC14619AD57B50F83958F45829AAD6E0AF7871BDAA174093285A48401D"
+    }
+  },
+  "fixed_plan": {
+    "identity_count": 32,
+    "asset_count": 64,
+    "assets": [
+      "lowres_depth.zip",
+      "confidence.zip"
+    ],
+    "selected_frame_count_per_identity": 300,
+    "selected_frame_count": 9600,
+    "request_plan_sha256": "F957FDDE8423D262BF7652B51AD42B7C877F26BB1A776C32B8920C25A62CFEB6",
+    "selected_frame_plan_sha256": "AFDFC393BC5CD8285EB6DC76D3FA2FC9BF4AB1579E5E85B835E5A28F1DDBA3B5",
+    "identity_replacement": false,
+    "stem_reselection": false
+  },
+  "transport_contract": {
+    "method": "GET",
+    "fresh_head_is_authority": true,
+    "http_status": 200,
+    "final_url_must_equal_requested": true,
+    "content_length_etag_last_modified_must_equal_fresh_head": true,
+    "accept_encoding": "identity",
+    "max_attempts_including_first": 3,
+    "range_get": false,
+    "redirect_following": false,
+    "full_restart_after_transient_error": true,
+    "transient_classes": [
+      "HTTP_408_429_5XX",
+      "TRANSIENT_TRANSPORT",
+      "TRANSIENT_BODY_SHORT_READ"
+    ],
+    "body_short_read_definition": "HTTP 200 with matching response headers and response_body_bytes_read less than frozen Content-Length",
+    "failed_partial_reuse": false,
+    "all_attempt_body_bytes_accounted": true
+  },
+  "coverage_contract": {
+    "container": "ZIP",
+    "operation": "central-directory and member-name inventory only",
+    "archive_member_payload_read": false,
+    "zip_crc_verified": false,
+    "pixel_decode": false,
+    "source_truth": false,
+    "selection_evaluated": false,
+    "all_64_required_before_manifest": true
+  },
+  "activation_contract": {
+    "current_activation_exists": false,
+    "required_activation_schema": "blindassist_depthart_task_preserving_d3r3_phase_b_source_coverage_census_activation_v1",
+    "required_status": "D3R3_PHASE_B_SOURCE_MEMBER_COVERAGE_CENSUS_ACTIVATED",
+    "required_top_level_fields": [
+      "schema",
+      "activation_id",
+      "activated_at",
+      "activated_by",
+      "authorization_verbatim",
+      "authorization_context",
+      "status",
+      "protocol",
+      "protocol_sha256",
+      "bindings",
+      "request_scope",
+      "execution_policy",
+      "authority",
+      "forbidden",
+      "next_action"
+    ],
+    "required_execution_policy": {
+      "one_shot_census_terminal": true,
+      "fresh_output_root": true,
+      "overwrite": false,
+      "resume_only_from_exact_continuous_checkpoint_prefix": true,
+      "all_64_before_terminal": true,
+      "archive_member_payload_read": false,
+      "pixel_decode": false,
+      "source_truth": false,
+      "selection_evaluated": false,
+      "stop_after_census_and_offline_validation": true
+    },
+    "must_authorize_true": [
+      "exact64_get",
+      "archive_container_read",
+      "archive_member_name_read",
+      "zip_directory_parse"
+    ],
+    "must_keep_false": [
+      "range_get",
+      "redirect_following",
+      "archive_member_payload_read",
+      "zip_crc_verification",
+      "pixel_decode",
+      "source_truth",
+      "phase_b_selection",
+      "phase_c_rgb",
+      "model_output",
+      "role_assignment",
+      "training",
+      "development_outcome",
+      "performance",
+      "android_default",
+      "production",
+      "safety"
+    ],
+    "r2_access": "NONE",
+    "required_forbidden": [
+      "reuse any D3R2 r0 body, checkpoint, failure, temp marker or partial coverage",
+      "use Range or follow redirects",
+      "change, extend, reorder or replace the exact 32 identities or 9,600 selected stems",
+      "open, read or decompress any ZIP member payload, including testzip",
+      "present ZipInfo CRC metadata as verified payload integrity",
+      "decode depth/confidence pixels or derive source truth/support",
+      "remove, replace, nearest-join or reinterpret a missing exact stem",
+      "make a Phase-B selection or open RGB/model/role/training/Development/R2 authority",
+      "claim performance, Android-default, production or safety authority"
+    ],
+    "required_next_action": "RUN_FROZEN_D3R3_PHASE_B_SOURCE_COVERAGE_PRODUCER_THEN_INDEPENDENT_OFFLINE_VALIDATOR"
+  },
+  "runtime": {
+    "launcher": {
+      "path": "E:/codex-tools/bin/blindassist-python.cmd",
+      "bytes": 987,
+      "sha256": "97225809D887B87B2C5C9CBED063B83651496F7F8E6A8D6B582FECC60031B3D3"
+    },
+    "python_executable": {
+      "path": "E:/codex-tools/tools/venvs/blindassist-venv-export312/Scripts/python.exe",
+      "bytes": 274712,
+      "sha256": "21BB438C0D4A6F1F164B9A646F6EE000340185E5871180AEC06DB8D3F07C0082"
+    },
+    "python_version": "3.11.9",
+    "dependencies": "Python standard library only"
+  },
+  "declared_download_bytes": 5580879686,
+  "free_space_margin_bytes": 1073741824,
+  "output_root": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r3-phase-b-source-coverage-20260813-r0",
+  "output_root_existed_at_freeze": false,
+  "pass_terminal": "D3R3_PHASE_B_EXACT64_MEMBER_COVERAGE_CENSUS_COMPLETE_NO_MEMBER_PAYLOAD_OR_TRUTH_READ",
+  "pass_next_gate": "EXPLICIT_D3R3_PHASE_B_MISSING_SOURCE_POLICY_REGISTRATION",
+  "failure_semantics": "Execution incomplete, no coverage or scientific terminal, immutable root, no same-version retry.",
+  "current_authority": "FROZEN_REVERSIBLE_SOURCE_COVERAGE_EXPERIMENT_ONLY",
+  "next_gate": "EXECUTE_D3R3_EXACT64_SOURCE_MEMBER_COVERAGE_CENSUS"
+}

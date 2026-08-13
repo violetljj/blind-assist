@@ -11,6 +11,16 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   R9 scoring/top-24、training/network 均为 0。Phase-A independent-validation blocker 与 pipeline hold 正式关闭；
   唯一 successor 为 non-executing `TARO_O1R_R11_SOURCE_ONLY_TOP24_IMPLEMENTATION_LOCK`，正式评分仍须独立 execution lock。
 
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。D3R2 coverage census r0 在第45个资产
+  short body 后保持不可变，另立 D3R3 transport-recovery version。新 scope 保持 exact-32 identity
+  顺序、每身份 exact-300 stems、9600-stem plan 和 64 URL 顺序，但不继承 D3R2 activation、44 bodies、
+  checkpoints、failure/temp 或 partial coverage。fresh HEAD 64/64 PASS（声明正文 `5,580,879,686` bytes），
+  Content-Length/ETag/Last-Modified 相对旧 snapshot 全部零漂移、redirect/body read 均为0；producer-free
+  validator PASS。因此把 D3R2 的失败假设收窄为 premature EOF，而不是源对象版本变化。D3R3 census
+  只增加一个可证伪变化：HTTP 200 且 headers 匹配但正文短于 Content-Length 时记
+  `TRANSIENT_BODY_SHORT_READ`，删除 partial 并从 byte 0 完整重试，最多3次；15/15 targeted tests PASS。
+  exact-64 fresh-root census 已激活，但仍禁止 Range、member payload、pixel/truth、selection、RGB/model/R2。
+
 - 时间：2026-08-13（Asia/Hong_Kong）；执行者：Codex。主机重启后 RTX 5060 / CUDA 12.8 恢复，针对同一
   immutable TARO R11 Phase-A 5,219-file root 重跑原 independent validator。原 validator 通过 CUDA 前检并
   重验 terminal/source，但在首帧 `466160/44796584/17383.777` 以

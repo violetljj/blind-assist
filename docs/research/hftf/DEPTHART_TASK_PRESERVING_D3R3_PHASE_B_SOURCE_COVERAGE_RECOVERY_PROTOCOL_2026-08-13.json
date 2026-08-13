@@ -1,0 +1,232 @@
+{
+  "schema": "blindassist_depthart_task_preserving_d3r3_phase_b_source_coverage_head_protocol_v1",
+  "protocol_id": "DEPTHART_TASK_PRESERVING_D3R3_PHASE_B_SOURCE_COVERAGE_TRANSPORT_RECOVERY_HEAD_ONLY",
+  "frozen_at": "2026-08-13T10:18:36.9605827+08:00",
+  "status": "D3R3_PHASE_B_SOURCE_COVERAGE_RECOVERY_HEAD_PROTOCOL_FROZEN_MEDIA_UNOPENED",
+  "research_mode": "FORMAL_CONFIRMATION_CONTROL_PLANE_NO_MEDIA_EXECUTION",
+  "owning_d3_router_protocol": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3_BIDIRECTIONAL_ERROR_CERTIFICATE_ROUTER_PROTOCOL_2026-08-12.json",
+    "bytes": 12307,
+    "sha256": "52E46A8E16B18BEFD8412874A1571429E95813EDC99A098B8B98194C613E50B2"
+  },
+  "phase_a_result": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R1_PHASE_A_RESULT_2026-08-12.json",
+    "bytes": 6116,
+    "sha256": "6857A001156265DD99A107BE9D9779AA3742CAD549A805559E73881B43F57B4E"
+  },
+  "prior_source_scope": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R1_PHASE_B_DEPTH_CONFIDENCE_SOURCE_SCOPE_RECEIPT_2026-08-12.json",
+    "bytes": 12041,
+    "sha256": "DBB9DD2B936FEB2B3D653FDFD7FF3EA47122122185CAA470BBAF7CF549D5C074"
+  },
+  "d3r2_protocol": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R2_PHASE_B_SOURCE_COVERAGE_RECOVERY_PROTOCOL_2026-08-12.json",
+    "bytes": 15234,
+    "sha256": "4BF9023F76C8933B08CEB70D2FC498DA4CE6B892D0A0FD5D4B063E8C60B3F041"
+  },
+  "d3r2_execution_stop": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R2_PHASE_B_SOURCE_COVERAGE_EXECUTION_STOP_2026-08-13.json",
+    "bytes": 6508,
+    "sha256": "78913CE76DBD0D4F060ADAB4881393DE64F1CA4FBB33029AB5DBB5A433504D4B"
+  },
+  "prior_head_result": {
+    "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r1-phase-b-head-20260812-r0/head-preflight.json",
+    "bytes": 64935,
+    "sha256": "3C1F7EC0BA09DF15F00B9AE0E3169F142631C84412F951D1D6D64FECF5CFB36E"
+  },
+  "prior_head_terminal_audit": {
+    "path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r1-phase-b-head-terminal-repair-20260812-r0/post-result-audit.json",
+    "bytes": 1807,
+    "sha256": "79436F27AF89F8A336A356DE6C8D9D799994D933E8467649D74CA35149F706D3"
+  },
+  "source_scope": {
+    "path": "docs/research/hftf/DEPTHART_TASK_PRESERVING_D3R3_PHASE_B_SOURCE_COVERAGE_SCOPE_RECEIPT_2026-08-13.json",
+    "bytes": 11100,
+    "sha256": "E7709580E4C56752D6EFE72A330080288125FEBF60CBC8F38FCED453159A75D6"
+  },
+  "producer": {
+    "path": "scripts/research/hftf/deployment/depthart/preflight_depthart_task_preserving_d3r3_phase_b_assets.py",
+    "bytes": 28054,
+    "sha256": "2AA9BD0173ABE63EE2C9D2A1555B2774CE1C75F55569B51A7E464FD4DC22F489"
+  },
+  "tests": {
+    "path": "scripts/research/hftf/deployment/depthart/test_preflight_depthart_task_preserving_d3r3_phase_b_assets.py",
+    "bytes": 10491,
+    "sha256": "AAAB918A3E85ECB2F3C65AA298F05E655D1EF76D1383540DA580BE657A7D794A"
+  },
+  "validator": {
+    "path": "scripts/research/hftf/deployment/depthart/validate_depthart_task_preserving_d3r3_phase_b_head.py",
+    "bytes": 25745,
+    "sha256": "108F967BAF235FAA4B68E649DDC7C2B49ABCF33590027BC384348FAAF42ABBE1"
+  },
+  "validator_tests": {
+    "path": "scripts/research/hftf/deployment/depthart/test_validate_depthart_task_preserving_d3r3_phase_b_head.py",
+    "bytes": 8377,
+    "sha256": "19FA7DA6231A9696CD2F8636E653E5B5D8C100935B5AAF6D657A1C3BB73043C1"
+  },
+  "base_url": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1/raw",
+  "fold": "Training",
+  "assets_per_video": [
+    "lowres_depth.zip",
+    "confidence.zip"
+  ],
+  "identity_count": 32,
+  "selected_frame_count_per_identity": 300,
+  "selected_frame_count_total": 9600,
+  "selected_frame_plan_sha256": "AFDFC393BC5CD8285EB6DC76D3FA2FC9BF4AB1579E5E85B835E5A28F1DDBA3B5",
+  "request_method": "HEAD",
+  "expected_parent_count": 32,
+  "expected_request_count": 64,
+  "request_plan_encoding": "one ASCII line in selection/asset order: selection_order/pool_order/visit_id/video_id/asset/url followed by LF",
+  "request_plan_sha256": "F957FDDE8423D262BF7652B51AD42B7C877F26BB1A776C32B8920C25A62CFEB6",
+  "timeout_seconds": 20,
+  "workers": 8,
+  "max_attempts": 3,
+  "user_agent": "BlindAssist-DepthART-D3R3-phase-b-fresh-head-only",
+  "redirect_policy": {
+    "follow_redirects": false,
+    "redirect_status_range": "300-399",
+    "redirect_is_terminal": true,
+    "redirect_is_retried": false,
+    "required_redirect_count_for_pass": 0,
+    "required_final_url": "exact_requested_url"
+  },
+  "retry_policy": {
+    "attempt_definition": "max_attempts includes the first request",
+    "retry_transient_transport_errors": true,
+    "retry_http_statuses": [
+      408,
+      429
+    ],
+    "retry_http_status_range": "500-599",
+    "do_not_retry": [
+      "any redirect status",
+      "all other HTTP 4xx statuses",
+      "invalid or missing required headers on HTTP 200"
+    ],
+    "method_on_every_attempt": "HEAD"
+  },
+  "fresh_snapshot_policy": {
+    "all_64_required": true,
+    "only_request_45_forbidden": true,
+    "prior_headers_role": "comparison baseline only; never D3R3 body authority",
+    "fresh_headers_role": "only a validated 64-of-64 PASS snapshot may be bound by a future D3R3 body protocol",
+    "row_fields": [
+      "Content-Length",
+      "ETag",
+      "Last-Modified"
+    ],
+    "record_per_field_drift_from_prior": true,
+    "header_drift_is_not_failure_if_fresh_row_is_valid": true,
+    "head_does_not_establish_body_deliverability": true
+  },
+  "required_success": {
+    "final_asset_count": 64,
+    "available_asset_count": 64,
+    "http_status": 200,
+    "content_length_positive_integer": true,
+    "etag_nonempty": true,
+    "last_modified_nonempty": true,
+    "redirect_count": 0,
+    "response_body_bytes_read": 0,
+    "unresolved_error_row_count": 0
+  },
+  "activation_contract": {
+    "activation_schema": "blindassist_depthart_task_preserving_d3r3_phase_b_source_coverage_head_activation_v1",
+    "required_status": "D3R3_PHASE_B_EXACT64_FRESH_HEAD_ONLY_PREFLIGHT_ACTIVATED",
+    "user_instruction_must_explicitly_authorize": "D3R3 exact64 fresh HEAD-only",
+    "one_shot": true,
+    "exact_top_level_fields": [
+      "schema",
+      "activation_id",
+      "activated_at",
+      "activated_by",
+      "authorization_verbatim",
+      "authorization_context",
+      "status",
+      "bindings",
+      "execution",
+      "authority",
+      "forbidden",
+      "next_action"
+    ],
+    "required_true_authority": [
+      "fresh_exact64_head"
+    ],
+    "required_false_authority": [
+      "media_get",
+      "media_body",
+      "range_get",
+      "redirect_following",
+      "archive_member_read",
+      "depth_confidence_decode",
+      "source_truth_support",
+      "phase_b_selection",
+      "phase_c_rgb",
+      "truth",
+      "model_output",
+      "role_assignment",
+      "training",
+      "development_outcome",
+      "r2",
+      "performance",
+      "android_default",
+      "production",
+      "safety"
+    ]
+  },
+  "output": {
+    "attempt_root": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r3-phase-b-source-coverage-head-20260813-r0",
+    "artifact_path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r3-phase-b-source-coverage-head-20260813-r0/head-preflight.json",
+    "validation_path": "artifacts.local/evidence/hftf/depthart-task-preserving-d3r3-phase-b-source-coverage-head-20260813-r0/validation.json",
+    "fresh_root_required": true,
+    "root_existed_at_freeze": false,
+    "overwrite_forbidden": true,
+    "failed_reserved_output_is_not_resumable": true
+  },
+  "pass_terminal": "D3R3_PHASE_B_EXACT64_FRESH_HEAD_PASS_MEDIA_BODY_UNOPENED",
+  "pass_next_gate": "EXPLICIT_D3R3_PHASE_B_EXACT64_COVERAGE_ONLY_CENSUS_PROTOCOL_REGISTRATION",
+  "failure_terminals": [
+    "D3R3_PHASE_B_FRESH_HEAD_ASSETS_NOT_AVAILABLE_MEDIA_BODY_UNOPENED",
+    "D3R3_PHASE_B_FRESH_HEAD_EXECUTION_INCOMPLETE_MEDIA_BODY_UNOPENED"
+  ],
+  "failure_successor": null,
+  "future_body_recovery_design_not_activated": {
+    "fresh_body_root_required": true,
+    "all_64_full_get_required": true,
+    "reuse_d3r2_bodies": false,
+    "range_forbidden": true,
+    "premature_eof_classification": "TRANSIENT_BODY_SHORT_READ",
+    "premature_eof_retry_policy": "full restart from byte zero; at most three total attempts including first",
+    "transport_response_body_bytes_must_include_failed_short_reads": true,
+    "protocol_registration_required_after_head_pass": true
+  },
+  "current_authority": {
+    "protocol_frozen": true,
+    "source_scope_registered": true,
+    "synthetic_tests_only": true,
+    "media_head": false,
+    "media_get": false,
+    "media_body": false,
+    "range_get": false,
+    "redirect_following": false,
+    "archive_member_read": false,
+    "depth_confidence_decode": false,
+    "source_truth_support": false,
+    "phase_b_selection": false,
+    "phase_c_rgb": false,
+    "truth": false,
+    "model_output": false,
+    "role_assignment": false,
+    "training": false,
+    "development_outcome": false,
+    "r2": "NONE",
+    "performance": false,
+    "android_default": false,
+    "production": false,
+    "safety": false
+  },
+  "scientific_terminal": null,
+  "next_gate": "EXPLICIT_D3R3_PHASE_B_EXACT64_FRESH_HEAD_ONLY_PREFLIGHT_ACTIVATION",
+  "terminal": "D3R3_PHASE_B_SOURCE_COVERAGE_RECOVERY_HEAD_PROTOCOL_FROZEN_MEDIA_UNOPENED"
+}
