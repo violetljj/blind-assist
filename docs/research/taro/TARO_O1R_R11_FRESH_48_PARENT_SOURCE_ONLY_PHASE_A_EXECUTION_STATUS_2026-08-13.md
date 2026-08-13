@@ -1,6 +1,6 @@
 # TARO O1R R11 fresh 48-parent source-only Phase A execution status
 
-状态：`FORMAL_EXECUTION_PASS / ONE_SHOT_CONSUMED / INDEPENDENT_VALIDATION_ENV_BLOCKED / PIPELINE_HOLD`
+状态：`FORMAL_EXECUTION_PASS / ONE_SHOT_CONSUMED / INDEPENDENT_VALIDATION_PASS / PIPELINE_HOLD_RELEASED / SOURCE_ONLY_TOP24_IMPLEMENTATION_PENDING`
 
 R11 all-48 source-only Phase A 已按冻结 module argv 正式消费。producer 原子终态为
 `TARO_O1R_R11_FRESH_POOL_PHASE_A_SOURCE_ONLY_SEALED_PASS`：exact `48` parents、`1,043` frames、
@@ -21,19 +21,40 @@ R7 baseline 形成 `7,315 OCCUPIED / 2,072 UNKNOWN / 0 CLEAR`；R11 candidate �
 
 ## 独立验签边界
 
-独立 validator 已只读重建 exact `5,219`-file root set，重哈希全部 `5,218` 个 terminal binding，
+首次独立 validator 已只读重建 exact `5,219`-file root set，重哈希全部 `5,218` 个 terminal binding，
 并验证 control seals、64 个 execution-lock binding 与冻结 authority。随后 GPU 进入 Windows
-`Code 43 / CM_PROB_FAILED_POST_START`，`torch.cuda.is_available()` 变为 false，验签以
-`R11_PHASE_A_VALIDATION_CUDA` 环境失败停止；完整 1,043-frame lineage 与 4,172 次允许 payload
-decode replay 尚未完成。validator 未改写正式 root，Phase A one-shot 不得重跑。
+`Code 43 / CM_PROB_FAILED_POST_START`，验签以 `R11_PHASE_A_VALIDATION_CUDA` 环境失败停止。
 
-因此当前不能进入 source-only top-24 或 selected-only FARO。唯一下一步是重启主机恢复 CUDA，随后对同一
-sealed root 只读重跑独立 validator；只有该验签 PASS 后，才可另立 top-24 implementation/execution lock。
+主机于 2026-08-13 重启后 RTX 5060 / CUDA 12.8 恢复，原命令针对同一 root 继续运行，并在首个
+candidate source receipt 以 `R11_PHASE_A_VALIDATION_SOURCE_BINDING` 停止。定位证明 producer 通过冻结的
+canonical JSON 将 trajectory pose/gravity round 到 12 位，而原 validator 将独立重建的 float64 值在序列化前
+作 Python exact equality；例如 `-0.403235180695` 对 `-0.4032351806954706`。重建值按冻结规则规范化后与
+stored pose/gravity 的 canonical SHA 同为 `B3CCB272ACACF3EA7C41CAD6DC196AA5536523EF32293118D44553CEC49574C7`。
+该停止属于 numeric representation defect，不是 source/evidence corruption。原 validator、execution lock、
+terminal 和正式 root 均未改写，模型、scoring、highres/FARO/truth/label/outcome 均未重跑或读取。
 
-重启后唯一允许的续验命令为：
+当时仍不能进入 source-only top-24 或 selected-only FARO。新的 protocol-only repair 已冻结：保留原
+validator 的全部 5,219-file/root/source/candidate/lineage/count/ledger/resource 检查，只将独立重建的
+`camera_to_world_4x4` 与 `gravity_up_camera_xyz` 按 producer 的 canonical JSON round-12 规则规范化后精确比较。
+它不使用 epsilon/tolerance，不修改任何旧 byte；后续 repaired audit 已 PASS，见下方最终独立验签。
+
+Attempt 01 repair 推送后首次调用在 output-root/payload 前以 `R11_PHASE_A_REPAIR_PATH` fail closed：repo lexical
+`artifacts.local` path 与同一授权 junction target 的 resolved spelling 被误作不同。正式/partial root 均未创建，
+Phase-A frame payload/model/FARO 读取均为 0。Attempt 02 只在 exact CLI 与 exact authorized path 两侧都 resolve
+后作 exact equality；不接受 alternate target。Attempt 02 推送后唯一允许的续验命令为：
 
 ```powershell
-E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe -m scripts.research.taro_o1r_r11_abstention_runtime.validate_pool_phase_a --evidence-root artifacts.local/evidence/taro/o1r-r11-fresh-pool-phase-a-r0 --execution-lock docs/research/taro/TARO_O1R_R11_FRESH_48_PARENT_SOURCE_ONLY_PHASE_A_ONE_SHOT_EXECUTION_LOCK_2026-08-12.json
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe -m scripts.research.taro_o1r_r11_abstention_runtime.audit_pool_phase_a_round12_terminal --repair-receipt docs/research/taro/TARO_O1R_R11_PHASE_A_INDEPENDENT_VALIDATOR_ROUND12_REPRESENTATION_REPAIR_ATTEMPT_02_2026-08-13.json --output-root artifacts.local/evidence/taro/o1r-r11-fresh-pool-phase-a-validator-round12-repair-r0
 ```
 
 本状态不产生 task effectiveness、路线晋级、部署、设备、产品或安全主张。
+
+## 最终独立验签
+
+Attempt 02 已对同一 sealed root 完整执行并以
+`TARO_O1R_R11_PHASE_A_OFFLINE_VALIDATOR_ROUND12_REPAIR_PASS` 结束。原 validator 的 exact 5,219-file root、
+5,218 prior hashes、64 lock bindings、全部 source containers/payloads、1,043 candidate/lineage、counts、ledger、
+runtime 与 resource 检查均通过；4,172 次允许 source payload replay 完成。结果 root 恰好一个原子文件，3,035 bytes，
+SHA-256 为 `2D80268D3E6D928F928F7C3B8AF8B14C7396D16A305521293C052DF6A378D19C`。
+模型未重跑，highres/FARO/truth/label/outcome/scoring 仍为 0。Phase-A pipeline hold 已释放；唯一后继是另立
+source-only 48→24 implementation lock，正式 scoring 仍未授权。

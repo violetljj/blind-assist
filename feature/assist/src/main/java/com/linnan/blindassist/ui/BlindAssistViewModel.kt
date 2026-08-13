@@ -104,6 +104,29 @@ class BlindAssistViewModel @Inject constructor(
         }
     }
 
+    fun renderFrame(
+        guidance: CameraGuidanceUiState,
+        fieldTestSummary: FieldTestSummaryUiState?,
+        modelStatus: String
+    ) {
+        _uiState.update { current ->
+            val nextSummary = fieldTestSummary ?: current.fieldTestSummary
+            if (
+                current.cameraGuidance == guidance &&
+                current.fieldTestSummary == nextSummary &&
+                current.modelStatus == modelStatus
+            ) {
+                current
+            } else {
+                current.copy(
+                    cameraGuidance = guidance,
+                    fieldTestSummary = nextSummary,
+                    modelStatus = modelStatus
+                )
+            }
+        }
+    }
+
     fun activateCamera(fieldTestSummary: FieldTestSummaryUiState, guidance: CameraGuidanceUiState, modelStatus: String) {
         _uiState.update {
             it.copy(

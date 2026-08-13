@@ -61,6 +61,7 @@ internal class FramePipelineStats(
     private fun snapshotLocked(): FramePipelineStatsSnapshot {
         val dropped = droppedBusy + droppedInactive + droppedDetectorUnavailable
         val total = processed + dropped
+        val sortedInferenceSamples = inferenceSamples.sorted()
         return FramePipelineStatsSnapshot(
             received = received,
             processed = processed,
@@ -68,16 +69,15 @@ internal class FramePipelineStats(
             droppedInactive = droppedInactive,
             droppedDetectorUnavailable = droppedDetectorUnavailable,
             droppedFrameRate = if (total == 0L) 0f else dropped.toFloat() / total.toFloat(),
-            inferenceP50Ms = percentileLocked(0.50f),
-            inferenceP95Ms = percentileLocked(0.95f)
+            inferenceP50Ms = percentile(sortedInferenceSamples, 0.50f),
+            inferenceP95Ms = percentile(sortedInferenceSamples, 0.95f)
         )
     }
 
-    private fun percentileLocked(percentile: Float): Long {
-        if (inferenceSamples.isEmpty()) return 0L
-        val sorted = inferenceSamples.sorted()
-        val index = ceil((sorted.size - 1) * percentile).toInt().coerceIn(0, sorted.lastIndex)
-        return sorted[index]
+    private fun percentile(sortedSamples: List<Long>, percentile: Float): Long {
+        if (sortedSamples.isEmpty()) return 0L
+        val index = ceil((sortedSamples.size - 1) * percentile).toInt().coerceIn(0, sortedSamples.lastIndex)
+        return sortedSamples[index]
     }
 
     companion object {

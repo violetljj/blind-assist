@@ -6,18 +6,10 @@ import androidx.activity.compose.BackHandler
 import androidx.camera.view.PreviewView
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,7 +28,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -54,7 +45,6 @@ import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Shield
 import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material.icons.rounded.Vibration
-import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material.icons.rounded.VolumeUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -73,7 +63,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -82,14 +71,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.role
@@ -108,105 +93,7 @@ import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.localization.LocalizedText
 import com.linnan.blindassist.preferences.DailyUsageMode
 import com.linnan.blindassist.ui.DetectionOverlayView
-import kotlinx.coroutines.delay
 
-
-@Composable
-fun BrandSplashScreen(
-    onFinished: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val transition = rememberInfiniteTransition(label = "splash")
-    val scan by transition.animateFloat(
-        initialValue = 0.05f,
-        targetValue = 0.95f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1400, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "scan"
-    )
-    val pulse by transition.animateFloat(
-        initialValue = 0.78f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(900, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "pulse"
-    )
-
-    LaunchedEffect(Unit) {
-        delay(1150)
-        onFinished()
-    }
-
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .clickable(
-                role = Role.Button,
-                onClickLabel = "跳过启动页",
-                onClick = onFinished
-            )
-            .background(
-                Brush.verticalGradient(
-                    listOf(BaNight, Color(0xFF092128), Color(0xFF061115))
-                )
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            val y = size.height * scan
-            drawLine(
-                color = BaMint.copy(alpha = 0.36f),
-                start = Offset(size.width * 0.12f, y),
-                end = Offset(size.width * 0.88f, y),
-                strokeWidth = 3.dp.toPx(),
-                cap = StrokeCap.Round
-            )
-            drawCircle(
-                color = BaSky.copy(alpha = 0.09f * pulse),
-                radius = size.minDimension * 0.34f * pulse,
-                center = center
-            )
-        }
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(32.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(116.dp)
-                    .clip(CircleShape)
-                    .background(BaPanelSoft),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Visibility,
-                    contentDescription = null,
-                    tint = BaMint,
-                    modifier = Modifier.size(58.dp)
-                )
-            }
-            Spacer(Modifier.height(24.dp))
-            Text(
-                text = "BlindAssist",
-                style = MaterialTheme.typography.headlineLarge,
-                color = BaText,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.semantics { heading() }
-            )
-            Spacer(Modifier.height(8.dp))
-            Text(
-                text = "本地视觉辅助引擎启动中",
-                style = MaterialTheme.typography.bodyLarge,
-                color = BaTextMuted
-            )
-        }
-    }
-}
 
 @Composable
 fun OnboardingScreen(

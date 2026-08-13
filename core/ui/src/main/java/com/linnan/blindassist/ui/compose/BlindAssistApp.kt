@@ -73,7 +73,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -110,7 +109,6 @@ import com.linnan.blindassist.model.AssistInputSource
 import com.linnan.blindassist.model.ReplayScenario
 import com.linnan.blindassist.preferences.DailyUsageMode
 import com.linnan.blindassist.ui.DetectionOverlayView
-import kotlinx.coroutines.delay
 
 
 @Composable
@@ -119,8 +117,6 @@ fun BlindAssistApp(
     actions: BlindAssistAppActions,
     modifier: Modifier = Modifier
 ) {
-    var splashVisible by rememberSaveable { mutableStateOf(true) }
-
     BackHandler(enabled = state.cameraActive) {
         actions.runtime.onCloseCamera()
     }
@@ -153,7 +149,6 @@ fun BlindAssistApp(
                         onSensitiveShortcut = actions.runtime.onSensitiveShortcut,
                         onCameraViewsReady = actions.runtime.onCameraViewsReady
                     )
-                    splashVisible -> BrandSplashScreen(onFinished = { splashVisible = false })
                     state.showOnboarding -> OnboardingScreen(onFinished = actions.navigation.onCompleteOnboarding)
                     state.showGlassesCenter -> GlassesHardwareScreen(
                         state = state.glassesSimulator,

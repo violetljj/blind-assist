@@ -2,6 +2,69 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：Codex。按用户授权正式消费 AG R2 cross-sensor
+  calibration-control R1 producer 与 independent replay，各恰好一次。execution lock 在任何 archive access
+  前以 master `3a4247dfa022323ca4f36f574bc607c4ff252b05` 固定；producer 先消费新 root，验证 archive hash、
+  枚举 5 个成员并读取 2 个 YAML / 7,236 bytes，随后以 `F2_R1_KALIBR_ROSTOPIC` fail closed。两份 YAML
+  已读但解析未完成，因此 matrix discovery 与 `/uvc_camera/cam_2` match count 都保持 `null/UNKNOWN`，未选择
+  member、camera node 或 first/best。独立 validator 先消费 replay receipt，再且仅再 replay archive 一次，
+  以 `CALIBRATION_CONTROL_R1_INDEPENDENT_REPLAY_CONFIRMED_PRODUCER_FAILURE` PASS；离线六文件 hash-chain
+  验签通过。R1 root 为 6 files / 6,462 bytes，producer failure SHA-256 `35F125C2...D40D38`，validator result
+  SHA-256 `57802146...ED15D`。session RGB-D/IMU、模型、truth、factor scoring、Confirmation、训练、reducer、
+  网络、设备与默认 App 全部为 0，Confirmation root 不存在，科学状态为 `NOT_RUN`。R1 永久 consumed，
+  不得 rerun/resume/replace；当前没有 active successor，未来恢复必须另立基于官方 archive-format evidence 的
+  新版本 non-executing protocol、fresh root 并单独授权。
+
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：Codex。TARO R11 Phase-A repaired independent audit 对同一
+  immutable 5,219-file root 完整 PASS：48 parents / 1,043 frames / 9,387 queries，原 validator 的 root set、
+  5,218 prior hashes、64 execution-lock bindings、source containers/payloads、candidate arrays、lineage、counts、
+  read ledger、runtime/resource 全部一致；独立 source payload replay 为 4,172 次。repaired audit 原子 root 恰好
+  1 file / 3,035 bytes，SHA-256 `2D80268D...78D19C`。numeric repair 仅把独立重建 pose/gravity 按 producer
+  frozen canonical JSON round-12 后作精确比较，无 epsilon。模型未重跑，highres/FARO/truth/label/outcome、
+  R9 scoring/top-24、training/network 均为 0。Phase-A independent-validation blocker 与 pipeline hold 正式关闭；
+  唯一 successor 为 non-executing `TARO_O1R_R11_SOURCE_ONLY_TOP24_IMPLEMENTATION_LOCK`，正式评分仍须独立 execution lock。
+
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。D3R2 coverage census r0 在第45个资产
+  short body 后保持不可变，另立 D3R3 transport-recovery version。新 scope 保持 exact-32 identity
+  顺序、每身份 exact-300 stems、9600-stem plan 和 64 URL 顺序，但不继承 D3R2 activation、44 bodies、
+  checkpoints、failure/temp 或 partial coverage。fresh HEAD 64/64 PASS（声明正文 `5,580,879,686` bytes），
+  Content-Length/ETag/Last-Modified 相对旧 snapshot 全部零漂移、redirect/body read 均为0；producer-free
+  validator PASS。因此把 D3R2 的失败假设收窄为 premature EOF，而不是源对象版本变化。D3R3 census
+  只增加一个可证伪变化：HTTP 200 且 headers 匹配但正文短于 Content-Length 时记
+  `TRANSIENT_BODY_SHORT_READ`，删除 partial 并从 byte 0 完整重试，最多3次；15/15 targeted tests PASS。
+  exact-64 fresh-root census 已激活，但仍禁止 Range、member payload、pixel/truth、selection、RGB/model/R2。
+
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：Codex。主机重启后 RTX 5060 / CUDA 12.8 恢复，针对同一
+  immutable TARO R11 Phase-A 5,219-file root 重跑原 independent validator。原 validator 通过 CUDA 前检并
+  重验 terminal/source，但在首帧 `466160/44796584/17383.777` 以
+  `R11_PHASE_A_VALIDATION_SOURCE_BINDING` 停止：producer 通过冻结 canonical JSON 把 pose/gravity 序列化为
+  12 位小数，validator 则把重建的 float64 值在序列化前作 Python exact equality；例如
+  `-0.403235180695` 对 `-0.4032351806954706`、`-0.077485681602` 对
+  `-0.07748568160183153`。两组独立重建值按冻结 round-12 规范化后与 stored 数值的 canonical SHA 均为
+  `B3CCB272...49574C7`，证明当前故障只属于 numeric representation，不是 source/evidence corruption。
+  原 validator、execution lock、terminal 和 Phase-A root 全部保持字节不变，模型/FARO/highres/truth/label/
+  outcome/scoring 均未重跑或读取。新增并冻结 protocol-only repair：只在原 validator 的 independent trajectory
+  重建后规范化 `camera_to_world_4x4` 与 `gravity_up_camera_xyz`，随后仍作精确比较；无 epsilon、无 schema/hash
+  bypass，原有 5,219-file/root/source/candidate/lineage/ledger/resource 检查全部保留。正式结果先在同卷 sibling
+  partial root 完整写入并回读 seal/bytes/SHA/单文件集，再原子发布整个 root；注入 fsync 故障时 formal root 保持
+  absent 且 partial 清理。10/10 focused tests 与
+  py_compile PASS。Attempt 01 推送后首次调用在创建 output root 或读取 Phase-A frame payload 前以
+  `R11_PHASE_A_REPAIR_PATH` fail closed：内部 absent output 保留 repo lexical `artifacts.local` spelling，CLI exact
+  path 则 resolve 到授权 junction target，二者被误判为不同。正式/partial root、模型、source-frame payload、
+  FARO/highres/truth/label/outcome 均为 0。Attempt 01 原字节保留；Attempt 02 只把 exact CLI 与 exact authorized
+  path 两侧 resolve 后作 exact equality，alternate target 仍拒绝。当前唯一 successor 是推送 Attempt 02 后对同一
+  sealed root 执行只读 post-terminal audit；只有该结果 PASS 才可另立 source-only top-24 lock。
+
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：Codex。消费用户明确授权的 D3R2 Phase-B
+  exact-64 coverage-only census。activation 先通过 PR #34 的 11 项检查并合并至受保护 master；正式 r0
+  随后完成连续 `44/64` asset checkpoints / 22 paired identities，保留 44 bodies / `4,223,537,610`
+  bytes。第45个 `44796744/lowres_depth.zip` 首试 HTTP 200，但流式正文长度与冻结 Content-Length
+  不一致；producer 封存 terminal `DownloadFailure <- ValueError: download length mismatch`、failure
+  sidecar 与 non-resumable temp marker 后停止。metadata-only auditor 验证 attempt、001..044 checkpoint
+  seals、failure、HEAD URL/header/length 与 source 名称/长度，body read/hash、ZIP open/member read 均为0。
+  无 manifest/validation，partial coverage 不发布，truth/selection 未打开；终态
+  `D3R2_PHASE_B_COVERAGE_CENSUS_EXECUTION_INVALID_INCOMPLETE / scientific_terminal=null / next_gate=null`。
+  当前 r0 不可 resume、修补、复用 partial assets 或同版本重跑；未来恢复须再次授权新版本/协议/root。
 - 时间：2026-08-13（Asia/Hong_Kong）；执行者：Codex。收到 R1 calibration-control one-shot 授权后，
   在真实 archive/root 访问前完成 formal pre-execution hardening。独立审计发现旧 replay 只声明一次、未先消费
   receipt，且未完整验签 R1 lock/start/terminal/manifest、非 namespace failure 与 downstream Confirmation

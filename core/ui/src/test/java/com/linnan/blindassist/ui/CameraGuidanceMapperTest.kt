@@ -61,11 +61,17 @@ class CameraGuidanceMapperTest {
         )
 
         val guidance = CameraGuidanceMapper.fromFrameResult(result)
+        val guidanceWithoutDebug = CameraGuidanceMapper.fromFrameResult(
+            frameResult = result,
+            includeDebugDetails = false
+        )
 
         assertEquals("走廊通行", guidance.scenarioName)
         assertEquals("已按走廊通行策略触发提醒", guidance.explanationHeadline)
         assertTrue(guidance.debugText.contains("infer 22ms"))
         assertTrue(guidance.accessibilitySummary.contains("已触发提醒"))
+        assertTrue(guidanceWithoutDebug.debugText.isEmpty())
+        assertEquals(guidance.accessibilitySummary, guidanceWithoutDebug.accessibilitySummary)
     }
 
     @Test
