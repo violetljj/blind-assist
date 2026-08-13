@@ -72,8 +72,26 @@ authority 摘要和机械验证入口仍以根 `AGENTS.md` 为准。
   `git commit --only -m "<message>" -- <task-owned-paths>`。
 - 复用仍与当前文件一致的验证 receipt，只补跑 receipt 之后实际改变所需要的最小
   gate。
-- 只有 push、交付候选或用户明确要求发布时，才分别核对本地 `HEAD`、upstream
-  和远端目标 ref；本地 commit 不需要远端 parity。
+- 用户或 Codex 任务在明确范围内产生的提交直接正常推送到 `origin/master`；不创建 PR，
+  不等待 GitHub Actions、CodeQL、required checks 或远端审查。推送成功并核对目标 ref 后
+  即可继续研究；研究证据边界约束结论真实性，不是 GitHub 等待门。
+- 禁止强推、改写历史或吸收并发任务的无关改动。只有实际 push/交付时才核对本地
+  `HEAD`、upstream 和远端目标 ref；本地 commit 不需要远端 parity。
+
+## 实验节奏
+
+- Discovery/Canary/Development 以真实算法进步和毕业贡献的信息增益为先。主动测试大胆、
+  创新、可证伪且可逆的机制变化；可以复用论文、开源实现、预训练模型、公开数据和成熟
+  架构，但必须保留来源/许可，并区分继承部分与本项目的新贡献。
+- 早期实验只需问题/假设、可信 baseline、一个有意义变化、可观察指标/决策和停止条件；
+  有定位价值的负结果也是进展。缺 Confirmation、设备、安全或发布证据只限制 claim，
+  不阻塞诚实标注的可逆探索。
+- `ROUTINE_ENGINEERING` 与 `REVERSIBLE_EXPLORATION` 默认一次实现加一个能直接证伪本次
+  改动或实验的最小专项检查；没有有意义的自动检查时，审阅限定 diff/输出即可继续。
+- 额外测试、审查、门禁、文档、receipt 或协调步骤必须对应明确的重大风险。昂贵验证集中
+  到里程碑，不为形式完整重复本地/远端检查，也不让无关并发失败阻塞当前研究。
+- 只有实验污染、数据损坏、难逆外部动作、`FORMAL_CONFIRMATION`、生产/default-App
+  晋级、release、安全/隐私/权限或共享核心基础设施风险才提高验证强度，仍选择最窄充分检查。
 
 ## 验证选择
 
@@ -82,8 +100,9 @@ authority 摘要和机械验证入口仍以根 `AGENTS.md` 为准。
 - 公共接口、CameraX、vision、risk、feedback、权限、resources/assets、构建配置，或
   跨模块影响范围不确定：相关测试加 Android build。纯文档、纯单测和非 Android
   脚本不要求 Android build。
-- 项目结构、脚本入口和文档治理：运行 `scripts/check_project_structure.ps1`；
-  push/交付再运行 `scripts/check_repo_hygiene.ps1`。只有明确要求两者联跑时才使用
+- 项目结构、脚本入口和文档治理：运行能覆盖本次变更的 owning gate；仓库卫生、
+  release 或交付物身份变化才运行 `scripts/check_repo_hygiene.ps1`，普通 push 不触发。
+  只有改变面明确要求两者联跑时才使用
   `scripts/check_repo_hygiene.ps1 -IncludeStructure`，避免重复结构扫描。
 - 设备、研究、host compute 和 release 不在本页复制命令；按根 `AGENTS.md` 路由到
   owning current 文档。

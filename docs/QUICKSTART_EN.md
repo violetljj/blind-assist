@@ -85,13 +85,16 @@ The APK is written to:
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
-For a documentation-only change, finish with:
+For a documentation-only change, finish with the checks that own that surface:
 
 ```powershell
 git diff --check
-pwsh -NoProfile -File scripts/check_repo_hygiene.ps1 -IncludeStructure
 pwsh -NoProfile -File scripts/check_docs_index.ps1
 ```
+
+Run structure, release, permission, default-app, or shared-infrastructure gates
+only when the change touches that risk. A push by itself does not require an
+unrelated full-repository gate.
 
 ## 3:00 — pick a bounded first contribution
 

@@ -46,7 +46,7 @@ HISTORICAL_TERMINALS_IMMUTABLE: true
 ## 评价器有效性审计：EVAL-VALIDITY R0
 
 在继续比较任何新视觉候选前，已冻结
-[EVAL-VALIDITY R0 合同](EVAL_VALIDITY_R0_CONTRACT_2026-08-02.md)：它不训练模型，要求一个
+[EVAL-VALIDITY R0 合同](../EVAL_VALIDITY_R0_CONTRACT_2026-08-02.md)：它不训练模型，要求一个
 新的 session-disjoint cohort 先把 native scene facts 与 output-blind 的
 `reminder_now / cleared / knownness` event facts 分开；后者的双 reviewer 一致性必须先于
 YOLO、truth box、truth mask 和 synthetic oracle 的输出访问。四臂使用同一 decision chain，
@@ -58,11 +58,11 @@ YOLO、truth box、truth mask 和 synthetic oracle 的输出访问。四臂使�
 
 HFTF 是独立于当前 RISKSEG/YOLO 主线的未来潜力支线；只有同口径证据持续超过主线，
 才另立主线切换合同。最新
-[MetricTraversabilityField shadow/demo R0](../hftf/METRIC_TRAVERSABILITY_FIELD_SHADOW_DEMO_R0_IMPLEMENTATION_RESULT_2026-08-04.md)
+[MetricTraversabilityField shadow/demo R0](../../hftf/METRIC_TRAVERSABILITY_FIELD_SHADOW_DEMO_R0_IMPLEMENTATION_RESULT_2026-08-04.md)
 已把丰富米制观测场、身体扫掠包络、`UNKNOWN` 与末端提醒映射在独立侧车中解耦；
 它是 `DEVELOPMENT_ONLY / SHADOW_DEMO` 软件能力，不是新效果证据，`MAINLINE_UNCHANGED / DEFAULT_APP_UNCHANGED`。
 此前
-[D8 THOR-MAGNI 局部路线监督](../hftf/HFTF_STAGE_C_D8_THOR_MAGNI_LOCAL_ROUTE_SUPERVISION_2026-08-02.md)
+[D8 THOR-MAGNI 局部路线监督](../../hftf/HFTF_STAGE_C_D8_THOR_MAGNI_LOCAL_ROUTE_SUPERVISION_2026-08-02.md)
 已从 19 个 Pupil/QTM sessions 物化 1,078 个 source-native local-actionability
 样本。冻结 MobileNet 的五折筛查中，history 相对 current-only 的近距/走廊 AUROC
 均 5/5 折提升，mean delta 为 `+.0559/+.0511`；但 48-cell occupancy AP 为
@@ -75,21 +75,21 @@ temporal-head 对照未复制该 coarse 增量：近距 AUROC/AP 仅 2/5 折为�
 9/15 fold×seed units 为正。该 corridor-specific weak signal 不改变总终态；
 THOR frozen-backbone 搜索停止，下一变量必须来自独立来源。
 随后
-[D9 JRDB 独立数据集复现](../hftf/HFTF_STAGE_C_D9_JRDB_CORRIDOR_REPLICATION_2026-08-02.md)
+[D9 JRDB 独立数据集复现](../../hftf/HFTF_STAGE_C_D9_JRDB_CORRIDOR_REPLICATION_2026-08-02.md)
 使用四个本地 RGB360+3D-person sequences、104 个 samples 和两个完整 source-pair
 folds 复现该 corridor signal。history-minus-current corridor AUROC/AP 在 0/2
 folds 为正，mean `-.00235/-.00152`；六个 fold×seed units 中 AP 为 0/6 正。
 终态 `D9_JRDB_TEMPORAL_SPATIAL_CORRIDOR_REPLICATION_NOT_SUPPORTED`，当前 HFTF
 frozen-feature history route 停止。该科学负结果不删除 D8 局部监督资产，也不改变
 研究主线或默认 App。为区分 frozen-feature ceiling 与 history 本身，后续又执行
-[D10 trainable-tail temporal canary](../hftf/HFTF_STAGE_C_D10_TRAINABLE_TAIL_TEMPORAL_CANARY_2026-08-02.md)：
+[D10 trainable-tail temporal canary](../../hftf/HFTF_STAGE_C_D10_TRAINABLE_TAIL_TEMPORAL_CANARY_2026-08-02.md)：
 解冻 MobileNet blocks `9..12`，current/history 使用相同 765,386 个 trainable
 parameters。近距与走廊 AUROC/AP 四项 history-minus-current 都只有 2/5 folds
 为正，mean delta 分别为 `-.000235/+.000004/-.000403/-.000546`。冻结扩展门失败，
 终态 `D10_TRAINABLE_TAIL_TEMPORAL_INCREMENT_NOT_SUPPORTED_STOP`；不扩 seed、
 不启动 JRDB zero-shot、不调 recipe 救援。该终态只关闭当前 late-tail temporal
 residual successor，不关闭未来实质不同的时空表示研究。随后
-[D11–D13 future-onset 任务修正](../hftf/HFTF_STAGE_C_D11_D13_TRUE_FUTURE_ONSET_REPAIR_2026-08-02.md)
+[D11–D13 future-onset 任务修正](../../hftf/HFTF_STAGE_C_D11_D13_TRUE_FUTURE_ONSET_REPAIR_2026-08-02.md)
 发现原 0–2 秒 future-ever 标签包含 `t=0`，current-static QTM geometry 五折 AUROC
 已约 `.89–.97`，history kinematic oracle 没有稳定增量。改为只预测当前安全样本的
 未来 onset 后，近距有 157/530 positive/eligible、走廊 148/616，五折均可评价。
@@ -98,20 +98,20 @@ residual successor，不关闭未来实质不同的时空表示研究。随后
 当前只记录 `D13_FUTURE_ONSET_TEMPORAL_SPATIAL_INCREMENT_SUPPORTED` 的弱
 representation signal；下一变量是显式 motion，而不是退回 current-dominated 标签
 或升级主线/App 主张。后续
-[D14 显式 RAFT motion canary](../hftf/HFTF_STAGE_C_D14_EXPLICIT_MOTION_FUTURE_ONSET_CANARY_2026-08-02.md)
+[D14 显式 RAFT motion canary](../../hftf/HFTF_STAGE_C_D14_EXPLICIT_MOTION_FUTURE_ONSET_CANARY_2026-08-02.md)
 完成 4,312 个相邻 frame pairs。走廊 AUROC/AP mean delta 为
 `+.0219/+.0240`，但 AP median 为负、仅 2/5 folds 正；近距 AP mean
 `-.0103`。终态 `D14_EXPLICIT_MOTION_FUTURE_ONSET_INCREMENT_NOT_SUPPORTED`。
 folds 0/1 的走廊局部正信号保留，但不按结果切换 target 或调 RAFT/grid/head；
 true-onset estimand 保留，主线与默认 App 不变。随后
-[D15 JRDB true-onset 独立复现](../hftf/HFTF_STAGE_C_D15_JRDB_TRUE_FUTURE_ONSET_REPLICATION_2026-08-02.md)
+[D15 JRDB true-onset 独立复现](../../hftf/HFTF_STAGE_C_D15_JRDB_TRUE_FUTURE_ONSET_REPLICATION_2026-08-02.md)
 物化 proximity 14/102、corridor 10/71 onset-positive/eligible，两个固定
 source-pair folds 均含正负例。等容量 history replication 的 corridor AUROC/AP
 两折 seed-mean 都为负，aggregate `-.00618/-.03098`，终态
 `D15_JRDB_FUTURE_ONSET_HISTORY_REPLICATION_NOT_SUPPORTED`。D13 弱正信号因此只保留
 在 THOR source-local representation 层，不升级为跨数据集效应。
 随后
-[D16 TartanGround true-onset baseline](../hftf/HFTF_STAGE_C_D16_TARTANGROUND_TRUE_FUTURE_ONSET_BASELINE_2026-08-02.md)
+[D16 TartanGround true-onset baseline](../../hftf/HFTF_STAGE_C_D16_TARTANGROUND_TRUE_FUTURE_ONSET_BASELINE_2026-08-02.md)
 在 15 environments、495 samples 上物化 19,478 eligible cells 与 1,652 onset
 cells，四个 near/far × body/head targets 在三折都有正负。相同 frozen-spatial
 history recipe 的 near 增量仅千分位，far body/head 多数为负，终态
@@ -120,7 +120,7 @@ single-frame feature + post-hoc temporal residual family；true-onset task 保�
 下一表示必须在预训练阶段共同编码时序。
 
 此前 D5/D6 Development 已推进到
-[outcome-unseen TartanGround 与 SANPO real-event transfer](../hftf/HFTF_STAGE_C_D5_TARTANGROUND_DEVELOPMENT_PILOT_2026-08-02.md)：
+[outcome-unseen TartanGround 与 SANPO real-event transfer](../../hftf/HFTF_STAGE_C_D5_TARTANGROUND_DEVELOPMENT_PILOT_2026-08-02.md)：
 directional + fixed v2 在 6 个未参与开发的合成 environments 上 event recall
 9/9 提高、false-active 7/9 降低；随后在已消费的 30-session SANPO 人工审阅事件集上，
 9 个 directional checkpoints 全部命中 16/16 正事件，但误报 13–14/14 负事件、
@@ -150,7 +150,7 @@ passage negatives 并改用固定 spatial feature 后，mean 为
 但召回下降且 0/9 超过 YOLO。统一阈值和低置信 parallel-curb canary 都只移动
 trade-off。跨源空间关系正结果保留在 representation/guardrail 层，研究主线和
 默认 App 继续不变。随后
-[D6 多源关系监督 canary](../hftf/HFTF_STAGE_C_D6_RELATION_SUPERVISION_CANARY_2026-08-02.md)
+[D6 多源关系监督 canary](../../hftf/HFTF_STAGE_C_D6_RELATION_SUPERVISION_CANARY_2026-08-02.md)
 加入 Luna merged relation pool 与 r789 人工状态转移片段；两者都没有超过上述
 reviewed-normal-negative reference。更关键的是，11-source public-video LOSO
 对 intervention 的 frame/segment recall 都为 `0`，表明现有 fixed HFTF spatial
@@ -224,18 +224,18 @@ fold 双增量。终态为 `D6_RAFT_RESIDUAL_FLOW_SEPARABILITY_NOT_STABLE`。当
 route/actionability correspondence。
 
 此前路线进行到
-[G0-D1 scientific design](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)
+[G0-D1 scientific design](../../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_2026-08-01.md)
 之后的
-[timeline amendment](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_TIMELINE_AMENDMENT_2026-08-01.md)
+[timeline amendment](../../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_D1_TIMELINE_AMENDMENT_2026-08-01.md)
 与
-[Development execution contract](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_EXECUTION_CONTRACT_D1_2026-08-01.md)：
+[Development execution contract](../../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_EXECUTION_CONTRACT_D1_2026-08-01.md)：
 只比较 current RGB 下 direct-risk 与 signed-clearance 两种输出机制。9 个已
 outcome-open 来源固定为 6 train + 3 model selection；三条 one-shot fresh 与三条
-reserved official-test 尚未打开。[Development training result](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_TRAINING_RESULT_D1_2026-08-01.md)
+reserved official-test 尚未打开。[Development training result](../../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_LEARNABILITY_TRAINING_RESULT_D1_2026-08-01.md)
 现已通过独立 authority/label 重推、12 个 Phase A/B runs 与六个最终 checkpoint
 hash freeze，终态为 `G0_D1_SIX_FINAL_CHECKPOINTS_FROZEN`。这只允许另立 fresh
 一次性评估合同。该
-[fresh execution contract](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_FRESH_EXECUTION_CONTRACT_D1_2026-08-01.md)
+[fresh execution contract](../../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_FRESH_EXECUTION_CONTRACT_D1_2026-08-01.md)
 现已在任何 fresh 媒体、teacher outcome 或 student prediction 打开前冻结：三条
 session、75 个 current samples、六个 checkpoint、450 条 prediction、truth-free
 prediction authorization、先 receipt 后单次 truth read、全部效果 gate 与失败后
@@ -243,7 +243,7 @@ prediction authorization、先 receipt 后单次 truth read、全部效果 gate 
 主线、默认 App、Android、reserved official-test、生产与安全权限均未改变。
 
 合同推送后的一次性执行已由
-[fresh execution result](../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_FRESH_EXECUTION_RESULT_D1_2026-08-01.md)
+[fresh execution result](../../hftf/HFTF_STAGE_C_CURRENT_CLEARANCE_FRESH_EXECUTION_RESULT_D1_2026-08-01.md)
 关闭为 `G0_D1_FRESH_EVALUATION_NOT_EVALUABLE_NO_SOURCE_REPLACEMENT`。第一个
 固定 source 在 frame-0 depth 临时文件创建时因 263 字符 Windows 路径触发传输
 失败；此前 metadata、首帧 RGB/mask 已打开，因此不允许改短路径重跑、补全 partial
@@ -252,13 +252,13 @@ prediction 或 truth join，既不支持也不拒绝 signed-clearance；主线�
 
 其后的独立 D2 mechanics 问题没有救援 D1，而是比较 history-only 恒速因果 transport
 与 current-field persistence。六源 one-shot 已由
-[D2 result](../hftf/HFTF_STAGE_C_D2_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_RESULT_2026-08-02.md)
+[D2 result](../../hftf/HFTF_STAGE_C_D2_CAUSAL_SIGNED_CLEARANCE_TRANSPORT_RESULT_2026-08-02.md)
 封存为 `D2_NOT_EVALUABLE_OPPORTUNITY_INADEQUATE_NO_SOURCE_REPLACEMENT`：24 个
 `parent × height × horizon` strata 仅 8 个通过，effect gates 未获判定，因此既不支持
 也不否定 transport。D2 cohort 不重跑、不换源、不调参。
 
 唯一新后继是
-[D3-Q0](../hftf/HFTF_STAGE_C_D3_REFERENCE_AND_SUPPORT_ONLY_CHALLENGE_QUALIFICATION_Q0_2026-08-02.md)
+[D3-Q0](../../hftf/HFTF_STAGE_C_D3_REFERENCE_AND_SUPPORT_ONLY_CHALLENGE_QUALIFICATION_Q0_2026-08-02.md)
 条件机会挑战集设计：保留 D2 mechanics、opportunity/effect gates 全部不变，只允许
 另冻 reference-and-support-only qualifier 与 outcome 前 effect skeleton。当前尚未
 授权 D3 metadata scan、媒体、truth、effect 或 RGB student；研究主线与默认 App
@@ -267,7 +267,7 @@ prediction 或 truth join，既不支持也不拒绝 signed-clearance；主线�
 2026-08-04 的已知相机高度地面尺度后继先尝试 fresh ARKit source gate，但固定的
 4 个 parents 只有 2 个达到 pre-DA 高度代理资格，故以
 `HOLD_SOURCE_AUTHORITY_NO_REPLACEMENT` 关闭 fresh effect。用户随后明确允许消费数据
-用于开发；[消费开发结果](../hftf/KNOWN_CAMERA_HEIGHT_GROUND_SCALE_CONSUMED_RESULT_2026-08-04.md)
+用于开发；[消费开发结果](../../hftf/KNOWN_CAMERA_HEIGHT_GROUND_SCALE_CONSUMED_RESULT_2026-08-04.md)
 在 5 个 TartanGround parents、165 个冻结 anchors 上显示：R0 相对 raw DA 将
 parent-macro clearance MAE 从 `1.0424 m` 降至 `0.4710 m`，false-clear 从
 `.4672` 降至 `.1814`；后验、只用过去帧的 9-valid-scale 因果中值 R1 又改善到
@@ -277,7 +277,7 @@ parent-macro clearance MAE 从 `1.0424 m` 降至 `0.4710 m`，false-clear 从
 主线切换或默认 App 变更。
 
 同日又按目标允许的激进软件后继冻结了
-[相机条件化轻量尺度学生](../hftf/CAMERA_CONDITIONED_SCALE_STUDENT_R0_RESULT_2026-08-04.md)。
+[相机条件化轻量尺度学生](../../hftf/CAMERA_CONDITIONED_SCALE_STUDENT_R0_RESULT_2026-08-04.md)。
 固定十特征 ridge 在 5 个 parents 的 leave-one-parent-out Development 中通过全部
 parent-macro gates；随后不改模型，在 10 个训练未见 parents、330 个 anchors 的外部
 复现中再次全部通过：coverage `.9909`、clearance MAE `.1046 m`、agreement `.9899`、
@@ -287,7 +287,7 @@ false-clear `.0101`、temporal delta MAE `.0518 m`，且 10/10 parents 均优于
 个别 parent 仍超局部门槛，真实手机 exact-timestamp depth cohort 也尚不可评价。因此不授权
 ToF 采购、默认 App 接入、实时提醒或安全主张；下一门只能是另冻的固定高度/内参真机 shadow。
 
-同日完成的[离线压力测试](../hftf/CAMERA_CONDITIONED_SCALE_STUDENT_OFFLINE_STRESS_R0_RESULT_2026-08-04.md)
+同日完成的[离线压力测试](../../hftf/CAMERA_CONDITIONED_SCALE_STUDENT_OFFLINE_STRESS_R0_RESULT_2026-08-04.md)
 没有重训或搜索。330 帧 cached-depth 结果显示学生能把单一 DA 全局尺度漂移 `±40%`
 基本抵消，但不能修复局部 geometry：20% bandwise 形变的 accepted-bad 最高 `51.5%`。
 50 帧 frozen-DA RGB 重放又显示 Gaussian `sigma=3` 时 coverage 仍有 `.86`，却产生
@@ -296,7 +296,7 @@ MAE/false-clear 已到 `.321 m/.123`。因此真机合同必须在学生外绑�
 CameraX crop/rotation、mount/gravity、ground support 与独立 blur quality gate；当前只保留
 严格外部门控的 mechanism candidate，不授权 App 或安全输出。
 
-[ARKitScenes 484248 反例审计](../hftf/SCALE_FREE_TRAVERSABILITY_R2_ARKITSCENES_COUNTEREXAMPLE_AUDIT_R0_RESULT_2026-08-04.md)
+[ARKitScenes 484248 反例审计](../../hftf/SCALE_FREE_TRAVERSABILITY_R2_ARKITSCENES_COUNTEREXAMPLE_AUDIT_R0_RESULT_2026-08-04.md)
 确认 R2 失败不是 global scale 或 nearest-fill 主导：150/150 帧按官方 pose 都需顺时针
 90 度矫正，132/148 帧有大平面，完整 band 排序仅 `.480` 一致。解释性 orientation
 反事实把 coverage/方向一致率从 `.224/.385` 提到 `.826/.895`，但不改写原 R2
@@ -306,7 +306,7 @@ Development disagreement detector，未矫正输入直接关闭。
 ## 当前决定
 
 2026-08-01，当前唯一算法主线切换为
-[RISKSEG-R0](RISKSEG_R0_TASK_DATA_AND_EXECUTION_CONTRACT_2026-08-01.md)：停止继续修补
+[RISKSEG-R0](../RISKSEG_R0_TASK_DATA_AND_EXECUTION_CONTRACT_2026-08-01.md)：停止继续修补
 当前 YOLO 决策规则，训练一个四类轻量风险/可通行性分割模型。任务 ID 固定为
 `0 walkable / 1 blocking_obstacle / 2 boundary_level_change /
 3 unknown_nonwalkable`；旧 520-frame canonical mask 的 ID 1/2 含义相反，必须先按
@@ -315,7 +315,7 @@ Development disagreement detector，未矫正输入直接关闭。
 重叠且含 22 张相同 RGB，只做 contaminated non-gating regression smoke。
 新 event-eval 必须与二者 session-disjoint，至少 30 个 parent events 并覆盖障碍、
 台阶/落差、平行路沿和正常通行负例。历史
-[数据门结果](RISKSEG_R0_EVENT_EVAL_DATA_GATE_RESULT_2026-08-01.md) 的
+[数据门结果](../RISKSEG_R0_EVENT_EVAL_DATA_GATE_RESULT_2026-08-01.md) 的
 `HOLD_EVENT_EVAL_DATA` 保持不可变；随后新增 output-blind review bundle 与裁决，
 已冻结 30 parent events / 30 source sessions，四桶精确为 `8/8/7/7`，successor
 数据门为 `EVENT_EVAL_FROZEN_ADEQUATE`。
@@ -323,13 +323,13 @@ Development disagreement detector，未矫正输入直接关闭。
 唯一模型候选是 PIDNet-S，技术预检固定 `512x288 / W8A8 / four-class`，要求 TFLite
 和 QNN 都能编译、输出有限且尺寸正确、SM-S9280 冻结链 total P95 `<=100 ms`，并通过
 10 分钟持续运行退化门。当前
-[技术预检结果](RISKSEG_R0_PIDNET_S_TECHNICAL_PREFLIGHT_RESULT_2026-08-01.md)
+[技术预检结果](../RISKSEG_R0_PIDNET_S_TECHNICAL_PREFLIGHT_RESULT_2026-08-01.md)
 已经 `PIDNET_S_TECHNICAL_PREFLIGHT_PASS`：SM-S9280 上 QNN HTP 完整接管
 `163/163` 节点；7,619 次全链路 P95 `75.739 ms`，末/初 2 分钟 P95 比
 `1.00255x`，failure 和 thermal status 均为 0。训练 recipe 已由
-[implementation lock](RISKSEG_R0_PIDNET_S_TRAINING_IMPLEMENTATION_LOCK_2026-08-01.json)
+[implementation lock](../RISKSEG_R0_PIDNET_S_TRAINING_IMPLEMENTATION_LOCK_2026-08-01.json)
 绑定。完整执行结果现已由
-[RISKSEG-R0 最终结果](RISKSEG_R0_FINAL_RESULT_2026-08-01.md)
+[RISKSEG-R0 最终结果](../RISKSEG_R0_FINAL_RESULT_2026-08-01.md)
 关闭为 `RISKSEG_R0_TRAINED_NOT_PROMOTABLE_KEEP_YOLO`。三个固定 seed 均完成训练、
 full W8A8 导出和 SM-S9280 三臂事件评价，但事件质量门 `0/3` 通过：YOLO 的正事件召回
 为 `13/16`、false-alert event 为 `6/14`；learned 三 seed 分别为
@@ -341,10 +341,10 @@ full W8A8 导出和 SM-S9280 三臂事件评价，但事件质量门 `0/3` 通�
 30-event cohort 上调参或增加规则。
 
 其后显式冻结的
-[RISKSEG-R1 P0 soft dense adapter audit](RISKSEG_R1_P0_SOFT_DENSE_ADAPTER_AUDIT_CONTRACT_2026-08-01.md)
+[RISKSEG-R1 P0 soft dense adapter audit](../RISKSEG_R1_P0_SOFT_DENSE_ADAPTER_AUDIT_CONTRACT_2026-08-01.md)
 只把该已消费 cohort 作为 post-consumption nested Development diagnostic，不恢复
 fresh/held-out 身份。P0 已由
-[结果](RISKSEG_R1_P0_SOFT_DENSE_ADAPTER_AUDIT_RESULT_2026-08-01.md)
+[结果](../RISKSEG_R1_P0_SOFT_DENSE_ADAPTER_AUDIT_RESULT_2026-08-01.md)
 关闭为 `TRUTH_MASK_SOFT_ADAPTER_FAIL_CHANGE_ACTIONABILITY_LABELS`：保留完整四通道
 INT8 soft evidence 后，truth-mask family reference 为 `14/16` hits、`12/14`
 false alerts、`4/16` cleared，未守住 YOLO 的 `13/16、6/14、5/16`。learned 三
@@ -353,7 +353,7 @@ seed 分别只有 `11/16、12/16、7/16` hits，完整相对 guardrails 为 `0/3
 再建立新的 session-disjoint cohort。默认 App 继续保持 YOLO。
 
 该后继已由
-[RISKSEG-ACT A0 标签可行性审计](RISKSEG_ACT_A0_ACTIONABILITY_LABEL_READINESS_RESULT_2026-08-01.md)
+[RISKSEG-ACT A0 标签可行性审计](../RISKSEG_ACT_A0_ACTIONABILITY_LABEL_READINESS_RESULT_2026-08-01.md)
 关闭为有效负终态 `STOP_ACTIONABILITY_REFERENCE_CONSTRUCT_UNSTABLE`。A0 在已消费
 30-event cohort 上冻结 120 个 content-blind anchors，并完成
 `CURRENT_ONLY / CAUSAL_HISTORY / HINDSIGHT_REFERENCE` 三种信息条件各两路、共六路
@@ -368,7 +368,7 @@ prompt、第三 Agent、UNKNOWN 转负类、网格调优或专用 parallel-curb 
 默认 App 与 YOLO baseline 保持不变。
 
 行动标签路线关闭后，当前主线转为
-[Objective image-space candidate increment D0](OBJECTIVE_IMAGE_SPACE_CANDIDATE_INCREMENT_D0_PROTOCOL_2026-08-02.md)。
+[Objective image-space candidate increment D0](../OBJECTIVE_IMAGE_SPACE_CANDIDATE_INCREMENT_D0_PROTOCOL_2026-08-02.md)。
 它不训练新模型，而把固定 PIDNet-S seed-20260801 仅作为 YOLO 框外客观区域候选
 生成器，在剥离所有 `positive/bucket/alertable/passed/event` 字段的
 30-session / 1,920-frame objective-only view 上评价 source-mask 像素/组件覆盖、
@@ -378,7 +378,7 @@ train/dev session-disjoint，但 cohort 已被前序研究消费，因此只提�
 12-session timing 门；本 D0 无论结果如何都不得声称“更早覆盖”，也不修改默认 App。
 协议、门、exact model/data/implementation hashes 与负终态已在任何新 YOLO box trace
 或 PIDNet pixel output 前冻结。当前
-[D0 result](OBJECTIVE_IMAGE_SPACE_CANDIDATE_INCREMENT_D0_RESULT_2026-08-02.md)
+[D0 result](../OBJECTIVE_IMAGE_SPACE_CANDIDATE_INCREMENT_D0_RESULT_2026-08-02.md)
 已独立复算为有效负终态
 `STOP_FIXED_PIDNET_OBJECTIVE_CANDIDATE_NO_ROBUST_INCREMENT`：`C-A` recall
 `+.069380` 和固定预算通过，但 residual component recall 仅 `.285436`，
@@ -387,13 +387,13 @@ recall gain 仅 `+.004039`。因此关闭 exact raw PIDNet candidate operator，
 不加 gate/latch/组件分类器、不修改默认 App。
 
 此前 2026-08-01 的候选算法主线曾切换为
-[DG-SRF image-space structural complementarity F0](DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_PROTOCOL_2026-08-01.md)。
+[DG-SRF image-space structural complementarity F0](../DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_PROTOCOL_2026-08-01.md)。
 它不继续救援已关闭的 segmentation gating，而是检验固定 Depth Anything V2 Small
 相对逆深度中的 `N/E/R+/R-` 结构信号，能否在实际 YOLO coverage 外，以低于冻结 raw
 DDRNet residual 的假激活代价，对 `boundary_step_curb / obstacle` canonical pixels
 提供跨 source-session 稳定互补。
 
-该 [F0 result](DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_RESULT_2026-08-01.md)
+该 [F0 result](../DG_SRF_IMAGE_SPACE_STRUCTURAL_COMPLEMENTARITY_F0_RESULT_2026-08-01.md)
 现已 `COMPLETE / VALID / STRUCTURAL_SIGNAL_NOT_SUPPORTED_STOP`：520/520 q 健康，
 但 D1-D4 均未形成跨组 stable signal；D4 macro AUPRC `.309456` 低于 frozen binary
 DDRNet B 的 `.362109`，只在 1/10 组优于最佳单信号。LOSO 九门只通过 4/9，
@@ -404,7 +404,7 @@ validator 通过 29,031 项检查。当前精确定义的 DG-SRF F0 已关闭，
 App 均未授权。
 
 随后完成的
-[信息上限三臂审计 D0](INFORMATION_CEILING_THREE_ARM_D0_RESULT_2026-08-01.md)
+[信息上限三臂审计 D0](../INFORMATION_CEILING_THREE_ARM_D0_RESULT_2026-08-01.md)
 在同一 90-frame / 3-parent-event SANPO consumed Development cohort 与当前
 `AssistDecisionKernel` 上得到有效混合终态：当前 YOLO 正事件 `0/2`、关键漏报 1；
 mask-derived 真值风险框恢复为 `2/2`、漏报 0，但产生 53 个误提醒帧、负事件误报和
@@ -442,7 +442,7 @@ Development 候选先通过冻结 utility/engineering 门时，才可另行冻�
 
 2026-07-31，用户明确要求以 Agent-only 标注检验“中央图像阻塞互补性”的可行边界；该
 探索路线现已完成 successor calibration 并关闭。唯一获授权阶段曾是
-[CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A](CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_PROTOCOL_2026-07-31.json)：
+[CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A](../CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_PROTOCOL_2026-07-31.json)：
 按 `CANARY_LITE` 先对现有连续 RGB 做适配度排序，以冻结充分性规则选出最小 admitted
 bundle；在排除式 calibration 上完成标签 pilot 和抽样审计规则，再用一个 primary
 Agent 标注 admitted bundle。正例、`NOT_EVALUABLE`、歧义/terminal-changing item 和
@@ -457,12 +457,12 @@ D0-A0 采用 `REUSE_FIRST / FITNESS_FIRST / STOP_ON_ADEQUACY`：先按当时的�
 回归或压力样本。只有当前问题所需信息确实缺失时才局部记为
 `NOT_EVALUABLE_FOR_CURRENT_QUESTION`，不得全局封存优秀数据。
 
-[D0-A0 输入宇宙冻结](CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A0_RESULT_2026-07-31.md)
+[D0-A0 输入宇宙冻结](../CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A0_RESULT_2026-07-31.md)
 现已 `COMPLETE / VALID`：6 个完整 production session、34,279 帧、5 个 ancestry
 group 已冻结；107 行 reuse-role ledger 将其余本地资产分别降级为 calibration-only
 或当前问题不可评价。D0-A0 不再扩数据。
 
-[D0-A1 已完成](CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A1_RESULT_2026-07-31.md)：
+[D0-A1 已完成](../CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A1_RESULT_2026-07-31.md)：
 R2 在 4 个 calibration-only source 上冻结 11 clip / 55 observation，并完成 fresh
 isolated second pass、8 项 third-Agent adjudication 与最终复算。overall/critical
 agreement 为 `0.8545/0.8298`，但 parent-event match `0.6316 < 0.75`，终态
@@ -470,7 +470,7 @@ agreement 为 `0.8545/0.8298`，但 parent-event match `0.6316 < 0.75`，终态
 successor boundary 是在新的 D0-A 版本中用 burned calibration stress cases 重设计
 observation/event workflow，不能调 R2 门或覆盖 raw review。
 
-[D0-A successor R0 已完成](CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_SUCCESSOR_RESULT_2026-07-31.md)：
+[D0-A successor R0 已完成](../CENTRAL_OBSTRUCTION_AGENT_LABEL_READINESS_D0_A_SUCCESSOR_RESULT_2026-07-31.md)：
 保留 observation-level Agent 标签，把分析单位改为程序生成的 1 秒 fixed clip，3 个
 新 session、6 个 clip、24 个 slot 只做 fresh calibration。固定边界复现率为 `1.0`，
 但两路 Agent observation agreement 为 `0.6667`、unresolved 为 `0.3333`，终态为
@@ -500,22 +500,22 @@ D0-A 不做融合、调度、Android 或 A568。只有
 区域，融合 C 再检验 B 是否为 A 提供可重复的互补信息。D0-A 的中央阻塞 Agent 标签
 只用于审计并已关闭，不能作为 B 的主真值或 C 的主要效果指标。
 
-独立的 [segmentation technical smoke R0 result](DUAL_LOOP_SEGMENTATION_TECHNICAL_SMOKE_R0_RESULT_2026-07-31.md)
+独立的 [segmentation technical smoke R0 result](../DUAL_LOOP_SEGMENTATION_TECHNICAL_SMOKE_R0_RESULT_2026-07-31.md)
 已完成：接口与有限值通过，但当前 reference 在 24 个 RGB slot 上 argmax 全部塌缩为
 `walkable`。该结果只保留为 `TECHNICAL_ONLY / NO_EFFECT_AUTHORITY` 诊断，不代表分割
 方向或其他模型候选已被否定。
 
-[Segmentation complementarity Development design R0](DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_DEVELOPMENT_DESIGN_R0.md)
+[Segmentation complementarity Development design R0](../DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_DEVELOPMENT_DESIGN_R0.md)
 已冻结并执行为 R1：主量是 `segmentation mask − YOLO box union`
 的 image-space uncovered fraction，按 session 聚合并保留时间相关性；它不使用中央阻塞、
 risk、feedback 或事件真值，也不把非零区域解释为可通行性或风险。
 
-[Segmentation complementarity R1 result](DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R1_RESULT_2026-07-31.md)
+[Segmentation complementarity R1 result](../DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R1_RESULT_2026-07-31.md)
 已完成用户授权的 4,891-frame Development mechanism diagnostic：配对、finite output 和
 独立 validator 均通过；class-wise image-space 增量可观察，但 temporal stability 按 class
 混合，且只有一个 burned source。因此 R1 不授权融合、事件效果、Android 或生产结论。
 
-[Segmentation complementarity cross-source R2 result](DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R2_CROSS_SOURCE_RESULT_2026-07-31.md)
+[Segmentation complementarity cross-source R2 result](../DUAL_LOOP_SEGMENTATION_COMPLEMENTARITY_R2_CROSS_SOURCE_RESULT_2026-07-31.md)
 随后在 Shiraz 与 Shanghai 两个 source 上，用同一 YOLO11n 资产、同一 host 解码合同和
 同一 segmentation reference 完成 `4,891 + 5,662` 个配对 frame；两份独立 validator
 均为 `VALID`。class-wise image-space signal 在两个 source 上重复出现，但量级随来源和
@@ -523,7 +523,7 @@ YOLO coverage 改变，`obstacle`/`boundary_step_curb` 稳定性仍偏低。因�
 `CROSS_SOURCE_IMAGE_SPACE_SIGNAL_REPLICATED / CLASS_STABILITY_MIXED`，仍不授权风险
 融合、事件效果、QNN/device parity、Android 或生产结论。
 
-[Segmentation candidate utility R0 result](DUAL_LOOP_SEGMENTATION_CANDIDATE_UTILITY_R0_RESULT.md)
+[Segmentation candidate utility R0 result](../DUAL_LOOP_SEGMENTATION_CANDIDATE_UTILITY_R0_RESULT.md)
 已在 SANPO-Real v0 source-native pixel truth 上完成 calibration 与 120-frame blind
 formal。A/B/C 三臂的 pixel 增量和 candidate component recall 达到部分门，但
 false activation 为 `13.833/帧`、total incremental host P95 为
@@ -532,7 +532,7 @@ false activation 为 `13.833/帧`、total incremental host P95 为
 `CURRENT_SEGMENTATION_REFERENCE_REJECTED`。因此关闭当前 segmentation
 reference，不接 Android、QNN、风险事件或主动提醒。
 
-[Segmentation model selection R1](DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1_RESULT_2026-07-31.md)
+[Segmentation model selection R1](../DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1_RESULT_2026-07-31.md)
 已进入不可恢复终态 `SEGMENTATION_MODEL_SELECTION_R1_BLOCKED /
 MODEL_SELECTION_NOT_EVALUABLE`。R1 formal 在首次 source-native mask decode contract
 不匹配时 fail closed，正式报告为零行；不得修复、重跑或从已消费 fresh holdout 恢复
@@ -545,11 +545,11 @@ R1 四个已消费 session
 `ic_BpoiSOIW-7_mffGenT6yissRNiPzT`、
 `eHxtA669WpN381O4ZjVAmG3-3ZUewuXr`
 现按
-[consumed-role amendment](DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1_CONSUMED_ROLE_AMENDMENT_2026-08-01.json)
+[consumed-role amendment](../DUAL_LOOP_SEGMENTATION_MODEL_SELECTION_R1_CONSUMED_ROLE_AMENDMENT_2026-08-01.json)
 永久降级为 regression/rehearsal/validator/canonicalizer-canary only；复制、重命名、
 重新映射、重新打包或 manifest alias 均不能恢复 fresh/unseen 身份。
 
-[R2-P0 readiness result](DUAL_LOOP_SEGMENTATION_R2_P0_RESULT_2026-08-01.md)
+[R2-P0 readiness result](../DUAL_LOOP_SEGMENTATION_R2_P0_RESULT_2026-08-01.md)
 已在不选择、下载或读取任何新 fresh mask truth 的条件下完成。独立 canonical view、
 synthetic/consumed rehearsal 和逐帧逐阶段 runtime validators 均为 `VALID`；一次冻结的
 36 点 DDRNet 后处理搜索没有候选通过全部 readiness margin。DDRNet baseline 的 false
@@ -557,14 +557,14 @@ activation 为 `7.885/frame`，SegFormer baseline 的 total incremental P95 为
 `74.139 ms`，最接近 DDRNet refinement 仍以 delta FP area `0.072513` 失败。唯一终态为
 `R2_NOT_WORTH_BURNING_FRESH_HOLDOUT`，因此 `R2_NOT_AUTHORIZED /
 DEVICE_BENCHMARK_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`。新增的
-[R2 protocol draft](DUAL_LOOP_SEGMENTATION_R2_P0_PROTOCOL_DRAFT_2026-07-31.json)
+[R2 protocol draft](../DUAL_LOOP_SEGMENTATION_R2_P0_PROTOCOL_DRAFT_2026-07-31.json)
 只定义未来单候选 qualification 问题，状态仍为 `DRAFT_NOT_AUTHORIZED_FOR_FORMAL`。
 这里的 device 禁令是 R2-P0 formal 协议的历史边界，不再禁止新
 `DEVELOPMENT_STANDARD` 在最终选模前采集明确标注的工程 runtime 证据。
 
-[Segmentation Failure Atlas 与 residual 可标注性 R0 pilot](DUAL_LOOP_SEGMENTATION_FAILURE_ATLAS_AND_RESIDUAL_LABELABILITY_R0_RESULT_2026-08-01.md)
+[Segmentation Failure Atlas 与 residual 可标注性 R0 pilot](../DUAL_LOOP_SEGMENTATION_FAILURE_ATLAS_AND_RESIDUAL_LABELABILITY_R0_RESULT_2026-08-01.md)
 及其
-[固定 320-frame 定向扩展](DUAL_LOOP_SEGMENTATION_FAILURE_ATLAS_TARGETED_EXPANSION_R1_RESULT_2026-08-01.md)
+[固定 320-frame 定向扩展](../DUAL_LOOP_SEGMENTATION_FAILURE_ATLAS_TARGETED_EXPANSION_R1_RESULT_2026-08-01.md)
 现为唯一科学主线。扩展严格复用 6 个既有 dev/consumed session、同一 DDRNet INT8、
 同一未过滤 postprocess 与原 9 个非组合 probe。五类机制均跨两种角色复现，pilot 与
 expansion 的 aggregate 排序 Spearman 为 `0.90`；residual pixel proxy 仍为
@@ -575,7 +575,7 @@ expansion 的 aggregate 排序 Spearman 为 `0.90`；residual pixel proxy 仍为
 `SUFFICIENT` gate。当前冻结终态为 `GATING_PARTIAL`，所以不启动 residual-aware DDRNet
 训练，也不在同一轮组合或选择 gate。
 
-后继 [conditional gating R0 配置](../../../configs/dual_loop_segmentation_conditional_gating_r0/default.json)
+后继 [conditional gating R0 配置](../../../../configs/dual_loop_segmentation_conditional_gating_r0/default.json)
 现已在任何新候选 outcome 前冻结为独立 Module：只执行一个
 `CLASS_CONDITIONED_MULTI_NEGATIVE`，不做 3 选 1。obstacle 仅在 raw component 低置信且
 属于小碎片或与纯几何 upper band 相交时，删除其中缺少同类别 causal 2-of-3 支持的
@@ -584,7 +584,7 @@ pixels；boundary/step/curb 只整组件删除低置信小碎片。Atlas 中依�
 burned Development source session 只做 fit-free held-out stress，不称 LOSO
 cross-validation 或独立确认。
 
-[Conditional gating R0 result](DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_RESULT_2026-08-01.md)
+[Conditional gating R0 result](../DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_RESULT_2026-08-01.md)
 现已在冻结 Git `2e46d76057becb1f85c22bf0c9ea4e8b59d26c31` 上完成一次执行并由独立
 validator 复算为 `VALID`。候选 overall recall retention 为 `0.942399`，但
 false-positive reduction 只有 `0.092572 < 0.30`，最低 source-session recall
@@ -596,7 +596,7 @@ Pareto improvement。终态为
 用户随后纠正了这个 terminal 的解释范围：一个 primary 失败不能证明全部条件门失败。
 R0 machine terminal 与全部 evidence 保持不可变，但 `STOP_GATING_ROUTE` 只表示 R0
 不以未执行候选救援 primary。前向
-[R0.1 post-primary shadow protocol](DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_1_SHADOW_PROTOCOL_2026-08-01.md)
+[R0.1 post-primary shadow protocol](../DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_1_SHADOW_PROTOCOL_2026-08-01.md)
 现冻结 `CLASS_CONDITIONAL_TEMPORAL` 与 `MULTI_NEGATIVE` 为 diagnostic-only shadows；
 两者在 R0 outcome 前已被概念性提出，但当时未进入 repo hash 或执行授权。R0.1 一次
 全量报告、不选优、不改 primary terminal；bounded family terminal 与 residual-aware
@@ -609,7 +609,7 @@ membership 检查前移到 preflight，科学合同不变。V2 随后完成一�
 recovery 只修摘要字段匹配，不修改既有 result/frame/component evidence，最终通过
 `167,327` 项检查、错误数 `0`，独立复算的两个核心 JSONL 逐字节一致。
 
-[R0.1 shadow result](DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_1_SHADOW_RESULT_2026-08-01.md)
+[R0.1 shadow result](../DUAL_LOOP_SEGMENTATION_CONDITIONAL_GATING_R0_1_SHADOW_RESULT_2026-08-01.md)
 显示：`CLASS_CONDITIONAL_TEMPORAL` 的 FP reduction / overall recall retention 为
 `0.284667 / 0.781123`，`MULTI_NEGATIVE` 为 `0.109286 / 0.922445`；两者最低
 session retention 仅 `0.612024 / 0.629324`，后者 boundary retention 也只有
@@ -617,7 +617,7 @@ session retention 仅 `0.612024 / 0.629324`，后者 boundary retention 也只�
 精确定义的静态手工门家族，并把下一主边界转入 FP-aware DDRNet Development；不得扩大
 为所有 conditional/learned gating、postprocess 或分割路线失败。
 
-[FP-aware DDRNet R0 result](DUAL_LOOP_SEGMENTATION_FP_AWARE_DDRNET_R0_RESULT_2026-08-01.md)
+[FP-aware DDRNet R0 result](../DUAL_LOOP_SEGMENTATION_FP_AWARE_DDRNET_R0_RESULT_2026-08-01.md)
 已完成唯一 successor `FP_WEIGHTED_UNGUIDED_FULL_FRAME`。validator 重新推理六个
 checkpoints、逐像素核对 1,920 个 prediction masks，并通过 28,861 项检查、错误数 0。
 三个 same-seed pair 均未通过全部九门：FP reduction 为
@@ -627,7 +627,7 @@ checkpoints、逐像素核对 1,920 个 prediction masks，并通过 28,861 项�
 重加权 30% full-frame 抽样的单一候选，不扩大为所有 residual-aware/FP-aware training
 失败；不在已消费 outcome 上换 seed、改 crop、loss 或 target 救援。
 
-[Failure-Aware Causal Component Validator R0](DUAL_LOOP_SEGMENTATION_LEARNED_COMPONENT_VALIDATOR_R0_RESULT_2026-08-01.md)
+[Failure-Aware Causal Component Validator R0](../DUAL_LOOP_SEGMENTATION_LEARNED_COMPONENT_VALIDATOR_R0_RESULT_2026-08-01.md)
 现已完成并由独立 validator 判为 `VALID`。它只用 current/past runtime component 特征、唯一
 `StandardScaler + L2 Logistic Regression`、10 个 source-session 的 nested LOSO
 cross-fit 与训练上下文内阈值选择，比较 raw、causal 2-of-3、confidence `>=.65`、历史
@@ -649,7 +649,7 @@ raw heatmap、候选、gate pass/reject/abstain 与原因，固定水印且
 App 权限。
 
 Failure Atlas 的批量失败案例图册维护入口见
-[`scripts/research/failure_case_atlas/`](../../../scripts/research/failure_case_atlas/)。
+[`scripts/research/failure_case_atlas/`](../../../../scripts/research/failure_case_atlas/)。
 运行 `batch_album.py` 可按当前输入批量生成原图、YOLO 框、segmentation/truth mask、
 depth、可选 risk heatmap、前后帧、错误类型、置信度、事件阶段、来源信息、分类
 contact sheet 与 `index.html`。类别规则由同目录的 `category_rules.json` 管理，
@@ -662,18 +662,18 @@ host-side visual diagnostic，不改变 alert authority。
 正例，5 个 baseline-false 负窗全部保留，反馈行由 `508 -> 494`；终点为
 `FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`，不是事件级
 误提醒改善。随后完成
-[R1 事件失败分解](DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)：
+[R1 事件失败分解](../DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)：
 只消费三来源已关闭 Development trace、truth ledger 与 receipt，输出逐窗口字段、
 retained-false 分类和不写 candidate trace 的 upper-bound audit。该 post-terminal
 分析的唯一 top-level terminal 为 `POLICY_GRANULARITY_MISMATCH_SUPPORTED`；它不重写
 R1 evidence、不改阈值、不授权或实现 R2。普通生产行为仍不变。
 
 教师可读的阶段收口见
-[DUAL_LOOP_STAGE_CLOSURE_R0_2026-07-31](DUAL_LOOP_STAGE_CLOSURE_R0_2026-07-31.md)。
+[DUAL_LOOP_STAGE_CLOSURE_R0_2026-07-31](../DUAL_LOOP_STAGE_CLOSURE_R0_2026-07-31.md)。
 该报告只整理既有证据，不授权新实验或调度实现。
 
 同日将“事件保持型语义刷新调度”作为独立后继路线建立了
-[Q0 协议](DUAL_LOOP_SEMANTIC_REFRESH_Q0_PROTOCOL_2026-07-31.json)。它不修复或升级
+[Q0 协议](../DUAL_LOOP_SEMANTIC_REFRESH_Q0_PROTOCOL_2026-07-31.json)。它不修复或升级
 旧几何双环，而是只在固定模型全频参考下审计“何时需要刷新语义结果”。Q0 R0 使用
 独立 arm 状态与 `ZERO_ORDER_HOLD_SEMANTIC_PROPAGATION_R0`，完成 4,422 帧、两 session 的
 固定时间 baseline：33/66/100/167/267 ms 分别调用 3,309/2,793/2,430/1,560/1,077
@@ -684,7 +684,7 @@ feedback decision divergence 为 121/200/261/403/527 帧；当前 8 个正例与
 真实 tracker、能效、Android、产品或安全结论。
 
 随后在不重跑 detector、不读取旧 R2/R3 的前提下完成了
-[Q0 R0.1 评测修订](DUAL_LOOP_SEMANTIC_REFRESH_Q0_R0_1_EVALUATION_PROTOCOL_2026-07-31.json)：
+[Q0 R0.1 评测修订](../DUAL_LOOP_SEMANTIC_REFRESH_Q0_R0_1_EVALUATION_PROTOCOL_2026-07-31.json)：
 将风险 episode 定义为连续 active risk-signature run，补齐独立 active event ID、
 episode onset/offset、temporal IoU、风险字段一致率、episode feedback count delta、
 最长 stale duration 与 signed feedback delay 的 P50/P90/P95。原始 nondominated set
@@ -697,7 +697,7 @@ rank-1 仍按其自身终点 `FIRST_UNSEEN_SOURCE_NOT_EVALUABLE / VALID` 封存�
 truth-first 门在无足够正例时停止，不与 rank-2 的结果混为一谈。
 
 2026-07-30 已完成
-[隔离主动纠错 R1](DUAL_LOOP_ACTIVE_CORRECTION_R1_RESULT_2026-07-30.md)。
+[隔离主动纠错 R1](../DUAL_LOOP_ACTIVE_CORRECTION_R1_RESULT_2026-07-30.md)。
 双环现已从真实 shadow 推进到独立 application id 的
 `ACTIVE_CONTRADICT_ONLY`：几何环只在至少两个唯一关联框共同明显缩小时否决当前帧
 提醒，其余全部弃权；raw/stable risk 与事件身份/生命周期规则不变，普通 debug、
@@ -708,7 +708,7 @@ release 和 shadow 仍默认不干预。该日的 CrowdBot/Matoaka 结果复现�
 误提醒下降结论。
 
 此前已完成
-[因果框尺度三态源 R0](DUAL_LOOP_CAUSAL_TRACK_TRISTATE_R0_RESULT_2026-07-30.md)。
+[因果框尺度三态源 R0](../DUAL_LOOP_CAUSAL_TRACK_TRISTATE_R0_RESULT_2026-07-30.md)。
 主线不再把 ego/target 运动责任归因、精确米制 TTC、pose、IMU、depth 或完整三维
 恢复作为基础提醒的前置条件。当前第二环只对 production semantic loop 选中的目标，
 根据连续 7 帧 `log(bbox height)` 的严格同号趋势输出
@@ -729,7 +729,7 @@ detection 与轻量 track continuity 生成三态 evidence，再由 frame/time/t
 调用保持 baseline 完全一致。该 shadow 结果仍是主动纠错的工程前序，不被后继改写。
 
 此前的
-[真实几何 shadow cycle R0](DUAL_LOOP_REAL_GEOMETRY_SHADOW_CYCLE_R0_RESULT_2026-07-30.md)
+[真实几何 shadow cycle R0](../DUAL_LOOP_REAL_GEOMETRY_SHADOW_CYCLE_R0_RESULT_2026-07-30.md)
 仍作为工程前序保留：JRDB LiDAR 回放证明接缝可运行；Depth Anything temporal
 derivative 与 homography residual flow 的负结果则解释了为何转向更简单、选择性
 更强的框尺度三态源。
@@ -737,11 +737,11 @@ derivative 与 homography residual flow 的负结果则解释了为何转向更�
 旧 Sparse LK F-1B 路线仍以 `NO_INCREMENT / VALID` 关闭；该结论没有被重写。
 LITE R2 两臂均不达 readiness floor 后，主线不再优先把失败的 radial-flow 候选
 接入 Android。当前最短可证伪路线改为对现有生产 `TemporalRiskTracker` 做
-[factorial A/B R0](DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0_PROTOCOL_2026-07-30.json)：
+[factorial A/B R0](../DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0_PROTOCOL_2026-07-30.json)：
 A 只中和 object-detector temporal geometry output，B 保持当前完整生产链；每帧
 QNN 只推理一次，两臂使用相同 detections 和完全隔离的决策/反馈状态。
 
-[独立设计复核](DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0_DESIGN_REVIEW_RESULT_2026-07-30.md)
+[独立设计复核](../DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0_DESIGN_REVIEW_RESULT_2026-07-30.md)
 为 `PASS`。outcome-blind 预检已验证 `4422/4422` 个冻结 RGB；truth-membership
 预检将 17 项原始 truth 冻结为 8 个可评分正例 + 7 个负窗，并在候选输出前排除
 两个零有效帧正例。A/B factorization、truth-blind device producer、独立
@@ -749,9 +749,9 @@ validator/evaluator 已实现；核心回归、合成 mutation tests、Android b
 真机 prestart 在 `SM-S9280 / SM8650` 上复核 `4422/4422` 帧身份，并以 strict
 QNN HTP 完成 synthetic probe，未解码 decision RGB、未写候选输出。hash-bound
 implementation lock 与
-[独立实现复核](DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-30.md)
+[独立实现复核](../DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-30.md)
 均已完成且为 `PASS`。唯一正式 producer、truth-blind validation/seal 与后续
-truth evaluator 已完成；[执行结果](DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0_EXECUTION_RESULT_2026-07-30.md)
+truth evaluator 已完成；[执行结果](../DUAL_LOOP_PRODUCTION_TEMPORAL_GEOMETRY_FACTORIAL_AB_R0_EXECUTION_RESULT_2026-07-30.md)
 为 `VALID / NO_INCREMENT`。两臂在 8 个可评分正例、7 个负窗和两个 session 上的
 实际提醒完全相同；正式 authority 已消费，Confirmation 不授权。
 
@@ -762,16 +762,16 @@ authorization；validator 逐帧对照冻结 ledger 并发布哈希闭合 seal�
 该 seal。修复后的独立 implementation 复审仍是 activation 的前置条件。
 
 用户将双环设为新的研究主线后，2026-07-30 完成了独立 successor Discovery：
-[可归因区域级接近证据源 Discovery R0](DUAL_LOOP_ATTRIBUTABLE_REGIONAL_APPROACH_SOURCE_DISCOVERY_R0_2026-07-30.md)。
+[可归因区域级接近证据源 Discovery R0](../DUAL_LOOP_ATTRIBUTABLE_REGIONAL_APPROACH_SOURCE_DISCOVERY_R0_2026-07-30.md)。
 
 LITE R2 负结果之后，用户已授权第一步冻结
-[D0 ego-motion error attribution R0](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R0_PROTOCOL_2026-07-30.json)。
+[D0 ego-motion error attribution R0](../DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R0_PROTOCOL_2026-07-30.json)。
 它只允许使用已经烧毁的 R2/REveL evidence，以 469 个 parent natural event 为
 分析单位，描述性检查 person/sensor 径向分量、相机运动、ROI 抖动、事件长度、
 flow MAD 与轨迹支持度。早先工程设计审查为
-[`PASS / NOT_RUN`](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R0_DESIGN_REVIEW_RESULT_2026-07-30.md)，
+[`PASS / NOT_RUN`](../DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R0_DESIGN_REVIEW_RESULT_2026-07-30.md)，
 但后续
-[独立统计复核](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R0_STATISTICAL_REVIEW_RESULT_2026-07-30.md)
+[独立统计复核](../DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R0_STATISTICAL_REVIEW_RESULT_2026-07-30.md)
 指出单 capture 依赖与“dominant mechanism”不可识别，终点为
 `REPAIR_NEEDED / NOT_IMPLEMENTATION_READY / NOT_RUN`。D0 现作为生产 A/B
 `NO_INCREMENT` 后的后备诊断，不再是唯一前瞻工作；旧 F-1B decision 继续密封。
@@ -779,21 +779,21 @@ flow MAD 与轨迹支持度。早先工程设计审查为
 本地只读连接复算确认，REveL Dynamic 的 RGB 人框、green/yellow 目标身份与
 person/sensor Vicon 径向轨迹能在 LEFT/CENTER/RIGHT 全部区域输出目标可归因的
 approaching/quasi-static/receding 开发真值。随后
-[LITE R0 设计评审](DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_DESIGN_REVIEW_RESULT_2026-07-30.md)
+[LITE R0 设计评审](../DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_DESIGN_REVIEW_RESULT_2026-07-30.md)
 冻结完整连续 capture、两条最小 arm、输出/TTL/abstention、parent-event 分母与
 停止规则并通过独立评审。两臂 producer、post-hash evaluator 和 24 个 synthetic
 fixtures 随后完成并通过
-[implementation review](DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-30.md)；
+[implementation review](../DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-30.md)；
 一次性 activation 也通过独立复核。但唯一 R0 full producer attempt 在同目标相邻
 RGB 尺寸从 `260×346` 变为 `258×346` 时触发 OpenCV LK 前提失败。按冻结规则
-[LITE R0 execution result](DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_EXECUTION_RESULT_2026-07-30.md)
+[LITE R0 execution result](../DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R0_EXECUTION_RESULT_2026-07-30.md)
 为 `EXECUTION_INVALID_STOP_NO_RERUN / NOT_EVALUABLE`，未进入 truth join。
 
 独立 R1 冻结跨尺寸处理后，正式 producer 完成，但共享 host guard 将 JSON 中 UTC `Z`
 时间戳误解释为本地时间；R1 因执行包络门失败而同样停止，完整输出不作科学救援。
 独立 R2 仅修复该执行包络、绑定新 identity/namespace，并通过设计、实现、pilot、
 preflight 与 activation 评审。R2 的唯一 producer 和条件 evaluator 均有效完成。
-[LITE R2 execution result](DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R2_EXECUTION_RESULT_2026-07-30.md)
+[LITE R2 execution result](../DUAL_LOOP_TARGET_TRACK_CAUSAL_RADIAL_GEOMETRY_LITE_R2_EXECUTION_RESULT_2026-07-30.md)
 在冻结的 469 个 primary 自然事件上得到：
 
 - box 面积增长：204/469 正确，153/469 wrong-signed；
@@ -844,12 +844,12 @@ F-1C 指定手机是否承载得住
 ```
 
 2026-07-30 的初始
-[DUAL_LOOP_DATA_READINESS_R0](DUAL_LOOP_DATA_READINESS_R0_2026-07-30.md)
+[DUAL_LOOP_DATA_READINESS_R0](../DUAL_LOOP_DATA_READINESS_R0_2026-07-30.md)
 终点为 `HOLD_DATA`。经用户授权的固定既有 RGB 标签修复 R0 保持一次性终点不变；
 独立后继 R1 只补缺失负类，最终达到
-[F-1A `READY / VALID`](DUAL_LOOP_F1A_NEGATIVE_CATEGORY_SUPPLEMENT_R1_RESULT_2026-07-30.md)。
+[F-1A `READY / VALID`](../DUAL_LOOP_F1A_NEGATIVE_CATEGORY_SUPPLEMENT_R1_RESULT_2026-07-30.md)。
 
-随后 [F-1B0 真机时序基线](DUAL_LOOP_F1B0_TIMING_BASELINE_R0_RESULT_2026-07-30.md)
+随后 [F-1B0 真机时序基线](../DUAL_LOOP_F1B0_TIMING_BASELINE_R0_RESULT_2026-07-30.md)
 在 `SM-S9280 / SM8650` 上形成生产 QNN 与隔离 Sparse LK 的完整
 capture→available→consume 因果账本，终点为 `READY / VALID`。
 
@@ -865,12 +865,12 @@ F-1B 在 decision 候选输出仍为零访问时，对 hash-bound 的现有几�
 - 几何不得绕过既有 cooldown、fatigue 或实际交付语义。
 
 因此 B 相对 A 的 `PAIRED_FIRST_DELIVERABLE_ALERT_LEAD` 理论上界为 `0 frame`。
-[F-1B 结果](DUAL_LOOP_F1B_STRUCTURAL_REACHABILITY_PROTOCOL_REPAIR_R2_RESULT_2026-07-30.md) 为
+[F-1B 结果](../DUAL_LOOP_F1B_STRUCTURAL_REACHABILITY_PROTOCOL_REPAIR_R2_RESULT_2026-07-30.md) 为
 `NO_INCREMENT / VALID`，按冻结合同停止论文双环主张，不消费 decision 集，也不进入
 F-1C。
 
 详细输入、状态、判定和停止门以
-[双环阶段−1准入合同 R0](BLINDASSIST_DUAL_LOOP_PHASE_MINUS1_ADMISSION_CONTRACT_R0_2026-07-30.md)
+[双环阶段−1准入合同 R0](../BLINDASSIST_DUAL_LOOP_PHASE_MINUS1_ADMISSION_CONTRACT_R0_2026-07-30.md)
 为准。本轮执行来自用户连续推进授权；合同本身仍不构成未来新实验权限。
 
 ## 研究候选
@@ -894,14 +894,14 @@ latch、新状态机或第二套反馈系统；Q0 的 hold/cache/event state 只
 
 ## 与 RCLE、USTRF 和 Project Guideline 的关系
 
-- [RCLE](../rcle/README.md) 已由用户于 2026-07-30 暂停。既有科学终态、协议终态、
+- [RCLE](../../rcle/README.md) 已由用户于 2026-07-30 暂停。既有科学终态、协议终态、
   one-shot 消费状态和未消费的 `480+16` 全部保留；双环不重跑或救援 RCLE。
 - Sparse LK 是阶段−1的默认轻量候选。RCLE 若未来恢复，只能通过新的、独立的准入决定
   成为可选证据源，不能自动替换 Sparse LK。
 - 已关闭的
-  [USTRF route-conditioned program](../ustrf-sc/USTRF_ROUTE_CONDITIONED_PROGRAM_CLOSURE_R1_2026-07-25.md)
+  [USTRF route-conditioned program](../../ustrf-sc/USTRF_ROUTE_CONDITIONED_PROGRAM_CLOSURE_R1_2026-07-25.md)
   不因“双环”名称重启；不恢复旧 dense risk field、route、lifecycle 或旧数据门。
-- [Project Guideline 适配审计](../../PROJECT_GUIDELINE_COMPONENT_ADAPTATION_AUDIT_2026-07-30.md)
+- [Project Guideline 适配审计](../../../PROJECT_GUIDELINE_COMPONENT_ADAPTATION_AUDIT_2026-07-30.md)
   只提供失效语义、时间戳、最小证据账本和可重算原则；仍是
   `REFERENCE_ONLY / NO_IMPLEMENTATION_AUTHORITY`。
 
@@ -1045,7 +1045,7 @@ candidate identity。
 
 LITE R0/R1/R2、production temporal geometry factorial A/B R0 与 D0 R1/R2/R3
 保持各自已消费的关闭终态，不重跑、不调阈值救援。隔离 active R1 已完成
-[事件失败分解](DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)：
+[事件失败分解](../DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)：
 row-density 仍可作为 Development diagnostic，但 25 个负窗中没有一个被完整消除。
 
 upper-bound audit 只在内存中使用已记录的 R1 candidate opportunities：CrowdBot 与
@@ -1067,15 +1067,15 @@ SCENE_CHANGE` 规则。没有跨 session 的独立 fast-feature evidence 前，�
 
 ### D0 R1/R2/R3 执行终态
 
-[D0 R1 执行](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R1_EXECUTION_RESULT_2026-07-30.md)
+[D0 R1 执行](../DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R1_EXECUTION_RESULT_2026-07-30.md)
 因冻结解释器缺少 `rosbags`，在读取任何 bag message 前以
 `EXECUTION_INVALID / CONSUMED / NO_SCIENTIFIC_EXIT` 关闭。
 
-[D0 R2](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R2_PROTOCOL_2026-07-30.json)
+[D0 R2](../DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R2_PROTOCOL_2026-07-30.json)
 随后只修复运行时包络，并通过设计复核、40 项测试、实现锁、独立实现复核与
 activation。正式运行通过首条 Vicon message probe 后，在冻结 calibration parser
 动态导入 `yaml` 时发现环境只有 `ruamel.yaml`。因此
-[R2 执行结果](DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R2_EXECUTION_RESULT_2026-07-30.md)
+[R2 执行结果](../DUAL_LOOP_D0_EGOMOTION_ERROR_ATTRIBUTION_R2_EXECUTION_RESULT_2026-07-30.md)
 同样为 `EXECUTION_INVALID / CONSUMED / NO_RERUN / NO_SCIENTIFIC_EXIT`：
 `0 / 469` event 完成、没有 event table、没有 D0 指标、没有科学出口。
 
@@ -1094,9 +1094,9 @@ R2 不能补包重跑。R3 以新的独立环境与 namespace 补齐 PyYAML 后�
 baseline 至少命中一个正例且误触发一个负窗，才生成绑定 input/truth/baseline SHA
 的 candidate authorization；candidate 只重放同一 detections/metrics 并逐帧校验
 raw/stable risk 不变。详见
-[rank-2 protocol](DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK2_PROTOCOL_2026-07-31.json)
+[rank-2 protocol](../DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK2_PROTOCOL_2026-07-31.json)
 和
-[rank-2 truth result](DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK2_TRUTH_RESULT_2026-07-31.md)。
+[rank-2 truth result](../DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK2_TRUTH_RESULT_2026-07-31.md)。
 
 “已使用”从此只限制同一候选的 unseen/independent claim，不对数据集作全局封存。
 旧数据仍可作为 Development、回归或新问题来源；缺原生提醒标签的数据可在算法输出
@@ -1105,18 +1105,18 @@ raw/stable risk 不变。详见
 rank-2 设备评价随后完成：baseline 和 candidate 都命中 7/7 正例，timely retention
 为 7/7；但 5 个 baseline-false 负窗全部保留，`corrected=0`。全序列反馈行只从
 508 降到 494。当前终点为
-[`FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`](DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK2_EFFECT_RESULT_2026-07-31.md)。
+[`FIRST_UNSEEN_SOURCE_NO_EVENT_LEVEL_EFFECT / DENSITY_SIGNAL_ONLY`](../DUAL_LOOP_R1_UNSEEN_NATURAL_EVENT_R0_RANK2_EFFECT_RESULT_2026-07-31.md)。
 这关闭 active R1 的事件效果主张；默认生产保持关闭，shadow、机制结果、隔离 Android
 工程和
-[post-terminal failure decomposition](DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)
+[post-terminal failure decomposition](../DUAL_LOOP_R1_EVENT_FAILURE_DECOMPOSITION_R0_RESULT_2026-07-31.md)
 保留。后续不自动实现或设计 scene-scale active R2。
 
 ## 独立 successor 提案（proposal-only）
 
-[TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0 设计合同](TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_DESIGN_CONTRACT.md)
+[TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0 设计合同](../TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_DESIGN_CONTRACT.md)
 是一个不继承 R1 或 D0 权限的独立目标局部背景 warp residual 假设；经
-[独立设计复核](TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_DESIGN_REVIEW_RESULT_2026-07-31.md)
-修订后，用户已明确授权 B Development；[B 实现复核](TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-31.md)
+[独立设计复核](../TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_DESIGN_REVIEW_RESULT_2026-07-31.md)
+修订后，用户已明确授权 B Development；[B 实现复核](../TARGET_LOCAL_BACKGROUND_WARP_RESIDUAL_R0_IMPLEMENTATION_REVIEW_RESULT_2026-07-31.md)
 现记录为 `B_TERMINAL_CLOSED / NO_DEVELOPMENT_INCREMENT / C1_C2_NOT_AUTHORIZED`。
 已冻结的 burned REveL 输入完成一次 truth-blind producer 和 truth-late evaluator，R1
 唯一选择未通过 Development gate；因此不重跑、不调参、不自动进入 C1/C2、Android 或产品行为。

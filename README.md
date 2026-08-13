@@ -11,7 +11,8 @@
   <p><strong>An Android prototype for on-device camera inference, accessible feedback, reproducible evaluation, and honest research boundaries.</strong></p>
   <p><strong>端侧助盲感知 Android 原型：本地推理、可复现评测、明确证据边界。</strong></p>
   <p>
-    <a href="docs/QUICKSTART_EN.md"><strong>3-minute Quick Start</strong></a> ·
+    <a href="docs/QUICKSTART_ZH.md"><strong>中文快速开始</strong></a> ·
+    <a href="docs/QUICKSTART_EN.md"><strong>English Quick Start</strong></a> ·
     <a href="https://github.com/violetljj/blind-assist/releases/tag/v10.9.0"><strong>Download v10.9.0</strong></a> ·
     <a href="#architecture--架构">Architecture</a> ·
     <a href="#evidence-map--证据地图">Evidence</a> ·
@@ -70,7 +71,7 @@ BlindAssist publishes more than an Android demo. It exposes the maintenance and 
 - explicit separation between engineering, research, deployment, product, and safety evidence;
 - contribution, governance, security, and public-roadmap workflows.
 
-Forward-looking research follows [`THESIS_FIRST_RESEARCH_GOVERNANCE_R4`](docs/research/dual-loop/README.md): `THESIS_DEVELOPMENT` and `PRODUCTION_PROMOTION` are separate lanes, and production promotion requires explicit scope.
+Forward-looking research follows the [research governance contract](docs/RESEARCH_GOVERNANCE.md): Development and production promotion are separate lanes, and production promotion requires explicit scope.
 
 BlindAssist 不只公开演示代码，也公开构建、验证、模型来源、失败结果和维护流程，让贡献者能够真正复核和改进项目。完整说明见[开源公共价值](docs/OPEN_SOURCE_PUBLIC_VALUE.md)。
 
@@ -141,8 +142,8 @@ Synthetic, pseudo-labeled, or model-reviewed evidence is never promoted into dev
 
 ## Quick start / 快速开始
 
-New contributor? Start with the standalone
-[English three-minute Quick Start](docs/QUICKSTART_EN.md).
+新贡献者从[中文三分钟快速开始](docs/QUICKSTART_ZH.md)进入；English readers can use the
+[three-minute Quick Start](docs/QUICKSTART_EN.md).
 
 The standard local entry point targets Windows 11 / PowerShell 7 with JDK 17 and Android SDK Platform 35. GitHub Actions continuously validates the Linux path; other environments are tracked in [contributor setup issue #7](https://github.com/violetljj/blind-assist/issues/7).
 
@@ -155,14 +156,17 @@ pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:testDebugUnitTest :app
 
 The debug APK is written to `app/build/outputs/apk/debug/app-debug.apk`.
 
-Checks that do not require an Android device:
+Choose checks by the changed surface; these examples do not require an Android device:
 
 ```powershell
 pwsh -NoProfile -File scripts/check_open_source_readiness.ps1
-pwsh -NoProfile -File scripts/check_repo_hygiene.ps1 -IncludeStructure
 pwsh -NoProfile -File scripts/check_docs_index.ps1
 python scripts/run_research_contract_tests.py
 ```
+
+Do not run all examples by default. Documentation, open-source governance, and
+research contracts each have their own focused check; release or shared-structure
+work follows its owning gate.
 
 ## Contribute / 参与贡献
 
@@ -188,6 +192,7 @@ The project never asks contributors to commit raw camera footage, private data, 
 ## Project links / 项目入口
 
 - [Documentation index](docs/README.md)
+- [中文三分钟快速开始](docs/QUICKSTART_ZH.md)
 - [English three-minute Quick Start](docs/QUICKSTART_EN.md)
 - [Community launch kit](docs/COMMUNITY_LAUNCH_KIT.md)
 - [Code and build map](docs/CODE_MAP.md)

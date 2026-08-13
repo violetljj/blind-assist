@@ -1,7 +1,7 @@
 # BlindAssist 项目冷启动状态
 
 状态：`current / NAVIGATION_ONLY`
-最后核验：2026-08-08
+最后核验：2026-08-13
 
 > 新窗口首先读本页。目标是 30 秒内确定项目是什么、这次任务该读哪两个
 > current/route 文件。
@@ -31,7 +31,7 @@ BlindAssist 是一个本地 Android 助盲避障原型：手机 CameraX 采集�
 
 | 任务关键词 | 默认读取路径 |
 |---|---|
-| 算法、模型、DepthART、DA2、双环 | 本页 → [算法 current](research/ALGORITHM_RESEARCH_CURRENT.md)；按直接依赖再读路线 README |
+| 算法、模型、Assistive Geometry、TARO、DepthART、DA2、双环、RCLE | 本页 → [算法 current](research/ALGORITHM_RESEARCH_CURRENT.md)；按直接依赖再读路线 README |
 | 数据集、truth、标注、split、coverage | 本页 → [数据 current](research/DATA_RESEARCH_CURRENT.md)；按直接依赖再读 data ledger/contract |
 | 延迟、链路、性能、QNN、HTP、部署 | 本页 → [系统 current](research/SYSTEM_RESEARCH_CURRENT.md)；按直接依赖再读 benchmark/preflight |
 | Android、App、CameraX、UI、构建 | 本页 → [代码地图](CODE_MAP.md)；按直接依赖再读根 README、模块实现或测试 |
