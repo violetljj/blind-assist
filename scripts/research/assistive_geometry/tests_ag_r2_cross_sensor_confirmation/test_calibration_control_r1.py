@@ -16,6 +16,9 @@ from scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation import 
     calibration_control_r1 as control_module,
 )
 from scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation import (
+    validate_calibration_control_r1 as validator_module,
+)
+from scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation import (
     validate_calibration_control_r1_repair_lock as repair_validator,
 )
 from scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation.calibration_control_r1 import (
@@ -34,6 +37,10 @@ from scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation.control
     discover_kalibr_camera_controls,
 )
 from scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation.validate_calibration_control_r1 import (
+    ValidationError,
+    execute_one_shot_replay,
+)
+from scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation.validate_calibration_control_r1 import (
     validate as independently_validate,
 )
 
@@ -46,6 +53,32 @@ def _sha(path: Path) -> str:
 
 def _binding(role: str, path: Path) -> dict:
     return {"role": role, "path": str(path.resolve()), "bytes": path.stat().st_size, "sha256": _sha(path)}
+
+
+def _write_json(path: Path, value: object) -> None:
+    path.write_bytes(
+        json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False).encode() + b"\n"
+    )
+
+
+def _reseal(root: Path, name: str, value: object) -> None:
+    _write_json(root / name, value)
+    manifest_path = root / "manifest.json"
+    manifest = json.loads(manifest_path.read_text())
+    payload = root / name
+    manifest["files"][name] = {"path": name, "bytes": payload.stat().st_size, "sha256": _sha(payload)}
+    manifest["bytes_before_manifest"] = sum(row["bytes"] for row in manifest["files"].values())
+    _write_json(manifest_path, manifest)
+
+
+def _reseal_validator(root: Path, name: str, value: object) -> None:
+    _write_json(root / name, value)
+    manifest_path = root / "validator-manifest.json"
+    manifest = json.loads(manifest_path.read_text())
+    payload = root / name
+    manifest["files"][name] = {"path": name, "bytes": payload.stat().st_size, "sha256": _sha(payload)}
+    manifest["bytes_before_validator_manifest"] = sum(row["bytes"] for row in manifest["files"].values())
+    _write_json(manifest_path, manifest)
 
 
 def _camera(node: str, rostopic: str | None, tx: float = 0.0) -> str:
@@ -97,7 +130,19 @@ def _fixture(
         encoding="utf-8",
     )
     repair = tmp_path / "repair-lock.json"
-    repair.write_text("{}", encoding="utf-8")
+    repair.write_text(
+        json.dumps(
+            {
+                "schema": (
+                    "blindassist.ag.r2.cross_sensor_factor_confirmation_"
+                    "calibration_control_r1_repair_implementation_lock.v1"
+                ),
+                "status": "R1_REPAIR_IMPLEMENTATION_LOCK_PASS_SYNTHETIC_ONLY_SCIENTIFIC_NOT_RUN",
+                "execution_authority": {"archive_access": False, "confirmation": False},
+            }
+        ),
+        encoding="utf-8",
+    )
     official = tmp_path / "official.json"
     official.write_text(
         json.dumps(
@@ -118,6 +163,17 @@ def _fixture(
                 "status": "R1_PROTOCOL_REPAIR_FROZEN_NOT_AUTHORIZED_NOT_RUN",
                 "prior_access_disclosure": {"r0_calibration_archive_member_enumerated": True},
                 "unchanged_scientific_contract": {"scientific_status": "NOT_RUN"},
+                "pre_execution_validator_hardening": {
+                    "detected_before_r1_execution_lock": True,
+                    "detected_before_r1_evidence_root_creation": True,
+                    "real_archive_access_during_hardening": False,
+                    "scientific_contract_changed": False,
+                    "selection_rule_changed": False,
+                    "data_identity_changed": False,
+                    "budget_changed": False,
+                    "session_model_truth_scoring_or_confirmation_authorized": False,
+                },
+                "execution_authority": {"archive_access": False, "confirmation": False},
             }
         ),
         encoding="utf-8",
@@ -137,6 +193,24 @@ def _fixture(
     monkeypatch.setattr(control_module, "R1_OFFICIAL_EVIDENCE_PATH", official)
     monkeypatch.setattr(control_module, "R1_AMENDMENT_PATH", amendment)
     monkeypatch.setattr(control_module, "R0_TERMINAL_PATH", r0_terminal)
+    monkeypatch.setattr(control_module, "ARCHIVE_ROOT_PATH", archive_root.resolve())
+    monkeypatch.setattr(
+        control_module,
+        "OUTPUT_ROOT_PATH",
+        (tmp_path / "ag-r2-cross-sensor-calibration-control-r1").resolve(),
+    )
+    monkeypatch.setattr(validator_module, "DATA_IDENTITY_PATH", identity)
+    monkeypatch.setattr(validator_module, "R1_REPAIR_LOCK_PATH", repair)
+    monkeypatch.setattr(validator_module, "R1_OFFICIAL_EVIDENCE_PATH", official)
+    monkeypatch.setattr(validator_module, "R1_AMENDMENT_PATH", amendment)
+    monkeypatch.setattr(validator_module, "R0_TERMINAL_PATH", r0_terminal)
+    monkeypatch.setattr(validator_module, "ARCHIVE_ROOT_PATH", archive_root.resolve())
+    monkeypatch.setattr(
+        validator_module,
+        "OUTPUT_ROOT_PATH",
+        (tmp_path / "ag-r2-cross-sensor-calibration-control-r1").resolve(),
+    )
+    monkeypatch.setattr(validator_module, "_verify_repair_lock", lambda _path: None)
     monkeypatch.setattr(repair_validator, "validate_lock_file", lambda _path, _root: {"valid": True})
     lock = {
         "schema": CONTROL_LOCK_SCHEMA,
@@ -201,9 +275,65 @@ def test_r1_selects_right_rgb_namespace_not_camchain_order_and_independent_valid
     assert result["selected_member"]["camera_node_key"] == "cam1"
     assert result["selected_member"]["rostopic_namespace"] == "/uvc_camera/cam_2"
     assert result["inventory"]["matrix_discovery_count"] == 2
+    replay_result = execute_one_shot_replay(Path(lock["output_root"]), lock_path)
+    assert replay_result["status"] == validator_module.REPLAY_PASS
     replay = independently_validate(Path(lock["output_root"]), lock_path)
     assert replay["valid"] is True
     assert replay["target_namespace_match_count"] == 1
+
+
+def test_r1_independent_validator_rejects_resealed_start_and_result_mutations(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    start_case = tmp_path / "start-case"
+    start_case.mkdir()
+    lock_path, lock = _fixture(
+        start_case,
+        monkeypatch,
+        members=[("one.yaml", _yaml(_camera("cam0", "/uvc_camera/cam_2/image_raw")))],
+    )
+    execute_control_preflight(lock_path)
+    root = Path(lock["output_root"])
+    start = json.loads((root / "start-receipt.json").read_text())
+    start["archive_bytes_read_before_start"] = 1
+    _reseal(root, "start-receipt.json", start)
+    with pytest.raises(ValidationError, match="F2_R1_VALIDATOR_START_RECEIPT"):
+        execute_one_shot_replay(root, lock_path)
+
+    result_case = tmp_path / "result-case"
+    result_case.mkdir()
+    lock_path, lock = _fixture(
+        result_case,
+        monkeypatch,
+        members=[("one.yaml", _yaml(_camera("cam0", "/uvc_camera/cam_2/image_raw")))],
+    )
+    execute_control_preflight(lock_path)
+    root = Path(lock["output_root"])
+    result = json.loads((root / "result.json").read_text())
+    result["archive"]["bytes"] += 1
+    _reseal(root, "result.json", result)
+    with pytest.raises(ValidationError, match="F2_R1_VALIDATOR_PASS_RESULT"):
+        execute_one_shot_replay(root, lock_path)
+
+
+def test_r1_independent_validator_rejects_manifest_terminal_mutation(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    lock_path, lock = _fixture(
+        tmp_path,
+        monkeypatch,
+        members=[("one.yaml", _yaml(_camera("cam0", "/uvc_camera/cam_2/image_raw")))],
+    )
+    execute_control_preflight(lock_path)
+    root = Path(lock["output_root"])
+    manifest_path = root / "manifest.json"
+    manifest = json.loads(manifest_path.read_text())
+    manifest["terminal"] = "MUTATED"
+    _write_json(manifest_path, manifest)
+    with pytest.raises(ValidationError, match="F2_R1_VALIDATOR_MANIFEST"):
+        execute_one_shot_replay(root, lock_path)
 
 
 @pytest.mark.parametrize(
@@ -248,6 +378,8 @@ def test_r1_failure_preserves_exact_counts_and_independent_validator_replays(
     assert observed["target_namespace_match_count"] == expected_matches
     assert observed["all_yaml_candidates_read"] is True
     assert failure["selection_receipt"]["first_or_best_selected"] is False
+    replay_result = execute_one_shot_replay(root, lock_path)
+    assert replay_result["status"] == validator_module.REPLAY_CONFIRMED_FAILURE
     replay = independently_validate(root, lock_path)
     assert replay["valid"] is True
     assert replay["matrix_discovery_count"] == expected_discoveries
@@ -279,6 +411,22 @@ def test_r1_control_lock_mutations_fail_before_archive_access(
             lambda value: value["official_camera_selection_evidence"].__setitem__("sha256", "0" * 64),
             "F2_R1_CONTROL_OFFICIAL_CAMERA_SELECTION_EVIDENCE_BINDING_FILE_DRIFT",
         ),
+        (
+            "archive-alias",
+            lambda value: value.__setitem__(
+                "archive_root",
+                str(Path(value["archive_root"]) / ".." / Path(value["archive_root"]).name),
+            ),
+            "F2_R1_CONTROL_ARCHIVE_ROOT_PATH_DRIFT",
+        ),
+        (
+            "output-alias",
+            lambda value: value.__setitem__(
+                "output_root",
+                str(Path(value["output_root"]) / ".." / Path(value["output_root"]).name),
+            ),
+            "F2_R1_CONTROL_OUTPUT_ROOT_PATH_DRIFT",
+        ),
     ):
         changed = deepcopy(original)
         mutate(changed)
@@ -286,6 +434,131 @@ def test_r1_control_lock_mutations_fail_before_archive_access(
         path.write_text(json.dumps(changed), encoding="utf-8")
         with pytest.raises(ContractError, match=code):
             validate_control_lock(path)
+
+
+def test_r1_independent_replay_is_permanently_consumed_before_second_archive_access(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    lock_path, lock = _fixture(
+        tmp_path,
+        monkeypatch,
+        members=[("one.yaml", _yaml(_camera("cam0", "/uvc_camera/cam_2/image_raw")))],
+    )
+    execute_control_preflight(lock_path)
+    root = Path(lock["output_root"])
+    execute_one_shot_replay(root, lock_path)
+    monkeypatch.setattr(
+        validator_module,
+        "_replay_archive",
+        lambda *_args: pytest.fail("second replay reached archive access"),
+    )
+    with pytest.raises(ValidationError, match="F2_R1_VALIDATOR_REPLAY_ALREADY_CONSUMED"):
+        execute_one_shot_replay(root, lock_path)
+
+
+@pytest.mark.parametrize(
+    ("members", "expected_code"),
+    [
+        ([ ("readme.txt", b"not yaml") ], "F2_R1_CONTROL_YAML_CANDIDATE_COUNT"),
+        ([ ("one.yaml", b"cam0:\n  T_cam_imu:\n  - invalid\n") ], "F2_R1_IMU_CALIBRATION_MATRIX"),
+        ([ ("one.yaml", b"A" * 100000) ], "F2_ZIP_COMPRESSION_BOMB"),
+        ([ ("../one.yaml", _yaml(_camera("cam0", "/uvc_camera/cam_2/image_raw"))) ], "F2_ZIP_MEMBER_DIRECTORY_ESCAPE"),
+    ],
+)
+def test_r1_all_fail_closed_classes_are_independently_replayable(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    members: list[tuple[str, bytes]],
+    expected_code: str,
+) -> None:
+    lock_path, lock = _fixture(tmp_path, monkeypatch, members=members)
+    with pytest.raises(ContractError, match=expected_code):
+        execute_control_preflight(lock_path)
+    root = Path(lock["output_root"])
+    assert json.loads((root / "failure.json").read_text())["error_code"] == expected_code
+    replay = execute_one_shot_replay(root, lock_path)
+    assert replay["status"] == validator_module.REPLAY_CONFIRMED_FAILURE
+    assert independently_validate(root, lock_path)["replay_terminal"] == validator_module.REPLAY_CONFIRMED_FAILURE
+
+
+def test_r1_archive_binding_failure_is_independently_replayable(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    lock_path, lock = _fixture(
+        tmp_path,
+        monkeypatch,
+        members=[("one.yaml", _yaml(_camera("cam0", "/uvc_camera/cam_2/image_raw")))],
+    )
+    archive = Path(lock["archive_root"]) / "camera_imu_calib_radtan.zip"
+    with archive.open("ab") as stream:
+        stream.write(b"drift")
+    with pytest.raises(ContractError, match="F2_ARCHIVE_BYTES_MISMATCH"):
+        execute_control_preflight(lock_path)
+    root = Path(lock["output_root"])
+    replay = execute_one_shot_replay(root, lock_path)
+    assert replay["status"] == validator_module.REPLAY_CONFIRMED_FAILURE
+    assert replay["archive_hash_passes"] == 0
+    assert independently_validate(root, lock_path)["replay_terminal"] == validator_module.REPLAY_CONFIRMED_FAILURE
+
+
+def test_r1_unexpected_replay_failure_is_sealed_after_start_receipt(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    lock_path, lock = _fixture(
+        tmp_path,
+        monkeypatch,
+        members=[("one.yaml", _yaml(_camera("cam0", "/uvc_camera/cam_2/image_raw")))],
+    )
+    execute_control_preflight(lock_path)
+    root = Path(lock["output_root"])
+    monkeypatch.setattr(validator_module, "_replay_archive", lambda *_args: (_ for _ in ()).throw(OSError("boom")))
+    with pytest.raises(ValidationError) as captured:
+        execute_one_shot_replay(root, lock_path)
+    assert captured.value.code == "OSError"
+    assert (root / "validator-start-receipt.json").is_file()
+    assert (root / "validator-failure.json").is_file()
+    assert (root / "validator-manifest.json").is_file()
+    assert independently_validate(root, lock_path)["replay_terminal"] == validator_module.REPLAY_FAIL
+
+
+def test_r1_offline_validator_rejects_resealed_replay_mutations(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    result_case = tmp_path / "result"
+    result_case.mkdir()
+    lock_path, lock = _fixture(
+        result_case,
+        monkeypatch,
+        members=[("one.yaml", _yaml(_camera("cam0", "/uvc_camera/cam_2/image_raw")))],
+    )
+    execute_control_preflight(lock_path)
+    root = Path(lock["output_root"])
+    execute_one_shot_replay(root, lock_path)
+    result = json.loads((root / "validator-result.json").read_text())
+    result["archive_replay_attempts"] = 2
+    _reseal_validator(root, "validator-result.json", result)
+    with pytest.raises(ValidationError, match="F2_R1_VALIDATOR_REPLAY_RESULT"):
+        independently_validate(root, lock_path)
+
+    start_case = tmp_path / "start"
+    start_case.mkdir()
+    lock_path, lock = _fixture(
+        start_case,
+        monkeypatch,
+        members=[("one.yaml", _yaml(_camera("cam0", "/uvc_camera/cam_2/image_raw")))],
+    )
+    execute_control_preflight(lock_path)
+    root = Path(lock["output_root"])
+    execute_one_shot_replay(root, lock_path)
+    start = json.loads((root / "validator-start-receipt.json").read_text())
+    start["archive_members_enumerated_before_start"] = 1
+    _reseal_validator(root, "validator-start-receipt.json", start)
+    with pytest.raises(ValidationError, match="F2_R1_VALIDATOR_REPLAY_START_RECEIPT"):
+        independently_validate(root, lock_path)
 
 
 def test_r1_independent_validator_does_not_import_producer_source_or_parser() -> None:
@@ -321,4 +594,6 @@ def test_tracked_r1_repair_implementation_lock_validates() -> None:
     )
     result = repair_validator.validate_lock_file(lock, REPO_ROOT)
     assert result["valid"] is True
-    assert result["implementation_binding_count"] == 5
+    assert result["implementation_binding_count"] == 9
+    assert result["predecessor_binding_count"] == 5
+    assert result["focused_test_count"] == 69

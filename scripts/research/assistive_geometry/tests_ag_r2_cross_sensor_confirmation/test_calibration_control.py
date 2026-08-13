@@ -15,6 +15,9 @@ from scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation import 
 from scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation import (
     calibration_control as control_module,
 )
+from scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation import (
+    validate_repair_implementation_lock as repair_validator,
+)
 from scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation.calibration_control import (
     CONTROL_AUTHORITY,
     CONTROL_BUDGET,
@@ -92,6 +95,7 @@ def _fixture(
         encoding="utf-8",
     )
     monkeypatch.setattr(control_module, "DATA_IDENTITY_PATH", identity)
+    monkeypatch.setattr(repair_validator, "validate_lock_file", lambda _path, _root: {"valid": True})
     lock = {
         "schema": CONTROL_LOCK_SCHEMA,
         "lock_id": CONTROL_LOCK_ID,

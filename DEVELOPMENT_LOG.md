@@ -42,6 +42,18 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   无 manifest/validation，partial coverage 不发布，truth/selection 未打开；终态
   `D3R2_PHASE_B_COVERAGE_CENSUS_EXECUTION_INVALID_INCOMPLETE / scientific_terminal=null / next_gate=null`。
   当前 r0 不可 resume、修补、复用 partial assets 或同版本重跑；未来恢复须再次授权新版本/协议/root。
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：Codex。收到 R1 calibration-control one-shot 授权后，
+  在真实 archive/root 访问前完成 formal pre-execution hardening。独立审计发现旧 replay 只声明一次、未先消费
+  receipt，且未完整验签 R1 lock/start/terminal/manifest、非 namespace failure 与 downstream Confirmation
+  binding；本次只修复这些证据链，不改变 `/uvc_camera/cam_2` 选择、数据 identity、budget 或科学门。
+  replay 现在先原子写入独占 start receipt，再且仅再打开 calibration archive 一次，并封存独立 terminal/manifest；
+  所有 producer fail-closed 类均可按相同 ZIP/parser 合约重放，reseal mutation 与二次 replay 均 fail closed。
+  最终 Confirmation execution-lock validator 只接受 R1 producer PASS 加 independent replay PASS 的完整 hash chain。
+  69/69 cross-sensor tests、专项 ruff、compile 与 R1 repair-lock validator PASS；真实 archive/member、session、
+  model/checkpoint、truth、factor scoring、Confirmation 与 Confirmation root 仍为 0，科学状态仍 `NOT_RUN`。
+  用户授权的当前唯一动作是先提交该 implementation boundary，再签发并各消费一次 R1 producer/replay；R0
+  继续永久 consumed，禁止 rerun/resume/replace。
+
 - 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。按用户对唯一 successor 的授权，完成 AG R2
   cross-sensor calibration-control R0 failure audit 与 R1 protocol repair implementation lock；本步无 archive
   执行权限。只读复核 R0 start/failure/manifest 三文件及 hash chain，确认终态有效但 failure 未保存 YAML

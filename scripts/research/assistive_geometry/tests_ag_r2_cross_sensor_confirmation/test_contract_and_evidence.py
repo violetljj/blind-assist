@@ -12,7 +12,7 @@ from scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation import 
     EXECUTION_LOCK_ID,
     PROTOCOL_ID,
 )
-from scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation.calibration_control import (
+from scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation.calibration_control_r1 import (
     CONTROL_AUTHORITY,
     CONTROL_BUDGET,
     CONTROL_LOCK_ID,
@@ -20,10 +20,9 @@ from scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation.calibra
     CONTROL_STATUS,
 )
 from scripts.research.assistive_geometry.ag_r2_cross_sensor_confirmation.contract import (
-    CALIBRATION_CONTROL_RESULT_SCHEMA,
+    CALIBRATION_CONTROL_R1_RESULT_SCHEMA,
     DATA_IDENTITY_PATH,
     EXECUTION_SCHEMA,
-    IMPLEMENTATION_LOCK_PATH,
     OFFICIAL_CONTROL_EVIDENCE_PATH,
     OFFICIAL_CONTROL_EVIDENCE_SCHEMA,
     ContractError,
@@ -66,28 +65,46 @@ def _execution_lock(tmp_path: Path) -> tuple[dict, Path]:
     control_root = tmp_path / "calibration-control-root"
     control_root.mkdir()
     control_lock_path = tmp_path / "calibration-control-lock.json"
+    repair = tmp_path / "repair-r1.json"
+    repair.write_text("{}\n", encoding="utf-8")
+    official_r1 = tmp_path / "official-r1.json"
+    official_r1.write_text("{}\n", encoding="utf-8")
+    amendment = tmp_path / "amendment-r1.json"
+    amendment.write_text("{}\n", encoding="utf-8")
+    r0_terminal = tmp_path / "r0-terminal.json"
+    r0_terminal.write_text("{}\n", encoding="utf-8")
     control_lock = {
         "schema": CONTROL_LOCK_SCHEMA,
         "lock_id": CONTROL_LOCK_ID,
         "protocol_id": PROTOCOL_ID,
         "status": CONTROL_STATUS,
-        "implementation_lock": _binding("REPAIR_IMPLEMENTATION_LOCK", IMPLEMENTATION_LOCK_PATH),
-        "data_identity": _binding("DATA_IDENTITY", DATA_IDENTITY_PATH),
-        "official_control_evidence": _binding("OFFICIAL_FORMAT_AND_IMU_CONVENTION", official),
+        "repair_implementation_lock": _binding("R1_REPAIR_IMPLEMENTATION_LOCK", repair),
+        "data_identity": _binding("DATA_IDENTITY_PRE_R0_SNAPSHOT", DATA_IDENTITY_PATH),
+        "official_camera_selection_evidence": _binding("R1_OFFICIAL_CAMERA_SELECTION_EVIDENCE", official_r1),
+        "protocol_amendment": _binding("R1_PROTOCOL_AMENDMENT", amendment),
+        "r0_terminal": _binding("R0_CONSUMED_CONTROL_TERMINAL", r0_terminal),
         "archive_root": str((tmp_path / "archives").resolve()),
         "output_root": str(control_root.resolve()),
         "budget": CONTROL_BUDGET,
         "authority": CONTROL_AUTHORITY,
-        "one_shot": {"exclusive_control_root": True, "rerun": False, "resume": False, "replacement": False},
+        "one_shot": {
+            "exclusive_r1_control_root": True,
+            "producer_runs": 1,
+            "independent_validator_replays": 1,
+            "r0_rerun": False,
+            "r0_resume": False,
+            "r0_replacement": False,
+        },
     }
     control_lock_path.write_text(json.dumps(control_lock), encoding="utf-8")
     start = control_root / "start-receipt.json"
     start.write_text(
         json.dumps(
             {
-                "schema": "blindassist.ag.r2.cross_sensor_factor_confirmation_calibration_control_start.v1",
+                "schema": "blindassist.ag.r2.cross_sensor_factor_confirmation_calibration_control_r1_start.v1",
                 "protocol_id": PROTOCOL_ID,
                 "control_lock": {"path": str(control_lock_path.resolve()), "sha256": _sha(control_lock_path)},
+                "r0_terminal": {"path": str(r0_terminal.resolve()), "sha256": _sha(r0_terminal)},
                 "control_root_consumed_at_start": True,
                 "archive_bytes_read_before_start": 0,
                 "archive_members_enumerated_before_start": 0,
@@ -99,8 +116,9 @@ def _execution_lock(tmp_path: Path) -> tuple[dict, Path]:
     control.write_text(
         json.dumps(
             {
-                "schema": CALIBRATION_CONTROL_RESULT_SCHEMA,
-                "status": "CALIBRATION_CONTROL_PASS_EXACT_MEMBER_BOUND",
+                "schema": CALIBRATION_CONTROL_R1_RESULT_SCHEMA,
+                "status": "CALIBRATION_CONTROL_R1_PASS_EXACT_MEMBER_AND_TARGET_CAMERA_BOUND",
+                "protocol_id": PROTOCOL_ID,
                 "archive": {
                     "filename": "camera_imu_calib_radtan.zip",
                     "bytes": 3645288,
@@ -109,9 +127,16 @@ def _execution_lock(tmp_path: Path) -> tuple[dict, Path]:
                 "selected_member": {
                     "name": "calibration/camchain-imucam.yaml",
                     "camera_node_key": "cam0",
+                    "rostopic": "/uvc_camera/cam_2/image_raw",
+                    "rostopic_namespace": "/uvc_camera/cam_2",
                     "matrix_key": "T_cam_imu",
                     "encoding": "KALIBR_CAMCHAIN_YAML_T_CAM_IMU_NESTED_4X4",
                     "transform_direction": "IMU_TO_CAMERA_T_CAM_IMU",
+                },
+                "selection_contract": {
+                    "official_target_imu_rostopic": "/uvc_camera/cam_2/imu",
+                    "expected_camera_sensor_namespace": "/uvc_camera/cam_2",
+                    "first_or_best_selected": False,
                 },
                 "access_receipt": {
                     "session_rgbd_archive_reads": 0,
@@ -132,11 +157,86 @@ def _execution_lock(tmp_path: Path) -> tuple[dict, Path]:
             {
                 "schema": "blindassist.ag.r2.cross_sensor_factor_confirmation_manifest.v1",
                 "evidence_root_consumed": True,
-                "terminal": "CALIBRATION_CONTROL_PASS_EXACT_MEMBER_BOUND",
+                "terminal": "CALIBRATION_CONTROL_R1_PASS_EXACT_MEMBER_AND_TARGET_CAMERA_BOUND",
                 "files": {
                     "result.json": {"path": "result.json", "bytes": control.stat().st_size, "sha256": _sha(control)},
                     "start-receipt.json": {"path": "start-receipt.json", "bytes": start.stat().st_size, "sha256": _sha(start)},
                 },
+            }
+        ),
+        encoding="utf-8",
+    )
+    replay_start = control_root / "validator-start-receipt.json"
+    replay_start.write_text(
+        json.dumps(
+            {
+                "schema": (
+                    "blindassist.ag.r2.cross_sensor_factor_confirmation_"
+                    "calibration_control_r1_validator_start.v1"
+                ),
+                "protocol_id": PROTOCOL_ID,
+                "control_lock": {"path": str(control_lock_path.resolve()), "sha256": _sha(control_lock_path)},
+                "producer_manifest": {"path": str(manifest.resolve()), "sha256": _sha(manifest)},
+                "producer_terminal": {"path": str(control.resolve()), "sha256": _sha(control)},
+                "replay_root_consumed_at_start": True,
+                "archive_hash_passes_before_start": 0,
+                "archive_members_enumerated_before_start": 0,
+                "archive_members_read_before_start": 0,
+            }
+        ),
+        encoding="utf-8",
+    )
+    replay_result = control_root / "validator-result.json"
+    replay_result.write_text(
+        json.dumps(
+            {
+                "schema": (
+                    "blindassist.ag.r2.cross_sensor_factor_confirmation_"
+                    "calibration_control_r1_validator_result.v1"
+                ),
+                "status": "CALIBRATION_CONTROL_R1_INDEPENDENT_REPLAY_PASS",
+                "protocol_id": PROTOCOL_ID,
+                "control_lock": {"path": str(control_lock_path.resolve()), "sha256": _sha(control_lock_path)},
+                "producer_manifest": {"path": str(manifest.resolve()), "sha256": _sha(manifest)},
+                "producer_terminal": {
+                    "path": str(control.resolve()),
+                    "sha256": _sha(control),
+                    "status": "CALIBRATION_CONTROL_R1_PASS_EXACT_MEMBER_AND_TARGET_CAMERA_BOUND",
+                    "error_code": None,
+                },
+                "archive_replay_attempts": 1,
+                "producer_equivalence": True,
+                "selected_member": json.loads(control.read_text())["selected_member"],
+                "forbidden_access": {
+                    "session_rgbd_archive_reads": 0,
+                    "session_imu_archive_reads": 0,
+                    "model_or_checkpoint_reads": 0,
+                    "source_truth_materializations": 0,
+                    "factor_scoring_runs": 0,
+                    "confirmation_runs": 0,
+                    "confirmation_root_created": False,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    replay_files = {
+        path.name: {"path": path.name, "bytes": path.stat().st_size, "sha256": _sha(path)}
+        for path in (manifest, control, start, replay_result, replay_start)
+    }
+    replay_manifest = control_root / "validator-manifest.json"
+    replay_manifest.write_text(
+        json.dumps(
+            {
+                "schema": (
+                    "blindassist.ag.r2.cross_sensor_factor_confirmation_"
+                    "calibration_control_r1_validator_manifest.v1"
+                ),
+                "evidence_root_consumed": True,
+                "terminal": "CALIBRATION_CONTROL_R1_INDEPENDENT_REPLAY_PASS",
+                "file_count_before_validator_manifest": 5,
+                "bytes_before_validator_manifest": sum(row["bytes"] for row in replay_files.values()),
+                "files": replay_files,
             }
         ),
         encoding="utf-8",
@@ -190,6 +290,9 @@ def _execution_lock(tmp_path: Path) -> tuple[dict, Path]:
                 _binding("CALIBRATION_CONTROL_START_RECEIPT", start),
                 _binding("CALIBRATION_ARCHIVE_CONTROL_RESULT", control),
                 _binding("CALIBRATION_CONTROL_MANIFEST", manifest),
+                _binding("CALIBRATION_CONTROL_REPLAY_START_RECEIPT", replay_start),
+                _binding("CALIBRATION_CONTROL_REPLAY_RESULT", replay_result),
+                _binding("CALIBRATION_CONTROL_REPLAY_MANIFEST", replay_manifest),
             ],
         },
         "runtime": {
@@ -235,7 +338,25 @@ def test_predecessor_hashes_and_authority_remain_frozen() -> None:
 def test_future_execution_lock_exact_schema_and_mutations(tmp_path: Path) -> None:
     lock, implementation = _execution_lock(tmp_path)
     path = tmp_path / "execution.json"
-    assert validate_execution_lock(path, implementation_lock_path=implementation)["lock_id"] == EXECUTION_LOCK_ID
+    def control_validator(control_path: Path) -> dict:
+        return json.loads(control_path.read_text())
+
+    def replay_validator(_root: Path, _control_path: Path) -> dict:
+        return {
+            "valid": True,
+            "producer_terminal": "CALIBRATION_CONTROL_R1_PASS_EXACT_MEMBER_AND_TARGET_CAMERA_BOUND",
+            "replay_terminal": "CALIBRATION_CONTROL_R1_INDEPENDENT_REPLAY_PASS",
+            "archive_replay_attempts": 1,
+        }
+    assert (
+        validate_execution_lock(
+            path,
+            implementation_lock_path=implementation,
+            control_lock_validator=control_validator,
+            control_replay_validator=replay_validator,
+        )["lock_id"]
+        == EXECUTION_LOCK_ID
+    )
     for name, mutate, code in (
         ("authority", lambda value: value["authority"].__setitem__("training_or_tuning", True), "F2_EXECUTION_AUTHORITY_DRIFT"),
         ("time", lambda value: value["source_contract"]["calibration_binding"].__setitem__("imu_clock_domain", "MOCAP"), "F2_EXECUTION_CALIBRATION_OFFICIAL_CONTRACT_DRIFT"),
@@ -247,7 +368,20 @@ def test_future_execution_lock_exact_schema_and_mutations(tmp_path: Path) -> Non
             changed = deepcopy(lock)
             mutate(changed)
             _write_lock(path, changed)
-            validate_execution_lock(path, implementation_lock_path=implementation)
+            validate_execution_lock(
+                path,
+                implementation_lock_path=implementation,
+                control_lock_validator=control_validator,
+                control_replay_validator=replay_validator,
+            )
+    _write_lock(path, lock)
+    with pytest.raises(ContractError, match="F2_CALIBRATION_CONTROL_REPLAY_INDEPENDENT_VALIDATION"):
+        validate_execution_lock(
+            path,
+            implementation_lock_path=implementation,
+            control_lock_validator=control_validator,
+            control_replay_validator=lambda _root, _control: {"valid": False},
+        )
 
 
 def test_evidence_root_is_exclusive_atomic_and_nonoverwritable(tmp_path: Path) -> None:

@@ -31,12 +31,36 @@ IMPLEMENTATION_LOCK_PATH = REPO_ROOT / (
     "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_"
     "CONFIRMATION_CONTROL_FORMAT_AND_RUNTIME_BINDING_REPAIR_IMPLEMENTATION_LOCK_2026-08-12.json"
 )
+R1_REPAIR_IMPLEMENTATION_LOCK_PATH = REPO_ROOT / (
+    "docs/research/assistive-geometry/"
+    "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_"
+    "CONFIRMATION_CALIBRATION_CONTROL_R0_FAILURE_AUDIT_AND_R1_PROTOCOL_"
+    "REPAIR_IMPLEMENTATION_LOCK_2026-08-13.json"
+)
 PROTOCOL_SHA256 = "8BA036E617531AE886BAAC8DAD60E5445BF8F0F7A2A073B7F8909750478D709F"
 DATA_IDENTITY_SHA256 = "E755288202F4E7189538671F5F8C120F9D6EF68EBE80757844BC5272382B345B"
 DEPTHART_SOURCE_MANIFEST_SHA256 = "1DA7AE23BA4954FA1CAC44742A33119E9475D6EAC5768A6CCFC9BFB71925111D"
 EXECUTION_SCHEMA = "blindassist.ag.r2.cross_sensor_factor_confirmation_execution_lock.v2"
 OFFICIAL_CONTROL_EVIDENCE_SCHEMA = "blindassist.ag.r2.cross_sensor_factor_confirmation_official_control_evidence.v1"
 CALIBRATION_CONTROL_RESULT_SCHEMA = "blindassist.ag.r2.cross_sensor_factor_confirmation_calibration_control_result.v1"
+CALIBRATION_CONTROL_R1_RESULT_SCHEMA = (
+    "blindassist.ag.r2.cross_sensor_factor_confirmation_calibration_control_r1_result.v1"
+)
+CALIBRATION_CONTROL_LOCK_SCHEMA = (
+    "blindassist.ag.r2.cross_sensor_factor_confirmation_calibration_control_r1_lock.v1"
+)
+CALIBRATION_CONTROL_START_SCHEMA = (
+    "blindassist.ag.r2.cross_sensor_factor_confirmation_calibration_control_r1_start.v1"
+)
+CALIBRATION_CONTROL_REPLAY_RESULT_SCHEMA = (
+    "blindassist.ag.r2.cross_sensor_factor_confirmation_calibration_control_r1_validator_result.v1"
+)
+CALIBRATION_CONTROL_REPLAY_START_SCHEMA = (
+    "blindassist.ag.r2.cross_sensor_factor_confirmation_calibration_control_r1_validator_start.v1"
+)
+CALIBRATION_CONTROL_REPLAY_MANIFEST_SCHEMA = (
+    "blindassist.ag.r2.cross_sensor_factor_confirmation_calibration_control_r1_validator_manifest.v1"
+)
 CALIBRATION_ENCODING = "KALIBR_CAMCHAIN_YAML_T_CAM_IMU_NESTED_4X4"
 CAMERA_FROM_IMU_DIRECTION = "IMU_TO_CAMERA_T_CAM_IMU"
 IMU_COLUMN_CONTRACT = "WHITESPACE_TIMESTAMP_NS_GYRO_XYZ_LINEAR_ACCELERATION_XYZ"
@@ -178,7 +202,9 @@ def load_frozen_contracts() -> tuple[dict[str, Any], dict[str, Any]]:
 def validate_execution_lock(
     path: Path,
     *,
-    implementation_lock_path: Path = IMPLEMENTATION_LOCK_PATH,
+    implementation_lock_path: Path = R1_REPAIR_IMPLEMENTATION_LOCK_PATH,
+    control_lock_validator: Any | None = None,
+    control_replay_validator: Any | None = None,
 ) -> dict[str, Any]:
     """Validate a future external one-shot lock before any archive member access."""
 
@@ -272,7 +298,7 @@ def validate_execution_lock(
     )
     require(type(calibration["minimum_imu_samples"]) is int and calibration["minimum_imu_samples"] >= 5, "F2_EXECUTION_CALIBRATION_MINIMUM_IMU_SAMPLES_INVALID")
     control_rows = source["control_evidence_bindings"]
-    require(isinstance(control_rows, list) and len(control_rows) == 5, "F2_EXECUTION_CONTROL_BINDINGS_SCHEMA")
+    require(isinstance(control_rows, list) and len(control_rows) == 8, "F2_EXECUTION_CONTROL_BINDINGS_SCHEMA")
     control_map: dict[str, Path] = {}
     for row in control_rows:
         require(isinstance(row, Mapping), "F2_EXECUTION_CONTROL_BINDING_ROW")
@@ -286,6 +312,9 @@ def validate_execution_lock(
             "CALIBRATION_CONTROL_START_RECEIPT",
             "CALIBRATION_ARCHIVE_CONTROL_RESULT",
             "CALIBRATION_CONTROL_MANIFEST",
+            "CALIBRATION_CONTROL_REPLAY_START_RECEIPT",
+            "CALIBRATION_CONTROL_REPLAY_RESULT",
+            "CALIBRATION_CONTROL_REPLAY_MANIFEST",
         },
         "F2_EXECUTION_CONTROL_BINDING_ROLE_SET",
     )
@@ -300,9 +329,12 @@ def validate_execution_lock(
         "F2_OFFICIAL_CONTROL_DRIFT",
     )
     try:
-        from .calibration_control import validate_control_lock
+        if control_lock_validator is None:
+            from .calibration_control_r1 import validate_control_lock
 
-        control_lock = validate_control_lock(control_map["CALIBRATION_CONTROL_LOCK"])
+            control_lock_validator = validate_control_lock
+
+        control_lock = control_lock_validator(control_map["CALIBRATION_CONTROL_LOCK"])
     except Exception as error:
         raise ContractError("F2_CALIBRATION_CONTROL_LOCK_INVALID", str(error)) from error
     control_root = Path(control_lock["output_root"]).resolve()
@@ -314,7 +346,7 @@ def validate_execution_lock(
     )
     start = load_json(control_map["CALIBRATION_CONTROL_START_RECEIPT"], "F2_CALIBRATION_CONTROL_START_READ")
     require(
-        start.get("schema") == "blindassist.ag.r2.cross_sensor_factor_confirmation_calibration_control_start.v1"
+        start.get("schema") == CALIBRATION_CONTROL_START_SCHEMA
         and start.get("protocol_id") == PROTOCOL_ID
         and start.get("control_root_consumed_at_start") is True
         and start.get("archive_bytes_read_before_start") == 0
@@ -331,7 +363,8 @@ def validate_execution_lock(
     result_receipt = manifest_files.get("result.json")
     start_receipt = manifest_files.get("start-receipt.json")
     require(
-        manifest.get("terminal") == "CALIBRATION_CONTROL_PASS_EXACT_MEMBER_BOUND"
+        manifest.get("schema") == "blindassist.ag.r2.cross_sensor_factor_confirmation_manifest.v1"
+        and manifest.get("terminal") == "CALIBRATION_CONTROL_R1_PASS_EXACT_MEMBER_AND_TARGET_CAMERA_BOUND"
         and manifest.get("evidence_root_consumed") is True
         and set(manifest_files) == {"result.json", "start-receipt.json"}
         and isinstance(result_receipt, Mapping)
@@ -349,8 +382,9 @@ def validate_execution_lock(
         if isinstance(row, Mapping) and row.get("kind") == "CAMERA_IMU_CALIBRATION_ARCHIVE"
     ]
     require(
-        control.get("schema") == CALIBRATION_CONTROL_RESULT_SCHEMA
-        and control.get("status") == "CALIBRATION_CONTROL_PASS_EXACT_MEMBER_BOUND"
+        control.get("schema") == CALIBRATION_CONTROL_R1_RESULT_SCHEMA
+        and control.get("status") == "CALIBRATION_CONTROL_R1_PASS_EXACT_MEMBER_AND_TARGET_CAMERA_BOUND"
+        and control.get("protocol_id") == PROTOCOL_ID
         and isinstance(selected, Mapping)
         and len(calibration_archives) == 1
         and control.get("archive") == {
@@ -363,6 +397,7 @@ def validate_execution_lock(
     require(
         selected.get("name") == calibration["member"]
         and selected.get("camera_node_key") == calibration["camera_node_key"]
+        and selected.get("rostopic_namespace") == "/uvc_camera/cam_2"
         and selected.get("matrix_key") == calibration["camera_from_imu_key"]
         and selected.get("encoding") == calibration["calibration_encoding"]
         and selected.get("transform_direction") == calibration["camera_from_imu_transform_direction"],
@@ -377,6 +412,132 @@ def validate_execution_lock(
         ))
         and access.get("confirmation_root_created") is False,
         "F2_CALIBRATION_CONTROL_ACCESS_DRIFT",
+    )
+    replay_start_path = control_map["CALIBRATION_CONTROL_REPLAY_START_RECEIPT"]
+    replay_result_path = control_map["CALIBRATION_CONTROL_REPLAY_RESULT"]
+    replay_manifest_path = control_map["CALIBRATION_CONTROL_REPLAY_MANIFEST"]
+    require(
+        replay_start_path == control_root / "validator-start-receipt.json"
+        and replay_result_path == control_root / "validator-result.json"
+        and replay_manifest_path == control_root / "validator-manifest.json",
+        "F2_CALIBRATION_CONTROL_REPLAY_ROOT_FILE_BINDING_DRIFT",
+    )
+    try:
+        if control_replay_validator is None:
+            from .validate_calibration_control_r1 import (
+                validate as validate_control_replay,
+            )
+
+            control_replay_validator = validate_control_replay
+        replay_validation = control_replay_validator(
+            control_root,
+            control_map["CALIBRATION_CONTROL_LOCK"],
+        )
+        require(
+            isinstance(replay_validation, Mapping)
+            and replay_validation.get("valid") is True
+            and replay_validation.get("producer_terminal")
+            == "CALIBRATION_CONTROL_R1_PASS_EXACT_MEMBER_AND_TARGET_CAMERA_BOUND"
+            and replay_validation.get("replay_terminal")
+            == "CALIBRATION_CONTROL_R1_INDEPENDENT_REPLAY_PASS"
+            and replay_validation.get("archive_replay_attempts") == 1,
+            "F2_CALIBRATION_CONTROL_REPLAY_INDEPENDENT_VALIDATION",
+        )
+    except ContractError:
+        raise
+    except Exception as error:
+        raise ContractError("F2_CALIBRATION_CONTROL_REPLAY_INDEPENDENT_VALIDATION", str(error)) from error
+    replay_start = load_json(replay_start_path, "F2_CALIBRATION_CONTROL_REPLAY_START_READ")
+    require(
+        replay_start
+        == {
+            "schema": CALIBRATION_CONTROL_REPLAY_START_SCHEMA,
+            "protocol_id": PROTOCOL_ID,
+            "control_lock": {
+                "path": str(control_map["CALIBRATION_CONTROL_LOCK"]),
+                "sha256": sha256_file(control_map["CALIBRATION_CONTROL_LOCK"]),
+            },
+            "producer_manifest": {
+                "path": str(control_map["CALIBRATION_CONTROL_MANIFEST"]),
+                "sha256": sha256_file(control_map["CALIBRATION_CONTROL_MANIFEST"]),
+            },
+            "producer_terminal": {
+                "path": str(control_map["CALIBRATION_ARCHIVE_CONTROL_RESULT"]),
+                "sha256": sha256_file(control_map["CALIBRATION_ARCHIVE_CONTROL_RESULT"]),
+            },
+            "replay_root_consumed_at_start": True,
+            "archive_hash_passes_before_start": 0,
+            "archive_members_enumerated_before_start": 0,
+            "archive_members_read_before_start": 0,
+        },
+        "F2_CALIBRATION_CONTROL_REPLAY_START_DRIFT",
+    )
+    replay = load_json(replay_result_path, "F2_CALIBRATION_CONTROL_REPLAY_READ")
+    replay_manifest = load_json(replay_manifest_path, "F2_CALIBRATION_CONTROL_REPLAY_MANIFEST_READ")
+    replay_files = replay_manifest.get("files") if isinstance(replay_manifest.get("files"), Mapping) else {}
+    require(
+        replay_manifest.get("schema") == CALIBRATION_CONTROL_REPLAY_MANIFEST_SCHEMA
+        and replay_manifest.get("terminal") == "CALIBRATION_CONTROL_R1_INDEPENDENT_REPLAY_PASS"
+        and replay_manifest.get("evidence_root_consumed") is True
+        and replay_manifest.get("file_count_before_validator_manifest") == 5
+        and set(replay_files)
+        == {
+            "manifest.json",
+            "result.json",
+            "start-receipt.json",
+            "validator-result.json",
+            "validator-start-receipt.json",
+        }
+        and all(
+            isinstance(replay_files.get(name), Mapping)
+            and replay_files[name].get("bytes") == (control_root / name).stat().st_size
+            and replay_files[name].get("sha256") == sha256_file(control_root / name)
+            for name in replay_files
+        ),
+        "F2_CALIBRATION_CONTROL_REPLAY_MANIFEST_DRIFT",
+    )
+    require(
+        replay.get("schema") == CALIBRATION_CONTROL_REPLAY_RESULT_SCHEMA
+        and replay.get("status") == "CALIBRATION_CONTROL_R1_INDEPENDENT_REPLAY_PASS"
+        and replay.get("protocol_id") == PROTOCOL_ID
+        and replay.get("control_lock")
+        == {
+            "path": str(control_map["CALIBRATION_CONTROL_LOCK"]),
+            "sha256": sha256_file(control_map["CALIBRATION_CONTROL_LOCK"]),
+        }
+        and replay.get("producer_manifest")
+        == {
+            "path": str(control_map["CALIBRATION_CONTROL_MANIFEST"]),
+            "sha256": sha256_file(control_map["CALIBRATION_CONTROL_MANIFEST"]),
+        }
+        and replay.get("producer_terminal")
+        == {
+            "path": str(control_map["CALIBRATION_ARCHIVE_CONTROL_RESULT"]),
+            "sha256": sha256_file(control_map["CALIBRATION_ARCHIVE_CONTROL_RESULT"]),
+            "status": control["status"],
+            "error_code": None,
+        }
+        and replay.get("archive_replay_attempts") == 1
+        and replay.get("producer_equivalence") is True
+        and replay.get("selected_member") == selected,
+        "F2_CALIBRATION_CONTROL_REPLAY_NOT_PASS",
+    )
+    replay_forbidden = replay.get("forbidden_access")
+    require(
+        isinstance(replay_forbidden, Mapping)
+        and all(
+            replay_forbidden.get(name) == 0
+            for name in (
+                "session_rgbd_archive_reads",
+                "session_imu_archive_reads",
+                "model_or_checkpoint_reads",
+                "source_truth_materializations",
+                "factor_scoring_runs",
+                "confirmation_runs",
+            )
+        )
+        and replay_forbidden.get("confirmation_root_created") is False,
+        "F2_CALIBRATION_CONTROL_REPLAY_ACCESS_DRIFT",
     )
     bindings = lock.get("runtime_bindings")
     require(isinstance(bindings, list) and bindings, "F2_EXECUTION_RUNTIME_BINDINGS_INVALID")
