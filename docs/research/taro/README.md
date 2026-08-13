@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / R13_ORACLE_HEADROOM_PASS / R14_R22_TASK_SCORER_TRANSFER_FAIL_STOP / POSE_DIVERSE_BASELINE_MULTI_SOURCE_PASS / ANCHOR_ADMISSION_ANDROIDTEST_COMPILE_PASS / DEVICE_ENV_BLOCKED / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / R13_ORACLE_HEADROOM_PASS / R14_R22_TASK_SCORER_TRANSFER_FAIL_STOP / POSE_DIVERSE_BASELINE_MULTI_SOURCE_PASS / ANCHOR_DEVICE_CANARY_PASS / RGB_PAIR_SUPPORT_PASS / FRESH_RAW_DEPTH_PAIR_FAIL_STOP / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
 
 本页只维护 TARO 当前状态、权限和唯一算法 successor。较早完整 R0–R11 叙事保存在
 [14d8ad7e 历史快照](archive/README_FULL_HISTORY_2026-08-13.md)，不能从中恢复旧权限。
@@ -74,10 +74,16 @@ Android、HTP 或默认 App 自动继承权限。
   下的相机相对位姿交给纯 camera-history selector。后一条不做 body-frame warp，所以不伪造或要求外参，
   也不能反向授权风险融合。时间戳不前进、连续跟踪 warm-up 不足、Anchor 非 TRACKING、相对位姿退化或
   任一 admission failure 都不会进入历史 buffer。
-- 项目自有 `TaroArCoreAnchorPoseDiverseCanaryTest` 已实现；`:ustrf-shadow-benchmark:testDebugUnitTest` 与
-  `:ustrf-shadow-benchmark:compileDebugAndroidTestKotlin` 已在 JDK 17 通过。2026-08-13 当前 health check 仍为
-  0 ready devices、AVD inventory 为 0，因此设备 canary 是 `ENV_BLOCKED_NO_READY_ANDROID_DEVICE_OR_AVD`，
-  不得写成 device PASS。
+- 项目自有 `TaroArCoreAnchorPoseDiverseCanaryTest` 已在 `SM-S9280 / Android 16 / ARCore 1.54.260890093`
+  真机通过：600 attempts 中 547 个 anchor-pose admissions、543 次合法选择，选择窗
+  `199.98ms..999.97ms`，最大位移 `0.1127m`、最大偏航 `0.1514rad`；这关闭了先前 device ENV_BLOCKED。
+- fresh raw-depth payload 路线在 `RAW_DEPTH_ONLY` 下正式 FAIL：474 个 candidate 只有 1 个严格同 source-frame
+  的新深度，且发生在 pose warm-up 前，fresh pose-bound frames/pairs 都为 0。不得把 473 个重投影/旧深度
+  当作独立额外观测回救。
+- RGB payload pair 路线在同一真机通过：595 张 camera images 中 564 张与已准入 Anchor pose 共享同一个
+  current ARCore Frame API provenance，564 个 bounded luminance digests 全部不同，形成 560 次合法选择；
+  时间窗 `166.03ms..999.99ms`，最大位移 `0.1457m`、最大偏航 `0.2379rad`。Image/Frame/Camera2 三种
+  timestamp 关系作为诊断保留，不用 nearest-frame 绑定；尚未保留或解码任何 RGB frame。
 
 ## 当前证据入口
 
@@ -94,19 +100,20 @@ Android、HTP 或默认 App 自动继承权限。
 - [R14-R20 scorer and confirmation results](TARO_TASK_EVIDENCE_SCORER_AND_CONFIRMATION_RESULTS_2026-08-13.json)
 - [R21-R22 cross-source learned-ranker result](TARO_CROSS_SOURCE_LEARNED_RANKER_RESULT_2026-08-13.json)
 - [Pose-diverse portfolio and default-off core selector](TARO_POSE_DIVERSE_BASELINE_PORTFOLIO_AND_CORE_SELECTOR_RESULT_2026-08-13.json)
-- [Isolated canary preflight and device environment stop](TARO_POSE_DIVERSE_SELECTOR_ISOLATED_CANARY_PREFLIGHT_RESULT_2026-08-13.json)
+- [Historical isolated canary preflight and superseded device environment stop](TARO_POSE_DIVERSE_SELECTOR_ISOLATED_CANARY_PREFLIGHT_RESULT_2026-08-13.json)
+- [ARCore device selector, raw-depth stop and RGB pair-support result](TARO_POSE_DIVERSE_ARCORE_DEVICE_AND_RGB_PAIR_RESULT_2026-08-13.json)
 - [算法路线总表](../ALGORITHM_RESEARCH_CURRENT.md) · [TARO Module](../../../scripts/research/taro/README.md)
 
 ## 唯一 successor
 
-`TARO_POSE_DIVERSE_SELECTOR_ARCORE_ANCHOR_DEVICE_RUN_R0`：
+`TARO_RGB_FRAME_HISTORY_RETENTION_AND_COST_R0`：
 
-1. 在一台明确 serial/API/ARCore 版本的兼容真机上运行项目自有
-   `TaroArCoreAnchorPoseDiverseCanaryTest`；不得在默认 App 创建 ARCore session；
-2. 必须验证 advancing timestamp、连续 TRACKING warm-up、同 session/same-anchor 相对位姿、150ms–1s
-   历史选择、至少 `2cm` 位移或 `2°` 偏航，以及当前 instrumentation report 路径；任何缺失都返回
-   `Unavailable`、test FAIL 或 `NOT_EVALUABLE`；
-3. canary 只输出 selection receipt、相对位移/偏航与准入/选择计数，不做像素/深度融合、不发用户 guidance；
+1. 只在隔离 benchmark 中把同 current ARCore Frame 获取的 YUV planes 复制到自有、可关闭的 1 秒有界
+   history；不得持有 `android.media.Image` 跨 update，不得在默认 App 创建 ARCore session；
+2. 每个 copied payload 必须绑定 source `Frame.timestamp`、Anchor pose receipt、内容 hash 和字节数；selector
+   返回的 frame identity 必须能反查同一 payload receipt，不得 nearest-frame 回退；
+3. 设备 canary 必须报告 copy+append+select 的 p50/p95、峰值 retained bytes、淘汰计数和 resource errors；
+   仍不做模型推理、风险融合或 guidance；
 4. learned task scorer 保持 STOP，只有 materially new source-time signal/supervision 才可重开；不得用 generic
    baseline 的落地掩盖 task-specific scorer 失败。
 
@@ -115,7 +122,7 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 
 ## 当前允许
 
-- 在隔离 canary 中运行默认关闭的 `TaroPoseDiverseFrameSelector`，只记录 selection receipt；
+- 在隔离 canary 中复制并有界保留 source-bound RGB payload，验证 selection identity 与 payload receipt；
 - 对纯 camera-history canary 使用同 session/same-anchor 相对位姿；外参门禁继续用于需要 body-frame/risk-field
   warp 的独立链路，不得把两者混为同一权限；
 - 只有 materially new source-time signal/supervision 才可另立 learned scorer successor；
@@ -128,7 +135,8 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 - 用不同额外帧预算比较 sensing arms，或只报告 recovery 而隐藏 false-occupied/known retention/cost；
 - 在 Development canary 中输出 `CLEAR`、把 UNKNOWN 当 negative，或用 R11 outcome 选择该 canary 的 source；
 - 回调 R12/R19/R20/R21 的 query、outcome 或 gate，或把 neighbor depth 泄漏进 scorer input；
-- 将 generic core selector 写成 task-specific scorer、真实设备成功、风险融合、默认 App 或产品成功；
+- 将 generic core selector 写成 task-specific scorer、跨设备成功、任务增益、风险融合、默认 App 或产品成功；
+- 将重投影/旧 raw depth 当成独立 fresh observation，或在当前设备上继续回调 raw-depth pair gate；
 - 修改 sealed R11 selection/selector/candidate/threshold，或覆盖、resume、删除、重跑已消费 one-shot；
 - 越级训练、Android/QNN/HTP、默认 App、产品或安全结论。
 
@@ -136,5 +144,6 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 
 R13 已证明 task-conditioned oracle headroom；R21 证明 learned scorer 可跨源提高宏平均，但没有广泛覆盖机会父级，
 R22 表示扩张又回归，因此 task-specific scorer 停止。pose-diverse generic baseline 已获得跨三源族的 Development
-支持并落为默认关闭的纯 Kotlin selector；anchor-relative instrumentation canary 已实现并通过本地编译，但尚未在
-真实 ARCore 设备运行，也未完成风险融合、产品有效性或安全验证，默认 App 不变。
+支持并落为默认关闭的纯 Kotlin selector；单台真实 ARCore 设备已证明 Anchor 相对选帧与 source-bound RGB pair
+support，fresh raw-depth pair 则失败。尚未保留/解码 RGB payload、证明任务证据增益、完成风险融合、产品有效性或
+安全验证，默认 App 不变。
