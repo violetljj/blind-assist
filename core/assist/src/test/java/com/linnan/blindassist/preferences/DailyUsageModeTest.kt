@@ -5,6 +5,7 @@ import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Test
 
 class DailyUsageModeTest {
@@ -73,6 +74,30 @@ class DailyUsageModeTest {
         )
 
         assertEquals(DailyUsageMode.CORRIDOR, mode)
+    }
+
+    @Test
+    fun everySelectablePresetRoundTripsThroughPreferences() {
+        DailyUsageMode.selectableModes.forEach { mode ->
+            val config = requireNotNull(mode.config)
+            assertEquals(
+                mode,
+                DailyUsageMode.fromPreferences(
+                    scenario = config.scenario,
+                    profile = config.profile,
+                    speechStyle = config.speechStyle,
+                    vibrationStrength = config.vibrationStrength,
+                    careModeEnabled = config.careModeEnabled
+                )
+            )
+        }
+
+        assertFalse(DailyUsageMode.selectableModes.contains(DailyUsageMode.CUSTOM))
+        assertEquals(
+            DailyUsageMode.selectableModes.size,
+            DailyUsageMode.selectableModes.map(DailyUsageMode::storageValue).distinct().size
+        )
+        assertFalse(DailyUsageMode.selectableModes.any { it.storageValue.isBlank() })
     }
 
     @Test
