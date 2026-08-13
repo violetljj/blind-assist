@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / R13_ORACLE_HEADROOM_PASS / R14_R22_TASK_SCORER_TRANSFER_FAIL_STOP / POSE_DIVERSE_BASELINE_MULTI_SOURCE_PASS / ANCHOR_DEVICE_CANARY_PASS / RGB_PAIR_SUPPORT_PASS / RGB_HISTORY_RETENTION_COST_PASS / FRESH_RAW_DEPTH_PAIR_FAIL_STOP / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / R13_ORACLE_HEADROOM_PASS / R14_R22_TASK_SCORER_TRANSFER_FAIL_STOP / POSE_DIVERSE_BASELINE_MULTI_SOURCE_PASS / ANCHOR_DEVICE_CANARY_PASS / RGB_PAIR_SUPPORT_PASS / RGB_HISTORY_RETENTION_COST_PASS / RGB_SELECTED_DECODE_INTEGRITY_PASS / FRESH_RAW_DEPTH_PAIR_FAIL_STOP / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
 
 本页只维护 TARO 当前状态、权限和唯一算法 successor。较早完整 R0–R11 叙事保存在
 [14d8ad7e 历史快照](archive/README_FULL_HISTORY_2026-08-13.md)，不能从中恢复旧权限。
@@ -89,6 +89,11 @@ Android、HTP 或默认 App 自动继承权限。
   resource error 均为 0。1 秒/32 MiB 双限下峰值为 28 帧、`17,203,144` bytes，438 次均按 source-age
   正常淘汰、byte-cap 淘汰为 0；copy+append+select p50/p95 为 `2.602/3.810ms`。这证明 payload ownership
   与单机成本可行，尚未解码像素、运行模型或证明任务增益。
+- delayed-decode canary 随后对 556/556 个 exact selected/reference pairs 运行既有冻结
+  `D45Yuv420ToRgbaDecoder`：所有 source identity、尺寸和 selected 重放 RGBA hash 都一致，decode/resource
+  error 为 0；556 个 reference RGBA hash 全部不同，selected 覆盖 201 个不同 hash。单次 CPU decode
+  p50/p95 为 `18.045/30.358ms`，瞬态 RGBA 为 `1,228,800` bytes；三解码完整性探针 p50/p95
+  `57.387/67.152ms`，不是建议的产品 cadence。尚未运行任何 detector/depth model。
 
 ## 当前证据入口
 
@@ -108,18 +113,19 @@ Android、HTP 或默认 App 自动继承权限。
 - [Historical isolated canary preflight and superseded device environment stop](TARO_POSE_DIVERSE_SELECTOR_ISOLATED_CANARY_PREFLIGHT_RESULT_2026-08-13.json)
 - [ARCore device selector, raw-depth stop and RGB pair-support result](TARO_POSE_DIVERSE_ARCORE_DEVICE_AND_RGB_PAIR_RESULT_2026-08-13.json)
 - [Owned RGB history exact-identity and cost result](TARO_RGB_FRAME_HISTORY_RETENTION_AND_COST_RESULT_2026-08-14.json)
+- [Exact selected/reference delayed-decode integrity result](TARO_RGB_SELECTED_PAYLOAD_DECODE_INTEGRITY_RESULT_2026-08-14.json)
 - [算法路线总表](../ALGORITHM_RESEARCH_CURRENT.md) · [TARO Module](../../../scripts/research/taro/README.md)
 
 ## 唯一 successor
 
-`TARO_RGB_SELECTED_PAYLOAD_DECODE_INTEGRITY_R0`：
+`TARO_RGB_PAIR_FROZEN_VISUAL_EVIDENCE_BACKEND_PREFLIGHT_R0`：
 
-1. 只在隔离 benchmark 中、只对 exact receipt 命中的 reference/selected owned YUV payload 调用既有冻结
-   `D45Yuv420ToRgbaDecoder`；不得重新 acquire、nearest-frame 回退或持有 `android.media.Image`；
-2. 必须验证延迟解码的 source identity、尺寸、plane stride 与 deterministic RGBA hash；同一 owned payload
-   重复解码必须字节一致，任何不一致都 fail closed；
-3. 设备 canary 必须报告 pair decode success/failure、p50/p95、RGBA peak bytes 与 resource errors；本轮不运行
-   detector/depth model，不做风险融合或 guidance；
+1. 在读取新的 live model output 前，只读审计现有冻结 RGB backends；最多选择一个能保留完整 source-frame
+   identity、输出 positive-only visual evidence 且语义上与 body/path observability 有明确交集的 backend；
+2. 预先冻结 current-only、current+passive 与 current+pose-diverse 三臂的同一额外帧预算、机会/abstention
+   分母、延迟/内存 receipt 和停止条件；UNKNOWN 不得转成 negative；
+3. 若没有合格 backend，必须以 `NOT_EVALUABLE_NO_ADMISSIBLE_FROZEN_BACKEND` 停止；不得换模型、训练、用
+   live output 事后定义指标，或把 pipeline readiness 写成任务增益；
 4. learned task scorer 保持 STOP，只有 materially new source-time signal/supervision 才可重开；不得用 generic
    baseline 的落地掩盖 task-specific scorer 失败。
 
@@ -128,7 +134,7 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 
 ## 当前允许
 
-- 在隔离 canary 中对 exact receipt 命中的 reference/selected owned YUV payload 做延迟解码完整性与成本验证；
+- 对现有冻结 RGB backends 做 outcome-blind 只读 preflight，并预注册唯一 visual-evidence shadow protocol；
 - 对纯 camera-history canary 使用同 session/same-anchor 相对位姿；外参门禁继续用于需要 body-frame/risk-field
   warp 的独立链路，不得把两者混为同一权限；
 - 只有 materially new source-time signal/supervision 才可另立 learned scorer successor；
@@ -152,5 +158,5 @@ R13 已证明 task-conditioned oracle headroom；R21 证明 learned scorer 可�
 R22 表示扩张又回归，因此 task-specific scorer 停止。pose-diverse generic baseline 已获得跨三源族的 Development
 支持并落为默认关闭的纯 Kotlin selector；单台真实 ARCore 设备已证明 Anchor 相对选帧与 source-bound RGB pair
 support，fresh raw-depth pair 则失败；同机已进一步证明完整 YUV payload 的 1 秒/32 MiB 有界 ownership、
-selection identity 与单次 copy 成本。尚未解码 RGB payload、运行模型、证明任务证据增益、完成风险融合、
-产品有效性或安全验证，默认 App 不变。
+selection identity、copy 成本和 exact selected/reference 延迟解码完整性。尚未运行模型、证明任务证据增益、
+完成风险融合、产品有效性或安全验证，默认 App 不变。
