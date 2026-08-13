@@ -2,6 +2,17 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：Codex。消费用户明确授权的 D3R2 Phase-B
+  exact-64 coverage-only census。activation 先通过 PR #34 的 11 项检查并合并至受保护 master；正式 r0
+  随后完成连续 `44/64` asset checkpoints / 22 paired identities，保留 44 bodies / `4,223,537,610`
+  bytes。第45个 `44796744/lowres_depth.zip` 首试 HTTP 200，但流式正文长度与冻结 Content-Length
+  不一致；producer 封存 terminal `DownloadFailure <- ValueError: download length mismatch`、failure
+  sidecar 与 non-resumable temp marker 后停止。metadata-only auditor 验证 attempt、001..044 checkpoint
+  seals、failure、HEAD URL/header/length 与 source 名称/长度，body read/hash、ZIP open/member read 均为0。
+  无 manifest/validation，partial coverage 不发布，truth/selection 未打开；终态
+  `D3R2_PHASE_B_COVERAGE_CENSUS_EXECUTION_INVALID_INCOMPLETE / scientific_terminal=null / next_gate=null`。
+  当前 r0 不可 resume、修补、复用 partial assets 或同版本重跑；未来恢复须再次授权新版本/协议/root。
+
 - 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。正式消费 TARO O1R R11 all-48 source-only
   Phase A one-shot。producer 原子终态为 `TARO_O1R_R11_FRESH_POOL_PHASE_A_SOURCE_ONLY_SEALED_PASS`，封存 exact
   48 parents / 1,043 frames / 9,387 queries、1,043 次 DepthART inference 与对应 R7/R11 factors。R7 state 为
