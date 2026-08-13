@@ -2,6 +2,21 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。按用户对唯一 successor 的单独授权，正式消费
+  Assistive Geometry R2 cross-sensor factor Confirmation 的 calibration-control R0 one-shot。execution lock
+  在任何 archive access 前固定为提交 `35f80eeac8c0c78f2576ef98a578ceacf0dc3fad`，仅授权 camera-IMU
+  calibration archive 的哈希、成员枚举与最多 32 个、每个最多 4 MiB 的 YAML candidate 读取；session
+  RGB-D/IMU、checkpoint/model、source truth、factor scoring、Confirmation、网络、设备、默认 App、产品和
+  safety 全部无权限。exclusive control root 先于 archive 读取永久消费；archive bytes/SHA 匹配，枚举后终态为
+  `F2_CALIBRATION_CONTROL_AMBIGUOUS_OR_MISSING_MATRIX`。failure evidence 未保存 exact candidate/discovery count，
+  只能确定合法 discovery 不是恰好一个，不能区分零个与多个，因而没有绑定 exact member/camera node，也不得
+  选择 first/best 或重跑补看。start/failure/manifest 三文件 hash chain 已复核；R0 one-shot 不得 rerun/resume/
+  replace。三个 session archive、模型、truth、评分、Confirmation 与 Confirmation root 仍为 0，科学状态保持
+  `NOT_RUN`，本终态不是 AG factor 的科学 PASS/FAIL。唯一 successor 为另行授权、无执行权限的
+  `BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R0_FAILURE_AUDIT_AND_R1_PROTOCOL_REPAIR_LOCK`；
+  只允许审计 sealed R0 failure、修复 failure observability，并在不重开 archive 前冻结披露既有 control access
+  的 R1 protocol 与 official-evidence-backed camera-node selection contract。
+
 - 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。正式消费 TARO O1R R11 all-48 source-only
   Phase A one-shot。producer 原子终态为 `TARO_O1R_R11_FRESH_POOL_PHASE_A_SOURCE_ONLY_SEALED_PASS`，封存 exact
   48 parents / 1,043 frames / 9,387 queries、1,043 次 DepthART inference 与对应 R7/R11 factors。R7 state 为
