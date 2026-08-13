@@ -17,6 +17,22 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   唯一 successor 收紧为 `TARO_TASK_OBSERVABILITY_BALANCED_POSE_SOURCE_FRONTDOOR_R0`：先冻结 pose/depth/
   intrinsics/label contract 并满足 48 references、4 recovery parents、4 CLEAR parents，再允许另立五臂 R2。
 
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。完成 DepthART-S D3R3→D3R6
+  source-support 与 selective-risk Development 回合，并按用户要求暂停。D3R3 fresh census 全量完成
+  exact 64/64 GET（`5,580,879,686` bytes），exact 9,600 stems 中 9,597 个 depth+confidence paired；
+  3 个缺失 stem 保持 `SOURCE_UNAVAILABLE_UNKNOWN`。旧 per-parent all-horizon 双向支持为 `0/32`，
+  继续扩 21 个同分布 parent 仍未增加 far-CLEAR diversity，排除了“只加同分布身份即可解决”假设。
+  D3R4 578-parameter 双头 router 在 parent-disjoint Development 上把 false-clear `34.39%→8.92%`，
+  却把 false-block `8.62%→46.78%`；D3R5 加入 parent×band×horizon 相对秩并将 veto 对齐
+  baseline-CLEAR 后，在首组 8 个 fresh parent 仍把 false-block `10.60%→27.92%`，两项 direct-veto
+  机制均判负并保留。D3R6 只保留该风险排序，把动作改成每 parent 最多 `54/2700=2%`
+  baseline-CLEAR cell 转 UNKNOWN，永不直接输出 CLEAR/OCCUPIED；budget 仅由 TRAIN 冻结。第二组 8 个
+  此前未读 DepthART 输出的 fresh parent 上，432 个 deferral 中 335 个 truth OCCUPIED、0 个 CLEAR、
+  97 个 truth UNKNOWN；false-clear `31.73%→29.92%`，false-block `18.92%→18.92%`，coverage
+  下降恰好 `2.00%`，签署 `D3R6_BUDGETED_UNKNOWN_DEFERRAL_FRESH_CONFIRMATION_PASS`。结果
+  `14,408 bytes / SHA-256 B089A050...55EDC`。D3R6 仅为 Development candidate；R2 outcome 未读，
+  不产生设备、性能、默认 App、产品或安全 authority；当前 successor 为 `NONE / USER_PAUSED`。
+
 - 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。按用户确认把新增算法预算收敛为两条可由
   Codex 并行、无固定天数的 evidence-gated Development 支线。Assistive Geometry 激活
   `AG_FACTORWISE_NO_REGRET_ORACLE_AND_PARENT_GATE_CANARY_R0`：先比较冻结 DepthART prior、correction
