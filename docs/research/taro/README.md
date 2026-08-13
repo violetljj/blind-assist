@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / R13_ORACLE_HEADROOM_PASS / R14_R22_TASK_SCORER_TRANSFER_FAIL_STOP / POSE_DIVERSE_BASELINE_MULTI_SOURCE_PASS / ANCHOR_DEVICE_CANARY_PASS / RGB_PAIR_SUPPORT_PASS / FRESH_RAW_DEPTH_PAIR_FAIL_STOP / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / R13_ORACLE_HEADROOM_PASS / R14_R22_TASK_SCORER_TRANSFER_FAIL_STOP / POSE_DIVERSE_BASELINE_MULTI_SOURCE_PASS / ANCHOR_DEVICE_CANARY_PASS / RGB_PAIR_SUPPORT_PASS / RGB_HISTORY_RETENTION_COST_PASS / FRESH_RAW_DEPTH_PAIR_FAIL_STOP / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
 
 本页只维护 TARO 当前状态、权限和唯一算法 successor。较早完整 R0–R11 叙事保存在
 [14d8ad7e 历史快照](archive/README_FULL_HISTORY_2026-08-13.md)，不能从中恢复旧权限。
@@ -83,7 +83,12 @@ Android、HTP 或默认 App 自动继承权限。
 - RGB payload pair 路线在同一真机通过：595 张 camera images 中 564 张与已准入 Anchor pose 共享同一个
   current ARCore Frame API provenance，564 个 bounded luminance digests 全部不同，形成 560 次合法选择；
   时间窗 `166.03ms..999.99ms`，最大位移 `0.1457m`、最大偏航 `0.2379rad`。Image/Frame/Camera2 三种
-  timestamp 关系作为诊断保留，不用 nearest-frame 绑定；尚未保留或解码任何 RGB frame。
+  timestamp 关系作为诊断保留，不用 nearest-frame 绑定；该轮尚未保留或解码任何 RGB frame。
+- 后继 retention/cost canary 已把 465 个 `640x480 YUV_420_888` payload 在 `Image.close()` 前完整复制到
+  benchmark 自有历史，461/461 次选择都以完整 `UstrfFrameStamp` 精确反查 payload receipt，identity miss、
+  resource error 均为 0。1 秒/32 MiB 双限下峰值为 28 帧、`17,203,144` bytes，438 次均按 source-age
+  正常淘汰、byte-cap 淘汰为 0；copy+append+select p50/p95 为 `2.602/3.810ms`。这证明 payload ownership
+  与单机成本可行，尚未解码像素、运行模型或证明任务增益。
 
 ## 当前证据入口
 
@@ -102,18 +107,19 @@ Android、HTP 或默认 App 自动继承权限。
 - [Pose-diverse portfolio and default-off core selector](TARO_POSE_DIVERSE_BASELINE_PORTFOLIO_AND_CORE_SELECTOR_RESULT_2026-08-13.json)
 - [Historical isolated canary preflight and superseded device environment stop](TARO_POSE_DIVERSE_SELECTOR_ISOLATED_CANARY_PREFLIGHT_RESULT_2026-08-13.json)
 - [ARCore device selector, raw-depth stop and RGB pair-support result](TARO_POSE_DIVERSE_ARCORE_DEVICE_AND_RGB_PAIR_RESULT_2026-08-13.json)
+- [Owned RGB history exact-identity and cost result](TARO_RGB_FRAME_HISTORY_RETENTION_AND_COST_RESULT_2026-08-14.json)
 - [算法路线总表](../ALGORITHM_RESEARCH_CURRENT.md) · [TARO Module](../../../scripts/research/taro/README.md)
 
 ## 唯一 successor
 
-`TARO_RGB_FRAME_HISTORY_RETENTION_AND_COST_R0`：
+`TARO_RGB_SELECTED_PAYLOAD_DECODE_INTEGRITY_R0`：
 
-1. 只在隔离 benchmark 中把同 current ARCore Frame 获取的 YUV planes 复制到自有、可关闭的 1 秒有界
-   history；不得持有 `android.media.Image` 跨 update，不得在默认 App 创建 ARCore session；
-2. 每个 copied payload 必须绑定 source `Frame.timestamp`、Anchor pose receipt、内容 hash 和字节数；selector
-   返回的 frame identity 必须能反查同一 payload receipt，不得 nearest-frame 回退；
-3. 设备 canary 必须报告 copy+append+select 的 p50/p95、峰值 retained bytes、淘汰计数和 resource errors；
-   仍不做模型推理、风险融合或 guidance；
+1. 只在隔离 benchmark 中、只对 exact receipt 命中的 reference/selected owned YUV payload 调用既有冻结
+   `D45Yuv420ToRgbaDecoder`；不得重新 acquire、nearest-frame 回退或持有 `android.media.Image`；
+2. 必须验证延迟解码的 source identity、尺寸、plane stride 与 deterministic RGBA hash；同一 owned payload
+   重复解码必须字节一致，任何不一致都 fail closed；
+3. 设备 canary 必须报告 pair decode success/failure、p50/p95、RGBA peak bytes 与 resource errors；本轮不运行
+   detector/depth model，不做风险融合或 guidance；
 4. learned task scorer 保持 STOP，只有 materially new source-time signal/supervision 才可重开；不得用 generic
    baseline 的落地掩盖 task-specific scorer 失败。
 
@@ -122,7 +128,7 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 
 ## 当前允许
 
-- 在隔离 canary 中复制并有界保留 source-bound RGB payload，验证 selection identity 与 payload receipt；
+- 在隔离 canary 中对 exact receipt 命中的 reference/selected owned YUV payload 做延迟解码完整性与成本验证；
 - 对纯 camera-history canary 使用同 session/same-anchor 相对位姿；外参门禁继续用于需要 body-frame/risk-field
   warp 的独立链路，不得把两者混为同一权限；
 - 只有 materially new source-time signal/supervision 才可另立 learned scorer successor；
@@ -145,5 +151,6 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 R13 已证明 task-conditioned oracle headroom；R21 证明 learned scorer 可跨源提高宏平均，但没有广泛覆盖机会父级，
 R22 表示扩张又回归，因此 task-specific scorer 停止。pose-diverse generic baseline 已获得跨三源族的 Development
 支持并落为默认关闭的纯 Kotlin selector；单台真实 ARCore 设备已证明 Anchor 相对选帧与 source-bound RGB pair
-support，fresh raw-depth pair 则失败。尚未保留/解码 RGB payload、证明任务证据增益、完成风险融合、产品有效性或
-安全验证，默认 App 不变。
+support，fresh raw-depth pair 则失败；同机已进一步证明完整 YUV payload 的 1 秒/32 MiB 有界 ownership、
+selection identity 与单次 copy 成本。尚未解码 RGB payload、运行模型、证明任务证据增益、完成风险融合、
+产品有效性或安全验证，默认 App 不变。
