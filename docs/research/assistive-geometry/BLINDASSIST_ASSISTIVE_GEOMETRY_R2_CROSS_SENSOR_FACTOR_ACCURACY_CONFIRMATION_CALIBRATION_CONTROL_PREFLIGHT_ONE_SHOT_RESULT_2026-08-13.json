@@ -1,0 +1,105 @@
+{
+  "schema": "blindassist.ag.r2.cross_sensor_factor_confirmation_calibration_control_terminal.v1",
+  "result_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_PREFLIGHT_ONE_SHOT_RESULT_2026-08-13",
+  "date": "2026-08-13",
+  "research_profile": "CONFIRMATION_STRICT",
+  "status": "CALIBRATION_CONTROL_FAIL_CLOSED_AMBIGUOUS_OR_MISSING_MATRIX_ONE_SHOT_CONSUMED",
+  "scientific_status": "NOT_RUN",
+  "protocol_status": "VALID_CONTROL_TERMINAL",
+  "execution_lock": {
+    "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_PREFLIGHT_ONE_SHOT_EXECUTION_LOCK_2026-08-13.json",
+    "bytes": 2677,
+    "sha256": "EA2EA46B46B4E9332587E5585905D0A8F95775B901653D8B29FB32DBDFCB88D8",
+    "pre_access_commit": "35f80eeac8c0c78f2576ef98a578ceacf0dc3fad"
+  },
+  "evidence_root": {
+    "path": "E:\\linnan\\linnan\\artifacts.local\\evidence\\assistive-geometry\\ag-r2-cross-sensor-calibration-control-r0",
+    "exclusive_root_consumed_at_start": true,
+    "terminal": "CALIBRATION_CONTROL_FAIL_CLOSED",
+    "files": [
+      {
+        "name": "start-receipt.json",
+        "bytes": 610,
+        "sha256": "DEAB73F91ED3EFDA7B694233578D75E61EEAEFA885B85CE53C41D071B5456574"
+      },
+      {
+        "name": "failure.json",
+        "bytes": 229,
+        "sha256": "3E62DFE42A0C7439CE015D91C24AE93E055285915216337440EDC96420B07B34"
+      },
+      {
+        "name": "manifest.json",
+        "bytes": 486,
+        "sha256": "23D2D18B2161A15A5A38468DEC4796A3C5261BA264959546DB09B8C1C9C089FC"
+      }
+    ],
+    "manifest_hash_chain_verified": true
+  },
+  "control_outcome": {
+    "error_code": "F2_CALIBRATION_CONTROL_AMBIGUOUS_OR_MISSING_MATRIX",
+    "one_shot_consumed": true,
+    "exact_calibration_member_bound": false,
+    "exact_camera_node_bound": false,
+    "zero_vs_multiple_valid_discoveries_distinguished": false,
+    "first_or_best_candidate_selected": false,
+    "interpretation": "The bounded real-archive control did not yield exactly one valid camera-node-scoped T_cam_imu discovery. The consumed failure artifact does not retain the candidate or discovery counts, so zero and multiple valid discoveries remain intentionally unresolved."
+  },
+  "access_receipt": {
+    "camera_imu_calibration_archive_hash_verified": true,
+    "camera_imu_calibration_archive_declared_bytes": 3645288,
+    "archive_member_enumerations": 1,
+    "calibration_yaml_candidate_read_count": "UNKNOWN_EXACT_BOUNDED_1_TO_32",
+    "calibration_yaml_candidate_bytes": "UNKNOWN_EXACT_EACH_LE_4194304_AND_TOTAL_ARCHIVE_UNCOMPRESSED_LE_67108864",
+    "session_rgbd_archive_reads": 0,
+    "session_imu_archive_reads": 0,
+    "model_or_checkpoint_reads": 0,
+    "source_truth_materializations": 0,
+    "factor_scoring_runs": 0,
+    "confirmation_runs": 0,
+    "confirmation_root_created": false,
+    "network_requests": 0,
+    "device_access": 0
+  },
+  "failure_scope": "CALIBRATION_CONTROL_EVIDENCE_VERSION_R0_ONLY",
+  "execution_authority": {
+    "calibration_control_r0_rerun": false,
+    "calibration_control_r0_resume": false,
+    "calibration_control_r0_replacement": false,
+    "session_archive_access": false,
+    "model_inference": false,
+    "source_truth_materialization": false,
+    "factor_scoring": false,
+    "confirmation": false,
+    "training_or_tuning": false,
+    "reducer_or_task_state": false,
+    "network": false,
+    "device": false,
+    "default_app": false,
+    "product": false,
+    "safety": false
+  },
+  "immutability": {
+    "preserve_execution_lock": true,
+    "preserve_control_root": true,
+    "patch_or_rerun_r0": false,
+    "new_version_after_control_outcome_only": true
+  },
+  "unique_successor": {
+    "lock_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R0_FAILURE_AUDIT_AND_R1_PROTOCOL_REPAIR_LOCK",
+    "requires_separate_user_authorization": true,
+    "execution_authority": false,
+    "archive_access": false,
+    "allowed_scope": [
+      "audit the sealed R0 failure evidence and producer failure observability without reopening the archive",
+      "freeze an R1 protocol amendment that discloses the consumed calibration-control access",
+      "synthetic-test count-preserving fail-closed evidence and an official-evidence-backed camera-node selection contract before any new archive access"
+    ],
+    "forbidden_scope": [
+      "reopen, resume, replace or rerun the R0 control root",
+      "guess or select the first or best YAML member or camera node",
+      "access any session RGB-D or IMU archive",
+      "load a model, materialize source truth, score factors or run Confirmation"
+    ]
+  },
+  "claim_ceiling": "This is a valid consumed calibration-control failure terminal only. It is not a scientific AG factor PASS or FAIL, does not bind a calibration member or camera node, and provides no deployment, product or safety evidence."
+}
