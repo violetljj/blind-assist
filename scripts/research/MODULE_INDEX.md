@@ -1,6 +1,6 @@
 # Research Module Index
 
-状态：`current / navigation-only / 82-of-82`
+状态：`current / navigation-only / 83-of-83`
 
 本页只回答“Module 在哪里、属于哪个研究族”。动态状态、successor 和权限必须回到每个
 Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导。
@@ -42,6 +42,7 @@ Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导�
 - [`taro_o1r_r9_clear_runtime`](taro_o1r_r9_clear_runtime/README.md)
 - [`taro_o1r_r10_clear_runtime`](taro_o1r_r10_clear_runtime/README.md)
 - [`taro_o1r_r11_abstention_runtime`](taro_o1r_r11_abstention_runtime/README.md)
+- [`taro_o1r_r12_clear_observability_runtime`](taro_o1r_r12_clear_observability_runtime/README.md)
 
 ## 双环研究族（30）
 

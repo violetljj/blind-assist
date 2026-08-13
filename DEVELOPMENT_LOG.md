@@ -2,6 +2,21 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。完成 TARO task-directed observability 的 Bonn
+  positive-oracle R1 可执行 canary 与数据分母收口。runner 先只读 timestamp/path/pose，以官方
+  `T_ROS * T_groundtruth * T_ROS * T_marker` 坐标链做 outcome-blind source audit；26 个 parents 中 25 个
+  具备合法 pair，从全序列均匀选择 100 references，selection image reads=0，pair capability PASS。五臂保持
+  static/passive/fixed `6±2 cm, <=5 deg` micro/generic max-parallax/task oracle 的同一额外帧预算，输出仅
+  `OCCUPIED/UNKNOWN`。实际评价 56 references / 504 queries，44 geometry abstentions；source-derived truth
+  为 `404 OCCUPIED / 2 CLEAR / 98 UNKNOWN`，static-miss positive opportunity 与 CLEAR denominator 都只覆盖
+  1 parent，低于冻结的 4/4 parent 门。虽然 passive、micro、task oracle 表面均恢复 2 个 positive，passive/
+  micro 同时 false-occupy 2/2 CLEAR，所有臂间 decision 因分母不足保持 null；终态
+  `NOT_EVALUABLE_DATA_OBSERVABILITY_DENOMINATOR`，不授权 learned scorer、Android、产品或默认 App。
+  TartanAir JapaneseAlley 本机只有 128-byte Hugging Face metadata、原 archive 已按 cleanup record 删除，
+  未冒充可运行 payload。
+  唯一 successor 收紧为 `TARO_TASK_OBSERVABILITY_BALANCED_POSE_SOURCE_FRONTDOOR_R0`：先冻结 pose/depth/
+  intrinsics/label contract 并满足 48 references、4 recovery parents、4 CLEAR parents，再允许另立五臂 R2。
+
 - 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。按用户确认把新增算法预算收敛为两条可由
   Codex 并行、无固定天数的 evidence-gated Development 支线。Assistive Geometry 激活
   `AG_FACTORWISE_NO_REGRET_ORACLE_AND_PARENT_GATE_CANARY_R0`：先比较冻结 DepthART prior、correction

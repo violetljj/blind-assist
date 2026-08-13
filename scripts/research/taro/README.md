@@ -1,6 +1,6 @@
 # TARO research scripts
 
-状态：`P0_PROTOCOL_AND_SCHEMA_FROZEN / PAIR_SUPPORT_AUDIT_AVAILABLE / TASK_OBSERVABILITY_D0_ACTIVE / SCIENTIFIC_STATUS_NOT_RUN`
+状态：`P0_PROTOCOL_AND_SCHEMA_FROZEN / PAIR_SUPPORT_AUDIT_AVAILABLE / BONN_POSITIVE_ORACLE_R1_NOT_EVALUABLE_DENOMINATOR`
 
 ## 研究问题与版本
 
@@ -23,6 +23,9 @@ machine-readable schema、measurement-only observability、有限弱子空间 ta
   blob、FARO/highres、truth/label/outcome，也不运行模型或网络。
 - `test_audit_observation_pair_support.py`：3 个 focused tests，覆盖 passive/extended window 计数、无效 pose
   fail-closed 与非 candidate-input schema 拒绝；结果只回答 source 是否支持下一 observability canary。
+- 五臂 positive-oracle runtime、测试和运行说明位于
+  [`taro_o1r_r12_clear_observability_runtime`](../taro_o1r_r12_clear_observability_runtime/README.md)；当前 Bonn
+  R1 因 recovery/CLEAR parent 分母不足而 `NOT_EVALUABLE`，未授权 learned scorer。
 
 运行：
 
@@ -30,8 +33,8 @@ machine-readable schema、measurement-only observability、有限弱子空间 ta
 E:\codex-tools\bin\blindassist-python.cmd -m unittest scripts.research.taro.test_validate_taro_p0_protocol scripts.research.taro.test_audit_observation_pair_support
 ```
 
-本 Module 没有 solver、oracle runner、数据 materializer、模型、trainer 或 action scorer；pair-support audit
-只是 Development source-capability precheck。
+本基础 Module 没有 solver、数据 materializer、模型、trainer 或 action scorer；pair-support audit 只是
+Development source-capability precheck。R12 的 Development oracle runner 不改变本 Module 的 P0 权限。
 
 ## 输出
 
