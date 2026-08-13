@@ -94,6 +94,15 @@ class BlindAssistComposeTest {
     }
 
     @Test
+    fun featureScreenExposesOneBrandNameWithoutGraphicDescription() {
+        prepareMainShell()
+        openFeaturesTab()
+
+        composeRule.onAllNodesWithText("BlindAssist").assertCountEquals(1)
+        composeRule.onAllNodesWithContentDescription("BlindAssist").assertCountEquals(0)
+    }
+
+    @Test
     fun phoneCameraEntryUsesExistingCameraPath() {
         prepareMainShell()
         openFeaturesTab()

@@ -86,7 +86,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
@@ -124,6 +127,8 @@ fun FeatureScreen(
     val language = controls.appLanguage
     var modesExpanded by rememberSaveable { mutableStateOf(false) }
     ScreenColumn(modifier = modifier) {
+        BlindAssistBrandHeader()
+        Spacer(Modifier.height(28.dp))
         Text(
             text = if (language == AppLanguage.EN) "Start assist" else "开始辅助",
             style = MaterialTheme.typography.headlineMedium,
@@ -210,6 +215,78 @@ fun FeatureScreen(
             rightBody = "v$appVersion"
         )
     }
+}
+
+@Composable
+private fun BlindAssistBrandHeader(modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = BlindAssistBrandMark,
+            contentDescription = null,
+            tint = BaMint,
+            modifier = Modifier.size(36.dp)
+        )
+        Spacer(Modifier.width(12.dp))
+        Text(
+            text = "BlindAssist",
+            color = BaText,
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Medium
+        )
+    }
+}
+
+private val BlindAssistBrandMark: ImageVector by lazy {
+    ImageVector.Builder(
+        name = "BlindAssistBrandMark",
+        defaultWidth = 108.dp,
+        defaultHeight = 108.dp,
+        viewportWidth = 108f,
+        viewportHeight = 108f
+    ).apply {
+        path(
+            fill = null,
+            stroke = SolidColor(Color.Black),
+            strokeLineWidth = 6f,
+            strokeLineCap = StrokeCap.Round,
+            strokeLineJoin = StrokeJoin.Round
+        ) {
+            moveTo(24f, 29f)
+            verticalLineTo(53f)
+
+            moveTo(24f, 29f)
+            horizontalLineTo(39f)
+            curveTo(48f, 29f, 54f, 33f, 54f, 41f)
+            curveTo(54f, 49f, 48f, 53f, 39f, 53f)
+            horizontalLineTo(24f)
+
+            moveTo(24f, 53f)
+            verticalLineTo(78f)
+
+            moveTo(39f, 53f)
+            curveTo(48f, 53f, 54f, 58f, 54f, 66f)
+            curveTo(54f, 74f, 48f, 78f, 39f, 78f)
+            horizontalLineTo(24f)
+        }
+
+        path(
+            fill = null,
+            stroke = SolidColor(Color.Black),
+            strokeLineWidth = 6f,
+            strokeLineCap = StrokeCap.Round,
+            strokeLineJoin = StrokeJoin.Round
+        ) {
+            moveTo(50f, 78f)
+            lineTo(68f, 36f)
+            lineTo(85f, 78f)
+
+            moveTo(58f, 64f)
+            horizontalLineTo(78f)
+        }
+    }.build()
 }
 
 
@@ -573,4 +650,3 @@ internal fun InfoStrip(
         }
     }
 }
-

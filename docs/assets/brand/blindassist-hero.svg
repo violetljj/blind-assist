@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 480" role="img" aria-labelledby="title desc">
   <title id="title">BlindAssist repository banner</title>
-  <desc id="desc">BlindAssist mark with the words on-device perception, accessible feedback, and evidence-bounded research.</desc>
+  <desc id="desc">BlindAssist BA monogram with the words on-device perception, accessible feedback, and evidence-bounded research.</desc>
   <defs>
     <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#061115"/>
@@ -8,8 +8,8 @@
       <stop offset="1" stop-color="#132B34"/>
     </linearGradient>
     <linearGradient id="route" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#71F6C5" stop-opacity="0"/>
-      <stop offset="0.42" stop-color="#71F6C5"/>
+      <stop offset="0" stop-color="#86DDB5" stop-opacity="0"/>
+      <stop offset="0.42" stop-color="#86DDB5"/>
       <stop offset="1" stop-color="#7CC5FF"/>
     </linearGradient>
     <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
@@ -26,24 +26,25 @@
 
   <g opacity="0.82">
     <circle cx="1190" cy="88" r="4" fill="#FFD66B"/>
-    <circle cx="1284" cy="146" r="3" fill="#71F6C5"/>
+    <circle cx="1284" cy="146" r="3" fill="#86DDB5"/>
     <circle cx="1114" cy="188" r="3" fill="#7CC5FF"/>
     <circle cx="1330" cy="286" r="4" fill="#FFD66B"/>
-    <circle cx="1238" cy="366" r="3" fill="#71F6C5"/>
+    <circle cx="1238" cy="366" r="3" fill="#86DDB5"/>
   </g>
 
-  <g transform="translate(92 72)">
-    <circle cx="96" cy="96" r="92" fill="#13252C" stroke="#2F4E58" stroke-width="2"/>
-    <path d="M46 111C62 76 80 58 96 58s34 18 50 53c-14 17-31 26-50 26s-36-9-50-26Z" fill="#71F6C5"/>
-    <circle cx="96" cy="105" r="23" fill="#061115"/>
-    <path d="M90 38h12v28H90zM90 139h12v20H90z" fill="#FFD66B"/>
+  <g transform="translate(80 60)">
+    <rect width="216" height="216" rx="54" fill="#0B1114" stroke="#2F4E58" stroke-width="2"/>
+    <g fill="none" stroke="#86DDB5" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" transform="scale(2)">
+      <path d="M24 29v24m0-24h15c9 0 15 4 15 12 0 8-6 12-15 12H24M24 53v25m15-25c9 0 15 5 15 13 0 8-6 12-15 12H24"/>
+      <path d="m50 78 18-42 17 42M58 64h20"/>
+    </g>
   </g>
 
   <g font-family="Inter, Segoe UI, Arial, sans-serif">
-    <text x="316" y="138" fill="#F3FBFD" font-size="70" font-weight="750" letter-spacing="-2">BlindAssist</text>
-    <text x="319" y="192" fill="#B8D3DB" font-size="27" font-weight="500">On-device perception · Accessible feedback · Evidence-bounded research</text>
+    <text x="340" y="138" fill="#F4EFE6" font-size="70" font-weight="650" letter-spacing="-2">BlindAssist</text>
+    <text x="343" y="192" fill="#B8D3DB" font-size="27" font-weight="500">On-device perception · Accessible feedback · Evidence-bounded research</text>
 
-    <g transform="translate(319 240)" font-size="17" font-weight="700" letter-spacing="1.4">
+    <g transform="translate(343 240)" font-size="17" font-weight="700" letter-spacing="1.4">
       <rect width="142" height="42" rx="21" fill="#17352F" stroke="#3F8D72"/>
       <text x="71" y="27" text-anchor="middle" fill="#8BFFD4">ANDROID</text>
       <rect x="156" width="176" height="42" rx="21" fill="#172E3D" stroke="#3A718E"/>
@@ -52,19 +53,19 @@
       <text x="450" y="27" text-anchor="middle" fill="#FFE399">OPEN RESEARCH</text>
     </g>
 
-    <text x="319" y="344" fill="#D9E9ED" font-size="21" font-weight="550">Local inference</text>
-    <text x="500" y="344" fill="#4D717D" font-size="21">/</text>
-    <text x="532" y="344" fill="#D9E9ED" font-size="21" font-weight="550">Reproducible checks</text>
-    <text x="760" y="344" fill="#4D717D" font-size="21">/</text>
-    <text x="792" y="344" fill="#D9E9ED" font-size="21" font-weight="550">Explicit claim boundaries</text>
-    <text x="319" y="389" fill="#7796A0" font-size="17">Kotlin · Jetpack Compose · CameraX · LiteRT/TFLite</text>
+    <text x="343" y="344" fill="#D9E9ED" font-size="21" font-weight="550">Local inference</text>
+    <text x="524" y="344" fill="#4D717D" font-size="21">/</text>
+    <text x="556" y="344" fill="#D9E9ED" font-size="21" font-weight="550">Reproducible checks</text>
+    <text x="784" y="344" fill="#4D717D" font-size="21">/</text>
+    <text x="816" y="344" fill="#D9E9ED" font-size="21" font-weight="550">Explicit claim boundaries</text>
+    <text x="343" y="389" fill="#7796A0" font-size="17">Kotlin · Jetpack Compose · CameraX · LiteRT/TFLite</text>
   </g>
 
   <g fill="none" stroke-linecap="round">
     <path d="M946 412C1016 354 1076 354 1132 306s97-78 216-206" stroke="url(#route)" stroke-width="6" opacity="0.9" filter="url(#glow)"/>
     <path d="M1000 420c89-44 152-35 218-90 54-45 101-99 154-188" stroke="#7CC5FF" stroke-width="2" stroke-opacity="0.24"/>
-    <path d="M915 431c99-28 178-15 254-62 77-48 140-127 201-221" stroke="#71F6C5" stroke-width="2" stroke-opacity="0.18"/>
-    <circle cx="1132" cy="306" r="8" fill="#71F6C5" stroke="#D4FFF0" stroke-width="3"/>
+    <path d="M915 431c99-28 178-15 254-62 77-48 140-127 201-221" stroke="#86DDB5" stroke-width="2" stroke-opacity="0.18"/>
+    <circle cx="1132" cy="306" r="8" fill="#86DDB5" stroke="#D4FFF0" stroke-width="3"/>
     <circle cx="1275" cy="181" r="7" fill="#7CC5FF" stroke="#E0F3FF" stroke-width="3"/>
   </g>
 </svg>

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="blindassist_splash_background">#061115</color>
-    <color name="blindassist_splash_icon_background">#13252C</color>
+    <color name="blindassist_brand_graphite">#0B1114</color>
+    <color name="blindassist_brand_mint">#86DDB5</color>
+    <color name="blindassist_brand_ivory">#F4EFE6</color>
+    <color name="blindassist_splash_background">@color/blindassist_brand_graphite</color>
+    <color name="blindassist_splash_icon_background">@color/blindassist_brand_graphite</color>
 </resources>
