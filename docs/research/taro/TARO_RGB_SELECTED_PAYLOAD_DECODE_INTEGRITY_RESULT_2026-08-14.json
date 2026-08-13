@@ -1,0 +1,83 @@
+{
+  "schema": "blindassist.taro.rgb_selected_payload_decode_integrity_result.v1",
+  "result_id": "TARO_RGB_SELECTED_PAYLOAD_DECODE_INTEGRITY_RESULT_2026-08-14",
+  "date": "2026-08-14",
+  "status": "ISOLATED_DEVICE_EXACT_SELECTED_AND_REFERENCE_DELAYED_DECODE_INTEGRITY_PASS",
+  "implementation_base_commit": "103f5bda21784141b1c26f25b7eda6bbf9297d6c",
+  "device": {
+    "alias": "SM-S9280-R0",
+    "model": "SM-S9280",
+    "android_release": "16",
+    "android_sdk": 36,
+    "google_play_services_for_ar_version_name": "1.54.260890093",
+    "physical_serial_redacted_from_repository_evidence": true
+  },
+  "implementation": {
+    "decoder_adapter": "apps/benchmarks/ustrf-shadow-benchmark/src/main/java/com/linnan/blindassist/ustrfbenchmark/TaroOwnedRgbPayloadDecoder.kt",
+    "decoder_adapter_sha256": "8868EF0C08B748B9EB717289FDCE7053123A4477B6EE2A07CDD1731C2D39CF2B",
+    "unit_test": "apps/benchmarks/ustrf-shadow-benchmark/src/test/java/com/linnan/blindassist/ustrfbenchmark/TaroOwnedRgbPayloadDecoderTest.kt",
+    "unit_test_sha256": "6B9BE2465E37CC3E0D60EB7D543D6EDD25BC76FF6D5B2DDD9705E77B6883C4BD",
+    "device_test": "apps/benchmarks/ustrf-shadow-benchmark/src/androidTest/java/com/linnan/blindassist/ustrfbenchmark/TaroArCoreRgbSelectedPayloadDecodeIntegrityCanaryTest.kt",
+    "device_test_sha256": "111C84A8B5DDDE792D8AF1E8F69D1103E565A18A46967D3C2E7B3E153711495B",
+    "frozen_decoder": "D45Yuv420ToRgbaDecoder",
+    "resource_lifetime": "ARCore Image is closed immediately after complete YUV copy and before any delayed decode",
+    "output_lifetime": "RGBA bytes are hashed inside one decode call and are not retained in history"
+  },
+  "verification": {
+    "focused_unit_and_androidtest_compile_exit_code": 0,
+    "connected_test_exit_code": 0,
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "frame_attempts": 600,
+    "camera_image_available_count": 561,
+    "camera_image_not_yet_available_count": 0,
+    "source_bound_payload_copy_count": 561,
+    "available_selection_count": 556,
+    "exact_selected_payload_lookup_count": 556,
+    "decoded_pair_count": 556,
+    "deterministic_selected_replay_count": 556,
+    "source_identity_mismatch_count": 0,
+    "deterministic_hash_mismatch_count": 0,
+    "decoded_dimension_mismatch_count": 0,
+    "distinct_reference_rgba_hash_count": 556,
+    "distinct_selected_rgba_hash_count": 201,
+    "maximum_transient_rgba_bytes": 1228800,
+    "individual_decode_latency_ms": {
+      "sample_count": 1668,
+      "p50": 18.044531,
+      "p95": 30.358489
+    },
+    "three_decode_pair_integrity_latency_ms": {
+      "sample_count": 556,
+      "p50": 57.38698,
+      "p95": 67.151875,
+      "interpretation": "Integrity probe cost for selected decode, selected deterministic replay, and reference decode; not a proposed production cadence."
+    },
+    "minimum_selected_gap_ns": 166375917,
+    "maximum_selected_gap_ns": 999675466,
+    "maximum_selected_translation_m": 0.037801497,
+    "maximum_selected_yaw_delta_rad": 0.031717822,
+    "decode_failure_count": 0,
+    "resource_error_count": 0,
+    "decode_integrity_gate_pass": true,
+    "resource_gate_pass": true,
+    "selection_window_gate_pass": true,
+    "observed_motion_gate_pass": true,
+    "current_report": "apps/benchmarks/ustrf-shadow-benchmark/build/reports/androidTests/connected/debug/index.html",
+    "current_test_log": "apps/benchmarks/ustrf-shadow-benchmark/build/outputs/androidTest-results/connected/debug/SM-S9280 - 16/testlog/test-results.log"
+  },
+  "evidence_interpretation": {
+    "owned_yuv_delayed_decode": "PASS",
+    "selection_to_decoded_payload_identity": "PASS",
+    "deterministic_decode": "PASS",
+    "single_device_decode_cost": "MEASURED_NOT_A_PRODUCT_BUDGET",
+    "model_inference": "NOT_RUN",
+    "task_evidence_gain": "NOT_RUN",
+    "risk_field_fusion": "NOT_AUTHORIZED",
+    "default_app": "UNCHANGED",
+    "product_or_safety_success": "NOT_PROVEN"
+  },
+  "unique_successor": "TARO_RGB_PAIR_FROZEN_VISUAL_EVIDENCE_BACKEND_PREFLIGHT_R0",
+  "claim_ceiling": "One SM-S9280/Android 16 run proved deterministic delayed RGBA decode of exact selected/reference owned YUV receipts after ARCore Image close, with measured CPU cost. No model was run, no task evidence or accuracy was established, and no risk-fusion, default-App, product, or safety claim is authorized."
+}
