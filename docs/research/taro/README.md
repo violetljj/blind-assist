@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / R13_TASK_EVIDENCE_ORACLE_HEADROOM_PASS / R14_R20_SCORER_TRANSFER_NOT_CONFIRMED / CROSS_SOURCE_LEARNED_RANKER_ACTIVE / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / R13_ORACLE_HEADROOM_PASS / R14_R22_TASK_SCORER_TRANSFER_FAIL_STOP / POSE_DIVERSE_BASELINE_MULTI_SOURCE_PASS / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
 
 本页只维护 TARO 当前状态、权限和唯一算法 successor。较早完整 R0–R11 叙事保存在
 [14d8ad7e 历史快照](archive/README_FULL_HISTORY_2026-08-13.md)，不能从中恢复旧权限。
@@ -61,6 +61,14 @@ Android、HTP 或默认 App 自动继承权限。
 - R20 在尚未打开 task-evidence neighbor outcomes 的 ARKitScenes 上按机会分母重做确认：40 references、17 parents、
   9 opportunity parents，policy 只覆盖 2，且 macro `16.3363` 低于 generic `16.4490`；oracle 仍为 `25.0863`。
   这把问题定位为 scorer transfer，而不是任务无 headroom；Android 与默认 App 仍未授权。
+- R21 固定 3-seed bounded nonlinear ranker 做 leave-one-source-family-out：三折 parent-macro 都同时高于
+  passive/generic，但 Bonn 只覆盖 `3/21` opportunity parents、ARKit 只覆盖 `3/9`，低于冻结的半数覆盖门，
+  因此 learned scorer 仍 FAIL。R22 只增加 query/along/height tensor、保持网络和门不变，held Bonn/ARKit
+  反而回归，证明当前样本下高维表示过拟合；没有继续扩模型容量。
+- 与 task scorer 分开，预先定义的 pose-only generic arm 在四个 cohort 均高于 passive：旧 TUM
+  `14.0222>13.8847`、Bonn `19.2037>17.2662`、task-outcome-blind TUM `11.25>8.9375`、ARKit
+  `16.4490>12.9431`。因此 `TARO_POSE_DIVERSE_GENERIC_R0` 已实现为 `core:ustrf` 中默认关闭的纯 Kotlin
+  frame selector；它只返回历史 frame identity，不读 payload、不融合风险、不发提醒、不接默认 App。
 
 ## 当前证据入口
 
@@ -75,28 +83,30 @@ Android、HTP 或默认 App 自动继承权限。
 - [Task-directed positive-oracle R1 result](TARO_TASK_DIRECTED_OBSERVABILITY_POSITIVE_ORACLE_CANARY_RESULT_2026-08-13.json)
 - [Balanced-source frontdoors and R13 task-evidence oracle](TARO_TASK_OBSERVABILITY_BALANCED_SOURCE_FRONTDOOR_AND_QUERY_EVIDENCE_ORACLE_RESULT_2026-08-13.json)
 - [R14-R20 scorer and confirmation results](TARO_TASK_EVIDENCE_SCORER_AND_CONFIRMATION_RESULTS_2026-08-13.json)
+- [R21-R22 cross-source learned-ranker result](TARO_CROSS_SOURCE_LEARNED_RANKER_RESULT_2026-08-13.json)
+- [Pose-diverse portfolio and default-off core selector](TARO_POSE_DIVERSE_BASELINE_PORTFOLIO_AND_CORE_SELECTOR_RESULT_2026-08-13.json)
 - [算法路线总表](../ALGORITHM_RESEARCH_CURRENT.md) · [TARO Module](../../../scripts/research/taro/README.md)
 
 ## 唯一 successor
 
-`TARO_CROSS_SOURCE_LEARNED_RANKER_R0`：
+`TARO_POSE_DIVERSE_SELECTOR_ARCORE_VIO_ISOLATED_CANARY_R0`：
 
-1. 训练数据只可来自现已消费的 TUM、Bonn、ARKitScenes task-evidence outcomes；scorer 输入仍只含 reference
-   static evidence、relative pose、内参与 source-time geometry，neighbor depth 只作 target；
-2. 模型族与超参数必须先冻结，再做 leave-one-source-family-out；每个 held source 都必须在 parent-macro 上同时
-   高于 passive 与 generic，并按 opportunity denominator 覆盖足够 strict-win parents；
-3. 不通过三源逐一外推就停止，不得在 held source 上调模型；通过后才锁一个未打开 task-evidence outcome 的
-   新来源/父级组；
-4. fresh confirmation 全门通过前，禁止 Android integration、默认 App 或产品主张。
+1. 只在隔离 benchmark/canary 中把已存在的 `UstrfVioPoseReceiptPromoter`、严格时间戳 pose buffer 与默认关闭的
+   `TaroPoseDiverseFrameSelector` 连接；不得在默认 App 创建 ARCore session；
+2. 必须验证 150ms–1s 历史窗、同 world/camera frame、TRACKING、置信度和时间戳绑定；任何缺失都返回
+   `Unavailable`，不得回退成未绑定帧；
+3. canary 只输出 selection receipt、相对位移/偏航和耗时，不做像素/深度融合、不发用户 guidance；
+4. learned task scorer 保持 STOP，只有 materially new source-time signal/supervision 才可重开；不得用 generic
+   baseline 的落地掩盖 task-specific scorer 失败。
 
 R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；它不能改写上述 outcome-blind source
 选择，也不能把 R11 改成 PASS。任何新的 dual-class confirmation 仍需 untouched parents。
 
 ## 当前允许
 
-- 实现 `TARO_CROSS_SOURCE_LEARNED_RANKER_R0`，输入只含 reference static evidence、relative pose、内参与 source-time geometry；
-- 在已消费 TUM/Bonn/ARKitScenes 上做 leave-one-source-family-out，held source 不参与拟合或调参；
-- 三源门均过后，为 frozen learned candidate 锁新 task-outcome-blind confirmation source；
+- 在隔离 canary 中接入默认关闭的 `TaroPoseDiverseFrameSelector`，只记录 selection receipt；
+- 复用已验证的 VIO pose receipt/extrinsics/pose buffer 失败闭合合同，不新建默认 App ARCore 路径；
+- 只有 materially new source-time signal/supervision 才可另立 learned scorer successor；
 - 对 consumed R11 evidence 做明确标注的只读后验机制诊断；
 - 重放 hash-bound tests、validator 和只读 evidence 复核。
 
@@ -105,13 +115,13 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 - 在 R7/R10 的 1 秒合法 pair 为 0 后训练时序模型或事后放宽窗口；
 - 用不同额外帧预算比较 sensing arms，或只报告 recovery 而隐藏 false-occupied/known retention/cost；
 - 在 Development canary 中输出 `CLEAR`、把 UNKNOWN 当 negative，或用 R11 outcome 选择该 canary 的 source；
-- 回调 R12/R19/R20 的 query、outcome 或 gate，或把 neighbor depth 泄漏进 scorer input；
-- 将 R13 oracle、R18 Development PASS 或两次 confirmation FAIL 冒充 learned scorer、Android 或产品成功；
+- 回调 R12/R19/R20/R21 的 query、outcome 或 gate，或把 neighbor depth 泄漏进 scorer input；
+- 将 generic core selector 写成 task-specific scorer、真实设备成功、风险融合、默认 App 或产品成功；
 - 修改 sealed R11 selection/selector/candidate/threshold，或覆盖、resume、删除、重跑已消费 one-shot；
 - 越级训练、Android/QNN/HTP、默认 App、产品或安全结论。
 
 ## Claim ceiling
 
-R13 已证明 task-conditioned next-pose oracle headroom；R19 在 TUM 的宏平均正迁移未越过 strict-parent 门，
-R20 在 ARKitScenes 又未越过 generic 与 opportunity 门，因此 source-time scorer 的可迁移性尚未确认。
-当前只授权跨已消费三源的 learned-ranker Development；未授权移动端实现、产品有效性或用户安全验证，默认 App 不变。
+R13 已证明 task-conditioned oracle headroom；R21 证明 learned scorer 可跨源提高宏平均，但没有广泛覆盖机会父级，
+R22 表示扩张又回归，因此 task-specific scorer 停止。pose-diverse generic baseline 已获得跨三源族的 Development
+支持并落为默认关闭的纯 Kotlin selector；未完成真实 ARCore/VIO canary、风险融合、产品有效性或安全验证，默认 App 不变。

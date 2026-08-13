@@ -1,0 +1,37 @@
+{
+  "schema": "blindassist.taro.cross_source_learned_ranker_result.v1",
+  "result_id": "TARO_CROSS_SOURCE_LEARNED_RANKER_RESULT_2026-08-13",
+  "date": "2026-08-13",
+  "status": "LEARNED_SCORER_MACRO_TRANSFER_POSITIVE_BROAD_OPPORTUNITY_COVERAGE_FAIL_STOP",
+  "r21_base_feature_ranker": {
+    "terminal": "STOP_TASK_EVIDENCE_CROSS_SOURCE_LEARNED_RANKER_LOFO_FAIL",
+    "model": "three-seed bounded nonlinear residual over generic pose diversity; parent/source-balanced within-reference pairwise loss",
+    "held_source_metrics": {
+      "TUM_RGBD": {"ranker": 13.8822916666667, "generic": 13.3291666666667, "passive": 12.6479166666667, "oracle": 16.4177083333333, "opportunity_parents": 12, "strict_win_parents": 6, "required_strict_win_parents": 6},
+      "BONN_RGBD_DYNAMIC": {"ranker": 19.3314318783069, "generic": 19.2037367724868, "passive": 17.2662367724868, "oracle": 23.0413855820106, "opportunity_parents": 21, "strict_win_parents": 3, "required_strict_win_parents": 11},
+      "ARKITSCENES": {"ranker": 17.415686274509802, "generic": 16.449019607843137, "passive": 12.943137254901963, "oracle": 25.086274509803925, "opportunity_parents": 9, "strict_win_parents": 3, "required_strict_win_parents": 5}
+    },
+    "finding": "All three held source families beat both macro baselines, but Bonn and ARKit opportunity-parent coverage failed the frozen breadth gate.",
+    "local_artifact": {"path": "artifacts.local/evidence/taro/task-evidence-cross-source-learned-ranker-r0/result.json", "bytes": 99835, "sha256": "3D88732B8DB2F8BBAB13D9CCFA6331773BED085B46461BCB4F8B0CE82FF0216C", "content_sha256": "7D9DB501C9889E1D1C87986F414BF5CA9C8AF365AE74D1C84F2AF652857BA81B"}
+  },
+  "r22_query_tensor_ranker": {
+    "terminal": "STOP_TASK_EVIDENCE_CROSS_SOURCE_LEARNED_RANKER_LOFO_FAIL",
+    "representation_change_only": true,
+    "network_loss_optimizer_seeds_and_gates_unchanged": true,
+    "held_source_metrics": {
+      "TUM_RGBD": {"ranker": 13.9979166666667, "generic": 13.3291666666667, "passive": 12.6479166666667, "opportunity_parents": 12, "strict_win_parents": 3, "required_strict_win_parents": 6},
+      "BONN_RGBD_DYNAMIC": {"ranker": 18.8217427248677, "generic": 19.2037367724868, "passive": 17.2662367724868, "opportunity_parents": 21, "strict_win_parents": 5, "required_strict_win_parents": 11},
+      "ARKITSCENES": {"ranker": 15.685294117647057, "generic": 16.449019607843137, "passive": 12.943137254901963, "opportunity_parents": 9, "strict_win_parents": 1, "required_strict_win_parents": 5}
+    },
+    "finding": "The 325-dimensional query/along/height tensor overfit the available source families and regressed held Bonn and ARKit, so representation expansion stopped.",
+    "pre_result_incident": "The first r0 process failed closed before training because a hand-written across-bin count was 4 instead of the frozen 3. No r0 result file exists; r1 derives the shape from R13 bin edges.",
+    "local_artifact": {"path": "artifacts.local/evidence/taro/task-evidence-query-tensor-learned-ranker-r1/result.json", "bytes": 100592, "sha256": "668CB21437C615D6A49AAF1206C83E6BDE9DF8E82A9A55B68DA44AB9BA525663", "content_sha256": "ECA63C87DBADB5D1BC02E2CEBE3495FEE1A1FCAA378F88FFD705BA510EBCD2D9"}
+  },
+  "decision": {
+    "task_specific_learned_ranker_route": "STOP_UNTIL_MATERIALLY_NEW_SOURCE_TIME_SIGNAL_OR_SUPERVISION",
+    "do_not_scale_model_capacity": true,
+    "do_not_relax_opportunity_parent_gate": true,
+    "pose_diverse_generic_baseline_landing_route": "CONTINUE_DEFAULT_OFF_CORE_AND_ISOLATED_DEVICE_CANARY"
+  },
+  "claim_ceiling": "Consumed source-family holdout Development evidence only. Macro transfer is positive for R21, but broad task-opportunity coverage is not confirmed; no learned scorer, Android pipeline, product, default-App, or safety promotion."
+}

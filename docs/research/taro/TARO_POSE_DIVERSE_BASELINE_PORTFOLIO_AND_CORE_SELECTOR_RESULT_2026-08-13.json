@@ -1,0 +1,45 @@
+{
+  "schema": "blindassist.taro.pose_diverse_baseline_portfolio_and_core_selector_result.v1",
+  "result_id": "TARO_POSE_DIVERSE_BASELINE_PORTFOLIO_AND_CORE_SELECTOR_RESULT_2026-08-13",
+  "date": "2026-08-13",
+  "status": "POSE_DIVERSE_BASELINE_MULTI_SOURCE_DEVELOPMENT_PASS_CORE_SELECTOR_IMPLEMENTED_DEFAULT_OFF",
+  "policy": {
+    "id": "TARO_POSE_DIVERSE_GENERIC_R0",
+    "input": "inter-frame-stable camera pose receipts only",
+    "window_seconds": [0.15, 1.0],
+    "selection": "maximize translation, then yaw diversity, then prefer smaller gap and deterministic frame identity",
+    "extra_frame_budget": 1,
+    "neighbor_depth_in_selection": false
+  },
+  "portfolio": [
+    {"cohort": "TUM_R13_CONSUMED_DEVELOPMENT", "source_family": "TUM_RGBD", "references": 48, "parents": 12, "generic_parent_macro": 14.022222222222224, "passive_parent_macro": 13.884722222222223, "delta": 0.1375, "positive_tie_negative_parents": [6, 1, 5]},
+    {"cohort": "BONN_R16_CONSUMED_NEW_TASK_DEVELOPMENT", "source_family": "BONN_RGBD_DYNAMIC", "references": 171, "parents": 24, "generic_parent_macro": 19.203736772486774, "passive_parent_macro": 17.266236772486774, "delta": 1.9375, "positive_tie_negative_parents": [17, 0, 7]},
+    {"cohort": "TUM_R19_TASK_OUTCOME_BLIND", "source_family": "TUM_RGBD", "references": 19, "parents": 4, "generic_parent_macro": 11.25, "passive_parent_macro": 8.9375, "delta": 2.3125, "positive_tie_negative_parents": [4, 0, 0]},
+    {"cohort": "ARKIT_R20_NEW_TASK_OUTCOME_BLIND", "source_family": "ARKITSCENES", "references": 40, "parents": 17, "generic_parent_macro": 16.449019607843137, "passive_parent_macro": 12.943137254901963, "delta": 3.505882352941174, "positive_tie_negative_parents": [7, 8, 2]}
+  ],
+  "portfolio_checks": {
+    "minimum_three_source_families": true,
+    "generic_macro_beats_passive_in_every_cohort": true,
+    "two_new_task_outcome_blind_cohorts_beat_passive": true,
+    "selection_was_pose_only_and_preceded_neighbor_depth": true,
+    "same_one_extra_frame_budget": true
+  },
+  "implementation": {
+    "path": "core/ustrf/src/main/java/com/linnan/blindassist/ustrf/TaroPoseDiverseFrameSelector.kt",
+    "scope": "pure Kotlin selector contract only",
+    "default_enabled": false,
+    "pixel_or_depth_decode": false,
+    "risk_fusion": false,
+    "guidance_output": false,
+    "ui_or_default_app_wiring": false,
+    "fail_closed_reasons": ["DISABLED", "REFERENCE_POSE_INVALID", "NO_ELIGIBLE_BUFFERED_FRAME"]
+  },
+  "risk_boundary": {
+    "old_tum_parent_distribution_is_marginal": true,
+    "task_specific_scorer_transfer_is_not_confirmed": true,
+    "real_arcore_vio_adapter_and_buffer_integration_not_authorized": true,
+    "default_app_unchanged": true
+  },
+  "claim_ceiling": "Multi-source Development support and a default-off pure Kotlin selector implementation. Not device runtime evidence, collision correctness, product effectiveness, default-App, or safety evidence.",
+  "unique_successor": "TARO_POSE_DIVERSE_SELECTOR_ARCORE_VIO_ISOLATED_CANARY_R0"
+}
