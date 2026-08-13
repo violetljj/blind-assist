@@ -133,13 +133,13 @@ fun BlindAssistTheme(content: @Composable () -> Unit) {
     )
 }
 
-internal val BaNight = Color(0xFF061115)
+internal val BaNight = Color(0xFF0B1114)
 internal val BaPanel = Color(0xFF111D23)
 internal val BaPanelSoft = Color(0xFF1C2D34)
-internal val BaMint = Color(0xFF71F6C5)
+internal val BaMint = Color(0xFF86DDB5)
 internal val BaSky = Color(0xFF8AC7FF)
 internal val BaAmber = Color(0xFFFFD66B)
 internal val BaDanger = Color(0xFFFF6B7E)
-internal val BaText = Color(0xFFEAF3F4)
+internal val BaText = Color(0xFFF4EFE6)
 internal val BaTextMuted = Color(0xFFAFC0C6)
-internal val BaInk = Color(0xFF061115)
+internal val BaInk = Color(0xFF0B1114)

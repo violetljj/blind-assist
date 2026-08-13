@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108" role="img" aria-labelledby="title desc">
+  <title id="title">BlindAssist BA mark</title>
+  <desc id="desc">A unified BA monogram with one horizontal pause cut.</desc>
+  <g fill="none" stroke="#86DDB5" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M24 29v24m0-24h15c9 0 15 4 15 12 0 8-6 12-15 12H24M24 53v25m15-25c9 0 15 5 15 13 0 8-6 12-15 12H24"/>
+    <path d="m50 78 18-42 17 42M58 64h20"/>
+  </g>
+</svg>
