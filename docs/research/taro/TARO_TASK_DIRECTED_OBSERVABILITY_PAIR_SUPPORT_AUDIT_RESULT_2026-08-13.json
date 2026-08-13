@@ -1,0 +1,55 @@
+{
+  "schema": "blindassist.taro.task_observability_pair_support_audit_result.v1",
+  "date": "2026-08-13",
+  "mode": "REVERSIBLE_EXPLORATION_SOURCE_ONLY",
+  "question": "Do the disclosed R7 and R10 static cohorts contain pose-valid adjacent frames inside a 1.0 second passive-history window?",
+  "implementation": "scripts/research/taro/audit_observation_pair_support.py",
+  "command": "E:/codex-tools/bin/blindassist-python.cmd -m scripts.research.taro.audit_observation_pair_support --cohort R7=artifacts.local/evidence/taro/o1r-r7-fresh-confirmation-phase-a-r1/candidate-inputs --cohort R10=artifacts.local/evidence/taro/o1r-r10-fresh-pool-phase-a-r1/candidate-inputs --passive-window-s 1.0 --extended-window-s 3.0 --output artifacts.local/experiments/taro-task-observability-pair-support-r0.json",
+  "method": {
+    "grouping": "exact parent_id plus video_id",
+    "pairing": "adjacent frames ordered by sensor_timestamp_ns",
+    "passive_window_s": 1.0,
+    "extended_diagnostic_window_s": 3.0,
+    "pose_requirement": "both camera_to_world_4x4 values are finite 4x4 matrices"
+  },
+  "cohorts": [
+    {
+      "id": "R7",
+      "role": "PROJECT_CONSUMED_DEVELOPMENT_SOURCE_ONLY",
+      "frame_count": 170,
+      "parent_count": 8,
+      "adjacent_pair_count": 162,
+      "pose_valid_frame_count": 170,
+      "pairs_within_1s": 0,
+      "pose_valid_pairs_within_1s": 0,
+      "pairs_within_3s": 116,
+      "minimum_positive_gap_s": 2.0,
+      "candidate_identity_sequence_sha256": "4C1FA8B64DE0A6F6F51190ED96A7C55B42E98E17FC99165C86832E5DEB1D25BB"
+    },
+    {
+      "id": "R10",
+      "role": "PROJECT_CONSUMED_DEVELOPMENT_SOURCE_ONLY",
+      "frame_count": 710,
+      "parent_count": 32,
+      "adjacent_pair_count": 678,
+      "pose_valid_frame_count": 710,
+      "pairs_within_1s": 0,
+      "pose_valid_pairs_within_1s": 0,
+      "pairs_within_3s": 492,
+      "minimum_positive_gap_s": 2.0,
+      "candidate_identity_sequence_sha256": "DAF120DE8F97B3C8E84B8043AE039837D305B310763910EBE89E1413AA095E9D"
+    }
+  ],
+  "read_boundary": {
+    "candidate_input_json_only": true,
+    "candidate_depth_blob_reads": 0,
+    "faro_highres_truth_label_outcome_reads": 0,
+    "model_runs": 0,
+    "network_requests": 0,
+    "r11_phase_a_or_top24_reads": 0
+  },
+  "decision": "CURRENT_COHORTS_NOT_EVALUABLE_FOR_PASSIVE_OBSERVABILITY",
+  "information_gain": "The static R7 and R10 sampling cadence cannot test a 0.5 to 1.0 second passive-history mechanism. Do not train or score a temporal model on these cohorts and do not widen the window after seeing this result.",
+  "next_action": "Use a separate pose-rich PROJECT_CONSUMED_DEVELOPMENT source to run a positive-occupancy-only static versus passive versus fixed-micro-baseline oracle canary before training an observation scorer.",
+  "claim_ceiling": "Source pair-support capability only; not temporal utility, task accuracy, Confirmation, product, deployment, or safety evidence."
+}

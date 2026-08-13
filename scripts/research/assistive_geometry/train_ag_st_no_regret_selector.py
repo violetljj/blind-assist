@@ -665,7 +665,9 @@ def summarize_selector_observations(
                 "base": defaultdict(float),
                 "expert": defaultdict(float),
                 "selected": defaultdict(float),
+                "oracle": defaultdict(float),
                 "selected_count": 0.0,
+                "oracle_selected_count": 0.0,
                 "selected_beneficial_count": 0.0,
                 "selected_regret_sum": 0.0,
             },
@@ -673,18 +675,22 @@ def summarize_selector_observations(
         require(values["domain"] == row.domain, "parent domain drift")
         selected_mask = row.selector_probability >= threshold
         selected_depth = np.where(selected_mask, row.expert_depth_m, row.base_depth_m)
+        base_error = np.abs(row.base_depth_m - row.truth_depth_m)
+        expert_error = np.abs(row.expert_depth_m - row.truth_depth_m)
+        oracle_mask = row.valid & (expert_error < base_error)
+        oracle_depth = np.where(oracle_mask, row.expert_depth_m, row.base_depth_m)
         for name, predicted in (
             ("base", row.base_depth_m),
             ("expert", row.expert_depth_m),
             ("selected", selected_depth),
+            ("oracle", oracle_depth),
         ):
             sums = _metric_sums(row.truth_depth_m, predicted, row.valid)
             for key, value in sums.items():
                 values[name][key] += value
         active = selected_mask & row.valid
-        base_error = np.abs(row.base_depth_m - row.truth_depth_m)
-        expert_error = np.abs(row.expert_depth_m - row.truth_depth_m)
         values["selected_count"] += float(active.sum())
+        values["oracle_selected_count"] += float(oracle_mask.sum())
         values["selected_beneficial_count"] += float(
             (active & (expert_error < base_error)).sum()
         )
@@ -712,7 +718,9 @@ def summarize_selector_observations(
                 "base": finalize("base"),
                 "expert": finalize("expert"),
                 "selected": finalize("selected"),
+                "oracle": finalize("oracle"),
                 "selected_coverage_fraction": selected_count / count,
+                "oracle_coverage_fraction": values["oracle_selected_count"] / count,
                 "selected_beneficial_fraction": (
                     values["selected_beneficial_count"] / selected_count
                     if selected_count > 0
@@ -736,14 +744,24 @@ def summarize_selector_observations(
                     np.mean([row[name]["bad_gt_0_10_m_fraction"] for row in rows])
                 ),
             }
-            for name in ("base", "expert", "selected")
+            for name in ("base", "expert", "selected", "oracle")
         }
         result["selected_coverage_fraction"] = coverage
+        result["oracle_coverage_fraction"] = float(
+            np.mean([row["oracle_coverage_fraction"] for row in rows])
+        )
         result["selected_mae_delta_vs_base_m"] = (
             result["selected"]["mae_m"] - result["base"]["mae_m"]
         )
         result["selected_bad_delta_vs_base"] = (
             result["selected"]["bad_gt_0_10_m_fraction"]
+            - result["base"]["bad_gt_0_10_m_fraction"]
+        )
+        result["oracle_mae_delta_vs_base_m"] = (
+            result["oracle"]["mae_m"] - result["base"]["mae_m"]
+        )
+        result["oracle_bad_delta_vs_base"] = (
+            result["oracle"]["bad_gt_0_10_m_fraction"]
             - result["base"]["bad_gt_0_10_m_fraction"]
         )
         result["improved_parent_count"] = sum(
@@ -768,9 +786,14 @@ def calibrate_selector_threshold(
     *,
     candidates: Iterable[float] = DEFAULT_THRESHOLD_CANDIDATES,
     minimum_coverage: float = 0.01,
+    minimum_nonzero_parent_fraction: float = 0.5,
     metric_tolerance: float = 1e-9,
 ) -> dict[str, Any]:
     require(0.0 <= minimum_coverage < 1.0, "selector minimum coverage invalid")
+    require(
+        0.0 <= minimum_nonzero_parent_fraction <= 1.0,
+        "selector minimum nonzero-parent fraction invalid",
+    )
     rows: list[dict[str, Any]] = []
     eligible: list[dict[str, Any]] = []
     for threshold in sorted(set(float(value) for value in candidates)):
@@ -782,17 +805,35 @@ def calibrate_selector_threshold(
             and values["selected_bad_delta_vs_base"] <= metric_tolerance
             for values in summary["by_domain"].values()
         )
+        parent_rows = summary["per_parent"]
+        harmful_parent_count = sum(
+            row["selected"]["mae_m"] - row["base"]["mae_m"]
+            > metric_tolerance
+            or row["selected"]["bad_gt_0_10_m_fraction"]
+            - row["base"]["bad_gt_0_10_m_fraction"]
+            > metric_tolerance
+            for row in parent_rows
+        )
+        nonzero_parent_count = sum(
+            row["selected_coverage_fraction"] > 0.0 for row in parent_rows
+        )
+        nonzero_parent_fraction = nonzero_parent_count / len(parent_rows)
         admissible = (
             overall["selected_coverage_fraction"] >= minimum_coverage
             and overall["selected_mae_delta_vs_base_m"] <= metric_tolerance
             and overall["selected_bad_delta_vs_base"] <= metric_tolerance
             and domains_no_regret
+            and harmful_parent_count == 0
+            and nonzero_parent_fraction >= minimum_nonzero_parent_fraction
         )
         compact = {
             "threshold": threshold,
             "admissible": admissible,
             "parent_macro": overall,
             "by_domain": summary["by_domain"],
+            "harmful_parent_count": harmful_parent_count,
+            "nonzero_parent_count": nonzero_parent_count,
+            "nonzero_parent_fraction": nonzero_parent_fraction,
         }
         rows.append(compact)
         if admissible:
@@ -817,6 +858,7 @@ def calibrate_selector_threshold(
         "decision": decision,
         "threshold": threshold,
         "minimum_coverage": minimum_coverage,
+        "minimum_nonzero_parent_fraction": minimum_nonzero_parent_fraction,
         "metric_tolerance": metric_tolerance,
         "candidate_count": len(rows),
         "admissible_candidate_count": len(eligible),

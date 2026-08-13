@@ -1,6 +1,6 @@
 # TARO research scripts
 
-状态：`P0_PROTOCOL_AND_SCHEMA_FROZEN / STATIC_VALIDATION_ONLY / SCIENTIFIC_STATUS_NOT_RUN / O0M_EXECUTION_NOT_AUTHORIZED`
+状态：`P0_PROTOCOL_AND_SCHEMA_FROZEN / PAIR_SUPPORT_AUDIT_AVAILABLE / TASK_OBSERVABILITY_D0_ACTIVE / SCIENTIFIC_STATUS_NOT_RUN`
 
 ## 研究问题与版本
 
@@ -18,18 +18,25 @@ machine-readable schema、measurement-only observability、有限弱子空间 ta
   校验 binding SHA、schema examples、factorial/identifiability 不变量、禁止扩权和 O0 runtime 缺席；
 - `test_validate_taro_p0_protocol.py`：mutation tests，覆盖执行扩权、TaskQuery 缺失、prior 补秩、
   K 混入 factorial、missing-anchor 变 clear、body-motion 放行等恶意漂移。
+- `audit_observation_pair_support.py`：只读 disclosed candidate-input JSON，按 exact parent/video 与 sensor
+  timestamp 审计相邻帧、pose validity、passive/extended window pair count 和 identity digest；不打开 depth
+  blob、FARO/highres、truth/label/outcome，也不运行模型或网络。
+- `test_audit_observation_pair_support.py`：3 个 focused tests，覆盖 passive/extended window 计数、无效 pose
+  fail-closed 与非 candidate-input schema 拒绝；结果只回答 source 是否支持下一 observability canary。
 
 运行：
 
 ```powershell
-E:\codex-tools\bin\blindassist-python.cmd -m unittest scripts.research.taro.test_validate_taro_p0_protocol
+E:\codex-tools\bin\blindassist-python.cmd -m unittest scripts.research.taro.test_validate_taro_p0_protocol scripts.research.taro.test_audit_observation_pair_support
 ```
 
-本 P0 Module 没有 solver、oracle runner、数据 materializer、模型、trainer 或 action scorer。
+本 Module 没有 solver、oracle runner、数据 materializer、模型、trainer 或 action scorer；pair-support audit
+只是 Development source-capability precheck。
 
 ## 输出
 
-当前 validator 只向 stdout 输出短 JSON，不写 scientific artifact。未来经独立协议授权的 TARO
+P0 validator 与 pair-support audit 都向 stdout 输出短 JSON；pair audit 可选写入独占的
+`artifacts.local/experiments/` 路径。未来经独立协议授权的 TARO
 执行只允许写入 `artifacts.local/evidence/taro/`、`artifacts.local/work/taro/` 或
 `artifacts.local/models/taro/`，不得写入其他研究路线的 namespace。
 

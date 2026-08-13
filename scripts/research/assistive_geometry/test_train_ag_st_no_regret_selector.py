@@ -16,6 +16,7 @@ from train_ag_st_no_regret_selector import (  # noqa: E402
     calibrate_selector_threshold,
     compute_no_regret_selector_loss,
     split_parent_roles,
+    summarize_selector_observations,
 )
 
 
@@ -151,6 +152,50 @@ class NoRegretSelectorTest(unittest.TestCase):
             calibrated["selected_summary"]["parent_macro"][
                 "selected_mae_delta_vs_base_m"
             ],
+        )
+
+    def test_summary_exposes_perfect_signed_advantage_oracle_headroom(self) -> None:
+        observation = self.observation(
+            "oracle",
+            "BONN",
+            expert=np.asarray([[1.0, 1.0, 1.4, 1.4]], dtype=np.float32),
+            probability=np.full((1, 4), 0.1, dtype=np.float32),
+        )
+        summary = summarize_selector_observations([observation], threshold=0.5)
+        macro = summary["parent_macro"]
+        self.assertEqual(0.5, macro["oracle_coverage_fraction"])
+        self.assertAlmostEqual(0.0, macro["oracle"]["mae_m"], places=7)
+        self.assertLess(macro["oracle_mae_delta_vs_base_m"], 0.0)
+        self.assertLessEqual(macro["oracle_bad_delta_vs_base"], 0.0)
+
+    def test_calibration_rejects_macro_gain_that_harms_one_parent(self) -> None:
+        helpful = self.observation(
+            "helpful",
+            "BONN",
+            expert=np.full((1, 4), 1.0, dtype=np.float32),
+            probability=np.full((1, 4), 0.9, dtype=np.float32),
+        )
+        harmful = self.observation(
+            "harmful",
+            "BONN",
+            expert=np.asarray([[1.31, 1.31, 1.01, 1.01]], dtype=np.float32),
+            probability=np.full((1, 4), 0.9, dtype=np.float32),
+        )
+        calibrated = calibrate_selector_threshold(
+            [helpful, harmful],
+            candidates=(0.5,),
+            minimum_coverage=0.1,
+        )
+        candidate = calibrated["candidates"][0]
+        self.assertLess(
+            candidate["parent_macro"]["selected_mae_delta_vs_base_m"],
+            0.0,
+        )
+        self.assertEqual(1, candidate["harmful_parent_count"])
+        self.assertFalse(candidate["admissible"])
+        self.assertEqual(
+            "NO_ADMISSIBLE_THRESHOLD_BASE_FALLBACK_FROZEN",
+            calibrated["decision"],
         )
 
 

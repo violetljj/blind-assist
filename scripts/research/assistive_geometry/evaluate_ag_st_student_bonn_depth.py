@@ -517,12 +517,34 @@ def extract_rgb_only_feature(
 ) -> tuple[torch.Tensor, torch.Tensor]:
     """Extract a frozen feature/base-depth pair from RGB plus fixed K."""
 
+    return extract_rgb_only_feature_with_intrinsics(
+        extractor,
+        rgb,
+        BONN_INTRINSICS,
+        feature_profile,
+        device,
+        amp_dtype,
+    )
+
+
+def extract_rgb_only_feature_with_intrinsics(
+    extractor: DepthArtDenseFeatureExtractor,
+    rgb: np.ndarray,
+    intrinsics: np.ndarray,
+    feature_profile: str,
+    device: torch.device,
+    amp_dtype: torch.dtype,
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """Extract frozen DepthART features from native 640x480 RGB and explicit K."""
+
     image = normalize_rgb_native(rgb)[None].to(device)
-    intrinsics = torch.from_numpy(BONN_INTRINSICS.copy())[None].to(device)
+    intrinsics_value = np.asarray(intrinsics, dtype=np.float32)
+    require(intrinsics_value.shape == (3, 3), "camera intrinsics shape drift")
+    intrinsics_tensor = torch.from_numpy(intrinsics_value.copy())[None].to(device)
     output_hw = (BONN_HEIGHT, BONN_WIDTH)
     with torch.no_grad(), torch.autocast(device_type="cuda", dtype=amp_dtype):
         cameras = extractor.metric_depthart.cam_embedder(
-            intrinsics,
+            intrinsics_tensor,
             BONN_HEIGHT,
             BONN_WIDTH,
             device,

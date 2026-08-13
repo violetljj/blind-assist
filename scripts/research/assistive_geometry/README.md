@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_CALIBRATION_CONTROL_R0_AND_R1_FAIL_CLOSED_CONSUMED / R1_INDEPENDENT_REPLAY_CONFIRMED_PRODUCER_FAILURE / SCIENTIFIC_NOT_RUN / CONFIRMATION_OUTCOMES_UNOPENED`
+状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_CALIBRATION_CONTROL_R0_AND_R1_FAIL_CLOSED_CONSUMED / R1_INDEPENDENT_REPLAY_CONFIRMED_PRODUCER_FAILURE / FACTORWISE_NO_REGRET_R0_ACTIVE / SCIENTIFIC_NOT_RUN / CONFIRMATION_OUTCOMES_UNOPENED`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -16,7 +16,8 @@ walking_xyz 负结果保持冻结；当前只支持 research-pipeline mechanics�
 读取 2 个 YAML 后以 `F2_R1_KALIBR_ROSTOPIC` 停止；matrix discovery 与 target-match count 保持
 `null/UNKNOWN`。producer-free validator 先消费独占 replay receipt，再一次性复现同一失败并封存完整 chain；
 离线验证 PASS。session archive、checkpoint、source truth、factor scoring 和 Confirmation 均未运行，R1 不得
-rerun/resume/replace，当前没有 active successor。
+rerun/resume/replace；该 Formal calibration 路径没有 active successor。当前算法 successor 仅为下述隔离的
+factor-wise no-regret Development。
 
 ## 稳定 Interface
 
@@ -202,6 +203,12 @@ rerun/resume/replace，当前没有 active successor。
   domain-balanced optimizer visits，并训练初始回退 DepthART base 的 `identity_sigmoid` correction gate。
 - `test_train_ag_st_bonn_anchored_student.py`：2 个 focused tests，锁定 8/8 cohort disjointness、排除旧
   fixed-8，并验证 Bonn adapter 只开放 source depth、其余 factor 分母恒为零。
+- `train_ag_st_no_regret_selector.py`：冻结 base 与 correction expert，只训练/评价 base-vs-correction
+  selective router，并报告 perfect signed-advantage oracle 的安全 coverage/headroom。threshold admission
+  要求每个 calibration parent 的 MAE 与 `>0.10 m` error 都 no-regret，且至少一半 parent 有非零
+  correction coverage；没有 admissible threshold 时确定性回退 base。
+- `test_train_ag_st_no_regret_selector.py`：8 个 focused tests，覆盖 deterministic split、oracle headroom、
+  fallback，以及“macro 改善但单 parent 受伤”必须拒绝的回归测试。
 - `evaluate_ag_st_student_checkpoint.py`：在 parent-disjoint cohort 上零样本评估冻结 checkpoint；默认
   fresh 模式，也可显式签署 `consumed_development_comparison`，防止把已看过的 cohort 再包装成新证据。
 - `test_evaluate_ag_st_student_checkpoint.py`：6 个 focused tests，覆盖 objective-specific core factors、
@@ -246,7 +253,9 @@ BCE `83.2%` 的相对下降。累计 52 个互异 ARKitScenes parent 已消费�
 source-diverse metric anchors，不能继续用同域 head-capacity scaling 代替跨数据源监督。
 后续 mixed-domain identity-gated student 已把新 Bonn EVAL MAE 收回到 `0.2713 m`，大幅消除上述
 catastrophic collapse；但仍差于冻结 DepthART baseline `0.2517 m`，且只有 `1/8` parent 改善，故不晋级。
-下一算法不是继续调同一 gate，而是冻结 correction expert 后训练 base-vs-correction no-regret selector。
+当前 factor-wise Development 先比较 perfect signed-advantage oracle 与现有 selector，回答 correction 是否
+存在安全覆盖；只有 oracle 有 headroom 而 selector 失败时，才训练 one-sided advantage-LCB router。selector
+准入已从 domain/macro no-regret 收紧到逐 parent 双指标 no-regret 与非集中 coverage，不在已看 EVAL 调 threshold。
 support/boundary 仍是 conservative pseudo-label、
 sigma 是 proxy，不产生完整 truth、正式 F1、产品或 safety authority。
 时序模块同样只有未激活 mechanics；没有新 temporal cohort、训练、任务收益或设备性能 authority。

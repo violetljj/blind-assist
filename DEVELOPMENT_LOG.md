@@ -2,6 +2,21 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。按用户确认把新增算法预算收敛为两条可由
+  Codex 并行、无固定天数的 evidence-gated Development 支线。Assistive Geometry 激活
+  `AG_FACTORWISE_NO_REGRET_ORACLE_AND_PARENT_GATE_CANARY_R0`：先比较冻结 DepthART prior、correction
+  expert、perfect signed-advantage oracle 与现有 selector，只有 oracle 有安全 headroom 才继续训练
+  advantage-LCB router；selector admission 已收紧为每个 parent 的 MAE/`>0.10 m` error 双指标 no-regret，
+  且至少一半 parent 具有非零 coverage，macro 改善不得掩盖单 parent 受伤。TARO 激活
+  `TARO_TASK_DIRECTED_OBSERVABILITY_POSITIVE_ORACLE_CANARY_R0`：只做同一额外帧预算的 static/passive/
+  fixed-micro/generic/task-directed positive-occupancy oracle，不开放 `CLEAR`。新 source-only pair audit 对
+  R7 170 帧与 R10 710 帧确认 pose 完整，但相邻最小间隔均为 2 秒，1 秒内合法 pair 均为 0；因此停止在
+  这两个 cohort 上训练时序模型，下一步改用 outcome-blind 选择的 pose-rich consumed Development source。
+  R11 sealed top24 与 protected outcomes 保持不读不改；FARO Phase-B implementation lock 已完成，但正式
+  outcome 未读，Formal execution 暂停且不阻塞 Development；默认
+  App、产品和安全主张不变。AG/TARO 11 个 focused tests PASS，pair audit 的 depth/FARO/truth/model/network
+  reads 均为 0。
+
 - 时间：2026-08-13（Asia/Hong_Kong）；执行者：Codex。按用户授权正式消费 AG R2 cross-sensor
   calibration-control R1 producer 与 independent replay，各恰好一次。execution lock 在任何 archive access
   前以 master `3a4247dfa022323ca4f36f574bc607c4ff252b05` 固定；producer 先消费新 root，验证 archive hash、

@@ -127,8 +127,10 @@ def extract_bonn_anchor_frames(
     depthart_checkpoint: Path,
     device: torch.device,
     seed: int,
+    *,
+    cohort_role: str = "fit",
 ) -> tuple[list[CachedFrame], dict[str, Any]]:
-    frame_indices = load_cohort_indices(cohort_manifest, "fit")
+    frame_indices = load_cohort_indices(cohort_manifest, cohort_role)
     _, _, provenance = validate_source_receipts(
         dataset_root,
         archive,
@@ -190,6 +192,7 @@ def extract_bonn_anchor_frames(
     return frames, {
         "cohort_manifest_path": str(cohort_manifest),
         "cohort_manifest_sha256": sha256_file(cohort_manifest),
+        "cohort_role": cohort_role,
         "parent_ids": list(frame_indices),
         "parent_count": len(frame_indices),
         "frame_count": len(frames),
