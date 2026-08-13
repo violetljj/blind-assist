@@ -2,6 +2,19 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：Codex。按用户授权正式消费 AG R2 cross-sensor
+  calibration-control R1 producer 与 independent replay，各恰好一次。execution lock 在任何 archive access
+  前以 master `3a4247dfa022323ca4f36f574bc607c4ff252b05` 固定；producer 先消费新 root，验证 archive hash、
+  枚举 5 个成员并读取 2 个 YAML / 7,236 bytes，随后以 `F2_R1_KALIBR_ROSTOPIC` fail closed。两份 YAML
+  已读但解析未完成，因此 matrix discovery 与 `/uvc_camera/cam_2` match count 都保持 `null/UNKNOWN`，未选择
+  member、camera node 或 first/best。独立 validator 先消费 replay receipt，再且仅再 replay archive 一次，
+  以 `CALIBRATION_CONTROL_R1_INDEPENDENT_REPLAY_CONFIRMED_PRODUCER_FAILURE` PASS；离线六文件 hash-chain
+  验签通过。R1 root 为 6 files / 6,462 bytes，producer failure SHA-256 `35F125C2...D40D38`，validator result
+  SHA-256 `57802146...ED15D`。session RGB-D/IMU、模型、truth、factor scoring、Confirmation、训练、reducer、
+  网络、设备与默认 App 全部为 0，Confirmation root 不存在，科学状态为 `NOT_RUN`。R1 永久 consumed，
+  不得 rerun/resume/replace；当前没有 active successor，未来恢复必须另立基于官方 archive-format evidence 的
+  新版本 non-executing protocol、fresh root 并单独授权。
+
 - 时间：2026-08-13（Asia/Hong_Kong）；执行者：Codex。TARO R11 Phase-A repaired independent audit 对同一
   immutable 5,219-file root 完整 PASS：48 parents / 1,043 frames / 9,387 queries，原 validator 的 root set、
   5,218 prior hashes、64 execution-lock bindings、source containers/payloads、candidate arrays、lineage、counts、

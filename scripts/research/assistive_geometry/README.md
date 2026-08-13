@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_CALIBRATION_CONTROL_R0_FAIL_CLOSED_CONSUMED / R1_PROTOCOL_REPAIR_IMPLEMENTATION_LOCK_PASS_SYNTHETIC_ONLY / SCIENTIFIC_NOT_RUN / CONFIRMATION_OUTCOMES_UNOPENED`
+状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_CALIBRATION_CONTROL_R0_AND_R1_FAIL_CLOSED_CONSUMED / R1_INDEPENDENT_REPLAY_CONFIRMED_PRODUCER_FAILURE / SCIENTIFIC_NOT_RUN / CONFIRMATION_OUTCOMES_UNOPENED`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -12,12 +12,11 @@ session-height scale anchor，经 `FactorTensorAdapterV2` 在 checkpoint-unseen 
 推理 `targets_loaded=false`，UNKNOWN 未转 negative，也没有任意 baseline 胜负门。Attempt17 与无锚
 walking_xyz 负结果保持冻结；当前只支持 research-pipeline mechanics，不是跨传感器或移动部署结论。
 
-`ag_r2_cross_sensor_confirmation/` 的 R0 calibration-control one-shot 已 fail closed consumed；R1 repair 新增
-same-node Kalibr `rostopic` 解析，以 ETH3D `/uvc_camera/cam_2` namespace 唯一匹配 RGB/depth 视点，且在
-fail-closed evidence 中保留完整 candidate/read/discovery/target-match counts。producer-free validator 先消费
-独占 replay receipt，再独立重算并封存 terminal/manifest；最终 Confirmation lock 只接受 producer PASS 与
-replay PASS 的完整 chain。69 个 synthetic/metadata/contract tests 已通过。R1 真实 archive、session archive、
-checkpoint、source truth 和 Confirmation 均未运行；用户已授权当前 R1 calibration-control one-shot。
+`ag_r2_cross_sensor_confirmation/` 的 R0/R1 calibration-control one-shot 均已 fail closed consumed。R1 producer
+读取 2 个 YAML 后以 `F2_R1_KALIBR_ROSTOPIC` 停止；matrix discovery 与 target-match count 保持
+`null/UNKNOWN`。producer-free validator 先消费独占 replay receipt，再一次性复现同一失败并封存完整 chain；
+离线验证 PASS。session archive、checkpoint、source truth、factor scoring 和 Confirmation 均未运行，R1 不得
+rerun/resume/replace，当前没有 active successor。
 
 ## 稳定 Interface
 

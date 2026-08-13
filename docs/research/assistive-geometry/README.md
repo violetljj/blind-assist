@@ -1,6 +1,6 @@
 # BlindAssist Assistive Geometry
 
-状态：`current / B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / FACTORTENSOR_ADAPTER_SYNTHETIC_CANARY_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_CALIBRATION_CONTROL_R0_FAIL_CLOSED_CONSUMED / R1_PROTOCOL_REPAIR_IMPLEMENTATION_LOCK_PASS_SYNTHETIC_ONLY / SCIENTIFIC_NOT_RUN / CONFIRMATION_OUTCOMES_UNOPENED / DEFAULT_APP_UNCHANGED`
+状态：`current / B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_P_PROTOCOL_FROZEN / FACTORTENSOR_ADAPTER_SYNTHETIC_CANARY_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_CALIBRATION_CONTROL_R0_AND_R1_FAIL_CLOSED_CONSUMED / R1_INDEPENDENT_REPLAY_CONFIRMED_PRODUCER_FAILURE / SCIENTIFIC_NOT_RUN / CONFIRMATION_OUTCOMES_UNOPENED / DEFAULT_APP_UNCHANGED`
 
 本路线把 DepthART-S 从研究终点降为可替换的轻量 encoder/initialization 候选，核心问题改为：
 
@@ -89,6 +89,8 @@
 - [Geometry R2 cross-sensor calibration-control R1 official camera-selection evidence](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R1_OFFICIAL_CAMERA_SELECTION_EVIDENCE_2026-08-13.json)
 - [Geometry R2 cross-sensor calibration-control R1 protocol amendment](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R1_PROTOCOL_AMENDMENT_2026-08-13.json)
 - [Geometry R2 cross-sensor calibration-control R1 repair implementation lock](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R0_FAILURE_AUDIT_AND_R1_PROTOCOL_REPAIR_IMPLEMENTATION_LOCK_2026-08-13.json)
+- [Geometry R2 cross-sensor calibration-control R1 one-shot execution lock](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R1_ONE_SHOT_EXECUTION_LOCK_2026-08-13.json)
+- [Geometry R2 cross-sensor calibration-control R1 consumed terminal](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R1_ONE_SHOT_RESULT_2026-08-13.json)
 - [Geometry R2 F1 FactorTensorAdapter gap audit](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_GAP_AUDIT_2026-08-10.md)
 - [Geometry R2 F1 FactorTensorAdapter machine audit](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_GAP_AUDIT_2026-08-10.json)
 - [Geometry R2 F1 FactorTensorAdapter protocol lock](BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F1_FACTORTENSOR_ADAPTER_PROTOCOL_LOCK_2026-08-10.md)
@@ -132,37 +134,22 @@
 
 ## 唯一 successor
 
-当前已完成：
+当前没有 active successor。用户授权的 R1 calibration-control producer 与 independent replay 已各消费一次。
+execution lock 在任何 archive access 前以 master `3a4247dfa022323ca4f36f574bc607c4ff252b05` 固定；producer
+先消费独占 root，验证 archive hash、枚举 5 个成员并读取 2 个 YAML / 7,236 bytes，随后以
+`F2_R1_KALIBR_ROSTOPIC` fail closed。两份 YAML 虽已读取，但 frozen parser 未完成所有 candidate discovery，
+所以 matrix discovery 与 `/uvc_camera/cam_2` target-match count 都必须保持 `null/UNKNOWN`；没有 selected
+member/camera node，也没有 first/best fallback。
 
-`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R0_FAILURE_AUDIT_AND_R1_PROTOCOL_REPAIR_LOCK`。
+独立 validator 先消费 replay receipt，再且仅再打开 calibration archive 一次，复现同一 error code 与 exact
+observability，以 `CALIBRATION_CONTROL_R1_INDEPENDENT_REPLAY_CONFIRMED_PRODUCER_FAILURE` PASS。离线验证随后
+只读验签 6 files / 6,462 bytes 的完整 producer/replay chain；failure SHA-256 为 `35F125C2...D40D38`，validator
+result SHA-256 为 `57802146...ED15D`。session RGB-D/IMU、模型、truth、factor scoring、Confirmation、训练、
+reducer、网络、设备与默认 App 全部为 0，Confirmation root 不存在，科学状态保持 `NOT_RUN`。
 
-用户于 2026-08-13 单独授权 calibration archive control。锁在任何 archive access 前固定为提交
-`35f80eeac8c0c78f2576ef98a578ceacf0dc3fad`，只允许校准 archive 哈希、成员枚举和有界 YAML 读取；
-session RGB-D/IMU、checkpoint/model、source truth、factor scoring、Confirmation、网络、设备、默认 App、
-产品和 safety 权限全部为 false。独立 control root 在读取前消费，archive 的 `3,645,288 bytes` 与冻结
-SHA-256 匹配，成员枚举完成，随后在 1–32 个有界 YAML candidate 全部读取后以
-`F2_CALIBRATION_CONTROL_AMBIGUOUS_OR_MISSING_MATRIX` fail closed。
-
-本终态没有绑定 exact member 或 camera node，也没有保存能区分“零个”与“多个”合法 discovery 的计数；
-因此禁止猜测、选择 first/best 或重开 archive 补看。R0 root 恰好包含 start、failure、manifest 三个文件且
-hash chain 已复核，one-shot 已永久消费。三个 session archive、模型、truth、评分与 Confirmation 仍为 0，
-Confirmation root 不存在，科学状态保持 `NOT_RUN`；这不是 AG factor 的科学 PASS 或 FAIL。
-
-R0 三文件 hash chain 的只读审计确认：终态有效，但 failure 只有 error code，没有 candidate、matrix discovery
-或 target-match count，因此零个与多个不可恢复。R1 不猜 `cam0/cam1`：ETH3D 官方文档把 `imu.txt` 绑定到
-RGB/depth 同视点的右 RGB 相机及 `/uvc_camera/cam_2/imu`；Kalibr 官方格式把 `rostopic` 与 `T_cam_imu`
-绑定在同一 camera node。R1 据此冻结 `/uvc_camera/cam_2` namespace 唯一匹配，并在失败 evidence 保存完整
-candidate/read/discovery/target-match counts 与摘要。锁前独立审计进一步补齐 exact lock/start/terminal/manifest
-验签、先消费的 replay receipt、所有 fail-closed terminal 重放、canonical root 与 downstream Confirmation binding；
-producer-free validator 完成一次 replay 后可纯本地验签且不会重开 archive。69/69 focused tests、ruff、compile
-与 repair-lock validator 均 PASS；本步真实 archive/member、session、模型、truth、评分与 Confirmation 访问全部为 0。
-
-用户已授权当前唯一 successor：另立 hash-bound lock/root 的
-`BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R1_ONE_SHOT_EXECUTION_LOCK`。
-它仍只允许 calibration archive producer 一次和独立 validator replay 一次；两者必须分别由先消费的 receipt
-证明且不得重开，不授权 session archive、模型或
-Confirmation。继续禁止 rerun/resume/replace R0、按 camchain 顺序或 first/best 选择、reducer、
-walking_xyz/sitting_rpy 调参和 task state。
+R0/R1 one-shot 均永久 consumed，不得 rerun、resume、replace、覆盖或把 null count 解释为零/negative；本结果
+不是 factor-level 科学 PASS/FAIL。未来恢复只有在另立基于官方 archive-format evidence 的新版本 non-executing
+protocol、fresh root 并单独获得用户授权后才可讨论；该条件不是当前 execution successor。
 
 ## 2026-08-12 SuperTeacher → AG 真实闭环
 
