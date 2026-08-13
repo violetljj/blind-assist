@@ -26,6 +26,7 @@ import com.linnan.blindassist.vision.VisionFrame
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.util.concurrent.CountDownLatch
@@ -160,6 +161,30 @@ class AssistFrameProcessorTest {
         assertEquals(1L, snapshot.processed)
         assertEquals(33L, snapshot.inferenceP50Ms)
         assertEquals(33L, snapshot.inferenceP95Ms)
+    }
+
+    @Test
+    fun visibleDiagnosticsRefreshAtTwoHertzInsteadOfEveryFrame() {
+        var diagnosticsNowMs = 0L
+        val appViewModel = BlindAssistViewModel(UserPreferences(InMemoryPreferenceStore()))
+        appViewModel.onDebugVisibleChange(true)
+        val processor = processor(
+            appViewModel = appViewModel,
+            diagnosticsClockMs = { diagnosticsNowMs }
+        )
+
+        processor.process(FakeVisionFrame())
+        val firstSummary = appViewModel.uiState.value.fieldTestSummary
+        assertTrue(firstSummary.detailText.contains("最近1帧"))
+
+        diagnosticsNowMs = 100L
+        processor.process(FakeVisionFrame())
+        assertSame(firstSummary, appViewModel.uiState.value.fieldTestSummary)
+
+        diagnosticsNowMs = 500L
+        processor.process(FakeVisionFrame())
+        val refreshedSummary = appViewModel.uiState.value.fieldTestSummary
+        assertTrue(refreshedSummary.detailText.contains("最近3帧"))
     }
 
     @Test
@@ -317,6 +342,7 @@ class AssistFrameProcessorTest {
         appViewModel: BlindAssistViewModel = BlindAssistViewModel(UserPreferences(InMemoryPreferenceStore())),
         runOnUiThread: ((() -> Unit) -> Unit) = { it() },
         decisionClockNs: () -> Long = { 2_000_000_000L },
+        diagnosticsClockMs: () -> Long = { System.nanoTime() / 1_000_000L },
         mode: AssistRuntimeMode = AssistRuntimeMode.BASELINE,
         onDualLoopShadowObservation: (DualLoopShadowObservation) -> Unit = {}
     ): AssistFrameProcessor {
@@ -332,7 +358,8 @@ class AssistFrameProcessorTest {
             guidanceFactory = guidanceFactory,
             fieldTestSummaryProvider = FieldTestSummaryProvider(coordinator),
             mode = mode,
-            performanceLogger = AssistRuntimePerformanceLogger(clockMs = { 0L })
+            performanceLogger = AssistRuntimePerformanceLogger(clockMs = { 0L }),
+            diagnosticsClockMs = diagnosticsClockMs
         )
         return AssistFrameProcessor(
             detector = detector,

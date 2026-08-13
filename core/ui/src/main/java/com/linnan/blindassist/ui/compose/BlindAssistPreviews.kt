@@ -111,13 +111,6 @@ import com.linnan.blindassist.ui.DetectionOverlayView
 import kotlinx.coroutines.delay
 
 
-@Composable
-private fun SplashPreview() {
-    BlindAssistTheme {
-        BrandSplashScreen(onFinished = {})
-    }
-}
-
 @Preview(showBackground = true, backgroundColor = 0xFF061115)
 @Composable
 private fun OnboardingPreview() {

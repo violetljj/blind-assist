@@ -13,8 +13,13 @@ import com.linnan.blindassist.preferences.UserPreferences
 import com.linnan.blindassist.ui.compose.CameraGuidanceUiState
 import com.linnan.blindassist.ui.compose.FieldTestSummaryUiState
 import com.linnan.blindassist.ui.compose.GlassesConnectionState
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -108,6 +113,46 @@ class BlindAssistViewModelTest {
         assertEquals(SpeechStyle.BRIEF, reloaded.speechStyle)
         assertEquals(VibrationStrength.SOFT, reloaded.vibrationStrength)
         assertEquals(AppLanguage.EN, reloaded.appLanguage)
+    }
+
+    @Test
+    fun frameRenderUpdatesOneSnapshotAndReusesItWhenNothingChanged() {
+        val viewModel = BlindAssistViewModel(UserPreferences(MapPreferenceStore()))
+        val initial = viewModel.uiState.value
+        val guidance = initial.cameraGuidance.copy(
+            title = "最新风险指导",
+            accessibilityKey = "frame-risk"
+        )
+        val summary = initial.fieldTestSummary.copy(statusText = "本次相机会话进行中")
+
+        val emissions = mutableListOf<BlindAssistAppUiState>()
+        runBlocking {
+            val collector = launch(Dispatchers.Unconfined, start = CoroutineStart.UNDISPATCHED) {
+                viewModel.uiState.collect { emissions += it }
+            }
+            viewModel.renderFrame(
+                guidance = guidance,
+                fieldTestSummary = summary,
+                modelStatus = "ready"
+            )
+            viewModel.renderFrame(
+                guidance = guidance,
+                fieldTestSummary = null,
+                modelStatus = "ready"
+            )
+            collector.cancel()
+        }
+
+        val rendered = viewModel.uiState.value
+        assertEquals(2, emissions.size)
+        assertSame(initial, emissions.first())
+        assertSame(rendered, emissions.last())
+        assertEquals(guidance, rendered.cameraGuidance)
+        assertEquals(summary, rendered.fieldTestSummary)
+        assertEquals("ready", rendered.modelStatus)
+        assertEquals(initial.controls, rendered.controls)
+        assertEquals(initial.cameraActive, rendered.cameraActive)
+        assertSame(rendered, viewModel.uiState.value)
     }
 
     @Test

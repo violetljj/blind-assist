@@ -456,6 +456,39 @@ class CameraControlPanelStandaloneTest {
     }
 
     @Test
+    fun firstRunShowsOnboardingOnTheFirstComposeFrame() {
+        composeRule.mainClock.autoAdvance = false
+        composeRule.setContent {
+            BlindAssistTheme {
+                BlindAssistApp(
+                    state = appState(showOnboarding = true),
+                    actions = appActions()
+                )
+            }
+        }
+
+        composeRule.onNodeWithText("开始使用 BlindAssist").assertIsDisplayed()
+        composeRule.onAllNodesWithText("本地视觉辅助引擎启动中").assertCountEquals(0)
+        composeRule.onAllNodesWithText("跳过启动页").assertCountEquals(0)
+    }
+
+    @Test
+    fun returningUserShowsMainShellOnTheFirstComposeFrame() {
+        composeRule.mainClock.autoAdvance = false
+        composeRule.setContent {
+            BlindAssistTheme {
+                BlindAssistApp(
+                    state = appState(showOnboarding = false),
+                    actions = appActions()
+                )
+            }
+        }
+
+        composeRule.onNodeWithText("Daily usage guide").assertIsDisplayed()
+        composeRule.onAllNodesWithText("本地视觉辅助引擎启动中").assertCountEquals(0)
+    }
+
+    @Test
     fun experimentalEditionBannerKeepsSafetyBoundaryVisible() {
         composeRule.setContent {
             BlindAssistTheme {
@@ -627,6 +660,58 @@ class CameraControlPanelStandaloneTest {
             statusText = "Camera session active",
             detailText = "Runtime: 1 min 20 sec\nFrames: 90\nAlerts: 3\nAverage FPS: 18.0",
             accessibilityText = "Field test summary, camera session active, average FPS 18."
+        )
+    }
+
+    private fun appState(showOnboarding: Boolean): BlindAssistAppState {
+        return BlindAssistAppState(
+            controls = cameraPanelControls(debugVisible = false),
+            cameraGuidance = cameraPanelGuidance(),
+            fieldTestSummary = cameraPanelSummary(),
+            modelStatus = "ready",
+            appVersion = "test",
+            cameraActive = false,
+            activeInputSource = AssistInputSource.PHONE_CAMERA,
+            activeReplayScenario = null,
+            showOnboarding = showOnboarding,
+            showGlassesCenter = false,
+            glassesSimulator = GlassesSimulatorUiState()
+        )
+    }
+
+    private fun appActions(): BlindAssistAppActions {
+        return BlindAssistAppActions(
+            runtime = AssistRuntimeUiActions(
+                onOpenCamera = {},
+                onCloseCamera = {},
+                onStartOfflineReplay = {},
+                onDetectionChange = {},
+                onSpeechChange = {},
+                onVibrationChange = {},
+                onCareModeChange = {},
+                onDebugVisibleChange = {},
+                onProfileChange = {},
+                onScenarioChange = {},
+                onSpeechStyleChange = {},
+                onVibrationStrengthChange = {},
+                onDailyUsageModeChange = {},
+                onQuietShortcut = {},
+                onSensitiveShortcut = {},
+                onLanguageChange = {},
+                onCameraViewsReady = { _, _, _ -> }
+            ),
+            navigation = AssistNavigationActions(
+                onCompleteOnboarding = {},
+                onShowOnboarding = {},
+                onShowGlassesCenter = {},
+                onDismissGlassesCenter = {}
+            ),
+            glasses = GlassesSimulatorActions(
+                onConnect = {},
+                onDisconnect = {},
+                onStartLiveAssist = {},
+                onReplayScenarioSelected = {}
+            )
         )
     }
 

@@ -167,7 +167,11 @@ object CameraGuidanceMapper {
         )
     }
 
-    fun fromFrameResult(frameResult: AssistFrameResult, language: AppLanguage = AppLanguage.ZH): CameraGuidanceUiState {
+    fun fromFrameResult(
+        frameResult: AssistFrameResult,
+        language: AppLanguage = AppLanguage.ZH,
+        includeDebugDetails: Boolean = true
+    ): CameraGuidanceUiState {
         val evaluation = frameResult.evaluation
         return fromRisk(
             rawRisk = evaluation.rawRisk,
@@ -177,10 +181,14 @@ object CameraGuidanceMapper {
             scenario = evaluation.scenario,
             feedbackDecision = frameResult.feedbackDecision,
             explanation = frameResult.explanation,
-            metricsText = "total ${evaluation.metrics.totalMs}ms / pre ${evaluation.metrics.preprocessMs}ms / " +
-                "infer ${evaluation.metrics.inferenceMs}ms / post ${evaluation.metrics.postprocessMs}ms / " +
-                "drop ${"%.1f".format(evaluation.metrics.droppedFrameRate * 100f)}% / " +
-                "p50 ${evaluation.metrics.inferenceP50Ms}ms / p95 ${evaluation.metrics.inferenceP95Ms}ms",
+            metricsText = if (includeDebugDetails) {
+                "total ${evaluation.metrics.totalMs}ms / pre ${evaluation.metrics.preprocessMs}ms / " +
+                    "infer ${evaluation.metrics.inferenceMs}ms / post ${evaluation.metrics.postprocessMs}ms / " +
+                    "drop ${"%.1f".format(evaluation.metrics.droppedFrameRate * 100f)}% / " +
+                    "p50 ${evaluation.metrics.inferenceP50Ms}ms / p95 ${evaluation.metrics.inferenceP95Ms}ms"
+            } else {
+                null
+            },
             fps = evaluation.metrics.fps,
             modelStatus = evaluation.metrics.modelStatus,
             language = language
@@ -195,7 +203,7 @@ object CameraGuidanceMapper {
         scenario: AssistScenario,
         feedbackDecision: FeedbackDecision,
         explanation: RiskExplanation,
-        metricsText: String,
+        metricsText: String?,
         fps: Float,
         modelStatus: String,
         language: AppLanguage
@@ -216,7 +224,9 @@ object CameraGuidanceMapper {
         val careDetail = AssistDisplayFormatter.careDetailFor(risk, language)
         val careTargetLine = AssistDisplayFormatter.careTargetLine(rawRisk, risk, count, language)
         val targetAccessibility = AssistDisplayFormatter.accessibilityTargetSummary(rawRisk, risk, count, language)
-        val debug = if (language == AppLanguage.EN) {
+        val debug = if (metricsText == null) {
+            ""
+        } else if (language == AppLanguage.EN) {
             "FPS: ${"%.1f".format(fps)}\n" +
                 "Timing: $metricsText\n" +
                 "Model: $modelStatus\n" +
