@@ -1,0 +1,91 @@
+{
+  "schema": "blindassist.ag.r2.cross_sensor_factor_confirmation_calibration_control_r0_failure_audit.v1",
+  "audit_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R0_FAILURE_AUDIT_2026-08-13",
+  "date": "2026-08-13",
+  "status": "PASS_SEALED_R0_FAILURE_VALID_OBSERVABILITY_GAP_CONFIRMED",
+  "research_profile": "CONFIRMATION_STRICT",
+  "predecessor_bindings": [
+    {
+      "role": "R0_ONE_SHOT_EXECUTION_LOCK",
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_PREFLIGHT_ONE_SHOT_EXECUTION_LOCK_2026-08-13.json",
+      "bytes": 2677,
+      "sha256": "EA2EA46B46B4E9332587E5585905D0A8F95775B901653D8B29FB32DBDFCB88D8"
+    },
+    {
+      "role": "R0_TRACKED_TERMINAL",
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_PREFLIGHT_ONE_SHOT_RESULT_2026-08-13.json",
+      "bytes": 4942,
+      "sha256": "4D3E1BF423FDFDA054F11BA3C08A606C7AB172B06EE08C1663E89617C04373AD"
+    },
+    {
+      "role": "R0_PRODUCER",
+      "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/calibration_control.py",
+      "bytes": 12086,
+      "sha256": "104307201F46B28A9E78ADEF16A34AA08375122B20B18FA1CADE8C7F613DBFB5"
+    },
+    {
+      "role": "R0_CONTROL_PARSER",
+      "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/control_format.py",
+      "bytes": 4538,
+      "sha256": "1568D952DC09402DCFB5B7B4391E06D0B1473DD154EE12B9D83D8BD3C3697E18"
+    }
+  ],
+  "sealed_evidence": {
+    "root": "E:\\linnan\\linnan\\artifacts.local\\evidence\\assistive-geometry\\ag-r2-cross-sensor-calibration-control-r0",
+    "exact_file_set": [
+      {
+        "name": "failure.json",
+        "bytes": 229,
+        "sha256": "3E62DFE42A0C7439CE015D91C24AE93E055285915216337440EDC96420B07B34"
+      },
+      {
+        "name": "manifest.json",
+        "bytes": 486,
+        "sha256": "23D2D18B2161A15A5A38468DEC4796A3C5261BA264959546DB09B8C1C9C089FC"
+      },
+      {
+        "name": "start-receipt.json",
+        "bytes": 610,
+        "sha256": "DEAB73F91ED3EFDA7B694233578D75E61EEAEFA885B85CE53C41D071B5456574"
+      }
+    ],
+    "manifest_hash_chain_verified": true,
+    "terminal": "CALIBRATION_CONTROL_FAIL_CLOSED",
+    "error_code": "F2_CALIBRATION_CONTROL_AMBIGUOUS_OR_MISSING_MATRIX",
+    "one_shot_consumed": true,
+    "archive_reopened_by_audit": false
+  },
+  "findings": {
+    "r0_failure_is_valid_terminal": true,
+    "r0_failure_scope": "CALIBRATION_CONTROL_EVIDENCE_VERSION_R0_ONLY",
+    "scientific_outcome_accessed": false,
+    "exact_member_bound": false,
+    "exact_camera_node_bound": false,
+    "yaml_candidate_count_present": false,
+    "matrix_discovery_count_present": false,
+    "target_camera_match_count_present": false,
+    "zero_vs_multiple_discoveries_recoverable_without_archive_replay": false,
+    "root_cause": "R0 aggregated every valid camera-node T_cam_imu across every YAML and required the global count to equal one, while its failure artifact retained only the error code and not the completed candidate or discovery counts.",
+    "forbidden_inference": "The audit cannot infer whether R0 observed zero matrices or multiple matrices and cannot infer any member or camera-node identity."
+  },
+  "r1_required_repairs": [
+    "preserve exact known candidate/read/discovery/target-match counts and hashes in failure evidence",
+    "select by an official sensor/viewpoint identity carried by the Kalibr camera node rather than cam0/cam1 ordering",
+    "keep R0 immutable and create a distinct R1 evidence root and execution lock",
+    "disclose R0 calibration archive control access while preserving unopened session RGB-D/IMU roles"
+  ],
+  "access_receipt": {
+    "r0_evidence_files_read": 3,
+    "r0_archive_file_reads": 0,
+    "r0_archive_member_enumerations": 0,
+    "r0_archive_member_reads": 0,
+    "session_archive_reads": 0,
+    "model_or_checkpoint_reads": 0,
+    "source_truth_materializations": 0,
+    "factor_scoring_runs": 0,
+    "confirmation_runs": 0,
+    "confirmation_root_created": false
+  },
+  "execution_authority": false,
+  "claim_ceiling": "This audit validates only the sealed R0 control failure and identifies its observability gap. It does not inspect or characterize the archive, choose a camera node, run a model, or establish a scientific result."
+}

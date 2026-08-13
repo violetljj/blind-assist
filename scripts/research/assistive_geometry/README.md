@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_CONTROL_FORMAT_AND_RUNTIME_BINDING_REPAIR_IMPLEMENTATION_LOCK_PASS_SYNTHETIC_ONLY / SCIENTIFIC_NOT_RUN / CONFIRMATION_OUTCOMES_UNOPENED`
+状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_CALIBRATION_CONTROL_R0_FAIL_CLOSED_CONSUMED / R1_PROTOCOL_REPAIR_IMPLEMENTATION_LOCK_PASS_SYNTHETIC_ONLY / SCIENTIFIC_NOT_RUN / CONFIRMATION_OUTCOMES_UNOPENED`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -12,11 +12,11 @@ session-height scale anchor，经 `FactorTensorAdapterV2` 在 checkpoint-unseen 
 推理 `targets_loaded=false`，UNKNOWN 未转 negative，也没有任意 baseline 胜负门。Attempt17 与无锚
 walking_xyz 负结果保持冻结；当前只支持 research-pipeline mechanics，不是跨传感器或移动部署结论。
 
-同日完成的 `ag_r2_cross_sensor_confirmation/` 已把跨传感器 factor-level Confirmation executor 修订为
-schema v2：exact-bind Kalibr YAML camera node/`T_cam_imu`/IMU convention 与控制 evidence，冻结 29-file
-DepthART runtime source manifest，并新增只允许 camera-calibration archive 的 control preflight 与 producer-free
-validator。51 个 synthetic/metadata tests 已通过；真实 ETH3D archive、checkpoint、source truth 和 Confirmation
-均未运行。future calibration-control one-shot 仍需独立授权，不能直接签发或消费 Confirmation execution lock。
+`ag_r2_cross_sensor_confirmation/` 的 R0 calibration-control one-shot 已 fail closed consumed；R1 repair 新增
+same-node Kalibr `rostopic` 解析，以 ETH3D `/uvc_camera/cam_2` namespace 唯一匹配 RGB/depth 视点，且在
+fail-closed evidence 中保留完整 candidate/read/discovery/target-match counts。producer-free validator 独立重算；
+58 个 synthetic/metadata tests 已通过。R1 真实 archive、session archive、checkpoint、source truth 和
+Confirmation 均未运行；未来 R1 calibration-control one-shot 仍需独立授权。
 
 ## 稳定 Interface
 
@@ -119,6 +119,14 @@ validator。51 个 synthetic/metadata tests 已通过；真实 ETH3D archive、c
   control root，并且只有 camera-IMU calibration archive 一个 payload 输入；session archives 与模型没有 API。
 - `ag_r2_cross_sensor_confirmation/validate_calibration_control.py`：不导入 producer/source adapter/control
   parser，独立重哈希 calibration archive、枚举 YAML、重算 matrix selection 与 evidence manifest。
+- `ag_r2_cross_sensor_confirmation/control_format_r1.py`：纯解析每个 Kalibr camera node 的同节点
+  `rostopic + T_cam_imu`，不以 `cam0/cam1` 顺序推断目标相机。
+- `ag_r2_cross_sensor_confirmation/calibration_control_r1.py`：未来只在另行 hash-bound R1 one-shot 下按
+  `/uvc_camera/cam_2` namespace 唯一匹配；失败时保存已知/未知计数、摘要与零 first/best selection receipt。
+- `ag_r2_cross_sensor_confirmation/validate_calibration_control_r1.py`：不导入 R1 producer/source/parser，
+  对 PASS 或 fail-closed evidence 独立重放 archive、rostopic namespace selection 与完整计数。
+- `ag_r2_cross_sensor_confirmation/validate_calibration_control_r1_repair_lock.py`：复核 R0 sealed audit、
+  official selection evidence、R1 amendment、5 个 implementation binding、58-test receipt 与零 archive access。
 - `ag_r2_cross_sensor_confirmation/validate_depthart_source_manifest.py`：独立复核 29 个实际可导入的
   metric/selective-scan Python 文件及 bytes/SHA，不加载 checkpoint 或模型。
 - `ag_r2_cross_sensor_confirmation/validate_repair_implementation_lock.py`：复核 schema v2、official control、

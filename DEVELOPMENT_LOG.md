@@ -42,6 +42,20 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   无 manifest/validation，partial coverage 不发布，truth/selection 未打开；终态
   `D3R2_PHASE_B_COVERAGE_CENSUS_EXECUTION_INVALID_INCOMPLETE / scientific_terminal=null / next_gate=null`。
   当前 r0 不可 resume、修补、复用 partial assets 或同版本重跑；未来恢复须再次授权新版本/协议/root。
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。按用户对唯一 successor 的授权，完成 AG R2
+  cross-sensor calibration-control R0 failure audit 与 R1 protocol repair implementation lock；本步无 archive
+  执行权限。只读复核 R0 start/failure/manifest 三文件及 hash chain，确认终态有效但 failure 未保存 YAML
+  candidate、matrix discovery 或 target-match count，因而零个/多个不可恢复且不得事后重开补看。官方 ETH3D
+  文档把 `imu.txt` 绑定到 RGB/depth 同视点右 RGB 相机及 `/uvc_camera/cam_2/imu`；Kalibr YAML 将每个
+  camera node 的 image `rostopic` 与 `T_cam_imu` 同节点绑定。R1 因此不猜 `cam0/cam1`，而要求所有有界
+  YAML discovery 中恰好一个 same-node rostopic namespace 为 `/uvc_camera/cam_2`；失败 evidence 保存完整
+  candidate/read/discovery/target-match counts 与摘要，仍拒绝 first/best。producer-free validator 可独立重放 PASS
+  与 failure；58/58 focused tests、ruff、compile、repair-lock validator 均 PASS。本步真实 archive/member、session、
+  model/checkpoint、truth、factor scoring 与 Confirmation 访问全部为 0，科学状态仍 `NOT_RUN`。唯一 successor
+  是另行授权、另立 hash-bound lock 与新 R1 root 的
+  `BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R1_ONE_SHOT_EXECUTION_LOCK`；
+  R0 不得 rerun/resume/replace，R1 仍不授权 session/model/Confirmation、产品或 safety。
+
 - 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。按用户对唯一 successor 的单独授权，正式消费
   Assistive Geometry R2 cross-sensor factor Confirmation 的 calibration-control R0 one-shot。execution lock
   在任何 archive access 前固定为提交 `35f80eeac8c0c78f2576ef98a578ceacf0dc3fad`，仅授权 camera-IMU

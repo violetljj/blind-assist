@@ -1,0 +1,48 @@
+{
+  "schema": "blindassist.ag.r2.cross_sensor_factor_confirmation_calibration_control_r1_official_camera_selection_evidence.v1",
+  "evidence_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R1_OFFICIAL_CAMERA_SELECTION_EVIDENCE_2026-08-13",
+  "date": "2026-08-13",
+  "sources": [
+    {
+      "role": "ETH3D_SLAM_DOCUMENTATION",
+      "url": "https://www.eth3d.net/slam_documentation",
+      "facts": [
+        "The published rgb and depth data share the viewpoint of the right RGB camera.",
+        "The published imu.txt belongs to that right RGB camera and has ROS topic /uvc_camera/cam_2/imu.",
+        "The other published IMU files belong to the left RGB and two infrared cameras, so they are not the rgb/depth viewpoint IMU."
+      ]
+    },
+    {
+      "role": "KALIBR_YAML_FORMATS",
+      "url": "https://github.com/ethz-asl/kalibr/wiki/yaml-formats",
+      "facts": [
+        "A camchain YAML stores each camera as a separate camera node.",
+        "Each camera node carries the rostopic of that camera image stream.",
+        "T_cam_imu is attached to a camera node and transforms IMU coordinates into that camera's coordinates."
+      ]
+    }
+  ],
+  "selection_contract": {
+    "dataset_target_viewpoint": "ETH3D_PRIMARY_RGB_DEPTH_RIGHT_RGB_CAMERA",
+    "official_target_imu_file": "imu.txt",
+    "official_target_imu_rostopic": "/uvc_camera/cam_2/imu",
+    "expected_camera_sensor_namespace": "/uvc_camera/cam_2",
+    "camera_identity_field": "same_camera_node.rostopic",
+    "namespace_operator": "rostopic.rpartition('/')[0]",
+    "required_matrix_key": "T_cam_imu",
+    "required_matrix_encoding": "KALIBR_CAMCHAIN_YAML_T_CAM_IMU_NESTED_4X4",
+    "required_transform_direction": "IMU_TO_CAMERA_T_CAM_IMU",
+    "selection_operator": "Across every bounded YAML candidate, retain every valid camera-node T_cam_imu discovery, then require exactly one discovery whose same-node rostopic namespace equals /uvc_camera/cam_2.",
+    "camera_node_key_is_preselected": false,
+    "camchain_order_is_selection_evidence": false,
+    "first_or_best_candidate_selection": false,
+    "zero_or_multiple_target_matches": "FAIL_CLOSED_WITH_EXACT_COUNT_PRESERVED"
+  },
+  "selection_boundary": {
+    "archive_or_member_read_by_this_evidence_step": false,
+    "exact_member_known": false,
+    "exact_camera_node_known": false,
+    "future_r1_archive_access_requires_separate_lock": true
+  },
+  "claim_ceiling": "This evidence freezes an official sensor-namespace selection rule only. It does not inspect the local calibration archive, prove a matching node exists, or authorize an R1 execution."
+}
