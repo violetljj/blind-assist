@@ -1,6 +1,6 @@
 # TARO O1R R11 fresh 48-parent source-only Phase A execution status
 
-状态：`FORMAL_EXECUTION_PASS / ONE_SHOT_CONSUMED / CUDA_RECOVERED / ORIGINAL_VALIDATOR_NUMERIC_REPRESENTATION_STOP / ROUND12_REPAIR_ATTEMPT_01_PATH_ALIAS_PRESTART_SUPERSEDED / ROUND12_REPAIR_ATTEMPT_02_FROZEN_REVALIDATION_REQUIRED / PIPELINE_HOLD`
+状态：`FORMAL_EXECUTION_PASS / ONE_SHOT_CONSUMED / INDEPENDENT_VALIDATION_PASS / PIPELINE_HOLD_RELEASED / SOURCE_ONLY_TOP24_IMPLEMENTATION_PENDING`
 
 R11 all-48 source-only Phase A 已按冻结 module argv 正式消费。producer 原子终态为
 `TARO_O1R_R11_FRESH_POOL_PHASE_A_SOURCE_ONLY_SEALED_PASS`：exact `48` parents、`1,043` frames、
@@ -33,10 +33,10 @@ stored pose/gravity 的 canonical SHA 同为 `B3CCB272ACACF3EA7C41CAD6DC196AA553
 该停止属于 numeric representation defect，不是 source/evidence corruption。原 validator、execution lock、
 terminal 和正式 root 均未改写，模型、scoring、highres/FARO/truth/label/outcome 均未重跑或读取。
 
-因此当前仍不能进入 source-only top-24 或 selected-only FARO。新的 protocol-only repair 已冻结：保留原
+当时仍不能进入 source-only top-24 或 selected-only FARO。新的 protocol-only repair 已冻结：保留原
 validator 的全部 5,219-file/root/source/candidate/lineage/count/ledger/resource 检查，只将独立重建的
 `camera_to_world_4x4` 与 `gravity_up_camera_xyz` 按 producer 的 canonical JSON round-12 规则规范化后精确比较。
-它不使用 epsilon/tolerance，不修改任何旧 byte；只有 repaired audit PASS 后才可另立 top-24 lock。
+它不使用 epsilon/tolerance，不修改任何旧 byte；后续 repaired audit 已 PASS，见下方最终独立验签。
 
 Attempt 01 repair 推送后首次调用在 output-root/payload 前以 `R11_PHASE_A_REPAIR_PATH` fail closed：repo lexical
 `artifacts.local` path 与同一授权 junction target 的 resolved spelling 被误作不同。正式/partial root 均未创建，
@@ -48,3 +48,13 @@ E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe -m scri
 ```
 
 本状态不产生 task effectiveness、路线晋级、部署、设备、产品或安全主张。
+
+## 最终独立验签
+
+Attempt 02 已对同一 sealed root 完整执行并以
+`TARO_O1R_R11_PHASE_A_OFFLINE_VALIDATOR_ROUND12_REPAIR_PASS` 结束。原 validator 的 exact 5,219-file root、
+5,218 prior hashes、64 lock bindings、全部 source containers/payloads、1,043 candidate/lineage、counts、ledger、
+runtime 与 resource 检查均通过；4,172 次允许 source payload replay 完成。结果 root 恰好一个原子文件，3,035 bytes，
+SHA-256 为 `2D80268D3E6D928F928F7C3B8AF8B14C7396D16A305521293C052DF6A378D19C`。
+模型未重跑，highres/FARO/truth/label/outcome/scoring 仍为 0。Phase-A pipeline hold 已释放；唯一后继是另立
+source-only 48→24 implementation lock，正式 scoring 仍未授权。

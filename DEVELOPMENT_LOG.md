@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：Codex。TARO R11 Phase-A repaired independent audit 对同一
+  immutable 5,219-file root 完整 PASS：48 parents / 1,043 frames / 9,387 queries，原 validator 的 root set、
+  5,218 prior hashes、64 execution-lock bindings、source containers/payloads、candidate arrays、lineage、counts、
+  read ledger、runtime/resource 全部一致；独立 source payload replay 为 4,172 次。repaired audit 原子 root 恰好
+  1 file / 3,035 bytes，SHA-256 `2D80268D...78D19C`。numeric repair 仅把独立重建 pose/gravity 按 producer
+  frozen canonical JSON round-12 后作精确比较，无 epsilon。模型未重跑，highres/FARO/truth/label/outcome、
+  R9 scoring/top-24、training/network 均为 0。Phase-A independent-validation blocker 与 pipeline hold 正式关闭；
+  唯一 successor 为 non-executing `TARO_O1R_R11_SOURCE_ONLY_TOP24_IMPLEMENTATION_LOCK`，正式评分仍须独立 execution lock。
+
 - 时间：2026-08-13（Asia/Hong_Kong）；执行者：Codex。主机重启后 RTX 5060 / CUDA 12.8 恢复，针对同一
   immutable TARO R11 Phase-A 5,219-file root 重跑原 independent validator。原 validator 通过 CUDA 前检并
   重验 terminal/source，但在首帧 `466160/44796584/17383.777` 以
