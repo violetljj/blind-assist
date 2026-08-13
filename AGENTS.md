@@ -67,6 +67,42 @@
 Research work must be assigned one mode before claim-bearing or materially
 risky execution. The mode controls process; it never upgrades evidence.
 
+### Research style and graduation objective
+
+- The primary research objective is real algorithmic progress and a credible
+  graduation contribution. In Discovery, Canary, and Development, optimize for
+  learning speed and information gain rather than procedural completeness,
+  production certification, or repository ceremony.
+- Proactively propose and test bold, innovative, falsifiable ideas. Reversible
+  experiments may change task definitions, representations, objectives, losses,
+  geometry or temporal mechanisms, fusion, training strategies, and system
+  interactions, and may run bounded canaries and ablations without a separate
+  approval ritual. A well-localized negative result is useful progress when it
+  rules out an idea or identifies the next mechanism to test.
+- Stand on the shoulders of strong prior work. Reuse and extend literature,
+  open-source implementations, pretrained models, public datasets, and proven
+  architectures when they accelerate progress; preserve source, license, and
+  provenance, and distinguish inherited components from the new contribution.
+  Innovation may be a new task or risk objective, conditional interaction,
+  mechanism, system loop, training/evaluation method, or credible empirical
+  finding. It does not require inventing an entire backbone from scratch.
+- For early research, the minimum useful experiment is a clear question or
+  hypothesis, a credible baseline, one meaningful change, an observable metric
+  or decision, and a stop condition. Start with the smallest informative run,
+  then expand only when the result justifies the next cost. Do not add tests,
+  reviews, documents, locks, receipts, or coordination layers that will not
+  change the next research decision.
+- Missing Confirmation, device, safety, release, or production evidence limits
+  the claim; it does not block an honestly labeled reversible experiment. Full
+  protocol locks, independent review packages, exhaustive receipts, and broad
+  validation are reserved for explicitly activated Formal Confirmation,
+  Deployment, or genuinely irreversible/high-risk work.
+- Minimum scientific integrity remains non-negotiable: do not fabricate truth,
+  hide provenance, leak protected outcomes, turn `UNKNOWN` into a negative, or
+  ignore broken schemas, invalid denominators, or collapsed coverage. Preserve
+  consumed and failed terminals, but allow a new versioned Development attempt
+  to learn from them without rewriting history.
+
 - `ROUTINE_ENGINEERING`: ordinary code, docs, tests, builds, and low-risk
   diagnostics. Use focused verification; research receipts, frozen protocols,
   multi-Agent review, and guarded host preflight are not required by default.
