@@ -120,6 +120,11 @@ def confirmation_plan(
             "selected_frame_stems": stems,
             "selected_frame_plan_sha256": selected_stem_sha256(stems),
             "depth_confidence_unavailable_stems": unavailable,
+            "prior_head": {
+                "content_length_bytes": None,
+                "etag": None,
+                "last_modified": None,
+            },
         })
     require(len({row["video_id"] for row in result}) == 8, "fresh roster duplicate")
     return result
