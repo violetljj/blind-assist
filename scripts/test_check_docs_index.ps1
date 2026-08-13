@@ -173,6 +173,38 @@ try {
         } `
         -ShouldPass $true
     Assert-DocumentationFixtureResult `
+        -Name 'community-entry-pages-indexed' `
+        -Files @{
+            'docs/README.md' = @'
+# docs
+
+[project state](PROJECT_STATE.md)
+[English quick start](QUICKSTART_EN.md)
+[community launch kit](COMMUNITY_LAUNCH_KIT.md)
+[research](research/README.md)
+[domain](research/domain/README.md)
+'@
+            'docs/QUICKSTART_EN.md' = "# quick start`n`nStatus: ``current```n"
+            'docs/COMMUNITY_LAUNCH_KIT.md' = "# launch kit`n`nStatus: ``current```n"
+        } `
+        -ShouldPass $true
+    Assert-DocumentationFixtureResult `
+        -Name 'community-current-entry-broken-link' `
+        -Files @{
+            'docs/README.md' = @'
+# docs
+
+[project state](PROJECT_STATE.md)
+[English quick start](QUICKSTART_EN.md)
+[community launch kit](COMMUNITY_LAUNCH_KIT.md)
+[research](research/README.md)
+[domain](research/domain/README.md)
+'@
+            'docs/QUICKSTART_EN.md' = "# quick start`n`nStatus: ``current```n`n[missing](MISSING.md)`n"
+            'docs/COMMUNITY_LAUNCH_KIT.md' = "# launch kit`n`nStatus: ``current```n"
+        } `
+        -ShouldPass $false
+    Assert-DocumentationFixtureResult `
         -Name 'current-snapshot-status-conflict' `
         -Files @{
             'docs/research/domain/DOMAIN_CURRENT_SNAPSHOT_2026-08-13.md' = "# snapshot`n`n状态：current`n"
