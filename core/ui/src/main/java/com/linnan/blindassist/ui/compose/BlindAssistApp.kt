@@ -66,6 +66,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -242,7 +243,11 @@ private fun MainShell(
         modifier = modifier.fillMaxSize(),
         containerColor = BaNight,
         bottomBar = {
-            NavigationBar(containerColor = BaPanel, tonalElevation = 0.dp) {
+            NavigationBar(
+                containerColor = BaPanel,
+                contentColor = BaText,
+                tonalElevation = 0.dp
+            ) {
                 tabs.forEach { tab ->
                     NavigationBarItem(
                         selected = selectedTab == tab.name,
@@ -250,10 +255,24 @@ private fun MainShell(
                         icon = {
                             Icon(
                                 imageVector = tab.icon,
-                                contentDescription = tab.label(language)
+                                contentDescription = tab.label(language),
+                                modifier = Modifier.size(24.dp)
                             )
                         },
-                        label = { Text(tab.label(language), maxLines = 1) }
+                        label = {
+                            Text(
+                                tab.label(language),
+                                maxLines = 1,
+                                style = MaterialTheme.typography.labelMedium
+                            )
+                        },
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = BaInk,
+                            selectedTextColor = BaText,
+                            indicatorColor = BaMint,
+                            unselectedIconColor = BaTextMuted,
+                            unselectedTextColor = BaTextMuted
+                        )
                     )
                 }
             }

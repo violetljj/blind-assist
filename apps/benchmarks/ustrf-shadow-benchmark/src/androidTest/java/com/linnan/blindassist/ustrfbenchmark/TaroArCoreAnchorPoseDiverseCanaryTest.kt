@@ -63,6 +63,7 @@ class TaroArCoreAnchorPoseDiverseCanaryTest {
         var maximumSelectedGapNs = 0L
         var longestContinuousTrackingRun = 0
         var lastTimestampNs = -1L
+        val trackingFailureReasonCounts = linkedMapOf<String, Int>()
         val admissionFailureCounts = linkedMapOf<String, Int>()
         val selectionFailureCounts = linkedMapOf<String, Int>()
         var session: Session? = null
@@ -86,7 +87,12 @@ class TaroArCoreAnchorPoseDiverseCanaryTest {
                         val timestampNs = frame.timestamp
                         if (timestampNs > lastTimestampNs) advancingTimestampCount++
                         lastTimestampNs = maxOf(lastTimestampNs, timestampNs)
-                        if (frame.camera.trackingState == TrackingState.TRACKING) trackingFrameCount++
+                        if (frame.camera.trackingState == TrackingState.TRACKING) {
+                            trackingFrameCount++
+                        } else {
+                            val key = frame.camera.trackingFailureReason.name
+                            trackingFailureReasonCounts[key] = (trackingFailureReasonCounts[key] ?: 0) + 1
+                        }
                         val sourceFrame = UstrfFrameStamp(attempt.toLong(), timestampNs, ARCORE_CAMERA_FRAME)
                         val admission = adapter.observe(frame, sourceFrame)
                         when (admission) {
@@ -159,6 +165,7 @@ class TaroArCoreAnchorPoseDiverseCanaryTest {
             .put("advancing_timestamp_count", advancingTimestampCount)
             .put("tracking_frame_count", trackingFrameCount)
             .put("longest_continuous_tracking_run_frames", longestContinuousTrackingRun)
+            .put("tracking_failure_reason_counts", JSONObject(trackingFailureReasonCounts as Map<*, *>))
             .put("available_anchor_pose_admission_count", availableAdmissionCount)
             .put("evaluated_selector_count", evaluatedSelectionCount)
             .put("available_selector_count", availableSelectionCount)
@@ -208,7 +215,9 @@ class TaroArCoreAnchorPoseDiverseCanaryTest {
         const val AVAILABILITY_ATTEMPTS = 10
         const val AVAILABILITY_RETRY_MS = 200L
         const val MINIMUM_FRAME_ATTEMPTS = 60
-        const val DEFAULT_FRAME_ATTEMPTS = 120
+        // A cold ARCore Session needed more than four seconds to enter TRACKING on the reference
+        // SM-S9280. Keep the default long enough to test the contract without a hidden runner arg.
+        const val DEFAULT_FRAME_ATTEMPTS = 600
         const val MAXIMUM_FRAME_ATTEMPTS = 1_800
         const val FRAME_SETTLE_MS = 33L
         const val MINIMUM_SELECTION_GAP_NS = 150_000_000L

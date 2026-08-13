@@ -38,11 +38,11 @@
 
 <table>
   <tr>
-    <td width="42%" align="center">
-      <img src="docs/research/assets/group-meeting/app-home-2026-07-22.png" width="330" alt="BlindAssist v10.9.0 home screen captured from an SM-S9280 device">
-      <br><sub>Real-device capture · SM-S9280 · v10.9.0</sub>
+    <td width="50%" align="center">
+      <img src="docs/assets/ui/blindassist-master-feature-sm-s9280-2026-08-13.png" width="360" alt="BlindAssist current master feature screen captured from an SM-S9280 device">
+      <br><sub><strong>Feature home / 功能主页</strong><br>Current task, primary camera action, hardware entry, and safety boundary.</sub>
     </td>
-    <td width="58%">
+    <td width="50%">
       <h3>What the public app contains</h3>
       <ul>
         <li>CameraX camera input and an optional local glasses-stream adapter.</li>
@@ -51,14 +51,28 @@
         <li>Speech, vibration, Compose UI, and accessibility semantics.</li>
         <li>Isolated benchmark and research apps that cannot silently replace the default path.</li>
       </ul>
-      <p><strong>Public release:</strong> <a href="https://github.com/violetljj/blind-assist/releases/tag/v10.9.0">BlindAssist v10.9.0</a> (<code>versionCode=37</code>)</p>
+      <p><strong>UI snapshot:</strong> current <code>master</code> debug build, captured on an SM-S9280 running Android 16.</p>
+      <p><strong>Latest public release:</strong> <a href="https://github.com/violetljj/blind-assist/releases/tag/v10.9.0">BlindAssist v10.9.0</a> (<code>versionCode=37</code>)</p>
       <p><strong>Default model:</strong> <code>app/src/main/assets/yolo11n_fp16_320.tflite</code></p>
       <p><a href="docs/MODEL_CARD.md">Model identity and limitations</a> · <a href="docs/RELEASE_AND_VERIFICATION.md">Release verification</a></p>
     </td>
   </tr>
 </table>
 
-The screenshot proves the recorded app surface and safety wording—not perception quality, user outcomes, or mobility safety. 截图只证明当时的真实界面与安全措辞，不证明感知效果或助行安全。
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <img src="docs/assets/ui/blindassist-master-profile-sm-s9280-2026-08-13.png" width="320" alt="BlindAssist current master local assist profile screen captured from an SM-S9280 device">
+      <br><sub><strong>Assist profile / 辅助档案</strong><br>Device capability, reminder profile, scenario, and preference summary.</sub>
+    </td>
+    <td width="50%" align="center">
+      <img src="docs/assets/ui/blindassist-master-settings-sm-s9280-2026-08-13.png" width="320" alt="BlindAssist current master settings screen captured from an SM-S9280 device">
+      <br><sub><strong>Accessible settings / 辅助设置</strong><br>Language, Care Mode, speech, vibration, and reminder controls.</sub>
+    </td>
+  </tr>
+</table>
+
+These real-device screenshots document the recorded `master` UI surface and safety wording. They are not release artifacts and do not prove perception quality, user outcomes, accessibility certification, or mobility safety. 这些真机截图只记录当前 `master` 界面与安全措辞，不属于正式发布证据，也不证明感知质量、用户效果、无障碍认证或助行安全。
 
 ## Why it is public / 为什么开源
 
@@ -71,7 +85,11 @@ BlindAssist publishes more than an Android demo. It exposes the maintenance and 
 - explicit separation between engineering, research, deployment, product, and safety evidence;
 - contribution, governance, security, and public-roadmap workflows.
 
-Forward-looking research follows the [research governance contract](docs/RESEARCH_GOVERNANCE.md): Development and production promotion are separate lanes, and production promotion requires explicit scope.
+Forward-looking research follows `THESIS_FIRST_RESEARCH_GOVERNANCE_R4` in the
+[research governance contract](docs/RESEARCH_GOVERNANCE.md): `THESIS_DEVELOPMENT`
+and `PRODUCTION_PROMOTION` are separate lanes, and production promotion requires
+explicit scope. The current secondary lane is documented in
+[dual-loop](docs/research/dual-loop/README.md).
 
 BlindAssist 不只公开演示代码，也公开构建、验证、模型来源、失败结果和维护流程，让贡献者能够真正复核和改进项目。完整说明见[开源公共价值](docs/OPEN_SOURCE_PUBLIC_VALUE.md)。
 

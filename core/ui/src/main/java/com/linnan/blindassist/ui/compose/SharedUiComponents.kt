@@ -17,6 +17,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -122,9 +123,69 @@ internal fun ScreenColumn(
             .fillMaxSize()
             .background(BaNight)
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 20.dp, vertical = 22.dp),
+            .padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 36.dp),
         content = content
     )
+}
+
+@Composable
+internal fun ScreenIntro(
+    title: String,
+    body: String,
+    modifier: Modifier = Modifier,
+    eyebrow: String? = null
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        eyebrow?.let {
+            Text(
+                text = it,
+                color = BaMint,
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(Modifier.height(6.dp))
+        }
+        Text(
+            text = title,
+            style = MaterialTheme.typography.headlineMedium,
+            color = BaText,
+            modifier = Modifier.semantics { heading() }
+        )
+        Spacer(Modifier.height(6.dp))
+        Text(
+            text = body,
+            style = MaterialTheme.typography.bodyMedium,
+            color = BaTextMuted
+        )
+    }
+}
+
+@Composable
+internal fun IconTile(
+    icon: ImageVector,
+    accent: Color,
+    modifier: Modifier = Modifier,
+    emphasized: Boolean = false
+) {
+    Box(
+        modifier = modifier
+            .size(if (emphasized) 60.dp else 48.dp)
+            .clip(RoundedCornerShape(if (emphasized) 18.dp else 15.dp))
+            .background(accent.copy(alpha = if (emphasized) 0.19f else 0.12f))
+            .border(
+                width = 1.dp,
+                color = accent.copy(alpha = if (emphasized) 0.28f else 0.20f),
+                shape = RoundedCornerShape(if (emphasized) 18.dp else 15.dp)
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = accent,
+            modifier = Modifier.size(if (emphasized) 28.dp else 22.dp)
+        )
+    }
 }
 
 
@@ -136,7 +197,7 @@ internal fun FieldTestSummaryCard(summary: FieldTestSummaryUiState) {
             .semantics(mergeDescendants = true) {
                 contentDescription = summary.accessibilityText
             },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = BaPanel)
     ) {
         FieldTestSummaryBlock(
@@ -194,13 +255,13 @@ internal fun StatusGrid(
 @Composable
 private fun StatusCell(title: String, body: String, modifier: Modifier = Modifier) {
     Card(
-        modifier = modifier.heightIn(min = 92.dp),
-        shape = RoundedCornerShape(16.dp),
+        modifier = modifier.heightIn(min = 100.dp),
+        shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = BaPanel)
     ) {
-        Column(Modifier.padding(14.dp)) {
-            Text(text = title, color = BaTextMuted, style = MaterialTheme.typography.labelLarge)
-            Spacer(Modifier.height(6.dp))
+        Column(Modifier.padding(horizontal = 16.dp, vertical = 15.dp)) {
+            Text(text = title, color = BaTextMuted, style = MaterialTheme.typography.labelMedium)
+            Spacer(Modifier.height(8.dp))
             Text(
                 text = body,
                 color = BaText,
@@ -268,7 +329,7 @@ internal fun CompactAction(
                 contentDescription = accessibilityText
                 stateDescriptionText?.let { stateDescription = it }
             },
-        shape = RoundedCornerShape(14.dp),
+        shape = RoundedCornerShape(16.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = background,
             contentColor = foreground

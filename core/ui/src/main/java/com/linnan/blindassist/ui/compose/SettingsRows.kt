@@ -1,6 +1,7 @@
 package com.linnan.blindassist.ui.compose
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -50,7 +51,8 @@ internal fun SettingSwitchRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = 72.dp)
+            .heightIn(min = 80.dp)
+            .background(BaPanel, RoundedCornerShape(18.dp))
             .clickable(
                 role = Role.Switch,
                 onClickLabel = actionText,
@@ -64,11 +66,14 @@ internal fun SettingSwitchRow(
                     "$title，$body，当前$stateText"
                 }
             }
-            .padding(vertical = 6.dp),
+            .padding(horizontal = 14.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(icon, contentDescription = null, tint = if (checked) BaMint else BaTextMuted)
-        Spacer(Modifier.width(14.dp))
+        IconTile(
+            icon = icon,
+            accent = if (checked) BaMint else BaTextMuted
+        )
+        Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
             Text(title, color = BaText, fontWeight = FontWeight.Bold)
             Text(body, color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
@@ -97,20 +102,20 @@ internal fun SettingsActionRow(
             .heightIn(min = 76.dp)
             .clickable(role = Role.Button, onClick = onClick)
             .semantics(mergeDescendants = true) {},
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = BaPanel)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(icon, contentDescription = null, tint = BaMint)
+            IconTile(icon = icon, accent = BaMint)
             Spacer(Modifier.width(14.dp))
             Column(Modifier.weight(1f)) {
                 Text(title, color = BaText, fontWeight = FontWeight.Bold)
                 Text(body, color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
             }
-            Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = BaTextMuted)
+            Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = BaMint.copy(alpha = 0.72f))
         }
     }
 }

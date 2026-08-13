@@ -72,6 +72,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -99,6 +100,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
@@ -121,6 +123,12 @@ fun BlindAssistTheme(content: @Composable () -> Unit) {
         background = BaNight,
         surface = BaPanel,
         surfaceVariant = BaPanelSoft,
+        outline = BaHairline,
+        outlineVariant = BaHairlineSoft,
+        primaryContainer = BaMintWash,
+        onPrimaryContainer = BaMint,
+        secondaryContainer = BaSkyWash,
+        onSecondaryContainer = BaSky,
         onBackground = BaText,
         onSurface = BaText,
         onSurfaceVariant = BaTextMuted,
@@ -128,18 +136,79 @@ fun BlindAssistTheme(content: @Composable () -> Unit) {
     )
     MaterialTheme(
         colorScheme = colors,
-        typography = MaterialTheme.typography,
+        typography = BlindAssistTypography,
         content = content
     )
 }
 
-internal val BaNight = Color(0xFF0B1114)
-internal val BaPanel = Color(0xFF111D23)
-internal val BaPanelSoft = Color(0xFF1C2D34)
-internal val BaMint = Color(0xFF86DDB5)
+internal val BaNight = Color(0xFF091014)
+internal val BaPanel = Color(0xFF101B20)
+internal val BaPanelSoft = Color(0xFF1A2B32)
+internal val BaPanelRaised = Color(0xFF20343B)
+internal val BaMint = Color(0xFF8BE3BA)
 internal val BaSky = Color(0xFF8AC7FF)
 internal val BaAmber = Color(0xFFFFD66B)
 internal val BaDanger = Color(0xFFFF6B7E)
 internal val BaText = Color(0xFFF4EFE6)
 internal val BaTextMuted = Color(0xFFAFC0C6)
 internal val BaInk = Color(0xFF0B1114)
+internal val BaHairline = Color(0xFF34464D)
+internal val BaHairlineSoft = Color(0xFF223239)
+internal val BaMintWash = Color(0xFF17372F)
+internal val BaSkyWash = Color(0xFF172D3D)
+
+private val BlindAssistTypography = Typography(
+    headlineLarge = androidx.compose.ui.text.TextStyle(
+        fontSize = 34.sp,
+        lineHeight = 40.sp,
+        fontWeight = FontWeight.Bold,
+        letterSpacing = (-0.5).sp
+    ),
+    headlineMedium = androidx.compose.ui.text.TextStyle(
+        fontSize = 28.sp,
+        lineHeight = 34.sp,
+        fontWeight = FontWeight.Bold,
+        letterSpacing = (-0.25).sp
+    ),
+    headlineSmall = androidx.compose.ui.text.TextStyle(
+        fontSize = 22.sp,
+        lineHeight = 28.sp,
+        fontWeight = FontWeight.SemiBold
+    ),
+    titleLarge = androidx.compose.ui.text.TextStyle(
+        fontSize = 20.sp,
+        lineHeight = 26.sp,
+        fontWeight = FontWeight.SemiBold
+    ),
+    titleMedium = androidx.compose.ui.text.TextStyle(
+        fontSize = 17.sp,
+        lineHeight = 23.sp,
+        fontWeight = FontWeight.SemiBold
+    ),
+    bodyLarge = androidx.compose.ui.text.TextStyle(
+        fontSize = 17.sp,
+        lineHeight = 26.sp,
+        fontWeight = FontWeight.Normal
+    ),
+    bodyMedium = androidx.compose.ui.text.TextStyle(
+        fontSize = 15.sp,
+        lineHeight = 22.sp,
+        fontWeight = FontWeight.Normal
+    ),
+    bodySmall = androidx.compose.ui.text.TextStyle(
+        fontSize = 13.sp,
+        lineHeight = 19.sp,
+        fontWeight = FontWeight.Normal
+    ),
+    labelLarge = androidx.compose.ui.text.TextStyle(
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        fontWeight = FontWeight.SemiBold
+    ),
+    labelMedium = androidx.compose.ui.text.TextStyle(
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        fontWeight = FontWeight.SemiBold,
+        letterSpacing = 0.2.sp
+    )
+)

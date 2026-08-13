@@ -128,29 +128,22 @@ fun FeatureScreen(
     var modesExpanded by rememberSaveable { mutableStateOf(false) }
     ScreenColumn(modifier = modifier) {
         BlindAssistBrandHeader()
-        Spacer(Modifier.height(28.dp))
-        Text(
-            text = if (language == AppLanguage.EN) "Start assist" else "开始辅助",
-            style = MaterialTheme.typography.headlineMedium,
-            color = BaText,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.semantics { heading() }
-        )
-        Text(
-            text = if (language == AppLanguage.EN) {
+        Spacer(Modifier.height(32.dp))
+        ScreenIntro(
+            eyebrow = if (language == AppLanguage.EN) "READY TO ASSIST" else "辅助已就绪",
+            title = if (language == AppLanguage.EN) "Start assist" else "开始辅助",
+            body = if (language == AppLanguage.EN) {
                 "Current mode is ready. Start the phone camera when you are ready to observe ahead."
             } else {
                 "当前模式已准备好。需要观察前方时，直接打开手机摄像头。"
-            },
-            style = MaterialTheme.typography.bodyMedium,
-            color = BaTextMuted
+            }
         )
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(22.dp))
         CurrentModeSummary(
             controls = controls,
             language = language,
         )
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(14.dp))
         ActionFeatureCard(
             title = if (language == AppLanguage.EN) "Use phone camera" else "使用手机摄像头",
             subtitle = if (language == AppLanguage.EN) {
@@ -169,7 +162,7 @@ fun FeatureScreen(
                 "使用手机摄像头，按${controls.dailyUsageMode.displayName(language)}模式打开实时识别"
             }
         )
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(14.dp))
 
         CollapsibleDailyUsageModeSelector(
             selected = controls.dailyUsageMode,
@@ -178,7 +171,7 @@ fun FeatureScreen(
             onExpandedChange = { modesExpanded = it },
             onModeChange = onDailyUsageModeChange
         )
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(10.dp))
         ActionFeatureCard(
             title = if (language == AppLanguage.EN) "External glasses hardware" else "眼镜外界硬件连接",
             subtitle = if (language == AppLanguage.EN) {
@@ -196,7 +189,7 @@ fun FeatureScreen(
                 "打开眼镜外界硬件连接中心"
             }
         )
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(24.dp))
 
         InfoStrip(
             icon = Icons.Rounded.Shield,
@@ -227,14 +220,14 @@ private fun BlindAssistBrandHeader(modifier: Modifier = Modifier) {
             imageVector = BlindAssistBrandMark,
             contentDescription = null,
             tint = BaMint,
-            modifier = Modifier.size(36.dp)
+            modifier = Modifier.size(34.dp)
         )
-        Spacer(Modifier.width(12.dp))
+        Spacer(Modifier.width(10.dp))
         Text(
             text = "BlindAssist",
             color = BaText,
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Medium
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.SemiBold
         )
     }
 }
@@ -310,16 +303,16 @@ private fun CurrentModeSummary(
                     "当前辅助设置，模式$mode，场景$scenario，提醒档位$profile，关怀模式$care"
                 }
             },
-        shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.cardColors(containerColor = BaPanelSoft)
+        shape = RoundedCornerShape(22.dp),
+        colors = CardDefaults.cardColors(containerColor = BaMintWash)
     ) {
-        Column(Modifier.padding(16.dp)) {
+        Column(Modifier.padding(horizontal = 18.dp, vertical = 17.dp)) {
             Text(
                 text = if (language == AppLanguage.EN) "Current walking task" else "当前行走任务",
                 color = BaTextMuted,
                 style = MaterialTheme.typography.labelLarge
             )
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(8.dp))
             Text(
                 text = mode,
                 color = BaText,
@@ -328,7 +321,7 @@ private fun CurrentModeSummary(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(8.dp))
             Text(
                 text = if (language == AppLanguage.EN) {
                     "$scenario · $profile reminders · Care Mode $care"
@@ -364,10 +357,10 @@ private fun CollapsibleDailyUsageModeSelector(
                     "日常模式选择，当前${selected.displayName(language)}"
                 }
             },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = BaPanel)
     ) {
-        Column(Modifier.padding(16.dp)) {
+        Column(Modifier.padding(17.dp)) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -403,7 +396,12 @@ private fun CollapsibleDailyUsageModeSelector(
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
-                Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = BaTextMuted)
+                Icon(
+                    Icons.Rounded.ChevronRight,
+                    contentDescription = null,
+                    tint = if (expanded) BaMint else BaTextMuted,
+                    modifier = Modifier.size(22.dp)
+                )
             }
             AnimatedVisibility(
                 visible = expanded,
@@ -487,28 +485,20 @@ private fun ActionFeatureCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = if (emphasis) 136.dp else 116.dp)
+            .heightIn(min = if (emphasis) 128.dp else 108.dp)
             .clickable(role = Role.Button, onClick = onClick)
             .semantics(mergeDescendants = true) {
                 contentDescription = accessibilityText
             },
-        shape = RoundedCornerShape(if (emphasis) 22.dp else 18.dp),
-        colors = CardDefaults.cardColors(containerColor = if (emphasis) BaPanelSoft else BaPanel)
+        shape = RoundedCornerShape(if (emphasis) 24.dp else 20.dp),
+        colors = CardDefaults.cardColors(containerColor = if (emphasis) BaPanelRaised else BaPanel)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(if (emphasis) 20.dp else 18.dp)
+            modifier = Modifier.padding(horizontal = 18.dp, vertical = if (emphasis) 18.dp else 16.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .size(if (emphasis) 64.dp else 54.dp)
-                    .clip(RoundedCornerShape(if (emphasis) 20.dp else 16.dp))
-                    .background(accent.copy(alpha = if (emphasis) 0.22f else 0.16f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(icon, contentDescription = null, tint = accent, modifier = Modifier.size(if (emphasis) 32.dp else 24.dp))
-            }
-            Spacer(Modifier.width(14.dp))
+            IconTile(icon = icon, accent = accent, emphasized = emphasis)
+            Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
@@ -522,19 +512,20 @@ private fun ActionFeatureCard(
                     )
                     Text(
                         text = badge,
-                        color = BaInk,
+                        color = accent,
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .clip(RoundedCornerShape(50))
-                            .background(accent)
-                            .padding(horizontal = 10.dp, vertical = 5.dp)
+                            .background(accent.copy(alpha = 0.14f))
+                            .padding(horizontal = 9.dp, vertical = 5.dp)
                     )
                 }
                 Spacer(Modifier.height(6.dp))
                 Text(text = subtitle, color = BaTextMuted, style = MaterialTheme.typography.bodyMedium)
             }
-            Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = BaTextMuted)
+            Spacer(Modifier.width(8.dp))
+            Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = accent.copy(alpha = 0.75f))
         }
     }
 }
@@ -558,7 +549,7 @@ private fun DailyUsageModeSelector(
                     "日常使用向导，当前${selected.displayName(language)}。选择模式会应用场景、提醒档位、语音风格、震动强度和关怀模式。"
                 }
             },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = BaPanel)
     ) {
         Column(Modifier.padding(16.dp)) {
@@ -633,15 +624,15 @@ internal fun InfoStrip(
         modifier = Modifier
             .fillMaxWidth()
             .semantics(mergeDescendants = true) {},
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = BaPanelSoft)
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = BaPanel)
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(18.dp),
             verticalAlignment = Alignment.Top
         ) {
-            Icon(icon, contentDescription = null, tint = BaAmber, modifier = Modifier.size(22.dp))
-            Spacer(Modifier.width(12.dp))
+            IconTile(icon = icon, accent = BaAmber)
+            Spacer(Modifier.width(14.dp))
             Column {
                 Text(text = title, color = BaText, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(4.dp))
