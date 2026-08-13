@@ -1,0 +1,38 @@
+{
+  "schema": "blindassist.taro.pose_diverse_selector_isolated_canary_preflight_result.v1",
+  "result_id": "TARO_POSE_DIVERSE_SELECTOR_ISOLATED_CANARY_PREFLIGHT_RESULT_2026-08-13",
+  "date": "2026-08-13",
+  "status": "LOCAL_CANARY_HARNESS_PASS_DEVICE_EXECUTION_ENV_BLOCKED",
+  "implementation": {
+    "core_selector": "core/ustrf/src/main/java/com/linnan/blindassist/ustrf/TaroPoseDiverseFrameSelector.kt",
+    "isolated_harness": "apps/benchmarks/ustrf-shadow-benchmark/src/main/java/com/linnan/blindassist/ustrfbenchmark/TaroPoseDiverseCanaryHarness.kt",
+    "contract": "Only UstrfVioPoseAdmission.Available may enter the history buffer; rejected admission never enters; selector returns frame identity and pose deltas only.",
+    "raw_arcore_direct_admission": false,
+    "pixel_or_depth_input": false,
+    "risk_fusion_or_guidance": false,
+    "default_app_wiring": false
+  },
+  "local_tests": [
+    {"task": ":core:ustrf:test", "result": "PASS", "java_version": "17.0.19", "coverage": "default-off, pose/clock/frame/quality fail-closed behavior and deterministic generic selection"},
+    {"task": ":ustrf-shadow-benchmark:testDebugUnitTest", "result": "PASS", "java_version": "17.0.19", "coverage": "VIO admission rejection does not buffer; available receipt selects; expired history is removed"}
+  ],
+  "device_preflight": {
+    "health_status": "degraded",
+    "ready_device_count": 0,
+    "ready_devices": [],
+    "avd_count": 0,
+    "terminal": "ENV_BLOCKED_NO_READY_ANDROID_DEVICE_OR_AVD"
+  },
+  "remaining_device_gate": {
+    "required_layer": "project-owned instrumentation on an identified ARCore-capable device",
+    "must_prove": [
+      "timestamp-bound tracking receipts",
+      "inter-frame-stable world-frame admission rather than EPHEMERAL_PER_FRAME raw pose",
+      "independently verified extrinsics receipt required by the existing VIO promoter",
+      "150ms to 1s bounded history selection",
+      "selection receipt only; no risk or guidance output"
+    ],
+    "may_not_infer_from_local_tests": "device runtime success"
+  },
+  "claim_ceiling": "Local core and isolated-harness implementation/test evidence only. Device execution is not evaluable because no device or AVD is ready; not product, default-App, or safety evidence."
+}

@@ -69,6 +69,10 @@ Android、HTP 或默认 App 自动继承权限。
   `14.0222>13.8847`、Bonn `19.2037>17.2662`、task-outcome-blind TUM `11.25>8.9375`、ARKit
   `16.4490>12.9431`。因此 `TARO_POSE_DIVERSE_GENERIC_R0` 已实现为 `core:ustrf` 中默认关闭的纯 Kotlin
   frame selector；它只返回历史 frame identity，不读 payload、不融合风险、不发提醒、不接默认 App。
+- 隔离 benchmark harness 只接受 `UstrfVioPoseAdmission.Available`；`EPHEMERAL_PER_FRAME` raw ARCore pose 或任一
+  admission failure 都不会进入历史 buffer。`:core:ustrf:test` 与 `:ustrf-shadow-benchmark:testDebugUnitTest` 已在
+  JDK 17 通过；设备 health check 为 0 ready devices、AVD inventory 为 0，因此设备 canary 当前
+  `ENV_BLOCKED_NO_READY_ANDROID_DEVICE_OR_AVD`，不得写成 device PASS。
 
 ## 当前证据入口
 
@@ -85,6 +89,7 @@ Android、HTP 或默认 App 自动继承权限。
 - [R14-R20 scorer and confirmation results](TARO_TASK_EVIDENCE_SCORER_AND_CONFIRMATION_RESULTS_2026-08-13.json)
 - [R21-R22 cross-source learned-ranker result](TARO_CROSS_SOURCE_LEARNED_RANKER_RESULT_2026-08-13.json)
 - [Pose-diverse portfolio and default-off core selector](TARO_POSE_DIVERSE_BASELINE_PORTFOLIO_AND_CORE_SELECTOR_RESULT_2026-08-13.json)
+- [Isolated canary preflight and device environment stop](TARO_POSE_DIVERSE_SELECTOR_ISOLATED_CANARY_PREFLIGHT_RESULT_2026-08-13.json)
 - [算法路线总表](../ALGORITHM_RESEARCH_CURRENT.md) · [TARO Module](../../../scripts/research/taro/README.md)
 
 ## 唯一 successor

@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.arcore)
     implementation(libs.tflite)
 
+    testImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.androidx.test.ext.junit)
