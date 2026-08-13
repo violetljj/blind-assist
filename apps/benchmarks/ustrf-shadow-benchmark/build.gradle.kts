@@ -23,7 +23,9 @@ android {
         targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
     }
 
-    sourceSets["main"].assets.srcDir("../app/src/main/assets")
+    // Reuse the repository's identity-bound default detector assets in this isolated benchmark.
+    // Do not copy or fork the model: per-run receipts recompute its packaged SHA-256.
+    sourceSets["main"].assets.srcDir("../../../app/src/main/assets")
     androidResources {
         noCompress += "tflite"
     }

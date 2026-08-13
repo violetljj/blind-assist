@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / R13_ORACLE_HEADROOM_PASS / R14_R22_TASK_SCORER_TRANSFER_FAIL_STOP / POSE_DIVERSE_BASELINE_MULTI_SOURCE_PASS / ANCHOR_DEVICE_CANARY_PASS / RGB_PAIR_SUPPORT_PASS / RGB_HISTORY_RETENTION_COST_PASS / RGB_SELECTED_DECODE_INTEGRITY_PASS / YOLO_POSITIVE_EVIDENCE_PROTOCOL_LOCKED / FRESH_RAW_DEPTH_PAIR_FAIL_STOP / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / R13_ORACLE_HEADROOM_PASS / R14_R22_TASK_SCORER_TRANSFER_FAIL_STOP / POSE_DIVERSE_BASELINE_MULTI_SOURCE_PASS / ANCHOR_DEVICE_CANARY_PASS / RGB_PAIR_SUPPORT_PASS / RGB_HISTORY_RETENTION_COST_PASS / RGB_SELECTED_DECODE_INTEGRITY_PASS / YOLO_POSITIVE_EVIDENCE_SHADOW_PASS / FRESH_RAW_DEPTH_PAIR_FAIL_STOP / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
 
 本页只维护 TARO 当前状态、权限和唯一算法 successor。较早完整 R0–R11 叙事保存在
 [14d8ad7e 历史快照](archive/README_FULL_HISTORY_2026-08-13.md)，不能从中恢复旧权限。
@@ -99,6 +99,11 @@ Android、HTP 或默认 App 自动继承权限。
   backend 因无 source identity、逐帧归一化且无跨帧米制语义被拒绝。正式 shadow 要求 4 个 opaque scene
   parents、至少 120 个 evaluable references；current+passive 与 current+pose-diverse 各自严格只多用一帧，
   primary 是中心下方 screen-space proxy 内新增的正对象 token。无检测保持空 positive set，不是 negative/safe。
+- 修正 preliminary `scene_a..d` 中把 focus 状态误纳入 token identity 的实现偏差后，使用 fresh
+  `scene_e..h` 完成正式 4-scene/120-reference device shadow：所有 denominator/runtime gate 通过；pose-diverse
+  parent macro 新增 focused token 为 `0.5750`，passive 为 `0.3917`，pose 在 4 个 scene parents 中 3 胜 1 负，
+  terminal 为 `POSE_DIVERSE_POSITIVE_VISUAL_EVIDENCE_PASS`。这只证明单设备受控场景中冻结模型的屏幕空间
+  positive-evidence observability，不证明 detector accuracy、body/path 几何、碰撞正确性、产品或安全。
 
 ## 当前证据入口
 
@@ -120,18 +125,18 @@ Android、HTP 或默认 App 自动继承权限。
 - [Owned RGB history exact-identity and cost result](TARO_RGB_FRAME_HISTORY_RETENTION_AND_COST_RESULT_2026-08-14.json)
 - [Exact selected/reference delayed-decode integrity result](TARO_RGB_SELECTED_PAYLOAD_DECODE_INTEGRITY_RESULT_2026-08-14.json)
 - [Frozen YOLO positive-evidence backend preflight and shadow lock](TARO_RGB_PAIR_FROZEN_VISUAL_EVIDENCE_BACKEND_PREFLIGHT_2026-08-14.json)
+- [Frozen YOLO multi-scene positive-evidence shadow result](TARO_RGB_PAIR_YOLO_POSITIVE_EVIDENCE_SHADOW_RESULT_2026-08-14.json)
 - [算法路线总表](../ALGORITHM_RESEARCH_CURRENT.md) · [TARO Module](../../../scripts/research/taro/README.md)
 
 ## 唯一 successor
 
-`TARO_RGB_PAIR_YOLO_POSITIVE_EVIDENCE_SHADOW_R0`：
+`TARO_DEFAULT_OFF_APP_POSITIVE_EVIDENCE_SHADOW_PREFLIGHT_R0`：
 
-1. 只能按已锁 JSON 使用哈希绑定的 YOLO/labels 与 CPU_XNNPACK；每个 opaque `scene_id` 最多收 40 个、至少
-   20 个 evaluable references，共需 4 个 scene parents 和至少 120 references；
-2. 每个 reference 在同一 150ms..1s exact history pool 内冻结 passive-500ms 与 pose-diverse identity 后，才按
-   unique FrameStamp 运行 detector；三臂共享缓存且各 active arm 只多用 1 帧；
-3. 只持久化 per-scene 聚合、模型/构建/设备 receipt、延迟与 abstention/error 计数；不得保存图像、box、
-   scene 地址或人员身份。分母不足、runtime gate 失败或 pose 不胜 passive 分别按预锁 terminal 停止；
+1. 在修改默认 App pipeline 前，先冻结 default-off integration seam、额外推理 cadence、owned-payload 生命周期、
+   资源预算、abstention 和回滚门；不得用本次 PASS 直接开启功能；
+2. 首个 App 步骤只能是无 guidance、无 risk-field mutation 的 telemetry shadow，且必须继续绑定 exact
+   FrameStamp、冻结模型哈希和 positive-only UNKNOWN 语义；
+3. 不得保存图像、box、scene 地址或人员身份；detector absence 不能成为 negative/CLEAR/safe；
 4. learned task scorer 保持 STOP，只有 materially new source-time signal/supervision 才可重开；不得用 generic
    baseline 的落地掩盖 task-specific scorer 失败。
 
@@ -140,7 +145,7 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 
 ## 当前允许
 
-- 在隔离 benchmark 中按预锁协议运行多 scene YOLO positive-evidence shadow，并只写聚合 receipt；
+- 只读审计默认 App pipeline，并为 default-off/no-guidance positive-evidence telemetry shadow 建立 outcome-blind preflight；
 - 对纯 camera-history canary 使用同 session/same-anchor 相对位姿；外参门禁继续用于需要 body-frame/risk-field
   warp 的独立链路，不得把两者混为同一权限；
 - 只有 materially new source-time signal/supervision 才可另立 learned scorer successor；
@@ -153,7 +158,8 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 - 用不同额外帧预算比较 sensing arms，或只报告 recovery 而隐藏 false-occupied/known retention/cost；
 - 在 Development canary 中输出 `CLEAR`、把 UNKNOWN 当 negative，或用 R11 outcome 选择该 canary 的 source；
 - 回调 R12/R19/R20/R21 的 query、outcome 或 gate，或把 neighbor depth 泄漏进 scorer input；
-- 将 generic core selector 写成 task-specific scorer、跨设备成功、任务增益、风险融合、默认 App 或产品成功；
+- 将 generic core selector 或本次单设备 screen-space PASS 写成 task-specific scorer、跨设备成功、任务增益、
+  风险融合、默认 App 或产品成功；
 - 将重投影/旧 raw depth 当成独立 fresh observation，或在当前设备上继续回调 raw-depth pair gate；
 - 修改 sealed R11 selection/selector/candidate/threshold，或覆盖、resume、删除、重跑已消费 one-shot；
 - 越级训练、Android/QNN/HTP、默认 App、产品或安全结论。
@@ -164,5 +170,6 @@ R13 已证明 task-conditioned oracle headroom；R21 证明 learned scorer 可�
 R22 表示扩张又回归，因此 task-specific scorer 停止。pose-diverse generic baseline 已获得跨三源族的 Development
 支持并落为默认关闭的纯 Kotlin selector；单台真实 ARCore 设备已证明 Anchor 相对选帧与 source-bound RGB pair
 support，fresh raw-depth pair 则失败；同机已进一步证明完整 YUV payload 的 1 秒/32 MiB 有界 ownership、
-selection identity、copy 成本和 exact selected/reference 延迟解码完整性。尚未运行模型、证明任务证据增益、
-完成风险融合、产品有效性或安全验证，默认 App 不变。
+selection identity、copy 成本和 exact selected/reference 延迟解码完整性，并在 4 个受控场景的同预算冻结 YOLO
+shadow 中通过 screen-space positive-evidence observability gate。尚未证明 detector accuracy、body/path 或碰撞
+正确性，未完成风险融合、产品有效性或安全验证，默认 App 不变。

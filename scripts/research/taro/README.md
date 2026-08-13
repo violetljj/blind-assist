@@ -25,6 +25,10 @@ machine-readable schema、measurement-only observability、有限弱子空间 ta
   fail-closed 与非 candidate-input schema 拒绝；结果只回答 source 是否支持下一 observability canary。
 - `validate_rgb_visual_evidence_backend_preflight.py`：验证 RGB pair shadow preflight 的唯一 backend 数量、
   冻结 YOLO/labels 大小与 SHA-256、同预算/scene/UNKNOWN 门以及零 pre-lock live model reads。
+- `aggregate_yolo_positive_evidence_shadow.py`：从 instrumentation test log 提取不含图像/box 的 opaque-scene
+  聚合 receipt，并按冻结的协议/模型/identity、scene/reference、runtime 与 parent-macro gate 产生唯一 terminal；
+- `test_aggregate_yolo_positive_evidence_shadow.py`：覆盖冻结四场 PASS、模型 identity 漂移和 exact payload
+  lookup 不完整时的 fail-closed 聚合。
 - 五臂 positive-oracle runtime、测试和运行说明位于
   [`taro_o1r_r12_clear_observability_runtime`](../taro_o1r_r12_clear_observability_runtime/README.md)；当前 Bonn
   R1 因 recovery/CLEAR parent 分母不足而 `NOT_EVALUABLE`，未授权 learned scorer。
@@ -32,7 +36,7 @@ machine-readable schema、measurement-only observability、有限弱子空间 ta
 运行：
 
 ```powershell
-E:\codex-tools\bin\blindassist-python.cmd -m unittest scripts.research.taro.test_validate_taro_p0_protocol scripts.research.taro.test_audit_observation_pair_support
+E:\codex-tools\bin\blindassist-python.cmd -m unittest scripts.research.taro.test_validate_taro_p0_protocol scripts.research.taro.test_audit_observation_pair_support scripts.research.taro.test_aggregate_yolo_positive_evidence_shadow
 ```
 
 本基础 Module 没有 solver、数据 materializer、模型、trainer 或 action scorer；pair-support audit 只是
