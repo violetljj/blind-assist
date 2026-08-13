@@ -1,0 +1,120 @@
+{
+  "schema": "blindassist.taro.o1r.r11_phase_a_validator_round12_repair.v1",
+  "repair_id": "TARO_O1R_R11_PHASE_A_INDEPENDENT_VALIDATOR_ROUND12_REPRESENTATION_REPAIR_R0",
+  "date": "2026-08-13",
+  "frozen_at": "2026-08-13T09:28:27.3275300+08:00",
+  "status": "R11_PHASE_A_VALIDATOR_ROUND12_REPRESENTATION_REPAIR_FROZEN",
+  "repair_class": "PROTOCOL_ONLY_NUMERIC_REPRESENTATION",
+  "reason": "After the host reboot restored CUDA, the original independent validator reverified the immutable terminal and source inputs but rejected the first candidate source receipt because it compared the producer's canonical JSON round-12 trajectory and gravity values directly with independently reconstructed float64 values before serialization. The independently reconstructed values canonicalize exactly to the stored values.",
+  "original_attempt": {
+    "date": "2026-08-13",
+    "cuda_preflight_passed": true,
+    "failure_code": "R11_PHASE_A_VALIDATION_SOURCE_BINDING",
+    "failure_message": "candidate source receipt differs from frozen inventory metadata",
+    "first_mismatch_physical_frame_id": "466160/44796584/17383.777",
+    "first_stored_transform_scalar": -0.403235180695,
+    "first_reconstructed_transform_scalar": -0.4032351806954706,
+    "first_stored_gravity_scalar": -0.077485681602,
+    "first_reconstructed_gravity_scalar": -0.07748568160183153,
+    "stored_numeric_sha256": "B3CCB272ACACF3EA7C41CAD6DC196AA5536523EF32293118D44553CEC49574C7",
+    "canonicalized_reconstruction_sha256": "B3CCB272ACACF3EA7C41CAD6DC196AA5536523EF32293118D44553CEC49574C7",
+    "precanonical_exact_equality": false,
+    "postcanonical_exact_equality": true,
+    "phase_a_root_modified": false,
+    "validation_result_created": false,
+    "parent_scoring_or_selection_created": false,
+    "faro_highres_truth_label_outcome_read": false
+  },
+  "bindings": {
+    "original_execution_lock": {
+      "path": "docs/research/taro/TARO_O1R_R11_FRESH_48_PARENT_SOURCE_ONLY_PHASE_A_ONE_SHOT_EXECUTION_LOCK_2026-08-12.json",
+      "bytes": 23648,
+      "sha256": "F0724520666CDC4DADEF432C27ED3D837293C34D59BE9719591F159D84F1B173"
+    },
+    "original_terminal": {
+      "path": "artifacts.local/evidence/taro/o1r-r11-fresh-pool-phase-a-r0/terminal.json",
+      "bytes": 1033405,
+      "sha256": "C4084BDBD00ECCA5735753E20893348505AB2A19650FB334850ADCD6D5173186"
+    },
+    "original_validator": {
+      "path": "scripts/research/taro_o1r_r11_abstention_runtime/validate_pool_phase_a.py",
+      "bytes": 60958,
+      "sha256": "F0887EDF26B78621916AA9CBD59A6D82C03176AF2F9D3D748677B341FB334C5E"
+    },
+    "repair_auditor": {
+      "path": "scripts/research/taro_o1r_r11_abstention_runtime/audit_pool_phase_a_round12_terminal.py",
+      "bytes": 17362,
+      "sha256": "E66178C93E8453105D80644A80DCCA3D2F9F5A82BAE8C57A5C125E8A6148CC89"
+    },
+    "repair_auditor_test": {
+      "path": "scripts/research/taro_o1r_r11_abstention_runtime/test_audit_pool_phase_a_round12_terminal.py",
+      "bytes": 7303,
+      "sha256": "8190AE82374234743DCE8B537D5EBAD377448D9F35FE8CA9D419E7D19434CFDC"
+    }
+  },
+  "predecessor_identity": {
+    "execution_lock_content_sha256": "384B956CE67DF23812EA31DFD48B7D94CA2885CA83FA77C2E481BD90EC70B832",
+    "terminal_content_sha256": "596DF5960A483F45A8777B914C50412B6A4A29CBCF39581FE0984DC658F77B71",
+    "terminal": "TARO_O1R_R11_FRESH_POOL_PHASE_A_SOURCE_ONLY_SEALED_PASS",
+    "parent_count": 48,
+    "frame_count": 1043,
+    "query_count": 9387,
+    "root_file_count": 5219,
+    "root_bytes": 959553693
+  },
+  "numeric_contract": {
+    "producer_representation": "CANONICAL_JSON_FLOAT_ROUND_12",
+    "independent_reconstruction": "FLOAT64_TRAJECTORY_INTERPOLATION_AND_NORMALIZED_GRAVITY",
+    "repaired_fields": [
+      "camera_to_world_4x4",
+      "gravity_up_camera_xyz"
+    ],
+    "comparison": "EXACT_EQUALITY_AFTER_RECONSTRUCTION_ROUND_12",
+    "tolerance": null,
+    "epsilon": null
+  },
+  "frozen_checks": [
+    "verify this repair receipt and all five exact file bindings before applying the repair",
+    "execute the original validator against the same execution lock and the same sealed 5219-file root",
+    "retain every original terminal, root-set, file-hash, source-container, source-payload, candidate-array, lineage, count, ledger, resource and authority check",
+    "canonicalize only independently reconstructed camera_to_world_4x4 and gravity_up_camera_xyz values to the producer's frozen 12-decimal JSON representation",
+    "compare those canonicalized values by exact equality with no epsilon or tolerance",
+    "restore the original validator function even if validation fails",
+    "after the complete read-only validation passes, write and replay the sealed result in a same-volume sibling partial root, then atomically rename that complete one-file root to the fresh formal root"
+  ],
+  "forbidden": [
+    "modify the original validator, original execution lock, original terminal or any Phase-A evidence byte",
+    "rerun DepthART or rewrite source, candidate, factor or lineage records",
+    "canonicalize any field other than camera_to_world_4x4 and gravity_up_camera_xyz",
+    "introduce an epsilon, approximate comparison, schema bypass or hash bypass",
+    "change the parent roster, frame plan, query count, R7 or R11 algorithm, selector, threshold, gate or state semantics",
+    "perform R9 parent scoring, top-24 selection or any highres, FARO, truth, label or outcome access",
+    "claim scientific, deployment, product or safety promotion"
+  ],
+  "scientific_influence": {
+    "phase_a_root_modified": false,
+    "model_rerun": false,
+    "source_or_candidate_rewritten": false,
+    "algorithm_changed": false,
+    "selector_or_threshold_changed": false,
+    "parent_or_frame_roster_changed": false,
+    "faro_highres_truth_label_outcome_read": false,
+    "training_network_device_deployment_product_safety_authority": false
+  },
+  "argv": [
+    "-m",
+    "scripts.research.taro_o1r_r11_abstention_runtime.audit_pool_phase_a_round12_terminal",
+    "--repair-receipt",
+    "docs/research/taro/TARO_O1R_R11_PHASE_A_INDEPENDENT_VALIDATOR_ROUND12_REPRESENTATION_REPAIR_2026-08-13.json",
+    "--output-root",
+    "artifacts.local/evidence/taro/o1r-r11-fresh-pool-phase-a-validator-round12-repair-r0"
+  ],
+  "output": {
+    "path": "artifacts.local/evidence/taro/o1r-r11-fresh-pool-phase-a-validator-round12-repair-r0/post-result-audit.json",
+    "fresh_root_required": true,
+    "overwrite_forbidden": true
+  },
+  "authority": "Read-only post-terminal validation of the same sealed R11 Phase-A root only; no model rerun, source or evidence rewrite, parent scoring, top-24 selection, FARO, highres depth, truth, label, outcome, training, network, device, deployment, product or safety authority.",
+  "terminal": "R11_PHASE_A_VALIDATOR_REPAIR_FROZEN_REVALIDATION_REQUIRED",
+  "content_sha256": "FC1F95EA43DD0508D449FFAABBE0685594CC057E66CE550F9F8F5997B7A030DF"
+}

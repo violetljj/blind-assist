@@ -2,6 +2,23 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：Codex。主机重启后 RTX 5060 / CUDA 12.8 恢复，针对同一
+  immutable TARO R11 Phase-A 5,219-file root 重跑原 independent validator。原 validator 通过 CUDA 前检并
+  重验 terminal/source，但在首帧 `466160/44796584/17383.777` 以
+  `R11_PHASE_A_VALIDATION_SOURCE_BINDING` 停止：producer 通过冻结 canonical JSON 把 pose/gravity 序列化为
+  12 位小数，validator 则把重建的 float64 值在序列化前作 Python exact equality；例如
+  `-0.403235180695` 对 `-0.4032351806954706`、`-0.077485681602` 对
+  `-0.07748568160183153`。两组独立重建值按冻结 round-12 规范化后与 stored 数值的 canonical SHA 均为
+  `B3CCB272...49574C7`，证明当前故障只属于 numeric representation，不是 source/evidence corruption。
+  原 validator、execution lock、terminal 和 Phase-A root 全部保持字节不变，模型/FARO/highres/truth/label/
+  outcome/scoring 均未重跑或读取。新增并冻结 protocol-only repair：只在原 validator 的 independent trajectory
+  重建后规范化 `camera_to_world_4x4` 与 `gravity_up_camera_xyz`，随后仍作精确比较；无 epsilon、无 schema/hash
+  bypass，原有 5,219-file/root/source/candidate/lineage/ledger/resource 检查全部保留。正式结果先在同卷 sibling
+  partial root 完整写入并回读 seal/bytes/SHA/单文件集，再原子发布整个 root；注入 fsync 故障时 formal root 保持
+  absent 且 partial 清理。10/10 focused tests 与
+  py_compile PASS。当前唯一 successor 是把该 repair 推送到 master 后，对同一 sealed root 执行一次只读
+  post-terminal audit；只有该结果 PASS 才可另立 source-only top-24 lock。
+
 - 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。正式消费 TARO O1R R11 all-48 source-only
   Phase A one-shot。producer 原子终态为 `TARO_O1R_R11_FRESH_POOL_PHASE_A_SOURCE_ONLY_SEALED_PASS`，封存 exact
   48 parents / 1,043 frames / 9,387 queries、1,043 次 DepthART inference 与对应 R7/R11 factors。R7 state 为
