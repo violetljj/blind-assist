@@ -92,6 +92,50 @@ function Assert-AuthoritySurfaceLinkResult(
     Write-Host "PASS: $Name"
 }
 
+function Assert-DocumentationFixtureResult(
+    [string]$Name,
+    [hashtable]$Files,
+    [bool]$ShouldPass
+) {
+    $repoRoot = Join-Path $script:testRoot $Name
+    $docsRoot = Join-Path $repoRoot 'docs'
+    New-Item -ItemType Directory -Force -Path $docsRoot | Out-Null
+    $baseFiles = @{
+        'docs/README.md' = @'
+# docs
+
+[project state](PROJECT_STATE.md)
+[research](research/README.md)
+[domain](research/domain/README.md)
+'@
+        'docs/PROJECT_STATE.md' = '# fixture'
+        'docs/research/README.md' = @'
+# research
+
+[algorithm](ALGORITHM_RESEARCH_CURRENT.md)
+[data](DATA_RESEARCH_CURRENT.md)
+[system](SYSTEM_RESEARCH_CURRENT.md)
+'@
+        'docs/research/ALGORITHM_RESEARCH_CURRENT.md' = '# fixture'
+        'docs/research/DATA_RESEARCH_CURRENT.md' = '# fixture'
+        'docs/research/SYSTEM_RESEARCH_CURRENT.md' = '# fixture'
+        'docs/research/domain/README.md' = '# domain'
+    }
+    foreach ($entry in $baseFiles.GetEnumerator()) {
+        Write-Utf8File (Join-Path $repoRoot $entry.Key) $entry.Value
+    }
+    foreach ($entry in $Files.GetEnumerator()) {
+        Write-Utf8File (Join-Path $repoRoot $entry.Key) $entry.Value
+    }
+
+    & $script:IndexScript -DocsRoot $docsRoot
+    $passed = $?
+    if ($passed -ne $ShouldPass) {
+        throw "Scenario '$Name' expected pass=$ShouldPass but got pass=$passed."
+    }
+    Write-Host "PASS: $Name"
+}
+
 try {
     $script:IndexScript = (Resolve-Path -LiteralPath $IndexScript).Path
     New-Item -ItemType Directory -Path $testRoot | Out-Null
@@ -116,6 +160,68 @@ try {
         -RelativePath 'research/domain/archive/FIXTURE_PROTOCOL_2026-08-10.md' `
         -Content "# archived protocol`n`n[missing](MISSING.md)`n" `
         -ShouldPass $true
+    Assert-DocumentationFixtureResult `
+        -Name 'archive-readme-broken-link' `
+        -Files @{
+            'docs/research/domain/archive/README_FULL_HISTORY_2026-08-13.md' = "# archive`n`n[missing](MISSING.md)`n"
+        } `
+        -ShouldPass $false
+    Assert-DocumentationFixtureResult `
+        -Name 'archive-readme-parent-link-valid' `
+        -Files @{
+            'docs/research/domain/archive/README_FULL_HISTORY_2026-08-13.md' = "# archive`n`n[current](../README.md)`n"
+        } `
+        -ShouldPass $true
+    Assert-DocumentationFixtureResult `
+        -Name 'current-snapshot-status-conflict' `
+        -Files @{
+            'docs/research/domain/DOMAIN_CURRENT_SNAPSHOT_2026-08-13.md' = "# snapshot`n`n状态：current`n"
+        } `
+        -ShouldPass $false
+    Assert-DocumentationFixtureResult `
+        -Name 'snapshot-status-valid' `
+        -Files @{
+            'docs/research/domain/DOMAIN_CURRENT_SNAPSHOT_2026-08-13.md' = "# snapshot`n`n状态：snapshot / historical`n"
+        } `
+        -ShouldPass $true
+    Assert-DocumentationFixtureResult `
+        -Name 'json-repo-path-valid' `
+        -Files @{
+            'docs/research/domain/result.json' = '{"implementation_path":"scripts/tool.py"}'
+            'scripts/tool.py' = '# fixture'
+        } `
+        -ShouldPass $true
+    Assert-DocumentationFixtureResult `
+        -Name 'json-repo-path-missing' `
+        -Files @{
+            'docs/research/domain/result.json' = '{"implementation_path":"scripts/missing.py"}'
+        } `
+        -ShouldPass $false
+    Assert-DocumentationFixtureResult `
+        -Name 'json-local-output-path-ignored' `
+        -Files @{
+            'docs/research/domain/result.json' = '{"artifact_path":"artifacts.local/evidence/missing.json","build_path":"apps/demo/build/missing.txt"}'
+        } `
+        -ShouldPass $true
+    Assert-DocumentationFixtureResult `
+        -Name 'json-nonpath-field-ignored' `
+        -Files @{
+            'docs/research/domain/result.json' = '{"description":"docs/MISSING.md"}'
+        } `
+        -ShouldPass $true
+    Assert-DocumentationFixtureResult `
+        -Name 'json-malformed' `
+        -Files @{
+            'docs/research/domain/result.json' = '{"path":'
+        } `
+        -ShouldPass $false
+    $longRouteBody = (1..181 | ForEach-Object { "line $_" }) -join "`n"
+    Assert-DocumentationFixtureResult `
+        -Name 'route-readme-budget' `
+        -Files @{
+            'docs/research/domain/README.md' = $longRouteBody
+        } `
+        -ShouldPass $false
 
     $missingCategoryRoot = Join-Path $testRoot 'research-missing-category'
     New-Item -ItemType Directory -Force -Path (Join-Path $missingCategoryRoot 'research') | Out-Null

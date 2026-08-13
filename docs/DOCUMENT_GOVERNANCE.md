@@ -1,7 +1,7 @@
 # BlindAssist 文档治理
 
 状态：current
-最后核验：2026-08-10
+最后核验：2026-08-13
 适用范围：仓库内所有协作者、自动化代理与长期任务。
 
 ## 目标
@@ -41,7 +41,10 @@
   重要验证、材料失败和可复用操作教训；普通小修复、一次性测试和常规重构不写条目。
   保留历史原文，不为美化时间线改写旧结论。
 - `idea.md` 只保留待决方向。实验结束后写一条简短决策并链接证据，而不是复制实验流水。
-- 新的顶层 `docs/*.md` 必须在 `docs/README.md` 中列为 `current`、`snapshot` 或 `archive`。`scripts/check_docs_index.ps1` 还会校验所有非归档 current 文档、路线 README 和 protocol 的本地链接；`history/` 与 `archive/` 保留历史路径原文，不强制追随当前树。
+- 新的顶层 `docs/*.md` 必须在 `docs/README.md` 中列为 `current`、`snapshot` 或 `archive`。`scripts/check_docs_index.ps1` 校验所有非归档 current、路线 README、protocol，以及 `history/archive` 内承担导航职责的聚合 `README*.md`；普通历史正文可以保留旧路径原文。
+- 日常路线 `docs/research/<route>/README.md` 只保留当前主张、当前结论、少量证据入口、唯一 successor、允许/禁止和 claim ceiling，硬预算为 180 行。完整过程原文进入同路线 archive，不能从 archive 恢复 authority。
+- 稳定 Module README 只描述 Interface、输出、安全边界和停止条件；轮次状态与 successor 委托给 owning route current。分类 current 的单行路线摘要应保持可读，不重新承载完整协议。
+- 非历史 `docs/**/*.json` 中键为 `path` 或 `*_path` 的仓库相对稳定路径必须存在；URI、绝对路径、`artifacts.local/` 与易失 `build/` 证据不在此门内。
 - `docs/PROJECT_STATE.md` 是冷启动导航，不复制研究结论；任务开始时先读它，默认读取一个分类 current/根入口和一个明确的路线/合同/测试入口，直接依赖、验证或冲突需要时可扩展。
 - 冷启动导航只允许稳定身份、路径和读取规则；状态、主张、指标、successor、禁止动作和默认 App 权限必须只在对应 current 真源维护。
 - `ALGORITHM_RESEARCH_CURRENT.md` 的 current 路线摘要必须与其唯一真源 README 的顶部 current 状态行、“唯一 successor”段和默认 App 标记同步；历史段落中偶然出现同名 token 不算同步。`SYSTEM_RESEARCH_CURRENT.md` 遇到同一 DepthART/HFTF 执行面时只分类并显式委托，不建立第二份动态真源。
@@ -50,6 +53,8 @@
 ## 历史与归档
 
 - 不删除已经用于解释决策、版本或验证的历史文档。把它们标记为 `snapshot` 或 `archive`，并从当前入口链接。
+- `CHANGELOG.md` 只保留 release/user-visible 变化；既有研究历史移入
+  `docs/history/project-materials/` 后留一个可访问指针，不删除原文。
 - 当 `DEVELOPMENT_LOG.md` 的近期部分再次影响查找效率时，按月复制旧日期块到 `docs/history/development-log/`；根文件保留索引和最近 2–4 周。迁移必须保持原文、日期和可访问链接。
 - `scripts/check_project_structure.ps1` 将根日志限制为 6000 行、1200000 bytes，且最老日期不超过 28 天。行数与字节预算为近期中文工程记录保留合理余量；任一超限仍须完成月度原文归档，不能无限扩张根日志。
 - 已完成任务从本地 handoff 索引移除前，先将持久决策写入相应 current 文档、CHANGELOG 或开发日志。
@@ -60,8 +65,8 @@
 | --- | --- |
 | 小范围代码/文档修改 | 只在形成 durable decision 或重要验证时更新相关 current 文档或 `DEVELOPMENT_LOG.md` |
 | 发布、演示或用户可见变化 | README + CHANGELOG + 发布验证文档 |
-| Discovery/Canary 研究 | 优先在现有 current 或单个 LITE round 记录中写问题、来源、最小实验、结果和下一步；不默认新增 contract/lock/receipt |
-| Development 研究 | 一个结果 snapshot + 简短开发日志；仅在身份、冻结或重放风险需要时增加机器 contract |
+| Discovery/Canary 研究 | 最小实验只需问题/假设、可信 baseline、一个有意义变化、可观察指标/决策和停止条件；可在 scoped 输出中记录，不默认新增文档、contract、lock 或 receipt |
+| Development 研究 | 沿用上述五项；复用论文/代码/模型/公开数据时记录来源、许可和继承/新贡献边界。只有结果真正改变下一决策或形成 durable claim 时才写一个 owning result，不强制 snapshot + 开发日志双写 |
 | Confirmation/Deployment 或不可逆研究决定 | 使用 `RESEARCH_PROTOCOL_TEMPLATE.md` 的 STRICT profile，生成机器 contract 并运行 `scripts/validate_research_protocol.py` |
 | 多阶段或跨窗口任务 | 遵循 `AGENTS.md` 的本地 handoff 规则 |
 | 新协议、门禁或不可逆决定 | current 协议；必要时新增 `docs/decisions/ADR-XXXX-*.md` 并链接到 `docs/README.md` |
@@ -97,15 +102,14 @@ current 真源；导航页只增加或调整链接，不复制状态和指标。
 
 ## 验证
 
-文档变更至少执行：
+文档变更只运行覆盖实际改变面的最小检查。例如导航、current、protocol 或聚合 archive
+README 变化执行：
 
 ```powershell
 git diff --check
 pwsh -File scripts/check_docs_index.ps1
-pwsh -File scripts/check_project_structure.ps1
 ```
 
-修改上述门禁本身时，同时运行对应的 `test_check_docs_index.ps1`、
-`test_check_project_structure.ps1` 或 `test_repo_hygiene.ps1`。CI 必须对 live tree 运行
-`check_repo_hygiene.ps1 -IncludeStructure` 和 `check_docs_index.ps1`，不能只测临时 fixture。
-涉及脚本入口、发布或工具链时，按对应专项文档补充验证。
+只有 current 状态/successor、项目结构或 Module 合同变化时才追加
+`check_project_structure.ps1`。修改门禁本身时运行其直接测试；涉及脚本入口、发布或工具链时，
+按 owning 文档追加专项验证。普通提交或 push 不要求仓库卫生门，也不等待远端 CI。

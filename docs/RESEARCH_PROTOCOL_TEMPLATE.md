@@ -13,8 +13,8 @@
 
 | Profile | 默认阶段 | 必需内容 |
 | --- | --- | --- |
-| `CANARY_LITE` | Discovery / Canary | 问题、数据/访问、最小实验、结果、限制和下一步；按适配度排序并在充分时停止 |
-| `DEVELOPMENT_STANDARD` | Development | CANARY_LITE 加版本化实现身份、专项测试、可复现输入输出和停止条件；允许至多 3 个候选、修复重跑和提前设备 benchmark；每轮输出表、图或 demo |
+| `CANARY_LITE` | Discovery / Canary | 问题/假设、可信 baseline、一个有意义变化、可观察指标/决策和停止条件；可直接写在 scoped 输出中 |
+| `DEVELOPMENT_STANDARD` | Development | CANARY_LITE 加必要的来源/许可、继承与新贡献边界；只有身份、冻结、重放或 durable claim 风险需要时才增加版本化合同 |
 | `CONFIRMATION_STRICT` | Confirmation / Deployment | 仅在用户明确激活最终确认后，增加冻结机器合同、独立 validator、receipt 和完整 authority |
 
 低阶段可以因真实污染、权利或不可逆风险升级 profile；不得仅因为模板存在而升级。
@@ -142,6 +142,19 @@ terminal_scope: ITEM | WINDOW | SEQUENCE | BRANCH |
 
 ## 7. 假设选择与失败学习
 
+早期可逆实验先写最小五项，不要求填写后面的完整候选卡：
+
+```text
+question_or_hypothesis:
+credible_baseline:
+one_meaningful_change:
+observable_metric_or_decision:
+stop_condition:
+```
+
+复用论文、开源实现、预训练模型、公开数据或成熟架构时，再补来源、许可、继承部分和
+本轮新贡献。只有比较多候选、成本较高或结果将形成 durable claim 时，才展开以下字段。
+
 每个主要候选写明：
 
 ```text
@@ -202,7 +215,7 @@ information_gain:
 任何 `AGENTS.md`、current 协议或数值门都可进入 `constraint_challenges`；修改
 必须走版本化 amendment，不得静默绕过。
 
-## 8. 每轮沉淀
+## 8. 决策改变时的沉淀
 
 ```text
 new_facts_and_evidence:
@@ -213,9 +226,9 @@ next_high_information_experiments:
 governance_changes_needed:
 ```
 
-只填写本轮实际改变判断的字段；没有治理变更时写 `NONE`，不得为了完整表格新增
-review、receipt 或状态文件。同时判断低价值算法/治理模块是否应继续、合并、降级
-或删除。
+只有结果改变下一研究决策或形成可复用资产时才填写实际相关字段；普通早期 canary
+不需要为此新增文档。不得为了完整表格新增 review、receipt 或状态文件。同时判断
+低价值算法/治理模块是否应继续、合并、降级或删除。
 
 ## 9. CONFIRMATION_STRICT profile 机器合同
 

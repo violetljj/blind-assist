@@ -46,9 +46,12 @@
 - Review the task diff and run proportionate verification. Stage only
   task-owned paths/hunks; in a dirty worktree prefer explicit-path staging and
   `git commit --only`.
-- The default branch is `master`. Use a concise commit message, then push the
-  task commit to `origin/master`. A normal non-force push to
-  `git@github.com:violetljj/blind-assist.git` is pre-authorized.
+- The default branch is `master`. User-owned and Codex task-owned commits within
+  their declared scope go directly to `origin/master` by normal non-force push.
+  Do not create a PR or wait for GitHub Actions, CodeQL, required checks, or
+  remote review; a successful push is the delivery terminal and research may
+  continue immediately. Remote checks may run in the background but are not a
+  routine research-progress gate.
 - Never amend/rewrite history, force-push, change another remote, delete a
   branch, create a PR, or include ignored/local payloads unless the user
   explicitly requests it.
@@ -117,6 +120,14 @@ risky execution. The mode controls process; it never upgrades evidence.
   protocol, data roles, implementation, statistics, thresholds, and
   missing-data handling before outcome access; then follow the owning current
   contract and its validators/receipts.
+
+For `ROUTINE_ENGINEERING` and `REVERSIBLE_EXPLORATION`, default to one
+implementation pass plus one smallest check that can directly falsify the
+change or experiment. When no meaningful automated check exists, inspect the
+scoped diff or output and continue. Extra tests, reviews, gates, documents,
+receipts, or coordination require a named material risk; concentrate expensive
+validation at milestones. Research evidence rules constrain claims, not GitHub
+merge waiting.
 
 These boundaries always apply:
 
@@ -202,8 +213,9 @@ the next window to discover it by broad search. In the same task and commit:
 - Route closure, pause, diagnostic-only results, successor changes, and
   default-App impact changes must update their current truth in the same commit.
   Historical detail moves to archive/snapshot and is not copied into navigation.
-- Run the structure and documentation gates for every change covered above.
-  Do not postpone index repair to a later cleanup task.
+- Run the narrow owning structure or documentation gate when that governed
+  surface changes. Do not postpone index repair, but do not run both gates as a
+  ritual when only one can falsify the change.
 
 ## 5. Execution contract and output budget
 
@@ -239,20 +251,22 @@ Use the smallest gates that cover the actual change. Do not replace necessary
 verification with prose, and do not run unrelated full suites solely because a
 commit is required.
 
-- Every change: `git diff --check` plus focused tests or content/link review.
+- Every change: one focused test or content/link review that covers the changed
+  behavior; use `git diff --check` when text or patch formatting is in scope.
 - Structure, root files, script layout, artifact paths, or governance:
 
   ```powershell
   pwsh -NoProfile -File scripts/check_project_structure.ps1
   ```
 
-- Push, delivery candidate, or explicit release:
+- Repository-hygiene, delivery-candidate, or explicit release work:
 
   ```powershell
   pwsh -NoProfile -File scripts/check_repo_hygiene.ps1
   ```
 
-- When both structure and hygiene are explicitly required, run
+- A normal push alone does not trigger the hygiene gate. When both structure
+  and hygiene are explicitly required by the changed surface, run
   `pwsh -NoProfile -File scripts/check_repo_hygiene.ps1 -IncludeStructure` once
   instead of running the two gates separately.
 

@@ -5,9 +5,8 @@
 研究脚本冷启动先读 [`research/REGISTRY.md`](research/REGISTRY.md)；HFTF/DepthART 再读
 [`research/hftf/INDEX.md`](research/hftf/INDEX.md)。这些索引只描述职责和路径，不复制动态状态。
 
-研究治理使用 `THESIS_FIRST_RESEARCH_GOVERNANCE_R4`：普通新研究默认进入
-`THESIS_DEVELOPMENT`，只有显式产品晋升才进入 `PRODUCTION_PROMOTION`。双环 current 入口为
-[`docs/research/dual-loop/README.md`](../docs/research/dual-loop/README.md)；脚本索引不复制路线动态状态。
+研究模式、证据角色和晋级边界统一从[研究治理](../docs/RESEARCH_GOVERNANCE.md)进入；
+具体路线只从[研究总入口](../docs/research/README.md)选择。本索引不复制动态状态或 successor。
 
 ## 稳定入口
 
@@ -57,7 +56,7 @@
 - `check_repo_hygiene.ps1` / `test_repo_hygiene.ps1`：仓库卫生门禁与测试；拒绝变更面中的构建缓存，并扫描根目录中即使已被忽略的 native 编译产物。默认只检查卫生，使用 `-IncludeStructure` 串联项目结构门。
 - `check_open_source_readiness.ps1` / `test_check_open_source_readiness.ps1`：开源维护硬门；校验许可证、治理、安全、贡献、Issue/PR 模板、引用元数据、依赖更新、模型卡，以及默认公开资产的 size/SHA256/provenance 绑定。
 - `check_project_structure.ps1` / `test_check_project_structure.ps1`：脚本根 allowlist、开发日志预算、研究 Module 合同/实时数量、current 真源委托/状态/successor 同步、内部路径和跨 Module import 门禁；需要结构/政策验证时单独运行，避免与卫生门重复执行。
-- `check_docs_index.ps1` / `test_check_docs_index.ps1`：顶层文档、research domain README/index，以及所有非归档 current、路线 README 和 protocol 本地链接门禁。
+- `check_docs_index.ps1` / `test_check_docs_index.ps1`：顶层文档、research domain/index、current/route/protocol、archive/history 聚合 README 本地链接，历史 snapshot 伪 current、路线 README 预算，以及约定 JSON 稳定路径门禁。
 - `audit_research_structure.ps1`：只读输出研究 Module 合同、HFTF 角色计数和 support 迁移清单。
 - `archive_apk.ps1`、`verify_release_apk.ps1`、`verify_apk_16kb.ps1`：跨平台 APK 身份、签名、16KB 静态兼容性校验与本地归档。
 - `generate_release_manifest.ps1` / `test_generate_release_manifest.ps1`：从已验证交付物生成不含本机路径的 `SHA256SUMS`、机器 manifest 和 Release 证据边界摘要；tag Release 工作流使用同一入口。
@@ -101,4 +100,5 @@
 - SANPO 普通论文训练先按 [SANPO 训练协议](../docs/SANPO_TRAINING_PROTOCOL.md)选择
   `THESIS_DEVELOPMENT`；只有改变 production canonical 数据、读取 blind 或启动默认模型
   晋级时，才进入 `PRODUCTION_PROMOTION` 的完整隔离与门禁。
-- 文档变更完成前运行 `scripts/check_docs_index.ps1`。
+- 文档导航、current、protocol 或聚合 archive README 变化时运行
+  `scripts/check_docs_index.ps1`；普通 push 不触发无关全仓门禁，也不等待远端 CI。

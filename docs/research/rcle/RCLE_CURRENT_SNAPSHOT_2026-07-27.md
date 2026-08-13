@@ -2,7 +2,7 @@
 
 > 本文件是 2026-07-27 的原 current 叙事快照，仅保留历史、前序证据和治理审计价值。它不再拥有当前阶段、终态、权限或下一步 authority；当前真源是同目录 [`README.md`](README.md)。
 
-状态：current
+状态：`snapshot / historical / non-authoritative`
 
 最后核验：2026-07-27
 
