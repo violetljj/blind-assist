@@ -152,13 +152,15 @@ R0 三文件 hash chain 的只读审计确认：终态有效，但 failure 只�
 或 target-match count，因此零个与多个不可恢复。R1 不猜 `cam0/cam1`：ETH3D 官方文档把 `imu.txt` 绑定到
 RGB/depth 同视点的右 RGB 相机及 `/uvc_camera/cam_2/imu`；Kalibr 官方格式把 `rostopic` 与 `T_cam_imu`
 绑定在同一 camera node。R1 据此冻结 `/uvc_camera/cam_2` namespace 唯一匹配，并在失败 evidence 保存完整
-candidate/read/discovery/target-match counts 与摘要。producer-free validator 可在 synthetic archive 上独立复算。
-58/58 focused tests、ruff、compile 与 repair-lock validator 均 PASS；本步 archive/member、session、模型、truth、
-评分与 Confirmation 访问全部为 0。
+candidate/read/discovery/target-match counts 与摘要。锁前独立审计进一步补齐 exact lock/start/terminal/manifest
+验签、先消费的 replay receipt、所有 fail-closed terminal 重放、canonical root 与 downstream Confirmation binding；
+producer-free validator 完成一次 replay 后可纯本地验签且不会重开 archive。69/69 focused tests、ruff、compile
+与 repair-lock validator 均 PASS；本步真实 archive/member、session、模型、truth、评分与 Confirmation 访问全部为 0。
 
-唯一 successor 是须另行授权并另立 hash-bound lock/root 的
+用户已授权当前唯一 successor：另立 hash-bound lock/root 的
 `BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R1_ONE_SHOT_EXECUTION_LOCK`。
-它仍只允许 calibration archive producer 一次和独立 validator replay 一次，不授权 session archive、模型或
+它仍只允许 calibration archive producer 一次和独立 validator replay 一次；两者必须分别由先消费的 receipt
+证明且不得重开，不授权 session archive、模型或
 Confirmation。继续禁止 rerun/resume/replace R0、按 camchain 顺序或 first/best 选择、reducer、
 walking_xyz/sitting_rpy 调参和 task state。
 

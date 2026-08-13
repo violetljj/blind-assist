@@ -18,13 +18,28 @@ SUCCESSOR = (
     "CALIBRATION_CONTROL_R1_ONE_SHOT_EXECUTION_LOCK"
 )
 EXPECTED_IMPLEMENTATION = {
+    "R1_EXECUTION_CONTRACT": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/contract.py",
     "R1_CONTROL_FORMAT": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/control_format_r1.py",
     "R1_CONTROL_PRODUCER": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/calibration_control_r1.py",
     "R1_INDEPENDENT_VALIDATOR": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/validate_calibration_control_r1.py",
     "R1_REPAIR_LOCK_VALIDATOR": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/validate_calibration_control_r1_repair_lock.py",
     "R1_SYNTHETIC_TEST": "scripts/research/assistive_geometry/tests_ag_r2_cross_sensor_confirmation/test_calibration_control_r1.py",
+    "R1_EXECUTION_CONTRACT_TEST": (
+        "scripts/research/assistive_geometry/tests_ag_r2_cross_sensor_confirmation/test_contract_and_evidence.py"
+    ),
+    "R1_HISTORICAL_LOCK_TEST": (
+        "scripts/research/assistive_geometry/tests_ag_r2_cross_sensor_confirmation/test_implementation_lock.py"
+    ),
+    "R1_LEGACY_CONTROL_TEST": (
+        "scripts/research/assistive_geometry/tests_ag_r2_cross_sensor_confirmation/test_calibration_control.py"
+    ),
 }
 EXPECTED_PREDECESSORS = {
+    "CONTROL_FORMAT_AND_RUNTIME_REPAIR_IMPLEMENTATION_LOCK": (
+        "docs/research/assistive-geometry/"
+        "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_"
+        "CONFIRMATION_CONTROL_FORMAT_AND_RUNTIME_BINDING_REPAIR_IMPLEMENTATION_LOCK_2026-08-12.json"
+    ),
     "R0_CONSUMED_CONTROL_TERMINAL": (
         "docs/research/assistive-geometry/"
         "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_"
@@ -45,6 +60,12 @@ EXPECTED_PREDECESSORS = {
         "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_"
         "CONFIRMATION_CALIBRATION_CONTROL_R1_PROTOCOL_AMENDMENT_2026-08-13.json"
     ),
+}
+SUPERSEDED_LEGACY_BINDINGS = {
+    "EXECUTION_CONTRACT_V2",
+    "EXECUTION_CONTRACT_TEST",
+    "REPAIR_IMPLEMENTATION_LOCK_TEST",
+    "CONTROL_TEST",
 }
 
 
@@ -89,6 +110,38 @@ def _bindings(rows: object, expected: Mapping[str, str], repo_root: Path, code: 
     _require(found == dict(expected), f"{code}_SET")
 
 
+def _validate_preserved_legacy_runtime(path: Path, repo_root: Path) -> None:
+    document = json.loads(path.read_text(encoding="utf-8"))
+    _require(
+        document.get("schema")
+        == "blindassist.ag.r2.cross_sensor_factor_confirmation_control_repair_implementation_lock.v1"
+        and document.get("status") == "IMPLEMENTATION_LOCK_PASS_SYNTHETIC_CONTROL_ONLY_SCIENTIFIC_NOT_RUN",
+        "F2_R1_REPAIR_LEGACY_LOCK",
+    )
+    rows = document.get("implementation_bindings")
+    _require(isinstance(rows, list), "F2_R1_REPAIR_LEGACY_BINDINGS")
+    observed: set[str] = set()
+    for row in rows:
+        _require(isinstance(row, Mapping) and set(row) == {"role", "path", "bytes", "sha256"}, "F2_R1_REPAIR_LEGACY_ROW")
+        role = str(row["role"])
+        _require(role not in observed, "F2_R1_REPAIR_LEGACY_ROLE")
+        observed.add(role)
+        if role in SUPERSEDED_LEGACY_BINDINGS:
+            continue
+        member = (repo_root / str(row["path"])).resolve()
+        _require(
+            member.is_file()
+            and member.stat().st_size == row["bytes"]
+            and _sha(member) == str(row["sha256"]).upper(),
+            "F2_R1_REPAIR_LEGACY_HASH",
+        )
+    _require(
+        SUPERSEDED_LEGACY_BINDINGS.issubset(observed)
+        and {"EXECUTOR_V2", "MODEL_ONLY_PREDICTOR", "ETH3D_SOURCE_ADAPTER_V2"}.issubset(observed),
+        "F2_R1_REPAIR_LEGACY_ROLE_SET",
+    )
+
+
 def validate_lock_file(path: Path, repo_root: Path) -> dict[str, object]:
     document = json.loads(path.read_text(encoding="utf-8"))
     _require(
@@ -103,6 +156,26 @@ def validate_lock_file(path: Path, repo_root: Path) -> dict[str, object]:
     _require(document["lock_id"] == LOCK_ID, "F2_R1_REPAIR_LOCK_ID")
     _require(document["status"] == "R1_REPAIR_IMPLEMENTATION_LOCK_PASS_SYNTHETIC_ONLY_SCIENTIFIC_NOT_RUN", "F2_R1_REPAIR_LOCK_STATUS")
     _bindings(document["predecessor_bindings"], EXPECTED_PREDECESSORS, repo_root, "F2_R1_REPAIR_PREDECESSOR")
+    legacy_path = repo_root / EXPECTED_PREDECESSORS["CONTROL_FORMAT_AND_RUNTIME_REPAIR_IMPLEMENTATION_LOCK"]
+    _validate_preserved_legacy_runtime(legacy_path.resolve(), repo_root)
+    amendment_path = repo_root / EXPECTED_PREDECESSORS["R1_PROTOCOL_AMENDMENT"]
+    amendment = json.loads(amendment_path.read_text(encoding="utf-8"))
+    hardening = amendment.get("pre_execution_validator_hardening")
+    _require(
+        amendment.get("status") == "R1_PROTOCOL_REPAIR_FROZEN_NOT_AUTHORIZED_NOT_RUN"
+        and isinstance(hardening, Mapping)
+        and hardening.get("detected_before_r1_execution_lock") is True
+        and hardening.get("detected_before_r1_evidence_root_creation") is True
+        and hardening.get("real_archive_access_during_hardening") is False
+        and hardening.get("scientific_contract_changed") is False
+        and hardening.get("selection_rule_changed") is False
+        and hardening.get("data_identity_changed") is False
+        and hardening.get("budget_changed") is False
+        and hardening.get("session_model_truth_scoring_or_confirmation_authorized") is False
+        and isinstance(amendment.get("execution_authority"), Mapping)
+        and all(value is False for value in amendment["execution_authority"].values()),
+        "F2_R1_REPAIR_AMENDMENT_SEMANTICS",
+    )
     _bindings(document["implementation_bindings"], EXPECTED_IMPLEMENTATION, repo_root, "F2_R1_REPAIR_IMPLEMENTATION")
     receipt = document["test_receipt"]
     _require(

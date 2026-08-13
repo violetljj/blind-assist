@@ -87,6 +87,24 @@
     "ambiguous_or_missing_target_terminal_requires_exact_nonnull_counts": true,
     "raw_candidate_or_node_selection_from_failure": false
   },
+  "pre_execution_validator_hardening": {
+    "detected_before_r1_execution_lock": true,
+    "detected_before_r1_evidence_root_creation": true,
+    "real_archive_access_during_hardening": false,
+    "changes": [
+      "independent validator exact-validates the R1 lock, all predecessor hashes and the producer start/result-or-failure/manifest chain",
+      "independent archive replay is consumed by an exclusive start receipt before archive bytes or members are accessed and cannot be repeated",
+      "independent replay preserves and validates every producer fail-closed terminal, including partial observability before the failure point",
+      "producer and replay use equivalent ZIP path, encryption, special-file, member, uncompressed-byte, compression-ratio, YAML-count and parser gates",
+      "the final Confirmation execution-lock validator accepts only an R1 PASS plus an independently sealed replay PASS chain",
+      "archive and output roots are exact canonical protocol paths and are checked for resolved overlap before evidence creation"
+    ],
+    "scientific_contract_changed": false,
+    "selection_rule_changed": false,
+    "data_identity_changed": false,
+    "budget_changed": false,
+    "session_model_truth_scoring_or_confirmation_authorized": false
+  },
   "r1_execution_versioning": {
     "r0_root_preserved": true,
     "r0_rerun_resume_replacement": false,

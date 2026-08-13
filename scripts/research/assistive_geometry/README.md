@@ -14,9 +14,10 @@ walking_xyz 负结果保持冻结；当前只支持 research-pipeline mechanics�
 
 `ag_r2_cross_sensor_confirmation/` 的 R0 calibration-control one-shot 已 fail closed consumed；R1 repair 新增
 same-node Kalibr `rostopic` 解析，以 ETH3D `/uvc_camera/cam_2` namespace 唯一匹配 RGB/depth 视点，且在
-fail-closed evidence 中保留完整 candidate/read/discovery/target-match counts。producer-free validator 独立重算；
-58 个 synthetic/metadata tests 已通过。R1 真实 archive、session archive、checkpoint、source truth 和
-Confirmation 均未运行；未来 R1 calibration-control one-shot 仍需独立授权。
+fail-closed evidence 中保留完整 candidate/read/discovery/target-match counts。producer-free validator 先消费
+独占 replay receipt，再独立重算并封存 terminal/manifest；最终 Confirmation lock 只接受 producer PASS 与
+replay PASS 的完整 chain。69 个 synthetic/metadata/contract tests 已通过。R1 真实 archive、session archive、
+checkpoint、source truth 和 Confirmation 均未运行；用户已授权当前 R1 calibration-control one-shot。
 
 ## 稳定 Interface
 
@@ -124,9 +125,11 @@ Confirmation 均未运行；未来 R1 calibration-control one-shot 仍需独立�
 - `ag_r2_cross_sensor_confirmation/calibration_control_r1.py`：未来只在另行 hash-bound R1 one-shot 下按
   `/uvc_camera/cam_2` namespace 唯一匹配；失败时保存已知/未知计数、摘要与零 first/best selection receipt。
 - `ag_r2_cross_sensor_confirmation/validate_calibration_control_r1.py`：不导入 R1 producer/source/parser，
-  对 PASS 或 fail-closed evidence 独立重放 archive、rostopic namespace selection 与完整计数。
+  先写独占 start receipt，再对 PASS 或任意 fail-closed evidence 独立重放一次 archive、rostopic namespace
+  selection 与完整计数；完成后可纯本地验签且不会重开 archive。
 - `ag_r2_cross_sensor_confirmation/validate_calibration_control_r1_repair_lock.py`：复核 R0 sealed audit、
-  official selection evidence、R1 amendment、5 个 implementation binding、58-test receipt 与零 archive access。
+  preserved legacy runtime、official selection evidence、R1 amendment、9 个 implementation binding、
+  69-test receipt 与零 archive access。
 - `ag_r2_cross_sensor_confirmation/validate_depthart_source_manifest.py`：独立复核 29 个实际可导入的
   metric/selective-scan Python 文件及 bytes/SHA，不加载 checkpoint 或模型。
 - `ag_r2_cross_sensor_confirmation/validate_repair_implementation_lock.py`：复核 schema v2、official control、

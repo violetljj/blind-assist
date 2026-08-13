@@ -65,6 +65,10 @@ R0_TERMINAL_PATH = REPO_ROOT / (
     "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_"
     "CONFIRMATION_CALIBRATION_CONTROL_PREFLIGHT_ONE_SHOT_RESULT_2026-08-13.json"
 )
+ARCHIVE_ROOT_PATH = REPO_ROOT / "artifacts.local/downloads/ag-r2-eth3d-cross-sensor-confirmation-r0"
+OUTPUT_ROOT_PATH = REPO_ROOT / (
+    "artifacts.local/evidence/assistive-geometry/ag-r2-cross-sensor-calibration-control-r1"
+)
 CONTROL_BUDGET = {
     "max_members": 256,
     "max_member_uncompressed_bytes": 4194304,
@@ -211,11 +215,16 @@ def validate_control_lock(path: Path) -> dict[str, Any]:
         require(isinstance(lock[key], str) and Path(lock[key]).is_absolute(), f"F2_R1_CONTROL_{key.upper()}")
     archive_root = Path(lock["archive_root"])
     output_root = Path(lock["output_root"])
+    require(archive_root == ARCHIVE_ROOT_PATH, "F2_R1_CONTROL_ARCHIVE_ROOT_PATH_DRIFT")
+    require(output_root == OUTPUT_ROOT_PATH, "F2_R1_CONTROL_OUTPUT_ROOT_PATH_DRIFT")
+    resolved_archive_root = archive_root.resolve(strict=True)
+    resolved_output_root = output_root.resolve(strict=False)
     require(
         output_root.name == "ag-r2-cross-sensor-calibration-control-r1"
-        and archive_root != output_root
-        and archive_root not in output_root.parents
-        and output_root not in archive_root.parents,
+        and output_root.parent == OUTPUT_ROOT_PATH.parent
+        and resolved_archive_root != resolved_output_root
+        and resolved_archive_root not in resolved_output_root.parents
+        and resolved_output_root not in resolved_archive_root.parents,
         "F2_R1_CONTROL_ROOT_COLLISION",
     )
     return lock

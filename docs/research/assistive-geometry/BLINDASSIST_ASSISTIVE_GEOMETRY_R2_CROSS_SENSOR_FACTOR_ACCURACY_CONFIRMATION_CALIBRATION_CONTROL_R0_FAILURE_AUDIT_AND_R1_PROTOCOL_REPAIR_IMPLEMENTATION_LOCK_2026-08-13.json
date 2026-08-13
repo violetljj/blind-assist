@@ -5,6 +5,12 @@
   "status": "R1_REPAIR_IMPLEMENTATION_LOCK_PASS_SYNTHETIC_ONLY_SCIENTIFIC_NOT_RUN",
   "predecessor_bindings": [
     {
+      "role": "CONTROL_FORMAT_AND_RUNTIME_REPAIR_IMPLEMENTATION_LOCK",
+      "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CONTROL_FORMAT_AND_RUNTIME_BINDING_REPAIR_IMPLEMENTATION_LOCK_2026-08-12.json",
+      "bytes": 8988,
+      "sha256": "9EDB60383A38E3E12451BB7537D8245543B5FE0913017D03BDB9DFE1A0693FC6"
+    },
+    {
       "role": "R0_CONSUMED_CONTROL_TERMINAL",
       "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_PREFLIGHT_ONE_SHOT_RESULT_2026-08-13.json",
       "bytes": 4942,
@@ -25,11 +31,17 @@
     {
       "role": "R1_PROTOCOL_AMENDMENT",
       "path": "docs/research/assistive-geometry/BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R1_PROTOCOL_AMENDMENT_2026-08-13.json",
-      "bytes": 5307,
-      "sha256": "6091EBEA4074E02FD8C4C924C6AA62BBF688CD0613F2DEA250CEBBC11D4942E1"
+      "bytes": 6585,
+      "sha256": "C590C3EC4B63FCE6BA878F7C4CF7AA121AEFEF578ACD3D55A276D6430ECDB7D5"
     }
   ],
   "implementation_bindings": [
+    {
+      "role": "R1_EXECUTION_CONTRACT",
+      "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/contract.py",
+      "bytes": 28542,
+      "sha256": "BA86F7FAA6FA20B8855E25C82462E3EA2EF317C8F35E2F27823610708A77C8CB"
+    },
     {
       "role": "R1_CONTROL_FORMAT",
       "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/control_format_r1.py",
@@ -39,31 +51,49 @@
     {
       "role": "R1_CONTROL_PRODUCER",
       "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/calibration_control_r1.py",
-      "bytes": 17615,
-      "sha256": "677B142182CB165DB1789480CD14CEADA20B58CCCD499A12A99FBF15EFC5BA0C"
+      "bytes": 18251,
+      "sha256": "7CD7CD615EC1DBA015947A645A551F7296E59B495544B0DE5F6B8B0C4AD6CD83"
     },
     {
       "role": "R1_INDEPENDENT_VALIDATOR",
       "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/validate_calibration_control_r1.py",
-      "bytes": 12653,
-      "sha256": "146380E3B509507F413138A1C49F51CD0DE2FCC047F0660B0EF1C2EAF22F928B"
+      "bytes": 59668,
+      "sha256": "02A766CE793C851CCE3951B2BCC1331620E42530408A9121DEFF91D5F8A49E60"
     },
     {
       "role": "R1_REPAIR_LOCK_VALIDATOR",
       "path": "scripts/research/assistive_geometry/ag_r2_cross_sensor_confirmation/validate_calibration_control_r1_repair_lock.py",
-      "bytes": 7266,
-      "sha256": "1B975917137AA2A71DB57FF95F4E50D31D36547A0B965EA7F6D23B97A11833C1"
+      "bytes": 10994,
+      "sha256": "427E81E3A2CC6271EFCC435EF95EE946CC39217AB1E5518F751CEF93F2A3EE32"
     },
     {
       "role": "R1_SYNTHETIC_TEST",
       "path": "scripts/research/assistive_geometry/tests_ag_r2_cross_sensor_confirmation/test_calibration_control_r1.py",
-      "bytes": 11824,
-      "sha256": "B3CC575C84182CC45508D269147D79A637096923B30A6BD3EE49DBDD1BE29ADB"
+      "bytes": 23508,
+      "sha256": "AD561951234E2740CCBCDFA5971280BAF8A40B5BEC0798E3DF7E5D21A3951518"
+    },
+    {
+      "role": "R1_EXECUTION_CONTRACT_TEST",
+      "path": "scripts/research/assistive_geometry/tests_ag_r2_cross_sensor_confirmation/test_contract_and_evidence.py",
+      "bytes": 18307,
+      "sha256": "DDD8581C7A02A079500EFF80E258F0BEBE40471A31E686F27CA64619D6BECB7F"
+    },
+    {
+      "role": "R1_HISTORICAL_LOCK_TEST",
+      "path": "scripts/research/assistive_geometry/tests_ag_r2_cross_sensor_confirmation/test_implementation_lock.py",
+      "bytes": 3954,
+      "sha256": "204981F2D12D1D83F602E1AF3E15C33EB290A47D4E46A1934B5CAC62A20E4FBD"
+    },
+    {
+      "role": "R1_LEGACY_CONTROL_TEST",
+      "path": "scripts/research/assistive_geometry/tests_ag_r2_cross_sensor_confirmation/test_calibration_control.py",
+      "bytes": 7331,
+      "sha256": "4263EB359A9CF5A704C8A29975A97909E2C9C3ECE6AC614762EE43180F385A20"
     }
   ],
   "test_receipt": {
-    "focused_test_count": 58,
-    "r1_specific_test_count": 7,
+    "focused_test_count": 69,
+    "r1_specific_test_count": 17,
     "focused_test_failures": 0,
     "synthetic_archives_only": true,
     "real_archive_access": false,
@@ -109,5 +139,5 @@
     "execution_authority": false,
     "created_by_this_lock": false
   },
-  "claim_ceiling": "This non-execution repair lock validates the sealed R0 failure audit, the official rostopic-namespace selection rule, and synthetic R1 count-preserving mechanics only. It does not reopen an archive, bind a real member or camera node, run a model, or establish scientific, deployment, product, or safety evidence."
+  "claim_ceiling": "This non-execution repair lock validates the sealed R0 failure audit, official rostopic-namespace selection, one-shot independent replay receipts, complete fail-closed observability, and downstream R1-to-Confirmation lock compatibility on synthetic evidence only. It does not reopen a real archive, bind a real member or camera node, run a model, or establish scientific, deployment, product, or safety evidence."
 }
