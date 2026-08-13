@@ -93,6 +93,16 @@ class PhaseARound12RepairAuditTests(unittest.TestCase):
         with self.assertRaises(auditor.RepairAuditError):
             auditor._validate_repair_receipt(mutated)
 
+    def test_repo_relative_cli_paths_resolve_to_authorized_junction_target(self) -> None:
+        self.assertEqual(
+            auditor._resolved_cli_path(Path(auditor.REPAIR_RECEIPT_RELATIVE), auditor.REPAIR_RECEIPT_RELATIVE),
+            auditor._repo_path(auditor.REPAIR_RECEIPT_RELATIVE).resolve(),
+        )
+        self.assertEqual(
+            auditor._resolved_cli_path(Path(auditor.OUTPUT_ROOT_RELATIVE), auditor.OUTPUT_ROOT_RELATIVE),
+            auditor._repo_path(auditor.OUTPUT_ROOT_RELATIVE).resolve(),
+        )
+
     def test_output_root_collision_fails_before_validation(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             collision = Path(directory).resolve()

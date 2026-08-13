@@ -20,9 +20,13 @@ from scripts.research.taro_o1r_r11_abstention_runtime import (
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-REPAIR_RECEIPT_RELATIVE = (
+ATTEMPT_01_REPAIR_RECEIPT_RELATIVE = (
     "docs/research/taro/"
     "TARO_O1R_R11_PHASE_A_INDEPENDENT_VALIDATOR_ROUND12_REPRESENTATION_REPAIR_2026-08-13.json"
+)
+REPAIR_RECEIPT_RELATIVE = (
+    "docs/research/taro/"
+    "TARO_O1R_R11_PHASE_A_INDEPENDENT_VALIDATOR_ROUND12_REPRESENTATION_REPAIR_ATTEMPT_02_2026-08-13.json"
 )
 ORIGINAL_LOCK_RELATIVE = original.LOCK_RELATIVE
 ORIGINAL_VALIDATOR_RELATIVE = (
@@ -39,9 +43,9 @@ OUTPUT_ROOT_RELATIVE = (
     "artifacts.local/evidence/taro/o1r-r11-fresh-pool-phase-a-validator-round12-repair-r0"
 )
 OUTPUT_RELATIVE = f"{OUTPUT_ROOT_RELATIVE}/post-result-audit.json"
-REPAIR_SCHEMA = "blindassist.taro.o1r.r11_phase_a_validator_round12_repair.v1"
+REPAIR_SCHEMA = "blindassist.taro.o1r.r11_phase_a_validator_round12_repair_attempt_02.v1"
 RESULT_SCHEMA = "blindassist.taro.o1r.r11_phase_a_validator_round12_audit.v1"
-REPAIR_STATUS = "R11_PHASE_A_VALIDATOR_ROUND12_REPRESENTATION_REPAIR_FROZEN"
+REPAIR_STATUS = "R11_PHASE_A_VALIDATOR_ROUND12_REPRESENTATION_REPAIR_ATTEMPT_02_FROZEN"
 PASS_STATUS = "TARO_O1R_R11_PHASE_A_OFFLINE_VALIDATOR_ROUND12_REPAIR_PASS"
 FLOAT_DECIMALS = 12
 REPAIRED_FIELDS = ("camera_to_world_4x4", "gravity_up_camera_xyz")
@@ -62,6 +66,13 @@ def require(condition: bool, code: str, message: str) -> None:
 
 def _repo_path(relative: str) -> Path:
     return original.materializer.safe_join(REPO_ROOT, relative)
+
+
+def _resolved_cli_path(value: Path | None, expected_relative: str) -> Path:
+    candidate = _repo_path(expected_relative) if value is None else value
+    if not candidate.is_absolute():
+        candidate = REPO_ROOT / candidate
+    return candidate.resolve()
 
 
 def _sha256_file(path: Path) -> str:
@@ -197,6 +208,7 @@ def _verify_file_binding(binding: Any, expected_relative: str, label: str) -> Pa
 def _validate_repair_receipt(value: Mapping[str, Any]) -> dict[str, Any]:
     repair = _validate_seal(value, REPAIR_SCHEMA)
     expected_bindings = {
+        "attempt_01_repair": ATTEMPT_01_REPAIR_RECEIPT_RELATIVE,
         "original_execution_lock": ORIGINAL_LOCK_RELATIVE,
         "original_terminal": ORIGINAL_TERMINAL_RELATIVE,
         "original_validator": ORIGINAL_VALIDATOR_RELATIVE,
@@ -205,9 +217,9 @@ def _validate_repair_receipt(value: Mapping[str, Any]) -> dict[str, Any]:
     }
     require(
         repair.get("repair_id")
-        == "TARO_O1R_R11_PHASE_A_INDEPENDENT_VALIDATOR_ROUND12_REPRESENTATION_REPAIR_R0"
+        == "TARO_O1R_R11_PHASE_A_INDEPENDENT_VALIDATOR_ROUND12_REPRESENTATION_REPAIR_ATTEMPT_02"
         and repair.get("status") == REPAIR_STATUS
-        and repair.get("repair_class") == "PROTOCOL_ONLY_NUMERIC_REPRESENTATION"
+        and repair.get("repair_class") == "PROTOCOL_ONLY_PATH_ALIAS_AND_NUMERIC_REPRESENTATION"
         and repair.get("output")
         == {"path": OUTPUT_RELATIVE, "fresh_root_required": True, "overwrite_forbidden": True},
         "R11_PHASE_A_REPAIR_IDENTITY",
@@ -233,6 +245,35 @@ def _validate_repair_receipt(value: Mapping[str, Any]) -> dict[str, Any]:
         },
         "R11_PHASE_A_REPAIR_NUMERIC_CONTRACT",
         "repair numeric contract drift",
+    )
+    require(
+        repair.get("path_contract")
+        == {
+            "accepted_cli_paths": [
+                "exact repository-relative repair receipt path",
+                "exact repository-relative formal output root path",
+            ],
+            "comparison": "RESOLVED_EXACT_EQUALITY_TO_THE_SAME_AUTHORIZED_TARGET",
+            "alternate_root_or_target_allowed": False,
+            "junction_scope_expanded": False,
+        },
+        "R11_PHASE_A_REPAIR_PATH_CONTRACT",
+        "repair path-alias contract drift",
+    )
+    require(
+        repair.get("attempt_01")
+        == {
+            "failure_code": "R11_PHASE_A_REPAIR_PATH",
+            "failure_message": "repair receipt or output root path drift",
+            "output_root_created": False,
+            "partial_root_created": False,
+            "phase_a_frame_payload_reads": 0,
+            "model_rerun": False,
+            "faro_highres_truth_label_outcome_reads": 0,
+            "scientific_or_selection_result_created": False,
+        },
+        "R11_PHASE_A_REPAIR_ATTEMPT_01",
+        "repair Attempt 01 incident boundary drift",
     )
     require(
         repair.get("scientific_influence")
@@ -317,10 +358,10 @@ def audit_same_sealed_root(
     repair_receipt_path: Path | None = None,
     output_root: Path | None = None,
 ) -> dict[str, Any]:
-    expected_repair_path = _repo_path(REPAIR_RECEIPT_RELATIVE)
-    expected_output_root = _repo_path(OUTPUT_ROOT_RELATIVE)
-    repair_path = (repair_receipt_path or expected_repair_path).resolve()
-    target_root = (output_root or expected_output_root).resolve()
+    expected_repair_path = _repo_path(REPAIR_RECEIPT_RELATIVE).resolve()
+    expected_output_root = _repo_path(OUTPUT_ROOT_RELATIVE).resolve()
+    repair_path = _resolved_cli_path(repair_receipt_path, REPAIR_RECEIPT_RELATIVE)
+    target_root = _resolved_cli_path(output_root, OUTPUT_ROOT_RELATIVE)
     require(
         repair_path == expected_repair_path and target_root == expected_output_root,
         "R11_PHASE_A_REPAIR_PATH",

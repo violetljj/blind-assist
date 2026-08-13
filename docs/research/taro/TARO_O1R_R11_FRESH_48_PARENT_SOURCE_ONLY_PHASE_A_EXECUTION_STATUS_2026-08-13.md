@@ -1,6 +1,6 @@
 # TARO O1R R11 fresh 48-parent source-only Phase A execution status
 
-状态：`FORMAL_EXECUTION_PASS / ONE_SHOT_CONSUMED / CUDA_RECOVERED / ORIGINAL_VALIDATOR_NUMERIC_REPRESENTATION_STOP / ROUND12_REPAIR_FROZEN_REVALIDATION_REQUIRED / PIPELINE_HOLD`
+状态：`FORMAL_EXECUTION_PASS / ONE_SHOT_CONSUMED / CUDA_RECOVERED / ORIGINAL_VALIDATOR_NUMERIC_REPRESENTATION_STOP / ROUND12_REPAIR_ATTEMPT_01_PATH_ALIAS_PRESTART_SUPERSEDED / ROUND12_REPAIR_ATTEMPT_02_FROZEN_REVALIDATION_REQUIRED / PIPELINE_HOLD`
 
 R11 all-48 source-only Phase A 已按冻结 module argv 正式消费。producer 原子终态为
 `TARO_O1R_R11_FRESH_POOL_PHASE_A_SOURCE_ONLY_SEALED_PASS`：exact `48` parents、`1,043` frames、
@@ -38,10 +38,13 @@ validator 的全部 5,219-file/root/source/candidate/lineage/count/ledger/resour
 `camera_to_world_4x4` 与 `gravity_up_camera_xyz` 按 producer 的 canonical JSON round-12 规则规范化后精确比较。
 它不使用 epsilon/tolerance，不修改任何旧 byte；只有 repaired audit PASS 后才可另立 top-24 lock。
 
-repair 推送到 master 后唯一允许的续验命令为：
+Attempt 01 repair 推送后首次调用在 output-root/payload 前以 `R11_PHASE_A_REPAIR_PATH` fail closed：repo lexical
+`artifacts.local` path 与同一授权 junction target 的 resolved spelling 被误作不同。正式/partial root 均未创建，
+Phase-A frame payload/model/FARO 读取均为 0。Attempt 02 只在 exact CLI 与 exact authorized path 两侧都 resolve
+后作 exact equality；不接受 alternate target。Attempt 02 推送后唯一允许的续验命令为：
 
 ```powershell
-E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe -m scripts.research.taro_o1r_r11_abstention_runtime.audit_pool_phase_a_round12_terminal --repair-receipt docs/research/taro/TARO_O1R_R11_PHASE_A_INDEPENDENT_VALIDATOR_ROUND12_REPRESENTATION_REPAIR_2026-08-13.json --output-root artifacts.local/evidence/taro/o1r-r11-fresh-pool-phase-a-validator-round12-repair-r0
+E:\codex-tools\tools\venvs\blindassist-venv-export312\Scripts\python.exe -m scripts.research.taro_o1r_r11_abstention_runtime.audit_pool_phase_a_round12_terminal --repair-receipt docs/research/taro/TARO_O1R_R11_PHASE_A_INDEPENDENT_VALIDATOR_ROUND12_REPRESENTATION_REPAIR_ATTEMPT_02_2026-08-13.json --output-root artifacts.local/evidence/taro/o1r-r11-fresh-pool-phase-a-validator-round12-repair-r0
 ```
 
 本状态不产生 task effectiveness、路线晋级、部署、设备、产品或安全主张。

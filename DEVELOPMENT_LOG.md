@@ -16,8 +16,12 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   bypass，原有 5,219-file/root/source/candidate/lineage/ledger/resource 检查全部保留。正式结果先在同卷 sibling
   partial root 完整写入并回读 seal/bytes/SHA/单文件集，再原子发布整个 root；注入 fsync 故障时 formal root 保持
   absent 且 partial 清理。10/10 focused tests 与
-  py_compile PASS。当前唯一 successor 是把该 repair 推送到 master 后，对同一 sealed root 执行一次只读
-  post-terminal audit；只有该结果 PASS 才可另立 source-only top-24 lock。
+  py_compile PASS。Attempt 01 推送后首次调用在创建 output root 或读取 Phase-A frame payload 前以
+  `R11_PHASE_A_REPAIR_PATH` fail closed：内部 absent output 保留 repo lexical `artifacts.local` spelling，CLI exact
+  path 则 resolve 到授权 junction target，二者被误判为不同。正式/partial root、模型、source-frame payload、
+  FARO/highres/truth/label/outcome 均为 0。Attempt 01 原字节保留；Attempt 02 只把 exact CLI 与 exact authorized
+  path 两侧 resolve 后作 exact equality，alternate target 仍拒绝。当前唯一 successor 是推送 Attempt 02 后对同一
+  sealed root 执行只读 post-terminal audit；只有该结果 PASS 才可另立 source-only top-24 lock。
 
 - 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。正式消费 TARO O1R R11 all-48 source-only
   Phase A one-shot。producer 原子终态为 `TARO_O1R_R11_FRESH_POOL_PHASE_A_SOURCE_ONLY_SEALED_PASS`，封存 exact

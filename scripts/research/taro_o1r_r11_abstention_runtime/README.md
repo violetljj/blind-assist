@@ -1,6 +1,6 @@
 # TARO O1R R11 abstention runtime
 
-状态：`current / TARO_RESEARCH_MODULE / R11_WEAK_DISTAL_ABSTENTION_DEVELOPMENT_ONLY / R11_PROTOCOL_LOCKED / R11_EXACT_DATA_USE_AUTHORIZED / R11_HEAD_PASS_ONE_SHOT_CONSUMED / R11_DOWNLOAD_ATTEMPT_01_PRESTART_SUPERSEDED / R11_SOURCE_DOWNLOAD_144_OF_144_INTEGRITY_PASS_ONE_SHOT_CONSUMED / R11_INVENTORY_IMPLEMENTATION_LOCK_PASS / R11_INVENTORY_ONE_SHOT_CONSUMED_PASS / R11_INVENTORY_48_PARENT_1043_FRAME_PASS / R11_PHASE_A_PRODUCER_PASS / R11_PHASE_A_ORIGINAL_VALIDATOR_NUMERIC_REPRESENTATION_STOP / R11_PHASE_A_ROUND12_REPAIR_FROZEN_REVALIDATION_REQUIRED / R11_FORMAL_ZIP_MEMBER_PAYLOAD_READS_ZERO / R11_SCIENTIFIC_NOT_RUN / DEFAULT_APP_UNCHANGED`
+状态：`current / TARO_RESEARCH_MODULE / R11_WEAK_DISTAL_ABSTENTION_DEVELOPMENT_ONLY / R11_PROTOCOL_LOCKED / R11_EXACT_DATA_USE_AUTHORIZED / R11_HEAD_PASS_ONE_SHOT_CONSUMED / R11_DOWNLOAD_ATTEMPT_01_PRESTART_SUPERSEDED / R11_SOURCE_DOWNLOAD_144_OF_144_INTEGRITY_PASS_ONE_SHOT_CONSUMED / R11_INVENTORY_IMPLEMENTATION_LOCK_PASS / R11_INVENTORY_ONE_SHOT_CONSUMED_PASS / R11_INVENTORY_48_PARENT_1043_FRAME_PASS / R11_PHASE_A_PRODUCER_PASS / R11_PHASE_A_ORIGINAL_VALIDATOR_NUMERIC_REPRESENTATION_STOP / R11_PHASE_A_ROUND12_REPAIR_ATTEMPT_01_PATH_ALIAS_PRESTART_SUPERSEDED / R11_PHASE_A_ROUND12_REPAIR_ATTEMPT_02_FROZEN_REVALIDATION_REQUIRED / R11_FORMAL_ZIP_MEMBER_PAYLOAD_READS_ZERO / R11_SCIENTIFIC_NOT_RUN / DEFAULT_APP_UNCHANGED`
 
 ## 稳定 Interface
 
@@ -12,7 +12,7 @@
 - `run_pool_download.py`：只接受另行提交、绑定 HEAD evidence 与 implementation commit 的 one-shot execution lock；按 144-row 冻结顺序执行受限 GET，逐文件校验 HEAD 长度/validator、SHA-256 与 CRC32。最多三次仅限 transient transport retry；archive/source decode、模型与 FARO 始终关闭。
 - `run_pool_inventory.py`：只接受后继独立 one-shot lock；先创建 exclusive evidence root，再重验 144 个下载文件。ZIP 只索引 central directory 的路径、声明尺寸与声明 CRC，不调用 `testzip/open/read`，不读取或解压任何 member payload；trajectory 只用于 exact-ns pose-bounded frame plan。
 - `validate_pool_phase_a.py`：原始、hash-bound 的独立 Phase-A validator；它在 CUDA 恢复后因把 producer 的 round-12 JSON pose/gravity 与重建的 float64 值作序列化前精确比较而停止，文件保持不变。
-- `audit_pool_phase_a_round12_terminal.py`：新绑定的只读薄修复；保留原 validator 全部 root/hash/source/candidate/lineage/ledger/resource 检查，只把独立重建的 `camera_to_world_4x4` 和 `gravity_up_camera_xyz` 按冻结 canonical JSON 规则 round 到 12 位后作精确比较。无 epsilon、无模型重跑、无 source scoring/FARO 权限。
+- `audit_pool_phase_a_round12_terminal.py`：新绑定的只读薄修复；保留原 validator 全部 root/hash/source/candidate/lineage/ledger/resource 检查，只把独立重建的 `camera_to_world_4x4` 和 `gravity_up_camera_xyz` 按冻结 canonical JSON 规则 round 到 12 位后作精确比较。Attempt 02 另将 exact repo-relative CLI path 与同一授权 junction target 作 resolved exact equality；alternate target 仍拒绝。无 epsilon、无模型重跑、无 source scoring/FARO 权限。
 
 ## 输出
 
