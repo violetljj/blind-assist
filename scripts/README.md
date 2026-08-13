@@ -63,6 +63,9 @@
 - `run_npu_candidate_acceptance.ps1`：SM-S9280/SM8650 上的独立 NPU 候选安装、QNN HTP runtime marker、正式包/数据不变式与候选专属卸载回滚门；不清除正式 App 数据。
 - `generate_qnn_preprocess_candidate.py`：生成并自校验隔离的 QNN 预处理候选；只写入 `artifacts.local/experiments/qnn-preprocess-fusion-v1/`，不修改 App assets，也不构成发布、默认路由或生产授权。
 
+前向脚本治理遵循 `THESIS_FIRST_RESEARCH_GOVERNANCE_R4`。双环 current 入口为
+[`docs/research/dual-loop/README.md`](../docs/research/dual-loop/README.md)。
+
 ## 研究模块
 
 研究模块不在本页重复列出实验轮次、动态终态或指标。按以下入口定位：

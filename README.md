@@ -85,7 +85,11 @@ BlindAssist publishes more than an Android demo. It exposes the maintenance and 
 - explicit separation between engineering, research, deployment, product, and safety evidence;
 - contribution, governance, security, and public-roadmap workflows.
 
-Forward-looking research follows the [research governance contract](docs/RESEARCH_GOVERNANCE.md): Development and production promotion are separate lanes, and production promotion requires explicit scope.
+Forward-looking research follows `THESIS_FIRST_RESEARCH_GOVERNANCE_R4` in the
+[research governance contract](docs/RESEARCH_GOVERNANCE.md): `THESIS_DEVELOPMENT`
+and `PRODUCTION_PROMOTION` are separate lanes, and production promotion requires
+explicit scope. The current secondary lane is documented in
+[dual-loop](docs/research/dual-loop/README.md).
 
 BlindAssist 不只公开演示代码，也公开构建、验证、模型来源、失败结果和维护流程，让贡献者能够真正复核和改进项目。完整说明见[开源公共价值](docs/OPEN_SOURCE_PUBLIC_VALUE.md)。
 

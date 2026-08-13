@@ -65,9 +65,9 @@ factor 只在各自证据成立时选择性组合，再由确定性 body-swept r
 - [Unopened fresh-TUM source lock](BLINDASSIST_AG_FACTORWISE_NO_REGRET_FRESH_TUM_SOURCE_LOCK_R0_2026-08-13.json)
 - [算法路线总表](../ALGORITHM_RESEARCH_CURRENT.md) · [研究脚本 Module](../../../scripts/research/assistive_geometry/README.md)
 
-## 当前 successor
+## 唯一 successor
 
-当前无 active successor。只有获得真正新增的 source-native obstacle supervision，或提出能直接改善
+无 active successor。只有获得真正新增的 source-native obstacle supervision，或提出能直接改善
 metric-depth scale/plane fidelity 的 materially different representation，才可另立新协议并重新分配
 consumed/fresh role；不得以新名字重调本轮三个失败候选。
 

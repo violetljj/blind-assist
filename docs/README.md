@@ -69,6 +69,9 @@
 | 数据与 discovery | [AG-DCA](research/assistive-geometry-data-capability/README.md) · [AG-DUE](research/assistive-geometry-data-upgrade/README.md) · [候选事件挖掘](research/candidate-event-mining/README.md) |
 | 历史路线/资料 | [USTRF-SC](research/ustrf-sc/README.md) · [Frontier Upgrade](research/frontier-upgrade-2026-07/README.md) · [研究资产](research/assets/README.md) · [组会总账](research/GROUP_MEETING_PROGRESS.md) |
 
+前向研究默认采用 R4：`THESIS_DEVELOPMENT / PRODUCTION_PROMOTION` 两条权限分离；
+只有显式启动 `PRODUCTION_PROMOTION` 才进入产品晋级门禁。
+
 ## 日期化快照与历史
 
 以下文件用于复核当时结论，不是当前操作入口。
