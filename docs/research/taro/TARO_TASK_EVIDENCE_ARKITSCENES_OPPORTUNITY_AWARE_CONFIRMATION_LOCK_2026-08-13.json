@@ -1,0 +1,45 @@
+{
+  "schema": "blindassist.taro.task_evidence_arkitscenes_opportunity_aware_confirmation_lock.v1",
+  "status": "FROZEN_BEFORE_ARKITSCENES_NEIGHBOR_TASK_EVIDENCE_OUTCOME_READ",
+  "token": "TARO_TASK_EVIDENCE_ARKITSCENES_CONFIRMATION_R0_2026-08-13",
+  "reason_for_successor": "The first task-outcome-blind TUM confirmation beat both macro baselines, but its fixed three-strict-parent gate was impossible when only two of four parents had any oracle strict-win opportunity. This successor freezes an opportunity-denominated gate before opening a different source family's task-evidence outcome.",
+  "frozen_policy": {
+    "family": "NORMALIZED_POSE_TASK_BLEND",
+    "score": "translation_unit + 0.8 * visible_unknown_unit + 0.05 * rotation_unit",
+    "normalization": "per-reference candidate-pool min-max; constant dimensions map to zero",
+    "task_term": "visible_unknown",
+    "task_weight": 0.8,
+    "rotation_weight": 0.05,
+    "development_result_content_sha256": "F39D940EF9432AD1FBBD72BF75698A111C16A3A6893CFC28DFC1655EAA78299B",
+    "candidate_family_identity_sha256": "40E6596628AF7C2646A86A99334EEAE3EF7562B68E0052307D8959C791A7A259"
+  },
+  "source": {
+    "family": "ARKITSCENES",
+    "dataset_root": "artifacts.local/datasets/assistive-geometry-b0-arkitscenes-20260809-r2",
+    "manifest_sha256": "F51041594FF34EE922F92A7A49AAD7CA44551B5C0A8D77A81693ECFFDD226D87",
+    "prior_r12_source_result_content_sha256": "186C3DFD4FA0201C275927985FB6C441909DB0E16EDEC9821F8BC4F10FFA54DC",
+    "prior_r12_opened_reference_occupancy_labels": true,
+    "prior_task_evidence_neighbor_outcomes_opened": false,
+    "therefore_not_globally_untouched_source_evidence": true,
+    "new_task_outcome_blind_confirmation": true
+  },
+  "confirmation_gates": {
+    "maximum_references_per_parent": 5,
+    "minimum_evaluated_references": 32,
+    "minimum_evaluated_parents": 8,
+    "minimum_opportunity_parents": 4,
+    "minimum_policy_strict_win_opportunity_parents": 3,
+    "minimum_policy_strict_win_opportunity_parent_fraction": 0.5,
+    "policy_parent_macro_must_exceed_passive": true,
+    "policy_parent_macro_must_exceed_generic": true,
+    "selection_must_precede_neighbor_depth": true,
+    "same_one_extra_frame_budget": true,
+    "zero_retention_failures": true
+  },
+  "opportunity_definition": "A parent is an opportunity parent iff at least one evaluated reference has oracle gain strictly above max(passive gain, generic gain). Policy strict-win parents are necessarily a subset of opportunity parents.",
+  "role_boundary": {
+    "confirmation_may_not_refit_policy_or_gates": true,
+    "android_candidate_authorized_only_if_all_confirmation_gates_pass": true,
+    "not_collision_correctness_product_default_app_or_safety_evidence": true
+  }
+}

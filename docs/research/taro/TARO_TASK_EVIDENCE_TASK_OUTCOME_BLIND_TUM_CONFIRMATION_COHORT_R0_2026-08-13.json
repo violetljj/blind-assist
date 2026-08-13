@@ -1,0 +1,40 @@
+{
+  "schema": "blindassist_ag_st_tum_rgbd_third_domain_cohort_v1",
+  "status": "FROZEN_BEFORE_TARO_TASK_EVIDENCE_METADATA_SELECTION_AND_DEPTH_OUTCOME_READ",
+  "token": "TARO_TASK_EVIDENCE_TUM_CONFIRMATION_R0_2026-08-13",
+  "fit_parents": [],
+  "evaluation_parents": [
+    {
+      "parent_id": "rgbd_dataset_freiburg3_structure_notexture_near",
+      "storage_kind": "tgz",
+      "source_path": "artifacts.local/downloads/ag-factorwise-no-regret-fresh-tum-r0/rgbd_dataset_freiburg3_structure_notexture_near.tgz",
+      "source_bytes": 432202427,
+      "source_sha256": "8DE8AEC62A63F4DAB25A2E976E9DE147293F14CFD6D19FC1A62464323D3725D1",
+      "intrinsics_fx_fy_cx_cy": [535.4, 539.2, 320.1, 247.6]
+    },
+    {
+      "parent_id": "rgbd_dataset_freiburg3_structure_texture_near",
+      "storage_kind": "tgz",
+      "source_path": "artifacts.local/downloads/ag-factorwise-no-regret-fresh-tum-r0/rgbd_dataset_freiburg3_structure_texture_near.tgz",
+      "source_bytes": 567005874,
+      "source_sha256": "C7DFD479B6BF84D87848882D8DFA93715BFA55F4F45D4ADC072A67D2F0363DF9",
+      "intrinsics_fx_fy_cx_cy": [535.4, 539.2, 320.1, 247.6]
+    },
+    {
+      "parent_id": "rgbd_dataset_freiburg3_walking_rpy",
+      "storage_kind": "tgz",
+      "source_path": "artifacts.local/downloads/ag-factorwise-no-regret-fresh-tum-r0/rgbd_dataset_freiburg3_walking_rpy.tgz",
+      "source_bytes": 533565255,
+      "source_sha256": "8727E72A01DA0150996AA98A63682E1798E4D6D196C30D35E8F693B33FBA3D5D",
+      "intrinsics_fx_fy_cx_cy": [535.4, 539.2, 320.1, 247.6]
+    },
+    {
+      "parent_id": "rgbd_dataset_freiburg3_nostructure_texture_far",
+      "storage_kind": "tgz",
+      "source_path": "artifacts.local/downloads/taro-task-evidence-tum-confirmation-r0/rgbd_dataset_freiburg3_nostructure_texture_far.tgz",
+      "source_bytes": 211008272,
+      "source_sha256": "E4A921052D342FD52FAC74509BB75F65149ACBDA3D31B25F36402041625FDBA9",
+      "intrinsics_fx_fy_cx_cy": [535.4, 539.2, 320.1, 247.6]
+    }
+  ]
+}

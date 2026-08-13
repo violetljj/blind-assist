@@ -1,0 +1,65 @@
+{
+  "schema": "blindassist.taro.task_evidence_task_outcome_blind_tum_confirmation_lock.v1",
+  "status": "FROZEN_BEFORE_FOURTH_PARENT_DOWNLOAD_AND_ANY_TARO_TASK_EVIDENCE_OUTCOME_READ",
+  "token": "TARO_TASK_EVIDENCE_TUM_CONFIRMATION_R0_2026-08-13",
+  "task_definition": "Select one pose-valid extra frame that maximizes novel observed cells inside frozen body/path capsules; UNKNOWN remains unknown.",
+  "frozen_policy": {
+    "family": "NORMALIZED_POSE_TASK_BLEND",
+    "score": "translation_unit + 0.8 * visible_unknown_unit + 0.05 * rotation_unit",
+    "normalization": "per-reference candidate-pool min-max; constant dimensions map to zero",
+    "task_term": "visible_unknown",
+    "task_weight": 0.8,
+    "rotation_weight": 0.05,
+    "development_result_content_sha256": "F39D940EF9432AD1FBBD72BF75698A111C16A3A6893CFC28DFC1655EAA78299B",
+    "candidate_family_identity_sha256": "40E6596628AF7C2646A86A99334EEAE3EF7562B68E0052307D8959C791A7A259"
+  },
+  "parents": [
+    {
+      "parent_id": "rgbd_dataset_freiburg3_structure_notexture_near",
+      "source_path": "artifacts.local/downloads/ag-factorwise-no-regret-fresh-tum-r0/rgbd_dataset_freiburg3_structure_notexture_near.tgz",
+      "source_url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_structure_notexture_near.tgz",
+      "source_bytes": 432202427,
+      "source_sha256": "8DE8AEC62A63F4DAB25A2E976E9DE147293F14CFD6D19FC1A62464323D3725D1"
+    },
+    {
+      "parent_id": "rgbd_dataset_freiburg3_structure_texture_near",
+      "source_path": "artifacts.local/downloads/ag-factorwise-no-regret-fresh-tum-r0/rgbd_dataset_freiburg3_structure_texture_near.tgz",
+      "source_url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_structure_texture_near.tgz",
+      "source_bytes": 567005874,
+      "source_sha256": "C7DFD479B6BF84D87848882D8DFA93715BFA55F4F45D4ADC072A67D2F0363DF9"
+    },
+    {
+      "parent_id": "rgbd_dataset_freiburg3_walking_rpy",
+      "source_path": "artifacts.local/downloads/ag-factorwise-no-regret-fresh-tum-r0/rgbd_dataset_freiburg3_walking_rpy.tgz",
+      "source_url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_walking_rpy.tgz",
+      "source_bytes": 533565255,
+      "source_sha256": "8727E72A01DA0150996AA98A63682E1798E4D6D196C30D35E8F693B33FBA3D5D"
+    },
+    {
+      "parent_id": "rgbd_dataset_freiburg3_nostructure_texture_far",
+      "source_path": "artifacts.local/downloads/taro-task-evidence-tum-confirmation-r0/rgbd_dataset_freiburg3_nostructure_texture_far.tgz",
+      "source_url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_nostructure_texture_far.tgz",
+      "source_bytes": 211008272,
+      "source_sha256": "E4A921052D342FD52FAC74509BB75F65149ACBDA3D31B25F36402041625FDBA9"
+    }
+  ],
+  "confirmation_gates": {
+    "minimum_evaluated_references": 16,
+    "minimum_evaluated_parents": 4,
+    "minimum_strict_win_parents": 3,
+    "policy_parent_macro_must_exceed_passive": true,
+    "policy_parent_macro_must_exceed_generic": true,
+    "selection_must_precede_neighbor_depth": true,
+    "same_one_extra_frame_budget": true,
+    "zero_retention_failures": true
+  },
+  "role_boundary": {
+    "all_parents_absent_from_prior_taro_task_evidence_outcomes": true,
+    "some_source_payloads_previously_used_by_other_research_routes": true,
+    "therefore_not_globally_untouched_source_evidence": true,
+    "taro_task_evidence_outcome_blind_at_lock": true,
+    "confirmation_may_not_refit_policy_or_gates": true,
+    "android_candidate_authorized_only_if_all_confirmation_gates_pass": true,
+    "not_collision_correctness_product_default_app_or_safety_evidence": true
+  }
+}

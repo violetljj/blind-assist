@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / R11_NOT_EVALUABLE_DUAL_CLASS_COVERAGE / R12_THREE_SOURCE_LABEL_SATURATION_LOCALIZED / R13_TASK_EVIDENCE_ORACLE_HEADROOM_PASS / POSE_SCORER_NOT_YET_RUN / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / R13_TASK_EVIDENCE_ORACLE_HEADROOM_PASS / R14_R20_SCORER_TRANSFER_NOT_CONFIRMED / CROSS_SOURCE_LEARNED_RANKER_ACTIVE / DEFAULT_APP_UNCHANGED`
 
 本页只维护 TARO 当前状态、权限和唯一算法 successor。较早完整 R0–R11 叙事保存在
 [14d8ad7e 历史快照](archive/README_FULL_HISTORY_2026-08-13.md)，不能从中恢复旧权限。
@@ -51,6 +51,16 @@ Android、HTP 或默认 App 自动继承权限。
   `17.9569` cells/reference，高于 generic `14.0222` 与 passive `13.8847`；12 opportunity parents、10 strict-win
   parents、零 retention failure，终态 `TASK_CONDITIONED_QUERY_EVIDENCE_ORACLE_HEADROOM_PASS`。这首次证明
   task × next-pose 条件交互有可学上限，但还不是 learned policy。
+- R14 pointwise ridge、R15 pairwise ridge 和 R16 fixed analytic scorer 都未越过冻结的跨父级/跨源基线门；
+  R15 FIT gate 失败时 Bonn target reads 保持 0，负终态均保留。
+- R18 在全部已消费 TUM/Bonn Development 上从 96 个预冻混合候选中只找到一个跨源 admissible policy：
+  `translation_unit + 0.8*visible_unknown_unit + 0.05*rotation_unit`。但其 Bonn 相对 generic 优势只有 `+0.0191`，
+  因此只授权新任务结果确认，不授权 Android。
+- R19 四个 task-outcome-blind TUM parents 上，冻结 policy 的 parent-macro `11.6375` 同时高于 generic
+  `11.25` 与 passive `8.9375`，但 strict-win parents 只有 2、低于预冻 3；正式终态仍为 FAIL。
+- R20 在尚未打开 task-evidence neighbor outcomes 的 ARKitScenes 上按机会分母重做确认：40 references、17 parents、
+  9 opportunity parents，policy 只覆盖 2，且 macro `16.3363` 低于 generic `16.4490`；oracle 仍为 `25.0863`。
+  这把问题定位为 scorer transfer，而不是任务无 headroom；Android 与默认 App 仍未授权。
 
 ## 当前证据入口
 
@@ -64,30 +74,29 @@ Android、HTP 或默认 App 自动继承权限。
 - [Pair-support audit](TARO_TASK_DIRECTED_OBSERVABILITY_PAIR_SUPPORT_AUDIT_RESULT_2026-08-13.json)
 - [Task-directed positive-oracle R1 result](TARO_TASK_DIRECTED_OBSERVABILITY_POSITIVE_ORACLE_CANARY_RESULT_2026-08-13.json)
 - [Balanced-source frontdoors and R13 task-evidence oracle](TARO_TASK_OBSERVABILITY_BALANCED_SOURCE_FRONTDOOR_AND_QUERY_EVIDENCE_ORACLE_RESULT_2026-08-13.json)
+- [R14-R20 scorer and confirmation results](TARO_TASK_EVIDENCE_SCORER_AND_CONFIRMATION_RESULTS_2026-08-13.json)
 - [算法路线总表](../ALGORITHM_RESEARCH_CURRENT.md) · [TARO Module](../../../scripts/research/taro/README.md)
 
 ## 唯一 successor
 
-`TARO_TASK_EVIDENCE_POSE_SCORER_R0`：
+`TARO_CROSS_SOURCE_LEARNED_RANKER_R0`：
 
-1. 冻结 scorer 输入只含 reference static evidence grid、候选相对 pose、相机内参和 source-time geometry；
-   candidate neighbor depth 只能生成 FIT target 或在选择完成后评价，不能进入 EVALUATION selection；
-2. 沿用 R13 的 14-parent namespace、pre-existing FIT/EVALUATION role 和每 reference 相同 pose-only proposal
-   pool；所有非静态 arm 仍严格一帧，UNKNOWN 仍不是 negative；
-3. 先只在 FIT parents 内选模型/正则，再在已消费 EVALUATION role 做明确标注的 Development replay；只有
-   scorer parent-macro 同时高于 passive 与 generic、至少 4 parents 有 strict win、retention failure=0，才冻结
-   candidate；
-4. candidate 仍须在至少 4 个未被 R13 打开的 parents 上 confirmation 才能讨论 Android integration；不得把
-   oracle target、EVALUATION depth 或 R13 全父源结果泄漏进 scorer input/training。
+1. 训练数据只可来自现已消费的 TUM、Bonn、ARKitScenes task-evidence outcomes；scorer 输入仍只含 reference
+   static evidence、relative pose、内参与 source-time geometry，neighbor depth 只作 target；
+2. 模型族与超参数必须先冻结，再做 leave-one-source-family-out；每个 held source 都必须在 parent-macro 上同时
+   高于 passive 与 generic，并按 opportunity denominator 覆盖足够 strict-win parents；
+3. 不通过三源逐一外推就停止，不得在 held source 上调模型；通过后才锁一个未打开 task-evidence outcome 的
+   新来源/父级组；
+4. fresh confirmation 全门通过前，禁止 Android integration、默认 App 或产品主张。
 
 R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；它不能改写上述 outcome-blind source
 选择，也不能把 R11 改成 PASS。任何新的 dual-class confirmation 仍需 untouched parents。
 
 ## 当前允许
 
-- 实现 `TARO_TASK_EVIDENCE_POSE_SCORER_R0`，scorer input 只含 reference static evidence、relative pose、内参与 source-time geometry；
-- FIT parents 内训练、选模和交叉验证；在 EVALUATION role 上必须先选帧、后开 neighbor depth 评价；
-- 为 scorer candidate 冻结至少 4 个 R13 未打开 parents 的 confirmation source lock；
+- 实现 `TARO_CROSS_SOURCE_LEARNED_RANKER_R0`，输入只含 reference static evidence、relative pose、内参与 source-time geometry；
+- 在已消费 TUM/Bonn/ARKitScenes 上做 leave-one-source-family-out，held source 不参与拟合或调参；
+- 三源门均过后，为 frozen learned candidate 锁新 task-outcome-blind confirmation source；
 - 对 consumed R11 evidence 做明确标注的只读后验机制诊断；
 - 重放 hash-bound tests、validator 和只读 evidence 复核。
 
@@ -96,13 +105,13 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 - 在 R7/R10 的 1 秒合法 pair 为 0 后训练时序模型或事后放宽窗口；
 - 用不同额外帧预算比较 sensing arms，或只报告 recovery 而隐藏 false-occupied/known retention/cost；
 - 在 Development canary 中输出 `CLEAR`、把 UNKNOWN 当 negative，或用 R11 outcome 选择该 canary 的 source；
-- 回调 R12 的 query/label/gate，或把 R13 oracle/neighbor depth/EVALUATION target 泄漏进 scorer input/FIT；
-- 将 R13 oracle PASS 冒充 learned scorer、untouched confirmation、Android 或产品成功；
+- 回调 R12/R19/R20 的 query、outcome 或 gate，或把 neighbor depth 泄漏进 scorer input；
+- 将 R13 oracle、R18 Development PASS 或两次 confirmation FAIL 冒充 learned scorer、Android 或产品成功；
 - 修改 sealed R11 selection/selector/candidate/threshold，或覆盖、resume、删除、重跑已消费 one-shot；
 - 越级训练、Android/QNN/HTP、默认 App、产品或安全结论。
 
 ## Claim ceiling
 
-R13 已证明在 consumed TUM Development 上，task-conditioned next-pose oracle 比 passive/generic 增加更多 body/path
-证据格；这是 task × pose 条件交互的正向机制证据。尚未证明可由 source-time scorer 预测，也未做 untouched
-confirmation、移动端实现、产品有效性或用户安全验证；默认 App 不变。
+R13 已证明 task-conditioned next-pose oracle headroom；R19 在 TUM 的宏平均正迁移未越过 strict-parent 门，
+R20 在 ARKitScenes 又未越过 generic 与 opportunity 门，因此 source-time scorer 的可迁移性尚未确认。
+当前只授权跨已消费三源的 learned-ranker Development；未授权移动端实现、产品有效性或用户安全验证，默认 App 不变。
