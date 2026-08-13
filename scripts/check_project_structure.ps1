@@ -510,9 +510,20 @@ if ($null -ne $currentTruthPolicy) {
                     $failures.Add("Algorithm current route '$routeName' truth status line is not marked current.")
                 }
 
+                # The compact algorithm index may use these established summary labels for
+                # more specific route-truth terminals. Keep this allowlist exact: every
+                # unlisted status token must still match the route status line literally.
+                $statusTokenAliases = @{
+                    'ANGULAR_BOUNDARY_TASK_INERT' = 'ANGULAR_BOUNDARY_FAIL_CLOSED_SAFE_BUT_TASK_INERT'
+                    'R14_R22_TASK_SCORER_FAIL_STOP' = 'R14_R22_TASK_SCORER_TRANSFER_FAIL_STOP'
+                }
                 $statusText = $cells[2].Trim().Trim([char]0x60)
                 foreach ($statusToken in @($statusText -split '\s*/\s*' | ForEach-Object { $_.Trim().Trim([char]0x60) } | Where-Object { $_ })) {
-                    if (-not $routeStatusTokens.Contains($statusToken)) {
+                    $statusTokenIsPresent = $routeStatusTokens.Contains($statusToken)
+                    if (-not $statusTokenIsPresent -and $statusTokenAliases.ContainsKey($statusToken)) {
+                        $statusTokenIsPresent = $routeStatusTokens.Contains([string]$statusTokenAliases[$statusToken])
+                    }
+                    if (-not $statusTokenIsPresent) {
                         $failures.Add("Algorithm current route '$routeName' status token is absent from its route current-status line: $statusToken")
                     }
                 }
