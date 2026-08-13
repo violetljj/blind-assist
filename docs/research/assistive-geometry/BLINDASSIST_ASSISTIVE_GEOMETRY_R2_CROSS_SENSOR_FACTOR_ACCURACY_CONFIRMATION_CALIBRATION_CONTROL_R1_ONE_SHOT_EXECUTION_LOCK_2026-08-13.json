@@ -1,0 +1,73 @@
+{
+  "schema": "blindassist.ag.r2.cross_sensor_factor_confirmation_calibration_control_r1_lock.v1",
+  "lock_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R1_ONE_SHOT_EXECUTION_LOCK",
+  "protocol_id": "BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_R0",
+  "status": "ONE_SHOT_CALIBRATION_CONTROL_R1_AUTHORIZED_NOT_STARTED",
+  "repair_implementation_lock": {
+    "role": "R1_REPAIR_IMPLEMENTATION_LOCK",
+    "path": "E:\\linnan\\linnan\\docs\\research\\assistive-geometry\\BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R0_FAILURE_AUDIT_AND_R1_PROTOCOL_REPAIR_IMPLEMENTATION_LOCK_2026-08-13.json",
+    "bytes": 7005,
+    "sha256": "5972018B5FCC9210ACC9F900FE0247F306029FA6370F168CD3FEE803B70B088E"
+  },
+  "data_identity": {
+    "role": "DATA_IDENTITY_PRE_R0_SNAPSHOT",
+    "path": "E:\\linnan\\linnan\\docs\\research\\assistive-geometry\\BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_DATA_IDENTITY_2026-08-12.json",
+    "bytes": 8318,
+    "sha256": "E755288202F4E7189538671F5F8C120F9D6EF68EBE80757844BC5272382B345B"
+  },
+  "official_camera_selection_evidence": {
+    "role": "R1_OFFICIAL_CAMERA_SELECTION_EVIDENCE",
+    "path": "E:\\linnan\\linnan\\docs\\research\\assistive-geometry\\BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R1_OFFICIAL_CAMERA_SELECTION_EVIDENCE_2026-08-13.json",
+    "bytes": 2643,
+    "sha256": "414B3586C64C2934EDAC64A88C5C47611383F3655D67E0824BFB0FDAECE33F76"
+  },
+  "protocol_amendment": {
+    "role": "R1_PROTOCOL_AMENDMENT",
+    "path": "E:\\linnan\\linnan\\docs\\research\\assistive-geometry\\BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_R1_PROTOCOL_AMENDMENT_2026-08-13.json",
+    "bytes": 6585,
+    "sha256": "C590C3EC4B63FCE6BA878F7C4CF7AA121AEFEF578ACD3D55A276D6430ECDB7D5"
+  },
+  "r0_terminal": {
+    "role": "R0_CONSUMED_CONTROL_TERMINAL",
+    "path": "E:\\linnan\\linnan\\docs\\research\\assistive-geometry\\BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_CALIBRATION_CONTROL_PREFLIGHT_ONE_SHOT_RESULT_2026-08-13.json",
+    "bytes": 4942,
+    "sha256": "4D3E1BF423FDFDA054F11BA3C08A606C7AB172B06EE08C1663E89617C04373AD"
+  },
+  "archive_root": "E:\\linnan\\linnan\\artifacts.local\\downloads\\ag-r2-eth3d-cross-sensor-confirmation-r0",
+  "output_root": "E:\\linnan\\linnan\\artifacts.local\\evidence\\assistive-geometry\\ag-r2-cross-sensor-calibration-control-r1",
+  "budget": {
+    "max_members": 256,
+    "max_member_uncompressed_bytes": 4194304,
+    "max_total_uncompressed_bytes": 67108864,
+    "max_compression_ratio": 100.0,
+    "max_metadata_bytes": 4194304,
+    "max_yaml_candidates": 32
+  },
+  "authority": {
+    "producer_calibration_archive_hash": true,
+    "producer_calibration_archive_member_enumeration": true,
+    "producer_calibration_yaml_member_read": true,
+    "independent_validator_archive_replay": true,
+    "session_rgbd_archive_access": false,
+    "session_imu_archive_access": false,
+    "model_or_checkpoint_access": false,
+    "source_truth_materialization": false,
+    "factor_scoring": false,
+    "confirmation_root": false,
+    "training_or_tuning": false,
+    "reducer_or_task_state": false,
+    "network": false,
+    "device": false,
+    "default_app": false,
+    "product": false,
+    "safety": false
+  },
+  "one_shot": {
+    "exclusive_r1_control_root": true,
+    "producer_runs": 1,
+    "independent_validator_replays": 1,
+    "r0_rerun": false,
+    "r0_resume": false,
+    "r0_replacement": false
+  }
+}
