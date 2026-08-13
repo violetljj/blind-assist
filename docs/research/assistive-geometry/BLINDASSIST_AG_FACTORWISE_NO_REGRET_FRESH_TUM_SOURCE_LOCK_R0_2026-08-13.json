@@ -1,0 +1,55 @@
+{
+  "schema": "blindassist_ag_factorwise_no_regret_fresh_tum_source_lock_v1",
+  "status": "IDENTITIES_FROZEN_BEFORE_DOWNLOAD_METADATA_SELECTION_AND_MODEL_EXECUTION",
+  "artifact_id": "BLINDASSIST_AG_FACTORWISE_NO_REGRET_FRESH_TUM_SOURCE_LOCK_R0_2026-08-13",
+  "selection_token": "AG_FACTORWISE_NO_REGRET_FRESH_TUM_R0_2026-08-13",
+  "purpose": "Parent-disjoint Development evaluation for the frozen source-diverse pixel candidate plus frame-level neural and cross-parent kNN lower-confidence veto. This is not confirmation, deployment, product or safety evidence.",
+  "frozen_before": [
+    "payload download",
+    "RGB or depth payload read",
+    "frame metadata selection",
+    "DepthART execution",
+    "selector execution",
+    "metric or task outcome read"
+  ],
+  "parents": [
+    {
+      "parent_id": "rgbd_dataset_freiburg3_walking_rpy",
+      "source_url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_walking_rpy.tgz",
+      "resolved_url": "https://webshare.cvg.cit.tum.de/g/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_walking_rpy.tgz",
+      "expected_bytes": 533565255,
+      "last_modified": "Tue, 07 Aug 2012 18:56:54 GMT"
+    },
+    {
+      "parent_id": "rgbd_dataset_freiburg3_structure_notexture_near",
+      "source_url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_structure_notexture_near.tgz",
+      "resolved_url": "https://webshare.cvg.cit.tum.de/g/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_structure_notexture_near.tgz",
+      "expected_bytes": 432202427,
+      "last_modified": "Tue, 07 Aug 2012 19:03:40 GMT"
+    },
+    {
+      "parent_id": "rgbd_dataset_freiburg3_structure_texture_near",
+      "source_url": "https://cvg.cit.tum.de/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_structure_texture_near.tgz",
+      "resolved_url": "https://webshare.cvg.cit.tum.de/g/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_structure_texture_near.tgz",
+      "expected_bytes": 567005874,
+      "last_modified": "Tue, 07 Aug 2012 19:02:02 GMT"
+    }
+  ],
+  "sensor_contract": {
+    "publisher": "Technical University of Munich Computer Vision Group",
+    "dataset": "TUM RGB-D benchmark",
+    "official_license": "CC BY 4.0",
+    "native_resolution_wh": [640, 480],
+    "depth_scale_divisor": 5000.0,
+    "invalid_depth": "uint16 == 0",
+    "intrinsics_fx_fy_cx_cy": [535.4, 539.2, 320.1, 247.6]
+  },
+  "role_boundary": {
+    "all_three_parent_ids_absent_from_repository_text_before_this_lock": true,
+    "evaluation_may_influence_current_frozen_router_fit_or_threshold": false,
+    "evaluation_may_influence_a_separately_versioned_successor": true,
+    "development_only": true,
+    "confirmation": false,
+    "deployment_or_product_claim": false
+  }
+}

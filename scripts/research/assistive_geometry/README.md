@@ -207,8 +207,21 @@ factor-wise no-regret Development。
   selective router，并报告 perfect signed-advantage oracle 的安全 coverage/headroom。threshold admission
   要求每个 calibration parent 的 MAE 与 `>0.10 m` error 都 no-regret，且至少一半 parent 有非零
   correction coverage；没有 admissible threshold 时确定性回退 base。
-- `test_train_ag_st_no_regret_selector.py`：8 个 focused tests，覆盖 deterministic split、oracle headroom、
+- `test_train_ag_st_no_regret_selector.py`：9 个 focused tests，覆盖 deterministic split、可扩展 TUM
+  calibration parent 数、oracle headroom、
   fallback，以及“macro 改善但单 parent 受伤”必须拒绝的回归测试。
+- `run_ag_factorwise_no_regret_oracle_parent_gate_canary.py`：重放冻结 prior/expert/selector，并显式加入
+  perfect signed-advantage oracle；逐 parent 同时约束 MAE 与 `>0.10 m` error，至少一半 parent 必须有
+  非零 coverage，R21 boundary 只作 SHA/结果重放。
+- `train_ag_st_frame_advantage_lcb_router.py`：冻结 pixel selector/correction expert，以 neural quantile
+  ensemble 和跨 parent kNN lower bound 形成只会 veto 的 frame gate；可把 checkpoint fallback 与显式
+  Development pixel candidate threshold 分开记账，也可限制为 TUM-only 并纳入已消费 evaluation parent。
+- `evaluate_ag_st_frame_advantage_lcb_router_tum.py`：对冻结 frame gate 执行 parent-disjoint TUM 评估，
+  检查 fit/calibration firewall，并报告 neural/kNN 分数、逐 frame 真值 advantage 与严格 parent gate；
+  consumed 诊断不能重新包装成 fresh evidence。
+- 对应 8 个 focused tests 覆盖 gate、fallback、pinball asymmetry、veto-only、kNN parent exclusion 与
+  selector threshold provenance；当前 TUM14 结果为 runtime-observability fail-stop，不授权继续用同一
+  observable 重训。
 - `evaluate_ag_st_student_checkpoint.py`：在 parent-disjoint cohort 上零样本评估冻结 checkpoint；默认
   fresh 模式，也可显式签署 `consumed_development_comparison`，防止把已看过的 cohort 再包装成新证据。
 - `test_evaluate_ag_st_student_checkpoint.py`：6 个 focused tests，覆盖 objective-specific core factors、

@@ -13,6 +13,7 @@ from train_ag_st_masked_student import TIER_A_SOURCE  # noqa: E402
 from train_ag_st_no_regret_selector import (  # noqa: E402
     NoRegretDepthSelector,
     SelectorObservation,
+    calibration_parent_count,
     calibrate_selector_threshold,
     compute_no_regret_selector_loss,
     split_parent_roles,
@@ -92,6 +93,11 @@ class NoRegretSelectorTest(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual((6, 2), (len(first[0]), len(first[1])))
         self.assertFalse(set(first[0]) & set(first[1]))
+
+    def test_calibration_parent_count_scales_with_source_diversity(self) -> None:
+        self.assertEqual(1, calibration_parent_count(4))
+        self.assertEqual(2, calibration_parent_count(8))
+        self.assertEqual(3, calibration_parent_count(15))
 
     @staticmethod
     def observation(

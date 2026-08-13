@@ -2,6 +2,20 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。完成 Assistive Geometry factor-wise no-regret
+  Development 回合。11-parent frozen replay 中 perfect signed-advantage oracle coverage `80.30%`，确认
+  correction 存在安全 headroom，但旧 learned selector 的 Bonn/TUM 外部结果保持失败。新增 source-diverse
+  pixel candidate（显式 `0.05`，不篡改 checkpoint 的 `1.001` fallback）以及 neural quantile ensemble +
+  cross-parent kNN LCB frame veto；14-parent calibration coverage `44.45%`、MAE delta `-0.7496 m`、bad-rate
+  delta `-0.1120`。两组各 3-parent consumed TUM 诊断都把 harmful parent 降为 0，但均只有 1/3 parent
+  非零 coverage，严格门失败。随后把全部 14 个 consumed TUM parent 降级重分为 11 fit / 3 calibration
+  训练 TUM-only gate；oracle 仍有 `39.27%` coverage，但所有 kNN-LCB 候选均只能全回退，终态
+  `AG_FACTORWISE_NO_REGRET_ORACLE_HEADROOM_RUNTIME_OBSERVABILITY_FAIL_STOP`。因此停止用同一 observable
+  重训，唯一 successor 改为 `AG_RUNTIME_CORRECTION_GAIN_OBSERVABILITY_CANARY_R0`：先检验 temporal
+  reprojection/model uncertainty 的 leave-one-parent-out 可观测性。三份此前未引用 TUM identity 已在任何
+  payload/model/outcome read 前冻结；因当前候选全回退未消费。R21 boundary、support/UNKNOWN、reducer、
+  ETH3D Confirmation、Android/default App、产品与安全权限全部不变；17 个 focused tests PASS。
+
 - 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。完成 TARO task-directed observability 的 Bonn
   positive-oracle R1 可执行 canary 与数据分母收口。runner 先只读 timestamp/path/pose，以官方
   `T_ROS * T_groundtruth * T_ROS * T_marker` 坐标链做 outcome-blind source audit；26 个 parents 中 25 个

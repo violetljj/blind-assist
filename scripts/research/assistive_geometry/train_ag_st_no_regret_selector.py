@@ -304,6 +304,16 @@ def split_parent_roles(
     return fit, calibration
 
 
+def calibration_parent_count(parent_count: int, *, minimum: int = 1) -> int:
+    """Reserve one quarter of a source domain without collapsing small cohorts."""
+
+    require(parent_count >= 4, "selector domain needs at least four parents")
+    require(minimum > 0, "selector calibration minimum invalid")
+    count = max(minimum, parent_count // 4)
+    require(count < parent_count, "selector calibration count consumes domain")
+    return count
+
+
 def compute_no_regret_selector_loss(
     outputs: dict[str, torch.Tensor],
     base_depth_m: torch.Tensor,
@@ -920,21 +930,30 @@ def execute(args: argparse.Namespace) -> int:
         cohort_role="fit",
     )
     tum_frames: list[CachedFrame] = []
-    tum_extraction: dict[str, Any] | None = None
-    if args.tum_cohort_manifest is not None:
-        tum_frames, tum_extraction = extract_tum_anchor_frames(
-            args.tum_cohort_manifest.resolve(),
+    tum_extractions: list[dict[str, Any]] = []
+    for manifest in args.tum_cohort_manifest or []:
+        manifest_frames, manifest_extraction = extract_tum_anchor_frames(
+            manifest.resolve(),
             args.depthart_source.resolve(),
             args.depthart_checkpoint.resolve(),
             device,
             args.seed,
             cohort_role="fit",
         )
+        tum_frames.extend(manifest_frames)
+        tum_extractions.append(manifest_extraction)
     arkit_parents = sorted({row.descriptor.parent_id for row in arkit_frames})
     bonn_parents = sorted({row.descriptor.parent_id for row in bonn_frames})
     tum_parents = sorted({row.descriptor.parent_id for row in tum_frames})
     require(len(arkit_parents) == 40 and len(bonn_parents) == 8, "selector source roster drift")
-    require(not tum_frames or len(tum_parents) == 4, "TUM selector source roster drift")
+    require(
+        not tum_frames or len(tum_parents) >= 4,
+        "TUM selector source roster too small",
+    )
+    require(
+        len(tum_frames) == 3 * len(tum_parents),
+        "TUM selector duplicate parent or frame-count drift",
+    )
     arkit_fit, arkit_calibration = split_parent_roles(
         arkit_parents,
         calibration_count=8,
@@ -950,7 +969,7 @@ def execute(args: argparse.Namespace) -> int:
     if tum_parents:
         tum_fit, tum_calibration = split_parent_roles(
             tum_parents,
-            calibration_count=1,
+            calibration_count=calibration_parent_count(len(tum_parents)),
             domain="TUM_RGBD",
         )
     fit_by_domain = {
@@ -1118,7 +1137,11 @@ def execute(args: argparse.Namespace) -> int:
                 row.label_path for row in descriptors
             ),
             "bonn_depth_anchors": bonn_extraction,
-            "tum_depth_anchors": tum_extraction,
+            "tum_depth_anchors": (
+                tum_extractions[0] if len(tum_extractions) == 1 else tum_extractions
+            )
+            if tum_extractions
+            else None,
             "arkit_feature_extraction": arkit_extraction,
         },
         "split": split,
@@ -1187,7 +1210,13 @@ def parse_args() -> argparse.Namespace:
         default=list(DEFAULT_LABEL_DIRS),
     )
     parser.add_argument("--cohort-manifest", type=Path, default=DEFAULT_COHORT_MANIFEST)
-    parser.add_argument("--tum-cohort-manifest", type=Path, default=None)
+    parser.add_argument(
+        "--tum-cohort-manifest",
+        type=Path,
+        action="append",
+        default=None,
+        help="Repeat to combine disjoint TUM fit manifests before the frozen split.",
+    )
     parser.add_argument("--dataset-root", type=Path, default=DEFAULT_BONN_ROOT)
     parser.add_argument("--archive", type=Path, default=DEFAULT_BONN_ARCHIVE)
     parser.add_argument("--catalog", type=Path, default=DEFAULT_BONN_CATALOG)
