@@ -43,30 +43,23 @@ fun SettingsScreen(
 ) {
     val language = controls.appLanguage
     ScreenColumn(modifier = modifier) {
-        Text(
-            text = if (language == AppLanguage.EN) "Settings" else "设置",
-            style = MaterialTheme.typography.headlineMedium,
-            color = BaText,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.semantics { heading() }
-        )
-        Text(
-            text = if (language == AppLanguage.EN) {
+        ScreenIntro(
+            eyebrow = if (language == AppLanguage.EN) "PERSONALIZE" else "个性化辅助",
+            title = if (language == AppLanguage.EN) "Settings" else "设置",
+            body = if (language == AppLanguage.EN) {
                 "These preferences affect reminders on the camera page. Detection can still be controlled after entering the camera."
             } else {
                 "这些偏好会影响摄像头页的提醒方式。检测开关进入相机后仍可随时控制。"
-            },
-            style = MaterialTheme.typography.bodyMedium,
-            color = BaTextMuted
+            }
         )
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(26.dp))
 
         SettingsSectionHeader(if (language == AppLanguage.EN) "Interface and assistance" else "界面与辅助")
         LanguageSelector(
             selected = controls.appLanguage,
             onLanguageChange = onLanguageChange
         )
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(20.dp))
         SettingSwitchRow(
             icon = Icons.Rounded.Favorite,
             title = if (language == AppLanguage.EN) "Care Mode" else "关怀模式",
@@ -76,7 +69,7 @@ fun SettingsScreen(
             modifier = Modifier.testTag("settings_care_mode_toggle"),
             onCheckedChange = onCareModeChange
         )
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(24.dp))
 
         SettingsSectionHeader(if (language == AppLanguage.EN) "Reminder feedback" else "提醒方式")
         SettingSwitchRow(
@@ -101,13 +94,13 @@ fun SettingsScreen(
             language = language,
             onSpeechStyleChange = onSpeechStyleChange
         )
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(20.dp))
         VibrationStrengthSelector(
             selected = controls.vibrationStrength,
             language = language,
             onVibrationStrengthChange = onVibrationStrengthChange
         )
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(24.dp))
 
         SettingsSectionHeader(if (language == AppLanguage.EN) "Walking scenario" else "行走场景")
         ProfileSelector(
@@ -115,13 +108,13 @@ fun SettingsScreen(
             language = language,
             onProfileChange = onProfileChange
         )
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(20.dp))
         ScenarioSelector(
             selected = controls.assistScenario,
             language = language,
             onScenarioChange = onScenarioChange
         )
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(24.dp))
 
         SettingsSectionHeader(if (language == AppLanguage.EN) "Debug and records" else "调试与记录")
         SettingSwitchRow(
@@ -158,11 +151,11 @@ fun SettingsScreen(
 @Composable
 private fun SettingsSectionHeader(text: String) {
     Text(
-        text = text,
-        style = MaterialTheme.typography.titleMedium,
+        text = text.uppercase(),
+        style = MaterialTheme.typography.labelMedium,
         color = BaMint,
         fontWeight = FontWeight.Bold,
         modifier = Modifier.semantics { heading() }
     )
-    Spacer(Modifier.height(8.dp))
+    Spacer(Modifier.height(10.dp))
 }

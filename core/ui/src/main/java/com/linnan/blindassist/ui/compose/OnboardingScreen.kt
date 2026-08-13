@@ -106,47 +106,26 @@ fun OnboardingScreen(
     val isLastPage = pageIndex == pages.lastIndex
 
     ScreenColumn(modifier = modifier) {
-        Spacer(Modifier.height(8.dp))
-        Text(
-            text = "开始使用 BlindAssist",
-            style = MaterialTheme.typography.headlineMedium,
-            color = BaText,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.semantics { heading() }
+        ScreenIntro(
+            eyebrow = "BLINDASSIST ${pageIndex + 1} / ${pages.size}",
+            title = "开始使用 BlindAssist",
+            body = "先了解三件事，再进入本地视觉辅助体验。"
         )
-        Text(
-            text = "先了解三件事，再进入本地视觉辅助体验。",
-            style = MaterialTheme.typography.bodyMedium,
-            color = BaTextMuted
-        )
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(26.dp))
 
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 340.dp),
-            shape = RoundedCornerShape(24.dp),
+                .heightIn(min = 330.dp),
+            shape = RoundedCornerShape(28.dp),
             colors = CardDefaults.cardColors(containerColor = BaPanel)
         ) {
             Column(
                 modifier = Modifier.padding(22.dp),
                 horizontalAlignment = Alignment.Start
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(68.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(page.accent.copy(alpha = 0.16f)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = page.icon,
-                        contentDescription = null,
-                        tint = page.accent,
-                        modifier = Modifier.size(34.dp)
-                    )
-                }
-                Spacer(Modifier.height(22.dp))
+                IconTile(icon = page.icon, accent = page.accent, emphasized = true)
+                Spacer(Modifier.height(24.dp))
                 Text(
                     text = page.title,
                     style = MaterialTheme.typography.headlineSmall,
@@ -154,14 +133,14 @@ fun OnboardingScreen(
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.semantics { heading() }
                 )
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(12.dp))
                 Text(
                     text = page.body,
                     style = MaterialTheme.typography.bodyLarge,
                     color = BaText,
                     lineHeight = MaterialTheme.typography.bodyLarge.lineHeight
                 )
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(14.dp))
                 Text(
                     text = page.detail,
                     style = MaterialTheme.typography.bodyMedium,
@@ -179,14 +158,14 @@ fun OnboardingScreen(
             pages.forEachIndexed { index, _ ->
                 Box(
                     modifier = Modifier
-                        .height(8.dp)
+                        .height(5.dp)
                         .weight(1f)
                         .clip(RoundedCornerShape(50))
                         .background(if (index == pageIndex) BaMint else BaPanelSoft)
                 )
             }
         }
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(22.dp))
         Button(
             onClick = {
                 if (isLastPage) {
@@ -197,8 +176,8 @@ fun OnboardingScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 52.dp),
-            shape = RoundedCornerShape(16.dp),
+                .heightIn(min = 56.dp),
+            shape = RoundedCornerShape(18.dp),
             colors = ButtonDefaults.buttonColors(containerColor = BaMint, contentColor = BaInk)
         ) {
             Text(if (isLastPage) "开始使用" else "下一步")

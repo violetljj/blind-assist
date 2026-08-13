@@ -119,24 +119,34 @@ fun ProfileScreen(
 ) {
     val language = controls.appLanguage
     ScreenColumn(modifier = modifier) {
+        ScreenIntro(
+            eyebrow = if (language == AppLanguage.EN) "LOCAL PROFILE" else "本地档案",
+            title = if (language == AppLanguage.EN) "Your assist profile" else "你的辅助档案",
+            body = if (language == AppLanguage.EN) {
+                "A quick view of this device, reminder preferences, and current walking setup."
+            } else {
+                "集中查看本机能力、提醒偏好与当前行走设置。"
+            }
+        )
+        Spacer(Modifier.height(22.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
             Box(
                 modifier = Modifier
-                    .size(64.dp)
-                    .clip(CircleShape)
-                    .background(BaMint.copy(alpha = 0.18f)),
+                    .size(58.dp)
+                    .clip(RoundedCornerShape(18.dp))
+                    .background(BaMintWash),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(Icons.Rounded.Person, contentDescription = null, tint = BaMint)
+                Icon(Icons.Rounded.Person, contentDescription = null, tint = BaMint, modifier = Modifier.size(26.dp))
             }
-            Spacer(Modifier.width(14.dp))
+            Spacer(Modifier.width(16.dp))
             Column {
                 Text(
                     text = if (language == AppLanguage.EN) "BlindAssist user" else "BlindAssist 用户",
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleMedium,
                     color = BaText,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.semantics { heading() }
@@ -152,7 +162,14 @@ fun ProfileScreen(
                 )
             }
         }
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(24.dp))
+        Text(
+            text = if (language == AppLanguage.EN) "STATUS AT A GLANCE" else "状态概览",
+            color = BaMint,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(Modifier.height(10.dp))
         StatusGrid(
             leftTitle = if (language == AppLanguage.EN) "Device" else "设备",
             leftBody = if (language == AppLanguage.EN) "Phone camera available" else "手机摄像头可用",
