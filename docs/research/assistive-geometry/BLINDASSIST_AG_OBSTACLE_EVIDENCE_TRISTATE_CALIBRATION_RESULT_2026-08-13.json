@@ -1,0 +1,57 @@
+{
+  "schema": "blindassist_ag_obstacle_evidence_tristate_calibration_frozen_result_v1",
+  "artifact_id": "BLINDASSIST_AG_OBSTACLE_EVIDENCE_TRISTATE_CALIBRATION_RESULT_2026-08-13",
+  "date": "2026-08-13",
+  "status": "AG_OBSTACLE_EVIDENCE_TRISTATE_CALIBRATION_FAIL_STOP",
+  "question": "Can the frozen obstacle logit support parent-disjoint POSITIVE, VERIFIED_NEGATIVE and UNKNOWN evidence with bounded false-negative and false-positive rates plus nonzero two-sided coverage?",
+  "artifact": {
+    "path": "artifacts.local/experiments/ag-obstacle-evidence-tristate-calibration-canary-r0/result.json",
+    "sha256": "9545718261D4BC3D2D4EF734D7D1536D5B5BE26B32B91842B85D0730E6A7852D",
+    "runner": "scripts/research/assistive_geometry/run_ag_obstacle_evidence_tristate_calibration_canary.py",
+    "runner_sha256": "4933E50708693E1003E8FD229D76F17B8981CEDCA5F5030B9D5FCC1884309ABE",
+    "focused_test": "scripts/research/assistive_geometry/test_run_ag_obstacle_evidence_tristate_calibration_canary.py",
+    "focused_test_sha256": "BB2153F8ECC212CC4CEB1B7A3C60343342204E813F3CBD634614DD97E23004A1",
+    "focused_tests": "3/3 PASS"
+  },
+  "protocol": {
+    "role": "CONSUMED_CHECKPOINT_HELD_DEVELOPMENT_LEAVE_ONE_PARENT_OUT",
+    "sources": [
+      "arkitscenes",
+      "tum_rgbd"
+    ],
+    "parent_count": 6,
+    "frame_count": 18,
+    "prediction_inputs": "RGB_PLUS_K_ONLY",
+    "source_outcomes_opened_after_all_predictions": true,
+    "training_steps": 0,
+    "false_negative_rate_cap": 0.01,
+    "false_positive_rate_cap": 0.05,
+    "minimum_side_coverage": 0.01,
+    "minimum_nonzero_parent_count": 3,
+    "unknown_is_negative": false,
+    "reducer_called": false
+  },
+  "result": {
+    "fold_count": 6,
+    "valid_threshold_pair_count": 0,
+    "evaluable_parent_count": 0,
+    "all_folds_threshold_pair_valid": false,
+    "all_parents_false_negative_rate_le_0p01": false,
+    "all_parents_false_positive_rate_le_0p05": false,
+    "at_least_half_parents_positive_recall_ge_0p01": false,
+    "at_least_half_parents_verified_negative_coverage_ge_0p01": false,
+    "interpretation": "No outer fold obtained a complete threshold pair. The low-score tail could not provide verified-negative evidence under the 1 percent per-parent false-negative cap, and five folds also lacked a high threshold satisfying the per-parent false-positive cap with required positive coverage. This is a ranking and conditional-reliability failure, not merely a threshold-choice failure."
+  },
+  "decision": {
+    "obstacle_tristate_calibration_supported": false,
+    "current_obstacle_logit_promoted": false,
+    "current_obstacle_logit_retraining_authorized": false,
+    "body_swept_seam_authorized": false,
+    "support_remains_veto_only": true,
+    "fresh3_tum_opened": false,
+    "default_app_changed": false,
+    "next_successor": "AG_OBSTACLE_SELECTIVE_INTERACTION_HEAD_CANARY_R0",
+    "next_successor_scope": "On the same consumed six-parent ARKit/TUM Development pool, freeze the R21 factor checkpoint and DepthART prior, compute RGB+K-only obstacle/support/boundary/depth observables before outcomes, and test one tiny factor-interaction obstacle head. Use nested parent-disjoint fitting and threshold calibration: inner out-of-parent predictions select POSITIVE and VERIFIED_NEGATIVE thresholds, then the outer held parent is scored once. Require the same per-parent false-negative and false-positive caps, nonzero two-sided coverage on at least half of outer parents, and strict coverage gain over frozen-obstacle-score-only calibration. No reducer, fresh source or task outcome is authorized."
+  },
+  "claim_boundary": "Consumed checkpoint-held Development evidence that scalar threshold calibration of the frozen obstacle logit cannot safely supply two-sided obstacle evidence. It authorizes one small factor-interaction observability canary only; it does not establish a new model, task utility, independent cross-sensor generalization, deployment, product readiness, default-App eligibility, navigation utility or assistive safety."
+}

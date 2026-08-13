@@ -1,0 +1,76 @@
+{
+  "schema": "blindassist_ag_depth_pose_analytic_obstacle_frozen_result_v1",
+  "artifact_id": "BLINDASSIST_AG_DEPTH_POSE_ANALYTIC_OBSTACLE_RESULT_2026-08-13",
+  "date": "2026-08-13",
+  "status": "AG_DEPTH_POSE_ANALYTIC_OBSTACLE_CANARY_FAIL_STOP",
+  "question": "Can frozen metric depth plus runtime-equivalent pose/gravity recover parent-disjoint two-sided obstacle evidence through deterministic height geometry?",
+  "artifact": {
+    "path": "artifacts.local/experiments/ag-depth-pose-analytic-obstacle-canary-r0/result.json",
+    "sha256": "6A8DA4070EB9B80365554919DDAC7771354EE90F6FA2604D41B29F563E0E2C85",
+    "runner": "scripts/research/assistive_geometry/run_ag_depth_pose_analytic_obstacle_canary.py",
+    "runner_sha256": "57E798BDA0E748F85677B57EA202419564E89366E472E9B5DB754DA12A456BD3",
+    "focused_test": "scripts/research/assistive_geometry/test_run_ag_depth_pose_analytic_obstacle_canary.py",
+    "focused_test_sha256": "908D0C839AFE664D68A2A149D751B41FC035C78C7902E7B99EA00818ACB2A294",
+    "focused_tests_with_two_predecessors": "10/10 PASS"
+  },
+  "protocol": {
+    "role": "CONSUMED_CHECKPOINT_HELD_DEVELOPMENT_PREDICTION_FIRST_PARENT_LOO",
+    "sources": [
+      "arkitscenes",
+      "tum_rgbd"
+    ],
+    "parent_count": 6,
+    "frame_count": 18,
+    "prediction_inputs": "RGB_PLUS_K_PLUS_CAMERA_TO_WORLD_POSE_GRAVITY",
+    "pose_role": "runtime-equivalent VIO/IMU observable; not source depth or factor outcome",
+    "source_depth_opened": false,
+    "source_factor_outcomes_opened_after_all_candidates": true,
+    "task_outcome_read": false,
+    "training_steps": 0,
+    "candidate_invalid_value": "UNKNOWN",
+    "false_negative_rate_cap": 0.01,
+    "false_positive_rate_cap": 0.05,
+    "minimum_side_coverage": 0.01,
+    "reducer_called": false
+  },
+  "pose_analytic_geometry": {
+    "complete_parent_count": 3,
+    "parent_count": 6,
+    "arkit_parent_without_persistent_mode": "44358617",
+    "arkit_partial_height_parents": [
+      "47334948",
+      "47430327"
+    ],
+    "complete_parents": [
+      "47331226",
+      "rgbd_dataset_freiburg1_desk2",
+      "rgbd_dataset_freiburg1_room"
+    ],
+    "interpretation": "Only half the parents produced a persistent predicted-depth plane and a policy-valid camera height in all three frames. Two additional ARKit parents crossed the 2.20 m camera-height ceiling in one frame, and one ARKit parent had no admissible persistent mode."
+  },
+  "result": {
+    "fold_count": 6,
+    "valid_threshold_pair_count": 0,
+    "evaluable_parent_count": 0,
+    "all_folds_threshold_pair_valid": false,
+    "at_least_half_parents_have_complete_pose_analytic_geometry": true,
+    "strict_coverage_gain_over_rgb_factor_family": false,
+    "low_threshold_0p01_safe_in_any_fold": false,
+    "high_threshold_0p99_safe_in_any_fold": false,
+    "interpretation": "Adding pose/gravity did recover complete analytic geometry for three parents, but the resulting obstacle ranking conflicted with source-valid obstacle labels on every training roster: even the most conservative low and high grid endpoints violated the per-parent error caps. Pose observability is therefore not the remaining bottleneck; predicted-depth scale/plane fidelity is insufficient for this task factor."
+  },
+  "decision": {
+    "depth_pose_analytic_obstacle_supported": false,
+    "body_swept_seam_authorized": false,
+    "current_consumed_obstacle_task_landing_route_closed": true,
+    "another_threshold_or_selector_on_current_observables_authorized": false,
+    "support_can_create_task_validity": false,
+    "correction_router_reopened": false,
+    "boundary_mapping_reopened": false,
+    "fresh3_tum_opened": false,
+    "default_app_changed": false,
+    "active_successor": null,
+    "reopen_condition": "Acquire or freeze genuinely new source-native obstacle supervision or a materially different representation that directly improves metric-depth scale/plane fidelity. Any future route must start with a new protocol and consumed/fresh role assignment; it may not retune the three failed obstacle candidates."
+  },
+  "claim_boundary": "Consumed six-parent Development evidence that pose-anchored deterministic height geometry does not rescue the current frozen metric-depth obstacle factor. Together with the scalar and nested-interaction terminals, this closes the present AG obstacle-to-task landing route. It does not establish general impossibility, independent cross-sensor performance, deployment, product readiness, default-App eligibility, navigation utility or assistive safety."
+}

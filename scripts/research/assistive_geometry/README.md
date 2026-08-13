@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_CALIBRATION_CONTROL_R0_AND_R1_FAIL_CLOSED_CONSUMED / R1_INDEPENDENT_REPLAY_CONFIRMED_PRODUCER_FAILURE / CORRECTION_GAIN_LOPO_FAIL_STOP / ANGULAR_BOUNDARY_FAIL_CLOSED_SAFE_BUT_TASK_INERT / SUPPORT_VALIDITY_FAIL_OPEN / OBSTACLE_POSITIVE_UNDERCOVERAGE / SCIENTIFIC_NOT_RUN / CONFIRMATION_OUTCOMES_UNOPENED`
+状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_CALIBRATION_CONTROL_R0_AND_R1_FAIL_CLOSED_CONSUMED / R1_INDEPENDENT_REPLAY_CONFIRMED_PRODUCER_FAILURE / CORRECTION_GAIN_LOPO_FAIL_STOP / ANGULAR_BOUNDARY_FAIL_CLOSED_SAFE_BUT_TASK_INERT / SUPPORT_VALIDITY_FAIL_OPEN / OBSTACLE_RGB_INTERACTION_FAIL_STOP / POSE_ANALYTIC_FAIL_STOP / CURRENT_OBSTACLE_TASK_ROUTE_CLOSED / SCIENTIFIC_NOT_RUN / CONFIRMATION_OUTCOMES_UNOPENED`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -235,6 +235,16 @@ factor-wise no-regret Development。
   执行 learned support、learned obstacle 与合取替换臂。结果显示 support 可越权打开 reference-UNKNOWN，
   obstacle 则安全但丢失 `23/33` known cells 且不产生 OCCUPIED；下一步只允许 obstacle 三态校准，support
   保持 veto-only。对应 focused tests 锁定单 factor 替换和 completion 保留。
+- `run_ag_obstacle_evidence_tristate_calibration_canary.py`：冻结 R21 obstacle logit，在六个 checkpoint-held
+  ARKit/TUM consumed parent 上完成 RGB+K prediction 后才打开 source-valid obstacle truth；嵌套前的首轮
+  leave-one-parent-out 双阈值校准为 `0/6` 可评 fold，因此 current scalar score fail-stop，禁止 reducer seam。
+- `run_ag_obstacle_selective_interaction_head_canary.py`：只组合 frozen obstacle/support/boundary/depth 与
+  image-row observable；inner calibration parent 始终由排除自身的模型预测，outer parent 也只评一次。
+  嵌套结果仍为 `0/6` 可评 fold，关闭同一 RGB factor observable 家族上的后续 selector。
+- `run_ag_depth_pose_analytic_obstacle_canary.py`：只从 RGB+K 预测 DepthART metric depth，并把
+  `camera_to_world` 作为 runtime-equivalent VIO/IMU pose-gravity；跨帧恢复最低水平高度后用冻结 factor
+  geometry 解析 obstacle。`3/6` parent 几何完整但 `0/6` fold 获得安全双阈值，当前 obstacle task route
+  fail-stop；对应 tests 锁定 persistent mode、world-z pose 变换与最小帧数。
 - `evaluate_ag_st_student_checkpoint.py`：在 parent-disjoint cohort 上零样本评估冻结 checkpoint；默认
   fresh 模式，也可显式签署 `consumed_development_comparison`，防止把已看过的 cohort 再包装成新证据。
 - `test_evaluate_ag_st_student_checkpoint.py`：6 个 focused tests，覆盖 objective-specific core factors、

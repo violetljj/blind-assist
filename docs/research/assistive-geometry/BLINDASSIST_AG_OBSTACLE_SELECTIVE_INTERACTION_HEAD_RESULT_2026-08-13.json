@@ -1,0 +1,66 @@
+{
+  "schema": "blindassist_ag_obstacle_selective_interaction_head_frozen_result_v1",
+  "artifact_id": "BLINDASSIST_AG_OBSTACLE_SELECTIVE_INTERACTION_HEAD_RESULT_2026-08-13",
+  "date": "2026-08-13",
+  "status": "AG_OBSTACLE_SELECTIVE_INTERACTION_HEAD_CANARY_FAIL_STOP",
+  "question": "Can a tiny obstacle/support/boundary/depth interaction head provide parent-disjoint two-sided obstacle evidence when its thresholds are calibrated only from inner out-of-parent predictions?",
+  "artifact": {
+    "path": "artifacts.local/experiments/ag-obstacle-selective-interaction-head-canary-r0/result.json",
+    "sha256": "0067B9256C1B72519E3F63683DA2BE91D1B32D393FBF3C8C8DFEC4C07B31255F",
+    "runner": "scripts/research/assistive_geometry/run_ag_obstacle_selective_interaction_head_canary.py",
+    "runner_sha256": "3DEE348C1CB9AFBA4A8BE843632B0433360B8E23C10E59E572891DAC98805B22",
+    "focused_test": "scripts/research/assistive_geometry/test_run_ag_obstacle_selective_interaction_head_canary.py",
+    "focused_test_sha256": "ED42680643BE2C6223481E0C8E8D8430606BD368A1256FEEA23D157A32B02206",
+    "focused_tests_with_scalar_predecessor": "7/7 PASS"
+  },
+  "protocol": {
+    "role": "CONSUMED_CHECKPOINT_HELD_DEVELOPMENT_NESTED_PARENT_DISJOINT",
+    "sources": [
+      "arkitscenes",
+      "tum_rgbd"
+    ],
+    "parent_count": 6,
+    "frame_count": 18,
+    "prediction_inputs": "RGB_PLUS_K_ONLY",
+    "feature_names": [
+      "obstacle_logit",
+      "support_logit",
+      "boundary_logit",
+      "log1p_depth_m",
+      "log1p_depth_gradient_m",
+      "normalized_image_row",
+      "obstacle_x_support",
+      "obstacle_x_boundary",
+      "obstacle_x_depth_gradient",
+      "support_x_boundary"
+    ],
+    "head": "standardized_linear_logistic_interaction",
+    "maximum_samples_per_parent_class": 512,
+    "inner_calibration": "Each calibration parent was predicted by a head fitted on the other four outer-training parents.",
+    "outer_evaluation": "Each held parent was predicted once by a head fitted on the other five parents.",
+    "source_outcomes_opened_after_all_observables": true,
+    "source_invalid_trains_factor_value": false,
+    "reducer_called": false,
+    "task_outcome_read": false
+  },
+  "result": {
+    "fold_count": 6,
+    "valid_threshold_pair_count": 0,
+    "evaluable_parent_count": 0,
+    "strict_coverage_gain_over_scalar_obstacle": false,
+    "all_folds_threshold_pair_valid": false,
+    "interpretation": "The interaction head did not produce a complete inner-out-of-parent threshold pair for any outer fold. Combining the frozen RGB factor logits, base depth topology and image-row prior therefore did not repair cross-parent conditional reliability."
+  },
+  "decision": {
+    "selective_interaction_supported": false,
+    "current_r21_factor_observable_family_closed_for_obstacle_task_landing": true,
+    "another_selector_on_same_observables_authorized": false,
+    "body_swept_seam_authorized": false,
+    "support_remains_veto_only": true,
+    "fresh3_tum_opened": false,
+    "default_app_changed": false,
+    "next_successor": "AG_DEPTH_POSE_ANALYTIC_OBSTACLE_CANARY_R0",
+    "next_successor_scope": "Test one new representation rather than another learned-score selector. On the same consumed six-parent pool, use frozen DepthART RGB+K metric depth plus source-native camera_to_world as a runtime-equivalent pose/gravity input. Recover the lowest persistent horizontal world-height mode from predicted depth only, derive per-frame camera height and analytic obstacle probability with the frozen factor geometry, map invalid analytic evidence to UNKNOWN, then run parent-LOO tri-state calibration under the unchanged per-parent false-negative, false-positive and two-sided coverage gates. Source depth, source factor truth and task outcomes remain unopened until every analytic candidate is complete."
+  },
+  "claim_boundary": "Consumed Development evidence that a tiny interaction head over the current R21 RGB factor observables cannot safely land obstacle evidence. It closes further selectors over that observable family and authorizes one pose-anchored analytic representation canary only; it does not establish task utility, independent cross-sensor generalization, deployment, product readiness, default-App eligibility, navigation utility or assistive safety."
+}
