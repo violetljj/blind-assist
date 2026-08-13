@@ -23,6 +23,8 @@ machine-readable schema、measurement-only observability、有限弱子空间 ta
   blob、FARO/highres、truth/label/outcome，也不运行模型或网络。
 - `test_audit_observation_pair_support.py`：3 个 focused tests，覆盖 passive/extended window 计数、无效 pose
   fail-closed 与非 candidate-input schema 拒绝；结果只回答 source 是否支持下一 observability canary。
+- `validate_rgb_visual_evidence_backend_preflight.py`：验证 RGB pair shadow preflight 的唯一 backend 数量、
+  冻结 YOLO/labels 大小与 SHA-256、同预算/scene/UNKNOWN 门以及零 pre-lock live model reads。
 - 五臂 positive-oracle runtime、测试和运行说明位于
   [`taro_o1r_r12_clear_observability_runtime`](../taro_o1r_r12_clear_observability_runtime/README.md)；当前 Bonn
   R1 因 recovery/CLEAR parent 分母不足而 `NOT_EVALUABLE`，未授权 learned scorer。

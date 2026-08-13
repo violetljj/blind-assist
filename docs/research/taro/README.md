@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / R13_ORACLE_HEADROOM_PASS / R14_R22_TASK_SCORER_TRANSFER_FAIL_STOP / POSE_DIVERSE_BASELINE_MULTI_SOURCE_PASS / ANCHOR_DEVICE_CANARY_PASS / RGB_PAIR_SUPPORT_PASS / RGB_HISTORY_RETENTION_COST_PASS / RGB_SELECTED_DECODE_INTEGRITY_PASS / FRESH_RAW_DEPTH_PAIR_FAIL_STOP / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / R13_ORACLE_HEADROOM_PASS / R14_R22_TASK_SCORER_TRANSFER_FAIL_STOP / POSE_DIVERSE_BASELINE_MULTI_SOURCE_PASS / ANCHOR_DEVICE_CANARY_PASS / RGB_PAIR_SUPPORT_PASS / RGB_HISTORY_RETENTION_COST_PASS / RGB_SELECTED_DECODE_INTEGRITY_PASS / YOLO_POSITIVE_EVIDENCE_PROTOCOL_LOCKED / FRESH_RAW_DEPTH_PAIR_FAIL_STOP / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
 
 本页只维护 TARO 当前状态、权限和唯一算法 successor。较早完整 R0–R11 叙事保存在
 [14d8ad7e 历史快照](archive/README_FULL_HISTORY_2026-08-13.md)，不能从中恢复旧权限。
@@ -94,6 +94,11 @@ Android、HTP 或默认 App 自动继承权限。
   error 为 0；556 个 reference RGBA hash 全部不同，selected 覆盖 201 个不同 hash。单次 CPU decode
   p50/p95 为 `18.045/30.358ms`，瞬态 RGBA 为 `1,228,800` bytes；三解码完整性探针 p50/p95
   `57.387/67.152ms`，不是建议的产品 cadence。尚未运行任何 detector/depth model。
+- outcome-blind backend preflight 在任何新 live model run 前锁定：冻结哈希的 YOLO11n/COCO 是唯一合格
+  backend，因为其 `DetectorFrameResult` 能保留 source identity 并只输出 positive detections；当前相对深度
+  backend 因无 source identity、逐帧归一化且无跨帧米制语义被拒绝。正式 shadow 要求 4 个 opaque scene
+  parents、至少 120 个 evaluable references；current+passive 与 current+pose-diverse 各自严格只多用一帧，
+  primary 是中心下方 screen-space proxy 内新增的正对象 token。无检测保持空 positive set，不是 negative/safe。
 
 ## 当前证据入口
 
@@ -114,18 +119,19 @@ Android、HTP 或默认 App 自动继承权限。
 - [ARCore device selector, raw-depth stop and RGB pair-support result](TARO_POSE_DIVERSE_ARCORE_DEVICE_AND_RGB_PAIR_RESULT_2026-08-13.json)
 - [Owned RGB history exact-identity and cost result](TARO_RGB_FRAME_HISTORY_RETENTION_AND_COST_RESULT_2026-08-14.json)
 - [Exact selected/reference delayed-decode integrity result](TARO_RGB_SELECTED_PAYLOAD_DECODE_INTEGRITY_RESULT_2026-08-14.json)
+- [Frozen YOLO positive-evidence backend preflight and shadow lock](TARO_RGB_PAIR_FROZEN_VISUAL_EVIDENCE_BACKEND_PREFLIGHT_2026-08-14.json)
 - [算法路线总表](../ALGORITHM_RESEARCH_CURRENT.md) · [TARO Module](../../../scripts/research/taro/README.md)
 
 ## 唯一 successor
 
-`TARO_RGB_PAIR_FROZEN_VISUAL_EVIDENCE_BACKEND_PREFLIGHT_R0`：
+`TARO_RGB_PAIR_YOLO_POSITIVE_EVIDENCE_SHADOW_R0`：
 
-1. 在读取新的 live model output 前，只读审计现有冻结 RGB backends；最多选择一个能保留完整 source-frame
-   identity、输出 positive-only visual evidence 且语义上与 body/path observability 有明确交集的 backend；
-2. 预先冻结 current-only、current+passive 与 current+pose-diverse 三臂的同一额外帧预算、机会/abstention
-   分母、延迟/内存 receipt 和停止条件；UNKNOWN 不得转成 negative；
-3. 若没有合格 backend，必须以 `NOT_EVALUABLE_NO_ADMISSIBLE_FROZEN_BACKEND` 停止；不得换模型、训练、用
-   live output 事后定义指标，或把 pipeline readiness 写成任务增益；
+1. 只能按已锁 JSON 使用哈希绑定的 YOLO/labels 与 CPU_XNNPACK；每个 opaque `scene_id` 最多收 40 个、至少
+   20 个 evaluable references，共需 4 个 scene parents 和至少 120 references；
+2. 每个 reference 在同一 150ms..1s exact history pool 内冻结 passive-500ms 与 pose-diverse identity 后，才按
+   unique FrameStamp 运行 detector；三臂共享缓存且各 active arm 只多用 1 帧；
+3. 只持久化 per-scene 聚合、模型/构建/设备 receipt、延迟与 abstention/error 计数；不得保存图像、box、
+   scene 地址或人员身份。分母不足、runtime gate 失败或 pose 不胜 passive 分别按预锁 terminal 停止；
 4. learned task scorer 保持 STOP，只有 materially new source-time signal/supervision 才可重开；不得用 generic
    baseline 的落地掩盖 task-specific scorer 失败。
 
@@ -134,7 +140,7 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 
 ## 当前允许
 
-- 对现有冻结 RGB backends 做 outcome-blind 只读 preflight，并预注册唯一 visual-evidence shadow protocol；
+- 在隔离 benchmark 中按预锁协议运行多 scene YOLO positive-evidence shadow，并只写聚合 receipt；
 - 对纯 camera-history canary 使用同 session/same-anchor 相对位姿；外参门禁继续用于需要 body-frame/risk-field
   warp 的独立链路，不得把两者混为同一权限；
 - 只有 materially new source-time signal/supervision 才可另立 learned scorer successor；
