@@ -150,6 +150,38 @@ try {
         -RelativePath 'research/domain/README.md' `
         -Content "# domain`n`n状态：current`n`n[missing](MISSING.md)`n" `
         -ShouldPass $false
+    Assert-DocumentationFixtureResult `
+        -Name 'public-entry-pages-indexed' `
+        -Files @{
+            'docs/README.md' = @'
+# docs
+
+[project state](PROJECT_STATE.md)
+[quickstart](QUICKSTART_EN.md)
+[community launch kit](COMMUNITY_LAUNCH_KIT.md)
+[research](research/README.md)
+[domain](research/domain/README.md)
+'@
+            'docs/QUICKSTART_EN.md' = "# quickstart`n`n状态：current`n`n[project state](PROJECT_STATE.md)`n"
+            'docs/COMMUNITY_LAUNCH_KIT.md' = "# community launch kit`n`n状态：current`n`n[quickstart](QUICKSTART_EN.md)`n"
+        } `
+        -ShouldPass $true
+    Assert-DocumentationFixtureResult `
+        -Name 'public-current-entry-broken-link' `
+        -Files @{
+            'docs/README.md' = @'
+# docs
+
+[project state](PROJECT_STATE.md)
+[quickstart](QUICKSTART_EN.md)
+[community launch kit](COMMUNITY_LAUNCH_KIT.md)
+[research](research/README.md)
+[domain](research/domain/README.md)
+'@
+            'docs/QUICKSTART_EN.md' = "# quickstart`n`n状态：current`n`n[missing](MISSING.md)`n"
+            'docs/COMMUNITY_LAUNCH_KIT.md' = "# community launch kit`n`n状态：current`n`n[quickstart](QUICKSTART_EN.md)`n"
+        } `
+        -ShouldPass $false
     Assert-AuthoritySurfaceLinkResult `
         -Name 'protocol-broken-link' `
         -RelativePath 'research/domain/FIXTURE_PROTOCOL_2026-08-10.md' `
