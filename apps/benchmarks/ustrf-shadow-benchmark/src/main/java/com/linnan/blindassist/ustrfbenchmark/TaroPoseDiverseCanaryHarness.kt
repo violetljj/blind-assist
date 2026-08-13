@@ -4,6 +4,7 @@ import com.linnan.blindassist.ustrf.TaroBufferedPoseFrame
 import com.linnan.blindassist.ustrf.TaroPoseDiverseFrameSelector
 import com.linnan.blindassist.ustrf.TaroPoseDiverseSelection
 import com.linnan.blindassist.ustrf.UstrfFrameStamp
+import com.linnan.blindassist.ustrf.UstrfPoseSample
 import com.linnan.blindassist.ustrf.UstrfVioPoseAdmission
 import com.linnan.blindassist.ustrf.UstrfVioPoseAdmissionFailure
 
@@ -17,6 +18,12 @@ sealed interface TaroPoseDiverseCanaryStep {
     data class AdmissionRejected(
         val frame: UstrfFrameStamp,
         val failure: UstrfVioPoseAdmissionFailure,
+        val bufferedFrameCount: Int
+    ) : TaroPoseDiverseCanaryStep
+
+    data class AnchorAdmissionRejected(
+        val frame: UstrfFrameStamp,
+        val failure: TaroArCoreAnchorPoseAdmissionFailure,
         val bufferedFrameCount: Int
     ) : TaroPoseDiverseCanaryStep
 }
@@ -43,12 +50,25 @@ class TaroPoseDiverseCanaryHarness(
             return TaroPoseDiverseCanaryStep.AdmissionRejected(frame, admission.failure, bufferedFrames.size)
         }
         admission as UstrfVioPoseAdmission.Available
+        return evaluate(frame, admission.cameraPose)
+    }
+
+    /** Camera-only TARO canary path; this overload cannot authorize USTRF risk-field fusion. */
+    fun observe(frame: UstrfFrameStamp, admission: TaroArCoreAnchorPoseAdmission): TaroPoseDiverseCanaryStep {
+        if (admission is TaroArCoreAnchorPoseAdmission.Unavailable) {
+            return TaroPoseDiverseCanaryStep.AnchorAdmissionRejected(frame, admission.failure, bufferedFrames.size)
+        }
+        admission as TaroArCoreAnchorPoseAdmission.Available
+        return evaluate(frame, admission.cameraPose)
+    }
+
+    private fun evaluate(frame: UstrfFrameStamp, cameraPose: UstrfPoseSample): TaroPoseDiverseCanaryStep {
         val oldestAllowedNs = (frame.capturedAtNs - maximumRetainedAgeNs).coerceAtLeast(0L)
         while (bufferedFrames.firstOrNull()?.frame?.capturedAtNs?.let { it < oldestAllowedNs } == true) {
             bufferedFrames.removeFirst()
         }
-        val selection = selector.select(frame, admission.cameraPose, bufferedFrames.toList())
-        bufferedFrames.addLast(TaroBufferedPoseFrame(frame, admission.cameraPose))
+        val selection = selector.select(frame, cameraPose, bufferedFrames.toList())
+        bufferedFrames.addLast(TaroBufferedPoseFrame(frame, cameraPose))
         return TaroPoseDiverseCanaryStep.Evaluated(frame, selection, bufferedFrames.size)
     }
 }

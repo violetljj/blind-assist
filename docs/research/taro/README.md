@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / R13_ORACLE_HEADROOM_PASS / R14_R22_TASK_SCORER_TRANSFER_FAIL_STOP / POSE_DIVERSE_BASELINE_MULTI_SOURCE_PASS / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / R13_ORACLE_HEADROOM_PASS / R14_R22_TASK_SCORER_TRANSFER_FAIL_STOP / POSE_DIVERSE_BASELINE_MULTI_SOURCE_PASS / ANCHOR_ADMISSION_ANDROIDTEST_COMPILE_PASS / DEVICE_ENV_BLOCKED / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
 
 本页只维护 TARO 当前状态、权限和唯一算法 successor。较早完整 R0–R11 叙事保存在
 [14d8ad7e 历史快照](archive/README_FULL_HISTORY_2026-08-13.md)，不能从中恢复旧权限。
@@ -69,10 +69,15 @@ Android、HTP 或默认 App 自动继承权限。
   `14.0222>13.8847`、Bonn `19.2037>17.2662`、task-outcome-blind TUM `11.25>8.9375`、ARKit
   `16.4490>12.9431`。因此 `TARO_POSE_DIVERSE_GENERIC_R0` 已实现为 `core:ustrf` 中默认关闭的纯 Kotlin
   frame selector；它只返回历史 frame identity，不读 payload、不融合风险、不发提醒、不接默认 App。
-- 隔离 benchmark harness 只接受 `UstrfVioPoseAdmission.Available`；`EPHEMERAL_PER_FRAME` raw ARCore pose 或任一
-  admission failure 都不会进入历史 buffer。`:core:ustrf:test` 与 `:ustrf-shadow-benchmark:testDebugUnitTest` 已在
-  JDK 17 通过；设备 health check 为 0 ready devices、AVD inventory 为 0，因此设备 canary 当前
-  `ENV_BLOCKED_NO_READY_ANDROID_DEVICE_OR_AVD`，不得写成 device PASS。
+- 隔离 benchmark 现有两条互不越权的准入：既有 `UstrfVioPoseAdmission` 继续保留外参门禁，供未来风险场
+  链路使用；新增的 `TaroArCoreAnchorPoseAdmission` 只把同一 ARCore session、同一正在跟踪的 local Anchor
+  下的相机相对位姿交给纯 camera-history selector。后一条不做 body-frame warp，所以不伪造或要求外参，
+  也不能反向授权风险融合。时间戳不前进、连续跟踪 warm-up 不足、Anchor 非 TRACKING、相对位姿退化或
+  任一 admission failure 都不会进入历史 buffer。
+- 项目自有 `TaroArCoreAnchorPoseDiverseCanaryTest` 已实现；`:ustrf-shadow-benchmark:testDebugUnitTest` 与
+  `:ustrf-shadow-benchmark:compileDebugAndroidTestKotlin` 已在 JDK 17 通过。2026-08-13 当前 health check 仍为
+  0 ready devices、AVD inventory 为 0，因此设备 canary 是 `ENV_BLOCKED_NO_READY_ANDROID_DEVICE_OR_AVD`，
+  不得写成 device PASS。
 
 ## 当前证据入口
 
@@ -94,13 +99,14 @@ Android、HTP 或默认 App 自动继承权限。
 
 ## 唯一 successor
 
-`TARO_POSE_DIVERSE_SELECTOR_ARCORE_VIO_ISOLATED_CANARY_R0`：
+`TARO_POSE_DIVERSE_SELECTOR_ARCORE_ANCHOR_DEVICE_RUN_R0`：
 
-1. 只在隔离 benchmark/canary 中把已存在的 `UstrfVioPoseReceiptPromoter`、严格时间戳 pose buffer 与默认关闭的
-   `TaroPoseDiverseFrameSelector` 连接；不得在默认 App 创建 ARCore session；
-2. 必须验证 150ms–1s 历史窗、同 world/camera frame、TRACKING、置信度和时间戳绑定；任何缺失都返回
-   `Unavailable`，不得回退成未绑定帧；
-3. canary 只输出 selection receipt、相对位移/偏航和耗时，不做像素/深度融合、不发用户 guidance；
+1. 在一台明确 serial/API/ARCore 版本的兼容真机上运行项目自有
+   `TaroArCoreAnchorPoseDiverseCanaryTest`；不得在默认 App 创建 ARCore session；
+2. 必须验证 advancing timestamp、连续 TRACKING warm-up、同 session/same-anchor 相对位姿、150ms–1s
+   历史选择、至少 `2cm` 位移或 `2°` 偏航，以及当前 instrumentation report 路径；任何缺失都返回
+   `Unavailable`、test FAIL 或 `NOT_EVALUABLE`；
+3. canary 只输出 selection receipt、相对位移/偏航与准入/选择计数，不做像素/深度融合、不发用户 guidance；
 4. learned task scorer 保持 STOP，只有 materially new source-time signal/supervision 才可重开；不得用 generic
    baseline 的落地掩盖 task-specific scorer 失败。
 
@@ -109,8 +115,9 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 
 ## 当前允许
 
-- 在隔离 canary 中接入默认关闭的 `TaroPoseDiverseFrameSelector`，只记录 selection receipt；
-- 复用已验证的 VIO pose receipt/extrinsics/pose buffer 失败闭合合同，不新建默认 App ARCore 路径；
+- 在隔离 canary 中运行默认关闭的 `TaroPoseDiverseFrameSelector`，只记录 selection receipt；
+- 对纯 camera-history canary 使用同 session/same-anchor 相对位姿；外参门禁继续用于需要 body-frame/risk-field
+  warp 的独立链路，不得把两者混为同一权限；
 - 只有 materially new source-time signal/supervision 才可另立 learned scorer successor；
 - 对 consumed R11 evidence 做明确标注的只读后验机制诊断；
 - 重放 hash-bound tests、validator 和只读 evidence 复核。
@@ -129,4 +136,5 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 
 R13 已证明 task-conditioned oracle headroom；R21 证明 learned scorer 可跨源提高宏平均，但没有广泛覆盖机会父级，
 R22 表示扩张又回归，因此 task-specific scorer 停止。pose-diverse generic baseline 已获得跨三源族的 Development
-支持并落为默认关闭的纯 Kotlin selector；未完成真实 ARCore/VIO canary、风险融合、产品有效性或安全验证，默认 App 不变。
+支持并落为默认关闭的纯 Kotlin selector；anchor-relative instrumentation canary 已实现并通过本地编译，但尚未在
+真实 ARCore 设备运行，也未完成风险融合、产品有效性或安全验证，默认 App 不变。

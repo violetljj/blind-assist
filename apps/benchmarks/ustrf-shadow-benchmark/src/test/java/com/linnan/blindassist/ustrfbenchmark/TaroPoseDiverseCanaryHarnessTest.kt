@@ -47,6 +47,28 @@ class TaroPoseDiverseCanaryHarnessTest {
     }
 
     @Test
+    fun anchorAdmissionUsesCameraOnlyPathWithoutRequiringBodyExtrinsics() {
+        val harness = TaroPoseDiverseCanaryHarness()
+        val rejectedFrame = frame(1L, 100_000_000L)
+        val rejected = harness.observe(
+            rejectedFrame,
+            TaroArCoreAnchorPoseAdmission.Unavailable(
+                TaroArCoreAnchorPoseAdmissionFailure.TRACKING_WARMUP_INCOMPLETE,
+                continuousTrackingFrames = 14
+            )
+        ) as TaroPoseDiverseCanaryStep.AnchorAdmissionRejected
+        val first = frame(2L, 300_000_000L)
+        val second = frame(3L, 500_000_000L)
+        harness.observe(first, anchorAvailable(first, x = 0f))
+        val evaluated = harness.observe(second, anchorAvailable(second, x = .25f)) as TaroPoseDiverseCanaryStep.Evaluated
+        val selected = evaluated.selection as TaroPoseDiverseSelection.Available
+
+        assertEquals(0, rejected.bufferedFrameCount)
+        assertEquals(first, selected.selectedFrame)
+        assertEquals(.25f, selected.translationM, .0001f)
+    }
+
+    @Test
     fun expiredHistoryIsRemovedBeforeSelection() {
         val harness = TaroPoseDiverseCanaryHarness(maximumRetainedAgeNs = 1_000_000_000L)
         val old = frame(1L, 100_000_000L)
@@ -76,5 +98,21 @@ class TaroPoseDiverseCanaryHarnessTest {
             validUntilNs = frame.capturedAtNs + 1_000_000_000L
         ),
         verifiedBodyFrame = "phone-body-v1"
+    )
+
+    private fun anchorAvailable(frame: UstrfFrameStamp, x: Float) = TaroArCoreAnchorPoseAdmission.Available(
+        cameraPose = UstrfPoseSample(
+            timestampNs = frame.capturedAtNs,
+            worldFrame = "arcore-local-anchor-v1:test-session",
+            cameraFrame = frame.coordinateFrame,
+            worldCameraTranslationM = UstrfVector3(x, 0f, 0f),
+            yawRad = 0f,
+            gravityWorld = UstrfVector3(0f, -9.80665f, 0f),
+            tracking = UstrfPoseState.TRACKING,
+            confidence = 1f,
+            validUntilNs = frame.capturedAtNs + 1_000_000_000L
+        ),
+        sessionToken = "test-session",
+        continuousTrackingFrames = 15
     )
 }
