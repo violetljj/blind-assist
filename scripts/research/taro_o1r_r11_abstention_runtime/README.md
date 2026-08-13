@@ -1,6 +1,6 @@
 # TARO O1R R11 abstention runtime
 
-状态：`current / TARO_RESEARCH_MODULE / R11_WEAK_DISTAL_ABSTENTION_DEVELOPMENT_ONLY / R11_PROTOCOL_LOCKED / R11_EXACT_DATA_USE_AUTHORIZED / R11_HEAD_PASS_ONE_SHOT_CONSUMED / R11_DOWNLOAD_ATTEMPT_01_PRESTART_SUPERSEDED / R11_SOURCE_DOWNLOAD_144_OF_144_INTEGRITY_PASS_ONE_SHOT_CONSUMED / R11_INVENTORY_48_PARENT_1043_FRAME_PASS / R11_PHASE_A_INDEPENDENT_VALIDATION_PASS / R11_SOURCE_ONLY_TOP24_INDEPENDENT_VALIDATION_PASS / R11_SELECTED_TOP24_FARO_PHASE_B_IMPLEMENTATION_LOCK_PASS_NON_EXECUTING / R11_SCIENTIFIC_NOT_RUN / DEFAULT_APP_UNCHANGED`
+状态：`current / TARO_RESEARCH_MODULE / R11_WEAK_DISTAL_ABSTENTION_FALSIFIED_ON_FRESH_COHORT / R11_FRESH_48_PARENT_PIPELINE_COMPLETE / R11_PHASE_A_INDEPENDENT_VALIDATION_PASS / R11_SOURCE_ONLY_TOP24_INDEPENDENT_VALIDATION_PASS / R11_SELECTED_TOP24_FARO_PHASE_B_ONE_SHOT_CONSUMED / R11_PHASE_B_INDEPENDENT_VALIDATION_PASS / R11_NOT_EVALUABLE_DUAL_CLASS_COVERAGE / R11_NO_PROMOTION / DEFAULT_APP_UNCHANGED`
 
 ## 稳定 Interface
 
@@ -20,11 +20,11 @@
 
 ## 输出
 
-协议、授权 receipt、implementation/lock/result 与 Phase-A validator repair receipt 写入 Git；HEAD、download、inventory、Phase A 与 top24 evidence 均封存在 consumed `artifacts.local/` roots。Phase A 48/1,043/9,387 与 top24 24/674/6,066 均已独立复核；Phase B implementation 已冻结但正式 FARO 尚未读取。
+协议、授权 receipt、implementation/lock/result 与 Phase-A validator repair receipt 写入 Git；HEAD、download、inventory、Phase A、top24 与 Phase B evidence 均封存在 consumed `artifacts.local/` roots。Phase A 48/1,043/9,387、top24 24/674/6,066 和 selected FARO 674/674 均已独立复核。Phase B 为 `NOT_EVALUABLE_DUAL_CLASS_COVERAGE`：28 个 definite-CLEAR queries 只覆盖 10 个 physical frames；R11 在 definite labels 上与 R7 完全相同，仅额外 abstain 1 个 truth-UNKNOWN query。
 
 ## 安全边界
 
-R10 只作为 consumed development evidence，不能被改门、重跑或写成 confirmation。R11 候选只有 `OCCUPIED/UNKNOWN`；truth `UNKNOWN` 永远不是 negative。top24 已不可变；Phase B 只允许 selected 24，unselected FARO 永远为 0。implementation lock 本身不授权 FARO，必须另立 one-shot lock。
+R10 与 R11 都是 consumed evidence，不能被改门、重跑或写成 PASS。R11 候选只有 `OCCUPIED/UNKNOWN`；truth `UNKNOWN` 永远不是 negative。top24 已不可变，unselected FARO 保持 0。后继仅可把 sealed R11 evidence 用于明确标注的 Development discovery；新的 confirmation 必须使用 untouched parents。
 
 ## 停止条件
 

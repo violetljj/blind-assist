@@ -1,0 +1,139 @@
+{
+  "schema": "blindassist.taro.o1r.r11_selected_top24_faro_phase_b_formal_result.v1",
+  "result_id": "TARO_O1R_R11_SELECTED_TOP24_FARO_PHASE_B_RESULT_2026_08_13",
+  "date": "2026-08-13",
+  "status": "TARO_O1R_R11_SELECTED_TOP24_FARO_PHASE_B_INDEPENDENT_VALIDATION_PASS",
+  "scientific_terminal": "NOT_EVALUABLE_DUAL_CLASS_COVERAGE",
+  "stage": "FORMAL_CONFIRMATION_CONSUMED_NOT_EVALUABLE_NO_PROMOTION",
+  "execution_valid": true,
+  "passed": false,
+  "scientifically_evaluable": false,
+  "execution": {
+    "implementation_commit": "30def7368e270acdb4c5d287581029c2abe33f80",
+    "execution_lock_commit": "314215c7e4af042b95329a2ab33d53f42ca7cb69",
+    "execution_lock_path": "docs/research/taro/TARO_O1R_R11_SELECTED_TOP24_FARO_PHASE_B_ONE_SHOT_EXECUTION_LOCK_2026-08-13.json",
+    "execution_lock_bytes": 12345,
+    "execution_lock_sha256": "B8996546846BAC57BE04C56C440CA4282382419B252F1D2A7FB62809D5D7DC31",
+    "execution_lock_content_sha256": "78EF47D2B84C132EA1344D1F4BDF2C7765D92AF4DD63367926169CADBD4945C7",
+    "one_shot_consumed": true,
+    "elapsed_seconds": 2948.625,
+    "peak_rss_bytes": 747212800,
+    "formal_root": "artifacts.local/evidence/taro/o1r-r11-selected-top24-faro-phase-b-r0",
+    "formal_root_exact_file_count": 678,
+    "files": {
+      "execution-receipt.json": {
+        "bytes": 782,
+        "sha256": "2F9CD8E96928DE6DCECD84C86F63D4E4D9106545F45D0F70782B3A32B57126A9",
+        "content_sha256": "8CEA149542EB8237D4A0A381B8756A26D5707A2725A7935AD641C4828CB86F50"
+      },
+      "label-completion.json": {
+        "bytes": 2145,
+        "sha256": "FC0EA13F1797717DBACC4DEF61579ED161F80E5198760FA47AD1A11B2FE42B34",
+        "content_sha256": "1163E46B1918484274A6352D8D6D74D4267305C17EC9B7BE845D7F525E4A6CD0"
+      },
+      "result.json": {
+        "bytes": 12903,
+        "sha256": "0B1C5BDEFD96D5EAB33457D2926603E14388E93EAC98CD8DE47CA5C480737087",
+        "content_sha256": "9E4F022BD785934258F9B8DED5E6A571D29B20B69FCBD870E7DCC053A74C3C51"
+      },
+      "terminal.json": {
+        "bytes": 137523,
+        "sha256": "00C8684BF44E8BBA4DF4EC7340E3CAA0ADB6EC5C5F517D2E0A077FAFADBF7E97",
+        "content_sha256": "0CE6037EBB4115B0BC2FE371983C590155B331F8106AFED83F237162A6335899"
+      }
+    },
+    "label_hash_sequence_sha256": "8AA45FA6647F5403FA9D78B4B9C460DA733B5D0D551A2F3782FB826E6F1AACDA"
+  },
+  "counts": {
+    "fresh_pool_parent_count": 48,
+    "selected_parent_count": 24,
+    "frame_count": 674,
+    "query_count": 6066,
+    "faro_read_attempts": 674,
+    "faro_read_completed": 674,
+    "faro_read_bytes": 476181317,
+    "unselected_faro_reads": 0,
+    "model_executions": 0,
+    "training_steps": 0,
+    "network_requests": 0
+  },
+  "label_state_counts": {
+    "CLEAR_OBSERVED": 28,
+    "OCCUPIED_OBSERVED": 4184,
+    "UNKNOWN": 1854
+  },
+  "evaluability": {
+    "selected_parent_count": {"value": 24, "minimum": 24, "passed": true},
+    "evaluable_parent_count": {"value": 24, "minimum": 16, "passed": true},
+    "parents_with_definite_occupied": {"value": 24, "minimum": 12, "passed": true},
+    "definite_occupied_query_count": {"value": 4184, "minimum": 200, "passed": true},
+    "parents_with_definite_clear": {"value": 7, "minimum": 4, "passed": true},
+    "physical_frames_with_definite_clear": {"value": 10, "minimum": 12, "passed": false},
+    "definite_clear_query_count": {"value": 28, "minimum": 20, "passed": true},
+    "failed_requirements": ["physical_frames_with_definite_clear"]
+  },
+  "confirmation_metrics": {
+    "candidate_occupied_precision": 1.0,
+    "one_sided_95_wilson_candidate_occupied_precision_lower_bound": 0.999347858404,
+    "candidate_occupied_recall": 0.990917782027,
+    "candidate_parent_macro_definite_occupied_recall": 0.984070773907,
+    "query_clear_specificity": 1.0,
+    "clear_frame_specificity": 1.0,
+    "one_sided_95_wilson_clear_frame_specificity_lower_bound": 0.787058029917,
+    "parent_macro_clear_frame_specificity": 1.0,
+    "candidate_occupied_true_positive": 4146,
+    "candidate_occupied_false_negative": 38,
+    "candidate_occupied_false_positive_against_definite_clear": 0,
+    "candidate_occupied_predictions_on_truth_unknown": 575,
+    "all_confirmation_gates_passed": false
+  },
+  "candidate_vs_r7": {
+    "candidate_occupied_recall": 0.990917782027,
+    "r7_occupied_recall": 0.990917782027,
+    "candidate_parent_macro_definite_occupied_recall": 0.984070773907,
+    "r7_parent_macro_definite_occupied_recall": 0.984070773907,
+    "candidate_false_positives_against_definite_clear": 0,
+    "r7_false_positives_against_definite_clear": 0,
+    "candidate_occupied_predictions_on_truth_unknown": 575,
+    "r7_occupied_predictions_on_truth_unknown": 576,
+    "candidate_occupied_prediction_count": 4721,
+    "r7_occupied_prediction_count": 4722,
+    "abstained_definite_clear_frames": 0,
+    "parents_with_abstained_definite_clear_frame": 0,
+    "interpretation": "R11 matched R7 on every definite label and abstained only one truth-UNKNOWN query. The proposed weak-distal abstention therefore had no measurable definite-clear effect on this fresh cohort."
+  },
+  "independent_validation": {
+    "passed": true,
+    "independently_recomputed_metrics": true,
+    "parent_count": 24,
+    "frame_count": 674,
+    "query_count": 6066,
+    "root_file_count": 678,
+    "scientific_terminal": "NOT_EVALUABLE_DUAL_CLASS_COVERAGE",
+    "faro_payload_replay_reads": 0,
+    "unselected_faro_reads": 0,
+    "unknown_is_negative": false,
+    "command": "python -m scripts.research.taro_o1r_r11_abstention_runtime.validate_selected_phase_b --root artifacts.local/evidence/taro/o1r-r11-selected-top24-faro-phase-b-r0 --execution-lock docs/research/taro/TARO_O1R_R11_SELECTED_TOP24_FARO_PHASE_B_ONE_SHOT_EXECUTION_LOCK_2026-08-13.json"
+  },
+  "interpretation": {
+    "positive_occupancy_signal_retained": true,
+    "formal_confirmation_pass": false,
+    "reason": "The frozen source-only selection found definite CLEAR evidence in 7 parents and 28 queries, but only 10 physical frames versus the frozen minimum of 12. With 10 of 10 clear frames specific, the one-sided 95 percent Wilson lower bound was 0.787058, below 0.8. R11 cannot be rescued by changing its selector, denominator, thresholds, or gates.",
+    "incremental_algorithm_effect": "R11 changed one R7 OCCUPIED prediction on truth UNKNOWN to UNKNOWN and changed no definite-label prediction. Its abstention hypothesis did not produce the intended clear-negative-control effect.",
+    "next_research_question": "Can a source-only, query-level clear-observability model enrich physical definite-CLEAR frames under parent-grouped validation without reducing definite-occupied recall or treating UNKNOWN as negative?"
+  },
+  "promotion": {
+    "effectiveness": false,
+    "route": false,
+    "deployment": false,
+    "device": false,
+    "product": false,
+    "default_app": false,
+    "safety": false
+  },
+  "current_project_successor": "TARO_TASK_DIRECTED_OBSERVABILITY_POSITIVE_ORACLE_CANARY_R0",
+  "result_specific_followup_hypothesis": "DEVELOPMENT_CLEAR_OBSERVABILITY_DISCOVERY_ON_CONSUMED_R11_EVIDENCE",
+  "successor_boundary": "The current project successor remains the outcome-blind positive-occupancy observability canary and must not use R11 outcomes for source selection. Separate Development-only diagnosis may use sealed R11 source features and selected labels, but must not rewrite R11, reread unselected FARO, convert UNKNOWN to negative, or claim fresh confirmation. Any later dual-class confirmation requires a new untouched parent cohort.",
+  "claim_ceiling": "Consumed fresh-parent WILD_LAB confirmation attempt and falsified weak-distal abstention hypothesis only; no CLEAR output, route promotion, deployment, device, product, default-App, or safety claim.",
+  "content_sha256": "24DCDDB9D498DBD389C2D7FC444E9F066A702595C7BDB2F092D4DBF26FEF7884"
+}
