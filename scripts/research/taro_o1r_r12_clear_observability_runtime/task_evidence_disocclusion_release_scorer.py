@@ -358,7 +358,7 @@ def _write_exclusive(path: Path, value: Mapping[str, Any]) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--bonn-root", type=Path, default=r21.balanced.DEFAULT_BONN_ROOT)
+    parser.add_argument("--bonn-root", type=Path, default=r21.shared.DEFAULT_BONN_ROOT)
     parser.add_argument("--arkit-root", type=Path, default=r21.DEFAULT_ARKIT_ROOT)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
