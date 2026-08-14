@@ -1,6 +1,6 @@
 # Assistive Geometry research scripts
 
-状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_CALIBRATION_CONTROL_R0_AND_R1_FAIL_CLOSED_CONSUMED / R1_INDEPENDENT_REPLAY_CONFIRMED_PRODUCER_FAILURE / CORRECTION_GAIN_LOPO_FAIL_STOP / ANGULAR_BOUNDARY_FAIL_CLOSED_SAFE_BUT_TASK_INERT / SUPPORT_VALIDITY_FAIL_OPEN / OBSTACLE_RGB_INTERACTION_FAIL_STOP / POSE_ANALYTIC_FAIL_STOP / CURRENT_OBSTACLE_TASK_ROUTE_CLOSED / SCIENTIFIC_NOT_RUN / CONFIRMATION_OUTCOMES_UNOPENED`
+状态：`B1_A0_PERMANENT_NEGATIVE_TERMINAL / R2_F0_SYNTHETIC_REDUCER_PASS / F1_SUPERVISION_FRONTDOOR_SATISFIED / AG_ST_DIRECT_TEACHER_TO_AG_REAL_SEAM_PASS / F1_STUDENT_ATTEMPT17_FAIL_NO_PROMOTION / AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_CALIBRATION_CONTROL_R0_AND_R1_FAIL_CLOSED_CONSUMED / R1_INDEPENDENT_REPLAY_CONFIRMED_PRODUCER_FAILURE / CORRECTION_GAIN_LOPO_FAIL_STOP / ANGULAR_BOUNDARY_FAIL_CLOSED_SAFE_BUT_TASK_INERT / SUPPORT_VALIDITY_FAIL_OPEN / OBSTACLE_RGB_INTERACTION_FAIL_STOP / POSE_ANALYTIC_FAIL_STOP / QPLANE_O0A_REPRESENTATION_HEADROOM_FAIL_CLOSE_NO_TRAINING / CURRENT_OBSTACLE_TASK_ROUTE_CLOSED / SCIENTIFIC_NOT_RUN / CONFIRMATION_OUTCOMES_UNOPENED`
 
 本目录包含 BlindAssist Assistive Geometry B0 的冻结合同、shape/export、metadata roster、
 可恢复媒体物化与 label-blind integrity 工具：
@@ -245,6 +245,14 @@ factor-wise no-regret Development。
   `camera_to_world` 作为 runtime-equivalent VIO/IMU pose-gravity；跨帧恢复最低水平高度后用冻结 factor
   geometry 解析 obstacle。`3/6` parent 几何完整但 `0/6` fold 获得安全双阈值，当前 obstacle task route
   fail-stop；对应 tests 锁定 persistent mode、world-z pose 变换与最小帧数。
+- `run_ba_clear_qplane_o0a_representation_headroom.py`：两阶段检验 body-query-conditioned inverse-depth
+  ray-plane residual。Phase A 只从 source-support inverse-depth residual 拟合并哈希 1080 个三参数向量；
+  Phase B 才比较 A0–A5 与 shuffled/wrong-gravity/wrong-K/globalized 负控，且不保存 corrected dense depth。
+  120 帧结果为 FAIL：A4 parent-macro MAE `0.17284 m`，差于 A1/A2/A3，不授权 O0-B 或训练。
+- `test_run_ba_clear_qplane_o0a_representation_headroom.py`：7 个 focused tests，覆盖冻结 authority、
+  三参数恢复、support/evaluation 零交集、临时深度不污染 base、UNKNOWN 记账和非对称 query margin。
+- `replay_ba_clear_qplane_o0a_query_decomposition.py`：只读校验原 result/candidate SHA 后复算冻结 Phase B，
+  补齐 9 个 `band@horizon` query 的独立指标；不 refit candidate、不改变参数、gate 或终态。
 - `evaluate_ag_st_student_checkpoint.py`：在 parent-disjoint cohort 上零样本评估冻结 checkpoint；默认
   fresh 模式，也可显式签署 `consumed_development_comparison`，防止把已看过的 cohort 再包装成新证据。
 - `test_evaluate_ag_st_student_checkpoint.py`：6 个 focused tests，覆盖 objective-specific core factors、
@@ -316,12 +324,11 @@ geometry transition agreement 均为 `0/3` seed 通过，终态为
 Calibration 与 Confirmation 保持封存。R2 F0 已签署
 `BLINDASSIST_ASSISTIVE_GEOMETRY_R2_F0_SYNTHETIC_FACTOR_GEOMETRY_CANARY_PASS`；历史 F1-P frontdoor 和
 adapter blocker 后续均已关闭。当前冻结终态是
-`AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / AG_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_F2_FROZEN / CONFIRMATION_OUTCOMES_UNOPENED`。
-唯一后续是 `BLINDASSIST_ASSISTIVE_GEOMETRY_R2_CROSS_SENSOR_FACTOR_ACCURACY_CONFIRMATION_EXECUTOR_IMPLEMENTATION_LOCK`：
-只实现并以 synthetic/metadata fixture 验证 ETH3D source adapter、deterministic roster、prediction-before-truth
-firewall、factor-only scorer 和独立 validator。当前不得枚举/解压七个 opaque archive、运行模型或
-Confirmation，也不得用 reducer state 训练、重跑已消费 fresh canary，或把 F2 lock 写成 HTP、默认 App、
-产品与 safety 结论。
+`AG_R2_SUPERTEACHER_TO_AG_FINAL_V2_SEAM_PASS / QPLANE_O0A_REPRESENTATION_HEADROOM_FAIL_CLOSE_NO_TRAINING / CONFIRMATION_OUTCOMES_UNOPENED`。
+历史 ETH3D implementation-lock successor 已关闭，不提供当前执行权限。Q-Plane O0-A 是最后一次
+materially different scale/plane representation 重开并失败；当前无 active Assistive Geometry successor。
+不得枚举/解压七个 opaque archive、运行 Confirmation、结果后调参/重跑 Q-Plane、创建 O0-B 或训练 learned
+Q-Plane head，也不得把任何 consumed result 写成 HTP、默认 App、产品或 safety 结论。
 
 验证：
 
