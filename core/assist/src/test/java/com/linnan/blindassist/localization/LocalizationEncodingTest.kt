@@ -146,8 +146,7 @@ class LocalizationEncodingTest {
             assertFalse("Unicode replacement character U+FFFD in: $text", text.contains('�'))
             assertFalse(
                 "Unexpected control character in: $text",
-                text.any { ch -> ch.isISOControl() && ch != '
-' && ch != '	' && ch != '' }
+                text.any { ch -> ch.isISOControl() && ch != '\n' && ch != '\t' && ch != '\r' }
             )
         }
     }
