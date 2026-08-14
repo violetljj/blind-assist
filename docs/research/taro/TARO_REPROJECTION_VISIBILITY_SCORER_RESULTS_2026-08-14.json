@@ -1,0 +1,233 @@
+{
+  "schema": "blindassist_taro_reprojection_visibility_scorer_results_v1",
+  "result_id": "TARO_REPROJECTION_VISIBILITY_SCORER_RESULTS_2026-08-14",
+  "date": "2026-08-14",
+  "mode": "CONSUMED_DEVELOPMENT_MECHANISM_SEARCH",
+  "task": "Under the same one-extra-observation budget, select the candidate that exposes the most previously unknown body/path query cells without reading candidate depth.",
+  "shared_evaluation_table": {
+    "candidate_count": 1690,
+    "source_qualified_parent_count": 57,
+    "source_families": [
+      "ARKITSCENES",
+      "BONN_RGBD_DYNAMIC",
+      "TUM_RGBD"
+    ],
+    "candidate_depth_available_to_scorer": false,
+    "candidate_depth_role": "outcome_only",
+    "analysis_role": "PROJECT_CONSUMED_DEVELOPMENT"
+  },
+  "experiments": {
+    "r26_disocclusion_release": {
+      "commit": "c89e8e1d",
+      "followup_fix_commit": "62ed1b95",
+      "mechanism": "Transform each task cell and its reference-depth foreground occluder to the candidate view, then score predicted crossings of the observed foreground boundary.",
+      "terminal": "STOP_TASK_EVIDENCE_DISOCCLUSION_RELEASE_TRANSFER_FAIL",
+      "source_metrics": {
+        "ARKITSCENES": {
+          "ranker_parent_macro": 17.8049,
+          "generic_parent_macro": 16.4490,
+          "passive_parent_macro": 12.9431,
+          "strict_win_parents": 4,
+          "required_strict_win_parents": 5,
+          "opportunity_parents": 9,
+          "generic_override_count": 9,
+          "reference_count": 40
+        },
+        "BONN_RGBD_DYNAMIC": {
+          "ranker_parent_macro": 19.2037,
+          "generic_parent_macro": 19.2037,
+          "strict_win_parents": 0,
+          "required_strict_win_parents": 11,
+          "generic_override_count": 1,
+          "reference_count": 171
+        },
+        "TUM_RGBD": {
+          "ranker_parent_macro": 13.3083,
+          "generic_parent_macro": 13.3292,
+          "strict_win_parents": 0,
+          "required_strict_win_parents": 6,
+          "generic_override_count": 1,
+          "reference_count": 67
+        }
+      },
+      "artifact": {
+        "path": "artifacts.local/evidence/taro/task-evidence-disocclusion-release-scorer-r0/result.json",
+        "bytes": 124917,
+        "sha256": "C8458F87232477F5DF794E80799765331CFE8062A70FDD358BD3A39F5B7E7F82",
+        "content_sha256": "9A71453066543F9B6AA83B40D7F70AB22D677040AAEB58D899CE37DD66EB1C8A"
+      }
+    },
+    "r27_query_aligned_reprojection_visibility": {
+      "commit": "55df9b9d",
+      "followup_fix_commit": "663b69a1",
+      "mechanism": "Forward z-buffer the reference RGB-D observation into each candidate view, then score unexplained warp holes and robust photometric inconsistency only inside the projected body/path query cells.",
+      "terminal": "STOP_TASK_EVIDENCE_REPROJECTION_VISIBILITY_TRANSFER_FAIL",
+      "source_metrics": {
+        "ARKITSCENES": {
+          "all_six_frozen_checks_pass": true,
+          "ranker_parent_macro": 19.7961,
+          "generic_parent_macro": 16.4490,
+          "passive_parent_macro": 12.9431,
+          "oracle_parent_macro": 25.0863,
+          "strict_win_parents": 5,
+          "required_strict_win_parents": 5,
+          "opportunity_parents": 9,
+          "generic_override_count": 13,
+          "reference_count": 40
+        },
+        "BONN_RGBD_DYNAMIC": {
+          "all_six_frozen_checks_pass": false,
+          "ranker_parent_macro": 17.3000,
+          "generic_parent_macro": 19.2037,
+          "strict_win_parents": 15,
+          "required_strict_win_parents": 11,
+          "opportunity_parents": 21,
+          "generic_override_count": 110,
+          "reference_count": 171,
+          "failure_localization": "Opportunity breadth passes, but dynamic or global novelty is over-accepted and macro utility regresses."
+        },
+        "TUM_RGBD": {
+          "all_six_frozen_checks_pass": true,
+          "ranker_parent_macro": 13.4896,
+          "generic_parent_macro": 13.3292,
+          "passive_parent_macro": 12.6479,
+          "oracle_parent_macro": 16.4177,
+          "strict_win_parents": 8,
+          "required_strict_win_parents": 6,
+          "opportunity_parents": 12,
+          "generic_override_count": 40,
+          "reference_count": 67
+        }
+      },
+      "artifact": {
+        "path": "artifacts.local/evidence/taro/task-evidence-reprojection-visibility-scorer-r0/result.json",
+        "bytes": 125738,
+        "sha256": "DA52B812F72861CD77AE039C18A3B8BD5FF93EC4D3E78ED71ECD8DCBCF0AAA16",
+        "content_sha256": "403DB3E95358CDE1C3E97557394D50F754B16EC0EC1C6A589834129266E105E7"
+      }
+    },
+    "r28_background_corrected_reprojection": {
+      "commit": "09152f99",
+      "mechanism": "Subtract global reprojection failure from the task-query novelty score.",
+      "terminal": "STOP_TASK_EVIDENCE_BACKGROUND_CORRECTED_REPROJECTION_TRANSFER_FAIL",
+      "representative_failure": {
+        "source": "ARKITSCENES",
+        "ranker_parent_macro": 12.0020,
+        "generic_parent_macro": 16.4490,
+        "strict_win_parents": 2,
+        "required_strict_win_parents": 5
+      },
+      "artifact": {
+        "path": "artifacts.local/evidence/taro/task-evidence-background-corrected-reprojection-scorer-r0/result.json",
+        "bytes": 125925,
+        "sha256": "F2F31C058CFDA0A0F140030CA8ECC4922A7CB604D294A97C7B15FC36FB9801A1",
+        "content_sha256": "0D75E5B317F2DF9C02C8AD9FA96DDD4B082935C87E4FAB2D8136F352EAC7132B"
+      }
+    },
+    "r29_selective_no_regret_gate": {
+      "commit": "437fe53e",
+      "followup_fix_commit": "2c8d3bca",
+      "mechanism": "Five-seed 64-32 GELU LOFO ensemble over R27 proposal-versus-generic relative features; accept only when ensemble mean logit minus one standard deviation is positive.",
+      "terminal": "STOP_TASK_EVIDENCE_SELECTIVE_REPROJECTION_GATE_LOFO_FAIL",
+      "source_metrics": {
+        "ARKITSCENES": {
+          "accepted_proposals": 6,
+          "available_proposals": 13,
+          "ranker_parent_macro": 20.0667,
+          "generic_parent_macro": 16.4490,
+          "strict_win_parents": 4,
+          "required_strict_win_parents": 5
+        },
+        "BONN_RGBD_DYNAMIC": {
+          "accepted_proposals": 9,
+          "available_proposals": 110,
+          "ranker_parent_macro": 19.3280,
+          "generic_parent_macro": 19.2037,
+          "strict_win_parents": 0,
+          "required_strict_win_parents": 11
+        },
+        "TUM_RGBD": {
+          "accepted_proposals": 13,
+          "available_proposals": 40,
+          "ranker_parent_macro": 13.5948,
+          "generic_parent_macro": 13.3292,
+          "strict_win_parents": 5,
+          "required_strict_win_parents": 6
+        }
+      },
+      "interpretation": "First task-specific policy to beat generic and passive macro utility in all three held source families, but opportunity breadth fails in every fold and is nearly absent on Bonn.",
+      "artifact": {
+        "path": "artifacts.local/evidence/taro/task-evidence-selective-reprojection-gate-r0/result.json",
+        "bytes": 136206,
+        "sha256": "6D46E40D86796F182D22C82153C861ECB2AD8E586C3E7D0F1617E3B5214E00E8",
+        "content_sha256": "51B088752F163836A31EB82E028876E4D57708F21F1D3EEC483B83FD8D7495E7"
+      }
+    },
+    "r30_strict_opportunity_gate": {
+      "commit": "eecaf352",
+      "mechanism": "Keep the R29 architecture, but label a training proposal positive only when it beats both generic and passive; passive remains label-side only.",
+      "terminal": "STOP_TASK_EVIDENCE_STRICT_OPPORTUNITY_REPROJECTION_GATE_LOFO_FAIL",
+      "source_metrics": {
+        "ARKITSCENES": {
+          "accepted_proposals": 3,
+          "available_proposals": 13,
+          "ranker_parent_macro": 16.7039,
+          "generic_parent_macro": 16.4490,
+          "strict_win_parents": 1,
+          "required_strict_win_parents": 5
+        },
+        "BONN_RGBD_DYNAMIC": {
+          "accepted_proposals": 8,
+          "available_proposals": 110,
+          "ranker_parent_macro": 18.9995,
+          "generic_parent_macro": 19.2037,
+          "strict_win_parents": 1,
+          "required_strict_win_parents": 11
+        },
+        "TUM_RGBD": {
+          "accepted_proposals": 3,
+          "available_proposals": 40,
+          "ranker_parent_macro": 13.3417,
+          "generic_parent_macro": 13.3292,
+          "strict_win_parents": 0,
+          "required_strict_win_parents": 6
+        }
+      },
+      "artifact": {
+        "path": "artifacts.local/evidence/taro/task-evidence-strict-opportunity-reprojection-gate-r0/result.json",
+        "bytes": 136397,
+        "sha256": "43C01580B38E7702F25094EF32E69D4C9C38B97EF0E59337FDB8F3E24A28D759",
+        "content_sha256": "9C36CBEB4F6975F474C8837E6B54E93B7003975626661F068473D99BBF9A0BE8"
+      }
+    }
+  },
+  "decision": {
+    "candidate_algorithm": "TARO_QUERY_ALIGNED_REPROJECTION_VISIBILITY_R27",
+    "status": "TWO_SOURCE_FULL_GATE_PASS_DYNAMIC_TRANSFER_NOT_CLOSED",
+    "why_r27_survives": "It is the only new mechanism with a complete frozen gate pass on two different source and sensor families while retaining task-query alignment and excluding candidate depth.",
+    "why_breakthrough_is_not_yet_claimed": "The same fixed scorer regresses below generic macro utility on Bonn dynamic data, and no fresh source-independent confirmation has been run.",
+    "same_table_tuning": "STOPPED",
+    "same_table_tuning_reason": "R28-R30 tested global correction and two selective gates; none closed both macro and opportunity-breadth transfer without regression.",
+    "unique_successor": "TARO_R27_FRESH_REGISTERED_RGBD_POSE_SOURCE_FRONTDOOR_R0",
+    "successor_acceptance": [
+      "The source family and selected parents are not part of the 1690-candidate consumed table.",
+      "RGB and depth are explicitly calibrated or already registered in a common image plane.",
+      "Camera poses and timestamps are source-native and bind to the selected RGB-D frames.",
+      "Selection and candidate generation read no task outcome or candidate depth.",
+      "The frozen R27 scorer, generic arm, passive arm, denominator and strict-win gate are unchanged before outcome access."
+    ]
+  },
+  "source_frontdoor_rejections": [
+    {
+      "source": "Microsoft 7-Scenes",
+      "decision": "REJECT_FOR_EXACT_R27_REPROJECTION_CONFIRMATION",
+      "reason": "The official dataset page states that the RGB and depth cameras were not calibrated and the frames are supplied in raw uncalibrated form, so an exact depth-to-RGB warp would require a new unverified registration assumption.",
+      "official_url": "https://www.microsoft.com/en-us/research/project/rgb-d-dataset-7-scenes/",
+      "accessed": "2026-08-14"
+    }
+  ],
+  "claim_ceiling": "R27 establishes dual-source consumed-Development evidence for query-aligned reprojection visibility, and R29 establishes three-source macro-only no-regret evidence. Neither is fresh source confirmation, broad algorithm breakthrough, Android authority, product evidence, deployment evidence, or safety evidence.",
+  "android_candidate_authorized": false,
+  "product_authorized": false,
+  "safety_authorized": false
+}

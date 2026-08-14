@@ -1,6 +1,6 @@
 # TARO R12 clear/task observability runtime
 
-状态：`current / REVERSIBLE_EXPLORATION / R12_THREE_SOURCE_LABEL_SATURATION_LOCALIZED / R13_TASK_EVIDENCE_ORACLE_HEADROOM_PASS / R14_R25_TASK_SCORER_TRANSFER_FAIL_STOP`
+状态：`current / REVERSIBLE_EXPLORATION / R13_TASK_EVIDENCE_ORACLE_HEADROOM_PASS / R27_ARKIT_TUM_FULL_GATE_PASS / R27_BONN_DYNAMIC_MACRO_FAIL / R29_THREE_SOURCE_MACRO_PASS_BREADTH_FAIL / R30_SAME_TABLE_STOP`
 
 ## 稳定 Interface
 
@@ -27,6 +27,15 @@
   held-source 概率失校准，未授权 successor。
 - `task_evidence_rgb_query_interaction_ranker.py`：R25 在 R23 目标和 gate 不变时新增冻结 identity 的参考/候选
   RGB query tokens；真实解码 1,932 个 payload 后仍未过跨源 breadth，Bonn/TUM macro 回归。
+- `task_evidence_disocclusion_release_scorer.py`：R26 解析式估计 task cell 与 reference-depth 前景遮挡物在
+  candidate view 的边界分离；只在 ARKit 接近通过，未迁移。
+- `task_evidence_reprojection_visibility_scorer.py`：R27 把 reference RGB-D forward z-buffer 到 candidate view，
+  只在 query cells 内计 warp hole/光度不一致；不读 candidate depth。ARKit/TUM 六项门全过，Bonn macro 回归。
+- `task_evidence_background_corrected_reprojection_scorer.py`：R28 试验全局 reprojection-failure 校正，三源回归。
+- `task_evidence_selective_reprojection_gate.py`：R29 五 seed LOFO no-regret gate；三源 macro 均过 generic/passive，
+  但 opportunity breadth 均未完整通过。
+- `task_evidence_strict_opportunity_reprojection_gate.py`：R30 只把同时胜 generic/passive 的 proposal 标正；
+  过度保守且 breadth 仍失败，关闭同表 gate 调整。
 
 R1 在 25/26 pose-capable parents 中 outcome-blind 均匀选出 100 references，实际评价 56 references / 504
 queries；label census 为 `404 OCCUPIED / 2 CLEAR / 98 UNKNOWN`，recovery opportunity 与 CLEAR denominator
@@ -44,6 +53,12 @@ R23–R25 共用 1,690 candidates、57 个 source-qualified parents，并在实�
 macro 版本，但机会覆盖仅 ARKit `0/9`、Bonn `7/21`、TUM `5/12`；R24 新监督与 R25 RGB 新 signal 都未关闭
 transfer gap。跟踪结果见
 [`TARO_COMPLEX_QUERY_CONDITIONED_SCORER_RESULTS_2026-08-14.json`](../../../docs/research/taro/TARO_COMPLEX_QUERY_CONDITIONED_SCORER_RESULTS_2026-08-14.json)。同表继续调容量、loss、seed、gate 或 RGB channels 已停止。
+
+R27 在 ARKit/TUM 的 frozen macro 与 breadth gate 全过，在 Bonn dynamic 取得 breadth `15/11` 却因
+`17.3000<19.2037` macro 回归而未能三源通过。R29 首次让三源 macro 全部高于 generic/passive，但 breadth
+为 `4/5、0/11、5/6`；R28/R30 也没有关闭 transfer gap。R27 保留为 fresh registered RGB-D+pose source
+候选，同表调参停止。跟踪结果见
+[`TARO_REPROJECTION_VISIBILITY_SCORER_RESULTS_2026-08-14.json`](../../../docs/research/taro/TARO_REPROJECTION_VISIBILITY_SCORER_RESULTS_2026-08-14.json)。
 
 ## 输出
 
@@ -74,7 +89,12 @@ E:\codex-tools\bin\blindassist-python.cmd -m unittest `
   scripts.research.taro_o1r_r12_clear_observability_runtime.test_task_evidence_oracle_canary `
   scripts.research.taro_o1r_r12_clear_observability_runtime.test_task_evidence_query_conditioned_no_regret_ranker `
   scripts.research.taro_o1r_r12_clear_observability_runtime.test_task_evidence_opportunity_aware_no_regret_ranker `
-  scripts.research.taro_o1r_r12_clear_observability_runtime.test_task_evidence_rgb_query_interaction_ranker
+  scripts.research.taro_o1r_r12_clear_observability_runtime.test_task_evidence_rgb_query_interaction_ranker `
+  scripts.research.taro_o1r_r12_clear_observability_runtime.test_task_evidence_disocclusion_release_scorer `
+  scripts.research.taro_o1r_r12_clear_observability_runtime.test_task_evidence_reprojection_visibility_scorer `
+  scripts.research.taro_o1r_r12_clear_observability_runtime.test_task_evidence_background_corrected_reprojection_scorer `
+  scripts.research.taro_o1r_r12_clear_observability_runtime.test_task_evidence_selective_reprojection_gate `
+  scripts.research.taro_o1r_r12_clear_observability_runtime.test_task_evidence_strict_opportunity_reprojection_gate
 ```
 
 动态状态、唯一 successor 与 claim ceiling 以

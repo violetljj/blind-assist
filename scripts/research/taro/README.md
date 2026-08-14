@@ -1,6 +1,6 @@
 # TARO research scripts
 
-状态：`P0_PROTOCOL_AND_SCHEMA_FROZEN / PAIR_SUPPORT_AUDIT_AVAILABLE / R13_ORACLE_HEADROOM_PASS / R14_R25_TASK_SCORER_TRANSFER_FAIL_STOP`
+状态：`P0_PROTOCOL_AND_SCHEMA_FROZEN / PAIR_SUPPORT_AUDIT_AVAILABLE / R13_ORACLE_HEADROOM_PASS / R27_DUAL_SOURCE_FULL_GATE_PASS / R29_THREE_SOURCE_MACRO_PASS_BREADTH_FAIL / R30_SAME_TABLE_STOP`
 
 ## 研究问题与版本
 
@@ -29,10 +29,10 @@ machine-readable schema、measurement-only observability、有限弱子空间 ta
   聚合 receipt，并按冻结的协议/模型/identity、scene/reference、runtime 与 parent-macro gate 产生唯一 terminal；
 - `test_aggregate_yolo_positive_evidence_shadow.py`：覆盖冻结四场 PASS、模型 identity 漂移和 exact payload
   lookup 不完整时的 fail-closed 聚合。
-- positive-oracle 与 R13–R25 task-evidence runtime、测试和运行说明位于
+- positive-oracle 与 R13–R30 task-evidence runtime、测试和运行说明位于
   [`taro_o1r_r12_clear_observability_runtime`](../taro_o1r_r12_clear_observability_runtime/README.md)；当前 Bonn
-  R1 因 recovery/CLEAR parent 分母不足而 `NOT_EVALUABLE`；R13 虽有 oracle headroom，R14–R25 learned
-  scorer 都未关闭跨源机会覆盖门，当前仍未授权 task-specific learned scorer。
+  R1 因 recovery/CLEAR parent 分母不足而 `NOT_EVALUABLE`；R27 已在 ARKit/TUM 完整过门但 Bonn dynamic
+  macro 回归，R29 三源 macro 均过却未关闭 breadth；当前只授权 fresh registered-source 验证 R27。
 
 运行：
 
@@ -41,7 +41,7 @@ E:\codex-tools\bin\blindassist-python.cmd -m unittest scripts.research.taro.test
 ```
 
 本基础 Module 自身没有 solver、数据 materializer、模型、trainer 或 action scorer；pair-support audit 只是
-Development source-capability precheck。隔离 runtime 中的 R23–R25 trainer 及其负结果不改变本 Module 的 P0
+Development source-capability precheck。隔离 runtime 中的 R23–R30 scorer/trainer 及其结果不改变本 Module 的 P0
 权限，也不授权 Android、产品或安全结论。
 
 ## 输出

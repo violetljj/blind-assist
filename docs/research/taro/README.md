@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / R13_ORACLE_HEADROOM_PASS / R14_R25_TASK_SCORER_TRANSFER_FAIL_STOP / POSE_DIVERSE_BASELINE_MULTI_SOURCE_PASS / ANCHOR_DEVICE_CANARY_PASS / RGB_PAIR_SUPPORT_PASS / RGB_HISTORY_RETENTION_COST_PASS / RGB_SELECTED_DECODE_INTEGRITY_PASS / YOLO_POSITIVE_EVIDENCE_SHADOW_PASS / DIRECT_CAMERAX_SEAM_REJECTED / SHARED_CAMERA_SOURCE_PROTOCOL_LOCKED / FRESH_RAW_DEPTH_PAIR_FAIL_STOP / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
+状态：`current / ALGORITHM_PRIORITY / R13_ORACLE_HEADROOM_PASS / R27_ARKIT_TUM_FULL_GATE_PASS / R27_BONN_DYNAMIC_MACRO_FAIL / R29_THREE_SOURCE_MACRO_PASS_BREADTH_FAIL / SAME_TABLE_TUNING_STOP / FRESH_REGISTERED_RGBD_POSE_SOURCE_NEXT / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
 
 本页只维护 TARO 当前状态、权限和唯一算法 successor。较早完整 R0–R11 叙事保存在
 [14d8ad7e 历史快照](archive/README_FULL_HISTORY_2026-08-13.md)，不能从中恢复旧权限。
@@ -68,6 +68,10 @@ Android、HTP 或默认 App 自动继承权限。
 - R24 strict-opportunity teacher 在 held source 失校准；R25 解码 1,932 个 source-time RGB identities、增至
   258,450 参数后仅把 ARKit coverage 推到 `1/9`，Bonn/TUM macro 又回归。禁止在同一 1,690-candidate/
   57-parent 已消费表上调容量、loss、gate 或 handcrafted RGB 回救；详细数字见跟踪结果。
+- R26 解析 disocclusion scorer 只在 ARKit 接近门槛；R27 将 reference RGB-D z-buffer 重投影到 candidate view，
+  只在 body/path query 内计 warp hole/稳健光度不一致。它在 ARKit/TUM 六项门全过：macro
+  `19.7961>16.4490`、`13.4896>13.3292`，breadth `5/5、8/6`；Bonn breadth `15/11` 却 macro
+  `17.3000<19.2037`。R28 回归；R29 三源 macro 全胜但 breadth `4/5、0/11、5/6`；R30 仍失败。同表回调停止，R27 只保留为 fresh-source 候选。
 - 与 task scorer 分开，预先定义的 pose-only generic arm 在四个 cohort 均高于 passive：旧 TUM
   `14.0222>13.8847`、Bonn `19.2037>17.2662`、task-outcome-blind TUM `11.25>8.9375`、ARKit
   `16.4490>12.9431`。因此 `TARO_POSE_DIVERSE_GENERIC_R0` 已实现为 `core:ustrf` 中默认关闭的纯 Kotlin
@@ -107,9 +111,7 @@ Android、HTP 或默认 App 自动继承权限。
   parent macro 新增 focused token 为 `0.5750`，passive 为 `0.3917`，pose 在 4 个 scene parents 中 3 胜 1 负，
   terminal 为 `POSE_DIVERSE_POSITIVE_VISUAL_EVIDENCE_PASS`。这只证明单设备受控场景中冻结模型的屏幕空间
   positive-evidence observability，不证明 detector accuracy、body/path 几何、碰撞正确性、产品或安全。
-- 默认 App source audit 显示 CameraX `Preview + RGBA ImageAnalysis` 只有 Camera2 timestamp，现有接缝不承载
-  同帧 ARCore pose；SharedCamera 要求 Camera2 wrapped callbacks 与显式 app Surface。因此拒绝 direct CameraX
-  sidecar，下一步仅在隔离 benchmark 验证 SharedCamera exact timestamp/pose seam，默认 App 不变。
+- 默认 App source audit 显示 CameraX 接缝不承载同帧 ARCore pose；SharedCamera protocol 虽已锁定，但在当前算法优先级下不再是 active successor，默认 App 不变。
 
 ## 当前证据入口
 
@@ -126,6 +128,7 @@ Android、HTP 或默认 App 自动继承权限。
 - [R14-R20 scorer and confirmation results](TARO_TASK_EVIDENCE_SCORER_AND_CONFIRMATION_RESULTS_2026-08-13.json)
 - [R21-R22 cross-source learned-ranker result](TARO_CROSS_SOURCE_LEARNED_RANKER_RESULT_2026-08-13.json)
 - [R23-R25 complex query-conditioned scorer results](TARO_COMPLEX_QUERY_CONDITIONED_SCORER_RESULTS_2026-08-14.json)
+- [R26-R30 reprojection visibility scorer results](TARO_REPROJECTION_VISIBILITY_SCORER_RESULTS_2026-08-14.json)
 - [Pose-diverse portfolio and default-off core selector](TARO_POSE_DIVERSE_BASELINE_PORTFOLIO_AND_CORE_SELECTOR_RESULT_2026-08-13.json)
 - [Historical isolated canary preflight and superseded device environment stop](TARO_POSE_DIVERSE_SELECTOR_ISOLATED_CANARY_PREFLIGHT_RESULT_2026-08-13.json)
 - [ARCore device selector, raw-depth stop and RGB pair-support result](TARO_POSE_DIVERSE_ARCORE_DEVICE_AND_RGB_PAIR_RESULT_2026-08-13.json)
@@ -138,21 +141,21 @@ Android、HTP 或默认 App 自动继承权限。
 
 ## 唯一 successor
 
-`TARO_ARCORE_SHARED_CAMERA_SOURCE_CANARY_R0`：
+`TARO_R27_FRESH_REGISTERED_RGBD_POSE_SOURCE_FRONTDOOR_R0`：
 
-1. 隔离 benchmark 使用 ARCore SharedCamera + wrapped Camera2 callbacks 和 app-owned `640x480 YUV_420_888` ImageReader Surface；默认 CameraX source 不变；
-2. app image 与 ARCore Frame timestamp exact 相等并绑定同一 Anchor epoch pose；禁止 fallback；目标 120 对 exact source-pose pairs、至少 100 次 frozen pose-diverse selections；
-3. 不运行模型、不接 App UI/risk/guidance、不保存图像/box/地址/身份；所有资源有界关闭；
-4. learned task scorer 保持 STOP；不得用 generic baseline 掩盖其失败。
+1. 选择不属于当前 1,690-candidate 表的新 RGB-D+pose source family/parents，并在任何 task outcome 或 candidate depth 读取前冻结 source、parents、reference 与候选池；
+2. RGB/depth 必须有 source-native calibration 或已在同一 image plane 注册，pose/timestamp 必须精确绑定；不满足即 source frontdoor STOP；
+3. 原样运行 R27 scorer、generic/passive arms、机会分母与 strict-win gate；禁止按新源 outcome 改 threshold、query、候选或 fallback；
+4. 只有 fresh source 同时过 macro、breadth、retention 与 denominator 门，才允许建立独立 confirmation；仍不自动授权 Android、产品或安全。
 
 R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；它不能改写上述 outcome-blind source
 选择，也不能把 R11 改成 PASS。任何新的 dual-class confirmation 仍需 untouched parents。
 
 ## 当前允许
 
-- 按已锁协议运行隔离 SharedCamera exact source-pose canary，并只持久化计数、身份与资源 receipt；
-- 对纯 camera-history canary 使用同 session/same-anchor 相对位姿；外参门禁只服务需 body-frame/risk-field warp 的独立链路；
-- 只有新 parent-disjoint task×candidate supervision，或强于 R25 handcrafted RGB 的预声明 correspondence/visibility signal，才可另立 learned scorer successor；
+- 只读审计新 source family 的 RGB/depth registration、camera pose、timestamp、许可、parent roster 与下载规模；
+- 在 outcome 前锁定 fresh parent-disjoint R27 frontdoor，并复用冻结 scorer、基线、分母和 gate；
+- 只有新 parent-disjoint supervision，或 materially different 的预声明 correspondence/visibility signal，才可另立后继；
 - 对 consumed R11 evidence 做明确标注的只读后验机制诊断；
 - 重放 hash-bound tests、validator 和只读 evidence 复核。
 
@@ -162,7 +165,7 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 - 用不同额外帧预算比较 sensing arms，或只报告 recovery 而隐藏 false-occupied/known retention/cost；
 - 在 Development canary 中输出 `CLEAR`、把 UNKNOWN 当 negative，或用 R11 outcome 选择该 canary 的 source；
 - 回调 R12/R19/R20/R21 的 query/outcome/gate，或把 neighbor depth 泄漏进 scorer input；
-- 在 R23–R25 已消费表上调容量、loss、seed、gate 或 RGB channels，并把 post-hoc fold 改善包装成 confirmation；
+- 在 R23–R30 已消费表上调容量、loss、seed、gate、background correction 或 RGB channels，并把 post-hoc fold 改善包装成 confirmation；
 - 将 generic core selector 或本次单设备 screen-space PASS 写成 task-specific scorer、跨设备成功、任务增益、
   风险融合、默认 App 或产品成功；
 - 把独立 ARCore Session 直接并挂到当前 CameraX analyzer，或在缺少 exact ARCore pose 时运行已验证 selector；
@@ -172,8 +175,6 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 
 ## Claim ceiling
 
-R13 有 task-conditioned oracle headroom；R21/R23 可跨源提高宏平均却未覆盖机会父级，R22/R24/R25 也未关闭
-transfer gap，task-specific scorer 继续停止。pose-diverse generic 已获跨源 Development 支持并落为默认关闭的
-Kotlin selector；单台 ARCore 设备证明 Anchor 选帧、source-bound RGB pair、YUV ownership/decode，并在四场冻结
-YOLO shadow 通过 screen-space positive-evidence gate。尚未证明 detector accuracy、body/path、碰撞、SharedCamera
-App source、telemetry、风险融合、产品或安全，默认 App 不变。
+R13 有 task-conditioned oracle headroom；R27 在 ARKit/TUM 完整过门但 Bonn dynamic macro 回归；R29 仅证明三源
+macro no-regret，未关闭 breadth。因此它是 materially stronger candidate，不是 broad/fresh breakthrough。设备侧
+证据不替代 fresh registered RGB-D+pose 验证；尚未证明 detector accuracy、碰撞、产品或安全，默认 App 不变。
