@@ -1,0 +1,80 @@
+{
+  "schema": "blindassist_taro_r27_openloris_home_calibration_plane_frontdoor_lock_v1",
+  "lock_id": "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FRONTDOOR_R2",
+  "date": "2026-08-14",
+  "status": "LOCKED_AFTER_R1_REFERENCE_ONLY_GEOMETRY_ABSTENTION_BEFORE_ANY_CANDIDATE_RGB_OR_DEPTH_OR_TASK_OUTCOME_READ",
+  "predecessor_lock": "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FRONTDOOR_R1",
+  "predecessor_lock_path": "docs/research/taro/TARO_R27_OPENLORIS_HOME_GROUNDTRUTH_DUPLICATE_ADAPTER_LOCK_2026-08-14.json",
+  "r1_terminal": "STOP_TARO_R27_OPENLORIS_HOME_R1_GEOMETRY_NOT_EVALUABLE",
+  "r1_failure": {
+    "selected_reference_count": 25,
+    "reference_depth_payloads_decoded": 25,
+    "generic_depth_plane_fit_abstention_count": 25,
+    "support_gate_failed_count": 17,
+    "support_plausible_insufficient_count": 8,
+    "reference_rgb_payloads_decoded": 0,
+    "candidate_rgb_payloads_decoded": 0,
+    "candidate_depth_payloads_decoded": 0,
+    "task_outcome_metrics_emitted": 0
+  },
+  "reference_only_source_audit": {
+    "calibrated_camera_height_min_m": 0.916,
+    "calibrated_camera_height_max_m": 0.916,
+    "references_with_observed_points_within_0_08_m_of_calibrated_ground_plane": 17,
+    "references_dominated_by_near_wall_or_furniture_without_visible_ground_support": 8,
+    "interpretation": "The generic image-fitted plane requires visible floor support. The source calibration provides gravity and physical camera height even when the floor is occluded."
+  },
+  "r2_query_geometry": {
+    "kind": "OPENLORIS_BASE_CALIBRATION_GROUND_PLANE_V1",
+    "world_up": [0.0, 0.0, 1.0],
+    "gravity_up_camera_formula": "rotation(world_T_color)^T * world_up",
+    "camera_height_formula": "translation(base_link_T_d400_color_optical_frame).z",
+    "required_camera_height_range_m": [0.45, 2.2],
+    "reference_depth_plane_fit": false,
+    "generic_plane_fit_thresholds_relaxed": false,
+    "query_capsule_grid_changed": false
+  },
+  "unchanged_candidate": {
+    "name": "TARO_QUERY_ALIGNED_REPROJECTION_VISIBILITY_R27",
+    "implementation": "scripts/research/taro_o1r_r12_clear_observability_runtime/task_evidence_reprojection_visibility_scorer.py",
+    "warp_coverage_dilation_px": 1,
+    "photometric_residual_quantile": 0.9,
+    "minimum_override_novel_cell_advantage": 1,
+    "candidate_depth_in_scorer_input": false,
+    "parameters_fit_from_fresh_targets": 0,
+    "training_steps_on_fresh_source": 0
+  },
+  "unchanged_frozen_gates": {
+    "source": "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FRONTDOOR_R0",
+    "minimum_evaluated_references": 16,
+    "minimum_evaluated_parents": 4,
+    "minimum_opportunity_parents": 4,
+    "required_strict_win_parents": "max(3, ceil(0.5 * opportunity_parent_count))",
+    "ranker_parent_macro_beats_generic": true,
+    "ranker_parent_macro_beats_passive": true,
+    "zero_known_evidence_retention_failures": true,
+    "all_checks_required_for_pass": true
+  },
+  "unchanged_source_authority": {
+    "source_package_bytes": 18974105600,
+    "source_package_sha256": "5A6B14CC01843669A9D77D077355FD5CA6E7FF88297718A8A7D6D5947A584E75",
+    "groundtruth_archive_bytes": 11076559,
+    "groundtruth_archive_sha256": "07564D7ED3D6739585002AFA12BCF481CC0E9E358FC64EFD5E658E2C994BDC3B"
+  },
+  "execution_order": [
+    "Commit this R2 geometry frontdoor and focused tests before decoding any candidate RGB or depth payload.",
+    "Verify unchanged source hashes and freeze source, reference and candidate identities.",
+    "Construct the same nine physical query capsules from source calibration instead of an image-fitted plane.",
+    "Open reference RGB-D and candidate RGB, compute and seal unchanged R27 selection scores.",
+    "Open candidate depth only after the selection seal and evaluate the unchanged R0 gates once."
+  ],
+  "terminals": {
+    "pass": "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_R2_PASS",
+    "source_not_evaluable": "STOP_TARO_R27_OPENLORIS_HOME_SOURCE_R2_NOT_EVALUABLE",
+    "algorithm_fail": "STOP_TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_R2_FAIL"
+  },
+  "claim_ceiling": "A PASS would confirm frozen R27 selection on one fresh OpenLORIS-home family under a disclosed source-native calibration-plane frontdoor. It would not prove broad generalization, collision correctness, Android readiness, product success, deployment readiness, navigation safety or user safety.",
+  "android_candidate_authorized": false,
+  "product_authorized": false,
+  "safety_authorized": false
+}

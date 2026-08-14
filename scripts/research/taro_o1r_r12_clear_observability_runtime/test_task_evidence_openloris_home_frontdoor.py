@@ -95,6 +95,19 @@ class OpenLorisHomeFrontdoorTest(unittest.TestCase):
         _second, second_sha = subject._candidate_identity([support])
         self.assertEqual(first_sha, second_sha)
 
+    def test_calibration_queries_use_pose_gravity_and_source_height(self) -> None:
+        pose = np.eye(4, dtype=np.float64)
+        pose[:3, :3] = np.asarray([[1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, -1.0, 0.0]])
+        reference = subject.bonn.Frame("p", 1.0, Path("r"), Path("r"), pose)
+        queries, receipt = subject._calibration_queries(reference, 0.916)
+        self.assertEqual(9, len(queries))
+        self.assertEqual("OPENLORIS_BASE_CALIBRATION_GROUND_PLANE_V1", receipt["kind"])
+        self.assertEqual([0.0, -1.0, 0.0], receipt["gravity_up_camera_xyz"])
+        self.assertEqual(0.916, receipt["camera_height_m"])
+        self.assertFalse(receipt["reference_depth_plane_fit"])
+        with self.assertRaises(subject.OpenLorisFrontdoorError):
+            subject._calibration_queries(reference, 0.2)
+
     def test_candidate_identity_rejects_reference_payload_overlap(self) -> None:
         pose = np.eye(4, dtype=np.float64)
         older = subject.bonn.Frame("p", 0.5, Path("a"), Path("a"), pose.copy())

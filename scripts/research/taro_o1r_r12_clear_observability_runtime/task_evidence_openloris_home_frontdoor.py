@@ -31,10 +31,10 @@ from scripts.research.taro_o1r_r12_clear_observability_runtime import task_evide
 from scripts.research.taro_o1r_r12_clear_observability_runtime import tum_balanced_pose_source_frontdoor as tum
 
 
-SCHEMA = "blindassist.taro.task_evidence_openloris_home_frontdoor.v2"
+SCHEMA = "blindassist.taro.task_evidence_openloris_home_frontdoor.v3"
 REPO_ROOT = Path(__file__).resolve().parents[3]
-LOCK_PATH = REPO_ROOT / "docs/research/taro/TARO_R27_OPENLORIS_HOME_GROUNDTRUTH_DUPLICATE_ADAPTER_LOCK_2026-08-14.json"
-LOCK_ID = "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FRONTDOOR_R1"
+LOCK_PATH = REPO_ROOT / "docs/research/taro/TARO_R27_OPENLORIS_HOME_CALIBRATION_PLANE_FRONTDOOR_LOCK_2026-08-14.json"
+LOCK_ID = "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FRONTDOOR_R2"
 PARENT_IDS = ("home1-1", "home1-2", "home1-3", "home1-4", "home1-5")
 PACKAGE_BYTES = 18_974_105_600
 PACKAGE_SHA256 = "5A6B14CC01843669A9D77D077355FD5CA6E7FF88297718A8A7D6D5947A584E75"
@@ -229,6 +229,7 @@ class OpenLorisAsset:
     rgb_path: Path
     depth_path: Path
     intrinsics: np.ndarray
+    camera_height_m: float
 
 
 def load_outcome_blind_roster(
@@ -276,7 +277,9 @@ def load_outcome_blind_roster(
                 continue
             frame = bonn.Frame(parent_id, timestamp, rgb_path, depth_path, camera_to_world)
             require(frame.frame_id not in assets, f"duplicate OpenLORIS frame: {frame.frame_id}")
-            assets[frame.frame_id] = OpenLorisAsset(parent_id, rgb_path, depth_path, intrinsics)
+            camera_height_m = float(base_to_color[2, 3])
+            require(0.45 <= camera_height_m <= 2.2, f"OpenLORIS calibrated camera height drift: {parent_id}")
+            assets[frame.frame_id] = OpenLorisAsset(parent_id, rgb_path, depth_path, intrinsics, camera_height_m)
             frames.append(frame)
             admitted += 1
             maximum_pose_delta = max(maximum_pose_delta, pose_delta)
@@ -315,6 +318,12 @@ def load_outcome_blind_roster(
             "rule": "STABLE_FIRST_ROW_FOR_EXACT_TIMESTAMP_WITH_BOUNDED_POSE_SPREAD",
             "maximum_translation_m": MAX_DUPLICATE_POSE_TRANSLATION_M,
             "maximum_rotation_deg": MAX_DUPLICATE_POSE_ROTATION_DEG,
+        },
+        "query_plane_contract": {
+            "kind": "OPENLORIS_BASE_CALIBRATION_GROUND_PLANE_V1",
+            "gravity_source": "world/base positive Z carried through world_T_color rotation",
+            "camera_height_source": "base_link_T_d400_color_optical_frame translation Z",
+            "reference_depth_plane_fit": False,
         },
         "source_resolution_wh": list(SOURCE_SIZE_WH),
         "center_crop_xywh": list(CROP_XYWH),
@@ -396,6 +405,32 @@ def _candidate_identity(selected: Sequence[bonn.ReferenceSupport]) -> tuple[dict
     return proposals, hashlib.sha256(canonical_json_bytes(rows)).hexdigest().upper()
 
 
+def _calibration_queries(reference: bonn.Frame, camera_height_m: float) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    require(0.45 <= camera_height_m <= 2.2, f"calibrated camera height outside source-support range: {reference.frame_id}")
+    up_camera = oracle.adapter._normalize_vector(
+        reference.camera_to_world[:3, :3].T @ tum.WORLD_UP,
+        "OPENLORIS_CALIBRATION_GRAVITY_INVALID",
+    )
+    plane = {
+        "normal_camera_xyz": up_camera,
+        "camera_height_m": float(camera_height_m),
+    }
+    queries = oracle.prospective._build_queries(
+        reference.frame_id,
+        hashlib.sha256(reference.frame_id.encode("utf-8")).hexdigest().upper(),
+        round(reference.timestamp_s * 1_000_000_000),
+        plane,
+    )
+    receipt = {
+        "reference_frame_id": reference.frame_id,
+        "kind": "OPENLORIS_BASE_CALIBRATION_GROUND_PLANE_V1",
+        "gravity_up_camera_xyz": up_camera.tolist(),
+        "camera_height_m": float(camera_height_m),
+        "reference_depth_plane_fit": False,
+    }
+    return queries, receipt
+
+
 def verify_locked_inputs(source_package: Path, groundtruth_archive: Path) -> dict[str, Any]:
     require(LOCK_PATH.is_file(), f"frontdoor lock absent: {LOCK_PATH}")
     lock = json.loads(LOCK_PATH.read_text(encoding="utf-8"))
@@ -438,7 +473,7 @@ def evaluate(
             "input_receipt": input_receipt,
             "source": source,
             "pose_pair_capability": capability,
-            "terminal": "STOP_TARO_R27_OPENLORIS_HOME_SOURCE_NOT_EVALUABLE",
+            "terminal": "STOP_TARO_R27_OPENLORIS_HOME_SOURCE_R2_NOT_EVALUABLE",
             "read_boundary": {
                 "image_payload_decodes": 0,
                 "candidate_depth_reads_before_selection_seal": 0,
@@ -457,14 +492,13 @@ def evaluate(
     contexts: dict[str, scorer.ReferenceContext] = {}
     records: list[scorer.CandidateRecord] = []
     geometry_abstentions = 0
+    query_plane_receipts: list[dict[str, Any]] = []
     for row in selected:
         low, points, valid, _coverage = store.observation(row.reference.frame_id)
         asset = assets[row.reference.frame_id]
         low_intrinsics = bonn._scaled_intrinsics(asset.intrinsics, CROPPED_SIZE_WH, tum.LOW_SIZE_WH)
-        queries = oracle._queries(row.reference, low, low_intrinsics)
-        if queries is None:
-            geometry_abstentions += 1
-            continue
+        queries, query_plane_receipt = _calibration_queries(row.reference, asset.camera_height_m)
+        query_plane_receipts.append(query_plane_receipt)
         static = oracle.query_evidence_cells(points, valid, queries)
         context = scorer.ReferenceContext(row, low, points, valid, low_intrinsics, queries, static)
         contexts[row.reference.frame_id] = context
@@ -512,9 +546,9 @@ def evaluate(
     checks["zero_known_evidence_retention_failures_by_union_construction"] = True
     passed = all(checks.values())
     terminal = (
-        "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_R1_PASS"
+        "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_R2_PASS"
         if passed
-        else "STOP_TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_R1_FAIL"
+        else "STOP_TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_R2_FAIL"
     )
     result = {
         "schema": SCHEMA,
@@ -535,6 +569,11 @@ def evaluate(
         "selection": selection,
         "selection_seal_before_candidate_depth": selection_seal,
         "geometry_abstention_count": geometry_abstentions,
+        "query_plane_receipt": {
+            "kind": "OPENLORIS_BASE_CALIBRATION_GROUND_PLANE_V1",
+            "reference_count": len(query_plane_receipts),
+            "content_sha256": hashlib.sha256(canonical_json_bytes(query_plane_receipts)).hexdigest().upper(),
+        },
         "metrics": metrics,
         "checks": checks,
         "payload_receipt": store.receipt(),
