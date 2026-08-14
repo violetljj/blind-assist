@@ -235,11 +235,16 @@ class OpenLorisAsset:
 def load_outcome_blind_roster(
     source_root: Path,
     groundtruth_root: Path,
+    parent_ids: Sequence[str] = PARENT_IDS,
+    family: str = "OPENLORIS_SCENE_D435I_HOME",
+    analysis_role: str = "FRESH_SOURCE_EVALUATION",
 ) -> tuple[list[bonn.Frame], dict[str, OpenLorisAsset], dict[str, Any]]:
+    parent_ids = tuple(parent_ids)
+    require(bool(parent_ids) and len(set(parent_ids)) == len(parent_ids), "invalid OpenLORIS parent set")
     frames: list[bonn.Frame] = []
     assets: dict[str, OpenLorisAsset] = {}
     parent_receipts: list[dict[str, Any]] = []
-    for parent_id in PARENT_IDS:
+    for parent_id in parent_ids:
         root = (source_root / parent_id).resolve()
         require(root.is_dir(), f"OpenLORIS parent absent: {parent_id}")
         color_path = root / "color.txt"
@@ -303,12 +308,12 @@ def load_outcome_blind_roster(
                 "calibration": calibration,
             }
         )
-    require(frames and len(parent_receipts) == len(PARENT_IDS), "empty OpenLORIS roster")
+    require(frames and len(parent_receipts) == len(parent_ids), "empty OpenLORIS roster")
     return frames, assets, {
-        "family": "OPENLORIS_SCENE_D435I_HOME",
-        "analysis_role": "FRESH_SOURCE_EVALUATION",
-        "parent_ids": list(PARENT_IDS),
-        "parent_count": len(PARENT_IDS),
+        "family": family,
+        "analysis_role": analysis_role,
+        "parent_ids": list(parent_ids),
+        "parent_count": len(parent_ids),
         "frame_count": len(frames),
         "selection_inputs": ["color.txt", "aligned_depth.txt", "groundtruth.txt", "sensors.yaml", "trans_matrix.yaml"],
         "selection_reads_task_outcome": False,
@@ -338,6 +343,7 @@ class PayloadStore:
     def __init__(self, assets: Mapping[str, OpenLorisAsset]):
         self.assets = dict(assets)
         self._observations: dict[str, tuple[np.ndarray, np.ndarray, np.ndarray, float]] = {}
+        self._rgb: dict[str, np.ndarray] = {}
         self._rgb_planes: dict[str, np.ndarray] = {}
         self._depth_receipts: dict[str, str] = {}
         self._rgb_receipts: dict[str, str] = {}
@@ -363,9 +369,9 @@ class PayloadStore:
         self._depth_receipts[frame_id] = hashlib.sha256(payload).hexdigest().upper()
         return result
 
-    def planes(self, frame: bonn.Frame) -> np.ndarray:
+    def rgb(self, frame: bonn.Frame) -> np.ndarray:
         frame_id = frame.frame_id
-        cached = self._rgb_planes.get(frame_id)
+        cached = self._rgb.get(frame_id)
         if cached is not None:
             return cached
         asset = self.assets[frame_id]
@@ -373,9 +379,17 @@ class PayloadStore:
         bgr = cv2.imdecode(np.frombuffer(payload, dtype=np.uint8), cv2.IMREAD_COLOR)
         require(bgr is not None, f"OpenLORIS RGB decode drift: {frame_id}")
         rgb = cv2.cvtColor(self._crop(bgr), cv2.COLOR_BGR2RGB)
-        planes = r25._rgb_planes(rgb)
-        self._rgb_planes[frame_id] = planes
+        self._rgb[frame_id] = rgb
         self._rgb_receipts[frame_id] = hashlib.sha256(payload).hexdigest().upper()
+        return rgb
+
+    def planes(self, frame: bonn.Frame) -> np.ndarray:
+        frame_id = frame.frame_id
+        cached = self._rgb_planes.get(frame_id)
+        if cached is not None:
+            return cached
+        planes = r25._rgb_planes(self.rgb(frame))
+        self._rgb_planes[frame_id] = planes
         return planes
 
     def receipt(self) -> dict[str, Any]:
@@ -388,6 +402,12 @@ class PayloadStore:
             "rgb_payload_receipt_sha256": hashlib.sha256(canonical_json_bytes(rgb_rows)).hexdigest().upper(),
             "model_runs": 0,
         }
+
+    def decoded_depth_frame_ids(self) -> tuple[str, ...]:
+        return tuple(sorted(self._depth_receipts))
+
+    def decoded_rgb_frame_ids(self) -> tuple[str, ...]:
+        return tuple(sorted(self._rgb_receipts))
 
 
 def _candidate_identity(selected: Sequence[bonn.ReferenceSupport]) -> tuple[dict[str, tuple[bonn.Pair, ...]], str]:

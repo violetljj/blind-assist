@@ -1,0 +1,126 @@
+{
+  "schema": "blindassist_taro_r31_r36_reliability_regime_and_fresh_parent_result_v1",
+  "result_id": "TARO_R31_R36_RELIABILITY_REGIME_AND_FRESH_PARENT_RESULT_2026-08-15",
+  "date": "2026-08-15",
+  "mode": "ZERO_LEAKAGE_DEVELOPMENT_THEN_FRESH_PARENT_CONFIRMATION_CONSUMED",
+  "development_correction": {
+    "invalidated_result": "R31-v6 / R35-r0",
+    "reason": "The inference opportunity gate selected its passive anchor from record.coverage, which is attached only after candidate-depth targets are opened. Candidate depth was not a model feature, but target-derived coverage still influenced selection, so the zero-leakage claim was invalid.",
+    "repair": "R31-v7 anchors opportunity margins only to the source-time generic candidate and permits scoring records whose target_gain and coverage are absent.",
+    "repaired_development": {
+      "r31_artifact": {
+        "path": "artifacts.local/evidence/taro/task-evidence-multi-candidate-reliability-consistency-r6/result.json",
+        "bytes": 79905,
+        "sha256": "A5C57D7FBFA5E0A15F4502855EDF47A8B596B91E5D17C2AB50718913ACDE2DBB",
+        "content_sha256": "1AD5FD062FE0108EEC31CBF7419147447EA40A287755C5DA65ADD6DA75C4EDCE",
+        "terminal": "STOP_TARO_R31_FOUR_SOURCE_LOFO_FAIL",
+        "openloris_held_fold_pass": true
+      },
+      "source_regime_artifact": {
+        "path": "artifacts.local/evidence/taro/task-evidence-source-regime-expert-policy-r2/result.json",
+        "bytes": 36789,
+        "sha256": "BCB01B8BBF1BD089B12636CCD9DB8E1189B16B31847695F8EDC3535B047456AE",
+        "content_sha256": "5F9581F72DC4FA4EC338D49F4DDEFE46610C5BE274F75E32E6383EB0D7798504",
+        "terminal": "TARO_R35_SOURCE_REGIME_DEVELOPMENT_PASS"
+      },
+      "role": "CONSUMED_DEVELOPMENT_ONLY"
+    }
+  },
+  "confirmation": {
+    "candidate": "TARO_R35_OPENLORIS_REGIME_R31_V7_RELIABILITY_CONSISTENCY",
+    "source": {
+      "family": "OPENLORIS_SCENE_D435I_CORRIDOR",
+      "parent_ids": ["corridor1-3", "corridor1-4", "corridor1-5"],
+      "fresh_source_family": false,
+      "fresh_parent_disjoint": true,
+      "frame_count": 8366
+    },
+    "lock_history": [
+      {
+        "path": "docs/research/taro/TARO_R36_OPENLORIS_CORRIDOR_FRESH_PARENT_CONFIRMATION_LOCK_2026-08-14.json",
+        "status": "INVALIDATED_BEFORE_FRESH_PAYLOAD_OPEN",
+        "reason": "Replaced full-package transport with exact authenticated TAR member ranges."
+      },
+      {
+        "path": "docs/research/taro/TARO_R36_OPENLORIS_CORRIDOR_FRESH_PARENT_CONFIRMATION_LOCK_2026-08-15.json",
+        "status": "INVALIDATED_BEFORE_FRESH_PAYLOAD_OPEN",
+        "reason": "Metadata-only preflight found two reference/candidate role overlaps."
+      },
+      {
+        "path": "docs/research/taro/TARO_R36_OPENLORIS_CORRIDOR_FRESH_PARENT_CONFIRMATION_LOCK_2026-08-15_R2.json",
+        "status": "EXECUTED_ONCE",
+        "sha256": "C8404BC29C325A8096FBF0F6F50C5D86ADD916388AF920EE0765BDE484E1DF14"
+      }
+    ],
+    "input_receipt": {
+      "source_object_bytes": 19695083520,
+      "source_object_lfs_sha256": "A2DE290B85BDEFC5388AAD27858125206A19B007D9B735DE5FAFF954CC473413",
+      "slice_manifest_sha256": "CF83DF5BB885D6ACCA56C57F60F8AB5A3D362F5D4E0EB46CDD9A840E9EFF1C71",
+      "archive_sha256": {
+        "corridor1-3.7z": "1182234E2037237AAF0EE8BE04AB131CF8C3A664929CD15886C0A5AEE03082B5",
+        "corridor1-4.7z": "0E09D76A6345C0AB3710019383F04C6998CBCEB23F604C531FDB2E48B168281F",
+        "corridor1-5.7z": "01746FAC980D824FE0340EB0D597BF59B52F7F5E0F0798F0B36D12541AC7C0AE"
+      },
+      "all_archive_crc_tests": "EVERYTHING_IS_OK",
+      "groundtruth_sha256": "07564D7ED3D6739585002AFA12BCF481CC0E9E358FC64EFD5E658E2C994BDC3B"
+    },
+    "selection_seal_before_candidate_depth": {
+      "reference_count": 18,
+      "candidate_record_count": 94,
+      "candidate_identity_sha256": "9E1A238AE7AC26073C3A46E7E5ADE41E2D0653A95232B0660AE22277F43C2CC1",
+      "candidate_depth_reads_before_selection_seal": 0,
+      "accepted_override_count": 1,
+      "generic_fallback_count": 17,
+      "seal_sha256": "87EC17DD3BF952D16BCADC0F0920CE9155C54222932598BBF4170443E722F996"
+    },
+    "metrics": {
+      "reference_count": 18,
+      "parent_count": 3,
+      "opportunity_parent_count": 2,
+      "minimum_opportunity_parent_count": 3,
+      "strict_win_parent_count": 0,
+      "required_strict_win_parent_count": 3,
+      "parent_macro_novel_evidence_cells_per_reference": {
+        "ranker": 31.833333333333332,
+        "generic": 31.833333333333332,
+        "passive": 16.055555555555557,
+        "oracle": 32.333333333333336
+      },
+      "per_parent": {
+        "corridor1-3": {"ranker": 37.833333333333336, "generic": 37.833333333333336, "passive": 20.666666666666668, "oracle": 37.833333333333336, "strict_wins": 0},
+        "corridor1-4": {"ranker": 37.166666666666664, "generic": 37.166666666666664, "passive": 9.5, "oracle": 37.833333333333336, "strict_wins": 0},
+        "corridor1-5": {"ranker": 20.5, "generic": 20.5, "passive": 18.0, "oracle": 21.333333333333332, "strict_wins": 0}
+      }
+    },
+    "checks": {
+      "minimum_evaluated_references": true,
+      "minimum_evaluated_parents": true,
+      "minimum_opportunity_parents": false,
+      "ranker_parent_macro_beats_generic": false,
+      "ranker_parent_macro_beats_passive": true,
+      "all_opportunity_parents_strict_win": false
+    },
+    "artifact": {
+      "path": "artifacts.local/evidence/taro/task-evidence-openloris-corridor-fresh-parent-confirmation-r0/result.json",
+      "bytes": 21104,
+      "sha256": "8DC5B13922C4A646D6F72AE26CFD8AB781F661908DAE2C874F3728623191B0C6",
+      "content_sha256": "0C760E13B687071B5597AF3242A79F84927B7F5590E0C6D58FE1B7AA6DF1A1C4"
+    },
+    "terminal": "STOP_TARO_R36_OPENLORIS_CORRIDOR_FRESH_PARENT_CONFIRMATION_FAIL",
+    "fresh_parent_confirmation_pass": false,
+    "algorithm_breakthrough_supported": false
+  },
+  "decision": {
+    "r31_r35_status": "FRESH_PARENT_REJECTED",
+    "failure_localization": "The repaired policy safely fell back to the strong generic pose candidate on 17 of 18 references, but the fresh corridor cohort had only two opportunity parents and the single accepted override produced no strict gain. The policy matched generic macro utility and did not close the remaining oracle gap.",
+    "same_candidate_retuning": "STOPPED",
+    "consumed_parent_ids": ["corridor1-3", "corridor1-4", "corridor1-5"],
+    "unique_successor": "TARO_R37_POSE_CONSTRAINED_CANDIDATE_MONOCULAR_GEOMETRY_R0",
+    "successor_mechanism": "Predict candidate geometry from candidate RGB with frozen metric Depth Anything V2; project runtime-available reference sensor depth into the candidate view; fit per-candidate robust scale and shift only on pose-consistent overlap; score newly visible frozen task cells with explicit occlusion and uncertainty receipts.",
+    "successor_boundary": "Do not tune or rerun R31/R35 on corridor1-3..5. Develop R37 only on already-consumed sources, require multi-source Development gates, then preregister a target-untouched parent cohort."
+  },
+  "claim_ceiling": "This is a valid zero-leakage fresh-parent rejection of the R35/R31-v7 OpenLORIS regime mapping. It is not an algorithm breakthrough, fresh-source confirmation, product result, deployment authority, collision result, navigation authority, or safety authority.",
+  "android_candidate_authorized": false,
+  "product_authorized": false,
+  "safety_authorized": false
+}

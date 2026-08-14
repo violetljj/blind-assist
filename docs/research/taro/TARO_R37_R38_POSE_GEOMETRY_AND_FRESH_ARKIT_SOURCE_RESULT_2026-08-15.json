@@ -1,0 +1,121 @@
+{
+  "schema": "blindassist.taro.r37_r38_pose_geometry_and_fresh_arkit_source_result.v1",
+  "result_id": "TARO_R37_R38_POSE_GEOMETRY_AND_FRESH_ARKIT_SOURCE_RESULT_2026-08-15",
+  "date": "2026-08-15",
+  "mode": "CONSUMED_DEVELOPMENT_REJECTION_THEN_FRESH_PARENT_SOURCE_ONLY_CHECKPOINT",
+  "r37": {
+    "candidate": "POSE_CONSTRAINED_CANDIDATE_MONOCULAR_GEOMETRY",
+    "algorithm_sha256": "638636F82F61FAC3E31886BE7F3F679CB619866107657B6DB72DC8D983190A18",
+    "mechanism": "Frozen metric Depth Anything V2 candidate RGB depth with per-candidate pose-overlap robust affine alignment to runtime reference sensor depth and explicit alignment, occlusion and newly-visible-cell features.",
+    "read_boundary": {
+      "candidate_sensor_depth_before_score_seal": false,
+      "fresh_parent_outcome_used_for_fit_or_selection": false,
+      "trainable_geometry_parameter_count": 0
+    },
+    "partial_development": {
+      "source": "CONSUMED_OPENLORIS_HOME",
+      "parent_count": 5,
+      "reference_count": 25,
+      "candidate_count": 124,
+      "model_run_count": 149,
+      "opportunity_parent_count": 4,
+      "strict_win_parent_count": 2,
+      "required_strict_win_parent_count": 3,
+      "parent_macro": {
+        "ranker": 16.16,
+        "generic": 17.36,
+        "passive": 13.88,
+        "oracle": 19.28
+      },
+      "checks": {
+        "minimum_evaluated_parents": true,
+        "minimum_evaluated_references": true,
+        "minimum_opportunity_parents": true,
+        "opportunity_denominated_strict_win_gate": false,
+        "ranker_parent_macro_beats_generic": false,
+        "ranker_parent_macro_beats_passive": true
+      },
+      "artifact": {
+        "path": "artifacts.local/evidence/taro/task-evidence-pose-constrained-candidate-monocular-geometry-openloris-r0/result.json",
+        "bytes": 26209,
+        "sha256": "5C0080D5830883DB25393CC29D2F1BD7948B2DBDA6FA0FF7F189AFCFB25E6FB8",
+        "content_sha256": "76C1F5AF03C16477635A0A837D9D64F9BFE56ABA665345DA885E8E8929013CA0",
+        "terminal": "TARO_R37_PARTIAL_DEVELOPMENT_RESULT"
+      },
+      "feature_cache": {
+        "path": "artifacts.local/cache/taro-r37-pose-constrained-monocular-geometry-openloris-r0/openloris_home-v1.npz",
+        "bytes": 9345,
+        "sha256": "5911A278CB6B5858E3045F95A04923FC5631D51B9D0AF2A5F302ED3321780A0F"
+      }
+    },
+    "bounded_capacity_diagnostic": {
+      "role": "CONSUMED_POST_HOC_DIAGNOSTIC_ONLY",
+      "combination_count": 8,
+      "feature_families": ["R31_GLOBAL_PLUS_R37_GEOMETRY", "R31_GLOBAL_PLUS_R37_GEOMETRY_MINUS_GENERIC"],
+      "estimators": ["RIDGE", "GRADIENT_BOOSTING", "RANDOM_FOREST", "EXTRA_TREES"],
+      "all_parent_lopo_macro_beat_generic": false,
+      "best_ranker_macro": 17.16,
+      "generic_macro": 17.36,
+      "disposition": "NO_CAPACITY_ONLY_RESCUE"
+    },
+    "decision": "CLOSED_NO_FURTHER_TUNING"
+  },
+  "r38": {
+    "candidate": "R32_REFERENCE_SENSOR_ANCHORED_MONOCULAR_GEOMETRY_FRESH_ARKIT_PARENT_CONFIRMATION",
+    "basis": {
+      "consumed_arkitscenes_parent_macro": {
+        "ranker": 21.93921568627451,
+        "generic": 16.449019607843137,
+        "passive": 12.943137254901963,
+        "oracle": 25.086274509803925
+      },
+      "strict_win_parent_count": 5,
+      "parent_count": 17,
+      "role": "CONSUMED_DEVELOPMENT_ONLY"
+    },
+    "source_lock": {
+      "path": "docs/research/taro/TARO_R38_ARKITSCENES_FRESH_PARENT_SOURCE_LOCK_2026-08-15.json",
+      "bytes": 9204,
+      "sha256": "4C2352407CE372F2EAE2C18B68E43ACDCAF9ADFA5DBFCE3D4E80B56AA3F45A1F",
+      "status": "FROZEN_AFTER_METADATA_TRAJECTORY_AND_HEAD_ONLY_BEFORE_MEDIA_BODY_OR_TASK_OUTCOME"
+    },
+    "materializer": {
+      "path": "scripts/research/taro_o1r_r12_clear_observability_runtime/materialize_r38_arkitscenes_fresh_parents.py",
+      "bytes": 15114,
+      "sha256": "1397B2AFC91E665CF98B17248221CEF18180E07628C398D6B62589236058B60F"
+    },
+    "source_materialization": {
+      "manifest_path": "artifacts.local/datasets/taro-r38-arkitscenes-fresh-parent-r0/manifest.json",
+      "manifest_bytes": 5724227,
+      "manifest_sha256": "3645DCBFD6061C355C448FEECC4F9308481D6CB221DD1777E4651642EC9C529E",
+      "content_sha256": "E37EBBBFB35EC780981026D9207934B857AD57B82EEC223A5E3459ECF10F38EC",
+      "parent_count": 12,
+      "selected_frame_count": 3600,
+      "selected_frame_count_per_parent": 300,
+      "temporary_archives_retained": false,
+      "terminal": "TARO_R38_ARKITSCENES_FRESH_PARENT_MATERIALIZED_SOURCE_ONLY"
+    },
+    "sealed_boundary": {
+      "candidate_sensor_depth_pixel_decodes": 0,
+      "task_outcome_opened": false,
+      "model_outputs_read": false,
+      "reference_input_preflight_opened": false
+    },
+    "current_status": "USER_PAUSED_AT_RECOVERABLE_SOURCE_ONLY_CHECKPOINT",
+    "next_action": "After explicit user resume, run reference-input-only evaluability preflight, freeze reference/candidate role-disjoint identities, then execute R32 confirmation exactly once."
+  },
+  "decision": {
+    "algorithm_breakthrough_supported_now": false,
+    "active_successor": "TARO_R38_R32_ARKITSCENES_FRESH_PARENT_CONFIRMATION_R0",
+    "forbidden": [
+      "retune R31, R35, R36 or R37 on consumed parents",
+      "open R38 candidate sensor depth before the selection seal",
+      "use R38 target outcome to tune R32 model, threshold, candidate identity or gate",
+      "promote a future within-source R38 pass to fresh-source or broad-domain confirmation"
+    ]
+  },
+  "claim_ceiling": "R37 is a consumed-source Development rejection. R38 is only a source-materialized, outcome-sealed parent-disjoint confirmation candidate inside the ARKitScenes Validation source regime; no confirmation result, broad algorithm breakthrough, product, Android, navigation, collision, deployment or safety claim exists yet.",
+  "android_candidate_authorized": false,
+  "product_authorized": false,
+  "safety_authorized": false
+}

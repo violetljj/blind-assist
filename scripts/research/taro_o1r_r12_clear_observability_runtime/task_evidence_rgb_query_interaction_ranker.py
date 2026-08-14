@@ -107,6 +107,7 @@ class RgbStore:
     def __init__(self, assets: Mapping[str, RgbAsset], authority: str):
         self.assets = dict(assets)
         self.authority = authority
+        self._rgb: dict[str, np.ndarray] = {}
         self._planes: dict[str, np.ndarray] = {}
         self._archives: dict[Path, tarfile.TarFile] = {}
         self._payload_receipts: dict[str, str] = {}
@@ -127,16 +128,7 @@ class RgbStore:
             shared.require(path.stat().st_size == asset.expected_bytes, f"R25 RGB byte drift: {path}")
         return path.read_bytes()
 
-    def planes(self, frame: Any) -> np.ndarray:
-        frame_id = str(frame.frame_id)
-        cached = self._planes.get(frame_id)
-        if cached is not None:
-            return cached
-        asset = self.assets.get(frame_id)
-        if asset is None:
-            path = Path(frame.rgb_path)
-            asset = RgbAsset("file", path.parent, str(path))
-        payload = self._payload(asset)
+    def _decode_rgb_payload(self, frame_id: str, asset: RgbAsset, payload: bytes) -> np.ndarray:
         digest = hashlib.sha256(payload).hexdigest().upper()
         if asset.expected_sha256 is not None:
             shared.require(digest == asset.expected_sha256, f"R25 RGB hash drift: {frame_id}")
@@ -144,9 +136,49 @@ class RgbStore:
             rgb = np.asarray(image.convert("RGB")).copy()
         if asset.orientation_index == 2:
             rgb = np.ascontiguousarray(np.rot90(rgb, 2))
-        planes = _rgb_planes(rgb)
-        self._planes[frame_id] = planes
+        self._rgb[frame_id] = rgb
         self._payload_receipts[frame_id] = digest
+        return rgb
+
+    def preload(self, frame_ids: Sequence[str]) -> None:
+        """Decode requested archive members in physical offset order."""
+        grouped: dict[Path, list[tuple[str, RgbAsset]]] = defaultdict(list)
+        for frame_id in sorted(set(frame_ids)):
+            if frame_id in self._rgb:
+                continue
+            asset = self.assets.get(frame_id)
+            if asset is not None and asset.storage_kind == "tgz":
+                grouped[asset.source_path].append((frame_id, asset))
+        for source_path, rows in grouped.items():
+            archive = self._archives.get(source_path)
+            if archive is None:
+                archive = tarfile.open(source_path, "r:*")
+                self._archives[source_path] = archive
+            members = {member.name: member for member in archive.getmembers() if member.isfile()}
+            ordered = sorted(rows, key=lambda row: members[row[1].identity].offset_data)
+            for frame_id, asset in ordered:
+                stream = archive.extractfile(members[asset.identity])
+                shared.require(stream is not None, f"R25 RGB archive member unreadable: {asset.identity}")
+                self._decode_rgb_payload(frame_id, asset, stream.read())
+
+    def rgb(self, frame: Any) -> np.ndarray:
+        frame_id = str(frame.frame_id)
+        cached = self._rgb.get(frame_id)
+        if cached is not None:
+            return cached
+        asset = self.assets.get(frame_id)
+        if asset is None:
+            path = Path(frame.rgb_path)
+            asset = RgbAsset("file", path.parent, str(path))
+        return self._decode_rgb_payload(frame_id, asset, self._payload(asset))
+
+    def planes(self, frame: Any) -> np.ndarray:
+        frame_id = str(frame.frame_id)
+        cached = self._planes.get(frame_id)
+        if cached is not None:
+            return cached
+        planes = _rgb_planes(self.rgb(frame))
+        self._planes[frame_id] = planes
         return planes
 
     def receipt(self) -> dict[str, Any]:
