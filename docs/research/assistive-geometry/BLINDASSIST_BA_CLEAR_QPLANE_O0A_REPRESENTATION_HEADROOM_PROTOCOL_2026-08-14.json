@@ -1,0 +1,134 @@
+{
+  "schema": "blindassist_ba_clear_qplane_o0a_protocol_v1",
+  "protocol_id": "BA_CLEAR_QPLANE_O0A_REPRESENTATION_HEADROOM",
+  "status": "FROZEN_REPRESENTATION_AUDIT_ONLY",
+  "frozen_at": "2026-08-14",
+  "mode": "REVERSIBLE_EXPLORATION",
+  "stage": "CONSUMED_DEVELOPMENT_DIAGNOSTIC",
+  "question": "Does a body-query-conditioned inverse-depth ray-plane residual provide task gain beyond global affine and global ray-plane calibration without changing UNKNOWN coverage?",
+  "hypothesis": "A three-parameter inverse-depth plane residual fitted from source-native support geometry near each frozen body query will reduce body-swept clearance error and false-blocks beyond a shared global plane residual, without increasing false-clear or changing known coverage.",
+  "representation": {
+    "ray": "r(p) = K_eff^-1 * [u,v,1]^T",
+    "base_inverse_depth": "rho0(p) = 1 / d0(p)",
+    "query_inverse_depth": "rhoq(p) = rho0(p) + mq(p) * clip(theta_q^T [1,r_lateral(p),r_up(p)]^T,-epsilon_rho,+epsilon_rho)",
+    "theta_dimensions_per_query": 3,
+    "epsilon_rho_m_inverse": 0.2,
+    "ridge_lambda": 0.0001,
+    "maximum_fit_pixels": 20000,
+    "minimum_fit_pixels": 128,
+    "query_mask_lateral_margin_m": 0.2,
+    "query_mask_near_margin_m": 0.1,
+    "query_mask_far_margin_m": 0.25,
+    "support_plane_tolerance_m": 0.045,
+    "support_fit_forward_range_m": [0.2, 3.0],
+    "support_fit_horizon_decay_m": 0.75,
+    "support_fit_minimum_query_weight": 0.02,
+    "global_scale_clip": [0.75, 1.25],
+    "global_inverse_affine_scale_clip": [0.75, 1.25],
+    "global_inverse_affine_shift_clip_m_inverse": [-0.2, 0.2],
+    "corrected_depth_clip_m": [0.05, 20.0],
+    "dense_corrected_depth_persistence_allowed": false
+  },
+  "frozen_queries": {
+    "bands_lateral_m": {
+      "left": [-1.2, -0.4],
+      "center": [-0.4, 0.4],
+      "right": [0.4, 1.2]
+    },
+    "horizons_m": [1.0, 1.5, 2.0],
+    "query_count": 9
+  },
+  "arms": {
+    "A0": "Frozen DepthART",
+    "A1": "Per-frame global scale-only geometry oracle",
+    "A2": "Per-frame global inverse-depth scale+shift affine geometry oracle",
+    "A3": "Per-frame shared global inverse-depth ray-plane residual oracle",
+    "A4": "Per-query local inverse-depth ray-plane residual oracle",
+    "A5": "Source-native depth task oracle ceiling"
+  },
+  "negative_controls": {
+    "shuffled_query": "Cyclically assign each query the next query's frozen theta while preserving its own mask",
+    "fit_pixel_identity": "Hold each query's baseline source-support fit pixel IDs fixed for wrong-gravity and wrong-intrinsics controls; perturb only the ray basis, query mask, and temporary correction coordinates",
+    "wrong_gravity_degrees": 10.0,
+    "wrong_intrinsics": {
+      "focal_scale": 1.05,
+      "principal_point_delta_px": [8.0, -8.0]
+    },
+    "globalized_qplane": "Identical to A3 shared theta"
+  },
+  "fit_evaluation_isolation": {
+    "fit_target": "source-native inverse-depth geometry residual only",
+    "fit_pixels": "source-native support-plane pixels",
+    "evaluation_cells": "body-swept obstacle cells with source-relative height in [0.08,2.00] m",
+    "required_fit_evaluation_pixel_overlap": 0,
+    "task_label_optimization_allowed": false,
+    "clearance_or_state_read_before_candidate_plan_freeze_allowed": false,
+    "candidate_plan_must_be_hashed_before_task_evaluation": true
+  },
+  "data": {
+    "role": "CONSUMED_DEVELOPMENT_ONLY",
+    "roster": "docs/research/hftf/DAV2_MODEL_VARIANT_VALIDATION_R0_ROSTER_2026-08-05.json",
+    "roster_sha256": "62D41DBFCA64BBD7964B146427911A384A8E0CE57FF606F9BA74682E380D43F2",
+    "frame_count": 120,
+    "parent_count": 4,
+    "pose_maximum_association_delta_seconds": 0.12,
+    "source_root": "artifacts.local/datasets/model-variant-gate-r0",
+    "depthart_cache": "artifacts.local/evidence/hftf/depthart-admission-r0/depthart_s_indoor_120x480x640_fp32.npy",
+    "depthart_cache_sha256": "4C3FFE1C4B931137E5DF313F4A91B24F87A3A90349C63A077965C0FE5BB1BA37",
+    "depthart_cache_shape": [120, 480, 640],
+    "depthart_cache_dtype": "float32",
+    "groundtruth_sha256": {
+      "rgbd_dataset_freiburg3_walking_static": "E18B9028AB473D1ED150A621C32B09A68C630290088F49ABFAC4F329B81FDC46",
+      "rgbd_dataset_freiburg3_walking_xyz": "4117699F2B027A6E305F84D3B17F1928AA5361DB300D5DF10639824540D92B6D"
+    },
+    "fresh_outcome_reads_allowed": false
+  },
+  "primary_metric": "parent_macro_clearance_mae_m",
+  "gates": {
+    "a4_strictly_better_than_a1_a2_a3_primary_metric": true,
+    "minimum_parents_with_false_block_improvement_vs_a3": 3,
+    "per_parent_false_clear_rate_all_known_increase_max": 0.005,
+    "coverage_must_exactly_equal_a0": true,
+    "minimum_global_plane_to_source_oracle_gap_closure": 0.2,
+    "minimum_a4_clearance_mae_advantage_over_shuffled_query_m": 0.005,
+    "minimum_bands_with_clearance_mae_improvement_vs_a3": 2,
+    "minimum_horizons_with_clearance_mae_improvement_vs_a3": 2,
+    "overall_false_block_must_improve_vs_a3": true,
+    "all_fit_evaluation_overlap_counts_must_be_zero": true
+  },
+  "required_outputs": [
+    "per-parent clearance MAE, bias, false-block, false-clear, coverage",
+    "parent-macro paired deltas",
+    "query, band, and horizon decomposition",
+    "global-plane to source-oracle gap closure",
+    "negative-control results",
+    "CPU runtime diagnostic",
+    "representation DoF and fit/evaluation isolation receipt",
+    "O0-A PASS or FAIL"
+  ],
+  "authority": {
+    "training_authorized": false,
+    "o0b_runtime_identifiability_authorized": false,
+    "fresh_outcome_authorized": false,
+    "teacher_training_authorized": false,
+    "android_qnn_htp_authorized": false,
+    "default_app_change_authorized": false,
+    "product_or_safety_claim_authorized": false
+  },
+  "decision": {
+    "pass_successor": "NEW_PROTOCOL_REQUIRED_FOR_BA_CLEAR_QPLANE_O0B_RUNTIME_IDENTIFIABILITY",
+    "fail_successor": "NONE_CLOSE_QPLANE_NO_TRAINING"
+  },
+  "forbidden": [
+    "fit theta from clearance, false-block, false-clear, or tri-state outcomes",
+    "use the same source pixels as support fit pixels and obstacle evaluation cells",
+    "persist a unified corrected dense-depth map",
+    "add UNKNOWN, deferral, selector, or learned head in O0-A",
+    "read any fresh or sealed outcome",
+    "train Metric3D, SharpDepth, DepthART, or another teacher",
+    "perform Android, ONNX, QNN, or HTP work",
+    "reopen the old correction selector, boundary mapping, obstacle threshold, or depth-pose threshold routes",
+    "automatically start O0-B or O1 after O0-A"
+  ],
+  "claim_ceiling": "CONSUMED_DEVELOPMENT_REPRESENTATION_HEADROOM_ONLY_NOT_RUNTIME_IDENTIFIABILITY_TRAINING_GENERALIZATION_DEPLOYMENT_PRODUCT_OR_SAFETY_EVIDENCE"
+}

@@ -1,0 +1,198 @@
+{
+  "schema": "blindassist_ba_clear_qplane_o0a_result_summary_v1",
+  "protocol_id": "BA_CLEAR_QPLANE_O0A_REPRESENTATION_HEADROOM",
+  "status": "BA_CLEAR_QPLANE_O0A_REPRESENTATION_HEADROOM_FAIL_CLOSE_NO_TRAINING",
+  "passed": false,
+  "data_role": "CONSUMED_DEVELOPMENT_ONLY",
+  "frame_count": 120,
+  "parent_count": 4,
+  "protocol_sha256": "45DF20CC7F946107F96DDB0350E3F6A6460C7F0891372C243D5333BCC050E077",
+  "roster_sha256": "62D41DBFCA64BBD7964B146427911A384A8E0CE57FF606F9BA74682E380D43F2",
+  "depthart_cache_sha256": "4C3FFE1C4B931137E5DF313F4A91B24F87A3A90349C63A077965C0FE5BB1BA37",
+  "script_sha256": "6A667DD80D4118DD1F7D1A25C5B34CB0987E958967F46D0818FD65DEB75BB845",
+  "artifacts": {
+    "result": {
+      "path": "artifacts.local/experiments/ba-clear-qplane-o0a-headroom-r0/result.json",
+      "bytes": 68882,
+      "sha256": "8C8487D05C2F831EA51019EB680E1107AF78BD59EE9C4A6E920365BB86745B04"
+    },
+    "geometry_only_candidate_plan": {
+      "path": "artifacts.local/experiments/ba-clear-qplane-o0a-headroom-r0/candidate-plan.json",
+      "bytes": 845858,
+      "sha256": "BA8D9845630C65F4976F73050F8E97D8598C9AF2B0D66A288447A09FF0B4BAF6",
+      "frozen_before_task_evaluation": true
+    },
+    "query_decomposition_reporting_replay": {
+      "path": "artifacts.local/experiments/ba-clear-qplane-o0a-headroom-r0/query-decomposition.json",
+      "bytes": 44975,
+      "sha256": "AEA0C8DB4896AB4F434A9AB268D1887CF9486371F192DED4E3176C2FC9107034",
+      "replay_script_sha256": "20E43FA52876214EADAFB71045BDE4511C71627FEEA6821ED4618082D8110B41",
+      "source_result_sha256": "8C8487D05C2F831EA51019EB680E1107AF78BD59EE9C4A6E920365BB86745B04",
+      "candidate_refit": false,
+      "gate_or_parameter_change": false
+    }
+  },
+  "pre_outcome_geometry_feasibility_receipt": {
+    "aborted_phase_a_attempts": 2,
+    "candidate_plan_created_in_aborted_attempts": false,
+    "task_evaluation_started_in_aborted_attempts": false,
+    "changes_before_final_candidate_freeze": [
+      "freeze nearest-pose association maximum at 0.12 seconds after observing one 0.101-second boundary frame",
+      "hold baseline source-support pixel IDs fixed for wrong-gravity and wrong-intrinsics controls",
+      "replace non-executable hard query-horizon support cutoff with source-geometry-only exponential horizon weighting"
+    ],
+    "task_outcome_used_for_changes": false
+  },
+  "parent_macro": {
+    "A0_FROZEN_DEPTHART": {
+      "clearance_mae_m": 0.14807357152069162,
+      "clearance_bias_m": 0.08106118372298299,
+      "false_block_rate_all_known": 0.011111111111111112,
+      "false_clear_rate_all_known": 0.09722222222222222,
+      "coverage": 1.0
+    },
+    "A1_GLOBAL_SCALE": {
+      "clearance_mae_m": 0.14590125911736118,
+      "clearance_bias_m": 0.07772281090723457,
+      "false_block_rate_all_known": 0.019444444444444445,
+      "false_clear_rate_all_known": 0.08148148148148147,
+      "coverage": 1.0
+    },
+    "A2_GLOBAL_AFFINE": {
+      "clearance_mae_m": 0.15373236435908735,
+      "clearance_bias_m": 0.0971679901720349,
+      "false_block_rate_all_known": 0.009259259259259259,
+      "false_clear_rate_all_known": 0.11388888888888887,
+      "coverage": 1.0
+    },
+    "A3_GLOBAL_RAY_PLANE": {
+      "clearance_mae_m": 0.15405296337144744,
+      "clearance_bias_m": 0.1132570223197217,
+      "false_block_rate_all_known": 0.011226851851851852,
+      "false_clear_rate_all_known": 0.10474537037037036,
+      "coverage": 0.9722222222222222
+    },
+    "A4_QUERY_LOCAL_RAY_PLANE": {
+      "clearance_mae_m": 0.17284156877263784,
+      "clearance_bias_m": 0.10137650136829712,
+      "false_block_rate_all_known": 0.009259259259259259,
+      "false_clear_rate_all_known": 0.1324074074074074,
+      "coverage": 1.0
+    },
+    "A5_SOURCE_DEPTH_ORACLE": {
+      "clearance_mae_m": 0.0,
+      "clearance_bias_m": 0.0,
+      "false_block_rate_all_known": 0.0,
+      "false_clear_rate_all_known": 0.0,
+      "coverage": 1.0
+    }
+  },
+  "per_parent_a3_a4": {
+    "tum-fr3-walking-static-pose-000-track-001": {
+      "A3": [0.16325140031961105, 0.143902605872057, 0.0, 0.1259259259259259, 1.0],
+      "A4": [0.13000696873463444, 0.08433276783272671, 0.0, 0.16666666666666666, 1.0],
+      "A4_minus_A3": [-0.033244431584976614, -0.05956983803933029, 0.0, 0.040740740740740744, 0.0]
+    },
+    "tum-fr3-walking-static-pose-016-track-001": {
+      "A3": [0.21893793650617127, 0.17637088493352457, 0.004166666666666667, 0.10416666666666667, 0.8888888888888888],
+      "A4": [0.2745251620173225, 0.20469847449511516, 0.003703703703703704, 0.15555555555555556, 1.0],
+      "A4_minus_A3": [0.05558722551115125, 0.028327589561590594, -0.00046296296296296276, 0.05138888888888889, 0.11111111111111116]
+    },
+    "tum-fr3-walking-static-pose-020-track-001": {
+      "A3": [0.09280352814509772, 0.014308334109674836, 0.040740740740740744, 0.025925925925925925, 1.0],
+      "A4": [0.11943363353062508, -0.0083074989565305, 0.03333333333333333, 0.018518518518518517, 1.0],
+      "A4_minus_A3": [0.02663010538552736, -0.022615833066205335, -0.007407407407407411, -0.007407407407407408, 0.0]
+    },
+    "tum-fr3-walking-xyz-pose-024-track-001": {
+      "A3": [0.14121898851490972, 0.11844626436363044, 0.0, 0.16296296296296298, 1.0],
+      "A4": [0.1674005108079693, 0.1247822621018771, 0.0, 0.18888888888888888, 1.0],
+      "A4_minus_A3": [0.02618152229305959, 0.006335997738246654, 0.0, 0.025925925925925908, 0.0]
+    },
+    "metric_order": [
+      "clearance_mae_m",
+      "clearance_bias_m",
+      "false_block_rate_all_known",
+      "false_clear_rate_all_known",
+      "coverage"
+    ]
+  },
+  "band_decomposition_a3_a4": {
+    "left": [0.1310738882442918, 0.12731445672878997, 0.0, 0.0, 0.1361111111111111, 0.14444444444444443],
+    "center": [0.26655742023976553, 0.2126791518565711, 0.021212121212121213, 0.016666666666666666, 0.16363636363636364, 0.16111111111111112],
+    "right": [0.06849587194141782, 0.17853109773255246, 0.013888888888888888, 0.011111111111111112, 0.019444444444444445, 0.09166666666666666],
+    "metric_order": ["A3_clearance_mae_m", "A4_clearance_mae_m", "A3_false_block", "A4_false_block", "A3_false_clear", "A4_false_clear"]
+  },
+  "horizon_decomposition_a3_a4": {
+    "1.0m": [0.15219910699616962, 0.14807357152069164, 0.0, 0.0, 0.0, 0.0],
+    "1.5m": [0.15219910699616962, 0.15737053956864036, 0.014285714285714285, 0.011111111111111112, 0.12, 0.13055555555555556],
+    "2.0m": [0.15219910699616962, 0.21308059522858153, 0.02, 0.016666666666666666, 0.19428571428571428, 0.26666666666666666],
+    "metric_order": ["A3_clearance_mae_m", "A4_clearance_mae_m", "A3_false_block", "A4_false_block", "A3_false_clear", "A4_false_clear"]
+  },
+  "query_decomposition_a3_a4": {
+    "center@1.0m": [0.26655742023976553, 0.20500661906293682, -0.06155080117682871, 0.0, 0.0],
+    "center@1.5m": [0.26655742023976553, 0.20780146523872212, -0.058755955001043414, 0.18181818181818182, 0.16666666666666666],
+    "center@2.0m": [0.26655742023976553, 0.22522937126805428, -0.041328048971711245, 0.3090909090909091, 0.31666666666666665],
+    "left@1.0m": [0.1310738882442918, 0.08244220528181521, -0.048631682962476594, 0.0, 0.0],
+    "left@1.5m": [0.1310738882442918, 0.0882216147287498, -0.04285227351554201, 0.125, 0.13333333333333333],
+    "left@2.0m": [0.1310738882442918, 0.21127955017580494, 0.08020566193151313, 0.2833333333333333, 0.3],
+    "right@1.0m": [0.06849587194141783, 0.1567718902173229, 0.08827601827590507, 0.0, 0.0],
+    "right@1.5m": [0.06849587194141783, 0.17608853873844912, 0.10759266679703129, 0.058333333333333334, 0.09166666666666666],
+    "right@2.0m": [0.06849587194141783, 0.20273286424188533, 0.13423699230046748, 0.0, 0.18333333333333332],
+    "metric_order": ["A3_clearance_mae_m", "A4_clearance_mae_m", "A4_minus_A3_clearance_mae_m", "A3_false_clear", "A4_false_clear"]
+  },
+  "negative_controls_parent_macro": {
+    "shuffled_query_clearance_mae_m": 0.17975175926396064,
+    "wrong_gravity_clearance_mae_m": 0.17195426715000336,
+    "wrong_intrinsics_clearance_mae_m": 0.17299915402548613,
+    "globalized_qplane_alias": "A3_GLOBAL_RAY_PLANE"
+  },
+  "gate": {
+    "passed": false,
+    "checks": {
+      "a4_strictly_better_than_a1_a2_a3_primary_metric": false,
+      "minimum_parents_with_false_block_improvement_vs_a3": false,
+      "per_parent_false_clear_noninferiority_vs_a3": false,
+      "coverage_exactly_equal_a0": true,
+      "minimum_global_plane_to_source_oracle_gap_closure": false,
+      "minimum_advantage_over_shuffled_query": true,
+      "minimum_bands_with_improvement_vs_a3": true,
+      "minimum_horizons_with_improvement_vs_a3": false,
+      "overall_false_block_improves_vs_a3": true,
+      "all_fit_evaluation_overlap_counts_zero": true
+    },
+    "global_plane_to_source_oracle_gap_closure": -0.12196198625460992,
+    "parents_with_false_block_improvement_vs_a3": 2,
+    "bands_with_clearance_improvement_vs_a3": 2,
+    "horizons_with_clearance_improvement_vs_a3": 1,
+    "a4_advantage_over_shuffled_query_m": 0.006910190491322799
+  },
+  "fit_evaluation_isolation": {
+    "geometry_only_candidate_frame_count": 120,
+    "query_parameter_vector_count": 1080,
+    "theta_dimensions_per_query": 3,
+    "query_local_degrees_of_freedom_per_frame": 27,
+    "minimum_fit_pixel_count": 1650,
+    "maximum_fit_pixel_count": 23893,
+    "maximum_fit_evaluation_overlap_pixel_count": 0,
+    "maximum_pose_association_delta_seconds": 0.10107994079589844,
+    "task_label_optimization_used": false,
+    "unified_corrected_dense_depth_persisted": false
+  },
+  "runtime_diagnostic": {
+    "device": "CPU",
+    "phase_a_geometry_fit_seconds": 83.19763489998877,
+    "phase_b_task_evaluation_seconds": 211.72086000000127,
+    "total_seconds": 295.0098757000087,
+    "claim_ceiling": "HOST_CPU_DIAGNOSTIC_ONLY"
+  },
+  "decision": {
+    "next_successor": "NONE_CLOSE_QPLANE_NO_TRAINING",
+    "o0b_runtime_identifiability_authorized": false,
+    "training_authorized": false,
+    "fresh_outcome_read": false,
+    "teacher_training_authorized": false,
+    "android_qnn_htp_authorized": false,
+    "default_app_changed": false
+  },
+  "claim_ceiling": "CONSUMED_DEVELOPMENT_REPRESENTATION_HEADROOM_NEGATIVE_ONLY_NOT_RUNTIME_IDENTIFIABILITY_TRAINING_GENERALIZATION_DEPLOYMENT_PRODUCT_OR_SAFETY_EVIDENCE"
+}

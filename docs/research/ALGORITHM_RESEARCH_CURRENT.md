@@ -1,17 +1,17 @@
 # 算法研究入口
 
-状态：`current / ALGORITHM_FOCUS=DUAL_LANE_GRADUATION_PORTFOLIO / ACTIVE_REVERSIBLE_LANES=2 / SCHEDULE=EVIDENCE_GATED_NO_DAY_QUOTA`
+状态：`current / ALGORITHM_FOCUS=GRADUATION_PORTFOLIO / ACTIVE_REVERSIBLE_LANES=1 / SCHEDULE=EVIDENCE_GATED_NO_DAY_QUOTA`
 
-新增算法预算只投向两条可由 Codex 并行的可逆支线，不设固定天数、周数或日期晋级：Assistive Geometry
-负责较高成功率的 factor-wise no-regret composition，TARO 负责较高创新上限的 task-directed
-observability。每线同一时刻只有一个最小判别实验；晋级靠证据，失败按停止条件收缩，不用文档数量代替进展。
+Assistive Geometry 的 factor-wise、obstacle 与 Q-Plane 表示支线均已按停止条件关闭；当前唯一 active
+可逆算法线为 TARO task-directed observability。不设固定天数、周数或日期晋级；同一时刻只有一个最小
+判别实验，晋级靠证据，失败按停止条件收缩，不用文档数量代替进展。
 
 表中“下一动作”就是唯一 successor；完整历史、数值和所有禁止项留在路线真源。`无` 表示
 路线保持 closed、paused 或 diagnostic，不能从旧文档推导隐含下一步。
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| BlindAssist Assistive Geometry | 连续因子 → selective no-regret → body-swept geometry | `CORRECTION_GAIN_LOPO_FAIL_STOP / ANGULAR_BOUNDARY_FAIL_CLOSED_SAFE_BUT_TASK_INERT / SUPPORT_VALIDITY_FAIL_OPEN / OBSTACLE_RGB_INTERACTION_FAIL_STOP / POSE_ANALYTIC_FAIL_STOP / CURRENT_OBSTACLE_TASK_ROUTE_CLOSED / SCIENTIFIC_NOT_RUN` | [Assistive Geometry current](assistive-geometry/README.md) | 无 active successor；需新增 source-native obstacle supervision 或 materially different metric-depth scale/plane representation 后另立协议 | 继续调本轮三个 obstacle 候选；让 support 创建 validity；重开 correction/boundary/fresh3；把 consumed negative 写成 task success | 否 |
+| BlindAssist Assistive Geometry | 连续因子 → selective no-regret → body-swept geometry | `CORRECTION_GAIN_LOPO_FAIL_STOP / ANGULAR_BOUNDARY_FAIL_CLOSED_SAFE_BUT_TASK_INERT / SUPPORT_VALIDITY_FAIL_OPEN / OBSTACLE_RGB_INTERACTION_FAIL_STOP / POSE_ANALYTIC_FAIL_STOP / QPLANE_O0A_REPRESENTATION_HEADROOM_FAIL_CLOSE_NO_TRAINING / CURRENT_OBSTACLE_TASK_ROUTE_CLOSED / SCIENTIFIC_NOT_RUN` | [Assistive Geometry current](assistive-geometry/README.md) | 无 active successor；需新增 source-native obstacle supervision，或 Q-Plane 家族之外的 materially different representation 后另立协议 | 调参/重跑 Q-Plane 或进入 O0-B/训练；继续调旧 obstacle 候选；让 support 创建 validity；重开 correction/boundary/fresh3；把 consumed negative 写成 task success | 否 |
 | TARO / Task-directed Active Risk Observability | 同预算观测使 body/path query 更早可识别 | `YOLO_POSITIVE_EVIDENCE_SHADOW_PASS / DIRECT_CAMERAX_SEAM_REJECTED / SHARED_CAMERA_SOURCE_PROTOCOL_LOCKED / CORE_SELECTOR_DEFAULT_OFF` | [TARO current](taro/README.md) | `TARO_ARCORE_SHARED_CAMERA_SOURCE_CANARY_R0`：隔离验证 exact SharedCamera source-pose seam | 换/训练模型；保存图像/box/身份；缺 exact ARCore pose 时直挂 CameraX；接默认 App/risk/guidance；夸大为 detector accuracy、安全或产品成功 | 否 |
 | AG-QSF / Queryable Survival Geometry | profile-queryable q-contact 生存分布统一 clearance 与 horizon occupancy | `CLOSED_DATA_SUPPORT_INSUFFICIENT / H1_NOT_EVALUABLE` | [AG-QSF current](assistive-geometry-qsf/README.md) | 无；只有新的 pre-outcome target/data contract 可重开 | 伪造 parent-disjoint censor support、实现未授权 H2 或声称数学假设被反证 | 否 |
 | AG-CBF / Corridor Bottleneck Field | 检验 ground-aligned corridor bottleneck 是否保留三带摘要丢失的信息 | `R0_CLOSED_DATA_SUPPORT_NOT_EVALUABLE / ORACLE_NEVER_AUTHORIZED` | [AG-CBF current](assistive-geometry-cbf/README.md) | 无；新版本必须从 source-geometry/data support 重开 | 填补 UNKNOWN、事后改 gate、实现 oracle/model 或复用旧权限 | 否 |
