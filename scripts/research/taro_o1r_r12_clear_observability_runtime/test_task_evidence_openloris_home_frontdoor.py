@@ -51,6 +51,27 @@ class OpenLorisHomeFrontdoorTest(unittest.TestCase):
             with self.assertRaises(subject.OpenLorisFrontdoorError):
                 subject._safe_child(root, "../escape.png")
 
+    def test_groundtruth_deduplicates_only_identical_rows(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "groundtruth.txt"
+            path.write_text(
+                "1.0 0 0 0 0 0 0 1\n"
+                "1.0 0 0 0 0 0 0 1\n"
+                "2.0 1 0 0 0 0 0 1\n",
+                encoding="utf-8",
+            )
+            rows, timestamps, duplicates = subject._parse_groundtruth(path)
+            self.assertEqual([1.0, 2.0], timestamps)
+            self.assertEqual(2, len(rows))
+            self.assertEqual(1, duplicates)
+            path.write_text(
+                "1.0 0 0 0 0 0 0 1\n"
+                "1.0 1 0 0 0 0 0 1\n",
+                encoding="utf-8",
+            )
+            with self.assertRaises(subject.OpenLorisFrontdoorError):
+                subject._parse_groundtruth(path)
+
     def test_candidate_identity_is_deterministic(self) -> None:
         pose = np.eye(4, dtype=np.float64)
         reference = subject.bonn.Frame("p", 1.0, Path("r"), Path("r"), pose)

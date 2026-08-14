@@ -91,16 +91,26 @@ def _parse_index(path: Path) -> list[list[str]]:
     return rows
 
 
-def _parse_groundtruth(path: Path) -> tuple[list[list[str]], list[float]]:
-    rows = [
+def _parse_groundtruth(path: Path) -> tuple[list[list[str]], list[float], int]:
+    raw_rows = [
         line.split()
         for line in path.read_text(encoding="utf-8").splitlines()
         if line and not line.startswith("#")
     ]
-    require(rows and all(len(row) == 8 for row in rows), f"invalid groundtruth: {path}")
+    require(raw_rows and all(len(row) == 8 for row in raw_rows), f"invalid groundtruth: {path}")
+    raw_timestamps = [float(row[0]) for row in raw_rows]
+    require(all(right >= left for left, right in zip(raw_timestamps, raw_timestamps[1:])), f"decreasing groundtruth: {path}")
+    rows: list[list[str]] = []
+    duplicate_identical_count = 0
+    for row in raw_rows:
+        if rows and row[0] == rows[-1][0]:
+            require(row == rows[-1], f"conflicting duplicate groundtruth timestamp: {path}/{row[0]}")
+            duplicate_identical_count += 1
+            continue
+        rows.append(row)
     timestamps = [float(row[0]) for row in rows]
-    require(all(right > left for left, right in zip(timestamps, timestamps[1:])), f"non-monotonic groundtruth: {path}")
-    return rows, timestamps
+    require(all(right > left for left, right in zip(timestamps, timestamps[1:])), f"groundtruth deduplication failed: {path}")
+    return rows, timestamps, duplicate_identical_count
 
 
 def _nearest_base_pose(
@@ -206,7 +216,7 @@ def load_outcome_blind_roster(
         truth_paths = [path.resolve() for path in truth_candidates if path.is_file()]
         require(bool(truth_paths), f"OpenLORIS groundtruth absent: {parent_id}")
         truth_path = truth_paths[0]
-        truth_rows, truth_timestamps = _parse_groundtruth(truth_path)
+        truth_rows, truth_timestamps, duplicate_truth_rows = _parse_groundtruth(truth_path)
         intrinsics, base_to_color, calibration = _opencv_calibration(root)
         pose_abstentions = missing_payloads = 0
         maximum_pose_delta = 0.0
@@ -239,6 +249,7 @@ def load_outcome_blind_roster(
                 "aligned_depth_index_count": len(depth_rows),
                 "associated_count": len(associations),
                 "pose_index_count": len(truth_rows),
+                "identical_duplicate_pose_row_count": duplicate_truth_rows,
                 "pose_abstention_count": pose_abstentions,
                 "missing_payload_count": missing_payloads,
                 "admitted_frame_count": admitted,
