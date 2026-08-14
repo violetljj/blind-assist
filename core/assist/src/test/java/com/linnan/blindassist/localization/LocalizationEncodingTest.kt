@@ -16,6 +16,7 @@ import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class LocalizationEncodingTest {
@@ -90,6 +91,77 @@ class LocalizationEncodingTest {
 
         catalog.forEach { text ->
             assertFalse("Mojibake in: $text", containsMojibake(text))
+        }
+    }
+
+
+    @Test
+    fun bilingualCatalogStringsAreNonBlankAndClean() {
+        val languages = listOf(AppLanguage.ZH, AppLanguage.EN)
+        val catalog = buildList {
+            languages.forEach { lang ->
+                AlertProfile.values().forEach { add(it.displayName(lang)) }
+                AssistScenario.values().forEach {
+                    add(it.displayName(lang))
+                    add(it.description(lang))
+                }
+                SpeechStyle.values().forEach {
+                    add(it.displayName(lang))
+                    add(it.description(lang))
+                }
+                VibrationStrength.values().forEach {
+                    add(it.displayName(lang))
+                    add(it.description(lang))
+                }
+                DailyUsageMode.values().forEach {
+                    add(it.displayName(lang))
+                    add(it.description(lang))
+                    add(it.accessibilitySummary(lang))
+                }
+                FeedbackReason.values().forEach { add(it.displayText(lang)) }
+                RiskLevel.values().forEach { add(LocalizedText.level(it, lang)) }
+                RiskDirection.values().forEach {
+                    add(LocalizedText.direction(it, lang))
+                    add(LocalizedText.direction(it, lang, short = true))
+                }
+                ProximityBand.values().forEach { add(LocalizedText.proximity(it, lang)) }
+                listOf(null, "person", "car", "traffic light", "stop sign", "chair").forEach { label ->
+                    LocalizedText.objectName(label, lang)?.let(::add)
+                }
+                add(LocalizedText.enabled(true, lang))
+                add(LocalizedText.enabled(false, lang))
+                add(LocalizedText.durationText(hasStarted = false, durationMs = 0L, language = lang))
+                add(LocalizedText.durationText(hasStarted = true, durationMs = 65_000L, language = lang))
+                add(
+                    SpeechStyle.STANDARD.messageFor(
+                        RiskResult(RiskLevel.NONE, RiskDirection.NONE, "持续检测中"),
+                        lang
+                    )
+                )
+            }
+        }
+
+        catalog.forEach { text ->
+            assertTrue("Blank localized string encountered: [$text]", text.isNotBlank())
+            assertFalse("Unicode replacement character U+FFFD in: $text", text.contains('�'))
+            assertFalse(
+                "Unexpected control character in: $text",
+                text.any { ch -> ch.isISOControl() && ch != '\n' && ch != '\t' && ch != '\r' }
+            )
+        }
+    }
+
+    @Test
+    fun dailyUsageModeAccessibilitySummaryIncludesDisplayName() {
+        listOf(AppLanguage.ZH, AppLanguage.EN).forEach { lang ->
+            DailyUsageMode.values().forEach { mode ->
+                val summary = mode.accessibilitySummary(lang)
+                val name = mode.displayName(lang)
+                assertTrue(
+                    "accessibilitySummary($lang) for ${mode.name} must include its displayName [$name]",
+                    summary.contains(name)
+                )
+            }
         }
     }
 
