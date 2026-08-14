@@ -16,6 +16,7 @@ import com.linnan.blindassist.risk.RiskLevel
 import com.linnan.blindassist.risk.RiskResult
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class LocalizationEncodingTest {
@@ -93,6 +94,22 @@ class LocalizationEncodingTest {
         }
     }
 
+    @Test
+    fun bilingualDailyUsageAccessibilityCatalogStaysUsable() {
+        AppLanguage.values().forEach { language ->
+            DailyUsageMode.values().forEach { mode ->
+                val name = mode.displayName(language)
+                val description = mode.description(language)
+                val summary = mode.accessibilitySummary(language)
+                listOf(name, description, summary).forEach { text ->
+                    assertFalse("Blank localization for $language", text.isBlank())
+                    assertFalse("Replacement character in: $text", text.contains('\uFFFD'))
+                    assertFalse("Unexpected control character in: $text", text.any { it.isISOControl() && it != '\n' && it != '\t' })
+                }
+                assertTrue(summary.contains(name))
+            }
+        }
+    }
     private fun containsMojibake(text: String): Boolean {
         return mojibakeMarkers.any(text::contains)
     }
