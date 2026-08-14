@@ -88,8 +88,12 @@ def _forward_z_buffer_warp(
     warped_depth = np.full((height, width), np.inf, dtype=np.float64)
     direct_coverage = np.zeros((height, width), dtype=bool)
     if admitted_indices.size:
-        destination_columns = np.rint(candidate_u[admitted_indices]).astype(np.int64)
-        destination_rows = np.rint(candidate_v[admitted_indices]).astype(np.int64)
+        destination_columns = np.clip(
+            np.rint(candidate_u[admitted_indices]).astype(np.int64), 0, width - 1
+        )
+        destination_rows = np.clip(
+            np.rint(candidate_v[admitted_indices]).astype(np.int64), 0, height - 1
+        )
         destination_flat = destination_rows * width + destination_columns
         order = np.lexsort((candidate_z[admitted_indices], destination_flat))
         sorted_flat = destination_flat[order]

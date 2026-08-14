@@ -57,6 +57,28 @@ class ReprojectionVisibilityScorerTest(unittest.TestCase):
         )
         self.assertFalse(bool(direct[2, 2]))
 
+    def test_subpixel_projection_at_right_edge_is_clamped_after_rounding(self) -> None:
+        height, width = 6, 8
+        depth = np.full((height, width), 2.0, dtype=np.float64)
+        reference = SimpleNamespace(camera_to_world=np.eye(4), frame_id="reference")
+        candidate_pose = np.eye(4)
+        candidate_pose[0, 3] = -0.26
+        candidate = SimpleNamespace(camera_to_world=candidate_pose, frame_id="candidate")
+        context = SimpleNamespace(
+            low_depth=depth,
+            valid=np.ones_like(depth, dtype=bool),
+            intrinsics=np.asarray([[6.0, 0.0, 3.5], [0.0, 6.0, 2.5], [0.0, 0.0, 1.0]]),
+            row=SimpleNamespace(reference=reference),
+        )
+        warped, direct, explained = subject._forward_z_buffer_warp(
+            context,
+            SimpleNamespace(neighbor=candidate),
+            np.ones_like(depth, dtype=np.float32),
+        )
+        self.assertEqual(depth.shape, warped.shape)
+        self.assertTrue(np.any(direct[:, -1]))
+        self.assertTrue(np.any(explained[:, -1]))
+
     def test_primary_gate_and_target_firewall(self) -> None:
         records = [
             _record("generic", 1.0, 2.0, 2.0, target=-999),
