@@ -1,0 +1,153 @@
+{
+  "schema": "blindassist_taro_r27_openloris_home_fresh_source_frontdoor_lock_v1",
+  "lock_id": "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FRONTDOOR_R0",
+  "date": "2026-08-14",
+  "status": "LOCKED_BEFORE_SOURCE_PAYLOAD_DOWNLOAD_AND_TASK_OUTCOME_READ",
+  "objective": "Test the unchanged R27 query-aligned RGB-D-to-RGB reprojection visibility scorer on five TARO-fresh OpenLORIS home trajectories.",
+  "candidate_algorithm": {
+    "name": "TARO_QUERY_ALIGNED_REPROJECTION_VISIBILITY_R27",
+    "implementation": "scripts/research/taro_o1r_r12_clear_observability_runtime/task_evidence_reprojection_visibility_scorer.py",
+    "implementation_commits": [
+      "55df9b9d",
+      "663b69a1"
+    ],
+    "frozen_constants": {
+      "warp_coverage_dilation_px": 1,
+      "photometric_residual_quantile": 0.9,
+      "minimum_override_novel_cell_advantage": 1,
+      "candidate_depth_in_scorer_input": false,
+      "parameters_fit_from_fresh_targets": 0,
+      "training_steps_on_fresh_source": 0
+    }
+  },
+  "source_authority": {
+    "family": "OPENLORIS_SCENE_D435I_HOME",
+    "official_dataset_url": "https://lifelong-robotic-vision.github.io/dataset/scene.html",
+    "official_download_index": "https://github.com/lifelong-robotic-vision/OpenLORIS-Scene/blob/master/download.md",
+    "maintained_object_repository": "https://huggingface.co/datasets/shixuesong/openloris-scene",
+    "license": "CC-BY-ND-4.0",
+    "sensor": "Intel RealSense D435i on a wheeled robot",
+    "color_contract": "848x480 at 30 Hz",
+    "depth_contract": "848x480 aligned depth at 30 Hz; depth is aligned to color for per-pixel correspondence",
+    "synchronization_contract": "Data from the same RealSense camera are hardware synchronized",
+    "depth_scale_m": 0.001,
+    "groundtruth_contract": "Offline LiDAR-SLAM world-to-base trajectory for non-office scenes; bind to the D435i color optical frame through the source calibration chain",
+    "calibration_contract": "D435i intrinsics are source-carried factory calibration and extrinsics are source-carried in the package"
+  },
+  "source_objects": {
+    "package": {
+      "path": "package/home1-1_5-package.tar",
+      "url": "https://huggingface.co/datasets/shixuesong/openloris-scene/resolve/main/package/home1-1_5-package.tar?download=true",
+      "bytes": 18974105600,
+      "lfs_sha256": "5A6B14CC01843669A9D77D077355FD5CA6E7FF88297718A8A7D6D5947A584E75",
+      "xet_hash": "B22E4262CE0BBC88FA221BB91255F6243245B9847415732D8CA490C722A4E70B",
+      "repository_commit": "1DA334E3A9A5005411A8945B1802AA7559BD1567"
+    },
+    "groundtruth": {
+      "path": "package/groundtruth.zip",
+      "url": "https://huggingface.co/datasets/shixuesong/openloris-scene/resolve/main/package/groundtruth.zip?download=true",
+      "bytes": 11076559,
+      "lfs_sha256": "07564D7ED3D6739585002AFA12BCF481CC0E9E358FC64EFD5E658E2C994BDC3B",
+      "xet_hash": "52427912BE655389B52F442EED0204B1DE21842A8651BB8CBCF51CB5AF8DAE7E",
+      "repository_commit": "EE3D7161DB75B0CB5B4AB378C4CD44D9ACE67413"
+    },
+    "metadata_api": "https://huggingface.co/api/datasets/shixuesong/openloris-scene/tree/main/package?recursive=true&expand=true",
+    "metadata_accessed": "2026-08-14",
+    "payload_bytes_downloaded_before_lock": 0
+  },
+  "parent_cohort": {
+    "role": "FRESH_SOURCE_EVALUATION",
+    "parent_ids": [
+      "home1-1",
+      "home1-2",
+      "home1-3",
+      "home1-4",
+      "home1-5"
+    ],
+    "parent_count": 5,
+    "prior_taro_candidate_table_overlap": 0,
+    "prior_project_task_outcome_evidence_hits_for_exact_parent_ids": 0,
+    "cross_program_boundary": "Earlier OpenLORIS work inspected office1-1..7, cafe1-1..2 and corridor1-1..2. Those exact parents are excluded; no prior result grants or removes authority from home1-1..5."
+  },
+  "frame_binding": {
+    "color_index": "color.txt",
+    "aligned_depth_index": "aligned_depth.txt",
+    "maximum_color_aligned_depth_delta_s": 0.02,
+    "pose_index": "groundtruth.txt",
+    "maximum_nearest_pose_delta_s": 0.1,
+    "pose_formula": "world_T_color = world_T_base * base_T_d400_color_optical_frame",
+    "required_calibration_files": [
+      "sensors.yaml",
+      "trans_matrix.yaml"
+    ],
+    "invalid_or_missing_binding_policy": "ABSTAIN_FRAME",
+    "global_binding_failure_policy": "STOP_SOURCE_FRONTDOOR"
+  },
+  "canonical_observation": {
+    "source_resolution_wh": [
+      848,
+      480
+    ],
+    "center_crop_xywh": [
+      104,
+      0,
+      640,
+      480
+    ],
+    "evaluation_resolution_wh": [
+      256,
+      192
+    ],
+    "crop_and_scale_intrinsics": true,
+    "depth_range_m": [
+      0.2,
+      8.0
+    ],
+    "rgb_preprocessing": "Use the unchanged R27 luminance, gradient and texture plane implementation after the same center crop and resize.",
+    "candidate_depth_read_boundary": "Candidate depth remains unopened until source/reference/candidate identities and R27 selection scores have been sealed."
+  },
+  "outcome_blind_selection": {
+    "passive_window_s": [
+      0.15,
+      1.0
+    ],
+    "micro_translation_range_m": [
+      0.04,
+      0.08
+    ],
+    "micro_max_rotation_deg": 5.0,
+    "maximum_references_per_parent": 5,
+    "reference_selection": "Reuse balanced_pose_source_frontdoor.select_pose_capable_references over the complete metadata/pose roster.",
+    "candidate_generation": "Reuse task_evidence_oracle_canary.pose_proposal_pairs without reading task outcome or candidate depth.",
+    "generic_arm": "Maximum translation, then rotation, then smallest gap, then deterministic frame identity.",
+    "passive_arm": "Unchanged passive candidate from the frozen proposal row.",
+    "source_selection_reads_task_outcome": false
+  },
+  "frozen_gates": {
+    "minimum_evaluated_references": 16,
+    "minimum_evaluated_parents": 4,
+    "minimum_opportunity_parents": 4,
+    "required_strict_win_parents": "max(3, ceil(0.5 * opportunity_parent_count))",
+    "ranker_parent_macro_beats_generic": true,
+    "ranker_parent_macro_beats_passive": true,
+    "zero_known_evidence_retention_failures": true,
+    "all_checks_required_for_pass": true
+  },
+  "execution_order": [
+    "Verify exact source object byte counts and SHA-256 values.",
+    "Extract only under artifacts.local and validate the five parent/calibration/index rosters.",
+    "Freeze frame, reference and candidate identities from timestamps and poses before opening image payloads.",
+    "Open reference RGB-D and candidate RGB only; compute and seal unchanged R27 selection scores.",
+    "Open selected candidate depth only for fresh source-derived task evidence metrics.",
+    "Evaluate every frozen gate once and emit an exclusive result artifact."
+  ],
+  "terminals": {
+    "pass": "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_PASS",
+    "source_not_evaluable": "STOP_TARO_R27_OPENLORIS_HOME_SOURCE_NOT_EVALUABLE",
+    "algorithm_fail": "STOP_TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FAIL"
+  },
+  "claim_ceiling": "A PASS would be one fresh-family source confirmation of R27 task-evidence observability. It would not by itself prove broad generalization, collision correctness, Android readiness, product success, deployment readiness, navigation safety or user safety.",
+  "android_candidate_authorized": false,
+  "product_authorized": false,
+  "safety_authorized": false
+}

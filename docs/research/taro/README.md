@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / ALGORITHM_PRIORITY / R13_ORACLE_HEADROOM_PASS / R27_ARKIT_TUM_FULL_GATE_PASS / R27_BONN_DYNAMIC_MACRO_FAIL / R29_THREE_SOURCE_MACRO_PASS_BREADTH_FAIL / SAME_TABLE_TUNING_STOP / FRESH_REGISTERED_RGBD_POSE_SOURCE_NEXT / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
+状态：`current / ALGORITHM_PRIORITY / R27_ARKIT_TUM_FULL_GATE_PASS / R27_BONN_DYNAMIC_MACRO_FAIL / R29_THREE_SOURCE_MACRO_PASS_BREADTH_FAIL / SAME_TABLE_TUNING_STOP / OPENLORIS_HOME_FRESH_SOURCE_LOCKED / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
 
 本页只维护 TARO 当前状态、权限和唯一算法 successor。较早完整 R0–R11 叙事保存在
 [14d8ad7e 历史快照](archive/README_FULL_HISTORY_2026-08-13.md)，不能从中恢复旧权限。
@@ -128,7 +128,7 @@ Android、HTP 或默认 App 自动继承权限。
 - [R14-R20 scorer and confirmation results](TARO_TASK_EVIDENCE_SCORER_AND_CONFIRMATION_RESULTS_2026-08-13.json)
 - [R21-R22 cross-source learned-ranker result](TARO_CROSS_SOURCE_LEARNED_RANKER_RESULT_2026-08-13.json)
 - [R23-R25 complex query-conditioned scorer results](TARO_COMPLEX_QUERY_CONDITIONED_SCORER_RESULTS_2026-08-14.json)
-- [R26-R30 reprojection visibility scorer results](TARO_REPROJECTION_VISIBILITY_SCORER_RESULTS_2026-08-14.json)
+- [R26-R30 reprojection results](TARO_REPROJECTION_VISIBILITY_SCORER_RESULTS_2026-08-14.json) · [OpenLORIS home fresh-source lock](TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FRONTDOOR_LOCK_2026-08-14.json)
 - [Pose-diverse portfolio and default-off core selector](TARO_POSE_DIVERSE_BASELINE_PORTFOLIO_AND_CORE_SELECTOR_RESULT_2026-08-13.json)
 - [Historical isolated canary preflight and superseded device environment stop](TARO_POSE_DIVERSE_SELECTOR_ISOLATED_CANARY_PREFLIGHT_RESULT_2026-08-13.json)
 - [ARCore device selector, raw-depth stop and RGB pair-support result](TARO_POSE_DIVERSE_ARCORE_DEVICE_AND_RGB_PAIR_RESULT_2026-08-13.json)
@@ -141,10 +141,10 @@ Android、HTP 或默认 App 自动继承权限。
 
 ## 唯一 successor
 
-`TARO_R27_FRESH_REGISTERED_RGBD_POSE_SOURCE_FRONTDOOR_R0`：
+`TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FRONTDOOR_R0`：
 
-1. 选择不属于当前 1,690-candidate 表的新 RGB-D+pose source family/parents，并在任何 task outcome 或 candidate depth 读取前冻结 source、parents、reference 与候选池；
-2. RGB/depth 必须有 source-native calibration 或已在同一 image plane 注册，pose/timestamp 必须精确绑定；不满足即 source frontdoor STOP；
+1. 使用已在 payload 前锁定且与当前 1,690-candidate 表零交集的 OpenLORIS `home1-1..5`；核验两个 HF object 的 exact bytes/SHA 后才能解包；
+2. 只接受 D435i aligned-depth/color 硬件同步、source calibration 与 `world_T_base * base_T_color` pose 链；不满足即 source frontdoor STOP；
 3. 原样运行 R27 scorer、generic/passive arms、机会分母与 strict-win gate；禁止按新源 outcome 改 threshold、query、候选或 fallback；
 4. 只有 fresh source 同时过 macro、breadth、retention 与 denominator 门，才允许建立独立 confirmation；仍不自动授权 Android、产品或安全。
 
@@ -153,8 +153,8 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 
 ## 当前允许
 
-- 只读审计新 source family 的 RGB/depth registration、camera pose、timestamp、许可、parent roster 与下载规模；
-- 在 outcome 前锁定 fresh parent-disjoint R27 frontdoor，并复用冻结 scorer、基线、分母和 gate；
+- 取得并核验锁定的 OpenLORIS home package/groundtruth，只在 `artifacts.local/` 解包；
+- 按锁定 frontdoor 冻结 frame/reference/candidate identities，并复用 R27 scorer、基线、分母和 gate；
 - 只有新 parent-disjoint supervision，或 materially different 的预声明 correspondence/visibility signal，才可另立后继；
 - 对 consumed R11 evidence 做明确标注的只读后验机制诊断；
 - 重放 hash-bound tests、validator 和只读 evidence 复核。
