@@ -1,0 +1,77 @@
+{
+  "schema": "blindassist.taro.complex_query_conditioned_scorer_results.v1",
+  "result_id": "TARO_COMPLEX_QUERY_CONDITIONED_SCORER_RESULTS_2026-08-14",
+  "mode": "CONSUMED_THREE_SOURCE_DEVELOPMENT_LEAVE_ONE_SOURCE_FAMILY_OUT",
+  "task_definition": "Select one pose-valid extra frame that maximizes novel observed cells inside nine frozen body/path capsules; UNKNOWN remains unknown.",
+  "common_candidate_table": {
+    "candidate_count": 1690,
+    "source_qualified_parent_count": 57,
+    "sources": {
+      "TUM_RGBD": {"candidate_count": 352, "parent_count": 16, "reference_count": 67},
+      "BONN_RGBD_DYNAMIC": {"candidate_count": 1127, "parent_count": 24, "reference_count": 171},
+      "ARKITSCENES": {"candidate_count": 211, "parent_count": 17, "reference_count": 40}
+    },
+    "checks": {
+      "candidate_identity_unique_within_source": true,
+      "every_source_has_non_tied_teacher_references": true,
+      "every_source_has_strict_improvement_denominator": true,
+      "neighbor_depth_excluded_from_student_features": true,
+      "held_source_family_excluded_from_normalizer_and_model_fit": true,
+      "held_source_target_excluded_from_stopping_uncertainty_and_selection": true
+    }
+  },
+  "r23_query_conditioned_no_regret": {
+    "prospective_implementation_commit": "a652d7c5",
+    "parameter_count": 109426,
+    "raw_feature_count": 3273,
+    "model": "nine task tokens and nine candidate-geometry tokens with pose-conditioned four-head cross-attention, heteroscedastic utility head, three-seed ensemble, and generic fallback unless a frozen conservative advantage bound is positive",
+    "folds": {
+      "ARKITSCENES": {"gated_macro": 18.929411764705883, "ungated_macro": 19.937254901960785, "generic": 16.449019607843137, "passive": 12.943137254901963, "oracle": 25.086274509803925, "opportunity_parents": 9, "strict_win_parents": 0, "ungated_strict_win_parents": 2, "required_strict_win_parents": 5, "learned_overrides": 8},
+      "BONN_RGBD_DYNAMIC": {"gated_macro": 19.291435185185183, "ungated_macro": 18.260284391534395, "generic": 19.203736772486774, "passive": 17.266236772486774, "oracle": 23.041385582010587, "opportunity_parents": 21, "strict_win_parents": 7, "ungated_strict_win_parents": 11, "required_strict_win_parents": 11, "learned_overrides": 34},
+      "TUM_RGBD": {"gated_macro": 14.033333333333333, "ungated_macro": 13.694791666666667, "generic": 13.329166666666666, "passive": 12.647916666666667, "oracle": 16.417708333333334, "opportunity_parents": 12, "strict_win_parents": 5, "ungated_strict_win_parents": 7, "required_strict_win_parents": 6, "learned_overrides": 17}
+    },
+    "finding": "The frozen no-regret policy beat both macro baselines in all three held source families and improved Bonn opportunity coverage over R21, but failed the frozen breadth gate in every fold. Ungated predictions recovered enough breadth on Bonn and TUM only by losing Bonn macro utility.",
+    "terminal": "STOP_TASK_EVIDENCE_QUERY_CONDITIONED_NO_REGRET_LOFO_FAIL",
+    "local_artifact": {"path": "artifacts.local/evidence/taro/task-evidence-query-conditioned-no-regret-ranker-r0/result.json", "bytes": 295453, "sha256": "EF020AB05DADBDA23BB5E5C8A99E2CE09A6A3D34FBD63B0C7F885975A1B4C43E", "content_sha256": "3F3AFD01AEDBC239C603F5D7419AC0388B126839975A001766DB0040F5F54362"}
+  },
+  "r24_opportunity_teacher": {
+    "prospective_implementation_commit": "e31855c2",
+    "parameter_count": 109475,
+    "new_teacher_supervision": "candidate target gain strictly exceeds both generic and passive-coverage target gains",
+    "teacher_positive_candidates": {"TUM_RGBD": 43, "BONN_RGBD_DYNAMIC": 138, "ARKITSCENES": 24},
+    "folds": {
+      "ARKITSCENES": {"gated_macro": 16.449019607843137, "ungated_macro": 21.731372549019607, "generic": 16.449019607843137, "opportunity_parents": 9, "strict_win_parents": 0, "ungated_strict_win_parents": 3, "required_strict_win_parents": 5, "learned_overrides": 0},
+      "BONN_RGBD_DYNAMIC": {"gated_macro": 19.111954365079367, "ungated_macro": 17.951851851851853, "generic": 19.203736772486774, "opportunity_parents": 21, "strict_win_parents": 0, "ungated_strict_win_parents": 12, "required_strict_win_parents": 11, "learned_overrides": 4},
+      "TUM_RGBD": {"gated_macro": 14.182291666666666, "ungated_macro": 12.583333333333332, "generic": 13.329166666666666, "opportunity_parents": 12, "strict_win_parents": 3, "ungated_strict_win_parents": 8, "required_strict_win_parents": 6, "learned_overrides": 6}
+    },
+    "finding": "Positive teacher rows were available in all sources, but their low in-sample classification loss did not calibrate across source families. The frozen joint probability-and-utility gate fell back on all 40 held ARKit references and did not preserve generic macro on Bonn.",
+    "terminal": "STOP_TASK_EVIDENCE_OPPORTUNITY_AWARE_NO_REGRET_LOFO_FAIL",
+    "local_artifact": {"path": "artifacts.local/evidence/taro/task-evidence-opportunity-aware-no-regret-ranker-r0/result.json", "bytes": 352770, "sha256": "745605747809D5487539D18171E76CF4E49226243BC23E30FEDB9BCE1268F062", "content_sha256": "1E354F531D70107B19592545A5E2B7D572A9944EA4B2A26D6EA2C2209BFCE5FC"}
+  },
+  "r25_rgb_query_interaction": {
+    "prospective_implementation_commit": "a4f43f99",
+    "parameter_count": 258450,
+    "raw_feature_count": 9753,
+    "new_source_time_signal": "projected reference/candidate luma, gradient, texture and disagreement at each task-query cell",
+    "rgb_payload_decodes": {"total": 1932, "TUM_RGBD": 417, "BONN_RGBD_DYNAMIC": 1289, "ARKITSCENES": 226},
+    "folds": {
+      "ARKITSCENES": {"gated_macro": 18.949019607843137, "ungated_macro": 19.82450980392157, "generic": 16.449019607843137, "opportunity_parents": 9, "strict_win_parents": 1, "ungated_strict_win_parents": 2, "required_strict_win_parents": 5, "learned_overrides": 10},
+      "BONN_RGBD_DYNAMIC": {"gated_macro": 18.6369708994709, "ungated_macro": 18.706431878306876, "generic": 19.203736772486774, "opportunity_parents": 21, "strict_win_parents": 1, "ungated_strict_win_parents": 10, "required_strict_win_parents": 11, "learned_overrides": 15},
+      "TUM_RGBD": {"gated_macro": 13.213541666666668, "ungated_macro": 13.779166666666665, "generic": 13.329166666666666, "opportunity_parents": 12, "strict_win_parents": 2, "ungated_strict_win_parents": 7, "required_strict_win_parents": 6, "learned_overrides": 11}
+    },
+    "finding": "The new RGB interaction produced one held ARKit strict-win opportunity parent, but it still missed 5/9 breadth and regressed gated macro below generic on Bonn and TUM. Handcrafted projected RGB tokens are not a transferable successor on this table.",
+    "terminal": "STOP_TASK_EVIDENCE_RGB_QUERY_INTERACTION_LOFO_FAIL",
+    "local_artifact": {"path": "artifacts.local/evidence/taro/task-evidence-rgb-query-interaction-ranker-r0/result.json", "bytes": 295500, "sha256": "F40490E765C712C18C0126CC02A5A88106D327F8D0279647C06840AD28919264", "content_sha256": "97D7BECB3BDF6855DB3BDCBCF40A349AA1920F4DC505CBB835877EACEA600272"}
+  },
+  "decision": {
+    "terminal": "STOP_TARO_R23_R25_COMPLEX_SCORER_TRANSFER_FAIL",
+    "task_specific_learned_ranker_route": "STOP_UNTIL_NEW_PARENT_DISJOINT_TASK_CANDIDATE_SUPERVISION_OR_STRONGER_SOURCE_TIME_CORRESPONDENCE_SIGNAL",
+    "same_consumed_table_capacity_loss_gate_or_handcrafted_rgb_tuning_authorized": false,
+    "fresh_confirmation_source_lock_authorized": false,
+    "android_candidate_authorized": false,
+    "do_not_relax_opportunity_parent_gate": true,
+    "do_not_promote_ungated_fold_metrics": true,
+    "interpretation": "Capacity can raise macro utility, but the current source-time representation and 57-parent supervision do not support broad transferable task-opportunity coverage. More layers on the same table are not evidence of progress. A successor must add genuinely new parent-disjoint supervision or a predeclared correspondence/visibility signal, then repeat source-family holdout without using R23-R25 outcomes for gate tuning."
+  },
+  "claim_ceiling": "Consumed three-source Development and source-family holdout evidence only. R23 is a stronger macro ranker, but no R23-R25 task-specific scorer passed breadth; none authorizes fresh Confirmation, Android integration, product, default-App, collision, or safety claims."
+}

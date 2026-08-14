@@ -1,6 +1,6 @@
 # TARO research scripts
 
-状态：`P0_PROTOCOL_AND_SCHEMA_FROZEN / PAIR_SUPPORT_AUDIT_AVAILABLE / BONN_POSITIVE_ORACLE_R1_NOT_EVALUABLE_DENOMINATOR`
+状态：`P0_PROTOCOL_AND_SCHEMA_FROZEN / PAIR_SUPPORT_AUDIT_AVAILABLE / R13_ORACLE_HEADROOM_PASS / R14_R25_TASK_SCORER_TRANSFER_FAIL_STOP`
 
 ## 研究问题与版本
 
@@ -29,9 +29,10 @@ machine-readable schema、measurement-only observability、有限弱子空间 ta
   聚合 receipt，并按冻结的协议/模型/identity、scene/reference、runtime 与 parent-macro gate 产生唯一 terminal；
 - `test_aggregate_yolo_positive_evidence_shadow.py`：覆盖冻结四场 PASS、模型 identity 漂移和 exact payload
   lookup 不完整时的 fail-closed 聚合。
-- 五臂 positive-oracle runtime、测试和运行说明位于
+- positive-oracle 与 R13–R25 task-evidence runtime、测试和运行说明位于
   [`taro_o1r_r12_clear_observability_runtime`](../taro_o1r_r12_clear_observability_runtime/README.md)；当前 Bonn
-  R1 因 recovery/CLEAR parent 分母不足而 `NOT_EVALUABLE`，未授权 learned scorer。
+  R1 因 recovery/CLEAR parent 分母不足而 `NOT_EVALUABLE`；R13 虽有 oracle headroom，R14–R25 learned
+  scorer 都未关闭跨源机会覆盖门，当前仍未授权 task-specific learned scorer。
 
 运行：
 
@@ -39,8 +40,9 @@ machine-readable schema、measurement-only observability、有限弱子空间 ta
 E:\codex-tools\bin\blindassist-python.cmd -m unittest scripts.research.taro.test_validate_taro_p0_protocol scripts.research.taro.test_audit_observation_pair_support scripts.research.taro.test_aggregate_yolo_positive_evidence_shadow
 ```
 
-本基础 Module 没有 solver、数据 materializer、模型、trainer 或 action scorer；pair-support audit 只是
-Development source-capability precheck。R12 的 Development oracle runner 不改变本 Module 的 P0 权限。
+本基础 Module 自身没有 solver、数据 materializer、模型、trainer 或 action scorer；pair-support audit 只是
+Development source-capability precheck。隔离 runtime 中的 R23–R25 trainer 及其负结果不改变本 Module 的 P0
+权限，也不授权 Android、产品或安全结论。
 
 ## 输出
 
