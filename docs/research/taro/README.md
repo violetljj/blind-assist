@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / ALGORITHM_PRIORITY / R27_ARKIT_TUM_FULL_GATE_PASS / R27_BONN_DYNAMIC_MACRO_FAIL / R29_THREE_SOURCE_MACRO_PASS_BREADTH_FAIL / SAME_TABLE_TUNING_STOP / OPENLORIS_HOME_FRESH_SOURCE_LOCKED / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
+状态：`current / ALGORITHM_PRIORITY / R27_ARKIT_TUM_FULL_GATE_PASS / R27_BONN_DYNAMIC_MACRO_FAIL / R27_OPENLORIS_FRESH_SOURCE_FAIL / R27_FRESH_SOURCE_REJECTED / R31_RELIABILITY_CONSISTENCY_SUCCESSOR / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
 
 本页只维护 TARO 当前状态、权限和唯一算法 successor。较早完整 R0–R11 叙事保存在
 [14d8ad7e 历史快照](archive/README_FULL_HISTORY_2026-08-13.md)，不能从中恢复旧权限。
@@ -71,7 +71,9 @@ Android、HTP 或默认 App 自动继承权限。
 - R26 解析 disocclusion scorer 只在 ARKit 接近门槛；R27 将 reference RGB-D z-buffer 重投影到 candidate view，
   只在 body/path query 内计 warp hole/稳健光度不一致。它在 ARKit/TUM 六项门全过：macro
   `19.7961>16.4490`、`13.4896>13.3292`，breadth `5/5、8/6`；Bonn breadth `15/11` 却 macro
-  `17.3000<19.2037`。R28 回归；R29 三源 macro 全胜但 breadth `4/5、0/11、5/6`；R30 仍失败。同表回调停止，R27 只保留为 fresh-source 候选。
+  `17.3000<19.2037`。R28 回归；R29 三源 macro 全胜但 breadth `4/5、0/11、5/6`；R30 仍失败。同表回调停止。
+- R27 在独立 OpenLORIS `home1-1..5` 有效评测 25 references/5 parents/124 candidates，seal 前 candidate-depth reads=0；macro `16.32<17.36 generic`，4 个 opportunity parents 仅 1 个 strict win、门槛为 3。
+  终态 `STOP_TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_R2_FAIL`；R27 被 fresh-source 拒绝，OpenLORIS home 从此只作 consumed Development。
 - 与 task scorer 分开，预先定义的 pose-only generic arm 在四个 cohort 均高于 passive：旧 TUM
   `14.0222>13.8847`、Bonn `19.2037>17.2662`、task-outcome-blind TUM `11.25>8.9375`、ARKit
   `16.4490>12.9431`。因此 `TARO_POSE_DIVERSE_GENERIC_R0` 已实现为 `core:ustrf` 中默认关闭的纯 Kotlin
@@ -128,7 +130,7 @@ Android、HTP 或默认 App 自动继承权限。
 - [R14-R20 scorer and confirmation results](TARO_TASK_EVIDENCE_SCORER_AND_CONFIRMATION_RESULTS_2026-08-13.json)
 - [R21-R22 cross-source learned-ranker result](TARO_CROSS_SOURCE_LEARNED_RANKER_RESULT_2026-08-13.json)
 - [R23-R25 complex query-conditioned scorer results](TARO_COMPLEX_QUERY_CONDITIONED_SCORER_RESULTS_2026-08-14.json)
-- [R26-R30 reprojection results](TARO_REPROJECTION_VISIBILITY_SCORER_RESULTS_2026-08-14.json) · [OpenLORIS home fresh-source lock](TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FRONTDOOR_LOCK_2026-08-14.json)
+- [R26-R30 reprojection results](TARO_REPROJECTION_VISIBILITY_SCORER_RESULTS_2026-08-14.json) · [OpenLORIS home fresh-source result](TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_RESULT_2026-08-14.json)
 - [Pose-diverse portfolio and default-off core selector](TARO_POSE_DIVERSE_BASELINE_PORTFOLIO_AND_CORE_SELECTOR_RESULT_2026-08-13.json)
 - [Historical isolated canary preflight and superseded device environment stop](TARO_POSE_DIVERSE_SELECTOR_ISOLATED_CANARY_PREFLIGHT_RESULT_2026-08-13.json)
 - [ARCore device selector, raw-depth stop and RGB pair-support result](TARO_POSE_DIVERSE_ARCORE_DEVICE_AND_RGB_PAIR_RESULT_2026-08-13.json)
@@ -141,21 +143,20 @@ Android、HTP 或默认 App 自动继承权限。
 
 ## 唯一 successor
 
-`TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FRONTDOOR_R0`：
+`TARO_R31_MULTI_CANDIDATE_RELIABILITY_AND_OCCLUSION_CONSISTENCY_R0`：
 
-1. 使用已在 payload 前锁定且与当前 1,690-candidate 表零交集的 OpenLORIS `home1-1..5`；核验两个 HF object 的 exact bytes/SHA 后才能解包；
-2. 只接受 D435i aligned-depth/color 硬件同步、source calibration 与 `world_T_base * base_T_color` pose 链；不满足即 source frontdoor STOP；
-3. 原样运行 R27 scorer、generic/passive arms、机会分母与 strict-win gate；禁止按新源 outcome 改 threshold、query、候选或 fallback；
-4. 只有 fresh source 同时过 macro、breadth、retention 与 denominator 门，才允许建立独立 confirmation；仍不自动授权 Android、产品或安全。
+1. R27 的失败集中在错误 override，而不是 proposal 无 oracle headroom；R31 必须显式建模 rigid-warp 可靠性、遮挡一致性和候选集合内的 task-cell 共识；
+2. R31 可以在 ARKit/Bonn/TUM/OpenLORIS 已消费表上做明确标注的 Development，但不得把任何同表结果写成 confirmation；
+3. 不允许只改 R27 override threshold、loss、seed 或后验 fallback；新机制必须产生独立的 reliability/consistency receipt，并始终排除 candidate depth；
+4. consumed Development 全门通过后，仍需另找 source- 或 parent-disjoint registered RGB-D+pose cohort 做一次前瞻 confirmation。
 
-R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；它不能改写上述 outcome-blind source
-选择，也不能把 R11 改成 PASS。任何新的 dual-class confirmation 仍需 untouched parents。
+R11 outcome 只能作为 consumed Development 做后验诊断，不能改写 source selection 或 R11 terminal；任何 dual-class confirmation 仍需 untouched parents。
 
 ## 当前允许
 
-- 取得并核验锁定的 OpenLORIS home package/groundtruth，只在 `artifacts.local/` 解包；
-- 按锁定 frontdoor 冻结 frame/reference/candidate identities，并复用 R27 scorer、基线、分母和 gate；
-- 只有新 parent-disjoint supervision，或 materially different 的预声明 correspondence/visibility signal，才可另立后继；
+- 在 ARKit/Bonn/TUM/OpenLORIS consumed evidence 上开发并证伪 R31 的 multi-candidate reliability/occlusion-consistency 机制；
+- 保留 R27/OpenLORIS 的 exact identities、selection seal、基线、分母和失败终态，禁止覆盖重跑；
+- 为 R31 寻找新的 parent/source-disjoint registered RGB-D+pose confirmation cohort，并在 outcome 前锁定；
 - 对 consumed R11 evidence 做明确标注的只读后验机制诊断；
 - 重放 hash-bound tests、validator 和只读 evidence 复核。
 
@@ -175,6 +176,5 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 
 ## Claim ceiling
 
-R13 有 task-conditioned oracle headroom；R27 在 ARKit/TUM 完整过门但 Bonn dynamic macro 回归；R29 仅证明三源
-macro no-regret，未关闭 breadth。因此它是 materially stronger candidate，不是 broad/fresh breakthrough。设备侧
-证据不替代 fresh registered RGB-D+pose 验证；尚未证明 detector accuracy、碰撞、产品或安全，默认 App 不变。
+R13 有 task-conditioned oracle headroom；R27 在 ARKit/TUM 完整过门，但在 Bonn dynamic 与 fresh OpenLORIS 均发生 macro 回归，因此已被 fresh-source 拒绝。
+R31 目前只是 consumed-Development successor，尚未产生算法突破；设备证据不替代 fresh RGB-D+pose 验证，未证明 detector accuracy、碰撞、产品或安全，默认 App 不变。

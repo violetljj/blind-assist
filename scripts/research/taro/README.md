@@ -1,6 +1,6 @@
 # TARO research scripts
 
-状态：`P0_PROTOCOL_AND_SCHEMA_FROZEN / PAIR_SUPPORT_AUDIT_AVAILABLE / R13_ORACLE_HEADROOM_PASS / R27_DUAL_SOURCE_FULL_GATE_PASS / R29_THREE_SOURCE_MACRO_PASS_BREADTH_FAIL / R30_SAME_TABLE_STOP`
+状态：`P0_PROTOCOL_AND_SCHEMA_FROZEN / PAIR_SUPPORT_AUDIT_AVAILABLE / R13_ORACLE_HEADROOM_PASS / R27_DUAL_SOURCE_FULL_GATE_PASS / R27_OPENLORIS_FRESH_SOURCE_FAIL / R31_RELIABILITY_CONSISTENCY_SUCCESSOR`
 
 ## 研究问题与版本
 
@@ -31,8 +31,9 @@ machine-readable schema、measurement-only observability、有限弱子空间 ta
   lookup 不完整时的 fail-closed 聚合。
 - positive-oracle 与 R13–R30 task-evidence runtime、测试和运行说明位于
   [`taro_o1r_r12_clear_observability_runtime`](../taro_o1r_r12_clear_observability_runtime/README.md)；当前 Bonn
-  R1 因 recovery/CLEAR parent 分母不足而 `NOT_EVALUABLE`；R27 已在 ARKit/TUM 完整过门但 Bonn dynamic
-  macro 回归，R29 三源 macro 均过却未关闭 breadth；当前只授权 fresh registered-source 验证 R27。
+  R1 因 recovery/CLEAR parent 分母不足而 `NOT_EVALUABLE`；R27 已在 ARKit/TUM 完整过门，但 Bonn dynamic
+  与 fresh OpenLORIS 均发生 macro 回归，现已拒绝。当前只授权 consumed R31 reliability/occlusion-consistency
+  Development，以及后续另立 source/parent-disjoint confirmation。
 
 运行：
 
