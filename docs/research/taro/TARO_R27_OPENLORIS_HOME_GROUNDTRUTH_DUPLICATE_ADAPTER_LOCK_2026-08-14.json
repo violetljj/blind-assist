@@ -1,0 +1,62 @@
+{
+  "schema": "blindassist_taro_r27_openloris_home_groundtruth_duplicate_adapter_lock_v1",
+  "lock_id": "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FRONTDOOR_R1",
+  "date": "2026-08-14",
+  "status": "LOCKED_AFTER_R0_METADATA_REJECTION_BEFORE_ANY_IMAGE_PAYLOAD_OR_TASK_OUTCOME_READ",
+  "predecessor_lock": "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FRONTDOOR_R0",
+  "predecessor_lock_path": "docs/research/taro/TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FRONTDOOR_LOCK_2026-08-14.json",
+  "r0_terminal": "STOP_TARO_R27_OPENLORIS_HOME_SOURCE_NOT_EVALUABLE_AT_GROUNDTRUTH_METADATA",
+  "r0_failure": {
+    "parent_id": "home1-1",
+    "timestamp": "1560000024.43179131",
+    "reason": "The official hash-bound groundtruth archive contains two non-identical pose rows at the exact same timestamp.",
+    "image_payloads_decoded_before_failure": 0,
+    "candidate_depth_reads_before_failure": 0,
+    "task_outcome_metrics_emitted_before_failure": 0
+  },
+  "metadata_audit": {
+    "parents": 5,
+    "duplicate_timestamp_count": 1078,
+    "identical_extra_row_count": 1077,
+    "near_identical_extra_row_count": 1,
+    "observed_maximum_duplicate_translation_m": 0.00011294504520913189,
+    "observed_maximum_duplicate_rotation_deg": 0.0031464643652012224
+  },
+  "adapter": {
+    "scope": "SOURCE_NATIVE_GROUNDTRUTH_INGESTION_ONLY",
+    "exact_timestamp_rule": "Keep the first published row deterministically and discard later rows only when pose spread remains inside both frozen ceilings.",
+    "maximum_duplicate_translation_m": 0.001,
+    "maximum_duplicate_rotation_deg": 0.01,
+    "material_conflict_policy": "STOP_SOURCE_FRONTDOOR",
+    "receipt_policy": "Emit identical and near-identical counts plus observed maximum translation and rotation spread per parent.",
+    "algorithm_scores_changed": false,
+    "candidate_depth_read_boundary_changed": false,
+    "reference_or_candidate_identity_rule_changed": false,
+    "frozen_gates_changed": false
+  },
+  "unchanged_authority": {
+    "source_package_bytes": 18974105600,
+    "source_package_sha256": "5A6B14CC01843669A9D77D077355FD5CA6E7FF88297718A8A7D6D5947A584E75",
+    "groundtruth_archive_bytes": 11076559,
+    "groundtruth_archive_sha256": "07564D7ED3D6739585002AFA12BCF481CC0E9E358FC64EFD5E658E2C994BDC3B",
+    "candidate_algorithm": "TARO_QUERY_ALIGNED_REPROJECTION_VISIBILITY_R27",
+    "candidate_algorithm_parameters_fit_from_fresh_targets": 0,
+    "training_steps_on_fresh_source": 0,
+    "frozen_gate_source": "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FRONTDOOR_R0"
+  },
+  "execution_order": [
+    "Commit this R1 adapter and its focused tests before opening any image payload or task outcome.",
+    "Verify the unchanged exact source hashes and apply the bounded duplicate adapter to metadata only.",
+    "Freeze source, reference and candidate identities and seal unchanged R27 scores before candidate depth is opened.",
+    "Evaluate the unchanged R0 gates once and emit an exclusive R1 result artifact."
+  ],
+  "terminals": {
+    "pass": "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_R1_PASS",
+    "source_not_evaluable": "STOP_TARO_R27_OPENLORIS_HOME_SOURCE_R1_NOT_EVALUABLE",
+    "algorithm_fail": "STOP_TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_R1_FAIL"
+  },
+  "claim_ceiling": "A PASS would be one fresh-family source confirmation of unchanged R27 under a disclosed source-native metadata adapter. It would not prove broad generalization, collision correctness, Android readiness, product success, deployment readiness, navigation safety or user safety.",
+  "android_candidate_authorized": false,
+  "product_authorized": false,
+  "safety_authorized": false
+}

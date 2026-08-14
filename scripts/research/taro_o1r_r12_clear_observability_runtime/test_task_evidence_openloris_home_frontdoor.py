@@ -51,7 +51,7 @@ class OpenLorisHomeFrontdoorTest(unittest.TestCase):
             with self.assertRaises(subject.OpenLorisFrontdoorError):
                 subject._safe_child(root, "../escape.png")
 
-    def test_groundtruth_deduplicates_only_identical_rows(self) -> None:
+    def test_groundtruth_deduplicates_bounded_same_timestamp_rows(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "groundtruth.txt"
             path.write_text(
@@ -63,7 +63,19 @@ class OpenLorisHomeFrontdoorTest(unittest.TestCase):
             rows, timestamps, duplicates = subject._parse_groundtruth(path)
             self.assertEqual([1.0, 2.0], timestamps)
             self.assertEqual(2, len(rows))
-            self.assertEqual(1, duplicates)
+            self.assertEqual(1, duplicates["identical_extra_row_count"])
+            self.assertEqual(0, duplicates["near_identical_extra_row_count"])
+            path.write_text(
+                "1.0 0 0 0 0 0 0 1\n"
+                "1.0 0.0005 0 0 0 0 0 1\n"
+                "2.0 1 0 0 0 0 0 1\n",
+                encoding="utf-8",
+            )
+            rows, timestamps, duplicates = subject._parse_groundtruth(path)
+            self.assertEqual([1.0, 2.0], timestamps)
+            self.assertEqual("0", rows[0][1])
+            self.assertEqual(1, duplicates["near_identical_extra_row_count"])
+            self.assertAlmostEqual(0.0005, duplicates["maximum_duplicate_translation_m"])
             path.write_text(
                 "1.0 0 0 0 0 0 0 1\n"
                 "1.0 1 0 0 0 0 0 1\n",

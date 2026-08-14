@@ -31,10 +31,10 @@ from scripts.research.taro_o1r_r12_clear_observability_runtime import task_evide
 from scripts.research.taro_o1r_r12_clear_observability_runtime import tum_balanced_pose_source_frontdoor as tum
 
 
-SCHEMA = "blindassist.taro.task_evidence_openloris_home_frontdoor.v1"
+SCHEMA = "blindassist.taro.task_evidence_openloris_home_frontdoor.v2"
 REPO_ROOT = Path(__file__).resolve().parents[3]
-LOCK_PATH = REPO_ROOT / "docs/research/taro/TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FRONTDOOR_LOCK_2026-08-14.json"
-LOCK_ID = "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FRONTDOOR_R0"
+LOCK_PATH = REPO_ROOT / "docs/research/taro/TARO_R27_OPENLORIS_HOME_GROUNDTRUTH_DUPLICATE_ADAPTER_LOCK_2026-08-14.json"
+LOCK_ID = "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FRONTDOOR_R1"
 PARENT_IDS = ("home1-1", "home1-2", "home1-3", "home1-4", "home1-5")
 PACKAGE_BYTES = 18_974_105_600
 PACKAGE_SHA256 = "5A6B14CC01843669A9D77D077355FD5CA6E7FF88297718A8A7D6D5947A584E75"
@@ -46,6 +46,8 @@ CROPPED_SIZE_WH = (640, 480)
 DEPTH_SCALE_M = 0.001
 MAX_RGB_DEPTH_DELTA_S = 0.02
 MAX_POSE_DELTA_S = 0.10
+MAX_DUPLICATE_POSE_TRANSLATION_M = 0.001
+MAX_DUPLICATE_POSE_ROTATION_DEG = 0.01
 MAX_REFERENCES_PER_PARENT = 5
 MIN_REFERENCES = 16
 MIN_PARENTS = 4
@@ -91,7 +93,22 @@ def _parse_index(path: Path) -> list[list[str]]:
     return rows
 
 
-def _parse_groundtruth(path: Path) -> tuple[list[list[str]], list[float], int]:
+def _duplicate_pose_delta(left: Sequence[str], right: Sequence[str]) -> tuple[float, float]:
+    left_values = np.asarray([float(value) for value in left[1:]], dtype=np.float64)
+    right_values = np.asarray([float(value) for value in right[1:]], dtype=np.float64)
+    require(np.all(np.isfinite(left_values)) and np.all(np.isfinite(right_values)), "non-finite duplicate pose")
+    translation_m = float(np.linalg.norm(left_values[:3] - right_values[:3]))
+    left_quaternion = left_values[3:]
+    right_quaternion = right_values[3:]
+    left_norm = float(np.linalg.norm(left_quaternion))
+    right_norm = float(np.linalg.norm(right_quaternion))
+    require(left_norm > 0.0 and right_norm > 0.0, "zero-norm duplicate quaternion")
+    cosine = float(np.clip(abs(np.dot(left_quaternion, right_quaternion) / (left_norm * right_norm)), 0.0, 1.0))
+    rotation_deg = float(np.degrees(2.0 * np.arccos(cosine)))
+    return translation_m, rotation_deg
+
+
+def _parse_groundtruth(path: Path) -> tuple[list[list[str]], list[float], dict[str, Any]]:
     raw_rows = [
         line.split()
         for line in path.read_text(encoding="utf-8").splitlines()
@@ -102,15 +119,37 @@ def _parse_groundtruth(path: Path) -> tuple[list[list[str]], list[float], int]:
     require(all(right >= left for left, right in zip(raw_timestamps, raw_timestamps[1:])), f"decreasing groundtruth: {path}")
     rows: list[list[str]] = []
     duplicate_identical_count = 0
+    duplicate_near_identical_count = 0
+    maximum_duplicate_translation_m = 0.0
+    maximum_duplicate_rotation_deg = 0.0
     for row in raw_rows:
         if rows and row[0] == rows[-1][0]:
-            require(row == rows[-1], f"conflicting duplicate groundtruth timestamp: {path}/{row[0]}")
-            duplicate_identical_count += 1
+            if row == rows[-1]:
+                duplicate_identical_count += 1
+            else:
+                translation_m, rotation_deg = _duplicate_pose_delta(rows[-1], row)
+                require(
+                    translation_m <= MAX_DUPLICATE_POSE_TRANSLATION_M
+                    and rotation_deg <= MAX_DUPLICATE_POSE_ROTATION_DEG,
+                    f"materially conflicting duplicate groundtruth timestamp: {path}/{row[0]}",
+                )
+                duplicate_near_identical_count += 1
+                maximum_duplicate_translation_m = max(maximum_duplicate_translation_m, translation_m)
+                maximum_duplicate_rotation_deg = max(maximum_duplicate_rotation_deg, rotation_deg)
             continue
         rows.append(row)
     timestamps = [float(row[0]) for row in rows]
     require(all(right > left for left, right in zip(timestamps, timestamps[1:])), f"groundtruth deduplication failed: {path}")
-    return rows, timestamps, duplicate_identical_count
+    duplicate_receipt = {
+        "policy": "STABLE_FIRST_ROW_FOR_EXACT_TIMESTAMP_WITH_BOUNDED_POSE_SPREAD",
+        "identical_extra_row_count": duplicate_identical_count,
+        "near_identical_extra_row_count": duplicate_near_identical_count,
+        "maximum_duplicate_translation_m": maximum_duplicate_translation_m,
+        "maximum_duplicate_rotation_deg": maximum_duplicate_rotation_deg,
+        "maximum_allowed_duplicate_translation_m": MAX_DUPLICATE_POSE_TRANSLATION_M,
+        "maximum_allowed_duplicate_rotation_deg": MAX_DUPLICATE_POSE_ROTATION_DEG,
+    }
+    return rows, timestamps, duplicate_receipt
 
 
 def _nearest_base_pose(
@@ -216,7 +255,7 @@ def load_outcome_blind_roster(
         truth_paths = [path.resolve() for path in truth_candidates if path.is_file()]
         require(bool(truth_paths), f"OpenLORIS groundtruth absent: {parent_id}")
         truth_path = truth_paths[0]
-        truth_rows, truth_timestamps, duplicate_truth_rows = _parse_groundtruth(truth_path)
+        truth_rows, truth_timestamps, duplicate_truth_receipt = _parse_groundtruth(truth_path)
         intrinsics, base_to_color, calibration = _opencv_calibration(root)
         pose_abstentions = missing_payloads = 0
         maximum_pose_delta = 0.0
@@ -249,7 +288,7 @@ def load_outcome_blind_roster(
                 "aligned_depth_index_count": len(depth_rows),
                 "associated_count": len(associations),
                 "pose_index_count": len(truth_rows),
-                "identical_duplicate_pose_row_count": duplicate_truth_rows,
+                "duplicate_pose_rows": duplicate_truth_receipt,
                 "pose_abstention_count": pose_abstentions,
                 "missing_payload_count": missing_payloads,
                 "admitted_frame_count": admitted,
@@ -272,6 +311,11 @@ def load_outcome_blind_roster(
         "selection_reads_task_outcome": False,
         "image_payload_reads_during_selection": 0,
         "candidate_depth_reads_during_selection": 0,
+        "pose_duplicate_policy": {
+            "rule": "STABLE_FIRST_ROW_FOR_EXACT_TIMESTAMP_WITH_BOUNDED_POSE_SPREAD",
+            "maximum_translation_m": MAX_DUPLICATE_POSE_TRANSLATION_M,
+            "maximum_rotation_deg": MAX_DUPLICATE_POSE_ROTATION_DEG,
+        },
         "source_resolution_wh": list(SOURCE_SIZE_WH),
         "center_crop_xywh": list(CROP_XYWH),
         "cropped_resolution_wh": list(CROPPED_SIZE_WH),
@@ -468,9 +512,9 @@ def evaluate(
     checks["zero_known_evidence_retention_failures_by_union_construction"] = True
     passed = all(checks.values())
     terminal = (
-        "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_PASS"
+        "TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_R1_PASS"
         if passed
-        else "STOP_TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_FAIL"
+        else "STOP_TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_R1_FAIL"
     )
     result = {
         "schema": SCHEMA,
