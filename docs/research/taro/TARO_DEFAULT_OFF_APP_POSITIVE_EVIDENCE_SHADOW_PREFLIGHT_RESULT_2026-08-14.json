@@ -1,0 +1,131 @@
+{
+  "schema": "blindassist.taro.default_off_app_positive_evidence_shadow_preflight_result.v1",
+  "result_id": "TARO_DEFAULT_OFF_APP_POSITIVE_EVIDENCE_SHADOW_PREFLIGHT_RESULT_2026-08-14",
+  "date": "2026-08-14",
+  "mode": "CANARY_LITE_OUTCOME_BLIND_SOURCE_ARCHITECTURE_AUDIT",
+  "status": "DIRECT_CAMERAX_SEAM_REJECTED_SHARED_CAMERA_SOURCE_CANARY_LOCKED",
+  "question": "Can the verified ARCore pose-diverse selector be attached to the current default-App camera path without losing exact source-frame pose authority or changing user guidance?",
+  "input_evidence": {
+    "positive_evidence_result": "docs/research/taro/TARO_RGB_PAIR_YOLO_POSITIVE_EVIDENCE_SHADOW_RESULT_2026-08-14.json",
+    "positive_evidence_terminal": "POSE_DIVERSE_POSITIVE_VISUAL_EVIDENCE_PASS",
+    "claim_ceiling_preserved": true
+  },
+  "repository_audit": {
+    "current_camera_source": {
+      "path": "core/device/src/main/java/com/linnan/blindassist/camera/CameraXFrameSource.kt",
+      "sha256": "B6E247BF456C44ED37ACED394A385B904820D436DA2CA73CFF6AFCAD4A999195",
+      "observed_contract": "CameraX Preview plus 640x480 RGBA ImageAnalysis, KEEP_ONLY_LATEST at requested 24 fps; emits Camera2 timestamp FrameStamp and no VIO or Anchor pose."
+    },
+    "vision_frame_contract": {
+      "path": "core/assist/src/main/java/com/linnan/blindassist/vision/VisionFrame.kt",
+      "sha256": "96AFE3B1FD9BBEAEDE65015105CF4FF64AC7025ACB0AE18668CF94482A75C8E5",
+      "observed_contract": "Carries frame identity, optional ranging and transport timing; no source-frame camera pose receipt."
+    },
+    "frame_processor": {
+      "path": "feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistFrameProcessor.kt",
+      "sha256": "B331CCCEEC9E4E8B4CA01D3BCF01F44BA34D7DFAF30D89DB4B27802A337C3AF5",
+      "observed_contract": "Consumes one current VisionFrame, runs the production detector, then commits risk/rendering under one lifecycle lease."
+    },
+    "runtime_controller": {
+      "path": "feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimeController.kt",
+      "sha256": "5D86BF7E88647AFFC3D56ACA807483ABE1D5CBD1969629A947ADEF373F196535",
+      "observed_contract": "Creates the CameraX phone source through FrameSourceFactory; no ARCore session or spatial source selection exists."
+    },
+    "phone_preview": {
+      "path": "core/ui/src/main/java/com/linnan/blindassist/ui/compose/CameraExperienceScreen.kt",
+      "sha256": "7C2B74AD8A864D3EE13641F8065B21C42D962B66B6A4D5C226A0855DE07154F2",
+      "observed_contract": "PHONE_CAMERA provides CameraX PreviewView; no generic Camera2 or ARCore Surface host is exposed."
+    }
+  },
+  "external_primary_sources": [
+    {
+      "title": "Shared camera access with ARCore",
+      "url": "https://developers.google.com/ar/develop/java/camera-sharing",
+      "accessed_at": "2026-08-14",
+      "used_for": "SharedCamera requires Session.Feature.SHARED_CAMERA, Camera2 wrapped callbacks and explicit app surfaces; extra surfaces increase device performance demand."
+    },
+    {
+      "title": "ARCore SharedCamera reference",
+      "url": "https://developers.google.com/ar/reference/java/com/google/ar/core/SharedCamera",
+      "accessed_at": "2026-08-14",
+      "used_for": "SharedCamera shares CameraDevice and CameraCaptureSession state with ARCore; app-created surfaces are device-dependent and ARCore depth is unavailable in shared-camera mode."
+    },
+    {
+      "title": "CameraX architecture",
+      "url": "https://developer.android.com/media/camera/camerax/architecture",
+      "accessed_at": "2026-08-14",
+      "used_for": "CameraX owns lifecycle-bound Preview and ImageAnalysis use cases; stream combinations and processing demand vary by device."
+    }
+  ],
+  "candidate_audit": [
+    {
+      "id": "DIRECT_EXISTING_CAMERAX_ANALYZER_SIDECAR",
+      "decision": "REJECT",
+      "reasons": [
+        "No ARCore Frame or Anchor-relative pose is present on the emitted VisionFrame.",
+        "Camera2 image timestamp alone cannot reconstruct ARCore translation or the frozen selector's same-world-frame invariant.",
+        "Opening a separate exclusive ARCore Session beside the existing CameraX provider risks camera ownership conflict and does not establish exact shared-frame identity.",
+        "PreviewView is bound to CameraX rather than exposed as a generic SharedCamera Camera2 Surface."
+      ]
+    },
+    {
+      "id": "ARCORE_SHARED_CAMERA_CAMERA2_CUSTOM_YUV_SOURCE",
+      "decision": "SELECT_FOR_ISOLATED_SOURCE_CANARY",
+      "reasons": [
+        "It is the documented path for concurrent app-owned Camera2 surfaces and ARCore tracking.",
+        "A custom YUV ImageReader timestamp can be compared exactly with ARCore Frame.timestamp without nearest fallback.",
+        "It tests the missing product-source seam while keeping detector, risk, feedback and default App unchanged."
+      ]
+    }
+  ],
+  "frozen_source_canary": {
+    "protocol_id": "TARO_ARCORE_SHARED_CAMERA_SOURCE_CANARY_R0",
+    "question": "On the current SM-S9280, can ARCore SharedCamera and one app-owned 640x480 YUV_420_888 ImageReader produce exact timestamp-bound CPU payload and Anchor-relative pose receipts that support the frozen pose-diverse selector?",
+    "session_feature": "Session.Feature.SHARED_CAMERA",
+    "camera_api": "Camera2 with ARCore-wrapped device and session callbacks",
+    "capture_template": "CameraDevice.TEMPLATE_RECORD",
+    "app_surface": "one 640x480 YUV_420_888 ImageReader surface registered through SharedCamera.setAppSurfaces",
+    "arcore_surfaces": "all SharedCamera.arCoreSurfaces",
+    "depth": "DISABLED_AND_NOT_REQUIRED",
+    "frame_identity": "Image.timestamp must equal ARCore Frame.timestamp exactly; no nearest-timestamp, frame-id-only or cross-epoch fallback",
+    "pose_identity": "Anchor-relative UstrfPoseSample timestamp and camera frame must match the exact source frame",
+    "history_window_ns": {
+      "minimum": 150000000,
+      "maximum": 1000000000
+    },
+    "target_exact_source_pose_pairs": 120,
+    "minimum_pose_diverse_selections": 100,
+    "maximum_frame_attempts": 900,
+    "timeout_seconds": 180,
+    "resource_bounds": {
+      "maximum_owned_history_age_ns": 1000000000,
+      "maximum_owned_history_bytes": 33554432,
+      "maximum_images_acquired_concurrently": 2
+    },
+    "gates": {
+      "arcore_supported_installed": true,
+      "shared_camera_session_created": true,
+      "camera2_session_configured": true,
+      "exact_source_pose_pair_target_reached": true,
+      "minimum_pose_diverse_selections_reached": true,
+      "zero_nearest_timestamp_fallbacks": true,
+      "zero_cross_anchor_epoch_history": true,
+      "zero_image_reader_acquire_or_resource_errors": true,
+      "all_images_and_camera_resources_closed": true
+    },
+    "terminal_if_pass": "SHARED_CAMERA_EXACT_SOURCE_POSE_PASS",
+    "terminal_if_exact_pair_or_selection_denominator_fails": "SHARED_CAMERA_SOURCE_POSE_NOT_EVALUABLE",
+    "terminal_if_resource_or_lifecycle_fails": "SHARED_CAMERA_SOURCE_RUNTIME_FAIL_STOP"
+  },
+  "read_and_mutation_boundary": {
+    "shared_camera_device_outcomes_read_before_lock": 0,
+    "default_app_code_changed": false,
+    "default_app_behavior_changed": false,
+    "model_run_authorized": false,
+    "risk_field_fusion_authorized": false,
+    "guidance_authorized": false,
+    "raw_images_or_boxes_persisted": false
+  },
+  "unique_successor": "TARO_ARCORE_SHARED_CAMERA_SOURCE_CANARY_R0",
+  "claim_ceiling": "This audit rejects only direct attachment to the current CameraX analyzer because it lacks exact ARCore pose authority. A future SharedCamera source-canary PASS would establish only one-device app-owned CPU-frame plus ARCore-pose source feasibility, not detector accuracy, App integration, thermal stability, product effectiveness or safety."
+}

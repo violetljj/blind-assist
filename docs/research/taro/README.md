@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / PARALLEL_WILD_LAB / R13_ORACLE_HEADROOM_PASS / R14_R22_TASK_SCORER_TRANSFER_FAIL_STOP / POSE_DIVERSE_BASELINE_MULTI_SOURCE_PASS / ANCHOR_DEVICE_CANARY_PASS / RGB_PAIR_SUPPORT_PASS / RGB_HISTORY_RETENTION_COST_PASS / RGB_SELECTED_DECODE_INTEGRITY_PASS / YOLO_POSITIVE_EVIDENCE_SHADOW_PASS / FRESH_RAW_DEPTH_PAIR_FAIL_STOP / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
+状态：`current / PARALLEL_WILD_LAB / R13_ORACLE_HEADROOM_PASS / R14_R22_TASK_SCORER_TRANSFER_FAIL_STOP / POSE_DIVERSE_BASELINE_MULTI_SOURCE_PASS / ANCHOR_DEVICE_CANARY_PASS / RGB_PAIR_SUPPORT_PASS / RGB_HISTORY_RETENTION_COST_PASS / RGB_SELECTED_DECODE_INTEGRITY_PASS / YOLO_POSITIVE_EVIDENCE_SHADOW_PASS / DIRECT_CAMERAX_SEAM_REJECTED / SHARED_CAMERA_SOURCE_PROTOCOL_LOCKED / FRESH_RAW_DEPTH_PAIR_FAIL_STOP / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
 
 本页只维护 TARO 当前状态、权限和唯一算法 successor。较早完整 R0–R11 叙事保存在
 [14d8ad7e 历史快照](archive/README_FULL_HISTORY_2026-08-13.md)，不能从中恢复旧权限。
@@ -104,6 +104,9 @@ Android、HTP 或默认 App 自动继承权限。
   parent macro 新增 focused token 为 `0.5750`，passive 为 `0.3917`，pose 在 4 个 scene parents 中 3 胜 1 负，
   terminal 为 `POSE_DIVERSE_POSITIVE_VISUAL_EVIDENCE_PASS`。这只证明单设备受控场景中冻结模型的屏幕空间
   positive-evidence observability，不证明 detector accuracy、body/path 几何、碰撞正确性、产品或安全。
+- 默认 App source audit 显示 CameraX `Preview + RGBA ImageAnalysis` 只有 Camera2 timestamp，现有接缝不承载
+  同帧 ARCore pose；SharedCamera 要求 Camera2 wrapped callbacks 与显式 app Surface。因此拒绝 direct CameraX
+  sidecar，下一步仅在隔离 benchmark 验证 SharedCamera exact timestamp/pose seam，默认 App 不变。
 
 ## 当前证据入口
 
@@ -126,26 +129,26 @@ Android、HTP 或默认 App 自动继承权限。
 - [Exact selected/reference delayed-decode integrity result](TARO_RGB_SELECTED_PAYLOAD_DECODE_INTEGRITY_RESULT_2026-08-14.json)
 - [Frozen YOLO positive-evidence backend preflight and shadow lock](TARO_RGB_PAIR_FROZEN_VISUAL_EVIDENCE_BACKEND_PREFLIGHT_2026-08-14.json)
 - [Frozen YOLO multi-scene positive-evidence shadow result](TARO_RGB_PAIR_YOLO_POSITIVE_EVIDENCE_SHADOW_RESULT_2026-08-14.json)
+- [Default-off App source architecture audit and SharedCamera canary lock](TARO_DEFAULT_OFF_APP_POSITIVE_EVIDENCE_SHADOW_PREFLIGHT_RESULT_2026-08-14.json)
 - [算法路线总表](../ALGORITHM_RESEARCH_CURRENT.md) · [TARO Module](../../../scripts/research/taro/README.md)
 
 ## 唯一 successor
 
-`TARO_DEFAULT_OFF_APP_POSITIVE_EVIDENCE_SHADOW_PREFLIGHT_R0`：
+`TARO_ARCORE_SHARED_CAMERA_SOURCE_CANARY_R0`：
 
-1. 在修改默认 App pipeline 前，先冻结 default-off integration seam、额外推理 cadence、owned-payload 生命周期、
-   资源预算、abstention 和回滚门；不得用本次 PASS 直接开启功能；
-2. 首个 App 步骤只能是无 guidance、无 risk-field mutation 的 telemetry shadow，且必须继续绑定 exact
-   FrameStamp、冻结模型哈希和 positive-only UNKNOWN 语义；
-3. 不得保存图像、box、scene 地址或人员身份；detector absence 不能成为 negative/CLEAR/safe；
-4. learned task scorer 保持 STOP，只有 materially new source-time signal/supervision 才可重开；不得用 generic
-   baseline 的落地掩盖 task-specific scorer 失败。
+1. 隔离 benchmark 使用 ARCore SharedCamera + wrapped Camera2 callbacks 和 app-owned `640x480 YUV_420_888`
+   ImageReader Surface；默认 CameraX source 不变；
+2. app image 与 ARCore Frame timestamp 必须 exact 相等并绑定同一 Anchor epoch pose；禁止 fallback；目标 120
+   对 exact source-pose pairs、至少 100 次 frozen pose-diverse selections；
+3. 不运行模型、不接 App UI/risk/guidance、不保存图像/box/地址/身份；所有相机、ARCore 与线程资源有界关闭；
+4. learned task scorer 保持 STOP；不得用 generic baseline 掩盖 task-specific scorer 失败。
 
 R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；它不能改写上述 outcome-blind source
 选择，也不能把 R11 改成 PASS。任何新的 dual-class confirmation 仍需 untouched parents。
 
 ## 当前允许
 
-- 只读审计默认 App pipeline，并为 default-off/no-guidance positive-evidence telemetry shadow 建立 outcome-blind preflight；
+- 按已锁协议运行隔离 SharedCamera exact source-pose canary，并只持久化计数、身份与资源 receipt；
 - 对纯 camera-history canary 使用同 session/same-anchor 相对位姿；外参门禁继续用于需要 body-frame/risk-field
   warp 的独立链路，不得把两者混为同一权限；
 - 只有 materially new source-time signal/supervision 才可另立 learned scorer successor；
@@ -160,6 +163,7 @@ R11 outcome 只能作为已消费 Development evidence 做后验机制诊断；�
 - 回调 R12/R19/R20/R21 的 query、outcome 或 gate，或把 neighbor depth 泄漏进 scorer input；
 - 将 generic core selector 或本次单设备 screen-space PASS 写成 task-specific scorer、跨设备成功、任务增益、
   风险融合、默认 App 或产品成功；
+- 把独立 ARCore Session 直接并挂到当前 CameraX analyzer，或在缺少 exact ARCore pose 时运行已验证 selector；
 - 将重投影/旧 raw depth 当成独立 fresh observation，或在当前设备上继续回调 raw-depth pair gate；
 - 修改 sealed R11 selection/selector/candidate/threshold，或覆盖、resume、删除、重跑已消费 one-shot；
 - 越级训练、Android/QNN/HTP、默认 App、产品或安全结论。
@@ -172,4 +176,5 @@ R22 表示扩张又回归，因此 task-specific scorer 停止。pose-diverse ge
 support，fresh raw-depth pair 则失败；同机已进一步证明完整 YUV payload 的 1 秒/32 MiB 有界 ownership、
 selection identity、copy 成本和 exact selected/reference 延迟解码完整性，并在 4 个受控场景的同预算冻结 YOLO
 shadow 中通过 screen-space positive-evidence observability gate。尚未证明 detector accuracy、body/path 或碰撞
-正确性，未完成风险融合、产品有效性或安全验证，默认 App 不变。
+正确性；current CameraX source 又因缺少 exact ARCore pose 而不能直接接 selector。未完成 SharedCamera app-owned
+source、App telemetry、风险融合、产品有效性或安全验证，默认 App 不变。
