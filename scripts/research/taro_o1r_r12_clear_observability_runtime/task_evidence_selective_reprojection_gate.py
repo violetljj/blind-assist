@@ -114,6 +114,9 @@ class FeatureTransform:
 
 def _record_vector(record: scorer.CandidateRecord) -> np.ndarray:
     analytic = r28.background_corrected_analytic(record.analytic)
+    photometric_threshold = float(analytic["photometric_residual_threshold"])
+    if not np.isfinite(photometric_threshold):
+        photometric_threshold = 0.0
     values = np.asarray(
         [
             analytic["reprojection_novel_cell_count"],
@@ -123,7 +126,7 @@ def _record_vector(record: scorer.CandidateRecord) -> np.ndarray:
             analytic["candidate_visible_unknown_cell_count"],
             analytic["direct_warp_coverage_fraction"],
             analytic["explained_warp_coverage_fraction"],
-            analytic["photometric_residual_threshold"],
+            photometric_threshold,
             analytic["background_corrected_excess_novel_cell_count"],
             analytic["task_novel_enrichment_ratio"],
             record.pair.translation_m,

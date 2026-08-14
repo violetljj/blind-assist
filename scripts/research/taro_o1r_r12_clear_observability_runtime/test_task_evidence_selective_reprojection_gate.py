@@ -50,6 +50,14 @@ class SelectiveReprojectionGateTest(unittest.TestCase):
         examples = subject.proposal_examples("TRAIN", records, include_labels=True)
         self.assertEqual(0.0, examples[0].label)
 
+    def test_absent_direct_correspondence_has_finite_gate_encoding(self) -> None:
+        record = _record("candidate", 0.5, 4.0, 0)
+        record.analytic["direct_warp_coverage_fraction"] = 0.0
+        record.analytic["photometric_residual_threshold"] = float("inf")
+        vector = subject._record_vector(record)
+        self.assertTrue(np.all(np.isfinite(vector)))
+        self.assertEqual(0.0, vector[7])
+
     def test_gate_lcb_accepts_or_rejects_without_target(self) -> None:
         records = [_record("generic", 1.0, 2.0, 0), _record("proposal", 0.5, 4.0, 0)]
         examples = subject.proposal_examples("HELD", records, include_labels=False)
