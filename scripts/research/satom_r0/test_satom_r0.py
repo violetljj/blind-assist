@@ -16,6 +16,7 @@ from scripts.research.satom_r0.core import (
     evaluate_frames,
     make_synthetic_frames,
 )
+from scripts.research.satom_r0.bonn import estimate_camera_height_m
 from scripts.research.satom_r0.run_satom_r0 import load_manifest
 
 
@@ -90,6 +91,13 @@ class SatomR0Test(unittest.TestCase):
             self.assertIn("coverage", arm["parent_macro"])
             self.assertIn("clearance_mae_m", arm["parent_macro"])
             self.assertIn("calibration_error", arm["parent_macro"])
+            self.assertEqual(arm["matched_coverage"]["targets"], [0.5, 0.6, 0.7, 0.8, 0.9])
+            self.assertIn("0.70", arm["matched_coverage"]["across_parents"])
+        self.assertEqual(
+            result["pareto_diagnostic"]["metrics"],
+            ["false_clear:min", "false_block:min", "coverage:max"],
+        )
+        self.assertIn("satom_round_robin", result["pareto_diagnostic"]["parent_macro"])
 
     def test_non_unit_gravity_is_rejected(self) -> None:
         frame = make_synthetic_frames(parent_count=1, frames_per_parent=1)[0]
@@ -113,6 +121,16 @@ class SatomR0Test(unittest.TestCase):
             path.write_text(json.dumps(manifest), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "Development role"):
                 load_manifest(path)
+
+    def test_camera_height_estimation_is_source_specific(self) -> None:
+        prior = np.full((32, 48), 1.2, dtype=np.float32)
+        truth = np.full((32, 48), 1.6, dtype=np.float32)
+        intrinsics = np.asarray([[40.0, 0.0, 23.5], [0.0, 40.0, 15.5], [0.0, 0.0, 1.0]])
+        gravity = np.asarray([0.0, 0.0, 1.0])
+        prior_height = estimate_camera_height_m(prior, intrinsics, gravity, 0.98, 0.5, 2.5)
+        truth_height = estimate_camera_height_m(truth, intrinsics, gravity, 0.98, 0.5, 2.5)
+        self.assertAlmostEqual(prior_height, 1.2, places=5)
+        self.assertAlmostEqual(truth_height, 1.6, places=5)
 
 
 if __name__ == "__main__":

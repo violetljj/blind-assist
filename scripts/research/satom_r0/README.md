@@ -51,7 +51,8 @@ truth_depth_m[N,H,W]
 prior_depth_m[N,H,W]
 intrinsics[N,4]                 # fx, fy, cx, cy
 world_from_camera[N,4,4]
-camera_height_m[N]
+candidate_camera_height_m[N]    # frozen-prior + gravity only
+truth_camera_height_m[N]        # evaluator-only registered-depth geometry
 gravity_down_camera[N,3]        # unit vector in camera x-right/y-down/z-forward
 prior_confidence[N,H,W]         # optional
 ```

@@ -56,7 +56,8 @@ def load_manifest(path: Path) -> tuple[list[Frame], dict[str, Any], str]:
                 "prior_depth_m",
                 "intrinsics",
                 "world_from_camera",
-                "camera_height_m",
+                "candidate_camera_height_m",
+                "truth_camera_height_m",
                 "gravity_down_camera",
             }
             missing = required.difference(bundle.files)
@@ -78,7 +79,8 @@ def load_manifest(path: Path) -> tuple[list[Frame], dict[str, Any], str]:
                         prior_confidence=(None if confidence is None else np.asarray(confidence[index], dtype=np.float32)),
                         intrinsics=Intrinsics(fx=fx, fy=fy, cx=cx, cy=cy),
                         world_from_camera=np.asarray(bundle["world_from_camera"][index], dtype=np.float64),
-                        camera_height_m=float(bundle["camera_height_m"][index]),
+                        camera_height_m=float(bundle["candidate_camera_height_m"][index]),
+                        truth_camera_height_m=float(bundle["truth_camera_height_m"][index]),
                         gravity_down_camera=np.asarray(bundle["gravity_down_camera"][index], dtype=np.float64),
                     )
                 )

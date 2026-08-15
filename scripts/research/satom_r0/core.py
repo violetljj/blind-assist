@@ -17,6 +17,7 @@ import numpy as np
 
 BANDS = ("left", "center", "right")
 HORIZONS_M = (1.0, 1.5, 2.0)
+MATCHED_COVERAGE_TARGETS = (0.50, 0.60, 0.70, 0.80, 0.90)
 STATES = ("CLEAR", "OCCUPIED", "UNKNOWN")
 POLICIES = (
     "center_only",
@@ -53,6 +54,7 @@ class Frame:
     intrinsics: Intrinsics
     world_from_camera: np.ndarray
     camera_height_m: float
+    truth_camera_height_m: float
     gravity_down_camera: np.ndarray
     prior_confidence: np.ndarray | None = None
 
@@ -71,7 +73,9 @@ class Frame:
         if not np.all(np.isfinite(self.world_from_camera)):
             raise ValueError("pose must be finite")
         if not math.isfinite(self.camera_height_m) or self.camera_height_m <= 0:
-            raise ValueError("camera height must be positive")
+            raise ValueError("candidate camera height must be positive")
+        if not math.isfinite(self.truth_camera_height_m) or self.truth_camera_height_m <= 0:
+            raise ValueError("truth camera height must be positive")
         gravity = np.asarray(self.gravity_down_camera, dtype=np.float64)
         if gravity.shape != (3,) or not np.all(np.isfinite(gravity)):
             raise ValueError("gravity_down_camera must be a finite 3-vector")
@@ -262,7 +266,7 @@ def _band_from_ratio(x_over_z: float) -> int:
     return 1
 
 
-def _task_clearance(depth: np.ndarray, frame: Frame) -> list[float | None]:
+def _task_clearance(depth: np.ndarray, frame: Frame, camera_height_m: float) -> list[float | None]:
     height, width = depth.shape
     yy, xx = np.mgrid[0:height, 0:width]
     z = np.asarray(depth, dtype=np.float64)
@@ -271,7 +275,7 @@ def _task_clearance(depth: np.ndarray, frame: Frame) -> list[float | None]:
     y = (yy - frame.intrinsics.cy) * z / frame.intrinsics.fy
     gravity = np.asarray(frame.gravity_down_camera, dtype=np.float64)
     drop_from_camera = gravity[0] * x + gravity[1] * y + gravity[2] * z
-    above_ground = frame.camera_height_m - drop_from_camera
+    above_ground = camera_height_m - drop_from_camera
     valid &= (above_ground >= 0.05) & (above_ground <= 1.65)
     ratios = np.divide(x, z, out=np.zeros_like(x), where=z > 0)
     band_masks = (ratios < -0.12, np.abs(ratios) <= 0.12, ratios > 0.12)
@@ -283,7 +287,7 @@ def _task_clearance(depth: np.ndarray, frame: Frame) -> list[float | None]:
 
 
 def _prior_summary(frame: Frame) -> list[float | None]:
-    return _task_clearance(frame.prior_depth_m, frame)
+    return _task_clearance(frame.prior_depth_m, frame, frame.camera_height_m)
 
 
 def _roi_bounds(shape: tuple[int, int], roi_index: int, config: TofConfig) -> tuple[slice, slice]:
@@ -416,7 +420,9 @@ def _metric_rows_for_parent(
     rows: list[dict[str, Any]] = []
     for frame in frames:
         frame.validate()
-        truth_clearance = _task_clearance(frame.truth_depth_m, frame)
+        truth_clearance = _task_clearance(
+            frame.truth_depth_m, frame, frame.truth_camera_height_m
+        )
         prior_clearance = _prior_summary(frame)
         if arm.use_memory:
             memory.begin_frame(frame.world_from_camera)
@@ -515,6 +521,80 @@ def summarize_rows(rows: Sequence[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def summarize_matched_coverage(
+    rows: Sequence[dict[str, Any]],
+    targets: Sequence[float] = MATCHED_COVERAGE_TARGETS,
+) -> dict[str, Any]:
+    """Post-hoc diagnostic at fixed coverage; never changes candidate actions."""
+    if not rows:
+        raise ValueError("no known task opportunities")
+    ranked = [row for row in rows if row["state"] != "UNKNOWN"]
+    ranked.sort(
+        key=lambda row: (
+            -(
+                float(row["occupied_probability"])
+                if row["state"] == "OCCUPIED"
+                else 1.0 - float(row["occupied_probability"])
+            ),
+            str(row["parent_id"]),
+            int(row["frame_index"]),
+            str(row["band"]),
+            float(row["horizon_m"]),
+        )
+    )
+    output: dict[str, Any] = {}
+    for target in targets:
+        key = f"{target:.2f}"
+        count = int(math.floor(target * len(rows)))
+        if count <= 0 or len(ranked) < count:
+            output[key] = {
+                "available": False,
+                "target_coverage": target,
+                "intrinsic_coverage": len(ranked) / len(rows),
+            }
+            continue
+        selected = ranked[:count]
+        summary = summarize_rows(selected)
+        summary["available"] = True
+        summary["target_coverage"] = target
+        summary["coverage"] = count / len(rows)
+        summary["intrinsic_coverage"] = len(ranked) / len(rows)
+        output[key] = summary
+    return output
+
+
+def _aggregate_matched_by_parent(by_parent: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    output: dict[str, Any] = {}
+    metric_names = ("coverage", "false_clear", "false_block", "clearance_mae_m", "calibration_error")
+    for target in MATCHED_COVERAGE_TARGETS:
+        key = f"{target:.2f}"
+        rows = [value[key] for value in by_parent.values()]
+        if not rows or not all(row.get("available") is True for row in rows):
+            output[key] = {
+                "available": False,
+                "target_coverage": target,
+                "available_parents": sum(row.get("available") is True for row in rows),
+                "total_parents": len(rows),
+            }
+            continue
+        output[key] = {
+            "available": True,
+            "target_coverage": target,
+            "available_parents": len(rows),
+            "total_parents": len(rows),
+            "parent_macro": {
+                name: _mean_optional(row[name] for row in rows) for name in metric_names
+            },
+            "worst_parent": {
+                name: _worst_optional(
+                    (row[name] for row in rows), lower_is_worse=name == "coverage"
+                )
+                for name in metric_names
+            },
+        }
+    return output
+
+
 def _mean_optional(values: Iterable[float | None]) -> float | None:
     finite = [float(value) for value in values if value is not None and math.isfinite(float(value))]
     return float(np.mean(finite)) if finite else None
@@ -525,6 +605,43 @@ def _worst_optional(values: Iterable[float | None], lower_is_worse: bool = False
     if not finite:
         return None
     return min(finite) if lower_is_worse else max(finite)
+
+
+def _risk_coverage_dominates(left: dict[str, Any], right: dict[str, Any]) -> bool:
+    names = ("coverage", "false_clear", "false_block")
+    if any(left.get(name) is None or right.get(name) is None for name in names):
+        return False
+    tolerance = 1e-12
+    no_worse = (
+        float(left["coverage"]) + tolerance >= float(right["coverage"])
+        and float(left["false_clear"]) <= float(right["false_clear"]) + tolerance
+        and float(left["false_block"]) <= float(right["false_block"]) + tolerance
+    )
+    strict = (
+        float(left["coverage"]) > float(right["coverage"]) + tolerance
+        or float(left["false_clear"]) + tolerance < float(right["false_clear"])
+        or float(left["false_block"]) + tolerance < float(right["false_block"])
+    )
+    return no_worse and strict
+
+
+def _pareto_diagnostic(results: dict[str, Any], scope: str) -> dict[str, Any]:
+    output: dict[str, Any] = {}
+    for left_name, left in results.items():
+        dominates = []
+        dominated_by = []
+        for right_name, right in results.items():
+            if left_name == right_name:
+                continue
+            if _risk_coverage_dominates(left[scope], right[scope]):
+                dominates.append(right_name)
+            if _risk_coverage_dominates(right[scope], left[scope]):
+                dominated_by.append(right_name)
+        output[left_name] = {
+            "dominates": sorted(dominates),
+            "dominated_by": sorted(dominated_by),
+        }
+    return output
 
 
 def evaluate_frames(
@@ -553,9 +670,11 @@ def evaluate_frames(
     for arm in arms:
         all_rows: list[dict[str, Any]] = []
         by_parent: dict[str, Any] = {}
+        matched_by_parent: dict[str, Any] = {}
         for parent_id in sorted(grouped):
             rows = _metric_rows_for_parent(grouped[parent_id], arm, tof_config)
             by_parent[parent_id] = summarize_rows(rows)
+            matched_by_parent[parent_id] = summarize_matched_coverage(rows)
             all_rows.extend(rows)
         pooled = summarize_rows(all_rows)
         metric_names = ("coverage", "false_clear", "false_block", "clearance_mae_m", "calibration_error")
@@ -576,6 +695,14 @@ def evaluate_frames(
             "parent_macro": parent_macro,
             "worst_parent": worst_parent,
             "by_parent": by_parent,
+            "matched_coverage": {
+                "diagnostic_only": True,
+                "ranking_input": "candidate decision confidence only; no truth in ranking",
+                "targets": list(MATCHED_COVERAGE_TARGETS),
+                "pooled": summarize_matched_coverage(all_rows),
+                "by_parent": matched_by_parent,
+                "across_parents": _aggregate_matched_by_parent(matched_by_parent),
+            },
             "scan_trace": [
                 {
                     key: row[key]
@@ -585,6 +712,11 @@ def evaluate_frames(
                 if row["band"] == "center" and row["horizon_m"] == HORIZONS_M[0]
             ],
         }
+    pareto = {
+        "metrics": ["false_clear:min", "false_block:min", "coverage:max"],
+        "parent_macro": _pareto_diagnostic(results, "parent_macro"),
+        "worst_parent": _pareto_diagnostic(results, "worst_parent"),
+    }
     return {
         "schema": "blindassist.satom_r0.evaluation.v1",
         "status": "SATOM_R0_MECHANICS_EVALUATED_NO_SCIENTIFIC_CLAIM",
@@ -609,6 +741,7 @@ def evaluate_frames(
             "missing_probability": tof_config.missing_probability,
             "first_return_quantile": tof_config.first_return_quantile,
         },
+        "pareto_diagnostic": pareto,
         "arms": results,
     }
 
@@ -650,6 +783,7 @@ def make_synthetic_frames(parent_count: int = 4, frames_per_parent: int = 24, se
                     intrinsics=intrinsics,
                     world_from_camera=pose,
                     camera_height_m=1.25,
+                    truth_camera_height_m=1.25,
                     gravity_down_camera=np.array([0.0, 1.0, 0.0], dtype=np.float64),
                 )
             )
