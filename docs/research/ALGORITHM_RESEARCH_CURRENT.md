@@ -1,15 +1,17 @@
 # 算法研究入口
 
-状态：`current / ALGORITHM_FOCUS=VITG_G0 / ACTIVE_REVERSIBLE_LANES=1 / VITG_G0_PREOUTCOME_PROTOCOL_FROZEN / SCHEDULE=EVIDENCE_GATED_NO_DAY_QUOTA`
+状态：`current / ALGORITHM_FOCUS=SVRF_O0 / ACTIVE_REVERSIBLE_LANES=1 / SVRF_O0_PREOUTCOME_PROTOCOL_FROZEN / SCHEDULE=EVIDENCE_GATED_NO_DAY_QUOTA`
 
 Assistive Geometry 的 factor-wise、obstacle 与 Q-Plane 表示支线均已按停止条件关闭；TARO R38 也已在
 parent-disjoint ARKitScenes Validation confirmation 上有效失败并关闭。用户已明确新开 SATOM-A，
 它通过主动稀疏 metric range 与 causal task-space memory 改变输入信息、时间结构、表示和动作，
 不是旧 selector 的 rescue continuation。SATOM-R0 的 Bonn Real E0 在任何 arm metric 产生前，
 因 frozen DepthART prior 无法稳定提供 ground-height observability 而 `NOT_EVALUABLE` 并关闭。
-GA-SATOM 的 physical-ToF G0 协议保留但按用户新的无 ToF 选择暂停。当前主线改为独立的
-VI-Task Geometry：利用现有 AtomS3R-M12 同刚体 OV3660 + 板载 BMI270，先检验 metric-frame
-observability；当前缺同步 capture implementation、calibration、具体 VIO lock 与 exact fresh roster。
+GA-SATOM 的 physical-ToF G0 协议保留但按用户的无 ToF 选择暂停；VI-Task Geometry 的 RGB+IMU
+G0 协议也按进一步的纯 RGB 选择暂停。当前唯一算法主线是独立的 SVRF-O0：不恢复 metric ground、
+已知相机高度或 clearance，只审计 RGB 派生的相对深度动态、局部扩张与图像空间通道侵入是否存在
+可重复的 scale-free relative-risk 表示余量。协议与机制已冻结，但 route-specific fresh two-source /
+eight-parent cohort 尚未锁定，故真实 O0 未运行。
 DepthART D3R6 仍保持暂停；其 bounded deferral contract 与 fresh gate 保留，但 post-hoc
 same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6 执行权限。
 
@@ -18,7 +20,8 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| VI-Task Geometry | 同刚体 RGB+IMU 自校准 metric pose/ground，再为未来 task geometry 分配 computation/parallax budget | `WILD_LAB / VITG_G0_PREOUTCOME_PROTOCOL_FROZEN / ATOMS3R_M12_ONBOARD_BMI270_CONFIRMED / BLOCKED_ON_SYNCHRONIZED_CAPTURE_CALIBRATION_IMPLEMENTATION_LOCK_AND_FRESH_ROSTER / REAL_G0_NOT_RUN / NO_TOF / NO_TRAINING` | [VI-Task Geometry current](vi-task-geometry/README.md) | `VITG_G0_ATOMS3R_RGB_IMU_CAPTURE_PREFLIGHT`：实现并编译验证 ToF-disabled 同钟 writer，绑定 calibration、reference、A0-A3 implementation 与 exact roster | 用手机 IMU配眼镜视频；重跑 ARCore D45；打开 outcome 后改 VIO/parent/gate；提前训练、主动分配或接 Android | 否 |
+| SVRF / Scale-free Visual Risk Field | 纯 RGB 派生的相对深度动态、局部扩张和视觉通道侵入能否形成稳定相对风险排序 | `WILD_LAB / SVRF_O0_PREOUTCOME_PROTOCOL_FROZEN / RGB_ONLY / BLOCKED_ON_FRESH_PARENT_CAPABILITY_AND_SOURCE_LOCK / REAL_O0_NOT_RUN / NO_TRAINING` | [SVRF current](svrf/README.md) | `SVRF_O0_FRESH_PARENT_CAPABILITY_AND_SOURCE_LOCK`：只锁 metadata/license/ancestry/prior-use、truth capability、exact two-source/eight-parent roster 与负控 identity | 读取 candidate outcome 后换 source/parent/gate；引入 IMU/ToF/已知高度/metric ground；用 UNKNOWN 买收益；训练或接 Android | 否 |
+| VI-Task Geometry | 同刚体 RGB+IMU 自校准 metric pose/ground，再为未来 task geometry 分配 computation/parallax budget | `PAUSED_BY_PURE_RGB_SELECTION / G0_PROTOCOL_RETAINED / REAL_G0_NOT_RUN / NO_TOF / NO_TRAINING` | [VI-Task Geometry current](vi-task-geometry/README.md) | 无；只有用户明确恢复 RGB+IMU metric-frame 路线才可重开 preflight | 实现/采集/运行 G0；用手机 IMU配眼镜视频；重跑 ARCore D45；提前训练、主动分配或接 Android | 否 |
 | GA-SATOM | 固定总稀疏测距信息预算内，先建立 metric ground frame，再保留剩余预算给未来 task sensing | `PAUSED_BY_NO_EXTERNAL_TOF_SELECTION / G0_PROTOCOL_RETAINED / REAL_G0_NOT_RUN / NO_PROCUREMENT` | [GA-SATOM current](ga-satom/README.md) | 无；只有用户明确恢复 external-ToF 路线才可重开 preflight | 采购/采集/运行 physical G0；用单区/模拟/旧输出替代；提前运行 G1/arm/训练 | 否 |
 | SATOM-A | metric pose + active sparse ToF + frozen dense prior → causal task-space occupancy memory | `WILD_LAB / SATOM_R0_REAL_E0_NOT_EVALUABLE / DEPTHART_GROUND_HEIGHT_OBSERVABILITY_FAIL / NO_ARM_METRIC / CLOSED_NO_TUNING` | [SATOM-A current](satom/README.md) | 无；新的 pre-outcome 协议须先提供独立 ground-height observability 或 materially different representation | 用 truth height/scale 修补 candidate；在已打开 Bonn/DepthART 输出上放宽高度门、改 winner rule、训练或接 Android | 否 |
 | BlindAssist Assistive Geometry | 连续因子 → selective no-regret → body-swept geometry | `CORRECTION_GAIN_LOPO_FAIL_STOP / ANGULAR_BOUNDARY_FAIL_CLOSED_SAFE_BUT_TASK_INERT / SUPPORT_VALIDITY_FAIL_OPEN / OBSTACLE_RGB_INTERACTION_FAIL_STOP / POSE_ANALYTIC_FAIL_STOP / QPLANE_O0A_REPRESENTATION_HEADROOM_FAIL_CLOSE_NO_TRAINING / CURRENT_OBSTACLE_TASK_ROUTE_CLOSED / SCIENTIFIC_NOT_RUN` | [Assistive Geometry current](assistive-geometry/README.md) | 无 active successor；需新增 source-native obstacle supervision，或 Q-Plane 家族之外的 materially different representation 后另立协议 | 调参/重跑 Q-Plane 或进入 O0-B/训练；继续调旧 obstacle 候选；让 support 创建 validity；重开 correction/boundary/fresh3；把 consumed negative 写成 task success | 否 |

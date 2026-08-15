@@ -2,8 +2,8 @@
 
 状态：`current / paused / G0_PROTOCOL_RETAINED / PAUSED_BY_NO_EXTERNAL_TOF_SELECTION / REAL_G0_NOT_RUN / NO_PROCUREMENT / NO_SATOM_ARMS / NO_TRAINING / DEFAULT_APP_UNCHANGED`
 
-用户已选择不依赖 external ToF 的 [VI-Task Geometry](../vi-task-geometry/README.md) 作为当前算法主线。
-本页协议作为未消费的备选保留，不采购、不采集、不运行；这不是 G0 失败或路线反证。
+用户已进一步选择不引入 IMU、ToF 或已知相机高度的 [SVRF](../svrf/README.md) 作为当前算法主线。
+本页协议继续作为未消费备选保留，不采购、不采集、不运行；这不是 G0 失败或路线反证。
 
 ## 主张
 

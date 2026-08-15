@@ -1,8 +1,11 @@
 # VI-Task Geometry current
 
-状态：`current / WILD_LAB / VITG_G0_PREOUTCOME_PROTOCOL_FROZEN / ATOMS3R_M12_ONBOARD_BMI270_CONFIRMED / BLOCKED_ON_SYNCHRONIZED_CAPTURE_CALIBRATION_IMPLEMENTATION_LOCK_AND_FRESH_ROSTER / REAL_G0_NOT_RUN / NO_TOF / NO_TRAINING / DEFAULT_APP_UNCHANGED`
+状态：`current / paused / G0_PROTOCOL_RETAINED / PAUSED_BY_PURE_RGB_SELECTION / REAL_G0_NOT_RUN / NO_TOF / NO_TRAINING / DEFAULT_APP_UNCHANGED`
 
 ## 结论
+
+用户已选择不引入 IMU、ToF 或已知相机高度的 [SVRF](../svrf/README.md) 作为当前算法主线。
+本页冻结协议作为未消费备选保留，不实现 capture、不采集、不运行；这不是 G0 失败或路线反证。
 
 BlindAssist 已有的 AtomS3R-M12 同时提供 OV3660 RGB 与板载 BMI270 六轴 IMU，因此这条路线
 不需要购买外部 ToF，也不需要再外挂 IMU。真正缺失的是同一设备时钟域下的可审计 RGB-IMU
@@ -32,9 +35,8 @@ Galaxy S24 Ultra 官方支持 Depth API，ARCore Depth 可利用手机相机运�
 
 ## 唯一 successor
 
-`VITG_G0_ATOMS3R_RGB_IMU_CAPTURE_PREFLIGHT`：先实现并编译验证 ToF-disabled OV3660+BMI270 writer，
-完成 intrinsics、IMU-to-camera extrinsics、同钟同步验证、reference 与 exact roster activation；在此
-之前不刷机、不采集、不打开 truth/outcome。
+无。只有用户明确恢复 RGB+IMU metric-frame 路线后，才可重新授权
+`VITG_G0_ATOMS3R_RGB_IMU_CAPTURE_PREFLIGHT`；现阶段不实现、不刷机、不采集、不运行 G0。
 
 G0 失败或不可评估即关闭 VI metric task-geometry 路线，下一条独立表示只能是 height-free
 gravity-normalized angular/TTC risk。默认 App 影响：`否`。
