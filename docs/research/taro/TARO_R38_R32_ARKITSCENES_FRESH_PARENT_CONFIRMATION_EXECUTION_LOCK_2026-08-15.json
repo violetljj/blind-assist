@@ -1,0 +1,1106 @@
+{
+  "candidate_rgb_or_model_output_before_this_lock": false,
+  "candidate_sensor_depth_before_score_seal": false,
+  "claim_ceiling": "A PASS can establish parent-disjoint confirmation inside the ARKitScenes Validation source regime for the frozen R32 selector. It cannot establish fresh-source, broad-domain, product, Android, navigation, collision, deployment, or safety success.",
+  "content_sha256": "660B34E6C64E3848937CB9422121A1634B73415F96CDF431A198508A6D4A0183",
+  "evidence_root": "E:\\linnan\\linnan\\artifacts.local\\evidence\\taro\\r38-r32-arkitscenes-fresh-parent-confirmation-r0",
+  "execution_count": 1,
+  "frozen_confirmation_contract": {
+    "algorithm": "R32_REFERENCE_SENSOR_ANCHORED_MONOCULAR_CANDIDATE_GEOMETRY",
+    "candidate_sensor_depth_before_score_seal": false,
+    "checkpoint_sha256": "B782898D8A3E8BE1F639DE33837ED85E9B4B73E40F8F5E5CD99067588D722545",
+    "minimum_evaluated_parent_count": 8,
+    "minimum_evaluated_reference_count": 24,
+    "minimum_opportunity_parent_count": 4,
+    "minimum_strict_win_fraction_of_opportunity_parents": 0.5,
+    "minimum_strict_win_parent_count": 3,
+    "model": "DEPTH_ANYTHING_V2_METRIC_HYPERSIM_VITS",
+    "ranker_parent_macro_must_beat_generic": true,
+    "ranker_parent_macro_must_beat_passive": true,
+    "reference_and_candidate_identity_disjoint": true,
+    "retention_failures_allowed": 0,
+    "same_one_extra_frame_budget": true,
+    "trainable_parameter_count": 0
+  },
+  "identity_rows": [
+    {
+      "candidate_frame_ids": [
+        "41159534:39023.29800",
+        "41159534:39023.36400",
+        "41159534:39023.49800",
+        "41159534:39023.71400",
+        "41159534:39023.79700",
+        "41159534:39023.81400",
+        "41159534:39024.14700"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "41159534:39023.29800",
+          "gap_s": 0.9989999999961583,
+          "rotation_deg": 12.173563526410653,
+          "translation_m": 0.0752703477086633
+        },
+        {
+          "frame_id": "41159534:39023.36400",
+          "gap_s": 0.9329999999972642,
+          "rotation_deg": 11.583310427209364,
+          "translation_m": 0.0704562730148906
+        },
+        {
+          "frame_id": "41159534:39023.49800",
+          "gap_s": 0.7989999999990687,
+          "rotation_deg": 10.056610867252544,
+          "translation_m": 0.060235542803653085
+        },
+        {
+          "frame_id": "41159534:39023.71400",
+          "gap_s": 0.5829999999987194,
+          "rotation_deg": 7.226704748703129,
+          "translation_m": 0.05037470421685287
+        },
+        {
+          "frame_id": "41159534:39023.79700",
+          "gap_s": 0.5,
+          "rotation_deg": 5.244202862432982,
+          "translation_m": 0.041962864658626704
+        },
+        {
+          "frame_id": "41159534:39023.81400",
+          "gap_s": 0.4830000000001746,
+          "rotation_deg": 4.864275808404543,
+          "translation_m": 0.04024115247338788
+        },
+        {
+          "frame_id": "41159534:39024.14700",
+          "gap_s": 0.1500000000014552,
+          "rotation_deg": 1.398874419672799,
+          "translation_m": 0.009265384321224701
+        }
+      ],
+      "parent_id": "41159534",
+      "reference_frame_id": "41159534:39024.29700"
+    },
+    {
+      "candidate_frame_ids": [
+        "42445429:50319.63800",
+        "42445429:50320.13800",
+        "42445429:50320.45500",
+        "42445429:50320.48800"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "42445429:50319.63800",
+          "gap_s": 1.0,
+          "rotation_deg": 15.263762198969584,
+          "translation_m": 0.3375533105384135
+        },
+        {
+          "frame_id": "42445429:50320.13800",
+          "gap_s": 0.5,
+          "rotation_deg": 8.09227204806814,
+          "translation_m": 0.19145243695203398
+        },
+        {
+          "frame_id": "42445429:50320.45500",
+          "gap_s": 0.18299999999726424,
+          "rotation_deg": 3.170474997871096,
+          "translation_m": 0.08142396504865244
+        },
+        {
+          "frame_id": "42445429:50320.48800",
+          "gap_s": 0.1500000000014552,
+          "rotation_deg": 2.6837305631032917,
+          "translation_m": 0.06673968408921362
+        }
+      ],
+      "parent_id": "42445429",
+      "reference_frame_id": "42445429:50320.63800"
+    },
+    {
+      "candidate_frame_ids": [
+        "42445429:50320.65500",
+        "42445429:50321.15400",
+        "42445429:50321.37100",
+        "42445429:50321.40400",
+        "42445429:50321.45400",
+        "42445429:50321.48800",
+        "42445429:50321.50400"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "42445429:50320.65500",
+          "gap_s": 0.9990000000034343,
+          "rotation_deg": 16.43404683043296,
+          "translation_m": 0.22656319805320313
+        },
+        {
+          "frame_id": "42445429:50321.15400",
+          "gap_s": 0.5,
+          "rotation_deg": 6.921535657091017,
+          "translation_m": 0.11461609995689324
+        },
+        {
+          "frame_id": "42445429:50321.37100",
+          "gap_s": 0.283000000003085,
+          "rotation_deg": 4.621444552583932,
+          "translation_m": 0.07931012471922412
+        },
+        {
+          "frame_id": "42445429:50321.40400",
+          "gap_s": 0.25,
+          "rotation_deg": 4.177680063673745,
+          "translation_m": 0.07199695280769251
+        },
+        {
+          "frame_id": "42445429:50321.45400",
+          "gap_s": 0.20000000000436557,
+          "rotation_deg": 3.314514682619407,
+          "translation_m": 0.059397194519030944
+        },
+        {
+          "frame_id": "42445429:50321.48800",
+          "gap_s": 0.16600000000471482,
+          "rotation_deg": 2.7412714351953738,
+          "translation_m": 0.0508243661155582
+        },
+        {
+          "frame_id": "42445429:50321.50400",
+          "gap_s": 0.1500000000014552,
+          "rotation_deg": 2.4668089900031207,
+          "translation_m": 0.046053664343325286
+        }
+      ],
+      "parent_id": "42445429",
+      "reference_frame_id": "42445429:50321.65400"
+    },
+    {
+      "candidate_frame_ids": [
+        "42446535:200479.51300"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "42446535:200479.51300",
+          "gap_s": 0.16599999999743886,
+          "rotation_deg": 3.899529744544409,
+          "translation_m": 0.056708832449343154
+        }
+      ],
+      "parent_id": "42446535",
+      "reference_frame_id": "42446535:200479.67900"
+    },
+    {
+      "candidate_frame_ids": [
+        "42446535:200479.51300",
+        "42446535:200479.69600",
+        "42446535:200480.01300",
+        "42446535:200480.02900"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "42446535:200479.51300",
+          "gap_s": 0.6829999999899883,
+          "rotation_deg": 15.550258252401628,
+          "translation_m": 0.2904384265161614
+        },
+        {
+          "frame_id": "42446535:200479.69600",
+          "gap_s": 0.5,
+          "rotation_deg": 11.603986901923362,
+          "translation_m": 0.2293070339105752
+        },
+        {
+          "frame_id": "42446535:200480.01300",
+          "gap_s": 0.18299999998998828,
+          "rotation_deg": 5.470330025822998,
+          "translation_m": 0.08148717917342908
+        },
+        {
+          "frame_id": "42446535:200480.02900",
+          "gap_s": 0.16699999998672865,
+          "rotation_deg": 4.908150762118615,
+          "translation_m": 0.07401663920435249
+        }
+      ],
+      "parent_id": "42446535",
+      "reference_frame_id": "42446535:200480.19600"
+    },
+    {
+      "candidate_frame_ids": [
+        "42446535:200479.69600",
+        "42446535:200480.21200",
+        "42446535:200480.51200",
+        "42446535:200480.52900"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "42446535:200479.69600",
+          "gap_s": 1.0,
+          "rotation_deg": 19.282380715576803,
+          "translation_m": 0.4167635429984079
+        },
+        {
+          "frame_id": "42446535:200480.21200",
+          "gap_s": 0.48399999999674037,
+          "rotation_deg": 8.420445125653565,
+          "translation_m": 0.21964748388442412
+        },
+        {
+          "frame_id": "42446535:200480.51200",
+          "gap_s": 0.1840000000083819,
+          "rotation_deg": 1.5980155409862853,
+          "translation_m": 0.07889635404318843
+        },
+        {
+          "frame_id": "42446535:200480.52900",
+          "gap_s": 0.16699999998672865,
+          "rotation_deg": 1.4500684687901937,
+          "translation_m": 0.07142970099533676
+        }
+      ],
+      "parent_id": "42446535",
+      "reference_frame_id": "42446535:200480.69600"
+    },
+    {
+      "candidate_frame_ids": [
+        "42446535:200480.21200",
+        "42446535:200480.71200",
+        "42446535:200480.76200",
+        "42446535:200480.79600",
+        "42446535:200480.82900",
+        "42446535:200480.84600",
+        "42446535:200480.87900",
+        "42446535:200481.04500"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "42446535:200480.21200",
+          "gap_s": 1.0,
+          "rotation_deg": 10.585329838928182,
+          "translation_m": 0.3304095837595269
+        },
+        {
+          "frame_id": "42446535:200480.71200",
+          "gap_s": 0.5,
+          "rotation_deg": 3.3908481871422103,
+          "translation_m": 0.1041894622416238
+        },
+        {
+          "frame_id": "42446535:200480.76200",
+          "gap_s": 0.45000000001164153,
+          "rotation_deg": 2.052784420956223,
+          "translation_m": 0.08300642353191798
+        },
+        {
+          "frame_id": "42446535:200480.79600",
+          "gap_s": 0.41599999999743886,
+          "rotation_deg": 1.3033837435950164,
+          "translation_m": 0.06889264007945613
+        },
+        {
+          "frame_id": "42446535:200480.82900",
+          "gap_s": 0.3830000000016298,
+          "rotation_deg": 0.804176707180953,
+          "translation_m": 0.05726591035895927
+        },
+        {
+          "frame_id": "42446535:200480.84600",
+          "gap_s": 0.3660000000090804,
+          "rotation_deg": 0.8590459573172293,
+          "translation_m": 0.05136408988596111
+        },
+        {
+          "frame_id": "42446535:200480.87900",
+          "gap_s": 0.33300000001327135,
+          "rotation_deg": 1.4643943335590608,
+          "translation_m": 0.040200091107128674
+        },
+        {
+          "frame_id": "42446535:200481.04500",
+          "gap_s": 0.16699999998672865,
+          "rotation_deg": 2.3087058922234522,
+          "translation_m": 0.012610446668697026
+        }
+      ],
+      "parent_id": "42446535",
+      "reference_frame_id": "42446535:200481.21200"
+    },
+    {
+      "candidate_frame_ids": [
+        "45260854:557.09300"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "45260854:557.09300",
+          "gap_s": 0.15000000000009095,
+          "rotation_deg": 2.5113167029257686,
+          "translation_m": 0.04085178153177613
+        }
+      ],
+      "parent_id": "45260854",
+      "reference_frame_id": "45260854:557.24300"
+    },
+    {
+      "candidate_frame_ids": [
+        "45260854:557.09300",
+        "45260854:557.25900",
+        "45260854:557.47600",
+        "45260854:557.50900",
+        "45260854:557.54300",
+        "45260854:557.57600",
+        "45260854:557.59300"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "45260854:557.09300",
+          "gap_s": 0.650000000000091,
+          "rotation_deg": 9.907599321130837,
+          "translation_m": 0.1919240358298603
+        },
+        {
+          "frame_id": "45260854:557.25900",
+          "gap_s": 0.4840000000000373,
+          "rotation_deg": 9.210615204769072,
+          "translation_m": 0.1485868161236758
+        },
+        {
+          "frame_id": "45260854:557.47600",
+          "gap_s": 0.26700000000005275,
+          "rotation_deg": 5.996398111336137,
+          "translation_m": 0.08094983792630417
+        },
+        {
+          "frame_id": "45260854:557.50900",
+          "gap_s": 0.2340000000000373,
+          "rotation_deg": 5.400902699071546,
+          "translation_m": 0.0705269714128724
+        },
+        {
+          "frame_id": "45260854:557.54300",
+          "gap_s": 0.20000000000004547,
+          "rotation_deg": 4.687921769957165,
+          "translation_m": 0.059426780484418754
+        },
+        {
+          "frame_id": "45260854:557.57600",
+          "gap_s": 0.16700000000003,
+          "rotation_deg": 4.019441525582792,
+          "translation_m": 0.04878798025337958
+        },
+        {
+          "frame_id": "45260854:557.59300",
+          "gap_s": 0.15000000000009095,
+          "rotation_deg": 3.685844846838026,
+          "translation_m": 0.04339526762075971
+        }
+      ],
+      "parent_id": "45260854",
+      "reference_frame_id": "45260854:557.74300"
+    },
+    {
+      "candidate_frame_ids": [
+        "45260854:557.25900",
+        "45260854:557.75900",
+        "45260854:557.87600",
+        "45260854:557.92600",
+        "45260854:557.95900",
+        "45260854:558.00900",
+        "45260854:558.04200",
+        "45260854:558.09200"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "45260854:557.25900",
+          "gap_s": 1.0,
+          "rotation_deg": 17.591678992740427,
+          "translation_m": 0.23867243713080244
+        },
+        {
+          "frame_id": "45260854:557.75900",
+          "gap_s": 0.5,
+          "rotation_deg": 8.663564136541682,
+          "translation_m": 0.10875020864405006
+        },
+        {
+          "frame_id": "45260854:557.87600",
+          "gap_s": 0.3830000000000382,
+          "rotation_deg": 6.008551167603588,
+          "translation_m": 0.08120216372888286
+        },
+        {
+          "frame_id": "45260854:557.92600",
+          "gap_s": 0.33299999999997,
+          "rotation_deg": 5.446751699301119,
+          "translation_m": 0.06900992174827174
+        },
+        {
+          "frame_id": "45260854:557.95900",
+          "gap_s": 0.3000000000000682,
+          "rotation_deg": 5.251003101867031,
+          "translation_m": 0.06079503352148266
+        },
+        {
+          "frame_id": "45260854:558.00900",
+          "gap_s": 0.25,
+          "rotation_deg": 4.7542491984581305,
+          "translation_m": 0.04877393685053391
+        },
+        {
+          "frame_id": "45260854:558.04200",
+          "gap_s": 0.21699999999998454,
+          "rotation_deg": 4.159352715868544,
+          "translation_m": 0.04135829505431083
+        },
+        {
+          "frame_id": "45260854:558.09200",
+          "gap_s": 0.16700000000003,
+          "rotation_deg": 3.2610541829068582,
+          "translation_m": 0.030188618605934928
+        }
+      ],
+      "parent_id": "45260854",
+      "reference_frame_id": "45260854:558.25900"
+    },
+    {
+      "candidate_frame_ids": [
+        "45260854:557.75900",
+        "45260854:558.05900",
+        "45260854:558.10900",
+        "45260854:558.15900",
+        "45260854:558.22600",
+        "45260854:558.27600",
+        "45260854:558.29200",
+        "45260854:558.59200"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "45260854:557.75900",
+          "gap_s": 1.0,
+          "rotation_deg": 12.052568156595898,
+          "translation_m": 0.14631973970901424
+        },
+        {
+          "frame_id": "45260854:558.05900",
+          "gap_s": 0.7000000000000455,
+          "rotation_deg": 7.443254917804129,
+          "translation_m": 0.07830998509944795
+        },
+        {
+          "frame_id": "45260854:558.10900",
+          "gap_s": 0.6499999999999773,
+          "rotation_deg": 6.631639965151373,
+          "translation_m": 0.06884942097545063
+        },
+        {
+          "frame_id": "45260854:558.15900",
+          "gap_s": 0.6000000000000227,
+          "rotation_deg": 5.817960938808652,
+          "translation_m": 0.060136579205515704
+        },
+        {
+          "frame_id": "45260854:558.22600",
+          "gap_s": 0.5330000000000155,
+          "rotation_deg": 4.764734602186397,
+          "translation_m": 0.04969760932576602
+        },
+        {
+          "frame_id": "45260854:558.27600",
+          "gap_s": 0.48300000000006094,
+          "rotation_deg": 3.978370246575914,
+          "translation_m": 0.04284316204554516
+        },
+        {
+          "frame_id": "45260854:558.29200",
+          "gap_s": 0.46699999999998454,
+          "rotation_deg": 3.740230493175053,
+          "translation_m": 0.040747122961414015
+        },
+        {
+          "frame_id": "45260854:558.59200",
+          "gap_s": 0.16700000000003,
+          "rotation_deg": 2.06982145835732,
+          "translation_m": 0.013888821374933524
+        }
+      ],
+      "parent_id": "45260854",
+      "reference_frame_id": "45260854:558.75900"
+    },
+    {
+      "candidate_frame_ids": [
+        "45662981:27937.13300",
+        "45662981:27937.15000",
+        "45662981:27937.16600",
+        "45662981:27937.18300"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "45662981:27937.13300",
+          "gap_s": 0.216999999996915,
+          "rotation_deg": 6.858782319365831,
+          "translation_m": 0.08696821774635924
+        },
+        {
+          "frame_id": "45662981:27937.15000",
+          "gap_s": 0.19999999999708962,
+          "rotation_deg": 6.202323380843382,
+          "translation_m": 0.0774449971945675
+        },
+        {
+          "frame_id": "45662981:27937.16600",
+          "gap_s": 0.18399999999746797,
+          "rotation_deg": 5.585599046721117,
+          "translation_m": 0.0684963428017032
+        },
+        {
+          "frame_id": "45662981:27937.18300",
+          "gap_s": 0.1669999999976426,
+          "rotation_deg": 4.932579400183159,
+          "translation_m": 0.05902895351602091
+        }
+      ],
+      "parent_id": "45662981",
+      "reference_frame_id": "45662981:27937.35000"
+    },
+    {
+      "candidate_frame_ids": [
+        "45663175:65874.94000",
+        "45663175:65875.44000",
+        "45663175:65875.79000"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "45663175:65874.94000",
+          "gap_s": 1.0,
+          "rotation_deg": 20.618884782627923,
+          "translation_m": 0.38701661194659864
+        },
+        {
+          "frame_id": "45663175:65875.44000",
+          "gap_s": 0.5,
+          "rotation_deg": 12.744091518686698,
+          "translation_m": 0.24448259886330576
+        },
+        {
+          "frame_id": "45663175:65875.79000",
+          "gap_s": 0.15000000000873115,
+          "rotation_deg": 4.37285780676908,
+          "translation_m": 0.0764108901758364
+        }
+      ],
+      "parent_id": "45663175",
+      "reference_frame_id": "45663175:65875.94000"
+    },
+    {
+      "candidate_frame_ids": [
+        "45663175:65876.45600",
+        "45663175:65876.95600",
+        "45663175:65877.28900",
+        "45663175:65877.30600"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "45663175:65876.45600",
+          "gap_s": 1.0,
+          "rotation_deg": 21.07288406166771,
+          "translation_m": 0.3586528186198484
+        },
+        {
+          "frame_id": "45663175:65876.95600",
+          "gap_s": 0.5,
+          "rotation_deg": 10.510102968159918,
+          "translation_m": 0.22498093082031864
+        },
+        {
+          "frame_id": "45663175:65877.28900",
+          "gap_s": 0.16700000000128057,
+          "rotation_deg": 2.3874499944060594,
+          "translation_m": 0.07913238992037433
+        },
+        {
+          "frame_id": "45663175:65877.30600",
+          "gap_s": 0.15000000000873115,
+          "rotation_deg": 2.0629127687929363,
+          "translation_m": 0.0710734260162064
+        }
+      ],
+      "parent_id": "45663175",
+      "reference_frame_id": "45663175:65877.45600"
+    },
+    {
+      "candidate_frame_ids": [
+        "47115452:13056.58500",
+        "47115452:13056.63500",
+        "47115452:13056.83500"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "47115452:13056.58500",
+          "gap_s": 0.41600000000107684,
+          "rotation_deg": 3.6463057101802887,
+          "translation_m": 0.04159135935432046
+        },
+        {
+          "frame_id": "47115452:13056.63500",
+          "gap_s": 0.36599999999998545,
+          "rotation_deg": 3.207607947146885,
+          "translation_m": 0.03977630943718191
+        },
+        {
+          "frame_id": "47115452:13056.83500",
+          "gap_s": 0.16600000000107684,
+          "rotation_deg": 1.9928945065345514,
+          "translation_m": 0.018270282102382282
+        }
+      ],
+      "parent_id": "47115452",
+      "reference_frame_id": "47115452:13057.00100"
+    },
+    {
+      "candidate_frame_ids": [
+        "47115452:13059.81700",
+        "47115452:13060.28300",
+        "47115452:13060.31600",
+        "47115452:13060.36600",
+        "47115452:13060.43300",
+        "47115452:13060.51600",
+        "47115452:13060.58300",
+        "47115452:13060.66600"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "47115452:13059.81700",
+          "gap_s": 0.9990000000016153,
+          "rotation_deg": 23.796187208140765,
+          "translation_m": 0.1566032767690024
+        },
+        {
+          "frame_id": "47115452:13060.28300",
+          "gap_s": 0.533000000001266,
+          "rotation_deg": 10.798274359185426,
+          "translation_m": 0.08037735135388496
+        },
+        {
+          "frame_id": "47115452:13060.31600",
+          "gap_s": 0.5,
+          "rotation_deg": 10.014207790159423,
+          "translation_m": 0.07586813787846412
+        },
+        {
+          "frame_id": "47115452:13060.36600",
+          "gap_s": 0.4500000000007276,
+          "rotation_deg": 8.826445461679537,
+          "translation_m": 0.06924176640502025
+        },
+        {
+          "frame_id": "47115452:13060.43300",
+          "gap_s": 0.3829999999998108,
+          "rotation_deg": 7.61749545886379,
+          "translation_m": 0.060268483612902955
+        },
+        {
+          "frame_id": "47115452:13060.51600",
+          "gap_s": 0.3000000000010914,
+          "rotation_deg": 6.180404173060237,
+          "translation_m": 0.04902736488826379
+        },
+        {
+          "frame_id": "47115452:13060.58300",
+          "gap_s": 0.23300000000017462,
+          "rotation_deg": 4.903423072186782,
+          "translation_m": 0.04002987535306096
+        },
+        {
+          "frame_id": "47115452:13060.66600",
+          "gap_s": 0.1500000000014552,
+          "rotation_deg": 2.8310981720494306,
+          "translation_m": 0.027905785381658964
+        }
+      ],
+      "parent_id": "47115452",
+      "reference_frame_id": "47115452:13060.81600"
+    },
+    {
+      "candidate_frame_ids": [
+        "47115452:13060.31600",
+        "47115452:13060.80000",
+        "47115452:13061.14900",
+        "47115452:13061.16600"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "47115452:13060.31600",
+          "gap_s": 1.0,
+          "rotation_deg": 3.466921517720844,
+          "translation_m": 0.23837178867454584
+        },
+        {
+          "frame_id": "47115452:13060.80000",
+          "gap_s": 0.5160000000014406,
+          "rotation_deg": 6.683494663453853,
+          "translation_m": 0.19996278187192304
+        },
+        {
+          "frame_id": "47115452:13061.14900",
+          "gap_s": 0.16700000000128057,
+          "rotation_deg": 5.036947822423598,
+          "translation_m": 0.07982209777128903
+        },
+        {
+          "frame_id": "47115452:13061.16600",
+          "gap_s": 0.1500000000014552,
+          "rotation_deg": 4.574479206572812,
+          "translation_m": 0.07191787266630467
+        }
+      ],
+      "parent_id": "47115452",
+      "reference_frame_id": "47115452:13061.31600"
+    },
+    {
+      "candidate_frame_ids": [
+        "47895735:384597.77100",
+        "47895735:384598.27000",
+        "47895735:384598.60400",
+        "47895735:384598.62000"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "47895735:384597.77100",
+          "gap_s": 0.9990000000107102,
+          "rotation_deg": 69.96345494641749,
+          "translation_m": 0.6623577479631373
+        },
+        {
+          "frame_id": "47895735:384598.27000",
+          "gap_s": 0.5,
+          "rotation_deg": 33.48207402272263,
+          "translation_m": 0.27616534808957477
+        },
+        {
+          "frame_id": "47895735:384598.60400",
+          "gap_s": 0.1660000000265427,
+          "rotation_deg": 5.6030570769054036,
+          "translation_m": 0.07618430571627492
+        },
+        {
+          "frame_id": "47895735:384598.62000",
+          "gap_s": 0.15000000002328306,
+          "rotation_deg": 4.594484458651854,
+          "translation_m": 0.06914507481770245
+        }
+      ],
+      "parent_id": "47895735",
+      "reference_frame_id": "47895735:384598.77000"
+    },
+    {
+      "candidate_frame_ids": [
+        "47895783:387010.91400"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "47895783:387010.91400",
+          "gap_s": 0.15000000002328306,
+          "rotation_deg": 2.7703552048487814,
+          "translation_m": 0.046039870821480026
+        }
+      ],
+      "parent_id": "47895783",
+      "reference_frame_id": "47895783:387011.06400"
+    },
+    {
+      "candidate_frame_ids": [
+        "48458417:115254.39700",
+        "48458417:115254.56400",
+        "48458417:115254.66400",
+        "48458417:115254.74700",
+        "48458417:115254.84700",
+        "48458417:115254.89700",
+        "48458417:115254.93100",
+        "48458417:115255.23000"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "48458417:115254.39700",
+          "gap_s": 1.0,
+          "rotation_deg": 31.626273948048983,
+          "translation_m": 0.09824034146737112
+        },
+        {
+          "frame_id": "48458417:115254.56400",
+          "gap_s": 0.8329999999987194,
+          "rotation_deg": 20.628323502128907,
+          "translation_m": 0.08067961949523736
+        },
+        {
+          "frame_id": "48458417:115254.66400",
+          "gap_s": 0.7329999999928987,
+          "rotation_deg": 15.112495001627513,
+          "translation_m": 0.06926902596397712
+        },
+        {
+          "frame_id": "48458417:115254.74700",
+          "gap_s": 0.6499999999941792,
+          "rotation_deg": 11.242496594419148,
+          "translation_m": 0.06053450071786545
+        },
+        {
+          "frame_id": "48458417:115254.84700",
+          "gap_s": 0.5500000000029104,
+          "rotation_deg": 7.103486310282044,
+          "translation_m": 0.049832432993665465
+        },
+        {
+          "frame_id": "48458417:115254.89700",
+          "gap_s": 0.5,
+          "rotation_deg": 5.795173926227768,
+          "translation_m": 0.04410608874378064
+        },
+        {
+          "frame_id": "48458417:115254.93100",
+          "gap_s": 0.46600000000034925,
+          "rotation_deg": 4.912365552092286,
+          "translation_m": 0.0402838323376032
+        },
+        {
+          "frame_id": "48458417:115255.23000",
+          "gap_s": 0.16700000000128057,
+          "rotation_deg": 1.2147803586638242,
+          "translation_m": 0.015867994285733725
+        }
+      ],
+      "parent_id": "48458417",
+      "reference_frame_id": "48458417:115255.39700"
+    },
+    {
+      "candidate_frame_ids": [
+        "48458417:115254.89700",
+        "48458417:115255.06400",
+        "48458417:115255.31400",
+        "48458417:115255.38000",
+        "48458417:115255.43000",
+        "48458417:115255.54700",
+        "48458417:115255.73000"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "48458417:115254.89700",
+          "gap_s": 1.0,
+          "rotation_deg": 8.07216716303823,
+          "translation_m": 0.07920737255645806
+        },
+        {
+          "frame_id": "48458417:115255.06400",
+          "gap_s": 0.8329999999987194,
+          "rotation_deg": 5.485948591396089,
+          "translation_m": 0.06989325693376265
+        },
+        {
+          "frame_id": "48458417:115255.31400",
+          "gap_s": 0.5829999999987194,
+          "rotation_deg": 4.632621572338604,
+          "translation_m": 0.05997720018522802
+        },
+        {
+          "frame_id": "48458417:115255.38000",
+          "gap_s": 0.5169999999925494,
+          "rotation_deg": 4.158016046395205,
+          "translation_m": 0.05466285908129998
+        },
+        {
+          "frame_id": "48458417:115255.43000",
+          "gap_s": 0.46700000000419095,
+          "rotation_deg": 3.67430740457573,
+          "translation_m": 0.05027033315532012
+        },
+        {
+          "frame_id": "48458417:115255.54700",
+          "gap_s": 0.34999999999126885,
+          "rotation_deg": 2.5439092618114314,
+          "translation_m": 0.039439311543233484
+        },
+        {
+          "frame_id": "48458417:115255.73000",
+          "gap_s": 0.16700000000128057,
+          "rotation_deg": 0.711483020255995,
+          "translation_m": 0.021399789013988896
+        }
+      ],
+      "parent_id": "48458417",
+      "reference_frame_id": "48458417:115255.89700"
+    },
+    {
+      "candidate_frame_ids": [
+        "48458417:115255.46400",
+        "48458417:115255.96400",
+        "48458417:115256.31300"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "48458417:115255.46400",
+          "gap_s": 0.9989999999961583,
+          "rotation_deg": 4.50929164885977,
+          "translation_m": 0.27645149292029986
+        },
+        {
+          "frame_id": "48458417:115255.96400",
+          "gap_s": 0.4989999999961583,
+          "rotation_deg": 4.012776996512087,
+          "translation_m": 0.2227251479572678
+        },
+        {
+          "frame_id": "48458417:115256.31300",
+          "gap_s": 0.15000000000873115,
+          "rotation_deg": 2.0678472866579343,
+          "translation_m": 0.07792354167954313
+        }
+      ],
+      "parent_id": "48458417",
+      "reference_frame_id": "48458417:115256.46300"
+    },
+    {
+      "candidate_frame_ids": [
+        "48458472:110527.40300",
+        "48458472:110527.90300",
+        "48458472:110528.22000",
+        "48458472:110528.25300"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "48458472:110527.40300",
+          "gap_s": 1.0,
+          "rotation_deg": 24.736494837513185,
+          "translation_m": 0.4353591989749436
+        },
+        {
+          "frame_id": "48458472:110527.90300",
+          "gap_s": 0.5,
+          "rotation_deg": 9.545813379728123,
+          "translation_m": 0.20418827893903954
+        },
+        {
+          "frame_id": "48458472:110528.22000",
+          "gap_s": 0.1830000000045402,
+          "rotation_deg": 3.3638683836710386,
+          "translation_m": 0.08064465604067923
+        },
+        {
+          "frame_id": "48458472:110528.25300",
+          "gap_s": 0.15000000000873115,
+          "rotation_deg": 3.088587938481302,
+          "translation_m": 0.0671158882484011
+        }
+      ],
+      "parent_id": "48458472",
+      "reference_frame_id": "48458472:110528.40300"
+    },
+    {
+      "candidate_frame_ids": [
+        "48458472:110528.10300",
+        "48458472:110528.60300",
+        "48458472:110528.95300"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "48458472:110528.10300",
+          "gap_s": 1.0,
+          "rotation_deg": 7.684033128983939,
+          "translation_m": 0.49618587754897475
+        },
+        {
+          "frame_id": "48458472:110528.60300",
+          "gap_s": 0.5,
+          "rotation_deg": 6.1154972086939345,
+          "translation_m": 0.2769895958031214
+        },
+        {
+          "frame_id": "48458472:110528.95300",
+          "gap_s": 0.15000000000873115,
+          "rotation_deg": 3.2744897200030287,
+          "translation_m": 0.0765496712705756
+        }
+      ],
+      "parent_id": "48458472",
+      "reference_frame_id": "48458472:110529.10300"
+    },
+    {
+      "candidate_frame_ids": [
+        "48458472:110529.11900",
+        "48458472:110529.61900",
+        "48458472:110529.91900",
+        "48458472:110529.95200",
+        "48458472:110529.96900"
+      ],
+      "candidate_pose_receipts": [
+        {
+          "frame_id": "48458472:110529.11900",
+          "gap_s": 1.0,
+          "rotation_deg": 27.021848221533716,
+          "translation_m": 0.4534525873210608
+        },
+        {
+          "frame_id": "48458472:110529.61900",
+          "gap_s": 0.5,
+          "rotation_deg": 14.465859855565574,
+          "translation_m": 0.22584901625660628
+        },
+        {
+          "frame_id": "48458472:110529.91900",
+          "gap_s": 0.20000000001164153,
+          "rotation_deg": 5.852444978225283,
+          "translation_m": 0.08223736931675946
+        },
+        {
+          "frame_id": "48458472:110529.95200",
+          "gap_s": 0.16700000000128057,
+          "rotation_deg": 4.935870792954186,
+          "translation_m": 0.06719683028409106
+        },
+        {
+          "frame_id": "48458472:110529.96900",
+          "gap_s": 0.15000000000873115,
+          "rotation_deg": 4.431437729474953,
+          "translation_m": 0.06020818296056367
+        }
+      ],
+      "parent_id": "48458472",
+      "reference_frame_id": "48458472:110530.11900"
+    }
+  ],
+  "identity_sha256": "2647149BAFA132A8BEE46DB7A4B0051F55FFE2A297975707595473D74A836A6F",
+  "implementation": {
+    "bytes": 39505,
+    "path": "E:\\linnan\\linnan\\scripts\\research\\taro_o1r_r12_clear_observability_runtime\\taro_r38_r32_arkitscenes_confirmation.py",
+    "sha256": "6CF45D5F4002F62834795F4CE171D02632B05D8571C6D3EF060717B3E8EC778E"
+  },
+  "lock_id": "TARO_R38_R32_ARKITSCENES_FRESH_PARENT_CONFIRMATION_EXECUTION_LOCK",
+  "materialization_manifest": {
+    "bytes": 5724227,
+    "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\taro-r38-arkitscenes-fresh-parent-r0\\manifest.json",
+    "sha256": "3645DCBFD6061C355C448FEECC4F9308481D6CB221DD1777E4651642EC9C529E"
+  },
+  "model": {
+    "checkpoint_path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\depth-anything-v2-metric-hypersim-small\\depth_anything_v2_metric_hypersim_vits.pth",
+    "checkpoint_sha256": "B782898D8A3E8BE1F639DE33837ED85E9B4B73E40F8F5E5CD99067588D722545",
+    "device_runtime_not_claim_relevant": true,
+    "dpt_source_path": "F:\\ba-data\\blindassist-artifacts-20260805\\downloads\\depth-lab\\src\\Depth-Anything-V2-main\\metric_depth\\depth_anything_v2\\dpt.py",
+    "dpt_source_sha256": "120698FD0AD9A4D169B4B9EF26035AD0CB11EED4089AF53E07E38F5717024B1D",
+    "repository": "F:\\ba-data\\blindassist-artifacts-20260805\\downloads\\depth-lab\\src\\Depth-Anything-V2-main",
+    "trainable_parameter_count": 0
+  },
+  "r32_implementation": {
+    "bytes": 24632,
+    "path": "E:\\linnan\\linnan\\scripts\\research\\taro_o1r_r12_clear_observability_runtime\\task_evidence_source_anchored_monocular_geometry.py",
+    "sha256": "9010CF98FE93AB3B0836BFC56E4C4773D7AC6BA933B3FE22FF797BB27E988A33"
+  },
+  "reference_preflight": {
+    "bytes": 54370,
+    "content_sha256": "B618CB02DC0758BA28CE9D171997F3C1209F1382CF38E5C605CB5DCD1C8DC5A7",
+    "path": "F:\\ba-data\\blindassist-artifacts-20260805\\evidence\\taro\\r38-r32-arkitscenes-fresh-parent-confirmation-r0\\preflight.json",
+    "sha256": "89BB317BBBCF3BA5B5010EFF48820702CAEA0EC9FADD4993E9E3ACCC96794136"
+  },
+  "schema": "blindassist.taro.r38_r32_arkitscenes_confirmation_execution_lock.v1",
+  "source_lock": {
+    "bytes": 9204,
+    "path": "E:\\linnan\\linnan\\docs\\research\\taro\\TARO_R38_ARKITSCENES_FRESH_PARENT_SOURCE_LOCK_2026-08-15.json",
+    "sha256": "4C2352407CE372F2EAE2C18B68E43ACDCAF9ADFA5DBFCE3D4E80B56AA3F45A1F"
+  },
+  "status": "FROZEN_AFTER_REFERENCE_INPUT_PREFLIGHT_BEFORE_CANDIDATE_RGB_MODEL_OUTPUT_OR_SENSOR_DEPTH"
+}

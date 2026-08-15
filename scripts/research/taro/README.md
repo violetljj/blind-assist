@@ -1,6 +1,6 @@
 # TARO research scripts
 
-状态：`P0_PROTOCOL_AND_SCHEMA_FROZEN / PAIR_SUPPORT_AUDIT_AVAILABLE / R13_ORACLE_HEADROOM_PASS / R27_DUAL_SOURCE_FULL_GATE_PASS / R27_OPENLORIS_FRESH_SOURCE_FAIL / R31_RELIABILITY_CONSISTENCY_SUCCESSOR`
+状态：`P0_PROTOCOL_AND_SCHEMA_FROZEN / PAIR_SUPPORT_AUDIT_AVAILABLE / R13_ORACLE_HEADROOM_PASS / R27_OPENLORIS_FRESH_SOURCE_FAIL / R36_FRESH_PARENT_FAIL / R37_CLOSED / R38_R32_FRESH_PARENT_CONFIRMATION_FAIL / TARO_CLOSED_NO_RESCUE`
 
 ## 研究问题与版本
 
@@ -32,8 +32,10 @@ machine-readable schema、measurement-only observability、有限弱子空间 ta
 - positive-oracle 与 R13–R30 task-evidence runtime、测试和运行说明位于
   [`taro_o1r_r12_clear_observability_runtime`](../taro_o1r_r12_clear_observability_runtime/README.md)；当前 Bonn
   R1 因 recovery/CLEAR parent 分母不足而 `NOT_EVALUABLE`；R27 已在 ARKit/TUM 完整过门，但 Bonn dynamic
-  与 fresh OpenLORIS 均发生 macro 回归，现已拒绝。当前只授权 consumed R31 reliability/occlusion-consistency
-  Development，以及后续另立 source/parent-disjoint confirmation。
+  与 fresh OpenLORIS 均发生 macro 回归，现已拒绝。R31/R35 随后被 R36 fresh parents 拒绝，R37 关闭；
+  R38 对 R32 的唯一一次 ARKitScenes Validation parent-disjoint confirmation 又得到
+  `22.0682 < 25.0227 generic`、strict-win `2/5`，有效 FAIL。当前 TARO 没有 active successor；本目录只保留
+  hash-bound replay/verification，不授权 R39/R40/R41 rescue。
 
 运行：
 

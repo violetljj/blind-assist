@@ -1,6 +1,6 @@
 # BlindAssist TARO
 
-状态：`current / ALGORITHM_PRIORITY / R31_V6_LEAK_INVALIDATED / R36_FRESH_PARENT_FAIL / R31_R35_FRESH_PARENT_REJECTED / R37_OPENLORIS_DEVELOPMENT_FAIL / R37_CLOSED / R38_R32_ARKIT_FRESH_PARENT_SOURCE_MATERIALIZED / R38_OUTCOME_SEALED / USER_PAUSED_BEFORE_REFERENCE_PREFLIGHT / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
+状态：`current / R31_V6_LEAK_INVALIDATED / R36_FRESH_PARENT_FAIL / R31_R35_FRESH_PARENT_REJECTED / R37_OPENLORIS_DEVELOPMENT_FAIL / R37_CLOSED / R38_REFERENCE_PREFLIGHT_PASS / R38_R32_FRESH_PARENT_CONFIRMATION_FAIL / TARO_CLOSED_NO_RESCUE / NO_ACTIVE_SUCCESSOR / CORE_SELECTOR_DEFAULT_OFF / DEFAULT_APP_UNCHANGED`
 
 本页只维护 TARO 当前状态、权限和唯一算法 successor。较早完整 R0–R11 叙事保存在
 [14d8ad7e 历史快照](archive/README_FULL_HISTORY_2026-08-13.md)，不能从中恢复旧权限。
@@ -114,6 +114,12 @@ Android、HTP 或默认 App 自动继承权限。
   terminal 为 `POSE_DIVERSE_POSITIVE_VISUAL_EVIDENCE_PASS`。这只证明单设备受控场景中冻结模型的屏幕空间
   positive-evidence observability，不证明 detector accuracy、body/path 几何、碰撞正确性、产品或安全。
 - 默认 App source audit 显示 CameraX 接缝不承载同帧 ARCore pose；SharedCamera protocol 虽已锁定，但在当前算法优先级下不再是 active successor，默认 App 不变。
+- R38 reference-input-only preflight 在 candidate RGB/model、candidate sensor depth 与 task outcome 均未打开时，
+  冻结出全局 role-disjoint 的 `11 parents / 25 references / 112 unique candidates`，通过预冻的
+  `8-parent / 24-reference` 分母门。唯一一次 R32 confirmation 随后有效消费：ranker parent-macro
+  `22.0682 < 25.0227 generic`，虽高于 passive `15.3561`，但 5 个 opportunity parents 仅 2 个 strict win，
+  同时失败 macro 与 `max(3, 50%)` strict-win 门。其余分母、同预算、retention、identity 和 score-before-target
+  firewall 全部通过；终态是有效算法确认 FAIL，不是实验失效。R32 不再允许用 R38 回调或 rescue，TARO 当前关闭且无 active successor。
 
 ## 当前证据入口
 
@@ -133,6 +139,7 @@ Android、HTP 或默认 App 自动继承权限。
 - [R26-R30 reprojection results](TARO_REPROJECTION_VISIBILITY_SCORER_RESULTS_2026-08-14.json) · [OpenLORIS home fresh-source result](TARO_R27_OPENLORIS_HOME_FRESH_SOURCE_RESULT_2026-08-14.json)
 - [R31-v7 / R35 zero-leakage Development and R36 fresh-parent rejection](TARO_R31_R36_RELIABILITY_REGIME_AND_FRESH_PARENT_RESULT_2026-08-15.json)
 - [R37 pose-constrained geometry rejection and R38 fresh ARKit source checkpoint](TARO_R37_R38_POSE_GEOMETRY_AND_FRESH_ARKIT_SOURCE_RESULT_2026-08-15.json)
+- [R38 R32 fresh-parent confirmation failure](TARO_R38_R32_ARKITSCENES_FRESH_PARENT_CONFIRMATION_RESULT_2026-08-15.json) · [execution lock](TARO_R38_R32_ARKITSCENES_FRESH_PARENT_CONFIRMATION_EXECUTION_LOCK_2026-08-15.json)
 - [Pose-diverse portfolio and default-off core selector](TARO_POSE_DIVERSE_BASELINE_PORTFOLIO_AND_CORE_SELECTOR_RESULT_2026-08-13.json)
 - [Historical isolated canary preflight and superseded device environment stop](TARO_POSE_DIVERSE_SELECTOR_ISOLATED_CANARY_PREFLIGHT_RESULT_2026-08-13.json)
 - [ARCore device selector, raw-depth stop and RGB pair-support result](TARO_POSE_DIVERSE_ARCORE_DEVICE_AND_RGB_PAIR_RESULT_2026-08-13.json)
@@ -145,21 +152,21 @@ Android、HTP 或默认 App 自动继承权限。
 
 ## 唯一 successor
 
-`TARO_R38_R32_ARKITSCENES_FRESH_PARENT_CONFIRMATION_R0`：
+无。`TARO_R38_R32_ARKITSCENES_FRESH_PARENT_CONFIRMATION_R0` 已消费并关闭：
 
 1. R31-v6 的 inference opportunity anchor 读取了 target-derived coverage，相关零泄漏主张已作废；R31-v7 修复后，R35 source-regime policy 只在 consumed Development 四源通过；
 2. R36 在未见的 OpenLORIS corridor1-3..5 上零泄漏执行有效，但 ranker 与 generic 同为 `31.8333`，strict-win parents `0/3`，opportunity parents `2/3`，终态 fresh-parent FAIL；R31/R35 不再允许在这些 parent 上回调；
 3. R37 的 pose-constrained candidate scale+shift 在 consumed OpenLORIS home 上只得 `16.16 < 17.36` generic，strict-win parents `2/5 < 3/5`；预先有界的八种高容量 LOPO 组合也均未超过 generic，因此 R37 已关闭；
-4. R32 的 reference-sensor-anchored frozen metric monocular geometry 在 consumed ARKitScenes 上曾取得 `21.9392 > 16.4490` 且 strict-win parents `5/17`。R38 已按冻结哈希、未使用 video/visit 身份和轨迹能力，从官方 Validation 锁定并材料化 12 个 parent、3600 帧；candidate depth decode、task outcome、model output 和 reference preflight 均仍为零/false；
-5. 用户恢复后，只允许先做 reference-input-only evaluability preflight，冻结 role-disjoint identities，再执行一次 R32 confirmation。不得用 R38 fresh-parent outcome 改模型、阈值、候选或 gate。
+4. R32 的 reference-sensor-anchored frozen metric monocular geometry 在 consumed ARKitScenes 上曾取得 `21.9392 > 16.4490` 且 strict-win parents `5/17`；
+5. R38 在 12 个全新 Validation parents 上先完成 reference-only preflight，再冻结 `11/25/112` role-disjoint identity。唯一一次 confirmation 得到 `22.0682 < 25.0227 generic`、strict-win `2/5`，有效 FAIL；不得用 R38 outcome 改模型、阈值、候选或 gate，也不建立 R39/R40/R41 rescue。
 
 R11 outcome 只能作为 consumed Development 做后验诊断，不能改写 source selection 或 R11 terminal；任何 dual-class confirmation 仍需 untouched parents。
 
 ## 当前允许
 
 - 保留 R27、R31/R35、R36 和 R37 的 exact identities、selection seal、基线、分母和失败终态，禁止覆盖重跑；
-- 在用户恢复后，对 R38 已材料化的 12 个新 ARKitScenes Validation parents 做 reference-input-only preflight；
-- 在 candidate sensor depth 和 task outcome 仍封存时冻结最终 reference/candidate role-disjoint selection，再执行一次 R32 confirmation；
+- 只读复核 R38 preflight、execution lock、selection seal、result 与 hash binding；
+- 将 R31–R38 负结果链和 DepthART D3R6 可信 Development candidate 用于论文主线盘点，但不自动恢复任何算法执行权限；
 - 对 consumed R11 evidence 做明确标注的只读后验机制诊断；
 - 重放 hash-bound tests、validator 和只读 evidence 复核。
 
@@ -172,7 +179,8 @@ R11 outcome 只能作为 consumed Development 做后验诊断，不能改写 sou
 - 在 R23–R30 已消费表上调容量、loss、seed、gate、background correction 或 RGB channels，并把 post-hoc fold 改善包装成 confirmation；
 - 在 OpenLORIS home1-1..5 或 corridor1-3..5 上回调 R31/R35/R36，或用 R36 outcome 选择 R37 参数；
 - 将 candidate sensor depth、target coverage、target gain 或任何 outcome-derived anchor 输入 R37 的 scale、shift、score、gate 或 selection；
-- 在 R37 上继续调模型容量、特征组合或 LOPO estimator；在 R38 identity seal 前打开 candidate depth，或用 R38 结果回调 R32；
+- 在 R37 上继续调模型容量、特征组合或 LOPO estimator；覆盖或重跑 R38 one-shot，或用 R38 结果回调 R32；
+- 建立 R39/R40/R41 或其他 TARO rescue continuation；新 TARO 问题必须由用户重新授权 materially different hypothesis 和新协议；
 - 将 generic core selector 或本次单设备 screen-space PASS 写成 task-specific scorer、跨设备成功、任务增益、
   风险融合、默认 App 或产品成功；
 - 把独立 ARCore Session 直接并挂到当前 CameraX analyzer，或在缺少 exact ARCore pose 时运行已验证 selector；
@@ -182,5 +190,4 @@ R11 outcome 只能作为 consumed Development 做后验诊断，不能改写 sou
 
 ## Claim ceiling
 
-R13 有 task-conditioned oracle headroom；R27 已被 fresh-source 拒绝。R31-v7/R35 被 R36 fresh-parent 拒绝；R37 在 consumed OpenLORIS 上回归并已关闭。
-当前仍没有算法突破。R38 只是 R32 的 parent-disjoint ARKitScenes source-regime confirmation 候选，现停在 12-parent source-only materialization、结果未开；即使未来 PASS，也不等于 fresh-source 或 broad-domain confirmation。设备证据不替代 fresh RGB-D+pose 验证，未证明 detector accuracy、碰撞、产品或安全，默认 App 不变。
+R13 有 task-conditioned oracle headroom；R27 已被 fresh-source 拒绝。R31-v7/R35 被 R36 fresh-parent 拒绝；R37 在 consumed OpenLORIS 上回归并已关闭。R38 又以有效的 parent-disjoint ARKitScenes Validation confirmation 拒绝冻结 R32：`22.0682 < 25.0227 generic`、strict-win `2/5`。当前 TARO 没有算法突破、没有 active successor，也不能以 rescue tuning 续命。该负结果不证明 task-directed observability 整体不可能；设备证据仍不替代 fresh RGB-D+pose 验证，未证明 detector accuracy、碰撞、产品或安全，默认 App 不变。
