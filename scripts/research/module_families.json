@@ -5,6 +5,7 @@
     "assistive_geometry",
     "taro",
     "satom",
+    "ga_satom",
     "assistive_geometry_cbf",
     "assistive_geometry_qsf",
     "depth_geometry",
@@ -41,6 +42,13 @@
         "^satom_r0$"
       ],
       "dynamic_truth": "docs/research/satom/README.md"
+    },
+    "ga_satom": {
+      "description": "GA-SATOM independent physical metric ground-anchor observability exploration",
+      "patterns": [
+        "^ga_satom_g0$"
+      ],
+      "dynamic_truth": "docs/research/ga-satom/README.md"
     },
     "assistive_geometry_cbf": {
       "description": "与主线资源隔离的 AG-CBF TRAIN-only corridor bottleneck WILD_LAB 路线",

@@ -1,6 +1,6 @@
 # Research Module Index
 
-状态：`current / navigation-only / 84-of-84`
+状态：`current / navigation-only / 85-of-85`
 
 本页只回答“Module 在哪里、属于哪个研究族”。动态状态、successor 和权限必须回到每个
 Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导。
@@ -13,7 +13,7 @@ Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导�
 - [`dual_loop`](dual_loop/README.md)
 - [`hftf`](hftf/README.md)
 
-## Assistive Geometry、TARO、SATOM、DepthART、metric-depth 与几何（28）
+## Assistive Geometry、TARO、SATOM、DepthART、metric-depth 与几何（29）
 
 - [`assistive_geometry`](assistive_geometry/README.md)
 - [`assistive_geometry_cbf`](assistive_geometry_cbf/README.md)
@@ -21,6 +21,7 @@ Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导�
 - [`central_obstruction_agent_label_readiness_d0a`](central_obstruction_agent_label_readiness_d0a/README.md)
 - [`dual_rate_metric_depth_observer_r1`](dual_rate_metric_depth_observer_r1/README.md)
 - [`egomotion_compensated_looming`](egomotion_compensated_looming/README.md)
+- [`ga_satom_g0`](ga_satom_g0/README.md)
 - [`hftf_d7_public_real`](hftf_d7_public_real/README.md)
 - [`known_camera_height_ground_scale_r0`](known_camera_height_ground_scale_r0/README.md)
 - [`metric_depth_successors_r0`](metric_depth_successors_r0/README.md)

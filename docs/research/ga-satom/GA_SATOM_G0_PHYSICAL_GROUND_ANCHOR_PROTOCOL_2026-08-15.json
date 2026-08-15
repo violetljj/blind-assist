@@ -1,0 +1,165 @@
+{
+  "schema": "blindassist.ga_satom_g0.protocol.v1",
+  "protocol_id": "GA_SATOM_G0_PHYSICAL_GROUND_ANCHOR_20260815_R0",
+  "date": "2026-08-15",
+  "status": "FROZEN_PREOUTCOME_BLOCKED_ON_PHYSICAL_MULTIZONE_HARDWARE_REGISTRATION_AND_ROSTER_ACTIVATION",
+  "research_mode": "WILD_LAB",
+  "research_question": "Can a fixed, budget-counted physical multi-zone ToF ground-anchor pattern make RGB-camera height stably observable on fresh real parents without using a dense visual prior or evaluator truth?",
+  "independence_from_satom_r0": {
+    "new_route": true,
+    "reuses_bonn_parents": false,
+    "reuses_opened_depthart_outputs": false,
+    "uses_depthart_height": false,
+    "uses_truth_height_in_candidate": false,
+    "rationale": "SATOM-R0 terminated before arm metrics because the visual prior did not establish a metric ground origin; G0 gives that role to an independent physical metric observation."
+  },
+  "external_basis": [
+    {
+      "work": "Dense Metric Depth Completion from Sparse Direct Time-of-Flight Sensors",
+      "venue": "CVPR 2026",
+      "url": "https://openaccess.thecvf.com/content/CVPR2026/html/Kim_Dense_Metric_Depth_Completion_from_Sparse_Direct_Time-of-Flight_Sensors_CVPR_2026_paper.html",
+      "bounded_relevance": "supports the premise that extremely sparse physical dToF can alter metric-depth identifiability; does not validate this G0 estimator or gate"
+    },
+    {
+      "work": "ToF-Splatting: Dense SLAM using Sparse Time-of-Flight Depth and Multi-Frame Integration",
+      "venue": "ICCV 2025",
+      "url": "https://openaccess.thecvf.com/content/ICCV2025/html/Conti_ToF-Splatting_Dense_SLAM_using_Sparse_Time-of-Flight_Depth_and_Multi-Frame_Integration_ICCV_2025_paper.html",
+      "bounded_relevance": "supports sparse-ToF plus multi-frame geometry as a viable research substrate; does not establish ground-height observability"
+    },
+    {
+      "work": "Flexible Depth Completion for Sparse and Varying Point Densities",
+      "venue": "CVPR 2024",
+      "url": "https://openaccess.thecvf.com/content/CVPR2024/html/Park_Flexible_Depth_Completion_for_Sparse_and_Varying_Point_Densities_CVPR_2024_paper.html",
+      "bounded_relevance": "supports explicit treatment of sparse-point count and spatial distribution; G0 performs no depth completion"
+    }
+  ],
+  "hardware_contract": {
+    "sensor": "ST VL53L8CX",
+    "mode": "8x8 continuous ranging at 15 Hz",
+    "range_and_quality": "all 64 zones retain normalized range_m, sigma_m, status and host-monotonic timestamp",
+    "registration": "admitted rigid ToF-to-RGB transform plus per-zone ray table and RGB-coordinate sensor origin",
+    "gravity": "independently calibrated IMU-to-RGB transform and per-frame unit gravity-down in RGB coordinates",
+    "reference_truth": "independent rigid mechanical measurement of RGB optical-center height with uncertainty <=0.01 m",
+    "existing_selection": "scripts/research/hftf/MULTIZONE_TOF_HARDWARE_SELECTION_R0.json",
+    "single_zone_tof4m_admitted": false,
+    "simulated_tof_admitted": false,
+    "procurement_present_at_lock": false
+  },
+  "information_budget": {
+    "unit": "one exposed zone-range observation per sensor frame",
+    "total_zone_budget": 64,
+    "anchor_zone_budget": 12,
+    "anchor_fraction": 0.1875,
+    "future_task_zone_budget_if_g1_is_separately_authorized": 52,
+    "g0_exposes_task_zones_to_candidate": false,
+    "physical_power_claim": false,
+    "interpretation": "VL53L8CX physically acquires a full frame; this protocol freezes an algorithmic information budget, not a measured energy or emitter-firing budget."
+  },
+  "anchor_estimator": {
+    "total_zone_budget": 64,
+    "anchor_zone_ids": [
+      "r7c0", "r7c1", "r7c2", "r7c3", "r7c4", "r7c5", "r7c6", "r7c7",
+      "r6c2", "r6c3", "r6c4", "r6c5"
+    ],
+    "minimum_range_m": 0.2,
+    "maximum_range_m": 4.0,
+    "maximum_sigma_m": 0.05,
+    "support_tolerance_m": 0.06,
+    "minimum_support_zones": 6,
+    "minimum_support_fraction": 0.5,
+    "maximum_height_sigma_m": 0.05
+  },
+  "fresh_source_contract": {
+    "evidence_role": "FRESH_PHYSICAL_G0",
+    "minimum_parent_count": 8,
+    "parent_definition": "one site-by-surface setup with a separately logged floor identity; frames or rig heights from the same setup are not separate parents",
+    "minimum_sites": 2,
+    "surface_strata": [
+      "matte_light_hard_floor",
+      "dark_low_reflectance_floor_or_mat",
+      "textured_or_carpet_floor",
+      "specular_or_bright_tile_floor"
+    ],
+    "minimum_parents_per_surface_stratum": 2,
+    "episode_grid": {
+      "reference_rgb_camera_heights_m": [1.2, 1.5, 1.8],
+      "rig_pitch_degrees": [-5.0, 0.0, 5.0],
+      "duration_seconds_each": 20,
+      "nominal_frame_rate_hz": 15,
+      "episodes_per_parent": 9,
+      "registered_time_slots_per_episode": 300,
+      "registered_time_slots_per_parent": 2700,
+      "missing_capture_rule": "every pre-registered slot remains in both streams; a missing or unusable physical sample is encoded as a complete 64-zone frame with INVALID zone status and therefore remains in the coverage denominator",
+      "timestamp_rule": "host-monotonic timestamps must increase in frozen frame-slot order within every parent and episode"
+    },
+    "required_challenge_content": "at least one episode per parent contains a predeclared partial non-ground occluder crossing anchor zones; evaluator labels every anchor zone GROUND, NON_GROUND or UNRESOLVED",
+    "old_bonn_or_tof_capture_allowed": false,
+    "selection_after_range_outcome_access_allowed": false
+  },
+  "activation_contract": {
+    "outcome_access_authorized": false,
+    "required_before_first_range_capture": [
+      "exact VL53L8CX device serial and firmware/source hashes",
+      "admitted RGB intrinsics and ToF-to-RGB registration identities plus hashes",
+      "admitted IMU-to-RGB gravity registration identity plus hash",
+      "reference height instrument identity, calibration receipt and <=0.01 m uncertainty",
+      "exact eight-parent site/surface roster and nine-episode schedule per parent",
+      "exact 300-slot identity ledger per episode; no outcome-dependent deletion or denominator repair",
+      "measurement/truth writer hashes and empty exclusive artifact root"
+    ],
+    "activation_receipt_required": true,
+    "activation_receipt_executable_fields": {
+      "schema": "blindassist.ga_satom_g0.activation.v1",
+      "status": "ACTIVATED_FOR_FRESH_PHYSICAL_CAPTURE",
+      "protocol_id_and_sha256": "must bind this exact frozen protocol",
+      "frozen_parent_ids": "exactly eight unique IDs",
+      "parent_records": "one record per frozen parent with parent_id, nonempty site_id, one frozen surface_stratum and a predeclared occluder_episode_id",
+      "frozen_episode_ids": "exactly nine unique IDs",
+      "episode_records": "one record per episode ID covering exactly the 3 heights by 3 pitches grid",
+      "expected_frames_per_episode": 300,
+      "frozen_frame_ids": "exactly 300 unique pre-capture time-slot IDs reused as the fixed denominator for every parent and episode",
+      "bindings": [
+        "device_serial", "firmware_sha256", "source_sha256", "rgb_intrinsics_sha256",
+        "tof_to_rgb_registration_sha256", "imu_to_rgb_registration_sha256",
+        "reference_instrument_id", "calibration_receipt_sha256",
+        "measurement_writer_sha256", "truth_writer_sha256", "artifact_root"
+      ]
+    },
+    "activation_cannot_change_estimator_or_winner_rule": true
+  },
+  "metrics": [
+    "parent_macro and worst-parent valid-support coverage",
+    "parent_macro and worst-parent absolute RGB-camera-height error",
+    "worst-parent height-error MAD",
+    "parent-macro and worst-parent false-ground support rate",
+    "worst-parent catastrophic false-anchor rate",
+    "worst-parent within-episode temporal-jitter P95"
+  ],
+  "winner_rule": {
+    "minimum_parent_count": 8,
+    "parent_macro_coverage_min": 0.95,
+    "worst_parent_coverage_min": 0.9,
+    "parent_macro_height_mae_m_max": 0.08,
+    "worst_parent_height_mae_m_max": 0.12,
+    "worst_parent_height_error_mad_m_max": 0.08,
+    "parent_macro_false_ground_support_rate_max": 0.02,
+    "worst_parent_false_ground_support_rate_max": 0.05,
+    "worst_parent_catastrophic_false_anchor_rate_max": 0.01,
+    "worst_parent_temporal_jitter_p95_m_max": 0.08
+  },
+  "authority": {
+    "g0_runs_satom_arms": false,
+    "g0_loads_depthart": false,
+    "g0_trains_any_model": false,
+    "g1_authorized": false,
+    "android_or_default_app_authorized": false,
+    "paper_or_safety_claim_authorized": false
+  },
+  "stopping_rule": {
+    "pass": "G0 only establishes physical metric ground-height observability; a separately frozen equal-total-budget G1 may then be proposed, not automatically run.",
+    "fail_or_not_evaluable": "Close the ground/body-space SATOM family without changing G0 on opened outcomes; any future route must use a height-independent angular/TTC representation or a materially different pre-outcome metric reference."
+  },
+  "artifact_root": "artifacts.local/evidence/ga-satom-g0/",
+  "claim_ceiling": "pre-outcome physical ground-anchor protocol and mechanics only; no real G0 result, SATOM headroom, training, device deployment, product, safety, or paper authority",
+  "default_app_changed": false
+}

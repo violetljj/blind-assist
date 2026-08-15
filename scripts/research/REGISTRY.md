@@ -17,6 +17,7 @@ identity，不代表当前 authority。
 | 双环 | [`dual_loop/README.md`](dual_loop/README.md) | 论文次线与 risk-seg/temporal 研究；动态状态以 `docs/research/dual-loop/README.md` 为准 |
 | 候选事件 | [`candidate_event_mining/README.md`](candidate_event_mining/README.md) | discovery-only 候选池与复核 bundle |
 | 公共实现 | [`common/README.md`](common/README.md) | 至少两个域证明复用后的共享实现 |
+| GA-SATOM G0 | [`ga_satom_g0/README.md`](ga_satom_g0/README.md) | physical metric ground-anchor observability only；动态状态以 `docs/research/ga-satom/README.md` 为准 |
 
 ## HFTF 职责分层
 

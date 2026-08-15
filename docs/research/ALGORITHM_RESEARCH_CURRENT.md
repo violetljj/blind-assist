@@ -1,12 +1,14 @@
 # 算法研究入口
 
-状态：`current / ALGORITHM_FOCUS=NONE / ACTIVE_REVERSIBLE_LANES=0 / SATOM_R0_REAL_E0_NOT_EVALUABLE_CLOSED / SCHEDULE=EVIDENCE_GATED_NO_DAY_QUOTA`
+状态：`current / ALGORITHM_FOCUS=GA_SATOM_G0 / ACTIVE_REVERSIBLE_LANES=1 / GA_SATOM_G0_PREOUTCOME_PROTOCOL_FROZEN / SCHEDULE=EVIDENCE_GATED_NO_DAY_QUOTA`
 
 Assistive Geometry 的 factor-wise、obstacle 与 Q-Plane 表示支线均已按停止条件关闭；TARO R38 也已在
 parent-disjoint ARKitScenes Validation confirmation 上有效失败并关闭。用户已明确新开 SATOM-A，
 它通过主动稀疏 metric range 与 causal task-space memory 改变输入信息、时间结构、表示和动作，
 不是旧 selector 的 rescue continuation。SATOM-R0 的 Bonn Real E0 在任何 arm metric 产生前，
 因 frozen DepthART prior 无法稳定提供 ground-height observability 而 `NOT_EVALUABLE` 并关闭。
+用户已明确新开与该失败正交的 GA-SATOM；G0 只检验预算内 physical ToF ground anchor，
+不运行 SATOM arms。当前缺 VL53L8CX physical bench、registration 与 exact fresh roster，未激活 outcome access。
 DepthART D3R6 仍保持暂停；其 bounded deferral contract 与 fresh gate 保留，但 post-hoc
 same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6 执行权限。
 
@@ -15,6 +17,7 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
+| GA-SATOM | 固定总稀疏测距信息预算内，先建立 metric ground frame，再保留剩余预算给未来 task sensing | `WILD_LAB / GA_SATOM_G0_PREOUTCOME_PROTOCOL_FROZEN / BLOCKED_ON_PHYSICAL_VL53L8CX_REGISTRATION_AND_FRESH_ROSTER / REAL_G0_NOT_RUN / NO_SATOM_ARMS / NO_TRAINING` | [GA-SATOM current](ga-satom/README.md) | `GA_SATOM_G0_PHYSICAL_CAPTURE_PREFLIGHT`：outcome access 前绑定硬件、registration、机械高度 reference 与 exact fresh roster | 用单区/模拟/旧输出替代 physical G0；把 information budget 写成功耗预算；提前运行 G1/arm/训练 | 否 |
 | SATOM-A | metric pose + active sparse ToF + frozen dense prior → causal task-space occupancy memory | `WILD_LAB / SATOM_R0_REAL_E0_NOT_EVALUABLE / DEPTHART_GROUND_HEIGHT_OBSERVABILITY_FAIL / NO_ARM_METRIC / CLOSED_NO_TUNING` | [SATOM-A current](satom/README.md) | 无；新的 pre-outcome 协议须先提供独立 ground-height observability 或 materially different representation | 用 truth height/scale 修补 candidate；在已打开 Bonn/DepthART 输出上放宽高度门、改 winner rule、训练或接 Android | 否 |
 | BlindAssist Assistive Geometry | 连续因子 → selective no-regret → body-swept geometry | `CORRECTION_GAIN_LOPO_FAIL_STOP / ANGULAR_BOUNDARY_FAIL_CLOSED_SAFE_BUT_TASK_INERT / SUPPORT_VALIDITY_FAIL_OPEN / OBSTACLE_RGB_INTERACTION_FAIL_STOP / POSE_ANALYTIC_FAIL_STOP / QPLANE_O0A_REPRESENTATION_HEADROOM_FAIL_CLOSE_NO_TRAINING / CURRENT_OBSTACLE_TASK_ROUTE_CLOSED / SCIENTIFIC_NOT_RUN` | [Assistive Geometry current](assistive-geometry/README.md) | 无 active successor；需新增 source-native obstacle supervision，或 Q-Plane 家族之外的 materially different representation 后另立协议 | 调参/重跑 Q-Plane 或进入 O0-B/训练；继续调旧 obstacle 候选；让 support 创建 validity；重开 correction/boundary/fresh3；把 consumed negative 写成 task success | 否 |
 | TARO / Task-directed Active Risk Observability | 同预算观测使 body/path query 更早可识别 | `R31_V6_LEAK_INVALIDATED / R36_FRESH_PARENT_FAIL / R37_CLOSED / R38_REFERENCE_PREFLIGHT_PASS / R38_R32_FRESH_PARENT_CONFIRMATION_FAIL / TARO_CLOSED_NO_RESCUE` | [TARO current](taro/README.md) | 无；R38 已有效消费，论文主线盘点前不建立 R39/R40/R41 | 覆盖/重跑 R38；回调 R31/R32/R35/R36/R37；以 R38 outcome rescue tuning；接默认 App/risk/guidance；夸大为 fresh-source、broad breakthrough、安全或产品成功 | 否 |
