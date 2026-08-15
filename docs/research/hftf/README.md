@@ -1,6 +1,6 @@
 # DepthART 算法路线
 
-状态：`current / DEVELOPMENT_STANDARD / R1_RESEARCH_MAINLINE / STRICT_G4D_NEGATIVE_TERMINAL / D1_TASK_QUALITY_FAIL_TERMINAL / D2_DEVELOPMENT_FROZEN_HEAD_QUALITY_FAIL_TERMINAL / D3R1_D3R2_EXECUTION_INVALID_TERMINALS_PRESERVED / D3R3_EXACT64_CENSUS_PASS_9597_OF_9600_PAIRED / D3R4_D3R5_DIRECT_VETO_NEGATIVES_PRESERVED / D3R6_BUDGETED_UNKNOWN_DEFERRAL_FRESH_CONFIRMATION_PASS / DEVELOPMENT_CANDIDATE_ONLY / USER_PAUSED / R2_CANDIDATE_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / DEVELOPMENT_STANDARD / R1_RESEARCH_MAINLINE / STRICT_G4D_NEGATIVE_TERMINAL / D1_TASK_QUALITY_FAIL_TERMINAL / D2_DEVELOPMENT_FROZEN_HEAD_QUALITY_FAIL_TERMINAL / D3R1_D3R2_EXECUTION_INVALID_TERMINALS_PRESERVED / D3R3_EXACT64_CENSUS_PASS_9597_OF_9600_PAIRED / D3R4_D3R5_DIRECT_VETO_NEGATIVES_PRESERVED / D3R6_FROZEN_GATE_PASS / BOUNDED_DEFERRAL_CONTRACT_PRESERVED / POSTHOC_SAME_DOMAIN_RANDOM_AUDIT_NO_INCREMENTAL_RANKING_SUPPORT / USER_PAUSED / R2_CANDIDATE_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
 本页只维护 DepthART 当前摘要、权限和唯一 successor。完整旧历史在
 [2026-08-07 快照](archive/README_FULL_HISTORY_2026-08-07.md)，不得据此恢复权限。
@@ -27,6 +27,9 @@ admission，也不等于正式 App 能力。
   `18.92% -> 18.92%`，coverage 恰好下降 `2.00%`，fresh confirmation PASS。
 - D3R6 只锁为 Development candidate。按用户要求，本轮完成后路线暂停；不自动进入 R2、设备、
   Android 默认、产品或安全。
+- 后续 post-hoc same-domain random comparator 审计中，D3R6 移除 `335` 个 false-clear，低于
+  随机选择的期望 `363.704`。因此保留 frozen gate PASS 与 bounded deferral contract，但不再
+  把 risk ranking 描述为已有增量收益证据。
 
 ## 当前证据入口
 
@@ -58,6 +61,7 @@ admission，也不等于正式 App 能力。
 
 ## Claim ceiling
 
-当前证明：D3R6 的 parent-relative risk ranking 加固定 per-parent UNKNOWN budget，在 TRAIN-frozen
-规则下通过一组 8-parent fresh confirmation，并把 coverage/false-block 代价结构性封顶。它是可信的
-Development candidate 和负结果驱动的新机制，不证明 sealed R2、跨数据域、部署、默认 App 或用户安全。
+当前证明：D3R6 的固定 per-parent UNKNOWN budget 在 TRAIN-frozen 规则下通过一组 8-parent fresh
+confirmation，并把 coverage/false-block 代价结构性封顶。后续 same-domain random audit 不支持
+parent-relative risk ranking 的增量收益，因此不能把 gate PASS 解释为 ranking 优于随机。它不证明
+sealed R2、跨数据域、部署、默认 App 或用户安全。

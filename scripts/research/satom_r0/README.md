@@ -1,6 +1,6 @@
 # SATOM-R0
 
-状态：`ACTIVE_REVERSIBLE_EXPLORATION / IMPLEMENTED_SYNTHETIC_MECHANICS_CANARY_ONLY / REAL_DEPTHART_PRIOR_DATASET_NOT_RUN`
+状态：`SATOM_R0_REAL_E0_NOT_EVALUABLE / DEPTHART_GROUND_HEIGHT_OBSERVABILITY_FAIL / NO_ARM_METRIC / CLOSED_NO_TUNING`
 
 ## 科学问题
 
@@ -21,7 +21,8 @@ continuation。旧路线 terminal、数据角色和禁止动作保持不变。
   五种因果策略；策略只读过去 memory、当前 frozen prior summary、frame index 和 seeded RNG；
 - 单帧 prior、ToF-only、uniform multi-frame fusion 基线；
 - shuffled timestamp、wrong extrinsic、wrong ROI 负控；
-- pooled、parent-macro、worst-parent、false-clear、false-block、coverage、clearance MAE、ECE。
+- pooled、parent-macro、worst-parent、false-clear、false-block、coverage、clearance MAE、ECE，
+  以及固定 coverage 点和三维 risk/coverage Pareto 诊断。
 
 当前 canary 的 prior 是由合成 truth 人工扰动得到的
 `SYNTHETIC_DEPTHART_LIKE_PRIOR`，只验证 mechanics、因果性和 evaluator，绝不算
@@ -70,11 +71,12 @@ memory 不得读取 truth、未来帧或完整 parent 分布。所有输出均�
 
 ## 停止条件
 
-唯一 successor：在现有 Bonn（优先）或其他完整 RGB-D+pose Development parent 上，
-物化与 RGB/pose 同时间绑定的 frozen DepthART dense prior，建立 real manifest，先跑
-最小多-parent E0。TUM 原始主包当前本机已清理，不把历史 clearance report 伪装成 dense prior。
+预冻结的 Bonn Real E0 已在任何 arm metric 产生前触发 ground-height observability 守卫；
+三次 materialization attempt 均为 0 output file，最终 parent-level candidate height MAD
+超过冻结上限。结果真源为
+[SATOM-R0 Bonn Real E0 NOT_EVALUABLE](../../../docs/research/satom/SATOM_R0_BONN_REAL_E0_NOT_EVALUABLE_2026-08-15.md)。
 
-若 deterministic SATOM 在 parent-macro 与 worst-parent 上不能同时相对
-`single_frame_depthart / tof_only_round_robin / satom_random / satom_round_robin /
-uniform_multiframe_fusion` 显示可解释增量，则关闭 SATOM-A，不训练 refiner、memory
-网络或 scheduler。当前禁止训练、Android/设备接入、论文 claim、默认 App 或安全结论。
+SATOM-R0 已关闭且没有 active successor。不得在已打开的 Bonn/DepthART 输出上放宽高度门、
+改 winner rule 或继续运行；只有新的 pre-outcome 协议先提供独立 ground-height observability
+或 materially different representation 才可重开。当前禁止训练、Android/设备接入、论文
+claim、默认 App 或安全结论。

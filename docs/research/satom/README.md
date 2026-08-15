@@ -1,6 +1,6 @@
 # SATOM-A current
 
-状态：`current / WILD_LAB / DEVELOPMENT_STANDARD / SATOM_R0_ACTIVE_REVERSIBLE_EXPLORATION / SYNTHETIC_MECHANICS_ONLY / REAL_E0_NOT_RUN / DEFAULT_APP_UNCHANGED`
+状态：`current / WILD_LAB / DEVELOPMENT_STANDARD / SATOM_R0_REAL_E0_NOT_EVALUABLE / DEPTHART_GROUND_HEIGHT_OBSERVABILITY_FAIL / NO_ARM_METRIC / CLOSED_NO_TUNING / DEFAULT_APP_UNCHANGED`
 
 ## 主张
 
@@ -14,16 +14,18 @@ task-space occupancy memory，并按身体带与 horizon 输出 `CLEAR / OCCUPIE
 ## 当前证据
 
 [SATOM-R0 Module](../../../scripts/research/satom_r0/README.md) 已实现模拟、确定性 polar
-evidential memory、五种扫描策略、必要基线、parent 级指标及三项传感器负控。当前只运行
-合成 mechanics canary；合成 prior 不是 DepthART 输出，不构成 utility、真实 ToF、设备、
-论文创新、产品或安全证据。
+evidential memory、五种扫描策略、必要基线、parent 级指标、matched-coverage/Pareto 诊断及
+三项传感器负控。Bonn roster、DepthART prior、PRIMARY 和 winner rule 已在 outcome access
+前冻结，但 [Real E0](SATOM_R0_BONN_REAL_E0_NOT_EVALUABLE_2026-08-15.md) 在 arm metric 前
+因 DepthART ground-height observability 不稳定而 `NOT_EVALUABLE`。合成 prior 仍不是
+DepthART utility 证据；Real E0 没有算法结果。
 
 ## 唯一 successor
 
-`SATOM_R0_REAL_DEPTHART_PRIOR_MULTI_PARENT_E0`：从现有 Bonn RGB-D+pose Development
-数据开始，离线物化逐帧 frozen DepthART dense prior 并绑定 provenance，随后在同一
-evaluator 中执行最小多-parent E0。不得使用完整 parent 的未来分布选择 ROI、阈值、
-预算或 arm。
+无。状态为 `NONE / SATOM_R0_CLOSED_AFTER_REAL_E0_NOT_EVALUABLE`。只有新的 pre-outcome
+协议先提供 source-native ground height、独立 metric height observability，或不依赖绝对
+ground height 的 materially different task representation 后，才可重开；不得在已打开的
+Bonn/DepthART 输出上继续修改高度算法或 winner rule。
 
 ## 禁止动作
 
