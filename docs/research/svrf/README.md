@@ -1,6 +1,6 @@
 # SVRF current
 
-状态：`current / WILD_LAB / SVRF_O0_PREOUTCOME_PROTOCOL_FROZEN / RGB_ONLY / A2D2_SPRING_TWO_SOURCE_EIGHT_PARENT_METADATA_LOCK_VALID / BLOCKED_ON_SELECTIVE_MATERIALIZATION_AND_TRUTH_WRITER_LOCK / REAL_O0_NOT_RUN / NO_TRAINING / DEFAULT_APP_UNCHANGED`
+状态：`current / WILD_LAB / FROZEN_PREOUTCOME_BLOCKED_ON_SELECTIVE_MATERIALIZATION_AND_TRUTH_WRITER_LOCK / RGB_ONLY / A2D2_SPRING_TWO_SOURCE_EIGHT_PARENT_METADATA_LOCK_VALID / REAL_O0_NOT_RUN / NO_TRAINING / DEFAULT_APP_UNCHANGED`
 
 ## 主张
 
@@ -25,6 +25,10 @@ path intrusion，是否能稳定识别“相对逼近且侵入前向视觉通道
 - A2D2 是车载域且 5/8 parent 为 synthetic；未来 PASS 也不能写成助盲生态 confirmation。
   零 prior-use 只证明 BlindAssist 项目内 fresh，不能排除 DepthART/上游 foundation pretraining exposure；
   A2D2 payload 与派生帧不进入公共仓库，只允许本地分析和聚合指标。
+- truth 与 candidate 的 `UNKNOWN` 均须保留 exact identity；winner coverage 固定为“truth 有效且
+  candidate 有效 / 全部锁定 identity”。核心指标缺少任一 parent 支撑时为 `NOT_EVALUABLE`，禁止
+  静默跳过该 parent；candidate 内参政策固定为 `FIXED_CANONICAL_OR_RGB_DERIVED`，source-native
+  camera intrinsics 仅可位于 evaluator firewall 后。
 
 ## 既有资产边界
 

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections import Counter
 from dataclasses import dataclass
 import math
 from typing import Any
@@ -13,9 +14,10 @@ ARM_IDS = ("A0", "A1", "A2", "A3", "N0", "N1", "N2", "N3")
 SINGLE_ARM_IDS = ("A0", "A1", "A2")
 NEGATIVE_CONTROL_IDS = ("N0", "N1", "N2", "N3")
 CLASSES = ("APPROACHING", "STABLE", "RECEDING")
+TRUTH_VALID_STATUS = "VALID_TRUTH"
 BEST_SINGLE_RULE = (
-    "among A0-A2 meeting parent-macro coverage >= 0.70 and false-block <= 0.15, "
-    "minimize parent-macro false-clear, then maximize approach Macro-F1, then coverage; "
+    "among A0-A2 meeting parent-macro joint-evaluable coverage >= 0.70 and false-block <= 0.15, "
+    "minimize parent-macro false-clear, then maximize approach Macro-F1, then joint-evaluable coverage; "
     "no eligible single arm makes O0 fail-close"
 )
 
@@ -37,6 +39,7 @@ class EvaluationPolicy:
     matched_source_improvement_count_min: int = 2
     matched_coverage_delta_min: float = -0.02
     negative_control_macro_f1_degradation_min: float = 0.08
+    minimum_parents_with_core_metric_support: int = 8
 
 
 @dataclass(frozen=True)
@@ -68,6 +71,8 @@ class CandidateRow:
                 raise ValueError("valid SVRF candidate approach score must lie in [-1,1]")
             if self.risk_score is None or not math.isfinite(self.risk_score) or not 0 <= self.risk_score <= 1:
                 raise ValueError("valid SVRF candidate risk score must lie in [0,1]")
+        elif self.approach_score is not None or self.risk_score is not None:
+            raise ValueError("SVRF UNKNOWN candidate cannot carry scores")
 
 
 @dataclass(frozen=True)
@@ -77,11 +82,17 @@ class TruthRow:
     sequence_id: str
     frame_id: str
     region_id: str
-    approach_class: str
-    relative_risk: float
-    high_risk: bool
-    time_seconds: float = 0.0
+    truth_status: str = TRUTH_VALID_STATUS
+    unknown_reason: str | None = None
+    approach_class: str | None = None
+    relative_risk: float | None = None
+    high_risk: bool | None = None
+    time_seconds: float | None = None
     high_risk_onset_seconds: float | None = None
+
+    @property
+    def valid(self) -> bool:
+        return self.truth_status == TRUTH_VALID_STATUS
 
     @property
     def key(self) -> tuple[str, str, str, str]:
@@ -90,11 +101,32 @@ class TruthRow:
     def validate(self) -> None:
         if not all((self.source_id, self.parent_id, self.sequence_id, self.frame_id, self.region_id)):
             raise ValueError("SVRF truth identity is invalid")
+        if self.truth_status != TRUTH_VALID_STATUS and not self.truth_status.startswith("UNKNOWN_"):
+            raise ValueError("SVRF truth must be valid or fail-closed UNKNOWN")
+        if not self.valid:
+            if not self.unknown_reason:
+                raise ValueError("SVRF UNKNOWN truth requires an explicit reason")
+            if any(
+                value is not None
+                for value in (
+                    self.approach_class,
+                    self.relative_risk,
+                    self.high_risk,
+                    self.time_seconds,
+                    self.high_risk_onset_seconds,
+                )
+            ):
+                raise ValueError("SVRF UNKNOWN truth cannot carry evaluator labels")
+            return
+        if self.unknown_reason is not None:
+            raise ValueError("valid SVRF truth cannot carry an UNKNOWN reason")
         if self.approach_class not in CLASSES:
             raise ValueError("SVRF truth approach class is invalid")
-        if not math.isfinite(self.relative_risk) or not 0 <= self.relative_risk <= 1:
+        if self.relative_risk is None or not math.isfinite(self.relative_risk) or not 0 <= self.relative_risk <= 1:
             raise ValueError("SVRF truth relative risk must lie in [0,1]")
-        if not math.isfinite(self.time_seconds) or self.time_seconds < 0:
+        if not isinstance(self.high_risk, bool):
+            raise ValueError("valid SVRF truth high-risk identity is required")
+        if self.time_seconds is None or not math.isfinite(self.time_seconds) or self.time_seconds < 0:
             raise ValueError("SVRF truth time must be finite and non-negative")
         if self.high_risk_onset_seconds is not None and (
             not math.isfinite(self.high_risk_onset_seconds) or self.high_risk_onset_seconds < 0
@@ -115,7 +147,7 @@ def _predict_class(score: float) -> str:
 
 
 def _macro_f1(truth: list[str], prediction: list[str]) -> float | None:
-    if not truth:
+    if set(truth) != set(CLASSES):
         return None
     scores = []
     for label in CLASSES:
@@ -128,6 +160,8 @@ def _macro_f1(truth: list[str], prediction: list[str]) -> float | None:
 
 
 def _balanced_accuracy(truth: list[str], prediction: list[str]) -> float | None:
+    if set(truth) != set(CLASSES):
+        return None
     recalls = []
     for label in CLASSES:
         positives = sum(actual == label for actual in truth)
@@ -169,7 +203,7 @@ def _approaching_auroc(scores: list[float], truth: list[str]) -> float | None:
     return (rank_sum - positive_count * (positive_count + 1) / 2.0) / (positive_count * negative_count)
 
 
-def _pairwise_accuracy(rows: list[tuple[CandidateRow, TruthRow]]) -> float | None:
+def _pairwise_accuracy(rows: list[tuple[CandidateRow, TruthRow]]) -> tuple[float | None, int]:
     correct = 0
     total = 0
     by_frame: dict[tuple[str, str], list[tuple[CandidateRow, TruthRow]]] = {}
@@ -178,54 +212,69 @@ def _pairwise_accuracy(rows: list[tuple[CandidateRow, TruthRow]]) -> float | Non
     for values in by_frame.values():
         for left_index, left in enumerate(values):
             for right in values[left_index + 1:]:
-                truth_delta = left[1].relative_risk - right[1].relative_risk
+                truth_delta = float(left[1].relative_risk) - float(right[1].relative_risk)
                 if abs(truth_delta) < 0.10:
                     continue
                 predicted_delta = float(left[0].risk_score) - float(right[0].risk_score)
                 correct += int(predicted_delta * truth_delta > 0)
                 total += 1
-    return correct / total if total else None
+    return (correct / total if total else None), total
 
 
 def _time_to_detection(rows: list[tuple[CandidateRow, TruthRow]]) -> tuple[float | None, float | None, int]:
     episodes: dict[tuple[str, str, str], list[tuple[CandidateRow, TruthRow]]] = {}
     for candidate, truth in rows:
-        if truth.high_risk_onset_seconds is not None:
+        if truth.valid and truth.high_risk_onset_seconds is not None:
             episodes.setdefault((truth.parent_id, truth.sequence_id, truth.region_id), []).append((candidate, truth))
     delays: list[float] = []
     for values in episodes.values():
         onset = float(values[0][1].high_risk_onset_seconds)
         consecutive = 0
-        for candidate, truth in sorted(values, key=lambda pair: pair[1].time_seconds):
+        for candidate, truth in sorted(values, key=lambda pair: float(pair[1].time_seconds)):
             detected = (
                 candidate.valid
-                and truth.time_seconds >= onset
+                and float(truth.time_seconds) >= onset
                 and truth.approach_class == "APPROACHING"
                 and float(candidate.approach_score) >= 0.20
             )
             consecutive = consecutive + 1 if detected else 0
             if consecutive >= 2:
-                delays.append(truth.time_seconds - onset)
+                delays.append(float(truth.time_seconds) - onset)
                 break
     return _mean(delays), len(delays) / len(episodes) if episodes else None, len(episodes)
 
 
 def _parent_metrics(rows: list[tuple[CandidateRow, TruthRow]]) -> dict[str, float | int | None]:
-    valid = [(candidate, truth) for candidate, truth in rows if candidate.valid]
-    actual = [truth.approach_class for _, truth in valid]
-    predicted = [_predict_class(float(candidate.approach_score)) for candidate, _ in valid]
-    high = [(candidate, truth) for candidate, truth in valid if truth.high_risk]
-    low = [(candidate, truth) for candidate, truth in valid if not truth.high_risk]
-    ttd_mean, ttd_coverage, ttd_episodes = _time_to_detection(rows)
+    truth_labelable = [(candidate, truth) for candidate, truth in rows if truth.valid]
+    candidate_valid = [(candidate, truth) for candidate, truth in rows if candidate.valid]
+    joint = [(candidate, truth) for candidate, truth in truth_labelable if candidate.valid]
+    actual = [str(truth.approach_class) for _, truth in joint]
+    predicted = [_predict_class(float(candidate.approach_score)) for candidate, _ in joint]
+    high = [(candidate, truth) for candidate, truth in joint if truth.high_risk is True]
+    low = [(candidate, truth) for candidate, truth in joint if truth.high_risk is False]
+    ranking_accuracy, ranking_pair_count = _pairwise_accuracy(joint)
+    ttd_mean, ttd_coverage, ttd_episodes = _time_to_detection(truth_labelable)
     return {
         "rows": len(rows),
-        "valid_rows": len(valid),
-        "coverage": len(valid) / len(rows) if rows else None,
+        "truth_labelable_rows": len(truth_labelable),
+        "candidate_valid_rows": len(candidate_valid),
+        "joint_evaluable_rows": len(joint),
+        "truth_labelability_coverage": len(truth_labelable) / len(rows) if rows else None,
+        "candidate_valid_coverage": len(candidate_valid) / len(rows) if rows else None,
+        "joint_evaluable_coverage": len(joint) / len(rows) if rows else None,
+        "coverage": len(joint) / len(rows) if rows else None,
+        "approach_class_count": len(set(actual)),
+        "high_risk_rows": len(high),
+        "low_risk_rows": len(low),
+        "within_frame_ranking_pairs": ranking_pair_count,
         "approach_macro_f1": _macro_f1(actual, predicted),
         "approach_balanced_accuracy": _balanced_accuracy(actual, predicted),
-        "approaching_auroc": _approaching_auroc([float(candidate.approach_score) for candidate, _ in valid], actual),
-        "risk_spearman": _spearman([float(candidate.risk_score) for candidate, _ in valid], [truth.relative_risk for _, truth in valid]),
-        "pairwise_ranking_accuracy": _pairwise_accuracy(valid),
+        "approaching_auroc": _approaching_auroc([float(candidate.approach_score) for candidate, _ in joint], actual),
+        "risk_spearman": _spearman(
+            [float(candidate.risk_score) for candidate, _ in joint],
+            [float(truth.relative_risk) for _, truth in joint],
+        ),
+        "pairwise_ranking_accuracy": ranking_accuracy,
         "false_clear_rate": sum(float(candidate.risk_score) < 0.50 for candidate, _ in high) / len(high) if high else None,
         "false_block_rate": sum(float(candidate.risk_score) >= 0.50 for candidate, _ in low) / len(low) if low else None,
         "time_to_detection_mean_seconds": ttd_mean,
@@ -234,12 +283,29 @@ def _parent_metrics(rows: list[tuple[CandidateRow, TruthRow]]) -> dict[str, floa
     }
 
 
+def _complete_aggregate(values: list[float | int | None]) -> float | None:
+    if not values or any(value is None for value in values):
+        return None
+    return _mean([float(value) for value in values if value is not None])
+
+
+def _complete_worst(values: list[float | int | None], *, lower_is_worse: bool) -> float | None:
+    if not values or any(value is None for value in values):
+        return None
+    numeric = [float(value) for value in values if value is not None]
+    return min(numeric) if lower_is_worse else max(numeric)
+
+
 def _matched_false_clear(
     left: list[CandidateRow], right: list[CandidateRow], truth_by_id: dict[tuple[str, str, str, str], TruthRow]
 ) -> tuple[float | None, float | None, int]:
     left_by_id = {row.key: row for row in left if row.valid}
     right_by_id = {row.key: row for row in right if row.valid}
-    matched = [key for key in left_by_id.keys() & right_by_id.keys() if truth_by_id[key].high_risk]
+    matched = [
+        key
+        for key in left_by_id.keys() & right_by_id.keys()
+        if truth_by_id[key].valid and truth_by_id[key].high_risk is True
+    ]
     if not matched:
         return None, None, 0
     left_rate = sum(float(left_by_id[key].risk_score) < 0.50 for key in matched) / len(matched)
@@ -282,18 +348,71 @@ def evaluate_o0(candidates: list[CandidateRow], truth: list[TruthRow], policy: E
         for source in source_ids:
             joined = [(row, truth_by_id[row.key]) for row in rows if truth_by_id[row.key].source_id == source]
             by_source[source] = _parent_metrics(joined)
-        metric_names = ("coverage", "approach_macro_f1", "approach_balanced_accuracy", "approaching_auroc", "risk_spearman", "pairwise_ranking_accuracy", "false_clear_rate", "false_block_rate", "time_to_detection_mean_seconds", "time_to_detection_coverage")
-        macro = {name: _mean([float(value[name]) for value in by_parent.values() if value[name] is not None]) for name in metric_names}
-        source_macro = {name: _mean([float(value[name]) for value in by_source.values() if value[name] is not None]) for name in metric_names}
+        overall = _parent_metrics([(row, truth_by_id[row.key]) for row in rows])
+        metric_names = (
+            "truth_labelability_coverage",
+            "candidate_valid_coverage",
+            "joint_evaluable_coverage",
+            "coverage",
+            "approach_macro_f1",
+            "approach_balanced_accuracy",
+            "approaching_auroc",
+            "risk_spearman",
+            "pairwise_ranking_accuracy",
+            "false_clear_rate",
+            "false_block_rate",
+            "time_to_detection_mean_seconds",
+            "time_to_detection_coverage",
+        )
+        macro = {name: _complete_aggregate([value[name] for value in by_parent.values()]) for name in metric_names}
+        source_macro = {name: _complete_aggregate([value[name] for value in by_source.values()]) for name in metric_names}
         worst = {}
         for name in metric_names:
-            values = [float(value[name]) for value in by_parent.values() if value[name] is not None]
-            worst[name] = (min(values) if name in {"coverage", "approach_macro_f1", "approach_balanced_accuracy", "approaching_auroc", "risk_spearman", "pairwise_ranking_accuracy", "time_to_detection_coverage"} else max(values)) if values else None
+            values = [value[name] for value in by_parent.values()]
+            worst[name] = _complete_worst(
+                values,
+                lower_is_worse=name
+                in {
+                    "truth_labelability_coverage",
+                    "candidate_valid_coverage",
+                    "joint_evaluable_coverage",
+                    "coverage",
+                    "approach_macro_f1",
+                    "approach_balanced_accuracy",
+                    "approaching_auroc",
+                    "risk_spearman",
+                    "pairwise_ranking_accuracy",
+                    "time_to_detection_coverage",
+                },
+            )
         source_worst = {}
         for name in metric_names:
-            values = [float(value[name]) for value in by_source.values() if value[name] is not None]
-            source_worst[name] = (min(values) if name in {"coverage", "approach_macro_f1", "approach_balanced_accuracy", "approaching_auroc", "risk_spearman", "pairwise_ranking_accuracy", "time_to_detection_coverage"} else max(values)) if values else None
-        arm_results[arm] = {"parent_macro": macro, "source_macro": source_macro, "worst_parent": worst, "worst_source": source_worst, "by_parent": by_parent, "by_source": by_source}
+            values = [value[name] for value in by_source.values()]
+            source_worst[name] = _complete_worst(
+                values,
+                lower_is_worse=name
+                in {
+                    "truth_labelability_coverage",
+                    "candidate_valid_coverage",
+                    "joint_evaluable_coverage",
+                    "coverage",
+                    "approach_macro_f1",
+                    "approach_balanced_accuracy",
+                    "approaching_auroc",
+                    "risk_spearman",
+                    "pairwise_ranking_accuracy",
+                    "time_to_detection_coverage",
+                },
+            )
+        arm_results[arm] = {
+            "overall_all_locked_identities": overall,
+            "parent_macro": macro,
+            "source_macro": source_macro,
+            "worst_parent": worst,
+            "worst_source": source_worst,
+            "by_parent": by_parent,
+            "by_source": by_source,
+        }
     eligible_single_arms = [
         arm
         for arm in SINGLE_ARM_IDS
@@ -301,6 +420,8 @@ def evaluate_o0(candidates: list[CandidateRow], truth: list[TruthRow], policy: E
         and arm_results[arm]["parent_macro"]["coverage"] >= policy.a3_parent_macro_coverage_min
         and arm_results[arm]["parent_macro"]["false_block_rate"] is not None
         and arm_results[arm]["parent_macro"]["false_block_rate"] <= policy.a3_parent_macro_false_block_max
+        and arm_results[arm]["parent_macro"]["false_clear_rate"] is not None
+        and arm_results[arm]["parent_macro"]["approach_macro_f1"] is not None
     ]
     best_single = min(
         eligible_single_arms or SINGLE_ARM_IDS,
@@ -330,6 +451,25 @@ def evaluate_o0(candidates: list[CandidateRow], truth: list[TruthRow], policy: E
             eligible_effect_sources += 1
             improved_sources += int(left_rate < right_rate)
     a3 = arm_results["A3"]
+    a3_by_parent = a3["by_parent"]
+    metric_support = {
+        "parents_total": len(parent_ids),
+        "sources_total": len(source_ids),
+        "parents_in_coverage_denominator": sum(value["rows"] > 0 for value in a3_by_parent.values()),
+        "parents_with_all_three_approach_classes": sum(
+            value["approach_class_count"] == len(CLASSES) for value in a3_by_parent.values()
+        ),
+        "parents_with_high_risk_rows": sum(value["high_risk_rows"] > 0 for value in a3_by_parent.values()),
+        "parents_with_low_risk_rows": sum(value["low_risk_rows"] > 0 for value in a3_by_parent.values()),
+        "parents_with_valid_spearman_support": sum(
+            value["risk_spearman"] is not None for value in a3_by_parent.values()
+        ),
+        "parents_with_within_frame_ranking_pairs": sum(
+            value["within_frame_ranking_pairs"] > 0 for value in a3_by_parent.values()
+        ),
+        "parents_with_matched_high_risk_rows": eligible_effect_parents,
+        "sources_with_matched_high_risk_rows": eligible_effect_sources,
+    }
     negative_degradation = {
         arm: (
             None if a3["parent_macro"]["approach_macro_f1"] is None or arm_results[arm]["parent_macro"]["approach_macro_f1"] is None
@@ -345,9 +485,21 @@ def evaluate_o0(candidates: list[CandidateRow], truth: list[TruthRow], policy: E
         for arm in NEGATIVE_CONTROL_IDS
     }
     available = lambda value: value is not None and math.isfinite(float(value))
+    all_core_parent_support = all(
+        metric_support[name] >= policy.minimum_parents_with_core_metric_support
+        for name in (
+            "parents_in_coverage_denominator",
+            "parents_with_all_three_approach_classes",
+            "parents_with_high_risk_rows",
+            "parents_with_low_risk_rows",
+            "parents_with_valid_spearman_support",
+            "parents_with_within_frame_ranking_pairs",
+        )
+    )
     gates = {
-        "parent_count_at_least_8": len(parent_ids) >= policy.minimum_parent_count,
-        "source_count_at_least_2": len({row.source_id for row in truth}) >= policy.minimum_source_count,
+        "parent_count_exactly_8": len(parent_ids) == policy.minimum_parent_count,
+        "source_count_exactly_2": len(source_ids) == policy.minimum_source_count,
+        "all_parent_core_metric_support": all_core_parent_support,
         "best_single_arm_eligible": bool(eligible_single_arms),
         "a3_parent_macro_coverage": available(a3["parent_macro"]["coverage"]) and a3["parent_macro"]["coverage"] >= policy.a3_parent_macro_coverage_min,
         "a3_worst_parent_coverage": available(a3["worst_parent"]["coverage"]) and a3["worst_parent"]["coverage"] >= policy.a3_worst_parent_coverage_min,
@@ -370,16 +522,38 @@ def evaluate_o0(candidates: list[CandidateRow], truth: list[TruthRow], policy: E
             for arm, value in negative_source_degradation.items()
         },
     }
-    passed = all(gates.values())
+    evaluable = (
+        gates["parent_count_exactly_8"]
+        and gates["source_count_exactly_2"]
+        and all_core_parent_support
+        and bool(eligible_single_arms)
+        and eligible_effect_parents >= policy.matched_parent_improvement_count_min
+        and eligible_effect_sources >= policy.matched_source_improvement_count_min
+        and all(value is not None for value in negative_degradation.values())
+        and all(value is not None for value in negative_source_degradation.values())
+    )
+    passed = evaluable and all(gates.values())
+    status = (
+        "SVRF_O0_REPRESENTATION_HEADROOM_PASS"
+        if passed
+        else "SVRF_O0_REPRESENTATION_HEADROOM_FAIL_CLOSE"
+        if evaluable
+        else "SVRF_O0_NOT_EVALUABLE_LOCKED_COHORT"
+    )
     return {
-        "schema": "blindassist.svrf_o0.evaluation.v1",
-        "status": "SVRF_O0_REPRESENTATION_HEADROOM_PASS" if passed else "SVRF_O0_REPRESENTATION_HEADROOM_FAIL_CLOSE",
+        "schema": "blindassist.svrf_o0.evaluation.v2",
+        "status": status,
+        "evaluable": evaluable,
         "passed": passed,
         "best_single_arm": best_single,
         "matched_high_risk_rows": matched_count,
         "matched_false_clear": {"A3": a3_matched, "best_single": best_matched},
         "matched_parent_effect": {"eligible": eligible_effect_parents, "improved": improved_parents},
         "matched_source_effect": {"eligible": eligible_effect_sources, "improved": improved_sources},
+        "truth_unknown_reasons": dict(
+            sorted(Counter(row.unknown_reason for row in truth if not row.valid).items())
+        ),
+        "metric_support": metric_support,
         "negative_control_macro_f1_degradation": negative_degradation,
         "negative_control_source_macro_f1_degradation": negative_source_degradation,
         "arms": arm_results,
