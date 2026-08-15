@@ -1,6 +1,9 @@
 # GA-SATOM current
 
-状态：`current / WILD_LAB / GA_SATOM_G0_PREOUTCOME_PROTOCOL_FROZEN / BLOCKED_ON_PHYSICAL_VL53L8CX_REGISTRATION_AND_FRESH_ROSTER / REAL_G0_NOT_RUN / NO_SATOM_ARMS / NO_TRAINING / DEFAULT_APP_UNCHANGED`
+状态：`current / paused / G0_PROTOCOL_RETAINED / PAUSED_BY_NO_EXTERNAL_TOF_SELECTION / REAL_G0_NOT_RUN / NO_PROCUREMENT / NO_SATOM_ARMS / NO_TRAINING / DEFAULT_APP_UNCHANGED`
+
+用户已选择不依赖 external ToF 的 [VI-Task Geometry](../vi-task-geometry/README.md) 作为当前算法主线。
+本页协议作为未消费的备选保留，不采购、不采集、不运行；这不是 G0 失败或路线反证。
 
 ## 主张
 
@@ -32,9 +35,8 @@ ICCV 2025 的 [ToF-Splatting](https://openaccess.thecvf.com/content/ICCV2025/htm
 
 ## 唯一 successor
 
-`GA_SATOM_G0_PHYSICAL_CAPTURE_PREFLIGHT`：在不读取 range outcome 的前提下，先取得并绑定
-VL53L8CX device/firmware、RGB/ToF/IMU registration、机械高度 reference 和 exact 8-parent
-fresh roster，签署 activation receipt。当前不采购、不采集、不运行 G0。
+无。只有用户明确恢复 external-ToF 路线后，才可重新授权
+`GA_SATOM_G0_PHYSICAL_CAPTURE_PREFLIGHT`；现阶段不采购、不采集、不运行 G0。
 
 ## 禁止动作
 

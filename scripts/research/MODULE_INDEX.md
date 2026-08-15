@@ -1,6 +1,6 @@
 # Research Module Index
 
-状态：`current / navigation-only / 85-of-85`
+状态：`current / navigation-only / 86-of-86`
 
 本页只回答“Module 在哪里、属于哪个研究族”。动态状态、successor 和权限必须回到每个
 Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导。
@@ -13,7 +13,7 @@ Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导�
 - [`dual_loop`](dual_loop/README.md)
 - [`hftf`](hftf/README.md)
 
-## Assistive Geometry、TARO、SATOM、DepthART、metric-depth 与几何（29）
+## Assistive Geometry、TARO、SATOM、DepthART、metric-depth 与几何（30）
 
 - [`assistive_geometry`](assistive_geometry/README.md)
 - [`assistive_geometry_cbf`](assistive_geometry_cbf/README.md)
@@ -43,6 +43,7 @@ Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导�
 - [`taro_o1r_r8_clear_runtime`](taro_o1r_r8_clear_runtime/README.md)
 - [`taro_o1r_r9_clear_runtime`](taro_o1r_r9_clear_runtime/README.md)
 - [`taro_o1r_r10_clear_runtime`](taro_o1r_r10_clear_runtime/README.md)
+- [`vi_task_geometry_g0`](vi_task_geometry_g0/README.md)
 - [`taro_o1r_r11_abstention_runtime`](taro_o1r_r11_abstention_runtime/README.md)
 - [`taro_o1r_r12_clear_observability_runtime`](taro_o1r_r12_clear_observability_runtime/README.md)
 

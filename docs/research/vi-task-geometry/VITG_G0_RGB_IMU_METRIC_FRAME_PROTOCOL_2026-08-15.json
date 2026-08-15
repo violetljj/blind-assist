@@ -1,0 +1,163 @@
+{
+  "schema": "blindassist.vitg_g0.protocol.v1",
+  "protocol_id": "VITG_G0_RGB_IMU_METRIC_FRAME_20260815_R0",
+  "date": "2026-08-15",
+  "status": "FROZEN_PREOUTCOME_BLOCKED_ON_SYNCHRONIZED_RGB_IMU_CAPTURE_IMPLEMENTATION_CALIBRATION_AND_FRESH_ROSTER",
+  "research_mode": "WILD_LAB",
+  "research_question": "Can rigidly synchronized eyewear RGB plus IMU establish observable metric camera height and sparse ground geometry on fresh real parents without external ToF or evaluator truth?",
+  "route_identity": {
+    "name": "VI-Task Geometry",
+    "independent_from_satom_r0": true,
+    "independent_from_ga_satom_g0": true,
+    "reuses_consumed_bonn_or_arkitscenes_outcomes": false,
+    "retries_arcore_d45": false,
+    "active_range_allocation_claim": false,
+    "future_concept_if_g0_passes": "active computation, feature, keyframe and parallax allocation under a separately frozen successor"
+  },
+  "hardware_contract": {
+    "device": "M5Stack AtomS3R-M12",
+    "camera": "OV3660",
+    "imu": "onboard BMI270 six-axis IMU",
+    "new_hardware_purchase_required": false,
+    "same_rigid_body_required": true,
+    "same_mcu_clock_required": true,
+    "phone_imu_admitted_for_eyewear_video": false,
+    "external_tof_admitted": false,
+    "one_time_wear_height": "A1 comparator and plausibility receipt only; never evaluator truth or per-frame A2/A3 scale input"
+  },
+  "external_basis": [
+    {
+      "work": "M5Stack AtomS3R official hardware and IMU documentation",
+      "url": "https://docs.m5stack.com/en/core/AtomS3R",
+      "bounded_relevance": "confirms onboard BMI270 and official IMU access; does not establish synchronization, calibration or VIO quality"
+    },
+    {
+      "work": "VINS-Mono: A Robust and Versatile Monocular Visual-Inertial State Estimator",
+      "url": "https://arxiv.org/abs/1708.03852",
+      "bounded_relevance": "supports monocular camera plus low-cost IMU as a metric 6DoF research substrate; does not validate this hardware or cohort"
+    },
+    {
+      "work": "Motion as a Sensing Modality for Metric Scale in Monocular Visual-Inertial Odometry",
+      "url": "https://arxiv.org/abs/2603.26740",
+      "bounded_relevance": "supports an explicit excitation/observability control; it is a recent preprint and not BlindAssist evidence"
+    },
+    {
+      "work": "ARCore Depth API",
+      "url": "https://developers.google.com/ar/develop/depth",
+      "bounded_relevance": "supports phone-camera depth-from-motion teacher experiments without mandatory ToF; ARCore cannot ingest AtomS3R MJPEG as its tracking camera and prior local D45 remained not evaluable"
+    }
+  ],
+  "fresh_source_contract": {
+    "evidence_role": "FRESH_PHYSICAL_VITG_G0",
+    "parent_count": 8,
+    "parent_definition": "one site-by-surface-by-rigid-mount session; repeated episodes in the same mount are not new parents",
+    "minimum_sites": 2,
+    "surface_strata": [
+      "matte_light_hard_floor",
+      "dark_low_reflectance_floor_or_mat",
+      "textured_or_carpet_floor",
+      "specular_or_bright_tile_floor"
+    ],
+    "parents_per_surface_stratum": 2,
+    "episode_duration_seconds": 20,
+    "episode_types": [
+      "EXCITED_WALK_TURN",
+      "NATURAL_HEAD_MOTION",
+      "STRAIGHT_LOW_EXCITATION_CONTROL",
+      "STATIC_CONTROL",
+      "POSTURE_HEIGHT_CHANGE",
+      "STAIRS_OR_RAMP",
+      "LOW_TEXTURE_OR_DYNAMIC_OCCLUDER"
+    ],
+    "selection_after_outcome_access_allowed": false
+  },
+  "capture_admission": {
+    "device_clock_domain": "single esp32_boot_monotonic sequence for camera and IMU",
+    "camera_nominal_rate_hz": 15,
+    "camera_valid_frames_per_20s_range": [250, 350],
+    "camera_duration_seconds_range": [18, 22],
+    "camera_loss_rule": "every device frame_sequence slot from first through last is materialized; unavailable JPEG is LOST_BEFORE_WRITER or INVALID_JPEG and remains in denominators",
+    "imu_effective_rate_hz": [100, 400],
+    "maximum_imu_gap_ms": 20,
+    "maximum_imu_bracket_ms": 10,
+    "maximum_nearest_imu_delta_ms": 5,
+    "forbidden_candidate_inputs": ["external ToF", "phone IMU for eyewear RGB", "mechanical height truth", "clearance truth", "future frames"]
+  },
+  "comparators": {
+    "A0": "DepthART-only ground/height estimate; no truth, fixed height, IMU or ToF",
+    "A1": "DepthART plus one predeclared fixed wear-height scalar; no per-frame truth or IMU scale",
+    "A2": "frozen monocular VIO sparse metric geometry plus gravity-constrained ground plane; no DepthART or truth",
+    "A3": "A2 sparse metric anchors robustly align the frozen DepthART dense prior; no truth access",
+    "primary_arms": ["A2", "A3"],
+    "implementation_rule": "exact VIO source commit, configuration, initialization, excitation gate, feature policy, ground fitter and DepthART identity must be hash-bound in activation before first fresh capture"
+  },
+  "truth_contract": {
+    "camera_height": "independent per-frame RGB optical-center height with uncertainty <=0.01 m",
+    "sparse_geometry": "independent metric checkpoints not derived from any comparator",
+    "ground_labels": "evaluator-only GROUND, NON_GROUND or UNRESOLVED labels for every candidate support identity",
+    "clearance": "independent obstacle clearance probes retained as diagnostic only in G0",
+    "candidate_truth_access": false
+  },
+  "observability_policy": {
+    "observable_positive_episodes": ["EXCITED_WALK_TURN", "NATURAL_HEAD_MOTION", "POSTURE_HEIGHT_CHANGE", "STAIRS_OR_RAMP"],
+    "degeneracy_controls": ["STRAIGHT_LOW_EXCITATION_CONTROL", "STATIC_CONTROL"],
+    "rule": "initialization, excitation, feature/parallax, ground support and residual gates must all pass before A2/A3 emit metric geometry; otherwise UNKNOWN",
+    "no_coverage_credit_for_expected_unknown_controls": true,
+    "unsafe_valid_on_degeneracy_controls_is_penalized": true
+  },
+  "g0_metrics": {
+    "primary": [
+      "parent-macro and worst-parent observable-episode height coverage",
+      "parent-macro and worst-parent camera-height MAE",
+      "worst-parent height-error MAD",
+      "within-episode scale-drift P95",
+      "sparse metric anchor AbsRel",
+      "false-wall-as-ground support rate",
+      "unsafe metric-valid rate on degeneracy controls"
+    ],
+    "diagnostic_only": ["clearance MAE", "false-clear rate", "false-block rate"]
+  },
+  "winner_rule": {
+    "eligible_primary_arm": "A2 or A3 independently passes every absolute gate; A0/A1 never win G0",
+    "observable_parent_macro_coverage_min": 0.80,
+    "observable_worst_parent_coverage_min": 0.65,
+    "parent_macro_camera_height_mae_m_max": 0.10,
+    "worst_parent_camera_height_mae_m_max": 0.15,
+    "worst_parent_height_error_mad_m_max": 0.08,
+    "worst_parent_scale_drift_p95_fraction_max": 0.08,
+    "parent_macro_sparse_anchor_absrel_max": 0.12,
+    "worst_parent_false_wall_ground_support_rate_max": 0.05,
+    "parent_macro_false_wall_ground_support_rate_max": 0.02,
+    "worst_parent_degeneracy_unsafe_valid_rate_max": 0.05,
+    "clearance_metrics_affect_g0_pass": false
+  },
+  "activation_contract": {
+    "outcome_access_authorized": false,
+    "required_before_first_fresh_capture": [
+      "exact AtomS3R-M12 device identity and firmware hash with ToF disabled",
+      "OV3660 intrinsics and BMI270-to-camera extrinsics plus calibration hashes",
+      "same-clock timestamp/bracketing validation receipt",
+      "independent height/sparse/clearance reference identities and uncertainty receipts",
+      "exact eight-parent and seven-episode roster",
+      "exact A0-A3 source/configuration hashes and frozen observability gates",
+      "capture/truth writer hashes and empty exclusive artifact root"
+    ],
+    "activation_receipt_required": true,
+    "opened_outcome_cannot_change_parent_arm_gate_or_implementation": true
+  },
+  "authority": {
+    "external_tof_authorized": false,
+    "arcore_phone_teacher_run_authorized": false,
+    "training_authorized": false,
+    "active_policy_authorized": false,
+    "android_alert_or_default_app_authorized": false,
+    "paper_product_or_safety_claim_authorized": false
+  },
+  "stopping_rule": {
+    "pass": "Only establishes bounded fresh physical metric-frame observability and permits a separately frozen task-geometry successor; it does not authorize active allocation or Android alerts.",
+    "fail_or_not_evaluable": "Close the VI metric task-geometry route without outcome-driven rescue and move to a height-free gravity-normalized angular/TTC representation."
+  },
+  "artifact_root": "artifacts.local/evidence/vi-task-geometry-g0/",
+  "claim_ceiling": "pre-outcome RGB-IMU metric-frame protocol and capture mechanics only; no real VIO, metric height, clearance, training, device, product, safety or paper result",
+  "default_app_changed": false
+}

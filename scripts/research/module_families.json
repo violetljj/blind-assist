@@ -6,6 +6,7 @@
     "taro",
     "satom",
     "ga_satom",
+    "vi_task_geometry",
     "assistive_geometry_cbf",
     "assistive_geometry_qsf",
     "depth_geometry",
@@ -49,6 +50,13 @@
         "^ga_satom_g0$"
       ],
       "dynamic_truth": "docs/research/ga-satom/README.md"
+    },
+    "vi_task_geometry": {
+      "description": "VI-Task Geometry independent no-ToF RGB-IMU metric-frame observability exploration",
+      "patterns": [
+        "^vi_task_geometry_g0$"
+      ],
+      "dynamic_truth": "docs/research/vi-task-geometry/README.md"
     },
     "assistive_geometry_cbf": {
       "description": "与主线资源隔离的 AG-CBF TRAIN-only corridor bottleneck WILD_LAB 路线",
