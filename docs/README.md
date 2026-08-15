@@ -65,7 +65,7 @@
 | 类型 | 入口 |
 |---|---|
 | 分类 current | [算法](research/ALGORITHM_RESEARCH_CURRENT.md) · [数据](research/DATA_RESEARCH_CURRENT.md) · [系统与平台](research/SYSTEM_RESEARCH_CURRENT.md) |
-| 算法路线 | [Assistive Geometry](research/assistive-geometry/README.md) · [TARO](research/taro/README.md) · [AG-QSF](research/assistive-geometry-qsf/README.md) · [AG-CBF](research/assistive-geometry-cbf/README.md) · [DepthART](research/hftf/README.md) · [双环](research/dual-loop/README.md) · [RCLE](research/rcle/README.md) |
+| 算法路线 | [SATOM-A](research/satom/README.md) · [Assistive Geometry](research/assistive-geometry/README.md) · [TARO](research/taro/README.md) · [AG-QSF](research/assistive-geometry-qsf/README.md) · [AG-CBF](research/assistive-geometry-cbf/README.md) · [DepthART](research/hftf/README.md) · [双环](research/dual-loop/README.md) · [RCLE](research/rcle/README.md) |
 | 数据与 discovery | [AG-DCA](research/assistive-geometry-data-capability/README.md) · [AG-DUE](research/assistive-geometry-data-upgrade/README.md) · [候选事件挖掘](research/candidate-event-mining/README.md) |
 | 历史路线/资料 | [USTRF-SC](research/ustrf-sc/README.md) · [Frontier Upgrade](research/frontier-upgrade-2026-07/README.md) · [研究资产](research/assets/README.md) · [组会总账](research/GROUP_MEETING_PROGRESS.md) |
 

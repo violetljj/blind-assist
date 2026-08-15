@@ -4,6 +4,7 @@
     "current_entry",
     "assistive_geometry",
     "taro",
+    "satom",
     "assistive_geometry_cbf",
     "assistive_geometry_qsf",
     "depth_geometry",
@@ -33,6 +34,13 @@
         "^taro(?:_o0m(?:_runtime)?|_o0r_(?:candidate_scale_runtime|factor_headroom_runtime|source_adapter(?:_runtime)?|truth_(?:preflight|materializer_runtime))|_o1r_(?:reducer_integration_runtime|r7_canary_runtime|r8_clear_runtime|r9_clear_runtime|r10_clear_runtime|r11_abstention_runtime|r12_clear_observability_runtime))?$"
       ],
       "dynamic_truth": "docs/research/taro/README.md"
+    },
+    "satom": {
+      "description": "SATOM sparse-anchor causal task-space occupancy exploration",
+      "patterns": [
+        "^satom_r0$"
+      ],
+      "dynamic_truth": "docs/research/satom/README.md"
     },
     "assistive_geometry_cbf": {
       "description": "与主线资源隔离的 AG-CBF TRAIN-only corridor bottleneck WILD_LAB 路线",
