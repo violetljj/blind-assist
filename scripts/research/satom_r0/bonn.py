@@ -195,11 +195,14 @@ def estimate_camera_height_m(
     depth_m: np.ndarray,
     intrinsics: np.ndarray,
     gravity_down_camera: np.ndarray,
-    quantile: float,
     minimum_m: float,
     maximum_m: float,
+    histogram_bin_m: float,
+    support_tolerance_m: float,
+    minimum_support_points: int,
+    minimum_support_fraction: float,
 ) -> float:
-    """Frozen robust floor-distance proxy, run separately on prior and truth."""
+    """Gravity-bound support-mode height, run separately on prior and truth."""
     depth = np.asarray(depth_m, dtype=np.float64)
     height, width = depth.shape
     yy, xx = np.mgrid[0:height:4, 0:width:4]
@@ -211,10 +214,17 @@ def estimate_camera_height_m(
     y = (yy - intrinsics[1, 2]) * z / intrinsics[1, 1]
     gravity = np.asarray(gravity_down_camera, dtype=np.float64)
     drop = gravity[0] * x + gravity[1] * y + gravity[2] * z
-    candidates = drop[valid & np.isfinite(drop) & (drop > minimum_m * 0.5)]
-    if candidates.size < 64:
+    plausible = valid & np.isfinite(drop) & (drop >= minimum_m) & (drop <= maximum_m)
+    candidates = drop[plausible]
+    if candidates.size < minimum_support_points:
         raise ValueError("insufficient floor-distance candidates")
-    estimate = float(np.quantile(candidates, quantile))
-    if not minimum_m <= estimate <= maximum_m:
-        raise ValueError(f"camera-height estimate outside frozen bounds: {estimate}")
-    return estimate
+    edges = np.arange(minimum_m, maximum_m + histogram_bin_m * 1.001, histogram_bin_m)
+    counts, edges = np.histogram(candidates, bins=edges)
+    mode_indexes = np.flatnonzero(counts == int(np.max(counts)))
+    mode_index = int(mode_indexes[-1])
+    mode_center = float((edges[mode_index] + edges[mode_index + 1]) / 2.0)
+    support = plausible & (np.abs(drop - mode_center) <= support_tolerance_m)
+    minimum_count = max(minimum_support_points, int(math.ceil(minimum_support_fraction * int(np.sum(valid)))))
+    if int(np.sum(support)) < minimum_count:
+        raise ValueError("insufficient gravity-bound support for camera height")
+    return float(np.median(drop[support]))

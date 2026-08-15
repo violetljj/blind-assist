@@ -110,7 +110,7 @@ def _materialize_parent(
     sequence_root: Path,
     frozen_parent: dict[str, Any],
     source_contract: dict[str, Any],
-    height_contract: dict[str, Any],
+    height_amendment: dict[str, Any],
     prior_contract: dict[str, Any],
     model: torch.nn.Module,
     preprocess: Any,
@@ -160,9 +160,12 @@ def _materialize_parent(
         height_args = (
             BONN_INTRINSICS,
             gravity,
-            float(height_contract["quantile"]),
-            float(height_contract["minimum_m"]),
-            float(height_contract["maximum_m"]),
+            float(height_amendment["minimum_m"]),
+            float(height_amendment["maximum_m"]),
+            float(height_amendment["histogram_bin_m"]),
+            float(height_amendment["support_tolerance_m"]),
+            int(height_amendment["minimum_support_points"]),
+            float(height_amendment["minimum_support_fraction"]),
         )
         candidate_height = estimate_camera_height_m(prior, *height_args)
         truth_height = estimate_camera_height_m(truth, *height_args)
@@ -218,6 +221,7 @@ def _materialize_parent(
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--lock", type=Path, required=True)
+    parser.add_argument("--validity-amendment", type=Path, required=True)
     parser.add_argument("--metadata-root", type=Path, required=True)
     parser.add_argument("--payload-root", type=Path, required=True)
     parser.add_argument("--depthart-source", type=Path, required=True)
@@ -227,7 +231,11 @@ def main() -> None:
 
     lock_path = args.lock.resolve()
     lock = json.loads(lock_path.read_text(encoding="utf-8"))
+    amendment_path = args.validity_amendment.resolve()
+    amendment = json.loads(amendment_path.read_text(encoding="utf-8"))
     require(lock["status"] == "FROZEN_BEFORE_BONN_PIXEL_OR_DEPTHART_OUTPUT_ACCESS", "execution lock is not frozen")
+    require(amendment["original_lock"]["sha256"] == sha256_file(lock_path), "validity amendment/lock SHA drift")
+    require(amendment["status"] == "FROZEN_AFTER_INVALID_ONE_FRAME_MATERIALIZATION_PREFLIGHT_BEFORE_ANY_ARM_METRIC", "validity amendment is not frozen")
     source_contract = lock["source_contract"]
     expected_roster = source_contract["roster"]
     require(build_roster(args.metadata_root.resolve(), source_contract) == expected_roster, "metadata-only roster drift")
@@ -253,7 +261,7 @@ def main() -> None:
         sequence_root = _payload_sequence(args.payload_root.resolve(), frozen_parent["sequence_id"])
         parent_receipts.append(
             _materialize_parent(
-                sequence_root, frozen_parent, source_contract, lock["camera_height_contract"],
+                sequence_root, frozen_parent, source_contract, amendment["camera_height_contract_override"],
                 prior, model, preprocess, output_root,
             )
         )
@@ -262,6 +270,9 @@ def main() -> None:
         "dataset": "Bonn RGB-D Dynamic Dataset",
         "evidence_role": lock["evidence_role"],
         "execution_lock": {"path": str(lock_path), "sha256": sha256_file(lock_path)},
+        "execution_validity_amendment": {
+            "path": str(amendment_path), "sha256": sha256_file(amendment_path),
+        },
         "prior_provenance": {
             "family": "DepthART", "frozen": True, "truth_derived": False,
             "model_id": prior["model_id"], "source_git_commit": prior["source_git_commit"],

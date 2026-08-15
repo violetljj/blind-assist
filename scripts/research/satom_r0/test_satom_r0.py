@@ -127,8 +127,9 @@ class SatomR0Test(unittest.TestCase):
         truth = np.full((32, 48), 1.6, dtype=np.float32)
         intrinsics = np.asarray([[40.0, 0.0, 23.5], [0.0, 40.0, 15.5], [0.0, 0.0, 1.0]])
         gravity = np.asarray([0.0, 0.0, 1.0])
-        prior_height = estimate_camera_height_m(prior, intrinsics, gravity, 0.98, 0.5, 2.5)
-        truth_height = estimate_camera_height_m(truth, intrinsics, gravity, 0.98, 0.5, 2.5)
+        policy = (0.5, 2.5, 0.04, 0.08, 20, 0.02)
+        prior_height = estimate_camera_height_m(prior, intrinsics, gravity, *policy)
+        truth_height = estimate_camera_height_m(truth, intrinsics, gravity, *policy)
         self.assertAlmostEqual(prior_height, 1.2, places=5)
         self.assertAlmostEqual(truth_height, 1.6, places=5)
 
