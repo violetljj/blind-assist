@@ -1,6 +1,6 @@
 # SVRF current
 
-状态：`current / WILD_LAB / FROZEN_PREOUTCOME_BLOCKED_ON_SELECTIVE_MATERIALIZATION_AND_TRUTH_WRITER_LOCK / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / ARCHIVE_ACCESS_PARTIAL_PASS / REAL_O0_NOT_RUN / NO_TRAINING / DEFAULT_APP_UNCHANGED`
+状态：`current / WILD_LAB / FROZEN_PREOUTCOME_BLOCKED_ON_SELECTIVE_MATERIALIZATION_AND_TRUTH_WRITER_LOCK / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / ARCHIVE_ACCESS_PARTIAL_PASS / STREAM_INDEX_AUTHORIZED / REAL_O0_NOT_RUN / NO_TRAINING / DEFAULT_APP_UNCHANGED`
 
 ## 主张
 
@@ -23,6 +23,9 @@ path intrusion，是否能稳定识别“相对逼近且侵入前向视觉通道
 - [Archive capability lock](SVRF_O0_ARCHIVE_ACCESS_CAPABILITY_LOCK_2026-08-15.json) 已证明 Spring
   ZIP64 可用 Range 建 central index 并做 CRC-valid member 抽取；A2D2 官方桶只有 TAR、无独立
   PNG/NPZ 对象，必须先实现一次性流式 member index，不能假装随机抽取已就绪；
+- [Stream-index execution lock](SVRF_O0_STREAM_INDEX_EXECUTION_LOCK_2026-08-15.json) 已按用户明确
+  授权开放 outcome-blind A2D2 index 与 Spring manifest；selected payload、truth writer、candidate 和
+  outcome access 仍关闭；
 - 当前除 5 个 bounded ZIP-member CRC 样本外未物化 payload，且没有媒体/flow/disparity/label
   语义解码；causal windows 与 truth writer 未冻结，故 outcome access 继续关闭，`REAL_O0_NOT_RUN`；
 - A2D2 是车载域且 5/8 parent 为 synthetic；未来 PASS 也不能写成助盲生态 confirmation。
@@ -44,9 +47,9 @@ ADVIO 13/14/15/17 已用于 RCLE Development；sequence16 仍是 RCLE-reserved `
 
 ## 唯一 successor
 
-`SVRF_O0_A2D2_ONE_PASS_STREAM_INDEXER_AND_SPRING_RANGE_MANIFEST_PREFLIGHT`：在
-`artifacts.local` 的 F 盘物理目标上实现可恢复 A2D2 单次流式 TAR member index，同时从 Spring
-central directory 生成 outcome-blind member manifest；保留 64 GiB 余量，不运行 candidate 或读取 outcome。
+`EXECUTE_BUS_CANARY_THEN_LOCKED_ARCHIVE_MEMBER_INDEX`：先执行 105.6 MB A2D2 bus TAR canary；
+验证 SQLite resume/header/payload-hash/receipt 后，才按冻结顺序推进其余 A2D2 archive 和 Spring
+central manifest；保留 64 GiB 余量，不运行 candidate 或读取 outcome。
 
 ## 禁止动作
 

@@ -58,6 +58,7 @@
     "exact_source_roster_selected": true,
     "source_lock": "SVRF_O0_A2D2_SPRING_SOURCE_LOCK_2026-08-15.json",
     "archive_access_capability_lock": "SVRF_O0_ARCHIVE_ACCESS_CAPABILITY_LOCK_2026-08-15.json",
+    "stream_index_execution_lock": "SVRF_O0_STREAM_INDEX_EXECUTION_LOCK_2026-08-15.json",
     "blocked_reason": "the exact A2D2 three-drive plus Spring-v2 five-sequence roster is metadata-locked, but selected RGB/truth payloads, per-file hashes, causal windows and separate truth/candidate writers are not materialized or frozen",
     "explicitly_not_fresh": ["Bonn parents", "ARKitScenes parents", "TUM parents", "OpenLORIS parents", "ADVIO 13/14/15/17", "all previously opened DepthART, RCLE, SATOM, TARO or scale-free outcomes"],
     "advio_16": "remains RCLE-reserved SEALED_UNSEEN and is not allocated to SVRF",
@@ -163,6 +164,14 @@
     "outcome_access_authorized": false,
     "required_before_first_candidate_run": ["validated A2D2 plus Spring source lock", "validated archive-access capability lock with canonical F-drive storage", "validated resumable A2D2 one-pass stream index", "selective payload materialization with exact per-file hashes", "outcome-blind causal window identities", "exact RGB/timestamp/truth identities and hashes", "truth UNKNOWN and metric-support readiness receipt", "frozen DepthART identity", "frozen FIXED_CANONICAL_OR_RGB_DERIVED intrinsics implementation", "frozen warp/flow/background/dynamic/channel implementations", "exact N0-N3 intervention seeds and transforms", "separate candidate/truth writers and empty exclusive artifact root"],
     "opened_outcome_cannot_change_source_arm_threshold_gate_or_missing_policy": true
+  },
+  "preflight_execution_authority": {
+    "a2d2_stream_index_execution_authorized": true,
+    "spring_range_manifest_execution_authorized": true,
+    "selected_payload_materialization_authorized": false,
+    "truth_writer_execution_authorized": false,
+    "candidate_run_authorized": false,
+    "outcome_access_authorized": false
   },
   "authority": {
     "real_o0_execution_authorized": false,

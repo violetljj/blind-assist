@@ -18,6 +18,9 @@
 - [`probe_materialization_capability.py`](probe_materialization_capability.py) 只做 HTTP Range、TAR
   header、ZIP64 central-directory 和最小 CRC 抽取，并按 `artifacts.local` junction 的 F 盘物理目标
   计算容量；[`validate_materialization_capability.py`](validate_materialization_capability.py) 锁住该 receipt。
+- [`stream_index_a2d2.py`](stream_index_a2d2.py) 以 SQLite WAL 可恢复地扫描冻结 A2D2 TAR，丢弃
+  payload 但保留 member offset/size/SHA；[`build_spring_range_manifest.py`](build_spring_range_manifest.py)
+  只从 ZIP central directory 写 locked-parent visibility manifest。
 
 ## 输出
 

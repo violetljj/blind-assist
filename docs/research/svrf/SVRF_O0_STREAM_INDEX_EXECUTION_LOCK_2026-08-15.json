@@ -1,0 +1,68 @@
+{
+  "schema": "blindassist.svrf_o0.stream_index_execution_lock.v1",
+  "lock_id": "SVRF_O0_STREAM_INDEX_EXECUTION_20260815_R0",
+  "date": "2026-08-15",
+  "status": "AUTHORIZED_OUTCOME_BLIND_ARCHIVE_INDEX_EXECUTION",
+  "authorization_basis": "explicit user authorization after archive capability partial pass",
+  "source_lock": "SVRF_O0_A2D2_SPRING_SOURCE_LOCK_2026-08-15.json",
+  "source_lock_sha256": "2d4f28e6e8c590ab0d23ae5f0cdd582c63d81ca4f41a341dc575eeecf800ad6a",
+  "capability_lock": "SVRF_O0_ARCHIVE_ACCESS_CAPABILITY_LOCK_2026-08-15.json",
+  "capability_lock_sha256": "74c6fa876a6d1a74a846f69b338d82a5fed9048c32ce8c647d5ad3cf3217b17a",
+  "implementation": {
+    "a2d2_stream_indexer": "scripts/research/svrf_o0/stream_index_a2d2.py",
+    "a2d2_stream_indexer_sha256": "cf5594aaa9d668df4c08977fc63ef067102ce5177217cb609ae1dc85f9ffdf02",
+    "spring_range_manifest_builder": "scripts/research/svrf_o0/build_spring_range_manifest.py",
+    "spring_range_manifest_builder_sha256": "fb6faff3dc7e0a2fcb9032bf18c31308a6b90b64a7a2065506ed50e98a9807ff"
+  },
+  "storage": {
+    "logical_output_root": "artifacts.local/evidence/svrf-o0/materialization-preflight",
+    "physical_root_prefix": "F:\\ba-data\\blindassist-artifacts-20260805\\evidence\\svrf-o0\\materialization-preflight",
+    "minimum_free_space_reserve_bytes": 68719476736,
+    "full_archive_retention": false
+  },
+  "a2d2_execution": {
+    "maximum_network_stream_bytes_before_retries": 299274577920,
+    "archive_order": [
+      "camera_lidar-20180810150607_bus_signals.tar",
+      "camera_lidar-20190401145936_bus_signals.tar",
+      "camera_lidar-20190401121727_bus_signals.tar",
+      "camera_lidar-20180810150607_lidar_frontcenter.tar",
+      "camera_lidar-20190401121727_lidar_frontcenter.tar",
+      "camera_lidar-20190401145936_lidar_frontcenter.tar",
+      "camera_lidar-20180810150607_camera_frontcenter.tar",
+      "camera_lidar-20190401145936_camera_frontcenter.tar",
+      "camera_lidar-20190401121727_camera_frontcenter.tar"
+    ],
+    "first_archive_is_canary": true,
+    "index_fields": ["member path", "member type", "TAR header offset", "payload offset", "payload bytes", "padded bytes", "payload SHA256", "TAR header checksum", "next header offset"],
+    "resumability": "SQLite WAL commits every 100 members; any failed request resumes from the last committed TAR header offset and records received bytes",
+    "official_md5_policy": "bind the official source-lock MD5 but do not claim recomputation when resumed Range requests prevent a single uninterrupted archive digest",
+    "payload_semantics_parsed": false
+  },
+  "spring_execution": {
+    "archive_count": 5,
+    "locked_parent_count": 5,
+    "source": "ZIP/ZIP64 central directories via bounded HTTP Range only",
+    "payload_materialization": false,
+    "manifest_visibility": "left RGB is candidate-visible only; camera/disparity/flow/maps are truth-visible only"
+  },
+  "stop_conditions": [
+    "F-drive free space falls below the 64-GiB reserve",
+    "source-lock URL, archive bytes, official MD5 binding or implementation hash drifts",
+    "TAR header checksum, ZIP central directory, member identity or SQLite resume contract fails",
+    "one archive exhausts five bounded stream retries",
+    "any media, tensor, label, candidate output or A0-A3/N0-N3 metric is parsed"
+  ],
+  "activation": {
+    "a2d2_stream_index_execution_authorized": true,
+    "spring_range_manifest_execution_authorized": true,
+    "bulk_archive_retention_authorized": false,
+    "selected_payload_materialization_authorized": false,
+    "truth_writer_execution_authorized": false,
+    "candidate_run_authorized": false,
+    "outcome_access_authorized": false
+  },
+  "success_terminal": "SVRF_O0_LOCKED_ARCHIVE_MEMBER_INDEX_COMPLETE",
+  "claim_ceiling": "archive member identity and access mechanics only; no truth labelability, risk representation, algorithm, assistive, product or safety result",
+  "unique_successor": "EXECUTE_BUS_CANARY_THEN_LOCKED_ARCHIVE_MEMBER_INDEX"
+}

@@ -31,6 +31,8 @@ def validate_protocol(protocol: dict[str, object]) -> None:
         raise ValueError("SVRF-O0 source-lock binding drift")
     if source.get("archive_access_capability_lock") != "SVRF_O0_ARCHIVE_ACCESS_CAPABILITY_LOCK_2026-08-15.json":
         raise ValueError("SVRF-O0 archive capability binding drift")
+    if source.get("stream_index_execution_lock") != "SVRF_O0_STREAM_INDEX_EXECUTION_LOCK_2026-08-15.json":
+        raise ValueError("SVRF-O0 stream-index execution binding drift")
     if any(protocol["authority"].values()):
         raise ValueError("SVRF-O0 pre-outcome authority must remain closed")
     truth = protocol.get("truth_unknown_contract", {})
@@ -85,6 +87,15 @@ def validate_protocol(protocol: dict[str, object]) -> None:
         raise ValueError("SVRF-O0 N3 support-preservation drift")
     if protocol["activation_contract"].get("outcome_access_authorized") is not False:
         raise ValueError("SVRF-O0 outcome access opened before preflight")
+    if protocol.get("preflight_execution_authority") != {
+        "a2d2_stream_index_execution_authorized": True,
+        "spring_range_manifest_execution_authorized": True,
+        "selected_payload_materialization_authorized": False,
+        "truth_writer_execution_authorized": False,
+        "candidate_run_authorized": False,
+        "outcome_access_authorized": False,
+    }:
+        raise ValueError("SVRF-O0 preflight execution authority drift")
 
 
 def main() -> None:
