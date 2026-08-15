@@ -111,6 +111,7 @@ def _materialize_parent(
     frozen_parent: dict[str, Any],
     source_contract: dict[str, Any],
     height_amendment: dict[str, Any],
+    parent_height_contract: dict[str, Any],
     prior_contract: dict[str, Any],
     model: torch.nn.Module,
     preprocess: Any,
@@ -135,8 +136,8 @@ def _materialize_parent(
     priors: list[np.ndarray] = []
     intrinsics_rows: list[list[float]] = []
     poses: list[np.ndarray] = []
-    candidate_heights: list[float] = []
-    truth_heights: list[float] = []
+    candidate_height_estimates: list[float | None] = []
+    truth_height_estimates: list[float | None] = []
     gravities: list[np.ndarray] = []
     source_frames: list[dict[str, Any]] = []
     for row in frames:
@@ -167,8 +168,14 @@ def _materialize_parent(
             int(height_amendment["minimum_support_points"]),
             float(height_amendment["minimum_support_fraction"]),
         )
-        candidate_height = estimate_camera_height_m(prior, *height_args)
-        truth_height = estimate_camera_height_m(truth, *height_args)
+        try:
+            candidate_height = estimate_camera_height_m(prior, *height_args)
+        except ValueError:
+            candidate_height = None
+        try:
+            truth_height = estimate_camera_height_m(truth, *height_args)
+        except ValueError:
+            truth_height = None
         timestamps.append(float(row["rgb_timestamp_s"]))
         truths.append(truth)
         priors.append(prior)
@@ -177,8 +184,8 @@ def _materialize_parent(
              float(BONN_INTRINSICS[0, 2]), float(BONN_INTRINSICS[1, 2])]
         )
         poses.append(np.asarray(row["world_from_camera"], dtype=np.float64))
-        candidate_heights.append(candidate_height)
-        truth_heights.append(truth_height)
+        candidate_height_estimates.append(candidate_height)
+        truth_height_estimates.append(truth_height)
         gravities.append(gravity)
         source_frames.append(
             {
@@ -191,6 +198,19 @@ def _materialize_parent(
         )
         print(json.dumps({"parent": sequence_id, "frame": len(timestamps), "of": len(frames)}), flush=True)
 
+    def parent_height(values: list[float | None], source_name: str) -> tuple[float, float, int]:
+        valid_values = np.asarray([value for value in values if value is not None], dtype=np.float64)
+        minimum = int(parent_height_contract["minimum_valid_height_frames_each_source"])
+        require(len(valid_values) >= minimum, f"{sequence_id}: insufficient {source_name} parent height support")
+        median = float(np.median(valid_values))
+        mad = float(np.median(np.abs(valid_values - median)))
+        require(mad <= float(parent_height_contract["maximum_height_mad_m"]), f"{sequence_id}: unstable {source_name} parent height")
+        return median, mad, len(valid_values)
+
+    candidate_height, candidate_height_mad, candidate_height_count = parent_height(
+        candidate_height_estimates, "candidate"
+    )
+    truth_height, truth_height_mad, truth_height_count = parent_height(truth_height_estimates, "truth")
     atomic_npz(
         bundle,
         timestamp_s=np.asarray(timestamps, dtype=np.float64),
@@ -198,8 +218,8 @@ def _materialize_parent(
         prior_depth_m=np.stack(priors).astype(np.float32),
         intrinsics=np.asarray(intrinsics_rows, dtype=np.float64),
         world_from_camera=np.stack(poses).astype(np.float64),
-        candidate_camera_height_m=np.asarray(candidate_heights, dtype=np.float64),
-        truth_camera_height_m=np.asarray(truth_heights, dtype=np.float64),
+        candidate_camera_height_m=np.full(len(frames), candidate_height, dtype=np.float64),
+        truth_camera_height_m=np.full(len(frames), truth_height, dtype=np.float64),
         gravity_down_camera=np.stack(gravities).astype(np.float64),
     )
     receipt = {
@@ -209,9 +229,12 @@ def _materialize_parent(
         "sha256": sha256_file(bundle),
         "frames": len(frames),
         "candidate_camera_height_m": {
-            "minimum": min(candidate_heights), "maximum": max(candidate_heights),
+            "parent_median": candidate_height, "valid_frames": candidate_height_count,
+            "mad_m": candidate_height_mad,
         },
-        "truth_camera_height_m": {"minimum": min(truth_heights), "maximum": max(truth_heights)},
+        "truth_camera_height_m": {
+            "parent_median": truth_height, "valid_frames": truth_height_count, "mad_m": truth_height_mad,
+        },
         "source_frames": source_frames,
     }
     atomic_json(receipt_path, receipt)
@@ -222,6 +245,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--lock", type=Path, required=True)
     parser.add_argument("--validity-amendment", type=Path, required=True)
+    parser.add_argument("--parent-height-amendment", type=Path, required=True)
     parser.add_argument("--metadata-root", type=Path, required=True)
     parser.add_argument("--payload-root", type=Path, required=True)
     parser.add_argument("--depthart-source", type=Path, required=True)
@@ -233,9 +257,13 @@ def main() -> None:
     lock = json.loads(lock_path.read_text(encoding="utf-8"))
     amendment_path = args.validity_amendment.resolve()
     amendment = json.loads(amendment_path.read_text(encoding="utf-8"))
+    parent_amendment_path = args.parent_height_amendment.resolve()
+    parent_amendment = json.loads(parent_amendment_path.read_text(encoding="utf-8"))
     require(lock["status"] == "FROZEN_BEFORE_BONN_PIXEL_OR_DEPTHART_OUTPUT_ACCESS", "execution lock is not frozen")
     require(amendment["original_lock"]["sha256"] == sha256_file(lock_path), "validity amendment/lock SHA drift")
     require(amendment["status"] == "FROZEN_AFTER_INVALID_ONE_FRAME_MATERIALIZATION_PREFLIGHT_BEFORE_ANY_ARM_METRIC", "validity amendment is not frozen")
+    require(parent_amendment["predecessor_amendment"]["sha256"] == sha256_file(amendment_path), "parent-height amendment/predecessor SHA drift")
+    require(parent_amendment["status"] == "FROZEN_AFTER_INVALID_18_FRAME_MATERIALIZATION_BEFORE_ANY_OUTPUT_FILE_OR_ARM_METRIC", "parent-height amendment is not frozen")
     source_contract = lock["source_contract"]
     expected_roster = source_contract["roster"]
     require(build_roster(args.metadata_root.resolve(), source_contract) == expected_roster, "metadata-only roster drift")
@@ -262,6 +290,7 @@ def main() -> None:
         parent_receipts.append(
             _materialize_parent(
                 sequence_root, frozen_parent, source_contract, amendment["camera_height_contract_override"],
+                parent_amendment["parent_height_contract"],
                 prior, model, preprocess, output_root,
             )
         )
@@ -272,6 +301,9 @@ def main() -> None:
         "execution_lock": {"path": str(lock_path), "sha256": sha256_file(lock_path)},
         "execution_validity_amendment": {
             "path": str(amendment_path), "sha256": sha256_file(amendment_path),
+        },
+        "parent_height_amendment": {
+            "path": str(parent_amendment_path), "sha256": sha256_file(parent_amendment_path),
         },
         "prior_provenance": {
             "family": "DepthART", "frozen": True, "truth_derived": False,

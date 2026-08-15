@@ -89,15 +89,18 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--lock", type=Path, required=True)
     parser.add_argument("--validity-amendment", type=Path, required=True)
+    parser.add_argument("--parent-height-amendment", type=Path, required=True)
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--result", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     lock_path = args.lock.resolve()
     amendment_path = args.validity_amendment.resolve()
+    parent_amendment_path = args.parent_height_amendment.resolve()
     manifest_path, result_path = args.manifest.resolve(), args.result.resolve()
     lock = json.loads(lock_path.read_text(encoding="utf-8"))
     amendment = json.loads(amendment_path.read_text(encoding="utf-8"))
+    parent_amendment = json.loads(parent_amendment_path.read_text(encoding="utf-8"))
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     result = json.loads(result_path.read_text(encoding="utf-8"))
     _require(manifest["execution_lock"]["sha256"] == sha256_file(lock_path), "manifest/lock SHA drift")
@@ -105,6 +108,14 @@ def main() -> None:
     _require(
         manifest["execution_validity_amendment"]["sha256"] == sha256_file(amendment_path),
         "manifest/amendment SHA drift",
+    )
+    _require(
+        parent_amendment["predecessor_amendment"]["sha256"] == sha256_file(amendment_path),
+        "parent-height amendment/predecessor SHA drift",
+    )
+    _require(
+        manifest["parent_height_amendment"]["sha256"] == sha256_file(parent_amendment_path),
+        "manifest/parent-height amendment SHA drift",
     )
     _require(result["evidence_role"] == lock["evidence_role"], "result evidence role drift")
     arms = lock["arms"]
@@ -129,6 +140,7 @@ def main() -> None:
         "lock_id": lock["lock_id"],
         "execution_lock_sha256": sha256_file(lock_path),
         "execution_validity_amendment_sha256": sha256_file(amendment_path),
+        "parent_height_amendment_sha256": sha256_file(parent_amendment_path),
         "manifest_sha256": sha256_file(manifest_path),
         "result_sha256": sha256_file(result_path),
         "primary": primary_name,
