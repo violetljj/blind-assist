@@ -57,6 +57,7 @@
     "missing_policy": "missing timestamp, truth, region identity or alignment support remains an explicit truth/candidate UNKNOWN identity in the all-locked-identity denominator; rows cannot be deleted",
     "exact_source_roster_selected": true,
     "source_lock": "SVRF_O0_A2D2_SPRING_SOURCE_LOCK_2026-08-15.json",
+    "archive_access_capability_lock": "SVRF_O0_ARCHIVE_ACCESS_CAPABILITY_LOCK_2026-08-15.json",
     "blocked_reason": "the exact A2D2 three-drive plus Spring-v2 five-sequence roster is metadata-locked, but selected RGB/truth payloads, per-file hashes, causal windows and separate truth/candidate writers are not materialized or frozen",
     "explicitly_not_fresh": ["Bonn parents", "ARKitScenes parents", "TUM parents", "OpenLORIS parents", "ADVIO 13/14/15/17", "all previously opened DepthART, RCLE, SATOM, TARO or scale-free outcomes"],
     "advio_16": "remains RCLE-reserved SEALED_UNSEEN and is not allocated to SVRF",
@@ -131,7 +132,7 @@
     "writer_isolation": "separate candidate and truth processes and filesystem roots joined only by an evaluator-only opaque-ID map",
     "candidate_bundle": ["opaque identity", "RGB", "timestamp", "frozen FIXED_CANONICAL_OR_RGB_DERIVED intrinsics implementation"],
     "truth_bundle": ["opaque identity", "source depth/LiDAR/flow/pose/maps", "truth status and UNKNOWN reason"],
-    "archive_policy": "verify member indexing, selective extraction and local space budget before bulk payload download",
+    "archive_policy": "use artifacts.local as the logical root and its canonical F-drive junction target for all large payloads; retain a 64-GiB F-drive reserve; verify member indexing and selective extraction before bulk transfer",
     "legal_terminals": ["PASS / SVRF_O0_READY_FOR_ONE_SHOT_REAL_EXECUTION", "NOT_EVALUABLE / LOCKED_COHORT_CANNOT_SUPPORT_FROZEN_EVALUATION", "INVALID / FIREWALL_HASH_IDENTITY_OR_WRITER_CONTRACT_FAILURE"]
   },
   "negative_control_lock_contract": {
@@ -160,7 +161,7 @@
   ],
   "activation_contract": {
     "outcome_access_authorized": false,
-    "required_before_first_candidate_run": ["validated A2D2 plus Spring source lock", "selective payload materialization with exact per-file hashes", "outcome-blind causal window identities", "exact RGB/timestamp/truth identities and hashes", "truth UNKNOWN and metric-support readiness receipt", "frozen DepthART identity", "frozen FIXED_CANONICAL_OR_RGB_DERIVED intrinsics implementation", "frozen warp/flow/background/dynamic/channel implementations", "exact N0-N3 intervention seeds and transforms", "separate candidate/truth writers and empty exclusive artifact root"],
+    "required_before_first_candidate_run": ["validated A2D2 plus Spring source lock", "validated archive-access capability lock with canonical F-drive storage", "validated resumable A2D2 one-pass stream index", "selective payload materialization with exact per-file hashes", "outcome-blind causal window identities", "exact RGB/timestamp/truth identities and hashes", "truth UNKNOWN and metric-support readiness receipt", "frozen DepthART identity", "frozen FIXED_CANONICAL_OR_RGB_DERIVED intrinsics implementation", "frozen warp/flow/background/dynamic/channel implementations", "exact N0-N3 intervention seeds and transforms", "separate candidate/truth writers and empty exclusive artifact root"],
     "opened_outcome_cannot_change_source_arm_threshold_gate_or_missing_policy": true
   },
   "authority": {

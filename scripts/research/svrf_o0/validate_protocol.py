@@ -29,6 +29,8 @@ def validate_protocol(protocol: dict[str, object]) -> None:
     source = protocol["fresh_source_contract"]
     if source.get("exact_source_roster_selected") is not True or source.get("source_lock") != "SVRF_O0_A2D2_SPRING_SOURCE_LOCK_2026-08-15.json":
         raise ValueError("SVRF-O0 source-lock binding drift")
+    if source.get("archive_access_capability_lock") != "SVRF_O0_ARCHIVE_ACCESS_CAPABILITY_LOCK_2026-08-15.json":
+        raise ValueError("SVRF-O0 archive capability binding drift")
     if any(protocol["authority"].values()):
         raise ValueError("SVRF-O0 pre-outcome authority must remain closed")
     truth = protocol.get("truth_unknown_contract", {})
@@ -74,6 +76,8 @@ def validate_protocol(protocol: dict[str, object]) -> None:
     preflight = protocol.get("selective_materialization_preflight_contract", {})
     if preflight.get("outcome_metrics_forbidden") is not True:
         raise ValueError("SVRF-O0 preflight outcome firewall drift")
+    if "canonical F-drive junction target" not in preflight.get("archive_policy", ""):
+        raise ValueError("SVRF-O0 large-data storage policy drift")
     negative = protocol.get("negative_control_lock_contract", {})
     if "positive-yaw 5-degree" not in negative.get("N2", ""):
         raise ValueError("SVRF-O0 N2 transform identity drift")

@@ -1,6 +1,6 @@
 # SVRF current
 
-状态：`current / WILD_LAB / FROZEN_PREOUTCOME_BLOCKED_ON_SELECTIVE_MATERIALIZATION_AND_TRUTH_WRITER_LOCK / RGB_ONLY / A2D2_SPRING_TWO_SOURCE_EIGHT_PARENT_METADATA_LOCK_VALID / REAL_O0_NOT_RUN / NO_TRAINING / DEFAULT_APP_UNCHANGED`
+状态：`current / WILD_LAB / FROZEN_PREOUTCOME_BLOCKED_ON_SELECTIVE_MATERIALIZATION_AND_TRUTH_WRITER_LOCK / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / ARCHIVE_ACCESS_PARTIAL_PASS / REAL_O0_NOT_RUN / NO_TRAINING / DEFAULT_APP_UNCHANGED`
 
 ## 主张
 
@@ -20,8 +20,11 @@ path intrusion，是否能稳定识别“相对逼近且侵入前向视觉通道
   candidate；
 - [Source lock](SVRF_O0_A2D2_SPRING_SOURCE_LOCK_2026-08-15.json) 已冻结 A2D2 三条真实连续
   drive 与 Spring v2 五条 synthetic stress sequence；pre-lock tracked prior-use 与总账命中均为 0；
-- 当前只取得官方 checksums/license/API 与 Spring camera metadata，未下载或解码 RGB/depth/LiDAR，
-  未冻结 causal windows 或 truth writer，故 outcome access 继续关闭，`REAL_O0_NOT_RUN`；
+- [Archive capability lock](SVRF_O0_ARCHIVE_ACCESS_CAPABILITY_LOCK_2026-08-15.json) 已证明 Spring
+  ZIP64 可用 Range 建 central index 并做 CRC-valid member 抽取；A2D2 官方桶只有 TAR、无独立
+  PNG/NPZ 对象，必须先实现一次性流式 member index，不能假装随机抽取已就绪；
+- 当前除 5 个 bounded ZIP-member CRC 样本外未物化 payload，且没有媒体/flow/disparity/label
+  语义解码；causal windows 与 truth writer 未冻结，故 outcome access 继续关闭，`REAL_O0_NOT_RUN`；
 - A2D2 是车载域且 5/8 parent 为 synthetic；未来 PASS 也不能写成助盲生态 confirmation。
   零 prior-use 只证明 BlindAssist 项目内 fresh，不能排除 DepthART/上游 foundation pretraining exposure；
   A2D2 payload 与派生帧不进入公共仓库，只允许本地分析和聚合指标。
@@ -41,9 +44,9 @@ ADVIO 13/14/15/17 已用于 RCLE Development；sequence16 仍是 RCLE-reserved `
 
 ## 唯一 successor
 
-`SVRF_O0_LOCKED_PARENT_SELECTIVE_MATERIALIZATION_PREFLIGHT`：只从已锁 A2D2/Spring parent
-物化 outcome-blind causal windows、RGB 与 evaluator truth 必需的最小文件，绑定逐文件 hash、时间戳、
-缺失分母和独立 truth/candidate writer；在 activation 之前不运行 candidate 或读取 outcome。
+`SVRF_O0_A2D2_ONE_PASS_STREAM_INDEXER_AND_SPRING_RANGE_MANIFEST_PREFLIGHT`：在
+`artifacts.local` 的 F 盘物理目标上实现可恢复 A2D2 单次流式 TAR member index，同时从 Spring
+central directory 生成 outcome-blind member manifest；保留 64 GiB 余量，不运行 candidate 或读取 outcome。
 
 ## 禁止动作
 

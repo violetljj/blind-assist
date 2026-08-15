@@ -15,6 +15,9 @@
 - [`validate_source_lock.py`](validate_source_lock.py) 校验 A2D2/Spring 官方 metadata hash、许可、
   archive checksum、Spring deterministic 5-parent selection、pre-lock prior-use 与 3+5 denominator；
   它不读取 RGB/depth/LiDAR 或 candidate outcome。
+- [`probe_materialization_capability.py`](probe_materialization_capability.py) 只做 HTTP Range、TAR
+  header、ZIP64 central-directory 和最小 CRC 抽取，并按 `artifacts.local` junction 的 F 盘物理目标
+  计算容量；[`validate_materialization_capability.py`](validate_materialization_capability.py) 锁住该 receipt。
 
 ## 输出
 
