@@ -21,6 +21,9 @@ def main() -> None:
         raise ValueError("SVRF-O0 arm identity drift")
     if protocol["candidate_input_firewall"]["rgb_only"] is not True:
         raise ValueError("SVRF-O0 must remain RGB-only")
+    source = protocol["fresh_source_contract"]
+    if source.get("exact_source_roster_selected") is not True or source.get("source_lock") != "SVRF_O0_A2D2_SPRING_SOURCE_LOCK_2026-08-15.json":
+        raise ValueError("SVRF-O0 source-lock binding drift")
     if any(protocol["authority"].values()):
         raise ValueError("SVRF-O0 pre-outcome authority must remain closed")
     policy = EvaluationPolicy()

@@ -1,6 +1,6 @@
 # SVRF current
 
-状态：`current / WILD_LAB / SVRF_O0_PREOUTCOME_PROTOCOL_FROZEN / RGB_ONLY / BLOCKED_ON_FRESH_PARENT_CAPABILITY_AND_SOURCE_LOCK / REAL_O0_NOT_RUN / NO_TRAINING / DEFAULT_APP_UNCHANGED`
+状态：`current / WILD_LAB / SVRF_O0_PREOUTCOME_PROTOCOL_FROZEN / RGB_ONLY / A2D2_SPRING_TWO_SOURCE_EIGHT_PARENT_METADATA_LOCK_VALID / BLOCKED_ON_SELECTIVE_MATERIALIZATION_AND_TRUTH_WRITER_LOCK / REAL_O0_NOT_RUN / NO_TRAINING / DEFAULT_APP_UNCHANGED`
 
 ## 主张
 
@@ -18,8 +18,13 @@ path intrusion，是否能稳定识别“相对逼近且侵入前向视觉通道
   aligned depth change、local expansion、无训练融合与 evaluator；
 - source-native depth/pose/geometry 只在 evaluator firewall 后构造 approach/ranking truth，不能进入
   candidate；
-- 当前没有完成 route-specific capability、license、ancestry 与 prior-use exclusion 的 exact
-  two-source/eight-parent cohort，故 outcome access 保持关闭，`REAL_O0_NOT_RUN`。
+- [Source lock](SVRF_O0_A2D2_SPRING_SOURCE_LOCK_2026-08-15.json) 已冻结 A2D2 三条真实连续
+  drive 与 Spring v2 五条 synthetic stress sequence；pre-lock tracked prior-use 与总账命中均为 0；
+- 当前只取得官方 checksums/license/API 与 Spring camera metadata，未下载或解码 RGB/depth/LiDAR，
+  未冻结 causal windows 或 truth writer，故 outcome access 继续关闭，`REAL_O0_NOT_RUN`；
+- A2D2 是车载域且 5/8 parent 为 synthetic；未来 PASS 也不能写成助盲生态 confirmation。
+  零 prior-use 只证明 BlindAssist 项目内 fresh，不能排除 DepthART/上游 foundation pretraining exposure；
+  A2D2 payload 与派生帧不进入公共仓库，只允许本地分析和聚合指标。
 
 ## 既有资产边界
 
@@ -32,9 +37,9 @@ ADVIO 13/14/15/17 已用于 RCLE Development；sequence16 仍是 RCLE-reserved `
 
 ## 唯一 successor
 
-`SVRF_O0_FRESH_PARENT_CAPABILITY_AND_SOURCE_LOCK`：只做 metadata/license/ancestry/prior-use 与
-truth-capability admission，冻结 exact two-source/eight-parent roster 和 N0–N3 identities；在 activation
-之前不读取 candidate outcome、不运行真实 O0。
+`SVRF_O0_LOCKED_PARENT_SELECTIVE_MATERIALIZATION_PREFLIGHT`：只从已锁 A2D2/Spring parent
+物化 outcome-blind causal windows、RGB 与 evaluator truth 必需的最小文件，绑定逐文件 hash、时间戳、
+缺失分母和独立 truth/candidate writer；在 activation 之前不运行 candidate 或读取 outcome。
 
 ## 禁止动作
 

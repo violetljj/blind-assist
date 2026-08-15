@@ -53,8 +53,9 @@
     "parent_unit": "source-native sequence/session, never random frame or clip",
     "required_capabilities": ["continuous RGB and timestamps", "evaluator-only approach/stable/receding truth", "evaluator-only relative-risk or clearance ordering", "dynamic/occlusion identity or admissible label construction", "at least three image regions per evaluated frame"],
     "missing_policy": "missing timestamp, truth, region identity or alignment support remains UNKNOWN and in the coverage denominator",
-    "exact_source_roster_selected": false,
-    "blocked_reason": "the 2026-08-05 ledger is large and role-conflicted; no exact new two-source eight-parent cohort has yet passed route-specific capability, license, ancestry and prior-use exclusion",
+    "exact_source_roster_selected": true,
+    "source_lock": "SVRF_O0_A2D2_SPRING_SOURCE_LOCK_2026-08-15.json",
+    "blocked_reason": "the exact A2D2 three-drive plus Spring-v2 five-sequence roster is metadata-locked, but selected RGB/truth payloads, per-file hashes, causal windows and separate truth/candidate writers are not materialized or frozen",
     "explicitly_not_fresh": ["Bonn parents", "ARKitScenes parents", "TUM parents", "OpenLORIS parents", "ADVIO 13/14/15/17", "all previously opened DepthART, RCLE, SATOM, TARO or scale-free outcomes"],
     "advio_16": "remains RCLE-reserved SEALED_UNSEEN and is not allocated to SVRF",
     "selection_after_candidate_outcome_access_allowed": false
@@ -120,7 +121,7 @@
   ],
   "activation_contract": {
     "outcome_access_authorized": false,
-    "required_before_first_candidate_run": ["exact two-source eight-parent source lock", "license and ancestry receipts", "prior-use exclusion against the master ledger and route locks", "exact RGB/timestamp/truth identities and hashes", "frozen DepthART identity", "frozen warp/flow/background/dynamic/channel implementations", "exact N0-N3 intervention seeds and transforms", "separate candidate/truth writers and empty exclusive artifact root"],
+    "required_before_first_candidate_run": ["validated A2D2 plus Spring source lock", "selective payload materialization with exact per-file hashes", "outcome-blind causal window identities", "exact RGB/timestamp/truth identities and hashes", "frozen DepthART identity", "frozen warp/flow/background/dynamic/channel implementations", "exact N0-N3 intervention seeds and transforms", "separate candidate/truth writers and empty exclusive artifact root"],
     "opened_outcome_cannot_change_source_arm_threshold_gate_or_missing_policy": true
   },
   "authority": {

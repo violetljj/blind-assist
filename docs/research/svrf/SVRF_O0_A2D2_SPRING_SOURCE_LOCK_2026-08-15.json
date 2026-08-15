@@ -1,0 +1,108 @@
+{
+  "schema": "blindassist.svrf_o0.source_lock.v1",
+  "lock_id": "SVRF_O0_A2D2_SPRING_FRESH_PARENT_SOURCE_LOCK_20260815_R0",
+  "status": "FROZEN_METADATA_ONLY_PAYLOAD_NOT_MATERIALIZED",
+  "date": "2026-08-15",
+  "selection_salt": "SVRF_O0_SPRING_PARENT_LOCK_R0",
+  "parent_count": 8,
+  "source_count": 2,
+  "candidate_input": "RGB_ONLY",
+  "sources": [
+    {
+      "source_id": "A2D2_SENSOR_FUSION",
+      "domain": "REAL_AUTOMOTIVE",
+      "publisher": "Audi Electronics Venture GmbH",
+      "license": "CC BY-ND 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-nd/4.0/",
+      "official_registry": "https://registry.opendata.aws/aev-a2d2/",
+      "official_bucket": "https://aev-autonomous-driving-dataset.s3.eu-central-1.amazonaws.com/",
+      "parent_unit": "one source-native recorded drive",
+      "candidate_modality": "front-center RGB only",
+      "evaluator_only_modalities": ["front-center registered LiDAR", "camera registration metadata", "vehicle bus timestamps and motion signals"],
+      "dynamic_identity_policy": "unannotated sequential drives provide no source-native dynamic instance identity; regions whose LiDAR/RGB temporal association is not static-consistent remain UNKNOWN",
+      "redistribution_policy": "local research analysis and aggregate metrics only; do not publish source or derived frame payloads under this lock",
+      "parents": [
+        {
+          "parent_id": "20180810150607",
+          "archives": {
+            "camera": {"name": "camera_lidar-20180810150607_camera_frontcenter.tar", "bytes": 53791242240, "md5": "e9457e2d7ca68bfec527522a0606fc0a"},
+            "lidar": {"name": "camera_lidar-20180810150607_lidar_frontcenter.tar", "bytes": 15040716800, "md5": "d0249a35e90f22cabd410c0c61744b2c"},
+            "bus": {"name": "camera_lidar-20180810150607_bus_signals.tar", "bytes": 105594880, "md5": "f6760430d3421d8efc03ae953aaf14df"}
+          }
+        },
+        {
+          "parent_id": "20190401121727",
+          "archives": {
+            "camera": {"name": "camera_lidar-20190401121727_camera_frontcenter.tar", "bytes": 98142607360, "md5": "66bf8642c0ee221d1c5664c7b6362a6c"},
+            "lidar": {"name": "camera_lidar-20190401121727_lidar_frontcenter.tar", "bytes": 25998315520, "md5": "70ba406fbec9da092a5c7dff834375ca"},
+            "bus": {"name": "camera_lidar-20190401121727_bus_signals.tar", "bytes": 185006080, "md5": "5d1ba665c3fedd3c64f4fa16dfc35084"}
+          }
+        },
+        {
+          "parent_id": "20190401145936",
+          "archives": {
+            "camera": {"name": "camera_lidar-20190401145936_camera_frontcenter.tar", "bytes": 78954700800, "md5": "46934d1b0426b477cd5f5b0149ee57ba"},
+            "lidar": {"name": "camera_lidar-20190401145936_lidar_frontcenter.tar", "bytes": 26906624000, "md5": "99b79402edd54b9776ad055788d37ec6"},
+            "bus": {"name": "camera_lidar-20190401145936_bus_signals.tar", "bytes": 149770240, "md5": "e64162938ddfe07bfd9e192cbcf0a906"}
+          }
+        }
+      ]
+    },
+    {
+      "source_id": "SPRING_V2",
+      "domain": "SYNTHETIC_CINEMATIC_STRESS",
+      "publisher": "University of Stuttgart / Spring Benchmark",
+      "persistent_id": "doi:10.18419/DARUS-3376",
+      "version": "2.0",
+      "license": "CC BY 4.0",
+      "official_record": "https://darus.uni-stuttgart.de/dataset.xhtml?persistentId=doi:10.18419/DARUS-3376&version=2.0",
+      "parent_unit": "one source-native Spring train sequence",
+      "candidate_modality": "left RGB only",
+      "evaluator_only_modalities": ["left disparity", "forward/backward optical flow", "camera intrinsics/extrinsics", "rigid/detail/match/sky maps"],
+      "minimum_camera_rows": 100,
+      "selection_rule": "SHA256(selection_salt + '|' + four-digit sequence id), ascending among sequences with at least 100 extrinsic rows; take first five",
+      "archive_bindings": {
+        "train_cam_data.zip": {"datafile_id": 198954, "bytes": 478094, "md5": "9b1611f904e20ea79f90c2624b7fad94"},
+        "train_frame_left.zip": {"datafile_id": 199097, "bytes": 13361546687, "md5": "3a53483fc920514f72e553d1a11d271a"},
+        "train_disp1_left.zip": {"datafile_id": 198961, "bytes": 10608767690, "md5": "9534f6094be09729aff3a0db31551257"},
+        "train_flow_FW_left.zip": {"datafile_id": 199011, "bytes": 47214992751, "md5": "5cf887fa4b2003909db31336ab917664"},
+        "train_maps.zip": {"datafile_id": 242149, "bytes": 4626778672, "md5": "6f69ef9ad5fdb5b857102560eb5b2e48"}
+      },
+      "parents": [
+        {"parent_id": "0018", "camera_rows": 111, "selection_rank_sha256": "06cb24401b659b93d07c13649e3ec84e733e516860d83f8a8a355150ff2d24d1"},
+        {"parent_id": "0016", "camera_rows": 282, "selection_rank_sha256": "12ac42f7713bcf4d578af92e0798d56833bc2fe772674b41fb5b4ec15abc839b"},
+        {"parent_id": "0005", "camera_rows": 116, "selection_rank_sha256": "1a5f48b9645bb220b84b8d0f511d404b3a77d5aed95a54434647f4f23bba51f0"},
+        {"parent_id": "0014", "camera_rows": 158, "selection_rank_sha256": "46b08e9da846a5f783560792054c2061b3d35196378d9f57bba7fd8a21f4abe4"},
+        {"parent_id": "0047", "camera_rows": 268, "selection_rank_sha256": "54ed72636047b716404ae497f6aec40778ba73f780958514482d219de974e7d5"}
+      ]
+    }
+  ],
+  "metadata_inputs": {
+    "a2d2_checksums_sha256": "c6db5dc677a9d954f691827dcfbfe06a2611486540d2cdea3b086dd467da8b2b",
+    "a2d2_license_sha256": "7dcd2819b7724bbb95b2b180f45f5c67c7f8aa2d120c97a1e192eaa025f2d013",
+    "a2d2_sensor_fusion_readme_sha256": "3211463887bda8545681822e6c11ab07793f0814c11ea2e10235ab0f3c44e80d",
+    "spring_darus_api_sha256": "2df709d56d3020ab5580d3fc7575babf39093f496c5925b12c84d5ee26afca52",
+    "spring_cam_data_zip_sha256": "4bbdd64ebf78fc5089fb34e7d267af88813ac4d508c4f1d97a35ff70743f5b0d"
+  },
+  "prior_use_exclusion": {
+    "repository_commit": "2b96a55628867ee1c8c9e144a44c6f653b3f69ff",
+    "patterns": "(^|[^A-Za-z0-9_])A2D2([^A-Za-z0-9_]|$)|DARUS-3376|spring/train/[0-9]{4}",
+    "scope": ["docs", "scripts"],
+    "matched_tracked_paths": 0,
+    "master_ledger_matching_rows": 0
+  },
+  "freshness_boundary": {
+    "project_level_parent_freshness": true,
+    "upstream_foundation_or_teacher_pretraining_exposure_excluded": false,
+    "interpretation": "zero tracked-repository and master-ledger matches only establishes BlindAssist project-level prior-use exclusion; it is not a claim that DepthART or any upstream foundation model never saw A2D2 or Spring"
+  },
+  "activation": {
+    "source_roster_frozen": true,
+    "payload_materialized": false,
+    "truth_writer_frozen": false,
+    "candidate_run_authorized": false,
+    "outcome_access_authorized": false
+  },
+  "claim_ceiling": "A2D2 is vehicle-domain, five of eight parents are synthetic, and upstream model pretraining exposure is unknown; even a future O0 PASS establishes project-level fresh cross-domain representation headroom only, not sealed model holdout, assistive ecological confirmation, physical TTC, clearance, navigation, product or safety performance.",
+  "unique_successor": "SVRF_O0_LOCKED_PARENT_SELECTIVE_MATERIALIZATION_PREFLIGHT"
+}

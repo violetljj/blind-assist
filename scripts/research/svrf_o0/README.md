@@ -11,6 +11,9 @@
   approach rate、rotation-compensated local expansion 与冻结无训练融合规则；
 - [`evaluation.py`](evaluation.py) 强制 A0–A3/N0–N3 exact ledger、parent/source macro、matched
   coverage、负控退化和 UNKNOWN 非增益。
+- [`validate_source_lock.py`](validate_source_lock.py) 校验 A2D2/Spring 官方 metadata hash、许可、
+  archive checksum、Spring deterministic 5-parent selection、pre-lock prior-use 与 3+5 denominator；
+  它不读取 RGB/depth/LiDAR 或 candidate outcome。
 
 ## 输出
 
