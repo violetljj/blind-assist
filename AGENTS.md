@@ -11,10 +11,14 @@
   connected test needs an explicit device. Do not hand-compose `JAVA_HOME`,
   Android SDK, Gradle state, or direct `gradlew.bat` commands.
 - Use `pwsh -NoProfile -File scripts/project.ps1 doctor` for combined
-  workstation readiness. It validates the evidence-bound Python launcher and
-  delegates Android checks to the existing Gradle preflight. Its `rebuild`
-  action is intentionally refused: protected toolchains and evidence
-  environments are rebuilt only through their owning reviewed procedures.
+  workstation readiness. It must validate the evidence-bound launcher
+  `E:\codex-tools\bin\blindassist-python.cmd` as Python 3.11.9 with NumPy and
+  OpenCV importable, then delegate Android checks to the existing Gradle
+  preflight. `bootstrap` is the same non-mutating readiness check, and `test`
+  adds the project-structure gate after readiness passes. The generic
+  `rebuild` action must remain fail-closed: do not delete, replace, migrate, or
+  recreate protected toolchains or evidence environments through this entry;
+  rebuild them only through their owning reviewed procedures.
 - Keep PowerShell execution single-layer by default. When the active shell is
   already `pwsh`, invoke cmdlets and scripts directly; start a nested `pwsh`
   only when process isolation is the thing being tested. Use named variables
