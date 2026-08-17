@@ -62,6 +62,7 @@ plan_sanpo_boundary_aux_candidates.py
 plan_sanpo_p3_session_split.py
 prepare_coco100.py
 prepare_sanpo_v3_dataset_views.py
+project.ps1
 README.md
 redact_sanpo_auxiliary_candidate.py
 report_ustrf_sc_research_benchmark.py

@@ -10,6 +10,11 @@
   `-PreflightOnly` for environment diagnosis and `-AndroidSerial` when a
   connected test needs an explicit device. Do not hand-compose `JAVA_HOME`,
   Android SDK, Gradle state, or direct `gradlew.bat` commands.
+- Use `pwsh -NoProfile -File scripts/project.ps1 doctor` for combined
+  workstation readiness. It validates the evidence-bound Python launcher and
+  delegates Android checks to the existing Gradle preflight. Its `rebuild`
+  action is intentionally refused: protected toolchains and evidence
+  environments are rebuilt only through their owning reviewed procedures.
 - Keep PowerShell execution single-layer by default. When the active shell is
   already `pwsh`, invoke cmdlets and scripts directly; start a nested `pwsh`
   only when process isolation is the thing being tested. Use named variables

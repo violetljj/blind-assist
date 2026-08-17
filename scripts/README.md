@@ -10,6 +10,7 @@
 
 ## 稳定入口
 
+- `project.ps1`：Windows/Codex 本地统一环境入口；`doctor` 同时验证证据绑定的 Python 3.11.9（NumPy/OpenCV）和 Android/Gradle preflight，`bootstrap` 只做非变更检查，`test` 再执行结构门。`run` 只路由仓库内短 Python 脚本或现有 Gradle 入口，不替代正式研究 adapter/guard；`rebuild` 固定 fail closed，禁止通用入口删除受保护环境。
 - `run_android_gradle.ps1`：Windows/Codex 本地 Android Gradle 唯一入口；从脚本位置锁定仓库根目录，按 version catalog、wrapper 和 `local.properties` 校验 JDK、Android SDK 与 Gradle，统一 machine-local state，并在 connected test 前执行有超时的 ADB 预检。仅检查环境时使用 `-PreflightOnly`；环境失败固定为 `ENV_BLOCKED`，通过后才启动 `gradlew.bat`。
 - `run_host_research.ps1`：电脑端 CPU 进程池研究启动器；按本机实测解析 interactive/balanced/throughput 的 8/12/16 worker，当前 16 GiB 主机默认保留 4 GiB 系统内存并限制嵌套数值线程。只调度 host research，不改变科学参数，也不适用于 Android/边缘端。
 - `run_model_matrix.py`：manifest 驱动的历史模型/基线离线矩阵入口；统一逐帧 trace、model/config/dataset identity、artifact 引用、进度和 resume。RISKSEG-R0 已完成设备 trace 优先以 replay 接入，不自动重跑设备实验；详细合同见 `research/model_matrix/README.md`。
@@ -88,6 +89,7 @@
 
 ## 运行约定
 
+- 普通环境检查先运行 `pwsh -NoProfile -File scripts/project.ps1 doctor`；结构验证运行 `pwsh -NoProfile -File scripts/project.ps1 test`。这个入口不创建第二套 Python/Gradle 环境。
 - Windows/Codex 本地 Gradle 命令统一通过 `pwsh -NoProfile -File scripts/run_android_gradle.ps1 <tasks...>`；不要手工拼接 `JAVA_HOME`、SDK、Gradle home 或直接调用 `gradlew.bat`。通用 Python 优先使用 `E:\codex-tools\bin\blindassist-python.cmd`。
 - 电脑端多进程算法研究优先通过 `run_host_research.ps1` 选择 `interactive`、`balanced` 或 `throughput`；具体规则见 [HOST_RESEARCH_COMPUTE.md](../docs/HOST_RESEARCH_COMPUTE.md)。
 - 上述直接入口用于可逆短开发循环；正式 one-shot/不可逆 claim、预计超过 15 分钟、
