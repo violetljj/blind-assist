@@ -12,4 +12,3 @@ The evaluator must remain fixed when B1 structured-search experiments are
 introduced. Search may modify only policy parameters explicitly admitted by a
 future frozen IR; it may never modify truth, unsafe definitions, termination
 truth, or hard safety invariants.
-
