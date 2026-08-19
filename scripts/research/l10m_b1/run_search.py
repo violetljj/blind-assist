@@ -320,7 +320,13 @@ def _run_arm(
         )
 
 
-def run_search(output_root: Path, cli: Path, timeout_seconds: int, resume_dir: Path | None = None) -> Path:
+def run_search(
+    output_root: Path,
+    cli: Path,
+    timeout_seconds: int,
+    resume_dir: Path | None = None,
+    supersedes: str | None = None,
+) -> Path:
     protocol = build_protocol_manifest()
     provider = _provider_preflight(cli)
     if resume_dir is None:
@@ -345,6 +351,7 @@ def run_search(output_root: Path, cli: Path, timeout_seconds: int, resume_dir: P
             "evaluations_per_arm_per_seed": EVALUATIONS_PER_ARM_PER_SEED,
             "retry_semantics": "no retry; timeout/in_doubt consumes one generation and evaluation",
             "blind_boundary": "provider workdirs contain no evaluator, cohort, truth, or repository files",
+            "supersedes_non_evaluable_attempt": supersedes,
         }
         _atomic_json(run_dir / "execution_manifest.json", manifest)
         _atomic_json(progress_path, {"run_id": run_id, "status": "running", "completed": 0, "last_activity": _utc(), "eta": "unknown"})
@@ -392,8 +399,9 @@ def main() -> None:
     parser.add_argument("--cli", type=Path, default=DEFAULT_CLI)
     parser.add_argument("--timeout-seconds", type=int, default=300)
     parser.add_argument("--resume", type=Path)
+    parser.add_argument("--supersedes")
     args = parser.parse_args()
-    path = run_search(args.output_root, args.cli, args.timeout_seconds, args.resume)
+    path = run_search(args.output_root, args.cli, args.timeout_seconds, args.resume, args.supersedes)
     print(path)
 
 
