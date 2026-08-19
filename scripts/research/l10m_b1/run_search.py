@@ -327,6 +327,7 @@ def run_search(
     resume_dir: Path | None = None,
     supersedes: str | None = None,
 ) -> Path:
+    output_root = output_root.resolve()
     protocol = build_protocol_manifest()
     provider = _provider_preflight(cli)
     if resume_dir is None:
