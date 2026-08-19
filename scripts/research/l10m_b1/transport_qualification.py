@@ -24,7 +24,7 @@ from .provider_transport import (
 )
 
 
-PROTOCOL_ID = "L10M-B1-I0-TRANSPORT-QUALIFICATION-V1"
+PROTOCOL_ID = "L10M-B1-I0-TRANSPORT-QUALIFICATION-V2-FORMAL-SHAPED"
 ATTEMPT_COUNT = 10
 PAYLOAD_ITEMS = 32
 PAYLOAD_VALUE = "B1-I0-TRANSPORT-CANARY"
@@ -73,6 +73,7 @@ def build_protocol_manifest(route: str) -> dict[str, object]:
         },
         "fixed_canary": {
             "research_content": False,
+            "prompt_shape": "formal_b1_structured_candidate_and_feedback_envelope",
             "terminal_format": "strict JSON object",
             "payload_items": PAYLOAD_ITEMS,
             "payload_value": PAYLOAD_VALUE,
@@ -104,9 +105,22 @@ def build_protocol_manifest(route: str) -> dict[str, object]:
 
 def _prompt(attempt: int) -> str:
     return (
-        "This is a transport-only infrastructure canary. Do not use tools, inspect files, "
-        "or discuss research. Return exactly one JSON object and nothing else. "
-        f'The object must be {{"canary_id":"B1-I0","attempt":{attempt},"payload":['
+        "You are improving one transport-only canary candidate. You may change only "
+        "the five displayed fields, and this has no research meaning. Do not use tools, "
+        "inspect files, or discuss research. Return exactly one JSON object and nothing else.\n"
+        "Allowed fields: action_selection.turn_threshold (0.10, 0.20, 0.30), "
+        "fallback.min_quality (0.35, 0.50, 0.65), fallback.action (STOP, LEFT, RIGHT), "
+        "stuck_response.on_confirmed_stuck (ENTER_RECOVERY, STOP), and "
+        "recovery_transition.while_active (RECOVER, LEFT, RIGHT).\n"
+        f"Paired seed: 0. Generation: {attempt}. Interface: component-grouped JSON.\n"
+        "Current candidate:\n"
+        '{"action_selection":{"turn_threshold":0.2},"fallback":{"action":"STOP","min_quality":0.35},'
+        '"progress_contract":{"mode":"POSITIVE_PROGRESS|CONFIRMED_NO_PROGRESS|UNKNOWN_PROGRESS","mutable":false},'
+        '"recovery_transition":{"while_active":"RECOVER"},"stuck_response":{"on_confirmed_stuck":"ENTER_RECOVERY"}}\n'
+        "Latest evaluator feedback (canary-only, not scientific): "
+        '{"behavioral_score":0.5,"behavioral_vector":{"action_agreement_rate":0.5,"arrival_success_rate":0.5,"false_arrival_rate":0.0,"oscillation_rate":0.0,"unsafe_action_rate":0.0},"best_score_so_far":0.5,"candidate_valid":true,"generation":0,"unsafe_candidate":false}\n'
+        "Return the same displayed candidate with the canary marker and payload. The object must be "
+        f'{{"canary_id":"B1-I0-V2","attempt":{attempt},"candidate":{{"action_selection":{{"turn_threshold":0.2}},"fallback":{{"action":"STOP","min_quality":0.35}},"progress_contract":{{"mode":"POSITIVE_PROGRESS|CONFIRMED_NO_PROGRESS|UNKNOWN_PROGRESS","mutable":false}},"recovery_transition":{{"while_active":"RECOVER"}},"stuck_response":{{"on_confirmed_stuck":"ENTER_RECOVERY"}}}},"payload":['
         + ",".join(f'"{PAYLOAD_VALUE}"' for _ in range(PAYLOAD_ITEMS))
         + "]}."
     )
@@ -120,8 +134,18 @@ def _validate_response(output: str, attempt: int) -> tuple[bool, str | None]:
     except json.JSONDecodeError as exc:
         return False, f"terminal_json_decode_failure:{exc.msg}"
     expected = {
-        "canary_id": "B1-I0",
+        "canary_id": "B1-I0-V2",
         "attempt": attempt,
+        "candidate": {
+            "action_selection": {"turn_threshold": 0.2},
+            "fallback": {"action": "STOP", "min_quality": 0.35},
+            "progress_contract": {
+                "mode": "POSITIVE_PROGRESS|CONFIRMED_NO_PROGRESS|UNKNOWN_PROGRESS",
+                "mutable": False,
+            },
+            "recovery_transition": {"while_active": "RECOVER"},
+            "stuck_response": {"on_confirmed_stuck": "ENTER_RECOVERY"},
+        },
         "payload": [PAYLOAD_VALUE] * PAYLOAD_ITEMS,
     }
     if parsed != expected:

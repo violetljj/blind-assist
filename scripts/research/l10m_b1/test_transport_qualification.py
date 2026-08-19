@@ -30,8 +30,18 @@ class L10MB1TransportQualificationTest(unittest.TestCase):
     def test_strict_terminal_response_validation(self) -> None:
         output = json.dumps(
             {
-                "canary_id": "B1-I0",
+                "canary_id": "B1-I0-V2",
                 "attempt": 3,
+                "candidate": {
+                    "action_selection": {"turn_threshold": 0.2},
+                    "fallback": {"action": "STOP", "min_quality": 0.35},
+                    "progress_contract": {
+                        "mode": "POSITIVE_PROGRESS|CONFIRMED_NO_PROGRESS|UNKNOWN_PROGRESS",
+                        "mutable": False,
+                    },
+                    "recovery_transition": {"while_active": "RECOVER"},
+                    "stuck_response": {"on_confirmed_stuck": "ENTER_RECOVERY"},
+                },
                 "payload": [PAYLOAD_VALUE] * PAYLOAD_ITEMS,
             }
         )
