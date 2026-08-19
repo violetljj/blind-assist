@@ -52,6 +52,14 @@ BLIND_VIOLATION_MARKERS = (
     "git status",
     "git log",
 )
+DOCKER_BLIND_VIOLATION_MARKERS = (
+    "MEMORY.md",
+    "rollout_summaries",
+    "C:\\Users\\",
+    "E:\\linnan\\",
+    "artifacts.local/evidence",
+    "execution_manifest.json",
+)
 
 
 def _utc() -> str:
@@ -395,8 +403,9 @@ def _docker_isolation_canary(docker: Path, image: str, auth_path: Path, output_r
             host_marker.unlink(missing_ok=True)
 
 
-def _blind_violation(diagnostics: str) -> str | None:
-    for marker in BLIND_VIOLATION_MARKERS:
+def _blind_violation(diagnostics: str, backend: str) -> str | None:
+    markers = DOCKER_BLIND_VIOLATION_MARKERS if backend == "docker" else BLIND_VIOLATION_MARKERS
+    for marker in markers:
         if marker in diagnostics:
             return marker
     return None
@@ -513,7 +522,7 @@ def _run_arm(
             else:
                 output, returncode, diagnostics = _run_provider(cli, prompt, workdir, timeout_seconds)
             candidate_output = output.strip()
-            blind_marker = _blind_violation(diagnostics)
+            blind_marker = _blind_violation(diagnostics, backend)
             if blind_marker is not None:
                 completion = {
                     "kind": "completion",
