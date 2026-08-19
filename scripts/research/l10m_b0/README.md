@@ -43,5 +43,24 @@ progress exits recovery before normal action selection. Run it with:
 python -m scripts.research.l10m_b0.b0c_precedence --output artifacts.local/evidence/l10m_b0/c_matrix.json
 ```
 
-Its claim ceiling is causal recovery-transition repair on matched synthetic
-mechanics only. It does not authorize B1 or Structured Search.
+The frozen B0-C observation is not a single-case preservation pass. Both
+`recovery_plus_arrival` and `true_stuck` flip because both end in the same
+confirmed-arrival terminal truth. Its formal verdict is
+`B0_C_TERMINAL_PRECEDENCE_MECHANISM_CONFIRMED_CAUSAL_SELECTIVITY_NOT_IDENTIFIED`:
+the code intervention is limited to precedence, while its behavioral effect
+must propagate to every trajectory satisfying `ARRIVAL => terminal`. The
+consumed B0-C fixtures and results remain unchanged.
+
+B0-D is a new four-case synthetic canary; it does not retrofit B0-C. It
+orthogonalizes stuck/recovery history from final arrival truth and checks that
+confirmed arrival remains terminal across stuck-evidence counts, recovery
+state/attempt number, and the action that the parent policy would have selected.
+It also requires no-arrival and UNKNOWN/no-arrival cases not to fabricate
+success. Run it with:
+
+```text
+python -m scripts.research.l10m_b0.b0d_arrival_orthogonality --output artifacts.local/evidence/l10m_b0/d_matrix.json
+```
+
+Its claim ceiling is state-independent terminal semantics on synthetic policy
+mechanics only. B1 and Structured Search remain unstarted.
