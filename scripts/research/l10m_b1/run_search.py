@@ -106,10 +106,10 @@ def _prompt(arm: str, seed: int, generation: int, candidate: PolicySpec, result:
 
 
 def _provider_preflight(cli: Path) -> dict[str, str]:
-    version_result = subprocess.run([str(cli), "--version"], check=True, capture_output=True, text=True)
-    login_result = subprocess.run([str(cli), "login", "status"], check=True, capture_output=True, text=True)
-    version = (version_result.stdout + version_result.stderr).strip()
-    login = (login_result.stdout + login_result.stderr).strip()
+    version_result = subprocess.run([str(cli), "--version"], check=True, capture_output=True)
+    login_result = subprocess.run([str(cli), "login", "status"], check=True, capture_output=True)
+    version = (version_result.stdout + version_result.stderr).decode("utf-8", errors="replace").strip()
+    login = (login_result.stdout + login_result.stderr).decode("utf-8", errors="replace").strip()
     if not version.startswith("codex-cli ") or version.endswith("unknown"):
         raise RuntimeError(f"unexpected Codex CLI version: {version}")
     if "Logged in" not in login:
@@ -136,8 +136,7 @@ def _run_provider(cli: Path, prompt: str, workdir: Path, timeout_seconds: int) -
     ]
     completed = subprocess.run(
         command,
-        input=prompt,
-        text=True,
+        input=prompt.encode("utf-8"),
         capture_output=True,
         cwd=str(workdir),
         timeout=timeout_seconds,
@@ -145,8 +144,8 @@ def _run_provider(cli: Path, prompt: str, workdir: Path, timeout_seconds: int) -
     )
     output = output_path.read_text(encoding="utf-8") if output_path.exists() else ""
     if not output:
-        output = completed.stdout
-    diagnostics = (completed.stderr or "")[-4000:]
+        output = completed.stdout.decode("utf-8", errors="replace")
+    diagnostics = completed.stderr.decode("utf-8", errors="replace")[-4000:]
     return output, completed.returncode, diagnostics
 
 
