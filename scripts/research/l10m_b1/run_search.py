@@ -125,7 +125,8 @@ def _prompt(arm: str, seed: int, generation: int, candidate: PolicySpec, result:
         + _render_candidate(arm, candidate)
         + "\nLatest evaluator feedback (only this arm):\n"
         + _feedback(result, generation=generation - 1, best_score=best_score)
-        + "\nReturn exactly one replacement candidate."
+        + "\nDo not run shell commands, inspect files, or use tools. Use only the information in this prompt.\n"
+        + "Return exactly one replacement candidate."
     )
 
 
@@ -352,7 +353,7 @@ def _run_provider_docker(
         image,
         "/bin/sh",
         "-c",
-        "codex exec --ephemeral --skip-git-repo-check --ignore-user-config --ignore-rules --sandbox danger-full-access --model "
+        "codex -c responses_websocket=false exec --ephemeral --skip-git-repo-check --ignore-user-config --ignore-rules --sandbox danger-full-access --model "
         + MODEL
         + " --cd /workspace --output-last-message /tmp/last_message.txt - >/dev/null 2>/tmp/diagnostics.txt; rc=$?; cat /tmp/last_message.txt 2>/dev/null; cat /tmp/diagnostics.txt >&2; exit $rc",
     ]
