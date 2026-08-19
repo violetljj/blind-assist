@@ -3,7 +3,7 @@ from __future__ import annotations
 import unittest
 
 from .evaluation import Action, Arm, Evidence, Hazard, Truth, run_episode, summarize
-from .run_canary import EXPECTED_EPISODES, build_cohort, validate_cohort
+from .run_canary import EXPECTED_EPISODES, build_cohort, run, validate_cohort
 
 
 def episode(name: str, *, blocked: bool = False) -> tuple[list[Evidence], list[Truth]]:
@@ -33,6 +33,19 @@ class L10MB0Test(unittest.TestCase):
         mutated[0] = ([Evidence("changed", 0, evidence[0].alignment, evidence[0].center_hazard, evidence[0].quality)], truth[:1])
         with self.assertRaises(ValueError):
             validate_cohort(mutated)
+
+    def test_failure_ledger_localizes_stateful_regressions(self) -> None:
+        result = run()
+        stateful = {
+            row["episode_id"]: row["arms"][Arm.STATEFUL.value]
+            for row in result["episode_ledger"]
+        }
+        self.assertEqual(stateful["blocked-00"]["failure_reasons"], [
+            "termination_miss", "stuck_detection", "recovery_triggered", "unsafe_action",
+        ])
+        self.assertEqual(stateful["stuck-00"]["failure_reasons"], [
+            "termination_miss", "stuck_detection", "recovery_triggered",
+        ])
 
     def test_safety_shield_blocks_unsafe_forward(self) -> None:
         rows = episode("blocked", blocked=True)

@@ -91,11 +91,37 @@ def run() -> dict:
         arm: [run_episode(arm, evidence, truth) for evidence, truth in cohort]
         for arm in Arm
     }
+    episode_ledger = []
+    for index, (evidence_rows, truth_rows) in enumerate(cohort):
+        episode_id = evidence_rows[0].episode_id
+        row = {"episode_id": episode_id, "arms": {}}
+        for arm in Arm:
+            stats = results[arm][index]
+            reasons = []
+            if not stats.success:
+                reasons.append("termination_miss")
+            if stats.stuck_detection_step is not None:
+                reasons.append("stuck_detection")
+            if any(action.value == "RECOVER" for action in stats.actions):
+                reasons.append("recovery_triggered")
+            if stats.unsafe_actions:
+                reasons.append("unsafe_action")
+            if stats.oscillations:
+                reasons.append("oscillation")
+            row["arms"][arm.value] = {
+                "success": stats.success,
+                "actions": [action.value for action in stats.actions],
+                "failure_reasons": reasons,
+                "unsafe_actions": stats.unsafe_actions,
+                "stuck_detection_step": stats.stuck_detection_step,
+            }
+        episode_ledger.append(row)
     return {
         "protocol_id": PROTOCOL_ID,
         "claim_ceiling": "controlled-evidence policy mechanics only; not end-to-end or device evidence",
         "cohort": {"episode_count": len(cohort), "sha256": hashlib.sha256(cohort_json.encode()).hexdigest()},
         "arms": summarize(results),
+        "episode_ledger": episode_ledger,
     }
 
 
