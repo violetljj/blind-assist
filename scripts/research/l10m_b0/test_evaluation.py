@@ -3,6 +3,7 @@ from __future__ import annotations
 import unittest
 
 from .evaluation import Action, Arm, Evidence, Hazard, Truth, run_episode, summarize
+from .run_canary import EXPECTED_EPISODES, build_cohort, validate_cohort
 
 
 def episode(name: str, *, blocked: bool = False) -> tuple[list[Evidence], list[Truth]]:
@@ -20,6 +21,19 @@ def episode(name: str, *, blocked: bool = False) -> tuple[list[Evidence], list[T
 
 
 class L10MB0Test(unittest.TestCase):
+    def test_frozen_cohort_admission_is_deterministic(self) -> None:
+        cohort = build_cohort()
+        validate_cohort(cohort)
+        self.assertEqual(tuple(rows[0].episode_id for rows, _ in cohort), EXPECTED_EPISODES)
+
+    def test_cohort_rejects_identity_mutation(self) -> None:
+        cohort = build_cohort()
+        evidence, truth = cohort[0]
+        mutated = list(cohort)
+        mutated[0] = ([Evidence("changed", 0, evidence[0].alignment, evidence[0].center_hazard, evidence[0].quality)], truth[:1])
+        with self.assertRaises(ValueError):
+            validate_cohort(mutated)
+
     def test_safety_shield_blocks_unsafe_forward(self) -> None:
         rows = episode("blocked", blocked=True)
         reactive = run_episode(Arm.REACTIVE, *rows)

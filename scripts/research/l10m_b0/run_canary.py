@@ -11,6 +11,7 @@ from .evaluation import Arm, Evidence, Hazard, Truth, run_episode, summarize
 
 
 PROTOCOL_ID = "L10M-B0-CONTROLLED-EVIDENCE-V1"
+EXPECTED_EPISODES = ("clear-00", "clear-01", "blocked-00", "blocked-01", "stale-00", "stuck-00")
 
 
 def _episode(name: str, *, blocked: bool = False, stale: bool = False, stuck: bool = False):
@@ -56,6 +57,25 @@ def build_cohort() -> list[tuple[list[Evidence], list[Truth]]]:
     ]
 
 
+def validate_cohort(cohort: list[tuple[list[Evidence], list[Truth]]]) -> None:
+    """Enforce the B0 admission boundary before any arm is evaluated."""
+    if tuple(evidence[0].episode_id for evidence, _ in cohort) != EXPECTED_EPISODES:
+        raise ValueError("cohort episode order/identity changed")
+    for evidence_rows, truth_rows in cohort:
+        if len(evidence_rows) != len(truth_rows) or not evidence_rows:
+            raise ValueError("cohort episode is not aligned and non-empty")
+        seen_steps = set()
+        for evidence, truth in zip(evidence_rows, truth_rows):
+            evidence.validate()
+            if evidence.step in seen_steps:
+                raise ValueError("duplicate evidence step")
+            seen_steps.add(evidence.step)
+            if (evidence.episode_id, evidence.step) != (truth.episode_id, truth.step):
+                raise ValueError("evidence/truth identity mismatch")
+    if any(e.progress_signal is not None and not (-1.0 <= e.progress_signal <= 1.0) for rows, _ in cohort for e in rows):
+        raise ValueError("progress signal is outside controlled evidence range")
+
+
 def _canonical_cohort(cohort) -> str:
     payload = []
     for evidence, truth in cohort:
@@ -65,6 +85,7 @@ def _canonical_cohort(cohort) -> str:
 
 def run() -> dict:
     cohort = build_cohort()
+    validate_cohort(cohort)
     cohort_json = _canonical_cohort(cohort)
     results = {
         arm: [run_episode(arm, evidence, truth) for evidence, truth in cohort]
