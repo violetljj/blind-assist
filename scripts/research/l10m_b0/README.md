@@ -12,3 +12,12 @@ The evaluator must remain fixed when B1 structured-search experiments are
 introduced. Search may modify only policy parameters explicitly admitted by a
 future frozen IR; it may never modify truth, unsafe definitions, termination
 truth, or hard safety invariants.
+
+Run the frozen synthetic canary from the repository root with:
+
+```text
+python -m scripts.research.l10m_b0.run_canary --output artifacts.local/evidence/l10m_b0/result.json
+```
+
+The generated JSON is a replayable mechanics receipt. Its cohort is synthetic
+controlled evidence and its claim ceiling must remain attached to the result.

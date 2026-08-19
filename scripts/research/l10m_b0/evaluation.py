@@ -41,6 +41,7 @@ class Evidence:
     stale: bool = False
     conflict: bool = False
     target_visible: bool = True
+    progress_signal: float | None = None
 
     def validate(self) -> None:
         if not self.episode_id or self.step < 0:
@@ -49,6 +50,8 @@ class Evidence:
             raise ValueError("alignment must be in [-1, 1]")
         if not 0.0 <= self.quality <= 1.0:
             raise ValueError("quality must be in [0, 1]")
+        if self.progress_signal is not None and not -1.0 <= self.progress_signal <= 1.0:
+            raise ValueError("progress_signal must be in [-1, 1]")
 
 
 @dataclass(frozen=True)
@@ -110,15 +113,15 @@ def _shield(action: Action, evidence: Evidence, belief: Belief) -> Action:
     return action
 
 
-def _update_belief(belief: Belief, evidence: Evidence, truth: Truth, action: Action) -> None:
+def _update_belief(belief: Belief, evidence: Evidence, action: Action) -> None:
     observable = evidence.quality >= 0.50 and not evidence.stale and not evidence.conflict
-    if observable:
-        belief.progress_direction = "POSITIVE" if truth.progress > 0 else "NONE"
-        belief.progress_magnitude = truth.progress
+    if observable and evidence.progress_signal is not None:
+        belief.progress_direction = "POSITIVE" if evidence.progress_signal > 0 else "NONE"
+        belief.progress_magnitude = evidence.progress_signal
         belief.progress_confidence = evidence.quality
-        if action == Action.FORWARD and truth.progress <= 0:
+        if action == Action.FORWARD and evidence.progress_signal <= 0:
             belief.stuck_count += 1
-        elif truth.progress > 0:
+        elif evidence.progress_signal > 0:
             belief.stuck_count = 0
     else:
         belief.progress_direction = "UNKNOWN"
@@ -147,7 +150,13 @@ def run_episode(arm: Arm, evidence_rows: list[Evidence], truth_rows: list[Truth]
         if action == Action.STOP and evidence.quality < 0.50:
             stats.unknown_steps += 1
         stats.unsafe_actions += int(action == Action.FORWARD and truth.unsafe_forward)
-        if action == Action.STOP and truth.arrived is False and evidence.quality >= 0.50:
+        if (
+            action == Action.STOP
+            and truth.arrived is False
+            and evidence.quality >= 0.50
+            and evidence.center_hazard == Hazard.LOW
+            and abs(evidence.alignment) <= 0.10
+        ):
             stats.false_arrivals += 1
         if previous_direction in {Action.LEFT, Action.RIGHT} and action in {Action.LEFT, Action.RIGHT} and action != previous_direction:
             stats.oscillations += 1
@@ -155,7 +164,7 @@ def run_episode(arm: Arm, evidence_rows: list[Evidence], truth_rows: list[Truth]
         stats.actions.append(action)
         before_stuck = belief.stuck_count
         if arm != Arm.REACTIVE:
-            _update_belief(belief, evidence, truth, action)
+            _update_belief(belief, evidence, action)
             if belief.stuck_count >= 2 and before_stuck < 2 and stats.stuck_detection_step is None:
                 stats.stuck_detection_step = evidence.step
             if action == Action.RECOVER and truth.progress > 0:
