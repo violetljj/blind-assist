@@ -490,6 +490,85 @@ def _reconcile_in_doubt(events_path: Path, seed: int, arm: str) -> None:
         )
 
 
+def close_interrupted_run(run_dir: Path, reason: str) -> Path:
+    """Seal an interrupted B1 run without resuming or producing a verdict."""
+    run_dir = run_dir.resolve()
+    manifest_path = run_dir / "execution_manifest.json"
+    events_path = run_dir / "events.jsonl"
+    if not manifest_path.is_file() or not events_path.is_file():
+        raise RuntimeError("closeout target is missing the B1 manifest or event journal")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest.get("status") != "RUNNING":
+        raise RuntimeError("closeout target is not an interrupted RUNNING B1 run")
+    events = _load_events(events_path)
+    dispatches = {
+        str(event["request_id"]): event
+        for event in events
+        if event.get("kind") == "dispatch"
+    }
+    completions = {
+        str(event["request_id"]): event
+        for event in events
+        if event.get("kind") == "completion"
+    }
+    in_doubt = []
+    for request_id, dispatch in dispatches.items():
+        if request_id in completions:
+            continue
+        completion = {
+            "kind": "completion",
+            "request_id": request_id,
+            "protocol_id": PROTOCOL_ID,
+            "seed": dispatch["seed"],
+            "arm": dispatch["arm"],
+            "generation": dispatch["generation"],
+            "completed_at": _utc(),
+            "returncode": None,
+            "candidate_output": "",
+            "candidate_output_sha256": _sha256_bytes(b""),
+            "semantic_valid": False,
+            "unsafe_candidate": False,
+            "semantic_error": "in_doubt dispatch sealed at interruption; no resume allowed",
+            "behavioral_score": None,
+            "behavioral_vector": {},
+            "invariant_counts": {},
+            "changed_components": [],
+            "diagnostics_tail": "manual fail-closed closeout",
+            "in_doubt": True,
+        }
+        _append_jsonl(events_path, completion)
+        in_doubt.append(completion)
+    events = _load_events(events_path)
+    observations = sum(
+        event.get("kind") == "completion" and event.get("semantic_valid") is True
+        for event in events
+    )
+    closeout = {
+        "protocol_id": PROTOCOL_ID,
+        "run_id": manifest["run_id"],
+        "terminal": "B1_NOT_EVALUABLE_TRANSPORT_RUNTIME",
+        "status": "NOT_EVALUABLE",
+        "scientific_verdict": "NO_SCIENTIFIC_VERDICT",
+        "reason": reason,
+        "scientific_observations_recorded": observations,
+        "scientific_comparison_authorized": False,
+        "hidden_outcomes_exposed_to_searcher": False,
+        "dispatch_count": len(dispatches),
+        "completion_count": sum(event.get("kind") == "completion" for event in events),
+        "in_doubt_count": len(in_doubt),
+        "resume_authorized": False,
+        "sealed_at": _utc(),
+    }
+    _atomic_json(run_dir / "attempt_closeout.json", closeout)
+    manifest["status"] = "NOT_EVALUABLE"
+    manifest["terminal"] = closeout["terminal"]
+    manifest["scientific_verdict"] = closeout["scientific_verdict"]
+    manifest["completed_at"] = closeout["sealed_at"]
+    manifest["resume_authorized"] = False
+    _atomic_json(manifest_path, manifest)
+    return run_dir
+
+
 def _run_arm(
     *,
     cli: Path,
@@ -766,7 +845,12 @@ def main() -> None:
     parser.add_argument("--supersedes")
     parser.add_argument("--docker-canary", action="store_true")
     parser.add_argument("--transport-qualification", type=Path)
+    parser.add_argument("--closeout", type=Path)
+    parser.add_argument("--closeout-reason", default="manual fail-closed interruption")
     args = parser.parse_args()
+    if args.closeout is not None:
+        print(close_interrupted_run(args.closeout, args.closeout_reason))
+        return
     if args.docker_canary:
         result = _docker_isolation_canary(args.docker, args.docker_image, args.auth_path, args.output_root.resolve())
         print(json.dumps(result, sort_keys=True))
