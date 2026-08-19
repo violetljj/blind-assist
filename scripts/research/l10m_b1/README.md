@@ -29,6 +29,28 @@ large-scale Structured Search. A later execution manifest must bind one verified
 Codex CLI executable/version/hash and one model before any formal run artifact,
 then reuse them identically across paired arms.
 
+The historical provider attempts remain infrastructure-only and do not consume
+a B1 seed or support a scientific verdict. Before any first evaluable B1 run,
+qualify the transport independently with `L10M-B1-I0-TRANSPORT-QUALIFICATION-V1`:
+
+```text
+python -m scripts.research.l10m_b1.transport_qualification --route direct
+python -m scripts.research.l10m_b1.transport_qualification --route proxy
+```
+
+Each route uses the same Docker image, auth mount, Codex provider invocation,
+Responses streaming configuration, isolation guard, and response scale as B1,
+but a fixed research-free JSON canary. The frozen gate is 10/10 non-empty,
+strictly parseable terminal responses, zero nonzero provider exits, zero
+reconnect exhaustion, zero decode failures, and an isolation `PASS`, with no
+application retry. A direct-path pass diagnoses the proxy boundary but does not
+authorize the current proxy-bound B1. Only a 10/10 proxy result can emit
+`B1_TRANSPORT_QUALIFIED` with `b1_execution_authorized=true`; every failure
+leaves B1 unauthorized and has `NO_SCIENTIFIC_VERDICT`. The formal Docker
+runner additionally requires the exact proxy `result.json` through
+`--transport-qualification` and binds its path and SHA-256 into the execution
+manifest.
+
 Primary analysis is the paired difference in best improvement from the shared
 initial candidate. Secondary analysis records discovery hit-rate, best-of-budget
 behavioral vector, first-hit generation/evaluation, unsafe and semantic-invalid

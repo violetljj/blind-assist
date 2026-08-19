@@ -35,6 +35,12 @@ from .protocol import (
     PROTOCOL_ID,
     build_protocol_manifest,
 )
+from .provider_transport import run_provider_docker as _execute_docker_provider
+from .transport_qualification import (
+    ATTEMPT_COUNT as TRANSPORT_QUALIFICATION_ATTEMPTS,
+    PASS_TERMINAL as TRANSPORT_QUALIFICATION_PASS,
+    PROTOCOL_ID as TRANSPORT_QUALIFICATION_PROTOCOL_ID,
+)
 
 
 DEFAULT_CLI = Path(r"E:\codex-tools\bin\codex.exe")
@@ -142,8 +148,8 @@ def _provider_preflight_native(cli: Path) -> dict[str, str]:
     return {"path": str(cli), "version": version, "sha256": _sha256_file(cli), "login_status": login}
 
 
-def _docker_run_base(docker: Path, image: str, *, proxy_url: str = "http://host.docker.internal:7890") -> list[str]:
-    return [
+def _docker_run_base(docker: Path, image: str, *, proxy_url: str | None = "http://host.docker.internal:7890") -> list[str]:
+    command = [
         str(docker),
         "run",
         "--rm",
@@ -168,14 +174,20 @@ def _docker_run_base(docker: Path, image: str, *, proxy_url: str = "http://host.
         "/root/.codex:rw,nosuid,nodev,size=64m",
         "--env",
         "CODEX_HOME=/root/.codex",
-        "--env",
-        f"HTTPS_PROXY={proxy_url}",
-        "--env",
-        f"HTTP_PROXY={proxy_url}",
-        "--env",
-        "NO_PROXY=localhost,127.0.0.1",
-        image,
     ]
+    if proxy_url is not None:
+        command.extend(
+            [
+                "--env",
+                f"HTTPS_PROXY={proxy_url}",
+                "--env",
+                f"HTTP_PROXY={proxy_url}",
+                "--env",
+                "NO_PROXY=localhost,127.0.0.1",
+            ]
+        )
+    command.append(image)
+    return command
 
 
 class _LocalProxyForwarder:
@@ -338,39 +350,18 @@ def _run_provider_docker(
     workdir: Path,
     timeout_seconds: int,
     proxy_bind: str = DEFAULT_PROXY_BIND,
+    transport_route: str = "proxy",
 ) -> tuple[str, int, str]:
-    forwarder = _LocalProxyForwarder(proxy_bind)
-    auth_mount = f"type=bind,source={auth_path},target=/root/.codex/auth.json,readonly"
-    command = _docker_run_base(docker, image, proxy_url=forwarder.proxy_url)[:-1] + [
-        "--mount",
-        f"type=bind,source={workdir},target=/workspace,readonly",
-        "--mount",
-        auth_mount,
-        "--workdir",
-        "/workspace",
-        "--network",
-        "bridge",
+    return _execute_docker_provider(
+        docker,
         image,
-        "/bin/sh",
-        "-c",
-        "codex -c responses_websocket=false exec --ephemeral --skip-git-repo-check --ignore-user-config --ignore-rules --sandbox danger-full-access --model "
-        + MODEL
-        + " --cd /workspace --output-last-message /tmp/last_message.txt - >/dev/null 2>/tmp/diagnostics.txt; rc=$?; cat /tmp/last_message.txt 2>/dev/null; cat /tmp/diagnostics.txt >&2; exit $rc",
-    ]
-    try:
-        completed = subprocess.run(
-            command,
-            input=prompt.encode("utf-8"),
-            capture_output=True,
-            cwd=str(workdir),
-            timeout=timeout_seconds,
-            shell=False,
-        )
-        output = completed.stdout.decode("utf-8", errors="replace")
-        diagnostics = completed.stderr.decode("utf-8", errors="replace")[-4000:]
-        return output, completed.returncode, diagnostics
-    finally:
-        forwarder.close()
+        auth_path,
+        prompt,
+        workdir,
+        timeout_seconds,
+        proxy_bind,
+        transport_route,
+    )
 
 
 def _docker_isolation_canary(docker: Path, image: str, auth_path: Path, output_root: Path) -> dict[str, object]:
@@ -414,6 +405,45 @@ def _blind_violation(diagnostics: str, backend: str) -> str | None:
 
 def _initial_result() -> dict[str, object]:
     return evaluate_spec(INITIAL_SPEC)
+
+
+def _validate_transport_qualification(path: Path) -> dict[str, object]:
+    path = path.resolve()
+    if not path.is_file():
+        raise RuntimeError(f"transport qualification result not found: {path}")
+    result = json.loads(path.read_text(encoding="utf-8"))
+    required = {
+        "protocol_id": TRANSPORT_QUALIFICATION_PROTOCOL_ID,
+        "route": "proxy",
+        "terminal": TRANSPORT_QUALIFICATION_PASS,
+        "b1_execution_authorized": True,
+        "scientific_instances_or_seeds_consumed": 0,
+        "scientific_verdict": "NO_SCIENTIFIC_VERDICT",
+        "request_count": TRANSPORT_QUALIFICATION_ATTEMPTS,
+        "success_count": TRANSPORT_QUALIFICATION_ATTEMPTS,
+        "failure_count": 0,
+        "websocket_reconnect_exhaustion_count": 0,
+        "decode_failure_count": 0,
+        "container_isolation_guard": "PASS",
+    }
+    mismatches = {
+        key: {"expected": expected, "actual": result.get(key)}
+        for key, expected in required.items()
+        if result.get(key) != expected
+    }
+    if mismatches:
+        raise RuntimeError(
+            "transport qualification does not authorize B1: "
+            + json.dumps(mismatches, sort_keys=True)
+        )
+    return {
+        "path": str(path),
+        "sha256": _sha256_file(path),
+        "run_id": result.get("run_id"),
+        "completed_at": result.get("completed_at"),
+        "terminal": result["terminal"],
+        "route": result["route"],
+    }
 
 
 def _arm_events(events: list[dict[str, object]], seed: int, arm: str) -> list[dict[str, object]]:
@@ -626,10 +656,16 @@ def run_search(
     docker_image: str = DEFAULT_DOCKER_IMAGE,
     auth_path: Path = DEFAULT_AUTH,
     proxy_bind: str = DEFAULT_PROXY_BIND,
+    transport_qualification: Path | None = None,
 ) -> Path:
     output_root = output_root.resolve()
     protocol = build_protocol_manifest()
     provider = _provider_preflight(cli, backend=backend, docker=docker, image=docker_image, auth_path=auth_path, proxy_bind=proxy_bind)
+    qualification = None
+    if backend == "docker":
+        if transport_qualification is None:
+            raise RuntimeError("Docker B1 requires a passing proxy transport qualification receipt")
+        qualification = _validate_transport_qualification(transport_qualification)
     if resume_dir is None:
         if protocol["execution_boundary"]["formal_search_started"]:
             raise RuntimeError("protocol unexpectedly marks formal search as already started")
@@ -644,6 +680,7 @@ def run_search(
             "status": "RUNNING",
             "started_at": _utc(),
             "provider": provider,
+            "transport_qualification": qualification,
             "model": MODEL,
             "protocol_manifest_sha256": _sha256_bytes(json.dumps(protocol, sort_keys=True).encode()),
             "protocol_manifest": protocol,
@@ -682,6 +719,8 @@ def run_search(
             raise RuntimeError("resume protocol hash changed")
         if manifest.get("provider") != provider or manifest.get("model") != MODEL:
             raise RuntimeError("resume provider/model identity changed")
+        if manifest.get("transport_qualification") != qualification:
+            raise RuntimeError("resume transport qualification identity changed")
         events_path = run_dir / "events.jsonl"
         progress_path = run_dir / "progress.json"
         manifest["status"] = "RUNNING"
@@ -726,12 +765,13 @@ def main() -> None:
     parser.add_argument("--resume", type=Path)
     parser.add_argument("--supersedes")
     parser.add_argument("--docker-canary", action="store_true")
+    parser.add_argument("--transport-qualification", type=Path)
     args = parser.parse_args()
     if args.docker_canary:
         result = _docker_isolation_canary(args.docker, args.docker_image, args.auth_path, args.output_root.resolve())
         print(json.dumps(result, sort_keys=True))
         return
-    path = run_search(args.output_root, args.cli, args.timeout_seconds, args.resume, args.supersedes, args.backend, args.docker, args.docker_image, args.auth_path, args.proxy_bind)
+    path = run_search(args.output_root, args.cli, args.timeout_seconds, args.resume, args.supersedes, args.backend, args.docker, args.docker_image, args.auth_path, args.proxy_bind, args.transport_qualification)
     print(path)
 
 
