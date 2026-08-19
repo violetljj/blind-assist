@@ -63,4 +63,16 @@ python -m scripts.research.l10m_b0.b0d_arrival_orthogonality --output artifacts.
 ```
 
 Its claim ceiling is state-independent terminal semantics on synthetic policy
-mechanics only. B1 and Structured Search remain unstarted.
+mechanics only. The B0-D receipt keeps its historical execution boundary:
+B1 and Structured Search had not started when B0-D was consumed.
+
+B0 is formally closed without a B0-E. The closure verifies the frozen B0
+source identities, B0-C/B0-D result hashes and verdicts, the progress three-state
+contract, and the no-fabricated-stuck/no-fabricated-arrival UNKNOWN behavior:
+
+```text
+python -m scripts.research.l10m_b0.closure --output artifacts.local/evidence/l10m_b0/closure.json
+```
+
+The successor protocol is the small matched B1 searchability experiment in
+`scripts/research/l10m_b1`. B1 may not modify any B0 semantic lock.

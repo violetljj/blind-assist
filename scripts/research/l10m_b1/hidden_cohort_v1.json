@@ -1,0 +1,95 @@
+{
+  "cohort_id": "L10M-B1-HIDDEN-SYNTHETIC-COHORT-V1",
+  "claim_role": "hidden synthetic search-evaluation cohort; mechanics only",
+  "episodes": [
+    {
+      "episode_id": "h-clear-arrival",
+      "steps": [
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.6, "progress": 0.6, "arrived": false, "unsafe_forward": false, "accepted_actions": ["FORWARD"]},
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 1.0, "progress": 1.0, "arrived": true, "unsafe_forward": false, "accepted_actions": ["FORWARD", "STOP"]}
+      ]
+    },
+    {
+      "episode_id": "h-left-correction",
+      "steps": [
+        {"alignment": -0.15, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.1, "progress": 0.1, "arrived": false, "unsafe_forward": false, "accepted_actions": ["LEFT"]},
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 1.0, "progress": 1.0, "arrived": true, "unsafe_forward": false, "accepted_actions": ["FORWARD", "STOP"]}
+      ]
+    },
+    {
+      "episode_id": "h-right-correction",
+      "steps": [
+        {"alignment": 0.15, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.1, "progress": 0.1, "arrived": false, "unsafe_forward": false, "accepted_actions": ["RIGHT"]},
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 1.0, "progress": 1.0, "arrived": true, "unsafe_forward": false, "accepted_actions": ["FORWARD", "STOP"]}
+      ]
+    },
+    {
+      "episode_id": "h-confirmed-stuck",
+      "steps": [
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.0, "progress": 0.0, "arrived": false, "unsafe_forward": false, "accepted_actions": ["FORWARD"]},
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.0, "progress": 0.0, "arrived": false, "unsafe_forward": false, "accepted_actions": ["FORWARD"]},
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.0, "progress": 0.0, "arrived": false, "unsafe_forward": false, "accepted_actions": ["RECOVER"]}
+      ]
+    },
+    {
+      "episode_id": "h-recovery-exit",
+      "steps": [
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.0, "progress": 0.0, "arrived": false, "unsafe_forward": false, "accepted_actions": ["FORWARD"]},
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.0, "progress": 0.0, "arrived": false, "unsafe_forward": false, "accepted_actions": ["FORWARD"]},
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.5, "progress": 0.5, "arrived": false, "unsafe_forward": false, "accepted_actions": ["FORWARD"]}
+      ]
+    },
+    {
+      "episode_id": "h-unknown-does-not-stick",
+      "steps": [
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.40, "stale": true, "progress_signal": null, "progress": 0.0, "arrived": false, "unsafe_forward": false, "accepted_actions": ["STOP"]},
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.40, "conflict": true, "progress_signal": null, "progress": 0.0, "arrived": false, "unsafe_forward": false, "accepted_actions": ["STOP"]},
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.5, "progress": 0.5, "arrived": false, "unsafe_forward": false, "accepted_actions": ["FORWARD"]}
+      ]
+    },
+    {
+      "episode_id": "h-hazard-shield",
+      "steps": [
+        {"alignment": 0.0, "hazard": "HIGH", "quality": 0.95, "progress_signal": 0.0, "progress": 0.0, "arrived": false, "unsafe_forward": true, "accepted_actions": ["STOP"]},
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 1.0, "progress": 1.0, "arrived": true, "unsafe_forward": false, "accepted_actions": ["FORWARD", "STOP"]}
+      ]
+    },
+    {
+      "episode_id": "h-no-false-terminal",
+      "steps": [
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.60, "progress_signal": 0.2, "progress": 0.2, "arrived": false, "unsafe_forward": false, "accepted_actions": ["FORWARD"]}
+      ]
+    },
+    {
+      "episode_id": "h-turn-stability",
+      "steps": [
+        {"alignment": -0.30, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.1, "progress": 0.1, "arrived": false, "unsafe_forward": false, "accepted_actions": ["LEFT"]},
+        {"alignment": -0.18, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.1, "progress": 0.1, "arrived": false, "unsafe_forward": false, "accepted_actions": ["LEFT"]},
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 1.0, "progress": 1.0, "arrived": true, "unsafe_forward": false, "accepted_actions": ["FORWARD", "STOP"]}
+      ]
+    },
+    {
+      "episode_id": "h-target-lost",
+      "steps": [
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "target_visible": false, "progress_signal": null, "progress": 0.0, "arrived": false, "unsafe_forward": false, "accepted_actions": ["STOP"]}
+      ]
+    },
+    {
+      "episode_id": "h-arrival-during-recovery",
+      "steps": [
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.0, "progress": 0.0, "arrived": false, "unsafe_forward": false, "accepted_actions": ["FORWARD"]},
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.0, "progress": 0.0, "arrived": false, "unsafe_forward": false, "accepted_actions": ["FORWARD"]},
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 1.0, "progress": 1.0, "arrived": true, "unsafe_forward": false, "accepted_actions": ["FORWARD", "STOP"]}
+      ]
+    },
+    {
+      "episode_id": "h-recovery-persistence",
+      "steps": [
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.0, "progress": 0.0, "arrived": false, "unsafe_forward": false, "accepted_actions": ["FORWARD"]},
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.0, "progress": 0.0, "arrived": false, "unsafe_forward": false, "accepted_actions": ["FORWARD"]},
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.0, "progress": 0.0, "arrived": false, "unsafe_forward": false, "accepted_actions": ["RECOVER"]},
+        {"alignment": 0.0, "hazard": "LOW", "quality": 0.95, "progress_signal": 0.0, "progress": 0.0, "arrived": false, "unsafe_forward": false, "accepted_actions": ["RECOVER"]}
+      ]
+    }
+  ]
+}
