@@ -36,6 +36,14 @@ from .protocol import (
 
 DEFAULT_CLI = Path(r"E:\codex-tools\bin\codex.exe")
 MODEL = "gpt-5.6-sol"
+BLIND_VIOLATION_MARKERS = (
+    "MEMORY.md",
+    "rollout_summaries",
+    "Get-ChildItem",
+    "rg -n",
+    "git status",
+    "git log",
+)
 
 
 def _utc() -> str:
@@ -151,6 +159,13 @@ def _run_provider(cli: Path, prompt: str, workdir: Path, timeout_seconds: int) -
     return output, completed.returncode, diagnostics
 
 
+def _blind_violation(diagnostics: str) -> str | None:
+    for marker in BLIND_VIOLATION_MARKERS:
+        if marker in diagnostics:
+            return marker
+    return None
+
+
 def _initial_result() -> dict[str, object]:
     return evaluate_spec(INITIAL_SPEC)
 
@@ -254,6 +269,30 @@ def _run_arm(
         try:
             output, returncode, diagnostics = _run_provider(cli, prompt, workdir, timeout_seconds)
             candidate_output = output.strip()
+            blind_marker = _blind_violation(diagnostics)
+            if blind_marker is not None:
+                completion = {
+                    "kind": "completion",
+                    "request_id": request_id,
+                    "protocol_id": PROTOCOL_ID,
+                    "seed": seed,
+                    "arm": arm,
+                    "generation": generation,
+                    "completed_at": _utc(),
+                    "returncode": returncode,
+                    "candidate_output": candidate_output,
+                    "candidate_output_sha256": _sha256_bytes(candidate_output.encode()),
+                    "semantic_valid": False,
+                    "unsafe_candidate": False,
+                    "semantic_error": f"BlindIsolationViolation: provider diagnostics contained {blind_marker}",
+                    "behavioral_score": None,
+                    "behavioral_vector": {},
+                    "invariant_counts": {},
+                    "changed_components": [],
+                    "diagnostics_tail": diagnostics,
+                }
+                _append_jsonl(events_path, completion)
+                raise RuntimeError(f"B1 blind isolation violation: {blind_marker}")
             try:
                 candidate = _parse_output(arm, candidate_output)
                 result = evaluate_spec(candidate)
@@ -355,6 +394,12 @@ def run_search(
             "retry_semantics": "no retry; timeout/in_doubt consumes one generation and evaluation",
             "blind_boundary": "provider workdirs contain no evaluator, cohort, truth, or repository files",
             "supersedes_non_evaluable_attempt": supersedes,
+            "provider_invocation": {
+                "ignore_user_config": True,
+                "ignore_rules": True,
+                "sandbox": "read-only",
+                "skip_git_repo_check": True,
+            },
         }
         _atomic_json(run_dir / "execution_manifest.json", manifest)
         _atomic_json(progress_path, {"run_id": run_id, "status": "running", "completed": 0, "last_activity": _utc(), "eta": "unknown"})
