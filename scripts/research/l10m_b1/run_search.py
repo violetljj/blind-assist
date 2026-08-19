@@ -344,7 +344,7 @@ def _run_provider_docker(
         image,
         "/bin/sh",
         "-c",
-        "codex exec --ephemeral --skip-git-repo-check --ignore-user-config --ignore-rules --sandbox read-only --model "
+        "codex exec --ephemeral --skip-git-repo-check --ignore-user-config --ignore-rules --sandbox danger-full-access --model "
         + MODEL
         + " --cd /workspace --output-last-message /tmp/last_message.txt - >/dev/null 2>/tmp/diagnostics.txt; rc=$?; cat /tmp/last_message.txt 2>/dev/null; cat /tmp/diagnostics.txt >&2; exit $rc",
     ]
@@ -646,7 +646,8 @@ def run_search(
             "provider_invocation": {
                 "ignore_user_config": True,
                 "ignore_rules": True,
-                "sandbox": "read-only",
+                "sandbox": "danger-full-access_inside_hard_container",
+                "outer_isolation": "read_only_rootfs_cap_drop_all_no_new_privileges_read_only_workspace",
                 "skip_git_repo_check": True,
                 "backend": backend,
                 "docker_image": docker_image if backend == "docker" else None,

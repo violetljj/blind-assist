@@ -11,6 +11,12 @@ workspace and auth file. The image carries the pinned Google Trust Services
 WE1 intermediate used by the local HTTPS proxy; the canary must be rerun if
 the local proxy's presented issuer changes.
 
+The Codex invocation uses `danger-full-access` only inside this hard container,
+because the Docker Desktop kernel does not permit Codex's nested bubblewrap
+namespace. The outer Docker boundary remains authoritative: the root filesystem
+and worker workspace are read-only, capabilities are dropped, and no evaluator
+or hidden data is mounted.
+
 Build with:
 
 ```text
