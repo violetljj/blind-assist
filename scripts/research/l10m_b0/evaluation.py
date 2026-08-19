@@ -31,6 +31,12 @@ class Hazard(str, Enum):
     HIGH = "HIGH"
 
 
+class ProgressStatus(str, Enum):
+    POSITIVE = "POSITIVE_PROGRESS"
+    CONFIRMED_NONE = "CONFIRMED_NO_PROGRESS"
+    UNKNOWN = "UNKNOWN_PROGRESS"
+
+
 @dataclass(frozen=True)
 class Evidence:
     episode_id: str
@@ -52,6 +58,14 @@ class Evidence:
             raise ValueError("quality must be in [0, 1]")
         if self.progress_signal is not None and not -1.0 <= self.progress_signal <= 1.0:
             raise ValueError("progress_signal must be in [-1, 1]")
+
+    @property
+    def progress_status(self) -> ProgressStatus:
+        if self.stale or self.conflict or self.progress_signal is None:
+            return ProgressStatus.UNKNOWN
+        if self.progress_signal > 0:
+            return ProgressStatus.POSITIVE
+        return ProgressStatus.CONFIRMED_NONE
 
 
 @dataclass(frozen=True)
@@ -115,13 +129,13 @@ def _shield(action: Action, evidence: Evidence, belief: Belief) -> Action:
 
 def _update_belief(belief: Belief, evidence: Evidence, action: Action) -> None:
     observable = evidence.quality >= 0.50 and not evidence.stale and not evidence.conflict
-    if observable and evidence.progress_signal is not None:
-        belief.progress_direction = "POSITIVE" if evidence.progress_signal > 0 else "NONE"
+    if observable and evidence.progress_status != ProgressStatus.UNKNOWN:
+        belief.progress_direction = evidence.progress_status.value
         belief.progress_magnitude = evidence.progress_signal
         belief.progress_confidence = evidence.quality
-        if action == Action.FORWARD and evidence.progress_signal <= 0:
+        if action == Action.FORWARD and evidence.progress_status == ProgressStatus.CONFIRMED_NONE:
             belief.stuck_count += 1
-        elif evidence.progress_signal > 0:
+        elif evidence.progress_status == ProgressStatus.POSITIVE:
             belief.stuck_count = 0
     else:
         belief.progress_direction = "UNKNOWN"

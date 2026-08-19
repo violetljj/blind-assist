@@ -21,3 +21,15 @@ python -m scripts.research.l10m_b0.run_canary --output artifacts.local/evidence/
 
 The generated JSON is a replayable mechanics receipt. Its cohort is synthetic
 controlled evidence and its claim ceiling must remain attached to the result.
+
+B0-A/B localization matrix (a new protocol; it does not mutate B0-V1) runs with:
+
+```text
+python -m scripts.research.l10m_b0.scenario_matrix --output artifacts.local/evidence/l10m_b0/b_matrix.json
+```
+
+The B0-B matrix is composed of matched counterfactuals for transient
+no-progress, true stuck, recovery exit, recovery-plus-arrival, reactive-solvable
+preservation, and uncertain progress. Progress is represented as the explicit
+three-state contract `POSITIVE_PROGRESS`, `CONFIRMED_NO_PROGRESS`, or
+`UNKNOWN_PROGRESS`; only confirmed no-progress may increase stuck evidence.
