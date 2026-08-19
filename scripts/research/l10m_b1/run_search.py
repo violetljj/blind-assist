@@ -106,8 +106,10 @@ def _prompt(arm: str, seed: int, generation: int, candidate: PolicySpec, result:
 
 
 def _provider_preflight(cli: Path) -> dict[str, str]:
-    version = subprocess.run([str(cli), "--version"], check=True, capture_output=True, text=True).stdout.strip()
-    login = subprocess.run([str(cli), "login", "status"], check=True, capture_output=True, text=True).stdout.strip()
+    version_result = subprocess.run([str(cli), "--version"], check=True, capture_output=True, text=True)
+    login_result = subprocess.run([str(cli), "login", "status"], check=True, capture_output=True, text=True)
+    version = (version_result.stdout + version_result.stderr).strip()
+    login = (login_result.stdout + login_result.stderr).strip()
     if not version.startswith("codex-cli ") or version.endswith("unknown"):
         raise RuntimeError(f"unexpected Codex CLI version: {version}")
     if "Logged in" not in login:
