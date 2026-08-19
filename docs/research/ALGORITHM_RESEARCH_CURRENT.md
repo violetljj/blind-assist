@@ -1,6 +1,6 @@
 # 算法研究入口
 
-状态：`current / ALGORITHM_FOCUS=SVRF_O0 / ACTIVE_REVERSIBLE_LANES=1 / FROZEN_PREOUTCOME_BLOCKED_ON_SELECTIVE_MATERIALIZATION_AND_TRUTH_WRITER_LOCK / STREAM_INDEX_AUTHORIZED / SCHEDULE=EVIDENCE_GATED_NO_DAY_QUOTA`
+状态：`current / RESEARCH_FOCUS=D_ORACLE_1_UNIQUE_P0 / CAUSAL_DIAGNOSIS_BEFORE_REPRESENTATION_SEARCH / PROTOCOL_FROZEN / BLOCKED_ON_SOURCE_ACTION_TRUTH_POLICY_LOCK / NO_OUTCOME_ACCESS / ACTIVE_ALGORITHM_LANES=0 / DEFAULT_APP_UNCHANGED`
 
 Assistive Geometry 的 factor-wise、obstacle 与 Q-Plane 表示支线均已按停止条件关闭；TARO R38 也已在
 parent-disjoint ARKitScenes Validation confirmation 上有效失败并关闭。用户已明确新开 SATOM-A，
@@ -11,9 +11,12 @@ GA-SATOM 的 physical-ToF G0 协议保留但按用户的无 ToF 选择暂停；V
 G0 协议也按进一步的纯 RGB 选择暂停。当前唯一算法主线是独立的 SVRF-O0：不恢复 metric ground、
 已知相机高度或 clearance，只审计 RGB 派生的相对深度动态、局部扩张与图像空间通道侵入是否存在
 可重复的 scale-free relative-risk 表示余量。协议与机制已冻结；A2D2 三条真实 drive + Spring v2
-五条 synthetic stress sequence 的 exact roster 已锁定。Spring Range/ZIP64 random-member capability
-有效；A2D2 只有整 TAR，须先完成约 299.27 GB 单次网络流式 member index 合同与实现。RGB/truth
-payload、causal windows 与 writer 尚未物化，故真实 O0 未运行。
+五条 synthetic stress sequence 的 exact roster 已锁定。Failure Synthesis 随后确认历史预算长期集中在
+representation，用户已将 D-ORACLE-1 设为唯一 P0：先用 Direct Action Oracle / Perfect Source Geometry
+→ Current Policy / Estimated Representation → Same Policy 的 matched causal ladder 定位损失层。
+因此 SVRF 的既有 source/index 权限保留但暂停，不执行 bus canary、member index、payload materialization、
+truth writer 或 O0；没有 algorithm lane 活跃。D-ORACLE-1 当前只冻结协议，尚待 source/action truth/
+policy lock，未授权 outcome access。
 DepthART D3R6 仍保持暂停；其 bounded deferral contract 与 fresh gate 保留，但 post-hoc
 same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6 执行权限。
 
@@ -22,7 +25,8 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| SVRF / Scale-free Visual Risk Field | 纯 RGB 派生的相对深度动态、局部扩张和视觉通道侵入能否形成稳定相对风险排序 | `WILD_LAB / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / ARCHIVE_ACCESS_PARTIAL_PASS / STREAM_INDEX_AUTHORIZED / FROZEN_PREOUTCOME_BLOCKED_ON_SELECTIVE_MATERIALIZATION_AND_TRUTH_WRITER_LOCK / REAL_O0_NOT_RUN / NO_TRAINING` | [SVRF current](svrf/README.md) | `EXECUTE_BUS_CANARY_THEN_LOCKED_ARCHIVE_MEMBER_INDEX`：先验证 105.6 MB bus TAR，再按冻结顺序建立 A2D2/Spring member manifests | 读取 candidate outcome 后换 source/parent/gate；引入 IMU/ToF/已知高度/metric ground；用 UNKNOWN 买收益；训练或接 Android | 否 |
+| D-ORACLE-1 causal ladder | 三臂 matched oracle intervention 定位 downstream target-policy stack 与 estimated representation 的损失 | `UNIQUE_P0 / PROTOCOL_FROZEN / BLOCKED_ON_SOURCE_ACTION_TRUTH_POLICY_LOCK / NO_EXECUTION / NO_SEARCH` | [Failure diagnosis current](failure-synthesis/README.md) | `D_ORACLE_1_SOURCE_ACTION_TRUTH_POLICY_LOCK` | 增加第四竞争臂；提前拆H3/H4；训练/调policy/threshold；读取outcome后换parent/gate；让当前root ranking约束结果 | 否 |
+| SVRF / Scale-free Visual Risk Field | 纯 RGB 派生的相对深度动态、局部扩张和视觉通道侵入能否形成稳定相对风险排序 | `PAUSED_BY_D_ORACLE_1_UNIQUE_P0 / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / STREAM_INDEX_AUTHORIZED_BUT_NOT_ACTIVE / REAL_O0_NOT_RUN / NO_TRAINING` | [SVRF current](svrf/README.md) | 无；只有 D-ORACLE-1 定位 representation 层确有 headroom 且用户重开后，才可另行恢复 | bus canary、member index、payload/truth materialization、O0、训练或接 Android | 否 |
 | VI-Task Geometry | 同刚体 RGB+IMU 自校准 metric pose/ground，再为未来 task geometry 分配 computation/parallax budget | `PAUSED_BY_PURE_RGB_SELECTION / G0_PROTOCOL_RETAINED / REAL_G0_NOT_RUN / NO_TOF / NO_TRAINING` | [VI-Task Geometry current](vi-task-geometry/README.md) | 无；只有用户明确恢复 RGB+IMU metric-frame 路线才可重开 preflight | 实现/采集/运行 G0；用手机 IMU配眼镜视频；重跑 ARCore D45；提前训练、主动分配或接 Android | 否 |
 | GA-SATOM | 固定总稀疏测距信息预算内，先建立 metric ground frame，再保留剩余预算给未来 task sensing | `PAUSED_BY_NO_EXTERNAL_TOF_SELECTION / G0_PROTOCOL_RETAINED / REAL_G0_NOT_RUN / NO_PROCUREMENT` | [GA-SATOM current](ga-satom/README.md) | 无；只有用户明确恢复 external-ToF 路线才可重开 preflight | 采购/采集/运行 physical G0；用单区/模拟/旧输出替代；提前运行 G1/arm/训练 | 否 |
 | SATOM-A | metric pose + active sparse ToF + frozen dense prior → causal task-space occupancy memory | `WILD_LAB / SATOM_R0_REAL_E0_NOT_EVALUABLE / DEPTHART_GROUND_HEIGHT_OBSERVABILITY_FAIL / NO_ARM_METRIC / CLOSED_NO_TUNING` | [SATOM-A current](satom/README.md) | 无；新的 pre-outcome 协议须先提供独立 ground-height observability 或 materially different representation | 用 truth height/scale 修补 candidate；在已打开 Bonn/DepthART 输出上放宽高度门、改 winner rule、训练或接 Android | 否 |

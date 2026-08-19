@@ -2,6 +2,27 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-17（Asia/Hong_Kong）；执行者：Codex。将 `D-ORACLE-1` 冻结为 Failure Synthesis
+  后的唯一 P0，状态为 `PROTOCOL_FROZEN / NOT_EXECUTED`。协议只含三个正式 arm：independent direct-action
+  oracle、perfect source geometry→current policy、estimated representation→同一 policy；B/C 的 policy、
+  threshold、feature contract、coverage rule、evaluator 与 parent denominator 完全相同。归因只使用 matched-
+  coverage 的 `U(A)-U(B)` 与 `U(B)-U(C)`；另加 parent-local geometry permutation 作为非竞争机制 control。
+  action truth 与 event-evaluation truth 分账盲化，统计单位为 parent，并冻结 native/matched coverage、paired
+  delta、median、worst-parent 与 stratified bootstrap CI。SVRF 和其他 representation/search successor 暂停；
+  只有观察到 `A` materially 高于 `B` 后才允许另行设计 H3/H4 分离的 D-ORACLE-2，本轮不增加 arm、
+  不执行 cohort，也不改变默认 App、产品或 safety authority。
+
+- 时间：2026-08-17（Asia/Hong_Kong）；执行者：violjjet。完成 BlindAssist Failure Synthesis /
+  Global Reckoning，只读汇总既有 Git 历史、current、冻结 result/protocol 与 artifact bindings，未重跑
+  benchmark、未修改算法或历史终态。正式签署 `BLINDASSIST_FAILURE_STRUCTURE_IDENTIFIED`、
+  `SEARCH_CONCENTRATION / WRONG_LEVEL_OPTIMIZATION` 与 `PROXY_TARGET_ALIGNMENT_NOT_ESTABLISHED`。
+  根因排序为 H3 target/supervision、H4 downstream objective/policy、H2 representation、H1 input/
+  observability；H3/H4 的单一主因仍待 oracle decomposition。最高价值 successor 不是新模型，而是
+  `D-ORACLE-1 ACTIONABILITY→GEOMETRY→REPRESENTATION LADDER`：同一 fresh parent cohort 比较 direct
+  action oracle、source-native geometry→冻结 current policy、estimated representation→同 policy。
+  在该诊断前停止为新 encoder/loss/fusion/depth/selector、B1/A0、Q-Plane、TARO rescue 或 proxy-only
+  win 分配预算。默认 App、产品与安全 authority 不变。
+
 - 时间：2026-08-13（Asia/Hong_Kong）；执行者：violjjet。完成 Assistive Geometry factor-wise no-regret
   Development 回合。11-parent frozen replay 中 perfect signed-advantage oracle coverage `80.30%`，确认
   correction 存在安全 headroom，但旧 learned selector 的 Bonn/TUM 外部结果保持失败。新增 source-diverse

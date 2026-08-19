@@ -7,6 +7,7 @@
 
 | 分类 | 回答的问题 | 唯一入口 |
 |---|---|---|
+| 因果诊断 | 当前失败首先发生在 target-policy stack 还是 representation？ | [D-ORACLE-1 current](failure-synthesis/README.md) |
 | 算法 | 当前有哪些算法假设、各自状态与唯一下一动作？ | [算法研究入口](ALGORITHM_RESEARCH_CURRENT.md) |
 | 数据 | 来源、truth、parent/session 独立性、coverage 和数据角色是否足以支持问题？ | [数据研究入口](DATA_RESEARCH_CURRENT.md) |
 | 系统与平台 | 通信、延迟、导出、accelerator、设备和稳定性证据属于哪条工作流？ | [系统与平台入口](SYSTEM_RESEARCH_CURRENT.md) |
