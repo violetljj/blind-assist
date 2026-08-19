@@ -6,8 +6,11 @@ import argparse
 import hashlib
 import json
 import os
+import socket
 import subprocess
 import sys
+import tempfile
+import threading
 import time
 import uuid
 from datetime import datetime, timezone
@@ -35,6 +38,11 @@ from .protocol import (
 
 
 DEFAULT_CLI = Path(r"E:\codex-tools\bin\codex.exe")
+DEFAULT_DOCKER = Path(r"E:\codex-tools\tools\docker-desktop\resources\bin\docker.exe")
+DEFAULT_DOCKER_IMAGE = "l10m-b1-codex:0.148.0"
+DEFAULT_AUTH = Path(r"C:\Users\26442\.codex\auth.json")
+DEFAULT_PROXY_BIND = "172.31.224.1"
+DOCKER_CA_CERT = Path(__file__).with_name("docker") / "we1.crt.pem"
 MODEL = "gpt-5.6-sol"
 BLIND_VIOLATION_MARKERS = (
     "MEMORY.md",
@@ -113,7 +121,7 @@ def _prompt(arm: str, seed: int, generation: int, candidate: PolicySpec, result:
     )
 
 
-def _provider_preflight(cli: Path) -> dict[str, str]:
+def _provider_preflight_native(cli: Path) -> dict[str, str]:
     version_result = subprocess.run([str(cli), "--version"], check=True, capture_output=True)
     login_result = subprocess.run([str(cli), "login", "status"], check=True, capture_output=True)
     version = (version_result.stdout + version_result.stderr).decode("utf-8", errors="replace").strip()
@@ -123,6 +131,160 @@ def _provider_preflight(cli: Path) -> dict[str, str]:
     if "Logged in" not in login:
         raise RuntimeError(f"Codex login status did not confirm ChatGPT authentication: {login}")
     return {"path": str(cli), "version": version, "sha256": _sha256_file(cli), "login_status": login}
+
+
+def _docker_run_base(docker: Path, image: str, *, proxy_url: str = "http://host.docker.internal:7890") -> list[str]:
+    return [
+        str(docker),
+        "run",
+        "--rm",
+        "--interactive",
+        "--init",
+        "--read-only",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--user",
+        "0:0",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1.0",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,nodev,size=64m",
+        "--tmpfs",
+        "/root/.codex:rw,nosuid,nodev,size=64m",
+        "--env",
+        "CODEX_HOME=/root/.codex",
+        "--env",
+        f"HTTPS_PROXY={proxy_url}",
+        "--env",
+        f"HTTP_PROXY={proxy_url}",
+        "--env",
+        "NO_PROXY=localhost,127.0.0.1",
+        image,
+    ]
+
+
+class _LocalProxyForwarder:
+    def __init__(self, bind_address: str, target_address: str = "127.0.0.1", target_port: int = 7890) -> None:
+        self._listener = socket.socket()
+        self._listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self._listener.bind((bind_address, 0))
+        self._listener.listen(8)
+        self._listener.settimeout(0.5)
+        self.bind_address = bind_address
+        self.port = int(self._listener.getsockname()[1])
+        self.target_address = target_address
+        self.target_port = target_port
+        self._stop = False
+        self._thread = threading.Thread(target=self._accept, daemon=True)
+        self._thread.start()
+
+    @property
+    def proxy_url(self) -> str:
+        return f"http://{self.bind_address}:{self.port}"
+
+    def _accept(self) -> None:
+        while not self._stop:
+            try:
+                source, _ = self._listener.accept()
+            except (socket.timeout, OSError):
+                continue
+            try:
+                target = socket.create_connection((self.target_address, self.target_port), timeout=5)
+            except OSError:
+                source.close()
+                continue
+            threading.Thread(target=self._relay, args=(source, target), daemon=True).start()
+            threading.Thread(target=self._relay, args=(target, source), daemon=True).start()
+
+    @staticmethod
+    def _relay(source: socket.socket, target: socket.socket) -> None:
+        try:
+            while True:
+                data = source.recv(65536)
+                if not data:
+                    break
+                target.sendall(data)
+        except OSError:
+            pass
+        finally:
+            try:
+                source.close()
+            finally:
+                target.close()
+
+    def close(self) -> None:
+        self._stop = True
+        try:
+            self._listener.close()
+        finally:
+            self._thread.join(timeout=2)
+
+
+def _docker_image_identity(docker: Path, image: str) -> dict[str, str]:
+    inspected = subprocess.run(
+        [str(docker), "image", "inspect", image, "--format", "{{.Id}}|{{json .RepoDigests}}"],
+        check=True,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    image_id, repo_digests = inspected.stdout.strip().split("|", 1)
+    return {"image": image, "image_id": image_id, "repo_digests": repo_digests}
+
+
+def _provider_preflight_docker(docker: Path, image: str, auth_path: Path, proxy_bind: str = DEFAULT_PROXY_BIND) -> dict[str, object]:
+    if not docker.exists():
+        raise RuntimeError(f"Docker executable not found: {docker}")
+    if not auth_path.is_file():
+        raise RuntimeError(f"Codex auth file not found: {auth_path}")
+    if not DOCKER_CA_CERT.is_file():
+        raise RuntimeError(f"Docker CA certificate not found: {DOCKER_CA_CERT}")
+    version_result = subprocess.run([str(docker), "version", "--format", "{{.Server.Version}}"], check=True, capture_output=True, text=True, encoding="utf-8")
+    identity = _docker_image_identity(docker, image)
+    common = _docker_run_base(docker, image)
+    auth_mount = f"type=bind,source={auth_path},target=/root/.codex/auth.json,readonly"
+    check_base = common[:-1] + ["--network", "none", "--mount", auth_mount, "--entrypoint", "codex", image]
+    version = subprocess.run(check_base + ["--version"], check=True, capture_output=True, text=True, encoding="utf-8")
+    login = subprocess.run(check_base + ["login", "status"], check=True, capture_output=True, text=True, encoding="utf-8")
+    codex_version = (version.stdout + version.stderr).strip()
+    login_status = (login.stdout + login.stderr).strip()
+    if not codex_version.startswith("codex-cli ") or codex_version.endswith("unknown"):
+        raise RuntimeError(f"unexpected container Codex version: {codex_version}")
+    if "Logged in" not in login_status:
+        raise RuntimeError(f"container Codex login status did not confirm ChatGPT authentication: {login_status}")
+    return {
+        "backend": "docker",
+        "docker_path": str(docker),
+        "docker_server_version": version_result.stdout.strip(),
+        "image": identity,
+        "codex_version": codex_version,
+        "login_status": login_status,
+        "auth_mount": "read_only_host_auth",
+        "ca_cert_sha256": _sha256_file(DOCKER_CA_CERT),
+        "proxy_bind": proxy_bind,
+    }
+
+
+def _provider_preflight(
+    cli: Path,
+    *,
+    backend: str,
+    docker: Path,
+    image: str,
+    auth_path: Path,
+    proxy_bind: str = DEFAULT_PROXY_BIND,
+) -> dict[str, object]:
+    if backend == "native":
+        return {"backend": "native", **_provider_preflight_native(cli)}
+    if backend == "docker":
+        return _provider_preflight_docker(docker, image, auth_path, proxy_bind)
+    raise ValueError(f"unknown provider backend: {backend}")
 
 
 def _run_provider(cli: Path, prompt: str, workdir: Path, timeout_seconds: int) -> tuple[str, int, str]:
@@ -157,6 +319,80 @@ def _run_provider(cli: Path, prompt: str, workdir: Path, timeout_seconds: int) -
         output = completed.stdout.decode("utf-8", errors="replace")
     diagnostics = completed.stderr.decode("utf-8", errors="replace")[-4000:]
     return output, completed.returncode, diagnostics
+
+
+def _run_provider_docker(
+    docker: Path,
+    image: str,
+    auth_path: Path,
+    prompt: str,
+    workdir: Path,
+    timeout_seconds: int,
+    proxy_bind: str = DEFAULT_PROXY_BIND,
+) -> tuple[str, int, str]:
+    forwarder = _LocalProxyForwarder(proxy_bind)
+    auth_mount = f"type=bind,source={auth_path},target=/root/.codex/auth.json,readonly"
+    command = _docker_run_base(docker, image, proxy_url=forwarder.proxy_url)[:-1] + [
+        "--mount",
+        f"type=bind,source={workdir},target=/workspace,readonly",
+        "--mount",
+        auth_mount,
+        "--workdir",
+        "/workspace",
+        "--network",
+        "bridge",
+        image,
+        "/bin/sh",
+        "-c",
+        "codex exec --ephemeral --skip-git-repo-check --ignore-user-config --ignore-rules --sandbox read-only --model "
+        + MODEL
+        + " --cd /workspace --output-last-message /tmp/last_message.txt - >/dev/null 2>/tmp/diagnostics.txt; rc=$?; cat /tmp/last_message.txt 2>/dev/null; cat /tmp/diagnostics.txt >&2; exit $rc",
+    ]
+    try:
+        completed = subprocess.run(
+            command,
+            input=prompt.encode("utf-8"),
+            capture_output=True,
+            cwd=str(workdir),
+            timeout=timeout_seconds,
+            shell=False,
+        )
+        output = completed.stdout.decode("utf-8", errors="replace")
+        diagnostics = completed.stderr.decode("utf-8", errors="replace")[-4000:]
+        return output, completed.returncode, diagnostics
+    finally:
+        forwarder.close()
+
+
+def _docker_isolation_canary(docker: Path, image: str, auth_path: Path, output_root: Path) -> dict[str, object]:
+    output_root.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="b1-docker-canary-", dir=output_root) as temporary:
+        workdir = Path(temporary)
+        (workdir / "worker_marker.txt").write_text("worker-visible\n", encoding="utf-8")
+        host_marker = output_root / f"{workdir.name}-host-marker.txt"
+        host_marker.write_text("host-hidden\n", encoding="utf-8")
+        try:
+            auth_mount = f"type=bind,source={auth_path},target=/root/.codex/auth.json,readonly"
+            command = _docker_run_base(docker, image)[:-1] + [
+                "--network",
+                "none",
+                "--mount",
+                f"type=bind,source={workdir},target=/workspace,readonly",
+                "--mount",
+                auth_mount,
+                "--workdir",
+                "/workspace",
+                image,
+                "/bin/sh",
+                "-c",
+                "grep -q worker-visible /workspace/worker_marker.txt && ! test -e /host-hidden-marker && ! test -e /workspace/../host-hidden-marker",
+            ]
+            completed = subprocess.run(command, check=False, capture_output=True, text=True, encoding="utf-8")
+            if completed.returncode != 0:
+                raise RuntimeError(f"Docker isolation canary failed: {completed.stderr.strip()}")
+            return {"status": "PASS", "worker_mount": "read_only", "host_marker": "not_visible", "image": image}
+        finally:
+            host_marker.unlink(missing_ok=True)
 
 
 def _blind_violation(diagnostics: str) -> str | None:
@@ -217,6 +453,11 @@ def _reconcile_in_doubt(events_path: Path, seed: int, arm: str) -> None:
 def _run_arm(
     *,
     cli: Path,
+    backend: str,
+    docker: Path,
+    docker_image: str,
+    auth_path: Path,
+    proxy_bind: str,
     root: Path,
     run_dir: Path,
     seed: int,
@@ -267,7 +508,10 @@ def _run_arm(
         workdir = run_dir / "workers" / f"seed-{seed}" / arm / f"generation-{generation}"
         workdir.mkdir(parents=True, exist_ok=True)
         try:
-            output, returncode, diagnostics = _run_provider(cli, prompt, workdir, timeout_seconds)
+            if backend == "docker":
+                output, returncode, diagnostics = _run_provider_docker(docker, docker_image, auth_path, prompt, workdir, timeout_seconds, proxy_bind)
+            else:
+                output, returncode, diagnostics = _run_provider(cli, prompt, workdir, timeout_seconds)
             candidate_output = output.strip()
             blind_marker = _blind_violation(diagnostics)
             if blind_marker is not None:
@@ -367,10 +611,15 @@ def run_search(
     timeout_seconds: int,
     resume_dir: Path | None = None,
     supersedes: str | None = None,
+    backend: str = "docker",
+    docker: Path = DEFAULT_DOCKER,
+    docker_image: str = DEFAULT_DOCKER_IMAGE,
+    auth_path: Path = DEFAULT_AUTH,
+    proxy_bind: str = DEFAULT_PROXY_BIND,
 ) -> Path:
     output_root = output_root.resolve()
     protocol = build_protocol_manifest()
-    provider = _provider_preflight(cli)
+    provider = _provider_preflight(cli, backend=backend, docker=docker, image=docker_image, auth_path=auth_path, proxy_bind=proxy_bind)
     if resume_dir is None:
         if protocol["execution_boundary"]["formal_search_started"]:
             raise RuntimeError("protocol unexpectedly marks formal search as already started")
@@ -399,6 +648,13 @@ def run_search(
                 "ignore_rules": True,
                 "sandbox": "read-only",
                 "skip_git_repo_check": True,
+                "backend": backend,
+                "docker_image": docker_image if backend == "docker" else None,
+                "network": "bridge_via_host_proxy" if backend == "docker" else "native_default",
+                "proxy_bind": proxy_bind if backend == "docker" else None,
+                "host_mounts": ["worker_workspace_read_only", "codex_auth_read_only"] if backend == "docker" else ["none"],
+                "cap_drop": ["ALL"] if backend == "docker" else [],
+                "no_new_privileges": backend == "docker",
             },
         }
         _atomic_json(run_dir / "execution_manifest.json", manifest)
@@ -426,6 +682,11 @@ def run_search(
         for arm in arm_order:
             _run_arm(
                 cli=cli,
+                backend=backend,
+                docker=docker,
+                docker_image=docker_image,
+                auth_path=auth_path,
+                proxy_bind=proxy_bind,
                 root=output_root,
                 run_dir=run_dir,
                 seed=seed,
@@ -445,11 +706,21 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-root", type=Path, default=Path("artifacts.local/evidence/l10m_b1/runs"))
     parser.add_argument("--cli", type=Path, default=DEFAULT_CLI)
+    parser.add_argument("--backend", choices=("docker", "native"), default="docker")
+    parser.add_argument("--docker", type=Path, default=DEFAULT_DOCKER)
+    parser.add_argument("--docker-image", default=DEFAULT_DOCKER_IMAGE)
+    parser.add_argument("--auth-path", type=Path, default=DEFAULT_AUTH)
+    parser.add_argument("--proxy-bind", default=DEFAULT_PROXY_BIND)
     parser.add_argument("--timeout-seconds", type=int, default=300)
     parser.add_argument("--resume", type=Path)
     parser.add_argument("--supersedes")
+    parser.add_argument("--docker-canary", action="store_true")
     args = parser.parse_args()
-    path = run_search(args.output_root, args.cli, args.timeout_seconds, args.resume, args.supersedes)
+    if args.docker_canary:
+        result = _docker_isolation_canary(args.docker, args.docker_image, args.auth_path, args.output_root.resolve())
+        print(json.dumps(result, sort_keys=True))
+        return
+    path = run_search(args.output_root, args.cli, args.timeout_seconds, args.resume, args.supersedes, args.backend, args.docker, args.docker_image, args.auth_path, args.proxy_bind)
     print(path)
 
 
