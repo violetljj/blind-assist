@@ -124,6 +124,8 @@ def _run_provider(cli: Path, prompt: str, workdir: Path, timeout_seconds: int) -
         "exec",
         "--ephemeral",
         "--skip-git-repo-check",
+        "--ignore-user-config",
+        "--ignore-rules",
         "--sandbox",
         "read-only",
         "--model",
