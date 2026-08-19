@@ -33,3 +33,15 @@ no-progress, true stuck, recovery exit, recovery-plus-arrival, reactive-solvable
 preservation, and uncertain progress. Progress is represented as the explicit
 three-state contract `POSITIVE_PROGRESS`, `CONFIRMED_NO_PROGRESS`, or
 `UNKNOWN_PROGRESS`; only confirmed no-progress may increase stuck evidence.
+
+B0-C is a separate, minimal intervention over the consumed B0-B scenarios. It
+keeps all thresholds and evidence contracts fixed and changes only precedence:
+confirmed terminal evidence preempts a recovery action, while credible positive
+progress exits recovery before normal action selection. Run it with:
+
+```text
+python -m scripts.research.l10m_b0.b0c_precedence --output artifacts.local/evidence/l10m_b0/c_matrix.json
+```
+
+Its claim ceiling is causal recovery-transition repair on matched synthetic
+mechanics only. It does not authorize B1 or Structured Search.
