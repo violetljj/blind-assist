@@ -106,9 +106,10 @@ R4 只改变 LOST search。S1 使用
 S0/S1/S2，固定读取 R1 五窗；它显式记录 `T_invisible/T_subdetectable/T_system_miss/T_confirmation`，
 proposal 未出现时将 `T_system_miss` 在窗口末尾标为右删失。
 
-R5 的 GT-blind teacher 入口是 `run_visual_upper_bound_r5.py`，隔离评价入口是
-`evaluate_visual_upper_bound_r5.py`。完整冻结参数、输入 SHA、合法 exemplar 选择和三分支终止门见
-[`R5 protocol`](../../../docs/research/goal-copilot/BA_ADT_SMALL_TARGET_VISUAL_UPPER_BOUND_R5_PROTOCOL_2026-08-21.md)。
+R5 Attempt 01 的 SAM 3 入口 `run_visual_upper_bound_r5.py` 在 inference 前因 8 GB 本机机械不可行而
+supersede。正式 Attempt 02 的 GT-blind OWLv2-large 入口是 `run_visual_upper_bound_r5_owlv2.py`，隔离评价
+入口仍是 `evaluate_visual_upper_bound_r5.py`。完整冻结参数、输入 SHA、合法 exemplar 选择和三分支终止门见
+[`R5 Attempt 02 protocol`](../../../docs/research/goal-copilot/BA_ADT_SMALL_TARGET_VISUAL_UPPER_BOUND_R5_ATTEMPT_02_PROTOCOL_2026-08-21.md)。
 
 ## 输出
 
@@ -155,5 +156,6 @@ R4 的 S0/S1/S2 在 3 个 eligible 窗口、97 个 LOST-search frames 上均为 
 `0/3` confirmed reacquisition；S1/S2 全局 recall 改善却分别产生 1/4 次 wrong-instance，故不保留。
 结果见
 [`BA_ADT_SMALL_TARGET_SEARCH_SCALE_R4_RESULT_2026-08-21.md`](../../../docs/research/goal-copilot/BA_ADT_SMALL_TARGET_SEARCH_SCALE_R4_RESULT_2026-08-21.md)。
-R5 已在 teacher outcome 前冻结 SAM 3 Teacher A、合法 RGB exemplar、3-window/97-frame denominator 与
-`0/3, 1/3, >=2/3` 终止门。唯一下一动作是运行该固定 teacher/evaluator；不继续扫 R4，不接 DINOv2/Sky。
+R5 Attempt 01 的 SAM 3 在 teacher outcome 前被机械可行性否决，未消费固定窗口。Attempt 02 已冻结
+OWLv2-large Teacher A、合法 RGB exemplar、3-window/97-frame denominator 与 `0/3, 1/3, >=2/3` 终止门。
+唯一下一动作是运行该固定 teacher/evaluator；不继续扫 R4，不接 DINOv2/Sky。
