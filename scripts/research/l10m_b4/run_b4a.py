@@ -10,7 +10,7 @@ import subprocess
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from scripts.research.l10m_b1.policy_space import (
     INITIAL_SPEC,
@@ -203,13 +203,16 @@ def _run_trajectory(
     proxy_bind: str,
     timeout_seconds: int,
     total_calls: int,
+    protocol_id: str = PROTOCOL_ID,
+    generations_per_trajectory: int = GENERATIONS_PER_TRAJECTORY,
+    evaluate_fn: Callable[[PolicySpec, dict[str, Any]], dict[str, object]] = evaluate_instance,
 ) -> None:
     instance_id = str(instance["instance_id"])
     incumbent = INITIAL_SPEC
-    best_result = evaluate_instance(INITIAL_SPEC, instance)
+    best_result = evaluate_fn(INITIAL_SPEC, instance)
     attempted_moves: set[str] = set()
     move_ledger: list[dict[str, object]] = []
-    for generation in range(1, GENERATIONS_PER_TRAJECTORY + 1):
+    for generation in range(1, generations_per_trajectory + 1):
         if arm == "structured_control":
             prompt = b1_prompt("structured", identity, generation, incumbent, best_result, float(best_result["behavioral_score"]))
         else:
@@ -217,7 +220,7 @@ def _run_trajectory(
         request_id = str(uuid.uuid4())
         started = _utc()
         common = {
-            "protocol_id": PROTOCOL_ID,
+            "protocol_id": protocol_id,
             "request_id": request_id,
             "instance_id": instance_id,
             "replicate": replicate,
@@ -315,7 +318,7 @@ def _run_trajectory(
                 )
             else:
                 admitted = model_proposal
-            result = evaluate_instance(admitted, instance)
+            result = evaluate_fn(admitted, instance)
             valid = bool(result["semantic_valid"])
             unsafe = bool(result["unsafe_candidate"])
             score = float(result["behavioral_score"])

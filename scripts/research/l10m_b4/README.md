@@ -162,6 +162,23 @@ frozen Balanced operator on this qualified finite harder cohort. It does not
 establish complete search, general algorithm or model superiority, device or
 user value, safety effect, or production readiness.
 
+## B5-A fresh generalization replication
+
+B5-A freezes the B4-A V2 Balanced and Control mechanisms without an algorithm
+change and moves to three new outcome-blind identities in the same finite
+benchmark family: `obsidian`, `coral`, and `silver`. Their motif weights and
+names are frozen in `fresh_benchmark_v1.json` before any B5-A model call.
+Exhaustive qualification may inspect the finite evaluator landscape, but it may
+not use a B5-A arm outcome. Each admitted landscape must retain the B4 pressure
+criteria and require at least five strict improvement steps from the initial
+candidate to a global optimum.
+
+This stage asks only whether B4-A's relative final normalized-progress result
+replicates on a fresh harder cohort. Global-optimum reach is supporting and must
+not be lower for Balanced, but positive global-optimum reach is not required for
+replication. Any progress-conditioned proposal or search-state-memory mechanism
+belongs to a later B5-B version and is forbidden in B5-A.
+
 Bound evidence:
 
 - source commit: `d32d88c565bd339651ab8acd618ab74261677639`
