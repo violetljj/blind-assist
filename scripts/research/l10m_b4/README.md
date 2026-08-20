@@ -89,3 +89,63 @@ No B4-A runner is authorized until this certificate is terminal and its exact
 path and SHA-256 are bound into a separate paired comparison protocol. That
 future protocol must keep eight generations and use fresh outcome-blind
 prompt/session identities.
+
+### Harder-cohort terminal
+
+`B4_HARD_BENCHMARK_QUALIFIED`
+
+All three instances contain 17 episodes and exhaustively cover the same 162
+finite PolicySpecs. Each has four improving and four non-improving legal moves
+from the initial candidate, six local maxima, no one-step global-optimum hit,
+and a shortest strictly improving path of five moves. `amber` and `cobalt`
+have one global optimum each; `jade` has two tied global optima. The latter is
+intentional threshold symmetry, not an arm outcome.
+
+Bound evidence:
+
+- source commit: `462b47d89517c9afac453d2e67b5ebff79bdecae`
+- certificate: `artifacts.local/evidence/l10m_b4/hard_benchmark_v1/certificate.json`
+- certificate SHA-256: `7f2cf3a1fb4db8534e5af3839c264dc377be48db63538d7c85c023aabf3c2696`
+- model calls used for construction and qualification: `0`
+
+## B4-A paired comparison
+
+B4-A compares the unchanged B3-A Structured Control and Balanced Exploration
+mechanisms on all three qualified harder instances. Each instance receives
+three fresh paired prompt/session identities, for nine pairs total. Both arms
+retain eight generations, so the frozen budget is 144 model calls.
+
+The primary estimand is paired final normalized progress within each instance:
+`(final - initial) / (qualified global optimum - initial)`. Balanced search
+value is established only if the median paired delta is positive, Balanced
+wins at least six of nine pairs with zero losses, global-optimum reach is not
+lower, unsafe count does not increase, and operator integrity passes. Earlier
+discovery alone is supporting evidence and cannot satisfy admission.
+
+After committing the implementation, freeze the create-once protocol:
+
+```text
+python -m scripts.research.l10m_b4.run_b4a freeze \
+  --repo-root . \
+  --output artifacts.local/evidence/l10m_b4/b4a/protocol.json
+```
+
+Only then may the single formal cohort run:
+
+```text
+python -m scripts.research.l10m_b4.run_b4a run \
+  --repo-root . \
+  --output-root artifacts.local/evidence/l10m_b4/b4a/runs \
+  --protocol artifacts.local/evidence/l10m_b4/b4a/protocol.json \
+  --transport-qualification F:/ba-data/blindassist-artifacts-20260805/evidence/l10m_b1/transport_qualification/b1-i0-proxy-20260820T025833-4e438512/result.json
+```
+
+Any provider, transport, isolation, evaluator, or ledger-integrity failure
+seals the entire cohort `B4A_NOT_EVALUABLE_RUNTIME / NO_SCIENTIFIC_VERDICT`.
+There is no retry, replacement, or resume.
+
+Read progress without mutating the run:
+
+```text
+python -m scripts.research.l10m_b4.summarize_b4a --run-dir <run-dir>
+```
