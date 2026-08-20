@@ -140,6 +140,37 @@ python -m scripts.research.l10m_b4.run_b4a run \
   --transport-qualification F:/ba-data/blindassist-artifacts-20260805/evidence/l10m_b1/transport_qualification/b1-i0-proxy-20260820T025833-4e438512/result.json
 ```
 
+### B4-A V2 terminal
+
+`B4A_EVALUABLE_COMPLETE / B4A_BALANCED_SEARCH_VALUE_ESTABLISHED`
+
+The V2 cohort completed all 144 model calls with no provider, isolation,
+semantic-validity, unsafe, or operator-integrity failure. Balanced Exploration
+won final normalized progress in all nine paired identities, with zero losses
+and zero ties. The median paired normalized-progress delta was
+`+0.3076923076923076`; mean normalized progress was `0.324786324786325`
+for Control and `0.584249084249084` for Balanced.
+
+Balanced covered eight canonical moves in every trajectory and admitted a mean
+of `7.89` unique candidates, versus Control's mean `4.11` unique candidates.
+This mechanical coverage difference is supporting evidence only; admission
+comes from the preregistered 9/9 paired final-progress wins.
+
+Neither arm reached a qualified global optimum in any trajectory (`0/9` vs
+`0/9`). The result therefore establishes relative final search value for the
+frozen Balanced operator on this qualified finite harder cohort. It does not
+establish complete search, general algorithm or model superiority, device or
+user value, safety effect, or production readiness.
+
+Bound evidence:
+
+- source commit: `d32d88c565bd339651ab8acd618ab74261677639`
+- protocol SHA-256: `d289af12c4c9726958320f0ba8b807e375f0963793a3dba7a6c6b0f0af2b5e67`
+- run: `b4av2-20260820T133016-815ed378`
+- event ledger SHA-256: `6f1d4b7b40a7e9c763c7d072e75b42379c970199b3c8434b800ae2db972a3103`
+- execution manifest SHA-256: `5696a8fd86f74872a6a1384e0d72e647a31bbefad45c99bf1fc266a9d592dbba`
+- result SHA-256: `50102673579283c1ab4552c3827eb98d297e0e5b19c22dfdf28042b2280a1370`
+
 Any provider, transport, isolation, evaluator, or ledger-integrity failure
 seals the entire cohort `B4A_NOT_EVALUABLE_RUNTIME / NO_SCIENTIFIC_VERDICT`.
 There is no retry, replacement, or resume.
