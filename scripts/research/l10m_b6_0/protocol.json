@@ -1,0 +1,35 @@
+{
+  "protocol": "L10M-B6-0-REACHABILITY-HYPOTHESIS-TRIAGE-V1",
+  "status": "FROZEN_BEFORE_ELIGIBILITY_AND_OUTCOME_ANALYSIS",
+  "authority": "DEVELOPMENT_HISTORICAL_TRIAGE_ONLY",
+  "hypothesis_seed_authority": "EXPLORATORY_HYPOTHESIS_SEED_ONLY",
+  "phases": ["INVENTORY_ELIGIBILITY", "SEALED_ANALYSIS"],
+  "zero_call_constraints": {
+    "experimental_model_calls": 0,
+    "fresh_tasks_consumed": 0,
+    "historical_runs_modified": 0
+  },
+  "historical_cohorts": {
+    "B1_V2_FRESH_SUCCESSOR": "CONFIRMATORY_SET",
+    "B3_A_BALANCED_EXPLORATION": "CONFIRMATORY_SET",
+    "B4_A_HARDER_COHORT": "CONFIRMATORY_SET",
+    "B5_A_FRESH_REPLICATION": "HYPOTHESIS_GENERATING_ONLY"
+  },
+  "strict_path_reachability": {
+    "source_semantics": "B5-C shortest_strict_steps: legal one-field neighbor edges whose score strictly increases, ending at any global optimum",
+    "rank_encoding": "0 if no strict path exists; otherwise 1/(1+shortest_strict_steps)",
+    "justification": "monotone ordinal encoding of the B5-C reachable/shorter-is-better semantics for frozen rank analyses; not a soft, weighted, or learned proxy",
+    "primary": "reachability_after",
+    "secondary": "reachability_delta"
+  },
+  "primary_decision": "earliest generation with reconstructible incumbent, chosen candidate and successor, at least two legal graph neighbors, computable immediate score and reachability, and non-empty future trajectory",
+  "immediate_score": "recorded candidate behavioral_score after deterministic evaluator identity check",
+  "future_outcome": "terminal_best_normalized_progress minus normalized_progress_after_primary_decision",
+  "normalization": "average ranks within cohort",
+  "minimum_evidence": {"confirmatory_cohorts_n_ge_6": 2, "evaluable_policies": 2, "policy_min_records": 6, "policy_min_cohorts": 2},
+  "incremental_information": {"pooled_loco_relative_mae_improvement_min": 0.02, "median_per_cohort_mae_improvement_strictly_positive": true},
+  "cross_cohort": {"positive_fraction_min": 0.75, "median_partial_spearman_min": 0.2, "strong_reversal_max": -0.2},
+  "cross_policy": {"all_evaluable_policy_partial_associations_strictly_positive": true},
+  "terminal_states": ["REACHABILITY_HYPOTHESIS_NOT_SUPPORTED", "REACHABILITY_HYPOTHESIS_SUPPORTED_FOR_DEVELOPMENT"],
+  "pooled_result_authority": "SECONDARY_DESCRIPTIVE_ONLY"
+}
