@@ -79,7 +79,10 @@ def infer_search_frames(model, processor, query, pending: list[dict], device: st
         outputs,
         threshold=0.0,
         nms_threshold=TILE_NMS_IOU,
-        target_sizes=[(height, width) for _, _, _, _, height, width in ownership],
+        target_sizes=torch.tensor(
+            [(height, width) for _, _, _, _, height, width in ownership],
+            device=outputs.logits.device,
+        ),
     )
     collected = {entry["frame_index"]: [] for entry in search}
     for result, (entry, _, origin_x, origin_y, _, _) in zip(results, ownership, strict=True):
