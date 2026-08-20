@@ -66,3 +66,36 @@ admission. Any provider or execution-integrity failure seals the whole cohort
 The maximum claim is causal search-value evidence for this operator inside the
 frozen finite synthetic Structured interface. It is not general model,
 end-to-end, device, user, safety-effect, or production evidence.
+
+## Terminal
+
+`B3A_EVALUABLE_COMPLETE / B3A_BALANCED_EXPLORATION_NOT_ADMITTED`
+
+The one authorized fresh cohort completed 48/48 model calls with no provider,
+semantic-validity, unsafe, or operator-integrity failure. Control and Balanced
+Exploration both reached the improvement threshold in all three paired seeds,
+and every final best score was `0.993103448275862`. Paired final-score outcomes
+were therefore zero Balanced wins, zero losses, and three ties. The
+preregistered admission rule did not pass.
+
+The intervention worked mechanically but did not add the required search
+value. Balanced Exploration covered eight unique canonical moves in every seed,
+versus three in every Control seed, and reached the exact diagnostic target at
+generations `2/2/1`; Control reached it at generations `4/4/3`. This is a
+consistent fresh efficiency signal, but earlier discovery alone was not an
+admission criterion. Higher diversity without higher reach or final score is
+explicitly classified as `diversity_without_search_value`.
+
+This closes the specific balanced-coverage repair without promotion into the
+searcher. It does not erase the B3-I0 seed-89 proposal-collapse diagnosis; it
+shows that the fresh Controls did not reproduce a reach/final-score deficit
+that this operator could repair. No further seed-89 use or post-hoc rescue is
+authorized.
+
+Bound evidence:
+
+- run: `b3a-20260820T124003-69a8df8a`
+- protocol SHA-256: `a6ab7a39855862a86bca15f0e00a5b4936c3d19b4fdff2423a72317903fd3a27`
+- event ledger SHA-256: `050a536080ea7856ed38fd6e711874d9652ee4f2e9855694b3c63bec194e98e5`
+- execution manifest SHA-256: `7bf8f69479e8646683945df9376bae62eb28c7c97707563563f7669c64161a05`
+- result SHA-256: `bfa265c677e2ff733456ec4c873ba9573ee6b425ffd24001d670a3b785fbeb1b`
