@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / GOAL_COPILOT_1_PERMANENTLY_CLOSED / GOAL_COPILOT_2A_COMPLETE / GOAL_COPILOT_2B_PROTOCOL_DESIGN_ADMITTED_NO_MODEL_CALLS / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / GOAL_COPILOT_1_PERMANENTLY_CLOSED / GOAL_COPILOT_2A_COMPLETE / GOAL_COPILOT_2B_PROTOCOL_DESIGN_FROZEN_SEARCH_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
 ## 上位产品定义
 
@@ -91,3 +91,9 @@ GC2-A 已完成并确定性 replay 通过；结果见
 `COMBINED_MODERATE` 下 completion `0/12`、eligible reacquisition `0/3`，并有 `1` 次
 premature completion，因此只准入 GC2-B noise-robust Sky search 的独立协议设计。GC2-B
 模型调用、正式 Sky/EvoX 搜索和多臂实验仍未授权。
+
+GC2-B 的双仓协议设计已冻结，见
+[`GOAL_COPILOT_2B_PROTOCOL.md`](GOAL_COPILOT_2B_PROTOCOL.md)。冻结设计规定 BA 独占
+task/noise/evaluator/hidden/acceptance authority，Sky 仅有 proposal/search authority；其当前
+claim ceiling 仅为 protocol design。正式 bundle、held-out envelope、provider/run seal 与模型调用
+仍需后续单独授权。

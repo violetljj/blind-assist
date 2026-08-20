@@ -1,6 +1,6 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_COPILOT / GOAL_COPILOT_1_PERMANENTLY_CLOSED / GOAL_COPILOT_2A_COMPLETE / GOAL_COPILOT_2B_PROTOCOL_DESIGN_ADMITTED_NO_MODEL_CALLS / ACTIVE_ALGORITHM_P0=D_ORACLE_1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_COPILOT / GOAL_COPILOT_1_PERMANENTLY_CLOSED / GOAL_COPILOT_2A_COMPLETE / GOAL_COPILOT_2B_PROTOCOL_DESIGN_FROZEN_SEARCH_NOT_AUTHORIZED / ACTIVE_ALGORITHM_P0=D_ORACLE_1 / DEFAULT_APP_UNCHANGED`
 
 Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线：现有 perception、geometry、risk、
 tracking 与 traversability 模块作为 Evidence Providers，Goal Copilot Brain 负责跨时间的 task belief、
@@ -32,7 +32,7 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| Goal-Driven Visual Copilot / GOAL-COPILOT-2 | 冻结 GC1 winner 在 perception uncertainty 下的 closed-loop robustness | `PRODUCT_AND_RESEARCH_MAINLINE / GOAL_COPILOT_1_PERMANENTLY_CLOSED / GOAL_COPILOT_2A_COMPLETE / GOAL_COPILOT_2B_PROTOCOL_DESIGN_ADMITTED_NO_MODEL_CALLS` | [Goal Copilot current](goal-copilot/README.md) | 只设计独立冻结的 `GOAL-COPILOT-2B` noise-robust Sky search 协议 | 恢复 GC1；未冻结即调用模型/正式 Sky/EvoX/多臂；复用 fresh；改 GC2-A outcome 或夸大为真实感知、安全、产品证据 | 否 |
+| Goal-Driven Visual Copilot / GOAL-COPILOT-2 | 冻结 GC1 winner 在 perception uncertainty 下的 closed-loop robustness | `PRODUCT_AND_RESEARCH_MAINLINE / GOAL_COPILOT_1_PERMANENTLY_CLOSED / GOAL_COPILOT_2A_COMPLETE / GOAL_COPILOT_2B_PROTOCOL_DESIGN_FROZEN_SEARCH_NOT_AUTHORIZED` | [Goal Copilot current](goal-copilot/README.md) | 另行 materialize 并验证 bundle/held-out envelope/provider/run seal；未授权执行 | 恢复 GC1；当前即调用模型/正式 Sky/EvoX/多臂；复用 fresh；改 GC2-A outcome 或夸大为真实感知、安全、产品证据 | 否 |
 | D-ORACLE-1 causal ladder | 三臂 matched oracle intervention 定位 downstream target-policy stack 与 estimated representation 的损失 | `UNIQUE_P0 / PROTOCOL_FROZEN / BLOCKED_ON_SOURCE_ACTION_TRUTH_POLICY_LOCK / NO_EXECUTION / NO_SEARCH` | [Failure diagnosis current](failure-synthesis/README.md) | `D_ORACLE_1_SOURCE_ACTION_TRUTH_POLICY_LOCK` | 增加第四竞争臂；提前拆H3/H4；训练/调policy/threshold；读取outcome后换parent/gate；让当前root ranking约束结果 | 否 |
 | SVRF / Scale-free Visual Risk Field | 纯 RGB 派生的相对深度动态、局部扩张和视觉通道侵入能否形成稳定相对风险排序 | `PAUSED_BY_D_ORACLE_1_UNIQUE_P0 / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / STREAM_INDEX_AUTHORIZED_BUT_NOT_ACTIVE / REAL_O0_NOT_RUN / NO_TRAINING` | [SVRF current](svrf/README.md) | 无；只有 D-ORACLE-1 定位 representation 层确有 headroom 且用户重开后，才可另行恢复 | bus canary、member index、payload/truth materialization、O0、训练或接 Android | 否 |
 | VI-Task Geometry | 同刚体 RGB+IMU 自校准 metric pose/ground，再为未来 task geometry 分配 computation/parallax budget | `PAUSED_BY_PURE_RGB_SELECTION / G0_PROTOCOL_RETAINED / REAL_G0_NOT_RUN / NO_TOF / NO_TRAINING` | [VI-Task Geometry current](vi-task-geometry/README.md) | 无；只有用户明确恢复 RGB+IMU metric-frame 路线才可重开 preflight | 实现/采集/运行 G0；用手机 IMU配眼镜视频；重跑 ARCore D45；提前训练、主动分配或接 Android | 否 |
