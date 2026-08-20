@@ -27,6 +27,7 @@ FRAME_TOP_K = 50
 TILE_NMS_IOU = 0.30
 GLOBAL_NMS_IOU = 0.50
 CHECKPOINT_INTERVAL = 25
+SEARCH_FRAMES_PER_BATCH = 2
 
 
 def atomic_json(path: Path, payload: dict) -> None:
@@ -51,6 +52,50 @@ def crop_exemplar(video: Path, exemplar: dict) -> Image.Image:
     bottom = max(top + 1, min(height, int(y2 + 0.999999)))
     crop = image[top:bottom, left:right]
     return Image.fromarray(cv2.cvtColor(crop, cv2.COLOR_BGR2RGB))
+
+
+def infer_search_frames(model, processor, query, pending: list[dict], device: str) -> None:
+    """Fill candidates for up to two search frames in one eight-tile GPU batch."""
+    import torch
+
+    search = [entry for entry in pending if entry["search_active"]]
+    if not search:
+        return
+    flat_tiles = []
+    ownership = []
+    for entry in search:
+        tiles = two_by_two_tiles(entry.pop("image"), TILE_OVERLAP)
+        for tile_index, (tile, origin_x, origin_y) in enumerate(tiles):
+            flat_tiles.append(Image.fromarray(cv2.cvtColor(tile, cv2.COLOR_BGR2RGB)))
+            ownership.append((entry, tile_index, origin_x, origin_y, tile.shape[0], tile.shape[1]))
+    inputs = processor(images=flat_tiles, query_images=[query] * len(flat_tiles), return_tensors="pt")
+    inputs = {
+        key: value.to(device, dtype=torch.float16) if value.is_floating_point() else value.to(device)
+        for key, value in inputs.items()
+    }
+    with torch.inference_mode():
+        outputs = model.image_guided_detection(**inputs)
+    results = processor.post_process_image_guided_detection(
+        outputs,
+        threshold=0.0,
+        nms_threshold=TILE_NMS_IOU,
+        target_sizes=[(height, width) for _, _, _, _, height, width in ownership],
+    )
+    collected = {entry["frame_index"]: [] for entry in search}
+    for result, (entry, _, origin_x, origin_y, _, _) in zip(results, ownership, strict=True):
+        pairs = zip(result["scores"].tolist(), result["boxes"].tolist(), strict=True)
+        ranked = sorted(pairs, key=lambda pair: pair[0], reverse=True)[:TILE_TOP_K]
+        for confidence, box in ranked:
+            collected[entry["frame_index"]].append({
+                "bbox_xyxy": [float(box[0] + origin_x), float(box[1] + origin_y),
+                              float(box[2] + origin_x), float(box[3] + origin_y)],
+                "confidence": float(confidence),
+            })
+    for entry in search:
+        entry["candidates"] = sorted(
+            deduplicate_candidates(collected[entry["frame_index"]], overlap_threshold=GLOBAL_NMS_IOU),
+            key=lambda candidate: candidate["confidence"], reverse=True,
+        )[:FRAME_TOP_K]
 
 
 def build_output(args, observations: dict, exemplar: dict, frames: list[dict], elapsed: float, peak: dict) -> dict:
@@ -79,6 +124,8 @@ def build_output(args, observations: dict, exemplar: dict, frames: list[dict], e
             "tile_top_k": TILE_TOP_K,
             "global_nms_iou": GLOBAL_NMS_IOU,
             "frame_top_k": FRAME_TOP_K,
+            "search_frames_per_gpu_batch": SEARCH_FRAMES_PER_BATCH,
+            "maximum_tile_batch": SEARCH_FRAMES_PER_BATCH * 4,
             "threshold_or_geometry_sweep": False,
         },
         "inputs": {
@@ -146,45 +193,31 @@ def main() -> int:
     started = time.perf_counter()
     inference_frames = 0
     expected = len(observations["frames"])
+    pending: list[dict] = []
+    stop_requested = False
     try:
         while len(frames) < expected:
             ok, image = capture.read()
             if not ok:
                 raise ValueError(f"video ended at frame {len(frames)} before expected {expected}")
-            frame_index = len(frames)
+            frame_index = len(frames) + len(pending)
             row = observations["frames"][frame_index]
             search_active = frame_index > exemplar["frame_index"] and not bool(row["target_visible"])
-            candidates: list[dict] = []
+            entry = {"frame_index": frame_index, "search_active": search_active, "candidates": []}
             if search_active:
-                tiles = two_by_two_tiles(image, TILE_OVERLAP)
-                targets = [Image.fromarray(cv2.cvtColor(tile, cv2.COLOR_BGR2RGB)) for tile, _, _ in tiles]
-                inputs = processor(images=targets, query_images=[query] * len(tiles), return_tensors="pt")
-                inputs = {
-                    key: value.to(args.device, dtype=torch.float16) if value.is_floating_point() else value.to(args.device)
-                    for key, value in inputs.items()
-                }
-                with torch.inference_mode():
-                    outputs = model.image_guided_detection(**inputs)
-                target_sizes = [(tile.shape[0], tile.shape[1]) for tile, _, _ in tiles]
-                results = processor.post_process_image_guided_detection(
-                    outputs, threshold=0.0, nms_threshold=TILE_NMS_IOU, target_sizes=target_sizes
-                )
-                tiled = []
-                for result, (_, origin_x, origin_y) in zip(results, tiles, strict=True):
-                    pairs = zip(result["scores"].tolist(), result["boxes"].tolist(), strict=True)
-                    ranked = sorted(pairs, key=lambda pair: pair[0], reverse=True)[:TILE_TOP_K]
-                    for confidence, box in ranked:
-                        tiled.append({
-                            "bbox_xyxy": [float(box[0] + origin_x), float(box[1] + origin_y),
-                                          float(box[2] + origin_x), float(box[3] + origin_y)],
-                            "confidence": float(confidence),
-                        })
-                candidates = sorted(
-                    deduplicate_candidates(tiled, overlap_threshold=GLOBAL_NMS_IOU),
-                    key=lambda candidate: candidate["confidence"], reverse=True,
-                )[:FRAME_TOP_K]
-                inference_frames += 1
-            frames.append({"frame_index": frame_index, "search_active": search_active, "candidates": candidates})
+                entry["image"] = image
+            pending.append(entry)
+            search_pending = sum(row["search_active"] for row in pending)
+            if args.stop_after_frame is not None and frame_index >= args.stop_after_frame:
+                stop_requested = True
+            if search_pending < SEARCH_FRAMES_PER_BATCH and len(frames) + len(pending) < expected and not stop_requested:
+                continue
+            infer_search_frames(model, processor, query, pending, args.device)
+            inference_frames += search_pending
+            for completed in pending:
+                completed.pop("image", None)
+                frames.append(completed)
+            pending.clear()
             elapsed = elapsed_before + time.perf_counter() - started
             peak = {"allocated": int(torch.cuda.max_memory_allocated()), "reserved": int(torch.cuda.max_memory_reserved())}
             if len(frames) % CHECKPOINT_INTERVAL == 0:
@@ -194,7 +227,7 @@ def main() -> int:
                                   "inference_frames_this_process": inference_frames,
                                   "elapsed_seconds": elapsed,
                                   "eta_seconds": (expected - len(frames)) / rate}), flush=True)
-            if args.stop_after_frame is not None and frame_index >= args.stop_after_frame:
+            if stop_requested:
                 break
     finally:
         capture.release()
