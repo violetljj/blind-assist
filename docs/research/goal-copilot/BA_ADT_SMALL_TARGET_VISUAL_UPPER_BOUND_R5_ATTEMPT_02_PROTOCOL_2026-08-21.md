@@ -38,6 +38,11 @@ slow-processor tensor，不改用会产生候选漂移的 fast processor；frame
 smoke elapsed 从 7.70 s 降至 5.97 s。正式 replay 只允许从该已验证 checkpoint 以此 exact-output
 caching optimization 恢复。
 
+远端实际为 18-CPU cgroup quota；query-cache resume 在 frame 300 checkpoint 后、仍远早于 preview frame
+1434 时停止。最终 runner 以 8 workers 并行执行每 batch 的 8 个 slow-processor tile transforms；与缓存版
+frame 224/225 candidates 逐项完全一致，smoke elapsed 进一步从 5.97 s 降至 4.88 s。正式 replay 从
+frame 300 checkpoint 恢复，禁止改变 worker 数、processor 或候选参数。
+
 Teacher 输入只有完整 RGB、R1 RGB-only search schedule 与历史 trusted exemplar。禁止 GT target
 location/bbox/visibility、未来位置、固定窗口 timing 或 scenario answer。远端不接收 GT。GT 仅由完整
 teacher replay 返回本地并通过隔离 evaluator 后读取。

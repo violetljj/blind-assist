@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 import json
 import os
 from pathlib import Path
@@ -29,6 +30,7 @@ GLOBAL_NMS_IOU = 0.50
 CHECKPOINT_INTERVAL = 25
 SEARCH_FRAMES_PER_BATCH = 2
 TORCH_DTYPE = "bfloat16"
+PREPROCESS_WORKERS = 8
 
 
 def atomic_json(path: Path, payload: dict) -> None:
@@ -55,7 +57,7 @@ def crop_exemplar(video: Path, exemplar: dict) -> Image.Image:
     return Image.fromarray(cv2.cvtColor(crop, cv2.COLOR_BGR2RGB))
 
 
-def infer_search_frames(model, processor, query_pixels, pending: list[dict], device: str) -> None:
+def infer_search_frames(model, processor, query_pixels, pending: list[dict], device: str, pool) -> None:
     """Fill candidates for up to two search frames in one eight-tile GPU batch."""
     import torch
 
@@ -71,7 +73,11 @@ def infer_search_frames(model, processor, query_pixels, pending: list[dict], dev
         for tile_index, (tile, origin_x, origin_y) in enumerate(tiles):
             flat_tiles.append(Image.fromarray(cv2.cvtColor(tile, cv2.COLOR_BGR2RGB)))
             ownership.append((entry, tile_index, origin_x, origin_y, tile.shape[0], tile.shape[1]))
-    inputs = processor(images=flat_tiles, return_tensors="pt")
+    pixel_values = list(pool.map(
+        lambda image: processor.image_processor(images=image, return_tensors="pt")["pixel_values"][0],
+        flat_tiles,
+    ))
+    inputs = {"pixel_values": torch.stack(pixel_values)}
     inputs["query_pixel_values"] = query_pixels.expand(len(flat_tiles), -1, -1, -1)
     inputs = {
         key: value.to(device, dtype=getattr(torch, TORCH_DTYPE)) if value.is_floating_point() else value.to(device)
@@ -141,6 +147,7 @@ def build_output(args, observations: dict, exemplar: dict, frames: list[dict], e
             "frame_top_k": FRAME_TOP_K,
             "search_frames_per_gpu_batch": SEARCH_FRAMES_PER_BATCH,
             "maximum_tile_batch": SEARCH_FRAMES_PER_BATCH * 4,
+            "cpu_preprocess_workers": PREPROCESS_WORKERS,
             "threshold_or_geometry_sweep": False,
         },
         "inputs": {
@@ -214,39 +221,40 @@ def main() -> int:
     pending: list[dict] = []
     stop_requested = False
     try:
-        while len(frames) < expected:
-            ok, image = capture.read()
-            if not ok:
-                raise ValueError(f"video ended at frame {len(frames)} before expected {expected}")
-            frame_index = len(frames) + len(pending)
-            row = observations["frames"][frame_index]
-            search_active = frame_index > exemplar["frame_index"] and not bool(row["target_visible"])
-            entry = {"frame_index": frame_index, "search_active": search_active, "candidates": []}
-            if search_active:
-                entry["image"] = image
-            pending.append(entry)
-            search_pending = sum(row["search_active"] for row in pending)
-            if args.stop_after_frame is not None and frame_index >= args.stop_after_frame:
-                stop_requested = True
-            if search_pending < SEARCH_FRAMES_PER_BATCH and len(frames) + len(pending) < expected and not stop_requested:
-                continue
-            infer_search_frames(model, processor, query_pixels, pending, args.device)
-            inference_frames += search_pending
-            for completed in pending:
-                completed.pop("image", None)
-                frames.append(completed)
-            pending.clear()
-            elapsed = elapsed_before + time.perf_counter() - started
-            peak = {"allocated": int(torch.cuda.max_memory_allocated()), "reserved": int(torch.cuda.max_memory_reserved())}
-            if len(frames) % CHECKPOINT_INTERVAL == 0:
-                atomic_json(args.output, build_output(args, observations, exemplar, frames, elapsed, peak))
-                rate = len(frames) / max(elapsed, 1e-9)
-                print(json.dumps({"frames": len(frames), "expected": expected,
-                                  "inference_frames_this_process": inference_frames,
-                                  "elapsed_seconds": elapsed,
-                                  "eta_seconds": (expected - len(frames)) / rate}), flush=True)
-            if stop_requested:
-                break
+        with ThreadPoolExecutor(max_workers=PREPROCESS_WORKERS) as preprocess_pool:
+            while len(frames) < expected:
+                ok, image = capture.read()
+                if not ok:
+                    raise ValueError(f"video ended at frame {len(frames)} before expected {expected}")
+                frame_index = len(frames) + len(pending)
+                row = observations["frames"][frame_index]
+                search_active = frame_index > exemplar["frame_index"] and not bool(row["target_visible"])
+                entry = {"frame_index": frame_index, "search_active": search_active, "candidates": []}
+                if search_active:
+                    entry["image"] = image
+                pending.append(entry)
+                search_pending = sum(row["search_active"] for row in pending)
+                if args.stop_after_frame is not None and frame_index >= args.stop_after_frame:
+                    stop_requested = True
+                if search_pending < SEARCH_FRAMES_PER_BATCH and len(frames) + len(pending) < expected and not stop_requested:
+                    continue
+                infer_search_frames(model, processor, query_pixels, pending, args.device, preprocess_pool)
+                inference_frames += search_pending
+                for completed in pending:
+                    completed.pop("image", None)
+                    frames.append(completed)
+                pending.clear()
+                elapsed = elapsed_before + time.perf_counter() - started
+                peak = {"allocated": int(torch.cuda.max_memory_allocated()), "reserved": int(torch.cuda.max_memory_reserved())}
+                if len(frames) % CHECKPOINT_INTERVAL == 0:
+                    atomic_json(args.output, build_output(args, observations, exemplar, frames, elapsed, peak))
+                    rate = len(frames) / max(elapsed, 1e-9)
+                    print(json.dumps({"frames": len(frames), "expected": expected,
+                                      "inference_frames_this_process": inference_frames,
+                                      "elapsed_seconds": elapsed,
+                                      "eta_seconds": (expected - len(frames)) / rate}), flush=True)
+                if stop_requested:
+                    break
     finally:
         capture.release()
 
