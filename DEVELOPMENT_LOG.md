@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。在 teacher outcome 前冻结终止性
+  `ADT1_SMALL_TARGET_VISUAL_UPPER_BOUND_R5`。Teacher A 固定为 SAM 3 / Ultralytics 8.4.52 / FP16 /
+  imgsz 1008 / conf 0.05；ModelScope `facebook/sam3` commit 与 3.45GB LFS object SHA 已绑定。合法 visual
+  exemplar 仅按 RGB-only R1 首个 acquired segment 的 detector-confidence 最大值选择，固定为 frame 208，
+  不读取 GT；GT 仍只进隔离 evaluator。R4 的 3-window/97-frame denominator、IoU 0.10 与六项 primary
+  metrics 不变，预声明 `0/3` 关闭 appearance-only tiny-target priority、`1/3` 最多一个机制不同 Teacher B、
+  `>=2/3` 才允许另立 teacher-to-edge protocol；无论结果均禁止 R6/R7 同窗 rescue。14 项 BA-ADT 测试与
+  Python compile PASS；当前 teacher outcome 仍 `NOT_RUN`，唯一下一动作是冻结 SAM 3 formal replay。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。完成
   `ADT1_SMALL_TARGET_SEARCH_SCALE_R4`。保持正常 640 detector、TargetMemory/verifier、弱先验、2-of-3、
   quarantine、flow 与 evaluator 不变，只比较 S0 full-frame 640、S1 full-frame 1280、S2 2x2/20%

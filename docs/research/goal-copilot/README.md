@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / SMALL_TARGET_SEARCH_SCALE_R4_FIXED_WINDOW_NOT_SUPPORTED / GLOBAL_GAIN_WITH_IDENTITY_REGRESSION / ADT_2_PRERECORDED_DEVELOPMENT_DEMO_RENDERED / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / NO_DINOV2_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / R5_VISUAL_UPPER_BOUND_PROTOCOL_FROZEN / TEACHER_OUTCOME_NOT_RUN / TERMINAL_REDETECTION_GATE / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / NO_DINOV2_SKY / DEFAULT_APP_UNCHANGED`
 
 ## 当前主线：BA-ADT-REAL-EVIDENCE
 
@@ -126,10 +126,9 @@ claim ceiling 与 evidence role 均保持原样。
 
 ## 唯一 successor
 
-`ADT1_SMALL_TARGET_VISUAL_UPPER_BOUND_R5`：只在已消费的固定 Development 窗口，以 materially stronger
-visual-query/proposal teacher 检验 RGB 中是否仍有可恢复 proposal information；现有 TargetMemory、
-2-of-3 与 evaluator 保持不变。它是 capability upper bound，不做效率、端侧或产品主张；禁止继续
-post-hoc 扫 R4 scale/tiling、接 DINOv2 verifier、启动 Sky、GC2-C、held-out 或 default-App。
+[`ADT1_SMALL_TARGET_VISUAL_UPPER_BOUND_R5`](BA_ADT_SMALL_TARGET_VISUAL_UPPER_BOUND_R5_PROTOCOL_2026-08-21.md)：
+固定 SAM 3 Teacher A、consumed 3-window/97-frame denominator 与 `0/3, 1/3, >=2/3` 终止门。下一动作只
+运行冻结 teacher/evaluator；禁止扫 R4、接 DINOv2/Sky、启动 held-out 或 default-App。
 
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim

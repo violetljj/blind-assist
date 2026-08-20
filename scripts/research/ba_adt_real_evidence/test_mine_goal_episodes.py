@@ -13,6 +13,7 @@ from run_rgb_observer import TargetMemory, appearance_embedding, candidate_confi
 from evaluate_rgb_observations import metrics
 from build_offline_demo import copilot_state
 from account_redetection_failures import account_opportunities
+from run_visual_upper_bound_r5 import select_trusted_exemplar
 from audit_reappearance_windows import diagnostic_class, oracle_status
 
 
@@ -152,6 +153,25 @@ class EpisodeMinerTest(unittest.TestCase):
             {"bbox_xyxy": [80, 80, 90, 90], "confidence": 0.7},
         ]
         self.assertEqual(len(deduplicate_candidates(candidates)), 2)
+
+    def test_r5_exemplar_is_rgb_only_first_segment_maximum(self):
+        frames = [
+            {"frame_index": index, "observation_source": "none", "bbox_xyxy": None, "target_confidence": 0.0}
+            for index in range(8)
+        ]
+        frames[2].update(observation_source="detector", bbox_xyxy=[1, 2, 3, 4], target_confidence=0.71)
+        frames[3].update(observation_source="detector", bbox_xyxy=[2, 3, 4, 5], target_confidence=0.85)
+        frames[6].update(observation_source="detector", bbox_xyxy=[3, 4, 5, 6], target_confidence=0.99)
+        result = select_trusted_exemplar({
+            "frames": frames,
+            "events": [
+                {"frame_index": 2, "event": "ACQUIRED"},
+                {"frame_index": 5, "event": "LOST"},
+                {"frame_index": 6, "event": "REACQUIRED"},
+            ],
+        })
+        self.assertEqual(result["frame_index"], 3)
+        self.assertEqual(result["bbox_xyxy"], [2.0, 3.0, 4.0, 5.0])
 
     def test_mines_search_track_loss_reacquire_and_approach(self):
         with tempfile.TemporaryDirectory() as directory:

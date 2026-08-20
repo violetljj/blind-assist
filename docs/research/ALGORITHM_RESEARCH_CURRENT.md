@@ -1,6 +1,6 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_RESEARCH_MAINLINE=BA_ADT_REAL_EVIDENCE / SMALL_TARGET_SEARCH_SCALE_R4_FIXED_WINDOW_NOT_SUPPORTED / GLOBAL_GAIN_WITH_IDENTITY_REGRESSION / ADT_2_PRERECORDED_DEVELOPMENT_DEMO_RENDERED / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / NO_DINOV2_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_RESEARCH_MAINLINE=BA_ADT_REAL_EVIDENCE / R5_VISUAL_UPPER_BOUND_PROTOCOL_FROZEN / TEACHER_OUTCOME_NOT_RUN / TERMINAL_REDETECTION_GATE / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / NO_DINOV2_SKY / DEFAULT_APP_UNCHANGED`
 
 Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线，当前 successor 为
 `BA-ADT-REAL-EVIDENCE`：现有 perception、geometry、risk、
@@ -30,7 +30,7 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| Goal Copilot / BA-ADT | 真实第一视角 RGB 能否恢复 target temporal evidence | `PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / SMALL_TARGET_SEARCH_SCALE_R4_FIXED_WINDOW_NOT_SUPPORTED / GLOBAL_GAIN_WITH_IDENTITY_REGRESSION / ADT_2_PRERECORDED_DEVELOPMENT_DEMO_RENDERED / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / NO_DINOV2_SKY / DEFAULT_APP_UNCHANGED` | [Goal Copilot current](goal-copilot/README.md) | `ADT1_SMALL_TARGET_VISUAL_UPPER_BOUND_R5`：固定 consumed Development 窗口上的 stronger proposal teacher capability upper bound | GT 进入正式 estimator；继续扫 R4 scale/tiling；接 DINOv2 verifier/Sky；把 teacher 写成部署收益；启动 held-out/default App | 否 |
+| Goal Copilot / BA-ADT | 真实第一视角 RGB 能否恢复 target temporal evidence | `PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / R5_VISUAL_UPPER_BOUND_PROTOCOL_FROZEN / TEACHER_OUTCOME_NOT_RUN / TERMINAL_REDETECTION_GATE / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / NO_DINOV2_SKY / DEFAULT_APP_UNCHANGED` | [Goal Copilot current](goal-copilot/README.md) | 执行冻结的 `ADT1_SMALL_TARGET_VISUAL_UPPER_BOUND_R5` SAM 3 Teacher A 与三分支终止门 | GT 进入 teacher；继续扫 R4；多 teacher 动物园；接 DINOv2/Sky；启动 held-out/default App | 否 |
 | D-ORACLE-1 causal ladder | 三臂 matched oracle intervention 定位 downstream target-policy stack 与 estimated representation 的损失 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / PROTOCOL_FROZEN / NO_EXECUTION / NO_SEARCH` | [Failure diagnosis current](failure-synthesis/README.md) | 无；只有用户显式改变主线后才可重开 | 执行 source/action truth/policy lock；增加第四竞争臂；提前拆H3/H4；训练/调policy/threshold；读取outcome后换parent/gate | 否 |
 | SVRF / Scale-free Visual Risk Field | 纯 RGB 派生的相对深度动态、局部扩张和视觉通道侵入能否形成稳定相对风险排序 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / STREAM_INDEX_NOT_ACTIVE / REAL_O0_NOT_RUN / NO_TRAINING` | [SVRF current](svrf/README.md) | 无；只有用户显式改变主线并有新的 representation-headroom 前置证据后，才可另行恢复 | bus canary、member index、payload/truth materialization、O0、训练或接 Android | 否 |
 | VI-Task Geometry | 同刚体 RGB+IMU 自校准 metric pose/ground，再为未来 task geometry 分配 computation/parallax budget | `PAUSED_BY_PURE_RGB_SELECTION / G0_PROTOCOL_RETAINED / REAL_G0_NOT_RUN / NO_TOF / NO_TRAINING` | [VI-Task Geometry current](vi-task-geometry/README.md) | 无；只有用户明确恢复 RGB+IMU metric-frame 路线才可重开 preflight | 实现/采集/运行 G0；用手机 IMU配眼镜视频；重跑 ARCore D45；提前训练、主动分配或接 Android | 否 |

@@ -1,6 +1,6 @@
 # BA-ADT Real Evidence
 
-状态：`current / REVERSIBLE_EXPLORATION / SMALL-TARGET-SEARCH-SCALE-R4-FIXED-WINDOW-NOT-SUPPORTED / GLOBAL-GAIN-WITH-IDENTITY-REGRESSION / ADT-2-PRERECORDED-DEVELOPMENT-DEMO-RENDERED / NO-DINOV2-SKY / DEFAULT-APP-UNCHANGED`
+状态：`current / REVERSIBLE_EXPLORATION / R5-VISUAL-UPPER-BOUND-PROTOCOL-FROZEN / TEACHER-OUTCOME-NOT-RUN / TERMINAL-REDETECTION-GATE / NO-DINOV2-SKY / DEFAULT-APP-UNCHANGED`
 
 ## 目标与边界
 
@@ -106,6 +106,10 @@ R4 只改变 LOST search。S1 使用
 S0/S1/S2，固定读取 R1 五窗；它显式记录 `T_invisible/T_subdetectable/T_system_miss/T_confirmation`，
 proposal 未出现时将 `T_system_miss` 在窗口末尾标为右删失。
 
+R5 的 GT-blind teacher 入口是 `run_visual_upper_bound_r5.py`，隔离评价入口是
+`evaluate_visual_upper_bound_r5.py`。完整冻结参数、输入 SHA、合法 exemplar 选择和三分支终止门见
+[`R5 protocol`](../../../docs/research/goal-copilot/BA_ADT_SMALL_TARGET_VISUAL_UPPER_BOUND_R5_PROTOCOL_2026-08-21.md)。
+
 ## 输出
 
 机器输出位于 ignored `artifacts.local/`。源码只记录来源、身份、阈值、事件覆盖与 claim ceiling。
@@ -151,5 +155,5 @@ R4 的 S0/S1/S2 在 3 个 eligible 窗口、97 个 LOST-search frames 上均为 
 `0/3` confirmed reacquisition；S1/S2 全局 recall 改善却分别产生 1/4 次 wrong-instance，故不保留。
 结果见
 [`BA_ADT_SMALL_TARGET_SEARCH_SCALE_R4_RESULT_2026-08-21.md`](../../../docs/research/goal-copilot/BA_ADT_SMALL_TARGET_SEARCH_SCALE_R4_RESULT_2026-08-21.md)。
-唯一 successor 是 consumed Development 上的 `ADT1_SMALL_TARGET_VISUAL_UPPER_BOUND_R5`；只允许 stronger
-proposal teacher capability diagnostic，不继续扫 R4 scale/tiling，不接 DINOv2 verifier 或 Sky。
+R5 已在 teacher outcome 前冻结 SAM 3 Teacher A、合法 RGB exemplar、3-window/97-frame denominator 与
+`0/3, 1/3, >=2/3` 终止门。唯一下一动作是运行该固定 teacher/evaluator；不继续扫 R4，不接 DINOv2/Sky。
