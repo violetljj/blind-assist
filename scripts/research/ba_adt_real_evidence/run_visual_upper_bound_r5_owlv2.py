@@ -28,6 +28,7 @@ TILE_NMS_IOU = 0.30
 GLOBAL_NMS_IOU = 0.50
 CHECKPOINT_INTERVAL = 25
 SEARCH_FRAMES_PER_BATCH = 2
+TORCH_DTYPE = "bfloat16"
 
 
 def atomic_json(path: Path, payload: dict) -> None:
@@ -64,13 +65,15 @@ def infer_search_frames(model, processor, query, pending: list[dict], device: st
     flat_tiles = []
     ownership = []
     for entry in search:
-        tiles = two_by_two_tiles(entry.pop("image"), TILE_OVERLAP)
+        frame_image = entry.pop("image")
+        entry["_frame_height"], entry["_frame_width"] = frame_image.shape[:2]
+        tiles = two_by_two_tiles(frame_image, TILE_OVERLAP)
         for tile_index, (tile, origin_x, origin_y) in enumerate(tiles):
             flat_tiles.append(Image.fromarray(cv2.cvtColor(tile, cv2.COLOR_BGR2RGB)))
             ownership.append((entry, tile_index, origin_x, origin_y, tile.shape[0], tile.shape[1]))
     inputs = processor(images=flat_tiles, query_images=[query] * len(flat_tiles), return_tensors="pt")
     inputs = {
-        key: value.to(device, dtype=torch.float16) if value.is_floating_point() else value.to(device)
+        key: value.to(device, dtype=getattr(torch, TORCH_DTYPE)) if value.is_floating_point() else value.to(device)
         for key, value in inputs.items()
     }
     with torch.inference_mode():
@@ -89,9 +92,15 @@ def infer_search_frames(model, processor, query, pending: list[dict], device: st
         pairs = zip(result["scores"].tolist(), result["boxes"].tolist(), strict=True)
         ranked = sorted(pairs, key=lambda pair: pair[0], reverse=True)[:TILE_TOP_K]
         for confidence, box in ranked:
+            width, height = entry["_frame_width"], entry["_frame_height"]
+            clipped = [max(0.0, min(float(width), float(box[0] + origin_x))),
+                       max(0.0, min(float(height), float(box[1] + origin_y))),
+                       max(0.0, min(float(width), float(box[2] + origin_x))),
+                       max(0.0, min(float(height), float(box[3] + origin_y)))]
+            if clipped[2] <= clipped[0] or clipped[3] <= clipped[1]:
+                continue
             collected[entry["frame_index"]].append({
-                "bbox_xyxy": [float(box[0] + origin_x), float(box[1] + origin_y),
-                              float(box[2] + origin_x), float(box[3] + origin_y)],
+                "bbox_xyxy": clipped,
                 "confidence": float(confidence),
             })
     for entry in search:
@@ -99,6 +108,8 @@ def infer_search_frames(model, processor, query, pending: list[dict], device: st
             deduplicate_candidates(collected[entry["frame_index"]], overlap_threshold=GLOBAL_NMS_IOU),
             key=lambda candidate: candidate["confidence"], reverse=True,
         )[:FRAME_TOP_K]
+        entry.pop("_frame_height")
+        entry.pop("_frame_width")
 
 
 def build_output(args, observations: dict, exemplar: dict, frames: list[dict], elapsed: float, peak: dict) -> dict:
@@ -114,7 +125,7 @@ def build_output(args, observations: dict, exemplar: dict, frames: list[dict], e
             "model_revision": MODEL_REVISION,
             "model_safetensors_sha256": MODEL_SAFETENSORS_SHA256,
             "model_safetensors_bytes": MODEL_SAFETENSORS_BYTES,
-            "dtype": "float16",
+            "dtype": TORCH_DTYPE,
             "native_image_size": 1008,
             "patch_size": 14,
             "visual_exemplar": exemplar,
@@ -186,7 +197,7 @@ def main() -> int:
 
     processor = Owlv2Processor.from_pretrained(MODEL_ID, revision=MODEL_REVISION, use_fast=False)
     model = Owlv2ForObjectDetection.from_pretrained(
-        MODEL_ID, revision=MODEL_REVISION, dtype=torch.float16
+        MODEL_ID, revision=MODEL_REVISION, dtype=getattr(torch, TORCH_DTYPE)
     ).eval().to(args.device)
     query = crop_exemplar(args.video, exemplar)
     capture = cv2.VideoCapture(str(args.video))

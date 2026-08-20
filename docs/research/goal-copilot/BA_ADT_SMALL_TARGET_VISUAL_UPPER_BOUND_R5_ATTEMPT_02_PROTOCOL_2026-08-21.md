@@ -13,7 +13,7 @@ R5 outcome。Attempt 02 不是观察结果后的换模型；它是首个正式 t
 Teacher A 为 `google/owlv2-large-patch14-ensemble`，Hugging Face revision
 `95e26936e865f87db1742128404b3c035d47d89d`。`model.safetensors` 长度 1,750,520,144 bytes，
 SHA-256 为 `D1C2261503C55AAF400667A843A54A5167E3C696334674C4093D6D10F7F40075`。模型为
-437,610,760 parameters、native 1008、patch 14，以 FP16 运行。正式 compute 可在用户提供的
+437,610,760 parameters、native 1008、patch 14，以 BF16 运行。正式 compute 可在用户提供的
 RTX 4090D remote worker 上执行；协议、输入哈希、GT evaluator 和结果验收保持本地权威。
 
 Visual prompt 继续使用 Attempt 01 已在结果前冻结的单一 trusted exemplar：RGB-only R1 首个
@@ -30,6 +30,8 @@ sweep。
 Outcome-blind remote benchmark 在同一 4090D 上得到 batch 4 为 1.39 s / 11.54 GB reserved、batch 8 为
 2.26 s / 22.18 GB reserved，batch 12 OOM。正式执行因此冻结每 GPU batch 两个 search frames、共 8 tiles，
 并保留约 2 GB device 余量；这只合并独立 forward，不改变每帧 tiles、prompt、postprocess 或候选排序。
+非审计 frame 224/225 mechanics smoke 同时验证 BF16 batch 8 成功、峰值 reserved 22.16 GB；所有输出框
+在映射回 source frame 后裁剪到 `[0, 1408]` 合法边界，退化空框丢弃。该合法化不读取 GT 或目标命中。
 
 Teacher 输入只有完整 RGB、R1 RGB-only search schedule 与历史 trusted exemplar。禁止 GT target
 location/bbox/visibility、未来位置、固定窗口 timing 或 scenario answer。远端不接收 GT。GT 仅由完整
