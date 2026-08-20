@@ -172,6 +172,24 @@ def initial_anchor_candidate(candidates: list[dict[str, Any]], memory: TargetMem
     return max(candidates, key=lambda row: row["confidence"], default=None)
 
 
+def deduplicate_candidates(candidates: list[dict[str, Any]], overlap_threshold: float = 0.50) -> list[dict[str, Any]]:
+    kept = []
+    for candidate in sorted(candidates, key=lambda row: row["confidence"], reverse=True):
+        if all(iou(candidate["bbox_xyxy"], earlier["bbox_xyxy"]) < overlap_threshold for earlier in kept):
+            kept.append(candidate)
+    return kept
+
+
+def two_by_two_tiles(image, overlap_fraction: float):
+    import math
+
+    height, width = image.shape[:2]
+    tile_width = min(width, math.ceil(width / (2.0 - overlap_fraction)))
+    tile_height = min(height, math.ceil(height / (2.0 - overlap_fraction)))
+    origins = [(0, 0), (width - tile_width, 0), (0, height - tile_height), (width - tile_width, height - tile_height)]
+    return [(image[y:y + tile_height, x:x + tile_width], x, y) for x, y in origins]
+
+
 def flow_bbox(previous_gray, current_gray, points, bbox, width: int, height: int):
     """Propagate one bbox by robust sparse optical flow; fail closed on weak flow."""
     import cv2
@@ -224,8 +242,10 @@ def main() -> int:
     parser.add_argument("--confidence", type=float, default=0.10)
     parser.add_argument("--flow-max-gap", type=int, default=0, help="Maximum detector-missing frames filled by RGB optical flow")
     parser.add_argument("--instance-redetection", action="store_true")
-    parser.add_argument("--redetection-generator", choices=("class-yolo", "yoloe-visual-prompt", "diagnostic-oracle"), default="class-yolo")
+    parser.add_argument("--redetection-generator", choices=("class-yolo", "yoloe-visual-prompt", "highres-full-frame", "tiled-full-frame", "diagnostic-oracle"), default="class-yolo")
     parser.add_argument("--redetection-model", type=Path, help="YOLOE checkpoint used only for LOST-frame proposal generation")
+    parser.add_argument("--redetect-imgsz", type=int, help="LOST proposal input size; defaults to 1280 for highres and 640 for tiled search")
+    parser.add_argument("--redetect-tile-overlap", type=float, default=0.20)
     parser.add_argument("--diagnostic-oracle-proposals", type=Path, help="GT-derived proposal map for diagnostic use only; output is not RGB-only evidence")
     parser.add_argument("--diagnostic-stop-after-frame", type=int, help="Stop an oracle diagnostic after this preview frame")
     parser.add_argument("--redetect-confidence", type=float, default=0.02)
@@ -255,13 +275,17 @@ def main() -> int:
         raise ValueError("--diagnostic-oracle-proposals requires --redetection-generator diagnostic-oracle")
     if args.diagnostic_stop_after_frame is not None and args.redetection_generator != "diagnostic-oracle":
         raise ValueError("--diagnostic-stop-after-frame is restricted to diagnostic oracle runs")
+    if not 0.0 <= args.redetect_tile_overlap < 0.50:
+        raise ValueError("--redetect-tile-overlap must be in [0, 0.5)")
     oracle_payload = json.loads(args.diagnostic_oracle_proposals.read_text(encoding="utf-8")) if args.diagnostic_oracle_proposals else None
     if oracle_payload is not None and oracle_payload.get("source_role") != "GT_DERIVED_DIAGNOSTIC_ORACLE_PROPOSALS":
         raise ValueError("diagnostic oracle proposal role is missing")
     oracle_proposals = {int(key): value for key, value in (oracle_payload or {}).get("proposals_by_preview_frame", {}).items()}
-    redetection_model = YOLOE(str(args.redetection_model)) if args.redetection_generator == "yoloe-visual-prompt" else None
+    yoloe_model = YOLOE(str(args.redetection_model)) if args.redetection_generator == "yoloe-visual-prompt" else None
+    scale_search_model = YOLO(str(args.model)) if args.redetection_generator in {"highres-full-frame", "tiled-full-frame"} else None
+    redetect_imgsz = args.redetect_imgsz or (1280 if args.redetection_generator == "highres-full-frame" else 640)
     redetection_prompt_ready = False
-    inference_confidence = min(args.confidence, args.redetect_confidence) if args.instance_redetection and redetection_model is None else args.confidence
+    inference_confidence = min(args.confidence, args.redetect_confidence) if args.instance_redetection and yoloe_model is None else args.confidence
     results = model.predict(source=str(args.video), stream=True, verbose=False, device=args.device, imgsz=args.imgsz, conf=inference_confidence)
     frames = []
     events = []
@@ -279,6 +303,8 @@ def main() -> int:
     lost_frames = 0
     stable_tracked_frames = 0
     memory_quarantine = 0
+    redetection_search_frames = 0
+    redetection_inference_images = 0
     fps = None
     frame_size = None
     for frame_index, result in enumerate(results):
@@ -305,12 +331,33 @@ def main() -> int:
                 observation_source = "detector"
             elif target_memory.templates:
                 redetection_candidates = candidates
-                if redetection_model is not None:
-                    prompted = redetection_model.predict(source=result.orig_img, verbose=False, device=args.device, imgsz=args.imgsz, conf=args.redetect_confidence)[0]
+                redetection_search_frames += 1
+                if yoloe_model is not None:
+                    redetection_inference_images += 1
+                    prompted = yoloe_model.predict(source=result.orig_img, verbose=False, device=args.device, imgsz=args.imgsz, conf=args.redetect_confidence)[0]
                     redetection_candidates = [
-                        {"bbox_xyxy": [float(value) for value in box], "confidence": float(confidence)}
+                        {"bbox_xyxy": [float(value) for value in box], "confidence": float(confidence), "candidate_source": "yoloe-visual-prompt"}
                         for box, confidence in zip(prompted.boxes.xyxy.tolist(), prompted.boxes.conf.tolist(), strict=True)
                     ]
+                elif scale_search_model is not None and args.redetection_generator == "highres-full-frame":
+                    redetection_inference_images += 1
+                    prompted = scale_search_model.predict(source=result.orig_img, verbose=False, device=args.device, imgsz=redetect_imgsz, conf=args.redetect_confidence)[0]
+                    redetection_candidates = [
+                        {"bbox_xyxy": [float(value) for value in box], "confidence": float(confidence), "candidate_source": "highres-full-frame"}
+                        for box, confidence, class_id in zip(prompted.boxes.xyxy.tolist(), prompted.boxes.conf.tolist(), prompted.boxes.cls.tolist(), strict=True)
+                        if str(prompted.names[int(class_id)]).casefold() == args.target_class.casefold()
+                    ]
+                elif scale_search_model is not None and args.redetection_generator == "tiled-full-frame":
+                    tiles = two_by_two_tiles(result.orig_img, args.redetect_tile_overlap)
+                    redetection_inference_images += len(tiles)
+                    tile_results = scale_search_model.predict(source=[tile for tile, _, _ in tiles], verbose=False, device=args.device, imgsz=redetect_imgsz, conf=args.redetect_confidence)
+                    tiled_candidates = []
+                    for tile_result, (_, origin_x, origin_y) in zip(tile_results, tiles, strict=True):
+                        for box, confidence, class_id in zip(tile_result.boxes.xyxy.tolist(), tile_result.boxes.conf.tolist(), tile_result.boxes.cls.tolist(), strict=True):
+                            if str(tile_result.names[int(class_id)]).casefold() != args.target_class.casefold():
+                                continue
+                            tiled_candidates.append({"bbox_xyxy": [float(box[0] + origin_x), float(box[1] + origin_y), float(box[2] + origin_x), float(box[3] + origin_y)], "confidence": float(confidence), "candidate_source": "tiled-full-frame"})
+                    redetection_candidates = deduplicate_candidates(tiled_candidates)
                 elif oracle_payload is not None:
                     injected = oracle_proposals.get(frame_index)
                     redetection_candidates = [*candidates]
@@ -421,8 +468,8 @@ def main() -> int:
             if args.instance_redetection:
                 if not target_memory.templates and observation_source == "detector" and confidence >= args.confidence:
                     anchored = target_memory.remember(result.orig_img, bbox, frame_index, force=True)
-                    if anchored and redetection_model is not None and not redetection_prompt_ready:
-                        redetection_model.predict(
+                    if anchored and yoloe_model is not None and not redetection_prompt_ready:
+                        yoloe_model.predict(
                             source=result.orig_img,
                             refer_image=result.orig_img,
                             visual_prompts={"bboxes": [bbox], "cls": [0]},
@@ -478,7 +525,7 @@ def main() -> int:
         "groundtruth_argument_supported": oracle_payload is not None,
         "gt_derived_diagnostic_input": None if oracle_payload is None else {"proposal_map_name": args.diagnostic_oracle_proposals.name, "sha256": sha256(args.diagnostic_oracle_proposals), "source_role": oracle_payload["source_role"], "fixed_failure_window_indices": oracle_payload["fixed_failure_window_indices"], "formal_evaluator_must_reject": True},
         "model": {"path_name": args.model.name, "sha256": sha256(args.model), "runtime": f"ultralytics-{ultralytics.__version__}", "device": str(args.device), "target_class": args.target_class, "imgsz": args.imgsz, "confidence_floor": args.confidence, "flow_max_gap": args.flow_max_gap},
-        "instance_redetection": {"enabled": args.instance_redetection, "candidate_generator": args.redetection_generator, "candidate_model": None if args.redetection_model is None else {"path_name": args.redetection_model.name, "sha256": sha256(args.redetection_model), "visual_prompt_source": "first_confirmed_rgb_anchor_bbox"}, "candidate_confidence_floor": args.redetect_confidence if redetection_model is not None else inference_confidence, "appearance_threshold": args.redetect_appearance_threshold, "score_threshold": args.redetect_score_threshold, "top1_top2_margin": args.redetect_margin, "confirmation": f"{args.redetect_confirm_hits}-of-{args.redetect_confirm_window}", "short_reconnect_max_gap": args.short_reconnect_max_gap, "appearance_weight": 0.80, "memory_templates": len(target_memory.templates), "memory_update_quarantine_frames": args.memory_update_quarantine, "candidate_diagnostics": args.candidate_diagnostics},
+        "instance_redetection": {"enabled": args.instance_redetection, "candidate_generator": args.redetection_generator, "candidate_model": None if args.redetection_model is None else {"path_name": args.redetection_model.name, "sha256": sha256(args.redetection_model), "visual_prompt_source": "first_confirmed_rgb_anchor_bbox"}, "candidate_confidence_floor": args.redetect_confidence if yoloe_model is not None or scale_search_model is not None else inference_confidence, "search_imgsz": redetect_imgsz if scale_search_model is not None else args.imgsz, "tile_layout": "2x2" if args.redetection_generator == "tiled-full-frame" else None, "tile_overlap_fraction": args.redetect_tile_overlap if args.redetection_generator == "tiled-full-frame" else None, "search_frames": redetection_search_frames, "inference_images": redetection_inference_images, "appearance_threshold": args.redetect_appearance_threshold, "score_threshold": args.redetect_score_threshold, "top1_top2_margin": args.redetect_margin, "confirmation": f"{args.redetect_confirm_hits}-of-{args.redetect_confirm_window}", "short_reconnect_max_gap": args.short_reconnect_max_gap, "appearance_weight": 0.80, "memory_templates": len(target_memory.templates), "memory_update_quarantine_frames": args.memory_update_quarantine, "candidate_diagnostics": args.candidate_diagnostics},
         "frame_count": len(frames),
         "frame_size": frame_size,
         "visible_frame_count": sum(row["target_visible"] for row in frames),

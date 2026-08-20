@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / FIVE_WINDOW_OBSERVABILITY_AUDIT_COMPLETE / ORACLE_4_OF_5 / TWO_UNOBSERVABLE_THREE_TOO_SMALL / NO_VISIBLE_SCALE_SUFFICIENT_MODEL_MISS / ADT_2_PRERECORDED_DEVELOPMENT_DEMO_RENDERED / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / NO_DINOV2_SAM_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / SMALL_TARGET_SEARCH_SCALE_R4_FIXED_WINDOW_NOT_SUPPORTED / GLOBAL_GAIN_WITH_IDENTITY_REGRESSION / ADT_2_PRERECORDED_DEVELOPMENT_DEMO_RENDERED / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / NO_DINOV2_SKY / DEFAULT_APP_UNCHANGED`
 
 ## 当前主线：BA-ADT-REAL-EVIDENCE
 
@@ -25,19 +25,11 @@ ADT-0 的稳定实现入口见
 当前 ADT-0、ADT-1 Development evaluation 与首个 ADT-2 prerecorded demo 已运行；Sky、GC2-C、
 held-out、Android/default-App 接线、产品和安全主张均关闭。
 
-Sample 已完成，结果见
-[`BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md`](BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md)：300 帧中
-102 个目标满足持续可见候选门，事件候选覆盖 search/acquire/track/lost/reacquire/approach，但没有单一
-目标覆盖完整六阶段。下一步保持门槛不变，先对少量完整 sequence 做 GT-only mining。
-
-完整 sequence 筛选与首个 RGB-only canary 结果见
-[`BA_ADT_REAL_EVIDENCE_ADT0_SELECTION_ADT1_CANARY_RESULT.md`](BA_ADT_REAL_EVIDENCE_ADT0_SELECTION_ADT1_CANARY_RESULT.md)。
-固定 miner 在 `clean_seq134/136` 找到 172/134 个六阶段候选，首选 `seq136 / Carrot_A`。修正 ADT →
-preview 90° clockwise 坐标变换后，sample `bowl` held-forward recall 为 0.2488，仍显示多实例 target
-identity 不足。完整 `seq136 / carrot` detector-only held-forward recall 为 0.4041。最小 5-frame sparse
-optical-flow tracker 把 recall 提升至 0.5808、mean IoU 提升至 0.4469，GT-invisible false-visible 为
-0.0073；但最长 dropout 仍为 162 帧、30 帧内重捕获成功率仍仅 0.4。ADT-2 demo 已把这一 RGB-only
-observation 接到冻结 GC1 winner，且保持 clearance/completion fail closed。
+ADT-0 sample 结果见 [`sample result`](BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md)；完整 sequence 与首个
+RGB-only canary 见 [`selection/canary result`](BA_ADT_REAL_EVIDENCE_ADT0_SELECTION_ADT1_CANARY_RESULT.md)。
+固定 miner 选择 `seq136 / Carrot_A`；修正 90° clockwise 坐标变换后，detector-only recall 为 0.4041，
+5-frame sparse flow 提至 recall/mean IoU `0.5808/0.4469`，false-visible 0.0073，但最长 dropout 仍 162、
+@30 重捕获 0.4。ADT-2 demo 已接冻结 GC1 winner，且保持 clearance/completion fail closed。
 
 实例重检测 R1 结果见
 [`BA_ADT_INSTANCE_REDETECTION_1_RESULT_2026-08-21.md`](BA_ADT_INSTANCE_REDETECTION_1_RESULT_2026-08-21.md)。
@@ -53,12 +45,12 @@ YOLOE-26n visual-prompt canary 仍是 `5/0/0` failure A/B/C，candidate recall �
 [`BA_ADT_YOLOE_VISUAL_PROMPT_CANARY_RESULT_2026-08-21.md`](BA_ADT_YOLOE_VISUAL_PROMPT_CANARY_RESULT_2026-08-21.md)。
 因此该单 visual-prompt candidate route 不获支持，DINOv2 不进入。
 
-五窗口 observability audit 见
-[`BA_ADT_REAPPEARANCE_OBSERVABILITY_R3_RESULT_2026-08-21.md`](BA_ADT_REAPPEARANCE_OBSERVABILITY_R3_RESULT_2026-08-21.md)。
-五个独立 GT-proposal oracle arm 为 `4/5`；唯一失败窗只有 1 帧、3×3 px、visibility 0.10，无法满足
-2-of-3。五窗最终分为 2 个不可见/重遮挡和 3 个太小；在 640 observer 输入上，所有窗口的 bbox 最短
-边最大值都低于 10 px。没有“可见且尺度足够但模型不会”或同 prototype identity ambiguity 证据，
-因此不启动 SAM teacher、DINOv2 或 Sky。
+[`R3 observability audit`](BA_ADT_REAPPEARANCE_OBSERVABILITY_R3_RESULT_2026-08-21.md) 的独立 GT-proposal
+oracle 为 `4/5`，五窗分为 2 个不可见/重遮挡和 3 个太小；640 输入上最短边最大值均低于 10 px。
+[`R4 search-scale result`](BA_ADT_SMALL_TARGET_SEARCH_SCALE_R4_RESULT_2026-08-21.md) 排除两个
+insufficient-evidence 窗口后，S0/S1-1280/S2-2x2 在 97 个 eligible LOST-search frames 上均为 `0/97`、
+重捕获 `0/3`。S1/S2 全局 recall 虽升至 `0.6720/0.6852`，却产生 1/4 次 wrong-instance，
+false-visible 升至 `0.0128/0.0182`；已测试 scale arms 不获支持，也不进入部署。
 
 ## 上位产品定义
 
@@ -134,10 +126,10 @@ claim ceiling 与 evidence role 均保持原样。
 
 ## 唯一 successor
 
-`ADT1_SMALL_TARGET_SEARCH_SCALE_R4`：只检验 full-preview-resolution、tiling 或有依据的 ROI search 是否
-能增加原 RGB 中仍存在的有效 proposal pixels，并新增 `GT-invisible / below-detectability-proxy /
-detectable-but-missed` 分解。它不增加 verifier、DINOv2、SAM 或 Sky，不承诺恢复实际不可观察窗口；
-GC2-C、held-out、Android/default-App 与交互式导航均不在此 successor 内。
+`ADT1_SMALL_TARGET_VISUAL_UPPER_BOUND_R5`：只在已消费的固定 Development 窗口，以 materially stronger
+visual-query/proposal teacher 检验 RGB 中是否仍有可恢复 proposal information；现有 TargetMemory、
+2-of-3 与 evaluator 保持不变。它是 capability upper bound，不做效率、端侧或产品主张；禁止继续
+post-hoc 扫 R4 scale/tiling、接 DINOv2 verifier、启动 Sky、GC2-C、held-out 或 default-App。
 
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim

@@ -1,6 +1,6 @@
 # BA-ADT Real Evidence
 
-状态：`current / REVERSIBLE_EXPLORATION / FIVE-WINDOW-OBSERVABILITY-AUDIT-COMPLETE / ORACLE-4-OF-5 / TWO-UNOBSERVABLE-THREE-TOO-SMALL / NO-VISIBLE-SCALE-SUFFICIENT-MODEL-MISS / ADT-2-PRERECORDED-DEVELOPMENT-DEMO-RENDERED / NO-DINOV2-SAM-SKY / DEFAULT-APP-UNCHANGED`
+状态：`current / REVERSIBLE_EXPLORATION / SMALL-TARGET-SEARCH-SCALE-R4-FIXED-WINDOW-NOT-SUPPORTED / GLOBAL-GAIN-WITH-IDENTITY-REGRESSION / ADT-2-PRERECORDED-DEVELOPMENT-DEMO-RENDERED / NO-DINOV2-SKY / DEFAULT-APP-UNCHANGED`
 
 ## 目标与边界
 
@@ -99,6 +99,13 @@ maps、逐窗 JSON 与 contact sheet。oracle arm 必须使用
 `--redetection-generator diagnostic-oracle --diagnostic-oracle-proposals <WINDOW_MAP>`；它会把 output 标成
 非 RGB-only，现有正式 evaluator 必须拒绝。五窗必须分别独立运行，不能让前窗注入改变后窗状态。
 
+R4 只改变 LOST search。S1 使用
+`--redetection-generator highres-full-frame --redetect-imgsz 1280`；S2 使用
+`--redetection-generator tiled-full-frame --redetect-imgsz 640 --redetect-tile-overlap 0.20`。后者固定为
+2x2 tiles 并把局部 bbox 映射回全图后去重。`evaluate_search_scale_r4.py` 用 `--arm NAME=PATH` 接收
+S0/S1/S2，固定读取 R1 五窗；它显式记录 `T_invisible/T_subdetectable/T_system_miss/T_confirmation`，
+proposal 未出现时将 `T_system_miss` 在窗口末尾标为右删失。
+
 ## 输出
 
 机器输出位于 ignored `artifacts.local/`。源码只记录来源、身份、阈值、事件覆盖与 claim ceiling。
@@ -140,5 +147,9 @@ R3 五窗口审计得到 oracle `4/5`；唯一失败只有 1 帧 3×3 px，2-of-
 不可见/重遮挡和 3 个太小；640 observer 输入上的目标最短边最大值均小于 10 px，没有建立尺度足够的
 model miss 或 identity ambiguity。结果见
 [`BA_ADT_REAPPEARANCE_OBSERVABILITY_R3_RESULT_2026-08-21.md`](../../../docs/research/goal-copilot/BA_ADT_REAPPEARANCE_OBSERVABILITY_R3_RESULT_2026-08-21.md)。
-下一步只做 `ADT1_SMALL_TARGET_SEARCH_SCALE_R4`，检验 full-resolution、tiling/ROI search 与新
-detectability duration 分解；不增加 DINOv2/SAM/Sky，不降低身份门。
+R4 的 S0/S1/S2 在 3 个 eligible 窗口、97 个 LOST-search frames 上均为 `0/97` candidate recall、
+`0/3` confirmed reacquisition；S1/S2 全局 recall 改善却分别产生 1/4 次 wrong-instance，故不保留。
+结果见
+[`BA_ADT_SMALL_TARGET_SEARCH_SCALE_R4_RESULT_2026-08-21.md`](../../../docs/research/goal-copilot/BA_ADT_SMALL_TARGET_SEARCH_SCALE_R4_RESULT_2026-08-21.md)。
+唯一 successor 是 consumed Development 上的 `ADT1_SMALL_TARGET_VISUAL_UPPER_BOUND_R5`；只允许 stronger
+proposal teacher capability diagnostic，不继续扫 R4 scale/tiling，不接 DINOv2 verifier 或 Sky。

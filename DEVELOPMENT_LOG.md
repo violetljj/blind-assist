@@ -2,6 +2,18 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。完成
+  `ADT1_SMALL_TARGET_SEARCH_SCALE_R4`。保持正常 640 detector、TargetMemory/verifier、弱先验、2-of-3、
+  quarantine、flow 与 evaluator 不变，只比较 S0 full-frame 640、S1 full-frame 1280、S2 2x2/20%
+  overlap/tile-640 LOST search。排除 W0/W1 insufficient evidence 后，W2/W3/W4 共 97 个 eligible
+  LOST-search frames 的 candidate recall 三臂均为 `0/97`，正确 proposal/confirmed reacquisition 均为
+  `0/3`；`T_system_miss` 在窗末右删失下界为 36/52/20 帧。S1/S2 全局 recall 虽升至
+  `0.6720/0.6852`、longest dropout 降至 149/148，却分别产生 1/4 次 wrong-instance，false-visible
+  升至 `0.0128/0.0182`；S2 为 2615 个 search frames 执行 10460 tile inference。终态为
+  `ADT1_SMALL_TARGET_SEARCH_SCALE_R4_NOT_SUPPORTED_ON_FIXED_WINDOWS`，不继续 post-hoc 扫尺度。唯一
+  successor 为 consumed Development 固定窗口上的 `ADT1_SMALL_TARGET_VISUAL_UPPER_BOUND_R5`；只做 stronger
+  proposal teacher capability upper bound，不接 DINOv2 verifier/Sky/default App。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。完成固定五个 `NO_CANDIDATE` 窗口的
   `ADT1_REAPPEARANCE_OBSERVABILITY_DIAGNOSTIC_R3`。五窗分别独立注入 GT-derived proposal，正式 RGB
   evaluator 对 oracle output fail closed；原 TargetMemory/verifier/2-of-3 最终重捕获 `4/5`，延迟为

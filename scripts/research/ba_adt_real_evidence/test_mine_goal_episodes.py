@@ -9,7 +9,7 @@ import zipfile
 from pathlib import Path
 
 from mine_goal_episodes import Thresholds, mine
-from run_rgb_observer import TargetMemory, appearance_embedding, candidate_confirmed, choose_target, flow_bbox, initial_anchor_candidate, iou
+from run_rgb_observer import TargetMemory, appearance_embedding, candidate_confirmed, choose_target, deduplicate_candidates, flow_bbox, initial_anchor_candidate, iou, two_by_two_tiles
 from evaluate_rgb_observations import metrics
 from build_offline_demo import copilot_state
 from account_redetection_failures import account_opportunities
@@ -137,6 +137,21 @@ class EpisodeMinerTest(unittest.TestCase):
         self.assertEqual(selected, candidates[0])
         self.assertGreater(overlap, 0.8)
         self.assertAlmostEqual(iou(previous, previous), 1.0)
+
+    def test_tiled_search_covers_frame_and_deduplicates_overlap(self):
+        import numpy as np
+
+        tiles = two_by_two_tiles(np.zeros((100, 200, 3), dtype=np.uint8), 0.20)
+        self.assertEqual(len(tiles), 4)
+        self.assertEqual(tiles[0][1:], (0, 0))
+        self.assertEqual(tiles[-1][1] + tiles[-1][0].shape[1], 200)
+        self.assertEqual(tiles[-1][2] + tiles[-1][0].shape[0], 100)
+        candidates = [
+            {"bbox_xyxy": [10, 10, 30, 30], "confidence": 0.9},
+            {"bbox_xyxy": [11, 10, 31, 30], "confidence": 0.8},
+            {"bbox_xyxy": [80, 80, 90, 90], "confidence": 0.7},
+        ]
+        self.assertEqual(len(deduplicate_candidates(candidates)), 2)
 
     def test_mines_search_track_loss_reacquire_and_approach(self):
         with tempfile.TemporaryDirectory() as directory:
