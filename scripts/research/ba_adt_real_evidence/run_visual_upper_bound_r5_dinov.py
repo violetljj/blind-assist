@@ -16,8 +16,20 @@ from run_rgb_observer import deduplicate_candidates
 
 
 DINOV_SOURCE_REVISION = "53bf20d5cfdbb86fa35141a1cff432d4923599f2"
+DETECTRON2_SOURCE_REVISION = "42121d75e10d9f858f3a91b6a39f5722c02868f0"
 CHECKPOINT_SHA256 = "167fec1f006af8d2d53c662290dd2dff8e667aa66c8c0836af1181533d334a9a"
 CHECKPOINT_BYTES = 902_781_487
+MSDA_TORCH28_PATCH_SHA256 = "8abf6e3514486544b67162a4cb4e74531a845b9cf4de20aa121a27f0ddbab282"
+MSDA_PATCHED_SOURCE_SHA256 = "0b7c38657c05ca77e335cda87a06499b62b51db40393da3b57551dc7010dfcef"
+PILLOW_ALIAS_SHIM_SHA256 = "594a51e9460f8ba78b18f9fc66d880e58be6c51b9b38e597ce6809a7f50aa625"
+EXPECTED_RUNTIME = {
+    "python": "3.12",
+    "torch": "2.8.0+cu128",
+    "torchvision": "0.23.0+cu128",
+    "torch_cuda": "12.8",
+    "detectron2": "0.6",
+    "msda": "1.0",
+}
 IMAGE_SIZE = 1408
 EXEMPLAR_CONFIDENCE_FLOOR = 0.60
 EXEMPLAR_COUNT = 5
@@ -187,7 +199,9 @@ def infer_frame(model, image, prompt, source_size: dict, torch) -> list[dict]:
     return masks_to_candidates(usable_masks, scores, source_size["width"], source_size["height"])
 
 
-def build_output(args, observations, exemplars, frames, processed, elapsed, peak, checkpoint_hash, checkpoint_bytes):
+def build_output(
+    args, observations, exemplars, frames, processed, elapsed, peak, checkpoint_hash, checkpoint_bytes, runtime
+):
     return {
         "schema_version": "ba_adt_visual_upper_bound_r5_teacher_v3",
         "route": "BA-ADT-REAL-EVIDENCE",
@@ -197,6 +211,7 @@ def build_output(args, observations, exemplars, frames, processed, elapsed, peak
             "name": "DINOv Swin-L",
             "implementation": "official-UX-Decoder-DINOv-visual-in-context-demo-path",
             "source_revision": DINOV_SOURCE_REVISION,
+            "detectron2_source_revision": DETECTRON2_SOURCE_REVISION,
             "checkpoint_path_name": args.checkpoint.name,
             "checkpoint_sha256": checkpoint_hash,
             "checkpoint_bytes": checkpoint_bytes,
@@ -206,6 +221,13 @@ def build_output(args, observations, exemplars, frames, processed, elapsed, peak
             "visual_exemplar_count": len(exemplars),
             "visual_exemplar_geometry": "full_image_binary_box_mask",
             "prompt_aggregation": "mean_of_five_content_embeddings",
+            "redundant_backbone_preload_disabled": True,
+            "compatibility": {
+                "msda_torch28_patch_sha256": MSDA_TORCH28_PATCH_SHA256,
+                "msda_patched_source_sha256": MSDA_PATCHED_SOURCE_SHA256,
+                "pillow_alias_shim_sha256": PILLOW_ALIAS_SHIM_SHA256,
+                "semantic_scope": "api_compatibility_only_no_kernel_or_interpolation_algorithm_change",
+            },
             "candidate_source": "positive_logit_predicted_masks_converted_to_boxes",
             "internal_score_filter": INTERNAL_SCORE_FILTER,
             "global_nms_iou": GLOBAL_NMS_IOU,
@@ -218,6 +240,7 @@ def build_output(args, observations, exemplars, frames, processed, elapsed, peak
             "observations_path_name": args.observations.name,
             "observations_sha256": sha256(args.observations),
         },
+        "runtime": runtime,
         "groundtruth_argument_supported": False,
         "future_location_or_visibility_input_supported": False,
         "formal_run": args.mechanics_frame is None and set(processed) == set(formal_frame_indices()),
@@ -285,9 +308,28 @@ def main() -> int:
     sys.path.insert(0, str(source))
     os.chdir(source)
     import torch
+    import torchvision
+    import importlib.metadata
+    from PIL import Image
     from dinov.BaseModel import BaseModel
     from dinov import build_model
     from utils.arguments import load_opt_from_config_file
+
+    runtime = {
+        "python": f"{sys.version_info.major}.{sys.version_info.minor}",
+        "torch": torch.__version__,
+        "torchvision": torchvision.__version__,
+        "torch_cuda": torch.version.cuda,
+        "detectron2": importlib.metadata.version("detectron2"),
+        "msda": importlib.metadata.version("MultiScaleDeformableAttention"),
+    }
+    if runtime != EXPECTED_RUNTIME:
+        raise ValueError(f"DINOv runtime drift: {runtime}")
+    if not hasattr(Image, "LINEAR") or Image.LINEAR != Image.BILINEAR:
+        raise ValueError("Pillow compatibility alias is not active")
+    msda_source = source / "dinov" / "body" / "encoder" / "ops" / "src" / "cuda" / "ms_deform_attn_cuda.cu"
+    if sha256(msda_source) != MSDA_PATCHED_SOURCE_SHA256:
+        raise ValueError("DINOv MSDA compatibility source hash mismatch")
 
     torch.set_grad_enabled(False)
     torch.backends.cuda.matmul.allow_tf32 = True
@@ -295,6 +337,7 @@ def main() -> int:
     torch.backends.cudnn.benchmark = True
     config = source / "configs" / "dinov_sam_coco_swinl_train.yaml"
     options = load_opt_from_config_file(str(config))
+    options["MODEL"]["BACKBONE"]["LOAD_PRETRAINED"] = False
     model = BaseModel(options, build_model(options)).from_pretrained(str(args.checkpoint)).eval().cuda()
     capture = cv2.VideoCapture(str(args.video))
     if not capture.isOpened():
@@ -321,7 +364,8 @@ def main() -> int:
             }
             if len(processed) % CHECKPOINT_INTERVAL == 0 or ordinal == len(requested) - 1:
                 payload = build_output(
-                    args, observations, exemplars, frames, processed, elapsed, peak, checkpoint_hash, checkpoint_bytes
+                    args, observations, exemplars, frames, processed, elapsed, peak, checkpoint_hash, checkpoint_bytes,
+                    runtime,
                 )
                 atomic_json(args.output, payload)
                 print(json.dumps({

@@ -24,6 +24,22 @@ in-context demo 路径：每个历史 exemplar 的整图 RGB 与正例 bbox bina
 无候选时每次降低 `0.04` 直至至少一项；不做阈值 sweep。输出 bbox 以 IoU 0.70 去重并保留每帧 top 100。
 不启用 text prompt、GT prompt、video propagation、memory update、后验人工修正或多尺度/tile sweep。
 
+Outcome-blind mechanics preflight 发现官方 2024 repo 的 Torch 1.13/CUDA 11.7 环境无法与远端唯一 CUDA
+12.8 compiler 混编。正式 runtime 因此在任何判定帧前冻结为 Python 3.12、Torch 2.8.0+cu128、
+torchvision 0.23.0+cu128、Detectron2 0.6（source revision
+`42121d75e10d9f858f3a91b6a39f5722c02868f0`）和 CUDA 12.8。DINOv 自有 MSDA op 只做两处
+Torch API 等价迁移：`value.type()` 改为 `value.scalar_type()`；patch SHA-256 为
+`8ABF6E3514486544B67162A4CB4E74531A845B9CF4DE20AA121A27F0DDBAB282`，patched source SHA-256
+为 `0B7C38657C05CA77E335CDA87A06499B62B51DB40393DA3B57551DC7010DFCEF`。Pillow 12 只恢复已删除的
+`Image.LINEAR = Image.BILINEAR` 别名，shim SHA-256 为
+`594A51E9460F8BA78B18F9FC66D880E58BE6C51B9B38E597CE6809A7F50AA625`。两项兼容改动都不改变
+kernel 数学或插值算法，runner 会验证 runtime 与 patched source hash 后才推理。
+
+非判定 frame 225 mechanics smoke 已验证五 exemplar + 1408 image-only inference 可完成：target forward
+阶段 3.12 s，24 个候选，峰值 CUDA reserved 15,426,650,112 bytes；该输出标记
+`formal_run=false`，不进入 evaluator。正式 runner 在加载完整 DINOv checkpoint 前关闭冗余 Swin-L
+ImageNet preload；checkpoint 已含 357 个 backbone keys，因此不额外下载/短暂加载另一份 backbone。
+
 历史 exemplar 只由 GT-blind R1 observation 决定：首个 `ACQUIRED -> LOST` segment 内，选择 detector
 confidence 不低于 0.60 的 top 5。冻结结果为 frame 208/206/198/200/203，对应 confidence
 0.761395/0.679363/0.663399/0.643646/0.615761。bbox 全部来自当时的 RGB detector/track state，
