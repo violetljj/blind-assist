@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / GOAL_COPILOT_1_SKY_SEARCH_SIGNAL_ESTABLISHED_ON_SEALED_PILOT / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / GOAL_COPILOT_1_PERMANENTLY_CLOSED / GOAL_COPILOT_2A_ZERO_MODEL_PROTOCOL_FROZEN / DEFAULT_APP_UNCHANGED`
 
 ## 上位产品定义
 
@@ -80,3 +80,8 @@ claim ceiling 与 evidence role 均保持原样。
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim
 ceiling 见 [`GOAL_COPILOT_1_SKY_PILOT_RESULT.md`](GOAL_COPILOT_1_SKY_PILOT_RESULT.md)。若继续，
 应另立 `GOAL-COPILOT-2 / NOISY-OBSERVATION ROBUSTNESS` 协议，而不是恢复本 Pilot 或复用其 fresh。
+
+GOAL-COPILOT-1 现已永久关闭，不再授权任何 GC1 模型搜索。下一条已冻结路线是
+[`GOAL_COPILOT_2A_PROTOCOL.md`](GOAL_COPILOT_2A_PROTOCOL.md)：在不调用模型、不接触 GC1
+fresh cohort 的前提下，对冻结 GC1 baseline 与 winner 做 perception-uncertainty
+characterization。GC2-A 只使用已消费 dev 场景语义，因此其结果不得称为 fresh evidence。
