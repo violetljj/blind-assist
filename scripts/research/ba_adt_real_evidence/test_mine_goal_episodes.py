@@ -9,6 +9,7 @@ import zipfile
 from pathlib import Path
 
 from mine_goal_episodes import Thresholds, mine
+from run_rgb_observer import choose_target, iou
 
 
 def csv_bytes(fieldnames, rows):
@@ -20,6 +21,17 @@ def csv_bytes(fieldnames, rows):
 
 
 class EpisodeMinerTest(unittest.TestCase):
+    def test_iou_association_prefers_temporal_match(self):
+        previous = [0.0, 0.0, 10.0, 10.0]
+        candidates = [
+            {"bbox_xyxy": [0.0, 0.0, 9.0, 9.0], "confidence": 0.6},
+            {"bbox_xyxy": [50.0, 50.0, 60.0, 60.0], "confidence": 0.95},
+        ]
+        selected, overlap = choose_target(candidates, previous)
+        self.assertEqual(selected, candidates[0])
+        self.assertGreater(overlap, 0.8)
+        self.assertAlmostEqual(iou(previous, previous), 1.0)
+
     def test_mines_search_track_loss_reacquire_and_approach(self):
         with tempfile.TemporaryDirectory() as directory:
             archive = Path(directory) / "fixture.zip"

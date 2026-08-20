@@ -12,6 +12,12 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   search/acquire/track/lost/reacquire/approach 候选数分别为 18/102/102/35/35/2，但没有单一目标覆盖
   完整六阶段。结果因此为 `ADT0_SAMPLE_EPISODES_MINED / PARTIAL_EVENT_COVERAGE`，下一步固定门槛
   选择少量完整 sequence；不把 visibility gap 冒充已确认 tracker failure，也不为凑结果调门。
+  随后复用已披露 consumed GT geometry prescreen 仅作 Development 优先级，固定门槛挖掘
+  `clean_seq134/136`，分别得到 172/134 个六阶段候选；选中 `seq136 / Carrot_A`（1,502 visible
+  frames，GT center-range proxy 约 4.59→1.77 m）作为 ADT-1 demo 目标。Sample RGB-only YOLO11n
+  `bowl` canary 的 `WoodenBowl` localization recall 仅 0.1393、最长漏定位 86 帧，暴露多实例 target
+  grounding/association failure；不归因 policy、不授权 Sky。`seq136` RGB 下载当前因官方 manifest TLS
+  EOF 暂停，唯一下一步为 hash-verified `ADT1_SEQ136_CARROT_RGB_CANARY`。
 
 - 时间：2026-08-20（Asia/Hong_Kong）；执行者：Codex。完成 Goal Copilot 2 的零模型 observability、
   failure-autopsy、counterfactual 与 reality audit；只使用 consumed GC2 dev scenarios、冻结 simulator、

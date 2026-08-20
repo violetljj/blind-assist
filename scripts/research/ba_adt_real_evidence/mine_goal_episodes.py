@@ -198,6 +198,7 @@ def mine(path: Path, thresholds: Thresholds) -> dict[str, Any]:
     candidates = [candidate for uid in sorted(source["boxes"]) if (candidate := build_candidate(source, uid, thresholds)) is not None]
     candidates.sort(key=lambda row: (-row["phase_count"], -row["visible_frame_count"], row["target_uid"]))
     coverage = {phase: sum(phase in row["phases"] for row in candidates) for phase in ("SEARCH", "ACQUIRE", "TRACK", "LOST", "REACQUIRE", "APPROACH")}
+    scope = "SAMPLE" if "10s_sample" in path.name else "SELECTED_SEQUENCE"
     return {
         "schema_version": "ba_adt_goal_episode_mining_v1", "route": "BA-ADT-REAL-EVIDENCE", "stage": "ADT-0",
         "input": {"groundtruth_archive": path.name, "sha256": sha256(path), "role": "GT_MINING_AND_EVALUATION_ONLY"},
@@ -205,7 +206,7 @@ def mine(path: Path, thresholds: Thresholds) -> dict[str, Any]:
         "target_count_with_bbox": len(source["boxes"]), "candidate_count": len(candidates), "event_coverage": coverage,
         "thresholds": asdict(thresholds), "candidates": candidates,
         "claim_ceiling": "adt_sample_gt_only_episode_suitability_no_rgb_perception_or_navigation_claim",
-        "terminal": "ADT0_SAMPLE_EPISODES_MINED" if candidates else "ADT0_SAMPLE_NO_ELIGIBLE_TARGET_EPISODE",
+        "terminal": f"ADT0_{scope}_EPISODES_MINED" if candidates else f"ADT0_{scope}_NO_ELIGIBLE_TARGET_EPISODE",
     }
 
 

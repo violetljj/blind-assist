@@ -30,7 +30,9 @@ def digest(path: Path, algorithm: str) -> str:
     return value.hexdigest()
 
 
-def fetch_manifest() -> dict[str, Any]:
+def fetch_manifest(path: Path | None = None) -> dict[str, Any]:
+    if path is not None:
+        return json.loads(path.read_text(encoding="utf-8"))
     request = urllib.request.Request(MANIFEST_URL, headers={"User-Agent": "BlindAssist-ADT0/1.0"})
     with urllib.request.urlopen(request, timeout=30) as response:
         if response.status != 200:

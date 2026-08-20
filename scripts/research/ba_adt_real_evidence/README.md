@@ -1,6 +1,6 @@
 # BA-ADT Real Evidence
 
-状态：`current / REVERSIBLE_EXPLORATION / ADT-0-SAMPLE-MINED-PARTIAL-EVENT-COVERAGE / FULL-SEQUENCE-SELECTION-NEXT / SKY-DISABLED / DEFAULT-APP-UNCHANGED`
+状态：`current / REVERSIBLE_EXPLORATION / ADT-0-FULL-SEQUENCE-TARGET-SELECTED / ADT-1-SAMPLE-CANARY-TARGET-IDENTITY-FAILURE / SEQ136-CARROT-RGB-NEXT / SKY-DISABLED / DEFAULT-APP-UNCHANGED`
 
 ## 目标与边界
 
@@ -25,6 +25,10 @@ tracking、reacquisition、relative nearness 和 approach evidence；不能证�
 
 当前只激活 `ADT-0`。不得启动 Sky、GC2-C、held-out、Android/default-App 接线或导航结论。
 
+ADT-1 的 RGB-only mechanical canary 可使用 `run_rgb_observer.py`，再由独立
+`evaluate_rgb_observations.py` 读取 prediction + GT。Observer CLI 没有 GT 参数；bearing 明确是
+normalized image-x，nearness 是 bbox-scale proxy，二者都不能冒充标定角度或 metric range。
+
 ## 稳定 Interface
 
 下载官方 sample 的 RGB preview 与 main ground truth（当前 manifest 合计必须小于 32 MiB）：
@@ -43,6 +47,24 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-re
   --output artifacts.local/evidence/ba_adt_real_evidence/sample/episodes.json
 ```
 
+Sample 之后，对显式选择且总量有界的完整 sequence 只下载 main GT：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-real-evidence acquire_sequence_groundtruth.py `
+  --sequence-id <ADT_SEQUENCE_ID> `
+  --output-dir artifacts.local/datasets/ba_adt_real_evidence/selected_gt `
+  --receipt artifacts.local/evidence/ba_adt_real_evidence/selected_gt/acquisition.json
+```
+
+只有 GT mining 选中 episode 后，才单独下载对应 preview RGB：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-real-evidence acquire_sequence_rgb.py `
+  --sequence-id <ADT_SEQUENCE_ID> `
+  --output-dir artifacts.local/datasets/ba_adt_real_evidence/selected_rgb `
+  --receipt artifacts.local/evidence/ba_adt_real_evidence/selected_rgb/acquisition.json
+```
+
 ## 输出
 
 机器输出位于 ignored `artifacts.local/`。源码只记录来源、身份、阈值、事件覆盖与 claim ceiling。
@@ -57,6 +79,8 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-re
 ## 停止条件
 
 若官方 manifest 身份漂移、sample 超过 32 MiB、下载 hash 不符、GT schema 缺失，立即 fail closed。
+当 manifest transport 不稳定时，可先把同一官方 JSON 缓存到 `artifacts.local/`，再用
+`--manifest-file` 读取；receipt 会绑定缓存 SHA-256，不能手工改写 URL 或成员身份。
 若少量完整 sequence 仍不能产生适合的自然多阶段 episode，记录 ADT 数据适配性边界并评估其他真实
 第一视角来源；不得降低门槛或把多个无关目标拼成一个完整 episode。
 
@@ -64,5 +88,7 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-re
 
 Sample 已得到 102 个持续跟踪候选，覆盖全部六类事件，但没有单一目标覆盖完整六阶段；详见
 [`BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md`](../../../docs/research/goal-copilot/BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md)。
-下一步通过 Dataset Explorer 选择少量完整 sequence；不能为了凑齐六阶段而事后改写事件定义。只有
-ADT-0 找到合适的自然 target episode 后才实现 ADT-1 RGB adapter。
+固定门槛已在 `clean_seq134/136` 找到 172/134 个六阶段候选，首选 `seq136 / Carrot_A`；详见
+[`BA_ADT_REAL_EVIDENCE_ADT0_SELECTION_ADT1_CANARY_RESULT.md`](../../../docs/research/goal-copilot/BA_ADT_REAL_EVIDENCE_ADT0_SELECTION_ADT1_CANARY_RESULT.md)。
+Sample `bowl` RGB canary 已定位多实例 grounding failure。下一步只运行 `seq136 / carrot` RGB canary；
+不能为了凑齐结果而事后改写事件或阈值。

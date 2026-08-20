@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / ADT_0_SAMPLE_MINED_PARTIAL_EVENT_COVERAGE / FULL_SEQUENCE_SELECTION_NEXT / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / SKY_DISABLED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / ADT_0_FULL_SEQUENCE_TARGET_SELECTED / ADT_1_SAMPLE_RGB_CANARY_TARGET_IDENTITY_FAILURE / SEQ136_CARROT_RGB_NEXT / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / SKY_DISABLED / DEFAULT_APP_UNCHANGED`
 
 ## 当前主线：BA-ADT-REAL-EVIDENCE
 
@@ -24,6 +24,12 @@ Sample 已完成，结果见
 [`BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md`](BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md)：300 帧中
 102 个目标满足持续可见候选门，事件候选覆盖 search/acquire/track/lost/reacquire/approach，但没有单一
 目标覆盖完整六阶段。下一步保持门槛不变，先对少量完整 sequence 做 GT-only mining。
+
+完整 sequence 筛选与首个 RGB-only canary 结果见
+[`BA_ADT_REAL_EVIDENCE_ADT0_SELECTION_ADT1_CANARY_RESULT.md`](BA_ADT_REAL_EVIDENCE_ADT0_SELECTION_ADT1_CANARY_RESULT.md)。
+固定 miner 在 `clean_seq134/136` 找到 172/134 个六阶段候选，首选 `seq136 / Carrot_A`。Sample
+closed-vocabulary `bowl` canary 因多实例身份混淆只有 0.1393 localization recall；这是 perception
+grounding failure，不授权 Sky。
 
 ## 上位产品定义
 
@@ -99,9 +105,10 @@ claim ceiling 与 evidence role 均保持原样。
 
 ## 唯一 successor
 
-`ADT0_FULL_SEQUENCE_SELECTION`：保持 sample miner、事件定义和阈值不变，对少量完整 ADT sequence
-先做 GT-only mining；只为自然多阶段目标下载对应真实 RGB，随后才能另立 ADT-1 RGB adapter。
-Sky、GC2-C、held-out、Android/default-App 与交互式导航均不在此 successor 内。
+`ADT1_SEQ136_CARROT_RGB_CANARY`：官方 manifest transport 恢复后，hash-verified 下载
+`Apartment_release_clean_seq136_M1292` preview RGB，以唯一 COCO `carrot` class 运行 RGB-only adapter，
+再由隔离 GT evaluator 计分。Sky、GC2-C、held-out、Android/default-App 与交互式导航均不在此
+successor 内。
 
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim
