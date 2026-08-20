@@ -157,6 +157,10 @@ receipts, or coordination require a named material risk; concentrate expensive
 validation at milestones. Research evidence rules constrain claims, not GitHub
 merge waiting.
 
+在结果语义、正确性和证据边界不变的前提下，优先选择经短基准确认端到端更快的执行后端；
+GPU 可用且更快时优先 GPU，并合理提高 batch、并发和流水线利用率，但不得干扰其他任务、
+触发显存/稳定性风险或把后端性能当成算法有效性证据。
+
 These boundaries always apply:
 
 - Thesis, graduation-project, demo, and competition research defaults to
