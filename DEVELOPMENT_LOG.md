@@ -4471,3 +4471,17 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   search value 不被改写，但跨 cohort 泛化未建立，不授予
   `ADMITTED_L10M_SEARCH_OPERATOR`；以 B5-A pass 为前提的 B5-B 保持未授权，不重跑或
   事后修改 Balanced。
+- 同日完成零模型调用、只读 consumed-evidence 的 B5-C Balanced effect heterogeneity
+  autopsy。分析实现先以提交 `91a97137` 冻结，再验证 B4-A/B5-A exact result、manifest、
+  event ledger 与 landscape certificate hashes 后运行。13 个 outcome-blind landscape
+  特征没有产生跨 B4/B5 的 conditional-domain hypothesis；预声明的 finite-horizon
+  exploration waste 与 nonproductive coverage projection 在 4 个 loss 中均为 `0/4`，终态
+  为 `NO_REPRODUCIBLE_HETEROGENEITY_EXPLANATION_CLOSE_OPERATOR_ADMISSION_ROUTE`。
+  描述性分解显示 B4→B5 的 Balanced mean progress 变化 `-0.071022`、Control 变化
+  `+0.155637`、相对优势变化 `-0.226659`；18/18 首次分叉均是
+  `MODEL_UNTRIED_DIRECTION`，无 `COVERAGE_PROJECTION`。结果后汇总观察到 Balanced
+  terminal strict-path reachability 在 `3/4` losses、`0/14` non-losses 中更差，且 4/4
+  losses 的首次分叉即时分数不低；该线索与长期 basin 可达性问题一致，但不在冻结终态
+  签名内，只能保留为未准入 retrospective clue，不能授权 V2、conditional domain 或新
+  fresh budget。Balanced operator-admission route 正式关闭，B4 局部结果与 B5 泛化负终态
+  均保持不变，B5-B 继续未授权。

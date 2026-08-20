@@ -297,3 +297,41 @@ Exactly one terminal is allowed:
 The first two authorize only a future versioned design or separately frozen
 fresh validation. The third closes operator admission without claiming that
 uncontrolled provider identities prove seed-level stochasticity.
+
+### B5-C terminal
+
+`NO_REPRODUCIBLE_HETEROGENEITY_EXPLANATION_CLOSE_OPERATOR_ADMISSION_ROUTE`
+
+The create-once autopsy validated the exact sealed B4-A and B5-A result,
+manifest, event-ledger, and landscape-certificate hashes and made zero model
+calls. None of the 13 allowlisted outcome-blind landscape features produced a
+qualified cross-cohort conditional-domain hypothesis. Neither predeclared
+trajectory signature qualified: finite-horizon exploration waste and
+nonproductive coverage projection each occurred in `0/4` Balanced loss pairs.
+
+The B4-to-B5 mean normalized-progress decomposition was descriptive rather than
+causal: Balanced changed by `-0.0710215710215713`, Control changed by
+`+0.155636955636955`, and the arm advantage changed by
+`-0.226658526658527`. All 18 first divergences were admitted
+`MODEL_UNTRIED_DIRECTION` moves, and no trajectory used a
+`COVERAGE_PROJECTION`, so a forced-projection cost does not explain the losses.
+
+One outcome-inspected association is retained only as an unadmitted clue.
+Balanced ended with worse strict-path reachability to the global optimum in
+`3/4` loss pairs across three instances and `0/14` non-loss pairs, while its
+first-divergence candidate had a non-lower immediate score in all four losses.
+This is consistent with locally acceptable moves entering worse long-horizon
+basins, but the association was not one of the frozen terminal signatures. It
+therefore cannot reclassify B5-C, authorize Balanced V2, define a conditional
+domain, or justify new fresh budget.
+
+The Balanced operator-admission route is closed. B4-A remains a real local
+cohort result; B5-A remains the failed generalization replication; B5-B remains
+unauthorized.
+
+Bound evidence:
+
+- frozen analysis commit: `91a971373a3aae8a0db9f1dceb7a04ecd6846a47`
+- analysis implementation SHA-256: `64b959cd6897631821e4a10d8ce29776ae89dcfa38b7f7e72f78d71fe54a55cc`
+- result: `artifacts.local/evidence/l10m_b5/b5c/result.json`
+- result SHA-256: `8b87a6882ab35ed323c2ee19f16b030f951d2a6abbf6544e30203033a5ccc7cf`
