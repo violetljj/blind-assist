@@ -23,15 +23,18 @@ Freeze and inspect the preregistration with:
 python -m scripts.research.l10m_b1.protocol --output artifacts.local/evidence/l10m_b1/protocol.json
 ```
 
-The current status is `B1_PROTOCOL_FROZEN_EXECUTION_NOT_STARTED`: this command
-does not call a model or expose hidden outcomes. It authorizes neither B0-E nor
-large-scale Structured Search. A later execution manifest must bind one verified
-Codex CLI executable/version/hash and one model before any formal run artifact,
-then reuse them identically across paired arms.
+The fresh V2 successor is closed `B1_EVALUABLE_COMPLETE / B1_INCONCLUSIVE` after
+48/48 completions. Structured value was not established. Seeds 53 and 71 ended
+with equivalent best behavior in both arms; seed 89 alone had a Raw advantage of
+`0.04137931034482756`. No extra seeds or B1 rerun are authorized. The remaining
+representation-versus-search-path ambiguity is handled only by the bounded B2
+candidate transplant in `scripts/research/l10m_b2`.
 
 The historical provider attempts remain infrastructure-only and do not consume
-a B1 seed or support a scientific verdict. Before any first evaluable B1 run,
-qualify the transport independently with `L10M-B1-I0-TRANSPORT-QUALIFICATION-V1`:
+a B1 seed or support a scientific verdict. The now-complete successor used the
+independent `L10M-B1-I0-TRANSPORT-QUALIFICATION-V2-FORMAL-SHAPED` gate. The
+following commands document that historical qualification path; they do not
+authorize another B1 run:
 
 ```text
 python -m scripts.research.l10m_b1.transport_qualification --route direct
@@ -51,7 +54,7 @@ runner additionally requires the exact proxy `result.json` through
 `--transport-qualification` and binds its path and SHA-256 into the execution
 manifest.
 
-The current scientific protocol is the fresh V2 successor. V1 was sealed
+The completed scientific protocol was the fresh V2 successor. V1 was sealed
 `B1_NOT_EVALUABLE_TRANSPORT_RUNTIME` after partial observations and is never
 resumed or compared. V2 uses fresh paired seeds `53/71/89`; no V1 candidate,
 feedback, score, or seed is reused. Any provider nonzero exit, empty terminal
