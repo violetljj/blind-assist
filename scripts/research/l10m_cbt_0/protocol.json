@@ -1,0 +1,46 @@
+{
+  "protocol": "L10M-CBT-0-CANDIDATE-BOTTLENECK-TRIAGE-V1",
+  "status": "FROZEN_BEFORE_ELIGIBILITY_AND_METRIC_ANALYSIS",
+  "authority": "CONSUMED_HISTORICAL_DEVELOPMENT_DIAGNOSTIC_ONLY",
+  "research_question": "Did completion fail because good candidates were unavailable, incorrectly ranked, not retained, or not transmitted to productive descendants?",
+  "permanent_prior_closure": {
+    "l10m_exploration_policy_route": "CLOSED",
+    "b6a_authorized": false,
+    "rps_authorized": false,
+    "balanced_v2_authorized": false,
+    "new_exploration_heuristic_authorized": false
+  },
+  "phases": ["CANDIDATE_SET_ELIGIBILITY", "SEALED_BOTTLENECK_ANALYSIS"],
+  "zero_call_constraints": {"experimental_model_calls": 0, "fresh_tasks_consumed": 0, "historical_runs_modified": 0},
+  "candidate_set": {
+    "include": ["incumbent retain option", "candidate materialized in the same arm and decision before selection"],
+    "exclude": ["paired-arm candidates", "future-generation candidates", "post-hoc oracle candidates", "unrecorded candidates", "model proposals forbidden by the frozen arm operator"],
+    "selection_identifiable": "at least two distinct legal non-incumbent candidates at the same decision",
+    "single_candidate_zero_regret_authority": "NOT_IDENTIFIABLE_NOT_SELECTION_SUCCESS"
+  },
+  "metrics": {
+    "availability_gap": "max(score of incumbent and legal same-decision candidates)-incumbent_score",
+    "normalized_availability_gap": "availability_gap/(global_optimum_score-initial_score)",
+    "substantive_gain_threshold": 0.1,
+    "selection_regret": "best legal non-incumbent score-chosen non-incumbent score; only identifiable multi-candidate decisions",
+    "retention_regret": "max(0, chosen_candidate_score-retained_successor_score)",
+    "transmission": "a retained candidate with a later generation becomes a parent; productive iff a later strict improvement is generated while it remains incumbent"
+  },
+  "selection_identifiability_gate": {"minimum_decisions": 20, "minimum_cohorts": 2, "minimum_policies": 2},
+  "selection_failure_gate": {"positive_regret_rate_min": 0.25, "median_positive_normalized_regret_min": 0.1},
+  "retention_failure_gate": {"positive_retention_regret_rate_min": 0.1},
+  "completion_availability_gate": {
+    "target_cohorts": ["B4_A_HARDER_COHORT", "B5_A_FRESH_REPLICATION"],
+    "global_optimum_candidate_trajectory_rate_max_for_ceiling": 0.1,
+    "require_each_target_cohort": true
+  },
+  "terminal_states": [
+    "CANDIDATE_AVAILABILITY_CEILING",
+    "GOOD_CANDIDATES_EXIST_BUT_SELECTION_FAILS",
+    "RETENTION_OR_TRANSMISSION_BOTTLENECK",
+    "SELECTION_BOTTLENECK_NOT_IDENTIFIABLE_FROM_HISTORICAL_LOGS",
+    "NO_DOMINANT_CANDIDATE_BOTTLENECK_IDENTIFIED",
+    "CBT0_NOT_EVALUABLE_PROTOCOL_INTEGRITY"
+  ],
+  "claim_ceiling": "historical routing evidence only; no causal mechanism, operator effectiveness, generalization, fresh-cohort use, admission, or model experiment authorization"
+}
