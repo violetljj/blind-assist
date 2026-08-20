@@ -14,6 +14,7 @@ from evaluate_rgb_observations import metrics
 from build_offline_demo import copilot_state
 from account_redetection_failures import account_opportunities
 from run_visual_upper_bound_r5 import select_trusted_exemplar
+from run_visual_upper_bound_r5_dinov import formal_frame_indices, select_trusted_exemplars
 from audit_reappearance_windows import diagnostic_class, oracle_status
 
 
@@ -172,6 +173,27 @@ class EpisodeMinerTest(unittest.TestCase):
         })
         self.assertEqual(result["frame_index"], 3)
         self.assertEqual(result["bbox_xyxy"], [2.0, 3.0, 4.0, 5.0])
+
+    def test_r5_dinov_freezes_97_frames_and_five_rgb_only_exemplars(self):
+        self.assertEqual(len(formal_frame_indices()), 97)
+        self.assertEqual(formal_frame_indices()[:2], [2039, 2040])
+        self.assertEqual(formal_frame_indices()[-2:], [3310, 3311])
+        frames = [
+            {"frame_index": index, "observation_source": "none", "bbox_xyxy": None, "target_confidence": 0.0}
+            for index in range(12)
+        ]
+        for index, confidence in enumerate((0.61, 0.75, 0.63, 0.91, 0.88, 0.81), start=2):
+            frames[index].update(
+                observation_source="detector",
+                bbox_xyxy=[index, index + 1, index + 2, index + 3],
+                target_confidence=confidence,
+            )
+        result = select_trusted_exemplars({
+            "frames": frames,
+            "events": [{"frame_index": 2, "event": "ACQUIRED"}, {"frame_index": 9, "event": "LOST"}],
+        })
+        self.assertEqual([row["frame_index"] for row in result], [5, 6, 7, 3, 4])
+        self.assertTrue(all(row["confidence"] >= 0.60 for row in result))
 
     def test_mines_search_track_loss_reacquire_and_approach(self):
         with tempfile.TemporaryDirectory() as directory:

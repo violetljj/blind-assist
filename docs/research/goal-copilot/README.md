@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / R5_ATTEMPT_02_OWLV2_LARGE_FROZEN / TEACHER_OUTCOME_NOT_RUN / TERMINAL_REDETECTION_GATE / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / NO_DINOV2_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / R5_ATTEMPT_03_DINOV_SWINL_FROZEN / TEACHER_OUTCOME_NOT_RUN / TERMINAL_REDETECTION_GATE / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 ## 当前主线：BA-ADT-REAL-EVIDENCE
 
@@ -126,10 +126,12 @@ claim ceiling 与 evidence role 均保持原样。
 
 ## 唯一 successor
 
-[`ADT1_SMALL_TARGET_VISUAL_UPPER_BOUND_R5`](BA_ADT_SMALL_TARGET_VISUAL_UPPER_BOUND_R5_ATTEMPT_02_PROTOCOL_2026-08-21.md)：
-SAM 3 Attempt 01 在 inference 前被机械可行性否决；Attempt 02 固定 OWLv2-large Teacher A、consumed
-3-window/97-frame denominator 与 `0/3, 1/3, >=2/3` 终止门。下一动作只
-运行冻结 teacher/evaluator；禁止扫 R4、接 DINOv2/Sky、启动 held-out 或 default-App。
+[`ADT1_SMALL_TARGET_VISUAL_UPPER_BOUND_R5`](BA_ADT_SMALL_TARGET_VISUAL_UPPER_BOUND_R5_ATTEMPT_03_PROTOCOL_2026-08-21.md)：
+SAM 3 Attempt 01 在 inference 前被机械可行性否决；OWLv2 Attempt 02 在首个判定帧前被 4090D
+capability-teacher 决策取代。Attempt 03 固定 DINOv-SwinL Teacher A、五个 RGB-only exemplars、consumed
+3-window/97-frame denominator 与 `0/3, 1/3, >=2/3` 终止门。下一动作只运行冻结 teacher/evaluator；
+Teacher A 明确成功即停止，否则最多一个 SAM 3.1 image-only Teacher B。禁止扫 R4、接 Sky、启动
+held-out 或 default-App。
 
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim
