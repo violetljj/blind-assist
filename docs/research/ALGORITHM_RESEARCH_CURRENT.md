@@ -1,8 +1,9 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_COPILOT / GOAL_COPILOT_1_PERMANENTLY_CLOSED / GOAL_COPILOT_2A_COMPLETE / GOAL_COPILOT_2B_SEARCH_COMPLETE_NO_HELDOUT_ADMISSION / GC2_OBSERVABILITY_AUDIT_COMPLETE / SYNTHETIC_MODERATE_OPTIMIZATION_STOPPED / REAL_PHONE_RGB_GROUNDING_NOT_EVALUABLE / ACTIVE_ALGORITHM_P0=D_ORACLE_1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_RESEARCH_MAINLINE=BA_ADT_REAL_EVIDENCE / ADT_0_SAMPLE_MINED_PARTIAL_EVENT_COVERAGE / FULL_SEQUENCE_SELECTION_NEXT / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / SKY_DISABLED / DEFAULT_APP_UNCHANGED`
 
-Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线：现有 perception、geometry、risk、
+Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线，当前 successor 为
+`BA-ADT-REAL-EVIDENCE`：现有 perception、geometry、risk、
 tracking 与 traversability 模块作为 Evidence Providers，Goal Copilot Brain 负责跨时间的 task belief、
 progress、recovery、action 和 completion。`GOAL-COPILOT-1` 已永久关闭；其冻结 winner 的零模型
 GC2-A perception-uncertainty characterization 和 GC2-B 搜索均已完成；GC2-B 未建立 moderate robustness
@@ -33,7 +34,7 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| Goal-Driven Visual Copilot / GOAL-COPILOT-2 | 冻结 GC1 winner 在 perception uncertainty 下的 closed-loop robustness | `PRODUCT_AND_RESEARCH_MAINLINE / GC2B_SEARCH_SIGNAL_NOT_ESTABLISHED / OBSERVABILITY_AUDIT_COMPLETE / SYNTHETIC_MODERATE_OPTIMIZATION_STOPPED / REAL_PHONE_RGB_GROUNDING_NOT_EVALUABLE / NO_SUCCESSOR_EXECUTION_AUTHORIZED` | [Goal Copilot current](goal-copilot/README.md) | 无；继续前须另冻结 real-phone RGB target identity/truth、detector/tracker、camera/timing、privacy 与 bounded clip contract | 恢复 GC1/GC2-B；打开 held-out；rescue rerun/扩预算/同候选面 GC2-C；consumed representation ladder；夸大为真实感知、安全、产品证据 | 否 |
+| Goal-Driven Visual Copilot / BA-ADT-REAL-EVIDENCE | 真实第一视角 RGB 能否恢复 Goal Copilot 所需的 target temporal evidence | `PRODUCT_AND_RESEARCH_MAINLINE / ADT_0_SAMPLE_MINED_PARTIAL_EVENT_COVERAGE / FULL_SEQUENCE_SELECTION_NEXT / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / SKY_DISABLED` | [Goal Copilot current](goal-copilot/README.md) | `ADT0_FULL_SEQUENCE_SELECTION`：保持 sample miner/门槛不变，对少量完整 sequence 做 GT-only mining；选中自然多阶段目标后进入 ADT-1 RGB adapter | GT 进入 RGB estimator；把 prerecorded replay 称为闭环导航；恢复 GC1/GC2-B、打开 held-out、启动 Sky/GC2-C 或接默认 App | 否 |
 | D-ORACLE-1 causal ladder | 三臂 matched oracle intervention 定位 downstream target-policy stack 与 estimated representation 的损失 | `UNIQUE_P0 / PROTOCOL_FROZEN / BLOCKED_ON_SOURCE_ACTION_TRUTH_POLICY_LOCK / NO_EXECUTION / NO_SEARCH` | [Failure diagnosis current](failure-synthesis/README.md) | `D_ORACLE_1_SOURCE_ACTION_TRUTH_POLICY_LOCK` | 增加第四竞争臂；提前拆H3/H4；训练/调policy/threshold；读取outcome后换parent/gate；让当前root ranking约束结果 | 否 |
 | SVRF / Scale-free Visual Risk Field | 纯 RGB 派生的相对深度动态、局部扩张和视觉通道侵入能否形成稳定相对风险排序 | `PAUSED_BY_D_ORACLE_1_UNIQUE_P0 / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / STREAM_INDEX_AUTHORIZED_BUT_NOT_ACTIVE / REAL_O0_NOT_RUN / NO_TRAINING` | [SVRF current](svrf/README.md) | 无；只有 D-ORACLE-1 定位 representation 层确有 headroom 且用户重开后，才可另行恢复 | bus canary、member index、payload/truth materialization、O0、训练或接 Android | 否 |
 | VI-Task Geometry | 同刚体 RGB+IMU 自校准 metric pose/ground，再为未来 task geometry 分配 computation/parallax budget | `PAUSED_BY_PURE_RGB_SELECTION / G0_PROTOCOL_RETAINED / REAL_G0_NOT_RUN / NO_TOF / NO_TRAINING` | [VI-Task Geometry current](vi-task-geometry/README.md) | 无；只有用户明确恢复 RGB+IMU metric-frame 路线才可重开 preflight | 实现/采集/运行 G0；用手机 IMU配眼镜视频；重跑 ARCore D45；提前训练、主动分配或接 Android | 否 |

@@ -26,9 +26,9 @@
       "dynamic_truth": "docs/research/README.md"
     },
     "goal_copilot": {
-      "description": "Goal-Driven Visual Copilot 主线的 BA-owned external optimizer bridge",
+      "description": "Goal-Driven Visual Copilot 主线、真实视觉证据与 BA-owned external optimizer bridge",
       "patterns": [
-        "^goal_copilot_bridge$"
+        "^(goal_copilot_bridge|ba_adt_real_evidence)$"
       ],
       "dynamic_truth": "docs/research/goal-copilot/README.md"
     },

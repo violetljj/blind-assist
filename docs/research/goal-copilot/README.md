@@ -1,6 +1,29 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / GOAL_COPILOT_1_PERMANENTLY_CLOSED / GOAL_COPILOT_2A_COMPLETE / GOAL_COPILOT_2B_SEARCH_COMPLETE_NO_HELDOUT_ADMISSION / GC2_OBSERVABILITY_AUDIT_COMPLETE / SYNTHETIC_MODERATE_OPTIMIZATION_STOPPED / REAL_PHONE_RGB_GROUNDING_NOT_EVALUABLE / NO_SUCCESSOR_EXECUTION_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / ADT_0_SAMPLE_MINED_PARTIAL_EVENT_COVERAGE / FULL_SEQUENCE_SELECTION_NEXT / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / SKY_DISABLED / DEFAULT_APP_UNCHANGED`
+
+## 当前主线：BA-ADT-REAL-EVIDENCE
+
+BlindAssist 的当前唯一 Goal Copilot successor 是 `BA-ADT-REAL-EVIDENCE`。它从最终产品目标倒推，
+先补齐真实第一视角视觉证据，再接回冻结的 Goal Copilot。路线依次为 ADT-0 episode mining、ADT-1
+RGB-only Observation、ADT-2 prerecorded Offline Goal Copilot，以及只在真实失败明确归因到 policy 层时
+才允许设计的 ADT-3/Sky task。
+
+系统侧输入只允许真实 RGB；ADT bbox、object/device trajectory、depth、segmentation 与 visibility GT
+只允许进入隔离的 mining/evaluator。ADT 是录好轨迹，因此本路线最多证明真实 RGB 能否恢复 target
+visibility、bearing、tracking、reacquisition、relative nearness 与 approach evidence，以及这些 evidence
+能否支撑合理的 prerecorded guidance timeline；它不能证明引导改变了用户动作或完成 closed-loop
+navigation。
+
+ADT-0 的稳定实现入口见
+[`scripts/research/ba_adt_real_evidence/README.md`](../../../scripts/research/ba_adt_real_evidence/README.md)。
+当前只激活 sample acquisition 与 GT-only episode mining；Sky、GC2-C、held-out、Android/default-App
+接线、产品和安全主张均关闭。
+
+Sample 已完成，结果见
+[`BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md`](BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md)：300 帧中
+102 个目标满足持续可见候选门，事件候选覆盖 search/acquire/track/lost/reacquire/approach，但没有单一
+目标覆盖完整六阶段。下一步保持门槛不变，先对少量完整 sequence 做 GT-only mining。
 
 ## 上位产品定义
 
@@ -74,7 +97,11 @@ claim ceiling 与 evidence role 均保持原样。
 - 证据范围：small deterministic symbolic closed-loop Pilot；
 - 默认 App、真实用户、安全效果和产品可用性：无新权限；
 
-## 当前 successor
+## 唯一 successor
+
+`ADT0_FULL_SEQUENCE_SELECTION`：保持 sample miner、事件定义和阈值不变，对少量完整 ADT sequence
+先做 GT-only mining；只为自然多阶段目标下载对应真实 RGB，随后才能另立 ADT-1 RGB adapter。
+Sky、GC2-C、held-out、Android/default-App 与交互式导航均不在此 successor 内。
 
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim
@@ -115,6 +142,7 @@ policy evidence。现有 Android trace 是公开/已消费真实世界 RGB 的 d
 capture，且缺少 target identity、tracking、bearing、nearness 与时间映射，所以真实手机噪声校准为
 `NOT_EVALUABLE`。
 
-当前决策固定为停止 synthetic moderate optimization 并保持 policy search 关闭。若未来继续，必须先
-另立 real-phone RGB target-evidence capture/audit contract；该执行当前未授权。GC2-C、held-out opening、
-新模型/Sky 调用、扩预算和 consumed representation ladder 均继续禁止。
+该审计的历史决策仍保持：停止 synthetic moderate optimization 并保持 policy search 关闭。新的
+`BA-ADT-REAL-EVIDENCE` 不是 GC2 rescue；它使用独立 ADT 真实 RGB/GT lineage，先执行 ADT-0
+数据适配性与 episode mining。GC2-C、held-out opening、新模型/Sky 调用、扩预算和 consumed
+representation ladder 均继续禁止。

@@ -2,6 +2,17 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-20（Asia/Hong_Kong）；执行者：violjjet。将 BlindAssist 当前 successor 切换为
+  `BA-ADT-REAL-EVIDENCE`：系统侧只允许真实 ADT RGB，ADT bbox/trajectory/depth/visibility GT 只允许
+  进入隔离的 episode mining/evaluator；recorded ADT 不得解释为用户受引导后的 closed-loop navigation。
+  当前只激活 ADT-0，并新增有界 sample acquisition（RGB preview + main GT 小于 32 MiB）与 GT-only
+  Goal Episode Miner。ADT-1 RGB Observation、ADT-2 prerecorded guidance、ADT-3 policy failure benchmark
+  依次后置；Sky、GC2-C、held-out、Android/default-App、产品和安全权限均保持关闭。
+  官方 10 秒 sample 实跑得到 300 个 GT RGB timestamps、106 个 bbox target 和 102 个持续跟踪候选；
+  search/acquire/track/lost/reacquire/approach 候选数分别为 18/102/102/35/35/2，但没有单一目标覆盖
+  完整六阶段。结果因此为 `ADT0_SAMPLE_EPISODES_MINED / PARTIAL_EVENT_COVERAGE`，下一步固定门槛
+  选择少量完整 sequence；不把 visibility gap 冒充已确认 tracker failure，也不为凑结果调门。
+
 - 时间：2026-08-20（Asia/Hong_Kong）；执行者：Codex。完成 Goal Copilot 2 的零模型 observability、
   failure-autopsy、counterfactual 与 reality audit；只使用 consumed GC2 dev scenarios、冻结 simulator、
   GC2-B 锁定公开 winner 和既有 device evidence，未读取 held-out。Moderate `0/12` 的首次偏离分散为
