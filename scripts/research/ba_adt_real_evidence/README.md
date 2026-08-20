@@ -1,6 +1,6 @@
 # BA-ADT Real Evidence
 
-状态：`current / REVERSIBLE_EXPLORATION / ADT-1-FLOW5-TEMPORAL-TRACKER-ADMITTED-FOR-DEVELOPMENT / ADT-2-PRERECORDED-DEVELOPMENT-DEMO-RENDERED / LONG-DROPOUT-REACQUISITION-INSUFFICIENT / SKY-DISABLED / DEFAULT-APP-UNCHANGED`
+状态：`current / REVERSIBLE_EXPLORATION / ADT-1-INSTANCE-REDETECTION-R1-BOUNDED-DEVELOPMENT-UTILITY / ADT-2-PRERECORDED-DEVELOPMENT-DEMO-RENDERED / LONG-DROPOUT-REACQUISITION-INSUFFICIENT / SKY-DISABLED / DEFAULT-APP-UNCHANGED`
 
 ## 目标与边界
 
@@ -71,6 +71,7 @@ RGB-only observation、隔离评价与 demo 渲染：
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-real-evidence run_rgb_observer.py `
   --video <PREVIEW_RGB_MP4> --model <YOLO_MODEL> --target-class carrot --flow-max-gap 5 `
+  --instance-redetection --device 0 `
   --output <OBSERVATIONS_JSON>
 
 E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-real-evidence evaluate_rgb_observations.py `
@@ -112,5 +113,10 @@ Sample 已得到 102 个持续跟踪候选，覆盖全部六类事件，但没�
 修正 90° clockwise 坐标变换后，sample `bowl` canary 仍定位到多实例 grounding failure。完整
 `seq136 / carrot` held-forward evaluation 显示定位成功时 bearing/scale/approach 有信号。5-frame sparse
 optical-flow candidate 将 recall 从 0.4041 提至 0.5808，GT-invisible false-visible 为 0.0073，已准入
-ADT-2 Development demo；但最长 dropout 仍为 162 帧且 reacquisition 未改善。下一步只做
-`ADT1_INSTANCE_CONDITIONED_REDETECTION`，不能继续拉长 persistence、事后改写门槛或授权 Sky。
+ADT-2 Development demo。实例重检测 R1 随后以多模板 appearance memory、弱时空先验和 2-of-3
+确认把 recall/mean IoU 提至 `0.6203/0.4743`，13 次重检测为 `13/0/0 correct/wrong/unresolved`，且
+false-visible 不变；但 @30/@90/@180 reacquisition 仍为 `0.4/0.5/0.5`，最长 dropout 只降到 159 帧。
+结果见
+[`BA_ADT_INSTANCE_REDETECTION_1_RESULT_2026-08-21.md`](../../../docs/research/goal-copilot/BA_ADT_INSTANCE_REDETECTION_1_RESULT_2026-08-21.md)。
+下一步只做 `ADT1_LEARNED_INSTANCE_REDETECTION_R2`，保持状态机/evaluator 不变，升级 YOLOE visual
+prompt 候选与 DINOv2 instance embedding；不能继续拉长 persistence、降低身份门或授权 Sky。

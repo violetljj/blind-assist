@@ -8,6 +8,7 @@ import bisect
 import json
 import math
 from pathlib import Path
+import statistics
 
 from mine_goal_episodes import RGB_STREAM, csv_rows, sha256
 from run_rgb_observer import iou
@@ -40,26 +41,32 @@ def nearest_index(times: list[int], timestamp: int) -> int | None:
     return index if abs(times[index] - timestamp) <= 20_000_000 else None
 
 
-def aligned_row(frame: dict, gt: dict | None, width: float, height: float) -> dict:
-    gt_visible = gt is not None and float(gt["visibility_ratio[%]"]) >= 0.10
-    gt_box = None if gt is None else [
-        height - float(gt["y_max[pixel]"]),
-        float(gt["x_min[pixel]"]),
-        height - float(gt["y_min[pixel]"]),
-        float(gt["x_max[pixel]"]),
+def gt_box(row: dict | None, height: float):
+    return None if row is None else [
+        height - float(row["y_max[pixel]"]),
+        float(row["x_min[pixel]"]),
+        height - float(row["y_min[pixel]"]),
+        float(row["x_max[pixel]"]),
     ]
+
+
+def aligned_row(frame: dict, gt: dict | None, distractors: list[dict], width: float, height: float) -> dict:
+    gt_visible = gt is not None and float(gt["visibility_ratio[%]"]) >= 0.10
+    target_box = gt_box(gt, height)
     predicted_box = frame["bbox_xyxy"]
-    overlap = iou(predicted_box, gt_box) if predicted_box is not None and gt_box is not None else 0.0
-    localized = predicted_box is not None and overlap >= 0.10
-    if gt_visible and predicted_box is not None and gt_box is not None:
+    overlap = iou(predicted_box, target_box) if predicted_box is not None and target_box is not None else 0.0
+    distractor_overlap = max((iou(predicted_box, gt_box(row, height)) for row in distractors), default=0.0) if predicted_box is not None else 0.0
+    localized = gt_visible and predicted_box is not None and overlap >= 0.10
+    if gt_visible and predicted_box is not None and target_box is not None:
         predicted_center = ((predicted_box[0] + predicted_box[2]) / 2.0 - width / 2.0) / (width / 2.0)
-        truth_center = ((gt_box[0] + gt_box[2]) / 2.0 - width / 2.0) / (width / 2.0)
+        truth_center = ((target_box[0] + target_box[2]) / 2.0 - width / 2.0) / (width / 2.0)
         bearing_error = abs(predicted_center - truth_center)
         predicted_scale = float(frame["relative_nearness"])
-        truth_scale = math.sqrt(max(0.0, (gt_box[2] - gt_box[0]) * (gt_box[3] - gt_box[1]) / (width * height)))
+        truth_scale = math.sqrt(max(0.0, (target_box[2] - target_box[0]) * (target_box[3] - target_box[1]) / (width * height)))
     else:
         bearing_error = predicted_scale = truth_scale = None
-    return {"gt_visible": gt_visible, "predicted_visible": predicted_box is not None, "localized": localized, "iou": overlap, "bearing_error_normalized": bearing_error, "predicted_scale": predicted_scale, "truth_scale": truth_scale, "observation_quality": float(frame["observation_quality"])}
+    redetection = frame.get("observation_source") == "instance_redetection"
+    return {"gt_visible": gt_visible, "predicted_visible": predicted_box is not None, "localized": localized, "iou": overlap, "non_target_instance_iou": distractor_overlap, "instance_redetection": redetection, "wrong_instance_redetection": redetection and overlap < 0.10 and distractor_overlap >= 0.10, "unresolved_redetection": redetection and overlap < 0.10 and distractor_overlap < 0.10, "bearing_error_normalized": bearing_error, "predicted_scale": predicted_scale, "truth_scale": truth_scale, "observation_quality": float(frame["observation_quality"])}
 
 
 def metrics(rows: list[dict]) -> dict:
@@ -95,6 +102,10 @@ def metrics(rows: list[dict]) -> dict:
         approach_matches.append((predicted_delta > 0) == (truth_delta > 0))
     localized_quality = [row["observation_quality"] for row in visible_rows if row["localized"]]
     missed_quality = [row["observation_quality"] for row in visible_rows if not row["localized"]]
+    redetections = [row for row in rows if row.get("instance_redetection")]
+    successful_reacquisitions = [delay for delay in reacquisition_delays if delay is not None]
+    def success_rate_within(limit: int):
+        return sum(delay is not None and delay <= limit for delay in reacquisition_delays) / len(reacquisition_delays) if reacquisition_delays else None
     return {
         "evaluated_frames": len(rows),
         "gt_visible_frames": len(visible_rows),
@@ -105,12 +116,21 @@ def metrics(rows: list[dict]) -> dict:
         "mean_abs_bearing_error_normalized": sum(bearing_errors) / len(bearing_errors) if bearing_errors else None,
         "bbox_scale_correlation": pearson([row["predicted_scale"] for row in scale_rows], [row["truth_scale"] for row in scale_rows]),
         "eligible_reacquisition_count": len(reacquisition_delays),
-        "reacquisition_success_within_30_frames": sum(delay is not None and delay <= 30 for delay in reacquisition_delays) / len(reacquisition_delays) if reacquisition_delays else None,
+        "reacquisition_success_within_30_frames": success_rate_within(30),
+        "reacquisition_success_within_90_frames": success_rate_within(90),
+        "reacquisition_success_within_180_frames": success_rate_within(180),
+        "median_successful_reacquisition_delay_frames": statistics.median(successful_reacquisitions) if successful_reacquisitions else None,
         "reacquisition_delay_frames": reacquisition_delays,
         "approach_direction_accuracy_lag15": sum(approach_matches) / len(approach_matches) if approach_matches else None,
         "approach_direction_comparison_count": len(approach_matches),
         "observation_quality_mean_when_localized": sum(localized_quality) / len(localized_quality) if localized_quality else None,
         "observation_quality_mean_when_missed": sum(missed_quality) / len(missed_quality) if missed_quality else None,
+        "instance_redetection_event_count": len(redetections),
+        "correct_instance_redetection_count": sum(row["localized"] for row in redetections),
+        "wrong_instance_redetection_count": sum(row.get("wrong_instance_redetection", False) for row in redetections),
+        "unresolved_redetection_count": sum(row.get("unresolved_redetection", False) for row in redetections),
+        "wrong_instance_redetection_rate": sum(row.get("wrong_instance_redetection", False) for row in redetections) / len(redetections) if redetections else None,
+        "id_switch_count_at_instance_redetection": sum(row.get("wrong_instance_redetection", False) for row in redetections),
     }
 
 
@@ -130,12 +150,15 @@ def main() -> int:
         rgb_rows = [row for row in csv_rows(zf, member) if row["stream_id"] == RGB_STREAM]
         trajectory_times = [int(row["tracking_timestamp_us"]) * 1000 for row in csv_rows(zf, "aria_trajectory.csv")]
     target_by_index = {}
+    distractors_by_index = {}
     for row in rgb_rows:
-        if str(row["object_uid"]) != args.target_uid:
-            continue
         index = nearest_index(trajectory_times, int(row["timestamp[ns]"]))
-        if index is not None:
+        if index is None or float(row["visibility_ratio[%]"]) < 0.10:
+            continue
+        if str(row["object_uid"]) == args.target_uid:
             target_by_index[index] = row
+        else:
+            distractors_by_index.setdefault(index, []).append(row)
     frames = prediction["frames"]
     width = float(prediction.get("frame_size", {}).get("width", 1408))
     height = float(prediction.get("frame_size", {}).get("height", 1408))
@@ -143,16 +166,16 @@ def main() -> int:
     maximum_offset = max(0, len(frames) - len(trajectory_times))
     scores = []
     for offset in range(maximum_offset + 1):
-        rows = [aligned_row(frames[offset + index], target_by_index.get(index), width, height) for index in range(calibration_count)]
+        rows = [aligned_row(frames[offset + index], target_by_index.get(index), distractors_by_index.get(index, []), width, height) for index in range(calibration_count)]
         scores.append(sum(row["iou"] for row in rows if row["gt_visible"]))
     offset = max(range(len(scores)), key=lambda item: (scores[item], -item))
     aligned = min(len(trajectory_times), len(frames) - offset)
-    calibration_rows = [aligned_row(frames[offset + index], target_by_index.get(index), width, height) for index in range(min(calibration_count, aligned))]
-    evaluation_rows = [aligned_row(frames[offset + index], target_by_index.get(index), width, height) for index in range(calibration_count, aligned)]
+    calibration_rows = [aligned_row(frames[offset + index], target_by_index.get(index), distractors_by_index.get(index, []), width, height) for index in range(min(calibration_count, aligned))]
+    evaluation_rows = [aligned_row(frames[offset + index], target_by_index.get(index), distractors_by_index.get(index, []), width, height) for index in range(calibration_count, aligned)]
     report_metrics = metrics(evaluation_rows)
     report_metrics.update({"aligned_frames": aligned, "prediction_frames": len(frames), "gt_trajectory_frames": len(trajectory_times), "gt_target_rows": len(target_by_index)})
     output = {
-        "schema_version": "ba_adt_rgb_observation_evaluation_v2",
+        "schema_version": "ba_adt_rgb_observation_evaluation_v3",
         "route": "BA-ADT-REAL-EVIDENCE", "stage": "ADT-1-CANARY",
         "inputs": {"observations_sha256": sha256(args.observations), "groundtruth_sha256": sha256(args.groundtruth), "target_uid": args.target_uid},
         "isolation": {"observer_received_gt": False, "evaluator_received_rgb_pixels": False},

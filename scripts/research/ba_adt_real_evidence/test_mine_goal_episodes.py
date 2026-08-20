@@ -9,7 +9,7 @@ import zipfile
 from pathlib import Path
 
 from mine_goal_episodes import Thresholds, mine
-from run_rgb_observer import choose_target, flow_bbox, iou
+from run_rgb_observer import TargetMemory, appearance_embedding, candidate_confirmed, choose_target, flow_bbox, initial_anchor_candidate, iou
 from evaluate_rgb_observations import metrics
 from build_offline_demo import copilot_state
 
@@ -23,6 +23,35 @@ def csv_bytes(fieldnames, rows):
 
 
 class EpisodeMinerTest(unittest.TestCase):
+    def test_instance_memory_prefers_anchor_appearance(self):
+        import numpy as np
+
+        image = np.zeros((100, 200, 3), dtype=np.uint8)
+        image[10:50, 10:70] = (0, 100, 255)
+        image[10:50, 110:170] = (255, 0, 0)
+        memory = TargetMemory()
+        self.assertTrue(memory.remember(image, [10, 10, 70, 50], 0, force=True))
+        matching = memory.score(image, [10, 10, 70, 50], 10)
+        distractor = memory.score(image, [110, 10, 170, 50], 10)
+        self.assertGreater(matching["appearance"], distractor["appearance"])
+        self.assertGreater(matching["score"], distractor["score"])
+
+    def test_redetection_requires_two_compatible_hits(self):
+        import numpy as np
+
+        embedding = np.ones(4, dtype=np.float32) / 2.0
+        first = {"bbox_xyxy": [10, 10, 30, 30], "embedding": embedding}
+        second = {"bbox_xyxy": [11, 10, 31, 30], "embedding": embedding}
+        self.assertFalse(candidate_confirmed([], first, 2))
+        self.assertTrue(candidate_confirmed([first], second, 2))
+
+    def test_only_empty_memory_accepts_unconfirmed_initial_anchor(self):
+        candidates = [{"bbox_xyxy": [0, 0, 10, 10], "confidence": 0.7}]
+        memory = TargetMemory()
+        self.assertEqual(initial_anchor_candidate(candidates, memory), candidates[0])
+        memory.templates.append(object())
+        self.assertIsNone(initial_anchor_candidate(candidates, memory))
+
     def test_sparse_flow_propagates_bbox_translation(self):
         import cv2
         import numpy as np
@@ -63,7 +92,21 @@ class EpisodeMinerTest(unittest.TestCase):
         result = metrics(rows)
         self.assertEqual(result["eligible_reacquisition_count"], 1)
         self.assertEqual(result["reacquisition_delay_frames"], [2])
+        self.assertEqual(result["reacquisition_success_within_90_frames"], 1.0)
+        self.assertEqual(result["median_successful_reacquisition_delay_frames"], 2)
         self.assertGreater(result["observation_quality_mean_when_localized"], result["observation_quality_mean_when_missed"])
+
+    def test_evaluator_separates_correct_wrong_and_unresolved_redetection(self):
+        rows = [
+            {"gt_visible": True, "predicted_visible": True, "localized": True, "iou": 0.8, "bearing_error_normalized": 0.01, "predicted_scale": 0.1, "truth_scale": 0.1, "observation_quality": 0.9, "instance_redetection": True, "wrong_instance_redetection": False, "unresolved_redetection": False},
+            {"gt_visible": True, "predicted_visible": True, "localized": False, "iou": 0.0, "bearing_error_normalized": 0.5, "predicted_scale": 0.1, "truth_scale": 0.1, "observation_quality": 0.2, "instance_redetection": True, "wrong_instance_redetection": True, "unresolved_redetection": False},
+            {"gt_visible": False, "predicted_visible": True, "localized": False, "iou": 0.0, "bearing_error_normalized": None, "predicted_scale": None, "truth_scale": None, "observation_quality": 0.1, "instance_redetection": True, "wrong_instance_redetection": False, "unresolved_redetection": True},
+        ]
+        result = metrics(rows)
+        self.assertEqual(result["correct_instance_redetection_count"], 1)
+        self.assertEqual(result["wrong_instance_redetection_count"], 1)
+        self.assertEqual(result["unresolved_redetection_count"], 1)
+        self.assertEqual(result["id_switch_count_at_instance_redetection"], 1)
 
     def test_iou_association_prefers_temporal_match(self):
         previous = [0.0, 0.0, 10.0, 10.0]

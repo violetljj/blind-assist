@@ -2,6 +2,17 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。完成
+  `BA-ADT-INSTANCE-REDETECTION-1` Development canary：在同一已消费 `seq136 / Carrot_A`
+  上，为 YOLO11n + flow5 observer 增加最多 5 个 trusted crop 的 RGB appearance memory、弱尺度/
+  空间先验、2-of-3 确认与重接后 8 帧记忆隔离；evaluator v3 新增 @90/@180、median delay、
+  correct/wrong/unresolved instance redetection 与 ID-switch 指标。held-forward recall/mean IoU 从
+  `0.5808/0.4469` 提至 `0.6203/0.4743`，false-visible 保持 `0.0073`，13 次实例重检测为
+  `13 correct / 0 wrong / 0 unresolved`；但 @30/@90/@180 仍为 `0.4/0.5/0.5`，最长 dropout
+  仅从 162 降至 159。终态为 bounded Development utility，长时重捕获仍未解决；唯一 successor
+  是保持状态机/evaluator、只升级 YOLOE visual-prompt candidates 与 DINOv2 identity embedding 的
+  `ADT1_LEARNED_INSTANCE_REDETECTION_R2`。Sky、冻结 Goal Copilot、默认 App 与产品/安全权限不变。
+
 - 时间：2026-08-20（Asia/Hong_Kong）；执行者：violjjet。将 `BA-ADT-REAL-EVIDENCE` 的主线地位从状态
   标签提升为仓库级执行约束：它是 BlindAssist 唯一 active 产品与研究主线；当前 successor 只由 Goal
   Copilot current 与算法研究入口共同声明。D-ORACLE、SVRF、Assistive Geometry、TARO、SATOM、
