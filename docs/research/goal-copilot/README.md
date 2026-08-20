@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / GOAL_COPILOT_SKY_BRIDGE_V0_MECHANICS_READY / GOAL_COPILOT_1_SKY_PILOT_PROTOCOL_IMPLEMENTED_MODEL_SEARCH_NOT_STARTED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / GOAL_COPILOT_1_SKY_SEARCH_SIGNAL_ESTABLISHED_ON_SEALED_PILOT / DEFAULT_APP_UNCHANGED`
 
 ## 上位产品定义
 
@@ -70,14 +70,13 @@ claim ceiling 与 evidence role 均保持原样。
 
 ## 当前结论
 
-- 当前结论：`GOAL_COPILOT_SKY_BRIDGE_V0_MECHANICS_READY`；
-- 模型状态：`GOAL_COPILOT_1_MODEL_SEARCH_NOT_STARTED`；
+- 当前结论：`GOAL_COPILOT_1_SKY_SEARCH_SIGNAL_ESTABLISHED_ON_SEALED_PILOT`；
+- 证据范围：small deterministic symbolic closed-loop Pilot；
 - 默认 App、真实用户、安全效果和产品可用性：无新权限；
 
 ## 当前 successor
 
-`GOAL-COPILOT-1-SKY-PILOT` 已形成独立冻结协议；正式模型调用只能由 hash-bound formal seal
-授权。协议、候选隔离、两 replicate 的 2×16 预算、dev-only winner selection、加密 fresh cohort 和
-PASS gate 见
-[`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)。在 formal seal
-出现前，模型状态仍为 `NOT_STARTED`。
+`GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
+[`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim
+ceiling 见 [`GOAL_COPILOT_1_SKY_PILOT_RESULT.md`](GOAL_COPILOT_1_SKY_PILOT_RESULT.md)。若继续，
+应另立 `GOAL-COPILOT-2 / NOISY-OBSERVATION ROBUSTNESS` 协议，而不是恢复本 Pilot 或复用其 fresh。
