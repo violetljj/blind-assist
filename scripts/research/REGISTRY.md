@@ -16,6 +16,7 @@ identity，不代表当前 authority。
 | DepthART/HFTF | [`hftf/README.md`](hftf/README.md) | 算法候选、几何学生和部署前置；动态状态以 `docs/research/hftf/README.md` 为准 |
 | 双环 | [`dual_loop/README.md`](dual_loop/README.md) | 论文次线与 risk-seg/temporal 研究；动态状态以 `docs/research/dual-loop/README.md` 为准 |
 | 候选事件 | [`candidate_event_mining/README.md`](candidate_event_mining/README.md) | discovery-only 候选池与复核 bundle |
+| Goal Copilot bridge | [`goal_copilot_bridge/README.md`](goal_copilot_bridge/README.md) | BA-owned task/candidate bundle 协议与无模型 dry-run；外部优化器仅有 proposal authority |
 | 公共实现 | [`common/README.md`](common/README.md) | 至少两个域证明复用后的共享实现 |
 | SVRF O0 | [`svrf_o0/README.md`](svrf_o0/README.md) | pure-RGB scale-free relative-risk representation headroom；动态状态以 `docs/research/svrf/README.md` 为准 |
 | VI-Task Geometry G0 | [`vi_task_geometry_g0/README.md`](vi_task_geometry_g0/README.md) | no-ToF RGB-IMU metric-frame capture admission；动态状态以 `docs/research/vi-task-geometry/README.md` 为准 |

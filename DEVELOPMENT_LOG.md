@@ -2,6 +2,16 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-20（Asia/Hong_Kong）；执行者：violjjet。正式将 Goal-Driven Visual Copilot 建立为
+  BlindAssist 上位产品/研究主线，并建立独立新 lineage `GOAL-COPILOT-1`。V0 只做冻结 symbolic
+  observation 的零模型 mock roundtrip，覆盖 FIND_AND_REACH、TRACK_AND_REACQUIRE、
+  FIND_ALIGN_INTERACT；BA 独占 task/evaluator/sealed truth/safety/acceptance authority，SkyDiscover
+  只有 proposal authority。SearchTaskBundle/CandidateBundle 均 content-addressed、逐文件 SHA-256、
+  exact allowlist 和 source/protocol 绑定；BA 以完整 evaluator vector 独立输出 ACCEPT/REJECT/
+  NOT_EVALUABLE，Sky score 仅作 provenance。状态为 `GOAL_COPILOT_SKY_BRIDGE_V0_MECHANICS_READY /
+  GOAL_COPILOT_1_MODEL_SEARCH_NOT_STARTED`；现有 L10M 仅作先导机制背景，所有封存结果、run 根、
+  terminal 与 claim ceiling 未修改。默认 App、真实用户、安全效果和产品权限不变。
+
 - 时间：2026-08-17（Asia/Hong_Kong）；执行者：Codex。将 `D-ORACLE-1` 冻结为 Failure Synthesis
   后的唯一 P0，状态为 `PROTOCOL_FROZEN / NOT_EXECUTED`。协议只含三个正式 arm：independent direct-action
   oracle、perfect source geometry→current policy、estimated representation→同一 policy；B/C 的 policy、

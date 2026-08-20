@@ -1,16 +1,17 @@
 # Research Module Index
 
-状态：`current / navigation-only / 87-of-87`
+状态：`current / navigation-only / 88-of-88`
 
 本页只回答“Module 在哪里、属于哪个研究族”。动态状态、successor 和权限必须回到每个
 Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导。
 机器分类规则见 [`module_families.json`](module_families.json)。
 
-## 当前入口与共享实现（4）
+## 当前入口与共享实现（5）
 
 - [`candidate_event_mining`](candidate_event_mining/README.md)
 - [`common`](common/README.md)
 - [`dual_loop`](dual_loop/README.md)
+- [`goal_copilot_bridge`](goal_copilot_bridge/README.md)
 - [`hftf`](hftf/README.md)
 
 ## Assistive Geometry、TARO、SATOM、SVRF、DepthART、metric-depth 与几何（31）

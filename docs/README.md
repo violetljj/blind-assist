@@ -65,6 +65,7 @@
 | 类型 | 入口 |
 |---|---|
 | 分类 current | [算法](research/ALGORITHM_RESEARCH_CURRENT.md) · [数据](research/DATA_RESEARCH_CURRENT.md) · [系统与平台](research/SYSTEM_RESEARCH_CURRENT.md) |
+| 产品/研究主线 | [Goal-Driven Visual Copilot](research/goal-copilot/README.md) · [SkyDiscover integration contract](research/goal-copilot/SKYDISCOVER_INTEGRATION_CONTRACT.md) |
 | 全局失败清算 | [Failure Synthesis](BLINDASSIST_FAILURE_SYNTHESIS.md) · [Causal Failure Model](BLINDASSIST_CAUSAL_FAILURE_MODEL.md) · [Oracle Ladder](BLINDASSIST_ORACLE_LADDER.md) |
 | 因果诊断与算法路线 | [D-ORACLE-1](research/failure-synthesis/README.md) · [SVRF](research/svrf/README.md) · [VI-Task Geometry](research/vi-task-geometry/README.md) · [GA-SATOM](research/ga-satom/README.md) · [SATOM-A](research/satom/README.md) · [Assistive Geometry](research/assistive-geometry/README.md) · [TARO](research/taro/README.md) · [AG-QSF](research/assistive-geometry-qsf/README.md) · [AG-CBF](research/assistive-geometry-cbf/README.md) · [DepthART](research/hftf/README.md) · [双环](research/dual-loop/README.md) · [RCLE](research/rcle/README.md) |
 | 数据与 discovery | [AG-DCA](research/assistive-geometry-data-capability/README.md) · [AG-DUE](research/assistive-geometry-data-upgrade/README.md) · [候选事件挖掘](research/candidate-event-mining/README.md) |

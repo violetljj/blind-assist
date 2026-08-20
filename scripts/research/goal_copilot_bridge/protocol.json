@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "protocol_id": "GOAL-COPILOT-1",
+  "title": "BlindAssist Goal-Copilot-1: Completion-Capable Closed-Loop Policy Synthesis",
+  "mode": "ROUTINE_ENGINEERING_MOCK_ROUNDTRIP",
+  "task_families": [
+    "FIND_AND_REACH",
+    "TRACK_AND_REACQUIRE",
+    "FIND_ALIGN_INTERACT"
+  ],
+  "observation_source": "frozen_symbolic_oracle_style_evidence",
+  "real_perception_optimization": false,
+  "search_authority": "PROPOSAL_ONLY",
+  "acceptance_authority": "BLINDASSIST_ONLY",
+  "editable_files": ["initial_policy.py"],
+  "exported_evaluator": false,
+  "exported_hidden_truth": false,
+  "hard_gates": {
+    "unsafe_guidance": 0,
+    "premature_completion": 0,
+    "semantic_validity": true
+  },
+  "evaluation_vector": [
+    "goal_completion",
+    "normalized_progress",
+    "reacquisition_success",
+    "tracking_continuity",
+    "wrong_way_actions",
+    "unsafe_guidance",
+    "premature_completion",
+    "recovery_steps",
+    "total_actions",
+    "timeout",
+    "semantic_validity"
+  ],
+  "scientific_verdict_from_scalar": false,
+  "claim_ceiling": "bridge_mechanics_only_no_model_or_scientific_result"
+}

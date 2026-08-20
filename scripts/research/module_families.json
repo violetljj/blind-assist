@@ -2,6 +2,7 @@
   "schema_version": 1,
   "family_order": [
     "current_entry",
+    "goal_copilot",
     "assistive_geometry",
     "taro",
     "satom",
@@ -23,6 +24,13 @@
         "^(candidate_event_mining|common|dual_loop|hftf)$"
       ],
       "dynamic_truth": "docs/research/README.md"
+    },
+    "goal_copilot": {
+      "description": "Goal-Driven Visual Copilot 主线的 BA-owned external optimizer bridge",
+      "patterns": [
+        "^goal_copilot_bridge$"
+      ],
+      "dynamic_truth": "docs/research/goal-copilot/README.md"
     },
     "assistive_geometry": {
       "description": "当前 BlindAssist task-specific Assistive Geometry 主线",

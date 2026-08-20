@@ -15,6 +15,7 @@ DOMAINS = {
     "egomotion-compensated-looming": SCRIPTS_DIR / "research" / "egomotion_compensated_looming",
     "public-video": SCRIPTS_DIR / "research" / "public_video",
     "candidate-event-mining": SCRIPTS_DIR / "research" / "candidate_event_mining",
+    "goal-copilot": SCRIPTS_DIR / "research" / "goal_copilot_bridge",
     "hftf": SCRIPTS_DIR / "research" / "hftf",
     "hftf-d7-public-real": SCRIPTS_DIR / "research" / "hftf_d7_public_real",
     "ustrf-crosscam-codex": SCRIPTS_DIR / "research" / "ustrf_crosscam_codex",
