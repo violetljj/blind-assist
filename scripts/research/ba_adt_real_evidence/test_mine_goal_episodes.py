@@ -12,6 +12,7 @@ from mine_goal_episodes import Thresholds, mine
 from run_rgb_observer import TargetMemory, appearance_embedding, candidate_confirmed, choose_target, flow_bbox, initial_anchor_candidate, iou
 from evaluate_rgb_observations import metrics
 from build_offline_demo import copilot_state
+from account_redetection_failures import account_opportunities
 
 
 def csv_bytes(fieldnames, rows):
@@ -107,6 +108,18 @@ class EpisodeMinerTest(unittest.TestCase):
         self.assertEqual(result["wrong_instance_redetection_count"], 1)
         self.assertEqual(result["unresolved_redetection_count"], 1)
         self.assertEqual(result["id_switch_count_at_instance_redetection"], 1)
+
+    def test_failure_accounting_separates_candidate_rejection_and_confirmation(self):
+        rows = []
+        for index in range(30):
+            gt_visible = index < 5 or 12 <= index < 16 or index >= 22
+            rows.append({"gt_visible": gt_visible, "localized": False, "search_active": gt_visible and index >= 12, "correct_candidate_present": False, "correct_top_eligible": False, "best_candidate_iou": 0.0})
+        rows[13].update({"correct_candidate_present": True, "best_candidate_iou": 0.6})
+        rows[22].update({"correct_candidate_present": True, "correct_top_eligible": True, "best_candidate_iou": 0.7})
+        accounting = account_opportunities(rows)
+        self.assertEqual(accounting["eligible_reacquisition_count"], 2)
+        self.assertEqual(accounting["failure_counts"], {"NO_CANDIDATE": 0, "CANDIDATE_REJECTED": 1, "CONFIRMATION_FAILED": 1})
+        self.assertEqual(accounting["opportunities"][0]["first_valid_candidate_latency_frames"], 1)
 
     def test_iou_association_prefers_temporal_match(self):
         previous = [0.0, 0.0, 10.0, 10.0]

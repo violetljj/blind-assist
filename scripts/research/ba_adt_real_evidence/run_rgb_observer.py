@@ -150,7 +150,7 @@ def rank_redetection_candidates(memory: TargetMemory, image, candidates: list[di
     return sorted(ranked, key=lambda row: row["score"], reverse=True)
 
 
-def candidate_confirmed(history, current: dict[str, Any], required_hits: int) -> bool:
+def candidate_compatible_hit_count(history, current: dict[str, Any]) -> int:
     compatible = 1
     for earlier in history:
         if earlier is None:
@@ -158,7 +158,11 @@ def candidate_confirmed(history, current: dict[str, Any], required_hits: int) ->
         appearance = cosine_similarity(current["embedding"], earlier["embedding"])
         if appearance >= 0.90 and iou(current["bbox_xyxy"], earlier["bbox_xyxy"]) >= 0.03:
             compatible += 1
-    return compatible >= required_hits
+    return compatible
+
+
+def candidate_confirmed(history, current: dict[str, Any], required_hits: int) -> bool:
+    return candidate_compatible_hit_count(history, current) >= required_hits
 
 
 def initial_anchor_candidate(candidates: list[dict[str, Any]], memory: TargetMemory):
@@ -220,6 +224,8 @@ def main() -> int:
     parser.add_argument("--confidence", type=float, default=0.10)
     parser.add_argument("--flow-max-gap", type=int, default=0, help="Maximum detector-missing frames filled by RGB optical flow")
     parser.add_argument("--instance-redetection", action="store_true")
+    parser.add_argument("--redetection-generator", choices=("class-yolo", "yoloe-visual-prompt"), default="class-yolo")
+    parser.add_argument("--redetection-model", type=Path, help="YOLOE checkpoint used only for LOST-frame proposal generation")
     parser.add_argument("--redetect-confidence", type=float, default=0.02)
     parser.add_argument("--redetect-appearance-threshold", type=float, default=0.82)
     parser.add_argument("--redetect-score-threshold", type=float, default=0.75)
@@ -229,13 +235,21 @@ def main() -> int:
     parser.add_argument("--short-reconnect-max-gap", type=int, default=15)
     parser.add_argument("--memory-max-templates", type=int, default=5)
     parser.add_argument("--memory-update-quarantine", type=int, default=8)
+    parser.add_argument("--candidate-diagnostics", action="store_true", help="Record RGB-only proposal and verifier traces for isolated GT failure accounting")
     args = parser.parse_args()
 
-    from ultralytics import YOLO
+    from ultralytics import YOLO, YOLOE
+    from ultralytics.models.yolo.yoloe.predict import YOLOEVPSegPredictor
     import ultralytics
 
     model = YOLO(str(args.model))
-    inference_confidence = min(args.confidence, args.redetect_confidence) if args.instance_redetection else args.confidence
+    if args.redetection_generator == "yoloe-visual-prompt" and not args.instance_redetection:
+        raise ValueError("YOLOE redetection requires --instance-redetection")
+    if args.redetection_generator == "yoloe-visual-prompt" and args.redetection_model is None:
+        raise ValueError("YOLOE redetection requires --redetection-model")
+    redetection_model = YOLOE(str(args.redetection_model)) if args.redetection_generator == "yoloe-visual-prompt" else None
+    redetection_prompt_ready = False
+    inference_confidence = min(args.confidence, args.redetect_confidence) if args.instance_redetection and redetection_model is None else args.confidence
     results = model.predict(source=str(args.video), stream=True, verbose=False, device=args.device, imgsz=args.imgsz, conf=inference_confidence)
     frames = []
     events = []
@@ -270,6 +284,7 @@ def main() -> int:
         observation_source = "none"
         redetection_details = None
         redetection_probe = None
+        redetection_trace = None
         if args.instance_redetection and previous_bbox is None:
             anchor = initial_anchor_candidate(primary_candidates, target_memory)
             selected = anchor
@@ -277,19 +292,53 @@ def main() -> int:
             if anchor is not None:
                 observation_source = "detector"
             elif target_memory.templates:
-                ranked = rank_redetection_candidates(target_memory, result.orig_img, candidates, frame_index)
+                redetection_candidates = candidates
+                if redetection_model is not None:
+                    prompted = redetection_model.predict(source=result.orig_img, verbose=False, device=args.device, imgsz=args.imgsz, conf=args.redetect_confidence)[0]
+                    redetection_candidates = [
+                        {"bbox_xyxy": [float(value) for value in box], "confidence": float(confidence)}
+                        for box, confidence in zip(prompted.boxes.xyxy.tolist(), prompted.boxes.conf.tolist(), strict=True)
+                    ]
+                ranked = rank_redetection_candidates(target_memory, result.orig_img, redetection_candidates, frame_index)
                 if ranked:
                     top = ranked[0]
                     margin = top["score"] - ranked[1]["score"] if len(ranked) > 1 else 1.0
                     eligible = top["appearance"] >= args.redetect_appearance_threshold and top["score"] >= args.redetect_score_threshold and margin >= args.redetect_margin
                     short_reconnect = lost_frames <= args.short_reconnect_max_gap and top["confidence"] >= args.confidence and top["spatial"] >= 0.35
+                    compatible_hits = candidate_compatible_hit_count(redetection_history, top)
+                    confirmed = eligible and compatible_hits >= args.redetect_confirm_hits
+                    if args.candidate_diagnostics:
+                        redetection_trace = {
+                            "search_active": True,
+                            "candidate_count": len(ranked),
+                            "top_margin": float(margin),
+                            "top_eligible": bool(eligible),
+                            "top_short_reconnect": bool(short_reconnect),
+                            "top_confirmation_compatible_hits": compatible_hits,
+                            "top_confirmed": bool(confirmed),
+                            "candidates": [
+                                {
+                                    "rank": rank,
+                                    "bbox_xyxy": [float(value) for value in candidate["bbox_xyxy"]],
+                                    "confidence": float(candidate["confidence"]),
+                                    "appearance": float(candidate["appearance"]),
+                                    "shape": float(candidate["shape"]),
+                                    "scale": float(candidate["scale"]),
+                                    "spatial": float(candidate["spatial"]),
+                                    "score": float(candidate["score"]),
+                                    "considered_by_verifier": rank == 0,
+                                    "verifier_eligible": bool(eligible) if rank == 0 else False,
+                                }
+                                for rank, candidate in enumerate(ranked)
+                            ],
+                        }
                     redetection_probe = {key: float(top[key]) for key in ("appearance", "shape", "scale", "spatial", "score")}
                     redetection_probe.update({"margin": float(margin), "eligible": bool(eligible), "short_reconnect": bool(short_reconnect)})
                     if eligible and short_reconnect:
                         selected = top
                         observation_source = "detector_reconnect"
                         redetection_history.clear()
-                    elif eligible and candidate_confirmed(redetection_history, top, args.redetect_confirm_hits):
+                    elif confirmed:
                         selected = top
                         observation_source = "instance_redetection"
                         redetection_details = {key: float(top[key]) for key in ("appearance", "shape", "scale", "spatial", "score")}
@@ -299,6 +348,8 @@ def main() -> int:
                     else:
                         redetection_history.append(top if eligible else None)
                 else:
+                    if args.candidate_diagnostics:
+                        redetection_trace = {"search_active": True, "candidate_count": 0, "candidates": []}
                     redetection_history.append(None)
         if selected is not None:
             if observation_source == "none":
@@ -351,7 +402,19 @@ def main() -> int:
                 flow_points = seed_flow_points(current_gray, bbox)
             if args.instance_redetection:
                 if not target_memory.templates and observation_source == "detector" and confidence >= args.confidence:
-                    target_memory.remember(result.orig_img, bbox, frame_index, force=True)
+                    anchored = target_memory.remember(result.orig_img, bbox, frame_index, force=True)
+                    if anchored and redetection_model is not None and not redetection_prompt_ready:
+                        redetection_model.predict(
+                            source=result.orig_img,
+                            refer_image=result.orig_img,
+                            visual_prompts={"bboxes": [bbox], "cls": [0]},
+                            verbose=False,
+                            device=args.device,
+                            imgsz=args.imgsz,
+                            conf=args.redetect_confidence,
+                            predictor=YOLOEVPSegPredictor,
+                        )
+                        redetection_prompt_ready = True
                 elif observation_source == "detector" and stable_tracked_frames >= 3 and memory_quarantine <= 0 and association_iou >= 0.15:
                     target_memory.remember(result.orig_img, bbox, frame_index)
                 if target_memory.templates:
@@ -365,8 +428,7 @@ def main() -> int:
             events.append({"frame_index": frame_index, "event": "LOST"})
         ever_visible = ever_visible or visible
         previous_visible = visible
-        frames.append(
-            {
+        frame_record = {
                 "frame_index": frame_index,
                 "timestamp_s": frame_index / 30.0,
                 "target_visible": visible,
@@ -383,7 +445,9 @@ def main() -> int:
                 "redetection_details": redetection_details,
                 "redetection_probe": redetection_probe,
             }
-        )
+        if args.candidate_diagnostics:
+            frame_record["redetection_trace"] = redetection_trace
+        frames.append(frame_record)
         previous_gray = current_gray
 
     output = {
@@ -393,13 +457,13 @@ def main() -> int:
         "input": {"video": args.video.name, "sha256": sha256(args.video), "role": "RGB_SYSTEM_INPUT"},
         "groundtruth_argument_supported": False,
         "model": {"path_name": args.model.name, "sha256": sha256(args.model), "runtime": f"ultralytics-{ultralytics.__version__}", "device": str(args.device), "target_class": args.target_class, "imgsz": args.imgsz, "confidence_floor": args.confidence, "flow_max_gap": args.flow_max_gap},
-        "instance_redetection": {"enabled": args.instance_redetection, "candidate_confidence_floor": inference_confidence, "appearance_threshold": args.redetect_appearance_threshold, "score_threshold": args.redetect_score_threshold, "top1_top2_margin": args.redetect_margin, "confirmation": f"{args.redetect_confirm_hits}-of-{args.redetect_confirm_window}", "short_reconnect_max_gap": args.short_reconnect_max_gap, "appearance_weight": 0.80, "memory_templates": len(target_memory.templates), "memory_update_quarantine_frames": args.memory_update_quarantine},
+        "instance_redetection": {"enabled": args.instance_redetection, "candidate_generator": args.redetection_generator, "candidate_model": None if args.redetection_model is None else {"path_name": args.redetection_model.name, "sha256": sha256(args.redetection_model), "visual_prompt_source": "first_confirmed_rgb_anchor_bbox"}, "candidate_confidence_floor": args.redetect_confidence if redetection_model is not None else inference_confidence, "appearance_threshold": args.redetect_appearance_threshold, "score_threshold": args.redetect_score_threshold, "top1_top2_margin": args.redetect_margin, "confirmation": f"{args.redetect_confirm_hits}-of-{args.redetect_confirm_window}", "short_reconnect_max_gap": args.short_reconnect_max_gap, "appearance_weight": 0.80, "memory_templates": len(target_memory.templates), "memory_update_quarantine_frames": args.memory_update_quarantine, "candidate_diagnostics": args.candidate_diagnostics},
         "frame_count": len(frames),
         "frame_size": frame_size,
         "visible_frame_count": sum(row["target_visible"] for row in frames),
         "events": events,
         "frames": frames,
-        "limitations": ["preview_mp4_frame_order_time_proxy", "normalized_image_bearing_not_calibrated_degrees", "bbox_scale_nearness_not_metric_distance", "single_class_yolo_candidate_generator", "handcrafted_color_gradient_instance_embedding", "optional_sparse_optical_flow_translation_only"],
+        "limitations": ["preview_mp4_frame_order_time_proxy", "normalized_image_bearing_not_calibrated_degrees", "bbox_scale_nearness_not_metric_distance", "single_visual_prompt_or_single_class_candidate_generator", "handcrafted_color_gradient_instance_embedding", "optional_sparse_optical_flow_translation_only"],
         "claim_ceiling": "rgb_only_observation_mechanics_no_accuracy_or_navigation_claim",
         "terminal": "ADT1_RGB_OBSERVATIONS_PRODUCED",
     }

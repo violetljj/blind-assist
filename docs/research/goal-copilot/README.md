@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / ADT_1_INSTANCE_REDETECTION_R1_BOUNDED_DEVELOPMENT_UTILITY / ADT_2_PRERECORDED_DEVELOPMENT_DEMO_RENDERED / LONG_DROPOUT_REACQUISITION_INSUFFICIENT / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / SKY_DISABLED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / PROPOSAL_BOTTLENECK_CONFIRMED / YOLOE_26N_VISUAL_PROMPT_NOT_SUPPORTED / ADT_2_PRERECORDED_DEVELOPMENT_DEMO_RENDERED / LONG_DROPOUT_REACQUISITION_INSUFFICIENT / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / NO_DINOV2 / SKY_DISABLED / DEFAULT_APP_UNCHANGED`
 
 ## 当前主线：BA-ADT-REAL-EVIDENCE
 
@@ -45,6 +45,13 @@ observation 接到冻结 GC1 winner，且保持 clearance/completion fail closed
 `0.6203/0.4743`，13 次 instance-redetection 为 `13 correct / 0 wrong / 0 unresolved`，false-visible
 保持 `0.0073`；但 @30/@90/@180 reacquisition 仍为 `0.4/0.5/0.5`，最长 dropout 只降到 159 帧。
 因此仅建立 bounded Development utility，长时重捕获主瓶颈未解决。
+
+后置 failure accounting 将 5 个失败 opportunity 全部分为 `NO_CANDIDATE`，R1 在 GT-visible LOST
+search 中的 candidate recall 仅 `34/405 = 0.0840`。随后只替换 LOST proposal generator 的
+YOLOE-26n visual-prompt canary 仍是 `5/0/0` failure A/B/C，candidate recall 降至 `29/423 = 0.0686`，
+@30 reacquisition 降至 `0.2`、最长 dropout 增至 164，wrong-instance 仍为 0。结果见
+[`BA_ADT_YOLOE_VISUAL_PROMPT_CANARY_RESULT_2026-08-21.md`](BA_ADT_YOLOE_VISUAL_PROMPT_CANARY_RESULT_2026-08-21.md)。
+因此该单 visual-prompt candidate route 不获支持，DINOv2 不进入。
 
 ## 上位产品定义
 
@@ -120,10 +127,10 @@ claim ceiling 与 evidence role 均保持原样。
 
 ## 唯一 successor
 
-`ADT1_LEARNED_INSTANCE_REDETECTION_R2`：保持 R1 状态机、确认门、evaluator 与 flow5 不变，只升级为
-bounded `YOLOE visual prompt + DINOv2 ViT-S/14` candidate/identity canary，检验从未成功的 visible
-segments 是否真正获得候选。不能靠拉长 persistence、降低 wrong-instance 门或调用 Sky 刷 recall；
-GC2-C、held-out、Android/default-App 与交互式导航均不在此 successor 内。
+`ADT1_REAPPEARANCE_OBSERVABILITY_DIAGNOSTIC_R3`：保持 R1/YOLOE 结果与 evaluator 不变，只诊断五个
+`NO_CANDIDATE` 窗口中的目标像素尺度、visibility/遮挡和 RGB 可辨识性。它不增加 verifier、DINOv2、
+SAM 或新 detector，不靠拉长 persistence、降低 wrong-instance 门或调用 Sky 刷 recall；GC2-C、held-out、
+Android/default-App 与交互式导航均不在此 successor 内。
 
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim

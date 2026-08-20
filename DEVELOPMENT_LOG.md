@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。完成 R1 failure accounting 与单变量
+  YOLOE-26n visual-prompt candidate canary。R1 的 5 个失败 opportunity 全为 `NO_CANDIDATE`，
+  `CANDIDATE_REJECTED/CONFIRMATION_FAILED=0/0`，GT-visible LOST candidate recall 为 `34/405=0.0840`。
+  保持 TargetMemory、2-of-3、弱先验、quarantine、flow5 和 evaluator 不变，仅替换 LOST proposal 后，
+  candidate recall 降为 `29/423=0.0686`、@30 从 `0.4` 降至 `0.2`、longest dropout 从 159 增至 164，
+  5 个失败仍全为 `NO_CANDIDATE` 且 wrong-instance 为 0。终态为
+  `YOLOE_26N_VISUAL_PROMPT_NOT_SUPPORTED`；不进入 DINOv2/SAM/Sky，唯一 successor 是只诊断目标尺度、
+  遮挡与 RGB 可辨识性的 `ADT1_REAPPEARANCE_OBSERVABILITY_DIAGNOSTIC_R3`。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。完成
   `BA-ADT-INSTANCE-REDETECTION-1` Development canary：在同一已消费 `seq136 / Carrot_A`
   上，为 YOLO11n + flow5 observer 增加最多 5 个 trusted crop 的 RGB appearance memory、弱尺度/
