@@ -57,6 +57,9 @@ resumed or compared. V2 uses fresh paired seeds `53/71/89`; no V1 candidate,
 feedback, score, or seed is reused. Any provider nonzero exit, empty terminal
 caused by provider failure, timeout, or interrupted dispatch immediately seals
 the entire V2 cohort `NOT_EVALUABLE`, with no replacement request or resume.
+After a complete 48/48 run, `analyze_result.py` applies only the preregistered
+verdict rules and writes a create-once result receipt; it refuses incomplete or
+provider-failed runs.
 
 Primary analysis is the paired difference in best improvement from the shared
 initial candidate. Secondary analysis records discovery hit-rate, best-of-budget
