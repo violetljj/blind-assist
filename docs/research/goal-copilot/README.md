@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / GOAL_COPILOT_1_PERMANENTLY_CLOSED / GOAL_COPILOT_2A_ZERO_MODEL_PROTOCOL_FROZEN / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / GOAL_COPILOT_1_PERMANENTLY_CLOSED / GOAL_COPILOT_2A_COMPLETE / GOAL_COPILOT_2B_PROTOCOL_DESIGN_ADMITTED_NO_MODEL_CALLS / DEFAULT_APP_UNCHANGED`
 
 ## 上位产品定义
 
@@ -85,3 +85,9 @@ GOAL-COPILOT-1 现已永久关闭，不再授权任何 GC1 模型搜索。下一
 [`GOAL_COPILOT_2A_PROTOCOL.md`](GOAL_COPILOT_2A_PROTOCOL.md)：在不调用模型、不接触 GC1
 fresh cohort 的前提下，对冻结 GC1 baseline 与 winner 做 perception-uncertainty
 characterization。GC2-A 只使用已消费 dev 场景语义，因此其结果不得称为 fresh evidence。
+
+GC2-A 已完成并确定性 replay 通过；结果见
+[`GOAL_COPILOT_2A_RESULT.md`](GOAL_COPILOT_2A_RESULT.md)。冻结 winner 在 primary
+`COMBINED_MODERATE` 下 completion `0/12`、eligible reacquisition `0/3`，并有 `1` 次
+premature completion，因此只准入 GC2-B noise-robust Sky search 的独立协议设计。GC2-B
+模型调用、正式 Sky/EvoX 搜索和多臂实验仍未授权。
