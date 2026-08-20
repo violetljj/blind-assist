@@ -27,14 +27,16 @@ from .policy_space import (
 )
 
 
-PROTOCOL_ID = "L10M-B1-STRUCTURED-SEARCHABILITY-MATCHED-V1"
-STATUS = "B1_PROTOCOL_FROZEN_EXECUTION_NOT_STARTED"
+PROTOCOL_ID = "L10M-B1-STRUCTURED-SEARCHABILITY-MATCHED-V2-FRESH-SUCCESSOR"
+STATUS = "B1_V2_FRESH_SUCCESSOR_PROTOCOL_FROZEN_EXECUTION_NOT_STARTED"
+PREDECESSOR_PROTOCOL_ID = "L10M-B1-STRUCTURED-SEARCHABILITY-MATCHED-V1"
+PREDECESSOR_TERMINAL = "B1_NOT_EVALUABLE_TRANSPORT_RUNTIME"
 EXPECTED_SHA256 = {
     "scripts/research/l10m_b1/hidden_cohort_v1.json": "960172ce5dd5cc227eddf778ff9c586956f784ac681916b1cbb45a0e11013e7e",
     "scripts/research/l10m_b1/evaluator.py": "5ca40163ead786127a53afbd994862f31b5bb87a9d83ffcc806406cdc0525a05",
     "scripts/research/l10m_b1/policy_space.py": "923ea40af80866fb6f98725d2031e2c450972f138e3ce31e8df6de4270779c43",
 }
-PAIRED_SEEDS = (17, 29, 43)
+PAIRED_SEEDS = (53, 71, 89)
 GENERATIONS_PER_ARM_PER_SEED = 8
 EVALUATIONS_PER_ARM_PER_SEED = 8
 MIN_DISCOVERY_IMPROVEMENT = 0.02
@@ -103,6 +105,14 @@ def build_protocol_manifest() -> dict[str, object]:
         "status": STATUS,
         "research_question": "Under frozen B0 state semantics, does structured exposure of the same mutable policy space make behaviorally better candidates easier to find?",
         "claim_ceiling": "matched search-interface value on a hidden synthetic mechanics cohort; not state-machine revalidation, large-scale Structured Search, end-to-end, device, user, or safety-effect evidence",
+        "successor_boundary": {
+            "predecessor_protocol_id": PREDECESSOR_PROTOCOL_ID,
+            "predecessor_terminal": PREDECESSOR_TERMINAL,
+            "predecessor_observations_reused": False,
+            "predecessor_seeds_reused": False,
+            "fresh_paired_seeds": list(PAIRED_SEEDS),
+            "reason": "V1 was sealed NOT_EVALUABLE after a transport runtime failure and cannot be resumed or compared",
+        },
         "parent_freeze": {
             "protocol_id": closure["protocol_id"],
             "verdict": closure["verdict"],
@@ -141,6 +151,7 @@ def build_protocol_manifest() -> dict[str, object]:
             "feedback": "same behavioral vector and validity fields after each admitted evaluation",
             "selection_rule": "best semantic-valid and safe candidate by frozen behavioral_score; earliest evaluation breaks ties",
             "pair_order": "alternate first arm by seed; preserve paired generation and evaluation counts",
+            "transport_failure_semantics": "any nonzero provider exit, empty terminal caused by provider failure, timeout, or interrupted dispatch immediately seals the whole cohort NOT_EVALUABLE; no resume or replacement call",
         },
         "candidate_space": {
             "action_selection_turn_threshold": list(TURN_THRESHOLDS),

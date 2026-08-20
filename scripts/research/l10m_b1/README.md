@@ -51,6 +51,13 @@ runner additionally requires the exact proxy `result.json` through
 `--transport-qualification` and binds its path and SHA-256 into the execution
 manifest.
 
+The current scientific protocol is the fresh V2 successor. V1 was sealed
+`B1_NOT_EVALUABLE_TRANSPORT_RUNTIME` after partial observations and is never
+resumed or compared. V2 uses fresh paired seeds `53/71/89`; no V1 candidate,
+feedback, score, or seed is reused. Any provider nonzero exit, empty terminal
+caused by provider failure, timeout, or interrupted dispatch immediately seals
+the entire V2 cohort `NOT_EVALUABLE`, with no replacement request or resume.
+
 Primary analysis is the paired difference in best improvement from the shared
 initial candidate. Secondary analysis records discovery hit-rate, best-of-budget
 behavioral vector, first-hit generation/evaluation, unsafe and semantic-invalid

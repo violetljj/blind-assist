@@ -407,6 +407,10 @@ def _initial_result() -> dict[str, object]:
     return evaluate_spec(INITIAL_SPEC)
 
 
+def _provider_runtime_failure(returncode: int, output: str) -> bool:
+    return returncode != 0 or not output.strip()
+
+
 def _validate_transport_qualification(path: Path) -> dict[str, object]:
     path = path.resolve()
     if not path.is_file():
@@ -656,6 +660,32 @@ def _run_arm(
                 }
                 _append_jsonl(events_path, completion)
                 raise RuntimeError(f"B1 blind isolation violation: {blind_marker}")
+            if _provider_runtime_failure(returncode, candidate_output):
+                completion = {
+                    "kind": "completion",
+                    "request_id": request_id,
+                    "protocol_id": PROTOCOL_ID,
+                    "seed": seed,
+                    "arm": arm,
+                    "generation": generation,
+                    "completed_at": _utc(),
+                    "returncode": returncode,
+                    "candidate_output": candidate_output,
+                    "candidate_output_sha256": _sha256_bytes(candidate_output.encode()),
+                    "semantic_valid": False,
+                    "unsafe_candidate": False,
+                    "semantic_error": "ProviderRuntimeFailure: nonzero exit or empty terminal response",
+                    "behavioral_score": None,
+                    "behavioral_vector": {},
+                    "invariant_counts": {},
+                    "changed_components": [],
+                    "diagnostics_tail": diagnostics,
+                    "transport_runtime_failure": True,
+                }
+                _append_jsonl(events_path, completion)
+                raise RuntimeError(
+                    f"B1 provider runtime failure at seed={seed} arm={arm} generation={generation}"
+                )
             try:
                 candidate = _parse_output(arm, candidate_output)
                 result = evaluate_spec(candidate)
@@ -717,7 +747,9 @@ def _run_arm(
                 "diagnostics_tail": "provider timeout; counted against frozen budget",
             }
             _append_jsonl(events_path, completion)
-            completed.append(completion)
+            raise RuntimeError(
+                f"B1 provider timeout at seed={seed} arm={arm} generation={generation}"
+            ) from exc
         _atomic_json(
             progress_path,
             {"run_id": run_dir.name, "seed": seed, "arm": arm, "generation": generation, "completed": len(completed), "last_activity": _utc(), "status": "running", "eta": "unknown"},
@@ -806,24 +838,31 @@ def run_search(
         manifest["resumed_at"] = _utc()
         _atomic_json(manifest_path, manifest)
 
-    for seed_index, seed in enumerate(PAIRED_SEEDS):
-        arm_order = ("raw", "structured") if seed_index % 2 == 0 else ("structured", "raw")
-        for arm in arm_order:
-            _run_arm(
-                cli=cli,
-                backend=backend,
-                docker=docker,
-                docker_image=docker_image,
-                auth_path=auth_path,
-                proxy_bind=proxy_bind,
-                root=output_root,
-                run_dir=run_dir,
-                seed=seed,
-                arm=arm,
-                timeout_seconds=timeout_seconds,
-                events_path=events_path,
-                progress_path=progress_path,
-            )
+    try:
+        for seed_index, seed in enumerate(PAIRED_SEEDS):
+            arm_order = ("raw", "structured") if seed_index % 2 == 0 else ("structured", "raw")
+            for arm in arm_order:
+                _run_arm(
+                    cli=cli,
+                    backend=backend,
+                    docker=docker,
+                    docker_image=docker_image,
+                    auth_path=auth_path,
+                    proxy_bind=proxy_bind,
+                    root=output_root,
+                    run_dir=run_dir,
+                    seed=seed,
+                    arm=arm,
+                    timeout_seconds=timeout_seconds,
+                    events_path=events_path,
+                    progress_path=progress_path,
+                )
+    except Exception as exc:
+        close_interrupted_run(
+            run_dir,
+            f"{type(exc).__name__}: {exc}; successor cohort sealed fail-closed without resume",
+        )
+        raise
     manifest["status"] = "COMPLETE"
     manifest["completed_at"] = _utc()
     _atomic_json(run_dir / "execution_manifest.json", manifest)

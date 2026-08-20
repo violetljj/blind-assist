@@ -10,6 +10,7 @@ from .run_search import (
     _feedback,
     _parse_output,
     _render_candidate,
+    _provider_runtime_failure,
     _validate_transport_qualification,
 )
 from .transport_qualification import ATTEMPT_COUNT, PASS_TERMINAL, PROTOCOL_ID
@@ -49,6 +50,11 @@ class L10MB1RunSearchTest(unittest.TestCase):
             path.write_text(json.dumps(result), encoding="utf-8")
             with self.assertRaisesRegex(RuntimeError, "does not authorize"):
                 _validate_transport_qualification(path)
+
+    def test_provider_runtime_failure_is_not_candidate_invalidity(self) -> None:
+        self.assertTrue(_provider_runtime_failure(1, ""))
+        self.assertTrue(_provider_runtime_failure(0, ""))
+        self.assertFalse(_provider_runtime_failure(0, "candidate"))
 
 
 if __name__ == "__main__":
