@@ -254,7 +254,94 @@ handoffs, and tool-output control. In particular:
   changes, start a new task or create a compact handoff instead of carrying
   unrelated history forward.
 
-## 6. Mechanical verification
+## 6. Remote execution contract
+
+Treat every remote compute host as a replaceable, shared, isolated execution
+plane. The local checkout remains the control and evidence plane.
+
+### Authority and endpoint
+
+- Keep Codex Desktop/CLI and all model calls, source editing, frozen controller
+  and protocol, candidate store, dispatch journal, evidence ledger, checkpoints,
+  budgets, result validation, adjudication, closeout, and authoritative terminal
+  receipts on the local machine. Do not install or run Codex CLI on a remote
+  evaluator host.
+- Use the remote host only for task-owned evaluator workers and CPU-heavy
+  evaluation, tests, builds, or batch processing. Remote metrics, artifacts,
+  execution metadata, and receipts are provisional until the local controller
+  validates their hashes, protocol, task identity, and schema.
+- The SSH endpoint is runtime configuration, never a project constant. Use the
+  endpoint most recently supplied by the user. The current endpoint is
+  `ssh -p 24564 root@connect.westb.seetacloud.com`, but it is drift-prone and
+  must not be assumed current in a later task.
+- After an endpoint changes, rerun a read-only preflight that verifies SSH and
+  host identity, cgroup/cpuset CPU, memory, disk, active processes, locks, and
+  available container runtime. Locate or build a compatible environment and
+  verify it before dispatch. Ordinary work may explicitly fall back to local
+  execution; frozen or evidence-critical work must not switch execution
+  environment silently.
+
+### Environment and task isolation
+
+- Fingerprint a reusable remote environment from the committed dependency lock,
+  extras, Python/runtime version, OS/architecture, and required system-library
+  or CUDA identity. Build and verify a fingerprint once, then mount or reference
+  it read-only. Never modify global Python/Conda environments or shell startup
+  files.
+- Keep immutable environments under a layout equivalent to
+  `remote/environments/<environment-fingerprint>/`. Keep each task's staged
+  source, inputs, outputs, workers, writable cache, temporary files, logs,
+  checkpoints, receipts, locks, and process metadata under a distinct layout
+  equivalent to `remote/tasks/<project>/<task-id>/`.
+- Isolate every task's source commit, work directory, writable state, ports,
+  locks, process group, CPU/memory limits, and parallelism. Never share writable
+  caches or task state, clear caches globally, broadly kill processes, or touch
+  another project's directories, processes, locks, receipts, or artifacts.
+- Size workers from effective cgroup/cpuset capacity rather than the host's
+  headline CPU count and reserve capacity for supervision, logging, and
+  checkpoints. For multiprocessing, normally set `OMP_NUM_THREADS=1`,
+  `MKL_NUM_THREADS=1`, and `OPENBLAS_NUM_THREADS=1` to avoid nested
+  oversubscription. Reprobe capacity on every new endpoint; prior observations
+  such as 32 effective CPUs, 60 GiB RAM, and no GPU are not current authority.
+- Use Docker, Podman, or Apptainer only when preflight confirms it exists.
+  Containers package dependencies; they do not provide endpoint recovery,
+  persistent transport, idempotency, evidence authority, quotas, or task
+  isolation. Otherwise use a task-isolated Python/uv environment.
+
+### Persistent dispatch and recovery
+
+- Environment bootstrap is a one-time preparation phase, not a per-candidate
+  transport. Deploy the commit, protocol, and verified environment before a
+  high-frequency search, then keep one task-owned evaluator worker per slot.
+- A persistent evaluator request carries the candidate content or hash,
+  scenario/arm, seed, unique request ID, and idempotency key. The remote response
+  carries metrics, artifact hashes, execution metadata, and an atomically
+  created remote receipt. Before enabling a new formal remote transport, pass a
+  zero-model-call canary that exercises dispatch, retrieval, and validation.
+- Before each dispatch, append local `dispatch_started`. After retrieving the
+  remote result, validate hashes, protocol, task identity, and schema before
+  appending `dispatch_completed` and creating the authoritative local terminal
+  receipt.
+- If SSH disconnects after dispatch, query the existing task and receipt before
+  taking any new action. When execution cannot be ruled in or out, mark the
+  request `in_doubt` and conservatively charge it to the frozen budget. Never
+  automatically rerun it, reset budget usage, or add an undeclared attempt.
+  Repeated successful probes establish momentary reachability only; they do not
+  validate an architecture based on many short-lived connections.
+
+### Cleanup
+
+- At completion, failure, cancellation, or handoff, stop only the exact
+  task-owned workers and sessions; release its ports, locks, and process group;
+  and remove only proven task-owned temporary resources. Verify the relevant
+  processes, locks, and ports are actually gone.
+- Preserve manifests, receipts, hashes, logs, checkpoints, and other material
+  needed for audit or resume. If a resource remains allocated for handoff, state
+  its owner, purpose, and release procedure.
+- When AutoDL work ends, remind the user to shut down the instance in the AutoDL
+  console to stop billing.
+
+## 7. Mechanical verification
 
 Use the smallest gates that cover the actual change. Do not replace necessary
 verification with prose, and do not run unrelated full suites solely because a
