@@ -68,14 +68,21 @@ def select_trusted_exemplars(observations: dict) -> list[dict]:
     ]
 
 
-def read_frame(capture: Any, frame_index: int):
+def load_frames(capture: Any, frame_indices: list[int]) -> dict[int, Any]:
+    """Decode ordered contiguous ranges once so GPU inference never waits on repeated MP4 seeks."""
     import cv2
 
-    capture.set(cv2.CAP_PROP_POS_FRAMES, frame_index)
-    ok, image = capture.read()
-    if not ok:
-        raise ValueError(f"could not read source frame {frame_index}")
-    return image
+    result = {}
+    previous = None
+    for frame_index in sorted(set(frame_indices)):
+        if previous is None or frame_index != previous + 1:
+            capture.set(cv2.CAP_PROP_POS_FRAMES, frame_index)
+        ok, image = capture.read()
+        if not ok:
+            raise ValueError(f"could not read source frame {frame_index}")
+        result[frame_index] = image
+        previous = frame_index
+    return result
 
 
 def resize_rgb_tensor(image_bgr, image_size: int, torch):
@@ -109,12 +116,12 @@ def inverse_sigmoid(value, torch, eps: float = 1e-5):
     return torch.log(value.clamp(min=eps) / (1 - value).clamp(min=eps))
 
 
-def encode_exemplars(model, capture, exemplars: list[dict], source_size: dict, torch):
+def encode_exemplars(model, images: dict[int, Any], exemplars: list[dict], source_size: dict, torch):
     content = []
     last_attention = None
     last_padded = None
-    for exemplar in exemplars:
-        image = read_frame(capture, exemplar["frame_index"])
+    for exemplar in sorted(exemplars, key=lambda row: row["frame_index"]):
+        image = images[exemplar["frame_index"]]
         tensor, height, width = resize_rgb_tensor(image, IMAGE_SIZE, torch)
         target = scaled_box_mask(
             exemplar["bbox_xyxy"], source_size["width"], source_size["height"], width, height, torch
@@ -168,8 +175,7 @@ def masks_to_candidates(raw_masks, raw_scores, source_width: int, source_height:
     )[:FRAME_TOP_K]
 
 
-def infer_frame(model, capture, frame_index: int, prompt, source_size: dict, torch) -> list[dict]:
-    image = read_frame(capture, frame_index)
+def infer_frame(model, image, prompt, source_size: dict, torch) -> list[dict]:
     tensor, height, width = resize_rgb_tensor(image, IMAGE_SIZE, torch)
     target = {"image": tensor, "height": height, "width": width}
     features, mask_features, padded_h, padded_w = model.model.get_encoder_feature([target])
@@ -214,7 +220,7 @@ def build_output(args, observations, exemplars, frames, processed, elapsed, peak
         },
         "groundtruth_argument_supported": False,
         "future_location_or_visibility_input_supported": False,
-        "formal_run": args.mechanics_frame is None,
+        "formal_run": args.mechanics_frame is None and set(processed) == set(formal_frame_indices()),
         "mechanics_frame": args.mechanics_frame,
         "frozen_cohort_source": "consumed_R4_W2_W3_W4_eligibility_ranges",
         "frozen_frame_ranges_inclusive": [list(pair) for pair in FORMAL_FRAME_RANGES],
@@ -293,34 +299,35 @@ def main() -> int:
     capture = cv2.VideoCapture(str(args.video))
     if not capture.isOpened():
         raise ValueError("could not open source video")
-    torch.cuda.reset_peak_memory_stats()
-    started = time.perf_counter()
     try:
-        with torch.inference_mode(), torch.autocast(device_type="cuda", dtype=torch.float16):
-            prompt = encode_exemplars(model, capture, exemplars, observations["frame_size"], torch)
-            for ordinal, frame_index in enumerate(requested):
-                if frame_index in processed:
-                    continue
-                frames[frame_index]["candidates"] = infer_frame(
-                    model, capture, frame_index, prompt, observations["frame_size"], torch
-                )
-                processed.append(frame_index)
-                elapsed = elapsed_before + time.perf_counter() - started
-                peak = {
-                    "allocated": int(torch.cuda.max_memory_allocated()),
-                    "reserved": int(torch.cuda.max_memory_reserved()),
-                }
-                if len(processed) % CHECKPOINT_INTERVAL == 0 or ordinal == len(requested) - 1:
-                    payload = build_output(
-                        args, observations, exemplars, frames, processed, elapsed, peak, checkpoint_hash, checkpoint_bytes
-                    )
-                    atomic_json(args.output, payload)
-                    print(json.dumps({
-                        "processed": len(processed), "expected": len(requested), "frame_index": frame_index,
-                        "elapsed_seconds": elapsed, "peak_reserved_bytes": peak["reserved"],
-                    }), flush=True)
+        images = load_frames(capture, [row["frame_index"] for row in exemplars] + requested)
     finally:
         capture.release()
+    torch.cuda.reset_peak_memory_stats()
+    started = time.perf_counter()
+    with torch.inference_mode(), torch.autocast(device_type="cuda", dtype=torch.float16):
+        prompt = encode_exemplars(model, images, exemplars, observations["frame_size"], torch)
+        for ordinal, frame_index in enumerate(requested):
+            if frame_index in processed:
+                continue
+            frames[frame_index]["candidates"] = infer_frame(
+                model, images[frame_index], prompt, observations["frame_size"], torch
+            )
+            processed.append(frame_index)
+            elapsed = elapsed_before + time.perf_counter() - started
+            peak = {
+                "allocated": int(torch.cuda.max_memory_allocated()),
+                "reserved": int(torch.cuda.max_memory_reserved()),
+            }
+            if len(processed) % CHECKPOINT_INTERVAL == 0 or ordinal == len(requested) - 1:
+                payload = build_output(
+                    args, observations, exemplars, frames, processed, elapsed, peak, checkpoint_hash, checkpoint_bytes
+                )
+                atomic_json(args.output, payload)
+                print(json.dumps({
+                    "processed": len(processed), "expected": len(requested), "frame_index": frame_index,
+                    "elapsed_seconds": elapsed, "peak_reserved_bytes": peak["reserved"],
+                }), flush=True)
     return 0
 
 
