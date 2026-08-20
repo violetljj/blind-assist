@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / GOAL_COPILOT_1_PERMANENTLY_CLOSED / GOAL_COPILOT_2A_COMPLETE / GOAL_COPILOT_2B_SEARCH_COMPLETE_NO_HELDOUT_ADMISSION / NO_SUCCESSOR_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / GOAL_COPILOT_1_PERMANENTLY_CLOSED / GOAL_COPILOT_2A_COMPLETE / GOAL_COPILOT_2B_SEARCH_COMPLETE_NO_HELDOUT_ADMISSION / GC2_OBSERVABILITY_AUDIT_COMPLETE / SYNTHETIC_MODERATE_OPTIMIZATION_STOPPED / REAL_PHONE_RGB_GROUNDING_NOT_EVALUABLE / NO_SUCCESSOR_EXECUTION_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
 ## 上位产品定义
 
@@ -104,3 +104,17 @@ GC2-B 随后已按独立 formal seal 完整执行并关闭；见
 admission，因此 encrypted held-out 未进入 winner-lock 后的正式开启，也从未用于候选评估。当前结论是
 `GC2B_NOISE_ROBUST_SEARCH_SIGNAL_NOT_ESTABLISHED`，不授权 rescue rerun、扩预算或同一候选面的
 GC2-C。
+
+随后完成的零模型
+[`GOAL-COPILOT-2 observability and reality audit`](GOAL_COPILOT_2_OBSERVABILITY_AUDIT_RESULT.md)
+只使用 consumed scenarios、冻结 simulator、candidate traces 和既有 device evidence。12 个 moderate
+episode 的首次偏离分散在 stale evidence、tracking collapse、dropout 与方向/动作错误；逐项关闭任一
+corruption 最多只恢复到 `1/12`。Hidden oracle、完整历史 lookup 和六函数 surface memorization 均可在
+这 12 条 consumed 轨迹达到 `12/12`，但 lookup 明确是 simulator leakage diagnostic，不是可迁移
+policy evidence。现有 Android trace 是公开/已消费真实世界 RGB 的 device replay，不是 real-phone
+capture，且缺少 target identity、tracking、bearing、nearness 与时间映射，所以真实手机噪声校准为
+`NOT_EVALUABLE`。
+
+当前决策固定为停止 synthetic moderate optimization 并保持 policy search 关闭。若未来继续，必须先
+另立 real-phone RGB target-evidence capture/audit contract；该执行当前未授权。GC2-C、held-out opening、
+新模型/Sky 调用、扩预算和 consumed representation ladder 均继续禁止。

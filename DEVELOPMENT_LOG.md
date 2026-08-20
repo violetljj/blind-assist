@@ -2,6 +2,19 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-20（Asia/Hong_Kong）；执行者：Codex。完成 Goal Copilot 2 的零模型 observability、
+  failure-autopsy、counterfactual 与 reality audit；只使用 consumed GC2 dev scenarios、冻结 simulator、
+  GC2-B 锁定公开 winner 和既有 device evidence，未读取 held-out。Moderate `0/12` 的首次偏离分散为
+  stale evidence `4`、tracking collapse `3`、dropout `2`、bearing-jitter alignment bypass `2` 和
+  false-target reverse search `1`；逐项
+  去掉任一 corruption 最多只恢复到 `1/12`。Hidden oracle、完整 noisy-history lookup 与当前六函数面
+  的 consumed memorization upper bound 均为 `12/12`，后两者只排除有限场景上的绝对语法不可达，
+  不建立可迁移 policy/search signal。现有 4,422 帧真实世界 RGB Android device replay 不是 phone
+  capture，且缺 target identity、tracking、bearing、nearness 与 capture-time mapping，故 real-phone
+  grounding 为 `NOT_EVALUABLE`。决策选择 A：停止 synthetic moderate optimization，保持 GC2-C、
+  held-out、新 Sky/模型调用、扩预算和 representation ladder 关闭；real-phone evidence capture/audit
+  须另冻结 source/truth/timing/privacy/roster contract，当前不授权执行。默认 App、产品和 safety 不变。
+
 - 时间：2026-08-20（Asia/Hong_Kong）；执行者：violjjet。正式将 Goal-Driven Visual Copilot 建立为
   BlindAssist 上位产品/研究主线，并建立独立新 lineage `GOAL-COPILOT-1`。V0 只做冻结 symbolic
   observation 的零模型 mock roundtrip，覆盖 FIND_AND_REACH、TRACK_AND_REACQUIRE、
