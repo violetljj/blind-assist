@@ -14,10 +14,21 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   选择少量完整 sequence；不把 visibility gap 冒充已确认 tracker failure，也不为凑结果调门。
   随后复用已披露 consumed GT geometry prescreen 仅作 Development 优先级，固定门槛挖掘
   `clean_seq134/136`，分别得到 172/134 个六阶段候选；选中 `seq136 / Carrot_A`（1,502 visible
-  frames，GT center-range proxy 约 4.59→1.77 m）作为 ADT-1 demo 目标。Sample RGB-only YOLO11n
-  `bowl` canary 的 `WoodenBowl` localization recall 仅 0.1393、最长漏定位 86 帧，暴露多实例 target
-  grounding/association failure；不归因 policy、不授权 Sky。`seq136` RGB 下载当前因官方 manifest TLS
-  EOF 暂停，唯一下一步为 hash-verified `ADT1_SEQ136_CARROT_RGB_CANARY`。
+  frames，GT center-range proxy 约 4.59→1.77 m）作为 ADT-1 demo 目标。后续修正早期 evaluator 的
+  ADT→preview 坐标错误：正确变换为 90° clockwise，而不是 y-axis flip；sample `WoodenBowl`
+  held-forward recall 更新为 0.2488，仍暴露多实例 target grounding/association failure。官方 manifest
+  transport 恢复后，按 manifest SHA-1 下载 114,143,011-byte `seq136` preview RGB；RGB-only YOLO11n
+  `carrot` observer 处理 3,824 帧。仅用前 25% timeline 选择固定 506-frame offset、其余 2,160 帧评价：
+  localization recall 0.4041、false-visible 0、最长 dropout 177 帧、normalized bearing MAE 0.01234、
+  bbox-scale correlation 0.9681、approach-direction accuracy 0.9091，10 次 eligible reacquisition 中 30 帧内
+  成功率 0.4。定位成功时 evidence 明确有效，但 visibility/tracking/reacquisition 尚不足，失败不在 policy，
+  不授权 Sky。已将同一 observations 接到 SHA-256 固定的 GC1 winner，生成 72 秒 prerecorded ADT-2
+  Development demo、guidance timeline 和 evaluator-only GT overlay；bearing/nearness 仅为 proxy，clearance
+  与 completion fail closed，不能称为闭环导航。随后在同一 consumed Development sequence 加入 RGB-only
+  sparse optical flow：30-frame persistence 虽把 recall 提至 0.6767，却使 GT-invisible false-visible 升至
+  0.0940，故拒绝；原生 5-frame candidate 达到 recall 0.5808、mean IoU 0.4469、false-visible 0.0073，
+  准入 Development demo。它仍有 162-frame longest dropout，30-frame reacquisition success 仍为 0.4，
+  因此 M1 tracking 尚未建立。唯一下一步为 `ADT1_INSTANCE_CONDITIONED_REDETECTION`，Sky 继续关闭。
 
 - 时间：2026-08-20（Asia/Hong_Kong）；执行者：Codex。完成 Goal Copilot 2 的零模型 observability、
   failure-autopsy、counterfactual 与 reality audit；只使用 consumed GC2 dev scenarios、冻结 simulator、

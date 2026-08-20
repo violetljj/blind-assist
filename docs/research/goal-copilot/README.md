@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / ADT_0_FULL_SEQUENCE_TARGET_SELECTED / ADT_1_SAMPLE_RGB_CANARY_TARGET_IDENTITY_FAILURE / SEQ136_CARROT_RGB_NEXT / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / SKY_DISABLED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / ADT_1_FLOW5_TEMPORAL_TRACKER_ADMITTED_FOR_DEVELOPMENT / ADT_2_PRERECORDED_DEVELOPMENT_DEMO_RENDERED / LONG_DROPOUT_REACQUISITION_INSUFFICIENT / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / SKY_DISABLED / DEFAULT_APP_UNCHANGED`
 
 ## 当前主线：BA-ADT-REAL-EVIDENCE
 
@@ -17,8 +17,8 @@ navigation。
 
 ADT-0 的稳定实现入口见
 [`scripts/research/ba_adt_real_evidence/README.md`](../../../scripts/research/ba_adt_real_evidence/README.md)。
-当前只激活 sample acquisition 与 GT-only episode mining；Sky、GC2-C、held-out、Android/default-App
-接线、产品和安全主张均关闭。
+当前 ADT-0、ADT-1 Development evaluation 与首个 ADT-2 prerecorded demo 已运行；Sky、GC2-C、
+held-out、Android/default-App 接线、产品和安全主张均关闭。
 
 Sample 已完成，结果见
 [`BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md`](BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md)：300 帧中
@@ -27,9 +27,12 @@ Sample 已完成，结果见
 
 完整 sequence 筛选与首个 RGB-only canary 结果见
 [`BA_ADT_REAL_EVIDENCE_ADT0_SELECTION_ADT1_CANARY_RESULT.md`](BA_ADT_REAL_EVIDENCE_ADT0_SELECTION_ADT1_CANARY_RESULT.md)。
-固定 miner 在 `clean_seq134/136` 找到 172/134 个六阶段候选，首选 `seq136 / Carrot_A`。Sample
-closed-vocabulary `bowl` canary 因多实例身份混淆只有 0.1393 localization recall；这是 perception
-grounding failure，不授权 Sky。
+固定 miner 在 `clean_seq134/136` 找到 172/134 个六阶段候选，首选 `seq136 / Carrot_A`。修正 ADT →
+preview 90° clockwise 坐标变换后，sample `bowl` held-forward recall 为 0.2488，仍显示多实例 target
+identity 不足。完整 `seq136 / carrot` detector-only held-forward recall 为 0.4041。最小 5-frame sparse
+optical-flow tracker 把 recall 提升至 0.5808、mean IoU 提升至 0.4469，GT-invisible false-visible 为
+0.0073；但最长 dropout 仍为 162 帧、30 帧内重捕获成功率仍仅 0.4。ADT-2 demo 已把这一 RGB-only
+observation 接到冻结 GC1 winner，且保持 clearance/completion fail closed。
 
 ## 上位产品定义
 
@@ -105,10 +108,9 @@ claim ceiling 与 evidence role 均保持原样。
 
 ## 唯一 successor
 
-`ADT1_SEQ136_CARROT_RGB_CANARY`：官方 manifest transport 恢复后，hash-verified 下载
-`Apartment_release_clean_seq136_M1292` preview RGB，以唯一 COCO `carrot` class 运行 RGB-only adapter，
-再由隔离 GT evaluator 计分。Sky、GC2-C、held-out、Android/default-App 与交互式导航均不在此
-successor 内。
+`ADT1_INSTANCE_CONDITIONED_REDETECTION`：处理当前 5-frame tracker 无法跨越的长 dropout 与未改善的
+reacquisition，不能靠继续拉长 persistence 制造 false-visible。Sky、GC2-C、held-out、Android/
+default-App 与交互式导航均不在此 successor 内。
 
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim

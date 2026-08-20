@@ -1,6 +1,6 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_RESEARCH_MAINLINE=BA_ADT_REAL_EVIDENCE / ADT_0_FULL_SEQUENCE_TARGET_SELECTED / ADT_1_SAMPLE_CANARY_TARGET_IDENTITY_FAILURE / SEQ136_CARROT_RGB_NEXT / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / SKY_DISABLED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_RESEARCH_MAINLINE=BA_ADT_REAL_EVIDENCE / ADT_1_FLOW5_TEMPORAL_TRACKER_ADMITTED_FOR_DEVELOPMENT / ADT_2_PRERECORDED_DEVELOPMENT_DEMO_RENDERED / LONG_DROPOUT_REACQUISITION_INSUFFICIENT / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / SKY_DISABLED / DEFAULT_APP_UNCHANGED`
 
 Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线，当前 successor 为
 `BA-ADT-REAL-EVIDENCE`：现有 perception、geometry、risk、
@@ -34,7 +34,7 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| Goal-Driven Visual Copilot / BA-ADT-REAL-EVIDENCE | 真实第一视角 RGB 能否恢复 Goal Copilot 所需的 target temporal evidence | `PRODUCT_AND_RESEARCH_MAINLINE / ADT_0_FULL_SEQUENCE_TARGET_SELECTED / ADT_1_SAMPLE_CANARY_TARGET_IDENTITY_FAILURE / SEQ136_CARROT_RGB_NEXT / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / SKY_DISABLED` | [Goal Copilot current](goal-copilot/README.md) | `ADT1_SEQ136_CARROT_RGB_CANARY`：manifest transport 恢复后下载 hash-verified preview RGB，运行唯一 carrot class 的 RGB-only adapter + isolated GT evaluator | GT 进入 RGB estimator；把 prerecorded replay 称为闭环导航；恢复 GC1/GC2-B、打开 held-out、启动 Sky/GC2-C 或接默认 App | 否 |
+| Goal-Driven Visual Copilot / BA-ADT-REAL-EVIDENCE | 真实第一视角 RGB 能否恢复 Goal Copilot 所需的 target temporal evidence | `PRODUCT_AND_RESEARCH_MAINLINE / ADT_1_FLOW5_TEMPORAL_TRACKER_ADMITTED_FOR_DEVELOPMENT / ADT_2_PRERECORDED_DEVELOPMENT_DEMO_RENDERED / CONDITIONAL_BEARING_SCALE_APPROACH_SIGNAL / LONG_DROPOUT_REACQUISITION_INSUFFICIENT / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / SKY_DISABLED` | [Goal Copilot current](goal-copilot/README.md) | `ADT1_INSTANCE_CONDITIONED_REDETECTION`：处理 5-frame tracker 无法跨越的长 dropout 与未改善的 reacquisition | GT 进入 RGB estimator；把 prerecorded replay 称为闭环导航；把 bearing proxy 称为标定角；用更长 persistence 换取 false-visible；恢复 GC1/GC2-B、打开 held-out、启动 Sky/GC2-C 或接默认 App | 否 |
 | D-ORACLE-1 causal ladder | 三臂 matched oracle intervention 定位 downstream target-policy stack 与 estimated representation 的损失 | `UNIQUE_P0 / PROTOCOL_FROZEN / BLOCKED_ON_SOURCE_ACTION_TRUTH_POLICY_LOCK / NO_EXECUTION / NO_SEARCH` | [Failure diagnosis current](failure-synthesis/README.md) | `D_ORACLE_1_SOURCE_ACTION_TRUTH_POLICY_LOCK` | 增加第四竞争臂；提前拆H3/H4；训练/调policy/threshold；读取outcome后换parent/gate；让当前root ranking约束结果 | 否 |
 | SVRF / Scale-free Visual Risk Field | 纯 RGB 派生的相对深度动态、局部扩张和视觉通道侵入能否形成稳定相对风险排序 | `PAUSED_BY_D_ORACLE_1_UNIQUE_P0 / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / STREAM_INDEX_AUTHORIZED_BUT_NOT_ACTIVE / REAL_O0_NOT_RUN / NO_TRAINING` | [SVRF current](svrf/README.md) | 无；只有 D-ORACLE-1 定位 representation 层确有 headroom 且用户重开后，才可另行恢复 | bus canary、member index、payload/truth materialization、O0、训练或接 Android | 否 |
 | VI-Task Geometry | 同刚体 RGB+IMU 自校准 metric pose/ground，再为未来 task geometry 分配 computation/parallax budget | `PAUSED_BY_PURE_RGB_SELECTION / G0_PROTOCOL_RETAINED / REAL_G0_NOT_RUN / NO_TOF / NO_TRAINING` | [VI-Task Geometry current](vi-task-geometry/README.md) | 无；只有用户明确恢复 RGB+IMU metric-frame 路线才可重开 preflight | 实现/采集/运行 G0；用手机 IMU配眼镜视频；重跑 ARCore D45；提前训练、主动分配或接 Android | 否 |

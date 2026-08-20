@@ -1,6 +1,6 @@
 # BA-ADT Real Evidence
 
-状态：`current / REVERSIBLE_EXPLORATION / ADT-0-FULL-SEQUENCE-TARGET-SELECTED / ADT-1-SAMPLE-CANARY-TARGET-IDENTITY-FAILURE / SEQ136-CARROT-RGB-NEXT / SKY-DISABLED / DEFAULT-APP-UNCHANGED`
+状态：`current / REVERSIBLE_EXPLORATION / ADT-1-FLOW5-TEMPORAL-TRACKER-ADMITTED-FOR-DEVELOPMENT / ADT-2-PRERECORDED-DEVELOPMENT-DEMO-RENDERED / LONG-DROPOUT-REACQUISITION-INSUFFICIENT / SKY-DISABLED / DEFAULT-APP-UNCHANGED`
 
 ## 目标与边界
 
@@ -23,7 +23,8 @@ tracking、reacquisition、relative nearness 和 approach evidence；不能证�
 3. `ADT-2`：接冻结 Goal Copilot，输出 prerecorded guidance timeline；
 4. `ADT-3`：只有 RGB failure 明确归因到 policy 层时，才允许另立 Sky task。
 
-当前只激活 `ADT-0`。不得启动 Sky、GC2-C、held-out、Android/default-App 接线或导航结论。
+当前已执行 ADT-0、ADT-1 Development evaluation 与首个 ADT-2 prerecorded demo。不得启动 Sky、
+GC2-C、held-out、Android/default-App 接线或导航结论。
 
 ADT-1 的 RGB-only mechanical canary 可使用 `run_rgb_observer.py`，再由独立
 `evaluate_rgb_observations.py` 读取 prediction + GT。Observer CLI 没有 GT 参数；bearing 明确是
@@ -65,6 +66,24 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-re
   --receipt artifacts.local/evidence/ba_adt_real_evidence/selected_rgb/acquisition.json
 ```
 
+RGB-only observation、隔离评价与 demo 渲染：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-real-evidence run_rgb_observer.py `
+  --video <PREVIEW_RGB_MP4> --model <YOLO_MODEL> --target-class carrot --flow-max-gap 5 `
+  --output <OBSERVATIONS_JSON>
+
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-real-evidence evaluate_rgb_observations.py `
+  --observations <OBSERVATIONS_JSON> --groundtruth <GROUNDTRUTH_ZIP> `
+  --target-uid 4917588638317799 --output <EVALUATION_JSON>
+
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-real-evidence build_offline_demo.py `
+  --video <PREVIEW_RGB_MP4> --observations <OBSERVATIONS_JSON> --evaluation <EVALUATION_JSON> `
+  --groundtruth <GROUNDTRUTH_ZIP> --target-uid 4917588638317799 --target-name Carrot_A `
+  --policy scripts/research/goal_copilot_2a/frozen_gc1_winner.py `
+  --output-video <DEMO_MP4> --output-timeline <TIMELINE_JSON> --contact-sheet <CONTACT_SHEET_PNG>
+```
+
 ## 输出
 
 机器输出位于 ignored `artifacts.local/`。源码只记录来源、身份、阈值、事件覆盖与 claim ceiling。
@@ -90,5 +109,8 @@ Sample 已得到 102 个持续跟踪候选，覆盖全部六类事件，但没�
 [`BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md`](../../../docs/research/goal-copilot/BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md)。
 固定门槛已在 `clean_seq134/136` 找到 172/134 个六阶段候选，首选 `seq136 / Carrot_A`；详见
 [`BA_ADT_REAL_EVIDENCE_ADT0_SELECTION_ADT1_CANARY_RESULT.md`](../../../docs/research/goal-copilot/BA_ADT_REAL_EVIDENCE_ADT0_SELECTION_ADT1_CANARY_RESULT.md)。
-Sample `bowl` RGB canary 已定位多实例 grounding failure。下一步只运行 `seq136 / carrot` RGB canary；
-不能为了凑齐结果而事后改写事件或阈值。
+修正 90° clockwise 坐标变换后，sample `bowl` canary 仍定位到多实例 grounding failure。完整
+`seq136 / carrot` held-forward evaluation 显示定位成功时 bearing/scale/approach 有信号。5-frame sparse
+optical-flow candidate 将 recall 从 0.4041 提至 0.5808，GT-invisible false-visible 为 0.0073，已准入
+ADT-2 Development demo；但最长 dropout 仍为 162 帧且 reacquisition 未改善。下一步只做
+`ADT1_INSTANCE_CONDITIONED_REDETECTION`，不能继续拉长 persistence、事后改写门槛或授权 Sky。
