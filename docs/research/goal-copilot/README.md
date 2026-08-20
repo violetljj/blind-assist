@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / GOAL_COPILOT_1_PERMANENTLY_CLOSED / GOAL_COPILOT_2A_COMPLETE / GOAL_COPILOT_2B_PROTOCOL_DESIGN_FROZEN_SEARCH_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / GOAL_COPILOT_1_PERMANENTLY_CLOSED / GOAL_COPILOT_2A_COMPLETE / GOAL_COPILOT_2B_SEARCH_COMPLETE_NO_HELDOUT_ADMISSION / NO_SUCCESSOR_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
 ## 上位产品定义
 
@@ -97,3 +97,10 @@ GC2-B 的双仓协议设计已冻结，见
 task/noise/evaluator/hidden/acceptance authority，Sky 仅有 proposal/search authority；其当前
 claim ceiling 仅为 protocol design。正式 bundle、held-out envelope、provider/run seal 与模型调用
 仍需后续单独授权。
+
+GC2-B 随后已按独立 formal seal 完整执行并关闭；见
+[`GOAL_COPILOT_2B_RESULT.md`](GOAL_COPILOT_2B_RESULT.md)。32/32 generation calls 完成，
+但 BA 锁定的公开 dev winner 在 `COMBINED_MODERATE` 仍为 `0/12`，未达到 held-out
+admission，因此 encrypted held-out 未进入 winner-lock 后的正式开启，也从未用于候选评估。当前结论是
+`GC2B_NOISE_ROBUST_SEARCH_SIGNAL_NOT_ESTABLISHED`，不授权 rescue rerun、扩预算或同一候选面的
+GC2-C。
