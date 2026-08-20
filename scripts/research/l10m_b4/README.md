@@ -149,3 +149,42 @@ Read progress without mutating the run:
 ```text
 python -m scripts.research.l10m_b4.summarize_b4a --run-dir <run-dir>
 ```
+
+### B4-A V1 fail-closed terminal
+
+`B4A_NOT_EVALUABLE_RUNTIME / NO_SCIENTIFIC_VERDICT`
+
+V1 failed on its first dispatch before a container or model call began. The
+runner passed a relative Windows worker directory to Docker `--mount`; Docker
+returned exit 125 and rejected the path. The entire V1 cohort is sealed with
+no retry or resume, and all nine V1 paired identities are excluded from any
+successor.
+
+Bound V1 evidence:
+
+- run: `b4a-20260820T132702-0a00c0ec`
+- closeout SHA-256: `183d409e58fdc7c32cd58f19186775d68cd5c10332685f431a2fb7f17f643c46`
+- event ledger SHA-256: `14f8fb13f537b93078f99d9c15db55a272590c14d7d4d1e4e2b21528a02b77e7`
+- scientific model calls completed: `0`
+
+### B4-A V2 execution-mechanism successor
+
+V2 changes only worker-path resolution: repo, output, protocol, receipt, and
+derived worker paths are resolved absolutely before Docker preflight or any
+dispatch. Both arms receive the identical change. Benchmark, evaluator,
+search mechanisms, eight-generation budget, estimands, and verdict rules are
+unchanged. V2 uses nine newly derived paired identities.
+
+Freeze and run V2 under a separate evidence root:
+
+```text
+python -m scripts.research.l10m_b4.run_b4a freeze \
+  --repo-root . \
+  --output artifacts.local/evidence/l10m_b4/b4a_v2/protocol.json
+
+python -m scripts.research.l10m_b4.run_b4a run \
+  --repo-root . \
+  --output-root artifacts.local/evidence/l10m_b4/b4a_v2/runs \
+  --protocol artifacts.local/evidence/l10m_b4/b4a_v2/protocol.json \
+  --transport-qualification F:/ba-data/blindassist-artifacts-20260805/evidence/l10m_b1/transport_qualification/b1-i0-proxy-20260820T025833-4e438512/result.json
+```

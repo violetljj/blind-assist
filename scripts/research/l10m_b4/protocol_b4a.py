@@ -10,7 +10,7 @@ from pathlib import Path
 from scripts.research.l10m_b1.policy_space import INITIAL_SPEC, canonical_spec
 
 
-PROTOCOL_ID = "L10M-B4-A-HARDER-COHORT-PAIRED-SEARCH-V1"
+PROTOCOL_ID = "L10M-B4-A-HARDER-COHORT-PAIRED-SEARCH-V2-ABSOLUTE-WORKDIR"
 ARMS = ("structured_control", "structured_balanced")
 INSTANCE_IDS = ("amber", "cobalt", "jade")
 REPLICATES_PER_INSTANCE = 3
@@ -22,7 +22,14 @@ B3A_TERMINAL_RESULT = "artifacts.local/evidence/l10m_b3a/runs/b3a-20260820T12400
 B3A_TERMINAL_RESULT_SHA256 = "bfa265c677e2ff733456ec4c873ba9573ee6b425ffd24001d670a3b785fbeb1b"
 TRANSPORT_QUALIFICATION_SHA256 = "2af462f351814045dafcf488781fb8e914bd5847abd851a61ac7d962d13a0e1b"
 TRANSPORT_QUALIFICATION_RUN_ID = "b1-i0-proxy-20260820T025833-4e438512"
-CONSUMED_IDENTITIES = {17, 29, 43, 53, 71, 89, 1768, 7368, 1872}
+CONSUMED_IDENTITIES = {
+    17, 29, 43, 53, 71, 89, 1768, 7368, 1872,
+    519302, 862260, 549875, 858684, 452936, 717980, 206383, 545415, 636402,
+}
+B4A_V1_CLOSEOUT = "artifacts.local/evidence/l10m_b4/b4a/runs/b4a-20260820T132702-0a00c0ec/attempt_closeout.json"
+B4A_V1_CLOSEOUT_SHA256 = "183d409e58fdc7c32cd58f19186775d68cd5c10332685f431a2fb7f17f643c46"
+B4A_V1_EVENTS = "artifacts.local/evidence/l10m_b4/b4a/runs/b4a-20260820T132702-0a00c0ec/events.jsonl"
+B4A_V1_EVENTS_SHA256 = "14f8fb13f537b93078f99d9c15db55a272590c14d7d4d1e4e2b21528a02b77e7"
 SOURCE_FILES = (
     "scripts/research/l10m_b0/evaluation.py",
     "scripts/research/l10m_b0/b0c_precedence.py",
@@ -97,10 +104,14 @@ def build_protocol_manifest(repo_root: Path) -> dict[str, object]:
     b3a_result = json.loads(b3a_result_path.read_text(encoding="utf-8"))
     if b3a_result.get("terminal") != "B3A_EVALUABLE_COMPLETE" or b3a_result.get("model_calls") != 48:
         raise RuntimeError("B3-A terminal transport evidence is not complete")
+    if _sha256(repo_root / B4A_V1_CLOSEOUT) != B4A_V1_CLOSEOUT_SHA256:
+        raise RuntimeError("B4-A V1 closeout identity mismatch")
+    if _sha256(repo_root / B4A_V1_EVENTS) != B4A_V1_EVENTS_SHA256:
+        raise RuntimeError("B4-A V1 event identity mismatch")
     source_hashes = {relative: _sha256(repo_root / relative) for relative in SOURCE_FILES}
     return {
         "protocol_id": PROTOCOL_ID,
-        "status": "B4_A_PROTOCOL_FROZEN_EXECUTION_NOT_STARTED",
+        "status": "B4_A_V2_PROTOCOL_FROZEN_EXECUTION_NOT_STARTED",
         "research_question": "Does the frozen Balanced Exploration operator add final search value over the unmodified Structured Control on a fresh qualified higher-pressure L10M cohort?",
         "causal_arms": {
             "structured_control": "frozen B3-A Structured Control proposal, feedback, incumbent, and strict selection",
@@ -153,17 +164,29 @@ def build_protocol_manifest(repo_root: Path) -> dict[str, object]:
         "verdict_rules": {
             "B4A_BALANCED_SEARCH_VALUE_ESTABLISHED": "all nine pairs evaluable; median paired normalized-progress delta > 0; Balanced wins at least 6 pairs and loses 0; Balanced global-optimum reach is not lower; unsafe count does not increase; operator integrity passes",
             "B4A_BALANCED_SEARCH_VALUE_NOT_ESTABLISHED": "complete evaluable cohort without the full establishment pattern",
-            "B4A_NOT_EVALUABLE_RUNTIME": "any provider, transport, isolation, ledger, evaluator, or execution-integrity failure",
+            "B4A_V2_NOT_EVALUABLE_RUNTIME": "any provider, transport, isolation, ledger, evaluator, or execution-integrity failure",
         },
         "anti_post_hoc": {
             "generation_budget_reduced_to_two": False,
             "efficiency_claim_from_b3a_reused_as_primary": False,
             "future_time_or_token_efficiency_requires_separate_protocol": True,
         },
+        "v1_fail_closed_successor": {
+            "v1_terminal": "B4A_NOT_EVALUABLE_RUNTIME / NO_SCIENTIFIC_VERDICT",
+            "v1_failure": "Docker exit 125 before container/model start because a relative Windows workdir was passed to --mount",
+            "v1_closeout_path": B4A_V1_CLOSEOUT,
+            "v1_closeout_sha256": B4A_V1_CLOSEOUT_SHA256,
+            "v1_events_sha256": B4A_V1_EVENTS_SHA256,
+            "v1_dispatched_identities_excluded": [519302, 862260, 549875, 858684, 452936, 717980, 206383, 545415, 636402],
+            "execution_change": "resolve repo root, output root, protocol, transport receipt, and every derived worker directory to absolute paths before Docker preflight or dispatch",
+            "scientific_change": False,
+            "arms_receive_same_execution_change": True,
+        },
         "execution": {
             "authorized": True,
             "planned_model_calls": len(PAIRED_IDENTITIES) * len(ARMS) * GENERATIONS_PER_TRAJECTORY,
             "no_resume": True,
+            "worker_path_mode": "resolved absolute Windows path",
         },
         "transport": {
             "route": "proxy",

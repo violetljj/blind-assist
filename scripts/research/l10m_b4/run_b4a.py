@@ -166,7 +166,7 @@ def _seal_not_evaluable(run_dir: Path, reason: str) -> None:
     manifest.update(
         {
             "status": "NOT_EVALUABLE",
-            "terminal": "B4A_NOT_EVALUABLE_RUNTIME",
+            "terminal": "B4A_V2_NOT_EVALUABLE_RUNTIME",
             "scientific_verdict": "NO_SCIENTIFIC_VERDICT",
             "reason": reason,
             "completed_at": _utc(),
@@ -178,7 +178,7 @@ def _seal_not_evaluable(run_dir: Path, reason: str) -> None:
         run_dir / "attempt_closeout.json",
         {
             "run_id": run_dir.name,
-            "terminal": "B4A_NOT_EVALUABLE_RUNTIME",
+            "terminal": "B4A_V2_NOT_EVALUABLE_RUNTIME",
             "scientific_verdict": "NO_SCIENTIFIC_VERDICT",
             "reason": reason,
             "resume_authorized": False,
@@ -375,14 +375,18 @@ def run(
     proxy_bind: str,
     timeout_seconds: int,
 ) -> Path:
-    protocol = _validate_protocol(protocol_path.resolve(), repo_root.resolve())
-    qualification = _validate_transport(transport_path.resolve())
+    repo_root = repo_root.resolve()
+    output_root = output_root.resolve()
+    protocol_path = protocol_path.resolve()
+    transport_path = transport_path.resolve()
+    protocol = _validate_protocol(protocol_path, repo_root)
+    qualification = _validate_transport(transport_path)
     provider = provider_preflight_docker(docker, docker_image, auth_path, proxy_bind)
     isolation = docker_isolation_canary(docker, docker_image, auth_path, output_root / "preflight")
     if isolation.get("status") != "PASS":
         raise RuntimeError("Docker isolation canary did not pass")
     output_root.mkdir(parents=True, exist_ok=True)
-    run_id = f"b4a-{datetime.now().strftime('%Y%m%dT%H%M%S')}-{uuid.uuid4().hex[:8]}"
+    run_id = f"b4av2-{datetime.now().strftime('%Y%m%dT%H%M%S')}-{uuid.uuid4().hex[:8]}"
     run_dir = output_root / run_id
     run_dir.mkdir(exist_ok=False)
     events_path = run_dir / "events.jsonl"
@@ -403,6 +407,7 @@ def run(
         "isolation": isolation,
         "transport_qualification": qualification,
         "resume_authorized": False,
+        "worker_path_mode": "resolved_absolute_windows_path",
     }
     _write_create_once(run_dir / "execution_manifest.json", manifest)
     benchmark = {row["instance_id"]: row for row in load_benchmark()["instances"]}
@@ -438,7 +443,7 @@ def run(
     manifest.update(
         {
             "status": "COMPLETE",
-            "terminal": "B4A_EXECUTION_COMPLETE",
+            "terminal": "B4A_V2_EXECUTION_COMPLETE",
             "completion_count": completion_count,
             "events_sha256": _sha256(events_path),
             "completed_at": _utc(),
@@ -468,7 +473,7 @@ def main() -> None:
     args = parser.parse_args()
     if args.command == "freeze":
         _write_create_once(args.output, build_protocol_manifest(args.repo_root))
-        print(json.dumps({"output": str(args.output), "status": "B4_A_PROTOCOL_FROZEN_EXECUTION_NOT_STARTED"}))
+        print(json.dumps({"output": str(args.output), "status": "B4_A_V2_PROTOCOL_FROZEN_EXECUTION_NOT_STARTED"}))
         return
     run_dir = run(
         repo_root=args.repo_root,
@@ -481,7 +486,7 @@ def main() -> None:
         proxy_bind=args.proxy_bind,
         timeout_seconds=args.timeout_seconds,
     )
-    print(json.dumps({"run_dir": str(run_dir), "terminal": "B4A_EXECUTION_COMPLETE"}))
+    print(json.dumps({"run_dir": str(run_dir), "terminal": "B4A_V2_EXECUTION_COMPLETE"}))
 
 
 if __name__ == "__main__":

@@ -110,7 +110,7 @@ def analyze(repo_root: Path, run_dir: Path, protocol_path: Path) -> dict[str, An
     frozen = json.loads(protocol_path.read_text(encoding="utf-8"))
     if frozen != build_protocol_manifest(repo_root):
         raise RuntimeError("protocol does not match frozen implementation")
-    if manifest.get("terminal") != "B4A_EXECUTION_COMPLETE":
+    if manifest.get("terminal") != "B4A_V2_EXECUTION_COMPLETE":
         raise RuntimeError("run is not complete and evaluable")
     if manifest.get("protocol_manifest_sha256") != canonical_manifest_sha256(frozen):
         raise RuntimeError("execution manifest protocol identity mismatch")
