@@ -1,10 +1,10 @@
 # SVRF current
 
-状态：`current / PAUSED_BY_D_ORACLE_1_UNIQUE_P0 / WILD_LAB / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / ARCHIVE_ACCESS_PARTIAL_PASS / STREAM_INDEX_AUTHORIZED_BUT_NOT_ACTIVE / REAL_O0_NOT_RUN / NO_TRAINING / DEFAULT_APP_UNCHANGED`
+状态：`current / PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / WILD_LAB / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / ARCHIVE_ACCESS_PARTIAL_PASS / STREAM_INDEX_NOT_ACTIVE / REAL_O0_NOT_RUN / NO_TRAINING / DEFAULT_APP_UNCHANGED`
 
-Failure Synthesis 已把 D-ORACLE-1 设为唯一 P0，要求先定位 downstream target-policy stack 与
-representation 的损失。SVRF 的协议、source lock、archive capability 与 stream-index lock保持有效，
-但当前不构成执行权限；这不是 SVRF 科学失败，也不消费其 roster。
+当前唯一产品与研究主线是 `BA-ADT-REAL-EVIDENCE`。SVRF 的协议、source lock、archive capability 与
+stream-index lock 保持历史有效，但当前不构成执行权限；这不是 SVRF 科学失败，也不消费其 roster。
+未经用户显式改变主线并先更新 Goal Copilot current 与算法研究入口，不得恢复本路线。
 
 ## 主张
 
@@ -51,14 +51,14 @@ ADVIO 13/14/15/17 已用于 RCLE Development；sequence16 仍是 RCLE-reserved `
 
 ## 唯一 successor
 
-无。状态为 `NONE / PAUSED_BY_D_ORACLE_1_UNIQUE_P0`。只有 D-ORACLE-1 证明 representation layer
+无。状态为 `NONE / PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE`。只有用户显式改变主线，且新的前置证据证明 representation layer
 具有主要可恢复 headroom 且用户明确恢复 SVRF 后，才可另行授权既有 bus canary/member-index successor。
 当前不运行 bus canary、archive index、payload materialization、truth writer或candidate。
 
 ## 禁止动作
 
 - 不调 Bonn ground plane，不恢复 SATOM/RCLE，不运行 VITG/GA-SATOM；
-- 不以既有 stream-index authorization 绕过 D-ORACLE-1 P0 暂停；
+- 不以既有 stream-index authorization 或历史 successor 绕过 BA-ADT 主线暂停；
 - 不用 IMU、ToF、ARCore pose、已知高度、source pose/depth 帮 candidate；
 - 不通过增加 UNKNOWN 购买 false-clear 改善；
 - 不训练、不接 Android、不输出 `CLEAR`、米制 clearance、物理 TTC 或安全结论。

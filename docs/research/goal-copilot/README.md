@@ -9,6 +9,11 @@ BlindAssist 的当前唯一 Goal Copilot successor 是 `BA-ADT-REAL-EVIDENCE`。
 RGB-only Observation、ADT-2 prerecorded Offline Goal Copilot，以及只在真实失败明确归因到 policy 层时
 才允许设计的 ADT-3/Sky task。
 
+本页同时是执行约束：`BA-ADT-REAL-EVIDENCE` 是唯一 active 产品与研究主线。D-ORACLE、SVRF、
+Assistive Geometry、TARO、SATOM、DepthART、旧 GC/Sky search 与 Android/default-App promotion 只保留为
+历史、关闭或暂停的支撑上下文；除非用户显式改变主线并先同步本页与算法研究入口，否则不得自行恢复、
+占用执行预算或产生竞争 successor。
+
 系统侧输入只允许真实 RGB；ADT bbox、object/device trajectory、depth、segmentation 与 visibility GT
 只允许进入隔离的 mining/evaluator。ADT 是录好轨迹，因此本路线最多证明真实 RGB 能否恢复 target
 visibility、bearing、tracking、reacquisition、relative nearness 与 approach evidence，以及这些 evidence

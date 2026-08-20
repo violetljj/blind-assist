@@ -79,6 +79,25 @@
 Research work must be assigned one mode before claim-bearing or materially
 risky execution. The mode controls process; it never upgrades evidence.
 
+### Active BlindAssist mainline
+
+- The sole active product and research mainline is `BA-ADT-REAL-EVIDENCE` toward
+  the Goal-Driven Visual Copilot. Its current successor is owned by
+  `docs/research/goal-copilot/README.md` and mirrored in
+  `docs/research/ALGORITHM_RESEARCH_CURRENT.md`.
+- Treat every other research route, including Sky/GC search, D-ORACLE, SVRF,
+  Assistive Geometry, TARO, SATOM, DepthART, and Android/default-App promotion,
+  as historical, closed, or paused support context. Do not spend execution
+  budget on, reactivate, or advance one of those routes unless the user
+  explicitly changes the mainline and the two current documents above are
+  updated first.
+- Sky is not part of the active pipeline. It may be proposed only after real
+  RGB evidence isolates a failure at the Goal Copilot policy layer; perception,
+  grounding, tracking, or reacquisition failures must be repaired in their
+  owning evidence module instead.
+- ADT ground truth is evaluator/mining-only. The system input remains RGB-only,
+  and prerecorded ADT replay must never be described as closed-loop navigation.
+
 ### Research style and graduation objective
 
 - The primary research objective is real algorithmic progress and a credible

@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-20（Asia/Hong_Kong）；执行者：violjjet。将 `BA-ADT-REAL-EVIDENCE` 的主线地位从状态
+  标签提升为仓库级执行约束：它是 BlindAssist 唯一 active 产品与研究主线；当前 successor 只由 Goal
+  Copilot current 与算法研究入口共同声明。D-ORACLE、SVRF、Assistive Geometry、TARO、SATOM、
+  DepthART、旧 GC/Sky search 和 Android/default-App promotion 全部只保留为历史/关闭/暂停上下文，未经
+  用户显式改变主线并先更新两份 current，不得自行恢复或占用执行预算。同时清除算法入口中残留的
+  “SVRF 唯一算法主线”“D-ORACLE 唯一 active P0”和 DepthART `R1_RESEARCH_MAINLINE` 冲突标记；Sky
+  仍只允许在真实 RGB failure 明确归因到 policy 层后另立任务。
+
 - 时间：2026-08-20（Asia/Hong_Kong）；执行者：violjjet。将 BlindAssist 当前 successor 切换为
   `BA-ADT-REAL-EVIDENCE`：系统侧只允许真实 ADT RGB，ADT bbox/trajectory/depth/visibility GT 只允许
   进入隔离的 episode mining/evaluator；recorded ADT 不得解释为用户受引导后的 closed-loop navigation。

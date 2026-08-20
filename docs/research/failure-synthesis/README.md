@@ -1,6 +1,10 @@
 # BlindAssist causal failure diagnosis
 
-状态：`current / D_ORACLE_1_UNIQUE_P0 / UNIQUE_P0 / PROTOCOL_FROZEN / BLOCKED_ON_SOURCE_ACTION_TRUTH_POLICY_LOCK / NO_OUTCOME_ACCESS / NO_EXECUTION / NO_SEARCH / DEFAULT_APP_UNCHANGED`
+状态：`current / PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / D_ORACLE_1_PROTOCOL_FROZEN / NO_OUTCOME_ACCESS / NO_EXECUTION / NO_SEARCH / DEFAULT_APP_UNCHANGED`
+
+`D-ORACLE-1` 的冻结协议与历史优先级保留，但已不再是 active P0。当前唯一产品与研究主线是
+`BA-ADT-REAL-EVIDENCE`；未经用户显式改变主线并先更新 Goal Copilot current 与算法研究入口，本路线
+不得执行 lock、preflight、cohort 或 outcome access。
 
 ## 当前主张
 
@@ -30,9 +34,9 @@ B/C 后的 policy implementation、config、threshold、coverage rule、evaluato
 - Failure Synthesis 的 H3/H4/H2/H1 排序是待检验 prior，不约束结果。若 `A≈B≫C`，必须降低 H3、
   提升 H2，不得修改本协议救原结论。
 
-## 唯一 successor
+## 冻结 successor（当前不激活）
 
-`D_ORACLE_1_SOURCE_ACTION_TRUTH_POLICY_LOCK`：在任何 fresh RGB、geometry、action label、event truth、
+若用户未来显式重开本路线，原 successor 为 `D_ORACLE_1_SOURCE_ACTION_TRUTH_POLICY_LOCK`：在任何 fresh RGB、geometry、action label、event truth、
 model output 或 arm metric 打开前，一次性冻结 exact roster、两个独立 truth roles、B/C common policy
 implementation/config/evaluator hashes、C 的既有 frozen representation identity、permutation map 与执行 root。
 
