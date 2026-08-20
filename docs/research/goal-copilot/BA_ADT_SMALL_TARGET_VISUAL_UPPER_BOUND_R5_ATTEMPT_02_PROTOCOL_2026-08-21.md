@@ -32,6 +32,10 @@ Outcome-blind remote benchmark 在同一 4090D 上得到 batch 4 为 1.39 s / 11
 并保留约 2 GB device 余量；这只合并独立 forward，不改变每帧 tiles、prompt、postprocess 或候选排序。
 非审计 frame 224/225 mechanics smoke 同时验证 BF16 batch 8 成功、峰值 reserved 22.16 GB；所有输出框
 在映射回 source frame 后裁剪到 `[0, 1408]` 合法边界，退化空框丢弃。该合法化不读取 GT 或目标命中。
+首次 formal dispatch 因 legacy SciPy image processor 使 GPU 空闲而在首个 frame-250 checkpoint 前终止；
+原子 formal output 尚不存在，固定窗口未触及。最终 runner 缓存唯一 exemplar 的 slow-processor tensor，
+不改用会产生候选漂移的 fast processor；frame 224/225 的候选逐项完全一致，smoke elapsed 从 7.70 s
+降至 5.97 s。正式 replay 只允许此 exact-output caching optimization。
 
 Teacher 输入只有完整 RGB、R1 RGB-only search schedule 与历史 trusted exemplar。禁止 GT target
 location/bbox/visibility、未来位置、固定窗口 timing 或 scenario answer。远端不接收 GT。GT 仅由完整

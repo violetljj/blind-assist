@@ -55,7 +55,7 @@ def crop_exemplar(video: Path, exemplar: dict) -> Image.Image:
     return Image.fromarray(cv2.cvtColor(crop, cv2.COLOR_BGR2RGB))
 
 
-def infer_search_frames(model, processor, query, pending: list[dict], device: str) -> None:
+def infer_search_frames(model, processor, query_pixels, pending: list[dict], device: str) -> None:
     """Fill candidates for up to two search frames in one eight-tile GPU batch."""
     import torch
 
@@ -71,7 +71,8 @@ def infer_search_frames(model, processor, query, pending: list[dict], device: st
         for tile_index, (tile, origin_x, origin_y) in enumerate(tiles):
             flat_tiles.append(Image.fromarray(cv2.cvtColor(tile, cv2.COLOR_BGR2RGB)))
             ownership.append((entry, tile_index, origin_x, origin_y, tile.shape[0], tile.shape[1]))
-    inputs = processor(images=flat_tiles, query_images=[query] * len(flat_tiles), return_tensors="pt")
+    inputs = processor(images=flat_tiles, return_tensors="pt")
+    inputs["query_pixel_values"] = query_pixels.expand(len(flat_tiles), -1, -1, -1)
     inputs = {
         key: value.to(device, dtype=getattr(torch, TORCH_DTYPE)) if value.is_floating_point() else value.to(device)
         for key, value in inputs.items()
@@ -120,7 +121,7 @@ def build_output(args, observations: dict, exemplar: dict, frames: list[dict], e
         "attempt": "ATTEMPT_02_OWLV2_LARGE",
         "teacher": {
             "name": "OWLv2 large patch14 ensemble",
-            "implementation": "huggingface-transformers",
+            "implementation": "huggingface-transformers-slow-image-processor-cached-query",
             "model_id": MODEL_ID,
             "model_revision": MODEL_REVISION,
             "model_safetensors_sha256": MODEL_SAFETENSORS_SHA256,
@@ -200,6 +201,9 @@ def main() -> int:
         MODEL_ID, revision=MODEL_REVISION, dtype=getattr(torch, TORCH_DTYPE)
     ).eval().to(args.device)
     query = crop_exemplar(args.video, exemplar)
+    query_pixels = processor(query_images=query, return_tensors="pt")["query_pixel_values"].to(
+        args.device, dtype=getattr(torch, TORCH_DTYPE)
+    )
     capture = cv2.VideoCapture(str(args.video))
     capture.set(cv2.CAP_PROP_POS_FRAMES, len(frames))
     torch.set_grad_enabled(False)
@@ -226,7 +230,7 @@ def main() -> int:
                 stop_requested = True
             if search_pending < SEARCH_FRAMES_PER_BATCH and len(frames) + len(pending) < expected and not stop_requested:
                 continue
-            infer_search_frames(model, processor, query, pending, args.device)
+            infer_search_frames(model, processor, query_pixels, pending, args.device)
             inference_frames += search_pending
             for completed in pending:
                 completed.pop("image", None)
