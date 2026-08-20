@@ -60,3 +60,32 @@ Bound evidence:
 
 - result: `artifacts.local/evidence/l10m_b4/b4_i0_saturation_audit/result.json`
 - result SHA-256: `daa42c0c15d3e1122c1daa507a4868d991bd54d9049a8c19ebec413527c3a429`
+
+## B4 harder fresh cohort qualification
+
+The B4 harder cohort contains three independent evaluator instances named
+`amber`, `cobalt`, and `jade`. They retain the frozen B1 state, safety, score,
+finite policy space, and strict-selection mechanics. Only the hidden synthetic
+episode distribution changes. Preferred turn, fallback, quality-interaction,
+and recovery directions differ across instances, so the cohort is not built
+around one known target candidate or around Balanced Exploration's prior path.
+
+Before any B4-A model call, the finite landscape is exhaustively enumerated.
+Every instance must have at least three improving and three non-improving legal
+initial moves, forbid a one-step ceiling hit, contain a quality/fallback
+interaction, and expose a strictly improving path of at least two steps to a
+global optimum. This is benchmark qualification, not a search-arm result.
+
+After the implementation commit, create the frozen certificate once:
+
+```text
+python -m scripts.research.l10m_b4.certify_hard_benchmark \
+  --repo-root . \
+  --benchmark scripts/research/l10m_b4/hard_benchmark_v1.json \
+  --output artifacts.local/evidence/l10m_b4/hard_benchmark_v1/certificate.json
+```
+
+No B4-A runner is authorized until this certificate is terminal and its exact
+path and SHA-256 are bound into a separate paired comparison protocol. That
+future protocol must keep eight generations and use fresh outcome-blind
+prompt/session identities.
