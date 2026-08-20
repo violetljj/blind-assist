@@ -270,3 +270,30 @@ Read the sealed progress ledger without mutation:
 python -m scripts.research.l10m_b4.summarize_b5a \
   --run-dir artifacts.local/evidence/l10m_b5/b5a/runs/b5a-20260820T142630-82025cc9
 ```
+
+## B5-C Balanced effect heterogeneity autopsy
+
+B5-C is a zero-model-call, read-only analysis over the consumed sealed B4-A
+and B5-A trajectories. It may recompute finite landscapes and trajectory
+metrics, but it may not generate a fresh instance, call a model, modify
+Balanced, tune a threshold on B5-A, rerun either cohort, or restore operator
+admission.
+
+The analysis separates outcome-blind landscape features from post-treatment
+trajectory features. A landscape rule can qualify only as a retrospective
+conditional-domain hypothesis when both sides contain at least two instances,
+both sides span B4-A and B5-A, every favorable instance has median paired delta
+above `0.05`, and every adverse instance has median delta at or below zero. A
+trajectory mechanism requires the same predeclared signature in at least three
+loss pairs across at least two instances, at least 75% loss prevalence, and no
+more than half that prevalence among non-loss pairs.
+
+Exactly one terminal is allowed:
+
+- `OBSERVABLE_CONDITIONAL_DOMAIN_HYPOTHESIS_IDENTIFIED`
+- `BALANCED_V2_MECHANISM_HYPOTHESIS_IDENTIFIED`
+- `NO_REPRODUCIBLE_HETEROGENEITY_EXPLANATION_CLOSE_OPERATOR_ADMISSION_ROUTE`
+
+The first two authorize only a future versioned design or separately frozen
+fresh validation. The third closes operator admission without claiming that
+uncontrolled provider identities prove seed-level stochasticity.
