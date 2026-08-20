@@ -162,51 +162,6 @@ frozen Balanced operator on this qualified finite harder cohort. It does not
 establish complete search, general algorithm or model superiority, device or
 user value, safety effect, or production readiness.
 
-## B5-A fresh generalization replication
-
-B5-A freezes the B4-A V2 Balanced and Control mechanisms without an algorithm
-change and moves to three new outcome-blind identities in the same finite
-benchmark family: `obsidian`, `coral`, and `silver`. Their motif weights and
-names are frozen in `fresh_benchmark_v1.json` before any B5-A model call.
-Exhaustive qualification may inspect the finite evaluator landscape, but it may
-not use a B5-A arm outcome. Each admitted landscape must retain the B4 pressure
-criteria and require at least five strict improvement steps from the initial
-candidate to a global optimum.
-
-This stage asks only whether B4-A's relative final normalized-progress result
-replicates on a fresh harder cohort. Global-optimum reach is supporting and must
-not be lower for Balanced, but positive global-optimum reach is not required for
-replication. Any progress-conditioned proposal or search-state-memory mechanism
-belongs to a later B5-B version and is forbidden in B5-A.
-
-The frozen replication retains three prompt identities per instance, eight
-generations per arm, and 144 total model calls. Admission requires a positive
-median paired normalized-progress delta, at least six wins with zero losses,
-non-lower global-optimum reach, non-increased unsafe and semantic-invalid
-counts, matched model-call cost, and intact operator semantics. A pass admits
-the mechanism only as `ADMITTED_L10M_SEARCH_OPERATOR` within this qualified
-finite benchmark family.
-
-After the implementation commit is fixed, freeze and execute exactly once:
-
-```text
-python -m scripts.research.l10m_b4.run_b5a freeze \
-  --repo-root . \
-  --output artifacts.local/evidence/l10m_b5/b5a/protocol.json
-
-python -m scripts.research.l10m_b4.run_b5a run \
-  --repo-root . \
-  --output-root artifacts.local/evidence/l10m_b5/b5a/runs \
-  --protocol artifacts.local/evidence/l10m_b5/b5a/protocol.json \
-  --transport-qualification F:/ba-data/blindassist-artifacts-20260805/evidence/l10m_b1/transport_qualification/b1-i0-proxy-20260820T025833-4e438512/result.json
-```
-
-The progress reader is read-only:
-
-```text
-python -m scripts.research.l10m_b4.summarize_b5a --run-dir <run-dir>
-```
-
 Bound evidence:
 
 - source commit: `d32d88c565bd339651ab8acd618ab74261677639`
@@ -263,4 +218,55 @@ python -m scripts.research.l10m_b4.run_b4a run \
   --output-root artifacts.local/evidence/l10m_b4/b4a_v2/runs \
   --protocol artifacts.local/evidence/l10m_b4/b4a_v2/protocol.json \
   --transport-qualification F:/ba-data/blindassist-artifacts-20260805/evidence/l10m_b1/transport_qualification/b1-i0-proxy-20260820T025833-4e438512/result.json
+```
+
+## B5-A fresh generalization replication
+
+B5-A froze the B4-A V2 Balanced and Control mechanisms without an algorithm
+change and moved to three new outcome-blind instances in the same finite
+benchmark family: `obsidian`, `coral`, and `silver`. Their motif weights and
+names were committed before any B5-A model call. Exhaustive qualification used
+zero model calls; all three landscapes retained the B4 pressure criteria and
+required at least five strict improvement steps from the initial candidate to a
+global optimum.
+
+The frozen replication retained three prompt identities per instance, eight
+generations per arm, and 144 total model calls. Admission required a positive
+median paired normalized-progress delta, at least six wins with zero losses,
+non-lower global-optimum reach, non-increased unsafe and semantic-invalid
+counts, matched model-call cost, and intact operator semantics.
+
+### B5-A terminal
+
+`B5A_EVALUABLE_COMPLETE / B5A_GENERALIZATION_NOT_REPLICATED`
+
+All 144 calls completed with no provider, isolation, unsafe, semantic-invalid,
+or operator-integrity failure. Balanced produced four paired wins, one tie, and
+four losses. The median paired normalized-progress delta was `0.0`; mean
+normalized progress was `0.4804232804232803` for Control and
+`0.513227513227513` for Balanced. The arms used exactly 72 calls each.
+
+Neither arm reached a qualified global optimum (`0/9` vs `0/9`). The complete
+fresh cohort therefore does not replicate B4-A's preregistered win pattern, and
+Balanced is not admitted as `ADMITTED_L10M_SEARCH_OPERATOR`. B5-B was
+conditional on a B5-A pass and remains unauthorized. This does not erase the
+B4-A cohort-relative result; it limits that result to the B4 harder cohort and
+shows that cross-cohort generalization is not established.
+
+Bound evidence:
+
+- cohort construction commit: `52107056c420d92a61e2ff957dfcd56dd0a05205`
+- frozen implementation commit: `048225e4d1d7e3e4d61b01346987a15668858e1d`
+- cohort certificate SHA-256: `22be26089adaaa7d3302ea7f965b7373d642ac26033430046e89b8d828a9b446`
+- protocol SHA-256: `e2845a592d3962e4a1537842a3ee8d2e89fda2af8278d7dcf0275e4c88e33b0b`
+- run: `b5a-20260820T142630-82025cc9`
+- event ledger SHA-256: `dbc5bf284aa27ce75ede836dc9fea142473014adc8021795a35b7ed630bb995a`
+- execution manifest SHA-256: `84466ac0f8c6cb78ed84ca0ae418396630c4281ead946a79d40c8897f0f81078`
+- result SHA-256: `97f54954aeb6ae22a15420b94e0ce20f88d44e7d3115bb638469ca4bf1d69e9c`
+
+Read the sealed progress ledger without mutation:
+
+```text
+python -m scripts.research.l10m_b4.summarize_b5a \
+  --run-dir artifacts.local/evidence/l10m_b5/b5a/runs/b5a-20260820T142630-82025cc9
 ```

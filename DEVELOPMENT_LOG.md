@@ -4459,3 +4459,15 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   real utility。唯一 successor 是在现有 Bonn RGB-D+pose Development parent 上物化冻结
   DepthART dense prior 后执行最小 real E0；deterministic headroom 不成立即关闭，不训练、
   不接 Android、不改变默认 App 或 safety authority。
+- 时间：2026-08-20（Asia/Hong_Kong）；执行者：violjjet。完成 L10M B5-A fresh
+  generalization replication。Balanced/Control、8-generation budget、evaluator 与严格
+  incumbent selection 均冻结自 B4-A；三张 fresh finite landscapes 在零模型调用下预先
+  穷举合格，均需至少 5 个 strict-improvement steps，随后 9 个新 paired identities 完成
+  144/144 调用。终态为 `B5A_EVALUABLE_COMPLETE /
+  B5A_GENERALIZATION_NOT_REPLICATED`：Balanced 为 4 胜、1 平、4 负，median paired
+  normalized-progress delta `0.0`，Control/Balanced mean progress 分别为
+  `0.4804232804232803/0.513227513227513`，global optimum 均 `0/9`；unsafe、invalid
+  均 `0/0`，operator integrity 通过，调用成本 `72/72`。因此 B4-A 的 cohort-relative
+  search value 不被改写，但跨 cohort 泛化未建立，不授予
+  `ADMITTED_L10M_SEARCH_OPERATOR`；以 B5-A pass 为前提的 B5-B 保持未授权，不重跑或
+  事后修改 Balanced。
