@@ -224,8 +224,10 @@ def main() -> int:
     parser.add_argument("--confidence", type=float, default=0.10)
     parser.add_argument("--flow-max-gap", type=int, default=0, help="Maximum detector-missing frames filled by RGB optical flow")
     parser.add_argument("--instance-redetection", action="store_true")
-    parser.add_argument("--redetection-generator", choices=("class-yolo", "yoloe-visual-prompt"), default="class-yolo")
+    parser.add_argument("--redetection-generator", choices=("class-yolo", "yoloe-visual-prompt", "diagnostic-oracle"), default="class-yolo")
     parser.add_argument("--redetection-model", type=Path, help="YOLOE checkpoint used only for LOST-frame proposal generation")
+    parser.add_argument("--diagnostic-oracle-proposals", type=Path, help="GT-derived proposal map for diagnostic use only; output is not RGB-only evidence")
+    parser.add_argument("--diagnostic-stop-after-frame", type=int, help="Stop an oracle diagnostic after this preview frame")
     parser.add_argument("--redetect-confidence", type=float, default=0.02)
     parser.add_argument("--redetect-appearance-threshold", type=float, default=0.82)
     parser.add_argument("--redetect-score-threshold", type=float, default=0.75)
@@ -247,6 +249,16 @@ def main() -> int:
         raise ValueError("YOLOE redetection requires --instance-redetection")
     if args.redetection_generator == "yoloe-visual-prompt" and args.redetection_model is None:
         raise ValueError("YOLOE redetection requires --redetection-model")
+    if args.redetection_generator == "diagnostic-oracle" and args.diagnostic_oracle_proposals is None:
+        raise ValueError("diagnostic oracle redetection requires --diagnostic-oracle-proposals")
+    if args.redetection_generator != "diagnostic-oracle" and args.diagnostic_oracle_proposals is not None:
+        raise ValueError("--diagnostic-oracle-proposals requires --redetection-generator diagnostic-oracle")
+    if args.diagnostic_stop_after_frame is not None and args.redetection_generator != "diagnostic-oracle":
+        raise ValueError("--diagnostic-stop-after-frame is restricted to diagnostic oracle runs")
+    oracle_payload = json.loads(args.diagnostic_oracle_proposals.read_text(encoding="utf-8")) if args.diagnostic_oracle_proposals else None
+    if oracle_payload is not None and oracle_payload.get("source_role") != "GT_DERIVED_DIAGNOSTIC_ORACLE_PROPOSALS":
+        raise ValueError("diagnostic oracle proposal role is missing")
+    oracle_proposals = {int(key): value for key, value in (oracle_payload or {}).get("proposals_by_preview_frame", {}).items()}
     redetection_model = YOLOE(str(args.redetection_model)) if args.redetection_generator == "yoloe-visual-prompt" else None
     redetection_prompt_ready = False
     inference_confidence = min(args.confidence, args.redetect_confidence) if args.instance_redetection and redetection_model is None else args.confidence
@@ -299,6 +311,11 @@ def main() -> int:
                         {"bbox_xyxy": [float(value) for value in box], "confidence": float(confidence)}
                         for box, confidence in zip(prompted.boxes.xyxy.tolist(), prompted.boxes.conf.tolist(), strict=True)
                     ]
+                elif oracle_payload is not None:
+                    injected = oracle_proposals.get(frame_index)
+                    redetection_candidates = [*candidates]
+                    if injected is not None:
+                        redetection_candidates.append({"bbox_xyxy": [float(value) for value in injected["bbox_xyxy"]], "confidence": 1.0, "candidate_source": "gt_diagnostic_oracle"})
                 ranked = rank_redetection_candidates(target_memory, result.orig_img, redetection_candidates, frame_index)
                 if ranked:
                     top = ranked[0]
@@ -326,6 +343,7 @@ def main() -> int:
                                     "scale": float(candidate["scale"]),
                                     "spatial": float(candidate["spatial"]),
                                     "score": float(candidate["score"]),
+                                    "candidate_source": candidate.get("candidate_source", args.redetection_generator),
                                     "considered_by_verifier": rank == 0,
                                     "verifier_eligible": bool(eligible) if rank == 0 else False,
                                 }
@@ -449,13 +467,16 @@ def main() -> int:
             frame_record["redetection_trace"] = redetection_trace
         frames.append(frame_record)
         previous_gray = current_gray
+        if args.diagnostic_stop_after_frame is not None and frame_index >= args.diagnostic_stop_after_frame:
+            break
 
     output = {
-        "schema_version": "ba_adt_rgb_observation_v3" if args.instance_redetection else "ba_adt_rgb_observation_v2",
+        "schema_version": "ba_adt_rgb_observation_diagnostic_oracle_v1" if oracle_payload is not None else ("ba_adt_rgb_observation_v3" if args.instance_redetection else "ba_adt_rgb_observation_v2"),
         "route": "BA-ADT-REAL-EVIDENCE",
-        "stage": "ADT-1-CANARY",
+        "stage": "ADT-1-ORACLE-PROPOSAL-DIAGNOSTIC" if oracle_payload is not None else "ADT-1-CANARY",
         "input": {"video": args.video.name, "sha256": sha256(args.video), "role": "RGB_SYSTEM_INPUT"},
-        "groundtruth_argument_supported": False,
+        "groundtruth_argument_supported": oracle_payload is not None,
+        "gt_derived_diagnostic_input": None if oracle_payload is None else {"proposal_map_name": args.diagnostic_oracle_proposals.name, "sha256": sha256(args.diagnostic_oracle_proposals), "source_role": oracle_payload["source_role"], "fixed_failure_window_indices": oracle_payload["fixed_failure_window_indices"], "formal_evaluator_must_reject": True},
         "model": {"path_name": args.model.name, "sha256": sha256(args.model), "runtime": f"ultralytics-{ultralytics.__version__}", "device": str(args.device), "target_class": args.target_class, "imgsz": args.imgsz, "confidence_floor": args.confidence, "flow_max_gap": args.flow_max_gap},
         "instance_redetection": {"enabled": args.instance_redetection, "candidate_generator": args.redetection_generator, "candidate_model": None if args.redetection_model is None else {"path_name": args.redetection_model.name, "sha256": sha256(args.redetection_model), "visual_prompt_source": "first_confirmed_rgb_anchor_bbox"}, "candidate_confidence_floor": args.redetect_confidence if redetection_model is not None else inference_confidence, "appearance_threshold": args.redetect_appearance_threshold, "score_threshold": args.redetect_score_threshold, "top1_top2_margin": args.redetect_margin, "confirmation": f"{args.redetect_confirm_hits}-of-{args.redetect_confirm_window}", "short_reconnect_max_gap": args.short_reconnect_max_gap, "appearance_weight": 0.80, "memory_templates": len(target_memory.templates), "memory_update_quarantine_frames": args.memory_update_quarantine, "candidate_diagnostics": args.candidate_diagnostics},
         "frame_count": len(frames),
@@ -464,8 +485,8 @@ def main() -> int:
         "events": events,
         "frames": frames,
         "limitations": ["preview_mp4_frame_order_time_proxy", "normalized_image_bearing_not_calibrated_degrees", "bbox_scale_nearness_not_metric_distance", "single_visual_prompt_or_single_class_candidate_generator", "handcrafted_color_gradient_instance_embedding", "optional_sparse_optical_flow_translation_only"],
-        "claim_ceiling": "rgb_only_observation_mechanics_no_accuracy_or_navigation_claim",
-        "terminal": "ADT1_RGB_OBSERVATIONS_PRODUCED",
+        "claim_ceiling": "gt_derived_diagnostic_oracle_no_rgb_only_model_utility_or_navigation_claim" if oracle_payload is not None else "rgb_only_observation_mechanics_no_accuracy_or_navigation_claim",
+        "terminal": "ADT1_GT_DERIVED_ORACLE_DIAGNOSTIC_PRODUCED" if oracle_payload is not None else "ADT1_RGB_OBSERVATIONS_PRODUCED",
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")

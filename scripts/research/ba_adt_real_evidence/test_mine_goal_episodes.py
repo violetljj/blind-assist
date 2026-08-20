@@ -13,6 +13,7 @@ from run_rgb_observer import TargetMemory, appearance_embedding, candidate_confi
 from evaluate_rgb_observations import metrics
 from build_offline_demo import copilot_state
 from account_redetection_failures import account_opportunities
+from audit_reappearance_windows import diagnostic_class, oracle_status
 
 
 def csv_bytes(fieldnames, rows):
@@ -120,6 +121,11 @@ class EpisodeMinerTest(unittest.TestCase):
         self.assertEqual(accounting["eligible_reacquisition_count"], 2)
         self.assertEqual(accounting["failure_counts"], {"NO_CANDIDATE": 0, "CANDIDATE_REJECTED": 1, "CONFIRMATION_FAILED": 1})
         self.assertEqual(accounting["opportunities"][0]["first_valid_candidate_latency_frames"], 1)
+
+    def test_observability_class_and_one_frame_oracle_failure_are_separate(self):
+        one_frame = [{"visibility_ratio": 0.1, "size_visibility_usable": False, "same_prototype_distractors": 0, "oracle_candidate_traced": True, "oracle_candidate_eligible": False}]
+        self.assertEqual(diagnostic_class(one_frame)[0], "UNOBSERVABLE_OR_HEAVILY_OCCLUDED")
+        self.assertEqual(oracle_status(one_frame, False)[0], "FAIL_2_OF_3_INSUFFICIENT_VISIBLE_FRAMES")
 
     def test_iou_association_prefers_temporal_match(self):
         previous = [0.0, 0.0, 10.0, 10.0]

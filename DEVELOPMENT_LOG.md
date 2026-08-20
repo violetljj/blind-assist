@@ -2,6 +2,16 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。完成固定五个 `NO_CANDIDATE` 窗口的
+  `ADT1_REAPPEARANCE_OBSERVABILITY_DIAGNOSTIC_R3`。五窗分别独立注入 GT-derived proposal，正式 RGB
+  evaluator 对 oracle output fail closed；原 TargetMemory/verifier/2-of-3 最终重捕获 `4/5`，延迟为
+  10/42/20/17 帧。唯一失败窗只有 1 帧、3×3 px、visibility 0.10，2-of-3 在定义上不可能完成。
+  contact sheet 与逐帧统计把五窗分为 2 个不可见/重遮挡、3 个太小；640 observer 输入上的 bbox 最短
+  边最大值均小于 10 px，无尺度足够 model miss 或同 prototype identity ambiguity 证据。五窗合计
+  GT-invisible 780 帧、GT-visible 但低于尺度-可见性 proxy 177 帧、detectable-but-missed 0 帧；该合计
+  不与全局 longest-dropout 直接相减。停止 DINOv2/SAM/Sky，唯一 successor 为只改变搜索尺度并使用新
+  duration 分解的 `ADT1_SMALL_TARGET_SEARCH_SCALE_R4`。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。完成 R1 failure accounting 与单变量
   YOLOE-26n visual-prompt candidate canary。R1 的 5 个失败 opportunity 全为 `NO_CANDIDATE`，
   `CANDIDATE_REJECTED/CONFIRMATION_FAILED=0/0`，GT-visible LOST candidate recall 为 `34/405=0.0840`。

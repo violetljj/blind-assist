@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / PROPOSAL_BOTTLENECK_CONFIRMED / YOLOE_26N_VISUAL_PROMPT_NOT_SUPPORTED / ADT_2_PRERECORDED_DEVELOPMENT_DEMO_RENDERED / LONG_DROPOUT_REACQUISITION_INSUFFICIENT / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / NO_DINOV2 / SKY_DISABLED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / FIVE_WINDOW_OBSERVABILITY_AUDIT_COMPLETE / ORACLE_4_OF_5 / TWO_UNOBSERVABLE_THREE_TOO_SMALL / NO_VISIBLE_SCALE_SUFFICIENT_MODEL_MISS / ADT_2_PRERECORDED_DEVELOPMENT_DEMO_RENDERED / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / NO_DINOV2_SAM_SKY / DEFAULT_APP_UNCHANGED`
 
 ## 当前主线：BA-ADT-REAL-EVIDENCE
 
@@ -52,6 +52,13 @@ YOLOE-26n visual-prompt canary 仍是 `5/0/0` failure A/B/C，candidate recall �
 @30 reacquisition 降至 `0.2`、最长 dropout 增至 164，wrong-instance 仍为 0。结果见
 [`BA_ADT_YOLOE_VISUAL_PROMPT_CANARY_RESULT_2026-08-21.md`](BA_ADT_YOLOE_VISUAL_PROMPT_CANARY_RESULT_2026-08-21.md)。
 因此该单 visual-prompt candidate route 不获支持，DINOv2 不进入。
+
+五窗口 observability audit 见
+[`BA_ADT_REAPPEARANCE_OBSERVABILITY_R3_RESULT_2026-08-21.md`](BA_ADT_REAPPEARANCE_OBSERVABILITY_R3_RESULT_2026-08-21.md)。
+五个独立 GT-proposal oracle arm 为 `4/5`；唯一失败窗只有 1 帧、3×3 px、visibility 0.10，无法满足
+2-of-3。五窗最终分为 2 个不可见/重遮挡和 3 个太小；在 640 observer 输入上，所有窗口的 bbox 最短
+边最大值都低于 10 px。没有“可见且尺度足够但模型不会”或同 prototype identity ambiguity 证据，
+因此不启动 SAM teacher、DINOv2 或 Sky。
 
 ## 上位产品定义
 
@@ -127,10 +134,10 @@ claim ceiling 与 evidence role 均保持原样。
 
 ## 唯一 successor
 
-`ADT1_REAPPEARANCE_OBSERVABILITY_DIAGNOSTIC_R3`：保持 R1/YOLOE 结果与 evaluator 不变，只诊断五个
-`NO_CANDIDATE` 窗口中的目标像素尺度、visibility/遮挡和 RGB 可辨识性。它不增加 verifier、DINOv2、
-SAM 或新 detector，不靠拉长 persistence、降低 wrong-instance 门或调用 Sky 刷 recall；GC2-C、held-out、
-Android/default-App 与交互式导航均不在此 successor 内。
+`ADT1_SMALL_TARGET_SEARCH_SCALE_R4`：只检验 full-preview-resolution、tiling 或有依据的 ROI search 是否
+能增加原 RGB 中仍存在的有效 proposal pixels，并新增 `GT-invisible / below-detectability-proxy /
+detectable-but-missed` 分解。它不增加 verifier、DINOv2、SAM 或 Sky，不承诺恢复实际不可观察窗口；
+GC2-C、held-out、Android/default-App 与交互式导航均不在此 successor 内。
 
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim

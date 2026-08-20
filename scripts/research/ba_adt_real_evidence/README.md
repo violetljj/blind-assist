@@ -1,6 +1,6 @@
 # BA-ADT Real Evidence
 
-状态：`current / REVERSIBLE_EXPLORATION / PROPOSAL-BOTTLENECK-CONFIRMED / YOLOE-26N-VISUAL-PROMPT-NOT-SUPPORTED / ADT-2-PRERECORDED-DEVELOPMENT-DEMO-RENDERED / LONG-DROPOUT-REACQUISITION-INSUFFICIENT / NO-DINOV2 / SKY-DISABLED / DEFAULT-APP-UNCHANGED`
+状态：`current / REVERSIBLE_EXPLORATION / FIVE-WINDOW-OBSERVABILITY-AUDIT-COMPLETE / ORACLE-4-OF-5 / TWO-UNOBSERVABLE-THREE-TOO-SMALL / NO-VISIBLE-SCALE-SUFFICIENT-MODEL-MISS / ADT-2-PRERECORDED-DEVELOPMENT-DEMO-RENDERED / NO-DINOV2-SAM-SKY / DEFAULT-APP-UNCHANGED`
 
 ## 目标与边界
 
@@ -94,6 +94,11 @@ proposal/verifier trace，不向 observer 暴露 GT。YOLOE 单变量 arm 还需
 `--redetection-generator yoloe-visual-prompt --redetection-model <YOLOE_CHECKPOINT>`，正常 YOLO detector、
 flow、TargetMemory 和 confirmation 参数保持不变。
 
+固定五窗口 observability audit 使用 `audit_reappearance_windows.py` 生成 GT-derived oracle proposal
+maps、逐窗 JSON 与 contact sheet。oracle arm 必须使用
+`--redetection-generator diagnostic-oracle --diagnostic-oracle-proposals <WINDOW_MAP>`；它会把 output 标成
+非 RGB-only，现有正式 evaluator 必须拒绝。五窗必须分别独立运行，不能让前窗注入改变后窗状态。
+
 ## 输出
 
 机器输出位于 ignored `artifacts.local/`。源码只记录来源、身份、阈值、事件覆盖与 claim ceiling。
@@ -131,5 +136,9 @@ false-visible 不变；但 @30/@90/@180 reacquisition 仍为 `0.4/0.5/0.5`，最
 `34/405 = 0.0840`。只替换候选生成器的 YOLOE-26n visual-prompt canary 未改善任何失败窗口，candidate
 recall 降至 `29/423 = 0.0686`、@30 降至 `0.2`、最长 dropout 增至 164，wrong-instance 仍为 0；结果见
 [`BA_ADT_YOLOE_VISUAL_PROMPT_CANARY_RESULT_2026-08-21.md`](../../../docs/research/goal-copilot/BA_ADT_YOLOE_VISUAL_PROMPT_CANARY_RESULT_2026-08-21.md)。
-下一步只做 `ADT1_REAPPEARANCE_OBSERVABILITY_DIAGNOSTIC_R3`，检查五个 NO_CANDIDATE 窗口的目标尺度、
-遮挡与 RGB 可辨识性；不增加 DINOv2/SAM/verifier，不继续拉长 persistence、降低身份门或授权 Sky。
+R3 五窗口审计得到 oracle `4/5`；唯一失败只有 1 帧 3×3 px，2-of-3 不可能完成。五窗分为 2 个
+不可见/重遮挡和 3 个太小；640 observer 输入上的目标最短边最大值均小于 10 px，没有建立尺度足够的
+model miss 或 identity ambiguity。结果见
+[`BA_ADT_REAPPEARANCE_OBSERVABILITY_R3_RESULT_2026-08-21.md`](../../../docs/research/goal-copilot/BA_ADT_REAPPEARANCE_OBSERVABILITY_R3_RESULT_2026-08-21.md)。
+下一步只做 `ADT1_SMALL_TARGET_SEARCH_SCALE_R4`，检验 full-resolution、tiling/ROI search 与新
+detectability duration 分解；不增加 DINOv2/SAM/Sky，不降低身份门。
