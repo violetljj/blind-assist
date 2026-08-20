@@ -179,6 +179,34 @@ not be lower for Balanced, but positive global-optimum reach is not required for
 replication. Any progress-conditioned proposal or search-state-memory mechanism
 belongs to a later B5-B version and is forbidden in B5-A.
 
+The frozen replication retains three prompt identities per instance, eight
+generations per arm, and 144 total model calls. Admission requires a positive
+median paired normalized-progress delta, at least six wins with zero losses,
+non-lower global-optimum reach, non-increased unsafe and semantic-invalid
+counts, matched model-call cost, and intact operator semantics. A pass admits
+the mechanism only as `ADMITTED_L10M_SEARCH_OPERATOR` within this qualified
+finite benchmark family.
+
+After the implementation commit is fixed, freeze and execute exactly once:
+
+```text
+python -m scripts.research.l10m_b4.run_b5a freeze \
+  --repo-root . \
+  --output artifacts.local/evidence/l10m_b5/b5a/protocol.json
+
+python -m scripts.research.l10m_b4.run_b5a run \
+  --repo-root . \
+  --output-root artifacts.local/evidence/l10m_b5/b5a/runs \
+  --protocol artifacts.local/evidence/l10m_b5/b5a/protocol.json \
+  --transport-qualification F:/ba-data/blindassist-artifacts-20260805/evidence/l10m_b1/transport_qualification/b1-i0-proxy-20260820T025833-4e438512/result.json
+```
+
+The progress reader is read-only:
+
+```text
+python -m scripts.research.l10m_b4.summarize_b5a --run-dir <run-dir>
+```
+
 Bound evidence:
 
 - source commit: `d32d88c565bd339651ab8acd618ab74261677639`
