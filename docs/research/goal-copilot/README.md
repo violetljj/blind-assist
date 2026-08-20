@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / GOAL_COPILOT_SKY_BRIDGE_V0_MECHANICS_READY / GOAL_COPILOT_1_MODEL_SEARCH_NOT_STARTED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / GOAL_COPILOT_SKY_BRIDGE_V0_MECHANICS_READY / GOAL_COPILOT_1_SKY_PILOT_PROTOCOL_IMPLEMENTED_MODEL_SEARCH_NOT_STARTED / DEFAULT_APP_UNCHANGED`
 
 ## 上位产品定义
 
@@ -74,7 +74,10 @@ claim ceiling 与 evidence role 均保持原样。
 - 模型状态：`GOAL_COPILOT_1_MODEL_SEARCH_NOT_STARTED`；
 - 默认 App、真实用户、安全效果和产品可用性：无新权限；
 
-## 唯一 successor
+## 当前 successor
 
-在另立预算、provider、候选/评价身份与 Development claim ceiling 后，设计
-`GOAL-COPILOT-1-SKY-PILOT`。本页不授权执行该 pilot。
+`GOAL-COPILOT-1-SKY-PILOT` 已形成独立冻结协议；正式模型调用只能由 hash-bound formal seal
+授权。协议、候选隔离、两 replicate 的 2×16 预算、dev-only winner selection、加密 fresh cohort 和
+PASS gate 见
+[`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)。在 formal seal
+出现前，模型状态仍为 `NOT_STARTED`。
