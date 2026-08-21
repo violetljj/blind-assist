@@ -1,15 +1,20 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / R5_CLOSED_INCONCLUSIVE / DINOV_1_OF_3_WEAK_POSITIVE / SAM31_IMAGE_CROSS_IMAGE_PROMPT_NOT_EVALUABLE / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / BA_DESTINATION_GOAL_GROUNDING_R0 / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_VIO_SLAM_RESCUE / NO_SKY / DEFAULT_APP_UNCHANGED`
 
-## 当前主线：BA-ADT-REAL-EVIDENCE
+## 当前主线：Destination / Goal Grounding
 
-BlindAssist 的当前唯一 Goal Copilot successor 是 `BA-ADT-REAL-EVIDENCE`。它从最终产品目标倒推，
-先补齐真实第一视角视觉证据，再接回冻结的 Goal Copilot。路线依次为 ADT-0 episode mining、ADT-1
-RGB-only Observation、ADT-2 prerecorded Offline Goal Copilot，以及只在真实失败明确归因到 policy 层时
-才允许设计的 ADT-3/Sky task。
+BlindAssist 的当前唯一 Goal Copilot successor 是 `BA_DESTINATION_GOAL_GROUNDING_R0`。它回答的不是
+“画面里有没有门”，而是“哪个视觉实体真正满足用户目标”：先确认目标建筑，再找属于该建筑的入口，
+最后才把锁定目标交给 persistence、approach 与 completion。首个 P0 不造模块群，只验证一个直接任务：
+给定“找到目标建筑的入口”，在含多个建筑、多个门的真实图像或视频中，将目标建筑所属入口排在其他门
+之前，并输出支持该排序的可审计 evidence。
 
-本页同时是执行约束：`BA-ADT-REAL-EVIDENCE` 是唯一 active 产品与研究主线。D-ORACLE、SVRF、
+允许组合的 evidence 包括 OCR 招牌、logo、building/facade semantics、entrance detection、VLM relational
+reasoning 与 POI/map coarse prior；核心关系是 `entrance_of(target_building)`。首个 P0 只判定目标建筑与
+入口归属排序，不提前把 `public / accessible entrance`、导航完成或安全效果混入成功主张。
+
+本页同时是执行约束：`BA_DESTINATION_GOAL_GROUNDING_R0` 是唯一 active 产品与研究主线。D-ORACLE、SVRF、
 Assistive Geometry、TARO、SATOM、DepthART、旧 GC/Sky search 与 Android/default-App promotion 只保留为
 历史、关闭或暂停的支撑上下文；除非用户显式改变主线并先同步本页与算法研究入口，否则不得自行恢复、
 占用执行预算或产生竞争 successor。
@@ -20,7 +25,8 @@ visibility、bearing、tracking、reacquisition、relative nearness 与 approach
 能否支撑合理的 prerecorded guidance timeline；它不能证明引导改变了用户动作或完成 closed-loop
 navigation。
 
-ADT-0 的稳定实现入口见
+已完成的 BA-ADT real-evidence 工作现在是 Target Persistence 的基础与 R5 终止证据，不再是 active
+tiny-object successor。ADT-0 的稳定实现入口见
 [`scripts/research/ba_adt_real_evidence/README.md`](../../../scripts/research/ba_adt_real_evidence/README.md)。
 当前 ADT-0、ADT-1 Development evaluation 与首个 ADT-2 prerecorded demo 已运行；Sky、GC2-C、
 held-out、Android/default-App 接线、产品和安全主张均关闭。
@@ -133,6 +139,13 @@ correct candidate，唯一命中是 W4 的 20 px 目标，且正确分数低于�
 checkpoint 只接 multiplex video predictor，公开 image visual box 只作用于当前同一图，没有历史
 exemplar 到独立 target image 的受支持路径。该项不是 `0/3`，R5 总结论为 inconclusive；不追加其他
 teacher、R6/R7 rescue、Sky、held-out 或 default-App。
+
+当前唯一 successor 是 `BA_DESTINATION_GOAL_GROUNDING_R0`。最小输入是用户目标与真实多建筑/多门 RGB
+图像或视频；最小输出是 entrance candidates、goal-conditioned ranking 与逐候选 evidence；最小成功条件
+是目标建筑所属入口排在其他建筑或无关实体的门之前。TargetMemory、flow tracking、conservative
+redetection 与 failure evaluator 保留为找到目标后的 persistence 基础；VIO/SLAM/world memory 只保留为
+未来 spatial-memory 增强，不为 carrot 单独开启 rescue 长线。Sky 仅在某个真实模块出现明确、可测的
+headroom 后才可另立任务，不能驱动当前研究方向。
 
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim

@@ -2,6 +2,17 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。确认 AutoDL 4090D 已关机，R5 永久作为
+  appearance-only tiny-target redetection 的终止性上界实验封存，不建立 R6/R7，也不立即开启
+  VIO/SLAM carrot rescue。结论上限保持为：当前证据不足以支持继续把“几像素任意小实例的
+  appearance-only 长时重捕获”作为 BlindAssist P0；这不是“纯 RGB 一定无法重捕获”的普遍结论。
+  产品/研究唯一主线切换为 `BA_DESTINATION_GOAL_GROUNDING_R0`：给定“找到目标建筑入口”，先在真实
+  多建筑、多门 RGB 场景中确认目标建筑，再将 `entrance_of(target_building)` 排在其他门之前，并给出
+  OCR/招牌、logo、facade/entrance semantics、relational reasoning 或 POI coarse prior 等可审计 evidence。
+  TargetMemory/flow/conservative redetection 保留为目标锁定后的 persistence 基础；VIO/SLAM/world memory
+  后置为 spatial-memory 辅助；Sky 只在真实模块出现明确可测 headroom 后另立任务。当前不启动新实验、
+  held-out、Android/default-App、产品或安全权限。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。在 teacher outcome 前冻结终止性
   `ADT1_SMALL_TARGET_VISUAL_UPPER_BOUND_R5`。Teacher A 固定为 SAM 3 / Ultralytics 8.4.52 / FP16 /
   imgsz 1008 / conf 0.05；ModelScope `facebook/sam3` commit 与 3.45GB LFS object SHA 已绑定。合法 visual

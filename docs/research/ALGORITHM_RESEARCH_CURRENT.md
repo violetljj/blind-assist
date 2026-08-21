@@ -1,11 +1,12 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_RESEARCH_MAINLINE=BA_ADT_REAL_EVIDENCE / R5_ATTEMPT_02_OWLV2_LARGE_FROZEN / TEACHER_OUTCOME_NOT_RUN / TERMINAL_REDETECTION_GATE / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / NO_DINOV2_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_RESEARCH_MAINLINE=DESTINATION_GOAL_GROUNDING / GOAL_GROUNDING_P0 / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_VIO_SLAM_RESCUE / NO_SKY / DEFAULT_APP_UNCHANGED`
 
-Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线，当前 successor 为
-`BA-ADT-REAL-EVIDENCE`：现有 perception、geometry、risk、
-tracking 与 traversability 模块作为 Evidence Providers，Goal Copilot Brain 负责跨时间的 task belief、
-progress、recovery、action 和 completion。`GOAL-COPILOT-1` 已永久关闭；其冻结 winner 的零模型
+Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线，当前唯一 successor 为
+`BA_DESTINATION_GOAL_GROUNDING_R0`：先在真实多建筑、多入口场景中确定哪个实体满足用户目标，并将
+`entrance_of(target_building)` 排在其他门之前；现有 perception、geometry、risk、tracking 与
+traversability 模块作为 Evidence Providers，Goal Copilot Brain 负责跨时间的 task belief、progress、
+recovery、action 和 completion。`GOAL-COPILOT-1` 已永久关闭；其冻结 winner 的零模型
 GC2-A perception-uncertainty characterization 和 GC2-B 搜索均已完成；GC2-B 未建立 moderate robustness
 search signal，held-out 未开启。后续零模型 observability/reality audit 已选择停止 synthetic moderate
 optimization；真实手机 RGB noise grounding 因当前 source contract 缺失而 `NOT_EVALUABLE`。此前冻结的
@@ -20,7 +21,7 @@ GA-SATOM 的 physical-ToF G0 协议保留但按用户的无 ToF 选择暂停；V
 G0 协议也按进一步的纯 RGB 选择暂停。SVRF-O0 的协议、机制与 source/index 权限仅作历史保留，不执行
 bus canary、member index、payload materialization、truth writer 或 O0。Failure Synthesis 冻结的
 D-ORACLE-1 同样暂停，不执行 source/action truth/policy lock 或 outcome access。除
-`BA-ADT-REAL-EVIDENCE` 当前 successor 外，没有其他 active algorithm lane；任何旧路线重开都必须由用户
+`BA_DESTINATION_GOAL_GROUNDING_R0` 当前 successor 外，没有其他 active algorithm lane；任何旧路线重开都必须由用户
 显式改变主线，并先同步本页与 Goal Copilot current，不能由旧文档中的 successor 或历史优先级自行恢复。
 DepthART D3R6 仍保持暂停；其 bounded deferral contract 与 fresh gate 保留，但 post-hoc
 same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6 执行权限。
@@ -30,7 +31,7 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| Goal Copilot / BA-ADT | 真实第一视角 RGB 能否恢复 target temporal evidence | `PRODUCT_AND_RESEARCH_MAINLINE / BA_ADT_REAL_EVIDENCE_ACTIVE / R5_ATTEMPT_02_OWLV2_LARGE_FROZEN / TEACHER_OUTCOME_NOT_RUN / TERMINAL_REDETECTION_GATE / RGB_ONLY_SYSTEM_INPUT / GT_EVALUATOR_ONLY / NO_DINOV2_SKY / DEFAULT_APP_UNCHANGED` | [Goal Copilot current](goal-copilot/README.md) | 执行冻结的 `ADT1_SMALL_TARGET_VISUAL_UPPER_BOUND_R5` OWLv2-large Teacher A 与三分支终止门 | GT 进入 teacher；继续扫 R4；多 teacher 动物园；接 DINOv2/Sky；启动 held-out/default App | 否 |
+| Goal Copilot / Destination Grounding | 在真实多建筑、多门场景中，哪个入口真正属于用户指定的目标建筑 | `PRODUCT_AND_RESEARCH_MAINLINE / GOAL_GROUNDING_P0 / R5_PERMANENTLY_CLOSED / TARGET_PERSISTENCE_FOUNDATION_RETAINED / SPATIAL_MEMORY_DEFERRED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED` | [Goal Copilot current](goal-copilot/README.md) | `BA_DESTINATION_GOAL_GROUNDING_R0`：给定“找到目标建筑入口”，输出入口候选排序和可审计 evidence，使目标建筑所属入口排在其他门之前 | 继续 tiny-object teacher/R6/R7；另开 carrot VIO/SLAM rescue；先造模块群；让 Sky 决定研究方向；启动 held-out/default App | 否 |
 | D-ORACLE-1 causal ladder | 三臂 matched oracle intervention 定位 downstream target-policy stack 与 estimated representation 的损失 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / PROTOCOL_FROZEN / NO_EXECUTION / NO_SEARCH` | [Failure diagnosis current](failure-synthesis/README.md) | 无；只有用户显式改变主线后才可重开 | 执行 source/action truth/policy lock；增加第四竞争臂；提前拆H3/H4；训练/调policy/threshold；读取outcome后换parent/gate | 否 |
 | SVRF / Scale-free Visual Risk Field | 纯 RGB 派生的相对深度动态、局部扩张和视觉通道侵入能否形成稳定相对风险排序 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / STREAM_INDEX_NOT_ACTIVE / REAL_O0_NOT_RUN / NO_TRAINING` | [SVRF current](svrf/README.md) | 无；只有用户显式改变主线并有新的 representation-headroom 前置证据后，才可另行恢复 | bus canary、member index、payload/truth materialization、O0、训练或接 Android | 否 |
 | VI-Task Geometry | 同刚体 RGB+IMU 自校准 metric pose/ground，再为未来 task geometry 分配 computation/parallax budget | `PAUSED_BY_PURE_RGB_SELECTION / G0_PROTOCOL_RETAINED / REAL_G0_NOT_RUN / NO_TOF / NO_TRAINING` | [VI-Task Geometry current](vi-task-geometry/README.md) | 无；只有用户明确恢复 RGB+IMU metric-frame 路线才可重开 preflight | 实现/采集/运行 G0；用手机 IMU配眼镜视频；重跑 ARCore D45；提前训练、主动分配或接 Android | 否 |
