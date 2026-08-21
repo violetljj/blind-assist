@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_R0_REAL_RGB_HEADROOM_ESTABLISHED_ON_CONSUMED_ADT / P1_A1_CONSERVATIVE_LOCAL_TRACK_VALIDITY / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_A1_VALIDITY_GAIN_ONLY_BY_ABSTENTION / NO_POLICY_ADMISSION / P1_A2_REPRESENTATION_DESIGN_ONLY / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；详细历史、协议和数字留在链接的独立结果文件，不在 current 重复维护。
@@ -109,14 +109,16 @@ confirmation、quarantine、receipt 或终态。
 
 ## 唯一 successor
 
-`P1_A1_CONSERVATIVE_LOCAL_TRACK_VALIDITY`：P1-R0 baseline 的 coverage 为 `87/777 = 11.20%`，同时产生
-`1,221` wrong-instance frames、`59` identity switches 与 255-frame max wrong-lock；post-outcome 描述性分解中
-`1,094/1,221 = 89.60%` wrong assertions 是 background drift，另一个 ADT instance 为 127。A1 只改变
-local-track RGB contradiction / drift rejection；candidate generator、fixed-template reacquisition、state machine、
-evaluator、P1-D0 cohort 与 truth firewall 全部冻结。
+[`P1-A1`](P1_A1_CONSERVATIVE_LOCAL_TRACK_VALIDITY_RESULT_2026-08-21.md) 已一次性完成 3,069 个 compact
+RGB-only validity gates。最佳 `>=90%` retention gate 保留 `80/87` correct，但 wrong、episode-macro、max wrong-lock
+只下降 `39.64% / 44.73% / 9.41%`；0 wrong gate 只保留 `15/87` correct，false-loss 达 `94.21%`。终态
+`VALIDITY_GAIN_ONLY_BY_ABSTENTION / NO_POLICY_ADMISSION / NO_SCIENTIFIC_VERDICT`，不保留 discovered threshold。
 
-禁止：提前更换 candidate generator/reacquisition、加入 ReID/强 tracker、Sky、fresh/large cohort、P0 policy
-续搜、Active/Temporal Grounding、Android/default-App、产品或安全主张。
+当前唯一 successor 是 `P1_A2_MATERIALLY_DIFFERENT_TRACK_VALIDITY_REPRESENTATION_DESIGN`，仅设计不同的
+tracking-validity representation，execution=false。不得继续扫 A1 threshold，也不得提前进入 loss/reacquisition。
+
+禁止：继续调 A1 threshold、直接保留 winner、提前进入 loss/reacquisition、加入 ReID/Sky、fresh/large cohort、
+P0 policy 续搜、Active/Temporal Grounding、Android/default-App、产品或安全主张。
 
 Claim ceiling：`CONSUMED_ADT_INDOOR_OBJECT_DEVELOPMENT_BASELINE_ONLY_NO_SCIENTIFIC_VERDICT`。
 默认 App：不变。

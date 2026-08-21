@@ -82,6 +82,23 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-re
 `prepare-public` 后应先复核 public JSON 无 future bbox、visibility、UID、temporal tag、distractor 或 GT path；
 tracker 完成并封存 prediction 后才运行 private evaluator。
 
+P1-A1 先做不读 GT 的 exact-parity instrumentation replay，再执行唯一一次 private-label compact sweep：
+
+```powershell
+$r0 = "artifacts.local/evidence/p1_r0_consumed_adt_baseline_v2"
+$a1 = "artifacts.local/evidence/p1_a1_conservative_local_validity_v1"
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-real-evidence `
+  run_p1_a1_local_validity.py instrument-replay `
+  --public-input "$r0/public_input.json" --sealed-prediction "$r0/prediction.json" `
+  --trace "$a1/flow_health_trace.json"
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-real-evidence `
+  run_p1_a1_local_validity.py sweep `
+  --trace "$a1/flow_health_trace.json" --private-input "$r0/private_eval_input.json" `
+  --sealed-prediction "$r0/prediction.json" --output-dir $a1
+```
+
+`sweep` root 已消费；不得重跑、扩大 quantile grid 或保留 discovered threshold。
+
 Sample 之后，对显式选择且总量有界的完整 sequence 只下载 main GT：
 
 ```powershell
@@ -166,14 +183,14 @@ supersede。正式 Attempt 02 的 GT-blind OWLv2-large 入口是 `run_visual_upp
 
 ## 当前 successor
 
-P1-D0 的 15 episodes 已被隔离的 P1-R0 sparse-flow + fixed-template RGB baseline 消费。冻结 evaluator 得到
-`87/777` correct coverage、`1,221` wrong-instance frames、59 switches 与 255-frame max wrong-lock，终态
-`REAL_RGB_PERSISTENCE_HEADROOM_ESTABLISHED_ON_CONSUMED_ADT`。89.60% wrong assertions 是没有匹配任何 visible
-ADT instance 的 background drift；当前唯一 successor 为 `P1_A1_CONSERVATIVE_LOCAL_TRACK_VALIDITY`，只改变
-local-track RGB contradiction / drift rejection，冻结 candidate generator、reacquisition、state machine、evaluator、
-cohort 与 truth firewall。协议、结果与稳定入口见
-[`P1-R0 result`](../../../docs/research/goal-copilot/P1_R0_CONSUMED_ADT_BASELINE_RESULT_2026-08-21.md) 和
-`run_p1_consumed_adt_baseline.py`。以下 ADT-0..R5 内容是既有 consumed Development context，不是并行 successor。
+P1-A1 已在 P1-R0 的 1,296 个 flow candidates 上完成 instrumentation-parity PASS 与一次性 3,069-gate
+compact sweep。最佳 retention-admissible gate 保留 `80/87` correct，但 wrong/macro/max-lock 只改善
+`39.64%/44.73%/9.41%`；0 wrong gate 只保留 15 个 oracle-init correct。终态
+`VALIDITY_GAIN_ONLY_BY_ABSTENTION / NO_POLICY_ADMISSION / NO_SCIENTIFIC_VERDICT`。当前唯一 successor 是
+非执行的 `P1_A2_MATERIALLY_DIFFERENT_TRACK_VALIDITY_REPRESENTATION_DESIGN`；不得继续扫 A1 threshold 或进入
+loss/reacquisition。协议、结果与入口见
+[`P1-A1 result`](../../../docs/research/goal-copilot/P1_A1_CONSERVATIVE_LOCAL_TRACK_VALIDITY_RESULT_2026-08-21.md) 和
+`run_p1_a1_local_validity.py`。以下 ADT-0..R5 内容是既有 consumed Development context，不是并行 successor。
 
 Sample 已得到 102 个持续跟踪候选，覆盖全部六类事件，但没有单一目标覆盖完整六阶段；详见
 [`BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md`](../../../docs/research/goal-copilot/BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md)。

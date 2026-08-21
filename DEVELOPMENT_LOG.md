@@ -2,6 +2,18 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：Codex。完成 P1-A1 一次性 conservative local-track
+  validity discovery。RGB-only instrumentation replay 对 P1-R0 v2 的 1,296 个 flow candidates 增加 survival、
+  forward-backward、affine/RANSAC、spatial coverage、residual/jump 与 fixed-initial-anchor appearance；15/15
+  episodes 的 candidate/bbox/source/state/event exact parity PASS，post-init GT reads=0。固定 quantile grid 只跑
+  `72 single + 2,268 pair-AND + 729 one-family triple-AND = 3,069` gates。仅 47 个满足 `>=90%` correct-retention；
+  最佳 admissible gate 保留 `80/87=91.95%` correct，但 wrong `1,221->737`、episode-macro reduction `44.73%`、
+  max wrong-lock `8,498->7,698 ms`，三项 meaningful signal 门均失败。无 retention 约束的 gate 可令 wrong=0，
+  但只保留 `15/87=17.24%` correct，coverage `1.93%`、false-loss `94.21%`。终态
+  `VALIDITY_GAIN_ONLY_BY_ABSTENTION / NO_POLICY_ADMISSION / NO_SCIENTIFIC_VERDICT`；不保留 threshold、不做第二轮
+  grid、不进入 loss/reacquisition。唯一 successor 为 execution=false 的
+  `P1_A2_MATERIALLY_DIFFERENT_TRACK_VALIDITY_REPRESENTATION_DESIGN`，仍禁止先做 ReID/Sky/fresh data/Android。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：Codex。按 outcome-blind protocol 完成 P1-R0 consumed ADT
   baseline adapter 与 15-episode 真实 RGB 运行。Public input 只含 RGB/timestamp/P0 handoff 和每 episode 一次
   frame-0 oracle bbox；tracker receipt 为 `oracle_initializations=15 / post_initialization_gt_reads=0`，无 detector、
