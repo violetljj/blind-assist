@@ -12,7 +12,10 @@ import math
 import cv2
 import numpy as np
 
-from stage_a import FrameEvidence, SpatialEvidence
+try:
+    from .stage_a import FrameEvidence, SpatialEvidence
+except ImportError:  # Direct-file test discovery keeps this directory on sys.path.
+    from stage_a import FrameEvidence, SpatialEvidence
 
 
 ORB_FEATURES = 1000

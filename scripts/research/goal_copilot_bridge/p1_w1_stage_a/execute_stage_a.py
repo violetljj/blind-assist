@@ -18,8 +18,12 @@ from typing import Any
 import cv2
 import numpy as np
 
-from opencv_provider import FrozenRgbProvider
-from stage_a import adjudicate_stage_a, step
+try:
+    from .opencv_provider import FrozenRgbProvider
+    from .stage_a import adjudicate_stage_a, step
+except ImportError:  # Direct-file test discovery keeps this directory on sys.path.
+    from opencv_provider import FrozenRgbProvider
+    from stage_a import adjudicate_stage_a, step
 
 
 EXPECTED_PUBLIC_ROSTER_SHA256 = "1969560ba8a3863ad4aef16fca9141602144a4b4555ee38c38ff49b6f62bef70"
