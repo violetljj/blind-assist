@@ -2,6 +2,8 @@
   "schema_version": 1,
   "protocol_id": "BA-P0-NAMED-BUILDING-ENTRANCE-GROUNDING-V1",
   "status": "FROZEN_MECHANICS_CONTRACT",
+  "prospective_addendum": "GOAL_REFERENCE_SET_SEMANTICS_2026-08-21",
+  "retroactive_receipt_reinterpretation": false,
   "profile": "ROUTINE_ENGINEERING_MOCK_VALIDATION",
   "task_family": "NAMED_BUILDING_ENTRANCE_GROUNDING",
   "observation_mode": "FROZEN_PASSIVE_FIRST_PERSON_WINDOW",
@@ -11,6 +13,13 @@
     "optional_coarse_poi_prior"
   ],
   "goal_relation": "entrance_of(target_building)",
+  "goal_reference_resolutions": [
+    "UNIQUE",
+    "SET_VALUED",
+    "AMBIGUOUS"
+  ],
+  "set_valued_correctness": "ANY_VALID_TARGET_INSTANCE_IS_CORRECT",
+  "ambiguous_correctness": "AMBIGUOUS_OR_FAIL_CLOSED_ABSTENTION",
   "decision_statuses": [
     "GROUNDED",
     "AMBIGUOUS",
@@ -43,6 +52,8 @@
     "CORRECT_CANDIDATE_UNAVAILABLE",
     "FALSE_GROUNDING_TARGET_ABSENT",
     "CORRECT_AMBIGUITY",
+    "SET_VALUED_ANY_VALID_TARGET_SELECTED",
+    "AMBIGUOUS_FAIL_CLOSED_ABSTENTION",
     "EXPIRED_SLOW_EVIDENCE_USED",
     "REGION_CORRECT_IDENTITY_WRONG",
     "IDENTITY_CORRECT_REGION_WRONG",
@@ -57,7 +68,8 @@
     "same_class_distractor",
     "target_presence",
     "illumination",
-    "view_angle"
+    "view_angle",
+    "goal_reference_resolution"
   ],
   "execution_authority": {
     "new_cohort_download_or_materialization": false,

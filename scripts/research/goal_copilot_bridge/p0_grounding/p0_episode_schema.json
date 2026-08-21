@@ -10,8 +10,9 @@
     "goal_spec",
     "observation_window",
     "observation_valid",
+    "goal_reference_resolution",
     "target_visible",
-    "target_instance_annotation",
+    "valid_target_instances",
     "acceptable_spatial_regions",
     "distractor_instances",
     "target_min_side_px",
@@ -26,12 +27,11 @@
     "goal_spec": {"$ref": "#/$defs/goalSpec"},
     "observation_window": {"$ref": "#/$defs/observationWindow"},
     "observation_valid": {"type": "boolean"},
+    "goal_reference_resolution": {"enum": ["UNIQUE", "SET_VALUED", "AMBIGUOUS"]},
     "target_visible": {"type": "boolean"},
-    "target_instance_annotation": {
-      "oneOf": [
-        {"$ref": "#/$defs/targetAnnotation"},
-        {"type": "null"}
-      ]
+    "valid_target_instances": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/targetAnnotation"}
     },
     "acceptable_spatial_regions": {
       "type": "array",
@@ -65,10 +65,38 @@
   },
   "allOf": [
     {
+      "if": {"properties": {"goal_reference_resolution": {"const": "UNIQUE"}}, "required": ["goal_reference_resolution"]},
+      "then": {
+        "properties": {
+          "valid_target_instances": {"minItems": 1, "maxItems": 1}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"goal_reference_resolution": {"const": "SET_VALUED"}}, "required": ["goal_reference_resolution"]},
+      "then": {
+        "properties": {
+          "valid_target_instances": {"minItems": 2}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"goal_reference_resolution": {"const": "AMBIGUOUS"}}, "required": ["goal_reference_resolution"]},
+      "then": {
+        "properties": {
+          "valid_target_instances": {"maxItems": 0},
+          "target_visible": {"const": false},
+          "acceptable_spatial_regions": {"maxItems": 0},
+          "target_min_side_px": {"type": "null"},
+          "visibility_fraction": {"type": "null"},
+          "grounding_expectation": {"const": "MUST_BE_AMBIGUOUS"}
+        }
+      }
+    },
+    {
       "if": {"properties": {"target_visible": {"const": true}}, "required": ["target_visible"]},
       "then": {
         "properties": {
-          "target_instance_annotation": {"$ref": "#/$defs/targetAnnotation"},
           "acceptable_spatial_regions": {"minItems": 1},
           "target_min_side_px": {"type": "number", "exclusiveMinimum": 0},
           "visibility_fraction": {"type": "number", "minimum": 0, "maximum": 1}
@@ -79,7 +107,6 @@
       "if": {"properties": {"target_visible": {"const": false}}, "required": ["target_visible"]},
       "then": {
         "properties": {
-          "target_instance_annotation": {"type": "null"},
           "acceptable_spatial_regions": {"maxItems": 0},
           "target_min_side_px": {"type": "null"},
           "visibility_fraction": {"type": "null"}
@@ -138,7 +165,7 @@
         "target_instance_id": {"type": "string", "minLength": 1, "maxLength": 128},
         "target_name": {"type": "string", "minLength": 1, "maxLength": 256},
         "relation": {"const": "entrance_of"},
-        "regions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/region"}}
+        "regions": {"type": "array", "items": {"$ref": "#/$defs/region"}}
       }
     },
     "distractor": {

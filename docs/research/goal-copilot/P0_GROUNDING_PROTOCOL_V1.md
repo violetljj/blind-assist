@@ -1,13 +1,16 @@
 # P0 Goal Grounding Protocol V1
 
-状态：`FROZEN_MECHANICS_CONTRACT / NAMED_BUILDING_ENTRANCE_GROUNDING / PASSIVE_OBSERVATION_ONLY / MOCK_VALIDATION_ONLY / NO_COHORT / NO_BASELINE / NO_MODEL / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`FROZEN_MECHANICS_CONTRACT / GOAL_REFERENCE_SET_ADDENDUM / NAMED_BUILDING_ENTRANCE_GROUNDING / PASSIVE_OBSERVATION_ONLY / MOCK_VALIDATION_ONLY / NO_BASELINE / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 协议 ID：`BA-P0-NAMED-BUILDING-ENTRANCE-GROUNDING-V1`
 
+2026-08-21 prospective goal-reference addendum：以下 `UNIQUE / SET_VALUED / AMBIGUOUS` 语义只适用于新增
+episode，不回写 addendum 前的 mechanics receipt 或 P0-S1 终态。
+
 ## 研究问题
 
-给定一个明确目标和一段冻结的第一视角被动观察窗口，系统能否将该目标绑定到正确的可见实例和原始帧
-空间区域；当目标不在场、观测无效、目标太小/被遮挡或证据不足以消歧时，能否拒绝绑定？
+给定一个目标描述和一段冻结的第一视角被动观察窗口，系统能否将目标绑定到任一合法可见 referent 和原始帧
+空间区域；当语言不足以确定合法 referent 集、目标不在场、观测无效或证据不足时，能否拒绝强猜？
 
 V1 只覆盖 `Named Building Entrance Grounding`：用户指定一个有名称的建筑，系统寻找属于该建筑的
 入口。它不是通用生活目标 benchmark，也不同时覆盖公交车门、空座位、电梯按钮、商品、收银台或
@@ -52,7 +55,8 @@ goal_spec
 observation_window
 observation_valid
 target_visible
-target_instance_annotation
+goal_reference_resolution
+valid_target_instances
 acceptable_spatial_regions
 distractor_instances
 target_min_side_px
@@ -65,9 +69,21 @@ grounding_expectation
 `grounding_expectation` 只能是：
 
 - `MUST_GROUND`：证据角色要求系统绑定正确实例；
-- `MUST_BE_AMBIGUOUS`：窗口内存在不可可靠消歧的多个候选；
+- `MUST_BE_AMBIGUOUS`：当前语言/上下文不足以可靠确定合法 referent 集；
 - `MUST_ABSTAIN`：目标不在场或证据不足；
 - `INVALID_OBSERVATION`：输入窗口本身不可评估。
+
+Goal reference truth 显式区分：
+
+- `UNIQUE`：`valid_target_instances` 恰有一个物理目标；
+- `SET_VALUED`：至少两个物理目标都满足当前指令，选中其中任何一个都不得判错；
+- `AMBIGUOUS`：现有语言/上下文不足以可靠确定合法目标集合，不得预设单一 bbox，系统返回 `AMBIGUOUS`
+  或 fail-closed abstention 均为正确处理。
+
+`acceptable_spatial_regions` 必须严格等于所有 valid target 在 observation window 中 regions 的并集；不存在
+额外隐藏的 single-target region。`target_visible` 只表示至少一个已建立的 valid referent 在窗口中有 region。
+因此 `AMBIGUOUS` 不进入 Provider recall 或 exact Brain-selection 分母。这里不实现 clarification、对话历史、
+路线偏好或最近入口策略。
 
 Mock fixture 是 evaluator mechanics，不是 scientific cohort。真实 cohort 的来源、去重、场景数量、分层
 分母、Development/fresh 角色和缺失数据规则均未在 V1 中授权。
@@ -146,7 +162,8 @@ visibility_fraction
 scene strata
 ```
 
-Availability 使用候选 region 与 `acceptable_spatial_regions` 的最大 IoU；V1 mechanics threshold 固定为
+Availability 使用候选 region 与全部 `acceptable_spatial_regions` 的最大 IoU；`SET_VALUED` 下命中任一 valid
+target region 都算 correct。V1 mechanics threshold 固定为
 `0.5`，只用于验证 evaluator，不是 baseline admission 数值门。
 
 ### Layer 2 — Brain Selection / Fusion

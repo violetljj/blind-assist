@@ -22,6 +22,7 @@ DECISION_STATUSES = {
     "INVALID_OBSERVATION",
 }
 EXPECTATIONS = {"MUST_GROUND", "MUST_BE_AMBIGUOUS", "MUST_ABSTAIN", "INVALID_OBSERVATION"}
+GOAL_REFERENCE_RESOLUTIONS = {"UNIQUE", "SET_VALUED", "AMBIGUOUS"}
 PROVIDER_STATUSES = {"RUN_SUCCESS", "NOT_RUN", "RUN_FAILED", "INVALID_OUTPUT"}
 EVIDENCE_VALIDITIES = {"VALID", "EXPIRED", "INVALID", "UNKNOWN"}
 IDENTITY_SUPPORT = {"SUPPORTED", "INSUFFICIENT", "CONTRADICTED", "NOT_EVALUABLE"}
@@ -43,8 +44,9 @@ EPISODE_KEYS = {
     "goal_spec",
     "observation_window",
     "observation_valid",
+    "goal_reference_resolution",
     "target_visible",
-    "target_instance_annotation",
+    "valid_target_instances",
     "acceptable_spatial_regions",
     "distractor_instances",
     "target_min_side_px",
@@ -193,6 +195,8 @@ def validate_episode(value: Mapping[str, Any]) -> Mapping[str, Any]:
     frame_set = set(frame_ids)
 
     _require(type(episode["observation_valid"]) is bool, "observation_valid must be boolean", EpisodeContractError)
+    resolution = episode["goal_reference_resolution"]
+    _require(resolution in GOAL_REFERENCE_RESOLUTIONS, "unknown goal_reference_resolution", EpisodeContractError)
     _require(type(episode["target_visible"]) is bool, "target_visible must be boolean", EpisodeContractError)
     _require(episode["grounding_expectation"] in EXPECTATIONS, "unknown grounding expectation", EpisodeContractError)
     _require(episode["text_support"] in {"READABLE", "PARTIAL", "NONE", "NOT_APPLICABLE"}, "unknown text_support", EpisodeContractError)
@@ -217,19 +221,39 @@ def validate_episode(value: Mapping[str, Any]) -> Mapping[str, Any]:
         _require(distractor["semantic_role"] in {"OTHER_BUILDING_ENTRANCE", "NON_ENTRANCE_DOOR", "SAME_BUILDING_NON_TARGET_ENTRANCE"}, "unknown distractor semantic_role", EpisodeContractError)
         _validate_region(distractor["region"], f"episode.distractor_instances[{index}].region", EpisodeContractError, frame_set)
 
-    if episode["target_visible"]:
-        annotation = _exact_keys(episode["target_instance_annotation"], {"target_instance_id", "target_name", "relation", "regions"}, "episode.target_instance_annotation", EpisodeContractError)
-        _string(annotation["target_instance_id"], "target_instance_id", EpisodeContractError)
+    annotations = episode["valid_target_instances"]
+    _require(isinstance(annotations, list), "valid_target_instances must be an array", EpisodeContractError)
+    if resolution == "UNIQUE":
+        _require(len(annotations) == 1, "UNIQUE requires exactly one valid target instance", EpisodeContractError)
+    elif resolution == "SET_VALUED":
+        _require(len(annotations) >= 2, "SET_VALUED requires at least two valid target instances", EpisodeContractError)
+    else:
+        _require(not annotations, "AMBIGUOUS cannot assert a valid target set", EpisodeContractError)
+        _require(episode["grounding_expectation"] == "MUST_BE_AMBIGUOUS", "AMBIGUOUS must use MUST_BE_AMBIGUOUS", EpisodeContractError)
+    instance_ids = set()
+    annotation_regions = []
+    for index, item in enumerate(annotations):
+        annotation = _exact_keys(item, {"target_instance_id", "target_name", "relation", "regions"}, f"episode.valid_target_instances[{index}]", EpisodeContractError)
+        instance_id = _string(annotation["target_instance_id"], f"episode.valid_target_instances[{index}].target_instance_id", EpisodeContractError)
+        _require(instance_id not in instance_ids, "duplicate valid target instance", EpisodeContractError)
+        instance_ids.add(instance_id)
         _require(annotation["target_name"] == goal["target_name"], "target annotation name differs from goal", EpisodeContractError)
         _require(annotation["relation"] == "entrance_of", "target annotation relation drift", EpisodeContractError)
-        _require(isinstance(annotation["regions"], list) and bool(annotation["regions"]), "target annotation requires regions", EpisodeContractError)
-        for index, region in enumerate(annotation["regions"]):
-            _validate_region(region, f"episode.target_instance_annotation.regions[{index}]", EpisodeContractError, frame_set)
-        _require(bool(episode["acceptable_spatial_regions"]), "visible target requires acceptable regions", EpisodeContractError)
+        _require(isinstance(annotation["regions"], list), "target annotation regions must be an array", EpisodeContractError)
+        for region_index, annotated_region in enumerate(annotation["regions"]):
+            _validate_region(annotated_region, f"episode.valid_target_instances[{index}].regions[{region_index}]", EpisodeContractError, frame_set)
+            annotation_regions.append(annotated_region)
+    _require(
+        sorted(json.dumps(item, sort_keys=True) for item in annotation_regions)
+        == sorted(json.dumps(item, sort_keys=True) for item in episode["acceptable_spatial_regions"]),
+        "acceptable_spatial_regions must equal the union of valid target regions",
+        EpisodeContractError,
+    )
+    _require(episode["target_visible"] is bool(annotation_regions), "target_visible must match visible valid target regions", EpisodeContractError)
+    if episode["target_visible"]:
         _require(_is_number(episode["target_min_side_px"]) and float(episode["target_min_side_px"]) > 0.0, "visible target requires target_min_side_px", EpisodeContractError)
         _require(_is_number(episode["visibility_fraction"]) and 0.0 <= float(episode["visibility_fraction"]) <= 1.0, "visible target requires visibility_fraction", EpisodeContractError)
     else:
-        _require(episode["target_instance_annotation"] is None, "absent target annotation must be null", EpisodeContractError)
         _require(episode["acceptable_spatial_regions"] == [], "absent target cannot have acceptable regions", EpisodeContractError)
         _require(episode["target_min_side_px"] is None and episode["visibility_fraction"] is None, "absent target size/visibility must be null", EpisodeContractError)
 
@@ -238,7 +262,7 @@ def validate_episode(value: Mapping[str, Any]) -> Mapping[str, Any]:
     if episode["grounding_expectation"] == "MUST_GROUND":
         _require(episode["observation_valid"] and episode["target_visible"], "MUST_GROUND requires a valid visible target", EpisodeContractError)
     if episode["grounding_expectation"] == "MUST_BE_AMBIGUOUS":
-        _require(episode["observation_valid"] and episode["target_visible"] and bool(episode["distractor_instances"]), "MUST_BE_AMBIGUOUS requires visible target and distractor", EpisodeContractError)
+        _require(episode["observation_valid"] and resolution == "AMBIGUOUS", "MUST_BE_AMBIGUOUS requires unresolved goal reference", EpisodeContractError)
     return episode
 
 
@@ -442,7 +466,12 @@ def evaluate_episode(episode_value: Mapping[str, Any], output_value: Mapping[str
     }
 
     decision = output["decision"]
-    identifiable = bool(episode["observation_valid"] and episode["target_visible"] and correct_candidates)
+    identifiable = bool(
+        episode["observation_valid"]
+        and episode["goal_reference_resolution"] in {"UNIQUE", "SET_VALUED"}
+        and episode["target_visible"]
+        and correct_candidates
+    )
     selected_id = decision["selected_candidate_id"]
     selected_correct = selected_id in correct_ids if selected_id is not None else None
     selected_is_distractor = None
@@ -478,8 +507,8 @@ def evaluate_episode(episode_value: Mapping[str, Any], output_value: Mapping[str
             decision["status"] == "GROUNDED" and selected_correct is False if identifiable else None
         ),
         "correct_abstention_under_ambiguity": (
-            decision["status"] == "AMBIGUOUS"
-            if episode["grounding_expectation"] == "MUST_BE_AMBIGUOUS" and identifiable else None
+            decision["status"] in {"AMBIGUOUS", "ABSTAIN_NO_RELIABLE_EVIDENCE"}
+            if episode["grounding_expectation"] == "MUST_BE_AMBIGUOUS" else None
         ),
         "candidate_rank_improvement": rank_improvement if identifiable else None,
         "identity_match": identity_match if identifiable else None,
@@ -535,6 +564,12 @@ def _end_to_end_outcome(
     status = decision["status"]
     if expectation == "INVALID_OBSERVATION":
         return "INVALID_OBSERVATION_HANDLED" if status == "INVALID_OBSERVATION" else "INVALID_OBSERVATION_NOT_HANDLED"
+    if expectation == "MUST_BE_AMBIGUOUS":
+        if status == "AMBIGUOUS":
+            return "CORRECT_AMBIGUITY"
+        if status == "ABSTAIN_NO_RELIABLE_EVIDENCE":
+            return "CORRECT_ABSTENTION"
+        return "UNJUSTIFIED_GROUNDING" if status == "GROUNDED" else "MISSED_REQUIRED_AMBIGUITY"
     if not episode["target_visible"]:
         return "FALSE_GROUNDING_TARGET_ABSENT" if status == "GROUNDED" else "CORRECT_ABSTENTION"
     if status == "GROUNDED":
@@ -551,8 +586,6 @@ def _end_to_end_outcome(
         if identity_match and spatial_match:
             return "CORRECT_GROUNDING" if expectation == "MUST_GROUND" else "UNJUSTIFIED_GROUNDING"
         return "GOAL_IDENTITY_ERROR"
-    if expectation == "MUST_BE_AMBIGUOUS":
-        return "CORRECT_AMBIGUITY" if status == "AMBIGUOUS" else "MISSED_REQUIRED_AMBIGUITY"
     if expectation == "MUST_ABSTAIN":
         return "CORRECT_ABSTENTION" if status == "ABSTAIN_NO_RELIABLE_EVIDENCE" else "INCORRECT_ABSTENTION_STATUS"
     if not correct_available:
@@ -562,13 +595,19 @@ def _end_to_end_outcome(
 
 def _episode_strata(episode: Mapping[str, Any]) -> dict[str, str]:
     scene = episode["scene_condition"]
+    target_presence = (
+        "UNRESOLVED"
+        if episode["goal_reference_resolution"] == "AMBIGUOUS"
+        else "PRESENT" if episode["target_visible"] else "ABSENT"
+    )
     return {
         "target_size": scene["target_size"],
         "visibility": scene["visibility"],
         "entrance_count": scene["entrance_count"],
         "text_support": episode["text_support"],
         "same_class_distractor": "YES" if scene["same_class_distractor"] else "NO",
-        "target_presence": "PRESENT" if episode["target_visible"] else "ABSENT",
+        "target_presence": target_presence,
+        "goal_reference_resolution": episode["goal_reference_resolution"],
         "illumination": scene["illumination"],
         "view_angle": scene["view_angle"],
     }
@@ -579,7 +618,9 @@ def evaluate_batch(cases: Iterable[tuple[Mapping[str, Any], Mapping[str, Any]]])
     valid = [item for item in results if item["valid_system_output"]]
     provider_eligible = [
         item for item in valid
-        if item["observation_valid"] and item["strata"]["target_presence"] == "PRESENT"
+        if item["observation_valid"]
+        and item["strata"]["target_presence"] == "PRESENT"
+        and item["strata"]["goal_reference_resolution"] != "AMBIGUOUS"
     ]
     identifiable = [item for item in valid if item["brain_selection"]["identifiability"] == "IDENTIFIABLE"]
     successes = [item for item in valid if item["end_to_end"]["success"]]

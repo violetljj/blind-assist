@@ -31,6 +31,14 @@ DISTRACTOR_REGION = {
     "x_max": 0.90,
     "y_max": 0.80,
 }
+SECOND_TARGET_REGION = {
+    "frame_id": "frame-0",
+    "coordinate_space": "NORMALIZED_XYXY",
+    "x_min": 0.65,
+    "y_min": 0.15,
+    "x_max": 0.78,
+    "y_max": 0.70,
+}
 MISLOCALIZED_REGION = {
     "frame_id": "frame-0",
     "coordinate_space": "NORMALIZED_XYXY",
@@ -51,8 +59,25 @@ def episode(
     target_visible: bool = True,
     observation_valid: bool = True,
     with_distractor: bool = True,
+    reference_resolution: str = "UNIQUE",
 ) -> dict:
+    if expectation == "MUST_BE_AMBIGUOUS":
+        reference_resolution = "AMBIGUOUS"
+        target_visible = False
     visible = target_visible
+    valid_targets = []
+    if reference_resolution == "UNIQUE":
+        valid_targets = [{
+            "target_instance_id": "target-entrance",
+            "target_name": TARGET_NAME,
+            "relation": "entrance_of",
+            "regions": [region(TARGET_REGION)] if visible else [],
+        }]
+    elif reference_resolution == "SET_VALUED":
+        valid_targets = [
+            {"target_instance_id": "target-east", "target_name": TARGET_NAME, "relation": "entrance_of", "regions": [region(TARGET_REGION)] if visible else []},
+            {"target_instance_id": "target-west", "target_name": TARGET_NAME, "relation": "entrance_of", "regions": [region(SECOND_TARGET_REGION)] if visible else []},
+        ]
     return {
         "schema_version": 1,
         "episode_id": "mock-episode",
@@ -67,17 +92,10 @@ def episode(
             "end_timestamp_ms": 1000,
         },
         "observation_valid": observation_valid,
+        "goal_reference_resolution": reference_resolution,
         "target_visible": visible,
-        "target_instance_annotation": (
-            {
-                "target_instance_id": "target-entrance",
-                "target_name": TARGET_NAME,
-                "relation": "entrance_of",
-                "regions": [region(TARGET_REGION)],
-            }
-            if visible else None
-        ),
-        "acceptable_spatial_regions": [region(TARGET_REGION)] if visible else [],
+        "valid_target_instances": valid_targets,
+        "acceptable_spatial_regions": [item for target in valid_targets for item in target["regions"]],
         "distractor_instances": (
             [
                 {
@@ -324,6 +342,41 @@ class P0GroundingEvaluatorTest(unittest.TestCase):
         )
         self.assertTrue(result["brain_selection"]["correct_abstention_under_ambiguity"])
         self.assertEqual("CORRECT_AMBIGUITY", result["end_to_end"]["outcome"])
+
+    def test_set_valued_goal_accepts_any_valid_physical_target(self) -> None:
+        items = [
+            evidence("ev-west-structure", SECOND_TARGET_REGION, target_name=None, evidence_type="ENTRANCE_STRUCTURE"),
+            evidence("ev-west-identity", SECOND_TARGET_REGION, target_name=TARGET_NAME, evidence_type="OCR_TEXT"),
+        ]
+        candidates = [candidate("candidate-west", SECOND_TARGET_REGION, [item["evidence_id"] for item in items], 1)]
+        result = evaluator.evaluate_episode(
+            episode(reference_resolution="SET_VALUED"),
+            system_output(candidates=candidates, evidence_items=items, status="GROUNDED", selected_candidate_id="candidate-west"),
+        )
+        self.assertTrue(result["provider_availability"]["correct_candidate_available"])
+        self.assertTrue(result["brain_selection"]["top1_correct_given_available"])
+        self.assertEqual("CORRECT_GROUNDING", result["end_to_end"]["outcome"])
+
+    def test_ambiguous_goal_allows_fail_closed_abstention(self) -> None:
+        result = evaluator.evaluate_episode(
+            episode(expectation="MUST_BE_AMBIGUOUS", with_distractor=False),
+            system_output(candidates=[], evidence_items=[], status="ABSTAIN_NO_RELIABLE_EVIDENCE", abstention_reason="INSUFFICIENT_IDENTITY_EVIDENCE"),
+        )
+        self.assertTrue(result["brain_selection"]["correct_abstention_under_ambiguity"])
+        self.assertEqual("CORRECT_ABSTENTION", result["end_to_end"]["outcome"])
+
+    def test_set_valued_goal_requires_multiple_physical_instances(self) -> None:
+        invalid = episode(reference_resolution="SET_VALUED")
+        invalid["valid_target_instances"] = invalid["valid_target_instances"][:1]
+        invalid["acceptable_spatial_regions"] = invalid["acceptable_spatial_regions"][:1]
+        with self.assertRaises(evaluator.EpisodeContractError):
+            evaluator.validate_episode(invalid)
+
+    def test_acceptable_regions_cannot_hide_single_target_truth(self) -> None:
+        invalid = episode(reference_resolution="SET_VALUED")
+        invalid["acceptable_spatial_regions"] = invalid["acceptable_spatial_regions"][:1]
+        with self.assertRaises(evaluator.EpisodeContractError):
+            evaluator.validate_episode(invalid)
 
     def test_expired_slow_evidence_is_not_accepted(self) -> None:
         candidates, items = correct_components(expiry=1000)

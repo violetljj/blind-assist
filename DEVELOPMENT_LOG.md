@@ -2,6 +2,17 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。前瞻性启用 P0 Silver-B Development，未修改
+  Grounding DINO、P0-S0 materializer、P0-S1 rule 或历史 receipt。新增 deterministic lower-authority exporter，
+  将已通过既有 provenance/license/map/geometry/conflict gates 的 parent A/B 记录作为
+  `SILVER_B_MAP_GEOMETRY` 开发输入；rejected 记录不可导出。已消费的 20-image canary 导出 4 个 frame-level
+  episodes / 4 个 weak candidates，exact entrance identity 均未建立。它们只授权 pipeline、conditioned yield、
+  弱排序原型与 failure/abstention 开发；因 detector 参与样本生成，不授权 detector recall/precision、exact
+  Brain/E2E accuracy 或 Silver-A/human-truth 等价。同期最小修正 P0 goal-reference truth：显式区分
+  `UNIQUE / SET_VALUED / AMBIGUOUS`，set-valued 命中任一 valid target 均正确，ambiguous 接受歧义输出或
+  fail-closed abstention；当前 4 个 B episode 全部为 unresolved `AMBIGUOUS`，未伪造唯一 bbox。下一步扩大普通 anchor-facing coverage 至几十到约 100 个 B，
+  天然 A 只作高可信 subset，不再作为 Development blocker。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。冻结
   `BA-P0-NAMED-BUILDING-ENTRANCE-GROUNDING-V1` mechanics contract：限定输入为明确 named-building goal
   与冻结的第一视角被动窗口，输出为 evidence-bound `GroundingDecision`，严格区分 Provider availability、

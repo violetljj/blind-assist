@@ -1,9 +1,9 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / P0_CONTRACT_V1_FROZEN / MAPILLARY_TOKEN_READY / GROUNDING_DINO_PROPOSAL_PATH_RUN / P0_S1_IDENTITY_RULE_TOO_WEAK / NO_COHORT / NO_BASELINE / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / P0_CONTRACT_V1_REFERENCE_SET_ADDENDUM / MAPILLARY_TOKEN_READY / GROUNDING_DINO_PROPOSAL_PATH_RUN / SILVER_B_DEVELOPMENT_COHORT_4 / NO_BASELINE / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)；P0 冻结合同与机器合同见 [`Protocol V1`](P0_GROUNDING_PROTOCOL_V1.md) / [`JSON`](p0_grounding_protocol_v1.json)。
-本页仍是动态执行状态真源；当前已完成 schema、evaluator mechanics、mock fixtures 与匿名 Overture/OSM slice，但没有合法 silver episode、真实 cohort、provider/model output 或 baseline 结果。
+本页仍是动态执行状态真源；当前已完成 schema/evaluator mechanics、真实 map+geometry materialization，并从已消费 canary 导出 4 个 Silver-B Development episodes；没有 baseline 或科学性能结果。
 
 ## 当前主线：Destination / Goal Grounding
 
@@ -167,6 +167,16 @@ headroom 后才可另立任务，不能驱动当前研究方向。
 终态 `P0_S1_IDENTITY_RULE_TOO_WEAK`、strong identity `0`，所以 S0-R1 不重跑。当前唯一 blocker 是同 source 内
 target-anchor-facing、同 sequence、具有 `3–30 m` 真实 parallax 且逐 view 独立过 map/geometry 的 pair coverage；不得
 降低 identity gates 或升级 cross-sequence evidence 来救当前 record。
+
+从 [`P0 Silver-B Development Addendum V1`](P0_SILVER_B_DEVELOPMENT_ADDENDUM_V1.md) 起，P0 Development
+不再以 Silver-A coverage 为前置条件。已通过既有 provenance/license/map/geometry/conflict gates 的 parent A/B
+记录可向下导出为 `SILVER_B_MAP_GEOMETRY`：第一批 consumed real data 为 4 个 frame-level episodes / 4 个
+weak candidates。它们只支持 pipeline、conditioned yield、弱排序原型与 failure/abstention 开发；由于 detector
+参与样本生成且 exact entrance identity 未建立，不能报告 detector recall/precision、exact Brain/E2E accuracy，
+也不能回写 P0-S1 终态。P0 goal-reference truth 现显式支持 `UNIQUE / SET_VALUED / AMBIGUOUS`；set-valued
+命中任一合法物理目标均正确，ambiguous 必须允许 `AMBIGUOUS` 或 fail-closed abstention。当前 4 个 B episode
+均为 `AMBIGUOUS`，没有被压成单一 bbox truth。下一步扩大普通 anchor-facing coverage，积累几十至约 100 个 B 级 Development episodes；
+天然满足冻结 identity rule 的样本另保留为 A subset，不再专门追逐 A。
 
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim
