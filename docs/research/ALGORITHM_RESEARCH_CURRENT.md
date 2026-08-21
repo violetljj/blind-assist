@@ -1,6 +1,6 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_RESEARCH_MAINLINE=DESTINATION_GOAL_GROUNDING / GOAL_GROUNDING_P0 / P0_CONTRACT_V1_FROZEN / MAPILLARY_TOKEN_READY / GROUNDING_DINO_PROPOSAL_PATH_RUN / P0_S0_CROSSVIEW_IDENTITY_NOT_ESTABLISHED / NO_COHORT_BASELINE / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_RESEARCH_MAINLINE=DESTINATION_GOAL_GROUNDING / GOAL_GROUNDING_P0 / P0_CONTRACT_V1_FROZEN / MAPILLARY_TOKEN_READY / GROUNDING_DINO_PROPOSAL_PATH_RUN / P0_S1_IDENTITY_RULE_TOO_WEAK / NO_COHORT_BASELINE / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线，当前唯一 successor 为
 `BA_DESTINATION_GOAL_GROUNDING_R0`：先在真实多建筑、多入口场景中确定哪个实体满足用户目标，并将
@@ -31,7 +31,7 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| Goal Copilot / Destination Grounding | 目标建筑入口归属 | `PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / GROUNDING_DINO_PROPOSAL_PATH_RUN / P0_S0_CROSSVIEW_IDENTITY_NOT_ESTABLISHED / NO_COHORT / NO_BASELINE / DEFAULT_APP_UNCHANGED` | [current](goal-copilot/README.md) / [S0-R1 result](goal-copilot/P0_S0_GROUNDING_DINO_R1_RESULT_2026-08-21.md) | `BA_DESTINATION_GOAL_GROUNDING_R0`：只修复跨 view same-physical-region correspondence，并在 consumed canary replay | 将 nominal automatic Silver 当合法 cohort；比较/更换 detector；调视觉阈值；baseline、Sky、Android | 否 |
+| Goal Copilot / Destination Grounding | 目标建筑入口归属 | `PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / GROUNDING_DINO_PROPOSAL_PATH_RUN / P0_S1_IDENTITY_RULE_TOO_WEAK / NO_COHORT / NO_BASELINE / DEFAULT_APP_UNCHANGED` | [current](goal-copilot/README.md) / [S0-R1](goal-copilot/P0_S0_GROUNDING_DINO_R1_RESULT_2026-08-21.md) / [P0-S1](goal-copilot/P0_S1_CROSSVIEW_ENTRANCE_IDENTITY_RESULT_2026-08-21.md) | `BA_DESTINATION_GOAL_GROUNDING_R0`：同 Mapillary source 内补足 target-anchor-facing、同 sequence、3–30 m parallax pair coverage，再按冻结 P0-S1 gate | 降低 identity gates；升级跨 sequence evidence；比较/更换 detector；调视觉阈值；baseline、Sky、Android | 否 |
 | D-ORACLE-1 causal ladder | 三臂 matched oracle intervention 定位 downstream target-policy stack 与 estimated representation 的损失 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / PROTOCOL_FROZEN / NO_EXECUTION / NO_SEARCH` | [Failure diagnosis current](failure-synthesis/README.md) | 无；只有用户显式改变主线后才可重开 | 执行 source/action truth/policy lock；增加第四竞争臂；提前拆H3/H4；训练/调policy/threshold；读取outcome后换parent/gate | 否 |
 | SVRF / Scale-free Visual Risk Field | 纯 RGB 派生的相对深度动态、局部扩张和视觉通道侵入能否形成稳定相对风险排序 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / STREAM_INDEX_NOT_ACTIVE / REAL_O0_NOT_RUN / NO_TRAINING` | [SVRF current](svrf/README.md) | 无；只有用户显式改变主线并有新的 representation-headroom 前置证据后，才可另行恢复 | bus canary、member index、payload/truth materialization、O0、训练或接 Android | 否 |
 | VI-Task Geometry | 同刚体 RGB+IMU 自校准 metric pose/ground，再为未来 task geometry 分配 computation/parallax budget | `PAUSED_BY_PURE_RGB_SELECTION / G0_PROTOCOL_RETAINED / REAL_G0_NOT_RUN / NO_TOF / NO_TRAINING` | [VI-Task Geometry current](vi-task-geometry/README.md) | 无；只有用户明确恢复 RGB+IMU metric-frame 路线才可重开 preflight | 实现/采集/运行 G0；用手机 IMU配眼镜视频；重跑 ARCore D45；提前训练、主动分配或接 Android | 否 |

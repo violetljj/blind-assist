@@ -1,6 +1,6 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / P0_GROUNDING_CONTRACT_V1_MECHANICS_READY / MAPILLARY_TOKEN_READY / GROUNDING_DINO_PROPOSAL_PATH_RUN / P0_S0_CROSSVIEW_IDENTITY_NOT_ESTABLISHED / NO_COHORT_BASELINE / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / P0_GROUNDING_CONTRACT_V1_MECHANICS_READY / MAPILLARY_TOKEN_READY / GROUNDING_DINO_PROPOSAL_PATH_RUN / P0_S1_IDENTITY_RULE_TOO_WEAK / NO_COHORT_BASELINE / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
@@ -48,6 +48,13 @@ cross-sequence proposal and the other three proposals were different physical en
 accepted; the next mechanics fix is crossview same-region correspondence, not detector comparison or threshold tuning.
 See the [`S0-R1 result`](../../../docs/research/goal-copilot/P0_S0_GROUNDING_DINO_R1_RESULT_2026-08-21.md).
 
+`P0-S1 Crossview Entrance Identity` now runs as an independent post-materializer gate. It freezes strong identity to
+same-sequence pairs satisfying timestamp, 3–30 m baseline, 10–120 degree ray diversity, local-wall position, shape/scale,
+and deterministic crop-appearance gates. Cross-sequence pairs are support-only. On the consumed 20-image canary, all
+three same-sequence pairs had only 4–12 mm baseline, while all three proper-baseline pairs were cross-sequence and
+appearance-inconsistent. Verdict: `P0_S1_IDENTITY_RULE_TOO_WEAK`, 0 strong identities, no S0 rerun. See the
+[`P0-S1 result`](../../../docs/research/goal-copilot/P0_S1_CROSSVIEW_ENTRANCE_IDENTITY_RESULT_2026-08-21.md).
+
 Focused check:
 
 ```powershell
@@ -55,7 +62,8 @@ E:\codex-tools\bin\blindassist-python.cmd -m unittest `
   scripts/research/goal_copilot_bridge/p0_s0_materialization/test_materializer.py `
   scripts/research/goal_copilot_bridge/p0_s0_materialization/test_source_slice.py `
   scripts/research/goal_copilot_bridge/p0_s0_materialization/test_candidate_generator_admission.py `
-  scripts/research/goal_copilot_bridge/p0_s0_materialization/test_grounding_dino_s0_r1.py
+  scripts/research/goal_copilot_bridge/p0_s0_materialization/test_grounding_dino_s0_r1.py `
+  scripts/research/goal_copilot_bridge/p0_s0_materialization/test_crossview_identity.py
 ```
 
 Authority: BlindAssist owns `GOAL-COPILOT-1`, its evaluator, sealed scenarios,

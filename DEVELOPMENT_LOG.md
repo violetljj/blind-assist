@@ -4655,3 +4655,13 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   其余 3 框是不同实体入口，而其余 3 张相机位置近乎相同；现有 ray-wall multiview 未建立同一物理 region。
   nominal Silver 不接受，终态为 `P0_S0_CROSSVIEW_IDENTITY_NOT_ESTABLISHED / NO_SCIENTIFIC_VERDICT`；不调视觉阈值、
   不换 detector，下一步只在 consumed canary 修复 crossview correspondence mechanics。
+- 同日完成 `P0-S1 Crossview Entrance Identity` 独立 post-materializer gate，不修改 frozen P0-S0 materializer、
+  Grounding DINO、prompt、threshold、NMS 或图像集。V1 将 ray-wall 结果降为 `WALL_ASSOCIATED`；strong identity
+  只允许同 sequence pair，并同时要求 `<=30s`、camera baseline `3–30m`、local-wall delta `<=1m`、ray angle
+  `10–120°`、bbox shape/physical-height proxy 与 deterministic crop appearance 相容；跨 sequence 永远 support-only。
+  synthetic/fail-closed 6/6 tests 通过。对 consumed 20-image canary replay：4 candidates / 6 pairs；3 个同 sequence
+  pairs appearance `0.963908–0.984823`，但 baseline 仅 `0.004270–0.011859m`、ray angle
+  `0.079955–0.160994°`；3 个跨 sequence pairs baseline 约 `15.8m`，但相隔约 4.9 年、appearance
+  `0.379476–0.405762`，且禁止升级。终态 `P0_S1_IDENTITY_RULE_TOO_WEAK`、strong identity 0、S0 不重跑。
+  下一边界只是在同 Mapillary source 内补足 target-anchor-facing、同 sequence、3–30m parallax 且逐 view 过
+  map/geometry 的 pair coverage；不得降低 gates 或用跨 sequence rescue。

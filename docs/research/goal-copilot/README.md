@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / P0_CONTRACT_V1_FROZEN / MAPILLARY_TOKEN_READY / GROUNDING_DINO_PROPOSAL_PATH_RUN / P0_S0_CROSSVIEW_IDENTITY_NOT_ESTABLISHED / NO_COHORT / NO_BASELINE / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / P0_CONTRACT_V1_FROZEN / MAPILLARY_TOKEN_READY / GROUNDING_DINO_PROPOSAL_PATH_RUN / P0_S1_IDENTITY_RULE_TOO_WEAK / NO_COHORT / NO_BASELINE / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)；P0 冻结合同与机器合同见 [`Protocol V1`](P0_GROUNDING_PROTOCOL_V1.md) / [`JSON`](p0_grounding_protocol_v1.json)。
 本页仍是动态执行状态真源；当前已完成 schema、evaluator mechanics、mock fixtures 与匿名 Overture/OSM slice，但没有合法 silver episode、真实 cohort、provider/model output 或 baseline 结果。
@@ -160,6 +160,13 @@ limitation，不再是 bbox generation 硬门；模型仍无任何 truth authori
 redetection 与 failure evaluator 保留为找到目标后的 persistence 基础；VIO/SLAM/world memory 只保留为
 未来 spatial-memory 增强，不为 carrot 单独开启 rescue 长线。Sky 仅在某个真实模块出现明确、可测的
 headroom 后才可另立任务，不能驱动当前研究方向。
+
+[`P0-S1 Crossview Entrance Identity`](P0_S1_CROSSVIEW_ENTRANCE_IDENTITY_RESULT_2026-08-21.md) 已在上述 consumed
+20-image canary 上完成：4 个 wall-associated candidates 的 3 个同 sequence pair 外观高度相容，但 baseline 只有
+`4–12 mm`、ray angle `0.08–0.16°`；另外 3 个合格视差 pair 全部跨 sequence、相隔约 4.9 年且外观不一致，只能弱支持。
+终态 `P0_S1_IDENTITY_RULE_TOO_WEAK`、strong identity `0`，所以 S0-R1 不重跑。当前唯一 blocker 是同 source 内
+target-anchor-facing、同 sequence、具有 `3–30 m` 真实 parallax 且逐 view 独立过 map/geometry 的 pair coverage；不得
+降低 identity gates 或升级 cross-sequence evidence 来救当前 record。
 
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim
