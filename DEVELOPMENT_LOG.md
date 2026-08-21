@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。完成 P0 Prior-Art Assimilation：通过 4 个检索
+  workstreams 审阅 40 个搜索结果并精读直接来源，将路线对齐到 BLV last-few-meters、embodied referring
+  expression、interactive VLN 与 POI-goal navigation。BridgeNav 已覆盖 prior-free outdoor-to-indoor entrance
+  waypoint，ABot-N1/ABotN-POIBench 已覆盖命名 POI、物理 entrance frame、3DGS closed-loop SR/SPL；因此
+  BlindAssist 不再把入口级 POI navigation 本身当作创新。潜在结合点收窄为未预扫描开放街景中的 BLV
+  `UNIQUE/SET_VALUED/AMBIGUOUS` referential grounding、可审计 evidence/abstention 与持续引导，且仍只是
+  prospective positioning。Silver-B 不暂停，下一步继续扩大带 reference-resolution 的 Development coverage；
+  不能把生成数据、3DGS/VPS、dialogue oracle、厂商声明或受控 guideline 安全性直接迁移为本项目 truth。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。前瞻性启用 P0 Silver-B Development，未修改
   Grounding DINO、P0-S0 materializer、P0-S1 rule 或历史 receipt。新增 deterministic lower-authority exporter，
   将已通过既有 provenance/license/map/geometry/conflict gates 的 parent A/B 记录作为

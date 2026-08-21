@@ -1,9 +1,14 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / P0_CONTRACT_V1_REFERENCE_SET_ADDENDUM / MAPILLARY_TOKEN_READY / GROUNDING_DINO_PROPOSAL_PATH_RUN / SILVER_B_DEVELOPMENT_COHORT_4 / NO_BASELINE / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / PRIOR_ART_ASSIMILATED / P0_CONTRACT_V1_REFERENCE_SET_ADDENDUM / MAPILLARY_TOKEN_READY / GROUNDING_DINO_PROPOSAL_PATH_RUN / SILVER_B_DEVELOPMENT_COHORT_4 / NO_BASELINE / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)；P0 冻结合同与机器合同见 [`Protocol V1`](P0_GROUNDING_PROTOCOL_V1.md) / [`JSON`](p0_grounding_protocol_v1.json)。
 本页仍是动态执行状态真源；当前已完成 schema/evaluator mechanics、真实 map+geometry materialization，并从已消费 canary 导出 4 个 Silver-B Development episodes；没有 baseline 或科学性能结果。
+
+[`Prior-Art Assimilation`](P0_PRIOR_ART_ASSIMILATION_2026-08-21.md) 已将路线对齐到 BLV last-few-meters、
+embodied referring expression、interactive VLN 与 POI-goal navigation。BridgeNav 和 ABot-N1/POIBench 已覆盖
+入口级 POI navigation 的关键部分；BlindAssist 不主张该任务首创，潜在缺口收窄为未预扫描开放街景中的
+BLV set-valued referential grounding、证据化 abstention 与后续持续引导。Silver-B 原样继续。
 
 ## 当前主线：Destination / Goal Grounding
 
