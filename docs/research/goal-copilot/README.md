@@ -1,13 +1,30 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BLINDASSIST_LAST_10M_REGROUNDING_V0 / RESPONSIVE_SANITY_CLOSED / CONTROL_POLICY_BOTTLENECK / P1_CLOSED / NO_P1_W3 / NO_REFERENT_PERSISTENCE / NO_SCIENTIFIC_CONFIRMATION / NO_SUCCESSOR / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_VF0_VERIFIER_FIRST_LEDGER / OUTCOME_BLIND_MECHANICS_IMPLEMENTED / SYNTHETIC_CONTRACT_TESTED / PERFORMANCE_NOT_RUN / NO_EXECUTION_SUCCESSOR / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
 
-## 当前工程里程碑
+## 当前研究实现
 
-当前唯一执行面是 `BLINDASSIST_LAST_10M_REGROUNDING_V0`：复用且不修改现有 P0 named-building entrance
+用户已明确授权以新版本重开 verifier-first referent persistence。当前唯一 active surface 是
+[`P1-VF0 verifier-first ledger`](../../../scripts/research/goal_copilot_bridge/p1_verifier_first/README.md)：实现
+`GoalContract`、有限且不可变的 `ReferentLedger`、常驻 `H_other`、parent/child-slot relation、distractor registry、
+observability-gated negative evidence、appearance cap，以及 `CONFIRMED_VISIBLE / VERIFYING / AMBIGUOUS / STALE /
+REBOUND_TO_NEW_VALID_INSTANCE / DISPROVED` 裁决。
+
+候选源只能 proposal，只有 verifier 可更新 active referent 或 identity gallery；确认要求独立 prediction/context
+支持与 distractor exclusion，appearance 永远不能单独授权身份。`UNIQUE / SET_VALUED / AMBIGUOUS`、identity 与
+current goal validity 分开保存。主动取证只允许保持静止、旋转扫描或纳入 parent context，不授权主动平移。
+14 项 synthetic contract tests 已通过；这只证明 mechanics/invariants，不是 real-data utility 或 scientific result。
+
+P1-VF0 与已消费的 W1-T0/W2 实质不同，不修改、续跑或覆盖旧 cohort，也不继承旧 execution authority。当前未选择
+RGB provider、数据 roster 或 performance experiment；VIO、SLAM、metric 3D、POMDP、主动平移、自动到达距离、
+Android/default App 均禁止。
+
+## 已关闭的当前帧工程里程碑
+
+上一执行面 `BLINDASSIST_LAST_10M_REGROUNDING_V0` 已关闭：它复用且不修改现有 P0 named-building entrance
 grounding/provider，完成“入口寻找—引导—重新观测—确认”的当前帧机械闭环。只支持清晰、相对唯一的建筑入口。
 
 最小状态机：
@@ -76,9 +93,9 @@ P0 commitment-policy discovery 已以
 threshold/classifier/XGBoost/Sky，不新增训练、数据集、cohort 或多臂比较。Grounding DINO 仍仅是 proposal，
 provider score 不是 truth；P0 的既有证据和 claim ceiling 保持不变。
 
-## P1 正式关闭
+## P1 历史终态与重开边界
 
-P1 persistence、tracker/correspondence、keyframe/world-anchor 路线全部关闭，不再承担当前主线：
+旧 P1 persistence、tracker/correspondence、keyframe/world-anchor 路线全部保持关闭，不因 P1-VF0 改写终态：
 
 - [`P1-A1`](P1_A1_CONSERVATIVE_LOCAL_TRACK_VALIDITY_RESULT_2026-08-21.md) 到
   [`P1-A4`](P1_A4_ONLINE_STRONG_TEMPORAL_CORRESPONDENCE_RESULT_2026-08-22.md) 只保留 consumed Development
@@ -88,16 +105,16 @@ P1 persistence、tracker/correspondence、keyframe/world-anchor 路线全部关�
 - [`P1-W2 single execution`](P1_W2_SINGLE_EXECUTION_RESULT_2026-08-22.md) 为
   `P1_W2_RGB_REFERENT_INTERFACE_NOT_SUPPORTED`，不允许在 sealed cohort 上降 gate、换模型、改 crop/context 或重跑。
 
-明确不建立 `P1-W3`，不自动重开 referent persistence，也不从旧 successor、W0 design 或历史 handoff 恢复权限。
-P1 历史 JSON schemas、evaluator 和结果只用于追溯；当前闭环不得导入其 tracker、SAM propagation、DINO identity、
+P1-VF0 来自本轮用户显式授权，不命名为 `P1-W3`，也不从旧 successor、W0 design 或历史 handoff 恢复权限。
+P1 历史 JSON schemas、evaluator 和结果只用于追溯；新实现不得导入其 tracker、SAM propagation、DINO identity、
 LoFTR、keyframe memory、SLAM、VIO 或 world-relative state。
 
 ## 唯一 successor
 
-无。
+无。P1-VF0 mechanics 已实现；data-adequacy、真实 Development execution、阈值/模型选择或 App 集成都需要用户另行授权。
 
-网络场景 3x5 与 action-responsive sanity 均已完成。本路线不自动创建任何后继协议、P1-W3、模型 arm、数据 cohort、Android 接入或
-scientific confirmation。新的研究问题必须由用户另行明确启动。
+网络场景 3x5 与 action-responsive sanity 均已完成。P1-VF0 不自动创建 performance successor、模型 arm、数据
+cohort、Android 接入或 scientific confirmation。
 
-Claim ceiling：`NETWORK_SCENE_MECHANICAL_REPLAY_ONLY_NO_REAL_USER_OR_SCIENTIFIC_CONFIRMATION`。
+Claim ceiling：`SYNTHETIC_VERIFIER_LEDGER_MECHANICS_ONLY / NO_REAL_DATA_UTILITY_OR_SCIENTIFIC_CONFIRMATION`。
 默认 App：不变。

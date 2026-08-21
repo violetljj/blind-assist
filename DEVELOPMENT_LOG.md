@@ -2,6 +2,13 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-22（Asia/Hong_Kong）；执行者：violjjet。按用户显式授权以新版本重开 verifier-first referent
+  persistence，建立 `P1-VF0` outcome-blind mechanics，不修改或续跑已消费的 W1-T0/W2。实现 Goal Contract、
+  bounded immutable Referent Ledger、常驻 `H_other`、parent/child slot、distractor registry、appearance cap、
+  observability-gated negative evidence、显式 `VERIFYING / AMBIGUOUS / STALE / REBOUND / DISPROVED`，并禁止
+  未确认候选污染 identity gallery。14 项 synthetic contract tests 通过；未选择 provider/data，未运行 performance，
+  不包含 VIO/SLAM/POMDP/主动平移/Android/default App，也无自动 execution successor。
+
 - 时间：2026-08-22（Asia/Hong_Kong）；执行者：Codex。完成一次性 action-responsive Last-10m engineering sanity。
   自动盘点后选择 Mapillary `hofbladelin` real sequence 与 OSM main-entrance pose proxy；原生 approach 缺 turn capture，
   在任何 formal observation 前冻结 outcome-independent 五档 viewport turn fallback、22 张真实 sequence frame、110 个

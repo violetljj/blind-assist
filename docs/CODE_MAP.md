@@ -17,7 +17,7 @@
 | 稳定脚本 Interface | [`scripts/README.md`](../scripts/README.md) | `scripts/` 根 allowlist |
 | 研究实现 | [`MODULE_INDEX.md`](../scripts/research/MODULE_INDEX.md) | `scripts/research/<module>/` |
 | 研究 Module 角色与稳定入口 | 各 Module `README.md`；HFTF 另见 [`INDEX.md`](../scripts/research/hftf/INDEX.md) | 从 `MODULE_INDEX.md` 选择一个 Module |
-| Goal Copilot P0/P1 历史桥与当前帧重定位机械 runner | [`goal_copilot_bridge/README.md`](../scripts/research/goal_copilot_bridge/README.md) | `scripts/research/goal_copilot_bridge/` |
+| Goal Copilot P0/P1 bridge、verifier-first ledger 与历史当前帧重定位 runner | [`goal_copilot_bridge/README.md`](../scripts/research/goal_copilot_bridge/README.md) | `scripts/research/goal_copilot_bridge/` |
 | 配置与冻结合同 | `configs/` | JSON/YAML；先看调用方和协议 |
 | 机器 schema | `schemas/` | JSON Schema 与 validator |
 | 当前文档与研究真源 | [`docs/PROJECT_STATE.md`](PROJECT_STATE.md) | `docs/`、`docs/research/` |

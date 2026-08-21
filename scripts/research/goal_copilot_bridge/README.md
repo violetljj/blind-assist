@@ -1,12 +1,25 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / BLINDASSIST_LAST_10M_REGROUNDING_V0 / RESPONSIVE_SANITY_CLOSED / CONTROL_POLICY_BOTTLENECK / P1_CLOSED / NO_REFERENT_PERSISTENCE / NO_SCIENTIFIC_VERDICT / NO_SUCCESSOR / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / P1_VF0_VERIFIER_FIRST_LEDGER / SYNTHETIC_CONTRACT_TESTED / PERFORMANCE_NOT_RUN / NO_EXECUTION_SUCCESSOR / NO_SCIENTIFIC_VERDICT / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
+## P1-VF0 verifier-first referent ledger
+
+`p1_verifier_first/` is the active outcome-blind mechanics surface. It separates proposal generation from identity
+authority through a Goal Contract, bounded immutable ledger, explicit `H_other`, independent prediction/exclusion
+evidence, appearance cap, parent/child slot, distractor registry, observability-gated negative evidence, and explicit
+verification/ambiguity/staleness/rebinding decisions. It never requests translation and contains no provider, real
+cohort, performance execution, VIO/SLAM/POMDP, Android, or safety authority.
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts/research/goal_copilot_bridge/p1_verifier_first/test_core.py
+```
+
 ## Last-10-metre current-frame regrounding
 
-`last_10m_regrounding_v0/` is the active engineering surface. It reuses the exact frozen Grounding DINO inference
+`last_10m_regrounding_v0/` is a closed engineering surface. It reuses the exact frozen Grounding DINO inference
 and single-Brain baseline functions, or adapts one externally produced unchanged P0 output, per fresh frame into the
 bounded `SCAN -> CURRENT_CANDIDATE -> ALIGN -> ADVANCE_AND_REOBSERVE ->
 ARRIVAL_CONFIRM -> COMPLETE / RESCAN / ABSTAIN` control loop. Persistent state deliberately excludes candidates,

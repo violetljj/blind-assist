@@ -1,20 +1,18 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / BLINDASSIST_LAST_10M_REGROUNDING_V0 / RESPONSIVE_SANITY_CLOSED / CONTROL_POLICY_BOTTLENECK / P1_CLOSED / NO_P1_W3 / NO_REFERENT_PERSISTENCE / NO_SCIENTIFIC_CONFIRMATION / NO_SUCCESSOR / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / P1_VF0_VERIFIER_FIRST_LEDGER / OUTCOME_BLIND_MECHANICS_IMPLEMENTED / SYNTHETIC_CONTRACT_TESTED / PERFORMANCE_NOT_RUN / NO_EXECUTION_SUCCESSOR / DEFAULT_APP_UNCHANGED`
 
 Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线。P0 commitment-policy discovery 已以
-`COMPLEXITY_ONLY_BUYS_ABSTENTION` 收口；现有 P0 grounding/provider 与 evaluator 保持冻结。P1 的
-tracker/correspondence、keyframe/world-anchor 和 referent persistence 路线已正式关闭：A1-A4、W1 与 W2 结果只保留
-历史 Development/feasibility 边界，W2 终态为 `P1_W2_RGB_REFERENT_INTERFACE_NOT_SUPPORTED`。明确不建立
-`P1-W3`，不自动重开 referent persistence，也不从旧 successor 恢复执行权限。
+`COMPLEXITY_ONLY_BUYS_ABSTENTION` 收口；现有 P0 grounding/provider 与 evaluator 保持冻结。用户现已显式授权新的
+`P1-VF0` verifier-first successor；它只实现 outcome-blind Goal Contract、有限 Referent Ledger、`H_other`、独立证据
+裁决与 observability gating。14 项 synthetic contract tests 通过，performance 未运行，没有 execution successor。
+旧 A1-A4、W1/W2 终态继续有效；P1-VF0 不是 P1-W3，也不覆盖或续跑 consumed evidence。
 
-当前唯一执行面是 [`BLINDASSIST_LAST_10M_REGROUNDING_V0`](goal-copilot/README.md)：只为清晰、相对唯一的建筑入口
-实现当前帧 `SCAN -> CURRENT_CANDIDATE -> ALIGN -> ADVANCE_AND_REOBSERVE -> ARRIVAL_CONFIRM -> COMPLETE /
-RESCAN / ABSTAIN` 机械闭环。每次动作后重新调用未修改的 P0；控制 state 不保留或比较上一帧 candidate/region/
-identity。固定场景回放之后的 action-responsive sanity 也已完成：1 个 Mapillary scene x 6 starts、完成 `0/6`、
-false arrival `0`、可靠 grounding `27/29`、exhausted `6/6`，终态 `CONTROL_POLICY_BOTTLENECK`。它只报告
-responsive mechanics、首次发现、指令/重扫和限定工程归因，不是 scientific
-confirmation、真实用户闭环、安全、导航有效性或默认 App admission；里程碑已关闭且没有自动后继协议。
+当前唯一 active implementation 是 [`P1-VF0`](goal-copilot/README.md)。Detector/tracker/matcher/VLM/geometry 只能
+生成候选；只有 verifier 可写 active referent 与 identity gallery。Appearance 被封顶且不能独立确认；多候选保持
+`AMBIGUOUS`，不可观测不冒充负证据，set-valued rebinding 必须显式记录。主动取证只允许 hold/rotation/context，
+禁止 translation。已关闭的 Last-10m current-frame replay 与 responsive sanity 仍保留原 `CONTROL_POLICY_BOTTLENECK`
+工程结论，不被新实现改写。
 
 Assistive Geometry 的 factor-wise、obstacle 与 Q-Plane 表示支线均已按停止条件关闭；TARO R38 也已在
 parent-disjoint ARKitScenes Validation confirmation 上有效失败并关闭。用户已明确新开 SATOM-A，
@@ -25,8 +23,8 @@ GA-SATOM 的 physical-ToF G0 协议保留但按用户的无 ToF 选择暂停；V
 G0 协议也按进一步的纯 RGB 选择暂停。SVRF-O0 的协议、机制与 source/index 权限仅作历史保留，不执行
 bus canary、member index、payload materialization、truth writer 或 O0。Failure Synthesis 冻结的
 D-ORACLE-1 同样暂停，不执行 source/action truth/policy lock 或 outcome access。除
-`BLINDASSIST_LAST_10M_REGROUNDING_V0` 当前主线外，没有其他 active algorithm lane；任何旧路线重开都必须由用户
-显式改变主线，并先同步本页与 Goal Copilot current，不能由旧文档中的 successor 或历史优先级自行恢复。
+P1-VF0 外没有其他 active algorithm lane；任何真实数据、performance、模型/阈值选择或 App 集成都需要用户另行
+授权，不能由旧文档中的 successor 或历史优先级自行恢复。
 DepthART D3R6 仍保持暂停；其 bounded deferral contract 与 fresh gate 保留，但 post-hoc
 same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6 执行权限。
 
@@ -35,7 +33,7 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| Goal Copilot / Last 10 m Regrounding | 当前帧入口寻找—引导—重新观测—确认机械闭环 | `RESPONSIVE_SANITY_CLOSED / CONTROL_POLICY_BOTTLENECK / P1_CLOSED / NO_SCIENTIFIC_CONFIRMATION / DEFAULT_APP_UNCHANGED` | [current](goal-copilot/README.md) / [responsive result](goal-copilot/BLINDASSIST_LAST_10M_RESPONSIVE_SANITY_RESULT_2026-08-22.md) | 无；6 次 action-responsive engineering episodes 已一次性封口 | P1-W3/referent persistence；tracker/memory/SLAM/VIO；新模型/训练/cohort/多臂；viewport replay 冒充真实用户闭环；Android/App；科学或安全主张 | 否 |
+| Goal Copilot / P1-VF0 verifier-first ledger | 候选 proposal 与 identity authority 分离的 Goal Contract + Referent Ledger mechanics | `OUTCOME_BLIND_MECHANICS_IMPLEMENTED / SYNTHETIC_CONTRACT_TESTED / PERFORMANCE_NOT_RUN / DEFAULT_APP_UNCHANGED` | [current](goal-copilot/README.md) / [implementation](../../scripts/research/goal_copilot_bridge/p1_verifier_first/README.md) | 无；真实 data-adequacy/Development execution 需用户另行授权 | 覆盖/续跑 W1/W2；appearance 单通道确认；VIO/SLAM/POMDP/主动平移；模型/阈值搜索；Android/App；科学或安全主张 | 否 |
 | D-ORACLE-1 causal ladder | 三臂 matched oracle intervention 定位 downstream target-policy stack 与 estimated representation 的损失 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / PROTOCOL_FROZEN / NO_EXECUTION / NO_SEARCH` | [Failure diagnosis current](failure-synthesis/README.md) | 无；只有用户显式改变主线后才可重开 | 执行 source/action truth/policy lock；增加第四竞争臂；提前拆H3/H4；训练/调policy/threshold；读取outcome后换parent/gate | 否 |
 | SVRF / Scale-free Visual Risk Field | 纯 RGB 派生的相对深度动态、局部扩张和视觉通道侵入能否形成稳定相对风险排序 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / STREAM_INDEX_NOT_ACTIVE / REAL_O0_NOT_RUN / NO_TRAINING` | [SVRF current](svrf/README.md) | 无；只有用户显式改变主线并有新的 representation-headroom 前置证据后，才可另行恢复 | bus canary、member index、payload/truth materialization、O0、训练或接 Android | 否 |
 | VI-Task Geometry | 同刚体 RGB+IMU 自校准 metric pose/ground，再为未来 task geometry 分配 computation/parallax budget | `PAUSED_BY_PURE_RGB_SELECTION / G0_PROTOCOL_RETAINED / REAL_G0_NOT_RUN / NO_TOF / NO_TRAINING` | [VI-Task Geometry current](vi-task-geometry/README.md) | 无；只有用户明确恢复 RGB+IMU metric-frame 路线才可重开 preflight | 实现/采集/运行 G0；用手机 IMU配眼镜视频；重跑 ARCore D45；提前训练、主动分配或接 Android | 否 |
