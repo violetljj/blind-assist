@@ -158,7 +158,12 @@ mechanics fixture roster。[`Stage A single execution`](P1_W1_STAGE_A_SINGLE_EXE
 ## 当前终点
 
 Stage A v1 已消费，没有自动 successor。不得放宽初始化门、调 HSV/ORB、换 tracker 或在 sealed 17 cases 上重跑；
-未来若重开，必须另立 outcome-blind interface/data-adequacy contract。W1-T1/Stage B、SLAM 与 App 均未授权。
+[`P1-W2 referent anchor interface feasibility`](P1_W2_REFERENT_ANCHOR_INTERFACE_FEASIBILITY_PROTOCOL_V1.md) 现只冻结
+下一问题的设计边界：分别评价 referent-core geometry support 与 same-scene identity separability，再联合判定 anchor
+eligibility。Matcher 只产出 correspondence candidates；geometry authority 需要 target-local filtering、spatial
+dispersion 与 model consistency。Context ring 可帮助 geometry，但不能贡献 identity，context-only support 不能使
+referent `ELIGIBLE`。实现、数据选择、模型下载与执行均未授权；17 个 sealed cases 仍只可作 Development diagnostic。
+W1-T1/Stage B、tracking、keyframe memory、SAM2 propagation、SLAM 与 App 均未授权。
 
 禁止：继续调 A1/A2/A3 threshold/operator、建立 A5+ tracker/model arm、提前执行 W1 或实现 global
 reacquisition/SLAM/object map、加入 ReID/Sky、fresh/large cohort、
@@ -167,4 +172,5 @@ P0 policy 续搜、Active/Temporal Grounding、Android/default-App、产品或�
 Claim ceiling：既有 A1-A4 仍为 `CONSUMED_ADT_INDOOR_OBJECT_DEVELOPMENT_BASELINE_ONLY_NO_SCIENTIFIC_VERDICT`；
 W0 为 `ARCHITECTURE_DESIGN_ONLY / NO_EMPIRICAL_CAPABILITY`。
 W1 Stage A 为 `CONSUMED_ADT_DEVELOPMENT_NOT_EVALUABLE_INTERFACE / NO_C0_T0_VERDICT`。
+W2 为 `ANCHOR_INTERFACE_DESIGN_ONLY / NO_EMPIRICAL_CAPABILITY`。
 默认 App：不变。
