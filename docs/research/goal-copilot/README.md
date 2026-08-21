@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / PRIOR_ART_ASSIMILATED / P0_CONTRACT_V1_REFERENCE_SET_ADDENDUM / GROUNDING_DINO_PROPOSAL_PATH_RUN / SILVER_B_DEVELOPMENT / P0_D1_PARENT_DISJOINT_FAILURE_REPRODUCED / NO_SCIENTIFIC_VERDICT / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / PRIOR_ART_ASSIMILATED / P0_CONTRACT_V1_REFERENCE_SET_ADDENDUM / GROUNDING_DINO_PROPOSAL_PATH_RUN / SILVER_B_DEVELOPMENT / P0_D1_PARENT_DISJOINT_FAILURE_REPRODUCED / P0_D2_DATA_FRONTDOOR_INSUFFICIENT / FIT_NOT_AUTHORIZED / NO_SCIENTIFIC_VERDICT / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)；P0 冻结合同与机器合同见 [`Protocol V1`](P0_GROUNDING_PROTOCOL_V1.md) / [`JSON`](p0_grounding_protocol_v1.json)。
 本页仍是动态执行状态真源；当前已完成 schema/evaluator mechanics、真实 map+geometry materialization、
@@ -198,6 +198,15 @@ association 推动为 grounding，且 0 个主动返回 `AMBIGUOUS`；正确 pro
   failure mechanism 因而跨 venue 复现。详见 [`P0-D1 parent-disjoint result`](P0_D1_PARENT_DISJOINT_CONFIRMATION_RESULT_2026-08-21.md)。
   当前停止 prompt fishing；下一步才是小型 evidence-budget / calibration surface 的 Development 设计，不启动
   Sky、detector 调参或模型比较。
+
+[`P0-D2 Commitment Calibration protocol V1`](P0_D2_COMMITMENT_CALIBRATION_PROTOCOL_V1.md) 已冻结 Terra、
+candidate pool/order、evaluator、parent-level calibration 与 `COMMIT / SET / AMBIGUOUS / ABSTAIN` 两层语义。
+首轮 outcome-blind resolvable enrichment 从 60 个 acquisition frames 中经 score-blind review 和 name/frame overlap 排除后，
+得到 16 episodes / 8 新 venue parents：`UNIQUE=4 / SET_VALUED=0 / AMBIGUOUS=12`。合并 consumed Development
+后共有 29 parents，`UNIQUE=11 / SET_VALUED=2 / AMBIGUOUS=23`，resolvable union 11；因 `SET_VALUED<4`
+且 resolvable `<12`，数据前门关闭，logistic/conformal fitting 均未授权、未运行。详见
+[`D2 enrichment/frontdoor result`](P0_D2_RESOLVABLE_ENRICHMENT_AND_FRONTDOOR_RESULT_2026-08-21.md)。下一批只补
+至少两个新 SET_VALUED parents 与一个新 resolvable parent；不得用 frame 或 candidate 数补 parent 分母。
 
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim

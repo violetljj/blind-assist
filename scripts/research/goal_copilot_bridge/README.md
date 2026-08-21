@@ -76,6 +76,24 @@ prompt or creating a scientific claim. See the
 [`consumed P0-D1 result`](../../../docs/research/goal-copilot/P0_D1_AMBIGUITY_CALIBRATION_CONSUMED_CANARY_RESULT_2026-08-21.md)
 and [`parent-disjoint confirmation`](../../../docs/research/goal-copilot/P0_D1_PARENT_DISJOINT_CONFIRMATION_RESULT_2026-08-21.md).
 
+`p0_d2_calibration/` freezes the successor commitment-calibration mechanics without fitting on an inadequate
+denominator. `plan_resolvable_enrichment.py` creates an outcome-blind metadata-only roster and balanced Mapillary
+anchor shards; `build_enrichment_cohort.py` applies score-blind manual decisions and fails on old target-name/frame
+overlap; `core.py` keeps referent-set and ambiguity semantics separate, rejects evaluator-only runtime features, and
+computes finite-sample conformal quantiles over parent scores. The first enrichment added 4 UNIQUE and 12 AMBIGUOUS
+episodes over 8 new parents, but the combined consumed bank still has only 2 SET_VALUED and 11 resolvable parents.
+`audit_frontdoor.py` therefore returns `P0_D2_DATA_FRONTDOOR_INSUFFICIENT`; no logistic or conformal fit ran. Protocol
+and result: [`P0-D2 protocol`](../../../docs/research/goal-copilot/P0_D2_COMMITMENT_CALIBRATION_PROTOCOL_V1.md) /
+[`frontdoor result`](../../../docs/research/goal-copilot/P0_D2_RESOLVABLE_ENRICHMENT_AND_FRONTDOOR_RESULT_2026-08-21.md).
+
+Focused D2 mechanics check:
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts/research/goal_copilot_bridge/p0_d2_calibration/test_core.py `
+  scripts/research/goal_copilot_bridge/p0_d2_calibration/test_plan_resolvable_enrichment.py
+```
+
 Focused check:
 
 ```powershell
