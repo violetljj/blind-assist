@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_A1_VALIDITY_GAIN_ONLY_BY_ABSTENTION / NO_POLICY_ADMISSION / P1_A2_REPRESENTATION_DESIGN_ONLY / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_A2_DENSE_IDENTITY_VALIDITY_SIGNAL_ESTABLISHED / NO_POLICY_ADMISSION / P1_A3_LOSS_REACQUISITION_DESIGN_ONLY / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；详细历史、协议和数字留在链接的独立结果文件，不在 current 重复维护。
@@ -107,17 +107,26 @@ confirmation、quarantine、receipt 或终态。
 已选择停止 synthetic moderate optimization。Sky 不属于当前 pipeline，不能用于 P0 policy rescue、P1 tracker
 搜索或绕过真实 observation failure。
 
-## 唯一 successor
+## 当前 P1 结果与唯一 successor
 
 [`P1-A1`](P1_A1_CONSERVATIVE_LOCAL_TRACK_VALIDITY_RESULT_2026-08-21.md) 已一次性完成 3,069 个 compact
 RGB-only validity gates。最佳 `>=90%` retention gate 保留 `80/87` correct，但 wrong、episode-macro、max wrong-lock
 只下降 `39.64% / 44.73% / 9.41%`；0 wrong gate 只保留 `15/87` correct，false-loss 达 `94.21%`。终态
 `VALIDITY_GAIN_ONLY_BY_ABSTENTION / NO_POLICY_ADMISSION / NO_SCIENTIFIC_VERDICT`，不保留 discovered threshold。
 
-当前唯一 successor 是 `P1_A2_MATERIALLY_DIFFERENT_TRACK_VALIDITY_REPRESENTATION_DESIGN`，仅设计不同的
-tracking-validity representation，execution=false。不得继续扫 A1 threshold，也不得提前进入 loss/reacquisition。
+[`P1-A2`](P1_A2_FIXED_REFERENCE_DENSE_IDENTITY_RESULT_2026-08-21.md) 随后以 frozen DINOv2-S initial patch
+memory 和 dense correspondence consensus 一次性检查 625 个四特征 AND policy。4 个通过预冻结 admission；
+top policy 保留 `80/87` correct，把 wrong `1,221→445`、max wrong-lock `8,498→2,700 ms`，分别改善
+`63.55% / 68.23%`，终态 `DENSE_IDENTITY_VALIDITY_SIGNAL_ESTABLISHED / NO_POLICY_ADMISSION`。
 
-禁止：继续调 A1 threshold、直接保留 winner、提前进入 loss/reacquisition、加入 ReID/Sky、fresh/large cohort、
+边界同样必须保留：14 个 drift episode 没有正 warning lead；false-loss 为 `304/777`，frame-wise gate churn
+产生 29 个 evaluator-defined false reacquisition。它只建立 consumed Development representation signal，不能保留
+threshold 或接 App。
+
+当前唯一 successor 是 execution=false 的 `P1_A3_LOSS_DECLARATION_AND_CONSERVATIVE_REACQUISITION_DESIGN`：
+先设计 stable loss event 与 loss 后的 bounded reacquisition；协议冻结前不实现、不运行。
+
+禁止：继续调 A1/A2 threshold、直接保留 winner、提前实现/运行 loss/reacquisition、加入 ReID/Sky、fresh/large cohort、
 P0 policy 续搜、Active/Temporal Grounding、Android/default-App、产品或安全主张。
 
 Claim ceiling：`CONSUMED_ADT_INDOOR_OBJECT_DEVELOPMENT_BASELINE_ONLY_NO_SCIENTIFIC_VERDICT`。

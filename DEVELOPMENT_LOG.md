@@ -2,6 +2,17 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：Codex。完成 P1-A2 fixed-reference dense-identity validity
+  experiment。精确冻结 `facebook/dinov2-small@ed25f3a`，每 episode 只用 frame-0 oracle bbox 创建一次
+  `256×384` patch memory；对 1,296 个 hash/parity-identical sparse-LK bbox 计算 mutual correspondence、confidence、
+  partial-affine consistency、anchor coverage 与 dispersion，online update / added search / post-init GT reads 均为 0。
+  Private truth 前封存 1,311-crop trace；一次性四特征 `5^4=625` AND policy 中 4 个通过 `90%/60%/60%`
+  admission。top policy 保留 `80/87=91.95%` correct，wrong `1,221→445`（`63.55%` reduction），max wrong-lock
+  `8,498→2,700 ms`（`68.23%` reduction），终态 `DENSE_IDENTITY_VALIDITY_SIGNAL_ESTABLISHED /
+  NO_POLICY_ADMISSION / NO_SCIENTIFIC_VERDICT`。负面边界：14 个 drift episode 正 warning lead 为 0，false-loss
+  `304/777`，frame-wise gate churn 产生 29 个 evaluator-defined false reacquisition；不得保留 threshold 或接 App。
+  唯一 successor 为 execution=false 的 `P1_A3_LOSS_DECLARATION_AND_CONSERVATIVE_REACQUISITION_DESIGN`。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：Codex。完成 P1-A1 一次性 conservative local-track
   validity discovery。RGB-only instrumentation replay 对 P1-R0 v2 的 1,296 个 flow candidates 增加 survival、
   forward-backward、affine/RANSAC、spatial coverage、residual/jump 与 fixed-initial-anchor appearance；15/15

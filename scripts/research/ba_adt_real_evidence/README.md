@@ -183,14 +183,16 @@ supersede。正式 Attempt 02 的 GT-blind OWLv2-large 入口是 `run_visual_upp
 
 ## 当前 successor
 
-P1-A1 已在 P1-R0 的 1,296 个 flow candidates 上完成 instrumentation-parity PASS 与一次性 3,069-gate
-compact sweep。最佳 retention-admissible gate 保留 `80/87` correct，但 wrong/macro/max-lock 只改善
-`39.64%/44.73%/9.41%`；0 wrong gate 只保留 15 个 oracle-init correct。终态
-`VALIDITY_GAIN_ONLY_BY_ABSTENTION / NO_POLICY_ADMISSION / NO_SCIENTIFIC_VERDICT`。当前唯一 successor 是
-非执行的 `P1_A2_MATERIALLY_DIFFERENT_TRACK_VALIDITY_REPRESENTATION_DESIGN`；不得继续扫 A1 threshold 或进入
+P1-A1 已以 `VALIDITY_GAIN_ONLY_BY_ABSTENTION` 关闭 optical-flow health family。P1-A2 随后固定 DINOv2-S
+initial patch memory，只在同一 1,296 个 frozen flow candidates 上运行 dense correspondence consensus；一次性
+625-policy sweep 的 top policy 保留 `80/87` correct，把 wrong `1,221→445`、max wrong-lock
+`8,498→2,700 ms`，终态 `DENSE_IDENTITY_VALIDITY_SIGNAL_ESTABLISHED / NO_POLICY_ADMISSION /
+NO_SCIENTIFIC_VERDICT`。但没有正 pre-drift warning lead，false-loss `304/777`，gate churn 产生 29 个
+evaluator-defined false reacquisition。当前唯一 successor 是非执行的
+`P1_A3_LOSS_DECLARATION_AND_CONSERVATIVE_REACQUISITION_DESIGN`；不得保留 A2 threshold 或直接运行
 loss/reacquisition。协议、结果与入口见
-[`P1-A1 result`](../../../docs/research/goal-copilot/P1_A1_CONSERVATIVE_LOCAL_TRACK_VALIDITY_RESULT_2026-08-21.md) 和
-`run_p1_a1_local_validity.py`。以下 ADT-0..R5 内容是既有 consumed Development context，不是并行 successor。
+[`P1-A2 result`](../../../docs/research/goal-copilot/P1_A2_FIXED_REFERENCE_DENSE_IDENTITY_RESULT_2026-08-21.md) 和
+`run_p1_a2_dense_identity.py`。以下 ADT-0..R5 内容是既有 consumed Development context，不是并行 successor。
 
 Sample 已得到 102 个持续跟踪候选，覆盖全部六类事件，但没有单一目标覆盖完整六阶段；详见
 [`BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md`](../../../docs/research/goal-copilot/BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md)。
