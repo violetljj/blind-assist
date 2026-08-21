@@ -188,11 +188,14 @@ initial patch memory，只在同一 1,296 个 frozen flow candidates 上运行 d
 625-policy sweep 的 top policy 保留 `80/87` correct，把 wrong `1,221→445`、max wrong-lock
 `8,498→2,700 ms`，终态 `DENSE_IDENTITY_VALIDITY_SIGNAL_ESTABLISHED / NO_POLICY_ADMISSION /
 NO_SCIENTIFIC_VERDICT`。但没有正 pre-drift warning lead，false-loss `304/777`，gate churn 产生 29 个
-evaluator-defined false reacquisition。当前唯一 successor 是非执行的
-`P1_A3_LOSS_DECLARATION_AND_CONSERVATIVE_REACQUISITION_DESIGN`；不得保留 A2 threshold 或直接运行
-loss/reacquisition。协议、结果与入口见
-[`P1-A2 result`](../../../docs/research/goal-copilot/P1_A2_FIXED_REFERENCE_DENSE_IDENTITY_RESULT_2026-08-21.md) 和
-`run_p1_a2_dense_identity.py`。以下 ADT-0..R5 内容是既有 consumed Development context，不是并行 successor。
+evaluator-defined false reacquisition。P1-A3 随后不继承 A2 threshold，一次性完成
+`16 consecutive + 8 sliding + 16 leaky = 40` policies；wrong 与 false-loss gates 都是 `0/40`，代表结果
+`correct=81 / wrong=685 / max-lock=2,899 ms / false-loss=205 / false-reacquisition=0`，终态
+`TEMPORAL_POLICY_INSUFFICIENT / NO_POLICY_ADMISSION`。当前唯一 successor 改为非执行的
+`P1_A4_MATERIALLY_STRONGER_TEMPORAL_CORRESPONDENCE_REPRESENTATION_DESIGN`；不得续扫 A3 或直接实现
+CoTracker/TAPIR/global search。协议、结果与入口见
+[`P1-A3 result`](../../../docs/research/goal-copilot/P1_A3_TEMPORAL_LOSS_DECLARATION_RESULT_2026-08-21.md) 和
+`run_p1_a3_temporal_loss.py`。以下 ADT-0..R5 内容是既有 consumed Development context，不是并行 successor。
 
 Sample 已得到 102 个持续跟踪候选，覆盖全部六类事件，但没有单一目标覆盖完整六阶段；详见
 [`BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md`](../../../docs/research/goal-copilot/BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md)。

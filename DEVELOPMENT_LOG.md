@@ -2,6 +2,17 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：Codex。完成 P1-A3 temporal loss-declaration experiment。
+  不继承 A2 winner threshold，只对 frozen DINOv2-S raw dense features 做 outcome-blind percentile/median evidence；
+  private truth 前一次性封存 `16 consecutive + 8 sliding + 16 leaky = 40` temporal outputs。全部 40 个 policy
+  均保留 correct、通过 false-reacquisition/chatter、loss-declaration 与 evaluator-contract 门，但 wrong `<=488`
+  和 false-loss `<=152` 均为 `0/40`；20 个通过 8/10 gates，20 个通过 7/10。代表 policy 为
+  `correct=81 / wrong=685 / max wrong-lock=2,899 ms / false-loss=205 / false-reacquisition=0 /
+  TRACKING-boundary transitions=10 / chatter=0`。三类 operator 的最低 wrong 为 `601/607/669`、最低 false-loss
+  为 `205/208/206`，没有接近同时过门的 candidate。终态 `TEMPORAL_POLICY_INSUFFICIENT /
+  NO_POLICY_ADMISSION / NO_SCIENTIFIC_VERDICT`；禁止 post-outcome 续扫。唯一 successor 为 execution=false 的
+  `P1_A4_MATERIALLY_STRONGER_TEMPORAL_CORRESPONDENCE_REPRESENTATION_DESIGN`。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：Codex。完成 P1-A2 fixed-reference dense-identity validity
   experiment。精确冻结 `facebook/dinov2-small@ed25f3a`，每 episode 只用 frame-0 oracle bbox 创建一次
   `256×384` patch memory；对 1,296 个 hash/parity-identical sparse-LK bbox 计算 mutual correspondence、confidence、

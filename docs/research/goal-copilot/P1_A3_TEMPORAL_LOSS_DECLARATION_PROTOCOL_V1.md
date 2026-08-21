@@ -1,6 +1,8 @@
 # P1-A3 temporal loss-declaration and conservative recovery protocol V1
 
-状态：`FROZEN_BEFORE_PRIVATE_TRUTH / EXECUTION_NOT_STARTED`。
+状态：`CONSUMED / TEMPORAL_POLICY_INSUFFICIENT / NO_POLICY_ADMISSION / NO_SCIENTIFIC_VERDICT`。
+
+结果：[`P1-A3 result`](P1_A3_TEMPORAL_LOSS_DECLARATION_RESULT_2026-08-21.md)。
 
 ## 唯一研究问题
 

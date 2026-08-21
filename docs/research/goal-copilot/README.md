@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_A2_DENSE_IDENTITY_VALIDITY_SIGNAL_ESTABLISHED / NO_POLICY_ADMISSION / P1_A3_LOSS_REACQUISITION_DESIGN_ONLY / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_A2_DENSE_IDENTITY_SIGNAL_RETAINED / P1_A3_TEMPORAL_POLICY_INSUFFICIENT / NO_POLICY_ADMISSION / P1_A4_STRONGER_TEMPORAL_CORRESPONDENCE_DESIGN_ONLY / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；详细历史、协议和数字留在链接的独立结果文件，不在 current 重复维护。
@@ -123,10 +123,19 @@ top policy 保留 `80/87` correct，把 wrong `1,221→445`、max wrong-lock `8,
 产生 29 个 evaluator-defined false reacquisition。它只建立 consumed Development representation signal，不能保留
 threshold 或接 App。
 
-当前唯一 successor 是 execution=false 的 `P1_A3_LOSS_DECLARATION_AND_CONSERVATIVE_REACQUISITION_DESIGN`：
-先设计 stable loss event 与 loss 后的 bounded reacquisition；协议冻结前不实现、不运行。
+[`P1-A3`](P1_A3_TEMPORAL_LOSS_DECLARATION_RESULT_2026-08-21.md) 未继承 A2 threshold，只复用 raw dense
+evidence，一次性比较 consecutive/sliding/leaky 共 40 个 temporal policies。全部 policy 均保留 correct、消灭
+false reacquisition/chatter 并维持 long-loss declaration，但 `wrong<=488` 与 `false-loss<=152` 均为 `0/40`。
+代表 policy 为 `correct=81 / wrong=685 / max-lock=2,899 ms / false-loss=205 / false-reacquisition=0`；终态
+`TEMPORAL_POLICY_INSUFFICIENT / NO_POLICY_ADMISSION`。这关闭简单 temporal smoothing rescue，不改写 A2 的历史
+frame-wise representation signal。
 
-禁止：继续调 A1/A2 threshold、直接保留 winner、提前实现/运行 loss/reacquisition、加入 ReID/Sky、fresh/large cohort、
+当前唯一 successor 是 execution=false 的
+`P1_A4_MATERIALLY_STRONGER_TEMPORAL_CORRESPONDENCE_REPRESENTATION_DESIGN`；只设计 CoTracker/TAPIR class
+representation 的下一轮合同，本轮不选模、不实现、不下载、不执行。
+
+禁止：继续调 A1/A2/A3 threshold/operator、直接保留 winner、提前实现 stronger tracker 或 global
+reacquisition、加入 ReID/Sky、fresh/large cohort、
 P0 policy 续搜、Active/Temporal Grounding、Android/default-App、产品或安全主张。
 
 Claim ceiling：`CONSUMED_ADT_INDOOR_OBJECT_DEVELOPMENT_BASELINE_ONLY_NO_SCIENTIFIC_VERDICT`。
