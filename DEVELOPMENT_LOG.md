@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-22（Asia/Hong_Kong）；执行者：Codex。按用户授权完成唯一 P1-W1 Stage A single execution。
+  冻结 commit `08aa765c` 对 17/17 real cases 做 C0/W1-T0 各一次 public-only pass，再一次 private evaluation；
+  无重选、调参、换实现或重跑。14/17 cases 在 arm 前因 source region 少于 6 个 target-local ORB descriptors
+  initialization fail，rotation evaluable support 为 `0/2`，正式终态
+  `W1_T0_NOT_EVALUABLE_DATA_OR_INTERFACE`。剩余 3 cases 的 zero false-continuity/reacquisition、C0/T0 usable
+  anchor `5/19` 与 honest NONE `468/468` 仅为诊断，不能建立 C0/T0 verdict。Stage A v1 消费并封口；不进入
+  Stage B、tracker zoo、SLAM 或 App，没有自动 successor。
+
 - 时间：2026-08-22（Asia/Hong_Kong）；执行者：Codex。完成 P1-W1 Stage A outcome-blind implementation 与
   data selection，不运行 performance。冻结 1,000-point ORB keyframe geometry、独立 HSV identity verifier、
   C0 rotation-compatible guard、T0 keyframe homography/parallax guard 与 fail-stale `ReferentSnapshot` fusion；

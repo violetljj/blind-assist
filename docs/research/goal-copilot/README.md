@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_A_CLOSED / P1_W0_DESIGN_COMPLETE / P1_W1_MINIMAL_BASELINE_PROTOCOL_FROZEN / IMPLEMENTATION_NOT_SELECTED / NO_EXECUTION / NO_POLICY_ADMISSION / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_A_CLOSED / P1_W0_DESIGN_COMPLETE / P1_W1_STAGE_A_CONSUMED_NOT_EVALUABLE_INTERFACE / NO_STAGE_B / NO_POLICY_ADMISSION / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；详细历史、协议和数字留在链接的独立结果文件，不在 current 重复维护。
@@ -151,12 +151,14 @@ shared-gauge pose/anchor interface 检验 translation。Primary endpoints 是 fa
 `NONE`、timely stale、bearing compatibility 与 identity-confirmed reacquisition，不以 bbox continuity 为胜负指标。
 [`Stage A implementation/data selection`](P1_W1_STAGE_A_IMPLEMENTATION_AND_DATA_SELECTION_2026-08-22.md) 已
 outcome-blind 冻结 ORB keyframe geometry、独立 HSV identity path、fail-stale fusion 与 17 个真实 episode + 1 个
-mechanics fixture roster；真实 performance 尚未运行，T1 pose source 未选择，Stage A/B execution 均未授权。
+mechanics fixture roster。[`Stage A single execution`](P1_W1_STAGE_A_SINGLE_EXECUTION_RESULT_2026-08-22.md) 已按
+冻结 commit 对 17/17 cases 各运行一次，但 14/17 在 target-local ORB initialization 失败，rotation 实际 support
+为 `0/2`，正式终态 `W1_T0_NOT_EVALUABLE_DATA_OR_INTERFACE`。3 个可运行 case 的指标仅可诊断，不能判 C0/T0。
 
-## 唯一 successor
+## 当前终点
 
-`P1_W1_STAGE_A_SINGLE_EXECUTION`，状态为 `NOT_AUTHORIZED / NO_EXECUTION`。它只能一次执行已冻结 C0/T0 与 v3
-roster，不得重选数据、搜索 threshold、选择 T1 pose source 或接 App。
+Stage A v1 已消费，没有自动 successor。不得放宽初始化门、调 HSV/ORB、换 tracker 或在 sealed 17 cases 上重跑；
+未来若重开，必须另立 outcome-blind interface/data-adequacy contract。W1-T1/Stage B、SLAM 与 App 均未授权。
 
 禁止：继续调 A1/A2/A3 threshold/operator、建立 A5+ tracker/model arm、提前执行 W1 或实现 global
 reacquisition/SLAM/object map、加入 ReID/Sky、fresh/large cohort、
@@ -164,5 +166,5 @@ P0 policy 续搜、Active/Temporal Grounding、Android/default-App、产品或�
 
 Claim ceiling：既有 A1-A4 仍为 `CONSUMED_ADT_INDOOR_OBJECT_DEVELOPMENT_BASELINE_ONLY_NO_SCIENTIFIC_VERDICT`；
 W0 为 `ARCHITECTURE_DESIGN_ONLY / NO_EMPIRICAL_CAPABILITY`。
-W1 为 `PROTOCOL_DESIGN_ONLY / NO_EMPIRICAL_CAPABILITY`。
+W1 Stage A 为 `CONSUMED_ADT_DEVELOPMENT_NOT_EVALUABLE_INTERFACE / NO_C0_T0_VERDICT`。
 默认 App：不变。
