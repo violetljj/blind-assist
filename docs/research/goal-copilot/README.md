@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / A1_DEVELOPMENT_INCUMBENT_NOT_ADMITTED / P1_TARGET_PERSISTENCE_R0 / REPRESENTATION_EVALUATOR_CONTRACT_FROZEN / P1_D0_TEMPORAL_DEVELOPMENT_COHORT_READY / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_R0_REAL_RGB_HEADROOM_ESTABLISHED_ON_CONSUMED_ADT / P1_A1_CONSERVATIVE_LOCAL_TRACK_VALIDITY / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；详细历史、协议和数字留在链接的独立结果文件，不在 current 重复维护。
@@ -30,8 +30,9 @@ LOST
 永久状态；`TRACKING` 之外不得断言当前 candidate。Active/Temporal Grounding 是独立未来模块，不能塞进
 P1-R0 越权解决 `AMBIGUOUS / NO_REFERENT`。
 
-本轮只冻结 JSON schemas、deterministic evaluator、八个 synthetic mechanics fixtures 和固定阈值 simple
-baseline。它没有真实 RGB tracker、模型、Sky 或 fresh cohort，因此不建立 P1 科学性能。
+JSON schemas、deterministic evaluator、八个 synthetic mechanics fixtures 与 P1-D0 truth firewall 保持冻结。
+[`P1-R0 consumed ADT baseline`](P1_R0_CONSUMED_ADT_BASELINE_RESULT_2026-08-21.md) 已运行一个只读 RGB 的
+sparse-flow + fixed-template baseline；它只建立 consumed Development failure structure，不建立科学、产品或 safety 性能。
 
 ## P0 policy-discovery 终点
 
@@ -108,11 +109,14 @@ confirmation、quarantine、receipt 或终态。
 
 ## 唯一 successor
 
-`P1_R0_CONSUMED_ADT_BASELINE_ADAPTER_DESIGN`：只设计如何把 P1-D0 RGB/P0 handoff 接入 P1 public-input
-schema，并让 episode truth 只进入 evaluator。设计完成前不运行新的 ADT baseline evaluation。
+`P1_A1_CONSERVATIVE_LOCAL_TRACK_VALIDITY`：P1-R0 baseline 的 coverage 为 `87/777 = 11.20%`，同时产生
+`1,221` wrong-instance frames、`59` identity switches 与 255-frame max wrong-lock；post-outcome 描述性分解中
+`1,094/1,221 = 89.60%` wrong assertions 是 background drift，另一个 ADT instance 为 127。A1 只改变
+local-track RGB contradiction / drift rejection；candidate generator、fixed-template reacquisition、state machine、
+evaluator、P1-D0 cohort 与 truth firewall 全部冻结。
 
-禁止：Sky、模型搜索、fresh/large cohort、P0 policy 续搜、Active/Temporal Grounding、Android/default-App、
-产品或安全主张。允许：stdlib mechanics 修复、schema/evaluator 专项测试、只读检查既有 consumed ADT interface。
+禁止：提前更换 candidate generator/reacquisition、加入 ReID/强 tracker、Sky、fresh/large cohort、P0 policy
+续搜、Active/Temporal Grounding、Android/default-App、产品或安全主张。
 
-Claim ceiling：`SCHEMA_EVALUATOR_AND_SYNTHETIC_BASELINE_MECHANICS_ONLY_NO_VISUAL_PERSISTENCE_OR_SCIENTIFIC_VERDICT`。
+Claim ceiling：`CONSUMED_ADT_INDOOR_OBJECT_DEVELOPMENT_BASELINE_ONLY_NO_SCIENTIFIC_VERDICT`。
 默认 App：不变。

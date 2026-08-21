@@ -62,6 +62,26 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-re
 固定合同与 Development 终态见
 [`P1-D0 protocol`](../../../docs/research/goal-copilot/P1_D0_TEMPORAL_COHORT_PROTOCOL_V1.md)。
 
+P1-R0 consumed RGB baseline 保持三个文件边界，`track` 只接受 public input：
+
+```powershell
+$run = "artifacts.local/evidence/p1_r0_consumed_adt_baseline_v2"
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-real-evidence `
+  run_p1_consumed_adt_baseline.py prepare-public `
+  --cohort-dir artifacts.local/evidence/p1_d0_temporal_cohort_v1 `
+  --public-input "$run/public_input.json" --private-input "$run/private_eval_input.json"
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-real-evidence `
+  run_p1_consumed_adt_baseline.py track `
+  --public-input "$run/public_input.json" --prediction "$run/prediction.json"
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-real-evidence `
+  run_p1_consumed_adt_baseline.py evaluate `
+  --private-input "$run/private_eval_input.json" --prediction "$run/prediction.json" `
+  --result "$run/result.json"
+```
+
+`prepare-public` 后应先复核 public JSON 无 future bbox、visibility、UID、temporal tag、distractor 或 GT path；
+tracker 完成并封存 prediction 后才运行 private evaluator。
+
 Sample 之后，对显式选择且总量有界的完整 sequence 只下载 main GT：
 
 ```powershell
@@ -146,10 +166,14 @@ supersede。正式 Attempt 02 的 GT-blind OWLv2-large 入口是 `run_visual_upp
 
 ## 当前 successor
 
-P1-D0 已从 2 条现有 ADT GT/RGB source 自动物化 15 episodes / 15 physical targets / 1,724 frames，
-六类 temporal mode 均非零，终态 `P1_TEMPORAL_DEVELOPMENT_COHORT_READY`。该批只服务 P1 Development；
-EgoTracks fallback 不触发，不再追加数据。后续只允许 P1 representation/evaluator/baseline 消费该 cohort，
-不得把 ADT indoor object 结果称为 entrance persistence、fresh confirmation 或产品证据。
+P1-D0 的 15 episodes 已被隔离的 P1-R0 sparse-flow + fixed-template RGB baseline 消费。冻结 evaluator 得到
+`87/777` correct coverage、`1,221` wrong-instance frames、59 switches 与 255-frame max wrong-lock，终态
+`REAL_RGB_PERSISTENCE_HEADROOM_ESTABLISHED_ON_CONSUMED_ADT`。89.60% wrong assertions 是没有匹配任何 visible
+ADT instance 的 background drift；当前唯一 successor 为 `P1_A1_CONSERVATIVE_LOCAL_TRACK_VALIDITY`，只改变
+local-track RGB contradiction / drift rejection，冻结 candidate generator、reacquisition、state machine、evaluator、
+cohort 与 truth firewall。协议、结果与稳定入口见
+[`P1-R0 result`](../../../docs/research/goal-copilot/P1_R0_CONSUMED_ADT_BASELINE_RESULT_2026-08-21.md) 和
+`run_p1_consumed_adt_baseline.py`。以下 ADT-0..R5 内容是既有 consumed Development context，不是并行 successor。
 
 Sample 已得到 102 个持续跟踪候选，覆盖全部六类事件，但没有单一目标覆盖完整六阶段；详见
 [`BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md`](../../../docs/research/goal-copilot/BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md)。
@@ -175,6 +199,5 @@ R4 的 S0/S1/S2 在 3 个 eligible 窗口、97 个 LOST-search frames 上均为 
 `0/3` confirmed reacquisition；S1/S2 全局 recall 改善却分别产生 1/4 次 wrong-instance，故不保留。
 结果见
 [`BA_ADT_SMALL_TARGET_SEARCH_SCALE_R4_RESULT_2026-08-21.md`](../../../docs/research/goal-copilot/BA_ADT_SMALL_TARGET_SEARCH_SCALE_R4_RESULT_2026-08-21.md)。
-R5 Attempt 01 的 SAM 3 在 teacher outcome 前被机械可行性否决，未消费固定窗口。Attempt 02 已冻结
-OWLv2-large Teacher A、合法 RGB exemplar、3-window/97-frame denominator 与 `0/3, 1/3, >=2/3` 终止门。
-唯一下一动作是运行该固定 teacher/evaluator；不继续扫 R4，不接 DINOv2/Sky。
+R5 Attempt 01 的 SAM 3 在 teacher outcome 前被机械可行性否决，未消费固定窗口。后续 teacher interface
+审计已以 `R5_CLOSED_INCONCLUSIVE` 永久关闭；不继续扫 R4/R5，不接 DINOv2/Sky。

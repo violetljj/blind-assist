@@ -2,6 +2,20 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：Codex。按 outcome-blind protocol 完成 P1-R0 consumed ADT
+  baseline adapter 与 15-episode 真实 RGB 运行。Public input 只含 RGB/timestamp/P0 handoff 和每 episode 一次
+  frame-0 oracle bbox；tracker receipt 为 `oracle_initializations=15 / post_initialization_gt_reads=0`，无 detector、
+  model、GT reset 或 Sky。冻结 evaluator 得到 correct coverage `87/777=11.20%`、wrong-instance asserted
+  `1,221/1,308=93.35%`、identity switches `59`、max wrong-lock `255 frames / 8,498 ms`、temporary recovery
+  `0/3`、reacquisition recall `0/6`，precision 因无 event 为 null。按预冻结终止门，终态
+  `REAL_RGB_PERSISTENCE_HEADROOM_ESTABLISHED_ON_CONSUMED_ADT`。Post-outcome 描述性 autopsy 显示
+  `1,094/1,221=89.60%` wrong assertions 是 background drift，另一个 ADT instance 为 127；因此唯一 successor
+  选为 `P1_A1_CONSERVATIVE_LOCAL_TRACK_VALIDITY`，只改变 local-flow drift rejection，冻结 candidate generator、
+  reacquisition、state machine、evaluator、cohort 与 truth firewall。结果只属 consumed indoor-object Development；
+  默认 App、科学、产品与 safety authority 不变。首次 v1 public ID 仍嵌 source UID，虽 tracker 未使用其内容，
+  仍按合同标记 `INVALID_PUBLIC_IDENTIFIER_LEAK / NO_SCIENTIFIC_VERDICT` 并保留；有效 v2 改用无语义 ordinal
+  alias，公开 surface 的 truth/长数字扫描零命中，算法与阈值不变，重复得到完全相同的 aggregate。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。正式关闭 P0 commitment-policy discovery，并冻结
   `BA-P1-TARGET-PERSISTENCE-R0-V1` 最小 representation/evaluator contract。P1 只接受
   `REFERENT_ESTABLISHED / NO_REFERENT`，后者硬绑定 `UNBOUND / referent_id=null`；episode-local physical
