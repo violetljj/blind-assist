@@ -1,6 +1,6 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / P0_GROUNDING_CONTRACT_V1_REFERENCE_SET_ADDENDUM / GROUNDING_DINO_PROPOSAL_PATH_RUN / SILVER_B_DEVELOPMENT_COHORT_47_GOALS_43_FRAMES / SINGLE_BRAIN_MECHANICS_RUN / NO_SCIENTIFIC_VERDICT / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / P0_GROUNDING_CONTRACT_V1_REFERENCE_SET_ADDENDUM / GROUNDING_DINO_PROPOSAL_PATH_RUN / SILVER_B_DEVELOPMENT / P0_D1_PARENT_DISJOINT_FAILURE_REPRODUCED / NO_SCIENTIFIC_VERDICT / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
@@ -68,8 +68,13 @@ place-plus-entrance gate and V2's explicit `place_support / entrance_relation_su
 commitment, but retained only 4/13 and 2/13 of the baseline's correct groundings. Both are over-refusal negative
 canaries and are not admitted. `audit_silver_b_ambiguity_calibration.py` reports both frame-micro and venue-parent-
 macro unsupported commitment and uses actual `CORRECT_GROUNDING` retention rather than ranked-candidate top-1.
-The required 25–40-episode new parent-disjoint slice has not started because no Mapillary token is currently
-available. See the [`P0-D1 result`](../../../docs/research/goal-copilot/P0_D1_AMBIGUITY_CALIBRATION_CONSUMED_CANARY_RESULT_2026-08-21.md).
+The successor Brussels acquisition produced a deduplicated 24-goal / 24-frame parent-disjoint Development slice:
+20 `AMBIGUOUS`, 4 `UNIQUE`, 10 venue parents, and zero old-cohort target-name or frame overlap. The unchanged
+baseline again unsupported-committed on 13/20 ambiguous episodes (9-parent macro 0.7444) while correctly grounding
+4/4 UNIQUE episodes with no refusal. This reproduces the calibration failure across venues without admitting a V3
+prompt or creating a scientific claim. See the
+[`consumed P0-D1 result`](../../../docs/research/goal-copilot/P0_D1_AMBIGUITY_CALIBRATION_CONSUMED_CANARY_RESULT_2026-08-21.md)
+and [`parent-disjoint confirmation`](../../../docs/research/goal-copilot/P0_D1_PARENT_DISJOINT_CONFIRMATION_RESULT_2026-08-21.md).
 
 Focused check:
 

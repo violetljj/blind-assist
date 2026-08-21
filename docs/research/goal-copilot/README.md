@@ -1,10 +1,11 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / PRIOR_ART_ASSIMILATED / P0_CONTRACT_V1_REFERENCE_SET_ADDENDUM / GROUNDING_DINO_PROPOSAL_PATH_RUN / SILVER_B_DEVELOPMENT_COHORT_47_GOALS_43_FRAMES / SINGLE_BRAIN_MECHANICS_RUN / NO_SCIENTIFIC_VERDICT / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / PRIOR_ART_ASSIMILATED / P0_CONTRACT_V1_REFERENCE_SET_ADDENDUM / GROUNDING_DINO_PROPOSAL_PATH_RUN / SILVER_B_DEVELOPMENT / P0_D1_PARENT_DISJOINT_FAILURE_REPRODUCED / NO_SCIENTIFIC_VERDICT / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)；P0 冻结合同与机器合同见 [`Protocol V1`](P0_GROUNDING_PROTOCOL_V1.md) / [`JSON`](p0_grounding_protocol_v1.json)。
 本页仍是动态执行状态真源；当前已完成 schema/evaluator mechanics、真实 map+geometry materialization、
-47-goal/43-frame Silver-B Development cohort，以及一个 `gpt-5.6-terra / medium` 单 Brain mechanics run；
+47-goal/43-frame Silver-B Development cohort、P0-D1 consumed calibration canaries，以及新的 24-goal/24-frame
+venue-parent-disjoint Development confirmation；
 没有正式 baseline、科学性能、导航或用户效果结果。
 
 [`Prior-Art Assimilation`](P0_PRIOR_ART_ASSIMILATION_2026-08-21.md) 已将路线对齐到 BLV last-few-meters、
@@ -190,9 +191,13 @@ association 推动为 grounding，且 0 个主动返回 `AMBIGUOUS`；正确 pro
   consumed-development calibration canary 将 place identity 与 exact entrance relation 分开：V1 把 unsupported
   commit 从 `23/31` 降到 `12/31`，但只保留 `4/13` 原正确 grounding；V2 显式输出两级 support，将 unsupported
   commit 降到 `6/31`，却只保留 `2/13`，并拒绝 14/16 resolvable episodes。两者均属 over-refusal、不得准入，
-  详见 [`P0-D1 result`](P0_D1_AMBIGUITY_CALIBRATION_CONSUMED_CANARY_RESULT_2026-08-21.md)。下一步先补 25–40
-  个新 venue-parent-disjoint signage/conflict/UNIQUE Development episodes；当前缺少 Mapillary token，未启动
-  parent-disjoint confirmation、Sky、detector 调参或模型比较。
+  详见 [`P0-D1 consumed result`](P0_D1_AMBIGUITY_CALIBRATION_CONSUMED_CANARY_RESULT_2026-08-21.md)。随后新的
+  Brussels parent-disjoint Development slice 在去重后保留 24 goals / 24 frames，`UNIQUE=4 / AMBIGUOUS=20`，
+  与旧 cohort 的 venue name 和 frame overlap 均为 0。原始 baseline 在 20 个 ambiguous episodes 中仍
+  unsupported commit `13/20`，9-parent macro 为 `0.7444`，同时 4/4 UNIQUE 全部正确 grounding、0 refusal；
+  failure mechanism 因而跨 venue 复现。详见 [`P0-D1 parent-disjoint result`](P0_D1_PARENT_DISJOINT_CONFIRMATION_RESULT_2026-08-21.md)。
+  当前停止 prompt fishing；下一步才是小型 evidence-budget / calibration surface 的 Development 设计，不启动
+  Sky、detector 调参或模型比较。
 
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim
