@@ -4645,3 +4645,13 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   `P0_S0_VISUAL_CANDIDATE_GENERATOR_NOT_ADMITTED`。新增 stdlib validator 将权限锁死为
   `VISUAL_PROPOSAL_ONLY`，禁止建立或升级任何 evaluator/Silver truth。随后用户级 Mapillary token 已配置并通过
   极小只读 Graph API 鉴权、无图像下载；S0-R1 当前唯一剩余前置条件为一个合法 generator admission。
+- 同日按简化后的 proposal-only policy 固定并运行官方 `IDEA-Research/grounding-dino-tiny`：revision
+  `a2bb814dd30d776dcf7e30523b00659f4f141c71`、safetensors SHA-256
+  `1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3`、Apache-2.0、固定 6-phrase prompt 与
+  `box/text=0.15/0.10`。训练 provenance 不完整只保留为 limitation，模型严格为 `VISUAL_PROPOSAL_ONLY`。
+  首轮 30 张全 bbox 取样 217 proposals 因取图落在无目标 anchor 的涂鸦巷而 0 record；保留结果后只修正为
+  anchor-facing 取图，同一模型/阈值在 20 张、7 sequences 产生 177 proposals、4 个 map+geometry anchors，
+  自动 materializer nominal 产出 1 `SILVER_A_PRIMARY`。但结果后的 contact-sheet 核对发现关键跨 sequence 框与
+  其余 3 框是不同实体入口，而其余 3 张相机位置近乎相同；现有 ray-wall multiview 未建立同一物理 region。
+  nominal Silver 不接受，终态为 `P0_S0_CROSSVIEW_IDENTITY_NOT_ESTABLISHED / NO_SCIENTIFIC_VERDICT`；不调视觉阈值、
+  不换 detector，下一步只在 consumed canary 修复 crossview correspondence mechanics。

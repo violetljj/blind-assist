@@ -1,6 +1,6 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / P0_GROUNDING_CONTRACT_V1_MECHANICS_READY / MAPILLARY_TOKEN_READY / P0_S0_VISUAL_CANDIDATE_GENERATOR_NOT_ADMITTED / NO_COHORT_BASELINE / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / P0_GROUNDING_CONTRACT_V1_MECHANICS_READY / MAPILLARY_TOKEN_READY / GROUNDING_DINO_PROPOSAL_PATH_RUN / P0_S0_CROSSVIEW_IDENTITY_NOT_ESTABLISHED / NO_COHORT_BASELINE / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
@@ -37,9 +37,16 @@ explicitly outside this zero-model run. No episode or model metric was emitted. 
 `P0-S0-V0` then audited the exact upstream checkpoint without downloading or running it. The checkpoint bytes are
 identifiable, but training-data provenance, a replay-complete inference envelope, entrance-only filtering, and required
 per-candidate provenance are not established, so the generator is `NOT_ADMITTED`. A stdlib validator keeps its authority
-at `VISUAL_PROPOSAL_ONLY`. The Mapillary token is now configured and authenticated; generator admission is the sole
-remaining S0-R1 prerequisite. See the
+at `VISUAL_PROPOSAL_ONLY`. This remains the historical verdict for that exact YOLO checkpoint; the later simplified
+proposal-only policy did not retrofit or rerun V0. See the
 [`V0 result`](../../../docs/research/goal-copilot/P0_S0_VISUAL_CANDIDATE_GENERATOR_ADMISSION_RESULT_2026-08-21.md).
+
+The successor uses pinned `IDEA-Research/grounding-dino-tiny` with proposal-only authority. Training-data provenance
+incompleteness is recorded as a limitation rather than a proposal-generation blocker. The 20-image anchor-facing run
+produced 177 proposals and one nominal automatic `SILVER_A_PRIMARY`, but the post-run contact sheet showed that the
+cross-sequence proposal and the other three proposals were different physical entrances. The nominal Silver is not
+accepted; the next mechanics fix is crossview same-region correspondence, not detector comparison or threshold tuning.
+See the [`S0-R1 result`](../../../docs/research/goal-copilot/P0_S0_GROUNDING_DINO_R1_RESULT_2026-08-21.md).
 
 Focused check:
 
@@ -47,7 +54,8 @@ Focused check:
 E:\codex-tools\bin\blindassist-python.cmd -m unittest `
   scripts/research/goal_copilot_bridge/p0_s0_materialization/test_materializer.py `
   scripts/research/goal_copilot_bridge/p0_s0_materialization/test_source_slice.py `
-  scripts/research/goal_copilot_bridge/p0_s0_materialization/test_candidate_generator_admission.py
+  scripts/research/goal_copilot_bridge/p0_s0_materialization/test_candidate_generator_admission.py `
+  scripts/research/goal_copilot_bridge/p0_s0_materialization/test_grounding_dino_s0_r1.py
 ```
 
 Authority: BlindAssist owns `GOAL-COPILOT-1`, its evaluator, sealed scenarios,

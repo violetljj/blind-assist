@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / P0_CONTRACT_V1_FROZEN / MAPILLARY_TOKEN_READY / P0_S0_VISUAL_CANDIDATE_GENERATOR_NOT_ADMITTED / NO_COHORT / NO_BASELINE / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / P0_CONTRACT_V1_FROZEN / MAPILLARY_TOKEN_READY / GROUNDING_DINO_PROPOSAL_PATH_RUN / P0_S0_CROSSVIEW_IDENTITY_NOT_ESTABLISHED / NO_COHORT / NO_BASELINE / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)；P0 冻结合同与机器合同见 [`Protocol V1`](P0_GROUNDING_PROTOCOL_V1.md) / [`JSON`](p0_grounding_protocol_v1.json)。
 本页仍是动态执行状态真源；当前已完成 schema、evaluator mechanics、mock fixtures 与匿名 Overture/OSM slice，但没有合法 silver episode、真实 cohort、provider/model output 或 baseline 结果。
@@ -149,7 +149,13 @@ mock 归因路径。后续 [`P0-S0 canary`](P0_S0_SILVER_MATERIALIZATION_CANARY_
 `MAPILLARY_ACCESS_TOKEN_MISSING / MANDATORY_CANDIDATE_GENERATOR_NOT_AUTHORIZED` 关闭为
 `P0_S0_SOURCE_OR_LICENSE_BLOCKED`：0 episode、0 `SILVER_A_PRIMARY`、无科学 verdict。随后 [`P0-S0-V0`](P0_S0_VISUAL_CANDIDATE_GENERATOR_ADMISSION_RESULT_2026-08-21.md)
 将固定上游 YOLO checkpoint 判为 `P0_S0_VISUAL_CANDIDATE_GENERATOR_NOT_ADMITTED`：训练 provenance、replay envelope、逐候选 lineage 不足，且上游全类别放行并丢失 provenance。
-Mapillary token 现已通过只读 Graph API 鉴权；新 S0 仅剩 generator admission。map/cluster/fixture 不得升格，baseline 仍未授权。未来最小输入是用户目标与真实多建筑/多门 RGB 图像或视频；最小输出是 entrance candidates、goal-conditioned ranking 与逐候选 evidence；最小成功条件
+Mapillary token 现已通过只读 Graph API 鉴权。随后固定 Grounding DINO Tiny 仅作 proposal generator，在 20 张
+anchor-facing 真实图上产生 177 个 bbox；自动链 nominal 产出 1 个 `SILVER_A_PRIMARY`，但结果后的可视核对显示
+关键跨 sequence proposal 与其余 proposals 属于不同实体入口，暴露现有 ray-wall multiview 缺少 same-physical-region
+correspondence。nominal Silver 不接受，当前仍无 cohort/baseline/科学 verdict；详见
+[`S0-R1 result`](P0_S0_GROUNDING_DINO_R1_RESULT_2026-08-21.md)。训练数据 provenance 不完整仅作为 proposal-only
+limitation，不再是 bbox generation 硬门；模型仍无任何 truth authority。下一步只修复 crossview identity mechanics，
+不比较 detector、不换模型或调视觉阈值。map/cluster/fixture 不得升格，baseline 仍未授权。未来最小输入是用户目标与真实多建筑/多门 RGB 图像或视频；最小输出是 entrance candidates、goal-conditioned ranking 与逐候选 evidence；最小成功条件
 是目标建筑所属入口排在其他建筑或无关实体的门之前。TargetMemory、flow tracking、conservative
 redetection 与 failure evaluator 保留为找到目标后的 persistence 基础；VIO/SLAM/world memory 只保留为
 未来 spatial-memory 增强，不为 carrot 单独开启 rescue 长线。Sky 仅在某个真实模块出现明确、可测的
