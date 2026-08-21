@@ -2,6 +2,10 @@
 
 状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / BA_DESTINATION_GOAL_GROUNDING_R0 / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_VIO_SLAM_RESCUE / NO_SKY / DEFAULT_APP_UNCHANGED`
 
+完整系统蓝图见
+[`BlindAssist Goal-Driven Visual Copilot V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。
+本页继续承担动态执行状态真源；路线图负责整体架构、能力分层和证据地图，不能单独产生实验权限。
+
 ## 当前主线：Destination / Goal Grounding
 
 BlindAssist 的当前唯一 Goal Copilot successor 是 `BA_DESTINATION_GOAL_GROUNDING_R0`。它回答的不是
@@ -140,7 +144,9 @@ checkpoint 只接 multiplex video predictor，公开 image visual box 只作用�
 exemplar 到独立 target image 的受支持路径。该项不是 `0/3`，R5 总结论为 inconclusive；不追加其他
 teacher、R6/R7 rescue、Sky、held-out 或 default-App。
 
-当前唯一 successor 是 `BA_DESTINATION_GOAL_GROUNDING_R0`。最小输入是用户目标与真实多建筑/多门 RGB
+当前唯一 successor 是 `BA_DESTINATION_GOAL_GROUNDING_R0`。下一动作仅设计并冻结真实场景、goal、
+candidate/truth schema、Development/fresh 角色与 ranking evaluator；尚未授权采集、打开 cohort 或运行
+baseline。该任务未来的最小输入是用户目标与真实多建筑/多门 RGB
 图像或视频；最小输出是 entrance candidates、goal-conditioned ranking 与逐候选 evidence；最小成功条件
 是目标建筑所属入口排在其他建筑或无关实体的门之前。TargetMemory、flow tracking、conservative
 redetection 与 failure evaluator 保留为找到目标后的 persistence 基础；VIO/SLAM/world memory 只保留为

@@ -2,6 +2,16 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。发布
+  `BlindAssist Goal-Driven Visual Copilot V2` 当前系统蓝图，将原始完整 Copilot 方案与 GC/ADT 证据重新
+  合并，而不再让连续实验编号代替产品能力路线。蓝图明确 Evidence Providers 与 Goal Copilot Brain
+  authority、30–60 Hz fast / 5–15 Hz mid / on-demand slow 异步视觉层、医院入口端到端参考路径，以及
+  P0 Goal Grounding → P1 Target Persistence → P2 Approach/Completion → P3 Active Perception 的能力顺序。
+  GC1/GC2、ADT R1、YOLOE、R3/R4/R5 和 SAM 3.1 的结论均按原 claim ceiling 映射回系统，R5 只关闭
+  tiny appearance-only P0，不解释为视觉副驾失败。Sky 只在真实 baseline、冻结 evaluator 与明确 failure
+  anatomy 后接有界 policy surface。当前下一动作仅为 P0 scoped protocol/data/evaluator design；未授权采集、
+  cohort、baseline、模型、Sky、VIO/SLAM、Android/default-App 或产品/安全主张。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。确认 AutoDL 4090D 已关机，R5 永久作为
   appearance-only tiny-target redetection 的终止性上界实验封存，不建立 R6/R7，也不立即开启
   VIO/SLAM carrot rescue。结论上限保持为：当前证据不足以支持继续把“几像素任意小实例的
