@@ -158,11 +158,14 @@ mechanics fixture roster。[`Stage A single execution`](P1_W1_STAGE_A_SINGLE_EXE
 ## 当前终点
 
 Stage A v1 已消费，没有自动 successor。不得放宽初始化门、调 HSV/ORB、换 tracker 或在 sealed 17 cases 上重跑；
-[`P1-W2 referent anchor interface feasibility`](P1_W2_REFERENT_ANCHOR_INTERFACE_FEASIBILITY_PROTOCOL_V1.md) 现只冻结
-下一问题的设计边界：分别评价 referent-core geometry support 与 same-scene identity separability，再联合判定 anchor
-eligibility。Matcher 只产出 correspondence candidates；geometry authority 需要 target-local filtering、spatial
-dispersion 与 model consistency。Context ring 可帮助 geometry，但不能贡献 identity，context-only support 不能使
-referent `ELIGIBLE`。实现、数据选择、模型下载与执行均未授权；17 个 sealed cases 仍只可作 Development diagnostic。
+[`P1-W2 referent anchor interface feasibility`](P1_W2_REFERENT_ANCHOR_INTERFACE_FEASIBILITY_PROTOCOL_V1.md) 已冻结
+referent-core geometry support 与 same-scene identity separability 的证据权限；随后获准的
+[`outcome-blind implementation/data selection`](P1_W2_OUTCOME_BLIND_IMPLEMENTATION_AND_DATA_SELECTION_2026-08-22.md)
+选择 EfficientLoFTR correspondence candidates + core-only geometric verification，以及复用带 consumed-Development
+lineage 的 frozen DINOv2-S patch identity gate。Context endpoint 不进入 geometry fit，identity 永远只读 core。
+ADT metadata-only selector 已冻结 8 个 source-parent-disjoint indoor-object proxy parents，但没有下载 fresh payload，
+也尚未形成 target/source/probe/confuser private roster；因此 execution 仍未授权。17 个 sealed cases 仍只可作
+Development diagnostic。唯一合法 successor 是 fresh source materialization + private roster freeze，而不是直接运行。
 W1-T1/Stage B、tracking、keyframe memory、SAM2 propagation、SLAM 与 App 均未授权。
 
 禁止：继续调 A1/A2/A3 threshold/operator、建立 A5+ tracker/model arm、提前执行 W1 或实现 global
@@ -172,5 +175,5 @@ P0 policy 续搜、Active/Temporal Grounding、Android/default-App、产品或�
 Claim ceiling：既有 A1-A4 仍为 `CONSUMED_ADT_INDOOR_OBJECT_DEVELOPMENT_BASELINE_ONLY_NO_SCIENTIFIC_VERDICT`；
 W0 为 `ARCHITECTURE_DESIGN_ONLY / NO_EMPIRICAL_CAPABILITY`。
 W1 Stage A 为 `CONSUMED_ADT_DEVELOPMENT_NOT_EVALUABLE_INTERFACE / NO_C0_T0_VERDICT`。
-W2 为 `ANCHOR_INTERFACE_DESIGN_ONLY / NO_EMPIRICAL_CAPABILITY`。
+W2 为 `OUTCOME_BLIND_SELECTION_ONLY / NO_EMPIRICAL_CAPABILITY / NO_BUILDING_ENTRANCE_OR_P0_HANDOFF_CONFIRMATION`。
 默认 App：不变。

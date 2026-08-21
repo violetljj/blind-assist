@@ -1,0 +1,242 @@
+{
+  "schema_version": "p1_w2_anchor_interface_selection_v1",
+  "frozen_at": "2026-08-22",
+  "status": [
+    "IMPLEMENTATION_SELECTED",
+    "DEVELOPMENT_COHORT_IDENTIFIED",
+    "FRESH_PARENT_ROSTER_FROZEN",
+    "FRESH_PAYLOAD_NOT_MATERIALIZED",
+    "TARGET_CANDIDATE_ROSTER_NOT_FROZEN",
+    "NO_MODEL_DOWNLOAD",
+    "NO_EXECUTION"
+  ],
+  "claim_ceiling": "OUTCOME_BLIND_SELECTION_ONLY_NO_EMPIRICAL_CAPABILITY_NO_ENTRANCE_OR_PRODUCT_AUTHORITY",
+  "geometry_provider": {
+    "provider_role": "CORRESPONDENCE_CANDIDATES_ONLY",
+    "model_id": "zju-community/efficientloftr",
+    "revision": "face1a79050ffa3e9da28720d1cf93aaf2e8f421",
+    "license": "Apache-2.0",
+    "artifacts": {
+      "model.safetensors": {
+        "sha256": "00a5edc343fa222eba763643553548ad37a05aa3d00d266553c9f6cf67bb0e64",
+        "bytes": 64263488
+      },
+      "config.json": {
+        "sha256": "eaa141ed38f64ec65efe7b663338e2b44d260ff2b26f5829624e5241ff29f1d8"
+      },
+      "preprocessor_config.json": {
+        "sha256": "22151d20a71d5d25bee2b5f5c3a5999befa3285597218a9d1ea63998f84dc606"
+      }
+    },
+    "candidate_confidence_min": 0.2,
+    "input": {
+      "color": "grayscale",
+      "width": 640,
+      "height": 480,
+      "outer_crop": "centered_4_to_3_box_with_width=max(2*core_width,(4/3)*2*core_height); constant_zero_pad_outside_image"
+    },
+    "geometry_authority": {
+      "correspondence_filter": "both source and probe endpoints must lie inside their referent core",
+      "context_points_in_model_fit": false,
+      "min_core_correspondences": 8,
+      "model": "homography",
+      "estimator": "OpenCV_USAC_MAGSAC",
+      "opencv_version": "4.10.0",
+      "rng_seed": 0,
+      "reprojection_threshold_px": 3.0,
+      "max_iterations": 10000,
+      "confidence": 0.999,
+      "min_inliers": 8,
+      "min_inlier_ratio": 0.5,
+      "min_occupied_quadrants_source": 3,
+      "min_occupied_quadrants_probe": 3,
+      "nonfinite_or_degenerate": "GEOMETRY_UNSUPPORTED"
+    }
+  },
+  "identity_provider": {
+    "provider_role": "IDENTITY_EVIDENCE_CANDIDATE_ONLY",
+    "model_id": "facebook/dinov2-small",
+    "revision": "ed25f3a31f01632728cabb09d1542f84ab7b0056",
+    "license": "Apache-2.0",
+    "artifacts": {
+      "model.safetensors": {
+        "sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1"
+      },
+      "config.json": {
+        "sha256": "1809f83e3bdb1609a501a610ad4a742f4fd8ae44d72ca4aa0df52d1f2ac8628d"
+      },
+      "preprocessor_config.json": {
+        "sha256": "14e780d86fa1861f8751f868d7f45425b5feb55c38ca26f152ca5097ab30f828"
+      }
+    },
+    "input": "referent_core_only_exact_bbox_resize_224x224_imagenet_normalization",
+    "representation": "16x16_last_hidden_patch_tokens_l2_normalized_mutual_nearest_cosine",
+    "spatial_model": "partial_affine_ransac",
+    "threshold_lineage": "consumed_outcome_aware_P1_A2_development_prior_frozen_before_fresh_P1_W2_outcomes",
+    "candidate_pass_rule": {
+      "anchor_match_fraction_min": 0.1640625,
+      "median_match_confidence_min": 0.755523741,
+      "spatial_consistency_min": 0.423076923,
+      "anchor_coverage_min": 0.875,
+      "operator": "AND"
+    },
+    "selection_rule": "exactly one passing candidate means separated; zero means NOT_OBSERVABLE; more than one means AMBIGUOUS"
+  },
+  "joint_rule": {
+    "eligible": "exactly one opaque candidate passes both frozen geometry and identity rules",
+    "not_eligible": "no candidate passes both rules",
+    "ambiguous": "more than one candidate passes both rules",
+    "private_adjudication": "evaluator reveals true object_uid only after provider outputs are sealed",
+    "unique_wrong_candidate": "FALSE_BIND"
+  },
+  "data": {
+    "development": {
+      "role": "CONSUMED_DEVELOPMENT_DIAGNOSTIC_ONLY",
+      "roster": "artifacts.local/evidence/p1_w1_stage_a_selection_v3/public_roster.json",
+      "cases": 17,
+      "execution_authorized": false
+    },
+    "fresh_proxy": {
+      "dataset": "Aria Digital Twin",
+      "role": "FRESH_CANDIDATE_CONDITIONED_INDOOR_OBJECT_INTERFACE_PROXY",
+      "not_authorized_for": [
+        "building_entrance_claim",
+        "P0_handoff_claim",
+        "proposal_recall_claim",
+        "product_or_safety_claim"
+      ],
+      "inventory_url": "https://explorer.projectaria.com/data/adt/download_links",
+      "inventory_sequence_count": 236,
+      "canonical_inventory_sha256": "a4fa902569891332275bd034784e57f453efe8a3190e4d89f1775f0e90eca155",
+      "canonical_inventory_identity": "sorted sequence_id|rgb filename|rgb sha1|rgb bytes|groundtruth filename|groundtruth sha1|groundtruth bytes lines plus main_groundtruth schema; signed URLs excluded",
+      "selection_salt": "blindassist-p1-w2-fresh-adt-parent-selection-v1",
+      "selection_identity_sha256": "ce49c7634ce446accbc613e706b43951d2d88e30a442fbfc4d8db7c914d68189",
+      "selection_method": "within each metadata-name stratum, exclude previously opened parents, rank SHA256(salt|stratum|sequence_id), take first two",
+      "strata_filters": {
+        "LITE_RECOGNITION": ["Lite_release_recognition_*", 48],
+        "APARTMENT_SINGLE": ["Apartment_release_*_M1292 excluding names containing multiuser, multiskeleton, skeleton, or sample", 55],
+        "APARTMENT_MULTIUSER": ["Apartment_release_multiuser_*_M1292", 47],
+        "APARTMENT_MULTISKELETON": ["Apartment_release_multiskeleton_*_M1292", 18]
+      },
+      "excluded_previously_opened_sequence_ids": [
+        "Lite_release_recognition_Mug_2_seq031_61283",
+        "Lite_release_recognition_BirdHouseToy_seq031_61283",
+        "Lite_release_recognition_WoodenBoxSmall_seq032_61283",
+        "Lite_release_recognition_BambooPlate_seq030_61283",
+        "Apartment_release_work_skeleton_seq139_M1292",
+        "Apartment_release_decoration_skeleton_seq133_M1292",
+        "Apartment_release_clean_seq134_M1292",
+        "Apartment_release_clean_seq136_M1292",
+        "Apartment_release_multiuser_cook_seq120_M1292",
+        "Apartment_release_multiuser_party_seq140_M1292",
+        "Apartment_release_multiuser_cook_seq144_M1292",
+        "Apartment_release_multiuser_party_seq142_M1292",
+        "Apartment_release_multiuser_party_seq149_M1292",
+        "Apartment_release_multiuser_party_seq139_M1292",
+        "Apartment_release_multiuser_party_seq138_M1292",
+        "Apartment_release_multiuser_party_seq150_M1292",
+        "Apartment_release_golden_skeleton_seq100_10s_sample_M1292",
+        "Apartment_release_golden_skeleton_seq100_M1292"
+      ],
+      "parents": [
+        {
+          "stratum": "LITE_RECOGNITION",
+          "sequence_id": "Lite_release_recognition_BirdHouseToy_seq032_61283",
+          "rank_sha256": "002e6b64431e2d05aeae158b73ecc177fc9364b0d9b08fe9ac657bf810e22370",
+          "rgb": ["ADT_Lite_release_recognition_BirdHouseToy_seq032_61283_preview_rgb.mp4", "a5308babc6f2e1e5abd3e9117c33e5ca565c42a3", 49166764],
+          "groundtruth": ["ADT_Lite_release_recognition_BirdHouseToy_seq032_61283_main_groundtruth.zip", "8fb11421b01a77b0b88731098a75f0ebaa863c0b", 1774952]
+        },
+        {
+          "stratum": "LITE_RECOGNITION",
+          "sequence_id": "Lite_release_recognition_BlackCeramicBowl_seq032_61283",
+          "rank_sha256": "006bf5f64b6b1ae57a2eb1046cc011a92ca21ba1449fceb528ec2b6fb93326a3",
+          "rgb": ["ADT_Lite_release_recognition_BlackCeramicBowl_seq032_61283_preview_rgb.mp4", "0da713dd4a375932914db058c778c11c74debdfe", 55413553],
+          "groundtruth": ["ADT_Lite_release_recognition_BlackCeramicBowl_seq032_61283_main_groundtruth.zip", "5df1eb34e69fe42445fe157f1b62af9abfb8b7af", 1989761]
+        },
+        {
+          "stratum": "APARTMENT_SINGLE",
+          "sequence_id": "Apartment_release_work_seq136_M1292",
+          "rank_sha256": "034c34c6ce09aae9c1031adf5fb2649d5312c58d0eeb14a99288202bab52ea90",
+          "rgb": ["ADT_Apartment_release_work_seq136_M1292_preview_rgb.mp4", "620d28e00a235148e9e76f8843ce13b49a271e68", 115797218],
+          "groundtruth": ["ADT_Apartment_release_work_seq136_M1292_main_groundtruth.zip", "8dd79acc0c2e62e2861cebe11a0062be5f9bb1bc", 18658468]
+        },
+        {
+          "stratum": "APARTMENT_SINGLE",
+          "sequence_id": "Apartment_release_meal_seq133_M1292",
+          "rank_sha256": "0613d9afcb298443c5ee64a4a247e93593a3f1b0a64af0efc376a22c1e355866",
+          "rgb": ["ADT_Apartment_release_meal_seq133_M1292_preview_rgb.mp4", "5addc688726705adfd3cafc053f0da8fe88e870a", 94162623],
+          "groundtruth": ["ADT_Apartment_release_meal_seq133_M1292_main_groundtruth.zip", "907f2e0226f7c89af11aaf6e6e1f6fbd21ffa546", 17506693]
+        },
+        {
+          "stratum": "APARTMENT_MULTIUSER",
+          "sequence_id": "Apartment_release_multiuser_cook_seq116_M1292",
+          "rank_sha256": "04d05db5dc5e42ab4ab11ee2438de414af3d8fc8f53d02fa6d9ab294cee3c062",
+          "rgb": ["ADT_Apartment_release_multiuser_cook_seq116_M1292_preview_rgb.mp4", "a5f059a507fd634af6edfe62fa0ca1c67b05535f", 102760463],
+          "groundtruth": ["ADT_Apartment_release_multiuser_cook_seq116_M1292_main_groundtruth.zip", "791bbc81e5f2db16de414de19f10421f048e8621", 64156403]
+        },
+        {
+          "stratum": "APARTMENT_MULTIUSER",
+          "sequence_id": "Apartment_release_multiuser_clean_seq116_M1292",
+          "rank_sha256": "0ac8150438147882fdf4c9f358088fb4008fe0c6d680ea07a177536c6868ecb1",
+          "rgb": ["ADT_Apartment_release_multiuser_clean_seq116_M1292_preview_rgb.mp4", "365616873d726b7cf48ec6b246ce4afbc26824c8", 108636793],
+          "groundtruth": ["ADT_Apartment_release_multiuser_clean_seq116_M1292_main_groundtruth.zip", "d775ad989a1f9b994614f9fa18c4a9977071845d", 58685681]
+        },
+        {
+          "stratum": "APARTMENT_MULTISKELETON",
+          "sequence_id": "Apartment_release_multiskeleton_party_seq121_M1292",
+          "rank_sha256": "05f51c6780fd3bc4074d065af6587c1c86d3f987141f4a4b52f5e31b8fc963de",
+          "rgb": ["ADT_Apartment_release_multiskeleton_party_seq121_M1292_preview_rgb.mp4", "b588956187694037b1bfe8d70bd6e5bb4fd4357a", 139911624],
+          "groundtruth": ["ADT_Apartment_release_multiskeleton_party_seq121_M1292_main_groundtruth.zip", "83e97df6de696435cf37f0d3393dd1c8dc5e1a34", 95601924]
+        },
+        {
+          "stratum": "APARTMENT_MULTISKELETON",
+          "sequence_id": "Apartment_release_multiskeleton_party_seq117_M1292",
+          "rank_sha256": "0c45b398dfeb4d16fe965d8b90dd0d4531e7d9f09a8a48e39c7eb7d4a712f922",
+          "rgb": ["ADT_Apartment_release_multiskeleton_party_seq117_M1292_preview_rgb.mp4", "d58f6aa367f2c0650ebe89defad2785de55f9a31", 169664411],
+          "groundtruth": ["ADT_Apartment_release_multiskeleton_party_seq117_M1292_main_groundtruth.zip", "c1d44588ad31bb0fa21896b02158f869c20dc4b0", 147304223]
+        }
+      ],
+      "payload_downloaded": false,
+      "target_candidate_roster_frozen": false
+    }
+  },
+  "future_target_candidate_construction": {
+    "authority": "not executable until separately authorized payload materialization",
+    "source_region": "evaluator-supplied truth bbox used only as an upper-bound P0-handoff surrogate",
+    "eligible_instance": "instance_type=object AND rigidity=rigid AND motion_type=static",
+    "source_gate": "visibility_ratio>=0.75 AND bbox_min_side>=24px",
+    "probe_gate": "visibility_ratio>=0.50 AND bbox_min_side>=16px",
+    "confuser_priority": "different object_uid with same prototype_name, then same category_uid",
+    "candidate_cap": 4,
+    "candidate_order": "opaque IDs shuffled by frozen hash; truth mapping evaluator-private",
+    "parent_unit": "one source referent per selected parent",
+    "probe_strata": {
+      "ROTATION_DOMINANT": "translation<=0.10m AND rotation>=15deg",
+      "SMALL_TRANSLATION": "0.10m<translation<=0.75m",
+      "LARGE_TRANSLATION": "translation>0.75m",
+      "REAPPEARANCE": "truth visibility gap>=0.50s before visible probe",
+      "SAME_SCENE_CONFUSER": "at least one co-visible priority confuser"
+    },
+    "selection": "hash-rank eligible source referents that support SAME_SCENE_CONFUSER and at least one viewpoint stratum; hash-rank one probe per available stratum",
+    "minimum_evaluable_support": "at least 6 of 8 parents, at least one probe in every frozen stratum, and at least 6 SAME_SCENE_CONFUSER probes"
+  },
+  "future_execution_budget": {
+    "execution_authorized": false,
+    "max_parents": 8,
+    "max_probes_per_parent": 5,
+    "max_candidates_per_probe": 4,
+    "max_pair_evaluations_per_provider": 160,
+    "external_model_calls": 0,
+    "online_update_or_memory_write": false
+  },
+  "future_adjudication": {
+    "analysis_unit": "parent-macro; probes within a parent are correlated repeats",
+    "geometry_sufficient": "true-candidate support >=0.70 parent-macro overall AND >=0.50 in each viewpoint stratum",
+    "identity_sufficient": "unique true-candidate separation >=0.70 parent-macro overall AND zero false binds",
+    "joint_sufficient": "correct ELIGIBLE >=0.60 parent-macro overall AND zero false binds",
+    "signal_established": "geometry_sufficient AND identity_sufficient AND joint_sufficient",
+    "otherwise": "attribute limitation to geometry, identity, or both using the frozen terminal family; never tune gates after outcome"
+  },
+  "next_legal_successor": "P1_W2_FRESH_SOURCE_MATERIALIZATION_AND_PRIVATE_ROSTER_FREEZE",
+  "execution_successor_authorized": false
+}
