@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。完成 P0-D1 consumed-development ambiguity-
+  calibration canary。venue-parent macro 审计确认原始 `23/31` unsupported grounding 集中于 8 个 parents，
+  micro `0.7419`、macro `0.6667`。固定 47-goal cohort、Grounding DINO、冻结 evaluator 与
+  `gpt-5.6-terra/medium`，V1 双证据硬门降至 `12/31`，但只保留 `4/13` 原正确 grounding；V2 显式输出
+  `place_support / entrance_relation_support` 并允许强证据替代、弱证据累积，降至 `6/31`，却只保留
+  `2/13` 且拒绝 14/16 resolvable episodes。两者均为 over-refusal 负结果，不准入、不启动 Sky。当前缺少
+  Mapillary token，25–40 个新 venue-parent-disjoint Development episodes 尚未采集，旧帧不得冒充新 slice。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。完成 P0 Prior-Art Assimilation：通过 4 个检索
   workstreams 审阅 40 个搜索结果并精读直接来源，将路线对齐到 BLV last-few-meters、embodied referring
   expression、interactive VLN 与 POI-goal navigation。BridgeNav 已覆盖 prior-free outdoor-to-indoor entrance

@@ -74,6 +74,40 @@ class SilverBBrainBaselineAdapterTest(unittest.TestCase):
         self.assertEqual("case-001", decisions[0]["model_case_id"])
         self.assertEqual(episode["episode_id"], decisions[0]["episode_id"])
 
+    def test_calibration_prompt_separates_place_identity_from_entrance_relation(self) -> None:
+        episode = self._episode("AMBIGUOUS")
+        prompt = baseline._prompt([("case-001", episode)], baseline.CALIBRATION_POLICY_ID)
+        self.assertIn("place-identity evidence", prompt)
+        self.assertIn("entrance-relation evidence", prompt)
+        self.assertIn("cannot by itself establish entrance relation", prompt)
+        self.assertNotIn(episode["episode_id"], prompt)
+
+    def test_two_level_prompt_allows_direct_or_cumulative_evidence(self) -> None:
+        episode = self._episode("UNIQUE")
+        prompt = baseline._prompt([("case-001", episode)], baseline.CALIBRATION_POLICY_V2_ID)
+        self.assertIn("substitutable and cumulative, not a checklist", prompt)
+        self.assertIn("one direct targeted cue", prompt)
+        self.assertIn("multiple independent medium cues", prompt)
+        schema = baseline._schema(baseline.CALIBRATION_POLICY_V2_ID)
+        required = schema["properties"]["decisions"]["items"]["required"]
+        self.assertIn("place_support", required)
+        self.assertIn("entrance_relation_support", required)
+
+    def test_two_level_policy_rejects_select_without_strong_relation_support(self) -> None:
+        episode = self._episode("UNIQUE")
+        candidate_id = episode["candidates"][0]["candidate_id"]
+        raw = {"decisions": [{
+            "episode_id": "case-001",
+            "action": "SELECT",
+            "selected_candidate_ids": [candidate_id],
+            "confidence": 0.8,
+            "rationale": "Place is visible but relation is weak.",
+            "place_support": "STRONG",
+            "entrance_relation_support": "WEAK",
+        }]}
+        with self.assertRaisesRegex(baseline.BrainRunError, "SELECT requires strong"):
+            baseline._validate_raw(raw, [("case-001", episode)], baseline.CALIBRATION_POLICY_V2_ID)
+
 
 if __name__ == "__main__":
     unittest.main()

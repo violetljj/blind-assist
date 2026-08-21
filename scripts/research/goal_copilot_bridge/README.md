@@ -63,6 +63,14 @@ conditioned selection/abstention mechanics only; it is not detector recall, exac
 performance. See the [`Silver-B addendum`](../../../docs/research/goal-copilot/P0_SILVER_B_DEVELOPMENT_ADDENDUM_V1.md)
 and [`Development result`](../../../docs/research/goal-copilot/P0_SILVER_B_BRAIN_DEVELOPMENT_RESULT_2026-08-21.md).
 
+`P0-D1` then tested two prompt-level ambiguity-calibration policies on the same consumed cohort. V1's hard
+place-plus-entrance gate and V2's explicit `place_support / entrance_relation_support` both reduced unsupported
+commitment, but retained only 4/13 and 2/13 of the baseline's correct groundings. Both are over-refusal negative
+canaries and are not admitted. `audit_silver_b_ambiguity_calibration.py` reports both frame-micro and venue-parent-
+macro unsupported commitment and uses actual `CORRECT_GROUNDING` retention rather than ranked-candidate top-1.
+The required 25–40-episode new parent-disjoint slice has not started because no Mapillary token is currently
+available. See the [`P0-D1 result`](../../../docs/research/goal-copilot/P0_D1_AMBIGUITY_CALIBRATION_CONSUMED_CANARY_RESULT_2026-08-21.md).
+
 Focused check:
 
 ```powershell

@@ -186,9 +186,13 @@ conditioned yield、弱排序原型与 failure/abstention 开发；由于 detect
 主要结构信号是：4/4 SET 返回多个 candidates；31 个 AMBIGUOUS 中 23 个被 branding/signage/facade
 association 推动为 grounding，且 0 个主动返回 `AMBIGUOUS`；正确 proposal 可用的 14 个 resolvable goal
 中 top-1 命中 13 个。所有数字只属于 Silver-B conditioned
-mechanics，详见 [`Development result`](P0_SILVER_B_BRAIN_DEVELOPMENT_RESULT_2026-08-21.md)。下一步优先补
-SET/signage-conflict coverage，并复用 ask/abstain calibration 与 near-stage door refinement；天然满足冻结
-identity rule 的样本另保留为 A subset，不再专门追逐 A。
+  mechanics，详见 [`Development result`](P0_SILVER_B_BRAIN_DEVELOPMENT_RESULT_2026-08-21.md)。随后两个
+  consumed-development calibration canary 将 place identity 与 exact entrance relation 分开：V1 把 unsupported
+  commit 从 `23/31` 降到 `12/31`，但只保留 `4/13` 原正确 grounding；V2 显式输出两级 support，将 unsupported
+  commit 降到 `6/31`，却只保留 `2/13`，并拒绝 14/16 resolvable episodes。两者均属 over-refusal、不得准入，
+  详见 [`P0-D1 result`](P0_D1_AMBIGUITY_CALIBRATION_CONSUMED_CANARY_RESULT_2026-08-21.md)。下一步先补 25–40
+  个新 venue-parent-disjoint signage/conflict/UNIQUE Development episodes；当前缺少 Mapillary token，未启动
+  parent-disjoint confirmation、Sky、detector 调参或模型比较。
 
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim

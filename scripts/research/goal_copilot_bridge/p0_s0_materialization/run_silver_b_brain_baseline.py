@@ -17,7 +17,15 @@ from scripts.research.goal_copilot_bridge.p0_s0_materialization import materiali
 
 
 POLICY_ID = "P0-SILVER-B-SINGLE-BRAIN-BASELINE-V1"
+CALIBRATION_POLICY_ID = "P0-D1-EVIDENCE-SUFFICIENCY-GATE-V1"
+CALIBRATION_POLICY_V2_ID = "P0-D1-TWO-LEVEL-EVIDENCE-SUPPORT-V2"
+POLICY_IDS = {
+    "baseline": POLICY_ID,
+    "evidence-sufficiency-v1": CALIBRATION_POLICY_ID,
+    "two-level-support-v2": CALIBRATION_POLICY_V2_ID,
+}
 ACTIONS = {"SELECT", "AMBIGUOUS", "ABSTAIN"}
+SUPPORT_LEVELS = {"STRONG", "WEAK", "ABSENT"}
 
 
 class BrainRunError(ValueError):
@@ -72,7 +80,21 @@ def _render_input(episode: Mapping[str, Any], model_case_id: str, output_path: P
     canvas.save(output_path, format="JPEG", quality=95)
 
 
-def _schema() -> dict[str, Any]:
+def _schema(policy_id: str = POLICY_ID) -> dict[str, Any]:
+    decision_required = ["episode_id", "action", "selected_candidate_ids", "confidence", "rationale"]
+    decision_properties = {
+        "episode_id": {"type": "string"},
+        "action": {"type": "string", "enum": sorted(ACTIONS)},
+        "selected_candidate_ids": {"type": "array", "items": {"type": "string"}},
+        "confidence": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+        "rationale": {"type": "string"},
+    }
+    if policy_id == CALIBRATION_POLICY_V2_ID:
+        decision_required.extend(["place_support", "entrance_relation_support"])
+        decision_properties.update({
+            "place_support": {"type": "string", "enum": sorted(SUPPORT_LEVELS)},
+            "entrance_relation_support": {"type": "string", "enum": sorted(SUPPORT_LEVELS)},
+        })
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "type": "object",
@@ -84,21 +106,18 @@ def _schema() -> dict[str, Any]:
                 "items": {
                     "type": "object",
                     "additionalProperties": False,
-                    "required": ["episode_id", "action", "selected_candidate_ids", "confidence", "rationale"],
-                    "properties": {
-                        "episode_id": {"type": "string"},
-                        "action": {"type": "string", "enum": sorted(ACTIONS)},
-                        "selected_candidate_ids": {"type": "array", "items": {"type": "string"}},
-                        "confidence": {"type": "number", "minimum": 0.0, "maximum": 1.0},
-                        "rationale": {"type": "string"},
-                    },
+                    "required": decision_required,
+                    "properties": decision_properties,
                 },
             }
         },
     }
 
 
-def _prompt(batch: Sequence[tuple[str, Mapping[str, Any]]]) -> str:
+def _prompt(
+    batch: Sequence[tuple[str, Mapping[str, Any]]],
+    policy_id: str = POLICY_ID,
+) -> str:
     episode_specs = []
     for model_case_id, episode in batch:
         episode_specs.append({
@@ -114,19 +133,46 @@ def _prompt(batch: Sequence[tuple[str, Mapping[str, Any]]]) -> str:
                 for item in episode["candidates"]
             ],
         })
+    calibration_rule = ""
+    if policy_id == CALIBRATION_POLICY_ID:
+        calibration_rule = (
+            " Before SELECT, require both (1) place-identity evidence that the named venue is present and "
+            "(2) entrance-relation evidence that the specific physical door belongs to that venue. "
+            "Branding, signage, facade association, proximity, or being the best-looking door can establish place identity "
+            "but cannot by itself establish entrance relation. If the venue is identifiable but the specific door relation "
+            "cannot be established or competing doors cannot be excluded, use AMBIGUOUS. Use ABSTAIN when reliable place "
+            "identity or any reliable entrance candidate is absent."
+        )
+    elif policy_id == CALIBRATION_POLICY_V2_ID:
+        calibration_rule = (
+            " Separately judge place_support (evidence that this is the named place) and entrance_relation_support "
+            "(evidence that the specific candidate door is an entrance of that place), each as STRONG, WEAK, or ABSENT. "
+            "Evidence is substitutable and cumulative, not a checklist: one direct targeted cue such as text explicitly naming "
+            "the place and entrance can be STRONG by itself, while multiple independent medium cues may combine to STRONG. "
+            "Nearby branding or facade proximity alone can strongly identify the place yet remain WEAK for the exact door relation. "
+            "If an equally plausible competing door cannot be excluded, entrance_relation_support is not STRONG unless the goal "
+            "genuinely permits the returned set. SELECT only when both support judgments are STRONG; otherwise choose AMBIGUOUS "
+            "when a place or door association remains plausible, and ABSTAIN when the target place or a usable entrance candidate "
+            "is absent. Include both support judgments in every decision."
+        )
     return (
         "You are the single existing VLM Brain baseline for conditioned entrance-candidate selection. "
         "Use only the attached score-neutral images and the episode specifications below; do not use tools, files, web, or outside knowledge. "
         "Each image header identifies its episode and goal. Blue numbered boxes are Grounding DINO proposals, not truth. "
         "For each episode independently: choose SELECT only when one or more listed candidates reliably satisfy the natural-language goal; "
         "use AMBIGUOUS when the referring expression does not determine a referent; use ABSTAIN when the target or a reliable matching candidate is not visible. "
-        "For SELECT, selected_candidate_ids must contain the chosen IDs in preference order. It may contain multiple IDs only when the goal genuinely permits multiple visible entrances. "
+        + (calibration_rule + " " if calibration_rule else "")
+        + "For SELECT, selected_candidate_ids must contain the chosen IDs in preference order. It may contain multiple IDs only when the goal genuinely permits multiple visible entrances. "
         "For AMBIGUOUS or ABSTAIN, selected_candidate_ids must be empty. Return exactly one decision per requested episode and no extra episodes.\n\n"
         + json.dumps(episode_specs, ensure_ascii=False, indent=2)
     )
 
 
-def _validate_raw(raw: Mapping[str, Any], batch: Sequence[tuple[str, Mapping[str, Any]]]) -> list[dict[str, Any]]:
+def _validate_raw(
+    raw: Mapping[str, Any],
+    batch: Sequence[tuple[str, Mapping[str, Any]]],
+    policy_id: str = POLICY_ID,
+) -> list[dict[str, Any]]:
     decisions = raw.get("decisions")
     _require(isinstance(decisions, list), "Brain decisions missing")
     expected = {model_case_id: episode for model_case_id, episode in batch}
@@ -141,6 +187,14 @@ def _validate_raw(raw: Mapping[str, Any], batch: Sequence[tuple[str, Mapping[str
         _require(action in ACTIONS, "unknown Brain action")
         _require(len(selected) == len(set(selected)) and set(selected) <= valid_ids, "Brain selected unknown or duplicate candidate")
         _require(bool(selected) == (action == "SELECT"), "Brain action/selection mismatch")
+        if policy_id == CALIBRATION_POLICY_V2_ID:
+            place_support = str(item.get("place_support"))
+            relation_support = str(item.get("entrance_relation_support"))
+            _require(place_support in SUPPORT_LEVELS and relation_support in SUPPORT_LEVELS, "support judgment missing or unknown")
+            _require(
+                action != "SELECT" or (place_support == "STRONG" and relation_support == "STRONG"),
+                "SELECT requires strong place and entrance-relation support",
+            )
         result.append(dict(
             item,
             episode_id=str(episode["episode_id"]),
@@ -151,7 +205,7 @@ def _validate_raw(raw: Mapping[str, Any], batch: Sequence[tuple[str, Mapping[str
     return result
 
 
-def _evidence(provider_id: str, evidence_id: str, evidence_type: str, frame_id: str, timestamp: int, region: Mapping[str, Any], confidence: float, target_name: str | None) -> dict[str, Any]:
+def _evidence(provider_id: str, evidence_id: str, evidence_type: str, frame_id: str, timestamp: int, region: Mapping[str, Any], confidence: float, target_name: str | None, policy_id: str = POLICY_ID) -> dict[str, Any]:
     return {
         "provider_id": provider_id,
         "evidence_id": evidence_id,
@@ -165,13 +219,13 @@ def _evidence(provider_id: str, evidence_id: str, evidence_type: str, frame_id: 
         "identity_claim": {"target_name": target_name, "relation": "entrance_of" if target_name else "none"},
         "provenance": {
             "implementation_id": provider_id,
-            "config_id": POLICY_ID,
+            "config_id": policy_id,
             "source_kind": "VLM_PROVIDER" if provider_id == "codex-brain" else "RGB_PROVIDER",
         },
     }
 
 
-def _frozen_output(episode: Mapping[str, Any], raw: Mapping[str, Any]) -> dict[str, Any]:
+def _frozen_output(episode: Mapping[str, Any], raw: Mapping[str, Any], policy_id: str = POLICY_ID) -> dict[str, Any]:
     frame_id = str(episode["evaluator_episode"]["observation_window"]["frame_ids"][0])
     timestamp = int(episode["evaluator_episode"]["observation_window"]["start_timestamp_ms"])
     selected_ids = list(raw["selected_candidate_ids"])
@@ -185,7 +239,7 @@ def _frozen_output(episode: Mapping[str, Any], raw: Mapping[str, Any]) -> dict[s
         candidate_evidence = [structure_id]
         evidences.append(_evidence(
             "grounding-dino-tiny", structure_id, "ENTRANCE_STRUCTURE", frame_id, timestamp,
-            item["region"], float(item["proposal_score"]), None,
+            item["region"], float(item["proposal_score"]), None, policy_id,
         ))
         provider_ids = ["grounding-dino-tiny"]
         identity = None
@@ -193,7 +247,7 @@ def _frozen_output(episode: Mapping[str, Any], raw: Mapping[str, Any]) -> dict[s
             identity_id = f"brain-identity--{candidate_id}"
             evidences.append(_evidence(
                 "codex-brain", identity_id, "OPEN_VOCAB", frame_id, timestamp,
-                item["region"], float(raw["confidence"]), target_name,
+                item["region"], float(raw["confidence"]), target_name, policy_id,
             ))
             candidate_evidence.append(identity_id)
             provider_ids.append("codex-brain")
@@ -271,8 +325,9 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     _require(cohort.get("claim_ceiling") == "SILVER_B_DEVELOPMENT_ONLY_NO_EXACT_BRAIN_OR_END_TO_END_ACCURACY", "input cohort exceeds allowed claim ceiling")
     run_dir = args.run_dir.resolve()
     run_dir.mkdir(parents=True, exist_ok=True)
+    policy_id = POLICY_IDS[args.decision_policy]
     schema_path = run_dir / "brain-output-schema.json"
-    materializer.write_json(schema_path, _schema())
+    materializer.write_json(schema_path, _schema(policy_id))
     executable = args.codex_exe.resolve()
     provider = {
         "executable": str(executable),
@@ -299,7 +354,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         batch_id = f"batch-{offset // args.batch_size + 1:03d}"
         batch_dir = run_dir / "batches" / batch_id
         batch_dir.mkdir(parents=True, exist_ok=True)
-        prompt = _prompt(batch)
+        prompt = _prompt(batch, policy_id)
         (batch_dir / "prompt.txt").write_text(prompt, encoding="utf-8")
         completed = False
         errors = []
@@ -322,7 +377,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             try:
                 _require(result.returncode == 0 and raw_path.is_file(), f"Codex exit {result.returncode}")
                 parsed = json.loads(raw_path.read_text(encoding="utf-8"))
-                decisions = _validate_raw(parsed, batch)
+                decisions = _validate_raw(parsed, batch, policy_id)
                 all_raw.extend(decisions)
                 batch_receipts.append({"batch_id": batch_id, "attempt": attempt, "status": "RUN_SUCCESS", "episode_count": len(batch), "response_sha256": materializer.content_sha256(parsed)})
                 completed = True
@@ -339,7 +394,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     cases = []
     for episode in episodes:
         raw = raw_by_id[str(episode["episode_id"])]
-        output = _frozen_output(episode, raw)
+        output = _frozen_output(episode, raw, policy_id)
         p0_evaluator.validate_output(output, episode["evaluator_episode"])
         outputs.append(output)
         cases.append((episode["evaluator_episode"], output))
@@ -347,7 +402,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     raw_actions = {action: sum(item["action"] == action for item in all_raw) for action in sorted(ACTIONS)}
     report = {
         "schema_version": 1,
-        "policy_id": POLICY_ID,
+        "policy_id": policy_id,
         "cohort_report_sha256": cohort["report_sha256"],
         "provider": provider,
         "batch_receipts": batch_receipts,
@@ -372,6 +427,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--model", default="gpt-5.6-sol")
     parser.add_argument("--reasoning-effort", default="medium")
     parser.add_argument("--batch-size", type=int, default=4, choices=range(1, 9))
+    parser.add_argument("--decision-policy", choices=sorted(POLICY_IDS), default="baseline")
     args = parser.parse_args(argv)
     report = run(args)
     print(json.dumps({
