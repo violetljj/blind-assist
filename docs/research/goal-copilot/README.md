@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_AMRM0_ADAPTIVE_MULTI_VIEW_REFERENT_MEMORY / MAIN_EXPERIMENT_PATH / HIGHEST_PRIORITY_HYPOTHESIS / OUTCOME_BLIND_MECHANICS_IMPLEMENTED / SYNTHETIC_CONTRACT_TESTED / REAL_EXPERIMENT_NOT_RUN / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_AMRM0_ADAPTIVE_MULTI_VIEW_REFERENT_MEMORY / MAIN_EXPERIMENT_PATH / MATCHED_CANARY_IMPLEMENTED / PERFORMANCE_NOT_RUN / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
@@ -24,7 +24,7 @@ current goal validity 分开保存。`memory.py` 进一步保存 target/context/
 distance × viewpoint × scale coverage；tentative 与 verified 严格分离，只有匹配 verifier confirmation receipt 的观察
 才能晋升，retrieval 不暴露 tentative。重复观察丢弃，新的 coverage/context 才进入 bounded bank；出画、遮挡、
 stale、disproved 或 referent rebound 时停止写入旧 bank。主动取证只允许保持静止、旋转扫描或纳入 parent context。
-26 项 synthetic contract tests 已通过；这只证明 mechanics/invariants，不是 real-data utility 或 scientific result。
+31 项 contract tests 已通过；这只证明 mechanics/invariants，不是 real-data utility 或 scientific result。
 
 P1-AMRM0 与已消费的 W1-T0/W2 实质不同，不修改、续跑或覆盖旧 cohort，也不继承旧 execution authority。当前未选择
 RGB provider、数据 roster 或 performance experiment；VIO、SLAM、metric 3D、POMDP、主动平移、自动到达距离、
@@ -119,8 +119,11 @@ LoFTR、keyframe memory、SLAM、VIO 或 world-relative state。
 
 ## 唯一 successor
 
-`P1_AMRM0_DATA_ADAPTER_AND_MATCHED_DEVELOPMENT_CANARY`：先选择 causal RGB/metadata adapter 与 matched 2D
-correspondence control，再冻结真实 Development roster。当前仅登记，尚未实现或运行。
+`P1_AMRM0_DATA_ADAPTER_AND_MATCHED_DEVELOPMENT_CANARY` 已实现，performance 尚未运行。它固定复用 consumed P1-D0
+15 episodes 与 P1-A4 的 exact candidate bbox stream；A4 sealed output 是 correspondence baseline，AMRM 只能在同一
+candidate 上 commit/abstain。Target 与 masked-context 继承 P1-A2 unchanged DINOv2-S dense gate，不搜索阈值。
+Prediction 与 contribution trace 写完后才允许 private evaluation。真实 physical viewpoint truth 不存在，固定报告
+2D bearing-change proxy 并将 physical viewpoint 指标标为 `NOT_EVALUABLE`。
 
 网络场景 3x5 与 action-responsive sanity 均已完成。P1-AMRM0 不自动进入 minimal geometry；只有真实 canary 把
 主要剩余失败定位为 translation ambiguity 后，才允许另行考虑 VIO/triangulation/local parent frame。

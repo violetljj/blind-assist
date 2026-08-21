@@ -1,6 +1,6 @@
 # P1-AMRM0 adaptive multi-view referent memory
 
-状态：`MAIN_EXPERIMENT_PATH / HIGHEST_PRIORITY_HYPOTHESIS / OUTCOME_BLIND_MECHANICS_IMPLEMENTED / SYNTHETIC_CONTRACT_TESTED / REAL_EXPERIMENT_NOT_RUN / DEFAULT_APP_UNCHANGED`
+状态：`MAIN_EXPERIMENT_PATH / MATCHED_CANARY_IMPLEMENTED / PERFORMANCE_NOT_RUN / DEFAULT_APP_UNCHANGED`
 
 This stdlib-only module now owns the P1-AMRM0 main experiment path. P1-VF0 remains its verifier foundation. AMRM0 asks
 whether a compact bank of independently verified distance/viewpoint/context observations can improve same-instance
@@ -28,15 +28,29 @@ The stable surface in `core.py` provides:
 Only a verified candidate may append to the identity gallery. Multiple supported hypotheses remain ambiguous. Identity
 confirmation and current goal validity are separate, so a confirmed entity can be `DISPROVED` for the present task.
 
+## Matched Development canary
+
+`run_matched_canary.py` fixes the first scientific canary to the consumed P1-D0 15-episode cohort and the exact P1-A4
+candidate stream (`1,724` frames, `926` candidate-available frames, `798` explicit candidate absences). The sealed A4
+output is the continuous-correspondence baseline. AMRM can only commit or abstain on the same bbox; added search,
+candidate, frame, prompt, VIO, SLAM, VLM, or threshold sweep is forbidden.
+
+Target and masked-context matching inherit the unchanged consumed P1-A2 DINOv2-S dense-consensus gate. A new keyframe
+may enter the verified bank only when it remains directly supported by both the original binding target and original
+masked context. The private evaluator opens only after both predictions and contribution trace are written. Positive
+AMRM value requires improved identity precision, reduced wrong commitments, non-trivial identity coverage, at least one
+true reacquisition, no increased false reacquisition, zero poisoning, and at least one true reacquisition supported by a
+newly accumulated verified keyframe. Snapshot-only verifier gain has its own non-AMRM terminal.
+
 Focused check:
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd -m unittest `
   scripts/research/goal_copilot_bridge/p1_verifier_first/test_core.py `
-  scripts/research/goal_copilot_bridge/p1_verifier_first/test_memory.py
+  scripts/research/goal_copilot_bridge/p1_verifier_first/test_memory.py `
+  scripts/research/goal_copilot_bridge/p1_verifier_first/test_matched_canary.py
 ```
 
-Claim ceiling: synthetic contract mechanics only. The 26 tests do not establish AMRM utility. This module contains no RGB provider, model, threshold search, real
-cohort, performance result, VIO, SLAM, metric 3D, POMDP, active translation, arrival-distance promise, Android path, or
-product/safety authority. The next experiment must first establish a causal data adapter and matched correspondence
-control; minimal geometry remains conditional on a measured translation failure.
+Claim ceiling before execution: canary implementation mechanics only. The 31 tests do not establish AMRM utility.
+Physical viewpoint truth is unavailable; the canary reports a public 2D bearing-change proxy and marks physical
+viewpoint reacquisition `NOT_EVALUABLE`. Minimal geometry remains conditional on a measured translation failure.

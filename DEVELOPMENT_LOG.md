@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-22（Asia/Hong_Kong）；执行者：violjjet。完成
+  `P1_AMRM0_DATA_ADAPTER_AND_MATCHED_DEVELOPMENT_CANARY` outcome-blind implementation，performance 未运行。
+  两臂固定复用 consumed P1-D0 15 episodes / 1,724 frames 与 P1-A4 exact stream 的 926 candidate / 798 NONE；
+  baseline 为 sealed A4 output，AMRM 只能对同 bbox commit/abstain。Target 与 masked context 继承 unchanged P1-A2
+  DINOv2-S dense gate，无阈值搜索；新 KF 必须同时由原始 binding target/context 直接确认。判决同时要求 precision、
+  coverage、true reacquisition、zero poisoning 与 newly verified KF 对正确重捕获有实际贡献；snapshot-only gain 单列。
+  31 项 contract tests 通过，physical viewpoint truth 缺失并预声明为 `NOT_EVALUABLE`，只报告 2D bearing proxy。
+
 - 时间：2026-08-22（Asia/Hong_Kong）；执行者：violjjet。按用户决定将 `P1-AMRM0 Adaptive Multi-view Referent
   Memory` 登记为新的主实验路径与最高优先级待验证假设，不写成已证明有效。P1-VF0 保留为 verifier foundation；
   新增 target/context/full-frame refs、orientation、distance/viewpoint/scale/context coverage、严格

@@ -1,12 +1,12 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / P1_AMRM0_ADAPTIVE_MULTI_VIEW_REFERENT_MEMORY / MAIN_EXPERIMENT_PATH / HIGHEST_PRIORITY_HYPOTHESIS / SYNTHETIC_CONTRACT_TESTED / REAL_EXPERIMENT_NOT_RUN / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / P1_AMRM0_ADAPTIVE_MULTI_VIEW_REFERENT_MEMORY / MAIN_EXPERIMENT_PATH / MATCHED_CANARY_IMPLEMENTED / PERFORMANCE_NOT_RUN / DEFAULT_APP_UNCHANGED`
 
 Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线。P0 commitment-policy discovery 已以
 `COMPLEXITY_ONLY_BUYS_ABSTENTION` 收口；现有 P0 grounding/provider 与 evaluator 保持冻结。用户现已显式授权新的
 `P1-AMRM0 Adaptive Multi-view Referent Memory` 主实验路径；它把 P1-VF0 作为 verifier foundation，并新增严格
 tentative/verified 分离、verified-only retrieval、按 distance × viewpoint × scale/context 新颖度增长的 bounded memory。
-26 项 synthetic contract tests 通过，真实实验未运行。旧 A1-A4、W1/W2 终态继续有效；AMRM0 不是 P1-W3，也不
+31 项 contract tests 通过，matched canary 已实现但 performance 未运行。旧 A1-A4、W1/W2 终态继续有效；AMRM0 不是 P1-W3，也不
 覆盖或续跑 consumed evidence。
 
 当前唯一 active implementation 是 [`P1-AMRM0`](goal-copilot/README.md)。Detector/tracker/matcher/VLM/geometry 只能
@@ -34,7 +34,7 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| Goal Copilot / P1-AMRM0 adaptive multi-view referent memory | 经独立身份确认的多距离/多视角 episodic memory 是否优于持续 2D correspondence | `MAIN_EXPERIMENT_PATH / HIGHEST_PRIORITY_HYPOTHESIS / SYNTHETIC_CONTRACT_TESTED / REAL_EXPERIMENT_NOT_RUN / DEFAULT_APP_UNCHANGED` | [current](goal-copilot/README.md) / [implementation](../../scripts/research/goal_copilot_bridge/p1_verifier_first/README.md) | `P1_AMRM0_DATA_ADAPTER_AND_MATCHED_DEVELOPMENT_CANARY`，尚未实现/运行 | 覆盖/续跑 W1/W2；tentative 污染 verified bank；VIO/SLAM/POMDP/主动平移；无诊断证据提前进 geometry；Android/App；已有效或安全主张 | 否 |
+| Goal Copilot / P1-AMRM0 adaptive multi-view referent memory | 经独立身份确认的多距离/多视角 episodic memory 是否优于持续 2D correspondence | `MAIN_EXPERIMENT_PATH / MATCHED_CANARY_IMPLEMENTED / PERFORMANCE_NOT_RUN / DEFAULT_APP_UNCHANGED` | [current](goal-copilot/README.md) / [implementation](../../scripts/research/goal_copilot_bridge/p1_verifier_first/README.md) | 执行一次 `P1_AMRM0_DATA_ADAPTER_AND_MATCHED_DEVELOPMENT_CANARY` | 覆盖/续跑 W1/W2；tentative 污染 verified bank；增加候选/帧/搜索；调 retrieval 阈值；VIO/SLAM/POMDP/主动平移；无诊断证据提前进 geometry；Android/App；已有效或安全主张 | 否 |
 | D-ORACLE-1 causal ladder | 三臂 matched oracle intervention 定位 downstream target-policy stack 与 estimated representation 的损失 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / PROTOCOL_FROZEN / NO_EXECUTION / NO_SEARCH` | [Failure diagnosis current](failure-synthesis/README.md) | 无；只有用户显式改变主线后才可重开 | 执行 source/action truth/policy lock；增加第四竞争臂；提前拆H3/H4；训练/调policy/threshold；读取outcome后换parent/gate | 否 |
 | SVRF / Scale-free Visual Risk Field | 纯 RGB 派生的相对深度动态、局部扩张和视觉通道侵入能否形成稳定相对风险排序 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / STREAM_INDEX_NOT_ACTIVE / REAL_O0_NOT_RUN / NO_TRAINING` | [SVRF current](svrf/README.md) | 无；只有用户显式改变主线并有新的 representation-headroom 前置证据后，才可另行恢复 | bus canary、member index、payload/truth materialization、O0、训练或接 Android | 否 |
 | VI-Task Geometry | 同刚体 RGB+IMU 自校准 metric pose/ground，再为未来 task geometry 分配 computation/parallax budget | `PAUSED_BY_PURE_RGB_SELECTION / G0_PROTOCOL_RETAINED / REAL_G0_NOT_RUN / NO_TOF / NO_TRAINING` | [VI-Task Geometry current](vi-task-geometry/README.md) | 无；只有用户明确恢复 RGB+IMU metric-frame 路线才可重开 preflight | 实现/采集/运行 G0；用手机 IMU配眼镜视频；重跑 ARCore D45；提前训练、主动分配或接 Android | 否 |
