@@ -1,8 +1,26 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / P0_GROUNDING_CONTRACT_V1_REFERENCE_SET_ADDENDUM / GROUNDING_DINO_PROPOSAL_PATH_RUN / SILVER_B_DEVELOPMENT / P0_D1_PARENT_DISJOINT_FAILURE_REPRODUCED / NO_SCIENTIFIC_VERDICT / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / P0_POLICY_DISCOVERY_CLOSED / P1_TARGET_PERSISTENCE_R0_CONTRACT / SYNTHETIC_MECHANICS_ONLY / NO_SCIENTIFIC_VERDICT / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
+
+## P1-R0 Target Persistence mechanics
+
+`p1_persistence/` freezes the stdlib-only representation/evaluator mechanics for an already-established,
+episode-local physical referent. It provides separate public-input/evaluator/output JSON schemas, eight synthetic scenario fixtures, a deterministic
+identity-safety evaluator, and a deliberately simple fixed-threshold baseline. `NO_REFERENT` is a hard
+`UNBOUND` guard; P1 cannot create or replace semantic referent validity. Scores are algorithmic evidence, not
+calibrated probabilities, and evaluator-only physical-instance truth is never visible to the baseline.
+
+The evaluator orders candidates lexicographically by illegal bind, wrong-instance assertion, identity switch,
+false reacquisition, then correct identity coverage. It also reports wrong-lock persistence duration. This is
+synthetic mechanics only: no RGB tracker, ADT rerun, model, Sky, Android, product, safety, or scientific claim.
+Contract: [`P1-R0`](../../../docs/research/goal-copilot/P1_R0_TARGET_PERSISTENCE_CONTRACT_V1.md).
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts/research/goal_copilot_bridge/p1_persistence/test_contract.py
+```
 
 ## P0 Goal Grounding mechanics
 

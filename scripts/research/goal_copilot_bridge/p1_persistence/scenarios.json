@@ -1,0 +1,234 @@
+[
+  {
+    "schema_version": 1,
+    "protocol_id": "BA-P1-TARGET-PERSISTENCE-R0-V1",
+    "episode_id": "p1-r0-continuous-visible",
+    "scenario_class": "CONTINUOUS_VISIBLE_CAMERA_MOTION",
+    "handoff": {
+      "status": "REFERENT_ESTABLISHED",
+      "goal_id": "goal-entrance-a",
+      "referent_id": "episode-continuous/physical-target-a",
+      "grounding_provenance": {
+        "p0_decision_id": "p0-decision-continuous",
+        "source_frame_index": 0,
+        "authority": "P0_ESTABLISHED_REFERENT"
+      }
+    },
+    "frames": [
+      {"frame_index": 0, "timestamp_ms": 0, "candidates": [{"candidate_id": "f0-target", "identity_support": 0.90, "identity_contradiction": 0.05, "stability": 0.90, "oscillation": 0.05}]},
+      {"frame_index": 1, "timestamp_ms": 100, "candidates": [{"candidate_id": "f1-target", "identity_support": 0.88, "identity_contradiction": 0.08, "stability": 0.86, "oscillation": 0.08}]},
+      {"frame_index": 2, "timestamp_ms": 200, "candidates": [{"candidate_id": "f2-target", "identity_support": 0.84, "identity_contradiction": 0.10, "stability": 0.82, "oscillation": 0.10}]},
+      {"frame_index": 3, "timestamp_ms": 300, "candidates": [{"candidate_id": "f3-target", "identity_support": 0.87, "identity_contradiction": 0.08, "stability": 0.85, "oscillation": 0.08}]}
+    ],
+    "truth": {
+      "referent_instance_id": "physical-target-a",
+      "frames": [
+        {"frame_index": 0, "referent_observable": true, "candidate_instance_map": {"f0-target": "physical-target-a"}, "allowed_states": ["TRACKING"], "allowed_events": ["NONE"], "phase": "VISIBLE"},
+        {"frame_index": 1, "referent_observable": true, "candidate_instance_map": {"f1-target": "physical-target-a"}, "allowed_states": ["TRACKING"], "allowed_events": ["NONE"], "phase": "VISIBLE"},
+        {"frame_index": 2, "referent_observable": true, "candidate_instance_map": {"f2-target": "physical-target-a"}, "allowed_states": ["TRACKING"], "allowed_events": ["NONE"], "phase": "VISIBLE"},
+        {"frame_index": 3, "referent_observable": true, "candidate_instance_map": {"f3-target": "physical-target-a"}, "allowed_states": ["TRACKING"], "allowed_events": ["NONE"], "phase": "VISIBLE"}
+      ]
+    }
+  },
+  {
+    "schema_version": 1,
+    "protocol_id": "BA-P1-TARGET-PERSISTENCE-R0-V1",
+    "episode_id": "p1-r0-short-occlusion",
+    "scenario_class": "SHORT_OCCLUSION",
+    "handoff": {
+      "status": "REFERENT_ESTABLISHED",
+      "goal_id": "goal-entrance-b",
+      "referent_id": "episode-occlusion/physical-target-b",
+      "grounding_provenance": {"p0_decision_id": "p0-decision-occlusion", "source_frame_index": 0, "authority": "P0_ESTABLISHED_REFERENT"}
+    },
+    "frames": [
+      {"frame_index": 0, "timestamp_ms": 0, "candidates": [{"candidate_id": "f0-target", "identity_support": 0.91, "identity_contradiction": 0.04, "stability": 0.91, "oscillation": 0.04}]},
+      {"frame_index": 1, "timestamp_ms": 100, "candidates": [{"candidate_id": "f1-target", "identity_support": 0.86, "identity_contradiction": 0.10, "stability": 0.82, "oscillation": 0.10}]},
+      {"frame_index": 2, "timestamp_ms": 200, "candidates": []},
+      {"frame_index": 3, "timestamp_ms": 300, "candidates": []},
+      {"frame_index": 4, "timestamp_ms": 400, "candidates": [{"candidate_id": "f4-target", "identity_support": 0.82, "identity_contradiction": 0.12, "stability": 0.78, "oscillation": 0.10}]}
+    ],
+    "truth": {
+      "referent_instance_id": "physical-target-b",
+      "frames": [
+        {"frame_index": 0, "referent_observable": true, "candidate_instance_map": {"f0-target": "physical-target-b"}, "allowed_states": ["TRACKING"], "allowed_events": ["NONE"], "phase": "VISIBLE"},
+        {"frame_index": 1, "referent_observable": true, "candidate_instance_map": {"f1-target": "physical-target-b"}, "allowed_states": ["TRACKING"], "allowed_events": ["NONE"], "phase": "VISIBLE"},
+        {"frame_index": 2, "referent_observable": false, "candidate_instance_map": {}, "allowed_states": ["TEMP_UNOBSERVABLE"], "allowed_events": ["TARGET_TEMP_UNOBSERVABLE"], "phase": "SHORT_UNOBSERVABLE"},
+        {"frame_index": 3, "referent_observable": false, "candidate_instance_map": {}, "allowed_states": ["TEMP_UNOBSERVABLE"], "allowed_events": ["NONE"], "phase": "SHORT_UNOBSERVABLE"},
+        {"frame_index": 4, "referent_observable": true, "candidate_instance_map": {"f4-target": "physical-target-b"}, "allowed_states": ["TRACKING"], "allowed_events": ["NONE"], "phase": "VISIBLE"}
+      ]
+    }
+  },
+  {
+    "schema_version": 1,
+    "protocol_id": "BA-P1-TARGET-PERSISTENCE-R0-V1",
+    "episode_id": "p1-r0-turn-away-return",
+    "scenario_class": "TURN_AWAY_AND_RETURN",
+    "handoff": {
+      "status": "REFERENT_ESTABLISHED",
+      "goal_id": "goal-entrance-c",
+      "referent_id": "episode-turn/physical-target-c",
+      "grounding_provenance": {"p0_decision_id": "p0-decision-turn", "source_frame_index": 0, "authority": "P0_ESTABLISHED_REFERENT"}
+    },
+    "frames": [
+      {"frame_index": 0, "timestamp_ms": 0, "candidates": [{"candidate_id": "f0-target", "identity_support": 0.92, "identity_contradiction": 0.04, "stability": 0.91, "oscillation": 0.03}]},
+      {"frame_index": 1, "timestamp_ms": 100, "candidates": []},
+      {"frame_index": 2, "timestamp_ms": 200, "candidates": []},
+      {"frame_index": 3, "timestamp_ms": 300, "candidates": []},
+      {"frame_index": 4, "timestamp_ms": 400, "candidates": [{"candidate_id": "f4-target", "identity_support": 0.76, "identity_contradiction": 0.20, "stability": 0.66, "oscillation": 0.20}]},
+      {"frame_index": 5, "timestamp_ms": 500, "candidates": [{"candidate_id": "f5-target", "identity_support": 0.84, "identity_contradiction": 0.10, "stability": 0.78, "oscillation": 0.12}]},
+      {"frame_index": 6, "timestamp_ms": 600, "candidates": [{"candidate_id": "f6-target", "identity_support": 0.88, "identity_contradiction": 0.08, "stability": 0.84, "oscillation": 0.08}]}
+    ],
+    "truth": {
+      "referent_instance_id": "physical-target-c",
+      "frames": [
+        {"frame_index": 0, "referent_observable": true, "candidate_instance_map": {"f0-target": "physical-target-c"}, "allowed_states": ["TRACKING"], "allowed_events": ["NONE"], "phase": "VISIBLE"},
+        {"frame_index": 1, "referent_observable": false, "candidate_instance_map": {}, "allowed_states": ["TEMP_UNOBSERVABLE"], "allowed_events": ["TARGET_TEMP_UNOBSERVABLE"], "phase": "SHORT_UNOBSERVABLE"},
+        {"frame_index": 2, "referent_observable": false, "candidate_instance_map": {}, "allowed_states": ["TEMP_UNOBSERVABLE"], "allowed_events": ["NONE"], "phase": "SHORT_UNOBSERVABLE"},
+        {"frame_index": 3, "referent_observable": false, "candidate_instance_map": {}, "allowed_states": ["LOST"], "allowed_events": ["LOSS_DETECTED"], "phase": "LOSS_ELIGIBLE"},
+        {"frame_index": 4, "referent_observable": true, "candidate_instance_map": {"f4-target": "physical-target-c"}, "allowed_states": ["LOST", "UNCERTAIN"], "allowed_events": ["NONE"], "phase": "REACQUISITION_WINDOW"},
+        {"frame_index": 5, "referent_observable": true, "candidate_instance_map": {"f5-target": "physical-target-c"}, "allowed_states": ["TRACKING"], "allowed_events": ["REACQUIRED"], "phase": "REACQUISITION_WINDOW"},
+        {"frame_index": 6, "referent_observable": true, "candidate_instance_map": {"f6-target": "physical-target-c"}, "allowed_states": ["TRACKING"], "allowed_events": ["NONE"], "phase": "VISIBLE"}
+      ]
+    }
+  },
+  {
+    "schema_version": 1,
+    "protocol_id": "BA-P1-TARGET-PERSISTENCE-R0-V1",
+    "episode_id": "p1-r0-distractor-crossing",
+    "scenario_class": "SAME_CLASS_DISTRACTOR_CROSSING",
+    "handoff": {
+      "status": "REFERENT_ESTABLISHED",
+      "goal_id": "goal-entrance-d",
+      "referent_id": "episode-distractor/physical-target-d",
+      "grounding_provenance": {"p0_decision_id": "p0-decision-distractor", "source_frame_index": 0, "authority": "P0_ESTABLISHED_REFERENT"}
+    },
+    "frames": [
+      {"frame_index": 0, "timestamp_ms": 0, "candidates": [{"candidate_id": "f0-target", "identity_support": 0.90, "identity_contradiction": 0.05, "stability": 0.90, "oscillation": 0.05}]},
+      {"frame_index": 1, "timestamp_ms": 100, "candidates": [{"candidate_id": "f1-target", "identity_support": 0.64, "identity_contradiction": 0.25, "stability": 0.58, "oscillation": 0.20}, {"candidate_id": "f1-distractor", "identity_support": 0.82, "identity_contradiction": 0.12, "stability": 0.72, "oscillation": 0.18}]},
+      {"frame_index": 2, "timestamp_ms": 200, "candidates": [{"candidate_id": "f2-target", "identity_support": 0.62, "identity_contradiction": 0.27, "stability": 0.56, "oscillation": 0.22}, {"candidate_id": "f2-distractor", "identity_support": 0.84, "identity_contradiction": 0.10, "stability": 0.74, "oscillation": 0.16}]},
+      {"frame_index": 3, "timestamp_ms": 300, "candidates": [{"candidate_id": "f3-target", "identity_support": 0.88, "identity_contradiction": 0.07, "stability": 0.84, "oscillation": 0.08}]}
+    ],
+    "truth": {
+      "referent_instance_id": "physical-target-d",
+      "frames": [
+        {"frame_index": 0, "referent_observable": true, "candidate_instance_map": {"f0-target": "physical-target-d"}, "allowed_states": ["TRACKING"], "allowed_events": ["NONE"], "phase": "VISIBLE"},
+        {"frame_index": 1, "referent_observable": true, "candidate_instance_map": {"f1-target": "physical-target-d", "f1-distractor": "physical-distractor-d"}, "allowed_states": ["TRACKING", "UNCERTAIN"], "allowed_events": ["NONE"], "phase": "VISIBLE"},
+        {"frame_index": 2, "referent_observable": true, "candidate_instance_map": {"f2-target": "physical-target-d", "f2-distractor": "physical-distractor-d"}, "allowed_states": ["TRACKING", "UNCERTAIN"], "allowed_events": ["NONE"], "phase": "VISIBLE"},
+        {"frame_index": 3, "referent_observable": true, "candidate_instance_map": {"f3-target": "physical-target-d"}, "allowed_states": ["TRACKING"], "allowed_events": ["NONE"], "phase": "VISIBLE"}
+      ]
+    }
+  },
+  {
+    "schema_version": 1,
+    "protocol_id": "BA-P1-TARGET-PERSISTENCE-R0-V1",
+    "episode_id": "p1-r0-similar-alternation",
+    "scenario_class": "SIMILAR_CANDIDATE_ALTERNATION",
+    "handoff": {
+      "status": "REFERENT_ESTABLISHED",
+      "goal_id": "goal-entrance-e",
+      "referent_id": "episode-alternation/physical-target-e",
+      "grounding_provenance": {"p0_decision_id": "p0-decision-alternation", "source_frame_index": 0, "authority": "P0_ESTABLISHED_REFERENT"}
+    },
+    "frames": [
+      {"frame_index": 0, "timestamp_ms": 0, "candidates": [{"candidate_id": "f0-target", "identity_support": 0.88, "identity_contradiction": 0.08, "stability": 0.84, "oscillation": 0.08}]},
+      {"frame_index": 1, "timestamp_ms": 100, "candidates": [{"candidate_id": "f1-target", "identity_support": 0.61, "identity_contradiction": 0.25, "stability": 0.52, "oscillation": 0.35}, {"candidate_id": "f1-distractor", "identity_support": 0.78, "identity_contradiction": 0.12, "stability": 0.68, "oscillation": 0.35}]},
+      {"frame_index": 2, "timestamp_ms": 200, "candidates": [{"candidate_id": "f2-target", "identity_support": 0.80, "identity_contradiction": 0.12, "stability": 0.70, "oscillation": 0.38}, {"candidate_id": "f2-distractor", "identity_support": 0.63, "identity_contradiction": 0.24, "stability": 0.54, "oscillation": 0.38}]},
+      {"frame_index": 3, "timestamp_ms": 300, "candidates": [{"candidate_id": "f3-target", "identity_support": 0.60, "identity_contradiction": 0.27, "stability": 0.50, "oscillation": 0.42}, {"candidate_id": "f3-distractor", "identity_support": 0.79, "identity_contradiction": 0.11, "stability": 0.69, "oscillation": 0.42}]}
+    ],
+    "truth": {
+      "referent_instance_id": "physical-target-e",
+      "frames": [
+        {"frame_index": 0, "referent_observable": true, "candidate_instance_map": {"f0-target": "physical-target-e"}, "allowed_states": ["TRACKING"], "allowed_events": ["NONE"], "phase": "VISIBLE"},
+        {"frame_index": 1, "referent_observable": true, "candidate_instance_map": {"f1-target": "physical-target-e", "f1-distractor": "physical-distractor-e"}, "allowed_states": ["UNCERTAIN"], "allowed_events": ["NONE"], "phase": "VISIBLE"},
+        {"frame_index": 2, "referent_observable": true, "candidate_instance_map": {"f2-target": "physical-target-e", "f2-distractor": "physical-distractor-e"}, "allowed_states": ["UNCERTAIN"], "allowed_events": ["NONE"], "phase": "VISIBLE"},
+        {"frame_index": 3, "referent_observable": true, "candidate_instance_map": {"f3-target": "physical-target-e", "f3-distractor": "physical-distractor-e"}, "allowed_states": ["UNCERTAIN"], "allowed_events": ["NONE"], "phase": "VISIBLE"}
+      ]
+    }
+  },
+  {
+    "schema_version": 1,
+    "protocol_id": "BA-P1-TARGET-PERSISTENCE-R0-V1",
+    "episode_id": "p1-r0-long-absence",
+    "scenario_class": "LONG_TARGET_ABSENCE",
+    "handoff": {
+      "status": "REFERENT_ESTABLISHED",
+      "goal_id": "goal-entrance-f",
+      "referent_id": "episode-loss/physical-target-f",
+      "grounding_provenance": {"p0_decision_id": "p0-decision-loss", "source_frame_index": 0, "authority": "P0_ESTABLISHED_REFERENT"}
+    },
+    "frames": [
+      {"frame_index": 0, "timestamp_ms": 0, "candidates": [{"candidate_id": "f0-target", "identity_support": 0.90, "identity_contradiction": 0.05, "stability": 0.88, "oscillation": 0.05}]},
+      {"frame_index": 1, "timestamp_ms": 100, "candidates": []},
+      {"frame_index": 2, "timestamp_ms": 200, "candidates": []},
+      {"frame_index": 3, "timestamp_ms": 300, "candidates": []},
+      {"frame_index": 4, "timestamp_ms": 400, "candidates": []}
+    ],
+    "truth": {
+      "referent_instance_id": "physical-target-f",
+      "frames": [
+        {"frame_index": 0, "referent_observable": true, "candidate_instance_map": {"f0-target": "physical-target-f"}, "allowed_states": ["TRACKING"], "allowed_events": ["NONE"], "phase": "VISIBLE"},
+        {"frame_index": 1, "referent_observable": false, "candidate_instance_map": {}, "allowed_states": ["TEMP_UNOBSERVABLE"], "allowed_events": ["TARGET_TEMP_UNOBSERVABLE"], "phase": "SHORT_UNOBSERVABLE"},
+        {"frame_index": 2, "referent_observable": false, "candidate_instance_map": {}, "allowed_states": ["TEMP_UNOBSERVABLE"], "allowed_events": ["NONE"], "phase": "SHORT_UNOBSERVABLE"},
+        {"frame_index": 3, "referent_observable": false, "candidate_instance_map": {}, "allowed_states": ["LOST"], "allowed_events": ["LOSS_DETECTED"], "phase": "LOSS_ELIGIBLE"},
+        {"frame_index": 4, "referent_observable": false, "candidate_instance_map": {}, "allowed_states": ["LOST"], "allowed_events": ["NONE"], "phase": "LOSS_ELIGIBLE"}
+      ]
+    }
+  },
+  {
+    "schema_version": 1,
+    "protocol_id": "BA-P1-TARGET-PERSISTENCE-R0-V1",
+    "episode_id": "p1-r0-false-similar-after-loss",
+    "scenario_class": "FALSE_SIMILAR_AFTER_LOSS",
+    "handoff": {
+      "status": "REFERENT_ESTABLISHED",
+      "goal_id": "goal-entrance-g",
+      "referent_id": "episode-false-reacq/physical-target-g",
+      "grounding_provenance": {"p0_decision_id": "p0-decision-false-reacq", "source_frame_index": 0, "authority": "P0_ESTABLISHED_REFERENT"}
+    },
+    "frames": [
+      {"frame_index": 0, "timestamp_ms": 0, "candidates": [{"candidate_id": "f0-target", "identity_support": 0.90, "identity_contradiction": 0.05, "stability": 0.88, "oscillation": 0.05}]},
+      {"frame_index": 1, "timestamp_ms": 100, "candidates": []},
+      {"frame_index": 2, "timestamp_ms": 200, "candidates": []},
+      {"frame_index": 3, "timestamp_ms": 300, "candidates": []},
+      {"frame_index": 4, "timestamp_ms": 400, "candidates": [{"candidate_id": "f4-similar", "identity_support": 0.82, "identity_contradiction": 0.12, "stability": 0.76, "oscillation": 0.14}]},
+      {"frame_index": 5, "timestamp_ms": 500, "candidates": [{"candidate_id": "f5-similar", "identity_support": 0.85, "identity_contradiction": 0.10, "stability": 0.78, "oscillation": 0.12}]}
+    ],
+    "truth": {
+      "referent_instance_id": "physical-target-g",
+      "frames": [
+        {"frame_index": 0, "referent_observable": true, "candidate_instance_map": {"f0-target": "physical-target-g"}, "allowed_states": ["TRACKING"], "allowed_events": ["NONE"], "phase": "VISIBLE"},
+        {"frame_index": 1, "referent_observable": false, "candidate_instance_map": {}, "allowed_states": ["TEMP_UNOBSERVABLE"], "allowed_events": ["TARGET_TEMP_UNOBSERVABLE"], "phase": "SHORT_UNOBSERVABLE"},
+        {"frame_index": 2, "referent_observable": false, "candidate_instance_map": {}, "allowed_states": ["TEMP_UNOBSERVABLE"], "allowed_events": ["NONE"], "phase": "SHORT_UNOBSERVABLE"},
+        {"frame_index": 3, "referent_observable": false, "candidate_instance_map": {}, "allowed_states": ["LOST"], "allowed_events": ["LOSS_DETECTED"], "phase": "LOSS_ELIGIBLE"},
+        {"frame_index": 4, "referent_observable": false, "candidate_instance_map": {"f4-similar": "physical-distractor-g"}, "allowed_states": ["LOST", "UNCERTAIN"], "allowed_events": ["NONE", "REGROUND_REQUIRED"], "phase": "LOSS_ELIGIBLE"},
+        {"frame_index": 5, "referent_observable": false, "candidate_instance_map": {"f5-similar": "physical-distractor-g"}, "allowed_states": ["LOST", "UNCERTAIN"], "allowed_events": ["NONE", "REGROUND_REQUIRED"], "phase": "LOSS_ELIGIBLE"}
+      ]
+    }
+  },
+  {
+    "schema_version": 1,
+    "protocol_id": "BA-P1-TARGET-PERSISTENCE-R0-V1",
+    "episode_id": "p1-r0-no-referent-guard",
+    "scenario_class": "NO_REFERENT_GUARD",
+    "handoff": {
+      "status": "NO_REFERENT",
+      "goal_id": "goal-entrance-h",
+      "referent_id": null,
+      "grounding_provenance": {"p0_decision_id": null, "source_frame_index": null, "authority": "P0_NO_REFERENT"}
+    },
+    "frames": [
+      {"frame_index": 0, "timestamp_ms": 0, "candidates": [{"candidate_id": "f0-door", "identity_support": 0.95, "identity_contradiction": 0.02, "stability": 0.94, "oscillation": 0.02}]},
+      {"frame_index": 1, "timestamp_ms": 100, "candidates": [{"candidate_id": "f1-door", "identity_support": 0.97, "identity_contradiction": 0.01, "stability": 0.96, "oscillation": 0.01}]},
+      {"frame_index": 2, "timestamp_ms": 200, "candidates": [{"candidate_id": "f2-door", "identity_support": 0.96, "identity_contradiction": 0.02, "stability": 0.95, "oscillation": 0.02}]}
+    ],
+    "truth": {
+      "referent_instance_id": null,
+      "frames": [
+        {"frame_index": 0, "referent_observable": false, "candidate_instance_map": {"f0-door": "unrelated-door-h"}, "allowed_states": ["UNBOUND"], "allowed_events": ["NONE"], "phase": "VISIBLE"},
+        {"frame_index": 1, "referent_observable": false, "candidate_instance_map": {"f1-door": "unrelated-door-h"}, "allowed_states": ["UNBOUND"], "allowed_events": ["NONE"], "phase": "VISIBLE"},
+        {"frame_index": 2, "referent_observable": false, "candidate_instance_map": {"f2-door": "unrelated-door-h"}, "allowed_states": ["UNBOUND"], "allowed_events": ["NONE"], "phase": "VISIBLE"}
+      ]
+    }
+  }
+]

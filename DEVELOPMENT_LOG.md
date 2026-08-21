@@ -2,6 +2,19 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。正式关闭 P0 commitment-policy discovery，并冻结
+  `BA-P1-TARGET-PERSISTENCE-R0-V1` 最小 representation/evaluator contract。P1 只接受
+  `REFERENT_ESTABLISHED / NO_REFERENT`，后者硬绑定 `UNBOUND / referent_id=null`；episode-local physical
+  identity、`UNBOUND/TRACKING/UNCERTAIN/TEMP_UNOBSERVABLE/LOST` 五状态、support/contradiction 双向 evidence、
+  event-style reacquisition 与 `wrong-lock persistence duration` 成为稳定接口。新增 stdlib-only deterministic
+  evaluator、public-input/evaluator/output JSON schemas、8 个 synthetic mechanics scenarios 和固定阈值 simple
+  baseline；11 项专项测试 PASS，baseline 对含 evaluator truth 的 envelope 直接拒绝；
+  deterministic replay 的 `illegal_bind=0/3` hard guard 通过，同时按预期暴露 6 个 wrong-instance asserted
+  frames、6 次 identity switch、1 次 false reacquisition，最大 wrong lock 为 2 frames / 200 ms。该结果只证明
+  schema/evaluator/baseline mechanics，不建立真实 RGB persistence 或科学结论；唯一 successor 只是设计既有
+  consumed ADT observer trace 到 P1 schema 的 adapter，禁止 Sky、模型搜索、fresh/large cohort、Active
+  Grounding、Android/default-App 与产品/安全主张。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：Codex。完成 P0-D3 targeted set-valued one-shot closure。
   在任何新 RGB 前冻结 6 个 Overture taxonomy/building-geometry parents，Mapillary radius acquisition 固定取得
   5/6 parents、20 frames；UGent Campus Aula 为 0 eligible frame，按协议未替换。score-blind full-frame review

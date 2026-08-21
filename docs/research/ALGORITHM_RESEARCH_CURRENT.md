@@ -1,12 +1,13 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_RESEARCH_MAINLINE=DESTINATION_GOAL_GROUNDING / GOAL_GROUNDING_P0 / PRIOR_ART_ASSIMILATED / P0_CONTRACT_V1_REFERENCE_SET_ADDENDUM / MAPILLARY_TOKEN_READY / GROUNDING_DINO_PROPOSAL_PATH_RUN / SILVER_B_DEVELOPMENT_COHORT_4 / NO_BASELINE / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / P0_POLICY_DISCOVERY_CLOSED / P1_TARGET_PERSISTENCE_R0 / REPRESENTATION_EVALUATOR_CONTRACT_FROZEN / SYNTHETIC_MECHANICS_ONLY / NO_SKY / DEFAULT_APP_UNCHANGED`
 
-Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线，当前唯一 successor 为
-`BA_DESTINATION_GOAL_GROUNDING_R0`：先在真实多建筑、多入口场景中确定哪个实体满足用户目标，并将
-`entrance_of(target_building)` 排在其他门之前；现有 perception、geometry、risk、tracking 与
-traversability 模块作为 Evidence Providers，Goal Copilot Brain 负责跨时间的 task belief、progress、
-recovery、action 和 completion。`GOAL-COPILOT-1` 已永久关闭；其冻结 winner 的零模型
+Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线。P0 commitment-policy discovery 已以
+`COMPLEXITY_ONLY_BUYS_ABSTENTION` 收口；A1 只是未准入 Development incumbent。当前进入 P1 Target
+Persistence，已冻结 `NO_REFERENT -> UNBOUND`、episode-local physical identity、五状态表示、双向 evidence、
+事件式 reacquisition 与 lexicographic identity-safety evaluator。当前唯一 successor 为
+`P1_R0_CONSUMED_ADT_BASELINE_ADAPTER_DESIGN`，只允许设计既有 consumed ADT trace 到 P1 schema 的 adapter。
+`GOAL-COPILOT-1` 已永久关闭；其冻结 winner 的零模型
 GC2-A perception-uncertainty characterization 和 GC2-B 搜索均已完成；GC2-B 未建立 moderate robustness
 search signal，held-out 未开启。后续零模型 observability/reality audit 已选择停止 synthetic moderate
 optimization；真实手机 RGB noise grounding 因当前 source contract 缺失而 `NOT_EVALUABLE`。此前冻结的
@@ -21,7 +22,7 @@ GA-SATOM 的 physical-ToF G0 协议保留但按用户的无 ToF 选择暂停；V
 G0 协议也按进一步的纯 RGB 选择暂停。SVRF-O0 的协议、机制与 source/index 权限仅作历史保留，不执行
 bus canary、member index、payload materialization、truth writer 或 O0。Failure Synthesis 冻结的
 D-ORACLE-1 同样暂停，不执行 source/action truth/policy lock 或 outcome access。除
-`BA_DESTINATION_GOAL_GROUNDING_R0` 当前 successor 外，没有其他 active algorithm lane；任何旧路线重开都必须由用户
+`BA_P1_TARGET_PERSISTENCE_R0` 当前主线外，没有其他 active algorithm lane；任何旧路线重开都必须由用户
 显式改变主线，并先同步本页与 Goal Copilot current，不能由旧文档中的 successor 或历史优先级自行恢复。
 DepthART D3R6 仍保持暂停；其 bounded deferral contract 与 fresh gate 保留，但 post-hoc
 same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6 执行权限。
@@ -31,7 +32,7 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| Goal Copilot / Destination Grounding | BLV 开放街景入口 referent-set grounding | `PRODUCT_AND_RESEARCH_MAINLINE / PRIOR_ART_ASSIMILATED / SILVER_B_DEVELOPMENT_COHORT_4 / NO_BASELINE / DEFAULT_APP_UNCHANGED` | [current](goal-copilot/README.md) / [prior art](goal-copilot/P0_PRIOR_ART_ASSIMILATION_2026-08-21.md) / [Silver-B](goal-copilot/P0_SILVER_B_DEVELOPMENT_ADDENDUM_V1.md) | `BA_DESTINATION_GOAL_GROUNDING_R0`：扩大普通 anchor-facing coverage，物化几十至约 100 个带 reference resolution 的 B 级 Development episodes；以 BridgeNav/ABotN-POIBench 为直接 related-work/benchmark 参照 | 声称入口级 POI navigation 首创；把 B 当 exact truth；报告 detector recall 或 exact Brain/E2E accuracy；回写 S1；Sky、Android | 否 |
+| Goal Copilot / P1 Target Persistence | 已建立 physical referent 的身份连续性、丢失与保守重捕获 | `PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / REPRESENTATION_EVALUATOR_CONTRACT_FROZEN / SYNTHETIC_MECHANICS_ONLY / DEFAULT_APP_UNCHANGED` | [current](goal-copilot/README.md) / [P1-R0 contract](goal-copilot/P1_R0_TARGET_PERSISTENCE_CONTRACT_V1.md) | `P1_R0_CONSUMED_ADT_BASELINE_ADAPTER_DESIGN`：只设计既有 consumed ADT observer trace 到 P1 schema 的 adapter | P1 创建 semantic referent；把 temporal consistency 当 P0 correctness；Sky、模型搜索、fresh/large cohort、Active Grounding、Android | 否 |
 | D-ORACLE-1 causal ladder | 三臂 matched oracle intervention 定位 downstream target-policy stack 与 estimated representation 的损失 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / PROTOCOL_FROZEN / NO_EXECUTION / NO_SEARCH` | [Failure diagnosis current](failure-synthesis/README.md) | 无；只有用户显式改变主线后才可重开 | 执行 source/action truth/policy lock；增加第四竞争臂；提前拆H3/H4；训练/调policy/threshold；读取outcome后换parent/gate | 否 |
 | SVRF / Scale-free Visual Risk Field | 纯 RGB 派生的相对深度动态、局部扩张和视觉通道侵入能否形成稳定相对风险排序 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / STREAM_INDEX_NOT_ACTIVE / REAL_O0_NOT_RUN / NO_TRAINING` | [SVRF current](svrf/README.md) | 无；只有用户显式改变主线并有新的 representation-headroom 前置证据后，才可另行恢复 | bus canary、member index、payload/truth materialization、O0、训练或接 Android | 否 |
 | VI-Task Geometry | 同刚体 RGB+IMU 自校准 metric pose/ground，再为未来 task geometry 分配 computation/parallax budget | `PAUSED_BY_PURE_RGB_SELECTION / G0_PROTOCOL_RETAINED / REAL_G0_NOT_RUN / NO_TOF / NO_TRAINING` | [VI-Task Geometry current](vi-task-geometry/README.md) | 无；只有用户明确恢复 RGB+IMU metric-frame 路线才可重开 preflight | 实现/采集/运行 G0；用手机 IMU配眼镜视频；重跑 ARCore D45；提前训练、主动分配或接 Android | 否 |
