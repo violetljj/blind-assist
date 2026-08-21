@@ -1,6 +1,6 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / P0_POLICY_DISCOVERY_CLOSED / P1_TARGET_PERSISTENCE / P1_A2_DENSE_IDENTITY_SIGNAL_RETAINED / P1_A3_TEMPORAL_POLICY_INSUFFICIENT / NO_POLICY_ADMISSION / P1_A4_STRONGER_TEMPORAL_CORRESPONDENCE_DESIGN_ONLY / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / P0_POLICY_DISCOVERY_CLOSED / P1_TARGET_PERSISTENCE / P1_A2_DENSE_IDENTITY_SIGNAL_RETAINED / P1_A3_TEMPORAL_POLICY_INSUFFICIENT / NO_POLICY_ADMISSION / P1_A4_ONLINE_CORRESPONDENCE_PROTOCOL_FROZEN / IMPLEMENTATION_SELECTION_NOT_RUN / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线。P0 commitment-policy discovery 已以
 `COMPLEXITY_ONLY_BUYS_ABSTENTION` 收口；A1 只是未准入 Development incumbent。当前进入 P1 Target
@@ -17,7 +17,8 @@ health gates；最佳 retention-admissible gate 保留 `80/87` correct，但 wro
 policy。P1-A3 随后只比较 40 个 consecutive/sliding/leaky temporal policies；全部保留 correct、消灭 false
 reacquisition/chatter，但没有一个同时通过 wrong `<=488` 或 false-loss `<=152`，代表结果为
 `81 / 685 / 2,899 ms / 205 / 0`。终态 `TEMPORAL_POLICY_INSUFFICIENT`，关闭简单 temporal smoothing rescue。
-当前唯一 successor 为非执行的 `P1_A4_MATERIALLY_STRONGER_TEMPORAL_CORRESPONDENCE_REPRESENTATION_DESIGN`。
+P1-A4 strictly causal correspondence/output/evaluator contract 已冻结；当前只授权 outcome-blind official interface、
+checkpoint、license 与本机 runtime preflight，尚未选模或执行 capability probe。
 `GOAL-COPILOT-1` 已永久关闭；其冻结 winner 的零模型
 GC2-A perception-uncertainty characterization 和 GC2-B 搜索均已完成；GC2-B 未建立 moderate robustness
 search signal，held-out 未开启。后续零模型 observability/reality audit 已选择停止 synthetic moderate
@@ -43,7 +44,7 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| Goal Copilot / P1 Target Persistence | 已建立 physical referent 的身份连续性、丢失与保守重捕获 | `PRODUCT_AND_RESEARCH_MAINLINE / P1_A2_DENSE_IDENTITY_SIGNAL_RETAINED / P1_A3_TEMPORAL_POLICY_INSUFFICIENT / NO_POLICY_ADMISSION / P1_A4_STRONGER_TEMPORAL_CORRESPONDENCE_DESIGN_ONLY / DEFAULT_APP_UNCHANGED` | [current](goal-copilot/README.md) / [P1-A3 result](goal-copilot/P1_A3_TEMPORAL_LOSS_DECLARATION_RESULT_2026-08-21.md) / [P1-A2 result](goal-copilot/P1_A2_FIXED_REFERENCE_DENSE_IDENTITY_RESULT_2026-08-21.md) | `P1_A4_MATERIALLY_STRONGER_TEMPORAL_CORRESPONDENCE_REPRESENTATION_DESIGN`：只设计 stronger temporal correspondence 合同；execution=false | 续扫 A3；直接实现/下载 CoTracker/TAPIR 或 global search；ReID/Sky/fresh cohort/Android；改 evaluator/cohort/truth firewall | 否 |
+| Goal Copilot / P1 Target Persistence | 已建立 physical referent 的身份连续性、丢失与保守重捕获 | `PRODUCT_AND_RESEARCH_MAINLINE / P1_A2_DENSE_IDENTITY_SIGNAL_RETAINED / P1_A3_TEMPORAL_POLICY_INSUFFICIENT / NO_POLICY_ADMISSION / P1_A4_ONLINE_CORRESPONDENCE_PROTOCOL_FROZEN / DEFAULT_APP_UNCHANGED` | [current](goal-copilot/README.md) / [P1-A4 protocol](goal-copilot/P1_A4_ONLINE_STRONG_TEMPORAL_CORRESPONDENCE_PROTOCOL_V1.md) / [P1-A3 result](goal-copilot/P1_A3_TEMPORAL_LOSS_DECLARATION_RESULT_2026-08-21.md) | outcome-blind official implementation selection + one local mechanics smoke；private performance execution=false | 跑模型 zoo；offline/future-frame primary；A2/A3 gate；global search；ReID/Sky/fresh cohort/Android；改 evaluator/truth firewall | 否 |
 | D-ORACLE-1 causal ladder | 三臂 matched oracle intervention 定位 downstream target-policy stack 与 estimated representation 的损失 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / PROTOCOL_FROZEN / NO_EXECUTION / NO_SEARCH` | [Failure diagnosis current](failure-synthesis/README.md) | 无；只有用户显式改变主线后才可重开 | 执行 source/action truth/policy lock；增加第四竞争臂；提前拆H3/H4；训练/调policy/threshold；读取outcome后换parent/gate | 否 |
 | SVRF / Scale-free Visual Risk Field | 纯 RGB 派生的相对深度动态、局部扩张和视觉通道侵入能否形成稳定相对风险排序 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / STREAM_INDEX_NOT_ACTIVE / REAL_O0_NOT_RUN / NO_TRAINING` | [SVRF current](svrf/README.md) | 无；只有用户显式改变主线并有新的 representation-headroom 前置证据后，才可另行恢复 | bus canary、member index、payload/truth materialization、O0、训练或接 Android | 否 |
 | VI-Task Geometry | 同刚体 RGB+IMU 自校准 metric pose/ground，再为未来 task geometry 分配 computation/parallax budget | `PAUSED_BY_PURE_RGB_SELECTION / G0_PROTOCOL_RETAINED / REAL_G0_NOT_RUN / NO_TOF / NO_TRAINING` | [VI-Task Geometry current](vi-task-geometry/README.md) | 无；只有用户明确恢复 RGB+IMU metric-frame 路线才可重开 preflight | 实现/采集/运行 G0；用手机 IMU配眼镜视频；重跑 ARCore D45；提前训练、主动分配或接 Android | 否 |

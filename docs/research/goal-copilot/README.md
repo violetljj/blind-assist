@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_A2_DENSE_IDENTITY_SIGNAL_RETAINED / P1_A3_TEMPORAL_POLICY_INSUFFICIENT / NO_POLICY_ADMISSION / P1_A4_STRONGER_TEMPORAL_CORRESPONDENCE_DESIGN_ONLY / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_A2_DENSE_IDENTITY_SIGNAL_RETAINED / P1_A3_TEMPORAL_POLICY_INSUFFICIENT / NO_POLICY_ADMISSION / P1_A4_ONLINE_CORRESPONDENCE_PROTOCOL_FROZEN / IMPLEMENTATION_SELECTION_NOT_RUN / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；详细历史、协议和数字留在链接的独立结果文件，不在 current 重复维护。
@@ -130,9 +130,10 @@ false reacquisition/chatter 并维持 long-loss declaration，但 `wrong<=488` �
 `TEMPORAL_POLICY_INSUFFICIENT / NO_POLICY_ADMISSION`。这关闭简单 temporal smoothing rescue，不改写 A2 的历史
 frame-wise representation signal。
 
-当前唯一 successor 是 execution=false 的
-`P1_A4_MATERIALLY_STRONGER_TEMPORAL_CORRESPONDENCE_REPRESENTATION_DESIGN`；只设计 CoTracker/TAPIR class
-representation 的下一轮合同，本轮不选模、不实现、不下载、不执行。
+[`P1-A4 protocol`](P1_A4_ONLINE_STRONG_TEMPORAL_CORRESPONDENCE_PROTOCOL_V1.md) 已先于 implementation selection
+冻结 strictly causal point-correspondence、25-point initialization、visibility-aware object aggregation、单模型选择顺序
+与 capability gates。下一步只做 outcome-blind official interface/checkpoint/license 和本机 smoke；第一候选通过即固定，
+不运行模型竞赛，也不读取 private truth。
 
 禁止：继续调 A1/A2/A3 threshold/operator、直接保留 winner、提前实现 stronger tracker 或 global
 reacquisition、加入 ReID/Sky、fresh/large cohort、

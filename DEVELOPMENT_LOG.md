@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：Codex。冻结 P1-A4 online strong temporal-correspondence
+  capability protocol，先于任何 implementation selection、checkpoint 下载或 ADT execution。Primary 硬约束为逐帧
+  `frame0..t` causal reads、frame-0 bbox 内固定 5×5 queries、官方 visibility/occlusion 输出、partial-affine deterministic
+  object aggregation、原 P1 state machine 与 frozen evaluator；禁止 future window、GT reset、global/semantic search、
+  DINO gate、A3 policy、Sky 和模型竞赛。Implementation selection 顺序固定为 official PyTorch Online BootsTAPIR，
+  机械失败才允许 official JAX Online TAPIR；CoTracker/TAPNext/Cutie 不成为 fallback arms。Capability gate 冻结为
+  correct `>=120/777`、wrong/background/switch/max-lock/false-reacq 不差于 A2、false-loss `<=152`，且 temp-occlusion
+  或 out-of-view recovery 至少 `1/3`。当前 `IMPLEMENTATION_SELECTION_NOT_RUN / EXECUTION_NOT_STARTED`。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：Codex。完成 P1-A3 temporal loss-declaration experiment。
   不继承 A2 winner threshold，只对 frozen DINOv2-S raw dense features 做 outcome-blind percentile/median evidence；
   private truth 前一次性封存 `16 consecutive + 8 sliding + 16 leaky = 40` temporal outputs。全部 40 个 policy
