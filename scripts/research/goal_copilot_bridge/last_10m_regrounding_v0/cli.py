@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import time
@@ -19,10 +20,19 @@ from .core import (
     stop_episode,
     summarize_field_run,
 )
+from .provider_adapter import ProviderAdapterError, ground_current_frame, preflight_provider
 
 
 def _now_ms() -> int:
     return time.time_ns() // 1_000_000
+
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
 
 
 def _read_json(path: Path) -> Mapping[str, Any]:
@@ -80,7 +90,7 @@ def command_init_roster(args: argparse.Namespace) -> dict[str, Any]:
         "schema_version": 1,
         "milestone_id": "BLINDASSIST_LAST_10M_REGROUNDING_V0",
         "created_at_ms": _now_ms(),
-        "required_shape": "3_REAL_LOCATIONS_X_5_EPISODES",
+        "required_shape": "3_LOCATIONS_X_5_EPISODES",
         "episodes": episodes,
     }
     _atomic_json(args.run_dir / "roster.json", roster)
@@ -121,6 +131,15 @@ def command_start(args: argparse.Namespace) -> dict[str, Any]:
     return event
 
 
+def command_provider_preflight(args: argparse.Namespace) -> dict[str, Any]:
+    lock_path = args.run_dir / "provider-lock.json"
+    if lock_path.exists():
+        raise ContractError("provider lock already exists")
+    provider = preflight_provider(codex_exe=args.codex_exe, model_dir=args.model_dir)
+    _atomic_json(lock_path, provider)
+    return provider
+
+
 def _load_state(directory: Path) -> EpisodeState:
     return EpisodeState.from_dict(_read_json(directory / "state.json"))
 
@@ -129,6 +148,106 @@ def command_observe(args: argparse.Namespace) -> dict[str, Any]:
     directory = _episode_dir(args.run_dir, args.episode_id)
     state = _load_state(directory)
     observation = _read_json(args.observation)
+    policy = Policy(
+        center_left=args.center_left,
+        center_right=args.center_right,
+        arrival_min_height=args.arrival_min_height,
+        max_consecutive_unreliable=args.max_consecutive_unreliable,
+        max_instructions=args.max_instructions,
+    )
+    result = apply_observation(state, observation, policy)
+    _append_event(directory / "events.jsonl", result.event)
+    _atomic_json(directory / "state.json", result.state.to_dict())
+    return {"state": result.state.state, "message": result.message, "event": result.event}
+
+
+def _failed_provider_observation(
+    *,
+    episode_id: str,
+    observation_id: str,
+    frame_id: str,
+    frame_sha256: str,
+    captured_at_ms: int,
+    reason: str,
+) -> dict[str, Any]:
+    return {
+        "schema_version": 1,
+        "episode_id": episode_id,
+        "observation_id": observation_id,
+        "frame_id": frame_id,
+        "frame_sha256": frame_sha256,
+        "captured_at_ms": captured_at_ms,
+        "processed_at_ms": _now_ms(),
+        "p0_output": {
+            "schema_version": 1,
+            "episode_id": episode_id,
+            "provider_runs": [
+                {
+                    "provider_id": "frozen-current-p0",
+                    "status": "RUN_FAILED",
+                    "source_frame_ids": [frame_id],
+                    "evidence_ids": [],
+                    "candidate_ids": [],
+                    "failure_reason": reason[:512],
+                }
+            ],
+            "evidence": [],
+            "candidates": [],
+            "decision": {
+                "status": "INVALID_OBSERVATION",
+                "selected_candidate_id": None,
+                "ranked_candidate_ids": [],
+                "source_frame_id": None,
+                "decision_timestamp_ms": captured_at_ms,
+                "spatial_region": None,
+                "goal_identity_support": "NOT_EVALUABLE",
+                "spatial_support": "NOT_EVALUABLE",
+                "confidence": None,
+                "supporting_evidence_ids": [],
+                "competing_candidate_ids": [],
+                "abstention_reason": "INVALID_INPUT",
+                "persistence_handoff_token": None,
+            },
+        },
+    }
+
+
+def command_ground_observe(args: argparse.Namespace) -> dict[str, Any]:
+    directory = _episode_dir(args.run_dir, args.episode_id)
+    state = _load_state(directory)
+    image = args.image.resolve()
+    if not image.is_file():
+        raise ContractError("current frame image is missing")
+    frame_sha256 = _sha256_file(image)
+    if (
+        args.frame_id == state.last_frame_id
+        or frame_sha256 == state.last_frame_sha256
+        or args.observation_id == state.last_observation_id
+    ):
+        raise ContractError("ground-observe requires a fresh observation and frame")
+    captured_at_ms = args.captured_at_ms if args.captured_at_ms is not None else _now_ms()
+    provider_lock = _read_json(args.run_dir / "provider-lock.json")
+    call_dir = directory / "provider_calls" / args.observation_id
+    try:
+        observation = ground_current_frame(
+            provider_lock=provider_lock,
+            call_dir=call_dir,
+            episode_id=args.episode_id,
+            goal_name=state.goal_name,
+            image_path=image,
+            frame_id=args.frame_id,
+            observation_id=args.observation_id,
+            captured_at_ms=captured_at_ms,
+        )
+    except ProviderAdapterError as error:
+        observation = _failed_provider_observation(
+            episode_id=args.episode_id,
+            observation_id=args.observation_id,
+            frame_id=args.frame_id,
+            frame_sha256=frame_sha256,
+            captured_at_ms=captured_at_ms,
+            reason=str(error),
+        )
     policy = Policy(
         center_left=args.center_left,
         center_right=args.center_right,
@@ -206,6 +325,16 @@ def _build_parser() -> argparse.ArgumentParser:
     start.add_argument("--episode-id", required=True)
     start.set_defaults(handler=command_start)
 
+    provider_preflight = subparsers.add_parser("provider-preflight")
+    provider_preflight.add_argument("--run-dir", type=Path, required=True)
+    provider_preflight.add_argument("--codex-exe", type=Path, default=Path("E:/codex-tools/bin/codex.exe"))
+    provider_preflight.add_argument(
+        "--model-dir",
+        type=Path,
+        default=Path("artifacts.local/models/grounding-dino-tiny-a2bb814"),
+    )
+    provider_preflight.set_defaults(handler=command_provider_preflight)
+
     observe = subparsers.add_parser("observe")
     observe.add_argument("--run-dir", type=Path, required=True)
     observe.add_argument("--episode-id", required=True)
@@ -216,6 +345,20 @@ def _build_parser() -> argparse.ArgumentParser:
     observe.add_argument("--max-consecutive-unreliable", type=int, default=3)
     observe.add_argument("--max-instructions", type=int, default=12)
     observe.set_defaults(handler=command_observe)
+
+    ground_observe = subparsers.add_parser("ground-observe")
+    ground_observe.add_argument("--run-dir", type=Path, required=True)
+    ground_observe.add_argument("--episode-id", required=True)
+    ground_observe.add_argument("--image", type=Path, required=True)
+    ground_observe.add_argument("--frame-id", required=True)
+    ground_observe.add_argument("--observation-id", required=True)
+    ground_observe.add_argument("--captured-at-ms", type=int)
+    ground_observe.add_argument("--center-left", type=float, default=0.42)
+    ground_observe.add_argument("--center-right", type=float, default=0.58)
+    ground_observe.add_argument("--arrival-min-height", type=float, default=0.55)
+    ground_observe.add_argument("--max-consecutive-unreliable", type=int, default=3)
+    ground_observe.add_argument("--max-instructions", type=int, default=12)
+    ground_observe.set_defaults(handler=command_ground_observe)
 
     stop = subparsers.add_parser("stop")
     stop.add_argument("--run-dir", type=Path, required=True)
@@ -251,7 +394,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         result = args.handler(args)
-    except (ContractError, OSError, json.JSONDecodeError) as error:
+    except (ContractError, ProviderAdapterError, OSError, json.JSONDecodeError) as error:
         parser.exit(2, f"fail-closed: {error}\n")
     print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
     return 0

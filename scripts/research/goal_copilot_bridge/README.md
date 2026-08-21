@@ -1,17 +1,18 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / BLINDASSIST_LAST_10M_REGROUNDING_V0 / ENGINEERING_READY / FIELD_3X5_REQUIRED / P1_CLOSED / NO_REFERENT_PERSISTENCE / NO_SCIENTIFIC_VERDICT / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / BLINDASSIST_LAST_10M_REGROUNDING_V0 / MILESTONE_CLOSED / NETWORK_SCENE_3X5_COMPLETE / P1_CLOSED / NO_REFERENT_PERSISTENCE / NO_SCIENTIFIC_VERDICT / NO_SUCCESSOR / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
 ## Last-10-metre current-frame regrounding
 
-`last_10m_regrounding_v0/` is the active engineering surface. It adapts one already-produced, unchanged P0 output
-per fresh frame into the bounded `SCAN -> CURRENT_CANDIDATE -> ALIGN -> ADVANCE_AND_REOBSERVE ->
+`last_10m_regrounding_v0/` is the active engineering surface. It reuses the exact frozen Grounding DINO inference
+and single-Brain baseline functions, or adapts one externally produced unchanged P0 output, per fresh frame into the
+bounded `SCAN -> CURRENT_CANDIDATE -> ALIGN -> ADVANCE_AND_REOBSERVE ->
 ARRIVAL_CONFIRM -> COMPLETE / RESCAN / ABSTAIN` control loop. Persistent state deliberately excludes candidates,
-regions, images, features, scores, handoffs, and identity; prior details are audit-only JSONL. The runner initializes
-the exact 3-real-location x 5-episode roster, records each event, requires field adjudication of false entrance
-confirmation, and emits only the requested mechanical metrics and three attribution classes. It does not execute P1,
+regions, images, features, scores, handoffs, and identity; prior details are audit-only JSONL. The runner completed
+3 real-world network-scene locations x 5 fixed-playlist episodes, records each event, keeps evaluator truth provider-blind,
+and emits only the requested mechanical metrics and three attribution classes. It does not execute P1,
 modify the P0 provider, or create scientific/safety authority.
 
 Focused check:

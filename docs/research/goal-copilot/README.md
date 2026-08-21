@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BLINDASSIST_LAST_10M_REGROUNDING_V0 / ENGINEERING_READY / FIELD_3X5_REQUIRED / P1_CLOSED / NO_P1_W3 / NO_REFERENT_PERSISTENCE / NO_SCIENTIFIC_CONFIRMATION / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BLINDASSIST_LAST_10M_REGROUNDING_V0 / MILESTONE_CLOSED / NETWORK_SCENE_3X5_COMPLETE / P1_CLOSED / NO_P1_W3 / NO_REFERENT_PERSISTENCE / NO_SCIENTIFIC_CONFIRMATION / NO_SUCCESSOR / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
@@ -30,17 +30,20 @@ SCAN
 到达不是历史 identity 延续：当前帧出现居中、近距机械 cue 后先停下，再用一个新的当前帧重新 grounding；
 只有新的输出仍独立满足当前帧条件才能 `COMPLETE`。该 bbox cue 只是机械任务规则，不是距离或安全模型。
 
-稳定实现与现场命令见 [`last_10m_regrounding_v0`](../../../scripts/research/goal_copilot_bridge/last_10m_regrounding_v0/README.md)。
-当前实现专项 tests 已覆盖 fresh-frame、跨帧/stale fail-close、无 candidate 连续 abstain、二次到达确认、错误确认
-优先归因和 3x5 汇总形状。Android/default App 不变。
+稳定实现与网络场景命令见 [`last_10m_regrounding_v0`](../../../scripts/research/goal_copilot_bridge/last_10m_regrounding_v0/README.md)。
+单帧 adapter 直接复用已冻结 Grounding DINO 与 Terra Brain 函数/身份，hash/config 漂移即 fail closed；不形成新
+model/checkpoint 选择。当前实现专项 tests 覆盖实际 P0 output shape、fresh-frame、跨帧/stale fail-close、无
+candidate 连续 abstain、二次到达确认、错误确认优先归因和 3x5 汇总形状。Android/default App 不变。
 
-## 现场执行与报告边界
+## 网络场景执行结果与报告边界
 
-里程碑必须在 3 个真实地点各执行 5 次，共 15 episodes。Prerecorded RGB 可用于调试 provider payload，但不能
-冒充方向指令改变用户动作的真实机械任务。真实现场尚未完成时只允许
-`ENGINEERING_READY / FIELD_EXECUTION_INCOMPLETE`，不得填造完成率或错误确认数。
+按用户更新，本里程碑不再需要真实设备。已使用 3 个真实世界 Mapillary 地点的 9 张既有公开场景帧，各执行 5 个
+固定序列机械 episodes，共 15 次。完整结果见
+[`BLINDASSIST_LAST_10M_REGROUNDING_V0 result`](BLINDASSIST_LAST_10M_REGROUNDING_V0_RESULT_2026-08-22.md)：错误入口确认
+`0`、完成 `0/15`、首次可靠发现 median `9,745 ms`、方向指令 `40`、重扫 `5`。15 次全部在固定视角耗尽后
+fail closed；由于 playlist 不响应方向指令，该结果只属于网络场景机械回放，不能冒充真实用户控制闭环。
 
-每次 observation、candidate、direction、rescan、abstention、completion 和现场错误确认进入 append-only JSONL/
+每次 observation、candidate、direction、rescan、abstention、completion 和 evaluator 错误确认进入 append-only JSONL/
 episode summary。最终报告首先单列错误入口确认数，再报告任务完成率、完成时间、首次发现时间、指令数和重扫数。
 每个已 adjudicate episode 只允许以下三个归因之一：
 
@@ -49,7 +52,7 @@ episode summary。最终报告首先单列错误入口确认数，再报告任�
 3. `REGROUNDING_LOOP_MECHANICALLY_USEFUL`
 
 错误入口确认无条件计入第一类。只有恰好 3 locations x 5 adjudicated episodes 才能标记
-`FIELD_EXECUTION_COMPLETE`。本里程碑是机械工程结果，不是 scientific confirmation、用户安全、导航有效性或
+`MECHANICAL_EXECUTION_COMPLETE`。本里程碑是机械工程结果，不是 scientific confirmation、用户安全、导航有效性或
 默认 App 准入证据。
 
 ## 复用的 P0 权威
@@ -82,10 +85,10 @@ LoFTR、keyframe memory、SLAM、VIO 或 world-relative state。
 
 ## 唯一 successor
 
-`FIELD_3X5_MECHANICAL_EXECUTION` 只是本里程碑内完成 3x5 真实机械 episodes 并生成上述限定报告，不是新研究
-协议。现场执行完成或因现实条件无法执行而
-明确停止后，本路线不自动创建任何后继协议、P1-W3、模型 arm、数据 cohort、Android 接入或 scientific
-confirmation。新的研究问题必须由用户另行明确启动。
+无。
 
-Claim ceiling：`REAL_SITE_MECHANICAL_TASK_ONLY_NO_SCIENTIFIC_CONFIRMATION_NO_SAFETY_CLAIM`。
+网络场景 3x5 与限定报告已完成。本路线不自动创建任何后继协议、P1-W3、模型 arm、数据 cohort、Android 接入或
+scientific confirmation。新的研究问题必须由用户另行明确启动。
+
+Claim ceiling：`NETWORK_SCENE_MECHANICAL_REPLAY_ONLY_NO_REAL_USER_OR_SCIENTIFIC_CONFIRMATION`。
 默认 App：不变。

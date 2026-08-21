@@ -2,6 +2,13 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-22（Asia/Hong_Kong）；执行者：Codex。按用户更新将
+  `BLINDASSIST_LAST_10M_REGROUNDING_V0` 改为无需真实设备的网络场景机械回放，并完成 3 个真实世界 Mapillary 地点
+  x 5 episodes。45 次 observation 均独立重调未修改 P0，得到 40 次可靠当前帧 candidate；错误入口确认 `0`，
+  完成 `0/15`，方向指令 `40`、重扫 `5`、首次可靠发现 median `9,745 ms`。全部 fixed playlists 在没有当前帧
+  到达确认时 fail closed，归因 `INTERACTION_OR_CONTROL_BOTTLENECK=15/15`；不声称真实用户闭环、导航、安全或
+  scientific confirmation。里程碑关闭，无 P1-W3、referent persistence 或自动 successor。
+
 - 时间：2026-08-22（Asia/Hong_Kong）；执行者：violjjet。按用户决定正式关闭 P1，不建立 P1-W3，也不自动
   重开 referent persistence；启动 `BLINDASSIST_LAST_10M_REGROUNDING_V0`。新增 current-frame-only 文件适配器、
   最小控制状态机、fail-closed/真人协助出口、append-only 事件审计、现场 adjudication 与 3 个真实地点 x 5

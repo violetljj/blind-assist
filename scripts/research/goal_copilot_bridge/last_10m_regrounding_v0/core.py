@@ -18,7 +18,7 @@ from typing import Any, Iterable, Mapping, Sequence
 
 FAIL_CLOSED_MESSAGE = "没有可靠找到入口，请停下并缓慢重新扫描。"
 HUMAN_ASSISTANCE_MESSAGE = "持续无法确认入口，已停止自动引导。请联系现场工作人员或可信任的人协助。"
-CLAIM_CEILING = "REAL_SITE_MECHANICAL_TASK_ONLY_NO_SCIENTIFIC_CONFIRMATION_NO_SAFETY_CLAIM"
+CLAIM_CEILING = "NETWORK_SCENE_MECHANICAL_REPLAY_ONLY_NO_REAL_USER_OR_SCIENTIFIC_CONFIRMATION"
 
 
 class ContractError(ValueError):
@@ -70,6 +70,7 @@ class EpisodeState:
     state: str
     started_at_ms: int
     last_frame_id: str | None = None
+    last_frame_sha256: str | None = None
     last_observation_id: str | None = None
     observation_count: int = 0
     reliable_observation_count: int = 0
@@ -177,16 +178,25 @@ def adapt_current_p0_output(
     error rather than converted into a usable candidate.
     """
 
-    required = {"schema_version", "episode_id", "observation_id", "frame_id", "captured_at_ms", "p0_output"}
+    required = {
+        "schema_version", "episode_id", "observation_id", "frame_id", "frame_sha256",
+        "captured_at_ms", "processed_at_ms", "p0_output"
+    }
     if set(observation) != required or observation.get("schema_version") != 1:
         raise ContractError("observation keys or schema_version are invalid")
     if observation["episode_id"] != expected_episode_id:
         raise ContractError("observation episode_id mismatch")
     frame_id = _nonempty(observation["frame_id"], "frame_id")
+    frame_sha256 = _nonempty(observation["frame_sha256"], "frame_sha256")
+    if len(frame_sha256) != 64 or any(character not in "0123456789abcdef" for character in frame_sha256.lower()):
+        raise ContractError("frame_sha256 must be a SHA-256 hex digest")
     _nonempty(observation["observation_id"], "observation_id")
     captured_at_ms = observation["captured_at_ms"]
     if not isinstance(captured_at_ms, int) or captured_at_ms < 0:
         raise ContractError("captured_at_ms must be a non-negative integer")
+    processed_at_ms = observation["processed_at_ms"]
+    if not isinstance(processed_at_ms, int) or processed_at_ms < captured_at_ms:
+        raise ContractError("processed_at_ms must be an integer at or after capture")
 
     output = _mapping(observation["p0_output"], "p0_output")
     if output.get("schema_version") != 1:
@@ -262,9 +272,12 @@ def adapt_current_p0_output(
         if evidence_id not in evidence:
             raise ContractError("grounded decision references unknown evidence")
         item = evidence[evidence_id]
-        if list(_sequence(item.get("source_frame_ids"), "evidence.source_frame_ids")) != [frame_id]:
+        if item.get("source_frame_id") != frame_id:
             raise ContractError("supporting evidence is not current-frame-only")
-        valid_until_ms = item.get("valid_until_ms")
+        source_timestamp_ms = item.get("source_timestamp_ms")
+        if not isinstance(source_timestamp_ms, int) or not captured_at_ms <= source_timestamp_ms <= decision_timestamp_ms:
+            raise ContractError("supporting evidence timestamp is not bound to the current observation")
+        valid_until_ms = item.get("expiry_timestamp_ms")
         if not isinstance(valid_until_ms, int) or valid_until_ms < decision_timestamp_ms:
             raise ContractError("supporting evidence is stale")
         identity_claim = item.get("identity_claim")
@@ -311,14 +324,22 @@ def apply_observation(state: EpisodeState, observation: Mapping[str, Any], polic
     if state.state in {State.COMPLETE.value, State.ABSTAIN.value}:
         raise ContractError("terminal episode cannot accept another observation")
     frame_id = _nonempty(observation.get("frame_id"), "frame_id")
+    frame_sha256 = _nonempty(observation.get("frame_sha256"), "frame_sha256").lower()
     observation_id = _nonempty(observation.get("observation_id"), "observation_id")
-    if frame_id == state.last_frame_id or observation_id == state.last_observation_id:
+    if (
+        frame_id == state.last_frame_id
+        or frame_sha256 == state.last_frame_sha256
+        or observation_id == state.last_observation_id
+    ):
         raise ContractError("turn/advance/rescan requires a fresh observation and frame")
     captured_at_ms = observation.get("captured_at_ms")
     if isinstance(captured_at_ms, bool) or not isinstance(captured_at_ms, int):
         raise ContractError("captured_at_ms must be an integer")
     if captured_at_ms < state.started_at_ms:
         raise ContractError("observation predates episode start")
+    processed_at_ms = observation.get("processed_at_ms")
+    if isinstance(processed_at_ms, bool) or not isinstance(processed_at_ms, int) or processed_at_ms < captured_at_ms:
+        raise ContractError("processed_at_ms must be at or after captured_at_ms")
     contract_error: str | None = None
     try:
         grounded = adapt_current_p0_output(
@@ -338,6 +359,7 @@ def apply_observation(state: EpisodeState, observation: Mapping[str, Any], polic
 
     prior_state = state.state
     state.last_frame_id = frame_id
+    state.last_frame_sha256 = frame_sha256
     state.last_observation_id = observation_id
     state.observation_count += 1
     transitions: list[str] = []
@@ -361,7 +383,7 @@ def apply_observation(state: EpisodeState, observation: Mapping[str, Any], polic
         state.reliable_observation_count += 1
         state.consecutive_unreliable = 0
         if state.first_discovery_at_ms is None:
-            state.first_discovery_at_ms = captured_at_ms
+            state.first_discovery_at_ms = processed_at_ms
         candidate_audit = candidate.audit_dict()
         transitions.extend((State.CURRENT_CANDIDATE.value, State.ALIGN.value))
         centered = policy.center_left <= candidate.center_x <= policy.center_right
@@ -369,7 +391,7 @@ def apply_observation(state: EpisodeState, observation: Mapping[str, Any], polic
 
         if prior_state == State.ARRIVAL_CONFIRM.value and arrival_near:
             state.state = State.COMPLETE.value
-            state.completed_at_ms = captured_at_ms
+            state.completed_at_ms = processed_at_ms
             transitions.extend((State.ARRIVAL_CONFIRM.value, State.COMPLETE.value))
             message = "已依据新的当前帧重新确认入口。任务完成。"
         elif state.instruction_count >= policy.max_instructions:
@@ -403,7 +425,9 @@ def apply_observation(state: EpisodeState, observation: Mapping[str, Any], polic
         "location_id": state.location_id,
         "observation_id": observation_id,
         "frame_id": frame_id,
+        "frame_sha256": frame_sha256,
         "captured_at_ms": captured_at_ms,
+        "processed_at_ms": processed_at_ms,
         "from_state": prior_state,
         "transitions": transitions,
         "to_state": state.state,
@@ -522,11 +546,11 @@ def summarize_field_run(summaries: Sequence[Mapping[str, Any]]) -> dict[str, Any
     return {
         "schema_version": 1,
         "milestone_id": "BLINDASSIST_LAST_10M_REGROUNDING_V0",
-        "status": "FIELD_EXECUTION_COMPLETE" if roster_complete else "FIELD_EXECUTION_INCOMPLETE",
+        "status": "MECHANICAL_EXECUTION_COMPLETE" if roster_complete else "MECHANICAL_EXECUTION_INCOMPLETE",
         "roster": {
             "episode_count": len(summaries),
             "location_counts": dict(sorted(locations.items())),
-            "required": "3_REAL_LOCATIONS_X_5_EPISODES",
+            "required": "3_LOCATIONS_X_5_EPISODES",
         },
         "primary_safety_metric": {
             "name": "false_entrance_confirmation_count",

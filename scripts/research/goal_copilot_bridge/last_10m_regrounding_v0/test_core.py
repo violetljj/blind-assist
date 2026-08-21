@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import unittest
+from pathlib import Path
 
 from scripts.research.goal_copilot_bridge.last_10m_regrounding_v0.core import (
     Attribution,
@@ -15,6 +16,8 @@ from scripts.research.goal_copilot_bridge.last_10m_regrounding_v0.core import (
     apply_observation,
     summarize_field_run,
 )
+from scripts.research.goal_copilot_bridge.last_10m_regrounding_v0.provider_adapter import _live_episode
+from scripts.research.goal_copilot_bridge.p0_s0_materialization import run_silver_b_brain_baseline as brain
 
 
 def observation(
@@ -68,7 +71,9 @@ def observation(
         "episode_id": "site-a-e01",
         "observation_id": f"observation-{index}",
         "frame_id": frame_id,
+        "frame_sha256": f"{index:064x}",
         "captured_at_ms": timestamp,
+        "processed_at_ms": timestamp + 10,
         "p0_output": {
             "schema_version": 1,
             "episode_id": "p0-independent-call",
@@ -88,7 +93,7 @@ def observation(
                         "evidence_id": evidence_id,
                         "provider_id": "frozen-current-p0",
                         "evidence_type": "ENTRANCE_STRUCTURE",
-                        "source_frame_ids": [frame_id],
+                        "source_frame_id": frame_id,
                         "region": {
                             "frame_id": frame_id,
                             "coordinate_space": "NORMALIZED_XYXY",
@@ -98,8 +103,8 @@ def observation(
                             "y_max": y_max,
                         },
                         "confidence": 0.9,
-                        "captured_at_ms": timestamp,
-                        "valid_until_ms": timestamp + 1_000,
+                        "source_timestamp_ms": timestamp,
+                        "expiry_timestamp_ms": timestamp + 1_000,
                         "identity_claim": {"target_name": "建筑 A", "relation": "entrance_of"},
                         "provenance": {
                             "implementation_id": "unchanged",
@@ -191,14 +196,14 @@ class RegroundingCoreTest(unittest.TestCase):
 
     def test_cross_frame_and_stale_support_are_recorded_fail_closed(self) -> None:
         cross_frame = observation("frame-1", 1)
-        cross_frame["p0_output"]["evidence"][0]["source_frame_ids"] = ["old-frame"]
+        cross_frame["p0_output"]["evidence"][0]["source_frame_id"] = "old-frame"
         result = apply_observation(self.state, cross_frame)
         self.assertEqual(State.RESCAN.value, result.state.state)
         self.assertIn("current-frame-only", result.event["contract_error"])
         self.assertEqual(["INVALID_OUTPUT"], result.event["provider_failure_classes"])
 
         stale = observation("frame-2", 2)
-        stale["p0_output"]["evidence"][0]["valid_until_ms"] = 1_000
+        stale["p0_output"]["evidence"][0]["expiry_timestamp_ms"] = 1_000
         result = apply_observation(self.state, stale)
         self.assertEqual(State.RESCAN.value, result.state.state)
         self.assertIn("stale", result.event["contract_error"])
@@ -225,6 +230,42 @@ class RegroundingCoreTest(unittest.TestCase):
         self.assertEqual(State.RESCAN.value, result.state.state)
         self.assertIn("requested entrance goal", result.event["contract_error"])
 
+    def test_actual_frozen_p0_output_shape_is_accepted(self) -> None:
+        episode = _live_episode(
+            episode_id="site-a-e01",
+            goal_name="建筑 A",
+            image_path=Path("unused.jpg"),
+            frame_id="frame-live",
+            captured_at_ms=1_000,
+            proposals=[{"bbox_xyxy": [10.0, 10.0, 90.0, 90.0], "score": 0.8, "label": "entrance"}],
+            width=100,
+            height=100,
+        )
+        raw = {
+            "episode_id": "site-a-e01",
+            "model_case_id": "case-current",
+            "action": "SELECT",
+            "selected_candidate_ids": ["gdino-frame-live-001"],
+            "confidence": 0.9,
+            "rationale": "fixture",
+        }
+        frozen = brain._frozen_output(episode, raw, brain.POLICY_ID)
+        result = apply_observation(
+            self.state,
+            {
+                "schema_version": 1,
+                "episode_id": "site-a-e01",
+                "observation_id": "observation-live",
+                "frame_id": "frame-live",
+                "frame_sha256": "a" * 64,
+                "captured_at_ms": 1_000,
+                "processed_at_ms": 1_010,
+                "p0_output": frozen,
+            },
+        )
+        self.assertEqual(State.ARRIVAL_CONFIRM.value, result.state.state)
+        self.assertIsNone(result.event["contract_error"])
+
     def test_false_confirmation_is_primary_and_forces_grounding_attribution(self) -> None:
         first = apply_observation(self.state, observation("frame-1", 1, y_min=0.1, y_max=0.8))
         complete = apply_observation(first.state, observation("frame-2", 2, y_min=0.1, y_max=0.8))
@@ -236,6 +277,8 @@ class RegroundingCoreTest(unittest.TestCase):
         )
         self.assertTrue(summary["false_entrance_confirmation"])
         self.assertEqual(Attribution.CURRENT_FRAME_GROUNDING_BOTTLENECK.value, summary["failure_attribution"])
+        self.assertEqual(210, summary["first_discovery_time_ms"])
+        self.assertEqual(310, summary["completion_time_ms"])
 
     def test_summary_requires_exactly_three_by_five(self) -> None:
         summaries = []
@@ -259,14 +302,14 @@ class RegroundingCoreTest(unittest.TestCase):
                     }
                 )
         report = summarize_field_run(summaries)
-        self.assertEqual("FIELD_EXECUTION_COMPLETE", report["status"])
+        self.assertEqual("MECHANICAL_EXECUTION_COMPLETE", report["status"])
         self.assertEqual(1, report["primary_safety_metric"]["value"])
         self.assertEqual(1.0, report["task_completion_rate"]["value"])
         self.assertEqual(45, report["instruction_count"]["total"])
         self.assertEqual(15, report["rescan_count"]["total"])
 
         incomplete = summarize_field_run(copy.deepcopy(summaries[:-1]))
-        self.assertEqual("FIELD_EXECUTION_INCOMPLETE", incomplete["status"])
+        self.assertEqual("MECHANICAL_EXECUTION_INCOMPLETE", incomplete["status"])
 
 
 if __name__ == "__main__":
