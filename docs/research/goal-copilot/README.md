@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_A2_DENSE_IDENTITY_SIGNAL_RETAINED / P1_A3_TEMPORAL_POLICY_INSUFFICIENT / NO_POLICY_ADMISSION / P1_A4_ONLINE_CORRESPONDENCE_PROTOCOL_FROZEN / PYTORCH_ONLINE_BOOTSTAPIR_SELECTED / PERFORMANCE_NOT_RUN / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_A2_DENSE_IDENTITY_SIGNAL_RETAINED / P1_A3_TEMPORAL_POLICY_INSUFFICIENT / NO_POLICY_ADMISSION / P1_A4_STRONG_TEMPORAL_CORRESPONDENCE_NOT_SUFFICIENT / CURRENT_IMPLEMENTATION_STOPPED / NO_AUTOMATIC_SUCCESSOR / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；详细历史、协议和数字留在链接的独立结果文件，不在 current 重复维护。
@@ -132,9 +132,10 @@ frame-wise representation signal。
 
 [`P1-A4 protocol`](P1_A4_ONLINE_STRONG_TEMPORAL_CORRESPONDENCE_PROTOCOL_V1.md) 已先于 implementation selection
 冻结 strictly causal point-correspondence、25-point initialization、visibility-aware object aggregation、单模型选择顺序
-与 capability gates。[`Outcome-blind selection`](P1_A4_ONLINE_TAPIR_SELECTION_2026-08-21.md) 已固定第一候选
-official PyTorch Online BootsTAPIR；25-point CUDA mechanics canary 通过，JAX fallback 与其他模型未测试。下一步是
-同一冻结实现的一个 capability probe，尚未读取 private truth 或运行 performance arm。
+与 capability gates。[`P1-A4 result`](P1_A4_ONLINE_STRONG_TEMPORAL_CORRESPONDENCE_RESULT_2026-08-22.md) 完成唯一
+official PyTorch Online BootsTAPIR probe：hard evaluability 全通过，但 correct `85/777`、wrong `812`、background wrong
+`785`、temporary/return recovery 均 `0/3`。终态 `STRONG_TEMPORAL_CORRESPONDENCE_NOT_SUFFICIENT`；当前实现停止，
+不调参、不重跑、不换模型，也没有自动 successor。
 
 禁止：继续调 A1/A2/A3 threshold/operator、直接保留 winner、提前实现 stronger tracker 或 global
 reacquisition、加入 ReID/Sky、fresh/large cohort、

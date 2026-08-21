@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-22（Asia/Hong_Kong）；执行者：Codex。完成唯一 P1-A4 strictly causal official PyTorch Online
+  BootsTAPIR capability probe。15 episodes / 1,724 frames / 43,100 point rows 的 future/GT reset/semantic/global
+  search/query-replacement violations 与 evaluator state/event violations 全为 0；wall `121.667 s`、peak CUDA
+  `325,331,456 bytes`。冻结结果为 correct `85/777`、wrong `812`、background wrong `785`、switches `31`、
+  max wrong-lock `2,966 ms`、false-loss `121`、temp/return recovery `0/3`。终态
+  `STRONG_TEMPORAL_CORRESPONDENCE_NOT_SUFFICIENT / NO_PRODUCT_ADMISSION / NO_SCIENTIFIC_VERDICT`；停止当前实现，
+  不调参、不重跑、不换模型，没有自动 successor。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：Codex。完成 P1-A4 outcome-blind implementation selection。
   冻结协议 commit `611aa2dc` 后审计第一候选 official Google DeepMind PyTorch Online BootsTAPIR；固定 upstream
   `c2cbab81`、source/checkpoint/license/postprocessing hashes 与本机 PyTorch/CUDA/GPU identity。Deterministic
