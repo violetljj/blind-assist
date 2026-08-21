@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "protocol_id": "P0-A1-AMBIGUITY-GATE-DISCOVERY-V1",
+  "status": "FROZEN_BEFORE_FEATURE_SWEEP",
+  "data_role": "CONSUMED_DEVELOPMENT_ONLY",
+  "research_question": "Can already-observed runtime evidence distinguish when the existing Terra baseline may commit from when it should abstain?",
+  "inputs": [
+    {
+      "cohort_path": "artifacts.local/evidence/p0-s0/2026-08-21-silver-b-dev-cohort-v1/brain-cohort.json",
+      "cohort_file_sha256": "a2a93ed9859ac916e1a5c197d7e8ebc829fa22ec30d89b6d1988073bb7704afc",
+      "cohort_report_sha256": "aa724c31f1fb9f906c28bcc417dfa7dc83175fcaad07bf1919ad4d27415236a7",
+      "baseline_path": "artifacts.local/evidence/p0-s0/2026-08-21-silver-b-brain-gpt-5.6-terra-blind-v2/brain-baseline-report.json",
+      "baseline_file_sha256": "4d044a5c793dc34292ac08273bdd6b89976a2e6a52f34c9121238ceb66e95477",
+      "baseline_report_sha256": "1e9e7b3176d231fa3e67fa67f266da14a31672f3814bb836866c6446a0b3813c"
+    },
+    {
+      "cohort_path": "artifacts.local/evidence/p0-s0/2026-08-21-p0-d1-brussels-parent-disjoint-cohort-v1/brain-cohort.json",
+      "cohort_file_sha256": "8ba11387250b6f2f308d634e9786ac240f07fa1372be26fc63e336854d3c6964",
+      "cohort_report_sha256": "5788b5f790f3628821d9473c25ad5ecc484650c4175f367dda68cd4074cb63bd",
+      "baseline_path": "artifacts.local/evidence/p0-s0/2026-08-21-p0-d1-brussels-parent-disjoint-baseline-v1/brain-baseline-report.json",
+      "baseline_file_sha256": "de4206866c8e69ef875574b15d2e3f06975dd4d7c205adb7fc634b7885f899da",
+      "baseline_report_sha256": "cdd1e3a290b27b96cb031b47f1a62df29d8a3a2704f37dd7327b1aa026c63ff8"
+    }
+  ],
+  "included_truth": {
+    "RESOLVABLE": ["UNIQUE", "SET_VALUED"],
+    "AMBIGUOUS": ["AMBIGUOUS"],
+    "excluded": ["NOT_OBSERVED", "MISSING_RUNTIME_EVIDENCE"]
+  },
+  "runtime_surface": {
+    "baseline_policy_id": "P0-SILVER-B-BRAIN-BASELINE-V1",
+    "gate_semantics": "A rule may retain an existing Terra SELECT or turn it into ABSTAIN; it may not create a SELECT, change selected candidates, or use evaluator fields.",
+    "features": {
+      "brain_confidence": "min",
+      "detector_top1_score": "min",
+      "detector_top1_margin": "min",
+      "detector_candidate_count": "max",
+      "detector_near_tie_count_005": "max",
+      "selected_candidate_rank": "max",
+      "selected_score_margin": "min",
+      "candidate_center_dispersion": "max"
+    },
+    "unavailable_not_imputed": [
+      "cross_prompt_agreement",
+      "cross_provider_agreement",
+      "cross_view_candidate_stability",
+      "place_identity",
+      "entrance_relation"
+    ]
+  },
+  "sweep": {
+    "baselines": ["terra_ungated", "always_abstain"],
+    "single_feature_rules": "all frozen features with their frozen semantic direction",
+    "two_feature_rules": "all unordered conjunctions of frozen single-feature rules",
+    "threshold_grid": "sorted unique observed values when count <= 12; otherwise nearest-rank unlabeled quantiles q=0.0,0.1,...,1.0",
+    "missing_feature_behavior": "ABSTAIN",
+    "maximum_sweeps": 1,
+    "fit_or_training_authorized": false
+  },
+  "metrics": {
+    "primary": [
+      "ambiguous_false_commit_rate_episode_micro",
+      "ambiguous_false_commit_rate_venue_parent_macro",
+      "resolvable_commit_coverage_episode_micro",
+      "committed_resolvable_correctness_episode_micro"
+    ],
+    "parent_identity": "evaluator_episode.goal_spec.target_name",
+    "correctness_source": "the already-frozen evaluator outcome for the unchanged Terra selected candidate"
+  },
+  "terminal_rule": {
+    "CLEAR_SIGNAL_COMPACT_POLICY_NEXT": {
+      "minimum_ambiguous_micro_absolute_reduction": 0.25,
+      "minimum_ambiguous_parent_macro_absolute_reduction": 0.20,
+      "maximum_resolvable_coverage_absolute_loss": 0.10,
+      "maximum_committed_correctness_absolute_loss": 0.05
+    },
+    "WEAK_SIGNAL_SKY_ELIGIBLE": {
+      "minimum_ambiguous_micro_absolute_reduction": 0.20,
+      "minimum_resolvable_coverage_fraction_of_baseline": 0.65,
+      "maximum_committed_correctness_absolute_loss": 0.05
+    },
+    "otherwise": "AMBIGUITY_NOT_IDENTIFIABLE_FROM_CURRENT_RUNTIME_REPRESENTATION"
+  },
+  "prohibitions": [
+    "ZERO_NEW_PARENT",
+    "NO_LOGISTIC_OR_CONFORMAL",
+    "NO_RANKING_CHANGE",
+    "NO_SKY_IN_P0_A1",
+    "NO_THRESHOLD_OR_FEATURE_ADDITION_AFTER_RESULT",
+    "NO_SECOND_SWEEP",
+    "NO_SCIENTIFIC_OR_GENERALIZATION_CLAIM"
+  ],
+  "claim_ceiling": "CONSUMED_DEVELOPMENT_AMBIGUITY_FEATURE_DISCOVERY_ONLY_NO_GENERALIZATION_OR_SCIENTIFIC_VERDICT"
+}
