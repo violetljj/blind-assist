@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-22（Asia/Hong_Kong）；执行者：Codex。完成 P1-W1 Stage A outcome-blind implementation 与
+  data selection，不运行 performance。冻结 1,000-point ORB keyframe geometry、独立 HSV identity verifier、
+  C0 rotation-compatible guard、T0 keyframe homography/parallax guard 与 fail-stale `ReferentSnapshot` fusion；
+  9 项 synthetic/contract tests PASS。旧 15 个 consumed ADT episode 全纳入后 rotation support 为 0，因此仅从
+  同两条已下载 source 机械补入 2 个低平移 turn-away/return 窗口；当前 roster 为 17 real episodes / 1,904
+  frames + 1 geometry-degenerate fixture，rotation/small-translation/translation-overreach/confuser/loss support
+  分别为 `2/7/7/8/11`。当前 `IMPLEMENTATION_FROZEN / ROSTER_FROZEN / PERFORMANCE_NOT_RUN`；唯一 successor
+  为另行授权的 `P1_W1_STAGE_A_SINGLE_EXECUTION`，T1/SLAM/App 均未授权。
+
 - 时间：2026-08-22（Asia/Hong_Kong）；执行者：violjjet。冻结 P1-W1 minimal world-referent baseline protocol，
   W0 design 保持封口。协议只比较 C0 honest camera-relative control、W1-T0 keyframe-relative Stage A 与条件式
   W1-T1 shared-gauge pose/anchor Stage B；固定 `REACQUIRED = spatial compatibility AND independent identity
