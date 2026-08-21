@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-22（Asia/Hong_Kong）；执行者：violjjet。冻结 P1-W1 minimal world-referent baseline protocol，
+  W0 design 保持封口。协议只比较 C0 honest camera-relative control、W1-T0 keyframe-relative Stage A 与条件式
+  W1-T1 shared-gauge pose/anchor Stage B；固定 `REACQUIRED = spatial compatibility AND independent identity
+  confirmation`、无 observation 不输出 bbox、stale anchor 不授权方向引导。Primary endpoints 改为 false
+  continuity/reacquisition、honest `NONE`、timely stale、bearing compatibility 与 identity-confirmed reacquisition；
+  IoU/tracking survival 仅可诊断。相机 pose 加单条 image ray 不足以支持 translation，缺 bounded inverse-depth/
+  position evidence 时必须 stale。当前 implementation/data/pose source 未选择，Stage A/B execution 均未授权。
+
 - 时间：2026-08-22（Asia/Hong_Kong）；执行者：violjjet。完成 P1-W0 World-Anchored Target Persistence
   architecture design，正式关闭 P1-A tracker/correspondence authority 系列。新设计把维护对象从连续 `2D track`
   改为 `real-world referent belief`，允许 `CAMERA_RELATIVE / KEYFRAME_RELATIVE / WORLD_RELATIVE` 三类空间

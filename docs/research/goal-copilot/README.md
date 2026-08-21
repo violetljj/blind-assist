@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_A_CLOSED / P1_W0_WORLD_REFERENT_MEMORY_DESIGN_COMPLETE / NO_BASELINE_EXECUTION / NO_POLICY_ADMISSION / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_A_CLOSED / P1_W0_DESIGN_COMPLETE / P1_W1_MINIMAL_BASELINE_PROTOCOL_FROZEN / IMPLEMENTATION_NOT_SELECTED / NO_EXECUTION / NO_POLICY_ADMISSION / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；详细历史、协议和数字留在链接的独立结果文件，不在 current 重复维护。
@@ -144,20 +144,23 @@ official PyTorch Online BootsTAPIR probe：hard evaluability 全通过，但 cor
 `REACQUIRED = spatial compatibility AND independent identity confirmation`。`OUT_OF_VIEW / UNKNOWN /
 OCCLUDED_EVIDENCED` 是正交 observability reason，不扩张成完整产品 FSM。
 
-P1-A tracker/correspondence authority 系列正式关闭。W0 是 architecture design only，不证明 world memory、
-relocalization 或 SLAM 已有效。当前不选择模型、不运行 Tier-0/Tier-1 baseline、不接 App。若用户另行授权，
-唯一后继是一个极小可逆的 P1-W1 Tier-0/Tier-1 baseline protocol；先验证 bearing propagation、keyframe-local
-relocalization、双条件 reacquisition 和平移越界后的 stale downgrade，不自动进入 SLAM 或模型 zoo。
+P1-A tracker/correspondence authority 系列正式关闭，W0 design 到此封口。[`P1-W1 protocol`](P1_W1_MINIMAL_WORLD_REFERENT_BASELINE_PROTOCOL_V1.md)
+现已冻结一个 honest camera-relative control 与两个最小实验层级：W1-T0 keyframe-relative baseline 先验证局部
+relocalization、双条件 reacquisition 和 fail-stale；W1-T1 只在 Stage A 建立信号且另行授权后，才允许最小
+shared-gauge pose/anchor interface 检验 translation。Primary endpoints 是 false continuity/reacquisition、honest
+`NONE`、timely stale、bearing compatibility 与 identity-confirmed reacquisition，不以 bbox continuity 为胜负指标。
+当前未选择实现、数据、pose source 或阈值，Stage A/B 均未授权执行。
 
 ## 唯一 successor
 
-`P1-W1_TIER0_TIER1_MINIMAL_BASELINE_PROTOCOL`。当前仅登记身份，仍为 `NOT_AUTHORIZED / NO_EXECUTION`；
-只有用户另行授权后才能冻结极小 baseline protocol，不得从 W0 自动启动实现或评测。
+`P1_W1_STAGE_A_OUTCOME_BLIND_IMPLEMENTATION_AND_DATA_SELECTION`，状态为 `NOT_AUTHORIZED / NO_EXECUTION`。
+它只能选择 C0/T0 最小实现与 support roster，不得运行 performance、选择 T1 pose source 或接 App。
 
-禁止：继续调 A1/A2/A3 threshold/operator、直接保留 winner、建立 A5+ tracker/model arm、提前实现 global
-reacquisition 或 SLAM、加入 ReID/Sky、fresh/large cohort、
+禁止：继续调 A1/A2/A3 threshold/operator、建立 A5+ tracker/model arm、提前执行 W1 或实现 global
+reacquisition/SLAM/object map、加入 ReID/Sky、fresh/large cohort、
 P0 policy 续搜、Active/Temporal Grounding、Android/default-App、产品或安全主张。
 
 Claim ceiling：既有 A1-A4 仍为 `CONSUMED_ADT_INDOOR_OBJECT_DEVELOPMENT_BASELINE_ONLY_NO_SCIENTIFIC_VERDICT`；
 W0 为 `ARCHITECTURE_DESIGN_ONLY / NO_EMPIRICAL_CAPABILITY`。
+W1 为 `PROTOCOL_DESIGN_ONLY / NO_EMPIRICAL_CAPABILITY`。
 默认 App：不变。
