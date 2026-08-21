@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / A1_DEVELOPMENT_INCUMBENT_NOT_ADMITTED / P1_TARGET_PERSISTENCE_R0 / REPRESENTATION_EVALUATOR_CONTRACT_FROZEN / SYNTHETIC_MECHANICS_ONLY / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / A1_DEVELOPMENT_INCUMBENT_NOT_ADMITTED / P1_TARGET_PERSISTENCE_R0 / REPRESENTATION_EVALUATOR_CONTRACT_FROZEN / P1_D0_TEMPORAL_DEVELOPMENT_COHORT_READY / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；详细历史、协议和数字留在链接的独立结果文件，不在 current 重复维护。
@@ -80,6 +80,11 @@ mining/evaluator。ADT 是 prerecorded trajectory，不能证明 guidance 改变
 
 既有 consumed Development 只作为 P1 failure vocabulary 与未来 adapter 输入：
 
+[`P1-D0 temporal cohort`](P1_D0_TEMPORAL_COHORT_PROTOCOL_V1.md) 已从 2 条现有 ADT GT/RGB source 以 source
+timestamp 和 `object_uid` 自动物化 15 episodes / 15 physical targets / 1,724 frames；六类 temporal mode
+均非零，0 model/detector/tracker calls。它只是 consumed indoor-object Development truth，不验证入口
+persistence；数据线已止损关闭，EgoTracks fallback 不触发。
+
 - [`ADT0/ADT1 canary`](BA_ADT_REAL_EVIDENCE_ADT0_SELECTION_ADT1_CANARY_RESULT.md)：detector+5-frame flow
   建立 bounded persistence mechanics，但最长 dropout 仍为 162。
 - [`Instance redetection R1`](BA_ADT_INSTANCE_REDETECTION_1_RESULT_2026-08-21.md)：13 次确认均正确、0 wrong，
@@ -103,8 +108,8 @@ confirmation、quarantine、receipt 或终态。
 
 ## 唯一 successor
 
-`P1_R0_CONSUMED_ADT_BASELINE_ADAPTER_DESIGN`：只设计如何把既有 consumed ADT RGB observer trace 接入 P1
-schema，并保持 system/evaluator truth 隔离。设计完成前不运行新的 ADT baseline evaluation。
+`P1_R0_CONSUMED_ADT_BASELINE_ADAPTER_DESIGN`：只设计如何把 P1-D0 RGB/P0 handoff 接入 P1 public-input
+schema，并让 episode truth 只进入 evaluator。设计完成前不运行新的 ADT baseline evaluation。
 
 禁止：Sky、模型搜索、fresh/large cohort、P0 policy 续搜、Active/Temporal Grounding、Android/default-App、
 产品或安全主张。允许：stdlib mechanics 修复、schema/evaluator 专项测试、只读检查既有 consumed ADT interface。

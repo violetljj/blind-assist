@@ -1,6 +1,6 @@
 # BA-ADT Real Evidence
 
-状态：`current / REVERSIBLE_EXPLORATION / R5-VISUAL-UPPER-BOUND-PROTOCOL-FROZEN / TEACHER-OUTCOME-NOT-RUN / TERMINAL-REDETECTION-GATE / NO-DINOV2-SKY / DEFAULT-APP-UNCHANGED`
+状态：`current / REVERSIBLE_EXPLORATION / P1-D0-TEMPORAL-DEVELOPMENT-COHORT-READY / R5-PERMANENTLY-CLOSED / NO-DINOV2-SKY / DEFAULT-APP-UNCHANGED`
 
 ## 目标与边界
 
@@ -47,6 +47,20 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-re
   --groundtruth artifacts.local/datasets/ba_adt_real_evidence/sample/ADT_Apartment_release_golden_skeleton_seq100_10s_sample_M1292_main_groundtruth.zip `
   --output artifacts.local/evidence/ba_adt_real_evidence/sample/episodes.json
 ```
+
+P1-D0 temporal cohort 只读取 ADT source identity、timestamp、visibility 与 bbox truth，并用 MP4 自带的
+逐帧 timestamp metadata 对齐 RGB；选择过程不读取任何 tracker/model output：
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd scripts/run_research_tool.py ba-adt-real-evidence `
+  materialize_p1_temporal_cohort.py `
+  --source <SEQUENCE_ID> <GROUNDTRUTH_ZIP> <PREVIEW_RGB_MP4> `
+  --output-dir artifacts.local/evidence/p1_d0_temporal_cohort_v1 `
+  --episode-budget 15
+```
+
+固定合同与 Development 终态见
+[`P1-D0 protocol`](../../../docs/research/goal-copilot/P1_D0_TEMPORAL_COHORT_PROTOCOL_V1.md)。
 
 Sample 之后，对显式选择且总量有界的完整 sequence 只下载 main GT：
 
@@ -131,6 +145,11 @@ supersede。正式 Attempt 02 的 GT-blind OWLv2-large 入口是 `run_visual_upp
 第一视角来源；不得降低门槛或把多个无关目标拼成一个完整 episode。
 
 ## 当前 successor
+
+P1-D0 已从 2 条现有 ADT GT/RGB source 自动物化 15 episodes / 15 physical targets / 1,724 frames，
+六类 temporal mode 均非零，终态 `P1_TEMPORAL_DEVELOPMENT_COHORT_READY`。该批只服务 P1 Development；
+EgoTracks fallback 不触发，不再追加数据。后续只允许 P1 representation/evaluator/baseline 消费该 cohort，
+不得把 ADT indoor object 结果称为 entrance persistence、fresh confirmation 或产品证据。
 
 Sample 已得到 102 个持续跟踪候选，覆盖全部六类事件，但没有单一目标覆盖完整六阶段；详见
 [`BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md`](../../../docs/research/goal-copilot/BA_ADT_REAL_EVIDENCE_ADT0_SAMPLE_RESULT.md)。

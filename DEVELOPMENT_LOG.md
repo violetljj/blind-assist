@@ -15,6 +15,16 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   consumed ADT observer trace 到 P1 schema 的 adapter，禁止 Sky、模型搜索、fresh/large cohort、Active
   Grounding、Android/default-App 与产品/安全主张。
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。并行完成 P1-D0 Temporal Cohort
+  materialization。只复用已有 ADT `seq100 sample + seq136` 两条 GT/RGB source，以 MP4 内置逐帧 absolute
+  timestamp 对齐 `aria_trajectory.csv`，按 source `object_uid`、visibility/bbox gap 与同 prototype/category
+  并存机械选择；0 模型、0 detector、0 tracker、0 人工 identity 标注。固定 15 episodes / 15 physical
+  targets / 1,724 frames，`CONTINUOUS_VISIBLE=6 / TEMP_OCCLUSION=3 / OUT_OF_VIEW_RETURN=3 /
+  DISTRACTOR_PRESENT=3 / LONG_LOSS=3 / REACQUISITION=9`，六类均非零，终态
+  `P1_TEMPORAL_DEVELOPMENT_COHORT_READY`。该 cohort 仅为 consumed ADT indoor-object Development；不能验证
+  P0 grounding、入口 persistence、fresh Confirmation、导航或产品安全。数据线到此止损关闭，不启用
+  EgoTracks、不追加第三来源；下一步只让冻结的 P1 representation/evaluator/baseline 消费本批数据。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：Codex。完成 P0-D3 targeted set-valued one-shot closure。
   在任何新 RGB 前冻结 6 个 Overture taxonomy/building-geometry parents，Mapillary radius acquisition 固定取得
   5/6 parents、20 frames；UGent Campus Aula 为 0 eligible frame，按协议未替换。score-blind full-frame review
