@@ -168,8 +168,12 @@ ADT metadata-only selector 先冻结 8 个 source-parent-disjoint indoor-object 
 完成 8/8 parents、16/16 RGB/GT members、1,241,191,554 bytes 的校验物化。固定 8-parent 母分母中 7 个合法，1 个因
 `3068/3073` GT timestamps 无法在冻结 20 ms 内对齐而保留 `PAYLOAD_OR_SCHEMA_FAILURE`；没有替换或补样。最终冻结
 27 pairs，rotation/small/large/reappearance/confuser support 为 `2/7/5/6/7`，满足预注册 data-support gate。
-Provider truth firewall 与 deterministic replay 均通过，但 matcher/identity/model call 仍为 0，因此 execution 仍未授权。
-17 个 sealed cases 仍只可作 Development diagnostic。唯一合法 successor 是 `P1_W2_SINGLE_EXECUTION`。
+Provider truth firewall 与 deterministic replay 均通过；该阶段 matcher/identity/model call 仍为 0，execution 当时未授权。
+随后唯一授权的 [`P1-W2 single execution`](P1_W2_SINGLE_EXECUTION_RESULT_2026-08-22.md) 已对 27 cases / 66 candidates
+一次完成 provider seal 和 private adjudication。True-candidate geometry 为 `0/27`，confuser unique-true identity 为
+`0/7` 且有 1 次 identity false bind，joint correct eligibility 为 `0/27`；终态
+`P1_W2_RGB_REFERENT_INTERFACE_NOT_SUPPORTED`。17 个 sealed cases 仍只可作 Development diagnostic；P1-W2 没有
+自动 successor，不得在当前 cohort 上降 gate、换模型、改 crop/context 或重跑。
 W1-T1/Stage B、tracking、keyframe memory、SAM2 propagation、SLAM 与 App 均未授权。
 
 禁止：继续调 A1/A2/A3 threshold/operator、建立 A5+ tracker/model arm、提前执行 W1 或实现 global
@@ -179,5 +183,5 @@ P0 policy 续搜、Active/Temporal Grounding、Android/default-App、产品或�
 Claim ceiling：既有 A1-A4 仍为 `CONSUMED_ADT_INDOOR_OBJECT_DEVELOPMENT_BASELINE_ONLY_NO_SCIENTIFIC_VERDICT`；
 W0 为 `ARCHITECTURE_DESIGN_ONLY / NO_EMPIRICAL_CAPABILITY`。
 W1 Stage A 为 `CONSUMED_ADT_DEVELOPMENT_NOT_EVALUABLE_INTERFACE / NO_C0_T0_VERDICT`。
-W2 为 `FRESH_ADT_INDOOR_OBJECT_PROXY_ROSTER_ONLY / NO_EMPIRICAL_CAPABILITY / NO_BUILDING_ENTRANCE_OR_P0_HANDOFF_CONFIRMATION`。
+W2 为 `FRESH_ADT_INDOOR_OBJECT_PROXY_SINGLE_EXECUTION / RGB_REFERENT_INTERFACE_NOT_SUPPORTED / NO_BUILDING_ENTRANCE_OR_P0_HANDOFF_CONFIRMATION`。
 默认 App：不变。
