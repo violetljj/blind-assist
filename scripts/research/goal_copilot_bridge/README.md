@@ -1,8 +1,24 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / GOAL_COPILOT_SKY_BRIDGE_V0_MECHANICS_READY / GOAL_COPILOT_1_MODEL_SEARCH_NOT_STARTED`
+状态：`current / P0_GROUNDING_CONTRACT_V1_MECHANICS_READY / MOCK_TESTS_PASS / NO_COHORT_BASELINE / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
+
+## P0 Goal Grounding mechanics
+
+`p0_grounding/` contains the stdlib-only, no-model contract mechanics for Named Building Entrance Grounding:
+
+- `p0_episode_schema.json` and `p0_output_schema.json` freeze episode and output shapes;
+- `p0_evaluator.py` separates Provider availability, Brain selection given availability, end-to-end P0 outcomes,
+  and P1 handoff binding;
+- `test_p0_evaluator.py` embeds deterministic mock fixtures for correct grounding, provider miss, wrong instance,
+  target absence, ambiguity, stale slow evidence, identity/spatial errors, invalid observation and handoff drift.
+
+This surface does not run a provider, model, cohort, baseline, persistence, Sky or Android path. Focused check:
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest scripts/research/goal_copilot_bridge/p0_grounding/test_p0_evaluator.py
+```
 
 Authority: BlindAssist owns `GOAL-COPILOT-1`, its evaluator, sealed scenarios,
 acceptance decision, and claim ceiling. External optimizers have proposal authority

@@ -2,6 +2,16 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。冻结
+  `BA-P0-NAMED-BUILDING-ENTRANCE-GROUNDING-V1` mechanics contract：限定输入为明确 named-building goal
+  与冻结的第一视角被动窗口，输出为 evidence-bound `GroundingDecision`，严格区分 Provider availability、
+  Brain selection given available、End-to-End P0 与 P1 source-frame handoff。新增 episode/output JSON Schema、
+  stdlib-only deterministic evaluator 和内嵌 mock fixtures；12 项测试 PASS，覆盖 correct grounding、wrong
+  instance、Provider 无正确候选、target absent false grounding、正确歧义、过期 slow evidence、身份/空间
+  错误、invalid observation、handoff drift 与零分母 null。当前只证明合同/evaluator mechanics；无 cohort、
+  provider/model、baseline 或科学 verdict。下一动作只允许设计 cohort materialization/去重/strata denominator/
+  Development-fresh 角色规则，禁止下载/物化数据、运行模型、P1-P3、Sky 与 Android/default-App。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。发布
   `BlindAssist Goal-Driven Visual Copilot V2` 当前系统蓝图，将原始完整 Copilot 方案与 GC/ADT 证据重新
   合并，而不再让连续实验编号代替产品能力路线。蓝图明确 Evidence Providers 与 Goal Copilot Brain

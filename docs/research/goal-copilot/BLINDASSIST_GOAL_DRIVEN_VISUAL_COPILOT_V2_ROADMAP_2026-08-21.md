@@ -1,6 +1,6 @@
 # BlindAssist Goal-Driven Visual Copilot V2 路线图
 
-状态：`CURRENT_SYSTEM_BLUEPRINT / DESTINATION_GOAL_GROUNDING_P0 / EVIDENCE_GATED / ASYNC_FAST_MID_SLOW / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_NEW_EXECUTION_AUTHORITY / DEFAULT_APP_UNCHANGED`
+状态：`CURRENT_SYSTEM_BLUEPRINT / DESTINATION_GOAL_GROUNDING_P0 / P0_CONTRACT_V1_FROZEN / MOCK_MECHANICS_PASS / EVIDENCE_GATED / ASYNC_FAST_MID_SLOW / NO_COHORT_BASELINE / R5_PERMANENTLY_CLOSED / DEFAULT_APP_UNCHANGED`
 
 本文是 BlindAssist Goal-Driven Visual Copilot V2 的系统设计蓝图。它把原始完整产品方案与 GC、ADT
 已经得到的证据重新合并，定义能力层次、运行时协作、研究顺序与停止边界。它不是新的 formal protocol，
@@ -219,5 +219,8 @@ Goal Grounding 的潜在 Sky surface 可以是 `rank_candidates`、`update_desti
 5. P1 稳定后接 P2 approach/completion；证据不足时再开启 P3 active perception；
 6. 仅在具体模块有可测 headroom 时建立独立 Sky task。
 
-当前下一动作只到第 1 步的 scoped protocol/data/evaluator design。没有授权采集、打开 fresh cohort、运行
-baseline、调用模型、启用 Sky、恢复 VIO/SLAM、接 Android/default App 或提出安全/产品成功主张。
+第 1 步的 P0 goal、schema 和 evaluator mechanics 已由
+[`P0 Goal Grounding Protocol V1`](P0_GROUNDING_PROTOCOL_V1.md) 冻结并通过 mock unit tests。当前下一动作
+只允许设计第 3 步所需的 cohort materialization、去重、strata denominator 与 Development/fresh 角色规则；
+没有授权下载、采集、物化 cohort、冻结 baseline 数值门、运行 baseline、调用模型、启用 Sky、恢复
+VIO/SLAM、接 Android/default App 或提出安全/产品成功主张。

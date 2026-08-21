@@ -81,8 +81,9 @@ risky execution. The mode controls process; it never upgrades evidence.
 
 ### Active BlindAssist mainline
 
-- The sole active product and research mainline is `BA-ADT-REAL-EVIDENCE` toward
-  the Goal-Driven Visual Copilot. Its current successor is owned by
+- The sole active product and research mainline is Goal-Driven Visual Copilot V2,
+  currently `BA_DESTINATION_GOAL_GROUNDING_R0`; completed BA-ADT work is bounded
+  Target Persistence and failure evidence, not an active tiny-object successor. Its current successor is owned by
   `docs/research/goal-copilot/README.md` and mirrored in
   `docs/research/ALGORITHM_RESEARCH_CURRENT.md`.
 - Treat every other research route, including Sky/GC search, D-ORACLE, SVRF,
