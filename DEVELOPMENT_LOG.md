@@ -4636,3 +4636,12 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   dry-run、无科学 verdict。新增 source normalization、source-record bridge、许可证汇总、
   hard-gate admission、显式 multiview 独立性、provider 泄漏审计与 canonical hash mechanics；
   S0/source 12 项与既有 evaluator 12 项合计 24/24 tests 通过，两个冻结 JSON Schema 有效。
+- 同日完成 `P0-S0-V0 Visual Candidate Generator Admission`，全程未下载 checkpoint、Mapillary 图像或运行
+  inference。固定上游引用的 `yolo_weights_750_image_set.pt` 已定位到 Hugging Face revision
+  `524c7b7d1ea56f7c4b6f03389ffc6a73b75fcdda` 与 LFS SHA-256
+  `f0cceccf483ad87a5c0756044014d420a34df49a0b76afa877540ba3b7763b0a`；其仓库只声明 Apache-2.0，未提供
+  训练图像、标注或数据许可 provenance。上游下载未 pin revision/hash，inference envelope 不完整，class filter
+  的 `or True` 放行所有类别，adapter 又丢失 confidence/class/per-candidate provenance，因此 fail closed 为
+  `P0_S0_VISUAL_CANDIDATE_GENERATOR_NOT_ADMITTED`。新增 stdlib validator 将权限锁死为
+  `VISUAL_PROPOSAL_ONLY`，禁止建立或升级任何 evaluator/Silver truth。随后用户级 Mapillary token 已配置并通过
+  极小只读 Graph API 鉴权、无图像下载；S0-R1 当前唯一剩余前置条件为一个合法 generator admission。

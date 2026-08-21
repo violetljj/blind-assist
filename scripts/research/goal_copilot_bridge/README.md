@@ -1,6 +1,6 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / P0_GROUNDING_CONTRACT_V1_MECHANICS_READY / P0_S0_SOURCE_OR_LICENSE_BLOCKED / NO_COHORT_BASELINE / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / P0_GROUNDING_CONTRACT_V1_MECHANICS_READY / MAPILLARY_TOKEN_READY / P0_S0_VISUAL_CANDIDATE_GENERATOR_NOT_ADMITTED / NO_COHORT_BASELINE / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
@@ -34,12 +34,20 @@ that is not configured, while a visual candidate generator is mandatory under th
 explicitly outside this zero-model run. No episode or model metric was emitted. Result and exact unblock conditions:
 [`P0-S0 result`](../../../docs/research/goal-copilot/P0_S0_SILVER_MATERIALIZATION_CANARY_RESULT_2026-08-21.md).
 
+`P0-S0-V0` then audited the exact upstream checkpoint without downloading or running it. The checkpoint bytes are
+identifiable, but training-data provenance, a replay-complete inference envelope, entrance-only filtering, and required
+per-candidate provenance are not established, so the generator is `NOT_ADMITTED`. A stdlib validator keeps its authority
+at `VISUAL_PROPOSAL_ONLY`. The Mapillary token is now configured and authenticated; generator admission is the sole
+remaining S0-R1 prerequisite. See the
+[`V0 result`](../../../docs/research/goal-copilot/P0_S0_VISUAL_CANDIDATE_GENERATOR_ADMISSION_RESULT_2026-08-21.md).
+
 Focused check:
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd -m unittest `
   scripts/research/goal_copilot_bridge/p0_s0_materialization/test_materializer.py `
-  scripts/research/goal_copilot_bridge/p0_s0_materialization/test_source_slice.py
+  scripts/research/goal_copilot_bridge/p0_s0_materialization/test_source_slice.py `
+  scripts/research/goal_copilot_bridge/p0_s0_materialization/test_candidate_generator_admission.py
 ```
 
 Authority: BlindAssist owns `GOAL-COPILOT-1`, its evaluator, sealed scenarios,
