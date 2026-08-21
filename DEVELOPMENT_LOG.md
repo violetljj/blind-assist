@@ -4626,3 +4626,13 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   签名内，只能保留为未准入 retrospective clue，不能授权 V2、conditional domain 或新
   fresh budget。Balanced operator-admission route 正式关闭，B4 局部结果与 B5 泛化负终态
   均保持不变，B5-B 继续未授权。
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。完成 `P0-S0 GoalGrounding-Silver
+  Materialization Canary` 最小实现与真实匿名源 slice。Ghent 单 bbox 固定 Overture
+  `2026-08-19.0` 的 1,102 buildings / 1,043 places，并取得 OSM 1,078 building ways / 32
+  entrance nodes；metric crosswalk 产生 630 个 place-building 与 20 个 entrance-building
+  candidate-only 关联，source report 确定性重放一致。因本机无 Mapillary token，且冻结
+  episode 必需的 image-space candidate generator 不在本轮零模型授权内，终态严格为
+  `P0_S0_SOURCE_OR_LICENSE_BLOCKED`：0 episode、0 `SILVER_A_PRIMARY`、0 evaluator episode
+  dry-run、无科学 verdict。新增 source normalization、source-record bridge、许可证汇总、
+  hard-gate admission、显式 multiview 独立性、provider 泄漏审计与 canonical hash mechanics；
+  S0/source 12 项与既有 evaluator 12 项合计 24/24 tests 通过，两个冻结 JSON Schema 有效。

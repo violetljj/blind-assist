@@ -1,6 +1,6 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / P0_GROUNDING_CONTRACT_V1_MECHANICS_READY / MOCK_TESTS_PASS / NO_COHORT_BASELINE / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / P0_GROUNDING_CONTRACT_V1_MECHANICS_READY / P0_S0_SOURCE_OR_LICENSE_BLOCKED / NO_COHORT_BASELINE / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
@@ -18,6 +18,28 @@ This surface does not run a provider, model, cohort, baseline, persistence, Sky 
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd -m unittest scripts/research/goal_copilot_bridge/p0_grounding/test_p0_evaluator.py
+```
+
+## P0-S0 silver materialization canary
+
+`p0_s0_materialization/` is the stdlib-only, fail-closed source-normalization and admission slice for
+`BA-P0-GOAL-GROUNDING-SILVER-V1`. `source_slice.py` summarizes bounded Overture/OSM GeoJSON/XML,
+preserves source licenses and IDs, computes metric containment/boundary crosswalk candidates, and grants no
+episode admission. `materializer.py` applies frozen map/geometry/multiview/conflict/lineage gates to at most
+20 already-normalized records, audits provider-visible input for evaluator-only leakage, hashes canonical JSON,
+and repeats materialization to require deterministic replay.
+
+The 2026-08-21 real Ghent source slice closed as `P0_S0_SOURCE_OR_LICENSE_BLOCKED`: Mapillary requires a token
+that is not configured, while a visual candidate generator is mandatory under the frozen bbox schema but was
+explicitly outside this zero-model run. No episode or model metric was emitted. Result and exact unblock conditions:
+[`P0-S0 result`](../../../docs/research/goal-copilot/P0_S0_SILVER_MATERIALIZATION_CANARY_RESULT_2026-08-21.md).
+
+Focused check:
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts/research/goal_copilot_bridge/p0_s0_materialization/test_materializer.py `
+  scripts/research/goal_copilot_bridge/p0_s0_materialization/test_source_slice.py
 ```
 
 Authority: BlindAssist owns `GOAL-COPILOT-1`, its evaluator, sealed scenarios,

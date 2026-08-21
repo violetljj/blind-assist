@@ -1,6 +1,6 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_RESEARCH_MAINLINE=DESTINATION_GOAL_GROUNDING / GOAL_GROUNDING_P0 / P0_CONTRACT_V1_FROZEN / MOCK_MECHANICS_PASS / NO_COHORT_BASELINE / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_RESEARCH_MAINLINE=DESTINATION_GOAL_GROUNDING / GOAL_GROUNDING_P0 / P0_CONTRACT_V1_FROZEN / P0_S0_SOURCE_OR_LICENSE_BLOCKED / NO_COHORT_BASELINE / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线，当前唯一 successor 为
 `BA_DESTINATION_GOAL_GROUNDING_R0`：先在真实多建筑、多入口场景中确定哪个实体满足用户目标，并将
@@ -31,7 +31,7 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| Goal Copilot / Destination Grounding | 在真实多建筑、多门场景中，哪个入口真正属于用户指定的目标建筑 | `PRODUCT_AND_RESEARCH_MAINLINE / GOAL_GROUNDING_P0 / P0_CONTRACT_V1_FROZEN / MOCK_MECHANICS_12_OF_12_PASS / NO_COHORT_BASELINE / TARGET_PERSISTENCE_FOUNDATION_RETAINED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED` | [Goal Copilot current](goal-copilot/README.md) / [P0 V1 protocol](goal-copilot/P0_GROUNDING_PROTOCOL_V1.md) | `BA_DESTINATION_GOAL_GROUNDING_R0`：只设计 cohort materialization、去重、strata denominator 与 Development/fresh 角色规则；不下载/采集/物化 cohort，不冻结数值门或运行 baseline | 继续 tiny-object teacher/R6/R7；另开 carrot VIO/SLAM rescue；先造模块群；让 Sky 决定研究方向；接 detector/OCR/VLM/SAM；未冻结 cohort/数值门即运行 baseline；启动 Android/default App | 否 |
+| Goal Copilot / Destination Grounding | 目标建筑入口归属 | `PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / P0_CONTRACT_V1_FROZEN / P0_S0_SOURCE_OR_LICENSE_BLOCKED / NO_COHORT / NO_BASELINE / DEFAULT_APP_UNCHANGED` | [current](goal-copilot/README.md) / [S0 result](goal-copilot/P0_S0_SILVER_MATERIALIZATION_CANARY_RESULT_2026-08-21.md) | `BA_DESTINATION_GOAL_GROUNDING_R0`：合规 Mapillary token + 冻结/授权 visual candidate generator 后新建 S0 | 将 map/cluster/fixture 升为 silver；绕过 token；未授权模型、baseline、Sky、Android | 否 |
 | D-ORACLE-1 causal ladder | 三臂 matched oracle intervention 定位 downstream target-policy stack 与 estimated representation 的损失 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / PROTOCOL_FROZEN / NO_EXECUTION / NO_SEARCH` | [Failure diagnosis current](failure-synthesis/README.md) | 无；只有用户显式改变主线后才可重开 | 执行 source/action truth/policy lock；增加第四竞争臂；提前拆H3/H4；训练/调policy/threshold；读取outcome后换parent/gate | 否 |
 | SVRF / Scale-free Visual Risk Field | 纯 RGB 派生的相对深度动态、局部扩张和视觉通道侵入能否形成稳定相对风险排序 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / STREAM_INDEX_NOT_ACTIVE / REAL_O0_NOT_RUN / NO_TRAINING` | [SVRF current](svrf/README.md) | 无；只有用户显式改变主线并有新的 representation-headroom 前置证据后，才可另行恢复 | bus canary、member index、payload/truth materialization、O0、训练或接 Android | 否 |
 | VI-Task Geometry | 同刚体 RGB+IMU 自校准 metric pose/ground，再为未来 task geometry 分配 computation/parallax budget | `PAUSED_BY_PURE_RGB_SELECTION / G0_PROTOCOL_RETAINED / REAL_G0_NOT_RUN / NO_TOF / NO_TRAINING` | [VI-Task Geometry current](vi-task-geometry/README.md) | 无；只有用户明确恢复 RGB+IMU metric-frame 路线才可重开 preflight | 实现/采集/运行 G0；用手机 IMU配眼镜视频；重跑 ARCore D45；提前训练、主动分配或接 Android | 否 |
