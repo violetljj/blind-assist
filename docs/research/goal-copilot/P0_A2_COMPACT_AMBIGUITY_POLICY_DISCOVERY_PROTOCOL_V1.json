@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "protocol_id": "P0-A2-COMPACT-AMBIGUITY-POLICY-DISCOVERY-V1",
+  "status": "FROZEN_BEFORE_DETERMINISTIC_SEARCH",
+  "data_role": "CONSUMED_DEVELOPMENT_ONLY",
+  "research_question": "Can a policy with at most three threshold predicates materially improve A1 ambiguous parent-macro false commitment without losing any resolvable coverage or committed correctness?",
+  "a1_binding": {
+    "protocol_path": "docs/research/goal-copilot/P0_A1_AMBIGUITY_GATE_DISCOVERY_PROTOCOL_V1.json",
+    "protocol_file_sha256": "282c398b31c63c1cf276be8e980b8cf730ee040fe8f1a448d2ba8f3810c797a3",
+    "protocol_content_sha256": "810c50835bc667193a0add5cb776c91dc656e0faec5ee822d556ac959468c484",
+    "result_path": "artifacts.local/evidence/p0-s0/2026-08-21-p0-a1-ambiguity-gate-discovery-v1/result.json",
+    "result_file_sha256": "91a35f039f2bc7b7439cbcbd218b64549109f87f2674d750cbba04021fcea0b6",
+    "result_content_sha256": "31350c374ea4cb737252468ea5ef5ef75e84f777a1e4d814c21aa8c1f0352984"
+  },
+  "incumbent": {
+    "name": "P0_A1_COMPACT_RULE",
+    "predicates": [
+      {"feature": "brain_confidence", "direction": "min", "threshold": 0.85},
+      {"feature": "candidate_center_dispersion", "direction": "max", "threshold": 0.2423407460503519}
+    ],
+    "operator": "and",
+    "ambiguous_parent_macro_false_commit": 0.19607843137254902,
+    "ambiguous_episode_micro_false_commit": 0.21568627450980393,
+    "resolvable_commit_coverage": 1.0,
+    "committed_resolvable_correctness": 0.85
+  },
+  "search_space": {
+    "features": "exactly the eight A1 runtime features with their A1 semantic directions",
+    "threshold_grid": "exactly the A1 unlabeled grid: unique values when count <= 12, otherwise nearest-rank q=0.0,0.1,...,1.0",
+    "maximum_predicates": 3,
+    "maximum_boolean_depth": 2,
+    "repeated_feature_in_one_policy": false,
+    "allowed_monotone_forms": [
+      "A",
+      "A_AND_B",
+      "A_OR_B",
+      "A_AND_B_AND_C",
+      "A_OR_B_OR_C",
+      "(A_AND_B)_OR_C",
+      "(A_OR_B)_AND_C"
+    ],
+    "gate_semantics": "Policies may only retain an existing Terra SELECT or turn it into ABSTAIN; selection and ranking are immutable."
+  },
+  "objective": {
+    "hard_constraints": {
+      "resolvable_commit_coverage": 1.0,
+      "minimum_committed_resolvable_correctness": 0.85,
+      "maximum_predicates": 3
+    },
+    "primary": "minimize ambiguous venue-parent macro false commit",
+    "tie_breakers": [
+      "minimize ambiguous episode-micro false commit",
+      "minimize worst-parent false commit",
+      "minimize predicate count",
+      "canonical lexical expression"
+    ],
+    "minimum_meaningful_parent_macro_absolute_improvement": 0.05
+  },
+  "worst_parent_report": {
+    "bins": ["ZERO", "GT_0_LE_0_25", "GT_0_25_LE_0_50", "GT_0_50"],
+    "include_parent_ids_and_rates": true
+  },
+  "terminal_rule": {
+    "CLEAR_COMPACT_POLICY_IMPROVEMENT": "A hard-feasible policy improves A1 ambiguous parent-macro false commit by at least 0.05 absolute.",
+    "COMPLEXITY_ONLY_BUYS_ABSTENTION": "No hard-feasible meaningful improvement exists, but a policy retaining at least 65% resolvable coverage and at least 85% committed correctness buys at least 0.05 macro improvement by dropping coverage.",
+    "A1_COMPACT_RULE_RETAINED_NO_MEANINGFUL_COMPLEXITY_GAIN": "Neither condition above holds."
+  },
+  "prohibitions": [
+    "ZERO_NEW_PARENT",
+    "NO_NEW_MODEL_CALL",
+    "NO_NEW_FEATURE",
+    "NO_SKY",
+    "NO_NEURAL_NET_RANDOM_FOREST_XGBOOST_OR_LEARNED_CALIBRATOR",
+    "NO_RANKING_OR_EVALUATOR_CHANGE",
+    "NO_POLICY_ADMISSION",
+    "NO_SCIENTIFIC_OR_GENERALIZATION_CLAIM"
+  ],
+  "claim_ceiling": "CONSUMED_DEVELOPMENT_COMPACT_SYMBOLIC_POLICY_DISCOVERY_ONLY_NO_POLICY_ADMISSION_OR_SCIENTIFIC_VERDICT"
+}
