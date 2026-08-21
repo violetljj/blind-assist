@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_AMRM0_ADAPTIVE_MULTI_VIEW_REFERENT_MEMORY / MAIN_EXPERIMENT_PATH / MATCHED_CANARY_IMPLEMENTED / PERFORMANCE_NOT_RUN / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_AMRM0_ADAPTIVE_MULTI_VIEW_REFERENT_MEMORY / MATCHED_CANARY_TERMINAL=P1_AMRM0_MEMORY_POISONING_FAIL / FAILURE_AUTOPSY_ONLY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
@@ -119,11 +119,17 @@ LoFTR、keyframe memory、SLAM、VIO 或 world-relative state。
 
 ## 唯一 successor
 
-`P1_AMRM0_DATA_ADAPTER_AND_MATCHED_DEVELOPMENT_CANARY` 已实现，performance 尚未运行。它固定复用 consumed P1-D0
+`P1_AMRM0_DATA_ADAPTER_AND_MATCHED_DEVELOPMENT_CANARY` 已执行并以
+`P1_AMRM0_MEMORY_POISONING_FAIL` 终止。它固定复用 consumed P1-D0
 15 episodes 与 P1-A4 的 exact candidate bbox stream；A4 sealed output 是 correspondence baseline，AMRM 只能在同一
 candidate 上 commit/abstain。Target 与 masked-context 继承 P1-A2 unchanged DINOv2-S dense gate，不搜索阈值。
 Prediction 与 contribution trace 写完后才允许 private evaluation。真实 physical viewpoint truth 不存在，固定报告
 2D bearing-change proxy 并将 physical viewpoint 指标标为 `NOT_EVALUABLE`。
+
+结果见 [`P1-AMRM0 matched Development canary`](P1_AMRM0_MATCHED_DEVELOPMENT_CANARY_RESULT_2026-08-22.md)：
+AMRM0 precision `9.48% -> 10.65%`、coverage `96.87% -> 80.13%`，但 wrong-instance reacquisition
+`12 -> 38`，发生 17 次 verified-bank poisoning，且 newly verified KF 对正确重捕获贡献为 0。唯一 successor 是
+保留 outcome 的 poisoning failure autopsy；不得调阈值、增加候选或启动 AMRM1/2/3、VLM、VIO/SLAM/geometry。
 
 网络场景 3x5 与 action-responsive sanity 均已完成。P1-AMRM0 不自动进入 minimal geometry；只有真实 canary 把
 主要剩余失败定位为 translation ambiguity 后，才允许另行考虑 VIO/triangulation/local parent frame。

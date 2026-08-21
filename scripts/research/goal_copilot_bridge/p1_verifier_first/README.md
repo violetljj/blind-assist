@@ -1,6 +1,6 @@
 # P1-AMRM0 adaptive multi-view referent memory
 
-状态：`MAIN_EXPERIMENT_PATH / MATCHED_CANARY_IMPLEMENTED / PERFORMANCE_NOT_RUN / DEFAULT_APP_UNCHANGED`
+状态：`MATCHED_CANARY_TERMINAL=P1_AMRM0_MEMORY_POISONING_FAIL / FAILURE_AUTOPSY_ONLY / DEFAULT_APP_UNCHANGED`
 
 This stdlib-only module now owns the P1-AMRM0 main experiment path. P1-VF0 remains its verifier foundation. AMRM0 asks
 whether a compact bank of independently verified distance/viewpoint/context observations can improve same-instance
@@ -51,6 +51,10 @@ E:\codex-tools\bin\blindassist-python.cmd -m unittest `
   scripts/research/goal_copilot_bridge/p1_verifier_first/test_matched_canary.py
 ```
 
-Claim ceiling before execution: canary implementation mechanics only. The 31 tests do not establish AMRM utility.
-Physical viewpoint truth is unavailable; the canary reports a public 2D bearing-change proxy and marks physical
-viewpoint reacquisition `NOT_EVALUABLE`. Minimal geometry remains conditional on a measured translation failure.
+The 31 tests establish contract mechanics only. Physical viewpoint truth is unavailable; the canary reports a public
+2D bearing-change proxy and marks physical viewpoint reacquisition `NOT_EVALUABLE`.
+
+Executed result: identity precision `9.48% -> 10.65%` at coverage `96.87% -> 80.13%`, but wrong-instance
+reacquisition increased `12 -> 38`, verified-bank poisoning was 17, and newly accumulated keyframes contributed zero
+true reacquisitions. This is `P1_AMRM0_MEMORY_POISONING_FAIL`, not AMRM value. The only successor is a read-only,
+outcome-preserving poisoning autopsy; no threshold tuning or AMRM/geometry expansion is authorized.

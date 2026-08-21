@@ -1,6 +1,6 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / P1_AMRM0_ADAPTIVE_MULTI_VIEW_REFERENT_MEMORY / MAIN_EXPERIMENT_PATH / MATCHED_CANARY_IMPLEMENTED / PERFORMANCE_NOT_RUN / NO_SCIENTIFIC_VERDICT / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / P1_AMRM0_ADAPTIVE_MULTI_VIEW_REFERENT_MEMORY / MATCHED_CANARY_TERMINAL=P1_AMRM0_MEMORY_POISONING_FAIL / FAILURE_AUTOPSY_ONLY / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
@@ -21,11 +21,12 @@ E:\codex-tools\bin\blindassist-python.cmd -m unittest `
   scripts/research/goal_copilot_bridge/p1_verifier_first/test_matched_canary.py
 ```
 
-`run_matched_canary.py` is the implemented but not-yet-run successor. It binds the consumed P1-D0 cohort, sealed P1-A4
+`run_matched_canary.py` executed the consumed P1-D0 cohort against the sealed P1-A4
 candidate stream/baseline, and inherited P1-A2 DINOv2-S dense gate before private truth access. It writes a public AMRM
 prediction and memory-contribution trace first, then evaluates identity precision/coverage, false continuity,
 same/wrong-instance reacquisition, abstention, stale timing, friction, poisoning, bank growth, scale change, and the
-explicit 2D bearing proxy. It performs no sweep or AMRM-specific data generation.
+explicit 2D bearing proxy. The terminal is `P1_AMRM0_MEMORY_POISONING_FAIL`: 17 poisoned admissions and zero correct
+reacquisitions attributable to newly accumulated keyframes. It performs no sweep or AMRM-specific data generation.
 
 ## Last-10-metre current-frame regrounding
 

@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-22（Asia/Hong_Kong）；执行者：violjjet。执行 consumed P1-D0 matched canary 并收口为
+  `P1_AMRM0_MEMORY_POISONING_FAIL`。Candidate parity、zero added candidate/frame/search 与 zero post-init GT read
+  均通过；AMRM identity precision `9.48% -> 10.65%`、coverage `96.87% -> 80.13%`，但 wrong-instance
+  reacquisition `12 -> 38`，出现 17 次 verified-bank poisoning，newly verified KF 对 true reacquisition 贡献为 0。
+  不建立 AMRM identity-value signal；唯一 successor 是 outcome-preserving poisoning failure autopsy，禁止调阈值或
+  扩展 AMRM/VLM/VIO/SLAM/geometry。结果：
+  [P1-AMRM0 matched Development canary](docs/research/goal-copilot/P1_AMRM0_MATCHED_DEVELOPMENT_CANARY_RESULT_2026-08-22.md)。
+
 - 时间：2026-08-22（Asia/Hong_Kong）；执行者：violjjet。完成
   `P1_AMRM0_DATA_ADAPTER_AND_MATCHED_DEVELOPMENT_CANARY` outcome-blind implementation，performance 未运行。
   两臂固定复用 consumed P1-D0 15 episodes / 1,724 frames 与 P1-A4 exact stream 的 926 candidate / 798 NONE；
