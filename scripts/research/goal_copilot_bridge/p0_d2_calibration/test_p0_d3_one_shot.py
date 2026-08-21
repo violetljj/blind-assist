@@ -63,6 +63,32 @@ class D3RosterTest(unittest.TestCase):
         self.assertEqual(4, len(selected))
         self.assertEqual(4, len({item["sequence_id"] for item in selected}))
 
+    def test_adjudication_does_not_replace_unavailable_parent(self) -> None:
+        names = ["Visible", "Missing 1", "Missing 2", "Missing 3", "Missing 4", "Missing 5"]
+        roster = {
+            "policy_id": d3.POLICY_ID, "report_sha256": "roster",
+            "parents": [{"place_name": name} for name in names],
+        }
+        acquisition = {
+            "roster_sha256": "roster", "report_sha256": "acquisition", "replacement_performed": False,
+            "materialized_parent_count": 1,
+            "parents": [{"place_name": "Visible", "place_id": "p1", "building_id": "b1", "status": "MATERIALIZED", "frames": [{"id": "f1"}]}] + [
+                {"place_name": name, "place_id": f"p{index}", "building_id": f"b{index}", "status": "NO_ELIGIBLE_FRAME_NO_REPLACEMENT", "frames": []}
+                for index, name in enumerate(names[1:], start=2)
+            ],
+        }
+        decisions = {"parents": [
+            {"place_name": "Visible", "resolution": "UNIQUE", "evidence_note": "one", "valid_targets": [{"frame_id": "f1", "region_normalized_xyxy": [0.1, 0.1, 0.2, 0.2]}]},
+            *({"place_name": name, "resolution": "NOT_OBSERVED", "evidence_note": "none", "valid_targets": []} for name in names[1:]),
+        ]}
+        prior = {"report_sha256": "prior", "claim_ceiling": "SILVER_B_DEVELOPMENT_ONLY_NO_EXACT_BRAIN_OR_END_TO_END_ACCURACY", "episodes": []}
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as value:
+            review = d3.adjudicate(roster, acquisition, decisions, [prior], Path(value) / "out")
+        self.assertEqual(sorted(names[1:]), review["unavailable_parent_names"])
+        self.assertFalse(review["second_batch_authorized"])
+
 
 if __name__ == "__main__":
     unittest.main()

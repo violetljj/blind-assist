@@ -20,6 +20,7 @@ from typing import Any
 
 import requests
 
+from scripts.research.goal_copilot_bridge.p0_d2_calibration import core
 from scripts.research.goal_copilot_bridge.p0_s0_materialization import materializer, source_slice
 
 
@@ -418,6 +419,109 @@ def acquire(roster: Mapping[str, Any], output_dir: Path, token: str) -> dict[str
     return report
 
 
+def adjudicate(
+    roster: Mapping[str, Any],
+    acquisition: Mapping[str, Any],
+    decisions: Mapping[str, Any],
+    prior_cohorts: Sequence[Mapping[str, Any]],
+    output_dir: Path,
+) -> dict[str, Any]:
+    """Seal the single score-blind review and apply the existing D2 frontdoor."""
+    _require(roster.get("policy_id") == POLICY_ID, "roster policy drift")
+    _require(acquisition.get("roster_sha256") == roster.get("report_sha256"), "acquisition roster drift")
+    _require(acquisition.get("replacement_performed") is False, "replacement is forbidden")
+    roster_names = [str(item["place_name"]) for item in roster.get("parents", [])]
+    _require(len(roster_names) == PARENT_COUNT and len(set(roster_names)) == PARENT_COUNT, "frozen roster parent set drift")
+    by_name = {str(item["place_name"]): item for item in acquisition.get("parents", [])}
+    _require(len(by_name) == PARENT_COUNT and set(by_name) == set(roster_names), "acquisition parent set differs from frozen roster")
+    decision_rows = decisions.get("parents", [])
+    _require(len(decision_rows) == len(by_name), "every frozen parent requires exactly one terminal review row")
+    _require(len({str(item["place_name"]) for item in decision_rows}) == len(decision_rows), "duplicate reviewed parent")
+    episodes = []
+    resolution_counts: Counter[str] = Counter()
+    unavailable = []
+    for decision in decision_rows:
+        name = str(decision["place_name"])
+        _require(name in by_name, f"unknown reviewed parent: {name}")
+        acquired = by_name[name]
+        resolution = str(decision["resolution"])
+        if acquired["status"] != "MATERIALIZED":
+            _require(resolution == "NOT_OBSERVED", "unmaterialized parent cannot receive visual truth")
+            _require(not decision.get("valid_targets"), "unmaterialized parent cannot carry targets")
+            unavailable.append(name)
+            continue
+        _require(resolution in {"UNIQUE", "SET_VALUED", "AMBIGUOUS"}, "unknown visual resolution")
+        targets = decision.get("valid_targets", [])
+        if resolution == "UNIQUE":
+            _require(len(targets) == 1, "UNIQUE requires one valid target")
+        elif resolution == "SET_VALUED":
+            _require(len(targets) >= 2, "SET_VALUED requires multiple valid targets")
+        else:
+            _require(not targets, "AMBIGUOUS cannot carry valid targets")
+        acquired_frames = {str(item["id"]) for item in acquired.get("frames", [])}
+        for target in targets:
+            _require(str(target["frame_id"]) in acquired_frames, "valid target frame outside frozen parent")
+            region = target.get("region_normalized_xyxy")
+            _require(isinstance(region, list) and len(region) == 4, "valid target region missing")
+            _require(0 <= float(region[0]) < float(region[2]) <= 1 and 0 <= float(region[1]) < float(region[3]) <= 1, "invalid normalized target region")
+        episodes.append({
+            "episode_id": f"p0-d3--{acquired['place_id']}",
+            "target_building_id": acquired["building_id"],
+            "source": {"roster_sha256": roster["report_sha256"], "acquisition_sha256": acquisition["report_sha256"]},
+            "evaluator_episode": {
+                "episode_id": f"p0-d3--{acquired['place_id']}",
+                "goal_spec": {"target_name": name, "goal_text": f"Find the entrance to {name}."},
+                "observation_window": {"frame_ids": sorted(acquired_frames)},
+                "goal_reference_resolution": resolution,
+                "valid_target_instances": targets,
+                "review_evidence_note": str(decision["evidence_note"]),
+            },
+        })
+        resolution_counts[resolution] += 1
+    cohort = {
+        "schema_version": 1,
+        "data_role": "CONSUMED_DEVELOPMENT_P0_D3_ONE_SHOT_CLOSURE",
+        "episodes": episodes,
+        "resolution_counts": dict(sorted(resolution_counts.items())),
+        "claim_ceiling": "SILVER_B_DEVELOPMENT_ONLY_NO_EXACT_BRAIN_OR_END_TO_END_ACCURACY",
+    }
+    cohort["report_sha256"] = materializer.content_sha256(cohort)
+    frontdoor = core.audit_data_frontdoor([*prior_cohorts, cohort])
+    frontdoor["input_cohort_report_sha256s"] = [str(value["report_sha256"]) for value in [*prior_cohorts, cohort]]
+    terminal = (
+        "P0_D3_ONE_SHOT_FRONTDOOR_PASS_COHORT_LOCK_REQUIRED"
+        if frontdoor["status"] == "P0_D2_DATA_FRONTDOOR_PASS"
+        else "CURRENT_PUBLIC_DATA_SOURCE_INSUFFICIENT_FOR_CALIBRATION_DESIGN"
+    )
+    frontdoor["p0_d3_terminal"] = terminal
+    frontdoor["second_batch_authorized"] = False
+    frontdoor["report_sha256"] = materializer.content_sha256(frontdoor)
+    review = {
+        "schema_version": 1,
+        "policy_id": POLICY_ID,
+        "status": terminal,
+        "roster_sha256": roster["report_sha256"],
+        "acquisition_sha256": acquisition["report_sha256"],
+        "review_visibility": "FULL_FRAME_ONLY_NO_PROPOSAL_NO_BRAIN_NO_MODEL_SCORE",
+        "fixed_parent_count": PARENT_COUNT,
+        "materialized_parent_count": acquisition["materialized_parent_count"],
+        "reviewed_parent_count": len(episodes),
+        "unavailable_parent_names": sorted(unavailable),
+        "resolution_counts": dict(sorted(resolution_counts.items())),
+        "replacement_performed": False,
+        "second_batch_authorized": False,
+        "cohort_sha256": cohort["report_sha256"],
+        "frontdoor_sha256": frontdoor["report_sha256"],
+        "claim_ceiling": "CONSUMED_DEVELOPMENT_ONE_SHOT_DATA_CLOSURE_ONLY_NO_MODEL_OR_CALIBRATION_PERFORMANCE_CLAIM",
+    }
+    review["report_sha256"] = materializer.content_sha256(review)
+    output_dir.mkdir(parents=True, exist_ok=False)
+    materializer.write_json(output_dir / "brain-cohort.json", cohort)
+    materializer.write_json(output_dir / "frontdoor-audit.json", frontdoor)
+    materializer.write_json(output_dir / "review-audit.json", review)
+    return review
+
+
 def _load(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -433,6 +537,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     acquisition = subparsers.add_parser("acquire")
     acquisition.add_argument("--roster", required=True, type=Path)
     acquisition.add_argument("--output-dir", required=True, type=Path)
+    adjudication = subparsers.add_parser("adjudicate")
+    adjudication.add_argument("--roster", required=True, type=Path)
+    adjudication.add_argument("--acquisition", required=True, type=Path)
+    adjudication.add_argument("--decisions", required=True, type=Path)
+    adjudication.add_argument("--prior-cohort", action="append", required=True, type=Path)
+    adjudication.add_argument("--output-dir", required=True, type=Path)
     args = parser.parse_args(argv)
     if args.command == "plan":
         slices = []
@@ -448,6 +558,13 @@ def main(argv: Sequence[str] | None = None) -> int:
         roster = plan_roster(slices, [_load(path) for path in args.exclude_cohort], [_load(path) for path in args.exclude_roster])
         materializer.write_json(args.output, roster)
         print(json.dumps({"parents": [{key: row[key] for key in ("city", "place_name", "venue_family", "building_id")} for row in roster["parents"]], "report_sha256": roster["report_sha256"]}, ensure_ascii=False, indent=2))
+        return 0
+    if args.command == "adjudicate":
+        report = adjudicate(
+            _load(args.roster), _load(args.acquisition), _load(args.decisions),
+            [_load(path) for path in args.prior_cohort], args.output_dir,
+        )
+        print(json.dumps(report, ensure_ascii=False, indent=2))
         return 0
     token = os.environ.get("MAPILLARY_ACCESS_TOKEN") or os.environ.get("MAPILLARY_TOKEN")
     _require(bool(token), "MAPILLARY_ACCESS_TOKEN missing from process environment")

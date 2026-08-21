@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：Codex。完成 P0-D3 targeted set-valued one-shot closure。
+  在任何新 RGB 前冻结 6 个 Overture taxonomy/building-geometry parents，Mapillary radius acquisition 固定取得
+  5/6 parents、20 frames；UGent Campus Aula 为 0 eligible frame，按协议未替换。score-blind full-frame review
+  得到 `UNIQUE=1 / SET_VALUED=1 / AMBIGUOUS=3 / NOT_OBSERVED=1`；合并 consumed Development 后为
+  92 episodes / 34 parents，`UNIQUE=12 / SET_VALUED=3 / AMBIGUOUS=26`，resolvable union 13，唯一失败门为
+  `SET_VALUED 3<4`。终态 `CURRENT_PUBLIC_DATA_SOURCE_INSUFFICIENT_FOR_CALIBRATION_DESIGN`，Logistic/Conformal
+  继续 `FIT_NOT_AUTHORIZED`；禁止第 2 批和第 7 个 parent。本轮未运行 detector、Terra/V3、拟合或 Sky；后续只允许
+  用现有 consumed Development 做低 claim cheap discovery，出现 signal 后再另立科学确认。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：violjjet。完成 P0-D1 consumed-development ambiguity-
   calibration canary。venue-parent macro 审计确认原始 `23/31` unsupported grounding 集中于 8 个 parents，
   micro `0.7419`、macro `0.6667`。固定 47-goal cohort、Grounding DINO、冻结 evaluator 与

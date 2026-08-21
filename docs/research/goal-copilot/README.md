@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / PRIOR_ART_ASSIMILATED / P0_CONTRACT_V1_REFERENCE_SET_ADDENDUM / GROUNDING_DINO_PROPOSAL_PATH_RUN / SILVER_B_DEVELOPMENT / P0_D1_PARENT_DISJOINT_FAILURE_REPRODUCED / P0_D2_DATA_FRONTDOOR_INSUFFICIENT / FIT_NOT_AUTHORIZED / NO_SCIENTIFIC_VERDICT / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / PRIOR_ART_ASSIMILATED / P0_CONTRACT_V1_REFERENCE_SET_ADDENDUM / GROUNDING_DINO_PROPOSAL_PATH_RUN / SILVER_B_DEVELOPMENT / P0_D1_PARENT_DISJOINT_FAILURE_REPRODUCED / P0_D3_ONE_SHOT_CLOSED_SOURCE_INSUFFICIENT / P0_D2_DATA_FRONTDOOR_INSUFFICIENT / FIT_NOT_AUTHORIZED / NO_SECOND_DATA_BATCH / NO_SCIENTIFIC_VERDICT / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)；P0 冻结合同与机器合同见 [`Protocol V1`](P0_GROUNDING_PROTOCOL_V1.md) / [`JSON`](p0_grounding_protocol_v1.json)。
 本页仍是动态执行状态真源；当前已完成 schema/evaluator mechanics、真实 map+geometry materialization、
@@ -205,8 +205,15 @@ candidate pool/order、evaluator、parent-level calibration 与 `COMMIT / SET / 
 得到 16 episodes / 8 新 venue parents：`UNIQUE=4 / SET_VALUED=0 / AMBIGUOUS=12`。合并 consumed Development
 后共有 29 parents，`UNIQUE=11 / SET_VALUED=2 / AMBIGUOUS=23`，resolvable union 11；因 `SET_VALUED<4`
 且 resolvable `<12`，数据前门关闭，logistic/conformal fitting 均未授权、未运行。详见
-[`D2 enrichment/frontdoor result`](P0_D2_RESOLVABLE_ENRICHMENT_AND_FRONTDOOR_RESULT_2026-08-21.md)。下一批只补
-至少两个新 SET_VALUED parents 与一个新 resolvable parent；不得用 frame 或 candidate 数补 parent 分母。
+[`D2 enrichment/frontdoor result`](P0_D2_RESOLVABLE_ENRICHMENT_AND_FRONTDOOR_RESULT_2026-08-21.md)。该结果当时把缺口
+压缩为至少两个新 SET_VALUED parents 与一个新 resolvable parent；后续是否补数由下面 D3 止损终态取代。
+
+随后 [`P0-D3 one-shot closure`](P0_D3_ONE_SHOT_CLOSURE_RESULT_2026-08-21.md) 按固定 6-parent、无替换、无第二批
+止损线完成。5/6 parents 取得 20 个 Mapillary frames，score-blind review 为 `UNIQUE=1 / SET_VALUED=1 /
+AMBIGUOUS=3 / NOT_OBSERVED=1`；合并后 `UNIQUE=12 / SET_VALUED=3 / AMBIGUOUS=26`，resolvable union 13。
+唯一失败门为 `SET_VALUED 3<4`，终态 `CURRENT_PUBLIC_DATA_SOURCE_INSUFFICIENT_FOR_CALIBRATION_DESIGN`；
+Logistic/Conformal 继续不授权，且永久禁止为这套 frontdoor 再采第 2 批。P0 可转入现有 consumed Development 上的
+低 claim cheap discovery，严格确认只留给出现明确 signal 后的独立阶段。
 
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim
