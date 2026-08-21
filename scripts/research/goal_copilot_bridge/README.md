@@ -1,8 +1,25 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / P0_POLICY_DISCOVERY_CLOSED / P1_TARGET_PERSISTENCE_R0_CONTRACT / SYNTHETIC_MECHANICS_ONLY / NO_SCIENTIFIC_VERDICT / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / BLINDASSIST_LAST_10M_REGROUNDING_V0 / ENGINEERING_READY / FIELD_3X5_REQUIRED / P1_CLOSED / NO_REFERENT_PERSISTENCE / NO_SCIENTIFIC_VERDICT / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
+
+## Last-10-metre current-frame regrounding
+
+`last_10m_regrounding_v0/` is the active engineering surface. It adapts one already-produced, unchanged P0 output
+per fresh frame into the bounded `SCAN -> CURRENT_CANDIDATE -> ALIGN -> ADVANCE_AND_REOBSERVE ->
+ARRIVAL_CONFIRM -> COMPLETE / RESCAN / ABSTAIN` control loop. Persistent state deliberately excludes candidates,
+regions, images, features, scores, handoffs, and identity; prior details are audit-only JSONL. The runner initializes
+the exact 3-real-location x 5-episode roster, records each event, requires field adjudication of false entrance
+confirmation, and emits only the requested mechanical metrics and three attribution classes. It does not execute P1,
+modify the P0 provider, or create scientific/safety authority.
+
+Focused check:
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts/research/goal_copilot_bridge/last_10m_regrounding_v0/test_core.py
+```
 
 ## P1-R0 Target Persistence mechanics
 

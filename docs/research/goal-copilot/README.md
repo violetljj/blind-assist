@@ -1,187 +1,91 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_A_CLOSED / P1_W0_DESIGN_COMPLETE / P1_W1_STAGE_A_CONSUMED_NOT_EVALUABLE_INTERFACE / NO_STAGE_B / NO_POLICY_ADMISSION / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BLINDASSIST_LAST_10M_REGROUNDING_V0 / ENGINEERING_READY / FIELD_3X5_REQUIRED / P1_CLOSED / NO_P1_W3 / NO_REFERENT_PERSISTENCE / NO_SCIENTIFIC_CONFIRMATION / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
-Goal Copilot 动态执行状态真源；详细历史、协议和数字留在链接的独立结果文件，不在 current 重复维护。
+Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
 
-## 当前主线：P1 Target Persistence
+## 当前工程里程碑
 
-P1-R0 回答“现在观察到的是否仍是 P0 刚才建立的同一个 physical referent”，不重新判断哪个门满足目标。
-规范性边界是：
+当前唯一执行面是 `BLINDASSIST_LAST_10M_REGROUNDING_V0`：复用且不修改现有 P0 named-building entrance
+grounding/provider，完成“入口寻找—引导—重新观测—确认”的当前帧机械闭环。只支持清晰、相对唯一的建筑入口。
 
-> **Persistence may preserve or reject identity continuity; it may not establish semantic referent validity.**
-
-`NO_REFERENT` 永远保持 `UNBOUND / referent_id=null`；多帧一致性不能反向证明 P0 correctness。完整合同与
-机器合同见 [`P1-R0 contract`](P1_R0_TARGET_PERSISTENCE_CONTRACT_V1.md) /
-[`JSON`](P1_R0_TARGET_PERSISTENCE_PROTOCOL_V1.json)。
-
-P1 最小状态固定为：
+最小状态机：
 
 ```text
-UNBOUND
-TRACKING
-UNCERTAIN
-TEMP_UNOBSERVABLE
-LOST
+SCAN
+-> CURRENT_CANDIDATE
+-> ALIGN
+-> ADVANCE_AND_REOBSERVE
+-> ARRIVAL_CONFIRM
+-> COMPLETE / RESCAN / ABSTAIN
 ```
 
-系统同时积累 identity support 与 contradiction；memory 必须能失去信心。Reacquisition 是事件，不是
-永久状态；`TRACKING` 之外不得断言当前 candidate。Active/Temporal Grounding 是独立未来模块，不能塞进
-P1-R0 越权解决 `AMBIGUOUS / NO_REFERENT`。
+每次转向、前进或重扫后必须提交新的 frame 并重新调用 P0 grounding。控制 state 不保存 candidate id、bbox、
+图像、特征、score、handoff 或 identity，也不比较相邻帧；P0 persistence handoff 只校验当前帧绑定后丢弃。
+无唯一可靠 candidate 时固定输出“没有可靠找到入口，请停下并缓慢重新扫描。”；连续三次无法确认后进入
+`ABSTAIN`；即使持续有候选，12 条指令仍未完成也必须停止。两种停止都提供现场工作人员或可信任真人协助出口。
+任何指令都不得输出“前方安全”。
 
-JSON schemas、deterministic evaluator、八个 synthetic mechanics fixtures 与 P1-D0 truth firewall 保持冻结。
-[`P1-R0 consumed ADT baseline`](P1_R0_CONSUMED_ADT_BASELINE_RESULT_2026-08-21.md) 已运行一个只读 RGB 的
-sparse-flow + fixed-template baseline；它只建立 consumed Development failure structure，不建立科学、产品或 safety 性能。
+到达不是历史 identity 延续：当前帧出现居中、近距机械 cue 后先停下，再用一个新的当前帧重新 grounding；
+只有新的输出仍独立满足当前帧条件才能 `COMPLETE`。该 bbox cue 只是机械任务规则，不是距离或安全模型。
 
-## P0 policy-discovery 终点
+稳定实现与现场命令见 [`last_10m_regrounding_v0`](../../../scripts/research/goal_copilot_bridge/last_10m_regrounding_v0/README.md)。
+当前实现专项 tests 已覆盖 fresh-frame、跨帧/stale fail-close、无 candidate 连续 abstain、二次到达确认、错误确认
+优先归因和 3x5 汇总形状。Android/default App 不变。
 
-P0 named-building entrance grounding 的冻结合同见 [`Protocol V1`](P0_GROUNDING_PROTOCOL_V1.md) /
-[`JSON`](p0_grounding_protocol_v1.json)。它把 `UNIQUE / SET_VALUED / AMBIGUOUS`、Provider availability、
-Brain selection、End-to-End outcome 与 P1 source-frame handoff 分开。
+## 现场执行与报告边界
 
-P0 Development 先后建立 map+geometry Silver-B、Terra baseline、parent-disjoint failure replication 与
-calibration frontdoor。主要证据入口：
+里程碑必须在 3 个真实地点各执行 5 次，共 15 episodes。Prerecorded RGB 可用于调试 provider payload，但不能
+冒充方向指令改变用户动作的真实机械任务。真实现场尚未完成时只允许
+`ENGINEERING_READY / FIELD_EXECUTION_INCOMPLETE`，不得填造完成率或错误确认数。
 
-- [`Prior art`](P0_PRIOR_ART_ASSIMILATION_2026-08-21.md)：BridgeNav 与 ABot-N1/POIBench 已覆盖入口级
-  POI navigation 的关键部分；BlindAssist 不主张任务首创。
-- [`Silver-B contract`](P0_SILVER_B_DEVELOPMENT_ADDENDUM_V1.md) /
-  [`result`](P0_SILVER_B_BRAIN_DEVELOPMENT_RESULT_2026-08-21.md)：只支持 conditioned Development mechanics，
-  不授权 detector recall、exact Brain/E2E accuracy 或 Silver-A 等价。
-- [`P0-D1 consumed`](P0_D1_AMBIGUITY_CALIBRATION_CONSUMED_CANARY_RESULT_2026-08-21.md) /
-  [`parent-disjoint`](P0_D1_PARENT_DISJOINT_CONFIRMATION_RESULT_2026-08-21.md)：place/entrance calibration 降低
-  unsupported commitment 时严重 over-refusal，机制跨 venue 复现。
-- [`P0-D2`](P0_D2_RESOLVABLE_ENRICHMENT_AND_FRONTDOOR_RESULT_2026-08-21.md) /
-  [`P0-D3`](P0_D3_ONE_SHOT_CLOSURE_RESULT_2026-08-21.md)：public source 的 SET_VALUED denominator 不足；
-  Logistic/Conformal 未授权，禁止第二数据批。
+每次 observation、candidate、direction、rescan、abstention、completion 和现场错误确认进入 append-only JSONL/
+episode summary。最终报告首先单列错误入口确认数，再报告任务完成率、完成时间、首次发现时间、指令数和重扫数。
+每个已 adjudicate episode 只允许以下三个归因之一：
 
-[`P0-A1`](P0_A1_AMBIGUITY_GATE_DISCOVERY_RESULT_2026-08-21.md) 在统一可观察的 consumed Development surface
-上保留 `brain confidence >= 0.85 AND candidate center dispersion <= 0.2423407461`：ambiguous false commit
-为 `11/51`、parent macro `19.61%`，同时保持 `20/20` resolvable coverage 与 `17/20` correctness。
+1. `CURRENT_FRAME_GROUNDING_BOTTLENECK`
+2. `INTERACTION_OR_CONTROL_BOTTLENECK`
+3. `REGROUNDING_LOOP_MECHANICALLY_USEFUL`
 
-[`P0-A2`](P0_A2_COMPACT_AMBIGUITY_POLICY_DISCOVERY_RESULT_2026-08-21.md) 随后确定性枚举 518,570 个 compact
-symbolic policies。3,237 个满足硬约束的 unique behaviors 中，最优仍是 A1，parent-macro 增益 `0.00pp`；
-relaxed winner 只有 `65%` coverage。终态：
+错误入口确认无条件计入第一类。只有恰好 3 locations x 5 adjudicated episodes 才能标记
+`FIELD_EXECUTION_COMPLETE`。本里程碑是机械工程结果，不是 scientific confirmation、用户安全、导航有效性或
+默认 App 准入证据。
 
-```text
-COMPLEXITY_ONLY_BUYS_ABSTENTION
-A1_INCUMBENT_RETAINED
-NO_POLICY_ADMISSION
-NO_SCIENTIFIC_VERDICT
-```
+## 复用的 P0 权威
 
-P0 commitment-policy discovery 至此关闭：不运行 A3+ threshold/classifier/XGBoost/Sky，不补 SET_VALUED，
-不自动购买 fresh confirmation。A1 只保留为 Development incumbent。
+P0 冻结合同见 [`Protocol V1`](P0_GROUNDING_PROTOCOL_V1.md) / [`JSON`](p0_grounding_protocol_v1.json)。它分离
+`UNIQUE / SET_VALUED / AMBIGUOUS`、Provider availability、Brain selection 和 end-to-end outcome。当前闭环只接受
+其 source-frame-bound 输出，不改变 provider、model、checkpoint、threshold、cohort 或 evaluator。
 
-## P1 的既有 Development 基础
+P0 commitment-policy discovery 已以
+[`P0-A2`](P0_A2_COMPACT_AMBIGUITY_POLICY_DISCOVERY_RESULT_2026-08-21.md) 的
+`COMPLEXITY_ONLY_BUYS_ABSTENTION / A1_INCUMBENT_RETAINED / NO_POLICY_ADMISSION` 收口。当前里程碑不重开
+threshold/classifier/XGBoost/Sky，不新增训练、数据集、cohort 或多臂比较。Grounding DINO 仍仅是 proposal，
+provider score 不是 truth；P0 的既有证据和 claim ceiling 保持不变。
 
-系统侧只允许 RGB；ADT bbox、object/device trajectory、depth、segmentation 与 visibility GT 只进入隔离的
-mining/evaluator。ADT 是 prerecorded trajectory，不能证明 guidance 改变用户动作或 closed-loop navigation。
-稳定实现入口见 [`BA-ADT scripts`](../../../scripts/research/ba_adt_real_evidence/README.md)。
+## P1 正式关闭
 
-既有 consumed Development 只作为 P1 failure vocabulary 与未来 adapter 输入：
+P1 persistence、tracker/correspondence、keyframe/world-anchor 路线全部关闭，不再承担当前主线：
 
-[`P1-D0 temporal cohort`](P1_D0_TEMPORAL_COHORT_PROTOCOL_V1.md) 已从 2 条现有 ADT GT/RGB source 以 source
-timestamp 和 `object_uid` 自动物化 15 episodes / 15 physical targets / 1,724 frames；六类 temporal mode
-均非零，0 model/detector/tracker calls。它只是 consumed indoor-object Development truth，不验证入口
-persistence；数据线已止损关闭，EgoTracks fallback 不触发。
+- [`P1-A1`](P1_A1_CONSERVATIVE_LOCAL_TRACK_VALIDITY_RESULT_2026-08-21.md) 到
+  [`P1-A4`](P1_A4_ONLINE_STRONG_TEMPORAL_CORRESPONDENCE_RESULT_2026-08-22.md) 只保留 consumed Development
+  failure evidence；最终 `STRONG_TEMPORAL_CORRESPONDENCE_NOT_SUFFICIENT`。
+- [`P1-W1 Stage A`](P1_W1_STAGE_A_SINGLE_EXECUTION_RESULT_2026-08-22.md) 为
+  `W1_T0_NOT_EVALUABLE_DATA_OR_INTERFACE`，没有 Stage B authority。
+- [`P1-W2 single execution`](P1_W2_SINGLE_EXECUTION_RESULT_2026-08-22.md) 为
+  `P1_W2_RGB_REFERENT_INTERFACE_NOT_SUPPORTED`，不允许在 sealed cohort 上降 gate、换模型、改 crop/context 或重跑。
 
-- [`ADT0/ADT1 canary`](BA_ADT_REAL_EVIDENCE_ADT0_SELECTION_ADT1_CANARY_RESULT.md)：detector+5-frame flow
-  建立 bounded persistence mechanics，但最长 dropout 仍为 162。
-- [`Instance redetection R1`](BA_ADT_INSTANCE_REDETECTION_1_RESULT_2026-08-21.md)：13 次确认均正确、0 wrong，
-  但长时重捕获仍弱；5 个失败全部为 `NO_CANDIDATE`。
-- [`R3 observability`](BA_ADT_REAPPEARANCE_OBSERVABILITY_R3_RESULT_2026-08-21.md)：失败窗同时含不可见/重遮挡
-  与 tiny target，不允许把所有失败归因 identity verifier。
-- [`R4 scale`](BA_ADT_SMALL_TARGET_SEARCH_SCALE_R4_RESULT_2026-08-21.md)：已测试的 scale arms 未建立 fixed-window
-  correct proposal，并产生 wrong-instance 风险。
-- [`R5 teacher closure`](BA_ADT_SMALL_TARGET_VISUAL_UPPER_BOUND_R5_RESULT_2026-08-21.md)：DINOv-SwinL 只命中
-  `1/3 windows / 1/97 frames`；SAM 3.1 cross-image arm 为 `NOT_EVALUABLE_INTERFACE`，R5 inconclusive 并永久关闭。
+明确不建立 `P1-W3`，不自动重开 referent persistence，也不从旧 successor、W0 design 或历史 handoff 恢复权限。
+P1 历史 JSON schemas、evaluator 和结果只用于追溯；当前闭环不得导入其 tracker、SAM propagation、DINO identity、
+LoFTR、keyframe memory、SLAM、VIO 或 world-relative state。
 
-这些数字保持 consumed Development claim ceiling；P1-R0 不重跑或改写旧 evaluator、TargetMemory、flow、
-confirmation、quarantine、receipt 或终态。
+## 唯一 successor
 
-## Legacy GC/Sky 边界
+`FIELD_3X5_MECHANICAL_EXECUTION` 只是本里程碑内完成 3x5 真实机械 episodes 并生成上述限定报告，不是新研究
+协议。现场执行完成或因现实条件无法执行而
+明确停止后，本路线不自动创建任何后继协议、P1-W3、模型 arm、数据 cohort、Android 接入或 scientific
+confirmation。新的研究问题必须由用户另行明确启动。
 
-[`GOAL-COPILOT-1`](GOAL_COPILOT_1_SKY_PILOT_RESULT.md) 与
-[`GC2-B`](GOAL_COPILOT_2B_RESULT.md) 已封存；[`observability audit`](GOAL_COPILOT_2_OBSERVABILITY_AUDIT_RESULT.md)
-已选择停止 synthetic moderate optimization。Sky 不属于当前 pipeline，不能用于 P0 policy rescue、P1 tracker
-搜索或绕过真实 observation failure。
-
-## 当前 P1 结果与架构升级
-
-[`P1-A1`](P1_A1_CONSERVATIVE_LOCAL_TRACK_VALIDITY_RESULT_2026-08-21.md) 已一次性完成 3,069 个 compact
-RGB-only validity gates。最佳 `>=90%` retention gate 保留 `80/87` correct，但 wrong、episode-macro、max wrong-lock
-只下降 `39.64% / 44.73% / 9.41%`；0 wrong gate 只保留 `15/87` correct，false-loss 达 `94.21%`。终态
-`VALIDITY_GAIN_ONLY_BY_ABSTENTION / NO_POLICY_ADMISSION / NO_SCIENTIFIC_VERDICT`，不保留 discovered threshold。
-
-[`P1-A2`](P1_A2_FIXED_REFERENCE_DENSE_IDENTITY_RESULT_2026-08-21.md) 随后以 frozen DINOv2-S initial patch
-memory 和 dense correspondence consensus 一次性检查 625 个四特征 AND policy。4 个通过预冻结 admission；
-top policy 保留 `80/87` correct，把 wrong `1,221→445`、max wrong-lock `8,498→2,700 ms`，分别改善
-`63.55% / 68.23%`，终态 `DENSE_IDENTITY_VALIDITY_SIGNAL_ESTABLISHED / NO_POLICY_ADMISSION`。
-
-边界同样必须保留：14 个 drift episode 没有正 warning lead；false-loss 为 `304/777`，frame-wise gate churn
-产生 29 个 evaluator-defined false reacquisition。它只建立 consumed Development representation signal，不能保留
-threshold 或接 App。
-
-[`P1-A3`](P1_A3_TEMPORAL_LOSS_DECLARATION_RESULT_2026-08-21.md) 未继承 A2 threshold，只复用 raw dense
-evidence，一次性比较 consecutive/sliding/leaky 共 40 个 temporal policies。全部 policy 均保留 correct、消灭
-false reacquisition/chatter 并维持 long-loss declaration，但 `wrong<=488` 与 `false-loss<=152` 均为 `0/40`。
-代表 policy 为 `correct=81 / wrong=685 / max-lock=2,899 ms / false-loss=205 / false-reacquisition=0`；终态
-`TEMPORAL_POLICY_INSUFFICIENT / NO_POLICY_ADMISSION`。这关闭简单 temporal smoothing rescue，不改写 A2 的历史
-frame-wise representation signal。
-
-[`P1-A4 protocol`](P1_A4_ONLINE_STRONG_TEMPORAL_CORRESPONDENCE_PROTOCOL_V1.md) 已先于 implementation selection
-冻结 strictly causal point-correspondence、25-point initialization、visibility-aware object aggregation、单模型选择顺序
-与 capability gates。[`P1-A4 result`](P1_A4_ONLINE_STRONG_TEMPORAL_CORRESPONDENCE_RESULT_2026-08-22.md) 完成唯一
-official PyTorch Online BootsTAPIR probe：hard evaluability 全通过，但 correct `85/777`、wrong `812`、background wrong
-`785`、temporary/return recovery 均 `0/3`。终态 `STRONG_TEMPORAL_CORRESPONDENCE_NOT_SUFFICIENT`；当前实现停止，
-不调参、不重跑、不换模型，也没有自动 successor。
-
-[`P1-W0 design`](P1_W0_WORLD_ANCHORED_TARGET_PERSISTENCE_DESIGN_V1.md) 随后把 P1 的维护对象从连续
-`2D track` 重定义为 `real-world referent belief`。它只冻结 memory semantics 与 authority boundaries：
-`CAMERA_RELATIVE / KEYFRAME_RELATIVE / WORLD_RELATIVE` 不同 reference frame、identity 与 spatial anchor
-独立失效、observation honesty，以及
-`REACQUIRED = spatial compatibility AND independent identity confirmation`。`OUT_OF_VIEW / UNKNOWN /
-OCCLUDED_EVIDENCED` 是正交 observability reason，不扩张成完整产品 FSM。
-
-P1-A tracker/correspondence authority 系列正式关闭，W0 design 到此封口。[`P1-W1 protocol`](P1_W1_MINIMAL_WORLD_REFERENT_BASELINE_PROTOCOL_V1.md)
-现已冻结一个 honest camera-relative control 与两个最小实验层级：W1-T0 keyframe-relative baseline 先验证局部
-relocalization、双条件 reacquisition 和 fail-stale；W1-T1 只在 Stage A 建立信号且另行授权后，才允许最小
-shared-gauge pose/anchor interface 检验 translation。Primary endpoints 是 false continuity/reacquisition、honest
-`NONE`、timely stale、bearing compatibility 与 identity-confirmed reacquisition，不以 bbox continuity 为胜负指标。
-[`Stage A implementation/data selection`](P1_W1_STAGE_A_IMPLEMENTATION_AND_DATA_SELECTION_2026-08-22.md) 已
-outcome-blind 冻结 ORB keyframe geometry、独立 HSV identity path、fail-stale fusion 与 17 个真实 episode + 1 个
-mechanics fixture roster。[`Stage A single execution`](P1_W1_STAGE_A_SINGLE_EXECUTION_RESULT_2026-08-22.md) 已按
-冻结 commit 对 17/17 cases 各运行一次，但 14/17 在 target-local ORB initialization 失败，rotation 实际 support
-为 `0/2`，正式终态 `W1_T0_NOT_EVALUABLE_DATA_OR_INTERFACE`。3 个可运行 case 的指标仅可诊断，不能判 C0/T0。
-
-## 当前终点
-
-Stage A v1 已消费，没有自动 successor。不得放宽初始化门、调 HSV/ORB、换 tracker 或在 sealed 17 cases 上重跑；
-[`P1-W2 referent anchor interface feasibility`](P1_W2_REFERENT_ANCHOR_INTERFACE_FEASIBILITY_PROTOCOL_V1.md) 已冻结
-referent-core geometry support 与 same-scene identity separability 的证据权限；随后获准的
-[`outcome-blind implementation/data selection`](P1_W2_OUTCOME_BLIND_IMPLEMENTATION_AND_DATA_SELECTION_2026-08-22.md)
-选择 EfficientLoFTR correspondence candidates + core-only geometric verification，以及复用带 consumed-Development
-lineage 的 frozen DINOv2-S patch identity gate。Context endpoint 不进入 geometry fit，identity 永远只读 core。
-ADT metadata-only selector 先冻结 8 个 source-parent-disjoint indoor-object proxy parents；随后获准的
-[`fresh source materialization + private roster freeze`](P1_W2_FRESH_SOURCE_MATERIALIZATION_AND_PRIVATE_ROSTER_FREEZE_2026-08-22.md)
-完成 8/8 parents、16/16 RGB/GT members、1,241,191,554 bytes 的校验物化。固定 8-parent 母分母中 7 个合法，1 个因
-`3068/3073` GT timestamps 无法在冻结 20 ms 内对齐而保留 `PAYLOAD_OR_SCHEMA_FAILURE`；没有替换或补样。最终冻结
-27 pairs，rotation/small/large/reappearance/confuser support 为 `2/7/5/6/7`，满足预注册 data-support gate。
-Provider truth firewall 与 deterministic replay 均通过；该阶段 matcher/identity/model call 仍为 0，execution 当时未授权。
-随后唯一授权的 [`P1-W2 single execution`](P1_W2_SINGLE_EXECUTION_RESULT_2026-08-22.md) 已对 27 cases / 66 candidates
-一次完成 provider seal 和 private adjudication。True-candidate geometry 为 `0/27`，confuser unique-true identity 为
-`0/7` 且有 1 次 identity false bind，joint correct eligibility 为 `0/27`；终态
-`P1_W2_RGB_REFERENT_INTERFACE_NOT_SUPPORTED`。17 个 sealed cases 仍只可作 Development diagnostic；P1-W2 没有
-自动 successor，不得在当前 cohort 上降 gate、换模型、改 crop/context 或重跑。
-W1-T1/Stage B、tracking、keyframe memory、SAM2 propagation、SLAM 与 App 均未授权。
-
-禁止：继续调 A1/A2/A3 threshold/operator、建立 A5+ tracker/model arm、提前执行 W1 或实现 global
-reacquisition/SLAM/object map、加入 ReID/Sky、fresh/large cohort、
-P0 policy 续搜、Active/Temporal Grounding、Android/default-App、产品或安全主张。
-
-Claim ceiling：既有 A1-A4 仍为 `CONSUMED_ADT_INDOOR_OBJECT_DEVELOPMENT_BASELINE_ONLY_NO_SCIENTIFIC_VERDICT`；
-W0 为 `ARCHITECTURE_DESIGN_ONLY / NO_EMPIRICAL_CAPABILITY`。
-W1 Stage A 为 `CONSUMED_ADT_DEVELOPMENT_NOT_EVALUABLE_INTERFACE / NO_C0_T0_VERDICT`。
-W2 为 `FRESH_ADT_INDOOR_OBJECT_PROXY_SINGLE_EXECUTION / RGB_REFERENT_INTERFACE_NOT_SUPPORTED / NO_BUILDING_ENTRANCE_OR_P0_HANDOFF_CONFIRMATION`。
+Claim ceiling：`REAL_SITE_MECHANICAL_TASK_ONLY_NO_SCIENTIFIC_CONFIRMATION_NO_SAFETY_CLAIM`。
 默认 App：不变。

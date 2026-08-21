@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-22（Asia/Hong_Kong）；执行者：violjjet。按用户决定正式关闭 P1，不建立 P1-W3，也不自动
+  重开 referent persistence；启动 `BLINDASSIST_LAST_10M_REGROUNDING_V0`。新增 current-frame-only 文件适配器、
+  最小控制状态机、fail-closed/真人协助出口、append-only 事件审计、现场 adjudication 与 3 个真实地点 x 5
+  episodes 汇总。控制 state 不保存 candidate/region/image/feature/score/handoff/identity，每次动作后要求新的 P0
+  当前帧输出；现有 P0 provider/evaluator 未修改。6 项专项 tests 通过。当前仅
+  `ENGINEERING_READY / FIELD_EXECUTION_REQUIRED`，没有伪造真实现场指标；完成后仍只允许机械报告，不形成
+  scientific confirmation、安全、Android 或默认 App 权限，也不自动创建后继协议。
+
 - 时间：2026-08-22（Asia/Hong_Kong）；执行者：Codex。按用户授权完成唯一 P1-W1 Stage A single execution。
   冻结 commit `08aa765c` 对 17/17 real cases 做 C0/W1-T0 各一次 public-only pass，再一次 private evaluation；
   无重选、调参、换实现或重跑。14/17 cases 在 arm 前因 source region 少于 6 个 target-local ORB descriptors
