@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BLINDASSIST_LAST_10M_REGROUNDING_V0 / MILESTONE_CLOSED / NETWORK_SCENE_3X5_COMPLETE / P1_CLOSED / NO_P1_W3 / NO_REFERENT_PERSISTENCE / NO_SCIENTIFIC_CONFIRMATION / NO_SUCCESSOR / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / BLINDASSIST_LAST_10M_REGROUNDING_V0 / RESPONSIVE_SANITY_CLOSED / CONTROL_POLICY_BOTTLENECK / P1_CLOSED / NO_P1_W3 / NO_REFERENT_PERSISTENCE / NO_SCIENTIFIC_CONFIRMATION / NO_SUCCESSOR / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
@@ -18,7 +18,7 @@ SCAN
 -> ALIGN
 -> ADVANCE_AND_REOBSERVE
 -> ARRIVAL_CONFIRM
--> COMPLETE / RESCAN / ABSTAIN
+-> COMPLETE / RESCAN / ABSTAIN / EXHAUSTED
 ```
 
 每次转向、前进或重扫后必须提交新的 frame 并重新调用 P0 grounding。控制 state 不保存 candidate id、bbox、
@@ -42,6 +42,15 @@ candidate 连续 abstain、二次到达确认、错误确认优先归因和 3x5 
 [`BLINDASSIST_LAST_10M_REGROUNDING_V0 result`](BLINDASSIST_LAST_10M_REGROUNDING_V0_RESULT_2026-08-22.md)：错误入口确认
 `0`、完成 `0/15`、首次可靠发现 median `9,745 ms`、方向指令 `40`、重扫 `5`。15 次全部在固定视角耗尽后
 fail closed；由于 playlist 不响应方向指令，该结果只属于网络场景机械回放，不能冒充真实用户控制闭环。
+
+## Action-responsive sanity closeout
+
+后续最小 sanity check 已以 1 个 Mapillary sequence、22 张真实 pose/heading frame、110 个预冻结 viewport states 和
+6 个固定 starts 一次性执行。完整结果见
+[`responsive sanity result`](BLINDASSIST_LAST_10M_RESPONSIVE_SANITY_RESULT_2026-08-22.md)：完成 `0/6`、false arrival
+`0`、observations `29`、可靠 grounding `27`、方向指令 `27`、重扫 `2`、exhausted `6/6`，终态
+`CONTROL_POLICY_BOTTLENECK`。一个 episode 从 `15.55 m` 推进到 `5.56 m`，但控制在 viewport 间持续左转/振荡，
+未进入 `ARRIVAL_CONFIRM`。该 deterministic viewport replay 不是实际转头或真实用户 walk-through。
 
 每次 observation、candidate、direction、rescan、abstention、completion 和 evaluator 错误确认进入 append-only JSONL/
 episode summary。最终报告首先单列错误入口确认数，再报告任务完成率、完成时间、首次发现时间、指令数和重扫数。
@@ -87,7 +96,7 @@ LoFTR、keyframe memory、SLAM、VIO 或 world-relative state。
 
 无。
 
-网络场景 3x5 与限定报告已完成。本路线不自动创建任何后继协议、P1-W3、模型 arm、数据 cohort、Android 接入或
+网络场景 3x5 与 action-responsive sanity 均已完成。本路线不自动创建任何后继协议、P1-W3、模型 arm、数据 cohort、Android 接入或
 scientific confirmation。新的研究问题必须由用户另行明确启动。
 
 Claim ceiling：`NETWORK_SCENE_MECHANICAL_REPLAY_ONLY_NO_REAL_USER_OR_SCIENTIFIC_CONFIRMATION`。

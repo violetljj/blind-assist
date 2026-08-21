@@ -1,6 +1,6 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / BLINDASSIST_LAST_10M_REGROUNDING_V0 / MILESTONE_CLOSED / NETWORK_SCENE_3X5_COMPLETE / P1_CLOSED / NO_REFERENT_PERSISTENCE / NO_SCIENTIFIC_VERDICT / NO_SUCCESSOR / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / BLINDASSIST_LAST_10M_REGROUNDING_V0 / RESPONSIVE_SANITY_CLOSED / CONTROL_POLICY_BOTTLENECK / P1_CLOSED / NO_REFERENT_PERSISTENCE / NO_SCIENTIFIC_VERDICT / NO_SUCCESSOR / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
@@ -15,11 +15,17 @@ regions, images, features, scores, handoffs, and identity; prior details are aud
 and emits only the requested mechanical metrics and three attribution classes. It does not execute P1,
 modify the P0 provider, or create scientific/safety authority.
 
+`responsive_replay_runner.py` adds the closed one-shot responsive sanity surface. It freezes real Mapillary
+GPS/heading/sequence transitions for forward/rescan and fixed, outcome-independent viewport states for turns before any
+provider observation. The 6-episode run ended `CONTROL_POLICY_BOTTLENECK` with `0/6` completion and no false arrival;
+see the [responsive closeout](../../../docs/research/goal-copilot/BLINDASSIST_LAST_10M_RESPONSIVE_SANITY_RESULT_2026-08-22.md).
+
 Focused check:
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd -m unittest `
-  scripts/research/goal_copilot_bridge/last_10m_regrounding_v0/test_core.py
+  scripts/research/goal_copilot_bridge/last_10m_regrounding_v0/test_core.py `
+  scripts/research/goal_copilot_bridge/last_10m_regrounding_v0/test_responsive_replay.py
 ```
 
 ## P1-R0 Target Persistence mechanics

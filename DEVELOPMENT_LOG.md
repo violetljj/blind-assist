@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-22（Asia/Hong_Kong）；执行者：Codex。完成一次性 action-responsive Last-10m engineering sanity。
+  自动盘点后选择 Mapillary `hofbladelin` real sequence 与 OSM main-entrance pose proxy；原生 approach 缺 turn capture，
+  在任何 formal observation 前冻结 outcome-independent 五档 viewport turn fallback、22 张真实 sequence frame、110 个
+  states 和 6 个 starts。未修改 Grounding DINO/Terra P0、控制阈值或 identity 边界。唯一正式运行 29/29 provider
+  calls 成功，可靠 grounding `27`，完成 `0/6`、false arrival `0`、方向 LEFT/RIGHT/FORWARD=`17/3/7`、重扫 `2`、
+  exhausted `6/6`；一个 episode 从 `15.55 m` 推进到 `5.56 m` 仍未 ARRIVAL。终态
+  `CONTROL_POLICY_BOTTLENECK`，最大失败为 current-frame candidate-to-direction 持续左转/振荡。结果仅为
+  deterministic viewport mechanics；没有 P1、referent persistence、真实用户/安全/产品主张或自动 successor。
+
 - 时间：2026-08-22（Asia/Hong_Kong）；执行者：Codex。按用户更新将
   `BLINDASSIST_LAST_10M_REGROUNDING_V0` 改为无需真实设备的网络场景机械回放，并完成 3 个真实世界 Mapillary 地点
   x 5 episodes。45 次 observation 均独立重调未修改 P0，得到 40 次可靠当前帧 candidate；错误入口确认 `0`，

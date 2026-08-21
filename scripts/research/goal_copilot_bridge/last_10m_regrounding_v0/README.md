@@ -1,6 +1,6 @@
 # BLINDASSIST_LAST_10M_REGROUNDING_V0 runner
 
-状态：`MECHANICAL_EXECUTION_COMPLETE / NETWORK_SCENE_3X5 / MILESTONE_CLOSED / NO_P1 / NO_REFERENT_PERSISTENCE / NO_SUCCESSOR`
+状态：`RESPONSIVE_SANITY_COMPLETE / CONTROL_POLICY_BOTTLENECK / MILESTONE_CLOSED / NO_P1 / NO_REFERENT_PERSISTENCE / NO_SUCCESSOR`
 
 本目录只实现“入口寻找—引导—重新观测—确认”的当前帧机械闭环。`provider_adapter.py` 直接复用现有
 Grounding DINO `run_inference` 与现有 single-Brain baseline 的 render/prompt/schema/output 函数；不复制或修改
@@ -69,9 +69,34 @@ Observation envelope 只有八个顶层键；`p0_output` 必须是现有 P0 V1 �
 本次冻结结果见
 [`BLINDASSIST_LAST_10M_REGROUNDING_V0 result`](../../../../docs/research/goal-copilot/BLINDASSIST_LAST_10M_REGROUNDING_V0_RESULT_2026-08-22.md)。
 
+## Action-responsive one-shot sanity
+
+`responsive_replay_runner.py` 自动盘点既有 Silver-B/Mapillary pose metadata，冻结 1 个 scene x 6 starts。
+`FORWARD`/`RESCAN_HOLD` 使用真实 sequence GPS/heading 邻接帧；原生 approach 段缺同位置 turn capture，因此
+`TURN_LEFT/RIGHT` 只使用预冻结、provider-outcome-blind 的五档水平 viewport。正式运行目录 one-shot：存在即拒绝
+resume/rerun，provider preflight 在创建正式目录之前完成。
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m `
+  scripts.research.goal_copilot_bridge.last_10m_regrounding_v0.responsive_replay_runner prepare `
+  --brain-cohort artifacts.local/evidence/p0-s0/2026-08-21-silver-b-dev-cohort-v1/brain-cohort.json `
+  --metadata-root artifacts.local/evidence/p0-s0 `
+  --output-dir artifacts.local/evidence/last-10m-regrounding-v0/responsive-scenes-v1
+
+E:\codex-tools\bin\blindassist-python.cmd -m `
+  scripts.research.goal_copilot_bridge.last_10m_regrounding_v0.responsive_replay_runner run `
+  --scene-dir artifacts.local/evidence/last-10m-regrounding-v0/responsive-scenes-v1 `
+  --run-dir artifacts.local/evidence/last-10m-regrounding-v0/responsive-run-v1
+```
+
+该唯一正式运行已消费并封口，不得执行上述 `run` 命令重跑。结果：完成 `0/6`、false arrival `0`、可靠
+grounding `27/29`、方向指令 `27`、重扫 `2`、exhausted `6/6`，verdict `CONTROL_POLICY_BOTTLENECK`。
+完整 closeout：[`responsive result`](../../../../docs/research/goal-copilot/BLINDASSIST_LAST_10M_RESPONSIVE_SANITY_RESULT_2026-08-22.md)。
+
 专项检查：
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd -m unittest `
-  scripts/research/goal_copilot_bridge/last_10m_regrounding_v0/test_core.py
+  scripts/research/goal_copilot_bridge/last_10m_regrounding_v0/test_core.py `
+  scripts/research/goal_copilot_bridge/last_10m_regrounding_v0/test_responsive_replay.py
 ```

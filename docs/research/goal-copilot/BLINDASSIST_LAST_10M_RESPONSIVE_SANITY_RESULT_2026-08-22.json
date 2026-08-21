@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "milestone_id": "BLINDASSIST_LAST_10M_REGROUNDING_V0",
+  "result_kind": "ACTION_RESPONSIVE_ENGINEERING_SANITY_CHECK",
+  "status": "COMPLETE_AND_SEALED_NO_SUCCESSOR",
+  "verdict": "CONTROL_POLICY_BOTTLENECK",
+  "question_answer": "The unchanged current-frame repeated-grounding controller did not reach ARRIVAL in the frozen responsive replay.",
+  "environment": {
+    "scene_count": 1,
+    "episode_count": 6,
+    "source": "Mapillary sequence dbgdqomGU5W7oPnzKZjxLg",
+    "goal_name": "hofbladelin",
+    "target_anchor": "OSM node/4974210260 entrance=main",
+    "real_sequence_frame_count": 22,
+    "frozen_viewport_state_count": 110,
+    "actions": [
+      "TURN_LEFT",
+      "TURN_RIGHT",
+      "FORWARD",
+      "RESCAN_HOLD"
+    ],
+    "transition_authority": "Real Mapillary computed geometry, computed heading, capture time and sequence order for FORWARD/RESCAN; fixed outcome-independent same-frame horizontal viewport states for turns",
+    "public_manifest_sha256": "2aa6a61e9c65195fb0d0030b1d87e6891a2c4cc44c262ed5ed077f14fc9fa8f7"
+  },
+  "provider": {
+    "grounding_dino_revision": "a2bb814dd30d776dcf7e30523b00659f4f141c71",
+    "grounding_dino_weights_sha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3",
+    "brain": "gpt-5.6-terra medium",
+    "codex_cli": "0.149.0",
+    "brain_policy_id": "P0-SILVER-B-SINGLE-BRAIN-BASELINE-V1",
+    "provider_lock_sha256": "d5c8cc1013c2f8a191d97da3e28f34e175c31270841e63f2c727dc1c6e43a7a8",
+    "changed_for_run": false
+  },
+  "metrics": {
+    "episode_completion": {
+      "numerator": 0,
+      "denominator": 6
+    },
+    "false_arrival_count": 0,
+    "wrong_target_confirmation_count": null,
+    "wrong_target_confirmation_evaluability": "NOT_EVALUABLE_EXACT_FRAME_REGION_TRUTH_UNAVAILABLE",
+    "first_reliable_grounding_latency_ms": {
+      "count": 6,
+      "median": 9679.5,
+      "min": 9129,
+      "max": 32352
+    },
+    "observation_count": 29,
+    "reliable_grounding_count": 27,
+    "direction_command_count": 27,
+    "direction_action_counts": {
+      "TURN_LEFT": 17,
+      "TURN_RIGHT": 3,
+      "FORWARD": 7
+    },
+    "rescan_count": 2,
+    "abstention_count": 0,
+    "exhausted_trajectory_count": 6,
+    "failure_state_counts": {
+      "ADVANCE_AND_REOBSERVE": 5,
+      "RESCAN": 1
+    }
+  },
+  "largest_failure_cause": "Current-frame candidate selection repeatedly issued left turns or oscillated across deterministic responsive viewports; 27/29 observations were reliable, but none produced the centered near cue plus fresh-frame confirmation required for ARRIVAL.",
+  "notable_episode": "Episode e06 advanced from 15.55 m to 5.56 m from the OSM entrance proxy in 10 observations but still exhausted without ARRIVAL_CONFIRM.",
+  "formal_execution_audit": {
+    "provider_observation_receipts": 29,
+    "run_success_receipts": 29,
+    "in_doubt_calls": 0,
+    "provider_reruns": 0,
+    "post_outcome_graph_model_threshold_or_roster_changes": 0,
+    "raw_result_sha256": "e1348cc89a4012e543677be9e00d512337a6d82bd3bcd8d5d1c3fefb1799fda2",
+    "ignored_evidence_root": "artifacts.local/evidence/last-10m-regrounding-v0/responsive-run-v1"
+  },
+  "reporting_note": "The sealed raw result used an upper-middle value of 9881 ms for an even-sized latency list. This published closeout reports the conventional median, 9679.5 ms, derived from the six immutable episode summaries; no provider observation or scientific outcome was rerun or changed.",
+  "claim_ceiling": "DETERMINISTIC_VIEWPORT_ENGINEERING_MECHANICS_ONLY_NO_REAL_BLIND_USER_BUILDING_ENTRANCE_NAVIGATION_PRODUCT_OR_SAFETY_CONFIRMATION",
+  "real_walkthrough_recommendation": "WORTH_ONE_FUTURE_MINIMAL_RESPONSIVE_WALKTHROUGH_AFTER_EXPLICIT_AUTHORIZATION; the proxy exposed a control-direction failure, but viewport translation can itself create visual artifacts, so only a real turn-and-step check can separate simulator artifact from field behavior.",
+  "p1_reopened": false,
+  "referent_persistence_lane_created": false,
+  "automatic_successor_created": false
+}
