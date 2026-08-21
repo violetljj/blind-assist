@@ -221,4 +221,3 @@ Goal Grounding 的潜在 Sky surface 可以是 `rank_candidates`、`update_desti
 
 当前下一动作只到第 1 步的 scoped protocol/data/evaluator design。没有授权采集、打开 fresh cohort、运行
 baseline、调用模型、启用 Sky、恢复 VIO/SLAM、接 Android/default App 或提出安全/产品成功主张。
-
