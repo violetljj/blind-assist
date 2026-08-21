@@ -1,9 +1,11 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / PRIOR_ART_ASSIMILATED / P0_CONTRACT_V1_REFERENCE_SET_ADDENDUM / MAPILLARY_TOKEN_READY / GROUNDING_DINO_PROPOSAL_PATH_RUN / SILVER_B_DEVELOPMENT_COHORT_4 / NO_BASELINE / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / DESTINATION_GOAL_GROUNDING_P0 / PRIOR_ART_ASSIMILATED / P0_CONTRACT_V1_REFERENCE_SET_ADDENDUM / GROUNDING_DINO_PROPOSAL_PATH_RUN / SILVER_B_DEVELOPMENT_COHORT_47_GOALS_43_FRAMES / SINGLE_BRAIN_MECHANICS_RUN / NO_SCIENTIFIC_VERDICT / R5_PERMANENTLY_CLOSED / NO_R6_R7 / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)；P0 冻结合同与机器合同见 [`Protocol V1`](P0_GROUNDING_PROTOCOL_V1.md) / [`JSON`](p0_grounding_protocol_v1.json)。
-本页仍是动态执行状态真源；当前已完成 schema/evaluator mechanics、真实 map+geometry materialization，并从已消费 canary 导出 4 个 Silver-B Development episodes；没有 baseline 或科学性能结果。
+本页仍是动态执行状态真源；当前已完成 schema/evaluator mechanics、真实 map+geometry materialization、
+47-goal/43-frame Silver-B Development cohort，以及一个 `gpt-5.6-terra / medium` 单 Brain mechanics run；
+没有正式 baseline、科学性能、导航或用户效果结果。
 
 [`Prior-Art Assimilation`](P0_PRIOR_ART_ASSIMILATION_2026-08-21.md) 已将路线对齐到 BLV last-few-meters、
 embodied referring expression、interactive VLN 与 POI-goal navigation。BridgeNav 和 ABot-N1/POIBench 已覆盖
@@ -175,13 +177,18 @@ target-anchor-facing、同 sequence、具有 `3–30 m` 真实 parallax 且逐 v
 
 从 [`P0 Silver-B Development Addendum V1`](P0_SILVER_B_DEVELOPMENT_ADDENDUM_V1.md) 起，P0 Development
 不再以 Silver-A coverage 为前置条件。已通过既有 provenance/license/map/geometry/conflict gates 的 parent A/B
-记录可向下导出为 `SILVER_B_MAP_GEOMETRY`：第一批 consumed real data 为 4 个 frame-level episodes / 4 个
-weak candidates。它们只支持 pipeline、conditioned yield、弱排序原型与 failure/abstention 开发；由于 detector
+记录可向下导出为 `SILVER_B_MAP_GEOMETRY`。初始 4 个全 `AMBIGUOUS` episodes 已扩展为 47 个 goal
+episodes / 43 个 unique frames：`UNIQUE=12 / SET_VALUED=4 / AMBIGUOUS=31`。它们只支持 pipeline、
+conditioned yield、弱排序原型与 failure/abstention 开发；由于 detector
 参与样本生成且 exact entrance identity 未建立，不能报告 detector recall/precision、exact Brain/E2E accuracy，
 也不能回写 P0-S1 终态。P0 goal-reference truth 现显式支持 `UNIQUE / SET_VALUED / AMBIGUOUS`；set-valued
-命中任一合法物理目标均正确，ambiguous 必须允许 `AMBIGUOUS` 或 fail-closed abstention。当前 4 个 B episode
-均为 `AMBIGUOUS`，没有被压成单一 bbox truth。下一步扩大普通 anchor-facing coverage，积累几十至约 100 个 B 级 Development episodes；
-天然满足冻结 identity rule 的样本另保留为 A subset，不再专门追逐 A。
+命中任一合法物理目标均正确，ambiguous 必须允许 `AMBIGUOUS` 或 fail-closed abstention。单 Brain run 的
+主要结构信号是：4/4 SET 返回多个 candidates；31 个 AMBIGUOUS 中 23 个被 branding/signage/facade
+association 推动为 grounding，且 0 个主动返回 `AMBIGUOUS`；正确 proposal 可用的 14 个 resolvable goal
+中 top-1 命中 13 个。所有数字只属于 Silver-B conditioned
+mechanics，详见 [`Development result`](P0_SILVER_B_BRAIN_DEVELOPMENT_RESULT_2026-08-21.md)。下一步优先补
+SET/signage-conflict coverage，并复用 ask/abstain calibration 与 near-stage door refinement；天然满足冻结
+identity rule 的样本另保留为 A subset，不再专门追逐 A。
 
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim

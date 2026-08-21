@@ -1,6 +1,6 @@
 # P0 Silver-B Development Addendum V1
 
-状态：`ACTIVE / PROSPECTIVE_DEVELOPMENT_AUTHORITY / FIRST_CONSUMED_BATCH_4_EPISODES / NO_BASELINE / NO_SCIENTIFIC_VERDICT`
+状态：`ACTIVE / PROSPECTIVE_DEVELOPMENT_AUTHORITY / REVIEWED_COHORT_47_GOALS_43_FRAMES / SINGLE_BRAIN_MECHANICS_RUN / NO_SCIENTIFIC_VERDICT`
 
 本 addendum 不修改 `BA-P0-GOAL-GROUNDING-SILVER-V1`、Grounding DINO、P0-S0 materializer 或
 P0-S1 identity rule，也不回写任何历史 receipt。它只允许从本版本开始，把已经通过 provenance、license、
@@ -43,3 +43,14 @@ Ignored artifact：
 这批 4 episodes 验证了导出 mechanics 和边界，不足以形成 baseline 或性能结论。下一步直接扩大普通
 anchor-facing source coverage，积累几十至约 100 个 Silver-B Development episodes；天然满足冻结 P0-S1 的样本
 可另保留为 A subset，但不再把 A coverage 当作 P0 Development 的前置 blocker。
+
+## 扩展 cohort 与单 Brain development 结果
+
+后续按本 addendum 的相同权限扩展到 47 个 goal episodes / 43 个 unique frames，并经独立 score-blind
+frame review 得到 `UNIQUE=12 / SET_VALUED=4 / AMBIGUOUS=31`。同帧派生 referring expressions 不增加
+unique-frame count；resolved manual regions 不从 proposal score 推导。随后用户指定
+`gpt-5.6-terra / medium` 运行一次 conditioned candidate-selection mechanics。结果和失败分解见
+[`P0 Silver-B Brain Development Result`](P0_SILVER_B_BRAIN_DEVELOPMENT_RESULT_2026-08-21.md)。
+
+这不是对 addendum 的协议修改，也不提升其 authority：claim ceiling 仍为
+`SILVER_B_DEVELOPMENT_ONLY_NO_EXACT_BRAIN_OR_END_TO_END_ACCURACY`。

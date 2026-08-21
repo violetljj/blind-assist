@@ -6,6 +6,46 @@ from scripts.research.goal_copilot_bridge.p0_s0_materialization import run_groun
 
 
 class GroundingDinoS0R1Test(unittest.TestCase):
+    def test_target_building_filter_keeps_only_requested_eligible_anchors(self) -> None:
+        report = {
+            "place_building_crosswalk_candidates": [
+                {"status": "CANDIDATE_ONLY", "building_ids": ["b1"]},
+                {"status": "CANDIDATE_ONLY", "building_ids": ["b2"]},
+            ],
+            "osm_entrance_building_crosswalk_candidates": [
+                {"status": "CANDIDATE_ONLY", "entrance": "yes", "overture_building_id": "b1", "osm_entrance_id": "n1"},
+                {"status": "CANDIDATE_ONLY", "entrance": "yes", "overture_building_id": "b2", "osm_entrance_id": "n2"},
+            ],
+        }
+        selected = runner._eligible_target_anchors(report, ["b2"])
+        self.assertEqual(["n2"], [item["osm_entrance_id"] for item in selected])
+        with self.assertRaises(runner.RunError):
+            runner._eligible_target_anchors(report, ["missing"])
+
+    def test_source_bbox_is_read_from_each_slice(self) -> None:
+        report = {
+            "source_files": {"osm": {"bounds": {
+                "minlon": "4.347", "minlat": "50.844", "maxlon": "4.355", "maxlat": "50.850",
+            }}},
+        }
+        self.assertEqual((4.347, 50.844, 4.355, 50.850), runner.source_bbox(report))
+
+    def test_source_bbox_rejects_inverted_slice(self) -> None:
+        report = {"source_files": {"osm": {"bounds": {
+            "minlon": "4.0", "minlat": "51.0", "maxlon": "3.0", "maxlat": "50.0",
+        }}}}
+        with self.assertRaises(runner.RunError):
+            runner.source_bbox(report)
+
+    def test_polygon_ring_accepts_current_overture_top_level_id_shape(self) -> None:
+        feature = {
+            "id": "building-1",
+            "type": "Feature",
+            "geometry": {"type": "Polygon", "coordinates": [[[4.0, 51.0], [4.1, 51.0], [4.0, 51.0]]]},
+            "properties": {"sources": []},
+        }
+        self.assertEqual(feature["geometry"]["coordinates"][0], runner._polygon_ring(feature))
+
     def test_nms_is_stable_and_class_agnostic(self) -> None:
         proposals = [
             {"bbox_xyxy": [0.0, 0.0, 10.0, 10.0], "score": 0.8, "label": "door"},

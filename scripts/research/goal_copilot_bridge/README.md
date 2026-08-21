@@ -1,6 +1,6 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / P0_GROUNDING_CONTRACT_V1_REFERENCE_SET_ADDENDUM / MAPILLARY_TOKEN_READY / GROUNDING_DINO_PROPOSAL_PATH_RUN / SILVER_B_DEVELOPMENT_COHORT_4 / NO_BASELINE / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / P0_GROUNDING_CONTRACT_V1_REFERENCE_SET_ADDENDUM / GROUNDING_DINO_PROPOSAL_PATH_RUN / SILVER_B_DEVELOPMENT_COHORT_47_GOALS_43_FRAMES / SINGLE_BRAIN_MECHANICS_RUN / NO_SCIENTIFIC_VERDICT / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
@@ -56,11 +56,12 @@ appearance-inconsistent. Verdict: `P0_S1_IDENTITY_RULE_TOO_WEAK`, 0 strong ident
 [`P0-S1 result`](../../../docs/research/goal-copilot/P0_S1_CROSSVIEW_ENTRANCE_IDENTITY_RESULT_2026-08-21.md).
 
 `silver_b_development.py` prospectively exports parent A/B admissions at the lower `SILVER_B_MAP_GEOMETRY`
-Development authority without modifying either parent result. The first consumed real batch contains 4 frame-level
-episodes / 4 weak candidates. It supports pipeline/yield/ranking-prototype diagnostics, not detector recall, exact Brain
-accuracy or exact-entrance truth. Each B episode is explicitly `AMBIGUOUS` until independent evidence establishes a
-unique or set-valued physical referent. See the short
-[`Silver-B addendum`](../../../docs/research/goal-copilot/P0_SILVER_B_DEVELOPMENT_ADDENDUM_V1.md).
+Development authority without modifying either parent result. The expanded reviewed cohort contains 47 goal episodes
+over 43 unique frames: 12 `UNIQUE`, 4 `SET_VALUED`, and 31 `AMBIGUOUS`. Independent manual regions, not proposal
+scores, establish the resolved sidecar truth. One user-selected `gpt-5.6-terra / medium` Brain run now provides
+conditioned selection/abstention mechanics only; it is not detector recall, exact Brain accuracy or end-to-end
+performance. See the [`Silver-B addendum`](../../../docs/research/goal-copilot/P0_SILVER_B_DEVELOPMENT_ADDENDUM_V1.md)
+and [`Development result`](../../../docs/research/goal-copilot/P0_SILVER_B_BRAIN_DEVELOPMENT_RESULT_2026-08-21.md).
 
 Focused check:
 
@@ -71,7 +72,9 @@ E:\codex-tools\bin\blindassist-python.cmd -m unittest `
   scripts/research/goal_copilot_bridge/p0_s0_materialization/test_candidate_generator_admission.py `
   scripts/research/goal_copilot_bridge/p0_s0_materialization/test_grounding_dino_s0_r1.py `
   scripts/research/goal_copilot_bridge/p0_s0_materialization/test_crossview_identity.py `
-  scripts/research/goal_copilot_bridge/p0_s0_materialization/test_silver_b_development.py
+  scripts/research/goal_copilot_bridge/p0_s0_materialization/test_silver_b_development.py `
+  scripts/research/goal_copilot_bridge/p0_s0_materialization/test_silver_b_brain_cohort.py `
+  scripts/research/goal_copilot_bridge/p0_s0_materialization/test_run_silver_b_brain_baseline.py
 ```
 
 Authority: BlindAssist owns `GOAL-COPILOT-1`, its evaluator, sealed scenarios,

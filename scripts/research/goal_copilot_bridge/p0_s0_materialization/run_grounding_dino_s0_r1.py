@@ -13,6 +13,7 @@ import math
 import os
 import platform
 import sys
+import time
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -36,7 +37,6 @@ TEXT_THRESHOLD = 0.10
 NMS_IOU_THRESHOLD = 0.50
 MAX_PROPOSALS_PER_IMAGE = 100
 IMAGE_COUNT = 30
-MAPILLARY_BBOX = (3.7215, 51.0505, 3.7295, 51.0565)
 MAPILLARY_FIELDS = (
     "id", "computed_geometry", "captured_at", "compass_angle", "computed_compass_angle",
     "camera_type", "camera_parameters", "width", "height",
@@ -51,6 +51,21 @@ TRAINING_PROVENANCE_LIMITATION = (
 
 class RunError(RuntimeError):
     pass
+
+
+def source_bbox(source_report: Mapping[str, Any]) -> tuple[float, float, float, float]:
+    """Read the actual bounded source slice instead of assuming the first Ghent canary."""
+    try:
+        bounds = source_report["source_files"]["osm"]["bounds"]
+        bbox = (
+            float(bounds["minlon"]), float(bounds["minlat"]),
+            float(bounds["maxlon"]), float(bounds["maxlat"]),
+        )
+    except (KeyError, TypeError, ValueError) as error:
+        raise RunError("source report lacks a valid OSM bbox") from error
+    if not (bbox[0] < bbox[2] and bbox[1] < bbox[3]):
+        raise RunError("source report OSM bbox is empty or inverted")
+    return bbox
 
 
 def canonical_bytes(value: Any) -> bytes:
@@ -83,9 +98,13 @@ def _chunks(values: Sequence[str], size: int) -> Iterable[Sequence[str]]:
 
 
 def _graph_get(session: requests.Session, url: str, *, params: Mapping[str, Any]) -> Any:
-    response = session.get(url, params=params, timeout=90)
-    response.raise_for_status()
-    return response.json()
+    for attempt in range(2):
+        response = session.get(url, params=params, timeout=90)
+        if response.status_code < 500 or attempt == 1:
+            response.raise_for_status()
+            return response.json()
+        time.sleep(1.0)
+    raise AssertionError("unreachable")
 
 
 def metric_distance(left: Sequence[float], right: Sequence[float]) -> float:
@@ -110,21 +129,32 @@ def _angular_difference(left: float, right: float) -> float:
     return min(delta, 360.0 - delta)
 
 
-def _eligible_target_anchors(source_report: Mapping[str, Any]) -> list[dict[str, Any]]:
+def _eligible_target_anchors(
+    source_report: Mapping[str, Any],
+    target_building_ids: Sequence[str] | None = None,
+) -> list[dict[str, Any]]:
     places_by_building: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for item in source_report["place_building_crosswalk_candidates"]:
         if item.get("status") == "CANDIDATE_ONLY" and len(item.get("building_ids", [])) == 1:
             places_by_building[str(item["building_ids"][0])].append(item)
     unique_place_buildings = {building_id for building_id, rows in places_by_building.items() if len(rows) == 1}
-    return sorted(
+    requested_buildings = {str(value) for value in target_building_ids or []}
+    result = sorted(
         [
             item for item in source_report["osm_entrance_building_crosswalk_candidates"]
             if item.get("status") == "CANDIDATE_ONLY"
             and item.get("entrance") not in {"exit", "no", "service", "emergency"}
             and str(item["overture_building_id"]) in unique_place_buildings
+            and (not requested_buildings or str(item["overture_building_id"]) in requested_buildings)
         ],
         key=lambda item: item["osm_entrance_id"],
     )
+    if requested_buildings:
+        found = {str(item["overture_building_id"]) for item in result}
+        missing = sorted(requested_buildings - found)
+        if missing:
+            raise RunError(f"target building has no eligible entrance anchor: {', '.join(missing)}")
+    return result
 
 
 def select_anchor_facing_images(
@@ -175,22 +205,42 @@ def select_anchor_facing_images(
     return selected[:requested_count], {anchor["osm_entrance_id"]: len(candidates_by_anchor[anchor["osm_entrance_id"]]) for anchor in anchors}
 
 
-def fetch_mapillary_metadata(token: str, source_report: Mapping[str, Any], *, requested_count: int = IMAGE_COUNT) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+def fetch_mapillary_metadata(
+    token: str,
+    source_report: Mapping[str, Any],
+    *,
+    requested_count: int = IMAGE_COUNT,
+    target_building_ids: Sequence[str] | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     session = requests.Session()
     session.headers["Authorization"] = f"OAuth {token}"
-    anchors = _eligible_target_anchors(source_report)
+    anchors = _eligible_target_anchors(source_report, target_building_ids)
     raw_by_id: dict[str, dict[str, Any]] = {}
     query_bboxes: list[list[float]] = []
-    for anchor in anchors:
-        lon, lat = float(anchor["point"]["lon"]), float(anchor["point"]["lat"])
-        lat_delta = 60.0 / 110_540.0
-        lon_delta = 60.0 / (111_320.0 * math.cos(math.radians(lat)))
-        query_bbox = [lon - lon_delta, lat - lat_delta, lon + lon_delta, lat + lat_delta]
+    if len(anchors) > 40:
+        min_lon, min_lat, max_lon, max_lat = source_bbox(source_report)
+        mid_lon, mid_lat = (min_lon + max_lon) / 2.0, (min_lat + max_lat) / 2.0
+        query_plan = [
+            ([min_lon, min_lat, mid_lon, mid_lat], 500),
+            ([mid_lon, min_lat, max_lon, mid_lat], 500),
+            ([min_lon, mid_lat, mid_lon, max_lat], 500),
+            ([mid_lon, mid_lat, max_lon, max_lat], 500),
+        ]
+        query_strategy = "FOUR_QUADRANT_SOURCE_SLICE_FOR_DENSE_ANCHOR_SET"
+    else:
+        query_plan = []
+        for anchor in anchors:
+            lon, lat = float(anchor["point"]["lon"]), float(anchor["point"]["lat"])
+            lat_delta = 60.0 / 110_540.0
+            lon_delta = 60.0 / (111_320.0 * math.cos(math.radians(lat)))
+            query_plan.append(([lon - lon_delta, lat - lat_delta, lon + lon_delta, lat + lat_delta], 200))
+        query_strategy = "PER_ANCHOR_60M"
+    for query_bbox, limit in query_plan:
         query_bboxes.append(query_bbox)
         response = _graph_get(
             session,
             "https://graph.mapillary.com/images",
-            params={"bbox": ",".join(str(value) for value in query_bbox), "fields": ",".join(MAPILLARY_FIELDS), "limit": 200},
+            params={"bbox": ",".join(str(value) for value in query_bbox), "fields": ",".join(MAPILLARY_FIELDS), "limit": limit},
         )
         for item in response.get("data", []):
             raw_by_id[str(item["id"])] = item
@@ -242,13 +292,15 @@ def fetch_mapillary_metadata(token: str, source_report: Mapping[str, Any], *, re
         raise RunError("selected image lacks thumb_1024_url")
     acquisition = {
         "endpoint": "https://graph.mapillary.com/images",
-        "bbox": list(MAPILLARY_BBOX),
+        "bbox": list(source_bbox(source_report)),
         "anchor_query_bboxes": query_bboxes,
+        "metadata_query_strategy": query_strategy,
         "requested_fields": list(MAPILLARY_FIELDS) + ["sequence", "thumb_1024_url"],
         "raw_eligible_count": len(normalized),
         "selected_count": len(selected),
         "selection": "DETERMINISTIC_ANCHOR_FACING_3_TO_45M_WITHIN_CAMERA_HFOV_AND_3M_VIEW_SPACING",
         "eligible_anchor_ids": [item["osm_entrance_id"] for item in anchors],
+        "target_building_ids": sorted({str(item["overture_building_id"]) for item in anchors}) if target_building_ids else [],
         "anchor_facing_candidate_counts": anchor_candidate_counts,
         "retrieved_at": datetime.now(timezone.utc).isoformat(),
     }
@@ -401,12 +453,14 @@ def build_materializer_bundle(
     *,
     runtime_versions: Mapping[str, str],
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    origin = [(MAPILLARY_BBOX[0] + MAPILLARY_BBOX[2]) / 2.0, (MAPILLARY_BBOX[1] + MAPILLARY_BBOX[3]) / 2.0]
+    bbox = source_bbox(source_report)
+    origin = [(bbox[0] + bbox[2]) / 2.0, (bbox[1] + bbox[3]) / 2.0]
     buildings: dict[str, list[tuple[float, float]]] = {}
     for feature in buildings_geojson.get("features", []):
         ring = _polygon_ring(feature)
-        if ring:
-            buildings[str(feature["properties"]["id"])] = [_local_xy(point, origin) for point in ring]
+        building_id = feature.get("id") or feature.get("properties", {}).get("id")
+        if ring and building_id:
+            buildings[str(building_id)] = [_local_xy(point, origin) for point in ring]
     place_rows = [item for item in source_report["place_building_crosswalk_candidates"] if item.get("status") == "CANDIDATE_ONLY" and len(item.get("building_ids", [])) == 1]
     places_by_building: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for item in place_rows:
@@ -623,7 +677,12 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     run_dir.mkdir(parents=True, exist_ok=True)
     source_report = json.loads(args.source_report.read_text(encoding="utf-8"))
     buildings = json.loads(args.buildings.read_text(encoding="utf-8"))
-    metadata, acquisition = fetch_mapillary_metadata(token, source_report, requested_count=args.image_count)
+    metadata, acquisition = fetch_mapillary_metadata(
+        token,
+        source_report,
+        requested_count=args.image_count,
+        target_building_ids=args.target_building_id,
+    )
     download_images(metadata, run_dir / "images")
     write_json(run_dir / "mapillary_metadata.json", {"acquisition": acquisition, "images": metadata})
     inference, versions = run_inference(args.model_dir.resolve(), metadata)
@@ -684,6 +743,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--source-report", required=True, type=Path)
     parser.add_argument("--buildings", required=True, type=Path)
     parser.add_argument("--image-count", type=int, default=IMAGE_COUNT, choices=range(20, 51))
+    parser.add_argument(
+        "--target-building-id",
+        action="append",
+        default=[],
+        help="Restrict acquisition to an eligible Overture building; repeat for multiple buildings.",
+    )
     args = parser.parse_args(argv)
     summary = run(args)
     print(json.dumps(summary, ensure_ascii=False, indent=2))
