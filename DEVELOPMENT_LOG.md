@@ -2,6 +2,13 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-22（Asia/Hong_Kong）；执行者：violjjet。按用户决定将 `P1-AMRM0 Adaptive Multi-view Referent
+  Memory` 登记为新的主实验路径与最高优先级待验证假设，不写成已证明有效。P1-VF0 保留为 verifier foundation；
+  新增 target/context/full-frame refs、orientation、distance/viewpoint/scale/context coverage、严格
+  TENTATIVE/VERIFIED 分离、verifier receipt 才能晋升、verified-only retrieval、丢失时停止写入和 bounded diversity
+  memory。合计 26 项 synthetic contract tests 通过；真实 matched correspondence canary 尚未实现/运行，minimal
+  geometry 仅在未来真实结果把剩余失败定位为 translation ambiguity 后才可考虑。
+
 - 时间：2026-08-22（Asia/Hong_Kong）；执行者：violjjet。按用户显式授权以新版本重开 verifier-first referent
   persistence，建立 `P1-VF0` outcome-blind mechanics，不修改或续跑已消费的 W1-T0/W2。实现 Goal Contract、
   bounded immutable Referent Ledger、常驻 `H_other`、parent/child slot、distractor registry、appearance cap、

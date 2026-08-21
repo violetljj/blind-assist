@@ -1,12 +1,14 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / P1_VF0_VERIFIER_FIRST_LEDGER / SYNTHETIC_CONTRACT_TESTED / PERFORMANCE_NOT_RUN / NO_EXECUTION_SUCCESSOR / NO_SCIENTIFIC_VERDICT / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / P1_AMRM0_ADAPTIVE_MULTI_VIEW_REFERENT_MEMORY / MAIN_EXPERIMENT_PATH / HIGHEST_PRIORITY_HYPOTHESIS / SYNTHETIC_CONTRACT_TESTED / REAL_EXPERIMENT_NOT_RUN / NO_SCIENTIFIC_VERDICT / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
-## P1-VF0 verifier-first referent ledger
+## P1-AMRM0 adaptive multi-view referent memory
 
-`p1_verifier_first/` is the active outcome-blind mechanics surface. It separates proposal generation from identity
+`p1_verifier_first/` is the active outcome-blind mechanics surface. P1-VF0 supplies its verifier foundation; `memory.py`
+adds tentative/verified separation, verifier-only promotion, compact distance/viewpoint/scale/context novelty coverage,
+and verified-only retrieval. It separates proposal generation from identity
 authority through a Goal Contract, bounded immutable ledger, explicit `H_other`, independent prediction/exclusion
 evidence, appearance cap, parent/child slot, distractor registry, observability-gated negative evidence, and explicit
 verification/ambiguity/staleness/rebinding decisions. It never requests translation and contains no provider, real
@@ -14,7 +16,8 @@ cohort, performance execution, VIO/SLAM/POMDP, Android, or safety authority.
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd -m unittest `
-  scripts/research/goal_copilot_bridge/p1_verifier_first/test_core.py
+  scripts/research/goal_copilot_bridge/p1_verifier_first/test_core.py `
+  scripts/research/goal_copilot_bridge/p1_verifier_first/test_memory.py
 ```
 
 ## Last-10-metre current-frame regrounding

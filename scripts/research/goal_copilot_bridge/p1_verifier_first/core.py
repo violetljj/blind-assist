@@ -107,6 +107,7 @@ class CandidateHypothesis:
 class EvidenceReceipt:
     sequence_index: int
     decision: Decision
+    observability_reason: ObservabilityReason
     candidate_ids: tuple[str, ...]
     confirmed_evidence_id: str | None
     prior_referent_id: str
@@ -379,6 +380,7 @@ def update_ledger(
     receipt = EvidenceReceipt(
         sequence_index=sequence_index,
         decision=decision,
+        observability_reason=observability_reason,
         candidate_ids=tuple(candidate_ids),
         confirmed_evidence_id=confirmed_evidence_id,
         prior_referent_id=prior_referent_id,
