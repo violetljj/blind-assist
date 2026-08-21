@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-22（Asia/Hong_Kong）；执行者：violjjet。完成 P1-W0 World-Anchored Target Persistence
+  architecture design，正式关闭 P1-A tracker/correspondence authority 系列。新设计把维护对象从连续 `2D track`
+  改为 `real-world referent belief`，允许 `CAMERA_RELATIVE / KEYFRAME_RELATIVE / WORLD_RELATIVE` 三类空间
+  reference frame，并要求 identity memory、spatial anchor 与 current observation 独立失效。冻结
+  `REACQUIRED = spatial compatibility AND independent identity confirmation`、`NONE observation` 不伪造 bbox、
+  超出 Tier-0 平移能力必须 `SPATIAL_ANCHOR_STALE / UNKNOWN` 等边界。W0 只完成 memory semantics 与 authority
+  design；未选择模型、未运行 Tier-0/Tier-1 baseline、未进入 SLAM 或 Android/default-App。
+
 - 时间：2026-08-22（Asia/Hong_Kong）；执行者：Codex。完成唯一 P1-A4 strictly causal official PyTorch Online
   BootsTAPIR capability probe。15 episodes / 1,724 frames / 43,100 point rows 的 future/GT reset/semantic/global
   search/query-replacement violations 与 evaluator state/event violations 全为 0；wall `121.667 s`、peak CUDA

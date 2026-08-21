@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_A2_DENSE_IDENTITY_SIGNAL_RETAINED / P1_A3_TEMPORAL_POLICY_INSUFFICIENT / NO_POLICY_ADMISSION / P1_A4_STRONG_TEMPORAL_CORRESPONDENCE_NOT_SUFFICIENT / CURRENT_IMPLEMENTATION_STOPPED / NO_AUTOMATIC_SUCCESSOR / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P0_POLICY_DISCOVERY_CLOSED / P1_A_CLOSED / P1_W0_WORLD_REFERENT_MEMORY_DESIGN_COMPLETE / NO_BASELINE_EXECUTION / NO_POLICY_ADMISSION / NO_SCIENTIFIC_VERDICT / NO_SKY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；详细历史、协议和数字留在链接的独立结果文件，不在 current 重复维护。
@@ -107,7 +107,7 @@ confirmation、quarantine、receipt 或终态。
 已选择停止 synthetic moderate optimization。Sky 不属于当前 pipeline，不能用于 P0 policy rescue、P1 tracker
 搜索或绕过真实 observation failure。
 
-## 当前 P1 结果与唯一 successor
+## 当前 P1 结果与架构升级
 
 [`P1-A1`](P1_A1_CONSERVATIVE_LOCAL_TRACK_VALIDITY_RESULT_2026-08-21.md) 已一次性完成 3,069 个 compact
 RGB-only validity gates。最佳 `>=90%` retention gate 保留 `80/87` correct，但 wrong、episode-macro、max wrong-lock
@@ -137,9 +137,27 @@ official PyTorch Online BootsTAPIR probe：hard evaluability 全通过，但 cor
 `785`、temporary/return recovery 均 `0/3`。终态 `STRONG_TEMPORAL_CORRESPONDENCE_NOT_SUFFICIENT`；当前实现停止，
 不调参、不重跑、不换模型，也没有自动 successor。
 
-禁止：继续调 A1/A2/A3 threshold/operator、直接保留 winner、提前实现 stronger tracker 或 global
-reacquisition、加入 ReID/Sky、fresh/large cohort、
+[`P1-W0 design`](P1_W0_WORLD_ANCHORED_TARGET_PERSISTENCE_DESIGN_V1.md) 随后把 P1 的维护对象从连续
+`2D track` 重定义为 `real-world referent belief`。它只冻结 memory semantics 与 authority boundaries：
+`CAMERA_RELATIVE / KEYFRAME_RELATIVE / WORLD_RELATIVE` 不同 reference frame、identity 与 spatial anchor
+独立失效、observation honesty，以及
+`REACQUIRED = spatial compatibility AND independent identity confirmation`。`OUT_OF_VIEW / UNKNOWN /
+OCCLUDED_EVIDENCED` 是正交 observability reason，不扩张成完整产品 FSM。
+
+P1-A tracker/correspondence authority 系列正式关闭。W0 是 architecture design only，不证明 world memory、
+relocalization 或 SLAM 已有效。当前不选择模型、不运行 Tier-0/Tier-1 baseline、不接 App。若用户另行授权，
+唯一后继是一个极小可逆的 P1-W1 Tier-0/Tier-1 baseline protocol；先验证 bearing propagation、keyframe-local
+relocalization、双条件 reacquisition 和平移越界后的 stale downgrade，不自动进入 SLAM 或模型 zoo。
+
+## 唯一 successor
+
+`P1-W1_TIER0_TIER1_MINIMAL_BASELINE_PROTOCOL`。当前仅登记身份，仍为 `NOT_AUTHORIZED / NO_EXECUTION`；
+只有用户另行授权后才能冻结极小 baseline protocol，不得从 W0 自动启动实现或评测。
+
+禁止：继续调 A1/A2/A3 threshold/operator、直接保留 winner、建立 A5+ tracker/model arm、提前实现 global
+reacquisition 或 SLAM、加入 ReID/Sky、fresh/large cohort、
 P0 policy 续搜、Active/Temporal Grounding、Android/default-App、产品或安全主张。
 
-Claim ceiling：`CONSUMED_ADT_INDOOR_OBJECT_DEVELOPMENT_BASELINE_ONLY_NO_SCIENTIFIC_VERDICT`。
+Claim ceiling：既有 A1-A4 仍为 `CONSUMED_ADT_INDOOR_OBJECT_DEVELOPMENT_BASELINE_ONLY_NO_SCIENTIFIC_VERDICT`；
+W0 为 `ARCHITECTURE_DESIGN_ONLY / NO_EMPIRICAL_CAPABILITY`。
 默认 App：不变。
