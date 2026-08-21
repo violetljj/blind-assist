@@ -215,6 +215,14 @@ AMBIGUOUS=3 / NOT_OBSERVED=1`；合并后 `UNIQUE=12 / SET_VALUED=3 / AMBIGUOUS=
 Logistic/Conformal 继续不授权，且永久禁止为这套 frontdoor 再采第 2 批。P0 可转入现有 consumed Development 上的
 低 claim cheap discovery，严格确认只留给出现明确 signal 后的独立阶段。
 
+随后 [`P0-A1 Ambiguity Gate Discovery`](P0_A1_AMBIGUITY_GATE_DISCOVERY_RESULT_2026-08-21.md) 在协议提交后只运行
+一次 frozen feature sweep；0 新 parent、0 新模型调用，D2/D3 缺失 runtime evidence 不补值。统一可观测的 71 episodes /
+21 parents 上，ungated Terra 的 ambiguous false commit 为 `36/51 = 70.59%`、17-parent macro `70.78%`；冻结选中的
+`brain confidence >= 0.85 AND candidate center dispersion <= 0.2423407461` 将其降到 `11/51 = 21.57%`、macro
+`19.61%`，同时保留 `20/20` resolvable commit coverage 与 `17/20` committed correctness。终态
+`CLEAR_SIGNAL_COMPACT_POLICY_NEXT` 只授权 P0-A2 小型 policy discovery；当前规则仍未准入，Sky、ranking、
+Logistic/Conformal 与科学确认均未启动。
+
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim
 ceiling 见 [`GOAL_COPILOT_1_SKY_PILOT_RESULT.md`](GOAL_COPILOT_1_SKY_PILOT_RESULT.md)。若继续，

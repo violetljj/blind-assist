@@ -86,6 +86,21 @@ episodes over 8 new parents, but the combined consumed bank still has only 2 SET
 and result: [`P0-D2 protocol`](../../../docs/research/goal-copilot/P0_D2_COMMITMENT_CALIBRATION_PROTOCOL_V1.md) /
 [`frontdoor result`](../../../docs/research/goal-copilot/P0_D2_RESOLVABLE_ENRICHMENT_AND_FRONTDOOR_RESULT_2026-08-21.md).
 
+`p0_a1_ambiguity_gate/` performs the one allowed consumed-development feature sweep after the D3 calibration
+frontdoor closed. It hash-binds the two cohorts with complete, matching Grounding DINO + Terra + frozen-evaluator
+runtime evidence; missing D2/D3 runtime rows are excluded rather than imputed. Rules may only retain an existing
+Terra `SELECT` or turn it into `ABSTAIN`. The frozen eight-feature, single/two-condition sweep reached
+`CLEAR_SIGNAL_COMPACT_POLICY_NEXT`; this is feature headroom for P0-A2, not policy admission or a scientific result.
+Protocol and result: [`P0-A1 protocol`](../../../docs/research/goal-copilot/P0_A1_AMBIGUITY_GATE_DISCOVERY_PROTOCOL_V1.json) /
+[`P0-A1 result`](../../../docs/research/goal-copilot/P0_A1_AMBIGUITY_GATE_DISCOVERY_RESULT_2026-08-21.md).
+
+Focused P0-A1 mechanics check:
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts/research/goal_copilot_bridge/p0_a1_ambiguity_gate/test_sweep.py
+```
+
 Focused D2 mechanics check:
 
 ```powershell

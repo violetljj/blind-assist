@@ -4702,3 +4702,12 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   `0.379476–0.405762`，且禁止升级。终态 `P0_S1_IDENTITY_RULE_TOO_WEAK`、strong identity 0、S0 不重跑。
   下一边界只是在同 Mapillary source 内补足 target-anchor-facing、同 sequence、3–30m parallax 且逐 view 过
   map/geometry 的 pair coverage；不得降低 gates 或用跨 sequence rescue。
+- 同日完成 `P0-A1 Ambiguity Gate Discovery` 一次性 frozen feature sweep。协议与执行器先以 `f634e0b6`
+  提交并推送，随后只读取两组已有 Grounding DINO + Terra + frozen evaluator 的 consumed Development，0 新
+  parent、0 新模型调用；D2/D3 缺失 runtime evidence 与 `NOT_OBSERVED` 均不补值。71 episodes / 21 parents
+  上，ungated Terra ambiguous false commit 为 `36/51 = 70.59%`、17-parent macro `70.78%`；冻结 selector
+  选中 `brain_confidence>=0.85 AND candidate_center_dispersion<=0.2423407461`，降至 `11/51 = 21.57%`、
+  macro `19.61%`，同时保留 `20/20` resolvable commit coverage 与 `17/20` committed correctness。
+  终态 `CLEAR_SIGNAL_COMPACT_POLICY_NEXT / NO_POLICY_ADMISSION / NO_SCIENTIFIC_VERDICT`：当前 conjunction
+  只证明 representation 内存在 Development signal；下一步限于 P0-A2 compact policy discovery，不重跑 A1、
+  不加 feature/threshold，不启动 Sky、ranking、Logistic/Conformal 或正式确认。
