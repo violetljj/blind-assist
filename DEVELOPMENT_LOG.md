@@ -2,6 +2,12 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-21（Asia/Hong_Kong）；执行者：Codex。完成 P1-A4 outcome-blind implementation selection。
+  冻结协议 commit `611aa2dc` 后审计第一候选 official Google DeepMind PyTorch Online BootsTAPIR；固定 upstream
+  `c2cbab81`、source/checkpoint/license/postprocessing hashes 与本机 PyTorch/CUDA/GPU identity。Deterministic
+  256×256 / 25-point single-frame canary outputs finite，peak CUDA `325,528,576 bytes`、wall `2.767 s`。
+  按协议第一候选通过即停止；JAX/CoTracker/TAPNext/Cutie 未运行。当前 `PRIVATE_TRUTH_UNREAD / PERFORMANCE_NOT_RUN`。
+
 - 时间：2026-08-21（Asia/Hong_Kong）；执行者：Codex。冻结 P1-A4 online strong temporal-correspondence
   capability protocol，先于任何 implementation selection、checkpoint 下载或 ADT execution。Primary 硬约束为逐帧
   `frame0..t` causal reads、frame-0 bbox 内固定 5×5 queries、官方 visibility/occlusion 输出、partial-affine deterministic

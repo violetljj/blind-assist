@@ -1,0 +1,54 @@
+{
+  "schema_version": "p1-a4-selection-receipt-v1",
+  "status": "PYTORCH_ONLINE_BOOTSTAPIR_SELECTED",
+  "protocol_commit": "611aa2dc03f89d30589a1d434cf96746f0733ede",
+  "private_truth_reads": 0,
+  "performance_arms_run": 0,
+  "fallback_candidates_smoked": 0,
+  "repository": {
+    "url": "https://github.com/google-deepmind/tapnet.git",
+    "commit": "c2cbab81cc06092b5f05bfe2da7bfec54e2079c9",
+    "source_manifest_sha256": "927750992e5c5b6306154b891b1e47dcca47b6fa3ed18236a2c81f28a3fccb15",
+    "file_count": 98
+  },
+  "checkpoint": {
+    "url": "https://storage.googleapis.com/dm-tapnet/bootstap/causal_bootstapir_checkpoint.pt",
+    "bytes": 218887028,
+    "sha256": "87c1e752cf5ce56e3e2f7da460aeb4d40fc826d04ef2939bade86a5c7495377f"
+  },
+  "license": {
+    "spdx": "Apache-2.0",
+    "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5"
+  },
+  "constructor": "tapir_model.TAPIR(pyramid_level=1, use_casual_conv=True)",
+  "postprocessing": "visibility_probability=(1-sigmoid(occlusion))*(1-sigmoid(expected_dist)); visible=probability>0.5",
+  "source_hashes": {
+    "tapir_model.py": "72b0b4cfbe352c4168496db2241dc5bb29ab3cc7a52dd88076703aee8c4dfafd",
+    "pytorch_live_demo.py": "7f262a092e02bf58c2d69b2dbb872b4fac9ca4835090366fc96dcc0caf96c7d6"
+  },
+  "runtime": {
+    "python": "3.11.9",
+    "torch": "2.11.0+cu130",
+    "cuda_runtime": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "gpu_total_bytes": 8546484224,
+    "task_dependencies": {
+      "dm-tree": "0.1.10",
+      "einshape": "1.0"
+    }
+  },
+  "canary": {
+    "input_shape": [1, 1, 256, 256, 3],
+    "query_shape": [1, 25, 3],
+    "track_shape": [1, 25, 1, 2],
+    "occlusion_shape": [1, 25, 1],
+    "expected_distance_shape": [1, 25, 1],
+    "visible_shape": [1, 25, 1],
+    "finite": true,
+    "visible_count": 25,
+    "peak_cuda_bytes": 325528576,
+    "wall_seconds": 2.766873000000487,
+    "max_source_frame_read": 0,
+    "output_frame": 0
+  }
+}
