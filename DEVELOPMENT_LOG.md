@@ -4711,3 +4711,12 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   终态 `CLEAR_SIGNAL_COMPACT_POLICY_NEXT / NO_POLICY_ADMISSION / NO_SCIENTIFIC_VERDICT`：当前 conjunction
   只证明 representation 内存在 Development signal；下一步限于 P0-A2 compact policy discovery，不重跑 A1、
   不加 feature/threshold，不启动 Sky、ranking、Logistic/Conformal 或正式确认。
+- 同日完成 `P0-A2 Compact Ambiguity Policy Discovery`。协议和 deterministic enumerator 先以 `83371cd2`
+  提交并推送，再在 A1 exact evidence chain 上穷举 518,570 个最多 3 predicates、depth-2 单调 policies；0 新
+  parent、0 新 feature、0 模型/Sky 调用。55,346 个 unique commit behaviors 中有 3,237 个保持 `20/20`
+  resolvable coverage 与 committed correctness `>=85%`，但最优 parent-macro 仍为 A1 的 `19.61%`，增益
+  `0.00pp`。最佳 relaxed 三谓词 behavior 把 macro 降至 `1.47%`、micro `2/51`，代价是 coverage 仅
+  `13/20 = 65%`，因此冻结终态 `COMPLEXITY_ONLY_BUYS_ABSTENTION / A1_INCUMBENT_RETAINED / NO_POLICY_ADMISSION /
+  NO_SCIENTIFIC_VERDICT`。A1 worst-parent bins 为 `0%=10 / (0,25%]=2 / (25%,50%]=4 / >50%=1`；
+  `30CC Minnepoort 1/1` 为 worst rate、`NTGent Café 4/8` 为最大 residual count。当前不替换 A1、不扩 DSL、
+  不启动 fresh confirmation；这些 consumed counterexamples 后续只可支持 observation/active-perception 诊断。

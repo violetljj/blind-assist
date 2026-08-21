@@ -101,6 +101,21 @@ E:\codex-tools\bin\blindassist-python.cmd -m unittest `
   scripts/research/goal_copilot_bridge/p0_a1_ambiguity_gate/test_sweep.py
 ```
 
+`p0_a2_compact_policy/` hash-binds the complete A1 evidence chain and deterministically enumerates the frozen
+monotone policy DSL: at most three distinct threshold predicates and Boolean depth at most two. Full resolvable
+coverage and at least 85% committed correctness are hard constraints; ambiguous venue-parent macro false commit is
+the sole primary objective. The search retained A1 exactly; lower false commitment appeared only after coverage fell
+to 65%, so the terminal is `COMPLEXITY_ONLY_BUYS_ABSTENTION`. Protocol and result:
+[`P0-A2 protocol`](../../../docs/research/goal-copilot/P0_A2_COMPACT_AMBIGUITY_POLICY_DISCOVERY_PROTOCOL_V1.json) /
+[`P0-A2 result`](../../../docs/research/goal-copilot/P0_A2_COMPACT_AMBIGUITY_POLICY_DISCOVERY_RESULT_2026-08-21.md).
+
+Focused P0-A2 mechanics check:
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts/research/goal_copilot_bridge/p0_a2_compact_policy/test_search.py
+```
+
 Focused D2 mechanics check:
 
 ```powershell

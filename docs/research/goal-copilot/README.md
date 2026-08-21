@@ -223,6 +223,14 @@ Logistic/Conformal 继续不授权，且永久禁止为这套 frontdoor 再采�
 `CLEAR_SIGNAL_COMPACT_POLICY_NEXT` 只授权 P0-A2 小型 policy discovery；当前规则仍未准入，Sky、ranking、
 Logistic/Conformal 与科学确认均未启动。
 
+[`P0-A2 Compact Ambiguity Policy Discovery`](P0_A2_COMPACT_AMBIGUITY_POLICY_DISCOVERY_RESULT_2026-08-21.md)
+随后在同一 consumed runtime surface 上确定性穷举 518,570 个 `<=3` predicates、depth-2 单调 symbolic
+policies。3,237 个满足 `20/20` resolvable coverage 与 correctness `>=85%` 的 unique behaviors 中，最优解仍
+是 A1 本身，parent-macro 增益 `0.00pp`。最佳 relaxed 三谓词规则虽把 macro 降到 `1.47%`，却只保留
+`13/20 = 65%` coverage，因此终态 `COMPLEXITY_ONLY_BUYS_ABSTENTION / A1_INCUMBENT_RETAINED`。A1 的
+worst-parent 分布为 `0%=10 / (0,25%]=2 / (25%,50%]=4 / >50%=1`；`30CC Minnepoort 1/1` 是 worst-rate
+counterexample，`NTGent Café 4/8` 是最大 residual count。本轮不替换 A1、不启动 Sky 或 fresh confirmation。
+
 `GOAL-COPILOT-1-SKY-PILOT` 已按独立冻结协议完成并封存；协议见
 [`GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md`](GOAL_COPILOT_1_SKY_PILOT_PROTOCOL.md)，结果与严格 claim
 ceiling 见 [`GOAL_COPILOT_1_SKY_PILOT_RESULT.md`](GOAL_COPILOT_1_SKY_PILOT_RESULT.md)。若继续，
