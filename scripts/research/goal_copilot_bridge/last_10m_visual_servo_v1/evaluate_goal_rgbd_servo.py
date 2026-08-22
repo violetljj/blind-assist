@@ -21,18 +21,21 @@ def evaluate_cases(prediction: dict, private: dict) -> list[dict]:
     rows = []
     for truth in private["cases"]:
         case = observed[truth["case_id"]]
-        candidate_hits = []
+        candidate_hits, region_hits = [], []
         for candidate in case["candidates"]:
-            matches = []
+            matches, region_match = [], False
             for target in truth["legal_targets"]:
                 hit, metrics = functional_region_hit(candidate["bbox_xyxy"], target["target_bbox_xyxy"], case["image_width"], case["image_height"])
+                region_match = region_match or hit
                 if hit and candidate["action"] == target["desired_action"]:
                     matches.append(metrics)
             candidate_hits.append(bool(matches))
+            region_hits.append(region_match)
         rows.append({
             "case_id": truth["case_id"],
             "phase": truth["phase"],
             "candidate_count": len(case["candidates"]),
+            **{f"target_region_recall_at_{k}": any(region_hits[:k]) for k in KS},
             **{f"target_action_recall_at_{k}": any(candidate_hits[:k]) for k in KS},
         })
     return rows
@@ -53,6 +56,8 @@ def main() -> int:
         selected = [row for row in rows if phase is None or row["phase"] == phase]
         return sum(row[f"target_action_recall_at_{k}"] for row in selected) / len(selected) if selected else None
     metrics = {
+        "target_region_recall_at_1": sum(row["target_region_recall_at_1"] for row in rows) / len(rows) if rows else None,
+        "target_region_recall_at_3": sum(row["target_region_recall_at_3"] for row in rows) / len(rows) if rows else None,
         "target_action_recall_at_1": recall(None, 1),
         "target_action_recall_at_3": recall(None, 3),
         "far_target_action_recall_at_3": recall("FAR_GUIDANCE", 3),
@@ -75,7 +80,7 @@ def main() -> int:
         "rows": rows,
     }
     _atomic_json(args.output, payload)
-    print(json.dumps({key: payload[key] for key in ("case_count", "far_case_count", "stop_case_count", "target_action_recall_at_1", "target_action_recall_at_3", "far_target_action_recall_at_3", "stop_target_action_recall_at_3", "terminal")}, indent=2))
+    print(json.dumps({key: payload[key] for key in ("case_count", "far_case_count", "stop_case_count", "target_region_recall_at_1", "target_region_recall_at_3", "target_action_recall_at_1", "target_action_recall_at_3", "far_target_action_recall_at_3", "stop_target_action_recall_at_3", "terminal")}, indent=2))
     return 0
 
 

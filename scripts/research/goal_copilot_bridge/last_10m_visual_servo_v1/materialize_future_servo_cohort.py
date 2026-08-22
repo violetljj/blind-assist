@@ -12,6 +12,7 @@ import zipfile
 import cv2
 import numpy as np
 from PIL import Image
+from scipy.spatial.transform import Rotation
 
 from scripts.research.goal_copilot_bridge.last_10m_visual_servo_v1.completion_nearness import _atomic_json, _read, _require
 from scripts.research.goal_copilot_bridge.last_10m_visual_servo_v1.materialize_future_approach_cohort_dev import cluster_events, component_mask_for_bbox, member
@@ -20,6 +21,28 @@ from scripts.research.goal_copilot_bridge.last_10m_visual_servo_v1.materialize_t
 
 
 STOP_DEPTH_M = 1.50
+ROUTE_LOOKAHEAD_FRAMES = 30
+IMU_SAMPLES_PER_FRAME = 10
+
+
+def route_plan(imu_zip: zipfile.ZipFile, environment: str, trajectory: str, frame: int) -> dict:
+    base = f"{environment}/Data_easy/{trajectory}/imu/"
+    with imu_zip.open(base + "pos_global.npy") as stream:
+        positions = np.load(stream)
+    with imu_zip.open(base + "ori_global.npy") as stream:
+        orientations = np.load(stream)
+    current = min(frame * IMU_SAMPLES_PER_FRAME, len(positions) - 1)
+    waypoint = min((frame + ROUTE_LOOKAHEAD_FRAMES) * IMU_SAMPLES_PER_FRAME, len(positions) - 1)
+    displacement_body = Rotation.from_euler("xyz", orientations[current]).inv().apply(positions[waypoint] - positions[current])
+    bearing_fraction = 0.5 + float(displacement_body[1]) / max(abs(float(displacement_body[0])), 0.1) / 2.0
+    return {
+        "source": "PREDECLARED_REPLAY_WAYPOINT_PROXY",
+        "lookahead_frames": ROUTE_LOOKAHEAD_FRAMES,
+        "lookahead_seconds": 3.0,
+        "bearing_fraction": bearing_fraction,
+        "body_displacement_xyz_m": [float(value) for value in displacement_body],
+        "derived_without_semantic_or_target_truth": True,
+    }
 
 
 def servo_phases(cluster: list[dict], stop_depth_m: float = STOP_DEPTH_M) -> list[dict]:
@@ -58,8 +81,10 @@ def main() -> int:
         environment = diagnostic["environment"]
         data_root = zip_root / environment / "Data_easy"
         image_path, depth_path, seg_path = (data_root / f"{name}_lcam_front.zip" for name in ("image", "depth", "seg"))
+        imu_path = data_root / "imu.zip"
+        _require(imu_path.is_file(), "future servo route-plan IMU unavailable")
         door_id = exact_door_label(args.label_root / environment / "seg_label_map.json")
-        with zipfile.ZipFile(image_path) as image_zip, zipfile.ZipFile(depth_path) as depth_zip, zipfile.ZipFile(seg_path) as seg_zip:
+        with zipfile.ZipFile(image_path) as image_zip, zipfile.ZipFile(depth_path) as depth_zip, zipfile.ZipFile(seg_path) as seg_zip, zipfile.ZipFile(imu_path) as imu_zip:
             for cluster in cluster_events(diagnostic["episodes"]):
                 trajectory = cluster[0]["trajectory"]
                 for phase in servo_phases(cluster):
@@ -96,9 +121,10 @@ def main() -> int:
                         "goal_contract": {"goal_type": "ROUTE_APPROACHABLE_DOOR", "reference_mode": "SET_VALUED", "canonical_prompt": "door"},
                         "query": {"image_path": str(current_path.resolve()), "image_sha256": file_hash(current_path)},
                         "range_sensor": {"depth_path": str(current_depth_path.resolve()), "depth_sha256": file_hash(current_depth_path), "metric_unit": "meter"},
+                        "route_plan": route_plan(imu_zip, environment, trajectory, frame),
                     })
                     private_cases.append({"case_id": case_id, "phase": phase["phase"], "future_demonstrated_positive_only": True, "legal_targets": legal_targets})
-        receipts.append({"environment": environment, "diagnostic_sha256": file_hash(diagnostic_path), "independent_event_count": len(cluster_events(diagnostic["episodes"]))})
+        receipts.append({"environment": environment, "diagnostic_sha256": file_hash(diagnostic_path), "imu_zip_sha256": file_hash(imu_path), "independent_event_count": len(cluster_events(diagnostic["episodes"]))})
     public = {"schema_version": "blindassist_future_servo_public_v1", "created_at_utc": datetime.now(timezone.utc).isoformat(), "role": args.role, "provider_truth_access": False, "cases": public_cases}
     private = {"schema_version": "blindassist_future_servo_private_v1", "created_at_utc": datetime.now(timezone.utc).isoformat(), "role": "PRIVATE_EVALUATOR_ONLY", "positive_only_truth": True, "stop_depth_m": STOP_DEPTH_M, "source_receipts": receipts, "cases": private_cases}
     _atomic_json(args.public, public)

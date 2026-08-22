@@ -251,3 +251,17 @@ AMRM1/2/3、VLM、VIO/SLAM/geometry。
 
 Claim ceiling：`POST_OUTCOME_SELECTED_CONSUMED_DEVELOPMENT_FAILURE_COHORT_MECHANISM_DIAGNOSTIC_ONLY`。
 默认 App：不变。
+
+## Goal-semantic proposal 与 RGB-D servo 最新结果
+
+最新自动公开数据执行见 [`Goal-semantic proposal and RGB-D servo result`](BLINDASSIST_GOAL_RGBD_SERVO_RESULT_2026-08-23.md)。
+
+合法 public Goal Contract 驱动的四路 semantic proposal 在独立 14-case future-demonstrated cohort 上 ordinary IoU
+Recall@1/3/5/10 为 `85.7% / 100% / 100% / 100%`，functional-region Recall 同样在 Top-3 达到 `100%`；
+因此 bounded proposal availability 已建立。
+
+但 Top-3 RGB-D controller 在 fresh Office 35-case cohort 上 target-action Recall@3 只有 `57.1%`，far `54.5%`、
+STOP `61.5%`，终态为 `GOAL_RGBD_SERVO_ACTION_AVAILABILITY_NOT_ESTABLISHED`。正确门在 merged Top-10 中仍有
+`30/35`，主要未解层是 generic “沿当前路线”没有提供足以区分多个同类门的 public route intent。Outcome 后的
+cross-provider consensus 与 IMU replay waypoint proxy 都未过 gate；不得把它们写成确认成功，也不得从 future target
+truth 反推 public route prompt。默认 App 不变。

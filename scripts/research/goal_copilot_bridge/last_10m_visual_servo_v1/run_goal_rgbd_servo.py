@@ -17,6 +17,7 @@ from scripts.research.goal_copilot_bridge.p1_proposal_availability.pa3_semantic 
 
 
 STOP_DEPTH_M = 1.60
+MASK_HINT_MAX_INTERIOR_DEPTH_M = 2.20
 MAX_GUIDANCE_CANDIDATES = 3
 
 
@@ -40,6 +41,31 @@ def guidance_action(box: list[float], width: int, range_m: float | None) -> str:
     return bearing_action(box, width)
 
 
+def should_stop(interior_range_m: float | None, mask_p20_m: float | None) -> bool:
+    return interior_range_m is not None and (
+        interior_range_m <= STOP_DEPTH_M
+        or (mask_p20_m is not None and mask_p20_m <= STOP_DEPTH_M and interior_range_m <= MASK_HINT_MAX_INTERIOR_DEPTH_M)
+    )
+
+
+def round_robin_guidance(groups: list[list[dict]], limit: int = MAX_GUIDANCE_CANDIDATES) -> list[dict]:
+    selected, seen = [], set()
+    rank = 0
+    while len(selected) < limit and any(rank < len(group) for group in groups):
+        for group in groups:
+            if rank >= len(group):
+                continue
+            row = group[rank]
+            identity = row["proposal_rank"]
+            if identity not in seen:
+                selected.append(row)
+                seen.add(identity)
+                if len(selected) >= limit:
+                    break
+        rank += 1
+    return selected
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--public", type=Path, required=True)
@@ -60,17 +86,28 @@ def main() -> int:
         depth = decode_depth(depth_path)
         ranked = []
         for proposal in sorted(observed["candidates"], key=lambda row: row["provider_rank"]):
-            range_m = float(proposal["source_mask_depth_p20_m"]) if proposal.get("source_mask_depth_p20_m") is not None else candidate_depth(depth, proposal["bbox_xyxy"])
+            interior_range_m = candidate_depth(depth, proposal["bbox_xyxy"])
+            mask_p20_m = float(proposal["source_mask_depth_p20_m"]) if proposal.get("source_mask_depth_p20_m") is not None else None
+            action = "STOP" if should_stop(interior_range_m, mask_p20_m) else bearing_action(proposal["bbox_xyxy"], observed["image_width"])
             ranked.append({
                 "proposal_rank": proposal["provider_rank"],
                 "source_provider": proposal["source_provider"],
                 "bbox_xyxy": proposal["bbox_xyxy"],
-                "range_m": range_m,
-                "action": guidance_action(proposal["bbox_xyxy"], observed["image_width"], range_m),
+                "range_m": interior_range_m,
+                "mask_depth_p20_m": mask_p20_m,
+                "action": action,
             })
-        ranked.sort(key=lambda row: (row["action"] != "STOP", row["proposal_rank"]))
-        candidates = [row | {"guidance_rank": index} for index, row in enumerate(ranked[:MAX_GUIDANCE_CANDIDATES], start=1)]
-        rows.append({"case_id": case["case_id"], "image_width": observed["image_width"], "image_height": observed["image_height"], "candidates": candidates})
+        route_bearing = float(case["route_plan"]["bearing_fraction"])
+        route_action = "TURN_LEFT" if route_bearing < 0.42 else ("TURN_RIGHT" if route_bearing > 0.58 else "ADVANCE")
+        route_matches = [row for row in ranked if row["action"] == route_action]
+        stop_candidates = [row for row in ranked if row["action"] == "STOP"]
+        remaining = [row for row in ranked if row["action"] not in (route_action, "STOP")]
+        bearing_distance = lambda row: abs(((row["bbox_xyxy"][0] + row["bbox_xyxy"][2]) / (2.0 * observed["image_width"])) - route_bearing)
+        route_matches.sort(key=lambda row: (bearing_distance(row), row["proposal_rank"]))
+        stop_candidates.sort(key=lambda row: (bearing_distance(row), row["proposal_rank"]))
+        selected = round_robin_guidance([route_matches, stop_candidates, remaining])
+        candidates = [row | {"guidance_rank": index} for index, row in enumerate(selected, start=1)]
+        rows.append({"case_id": case["case_id"], "image_width": observed["image_width"], "image_height": observed["image_height"], "route_bearing_fraction": route_bearing, "route_action": route_action, "candidates": candidates})
     payload = {
         "schema_version": "blindassist_goal_rgbd_servo_prediction_v1",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -78,7 +115,7 @@ def main() -> int:
         "private_truth_access": False,
         "public_sha256": public_hash,
         "proposal_sha256": sha256(args.proposals),
-        "contract": {"stop_depth_m": STOP_DEPTH_M, "maximum_guidance_candidates": MAX_GUIDANCE_CANDIDATES, "range_statistic": "SAM3_mask_p20_else_interior_median", "near_candidates_rank_before_far_candidates": True},
+        "contract": {"stop_depth_m": STOP_DEPTH_M, "mask_hint_max_interior_depth_m": MASK_HINT_MAX_INTERIOR_DEPTH_M, "maximum_guidance_candidates": MAX_GUIDANCE_CANDIDATES, "range_statistic": "interior_median_with_bounded_SAM3_mask_p20_hint", "ranking": "round_robin_route_action_stop_remaining"},
         "cases": rows,
     }
     _atomic_json(args.output, payload)

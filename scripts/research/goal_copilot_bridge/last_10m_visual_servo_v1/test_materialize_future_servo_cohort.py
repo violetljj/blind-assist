@@ -1,4 +1,9 @@
-from scripts.research.goal_copilot_bridge.last_10m_visual_servo_v1.materialize_future_servo_cohort import servo_phases
+import io
+import zipfile
+
+import numpy as np
+
+from scripts.research.goal_copilot_bridge.last_10m_visual_servo_v1.materialize_future_servo_cohort import route_plan, servo_phases
 
 
 def episode(depth=1.2):
@@ -21,3 +26,19 @@ def test_servo_phases_materialize_far_and_bounded_near_stop():
 
 def test_servo_phases_omit_stop_when_route_never_reaches_stop_depth():
     assert [row["phase"] for row in servo_phases([episode(1.8)])] == ["FAR_GUIDANCE"]
+
+
+def test_route_plan_is_derived_from_pose_without_target_truth(tmp_path):
+    path = tmp_path / "imu.zip"
+    positions = np.zeros((401, 3), dtype=np.float64)
+    positions[300, :2] = [3.0, 1.0]
+    orientations = np.zeros((401, 3), dtype=np.float64)
+    with zipfile.ZipFile(path, "w") as archive:
+        for name, values in (("pos_global.npy", positions), ("ori_global.npy", orientations)):
+            stream = io.BytesIO()
+            np.save(stream, values)
+            archive.writestr(f"E/Data_easy/P000/imu/{name}", stream.getvalue())
+    with zipfile.ZipFile(path) as archive:
+        plan = route_plan(archive, "E", "P000", 0)
+    assert plan["bearing_fraction"] > 0.5
+    assert plan["derived_without_semantic_or_target_truth"] is True
