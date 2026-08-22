@@ -1,8 +1,12 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / AUTOMATED_PUBLIC_GOAL_COHORTS / FACADE_PROPOSAL_COVERAGE / LEFTMOST_RELATION_FEASIBILITY / BBOX_HEIGHT_COMPLETION_REJECTED / INDEPENDENT_NEARNESS_REQUIRED / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / SELECTIVE_GUIDANCE_V0_CONTRACT_IMPLEMENTED / REAL_EPISODE_PILOT_TOOLCHAIN_NEXT / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
+
+`selective_guidance_v0/` is the current experimental responsibility seam. It implements a pure current-frame decision
+contract and append-only episode event log; only explicit user confirmation or a contracted trusted interaction can
+produce `COMPLETED_BY_USER`. It contains no tracker, persistence, gallery, world memory, VIO/SLAM or default-App path.
 
 `last_10m_visual_servo_v1/` is the current algorithm successor. On a fresh automated public real-facade cohort it kept
 every action current-frame-only and re-grounded after each pan/zoom/rescan. Target proposals were available in `13/13`

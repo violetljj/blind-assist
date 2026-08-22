@@ -2,6 +2,12 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-23（Asia/Hong_Kong）；执行者：violjjet。实现 experimental `selective_guidance_v0` 纯当前帧责任合同：
+  cardinality 与 decision state 分离，正式支持 contested/abstain/lost/stale、方向、range、safety stop、handoff 与
+  user-confirmed completion。Perception/provider/controller completion receipt 硬拒绝；handoff 与 stop 均不等于完成。
+  JSONL event log 可重建 speech/action 时刻的 goal、candidate、referent、decision、range、用户事件、latency 与 provider
+  provenance。实现不持有跨帧 identity/gallery，不接 P1 或默认 App；8 项 focused contract tests 覆盖责任不变量。
+
 - 时间：2026-08-23（Asia/Hong_Kong）；执行者：violjjet。正式前向关闭 synthetic current-frame arrival 的产品证明责任：
   goal-semantic proposal availability 保留，bbox extent → completion 被否决，exact-door/ground-connected/route-bearing
   proxy 均未建立 destination-relative arrival。TartanAir/TartanGround 降为 regression/mechanics/geometry/leak-check；
