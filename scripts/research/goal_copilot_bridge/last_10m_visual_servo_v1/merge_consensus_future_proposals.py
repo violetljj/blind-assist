@@ -47,6 +47,7 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     _require(not args.output.exists(), "consensus proposal output already exists")
+    public = _read(args.public)
     public_hash = sha256(args.public)
     providers = []
     for specification in args.provider:
