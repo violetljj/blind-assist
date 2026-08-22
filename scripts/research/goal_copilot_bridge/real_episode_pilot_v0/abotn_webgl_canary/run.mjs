@@ -9,6 +9,8 @@ import { PNG } from 'pngjs';
 
 const SCHEMA = 'blindassist_abotn_webgl_render_canary_v0';
 const TRAJECTORY_SCHEMA = 'blindassist_abotn_webgl_trajectory_pixels_v0';
+const ACTION_GRAPH_PUBLIC_SCHEMA = 'blindassist_abotn_v0_action_graph_public_v0';
+const ACTION_GRAPH_SCHEMA = 'blindassist_abotn_webgl_action_graph_pixels_v0';
 const DATASET_REVISION = 'fbb62cc3382d8ff84f7fe3b6a3e7d48e4c21e974';
 const RENDERER_PACKAGE = '@mkkellogg/gaussian-splats-3d';
 const RENDERER_VERSION = '0.4.7';
@@ -17,8 +19,12 @@ const root = path.dirname(fileURLToPath(import.meta.url));
 function parseArgs(argv) {
   const values = {};
   for (let i = 0; i < argv.length; i += 2) values[argv[i].replace(/^--/, '')] = argv[i + 1];
-  for (const required of ['ply', 'annotation', 'output-dir']) {
+  for (const required of ['ply', 'output-dir']) {
     if (!values[required]) throw new Error(`missing --${required}`);
+  }
+  const mode = values.mode ?? 'initial';
+  if (mode === 'action-graph' ? !values.graph : !values.annotation) {
+    throw new Error(`missing --${mode === 'action-graph' ? 'graph' : 'annotation'}`);
   }
   values.chrome ??= 'C:/Program Files/Google/Chrome/Application/chrome.exe';
   return values;
@@ -128,58 +134,91 @@ async function atomicWrite(file, bytes) {
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const ply = path.resolve(args.ply);
-  const annotationPath = path.resolve(args.annotation);
   const outputDir = path.resolve(args['output-dir']);
   const trajectoryMode = args.mode === 'trajectory';
-  if (args.mode && !['initial', 'trajectory'].includes(args.mode)) throw new Error(`unsupported --mode: ${args.mode}`);
+  const actionGraphMode = args.mode === 'action-graph';
+  const cohortMode = trajectoryMode || actionGraphMode;
+  if (args.mode && !['initial', 'trajectory', 'action-graph'].includes(args.mode)) throw new Error(`unsupported --mode: ${args.mode}`);
   const chrome = path.resolve(args.chrome);
   if (!fs.existsSync(chrome)) throw new Error(`Chrome executable missing: ${chrome}`);
-  const annotationBytes = await fsp.readFile(annotationPath);
-  const annotation = JSON.parse(annotationBytes.toString('utf8'));
-  const camera = cameraConfig(annotation);
-  const trajectoryCameras = annotation.trajectory?.map((pose) => poseCameraConfig(pose)) ?? [];
-  if (trajectoryMode && trajectoryCameras.length === 0) throw new Error('annotation has no trajectory poses');
+  let annotationPath;
+  let annotationBytes;
+  let annotation;
+  let graphPath;
+  let graphBytes;
+  let graph;
+  let cameraEntries;
+  if (actionGraphMode) {
+    graphPath = path.resolve(args.graph);
+    graphBytes = await fsp.readFile(graphPath);
+    graph = JSON.parse(graphBytes.toString('utf8'));
+    if (graph.schema_version !== ACTION_GRAPH_PUBLIC_SCHEMA || graph.private_truth_access !== false) {
+      throw new Error('action graph is not an eligible provider-public graph');
+    }
+    cameraEntries = graph.nodes.map((node) => {
+      const source = node.source_camera;
+      const [roll, pitch, yaw] = source.euler_radians;
+      const [x, y, z] = source.position;
+      return { observationId: node.node_id, outputPath: node.rendered_frame_path, camera: poseCameraConfig({ x, y, z, roll, pitch, yaw }) };
+    });
+  } else {
+    annotationPath = path.resolve(args.annotation);
+    annotationBytes = await fsp.readFile(annotationPath);
+    annotation = JSON.parse(annotationBytes.toString('utf8'));
+    cameraEntries = (trajectoryMode ? annotation.trajectory : annotation.trajectory?.slice(0, 1))?.map((pose, index) => ({
+      observationId: `abotn-20260227163550-traj-0-o${String(index).padStart(3, '0')}`,
+      outputPath: `frames/frame-${String(index).padStart(3, '0')}.png`,
+      camera: poseCameraConfig(pose)
+    })) ?? [];
+  }
+  if (cameraEntries.length === 0) throw new Error('render cohort has no camera states');
+  const camera = cameraEntries[0].camera;
   const plyInspection = inspectPly(ply);
-  if (trajectoryMode && fs.existsSync(outputDir)) throw new Error('trajectory output directory already exists; refusing replay');
-  await fsp.mkdir(outputDir, { recursive: !trajectoryMode });
+  if (cohortMode && fs.existsSync(outputDir)) throw new Error('cohort output directory already exists; refusing replay');
+  await fsp.mkdir(outputDir, { recursive: !cohortMode });
 
-  let trajectoryManifest;
-  if (trajectoryMode) {
+  let cohortManifest;
+  if (cohortMode) {
     const roster = {
-      schema_version: 'blindassist_abotn_webgl_trajectory_roster_v0',
+      schema_version: actionGraphMode ? 'blindassist_abotn_webgl_action_graph_roster_v0' : 'blindassist_abotn_webgl_trajectory_roster_v0',
       created_at_utc: new Date().toISOString(),
       dataset_revision: DATASET_REVISION,
-      annotation_path: annotationPath,
-      annotation_sha256: crypto.createHash('sha256').update(annotationBytes).digest('hex'),
+      ...(actionGraphMode ? {
+        public_graph_path: graphPath,
+        public_graph_sha256: crypto.createHash('sha256').update(graphBytes).digest('hex')
+      } : {
+        annotation_path: annotationPath,
+        annotation_sha256: crypto.createHash('sha256').update(annotationBytes).digest('hex')
+      }),
       scene_path: ply,
       scene_sha256: sha256File(ply),
-      observation_count: trajectoryCameras.length,
-      observations: trajectoryCameras.map((poseCamera, index) => ({
-        observation_id: `abotn-20260227163550-traj-0-o${String(index).padStart(3, '0')}`,
+      observation_count: cameraEntries.length,
+      observations: cameraEntries.map((entry, index) => ({
+        observation_id: entry.observationId,
         observation_index: index,
-        source_position: poseCamera.source_initial_position,
-        source_euler_radians: poseCamera.source_initial_euler_radians,
-        renderer_camera_position: poseCamera.camera_position,
-        renderer_camera_look_at: poseCamera.camera_look_at,
-        renderer_camera_up: poseCamera.camera_up,
-        output_path: `frames/frame-${String(index).padStart(3, '0')}.png`
+        source_position: entry.camera.source_initial_position,
+        source_euler_radians: entry.camera.source_initial_euler_radians,
+        renderer_camera_position: entry.camera.camera_position,
+        renderer_camera_look_at: entry.camera.camera_look_at,
+        renderer_camera_up: entry.camera.camera_up,
+        output_path: entry.outputPath
       })),
       roster_frozen_before_render: true,
       provider_calls_before_freeze: 0
     };
     await atomicWrite(path.join(outputDir, 'roster.json'), `${JSON.stringify(roster, null, 2)}\n`);
-    trajectoryManifest = {
-      schema_version: TRAJECTORY_SCHEMA,
+    cohortManifest = {
+      schema_version: actionGraphMode ? ACTION_GRAPH_SCHEMA : TRAJECTORY_SCHEMA,
       created_at_utc: new Date().toISOString(),
       status: 'ROSTER_FROZEN_RENDER_NOT_STARTED',
       roster_sha256: sha256File(path.join(outputDir, 'roster.json')),
-      frozen_budget: { render_observations: trajectoryCameras.length },
+      frozen_budget: { render_observations: cameraEntries.length },
       renderer_private_truth_access: false,
       provider_calls: 0,
       teacher_calls: 0,
       baseline_calls: 0
     };
-    await atomicWrite(path.join(outputDir, 'manifest.json'), `${JSON.stringify(trajectoryManifest, null, 2)}\n`);
+    await atomicWrite(path.join(outputDir, 'manifest.json'), `${JSON.stringify(cohortManifest, null, 2)}\n`);
   }
 
   const servedConfig = {
@@ -240,12 +279,13 @@ async function main() {
     if (browserState.error) throw new Error(browserState.error);
     await page.evaluate(() => { window.__viewer.stop(); window.__viewer.update(); window.__viewer.render(); });
     await page.waitForTimeout(100);
-    if (trajectoryMode) {
+    if (cohortMode) {
       const framesDir = path.join(outputDir, 'frames');
       await fsp.mkdir(framesDir);
       const frames = [];
-      for (let index = 0; index < trajectoryCameras.length; index += 1) {
-        const poseCamera = trajectoryCameras[index];
+      for (let index = 0; index < cameraEntries.length; index += 1) {
+        const entry = cameraEntries[index];
+        const poseCamera = entry.camera;
         await page.evaluate(({ position, lookAt, up }) => {
           const viewer = window.__viewer;
           viewer.camera.position.set(...position);
@@ -258,24 +298,24 @@ async function main() {
         await page.waitForTimeout(25);
         const frameBytes = await page.screenshot({ timeout: 120000 });
         const stats = pixelStats(frameBytes);
-        const relativePath = `frames/frame-${String(index).padStart(3, '0')}.png`;
+        const relativePath = entry.outputPath;
         await atomicWrite(path.join(outputDir, relativePath), frameBytes);
         frames.push({
           observation_index: index,
-          observation_id: `abotn-20260227163550-traj-0-o${String(index).padStart(3, '0')}`,
+          observation_id: entry.observationId,
           path: relativePath,
           sha256: crypto.createHash('sha256').update(frameBytes).digest('hex'),
           bytes: frameBytes.length,
           pixel_stats: stats,
           nondegenerate: stats.luma_stddev >= 10 && stats.black_fraction < 0.9 && stats.sampled_distinct_rgb >= 256
         });
-        if ((index + 1) % 10 === 0 || index + 1 === trajectoryCameras.length) {
-          console.log(`rendered ${index + 1}/${trajectoryCameras.length}`);
+        if ((index + 1) % 25 === 0 || index + 1 === cameraEntries.length) {
+          console.log(`rendered ${index + 1}/${cameraEntries.length}`);
         }
       }
       const uniqueHashes = new Set(frames.map((frame) => frame.sha256)).size;
       const gates = {
-        frozen_roster_complete: frames.length === trajectoryCameras.length,
+        frozen_roster_complete: frames.length === cameraEntries.length,
         canvas_1280x720: frames.every((frame) => frame.pixel_stats.width === 1280 && frame.pixel_stats.height === 720),
         all_frames_nondegenerate: frames.every((frame) => frame.nondegenerate),
         pose_sequence_not_pixel_constant: uniqueHashes > 1,
@@ -283,9 +323,11 @@ async function main() {
       };
       const passed = Object.values(gates).every(Boolean);
       const receipt = {
-        schema_version: TRAJECTORY_SCHEMA,
+        schema_version: actionGraphMode ? ACTION_GRAPH_SCHEMA : TRAJECTORY_SCHEMA,
         closed_at_utc: new Date().toISOString(),
-        terminal: passed ? 'ABOTN_WEBGL_TRAJECTORY_PIXELS_PASS' : 'ABOTN_WEBGL_TRAJECTORY_PIXELS_FAIL',
+        terminal: passed
+          ? (actionGraphMode ? 'ABOTN_WEBGL_ACTION_GRAPH_PIXELS_PASS' : 'ABOTN_WEBGL_TRAJECTORY_PIXELS_PASS')
+          : (actionGraphMode ? 'ABOTN_WEBGL_ACTION_GRAPH_PIXELS_FAIL' : 'ABOTN_WEBGL_TRAJECTORY_PIXELS_FAIL'),
         dataset: { id: 'acvlab/ABotN-POIBench', revision: DATASET_REVISION },
         renderer: {
           kind: 'UNOFFICIAL_WEBGL_MECHANICS_CANARY',
@@ -297,7 +339,8 @@ async function main() {
           sort_backend: 'SHARED_MEMORY_CPU',
           render_backend: browserState.webgl
         },
-        roster_sha256: trajectoryManifest.roster_sha256,
+        roster_sha256: cohortManifest.roster_sha256,
+        ...(actionGraphMode ? { public_graph_sha256: crypto.createHash('sha256').update(graphBytes).digest('hex') } : {}),
         observation_count: frames.length,
         unique_frame_sha256_count: uniqueHashes,
         frames,
@@ -308,13 +351,19 @@ async function main() {
         teacher_calls: 0,
         baseline_calls: 0,
         truth_status: 'METRIC_ARRIVAL_ENDPOINT_ONLY_FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED',
-        claim_ceiling: 'UNOFFICIAL_WEBGL_TRAJECTORY_PIXEL_MATERIALIZATION_ONLY_NOT_OFFICIAL_RENDERER_EQUIVALENCE',
-        next_action: passed ? 'EVALUATE_TRAJECTORY_PIXEL_DENOMINATOR_BEFORE_ANY_PROVIDER_CALL' : 'STOP_AND_DIAGNOSE_RENDERED_PIXEL_COHORT'
+        claim_ceiling: actionGraphMode
+          ? 'UNOFFICIAL_WEBGL_ACTION_GRAPH_PIXEL_MATERIALIZATION_ONLY_NOT_OFFICIAL_RENDERER_EQUIVALENCE'
+          : 'UNOFFICIAL_WEBGL_TRAJECTORY_PIXEL_MATERIALIZATION_ONLY_NOT_OFFICIAL_RENDERER_EQUIVALENCE',
+        next_action: passed
+          ? (actionGraphMode ? 'VALIDATE_FROZEN_GRAPH_PIXEL_BINDING_BEFORE_ONE_CLOSED_LOOP_PROVIDER_RUN' : 'EVALUATE_TRAJECTORY_PIXEL_DENOMINATOR_BEFORE_ANY_PROVIDER_CALL')
+          : 'STOP_AND_DIAGNOSE_RENDERED_PIXEL_COHORT'
       };
       await atomicWrite(path.join(outputDir, 'terminal-receipt.json'), `${JSON.stringify(receipt, null, 2)}\n`);
-      trajectoryManifest.status = passed ? 'SEALED_TRAJECTORY_PIXELS_PASS' : 'SEALED_TRAJECTORY_PIXELS_FAIL';
-      trajectoryManifest.terminal_receipt_sha256 = sha256File(path.join(outputDir, 'terminal-receipt.json'));
-      await atomicWrite(path.join(outputDir, 'manifest.json'), `${JSON.stringify(trajectoryManifest, null, 2)}\n`);
+      cohortManifest.status = passed
+        ? (actionGraphMode ? 'SEALED_ACTION_GRAPH_PIXELS_PASS' : 'SEALED_TRAJECTORY_PIXELS_PASS')
+        : (actionGraphMode ? 'SEALED_ACTION_GRAPH_PIXELS_FAIL' : 'SEALED_TRAJECTORY_PIXELS_FAIL');
+      cohortManifest.terminal_receipt_sha256 = sha256File(path.join(outputDir, 'terminal-receipt.json'));
+      await atomicWrite(path.join(outputDir, 'manifest.json'), `${JSON.stringify(cohortManifest, null, 2)}\n`);
       console.log(JSON.stringify({ terminal: receipt.terminal, observation_count: frames.length, unique_frame_sha256_count: uniqueHashes, gates }, null, 2));
       if (!passed) process.exitCode = 2;
       return;

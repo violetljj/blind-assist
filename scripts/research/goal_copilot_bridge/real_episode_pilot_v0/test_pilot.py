@@ -9,6 +9,9 @@ import unittest
 from .abotn_arrival_provider_canary import ARRIVE_THRESHOLD_M, build_frozen_inputs
 from .annotation import make_annotation
 from .audit_abotn_trajectory_denominator import audit as audit_abotn_trajectory_denominator
+from .prepare_abotn_action_graph import build_graph as build_abotn_action_graph
+from .run_abotn_v0_closed_loop import _failure_class as abotn_closed_loop_failure_class
+from scripts.research.goal_copilot_bridge.last_10m_regrounding_v0.core import EpisodeState
 from .audit_abotn_poibench_truth_source import classify_source, inspect_task, summarize_tasks
 from .audit_abotn_render_runtime import classify_runtime
 from .baseline import run_baseline
@@ -50,6 +53,54 @@ def authorize_native(row):
 
 
 class RealEpisodePilotTest(unittest.TestCase):
+    def test_abotn_closed_loop_failure_attribution_separates_grounding_and_control(self):
+        state = EpisodeState.start(episode_id="e", location_id="l", goal_name="g", started_at_ms=0)
+        state.state = "ABSTAIN"
+        state.consecutive_unreliable = 3
+        self.assertEqual(
+            "CURRENT_FRAME_GROUNDING_BOTTLENECK",
+            abotn_closed_loop_failure_class(state, arrival=False, action_exhausted=False),
+        )
+        state.reliable_observation_count = 2
+        state.consecutive_unreliable = 0
+        self.assertEqual(
+            "CONTROL_POLICY_BOTTLENECK_ACTION_EXHAUSTED",
+            abotn_closed_loop_failure_class(state, arrival=False, action_exhausted=True),
+        )
+        state.state = "COMPLETE"
+        self.assertEqual(
+            "CONTROL_POLICY_BOTTLENECK_FALSE_ARRIVAL",
+            abotn_closed_loop_failure_class(state, arrival=False, action_exhausted=False),
+        )
+        self.assertIsNone(abotn_closed_loop_failure_class(state, arrival=True, action_exhausted=False))
+
+    def test_abotn_action_graph_reuses_v0_actions_without_private_endpoint(self):
+        trajectory = []
+        for index in range(15):
+            trajectory.append({
+                "x": float(index), "y": 0.0, "z": 1.65,
+                "roll": 0.0, "pitch": 0.0, "yaw": 0.0,
+            })
+        task = {
+            "trajectory": trajectory,
+            "instruction": "前往测试商店",
+            "label": {"extend": {"goal_label": "测试商店", "end_point": [14.0, 0.0]}},
+        }
+        public, private, freeze = build_abotn_action_graph(task)
+        serialized_public = json.dumps(public, ensure_ascii=False)
+        self.assertEqual(75, len(public["nodes"]))
+        self.assertEqual(0, freeze["provider_calls_before_freeze"])
+        self.assertTrue(freeze["start_reaches_arrival_within_budget"])
+        self.assertLessEqual(freeze["shortest_start_to_arrival_steps"], 12)
+        self.assertNotIn("endpoint_xy", serialized_public)
+        self.assertNotIn("distance_to_goal_m", serialized_public)
+        self.assertEqual([14.0, 0.0], private["endpoint_xy"])
+        center = next(node for node in public["nodes"] if node["pose_index"] == 0 and node["viewport_yaw_index"] == 0)
+        self.assertIn("TURN_LEFT", center["actions"])
+        self.assertIn("TURN_RIGHT", center["actions"])
+        self.assertIn("FORWARD", center["actions"])
+        self.assertIn("RESCAN_HOLD", center["actions"])
+
     def test_abotn_trajectory_denominator_does_not_promote_open_loop_path(self):
         task = {
             "trajectory": [{"x": 3.0, "y": 0.0}, {"x": 1.0, "y": 0.0}, {"x": 0.0, "y": 0.0}],

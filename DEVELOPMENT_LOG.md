@@ -5030,3 +5030,22 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   `ABOTN_TRAJECTORY_ARRIVAL_DENOMINATOR_PRESENT_OPEN_LOOP_CONTROL_NOT_EVALUABLE`。本段 render/provider/teacher/
   baseline calls=`89/0/0/0`；不把 expert path 记为算法 arrival，新增 provider call 在既有 V0 action-to-renderer
   adapter 存在前保持关闭。
+
+# 2026-08-23 ABotN V0 sealed closed-loop engineering run
+
+- 机械复用既有 responsive V0 的 `TURN_LEFT/TURN_RIGHT/FORWARD/RESCAN_HOLD`、五级 ±24° viewport、12° turn、
+  约 2 m fixed source-path forward 与 12 instructions/3 unreliable 上限；未改 provider、prompt、threshold、goal、
+  teacher 或 arrival rule。provider outcome 前冻结 89 poses × 5 yaw=`445` nodes 与全部 action edges；public graph
+  endpoint/distance literal hit=0，起点到 evaluator-private 2 m arrival domain 最短 6 steps。
+- 445/445 counterfactual frames 均为 1280×720 nondegenerate，SHA 445/445 唯一，总计 413,377,125 bytes；五个
+  固定 pose 的 ORB direction gate 中，left feature shift 为 +164.16 至 +194.16 px，right 为 -176.26 至 -171.36 px。
+  qualification terminal 为 `ABOTN_V0_ACTION_GRAPH_PIXELS_QUALIFIED_FOR_ONE_CLOSED_LOOP_RUN`。
+- 唯一 sealed episode 在 pose 0/1/2 上得到 4/4/5 proposals，但 unchanged Terra 三次均
+  `ABSTAIN_NO_RELIABLE_EVIDENCE`，理由均为画面模糊/遮挡且缺少能将候选绑定到“大众浴池”的可靠 identity evidence；
+  FSM 三次 fresh rescan 后 fail closed 为 `ABSTAIN`。provider calls/brain attempts/in_doubt=`3/3/0`，reliable
+  grounding/instruction/arrival-confirm/false-arrival=`0/0/0/0`，终点距目标 12.1326 m。
+- 正式 engineering attribution 为 `CURRENT_FRAME_GROUNDING_BOTTLENECK`；从未建立 VISIBLE/reliable grounding，
+  所以 control、range/bearing 与 `LOST_AFTER_VISIBLE` 均未到达。proposal count 不是 target recall，在缺 functional
+  pixel truth 时不能判定 `PROPOSAL_MISS` 还是 referent selection。official-renderer equivalence 也仍缺，因此不能把
+  provider semantic-identity weakness 与 alternate-renderer fidelity 分开；禁止 rerun、调参、算法救援、P1 或默认
+  App claim。

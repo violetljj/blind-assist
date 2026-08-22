@@ -1,6 +1,6 @@
 # Public-real episode mining + selective-guidance pilot V0
 
-状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_WEBGL_RENDER_TRANSPORT_PASS / ABOTN_PROVIDER_FIREWALL_PASS / ABOTN_TRAJECTORY_PIXELS_PASS / OPEN_LOOP_CONTROL_NOT_EVALUABLE / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_WEBGL_RENDER_TRANSPORT_PASS / ABOTN_PROVIDER_FIREWALL_PASS / ABOTN_TRAJECTORY_PIXELS_PASS / ABOTN_V0_CLOSED_LOOP_CURRENT_FRAME_GROUNDING_BOTTLENECK / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 This package automatically converts public real-world sequence metadata into goal-driven approach episodes, reuses
 frozen current-frame provider output, applies Selective Guidance V0, and evaluates only truth-supported denominators.
@@ -113,6 +113,23 @@ node scripts/research/goal_copilot_bridge/real_episode_pilot_v0/abotn_webgl_cana
 python -m scripts.research.goal_copilot_bridge.real_episode_pilot_v0.audit_abotn_trajectory_denominator `
   --annotation <traj_0.json> --pixel-receipt <terminal-receipt.json> --output <arrival-denominator.json>
 ```
+
+The closed-loop successor reuses, rather than redesigns, the sealed responsive V0 action contract:
+`TURN_LEFT / TURN_RIGHT / FORWARD / RESCAN_HOLD`, five fixed yaw states at 12 degrees, a fixed approximately 2 m
+source-path forward step, and the existing 12-instruction/three-unreliable-observation limits. It freezes a public
+445-node graph separately from evaluator-private endpoint distances, then renders and hashes every node before any
+provider call. All 445 frames were nondegenerate and unique. Fixed ORB checks on five preselected poses confirmed
+that left/right actions move image features in the expected directions; endpoint/distance literals remained absent.
+
+The one authorized V0 episode then stopped after exactly three fresh observations. Grounding DINO produced 4/4/5
+proposals, but the unchanged Terra brain returned `ABSTAIN_NO_RELIABLE_EVIDENCE` three times because the blurred or
+obscured views did not reliably identify the named POI. The FSM correctly entered `ABSTAIN` with zero reliable
+groundings, zero instructions, zero arrival confirmations, zero false arrivals, and no `in_doubt`. The supported
+engineering attribution is `CURRENT_FRAME_GROUNDING_BOTTLENECK`; range/bearing, control, and `LOST_AFTER_VISIBLE`
+were never reached. Proposal count alone is not target recall, so `PROPOSAL_MISS` versus referent-selection cannot be
+adjudicated without functional pixel truth. Official-renderer equivalence is also unavailable; consequently the result
+cannot distinguish provider semantic-identity weakness from alternate-renderer fidelity and does not authorize an
+algorithm rescue, P1, or a rerun.
 
 ```powershell
 python -m unittest `
