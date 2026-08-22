@@ -27,3 +27,20 @@ resized to 640. It retained per-tile postprocessed candidates, global dedup deci
 The preregistered IoU 0.30 Recall@10 endpoint remained `0/7`, including `0/7` over the full postprocessed rank. PA0's
 five permissive-IoU absent cases were rescued `0/5`; 4x input images increased proposal volume without creating a new
 adequate target candidate. See the [PA1 result](../../../../docs/research/goal-copilot/P1_PA1_TARGET_PROPOSAL_RESCUE_RESULT_2026-08-22.md).
+
+## P1-PA2 oracle representation observability audit
+
+PA2 is a consumed-Development autopsy, not a formal provider arm. It deliberately uses private GT to construct an exact
+target crop and a fixed 3x target-centred ROI, then compares the frozen target-only visual prompt with one fixed 2x
+exemplar-context prompt. The same YOLOE checkpoint, 640 input, 0.001 confidence floor and complete provider-postprocessed
+rank are retained. Since the provider API exposes neither prompt-embedding similarity nor pre-NMS proposals, the audit
+reports operational recognizability/localization and marks those internal attributions `NOT_EXPOSED_BY_PROVIDER_INTERFACE`.
+
+Run the focused mechanics check with:
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest scripts.research.goal_copilot_bridge.p1_proposal_availability.test_pa2
+```
+
+The result and exact command are recorded in
+[`P1-PA2 result`](../../../../docs/research/goal-copilot/P1_PA2_TARGET_REPRESENTATION_OBSERVABILITY_AUDIT_RESULT_2026-08-22.md).

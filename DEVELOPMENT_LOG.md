@@ -4909,3 +4909,12 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   NO_SCIENTIFIC_VERDICT`。A1 worst-parent bins 为 `0%=10 / (0,25%]=2 / (25%,50%]=4 / >50%=1`；
   `30CC Minnepoort 1/1` 为 worst rate、`NTGent Café 4/8` 为最大 residual count。当前不替换 A1、不扩 DSL、
   不启动 fresh confirmation；这些 consumed counterexamples 后续只可支持 observation/active-perception 诊断。
+- 时间：2026-08-22（Asia/Hong_Kong）；执行者：violjjet。完成 `P1-PA2 Target Representation
+  Observability Audit` 一次 consumed-Development oracle 尸检。固定 exact GT target crop、3x oracle ROI
+  target-only、同一 ROI 的 2x exemplar-context 三臂，共享 PA0/PA1 的 7 个 visible first-poison frame、
+  YOLOE-26n-seg、640/0.001/max_det=100。IoU 0.30 full-rank recall 分别为 `0/7 / 0/7 / 1/7`；唯一
+  context hit 是 wine rack（first rank 4、best IoU `0.3769`），其余 6/7 未恢复，exact crop 7/7 没有
+  provider-postprocessed proposal。终态 `P1_PA2_WEAK_CONTEXT_CONDITIONED_SIGNAL_ONE_OF_SEVEN_REPRESENTATION_MISMATCH_REMAINS_PRIMARY`：
+  保留 case-local context interaction，但不授权 parent-first、adaptive search 或 model zoo；若另行继续，应直接
+  改变/审计 target representation 与 prompt interface。GT 进入 crop construction/evaluator，结果不具有模型选择、
+  泛化、产品、安全或默认 App authority。

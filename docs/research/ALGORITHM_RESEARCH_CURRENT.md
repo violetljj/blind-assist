@@ -1,6 +1,6 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / P1_PA1_TARGET_PROPOSAL_RESCUE / TERMINAL=P1_PA1_FIXED_TILED_SCALE_RESCUE_NOT_SUPPORTED_ON_FAILURE_COHORT / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / P1_PA2_TARGET_REPRESENTATION_AUDIT / TERMINAL=P1_PA2_WEAK_CONTEXT_CONDITIONED_SIGNAL_ONE_OF_SEVEN_REPRESENTATION_MISMATCH_REMAINS_PRIMARY / DEFAULT_APP_UNCHANGED`
 
 Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线。P0 commitment-policy discovery 已以
 `COMPLEXITY_ONLY_BUYS_ABSTENTION` 收口；现有 P0 grounding/provider 与 evaluator 保持冻结。用户此前显式授权
@@ -9,9 +9,10 @@ tentative/verified 分离、verified-only retrieval、按 distance × viewpoint 
 31 项 contract tests 通过；matched canary 已以 `P1_AMRM0_MEMORY_POISONING_FAIL` 终止。旧 A1-A4、W1/W2 终态继续有效；AMRM0 不是 P1-W3，也不
 覆盖或续跑 consumed evidence。随后显式授权的 P1-PA0/PA1 独立上移到 proposal availability，不修改 AMRM0。
 
-当前 proposal-only 执行面已以 [`P1-PA1`](goal-copilot/README.md) 终止。固定 2x2 tiled YOLOE rescue 的
-IoU 0.30 Recall@10 在 bounded pool 和 full postprocessed rank 均为 `0/7`，PA0 absent cases 救回 `0/5`；不支持
-固定 scale rescue，也不自动启动 parent-first。AMRM、verifier、reacquisition、VLM、geometry 与 App 不在执行面。
+当前执行面已以 [`P1-PA2`](goal-copilot/README.md) 终止。oracle exact target crop / 3x ROI target-only 在
+IoU 0.30 均为 `0/7`；同一 ROI 的 2x exemplar-context 只恢复 wine rack `1/7`。该 case-local context interaction
+不足以授权 parent-first；representation / prompt-interface mismatch 仍为主归因。AMRM、verifier、reacquisition、VLM、
+geometry 与 App 不在执行面。
 已关闭的 Last-10m current-frame replay 与 responsive sanity 仍保留原 `CONTROL_POLICY_BOTTLENECK` 工程结论。
 
 Assistive Geometry 的 factor-wise、obstacle 与 Q-Plane 表示支线均已按停止条件关闭；TARO R38 也已在
@@ -23,7 +24,7 @@ GA-SATOM 的 physical-ToF G0 协议保留但按用户的无 ToF 选择暂停；V
 G0 协议也按进一步的纯 RGB 选择暂停。SVRF-O0 的协议、机制与 source/index 权限仅作历史保留，不执行
 bus canary、member index、payload materialization、truth writer 或 O0。Failure Synthesis 冻结的
 D-ORACLE-1 同样暂停，不执行 source/action truth/policy lock 或 outcome access。除
-P1-PA1 外没有其他 active algorithm lane；任何 fresh data、正式模型选择、新 proposal arm 或 App 集成都需要用户另行
+P1-PA2 外没有其他 active algorithm lane；任何 fresh data、正式模型选择、新 proposal arm 或 App 集成都需要用户另行
 授权，不能由旧文档中的 successor 或历史优先级自行恢复。
 DepthART D3R6 仍保持暂停；其 bounded deferral contract 与 fresh gate 保留，但 post-hoc
 same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6 执行权限。
@@ -33,7 +34,7 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| Goal Copilot / P1-PA1 target proposal rescue | fixed tiled zoom 能否把 PA0 absent target 拉入 bounded pool | `P1_PA1_FIXED_TILED_SCALE_RESCUE_NOT_SUPPORTED_ON_FAILURE_COHORT / IOU_0.30_R@10=0/7_FULL_RANK=0/7 / PA0_ABSENT_RESCUED=0/5 / DEFAULT_APP_UNCHANGED` | [P1-PA1 result](goal-copilot/P1_PA1_TARGET_PROPOSAL_RESCUE_RESULT_2026-08-22.md) / [P1-PA0 result](goal-copilot/P1_PA0_TARGET_CANDIDATE_AVAILABILITY_RESULT_2026-08-22.md) | 无自动 successor；新的 representation/parent-part arm 必须另行授权并预冻结公开 target semantics | outcome 后调 tile/overlap/resolution/threshold/NMS/K；直接造 verifier；AMRM1/2/3；读取 private category 做 parent prompt；VLM/VIO/SLAM/geometry；Android/App；模型推广、有效或安全主张 | 否 |
+| Goal Copilot / P1-PA2 representation audit | oracle ROI 下 target/context prompt 是否仍有 proposal signal | `WEAK_CONTEXT_SIGNAL_1_OF_7 / REPRESENTATION_MISMATCH_PRIMARY / APP_UNCHANGED` | [P1-PA2 result](goal-copilot/P1_PA2_TARGET_REPRESENTATION_OBSERVABILITY_AUDIT_RESULT_2026-08-22.md) | 无自动 successor；若另行启动，审计或改变 representation/prompt interface | outcome 后调 crop/prompt/provider；直接 parent-first、adaptive search、model zoo、AMRM/App 或扩大 claim | 否 |
 | D-ORACLE-1 causal ladder | 三臂 matched oracle intervention 定位 downstream target-policy stack 与 estimated representation 的损失 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / PROTOCOL_FROZEN / NO_EXECUTION / NO_SEARCH` | [Failure diagnosis current](failure-synthesis/README.md) | 无；只有用户显式改变主线后才可重开 | 执行 source/action truth/policy lock；增加第四竞争臂；提前拆H3/H4；训练/调policy/threshold；读取outcome后换parent/gate | 否 |
 | SVRF / Scale-free Visual Risk Field | 纯 RGB 派生的相对深度动态、局部扩张和视觉通道侵入能否形成稳定相对风险排序 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / RGB_ONLY / A2D2_SPRING_SOURCE_LOCK_VALID / STREAM_INDEX_NOT_ACTIVE / REAL_O0_NOT_RUN / NO_TRAINING` | [SVRF current](svrf/README.md) | 无；只有用户显式改变主线并有新的 representation-headroom 前置证据后，才可另行恢复 | bus canary、member index、payload/truth materialization、O0、训练或接 Android | 否 |
 | VI-Task Geometry | 同刚体 RGB+IMU 自校准 metric pose/ground，再为未来 task geometry 分配 computation/parallax budget | `PAUSED_BY_PURE_RGB_SELECTION / G0_PROTOCOL_RETAINED / REAL_G0_NOT_RUN / NO_TOF / NO_TRAINING` | [VI-Task Geometry current](vi-task-geometry/README.md) | 无；只有用户明确恢复 RGB+IMU metric-frame 路线才可重开 preflight | 实现/采集/运行 G0；用手机 IMU配眼镜视频；重跑 ARCore D45；提前训练、主动分配或接 Android | 否 |

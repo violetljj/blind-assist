@@ -1,19 +1,25 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_PA1_TARGET_PROPOSAL_RESCUE / TERMINAL=P1_PA1_FIXED_TILED_SCALE_RESCUE_NOT_SUPPORTED_ON_FAILURE_COHORT / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_PA2_TARGET_REPRESENTATION_AUDIT / TERMINAL=P1_PA2_WEAK_CONTEXT_CONDITIONED_SIGNAL_ONE_OF_SEVEN_REPRESENTATION_MISMATCH_REMAINS_PRIMARY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
 
 ## 当前研究实现
 
-当前 proposal-only 执行面已以
-[`P1-PA1 target proposal rescue`](../../../scripts/research/goal_copilot_bridge/p1_proposal_availability/README.md)
-终止，没有自动 successor。该路线只问 target visible 时正确 candidate 能否进入 bounded K=10 pool；输入仅为
-current frame 与冻结 frame-0 target exemplar，GT category/instance/visibility/future bbox 只在 private evaluator 中
-打开。AMRM、reacquisition、identity selection、verifier、VLM、VIO/SLAM、geometry 与 App 全部拔除。
+当前执行面已以
+[`P1-PA2 target representation observability audit`](P1_PA2_TARGET_REPRESENTATION_OBSERVABILITY_AUDIT_RESULT_2026-08-22.md)
+终止，没有自动 successor。PA2 明确是 consumed-Development oracle autopsy：GT 只为 exact target crop、3x target-centred
+ROI 与 evaluator 提供位置；provider checkpoint、visual prompt API、640 输入与 score floor 不变。AMRM、reacquisition、
+identity selection、verifier、VLM、VIO/SLAM、geometry 与 App 全部拔除。
 
-PA1 与 sealed PA0 使用同一 YOLOE visual-prompt provider 和 7 帧 cohort，只把 full-frame 640 替换成固定
+三臂在 IoU 0.30 完整 rank 的 recall 为 target crop target-only `0/7`、oracle ROI target-only `0/7`、同一 ROI
+target+context `1/7`。唯一 context hit 是 wine rack，rank 4 首次达标、best IoU `0.3769`；其余 6/7 未恢复。
+因此结果保留一个弱的 case-local context interaction，但主归因仍是 target representation / target-conditioned grounding
+mismatch；不授权 parent-first、adaptive search 或 model-zoo sweep。后续若另行启动，应直接改变或审计 target
+representation/prompt interface，并把该 1 positive + 6 negative 作为 consumed diagnostic counterexamples。
+
+PA1 的历史结果是：与 sealed PA0 使用同一 YOLOE visual-prompt provider 和 7 帧 cohort，只把 full-frame 640 替换成固定
 `2x2 / 20% overlap / tile-to-640` 搜索。结果见
 [`P1-PA1 result`](P1_PA1_TARGET_PROPOSAL_RESCUE_RESULT_2026-08-22.md)：预注册的 IoU >= 0.30 Recall@10
 在 bounded pool 和完整 postprocessed rank 中均为 `0/7`，PA0 的 5 个 IoU >= 0.10 absent cases 被救回 `0/5`。
