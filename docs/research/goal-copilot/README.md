@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PRE_RUN_VALIDITY_HARDENED / PUBLIC_REAL_8X89_FROZEN / PIXEL_AND_PROVIDER_NOT_RUN / MANUAL_CAPTURE_NOT_BLOCKING / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_REAL_8X89_SEALED / TRUTH_OR_CONTRACT_INSUFFICIENT_PRIMARY / NO_ALGORITHM_SUCCESSOR / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -30,7 +30,7 @@ Top-K；它不等于 referent authority、destination arrival、入口可用性�
 TartanAir/TartanGround 只保留为 regression、controller mechanics、geometry sanity 与 leak check。禁止 D2、S6 或新的
 synthetic completion confirmation cohort；不得通过 detector、SAM、depth model、threshold 或 provider sweep 恢复该权限。
 
-## 当前唯一 successor
+## 当前终态
 
 唯一 successor 是 [`PUBLIC_REAL_EPISODE_MINING_V0`](BLINDASSIST_PUBLIC_REAL_EPISODE_MINING_V0_RESULT_2026-08-23.md)，属于 `REVERSIBLE_EXPLORATION`：
 
@@ -51,9 +51,14 @@ Claim ceiling：`EXPLORATORY_MECHANICS_AND_FAILURE_ATTRIBUTION_ONLY`。
 因此 27 次 confident guidance 为 `UNKNOWN` 而非错误负例，6 个 episode 均归因
 `TRUTH_OR_CONTRACT_INSUFFICIENT`。该 run 只证明工具链可运行，不证明性能或 freshness。
 
-新的 prospective V1 已在 Mapillary 前冻结 4 个 venue-taxonomy 合法 public goals，自动展开 14 个 sequence，形成
-`8 episodes / 89 observations`；人工采集、人工标注、pixel download、provider call 均为 0。当前只授权对该冻结
-cohort 继续自动物化 pixel/teacher truth 并运行同一 V0 baseline，不授权换 goal、补抽或调模型。
+prospective V1 的 `8 episodes / 89 observations` 已完整执行并封存。Truth coverage 为
+`native/map-only strong=0 / teacher-supported weak usable=4 / teacher-only weak=19 / UNKNOWN=66`；三 teacher
+agreement 为 `5 / 18 / 66`，原始输出和 disagreement 均保留。Truth 冻结后原 V0 baseline 完成
+`89/89` provider call，`0 in_doubt`。
+
+仅 4 个弱可用 observation 上 proposal Recall@10=`4/4`、selection=`1/4`、referent-selection failure=`3/4`；
+但 8/8 episode 仍由 `TRUTH_OR_CONTRACT_INSUFFICIENT` 主导。因此当前不授权任何算法 successor；若继续，只能另行
+授权 substrate/truth-source 工作，不得补抽、换 teacher/provider/prompt/threshold 或把局部 3/4 信号写成 H1 已成立。
 
 正式 run 前的 validity hardening 已实现：Annotation V1 保存五级 truth authority、三个 teacher 的原始独立输出、
 agreement/disagreement、functional authority 及其 native/map sources；teacher-only consensus 不能建立 functional

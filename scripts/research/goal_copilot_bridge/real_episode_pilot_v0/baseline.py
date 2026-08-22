@@ -68,6 +68,7 @@ def run_baseline(public: dict, provider: dict, config: dict) -> dict:
                 "episode_id": episode["episode_id"],
                 "observation_id": frame["observation_id"],
                 "candidate_ids": [item["candidate_id"] for item in candidates],
+                "candidate_regions_normalized_xyxy": [item.get("region_normalized_xyxy") for item in candidates],
                 "selected_referent": decision.selected_referent,
                 "decision_state": decision.status.value,
                 "command": decision.command.value if decision.command else None,

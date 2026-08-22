@@ -34,6 +34,7 @@ def make_annotation(public: dict) -> dict:
                     "functional_authority_sources": [],
                     "target_visibility": "UNKNOWN",
                     "legal_candidate_ids": [],
+                    "legal_regions_normalized_xyxy": [],
                     "allowed_decision_states": [],
                     "range_truth": "RANGE_UNKNOWN",
                     "user_confirmed": False,

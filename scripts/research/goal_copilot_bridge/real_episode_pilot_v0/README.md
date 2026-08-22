@@ -1,6 +1,6 @@
 # Public-real episode mining + selective-guidance pilot V0
 
-状态：`PRE_RUN_VALIDITY_HARDENED / FRESH_PUBLIC_METADATA_COHORT_FROZEN_8X89 / PIXEL_AND_PROVIDER_NOT_RUN / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_OR_CONTRACT_INSUFFICIENT_PRIMARY / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 This package automatically converts public real-world sequence metadata into goal-driven approach episodes, reuses
 frozen current-frame provider output, applies Selective Guidance V0, and evaluates only truth-supported denominators.
@@ -40,6 +40,16 @@ only if public data cannot answer a separately stated, high-value question.
 The executed prospective V1 froze four unused, venue-taxonomy-gated goals before Mapillary access, expanded 14 full
 sequences from bbox-nearby metadata, and mined 8 episodes / 89 observations. It downloaded no pixels and made no model
 calls. The next bounded stage may materialize only these frozen observations; it may not replace goals after outcome.
+
+That bounded stage is now complete. `frozen_8x89_runner.py` froze the three local teacher identities, downloaded only
+the 89 roster pixels, preserved all three raw outputs, froze region-based private truth before baseline candidate IDs
+existed, then ran the unchanged Grounding DINO + Terra provider. The clean provider terminal is 89/89 with zero
+`in_doubt`. Truth coverage is `strong native/map-only=0 / teacher-supported weak usable=4 / teacher-only weak=19 /
+UNKNOWN=66`; all eight episodes remain `TRUTH_OR_CONTRACT_INSUFFICIENT`. No automatic algorithm successor follows.
+
+The independent private regions are matched to later provider candidates at fixed IoU 0.30. This removes candidate-ID
+dependence without allowing the baseline to run before truth freeze. Public map range shared with the provider is
+explicitly non-claimable as independent range accuracy.
 
 Before that stage, the per-frame contract was hardened to emit `NOT_VISIBLE`; only the episode interaction FSM may
 derive `LOST` from `VISIBLE -> NOT_VISIBLE`. These are mechanical validity gates, not performance gates.

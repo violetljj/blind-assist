@@ -4972,3 +4972,13 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
 - Annotation V1 冻结五级 truth authority、teacher_A/B/C raw outputs、agreement、functional authority 及 native/map sources；teacher-only consensus 不能升级 functional truth。
 - Evaluator 拒绝未冻结 truth，按 authority tier 保留 observation count、UNKNOWN coverage、conditioned denominator 与 failure attribution；UNKNOWN 不进入 accuracy。
 - Current-frame `target_visible=false` 改为 `NOT_VISIBLE`；`LOST` 只由 episode FSM 的 `VISIBLE -> NOT_VISIBLE_AFTER_VISIBLE` 边派生。从未看见目标不产生 LOST，FSM 不保存 embedding/instance/gallery/identity。
+# 2026-08-23 Public-real frozen 8×89 execution
+
+- 冻结 roster 原样执行：89 pixels；YOLOE/base-functional-door/domain-adapted-functional-door 三 teacher 各 89/89；
+  agreement `5/18/66`（agree/partial/disagree），raw output 与 disagreement 原样保留。
+- Truth coverage 为 native/map-only strong `0/89`、teacher-supported weak usable `4/89`、teacher-only weak
+  `19/89`、UNKNOWN `66/89`。Truth freeze 后原 Grounding DINO + Terra V0 完成 `89/89`、`0 in_doubt`。
+- 仅 4 个弱可用 observation 上 Recall@10=`4/4`、selection=`1/4`、referent-selection failure=`3/4`；
+  8/8 episode 仍为 `TRUTH_OR_CONTRACT_INSUFFICIENT`，故不建立 H1 或任何算法 successor。
+- Public map range proxy 同时进入 provider，不能充当独立 range truth；不报告 range accuracy、completion、用户、
+  产品、安全或导航效果 claim。若继续只能另行授权独立 functional-truth substrate/source，不补抽或救本次 8×89。

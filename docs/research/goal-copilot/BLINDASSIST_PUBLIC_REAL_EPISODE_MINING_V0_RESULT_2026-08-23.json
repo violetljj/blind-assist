@@ -13,7 +13,32 @@
     "observation_count": 29,
     "wrong_referent_eligible": 0
   },
-  "current_successor": "MATERIALIZE_ONLY_THE_FROZEN_8X89_PIXELS_RUN_INDEPENDENT_TEACHERS_FREEZE_TIERED_TRUTH_THEN_RUN_THE_SAME_V0_BASELINE",
+  "current_successor": "NONE_ALGORITHM_SUCCESSOR_REQUIRES_SEPARATELY_AUTHORIZED_INDEPENDENT_FUNCTIONAL_TRUTH_SUBSTRATE",
+  "executed_frozen_8x89": {
+    "episode_count": 8,
+    "episode_failure_attribution": {
+      "TRUTH_OR_CONTRACT_INSUFFICIENT": 8
+    },
+    "observation_count": 89,
+    "provider_calls_completed": 89,
+    "provider_calls_in_doubt": 0,
+    "provider_private_truth_access": false,
+    "teacher_agreement": 5,
+    "teacher_disagreement": 66,
+    "teacher_partial_agreement": 18,
+    "terminal": "TRUTH_OR_CONTRACT_INSUFFICIENT_PRIMARY",
+    "truth_coverage": {
+      "native_or_map_only_strong": 0,
+      "teacher_only_weak": 19,
+      "teacher_supported_weak_usable": 4,
+      "unknown": 66
+    },
+    "weak_usable_metrics_only": {
+      "proposal_recall_at_10": "4/4",
+      "referent_selection_failure": "3/4",
+      "selection_accuracy": "1/4"
+    }
+  },
   "forbidden_successors": [
     "PHYSICAL_CAPTURE_AS_DEFAULT_BLOCKER",
     "GOAL_REPLACEMENT_OR_POST_OUTCOME_RESAMPLING",

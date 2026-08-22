@@ -102,6 +102,44 @@ class RealEpisodePilotTest(unittest.TestCase):
         self.assertEqual(1, metric["unknown"])
         self.assertIsNone(metric["rate"])
 
+    def test_frozen_legal_region_matches_later_provider_candidate_without_id_dependency(self):
+        annotation = freeze(make_annotation(public_manifest()))
+        first, second = annotation["episodes"][0]["observations"]
+        authorize_native(first).update({
+            "target_visibility": "VISIBLE",
+            "legal_regions_normalized_xyxy": [[0.1, 0.2, 0.4, 0.8]],
+        })
+        prediction = {
+            "schema_version": "blindassist_real_episode_baseline_prediction_v0",
+            "predictions": [
+                {
+                    "observation_id": "o1",
+                    "candidate_ids": ["provider-generated-after-freeze"],
+                    "candidate_regions_normalized_xyxy": [[0.1, 0.2, 0.4, 0.8]],
+                    "selected_referent": "provider-generated-after-freeze",
+                    "decision_state": "FOUND",
+                    "command": "GUIDE_LEFT",
+                    "range_bucket": "RANGE_UNKNOWN",
+                    "confident_spoken_guidance": True,
+                },
+                {
+                    "observation_id": "o2",
+                    "candidate_ids": [],
+                    "candidate_regions_normalized_xyxy": [],
+                    "selected_referent": None,
+                    "decision_state": "ABSTAIN",
+                    "command": None,
+                    "range_bucket": "RANGE_UNKNOWN",
+                    "confident_spoken_guidance": False,
+                },
+            ],
+        }
+        result = evaluate(annotation, prediction)
+        self.assertEqual(
+            {"correct": 1, "eligible": 1, "rate": 1.0},
+            result["observation_metrics"]["selection_accuracy_given_legal_candidate_present"],
+        )
+
     def test_evaluator_rejects_unfrozen_truth(self):
         annotation = make_annotation(public_manifest())
         prediction = {

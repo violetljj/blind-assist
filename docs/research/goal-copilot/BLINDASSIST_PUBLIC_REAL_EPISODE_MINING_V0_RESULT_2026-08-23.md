@@ -1,6 +1,6 @@
 # BlindAssist Public-real Episode Mining V0 result
 
-状态：`PRE_RUN_VALIDITY_HARDENED / FRESH_PUBLIC_8X89_FROZEN / PIXEL_TEACHER_PROVIDER_NOT_RUN / MANUAL_CAPTURE_NOT_BLOCKING`
+状态：`8X89_EXECUTED_AND_SEALED / TRUTH_OR_CONTRACT_INSUFFICIENT_PRIMARY / NO_ALGORITHM_SUCCESSOR_AUTHORIZED`
 
 ## 结论
 
@@ -48,7 +48,39 @@ Mapillary bbox 查询取得近邻 metadata，再自动展开 14 个具有至少 
 metadata；矿工形成 `8 episodes / 89 observations`。全程 `manual capture=0 / manual annotation=0 / pixel download=0 /
 provider calls=0`。这是 fresh metadata/trajectory cohort，不是 visibility、proposal 或 guidance performance result。
 
-## 当前自动 successor
+## 冻结 8×89 正式运行
+
+冻结 roster 未替换、未补抽：8 episodes / 89 observations 全部下载 pixel，三路独立于 baseline 的本地
+teacher（YOLOE-26n-seg、base functional-door、domain-adapted functional-door）各执行 89/89，并保留原始
+输出。teacher agreement 为 `AGREE=5 / PARTIAL=18 / DISAGREE=66`；没有通过事后挑选 teacher 消除分歧。
+
+Truth coverage 与算法指标分开报告：
+
+- native/map-only strong truth：`0/89`；
+- map-bearing + teacher 支持的弱可用 `TEACHER_SUPPORTED`：`4/89`；
+- `TEACHER_ONLY_WEAK`：`19/89`；
+- `UNKNOWN`：`66/89`。
+
+Truth 冻结后才运行原 Grounding DINO Tiny + `gpt-5.6-terra / medium` V0 baseline；provider journal 为
+`89 dispatched / 89 completed / 0 in_doubt`，且不读取 private truth。在仅 4 个
+`TEACHER_SUPPORTED` observation 上，proposal Recall@10 为 `4/4`，selection accuracy 为 `1/4`；
+另外 `3/4` 的 observation attribution 是 `REFERENT_SELECTION`。这个局部信号不足以建立 selective
+commitment H1，因为 8/8 episode 的主 attribution 都仍是 `TRUTH_OR_CONTRACT_INSUFFICIENT`。
+
+公开 map range proxy 同时进入 provider，不能作为独立 range truth；evaluation 中对应的 range
+self-consistency 数字不产生 range/geometry accuracy claim。没有用户或独立 completion truth，completion rate
+同样不可作效果指标。
+
+正式 headline：
+
+> 0/89 observations 获得 native/map-only strong truth；4/89 仅获得 teacher-supported 弱可用 truth。
+> 在这 4 个中 selection 为 1/4，另有 19/89 teacher-only weak 与 66/89 UNKNOWN。当前首先失败在
+> truth/substrate coverage，而不是已经建立的算法瓶颈。
+
+终态 receipt：
+`artifacts.local/evidence/public-real-episode-mining-v0/prospective-8x89-v0/terminal-receipt.json`。
+
+## 运行前 validity gate（已消费）
 
 在任何 pixel/teacher/provider run 前，已冻结以下机械 validity gate：
 
@@ -62,10 +94,10 @@ provider calls=0`。这是 fresh metadata/trajectory cohort，不是 visibility�
 - current-frame 缺失只输出 `NOT_VISIBLE`；`LOST` 只由 episode FSM 的 `VISIBLE -> NOT_VISIBLE_AFTER_VISIBLE` 派生，
   `NEVER_SEEN -> NOT_VISIBLE` 不产生 LOST。
 
-这些 gate 不包含任何性能阈值。当前下一步只对这 8 个已冻结 episode 的 89 个 observation 下载像素，独立运行
-teachers，按上述 schema 冻结 private truth，再运行同一个 V0 baseline；
-只有 native GT、地图/轨迹或独立 teacher 一致性足够时才填入 private evaluator truth；其余保留 `SET_VALUED`、
-`AMBIGUOUS` 或 `UNKNOWN`。不得用 post-outcome resampling、人工唯一门、threshold/model/provider sweep rescue denominator。
+这些 gate 不包含任何性能阈值，并已按冻结顺序一次执行和封存。不得用 post-outcome resampling、人工唯一门、
+threshold/model/provider sweep rescue denominator。当前不授权 acquisition、proposal、selective commitment、range、
+P1 或其他算法 successor；若继续，必须另行提出能够增加独立 functional truth coverage 的 substrate/truth-source
+工作，且不得改写本次 8×89 终态。
 
 ADT 只承担 depth/bearing/visibility/occlusion/temporal calibration；Ego4D 只承担真实第一视角取景、模糊、遮挡和 out-of-
 frame 分布；Habitat 只承担显式 endpoint 的闭环 mechanics。三者都不能替代真实视障用户效果实验。

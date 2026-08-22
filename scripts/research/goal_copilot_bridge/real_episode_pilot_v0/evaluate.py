@@ -13,6 +13,29 @@ from .truth_contract import TruthAuthorityTier, validate_annotation
 
 KS = (1, 3, 5, 10)
 RANGE_ORDER = {"RANGE_FAR": 0, "RANGE_APPROACHING": 1, "RANGE_NEAR": 2}
+REGION_MATCH_IOU = 0.30
+
+
+def _iou(left: Sequence[float], right: Sequence[float]) -> float:
+    x1, y1 = max(float(left[0]), float(right[0])), max(float(left[1]), float(right[1]))
+    x2, y2 = min(float(left[2]), float(right[2])), min(float(left[3]), float(right[3]))
+    intersection = max(0.0, x2 - x1) * max(0.0, y2 - y1)
+    left_area = max(0.0, float(left[2]) - float(left[0])) * max(0.0, float(left[3]) - float(left[1]))
+    right_area = max(0.0, float(right[2]) - float(right[0])) * max(0.0, float(right[3]) - float(right[1]))
+    union = left_area + right_area - intersection
+    return intersection / union if union else 0.0
+
+
+def _legal_candidate_indexes(truth: dict[str, Any], row: dict[str, Any]) -> set[int]:
+    legal_ids = set(truth.get("legal_candidate_ids", []))
+    legal_regions = truth.get("legal_regions_normalized_xyxy", [])
+    candidate_ids = row.get("candidate_ids", [])
+    candidate_regions = row.get("candidate_regions_normalized_xyxy", [])
+    indexes = {index for index, candidate_id in enumerate(candidate_ids) if candidate_id in legal_ids}
+    for index, region in enumerate(candidate_regions):
+        if region is not None and any(_iou(region, legal) >= REGION_MATCH_IOU for legal in legal_regions):
+            indexes.add(index)
+    return indexes
 
 
 def _rate(numerator: int, denominator: int) -> float | None:
@@ -130,27 +153,32 @@ def evaluate(annotation: dict, prediction: dict) -> dict:
                 visibility_eligible += 1
                 visible += visibility == "VISIBLE"
             legal = set(truth.get("legal_candidate_ids", []))
+            legal_regions = truth.get("legal_regions_normalized_xyxy", [])
             candidates = row["candidate_ids"]
-            present = any(candidate in legal for candidate in candidates)
+            legal_indexes = _legal_candidate_indexes(truth, row)
+            present = bool(legal_indexes)
+            selected_index = candidates.index(row["selected_referent"]) if row.get("selected_referent") in candidates else None
+            selected_correct = selected_index in legal_indexes if selected_index is not None else False
             truth_eligible = functional_authority and tier != "UNKNOWN"
-            if visibility == "VISIBLE" and legal and truth_eligible:
+            has_legal_truth = bool(legal or legal_regions)
+            if visibility == "VISIBLE" and has_legal_truth and truth_eligible:
                 proposal_denominator += 1
                 tier_metric["proposal_eligible"] += 1
                 for k in KS:
-                    hit = any(candidate in legal for candidate in candidates[:k])
+                    hit = any(index < k for index in legal_indexes)
                     proposal_hits[k] += hit
                     tier_metric["proposal_hits"][k] += hit
             if present and truth_eligible:
                 selection_denominator += 1
-                selection_correct += row.get("selected_referent") in legal
+                selection_correct += selected_correct
                 tier_metric["selection_eligible"] += 1
-                tier_metric["selection_correct"] += row.get("selected_referent") in legal
+                tier_metric["selection_correct"] += selected_correct
             if row.get("confident_spoken_guidance"):
-                if visibility == "VISIBLE" and legal and truth_eligible:
+                if visibility == "VISIBLE" and has_legal_truth and truth_eligible:
                     confident += 1
-                    confident_correct += row.get("selected_referent") in legal
+                    confident_correct += selected_correct
                     tier_metric["confident_eligible"] += 1
-                    tier_metric["confident_correct"] += row.get("selected_referent") in legal
+                    tier_metric["confident_correct"] += selected_correct
                 else:
                     confident_unknown += 1
                     tier_metric["confident_unknown"] += 1
@@ -169,31 +197,31 @@ def evaluate(annotation: dict, prediction: dict) -> dict:
                 observation_attribution = "TRUTH_OR_CONTRACT_INSUFFICIENT"
             elif visibility == "NOT_VISIBLE":
                 observation_attribution = "CAMERA_POINTING_OR_VISIBILITY"
-            elif visibility == "VISIBLE" and legal and not present:
+            elif visibility == "VISIBLE" and has_legal_truth and not present:
                 observation_attribution = "PROPOSAL_MISS"
-            elif present and row.get("selected_referent") not in legal:
+            elif present and not selected_correct:
                 observation_attribution = "REFERENT_SELECTION"
             elif truth_range in RANGE_ORDER and predicted_range != truth_range:
                 observation_attribution = "RANGE_OR_GEOMETRY"
             if observation_attribution:
                 tier_attributions[tier][observation_attribution] += 1
-            episode_rows.append((truth, row, present))
+            episode_rows.append((truth, row, present, selected_correct, has_legal_truth))
 
         attribution = None
         if any(
             truth["target_visibility"] == "UNKNOWN"
             or truth["truth_authority_tier"] == "UNKNOWN"
             or truth["functional_authority"] != "ESTABLISHED"
-            for truth, _, _ in episode_rows
+            for truth, _, _, _, _ in episode_rows
         ):
             attribution = "TRUTH_OR_CONTRACT_INSUFFICIENT"
-        elif not any(truth["target_visibility"] == "VISIBLE" for truth, _, _ in episode_rows):
+        elif not any(truth["target_visibility"] == "VISIBLE" for truth, _, _, _, _ in episode_rows):
             attribution = "CAMERA_POINTING_OR_VISIBILITY"
-        elif any(truth["target_visibility"] == "VISIBLE" and truth.get("legal_candidate_ids") and not present for truth, _, present in episode_rows):
+        elif any(truth["target_visibility"] == "VISIBLE" and has_legal_truth and not present for truth, _, present, _, has_legal_truth in episode_rows):
             attribution = "PROPOSAL_MISS"
-        elif any(present and row.get("confident_spoken_guidance") and row.get("selected_referent") not in set(truth.get("legal_candidate_ids", [])) for truth, row, present in episode_rows):
+        elif any(present and row.get("confident_spoken_guidance") and not selected_correct for _, row, present, selected_correct, _ in episode_rows):
             attribution = "REFERENT_SELECTION"
-        elif any(truth.get("range_truth") in RANGE_ORDER and row.get("range_bucket") != truth.get("range_truth") for truth, row, _ in episode_rows):
+        elif any(truth.get("range_truth") in RANGE_ORDER and row.get("range_bucket") != truth.get("range_truth") for truth, row, _, _, _ in episode_rows):
             attribution = "RANGE_OR_GEOMETRY"
         elif episode.get("post_visibility_reacquisition_failure"):
             attribution = "POST_VISIBILITY_REACQUISITION"
