@@ -1,15 +1,20 @@
 # Public-real episode mining + selective-guidance pilot V0
 
-状态：`IMPLEMENTED / FRESH_PUBLIC_METADATA_COHORT_READY_8X89 / CONSUMED_DEVELOPMENT_BASELINE_SMOKE / MANUAL_CAPTURE_NOT_BLOCKING / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`PRE_RUN_VALIDITY_HARDENED / FRESH_PUBLIC_METADATA_COHORT_FROZEN_8X89 / PIXEL_AND_PROVIDER_NOT_RUN / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 This package automatically converts public real-world sequence metadata into goal-driven approach episodes, reuses
 frozen current-frame provider output, applies Selective Guidance V0, and evaluates only truth-supported denominators.
 The prospective entrypoint rejects a roster unless its public Goal Contract and entrance candidate set were frozen
 before Mapillary metadata, pixels, model output, and evaluator truth.
 
-Truth authority is ordered as native GT, map/trajectory-derived truth, independent-teacher consensus,
-`AMBIGUOUS/UNKNOWN`, then manual annotation as a last resort. Missing exact frame-region visibility truth never becomes
+Truth authority is ordered as `NATIVE_GT / MAP_TRAJECTORY_DERIVED / TEACHER_SUPPORTED / TEACHER_ONLY_WEAK / UNKNOWN`,
+then manual annotation as a last resort. Missing exact frame-region visibility truth never becomes
 a fabricated negative. `UNIQUE`, `SET_VALUED`, and `AMBIGUOUS` remain distinct.
+
+Annotation V1 preserves five truth-authority tiers, raw independent `teacher_A/B/C` outputs, agreement/disagreement,
+functional authority, and native/map authority sources. Teacher consensus alone cannot establish functional truth.
+The evaluator refuses unfrozen truth and reports denominators plus failure attribution separately by authority tier;
+UNKNOWN remains visible as cohort coverage and never enters accuracy.
 
 ```powershell
 python -m scripts.research.goal_copilot_bridge.real_episode_pilot_v0.public_real_mining prospective `
@@ -35,6 +40,9 @@ only if public data cannot answer a separately stated, high-value question.
 The executed prospective V1 froze four unused, venue-taxonomy-gated goals before Mapillary access, expanded 14 full
 sequences from bbox-nearby metadata, and mined 8 episodes / 89 observations. It downloaded no pixels and made no model
 calls. The next bounded stage may materialize only these frozen observations; it may not replace goals after outcome.
+
+Before that stage, the per-frame contract was hardened to emit `NOT_VISIBLE`; only the episode interaction FSM may
+derive `LOST` from `VISIBLE -> NOT_VISIBLE`. These are mechanical validity gates, not performance gates.
 
 No component adds tracking, re-ID, persistence, world memory, VIO/SLAM, model/threshold search, completion authority,
 or default-App integration. Public media cannot support a blind-user effectiveness claim.

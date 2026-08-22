@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / SYNTHETIC_CURRENT_FRAME_ARRIVAL_AUTHORITY_CLOSED / SELECTIVE_GUIDANCE_V0_IMPLEMENTED / PUBLIC_REAL_METADATA_COHORT_READY_8X89 / MANUAL_CAPTURE_NOT_BLOCKING / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PRE_RUN_VALIDITY_HARDENED / PUBLIC_REAL_8X89_FROZEN / PIXEL_AND_PROVIDER_NOT_RUN / MANUAL_CAPTURE_NOT_BLOCKING / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -37,7 +37,7 @@ synthetic completion confirmation cohort；不得通过 detector、SAM、depth m
 1. 实现 current-frame-only selective guidance、争议/弃权、handoff 与用户确认责任合同；
 2. 在 pixel/truth 前冻结 OSM/Overture public goal 与 entrance candidate set，再由 Mapillary sequence 的 GPS、heading、
    capture time 自动构造真实 approach episodes；
-3. truth 按 native GT、map/trajectory、independent-teacher consensus、`AMBIGUOUS/UNKNOWN`、人工最后手段排序；
+3. truth 按 `NATIVE_GT / MAP_TRAJECTORY_DERIVED / TEACHER_SUPPORTED / TEACHER_ONLY_WEAK / UNKNOWN`、人工最后手段排序；
 4. ADT 支持 calibration/mechanism，Ego4D 支持 domain realism，Habitat 支持 explicit-goal mechanics；它们不互相冒充；
 5. 物理采集不是当前 blocker；只有公开数据无法回答一个单独声明的高价值问题时才作为最后手段。
 
@@ -55,10 +55,16 @@ Claim ceiling：`EXPLORATORY_MECHANICS_AND_FAILURE_ATTRIBUTION_ONLY`。
 `8 episodes / 89 observations`；人工采集、人工标注、pixel download、provider call 均为 0。当前只授权对该冻结
 cohort 继续自动物化 pixel/teacher truth 并运行同一 V0 baseline，不授权换 goal、补抽或调模型。
 
+正式 run 前的 validity hardening 已实现：Annotation V1 保存五级 truth authority、三个 teacher 的原始独立输出、
+agreement/disagreement、functional authority 及其 native/map sources；teacher-only consensus 不能建立 functional
+truth。Evaluator 拒绝未冻结 truth，并按 tier 分层报告 denominator、UNKNOWN coverage 与 failure attribution；没有
+新增 performance gate。
+
 ## V0 与 P1 边界
 
-`CONTESTED / ABSTAIN / LOST / STALE / HANDOFF_READY / COMPLETED_BY_USER` 是 V0 的合法 current-frame 决策/交互状态，
-不构成 persistence。当前实现不得导入 tracker、cross-frame identity、re-ID、gallery growth、world memory/anchor、VIO/SLAM
+`FOUND / CONTESTED / NOT_VISIBLE / ABSTAIN / STALE / HANDOFF_READY / COMPLETED_BY_USER` 是 current-frame 状态；
+`LOST` 只允许由 episode interaction layer 的 `VISIBLE -> NOT_VISIBLE_AFTER_VISIBLE` 边派生。它不构成 persistence。
+当前实现不得导入 tracker、cross-frame identity、re-ID、gallery growth、world memory/anchor、VIO/SLAM
 或 scene graph，也不得静默修改默认 App。
 
 只有真实 pilot 后同时满足以下证据，才可另行提出而不能在本轮实现 P1 successor：

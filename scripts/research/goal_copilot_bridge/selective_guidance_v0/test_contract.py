@@ -9,10 +9,12 @@ from .contract import (
     CompletionAuthority,
     CompletionReceipt,
     CurrentFrameObservation,
+    EpisodeVisibilityState,
     OutputToken,
     ProviderReceipt,
     RangeBucket,
     decide,
+    derive_episode_interaction,
 )
 from .event_log import EpisodeEventLog
 
@@ -57,15 +59,32 @@ class SelectiveGuidanceContractTest(unittest.TestCase):
         self.assertEqual(OutputToken.CONTESTED, result.status)
         self.assertIsNone(result.command)
 
-    def test_stale_and_lost_invalidate_old_direction(self):
+    def test_stale_and_not_visible_invalidate_old_direction(self):
         stale = decide(observation(decision_at_ms=3_000))
-        lost = decide(observation(target_visible=False))
+        not_visible = decide(observation(target_visible=False))
         self.assertEqual(OutputToken.STALE, stale.status)
-        self.assertEqual(OutputToken.LOST, lost.status)
+        self.assertEqual(OutputToken.NOT_VISIBLE, not_visible.status)
         self.assertIsNone(stale.command)
-        self.assertIsNone(lost.command)
+        self.assertIsNone(not_visible.command)
         self.assertIsNone(stale.selected_referent)
-        self.assertIsNone(lost.selected_referent)
+        self.assertIsNone(not_visible.selected_referent)
+
+    def test_lost_is_derived_only_by_episode_transition(self):
+        found = decide(observation())
+        visible = derive_episode_interaction(EpisodeVisibilityState.NEVER_SEEN, found)
+        self.assertEqual(EpisodeVisibilityState.VISIBLE, visible.visibility_state)
+        self.assertIsNone(visible.event)
+
+        not_visible = decide(observation(target_visible=False))
+        lost = derive_episode_interaction(visible.visibility_state, not_visible)
+        self.assertEqual(EpisodeVisibilityState.NOT_VISIBLE_AFTER_VISIBLE, lost.visibility_state)
+        self.assertEqual(OutputToken.LOST, lost.event)
+
+    def test_never_seen_not_visible_is_not_lost(self):
+        not_visible = decide(observation(target_visible=False))
+        result = derive_episode_interaction(EpisodeVisibilityState.NEVER_SEEN, not_visible)
+        self.assertEqual(EpisodeVisibilityState.NEVER_SEEN, result.visibility_state)
+        self.assertIsNone(result.event)
 
     def test_handoff_requires_later_user_confirmation(self):
         handoff = decide(observation(handoff_ready=True, range_bucket=RangeBucket.NEAR))

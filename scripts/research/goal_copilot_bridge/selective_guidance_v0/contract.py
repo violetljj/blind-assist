@@ -20,6 +20,7 @@ class CandidateCardinality(str, Enum):
 class OutputToken(str, Enum):
     FOUND = "FOUND"
     CONTESTED = "CONTESTED"
+    NOT_VISIBLE = "NOT_VISIBLE"
     LOST = "LOST"
     STALE = "STALE"
     ABSTAIN = "ABSTAIN"
@@ -36,6 +37,12 @@ class RangeBucket(str, Enum):
     APPROACHING = "RANGE_APPROACHING"
     NEAR = "RANGE_NEAR"
     UNKNOWN = "RANGE_UNKNOWN"
+
+
+class EpisodeVisibilityState(str, Enum):
+    NEVER_SEEN = "NEVER_SEEN"
+    VISIBLE = "VISIBLE"
+    NOT_VISIBLE_AFTER_VISIBLE = "NOT_VISIBLE_AFTER_VISIBLE"
 
 
 class CompletionAuthority(str, Enum):
@@ -133,6 +140,8 @@ class GuidanceDecision:
     def __post_init__(self) -> None:
         if self.status in _DIRECTIONAL or self.status is OutputToken.STOP_FOR_SAFETY:
             raise ValueError("status and command responsibilities must remain separate")
+        if self.status is OutputToken.LOST:
+            raise ValueError("LOST is an episode interaction event, not a current-frame status")
         if self.command is not None and self.command not in _DIRECTIONAL | {OutputToken.STOP_FOR_SAFETY}:
             raise ValueError("invalid guidance command")
         if self.status is OutputToken.COMPLETED_BY_USER and self.command is not None:
@@ -145,6 +154,36 @@ class GuidanceDecision:
             values.append(self.command.value)
         values.append(self.range_bucket.value)
         return tuple(values)
+
+
+@dataclass(frozen=True)
+class EpisodeInteractionDecision:
+    visibility_state: EpisodeVisibilityState
+    event: OutputToken | None
+
+    def __post_init__(self) -> None:
+        if self.event not in {None, OutputToken.LOST}:
+            raise ValueError("episode interaction event must be LOST or absent")
+
+
+def derive_episode_interaction(
+    previous: EpisodeVisibilityState,
+    current: GuidanceDecision,
+) -> EpisodeInteractionDecision:
+    """Derive LOST from a frame-state transition without retaining target identity."""
+
+    if current.status in {OutputToken.FOUND, OutputToken.HANDOFF_READY}:
+        return EpisodeInteractionDecision(EpisodeVisibilityState.VISIBLE, None)
+    if current.status is OutputToken.NOT_VISIBLE:
+        if previous is EpisodeVisibilityState.VISIBLE:
+            return EpisodeInteractionDecision(
+                EpisodeVisibilityState.NOT_VISIBLE_AFTER_VISIBLE,
+                OutputToken.LOST,
+            )
+        if previous is EpisodeVisibilityState.NOT_VISIBLE_AFTER_VISIBLE:
+            return EpisodeInteractionDecision(previous, None)
+        return EpisodeInteractionDecision(EpisodeVisibilityState.NEVER_SEEN, None)
+    return EpisodeInteractionDecision(previous, None)
 
 
 def decide(observation: CurrentFrameObservation) -> GuidanceDecision:
@@ -167,7 +206,11 @@ def decide(observation: CurrentFrameObservation) -> GuidanceDecision:
         )
     if observation.target_visible is False:
         return GuidanceDecision(
-            OutputToken.LOST, None, RangeBucket.UNKNOWN, None, "target not visible in current frame"
+            OutputToken.NOT_VISIBLE,
+            None,
+            RangeBucket.UNKNOWN,
+            None,
+            "target not visible in current frame; LOST requires an episode transition",
         )
     if observation.stop_for_safety:
         return GuidanceDecision(

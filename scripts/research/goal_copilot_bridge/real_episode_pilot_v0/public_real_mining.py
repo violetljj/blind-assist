@@ -264,10 +264,13 @@ def adapt_consumed_replay(scene_path: Path, truth_path: Path, run_dir: Path) -> 
     for episode in annotation["episodes"]:
         for row in episode["observations"]:
             source = node_by_observation[row["observation_id"]]
+            row["truth_authority_tier"] = "MAP_TRAJECTORY_DERIVED"
+            row["functional_authority_sources"] = ["MAP_TRAJECTORY_DERIVED"]
             row["range_truth"] = _range_bucket(float(source["map_proxy_distance_m"]))
             row["range_truth_authority"] = "OSM_ENTRANCE_POSE_PROXY_NOT_PHYSICAL_RANGE_GT"
             row["target_visibility"] = "UNKNOWN"
             row["visibility_reason"] = "EXACT_FRAME_REGION_OR_NATIVE_VISIBILITY_GT_UNAVAILABLE"
+    annotation["truth_frozen"] = True
     provider = {
         "schema_version": "blindassist_public_real_provider_observations_v0",
         "source": "SEALED_LAST_10M_PROVIDER_OUTPUT_REUSE_NO_NEW_MODEL_CALLS",

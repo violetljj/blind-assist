@@ -7,6 +7,8 @@ import json
 from pathlib import Path
 from typing import Sequence
 
+from .truth_contract import empty_teacher_outputs
+
 
 def make_annotation(public: dict) -> dict:
     if public.get("schema_version") != "blindassist_real_episode_public_manifest_v0":
@@ -25,6 +27,11 @@ def make_annotation(public: dict) -> dict:
             "observations": [
                 {
                     "observation_id": row["observation_id"],
+                    "truth_authority_tier": "UNKNOWN",
+                    "teacher_outputs": empty_teacher_outputs(),
+                    "teacher_agreement": None,
+                    "functional_authority": "NOT_ESTABLISHED",
+                    "functional_authority_sources": [],
                     "target_visibility": "UNKNOWN",
                     "legal_candidate_ids": [],
                     "allowed_decision_states": [],
@@ -38,8 +45,9 @@ def make_annotation(public: dict) -> dict:
             ],
         })
     return {
-        "schema_version": "blindassist_real_episode_annotation_v0",
+        "schema_version": "blindassist_real_episode_annotation_v1",
         "private_evaluator_only": True,
+        "truth_frozen": False,
         "public_manifest_schema": public["schema_version"],
         "episodes": episodes,
     }

@@ -53,7 +53,7 @@ def run_baseline(public: dict, provider: dict, config: dict) -> dict:
                 visible_candidate_ids=tuple(item["candidate_id"] for item in candidates),
                 selected_referent=selected["candidate_id"] if selected else None,
                 cardinality=CandidateCardinality(row.get("candidate_cardinality", "AMBIGUOUS")),
-                target_visible=None,
+                target_visible=row.get("target_visible"),
                 selection_authorized=bool(row.get("selection_authorized", False)),
                 requested_direction=direction if selected else None,
                 range_bucket=range_bucket,

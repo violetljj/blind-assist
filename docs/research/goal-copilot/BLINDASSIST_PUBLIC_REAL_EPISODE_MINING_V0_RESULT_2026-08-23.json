@@ -13,7 +13,7 @@
     "observation_count": 29,
     "wrong_referent_eligible": 0
   },
-  "current_successor": "MATERIALIZE_ONLY_THE_FROZEN_8X89_PIXELS_AND_TEACHER_TRUTH_THEN_RUN_THE_SAME_V0_BASELINE",
+  "current_successor": "MATERIALIZE_ONLY_THE_FROZEN_8X89_PIXELS_RUN_INDEPENDENT_TEACHERS_FREEZE_TIERED_TRUTH_THEN_RUN_THE_SAME_V0_BASELINE",
   "forbidden_successors": [
     "PHYSICAL_CAPTURE_AS_DEFAULT_BLOCKER",
     "GOAL_REPLACEMENT_OR_POST_OUTCOME_RESAMPLING",
@@ -40,12 +40,25 @@
     "result": "FRESH_PUBLIC_METADATA_COHORT_READY",
     "episode_count": 8
   },
+  "pre_run_validity_hardening": {
+    "functional_authority_requires_native_or_map_source": true,
+    "lost_derivation": "EPISODE_ONLY_VISIBLE_TO_NOT_VISIBLE_AFTER_VISIBLE",
+    "performance_gate_added": false,
+    "pixel_download_count": 0,
+    "provider_call_count": 0,
+    "teacher_call_count": 0,
+    "teacher_consensus_can_establish_functional_truth": false,
+    "teacher_outputs_preserved": ["teacher_A", "teacher_B", "teacher_C"],
+    "truth_annotation_schema": "blindassist_real_episode_annotation_v1",
+    "truth_frozen_required_by_evaluator": true
+  },
   "schema_version": "blindassist_public_real_episode_mining_result_v0",
   "truth_priority": [
     "NATIVE_GT",
     "MAP_OR_TRAJECTORY_DERIVED",
-    "INDEPENDENT_TEACHER_CONSENSUS",
-    "AMBIGUOUS_OR_UNKNOWN",
+    "TEACHER_SUPPORTED",
+    "TEACHER_ONLY_WEAK",
+    "UNKNOWN",
     "MANUAL_ANNOTATION_LAST_RESORT"
   ]
 }

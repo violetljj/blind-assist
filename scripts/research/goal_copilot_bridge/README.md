@@ -1,6 +1,6 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / SELECTIVE_GUIDANCE_V0_IMPLEMENTED / PUBLIC_REAL_EPISODE_MINING_CURRENT / MANUAL_CAPTURE_NOT_BLOCKING / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRE_RUN_VALIDITY_HARDENED / PUBLIC_REAL_8X89_FROZEN / PIXEL_AND_PROVIDER_NOT_RUN / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
@@ -13,6 +13,10 @@ metadata/pixels/model output/truth, constructs approach segments from sequence/G
 `UNIQUE/SET_VALUED/AMBIGUOUS`, and keeps missing region truth as `UNKNOWN`. The consumed Last-10m adapter exercised
 6 episodes / 29 observations with zero new model calls or manual labels; it is smoke evidence only. Physical capture is
 not the current blocker.
+
+The pre-run hardening keeps raw independent teacher outputs and truth authority tiers, rejects teacher-only functional
+truth, refuses unfrozen truth, and stratifies denominators/failure classes by authority tier. Per-frame absence is
+`NOT_VISIBLE`; `LOST` exists only as `VISIBLE -> NOT_VISIBLE_AFTER_VISIBLE`, without identity state.
 
 `last_10m_visual_servo_v1/` is the current algorithm successor. On a fresh automated public real-facade cohort it kept
 every action current-frame-only and re-grounded after each pan/zoom/rescan. Target proposals were available in `13/13`

@@ -4966,3 +4966,9 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
 - 修正 evaluator：没有 exact legal region truth 时，confident guidance 计 `UNKNOWN`，不能伪造成 wrong referent；本次为 `unknown=27 / wrong eligible=0`。
 - physical capture 缺失不是 freshness gap；不建立 P1、模型 sweep 或默认 App successor。
 - fresh V1 已执行：4 个 Overture venue-taxonomy 合法 goal 在 Mapillary access 前冻结；展开 14 个 sequence，形成 `8 episodes / 89 observations`，pixel/provider/人工均为 0。V0 planner 的楼内商户目标接口缺陷在 outcome 前封存。
+# 2026-08-23 Public-real pre-run validity hardening
+
+- 在 8×89 pixel/provider run 前只收紧 validity mechanics，不下载 pixel、不调用 teacher/provider、不新增 performance gate。
+- Annotation V1 冻结五级 truth authority、teacher_A/B/C raw outputs、agreement、functional authority 及 native/map sources；teacher-only consensus 不能升级 functional truth。
+- Evaluator 拒绝未冻结 truth，按 authority tier 保留 observation count、UNKNOWN coverage、conditioned denominator 与 failure attribution；UNKNOWN 不进入 accuracy。
+- Current-frame `target_visible=false` 改为 `NOT_VISIBLE`；`LOST` 只由 episode FSM 的 `VISIBLE -> NOT_VISIBLE_AFTER_VISIBLE` 边派生。从未看见目标不产生 LOST，FSM 不保存 embedding/instance/gallery/identity。

@@ -1,6 +1,6 @@
 # BlindAssist Public-real Episode Mining V0 result
 
-状态：`IMPLEMENTED / FRESH_PUBLIC_METADATA_COHORT_READY_8_EPISODES_89_OBSERVATIONS / CONSUMED_BASELINE_SMOKE_RUN / MANUAL_CAPTURE_NOT_BLOCKING`
+状态：`PRE_RUN_VALIDITY_HARDENED / FRESH_PUBLIC_8X89_FROZEN / PIXEL_TEACHER_PROVIDER_NOT_RUN / MANUAL_CAPTURE_NOT_BLOCKING`
 
 ## 结论
 
@@ -50,7 +50,20 @@ provider calls=0`。这是 fresh metadata/trajectory cohort，不是 visibility�
 
 ## 当前自动 successor
 
-下一步只对这 8 个已冻结 episode 的 89 个 observation 下载像素，并按冻结 provider/teacher 路径生成 private truth；
+在任何 pixel/teacher/provider run 前，已冻结以下机械 validity gate：
+
+- observation truth 使用 `NATIVE_GT / MAP_TRAJECTORY_DERIVED / TEACHER_SUPPORTED / TEACHER_ONLY_WEAK / UNKNOWN`；
+- 原样保留 `teacher_A/B/C` 独立 raw output、implementation、运行状态、agreement/disagreement 与 provider-family
+  independence；
+- `functional_authority=ESTABLISHED` 必须包含 native 或 map/trajectory authority source；teacher consensus 单独存在时
+  最高只能是 `TEACHER_ONLY_WEAK / NOT_ESTABLISHED`；
+- evaluator 只接受 `truth_frozen=true`，并按 tier 单列 total、UNKNOWN、conditioned denominator、accuracy 与 failure
+  attribution；
+- current-frame 缺失只输出 `NOT_VISIBLE`；`LOST` 只由 episode FSM 的 `VISIBLE -> NOT_VISIBLE_AFTER_VISIBLE` 派生，
+  `NEVER_SEEN -> NOT_VISIBLE` 不产生 LOST。
+
+这些 gate 不包含任何性能阈值。当前下一步只对这 8 个已冻结 episode 的 89 个 observation 下载像素，独立运行
+teachers，按上述 schema 冻结 private truth，再运行同一个 V0 baseline；
 只有 native GT、地图/轨迹或独立 teacher 一致性足够时才填入 private evaluator truth；其余保留 `SET_VALUED`、
 `AMBIGUOUS` 或 `UNKNOWN`。不得用 post-outcome resampling、人工唯一门、threshold/model/provider sweep rescue denominator。
 
