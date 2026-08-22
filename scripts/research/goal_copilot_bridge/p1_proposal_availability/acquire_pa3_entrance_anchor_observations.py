@@ -29,7 +29,7 @@ from scripts.research.goal_copilot_bridge.p1_proposal_availability.pa3_semantic 
 
 
 PLAN_SCHEMA = "blindassist_p1_pa3_entrance_anchor_acquisition_plan_v1"
-ROSTER_SCHEMA = "blindassist_p1_pa3_osm_entrance_anchor_roster_v1"
+ROSTER_SCHEMA = "blindassist_p1_pa3_public_spatial_goal_contract_v2"
 ACQUISITION_SCHEMA = "blindassist_p1_pa3_entrance_anchor_observation_acquisition_v1"
 
 
@@ -180,6 +180,11 @@ def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dic
     _require(plan.get("goal_receipt_body_sha256") == c0.get("receipt_body_sha256"), "goal receipt body binding mismatch")
     _require(plan.get("pixel_state_at_freeze") == "NOT_ACCESSED_FOR_THIS_COHORT", "pixel precedence drift")
     _require(plan.get("truth_state_at_freeze") == "NOT_CREATED", "truth precedence drift")
+    spatial_contract = plan.get("public_spatial_contract")
+    _require(isinstance(spatial_contract, Mapping), "public spatial contract declaration is required")
+    _require(spatial_contract.get("provider_public") is True, "public spatial contract must be provider-public")
+    _require(spatial_contract.get("source_authority") == "OPENSTREETMAP_PRETRUTH", "public spatial source authority drift")
+    _require(spatial_contract.get("role") == "PRODUCT_NAVIGATION_ROUTE_ENDPOINT_CANDIDATE", "public spatial role drift")
     goal_ids = {row["episode_id"] for row in c0["episodes"]}
     queries = plan["geocoding"]["queries"]
     _require({row["episode_id"] for row in queries} == goal_ids, "goal/query roster mismatch")
@@ -236,9 +241,22 @@ def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dic
         if index + 1 < len(place_anchors):
             time.sleep(1.0)
     roster = {
-        "schema_version": ROSTER_SCHEMA, "plan_sha256": sha256(plan_path),
+        "schema_version": ROSTER_SCHEMA,
+        "protocol_id": "P1-PA3-S0-PUBLIC-SPATIAL-GOAL-CONTRACT-V1",
+        "plan_sha256": sha256(plan_path),
         "goal_receipt_file_sha256": sha256(c0_path),
-        "frozen_before_mapillary_metadata_or_pixels": True, "episodes": resolved,
+        "goal_receipt_body_sha256": c0["receipt_body_sha256"],
+        "provider_public": True,
+        "private_truth_access": False,
+        "source_authority": "OPENSTREETMAP_PRETRUTH",
+        "spatial_goal_role": "PRODUCT_NAVIGATION_ROUTE_ENDPOINT_CANDIDATE",
+        "created_before_mapillary_metadata_pixels_and_truth": True,
+        "provider_public_fields": [
+            "episode_id", "query", "lat", "lon", "osm_type", "osm_id", "display_name",
+            "selected_parent", "selected_entrance"
+        ],
+        "frozen_before_mapillary_metadata_or_pixels": True,
+        "episodes": resolved,
     }
     roster["roster_body_sha256"] = content_sha256(roster)
     roster_path = output_dir / "entrance_anchor_roster.json"
@@ -294,6 +312,7 @@ def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dic
                 "image_path": str(path.resolve()), "image_sha256": image_sha,
                 "mapillary_image_id": selected["image_id"], "mapillary_sequence_id": selected["sequence_id"],
                 "osm_entrance_node_id": entrance["osm_node_id"],
+                "public_spatial_contract_body_sha256": roster["roster_body_sha256"],
             })
         results.append({
             "episode_id": row["episode_id"], "status": "MATERIALIZED",

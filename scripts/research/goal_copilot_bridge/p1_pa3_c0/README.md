@@ -15,6 +15,18 @@ truth `NOT_CREATED` at goal recording. The output does not self-certify temporal
 bind the immutable goal-receipt body SHA-256 before an admission step may confirm `created_before_truth`. The materialized
 receipt remains `pa3_inference_authorized=false`.
 
+## P1-PA3-S0 public spatial Goal Contract
+
+For product tasks that already carry navigation context, the entrance-acquisition path now freezes public OSM place,
+parent-building, and route-endpoint-candidate geometry before Mapillary metadata, project pixel access, and target truth.
+The resulting `blindassist_p1_pa3_public_spatial_goal_contract_v2` receipt is provider-public and hash-bound to C0.
+It is not evaluator truth: it may be absent, stale, or wrong, and it contains no visibility judgment or image bbox/mask.
+
+When supplied to `materialize_pa3_inputs`, every captured case must bind the same spatial-contract body hash and OSM
+endpoint candidate. The provider receives it under `goal_contract.public_spatial_context`; any body, C0, source-role,
+precedence, or endpoint mismatch fails closed. This makes route-conditioned observation acquisition explicit instead of
+silently using a truth-like internal anchor.
+
 Focused mechanics check:
 
 ```powershell

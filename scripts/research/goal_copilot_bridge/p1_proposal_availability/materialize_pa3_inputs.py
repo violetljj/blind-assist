@@ -29,6 +29,7 @@ from scripts.research.goal_copilot_bridge.p1_proposal_availability.pa3_semantic 
 C0_SCHEMA = "blindassist_p1_pa3_c0_public_goal_cohort_v1"
 CAPTURE_SCHEMA = "blindassist_p1_pa3_capture_manifest_v1"
 TRUTH_SCHEMA = "blindassist_p1_pa3_truth_body_v1"
+PUBLIC_SPATIAL_SCHEMA = "blindassist_p1_pa3_public_spatial_goal_contract_v2"
 
 
 def _require(condition: bool, message: str) -> None:
@@ -62,6 +63,25 @@ def _verify_c0_receipt(c0: Mapping[str, Any]) -> str:
     return body_hash
 
 
+def _verify_public_spatial_contract(spatial: Mapping[str, Any], c0_body_sha: str) -> dict[str, Mapping[str, Any]]:
+    _require(spatial.get("schema_version") == PUBLIC_SPATIAL_SCHEMA, "public spatial contract schema mismatch")
+    body_hash = _text(spatial.get("roster_body_sha256"), "public spatial contract body hash")
+    body = dict(spatial)
+    body.pop("roster_body_sha256", None)
+    _require(content_sha256(body) == body_hash, "public spatial contract body hash mismatch")
+    _require(spatial.get("goal_receipt_body_sha256") == c0_body_sha, "public spatial contract C0 binding mismatch")
+    _require(spatial.get("provider_public") is True, "public spatial contract must be provider-public")
+    _require(spatial.get("private_truth_access") is False, "public spatial contract cannot access private truth")
+    _require(spatial.get("source_authority") == "OPENSTREETMAP_PRETRUTH", "public spatial source authority drift")
+    _require(spatial.get("spatial_goal_role") == "PRODUCT_NAVIGATION_ROUTE_ENDPOINT_CANDIDATE", "public spatial goal role drift")
+    _require(spatial.get("created_before_mapillary_metadata_pixels_and_truth") is True, "public spatial precedence is not confirmed")
+    episodes = spatial.get("episodes")
+    _require(isinstance(episodes, list) and bool(episodes), "public spatial contract episodes are required")
+    by_episode = {str(row.get("episode_id")): row for row in episodes if isinstance(row, Mapping)}
+    _require(len(by_episode) == len(episodes), "duplicate or invalid public spatial episode")
+    return by_episode
+
+
 def _atomic_json(path: Path, value: Mapping[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
@@ -77,10 +97,12 @@ def materialize_inputs(
     truth: Mapping[str, Any],
     output_dir: Path,
     source_base_dir: Path,
+    public_spatial_contract: Mapping[str, Any] | None = None,
 ) -> tuple[Path, Path]:
     output_dir = output_dir.resolve()
     source_base_dir = source_base_dir.resolve()
     c0_body_sha = _verify_c0_receipt(c0)
+    spatial_by_episode = _verify_public_spatial_contract(public_spatial_contract, c0_body_sha) if public_spatial_contract is not None else None
     _require(c0.get("prompt_map_sha256") == content_sha256(prompt_map), "C0 prompt-map hash mismatch")
     prompts = prompt_lookup(prompt_map)
     _require(capture.get("schema_version") == CAPTURE_SCHEMA, "capture manifest schema mismatch")
@@ -180,20 +202,42 @@ def materialize_inputs(
             "private_truth_body_sha256": truth_body_sha,
         }
         receipts.append((receipt_path, receipt))
+        public_goal_contract = {
+            "goal_text_original": goal["goal_text_original"],
+            "goal_type": goal_type,
+            "reference_mode": reference_mode,
+            "task_semantics": contract["task_semantics"],
+            "canonical_prompt": prompts[goal_type],
+            "c0_goal_receipt_body_sha256": c0_body_sha,
+            "precedence_receipt_path": str(receipt_path),
+            "precedence_receipt_sha256": "PENDING_RECEIPT_WRITE",
+        }
+        if spatial_by_episode is not None:
+            _require(episode_id in spatial_by_episode, f"{case_id} has no public spatial episode")
+            spatial = spatial_by_episode[episode_id]
+            endpoint = spatial.get("selected_entrance")
+            _require(isinstance(endpoint, Mapping), f"{case_id} has no public route endpoint candidate")
+            _require(captured.get("public_spatial_contract_body_sha256") == public_spatial_contract.get("roster_body_sha256"), f"{case_id} public spatial body binding mismatch")
+            _require(captured.get("osm_entrance_node_id") == endpoint.get("osm_node_id"), f"{case_id} route endpoint candidate drift")
+            public_goal_contract["public_spatial_context"] = {
+                "schema_version": PUBLIC_SPATIAL_SCHEMA,
+                "spatial_goal_role": public_spatial_contract["spatial_goal_role"],
+                "source_authority": public_spatial_contract["source_authority"],
+                "spatial_contract_body_sha256": public_spatial_contract["roster_body_sha256"],
+                "place_anchor": {
+                    "osm_type": spatial.get("osm_type"),
+                    "osm_id": spatial.get("osm_id"),
+                    "lat": spatial.get("lat"),
+                    "lon": spatial.get("lon"),
+                },
+                "selected_parent": spatial.get("selected_parent"),
+                "route_endpoint_candidate": dict(endpoint),
+            }
         public_cases.append({
             "case_id": case_id,
             "episode_id": episode_id,
             "query": {"image_path": str(image_path), "image_sha256": image_sha},
-            "goal_contract": {
-                "goal_text_original": goal["goal_text_original"],
-                "goal_type": goal_type,
-                "reference_mode": reference_mode,
-                "task_semantics": contract["task_semantics"],
-                "canonical_prompt": prompts[goal_type],
-                "c0_goal_receipt_body_sha256": c0_body_sha,
-                "precedence_receipt_path": str(receipt_path),
-                "precedence_receipt_sha256": "PENDING_RECEIPT_WRITE",
-            },
+            "goal_contract": public_goal_contract,
         })
 
     output_dir.mkdir(parents=True, exist_ok=False)
@@ -210,6 +254,7 @@ def materialize_inputs(
             "input": "CURRENT_FRAME_PLUS_PRETRUTH_GOAL_CONTRACT",
             "maximum_candidates": 10,
             "identity_selection": "FORBIDDEN",
+            "public_spatial_context": spatial_by_episode is not None,
         },
         "cases": public_cases,
         "claim_role": "PROSPECTIVE_GOAL_SEMANTIC_PROPOSAL_AVAILABILITY",
@@ -228,6 +273,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--prompt-map", required=True, type=Path)
     parser.add_argument("--capture-manifest", required=True, type=Path)
     parser.add_argument("--private-truth", required=True, type=Path)
+    parser.add_argument("--public-spatial-contract", type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
     args = parser.parse_args(argv)
     values = [
@@ -236,6 +282,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         json.loads(args.capture_manifest.read_text(encoding="utf-8")),
         json.loads(args.private_truth.read_text(encoding="utf-8")),
     ]
+    spatial = json.loads(args.public_spatial_contract.read_text(encoding="utf-8")) if args.public_spatial_contract else None
     public_path, private_path = materialize_inputs(
         c0=values[0],
         prompt_map=values[1],
@@ -243,6 +290,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         truth=values[3],
         output_dir=args.output_dir,
         source_base_dir=args.capture_manifest.resolve().parent,
+        public_spatial_contract=spatial,
     )
     print(json.dumps({
         "public_input": str(public_path),

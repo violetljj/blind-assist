@@ -295,6 +295,69 @@ class Pa3InputMaterializationTest(unittest.TestCase):
             receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
             self.assertEqual(content_sha256(private_truth_body(private)), receipt["private_truth_body_sha256"])
 
+    def test_materializer_exposes_only_hash_bound_pretruth_public_spatial_context(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            c0, capture, truth = self.inputs(root)
+            spatial = {
+                "schema_version": "blindassist_p1_pa3_public_spatial_goal_contract_v2",
+                "protocol_id": "P1-PA3-S0-PUBLIC-SPATIAL-GOAL-CONTRACT-V1",
+                "goal_receipt_body_sha256": c0["receipt_body_sha256"],
+                "provider_public": True,
+                "private_truth_access": False,
+                "source_authority": "OPENSTREETMAP_PRETRUTH",
+                "spatial_goal_role": "PRODUCT_NAVIGATION_ROUTE_ENDPOINT_CANDIDATE",
+                "created_before_mapillary_metadata_pixels_and_truth": True,
+                "episodes": [{
+                    "episode_id": "episode-001",
+                    "osm_type": "way",
+                    "osm_id": 10,
+                    "lat": 52.0,
+                    "lon": 4.0,
+                    "selected_parent": {"osm_type": "way", "osm_id": 10},
+                    "selected_entrance": {
+                        "osm_node_id": 11,
+                        "lat": 52.0001,
+                        "lon": 4.0001,
+                        "entrance_tag": "main",
+                        "access_tag": "yes",
+                    },
+                }],
+            }
+            spatial["roster_body_sha256"] = content_sha256(spatial)
+            capture["cases"][0].update({
+                "osm_entrance_node_id": 11,
+                "public_spatial_contract_body_sha256": spatial["roster_body_sha256"],
+            })
+            output = root / "pa3"
+            public_path, _ = materialize_inputs(
+                c0=c0,
+                prompt_map=PROMPT_MAP,
+                capture=capture,
+                truth=truth,
+                output_dir=output,
+                source_base_dir=root,
+                public_spatial_contract=spatial,
+            )
+            public = json.loads(public_path.read_text(encoding="utf-8"))
+            self.assertTrue(public["provider_contract"]["public_spatial_context"])
+            context = public["cases"][0]["goal_contract"]["public_spatial_context"]
+            self.assertEqual(11, context["route_endpoint_candidate"]["osm_node_id"])
+            self.assertNotIn("legal_target_bboxes_xyxy", json.dumps(context))
+            validate_public(public, PROMPT_MAP, output)
+
+            capture["cases"][0]["osm_entrance_node_id"] = 12
+            with self.assertRaisesRegex(Pa3ContractError, "route endpoint candidate drift"):
+                materialize_inputs(
+                    c0=c0,
+                    prompt_map=PROMPT_MAP,
+                    capture=capture,
+                    truth=truth,
+                    output_dir=root / "invalid",
+                    source_base_dir=root,
+                    public_spatial_contract=spatial,
+                )
+
     def test_materializer_rejects_truth_created_before_capture(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

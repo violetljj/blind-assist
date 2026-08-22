@@ -15,6 +15,11 @@ truth 只有 `2 VISIBLE / 14 NOT_VISIBLE`，覆盖 2/7 goal episodes。IoU `0.30
 mechanics，但 denominator 太小，不能建立跨场所 coverage 或授权正式 identity verifier。`SET_VALUED` 入口任务与 `UNIQUE`
 实例 identity 也必须分开；AMRM 与 App 仍不授权。
 
+后继 observation 扩展必须使用显式的 `P1-PA3-S0` public spatial Goal Contract：导航侧公开的 OSM place、parent building 与
+route-endpoint candidate 在 Mapillary metadata、project pixel 和 truth 前冻结并绑定 C0，再作为 provider-public context 进入
+materialized input。它不是 evaluator truth，也不携带 visibility/bbox/mask；任何 hash、source-role、precedence 或 endpoint 漂移
+都 fail closed。不得再把内部 entrance anchor 隐式当作合法输入。
+
 其前一个 fresh paired 结果是
 [`P1-HRG1 fresh parent-bound local-refinement result`](P1_HRG1_FRESH_PARENT_BOUND_LOCAL_REFINEMENT_RESULT_2026-08-22.md)：
 7 个 visible frame 上 HRG0 Recall@10 为 `2/7`，冻结的 HRG1 Top-5 coarse-to-local refinement 为 `0/7`。该结果解释了
