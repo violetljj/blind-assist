@@ -179,7 +179,11 @@ def decide(observation: CurrentFrameObservation) -> GuidanceDecision:
         )
 
     multiple_without_authority = (
-        len(observation.visible_candidate_ids) > 1 and not observation.selection_authorized
+        (
+            len(observation.visible_candidate_ids) > 1
+            or observation.cardinality is CandidateCardinality.SET_VALUED
+        )
+        and not observation.selection_authorized
     )
     if observation.cardinality is CandidateCardinality.AMBIGUOUS or multiple_without_authority:
         return GuidanceDecision(

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "episodes": {"items": {"type": "object"}, "minItems": 1, "type": "array"},
+    "private_evaluator_only": {"const": true},
+    "schema_version": {"const": "blindassist_real_episode_annotation_v0"}
+  },
+  "required": ["schema_version", "private_evaluator_only", "episodes"],
+  "type": "object"
+}

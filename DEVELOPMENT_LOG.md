@@ -4958,3 +4958,11 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   保留 case-local context interaction，但不授权 parent-first、adaptive search 或 model zoo；若另行继续，应直接
   改变/审计 target representation 与 prompt interface。GT 进入 crop construction/evaluator，结果不具有模型选择、
   泛化、产品、安全或默认 App authority。
+# 2026-08-23 Public-real episode mining V0
+
+- 将 Goal Copilot 当前 successor 从默认 physical capture 改为 `PUBLIC_REAL_EPISODE_MINING_V0`；人工采集不再是 blocker。
+- 新增 prospective Mapillary sequence miner：Goal Contract/OSM-Overture candidate set 必须先于 metadata、pixel、model、truth；自动形成 approach episodes 并保留 `UNIQUE/SET_VALUED/AMBIGUOUS`。
+- 复用 sealed Last-10m Mapillary Development sequence 完成 smoke run：`6 episodes / 29 observations / manual capture=0 / manual labels=0 / new model calls=0`。
+- 修正 evaluator：没有 exact legal region truth 时，confident guidance 计 `UNKNOWN`，不能伪造成 wrong referent；本次为 `unknown=27 / wrong eligible=0`。
+- physical capture 缺失不是 freshness gap；不建立 P1、模型 sweep 或默认 App successor。
+- fresh V1 已执行：4 个 Overture venue-taxonomy 合法 goal 在 Mapillary access 前冻结；展开 14 个 sequence，形成 `8 episodes / 89 observations`，pixel/provider/人工均为 0。V0 planner 的楼内商户目标接口缺陷在 outcome 前封存。

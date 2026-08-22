@@ -1,12 +1,18 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / SELECTIVE_GUIDANCE_V0_CONTRACT_IMPLEMENTED / REAL_EPISODE_PILOT_TOOLCHAIN_NEXT / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / SELECTIVE_GUIDANCE_V0_IMPLEMENTED / PUBLIC_REAL_EPISODE_MINING_CURRENT / MANUAL_CAPTURE_NOT_BLOCKING / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
 `selective_guidance_v0/` is the current experimental responsibility seam. It implements a pure current-frame decision
 contract and append-only episode event log; only explicit user confirmation or a contracted trusted interaction can
 produce `COMPLETED_BY_USER`. It contains no tracker, persistence, gallery, world memory, VIO/SLAM or default-App path.
+
+`real_episode_pilot_v0/` is now public-real-first. Its prospective miner rejects any goal roster opened after Mapillary
+metadata/pixels/model output/truth, constructs approach segments from sequence/GPS/heading/time, preserves
+`UNIQUE/SET_VALUED/AMBIGUOUS`, and keeps missing region truth as `UNKNOWN`. The consumed Last-10m adapter exercised
+6 episodes / 29 observations with zero new model calls or manual labels; it is smoke evidence only. Physical capture is
+not the current blocker.
 
 `last_10m_visual_servo_v1/` is the current algorithm successor. On a fresh automated public real-facade cohort it kept
 every action current-frame-only and re-grounded after each pan/zoom/rescan. Target proposals were available in `13/13`

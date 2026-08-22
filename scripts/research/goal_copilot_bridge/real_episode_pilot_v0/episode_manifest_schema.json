@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "claim_ceiling": {"const": "PUBLIC_REAL_DEVELOPMENT_MECHANICS_ONLY_NO_USER_PRODUCT_SAFETY_OR_NAVIGATION_EFFECT_CLAIM"},
+    "data_role": {"enum": ["PROSPECTIVE_PUBLIC_REAL_DEVELOPMENT", "PROJECT_CONSUMED_DEVELOPMENT_PIPELINE_SMOKE_ONLY"]},
+    "episode_count": {"minimum": 1, "type": "integer"},
+    "episodes": {"items": {"type": "object"}, "minItems": 1, "type": "array"},
+    "goal_before_truth": {"const": true},
+    "goal_before_mapillary_metadata_and_pixels": {"type": "boolean"},
+    "private_truth_access": {"const": false},
+    "provider_model_calls": {"const": 0},
+    "sample_rate_hz": {"minimum": 0.0, "type": "number"},
+    "schema_version": {"const": "blindassist_real_episode_public_manifest_v0"}
+  },
+  "required": ["schema_version", "data_role", "goal_before_truth", "goal_before_mapillary_metadata_and_pixels", "private_truth_access", "provider_model_calls", "sample_rate_hz", "episode_count", "episodes", "claim_ceiling"],
+  "type": "object"
+}

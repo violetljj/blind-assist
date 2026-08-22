@@ -1,0 +1,51 @@
+{
+  "claim_ceiling": "PUBLIC_REAL_DEVELOPMENT_MECHANICS_ONLY_NO_USER_PRODUCT_SAFETY_OR_NAVIGATION_EFFECT_CLAIM",
+  "consumed_development_baseline_smoke": {
+    "confident_guidance_unknown": 27,
+    "episode_count": 6,
+    "failure_attribution_counts": {
+      "TRUTH_OR_CONTRACT_INSUFFICIENT": 6
+    },
+    "fresh_cohort": false,
+    "manual_annotation_count": 0,
+    "manual_capture_count": 0,
+    "new_provider_model_call_count": 0,
+    "observation_count": 29,
+    "wrong_referent_eligible": 0
+  },
+  "current_successor": "MATERIALIZE_ONLY_THE_FROZEN_8X89_PIXELS_AND_TEACHER_TRUTH_THEN_RUN_THE_SAME_V0_BASELINE",
+  "forbidden_successors": [
+    "PHYSICAL_CAPTURE_AS_DEFAULT_BLOCKER",
+    "GOAL_REPLACEMENT_OR_POST_OUTCOME_RESAMPLING",
+    "MODEL_THRESHOLD_OR_PROVIDER_SWEEP",
+    "P1_PERSISTENCE_OR_WORLD_MEMORY",
+    "DEFAULT_APP_PROMOTION"
+  ],
+  "prospective_v1": {
+    "expanded_sequence_count": 14,
+    "fresh_cohort": true,
+    "goal_count": 4,
+    "goal_roster_sha256": "c61166dec119bcad14513839b3ddece222b3671083f70c056e923e3decb89646",
+    "manual_annotation_count": 0,
+    "manual_capture_count": 0,
+    "mapillary_metadata_image_count": 5151,
+    "mapillary_metadata_sha256": "1d5e5981a21573cef267c15f30675743941d69a2a1a61182e9400333b3b339cf",
+    "observation_count": 89,
+    "pixel_download_count": 0,
+    "provider_model_call_count": 0,
+    "reference_mode_episode_counts": {
+      "SET_VALUED": 3,
+      "UNIQUE": 5
+    },
+    "result": "FRESH_PUBLIC_METADATA_COHORT_READY",
+    "episode_count": 8
+  },
+  "schema_version": "blindassist_public_real_episode_mining_result_v0",
+  "truth_priority": [
+    "NATIVE_GT",
+    "MAP_OR_TRAJECTORY_DERIVED",
+    "INDEPENDENT_TEACHER_CONSENSUS",
+    "AMBIGUOUS_OR_UNKNOWN",
+    "MANUAL_ANNOTATION_LAST_RESORT"
+  ]
+}

@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / SYNTHETIC_CURRENT_FRAME_ARRIVAL_AUTHORITY_CLOSED / SELECTIVE_GUIDANCE_V0_CONTRACT_IMPLEMENTED / REAL_EPISODE_PILOT_TOOLCHAIN_NEXT / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / SYNTHETIC_CURRENT_FRAME_ARRIVAL_AUTHORITY_CLOSED / SELECTIVE_GUIDANCE_V0_IMPLEMENTED / PUBLIC_REAL_METADATA_COHORT_READY_8X89 / MANUAL_CAPTURE_NOT_BLOCKING / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -13,7 +13,7 @@ Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archiv
 ```text
 SYNTHETIC_CURRENT_FRAME_ARRIVAL_AUTHORITY_CLOSED
 DESTINATION_RELATIVE_ARRIVAL_NOT_ESTABLISHED
-REAL_EPISODE_SELECTIVE_GUIDANCE_PILOT_IS_CURRENT_SUCCESSOR
+PUBLIC_REAL_EPISODE_MINING_V0_IS_CURRENT_SUCCESSOR
 ```
 
 已建立的 bounded 事实是：合法 public Goal Contract 驱动的 semantic proposal 在受限公开/合成条件下通常能把目标放入
@@ -32,20 +32,28 @@ synthetic completion confirmation cohort；不得通过 detector、SAM、depth m
 
 ## 当前唯一 successor
 
-唯一 successor 是 `REAL_EPISODE_SELECTIVE_GUIDANCE_PILOT_V0`，属于 `REVERSIBLE_EXPLORATION`：
+唯一 successor 是 [`PUBLIC_REAL_EPISODE_MINING_V0`](BLINDASSIST_PUBLIC_REAL_EPISODE_MINING_V0_RESULT_2026-08-23.md)，属于 `REVERSIBLE_EXPLORATION`：
 
 1. 实现 current-frame-only selective guidance、争议/弃权、handoff 与用户确认责任合同；
-2. 复用现有 [`goal-capture-app`](../../../apps/demos/goal-capture-app/README.md) 与
-   [`prospective capture`](../../../scripts/research/goal_copilot_bridge/p1_prospective_capture/README.md)，完成真实 goal-driven
-   episode 的 capture plan、schema、annotation、materializer、baseline、evaluator、report 与设备 bundle；
-3. 只有发现合法 goal-before-truth 真实第一视角 episode 时才运行一次冻结 baseline；否则 terminal 为
-   `PHYSICAL_EPISODES_NOT_CAPTURED`，不得用 synthetic、room-door、Mapillary 或 replay 填补。
+2. 在 pixel/truth 前冻结 OSM/Overture public goal 与 entrance candidate set，再由 Mapillary sequence 的 GPS、heading、
+   capture time 自动构造真实 approach episodes；
+3. truth 按 native GT、map/trajectory、independent-teacher consensus、`AMBIGUOUS/UNKNOWN`、人工最后手段排序；
+4. ADT 支持 calibration/mechanism，Ego4D 支持 domain realism，Habitat 支持 explicit-goal mechanics；它们不互相冒充；
+5. 物理采集不是当前 blocker；只有公开数据无法回答一个单独声明的高价值问题时才作为最后手段。
 
 Pilot 按 speech/action decision 时刻和 episode 评估 visibility、proposal Recall@K、referent selection、confident wrong
 guidance、abstention/contested/lost/stale、range、handoff、用户确认/否认、完成时间、指令与纠正。所有条件指标必须保留
 conditioned denominator；provider/evaluator 分离、goal-before-truth、provenance、fail-closed 与 claim ceiling 保持有效。
 
 Claim ceiling：`EXPLORATORY_MECHANICS_AND_FAILURE_ATTRIBUTION_ONLY`。
+
+已消费 Development smoke run 自动适配 `6 episodes / 29 observations`，但 exact region visibility truth 全部不可用；
+因此 27 次 confident guidance 为 `UNKNOWN` 而非错误负例，6 个 episode 均归因
+`TRUTH_OR_CONTRACT_INSUFFICIENT`。该 run 只证明工具链可运行，不证明性能或 freshness。
+
+新的 prospective V1 已在 Mapillary 前冻结 4 个 venue-taxonomy 合法 public goals，自动展开 14 个 sequence，形成
+`8 episodes / 89 observations`；人工采集、人工标注、pixel download、provider call 均为 0。当前只授权对该冻结
+cohort 继续自动物化 pixel/teacher truth 并运行同一 V0 baseline，不授权换 goal、补抽或调模型。
 
 ## V0 与 P1 边界
 

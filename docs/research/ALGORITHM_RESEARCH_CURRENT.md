@@ -1,6 +1,6 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / SYNTHETIC_CURRENT_FRAME_ARRIVAL_AUTHORITY_CLOSED / SELECTIVE_GUIDANCE_V0_CONTRACT_IMPLEMENTED / REAL_EPISODE_PILOT_TOOLCHAIN_NEXT / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / SYNTHETIC_CURRENT_FRAME_ARRIVAL_AUTHORITY_CLOSED / PUBLIC_REAL_METADATA_COHORT_READY_8X89 / MANUAL_CAPTURE_NOT_BLOCKING / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线。P0 commitment-policy discovery 已以
 `COMPLEXITY_ONLY_BUYS_ABSTENTION` 收口；现有 P0 grounding/provider 与 evaluator 保持冻结。用户此前显式授权
@@ -9,7 +9,7 @@ tentative/verified 分离、verified-only retrieval、按 distance × viewpoint 
 31 项 contract tests 通过；matched canary 已以 `P1_AMRM0_MEMORY_POISONING_FAIL` 终止。旧 A1-A4、W1/W2 终态继续有效；AMRM0 不是 P1-W3，也不
 覆盖或续跑 consumed evidence。随后显式授权的 P1-PA0/PA1 独立上移到 proposal availability，不修改 AMRM0。
 
-当前算法执行面是 [`REAL_EPISODE_SELECTIVE_GUIDANCE_PILOT_V0`](goal-copilot/BLINDASSIST_SYNTHETIC_CURRENT_FRAME_ARRIVAL_CLOSEOUT_2026-08-23.md)。
+当前算法执行面是 [`PUBLIC_REAL_EPISODE_MINING_V0`](goal-copilot/BLINDASSIST_PUBLIC_REAL_EPISODE_MINING_V0_RESULT_2026-08-23.md)。
 PA2 后的 `Proposal–Identity Responsibility Mismatch` 只是待验证解释；当前 7-case 没有 provider-public goal semantics，
 private category 不能回填成 text prompt。既有 P1-D0/PA0、Silver-B 与 Last-10m 均无可证明的
 user/product goal-before-truth provenance，历史 eligible episode 为 `0`。本轮已新建 pre-truth product goal 与
@@ -19,8 +19,9 @@ AMRM、verifier、reacquisition、VLM 与 App 均未授权。随后 S0v3 在 met
 fresh product goals 与 public spatial candidate set，物化 8 个 episode、22 帧；private truth 只有 `6` 个 visible
 episodes、`7` 个 visible frames，未同时达到预注册 `5/8` 门，因此以零模型调用终止。该结果只诊断 observation
 denominator，不是 proposal provider 的负结果。
-现有 capture interface 与独立 recorder 继续复用；本 successor 先实现 current-frame selective guidance / handoff / user
-confirmation contract，再对合法 goal-before-truth 真实 episode 做 exploratory failure attribution。Synthetic arrival authority、
+本 successor 在 pixel/truth 前冻结 public Goal Contract 与 OSM/Overture entrance candidate set，再自动挖掘 Mapillary
+continuous sequence 的真实 approach episode；ADT/Ego4D/Habitat 分别只承担 calibration、domain realism、explicit-goal
+mechanics。物理采集不是当前 blocker。Synthetic arrival authority、
 P1 persistence/reacquisition、模型搜索和默认 App promotion 均关闭。
 
 Assistive Geometry 的 factor-wise、obstacle 与 Q-Plane 表示支线均已按停止条件关闭；TARO R38 也已在
@@ -42,8 +43,8 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| Goal Copilot / real-episode selective guidance V0 | 系统何时有权引导、弃权、handoff，并由用户确认 episode completion | `SYNTHETIC_ARRIVAL_CLOSED / IMPLEMENTATION_AND_EXPLORATORY_PILOT_AUTHORIZED / NO_P1` | [arrival closeout](goal-copilot/BLINDASSIST_SYNTHETIC_CURRENT_FRAME_ARRIVAL_CLOSEOUT_2026-08-23.md) | 实现 V0 responsibility contract；复用 recorder 完成真实 episode 工具链并在合法素材上运行一次冻结 baseline | D2/S6/new synthetic completion；P1/tracker/world memory/VIO/SLAM；模型/阈值/provider sweep；默认 App promotion | 否 |
-| Goal Copilot / P1-PA3-S0v3 observation contract | 合法 public goal + spatial candidate set 能否产生足够的 entrance-visible PA3 denominator | `6_VISIBLE_EPISODES / 7_VISIBLE_FRAMES / NOT_EVALUABLE / PROVIDER_CALLS=0` | [P1-PA3-S0v3 result](goal-copilot/P1_PA3_S0V3_PUBLIC_SPATIAL_CANDIDATE_SET_RESULT_2026-08-22.md) | prospective 地先记录 Goal Contract，再采集明确面向目标入口的第一视角 observation，最后私有标 truth | 补抽/替换 sealed Mapillary frames；放宽 visibility；运行 PA3/verifier；把 observation failure 写成 provider negative | 否 |
+| Goal Copilot / public-real episode mining + selective guidance V0 | 自动挖掘公开真实 approach episode，并定位 current-frame guidance failure layer | `FRESH_METADATA_COHORT=8_EPISODES_89_OBSERVATIONS / CONSUMED_BASELINE_SMOKE=6X29 / NO_P1` | [public-real result](goal-copilot/BLINDASSIST_PUBLIC_REAL_EPISODE_MINING_V0_RESULT_2026-08-23.md) | 只物化冻结 8x89 cohort 的 pixels/teacher truth；不足 truth 保持 AMBIGUOUS/UNKNOWN；运行同一 V0 baseline | 换 goal/补抽；physical capture 作为默认 blocker；P1/world memory；模型/阈值/provider sweep；默认 App promotion | 否 |
+| Goal Copilot / P1-PA3-S0v3 observation contract | 合法 public goal + spatial candidate set 能否产生足够的 entrance-visible PA3 denominator | `6_VISIBLE_EPISODES / 7_VISIBLE_FRAMES / NOT_EVALUABLE / PROVIDER_CALLS=0` | [P1-PA3-S0v3 result](goal-copilot/P1_PA3_S0V3_PUBLIC_SPATIAL_CANDIDATE_SET_RESULT_2026-08-22.md) | 转入 public-real miner：先冻结 Goal Contract，再自动挖 Mapillary approach sequence，最后私有建 truth | 补抽/替换 sealed frames；强造 UNIQUE/visibility；运行 PA3/verifier；把 UNKNOWN 写成 negative | 否 |
 | Goal Copilot / P1-PA3 + FRG1 proposal | 合法 goal semantics / frozen functional prompt 能否建立 bounded target availability | `PA3=0/2@10 / FRG1=1/2@10 / CONSUMED_DEVELOPMENT_ONLY` | [P1-PA3 + FRG1 result](goal-copilot/P1_PA3_GOAL_SEMANTIC_AND_FUNCTIONAL_REGION_RESULT_2026-08-22.md) | 由新的合格 prospective observation denominator 重新授权后才可另行冻结 proposal run | 同 cohort 调 prompt/threshold/model/拼框；identity verifier、AMRM、App；fresh confirmation claim | 否 |
 | Goal Copilot / P1-PA3-C0 public Goal Contract | 在 capture/truth 前形成 provider-public goal 与全局 canonical prompt | `S0V3_FRESH_GOALS=12 / MATERIALIZATION_VALID / PA3_INFERENCE_NOT_AUTHORIZED` | [P1-PA3-C0 result](goal-copilot/P1_PA3_C0_PUBLIC_GOAL_CONTRACT_COHORT_MATERIALIZATION_RESULT_2026-08-22.md) | 保持同一 C0 contract，转入 prospective first-person observation cohort | 回填旧类别/target name；伪造 user intent；在 observation gate 前跑 PA3、AMRM/verifier/App | 否 |
 | Goal Copilot / P1-PA2 representation audit | oracle ROI 下 target/context prompt 是否仍有 proposal signal | `WEAK_CONTEXT_SIGNAL_1_OF_7 / REPRESENTATION_MISMATCH_PRIMARY / APP_UNCHANGED` | [P1-PA2 result](goal-copilot/P1_PA2_TARGET_REPRESENTATION_OBSERVABILITY_AUDIT_RESULT_2026-08-22.md) | 无自动 successor；若另行启动，审计或改变 representation/prompt interface | outcome 后调 crop/prompt/provider；直接 parent-first、adaptive search、model zoo、AMRM/App 或扩大 claim | 否 |
