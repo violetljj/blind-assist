@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts.research.goal_copilot_bridge.p1_proposal_availability.acquire_pa3_public_observations import select_frame, select_frames
+from scripts.research.goal_copilot_bridge.p1_proposal_availability.acquire_pa3_public_observations import select_frame, select_frames, select_frames_for_anchors
 
 
 class SelectFrameTest(unittest.TestCase):
@@ -60,6 +60,31 @@ class SelectFrameTest(unittest.TestCase):
                 "selected_per_episode": 4,
                 "minimum_viewpoint_separation_m": 5.0,
             })
+
+    def test_candidate_set_deduplicates_images_and_preserves_public_candidate_identity(self) -> None:
+        policy = {
+            "minimum_distance_m": 8.0,
+            "maximum_distance_m": 45.0,
+            "maximum_absolute_bearing_error_deg": 45.0,
+            "panoramas_allowed": False,
+            "selected_per_episode": 2,
+            "minimum_viewpoint_separation_m": 0.0,
+        }
+        shared = {
+            "id": "shared", "computed_geometry": {"coordinates": [0.0, -0.00015]},
+            "computed_compass_angle": 0.0, "captured_at": 1, "sequence": "s",
+        }
+        second = {
+            "id": "second", "computed_geometry": {"coordinates": [0.00015, 0.0]},
+            "computed_compass_angle": 270.0, "captured_at": 2, "sequence": "s",
+        }
+        selected, eligible = select_frames_for_anchors([
+            ({"candidate_id": "entrance-a", "lat": 0.0, "lon": 0.0}, [shared, second]),
+            ({"candidate_id": "frontage-b", "lat": 0.0, "lon": 0.0}, [shared]),
+        ], policy)
+        self.assertEqual(2, eligible)
+        self.assertEqual(["shared", "second"], [row["image_id"] for row in selected])
+        self.assertEqual("entrance-a", selected[0]["public_spatial_candidate_id"])
 
 
 if __name__ == "__main__":

@@ -123,6 +123,47 @@ def select_frames(raw: Sequence[Mapping[str, Any]], anchor: Mapping[str, Any], p
     return selected, len(candidates)
 
 
+def select_frames_for_anchors(
+    raw_by_anchor: Sequence[tuple[Mapping[str, Any], Sequence[Mapping[str, Any]]]],
+    policy: Mapping[str, Any],
+) -> tuple[list[dict[str, Any]], int]:
+    """Select one bounded frame set across a public spatial candidate set."""
+    merged: list[dict[str, Any]] = []
+    for anchor_rank, (anchor, raw) in enumerate(raw_by_anchor, start=1):
+        candidate_id = str(anchor.get("candidate_id") or f"candidate-{anchor_rank:02d}")
+        for frame in _eligible_frames(raw, anchor, policy):
+            frame.update({"public_spatial_candidate_id": candidate_id, "public_spatial_candidate_rank": anchor_rank})
+            merged.append(frame)
+    merged.sort(key=lambda row: (
+        row["absolute_bearing_error_deg"],
+        abs(row["target_distance_m"] - 20.0),
+        row["public_spatial_candidate_rank"],
+        row["source_captured_at_ms"],
+        row["image_id"],
+    ))
+    deduplicated: list[dict[str, Any]] = []
+    seen_images: set[str] = set()
+    for row in merged:
+        if row["image_id"] not in seen_images:
+            seen_images.add(row["image_id"])
+            deduplicated.append(row)
+    maximum = int(policy.get("selected_per_episode", 1))
+    _require(1 <= maximum <= 3, "selected_per_episode must be between one and three")
+    minimum_separation = float(policy.get("minimum_viewpoint_separation_m", 0.0))
+    _require(minimum_separation >= 0.0, "minimum_viewpoint_separation_m must be non-negative")
+    selected: list[dict[str, Any]] = []
+    for candidate in deduplicated:
+        point = (candidate["camera_lat"], candidate["camera_lon"])
+        if all(
+            _distance_m(point, (prior["camera_lat"], prior["camera_lon"])) >= minimum_separation
+            for prior in selected
+        ):
+            selected.append(candidate)
+            if len(selected) == maximum:
+                break
+    return selected, len(deduplicated)
+
+
 def select_frame(raw: Sequence[Mapping[str, Any]], anchor: Mapping[str, Any], policy: Mapping[str, Any]) -> tuple[dict[str, Any] | None, int]:
     single_policy = dict(policy)
     single_policy["selected_per_episode"] = 1

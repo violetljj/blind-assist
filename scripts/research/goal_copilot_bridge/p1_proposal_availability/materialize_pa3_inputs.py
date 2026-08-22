@@ -29,7 +29,10 @@ from scripts.research.goal_copilot_bridge.p1_proposal_availability.pa3_semantic 
 C0_SCHEMA = "blindassist_p1_pa3_c0_public_goal_cohort_v1"
 CAPTURE_SCHEMA = "blindassist_p1_pa3_capture_manifest_v1"
 TRUTH_SCHEMA = "blindassist_p1_pa3_truth_body_v1"
-PUBLIC_SPATIAL_SCHEMA = "blindassist_p1_pa3_public_spatial_goal_contract_v2"
+PUBLIC_SPATIAL_SCHEMAS = {
+    "blindassist_p1_pa3_public_spatial_goal_contract_v2",
+    "blindassist_p1_pa3_public_spatial_goal_contract_v3",
+}
 
 
 def _require(condition: bool, message: str) -> None:
@@ -64,7 +67,7 @@ def _verify_c0_receipt(c0: Mapping[str, Any]) -> str:
 
 
 def _verify_public_spatial_contract(spatial: Mapping[str, Any], c0_body_sha: str) -> dict[str, Mapping[str, Any]]:
-    _require(spatial.get("schema_version") == PUBLIC_SPATIAL_SCHEMA, "public spatial contract schema mismatch")
+    _require(spatial.get("schema_version") in PUBLIC_SPATIAL_SCHEMAS, "public spatial contract schema mismatch")
     body_hash = _text(spatial.get("roster_body_sha256"), "public spatial contract body hash")
     body = dict(spatial)
     body.pop("roster_body_sha256", None)
@@ -215,12 +218,20 @@ def materialize_inputs(
         if spatial_by_episode is not None:
             _require(episode_id in spatial_by_episode, f"{case_id} has no public spatial episode")
             spatial = spatial_by_episode[episode_id]
-            endpoint = spatial.get("selected_entrance")
-            _require(isinstance(endpoint, Mapping), f"{case_id} has no public route endpoint candidate")
             _require(captured.get("public_spatial_contract_body_sha256") == public_spatial_contract.get("roster_body_sha256"), f"{case_id} public spatial body binding mismatch")
-            _require(captured.get("osm_entrance_node_id") == endpoint.get("osm_node_id"), f"{case_id} route endpoint candidate drift")
+            if public_spatial_contract.get("schema_version") == "blindassist_p1_pa3_public_spatial_goal_contract_v2":
+                endpoint = spatial.get("selected_entrance")
+                _require(isinstance(endpoint, Mapping), f"{case_id} has no public route endpoint candidate")
+                _require(captured.get("osm_entrance_node_id") == endpoint.get("osm_node_id"), f"{case_id} route endpoint candidate drift")
+                endpoint_candidates = [{"candidate_id": f"osm-entrance-{endpoint['osm_node_id']}", **dict(endpoint)}]
+                selected_candidate_id = endpoint_candidates[0]["candidate_id"]
+            else:
+                endpoint_candidates = spatial.get("route_endpoint_candidates")
+                _require(isinstance(endpoint_candidates, list) and bool(endpoint_candidates), f"{case_id} has no public route endpoint candidates")
+                selected_candidate_id = _text(captured.get("public_spatial_candidate_id"), f"{case_id} public spatial candidate id")
+                _require(selected_candidate_id in {candidate.get("candidate_id") for candidate in endpoint_candidates if isinstance(candidate, Mapping)}, f"{case_id} route endpoint candidate drift")
             public_goal_contract["public_spatial_context"] = {
-                "schema_version": PUBLIC_SPATIAL_SCHEMA,
+                "schema_version": public_spatial_contract["schema_version"],
                 "spatial_goal_role": public_spatial_contract["spatial_goal_role"],
                 "source_authority": public_spatial_contract["source_authority"],
                 "spatial_contract_body_sha256": public_spatial_contract["roster_body_sha256"],
@@ -231,7 +242,8 @@ def materialize_inputs(
                     "lon": spatial.get("lon"),
                 },
                 "selected_parent": spatial.get("selected_parent"),
-                "route_endpoint_candidate": dict(endpoint),
+                "route_endpoint_candidates": [dict(candidate) for candidate in endpoint_candidates],
+                "observation_selected_candidate_id": selected_candidate_id,
             }
         public_cases.append({
             "case_id": case_id,

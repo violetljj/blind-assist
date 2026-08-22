@@ -22,14 +22,14 @@ from scripts.research.goal_copilot_bridge.p1_proposal_availability.acquire_pa3_p
     _distance_m,
     _graph_get,
     _require,
-    select_frames,
+    select_frames_for_anchors,
 )
 from scripts.research.goal_copilot_bridge.p1_proposal_availability.materialize_pa3_inputs import CAPTURE_SCHEMA
 from scripts.research.goal_copilot_bridge.p1_proposal_availability.pa3_semantic import content_sha256, sha256
 
 
 PLAN_SCHEMA = "blindassist_p1_pa3_entrance_anchor_acquisition_plan_v1"
-ROSTER_SCHEMA = "blindassist_p1_pa3_public_spatial_goal_contract_v2"
+ROSTER_SCHEMA = "blindassist_p1_pa3_public_spatial_goal_contract_v3"
 ACQUISITION_SCHEMA = "blindassist_p1_pa3_entrance_anchor_observation_acquisition_v1"
 
 
@@ -142,7 +142,7 @@ def resolve_parent_bound_entrance_xml(
     if parent is None:
         return None, None, 0
 
-    raw = [nodes[ref] for ref in parent["refs"] if ref in nodes and nodes[ref]["tags"].get("entrance")]
+    raw = [nodes[ref] for ref in dict.fromkeys(parent["refs"]) if ref in nodes and nodes[ref]["tags"].get("entrance")]
     entrance = resolve_entrance(raw, place)
     parent_receipt = {
         "osm_type": "way",
@@ -153,6 +153,111 @@ def resolve_parent_bound_entrance_xml(
         "binding": "EXACT_NAMED_WAY_OR_SMALLEST_CONTAINING_BUILDING_WAY",
     }
     return entrance, parent_receipt, len(raw)
+
+
+def resolve_public_spatial_candidates_xml(
+    xml_payload: bytes,
+    place: Mapping[str, Any],
+    *,
+    maximum_entrance_candidates: int = 8,
+    maximum_frontage_fallbacks: int = 4,
+) -> tuple[list[dict[str, Any]], dict[str, Any] | None, int]:
+    """Resolve a bounded public entrance set, or deterministic building-frontage fallbacks."""
+    root = ET.fromstring(xml_payload)
+    nodes: dict[int, dict[str, Any]] = {}
+    for node in root.findall("node"):
+        node_id = int(node.attrib["id"])
+        nodes[node_id] = {
+            "id": node_id,
+            "lat": float(node.attrib["lat"]),
+            "lon": float(node.attrib["lon"]),
+            "tags": {tag.attrib["k"]: tag.attrib["v"] for tag in node.findall("tag")},
+        }
+    ways = []
+    for way in root.findall("way"):
+        refs = [int(nd.attrib["ref"]) for nd in way.findall("nd")]
+        tags = {tag.attrib["k"]: tag.attrib["v"] for tag in way.findall("tag")}
+        ways.append({"id": int(way.attrib["id"]), "refs": refs, "tags": tags})
+
+    parent = None
+    if str(place.get("osm_type")) == "way":
+        exact = next((way for way in ways if way["id"] == int(place["osm_id"])), None)
+        if exact is not None and (exact["tags"].get("building") or exact["tags"].get("amenity")):
+            parent = exact
+    if parent is None:
+        point = (float(place["lon"]), float(place["lat"]))
+        containing = []
+        for way in ways:
+            if not way["tags"].get("building") or len(way["refs"]) < 4 or way["refs"][0] != way["refs"][-1]:
+                continue
+            if any(ref not in nodes for ref in way["refs"]):
+                continue
+            polygon = [(nodes[ref]["lon"], nodes[ref]["lat"]) for ref in way["refs"][:-1]]
+            if _point_in_polygon(point, polygon):
+                area = abs(sum(
+                    polygon[index][0] * polygon[(index + 1) % len(polygon)][1]
+                    - polygon[(index + 1) % len(polygon)][0] * polygon[index][1]
+                    for index in range(len(polygon))
+                )) / 2.0
+                containing.append((area, way["id"], way))
+        if containing:
+            parent = min(containing, key=lambda row: (row[0], row[1]))[2]
+    if parent is None:
+        return [], None, 0
+
+    parent_receipt = {
+        "osm_type": "way",
+        "osm_id": parent["id"],
+        "name": parent["tags"].get("name"),
+        "building": parent["tags"].get("building"),
+        "amenity": parent["tags"].get("amenity"),
+        "binding": "EXACT_NAMED_WAY_OR_SMALLEST_CONTAINING_BUILDING_WAY",
+    }
+    origin = (float(place["lat"]), float(place["lon"]))
+    entrance_rows = []
+    for ref in dict.fromkeys(parent["refs"]):
+        node = nodes.get(ref)
+        if node is None:
+            continue
+        tags = node["tags"]
+        if not tags.get("entrance") or str(tags.get("access") or "").lower() in {"private", "no"}:
+            continue
+        entrance_rows.append({
+            "candidate_id": f"osm-entrance-{node['id']}",
+            "candidate_type": "OSM_PARENT_BOUND_ENTRANCE_NODE",
+            "osm_node_id": node["id"],
+            "lat": node["lat"],
+            "lon": node["lon"],
+            "entrance_tag": str(tags["entrance"]),
+            "access_tag": tags.get("access"),
+            "distance_to_place_anchor_m": _distance_m(origin, (node["lat"], node["lon"])),
+            "priority": _entrance_priority(tags),
+        })
+    entrance_rows.sort(key=lambda row: (row["priority"], row["distance_to_place_anchor_m"], row["osm_node_id"]))
+    if entrance_rows:
+        return entrance_rows[:maximum_entrance_candidates], parent_receipt, len(entrance_rows)
+
+    refs = parent["refs"]
+    edge_rows = []
+    for edge_index, (left_ref, right_ref) in enumerate(zip(refs, refs[1:])):
+        left, right = nodes.get(left_ref), nodes.get(right_ref)
+        if left is None or right is None:
+            continue
+        length_m = _distance_m((left["lat"], left["lon"]), (right["lat"], right["lon"]))
+        if length_m < 2.0:
+            continue
+        edge_rows.append({
+            "candidate_id": f"building-frontage-{parent['id']}-{edge_index:03d}",
+            "candidate_type": "OSM_BUILDING_EDGE_MIDPOINT_FALLBACK",
+            "lat": (left["lat"] + right["lat"]) / 2.0,
+            "lon": (left["lon"] + right["lon"]) / 2.0,
+            "parent_way_id": parent["id"],
+            "source_edge_node_ids": [left_ref, right_ref],
+            "edge_length_m": length_m,
+            "fallback_semantics": "PUBLIC_BUILDING_FRONTAGE_CANDIDATE_NOT_ENTRANCE_TRUTH",
+        })
+    edge_rows.sort(key=lambda row: (-row["edge_length_m"], row["candidate_id"]))
+    return edge_rows[:maximum_frontage_fallbacks], parent_receipt, 0
 
 
 def osm_map_payload(
@@ -217,13 +322,24 @@ def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dic
     _require(endpoint.startswith("https://"), "OSM entrance endpoint must use HTTPS")
     for index, place in enumerate(place_anchors):
         selected_parent = None
+        route_candidates: list[dict[str, Any]] = []
         if backend == "OSM_PARENT_BOUND_MAP_API":
             payload = osm_map_payload(public_session, place, radius, endpoint)
-            entrance, selected_parent, candidate_count = resolve_parent_bound_entrance_xml(payload, place)
+            route_candidates, selected_parent, candidate_count = resolve_public_spatial_candidates_xml(
+                payload,
+                place,
+                maximum_entrance_candidates=int(spatial_contract.get("maximum_entrance_candidates", 8)),
+                maximum_frontage_fallbacks=int(spatial_contract.get("maximum_frontage_fallbacks", 4)),
+            )
             raw = [None] * candidate_count
         elif backend == "OSM_MAP_API":
             raw = osm_map_entrance_nodes(public_session, place, radius, endpoint)
             entrance = resolve_entrance(raw, place)
+            route_candidates = [{
+                "candidate_id": f"osm-entrance-{entrance['osm_node_id']}",
+                "candidate_type": "OSM_ENTRANCE_NODE",
+                **entrance,
+            }] if entrance else []
         else:
             _require(backend == "OVERPASS", "unsupported OSM entrance backend")
             query = f'[out:json][timeout:25];node(around:{radius},{place["lat"]},{place["lon"]})["entrance"];out body;'
@@ -231,12 +347,20 @@ def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dic
             response.raise_for_status()
             raw = response.json().get("elements", [])
             entrance = resolve_entrance(raw, place)
+            route_candidates = [{
+                "candidate_id": f"osm-entrance-{entrance['osm_node_id']}",
+                "candidate_type": "OSM_ENTRANCE_NODE",
+                **entrance,
+            }] if entrance else []
+        entrance = next((candidate for candidate in route_candidates if candidate["candidate_type"].endswith("ENTRANCE_NODE")), None)
+        has_fallback = any(candidate["candidate_type"] == "OSM_BUILDING_EDGE_MIDPOINT_FALLBACK" for candidate in route_candidates)
         resolved.append({
             **place,
             "entrance_candidate_count": len(raw),
             "selected_parent": selected_parent,
             "selected_entrance": entrance,
-            "status": "OSM_PARENT_BOUND_ENTRANCE_FROZEN" if entrance and selected_parent else "OSM_ENTRANCE_FROZEN" if entrance else "NO_PARENT_BOUND_ENTRANCE_NO_REPLACEMENT" if backend == "OSM_PARENT_BOUND_MAP_API" else "NO_OSM_ENTRANCE_NO_REPLACEMENT",
+            "route_endpoint_candidates": route_candidates,
+            "status": "PUBLIC_SPATIAL_ENTRANCE_SET_FROZEN" if entrance and selected_parent else "PUBLIC_SPATIAL_BUILDING_FRONTAGE_FALLBACK_FROZEN" if has_fallback else "OSM_ENTRANCE_FROZEN" if entrance else "NO_PUBLIC_SPATIAL_CANDIDATE_NO_REPLACEMENT",
         })
         if index + 1 < len(place_anchors):
             time.sleep(1.0)
@@ -253,7 +377,7 @@ def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dic
         "created_before_mapillary_metadata_pixels_and_truth": True,
         "provider_public_fields": [
             "episode_id", "query", "lat", "lon", "osm_type", "osm_id", "display_name",
-            "selected_parent", "selected_entrance"
+            "selected_parent", "route_endpoint_candidates"
         ],
         "frozen_before_mapillary_metadata_or_pixels": True,
         "episodes": resolved,
@@ -269,21 +393,27 @@ def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dic
     results = []
     capture_cases = []
     for row in resolved:
-        entrance = row["selected_entrance"]
-        if entrance is None:
+        route_candidates = row["route_endpoint_candidates"]
+        if not route_candidates:
             results.append({"episode_id": row["episode_id"], "status": row["status"]})
             continue
         query = plan["mapillary_query"]
-        response = _graph_get(mapillary, "https://graph.mapillary.com/images", {
-            "lat": entrance["lat"], "lng": entrance["lon"], "radius": query["radius_m"],
-            "limit": query["limit"], "fields": ",".join(query["fields"]),
-        })
-        raw = response.get("data", [])
-        selected_frames, eligible_count = select_frames(raw, entrance, plan["outcome_blind_selection"])
+        raw_by_candidate = []
+        raw_metadata_count = 0
+        for candidate in route_candidates:
+            response = _graph_get(mapillary, "https://graph.mapillary.com/images", {
+                "lat": candidate["lat"], "lng": candidate["lon"], "radius": query["radius_m"],
+                "limit": query["limit"], "fields": ",".join(query["fields"]),
+            })
+            raw = response.get("data", [])
+            raw_metadata_count += len(raw)
+            raw_by_candidate.append((candidate, raw))
+        selected_frames, eligible_count = select_frames_for_anchors(raw_by_candidate, plan["outcome_blind_selection"])
         if not selected_frames:
             results.append({
                 "episode_id": row["episode_id"], "status": "NO_GEOMETRIC_CANDIDATE_NO_REPLACEMENT",
-                "raw_metadata_count": len(raw), "geometry_eligible_count": 0,
+                "raw_metadata_count": raw_metadata_count, "geometry_eligible_count": 0,
+                "public_spatial_candidate_count": len(route_candidates),
             })
             continue
         materialized = []
@@ -311,12 +441,13 @@ def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dic
                 "source_captured_at_utc": source_capture,
                 "image_path": str(path.resolve()), "image_sha256": image_sha,
                 "mapillary_image_id": selected["image_id"], "mapillary_sequence_id": selected["sequence_id"],
-                "osm_entrance_node_id": entrance["osm_node_id"],
+                "public_spatial_candidate_id": selected["public_spatial_candidate_id"],
                 "public_spatial_contract_body_sha256": roster["roster_body_sha256"],
             })
         results.append({
             "episode_id": row["episode_id"], "status": "MATERIALIZED",
-            "raw_metadata_count": len(raw), "geometry_eligible_count": eligible_count,
+            "raw_metadata_count": raw_metadata_count, "geometry_eligible_count": eligible_count,
+            "public_spatial_candidate_count": len(route_candidates),
             "selected": materialized[0],
             "selected_frame_count": len(materialized), "selected_frames": materialized,
         })

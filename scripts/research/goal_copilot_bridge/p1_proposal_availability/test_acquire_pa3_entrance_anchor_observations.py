@@ -3,7 +3,7 @@ from __future__ import annotations
 import unittest
 from unittest.mock import Mock
 
-from scripts.research.goal_copilot_bridge.p1_proposal_availability.acquire_pa3_entrance_anchor_observations import osm_map_entrance_nodes, resolve_entrance, resolve_parent_bound_entrance_xml
+from scripts.research.goal_copilot_bridge.p1_proposal_availability.acquire_pa3_entrance_anchor_observations import osm_map_entrance_nodes, resolve_entrance, resolve_parent_bound_entrance_xml, resolve_public_spatial_candidates_xml
 
 
 class ResolveEntranceTest(unittest.TestCase):
@@ -51,6 +51,29 @@ class ResolveEntranceTest(unittest.TestCase):
         self.assertEqual(10, parent["osm_id"])
         self.assertEqual(2, entrance["osm_node_id"])
         self.assertEqual(1, count)
+
+    def test_public_spatial_contract_keeps_entrance_set_and_uses_frontage_fallback(self) -> None:
+        with_entrances = b'''<osm>
+          <node id="1" lat="0.0" lon="0.0"><tag k="entrance" v="yes"/></node>
+          <node id="2" lat="0.0" lon="0.001"><tag k="entrance" v="main"/></node>
+          <node id="3" lat="0.001" lon="0.001"/>
+          <node id="4" lat="0.001" lon="0.0"/>
+          <way id="10"><nd ref="1"/><nd ref="2"/><nd ref="3"/><nd ref="4"/><nd ref="1"/><tag k="building" v="yes"/></way>
+        </osm>'''
+        candidates, parent, count = resolve_public_spatial_candidates_xml(with_entrances, {
+            "lat": 0.0005, "lon": 0.0005, "osm_type": "way", "osm_id": 10,
+        })
+        self.assertEqual(2, count)
+        self.assertEqual(10, parent["osm_id"])
+        self.assertEqual([2, 1], [candidate["osm_node_id"] for candidate in candidates])
+
+        without_entrances = with_entrances.replace(b'<tag k="entrance" v="yes"/>', b'').replace(b'<tag k="entrance" v="main"/>', b'')
+        fallbacks, _, count = resolve_public_spatial_candidates_xml(without_entrances, {
+            "lat": 0.0005, "lon": 0.0005, "osm_type": "way", "osm_id": 10,
+        }, maximum_frontage_fallbacks=2)
+        self.assertEqual(0, count)
+        self.assertEqual(2, len(fallbacks))
+        self.assertTrue(all(candidate["candidate_type"] == "OSM_BUILDING_EDGE_MIDPOINT_FALLBACK" for candidate in fallbacks))
 
 
 if __name__ == "__main__":

@@ -19,8 +19,13 @@ receipt remains `pa3_inference_authorized=false`.
 
 For product tasks that already carry navigation context, the entrance-acquisition path now freezes public OSM place,
 parent-building, and route-endpoint-candidate geometry before Mapillary metadata, project pixel access, and target truth.
-The resulting `blindassist_p1_pa3_public_spatial_goal_contract_v2` receipt is provider-public and hash-bound to C0.
+The resulting `blindassist_p1_pa3_public_spatial_goal_contract_v3` receipt is provider-public and hash-bound to C0.
 It is not evaluator truth: it may be absent, stale, or wrong, and it contains no visibility judgment or image bbox/mask.
+
+V3 retains the bounded set of eligible parent-bound OSM entrance nodes instead of silently choosing one. If the named
+building has no eligible entrance tag, it emits up to four deterministic longest-edge midpoint candidates with explicit
+`PUBLIC_BUILDING_FRONTAGE_CANDIDATE_NOT_ENTRANCE_TRUTH` semantics. Frame selection merges geometry-only candidates,
+deduplicates Mapillary image IDs, and keeps the same global three-view cap and spatial-separation rule.
 
 When supplied to `materialize_pa3_inputs`, every captured case must bind the same spatial-contract body hash and OSM
 endpoint candidate. The provider receives it under `goal_contract.public_spatial_context`; any body, C0, source-role,

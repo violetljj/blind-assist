@@ -342,7 +342,7 @@ class Pa3InputMaterializationTest(unittest.TestCase):
             public = json.loads(public_path.read_text(encoding="utf-8"))
             self.assertTrue(public["provider_contract"]["public_spatial_context"])
             context = public["cases"][0]["goal_contract"]["public_spatial_context"]
-            self.assertEqual(11, context["route_endpoint_candidate"]["osm_node_id"])
+            self.assertEqual(11, context["route_endpoint_candidates"][0]["osm_node_id"])
             self.assertNotIn("legal_target_bboxes_xyxy", json.dumps(context))
             validate_public(public, PROMPT_MAP, output)
 

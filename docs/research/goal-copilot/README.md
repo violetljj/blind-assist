@@ -20,6 +20,11 @@ route-endpoint candidate 在 Mapillary metadata、project pixel 和 truth 前冻
 materialized input。它不是 evaluator truth，也不携带 visibility/bbox/mask；任何 hash、source-role、precedence 或 endpoint 漂移
 都 fail closed。不得再把内部 entrance anchor 隐式当作合法输入。
 
+首个 S0 v2 fresh cohort 在 14 个目标中只有 5 个 parent-bound entrance tag、1 个可 materialize episode、3 帧且
+`0 VISIBLE`，因此以零模型调用终止。后继 v3 不修改该 sealed cohort，而把公开 spatial contract 改成 bounded entrance
+candidate set；无 entrance tag 时使用最多 4 个显式标注为非 truth 的 building-frontage midpoint fallback，并在所有 candidate
+上做统一 geometry-only frame ranking 与 image-id 去重。
+
 其前一个 fresh paired 结果是
 [`P1-HRG1 fresh parent-bound local-refinement result`](P1_HRG1_FRESH_PARENT_BOUND_LOCAL_REFINEMENT_RESULT_2026-08-22.md)：
 7 个 visible frame 上 HRG0 Recall@10 为 `2/7`，冻结的 HRG1 Top-5 coarse-to-local refinement 为 `0/7`。该结果解释了
