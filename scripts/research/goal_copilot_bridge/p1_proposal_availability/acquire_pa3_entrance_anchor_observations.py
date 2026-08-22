@@ -7,10 +7,12 @@ import argparse
 from datetime import datetime, timezone
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import time
 from typing import Any, Mapping
+import xml.etree.ElementTree as ET
 
 import requests
 
@@ -54,6 +56,33 @@ def resolve_entrance(raw: list[Mapping[str, Any]], place: Mapping[str, Any]) -> 
     return candidates[0] if candidates else None
 
 
+def osm_map_entrance_nodes(
+    session: requests.Session,
+    place: Mapping[str, Any],
+    radius_m: int,
+    endpoint: str,
+) -> list[dict[str, Any]]:
+    """Read entrance nodes from a small OSM map bbox and retain the circular radius."""
+    lat = float(place["lat"])
+    lon = float(place["lon"])
+    lat_delta = radius_m / 111_320.0
+    lon_delta = radius_m / (111_320.0 * max(0.01, abs(math.cos(math.radians(lat)))))
+    bbox = f"{lon - lon_delta},{lat - lat_delta},{lon + lon_delta},{lat + lat_delta}"
+    response = session.get(endpoint, params={"bbox": bbox}, timeout=90)
+    response.raise_for_status()
+    root = ET.fromstring(response.content)
+    rows = []
+    for node in root.findall("node"):
+        node_lat = float(node.attrib["lat"])
+        node_lon = float(node.attrib["lon"])
+        if _distance_m((lat, lon), (node_lat, node_lon)) > radius_m:
+            continue
+        tags = {tag.attrib["k"]: tag.attrib["v"] for tag in node.findall("tag")}
+        if tags.get("entrance"):
+            rows.append({"id": int(node.attrib["id"]), "lat": node_lat, "lon": node_lon, "tags": tags})
+    return rows
+
+
 def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dict[str, Any]:
     _require(not output_dir.exists(), "entrance-anchor acquisition output already exists")
     plan = json.loads(plan_path.read_text(encoding="utf-8"))
@@ -89,13 +118,18 @@ def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dic
 
     resolved = []
     radius = int(plan["entrance_anchor"]["search_radius_m"])
-    overpass_endpoint = str(plan["entrance_anchor"].get("endpoint", "https://overpass-api.de/api/interpreter"))
-    _require(overpass_endpoint.startswith("https://"), "Overpass endpoint must use HTTPS")
+    backend = str(plan["entrance_anchor"].get("backend", "OVERPASS"))
+    endpoint = str(plan["entrance_anchor"].get("endpoint", "https://overpass-api.de/api/interpreter"))
+    _require(endpoint.startswith("https://"), "OSM entrance endpoint must use HTTPS")
     for index, place in enumerate(place_anchors):
-        query = f'[out:json][timeout:25];node(around:{radius},{place["lat"]},{place["lon"]})["entrance"];out body;'
-        response = public_session.post(overpass_endpoint, data={"data": query}, timeout=90)
-        response.raise_for_status()
-        raw = response.json().get("elements", [])
+        if backend == "OSM_MAP_API":
+            raw = osm_map_entrance_nodes(public_session, place, radius, endpoint)
+        else:
+            _require(backend == "OVERPASS", "unsupported OSM entrance backend")
+            query = f'[out:json][timeout:25];node(around:{radius},{place["lat"]},{place["lon"]})["entrance"];out body;'
+            response = public_session.post(endpoint, data={"data": query}, timeout=90)
+            response.raise_for_status()
+            raw = response.json().get("elements", [])
         entrance = resolve_entrance(raw, place)
         resolved.append({
             **place,
