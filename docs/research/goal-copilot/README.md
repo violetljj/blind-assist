@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_HRG2_FRESH_2_OF_2_AT_K3_SMALL_DENOMINATOR / HRG2_NO_PAIRED_IMPROVEMENT / IDENTITY_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_S0V3_NOT_EVALUABLE_6_EPISODES_7_FRAMES / PA3_INFERENCE_NOT_AUTHORIZED / IDENTITY_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
@@ -8,6 +8,14 @@ Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保�
 ## 当前研究实现
 
 当前算法结果真源是
+[`P1-PA3-S0v3 public spatial candidate-set result`](P1_PA3_S0V3_PUBLIC_SPATIAL_CANDIDATE_SET_RESULT_2026-08-22.md)。
+12 个 fresh product goals 与 public spatial candidate set 均在 metadata/pixel/truth/provider 前冻结；统一采集物化
+8 个 episode、22 帧，private pre-provider truth 得到 `6` 个 visible episodes、`7` 个 visible frames。由于预注册
+authorization 同时要求 `5/8`，frame denominator 差 1，PA3 以零模型调用判为 `NOT_EVALUABLE`。不得把它写成
+YOLOE 负结果，也不得继续 retrospective Mapillary resampling；唯一 successor 是 prospective、明确面向目标入口的
+第一视角 Goal Contract cohort。
+
+其前一个算法结果是
 [`P1-HRG2 fresh public-anchor global-local reranking result`](P1_HRG2_FRESH_PUBLIC_ANCHOR_GLOBAL_LOCAL_RERANKING_RESULT_2026-08-22.md)。
 7 个 museum Goal Contract 在 pixel/truth 前冻结；只用公开命名场所 anchor 的 multi-view acquisition 得到 16 帧，但 pre-provider
 truth 只有 `2 VISIBLE / 14 NOT_VISIBLE`，覆盖 2/7 goal episodes。IoU `0.30` 下，HRG0 与 HRG2 都在 Top-3 达到
@@ -23,7 +31,7 @@ materialized input。它不是 evaluator truth，也不携带 visibility/bbox/ma
 首个 S0 v2 fresh cohort 在 14 个目标中只有 5 个 parent-bound entrance tag、1 个可 materialize episode、3 帧且
 `0 VISIBLE`，因此以零模型调用终止。后继 v3 不修改该 sealed cohort，而把公开 spatial contract 改成 bounded entrance
 candidate set；无 entrance tag 时使用最多 4 个显式标注为非 truth 的 building-frontage midpoint fallback，并在所有 candidate
-上做统一 geometry-only frame ranking 与 image-id 去重。
+上做统一 geometry-only frame ranking 与 image-id 去重。该 v3 已由上述 S0v3 result 消费，不再补抽或重跑。
 
 其前一个 fresh paired 结果是
 [`P1-HRG1 fresh parent-bound local-refinement result`](P1_HRG1_FRESH_PARENT_BOUND_LOCAL_REFINEMENT_RESULT_2026-08-22.md)：
@@ -44,9 +52,10 @@ C0 真源仍是
 [`P1-PA3-C0 public Goal Contract cohort materialization`](P1_PA3_C0_PUBLIC_GOAL_CONTRACT_COHORT_MATERIALIZATION_RESULT_2026-08-22.md)。
 它不运行模型，只要求 user/product task semantics 在 capture 与 target truth 前形成 immutable public receipt，并由全局
 `goal_type -> canonical_prompt` exact mapping 派生 prompt。既有 P1-D0/PA0、Silver-B 与 Last-10m 均无法证明该
-precedence，合格 episode 为 `0`，没有历史回填。prospective intake mechanics 已就绪，但空 roster 不可 materialize，
-且任何 goal receipt 本身仍固定 `pa3_inference_authorized=false`；本轮已经通过另行冻结的 run manifest 完成一次
-development inference。它不反向改变 C0 receipt 的 authority。AMRM、verifier 与 App 均未授权。
+precedence，历史合格 episode 为 `0`，没有历史回填。prospective intake mechanics 已就绪；后续 fresh cohorts 已沿用
+同一 contract 形成 immutable receipt，但任何 goal receipt 本身仍固定 `pa3_inference_authorized=false`。早期 development
+inference 由另行冻结的 run manifest 授权；最新 S0v3 因 observation denominator 不足没有获得授权。两者都不反向改变
+C0 receipt 的 authority。AMRM、verifier 与 App 均未授权。
 
 PA2 后的 `Proposal–Identity Responsibility Mismatch` 只登记为有效待验证解释，不是 YOLOE instance-ReID 机制事实。
 只有合法 C0 cohort 后，PA3 才能单独测试 goal-semantic bounded candidate availability。

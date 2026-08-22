@@ -1,6 +1,6 @@
 # P1-PA3-C0 public Goal Contract cohort materialization
 
-状态：`PROSPECTIVE_INTAKE_READY / EXISTING_ELIGIBLE_EPISODES=0 / PA3_INFERENCE_NOT_AUTHORIZED`
+状态：`PROSPECTIVE_INTAKE_READY / S0V3=6_VISIBLE_EPISODES_7_VISIBLE_FRAMES / PA3_INFERENCE_NOT_AUTHORIZED`
 
 This surface records provider-public user/product task semantics before episode capture and before target truth exists.
 It derives `canonical_prompt` only through one globally frozen exact `goal_type` mapping. Per-episode prompt overrides,
@@ -31,6 +31,12 @@ When supplied to `materialize_pa3_inputs`, every captured case must bind the sam
 endpoint candidate. The provider receives it under `goal_contract.public_spatial_context`; any body, C0, source-role,
 precedence, or endpoint mismatch fails closed. This makes route-conditioned observation acquisition explicit instead of
 silently using a truth-like internal anchor.
+
+The first consumed V3 cohort froze 12 fresh museum goals and materialized 22 Mapillary frames across eight episodes.
+Blinded pre-provider adjudication found six visible episodes but only seven visible frames. The preregistered joint
+authorization gate was at least five visible episodes and eight visible frames, so materialization returned
+`pa3_inference_authorized=false` and provider calls remained zero. The sealed cohort must not be resampled; the next
+cohort must use prospectively captured, entrance-facing first-person observations.
 
 Focused mechanics check:
 
