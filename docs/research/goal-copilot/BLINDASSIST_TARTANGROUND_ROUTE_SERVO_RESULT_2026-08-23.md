@@ -108,4 +108,3 @@ DESTINATION_RELATIVE_FUNCTIONAL_APERTURE_AND_ARRIVAL_NOT_ESTABLISHED
 - `evaluate_goal_rgbd_servo.py`：positive-only far/STOP evaluator。
 - ignored evidence：`artifacts.local/evidence/last-10m-tartanground-development-v2`、
   `artifacts.local/evidence/last-10m-tartanground-confirmation-v1`。
-
