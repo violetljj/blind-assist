@@ -103,8 +103,13 @@ def main() -> int:
         stop_candidates = [row for row in ranked if row["action"] == "STOP"]
         remaining = [row for row in ranked if row["action"] not in (route_action, "STOP")]
         bearing_distance = lambda row: abs(((row["bbox_xyxy"][0] + row["bbox_xyxy"][2]) / (2.0 * observed["image_width"])) - route_bearing)
-        route_matches.sort(key=lambda row: (bearing_distance(row), row["proposal_rank"]))
-        stop_candidates.sort(key=lambda row: (bearing_distance(row), row["proposal_rank"]))
+        # Preserve the already-confirmed semantic proposal ordering inside each
+        # action hypothesis.  The waypoint selects an action group; it is not
+        # precise enough to overwrite object evidence with sub-box bearing
+        # distance, which previously promoted low-ranked distractors.
+        route_matches.sort(key=lambda row: (row["proposal_rank"], bearing_distance(row)))
+        stop_candidates.sort(key=lambda row: (row["proposal_rank"], bearing_distance(row)))
+        remaining.sort(key=lambda row: row["proposal_rank"])
         selected = round_robin_guidance([route_matches, stop_candidates, remaining])
         candidates = [row | {"guidance_rank": index} for index, row in enumerate(selected, start=1)]
         rows.append({"case_id": case["case_id"], "image_width": observed["image_width"], "image_height": observed["image_height"], "route_bearing_fraction": route_bearing, "route_action": route_action, "candidates": candidates})
@@ -115,7 +120,7 @@ def main() -> int:
         "private_truth_access": False,
         "public_sha256": public_hash,
         "proposal_sha256": sha256(args.proposals),
-        "contract": {"stop_depth_m": STOP_DEPTH_M, "mask_hint_max_interior_depth_m": MASK_HINT_MAX_INTERIOR_DEPTH_M, "maximum_guidance_candidates": MAX_GUIDANCE_CANDIDATES, "range_statistic": "interior_median_with_bounded_SAM3_mask_p20_hint", "ranking": "round_robin_route_action_stop_remaining"},
+        "contract": {"stop_depth_m": STOP_DEPTH_M, "mask_hint_max_interior_depth_m": MASK_HINT_MAX_INTERIOR_DEPTH_M, "maximum_guidance_candidates": MAX_GUIDANCE_CANDIDATES, "range_statistic": "interior_median_with_bounded_SAM3_mask_p20_hint", "ranking": "round_robin_route_action_stop_remaining_provider_rank_first"},
         "cases": rows,
     }
     _atomic_json(args.output, payload)

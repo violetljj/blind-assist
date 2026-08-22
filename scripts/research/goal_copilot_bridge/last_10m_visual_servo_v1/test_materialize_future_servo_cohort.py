@@ -28,6 +28,14 @@ def test_servo_phases_omit_stop_when_route_never_reaches_stop_depth():
     assert [row["phase"] for row in servo_phases([episode(1.8)])] == ["FAR_GUIDANCE"]
 
 
+def test_servo_phases_find_stop_later_in_same_approach_cluster():
+    first = episode(1.8)
+    later = episode(0.8) | {"start_frame_id": 20, "closest_frame_id": 40}
+    phases = servo_phases([first, later])
+    assert [row["phase"] for row in phases] == ["FAR_GUIDANCE", "NEAR_STOP"]
+    assert phases[1]["frame_id"] == 40
+
+
 def test_route_plan_is_derived_from_pose_without_target_truth(tmp_path):
     path = tmp_path / "imu.zip"
     positions = np.zeros((401, 3), dtype=np.float64)

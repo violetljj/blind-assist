@@ -52,7 +52,10 @@ def servo_phases(cluster: list[dict], stop_depth_m: float = STOP_DEPTH_M) -> lis
         {"bbox_xyxy": row["target_bbox_xyxy"], "depth_m": row["start_depth_m"], "desired_action": row["demonstrated_action"]}
         for row in starts
     ]}]
-    near = min(starts, key=lambda row: row["future_min_depth_m"])
+    # The far phase is anchored to the first eligible observation, while the
+    # stop phase may occur from any overlapping window in the same physical
+    # approach cluster.
+    near = min(cluster, key=lambda row: row["future_min_depth_m"])
     if near["future_min_depth_m"] <= stop_depth_m:
         phases.append({"phase": "NEAR_STOP", "frame_id": near["closest_frame_id"], "targets": [{
             "bbox_xyxy": near["closest_target_bbox_xyxy"], "depth_m": near["future_min_depth_m"], "desired_action": "STOP"
