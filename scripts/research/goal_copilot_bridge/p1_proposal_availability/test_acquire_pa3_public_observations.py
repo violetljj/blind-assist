@@ -50,6 +50,17 @@ class SelectFrameTest(unittest.TestCase):
         self.assertEqual(["best", "distinct"], [row["image_id"] for row in selected])
         self.assertEqual(3, eligible)
 
+    def test_multiview_rejects_more_than_three_frozen_views(self) -> None:
+        with self.assertRaises(ValueError):
+            select_frames([], {"lat": 0.0, "lon": 0.0}, {
+                "minimum_distance_m": 8.0,
+                "maximum_distance_m": 45.0,
+                "maximum_absolute_bearing_error_deg": 45.0,
+                "panoramas_allowed": False,
+                "selected_per_episode": 4,
+                "minimum_viewpoint_separation_m": 5.0,
+            })
+
 
 if __name__ == "__main__":
     unittest.main()

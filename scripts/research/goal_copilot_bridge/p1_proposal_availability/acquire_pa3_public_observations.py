@@ -213,40 +213,46 @@ def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str, amendm
             "limit": query["limit"], "fields": ",".join(query["fields"]),
         })
         raw = response.get("data", [])
-        selected, eligible_count = select_frame(raw, anchor, plan["outcome_blind_selection"])
-        if selected is None:
+        selected_frames, eligible_count = select_frames(raw, anchor, plan["outcome_blind_selection"])
+        if not selected_frames:
             results.append({
                 "episode_id": anchor["episode_id"], "raw_metadata_count": len(raw),
                 "geometry_eligible_count": 0, "status": "NO_GEOMETRIC_CANDIDATE_NO_REPLACEMENT",
             })
             continue
-        details = _graph_get(session, "https://graph.mapillary.com/", {
-            "ids": selected["image_id"], "fields": "thumb_2048_url",
-        })
-        url = details.get(selected["image_id"], {}).get("thumb_2048_url")
-        _require(bool(url), f"selected frame lacks thumb URL: {selected['image_id']}")
-        image_response = requests.get(url, timeout=60, headers={"User-Agent": USER_AGENT})
-        image_response.raise_for_status()
-        payload = image_response.content
-        _require(payload.startswith(b"\xff\xd8") and payload.endswith(b"\xff\xd9"), "downloaded frame is not a complete JPEG")
-        image_path = image_dir / f"{selected['image_id']}.jpg"
-        temporary = image_path.with_suffix(".jpg.tmp")
-        temporary.write_bytes(payload)
-        os.replace(temporary, image_path)
-        acquired_at = datetime.now(timezone.utc).isoformat()
-        source_capture = datetime.fromtimestamp(selected["source_captured_at_ms"] / 1000.0, tz=timezone.utc).isoformat()
-        selected.update({"image_path": str(image_path.resolve()), "image_sha256": hashlib.sha256(payload).hexdigest()})
+        materialized = []
+        for frame_index, selected in enumerate(selected_frames, start=1):
+            details = _graph_get(session, "https://graph.mapillary.com/", {
+                "ids": selected["image_id"], "fields": "thumb_2048_url",
+            })
+            url = details.get(selected["image_id"], {}).get("thumb_2048_url")
+            _require(bool(url), f"selected frame lacks thumb URL: {selected['image_id']}")
+            image_response = requests.get(url, timeout=60, headers={"User-Agent": USER_AGENT})
+            image_response.raise_for_status()
+            payload = image_response.content
+            _require(payload.startswith(b"\xff\xd8") and payload.endswith(b"\xff\xd9"), "downloaded frame is not a complete JPEG")
+            image_path = image_dir / f"{selected['image_id']}.jpg"
+            temporary = image_path.with_suffix(".jpg.tmp")
+            temporary.write_bytes(payload)
+            os.replace(temporary, image_path)
+            acquired_at = datetime.now(timezone.utc).isoformat()
+            source_capture = datetime.fromtimestamp(selected["source_captured_at_ms"] / 1000.0, tz=timezone.utc).isoformat()
+            selected.update({"image_path": str(image_path.resolve()), "image_sha256": hashlib.sha256(payload).hexdigest()})
+            materialized.append(selected)
+            capture_cases.append({
+                "case_id": f"{anchor['episode_id']}-frame-{frame_index:02d}", "episode_id": anchor["episode_id"],
+                "capture_created_at_utc": acquired_at,
+                "capture_time_semantics": "FIRST_PROJECT_PIXEL_ACCESS_NOT_PHYSICAL_CAMERA_CAPTURE",
+                "source_captured_at_utc": source_capture,
+                "image_path": str(image_path.resolve()), "image_sha256": selected["image_sha256"],
+                "mapillary_image_id": selected["image_id"], "mapillary_sequence_id": selected["sequence_id"],
+                "public_goal_anchor_osm_type": anchor.get("osm_type"),
+                "public_goal_anchor_osm_id": anchor.get("osm_id"),
+            })
         results.append({
             "episode_id": anchor["episode_id"], "raw_metadata_count": len(raw),
-            "geometry_eligible_count": eligible_count, "status": "MATERIALIZED", "selected": selected,
-        })
-        capture_cases.append({
-            "case_id": f"{anchor['episode_id']}-frame-01", "episode_id": anchor["episode_id"],
-            "capture_created_at_utc": acquired_at,
-            "capture_time_semantics": "FIRST_PROJECT_PIXEL_ACCESS_NOT_PHYSICAL_CAMERA_CAPTURE",
-            "source_captured_at_utc": source_capture,
-            "image_path": str(image_path.resolve()), "image_sha256": selected["image_sha256"],
-            "mapillary_image_id": selected["image_id"], "mapillary_sequence_id": selected["sequence_id"],
+            "geometry_eligible_count": eligible_count, "status": "MATERIALIZED",
+            "selected": materialized[0], "selected_frame_count": len(materialized), "selected_frames": materialized,
         })
     acquisition = {
         "schema_version": ACQUISITION_SCHEMA,

@@ -86,3 +86,8 @@ of 0.50, and returns at most ten candidates. Parent rank and local rank are dete
 The model, prompt, thresholds, HRG0 parent prediction, local proposal count, final K, and identity prohibition are
 unchanged. The consumed HRG1 cohort must not be rerun with HRG2; execution requires a newly frozen Goal Contract,
 acquisition, and pre-provider truth cohort.
+
+The public-goal-anchor observation path now honors its frozen `selected_per_episode` field (bounded at three) instead
+of silently forcing one frame. Selection remains metadata-only: camera position, heading, distance to the public named
+place anchor, capture time, and viewpoint separation. It does not use an OSM entrance node, downloaded pixels, private
+visibility, target boxes, or model outputs.
