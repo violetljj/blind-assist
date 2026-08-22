@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PROSPECTIVE_FIRST_PERSON_DEVICE_RECORDER_READY / REAL_DEVICE_COHORT_NOT_CAPTURED / PA3_INFERENCE_NOT_AUTHORIZED / IDENTITY_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PROSPECTIVE_FIRST_PERSON_DEVICE_RECORDER_READY / PA3_DENOMINATOR_GATE_ENFORCED / REAL_DEVICE_COHORT_NOT_CAPTURED / PA3_INFERENCE_NOT_AUTHORIZED / IDENTITY_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
@@ -8,11 +8,14 @@ Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保�
 ## 当前研究实现
 
 当前算法基础设施结果真源是
-[`P1 prospective device recorder result`](P1_PROSPECTIVE_DEVICE_RECORDER_IMPLEMENTATION_RESULT_2026-08-22.md)。
-独立 `:goal-capture-app` 已把 `C0 goal -> capture arm -> CameraX continuous recording -> hash-bound receipt -> fixed
-end-relative extraction -> private truth` 补成可执行链，并在 cancellation、lifecycle interruption、partial roster、重复媒体、
-timeline/media drift 或 recorder error 时 fail closed。Android 与 Python 的完整 receipt 哈希已交叉验证；本机尚无真实设备
-执行该 plan，因此真实 cohort 未采集，provider calls 仍为 `0`，PA3 不授权，默认 App 未改动。
+[`P1 PA3 execution-gate hardening result`](P1_PA3_EXECUTION_GATE_HARDENING_RESULT_2026-08-22.md)。physical capture manifest
+现在必须验证自身 body hash、C0/设备 receipt/plan 绑定、device timeline 和 outcome-blind fixed-offset 语义；随后只有私有
+denominator 同时达到 `>=5 visible episodes / >=8 visible frames` 才能生成绑定唯一 prediction/journal 的授权 receipt。
+YOLOE runner 在授权前不能导入 provider，失败或中断后禁止 replay；evaluator 也只接收完成 journal 绑定的 prediction。
+
+设备 producer 仍由 [`P1 prospective device recorder result`](P1_PROSPECTIVE_DEVICE_RECORDER_IMPLEMENTATION_RESULT_2026-08-22.md)
+定义。本机检查到 Android SDK/ADB 正常，但 `0` 个 ready device、`0` 个 AVD，因此真实 cohort 尚未采集；provider calls
+仍为 `0`，PA3 不授权，默认 App 未改动。
 
 当前 observation evidence 真源仍是
 [`P1-PA3-S0v3 public spatial candidate-set result`](P1_PA3_S0V3_PUBLIC_SPATIAL_CANDIDATE_SET_RESULT_2026-08-22.md)。

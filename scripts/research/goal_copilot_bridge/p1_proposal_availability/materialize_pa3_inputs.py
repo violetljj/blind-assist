@@ -29,6 +29,11 @@ from scripts.research.goal_copilot_bridge.p1_proposal_availability.pa3_semantic 
 C0_SCHEMA = "blindassist_p1_pa3_c0_public_goal_cohort_v1"
 CAPTURE_SCHEMA = "blindassist_p1_pa3_capture_manifest_v1"
 TRUTH_SCHEMA = "blindassist_p1_pa3_truth_body_v1"
+PHYSICAL_SOURCE_ROLE = "PROSPECTIVE_FIRST_PERSON_PHYSICAL_CAPTURE_AFTER_GOAL"
+PHYSICAL_CAPTURE_INSTRUCTION = "APPROACH_NAMED_BUILDING_AND_STOP_AFTER_ENTRANCE_IS_IN_VIEW_V1"
+PHYSICAL_FRAME_SELECTION_RULE = "FIXED_OFFSETS_FROM_VIDEO_END_NO_PIXEL_OR_TRUTH_SELECTION"
+PHYSICAL_FRAME_OFFSETS = [-2.5, -1.5, -0.5]
+PHYSICAL_CAPTURE_TIME_SEMANTICS = "PHYSICAL_DEVICE_CAPTURE_TIMELINE_DERIVED_FROM_VIDEO_PTS"
 PUBLIC_SPATIAL_SCHEMAS = {
     "blindassist_p1_pa3_public_spatial_goal_contract_v2",
     "blindassist_p1_pa3_public_spatial_goal_contract_v3",
@@ -43,6 +48,36 @@ def _require(condition: bool, message: str) -> None:
 def _text(value: Any, label: str) -> str:
     _require(isinstance(value, str) and bool(value.strip()), f"{label} must be non-empty text")
     return value.strip()
+
+
+def _lower_sha256(value: Any, label: str) -> str:
+    text = _text(value, label)
+    _require(len(text) == 64 and all(character in "0123456789abcdef" for character in text), f"{label} must be lowercase SHA-256")
+    return text
+
+
+def _verify_capture_manifest(capture: Mapping[str, Any], c0_body_sha: str) -> tuple[str, str]:
+    _require(capture.get("schema_version") == CAPTURE_SCHEMA, "capture manifest schema mismatch")
+    declared = _lower_sha256(capture.get("capture_manifest_body_sha256"), "capture manifest body hash")
+    body = dict(capture)
+    body.pop("capture_manifest_body_sha256", None)
+    _require(content_sha256(body) == declared, "capture manifest body hash mismatch")
+    _require(capture.get("goal_receipt_body_sha256") == c0_body_sha, "capture manifest C0 binding mismatch")
+    _require(capture.get("private_truth_access") is False, "capture manifest accessed private truth")
+    _require(capture.get("provider_model_calls") == 0, "provider ran before PA3 authorization")
+    mode = _text(capture.get("precedence_mode", "PHYSICAL_CAPTURE_AFTER_GOAL"), "capture precedence mode")
+    _require(mode in PRECEDENCE_MODES, "capture precedence mode invalid")
+    if mode == "PHYSICAL_CAPTURE_AFTER_GOAL":
+        _require(capture.get("physical_capture_after_goal_claimed") is True, "physical capture claim is missing")
+        _require(capture.get("source_role") == PHYSICAL_SOURCE_ROLE, "physical capture source role mismatch")
+        _require(capture.get("capture_instruction_id") == PHYSICAL_CAPTURE_INSTRUCTION, "physical capture instruction drift")
+        _require(capture.get("frame_selection_rule") == PHYSICAL_FRAME_SELECTION_RULE, "physical frame-selection rule drift")
+        _require(list(capture.get("frame_offsets_from_end_seconds", [])) == PHYSICAL_FRAME_OFFSETS, "physical frame offsets drift")
+        _lower_sha256(capture.get("prospective_capture_receipt_body_sha256"), "prospective capture receipt hash")
+        _lower_sha256(capture.get("prospective_capture_plan_body_sha256"), "prospective capture plan hash")
+    else:
+        _require(capture.get("physical_capture_after_goal_claimed") is False, "public-source capture must not claim post-goal physical capture")
+    return declared, mode
 
 
 def _timestamp(value: Any, label: str) -> datetime:
@@ -108,13 +143,9 @@ def materialize_inputs(
     spatial_by_episode = _verify_public_spatial_contract(public_spatial_contract, c0_body_sha) if public_spatial_contract is not None else None
     _require(c0.get("prompt_map_sha256") == content_sha256(prompt_map), "C0 prompt-map hash mismatch")
     prompts = prompt_lookup(prompt_map)
-    _require(capture.get("schema_version") == CAPTURE_SCHEMA, "capture manifest schema mismatch")
     _require(truth.get("schema_version") == TRUTH_SCHEMA, "truth body schema mismatch")
     _require(not output_dir.exists(), "PA3 materialization output already exists")
-    precedence_mode = capture.get("precedence_mode", "PHYSICAL_CAPTURE_AFTER_GOAL")
-    _require(precedence_mode in PRECEDENCE_MODES, "capture precedence mode invalid")
-    if precedence_mode == "GOAL_BEFORE_FIRST_PROJECT_PIXEL_ACCESS_AND_TRUTH":
-        _require(capture.get("physical_capture_after_goal_claimed") is False, "public-source capture must not claim post-goal physical capture")
+    capture_body_sha, precedence_mode = _verify_capture_manifest(capture, c0_body_sha)
 
     c0_episodes = c0.get("episodes", [])
     goals = {episode["episode_id"]: episode for episode in c0_episodes}
@@ -159,6 +190,11 @@ def materialize_inputs(
         if precedence_mode == "GOAL_BEFORE_FIRST_PROJECT_PIXEL_ACCESS_AND_TRUTH":
             _require(captured.get("capture_time_semantics") == "FIRST_PROJECT_PIXEL_ACCESS_NOT_PHYSICAL_CAMERA_CAPTURE", f"{case_id} pixel-access time semantics mismatch")
             _timestamp(captured.get("source_captured_at_utc"), f"{case_id} source_captured_at_utc")
+        else:
+            _require(captured.get("capture_time_semantics") == PHYSICAL_CAPTURE_TIME_SEMANTICS, f"{case_id} physical capture time semantics mismatch")
+            _require(captured.get("frame_selection_rule") == PHYSICAL_FRAME_SELECTION_RULE, f"{case_id} physical frame-selection rule drift")
+            _lower_sha256(captured.get("source_media_sha256"), f"{case_id} source media hash")
+            _require(isinstance(captured.get("source_video_timestamp_seconds"), (int, float)), f"{case_id} source video timestamp is missing")
         goal_recorded_at = _timestamp(goal_recorded_text, f"{case_id} goal_recorded_at_utc")
         capture_created_at = _timestamp(capture_created_text, f"{case_id} capture_created_at_utc")
         _require(goal_recorded_at < capture_created_at, f"{case_id} goal does not precede capture")
@@ -201,7 +237,7 @@ def materialize_inputs(
             "created_before_project_pixel_access": precedence_mode == "GOAL_BEFORE_FIRST_PROJECT_PIXEL_ACCESS_AND_TRUTH",
             "physical_capture_after_goal_claimed": capture.get("physical_capture_after_goal_claimed", precedence_mode == "PHYSICAL_CAPTURE_AFTER_GOAL"),
             "created_before_truth": True,
-            "capture_manifest_body_sha256": content_sha256(capture),
+            "capture_manifest_body_sha256": capture_body_sha,
             "private_truth_body_sha256": truth_body_sha,
         }
         receipts.append((receipt_path, receipt))

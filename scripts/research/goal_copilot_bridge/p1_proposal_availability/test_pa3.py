@@ -4,7 +4,9 @@ import json
 import os
 from pathlib import Path
 import tempfile
+import types
 import unittest
+from unittest import mock
 
 from scripts.research.goal_copilot_bridge.p1_proposal_availability.pa3_semantic import (
     EXPECTED_MODEL_SHA256,
@@ -23,9 +25,21 @@ from scripts.research.goal_copilot_bridge.p1_proposal_availability.pa3_semantic 
 )
 from scripts.research.goal_copilot_bridge.p1_proposal_availability.materialize_pa3_inputs import (
     CAPTURE_SCHEMA,
+    PHYSICAL_CAPTURE_INSTRUCTION,
+    PHYSICAL_CAPTURE_TIME_SEMANTICS,
+    PHYSICAL_FRAME_OFFSETS,
+    PHYSICAL_FRAME_SELECTION_RULE,
+    PHYSICAL_SOURCE_ROLE,
     TRUTH_SCHEMA,
     materialize_inputs,
 )
+from scripts.research.goal_copilot_bridge.p1_proposal_availability.authorize_pa3 import (
+    authorize_pa3,
+    validate_completed_execution,
+    validate_execution_authorization,
+)
+from scripts.research.goal_copilot_bridge.p1_proposal_availability.run_yoloe_semantic_prompt import main as run_semantic_main
+from scripts.research.goal_copilot_bridge.p1_proposal_availability import run_yoloe_semantic_prompt as semantic_runner
 
 
 PROMPT_MAP = {
@@ -251,14 +265,30 @@ class Pa3InputMaterializationTest(unittest.TestCase):
         image.write_bytes(b"prospective-frame")
         capture = {
             "schema_version": CAPTURE_SCHEMA,
+            "precedence_mode": "PHYSICAL_CAPTURE_AFTER_GOAL",
+            "physical_capture_after_goal_claimed": True,
+            "goal_receipt_body_sha256": c0["receipt_body_sha256"],
+            "prospective_capture_receipt_body_sha256": "c" * 64,
+            "prospective_capture_plan_body_sha256": "d" * 64,
+            "source_role": PHYSICAL_SOURCE_ROLE,
+            "capture_instruction_id": PHYSICAL_CAPTURE_INSTRUCTION,
+            "frame_selection_rule": PHYSICAL_FRAME_SELECTION_RULE,
+            "frame_offsets_from_end_seconds": PHYSICAL_FRAME_OFFSETS,
+            "private_truth_access": False,
+            "provider_model_calls": 0,
             "cases": [{
                 "case_id": "case-001",
                 "episode_id": "episode-001",
                 "capture_created_at_utc": "2026-08-22T00:01:00Z",
+                "capture_time_semantics": PHYSICAL_CAPTURE_TIME_SEMANTICS,
+                "source_media_sha256": "e" * 64,
+                "source_video_timestamp_seconds": 7.5,
+                "frame_selection_rule": PHYSICAL_FRAME_SELECTION_RULE,
                 "image_path": str(image),
                 "image_sha256": sha256(image),
             }],
         }
+        capture["capture_manifest_body_sha256"] = content_sha256(capture)
         truth = {
             "schema_version": TRUTH_SCHEMA,
             "truth_created_at_utc": "2026-08-22T00:02:00Z",
@@ -329,6 +359,7 @@ class Pa3InputMaterializationTest(unittest.TestCase):
                 "osm_entrance_node_id": 11,
                 "public_spatial_contract_body_sha256": spatial["roster_body_sha256"],
             })
+            capture["capture_manifest_body_sha256"] = content_sha256({key: value for key, value in capture.items() if key != "capture_manifest_body_sha256"})
             output = root / "pa3"
             public_path, _ = materialize_inputs(
                 c0=c0,
@@ -347,6 +378,7 @@ class Pa3InputMaterializationTest(unittest.TestCase):
             validate_public(public, PROMPT_MAP, output)
 
             capture["cases"][0]["osm_entrance_node_id"] = 12
+            capture["capture_manifest_body_sha256"] = content_sha256({key: value for key, value in capture.items() if key != "capture_manifest_body_sha256"})
             with self.assertRaisesRegex(Pa3ContractError, "route endpoint candidate drift"):
                 materialize_inputs(
                     c0=c0,
@@ -396,6 +428,230 @@ class Pa3InputMaterializationTest(unittest.TestCase):
             receipt_path = Path(public["cases"][0]["goal_contract"]["precedence_receipt_path"])
             self.assertTrue(receipt_path.is_absolute())
             self.assertTrue(receipt_path.is_file())
+
+    def test_materializer_rejects_tampered_physical_capture_manifest(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            c0, capture, truth = self.inputs(root)
+            capture["cases"][0]["source_video_timestamp_seconds"] = 8.0
+            with self.assertRaisesRegex(Pa3ContractError, "capture manifest body hash mismatch"):
+                materialize_inputs(
+                    c0=c0,
+                    prompt_map=PROMPT_MAP,
+                    capture=capture,
+                    truth=truth,
+                    output_dir=root / "pa3",
+                    source_base_dir=root,
+                )
+
+    def test_materializer_rejects_non_device_physical_time_semantics(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            c0, capture, truth = self.inputs(root)
+            capture["cases"][0]["capture_time_semantics"] = "FIRST_PROJECT_PIXEL_ACCESS_NOT_PHYSICAL_CAMERA_CAPTURE"
+            capture["capture_manifest_body_sha256"] = content_sha256({key: value for key, value in capture.items() if key != "capture_manifest_body_sha256"})
+            with self.assertRaisesRegex(Pa3ContractError, "physical capture time semantics mismatch"):
+                materialize_inputs(
+                    c0=c0,
+                    prompt_map=PROMPT_MAP,
+                    capture=capture,
+                    truth=truth,
+                    output_dir=root / "pa3",
+                    source_base_dir=root,
+                )
+
+
+class Pa3AuthorizationTest(unittest.TestCase):
+    def write_inputs(self, root: Path, *, visible_frames: int, visible_episodes: int) -> tuple[Path, Path]:
+        public_path = root / "public.json"
+        private_path = root / "private.json"
+        case_count = max(visible_frames, 8)
+        public_cases = []
+        private_cases = []
+        for index in range(case_count):
+            case_id = f"case-{index + 1:02d}"
+            episode_index = index % max(visible_episodes, 1)
+            public_cases.append({
+                "case_id": case_id,
+                "episode_id": f"episode-{episode_index + 1:02d}",
+                "goal_contract": {"reference_mode": "SET_VALUED"},
+            })
+            visible = index < visible_frames
+            private_cases.append({
+                "case_id": case_id,
+                "reference_mode": "SET_VALUED",
+                "target_visibility": "VISIBLE" if visible else "NOT_VISIBLE",
+                "legal_target_bboxes_xyxy": [[1, 2, 11, 12]] if visible else [],
+            })
+        public = {
+            "schema_version": PUBLIC_SCHEMA,
+            "protocol_id": PROTOCOL_ID,
+            "private_truth_access": False,
+            "provider_contract": {
+                "input": "CURRENT_FRAME_PLUS_PRETRUTH_GOAL_CONTRACT",
+                "maximum_candidates": 10,
+                "identity_selection": "FORBIDDEN",
+            },
+            "cases": public_cases,
+        }
+        write_json(public_path, public)
+        private = {
+            "schema_version": PRIVATE_SCHEMA,
+            "protocol_id": PROTOCOL_ID,
+            "public_input_sha256": sha256(public_path),
+            "primary_iou_threshold": 0.30,
+            "diagnostic_iou_thresholds": [0.10, 0.50],
+            "recall_at_k": [1, 3, 5, 10],
+            "cases": private_cases,
+        }
+        write_json(private_path, private)
+        return public_path, private_path
+
+    def test_authorizes_only_bound_five_episode_eight_frame_denominator(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            public_path, private_path = self.write_inputs(root, visible_frames=8, visible_episodes=5)
+            prediction = root / "prediction.json"
+            journal = root / "dispatch.json"
+            authorization_path = root / "authorization.json"
+
+            receipt = authorize_pa3(
+                public_path=public_path,
+                private_path=private_path,
+                prediction_output=prediction,
+                dispatch_journal=journal,
+                authorization_output=authorization_path,
+            )
+
+            self.assertTrue(receipt["pa3_inference_authorized"])
+            self.assertEqual(5, receipt["visible_episode_count"])
+            self.assertEqual(8, receipt["visible_frame_count"])
+            validate_execution_authorization(authorization_path, public_path, prediction, journal)
+            write_json(prediction, {
+                "execution_authorization_sha256": sha256(authorization_path),
+                "dispatch_journal_path": str(journal.resolve()),
+                "cases": [{"case_id": f"case-{index + 1:02d}"} for index in range(8)],
+            })
+            write_json(journal, {
+                "schema_version": "blindassist_p1_pa3_dispatch_journal_v1",
+                "protocol_id": PROTOCOL_ID,
+                "status": "COMPLETED",
+                "public_input_sha256": sha256(public_path),
+                "authorization_receipt_sha256": sha256(authorization_path),
+                "prediction_output_path": str(prediction.resolve()),
+                "prediction_sha256": sha256(prediction),
+                "provider_model_calls_dispatched": 8,
+                "provider_model_calls_completed": 8,
+                "retry_or_replay_authorized": False,
+            })
+            validate_completed_execution(authorization_path, public_path, private_path, prediction, journal)
+            private_original = private_path.read_text(encoding="utf-8")
+            private_value = json.loads(private_original)
+            private_value["post_authorization_tamper"] = True
+            write_json(private_path, private_value)
+            with self.assertRaisesRegex(Pa3ContractError, "private binding mismatch"):
+                validate_completed_execution(authorization_path, public_path, private_path, prediction, journal)
+            private_path.write_text(private_original, encoding="utf-8")
+            with self.assertRaisesRegex(Pa3ContractError, "refusing replay"):
+                validate_execution_authorization(authorization_path, public_path, prediction, journal)
+            journal_value = json.loads(journal.read_text(encoding="utf-8"))
+            journal_value["status"] = "FAILED_SEALED"
+            write_json(journal, journal_value)
+            with self.assertRaisesRegex(Pa3ContractError, "did not complete"):
+                validate_completed_execution(authorization_path, public_path, private_path, prediction, journal)
+
+    def test_low_denominator_receipt_cannot_start_pa3(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            public_path, private_path = self.write_inputs(root, visible_frames=7, visible_episodes=4)
+            prediction = root / "prediction.json"
+            journal = root / "dispatch.json"
+            authorization_path = root / "authorization.json"
+            receipt = authorize_pa3(
+                public_path=public_path,
+                private_path=private_path,
+                prediction_output=prediction,
+                dispatch_journal=journal,
+                authorization_output=authorization_path,
+            )
+
+            self.assertFalse(receipt["pa3_inference_authorized"])
+            self.assertEqual("NOT_EVALUABLE_INPUT_CONTRACT", receipt["terminal"])
+            with self.assertRaisesRegex(Pa3ContractError, "not authorized"):
+                validate_execution_authorization(authorization_path, public_path, prediction, journal)
+            with self.assertRaisesRegex(Pa3ContractError, "not authorized"):
+                run_semantic_main([
+                    "--public", str(public_path),
+                    "--prompt-map", str(root / "unused-prompt-map.json"),
+                    "--model", str(root / "unused-model.pt"),
+                    "--text-encoder", str(root / "unused-text-encoder.ts"),
+                    "--authorization", str(authorization_path),
+                    "--dispatch-journal", str(journal),
+                    "--output", str(prediction),
+                ])
+            self.assertFalse(journal.exists())
+
+    def test_prompt_embedding_failure_is_journaled_as_in_doubt_and_sealed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            public_path = root / "public.json"
+            prompt_map_path = root / "prompt-map.json"
+            model_path = root / "model.pt"
+            encoder_path = root / "mobileclip2_b.ts"
+            authorization_path = root / "authorization.json"
+            prediction = root / "prediction.json"
+            journal = root / "dispatch.json"
+            image = root / "frame.jpg"
+            for path in (model_path, encoder_path, authorization_path, image):
+                path.write_bytes(b"fixture")
+            write_json(public_path, {})
+            write_json(prompt_map_path, PROMPT_MAP)
+
+            class FailingModel:
+                def set_classes(self, _: list[str]) -> None:
+                    raise RuntimeError("prompt embedding failed")
+
+            fake_torch = types.SimpleNamespace(cuda=types.SimpleNamespace(is_available=lambda: False))
+            fake_ultralytics = types.ModuleType("ultralytics")
+            fake_ultralytics.__version__ = EXPECTED_ULTRALYTICS_VERSION
+            fake_ultralytics.YOLOE = lambda _: FailingModel()
+
+            def frozen_hash(path: Path) -> str:
+                resolved = Path(path).resolve()
+                if resolved == model_path.resolve():
+                    return EXPECTED_MODEL_SHA256
+                if resolved == encoder_path.resolve():
+                    return semantic_runner.EXPECTED_TEXT_ENCODER_SHA256
+                return "f" * 64
+
+            with (
+                mock.patch.object(semantic_runner, "validate_execution_authorization"),
+                mock.patch.object(semantic_runner, "validate_public", return_value=[{
+                    "case_id": "case-01",
+                    "canonical_prompt": "building entrance",
+                    "image_path": image,
+                }]),
+                mock.patch.object(semantic_runner, "sha256", side_effect=frozen_hash),
+                mock.patch.dict("sys.modules", {"torch": fake_torch, "ultralytics": fake_ultralytics}),
+            ):
+                with self.assertRaisesRegex(RuntimeError, "prompt embedding failed"):
+                    run_semantic_main([
+                        "--public", str(public_path),
+                        "--prompt-map", str(prompt_map_path),
+                        "--model", str(model_path),
+                        "--text-encoder", str(encoder_path),
+                        "--authorization", str(authorization_path),
+                        "--dispatch-journal", str(journal),
+                        "--output", str(prediction),
+                        "--device", "cpu",
+                    ])
+
+            receipt = json.loads(journal.read_text(encoding="utf-8"))
+            self.assertEqual("FAILED_SEALED", receipt["status"])
+            self.assertEqual(1, receipt["provider_model_calls_dispatched"])
+            self.assertEqual(0, receipt["provider_model_calls_completed"])
+            self.assertEqual(1, receipt["provider_model_calls_in_doubt"])
+            self.assertFalse(prediction.exists())
 
 
 if __name__ == "__main__":

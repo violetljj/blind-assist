@@ -8,18 +8,22 @@ import json
 import os
 from pathlib import Path
 
+from scripts.research.goal_copilot_bridge.p1_proposal_availability.authorize_pa3 import validate_completed_execution
 from scripts.research.goal_copilot_bridge.p1_proposal_availability.pa3_semantic import evaluate
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--public", required=True, type=Path)
     parser.add_argument("--private", required=True, type=Path)
     parser.add_argument("--prediction", required=True, type=Path)
+    parser.add_argument("--authorization", required=True, type=Path)
+    parser.add_argument("--dispatch-journal", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if args.output.exists():
         raise ValueError("PA3 evaluation already exists; refusing replay")
+    validate_completed_execution(args.authorization, args.public, args.private, args.prediction, args.dispatch_journal)
     payload = evaluate(args.public, args.private, args.prediction)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     temporary = args.output.with_suffix(args.output.suffix + ".tmp")

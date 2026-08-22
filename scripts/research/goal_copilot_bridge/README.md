@@ -1,6 +1,6 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / PROSPECTIVE_FIRST_PERSON_DEVICE_RECORDER_READY / REAL_DEVICE_COHORT_NOT_CAPTURED / PA3_INFERENCE_NOT_AUTHORIZED / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / PROSPECTIVE_FIRST_PERSON_DEVICE_RECORDER_READY / PA3_DENOMINATOR_GATE_ENFORCED / REAL_DEVICE_COHORT_NOT_CAPTURED / PA3_INFERENCE_NOT_AUTHORIZED / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
@@ -21,6 +21,11 @@ executed the plan yet, so no physical cohort or private truth exists and PA3 inf
 materialization, GT-blind YOLOE semantic and frozen Grounding DINO functional-region runners, private bounded-candidate
 evaluators, and post-outcome anchor diagnostics. PA3 produced `0/2 @10`; FRG1 produced `1/2 @10` on the same consumed
 development cohort. No identity evaluation or App integration exists.
+
+The prospective PA3 path now validates the physical capture manifest body hash and device/receipt/plan provenance,
+then derives a separate execution receipt from the private visibility denominator. The YOLOE runner cannot import the
+provider until that receipt establishes `>=5 visible episodes / >=8 visible frames`; one authorized prediction path and
+dispatch journal are frozen, retry/replay is forbidden, and the evaluator requires a completed bound journal.
 
 ## P1-PA0 target candidate availability
 

@@ -1,6 +1,6 @@
 # P1 proposal availability: PA0–PA3
 
-状态：`P1_HRG2_GLOBAL_LOCAL_RERANKING_IMPLEMENTED_NOT_EXECUTED / AMRM_AND_VERIFIER_FROZEN / DEFAULT_APP_UNCHANGED`
+状态：`PROSPECTIVE_PA3_DENOMINATOR_GATE_ENFORCED / PA3_INFERENCE_NOT_AUTHORIZED / AMRM_AND_VERIFIER_FROZEN / DEFAULT_APP_UNCHANGED`
 
 P1-PA0 asks only whether a correct target candidate enters an ordered pool bounded at ten candidates when the target is
 visible. Its seven cases are the post-outcome-selected visible first-poison frames from the sealed P1-AMRM0 canary, so
@@ -62,8 +62,45 @@ Result: YOLOE semantic Recall@1/3/5/10 was `0/2` at IoU 0.30. A post-outcome anc
 then produced FRG1 Recall@10 `1/2` on the same consumed cohort. See
 [`P1-PA3 + FRG1 result`](../../../../docs/research/goal-copilot/P1_PA3_GOAL_SEMANTIC_AND_FUNCTIONAL_REGION_RESULT_2026-08-22.md).
 
-Future PA3 runs must pass `--text-encoder artifacts.local/models/mobileclip2_b.ts`; the runner freezes its SHA-256 and
-loads it locally, preventing Ultralytics from downloading an unmanifested text encoder at runtime.
+Future PA3 runs first require `authorize_pa3.py` to bind the public/private inputs, one prediction path, and one dispatch
+journal. It writes `pa3_inference_authorized=true` only at `>=5` visible episodes and `>=8` visible frames. The semantic
+runner requires that receipt before reading provider assets or importing YOLOE, creates the journal before the first
+prediction, journals every dispatched/completed case, and permanently refuses any existing journal or output. A failed
+or interrupted run is sealed rather than retried. The private evaluator accepts only a prediction bound to the same
+authorization and a completed journal.
+
+The runner also requires `--text-encoder artifacts.local/models/mobileclip2_b.ts`; its SHA-256 is frozen and loaded
+locally, preventing Ultralytics from downloading an unmanifested text encoder at runtime. Authorization permits only
+the YOLOE semantic arm; FRG, identity, prompt/model/threshold/pool sweeps and replay remain forbidden.
+
+The frozen execution sequence is:
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m scripts.research.goal_copilot_bridge.p1_proposal_availability.authorize_pa3 `
+  --public artifacts.local/<run>/pa3/public_input.json `
+  --private artifacts.local/<run>/pa3/private_eval_input.json `
+  --prediction-output artifacts.local/<run>/pa3/prediction.json `
+  --dispatch-journal artifacts.local/<run>/pa3/dispatch.json `
+  --authorization-output artifacts.local/<run>/pa3/authorization.json
+
+# Run only when authorization.json says pa3_inference_authorized=true.
+E:\codex-tools\bin\blindassist-python.cmd -m scripts.research.goal_copilot_bridge.p1_proposal_availability.run_yoloe_semantic_prompt `
+  --public artifacts.local/<run>/pa3/public_input.json `
+  --prompt-map artifacts.local/<run>/prompt_map.json `
+  --model artifacts.local/models/yoloe-26n-seg.pt `
+  --text-encoder artifacts.local/models/mobileclip2_b.ts `
+  --authorization artifacts.local/<run>/pa3/authorization.json `
+  --dispatch-journal artifacts.local/<run>/pa3/dispatch.json `
+  --output artifacts.local/<run>/pa3/prediction.json
+
+E:\codex-tools\bin\blindassist-python.cmd -m scripts.research.goal_copilot_bridge.p1_proposal_availability.evaluate_pa3 `
+  --public artifacts.local/<run>/pa3/public_input.json `
+  --private artifacts.local/<run>/pa3/private_eval_input.json `
+  --prediction artifacts.local/<run>/pa3/prediction.json `
+  --authorization artifacts.local/<run>/pa3/authorization.json `
+  --dispatch-journal artifacts.local/<run>/pa3/dispatch.json `
+  --output artifacts.local/<run>/pa3/evaluation.json
+```
 
 Focused check:
 
