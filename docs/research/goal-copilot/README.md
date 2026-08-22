@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_S0V3_NOT_EVALUABLE_6_EPISODES_7_FRAMES / PA3_INFERENCE_NOT_AUTHORIZED / IDENTITY_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PROSPECTIVE_FIRST_PERSON_CAPTURE_INTERFACE_READY / REAL_DEVICE_COHORT_NOT_CAPTURED / PA3_INFERENCE_NOT_AUTHORIZED / IDENTITY_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
@@ -8,6 +8,12 @@ Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保�
 ## 当前研究实现
 
 当前算法结果真源是
+[`P1 prospective first-person capture interface result`](P1_PROSPECTIVE_FIRST_PERSON_CAPTURE_INTERFACE_RESULT_2026-08-22.md)。
+它已把 `C0 goal -> capture arm -> device-owned continuous recording -> fixed end-relative extraction -> private truth`
+实现为 hash-bound fail-closed 接口，并禁止 partial roster、重复媒体、truth/outcome 字段和按结果选帧。本机没有连接的
+Android device，因此真实 cohort 尚未采集，provider calls 仍为 `0`，PA3 不授权；默认 App 也没有改动。
+
+当前 observation evidence 真源仍是
 [`P1-PA3-S0v3 public spatial candidate-set result`](P1_PA3_S0V3_PUBLIC_SPATIAL_CANDIDATE_SET_RESULT_2026-08-22.md)。
 12 个 fresh product goals 与 public spatial candidate set 均在 metadata/pixel/truth/provider 前冻结；统一采集物化
 8 个 episode、22 帧，private pre-provider truth 得到 `6` 个 visible episodes、`7` 个 visible frames。由于预注册

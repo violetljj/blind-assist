@@ -1,15 +1,20 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / P1_PA3_SEMANTIC_AVAILABILITY_NOT_OBSERVED / P1_FRG1_PARTIAL_FUNCTIONAL_REGION_SIGNAL_CONSUMED_DEVELOPMENT / FRESH_HIERARCHICAL_CONFIRMATION_REQUIRED / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / PROSPECTIVE_FIRST_PERSON_CAPTURE_INTERFACE_READY / REAL_DEVICE_COHORT_NOT_CAPTURED / PA3_INFERENCE_NOT_AUTHORIZED / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
 ## P1-PA3-C0 public Goal Contract materialization
 
-`p1_pa3_c0/` is the current no-model surface. It admits only real user/product task records captured before episode
+`p1_pa3_c0/` admits only real user/product task records captured before episode
 capture and target truth, derives one canonical semantic prompt from a global exact goal-type map, and rejects
 per-episode prompt overrides plus target/category/instance/bbox/mask/referent/evaluator fields. Existing research assets
-yielded zero eligible episodes, so the prospective intake template remains empty and PA3 inference is not authorized.
+yielded zero historical eligible episodes; later fresh receipts do not retroactively admit those assets.
+
+`p1_prospective_capture/` is the current no-model execution surface. It freezes a complete capture plan before physical
+recording, accepts only a device-owned continuous forward-camera receipt bound to that plan, and extracts three fixed
+end-relative frames without pixel/truth selection. No real device is currently connected, so no physical cohort or
+private truth has been created and PA3 inference remains unauthorized.
 
 `p1_proposal_availability/` now also contains the PA3/FRG1 algorithm surface: automated goal/acquisition/truth
 materialization, GT-blind YOLOE semantic and frozen Grounding DINO functional-region runners, private bounded-candidate
