@@ -1,6 +1,6 @@
 # Public-real episode mining + selective-guidance pilot V0
 
-状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_WEBGL_RENDER_TRANSPORT_PASS / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_WEBGL_RENDER_TRANSPORT_PASS / ABOTN_PROVIDER_FIREWALL_PASS / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 This package automatically converts public real-world sequence metadata into goal-driven approach episodes, reuses
 frozen current-frame provider output, applies Selective Guidance V0, and evaluates only truth-supported denominators.
@@ -84,6 +84,19 @@ Push-Location scripts/research/goal_copilot_bridge/real_episode_pilot_v0/abotn_w
 npm install --ignore-scripts
 node run.mjs --ply <point_cloud_rotated.ply> --annotation <traj_0.json> --output-dir <new-output-dir>
 Pop-Location
+```
+
+`abotn_arrival_provider_canary.py` freezes the same task's public RGB/goal envelope separately from evaluator-private
+metric arrival truth, preflights the exact provider before creating its formal directory, and permits one provider
+observation only. The completed canary used the frozen Grounding DINO + Terra V0 runtime and returned seven proposals
+plus `ABSTAIN_NO_RELIABLE_EVIDENCE` in one brain attempt. Its prompt/JSONL audit found no private endpoint or distance
+literal and no tool/command event. That establishes provider-firewall and interface mechanics only: absent functional
+pixel-region truth and a closed control loop, selection, bearing, range, and arrival success remain `NOT_EVALUABLE`.
+
+```powershell
+python -m scripts.research.goal_copilot_bridge.real_episode_pilot_v0.abotn_arrival_provider_canary `
+  --annotation <traj_0.json> --webgl-receipt <render-receipt.json> `
+  --output-dir <new-output-dir> --grounding-dino <frozen-model-dir>
 ```
 
 ```powershell

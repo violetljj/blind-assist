@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
+import tempfile
 import unittest
 
+from .abotn_arrival_provider_canary import ARRIVE_THRESHOLD_M, build_frozen_inputs
 from .annotation import make_annotation
 from .audit_abotn_poibench_truth_source import classify_source, inspect_task, summarize_tasks
 from .audit_abotn_render_runtime import classify_runtime
@@ -46,6 +49,42 @@ def authorize_native(row):
 
 
 class RealEpisodePilotTest(unittest.TestCase):
+    def test_abotn_provider_envelope_keeps_metric_arrival_truth_private(self):
+        task = {
+            "trajectory": [
+                {"x": 0.0, "y": 0.0, "z": 1.65, "roll": 0.0, "pitch": 0.0, "yaw": 0.0},
+                {"x": 3.01, "y": 4.02, "z": 1.65, "roll": 0.0, "pitch": 0.0, "yaw": 0.0},
+            ],
+            "instruction": "前往测试商店",
+            "label": {"extend": {"goal_label": "测试商店", "end_point": [3.0, 4.0]}},
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            image = Path(temporary) / "frame.png"
+            image.write_bytes(b"frozen-rgb")
+            webgl = {
+                "schema_version": "blindassist_abotn_webgl_render_canary_v0",
+                "terminal": "WEBGL_RENDER_TRANSPORT_CANARY_PASS",
+                "screenshot": {
+                    "path": str(image),
+                    "sha256": hashlib.sha256(image.read_bytes()).hexdigest(),
+                    "pixel_stats": {"width": 1280, "height": 720},
+                },
+                "camera": {
+                    "source_initial_position": [0.0, 0.0, 1.65],
+                    "source_initial_euler_radians": [0.0, 0.0, 0.0],
+                },
+            }
+            public, private = build_frozen_inputs(task, webgl)
+        serialized_public = json.dumps(public, ensure_ascii=False)
+        self.assertNotIn("endpoint_xy", serialized_public)
+        self.assertNotIn("distance_to_goal", serialized_public)
+        self.assertNotIn("3.0, 4.0", serialized_public)
+        self.assertFalse(public["private_truth_access"])
+        self.assertEqual([3.0, 4.0], private["endpoint_xy"])
+        self.assertEqual(5.0, private["initial_distance_to_goal_m"])
+        self.assertEqual(ARRIVE_THRESHOLD_M, private["arrive_threshold_m"])
+        self.assertFalse(private["initial_arrival"])
+
     def test_abotn_source_is_arrival_only_and_official_envelope_leaks_private_geometry(self):
         task = {
             "trajectory": [

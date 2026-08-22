@@ -5006,3 +5006,15 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   `WEBGL_RENDER_TRANSPORT_CANARY_PASS`，console error=0。
 - 本次 renderer/teacher/provider/baseline calls=`1/0/0/0`。Claim 仅为 real-RGB transport 与 arrival substrate mechanics；
   functional entrance region、官方 renderer equivalence、selection/arrival accuracy、算法 successor、P1 与默认 App 均未建立。
+
+# 2026-08-23 ABotN arrival-only provider-firewall canary
+
+- 在任何 baseline 前，将同一冻结任务 `20260227163550/traj_0` 的 public RGB/goal envelope 与 evaluator-private
+  endpoint、distance-to-goal、2 m arrival rule 分离；provider prompt 与 Codex JSONL 审计均通过，private literal hit=0、
+  tool/command event=0。
+- 复用 frozen Grounding DINO Tiny + Terra V0 及与 sealed 8×89 一致的 Python 3.11.9 / Pillow 12.2.0 /
+  torch 2.11.0+cu128 / transformers 4.57.1 runtime；唯一 observation 得到 7 proposals，一次 brain attempt 后
+  `ABSTAIN_NO_RELIABLE_EVIDENCE`，`in_doubt=0`，未重试或追加 observation。
+- 初始 evaluator-private 距离为 12.4228 m，状态 `NOT_ARRIVED`；因没有 functional entrance pixel truth、range
+  independence 或闭环动作，selection/bearing/range/arrival success 全部保持 `NOT_EVALUABLE`。本次
+  provider/teacher/baseline calls=`1/0/0`，不建立 grounding、navigation、arrival、算法、P1 或默认 App claim。
