@@ -1,6 +1,6 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / P1_PA0_TARGET_CANDIDATE_AVAILABILITY / TERMINAL=P1_PA0_TOP1_COLLAPSE_SIGNAL_ON_FAILURE_COHORT / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / P1_PA1_TARGET_PROPOSAL_RESCUE / TERMINAL=P1_PA1_FIXED_TILED_SCALE_RESCUE_NOT_SUPPORTED_ON_FAILURE_COHORT / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
@@ -10,6 +10,11 @@ Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/g
 first-poison frames with public current-frame/exemplar input and private GT, evaluates Recall@1/3/5/10, and contains no
 memory, identity selection, reacquisition, verifier, geometry, or App path. The frozen YOLOE visual-prompt arm found
 IoU >= 0.10 candidates only at ranks 9 and 10 (`Recall@10=2/7`); IoU >= 0.30 remained `0/7` at every K.
+
+The PA1 fixed tiled successor changed only the search input to 2x2/20%-overlap tiles at 640. IoU >= 0.30 remained
+`0/7` even across its complete postprocessed rank, and it rescued none of PA0's five IoU >= 0.10 absent cases. The
+terminal is `P1_PA1_FIXED_TILED_SCALE_RESCUE_NOT_SUPPORTED_ON_FAILURE_COHORT`; no tile/configuration sweep or automatic
+parent-first successor follows.
 
 ## P1-AMRM0 adaptive multi-view referent memory
 

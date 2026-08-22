@@ -1,6 +1,6 @@
-# P1-PA0 target candidate availability
+# P1 proposal availability: PA0 and PA1
 
-状态：`P1_PA0_TOP1_COLLAPSE_SIGNAL_ON_FAILURE_COHORT / AMRM_AND_VERIFIER_FROZEN / DEFAULT_APP_UNCHANGED`
+状态：`P1_PA1_FIXED_TILED_SCALE_RESCUE_NOT_SUPPORTED_ON_FAILURE_COHORT / AMRM_AND_VERIFIER_FROZEN / DEFAULT_APP_UNCHANGED`
 
 P1-PA0 asks only whether a correct target candidate enters an ordered pool bounded at ten candidates when the target is
 visible. Its seven cases are the post-outcome-selected visible first-poison frames from the sealed P1-AMRM0 canary, so
@@ -19,3 +19,11 @@ The frozen YOLOE-26n-seg visual-prompt arm produced Recall@1/3/5/10 of `0/7, 0/7
 two hits first appeared at ranks 9 and 10; all K were `0/7` at IoU 0.30 and 0.50. This is a weak top-1-collapse
 mechanism signal, not adequate candidate availability or a generator-selection result. See the
 [result](../../../../docs/research/goal-copilot/P1_PA0_TARGET_CANDIDATE_AVAILABILITY_RESULT_2026-08-22.md).
+
+## P1-PA1 fixed tiled rescue
+
+PA1 reused the sealed PA0 cohort/provider and changed only the input search to fixed 2x2 tiles with 20% overlap, each
+resized to 640. It retained per-tile postprocessed candidates, global dedup decisions, full rank, and bounded-K removal.
+The preregistered IoU 0.30 Recall@10 endpoint remained `0/7`, including `0/7` over the full postprocessed rank. PA0's
+five permissive-IoU absent cases were rescued `0/5`; 4x input images increased proposal volume without creating a new
+adequate target candidate. See the [PA1 result](../../../../docs/research/goal-copilot/P1_PA1_TARGET_PROPOSAL_RESCUE_RESULT_2026-08-22.md).

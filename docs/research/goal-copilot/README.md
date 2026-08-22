@@ -1,24 +1,31 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_PA0_TARGET_CANDIDATE_AVAILABILITY / TERMINAL=P1_PA0_TOP1_COLLAPSE_SIGNAL_ON_FAILURE_COHORT / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_PA1_TARGET_PROPOSAL_RESCUE / TERMINAL=P1_PA1_FIXED_TILED_SCALE_RESCUE_NOT_SUPPORTED_ON_FAILURE_COHORT / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
 
 ## 当前研究实现
 
-当前唯一 active surface 已上移到
-[`P1-PA0 target candidate availability`](../../../scripts/research/goal_copilot_bridge/p1_proposal_availability/README.md)。
-它只问 target visible 时正确 candidate 能否进入 bounded K=10 pool；输入仅为 current frame 与冻结 frame-0 target
-exemplar，GT category/instance/visibility/future bbox 只在 private evaluator 中打开。AMRM、reacquisition、identity
-selection、verifier、VLM、VIO/SLAM、geometry 与 App 全部拔除。
+当前 proposal-only 执行面已以
+[`P1-PA1 target proposal rescue`](../../../scripts/research/goal_copilot_bridge/p1_proposal_availability/README.md)
+终止，没有自动 successor。该路线只问 target visible 时正确 candidate 能否进入 bounded K=10 pool；输入仅为
+current frame 与冻结 frame-0 target exemplar，GT category/instance/visibility/future bbox 只在 private evaluator 中
+打开。AMRM、reacquisition、identity selection、verifier、VLM、VIO/SLAM、geometry 与 App 全部拔除。
 
-首个冻结 YOLOE-26n-seg visual-prompt arm 已执行，结果见
-[`P1-PA0 result`](P1_PA0_TARGET_CANDIDATE_AVAILABILITY_RESULT_2026-08-22.md)：IoU >= 0.10 的
-Recall@1/3/5/10 为 `0/7, 0/7, 0/7, 2/7`，两个正确 candidate 首次位于 rank 9/10；IoU >= 0.30 与 0.50
-在所有 K 均为 `0/7`。终态是 failure-cohort 上的弱 `TOP1_COLLAPSE_SIGNAL`，不是 proposal availability pass、
-模型选择或泛化证据。Provider 不暴露 pre-NMS raw proposals，余下 5 帧的 generation/内部 postprocess 分叉为
-`NOT_EVALUABLE_PROVIDER_INTERFACE`。
+PA1 与 sealed PA0 使用同一 YOLOE visual-prompt provider 和 7 帧 cohort，只把 full-frame 640 替换成固定
+`2x2 / 20% overlap / tile-to-640` 搜索。结果见
+[`P1-PA1 result`](P1_PA1_TARGET_PROPOSAL_RESCUE_RESULT_2026-08-22.md)：预注册的 IoU >= 0.30 Recall@10
+在 bounded pool 和完整 postprocessed rank 中均为 `0/7`，PA0 的 5 个 IoU >= 0.10 absent cases 被救回 `0/5`。
+固定 tiled zoom 增加了 4 倍输入图像和 proposal 竞争，但没有建立新的足够质量 target candidate。终态为
+`P1_PA1_FIXED_TILED_SCALE_RESCUE_NOT_SUPPORTED_ON_FAILURE_COHORT`；不在 outcome 上继续搜索 tile、overlap、
+resolution、threshold、NMS 或 K，也不自动进入 parent-first。
+
+PA0 的历史结果是：
+[`P1-PA0 result`](P1_PA0_TARGET_CANDIDATE_AVAILABILITY_RESULT_2026-08-22.md) 在 IoU >= 0.10 的
+Recall@1/3/5/10 为 `0/7, 0/7, 0/7, 2/7`，两个弱 candidate 首次位于 rank 9/10；IoU >= 0.30 与 0.50
+在所有 K 均为 `0/7`。这只是 failure-cohort 上的弱 `TOP1_COLLAPSE_SIGNAL`，不是 proposal availability pass、
+模型选择或泛化证据。
 
 ## 已关闭的 AMRM0 实验
 
