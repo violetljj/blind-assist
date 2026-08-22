@@ -220,6 +220,11 @@ class Pa3EvaluationTest(unittest.TestCase):
             write_json(prediction_path, prediction)
             with self.assertRaisesRegex(Pa3ContractError, "model identity drift"):
                 evaluate(public_path, private_path, prediction_path)
+            prediction["provider"]["model_sha256"] = EXPECTED_MODEL_SHA256
+            prediction["provider"]["text_encoder_sha256"] = "0" * 64
+            write_json(prediction_path, prediction)
+            with self.assertRaisesRegex(Pa3ContractError, "text_encoder_sha256"):
+                evaluate(public_path, private_path, prediction_path)
 
 
 class Pa3InputMaterializationTest(unittest.TestCase):

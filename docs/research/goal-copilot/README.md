@@ -1,25 +1,26 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_PA3_GOAL_SEMANTIC_PROPOSAL / OUTCOME_BLIND_IMPLEMENTATION_READY / LEGAL_COHORT_NOT_MATERIALIZED / PERFORMANCE_NOT_RUN / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_PA3_SEMANTIC_AVAILABILITY_NOT_OBSERVED / P1_FRG1_PARTIAL_FUNCTIONAL_REGION_SIGNAL_CONSUMED_DEVELOPMENT / FRESH_HIERARCHICAL_CONFIRMATION_REQUIRED / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
 
 ## 当前研究实现
 
-当前算法执行面是
-[`P1-PA3 goal-semantic proposal implementation`](P1_PA3_GOAL_SEMANTIC_PROPOSAL_IMPLEMENTATION_READY_2026-08-22.md)。
-它已经实现 C0 goal receipt → capture → later private truth 的自动哈希/时间绑定、GT-blind YOLOE text-prompt runner
-和 private Recall@1/3/5/10 evaluator。`UNIQUE/SET_VALUED` 进入 primary；`AMBIGUOUS` 只作 proposal-set diagnostic，
-不伪造 specific-referent 成败。当前合法 cohort 仍为 `0`，所以 performance 未运行，默认 App 不变。
+当前算法结果真源是
+[`P1-PA3 + FRG1 result`](P1_PA3_GOAL_SEMANTIC_AND_FUNCTIONAL_REGION_RESULT_2026-08-22.md)。合法 pre-truth
+Goal Contract 与 entrance-anchor acquisition 后得到 2 个 visible/evaluable case；YOLOE goal-semantic PA3 在
+IoU >= 0.30 的 Recall@1/3/5/10 均为 `0/2`。复用 outcome 前已冻结的 Grounding DINO functional prompt 后，
+FRG1 Recall@10 为 `1/2`，只形成 consumed-development partial signal。下一步只能是 fresh hierarchical grounding
+contract；identity verifier、AMRM 与 App 未授权。
 
 C0 真源仍是
 [`P1-PA3-C0 public Goal Contract cohort materialization`](P1_PA3_C0_PUBLIC_GOAL_CONTRACT_COHORT_MATERIALIZATION_RESULT_2026-08-22.md)。
 它不运行模型，只要求 user/product task semantics 在 capture 与 target truth 前形成 immutable public receipt，并由全局
 `goal_type -> canonical_prompt` exact mapping 派生 prompt。既有 P1-D0/PA0、Silver-B 与 Last-10m 均无法证明该
 precedence，合格 episode 为 `0`，没有历史回填。prospective intake mechanics 已就绪，但空 roster 不可 materialize，
-且任何 goal receipt 本身仍固定 `pa3_inference_authorized=false`；只有 capture/truth precedence 链完成并形成合法
-PA3 public/private input 后，才可另行授权一次正式 inference。AMRM、verifier 与 App 均未授权。
+且任何 goal receipt 本身仍固定 `pa3_inference_authorized=false`；本轮已经通过另行冻结的 run manifest 完成一次
+development inference。它不反向改变 C0 receipt 的 authority。AMRM、verifier 与 App 均未授权。
 
 PA2 后的 `Proposal–Identity Responsibility Mismatch` 只登记为有效待验证解释，不是 YOLOE instance-ReID 机制事实。
 只有合法 C0 cohort 后，PA3 才能单独测试 goal-semantic bounded candidate availability。

@@ -1,6 +1,6 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / P1_PA3_GOAL_SEMANTIC_PROPOSAL / OUTCOME_BLIND_IMPLEMENTATION_READY / LEGAL_COHORT_NOT_MATERIALIZED / PERFORMANCE_NOT_RUN / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / P1_PA3_SEMANTIC_AVAILABILITY_NOT_OBSERVED / P1_FRG1_PARTIAL_FUNCTIONAL_REGION_SIGNAL_CONSUMED_DEVELOPMENT / FRESH_HIERARCHICAL_CONFIRMATION_REQUIRED / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
@@ -11,9 +11,10 @@ capture and target truth, derives one canonical semantic prompt from a global ex
 per-episode prompt overrides plus target/category/instance/bbox/mask/referent/evaluator fields. Existing research assets
 yielded zero eligible episodes, so the prospective intake template remains empty and PA3 inference is not authorized.
 
-`p1_proposal_availability/` now also contains the PA3 algorithm surface: automated goal/capture/truth materialization,
-a GT-blind YOLOE text-prompt runner, and a private bounded-candidate evaluator. This is mechanics readiness only; no
-legal roster, model call, result, identity evaluation, or App integration exists.
+`p1_proposal_availability/` now also contains the PA3/FRG1 algorithm surface: automated goal/acquisition/truth
+materialization, GT-blind YOLOE semantic and frozen Grounding DINO functional-region runners, private bounded-candidate
+evaluators, and post-outcome anchor diagnostics. PA3 produced `0/2 @10`; FRG1 produced `1/2 @10` on the same consumed
+development cohort. No identity evaluation or App integration exists.
 
 ## P1-PA0 target candidate availability
 

@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-22（Asia/Hong_Kong）；执行者：Codex。P1-PA3 首次从合法 pre-truth product Goal Contract 落到
+  real Mapillary development cohort。station-centroid acquisition 为 `0/4 visible`，不跑模型；fresh OSM
+  entrance-anchor cohort 为 `6/7 acquired / 2 visible / 3 not-visible / 1 unadjudicable`。YOLOE goal-semantic PA3
+  在 IoU 0.30 的 Recall@1/3/5/10 均为 `0/2`；post-outcome anchor containment 为 `1/2 @1, 2/2 @3`，不改写
+  primary。复用 outcome 前冻结的 Grounding DINO functional prompt，FRG1 为 `1/2 @10`，只建立 consumed-development
+  partial functional-region signal。首次 YOLOE text call 的 MobileCLIP encoder 未在 manifest 前冻结，已如实降级且
+  runner 修为显式本地 hash gate；不重跑 consumed cohort。结果：
+  [P1-PA3 + FRG1](docs/research/goal-copilot/P1_PA3_GOAL_SEMANTIC_AND_FUNCTIONAL_REGION_RESULT_2026-08-22.md)。
+
 - 时间：2026-08-22（Asia/Hong_Kong）；执行者：Codex。完成 P1-PA3 goal-semantic proposal outcome-blind algorithm
   implementation，未运行模型。新增 C0 goal receipt → capture → later private truth 的自动时间/hash materializer、只读
   public input 的 YOLOE text-prompt runner，以及 private Recall@1/3/5/10 evaluator；保持 YOLOE-26n-seg、640、

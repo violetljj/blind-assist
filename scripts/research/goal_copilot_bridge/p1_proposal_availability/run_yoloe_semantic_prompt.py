@@ -12,6 +12,7 @@ from typing import Any
 
 from scripts.research.goal_copilot_bridge.p1_proposal_availability.pa3_semantic import (
     EXPECTED_MODEL_SHA256,
+    EXPECTED_TEXT_ENCODER_SHA256,
     EXPECTED_ULTRALYTICS_VERSION,
     PREDICTION_SCHEMA,
     PROTOCOL_ID,
@@ -39,16 +40,22 @@ def main() -> int:
     parser.add_argument("--public", required=True, type=Path)
     parser.add_argument("--prompt-map", required=True, type=Path)
     parser.add_argument("--model", required=True, type=Path)
+    parser.add_argument("--text-encoder", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--device", default="cuda:0")
     args = parser.parse_args()
-    if args.output.exists():
+    output_path = args.output.resolve()
+    model_path = args.model.resolve()
+    text_encoder_path = args.text_encoder.resolve()
+    if output_path.exists():
         raise ValueError("PA3 output already exists; refusing replay")
     public = json.loads(args.public.read_text(encoding="utf-8"))
     prompt_map = json.loads(args.prompt_map.read_text(encoding="utf-8"))
     cases = validate_public(public, prompt_map, args.public.resolve().parent)
-    if not args.model.is_file() or sha256(args.model) != EXPECTED_MODEL_SHA256:
+    if not model_path.is_file() or sha256(model_path) != EXPECTED_MODEL_SHA256:
         raise ValueError("PA3 requires the frozen PA0-PA2 YOLOE-26n-seg checkpoint")
+    if text_encoder_path.name != "mobileclip2_b.ts" or not text_encoder_path.is_file() or sha256(text_encoder_path) != EXPECTED_TEXT_ENCODER_SHA256:
+        raise ValueError("PA3 requires the frozen MobileCLIP2 text encoder")
 
     import torch
     import ultralytics
@@ -59,12 +66,17 @@ def main() -> int:
     uses_cuda = args.device.startswith("cuda")
     if uses_cuda and not torch.cuda.is_available():
         raise ValueError("requested PA3 CUDA device is unavailable")
-    model = YOLOE(str(args.model))
+    model = YOLOE(str(model_path))
     if uses_cuda:
         torch.cuda.reset_peak_memory_stats()
     outputs = []
     for case in cases:
-        model.set_classes([case["canonical_prompt"]])
+        previous_directory = Path.cwd()
+        os.chdir(text_encoder_path.parent)
+        try:
+            model.set_classes([case["canonical_prompt"]])
+        finally:
+            os.chdir(previous_directory)
         started = time.perf_counter()
         result = model.predict(
             source=str(case["image_path"]),
@@ -96,7 +108,7 @@ def main() -> int:
             ],
             "provider_postprocessed_candidate_count": len(ranked),
         })
-    atomic_json(args.output, {
+    atomic_json(output_path, {
         "schema_version": PREDICTION_SCHEMA,
         "protocol_id": PROTOCOL_ID,
         "public_input_sha256": sha256(args.public),
@@ -105,8 +117,10 @@ def main() -> int:
         "provider": {
             "name": "YOLOE-26n-seg goal-semantic text prompt",
             "ultralytics_version": ultralytics.__version__,
-            "model_path": str(args.model.resolve()),
-            "model_sha256": sha256(args.model),
+            "model_path": str(model_path),
+            "model_sha256": sha256(model_path),
+            "text_encoder_path": str(text_encoder_path),
+            "text_encoder_sha256": sha256(text_encoder_path),
             "device": args.device,
             "imgsz": IMAGE_SIZE,
             "confidence_floor": CONFIDENCE_FLOOR,

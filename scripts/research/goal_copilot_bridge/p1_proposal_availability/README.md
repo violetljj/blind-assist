@@ -47,7 +47,7 @@ The result and exact command are recorded in
 
 ## P1-PA3 goal-semantic proposal availability
 
-PA3 is outcome-blind implementation-ready but has no legal cohort and has not run. It changes only the proposal
+PA3 has now run once on a legal consumed development cohort. It changes only the proposal
 conditioning interface from a specific visual exemplar to the globally frozen semantic text prompt in a prospective,
 pre-truth Goal Contract. `materialize_pa3_inputs.py` closes the C0 goal → capture → later private truth hash/time chain;
 `run_yoloe_semantic_prompt.py` is GT-blind and keeps YOLOE-26n-seg, 640 input, 0.001 confidence floor, provider
@@ -56,6 +56,14 @@ pre-truth Goal Contract. `materialize_pa3_inputs.py` closes the C0 goal → capt
 `UNIQUE` and `SET_VALUED` enter primary Recall@1/3/5/10 at IoU 0.30. `AMBIGUOUS` is proposal-set diagnostic only and
 cannot be counted as specific-referent success/failure. Identity selection, visual exemplar fallback, per-episode prompt
 override, AMRM/verifier, model/config sweep, and cross-cohort PA2-vs-PA3 superiority claims are forbidden.
+
+Result: YOLOE semantic Recall@1/3/5/10 was `0/2` at IoU 0.30. A post-outcome anchor-containment diagnostic was
+`1/2 @1` and `2/2 @3`, which does not relabel PA3 success. The pre-existing frozen Grounding DINO functional prompt
+then produced FRG1 Recall@10 `1/2` on the same consumed cohort. See
+[`P1-PA3 + FRG1 result`](../../../../docs/research/goal-copilot/P1_PA3_GOAL_SEMANTIC_AND_FUNCTIONAL_REGION_RESULT_2026-08-22.md).
+
+Future PA3 runs must pass `--text-encoder artifacts.local/models/mobileclip2_b.ts`; the runner freezes its SHA-256 and
+loads it locally, preventing Ultralytics from downloading an unmanifested text encoder at runtime.
 
 Focused check:
 
