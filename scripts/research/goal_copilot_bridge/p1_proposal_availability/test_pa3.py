@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -305,6 +306,28 @@ class Pa3InputMaterializationTest(unittest.TestCase):
                     source_base_dir=root,
                 )
             self.assertFalse(output.exists())
+
+    def test_materializer_resolves_relative_output_receipt_paths(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            c0, capture, truth = self.inputs(root)
+            previous = Path.cwd()
+            try:
+                os.chdir(root)
+                public_path, _ = materialize_inputs(
+                    c0=c0,
+                    prompt_map=PROMPT_MAP,
+                    capture=capture,
+                    truth=truth,
+                    output_dir=Path("relative-pa3"),
+                    source_base_dir=root,
+                )
+            finally:
+                os.chdir(previous)
+            public = json.loads(public_path.read_text(encoding="utf-8"))
+            receipt_path = Path(public["cases"][0]["goal_contract"]["precedence_receipt_path"])
+            self.assertTrue(receipt_path.is_absolute())
+            self.assertTrue(receipt_path.is_file())
 
 
 if __name__ == "__main__":

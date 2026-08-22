@@ -78,6 +78,8 @@ def materialize_inputs(
     output_dir: Path,
     source_base_dir: Path,
 ) -> tuple[Path, Path]:
+    output_dir = output_dir.resolve()
+    source_base_dir = source_base_dir.resolve()
     c0_body_sha = _verify_c0_receipt(c0)
     _require(c0.get("prompt_map_sha256") == content_sha256(prompt_map), "C0 prompt-map hash mismatch")
     prompts = prompt_lookup(prompt_map)
