@@ -8,6 +8,7 @@ import unittest
 
 from .abotn_arrival_provider_canary import ARRIVE_THRESHOLD_M, build_frozen_inputs
 from .annotation import make_annotation
+from .audit_abotn_trajectory_denominator import audit as audit_abotn_trajectory_denominator
 from .audit_abotn_poibench_truth_source import classify_source, inspect_task, summarize_tasks
 from .audit_abotn_render_runtime import classify_runtime
 from .baseline import run_baseline
@@ -49,6 +50,34 @@ def authorize_native(row):
 
 
 class RealEpisodePilotTest(unittest.TestCase):
+    def test_abotn_trajectory_denominator_does_not_promote_open_loop_path(self):
+        task = {
+            "trajectory": [{"x": 3.0, "y": 0.0}, {"x": 1.0, "y": 0.0}, {"x": 0.0, "y": 0.0}],
+            "label": {"extend": {"end_point": [0.0, 0.0]}},
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            frames = []
+            for index in range(3):
+                frame_path = root / f"frame-{index}.png"
+                frame_path.write_bytes(f"frame-{index}".encode())
+                frames.append({
+                    "observation_index": index,
+                    "path": frame_path.name,
+                    "sha256": hashlib.sha256(frame_path.read_bytes()).hexdigest(),
+                })
+            pixels = {
+                "schema_version": "blindassist_abotn_webgl_trajectory_pixels_v0",
+                "terminal": "ABOTN_WEBGL_TRAJECTORY_PIXELS_PASS",
+                "frames": frames,
+            }
+            receipt = audit_abotn_trajectory_denominator(task, pixels, root)
+        self.assertEqual(1, receipt["outside_arrival_count"])
+        self.assertEqual(2, receipt["within_arrival_count"])
+        self.assertEqual(1, receipt["first_within_arrival_observation_index"])
+        self.assertEqual("NOT_EVALUABLE_OPEN_LOOP_SOURCE_TRAJECTORY", receipt["control_success"])
+        self.assertEqual(0, receipt["provider_calls"])
+
     def test_abotn_provider_envelope_keeps_metric_arrival_truth_private(self):
         task = {
             "trajectory": [

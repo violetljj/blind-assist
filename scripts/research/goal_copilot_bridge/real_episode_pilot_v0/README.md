@@ -1,6 +1,6 @@
 # Public-real episode mining + selective-guidance pilot V0
 
-状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_WEBGL_RENDER_TRANSPORT_PASS / ABOTN_PROVIDER_FIREWALL_PASS / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_WEBGL_RENDER_TRANSPORT_PASS / ABOTN_PROVIDER_FIREWALL_PASS / ABOTN_TRAJECTORY_PIXELS_PASS / OPEN_LOOP_CONTROL_NOT_EVALUABLE / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 This package automatically converts public real-world sequence metadata into goal-driven approach episodes, reuses
 frozen current-frame provider output, applies Selective Guidance V0, and evaluates only truth-supported denominators.
@@ -97,6 +97,21 @@ pixel-region truth and a closed control loop, selection, bearing, range, and arr
 python -m scripts.research.goal_copilot_bridge.real_episode_pilot_v0.abotn_arrival_provider_canary `
   --annotation <traj_0.json> --webgl-receipt <render-receipt.json> `
   --output-dir <new-output-dir> --grounding-dino <frozen-model-dir>
+```
+
+The same adapter's `--mode trajectory` freezes all source poses before rendering and materializes the complete
+trajectory without provider, teacher, or baseline calls. The sealed task produced 89/89 nondegenerate 1280x720
+frames with 89 unique hashes. `audit_abotn_trajectory_denominator.py` then verified every frame hash and evaluator-
+private endpoint distance: 75 poses are outside 2 m, 14 are within 2 m, and the first within-threshold pose is index
+75. This is a source demonstration, not a provider-controlled path, so it establishes a usable pixel/arrival
+denominator but not control success. Additional provider calls remain closed until the existing V0 action semantics
+have a renderer adapter; the expert trajectory cannot be credited to the algorithm.
+
+```powershell
+node scripts/research/goal_copilot_bridge/real_episode_pilot_v0/abotn_webgl_canary/run.mjs `
+  --mode trajectory --ply <point_cloud_rotated.ply> --annotation <traj_0.json> --output-dir <new-output-dir>
+python -m scripts.research.goal_copilot_bridge.real_episode_pilot_v0.audit_abotn_trajectory_denominator `
+  --annotation <traj_0.json> --pixel-receipt <terminal-receipt.json> --output <arrival-denominator.json>
 ```
 
 ```powershell

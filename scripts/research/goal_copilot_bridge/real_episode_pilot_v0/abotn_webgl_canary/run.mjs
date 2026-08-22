@@ -8,6 +8,7 @@ import { chromium } from 'playwright-core';
 import { PNG } from 'pngjs';
 
 const SCHEMA = 'blindassist_abotn_webgl_render_canary_v0';
+const TRAJECTORY_SCHEMA = 'blindassist_abotn_webgl_trajectory_pixels_v0';
 const DATASET_REVISION = 'fbb62cc3382d8ff84f7fe3b6a3e7d48e4c21e974';
 const RENDERER_PACKAGE = '@mkkellogg/gaussian-splats-3d';
 const RENDERER_VERSION = '0.4.7';
@@ -60,6 +61,10 @@ function inspectPly(file) {
 function cameraConfig(annotation) {
   const pose = annotation.trajectory?.[0];
   if (!pose) throw new Error('annotation has no initial trajectory pose');
+  return poseCameraConfig(pose);
+}
+
+function poseCameraConfig(pose) {
   const sourcePosition = [pose.x, pose.y, pose.z];
   const position = [pose.y, -pose.x, pose.z];
   const sourceForward = [
@@ -125,13 +130,57 @@ async function main() {
   const ply = path.resolve(args.ply);
   const annotationPath = path.resolve(args.annotation);
   const outputDir = path.resolve(args['output-dir']);
+  const trajectoryMode = args.mode === 'trajectory';
+  if (args.mode && !['initial', 'trajectory'].includes(args.mode)) throw new Error(`unsupported --mode: ${args.mode}`);
   const chrome = path.resolve(args.chrome);
   if (!fs.existsSync(chrome)) throw new Error(`Chrome executable missing: ${chrome}`);
   const annotationBytes = await fsp.readFile(annotationPath);
   const annotation = JSON.parse(annotationBytes.toString('utf8'));
   const camera = cameraConfig(annotation);
+  const trajectoryCameras = annotation.trajectory?.map((pose) => poseCameraConfig(pose)) ?? [];
+  if (trajectoryMode && trajectoryCameras.length === 0) throw new Error('annotation has no trajectory poses');
   const plyInspection = inspectPly(ply);
-  await fsp.mkdir(outputDir, { recursive: true });
+  if (trajectoryMode && fs.existsSync(outputDir)) throw new Error('trajectory output directory already exists; refusing replay');
+  await fsp.mkdir(outputDir, { recursive: !trajectoryMode });
+
+  let trajectoryManifest;
+  if (trajectoryMode) {
+    const roster = {
+      schema_version: 'blindassist_abotn_webgl_trajectory_roster_v0',
+      created_at_utc: new Date().toISOString(),
+      dataset_revision: DATASET_REVISION,
+      annotation_path: annotationPath,
+      annotation_sha256: crypto.createHash('sha256').update(annotationBytes).digest('hex'),
+      scene_path: ply,
+      scene_sha256: sha256File(ply),
+      observation_count: trajectoryCameras.length,
+      observations: trajectoryCameras.map((poseCamera, index) => ({
+        observation_id: `abotn-20260227163550-traj-0-o${String(index).padStart(3, '0')}`,
+        observation_index: index,
+        source_position: poseCamera.source_initial_position,
+        source_euler_radians: poseCamera.source_initial_euler_radians,
+        renderer_camera_position: poseCamera.camera_position,
+        renderer_camera_look_at: poseCamera.camera_look_at,
+        renderer_camera_up: poseCamera.camera_up,
+        output_path: `frames/frame-${String(index).padStart(3, '0')}.png`
+      })),
+      roster_frozen_before_render: true,
+      provider_calls_before_freeze: 0
+    };
+    await atomicWrite(path.join(outputDir, 'roster.json'), `${JSON.stringify(roster, null, 2)}\n`);
+    trajectoryManifest = {
+      schema_version: TRAJECTORY_SCHEMA,
+      created_at_utc: new Date().toISOString(),
+      status: 'ROSTER_FROZEN_RENDER_NOT_STARTED',
+      roster_sha256: sha256File(path.join(outputDir, 'roster.json')),
+      frozen_budget: { render_observations: trajectoryCameras.length },
+      renderer_private_truth_access: false,
+      provider_calls: 0,
+      teacher_calls: 0,
+      baseline_calls: 0
+    };
+    await atomicWrite(path.join(outputDir, 'manifest.json'), `${JSON.stringify(trajectoryManifest, null, 2)}\n`);
+  }
 
   const servedConfig = {
     camera_position: camera.camera_position,
@@ -191,6 +240,85 @@ async function main() {
     if (browserState.error) throw new Error(browserState.error);
     await page.evaluate(() => { window.__viewer.stop(); window.__viewer.update(); window.__viewer.render(); });
     await page.waitForTimeout(100);
+    if (trajectoryMode) {
+      const framesDir = path.join(outputDir, 'frames');
+      await fsp.mkdir(framesDir);
+      const frames = [];
+      for (let index = 0; index < trajectoryCameras.length; index += 1) {
+        const poseCamera = trajectoryCameras[index];
+        await page.evaluate(({ position, lookAt, up }) => {
+          const viewer = window.__viewer;
+          viewer.camera.position.set(...position);
+          viewer.camera.up.set(...up);
+          viewer.camera.lookAt(...lookAt);
+          viewer.camera.updateMatrixWorld(true);
+          viewer.update();
+          viewer.render();
+        }, { position: poseCamera.camera_position, lookAt: poseCamera.camera_look_at, up: poseCamera.camera_up });
+        await page.waitForTimeout(25);
+        const frameBytes = await page.screenshot({ timeout: 120000 });
+        const stats = pixelStats(frameBytes);
+        const relativePath = `frames/frame-${String(index).padStart(3, '0')}.png`;
+        await atomicWrite(path.join(outputDir, relativePath), frameBytes);
+        frames.push({
+          observation_index: index,
+          observation_id: `abotn-20260227163550-traj-0-o${String(index).padStart(3, '0')}`,
+          path: relativePath,
+          sha256: crypto.createHash('sha256').update(frameBytes).digest('hex'),
+          bytes: frameBytes.length,
+          pixel_stats: stats,
+          nondegenerate: stats.luma_stddev >= 10 && stats.black_fraction < 0.9 && stats.sampled_distinct_rgb >= 256
+        });
+        if ((index + 1) % 10 === 0 || index + 1 === trajectoryCameras.length) {
+          console.log(`rendered ${index + 1}/${trajectoryCameras.length}`);
+        }
+      }
+      const uniqueHashes = new Set(frames.map((frame) => frame.sha256)).size;
+      const gates = {
+        frozen_roster_complete: frames.length === trajectoryCameras.length,
+        canvas_1280x720: frames.every((frame) => frame.pixel_stats.width === 1280 && frame.pixel_stats.height === 720),
+        all_frames_nondegenerate: frames.every((frame) => frame.nondegenerate),
+        pose_sequence_not_pixel_constant: uniqueHashes > 1,
+        all_retained_splats_submitted: browserState.splat_count > 0 && browserState.instance_count === browserState.splat_count
+      };
+      const passed = Object.values(gates).every(Boolean);
+      const receipt = {
+        schema_version: TRAJECTORY_SCHEMA,
+        closed_at_utc: new Date().toISOString(),
+        terminal: passed ? 'ABOTN_WEBGL_TRAJECTORY_PIXELS_PASS' : 'ABOTN_WEBGL_TRAJECTORY_PIXELS_FAIL',
+        dataset: { id: 'acvlab/ABotN-POIBench', revision: DATASET_REVISION },
+        renderer: {
+          kind: 'UNOFFICIAL_WEBGL_MECHANICS_CANARY',
+          package: RENDERER_PACKAGE,
+          version: RENDERER_VERSION,
+          browser_executable: chrome,
+          browser_version: await browser.version(),
+          spherical_harmonics_degree: 0,
+          sort_backend: 'SHARED_MEMORY_CPU',
+          render_backend: browserState.webgl
+        },
+        roster_sha256: trajectoryManifest.roster_sha256,
+        observation_count: frames.length,
+        unique_frame_sha256_count: uniqueHashes,
+        frames,
+        gates,
+        console_messages: consoleMessages.filter((message) => !message.includes('favicon.ico')),
+        render_calls: frames.length,
+        provider_calls: 0,
+        teacher_calls: 0,
+        baseline_calls: 0,
+        truth_status: 'METRIC_ARRIVAL_ENDPOINT_ONLY_FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED',
+        claim_ceiling: 'UNOFFICIAL_WEBGL_TRAJECTORY_PIXEL_MATERIALIZATION_ONLY_NOT_OFFICIAL_RENDERER_EQUIVALENCE',
+        next_action: passed ? 'EVALUATE_TRAJECTORY_PIXEL_DENOMINATOR_BEFORE_ANY_PROVIDER_CALL' : 'STOP_AND_DIAGNOSE_RENDERED_PIXEL_COHORT'
+      };
+      await atomicWrite(path.join(outputDir, 'terminal-receipt.json'), `${JSON.stringify(receipt, null, 2)}\n`);
+      trajectoryManifest.status = passed ? 'SEALED_TRAJECTORY_PIXELS_PASS' : 'SEALED_TRAJECTORY_PIXELS_FAIL';
+      trajectoryManifest.terminal_receipt_sha256 = sha256File(path.join(outputDir, 'terminal-receipt.json'));
+      await atomicWrite(path.join(outputDir, 'manifest.json'), `${JSON.stringify(trajectoryManifest, null, 2)}\n`);
+      console.log(JSON.stringify({ terminal: receipt.terminal, observation_count: frames.length, unique_frame_sha256_count: uniqueHashes, gates }, null, 2));
+      if (!passed) process.exitCode = 2;
+      return;
+    }
     const png = await page.screenshot({ timeout: 120000 });
     const stats = pixelStats(png);
     const screenshotPath = path.join(outputDir, 'initial_view.png');

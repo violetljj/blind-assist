@@ -5018,3 +5018,15 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
 - 初始 evaluator-private 距离为 12.4228 m，状态 `NOT_ARRIVED`；因没有 functional entrance pixel truth、range
   independence 或闭环动作，selection/bearing/range/arrival success 全部保持 `NOT_EVALUABLE`。本次
   provider/teacher/baseline calls=`1/0/0`，不建立 grounding、navigation、arrival、算法、P1 或默认 App claim。
+
+# 2026-08-23 ABotN frozen trajectory pixel denominator
+
+- 在任何新增 provider call 前冻结同一 `traj_0` 的 89-pose roster；unofficial WebGL adapter 一次装载 scene 后物化
+  89/89 个 1280×720 frame，SHA-256 89/89 唯一，最低 luma stddev=33.16、最低 sampled RGB=13,213，全部
+  nondegenerate gate 通过，总 payload 85,011,798 bytes。
+- evaluator-private endpoint 审计逐一重算 89 个 frame hash 与 pose distance：75 个 pose 在 2 m 外、14 个在 2 m 内，
+  首个 arrival-domain index=75，最终距离 0.0225 m，88/88 transition 距离单调不增。
+- 该 trajectory 是 source demonstration，不由 V0 action 控制；因此 terminal 为
+  `ABOTN_TRAJECTORY_ARRIVAL_DENOMINATOR_PRESENT_OPEN_LOOP_CONTROL_NOT_EVALUABLE`。本段 render/provider/teacher/
+  baseline calls=`89/0/0/0`；不把 expert path 记为算法 arrival，新增 provider call 在既有 V0 action-to-renderer
+  adapter 存在前保持关闭。
