@@ -17,7 +17,7 @@ from scripts.research.goal_copilot_bridge.p0_s0_materialization.run_grounding_di
 from scripts.research.goal_copilot_bridge.p1_proposal_availability.pa3_semantic import sha256
 
 
-def run(public_path: Path, model_dir: Path, output_path: Path, device: str) -> dict:
+def run(public_path: Path, model_dir: Path, output_path: Path, device: str, role: str = "DEVELOPMENT_ONLY") -> dict:
     _require(not output_path.exists(), "public DINO development output already exists")
     public = _read(public_path)
     weight = model_dir / WEIGHTS_FILENAME
@@ -41,7 +41,8 @@ def run(public_path: Path, model_dir: Path, output_path: Path, device: str) -> d
         candidates = sorted(({"bbox_xyxy": [float(value) for value in box.detach().cpu().tolist()], "score": float(score.detach().cpu()), "label": str(label)} for box, score, label in zip(result["boxes"], result["scores"], labels)), key=lambda row: (-row["score"], row["bbox_xyxy"]))[:MAX_DINO_CANDIDATES]
         rows.append({"case_id": case["case_id"], "image_width": image.width, "image_height": image.height, "dino_candidates": candidates})
         print(f"dino-public {len(rows)}/{len(public['cases'])} case={case['case_id']} candidates={len(candidates)}", flush=True)
-    payload = {"schema_version": "blindassist_dino_public_development_run_v1", "created_at_utc": datetime.now(timezone.utc).isoformat(), "role": "DEVELOPMENT_ONLY", "public_sha256": sha256(public_path), "private_truth_access": False, "provider": {"repository": MODEL_REPOSITORY, "revision": MODEL_REVISION, "weights_sha256": WEIGHTS_SHA256, "prompt": PROMPT, "box_threshold": BOX_THRESHOLD, "text_threshold": TEXT_THRESHOLD, "device": device}, "cases": rows}
+    _require(role in {"DEVELOPMENT_ONLY", "CONFIRMATION_ONLY"}, "invalid public DINO role")
+    payload = {"schema_version": "blindassist_dino_public_development_run_v1", "created_at_utc": datetime.now(timezone.utc).isoformat(), "role": role, "public_sha256": sha256(public_path), "private_truth_access": False, "provider": {"repository": MODEL_REPOSITORY, "revision": MODEL_REVISION, "weights_sha256": WEIGHTS_SHA256, "prompt": PROMPT, "box_threshold": BOX_THRESHOLD, "text_threshold": TEXT_THRESHOLD, "device": device}, "cases": rows}
     _atomic_json(output_path, payload)
     return payload
 
@@ -52,8 +53,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--model-dir", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--device", default="cuda:0")
+    parser.add_argument("--role", choices=("DEVELOPMENT_ONLY", "CONFIRMATION_ONLY"), default="DEVELOPMENT_ONLY")
     args = parser.parse_args(argv)
-    result = run(args.public, args.model_dir, args.output, args.device)
+    result = run(args.public, args.model_dir, args.output, args.device, args.role)
     print(json.dumps({"case_count": len(result["cases"])}, indent=2))
     return 0
 

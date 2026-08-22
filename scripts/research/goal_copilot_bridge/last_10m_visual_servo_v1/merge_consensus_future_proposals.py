@@ -65,7 +65,7 @@ def main() -> int:
     payload = {
         "schema_version": "blindassist_future_consensus_proposals_v1",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
-        "role": "DEVELOPMENT_ONLY",
+        "role": public.get("role"),
         "private_truth_access": False,
         "public_sha256": public_hash,
         "merge": {"provider_priority": [name for name, _, _ in providers], "consensus_iou": CONSENSUS_IOU, "max_candidates": MAX_CANDIDATES},

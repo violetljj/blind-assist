@@ -35,6 +35,7 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--confidence", type=float, default=0.001)
+    parser.add_argument("--role", choices=("DEVELOPMENT_ONLY", "CONFIRMATION_ONLY"), default="DEVELOPMENT_ONLY")
     args = parser.parse_args()
     _require(not args.output.exists(), "public door proposal output already exists")
     public = _read(args.public)
@@ -66,7 +67,7 @@ def main() -> int:
     payload = {
         "schema_version": "blindassist_public_door_proposal_development_v1",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
-        "role": "DEVELOPMENT_ONLY",
+        "role": args.role,
         "private_truth_access": False,
         "public_sha256": sha256(args.public),
         "provider": {"model_path": str(args.model.resolve()), "model_sha256": sha256(args.model), "model_task": model.task, "door_class_id": door_ids[0], "confidence": args.confidence, "device": args.device},
