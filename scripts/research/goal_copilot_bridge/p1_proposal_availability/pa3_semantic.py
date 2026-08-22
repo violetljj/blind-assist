@@ -27,6 +27,11 @@ EXPECTED_PROVIDER_CONFIGURATION = {
     "threshold_or_configuration_sweep": False,
 }
 REFERENCE_MODES = {"UNIQUE", "SET_VALUED", "AMBIGUOUS"}
+TARGET_VISIBILITY_STATES = {"VISIBLE", "NOT_VISIBLE", "UNADJUDICABLE"}
+PRECEDENCE_MODES = {
+    "PHYSICAL_CAPTURE_AFTER_GOAL",
+    "GOAL_BEFORE_FIRST_PROJECT_PIXEL_ACCESS_AND_TRUTH",
+}
 FORBIDDEN_PUBLIC_KEYS = {
     "target_bbox_xyxy",
     "target_bboxes_xyxy",
@@ -136,12 +141,18 @@ def private_truth_body(private: Mapping[str, Any]) -> dict[str, Any]:
 def validate_precedence_receipt(receipt: Mapping[str, Any], expected_body_sha256: str) -> None:
     _require(receipt.get("schema_version") == PRECEDENCE_SCHEMA, "precedence receipt schema mismatch")
     _require(receipt.get("goal_receipt_body_sha256") == expected_body_sha256, "goal receipt body hash mismatch")
-    _require(receipt.get("created_before_capture") is True, "goal-before-capture is not confirmed")
+    precedence_mode = receipt.get("precedence_mode", "PHYSICAL_CAPTURE_AFTER_GOAL")
+    _require(precedence_mode in PRECEDENCE_MODES, "precedence mode is invalid")
+    if precedence_mode == "PHYSICAL_CAPTURE_AFTER_GOAL":
+        _require(receipt.get("created_before_capture") is True, "goal-before-capture is not confirmed")
+    else:
+        _require(receipt.get("created_before_project_pixel_access") is True, "goal-before-project-pixel-access is not confirmed")
+        _require(receipt.get("physical_capture_after_goal_claimed") is False, "public-source cohort must not claim post-goal physical capture")
     _require(receipt.get("created_before_truth") is True, "goal-before-truth is not confirmed")
     goal_at = _utc_timestamp(receipt.get("goal_recorded_at_utc"), "goal_recorded_at_utc")
     capture_at = _utc_timestamp(receipt.get("capture_created_at_utc"), "capture_created_at_utc")
     truth_at = _utc_timestamp(receipt.get("truth_created_at_utc"), "truth_created_at_utc")
-    _require(goal_at < capture_at, "goal timestamp does not precede capture")
+    _require(goal_at < capture_at, "goal timestamp does not precede capture/access")
     _require(goal_at < truth_at, "goal timestamp does not precede truth")
     private_hash = _text(receipt.get("private_truth_body_sha256"), "private_truth_body_sha256")
     _require(len(private_hash) == 64 and all(character in "0123456789abcdef" for character in private_hash), "private truth hash must be lowercase SHA-256")
@@ -243,13 +254,17 @@ def evaluate(public_path: Path, private_path: Path, prediction_path: Path) -> di
         target = truth[case_id]
         mode = _text(target.get("reference_mode"), f"{case_id} reference_mode")
         _require(mode in REFERENCE_MODES, f"{case_id} reference_mode invalid")
+        visibility = _text(target.get("target_visibility", "VISIBLE"), f"{case_id} target_visibility")
+        _require(visibility in TARGET_VISIBILITY_STATES, f"{case_id} target_visibility invalid")
         public_mode = next(case["goal_contract"]["reference_mode"] for case in public["cases"] if case["case_id"] == case_id)
         _require(mode == public_mode, f"{case_id} public/private reference mode mismatch")
         target_boxes = [validated_box(box, f"{case_id} target") for box in target.get("legal_target_bboxes_xyxy", [])]
-        if mode == "UNIQUE":
+        if visibility == "VISIBLE" and mode == "UNIQUE":
             _require(len(target_boxes) == 1, f"{case_id} UNIQUE requires exactly one legal target")
-        else:
+        elif visibility == "VISIBLE":
             _require(bool(target_boxes), f"{case_id} requires at least one legal target")
+        else:
+            _require(not target_boxes, f"{case_id} non-visible target must not carry target boxes")
         candidates = predicted[case_id].get("candidates", [])
         _require(isinstance(candidates, list) and len(candidates) <= 10, f"{case_id} candidate cap exceeded")
         _require([candidate.get("rank") for candidate in candidates] == list(range(1, len(candidates) + 1)), f"{case_id} candidate ranks are not contiguous")
@@ -273,14 +288,15 @@ def evaluate(public_path: Path, private_path: Path, prediction_path: Path) -> di
         rows.append({
             "case_id": case_id,
             "reference_mode": mode,
-            "primary_evaluable": mode != "AMBIGUOUS",
+            "target_visibility": visibility,
+            "primary_evaluable": mode != "AMBIGUOUS" and visibility == "VISIBLE",
             "candidate_count": len(candidates),
             "legal_target_count": len(target_boxes),
             "any_legal_first_rank": any_first_rank,
             "legal_target_recall_at_10": {
                 str(threshold): sum(
                     ranks[str(threshold)] is not None and ranks[str(threshold)] <= 10 for ranks in target_first_ranks
-                ) / len(target_first_ranks)
+                ) / len(target_first_ranks) if target_first_ranks else None
                 for threshold in thresholds
             },
             "best_iou_by_legal_target": target_best_ious,
@@ -314,7 +330,9 @@ def evaluate(public_path: Path, private_path: Path, prediction_path: Path) -> di
         },
         "case_count": len(rows),
         "primary_evaluable_case_count": len(evaluable),
-        "ambiguous_diagnostic_case_count": len(rows) - len(evaluable),
+        "ambiguous_diagnostic_case_count": sum(row["reference_mode"] == "AMBIGUOUS" for row in rows),
+        "target_not_visible_case_count": sum(row["target_visibility"] == "NOT_VISIBLE" for row in rows),
+        "unadjudicable_case_count": sum(row["target_visibility"] == "UNADJUDICABLE" for row in rows),
         "primary_iou_threshold": thresholds[0],
         "candidate_availability": recall,
         "rows": rows,

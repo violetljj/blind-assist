@@ -16,6 +16,8 @@ from scripts.research.goal_copilot_bridge.p1_proposal_availability.pa3_semantic 
     PROTOCOL_ID,
     PUBLIC_SCHEMA,
     Pa3ContractError,
+    TARGET_VISIBILITY_STATES,
+    PRECEDENCE_MODES,
     content_sha256,
     private_truth_body,
     prompt_lookup,
@@ -82,6 +84,10 @@ def materialize_inputs(
     _require(capture.get("schema_version") == CAPTURE_SCHEMA, "capture manifest schema mismatch")
     _require(truth.get("schema_version") == TRUTH_SCHEMA, "truth body schema mismatch")
     _require(not output_dir.exists(), "PA3 materialization output already exists")
+    precedence_mode = capture.get("precedence_mode", "PHYSICAL_CAPTURE_AFTER_GOAL")
+    _require(precedence_mode in PRECEDENCE_MODES, "capture precedence mode invalid")
+    if precedence_mode == "GOAL_BEFORE_FIRST_PROJECT_PIXEL_ACCESS_AND_TRUTH":
+        _require(capture.get("physical_capture_after_goal_claimed") is False, "public-source capture must not claim post-goal physical capture")
 
     c0_episodes = c0.get("episodes", [])
     goals = {episode["episode_id"]: episode for episode in c0_episodes}
@@ -123,6 +129,9 @@ def materialize_inputs(
         _require(isinstance(goal_provenance, Mapping) and isinstance(contract, Mapping), f"{case_id} C0 goal is incomplete")
         goal_recorded_text = _text(goal_provenance.get("goal_recorded_at_utc"), f"{case_id} goal_recorded_at_utc")
         capture_created_text = _text(captured.get("capture_created_at_utc"), f"{case_id} capture_created_at_utc")
+        if precedence_mode == "GOAL_BEFORE_FIRST_PROJECT_PIXEL_ACCESS_AND_TRUTH":
+            _require(captured.get("capture_time_semantics") == "FIRST_PROJECT_PIXEL_ACCESS_NOT_PHYSICAL_CAMERA_CAPTURE", f"{case_id} pixel-access time semantics mismatch")
+            _timestamp(captured.get("source_captured_at_utc"), f"{case_id} source_captured_at_utc")
         goal_recorded_at = _timestamp(goal_recorded_text, f"{case_id} goal_recorded_at_utc")
         capture_created_at = _timestamp(capture_created_text, f"{case_id} capture_created_at_utc")
         _require(goal_recorded_at < capture_created_at, f"{case_id} goal does not precede capture")
@@ -139,12 +148,18 @@ def materialize_inputs(
         _require(goal.get("canonical_prompt") == prompts[goal_type], f"{case_id} C0 canonical prompt drift")
         reference_mode = _text(contract.get("reference_mode"), f"{case_id} reference_mode")
         _require(truth_by_case[case_id].get("reference_mode") == reference_mode, f"{case_id} public/private reference mode mismatch")
+        visibility = _text(truth_by_case[case_id].get("target_visibility", "VISIBLE"), f"{case_id} target_visibility")
+        _require(visibility in TARGET_VISIBILITY_STATES, f"{case_id} target_visibility invalid")
         legal_boxes = truth_by_case[case_id].get("legal_target_bboxes_xyxy")
-        _require(isinstance(legal_boxes, list) and bool(legal_boxes), f"{case_id} legal target set must be non-empty")
+        _require(isinstance(legal_boxes, list), f"{case_id} legal target boxes must be a list")
         for index, box in enumerate(legal_boxes):
             validated_box(box, f"{case_id} legal target {index}")
-        if reference_mode == "UNIQUE":
+        if visibility == "VISIBLE" and reference_mode == "UNIQUE":
             _require(len(legal_boxes) == 1, f"{case_id} UNIQUE requires exactly one legal target")
+        elif visibility == "VISIBLE":
+            _require(bool(legal_boxes), f"{case_id} visible legal target set must be non-empty")
+        else:
+            _require(not legal_boxes, f"{case_id} non-visible target must not carry target boxes")
         receipt_path = output_dir / "precedence" / f"{case_id}.json"
         receipt = {
             "schema_version": PRECEDENCE_SCHEMA,
@@ -154,7 +169,10 @@ def materialize_inputs(
             "goal_recorded_at_utc": goal_recorded_text,
             "capture_created_at_utc": capture_created_text,
             "truth_created_at_utc": truth_created_text,
-            "created_before_capture": True,
+            "precedence_mode": precedence_mode,
+            "created_before_capture": precedence_mode == "PHYSICAL_CAPTURE_AFTER_GOAL",
+            "created_before_project_pixel_access": precedence_mode == "GOAL_BEFORE_FIRST_PROJECT_PIXEL_ACCESS_AND_TRUTH",
+            "physical_capture_after_goal_claimed": capture.get("physical_capture_after_goal_claimed", precedence_mode == "PHYSICAL_CAPTURE_AFTER_GOAL"),
             "created_before_truth": True,
             "capture_manifest_body_sha256": content_sha256(capture),
             "private_truth_body_sha256": truth_body_sha,

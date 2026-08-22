@@ -135,6 +135,7 @@ class Pa3EvaluationTest(unittest.TestCase):
                     {"case_id": "unique", "goal_contract": {"reference_mode": "UNIQUE"}},
                     {"case_id": "set", "goal_contract": {"reference_mode": "SET_VALUED"}},
                     {"case_id": "ambiguous", "goal_contract": {"reference_mode": "AMBIGUOUS"}},
+                    {"case_id": "not-visible", "goal_contract": {"reference_mode": "SET_VALUED"}},
                 ],
             }
             write_json(public_path, public)
@@ -149,12 +150,13 @@ class Pa3EvaluationTest(unittest.TestCase):
                     {"case_id": "unique", "reference_mode": "UNIQUE", "legal_target_bboxes_xyxy": [[0, 0, 10, 10]]},
                     {"case_id": "set", "reference_mode": "SET_VALUED", "legal_target_bboxes_xyxy": [[20, 20, 30, 30], [40, 40, 50, 50]]},
                     {"case_id": "ambiguous", "reference_mode": "AMBIGUOUS", "legal_target_bboxes_xyxy": [[60, 60, 70, 70]]},
+                    {"case_id": "not-visible", "reference_mode": "SET_VALUED", "target_visibility": "NOT_VISIBLE", "legal_target_bboxes_xyxy": []},
                 ],
             }
             write_json(private_path, private)
             body_sha = content_sha256(private_truth_body(private))
             receipts = {}
-            for case_id in ("unique", "set", "ambiguous"):
+            for case_id in ("unique", "set", "ambiguous", "not-visible"):
                 receipt_path = root / f"{case_id}-precedence.json"
                 write_json(receipt_path, {
                     "schema_version": "blindassist_p1_pa3_goal_truth_precedence_receipt_v1",
@@ -196,6 +198,7 @@ class Pa3EvaluationTest(unittest.TestCase):
                         {"rank": 1, "bbox_xyxy": [40, 40, 50, 50]},
                     ]},
                     {"case_id": "ambiguous", "latency_ms": 5.0, "candidates": []},
+                    {"case_id": "not-visible", "latency_ms": 2.0, "candidates": []},
                 ],
             }
             write_json(prediction_path, prediction)
@@ -204,6 +207,7 @@ class Pa3EvaluationTest(unittest.TestCase):
 
             self.assertEqual(2, result["primary_evaluable_case_count"])
             self.assertEqual(1, result["ambiguous_diagnostic_case_count"])
+            self.assertEqual(1, result["target_not_visible_case_count"])
             self.assertEqual(0.5, result["candidate_availability"]["recall_at_1"])
             self.assertEqual(1.0, result["candidate_availability"]["recall_at_3"])
             self.assertEqual("P1_PA3_FULL_BOUNDED_SEMANTIC_TARGET_AVAILABILITY_ON_COHORT", result["terminal"])
