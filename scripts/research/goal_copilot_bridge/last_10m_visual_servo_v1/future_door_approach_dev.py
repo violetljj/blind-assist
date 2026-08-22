@@ -57,7 +57,8 @@ def match_target(previous: dict, candidates: list[dict], width: int, height: int
 
 def approach_summary(track: list[dict]) -> dict:
     start = track[0]
-    min_depth = min(item["depth_median_m"] for item in track)
+    closest = min(track, key=lambda item: item["depth_median_m"])
+    min_depth = closest["depth_median_m"]
     max_area = max(item["pixel_count"] for item in track)
     depth_reduction = start["depth_median_m"] - min_depth
     depth_ratio = min_depth / start["depth_median_m"]
@@ -77,6 +78,9 @@ def approach_summary(track: list[dict]) -> dict:
         "tracked_steps": len(track),
         "start_depth_m": start["depth_median_m"],
         "future_min_depth_m": min_depth,
+        "closest_frame_id": closest.get("frame_id"),
+        "closest_target_bbox_xyxy": closest["bbox_xyxy"],
+        "closest_target_pixel_count": closest["pixel_count"],
         "depth_reduction_m": depth_reduction,
         "depth_ratio": depth_ratio,
         "area_growth": area_growth,

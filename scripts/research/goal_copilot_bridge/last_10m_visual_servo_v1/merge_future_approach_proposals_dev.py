@@ -19,7 +19,12 @@ NMS_IOU = 0.70
 def normalized_candidates(case: dict) -> list[dict]:
     raw = case.get("candidates", case.get("dino_candidates", []))
     return [
-        {"bbox_xyxy": row["bbox_xyxy"], "source_score": float(row.get("proposal_score", row.get("score", 0.0))), "source_rank": index}
+        {
+            "bbox_xyxy": row["bbox_xyxy"],
+            "source_score": float(row.get("proposal_score", row.get("score", 0.0))),
+            "source_rank": index,
+            **({"source_mask_depth_p20_m": float(row["mask_depth_p20_m"])} if row.get("mask_depth_p20_m") is not None else {}),
+        }
         for index, row in enumerate(raw, start=1)
     ]
 

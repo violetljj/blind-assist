@@ -18,6 +18,7 @@ def test_approach_requires_depth_and_area_evidence():
     summary = approach_summary(track)
     assert summary["approached"] is True
     assert summary["demonstrated_action"] == "ADVANCE"
+    assert summary["closest_target_bbox_xyxy"] == track[-1]["bbox_xyxy"]
 
 
 def test_lateral_target_maps_to_turn():
