@@ -72,23 +72,23 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--diagnostic", type=Path, action="append", required=True)
     parser.add_argument("--trajectory-root", type=Path, action="append", required=True)
-    parser.add_argument("--label-zip", type=Path, required=True)
+    parser.add_argument("--label-zip", type=Path, action="append", required=True)
     parser.add_argument("--payload-root", type=Path, required=True)
     parser.add_argument("--public", type=Path, required=True)
     parser.add_argument("--private", type=Path, required=True)
     parser.add_argument("--role", choices=("DEVELOPMENT_ONLY", "CONFIRMATION_ONLY"), required=True)
     parser.add_argument("--case-prefix", required=True)
     args = parser.parse_args()
-    _require(len(args.diagnostic) == len(args.trajectory_root), "diagnostic/trajectory source count mismatch")
+    _require(len(args.diagnostic) == len(args.trajectory_root) == len(args.label_zip), "diagnostic/trajectory/label source count mismatch")
     _require(not any(path.exists() for path in (args.payload_root, args.public, args.private)), "TartanGround servo cohort already exists")
     args.payload_root.mkdir(parents=True)
-    door_id = semantic_id(args.label_zip, "door")
     public_cases, private_cases, receipts = [], [], []
     case_index = 0
-    for diagnostic_path, trajectory_root in zip(args.diagnostic, args.trajectory_root, strict=True):
+    for diagnostic_path, trajectory_root, label_zip in zip(args.diagnostic, args.trajectory_root, args.label_zip, strict=True):
         diagnostic = _read(diagnostic_path)
         environment, trajectory = diagnostic["environment"], diagnostic["trajectory"]
         _require(trajectory_root.name == trajectory, "TartanGround trajectory root mismatch")
+        door_id = semantic_id(label_zip, "door")
         paths = {name: trajectory_root / f"{name}_lcam_front.zip" for name in ("image", "depth", "seg")}
         metadata_path = trajectory_root / "metadata.zip"
         with zipfile.ZipFile(paths["image"]) as image_zip, zipfile.ZipFile(paths["depth"]) as depth_zip, zipfile.ZipFile(paths["seg"]) as seg_zip, zipfile.ZipFile(metadata_path) as metadata_zip:
@@ -138,6 +138,7 @@ def main() -> int:
             "trajectory": trajectory,
             "diagnostic_sha256": file_hash(diagnostic_path),
             "metadata_zip_sha256": file_hash(metadata_path),
+            "label_zip_sha256": file_hash(label_zip),
             "independent_event_count": len(cluster_events(diagnostic["episodes"])),
         })
     created = datetime.now(timezone.utc).isoformat()
