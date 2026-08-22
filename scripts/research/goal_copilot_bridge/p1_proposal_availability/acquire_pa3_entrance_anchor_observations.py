@@ -89,9 +89,11 @@ def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dic
 
     resolved = []
     radius = int(plan["entrance_anchor"]["search_radius_m"])
+    overpass_endpoint = str(plan["entrance_anchor"].get("endpoint", "https://overpass-api.de/api/interpreter"))
+    _require(overpass_endpoint.startswith("https://"), "Overpass endpoint must use HTTPS")
     for index, place in enumerate(place_anchors):
         query = f'[out:json][timeout:25];node(around:{radius},{place["lat"]},{place["lon"]})["entrance"];out body;'
-        response = public_session.post("https://overpass-api.de/api/interpreter", data={"data": query}, timeout=90)
+        response = public_session.post(overpass_endpoint, data={"data": query}, timeout=90)
         response.raise_for_status()
         raw = response.json().get("elements", [])
         entrance = resolve_entrance(raw, place)
