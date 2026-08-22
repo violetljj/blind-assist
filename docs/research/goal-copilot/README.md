@@ -1,11 +1,19 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PROSPECTIVE_FIRST_PERSON_DEVICE_RECORDER_READY / PA3_DENOMINATOR_GATE_ENFORCED / REAL_DEVICE_COHORT_NOT_CAPTURED / PA3_INFERENCE_NOT_AUTHORIZED / IDENTITY_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / AUTOMATED_PUBLIC_COHORT_MATERIALIZED / GENERIC_DOOR_PA3_PARTIAL / ENTRANCE_CONFIRMATION_NOT_EVALUABLE / IDENTITY_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
 
 ## 当前研究实现
+
+最新自动化结果真源是
+[`P1-PA3 automated public-dataset cohort result`](P1_PA3_AUTOMATED_PUBLIC_DATASET_RESULT_2026-08-22.md)。它不要求用户
+现场采集、选图或标 truth：24 个 `帮我找入口` Goal Contract 先于项目 pixel/truth access 冻结，再由公开文件树按 path hash
+固定 roster。DeepDoors2 因官方 label-color 声明与实际 mask 不符 fail closed；DoorDetect 的 24-case successor 自动建立
+`8` 个 visible case，执行一次固定 YOLOE 后得到 IoU `0.30` 的 Recall@1/3/5/10 = `4/8, 4/8, 4/8, 5/8`。
+该结果只建立 generic room-door proposal mechanics；它不把 room-door truth 偷换成 outdoor building-entrance confirmation，
+也不授权 identity、AMRM 或 App。
 
 当前算法基础设施结果真源是
 [`P1 PA3 execution-gate hardening result`](P1_PA3_EXECUTION_GATE_HARDENING_RESULT_2026-08-22.md)。physical capture manifest
@@ -14,16 +22,16 @@ denominator 同时达到 `>=5 visible episodes / >=8 visible frames` 才能生�
 YOLOE runner 在授权前不能导入 provider，失败或中断后禁止 replay；evaluator 也只接收完成 journal 绑定的 prediction。
 
 设备 producer 仍由 [`P1 prospective device recorder result`](P1_PROSPECTIVE_DEVICE_RECORDER_IMPLEMENTATION_RESULT_2026-08-22.md)
-定义。本机检查到 Android SDK/ADB 正常，但 `0` 个 ready device、`0` 个 AVD，因此真实 cohort 尚未采集；provider calls
-仍为 `0`，PA3 不授权，默认 App 未改动。
+定义，但它不是建立合法 PA3 输入的唯一来源。公开数据只要证明 Goal Contract 先于本项目首次 pixel/truth access，并保持
+provider/evaluator 隔离，也可全自动 materialize；不能再把无 ready Android device 写成人工采集 blocker。
 
 当前 observation evidence 真源仍是
 [`P1-PA3-S0v3 public spatial candidate-set result`](P1_PA3_S0V3_PUBLIC_SPATIAL_CANDIDATE_SET_RESULT_2026-08-22.md)。
 12 个 fresh product goals 与 public spatial candidate set 均在 metadata/pixel/truth/provider 前冻结；统一采集物化
 8 个 episode、22 帧，private pre-provider truth 得到 `6` 个 visible episodes、`7` 个 visible frames。由于预注册
-authorization 同时要求 `5/8`，frame denominator 差 1，PA3 以零模型调用判为 `NOT_EVALUABLE`。不得把它写成
-YOLOE 负结果，也不得继续 retrospective Mapillary resampling；唯一 successor 是 prospective、明确面向目标入口的
-第一视角 Goal Contract cohort。
+authorization 同时要求 `5/8`，frame denominator 差 1，S0v3 以零模型调用判为 `NOT_EVALUABLE`。不得把它写成
+YOLOE 负结果，也不得继续 retrospective Mapillary resampling。其“唯一 successor 是 physical capture”的表述现已纠正：
+successor 必须 goal-before-project-pixel/truth 且 target semantics 合法，但 acquisition 可以是自动公开数据，不要求用户采集。
 
 其前一个算法结果是
 [`P1-HRG2 fresh public-anchor global-local reranking result`](P1_HRG2_FRESH_PUBLIC_ANCHOR_GLOBAL_LOCAL_RERANKING_RESULT_2026-08-22.md)。

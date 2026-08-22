@@ -189,7 +189,11 @@ def materialize_inputs(
         capture_created_text = _text(captured.get("capture_created_at_utc"), f"{case_id} capture_created_at_utc")
         if precedence_mode == "GOAL_BEFORE_FIRST_PROJECT_PIXEL_ACCESS_AND_TRUTH":
             _require(captured.get("capture_time_semantics") == "FIRST_PROJECT_PIXEL_ACCESS_NOT_PHYSICAL_CAMERA_CAPTURE", f"{case_id} pixel-access time semantics mismatch")
-            _timestamp(captured.get("source_captured_at_utc"), f"{case_id} source_captured_at_utc")
+            source_capture_time_semantics = captured.get("source_capture_time_semantics")
+            if source_capture_time_semantics == "UNKNOWN_PREEXISTING_PUBLIC_DATASET_CAPTURE":
+                _require("source_captured_at_utc" not in captured, f"{case_id} unknown source capture time must not be fabricated")
+            else:
+                _timestamp(captured.get("source_captured_at_utc"), f"{case_id} source_captured_at_utc")
         else:
             _require(captured.get("capture_time_semantics") == PHYSICAL_CAPTURE_TIME_SEMANTICS, f"{case_id} physical capture time semantics mismatch")
             _require(captured.get("frame_selection_rule") == PHYSICAL_FRAME_SELECTION_RULE, f"{case_id} physical frame-selection rule drift")
