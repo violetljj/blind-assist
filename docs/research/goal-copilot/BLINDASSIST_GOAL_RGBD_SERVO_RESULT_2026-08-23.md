@@ -102,4 +102,3 @@ generic “沿当前路线”
 - `run_goal_rgbd_servo.py` / `evaluate_goal_rgbd_servo.py`：public RGB-D candidate action 与 positive-only evaluator。
 
 Claim ceiling：`PUBLIC_GOAL_SEMANTIC_PROPOSAL_AVAILABILITY_CONFIRMED; ROUTE_IDENTITY_AND_CLOSED_LOOP_SERVO_NOT_ESTABLISHED`。
-
