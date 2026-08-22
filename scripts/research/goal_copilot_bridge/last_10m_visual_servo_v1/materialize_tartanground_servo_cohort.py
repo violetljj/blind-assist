@@ -51,15 +51,16 @@ def read_poses(metadata_zip: zipfile.ZipFile) -> np.ndarray:
     return values
 
 
-def route_plan(poses: np.ndarray, frame: int) -> dict:
+def route_plan(poses: np.ndarray, frame: int, waypoint_frame: int | None = None) -> dict:
     current = min(frame, len(poses) - 1)
-    waypoint = min(frame + ROUTE_LOOKAHEAD_FRAMES, len(poses) - 1)
+    waypoint = min(frame + ROUTE_LOOKAHEAD_FRAMES if waypoint_frame is None else waypoint_frame, len(poses) - 1)
     displacement_world = poses[waypoint, :3] - poses[current, :3]
     displacement_body = Rotation.from_quat(poses[current, 3:7]).inv().apply(displacement_world)
     yaw = math.atan2(float(displacement_body[1]), max(float(displacement_body[0]), 1e-6))
     bearing_fraction = min(1.0, max(0.0, 0.5 + yaw / (math.pi / 2.0)))
     return {
-        "source": "PREDECLARED_DIFF_DRIVE_REPLAY_WAYPOINT",
+        "source": "PREDECLARED_EPISODE_STABLE_DIFF_DRIVE_WAYPOINT",
+        "waypoint_frame_id": waypoint,
         "lookahead_frames": ROUTE_LOOKAHEAD_FRAMES,
         "lookahead_seconds": 3.0,
         "bearing_fraction": bearing_fraction,
@@ -95,6 +96,8 @@ def main() -> int:
             poses = read_poses(metadata_zip)
             clusters = cluster_events(diagnostic["episodes"])
             for cluster in clusters:
+                route_anchor = min(row["start_frame_id"] for row in cluster)
+                route_waypoint = min(route_anchor + ROUTE_LOOKAHEAD_FRAMES, len(poses) - 1)
                 for phase in servo_phases(cluster):
                     case_index += 1
                     case_id = f"{args.case_prefix}-{case_index:03d}"
@@ -130,7 +133,7 @@ def main() -> int:
                         "goal_contract_provenance": {"created_before_target_truth": True, "pretruth_commit": PRETRUTH_CONTRACT_COMMIT},
                         "query": {"image_path": str(current_path.resolve()), "image_sha256": file_hash(current_path)},
                         "range_sensor": {"depth_path": str(depth_path.resolve()), "depth_sha256": file_hash(depth_path), "metric_unit": "meter"},
-                        "route_plan": route_plan(poses, frame),
+                        "route_plan": route_plan(poses, frame, route_waypoint),
                     })
                     private_cases.append({"case_id": case_id, "phase": phase["phase"], "future_demonstrated_positive_only": True, "legal_targets": legal_targets})
         receipts.append({

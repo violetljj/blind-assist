@@ -20,6 +20,16 @@ def test_route_plan_uses_public_future_pose_without_truth():
     assert plan["derived_without_semantic_or_target_truth"] is True
 
 
+def test_route_plan_keeps_episode_waypoint_stable_for_near_phase():
+    poses = np.zeros((41, 7), dtype=np.float64)
+    poses[:, 6] = 1.0
+    poses[30, 0] = 3.0
+    poses[40, 1] = 8.0
+    plan = route_plan(poses, 20, waypoint_frame=30)
+    assert plan["waypoint_frame_id"] == 30
+    assert plan["bearing_fraction"] == 0.5
+
+
 def test_read_pose_contract():
     payload = "0 0 0 0 0 0 1\n1 0 0 0 0 0 1\n"
     stream = io.BytesIO()

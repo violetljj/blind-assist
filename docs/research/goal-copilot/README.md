@@ -6,6 +6,12 @@
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
 
 最新闭环算法结果是
+[`TartanGround public-goal route servo confirmation`](BLINDASSIST_TARTANGROUND_ROUTE_SERVO_RESULT_2026-08-23.md)：完全自动的
+差速驱动 RGB-D cohort 在 Development 达到 action Recall@3 `83.3%`，但 5 个未用于开发环境组成的 15-state confirmation
+只有 `60.0%`，far `55.6%`、STOP `66.7%`。目标仍有 `86.7%` 位于 Top-10，但 exact-door truth 包含入口阈值/通行带，
+证明下一接口必须把 public destination waypoint、functional aperture 与 arrival truth 分开；不得用门实例 proximity 代替到达。
+
+其前一个结果是
 [`Last-10m visual servo S0v11`](BLINDASSIST_LAST_10M_VISUAL_SERVO_S0V11_RESULT_2026-08-22.md)：在全自动新鲜
 real-facade/synthetic-view cohort 上，semantic candidate availability 为 `13/13`，但 bbox-height arrival cue 导致
 `9/13` false completion，正式否决 detector extent → nearness/completion 的责任混用。下一主线是独立

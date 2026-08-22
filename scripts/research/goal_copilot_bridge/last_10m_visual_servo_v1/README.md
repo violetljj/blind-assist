@@ -2,6 +2,13 @@
 
 状态：`S2_S5_CURRENT_FRAME_COMPLETION_NOT_ESTABLISHED / D3_SAM3_FUNCTIONAL_REGION_CONFIRMATION_FAILED / PROCTHOR_VULKAN_RUNTIME_NOT_EVALUABLE`
 
+最新全自动 TartanGround 差速驱动确认见
+[`TartanGround public-goal route servo result`](../../../../docs/research/goal-copilot/BLINDASSIST_TARTANGROUND_ROUTE_SERVO_RESULT_2026-08-23.md)：
+Development 18-state action Recall@3 为 `83.3%`，但 untouched 15-state confirmation 只有 `60.0%`，far `55.6%`、
+STOP `66.7%`，因此 `GOAL_RGBD_SERVO_ACTION_AVAILABILITY_NOT_ESTABLISHED`。后验显示 Top-10 target coverage 为
+`86.7%`，但 object proposal miss 的目标包含入口阈值/通行带；下一合法接口必须携带 provider-public destination waypoint，
+不能再把 exact-door component proximity 当 arrival truth。
+
 本模块把已经建立的 goal-semantic proposal 与 leftmost relation selection 接入一个完全当前帧的 pan/zoom/复扫
 visual-servo simulator。它不恢复 P1、tracker、referent memory 或跨帧 candidate identity。
 
