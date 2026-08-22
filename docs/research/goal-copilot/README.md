@@ -1,18 +1,33 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_AMRM0_ADAPTIVE_MULTI_VIEW_REFERENT_MEMORY / MATCHED_CANARY_TERMINAL=P1_AMRM0_MEMORY_POISONING_FAIL / FIRST_POISON_AUTOPSY=PROPOSAL_BOTTLENECK / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_PA0_TARGET_CANDIDATE_AVAILABILITY / TERMINAL=P1_PA0_TOP1_COLLAPSE_SIGNAL_ON_FAILURE_COHORT / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
 
 ## 当前研究实现
 
-用户已明确将 `P1-AMRM0 Adaptive Multi-view Referent Memory` 定为新的主实验路径。准确状态是“当前最值得优先
+当前唯一 active surface 已上移到
+[`P1-PA0 target candidate availability`](../../../scripts/research/goal_copilot_bridge/p1_proposal_availability/README.md)。
+它只问 target visible 时正确 candidate 能否进入 bounded K=10 pool；输入仅为 current frame 与冻结 frame-0 target
+exemplar，GT category/instance/visibility/future bbox 只在 private evaluator 中打开。AMRM、reacquisition、identity
+selection、verifier、VLM、VIO/SLAM、geometry 与 App 全部拔除。
+
+首个冻结 YOLOE-26n-seg visual-prompt arm 已执行，结果见
+[`P1-PA0 result`](P1_PA0_TARGET_CANDIDATE_AVAILABILITY_RESULT_2026-08-22.md)：IoU >= 0.10 的
+Recall@1/3/5/10 为 `0/7, 0/7, 0/7, 2/7`，两个正确 candidate 首次位于 rank 9/10；IoU >= 0.30 与 0.50
+在所有 K 均为 `0/7`。终态是 failure-cohort 上的弱 `TOP1_COLLAPSE_SIGNAL`，不是 proposal availability pass、
+模型选择或泛化证据。Provider 不暴露 pre-NMS raw proposals，余下 5 帧的 generation/内部 postprocess 分叉为
+`NOT_EVALUABLE_PROVIDER_INTERFACE`。
+
+## 已关闭的 AMRM0 实验
+
+用户此前明确将 `P1-AMRM0 Adaptive Multi-view Referent Memory` 定为主实验路径。准确状态是“当时最值得优先
 验证的新研究假设”，不是已经证明有效。核心假设为：在第一视角最后十米任务中，相比持续维护 2D correspondence，
 积累经过身份验证的多距离、多视角 referent memory，是否能提高真实同实例重捕获，同时降低 wrong-instance
 reacquisition。
 
-当前唯一 active surface 是
+其冻结实现是
 [`P1-AMRM0`](../../../scripts/research/goal_copilot_bridge/p1_verifier_first/README.md)。P1-VF0 作为其 verifier foundation，实现
 `GoalContract`、有限且不可变的 `ReferentLedger`、常驻 `H_other`、parent/child-slot relation、distractor registry、
 observability-gated negative evidence、appearance cap，以及 `CONFIRMED_VISIBLE / VERIFYING / AMBIGUOUS / STALE /
@@ -26,8 +41,8 @@ distance × viewpoint × scale coverage；tentative 与 verified 严格分离，
 stale、disproved 或 referent rebound 时停止写入旧 bank。主动取证只允许保持静止、旋转扫描或纳入 parent context。
 31 项 contract tests 已通过；这只证明 mechanics/invariants，不是 real-data utility 或 scientific result。
 
-P1-AMRM0 与已消费的 W1-T0/W2 实质不同，不修改、续跑或覆盖旧 cohort，也不继承旧 execution authority。当前未选择
-RGB provider、数据 roster 或 performance experiment；VIO、SLAM、metric 3D、POMDP、主动平移、自动到达距离、
+P1-AMRM0 与已消费的 W1-T0/W2 实质不同，不修改、续跑或覆盖旧 cohort，也不继承旧 execution authority。AMRM0
+本身未引入新 RGB provider、数据 roster 或 performance experiment；VIO、SLAM、metric 3D、POMDP、主动平移、自动到达距离、
 Android/default App 均禁止。
 
 ## 已关闭的当前帧工程里程碑
@@ -117,7 +132,7 @@ P1-AMRM0 来自本轮用户显式改变主路径，不命名为 `P1-W3`，也不
 P1 历史 JSON schemas、evaluator 和结果只用于追溯；新实现不得导入其 tracker、SAM propagation、DINO identity、
 LoFTR、keyframe memory、SLAM、VIO 或 world-relative state。
 
-## 唯一 successor
+## AMRM0 终态与 proposal successor
 
 `P1_AMRM0_DATA_ADAPTER_AND_MATCHED_DEVELOPMENT_CANARY` 已执行并以
 `P1_AMRM0_MEMORY_POISONING_FAIL` 终止。它固定复用 consumed P1-D0
@@ -128,14 +143,15 @@ Prediction 与 contribution trace 写完后才允许 private evaluation。真实
 
 结果见 [`P1-AMRM0 matched Development canary`](P1_AMRM0_MATCHED_DEVELOPMENT_CANARY_RESULT_2026-08-22.md)：
 AMRM0 precision `9.48% -> 10.65%`、coverage `96.87% -> 80.13%`，但 wrong-instance reacquisition
-`12 -> 38`，发生 17 次 verified-bank poisoning，且 newly verified KF 对正确重捕获贡献为 0。唯一 successor 是
+`12 -> 38`，发生 17 次 verified-bank poisoning，且 newly verified KF 对正确重捕获贡献为 0。当时唯一 successor 是
 保留 outcome 的 [first-poison autopsy](P1_AMRM0_FIRST_POISON_AUTOPSY_2026-08-22.md) 已完成：17 次 admission
 收敛为 9 个 first-poison episode，9/9 为 background-only single candidate，正确 candidate 全部 absent；其中 7 次
 目标仍可见。主分叉是 proposal bottleneck，multi-candidate contrastive verifier 在本 cohort 中 `NOT_EVALUABLE`。
-不得调阈值或启动 AMRM1/2/3、VLM、VIO/SLAM/geometry。
+随后显式授权的 P1-PA0 已在独立 proposal-only contract 下执行，不修改 AMRM0。不得调 AMRM 阈值或启动
+AMRM1/2/3、VLM、VIO/SLAM/geometry。
 
 网络场景 3x5 与 action-responsive sanity 均已完成。P1-AMRM0 不自动进入 minimal geometry；只有真实 canary 把
 主要剩余失败定位为 translation ambiguity 后，才允许另行考虑 VIO/triangulation/local parent frame。
 
-Claim ceiling：`HIGHEST_PRIORITY_HYPOTHESIS / SYNTHETIC_AMRM_MECHANICS_ONLY / NO_REAL_DATA_UTILITY_OR_SCIENTIFIC_CONFIRMATION`。
+Claim ceiling：`POST_OUTCOME_SELECTED_CONSUMED_DEVELOPMENT_FAILURE_COHORT_MECHANISM_DIAGNOSTIC_ONLY`。
 默认 App：不变。

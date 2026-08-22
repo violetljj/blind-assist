@@ -56,11 +56,12 @@ The 31 tests establish contract mechanics only. Physical viewpoint truth is unav
 
 Executed result: identity precision `9.48% -> 10.65%` at coverage `96.87% -> 80.13%`, but wrong-instance
 reacquisition increased `12 -> 38`, verified-bank poisoning was 17, and newly accumulated keyframes contributed zero
-true reacquisitions. This is `P1_AMRM0_MEMORY_POISONING_FAIL`, not AMRM value. The only successor is a read-only,
-outcome-preserving poisoning autopsy; no threshold tuning or AMRM/geometry expansion is authorized.
+true reacquisitions. This is `P1_AMRM0_MEMORY_POISONING_FAIL`, not AMRM value. At that terminal, the only successor was
+a read-only, outcome-preserving poisoning autopsy; no threshold tuning or AMRM/geometry expansion was authorized.
 
 `autopsy_first_poison.py` completed that read-only join. The 17 poisoned admissions collapse to 9 first-poison
 episodes; all 9 frozen candidates are background and all 9 lack a correct candidate in the single-candidate pool.
 Seven occur while the target remains observable and have zero IoU with target truth despite high absolute target/context
-scores. This locates the primary fork at proposal availability. Simultaneous correct/wrong alternatives and contrastive
-margin remain `NOT_EVALUABLE` in this cohort.
+scores. This locates the primary fork at proposal availability. The separately authorized P1-PA0 successor is
+implemented in `../p1_proposal_availability/`; it does not alter or resume AMRM0. Simultaneous correct/wrong
+alternatives and contrastive margin remain unevaluated by AMRM0.

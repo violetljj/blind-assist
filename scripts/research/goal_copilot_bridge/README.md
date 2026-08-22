@@ -1,12 +1,19 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / P1_AMRM0_ADAPTIVE_MULTI_VIEW_REFERENT_MEMORY / MATCHED_CANARY_TERMINAL=P1_AMRM0_MEMORY_POISONING_FAIL / FAILURE_AUTOPSY_ONLY / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / P1_PA0_TARGET_CANDIDATE_AVAILABILITY / TERMINAL=P1_PA0_TOP1_COLLAPSE_SIGNAL_ON_FAILURE_COHORT / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
+## P1-PA0 target candidate availability
+
+`p1_proposal_availability/` is the current narrow proposal-only surface. It materializes the seven target-visible
+first-poison frames with public current-frame/exemplar input and private GT, evaluates Recall@1/3/5/10, and contains no
+memory, identity selection, reacquisition, verifier, geometry, or App path. The frozen YOLOE visual-prompt arm found
+IoU >= 0.10 candidates only at ranks 9 and 10 (`Recall@10=2/7`); IoU >= 0.30 remained `0/7` at every K.
+
 ## P1-AMRM0 adaptive multi-view referent memory
 
-`p1_verifier_first/` is the active outcome-blind mechanics surface. P1-VF0 supplies its verifier foundation; `memory.py`
+`p1_verifier_first/` is the frozen AMRM0 outcome-blind mechanics surface. P1-VF0 supplies its verifier foundation; `memory.py`
 adds tentative/verified separation, verifier-only promotion, compact distance/viewpoint/scale/context novelty coverage,
 and verified-only retrieval. It separates proposal generation from identity
 authority through a Goal Contract, bounded immutable ledger, explicit `H_other`, independent prediction/exclusion
