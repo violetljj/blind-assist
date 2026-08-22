@@ -31,6 +31,7 @@ from scripts.research.goal_copilot_bridge.p1_proposal_availability.pa3_semantic 
 PLAN_SCHEMA = "blindassist_p1_pa3_entrance_anchor_acquisition_plan_v1"
 ROSTER_SCHEMA = "blindassist_p1_pa3_public_spatial_goal_contract_v3"
 ACQUISITION_SCHEMA = "blindassist_p1_pa3_entrance_anchor_observation_acquisition_v1"
+GEOCODER_AMENDMENT_SCHEMA = "blindassist_p1_pa3_geocoder_query_amendment_v1"
 
 
 def _entrance_priority(tags: Mapping[str, Any]) -> int:
@@ -276,7 +277,43 @@ def osm_map_payload(
     return response.content
 
 
-def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dict[str, Any]:
+def apply_geocoder_amendment(
+    queries: list[Mapping[str, Any]],
+    amendment: Mapping[str, Any],
+    plan_sha256: str,
+) -> list[dict[str, Any]]:
+    _require(amendment.get("schema_version") == GEOCODER_AMENDMENT_SCHEMA, "geocoder amendment schema mismatch")
+    _require(amendment.get("original_plan_sha256") == plan_sha256, "geocoder amendment plan binding mismatch")
+    diagnostic = amendment.get("diagnostic", {})
+    _require(diagnostic.get("mapillary_metadata_accessed") is False, "geocoder amendment followed Mapillary metadata access")
+    _require(diagnostic.get("pixel_content_accessed") is False, "geocoder amendment followed pixel access")
+    _require(diagnostic.get("truth_accessed") is False and diagnostic.get("provider_run") is False, "geocoder amendment was not outcome-blind")
+    replacements = amendment.get("query_replacements")
+    _require(isinstance(replacements, list) and bool(replacements), "geocoder amendment replacements are required")
+    replacement_by_id = {str(row.get("episode_id")): row for row in replacements if isinstance(row, Mapping)}
+    _require(len(replacement_by_id) == len(replacements), "duplicate or invalid geocoder amendment episode")
+    original_ids = {str(row["episode_id"]) for row in queries}
+    _require(set(replacement_by_id).issubset(original_ids), "geocoder amendment changes the frozen episode roster")
+    effective = []
+    for row in queries:
+        replacement = replacement_by_id.get(str(row["episode_id"]))
+        if replacement is None:
+            effective.append(dict(row))
+            continue
+        _require(replacement.get("same_public_place_goal") is True, "geocoder replacement changes public place semantics")
+        query = replacement.get("effective_query")
+        _require(isinstance(query, str) and bool(query.strip()), "effective geocoder query is required")
+        effective.append({"episode_id": row["episode_id"], "query": query.strip()})
+    return effective
+
+
+def acquire(
+    plan_path: Path,
+    c0_path: Path,
+    output_dir: Path,
+    token: str,
+    geocoder_amendment_path: Path | None = None,
+) -> dict[str, Any]:
     _require(not output_dir.exists(), "entrance-anchor acquisition output already exists")
     plan = json.loads(plan_path.read_text(encoding="utf-8"))
     c0 = json.loads(c0_path.read_text(encoding="utf-8"))
@@ -292,6 +329,11 @@ def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dic
     _require(spatial_contract.get("role") == "PRODUCT_NAVIGATION_ROUTE_ENDPOINT_CANDIDATE", "public spatial role drift")
     goal_ids = {row["episode_id"] for row in c0["episodes"]}
     queries = plan["geocoding"]["queries"]
+    geocoder_amendment_sha = None
+    if geocoder_amendment_path is not None:
+        amendment = json.loads(geocoder_amendment_path.read_text(encoding="utf-8"))
+        queries = apply_geocoder_amendment(queries, amendment, sha256(plan_path))
+        geocoder_amendment_sha = sha256(geocoder_amendment_path)
     _require({row["episode_id"] for row in queries} == goal_ids, "goal/query roster mismatch")
 
     output_dir.mkdir(parents=True, exist_ok=False)
@@ -368,6 +410,7 @@ def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dic
         "schema_version": ROSTER_SCHEMA,
         "protocol_id": "P1-PA3-S0-PUBLIC-SPATIAL-GOAL-CONTRACT-V1",
         "plan_sha256": sha256(plan_path),
+        "geocoder_amendment_sha256": geocoder_amendment_sha,
         "goal_receipt_file_sha256": sha256(c0_path),
         "goal_receipt_body_sha256": c0["receipt_body_sha256"],
         "provider_public": True,
@@ -453,6 +496,7 @@ def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dic
         })
     acquisition = {
         "schema_version": ACQUISITION_SCHEMA, "plan_sha256": sha256(plan_path),
+        "geocoder_amendment_sha256": geocoder_amendment_sha,
         "entrance_anchor_roster_file_sha256": sha256(roster_path),
         "precedence_mode": plan["precedence_mode"], "physical_capture_after_goal_claimed": False,
         "episode_count": len(resolved), "materialized_case_count": len(capture_cases),
@@ -473,10 +517,11 @@ def main() -> int:
     parser.add_argument("--plan", required=True, type=Path)
     parser.add_argument("--c0-receipt", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
+    parser.add_argument("--geocoder-amendment", type=Path)
     args = parser.parse_args()
     token = os.environ.get("MAPILLARY_ACCESS_TOKEN") or os.environ.get("MAPILLARY_TOKEN")
     _require(bool(token), "MAPILLARY_ACCESS_TOKEN missing")
-    result = acquire(args.plan, args.c0_receipt, args.output_dir, str(token))
+    result = acquire(args.plan, args.c0_receipt, args.output_dir, str(token), args.geocoder_amendment)
     print(json.dumps({
         "episode_count": result["episode_count"], "materialized_case_count": result["materialized_case_count"],
         "replacement_or_resampling_performed": result["replacement_or_resampling_performed"],

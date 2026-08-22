@@ -3,7 +3,7 @@ from __future__ import annotations
 import unittest
 from unittest.mock import Mock
 
-from scripts.research.goal_copilot_bridge.p1_proposal_availability.acquire_pa3_entrance_anchor_observations import osm_map_entrance_nodes, resolve_entrance, resolve_parent_bound_entrance_xml, resolve_public_spatial_candidates_xml
+from scripts.research.goal_copilot_bridge.p1_proposal_availability.acquire_pa3_entrance_anchor_observations import apply_geocoder_amendment, osm_map_entrance_nodes, resolve_entrance, resolve_parent_bound_entrance_xml, resolve_public_spatial_candidates_xml
 
 
 class ResolveEntranceTest(unittest.TestCase):
@@ -74,6 +74,26 @@ class ResolveEntranceTest(unittest.TestCase):
         self.assertEqual(0, count)
         self.assertEqual(2, len(fallbacks))
         self.assertTrue(all(candidate["candidate_type"] == "OSM_BUILDING_EDGE_MIDPOINT_FALLBACK" for candidate in fallbacks))
+
+    def test_geocoder_amendment_changes_query_only_before_metadata_or_truth(self) -> None:
+        queries = [{"episode_id": "goal-a", "query": "old"}, {"episode_id": "goal-b", "query": "stable"}]
+        amendment = {
+            "schema_version": "blindassist_p1_pa3_geocoder_query_amendment_v1",
+            "original_plan_sha256": "a" * 64,
+            "diagnostic": {
+                "mapillary_metadata_accessed": False,
+                "pixel_content_accessed": False,
+                "truth_accessed": False,
+                "provider_run": False,
+            },
+            "query_replacements": [{
+                "episode_id": "goal-a", "effective_query": "new", "same_public_place_goal": True,
+            }],
+        }
+        self.assertEqual([{"episode_id": "goal-a", "query": "new"}, queries[1]], apply_geocoder_amendment(queries, amendment, "a" * 64))
+        amendment["diagnostic"]["pixel_content_accessed"] = True
+        with self.assertRaisesRegex(ValueError, "pixel access"):
+            apply_geocoder_amendment(queries, amendment, "a" * 64)
 
 
 if __name__ == "__main__":
