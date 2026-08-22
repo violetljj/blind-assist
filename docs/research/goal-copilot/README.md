@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_HRG1_FRESH_NOT_OBSERVED / HRG0_PARTIAL_2_OF_7_AT_K10 / IDENTITY_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_HRG2_FRESH_2_OF_2_AT_K3_SMALL_DENOMINATOR / HRG2_NO_PAIRED_IMPROVEMENT / IDENTITY_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
@@ -8,13 +8,17 @@ Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保�
 ## 当前研究实现
 
 当前算法结果真源是
-[`P1-HRG1 fresh parent-bound local-refinement result`](P1_HRG1_FRESH_PARENT_BOUND_LOCAL_REFINEMENT_RESULT_2026-08-22.md)。
-7 个 fresh museum Goal Contract 先于 pixel/truth 冻结；parent-bound OSM entrance + geometry-frozen multi-view acquisition
-得到 11 帧，pre-provider truth 为 `7 VISIBLE / 4 NOT_VISIBLE`，覆盖 4/7 goal episodes。同一 fresh denominator 上，
-HRG0 在 IoU `0.30` 的 Recall@10 为 `2/7`，冻结的 HRG1 Top-5 coarse-to-local refinement 为 `0/7`，没有建立
-target availability。结果后的只读诊断显示 coarse target-center containment rank 为 `[none, 7, 9, 6, 8, 1, 2]`：多数
-target 在 HRG1 parent gate 前已经丢失，进入 Top-5 的两个 case 也没有获得足够精确的 local box。identity verifier、
-AMRM 与 App 仍不授权；本 cohort 禁止扩 pool、改排序、降阈值或重跑。
+[`P1-HRG2 fresh public-anchor global-local reranking result`](P1_HRG2_FRESH_PUBLIC_ANCHOR_GLOBAL_LOCAL_RERANKING_RESULT_2026-08-22.md)。
+7 个 museum Goal Contract 在 pixel/truth 前冻结；只用公开命名场所 anchor 的 multi-view acquisition 得到 16 帧，但 pre-provider
+truth 只有 `2 VISIBLE / 14 NOT_VISIBLE`，覆盖 2/7 goal episodes。IoU `0.30` 下，HRG0 与 HRG2 都在 Top-3 达到
+`2/2`；HRG2 没有提高任何预注册 Recall@K，并把 Recall@1 从 `1/2` 降到 `0/2`。这证明两帧上的 bounded proposal
+mechanics，但 denominator 太小，不能建立跨场所 coverage 或授权正式 identity verifier。`SET_VALUED` 入口任务与 `UNIQUE`
+实例 identity 也必须分开；AMRM 与 App 仍不授权。
+
+其前一个 fresh paired 结果是
+[`P1-HRG1 fresh parent-bound local-refinement result`](P1_HRG1_FRESH_PARENT_BOUND_LOCAL_REFINEMENT_RESULT_2026-08-22.md)：
+7 个 visible frame 上 HRG0 Recall@10 为 `2/7`，冻结的 HRG1 Top-5 coarse-to-local refinement 为 `0/7`。该结果解释了
+HRG2 的全 Top-10 parent 与全局 local-score reranking 设计，但已观察 cohort 不作为 HRG2 confirmation denominator。
 
 其前一个
 [`P1-HRG0 fresh single-visible-case result`](P1_HRG0_FRESH_HIERARCHICAL_FUNCTIONAL_CONTEXT_RESULT_2026-08-22.md)
