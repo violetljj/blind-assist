@@ -15,7 +15,7 @@ def c0_receipt(count: int = 5) -> dict:
         "schema_version": "blindassist_p1_pa3_c0_public_goal_cohort_v1",
         "private_truth_access": False,
         "pa3_inference_authorized": False,
-        "episodes": [{"episode_id": f"capture-{index:02d}", "goal_provenance": {"goal_recorded_at_utc": (base + timedelta(seconds=index)).isoformat()}} for index in range(count)],
+        "episodes": [{"episode_id": f"capture-{index:02d}", "goal_text_original": "帮我找入口", "goal_provenance": {"goal_recorded_at_utc": (base + timedelta(seconds=index)).isoformat()}} for index in range(count)],
     }
     value["receipt_body_sha256"] = content_sha256(value)
     return value
@@ -26,6 +26,7 @@ class ArmCaptureTest(unittest.TestCase):
         plan = arm_capture(c0_receipt(), "2026-08-22T07:01:00+00:00")
         self.assertEqual(5, plan["episode_count"])
         self.assertEqual("capture-00.mp4", plan["episodes"][0]["media_relative_path"])
+        self.assertEqual("帮我找入口", plan["episodes"][0]["goal_text_original"])
         self.assertEqual("NOT_STARTED", plan["capture_state_at_arming"])
         self.assertEqual(content_sha256({key: value for key, value in plan.items() if key != "capture_plan_body_sha256"}), plan["capture_plan_body_sha256"])
 
@@ -48,4 +49,3 @@ class ArmCaptureTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

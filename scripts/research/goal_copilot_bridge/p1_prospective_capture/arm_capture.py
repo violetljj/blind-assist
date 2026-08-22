@@ -59,10 +59,13 @@ def arm_capture(c0: Mapping[str, Any], armed_at_utc: str) -> dict[str, Any]:
             raise ProspectiveCaptureError(f"{episode_id} goal must precede capture arming")
         plan_rows.append({
             "episode_id": episode_id,
+            "goal_text_original": str(row.get("goal_text_original") or "").strip(),
             "media_relative_path": f"{episode_id}.mp4",
             "camera_view": "FIRST_PERSON_FORWARD",
             "continuous_capture": True,
         })
+        if not plan_rows[-1]["goal_text_original"]:
+            raise ProspectiveCaptureError(f"{episode_id} goal text is missing")
     plan = {
         "schema_version": CAPTURE_PLAN_SCHEMA,
         "goal_receipt_body_sha256": c0_body_sha,

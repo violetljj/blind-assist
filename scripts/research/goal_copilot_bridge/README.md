@@ -1,6 +1,6 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / PROSPECTIVE_FIRST_PERSON_CAPTURE_INTERFACE_READY / REAL_DEVICE_COHORT_NOT_CAPTURED / PA3_INFERENCE_NOT_AUTHORIZED / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / PROSPECTIVE_FIRST_PERSON_DEVICE_RECORDER_READY / REAL_DEVICE_COHORT_NOT_CAPTURED / PA3_INFERENCE_NOT_AUTHORIZED / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
@@ -13,8 +13,9 @@ yielded zero historical eligible episodes; later fresh receipts do not retroacti
 
 `p1_prospective_capture/` is the current no-model execution surface. It freezes a complete capture plan before physical
 recording, accepts only a device-owned continuous forward-camera receipt bound to that plan, and extracts three fixed
-end-relative frames without pixel/truth selection. No real device is currently connected, so no physical cohort or
-private truth has been created and PA3 inference remains unauthorized.
+end-relative frames without pixel/truth selection. The separate `:goal-capture-app` CameraX module now produces that
+receipt fail-closed from a complete rear-camera recording roster; it does not modify the default app. No real device has
+executed the plan yet, so no physical cohort or private truth exists and PA3 inference remains unauthorized.
 
 `p1_proposal_availability/` now also contains the PA3/FRG1 algorithm surface: automated goal/acquisition/truth
 materialization, GT-blind YOLOE semantic and frozen Grounding DINO functional-region runners, private bounded-candidate

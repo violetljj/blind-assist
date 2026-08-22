@@ -1,6 +1,6 @@
 # P1 prospective first-person Goal Contract capture
 
-状态：`IMPLEMENTED / REAL_DEVICE_COHORT_NOT_CAPTURED / PA3_INFERENCE_NOT_AUTHORIZED`
+状态：`HOST_VALIDATOR_AND_DEVICE_RECORDER_IMPLEMENTED / REAL_DEVICE_COHORT_NOT_CAPTURED / PA3_INFERENCE_NOT_AUTHORIZED`
 
 This surface closes the provenance seam between a C0 public Goal Contract and physical first-person observations.
 It only accepts a complete frozen roster of at least five episodes whose forward-camera recordings start after each
@@ -28,6 +28,11 @@ visible-episode and visible-frame gate.
 The receipt establishes machine-validated local provenance, not external attestation that a device clock or recorder
 was honest. A real cohort therefore still needs device-owned sidecars and source custody; pre-existing public videos,
 Mapillary resampling, replay, and synthetic video cannot claim this physical post-goal role.
+
+The standalone CameraX producer lives at `apps/demos/goal-capture-app`. It is a separate application ID and runtime from
+the default BlindAssist app. It consumes the frozen plan, records rear-camera video without audio, waits for asynchronous
+`Finalize`, validates duration/dimensions/SHA-256, and emits a receipt only after the complete roster. Its canonical JSON
+and full sample receipt hash are cross-checked against the Python contract. No real-device run has occurred yet.
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd -m scripts.research.goal_copilot_bridge.p1_prospective_capture.arm_capture `
