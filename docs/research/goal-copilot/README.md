@@ -1,9 +1,21 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / AUTOMATED_PUBLIC_COHORT_MATERIALIZED / GENERIC_DOOR_PA3_PARTIAL / ENTRANCE_CONFIRMATION_NOT_EVALUABLE / IDENTITY_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / FACADE_PROPOSAL_COVERAGE_ESTABLISHED / LEFTMOST_RELATION_FEASIBILITY / BBOX_HEIGHT_COMPLETION_REJECTED / INDEPENDENT_NEARNESS_REQUIRED / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
+
+最新闭环算法结果是
+[`Last-10m visual servo S0v11`](BLINDASSIST_LAST_10M_VISUAL_SERVO_S0V11_RESULT_2026-08-22.md)：在全自动新鲜
+real-facade/synthetic-view cohort 上，semantic candidate availability 为 `13/13`，但 bbox-height arrival cue 导致
+`9/13` false completion，正式否决 detector extent → nearness/completion 的责任混用。下一主线是独立
+door-region depth/nearness observability；没有独立 signal 时必须 `COMPLETION_PENDING/ABSTAIN`，不允许继续从 bbox
+猜到达。该 successor 仍为当前帧，不恢复 P1/referent persistence。
+
+其前置 proposal/relation 结果见
+[`Facade + leftmost relation`](P1_PA3_FACADE_ENTRANCE_AND_GOAL_RELATION_RESULT_2026-08-22.md)：S0v8 facade-door
+Recall@1/3/5/10 为 `17/20, 19/20, 19/20, 19/20`；disjoint S0v10 relation Top-1 从 `12/16` 到
+`13/16`。这些结果建立 candidate availability 与 current-frame relation feasibility，不建立物理 completion。
 
 ## 当前研究实现
 

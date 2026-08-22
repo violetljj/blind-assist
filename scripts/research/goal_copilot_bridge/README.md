@@ -1,8 +1,14 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / PROSPECTIVE_FIRST_PERSON_DEVICE_RECORDER_READY / PA3_DENOMINATOR_GATE_ENFORCED / REAL_DEVICE_COHORT_NOT_CAPTURED / PA3_INFERENCE_NOT_AUTHORIZED / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / AUTOMATED_PUBLIC_GOAL_COHORTS / FACADE_PROPOSAL_COVERAGE / LEFTMOST_RELATION_FEASIBILITY / BBOX_HEIGHT_COMPLETION_REJECTED / INDEPENDENT_NEARNESS_REQUIRED / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
+
+`last_10m_visual_servo_v1/` is the current algorithm successor. On a fresh automated public real-facade cohort it kept
+every action current-frame-only and re-grounded after each pan/zoom/rescan. Target proposals were available in `13/13`
+evaluable cases, but detector bbox height caused `9/13` false completions. The interface is therefore rejected:
+proposal/relation may support alignment, while completion now requires an independent depth/nearness plus doorway-
+visibility contract. P1/referent persistence and the default App remain closed.
 
 ## P1-PA3-C0 public Goal Contract materialization
 
