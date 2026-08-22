@@ -1,6 +1,6 @@
 # P1 proposal availability: PA0–PA3
 
-状态：`P1_PA1_FIXED_TILED_SCALE_RESCUE_NOT_SUPPORTED_ON_FAILURE_COHORT / AMRM_AND_VERIFIER_FROZEN / DEFAULT_APP_UNCHANGED`
+状态：`P1_HRG2_GLOBAL_LOCAL_RERANKING_IMPLEMENTED_NOT_EXECUTED / AMRM_AND_VERIFIER_FROZEN / DEFAULT_APP_UNCHANGED`
 
 P1-PA0 asks only whether a correct target candidate enters an ordered pool bounded at ten candidates when the target is
 visible. Its seven cases are the post-outcome-selected visible first-poison frames from the sealed P1-AMRM0 canary, so
@@ -74,3 +74,15 @@ E:\codex-tools\bin\blindassist-python.cmd -m unittest `
 
 Implementation status:
 [`P1-PA3 implementation ready`](../../../../docs/research/goal-copilot/P1_PA3_GOAL_SEMANTIC_PROPOSAL_IMPLEMENTATION_READY_2026-08-22.md).
+
+## P1-HRG2 global-local reranking
+
+HRG2 is the frozen successor to the fresh HRG1 failure. It does not add a spatial hint because the current product
+interface has no independently proven pre-truth route-endpoint contract; an OSM entrance bearing remains private truth.
+Instead, HRG2 processes all ten already-bounded HRG0 coarse regions, keeps the same two crop-local Grounding DINO
+proposals per parent, globally orders them by local provider score, applies the already frozen class-agnostic NMS IoU
+of 0.50, and returns at most ten candidates. Parent rank and local rank are deterministic tie-breaks only.
+
+The model, prompt, thresholds, HRG0 parent prediction, local proposal count, final K, and identity prohibition are
+unchanged. The consumed HRG1 cohort must not be rerun with HRG2; execution requires a newly frozen Goal Contract,
+acquisition, and pre-provider truth cohort.
