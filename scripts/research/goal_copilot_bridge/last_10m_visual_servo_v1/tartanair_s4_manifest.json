@@ -1,0 +1,59 @@
+{
+  "schema_version": "blindassist_tartanair_current_frame_completion_manifest_v1",
+  "protocol_id": "BLINDASSIST_TARTANAIR_CURRENT_FRAME_COMPLETION_S4_V1",
+  "created_at_utc": "2026-08-22T11:00:00Z",
+  "created_before_selected_rgb_depth_segmentation_access": true,
+  "created_before_provider_calls": true,
+  "development_provenance": {
+    "consumed_environment": ["ArchVizTinyHouseDay", "RetroOffice", "CountryHouse", "AmericanDiner"],
+    "sealed_s3_evaluation_sha256": "f69a2b5ff971ae988ee99abfa2877174d99185732ab5aec76b5e06dfbcc364fc",
+    "frozen_rule": "height fraction >=0.40, aligned sensor depth <=1.80m, DINO overlap >=0.85, depth-times-height-fraction >=0.35"
+  },
+  "public_goal_contract": {
+    "goal_text_original": "帮我找一扇看得见的门",
+    "goal_type": "VISIBLE_DOOR",
+    "reference_mode": "SET_VALUED",
+    "canonical_prompt": "door",
+    "canonical_prompt_map_sha256": "5bc54a0968f712d5f8e4a2d5397f47f0be91a8549b6fe2e3e02f82ae4824c242"
+  },
+  "source": {
+    "authority": "TartanAir V2 official Hugging Face distribution",
+    "repository": "theairlabcmu/tartanair2",
+    "environments": ["House"],
+    "difficulty": "easy",
+    "camera": "lcam_front",
+    "modalities": ["image", "depth", "seg", "pose"],
+    "environment_choice_rule": "smallest untouched residential indoor exact-door environment by official easy-front RGB-depth-seg archive size"
+  },
+  "eligibility": {
+    "semantic_class_exact": "door",
+    "class_alias_expansion": false,
+    "minimum_connected_region_pixels": 800,
+    "minimum_valid_depth_fraction": 0.5,
+    "valid_depth_range_m": [0.4, 8.0],
+    "near_threshold_m": 2.0,
+    "near_requires_center_ray": true,
+    "ordering": "ascending SHA256 of environment/trajectory/frame path",
+    "near_take": 24,
+    "far_take": 24,
+    "replacement_after_provider_observation": false
+  },
+  "provider": {
+    "yoloe": "YOLOE-26n-seg exact text prompt door Top-10 conf 0.001",
+    "semantic_consensus": "Grounding DINO Tiny exact prompt door. box 0.15 text 0.10",
+    "public_range_sensor": "current-frame aligned TartanAir depth map; candidate inset median",
+    "selection": "among center-ray candidates require height fraction >=0.40, sensor depth <=1.80m, sensor-depth-times-height-fraction >=0.35 and DINO IoU >=0.85; maximize DINO IoU then YOLOE score",
+    "stateless_current_frame_only": true,
+    "tracking_identity_memory_and_cross_frame_state": "FORBIDDEN",
+    "threshold_prompt_model_or_rule_sweep": false,
+    "retry_or_replay_authorized": false
+  },
+  "evaluator": {
+    "target_hit_iou_threshold": 0.30,
+    "truth_positive": "selected candidate matches any legal exact-door component and matched component median depth <=2.0m",
+    "primary": "completion TP FP FN TN and false-completion count",
+    "success_gate": "zero false completion, at least 8 opportunities, and correct completion coverage >=0.50",
+    "guardrails": ["candidate availability", "target selection", "near/far denominator"]
+  },
+  "claim_ceiling": "FRESH_SYNTHETIC_TARTANAIR_CURRENT_FRAME_DOOR_COMPLETION_ONLY_NO_REAL_WORLD_BUILDING_ENTRANCE_TRAVERSABILITY_NAVIGATION_PRODUCT_OR_SAFETY_CLAIM"
+}

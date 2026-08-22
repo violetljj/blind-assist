@@ -1,0 +1,61 @@
+{
+  "schema_version": "blindassist_tartanair_current_frame_completion_manifest_v1",
+  "protocol_id": "BLINDASSIST_TARTANAIR_CURRENT_FRAME_COMPLETION_S5_V1",
+  "created_at_utc": "2026-08-22T12:20:00Z",
+  "created_before_selected_rgb_depth_segmentation_access": true,
+  "created_before_provider_calls": true,
+  "development_provenance": {
+    "consumed_environments": ["ArchVizTinyHouseDay", "OldBrickHouseDay", "Hospital", "Restaurant", "RetroOffice", "CountryHouse", "AmericanDiner", "House"],
+    "sealed_s4_evaluation_sha256": "be60b37963d85c9ea656bc7a6b97c5f30781e852a388bc255e14928e5c35dcd",
+    "depth_aperture_development_evaluation_sha256": "7734a660c3f0bc8fe4e72973187f325e427846e27c254d3aeca76156be3de62c",
+    "frozen_rule": "centered candidate, height fraction >=0.40, p20 depth <=2.0m, median depth >2.0m, p20-times-height-fraction >=0.35m, DINO IoU >=0.85; rank by median-minus-p20 depth span"
+  },
+  "public_goal_contract": {
+    "goal_text_original": "帮我找一扇看得见的门",
+    "goal_type": "VISIBLE_DOOR",
+    "reference_mode": "SET_VALUED",
+    "canonical_prompt": "door",
+    "canonical_prompt_map_sha256": "5bc54a0968f712d5f8e4a2d5397f47f0be91a8549b6fe2e3e02f82ae4824c242"
+  },
+  "source": {
+    "authority": "TartanAir V2 official Hugging Face distribution",
+    "repository": "theairlabcmu/tartanair2",
+    "revision": "0d2d145e973832742a2aaa04b7d2ebffc8d82817",
+    "environments": ["Office"],
+    "difficulty": "easy",
+    "camera": "lcam_front",
+    "modalities": ["image", "depth", "seg"],
+    "environment_choice_rule": "untouched indoor environment with exact-door semantics chosen from public aggregate label histogram before Office RGB/depth/seg payload access"
+  },
+  "eligibility": {
+    "semantic_class_exact": "door",
+    "class_alias_expansion": false,
+    "minimum_connected_region_pixels": 800,
+    "minimum_valid_depth_fraction": 0.5,
+    "valid_depth_range_m": [0.4, 8.0],
+    "near_threshold_m": 2.0,
+    "near_requires_center_ray": true,
+    "ordering": "ascending SHA256 of environment/trajectory/frame path",
+    "near_take": 24,
+    "far_take": 24,
+    "replacement_after_provider_observation": false
+  },
+  "provider": {
+    "yoloe": "YOLOE-26n-seg exact text prompt door Top-10 conf 0.001",
+    "semantic_consensus": "Grounding DINO Tiny exact prompt door. box 0.15 text 0.10",
+    "public_range_sensor": "current-frame aligned TartanAir depth map",
+    "selection": "centered candidate with height fraction >=0.40, p20 depth <=2.0m, median depth >2.0m, p20-times-height-fraction >=0.35m and DINO IoU >=0.85; maximize median-minus-p20 depth span",
+    "stateless_current_frame_only": true,
+    "tracking_identity_memory_and_cross_frame_state": "FORBIDDEN",
+    "threshold_prompt_model_or_rule_sweep": false,
+    "retry_or_replay_authorized": false
+  },
+  "evaluator": {
+    "target_hit_iou_threshold": 0.30,
+    "truth_positive": "selected candidate matches any legal exact-door component and matched component median depth <=2.0m",
+    "primary": "completion TP FP FN TN and false-completion count",
+    "success_gate": "zero false completion, at least 8 opportunities, and correct completion coverage >=0.50",
+    "guardrails": ["candidate availability", "target selection", "near/far denominator"]
+  },
+  "claim_ceiling": "FRESH_SYNTHETIC_TARTANAIR_CURRENT_FRAME_OPEN_APERTURE_COMPLETION_ONLY_NO_REAL_WORLD_BUILDING_ENTRANCE_TRAVERSABILITY_NAVIGATION_PRODUCT_OR_SAFETY_CLAIM"
+}

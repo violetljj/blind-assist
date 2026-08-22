@@ -1,6 +1,6 @@
 # Last-10m current-frame visual servo V1
 
-状态：`S0V11_BBOX_HEIGHT_REJECTED / COMPLETION_NEARNESS_S1_SEALED / DEPTH_REDUCES_FALSE_COMPLETION_BUT_TRADES_OFF_TRUE_COMPLETION`
+状态：`S0V11_BBOX_HEIGHT_REJECTED / COMPLETION_NEARNESS_S1_SEALED / S2_S5_CURRENT_FRAME_COMPLETION_NOT_ESTABLISHED`
 
 本模块把已经建立的 goal-semantic proposal 与 leftmost relation selection 接入一个完全当前帧的 pan/zoom/复扫
 visual-servo simulator。它不恢复 P1、tracker、referent memory 或跨帧 candidate identity。
@@ -55,3 +55,22 @@ E:\codex-tools\bin\blindassist-python.cmd -m unittest `
 
 结果真源：
 [`completion-nearness S0/S1`](../../../../docs/research/goal-copilot/BLINDASSIST_LAST_10M_COMPLETION_NEARNESS_S0_S1_RESULT_2026-08-22.md)。
+
+## Fully automated public RGB-D S2-S5
+
+S2-S5 从公开 TartanAir RGB/depth/segmentation 自动下载、自动分层取样并机械生成 private truth；不要求用户
+选图、标帧、运行命令或判断中间结果。四个各 48-case 的 fresh cohort 均一次运行、禁止 replay，结果依次为：
+
+- S2: `4/11` correct opportunities，`0` false completion；
+- S3: `4/5` correct opportunities，`1` false completion；
+- S4: `1/24` correct opportunities，`4` false completion；
+- S5: `8/24` correct opportunities，`6` false completion。
+
+四个 terminal 都是 `FRESH_CURRENT_FRAME_COMPLETION_NOT_ESTABLISHED`。S4 的 23 个 missed opportunities 中，
+23 个都已经有正确 YOLOE proposal，因此当前主要失败层已从 proposal coverage 收窄到 current-frame
+functional/range selection。S4 上看似有效的 depth-aperture 规则在 untouched S5 上没有复现；固定深度结构
+Random Forest 在 S5 development split 上达到 `16/23`，但产生 `5` 个 false completion，同样是
+`NOT_PROMISING`，不授权 fresh successor。
+
+结果真源：
+[`current-frame completion S2-S5`](../../../../docs/research/goal-copilot/BLINDASSIST_LAST_10M_CURRENT_FRAME_COMPLETION_S2_S5_RESULT_2026-08-22.md)。

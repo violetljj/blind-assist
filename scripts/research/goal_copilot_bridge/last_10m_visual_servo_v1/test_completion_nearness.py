@@ -6,6 +6,7 @@ import numpy as np
 
 from scripts.research.goal_copilot_bridge.last_10m_visual_servo_v1.completion_nearness import SUNRGBD_PROTOCOL_ID, _config, _confusion, decision_for, region_depth_median
 from scripts.research.goal_copilot_bridge.last_10m_visual_servo_v1.materialize_sunrgbd_door_depth import _door_targets
+from scripts.research.goal_copilot_bridge.last_10m_visual_servo_v1.materialize_tartanair_s2 import door_targets as tartanair_door_targets
 
 
 DECISION = {
@@ -47,6 +48,18 @@ class CompletionNearnessTest(unittest.TestCase):
         self.assertEqual(2, len(targets))
         self.assertAlmostEqual(1.25, targets[0]["target_depth_median_m"])
         self.assertAlmostEqual(3.0, targets[1]["target_depth_median_m"])
+
+    def test_tartanair_connected_door_components_are_set_valued(self) -> None:
+        labels = np.zeros((40, 50), dtype=np.uint8)
+        labels[:, :20] = 7
+        labels[:, 30:] = 7
+        depth = np.full((40, 50), 3.0, dtype=np.float32)
+        depth[:, :20] = 1.0
+        rule = {"minimum_connected_region_pixels": 800, "minimum_valid_depth_fraction": 0.5, "valid_depth_range_m": [0.4, 8.0]}
+        targets = tartanair_door_targets(labels, depth, 7, rule)
+        self.assertEqual(2, len(targets))
+        self.assertAlmostEqual(1.0, targets[0]["depth_median_m"])
+        self.assertAlmostEqual(3.0, targets[1]["depth_median_m"])
 
     def test_depth_gate_is_independent_of_bbox_height(self) -> None:
         short_centered = {"bbox_xyxy": [250, 200, 390, 450]}
