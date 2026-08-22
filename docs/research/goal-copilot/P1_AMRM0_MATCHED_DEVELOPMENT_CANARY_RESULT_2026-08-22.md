@@ -57,9 +57,11 @@ AMRM0 的 target/context identity authority 仍大量放行，而不是多视角
 直接失败层是 **verified admission authority 不成立**：原始 target/context dense support 并不构成独立的实例身份确认，
 所以错误候选仍能被写入 verified bank。与此同时，新积累 KF 没有贡献任何正确重捕获，当前证据不支持继续扩展 AMRM。
 
-唯一后继是 outcome-preserving failure autopsy：定位 17 次 poisoning 的候选/场景结构，以及 original-binding/context
-为何共同放行错误实例。禁止调 retrieval 阈值、增加 detector/prompt/frame、启动 AMRM1/2/3、VLM、VIO、SLAM、
-scene graph 或 geometry。只有尸检形成新的、单变量可证伪假设后，才另行决定是否开新实验。
+Outcome-preserving failure autopsy 已完成，见
+[`P1-AMRM0 first-poison autopsy`](P1_AMRM0_FIRST_POISON_AUTOPSY_2026-08-22.md)。17 次 poisoned admission
+分布于 9 个 episode；9/9 first-poison candidate 都是 background，正确 candidate 全部不在 frozen single-candidate
+pool，其中 7 次真目标仍可见。该 cohort 将第一分叉定位为 proposal bottleneck，不能评估 multi-candidate contrastive
+verification。禁止调 retrieval 阈值、启动 AMRM1/2/3、VLM、VIO、SLAM、scene graph 或 geometry。
 
 ## Evidence identity
 

@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-22（Asia/Hong_Kong）；执行者：violjjet。完成 P1-AMRM0 outcome-preserving first-poison autopsy。
+  17 次 poisoned admission 收敛为 9 个 first-poison episode；9/9 frozen candidate 为 background、正确 candidate
+  全部 absent，其中 7 次目标仍可见且 candidate-target IoU 均为 0，2 次目标不可见。9/9 同时由 original target、
+  original context 与 hardcoded tracker-spatial support 放行，无 local contrast 或 negative veto。结论定位为
+  proposal bottleneck；single-candidate cohort 无法评估 correct-vs-wrong contrastive verifier。AMRM/VLM/geometry
+  继续冻结。结果：
+  [P1-AMRM0 first-poison autopsy](docs/research/goal-copilot/P1_AMRM0_FIRST_POISON_AUTOPSY_2026-08-22.md)。
+
 - 时间：2026-08-22（Asia/Hong_Kong）；执行者：violjjet。执行 consumed P1-D0 matched canary 并收口为
   `P1_AMRM0_MEMORY_POISONING_FAIL`。Candidate parity、zero added candidate/frame/search 与 zero post-init GT read
   均通过；AMRM identity precision `9.48% -> 10.65%`、coverage `96.87% -> 80.13%`，但 wrong-instance

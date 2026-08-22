@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_AMRM0_ADAPTIVE_MULTI_VIEW_REFERENT_MEMORY / MATCHED_CANARY_TERMINAL=P1_AMRM0_MEMORY_POISONING_FAIL / FAILURE_AUTOPSY_ONLY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_AMRM0_ADAPTIVE_MULTI_VIEW_REFERENT_MEMORY / MATCHED_CANARY_TERMINAL=P1_AMRM0_MEMORY_POISONING_FAIL / FIRST_POISON_AUTOPSY=PROPOSAL_BOTTLENECK / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
@@ -129,7 +129,10 @@ Prediction 与 contribution trace 写完后才允许 private evaluation。真实
 结果见 [`P1-AMRM0 matched Development canary`](P1_AMRM0_MATCHED_DEVELOPMENT_CANARY_RESULT_2026-08-22.md)：
 AMRM0 precision `9.48% -> 10.65%`、coverage `96.87% -> 80.13%`，但 wrong-instance reacquisition
 `12 -> 38`，发生 17 次 verified-bank poisoning，且 newly verified KF 对正确重捕获贡献为 0。唯一 successor 是
-保留 outcome 的 poisoning failure autopsy；不得调阈值、增加候选或启动 AMRM1/2/3、VLM、VIO/SLAM/geometry。
+保留 outcome 的 [first-poison autopsy](P1_AMRM0_FIRST_POISON_AUTOPSY_2026-08-22.md) 已完成：17 次 admission
+收敛为 9 个 first-poison episode，9/9 为 background-only single candidate，正确 candidate 全部 absent；其中 7 次
+目标仍可见。主分叉是 proposal bottleneck，multi-candidate contrastive verifier 在本 cohort 中 `NOT_EVALUABLE`。
+不得调阈值或启动 AMRM1/2/3、VLM、VIO/SLAM/geometry。
 
 网络场景 3x5 与 action-responsive sanity 均已完成。P1-AMRM0 不自动进入 minimal geometry；只有真实 canary 把
 主要剩余失败定位为 translation ambiguity 后，才允许另行考虑 VIO/triangulation/local parent frame。
