@@ -1,6 +1,6 @@
 # Last-10m current-frame visual servo V1
 
-状态：`S0V11_BBOX_HEIGHT_REJECTED / COMPLETION_NEARNESS_S1_SEALED / S2_S5_CURRENT_FRAME_COMPLETION_NOT_ESTABLISHED`
+状态：`S0V11_BBOX_HEIGHT_REJECTED / S2_S5_CURRENT_FRAME_COMPLETION_NOT_ESTABLISHED / D1C_SAM3_FUNCTIONAL_REGION_DEVELOPMENT_ONLY`
 
 本模块把已经建立的 goal-semantic proposal 与 leftmost relation selection 接入一个完全当前帧的 pan/zoom/复扫
 visual-servo simulator。它不恢复 P1、tracker、referent memory 或跨帧 candidate identity。
@@ -74,3 +74,20 @@ Random Forest 在 S5 development split 上达到 `16/23`，但产生 `5` 个 fal
 
 结果真源：
 [`current-frame completion S2-S5`](../../../../docs/research/goal-copilot/BLINDASSIST_LAST_10M_CURRENT_FRAME_COMPLETION_S2_S5_RESULT_2026-08-22.md)。
+
+## Functional-region development D1C
+
+后续审计收窄了 S2-S5 truth：它只能机械确认 exact-door bbox 与 metric depth，不能确认 open aperture、
+房间连通性或可通行性。新开发线因此只声称 synthetic exact-door ground-connected approachability proxy。
+
+全自动环境资格筛选先后得到：Supermarket 远程 ZIP 传输不可评估；DesertGasStation 在 RGB/provider 前因
+`near=4, far=408` 失败；HongKong D1C 以 `near=112, far=1654` 通过并自动冻结 24 near + 24 far。
+约束 RANSAC ground plane 在 Office development truth 上达到 floor+carpet precision `0.9411`、recall
+`0.7821`、IoU `0.7456`。YOLOE functional mask、RGB/CLIP/context verifier 都未过零误报与 50% coverage 门。
+
+官方 SAM 3 exact text prompt `door` 在 D1C 的固定 0.50 首轮为 `6/24 correct, 0 false`；开发 proposal
+floor 0.10 为 `13/24 correct, 1 false`。固定阈值网格中最优零误报配置只有 `10/24`，仍未授权 fresh/formal
+successor。D1C 只用于开发，不可回标成 independent confirmation。
+
+结果真源：
+[`functional-region D1C`](../../../../docs/research/goal-copilot/BLINDASSIST_LAST_10M_FUNCTIONAL_REGION_D1C_RESULT_2026-08-22.md)。

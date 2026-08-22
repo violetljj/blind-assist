@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Materialize a frozen S5 cohort directly from official remote TartanAir ZIPs."""
+"""Materialize a frozen cohort directly from official remote TartanAir ZIPs."""
 
 from __future__ import annotations
 
@@ -20,8 +20,7 @@ from scripts.research.goal_copilot_bridge.last_10m_visual_servo_v1.materialize_n
 from scripts.research.goal_copilot_bridge.last_10m_visual_servo_v1.materialize_tartanair_s2 import decode_depth, door_targets, exact_door_label, file_hash
 
 
-PROTOCOL_ID = "BLINDASSIST_TARTANAIR_CURRENT_FRAME_COMPLETION_S5_V1"
-ROSTER_SCHEMA = "blindassist_tartanair_remote_s5_roster_v1"
+ROSTER_SCHEMA = "blindassist_tartanair_remote_roster_v1"
 
 
 def modality_member(seg_member: str, modality: str) -> str:
@@ -56,7 +55,9 @@ def main() -> int:
     args = parser.parse_args()
     _require(not any(path.exists() for path in (args.payload_root, args.roster, args.public, args.private, args.private_mask_root)), "S5 materialization output already exists")
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
-    _require(manifest.get("protocol_id") == PROTOCOL_ID and manifest.get("created_before_selected_rgb_depth_segmentation_access") is True, "S5 manifest drift")
+    protocol_id = manifest.get("protocol_id")
+    _require(isinstance(protocol_id, str) and protocol_id and manifest.get("created_before_selected_rgb_depth_segmentation_access") is True, "remote TartanAir manifest drift")
+    case_prefix = manifest.get("case_prefix", "tartanair-s5-case")
     environment = manifest["source"]["environments"][0]
     revision = manifest["source"]["revision"]
     door_id = exact_door_label(args.label_root / environment / "seg_label_map.json")
@@ -99,7 +100,7 @@ def main() -> int:
     near_take, far_take = int(manifest["eligibility"]["near_take"]), int(manifest["eligibility"]["far_take"])
     _require(len(near) >= near_take and len(far) >= far_take, f"S5 denominator insufficient: near={len(near)} far={len(far)}")
     selected = near[:near_take] + far[:far_take]
-    roster = {"schema_version": ROSTER_SCHEMA, "protocol_id": PROTOCOL_ID, "manifest_sha256": file_hash(args.manifest), "repository_revision": revision, "eligible_case_count": len(eligible), "eligible_near_count": len(near), "eligible_far_count": len(far), "selection_observed_before_provider_calls": True, "provider_truth_access": False, "cases": [{"case_id": f"tartanair-s5-case-{index:03d}", **row} for index, row in enumerate(selected, start=1)]}
+    roster = {"schema_version": ROSTER_SCHEMA, "protocol_id": protocol_id, "manifest_sha256": file_hash(args.manifest), "repository_revision": revision, "eligible_case_count": len(eligible), "eligible_near_count": len(near), "eligible_far_count": len(far), "selection_observed_before_provider_calls": True, "provider_truth_access": False, "cases": [{"case_id": f"{case_prefix}-{index:03d}", **row} for index, row in enumerate(selected, start=1)]}
     roster["roster_body_sha256"] = json_body_hash(roster)
     _atomic_json(args.roster, roster)
 
@@ -124,9 +125,9 @@ def main() -> int:
                     legal.append({"target_bbox_xyxy": target["bbox_xyxy"], "target_mask_path": str(mask_path.resolve()), "target_mask_sha256": file_hash(mask_path), "target_pixel_count": target["pixel_count"], "target_depth_median_m": target["depth_median_m"], "target_depth_p10_m": target["depth_p10_m"], "target_depth_p90_m": target["depth_p90_m"], "depth_valid_fraction": target["depth_valid_fraction"]})
                 public_cases.append({"case_id": row["case_id"], "episode_id": row["source_key"], "goal_contract": manifest["public_goal_contract"], "query": {"image_path": str(image_path.resolve()), "image_sha256": file_hash(image_path)}, "range_sensor": {"depth_path": str(depth_path.resolve()), "depth_sha256": file_hash(depth_path)}})
                 private_cases.append({"case_id": row["case_id"], "source_key": row["source_key"], "stratum": row["stratum"], "legal_targets": legal, "true_interaction_range": any(target["target_depth_median_m"] <= 2.0 for target in legal)})
-    public = {"schema_version": PUBLIC_SCHEMA, "protocol_id": PROTOCOL_ID, "manifest_sha256": file_hash(args.manifest), "roster_body_sha256": roster["roster_body_sha256"], "private_truth_access": False, "cases": public_cases}
+    public = {"schema_version": PUBLIC_SCHEMA, "protocol_id": protocol_id, "manifest_sha256": file_hash(args.manifest), "roster_body_sha256": roster["roster_body_sha256"], "private_truth_access": False, "cases": public_cases}
     _atomic_json(args.public, public)
-    private = {"schema_version": PRIVATE_SCHEMA, "protocol_id": PROTOCOL_ID, "public_input_sha256": file_hash(args.public), "interaction_range_m": 2.0, "cases": private_cases}
+    private = {"schema_version": PRIVATE_SCHEMA, "protocol_id": protocol_id, "public_input_sha256": file_hash(args.public), "interaction_range_m": 2.0, "cases": private_cases}
     _atomic_json(args.private, private)
     print(json.dumps({"eligible": len(eligible), "near": len(near), "far": len(far), "selected": len(selected)}, indent=2))
     return 0
