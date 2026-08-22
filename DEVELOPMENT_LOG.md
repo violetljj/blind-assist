@@ -5049,3 +5049,13 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   pixel truth 时不能判定 `PROPOSAL_MISS` 还是 referent selection。official-renderer equivalence 也仍缺，因此不能把
   provider semantic-identity weakness 与 alternate-renderer fidelity 分开；禁止 rerun、调参、算法救援、P1 或默认
   App claim。
+
+# 2026-08-23 ABotN official pixel availability closure
+
+- 补充枚举固定 ABotN-POIBench revision 的完整 463-entry release tree：390 files / 9,666,374,456 bytes；182 张
+  PNG 严格分为 163 张成功轨迹可视化、8 张 failed 轨迹可视化、11 张 occupancy map，JPG/视频/其他 media 为 0。
+- 下载并绑定封存 `20260227163550/traj_0` 的官方同名“大众浴池”PNG：2850×1710、228,020 bytes、SHA-256
+  `F587AE2F...C8699`；它是俯视 trajectory visualization，不是 camera RGB 或 POI appearance reference。
+- receipt terminal=`OFFICIAL_PRE_RENDERED_OBSERVATION_RGB_NOT_RELEASED`，render/teacher/provider/baseline/rerun
+  均为 0。已配置的唯一 AutoDL worker 只读 SSH preflight 不可达；不启动付费资源、不重跑 sealed episode，下一执行
+  只剩取得可用的官方 Linux/CUDA/≥24 GB render host，不能用 map PNG 去“救”renderer fidelity confound。

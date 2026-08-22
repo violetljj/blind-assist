@@ -69,6 +69,9 @@ frame/pixel region 为 `0/163`；它只能承担 arrival-truth canary。官方 e
 endpoint、distance、teacher 或 private truth，provider/baseline call 均为 0。该 PASS 不建立官方 renderer equivalence 或
 functional pixel truth。Short-Horizon OVON 缺独立
 HM3D/OVON 资产，DoorFront 数据读取受 token 保护且无公开 export；不得绕过访问控制或把 shop sign 当 functional entrance。
+固定官方 release tree 的补充 inventory 进一步确认 182 张 PNG 全是 163 张成功轨迹图、8 张失败轨迹图和 11 张
+occupancy map，预渲染 camera observation RGB 为 0；封存“大众浴池”同名 PNG 是俯视轨迹图，不能替代官方 renderer。
+当前已配置 AutoDL worker 的只读 preflight 仍不可达，故去混杂的下一执行依赖仍是可用的官方 24 GB renderer host。
 
 正式 run 前的 validity hardening 已实现：Annotation V1 保存五级 truth authority、三个 teacher 的原始独立输出、
 agreement/disagreement、functional authority 及其 native/map sources；teacher-only consensus 不能建立 functional

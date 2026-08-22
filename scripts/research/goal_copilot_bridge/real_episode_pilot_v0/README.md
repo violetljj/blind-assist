@@ -73,6 +73,17 @@ python -m scripts.research.goal_copilot_bridge.real_episode_pilot_v0.audit_abotn
 any scene payload is downloaded. A host below the official 24 GB VRAM minimum closes locally as `NOT_EVALUABLE` with
 zero render, teacher, and provider calls.
 
+`audit_abotn_official_pixels.py` closes a separate release-tree ambiguity. It inventories every file in the pinned
+dataset revision and binds the sealed task to its same-name official PNG. The released PNGs are trajectory
+visualizations or occupancy maps, not pre-rendered camera observations; they cannot substitute for an official render
+server or be exposed to the provider.
+
+```powershell
+python -m scripts.research.goal_copilot_bridge.real_episode_pilot_v0.audit_abotn_official_pixels `
+  --action-graph-receipt artifacts.local/evidence/abotn-v0-action-graph-v0/freeze-receipt.json `
+  --output-dir artifacts.local/evidence/abotn-official-pixel-availability-v0
+```
+
 The separate `abotn_webgl_canary` is an explicitly unofficial renderer-mechanics adapter. It pins the smallest public
 ABotN PLY plus the lexicographically first task, maps only its initial camera pose into the rotated point-cloud frame,
 and serves no goal, endpoint, distance-to-goal, teacher output, or private truth to the renderer. A successful receipt

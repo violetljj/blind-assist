@@ -14,6 +14,7 @@ from .run_abotn_v0_closed_loop import _failure_class as abotn_closed_loop_failur
 from scripts.research.goal_copilot_bridge.last_10m_regrounding_v0.core import EpisodeState
 from .audit_abotn_poibench_truth_source import classify_source, inspect_task, summarize_tasks
 from .audit_abotn_render_runtime import classify_runtime
+from .audit_abotn_official_pixels import classify_files
 from .baseline import run_baseline
 from .evaluate import evaluate
 from .public_real_mining import mine_prospective
@@ -53,6 +54,22 @@ def authorize_native(row):
 
 
 class RealEpisodePilotTest(unittest.TestCase):
+    def test_abotn_official_pixel_inventory_does_not_promote_maps_to_camera_rgb(self):
+        entries = [
+            {"type": "file", "path": "annotations/s/png/traj_0_poi_1_goal.png", "size": 10},
+            {"type": "file", "path": "annotations/s/png_failed/failed_0_poi_2_goal.png", "size": 11},
+            {"type": "file", "path": "occmaps/s/map/occ_map.png", "size": 12},
+            {"type": "file", "path": "annotations/s/traj_0.json", "size": 13},
+            {"type": "file", "path": "annotations/s/png/camera_0.png", "size": 14},
+        ]
+        result = classify_files(entries)
+        self.assertEqual(4, result["media_count"])
+        self.assertEqual(1, result["pre_rendered_observation_candidate_count"])
+        self.assertEqual(["annotations/s/png/camera_0.png"], result["pre_rendered_observation_candidates"])
+        self.assertEqual(1, result["media_categories"]["annotation_trajectory_visualization"])
+        self.assertEqual(1, result["media_categories"]["annotation_failed_trajectory_visualization"])
+        self.assertEqual(1, result["media_categories"]["occupancy_map"])
+
     def test_abotn_closed_loop_failure_attribution_separates_grounding_and_control(self):
         state = EpisodeState.start(episode_id="e", location_id="l", goal_name="g", started_at_ms=0)
         state.state = "ABSTAIN"

@@ -48,6 +48,18 @@ teacher_calls=0
 provider_calls=0
 ```
 
+## Official release-tree pixel inventory
+
+对同一固定 dataset revision 的完整 463-entry tree 做了补充审计，而不是只按扩展名猜测是否存在 RGB。390 个文件中
+共有 182 张 PNG：163 张 `annotations/<scene>/png/traj_*_poi_*` 成功轨迹可视化、8 张 `png_failed/failed_*`
+失败轨迹可视化、11 张 occupancy map；JPG、视频和其他 media 均为 0。封存任务
+`20260227163550/traj_0` 的同名“大众浴池”PNG 也已下载并绑定，内容类型是 2850×1710 俯视轨迹可视化，绝非
+camera observation 或店面参考图。
+
+因此官方 release 中可直接复用的 pre-rendered observation RGB 为 `0`，不能用 annotation PNG 或 occupancy map
+替代官方 renderer，也不能把它们暴露给 provider。本次 render/teacher/provider/baseline/episode-rerun 均为 0；本机
+唯一已配置 AutoDL worker 的只读 SSH preflight 仍不可达，没有启动或创建远端资源。
+
 曾短暂启动 Docker Desktop 只验证 NVIDIA passthrough，验证后已停止；没有遗留 container 或 Docker process。
 
 ## Unofficial WebGL transport canary
@@ -98,6 +110,10 @@ region，也不产生 selection accuracy、arrival success 或算法 successor�
 - frozen initial RGB：`artifacts.local/evidence/abotn-webgl-render-canary-v0/initial_view.png`
   SHA-256 `A56565D02B9AF540C15460012B07A825419241497E3468026C730DC1478634E8`；
 - source annotation manifest SHA-256：`b90201c38a4660f765f9c68233e79f824dcb03ea8d7feb804b6e78cbf79a2779`。
+- official pixel availability receipt：
+  `artifacts.local/evidence/abotn-official-pixel-availability-v0/receipt.json`，SHA-256
+  `29185CC630C549644A20DAAB4E95E4E5C2116271435066B9E7B65D920C373A6C`；封存任务轨迹图 SHA-256
+  `F587AE2F952090985CF291B6B97ED7C2DA9ECCC817B8989383A0B2B84A4C8699`。
 
 下一可执行边界已收窄为：冻结同一 task 的 arrival-only provider-firewall canary，并在任何 baseline 前确认 provider
 只能看到 goal + rendered pixels + public camera state，不能看到 endpoint 或 distance-to-goal；这仍不建立 entrance-region
