@@ -1,6 +1,11 @@
 # Last-10m current-frame visual servo V1
 
-状态：`S2_S5_CURRENT_FRAME_COMPLETION_NOT_ESTABLISHED / D3_SAM3_FUNCTIONAL_REGION_CONFIRMATION_FAILED / PROCTHOR_VULKAN_RUNTIME_NOT_EVALUABLE`
+状态：`HISTORICAL_REGRESSION_AND_MECHANICS_ONLY / SYNTHETIC_CURRENT_FRAME_ARRIVAL_AUTHORITY_CLOSED / NO_NEW_COHORT`
+
+本模块的 synthetic completion/arrival 产品证明责任已由
+[`closeout`](../../../../docs/research/goal-copilot/BLINDASSIST_SYNTHETIC_CURRENT_FRAME_ARRIVAL_CLOSEOUT_2026-08-23.md)
+前向关闭。现有代码与数据只保留为 regression、mechanics、geometry sanity 和 leak check；不得建立 D2、S6 或新的
+TartanAir/TartanGround completion confirmation，也不得从历史结果恢复模型、阈值或 provider sweep 权限。
 
 最新全自动 TartanGround 差速驱动确认见
 [`TartanGround public-goal route servo result`](../../../../docs/research/goal-copilot/BLINDASSIST_TARTANGROUND_ROUTE_SERVO_RESULT_2026-08-23.md)：

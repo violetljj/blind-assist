@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-23（Asia/Hong_Kong）；执行者：violjjet。正式前向关闭 synthetic current-frame arrival 的产品证明责任：
+  goal-semantic proposal availability 保留，bbox extent → completion 被否决，exact-door/ground-connected/route-bearing
+  proxy 均未建立 destination-relative arrival。TartanAir/TartanGround 降为 regression/mechanics/geometry/leak-check；
+  `STOP_FOR_SAFETY != ARRIVED`，completion 只接受用户或合同化可信交互确认。只读历史分解得到 S0v11
+  `CORRECT_REFERENT_WRONG_RANGE=9`、两批 far `WRONG_REFERENT=14`、near/STOP
+  `INSUFFICIENT_OR_INVALID_TRUTH=19`。唯一 successor 改为真实 episode selective guidance V0；P1、模型搜索与默认 App
+  均未授权。结果：[arrival closeout](docs/research/goal-copilot/BLINDASSIST_SYNTHETIC_CURRENT_FRAME_ARRIVAL_CLOSEOUT_2026-08-23.md)。
+
 - 时间：2026-08-22（Asia/Hong_Kong）；执行者：Codex。P1-PA3 首次从合法 pre-truth product Goal Contract 落到
   real Mapillary development cohort。station-centroid acquisition 为 `0/4 visible`，不跑模型；fresh OSM
   entrance-anchor cohort 为 `6/7 acquired / 2 visible / 3 not-visible / 1 unadjudicable`。YOLOE goal-semantic PA3
