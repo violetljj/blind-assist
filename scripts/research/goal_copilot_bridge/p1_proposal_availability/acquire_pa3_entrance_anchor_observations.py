@@ -83,6 +83,94 @@ def osm_map_entrance_nodes(
     return rows
 
 
+def _point_in_polygon(point: tuple[float, float], polygon: list[tuple[float, float]]) -> bool:
+    x, y = point
+    inside = False
+    for index, (x1, y1) in enumerate(polygon):
+        x2, y2 = polygon[(index + 1) % len(polygon)]
+        if (y1 > y) != (y2 > y):
+            crossing_x = (x2 - x1) * (y - y1) / (y2 - y1) + x1
+            if x < crossing_x:
+                inside = not inside
+    return inside
+
+
+def resolve_parent_bound_entrance_xml(
+    xml_payload: bytes,
+    place: Mapping[str, Any],
+) -> tuple[dict[str, Any] | None, dict[str, Any] | None, int]:
+    """Bind entrance candidates to the named feature or its containing building way."""
+    root = ET.fromstring(xml_payload)
+    nodes: dict[int, dict[str, Any]] = {}
+    for node in root.findall("node"):
+        node_id = int(node.attrib["id"])
+        nodes[node_id] = {
+            "id": node_id,
+            "lat": float(node.attrib["lat"]),
+            "lon": float(node.attrib["lon"]),
+            "tags": {tag.attrib["k"]: tag.attrib["v"] for tag in node.findall("tag")},
+        }
+    ways = []
+    for way in root.findall("way"):
+        refs = [int(nd.attrib["ref"]) for nd in way.findall("nd")]
+        tags = {tag.attrib["k"]: tag.attrib["v"] for tag in way.findall("tag")}
+        ways.append({"id": int(way.attrib["id"]), "refs": refs, "tags": tags})
+
+    parent = None
+    if str(place.get("osm_type")) == "way":
+        exact = next((way for way in ways if way["id"] == int(place["osm_id"])), None)
+        if exact is not None and (exact["tags"].get("building") or exact["tags"].get("amenity")):
+            parent = exact
+    if parent is None:
+        point = (float(place["lon"]), float(place["lat"]))
+        containing = []
+        for way in ways:
+            if not way["tags"].get("building") or len(way["refs"]) < 4 or way["refs"][0] != way["refs"][-1]:
+                continue
+            if any(ref not in nodes for ref in way["refs"]):
+                continue
+            polygon = [(nodes[ref]["lon"], nodes[ref]["lat"]) for ref in way["refs"][:-1]]
+            if _point_in_polygon(point, polygon):
+                area = abs(sum(
+                    polygon[index][0] * polygon[(index + 1) % len(polygon)][1]
+                    - polygon[(index + 1) % len(polygon)][0] * polygon[index][1]
+                    for index in range(len(polygon))
+                )) / 2.0
+                containing.append((area, way["id"], way))
+        if containing:
+            parent = min(containing, key=lambda row: (row[0], row[1]))[2]
+    if parent is None:
+        return None, None, 0
+
+    raw = [nodes[ref] for ref in parent["refs"] if ref in nodes and nodes[ref]["tags"].get("entrance")]
+    entrance = resolve_entrance(raw, place)
+    parent_receipt = {
+        "osm_type": "way",
+        "osm_id": parent["id"],
+        "name": parent["tags"].get("name"),
+        "building": parent["tags"].get("building"),
+        "amenity": parent["tags"].get("amenity"),
+        "binding": "EXACT_NAMED_WAY_OR_SMALLEST_CONTAINING_BUILDING_WAY",
+    }
+    return entrance, parent_receipt, len(raw)
+
+
+def osm_map_payload(
+    session: requests.Session,
+    place: Mapping[str, Any],
+    radius_m: int,
+    endpoint: str,
+) -> bytes:
+    lat = float(place["lat"])
+    lon = float(place["lon"])
+    lat_delta = radius_m / 111_320.0
+    lon_delta = radius_m / (111_320.0 * max(0.01, abs(math.cos(math.radians(lat)))))
+    bbox = f"{lon - lon_delta},{lat - lat_delta},{lon + lon_delta},{lat + lat_delta}"
+    response = session.get(endpoint, params={"bbox": bbox}, timeout=90)
+    response.raise_for_status()
+    return response.content
+
+
 def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dict[str, Any]:
     _require(not output_dir.exists(), "entrance-anchor acquisition output already exists")
     plan = json.loads(plan_path.read_text(encoding="utf-8"))
@@ -111,6 +199,7 @@ def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dic
         place_anchors.append({
             "episode_id": item["episode_id"], "query": item["query"],
             "lat": float(matches[0]["lat"]), "lon": float(matches[0]["lon"]),
+            "osm_type": matches[0].get("osm_type"), "osm_id": matches[0].get("osm_id"),
             "display_name": matches[0].get("display_name"),
         })
         if index + 1 < len(queries):
@@ -122,20 +211,27 @@ def acquire(plan_path: Path, c0_path: Path, output_dir: Path, token: str) -> dic
     endpoint = str(plan["entrance_anchor"].get("endpoint", "https://overpass-api.de/api/interpreter"))
     _require(endpoint.startswith("https://"), "OSM entrance endpoint must use HTTPS")
     for index, place in enumerate(place_anchors):
-        if backend == "OSM_MAP_API":
+        selected_parent = None
+        if backend == "OSM_PARENT_BOUND_MAP_API":
+            payload = osm_map_payload(public_session, place, radius, endpoint)
+            entrance, selected_parent, candidate_count = resolve_parent_bound_entrance_xml(payload, place)
+            raw = [None] * candidate_count
+        elif backend == "OSM_MAP_API":
             raw = osm_map_entrance_nodes(public_session, place, radius, endpoint)
+            entrance = resolve_entrance(raw, place)
         else:
             _require(backend == "OVERPASS", "unsupported OSM entrance backend")
             query = f'[out:json][timeout:25];node(around:{radius},{place["lat"]},{place["lon"]})["entrance"];out body;'
             response = public_session.post(endpoint, data={"data": query}, timeout=90)
             response.raise_for_status()
             raw = response.json().get("elements", [])
-        entrance = resolve_entrance(raw, place)
+            entrance = resolve_entrance(raw, place)
         resolved.append({
             **place,
             "entrance_candidate_count": len(raw),
+            "selected_parent": selected_parent,
             "selected_entrance": entrance,
-            "status": "OSM_ENTRANCE_FROZEN" if entrance else "NO_OSM_ENTRANCE_NO_REPLACEMENT",
+            "status": "OSM_PARENT_BOUND_ENTRANCE_FROZEN" if entrance and selected_parent else "OSM_ENTRANCE_FROZEN" if entrance else "NO_PARENT_BOUND_ENTRANCE_NO_REPLACEMENT" if backend == "OSM_PARENT_BOUND_MAP_API" else "NO_OSM_ENTRANCE_NO_REPLACEMENT",
         })
         if index + 1 < len(place_anchors):
             time.sleep(1.0)
