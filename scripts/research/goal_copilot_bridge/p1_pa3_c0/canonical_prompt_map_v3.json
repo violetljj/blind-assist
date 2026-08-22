@@ -1,0 +1,19 @@
+{
+  "entries": [
+    {
+      "canonical_prompt": "building entrance",
+      "goal_type": "NAMED_BUILDING_ENTRANCE"
+    },
+    {
+      "canonical_prompt": "building entrance",
+      "goal_type": "LEFTMOST_BUILDING_ENTRANCE"
+    },
+    {
+      "canonical_prompt": "door",
+      "goal_type": "LEFTMOST_VISIBLE_DOOR"
+    }
+  ],
+  "mapping_id": "P1-PA3-C0-CANONICAL-PROMPT-MAP-V3",
+  "mapping_rule": "EXACT_GLOBAL_GOAL_TYPE_LOOKUP_NO_EPISODE_OVERRIDE",
+  "schema_version": "blindassist_p1_pa3_c0_prompt_map_v1"
+}

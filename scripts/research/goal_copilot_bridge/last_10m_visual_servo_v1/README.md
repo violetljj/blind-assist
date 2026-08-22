@@ -1,6 +1,6 @@
 # Last-10m current-frame visual servo V1
 
-状态：`S0V11_COMPLETE_AND_SEALED / PROPOSAL_COVERAGE_13_OF_13 / TRUE_COMPLETION_1_OF_13 / FALSE_COMPLETION_9_OF_13 / BBOX_HEIGHT_COMPLETION_REJECTED`
+状态：`S0V11_BBOX_HEIGHT_REJECTED / COMPLETION_NEARNESS_S1_SEALED / DEPTH_REDUCES_FALSE_COMPLETION_BUT_TRADES_OFF_TRUE_COMPLETION`
 
 本模块把已经建立的 goal-semantic proposal 与 leftmost relation selection 接入一个完全当前帧的 pan/zoom/复扫
 visual-servo simulator。它不恢复 P1、tracker、referent memory 或跨帧 candidate identity。
@@ -38,3 +38,20 @@ E:\codex-tools\bin\blindassist-python.cmd -m unittest `
 
 结果真源：
 [`S0v11 result`](../../../../docs/research/goal-copilot/BLINDASSIST_LAST_10M_VISUAL_SERVO_S0V11_RESULT_2026-08-22.md)。
+
+## Independent completion-nearness S0/S1
+
+`completion_nearness.py` 和两个 dataset materializer 自动建立 public RGB/private truth 边界。NYUv2 S0 使用
+预冻结 unique leftmost-door contract；fresh SUNRGBD S1 使用 set-valued visible-door contract，并排除所有 NYUv2
+ancestry。S1 的 48 帧一次运行表明 depth gate 把 false completion `8 -> 1`，但 true completion `2 -> 1`；
+因此独立 metric depth 是有信息但不充分的 completion cue，尚不能授权 completion control。
+
+Focused mechanics check:
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts.research.goal_copilot_bridge.last_10m_visual_servo_v1.test_completion_nearness
+```
+
+结果真源：
+[`completion-nearness S0/S1`](../../../../docs/research/goal-copilot/BLINDASSIST_LAST_10M_COMPLETION_NEARNESS_S0_S1_RESULT_2026-08-22.md)。
