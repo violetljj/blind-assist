@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_HRG0_FRESH_SINGLE_VISIBLE_CASE_RANK1 / OBSERVATION_VISIBILITY_YIELD_BOTTLENECK / IDENTITY_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_HRG1_FRESH_NOT_OBSERVED / HRG0_PARTIAL_2_OF_7_AT_K10 / IDENTITY_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
@@ -8,11 +8,18 @@ Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保�
 ## 当前研究实现
 
 当前算法结果真源是
-[`P1-HRG0 fresh hierarchical functional-context result`](P1_HRG0_FRESH_HIERARCHICAL_FUNCTIONAL_CONTEXT_RESULT_2026-08-22.md)。
-7 个 fresh city-hall Goal Contract 先于 pixel/truth 冻结，几何采集得到 4 帧，pre-provider truth 只有
-`1 VISIBLE / 3 NOT_VISIBLE`。唯一 visible Haarlem case 的固定 HRG0 candidate 在 rank 1 以 IoU `0.8955` 命中，
-Recall@1/3/5/10 均为 `1/1`。这只是 fresh 单例 availability observation；低 visibility yield 不支持 stable coverage、
-identity verifier、AMRM 或 App。下一步只允许把 geometry-frozen multi-view observation yield 与 HRG0 proposal 分开验证。
+[`P1-HRG1 fresh parent-bound local-refinement result`](P1_HRG1_FRESH_PARENT_BOUND_LOCAL_REFINEMENT_RESULT_2026-08-22.md)。
+7 个 fresh museum Goal Contract 先于 pixel/truth 冻结；parent-bound OSM entrance + geometry-frozen multi-view acquisition
+得到 11 帧，pre-provider truth 为 `7 VISIBLE / 4 NOT_VISIBLE`，覆盖 4/7 goal episodes。同一 fresh denominator 上，
+HRG0 在 IoU `0.30` 的 Recall@10 为 `2/7`，冻结的 HRG1 Top-5 coarse-to-local refinement 为 `0/7`，没有建立
+target availability。结果后的只读诊断显示 coarse target-center containment rank 为 `[none, 7, 9, 6, 8, 1, 2]`：多数
+target 在 HRG1 parent gate 前已经丢失，进入 Top-5 的两个 case 也没有获得足够精确的 local box。identity verifier、
+AMRM 与 App 仍不授权；本 cohort 禁止扩 pool、改排序、降阈值或重跑。
+
+其前一个
+[`P1-HRG0 fresh single-visible-case result`](P1_HRG0_FRESH_HIERARCHICAL_FUNCTIONAL_CONTEXT_RESULT_2026-08-22.md)
+在唯一 visible Haarlem city-hall case 上 rank 1、IoU `0.8955`，只能作为 fresh 单例 observation，已被当前更大的 paired
+cohort 取代为动态决策依据。
 
 其 predecessor 是
 [`P1-PA3 + FRG1 result`](P1_PA3_GOAL_SEMANTIC_AND_FUNCTIONAL_REGION_RESULT_2026-08-22.md)：2 个 consumed-development
