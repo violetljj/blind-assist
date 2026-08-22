@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_PA3_SEMANTIC_AVAILABILITY_NOT_OBSERVED / P1_FRG1_PARTIAL_FUNCTIONAL_REGION_SIGNAL_CONSUMED_DEVELOPMENT / FRESH_HIERARCHICAL_CONFIRMATION_REQUIRED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_HRG0_FRESH_SINGLE_VISIBLE_CASE_RANK1 / OBSERVATION_VISIBILITY_YIELD_BOTTLENECK / IDENTITY_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
@@ -8,11 +8,16 @@ Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保�
 ## 当前研究实现
 
 当前算法结果真源是
-[`P1-PA3 + FRG1 result`](P1_PA3_GOAL_SEMANTIC_AND_FUNCTIONAL_REGION_RESULT_2026-08-22.md)。合法 pre-truth
-Goal Contract 与 entrance-anchor acquisition 后得到 2 个 visible/evaluable case；YOLOE goal-semantic PA3 在
-IoU >= 0.30 的 Recall@1/3/5/10 均为 `0/2`。复用 outcome 前已冻结的 Grounding DINO functional prompt 后，
-FRG1 Recall@10 为 `1/2`，只形成 consumed-development partial signal。下一步只能是 fresh hierarchical grounding
-contract；identity verifier、AMRM 与 App 未授权。
+[`P1-HRG0 fresh hierarchical functional-context result`](P1_HRG0_FRESH_HIERARCHICAL_FUNCTIONAL_CONTEXT_RESULT_2026-08-22.md)。
+7 个 fresh city-hall Goal Contract 先于 pixel/truth 冻结，几何采集得到 4 帧，pre-provider truth 只有
+`1 VISIBLE / 3 NOT_VISIBLE`。唯一 visible Haarlem case 的固定 HRG0 candidate 在 rank 1 以 IoU `0.8955` 命中，
+Recall@1/3/5/10 均为 `1/1`。这只是 fresh 单例 availability observation；低 visibility yield 不支持 stable coverage、
+identity verifier、AMRM 或 App。下一步只允许把 geometry-frozen multi-view observation yield 与 HRG0 proposal 分开验证。
+
+其 predecessor 是
+[`P1-PA3 + FRG1 result`](P1_PA3_GOAL_SEMANTIC_AND_FUNCTIONAL_REGION_RESULT_2026-08-22.md)：2 个 consumed-development
+visible case 上 YOLOE semantic-only PA3 为 `0/2`，FRG1 Recall@10 为 `1/2`。它们只用于说明 HRG0 设计来源，不能
+与 fresh 单例拼接成确认分母。
 
 C0 真源仍是
 [`P1-PA3-C0 public Goal Contract cohort materialization`](P1_PA3_C0_PUBLIC_GOAL_CONTRACT_COHORT_MATERIALIZATION_RESULT_2026-08-22.md)。
