@@ -1,0 +1,22 @@
+{
+  "schema_version": "blindassist_tartanair_functional_confirmation_manifest_v1",
+  "protocol_id": "BLINDASSIST_TARTANAIR_FUNCTIONAL_CONFIRMATION_D3_V1",
+  "case_prefix": "tartanair-functional-d3-case",
+  "created_at_utc": "2026-08-22T14:55:00Z",
+  "created_before_selected_rgb_depth_segmentation_access": true,
+  "created_before_provider_calls": true,
+  "role": "INDEPENDENT_CONFIRMATION",
+  "supersedes_runtime_attempt": "D2D HQWesternSaloon stopped before evaluation at case 30/48 because ground plane was unavailable; no terminal result and no replay",
+  "development_ancestry": {
+    "development_environment": "HongKong",
+    "environment_selection_receipt": "artifacts.local/evidence/last-10m-functional-confirmation-d2b/environment_selection.json",
+    "environment_selection_rule": "next entry in ascending public seg+depth required archive bytes among untouched exact-door environments",
+    "mechanical_runtime_change": "unavailable ground plane now fails closed to no completion instead of aborting the cohort"
+  },
+  "public_goal_contract": {"goal_text_original": "帮我找一扇通向建筑内部的门", "goal_type": "BUILDING_PASSAGE_DOOR", "reference_mode": "SET_VALUED", "canonical_prompt": "door"},
+  "source": {"authority": "TartanAir V2 official Hugging Face distribution", "repository": "theairlabcmu/tartanair2", "revision": "0d2d145e973832742a2aaa04b7d2ebffc8d82817", "environments": ["JapaneseAlley"], "difficulty": "easy", "camera": "lcam_front", "modalities": ["image", "depth", "seg"]},
+  "eligibility": {"semantic_class_exact": "door", "class_alias_expansion": false, "minimum_connected_region_pixels": 800, "minimum_valid_depth_fraction": 0.5, "valid_depth_range_m": [0.4, 8.0], "near_threshold_m": 2.0, "near_requires_center_ray": true, "ordering": "ascending SHA256 of environment/trajectory/frame path", "near_take": 24, "far_take": 24, "replacement_after_provider_observation": false},
+  "provider": {"proposal": "official SAM 3 image text prompt exact door", "source_revision": "8f0b7f4d4e7eda2ed606ebde6702c93359ad01da", "checkpoint_sha256": "9999e2341ceef5e136daa386eecb55cb414446a00ac2b55eb2dfd2f7c3cf8c9e", "confidence_threshold": 0.105, "mask_height_fraction_min": 0.4, "ground_contact_pixel_min": 50, "ground_contact_depth_max_m": 2.0, "ground_unavailable_behavior": "fail closed to no completion", "stateless_current_frame_only": true, "threshold_prompt_model_or_rule_sweep": false},
+  "evaluator": {"target_hit_iou_threshold": 0.3, "truth_positive": "selected bbox matches an exact-door component whose median depth is at most 2m", "confirmation_gate": "zero false completion, at least 8 opportunities, correct completion coverage at least 0.50"},
+  "claim_ceiling": "INDEPENDENT_SYNTHETIC_EXACT_DOOR_GROUND_CONNECTED_APPROACHABILITY_PROXY_NO_REAL_WORLD_ENTRANCE_TRAVERSABILITY_NAVIGATION_PRODUCT_OR_SAFETY_CLAIM"
+}

@@ -28,12 +28,20 @@ CONFIDENCE_THRESHOLD = 0.5
 MASK_HEIGHT_FRACTION_MIN = 0.40
 
 
+def safe_ground_observation(depth: np.ndarray) -> tuple[np.ndarray, dict[str, Any]]:
+    try:
+        ground, plane = ground_mask_from_depth(depth)
+        return ground, {"status": "available", **plane}
+    except ValueError as error:
+        return np.zeros(depth.shape, dtype=bool), {"status": "unavailable", "reason": str(error)}
+
+
 def select_sam3_functional_candidate(candidates: list[dict[str, Any]], width: int) -> dict[str, Any] | None:
     eligible = [candidate for candidate in candidates if candidate["bbox_xyxy"][0] <= width / 2.0 <= candidate["bbox_xyxy"][2] and candidate["mask_height_fraction"] >= MASK_HEIGHT_FRACTION_MIN and candidate["ground_contact_pixel_count"] >= CONTACT_PIXEL_MIN and candidate["ground_contact_depth_median_m"] is not None and candidate["ground_contact_depth_median_m"] <= CONTACT_DEPTH_MAX_M]
     return max(eligible, key=lambda row: (row["proposal_score"], row["ground_contact_pixel_count"])) if eligible else None
 
 
-def run_provider(public_path: Path, source_root: Path, vendor_root: Path, checkpoint_path: Path, output_path: Path, device: str, confidence_threshold: float = CONFIDENCE_THRESHOLD) -> dict[str, Any]:
+def run_provider(public_path: Path, source_root: Path, vendor_root: Path, checkpoint_path: Path, output_path: Path, device: str, confidence_threshold: float = CONFIDENCE_THRESHOLD, role: str = "DEVELOPMENT_ONLY") -> dict[str, Any]:
     public = _read(public_path)
     revision = subprocess.check_output(["git", "-C", str(source_root), "rev-parse", "HEAD"], text=True).strip()
     _require(revision == SOURCE_REVISION, "SAM 3 source revision drift")
@@ -60,7 +68,7 @@ def run_provider(public_path: Path, source_root: Path, vendor_root: Path, checkp
         with Image.open(image_path) as opened:
             image = opened.convert("RGB")
         depth = decode_depth(depth_path)
-        ground, plane = ground_mask_from_depth(depth)
+        ground, plane = safe_ground_observation(depth)
         connected = observer_connected_ground(ground)
         ground_path = ground_dir / f"{case['case_id']}.png"
         Image.fromarray(connected.astype(np.uint8) * 255).save(ground_path)
@@ -88,7 +96,8 @@ def run_provider(public_path: Path, source_root: Path, vendor_root: Path, checkp
             selected = selected | {"selected_mask_path": str(selected_path.resolve()), "selected_mask_sha256": sha256(selected_path)}
         rows.append({"case_id": case["case_id"], "image_width": image.width, "image_height": image.height, "plane": plane, "connected_ground_mask_path": str(ground_path.resolve()), "connected_ground_mask_sha256": sha256(ground_path), "candidates": candidates, "selected_candidate": selected, "completion": selected is not None})
         print(f"sam3-functional {len(rows)}/{len(public['cases'])} case={case['case_id']} candidates={len(candidates)} completion={selected is not None}", flush=True)
-    payload = {"schema_version": "blindassist_sam3_functional_region_development_prediction_v1", "created_at_utc": datetime.now(timezone.utc).isoformat(), "role": "DEVELOPMENT_ONLY", "public_sha256": sha256(public_path), "private_truth_access": False, "provider": {"source_revision": SOURCE_REVISION, "checkpoint_sha256": sha256(checkpoint_path), "prompt": PROMPT, "confidence_threshold": confidence_threshold, "mask_height_fraction_min": MASK_HEIGHT_FRACTION_MIN, "contact_pixel_min": CONTACT_PIXEL_MIN, "contact_depth_max_m": CONTACT_DEPTH_MAX_M, "device": device}, "cases": rows}
+    _require(role in {"DEVELOPMENT_ONLY", "INDEPENDENT_CONFIRMATION"}, "invalid SAM 3 evidence role")
+    payload = {"schema_version": "blindassist_sam3_functional_region_prediction_v2", "created_at_utc": datetime.now(timezone.utc).isoformat(), "role": role, "public_sha256": sha256(public_path), "private_truth_access": False, "provider": {"source_revision": SOURCE_REVISION, "checkpoint_sha256": sha256(checkpoint_path), "prompt": PROMPT, "confidence_threshold": confidence_threshold, "mask_height_fraction_min": MASK_HEIGHT_FRACTION_MIN, "contact_pixel_min": CONTACT_PIXEL_MIN, "contact_depth_max_m": CONTACT_DEPTH_MAX_M, "device": device}, "cases": rows}
     _atomic_json(output_path, payload)
     return payload
 
@@ -127,7 +136,10 @@ def evaluate(public_path: Path, private_path: Path, prediction_path: Path, outpu
     opportunities = sum(row["completion_opportunity"] for row in rows)
     correct = sum(row["correct_completion"] for row in rows)
     false = sum(row["false_completion"] for row in rows)
-    payload = {"schema_version": "blindassist_sam3_functional_region_development_evaluation_v1", "created_at_utc": datetime.now(timezone.utc).isoformat(), "role": "DEVELOPMENT_ONLY", "prediction_sha256": sha256(prediction_path), "private_sha256": sha256(private_path), "opportunity_count": opportunities, "decision_count": sum(row["completion_decision"] for row in rows), "correct_count": correct, "false_count": false, "coverage": correct / opportunities if opportunities else None, "rows": rows, "terminal": "DEV_SAM3_FUNCTIONAL_REGION_PROMISING" if false == 0 and opportunities >= 8 and correct / opportunities >= 0.50 else "DEV_SAM3_FUNCTIONAL_REGION_NOT_PROMISING"}
+    passed = false == 0 and opportunities >= 8 and correct / opportunities >= 0.50
+    role = prediction.get("role")
+    terminal_prefix = "CONFIRMATION" if role == "INDEPENDENT_CONFIRMATION" else "DEV"
+    payload = {"schema_version": "blindassist_sam3_functional_region_evaluation_v2", "created_at_utc": datetime.now(timezone.utc).isoformat(), "role": role, "prediction_sha256": sha256(prediction_path), "private_sha256": sha256(private_path), "opportunity_count": opportunities, "decision_count": sum(row["completion_decision"] for row in rows), "correct_count": correct, "false_count": false, "coverage": correct / opportunities if opportunities else None, "rows": rows, "terminal": f"{terminal_prefix}_SAM3_FUNCTIONAL_REGION_{'PASSED' if passed else 'NOT_PASSED'}"}
     _atomic_json(output_path, payload)
     return payload
 
@@ -142,10 +154,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--confidence-threshold", type=float, default=CONFIDENCE_THRESHOLD)
+    parser.add_argument("--role", choices=("DEVELOPMENT_ONLY", "INDEPENDENT_CONFIRMATION"), default="DEVELOPMENT_ONLY")
     args = parser.parse_args(argv)
     args.output.mkdir(parents=True, exist_ok=False)
     prediction_path, evaluation_path = args.output / "prediction.json", args.output / "evaluation.json"
-    run_provider(args.public, args.source_root, args.vendor_root, args.checkpoint, prediction_path, args.device, args.confidence_threshold)
+    run_provider(args.public, args.source_root, args.vendor_root, args.checkpoint, prediction_path, args.device, args.confidence_threshold, args.role)
     result = evaluate(args.public, args.private, prediction_path, evaluation_path)
     print(json.dumps({key: result[key] for key in ("opportunity_count", "decision_count", "correct_count", "false_count", "coverage", "terminal")}, indent=2))
     return 0

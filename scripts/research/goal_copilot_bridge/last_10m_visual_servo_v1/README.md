@@ -1,6 +1,6 @@
 # Last-10m current-frame visual servo V1
 
-状态：`S0V11_BBOX_HEIGHT_REJECTED / S2_S5_CURRENT_FRAME_COMPLETION_NOT_ESTABLISHED / D1C_SAM3_FUNCTIONAL_REGION_DEVELOPMENT_ONLY`
+状态：`S2_S5_CURRENT_FRAME_COMPLETION_NOT_ESTABLISHED / D3_SAM3_FUNCTIONAL_REGION_CONFIRMATION_FAILED / PROCTHOR_VULKAN_RUNTIME_NOT_EVALUABLE`
 
 本模块把已经建立的 goal-semantic proposal 与 leftmost relation selection 接入一个完全当前帧的 pan/zoom/复扫
 visual-servo simulator。它不恢复 P1、tracker、referent memory 或跨帧 candidate identity。
@@ -89,5 +89,15 @@ Random Forest 在 S5 development split 上达到 `16/23`，但产生 `5` 个 fal
 floor 0.10 为 `13/24 correct, 1 false`。固定阈值网格中最优零误报配置只有 `10/24`，仍未授权 fresh/formal
 successor。D1C 只用于开发，不可回标成 independent confirmation。
 
+独立确认自动筛选了四个新环境：AbandonedFactory2、OldBrickHouseNight、CoalMine 均在 RGB/provider 前因
+near denominator 不足退出；HQWesternSaloon 通过但因一帧 ground-plane exception 在 evaluator 前成为
+`NOT_EVALUABLE_RUNTIME`。补齐 fail-closed 后，untouched JapaneseAlley D3 的 48/48 ground preflight 通过，
+唯一一次冻结 SAM 3 运行得到 `1/24 correct, 0 false, coverage=0.0417`，确认失败且禁止 replay。
+
+随后建立的 ProcTHOR/AI2-THOR 5.0 Docker CloudRendering 通道证明 CUDA GPU 可见，但 Docker Desktop Vulkan
+仅暴露 llvmpipe；Unity 以 `-11` 退出。因此 topology/reachable-position 评估是
+`NOT_EVALUABLE_VULKAN_RUNTIME`，不是算法负例。
+
 结果真源：
 [`functional-region D1C`](../../../../docs/research/goal-copilot/BLINDASSIST_LAST_10M_FUNCTIONAL_REGION_D1C_RESULT_2026-08-22.md)。
+[`functional-region D3 confirmation`](../../../../docs/research/goal-copilot/BLINDASSIST_LAST_10M_FUNCTIONAL_REGION_D3_RESULT_2026-08-22.md)。
