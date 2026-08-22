@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-22（Asia/Hong_Kong）；执行者：Codex。完成
+  `P1-PA3-C0 PUBLIC_GOAL_CONTRACT_COHORT_MATERIALIZATION` no-model infrastructure。审计 P1-D0/PA0、Silver-B 与
+  Last-10m 后，没有来源能证明真实 user/product goal 先于 capture/target truth，eligible episode 为 `0`，不回填
+  private category 或 target name。新增空 prospective intake、全局 exact
+  `NAMED_BUILDING_ENTRANCE -> building entrance` mapping、truth-key firewall、deterministic hashes 与 immutable-output
+  guard；空 roster、episode prompt override、truth field 和 retrospective provenance 全部 fail closed。5 项 focused tests
+  通过；PA3 inference、采集、truth、AMRM、verifier 与 App 均未授权。结果：
+  [P1-PA3-C0](docs/research/goal-copilot/P1_PA3_C0_PUBLIC_GOAL_CONTRACT_COHORT_MATERIALIZATION_RESULT_2026-08-22.md)。
+
 - 时间：2026-08-22（Asia/Hong_Kong）；执行者：violjjet。完成 P1-AMRM0 outcome-preserving first-poison autopsy。
   17 次 poisoned admission 收敛为 9 个 first-poison episode；9/9 frozen candidate 为 background、正确 candidate
   全部 absent，其中 7 次目标仍可见且 candidate-target IoU 均为 0，2 次目标不可见。9/9 同时由 original target、

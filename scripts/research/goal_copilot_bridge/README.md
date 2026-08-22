@@ -1,8 +1,15 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / P1_PA1_TARGET_PROPOSAL_RESCUE / TERMINAL=P1_PA1_FIXED_TILED_SCALE_RESCUE_NOT_SUPPORTED_ON_FAILURE_COHORT / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / P1_PA3_C0_PUBLIC_GOAL_CONTRACT_MATERIALIZATION / PA3_INFERENCE_NOT_AUTHORIZED / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
+
+## P1-PA3-C0 public Goal Contract materialization
+
+`p1_pa3_c0/` is the current no-model surface. It admits only real user/product task records captured before episode
+capture and target truth, derives one canonical semantic prompt from a global exact goal-type map, and rejects
+per-episode prompt overrides plus target/category/instance/bbox/mask/referent/evaluator fields. Existing research assets
+yielded zero eligible episodes, so the prospective intake template remains empty and PA3 inference is not authorized.
 
 ## P1-PA0 target candidate availability
 

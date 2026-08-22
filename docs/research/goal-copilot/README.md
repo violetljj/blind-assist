@@ -1,13 +1,23 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_PA2_TARGET_REPRESENTATION_AUDIT / TERMINAL=P1_PA2_WEAK_CONTEXT_CONDITIONED_SIGNAL_ONE_OF_SEVEN_REPRESENTATION_MISMATCH_REMAINS_PRIMARY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / P1_PA3_C0_PUBLIC_GOAL_CONTRACT_MATERIALIZATION / TERMINAL=P1_PA3_C0_PROSPECTIVE_INTAKE_READY_EXISTING_ELIGIBLE_EPISODES_ZERO_PA3_INFERENCE_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态真源；历史协议与数字只通过链接保留，不再授予执行权限。
 
 ## 当前研究实现
 
-当前执行面已以
+当前执行面是
+[`P1-PA3-C0 public Goal Contract cohort materialization`](P1_PA3_C0_PUBLIC_GOAL_CONTRACT_COHORT_MATERIALIZATION_RESULT_2026-08-22.md)。
+它不运行模型，只要求 user/product task semantics 在 capture 与 target truth 前形成 immutable public receipt，并由全局
+`goal_type -> canonical_prompt` exact mapping 派生 prompt。既有 P1-D0/PA0、Silver-B 与 Last-10m 均无法证明该
+precedence，合格 episode 为 `0`，没有历史回填。prospective intake mechanics 已就绪，但空 roster 不可 materialize，
+且任何未来 goal receipt 仍固定 `pa3_inference_authorized=false`；采集、标 truth、PA3、AMRM、verifier 与 App 均需另行授权。
+
+PA2 后的 `Proposal–Identity Responsibility Mismatch` 只登记为有效待验证解释，不是 YOLOE instance-ReID 机制事实。
+只有合法 C0 cohort 后，PA3 才能单独测试 goal-semantic bounded candidate availability。
+
+上一执行面已以
 [`P1-PA2 target representation observability audit`](P1_PA2_TARGET_REPRESENTATION_OBSERVABILITY_AUDIT_RESULT_2026-08-22.md)
 终止，没有自动 successor。PA2 明确是 consumed-Development oracle autopsy：GT 只为 exact target crop、3x target-centred
 ROI 与 evaluator 提供位置；provider checkpoint、visual prompt API、640 输入与 score floor 不变。AMRM、reacquisition、
