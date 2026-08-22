@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_REAL_8X89_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_ALGORITHM_SUCCESSOR / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_REAL_8X89_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_WEBGL_RENDER_TRANSPORT_PASS / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_ALGORITHM_SUCCESSOR / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -64,7 +64,10 @@ agreement 为 `5 / 18 / 66`，原始输出和 disagreement 均保留。Truth 冻
 执行。ABotN-POIBench 的 11 scenes / 163 tasks 全部具有 named goal、metric endpoint 与 trajectory，但显式 entrance
 frame/pixel region 为 `0/163`；它只能承担 arrival-truth canary。官方 evaluator 默认向 agent 暴露
 `target_position`/`distance_to_goal`，未来 provider firewall 必须移除。官方 3DGS runtime 要求 Linux + CUDA compiler +
-≥24 GB VRAM，本机 8151 MiB 因而在 scene 下载前 `NOT_EVALUABLE`，0 render/model call。Short-Horizon OVON 缺独立
+≥24 GB VRAM，本机 8151 MiB 因而保持 `NOT_EVALUABLE`。独立的 unofficial WebGL mechanics canary 已在最小 scene
+固定首帧完成 `1,865,491/1,865,491` retained-splat submission 和非退化 1280×720 RGB；renderer envelope 未包含 goal、
+endpoint、distance、teacher 或 private truth，provider/baseline call 均为 0。该 PASS 不建立官方 renderer equivalence 或
+functional pixel truth。Short-Horizon OVON 缺独立
 HM3D/OVON 资产，DoorFront 数据读取受 token 保护且无公开 export；不得绕过访问控制或把 shop sign 当 functional entrance。
 
 正式 run 前的 validity hardening 已实现：Annotation V1 保存五级 truth authority、三个 teacher 的原始独立输出、

@@ -1,6 +1,6 @@
 # Public functional-truth substrate audit
 
-状态：`REVERSIBLE_EXPLORATION / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / LOCAL_RENDER_NOT_EVALUABLE / NO_ALGORITHM_SUCCESSOR / DEFAULT_APP_UNCHANGED`
+状态：`REVERSIBLE_EXPLORATION / OFFICIAL_LOCAL_RENDER_NOT_EVALUABLE / WEBGL_RENDER_TRANSPORT_PASS / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_ALGORITHM_SUCCESSOR / DEFAULT_APP_UNCHANGED`
 
 ## 问题与结论
 
@@ -50,6 +50,32 @@ provider_calls=0
 
 曾短暂启动 Docker Desktop 只验证 NVIDIA passthrough，验证后已停止；没有遗留 container 或 Docker process。
 
+## Unofficial WebGL transport canary
+
+官方 CUDA renderer 仍保持上述 `NOT_EVALUABLE`；没有把 alternate renderer 冒充官方实现。为避免把 24 GB host
+availability 误当作 real-pixel substrate 本身，另行固定
+[`GaussianSplats3D`](https://github.com/mkkellogg/GaussianSplats3D) npm `0.4.7`，只下载最小 scene
+`20260227163550` 的标准 INRIA 3DGS PLY（463,431,940 bytes，1,868,671 vertices）和 outcome 前按规则选定的
+`traj_0.json`。Renderer 只接收 scene 与 initial camera；goal、endpoint、`distance_to_goal`、teacher output 和 private
+truth 均未进入 browser envelope。
+
+固定 WebGL 配置使用 cross-origin isolation、shared-memory CPU sort、SH degree 0 和 alpha gate 5。GPU sort 的早期
+诊断曾出现 silent `instanceCount=0`，已作为 transport failure 拒绝；最终冻结配置得到：
+
+| gate | 结果 |
+|---|---:|
+| retained splats submitted | `1,865,491 / 1,865,491` |
+| canvas | `1280 × 720` |
+| PNG bytes | `701,156` |
+| luma mean / stddev | `118.79 / 55.23` |
+| black / white fraction | `0.000047 / 0.007347` |
+| sampled distinct RGB | `21,830` |
+| renderer / teacher / provider / baseline calls | `1 / 0 / 0 / 0` |
+
+终态为 `WEBGL_RENDER_TRANSPORT_CANARY_PASS`。它只证明公开 ABotN real 3DGS 能在本机生成非退化 RGB，且
+provider firewall 可在 baseline 前成立；不证明 WebGL 与官方 CUDA renderer 像素等价，不提供 functional entrance
+region，也不产生 selection accuracy、arrival success 或算法 successor。
+
 ## 其他候选边界
 
 - [ABotN Short-Horizon OVON](https://huggingface.co/datasets/acvlab/ABotN-Short-Horizon-OVON)公开包只有 2,443 个
@@ -67,11 +93,16 @@ provider_calls=0
   SHA-256 `3B00CB3EFBA4FAA0B1B74E9094536344DA62C6B19569B427EFC5DF4F576618D0`；
 - runtime audit：`artifacts.local/evidence/abotn-poibench-truth-source-v0/render-runtime-audit.json`
   SHA-256 `412CA0D746E7C6ADC32F8708AB4FB9FAF1A28639693A2BAA0165107E0FA59A5A`；
+- WebGL receipt：`artifacts.local/evidence/abotn-webgl-render-canary-v0/receipt.json`
+  SHA-256 `E8FE0003AE9C6E3CD89BAA3891DCDEAF5D92587F6D918ED6E50008BF9A6D3E05`；
+- frozen initial RGB：`artifacts.local/evidence/abotn-webgl-render-canary-v0/initial_view.png`
+  SHA-256 `A56565D02B9AF540C15460012B07A825419241497E3468026C730DC1478634E8`；
 - source annotation manifest SHA-256：`b90201c38a4660f765f9c68233e79f824dcb03ea8d7feb804b6e78cbf79a2779`。
 
-唯一可执行边界是：获得并验证 Linux/CUDA/≥24 GB VRAM host 后，只为 ABotN 做 one-scene RGB + provider-firewall
-canary；这仍只建立 arrival task truth，不建立 entrance-region accuracy。若目标仍是 frame-level selection/failure
+下一可执行边界已收窄为：冻结同一 task 的 arrival-only provider-firewall canary，并在任何 baseline 前确认 provider
+只能看到 goal + rendered pixels + public camera state，不能看到 endpoint 或 distance-to-goal；这仍不建立 entrance-region
+accuracy。若目标仍是 frame-level selection/failure
 attribution，则必须取得 source-native functional entrance-region dataset/export。两者都不授权修改 V0、重开 8×89、
 P1、模型 sweep 或默认 App。
 
-Claim ceiling：`PUBLIC_SOURCE_AVAILABILITY_AND_LOCAL_RUNTIME_FEASIBILITY_ONLY`。
+Claim ceiling：`WEBGL_RENDER_TRANSPORT_AND_ARRIVAL_SUBSTRATE_MECHANICS_ONLY_NOT_OFFICIAL_RENDERER_EQUIVALENCE`。

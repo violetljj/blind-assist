@@ -1,6 +1,6 @@
 # Public-real episode mining + selective-guidance pilot V0
 
-状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_WEBGL_RENDER_TRANSPORT_PASS / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 This package automatically converts public real-world sequence metadata into goal-driven approach episodes, reuses
 frozen current-frame provider output, applies Selective Guidance V0, and evaluates only truth-supported denominators.
@@ -72,6 +72,19 @@ python -m scripts.research.goal_copilot_bridge.real_episode_pilot_v0.audit_abotn
 `audit_abotn_render_runtime.py` then checks the pinned official renderer requirements against the current host before
 any scene payload is downloaded. A host below the official 24 GB VRAM minimum closes locally as `NOT_EVALUABLE` with
 zero render, teacher, and provider calls.
+
+The separate `abotn_webgl_canary` is an explicitly unofficial renderer-mechanics adapter. It pins the smallest public
+ABotN PLY plus the lexicographically first task, maps only its initial camera pose into the rotated point-cloud frame,
+and serves no goal, endpoint, distance-to-goal, teacher output, or private truth to the renderer. A successful receipt
+establishes only real-RGB transport and arrival-substrate mechanics; it does not establish official-renderer pixel
+equivalence or functional entrance-region truth.
+
+```powershell
+Push-Location scripts/research/goal_copilot_bridge/real_episode_pilot_v0/abotn_webgl_canary
+npm install --ignore-scripts
+node run.mjs --ply <point_cloud_rotated.ply> --annotation <traj_0.json> --output-dir <new-output-dir>
+Pop-Location
+```
 
 ```powershell
 python -m unittest `

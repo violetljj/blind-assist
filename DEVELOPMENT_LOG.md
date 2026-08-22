@@ -4994,3 +4994,15 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   关闭为 `NOT_EVALUABLE_LOCAL_RENDER_RUNTIME_VRAM_BELOW_OFFICIAL_MINIMUM`，scene/render/teacher/provider 调用均为 0。
 - Short-Horizon OVON 只公开 first-visible poses、缺 HM3D/OVON 资产；DoorFront human door-region 数据读取受 token
   middleware 保护且无公开 export。当前仍无 functional pixel truth 和算法 successor，不绕过访问控制、不重开 8×89。
+
+# 2026-08-23 ABotN unofficial WebGL render-transport canary
+
+- 保持官方 Linux/CUDA/≥24 GB renderer 的本机 `NOT_EVALUABLE`，没有把 alternate renderer 写成官方等价；固定
+  `GaussianSplats3D 0.4.7`、最小 public scene `20260227163550` 与 outcome 前按规则选定的 `traj_0` 首帧。
+- 下载并校验单个 463,431,940-byte PLY，SHA-256 与固定 dataset LFS oid 一致；renderer 只接收 scene/camera，未接收
+  goal、endpoint、`distance_to_goal`、teacher output 或 private truth。
+- 首次 GPU-sort 诊断为 silent `instanceCount=0` 并 fail closed；冻结 cross-origin isolated shared-memory CPU sort 后，
+  retained splats `1,865,491/1,865,491`、1280×720 PNG 701,156 bytes、luma stddev 55.23、sampled RGB 21,830，终态
+  `WEBGL_RENDER_TRANSPORT_CANARY_PASS`，console error=0。
+- 本次 renderer/teacher/provider/baseline calls=`1/0/0/0`。Claim 仅为 real-RGB transport 与 arrival substrate mechanics；
+  functional entrance region、官方 renderer equivalence、selection/arrival accuracy、算法 successor、P1 与默认 App 均未建立。
