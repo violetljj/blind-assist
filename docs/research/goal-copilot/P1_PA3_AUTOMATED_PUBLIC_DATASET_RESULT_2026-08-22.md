@@ -44,8 +44,9 @@ availability 不是普遍为零；`@10 > @1` 也符合 proposal 层“提高候�
 DoorDetect 的 class 0 官方定义为 room door，不是 building entrance truth。因此 S0v5 只能支持
 `AUTOMATED_PUBLIC_GENERIC_DOOR_GOAL_SEMANTIC_PROPOSAL_MECHANICS`，不能升级为室外最后十米入口 confirmation、
 identity verifier 授权、App 集成、产品或安全结论。入口专用公开候选源（例如 Mapillary entrance pipeline）的模型
-预测也不能冒充 evaluator truth。已找到的 LSAA 提供街景 facade door bbox，可作为下一条全自动 entrance-aligned
-confirmation source；这不要求用户采集或标注。
+预测也不能冒充 evaluator truth。后续审计确认 LSAA 的 door bbox 独立人工 truth provenance 不成立，因此没有使用；
+全自动 FacadeElements successor 与 relation verifier 结果见
+[`facade + relation result`](P1_PA3_FACADE_ENTRANCE_AND_GOAL_RELATION_RESULT_2026-08-22.md)。
 
 ## Evidence identity
 

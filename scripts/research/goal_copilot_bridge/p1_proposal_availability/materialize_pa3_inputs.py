@@ -192,6 +192,9 @@ def materialize_inputs(
             source_capture_time_semantics = captured.get("source_capture_time_semantics")
             if source_capture_time_semantics == "UNKNOWN_PREEXISTING_PUBLIC_DATASET_CAPTURE":
                 _require("source_captured_at_utc" not in captured, f"{case_id} unknown source capture time must not be fabricated")
+            elif source_capture_time_semantics == "DATASET_COLLECTION_DATE_NO_PER_IMAGE_TIMESTAMP":
+                _require("source_captured_at_utc" not in captured, f"{case_id} collection date must not be represented as per-image capture time")
+                _timestamp(captured.get("source_collection_date_utc"), f"{case_id} source_collection_date_utc")
             else:
                 _timestamp(captured.get("source_captured_at_utc"), f"{case_id} source_captured_at_utc")
         else:

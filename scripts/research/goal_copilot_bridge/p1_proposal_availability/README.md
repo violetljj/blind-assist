@@ -112,6 +112,23 @@ E:\codex-tools\bin\blindassist-python.cmd -m unittest `
 Implementation status:
 [`P1-PA3 implementation ready`](../../../../docs/research/goal-copilot/P1_PA3_GOAL_SEMANTIC_PROPOSAL_IMPLEMENTATION_READY_2026-08-22.md).
 
+### Automated facade cohort and goal-relation verifier
+
+`materialize_pa3_public_dataset.py` also supports a verified FacadeElements Zenodo archive. It freezes the global
+`data.yaml` taxonomy and a path-hash roster before selected RGB/label access, extracts public RGB before private YOLO
+labels, and supports either all legal facade doors (`SET_VALUED`) or the predeclared leftmost door (`UNIQUE`). The public
+dataset capture contract records a dataset collection date without fabricating per-image timestamps.
+
+`run_goal_relation_verifier.py` is a GT-blind deterministic successor for `LEFTMOST_BUILDING_ENTRANCE`: it reorders the
+already bounded YOLOE candidates by bbox x-center and uses original provider rank only as a tie-break.
+`evaluate_goal_relation_verifier.py` opens private truth afterward and compares original versus relation Top-1, including
+strict target/same-class-distractor/background accounting. It is current-frame relation grounding, not instance identity.
+
+On the fixed automated public facade runs, S0v8 semantic proposal Recall@1/3/5/10 was
+`17/20, 19/20, 19/20, 19/20`; on disjoint S0v10, leftmost relation reranking changed Top-1 from `12/16` to `13/16`,
+and from `0/2` to `2/2` on the strict A/B/C contrastive subset. See
+[`facade + relation result`](../../../../docs/research/goal-copilot/P1_PA3_FACADE_ENTRANCE_AND_GOAL_RELATION_RESULT_2026-08-22.md).
+
 ## P1-HRG2 global-local reranking
 
 HRG2 is the frozen successor to the fresh HRG1 failure. It does not add a spatial hint because the current product
