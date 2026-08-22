@@ -1,6 +1,6 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / P1_PA3_C0_PUBLIC_GOAL_CONTRACT_MATERIALIZATION / TERMINAL=P1_PA3_C0_PROSPECTIVE_INTAKE_READY_EXISTING_ELIGIBLE_EPISODES_ZERO_PA3_INFERENCE_NOT_AUTHORIZED / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / P1_PA3_GOAL_SEMANTIC_PROPOSAL / OUTCOME_BLIND_IMPLEMENTATION_READY / LEGAL_COHORT_NOT_MATERIALIZED / PERFORMANCE_NOT_RUN / DEFAULT_APP_UNCHANGED`
 
 Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线。P0 commitment-policy discovery 已以
 `COMPLEXITY_ONLY_BUYS_ABSTENTION` 收口；现有 P0 grounding/provider 与 evaluator 保持冻结。用户此前显式授权
@@ -9,11 +9,12 @@ tentative/verified 分离、verified-only retrieval、按 distance × viewpoint 
 31 项 contract tests 通过；matched canary 已以 `P1_AMRM0_MEMORY_POISONING_FAIL` 终止。旧 A1-A4、W1/W2 终态继续有效；AMRM0 不是 P1-W3，也不
 覆盖或续跑 consumed evidence。随后显式授权的 P1-PA0/PA1 独立上移到 proposal availability，不修改 AMRM0。
 
-当前执行面是 [`P1-PA3-C0`](goal-copilot/P1_PA3_C0_PUBLIC_GOAL_CONTRACT_COHORT_MATERIALIZATION_RESULT_2026-08-22.md)。
+当前算法执行面是 [`P1-PA3`](goal-copilot/P1_PA3_GOAL_SEMANTIC_PROPOSAL_IMPLEMENTATION_READY_2026-08-22.md)。
 PA2 后的 `Proposal–Identity Responsibility Mismatch` 只是待验证解释；当前 7-case 没有 provider-public goal semantics，
 private category 不能回填成 text prompt。既有 P1-D0/PA0、Silver-B 与 Last-10m 均无可证明的
-user/product goal-before-truth provenance，eligible episode 为 `0`。C0 只建立 prospective intake、全局 canonical prompt
-映射与 truth-key firewall；PA3 inference、采集、truth、AMRM、verifier、reacquisition、VLM、geometry 与 App 均未授权。
+user/product goal-before-truth provenance，eligible episode 为 `0`。PA3 已实现 prospective goal/capture/truth
+materializer、GT-blind YOLOE semantic runner 与 private evaluator，但没有合法 cohort、模型调用或 performance result。
+AMRM、verifier、reacquisition、VLM、geometry 与 App 均未授权。
 已关闭的 Last-10m current-frame replay 与 responsive sanity 仍保留原 `CONTROL_POLICY_BOTTLENECK` 工程结论。
 
 Assistive Geometry 的 factor-wise、obstacle 与 Q-Plane 表示支线均已按停止条件关闭；TARO R38 也已在
@@ -25,7 +26,7 @@ GA-SATOM 的 physical-ToF G0 协议保留但按用户的无 ToF 选择暂停；V
 G0 协议也按进一步的纯 RGB 选择暂停。SVRF-O0 的协议、机制与 source/index 权限仅作历史保留，不执行
 bus canary、member index、payload materialization、truth writer 或 O0。Failure Synthesis 冻结的
 D-ORACLE-1 同样暂停，不执行 source/action truth/policy lock 或 outcome access。除
-P1-PA3-C0 外没有其他 active algorithm lane；任何 prospective goal intake、fresh data、正式模型选择、新 proposal arm 或 App 集成都需要用户另行
+P1-PA3 外没有其他 active algorithm lane；任何 prospective goal intake、fresh data、正式模型选择、新 proposal arm 或 App 集成都需要用户另行
 授权，不能由旧文档中的 successor 或历史优先级自行恢复。
 DepthART D3R6 仍保持暂停；其 bounded deferral contract 与 fresh gate 保留，但 post-hoc
 same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6 执行权限。
@@ -35,6 +36,7 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
+| Goal Copilot / P1-PA3 semantic proposal | 合法 goal semantics 能否把 legal target 带入 bounded pool | `IMPLEMENTATION_READY / COHORT_NOT_MATERIALIZED / PERFORMANCE_NOT_RUN` | [P1-PA3 implementation](goal-copilot/P1_PA3_GOAL_SEMANTIC_PROPOSAL_IMPLEMENTATION_READY_2026-08-22.md) | 先取得真实 prospective C0 goal，再 capture/后标 truth；形成合法 input 后另行单次执行 | 回填旧 GT 类别；无 precedence 跑模型；调 prompt/config；跨 cohort 宣称优于 PA2；AMRM/verifier/App | 否 |
 | Goal Copilot / P1-PA3-C0 public Goal Contract | 在 capture/truth 前形成 provider-public goal 与全局 canonical prompt | `PROSPECTIVE_INTAKE_READY / EXISTING_ELIGIBLE_EPISODES=0 / PA3_INFERENCE_NOT_AUTHORIZED` | [P1-PA3-C0 result](goal-copilot/P1_PA3_C0_PUBLIC_GOAL_CONTRACT_COHORT_MATERIALIZATION_RESULT_2026-08-22.md) | 另行取得真实 user/product prospective goal intake；先 materialize immutable goal receipt | 回填旧类别/target name；伪造 user intent；采集、标 truth、跑 PA3、AMRM/verifier/App | 否 |
 | Goal Copilot / P1-PA2 representation audit | oracle ROI 下 target/context prompt 是否仍有 proposal signal | `WEAK_CONTEXT_SIGNAL_1_OF_7 / REPRESENTATION_MISMATCH_PRIMARY / APP_UNCHANGED` | [P1-PA2 result](goal-copilot/P1_PA2_TARGET_REPRESENTATION_OBSERVABILITY_AUDIT_RESULT_2026-08-22.md) | 无自动 successor；若另行启动，审计或改变 representation/prompt interface | outcome 后调 crop/prompt/provider；直接 parent-first、adaptive search、model zoo、AMRM/App 或扩大 claim | 否 |
 | D-ORACLE-1 causal ladder | 三臂 matched oracle intervention 定位 downstream target-policy stack 与 estimated representation 的损失 | `PAUSED_BY_BA_ADT_PRODUCT_RESEARCH_MAINLINE / PROTOCOL_FROZEN / NO_EXECUTION / NO_SEARCH` | [Failure diagnosis current](failure-synthesis/README.md) | 无；只有用户显式改变主线后才可重开 | 执行 source/action truth/policy lock；增加第四竞争臂；提前拆H3/H4；训练/调policy/threshold；读取outcome后换parent/gate | 否 |

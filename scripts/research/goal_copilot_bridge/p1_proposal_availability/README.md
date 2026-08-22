@@ -1,4 +1,4 @@
-# P1 proposal availability: PA0 and PA1
+# P1 proposal availability: PA0–PA3
 
 状态：`P1_PA1_FIXED_TILED_SCALE_RESCUE_NOT_SUPPORTED_ON_FAILURE_COHORT / AMRM_AND_VERIFIER_FROZEN / DEFAULT_APP_UNCHANGED`
 
@@ -44,3 +44,25 @@ E:\codex-tools\bin\blindassist-python.cmd -m unittest scripts.research.goal_copi
 
 The result and exact command are recorded in
 [`P1-PA2 result`](../../../../docs/research/goal-copilot/P1_PA2_TARGET_REPRESENTATION_OBSERVABILITY_AUDIT_RESULT_2026-08-22.md).
+
+## P1-PA3 goal-semantic proposal availability
+
+PA3 is outcome-blind implementation-ready but has no legal cohort and has not run. It changes only the proposal
+conditioning interface from a specific visual exemplar to the globally frozen semantic text prompt in a prospective,
+pre-truth Goal Contract. `materialize_pa3_inputs.py` closes the C0 goal → capture → later private truth hash/time chain;
+`run_yoloe_semantic_prompt.py` is GT-blind and keeps YOLOE-26n-seg, 640 input, 0.001 confidence floor, provider
+`max_det=100`, and bounded K=10; `evaluate_pa3.py` opens truth afterward.
+
+`UNIQUE` and `SET_VALUED` enter primary Recall@1/3/5/10 at IoU 0.30. `AMBIGUOUS` is proposal-set diagnostic only and
+cannot be counted as specific-referent success/failure. Identity selection, visual exemplar fallback, per-episode prompt
+override, AMRM/verifier, model/config sweep, and cross-cohort PA2-vs-PA3 superiority claims are forbidden.
+
+Focused check:
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts.research.goal_copilot_bridge.p1_proposal_availability.test_pa3
+```
+
+Implementation status:
+[`P1-PA3 implementation ready`](../../../../docs/research/goal-copilot/P1_PA3_GOAL_SEMANTIC_PROPOSAL_IMPLEMENTATION_READY_2026-08-22.md).

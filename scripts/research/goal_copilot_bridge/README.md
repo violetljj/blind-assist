@@ -1,6 +1,6 @@
 # Goal Copilot optimizer bridge
 
-状态：`current / P1_PA3_C0_PUBLIC_GOAL_CONTRACT_MATERIALIZATION / PA3_INFERENCE_NOT_AUTHORIZED / LEGACY_GC1_SKY_BRIDGE_CLOSED`
+状态：`current / P1_PA3_GOAL_SEMANTIC_PROPOSAL / OUTCOME_BLIND_IMPLEMENTATION_READY / LEGAL_COHORT_NOT_MATERIALIZED / PERFORMANCE_NOT_RUN / LEGACY_GC1_SKY_BRIDGE_CLOSED`
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
@@ -10,6 +10,10 @@ Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/g
 capture and target truth, derives one canonical semantic prompt from a global exact goal-type map, and rejects
 per-episode prompt overrides plus target/category/instance/bbox/mask/referent/evaluator fields. Existing research assets
 yielded zero eligible episodes, so the prospective intake template remains empty and PA3 inference is not authorized.
+
+`p1_proposal_availability/` now also contains the PA3 algorithm surface: automated goal/capture/truth materialization,
+a GT-blind YOLOE text-prompt runner, and a private bounded-candidate evaluator. This is mechanics readiness only; no
+legal roster, model call, result, identity evaluation, or App integration exists.
 
 ## P1-PA0 target candidate availability
 

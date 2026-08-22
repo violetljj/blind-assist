@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-22（Asia/Hong_Kong）；执行者：Codex。完成 P1-PA3 goal-semantic proposal outcome-blind algorithm
+  implementation，未运行模型。新增 C0 goal receipt → capture → later private truth 的自动时间/hash materializer、只读
+  public input 的 YOLOE text-prompt runner，以及 private Recall@1/3/5/10 evaluator；保持 YOLOE-26n-seg、640、
+  conf 0.001、max_det 100、K=10，禁止 identity 与 sweep。`UNIQUE/SET_VALUED` 进入 primary，`AMBIGUOUS` 只作
+  proposal-set diagnostic。PA3 8 项 contract tests 与 PA0–PA2 相邻回归合计 15 项通过。合法 cohort 仍为 0，
+  performance/model call/App 均未发生。结果：
+  [P1-PA3 implementation](docs/research/goal-copilot/P1_PA3_GOAL_SEMANTIC_PROPOSAL_IMPLEMENTATION_READY_2026-08-22.md)。
+
 - 时间：2026-08-22（Asia/Hong_Kong）；执行者：Codex。完成
   `P1-PA3-C0 PUBLIC_GOAL_CONTRACT_COHORT_MATERIALIZATION` no-model infrastructure。审计 P1-D0/PA0、Silver-B 与
   Last-10m 后，没有来源能证明真实 user/product goal 先于 capture/target truth，eligible episode 为 `0`，不回填
