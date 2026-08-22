@@ -1,6 +1,6 @@
 # Public-real episode mining + selective-guidance pilot V0
 
-状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_OR_CONTRACT_INSUFFICIENT_PRIMARY / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 This package automatically converts public real-world sequence metadata into goal-driven approach episodes, reuses
 frozen current-frame provider output, applies Selective Guidance V0, and evaluates only truth-supported denominators.
@@ -56,6 +56,22 @@ derive `LOST` from `VISIBLE -> NOT_VISIBLE`. These are mechanical validity gates
 
 No component adds tracking, re-ID, persistence, world memory, VIO/SLAM, model/threshold search, completion authority,
 or default-App integration. Public media cannot support a blind-user effectiveness claim.
+
+`audit_abotn_poibench_truth_source.py` is the bounded post-8x89 substrate canary. It pins the public dataset and
+evaluation repository revisions, downloads only the small task JSON files, and distinguishes named-POI metric-arrival
+truth from frame-region truth. It must report metric endpoints without inventing entrance boxes. It also detects that
+the official evaluator exposes `target_position` and `distance_to_goal` to an agent; any later BlindAssist visual
+provider adapter must remove those evaluator-private fields.
+
+```powershell
+python -m scripts.research.goal_copilot_bridge.real_episode_pilot_v0.audit_abotn_poibench_truth_source `
+  --cache-dir artifacts.local/datasets/abotn-poibench/fbb62cc3 `
+  --output artifacts.local/evidence/abotn-poibench-truth-source-v0/audit.json
+```
+
+`audit_abotn_render_runtime.py` then checks the pinned official renderer requirements against the current host before
+any scene payload is downloaded. A host below the official 24 GB VRAM minimum closes locally as `NOT_EVALUABLE` with
+zero render, teacher, and provider calls.
 
 ```powershell
 python -m unittest `

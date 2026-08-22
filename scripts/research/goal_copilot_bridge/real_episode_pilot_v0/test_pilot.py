@@ -5,6 +5,8 @@ from pathlib import Path
 import unittest
 
 from .annotation import make_annotation
+from .audit_abotn_poibench_truth_source import classify_source, inspect_task, summarize_tasks
+from .audit_abotn_render_runtime import classify_runtime
 from .baseline import run_baseline
 from .evaluate import evaluate
 from .public_real_mining import mine_prospective
@@ -44,6 +46,59 @@ def authorize_native(row):
 
 
 class RealEpisodePilotTest(unittest.TestCase):
+    def test_abotn_source_is_arrival_only_and_official_envelope_leaks_private_geometry(self):
+        task = {
+            "trajectory": [
+                {"x": 1.02, "y": 2.01, "z": 0.65, "yaw": 0.0},
+                {"x": 3.01, "y": 4.02, "z": 0.65, "yaw": 0.5},
+            ],
+            "instruction": "前往测试商店",
+            "label": {"extend": {
+                "goal_label": "测试商店",
+                "start_point": [1.0, 2.0],
+                "end_point": [3.0, 4.0],
+            }},
+        }
+        inspected = inspect_task(task)
+        self.assertTrue(inspected["endpoint_consistent"])
+        self.assertEqual([], inspected["explicit_region_keys"])
+        summary = summarize_tasks([("annotations/scene-a/traj_0.json", task)])
+        result = classify_source(
+            summary,
+            dataset_license=None,
+            dataset_root_files=[".gitattributes"],
+            repository_readme="License: Apache-2.0",
+            repository_license_present=False,
+            evaluator_source=(
+                "target_position=base_obs.target_position\n"
+                "distance_to_goal=base_obs.distance_to_goal\n"
+            ),
+        )
+        self.assertEqual("ARRIVAL_TRUTH_ONLY_INTERNAL_RESEARCH_CANDIDATE", result["overall"])
+        self.assertEqual(
+            "NOT_EVALUABLE_NO_EXPLICIT_ENTRANCE_FRAME_OR_PIXEL_REGION",
+            result["functional_frame_region_truth"],
+        )
+        self.assertEqual(
+            ["target_position", "distance_to_goal"],
+            result["private_fields_exposed_to_official_agent"],
+        )
+
+    def test_abotn_render_runtime_fails_before_payload_download_when_vram_is_below_official_minimum(self):
+        result = classify_runtime(
+            host_os="Windows",
+            gpu_count=1,
+            maximum_gpu_vram_mib=8151,
+            torch_cuda_available=True,
+            cuda_compiler_available=False,
+        )
+        self.assertFalse(result["eligible"])
+        self.assertEqual(
+            "NOT_EVALUABLE_LOCAL_RENDER_RUNTIME_VRAM_BELOW_OFFICIAL_MINIMUM",
+            result["terminal"],
+        )
+        self.assertIn("VRAM_BELOW_OFFICIAL_24GB_MINIMUM", result["failures"])
+
     def test_annotation_starts_truth_unknown(self):
         annotation = make_annotation(public_manifest())
         self.assertTrue(annotation["private_evaluator_only"])

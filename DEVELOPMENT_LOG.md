@@ -4982,3 +4982,15 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   8/8 episode 仍为 `TRUTH_OR_CONTRACT_INSUFFICIENT`，故不建立 H1 或任何算法 successor。
 - Public map range proxy 同时进入 provider，不能充当独立 range truth；不报告 range accuracy、completion、用户、
   产品、安全或导航效果 claim。若继续只能另行授权独立 functional-truth substrate/source，不补抽或救本次 8×89。
+
+# 2026-08-23 Public functional-truth substrate audit
+
+- 固定并自动物化 ABotN-POIBench revision `fbb62cc3` 的 163 份 task JSON：11 scenes，named goal / metric endpoint /
+  trajectory 均为 `163/163`，label 与 trajectory endpoint 在 0.25 m 内一致 `163/163`，显式 entrance frame 或 pixel
+  region 为 `0/163`。结论限于 `ARRIVAL_TRUTH_ONLY_INTERNAL_RESEARCH_CANDIDATE`，不得把 endpoint 投成伪入口框。
+- 官方 evaluator 默认向 agent 暴露 `target_position` 和 `distance_to_goal`；未来视觉 provider 必须过滤这两个
+  evaluator-private 字段。dataset card 与固定 repo root 未附 LICENSE，虽 README 声明 Apache-2.0，仍不推导再分发或商用许可。
+- 官方 3DGS renderer 要求 Linux/CUDA compiler/每 GPU 至少 24 GB；本机 RTX 5060 Laptop 8151 MiB 在 payload 下载前
+  关闭为 `NOT_EVALUABLE_LOCAL_RENDER_RUNTIME_VRAM_BELOW_OFFICIAL_MINIMUM`，scene/render/teacher/provider 调用均为 0。
+- Short-Horizon OVON 只公开 first-visible poses、缺 HM3D/OVON 资产；DoorFront human door-region 数据读取受 token
+  middleware 保护且无公开 export。当前仍无 functional pixel truth 和算法 successor，不绕过访问控制、不重开 8×89。

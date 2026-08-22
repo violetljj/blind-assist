@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_REAL_8X89_SEALED / TRUTH_OR_CONTRACT_INSUFFICIENT_PRIMARY / NO_ALGORITHM_SUCCESSOR / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_REAL_8X89_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_ALGORITHM_SUCCESSOR / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -59,6 +59,13 @@ agreement 为 `5 / 18 / 66`，原始输出和 disagreement 均保留。Truth 冻
 仅 4 个弱可用 observation 上 proposal Recall@10=`4/4`、selection=`1/4`、referent-selection failure=`3/4`；
 但 8/8 episode 仍由 `TRUTH_OR_CONTRACT_INSUFFICIENT` 主导。因此当前不授权任何算法 successor；若继续，只能另行
 授权 substrate/truth-source 工作，不得补抽、换 teacher/provider/prompt/threshold 或把局部 3/4 信号写成 H1 已成立。
+
+该 substrate 工作已由 [`public functional-truth substrate audit`](BLINDASSIST_PUBLIC_FUNCTIONAL_TRUTH_SUBSTRATE_AUDIT_2026-08-23.md)
+执行。ABotN-POIBench 的 11 scenes / 163 tasks 全部具有 named goal、metric endpoint 与 trajectory，但显式 entrance
+frame/pixel region 为 `0/163`；它只能承担 arrival-truth canary。官方 evaluator 默认向 agent 暴露
+`target_position`/`distance_to_goal`，未来 provider firewall 必须移除。官方 3DGS runtime 要求 Linux + CUDA compiler +
+≥24 GB VRAM，本机 8151 MiB 因而在 scene 下载前 `NOT_EVALUABLE`，0 render/model call。Short-Horizon OVON 缺独立
+HM3D/OVON 资产，DoorFront 数据读取受 token 保护且无公开 export；不得绕过访问控制或把 shop sign 当 functional entrance。
 
 正式 run 前的 validity hardening 已实现：Annotation V1 保存五级 truth authority、三个 teacher 的原始独立输出、
 agreement/disagreement、functional authority 及其 native/map sources；teacher-only consensus 不能建立 functional
