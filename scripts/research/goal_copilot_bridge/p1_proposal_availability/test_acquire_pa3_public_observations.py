@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts.research.goal_copilot_bridge.p1_proposal_availability.acquire_pa3_public_observations import select_frame
+from scripts.research.goal_copilot_bridge.p1_proposal_availability.acquire_pa3_public_observations import select_frame, select_frames
 
 
 class SelectFrameTest(unittest.TestCase):
@@ -30,6 +30,25 @@ class SelectFrameTest(unittest.TestCase):
         })
         self.assertIsNone(selected)
         self.assertEqual(0, eligible)
+
+    def test_multiview_selection_is_bounded_and_spatially_distinct(self) -> None:
+        anchor = {"lat": 0.0, "lon": 0.0}
+        policy = {
+            "minimum_distance_m": 8.0,
+            "maximum_distance_m": 45.0,
+            "maximum_absolute_bearing_error_deg": 45.0,
+            "panoramas_allowed": False,
+            "selected_per_episode": 2,
+            "minimum_viewpoint_separation_m": 5.0,
+        }
+        raw = [
+            {"id": "best", "computed_geometry": {"coordinates": [-0.00018, 0.0]}, "compass_angle": 90.0, "captured_at": 1, "sequence": "a"},
+            {"id": "too-close", "computed_geometry": {"coordinates": [-0.000181, 0.0]}, "compass_angle": 90.0, "captured_at": 2, "sequence": "a"},
+            {"id": "distinct", "computed_geometry": {"coordinates": [0.0, -0.00018]}, "compass_angle": 0.0, "captured_at": 3, "sequence": "b"},
+        ]
+        selected, eligible = select_frames(raw, anchor, policy)
+        self.assertEqual(["best", "distinct"], [row["image_id"] for row in selected])
+        self.assertEqual(3, eligible)
 
 
 if __name__ == "__main__":

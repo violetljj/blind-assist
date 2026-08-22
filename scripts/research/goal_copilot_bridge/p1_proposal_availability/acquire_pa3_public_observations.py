@@ -61,7 +61,7 @@ def _angle_error(left: float, right: float) -> float:
     return abs((left - right + 180.0) % 360.0 - 180.0)
 
 
-def select_frame(raw: Sequence[Mapping[str, Any]], anchor: Mapping[str, Any], policy: Mapping[str, Any]) -> tuple[dict[str, Any] | None, int]:
+def _eligible_frames(raw: Sequence[Mapping[str, Any]], anchor: Mapping[str, Any], policy: Mapping[str, Any]) -> list[dict[str, Any]]:
     candidates: list[dict[str, Any]] = []
     anchor_point = (float(anchor["lat"]), float(anchor["lon"]))
     for item in raw:
@@ -100,7 +100,34 @@ def select_frame(raw: Sequence[Mapping[str, Any]], anchor: Mapping[str, Any], po
         row["source_captured_at_ms"],
         row["image_id"],
     ))
-    return (candidates[0] if candidates else None), len(candidates)
+    return candidates
+
+
+def select_frames(raw: Sequence[Mapping[str, Any]], anchor: Mapping[str, Any], policy: Mapping[str, Any]) -> tuple[list[dict[str, Any]], int]:
+    """Select a bounded, geometry-only set of spatially distinct views."""
+    candidates = _eligible_frames(raw, anchor, policy)
+    maximum = int(policy.get("selected_per_episode", 1))
+    _require(1 <= maximum <= 3, "selected_per_episode must be between one and three")
+    minimum_separation = float(policy.get("minimum_viewpoint_separation_m", 0.0))
+    _require(minimum_separation >= 0.0, "minimum_viewpoint_separation_m must be non-negative")
+    selected: list[dict[str, Any]] = []
+    for candidate in candidates:
+        point = (candidate["camera_lat"], candidate["camera_lon"])
+        if all(
+            _distance_m(point, (prior["camera_lat"], prior["camera_lon"])) >= minimum_separation
+            for prior in selected
+        ):
+            selected.append(candidate)
+            if len(selected) == maximum:
+                break
+    return selected, len(candidates)
+
+
+def select_frame(raw: Sequence[Mapping[str, Any]], anchor: Mapping[str, Any], policy: Mapping[str, Any]) -> tuple[dict[str, Any] | None, int]:
+    single_policy = dict(policy)
+    single_policy["selected_per_episode"] = 1
+    selected, eligible_count = select_frames(raw, anchor, single_policy)
+    return (selected[0] if selected else None), eligible_count
 
 
 def _graph_get(session: requests.Session, endpoint: str, params: Mapping[str, Any]) -> Any:
