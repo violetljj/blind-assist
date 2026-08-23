@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_REAL_8X89_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_WEBGL_RENDER_TRANSPORT_PASS / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_ALGORITHM_SUCCESSOR / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_REAL_8X89_SEALED / SUN3D_NATIVE_DOOR_APPROACH_SEALED / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_APERTURE_NOT_ESTABLISHED / NO_ALGORITHM_SUCCESSOR / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -77,6 +77,15 @@ occupancy map，预渲染 camera observation RGB 为 0；封存“大众浴池�
 agreement/disagreement、functional authority 及其 native/map sources；teacher-only consensus 不能建立 functional
 truth。Evaluator 拒绝未冻结 truth，并按 tier 分层报告 denominator、UNKNOWN coverage 与 failure attribution；没有
 新增 performance gate。
+
+不等待 ScanNet 授权的下一条公开 substrate 已执行并封存为
+[`SUN3D native-door approach V0`](BLINDASSIST_SUN3D_NATIVE_DOOR_APPROACH_V0_RESULT_2026-08-24.md)。官方 pose-corrected
+sequence 的原生 door polygon 加 trajectory 为 `15/15` observations 提供强 truth；冻结抽帧为
+`VISIBLE=4 / NOT_VISIBLE=11`，未补抽。可见帧 proposal availability=`3/4`，但 selection given usable proposal=`0/3`；
+全体 wrong confident guidance=`4/15`，其中 3 次发生在目标不在当前帧时。这使当前 failure signal 从
+`TRUTH_OR_CONTRACT_INSUFFICIENT` 推进到 current-frame referent selection / selective commitment，同时保留一个
+proposal miss。它仍只是单个预录制 generic-door episode，不建立 functional aperture、命名目的地、闭环控制或到达，
+不授权同 episode 调参、算法 successor 或 P1。
 
 ## V0 与 P1 边界
 

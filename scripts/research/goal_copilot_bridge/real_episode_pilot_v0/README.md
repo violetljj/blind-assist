@@ -249,6 +249,15 @@ sets, order, scores, provider, and private truth were unchanged. Across ten succ
 is sealed `CANDIDATE_ZOOM_REPRESENTATION_DEVELOPMENT_NOT_PROMISING`; no fresh Confirmation call or ABotN integration
 was authorized, and crop/prompt/provider/cohort tuning cannot rescue the consumed Development evidence.
 
+The SUN3D native-door route then removed the weak-truth blocker without ScanNet access. Run
+`run_sun3d_door_approach_v0` as a module in three irreversible phases: `freeze` reads only the official annotated list,
+polygons, and corrected extrinsics; `download` verifies the frozen roster hash and fetches only its 15 RGB frames; and
+`run` verifies both sealed inputs before proposal and Brain calls. On the frozen
+`hotel_umd/maryland_hotel3` door episode, native-plus-map truth covered `15/15`; visible proposal availability was
+`3/4`, selection given a usable proposal was `0/3`, and wrong confident guidance was `4/15`. The result is current-frame
+grounding evidence only. It does not establish a functional aperture, destination, closed-loop control, arrival,
+persistence, safety, or product performance, and it does not authorize same-episode tuning or a P1 successor.
+
 ```powershell
 python -m unittest `
   scripts.research.goal_copilot_bridge.selective_guidance_v0.test_contract `
