@@ -5144,3 +5144,15 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   verdict 仍为 `DOMAIN_LEXICON_PROPOSAL_UNION_NOT_SUPPORTED`。
 - 剩余 72 reserve identities 不启用。结论只否决“固定类词表扩 proposal、unchanged Brain 直接选择”这条 V1；不否决
   全部 proposal 研究，也不建立 approach、control、range/bearing、arrival、LOST、P1、安全或产品 claim。
+
+# 2026-08-23 GroundBench candidate-level CLIP verifier Development
+
+- 在 proposal-union 两次 fresh negative 后不启用 reserve；把已消费的首批 89 strong-truth observations 固定为
+  Development，并保持 expression-only candidate set 不变。固定本地 `openai/clip-vit-base-patch32` weights SHA-256
+  `a63082…1576f`、四种 outcome 前 representation（exact crop、1.25 crop、focused context、dual mean）与
+  `MAX_RANK1 -> MRR -> fixed order` 选择规则；CLIP 只见 public RGB/expression/candidate box。
+- 原 provider order 为 Recall@1/3/5=`47/75/77`、usable MRR=`0.7807`。最佳 exact-crop CLIP 仍为 Rank@1=`47`，
+  Rank@3/5=`71/76`、MRR=`0.7688`；其余三个变体 Rank@1=`41/44/44`。没有一个严格超过原 Rank@1。
+- 冻结 gate 因此输出 `CLIP_CANDIDATE_VERIFIER_DEVELOPMENT_NOT_PROMISING`；新增 Brain/teacher calls=`0/0`，没有
+  冻结、下载或调用 positions 282--345，剩余 72 identities 保持未消费。此结果关闭 zero-shot CLIP crop/context
+  reranking，不外推到 learned relational verifier，也不授权 P1 或产品 claim。

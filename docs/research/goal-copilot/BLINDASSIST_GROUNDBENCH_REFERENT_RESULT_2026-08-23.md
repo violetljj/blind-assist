@@ -103,6 +103,27 @@ identities stay untouched. This static COCO result neither evaluates target acqu
 range, bearing, arrival, `LOST_AFTER_VISIBLE`, persistence, safety, blind-user effectiveness, or product readiness.
 P1 remains unauthorized.
 
+## Candidate-level CLIP verifier Development
+
+After the proposal-union closure, a distinct candidate-level representation was tested without consuming fresh
+Confirmation data. The already-consumed 89-observation baseline was designated Development; its expression-only
+proposal boxes stayed unchanged. A pinned local `openai/clip-vit-base-patch32` scored four representations frozen
+before scoring: exact crop, 1.25-expanded crop, focused whole-image context, and the mean of expanded crop plus focused
+context. Selection was maximum Recall@1, then MRR, then fixed variant order. No Brain or teacher was called.
+
+| Development ranking | Recall@1 | Recall@3 | Recall@5 | MRR given usable |
+|---|---:|---:|---:|---:|
+| Original provider order | 47 | 75 | 77 | 0.7807 |
+| Exact crop | 47 | 71 | 76 | 0.7688 |
+| Expanded crop | 41 | 72 | 77 | 0.7307 |
+| Focused context | 44 | 65 | 73 | 0.7223 |
+| Expanded crop + focused context | 44 | 69 | 77 | 0.7470 |
+
+The selected exact-crop variant tied rather than exceeded provider Rank@1 and reduced MRR. It therefore failed the
+predeclared gate and was sealed `CLIP_CANDIDATE_VERIFIER_DEVELOPMENT_NOT_PROMISING`. Positions 282--345 were not
+frozen or downloaded, Confirmation provider calls remained zero, and all 72 remaining identities stay untouched.
+This rejects zero-shot CLIP crop/focused-context reranking, not learned relational verification in general.
+
 ## Claim ceiling
 
 `STATIC_COCO_OUTDOOR_REFERENT_SELECTION_ONLY_NO_APPROACH_CONTROL_RANGE_BEARING_ARRIVAL_LOST_PERSISTENCE_SAFETY_OR_PRODUCT_CLAIM`
