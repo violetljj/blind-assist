@@ -5125,3 +5125,22 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   `SELECTIVE_COMMITMENT_NOT_SUPPORTED`。
 - Reserve 26 张保持未调用，禁止观察后换 grid policy、threshold、provider、prompt、goal、cohort 或 rerun。
   rank-1 不是 referent authority；本结果否决该简单 gate，不授权 P1、默认 App 或产品声明。
+
+# 2026-08-23 GroundBench strong-referent baseline and proposal-union confirmation
+
+- 固定 GroundBench `1.0.0@010520d` 的 RefCOCO-family expression/polygon metadata 与 COCO image hash manifest；在
+  353 条含 same-class distractor 的 vehicle/outdoor-accessory eligible universe 中机械冻结 roster，无人工选图或标注。
+  89 条 strong-truth baseline 为 proposal `77/89`、correct `65/89`、proposal miss 12、usable-proposal 下 selection/
+  commitment failure 12，首次把 proposal 与 referent selection 放在同一 native-derived truth 分母上。
+- 失败审计只授权固定 24 类 public COCO lexicon 与原 expression proposals 做 union。第一份 64 Confirmation 在全部
+  V0 完成后、首个 V1 process 创建前因 46,284-byte argv 触发 WinError 206；provider V1 calls=0，封为
+  `NOT_EVALUABLE_TRANSPORT_RUNTIME`，不产生科学 verdict。唯一 repair 是在 fresh cohort 上把完全相同 prompt 改走 stdin。
+- uncapped union 的 fresh 64 Development 证据为 proposal `54->57`、correct `42->44`、wrong-all `16->19`，终态
+  `DOMAIN_LEXICON_PROPOSAL_UNION_NOT_SUPPORTED`。它仅用于 outcome 后按预定义 coverage 原则选出最小 K=10：union
+  Recall@10=55 高于 V0 availability=54；没有重跑或救原 cohort。
+- untouched positions 218--281 的 bounded Top-10 Confirmation 完成 16/16 stdin Brain batches，`in_doubt/teacher/
+  retry/rerun=0/0/0/0`。V0 对 V1：proposal `57->59`、correct `47->46`、wrong-all `13->16`、selection accuracy
+  `82.5%->78.0%`、commitment accuracy `78.3%->74.2%`；V1 candidate median/max=`10/10`。冻结成功条件失败，正式
+  verdict 仍为 `DOMAIN_LEXICON_PROPOSAL_UNION_NOT_SUPPORTED`。
+- 剩余 72 reserve identities 不启用。结论只否决“固定类词表扩 proposal、unchanged Brain 直接选择”这条 V1；不否决
+  全部 proposal 研究，也不建立 approach、control、range/bearing、arrival、LOST、P1、安全或产品 claim。

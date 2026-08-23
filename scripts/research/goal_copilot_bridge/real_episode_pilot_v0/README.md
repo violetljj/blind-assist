@@ -218,6 +218,21 @@ retention was only `14/31 = 45.2%`, below the frozen 80% requirement. The verdic
 cohort rescue is permitted. Provider rank is not referent authority, and this simple gate does not establish a V1 or
 authorize P1.
 
+The [GroundBench strong-referent route](../../../../docs/research/goal-copilot/BLINDASSIST_GROUNDBENCH_REFERENT_RESULT_2026-08-23.md)
+then replaced generic-door truth with RefCOCO-family expressions and public-dataset-derived polygons. On the first 89
+frozen static COCO observations, V0 had usable proposals on 77, correct grounding on 65, 12 proposal misses, and 12
+selection/commitment failures with a usable proposal. This established a mixed proposal-and-selection bottleneck
+rather than a teacher-derived accuracy claim.
+
+A fixed 24-category public lexicon union was evaluated only on fresh cohorts. The first attempt was sealed
+`NOT_EVALUABLE_TRANSPORT_RUNTIME` before any V1 process after Windows rejected a 46,284-byte argv; moving the identical
+prompt to stdin was the sole transport repair. An uncapped union increased both correct grounding and wrong
+commitments, so it was sealed negative. Its Development result selected the minimal above-V0 cutoff, Top-10, before
+the final untouched 64-observation Confirmation. There V1 increased proposal availability `57 -> 59`, but correct
+grounding fell `47 -> 46` and all wrong commitments rose `13 -> 16`; maximum V1 candidates was exactly 10. The frozen
+verdict is `DOMAIN_LEXICON_PROPOSAL_UNION_NOT_SUPPORTED`. No reserve activation or same-cohort rescue is permitted;
+static COCO evidence does not authorize approach, control, range/bearing, arrival, `LOST`, P1, safety, or product claims.
+
 ```powershell
 python -m unittest `
   scripts.research.goal_copilot_bridge.selective_guidance_v0.test_contract `
