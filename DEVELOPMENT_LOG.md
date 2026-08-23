@@ -5186,3 +5186,19 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   不开 detector/tracker/crop/RL/P1。唯一下一前门是在 pixels/provider output 前冻结 independently public-identifiable
   的 `UNIQUE / SET_VALUED / AMBIGUOUS` referent contract，并只对合同合法目标评分。结果：
   [referent-identifiability audit](docs/research/goal-copilot/BLINDASSIST_SUN3D_REFERENT_IDENTIFIABILITY_AUDIT_V0_RESULT_2026-08-24.md)。
+
+# 2026-08-24 Public Identifiable Referent Contract V1
+
+- 完成审计后的唯一 C0/C1 主线：新增 machine-readable `PUBLIC_IDENTIFIABLE_REFERENT_CONTRACT_V1` schema、freeze/public-
+  private splitter、hash-bound identity lock 与 later observation-truth validator。`REFERENCE_IMAGE_INSTANCE` 强制
+  `UNIQUE`，且参考图必须是 `FULL_FRAME_SINGLE_INSTANCE` 或公开 `PUBLIC_TARGET_REGION`；optional language 仅作
+  recognition evidence，不承担 identity authority。
+- 冻结必须早于 episode pixels、candidate/provider output 和 outcome；private identity 只接受 source-native、native
+  instance ID 或 independent pre-observation review，teacher/model 不得建立 physical identity。`UNIQUE` 恰好一个
+  instance/world anchor，`SET_VALUED` 至少两个 legal instances，`AMBIGUOUS` 不携带 target，`NOT_VISIBLE/UNKNOWN`
+  均不得伪造 region 或 negative。
+- 14 个定向 tests 覆盖 firewall、timing、cardinality、reference-image SHA binding、reference selector、current-frame
+  truth、wrong instance 与 hash tampering。无数据下载、cohort、baseline、provider/teacher、Active Search、control、
+  P1 或默认 App 变更；三个
+  authorization flags 保持 false。唯一下一边界是另立 C2 5--8 episode small-roster protocol，当前未授权。结果：
+  [Public Identifiable Referent Contract V1](docs/research/goal-copilot/BLINDASSIST_PUBLIC_IDENTIFIABLE_REFERENT_CONTRACT_V1_2026-08-24.md)。

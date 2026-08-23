@@ -1,0 +1,236 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://blindassist.local/schemas/public_identifiable_referent_contract_v1.schema.json",
+  "title": "BlindAssist Public Identifiable Referent Contract V1 Freeze Bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol_id",
+    "contract_id",
+    "frozen_at_utc",
+    "freeze_states",
+    "public_goal",
+    "private_binding"
+  ],
+  "properties": {
+    "schema_version": {"const": "blindassist_public_identifiable_referent_freeze_v1"},
+    "protocol_id": {"const": "PUBLIC_IDENTIFIABLE_REFERENT_CONTRACT_V1"},
+    "contract_id": {"type": "string", "minLength": 1},
+    "frozen_at_utc": {"type": "string", "minLength": 1},
+    "freeze_states": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["episode_observation_pixels", "provider_output", "candidate_output", "outcome_access"],
+      "properties": {
+        "episode_observation_pixels": {"const": "NOT_CAPTURED"},
+        "provider_output": {"const": "NOT_CREATED"},
+        "candidate_output": {"const": "NOT_CREATED"},
+        "outcome_access": {"const": "NONE"}
+      }
+    },
+    "public_goal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["goal_text", "modality", "reference_mode", "reference_anchor_id", "reference_image", "language_description"],
+      "properties": {
+        "goal_text": {"type": "string", "minLength": 1},
+        "modality": {"enum": ["REFERENCE_IMAGE_INSTANCE", "LANGUAGE_REFERRING_EXPRESSION"]},
+        "reference_mode": {"enum": ["UNIQUE", "SET_VALUED", "AMBIGUOUS"]},
+        "reference_anchor_id": {"type": "string", "minLength": 1},
+        "reference_image": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "#/$defs/referenceImage"}
+          ]
+        },
+        "language_description": {"type": ["string", "null"], "minLength": 1}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"modality": {"const": "REFERENCE_IMAGE_INSTANCE"}}},
+          "then": {
+            "properties": {
+              "reference_mode": {"const": "UNIQUE"},
+              "reference_image": {"$ref": "#/$defs/referenceImage"}
+            }
+          },
+          "else": {
+            "properties": {
+              "reference_image": {"type": "null"},
+              "language_description": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      ]
+    },
+    "private_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "binding_authority",
+        "binding_created_at_utc",
+        "binding_created_before_episode_observations",
+        "binding_created_before_provider_output",
+        "model_or_teacher_used_for_binding",
+        "source_record_sha256",
+        "bound_reference_image_sha256",
+        "legal_physical_instance_ids",
+        "world_anchors"
+      ],
+      "properties": {
+        "binding_authority": {
+          "enum": [
+            "SOURCE_NATIVE_REFERENCE_LINK",
+            "NATIVE_INSTANCE_ID",
+            "INDEPENDENT_PREOBSERVATION_REVIEW"
+          ]
+        },
+        "binding_created_at_utc": {"type": "string", "minLength": 1},
+        "binding_created_before_episode_observations": {"const": true},
+        "binding_created_before_provider_output": {"const": true},
+        "model_or_teacher_used_for_binding": {"const": false},
+        "source_record_sha256": {"$ref": "#/$defs/sha256"},
+        "bound_reference_image_sha256": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "#/$defs/sha256"}
+          ]
+        },
+        "legal_physical_instance_ids": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "world_anchors": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/worldAnchor"}
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"public_goal": {"properties": {"modality": {"const": "REFERENCE_IMAGE_INSTANCE"}}}}
+      },
+      "then": {
+        "properties": {
+          "private_binding": {
+            "properties": {"bound_reference_image_sha256": {"$ref": "#/$defs/sha256"}}
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "private_binding": {
+            "properties": {"bound_reference_image_sha256": {"type": "null"}}
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"public_goal": {"properties": {"reference_mode": {"const": "UNIQUE"}}}}
+      },
+      "then": {
+        "properties": {
+          "private_binding": {
+            "properties": {
+              "legal_physical_instance_ids": {"minItems": 1, "maxItems": 1},
+              "world_anchors": {"minItems": 1, "maxItems": 1}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"public_goal": {"properties": {"reference_mode": {"const": "SET_VALUED"}}}}
+      },
+      "then": {
+        "properties": {
+          "private_binding": {
+            "properties": {
+              "legal_physical_instance_ids": {"minItems": 2},
+              "world_anchors": {"minItems": 2}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"public_goal": {"properties": {"reference_mode": {"const": "AMBIGUOUS"}}}}
+      },
+      "then": {
+        "properties": {
+          "private_binding": {
+            "properties": {
+              "legal_physical_instance_ids": {"maxItems": 0},
+              "world_anchors": {"maxItems": 0}
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "normalizedBbox": {
+      "type": "array",
+      "prefixItems": [
+        {"type": "number", "minimum": 0, "maximum": 1},
+        {"type": "number", "minimum": 0, "maximum": 1},
+        {"type": "number", "minimum": 0, "maximum": 1},
+        {"type": "number", "minimum": 0, "maximum": 1}
+      ],
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "referenceImage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reference_image_id",
+        "image_sha256",
+        "width",
+        "height",
+        "target_selector",
+        "public_target_region_xyxy"
+      ],
+      "properties": {
+        "reference_image_id": {"type": "string", "minLength": 1},
+        "image_sha256": {"$ref": "#/$defs/sha256"},
+        "width": {"type": "integer", "minimum": 1},
+        "height": {"type": "integer", "minimum": 1},
+        "target_selector": {"enum": ["FULL_FRAME_SINGLE_INSTANCE", "PUBLIC_TARGET_REGION"]},
+        "public_target_region_xyxy": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "#/$defs/normalizedBbox"}
+          ]
+        }
+      }
+    },
+    "worldAnchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["physical_instance_id", "coordinate_frame_id", "position_xyz_m", "authority"],
+      "properties": {
+        "physical_instance_id": {"type": "string", "minLength": 1},
+        "coordinate_frame_id": {"type": "string", "minLength": 1},
+        "position_xyz_m": {
+          "type": "array",
+          "items": {"type": "number"},
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "authority": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

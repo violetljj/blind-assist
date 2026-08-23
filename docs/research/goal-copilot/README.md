@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_REAL_8X89_SEALED / SUN3D_PUBLIC_REFERENT_AMBIGUOUS / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_APERTURE_NOT_ESTABLISHED / NO_ALGORITHM_SUCCESSOR / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_CONTRACT_V1_READY / C2_NOT_AUTHORIZED / SUN3D_PUBLIC_REFERENT_AMBIGUOUS / NO_ALGORITHM_SUCCESSOR / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -87,6 +87,17 @@ usable-proposal 帧都至少出现两扇合理门，三个 object-45-absent conf
 `11/15` 只保留为 private-object visibility descriptor，`0/3 selection` 与 `4/15 wrong` 均为 public-goal
 `NOT_EVALUABLE`。当前不授权 independent cohort、Active Referent Search、FSM、同 episode 调参或 P1；下一前门是
 在 pixels/provider output 前冻结 independently public-identifiable 的 `UNIQUE / SET_VALUED / AMBIGUOUS` contract。
+
+该前门的 C0/C1 mechanics 已实现为
+[`PUBLIC_IDENTIFIABLE_REFERENT_CONTRACT_V1`](BLINDASSIST_PUBLIC_IDENTIFIABLE_REFERENT_CONTRACT_V1_2026-08-24.md)：
+reference-image instance goal 被强制为 `UNIQUE`，参考图必须是全帧单实例或公开 target region；pre-observation
+evaluator-private lock 固定 physical instance、world anchor、binding authority 与 source hash，provider-public receipt
+只暴露 reference evidence 和 opaque anchor。Later per-frame visibility/regions 必须绑定 public/private hashes；
+`SET_VALUED` 保留完整 legal set，`AMBIGUOUS` 不携带 target，teacher/model 不能建立 identity authority。
+
+当前只建立 contract/firewall/truth-binding mechanics；`cohort_freeze / passive_baseline / algorithm` authority 全为 false。
+不创建 C2 roster，不运行 baseline，不实现 Active Referent Search。唯一下一边界是另立 5--8 个 independent episodes
+的 C2 small-roster protocol，且仍必须在 observation pixels/provider output 前冻结；当前未授权。
 
 ## V0 与 P1 边界
 
