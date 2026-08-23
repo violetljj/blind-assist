@@ -110,7 +110,7 @@ def _failure_class(state: EpisodeState, *, arrival: bool, action_exhausted: bool
 def run(
     *, public_graph_path: Path, private_truth_path: Path, freeze_path: Path,
     pixel_receipt_path: Path, qualification_path: Path, output_dir: Path,
-    codex_exe: Path, grounding_dino: Path,
+    codex_exe: Path, grounding_dino: Path, provider_lock_path: Path | None = None,
 ) -> dict[str, Any]:
     from scripts.research.goal_copilot_bridge.last_10m_regrounding_v0.cli import _append_event
     from scripts.research.goal_copilot_bridge.last_10m_regrounding_v0.provider_adapter import (
@@ -154,7 +154,20 @@ def run(
             raise ValueError(f"qualified pixel changed: {node_id}")
 
     # Provider and machine preflight intentionally precede formal run creation.
-    provider_lock = preflight_provider(codex_exe=codex_exe, model_dir=grounding_dino)
+    # A prospective freeze may pass its already-verified lock so the matching
+    # provider is reused without a second mechanical preflight.
+    if provider_lock_path is None:
+        provider_lock = preflight_provider(codex_exe=codex_exe, model_dir=grounding_dino)
+    else:
+        provider_lock = json.loads(provider_lock_path.read_text(encoding="utf-8"))
+        if provider_lock.get("schema_version") != "blindassist_last_10m_p0_provider_lock_v1":
+            raise ValueError("frozen provider lock schema mismatch")
+        if Path(provider_lock["codex"]["executable"]).resolve() != codex_exe:
+            raise ValueError("frozen Codex executable path drift")
+        if _sha256(codex_exe) != provider_lock["codex"]["executable_sha256"]:
+            raise ValueError("frozen Codex executable hash drift")
+        if Path(provider_lock["grounding_dino"]["model_dir"]).resolve() != grounding_dino:
+            raise ValueError("frozen Grounding DINO model path drift")
     if output_dir.exists():
         raise ValueError("formal one-shot output already exists; replay is forbidden")
     output_dir.mkdir(parents=True, exist_ok=False)
@@ -171,6 +184,9 @@ def run(
         "pixel_receipt_sha256": _sha256(pixel_receipt_path),
         "qualification_sha256": _sha256(qualification_path),
         "provider_lock_sha256": _sha256(output_dir / "provider-lock.json"),
+        "provider_lock_source_sha256": (
+            _sha256(provider_lock_path) if provider_lock_path is not None else None
+        ),
         "frozen_budget": {
             "episodes": 1,
             "provider_observations_maximum": MAX_PROVIDER_OBSERVATIONS,
@@ -439,6 +455,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--codex-exe", type=Path, default=Path("E:/codex-tools/bin/codex.exe"))
     parser.add_argument("--grounding-dino", type=Path, required=True)
+    parser.add_argument("--provider-lock", type=Path)
     args = parser.parse_args(argv)
     receipt = run(
         public_graph_path=args.public_graph.resolve(),
@@ -449,6 +466,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         output_dir=args.output_dir.resolve(),
         codex_exe=args.codex_exe.resolve(),
         grounding_dino=args.grounding_dino.resolve(),
+        provider_lock_path=args.provider_lock.resolve() if args.provider_lock else None,
     )
     print(json.dumps({
         "terminal": receipt["terminal"],
