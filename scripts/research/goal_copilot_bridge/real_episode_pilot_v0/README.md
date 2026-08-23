@@ -207,6 +207,17 @@ This result supports a fresh-cohort selective-commitment/CONTESTED investigation
 facade stills with a generic door goal. Named-store identity, approach control, range, bearing, arrival, `LOST`, P1,
 and product effectiveness remain unevaluated.
 
+The [fresh selective-commitment confirmation](../../../../docs/research/goal-copilot/BLINDASSIST_CMP_SELECTIVE_COMMITMENT_V1_RESULT_2026-08-23.md)
+is now sealed negative. The 122 unused native-door images were frozen
+before provider output as `32 Development / 64 Confirmation / 26 Reserve`, with zero overlap against the consumed 89.
+Development selected the predeclared `confidence >= 0.75 AND provider rank == 1` gate. On 64 untouched Confirmation
+images, V0 made 43 commitments with 31 correct and 12 wrong over all observations; the offline V1 retained 16
+commitments with 14 correct and 2 wrong. Commitment accuracy improved from `72.1%` to `87.5%`, but correct-grounding
+retention was only `14/31 = 45.2%`, below the frozen 80% requirement. The verdict is therefore
+`SELECTIVE_COMMITMENT_NOT_SUPPORTED`. Reserve remains untouched; no policy, threshold, provider, prompt, goal, or
+cohort rescue is permitted. Provider rank is not referent authority, and this simple gate does not establish a V1 or
+authorize P1.
+
 ```powershell
 python -m unittest `
   scripts.research.goal_copilot_bridge.selective_guidance_v0.test_contract `

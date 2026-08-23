@@ -5110,3 +5110,18 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
 - 运行后仅做两项 read-only audit mechanics repair：shared server raw log 按预冻结总预算 3,190 校验；terminal
   graph 缺边动作记为 rejected/unexecuted 而不伪算 progress。dominance/outcome 分类逻辑未改，最终 cohort audit
   implementation SHA-256=`be7c3b…b720`，正式 receipt SHA-256=`d74445…457e`。
+
+# 2026-08-23 CMP native-door selective-commitment V1 confirmation
+
+- 从 CMP 211 张 native-door eligible universe 中排除已消费 89，按 outcome 前固定 SHA 排名切为
+  `32 Development / 64 Confirmation / 26 Reserve`；122 个 RGB hash 全唯一，各 split 与旧 89 零重叠。沿用同一
+  Grounding DINO、Terra Brain、prompt/threshold，teacher/retry/rerun 均为 0；V1 只是离线把未通过 gate 的原始
+  `SELECT` 降为 `CONTESTED`，不增加 provider call。
+- Development 四批 32 张按预提交六策略网格选出 `confidence>=0.75 AND provider_rank==1`：12 commitments、11
+  correct、1 wrong；selected-policy 文件在任何 Confirmation call 前封存，SHA-256=`5df739…3ef5f`。
+- untouched Confirmation 八批 64 张，provider calls/attempts/in_doubt=`8/8/0`。V0 为 43 commitments、31 correct、
+  12 wrong-all、commitment accuracy 72.1%；V1 为 16 commitments、14 correct、2 wrong-all、accuracy 87.5%。
+  但 correct-grounding retention 仅 `14/31=45.2%`，未过预冻结 80% gate，终态
+  `SELECTIVE_COMMITMENT_NOT_SUPPORTED`。
+- Reserve 26 张保持未调用，禁止观察后换 grid policy、threshold、provider、prompt、goal、cohort 或 rerun。
+  rank-1 不是 referent authority；本结果否决该简单 gate，不授权 P1、默认 App 或产品声明。
