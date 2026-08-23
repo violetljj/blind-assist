@@ -19,6 +19,8 @@ import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
+import androidx.compose.ui.test.assertHasClickAction
+import androidx.compose.ui.test.assertHeightIsAtLeast
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -40,6 +42,9 @@ import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
+import com.linnan.blindassist.goal.GoalCompletionReceipt
+import com.linnan.blindassist.goal.GoalHandoffState
+import com.linnan.blindassist.goal.ConfirmationModality
 import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.MainActivity
 import com.linnan.blindassist.model.AssistInputSource
@@ -462,6 +467,74 @@ class CameraControlPanelStandaloneTest {
         composeRule.onNodeWithTag("camera_debug_toggle").performClick()
         composeRule.onNodeWithTag("camera_debug_toggle").assertStateDescription("Collapsed")
         composeRule.onAllNodesWithText("FPS", substring = true).assertCountEquals(0)
+    }
+
+    @Test
+    fun handoffReadyShowsExplicitAccessibleLargeConfirmationAction() {
+        var confirmations = 0
+        composeRule.setContent {
+            BlindAssistTheme {
+                GoalHandoffCard(
+                    state = GoalHandoffState.HandoffReady(
+                        goalId = "goal-1",
+                        sessionId = "session-1",
+                        handoffTimestamp = 1_000L,
+                        handoffReason = "CURRENT_FRAME_HANDOFF_READY"
+                    ),
+                    language = AppLanguage.ZH,
+                    onUserConfirmed = { confirmations += 1 }
+                )
+            }
+        }
+
+        composeRule.onNodeWithTag("goal_handoff_card")
+            .assertStateDescription("已到交接点，等待用户明确确认")
+            .assertIsDisplayed()
+        composeRule.onNodeWithText("已经到目标前，请用手或盲杖确认入口。")
+            .assertIsDisplayed()
+        composeRule.onNodeWithContentDescription("确认已找到目标")
+            .assertHasClickAction()
+            .assertHeightIsAtLeast(48.dp)
+            .performClick()
+        assert(confirmations == 1)
+    }
+
+    @Test
+    fun foundApproachAndCompletedStatesNeverExposeConfirmationButton() {
+        val state = mutableStateOf<GoalHandoffState>(
+            GoalHandoffState.Found("goal-1", "session-1")
+        )
+        composeRule.setContent {
+            BlindAssistTheme {
+                GoalHandoffCard(
+                    state = state.value,
+                    language = AppLanguage.ZH,
+                    onUserConfirmed = {}
+                )
+            }
+        }
+
+        composeRule.onNodeWithText("找到目标，在你的右前方。").assertIsDisplayed()
+        composeRule.onAllNodesWithTag("goal_handoff_confirm_button").assertCountEquals(0)
+
+        state.value = GoalHandoffState.Approach("goal-1", "session-1")
+        composeRule.onNodeWithText("稍向右，继续向前。").assertIsDisplayed()
+        composeRule.onAllNodesWithTag("goal_handoff_confirm_button").assertCountEquals(0)
+
+        state.value = GoalHandoffState.CompletedByUser(
+            GoalCompletionReceipt(
+                goalId = "goal-1",
+                sessionId = "session-1",
+                handoffTimestamp = 1_000L,
+                handoffReason = "CURRENT_FRAME_HANDOFF_READY",
+                confirmationModality = ConfirmationModality.VOICE,
+                confirmationTimestamp = 1_100L
+            )
+        )
+        composeRule.onNodeWithText("你已确认找到了。").assertIsDisplayed()
+        composeRule.onNodeWithTag("goal_handoff_card")
+            .assertStateDescription("已由用户明确确认完成")
+        composeRule.onAllNodesWithTag("goal_handoff_confirm_button").assertCountEquals(0)
     }
 
     @Test

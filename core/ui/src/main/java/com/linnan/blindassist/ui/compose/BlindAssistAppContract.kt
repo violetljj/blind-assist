@@ -6,6 +6,7 @@ import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
+import com.linnan.blindassist.goal.GoalHandoffState
 import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.model.AssistInputSource
 import com.linnan.blindassist.model.ReplayScenario
@@ -25,13 +26,20 @@ data class BlindAssistAppState(
     val showOnboarding: Boolean,
     val showGlassesCenter: Boolean,
     val glassesSimulator: GlassesSimulatorUiState,
+    /** Null keeps Goal Copilot handoff UI inactive in the default app. */
+    val goalHandoff: GoalHandoffState? = null,
     val editionLabel: String? = null
 )
 
 data class BlindAssistAppActions(
     val runtime: AssistRuntimeUiActions,
     val navigation: AssistNavigationActions,
-    val glasses: GlassesSimulatorActions
+    val glasses: GlassesSimulatorActions,
+    val goalHandoff: GoalHandoffActions = GoalHandoffActions()
+)
+
+data class GoalHandoffActions(
+    val onConfirmByButton: () -> Unit = {}
 )
 
 data class AssistRuntimeUiActions(

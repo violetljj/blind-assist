@@ -12,6 +12,7 @@
 | TFLite、图像预处理、native vision | `core/vision/` | Kotlin 与 `src/main/cpp/` |
 | 设备、语音、震动和硬件 adapter | `core/device/` | `core/device/src/main/` |
 | Compose UI 模型 | `core/ui/` | `core/ui/src/main/` |
+| Goal handoff/completion 产品接口 | `core/assist/.../goal/GoalHandoffContract.kt` | 纯状态机与 receipt schema 在 `core:assist`；可注入 owner 在 `feature:assist`；无状态确认卡片在 `core:ui` |
 | USTRF 共享 kernel | `core/ustrf/` | `core/ustrf/src/main/` |
 | benchmark、canary、demo、候选 App | [`apps/README.md`](../apps/README.md) | `apps/<role>/<module>/` |
 | 稳定脚本 Interface | [`scripts/README.md`](../scripts/README.md) | `scripts/` 根 allowlist |
@@ -33,3 +34,12 @@
 1. 从本表选一个实现域；
 2. 用 `rg` 搜索具体 symbol、Gradle module 或稳定 Adapter；
 3. 只读直接调用方、实现和相关测试；需要权限结论时再回到 current 文档。
+
+## Goal handoff 集成边界
+
+`GoalHandoffStateOwner` 只接受显式 `FOUND -> APPROACH -> HANDOFF_READY`，再由用户事件
+进入 `COMPLETED_BY_USER`；`HANDOFF_READY` 不会自动完成，完成 receipt 必须来自按钮或
+上游语音端口传入的精确“找到了”短语。语音端口不包含麦克风权限或 ASR runtime。
+默认 App 不创建该 owner，`BlindAssistAppState.goalHandoff = null` 时界面完全不激活；
+未来 Goal Copilot runtime 需注入 owner、持久 receipt sink，并把状态与按钮事件接到现有
+App contract。不得从 detector 输出推导或默认展示 `FOUND`。

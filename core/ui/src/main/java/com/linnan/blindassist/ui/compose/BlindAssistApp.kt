@@ -136,6 +136,7 @@ fun BlindAssistApp(
                         controls = state.controls,
                         guidance = state.cameraGuidance,
                         fieldTestSummary = state.fieldTestSummary,
+                        goalHandoffState = state.goalHandoff,
                         inputSource = state.activeInputSource,
                         replayScenario = state.activeReplayScenario,
                         onBack = actions.runtime.onCloseCamera,
@@ -148,6 +149,7 @@ fun BlindAssistApp(
                         onScenarioChange = actions.runtime.onScenarioChange,
                         onQuietShortcut = actions.runtime.onQuietShortcut,
                         onSensitiveShortcut = actions.runtime.onSensitiveShortcut,
+                        onGoalCompletionConfirmed = actions.goalHandoff.onConfirmByButton,
                         onCameraViewsReady = actions.runtime.onCameraViewsReady
                     )
                     state.showOnboarding -> OnboardingScreen(onFinished = actions.navigation.onCompleteOnboarding)

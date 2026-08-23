@@ -108,6 +108,7 @@ import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
+import com.linnan.blindassist.goal.GoalHandoffState
 import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.localization.LocalizedText
 import com.linnan.blindassist.model.AssistInputSource
@@ -122,6 +123,7 @@ fun CameraExperienceScreen(
     controls: AssistControlsUiState,
     guidance: CameraGuidanceUiState,
     fieldTestSummary: FieldTestSummaryUiState,
+    goalHandoffState: GoalHandoffState? = null,
     inputSource: AssistInputSource,
     replayScenario: ReplayScenario?,
     onBack: () -> Unit,
@@ -134,6 +136,7 @@ fun CameraExperienceScreen(
     onScenarioChange: (AssistScenario) -> Unit,
     onQuietShortcut: () -> Unit,
     onSensitiveShortcut: () -> Unit,
+    onGoalCompletionConfirmed: () -> Unit = {},
     onCameraViewsReady: (PreviewView?, ImageView?, DetectionOverlayView) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -187,6 +190,7 @@ fun CameraExperienceScreen(
             controls = controls,
             guidance = guidance,
             fieldTestSummary = fieldTestSummary,
+            goalHandoffState = goalHandoffState,
             onDetectionChange = onDetectionChange,
             onSpeechChange = onSpeechChange,
             onVibrationChange = onVibrationChange,
@@ -196,6 +200,7 @@ fun CameraExperienceScreen(
             onScenarioChange = onScenarioChange,
             onQuietShortcut = onQuietShortcut,
             onSensitiveShortcut = onSensitiveShortcut,
+            onGoalCompletionConfirmed = onGoalCompletionConfirmed,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(12.dp)
@@ -283,6 +288,7 @@ fun CameraControlPanel(
     controls: AssistControlsUiState,
     guidance: CameraGuidanceUiState,
     fieldTestSummary: FieldTestSummaryUiState,
+    goalHandoffState: GoalHandoffState? = null,
     onDetectionChange: (Boolean) -> Unit,
     onSpeechChange: (Boolean) -> Unit,
     onVibrationChange: (Boolean) -> Unit,
@@ -292,6 +298,7 @@ fun CameraControlPanel(
     onScenarioChange: (AssistScenario) -> Unit,
     onQuietShortcut: () -> Unit,
     onSensitiveShortcut: () -> Unit,
+    onGoalCompletionConfirmed: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val language = controls.appLanguage
@@ -330,6 +337,16 @@ fun CameraControlPanel(
                     .verticalScroll(rememberScrollState())
                     .padding(if (controls.careModeEnabled) 20.dp else 16.dp)
             ) {
+            goalHandoffState?.let { handoffState ->
+                GoalHandoffCard(
+                    state = handoffState,
+                    language = language,
+                    onUserConfirmed = onGoalCompletionConfirmed
+                )
+                if (handoffState !is GoalHandoffState.Inactive) {
+                    Spacer(Modifier.height(16.dp))
+                }
+            }
             Text(
                 text = title,
                 style = titleStyle,
@@ -588,4 +605,3 @@ private fun CameraTopBar(
         )
     }
 }
-
