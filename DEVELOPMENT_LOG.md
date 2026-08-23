@@ -5171,3 +5171,18 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   success rule 要求 Rank@1 严格增加；机制未复现，正式 verdict `RELATIONAL_CANDIDATE_RANKER_NOT_SUPPORTED`。
 - 不用最后 8 条补样，不改 gate/feature/model/threshold，不重跑。结果不授权该 ranker 为 V1，也不外推 approach、
   control、range/bearing、arrival、LOST、P1、安全或产品有效性。
+
+# 2026-08-24 SUN3D referent-identifiability read-only audit
+
+- 对已消费 `hotel_umd/maryland_hotel3` episode 执行零 benchmark-model、零 fresh-data 的 Step-0 autopsy；同一官方 annotation
+  SHA-256 复核通过，原 sealed roster/proposal/Brain/result 未改写。官方对象表除 private `object 45 = door` 外还含
+  `object 57 = door: bathroom`；三个 object-45-visible + usable-proposal 帧都至少有两扇视觉上合理的门，private
+  correct proposal rank 为 `2 / 1 / 7`。唯一 frame-local `UNIQUE` 可见帧是 proposal miss。
+- 三个 object-45-absent confident commits 也都至少有另一扇视觉上合理的门可见。因此公开 goal `the door` 若允许任意
+  door 应为 `SET_VALUED`，若只允许 object 45 则缺少公开绑定而为 `AMBIGUOUS`。终态
+  `PUBLIC_GOAL_TO_PRIVATE_REFERENT_AMBIGUOUS_SELECTION_NOT_EVALUABLE`；原 `11/15` 仅保留 private-object visibility
+  descriptor，`0/3 selection` 与 `4/15 wrong` 均不再承担 public-goal claim。
+- 严格顺序在 Step 0 停止：不冻结独立 SUN3D cohort，不实现 Active Referent Search/FSM，不调用 provider/teacher，
+  不开 detector/tracker/crop/RL/P1。唯一下一前门是在 pixels/provider output 前冻结 independently public-identifiable
+  的 `UNIQUE / SET_VALUED / AMBIGUOUS` referent contract，并只对合同合法目标评分。结果：
+  [referent-identifiability audit](docs/research/goal-copilot/BLINDASSIST_SUN3D_REFERENT_IDENTIFIABILITY_AUDIT_V0_RESULT_2026-08-24.md)。

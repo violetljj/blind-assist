@@ -249,14 +249,30 @@ sets, order, scores, provider, and private truth were unchanged. Across ten succ
 is sealed `CANDIDATE_ZOOM_REPRESENTATION_DEVELOPMENT_NOT_PROMISING`; no fresh Confirmation call or ABotN integration
 was authorized, and crop/prompt/provider/cohort tuning cannot rescue the consumed Development evidence.
 
-The SUN3D native-door route then removed the weak-truth blocker without ScanNet access. Run
+The SUN3D native-door route provided complete private object-45 polygon/range truth without ScanNet access. Run
 `run_sun3d_door_approach_v0` as a module in three irreversible phases: `freeze` reads only the official annotated list,
 polygons, and corrected extrinsics; `download` verifies the frozen roster hash and fetches only its 15 RGB frames; and
 `run` verifies both sealed inputs before proposal and Brain calls. On the frozen
 `hotel_umd/maryland_hotel3` door episode, native-plus-map truth covered `15/15`; visible proposal availability was
-`3/4`, selection given a usable proposal was `0/3`, and wrong confident guidance was `4/15`. The result is current-frame
-grounding evidence only. It does not establish a functional aperture, destination, closed-loop control, arrival,
-persistence, safety, or product performance, and it does not authorize same-episode tuning or a P1 successor.
+`3/4`, the sealed private-object selection score was `0/3`, and the sealed private-object wrong-guidance score was
+`4/15`. A later read-only identifiability audit found that public `the door` does not uniquely bind object 45: the
+sequence also contains object 57 `door: bathroom`, and every usable-proposal frame contains at least two plausible
+doors. The two scores are therefore public-goal `NOT_EVALUABLE`, not selection or acquisition failures. The episode
+does not authorize a fresh cohort, Active Referent Search, same-episode tuning, P1, or product claims. A successor first
+requires an outcome-blind, independently public-identifiable `UNIQUE / SET_VALUED / AMBIGUOUS` referent contract.
+
+The autopsy is reproducible without a new benchmark-model call; its checked-in visual review remains explicitly
+reviewer-derived rather than native GT:
+
+```powershell
+python -m scripts.research.goal_copilot_bridge.real_episode_pilot_v0.audit_sun3d_referent_identifiability `
+  --roster artifacts.local/evidence/sun3d-native-door-approach-v0/frozen-roster-private-truth.json `
+  --pixels-manifest artifacts.local/evidence/sun3d-native-door-approach-v0/pixels-manifest.json `
+  --proposal-output artifacts.local/evidence/sun3d-native-door-approach-v0/formal/proposal-provider-output.json `
+  --final-report artifacts.local/evidence/sun3d-native-door-approach-v0/formal/final-report.json `
+  --review scripts/research/goal_copilot_bridge/real_episode_pilot_v0/sun3d_referent_identifiability_review_v0.json `
+  --output artifacts.local/evidence/sun3d-referent-identifiability-audit-v0/audit.json
+```
 
 ```powershell
 python -m unittest `
