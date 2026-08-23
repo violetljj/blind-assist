@@ -2,6 +2,17 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-24（Asia/Hong_Kong）；执行者：Codex。按用户授权，以同一 `GPT-5.6-Sol/high` 和固定 prompt
+  对 C2 visible probe 做一次 evaluator-private `ORACLE_COMPETING_IDENTITY_DIAGNOSTIC`；没有把 native ID 或正确槽位
+  暴露给 provider。17 个有 same-class competitor 的 observation 中，4 个历史 wrong-instance case 为
+  `TARGET_SELECTED=2 / DISTRACTOR_SELECTED=2`；13 个原正确 control 为 `TARGET_SELECTED=12 / CONTESTED=1 /
+  DISTRACTOR_SELECTED=0`，另 3 个无 same-class competitor 的原正确 observation 如实排除。因四个历史错例的首轮结果
+  与 target 槽位完全重合，又追加一次明确标记的 post-hoc 4-call A/B image swap；逐 physical instance 对照得到
+  `ROBUST_TARGET=1 / STABLE_DISTRACTOR=2 / ORDER_SENSITIVE=1`。因此显式竞争在原排列下低 collateral 且能救回 2/4，
+  但只有 1/4 经受候选顺序反事实；可靠 verifier 尚未建立，现有证据同时暴露 instance-discriminative appearance
+  不足与输出顺序敏感。两次 run 均 0 tool call、无 transport/schema failure；claim ceiling 仅为 consumed、visible-only、
+  oracle-candidate Discovery，不建立 candidate generation、belief、tracking、Active Search/P1、App 或产品能力。
+
 - 时间：2026-08-24（Asia/Hong_Kong）；执行者：violjjet。经用户单独授权，在已消费 C2 roster 上运行一次
   `VISIBLE_ONLY_PASSIVE_IDENTITY_PROBE_V0`：固定 `GPT-5.6-Sol/high`，21 个 observation 各独立接收 public reference、
   public target region 与 later image；provider 看不到 native identity/truth。21/21 transport 与结构化输出有效，得到

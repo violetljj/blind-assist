@@ -1,6 +1,6 @@
 # Public Identifiable Referent Contract V1
 
-状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / PUBLIC_PRIVATE_FIREWALL / NO_NOT_VISIBLE_EVIDENCE / NO_ALGORITHM`
+状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_2_OF_4_RESCUED_12_OF_13_CONTROLS_RETAINED / ORDER_COUNTERBALANCE_1_ROBUST_TARGET_2_STABLE_DISTRACTOR_1_ORDER_SENSITIVE / PUBLIC_PRIVATE_FIREWALL / NO_NOT_VISIBLE_EVIDENCE / RELIABLE_VERIFIER_NOT_ESTABLISHED`
 
 This package freezes the user-visible goal before episode observations, candidates, provider output, or outcomes. It
 then separates the provider-public contract from an evaluator-private physical-instance lock.
@@ -56,5 +56,38 @@ Focused mechanics test:
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_visible_identity_probe
+```
+
+## Oracle competing-identity diagnostic
+
+`oracle_competing_identity_probe.py` is a separate, consumed Discovery diagnostic over the immutable visible-probe
+inputs. It gives the fixed `GPT-5.6-Sol/high` provider two same-class 384x384 crops with equal 20% context and asks
+only `A / B / CONTESTED / NEITHER`. The evaluator privately maps slots to the frozen target and distractor; native IDs,
+truth labels, and correct position never enter the provider workspace. It is deliberately oracle-candidate and cannot
+measure candidate generation or product performance.
+
+The 17-pair run used all four historical wrong-instance cases plus 13 of 16 original correct cases with a real
+same-class competitor. It observed `2/4` target selections in the historical wrong stratum and
+`12/13 TARGET / 1/13 CONTESTED / 0/13 DISTRACTOR` in controls. The three controls without a same-class competitor
+were excluded rather than given a fabricated negative.
+
+Because all four historical results initially coincided with the target's A/B position, a separately marked post-hoc
+counterbalance swapped only the two candidate images. Paired by physical instance, one case selected the target in
+both orders, two selected the same distractor in both orders, and one selected slot B in both orders. Thus explicit
+competition has partial signal and low observed collateral in the original order, but only `1/4` historical errors
+has an order-robust rescue; a reliable verifier is not established. No belief, tracker, Active Search, candidate
+generator, representation sweep, App integration, or `NOT_VISIBLE` claim follows from this diagnostic.
+
+Local reports:
+
+- `artifacts.local/evidence/public-identifiable-referent-oracle-competing-identity-v0/run-20260824T034449+0800/final-report.json`
+- `artifacts.local/evidence/public-identifiable-referent-oracle-competing-identity-order-counterbalance-v0/run-20260824T034852+0800/final-report.json`
+
+Focused mechanics tests:
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_oracle_competing_identity_probe `
   scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_visible_identity_probe
 ```
