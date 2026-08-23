@@ -83,6 +83,14 @@ def select_rows(rows: Sequence[Mapping[str, Any]]) -> tuple[list[dict[str, Any]]
     return ordered[:SELECTED_COUNT], len(ordered)
 
 
+def coco_transport_url(source_url: str) -> str:
+    """Use COCO's working official HTTP endpoint without disabling TLS checks."""
+    prefix = "https://images.cocodataset.org/"
+    if not source_url.startswith(prefix):
+        raise FreezeError("unexpected COCO image host")
+    return "http://images.cocodataset.org/" + source_url[len(prefix):]
+
+
 def freeze(args: argparse.Namespace) -> dict[str, Any]:
     benchmark = args.benchmark.resolve()
     image_manifest = args.image_manifest.resolve()
@@ -188,7 +196,8 @@ def download_pixels(args: argparse.Namespace) -> dict[str, Any]:
         target.parent.mkdir(parents=True, exist_ok=True)
         if not target.is_file() or sha256_file(target) != item["rgb_sha256"]:
             temporary = target.with_suffix(target.suffix + ".part")
-            with session.get(item["source_image_url"], timeout=120, stream=True) as response:
+            transport_url = coco_transport_url(item["source_image_url"])
+            with session.get(transport_url, timeout=120, stream=True) as response:
                 response.raise_for_status()
                 with temporary.open("wb") as stream:
                     for block in response.iter_content(1024 * 1024):
@@ -200,6 +209,7 @@ def download_pixels(args: argparse.Namespace) -> dict[str, Any]:
         completed.append({
             "observation_id": item["observation_id"], "rgb_path": str(target),
             "bytes": target.stat().st_size, "sha256": sha256_file(target),
+            "transport_url": coco_transport_url(item["source_image_url"]),
         })
         print(f"pixels {index}/{len(roster['observations'])} {item['observation_id']}", flush=True)
     receipt = {

@@ -1,6 +1,7 @@
 import unittest
 
 from scripts.research.goal_copilot_bridge.real_episode_pilot_v0.freeze_groundbench_referent_89 import (
+    coco_transport_url,
     expression_from_question,
     polygon_bbox,
     select_rows,
@@ -18,6 +19,10 @@ class GroundBenchReferent89Test(unittest.TestCase):
         )
         self.assertEqual(expression, "Red car left")
         self.assertEqual(expression_prompt(expression), "red car left .")
+        self.assertEqual(
+            coco_transport_url("https://images.cocodataset.org/train2014/example.jpg"),
+            "http://images.cocodataset.org/train2014/example.jpg",
+        )
 
     def test_polygon_bbox(self) -> None:
         polygon = []
