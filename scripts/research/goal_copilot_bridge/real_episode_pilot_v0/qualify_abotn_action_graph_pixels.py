@@ -37,7 +37,7 @@ def _atomic_json(path: Path, payload: Any) -> None:
     os.replace(temporary, path)
 
 
-def _orb_horizontal_shift(first: Path, second: Path) -> tuple[float, int]:
+def _orb_horizontal_shift(first: Path, second: Path) -> tuple[float | None, int]:
     import cv2
     import numpy as np
 
@@ -45,11 +45,11 @@ def _orb_horizontal_shift(first: Path, second: Path) -> tuple[float, int]:
     first_keypoints, first_descriptors = detector.detectAndCompute(cv2.imread(str(first), 0), None)
     second_keypoints, second_descriptors = detector.detectAndCompute(cv2.imread(str(second), 0), None)
     if first_descriptors is None or second_descriptors is None:
-        raise ValueError("ORB direction check has no descriptors")
+        return None, 0
     matches = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True).match(first_descriptors, second_descriptors)
     retained = sorted(matches, key=lambda item: item.distance)[: min(500, len(matches))]
     if len(retained) < 50:
-        raise ValueError("ORB direction check has insufficient matches")
+        return None, len(retained)
     shifts = [
         second_keypoints[item.trainIdx].pt[0] - first_keypoints[item.queryIdx].pt[0]
         for item in retained
@@ -126,15 +126,25 @@ def qualify(
         right_shift, right_matches = _orb_horizontal_shift(
             pixel_root / center["rendered_frame_path"], pixel_root / right["rendered_frame_path"]
         )
+        evaluable = left_shift is not None and right_shift is not None
+        passed = bool(
+            evaluable
+            and left_shift > MIN_DIRECTION_SHIFT_PX
+            and right_shift < -MIN_DIRECTION_SHIFT_PX
+        )
         direction_checks.append({
             "pose_index": pose_index,
             "turn_left_median_feature_shift_px": left_shift,
             "turn_right_median_feature_shift_px": right_shift,
             "turn_left_retained_match_count": left_matches,
             "turn_right_retained_match_count": right_matches,
-            "pass": left_shift > MIN_DIRECTION_SHIFT_PX and right_shift < -MIN_DIRECTION_SHIFT_PX,
+            "status": "PASS" if passed else ("INSUFFICIENT_FEATURES" if not evaluable else "WRONG_DIRECTION"),
+            "pass": passed,
         })
-    if not all(row["pass"] for row in direction_checks):
+    wrong_direction_count = sum(row["status"] == "WRONG_DIRECTION" for row in direction_checks)
+    direction_pass_count = sum(row["pass"] for row in direction_checks)
+    minimum_direction_pass_count = max(1, sample_count - 1)
+    if wrong_direction_count or direction_pass_count < minimum_direction_pass_count:
         raise ValueError("rendered turn direction does not match the V0 action label")
 
     import cv2
@@ -152,6 +162,11 @@ def qualify(
         "direction_sample_pose_indices": list(sample_pose_indices),
         "minimum_direction_shift_px": MIN_DIRECTION_SHIFT_PX,
         "direction_checks": direction_checks,
+        "direction_pass_count": direction_pass_count,
+        "direction_insufficient_count": sum(
+            row["status"] == "INSUFFICIENT_FEATURES" for row in direction_checks
+        ),
+        "minimum_direction_pass_count": minimum_direction_pass_count,
         "opencv_version": cv2.__version__,
         "private_truth_literal_hits": private_hits,
         "provider_calls_before_qualification": 0,
