@@ -558,27 +558,8 @@ def run(*, freeze_path: Path, output_dir: Path, render_url: str) -> dict[str, An
     if live_lock != provider_lock:
         raise ValueError("live provider identity differs from frozen provider")
 
-    output_dir.mkdir(parents=True, exist_ok=False)
-    _atomic_json(output_dir / "provider-lock.json", provider_lock)
-    _atomic_json(output_dir / "run-manifest.json", {
-        "schema_version": RUN_SCHEMA,
-        "status": "FORMAL_ONE_SHOT_STARTED",
-        "started_at_utc": datetime.now(timezone.utc).isoformat(),
-        "freeze_sha256": _sha256(freeze_path),
-        "render_url": render_url,
-        "provider_private_truth_access": False,
-        "rerun_rule": frozen["rerun_rule"],
-        "claim_ceiling": frozen["claim_ceiling"],
-    })
-    _atomic_json(output_dir / "provider-journal.json", {
-        "schema_version": f"{SCHEMA}_provider_journal_v0",
-        "status": "ACTIVE",
-        "provider_calls_dispatched": 0,
-        "provider_calls_completed": 0,
-        "provider_calls_in_doubt": 0,
-        "brain_attempts_dispatched": 0,
-    })
-
+    # Finish all local imports and read-only evaluator setup before crossing the
+    # formal one-shot boundary. A missing runtime dependency must not consume a task.
     official = _load_official(official_repo)
     scene = official["GaussianScene"](
         local_data_path=str(annotation.parents[1]),
@@ -605,6 +586,28 @@ def run(*, freeze_path: Path, output_dir: Path, render_url: str) -> dict[str, An
         provide_height_map=False,
         save_render_images=True,
     )
+
+    output_dir.mkdir(parents=True, exist_ok=False)
+    _atomic_json(output_dir / "provider-lock.json", provider_lock)
+    _atomic_json(output_dir / "run-manifest.json", {
+        "schema_version": RUN_SCHEMA,
+        "status": "FORMAL_ONE_SHOT_STARTED",
+        "started_at_utc": datetime.now(timezone.utc).isoformat(),
+        "freeze_sha256": _sha256(freeze_path),
+        "render_url": render_url,
+        "provider_private_truth_access": False,
+        "rerun_rule": frozen["rerun_rule"],
+        "claim_ceiling": frozen["claim_ceiling"],
+    })
+    _atomic_json(output_dir / "provider-journal.json", {
+        "schema_version": f"{SCHEMA}_provider_journal_v0",
+        "status": "ACTIVE",
+        "provider_calls_dispatched": 0,
+        "provider_calls_completed": 0,
+        "provider_calls_in_doubt": 0,
+        "brain_attempts_dispatched": 0,
+    })
+
     Agent = _agent_class(official)
     agent = Agent(
         provider_lock=provider_lock,
