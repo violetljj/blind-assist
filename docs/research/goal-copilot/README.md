@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / C3_NOT_AUTHORIZED / SUN3D_GENERIC_DOOR_PUBLIC_REFERENT_AMBIGUOUS / NO_ALGORITHM_SUCCESSOR / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / VISIBLE_ONLY_PASSIVE_IDENTITY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / IDENTITY_COMPETITION_EXPOSED / IDENTITY_VERIFIER_HYPOTHESIS_NOT_AUTHORIZED / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -107,6 +107,20 @@ C2 只建立 `SMALL_ROSTER_MATERIALIZABLE`，不建立同实例重找能力。C2
 C3 或 Active Referent Search。若另行授权，唯一下一边界是一个独立版本的极简单 passive baseline，用 failure anatomy
 区分 acquisition、proposal、identity、false commit 与 honest abstention；当前 `passive_baseline / algorithm` authority
 仍为 false。
+
+用户随后单独授权一次性 `visible-only passive identity probe`，没有修改或重跑 C2。固定的 `GPT-5.6-Sol/high` 对每个
+observation 只看到 clean reference、public target-region overlay 与 later image，输出严格限于 `FOUND(region) / ABSTAIN`；
+private evaluator 从 C2 hash-bound SUN3D annotation 重建 later frame 全部 native instances，并以预测框中心归属、最高 IoU
+打破包含冲突，不设置成功阈值。有效 run 为 `21/21` transport/output 完成：`FOUND=20 / ABSTAIN=1`；20 次 commit 中
+`SAME_INSTANCE=16 / SAME_CLASS_DISTRACTOR=4 / UNRELATED_OBJECT=0 / BACKGROUND=0`，仅 `3/7` episodes 三视角全对。
+四个错误均以 `IoU=0.58--0.96` 高重叠命中另一同类 native instance；前三例 target IoU 为 `0`，第四例仅 `0.14`，因此
+不是 evaluator 归属边界造成的假错。
+
+该结果说明 acquisition/proposal 不是这 21 个 visible observations 的主导失败层，并直接暴露同类竞争下的 physical
+identity verification 缺口；它不证明完整任务已解决，也不回答 `NOT_VISIBLE`、abstention calibration、Active Search/P1、
+navigation、control、safety、默认 App 或产品能力。若继续，最小高信息增益假设是单一 competing-identity verifier/belief，
+而不是 detector/matcher/VLM/model sweep；当前只登记该假设，不自动授权实现或复跑。完整本地 report 位于
+`artifacts.local/evidence/public-identifiable-referent-visible-identity-probe-v0/run-20260824T033033+0800/final-report.json`。
 
 ## V0 与 P1 边界
 

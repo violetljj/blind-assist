@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-24（Asia/Hong_Kong）；执行者：violjjet。经用户单独授权，在已消费 C2 roster 上运行一次
+  `VISIBLE_ONLY_PASSIVE_IDENTITY_PROBE_V0`：固定 `GPT-5.6-Sol/high`，21 个 observation 各独立接收 public reference、
+  public target region 与 later image；provider 看不到 native identity/truth。21/21 transport 与结构化输出有效，得到
+  `FOUND=20 / ABSTAIN=1`；20 次 commit 中 `SAME_INSTANCE=16 / SAME_CLASS_DISTRACTOR=4 / UNRELATED=0 /
+  BACKGROUND=0`，仅 3/7 episodes 三视角全对。4 个错指均高重叠命中 native same-class instance，不是 evaluator
+  阈值边界。该 consumed、visible-only Discovery 结果把首要 failure layer 从 proposal availability 收窄到同类竞争下的
+  identity verification；不回答 `NOT_VISIBLE`、校准、Active Search/P1、导航、安全、默认 App 或产品能力。
+
 - 时间：2026-08-24（Asia/Hong_Kong）；执行者：Codex。按
   `PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_V1` 执行一次 metadata freeze 与一次 materialization。排除已消费
   hotel source 后，固定的 7 个 SUN3D pose-corrected sources 全部形成 source-disjoint

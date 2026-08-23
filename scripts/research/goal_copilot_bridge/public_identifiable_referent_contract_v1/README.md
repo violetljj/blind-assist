@@ -1,6 +1,6 @@
 # Public Identifiable Referent Contract V1
 
-状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / REFERENCE_IMAGE_UNIQUE / PUBLIC_PRIVATE_FIREWALL / NO_BASELINE / NO_ALGORITHM`
+状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / PUBLIC_PRIVATE_FIREWALL / NO_NOT_VISIBLE_EVIDENCE / NO_ALGORITHM`
 
 This package freezes the user-visible goal before episode observations, candidates, provider output, or outcomes. It
 then separates the provider-public contract from an evaluator-private physical-instance lock.
@@ -37,3 +37,24 @@ C2's one formal freeze/materialization has already been consumed. Do not rerun o
 
 - [`C2 protocol`](../../../../docs/research/goal-copilot/BLINDASSIST_PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_PROTOCOL_V1_2026-08-24.md)
 - [`C2 result`](../../../../docs/research/goal-copilot/BLINDASSIST_PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_RESULT_2026-08-24.md)
+
+## Visible-only passive identity probe
+
+The separately user-authorized `visible_identity_probe.py` consumes the immutable C2 images without changing C2.
+Each isolated Codex CLI call receives only the clean reference, a public target-region overlay, and one later image.
+The evaluator privately reconstructs every native SUN3D instance in the later frame from the C2-bound annotation SHA.
+A committed region is assigned by center containment and then highest IoU, with no score or success threshold.
+
+The single observed `GPT-5.6-Sol/high` run completed all 21 calls: `FOUND=20`, `ABSTAIN=1`, and the 20 commits split
+into `SAME_INSTANCE=16`, `SAME_CLASS_DISTRACTOR=4`, `UNRELATED_OBJECT=0`, `BACKGROUND=0`. Three of seven episodes
+were same-instance correct in all three views. This is consumed, visible-only Discovery failure anatomy; it does not
+measure `NOT_VISIBLE`, abstention calibration, navigation, safety, or product behavior, and it does not authorize an
+algorithm or rerun. Local report:
+`artifacts.local/evidence/public-identifiable-referent-visible-identity-probe-v0/run-20260824T033033+0800/final-report.json`.
+
+Focused mechanics test:
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_visible_identity_probe
+```
