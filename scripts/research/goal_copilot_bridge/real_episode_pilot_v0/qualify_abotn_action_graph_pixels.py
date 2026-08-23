@@ -12,8 +12,10 @@ from typing import Any, Sequence
 
 
 PUBLIC_SCHEMA = "blindassist_abotn_v0_action_graph_public_v0"
-PIXEL_SCHEMA = "blindassist_abotn_webgl_action_graph_pixels_v0"
-SAMPLE_POSE_INDICES = (0, 20, 40, 60, 80)
+PIXEL_TERMINALS = {
+    "blindassist_abotn_webgl_action_graph_pixels_v0": "ABOTN_WEBGL_ACTION_GRAPH_PIXELS_PASS",
+    "blindassist_abotn_official_action_graph_pixels_v0": "ABOTN_OFFICIAL_ACTION_GRAPH_PIXELS_PASS",
+}
 MIN_DIRECTION_SHIFT_PX = 40.0
 
 
@@ -72,7 +74,7 @@ def qualify(
         raise ValueError("public action graph is not eligible")
     if freeze.get("terminal") != "ABOTN_V0_ACTION_GRAPH_FROZEN_ELIGIBLE":
         raise ValueError("action graph freeze receipt is not eligible")
-    if pixels.get("schema_version") != PIXEL_SCHEMA or pixels.get("terminal") != "ABOTN_WEBGL_ACTION_GRAPH_PIXELS_PASS":
+    if PIXEL_TERMINALS.get(pixels.get("schema_version")) != pixels.get("terminal"):
         raise ValueError("action graph pixel receipt is not eligible")
     if pixels.get("public_graph_sha256") != _sha256(public_graph_path):
         raise ValueError("pixel/public graph binding drift")
@@ -105,8 +107,16 @@ def qualify(
         raise ValueError(f"private arrival truth leaked into public graph pixels: {private_hits}")
 
     by_pose_yaw = {(row["pose_index"], row["viewport_yaw_index"]): row for row in graph_nodes}
+    pose_indices = sorted({int(row["pose_index"]) for row in graph_nodes})
+    if len(pose_indices) < 2:
+        raise ValueError("action graph needs at least two source poses")
+    sample_count = min(5, len(pose_indices))
+    sample_pose_indices = tuple(
+        pose_indices[round(index * (len(pose_indices) - 1) / (sample_count - 1))]
+        for index in range(sample_count)
+    )
     direction_checks = []
-    for pose_index in SAMPLE_POSE_INDICES:
+    for pose_index in sample_pose_indices:
         center = by_pose_yaw[(pose_index, 0)]
         left = by_pose_yaw[(pose_index, 1)]
         right = by_pose_yaw[(pose_index, -1)]
@@ -139,7 +149,7 @@ def qualify(
         "edge_count_by_action": freeze["edge_count_by_action"],
         "shortest_start_to_arrival_steps": freeze["shortest_start_to_arrival_steps"],
         "maximum_instructions": freeze["maximum_instructions"],
-        "direction_sample_pose_indices": list(SAMPLE_POSE_INDICES),
+        "direction_sample_pose_indices": list(sample_pose_indices),
         "minimum_direction_shift_px": MIN_DIRECTION_SHIFT_PX,
         "direction_checks": direction_checks,
         "opencv_version": cv2.__version__,
@@ -148,6 +158,7 @@ def qualify(
         "teacher_calls_before_qualification": 0,
         "baseline_calls_before_qualification": 0,
         "one_shot_provider_execution_authorized": True,
+        "pixel_renderer": pixels.get("renderer", {}).get("kind", "UNOFFICIAL_WEBGL_MECHANICS_CANARY"),
         "inputs": {
             "public_graph_sha256": _sha256(public_graph_path),
             "private_truth_sha256": _sha256(private_truth_path),

@@ -103,7 +103,8 @@ class RealEpisodePilotTest(unittest.TestCase):
             "instruction": "前往测试商店",
             "label": {"extend": {"goal_label": "测试商店", "end_point": [14.0, 0.0]}},
         }
-        public, private, freeze = build_abotn_action_graph(task)
+        episode_id = "abotn-fresh-scene-traj-0"
+        public, private, freeze = build_abotn_action_graph(task, episode_id=episode_id)
         serialized_public = json.dumps(public, ensure_ascii=False)
         self.assertEqual(75, len(public["nodes"]))
         self.assertEqual(0, freeze["provider_calls_before_freeze"])
@@ -112,6 +113,8 @@ class RealEpisodePilotTest(unittest.TestCase):
         self.assertNotIn("endpoint_xy", serialized_public)
         self.assertNotIn("distance_to_goal_m", serialized_public)
         self.assertEqual([14.0, 0.0], private["endpoint_xy"])
+        self.assertEqual(episode_id, public["episode_id"])
+        self.assertTrue(public["start_node_id"].startswith(f"{episode_id}-p000-"))
         center = next(node for node in public["nodes"] if node["pose_index"] == 0 and node["viewport_yaw_index"] == 0)
         self.assertIn("TURN_LEFT", center["actions"])
         self.assertIn("TURN_RIGHT", center["actions"])

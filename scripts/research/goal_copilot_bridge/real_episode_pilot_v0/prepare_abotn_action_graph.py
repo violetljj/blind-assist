@@ -48,9 +48,12 @@ def _atomic_json(path: Path, payload: Mapping[str, Any]) -> None:
     os.replace(temporary, path)
 
 
-def _node_id(pose_index: int, yaw_index: int) -> str:
+DEFAULT_EPISODE_ID = "abotn-20260227163550-traj-0"
+
+
+def _node_id(episode_id: str, pose_index: int, yaw_index: int) -> str:
     yaw_label = "z" if yaw_index == 0 else (f"l{yaw_index}" if yaw_index > 0 else f"r{abs(yaw_index)}")
-    return f"abotn-20260227163550-traj-0-p{pose_index:03d}-yaw-{yaw_label}"
+    return f"{episode_id}-p{pose_index:03d}-yaw-{yaw_label}"
 
 
 def _step_distance(first: Mapping[str, Any], second: Mapping[str, Any]) -> float:
@@ -87,7 +90,9 @@ def _shortest_arrival_steps(
     return None
 
 
-def build_graph(annotation: Mapping[str, Any]) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+def build_graph(
+    annotation: Mapping[str, Any], *, episode_id: str = DEFAULT_EPISODE_ID,
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     trajectory = annotation.get("trajectory")
     extension = annotation.get("label", {}).get("extend", {})
     endpoint = extension.get("end_point")
@@ -102,16 +107,18 @@ def build_graph(annotation: Mapping[str, Any]) -> tuple[dict[str, Any], dict[str
     for pose_index, pose in enumerate(trajectory):
         distance = math.hypot(float(pose["x"]) - float(endpoint[0]), float(pose["y"]) - float(endpoint[1]))
         for yaw_index in VIEWPORT_YAWS:
-            node_id = _node_id(pose_index, yaw_index)
+            node_id = _node_id(episode_id, pose_index, yaw_index)
             actions: dict[str, str] = {}
             if yaw_index < max(VIEWPORT_YAWS):
-                actions["TURN_LEFT"] = _node_id(pose_index, yaw_index + 1)
+                actions["TURN_LEFT"] = _node_id(episode_id, pose_index, yaw_index + 1)
             if yaw_index > min(VIEWPORT_YAWS):
-                actions["TURN_RIGHT"] = _node_id(pose_index, yaw_index - 1)
+                actions["TURN_RIGHT"] = _node_id(episode_id, pose_index, yaw_index - 1)
             if forward_targets[pose_index] is not None:
-                actions["FORWARD"] = _node_id(int(forward_targets[pose_index]), yaw_index)
+                actions["FORWARD"] = _node_id(
+                    episode_id, int(forward_targets[pose_index]), yaw_index
+                )
             if pose_index + 1 < len(trajectory):
-                actions["RESCAN_HOLD"] = _node_id(pose_index + 1, yaw_index)
+                actions["RESCAN_HOLD"] = _node_id(episode_id, pose_index + 1, yaw_index)
             public_nodes.append(
                 {
                     "node_id": node_id,
@@ -141,7 +148,7 @@ def build_graph(annotation: Mapping[str, Any]) -> tuple[dict[str, Any], dict[str
     public = {
         "schema_version": PUBLIC_SCHEMA,
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
-        "episode_id": "abotn-20260227163550-traj-0",
+        "episode_id": episode_id,
         "goal_contract": {
             "goal_type": "NAMED_POI",
             "target_name": goal_name,
@@ -157,7 +164,7 @@ def build_graph(annotation: Mapping[str, Any]) -> tuple[dict[str, Any], dict[str
             "maximum_instructions": MAX_INSTRUCTIONS,
             "provider_outcome_dependent": False,
         },
-        "start_node_id": _node_id(0, 0),
+        "start_node_id": _node_id(episode_id, 0, 0),
         "nodes": public_nodes,
         "private_truth_access": False,
     }
@@ -214,13 +221,17 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--annotation", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--episode-id")
+    parser.add_argument("--selection-rule")
+    parser.add_argument("--excluded-episode-id", action="append", default=[])
     args = parser.parse_args(argv)
     annotation_path = args.annotation.resolve()
     output_dir = args.output_dir.resolve()
     if output_dir.exists():
         raise ValueError("output directory already exists; refusing replay")
     annotation = json.loads(annotation_path.read_text(encoding="utf-8"))
-    public, private, freeze = build_graph(annotation)
+    episode_id = args.episode_id or f"abotn-{annotation_path.parent.name}-{annotation_path.stem.replace('_', '-')}"
+    public, private, freeze = build_graph(annotation, episode_id=episode_id)
     output_dir.mkdir(parents=True, exist_ok=False)
     _atomic_json(output_dir / "public-graph.json", public)
     _atomic_json(output_dir / "evaluator-private.json", private)
@@ -229,6 +240,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         "annotation_sha256": _sha256(annotation_path),
         "public_graph_file_sha256": _sha256(output_dir / "public-graph.json"),
         "private_truth_file_sha256": _sha256(output_dir / "evaluator-private.json"),
+    }
+    freeze["episode_selection"] = {
+        "episode_id": episode_id,
+        "rule": args.selection_rule,
+        "excluded_episode_ids": args.excluded_episode_id,
+        "selection_depended_on_pixels_or_provider_outcome": False,
     }
     _atomic_json(output_dir / "freeze-receipt.json", freeze)
     print(json.dumps(freeze, ensure_ascii=False, indent=2))

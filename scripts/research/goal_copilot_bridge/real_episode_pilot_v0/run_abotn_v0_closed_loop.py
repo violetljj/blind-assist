@@ -23,7 +23,10 @@ from scripts.research.goal_copilot_bridge.last_10m_regrounding_v0.core import (
 
 SCHEMA = "blindassist_abotn_v0_closed_loop_run_v0"
 PUBLIC_SCHEMA = "blindassist_abotn_v0_action_graph_public_v0"
-PIXEL_SCHEMA = "blindassist_abotn_webgl_action_graph_pixels_v0"
+PIXEL_TERMINALS = {
+    "blindassist_abotn_webgl_action_graph_pixels_v0": "ABOTN_WEBGL_ACTION_GRAPH_PIXELS_PASS",
+    "blindassist_abotn_official_action_graph_pixels_v0": "ABOTN_OFFICIAL_ACTION_GRAPH_PIXELS_PASS",
+}
 QUALIFICATION_SCHEMA = "blindassist_abotn_v0_action_graph_pixel_qualification_v0"
 MAX_PROVIDER_OBSERVATIONS = Policy().max_instructions + Policy().max_consecutive_unreliable
 
@@ -124,7 +127,7 @@ def run(
     qualification = json.loads(qualification_path.read_text(encoding="utf-8"))
     if public.get("schema_version") != PUBLIC_SCHEMA or public.get("private_truth_access") is not False:
         raise ValueError("public action graph is not eligible")
-    if pixels.get("schema_version") != PIXEL_SCHEMA or pixels.get("terminal") != "ABOTN_WEBGL_ACTION_GRAPH_PIXELS_PASS":
+    if PIXEL_TERMINALS.get(pixels.get("schema_version")) != pixels.get("terminal"):
         raise ValueError("pixel cohort is not eligible")
     if (
         qualification.get("schema_version") != QUALIFICATION_SCHEMA
@@ -156,6 +159,8 @@ def run(
         raise ValueError("formal one-shot output already exists; replay is forbidden")
     output_dir.mkdir(parents=True, exist_ok=False)
     _atomic_json(output_dir / "provider-lock.json", provider_lock)
+    renderer_kind = pixels.get("renderer", {}).get("kind", "UNOFFICIAL_WEBGL_MECHANICS_CANARY")
+    official_pixels = renderer_kind == "PINNED_OFFICIAL_ABOTN_RENDERER"
     manifest = {
         "schema_version": SCHEMA,
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -174,7 +179,12 @@ def run(
         "provider_private_truth_access": False,
         "retry_rule": "UNCHANGED_PROVIDER_INTERNAL_SCHEMA_RETRY_ONLY_MAX_TWO_ATTEMPTS",
         "rerun_rule": "NO_EPISODE_OR_OBSERVATION_RERUN_AFTER_FORMAL_START",
-        "claim_ceiling": "UNOFFICIAL_RENDERER_ONE_TASK_CLOSED_LOOP_ENGINEERING_ONLY",
+        "pixel_renderer": renderer_kind,
+        "claim_ceiling": (
+            "OFFICIAL_RENDERER_ONE_TASK_CLOSED_LOOP_ENGINEERING_ONLY"
+            if official_pixels
+            else "UNOFFICIAL_RENDERER_ONE_TASK_CLOSED_LOOP_ENGINEERING_ONLY"
+        ),
     }
     _atomic_json(output_dir / "run-manifest.json", manifest)
     journal = {
@@ -192,7 +202,7 @@ def run(
     episode_id = str(public["episode_id"])
     state = EpisodeState.start(
         episode_id=episode_id,
-        location_id="abotn-scene-20260227163550",
+        location_id=f"abotn-scene-{episode_id.split('-')[1]}",
         goal_name=str(public["goal_contract"]["target_name"]),
         started_at_ms=_now_ms(),
     )
@@ -318,7 +328,12 @@ def run(
     # Evaluator-private truth is opened only after every provider call is terminal.
     private = json.loads(private_truth_path.read_text(encoding="utf-8"))
     private_by_node = {node["node_id"]: node for node in private["nodes"]}
+    initial_truth = private_by_node[str(public["start_node_id"])]
     terminal_truth = private_by_node[current]
+    evaluated_node_ids = [row["node_id"] for row in trajectory]
+    if current not in evaluated_node_ids:
+        evaluated_node_ids.append(current)
+    evaluated_distances = [private_by_node[node_id]["distance_to_goal_m"] for node_id in evaluated_node_ids]
     private_literals = [
         "endpoint_xy",
         "distance_to_goal_m",
@@ -343,6 +358,12 @@ def run(
         "terminal_pose_index": nodes[current]["pose_index"],
         "terminal_viewport_yaw_index": nodes[current]["viewport_yaw_index"],
         "terminal_distance_to_goal_m": terminal_truth["distance_to_goal_m"],
+        "initial_distance_to_goal_m": initial_truth["distance_to_goal_m"],
+        "minimum_distance_to_goal_m": min(evaluated_distances),
+        "net_goal_progress_m": (
+            initial_truth["distance_to_goal_m"] - terminal_truth["distance_to_goal_m"]
+        ),
+        "metric_distance_trajectory_m": evaluated_distances,
         "terminal_metric_arrival": arrival,
         "episode_completion": completed,
         "false_arrival": false_arrival,
@@ -372,6 +393,7 @@ def run(
             "brain_attempts": journal["brain_attempts_dispatched"],
             "in_doubt": journal["provider_calls_in_doubt"],
         },
+        "pixel_renderer": renderer_kind,
         "episode": evaluation,
         "action_state_trajectory": trajectory,
         "provider_call_audits": call_audits,
@@ -379,7 +401,11 @@ def run(
         "teacher_calls": 0,
         "baseline_episode_runs": 1,
         "rerun_authorized": False,
-        "claim_ceiling": "UNOFFICIAL_RENDERER_SINGLE_TASK_CLOSED_LOOP_ENGINEERING_ONLY_NO_REAL_USER_PRODUCT_SAFETY_OR_SCIENTIFIC_CONFIRMATION",
+        "claim_ceiling": (
+            "OFFICIAL_RENDERER_SINGLE_TASK_CLOSED_LOOP_ENGINEERING_ONLY_NO_REAL_USER_PRODUCT_SAFETY_OR_SCIENTIFIC_CONFIRMATION"
+            if official_pixels
+            else "UNOFFICIAL_RENDERER_SINGLE_TASK_CLOSED_LOOP_ENGINEERING_ONLY_NO_REAL_USER_PRODUCT_SAFETY_OR_SCIENTIFIC_CONFIRMATION"
+        ),
         "next_action": (
             "STOP_AND_ATTRIBUTE_FIRST_FAILURE_WITHOUT_TUNING"
             if not completed
