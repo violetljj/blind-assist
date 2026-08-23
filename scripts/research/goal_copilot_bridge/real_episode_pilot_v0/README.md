@@ -1,6 +1,6 @@
 # Public-real episode mining + selective-guidance pilot V0
 
-状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_OFFICIAL_RENDER_CANARY_PASS / ABOTN_FRESH_COHORT_0_OF_8_COMPLETION_1_OF_8_METRIC_ARRIVAL / CURRENT_FRAME_RELIABILITY_LIMITATION_DOMINANT_SINGLE_SCENE / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_FRESH_COHORT_0_OF_8_COMPLETION_1_OF_8_METRIC_ARRIVAL / CMP_NATIVE_DOOR_89_SELECTION_COMMITMENT_DOMINANT / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 This package automatically converts public real-world sequence metadata into goal-driven approach episodes, reuses
 frozen current-frame provider output, applies Selective Guidance V0, and evaluates only truth-supported denominators.
@@ -185,6 +185,27 @@ identify acquisition versus proposal versus referent selection: functional entra
 selection accuracy and `LOST_AFTER_VISIBLE` remain `NOT_EVALUABLE`, and P1 is still unauthorized. The simultaneous
 `0/8` completion and one arrival-without-confirmation also establish a control/termination problem; neither finding
 may be rescued by replaying or tuning this consumed cohort.
+
+The functional-region truth gap was then repaired with a separate, non-episodic CMP Facade cohort rather than by
+relabeling or replaying ABotN. Before baseline execution, all 606 official RGB/XML/PNG triples were inventoried and
+the 211 images with exactly one native XML `door` instance and non-empty native door pixels were ranked by a frozen
+SHA-256 rule; the first 89 were sealed. The provider saw only RGB, the literal goal `the door`, and frozen Grounding
+DINO boxes. Native PNG door pixels remained evaluator-private. The unchanged V0 completed 89 proposal observations
+and 12 Terra batches with zero `in_doubt`, retry, teacher call, or rerun.
+
+At IoU 0.50, usable proposals existed for `82/89`; final native-PNG Recall@1/3/5/10 was `44/67/73/82`.
+Final outcomes were `45 CORRECT_GROUNDING / 7 PROPOSAL_MISS /
+30 REFERENT_SELECTION_ABSTAINED_WITH_USABLE_PROPOSAL / 7 WRONG_CONFIDENT_GUIDANCE`. The Brain committed on 55
+observations and was correct on 45, while 10/89 total observations produced wrong confident guidance after including
+three commitments whose correct proposal was absent. Thus proposal availability is not the dominant first failure in
+this constrained current-frame domain; referent selection and selective commitment account for 37 of 44 failures.
+
+The initial post-run evaluator accidentally interpreted CMP XML `<x>` as horizontal. A read-only repair used the
+already-frozen official PNG pixels as region truth and confirmed that CMP XML axes are transposed: mean normalized
+PNG/XML edge difference is `0.001307` after swapping versus `0.434569` without swapping. No model output was replayed.
+This result supports a fresh-cohort selective-commitment/CONTESTED investigation, but it is limited to rectified
+facade stills with a generic door goal. Named-store identity, approach control, range, bearing, arrival, `LOST`, P1,
+and product effectiveness remain unevaluated.
 
 ```powershell
 python -m unittest `

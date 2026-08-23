@@ -8,6 +8,7 @@ import json
 import subprocess
 from collections import Counter
 from pathlib import Path
+from statistics import mean, median
 from typing import Any, Mapping, Sequence
 
 from scripts.research.goal_copilot_bridge.last_10m_regrounding_v0 import provider_adapter
@@ -51,8 +52,18 @@ def atomic_json(path: Path, value: Any) -> None:
 
 
 def truth_box(item: Mapping[str, Any]) -> list[float]:
+    mask = item["native_mask_bbox_xyxy"]
+    return [
+        mask[0] / item["image_width"], mask[1] / item["image_height"],
+        mask[2] / item["image_width"], mask[3] / item["image_height"],
+    ]
+
+
+def xml_truth_box(item: Mapping[str, Any]) -> list[float]:
     door = item["native_xml_door"]
-    return [min(door["x"]), min(door["y"]), max(door["x"]), max(door["y"])]
+    # CMP stores vertical coordinates in <x> and horizontal coordinates in <y>.
+    # The official rendered PNG labels provide an independent cross-check.
+    return [min(door["y"]), min(door["x"]), max(door["y"]), max(door["x"])]
 
 
 def build_episode(item: Mapping[str, Any], proposals: Sequence[Mapping[str, Any]], index: int) -> dict[str, Any]:
@@ -163,6 +174,8 @@ def evaluate(
             for candidate in episode["candidates"]
         }
         correct = [candidate_id for candidate_id, value in candidate_ious.items() if value >= IOU_THRESHOLD]
+        candidate_ranks = {candidate["candidate_id"]: candidate["provider_rank"] for candidate in episode["candidates"]}
+        correct_rank = min((candidate_ranks[candidate_id] for candidate_id in correct), default=None)
         decision = decision_by_episode[episode["episode_id"]]
         selected = decision["selected_candidate_ids"][0] if decision["selected_candidate_ids"] else None
         if not correct:
@@ -176,12 +189,17 @@ def evaluate(
         rows.append({
             "episode_id": episode["episode_id"], "rgb_sha256": truth["rgb_sha256"],
             "proposal_count": len(candidate_ious), "best_proposal_iou": max(candidate_ious.values(), default=0.0),
-            "correct_candidate_ids": correct, "brain_action": decision["action"],
+            "correct_candidate_ids": correct, "correct_candidate_rank": correct_rank,
+            "brain_action": decision["action"],
             "selected_candidate_id": selected, "outcome": failure,
         })
     counts = dict(sorted(Counter(item["outcome"] for item in rows).items()))
     available = [item for item in rows if item["correct_candidate_ids"]]
     correct = [item for item in available if item["outcome"] == "CORRECT_GROUNDING"]
+    committed = [item for item in rows if item["brain_action"] == "SELECT"]
+    committed_correct = [item for item in committed if item["selected_candidate_id"] in item["correct_candidate_ids"]]
+    available_wrong = [item for item in available if item["outcome"] == "WRONG_CONFIDENT_GUIDANCE"]
+    available_abstained = [item for item in available if item["brain_action"] != "SELECT"]
     return {
         "iou_threshold": IOU_THRESHOLD,
         "observation_count": len(rows),
@@ -189,6 +207,29 @@ def evaluate(
         "selection_accuracy_given_usable_proposal": {
             "numerator": len(correct), "denominator": len(available),
             "value": len(correct) / len(available) if available else None,
+        },
+        "proposal_recall_at_k": {
+            str(k): {
+                "numerator": sum(item["correct_candidate_rank"] is not None and item["correct_candidate_rank"] <= k for item in rows),
+                "denominator": len(rows),
+                "value": sum(item["correct_candidate_rank"] is not None and item["correct_candidate_rank"] <= k for item in rows) / len(rows),
+            }
+            for k in (1, 3, 5, 10)
+        },
+        "brain_action_counts": dict(sorted(Counter(item["brain_action"] for item in rows).items())),
+        "commitment_accuracy": {
+            "numerator": len(committed_correct), "denominator": len(committed),
+            "value": len(committed_correct) / len(committed) if committed else None,
+        },
+        "wrong_confident_guidance_all_observations": {
+            "numerator": len(committed) - len(committed_correct), "denominator": len(rows),
+            "value": (len(committed) - len(committed_correct)) / len(rows),
+        },
+        "given_usable_proposal": {
+            "correct_grounding": len(correct),
+            "wrong_confident_guidance": len(available_wrong),
+            "abstained_or_ambiguous": len(available_abstained),
+            "denominator": len(available),
         },
         "outcome_counts": counts,
         "observations": rows,
@@ -255,6 +296,65 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     return report
 
 
+def audit_existing(args: argparse.Namespace) -> dict[str, Any]:
+    roster_path = args.roster.resolve()
+    if sha256_file(roster_path) != args.roster_sha256:
+        raise RunError("frozen roster hash mismatch")
+    roster_doc = json.loads(roster_path.read_text(encoding="utf-8"))
+    roster = roster_doc["observations"]
+    run_dir = args.run_dir.resolve()
+    source_report_path = run_dir / "final-report.json"
+    proposal_path = run_dir / "proposal-provider-output.json"
+    if not source_report_path.is_file() or not proposal_path.is_file():
+        raise RunError("sealed provider outputs are incomplete")
+    source_report = json.loads(source_report_path.read_text(encoding="utf-8"))
+    proposals = json.loads(proposal_path.read_text(encoding="utf-8"))["outputs"]
+    if source_report.get("provider_in_doubt") != 0 or source_report.get("baseline_reruns") != 0:
+        raise RunError("source run is not a clean one-shot completion")
+    if len(roster) != 89 or len(proposals) != 89 or len(source_report["raw_brain_decisions"]) != 89:
+        raise RunError("source run denominator mismatch")
+
+    public_rows = []
+    coordinate_deltas = []
+    unswapped_coordinate_deltas = []
+    for item in roster:
+        rgb = (roster_path.parent / item["rgb_path"]).resolve()
+        public_rows.append(dict(item, absolute_rgb_path=str(rgb)))
+        mask_normalized = truth_box(item)
+        coordinate_deltas.extend(abs(left - right) for left, right in zip(xml_truth_box(item), mask_normalized))
+        door = item["native_xml_door"]
+        unswapped = [min(door["x"]), min(door["y"]), max(door["x"]), max(door["y"])]
+        unswapped_coordinate_deltas.extend(abs(left - right) for left, right in zip(unswapped, mask_normalized))
+    episodes = [
+        build_episode(item, result["proposals"], index)
+        for index, (item, result) in enumerate(zip(public_rows, proposals), start=1)
+    ]
+    evaluation = evaluate(roster, episodes, source_report["raw_brain_decisions"])
+    audit = {
+        "schema_version": "cmp_facade_native_door_89_post_run_audit_v3",
+        "source_report_file_sha256": sha256_file(source_report_path),
+        "source_report_content_sha256": source_report["report_sha256"],
+        "roster_sha256": args.roster_sha256,
+        "audit_implementation_sha256": sha256_file(Path(__file__).resolve()),
+        "provider_calls_added": 0,
+        "teacher_calls_added": 0,
+        "reruns_added": 0,
+        "repair": "Use frozen official PNG door pixels as region truth; CMP XML supplies referent identity and stores vertical coordinates in x and horizontal coordinates in y",
+        "native_png_crosscheck_max_normalized_coordinate_delta": max(coordinate_deltas),
+        "native_png_crosscheck_mean_normalized_coordinate_delta": mean(coordinate_deltas),
+        "native_png_crosscheck_median_normalized_coordinate_delta": median(coordinate_deltas),
+        "unswapped_xml_mean_normalized_coordinate_delta": mean(unswapped_coordinate_deltas),
+        "evaluation": evaluation,
+        "claim_ceiling": CLAIM_CEILING,
+    }
+    audit["audit_sha256"] = materializer.content_sha256(audit)
+    output = run_dir / "post-run-audit-v3.json"
+    if output.exists():
+        raise RunError("post-run audit already exists; refusing overwrite")
+    atomic_json(output, audit)
+    return audit
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--roster", type=Path, required=True)
@@ -263,10 +363,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--codex-exe", type=Path, default=Path(r"E:\codex-tools\bin\codex.exe"))
     parser.add_argument("--model-dir", type=Path, required=True)
     parser.add_argument("--batch-size", type=int, choices=range(1, 9), default=8)
+    parser.add_argument("--audit-only", action="store_true")
     args = parser.parse_args(argv)
-    report = run(args)
+    report = audit_existing(args) if args.audit_only else run(args)
     print(json.dumps({
-        "report_sha256": report["report_sha256"], "evaluation": report["evaluation"],
+        "report_sha256": report.get("report_sha256", report.get("audit_sha256")), "evaluation": report["evaluation"],
         "claim_ceiling": report["claim_ceiling"],
     }, ensure_ascii=False, indent=2))
     return 0
