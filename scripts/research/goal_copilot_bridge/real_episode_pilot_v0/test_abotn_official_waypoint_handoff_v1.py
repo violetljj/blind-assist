@@ -6,8 +6,10 @@ import unittest
 import numpy as np
 
 from .run_abotn_official_waypoint_handoff_v1 import (
+    BEARING_AWARE_TURN_V1,
     _CanonicalViewRenderer,
     _action_prediction,
+    _turn_degrees,
 )
 
 
@@ -47,6 +49,18 @@ class OfficialWaypointAdapterTest(unittest.TestCase):
         waypoint, direction, stop = _action_prediction("RESCAN_HOLD")
         np.testing.assert_allclose([[0.0, 0.0]], waypoint)
         self.assertAlmostEqual(math.radians(12), math.atan2(direction[0, 1], direction[0, 0]))
+        self.assertFalse(stop)
+
+    def test_bearing_aware_turn_uses_public_camera_geometry(self) -> None:
+        left = _turn_degrees("TURN_LEFT", {"center_x": 0.18}, BEARING_AWARE_TURN_V1)
+        right = _turn_degrees("TURN_RIGHT", {"center_x": 0.82}, BEARING_AWARE_TURN_V1)
+        self.assertIsNotNone(left)
+        self.assertIsNotNone(right)
+        self.assertGreater(left, 40.0)
+        self.assertAlmostEqual(left, -right)
+        waypoint, direction, stop = _action_prediction("TURN_LEFT", turn_degrees=left)
+        np.testing.assert_allclose([[0.0, 0.0]], waypoint)
+        self.assertAlmostEqual(math.radians(left), math.atan2(direction[0, 1], direction[0, 0]))
         self.assertFalse(stop)
 
 

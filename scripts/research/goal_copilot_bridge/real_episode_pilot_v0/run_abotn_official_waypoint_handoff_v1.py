@@ -42,6 +42,12 @@ OFFICIAL_COMMIT = "2a0aefb56f1e2d315bba924239e9e8ad9dca9d92"
 MAX_STEPS = 15
 FORWARD_STEP_M = 2.0
 TURN_DEG = 12.0
+FIXED_TURN_V0 = "FIXED_TURN_V0"
+BEARING_AWARE_TURN_V1 = "BEARING_AWARE_TURN_V1"
+CAMERA_WIDTH_PX = 720.0
+CAMERA_CX_PX = 360.0
+CAMERA_FX_PX = 252.075
+MAX_BEARING_TURN_DEG = 45.0
 PRIVATE_FIELD_NAMES = (
     "target_position",
     "distance_to_goal",
@@ -108,7 +114,29 @@ def _goal_name(annotation_path: Path) -> str:
     return value.strip()
 
 
-def _action_prediction(action: str | None) -> tuple[np.ndarray, np.ndarray, bool]:
+def _turn_degrees(
+    action: str | None, candidate: Mapping[str, Any] | None, control_policy: str
+) -> float | None:
+    if action not in {"TURN_LEFT", "TURN_RIGHT"}:
+        return None
+    if control_policy == FIXED_TURN_V0:
+        return TURN_DEG if action == "TURN_LEFT" else -TURN_DEG
+    if control_policy != BEARING_AWARE_TURN_V1 or not isinstance(candidate, Mapping):
+        raise ValueError("bearing-aware turn requires the current public candidate")
+    center_x = float(candidate["center_x"])
+    pixel_x = center_x * CAMERA_WIDTH_PX
+    degrees = math.degrees(math.atan2(CAMERA_CX_PX - pixel_x, CAMERA_FX_PX))
+    degrees = max(-MAX_BEARING_TURN_DEG, min(MAX_BEARING_TURN_DEG, degrees))
+    if action == "TURN_LEFT" and degrees <= 0:
+        raise ValueError("left action has inconsistent public candidate bearing")
+    if action == "TURN_RIGHT" and degrees >= 0:
+        raise ValueError("right action has inconsistent public candidate bearing")
+    return degrees
+
+
+def _action_prediction(
+    action: str | None, *, turn_degrees: float | None = None
+) -> tuple[np.ndarray, np.ndarray, bool]:
     """Map the frozen V0 control action into the official local waypoint API."""
 
     if action == "FORWARD":
@@ -116,7 +144,10 @@ def _action_prediction(action: str | None) -> tuple[np.ndarray, np.ndarray, bool
         direction = np.array([[1.0, 0.0]], dtype=np.float32)
         return waypoint, direction, False
     if action in {"TURN_LEFT", "TURN_RIGHT"}:
-        angle = math.radians(TURN_DEG if action == "TURN_LEFT" else -TURN_DEG)
+        frozen_degrees = turn_degrees
+        if frozen_degrees is None:
+            frozen_degrees = TURN_DEG if action == "TURN_LEFT" else -TURN_DEG
+        angle = math.radians(frozen_degrees)
         waypoint = np.array([[0.0, 0.0]], dtype=np.float32)
         direction = np.array([[math.cos(angle), math.sin(angle)]], dtype=np.float32)
         return waypoint, direction, False
@@ -172,12 +203,14 @@ class _CanonicalViewRenderer:
 def freeze(
     *, repo_root: Path, official_repo: Path, annotations_root: Path,
     maps_root: Path, scene_id: str, task_id: str, point_cloud: Path,
-    provider_lock_path: Path, output_path: Path,
+    provider_lock_path: Path, output_path: Path, control_policy: str = FIXED_TURN_V0,
 ) -> dict[str, Any]:
     if output_path.exists():
         raise ValueError("freeze output already exists")
     if _git_value(official_repo, "rev-parse", "HEAD") != OFFICIAL_COMMIT:
         raise ValueError("pinned official evaluator commit drift")
+    if control_policy not in {FIXED_TURN_V0, BEARING_AWARE_TURN_V1}:
+        raise ValueError("unknown control policy")
     annotation = annotations_root / scene_id / f"{task_id}.json"
     if not annotation.is_file() or not point_cloud.is_file() or not provider_lock_path.is_file():
         raise ValueError("a frozen input is missing")
@@ -213,6 +246,13 @@ def freeze(
             "forward_step_m": FORWARD_STEP_M,
             "turn_degrees": TURN_DEG,
             "rescan_motion": "IN_PLACE_LEFT_SWEEP_ONE_FROZEN_TURN_STEP",
+            "control_policy": control_policy,
+            "bearing_turn_camera": {
+                "width_px": CAMERA_WIDTH_PX,
+                "cx_px": CAMERA_CX_PX,
+                "fx_px": CAMERA_FX_PX,
+                "maximum_absolute_turn_degrees": MAX_BEARING_TURN_DEG,
+            } if control_policy == BEARING_AWARE_TURN_V1 else None,
             "current_views": ["left", "front", "right"],
             "provider_view": "front",
             "renderer_retries": 0,
@@ -275,10 +315,14 @@ def _agent_class(official: Mapping[str, Any]) -> type:
     WaypointPrediction = official["WaypointPrediction"]
 
     class CurrentFrameWaypointAgent(BasePoiGoalAgent):
-        def __init__(self, *, provider_lock: Mapping[str, Any], output_dir: Path, episode_id: str):
+        def __init__(
+            self, *, provider_lock: Mapping[str, Any], output_dir: Path,
+            episode_id: str, control_policy: str,
+        ):
             self.provider_lock = provider_lock
             self.output_dir = output_dir
             self.episode_id = episode_id
+            self.control_policy = control_policy
             self.events_path = output_dir / "events.jsonl"
             self.journal_path = output_dir / "provider-journal.json"
             self.state: EpisodeState | None = None
@@ -354,8 +398,12 @@ def _agent_class(official: Mapping[str, Any]) -> type:
                 result.state, result.event, termination_mode="HANDOFF_V1"
             )
             action = _action_for_event(event)
+            turn_degrees = _turn_degrees(
+                action, event.get("candidate"), self.control_policy
+            )
             event = dict(event) | {
                 "environment_action": action,
+                "environment_turn_degrees": turn_degrees,
                 "official_step_count": step_count,
                 "official_stop_bit_is_completion_claim": False,
             }
@@ -368,7 +416,9 @@ def _agent_class(official: Mapping[str, Any]) -> type:
                 "to_state": event["to_state"],
                 "action": action,
             })
-            waypoint, directions, stop_request = _action_prediction(action)
+            waypoint, directions, stop_request = _action_prediction(
+                action, turn_degrees=turn_degrees
+            )
             return WaypointPrediction(
                 waypoint=waypoint,
                 directions=directions,
@@ -461,6 +511,7 @@ def run(*, freeze_path: Path, output_dir: Path, render_url: str) -> dict[str, An
         provider_lock=provider_lock,
         output_dir=output_dir,
         episode_id=frozen["selection"]["episode_id"],
+        control_policy=frozen["execution"].get("control_policy", FIXED_TURN_V0),
     )
     evaluator = official["PoiGoalEvaluator"](
         scene=scene,
@@ -580,6 +631,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     freeze_parser.add_argument("--point-cloud", type=Path, required=True)
     freeze_parser.add_argument("--provider-lock", type=Path, required=True)
     freeze_parser.add_argument("--output", type=Path, required=True)
+    freeze_parser.add_argument(
+        "--control-policy",
+        choices=(FIXED_TURN_V0, BEARING_AWARE_TURN_V1),
+        default=FIXED_TURN_V0,
+    )
     run_parser = subparsers.add_parser("run")
     run_parser.add_argument("--freeze", type=Path, required=True)
     run_parser.add_argument("--output-dir", type=Path, required=True)
@@ -596,6 +652,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             point_cloud=args.point_cloud.resolve(),
             provider_lock_path=args.provider_lock.resolve(),
             output_path=args.output.resolve(),
+            control_policy=args.control_policy,
         )
         print(json.dumps({"terminal": payload["terminal"], "selection": payload["selection"]}, ensure_ascii=False, indent=2))
         return 0
