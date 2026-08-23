@@ -7,8 +7,11 @@ import numpy as np
 
 from .run_abotn_official_waypoint_handoff_v1 import (
     BEARING_AWARE_TURN_V1,
+    BEARING_COUPLED_SERVO_V1,
+    VISUAL_SERVO_STEP,
     _CanonicalViewRenderer,
     _action_prediction,
+    _resolve_control,
     _turn_degrees,
 )
 
@@ -61,6 +64,27 @@ class OfficialWaypointAdapterTest(unittest.TestCase):
         waypoint, direction, stop = _action_prediction("TURN_LEFT", turn_degrees=left)
         np.testing.assert_allclose([[0.0, 0.0]], waypoint)
         self.assertAlmostEqual(math.radians(left), math.atan2(direction[0, 1], direction[0, 0]))
+        self.assertFalse(stop)
+
+    def test_bearing_coupled_servo_turns_and_translates_in_one_step(self) -> None:
+        action, bearing = _resolve_control(
+            "TURN_LEFT", {"center_x": 0.18}, BEARING_COUPLED_SERVO_V1
+        )
+        self.assertEqual(VISUAL_SERVO_STEP, action)
+        self.assertGreater(bearing, 40.0)
+        waypoint, direction, stop = _action_prediction(action, turn_degrees=bearing)
+        self.assertAlmostEqual(2.0, float(np.linalg.norm(waypoint[0])), places=5)
+        np.testing.assert_allclose(waypoint[0] / 2.0, direction[0], rtol=1e-6, atol=1e-6)
+        self.assertGreater(waypoint[0, 1], 0.0)
+        self.assertFalse(stop)
+
+    def test_bearing_coupled_servo_keeps_centered_candidate_forward(self) -> None:
+        action, bearing = _resolve_control(
+            "FORWARD", {"center_x": 0.5}, BEARING_COUPLED_SERVO_V1
+        )
+        waypoint, direction, stop = _action_prediction(action, turn_degrees=bearing)
+        np.testing.assert_allclose([[2.0, 0.0]], waypoint, atol=1e-6)
+        np.testing.assert_allclose([[1.0, 0.0]], direction, atol=1e-6)
         self.assertFalse(stop)
 
 

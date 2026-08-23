@@ -44,6 +44,8 @@ FORWARD_STEP_M = 2.0
 TURN_DEG = 12.0
 FIXED_TURN_V0 = "FIXED_TURN_V0"
 BEARING_AWARE_TURN_V1 = "BEARING_AWARE_TURN_V1"
+BEARING_COUPLED_SERVO_V1 = "BEARING_COUPLED_SERVO_V1"
+VISUAL_SERVO_STEP = "VISUAL_SERVO_STEP"
 CAMERA_WIDTH_PX = 720.0
 CAMERA_CX_PX = 360.0
 CAMERA_FX_PX = 252.075
@@ -134,6 +136,25 @@ def _turn_degrees(
     return degrees
 
 
+def _candidate_bearing_degrees(candidate: Mapping[str, Any]) -> float:
+    center_x = float(candidate["center_x"])
+    pixel_x = center_x * CAMERA_WIDTH_PX
+    degrees = math.degrees(math.atan2(CAMERA_CX_PX - pixel_x, CAMERA_FX_PX))
+    return max(-MAX_BEARING_TURN_DEG, min(MAX_BEARING_TURN_DEG, degrees))
+
+
+def _resolve_control(
+    action: str | None, candidate: Mapping[str, Any] | None, control_policy: str
+) -> tuple[str | None, float | None]:
+    if control_policy == BEARING_COUPLED_SERVO_V1 and action in {
+        "TURN_LEFT", "TURN_RIGHT", "FORWARD"
+    }:
+        if not isinstance(candidate, Mapping):
+            raise ValueError("bearing-coupled servo requires the current public candidate")
+        return VISUAL_SERVO_STEP, _candidate_bearing_degrees(candidate)
+    return action, _turn_degrees(action, candidate, control_policy)
+
+
 def _action_prediction(
     action: str | None, *, turn_degrees: float | None = None
 ) -> tuple[np.ndarray, np.ndarray, bool]:
@@ -142,6 +163,16 @@ def _action_prediction(
     if action == "FORWARD":
         waypoint = np.array([[FORWARD_STEP_M, 0.0]], dtype=np.float32)
         direction = np.array([[1.0, 0.0]], dtype=np.float32)
+        return waypoint, direction, False
+    if action == VISUAL_SERVO_STEP:
+        if turn_degrees is None:
+            raise ValueError("visual servo step requires a public candidate bearing")
+        angle = math.radians(turn_degrees)
+        waypoint = np.array(
+            [[FORWARD_STEP_M * math.cos(angle), FORWARD_STEP_M * math.sin(angle)]],
+            dtype=np.float32,
+        )
+        direction = np.array([[math.cos(angle), math.sin(angle)]], dtype=np.float32)
         return waypoint, direction, False
     if action in {"TURN_LEFT", "TURN_RIGHT"}:
         frozen_degrees = turn_degrees
@@ -209,7 +240,9 @@ def freeze(
         raise ValueError("freeze output already exists")
     if _git_value(official_repo, "rev-parse", "HEAD") != OFFICIAL_COMMIT:
         raise ValueError("pinned official evaluator commit drift")
-    if control_policy not in {FIXED_TURN_V0, BEARING_AWARE_TURN_V1}:
+    if control_policy not in {
+        FIXED_TURN_V0, BEARING_AWARE_TURN_V1, BEARING_COUPLED_SERVO_V1
+    }:
         raise ValueError("unknown control policy")
     annotation = annotations_root / scene_id / f"{task_id}.json"
     if not annotation.is_file() or not point_cloud.is_file() or not provider_lock_path.is_file():
@@ -252,7 +285,13 @@ def freeze(
                 "cx_px": CAMERA_CX_PX,
                 "fx_px": CAMERA_FX_PX,
                 "maximum_absolute_turn_degrees": MAX_BEARING_TURN_DEG,
-            } if control_policy == BEARING_AWARE_TURN_V1 else None,
+            } if control_policy in {
+                BEARING_AWARE_TURN_V1, BEARING_COUPLED_SERVO_V1
+            } else None,
+            "servo_translation": (
+                "TWO_METRE_LOCAL_WAYPOINT_ALONG_PUBLIC_CANDIDATE_BEARING"
+                if control_policy == BEARING_COUPLED_SERVO_V1 else None
+            ),
             "current_views": ["left", "front", "right"],
             "provider_view": "front",
             "renderer_retries": 0,
@@ -397,11 +436,12 @@ def _agent_class(official: Mapping[str, Any]) -> type:
             self.state, event = _apply_termination_mode(
                 result.state, result.event, termination_mode="HANDOFF_V1"
             )
-            action = _action_for_event(event)
-            turn_degrees = _turn_degrees(
-                action, event.get("candidate"), self.control_policy
+            requested_action = _action_for_event(event)
+            action, turn_degrees = _resolve_control(
+                requested_action, event.get("candidate"), self.control_policy
             )
             event = dict(event) | {
+                "requested_environment_action": requested_action,
                 "environment_action": action,
                 "environment_turn_degrees": turn_degrees,
                 "official_step_count": step_count,
@@ -633,7 +673,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     freeze_parser.add_argument("--output", type=Path, required=True)
     freeze_parser.add_argument(
         "--control-policy",
-        choices=(FIXED_TURN_V0, BEARING_AWARE_TURN_V1),
+        choices=(FIXED_TURN_V0, BEARING_AWARE_TURN_V1, BEARING_COUPLED_SERVO_V1),
         default=FIXED_TURN_V0,
     )
     run_parser = subparsers.add_parser("run")
