@@ -1,6 +1,6 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / PUBLIC_REAL_8X89_SEALED / PUBLIC_REFERENT_VISIBLE_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_2_OF_4_RESCUED_WITH_1_OF_4_ORDER_ROBUST / RELIABLE_VERIFIER_NOT_ESTABLISHED / NO_BELIEF / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / PUBLIC_REAL_8X89_SEALED / PUBLIC_REFERENT_VISIBLE_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_13_OF_17_TARGET_OUTRANKS_HISTORICAL_WRONG_3_OF_4_CONTROLS_10_OF_13 / LOCAL_EVIDENCE_COMPLEMENTARY_NOT_SUFFICIENT / RELIABLE_VERIFIER_NOT_ESTABLISHED / NO_BELIEF / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线。P0 commitment-policy discovery 已以
 `COMPLEXITY_ONLY_BUYS_ABSTENTION` 收口；现有 P0 grounding/provider 与 evaluator 保持冻结。用户此前显式授权
@@ -9,14 +9,16 @@ tentative/verified 分离、verified-only retrieval、按 distance × viewpoint 
 31 项 contract tests 通过；matched canary 已以 `P1_AMRM0_MEMORY_POISONING_FAIL` 终止。旧 A1-A4、W1/W2 终态继续有效；AMRM0 不是 P1-W3，也不
 覆盖或续跑 consumed evidence。随后显式授权的 P1-PA0/PA1 独立上移到 proposal availability，不修改 AMRM0。
 
-当前算法 evidence boundary 已增加两次用户授权的 consumed Discovery 探针。C2 visible-only passive identity probe 中，
+当前算法 evidence boundary 已增加三次用户授权的 consumed Discovery 探针。C2 visible-only passive identity probe 中，
 固定强单模型在 21 个 visible observations 上 `FOUND=20 / SAME_INSTANCE=16 / SAME_CLASS_DISTRACTOR=4 / ABSTAIN=1`，
 且四个错指全部落到 native same-class instance。随后固定同一模型的 oracle competing-identity diagnostic 在四个历史
 错例上选对 `2/4`，并在 13 个原正确、有同类竞争者的 control 上保留 `12/13`、另 `1/13 CONTESTED`；但 A/B swap
 反事实只留下 `1/4` robust target、`2/4` stable distractor、`1/4` order-sensitive。它把下一问题从泛化 persistence
-进一步收窄到 instance-discriminative appearance/local evidence 与 order-invariant comparison；可靠 verifier 尚未建立，
-也不自动授权 representation arm、belief、Active Search 或 P1。两者都不回答 `NOT_VISIBLE` 或 calibration；上游
-public-real miner 与 C2 终态保持不变。
+进一步收窄到 instance-discriminative appearance/local evidence 与 order-invariant comparison。固定 DINOv2-S 的
+order-free local probe 随后在同 17 对上得到 `13/17` target outrank；四个历史错例为 `3/4`，其中两个 stable
+distractor 被拆成 `1/2` recovered、`1/2` still wrong；但原正确 controls 只有 `10/13`。因此 local evidence 有互补
+信号却不足以单独形成 verifier；可靠 verifier 尚未建立，也不自动授权 threshold/fusion、belief、Active Search 或 P1。
+三者都不回答 `NOT_VISIBLE` 或 calibration；上游 public-real miner 与 C2 终态保持不变。
 PA2 后的 `Proposal–Identity Responsibility Mismatch` 只是待验证解释；当前 7-case 没有 provider-public goal semantics，
 private category 不能回填成 text prompt。既有 P1-D0/PA0、Silver-B 与 Last-10m 均无可证明的
 user/product goal-before-truth provenance，历史 eligible episode 为 `0`。本轮已新建 pre-truth product goal 与
@@ -50,7 +52,8 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| Goal Copilot / oracle competing-identity diagnostic | 显式加入 target-vs-same-class 竞争假设后，能否救回四个 wrong-instance commit 且保留原正确 case | `ORIGINAL_ORDER: WRONG_CASE_TARGET=2/4; CONTROL_TARGET=12/13; CONTROL_CONTESTED=1/13 / A-B_SWAP: ROBUST_TARGET=1/4; STABLE_DISTRACTOR=2/4; ORDER_SENSITIVE=1/4 / RELIABLE_VERIFIER_NOT_ESTABLISHED / CONSUMED_ORACLE_CANDIDATE_DISCOVERY` | [Goal Copilot current](goal-copilot/README.md) | 仅登记 instance-discriminative appearance/local evidence 与 order-invariant comparison 为下一假设；须另行授权 | 把 oracle candidates 当产品 proposal；prompt/model/threshold sweep；直接上 belief/tracker/Active Search/P1/App | 否 |
+| Goal Copilot / DINOv2-S order-free local appearance probe | 独立 local patch evidence 能否在无 A/B positional bias 下区分 frozen target 与 same-class distractor | `TARGET_OUTRANKS=13/17 / HISTORICAL_WRONG=3/4 / ROBUST_TARGET=1/1 / ORDER_SENSITIVE=1/1 / STABLE_DISTRACTOR=1/2 / CONTROLS=10/13 / COMPLEMENTARY_NOT_SUFFICIENT / CONSUMED_ORACLE_CANDIDATE_DISCOVERY` | [Goal Copilot current](goal-copilot/README.md) | 无自动 successor；仅保留“局部证据可补 reasoning，但单 reference representation 仍有缺口”的混合归因 | outcome 后扫 threshold/crop/layer/model/fusion；把 raw rank 当 verifier；belief/tracker/Active Search/P1/App | 否 |
+| Goal Copilot / oracle competing-identity diagnostic | 显式加入 target-vs-same-class 竞争假设后，能否救回四个 wrong-instance commit 且保留原正确 case | `ORIGINAL_ORDER: WRONG_CASE_TARGET=2/4; CONTROL_TARGET=12/13; CONTROL_CONTESTED=1/13 / A-B_SWAP: ROBUST_TARGET=1/4; STABLE_DISTRACTOR=2/4; ORDER_SENSITIVE=1/4 / RELIABLE_VERIFIER_NOT_ESTABLISHED / CONSUMED_ORACLE_CANDIDATE_DISCOVERY` | [Goal Copilot current](goal-copilot/README.md) | 已由一次固定 DINOv2-S order-free local probe 检验；不自动续跑 | 把 oracle candidates 当产品 proposal；prompt/model/threshold sweep；直接上 belief/tracker/Active Search/P1/App | 否 |
 | Goal Copilot / public referent visible-only passive identity probe | reference + public target region 在真实视角变化和同类干扰下能否指出同一 physical instance | `20/21 FOUND / 16/20 SAME_INSTANCE / 4/20 SAME_CLASS_DISTRACTOR / 1 ABSTAIN / 3/7 THREE_VIEW_STABLE / CONSUMED_DISCOVERY` | [Goal Copilot current](goal-copilot/README.md) | 已由一次 oracle competing-identity diagnostic 攻击四个错误；不自动续跑 | 扩模型/阈值/arm sweep；用 visible-only 结果声称 NOT_VISIBLE/calibration；Active Search/P1/App | 否 |
 | Goal Copilot / public-real episode mining + selective guidance V0 | 自动挖掘公开真实 approach episode，并定位 current-frame guidance failure layer | `8X89_SEALED / ABOTN_WEBGL_TRANSPORT_PASS / ARRIVAL_ONLY / NO_FUNCTIONAL_REGION` | [public-real result](goal-copilot/BLINDASSIST_PUBLIC_REAL_EPISODE_MINING_V0_RESULT_2026-08-23.md) / [substrate audit](goal-copilot/BLINDASSIST_PUBLIC_FUNCTIONAL_TRUTH_SUBSTRATE_AUDIT_2026-08-23.md) | 无算法 successor；仅同 task arrival-only provider-firewall canary，或 source-native entrance-region export | 换 goal/补抽/挑 teacher；WebGL 冒充官方 renderer；endpoint/sign 冒充入口；绕过访问控制；P1；模型/阈值/provider sweep | 否 |
 | Goal Copilot / P1-PA3-S0v3 observation contract | 合法 public goal + spatial candidate set 能否产生足够的 entrance-visible PA3 denominator | `6_VISIBLE_EPISODES / 7_VISIBLE_FRAMES / NOT_EVALUABLE / PROVIDER_CALLS=0` | [P1-PA3-S0v3 result](goal-copilot/P1_PA3_S0V3_PUBLIC_SPATIAL_CANDIDATE_SET_RESULT_2026-08-22.md) | 转入 public-real miner：先冻结 Goal Contract，再自动挖 Mapillary approach sequence，最后私有建 truth | 补抽/替换 sealed frames；强造 UNIQUE/visibility；运行 PA3/verifier；把 UNKNOWN 写成 negative | 否 |

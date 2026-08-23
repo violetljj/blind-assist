@@ -1,6 +1,6 @@
 # Public Identifiable Referent Contract V1
 
-状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_2_OF_4_RESCUED_12_OF_13_CONTROLS_RETAINED / ORDER_COUNTERBALANCE_1_ROBUST_TARGET_2_STABLE_DISTRACTOR_1_ORDER_SENSITIVE / PUBLIC_PRIVATE_FIREWALL / NO_NOT_VISIBLE_EVIDENCE / RELIABLE_VERIFIER_NOT_ESTABLISHED`
+状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17_HISTORICAL_WRONG_3_OF_4_CONTROLS_10_OF_13 / LOCAL_EVIDENCE_COMPLEMENTARY_NOT_SUFFICIENT / PUBLIC_PRIVATE_FIREWALL / NO_NOT_VISIBLE_EVIDENCE / RELIABLE_VERIFIER_NOT_ESTABLISHED`
 
 This package freezes the user-visible goal before episode observations, candidates, provider output, or outcomes. It
 then separates the provider-public contract from an evaluator-private physical-instance lock.
@@ -90,4 +90,36 @@ Focused mechanics tests:
 E:\codex-tools\bin\blindassist-python.cmd -m unittest `
   scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_oracle_competing_identity_probe `
   scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_visible_identity_probe
+```
+
+## Order-free DINOv2 local appearance probe
+
+`dinov2_local_appearance_probe.py` consumes the same 17 oracle pairs without invoking a VLM. It reuses the exact
+frozen `facebook/dinov2-small@ed25f3a` files and P1-A2 preprocessing identity: 224x224 ImageNet-normalized crops,
+last-layer 16x16x384 patch tokens, and per-patch L2 normalization. Reference and candidate crops use the already fixed
+20% square context, but scoring retains only patch centers inside the object region. No red or green annotations enter
+the encoder.
+
+Each candidate is scored independently. The score is the mean of reference-to-candidate and candidate-to-reference
+mean nearest-patch cosine; only afterward does a strict greater-than comparison choose the higher raw score. There is
+no threshold, training, augmentation, positional prompt, fusion, or model/crop/layer sweep. `run-config.json` contains
+neither target position, physical/native IDs, nor baseline outcome. `raw-scores.json` is written before the private
+evaluator maps A/B to target/distractor.
+
+The one run observed `13/17 TARGET_OUTRANKS / 4/17 DISTRACTOR_OUTRANKS / 0 TIE`. Historical wrong-instance cases were
+`3/4` target outrank: the robust-target and order-sensitive cases both ranked target first, while the two prior
+stable-distractor cases split `1/2`. The rescued stable case had target margin `+0.01698`; the remaining stable error
+had `-0.04007`. Original-correct controls were only `10/13`, with two near-tie negative margins and one `-0.06206`
+error. Local evidence is therefore complementary but not sufficient as a standalone verifier. This run does not
+authorize threshold/fusion search, belief, tracking, Active Search, candidate generation, App integration, or any
+`NOT_VISIBLE`, safety, or product claim.
+
+Local report:
+`artifacts.local/evidence/public-identifiable-referent-dinov2-local-appearance-v0/run-20260824T042110+0800/final-report.json`.
+
+Focused mechanics test:
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_dinov2_local_appearance_probe
 ```

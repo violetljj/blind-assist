@@ -2,6 +2,19 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-24（Asia/Hong_Kong）；执行者：Codex。按用户授权，对既有 17 个 oracle same-class pairs 运行一次
+  order-free `DINOV2_LOCAL_APPEARANCE_PROBE_V0`。唯一 encoder 复用冻结的
+  `facebook/dinov2-small@ed25f3a`；clean reference/candidate 各取 20% square-context crop、224×224、last-layer
+  `16×16×384` patch tokens，只保留 bbox 内 patch centers。每个 candidate 独立计算双向 mean-nearest-patch cosine
+  的平均，最后才按严格 `>` 比较；无阈值、训练、augmentation、fusion 或 model sweep。Raw scorer config 不含
+  target position、physical/native ID 或 baseline outcome，private evaluator 最后映射。17 对结果为
+  `TARGET_OUTRANKS=13 / DISTRACTOR_OUTRANKS=4 / TIE=0`；4 个历史错例为 `3/4` target outrank，具体分为
+  `ROBUST_TARGET=1/1`、`ORDER_SENSITIVE=1/1`、`STABLE_DISTRACTOR=1/2`，而 13 个原正确 control 为 `10/13`。
+  两个 stable-distractor case 被拆开：`c2-ref-006-later-03` target margin `+0.01698`，但
+  `c2-ref-001-later-01` 仍为 `-0.04007`；三个 control collateral 中两例近 tie（约 `-0.0011`），一例为
+  `-0.06206`。结论为 local evidence 具有互补信号但单独不足以形成 verifier；不启动 threshold/fusion、belief、
+  tracking、Active Search/P1、App，也不建立 candidate generation、`NOT_VISIBLE`、safety 或产品 claim。
+
 - 时间：2026-08-24（Asia/Hong_Kong）；执行者：Codex。按用户授权，以同一 `GPT-5.6-Sol/high` 和固定 prompt
   对 C2 visible probe 做一次 evaluator-private `ORACLE_COMPETING_IDENTITY_DIAGNOSTIC`；没有把 native ID 或正确槽位
   暴露给 provider。17 个有 same-class competitor 的 observation 中，4 个历史 wrong-instance case 为

@@ -69,7 +69,7 @@
 | 全局失败清算 | [Failure Synthesis](BLINDASSIST_FAILURE_SYNTHESIS.md) · [Causal Failure Model](BLINDASSIST_CAUSAL_FAILURE_MODEL.md) · [Oracle Ladder](BLINDASSIST_ORACLE_LADDER.md) |
 | 因果诊断与算法路线 | [D-ORACLE-1](research/failure-synthesis/README.md) · [SVRF](research/svrf/README.md) · [VI-Task Geometry](research/vi-task-geometry/README.md) · [GA-SATOM](research/ga-satom/README.md) · [SATOM-A](research/satom/README.md) · [Assistive Geometry](research/assistive-geometry/README.md) · [TARO](research/taro/README.md) · [AG-QSF](research/assistive-geometry-qsf/README.md) · [AG-CBF](research/assistive-geometry-cbf/README.md) · [DepthART](research/hftf/README.md) · [双环](research/dual-loop/README.md) · [RCLE](research/rcle/README.md) |
 | 数据与 discovery | [AG-DCA](research/assistive-geometry-data-capability/README.md) · [AG-DUE](research/assistive-geometry-data-upgrade/README.md) · [候选事件挖掘](research/candidate-event-mining/README.md) |
-| 历史路线/资料 | [USTRF-SC](research/ustrf-sc/README.md) · [Frontier Upgrade](research/frontier-upgrade-2026-07/README.md) · [研究资产](research/assets/README.md) · [组会总账](research/GROUP_MEETING_PROGRESS.md) |
+| 历史路线/资料 | [动态出行风险候选精读](research/dynamic-travel-risk/README.md) · [USTRF-SC](research/ustrf-sc/README.md) · [Frontier Upgrade](research/frontier-upgrade-2026-07/README.md) · [研究资产](research/assets/README.md) · [组会总账](research/GROUP_MEETING_PROGRESS.md) |
 
 前向研究默认采用 R4：`THESIS_DEVELOPMENT / PRODUCTION_PROMOTION` 两条权限分离；
 只有显式启动 `PRODUCTION_PROMOTION` 才进入产品晋级门禁。

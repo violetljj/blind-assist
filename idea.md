@@ -22,6 +22,7 @@
 ### 动态出行风险：30 项外部候选池（2026-08-24）
 
 - 状态：`PENDING_CANDIDATE_POOL / NOT_AN_ACTIVE_ROUTE / NO_EXECUTION_AUTHORITY`。
+- 逐项精读：[30 项论文、算法与项目精读笔记](docs/research/dynamic-travel-risk/DYNAMIC_TRAVEL_RISK_30_DEEP_READING_2026-08-24.md)，逐项记录核心机制、实验、核心价值、读后判断和不可迁移边界；精读不建立执行或生产 authority。
 - 问题：如何从“检测到物体”转向“有证据表明目标正在进入用户的短期路径，或输入已不足以做决定”，并只在需要行动时提醒。
 - 检索与筛选：用 Exa 在 24 个不同搜索面审阅了 `327` 个结果槽位（包含重叠，不等于 327 个独立来源）；只保留论文页、作者/机构项目页、官方仓库或官方数据页。同一论文与官方仓库合并为一项；排除了排行榜文章、纯厂商宣传和只提供通用检测 AP 而没有事件/路径/不确定接口的工作。
 - 与已有资料的关系：已与 [USTRF 前沿论文指南](docs/research/ustrf-sc/USTRF_FRONTIER_PAPER_GUIDE_2026-07-22.md) 去重和交叉核对。本表只是待决候选池，不恢复已关闭的 USTRF 路线，也不把汽车/机器人指标写成助盲证据。
@@ -47,7 +48,7 @@
 | ID | 候选（一手来源） | 主要痛点 | 可借用的最小部件 | 证据域 | 最强边界 |
 |---|---|---|---|---|---|
 | DR09 | [Binary TTC: A Temporal Geofence](https://openaccess.thecvf.com/content/CVPR2021/html/Badki_Binary_TTC_A_Temporal_Geofence_for_Autonomous_Navigation_CVPR_2021_paper.html) | 精确 TTC 回归不稳，但仍需快速回答“会不会在某时限内进入” | 每像素多 horizon 二值 temporal geofence，作为事件触发的轻量对照 | 迁移 | TTC 相对相机平面，不是用户身体包络/真实路线的 physical TTC |
-| DR10 | [Stochastic Occupancy Grid Map Prediction / SCOPE](https://proceedings.mlr.press/v229/xie23a.html) | 行人可能有多个合理未来，单轨迹会漏掉分支 | 预测多个未来 occupancy map，以风险分布与 body corridor 相交，而不强制单 ID | 迁移 | 机器人传感和控制栈；没有头戴相机、BLV 事件或手机算力证据 |
+| DR10 | [Stochastic Occupancy Grid Map Prediction / SOGMP、SOGMP++](https://proceedings.mlr.press/v229/xie23a.html) | 行人可能有多个合理未来，单轨迹会漏掉分支 | 预测随机未来 occupancy map，以均值与样本方差 costmap 对照 body corridor，而不强制单 ID | 迁移 | 机器人传感和控制栈；VAE 样本方差未做风险校准，也没有头戴相机或 BLV 事件证据 |
 | DR11 | [RiskProp](https://openaccess.thecvf.com/content/CVPR2026/html/Zou_RiskProp_Collision-Anchored_Self-Supervised_Risk_Propagation_For_Early_Accident_Anticipation_CVPR_2026_paper.html) | 只有碰撞帧，没有可信的主观“风险开始”帧 | 以 collision anchor 向碰撞前的帧反向传播风险信号；可借鉴事件 onset 弱监督和趋势约束 | 迁移 | 驾驶记录仪事故数据；横穿后离开/用户停步时风险不必单调，不得照搬 monotonic prior |
 | DR12 | [Conformal Risk Tube Prediction](https://github.com/HCIS-Lab/CRTP) | 报警过早/过晚、在时空上闪烁、对不确定未来过度自信 | 经 conformal calibration 的时空 risk tube；评估 coverage、onset/release、Risk-IoU 与 nuisance duration | 迁移/工具 | ICRA 2026 新项目，车辆/CARLA 域、旧 CUDA 环境且外部复现少；概率覆盖不等于 BLV 安全 |
 | DR13 | [PIE + scenario evaluation](https://github.com/aras62/PIE) | 哪个行人正在变得相关，以及多早提醒才有用 | 行人行动/看向/横穿/遮挡标注；事件分层、lead-time、轨迹/意图评估代码 | 工具/数据 | 车载视角、交叉口横穿为主；不包含穿戴式身体路线或触地事件真值 |

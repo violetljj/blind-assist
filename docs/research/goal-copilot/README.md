@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / VISIBLE_ONLY_PASSIVE_IDENTITY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_2_OF_4_RESCUED_12_OF_13_CONTROLS_RETAINED / ORDER_COUNTERBALANCE_1_ROBUST_TARGET_2_STABLE_DISTRACTOR_1_ORDER_SENSITIVE / RELIABLE_VERIFIER_NOT_ESTABLISHED / NO_BELIEF / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / VISIBLE_ONLY_PASSIVE_IDENTITY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17_HISTORICAL_WRONG_3_OF_4_CONTROLS_10_OF_13 / LOCAL_EVIDENCE_COMPLEMENTARY_NOT_SUFFICIENT / RELIABLE_VERIFIER_NOT_ESTABLISHED / NO_BELIEF / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -108,39 +108,28 @@ C3 或 Active Referent Search。若另行授权，唯一下一边界是一个独
 区分 acquisition、proposal、identity、false commit 与 honest abstention；当前 `passive_baseline / algorithm` authority
 仍为 false。
 
-用户随后单独授权一次性 `visible-only passive identity probe`，没有修改或重跑 C2。固定的 `GPT-5.6-Sol/high` 对每个
-observation 只看到 clean reference、public target-region overlay 与 later image，输出严格限于 `FOUND(region) / ABSTAIN`；
-private evaluator 从 C2 hash-bound SUN3D annotation 重建 later frame 全部 native instances，并以预测框中心归属、最高 IoU
-打破包含冲突，不设置成功阈值。有效 run 为 `21/21` transport/output 完成：`FOUND=20 / ABSTAIN=1`；20 次 commit 中
-`SAME_INSTANCE=16 / SAME_CLASS_DISTRACTOR=4 / UNRELATED_OBJECT=0 / BACKGROUND=0`，仅 `3/7` episodes 三视角全对。
-四个错误均以 `IoU=0.58--0.96` 高重叠命中另一同类 native instance；前三例 target IoU 为 `0`，第四例仅 `0.14`，因此
-不是 evaluator 归属边界造成的假错。
+用户随后依次授权三把 consumed、visible-only Discovery 探针，均不修改或重跑 C2。固定
+`GPT-5.6-Sol/high` 的 localization probe 在 21 个 observation 上得到 `FOUND=20 / ABSTAIN=1`；20 次 commit 为
+`SAME_INSTANCE=16 / SAME_CLASS_DISTRACTOR=4 / UNRELATED=0 / BACKGROUND=0`，仅 `3/7` episodes 三视角全对。
+四个错误均以 `IoU=0.58--0.96` 命中另一 native same-class instance，直接暴露 identity competition 缺口。
 
-该结果说明 acquisition/proposal 不是这 21 个 visible observations 的主导失败层，并直接暴露同类竞争下的 physical
-identity verification 缺口。用户随后授权一个最小 oracle-candidate discrimination diagnostic：固定同一模型、prompt
-和 crop，给每个 eligible observation 一个 frozen target crop 与一个 same-class distractor crop，只允许
-`A / B / CONTESTED / NEITHER`；candidate 的 native ID、正确答案和 evaluator truth 均保持 private。
+同一 VLM 的 17-pair oracle competition 在四个历史错例上原排列选对 `2/4`，13 个原正确 controls 为
+`12 TARGET / 1 CONTESTED / 0 DISTRACTOR`。只交换 A/B candidate images 后，physical-instance 配对为
+`ROBUST_TARGET=1 / STABLE_DISTRACTOR=2 / ORDER_SENSITIVE=1`；因此 competition 有信号，但可靠 verifier 未建立。
 
-17 个 oracle pair 全部有效。4 个历史 wrong-instance case 中 `TARGET_SELECTED=2 / DISTRACTOR_SELECTED=2`；13 个原正确
-control 中 `TARGET_SELECTED=12 / CONTESTED=1 / DISTRACTOR_SELECTED=0`，另 3 个没有 same-class competitor 的原正确
-observation 不造假候选、直接排除。首轮四个历史错例恰好表现为 target 在 A 的两例全错、target 在 B 的两例全对，
-因此另存一次 post-hoc、只交换 A/B candidate images 的 4-call order counterbalance。按 physical instance 配对后：
+固定 `facebook/dinov2-small@ed25f3a` 的 order-free local probe 对每个 candidate 独立计算 bbox 内 patch 的双向
+mean-nearest cosine，无 threshold/training/fusion。结果为 `TARGET_OUTRANKS=13/17`；四个历史错例 `3/4`，其中
+`ROBUST_TARGET=1/1 / ORDER_SENSITIVE=1/1 / STABLE_DISTRACTOR=1/2`，原正确 controls 仅 `10/13`。两个 stable
+distractor 被拆开：`c2-ref-006-later-03=+0.01698`，`c2-ref-001-later-01=-0.04007`；三个 collateral 为
+`-0.00107 / -0.00115 / -0.06206`。Local evidence 具有互补信号但不能独立承担 verifier；不续做 threshold、
+fusion、belief、tracker 或 Active Search。详细口径见脚本包 README；reports：
 
-- `c2-ref-001-later-01`、`c2-ref-006-later-03` 在两种顺序下都选择同一个 distractor；
-- `c2-ref-005-later-03` 在两种顺序下都选择 target；
-- `c2-ref-007-later-03` 两次都选择 B 槽，交换后由 target 变成 distractor。
-
-所以原排列上的显式竞争能以低 collateral 救回 `2/4`，但只有 `1/4` 经受顺序反事实；两个错误属于稳定的错误实体偏好，
-另一个 case 对候选顺序敏感。结论不是“reasoning formulation 已解决 identity”，而是 competition 有部分信号、可靠
-verifier 尚未建立，下一算法问题应优先检验更 instance-discriminative 的 appearance/local evidence，并同时消除候选顺序
-敏感；本轮不自动实现 representation arm、belief、tracker 或 Active Search。完整本地 reports 位于：
-
+- `artifacts.local/evidence/public-identifiable-referent-visible-identity-probe-v0/run-20260824T033033+0800/final-report.json`；
 - `artifacts.local/evidence/public-identifiable-referent-oracle-competing-identity-v0/run-20260824T034449+0800/final-report.json`；
-- `artifacts.local/evidence/public-identifiable-referent-oracle-competing-identity-order-counterbalance-v0/run-20260824T034852+0800/final-report.json`。
+- `artifacts.local/evidence/public-identifiable-referent-oracle-competing-identity-order-counterbalance-v0/run-20260824T034852+0800/final-report.json`；
+- `artifacts.local/evidence/public-identifiable-referent-dinov2-local-appearance-v0/run-20260824T042110+0800/final-report.json`。
 
-两次诊断均属于 consumed、visible-only、oracle-candidate Discovery；它们不证明 candidate generation、完整任务、
-`NOT_VISIBLE`、abstention calibration、navigation、control、safety、默认 App 或产品能力。原 localization report 保留在
-`artifacts.local/evidence/public-identifiable-referent-visible-identity-probe-v0/run-20260824T033033+0800/final-report.json`。
+以上均不证明 candidate generation、`NOT_VISIBLE`、calibration、navigation、control、safety、默认 App 或产品能力。
 
 ## V0 与 P1 边界
 
