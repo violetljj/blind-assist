@@ -52,3 +52,60 @@ algorithm failure denominator. `traj_9` is consumed and must not be rerun after 
 
 The task-owned remote renderer, scene payload, transfer archive, and processes were removed after the local evidence
 copy and hashes were verified.
+
+## Follow-up fresh cached-scene task
+
+After CLI authentication was repaired, `traj_9` remained sealed and was not rerun. The first unused task in the
+already cached second official scene was frozen independently:
+
+```text
+episode: abotn-20260227163550-traj-1
+goal: 康乐大药房
+source poses / official views: 96 / 480
+native shortest arrival path: 6 actions
+provider observations: 7 completed, 0 in_doubt
+teacher calls / reruns: 0 / 0
+```
+
+All `480/480` official frames rendered and had unique hashes. Pixel qualification had `5/5` strong direction
+samples and zero private-truth literal hits. The seven closed-loop observations were all `GROUNDED`; native distance
+decreased from `13.520 m` to `9.638 m`, for `3.882 m` positive progress.
+
+The frozen action sequence was:
+
+```text
+p000 yaw  0: TURN_LEFT
+p000 yaw +1: FORWARD
+p014 yaw +1: TURN_RIGHT
+p014 yaw  0: TURN_RIGHT
+p014 yaw -1: TURN_RIGHT
+p014 yaw -2: FORWARD
+p028 yaw -2: TURN_RIGHT -> edge unavailable
+```
+
+The terminal was therefore `CONTROL_POLICY_BOTTLENECK_ACTION_EXHAUSTED`, before handoff or native arrival. More
+specifically, this is evidence that the current synthetic action contract is insufficient: viewport yaw is bounded to
+`[-2, +2]` while a real person can continue turning, and its `FORWARD` edge follows the released source trajectory
+rather than a body-heading-dependent physical action. Expanding a yaw threshold or substituting `FORWARD` at the
+boundary would be a substrate rescue, not evidence about the goal-driven algorithm.
+
+Supported conclusion:
+
+```text
+HANDOFF_V1_NOT_EVALUABLE_BEYOND_ACTION_CONTRACT_YAW_BOUNDARY
+```
+
+This task does establish that current-frame reliability was not the first failure (`7/7` reliable) and that the
+closed loop made native metric progress. It does not establish proposal accuracy, referent selection, range/bearing,
+persistence, handoff readiness, arrival, or completion. The next legitimate work is a physically executable control
+substrate or real interaction path, not prompt/threshold/provider/teacher tuning.
+
+Follow-up evidence SHA-256:
+
+- prospective freeze: `aa1711c09169a327acd1184c7e0786c4687a0a3646810f65e76d1304530726a6`
+- action-graph freeze: `2b96aa355860eb6dff8afd4d312913374438a438d54604b7b307b364259dbbfd`
+- official-pixel receipt: `39a2a234b1f44534dfd476df869a8862b89c06e4ab6149e966155dfd91d1a725`
+- pixel qualification: `647fc036dce7623ad3d90a046baa7031a62ff00c77963eab1c27a9e004677b8d`
+- closed-loop manifest: `9bcd6c17ecd26ebd2998cce54cbd894fbe01da0ce279d7633e1bfce4170d4268`
+- terminal receipt: `e7e1f81aa686541ddc370888194747f456df6556090c9237a751d45425ea036a`
+- ignored evidence root: `artifacts.local/evidence/abotn-handoff-v1-scene2-traj1/`
