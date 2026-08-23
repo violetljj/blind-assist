@@ -43,6 +43,14 @@ def summarize_audits(cohort: dict[str, Any], audits: Sequence[dict[str, Any]]) -
     if any(row["truth_boundaries"]["lost_after_visible"] !=
            "NOT_EVALUABLE_NO_FUNCTIONAL_PIXEL_VISIBILITY_TRUTH" for row in audits):
         raise ValueError("LOST authority boundary drift")
+    expected_render_calls = cohort["frozen_budget"]["official_render_calls"]
+    if any(
+        row["execution"]["official_render_http_200_calls"] != expected_render_calls
+        or row["execution"]["official_render_http_accounting_scope"]
+        != "FROZEN_COHORT_SHARED_SERVER"
+        for row in audits
+    ):
+        raise ValueError("shared official render accounting drift")
     classes = [_outcome_class(row) for row in audits]
     counts = Counter(classes)
     episode_count = len(audits)
@@ -80,6 +88,26 @@ def summarize_audits(cohort: dict[str, Any], audits: Sequence[dict[str, Any]]) -
         ),
         "current_frame_reliability_limited_episode_count": reliability_limited,
         "supported_dominance": dominant,
+        "execution": {
+            "official_render_http_200_calls": expected_render_calls,
+            "official_render_http_accounting_scope": "FROZEN_COHORT_SHARED_SERVER",
+            "provider_observation_calls": sum(
+                row["execution"]["provider_observation_calls"] for row in audits
+            ),
+            "provider_brain_attempts": sum(
+                row["execution"]["provider_brain_attempts"] for row in audits
+            ),
+            "provider_in_doubt": sum(
+                row["execution"]["provider_in_doubt"] for row in audits
+            ),
+            "teacher_calls": sum(row["execution"]["teacher_calls"] for row in audits),
+            "baseline_episode_runs": sum(
+                row["execution"]["baseline_episode_runs"] for row in audits
+            ),
+            "sealed_episode_reruns": sum(
+                row["execution"]["sealed_episode_reruns"] for row in audits
+            ),
+        },
         "functional_selection_truth_coverage": {
             "strong_or_usable": 0,
             "unknown_or_not_evaluable": episode_count,

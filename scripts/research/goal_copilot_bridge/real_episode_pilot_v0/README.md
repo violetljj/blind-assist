@@ -1,6 +1,6 @@
 # Public-real episode mining + selective-guidance pilot V0
 
-状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_OFFICIAL_RENDER_CANARY_PASS / ABOTN_SEALED_FAILURE_RENDERER_CONFOUNDED / ABOTN_FRESH_OFFICIAL_V0_PARTIAL_METRIC_PROGRESS_NO_GOAL_SUCCESS / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_OFFICIAL_RENDER_CANARY_PASS / ABOTN_FRESH_COHORT_0_OF_8_COMPLETION_1_OF_8_METRIC_ARRIVAL / CURRENT_FRAME_RELIABILITY_LIMITATION_DOMINANT_SINGLE_SCENE / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 This package automatically converts public real-world sequence metadata into goal-driven approach episodes, reuses
 frozen current-frame provider output, applies Selective Guidance V0, and evaluates only truth-supported denominators.
@@ -169,6 +169,22 @@ one provider commitment cannot establish selection correctness, and the later ab
 `VISIBLE -> NOT_VISIBLE_AFTER_VISIBLE` transition. `PROPOSAL_MISS`, referent selection, wrong-confident guidance,
 `LOST_AFTER_VISIBLE`, and range/bearing bottlenecks remain unsupported. No tuning, rerun, P1, or product claim follows;
 dominance requires a separately frozen fresh cohort.
+
+That cohort is now sealed. Before any new pixel or provider output, the executor fixed the first eight unused tasks
+from scene `20260212121852` (`traj_1` through `traj_8`), the unchanged V0/provider lock, native metric truth, 3,190
+official render calls, and at most 120 provider observations. All 3,190 official frames passed byte/hash,
+nondegeneracy, per-episode uniqueness, 40/40 fixed ORB turn-direction checks, and private-literal firewalls. The
+shared official server log contains exactly 3,190 successful render POSTs; render/provider `in_doubt` remained zero.
+
+The eight sealed runs used 82 provider observations. Seven episodes had positive instruction-attributable metric
+progress, one reached the native `<2 m` arrival domain, none emitted a completion confirmation, and false arrival was
+`0/8`. Initial-to-terminal distances were `11.191→5.774`, `10.373→0.033`, `9.161→3.173`, `9.904→5.829`,
+`8.743→2.874`, `8.665→2.620`, `12.401→12.118`, and `17.767→14.745` m. Under the precommitted aggregation rule,
+current-frame reliability limited 5/8 episodes and is the supported single-scene majority failure. This does not
+identify acquisition versus proposal versus referent selection: functional entrance-region truth remains absent,
+selection accuracy and `LOST_AFTER_VISIBLE` remain `NOT_EVALUABLE`, and P1 is still unauthorized. The simultaneous
+`0/8` completion and one arrival-without-confirmation also establish a control/termination problem; neither finding
+may be rescued by replaying or tuning this consumed cohort.
 
 ```powershell
 python -m unittest `

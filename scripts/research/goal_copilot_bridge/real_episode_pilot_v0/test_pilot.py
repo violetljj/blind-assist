@@ -75,6 +75,7 @@ class RealEpisodePilotTest(unittest.TestCase):
         cohort = {
             "selection": {"tasks": [{"episode_id": "e1"}, {"episode_id": "e2"}]},
             "truth_and_claim_boundary": {"claim_ceiling": "SINGLE_SCENE"},
+            "frozen_budget": {"official_render_calls": 10},
         }
         audits = []
         for episode_id, completion, progress, instructions, drop in (
@@ -96,6 +97,16 @@ class RealEpisodePilotTest(unittest.TestCase):
                 "truth_boundaries": {
                     "selection_accuracy": "NOT_EVALUABLE_FUNCTIONAL_PIXEL_REGION_MISSING",
                     "lost_after_visible": "NOT_EVALUABLE_NO_FUNCTIONAL_PIXEL_VISIBILITY_TRUTH",
+                },
+                "execution": {
+                    "official_render_http_200_calls": 10,
+                    "official_render_http_accounting_scope": "FROZEN_COHORT_SHARED_SERVER",
+                    "provider_observation_calls": 1,
+                    "provider_brain_attempts": 1,
+                    "provider_in_doubt": 0,
+                    "teacher_calls": 0,
+                    "baseline_episode_runs": 1,
+                    "sealed_episode_reruns": 0,
                 },
             })
         result = summarize_audits(cohort, audits)

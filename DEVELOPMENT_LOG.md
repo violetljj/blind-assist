@@ -5091,3 +5091,22 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   entrance region 正确。provider 的 `GROUNDED -> ABSTAIN` 不能自证 functional visibility，因此
   `LOST_AFTER_VISIBLE=NOT_EVALUABLE_NO_FUNCTIONAL_PIXEL_VISIBILITY_TRUTH`；proposal miss、referent selection、
   wrong-confident guidance、range/bearing 均未建立。禁止调参/rerun/P1；dominance 需要另行冻结 fresh cohort。
+
+# 2026-08-23 ABotN eight-task official-pixel V0 fresh cohort
+
+- 在 cohort pixels/provider output 前固定 scene `20260212121852` 中排除已消费 `traj_0` 后的前 8 条任务
+  `traj_1..traj_8`；unchanged provider/V0、native metric endpoint、每条 15 observations、总 3,190 renders、无
+  teacher、无替换、无 rerun。8/8 action graph 在既有 12-instruction budget 内可达 arrival domain。
+- 单 RTX 4090 D 上固定官方 renderer `2a0aefb5`，scene PLY 824,762,236 bytes / SHA-256 `d86bdf…346d`；
+  3,190/3,190 official frames、每 episode 全唯一、40/40 ORB turn checks、shared server HTTP 200 POST 恰好
+  3,190，private literal hits=0，render/provider `in_doubt=0`。
+- 8 条 sealed V0 共 82 observations；7/8 有正的 instruction-attributable metric progress，1/8 进入 `<2 m`
+  native arrival，0/8 completion confirmation，false arrival=0。逐条距离为 `11.191→5.774`、`10.373→0.033`、
+  `9.161→3.173`、`9.904→5.829`、`8.743→2.874`、`8.665→2.620`、`12.401→12.118`、`17.767→14.745` m。
+- 预提交聚合规则下，5/8 episode 受 current-frame reliability 限制，故 single-scene majority terminal 为
+  `CURRENT_FRAME_RELIABILITY_LIMITATION`；同时 0/8 completion 与一次 arrival-without-confirmation 建立
+  control/termination 问题。因 functional pixel-region truth 仍缺失，acquisition/proposal/referent-selection 不可拆分，
+  selection accuracy 与 `LOST_AFTER_VISIBLE` 保持 `NOT_EVALUABLE`，不授权 P1，也不重跑或调参救该 cohort。
+- 运行后仅做两项 read-only audit mechanics repair：shared server raw log 按预冻结总预算 3,190 校验；terminal
+  graph 缺边动作记为 rejected/unexecuted 而不伪算 progress。dominance/outcome 分类逻辑未改，最终 cohort audit
+  implementation SHA-256=`be7c3b…b720`，正式 receipt SHA-256=`d74445…457e`。
