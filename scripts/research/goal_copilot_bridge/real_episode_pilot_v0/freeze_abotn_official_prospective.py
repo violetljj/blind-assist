@@ -51,6 +51,7 @@ def freeze(args: argparse.Namespace) -> dict[str, Any]:
             path
             for path in annotations_root.glob("*/traj_*.json")
             if _episode_id(path) not in excluded
+            and (args.selection_scene_id is None or path.parent.name == args.selection_scene_id)
         ),
         key=lambda path: path.relative_to(annotations_root).as_posix(),
     )
@@ -88,6 +89,7 @@ def freeze(args: argparse.Namespace) -> dict[str, Any]:
         "terminal": "ABOTN_OFFICIAL_PROSPECTIVE_EPISODE_FROZEN",
         "selection": {
             "rule": "LEXICOGRAPHIC_FIRST_ANNOTATION_EXCLUDING_PREVIOUSLY_USED_EPISODES",
+            "scene_scope": args.selection_scene_id,
             "episode_id": episode_id,
             "annotation_relative_path": annotation.relative_to(annotations_root).as_posix(),
             "excluded_episode_ids": sorted(excluded),
@@ -212,6 +214,7 @@ def main() -> None:
     parser.add_argument("--annotations-root", type=Path, required=True)
     parser.add_argument("--annotation", type=Path, required=True)
     parser.add_argument("--excluded-episode-id", action="append", default=[])
+    parser.add_argument("--selection-scene-id")
     parser.add_argument("--action-graph-dir", type=Path, required=True)
     parser.add_argument("--provider-lock", type=Path, required=True)
     parser.add_argument("--dataset-revision", required=True)
