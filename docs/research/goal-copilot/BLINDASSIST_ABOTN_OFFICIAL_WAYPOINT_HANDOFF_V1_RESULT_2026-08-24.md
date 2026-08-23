@@ -202,3 +202,41 @@ fails before the formal boundary while zero-provider official runtime failures s
 
 The terminal-frame hypothesis therefore remained unevaluated after these two setup failures; they must not be
 counted as negative handoff outcomes.
+
+## Fresh-scene terminal-reobservation run (`20260227162045/traj_0`)
+
+After the two setup failures were sealed, the adapter was run once on a fresh cached scene and unused task at
+BlindAssist commit `93ce44b098ee51c2da8b34c52ce44f6e8871e8a0`. The public goal was `谋律律师事务所`. Before the formal boundary,
+the remote point-cloud SHA-256 was verified against the frozen local source, the scene preload succeeded, and the
+same `/render_gs` endpoint returned a real `720 x 640` RGB render at the task's start pose.
+
+The formal result was negative at current-frame grounding, before any translational servo action:
+
+| Measure | Result |
+| --- | ---: |
+| Provider observations / brain attempts | `3 / 3` |
+| Provider calls in doubt / teacher calls | `0 / 0` |
+| Distinct current-front frame hashes | `3 / 3` |
+| Grounding DINO proposals by observation | `9 / 9 / 7` |
+| Provider selections | `ABSTAIN / ABSTAIN / ABSTAIN` |
+| Initial / minimum / final native distance | `8.5912 / 8.5912 / 8.5912 m` |
+| Travel length | `0.0000 m` |
+| Official success / oracle success / SPL | `false / false / 0.0000` |
+| Visual handoff / completion | `false / false` |
+
+The first two provider abstentions entered the frozen current-frame rescan behavior; the third entered terminal
+`ABSTAIN`. No candidate obtained enough visual evidence to associate it with the named law firm. Because the
+controller was already terminal before official evaluation ended, the post-action terminal reobservation rule was
+not invoked; there was no skipped arrival frame to process. This is an evaluated algorithm outcome, not another
+setup failure.
+
+- Freeze SHA-256: `943f1089a078f7a13cc70ed6b5316ebc7c26c67f763e2fb80f224b520e1e8192`.
+- Terminal receipt SHA-256: `5d62877cf49484759276489569ac32366a91ff1282e6d3b51172733db0443cbf`.
+- Provider private-field-name hits: none.
+- Selection accuracy: `NOT_EVALUABLE_FUNCTIONAL_PIXEL_REGION_MISSING`.
+- Collision: `NOT_EVALUABLE_MAP_NOT_CACHED`.
+
+The sealed first-failure class is `CURRENT_FRAME_GROUNDING_BOTTLENECK`. This task does not support an arrival,
+handoff, completion, collision-safety, or functional-selection claim, and it must not be rerun or rescued by changing
+the prompt, proposal thresholds, provider, goal, or task. It provides no evidence for persistence: the failure occurred
+before a physical referent was established.
