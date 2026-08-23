@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / VISIBLE_ONLY_PASSIVE_IDENTITY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17_HISTORICAL_WRONG_3_OF_4_CONTROLS_10_OF_13 / LOCAL_EVIDENCE_COMPLEMENTARY_NOT_SUFFICIENT / RELIABLE_VERIFIER_NOT_ESTABLISHED / NO_BELIEF / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / VISIBLE_ONLY_PASSIVE_IDENTITY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17_HISTORICAL_WRONG_3_OF_4_CONTROLS_10_OF_13 / TWO_REFERENCE_MATCHED_SINGLE_14_OF_14_TWO_11_OF_14_ZERO_RESCUE_THREE_COLLATERAL / NAIVE_MULTI_REFERENCE_MAX_REJECTED / RELIABLE_VERIFIER_NOT_ESTABLISHED / NO_BELIEF / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -32,7 +32,7 @@ synthetic completion confirmation cohort；不得通过 detector、SAM、depth m
 
 ## 当前终态
 
-唯一 successor 是 [`PUBLIC_REAL_EPISODE_MINING_V0`](BLINDASSIST_PUBLIC_REAL_EPISODE_MINING_V0_RESULT_2026-08-23.md)，属于 `REVERSIBLE_EXPLORATION`：
+[`PUBLIC_REAL_EPISODE_MINING_V0`](BLINDASSIST_PUBLIC_REAL_EPISODE_MINING_V0_RESULT_2026-08-23.md) 已执行并封存，属于 `REVERSIBLE_EXPLORATION`：
 
 1. 实现 current-frame-only selective guidance、争议/弃权、handoff 与用户确认责任合同；
 2. 在 pixel/truth 前冻结 OSM/Overture public goal 与 entrance candidate set，再由 Mapillary sequence 的 GPS、heading、
@@ -124,10 +124,22 @@ distractor 被拆开：`c2-ref-006-later-03=+0.01698`，`c2-ref-001-later-01=-0.
 `-0.00107 / -0.00115 / -0.06206`。Local evidence 具有互补信号但不能独立承担 verifier；不续做 threshold、
 fusion、belief、tracker 或 Active Search。详细口径见脚本包 README；reports：
 
+用户随后授权一次新的 matched two-reference Development probe。它没有复用旧 17 对：在新 RGB GET 前排除 C2 的 28 张旧图、7 个旧 target 及 roster 中全部旧 same-class distractor IDs，从 5 条不同 SUN3D sequence 内冻结 5 个新 physical target、
+10 张 reference 与 14 个新 competition frame；这些 target/frame 单元相对 C2 不重叠，但 source capture 被复用，因此不是 source-new Confirmation。Single arm 精确复用原 R1 scorer；two-reference arm 只增加固定
+`max(score(R1,candidate), score(R2,candidate))`，两臂共享 candidate、encoder 与 evaluator。结果 single=`14/14`、
+two-reference=`11/14`，paired transition 为 `0 rescue / 3 collateral`，net target-rank delta=`-3`，target-margin delta
+为 `1 positive / 4 zero / 9 negative`、median=`-0.03808`。R2 在 `9/14` pairs 为 distractor 提供最大分数，却只在
+`2/14` 为 target 提供最大分数。因此 naive multi-reference max 被拒绝：第二视角在这个表示下更常扩大 class-common
+distractor support，而非增加可靠 identity authority。该 run 不证明单 reference 已信息完备，因为新 cohort 的 single
+arm 没有 hard-error 分母；也不授权在已打开 outcome 上改 mean/union/weighted aggregation、阈值或 fusion 追结果。
+当前无自动算法 successor；若另行授权，必须改变为预声明的 distinctive-anchor/correspondence representation，或建立
+新的 baseline-hard-error denominator，而不是继续同 cohort aggregation sweep。详细口径见脚本包 README；reports：
+
 - `artifacts.local/evidence/public-identifiable-referent-visible-identity-probe-v0/run-20260824T033033+0800/final-report.json`；
 - `artifacts.local/evidence/public-identifiable-referent-oracle-competing-identity-v0/run-20260824T034449+0800/final-report.json`；
 - `artifacts.local/evidence/public-identifiable-referent-oracle-competing-identity-order-counterbalance-v0/run-20260824T034852+0800/final-report.json`；
 - `artifacts.local/evidence/public-identifiable-referent-dinov2-local-appearance-v0/run-20260824T042110+0800/final-report.json`。
+- `artifacts.local/evidence/public-identifiable-referent-dinov2-two-reference-matched-v0/run-20260824T045037+0800/final-report.json`。
 
 以上均不证明 candidate generation、`NOT_VISIBLE`、calibration、navigation、control、safety、默认 App 或产品能力。
 

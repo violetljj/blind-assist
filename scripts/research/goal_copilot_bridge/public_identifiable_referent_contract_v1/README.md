@@ -1,6 +1,6 @@
 # Public Identifiable Referent Contract V1
 
-状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17_HISTORICAL_WRONG_3_OF_4_CONTROLS_10_OF_13 / LOCAL_EVIDENCE_COMPLEMENTARY_NOT_SUFFICIENT / PUBLIC_PRIVATE_FIREWALL / NO_NOT_VISIBLE_EVIDENCE / RELIABLE_VERIFIER_NOT_ESTABLISHED`
+状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17_HISTORICAL_WRONG_3_OF_4_CONTROLS_10_OF_13 / TWO_REFERENCE_MATCHED_SINGLE_14_OF_14_TWO_11_OF_14_ZERO_RESCUE_THREE_COLLATERAL / LOCAL_EVIDENCE_COMPLEMENTARY_NOT_SUFFICIENT / PUBLIC_PRIVATE_FIREWALL / NO_NOT_VISIBLE_EVIDENCE / RELIABLE_VERIFIER_NOT_ESTABLISHED`
 
 This package freezes the user-visible goal before episode observations, candidates, provider output, or outcomes. It
 then separates the provider-public contract from an evaluator-private physical-instance lock.
@@ -122,4 +122,49 @@ Focused mechanics test:
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd -m unittest `
   scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_dinov2_local_appearance_probe
+```
+
+## Matched two-reference information-gain probe
+
+`dinov2_two_reference_matched_probe.py` is an additive Development adapter; it does not alter the singular-reference
+V1 schema or any consumed C2 artifact. Before any new RGB GET, it deterministically excluded every C2 reference/later
+filename, the seven old target IDs, and every same-class distractor ID listed in the C2 roster. Five reused SUN3D
+capture sources then supplied five new physical target instances, ten reference images, and fourteen new
+same-class-competition frames. The target and frame units are disjoint from C2, but the capture sources are reused;
+the evidence is therefore Development, not source-new Confirmation.
+
+Both arms run in one matched DINOv2-S execution. `single_reference` is the exact existing R1 symmetric local score.
+`two_reference` applies one predeclared exemplar-set rule independently to each candidate:
+`max(score(R1, candidate), score(R2, candidate))`. There is no threshold, training, alternate aggregation, or
+model/crop/layer/fusion sweep. Raw scores are written and hashed before the evaluator-private target slot is read.
+
+The frozen run observed:
+
+```text
+single_reference       14 / 14 target outranks
+two_reference          11 / 14 target outranks
+paired transitions      0 rescue / 3 collateral
+net target-rank delta  -3
+target-margin delta     1 positive / 4 zero / 9 negative
+median margin delta    -0.0380834
+```
+
+R2 supplied the maximum distractor score in `9/14` pairs but the maximum target score in only `2/14`. The naive
+two-exemplar OR rule therefore enlarged same-class distractor support more often than target support. This rejects
+that aggregation as a reliable verifier and does not establish multi-view information gain. It also does not prove
+that a single reference is information-complete: the new cohort had no single-reference error denominator to rescue.
+Do not tune another aggregation on these opened outcomes; a future experiment would need a materially different,
+predeclared distinctive-anchor/correspondence representation or a new hard-error cohort.
+
+Evidence:
+
+- `artifacts.local/evidence/public-identifiable-referent-dinov2-two-reference-matched-v0/frozen-roster-private.json`
+- `artifacts.local/evidence/public-identifiable-referent-dinov2-two-reference-matched-v0/materialized/materialization-report.json`
+- `artifacts.local/evidence/public-identifiable-referent-dinov2-two-reference-matched-v0/run-20260824T045037+0800/final-report.json`
+
+Focused mechanics test:
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_dinov2_two_reference_matched_probe
 ```

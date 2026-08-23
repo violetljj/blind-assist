@@ -2,6 +2,22 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-24（Asia/Hong_Kong）；执行者：violjjet。按用户授权完成一次
+  `DINOV2_TWO_REFERENCE_MATCHED_INFORMATION_GAIN_V0` Development probe，不修改已消费的单 reference V1/C2/v0。
+  新 RGB GET 前以 metadata-only 规则排除 C2 的 28 张旧图、7 个旧 target 与 roster 中全部旧 same-class distractor
+  IDs；从 5 条彼此不同但相对 C2 source-reused 的 SUN3D sequence 冻结 5 个新 physical target、10 张 reference 与
+  14 个新 competition frame。Frozen roster body SHA256=`acce752a…e92af50`，runner live/frozen SHA256 均为
+  `679abf9b…d43cfc4`；materialization 为 `24` 张唯一新图、`5,492,572` bytes、与 parent image hash overlap=`0`，
+  reference barrier 时 candidate GET=`0`。两臂在同一次 `facebook/dinov2-small@ed25f3a` 执行中共享 candidate、encoder、
+  原 symmetric local scorer 与 private evaluator；single arm 只用 R1，two-reference arm 只增加预冻结的 per-candidate
+  `max(score(R1), score(R2))`，没有 alternate aggregation、threshold、training、augmentation 或 sweep。结果 single
+  `14/14` target outrank，two-reference `11/14`，paired transition=`0 rescue / 3 collateral`、net=`-3`；target-margin
+  delta 为 `1 positive / 4 zero / 9 negative`，mean/median=`-0.04581/-0.03808`。R2 为 distractor 提供最大分数
+  `9/14`，为 target 仅 `2/14`。独立 JSON/SHA 重算精确复现全部计数，focused tests `7/7`。结论为
+  `TWO_REFERENCE_COLLATERAL_WITHOUT_RESCUE_DEVELOPMENT`：naive exemplar-set max 扩大了 class-common distractor
+  support，不能承担 verifier；但 single arm 没有 hard-error 分母，所以也不能声称单 reference 已信息完备。不在已打开
+  outcome 上继续 mean/union/weight/fusion sweep，不授权 belief、tracker、Active Search、P1、App、导航或安全 claim。
+
 - 时间：2026-08-24（Asia/Hong_Kong）；执行者：Codex。按用户授权，对既有 17 个 oracle same-class pairs 运行一次
   order-free `DINOV2_LOCAL_APPEARANCE_PROBE_V0`。唯一 encoder 复用冻结的
   `facebook/dinov2-small@ed25f3a`；clean reference/candidate 各取 20% square-context crop、224×224、last-layer
