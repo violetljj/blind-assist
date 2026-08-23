@@ -131,3 +131,43 @@ removed the control bottleneck. It exposes high-confidence control-direction inc
 wrong referent without functional region truth. Further angle tuning would be outcome rescue. A future lane, if
 explicitly authorized and prospectively frozen on unused tasks, should study selective commitment or an oscillation
 guard rather than another turn-angle adjustment.
+
+## Bearing-coupled servo follow-up (`traj_5`)
+
+Commit `210679fcff3f1595f9931706cdf51d10c4b2005c` introduced one further control-only change before selecting a new
+task: every reliable current-frame candidate produced a `2.0 m` local waypoint along its public image bearing, so
+alignment and translation were coupled in one official evaluator action. The provider, prompt, candidate thresholds,
+instruction budget, arrival threshold, goal handling, teacher policy, and private-truth firewall stayed fixed.
+
+On fresh task `traj_5` (public goal `鲜牛羊肉`), this controller reached ABotN's native metric arrival region:
+
+| Measure | Result |
+| --- | ---: |
+| Provider observations / brain attempts | `9 / 9` |
+| Provider calls in doubt / teacher calls | `0 / 0` |
+| Distinct current-front frame hashes | `9 / 9` |
+| `GROUNDED` observations | `6 / 9` |
+| Initial native distance | `11.2369 m` |
+| Minimum/final native distance | `0.9246 m` |
+| Travel length / shortest path | `12.0000 / 11.9788 m` |
+| Official success / oracle success | `true / true` |
+| Official SPL | `0.8316` |
+| Visual handoff / completion | `false / false` |
+
+The ninth current-frame decision was still `GROUNDED` (confidence `0.78`, center-x `0.599`, candidate height
+`0.258`) and dispatched a bearing-coupled step of `-15.85 deg`. That action entered the official `2.0 m` arrival
+region, where the pinned evaluator terminated before asking the agent to process step 9's newly rendered current
+front. The pre-action image visibly contained the storefront; the unconsumed post-action image faced along its side.
+The provider therefore never emitted `HANDOFF_READY`, and no post-hoc provider call was added.
+
+- Freeze SHA-256: `fd736575aaeda70215977f6de2066f0dba6b6fe4b7736b6f1f425165f0497937`.
+- Terminal receipt SHA-256: `e392edfab3e6a5a0df67ad220a39f56a4938fce12a631c2343ac0857dddba50e`.
+- Provider private-field-name hits: none.
+- Collision remains `NOT_EVALUABLE_MAP_NOT_CACHED`; functional selection accuracy remains
+  `NOT_EVALUABLE_FUNCTIONAL_PIXEL_REGION_MISSING`.
+
+This is positive evidence that current-frame bearing-coupled control can land the native point-goal metric on one
+fresh public task. It is not evidence of a functional entrance selection, visual handoff, physical arrival,
+collision safety, or episode completion. The sealed first-failure class is
+`METRIC_ARRIVAL_WITHOUT_VISUAL_HANDOFF`. `traj_5` must not be rerun or retrospectively extended with the skipped
+terminal observation.
