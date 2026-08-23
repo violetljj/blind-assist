@@ -83,9 +83,10 @@ truth。Evaluator 拒绝未冻结 truth，并按 tier 分层报告 denominator�
 sequence 的原生 door polygon 加 trajectory 为 `15/15` observations 提供强 truth；冻结抽帧为
 `VISIBLE=4 / NOT_VISIBLE=11`，未补抽。可见帧 proposal availability=`3/4`，但 selection given usable proposal=`0/3`；
 全体 wrong confident guidance=`4/15`，其中 3 次发生在目标不在当前帧时。这使当前 failure signal 从
-`TRUTH_OR_CONTRACT_INSUFFICIENT` 推进到 current-frame referent selection / selective commitment，同时保留一个
-proposal miss。它仍只是单个预录制 generic-door episode，不建立 functional aperture、命名目的地、闭环控制或到达，
-不授权同 episode 调参、算法 successor 或 P1。
+`TRUTH_OR_CONTRACT_INSUFFICIENT` 推进到可归因层：episode 级第一层是 target acquisition / camera pointing
+（`NOT_VISIBLE=11/15`）；条件化到可见且有 proposal 的帧，referent selection / selective commitment 仍为
+`0/3`，另保留一个 proposal miss。它仍只是单个预录制 generic-door episode，不能评价 active camera policy，
+也不建立 functional aperture、命名目的地、闭环控制或到达；不授权同 episode 调参、算法 successor 或 P1。
 
 ## V0 与 P1 边界
 

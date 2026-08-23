@@ -1,13 +1,13 @@
 # SUN3D native-door approach V0 result (2026-08-24)
 
-状态：`SEALED / NATIVE_STRONG_TRUTH_15_OF_15 / CURRENT_FRAME_GROUNDING_FAILURE / NO_ALGORITHM_SUCCESSOR / NO_P1`
+状态：`SEALED / NATIVE_STRONG_TRUTH_15_OF_15 / TARGET_NOT_VISIBLE_PRIMARY / VISIBLE_SELECTION_FAILURE / NO_ALGORITHM_SUCCESSOR / NO_P1`
 
 ## 结论
 
-在一个冻结的真实 RGB-D 门接近 episode 上，V0 首先失败在 current-frame grounding / selective
-commitment，而不是缺少可评价 truth。15/15 observations 都有官方原生 polygon 加 pose-corrected trajectory
-支持的强 truth；4 个目标可见帧中 proposal 可用 `3/4`，但给定可用 proposal 的正确选择为 `0/3`。全 15 帧有
-4 次 wrong confident guidance，其中 3 次发生在目标不在当前帧时。
+在一个冻结的真实 RGB-D 门接近 episode 上，第一层主导条件是 target acquisition / camera pointing：15 个强
+truth observations 中，目标在当前帧不可见 `11/15`。V0 对其中 8 帧正确不承诺，但另外 3 帧仍给出 wrong
+confident guidance。目标可见的 4 帧中 proposal 可用 `3/4`，给定可用 proposal 的正确选择仍为 `0/3`，因此
+referent selection / selective commitment 是第二个明确失败层，而不是缺少可评价 truth。
 
 这是单个预录制室内 generic-door episode 的机制证据。它不建立 functional aperture、命名目的地、闭环控制、
 到达完成、用户安全或产品性能，也不足以授权新的算法 successor。
@@ -54,9 +54,10 @@ FSM 在首帧 `VISIBLE` 后的 `NOT_VISIBLE` 派生，不代表 tracking 或 per
 ## Failure attribution 与边界
 
 这一 episode 排除了此前 8x89 的 `TRUTH_OR_CONTRACT_INSUFFICIENT` 主导解释：强 truth denominator 是完整的。
-可见帧里已有 3 个可用 proposal，却没有一次正确 commit；同时不可见帧仍出现 3 次错误 commit。因此本次最直接的
-信号是 referent selection / selective commitment，proposal miss 为次要但仍存在的失败层。11/15 当前帧不可见也说明
-camera pointing / acquisition 是真实的 episode 条件，但这个预录制 sequence 不能评价 active camera policy。
+按预声明 failure ordering，`NOT_VISIBLE=11/15` 使 target acquisition / camera pointing 成为 episode 级第一层；
+这个预录制 sequence 只能识别该条件，不能评价 active camera policy。条件化到 4 个可见帧后，3 个已有可用
+proposal 却没有一次正确 commit，因此 referent selection / selective commitment 是独立的第二失败层；proposal
+miss 为次要但仍存在的失败层。
 
 不允许用本 episode 改 prompt、阈值、provider、goal、候选或抽帧来救结果；不从派生 `LOST` 启动 P1。后续若继续，
 应增加预冻结的独立 SUN3D approach episodes 来检验这一 failure ordering 是否复现，而不是在本 episode 上调参。
