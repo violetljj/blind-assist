@@ -93,3 +93,41 @@ The run stopped at a declared control-policy boundary: repeated fixed-size align
 budget before the agent reached either the official 2 m arrival region or the visual `HANDOFF_READY` cue. A next
 algorithm lane is legitimate only as a new, prospectively frozen control-policy study on unused tasks; changing the
 budget or rerunning either consumed task would be a rescue and is forbidden.
+
+## Bearing-aware control follow-up (`traj_4`)
+
+Commit `166b849c9b51613afe5c4f08bfd1e7a3d74ecf63` introduced one prospectively declared control-only change for a new
+unused task: turn magnitude was computed from the public current candidate center and the frozen camera intrinsics
+(`width=720`, `cx=360`, `fx=252.075`), capped at `45 deg`. The instruction budget, 2 m forward step, provider,
+prompt, thresholds, goal handling, handoff cue, evaluator, and truth firewall stayed fixed.
+
+On `traj_4` (public goal `晓锋鸽子王`), the result was again negative:
+
+| Measure | Result |
+| --- | ---: |
+| Provider observations / brain attempts | `15 / 15` |
+| Provider calls in doubt | `0` |
+| Distinct current-frame hashes | `15 / 15` |
+| `GROUNDED` observations | `13 / 15` |
+| Initial native distance | `18.3216 m` |
+| Minimum/final native distance | `9.6973 m` |
+| Net native progress | `8.6242 m` |
+| Travel length | `10.0000 m` |
+| Official success / handoff / completion | `false / false / false` |
+
+The task still consumed seven alignment turns, five forward steps, and two rescan sweeps. The turn stream reversed
+direction at high confidence (`+38.14 -> -25.22 deg` and `+37.77 -> -40.65 deg`) rather than converging monotonically.
+The final current observation remained `GROUNDED` (confidence `0.90`, center-x `0.49`) and the controller again
+stopped at its frozen budget boundary.
+
+- Freeze SHA-256: `0128eb0de074ca6f1243c903d4fa1c4ae11ed891a4b3b21ecaa1dab07119821e`.
+- Terminal receipt SHA-256: `8452a4073db8e1232ba93f8c8bc59297222af98cb7a02793ebde88aff7d556b1`.
+- Provider private-field-name hits: none.
+- Collision and functional selection outcomes remain not evaluable for the reasons above.
+
+Because `traj_3` and `traj_4` are different tasks, their metric progress is not a causal comparison of the two turn
+policies. The within-task evidence is sufficient only to reject the claim that calibrated turn magnitude by itself
+removed the control bottleneck. It exposes high-confidence control-direction inconsistency, but cannot establish a
+wrong referent without functional region truth. Further angle tuning would be outcome rescue. A future lane, if
+explicitly authorized and prospectively frozen on unused tasks, should study selective commitment or an oscillation
+guard rather than another turn-angle adjustment.
