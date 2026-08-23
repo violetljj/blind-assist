@@ -9,6 +9,8 @@ import unittest
 from .abotn_arrival_provider_canary import ARRIVE_THRESHOLD_M, build_frozen_inputs
 from .annotation import make_annotation
 from .audit_abotn_trajectory_denominator import audit as audit_abotn_trajectory_denominator
+from .audit_abotn_official_cohort import summarize_audits
+from .freeze_abotn_official_cohort import select_tasks
 from .prepare_abotn_action_graph import build_graph as build_abotn_action_graph
 from .run_abotn_v0_closed_loop import _failure_class as abotn_closed_loop_failure_class
 from scripts.research.goal_copilot_bridge.last_10m_regrounding_v0.core import EpisodeState
@@ -54,6 +56,53 @@ def authorize_native(row):
 
 
 class RealEpisodePilotTest(unittest.TestCase):
+    def test_abotn_cohort_selection_is_fixed_before_pixels(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            scene = root / "scene-a"
+            scene.mkdir()
+            for index in range(4):
+                (scene / f"traj_{index}.json").write_text("{}", encoding="utf-8")
+            selected = select_tasks(
+                root,
+                scene_id="scene-a",
+                count=2,
+                excluded_episode_ids=["abotn-scene-a-traj-0"],
+            )
+        self.assertEqual(["traj_1.json", "traj_2.json"], [path.name for path in selected])
+
+    def test_abotn_cohort_aggregation_keeps_selection_and_lost_not_evaluable(self):
+        cohort = {
+            "selection": {"tasks": [{"episode_id": "e1"}, {"episode_id": "e2"}]},
+            "truth_and_claim_boundary": {"claim_ceiling": "SINGLE_SCENE"},
+        }
+        audits = []
+        for episode_id, completion, progress, instructions, drop in (
+            ("e1", True, 3.0, 2, False),
+            ("e2", False, 0.0, 0, False),
+        ):
+            audits.append({
+                "episode_id": episode_id,
+                "metric_outcome": {
+                    "false_arrival": False,
+                    "episode_completion": completion,
+                    "instruction_attributable_progress_m": progress,
+                },
+                "provider_behavior": {
+                    "instruction_count": instructions,
+                    "reliability_drop_after_provider_commitment": drop,
+                },
+                "truth_boundaries": {
+                    "selection_accuracy": "NOT_EVALUABLE_FUNCTIONAL_PIXEL_REGION_MISSING",
+                    "lost_after_visible": "NOT_EVALUABLE_NO_FUNCTIONAL_PIXEL_VISIBILITY_TRUTH",
+                },
+            })
+        result = summarize_audits(cohort, audits)
+        self.assertEqual(1, result["metric_goal_success_count"])
+        self.assertEqual(0.5, result["metric_goal_success_rate"])
+        self.assertEqual("NOT_EVALUABLE_FUNCTIONAL_PIXEL_REGION_MISSING", result["selection_accuracy"])
+        self.assertFalse(result["p1_authorized"])
+
     def test_abotn_official_pixel_inventory_does_not_promote_maps_to_camera_rgb(self):
         entries = [
             {"type": "file", "path": "annotations/s/png/traj_0_poi_1_goal.png", "size": 10},
