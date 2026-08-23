@@ -105,6 +105,16 @@ risky execution. The mode controls process; it never upgrades evidence.
   graduation contribution. In Discovery, Canary, and Development, optimize for
   learning speed and information gain rather than procedural completeness,
   production certification, or repository ceremony.
+- The default deliverable is a working algorithm artifact: executable code, a
+  runnable training or evaluation path, or an interpretable experiment result.
+  Plans, protocols, rules, schemas, test scaffolds, and documents support that
+  deliverable; they are not substitutes for implementing it.
+- Avoid protocol and rule over-design and over-testing. Reuse existing
+  contracts and run the smallest relevant check once. Add a new process layer
+  or broader test matrix only when it protects a named evidence boundary,
+  prevents contamination or data loss, covers an irreversible or high-risk
+  action, or can change the next algorithm decision. If process work starts
+  displacing algorithm work, shrink it and resume implementation or experiment.
 - Proactively propose and test bold, innovative, falsifiable ideas. Reversible
   experiments may change task definitions, representations, objectives, losses,
   geometry or temporal mechanisms, fusion, training strategies, and system
