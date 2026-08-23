@@ -22,6 +22,9 @@ from scripts.research.goal_copilot_bridge.last_10m_regrounding_v0.core import (
 
 
 SCHEMA = "blindassist_abotn_v0_closed_loop_run_v0"
+HANDOFF_SCHEMA = "blindassist_abotn_handoff_v1_closed_loop_run_v0"
+HANDOFF_READY = "HANDOFF_READY"
+HANDOFF_DISTANCE_LIMIT_M = 3.0
 PUBLIC_SCHEMA = "blindassist_abotn_v0_action_graph_public_v0"
 PIXEL_TERMINALS = {
     "blindassist_abotn_webgl_action_graph_pixels_v0": "ABOTN_WEBGL_ACTION_GRAPH_PIXELS_PASS",
@@ -107,10 +110,31 @@ def _failure_class(state: EpisodeState, *, arrival: bool, action_exhausted: bool
     return "CONTROL_POLICY_BOTTLENECK"
 
 
+def _apply_termination_mode(
+    state: EpisodeState, event: Mapping[str, Any], *, termination_mode: str
+) -> tuple[EpisodeState, dict[str, Any]]:
+    """Demote the existing visual arrival cue to a terminal handoff signal."""
+
+    transformed = dict(event)
+    if termination_mode == "HANDOFF_V1" and transformed.get("to_state") == State.ARRIVAL_CONFIRM.value:
+        state.state = HANDOFF_READY
+        transformed["to_state"] = HANDOFF_READY
+        transformed["transitions"] = [
+            HANDOFF_READY if value == State.ARRIVAL_CONFIRM.value else value
+            for value in transformed.get("transitions", [])
+        ]
+        transformed["instruction"] = "已接近目标，请停止自动移动并进行现场确认。"
+        transformed["message"] = transformed["instruction"]
+        transformed["completion"] = False
+        transformed["handoff_ready"] = True
+    return state, transformed
+
+
 def run(
     *, public_graph_path: Path, private_truth_path: Path, freeze_path: Path,
     pixel_receipt_path: Path, qualification_path: Path, output_dir: Path,
     codex_exe: Path, grounding_dino: Path, provider_lock_path: Path | None = None,
+    prospective_freeze_path: Path | None = None, termination_mode: str = "V0_COMPLETION",
 ) -> dict[str, Any]:
     from scripts.research.goal_copilot_bridge.last_10m_regrounding_v0.cli import _append_event
     from scripts.research.goal_copilot_bridge.last_10m_regrounding_v0.provider_adapter import (
@@ -125,6 +149,20 @@ def run(
     public = json.loads(public_graph_path.read_text(encoding="utf-8"))
     pixels = json.loads(pixel_receipt_path.read_text(encoding="utf-8"))
     qualification = json.loads(qualification_path.read_text(encoding="utf-8"))
+    if termination_mode not in {"V0_COMPLETION", "HANDOFF_V1"}:
+        raise ValueError("unknown termination mode")
+    prospective_freeze = None
+    if termination_mode == "HANDOFF_V1":
+        if prospective_freeze_path is None:
+            raise ValueError("HANDOFF_V1 requires a prospective freeze")
+        prospective_freeze = json.loads(prospective_freeze_path.read_text(encoding="utf-8"))
+        contract = prospective_freeze.get("termination_contract", {})
+        if (
+            contract.get("mode") != "HANDOFF_V1"
+            or contract.get("handoff_distance_limit_m") != HANDOFF_DISTANCE_LIMIT_M
+            or contract.get("claim_boundary") != "HANDOFF_READY_IS_NOT_ARRIVED_OR_COMPLETED"
+        ):
+            raise ValueError("prospective handoff contract drift")
     if public.get("schema_version") != PUBLIC_SCHEMA or public.get("private_truth_access") is not False:
         raise ValueError("public action graph is not eligible")
     if PIXEL_TERMINALS.get(pixels.get("schema_version")) != pixels.get("terminal"):
@@ -174,8 +212,9 @@ def run(
     _atomic_json(output_dir / "provider-lock.json", provider_lock)
     renderer_kind = pixels.get("renderer", {}).get("kind", "UNOFFICIAL_WEBGL_MECHANICS_CANARY")
     official_pixels = renderer_kind == "PINNED_OFFICIAL_ABOTN_RENDERER"
+    run_schema = HANDOFF_SCHEMA if termination_mode == "HANDOFF_V1" else SCHEMA
     manifest = {
-        "schema_version": SCHEMA,
+        "schema_version": run_schema,
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "status": "FORMAL_ONE_SHOT_STARTED",
         "public_graph_sha256": _sha256(public_graph_path),
@@ -183,6 +222,10 @@ def run(
         "freeze_receipt_sha256": _sha256(freeze_path),
         "pixel_receipt_sha256": _sha256(pixel_receipt_path),
         "qualification_sha256": _sha256(qualification_path),
+        "prospective_freeze_sha256": (
+            _sha256(prospective_freeze_path) if prospective_freeze_path is not None else None
+        ),
+        "termination_mode": termination_mode,
         "provider_lock_sha256": _sha256(output_dir / "provider-lock.json"),
         "provider_lock_source_sha256": (
             _sha256(provider_lock_path) if provider_lock_path is not None else None
@@ -216,6 +259,8 @@ def run(
     _atomic_json(journal_path, journal)
     events_path = output_dir / "events.jsonl"
     episode_id = str(public["episode_id"])
+    if prospective_freeze is not None and prospective_freeze.get("selection", {}).get("episode_id") != episode_id:
+        raise ValueError("prospective handoff episode binding drift")
     state = EpisodeState.start(
         episode_id=episode_id,
         location_id=f"abotn-scene-{episode_id.split('-')[1]}",
@@ -232,7 +277,10 @@ def run(
         "start_node_id": current,
         "started_at_ms": state.started_at_ms,
     })
-    while state.state not in {State.COMPLETE.value, State.ABSTAIN.value}:
+    terminal_states = {State.COMPLETE.value, State.ABSTAIN.value}
+    if termination_mode == "HANDOFF_V1":
+        terminal_states.add(HANDOFF_READY)
+    while state.state not in terminal_states:
         if state.observation_count >= MAX_PROVIDER_OBSERVATIONS:
             stop = stop_episode(
                 state,
@@ -278,7 +326,7 @@ def run(
             })
             _atomic_json(journal_path, journal)
             receipt = {
-                "schema_version": SCHEMA,
+                "schema_version": run_schema,
                 "closed_at_utc": datetime.now(timezone.utc).isoformat(),
                 "terminal": "ABOTN_V0_CLOSED_LOOP_PROVIDER_IN_DOUBT" if in_doubt else "ABOTN_V0_CLOSED_LOOP_PROVIDER_FAILED",
                 "provider_calls_dispatched": journal["provider_calls_dispatched"],
@@ -303,8 +351,10 @@ def run(
         })
         _atomic_json(journal_path, journal)
         result = apply_observation(state, observation, Policy())
-        state = result.state
-        event = dict(result.event) | {"environment_node_id": current}
+        state, event = _apply_termination_mode(
+            result.state, result.event, termination_mode=termination_mode
+        )
+        event = event | {"environment_node_id": current}
         action = _action_for_event(event)
         event["environment_action"] = action
         _append_event(events_path, event)
@@ -363,9 +413,16 @@ def run(
     if literal_hits:
         raise ValueError(f"private arrival truth leaked to provider prompt: {sorted(set(literal_hits))}")
     arrival = bool(terminal_truth["arrival"])
-    completed = state.state == State.COMPLETE.value and arrival
+    handoff_ready = state.state == HANDOFF_READY
+    handoff_within_limit = handoff_ready and terminal_truth["distance_to_goal_m"] <= HANDOFF_DISTANCE_LIMIT_M
+    completed = state.state == State.COMPLETE.value and arrival and termination_mode == "V0_COMPLETION"
     false_arrival = state.state == State.COMPLETE.value and not arrival
-    failure_class = _failure_class(state, arrival=arrival, action_exhausted=action_exhausted)
+    if handoff_within_limit:
+        failure_class = None
+    elif handoff_ready:
+        failure_class = "CONTROL_POLICY_BOTTLENECK_PREMATURE_HANDOFF"
+    else:
+        failure_class = _failure_class(state, arrival=arrival, action_exhausted=action_exhausted)
     evaluation = {
         "schema_version": "blindassist_abotn_v0_closed_loop_evaluation_v0",
         "episode_id": episode_id,
@@ -382,6 +439,10 @@ def run(
         "metric_distance_trajectory_m": evaluated_distances,
         "terminal_metric_arrival": arrival,
         "episode_completion": completed,
+        "handoff_ready": handoff_ready,
+        "handoff_distance_limit_m": HANDOFF_DISTANCE_LIMIT_M if termination_mode == "HANDOFF_V1" else None,
+        "handoff_within_frozen_distance_limit": handoff_within_limit,
+        "completion_authority_receipt_present": False,
         "false_arrival": false_arrival,
         "failure_class": failure_class,
         "selection_accuracy": "NOT_EVALUABLE_FUNCTIONAL_PIXEL_REGION_MISSING",
@@ -400,9 +461,13 @@ def run(
     })
     _atomic_json(journal_path, journal)
     receipt = {
-        "schema_version": SCHEMA,
+        "schema_version": run_schema,
         "closed_at_utc": datetime.now(timezone.utc).isoformat(),
-        "terminal": "ABOTN_V0_CLOSED_LOOP_ENGINEERING_RUN_COMPLETE",
+        "terminal": (
+            "ABOTN_HANDOFF_V1_CLOSED_LOOP_ENGINEERING_RUN_COMPLETE"
+            if termination_mode == "HANDOFF_V1"
+            else "ABOTN_V0_CLOSED_LOOP_ENGINEERING_RUN_COMPLETE"
+        ),
         "provider": {
             "identity": "FROZEN_GROUNDING_DINO_TINY_PLUS_CODEX_TERRA_V0",
             "observation_calls": journal["provider_calls_completed"],
@@ -418,14 +483,20 @@ def run(
         "baseline_episode_runs": 1,
         "rerun_authorized": False,
         "claim_ceiling": (
-            "OFFICIAL_RENDERER_SINGLE_TASK_CLOSED_LOOP_ENGINEERING_ONLY_NO_REAL_USER_PRODUCT_SAFETY_OR_SCIENTIFIC_CONFIRMATION"
+            "OFFICIAL_RENDERER_SINGLE_TASK_HANDOFF_ENGINEERING_ONLY_HANDOFF_READY_IS_NOT_ARRIVED_OR_COMPLETED"
+            if official_pixels and termination_mode == "HANDOFF_V1"
+            else "OFFICIAL_RENDERER_SINGLE_TASK_CLOSED_LOOP_ENGINEERING_ONLY_NO_REAL_USER_PRODUCT_SAFETY_OR_SCIENTIFIC_CONFIRMATION"
             if official_pixels
             else "UNOFFICIAL_RENDERER_SINGLE_TASK_CLOSED_LOOP_ENGINEERING_ONLY_NO_REAL_USER_PRODUCT_SAFETY_OR_SCIENTIFIC_CONFIRMATION"
         ),
         "next_action": (
-            "STOP_AND_ATTRIBUTE_FIRST_FAILURE_WITHOUT_TUNING"
-            if not completed
-            else "REQUIRE_NEW_AUTHORIZATION_BEFORE_ANY_BROADER_COHORT"
+            "WAIT_FOR_EXPLICIT_USER_OR_TRUSTED_INTERACTION_CONFIRMATION"
+            if handoff_within_limit
+            else (
+                "STOP_AND_ATTRIBUTE_FIRST_FAILURE_WITHOUT_TUNING"
+                if not completed
+                else "REQUIRE_NEW_AUTHORIZATION_BEFORE_ANY_BROADER_COHORT"
+            )
         ),
         "artifact_sha256": {
             # The manifest is finalized after this receipt and therefore is

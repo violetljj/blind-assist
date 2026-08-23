@@ -14,6 +14,7 @@ from typing import Any
 
 SCHEMA = "blindassist_abotn_official_prospective_freeze_v0"
 EPISODE_PREFIX = "abotn-"
+HANDOFF_DISTANCE_LIMIT_M = 3.0
 
 
 def _sha256(path: Path) -> str:
@@ -160,6 +161,23 @@ def freeze(args: argparse.Namespace) -> dict[str, Any]:
             "teacher_calls": 0,
             "sealed_episode_reruns": 0,
         },
+        "termination_contract": (
+            {
+                "mode": "HANDOFF_V1",
+                "current_frame_cue": "CENTERED_CANDIDATE_HEIGHT_GTE_0_55",
+                "controller_effect": "STOP_AUTOMATIC_MOTION_AND_EMIT_HANDOFF_READY",
+                "handoff_distance_limit_m": HANDOFF_DISTANCE_LIMIT_M,
+                "completion_authority": ["USER_EXPLICIT", "TRUSTED_INTERACTION"],
+                "forbidden_controller_outputs": ["ARRIVED", "COMPLETE", "COMPLETED_BY_USER"],
+                "success_rule": "HANDOFF_READY_AND_NATIVE_DISTANCE_TO_GOAL_LTE_3M",
+                "claim_boundary": "HANDOFF_READY_IS_NOT_ARRIVED_OR_COMPLETED",
+            }
+            if args.termination_mode == "HANDOFF_V1"
+            else {
+                "mode": "V0_COMPLETION",
+                "success_rule": "LEGACY_FROZEN_V0_CONTROL_CONTRACT",
+            }
+        ),
         "truth_and_claim_boundary": {
             "metric_endpoint_and_trajectory_authority": "NATIVE_GT",
             "functional_entrance_region_truth": "NOT_EVALUABLE_NOT_RELEASED",
@@ -204,6 +222,11 @@ def main() -> None:
     parser.add_argument("--expected-polygon-bytes", type=int, required=True)
     parser.add_argument("--expected-polygon-sha256", required=True)
     parser.add_argument("--official-renderer-commit", required=True)
+    parser.add_argument(
+        "--termination-mode",
+        choices=("V0_COMPLETION", "HANDOFF_V1"),
+        default="V0_COMPLETION",
+    )
     parser.add_argument("--render-helper", type=Path, required=True)
     parser.add_argument("--download-helper", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
