@@ -70,16 +70,16 @@ def freeze(args: argparse.Namespace) -> dict[str, Any]:
     if consumed_identities != [source_identity(row) for row in ordered[:CONSUMED_COUNT]]:
         raise FreezeError("consumed first-89 identity does not match the frozen ordering")
     consumed_count = CONSUMED_COUNT
-    prior_confirmation_sha256 = None
-    if args.prior_confirmation_roster is not None:
-        prior_path = args.prior_confirmation_roster.resolve()
+    prior_confirmation_sha256 = []
+    for prior_arg in args.prior_confirmation_roster or []:
+        prior_path = prior_arg.resolve()
         prior = json.loads(prior_path.read_text(encoding="utf-8"))
         prior_identities = [item["source_identity"] for item in prior["observations"]]
-        expected_prior = [source_identity(row) for row in ordered[CONSUMED_COUNT:CONSUMED_COUNT + CONFIRMATION_COUNT]]
+        expected_prior = [source_identity(row) for row in ordered[consumed_count:consumed_count + CONFIRMATION_COUNT]]
         if prior_identities != expected_prior:
-            raise FreezeError("prior transport-failed Confirmation does not match frozen positions 90-153")
+            raise FreezeError("prior Confirmation does not match the next frozen 64-position block")
         consumed_count += CONFIRMATION_COUNT
-        prior_confirmation_sha256 = sha256_file(prior_path)
+        prior_confirmation_sha256.append(sha256_file(prior_path))
 
     with image_manifest.open("r", encoding="utf-8", newline="") as stream:
         image_rows = {row["image"]: row for row in csv.DictReader(stream)}
@@ -130,7 +130,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--benchmark", type=Path, required=True)
     parser.add_argument("--image-manifest", type=Path, required=True)
     parser.add_argument("--consumed-roster", type=Path, required=True)
-    parser.add_argument("--prior-confirmation-roster", type=Path)
+    parser.add_argument("--prior-confirmation-roster", type=Path, action="append")
     parser.add_argument("--output", type=Path, required=True)
     print(json.dumps(freeze(parser.parse_args(argv)), ensure_ascii=False, indent=2))
     return 0

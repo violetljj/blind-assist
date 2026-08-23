@@ -36,6 +36,7 @@ DOMAIN_LEXICON = (
     "tennis racket", "tie", "traffic light", "train", "truck", "umbrella",
 )
 DOMAIN_LEXICON_PROMPT = " . ".join(DOMAIN_LEXICON) + " ."
+UNION_MAX_CANDIDATES = 10
 
 
 class RunError(RuntimeError):
@@ -172,7 +173,7 @@ def run_dual_inference(model_dir: Path, metadata: Sequence[Mapping[str, Any]]) -
         expression = _infer(processor, model, image, expression_prompt(item["goal_text"]), device, "PUBLIC_EXPRESSION")
         lexicon = _infer(processor, model, image, DOMAIN_LEXICON_PROMPT, device, "FIXED_PUBLIC_DOMAIN_LEXICON")
         v0 = dino.deterministic_nms(expression)
-        v1 = dino.deterministic_nms(expression + lexicon)
+        v1 = dino.deterministic_nms(expression + lexicon)[:UNION_MAX_CANDIDATES]
         outputs.append({
             "image_id": item["id"], "image_sha256": item["image_sha256"],
             "public_expression": item["goal_text"], "expression_prompt": expression_prompt(item["goal_text"]),
@@ -198,10 +199,12 @@ def preflight(args: argparse.Namespace) -> dict[str, Any]:
         "mechanical_base_provider_lock": base_lock,
         "arms": {
             "V0": "PUBLIC_EXPRESSION_PROPOSALS",
-            "V1": "PUBLIC_EXPRESSION_PLUS_FIXED_DOMAIN_LEXICON_PROPOSAL_UNION",
+            "V1": "PUBLIC_EXPRESSION_PLUS_FIXED_DOMAIN_LEXICON_PROPOSAL_UNION_TOP10",
         },
         "domain_lexicon": DOMAIN_LEXICON,
         "domain_lexicon_prompt": DOMAIN_LEXICON_PROMPT,
+        "union_max_candidates": UNION_MAX_CANDIDATES,
+        "union_budget_selection": "MINIMUM_K_WITH_DEVELOPMENT_UNION_RECALL_ABOVE_V0_K10_55_VS_54",
         "arm_order": ["V0", "V1"],
         "success_rule": "proposal_v1 > proposal_v0 AND correct_v1 > correct_v0 AND wrong_all_v1 <= wrong_all_v0",
         "retry_count": 0, "reruns": 0, "teacher_calls": 0,
@@ -230,7 +233,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         raise RunError("provider lock missing or union Confirmation already consumed")
     lock = json.loads(lock_path.read_text(encoding="utf-8"))
     executable, model_dir = provider_adapter.verify_provider_lock(lock["mechanical_base_provider_lock"])
-    if tuple(lock["domain_lexicon"]) != DOMAIN_LEXICON or lock["arm_order"] != ["V0", "V1"]:
+    if (
+        tuple(lock["domain_lexicon"]) != DOMAIN_LEXICON
+        or lock["union_max_candidates"] != UNION_MAX_CANDIDATES
+        or lock["arm_order"] != ["V0", "V1"]
+    ):
         raise RunError("frozen union policy drift")
     run_dir.mkdir()
     dataset_root = Path(roster_doc["dataset_root"]).resolve()
@@ -264,6 +271,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "schema_version": SCHEMA_VERSION, "roster_sha256": args.roster_sha256,
         "provider_lock_sha256": sha256_file(lock_path), "truth_authority": roster_doc["truth_authority"],
         "proposal_passes_per_observation": {"V0": 1, "V1": 2},
+        "v1_union_max_candidates": UNION_MAX_CANDIDATES,
         "brain_provider_calls": {arm: len(receipts[arm]) for arm in ("V0", "V1")},
         "provider_in_doubt": 0, "teacher_calls": 0, "retry_count": 0, "reruns": 0,
         "brain_batch_receipts": receipts, "raw_brain_decisions": decisions,

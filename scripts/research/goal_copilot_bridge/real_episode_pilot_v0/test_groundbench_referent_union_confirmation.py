@@ -5,6 +5,7 @@ from scripts.research.goal_copilot_bridge.real_episode_pilot_v0.freeze_groundben
 )
 from scripts.research.goal_copilot_bridge.real_episode_pilot_v0.run_groundbench_referent_union_confirmation import (
     DOMAIN_LEXICON,
+    UNION_MAX_CANDIDATES,
     brain_command,
     paired_verdict,
 )
@@ -15,6 +16,7 @@ class GroundBenchReferentUnionConfirmationTest(unittest.TestCase):
         self.assertEqual(len(DOMAIN_LEXICON), len(set(DOMAIN_LEXICON)))
         self.assertIn("car", DOMAIN_LEXICON)
         self.assertIn("umbrella", DOMAIN_LEXICON)
+        self.assertEqual(UNION_MAX_CANDIDATES, 10)
 
     def test_brain_prompt_is_not_passed_in_argv(self) -> None:
         command = brain_command(
