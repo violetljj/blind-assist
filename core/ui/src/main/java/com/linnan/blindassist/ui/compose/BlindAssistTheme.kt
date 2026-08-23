@@ -157,6 +157,25 @@ internal val BaHairlineSoft = Color(0xFF223239)
 internal val BaMintWash = Color(0xFF17372F)
 internal val BaSkyWash = Color(0xFF172D3D)
 
+// Home shell palette derived from the selected warm, spatial light design.
+// These tokens stay separate from the dark camera/control palette above.
+internal val BaHomeBackground = Color(0xFFF8F7F2)
+internal val BaHomeSurface = Color(0xFFFFFEFB)
+internal val BaHomeControlRail = Color(0xFFF4F3EE)
+internal val BaHomeInk = Color(0xFF071B3A)
+internal val BaHomeGreen = Color(0xFF167A50)
+internal val BaHomeCobalt = Color(0xFF1684F8)
+internal val BaHomeHairline = Color(0xFFE4E3DE)
+internal val BaHomeActionStart = Color(0xFF1A3328)
+internal val BaHomeActionEnd = Color(0xFF142A22)
+internal val BaHomeActionTextMuted = Color(0xFFB8D5C7)
+internal val BaHomeCoolWash = Color(0xFFF6F8FA)
+internal val BaHomeWarmWash = Color(0xFFFAF7F0)
+internal val BaHomeSageWash = Color(0x30DDE9D8)
+internal val BaHomeBlueWash = Color(0x42D9E9FB)
+internal val BaHomeNavInactive = Color(0xFF767A7D)
+internal val BaHomeNavIndicator = Color(0xFFEAF2E9)
+
 private val BlindAssistTypography = Typography(
     headlineLarge = androidx.compose.ui.text.TextStyle(
         fontSize = 34.sp,

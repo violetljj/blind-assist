@@ -82,7 +82,7 @@ class BlindAssistComposeTest {
         if (backDescription != null) {
             composeRule.onNodeWithContentDescription(backDescription).performClick()
             composeRule.waitUntil(timeoutMillis = 5000) {
-                hasText("功能") || hasText("Features")
+                hasText("辅助") || hasText("Assist")
             }
             Thread.sleep(1500)
         }
@@ -92,10 +92,10 @@ class BlindAssistComposeTest {
     fun mainShellBottomNavigationSwitchesTopLevelPages() {
         prepareMainShell()
 
-        composeRule.onNodeWithText("个人主页").performClick()
-        composeRule.onNodeWithText("BlindAssist 用户").assertExists()
         composeRule.onNodeWithText("设置").performClick()
         composeRule.onNodeWithText("语音提醒").assertExists()
+        composeRule.onNodeWithText("辅助").performClick()
+        composeRule.onNodeWithText("选择辅助模式").assertExists()
     }
 
     @Test
@@ -113,31 +113,29 @@ class BlindAssistComposeTest {
         openFeaturesTab()
 
         composeRule.onNodeWithTag("daily_usage_mode_selector").assertExists()
-        composeRule.onNodeWithText("使用手机摄像头").performScrollTo().performClick()
+        composeRule.onNodeWithTag("home_primary_assist").performScrollTo().performClick()
         composeRule.waitUntil(timeoutMillis = 5000) {
             hasTextOrContentDescription("返回功能页")
         }
     }
 
     @Test
-    fun featureDailyGuideAppliesCorridorModeToSettings() {
+    fun homeModeSelectorAppliesSensitiveShortcutToSettings() {
         prepareMainShell()
         openFeaturesTab()
 
-        composeRule.onNodeWithText("更换日常模式").performScrollTo().performClick()
-        composeRule.onNodeWithText("走廊通行").performScrollTo().performClick()
+        composeRule.onNodeWithContentDescription("选择灵敏辅助模式")
+            .performScrollTo()
+            .performClick()
         composeRule.onNodeWithText("设置").performClick()
 
-        composeRule.onNodeWithContentDescription("选择走廊通行使用场景，更早关注正前方持续风险")
-            .performScrollTo()
-            .assertExists()
         composeRule.onNodeWithContentDescription("选择敏感提醒档位")
             .performScrollTo()
             .assertExists()
         composeRule.onNodeWithContentDescription("选择标准语音风格，使用当前短句提醒")
             .performScrollTo()
             .assertExists()
-        composeRule.onNodeWithContentDescription("选择标准震动强度，使用默认触觉反馈")
+        composeRule.onNodeWithContentDescription("选择强震动强度，增强近处和迫近提醒")
             .performScrollTo()
             .assertExists()
     }
@@ -171,12 +169,11 @@ class BlindAssistComposeTest {
         composeRule.onNodeWithTag("language_selector").performScrollTo().assertExists()
         composeRule.onNodeWithText("English").performScrollTo().performClick()
         composeRule.onNodeWithText("Speech reminders").assertExists()
-        composeRule.onNodeWithText("Features").performClick()
+        composeRule.onNodeWithText("Assist").performClick()
         composeRule.onNodeWithTag("daily_usage_mode_selector").performScrollTo().assertExists()
-        composeRule.onNodeWithText("Change daily mode").performScrollTo().performClick()
-        composeRule.onNodeWithContentDescription("Choose Corridor daily mode, Earlier attention to sustained front risks. Profile Sensitive, scenario Corridor, speech Standard, vibration Standard, Care Mode on.")
+        composeRule.onNodeWithContentDescription("Choose Sensitive assist mode")
             .performScrollTo()
-            .assertExists()
+            .performClick()
         composeRule.onNodeWithText("Settings").performClick()
         composeRule.onNodeWithContentDescription("Choose Detailed speech style, Adds object type and avoidance guidance")
             .performScrollTo()
@@ -187,9 +184,6 @@ class BlindAssistComposeTest {
         composeRule.onNodeWithContentDescription("Choose Sensitive reminder profile")
             .performScrollTo()
             .assertExists()
-        composeRule.onNodeWithContentDescription("Choose Corridor usage scenario, Notice sustained front risks earlier")
-            .performScrollTo()
-            .assertExists()
     }
 
     @Test
@@ -197,9 +191,10 @@ class BlindAssistComposeTest {
         prepareMainShell()
         openFeaturesTab()
 
-        composeRule.onNodeWithText("更换日常模式").performScrollTo().performClick()
-        composeRule.onNodeWithText("通用日常").performScrollTo().performClick()
-        composeRule.onNodeWithText("使用手机摄像头").performScrollTo().performClick()
+        composeRule.onNodeWithContentDescription("选择日常辅助模式")
+            .performScrollTo()
+            .performClick()
+        composeRule.onNodeWithTag("home_primary_assist").performScrollTo().performClick()
         composeRule.waitUntil(timeoutMillis = 5000) {
             hasTextOrContentDescription("返回功能页")
         }
@@ -227,8 +222,8 @@ class BlindAssistComposeTest {
         composeRule.onNodeWithText("设置").performClick()
         setSettingsSwitch("settings_care_mode_toggle", enabled = false)
         setSettingsSwitch("settings_debug_toggle", enabled = true)
-        composeRule.onNodeWithText("功能").performClick()
-        composeRule.onNodeWithText("使用手机摄像头").performScrollTo().performClick()
+        composeRule.onNodeWithText("辅助").performClick()
+        composeRule.onNodeWithTag("home_primary_assist").performScrollTo().performClick()
         composeRule.waitUntil(timeoutMillis = 5000) {
             hasTextOrContentDescription("返回功能页")
         }
@@ -246,8 +241,8 @@ class BlindAssistComposeTest {
         dismissSystemCompatibilityDialogIfPresent()
         composeRule.waitUntil(timeoutMillis = 8000) {
             hasAnyText(
-                "功能",
-                "Features",
+                "辅助",
+                "Assist",
                 "开始使用 BlindAssist",
                 "Start using BlindAssist",
                 "跳过引导",
@@ -264,7 +259,7 @@ class BlindAssistComposeTest {
             composeRule.onNodeWithText("Start using").performClick()
         }
         composeRule.waitUntil(timeoutMillis = 5000) {
-            hasText("功能") || hasText("Features")
+            hasText("辅助") || hasText("Assist")
         }
         ensureChineseUi()
     }
@@ -301,11 +296,11 @@ class BlindAssistComposeTest {
     }
 
     private fun openFeaturesTab() {
-        if (!hasText("日常使用向导") && !hasText("Daily usage guide")) {
-            if (hasText("Features")) {
-                composeRule.onNodeWithText("Features").performClick()
+        if (!hasText("选择辅助模式") && !hasText("Choose assist mode")) {
+            if (hasText("Assist")) {
+                composeRule.onNodeWithText("Assist").performClick()
             } else {
-                composeRule.onNodeWithText("功能").performClick()
+                composeRule.onNodeWithText("辅助").performClick()
             }
         }
     }
@@ -323,10 +318,10 @@ class BlindAssistComposeTest {
                 hasText("语音提醒")
             }
         }
-        if (hasText("Features")) {
-            composeRule.onNodeWithText("Features").performClick()
+        if (hasText("Assist")) {
+            composeRule.onNodeWithText("Assist").performClick()
         } else {
-            composeRule.onNodeWithText("功能").performClick()
+            composeRule.onNodeWithText("辅助").performClick()
         }
     }
 
@@ -566,7 +561,7 @@ class CameraControlPanelStandaloneTest {
             }
         }
 
-        composeRule.onNodeWithText("Daily usage guide").assertIsDisplayed()
+        composeRule.onNodeWithText("Choose assist mode").assertIsDisplayed()
         composeRule.onAllNodesWithText("本地视觉辅助引擎启动中").assertCountEquals(0)
     }
 

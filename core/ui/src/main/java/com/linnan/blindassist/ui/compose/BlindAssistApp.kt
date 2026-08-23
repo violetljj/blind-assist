@@ -1,5 +1,7 @@
 package com.linnan.blindassist.ui.compose
 
+import android.app.Activity
+import android.os.Build
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.activity.compose.BackHandler
@@ -35,6 +37,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -46,11 +50,11 @@ import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material.icons.rounded.CameraAlt
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.PhoneAndroid
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Shield
 import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material.icons.rounded.Vibration
@@ -74,6 +78,8 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -88,6 +94,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -100,6 +107,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.view.WindowCompat
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
 import com.linnan.blindassist.feedback.SpeechStyle
@@ -120,6 +128,13 @@ fun BlindAssistApp(
 ) {
     BackHandler(enabled = state.cameraActive) {
         actions.runtime.onCloseCamera()
+    }
+
+    if (state.cameraActive || state.showOnboarding || state.showGlassesCenter) {
+        SystemBarAppearance(
+            darkStatusIcons = false,
+            darkNavigationIcons = false
+        )
     }
 
     Surface(
@@ -168,6 +183,7 @@ fun BlindAssistApp(
                         fieldTestSummary = state.fieldTestSummary,
                         modelStatus = state.modelStatus,
                         appVersion = state.appVersion,
+                        glassesState = state.glassesSimulator,
                         onOpenCamera = actions.runtime.onOpenCamera,
                         onShowGlassesCenter = actions.navigation.onShowGlassesCenter,
                         onSpeechChange = actions.runtime.onSpeechChange,
@@ -179,6 +195,8 @@ fun BlindAssistApp(
                         onSpeechStyleChange = actions.runtime.onSpeechStyleChange,
                         onVibrationStrengthChange = actions.runtime.onVibrationStrengthChange,
                         onDailyUsageModeChange = actions.runtime.onDailyUsageModeChange,
+                        onQuietShortcut = actions.runtime.onQuietShortcut,
+                        onSensitiveShortcut = actions.runtime.onSensitiveShortcut,
                         onLanguageChange = actions.runtime.onLanguageChange,
                         onShowOnboarding = actions.navigation.onShowOnboarding
                     )
@@ -222,6 +240,7 @@ private fun MainShell(
     fieldTestSummary: FieldTestSummaryUiState,
     modelStatus: String,
     appVersion: String,
+    glassesState: GlassesSimulatorUiState,
     onOpenCamera: () -> Unit,
     onShowGlassesCenter: () -> Unit,
     onSpeechChange: (Boolean) -> Unit,
@@ -233,6 +252,8 @@ private fun MainShell(
     onSpeechStyleChange: (SpeechStyle) -> Unit,
     onVibrationStrengthChange: (VibrationStrength) -> Unit,
     onDailyUsageModeChange: (DailyUsageMode) -> Unit,
+    onQuietShortcut: () -> Unit,
+    onSensitiveShortcut: () -> Unit,
     onLanguageChange: (AppLanguage) -> Unit,
     onShowOnboarding: () -> Unit,
     modifier: Modifier = Modifier
@@ -240,42 +261,71 @@ private fun MainShell(
     var selectedTab by rememberSaveable { mutableStateOf(BottomTab.Features.name) }
     val tabs = BottomTab.entries
     val language = controls.appLanguage
+    val currentTab = tabs.firstOrNull { it.name == selectedTab } ?: BottomTab.Features
+
+    SystemBarAppearance(
+        darkStatusIcons = currentTab == BottomTab.Features,
+        darkNavigationIcons = true
+    )
+
+    LaunchedEffect(selectedTab) {
+        if (selectedTab != currentTab.name) selectedTab = currentTab.name
+    }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = BaNight,
+        containerColor = if (currentTab == BottomTab.Features) BaHomeBackground else BaNight,
         bottomBar = {
-            NavigationBar(
-                containerColor = BaPanel,
-                contentColor = BaText,
-                tonalElevation = 0.dp
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .padding(horizontal = 22.dp, vertical = 10.dp)
             ) {
-                tabs.forEach { tab ->
-                    NavigationBarItem(
-                        selected = selectedTab == tab.name,
-                        onClick = { selectedTab = tab.name },
-                        icon = {
-                            Icon(
-                                imageVector = tab.icon,
-                                contentDescription = tab.label(language),
-                                modifier = Modifier.size(24.dp)
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = BaHomeSurface.copy(alpha = 0.97f),
+                    contentColor = BaHomeInk,
+                    shape = RoundedCornerShape(26.dp),
+                    shadowElevation = 12.dp,
+                    tonalElevation = 0.dp
+                ) {
+                    NavigationBar(
+                        modifier = Modifier.height(78.dp),
+                        containerColor = Color.Transparent,
+                        contentColor = BaHomeInk,
+                        tonalElevation = 0.dp,
+                        windowInsets = WindowInsets(0, 0, 0, 0)
+                    ) {
+                        tabs.forEach { tab ->
+                            NavigationBarItem(
+                                selected = currentTab == tab,
+                                onClick = { selectedTab = tab.name },
+                                icon = {
+                                    Icon(
+                                        imageVector = tab.icon,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(26.dp)
+                                    )
+                                },
+                                label = {
+                                    Text(
+                                        tab.label(language),
+                                        maxLines = 1,
+                                        style = MaterialTheme.typography.labelLarge,
+                                        fontWeight = if (currentTab == tab) FontWeight.Bold else FontWeight.Medium
+                                    )
+                                },
+                                colors = NavigationBarItemDefaults.colors(
+                                    selectedIconColor = BaHomeGreen,
+                                    selectedTextColor = BaHomeGreen,
+                                    indicatorColor = BaHomeNavIndicator,
+                                    unselectedIconColor = BaHomeNavInactive,
+                                    unselectedTextColor = BaHomeNavInactive
+                                )
                             )
-                        },
-                        label = {
-                            Text(
-                                tab.label(language),
-                                maxLines = 1,
-                                style = MaterialTheme.typography.labelMedium
-                            )
-                        },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = BaInk,
-                            selectedTextColor = BaText,
-                            indicatorColor = BaMint,
-                            unselectedIconColor = BaTextMuted,
-                            unselectedTextColor = BaTextMuted
-                        )
-                    )
+                        }
+                    }
                 }
             }
         }
@@ -285,18 +335,17 @@ private fun MainShell(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            when (BottomTab.valueOf(selectedTab)) {
+            when (currentTab) {
                 BottomTab.Features -> FeatureScreen(
                     controls = controls,
                     modelStatus = modelStatus,
                     appVersion = appVersion,
                     onOpenCamera = onOpenCamera,
                     onShowGlassesCenter = onShowGlassesCenter,
-                    onDailyUsageModeChange = onDailyUsageModeChange
-                )
-                BottomTab.Profile -> ProfileScreen(
-                    controls = controls,
-                    appVersion = appVersion
+                    onDailyUsageModeChange = onDailyUsageModeChange,
+                    glassesConnectionState = glassesState.connectionState,
+                    onQuietShortcut = onQuietShortcut,
+                    onSensitiveShortcut = onSensitiveShortcut
                 )
                 BottomTab.Settings -> SettingsScreen(
                     controls = controls,
@@ -317,15 +366,32 @@ private fun MainShell(
     }
 }
 
+@Composable
+private fun SystemBarAppearance(
+    darkStatusIcons: Boolean,
+    darkNavigationIcons: Boolean
+) {
+    val view = LocalView.current
+    SideEffect {
+        val window = (view.context as? Activity)?.window ?: return@SideEffect
+        WindowCompat.getInsetsController(window, view).apply {
+            isAppearanceLightStatusBars = darkStatusIcons
+            isAppearanceLightNavigationBars = darkNavigationIcons
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.isNavigationBarContrastEnforced = false
+        }
+    }
+}
+
 
 private enum class BottomTab(
     private val zhLabel: String,
     private val enLabel: String,
     val icon: ImageVector
 ) {
-    Features("功能", "Features", Icons.Rounded.Home),
-    Profile("个人主页", "Profile", Icons.Rounded.Person),
-    Settings("设置", "Settings", Icons.Rounded.Settings);
+    Features("辅助", "Assist", Icons.Outlined.Home),
+    Settings("设置", "Settings", Icons.Outlined.Settings);
 
     fun label(language: AppLanguage): String {
         return if (language == AppLanguage.EN) enLabel else zhLabel
