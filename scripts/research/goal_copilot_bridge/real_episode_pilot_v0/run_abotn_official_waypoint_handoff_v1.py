@@ -193,7 +193,7 @@ def freeze(
             "task_id": task_id,
             "episode_id": f"abotn-{scene_id}-{task_id.replace('_', '-')}",
             "goal_name": goal_name,
-            "rule": "EXPLICIT_FRESH_CACHED_SCENE_TASK_AFTER_TRAJ_0_AND_TRAJ_1_CONSUMED",
+            "rule": "EXPLICIT_FRESH_CACHED_SCENE_TASK_NOT_PREVIOUSLY_CONSUMED",
         },
         "inputs": {
             "annotation_path": str(annotation.resolve()),
