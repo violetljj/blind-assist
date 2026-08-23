@@ -171,3 +171,34 @@ fresh public task. It is not evidence of a functional entrance selection, visual
 collision safety, or episode completion. The sealed first-failure class is
 `METRIC_ARRIVAL_WITHOUT_VISUAL_HANDOFF`. `traj_5` must not be rerun or retrospectively extended with the skipped
 terminal observation.
+
+## Terminal-frame reobservation bring-up (`traj_6` and `traj_7`)
+
+The `traj_5` termination sequence exposed an adapter mismatch: the official evaluator rendered the post-action
+arrival frame but stopped before the current-frame controller could process it. Commit
+`990121aa5e31bd500a26475dc6f372037533c23c` added one prospectively selectable adapter rule for future tasks:
+after a normal official terminal, process that already-rendered current front exactly once when the provider is
+still non-terminal, and discard any resulting motion command. Provider input remains current front RGB plus public
+POI name; the provider receives no metric-arrival bit, pose, distance, map, or history.
+
+The first two fresh tasks selected for this adapter yielded setup-only failures and no algorithm evidence:
+
+| Task | Formal failure | Provider / teacher / in-doubt | Scientific outcome |
+| --- | --- | ---: | --- |
+| `traj_6` (`云唐超市`) | local official evaluator import lacked `scipy` after formal start | `0 / 0 / 0` | `NOT_EVALUABLE_SETUP_RUNTIME` |
+| `traj_7` (`五金建材`) | renderer base URL was supplied instead of the required `/render_gs` endpoint | `0 / 0 / 0` | `NOT_EVALUABLE_RENDER_ENDPOINT` |
+
+Neither task was rerun. The runner was then tightened so official imports, scene loading, and evaluator construction
+finish before formal output creation (`acf93213f9f7a73866061cd71c47c00bd52513d4`), and a non-`/render_gs` URL now
+fails before the formal boundary while zero-provider official runtime failures seal cleanly
+(`fc9c740e523609b1c76dbf19fe5cca6b6d58b925`).
+
+- `traj_6` freeze / terminal receipt SHA-256:
+  `7302bbc20316e2e959447a3c46de35d702d1522d6bafaec9cbf430287409299b` /
+  `426342c90c52b0fd897bde3f3fc9d8d4760ccd0f97bda166a4cb81e0af328d39`.
+- `traj_7` freeze / terminal receipt SHA-256:
+  `b2d0acc32eced7014b72dabd2e96e9107aaec36f6458156c7992b7d448d31691` /
+  `6740b91709c5d798aebe288424e17d9e225073c176891ce439af38b388f40f11`.
+
+The terminal-frame hypothesis therefore remained unevaluated after these two setup failures; they must not be
+counted as negative handoff outcomes.
