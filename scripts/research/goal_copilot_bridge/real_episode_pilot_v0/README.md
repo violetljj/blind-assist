@@ -233,6 +233,15 @@ grounding fell `47 -> 46` and all wrong commitments rose `13 -> 16`; maximum V1 
 verdict is `DOMAIN_LEXICON_PROPOSAL_UNION_NOT_SUPPORTED`. No reserve activation or same-cohort rescue is permitted;
 static COCO evidence does not authorize approach, control, range/bearing, arrival, `LOST`, P1, safety, or product claims.
 
+Two candidate-level successors were then gated without reusing a Confirmation outcome. Zero-shot CLIP exact-crop,
+expanded-crop, focused-context, and dual-view reranking all failed to improve Rank@1 on the consumed first 89, so no
+fresh call was authorized for that route. A separately frozen 21-feature relational ranker trained on consumed
+positions 1--217 and improved held-out 218--281 Rank@1 `37 -> 41`, authorizing positions 282--345. On that fresh paired
+64, V0/V1 used identical candidate sets. The ranker improved correct grounding `41 -> 42`, wrong-all `20 -> 18`, and
+MRR `0.7736 -> 0.7877`, but fresh Rank@1 tied `33 -> 33`; therefore the frozen mechanism clause failed and the verdict
+is `RELATIONAL_CANDIDATE_RANKER_NOT_SUPPORTED`. The final eight identities remain untouched; no gate/model/feature
+rescue, P1, or approach/product claim follows.
+
 ```powershell
 python -m unittest `
   scripts.research.goal_copilot_bridge.selective_guidance_v0.test_contract `

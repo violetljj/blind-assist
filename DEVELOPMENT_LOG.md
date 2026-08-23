@@ -5156,3 +5156,18 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
 - 冻结 gate 因此输出 `CLIP_CANDIDATE_VERIFIER_DEVELOPMENT_NOT_PROMISING`；新增 Brain/teacher calls=`0/0`，没有
   冻结、下载或调用 positions 282--345，剩余 72 identities 保持未消费。此结果关闭 zero-shot CLIP crop/context
   reranking，不外推到 learned relational verifier，也不授权 P1 或产品 claim。
+
+# 2026-08-23 GroundBench learned relational-ranker Confirmation
+
+- 新假设不再直接用 zero-shot CLIP 排序，而是固定 21 个 public candidate 特征：DINO score/rank、四个冻结 CLIP
+  crop/context score、normalized geometry、left/right/top/bottom/size/depth relation interaction；pairwise logistic
+  regression `C=1/liblinear/random_state=0`，无超参搜索。positions 1--217 训练，已消费 218--281 独立 holdout。
+- holdout 57 个 usable-proposal observations 上，Rank@1 `37->41`、MRR `0.8026->0.8509`，通过 outcome 前冻结 gate；
+  此后才冻结/download positions 282--345，64/64 COCO pixels 与 manifest SHA 一致，末尾 8 identities 保持 reserve。
+- fresh paired Confirmation 保持 expression-only candidate set 完全相同，只改变 frozen rank order；16/16 stdin Brain
+  batches 一次成功，`in_doubt/teacher/retry/rerun=0/0/0/0`，public input private-literal hits=0。
+- fresh V0 对 V1：proposal `52=52`、Rank@1 `33=33`、MRR `0.7736->0.7877`、correct `41->42`、wrong-all
+  `20->18`、selection accuracy `78.8%->80.8%`、commitment accuracy `67.2%->70.0%`。端到端小幅正向，但预冻结
+  success rule 要求 Rank@1 严格增加；机制未复现，正式 verdict `RELATIONAL_CANDIDATE_RANKER_NOT_SUPPORTED`。
+- 不用最后 8 条补样，不改 gate/feature/model/threshold，不重跑。结果不授权该 ranker 为 V1，也不外推 approach、
+  control、range/bearing、arrival、LOST、P1、安全或产品有效性。

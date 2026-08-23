@@ -1,6 +1,6 @@
 # BlindAssist GroundBench referent result
 
-Status: `SEALED / PUBLIC_DATASET_DERIVED_GT_STRONG / DOMAIN_LEXICON_PROPOSAL_UNION_NOT_SUPPORTED / NO_RERUN / NO_P1`
+Status: `SEALED / PUBLIC_DATASET_DERIVED_GT_STRONG / PROPOSAL_UNION_NOT_SUPPORTED / RELATIONAL_RANKER_NOT_SUPPORTED / NO_RERUN / NO_P1`
 
 ## Source and authority
 
@@ -120,9 +120,45 @@ context. Selection was maximum Recall@1, then MRR, then fixed variant order. No 
 | Expanded crop + focused context | 44 | 69 | 77 | 0.7470 |
 
 The selected exact-crop variant tied rather than exceeded provider Rank@1 and reduced MRR. It therefore failed the
-predeclared gate and was sealed `CLIP_CANDIDATE_VERIFIER_DEVELOPMENT_NOT_PROMISING`. Positions 282--345 were not
-frozen or downloaded, Confirmation provider calls remained zero, and all 72 remaining identities stay untouched.
-This rejects zero-shot CLIP crop/focused-context reranking, not learned relational verification in general.
+predeclared gate and was sealed `CLIP_CANDIDATE_VERIFIER_DEVELOPMENT_NOT_PROMISING`. Under that zero-shot hypothesis,
+positions 282--345 were not frozen or downloaded, Confirmation provider calls remained zero, and all 72 remaining
+identities stayed untouched. This rejects zero-shot CLIP crop/focused-context reranking, not learned relational
+verification in general.
+
+## Learned relational-ranker Confirmation
+
+A separate fixed ranker then combined provider score/rank, the frozen CLIP scores, normalized candidate geometry,
+and fixed expression-relation interactions such as left/right/top/bottom. Pairwise logistic regression with 21 fixed
+features and no hyperparameter search trained only on consumed positions 1--217. Consumed positions 218--281 were a
+held-out Development block: on 57 usable-proposal observations, Rank@1 improved `37 -> 41` and MRR improved
+`0.8026 -> 0.8509`, passing the frozen authorization gate.
+
+Only then were fresh positions 282--345 frozen and their 64 COCO pixels hash-verified. V0 and V1 used exactly the same
+expression-only candidates; V1 changed only candidate order using the frozen ranker. All 16 Brain batches succeeded
+once through stdin, with `in_doubt/teacher/retry/rerun = 0/0/0/0`; public inputs had zero private-truth literal hits.
+
+| Fresh Confirmation metric | V0 | Relational ranker V1 |
+|---|---:|---:|
+| Proposal availability | 52/64 | 52/64 |
+| Recall@1 / @3 / @5 / @10 | 33 / 48 / 51 / 52 | 33 / 48 / 50 / 52 |
+| MRR given usable proposal | 0.7736 | 0.7877 |
+| Correct grounding | 41 | 42 |
+| Wrong confident guidance over all observations | 20/64 | 18/64 |
+| Selection accuracy given usable proposal | 78.8% | 80.8% |
+| Commitment accuracy | 67.2% | 70.0% |
+
+The end-to-end direction was mildly favorable, but the predeclared candidate mechanism did not reproduce: Rank@1
+was tied `33 -> 33`. The strict success rule required Rank@1 improvement in addition to more correct grounding and no
+increase in wrong guidance. Formal verdict:
+
+```text
+RELATIONAL_CANDIDATE_RANKER_NOT_SUPPORTED
+```
+
+The roster SHA-256 is `a0c16097f7d234089c9aa489bcc9a9cd702a2c7507c3b6184912f2756c51812a`. The report file SHA-256 is
+`3e3ad6b9e1fc190527733bc42f03112b2ff9b47ebbfe0ddf50d61d46e0966c3f`; its content SHA-256 is
+`671b3abd1239b763fd6d4551a21c059657f7803530cdd699beb3236290937445`. The final eight source identities remain
+untouched; they cannot be used to relax the gate or rescue this cohort.
 
 ## Claim ceiling
 
