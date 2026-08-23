@@ -5074,3 +5074,20 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
 - 因而先前 `CURRENT_FRAME_GROUNDING_BOTTLENECK` 不能再单独归因 provider semantic selection；但这不证明 provider
   在官方 pixels 上成功，也不建立 functional entrance-region truth、`PROPOSAL_MISS` versus referent selection 或
   algorithm accuracy。封存 episode 仍禁止 replay；如继续只能另开 fresh prospective official-pixel episode，不建立 P1。
+
+# 2026-08-23 ABotN fresh official-pixel V0 prospective episode
+
+- 在看到该 task pixels/provider output 前，固定选择全 annotations 中排除已用 episode 后路径序第一项
+  `20260212121852/traj_0`（麦当劳）；冻结 73 poses、365 action nodes、native metric endpoint/trajectory truth、
+  unchanged Grounding DINO Tiny + Terra provider lock、15-observation 上限与 no-rerun。最短 5 steps 可进入 2 m domain。
+- RTX 4090 D worker 上固定官方 renderer `2a0aefb5`；824,762,236-byte PLY full SHA-256=`d86bdf…346d` 后才启动
+  server。365/365 个 720×640 official frames、365 unique hashes、server HTTP 200 POST=`365`、render in_doubt=0；
+  provider 前 5 个固定 ORB turn checks 全通过，public/private literal hits=0。
+- 唯一 sealed V0 调用 5 次、brain attempts=5、in_doubt=0，状态为 `ABSTAIN -> GROUNDED -> ABSTAIN -> ABSTAIN ->
+  ABSTAIN`。唯一 `FORWARD` 从 pose 1 到 pose 15，使 native endpoint distance 下降 2.031 m；含非 instruction 的
+  `RESCAN_HOLD -> next source pose` 后总进展 2.465 m。终距 7.738 m、未进入 2 m arrival、completion=false、
+  false-arrival=false，终态 `ABOTN_OFFICIAL_V0_PARTIAL_METRIC_PROGRESS_NO_GOAL_SUCCESS`。
+- 这证明 unchanged V0 曾发出一次对 metric goal 有正进展的指导，随后 current-frame reliability 失败；不证明选中的
+  entrance region 正确。provider 的 `GROUNDED -> ABSTAIN` 不能自证 functional visibility，因此
+  `LOST_AFTER_VISIBLE=NOT_EVALUABLE_NO_FUNCTIONAL_PIXEL_VISIBILITY_TRUTH`；proposal miss、referent selection、
+  wrong-confident guidance、range/bearing 均未建立。禁止调参/rerun/P1；dominance 需要另行冻结 fresh cohort。

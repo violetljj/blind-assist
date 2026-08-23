@@ -1,6 +1,6 @@
 # Public-real episode mining + selective-guidance pilot V0
 
-状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_OFFICIAL_RENDER_CANARY_PASS / ABOTN_SEALED_FAILURE_RENDERER_CONFOUNDED / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_OFFICIAL_RENDER_CANARY_PASS / ABOTN_SEALED_FAILURE_RENDERER_CONFOUNDED / ABOTN_FRESH_OFFICIAL_V0_PARTIAL_METRIC_PROGRESS_NO_GOAL_SUCCESS / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 This package automatically converts public real-world sequence metadata into goal-driven approach episodes, reuses
 frozen current-frame provider output, applies Selective Guidance V0, and evaluates only truth-supported denominators.
@@ -152,6 +152,23 @@ provider rationales independently cite obscured, indistinct, or blurred input. T
 semantic selection. It does not establish provider success on official pixels, functional entrance-region truth,
 proposal miss versus referent selection, or accuracy. Any later provider run must be a fresh prospective official-pixel
 episode, never a replay of the sealed episode.
+
+A fresh prospective successor then selected the lexicographically first unused task before seeing its pixels or any
+provider output: `20260212121852/traj_0` (`麦当劳`). It froze 73 source poses, 365 action nodes, the unchanged provider
+lock, native metric endpoint truth, and a maximum of 15 observations. The official renderer produced 365/365 unique
+720x640 frames with exactly 365 successful server POSTs and zero provider calls before qualification. All five fixed
+ORB turn-direction checks passed and the private endpoint/distance literals remained absent from the public graph and
+provider inputs.
+
+The one-shot unchanged V0 made five provider calls with zero `in_doubt`: `ABSTAIN -> GROUNDED -> ABSTAIN -> ABSTAIN ->
+ABSTAIN`. Its single `FORWARD` instruction reduced native endpoint distance by 2.031 m; total terminal progress was
+2.465 m after separating the simulator's non-instruction `RESCAN_HOLD -> next source pose` updates. The episode stopped
+at 7.738 m, outside the 2 m arrival domain, with no completion or false arrival. The terminal is therefore
+`ABOTN_OFFICIAL_V0_PARTIAL_METRIC_PROGRESS_NO_GOAL_SUCCESS`. Functional entrance-region truth is still absent, so the
+one provider commitment cannot establish selection correctness, and the later abstentions cannot self-authorize a
+`VISIBLE -> NOT_VISIBLE_AFTER_VISIBLE` transition. `PROPOSAL_MISS`, referent selection, wrong-confident guidance,
+`LOST_AFTER_VISIBLE`, and range/bearing bottlenecks remain unsupported. No tuning, rerun, P1, or product claim follows;
+dominance requires a separately frozen fresh cohort.
 
 ```powershell
 python -m unittest `
