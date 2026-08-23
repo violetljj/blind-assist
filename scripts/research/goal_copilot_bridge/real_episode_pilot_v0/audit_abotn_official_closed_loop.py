@@ -105,6 +105,7 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
     private_nodes = {row["node_id"]: row for row in private["nodes"]}
     trajectory = run["action_state_trajectory"]
     action_progress = []
+    rejected_unexecuted_action_attempts = []
     for index, row in enumerate(trajectory):
         action = row.get("action")
         if action is None:
@@ -112,7 +113,19 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
         source_id = row["node_id"]
         target_id = public_nodes[source_id]["actions"].get(action)
         if target_id is None:
-            raise ValueError("sealed action has no frozen graph edge")
+            if (
+                index != len(trajectory) - 1
+                or run["episode"].get("failure_class")
+                != "CONTROL_POLICY_BOTTLENECK_ACTION_EXHAUSTED"
+            ):
+                raise ValueError("sealed action has no frozen graph edge")
+            rejected_unexecuted_action_attempts.append({
+                "sequence": index + 1,
+                "action": action,
+                "source_node_id": source_id,
+                "reason": "FROZEN_GRAPH_EDGE_UNAVAILABLE_ACTION_NOT_EXECUTED",
+            })
+            continue
         source_distance = float(private_nodes[source_id]["distance_to_goal_m"])
         target_distance = float(private_nodes[target_id]["distance_to_goal_m"])
         action_progress.append({
@@ -179,6 +192,7 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
             "episode_completion": episode["episode_completion"],
             "false_arrival": episode["false_arrival"],
             "action_progress": action_progress,
+            "rejected_unexecuted_action_attempts": rejected_unexecuted_action_attempts,
         },
         "provider_behavior": {
             "statuses": provider_statuses,
