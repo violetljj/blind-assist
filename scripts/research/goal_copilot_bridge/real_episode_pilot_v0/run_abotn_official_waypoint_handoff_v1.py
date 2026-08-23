@@ -534,6 +534,8 @@ def run(*, freeze_path: Path, output_dir: Path, render_url: str) -> dict[str, An
     frozen = json.loads(freeze_path.read_text(encoding="utf-8"))
     if frozen.get("schema_version") != FREEZE_SCHEMA:
         raise ValueError("official waypoint freeze schema mismatch")
+    if not render_url.rstrip("/").endswith("/render_gs"):
+        raise ValueError("render URL must name the official /render_gs endpoint")
     if output_dir.exists():
         raise ValueError("formal output already exists; rerun is forbidden")
     inputs = frozen["inputs"]
@@ -655,22 +657,24 @@ def run(*, freeze_path: Path, output_dir: Path, render_url: str) -> dict[str, An
         raise ValueError("official evaluator did not return exactly one frozen task result")
 
     private_hits: list[str] = []
-    for call_dir in sorted((output_dir / "provider-calls").iterdir()):
-        prompt = (call_dir / "brain-prompt.txt").read_text(encoding="utf-8")
-        private_hits.extend(name for name in PRIVATE_FIELD_NAMES if name in prompt)
+    provider_calls_root = output_dir / "provider-calls"
+    if provider_calls_root.is_dir():
+        for call_dir in sorted(provider_calls_root.iterdir()):
+            prompt = (call_dir / "brain-prompt.txt").read_text(encoding="utf-8")
+            private_hits.extend(name for name in PRIVATE_FIELD_NAMES if name in prompt)
     if private_hits:
         raise ValueError(f"evaluator-private field name leaked to provider prompt: {sorted(set(private_hits))}")
     result = results[0]
     state = agent.state
-    if state is None:
-        raise ValueError("official evaluator returned without a provider observation")
     official_success = bool(result.get("success"))
-    handoff_ready = state.state == HANDOFF_READY
-    distance = float(result["distance_to_goal"])
+    handoff_ready = state is not None and state.state == HANDOFF_READY
+    distance = float(result.get("distance_to_goal", math.inf))
     if handoff_ready and distance <= HANDOFF_DISTANCE_LIMIT_M:
         failure_class = None
     elif handoff_ready:
         failure_class = "CONTROL_POLICY_BOTTLENECK_PREMATURE_HANDOFF"
+    elif state is None:
+        failure_class = "NOT_EVALUABLE_OFFICIAL_EVALUATOR_RUNTIME"
     elif official_success:
         failure_class = "METRIC_ARRIVAL_WITHOUT_VISUAL_HANDOFF"
     elif state.reliable_observation_count == 0:
@@ -681,7 +685,7 @@ def run(*, freeze_path: Path, output_dir: Path, render_url: str) -> dict[str, An
         "schema_version": f"{SCHEMA}_evaluation_v0",
         "episode_id": frozen["selection"]["episode_id"],
         "official_result": result,
-        "terminal_control_state": state.state,
+        "terminal_control_state": state.state if state is not None else None,
         "terminal_metric_arrival": official_success,
         "handoff_ready": handoff_ready,
         "handoff_within_frozen_distance_limit": handoff_ready and distance <= HANDOFF_DISTANCE_LIMIT_M,
