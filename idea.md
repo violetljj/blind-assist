@@ -23,6 +23,7 @@
 
 - 状态：`PENDING_CANDIDATE_POOL / NOT_AN_ACTIVE_ROUTE / NO_EXECUTION_AUTHORITY`。
 - 逐项精读：[30 项论文、算法与项目精读笔记](docs/research/dynamic-travel-risk/DYNAMIC_TRAVEL_RISK_30_DEEP_READING_2026-08-24.md)，逐项记录核心机制、实验、核心价值、读后判断和不可迁移边界；精读不建立执行或生产 authority。
+- 新增筛选精读：[DR31–DR40 十项补充笔记](docs/research/dynamic-travel-risk/DYNAMIC_TRAVEL_RISK_ADDITIONAL_10_DEEP_READING_2026-08-24.md)，先与原 30 项及仓库既有路线去重；正式补入身体部位碰撞、概率风险、目标行人未来、安静车辆人因证据和选择性输出，并记录被替换候选与原因。
 - 问题：如何从“检测到物体”转向“有证据表明目标正在进入用户的短期路径，或输入已不足以做决定”，并只在需要行动时提醒。
 - 检索与筛选：用 Exa 在 24 个不同搜索面审阅了 `327` 个结果槽位（包含重叠，不等于 327 个独立来源）；只保留论文页、作者/机构项目页、官方仓库或官方数据页。同一论文与官方仓库合并为一项；排除了排行榜文章、纯厂商宣传和只提供通用检测 AP 而没有事件/路径/不确定接口的工作。
 - 与已有资料的关系：已与 [USTRF 前沿论文指南](docs/research/ustrf-sc/USTRF_FRONTIER_PAPER_GUIDE_2026-07-22.md) 去重和交叉核对。本表只是待决候选池，不恢复已关闭的 USTRF 路线，也不把汽车/机器人指标写成助盲证据。
