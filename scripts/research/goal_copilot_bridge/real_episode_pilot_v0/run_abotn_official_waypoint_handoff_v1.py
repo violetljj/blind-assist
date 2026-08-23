@@ -45,6 +45,7 @@ TURN_DEG = 12.0
 FIXED_TURN_V0 = "FIXED_TURN_V0"
 BEARING_AWARE_TURN_V1 = "BEARING_AWARE_TURN_V1"
 BEARING_COUPLED_SERVO_V1 = "BEARING_COUPLED_SERVO_V1"
+POST_ACTION_TERMINAL_REOBSERVATION_V1 = "POST_ACTION_TERMINAL_REOBSERVATION_V1"
 VISUAL_SERVO_STEP = "VISUAL_SERVO_STEP"
 CAMERA_WIDTH_PX = 720.0
 CAMERA_CX_PX = 360.0
@@ -235,6 +236,7 @@ def freeze(
     *, repo_root: Path, official_repo: Path, annotations_root: Path,
     maps_root: Path, scene_id: str, task_id: str, point_cloud: Path,
     provider_lock_path: Path, output_path: Path, control_policy: str = FIXED_TURN_V0,
+    terminal_reobservation: bool = False,
 ) -> dict[str, Any]:
     if output_path.exists():
         raise ValueError("freeze output already exists")
@@ -299,6 +301,10 @@ def freeze(
             "teacher_calls": 0,
             "episode_reruns": 0,
             "completion_authority_receipt_present": False,
+            "terminal_current_frame_reobservation": (
+                POST_ACTION_TERMINAL_REOBSERVATION_V1 if terminal_reobservation else None
+            ),
+            "terminal_reobservation_action_execution": False,
         },
         "firewall": {
             "provider_visible": ["current_true_front_rgb", "poi_name"],
@@ -368,6 +374,7 @@ def _agent_class(official: Mapping[str, Any]) -> type:
             self.trajectory: list[dict[str, Any]] = []
             self.call_audits: list[dict[str, Any]] = []
             self.goal_name = ""
+            self.observation_only = False
 
         def reset(self) -> None:
             self.state = None
@@ -442,10 +449,12 @@ def _agent_class(official: Mapping[str, Any]) -> type:
             )
             event = dict(event) | {
                 "requested_environment_action": requested_action,
-                "environment_action": action,
-                "environment_turn_degrees": turn_degrees,
+                "environment_action": None if self.observation_only else action,
+                "environment_turn_degrees": None if self.observation_only else turn_degrees,
                 "official_step_count": step_count,
                 "official_stop_bit_is_completion_claim": False,
+                "terminal_reobservation": self.observation_only,
+                "environment_action_applied": not self.observation_only,
             }
             _append_jsonl(self.events_path, event)
             self.trajectory.append({
@@ -454,8 +463,15 @@ def _agent_class(official: Mapping[str, Any]) -> type:
                 "p0_status": event["p0_status"],
                 "from_state": event["from_state"],
                 "to_state": event["to_state"],
-                "action": action,
+                "action": None if self.observation_only else action,
             })
+            if self.observation_only:
+                return WaypointPrediction(
+                    waypoint=np.array([[0.0, 0.0]], dtype=np.float32),
+                    directions=np.array([[1.0, 0.0]], dtype=np.float32),
+                    arrive=True,
+                    extra={"control_state": self.state.state, "completion_claim": False},
+                )
             waypoint, directions, stop_request = _action_prediction(
                 action, turn_degrees=turn_degrees
             )
@@ -467,6 +483,49 @@ def _agent_class(official: Mapping[str, Any]) -> type:
             )
 
     return CurrentFrameWaypointAgent
+
+
+def _terminal_reobservation_evaluator_class(base_evaluator: type) -> type:
+    class TerminalReobservationPoiGoalEvaluator(base_evaluator):
+        """Expose the already-rendered terminal frame without applying another action."""
+
+        def _evaluate_task(
+            self, agent: Any, episode: Any, task: Any, short_memory: Any,
+            episode_dir: str,
+        ) -> dict[str, Any]:
+            result = super()._evaluate_task(agent, episode, task, short_memory, episode_dir)
+            normal_terminal = result.get("status") in {"stop", "max_steps", "collision"}
+            state = getattr(getattr(agent, "state", None), "state", None)
+            provider_terminal = state in {
+                State.COMPLETE.value, State.ABSTAIN.value, HANDOFF_READY
+            }
+            if not normal_terminal or provider_terminal:
+                result["terminal_current_frame_reobserved"] = False
+                return result
+
+            point_path = self._build_pointgoal_path(task)
+            goal_xy = np.array(
+                [point_path[-1]["x"], point_path[-1]["y"]], dtype=np.float32
+            )
+            observation = self._build_poi_observation(
+                episode=episode,
+                short_memory=short_memory,
+                goal_xy=goal_xy,
+                step_count=int(result["steps"]),
+                poi_name=getattr(task, "goal_label", None) or "unknown",
+            )
+            agent.observation_only = True
+            try:
+                agent.predict(observation)
+            finally:
+                agent.observation_only = False
+            result["terminal_current_frame_reobserved"] = True
+            self._save_task_result(
+                result, os.path.join(episode_dir, task.task_id)
+            )
+            return result
+
+    return TerminalReobservationPoiGoalEvaluator
 
 
 def run(*, freeze_path: Path, output_dir: Path, render_url: str) -> dict[str, Any]:
@@ -553,7 +612,12 @@ def run(*, freeze_path: Path, output_dir: Path, render_url: str) -> dict[str, An
         episode_id=frozen["selection"]["episode_id"],
         control_policy=frozen["execution"].get("control_policy", FIXED_TURN_V0),
     )
-    evaluator = official["PoiGoalEvaluator"](
+    Evaluator = official["PoiGoalEvaluator"]
+    if frozen["execution"].get("terminal_current_frame_reobservation") == (
+        POST_ACTION_TERMINAL_REOBSERVATION_V1
+    ):
+        Evaluator = _terminal_reobservation_evaluator_class(Evaluator)
+    evaluator = Evaluator(
         scene=scene,
         renderer=renderer,
         config=config,
@@ -625,6 +689,9 @@ def run(*, freeze_path: Path, output_dir: Path, render_url: str) -> dict[str, An
         "failure_class": failure_class,
         "selection_accuracy": "NOT_EVALUABLE_FUNCTIONAL_PIXEL_REGION_MISSING",
         "collision_outcome": frozen["substrate"]["collision_claim"],
+        "terminal_current_frame_reobserved": bool(
+            result.get("terminal_current_frame_reobserved", False)
+        ),
     }
     _atomic_json(output_dir / "evaluation.json", evaluation)
     journal = json.loads((output_dir / "provider-journal.json").read_text(encoding="utf-8"))
@@ -676,6 +743,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         choices=(FIXED_TURN_V0, BEARING_AWARE_TURN_V1, BEARING_COUPLED_SERVO_V1),
         default=FIXED_TURN_V0,
     )
+    freeze_parser.add_argument("--terminal-reobservation", action="store_true")
     run_parser = subparsers.add_parser("run")
     run_parser.add_argument("--freeze", type=Path, required=True)
     run_parser.add_argument("--output-dir", type=Path, required=True)
@@ -693,6 +761,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             provider_lock_path=args.provider_lock.resolve(),
             output_path=args.output.resolve(),
             control_policy=args.control_policy,
+            terminal_reobservation=args.terminal_reobservation,
         )
         print(json.dumps({"terminal": payload["terminal"], "selection": payload["selection"]}, ensure_ascii=False, indent=2))
         return 0

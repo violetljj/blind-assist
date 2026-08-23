@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import math
+from pathlib import Path
+from types import SimpleNamespace
 import unittest
 
 import numpy as np
@@ -12,6 +14,7 @@ from .run_abotn_official_waypoint_handoff_v1 import (
     _CanonicalViewRenderer,
     _action_prediction,
     _resolve_control,
+    _terminal_reobservation_evaluator_class,
     _turn_degrees,
 )
 
@@ -19,6 +22,33 @@ from .run_abotn_official_waypoint_handoff_v1 import (
 class _Renderer:
     def render_at_pose(self, *args, **kwargs):
         return ["left", "right", "front"]
+
+
+class _BaseEvaluator:
+    def __init__(self):
+        self.saved = None
+
+    def _evaluate_task(self, agent, episode, task, short_memory, episode_dir):
+        return {"status": "stop", "steps": 3}
+
+    def _build_pointgoal_path(self, task):
+        return [{"x": 0.0, "y": 0.0}, {"x": 1.0, "y": 2.0}]
+
+    def _build_poi_observation(self, **kwargs):
+        return SimpleNamespace(step_count=kwargs["step_count"])
+
+    def _save_task_result(self, result, task_dir):
+        self.saved = (dict(result), Path(task_dir))
+
+
+class _Agent:
+    def __init__(self):
+        self.state = SimpleNamespace(state="ADVANCE_AND_REOBSERVE")
+        self.observation_only = False
+        self.calls = []
+
+    def predict(self, observation):
+        self.calls.append((observation.step_count, self.observation_only))
 
 
 class OfficialWaypointAdapterTest(unittest.TestCase):
@@ -86,6 +116,19 @@ class OfficialWaypointAdapterTest(unittest.TestCase):
         np.testing.assert_allclose([[2.0, 0.0]], waypoint, atol=1e-6)
         np.testing.assert_allclose([[1.0, 0.0]], direction, atol=1e-6)
         self.assertFalse(stop)
+
+    def test_terminal_reobservation_is_observation_only(self) -> None:
+        Evaluator = _terminal_reobservation_evaluator_class(_BaseEvaluator)
+        evaluator = Evaluator()
+        agent = _Agent()
+        task = SimpleNamespace(task_id="traj_x", goal_label="door")
+        result = evaluator._evaluate_task(
+            agent, SimpleNamespace(), task, SimpleNamespace(), "episode-dir"
+        )
+        self.assertEqual([(3, True)], agent.calls)
+        self.assertFalse(agent.observation_only)
+        self.assertTrue(result["terminal_current_frame_reobserved"])
+        self.assertEqual(Path("episode-dir") / "traj_x", evaluator.saved[1])
 
 
 if __name__ == "__main__":
