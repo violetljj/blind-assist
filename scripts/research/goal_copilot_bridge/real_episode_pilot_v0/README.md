@@ -1,6 +1,6 @@
 # Public-real episode mining + selective-guidance pilot V0
 
-状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_WEBGL_RENDER_TRANSPORT_PASS / ABOTN_PROVIDER_FIREWALL_PASS / ABOTN_TRAJECTORY_PIXELS_PASS / ABOTN_V0_CLOSED_LOOP_CURRENT_FRAME_GROUNDING_BOTTLENECK / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`FROZEN_8X89_EXECUTED_AND_SEALED / TRUTH_SUBSTRATE_AUDITED / ABOTN_OFFICIAL_RENDER_CANARY_PASS / ABOTN_SEALED_FAILURE_RENDERER_CONFOUNDED / ABOTN_ARRIVAL_TRUTH_ONLY / FUNCTIONAL_PIXEL_REGION_NOT_ESTABLISHED / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 This package automatically converts public real-world sequence metadata into goal-driven approach episodes, reuses
 frozen current-frame provider output, applies Selective Guidance V0, and evaluates only truth-supported denominators.
@@ -141,6 +141,17 @@ were never reached. Proposal count alone is not target recall, so `PROPOSAL_MISS
 adjudicated without functional pixel truth. Official-renderer equivalence is also unavailable; consequently the result
 cannot distinguish provider semantic-identity weakness from alternate-renderer fidelity and does not authorize an
 algorithm rescue, P1, or a rerun.
+
+The subsequent zero-model canary pinned the official ABotN renderer at commit `2a0aefb5`, verified the exact scene
+PLY and CUDA-extension hashes, and rendered only source pose indices 0/1/2 with the official 720x640 front camera.
+All 3/3 PNGs passed local hash/dimension/call-count audit; server POST count was exactly three and provider, teacher,
+baseline, and sealed-episode-rerun counts remained zero. A read-only binding to the sealed WebGL inputs then confirmed
+the same scene/poses/front-view semantics while the renderer and camera envelopes differ, and all three already-sealed
+provider rationales independently cite obscured, indistinct, or blurred input. The supported conclusion is therefore
+`ABOTN_SEALED_FAILURE_RENDERER_CONFOUNDED`: the prior current-frame failure cannot be assigned solely to provider
+semantic selection. It does not establish provider success on official pixels, functional entrance-region truth,
+proposal miss versus referent selection, or accuracy. Any later provider run must be a fresh prospective official-pixel
+episode, never a replay of the sealed episode.
 
 ```powershell
 python -m unittest `

@@ -5059,3 +5059,18 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
 - receipt terminal=`OFFICIAL_PRE_RENDERED_OBSERVATION_RGB_NOT_RELEASED`，render/teacher/provider/baseline/rerun
   均为 0。已配置的唯一 AutoDL worker 只读 SSH preflight 不可达；不启动付费资源、不重跑 sealed episode，下一执行
   只剩取得可用的官方 Linux/CUDA/≥24 GB render host，不能用 map PNG 去“救”renderer fidelity confound。
+
+# 2026-08-23 ABotN pinned official-render canary and sealed-failure attribution
+
+- 在独立 RTX 4090 D worker 上固定官方 `amap-cvlab/ABot-Navigation@2a0aefb5`、scene
+  `20260227163550`、PLY/annotation/polygon hashes、官方 720×640 front camera、CUDA/Python/torch 与两个编译扩展
+  hashes；CUDA 12.8 下只通过 `NVCC_PREPEND_FLAGS=-include cfloat` 修复编译环境，官方 source/commit 未改。
+- outcome 前只授权 pose 0/1/2 三次 render；官方 server 实际 HTTP 200 POST=`3`，3/3 PNG 均通过本地 SHA-256、
+  dimension、journal、runtime 与 freeze 审计，`in_doubt=0`。首个 helper 在已完成三次调用后仅因 namespace package
+  `__file__=None` 未写终态，finalizer 只校验既有 outputs 并补 receipt，没有第四次 render。
+- 只读 confound audit 绑定同 scene/pose/front semantics 的封存 WebGL frame 2/7/12；renderer 与 camera envelope
+  明确不同，封存 provider 三条原始 ABSTAIN 理由分别命中 `obscured / indistinctly / blurred`。终态
+  `ABOTN_SEALED_FAILURE_RENDERER_CONFOUNDED`，新增 render/provider/teacher/baseline/sealed-rerun=`0/0/0/0/0`。
+- 因而先前 `CURRENT_FRAME_GROUNDING_BOTTLENECK` 不能再单独归因 provider semantic selection；但这不证明 provider
+  在官方 pixels 上成功，也不建立 functional entrance-region truth、`PROPOSAL_MISS` versus referent selection 或
+  algorithm accuracy。封存 episode 仍禁止 replay；如继续只能另开 fresh prospective official-pixel episode，不建立 P1。
