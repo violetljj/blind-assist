@@ -67,6 +67,7 @@ def _audit_call_mechanics(call_dir: Path) -> dict[str, Any]:
     if any(not path.is_file() for path in required):
         raise ValueError("provider call is missing a required immutable artifact")
     completed_item_types: list[str] = []
+    benign_diagnostic_items: list[str] = []
     external_action_events = 0
     for stdout_path in sorted(call_dir.glob("attempt-*-stdout.jsonl")):
         for line in stdout_path.read_text(encoding="utf-8").splitlines():
@@ -77,7 +78,12 @@ def _audit_call_mechanics(call_dir: Path) -> dict[str, Any]:
             item_type = str(event.get("item", {}).get("type") or "")
             if event_type == "item.completed":
                 completed_item_types.append(item_type)
-                if item_type != "agent_message":
+                message = str(event.get("item", {}).get("message") or "")
+                if item_type == "error" and message.startswith(
+                    "Configured service tier `priority` is not advertised as supported"
+                ):
+                    benign_diagnostic_items.append(message)
+                elif item_type != "agent_message":
                     external_action_events += 1
             if "tool" in event_type.lower() or "command" in event_type.lower():
                 external_action_events += 1
@@ -92,6 +98,7 @@ def _audit_call_mechanics(call_dir: Path) -> dict[str, Any]:
         "prompt_sha256": _sha256(call_dir / "brain-prompt.txt"),
         "rendered_provider_input_sha256": _sha256(call_dir / "brain-input.jpg"),
         "completed_item_types": completed_item_types,
+        "benign_diagnostic_items": benign_diagnostic_items,
         "external_action_event_count": external_action_events,
         "provider_completion_status": completion.get("status"),
         "pass": passed,
@@ -206,58 +213,101 @@ def run(
             raise ValueError("frozen Codex executable hash drift")
         if Path(provider_lock["grounding_dino"]["model_dir"]).resolve() != grounding_dino:
             raise ValueError("frozen Grounding DINO model path drift")
-    if output_dir.exists():
-        raise ValueError("formal one-shot output already exists; replay is forbidden")
-    output_dir.mkdir(parents=True, exist_ok=False)
-    _atomic_json(output_dir / "provider-lock.json", provider_lock)
     renderer_kind = pixels.get("renderer", {}).get("kind", "UNOFFICIAL_WEBGL_MECHANICS_CANARY")
     official_pixels = renderer_kind == "PINNED_OFFICIAL_ABOTN_RENDERER"
     run_schema = HANDOFF_SCHEMA if termination_mode == "HANDOFF_V1" else SCHEMA
-    manifest = {
-        "schema_version": run_schema,
-        "created_at_utc": datetime.now(timezone.utc).isoformat(),
-        "status": "FORMAL_ONE_SHOT_STARTED",
-        "public_graph_sha256": _sha256(public_graph_path),
-        "private_truth_sha256": _sha256(private_truth_path),
-        "freeze_receipt_sha256": _sha256(freeze_path),
-        "pixel_receipt_sha256": _sha256(pixel_receipt_path),
-        "qualification_sha256": _sha256(qualification_path),
-        "prospective_freeze_sha256": (
-            _sha256(prospective_freeze_path) if prospective_freeze_path is not None else None
-        ),
-        "termination_mode": termination_mode,
-        "provider_lock_sha256": _sha256(output_dir / "provider-lock.json"),
-        "provider_lock_source_sha256": (
-            _sha256(provider_lock_path) if provider_lock_path is not None else None
-        ),
-        "frozen_budget": {
-            "episodes": 1,
-            "provider_observations_maximum": MAX_PROVIDER_OBSERVATIONS,
-            "brain_attempts_per_observation_maximum": 2,
-        },
-        "provider_private_truth_access": False,
-        "retry_rule": "UNCHANGED_PROVIDER_INTERNAL_SCHEMA_RETRY_ONLY_MAX_TWO_ATTEMPTS",
-        "rerun_rule": "NO_EPISODE_OR_OBSERVATION_RERUN_AFTER_FORMAL_START",
-        "pixel_renderer": renderer_kind,
-        "claim_ceiling": (
-            "OFFICIAL_RENDERER_ONE_TASK_CLOSED_LOOP_ENGINEERING_ONLY"
-            if official_pixels
-            else "UNOFFICIAL_RENDERER_ONE_TASK_CLOSED_LOOP_ENGINEERING_ONLY"
-        ),
-    }
-    _atomic_json(output_dir / "run-manifest.json", manifest)
-    journal = {
-        "schema_version": "blindassist_abotn_v0_closed_loop_journal_v0",
-        "status": "ACTIVE",
-        "started_at_utc": datetime.now(timezone.utc).isoformat(),
-        "provider_calls_dispatched": 0,
-        "provider_calls_completed": 0,
-        "provider_calls_in_doubt": 0,
-        "brain_attempts_dispatched": 0,
-    }
     journal_path = output_dir / "provider-journal.json"
-    _atomic_json(journal_path, journal)
     events_path = output_dir / "events.jsonl"
+    resume_call_dir: Path | None = None
+    started_at_ms = _now_ms()
+    if output_dir.exists():
+        terminal_path = output_dir / "terminal-receipt.json"
+        if terminal_path.exists():
+            raise ValueError("sealed formal output cannot resume")
+        manifest = json.loads((output_dir / "run-manifest.json").read_text(encoding="utf-8"))
+        journal = json.loads(journal_path.read_text(encoding="utf-8"))
+        event_lines = [
+            json.loads(line) for line in events_path.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+        call_dirs = sorted(path for path in (output_dir / "provider-calls").iterdir() if path.is_dir())
+        expected_manifest = {
+            "schema_version": run_schema,
+            "status": "FORMAL_ONE_SHOT_STARTED",
+            "public_graph_sha256": _sha256(public_graph_path),
+            "private_truth_sha256": _sha256(private_truth_path),
+            "freeze_receipt_sha256": _sha256(freeze_path),
+            "pixel_receipt_sha256": _sha256(pixel_receipt_path),
+            "qualification_sha256": _sha256(qualification_path),
+            "termination_mode": termination_mode,
+        }
+        if any(manifest.get(key) != value for key, value in expected_manifest.items()):
+            raise ValueError("pre-action resume manifest drift")
+        if (
+            len(event_lines) != 1
+            or event_lines[0].get("event_type") != "EPISODE_STARTED"
+            or len(call_dirs) != 1
+            or journal.get("provider_calls_dispatched") != 1
+            or journal.get("provider_calls_completed") != 0
+            or journal.get("provider_calls_in_doubt") != 1
+        ):
+            raise ValueError("only one completed pre-action provider call may resume")
+        if _sha256(output_dir / "provider-lock.json") != manifest.get("provider_lock_sha256"):
+            raise ValueError("pre-action resume provider lock drift")
+        resume_call_dir = call_dirs[0]
+        started_at_ms = int(event_lines[0]["started_at_ms"])
+        manifest["mechanical_resume"] = {
+            "mode": "REUSE_ONE_COMPLETED_PRE_ACTION_CALL_WITHOUT_REDISPATCH",
+            "observation_id": resume_call_dir.name,
+            "resumed_at_utc": datetime.now(timezone.utc).isoformat(),
+        }
+        _atomic_json(output_dir / "run-manifest.json", manifest)
+    else:
+        output_dir.mkdir(parents=True, exist_ok=False)
+        _atomic_json(output_dir / "provider-lock.json", provider_lock)
+        manifest = {
+            "schema_version": run_schema,
+            "created_at_utc": datetime.now(timezone.utc).isoformat(),
+            "status": "FORMAL_ONE_SHOT_STARTED",
+            "public_graph_sha256": _sha256(public_graph_path),
+            "private_truth_sha256": _sha256(private_truth_path),
+            "freeze_receipt_sha256": _sha256(freeze_path),
+            "pixel_receipt_sha256": _sha256(pixel_receipt_path),
+            "qualification_sha256": _sha256(qualification_path),
+            "prospective_freeze_sha256": (
+                _sha256(prospective_freeze_path) if prospective_freeze_path is not None else None
+            ),
+            "termination_mode": termination_mode,
+            "provider_lock_sha256": _sha256(output_dir / "provider-lock.json"),
+            "provider_lock_source_sha256": (
+                _sha256(provider_lock_path) if provider_lock_path is not None else None
+            ),
+            "frozen_budget": {
+                "episodes": 1,
+                "provider_observations_maximum": MAX_PROVIDER_OBSERVATIONS,
+                "brain_attempts_per_observation_maximum": 2,
+            },
+            "provider_private_truth_access": False,
+            "retry_rule": "UNCHANGED_PROVIDER_INTERNAL_SCHEMA_RETRY_ONLY_MAX_TWO_ATTEMPTS",
+            "rerun_rule": "NO_EPISODE_OR_OBSERVATION_RERUN_AFTER_FORMAL_START",
+            "pixel_renderer": renderer_kind,
+            "claim_ceiling": (
+                "OFFICIAL_RENDERER_ONE_TASK_CLOSED_LOOP_ENGINEERING_ONLY"
+                if official_pixels
+                else "UNOFFICIAL_RENDERER_ONE_TASK_CLOSED_LOOP_ENGINEERING_ONLY"
+            ),
+        }
+        _atomic_json(output_dir / "run-manifest.json", manifest)
+        journal = {
+            "schema_version": "blindassist_abotn_v0_closed_loop_journal_v0",
+            "status": "ACTIVE",
+            "started_at_utc": datetime.now(timezone.utc).isoformat(),
+            "provider_calls_dispatched": 0,
+            "provider_calls_completed": 0,
+            "provider_calls_in_doubt": 0,
+            "brain_attempts_dispatched": 0,
+        }
+        _atomic_json(journal_path, journal)
     episode_id = str(public["episode_id"])
     if prospective_freeze is not None and prospective_freeze.get("selection", {}).get("episode_id") != episode_id:
         raise ValueError("prospective handoff episode binding drift")
@@ -265,18 +315,19 @@ def run(
         episode_id=episode_id,
         location_id=f"abotn-scene-{episode_id.split('-')[1]}",
         goal_name=str(public["goal_contract"]["target_name"]),
-        started_at_ms=_now_ms(),
+        started_at_ms=started_at_ms,
     )
     current = str(public["start_node_id"])
     trajectory: list[dict[str, Any]] = []
     call_audits: list[dict[str, Any]] = []
     action_exhausted = False
-    _append_event(events_path, {
-        "event_type": "EPISODE_STARTED",
-        "episode_id": episode_id,
-        "start_node_id": current,
-        "started_at_ms": state.started_at_ms,
-    })
+    if resume_call_dir is None:
+        _append_event(events_path, {
+            "event_type": "EPISODE_STARTED",
+            "episode_id": episode_id,
+            "start_node_id": current,
+            "started_at_ms": state.started_at_ms,
+        })
     terminal_states = {State.COMPLETE.value, State.ABSTAIN.value}
     if termination_mode == "HANDOFF_V1":
         terminal_states.add(HANDOFF_READY)
@@ -294,49 +345,56 @@ def run(
         node = nodes[current]
         frame = frames[current]
         observation_id = f"{episode_id}-closed-loop-o{state.observation_count + 1:03d}"
-        call_dir = output_dir / "provider-calls" / observation_id
-        journal.update({
-            "status": "DISPATCHING",
-            "active_observation_id": observation_id,
-            "provider_calls_dispatched": journal["provider_calls_dispatched"] + 1,
-            "provider_calls_in_doubt": 1,
-        })
-        _atomic_json(journal_path, journal)
-        try:
-            observation = ground_current_frame(
-                provider_lock=provider_lock,
-                call_dir=call_dir,
-                episode_id=episode_id,
-                goal_name=state.goal_name,
-                image_path=pixel_root / frame["path"],
-                frame_id=current,
-                observation_id=observation_id,
-                captured_at_ms=_now_ms(),
-            )
-        except ProviderAdapterError as error:
-            completion_path = call_dir / "completion.json"
-            completion = json.loads(completion_path.read_text(encoding="utf-8")) if completion_path.is_file() else {}
-            in_doubt = completion.get("status") == "IN_DOUBT" or not completion_path.is_file()
+        if resume_call_dir is not None:
+            call_dir = resume_call_dir
+            if call_dir.name != observation_id:
+                raise ValueError("pre-action resume observation id drift")
+            observation = json.loads((call_dir / "observation.json").read_text(encoding="utf-8"))
+            resume_call_dir = None
+        else:
+            call_dir = output_dir / "provider-calls" / observation_id
             journal.update({
-                "status": "SEALED_PROVIDER_IN_DOUBT" if in_doubt else "SEALED_PROVIDER_FAILED",
-                "failed_at_utc": datetime.now(timezone.utc).isoformat(),
+                "status": "DISPATCHING",
                 "active_observation_id": observation_id,
-                "provider_calls_in_doubt": 1 if in_doubt else 0,
-                "failure": str(error),
+                "provider_calls_dispatched": journal["provider_calls_dispatched"] + 1,
+                "provider_calls_in_doubt": 1,
             })
             _atomic_json(journal_path, journal)
-            receipt = {
-                "schema_version": run_schema,
-                "closed_at_utc": datetime.now(timezone.utc).isoformat(),
-                "terminal": "ABOTN_V0_CLOSED_LOOP_PROVIDER_IN_DOUBT" if in_doubt else "ABOTN_V0_CLOSED_LOOP_PROVIDER_FAILED",
-                "provider_calls_dispatched": journal["provider_calls_dispatched"],
-                "provider_calls_completed": journal["provider_calls_completed"],
-                "provider_calls_in_doubt": journal["provider_calls_in_doubt"],
-                "rerun_authorized": False,
-                "claim_ceiling": manifest["claim_ceiling"],
-            }
-            _atomic_json(output_dir / "terminal-receipt.json", receipt)
-            return receipt
+            try:
+                observation = ground_current_frame(
+                    provider_lock=provider_lock,
+                    call_dir=call_dir,
+                    episode_id=episode_id,
+                    goal_name=state.goal_name,
+                    image_path=pixel_root / frame["path"],
+                    frame_id=current,
+                    observation_id=observation_id,
+                    captured_at_ms=_now_ms(),
+                )
+            except ProviderAdapterError as error:
+                completion_path = call_dir / "completion.json"
+                completion = json.loads(completion_path.read_text(encoding="utf-8")) if completion_path.is_file() else {}
+                in_doubt = completion.get("status") == "IN_DOUBT" or not completion_path.is_file()
+                journal.update({
+                    "status": "SEALED_PROVIDER_IN_DOUBT" if in_doubt else "SEALED_PROVIDER_FAILED",
+                    "failed_at_utc": datetime.now(timezone.utc).isoformat(),
+                    "active_observation_id": observation_id,
+                    "provider_calls_in_doubt": 1 if in_doubt else 0,
+                    "failure": str(error),
+                })
+                _atomic_json(journal_path, journal)
+                receipt = {
+                    "schema_version": run_schema,
+                    "closed_at_utc": datetime.now(timezone.utc).isoformat(),
+                    "terminal": "ABOTN_V0_CLOSED_LOOP_PROVIDER_IN_DOUBT" if in_doubt else "ABOTN_V0_CLOSED_LOOP_PROVIDER_FAILED",
+                    "provider_calls_dispatched": journal["provider_calls_dispatched"],
+                    "provider_calls_completed": journal["provider_calls_completed"],
+                    "provider_calls_in_doubt": journal["provider_calls_in_doubt"],
+                    "rerun_authorized": False,
+                    "claim_ceiling": manifest["claim_ceiling"],
+                }
+                _atomic_json(output_dir / "terminal-receipt.json", receipt)
+                return receipt
         audit = _audit_call_mechanics(call_dir)
         if not audit["pass"]:
             raise ValueError(f"provider call mechanics audit failed: {audit}")
