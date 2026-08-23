@@ -5,6 +5,7 @@ from scripts.research.goal_copilot_bridge.real_episode_pilot_v0.freeze_groundben
 )
 from scripts.research.goal_copilot_bridge.real_episode_pilot_v0.run_groundbench_referent_union_confirmation import (
     DOMAIN_LEXICON,
+    brain_command,
     paired_verdict,
 )
 
@@ -14,6 +15,17 @@ class GroundBenchReferentUnionConfirmationTest(unittest.TestCase):
         self.assertEqual(len(DOMAIN_LEXICON), len(set(DOMAIN_LEXICON)))
         self.assertIn("car", DOMAIN_LEXICON)
         self.assertIn("umbrella", DOMAIN_LEXICON)
+
+    def test_brain_prompt_is_not_passed_in_argv(self) -> None:
+        command = brain_command(
+            executable=__import__("pathlib").Path("codex.exe"),
+            schema_path=__import__("pathlib").Path("schema.json"),
+            raw_path=__import__("pathlib").Path("raw.json"),
+            rendered=[__import__("pathlib").Path("image.jpg")],
+            model="model", reasoning_effort="medium",
+        )
+        self.assertNotIn("a very long prompt", command)
+        self.assertNotIn("--", command)
 
     def test_ordered_eligible_is_deterministic(self) -> None:
         def row(index: int) -> dict:

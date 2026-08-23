@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import platform
+import subprocess
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -14,10 +15,10 @@ from PIL import Image
 from scripts.research.goal_copilot_bridge.last_10m_regrounding_v0 import provider_adapter
 from scripts.research.goal_copilot_bridge.p0_s0_materialization import materializer
 from scripts.research.goal_copilot_bridge.p0_s0_materialization import run_grounding_dino_s0_r1 as dino
+from scripts.research.goal_copilot_bridge.p0_s0_materialization import run_silver_b_brain_baseline as brain
 from scripts.research.goal_copilot_bridge.real_episode_pilot_v0.run_cmp_facade_native_door_89 import (
     atomic_json,
     evaluate,
-    run_brain,
     sha256_file,
 )
 from scripts.research.goal_copilot_bridge.real_episode_pilot_v0.run_groundbench_referent_89 import (
@@ -39,6 +40,76 @@ DOMAIN_LEXICON_PROMPT = " . ".join(DOMAIN_LEXICON) + " ."
 
 class RunError(RuntimeError):
     pass
+
+
+def brain_command(
+    executable: Path, schema_path: Path, raw_path: Path, rendered: Sequence[Path], model: str, reasoning_effort: str,
+) -> list[str]:
+    command = [
+        str(executable), "exec", "--skip-git-repo-check", "--ephemeral", "--ignore-rules",
+        "--json", "--color", "never", "--sandbox", "read-only", "--model", model,
+        "-c", f'model_reasoning_effort="{reasoning_effort}"', "--output-schema", str(schema_path),
+        "--output-last-message", str(raw_path),
+    ]
+    for path in rendered:
+        command.extend(["--image", str(path)])
+    return command
+
+
+def run_brain_stdin(
+    *, episodes: Sequence[Mapping[str, Any]], run_dir: Path, executable: Path, model: str,
+    reasoning_effort: str, batch_size: int,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    schema_path = run_dir / "brain-output-schema.json"
+    atomic_json(schema_path, brain._schema(brain.POLICY_ID))
+    aliases = [(f"case-{index:03d}", episode) for index, episode in enumerate(episodes, start=1)]
+    rendered = {}
+    for case_id, episode in aliases:
+        path = run_dir / "brain-inputs" / f"{case_id}.jpg"
+        brain._render_input(episode, case_id, path)
+        rendered[case_id] = path
+    decisions, receipts = [], []
+    for offset in range(0, len(aliases), batch_size):
+        batch = aliases[offset:offset + batch_size]
+        batch_id = f"batch-{offset // batch_size + 1:03d}"
+        batch_dir = run_dir / "batches" / batch_id
+        batch_dir.mkdir(parents=True, exist_ok=False)
+        prompt = brain._prompt(batch, brain.POLICY_ID)
+        (batch_dir / "prompt.txt").write_text(prompt, encoding="utf-8")
+        raw_path = batch_dir / "last-message.json"
+        command = brain_command(
+            executable, schema_path, raw_path, [rendered[case_id] for case_id, _ in batch], model, reasoning_effort,
+        )
+        if len(subprocess.list2cmdline(command)) >= 16_000 or prompt in command:
+            raise RunError("stdin transport preflight failed")
+        atomic_json(batch_dir / "dispatch.json", {
+            "status": "DISPATCH_STARTED", "attempt": 1, "transport": "STDIN",
+            "prompt_bytes": len(prompt.encode("utf-8")), "case_ids": [case_id for case_id, _ in batch],
+        })
+        result = subprocess.run(
+            command, cwd=batch_dir, shell=False, capture_output=True, text=True, input=prompt,
+            encoding="utf-8", errors="replace", timeout=900,
+        )
+        (batch_dir / "stdout.txt").write_text(result.stdout, encoding="utf-8")
+        (batch_dir / "stderr.txt").write_text(result.stderr, encoding="utf-8")
+        if result.returncode != 0 or not raw_path.is_file():
+            atomic_json(batch_dir / "completion.json", {"status": "IN_DOUBT", "returncode": result.returncode})
+            raise RunError(f"{batch_id} provider call is in_doubt; no retry permitted")
+        try:
+            parsed = json.loads(raw_path.read_text(encoding="utf-8"))
+            validated = brain._validate_raw(parsed, batch, brain.POLICY_ID)
+        except (json.JSONDecodeError, brain.BrainRunError) as error:
+            atomic_json(batch_dir / "completion.json", {"status": "INVALID_OUTPUT", "error": str(error)})
+            raise RunError(f"{batch_id} invalid provider output; no retry permitted") from error
+        decisions.extend(validated)
+        receipt = {
+            "status": "RUN_SUCCESS", "attempt": 1, "transport": "STDIN", "episode_count": len(batch),
+            "response_sha256": materializer.content_sha256(parsed),
+        }
+        atomic_json(batch_dir / "completion.json", receipt)
+        receipts.append({"batch_id": batch_id, **receipt})
+        print(f"{batch_id} complete {len(batch)} transport=STDIN", flush=True)
+    return decisions, receipts
 
 
 def paired_verdict(v0: Mapping[str, Any], v1: Mapping[str, Any]) -> dict[str, Any]:
@@ -183,7 +254,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     atomic_json(run_dir / "public-provider-input-v1.json", {"episodes": episodes_by_arm["V1"]})
     decisions, receipts, evaluations = {}, {}, {}
     for arm in ("V0", "V1"):
-        decisions[arm], receipts[arm] = run_brain(
+        decisions[arm], receipts[arm] = run_brain_stdin(
             episodes=episodes_by_arm[arm], run_dir=run_dir / f"brain-{arm.lower()}", executable=executable,
             model=provider_adapter.CODEX_MODEL, reasoning_effort=provider_adapter.CODEX_REASONING_EFFORT,
             batch_size=args.batch_size,

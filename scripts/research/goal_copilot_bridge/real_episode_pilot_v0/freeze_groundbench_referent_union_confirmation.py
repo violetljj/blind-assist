@@ -69,12 +69,23 @@ def freeze(args: argparse.Namespace) -> dict[str, Any]:
     consumed_identities = [item["source_identity"] for item in consumed["observations"]]
     if consumed_identities != [source_identity(row) for row in ordered[:CONSUMED_COUNT]]:
         raise FreezeError("consumed first-89 identity does not match the frozen ordering")
+    consumed_count = CONSUMED_COUNT
+    prior_confirmation_sha256 = None
+    if args.prior_confirmation_roster is not None:
+        prior_path = args.prior_confirmation_roster.resolve()
+        prior = json.loads(prior_path.read_text(encoding="utf-8"))
+        prior_identities = [item["source_identity"] for item in prior["observations"]]
+        expected_prior = [source_identity(row) for row in ordered[CONSUMED_COUNT:CONSUMED_COUNT + CONFIRMATION_COUNT]]
+        if prior_identities != expected_prior:
+            raise FreezeError("prior transport-failed Confirmation does not match frozen positions 90-153")
+        consumed_count += CONFIRMATION_COUNT
+        prior_confirmation_sha256 = sha256_file(prior_path)
 
     with image_manifest.open("r", encoding="utf-8", newline="") as stream:
         image_rows = {row["image"]: row for row in csv.DictReader(stream)}
-    selected = ordered[CONSUMED_COUNT:CONSUMED_COUNT + CONFIRMATION_COUNT]
+    selected = ordered[consumed_count:consumed_count + CONFIRMATION_COUNT]
     observations = []
-    for offset, row in enumerate(selected, start=CONSUMED_COUNT + 1):
+    for offset, row in enumerate(selected, start=consumed_count + 1):
         annotations = row["annotations"]
         image_row = image_rows[row["image"]]
         width, height = int(annotations["image_w"]), int(annotations["image_h"])
@@ -96,13 +107,14 @@ def freeze(args: argparse.Namespace) -> dict[str, Any]:
             "same_class_distractors": int(annotations["same_class_distractors"]),
             "selection_rank_sha256": row["selection_rank_sha256"],
         })
-    reserve = [source_identity(row) for row in ordered[CONSUMED_COUNT + CONFIRMATION_COUNT:]]
+    reserve = [source_identity(row) for row in ordered[consumed_count + CONFIRMATION_COUNT:]]
     result = {
         "schema_version": SCHEMA_VERSION,
         "source_revision": SOURCE_REVISION,
         "selection_salt": SELECTION_SALT,
         "consumed_roster_sha256": sha256_file(consumed_path),
-        "eligible_count": len(ordered), "consumed_count": CONSUMED_COUNT,
+        "prior_confirmation_roster_sha256": prior_confirmation_sha256,
+        "eligible_count": len(ordered), "consumed_count": consumed_count,
         "confirmation_count": len(observations), "reserve_count": len(reserve),
         "dataset_root": str(output.parent), "truth_authority": "PUBLIC_DATASET_DERIVED_GT_STRONG",
         "provider_calls": 0, "teacher_calls": 0, "pixels_downloaded_at_freeze": 0,
@@ -118,6 +130,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--benchmark", type=Path, required=True)
     parser.add_argument("--image-manifest", type=Path, required=True)
     parser.add_argument("--consumed-roster", type=Path, required=True)
+    parser.add_argument("--prior-confirmation-roster", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     print(json.dumps(freeze(parser.parse_args(argv)), ensure_ascii=False, indent=2))
     return 0
