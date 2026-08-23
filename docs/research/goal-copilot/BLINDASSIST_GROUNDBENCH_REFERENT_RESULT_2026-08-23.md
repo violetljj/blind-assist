@@ -160,6 +160,26 @@ The roster SHA-256 is `a0c16097f7d234089c9aa489bcc9a9cd702a2c7507c3b6184912f2756
 `671b3abd1239b763fd6d4551a21c059657f7803530cdd699beb3236290937445`. The final eight source identities remain
 untouched; they cannot be used to relax the gate or rescue this cohort.
 
+## Scene-plus-candidate-zoom representation Development
+
+The already-consumed 77 baseline observations with usable expression-only proposals were reused strictly as
+Development. The provider received a score-neutral composite: the unchanged whole scene with numbered proposal
+boxes plus enlarged, numbered crops for the same candidates. Candidate membership, ordering, scores, Brain policy,
+provider, and private truth were unchanged; no detector or teacher was called. The frozen gate required correct
+grounding to increase while wrong confident guidance did not increase.
+
+All ten Brain batches completed once, with `provider_calls/attempts/in_doubt/teacher_calls = 10/10/0/0`. Correct
+grounding decreased `65 -> 63`, while wrong confident guidance increased `5 -> 7`. The terminal verdict is:
+
+```text
+CANDIDATE_ZOOM_REPRESENTATION_DEVELOPMENT_NOT_PROMISING
+```
+
+The result content SHA-256 is `78a67861927ec66849daa1d28ee1cc58441fc2245b321945afc88395268a0fa6`.
+No fresh Confirmation data were consumed and the representation was not integrated into ABotN. This rejects the
+fixed enlarged-crop-plus-global-scene interface, not all richer referent representations. Tile size, crop padding,
+prompt, provider, and cohort must not be tuned to rescue this consumed Development result; P1 remains unauthorized.
+
 ## Claim ceiling
 
 `STATIC_COCO_OUTDOOR_REFERENT_SELECTION_ONLY_NO_APPROACH_CONTROL_RANGE_BEARING_ARRIVAL_LOST_PERSISTENCE_SAFETY_OR_PRODUCT_CLAIM`

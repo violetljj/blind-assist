@@ -1,6 +1,10 @@
 from __future__ import annotations
 
 import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
+from PIL import Image
 
 from scripts.research.goal_copilot_bridge.p0_grounding import p0_evaluator
 from scripts.research.goal_copilot_bridge.p0_s0_materialization import run_silver_b_brain_baseline as baseline
@@ -107,6 +111,51 @@ class SilverBBrainBaselineAdapterTest(unittest.TestCase):
         }]}
         with self.assertRaisesRegex(baseline.BrainRunError, "SELECT requires strong"):
             baseline._validate_raw(raw, [("case-001", episode)], baseline.CALIBRATION_POLICY_V2_ID)
+
+    def test_candidate_zoom_representation_preserves_scene_and_adds_tiles(self) -> None:
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.png"
+            Image.new("RGB", (320, 180), (120, 140, 160)).save(source)
+            episode = {
+                "goal_text": "the left door",
+                "image_path": str(source),
+                "candidates": [
+                    {
+                        "candidate_id": "candidate-1",
+                        "category_label": "door",
+                        "provider_rank": 1,
+                        "region": {
+                            "frame_id": "frame-1",
+                            "x_min": 0.05,
+                            "y_min": 0.1,
+                            "x_max": 0.25,
+                            "y_max": 0.8,
+                        },
+                    },
+                    {
+                        "candidate_id": "candidate-2",
+                        "category_label": "door",
+                        "provider_rank": 2,
+                        "region": {
+                            "frame_id": "frame-1",
+                            "x_min": 0.65,
+                            "y_min": 0.1,
+                            "x_max": 0.9,
+                            "y_max": 0.8,
+                        },
+                    },
+                ],
+                "evaluator_episode": {"observation_window": {"frame_ids": ["frame-1"]}},
+            }
+            output = root / "zoom.jpg"
+            baseline._render_input_with_candidate_zoom(episode, "case-001", output)
+            with Image.open(output) as rendered:
+                self.assertGreaterEqual(rendered.width, 960)
+                self.assertGreater(rendered.height, 138 + 180)
+            prompt = baseline._prompt_with_candidate_zoom([("case-001", episode)])
+            self.assertIn(baseline.CANDIDATE_ZOOM_REPRESENTATION_ID, prompt)
+            self.assertIn("full scene for spatial and relational context", prompt)
 
 
 if __name__ == "__main__":

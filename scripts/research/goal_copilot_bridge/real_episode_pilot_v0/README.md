@@ -242,6 +242,13 @@ MRR `0.7736 -> 0.7877`, but fresh Rank@1 tied `33 -> 33`; therefore the frozen m
 is `RELATIONAL_CANDIDATE_RANKER_NOT_SUPPORTED`. The final eight identities remain untouched; no gate/model/feature
 rescue, P1, or approach/product claim follows.
 
+A further representation-only Development check reused the 77 consumed GroundBench observations with usable
+proposals. The same Brain saw the unchanged whole scene plus enlarged numbered crops of the same candidates; candidate
+sets, order, scores, provider, and private truth were unchanged. Across ten successful one-shot batches with zero
+`in_doubt` or teacher calls, correct grounding fell `65 -> 63` and wrong confident guidance rose `5 -> 7`. The result
+is sealed `CANDIDATE_ZOOM_REPRESENTATION_DEVELOPMENT_NOT_PROMISING`; no fresh Confirmation call or ABotN integration
+was authorized, and crop/prompt/provider/cohort tuning cannot rescue the consumed Development evidence.
+
 ```powershell
 python -m unittest `
   scripts.research.goal_copilot_bridge.selective_guidance_v0.test_contract `

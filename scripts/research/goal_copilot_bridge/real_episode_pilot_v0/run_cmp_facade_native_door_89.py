@@ -9,7 +9,7 @@ import subprocess
 from collections import Counter
 from pathlib import Path
 from statistics import mean, median
-from typing import Any, Mapping, Sequence
+from typing import Any, Callable, Mapping, Sequence
 
 from scripts.research.goal_copilot_bridge.last_10m_regrounding_v0 import provider_adapter
 from scripts.research.goal_copilot_bridge.p0_s0_materialization import materializer
@@ -100,6 +100,8 @@ def build_episode(item: Mapping[str, Any], proposals: Sequence[Mapping[str, Any]
 def run_brain(
     *, episodes: Sequence[Mapping[str, Any]], run_dir: Path, executable: Path, model: str,
     reasoning_effort: str, batch_size: int,
+    render_input: Callable[[Mapping[str, Any], str, Path], None] = brain._render_input,
+    prompt_builder: Callable[[Sequence[tuple[str, Mapping[str, Any]]], str], str] = brain._prompt,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     schema_path = run_dir / "brain-output-schema.json"
     atomic_json(schema_path, brain._schema(brain.POLICY_ID))
@@ -108,7 +110,7 @@ def run_brain(
     rendered = {}
     for case_id, episode in aliases:
         path = input_dir / f"{case_id}.jpg"
-        brain._render_input(episode, case_id, path)
+        render_input(episode, case_id, path)
         rendered[case_id] = path
 
     decisions = []
@@ -118,7 +120,7 @@ def run_brain(
         batch_id = f"batch-{offset // batch_size + 1:03d}"
         batch_dir = run_dir / "batches" / batch_id
         batch_dir.mkdir(parents=True, exist_ok=False)
-        prompt = brain._prompt(batch, brain.POLICY_ID)
+        prompt = prompt_builder(batch, brain.POLICY_ID)
         (batch_dir / "prompt.txt").write_text(prompt, encoding="utf-8")
         raw_path = batch_dir / "last-message.json"
         atomic_json(batch_dir / "dispatch.json", {

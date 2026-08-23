@@ -17,6 +17,7 @@ from scripts.research.goal_copilot_bridge.p0_s0_materialization import materiali
 
 
 POLICY_ID = "P0-SILVER-B-SINGLE-BRAIN-BASELINE-V1"
+CANDIDATE_ZOOM_REPRESENTATION_ID = "CURRENT_FRAME_SCENE_PLUS_CANDIDATE_ZOOM_TILES_V1"
 CALIBRATION_POLICY_ID = "P0-D1-EVIDENCE-SUFFICIENCY-GATE-V1"
 CALIBRATION_POLICY_V2_ID = "P0-D1-TWO-LEVEL-EVIDENCE-SUPPORT-V2"
 POLICY_IDS = {
@@ -78,6 +79,92 @@ def _render_input(episode: Mapping[str, Any], model_case_id: str, output_path: P
         draw.text((box[0] + 3, box[1] + 2), rank, fill=(0, 70, 180), font=font)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     canvas.save(output_path, format="JPEG", quality=95)
+
+
+def _render_input_with_candidate_zoom(
+    episode: Mapping[str, Any], model_case_id: str, output_path: Path
+) -> None:
+    """Keep the score-neutral scene and add enlarged views of every candidate."""
+
+    with Image.open(episode["image_path"]) as opened:
+        image = opened.convert("RGB")
+    header_height = 138
+    tile_width, tile_height, columns = 240, 210, 4
+    candidates = list(episode["candidates"])
+    rows = (len(candidates) + columns - 1) // columns
+    canvas_width = max(image.width, columns * tile_width)
+    canvas_height = header_height + image.height + rows * tile_height
+    canvas = Image.new("RGB", (canvas_width, canvas_height), "white")
+    scene_left = (canvas_width - image.width) // 2
+    canvas.paste(image, (scene_left, header_height))
+    draw = ImageDraw.Draw(canvas)
+    title_font, font = _font(24), _font(18)
+    draw.text((8, 7), model_case_id, fill=(0, 0, 0), font=font)
+    goal = str(episode["goal_text"])
+    draw.text((8, 37), goal[:105], fill=(0, 0, 0), font=title_font)
+    draw.text(
+        (8, 76),
+        "Blue boxes are score-neutral proposal candidates; labels are rank numbers.",
+        fill=(0, 0, 0),
+        font=font,
+    )
+    draw.text(
+        (8, 104),
+        "Bottom tiles enlarge the same candidates; use the scene for global relations.",
+        fill=(0, 0, 0),
+        font=font,
+    )
+    frame_id = str(episode["evaluator_episode"]["observation_window"]["frame_ids"][0])
+    for index, candidate in enumerate(candidates):
+        region = candidate["region"]
+        _require(region["frame_id"] == frame_id, "candidate frame mismatch")
+        left = max(0, min(image.width - 1, round(float(region["x_min"]) * image.width)))
+        top = max(0, min(image.height - 1, round(float(region["y_min"]) * image.height)))
+        right = max(left + 1, min(image.width, round(float(region["x_max"]) * image.width)))
+        bottom = max(top + 1, min(image.height, round(float(region["y_max"]) * image.height)))
+        rank = str(candidate["provider_rank"])
+        scene_box = [scene_left + left, header_height + top, scene_left + right, header_height + bottom]
+        draw.rectangle(scene_box, outline=(0, 110, 255), width=4)
+        draw.rectangle(
+            (scene_box[0], scene_box[1], scene_box[0] + 12 + 12 * len(rank), scene_box[1] + 25),
+            fill=(255, 255, 255),
+        )
+        draw.text((scene_box[0] + 3, scene_box[1] + 2), rank, fill=(0, 70, 180), font=font)
+
+        width, height = right - left, bottom - top
+        pad_x, pad_y = round(width * 0.15), round(height * 0.15)
+        crop_box = (
+            max(0, left - pad_x),
+            max(0, top - pad_y),
+            min(image.width, right + pad_x),
+            min(image.height, bottom + pad_y),
+        )
+        crop = image.crop(crop_box)
+        crop.thumbnail((tile_width - 16, tile_height - 42), Image.Resampling.LANCZOS)
+        tile_left = (index % columns) * tile_width
+        tile_top = header_height + image.height + (index // columns) * tile_height
+        draw.rectangle(
+            (tile_left + 4, tile_top + 4, tile_left + tile_width - 4, tile_top + tile_height - 4),
+            outline=(0, 110, 255),
+            width=3,
+        )
+        draw.text((tile_left + 10, tile_top + 9), f"Candidate {rank} zoom", fill=(0, 70, 180), font=font)
+        paste_left = tile_left + (tile_width - crop.width) // 2
+        paste_top = tile_top + 36 + (tile_height - 40 - crop.height) // 2
+        canvas.paste(crop, (paste_left, paste_top))
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    canvas.save(output_path, format="JPEG", quality=95)
+
+
+def _prompt_with_candidate_zoom(
+    batch: Sequence[tuple[str, Mapping[str, Any]]], policy_id: str = POLICY_ID
+) -> str:
+    return (
+        f"Input representation: {CANDIDATE_ZOOM_REPRESENTATION_ID}. "
+        "Each image preserves the full scene with numbered proposal boxes and adds enlarged tiles of those same "
+        "candidates. Use the full scene for spatial and relational context; use tiles only for candidate detail. "
+        + _prompt(batch, policy_id)
+    )
 
 
 def _schema(policy_id: str = POLICY_ID) -> dict[str, Any]:
