@@ -86,6 +86,7 @@ class RealEpisodePilotTest(unittest.TestCase):
                 "metric_outcome": {
                     "false_arrival": False,
                     "episode_completion": completion,
+                    "terminal_metric_arrival": completion,
                     "instruction_attributable_progress_m": progress,
                 },
                 "provider_behavior": {
@@ -100,6 +101,8 @@ class RealEpisodePilotTest(unittest.TestCase):
         result = summarize_audits(cohort, audits)
         self.assertEqual(1, result["metric_goal_success_count"])
         self.assertEqual(0.5, result["metric_goal_success_rate"])
+        self.assertEqual(1, result["terminal_metric_arrival_count"])
+        self.assertEqual(1, result["completion_confirmation_count"])
         self.assertEqual("NOT_EVALUABLE_FUNCTIONAL_PIXEL_REGION_MISSING", result["selection_accuracy"])
         self.assertFalse(result["p1_authorized"])
 

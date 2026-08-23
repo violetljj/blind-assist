@@ -46,6 +46,9 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
     qualification_path = args.qualification.resolve()
     run_path = args.run_receipt.resolve()
     server_log_path = args.server_log.resolve()
+    cohort_freeze_path = (
+        args.cohort_freeze.resolve() if getattr(args, "cohort_freeze", None) else None
+    )
     freeze = _read(freeze_path)
     public = _read(public_path)
     private = _read(private_path)
@@ -80,6 +83,18 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
     if run.get("provider_private_truth_literal_hits"):
         raise ValueError("private truth leaked to provider")
     expected_render_calls = freeze["frozen_budget"]["official_render_calls"]
+    server_accounting_scope = "EPISODE"
+    if cohort_freeze_path is not None:
+        cohort = _read(cohort_freeze_path)
+        if cohort.get("terminal") != "ABOTN_OFFICIAL_FRESH_COHORT_FROZEN":
+            raise ValueError("shared server log cohort is not frozen")
+        cohort_episode_ids = [
+            row["episode_id"] for row in cohort["selection"]["tasks"]
+        ]
+        if public["episode_id"] not in cohort_episode_ids:
+            raise ValueError("episode is not in the shared server log cohort")
+        expected_render_calls = cohort["frozen_budget"]["official_render_calls"]
+        server_accounting_scope = "FROZEN_COHORT_SHARED_SERVER"
     actual_http_calls = len(
         HTTP_RENDER_SUCCESS.findall(server_log_path.read_text(encoding="utf-8", errors="replace"))
     )
@@ -133,14 +148,19 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
         "terminal": terminal,
         "episode_id": public["episode_id"],
         "inputs": {
+            "audit_implementation_sha256": _sha256(Path(__file__).resolve()),
             "prospective_freeze_sha256": _sha256(freeze_path),
             "pixel_receipt_sha256": _sha256(pixel_path),
             "qualification_sha256": _sha256(qualification_path),
             "sealed_run_receipt_sha256": _sha256(run_path),
             "server_log_sha256": _sha256(server_log_path),
+            "cohort_freeze_sha256": (
+                _sha256(cohort_freeze_path) if cohort_freeze_path is not None else None
+            ),
         },
         "execution": {
             "official_render_http_200_calls": actual_http_calls,
+            "official_render_http_accounting_scope": server_accounting_scope,
             "provider_observation_calls": run["provider"]["observation_calls"],
             "provider_brain_attempts": run["provider"]["brain_attempts"],
             "provider_in_doubt": 0,
@@ -199,6 +219,7 @@ def main() -> None:
     parser.add_argument("--qualification", type=Path, required=True)
     parser.add_argument("--run-receipt", type=Path, required=True)
     parser.add_argument("--server-log", type=Path, required=True)
+    parser.add_argument("--cohort-freeze", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     result = audit(args)

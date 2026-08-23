@@ -62,6 +62,18 @@ def summarize_audits(cohort: dict[str, Any], audits: Sequence[dict[str, Any]]) -
         "outcome_class_counts": dict(sorted(counts.items())),
         "metric_goal_success_count": counts["METRIC_GOAL_SUCCESS"],
         "metric_goal_success_rate": counts["METRIC_GOAL_SUCCESS"] / episode_count,
+        "terminal_metric_arrival_count": sum(
+            row["metric_outcome"]["terminal_metric_arrival"] for row in audits
+        ),
+        "terminal_metric_arrival_rate": sum(
+            row["metric_outcome"]["terminal_metric_arrival"] for row in audits
+        ) / episode_count,
+        "completion_confirmation_count": sum(
+            row["metric_outcome"]["episode_completion"] for row in audits
+        ),
+        "completion_confirmation_rate": sum(
+            row["metric_outcome"]["episode_completion"] for row in audits
+        ) / episode_count,
         "false_arrival_count": counts["FALSE_ARRIVAL"],
         "positive_instruction_progress_episode_count": sum(
             row["metric_outcome"]["instruction_attributable_progress_m"] > 0 for row in audits
@@ -92,6 +104,7 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         **summary,
         "inputs": {
+            "audit_implementation_sha256": _sha256(Path(__file__).resolve()),
             "cohort_freeze_sha256": _sha256(cohort_path),
             "episode_audits": [
                 {"episode_id": row["episode_id"], "path": str(path), "sha256": _sha256(path)}
@@ -103,6 +116,8 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
                 "episode_id": row["episode_id"],
                 "outcome_class": _outcome_class(row),
                 "terminal_distance_to_goal_m": row["metric_outcome"]["terminal_distance_to_goal_m"],
+                "terminal_metric_arrival": row["metric_outcome"]["terminal_metric_arrival"],
+                "episode_completion": row["metric_outcome"]["episode_completion"],
                 "instruction_attributable_progress_m": row["metric_outcome"]["instruction_attributable_progress_m"],
                 "provider_observation_calls": row["execution"]["provider_observation_calls"],
             }
