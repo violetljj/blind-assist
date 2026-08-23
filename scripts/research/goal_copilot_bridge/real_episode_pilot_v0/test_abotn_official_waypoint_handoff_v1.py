@@ -43,6 +43,12 @@ class OfficialWaypointAdapterTest(unittest.TestCase):
         np.testing.assert_allclose([[1.0, 0.0]], direction)
         self.assertTrue(stop)
 
+    def test_rescan_is_a_fresh_in_place_sweep(self) -> None:
+        waypoint, direction, stop = _action_prediction("RESCAN_HOLD")
+        np.testing.assert_allclose([[0.0, 0.0]], waypoint)
+        self.assertAlmostEqual(math.radians(12), math.atan2(direction[0, 1], direction[0, 0]))
+        self.assertFalse(stop)
+
 
 if __name__ == "__main__":
     unittest.main()

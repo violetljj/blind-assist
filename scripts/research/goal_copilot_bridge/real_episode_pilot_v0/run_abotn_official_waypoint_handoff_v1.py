@@ -121,9 +121,10 @@ def _action_prediction(action: str | None) -> tuple[np.ndarray, np.ndarray, bool
         direction = np.array([[math.cos(angle), math.sin(angle)]], dtype=np.float32)
         return waypoint, direction, False
     if action == "RESCAN_HOLD":
+        angle = math.radians(TURN_DEG)
         return (
             np.array([[0.0, 0.0]], dtype=np.float32),
-            np.array([[1.0, 0.0]], dtype=np.float32),
+            np.array([[math.cos(angle), math.sin(angle)]], dtype=np.float32),
             False,
         )
     if action is None:
@@ -211,6 +212,7 @@ def freeze(
             "max_steps": MAX_STEPS,
             "forward_step_m": FORWARD_STEP_M,
             "turn_degrees": TURN_DEG,
+            "rescan_motion": "IN_PLACE_LEFT_SWEEP_ONE_FROZEN_TURN_STEP",
             "current_views": ["left", "front", "right"],
             "provider_view": "front",
             "renderer_retries": 0,
