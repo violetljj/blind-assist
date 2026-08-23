@@ -4,6 +4,13 @@
 
 Dynamic truth: [`docs/research/goal-copilot/README.md`](../../../docs/research/goal-copilot/README.md).
 
+`named_referent_provider_v0/` is a reversible platform-engineering canary seam for current RGB plus a Goal Reference
+Pack. It keeps PP-OCRv5 text, DINOv2-S reference-image, Grounding DINO proposal, and optional map-bearing evidence in
+four strictly independent, fail-closed channels with provider identity, latency, spatial/source provenance, raw and
+normalized match fields, and explicit `NOT_EVALUABLE` errors. Its public repeatable storefront canary and all model/data
+payloads stay under ignored `artifacts.local/`. Claim ceiling is `ENGINEERING_MECHANICS_ONLY`: no fusion, fresh/formal
+cohort, scientific performance claim, referent authority, Android/default-App wiring, or model promotion.
+
 `selective_guidance_v0/` is the current experimental responsibility seam. It implements a pure current-frame decision
 contract and append-only episode event log; only explicit user confirmation or a contracted trusted interaction can
 produce `COMPLETED_BY_USER`. It contains no tracker, persistence, gallery, world memory, VIO/SLAM or default-App path.
