@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-24（Asia/Hong_Kong）；执行者：Codex。按
+  `PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_V1` 执行一次 metadata freeze 与一次 materialization。排除已消费
+  hotel source 后，固定的 7 个 SUN3D pose-corrected sources 全部形成 source-disjoint
+  `REFERENCE_IMAGE_INSTANCE + UNIQUE` episode；7/7 identity locks 在 later image GET 前 hash-bound，21/21 later
+  observations 通过 real-viewpoint 与 V1 truth-binding gate，28/28 image hashes 唯一，6/7 episodes 含 same-class
+  distractor。Provider/teacher/detector/matcher/baseline calls 全为 0，终态 `SMALL_ROSTER_MATERIALIZABLE`。C2 关闭；
+  passive baseline、Active Referent Search、FSM、control 与默认 App 均未运行或授权。结果：
+  [C2 small roster](docs/research/goal-copilot/BLINDASSIST_PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_RESULT_2026-08-24.md)。
+
 - 时间：2026-08-23（Asia/Hong_Kong）；执行者：violjjet。实现 experimental `selective_guidance_v0` 纯当前帧责任合同：
   cardinality 与 decision state 分离，正式支持 contested/abstain/lost/stale、方向、range、safety stop、handoff 与
   user-confirmed completion。Perception/provider/controller completion receipt 硬拒绝；handoff 与 stop 均不等于完成。

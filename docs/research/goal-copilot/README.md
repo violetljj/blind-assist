@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_CONTRACT_V1_READY / C2_NOT_AUTHORIZED / SUN3D_PUBLIC_REFERENT_AMBIGUOUS / NO_ALGORITHM_SUCCESSOR / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / C3_NOT_AUTHORIZED / SUN3D_GENERIC_DOOR_PUBLIC_REFERENT_AMBIGUOUS / NO_ALGORITHM_SUCCESSOR / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -95,9 +95,18 @@ evaluator-private lock 固定 physical instance、world anchor、binding authori
 只暴露 reference evidence 和 opaque anchor。Later per-frame visibility/regions 必须绑定 public/private hashes；
 `SET_VALUED` 保留完整 legal set，`AMBIGUOUS` 不携带 target，teacher/model 不能建立 identity authority。
 
-当前只建立 contract/firewall/truth-binding mechanics；`cohort_freeze / passive_baseline / algorithm` authority 全为 false。
-不创建 C2 roster，不运行 baseline，不实现 Active Referent Search。唯一下一边界是另立 5--8 个 independent episodes
-的 C2 small-roster protocol，且仍必须在 observation pixels/provider output 前冻结；当前未授权。
+随后按单独冻结的
+[`C2 small-roster protocol V1`](BLINDASSIST_PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_PROTOCOL_V1_2026-08-24.md)
+完成唯一一次 materialization，并封存
+[`C2 result`](BLINDASSIST_PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_RESULT_2026-08-24.md)：排除已消费 hotel source 后，
+固定 7 个 SUN3D pose-corrected sources 全部形成 source-disjoint `REFERENCE_IMAGE_INSTANCE + UNIQUE` episode；
+7/7 identity locks 在任何 later image GET 前完成，21/21 later observations 通过 frozen viewpoint 与 truth-binding gate，
+28/28 image hashes 唯一，6/7 episodes 含 same-class distractor。Provider/teacher/detector/matcher/baseline calls 全为 0。
+
+C2 只建立 `SMALL_ROSTER_MATERIALIZABLE`，不建立同实例重找能力。C2 到此关闭，不继续扩建 contract，也不自动运行
+C3 或 Active Referent Search。若另行授权，唯一下一边界是一个独立版本的极简单 passive baseline，用 failure anatomy
+区分 acquisition、proposal、identity、false commit 与 honest abstention；当前 `passive_baseline / algorithm` authority
+仍为 false。
 
 ## V0 与 P1 边界
 

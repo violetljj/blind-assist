@@ -1,6 +1,6 @@
 # Public Identifiable Referent Contract V1
 
-状态：`C0_C1_CONTRACT_MECHANICS_READY / REFERENCE_IMAGE_UNIQUE / PUBLIC_PRIVATE_FIREWALL / NO_COHORT / NO_BASELINE / NO_ALGORITHM`
+状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / REFERENCE_IMAGE_UNIQUE / PUBLIC_PRIVATE_FIREWALL / NO_BASELINE / NO_ALGORITHM`
 
 This package freezes the user-visible goal before episode observations, candidates, provider output, or outcomes. It
 then separates the provider-public contract from an evaluator-private physical-instance lock.
@@ -17,9 +17,10 @@ Teacher/model consensus cannot create physical identity authority. `AMBIGUOUS` c
 `NOT_VISIBLE` carries no target region. Public receipts recursively reject evaluator-private field names and never
 expose physical instance IDs or world anchors.
 
-The implementation deliberately leaves `cohort_freeze_authorized`, `passive_baseline_authorized`, and
-`algorithm_authorized` false. It does not implement IEVE, Active Referent Search, detector changes, identity matching,
-control, or product integration.
+The C0/C1 contract deliberately leaves `cohort_freeze_authorized`, `passive_baseline_authorized`, and
+`algorithm_authorized` false. The separately frozen C2 adapter materialized one 7-source roster without provider or
+model calls; it does not implement a passive baseline, IEVE, Active Referent Search, detector changes, identity
+matching, control, or product integration.
 
 ```powershell
 python -m scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.contract `
@@ -28,5 +29,11 @@ python -m scripts.research.goal_copilot_bridge.public_identifiable_referent_cont
   --private-output <new-evaluator-private-identity-lock.json>
 
 python -m unittest `
-  scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_contract
+  scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_contract `
+  scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_c2_small_roster
 ```
+
+C2's one formal freeze/materialization has already been consumed. Do not rerun or overwrite it. Protocol and result:
+
+- [`C2 protocol`](../../../../docs/research/goal-copilot/BLINDASSIST_PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_PROTOCOL_V1_2026-08-24.md)
+- [`C2 result`](../../../../docs/research/goal-copilot/BLINDASSIST_PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_RESULT_2026-08-24.md)
