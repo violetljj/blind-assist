@@ -1,6 +1,6 @@
 # Public Identifiable Referent Contract V1
 
-状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_4_OF_6 / PDM_UNARY_REJECTED / NEAR_IDENTITY_V0_RESCUE_4_COLLATERAL_17_CONTROL_1_OF_18_COVERAGE_5_OF_135 / SPATIAL_LAYOUT_BASELINE_702_OF_900_LAYOUT_558_OF_900_RESCUE_74_COLLATERAL_218 / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / SEMANTIC_ANCHOR_V1_16_OF_16_ZERO_WRONG_LOCK_4_OF_4_REACQUISITION_CONTROLLED_DERIVED_DEMO / PUBLIC_PRIVATE_FIREWALL / RELIABLE_VERIFIER_NOT_ESTABLISHED / NO_NONE_AUTHORITY`
+状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_4_OF_6 / PDM_UNARY_REJECTED / NEAR_IDENTITY_V0_RESCUE_4_COLLATERAL_17_CONTROL_1_OF_18_COVERAGE_5_OF_135 / SPATIAL_LAYOUT_BASELINE_702_OF_900_LAYOUT_558_OF_900_RESCUE_74_COLLATERAL_218 / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / SEMANTIC_ANCHOR_V1_16_OF_16_ZERO_WRONG_LOCK_4_OF_4_REACQUISITION_CONTROLLED_DERIVED_DEMO / SAGE_R_V2_SYNTHETIC_OCR_STAGE_CORRECT_3_TO_12_WRONG_LOCK_6_TO_0_NONE_0_TO_3_UNKNOWN_0_TO_3 / PUBLIC_PRIVATE_FIREWALL / RELIABLE_NATURAL_VERIFIER_NOT_ESTABLISHED`
 
 This package freezes the user-visible goal before episode observations, candidates, provider output, or outcomes. It
 then separates the provider-public contract from an evaluator-private physical-instance lock.
@@ -254,3 +254,28 @@ E:\codex-tools\bin\blindassist-python.cmd -m unittest `
 ```
 
 Result: `docs/research/goal-copilot/SEMANTIC_DISTINCTIVE_ANCHOR_V1_RESULT_2026-08-24.md`.
+
+## SAGE-R V2: Semantic Anchor Graph + Referent Belief
+
+`semantic_anchor_graph_and_belief_v2.py` replaces the V1 substring/debounce rule at the OCR-output seam with a
+relational graph score over lexical match, same-line layout, anchor-to-candidate geometry, image/read quality and
+scene-adaptive token distinctiveness. Its sequential state explicitly represents every candidate plus `NONE`, preserves
+low-observability input as `UNKNOWN`, and heavily discounts an unchanged source signature instead of counting a camera
+burst as independent evidence.
+
+The deterministic synthetic Development cohort contains 23 frames across adjacent `301/302/320`, `302A`, directory-board
+misassociation, clear absence, unreadable text, correlated repeats and LOST/reacquisition. On identical token/geometry
+input, substring + two-frame FSM achieved 3 correct terminal frames, 6 wrong locks, no `NONE`, and preserved 0/3
+`UNKNOWN`; SAGE-R V2 achieved 12 correct terminal frames, 0 wrong locks, 3 correct `NONE`, and preserved 3/3 `UNKNOWN`.
+This is an OCR-stage mechanism result, not natural OCR/camera or open-world calibration evidence.
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_semantic_anchor_graph_and_belief_v2
+
+E:\codex-tools\bin\blindassist-python.cmd -m `
+  scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.semantic_anchor_graph_and_belief_v2 `
+  --run-dir artifacts.local/evidence/semantic-anchor-graph-belief-v2/<new-run>
+```
+
+Result: `docs/research/goal-copilot/SEMANTIC_ANCHOR_GRAPH_AND_BELIEF_V2_RESULT_2026-08-24.md`.
