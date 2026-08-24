@@ -1,6 +1,6 @@
 # Public Identifiable Referent Contract V1
 
-状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_4_OF_6 / PDM_UNARY_REJECTED / NEAR_IDENTITY_V0_RESCUE_4_COLLATERAL_17_CONTROL_1_OF_18_COVERAGE_5_OF_135 / NEAR_IDENTITY_MIXED_WITH_COLLATERAL / PUBLIC_PRIVATE_FIREWALL / RELIABLE_VERIFIER_NOT_ESTABLISHED / NO_NONE_AUTHORITY`
+状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_4_OF_6 / PDM_UNARY_REJECTED / NEAR_IDENTITY_V0_RESCUE_4_COLLATERAL_17_CONTROL_1_OF_18_COVERAGE_5_OF_135 / SPATIAL_LAYOUT_BASELINE_702_OF_900_LAYOUT_558_OF_900_RESCUE_74_COLLATERAL_218 / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / PUBLIC_PRIVATE_FIREWALL / RELIABLE_VERIFIER_NOT_ESTABLISHED / NO_NONE_AUTHORITY`
 
 This package freezes the user-visible goal before episode observations, candidates, provider output, or outcomes. It
 then separates the provider-public contract from an evaluator-private physical-instance lock.
@@ -202,3 +202,17 @@ The consumed run produced `4 rescue / 17 collateral`, retained only `1/18` basel
 only `5/135` target-present pairs. Its zero test absence false accepts therefore fail the non-trivial coverage gate and
 do not establish a `NONE` authority. Result:
 `docs/research/goal-copilot/NEAR_IDENTITY_HARD_NEGATIVE_UNARY_V0_RESULT_2026-08-24.md`.
+
+## Spatial-layout identity verification V0
+
+The fresh Washington RGB-D Object Dataset run fixed all 300 physical instances, 51 categories, video-1 references,
+video-4 candidates and 900 same-instance-vs-same-class-distractor pairs before pixel decode. Both arms shared frozen
+DINOv2-S patch tokens. The analytic layout arm used only reciprocal matches, bilateral coverage/dispersion,
+local-neighborhood preservation, Procrustes residual and conflict consistency; it had no training, threshold, `NONE`,
+fusion or second reference.
+
+Baseline target outrank was `702/900`; layout was `558/900`, with `74 rescue / 218 collateral` and `484/702=68.9%`
+control retention. Stable-distractor recovery was `29/69=42.0%`; direction invariance was `1800/1800` and candidate
+permutation invariance `900/900`. The valid negative closes this passive single-reference RGB exact-instance mainline;
+open-set calibration, P1 and App remain unrun. Result:
+`docs/research/goal-copilot/SPATIAL_LAYOUT_IDENTITY_VERIFICATION_V0_RESULT_2026-08-24.md`.

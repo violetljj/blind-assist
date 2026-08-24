@@ -31,8 +31,10 @@ control retention=`4/6`，未过预注册门；8 个 absence 仍因无 NONE thre
 且 T-LESS 的 near-instance industrial objects 不支持 native same-class 外推。
 只读 residual identity failure-layer audit 随后复核冻结原图、bbox、instance truth 与 raw scores，没有调用模型或修改结果。
 12 对中 `representation collapse=4 / local layout lost=3 / UNKNOWN=5`；现有证据没有建立 pixel information insufficient、
-background shortcut 或 quality failure。唯一终态为 `LEARNED_NEAR_IDENTITY_REPRESENTATION_JUSTIFIED / NEARID_NOT_RUN`：
-若另行授权，唯一优先的新模型候选是使用全新数据分层的 NearID-style hard-negative unary，不能复用已消费 cohort 选模。
+background shortcut 或 quality failure。后续 NearID-style small head 在全新 CORe50 上为 `4 rescue / 17 collateral`，
+再后的 analytic spatial-layout arm 在全新 Washington 300-instance roster 上为 `74 rescue / 218 collateral`。因此
+passive single-reference RGB exact-instance mainline 已按 stop rule 关闭；不再以新 backbone/head/layout 续跑，identity
+signal 未建立前也不启动 open-set calibration。下一研究必须改变输入合同，转向主动 distinctive evidence 或独立身份来源。
 PA2 后的 `Proposal–Identity Responsibility Mismatch` 只是待验证解释；当前 7-case 没有 provider-public goal semantics，
 private category 不能回填成 text prompt。既有 P1-D0/PA0、Silver-B 与 Last-10m 均无可证明的
 user/product goal-before-truth provenance，历史 eligible episode 为 `0`。本轮已新建 pre-truth product goal 与
@@ -66,7 +68,7 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| Goal Copilot / residual identity failure-layer audit | 既有错误是像素无信息，还是通用表示/布局证据丢失 | `READ_ONLY / REPRESENTATION_COLLAPSE=4 / LOCAL_LAYOUT_LOST=3 / UNKNOWN=5 / LEARNED_NEAR_IDENTITY_REPRESENTATION_JUSTIFIED / NEARID_NOT_RUN` | [failure-layer result](goal-copilot/PUBLIC_IDENTIFIABLE_REFERENT_IDENTITY_FAILURE_LAYER_AUDIT_V0_RESULT_2026-08-24.md) | 无自动执行；若另行授权，唯一优先为新数据分层的 NearID-style hard-negative unary | 调用/下载模型；重编码/crop/threshold/fusion；复用 consumed cohort 选模；layout/Deep Sets/P1/App | 否 |
+| Goal Copilot / passive exact-instance identity closure | generic appearance、diffusion、multi-reference、learned head、layout 是否建立可迁移的单参考 RGB identity rule | `NEARID_SMALL_HEAD: RESCUE=4 COLLATERAL=17 / LAYOUT: BASELINE=702/900 CHALLENGER=558/900 RESCUE=74 COLLATERAL=218 CONTROL_RETENTION=68.9% STABLE=42.0% / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP` | [layout result](goal-copilot/SPATIAL_LAYOUT_IDENTITY_VERIFICATION_V0_RESULT_2026-08-24.md) | 无自动执行；新研究必须另立改变输入合同的 active distinctive-evidence 或独立身份来源协议 | 新 passive backbone/head/layout、threshold/fusion/Deep Sets；先跑 open-set calibration；P1/App | 否 |
 | Goal Copilot / DINOv2-S matched two-reference probe | 固定 scorer、candidate 与 evaluator，只增加 R2 和 exemplar-set max，是否增加 identity rank | `SOURCE_REUSED_DEVELOPMENT / SINGLE=14/14 / TWO=11/14 / RESCUE=0 / COLLATERAL=3 / NET=-3 / MEDIAN_DELTA=-0.03808 / NAIVE_MAX_REJECTED` | [Goal Copilot current](goal-copilot/README.md) | 无自动 successor；新授权须改为 distinctive-anchor/correspondence representation，或建立新的 hard-error denominator | 同 cohort 改 aggregation/threshold/fusion 或换 crop/layer/model；升格 Confirmation；belief/tracker/Active Search/P1/App | 否 |
 | Goal Copilot / source-disjoint PDM hard-error unary probe | 新 T-LESS/BOP19 roster 上，固定 PDM PerMIR unary score 能否救 DINO hard errors 且不击穿 controls | `DINO=27/30 / HARD=6 / CONTROL=6 / RESCUE=1 / COLLATERAL=4 / CONTROL_RETENTION=4/6 / GATE_FAIL / ABSENCE_NOT_EVALUABLE / PDM_UNARY_REJECTED` | [Goal Copilot current](goal-copilot/README.md) | residual audit 已完成；PDM 无 successor，NearID 仍须另行授权 | outcome 后改 PDM layer/timestep/prompt/top-k/crop/threshold/fusion；把 T-LESS 当 native same-class 或 Confirmation；P1/App | 否 |
 | Goal Copilot / DINOv2-S order-free local appearance probe | 独立 local patch evidence 能否在无 A/B positional bias 下区分 frozen target 与 same-class distractor | `TARGET_OUTRANKS=13/17 / HISTORICAL_WRONG=3/4 / ROBUST_TARGET=1/1 / ORDER_SENSITIVE=1/1 / STABLE_DISTRACTOR=1/2 / CONTROLS=10/13 / COMPLEMENTARY_NOT_SUFFICIENT / CONSUMED_ORACLE_CANDIDATE_DISCOVERY` | [Goal Copilot current](goal-copilot/README.md) | 已由一次新 target/frame、source-reused two-reference matched Development probe 检验；naive max 失败，不自动续跑 | outcome 后扫 threshold/crop/layer/model/fusion；把 raw rank 当 verifier；belief/tracker/Active Search/P1/App | 否 |

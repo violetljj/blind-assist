@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / VISIBLE_ONLY_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / DINOV2_LOCAL_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_RETENTION_4_OF_6 / PDM_UNARY_REJECTED / IDENTITY_FAILURE_AUDIT_NEARID_JUSTIFIED / NEAR_IDENTITY_V0_RESCUE_4_COLLATERAL_17_CONTROL_RETENTION_1_OF_18_COVERAGE_5_OF_135 / NEAR_IDENTITY_HARD_NEGATIVE_UNARY_MIXED_WITH_COLLATERAL / RELIABLE_VERIFIER_NOT_ESTABLISHED / NO_NONE_AUTHORITY / NO_BELIEF / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / VISIBLE_ONLY_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / DINOV2_LOCAL_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_RETENTION_4_OF_6 / PDM_UNARY_REJECTED / NEAR_IDENTITY_V0_RESCUE_4_COLLATERAL_17_CONTROL_RETENTION_1_OF_18_COVERAGE_5_OF_135 / SPATIAL_LAYOUT_BASELINE_702_OF_900_LAYOUT_558_OF_900_RESCUE_74_COLLATERAL_218 / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / OPEN_SET_CALIBRATION_NOT_RUN / RELIABLE_VERIFIER_NOT_ESTABLISHED / NO_NONE_AUTHORITY / NO_BELIEF / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -133,6 +133,14 @@ arm 得到 `1 rescue / 4 collateral / control retention=4/6`，未过 `rescue > 
 终态为 `PDM_UNARY_MIXED_RESCUE_WITH_COLLATERAL_DEVELOPMENT`。absence 因无冻结 NONE threshold 全部 `NOT_EVALUABLE`。
 这只覆盖 T-LESS textureless near-instance oracle-candidate ranking，不产生 native same-class、proposal 或产品声明。
 只读 [`identity failure-layer audit`](PUBLIC_IDENTIFIABLE_REFERENT_IDENTITY_FAILURE_LAYER_AUDIT_V0_RESULT_2026-08-24.md) 将 12 对分为 `REPRESENTATION_COLLAPSE=4 / LOCAL_LAYOUT_LOST=3 / UNKNOWN=5`，由此授权的 [`NearID-style unary V0`](NEAR_IDENTITY_HARD_NEGATIVE_UNARY_V0_RESULT_2026-08-24.md) 在全新 CORe50 三重 source-disjoint split 上得到 `4 rescue / 17 collateral / control retention 1/18 / coverage 5/135`，终态 `MIXED_WITH_COLLATERAL`；这只拒绝冻结的小型 DINO projection arm，不等同于运行官方 NearID checkpoint，layout 仍不预先 fusion。
+
+随后独立执行的 [`Spatial-Layout Identity Verification V0`](SPATIAL_LAYOUT_IDENTITY_VERIFICATION_V0_RESULT_2026-08-24.md)
+在全新 Washington RGB-D Object Dataset 的 300 个 physical instances / 900 个 paired decisions 上，把固定 DINO
+mean-nearest baseline 的 `702/900` 降到 `558/900`，paired transition=`74 rescue / 218 collateral`、control retention
+`484/702=68.9%`；23 个 stable-distractor instances 上仅 `29/69=42.0%`。direction 与 candidate permutation
+invariance 均 100%，所以 analytic layout arm 有效失败。按预声明 stop rule，passive single-reference RGB exact-instance
+mainline 关闭；不再换 backbone/head/layout，且 identity signal 未通过前不启动 open-set calibration。新研究必须改变输入合同，
+转向主动 distinctive evidence 或独立身份来源；P1 与 App 不启动。
 
 - `artifacts.local/evidence/public-identifiable-referent-visible-identity-probe-v0/run-20260824T033033+0800/final-report.json`；
 - `artifacts.local/evidence/public-identifiable-referent-oracle-competing-identity-v0/run-20260824T034449+0800/final-report.json`；
