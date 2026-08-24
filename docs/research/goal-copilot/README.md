@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / VISIBLE_ONLY_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / DINOV2_LOCAL_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_UNARY_REJECTED / NEAR_IDENTITY_V0_RESCUE_4_COLLATERAL_17 / SPATIAL_LAYOUT_BASELINE_702_OF_900_LAYOUT_558_OF_900 / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / ACTIVE_DISTINCTIVE_V0_TOP1_11_OF_16_EQUALS_PASSIVE_WRONG_LOCK_9_EQUALS_PASSIVE_REACQUISITION_3_OF_4_EQUALS_PASSIVE / APPEARANCE_DERIVED_DISTINCTIVE_ANCHOR_NO_UPLIFT / SEMANTIC_ANCHOR_V1_PASSIVE_11_OF_16_TO_SEMANTIC_16_OF_16_WRONG_LOCK_9_TO_0_REACQUISITION_3_OF_4_TO_4_OF_4 / SAGE_R_V3_A_FULL_CORRECT_14_OF_16_TARGET_7_OF_7_NONE_7_OF_7_WRONG_LOCK_0_NO_RELATION_TARGET_0_OF_7 / TUNED_ON_V2_1_DEVELOPMENT / NATURAL_PHOTO_NOT_RUN / V3_B_NOT_RUN / V4_NOT_RUN / LIVE_ANDROID_NOT_RUN / NO_P1_PROMOTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / VISIBLE_ONLY_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / DINOV2_LOCAL_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_UNARY_REJECTED / NEAR_IDENTITY_V0_RESCUE_4_COLLATERAL_17 / SPATIAL_LAYOUT_BASELINE_702_OF_900_LAYOUT_558_OF_900 / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / ACTIVE_DISTINCTIVE_V0_TOP1_11_OF_16_EQUALS_PASSIVE_WRONG_LOCK_9_EQUALS_PASSIVE_REACQUISITION_3_OF_4_EQUALS_PASSIVE / APPEARANCE_DERIVED_DISTINCTIVE_ANCHOR_NO_UPLIFT / SEMANTIC_ANCHOR_V1_PASSIVE_11_OF_16_TO_SEMANTIC_16_OF_16_WRONG_LOCK_9_TO_0_REACQUISITION_3_OF_4_TO_4_OF_4 / SAGE_R_V3_A_TUNED_FULL_14_OF_16 / NATURAL_SOURCE_DISJOINT_9_SOURCES_12_QUERIES_36_OBSERVATIONS / V2_CORRECT_4_FULL_CORRECT_3_FULL_WRONG_LOCK_9_NO_RELATION_TARGET_0_OF_27 / DO_NOT_ENTER_V3_B / V4_NOT_RUN / LIVE_ANDROID_NOT_RUN / NO_P1_PROMOTION / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -165,8 +165,17 @@ Android/P1 与默认 App 均不启动。
 在同一 V2.1 RapidOCR Development rows 上，V2 heuristic=`9/16 correct, target 6/7, NONE 3/7, wrong 0`；no-relation=`7/16,
 target 0/7, NONE 7/7`；full=`14/16, target 7/7, NONE 7/7, wrong 0, UNKNOWN 2/2`，candidate permutation 16/16。
 V2 observability/novelty/belief/NONE/threshold 全冻结，learned reliability/NONE head 仅诊断。由于 directory failure inspection
-影响了 generator coverage，结果是 `TUNED_ON_DEVELOPMENT`。当前唯一 successor 是冻结 full scorer 后运行未参与开发的自然照片
-source-disjoint door/directory/gate/office/exit/area cohort；V3-B 与 V4 均不启动。
+影响了 generator coverage，结果是 `TUNED_ON_DEVELOPMENT`。该结果当时的 successor 是冻结 full scorer 后运行未参与开发的
+自然照片 source-disjoint cohort；该 successor 已由下述 natural-photo Development 执行。
+
+[`V3-A natural-photo source-disjoint Development`](SAGE_R_V3_A_NATURAL_PHOTO_SOURCE_DISJOINT_RESULT_2026-08-24.md)
+随后在 OCR/模型打开前封存 9 张独立 Wikimedia Commons 自然照片、12 个 target query 与 36 个派生 observation。目标类型为
+`PLATFORM / EXIT / EMERGENCY EXIT / LAB / CLASSROOM`，与 synthetic generator 的 target type 隔离。V2 / no-relation /
+full correct terminal=`4/36 / 0/36 / 3/36`，evaluable target=`2/27 / 0/27 / 3/27`；full wrong lock=`9`、NONE=`0/6`、
+directory false binding=`2`，仅 candidate permutation `36/36` 保持。relation path 仍提供 `+3` target observation，但没有建立
+可迁移的 authority assignment，状态为 `DO_NOT_ENTER_V3_B`。下一问题收窄到 natural OCR grouping、sign-to-destination
+association、directional geometry normalization 与 missing decisive token 的 open-set behavior；不得在本 sealed cohort 上换图、
+改 candidate/truth、调阈值或重跑，V3-B/V4 继续不启动。
 
 ## V0 与 P1 边界
 

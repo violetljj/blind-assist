@@ -5295,3 +5295,13 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
 - 结果为 top-1 `11/16 -> 16/16`、wrong lock `9 -> 0`、reacquisition `3/4 -> 4/4`、lost abstention `4/4`。
   除 Starbucks natural OCR 外均为 deterministic derived canary；不产生 general exact-instance、Android、P1、导航或安全声明。
 - 结果：[Semantic Distinctive Anchor V1](docs/research/goal-copilot/SEMANTIC_DISTINCTIVE_ANCHOR_V1_RESULT_2026-08-24.md)。
+
+# 2026-08-24 SAGE-R V3-A natural-photo source-disjoint Development
+
+- 在任何 OCR/模型调用前封存 9 张独立 Wikimedia Commons 自然照片、12 个 target query、36 个固定派生
+  observation；target type 为 `PLATFORM / EXIT / EMERGENCY EXIT / LAB / CLASSROOM`，与 synthetic generator 隔离。
+- 四臂结果：substring=`0/36`、V2=`4/36`、no-relation=`0/36`、full=`3/36`；full evaluable target=`3/27`，但
+  wrong lock=`9`、NONE=`0/6`、directory false binding=`2`。candidate permutation `36/36`，故失败不来自候选枚举顺序。
+- promotion checks 未通过，状态 `DO_NOT_ENTER_V3_B`；V3-B/V4 不启动。下一 representation 问题为 natural OCR
+  grouping、sign-to-destination association、directional geometry normalization 与 missing decisive token 的 open-set behavior。
+- 结果：[SAGE-R V3-A natural-photo source-disjoint](docs/research/goal-copilot/SAGE_R_V3_A_NATURAL_PHOTO_SOURCE_DISJOINT_RESULT_2026-08-24.md)。

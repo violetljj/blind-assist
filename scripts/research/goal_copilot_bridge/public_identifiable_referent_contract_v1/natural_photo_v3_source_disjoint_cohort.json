@@ -1,0 +1,117 @@
+{
+  "schema_version": "blindassist_natural_photo_v3_source_disjoint_cohort_spec_v1",
+  "data_role": "NATURAL_PHOTO_SOURCE_DISJOINT_DEVELOPMENT_PRE_OCR_FREEZE",
+  "frozen_v3_commit": "188b4b2744f134bcccf43efd3e0443ce7581afb5",
+  "claim_boundary": "Nine independent Wikimedia Commons source photographs, twelve predeclared target queries, and three deterministic derived views per query. Natural source pixels are source-disjoint from synthetic V3 training and generated-pixel V2.1 Development, but queries sharing a photograph are correlated and the cohort is Development, not Confirmation or a population estimate.",
+  "sources": [
+    {
+      "source_id": "S01",
+      "local_name": "01.jpg",
+      "commons_title": "File:Platform 2 sign on Cwmbran railway station - geograph.org.uk - 7835994.jpg",
+      "page_url": "https://commons.wikimedia.org/wiki/File:Platform_2_sign_on_Cwmbran_railway_station_-_geograph.org.uk_-_7835994.jpg",
+      "artist": "Jaggery",
+      "license": "CC BY-SA 2.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
+      "candidate_boxes": {"A": [0.02, 0.30, 0.33, 0.98], "B": [0.345, 0.30, 0.655, 0.98], "C": [0.67, 0.30, 0.98, 0.98]}
+    },
+    {
+      "source_id": "S02",
+      "local_name": "02.jpg",
+      "commons_title": "File:Platform 2 sign, TRA Banqiao Station 20181027.jpg",
+      "page_url": "https://commons.wikimedia.org/wiki/File:Platform_2_sign,_TRA_Banqiao_Station_20181027.jpg",
+      "artist": "Solomon203",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "candidate_boxes": {"A": [0.02, 0.31, 0.33, 0.98], "B": [0.345, 0.31, 0.655, 0.98], "C": [0.67, 0.31, 0.98, 0.98]}
+    },
+    {
+      "source_id": "S03",
+      "local_name": "03.jpg",
+      "commons_title": "File:2009 at Teignmouth station - platform 2.jpg",
+      "page_url": "https://commons.wikimedia.org/wiki/File:2009_at_Teignmouth_station_-_platform_2.jpg",
+      "artist": "Geof Sheppard",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "candidate_boxes": {"A": [0.02, 0.30, 0.33, 0.98], "B": [0.345, 0.30, 0.655, 0.98], "C": [0.67, 0.30, 0.98, 0.98]}
+    },
+    {
+      "source_id": "S04",
+      "local_name": "04.jpg",
+      "commons_title": "File:Exit B sign of Workers' Stadium Station (20241029155737).jpg",
+      "page_url": "https://commons.wikimedia.org/wiki/File:Exit_B_sign_of_Workers%27_Stadium_Station_(20241029155737).jpg",
+      "artist": "N509FZ",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "candidate_boxes": {"A": [0.02, 0.47, 0.33, 0.98], "B": [0.345, 0.47, 0.655, 0.98], "C": [0.67, 0.47, 0.98, 0.98]}
+    },
+    {
+      "source_id": "S05",
+      "local_name": "05.jpg",
+      "commons_title": "File:HK MTR Wan Chai Station interior Exit B sign stairs April 2016 DSC.JPG",
+      "page_url": "https://commons.wikimedia.org/wiki/File:HK_MTR_Wan_Chai_Station_interior_Exit_B_sign_stairs_April_2016_DSC.JPG",
+      "artist": "Hahwaimeni",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "candidate_boxes": {"A": [0.02, 0.29, 0.33, 0.98], "B": [0.345, 0.29, 0.655, 0.98], "C": [0.67, 0.29, 0.98, 0.98]}
+    },
+    {
+      "source_id": "S06",
+      "local_name": "06.jpg",
+      "commons_title": "File:SZ 深圳 Shenzhen 福田 Futian Metro 沙尾站 Shawei Station B exit and entrance passageway n sign June 2024 R12S.jpg",
+      "page_url": "https://commons.wikimedia.org/wiki/File:SZ_%E6%B7%B1%E5%9C%B3_Shenzhen_%E7%A6%8F%E7%94%B0_Futian_Metro_%E6%B2%99%E5%B0%BE%E7%AB%99_Shawei_Station_B_exit_and_entrance_passageway_n_sign_June_2024_R12S.jpg",
+      "artist": "BISLTAIO Tosmacia",
+      "license": "CC0",
+      "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "candidate_boxes": {"A": [0.02, 0.30, 0.33, 0.98], "B": [0.345, 0.30, 0.655, 0.98], "C": [0.67, 0.30, 0.98, 0.98]}
+    },
+    {
+      "source_id": "S07",
+      "local_name": "07.jpg",
+      "commons_title": "File:2024-03-27 20 47 27 Sign for Room 323 (Computer Lab) at the Environmental & Natural Resource Sciences Building on the Cook-Douglass campus of Rutgers University in New Brunswick, Middlesex County, New Jersey.jpg",
+      "page_url": "https://commons.wikimedia.org/wiki/File:2024-03-27_20_47_27_Sign_for_Room_323_(Computer_Lab)_at_the_Environmental_%26_Natural_Resource_Sciences_Building_on_the_Cook-Douglass_campus_of_Rutgers_University_in_New_Brunswick,_Middlesex_County,_New_Jersey.jpg",
+      "artist": "Famartin",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "candidate_boxes": {"A": [0.02, 0.34, 0.33, 0.98], "B": [0.345, 0.34, 0.655, 0.98], "C": [0.67, 0.34, 0.98, 0.98]}
+    },
+    {
+      "source_id": "S08",
+      "local_name": "08.jpg",
+      "commons_title": "File:2024-03-27 20 50 51 Sign for Room 223 (Classroom) at the Environmental & Natural Resource Sciences Building on the Cook-Douglass campus of Rutgers University in New Brunswick, Middlesex County, New Jersey.jpg",
+      "page_url": "https://commons.wikimedia.org/wiki/File:2024-03-27_20_50_51_Sign_for_Room_223_(Classroom)_at_the_Environmental_%26_Natural_Resource_Sciences_Building_on_the_Cook-Douglass_campus_of_Rutgers_University_in_New_Brunswick,_Middlesex_County,_New_Jersey.jpg",
+      "artist": "Famartin",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "candidate_boxes": {"A": [0.02, 0.31, 0.33, 0.98], "B": [0.345, 0.31, 0.655, 0.98], "C": [0.67, 0.31, 0.98, 0.98]}
+    },
+    {
+      "source_id": "S09",
+      "local_name": "09.jpg",
+      "commons_title": "File:Laboratory door sign.jpg",
+      "page_url": "https://commons.wikimedia.org/wiki/File:Laboratory_door_sign.jpg",
+      "artist": "SulaLib",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "candidate_boxes": {"A": [0.02, 0.34, 0.33, 0.98], "B": [0.345, 0.34, 0.655, 0.98], "C": [0.67, 0.34, 0.98, 0.98]}
+    }
+  ],
+  "queries": [
+    {"query_id": "Q01", "source_id": "S01", "target_tokens": ["PLATFORM", "2"], "truth": "A", "expected_state": "TARGET", "scenario": "true_target", "note": "large platform numeral above the left physical platform region"},
+    {"query_id": "Q02", "source_id": "S02", "target_tokens": ["PLATFORM", "2A"], "truth": "A", "expected_state": "TARGET", "scenario": "hard_neighbor", "note": "2A and 2B appear together with opposing directional regions"},
+    {"query_id": "Q03", "source_id": "S02", "target_tokens": ["EXIT", "WEST"], "truth": "A", "expected_state": "TARGET", "scenario": "directory_trap", "note": "correct text is on a directional board; authority belongs to the indicated left region, not the board-adjacent center"},
+    {"query_id": "Q04", "source_id": "S03", "target_tokens": ["PLATFORM", "2"], "truth": "C", "expected_state": "TARGET", "scenario": "true_target", "note": "small distant platform numeral at the far right"},
+    {"query_id": "Q05", "source_id": "S04", "target_tokens": ["EXIT", "B"], "truth": "B", "expected_state": "UNKNOWN", "scenario": "partial_ocr", "note": "source identity says Exit B but the visible sign does not spell the full target; should not create negative authority"},
+    {"query_id": "Q06", "source_id": "S05", "target_tokens": ["EXIT", "B"], "truth": "B", "expected_state": "TARGET", "scenario": "true_target", "note": "Exit B sign above the central stair destination"},
+    {"query_id": "Q07", "source_id": "S06", "target_tokens": ["EXIT", "B"], "truth": "B", "expected_state": "TARGET", "scenario": "hard_neighbor", "note": "Emergency Exit and Exit B signs coexist over the passage"},
+    {"query_id": "Q08", "source_id": "S06", "target_tokens": ["EMERGENCY", "EXIT"], "truth": "A", "expected_state": "TARGET", "scenario": "hard_neighbor", "note": "generic exit neighbor must not steal the emergency-exit authority"},
+    {"query_id": "Q09", "source_id": "S07", "target_tokens": ["LAB", "323"], "truth": "B", "expected_state": "TARGET", "scenario": "true_target", "note": "held-out LAB semantic type with room-number evidence"},
+    {"query_id": "Q10", "source_id": "S07", "target_tokens": ["LAB", "406"], "truth": "NONE", "expected_state": "NONE", "scenario": "absent_hard_neighbor", "note": "LAB is present but the requested number is absent"},
+    {"query_id": "Q11", "source_id": "S08", "target_tokens": ["CLASSROOM", "223"], "truth": "B", "expected_state": "TARGET", "scenario": "true_target", "note": "held-out CLASSROOM semantic type with number above label"},
+    {"query_id": "Q12", "source_id": "S09", "target_tokens": ["LAB", "406"], "truth": "NONE", "expected_state": "NONE", "scenario": "absent", "note": "generic laboratory text is present without the requested identity number"}
+  ],
+  "views": [
+    {"view_id": "far_blur", "scale": 0.62, "perspective": 0.0, "blur_sigma": 1.2},
+    {"view_id": "oblique", "scale": 1.0, "perspective": 0.18, "blur_sigma": 0.0},
+    {"view_id": "native", "scale": 1.0, "perspective": 0.0, "blur_sigma": 0.0}
+  ]
+}

@@ -319,3 +319,19 @@ E:\codex-tools\bin\blindassist-python.cmd -m unittest `
 ```
 
 Result: `docs/research/goal-copilot/TYPED_SEMANTIC_REFERENT_GRAPH_V3_A_RESULT_2026-08-25.md`.
+
+## SAGE-R V3-A natural-photo source-disjoint Development
+
+`natural_photo_v3_source_disjoint.py` first seals nine Wikimedia Commons natural source photos, twelve target queries and
+36 deterministic derived observations before OCR/model access, then runs exactly substring FSM, V2 heuristic, frozen V3
+no-relation and frozen V3 full. Target types are `PLATFORM / EXIT / EMERGENCY EXIT / LAB / CLASSROOM`, disjoint from the
+synthetic generator's `ROOM / GATE / OFFICE / AREA` types.
+
+The natural-photo shot fails its preregistered promotion checks: V2 / no-relation / full correct terminal is `4 / 0 / 3` of
+36, evaluable target is `2 / 0 / 3` of 27, full wrong lock is 9, full NONE is `0/6`, and directory false binding is 2. Full
+remains candidate-permutation equivariant on 36/36 observations, and its target uplift over no-relation is only `+3` while
+creating wrong authority. Status is `DO_NOT_ENTER_V3_B`; V3-B and V4 remain closed. The next representation question is OCR
+grouping, sign-to-destination association, directional geometry normalization, and missing-token open-set behavior—not more
+message-passing layers.
+
+Result: `docs/research/goal-copilot/SAGE_R_V3_A_NATURAL_PHOTO_SOURCE_DISJOINT_RESULT_2026-08-24.md`.
