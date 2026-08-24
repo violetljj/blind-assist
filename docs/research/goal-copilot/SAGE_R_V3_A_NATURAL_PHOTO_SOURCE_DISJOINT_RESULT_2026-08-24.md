@@ -81,7 +81,7 @@ V3-A full/no-relation 权重、V2 scorer/belief/threshold 和 generator 都没�
 E:\codex-tools\bin\blindassist-python.cmd -m `
   scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.natural_photo_v3_source_disjoint freeze `
   --spec scripts/research/goal_copilot_bridge/public_identifiable_referent_contract_v1/natural_photo_v3_source_disjoint_cohort.json `
-  --source-dir artifacts.local/tmp/natural-v3-selection2 `
+  --source-dir artifacts.local/evidence/sage-r-v3-a-natural-photo-source-disjoint/cohort-20260824T204655+0800/sources `
   --run-dir artifacts.local/evidence/sage-r-v3-a-natural-photo-source-disjoint/<new-cohort>
 
 E:\codex-tools\bin\blindassist-python.cmd -m `
