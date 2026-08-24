@@ -216,3 +216,22 @@ control retention. Stable-distractor recovery was `29/69=42.0%`; direction invar
 permutation invariance `900/900`. The valid negative closes this passive single-reference RGB exact-instance mainline;
 open-set calibration, P1 and App remain unrun. Result:
 `docs/research/goal-copilot/SPATIAL_LAYOUT_IDENTITY_VERIFICATION_V0_RESULT_2026-08-24.md`.
+
+## Active distinctive evidence acquisition V0
+
+`active_distinctive_evidence_acquisition_v0.py` changes enrollment to a three-view sweep and builds stable local
+anchors. SIFT audits whether the sweep contains repeatable points; stable DINOv2 patches then vote only for a candidate
+that explains an anchor with absolute support and a margin over every competitor. It never uses max-over-reference
+scores, and the injected lost step requires a fresh anchor-gated relock rather than tracker identity.
+
+The curated Development demo contains two Wikimedia storefront targets plus Washington cereal-box and keyboard targets:
+4 targets, 16 target-present decisions, and 4 lost/reacquisition opportunities. The final active arm exactly matched
+the passive single-reference DINO comparator: top-1 `11/16`, wrong lock `9/20`, reacquisition `3/4`, with zero delta in
+every scenario. Appearance-derived anchors therefore stop; OCR/logo/marker evidence was not evaluated because no
+executable OCR runtime currently exists. Result:
+`docs/research/goal-copilot/ACTIVE_DISTINCTIVE_EVIDENCE_ACQUISITION_V0_RESULT_2026-08-24.md`.
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_active_distinctive_evidence_acquisition_v0
+```

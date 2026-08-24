@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / VISIBLE_ONLY_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / DINOV2_LOCAL_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_RETENTION_4_OF_6 / PDM_UNARY_REJECTED / NEAR_IDENTITY_V0_RESCUE_4_COLLATERAL_17_CONTROL_RETENTION_1_OF_18_COVERAGE_5_OF_135 / SPATIAL_LAYOUT_BASELINE_702_OF_900_LAYOUT_558_OF_900_RESCUE_74_COLLATERAL_218 / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / OPEN_SET_CALIBRATION_NOT_RUN / RELIABLE_VERIFIER_NOT_ESTABLISHED / NO_NONE_AUTHORITY / NO_BELIEF / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / VISIBLE_ONLY_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / DINOV2_LOCAL_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_UNARY_REJECTED / NEAR_IDENTITY_V0_RESCUE_4_COLLATERAL_17 / SPATIAL_LAYOUT_BASELINE_702_OF_900_LAYOUT_558_OF_900 / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / ACTIVE_DISTINCTIVE_V0_TOP1_11_OF_16_EQUALS_PASSIVE_WRONG_LOCK_9_EQUALS_PASSIVE_REACQUISITION_3_OF_4_EQUALS_PASSIVE / APPEARANCE_DERIVED_DISTINCTIVE_ANCHOR_NO_UPLIFT / SEMANTIC_ANCHOR_NOT_EVALUABLE_NO_OCR_RUNTIME / NO_NONE_AUTHORITY / NO_BELIEF / NO_P1_PROMOTION / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -142,28 +142,19 @@ invariance 均 100%，所以 analytic layout arm 有效失败。按预声明 sto
 mainline 关闭；不再换 backbone/head/layout，且 identity signal 未通过前不启动 open-set calibration。新研究必须改变输入合同，
 转向主动 distinctive evidence 或独立身份来源；P1 与 App 不启动。
 
-- `artifacts.local/evidence/public-identifiable-referent-visible-identity-probe-v0/run-20260824T033033+0800/final-report.json`；
-- `artifacts.local/evidence/public-identifiable-referent-oracle-competing-identity-v0/run-20260824T034449+0800/final-report.json`；
-- `artifacts.local/evidence/public-identifiable-referent-oracle-competing-identity-order-counterbalance-v0/run-20260824T034852+0800/final-report.json`；
-- `artifacts.local/evidence/public-identifiable-referent-dinov2-local-appearance-v0/run-20260824T042110+0800/final-report.json`。
-- `artifacts.local/evidence/public-identifiable-referent-dinov2-two-reference-matched-v0/run-20260824T045037+0800/final-report.json`。
-- `artifacts.local/evidence/public-identifiable-referent-pdm-hard-error-unary-v0/challenger-run-20260824T044413Z/final-report.json`。
-
-以上均不证明 candidate generation、`NOT_VISIBLE`、calibration、navigation、control、safety、默认 App 或产品能力。
+[`Active Distinctive Evidence Acquisition V0`](ACTIVE_DISTINCTIVE_EVIDENCE_ACQUISITION_V0_RESULT_2026-08-24.md) 的两个
+storefront、商品、个人物品三帧 sweep 最终与 passive 完全相同：top-1=`11/16`、wrong lock=`9/20`、reacquisition=`3/4`，
+故 `APPEARANCE_DERIVED_DISTINCTIVE_ANCHOR_NO_UPLIFT`。它关闭 patch/threshold successor，不关闭项目 Demo；
+`NO_P1 / DEFAULT_APP_UNCHANGED` 只禁本 lane 晋升。下一动作只允许独立 OCR/logo/marker semantic anchor；当前 OCR runtime
+不可执行，保持 `NOT_EVALUABLE`，不得用旧部分 canary 输出补分母。
 
 ## V0 与 P1 边界
 
-`FOUND / CONTESTED / NOT_VISIBLE / ABSTAIN / STALE / HANDOFF_READY / COMPLETED_BY_USER` 是 current-frame 状态；
-`LOST` 只允许由 episode interaction layer 的 `VISIBLE -> NOT_VISIBLE_AFTER_VISIBLE` 边派生。它不构成 persistence。
-当前实现不得导入 tracker、cross-frame identity、re-ID、gallery growth、world memory/anchor、VIO/SLAM
-或 scene graph，也不得静默修改默认 App。
-
-只有真实 pilot 后同时满足以下证据，才可另行提出而不能在本轮实现 P1 successor：
-
-1. 连续可见片段内 referent selection 已足够可靠；
-2. episode failure 仍显著；
-3. 主导失败明确是出画/遮挡后错锁同类实例或无法恢复；
-4. camera pointing、proposal miss、range 与 interaction 均不是主导层。
+`FOUND / CONTESTED / NOT_VISIBLE / ABSTAIN / STALE / HANDOFF_READY / COMPLETED_BY_USER` 是 current-frame 状态；`LOST`
+只由 `VISIBLE -> NOT_VISIBLE_AFTER_VISIBLE` 派生，不构成 persistence。当前不得让 tracker、re-ID、gallery、world anchor、
+VIO/SLAM 或 scene graph 获得 identity authority，也不得静默修改默认 App。只有真实 pilot 同时证明连续可见 selection
+可靠、episode failure 仍显著、主导失败确为出画/遮挡后的错锁或无法恢复，且 pointing/proposal/range/interaction 均非
+主导层，才可另行提出 P1 successor。
 
 ## 关键历史证据入口
 

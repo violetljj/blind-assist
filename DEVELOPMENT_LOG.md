@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-24（Asia/Hong_Kong）；执行者：violjjet。实现三帧 reference sweep、跨视角稳定 SIFT acquisition
+  audit 与 candidate-unique DINO local-anchor voting；受控 cohort 为两个公开 storefront、一个包装商品和一个个人
+  物品，共 4 targets × 4 search views，另有 4 次显式 lost/reacquisition。首个 SIFT-only arm 只靠全弃权消除
+  wrong lock，0 次正确 lock；唯一机制修订后的 active arm 与 passive 在 top-1 `11/16`、wrong lock `9/20`、
+  reacquisition `3/4` 以及三个场景分层上完全相同，终态 `APPEARANCE_DERIVED_DISTINCTIVE_ANCHOR_NO_UPLIFT`。
+  `NO_P1 / DEFAULT_APP_UNCHANGED` 只约束从失败 identity lane 晋升 authority，不等于项目停止；下一条有信息增益的
+  路线必须使用独立 OCR/logo/marker semantic evidence。当前无可执行 OCR runtime，保持 `NOT_EVALUABLE`。
+
 - 时间：2026-08-24（Asia/Hong_Kong）；执行者：violjjet。按用户授权完成一次
   `DINOV2_TWO_REFERENCE_MATCHED_INFORMATION_GAIN_V0` Development probe，不修改已消费的单 reference V1/C2/v0。
   新 RGB GET 前以 metadata-only 规则排除 C2 的 28 张旧图、7 个旧 target 与 roster 中全部旧 same-class distractor
