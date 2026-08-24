@@ -1,6 +1,6 @@
 # Public Identifiable Referent Contract V1
 
-状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17_HISTORICAL_WRONG_3_OF_4_CONTROLS_10_OF_13 / TWO_REFERENCE_MATCHED_SINGLE_14_OF_14_TWO_11_OF_14_ZERO_RESCUE_THREE_COLLATERAL / LOCAL_EVIDENCE_COMPLEMENTARY_NOT_SUFFICIENT / PUBLIC_PRIVATE_FIREWALL / NO_NOT_VISIBLE_EVIDENCE / RELIABLE_VERIFIER_NOT_ESTABLISHED`
+状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_4_OF_6 / PDM_UNARY_REJECTED / PUBLIC_PRIVATE_FIREWALL / NO_NONE_THRESHOLD / RELIABLE_VERIFIER_NOT_ESTABLISHED`
 
 This package freezes the user-visible goal before episode observations, candidates, provider output, or outcomes. It
 then separates the provider-public contract from an evaluator-private physical-instance lock.
@@ -168,3 +168,13 @@ Focused mechanics test:
 E:\codex-tools\bin\blindassist-python.cmd -m unittest `
   scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_dinov2_two_reference_matched_probe
 ```
+
+## Fresh-source hard-error unary PDM probe
+
+`pdm_hard_error_unary_probe.py` freezes a source-disjoint T-LESS/BOP19 Development cohort before RGB materialization;
+its 1280x1024 camera-metadata area gate became a stricter >=3.37% gate on the materialized 720x540 raster. The unchanged
+DINOv2-S baseline produced `27/30` target outranks and six frozen hard pairs (three wrong plus three
+lowest-margin correct) with six matched controls. One published PDM PerMIR configuration then yielded `1` rescue,
+`4` collateral errors, and control retention `4/6=66.7%`; it fails the frozen `rescue > collateral` and `>=80%` gate.
+Eight target-absent scores remain `NOT_EVALUABLE_NO_FROZEN_NONE_THRESHOLD`. Evidence is under
+`artifacts.local/evidence/public-identifiable-referent-pdm-hard-error-unary-v0/`; focused tests are `test_pdm_*.py`.
