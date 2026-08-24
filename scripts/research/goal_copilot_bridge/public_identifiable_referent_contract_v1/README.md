@@ -1,6 +1,6 @@
 # Public Identifiable Referent Contract V1
 
-状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_4_OF_6 / PDM_UNARY_REJECTED / NEAR_IDENTITY_V0_RESCUE_4_COLLATERAL_17_CONTROL_1_OF_18_COVERAGE_5_OF_135 / SPATIAL_LAYOUT_BASELINE_702_OF_900_LAYOUT_558_OF_900_RESCUE_74_COLLATERAL_218 / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / PUBLIC_PRIVATE_FIREWALL / RELIABLE_VERIFIER_NOT_ESTABLISHED / NO_NONE_AUTHORITY`
+状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_4_OF_6 / PDM_UNARY_REJECTED / NEAR_IDENTITY_V0_RESCUE_4_COLLATERAL_17_CONTROL_1_OF_18_COVERAGE_5_OF_135 / SPATIAL_LAYOUT_BASELINE_702_OF_900_LAYOUT_558_OF_900_RESCUE_74_COLLATERAL_218 / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / SEMANTIC_ANCHOR_V1_16_OF_16_ZERO_WRONG_LOCK_4_OF_4_REACQUISITION_CONTROLLED_DERIVED_DEMO / PUBLIC_PRIVATE_FIREWALL / RELIABLE_VERIFIER_NOT_ESTABLISHED / NO_NONE_AUTHORITY`
 
 This package freezes the user-visible goal before episode observations, candidates, provider output, or outcomes. It
 then separates the provider-public contract from an evaluator-private physical-instance lock.
@@ -235,3 +235,22 @@ executable OCR runtime currently exists. Result:
 E:\codex-tools\bin\blindassist-python.cmd -m unittest `
   scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_active_distinctive_evidence_acquisition_v0
 ```
+
+## Semantic Distinctive Anchor V1
+
+`semantic_distinctive_anchor_v1.py` reuses the consumed Active Distinctive V0 sequence and frozen passive receipt, then
+adds independently decodable goal evidence. RapidOCR is isolated under `artifacts.local`; semantic decisions lock only
+on exactly one matching OCR substring, ArUco ID, or homography-verified sign patch and otherwise abstain. The controlled
+derived demo changes available information rather than tuning appearance and moves top-1 `11/16 -> 16/16`, wrong locks
+`9 -> 0`, and reacquisition `3/4 -> 4/4`. Only the Starbucks OCR rows are naturally occurring; the sign/code/marker rows
+are disclosed canaries. No Android/default-App/P1 or general identity claim follows.
+
+```powershell
+pwsh -NoProfile -File `
+  scripts/research/goal_copilot_bridge/public_identifiable_referent_contract_v1/install_semantic_anchor_v1_runtime.ps1
+
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_semantic_distinctive_anchor_v1
+```
+
+Result: `docs/research/goal-copilot/SEMANTIC_DISTINCTIVE_ANCHOR_V1_RESULT_2026-08-24.md`.

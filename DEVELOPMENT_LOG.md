@@ -5267,3 +5267,14 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   P1 或默认 App 变更；三个
   authorization flags 保持 false。唯一下一边界是另立 C2 5--8 episode small-roster protocol，当前未授权。结果：
   [Public Identifiable Referent Contract V1](docs/research/goal-copilot/BLINDASSIST_PUBLIC_IDENTIFIABLE_REFERENT_CONTRACT_V1_2026-08-24.md)。
+
+# 2026-08-24 Semantic Distinctive Anchor V1 controlled demo
+
+- 在 consumed Active Distinctive V0 的同一 4-target / 16-present / 4-lost sequence 上复用冻结 passive receipt，只新增
+  natural OCR、public-reference distinctive sign、printed product code 与 ArUco ID；semantic arm 无 appearance fallback，
+  anchor 非唯一或缺失时只 `ABSTAIN`。
+- 隔离安装 RapidOCR `3.9.2`、ONNX Runtime `1.26.0` 与 PP-OCRv6 models；R2 收据确认 metadata/import 版本一致，
+  不修改共享 Python 或默认 App。
+- 结果为 top-1 `11/16 -> 16/16`、wrong lock `9 -> 0`、reacquisition `3/4 -> 4/4`、lost abstention `4/4`。
+  除 Starbucks natural OCR 外均为 deterministic derived canary；不产生 general exact-instance、Android、P1、导航或安全声明。
+- 结果：[Semantic Distinctive Anchor V1](docs/research/goal-copilot/SEMANTIC_DISTINCTIVE_ANCHOR_V1_RESULT_2026-08-24.md)。
