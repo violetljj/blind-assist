@@ -1,6 +1,6 @@
 # Public Identifiable Referent Contract V1
 
-状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_4_OF_6 / PDM_UNARY_REJECTED / PUBLIC_PRIVATE_FIREWALL / NO_NONE_THRESHOLD / RELIABLE_VERIFIER_NOT_ESTABLISHED`
+状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_4_OF_6 / PDM_UNARY_REJECTED / NEAR_IDENTITY_HARD_NEGATIVE_UNARY_V0_PROTOCOL_FROZEN_NO_OUTCOME / PUBLIC_PRIVATE_FIREWALL / RELIABLE_VERIFIER_NOT_ESTABLISHED`
 
 This package freezes the user-visible goal before episode observations, candidates, provider output, or outcomes. It
 then separates the provider-public contract from an evaluator-private physical-instance lock.
@@ -189,3 +189,11 @@ hard/control pairs it assigns `NEAR_IDENTITY_REPRESENTATION_COLLAPSE=4`, `LOCAL_
 `UNKNOWN=5`; no unknown is converted into pixel insufficiency or a background/quality claim. The unique routing
 terminal is `LEARNED_NEAR_IDENTITY_REPRESENTATION_JUSTIFIED`, while `NEARID_NOT_RUN`, `NO_P1`, and
 `DEFAULT_APP_UNCHANGED` remain explicit.
+
+## Near-identity hard-negative unary V0
+
+The separately authorized protocol is frozen before CORe50 download or model execution in
+`docs/research/goal-copilot/NEAR_IDENTITY_HARD_NEGATIVE_UNARY_V0_PROTOCOL_2026-08-24.md`. The experiment keeps the
+same frozen DINOv2-S backbone in both arms and trains only one fixed 384→256→128 projection head on source-, category-,
+and physical-object-disjoint data. Test pixels remain sealed until the head, both absence thresholds, and quality
+cutoffs are hash-bound. PDM, layout, fusion, multiple references, threshold sweeps, P1, and App wiring are forbidden.
