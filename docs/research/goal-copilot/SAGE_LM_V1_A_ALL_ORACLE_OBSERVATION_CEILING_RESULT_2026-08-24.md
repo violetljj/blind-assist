@@ -38,4 +38,8 @@ V1 的失败可以定位于 observation adapter，而不是 downstream policy：
 V1-B 为 `NOT_EVALUABLE`，不能裁决 boundary/parallax observation 路线。新运行须先显式授权正确 source-pose 物化的 cohort；
 不得用 raw B1/B2 outcome 调 detector、association 或 policy。
 
+后续新授权的 [`V1-B-R2`](SAGE_LM_V1_B_R2_CORRECT_POSE_BOUNDARY_RESULT_2026-08-24.md) 已在 24/24 正确 pose pair 上执行：
+B0=`24/24`，B1=`0/24` arrival，正式把当前主导失败层定位为 RGB boundary candidate extraction；association 仍被上游
+candidate recall 混杂。
+
 本机可复现输出：`artifacts.local/evidence/sage-lm-v1a/all-oracle-ceiling-r1/report.json`。

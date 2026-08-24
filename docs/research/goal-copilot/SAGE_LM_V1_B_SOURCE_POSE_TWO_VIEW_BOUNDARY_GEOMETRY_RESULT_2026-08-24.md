@@ -52,3 +52,7 @@ future materializer 已改为官方 world-to-camera inversion，防止再次把 
 与结果没有被覆盖或重写。
 
 本机证据：`artifacts.local/evidence/sage-lm-v1b/source-pose-two-view-r1/report.json` 与 `observation_ladder.png`。
+
+后续已按新授权完成 [`V1-B-R2 correct-pose cohort`](SAGE_LM_V1_B_R2_CORRECT_POSE_BOUNDARY_RESULT_2026-08-24.md)。
+旧 R1 的 `NOT_EVALUABLE` 与 raw outcome 保持不变；R2 在新 24 条有效 pair 上把当前失败层定位为 RGB boundary
+candidate extraction。

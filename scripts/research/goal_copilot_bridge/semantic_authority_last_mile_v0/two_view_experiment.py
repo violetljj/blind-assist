@@ -172,10 +172,16 @@ def run(cohort_path: Path) -> dict:
     criteria = {arm: _v1_criteria(baseline_metrics, arm_metrics[arm], controls_retained[arm]) for arm in ARMS}
     baseline_values = [row["source_pose_audit"]["actual_lateral_baseline_m"] for row in rows]
     forward_values = [row["source_pose_audit"]["actual_forward_delta_m"] for row in rows]
+    stored_position_error_max = max(
+        max(row["source_pose_audit"]["frozen_camera_positions_field_error_m"])
+        for row in rows
+    )
+    stored_positions_valid = stored_position_error_max <= 1e-6
     source_pose_audit = {
         "authority": "ORIGINAL_ARKITSCENES_TRAJECTORY_OFFICIAL_WORLD_TO_CAMERA_INVERSION",
-        "frozen_camera_positions_m_field_valid": False,
-        "failure": "MATERIALIZER_INTERPRETED_ROTATION_VECTOR_COLUMNS_AS_CAMERA_POSITION",
+        "frozen_camera_positions_m_field_valid": stored_positions_valid,
+        "frozen_camera_positions_m_max_error_m": stored_position_error_max,
+        "failure": None if stored_positions_valid else "MATERIALIZER_CAMERA_POSITION_FIELD_DISAGREES_WITH_OFFICIAL_POSE",
         "intended_active_pair_gate_pass_count": sum(row["source_pose_audit"]["intended_active_pair_gate_pass"] for row in rows),
         "same_window_valid_alternative_count": sum(bool(row["source_pose_audit"]["valid_alternative_active_pairs_in_same_window"]) for row in rows),
         "actual_lateral_baseline_min_m": min(baseline_values),

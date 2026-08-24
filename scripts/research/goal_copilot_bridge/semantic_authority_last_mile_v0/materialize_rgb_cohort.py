@@ -32,21 +32,64 @@ def _frame_pose(frame: Path, trajectory: np.ndarray) -> tuple[np.ndarray, np.nda
     return transform[:3, 3], transform[:3, :3]
 
 
-def _active_pair(frames: list[Path], trajectory: np.ndarray) -> tuple[int, list[list[float]], float] | None:
+def _project_aperture_to_view(
+    start_position: np.ndarray,
+    start_rotation: np.ndarray,
+    candidate_position: np.ndarray,
+    candidate_rotation: np.ndarray,
+    intrinsics: dict,
+    truth: dict,
+) -> tuple[float, float] | None:
+    projected = []
+    for boundary_x in (truth["left_x_px"], truth["right_x_px"]):
+        x_m = (boundary_x - intrinsics["cx"]) * truth["range_m"] / intrinsics["fx"]
+        point_start = np.asarray([x_m, 0.0, truth["range_m"]], dtype=np.float64)
+        point_world = start_rotation @ point_start + start_position
+        point_candidate = candidate_rotation.T @ (point_world - candidate_position)
+        if point_candidate[2] <= 0.35:
+            return None
+        projected.append(float(intrinsics["fx"] * point_candidate[0] / point_candidate[2] + intrinsics["cx"]))
+    left, right = sorted(projected)
+    margin = intrinsics["width"] * 0.03
+    if left < margin or right > intrinsics["width"] - margin:
+        return None
+    if right - left < intrinsics["width"] * 0.10:
+        return None
+    return left, right
+
+
+def _active_pair(
+    frames: list[Path],
+    trajectory: np.ndarray,
+    intrinsics: dict,
+    truth: dict,
+) -> dict | None:
     poses = [_frame_pose(frame, trajectory) for frame in frames]
     start_position, start_rotation = poses[0]
     choices = []
-    for index, (position, _) in enumerate(poses[2:], start=2):
+    for index, (position, rotation) in enumerate(poses[2:], start=2):
         delta_camera = start_rotation.T @ (position - start_position)
         lateral = float(abs(delta_camera[0]))
         forward = float(abs(delta_camera[2]))
-        if 0.18 <= lateral <= 0.30 and forward <= 0.45:
-            choices.append((abs(lateral - 0.24) + 0.2 * forward, index, lateral))
+        if not (0.18 <= lateral <= 0.30 and forward <= 0.45):
+            continue
+        projected_boundaries = _project_aperture_to_view(
+            start_position, start_rotation, position, rotation, intrinsics, truth
+        )
+        if projected_boundaries is None:
+            continue
+        choices.append((abs(lateral - 0.24) + 0.2 * forward, index, lateral, forward, projected_boundaries))
     if not choices:
         return None
-    _, index, lateral = min(choices)
+    _, index, lateral, forward, projected_boundaries = min(choices)
     positions = [[float(value) for value in position] for position, _ in poses]
-    return index, positions, lateral
+    return {
+        "active_index": index,
+        "camera_positions_m": positions,
+        "lateral_baseline_m": lateral,
+        "forward_delta_m": forward,
+        "projected_boundary_x_px": list(projected_boundaries),
+    }
 
 
 def _intrinsics(path: Path) -> dict:
@@ -157,7 +200,7 @@ def _source_candidates(source_root: Path) -> list[dict]:
         depth_dir = sequence / "lowres_depth"
         intr_dir = sequence / "lowres_wide_intrinsics"
         frames = sorted(rgb_dir.glob("*.png"))
-        for start in range(8, max(8, len(frames) - 18), 6):
+        for start in range(8, max(8, len(frames) - 18), 3):
             frame = frames[start]
             stem = frame.stem
             depth_path = depth_dir / f"{stem}.png"
@@ -167,16 +210,15 @@ def _source_candidates(source_root: Path) -> list[dict]:
             bgr = cv2.imread(str(frame), cv2.IMREAD_COLOR)
             if bgr is None:
                 continue
-            window = frames[start : start + 16]
-            if len(window) < 12:
-                continue
-            active_pair = _active_pair(window, trajectory)
-            if active_pair is None:
-                continue
-            active_index, camera_positions, actual_lateral = active_pair
             intr = _intrinsics(intr_path)
             truth = _opening_truth(bgr, _metric_depth(depth_path), intr)
             if truth is None or truth["selection_score"] < 0.58:
+                continue
+            window = frames[start : start + 16]
+            if len(window) < 12:
+                continue
+            active_pair = _active_pair(window, trajectory, intr, truth)
+            if active_pair is None:
                 continue
             candidates.append(
                 {
@@ -184,9 +226,11 @@ def _source_candidates(source_root: Path) -> list[dict]:
                     "frames": window,
                     "intrinsics": intr,
                     "truth": truth,
-                    "active_parallax_frame_index": active_index,
-                    "camera_positions_m": camera_positions,
-                    "actual_lateral_baseline_m": actual_lateral,
+                    "active_parallax_frame_index": active_pair["active_index"],
+                    "camera_positions_m": active_pair["camera_positions_m"],
+                    "actual_lateral_baseline_m": active_pair["lateral_baseline_m"],
+                    "actual_forward_delta_m": active_pair["forward_delta_m"],
+                    "active_projected_boundary_x_px": active_pair["projected_boundary_x_px"],
                 }
             )
     candidates.sort(key=lambda row: row["truth"]["selection_score"], reverse=True)
@@ -202,14 +246,16 @@ def materialize(source_root: Path, output_dir: Path, seed: int = 240824) -> dict
     per_sequence: dict[str, int] = {}
     for candidate in candidates:
         key = str(candidate["sequence"])
-        if per_sequence.get(key, 0) >= 2:
+        if per_sequence.get(key, 0) >= 4:
             continue
         selected.append(candidate)
         per_sequence[key] = per_sequence.get(key, 0) + 1
         if len(selected) == 24:
             break
     if len(selected) < 24:
-        selected = candidates[:24]
+        raise RuntimeError(
+            f"only {len(selected)} source windows remain after the explicit four-per-sequence diversity cap"
+        )
 
     output_dir.mkdir(parents=True, exist_ok=True)
     episodes = []
@@ -281,6 +327,8 @@ def materialize(source_root: Path, output_dir: Path, seed: int = 240824) -> dict
                     "first_rgb": str(candidate["frames"][0].resolve()),
                     "selection_score": truth["selection_score"],
                     "actual_lateral_baseline_m": candidate["actual_lateral_baseline_m"],
+                    "actual_forward_delta_m": candidate["actual_forward_delta_m"],
+                    "active_projected_boundary_x_px": candidate["active_projected_boundary_x_px"],
                 },
             }
         )
@@ -293,6 +341,16 @@ def materialize(source_root: Path, output_dir: Path, seed: int = 240824) -> dict
         "semantic_anchor_provenance": "CONTROLLED_COMPOSITED_EXACT_ANCHOR",
         "real_capture_scope": "SCENE_TEXTURE_BOUNDARIES_MOTION_AND_DEPTH_PHENOMENA",
         "selection_scope": "CURATED_DEVELOPMENT_SOURCE_DEPTH_SUPPORTED_VERTICAL_OPENING_PROXIES",
+        "pair_selection_contract": {
+            "pose": "OFFICIAL_WORLD_TO_CAMERA_INVERTED_TO_CAMERA_TO_WORLD",
+            "lateral_baseline_m": [0.18, 0.30],
+            "maximum_absolute_forward_delta_m": 0.45,
+            "aperture_visibility": "BOTH_PROJECTED_BOUNDARIES_INSIDE_THREE_PERCENT_IMAGE_MARGIN",
+            "minimum_projected_aperture_span_fraction": 0.10,
+            "source_start_stride_frames": 3,
+            "maximum_episodes_per_sequence": 4,
+            "selection_excludes": ["B1_RGB_LSD_OUTCOME", "B2_ASSOCIATION_OUTCOME"],
+        },
         "episodes": episodes,
     }
     (output_dir / "cohort.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")

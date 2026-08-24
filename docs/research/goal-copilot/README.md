@@ -201,6 +201,13 @@ baseline 无效；exact anchor 为 controlled composited，真实运动没有满
 且移除 LK/metric depth，但冻结 pair 仅 `2/24` 通过正确 source-pose motion gate，同 window 只有 `13/24` 存在可替代 pair，
 故 `NOT_EVALUABLE`；B1/B2 raw outcome 不是 boundary negative。新 cohort 须另行显式授权，不接 Android/P1/default App。
 
+用户随后授权从 source 重建完整 cohort。[`V1-B-R2 correct-pose boundary`](SAGE_LM_V1_B_R2_CORRECT_POSE_BOUNDARY_RESULT_2026-08-24.md)
+在任何 arm outcome 前冻结 24 条新 episode：三类各 8、6 controls、11 source sequences，24/24 满足正确 pose motion gate
+与第二视图 aperture 投影可见门。B0=`24/24` geometry/confidence/arrival、八条 criteria 全过；B1 仅 `2/24` geometry、
+`0/24` confidence/arrival，21/24 为 `BOUNDARY_CANDIDATE_MISSING`；B2=`14/24` geometry、`5/24` confidence、`3/24`
+arrival。故当前 real-RGB 主导失败层正式定位为 boundary candidate extraction；automatic association 因上游候选 recall
+不足仍未被单独裁决。不得从 R2 outcome 挑 pair、缩分母、降 oracle-distance/confidence 门或把 B2 写成独立 association negative。
+
 ## V0 与 P1 边界
 
 `FOUND / CONTESTED / NOT_VISIBLE / ABSTAIN / STALE / HANDOFF_READY / COMPLETED_BY_USER` 是 current-frame 状态；`LOST`

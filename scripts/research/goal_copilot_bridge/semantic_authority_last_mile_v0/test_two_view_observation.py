@@ -12,7 +12,7 @@ from .two_view_observation import (
     oracle_pixel_lines,
     triangulate_aperture,
 )
-from .materialize_rgb_cohort import _frame_pose, _trajectory
+from .materialize_rgb_cohort import _frame_pose, _project_aperture_to_view, _trajectory
 
 
 class SourcePoseTwoViewBoundaryTest(unittest.TestCase):
@@ -28,6 +28,25 @@ class SourcePoseTwoViewBoundaryTest(unittest.TestCase):
             position, rotation = _frame_pose(frame, _trajectory(trajectory_path))
             np.testing.assert_allclose(position, [1.0, 2.0, 3.0], atol=1e-9)
             np.testing.assert_allclose(rotation, np.eye(3), atol=1e-9)
+
+    def test_materializer_accepts_aperture_visible_in_second_view(self) -> None:
+        intrinsics = {"width": 320, "height": 240, "fx": 200.0, "fy": 200.0, "cx": 160.0, "cy": 120.0}
+        truth = {"left_x_px": 100.0, "right_x_px": 220.0, "range_m": 2.0}
+        projected = _project_aperture_to_view(
+            np.zeros(3), np.eye(3), np.asarray([0.24, 0.0, 0.1]), np.eye(3), intrinsics, truth
+        )
+        self.assertIsNotNone(projected)
+        assert projected is not None
+        self.assertGreater(projected[0], 0.03 * intrinsics["width"])
+        self.assertLess(projected[1], 0.97 * intrinsics["width"])
+
+    def test_materializer_rejects_aperture_outside_second_view(self) -> None:
+        intrinsics = {"width": 320, "height": 240, "fx": 200.0, "fy": 200.0, "cx": 160.0, "cy": 120.0}
+        truth = {"left_x_px": 100.0, "right_x_px": 220.0, "range_m": 2.0}
+        projected = _project_aperture_to_view(
+            np.zeros(3), np.eye(3), np.asarray([1.8, 0.0, 0.0]), np.eye(3), intrinsics, truth
+        )
+        self.assertIsNone(projected)
 
     def test_two_endpoint_line_fit_preserves_vertical_geometry(self) -> None:
         image = np.zeros((192, 256, 3), dtype=np.uint8)

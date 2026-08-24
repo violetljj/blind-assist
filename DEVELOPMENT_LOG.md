@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-24（Asia/Hong_Kong）；执行者：violjjet。按用户授权从 ARKitScenes source 用官方
+  world-to-camera inversion 重建 SAGE-LM V1-B-R2：outcome 前冻结 24 episode、三类各 8、6 controls、11 sequences、
+  lateral `0.1889–0.2847 m`、forward max `0.4101 m`、24/24 第二视图 aperture 投影可见。B0=`24/24`
+  geometry/confidence/arrival、8/8 criteria；B1=`2/24` geometry、`0/24` confidence/arrival，21/24
+  `BOUNDARY_CANDIDATE_MISSING`；B2=`14/24` geometry、`5/24` confidence、`3/24` arrival。终态为
+  `RGB_BOUNDARY_EXTRACTION_FAIL / ASSOCIATION_UNADJUDICATED`；不运行 LK/metric depth，不改 policy/baseline/criteria，
+  不接 Android/P1/default App。
+
 - 时间：2026-08-24（Asia/Hong_Kong）；执行者：violjjet。natural open-world SAGE-R 保持
   `CLOSE_NATURAL_SAGE_R`，不再 rescue；新立唯一 successor
   `SEMANTIC_AUTHORITY_CONDITIONED_LAST_MILE_GEOMETRY_V0`。身份由 exact QR/OCR authority 固定，geometry 不得重绑

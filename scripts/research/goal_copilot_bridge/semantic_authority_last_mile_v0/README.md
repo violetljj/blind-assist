@@ -1,6 +1,6 @@
 # Semantic-Authority Conditioned Last-Mile Geometry V0
 
-状态：`REVERSIBLE_EXPLORATION / V1_RGB_ADAPTER_FAIL / V1_A_ALL_ORACLE_CEILING_PASS / V1_B_NOT_EVALUABLE_SOURCE_POSE_PAIR_INVALID`
+状态：`REVERSIBLE_EXPLORATION / V1_RGB_ADAPTER_FAIL / V1_A_ALL_ORACLE_CEILING_PASS / V1_B_R2_B0_PASS / V1_B_R2_RGB_BOUNDARY_EXTRACTION_FAIL / ASSOCIATION_UNADJUDICATED`
 
 本模块是 natural open-world SAGE-R 关闭后的唯一 Goal Copilot successor。身份由 QR 或 exact OCR semantic
 authority 预先确认；geometry 只能回答目标 aperture 在哪里、如何接近以及是否具备到达证据，不能创建、替换或恢复 identity。
@@ -39,6 +39,11 @@ pair 仅 `2/24` 满足原 motion gate，同 window 也只有 `13/24` 可找到�
 `NOT_EVALUABLE_SOURCE_POSE_PAIR_CONTRACT_INVALID`，B1/B2 raw output 不得当 boundary negative。future materializer 已改用
 官方 camera-to-world inversion，但没有覆盖或重物化本 cohort。
 
+V1-B-R2 随后从 source 新建 24 条正确 pose cohort，并在 outcome 前同时冻结 motion、第二视图 aperture projection
+visibility 与最多 4 episode/source-sequence。24/24 pair gate 通过；B0=`24/24`，B1=`2/24` geometry、`0/24`
+confidence/arrival，B2=`14/24` geometry、`5/24` confidence、`3/24` arrival。当前失败层为 RGB boundary candidate
+extraction；B2 association 被上游 candidate recall 混杂，不作独立否定。
+
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd -m `
   scripts.research.goal_copilot_bridge.semantic_authority_last_mile_v0.materialize_rgb_cohort `
@@ -60,4 +65,14 @@ E:\codex-tools\bin\blindassist-python.cmd -m `
   scripts.research.goal_copilot_bridge.semantic_authority_last_mile_v0.two_view_experiment `
   --cohort artifacts.local/evidence/sage-lm-v1/controlled-real-rgb-r1/cohort.json `
   --output-dir artifacts.local/evidence/sage-lm-v1b/source-pose-two-view-r1
+
+E:\codex-tools\bin\blindassist-python.cmd -m `
+  scripts.research.goal_copilot_bridge.semantic_authority_last_mile_v0.materialize_rgb_cohort `
+  --source-root artifacts.local/datasets/spatial-calibration-head-r1-arkitscenes-20260804/raw `
+  --output-dir artifacts.local/evidence/sage-lm-v1b/correct-pose-cohort-r2
+
+E:\codex-tools\bin\blindassist-python.cmd -m `
+  scripts.research.goal_copilot_bridge.semantic_authority_last_mile_v0.two_view_experiment `
+  --cohort artifacts.local/evidence/sage-lm-v1b/correct-pose-cohort-r2/cohort.json `
+  --output-dir artifacts.local/evidence/sage-lm-v1b/source-pose-two-view-r2
 ```
