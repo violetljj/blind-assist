@@ -1,6 +1,6 @@
 # Public Identifiable Referent Contract V1
 
-状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_4_OF_6 / PDM_UNARY_REJECTED / NEAR_IDENTITY_V0_RESCUE_4_COLLATERAL_17_CONTROL_1_OF_18_COVERAGE_5_OF_135 / SPATIAL_LAYOUT_BASELINE_702_OF_900_LAYOUT_558_OF_900_RESCUE_74_COLLATERAL_218 / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / SEMANTIC_ANCHOR_V1_16_OF_16_ZERO_WRONG_LOCK_4_OF_4_REACQUISITION_CONTROLLED_DERIVED_DEMO / SAGE_R_V2_1_RAPIDOCR_CORRECT_1_TO_9_WRONG_LOCK_4_TO_0_NONE_0_TO_3_UNKNOWN_0_TO_2 / GENERATED_PIXEL_SCENES / PUBLIC_PRIVATE_FIREWALL / RELIABLE_NATURAL_VERIFIER_NOT_ESTABLISHED`
+状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_4_OF_6 / PDM_UNARY_REJECTED / NEAR_IDENTITY_V0_RESCUE_4_COLLATERAL_17_CONTROL_1_OF_18_COVERAGE_5_OF_135 / SPATIAL_LAYOUT_BASELINE_702_OF_900_LAYOUT_558_OF_900_RESCUE_74_COLLATERAL_218 / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / SEMANTIC_ANCHOR_V1_16_OF_16_ZERO_WRONG_LOCK_4_OF_4_REACQUISITION_CONTROLLED_DERIVED_DEMO / SAGE_R_V3_A_FULL_CORRECT_14_OF_16_TARGET_7_OF_7_NONE_7_OF_7_WRONG_LOCK_0_NO_RELATION_TARGET_0_OF_7 / TUNED_ON_V2_1_DEVELOPMENT / PUBLIC_PRIVATE_FIREWALL / RELIABLE_NATURAL_VERIFIER_NOT_ESTABLISHED`
 
 This package freezes the user-visible goal before episode observations, candidates, provider output, or outcomes. It
 then separates the provider-public contract from an evaluator-private physical-instance lock.
@@ -301,3 +301,21 @@ E:\codex-tools\bin\blindassist-python.cmd -m `
 ```
 
 Result: `docs/research/goal-copilot/SEMANTIC_ANCHOR_GRAPH_AND_BELIEF_V2_1_REAL_OCR_TRANSFER_RESULT_2026-08-24.md`.
+
+## SAGE-R V3-A: Typed Semantic-Referent Graph
+
+`typed_semantic_referent_graph_v3.py` implements three node types, 14 directed relation types and three relation-specific
+message-passing layers. Synthetic graph training uses 1,600 examples plus 320 validation examples. Only candidate identity
+scores enter the existing V2 belief; learned reliability and NONE heads are diagnostic-only.
+
+On the tuned-on V2.1 RapidOCR Development rows, V2 heuristic / V3 no-relation / V3 full correct terminal is `9 / 7 / 14`;
+evaluable target recall is `6/7 / 0/7 / 7/7`; NONE is `3/7 / 7/7 / 7/7`; full wrong lock remains 0 and preserves UNKNOWN
+`2/2`. Full is candidate-permutation equivariant on 16/16 rows. V2.1 outcomes influenced directory-layout generator coverage,
+so this result is not held-out natural-photo evidence.
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_typed_semantic_referent_graph_v3
+```
+
+Result: `docs/research/goal-copilot/TYPED_SEMANTIC_REFERENT_GRAPH_V3_A_RESULT_2026-08-25.md`.

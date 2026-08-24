@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-25（Asia/Hong_Kong）；执行者：violjjet。完成 SAGE-R V3-A typed semantic-referent graph：
+  `Target/OCR/Candidate` 三类节点、14 类 directed relation、3 层 relation-specific attention/message passing，训练集
+  1,600 synthetic graph、validation 320。V2 observability/novelty/belief/NONE/threshold 全冻结，learned reliability/NONE
+  head 只诊断。同一 V2.1 RapidOCR Development rows 上，V2=`9/16 correct, target 6/7, NONE 3/7, wrong 0`，
+  no-relation=`7/16, target 0/7`，full=`14/16, target 7/7, NONE 7/7, wrong 0, UNKNOWN 2/2`；candidate permutation
+  16/16。早期 majority-class collapse 由 synthetic validation 定位并用 positive-weighted BCE + present ranking loss 修复；
+  后续 V2.1 directory outcome 促成 generator layout 扩展，因此最终结果为 `TUNED_ON_DEVELOPMENT`，不是 held-out。
+  下一步冻结 full scorer，只做未参与开发的自然照片 source-disjoint 验证；V3-B/V4/Android/P1 均不启动。
+
 - 时间：2026-08-24（Asia/Hong_Kong）；执行者：violjjet。保持 SAGE-R V2 scorer、belief 与阈值不变，新增
   V2.1 RapidOCR polygon transfer：16 张自动生成门牌式像素图覆盖 `301/302/320/302A`、directory、partial、
   absence、blur 与 correlated burst，RapidOCR 3.9.2 实际产生 112 条 text/confidence/quadrilateral line。
