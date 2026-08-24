@@ -1,6 +1,6 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / PUBLIC_REAL_8X89_SEALED / PUBLIC_REFERENT_VISIBLE_16_OF_20_SAME_INSTANCE / DINOV2_LOCAL_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_4_OF_6 / PDM_UNARY_REJECTED / RELIABLE_VERIFIER_NOT_ESTABLISHED / NO_BELIEF / NO_P1 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_RESEARCH_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / PUBLIC_REAL_8X89_SEALED / PUBLIC_REFERENT_VISIBLE_16_OF_20_SAME_INSTANCE / DINOV2_LOCAL_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_4_OF_6 / PDM_UNARY_REJECTED / IDENTITY_FAILURE_AUDIT_NEARID_JUSTIFIED / NEARID_NOT_RUN / RELIABLE_VERIFIER_NOT_ESTABLISHED / NO_BELIEF / NO_P1 / DEFAULT_APP_UNCHANGED`
 
 Goal-Driven Visual Copilot 现为 BlindAssist 的上位产品/研究主线。P0 commitment-policy discovery 已以
 `COMPLEXITY_ONLY_BUYS_ABSTENTION` 收口；现有 P0 grounding/provider 与 evaluator 保持冻结。用户此前显式授权
@@ -29,6 +29,10 @@ public-real miner 与 C2 终态保持不变。
 `27/30` 与 3 个真实 hard errors。固定 PDM PerMIR unary arm 在 6 hard/6 control 上仅 `1 rescue / 4 collateral`，
 control retention=`4/6`，未过预注册门；8 个 absence 仍因无 NONE threshold 为 `NOT_EVALUABLE`。PDM unary 路线关闭，
 且 T-LESS 的 near-instance industrial objects 不支持 native same-class 外推。
+只读 residual identity failure-layer audit 随后复核冻结原图、bbox、instance truth 与 raw scores，没有调用模型或修改结果。
+12 对中 `representation collapse=4 / local layout lost=3 / UNKNOWN=5`；现有证据没有建立 pixel information insufficient、
+background shortcut 或 quality failure。唯一终态为 `LEARNED_NEAR_IDENTITY_REPRESENTATION_JUSTIFIED / NEARID_NOT_RUN`：
+若另行授权，唯一优先的新模型候选是使用全新数据分层的 NearID-style hard-negative unary，不能复用已消费 cohort 选模。
 PA2 后的 `Proposal–Identity Responsibility Mismatch` 只是待验证解释；当前 7-case 没有 provider-public goal semantics，
 private category 不能回填成 text prompt。既有 P1-D0/PA0、Silver-B 与 Last-10m 均无可证明的
 user/product goal-before-truth provenance，历史 eligible episode 为 `0`。本轮已新建 pre-truth product goal 与
@@ -62,8 +66,9 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
+| Goal Copilot / residual identity failure-layer audit | 既有错误是像素无信息，还是通用表示/布局证据丢失 | `READ_ONLY / REPRESENTATION_COLLAPSE=4 / LOCAL_LAYOUT_LOST=3 / UNKNOWN=5 / LEARNED_NEAR_IDENTITY_REPRESENTATION_JUSTIFIED / NEARID_NOT_RUN` | [failure-layer result](goal-copilot/PUBLIC_IDENTIFIABLE_REFERENT_IDENTITY_FAILURE_LAYER_AUDIT_V0_RESULT_2026-08-24.md) | 无自动执行；若另行授权，唯一优先为新数据分层的 NearID-style hard-negative unary | 调用/下载模型；重编码/crop/threshold/fusion；复用 consumed cohort 选模；layout/Deep Sets/P1/App | 否 |
 | Goal Copilot / DINOv2-S matched two-reference probe | 固定 scorer、candidate 与 evaluator，只增加 R2 和 exemplar-set max，是否增加 identity rank | `SOURCE_REUSED_DEVELOPMENT / SINGLE=14/14 / TWO=11/14 / RESCUE=0 / COLLATERAL=3 / NET=-3 / MEDIAN_DELTA=-0.03808 / NAIVE_MAX_REJECTED` | [Goal Copilot current](goal-copilot/README.md) | 无自动 successor；新授权须改为 distinctive-anchor/correspondence representation，或建立新的 hard-error denominator | 同 cohort 改 aggregation/threshold/fusion 或换 crop/layer/model；升格 Confirmation；belief/tracker/Active Search/P1/App | 否 |
-| Goal Copilot / source-disjoint PDM hard-error unary probe | 新 T-LESS/BOP19 roster 上，固定 PDM PerMIR unary score 能否救 DINO hard errors 且不击穿 controls | `DINO=27/30 / HARD=6 / CONTROL=6 / RESCUE=1 / COLLATERAL=4 / CONTROL_RETENTION=4/6 / GATE_FAIL / ABSENCE_NOT_EVALUABLE / PDM_UNARY_REJECTED` | [Goal Copilot current](goal-copilot/README.md) | 无自动 successor；先定位残余 identity failure layer，若新授权须换 representation 与新数据 | outcome 后改 PDM layer/timestep/prompt/top-k/crop/threshold/fusion；把 T-LESS 当 native same-class 或 Confirmation；P1/App | 否 |
+| Goal Copilot / source-disjoint PDM hard-error unary probe | 新 T-LESS/BOP19 roster 上，固定 PDM PerMIR unary score 能否救 DINO hard errors 且不击穿 controls | `DINO=27/30 / HARD=6 / CONTROL=6 / RESCUE=1 / COLLATERAL=4 / CONTROL_RETENTION=4/6 / GATE_FAIL / ABSENCE_NOT_EVALUABLE / PDM_UNARY_REJECTED` | [Goal Copilot current](goal-copilot/README.md) | residual audit 已完成；PDM 无 successor，NearID 仍须另行授权 | outcome 后改 PDM layer/timestep/prompt/top-k/crop/threshold/fusion；把 T-LESS 当 native same-class 或 Confirmation；P1/App | 否 |
 | Goal Copilot / DINOv2-S order-free local appearance probe | 独立 local patch evidence 能否在无 A/B positional bias 下区分 frozen target 与 same-class distractor | `TARGET_OUTRANKS=13/17 / HISTORICAL_WRONG=3/4 / ROBUST_TARGET=1/1 / ORDER_SENSITIVE=1/1 / STABLE_DISTRACTOR=1/2 / CONTROLS=10/13 / COMPLEMENTARY_NOT_SUFFICIENT / CONSUMED_ORACLE_CANDIDATE_DISCOVERY` | [Goal Copilot current](goal-copilot/README.md) | 已由一次新 target/frame、source-reused two-reference matched Development probe 检验；naive max 失败，不自动续跑 | outcome 后扫 threshold/crop/layer/model/fusion；把 raw rank 当 verifier；belief/tracker/Active Search/P1/App | 否 |
 | Goal Copilot / oracle competing-identity diagnostic | 显式加入 target-vs-same-class 竞争假设后，能否救回四个 wrong-instance commit 且保留原正确 case | `ORIGINAL_ORDER: WRONG_CASE_TARGET=2/4; CONTROL_TARGET=12/13; CONTROL_CONTESTED=1/13 / A-B_SWAP: ROBUST_TARGET=1/4; STABLE_DISTRACTOR=2/4; ORDER_SENSITIVE=1/4 / RELIABLE_VERIFIER_NOT_ESTABLISHED / CONSUMED_ORACLE_CANDIDATE_DISCOVERY` | [Goal Copilot current](goal-copilot/README.md) | 已由一次固定 DINOv2-S order-free local probe 检验；不自动续跑 | 把 oracle candidates 当产品 proposal；prompt/model/threshold sweep；直接上 belief/tracker/Active Search/P1/App | 否 |
 | Goal Copilot / public referent visible-only passive identity probe | reference + public target region 在真实视角变化和同类干扰下能否指出同一 physical instance | `20/21 FOUND / 16/20 SAME_INSTANCE / 4/20 SAME_CLASS_DISTRACTOR / 1 ABSTAIN / 3/7 THREE_VIEW_STABLE / CONSUMED_DISCOVERY` | [Goal Copilot current](goal-copilot/README.md) | 已由一次 oracle competing-identity diagnostic 攻击四个错误；不自动续跑 | 扩模型/阈值/arm sweep；用 visible-only 结果声称 NOT_VISIBLE/calibration；Active Search/P1/App | 否 |

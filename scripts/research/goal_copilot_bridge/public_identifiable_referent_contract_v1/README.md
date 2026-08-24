@@ -178,3 +178,14 @@ lowest-margin correct) with six matched controls. One published PDM PerMIR confi
 `4` collateral errors, and control retention `4/6=66.7%`; it fails the frozen `rescue > collateral` and `>=80%` gate.
 Eight target-absent scores remain `NOT_EVALUABLE_NO_FROZEN_NONE_THRESHOLD`. Evidence is under
 `artifacts.local/evidence/public-identifiable-referent-pdm-hard-error-unary-v0/`; focused tests are `test_pdm_*.py`.
+
+## Read-only residual identity failure-layer audit
+
+The audit in
+`docs/research/goal-copilot/PUBLIC_IDENTIFIABLE_REFERENT_IDENTITY_FAILURE_LAYER_AUDIT_V0_RESULT_2026-08-24.md`
+reads only the frozen DINO local, two-reference, and PDM reports plus already-materialized images, bboxes, and native
+instance truth. It invokes no model and creates no new crop, feature, score, or threshold. Across the 12 frozen
+hard/control pairs it assigns `NEAR_IDENTITY_REPRESENTATION_COLLAPSE=4`, `LOCAL_LAYOUT_INFORMATION_LOST=3`, and
+`UNKNOWN=5`; no unknown is converted into pixel insufficiency or a background/quality claim. The unique routing
+terminal is `LEARNED_NEAR_IDENTITY_REPRESENTATION_JUSTIFIED`, while `NEARID_NOT_RUN`, `NO_P1`, and
+`DEFAULT_APP_UNCHANGED` remain explicit.
