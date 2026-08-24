@@ -110,7 +110,14 @@ def render_paired(row: dict, materialized: dict, output: Path) -> None:
             _trajectory_inset(canvas, row["baseline"]["path"], row["truth"], base_upto, (35, 480), (75, 100, 245))
             _trajectory_inset(canvas, row["sage_lm"]["path"], row["truth"], sage_upto, (680, 480), (85, 180, 65))
             cv2.putText(canvas, f"endpoint error {row['baseline']['endpoint_lateral_error_m']:.2f}m | {'ARRIVED' if row['baseline']['true_arrival'] else 'MISSED'}", (45, 705), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (75, 100, 245), 2, cv2.LINE_AA)
-            cv2.putText(canvas, f"endpoint error {row['sage_lm']['endpoint_lateral_error_m']:.2f}m | {'ARRIVED' if row['sage_lm']['true_arrival'] else 'MISSED'}", (690, 705), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (85, 215, 90), 2, cv2.LINE_AA)
+            sage_state = (
+                "ARRIVED"
+                if row["sage_lm"]["true_arrival"]
+                else "ABSTAIN / NO AUTHORIZED MOTION"
+                if row["sage_lm"]["geometry_confidence"] < 0.35
+                else "MISSED"
+            )
+            cv2.putText(canvas, f"endpoint error {row['sage_lm']['endpoint_lateral_error_m']:.2f}m | {sage_state}", (690, 705), cv2.FONT_HERSHEY_SIMPLEX, 0.48, (85, 215, 90), 2, cv2.LINE_AA)
             writer.write(canvas)
     finally:
         writer.release()
@@ -127,8 +134,14 @@ def render_trajectory(report: dict, output: Path) -> None:
         _trajectory_inset(canvas, row["baseline"]["path"], row["truth"], len(row["baseline"]["path"]), (x, 110), (75, 100, 245))
         _trajectory_inset(canvas, row["sage_lm"]["path"], row["truth"], len(row["sage_lm"]["path"]), (x, 410), (85, 180, 65))
         cv2.putText(canvas, "baseline", (x + 12, 375), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (75, 100, 245), 1, cv2.LINE_AA)
-        cv2.putText(canvas, "SAGE-LM", (x + 12, 675), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (85, 180, 65), 1, cv2.LINE_AA)
-    cv2.putText(canvas, "Development result: 2/24 SAGE-LM arrivals vs 7/24 baseline; observation adapter did not preserve V0 uplift.", (35, 850), cv2.FONT_HERSHEY_SIMPLEX, 0.68, (35, 35, 170), 2, cv2.LINE_AA)
+        sage_label = (
+            "SAGE-LM: abstained / no authorized motion"
+            if row["sage_lm"]["geometry_confidence"] < 0.35
+            else "SAGE-LM: authorized trajectory"
+        )
+        cv2.putText(canvas, sage_label, (x + 12, 675), cv2.FONT_HERSHEY_SIMPLEX, 0.43, (85, 180, 65), 1, cv2.LINE_AA)
+    cv2.putText(canvas, "Completion precision: 100% at 2/24 accepted episodes; baseline arrival 7/24.", (35, 820), cv2.FONT_HERSHEY_SIMPLEX, 0.62, (35, 35, 170), 2, cv2.LINE_AA)
+    cv2.putText(canvas, "The RGB observation adapter did not preserve the V0 synthetic mechanism signal.", (35, 855), cv2.FONT_HERSHEY_SIMPLEX, 0.62, (35, 35, 170), 2, cv2.LINE_AA)
     if not cv2.imwrite(str(output), canvas):
         raise OSError(f"failed to write {output}")
 

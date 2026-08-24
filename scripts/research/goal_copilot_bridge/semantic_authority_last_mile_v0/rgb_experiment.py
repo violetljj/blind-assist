@@ -8,11 +8,13 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .experiment import Pose, _advance, _aggregate, _direction
-from .observation import CameraIntrinsics, ExactAnchorObservation, RgbEpisodeInput, RgbEpisodeTruth
+from .observation import CameraIntrinsics, ExactAnchorObservation, ObservationProvider, RgbEpisodeInput, RgbEpisodeTruth
+from .oracle_observation import OracleApertureObservationProvider
 from .rgb_observation import RgbObservationProvider
 
 
 SCHEMA_VERSION = "sage_lm_v1_controlled_real_rgb_observation"
+ORACLE_SCHEMA_VERSION = "sage_lm_v1a_all_oracle_observation_ceiling"
 ALIGNMENT_TOLERANCE_M = 0.22
 NEAR_THRESHOLD_M = 0.82
 GEOMETRY_CONFIDENCE_THRESHOLD = 0.35
@@ -110,7 +112,7 @@ def _baseline(episode: EvaluatorEpisode) -> dict:
     }
 
 
-def _sage_lm(episode: EvaluatorEpisode, provider: RgbObservationProvider) -> dict:
+def _sage_lm(episode: EvaluatorEpisode, provider: ObservationProvider) -> dict:
     observation = provider.observe()
     physical_pose = Pose(episode.start_x_m, episode.start_range_m)
     policy_range_m = observation.range_m if observation.range_m is not None else float("inf")
@@ -153,7 +155,7 @@ def _sage_lm(episode: EvaluatorEpisode, provider: RgbObservationProvider) -> dic
             break
     arrived = _truth_arrived(episode, physical_pose)
     return {
-        "arm": "SAGE_LM_RGB_APERTURE_PROGRESS",
+        "arm": getattr(provider, "arm_name", "SAGE_LM_RGB_APERTURE_PROGRESS"),
         "completion": bool(completion),
         "completion_step": completion_step,
         "true_arrival": arrived,
@@ -180,7 +182,9 @@ def _sage_lm(episode: EvaluatorEpisode, provider: RgbObservationProvider) -> dic
     }
 
 
-def run(cohort_path: Path) -> dict:
+def run(cohort_path: Path, observation_mode: str = "rgb") -> dict:
+    if observation_mode not in {"rgb", "oracle"}:
+        raise ValueError(f"unsupported observation mode: {observation_mode}")
     cohort = json.loads(cohort_path.read_text(encoding="utf-8"))
     rows = []
     controls_retained = 0
@@ -201,7 +205,11 @@ def run(cohort_path: Path) -> dict:
             occlusion_steps=tuple(materialized["occlusion_frame_indices"]),
         )
         baseline = _baseline(evaluator)
-        provider = RgbObservationProvider(input_value)
+        provider: ObservationProvider
+        if observation_mode == "oracle":
+            provider = OracleApertureObservationProvider(input_value, truth)
+        else:
+            provider = RgbObservationProvider(input_value)
         sage = _sage_lm(evaluator, provider)
         if materialized["control"] and sage["true_arrival"]:
             controls_retained += 1
@@ -236,6 +244,7 @@ def run(cohort_path: Path) -> dict:
         return values[middle] if len(values) % 2 else (values[middle - 1] + values[middle]) / 2.0
 
     observation_diagnostics = {
+        "observation_mode": observation_mode,
         "boundary_pair_output_count": sum(row["sage_lm"]["observation"]["center_x_m"] is not None for row in rows),
         "geometry_confidence_pass_count": sum(row["sage_lm"]["observation"]["geometry_confidence"] >= GEOMETRY_CONFIDENCE_THRESHOLD for row in rows),
         "reciprocal_flow_confidence_ge_0_5_count": sum(row["sage_lm"]["observation"]["flow_confidence"] >= 0.5 for row in rows),
@@ -244,7 +253,11 @@ def run(cohort_path: Path) -> dict:
         "aperture_center_absolute_error_median_m": median(center_errors),
         "metric_range_absolute_error_mean_m": sum(range_errors) / len(range_errors) if range_errors else None,
         "metric_range_absolute_error_median_m": median(range_errors),
-        "primary_failure_layer": "RECIPROCAL_FLOW_SURVIVAL_THEN_BOUNDARY_ASSOCIATION_AND_METRIC_RANGE",
+        "primary_failure_layer": (
+            "NOT_APPLICABLE_ALL_ORACLE"
+            if observation_mode == "oracle"
+            else "RECIPROCAL_FLOW_SURVIVAL_THEN_BOUNDARY_ASSOCIATION_AND_METRIC_RANGE"
+        ),
     }
     criteria = {
         "target_front_arrival_at_least_18": int(round(sage_metrics["target_front_arrival_rate"] * 24)) >= 18,
@@ -257,9 +270,13 @@ def run(cohort_path: Path) -> dict:
         "movement_while_lost_zero": sage_metrics["movement_steps_while_lost"] == 0,
     }
     return {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": ORACLE_SCHEMA_VERSION if observation_mode == "oracle" else SCHEMA_VERSION,
         "mode": "REVERSIBLE_EXPLORATION_DEVELOPMENT_STANDARD",
-        "experiment_label": "CONTROLLED_REAL_RGB_OBSERVATION_IN_SIMULATED_GEOMETRY_LOOP",
+        "experiment_label": (
+            "V1_A_ALL_ORACLE_OBSERVATION_CEILING_IN_SIMULATED_GEOMETRY_LOOP"
+            if observation_mode == "oracle"
+            else "CONTROLLED_REAL_RGB_OBSERVATION_IN_SIMULATED_GEOMETRY_LOOP"
+        ),
         "identity_contract": "EXACT_SEMANTIC_AUTHORITY_FIXED_GEOMETRY_CANNOT_REBIND",
         "semantic_anchor_provenance": cohort["semantic_anchor_provenance"],
         "real_capture_scope": cohort["real_capture_scope"],
@@ -278,7 +295,11 @@ def run(cohort_path: Path) -> dict:
         "criteria": criteria,
         "passed": all(criteria.values()),
         "rows": rows,
-        "claim_ceiling": "CONTROLLED_REAL_RGB_OBSERVATION_IN_SIMULATED_GEOMETRY_LOOP_ONLY",
+        "claim_ceiling": (
+            "EVALUATOR_TRUTH_ALL_ORACLE_POLICY_CEILING_ON_FIXED_24_EPISODES_ONLY"
+            if observation_mode == "oracle"
+            else "CONTROLLED_REAL_RGB_OBSERVATION_IN_SIMULATED_GEOMETRY_LOOP_ONLY"
+        ),
     }
 
 
@@ -286,8 +307,9 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--cohort", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--observation-mode", choices=("rgb", "oracle"), default="rgb")
     args = parser.parse_args()
-    report = run(args.cohort)
+    report = run(args.cohort, observation_mode=args.observation_mode)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     (args.output_dir / "report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"metrics": report["metrics"], "criteria": report["criteria"], "passed": report["passed"]}, indent=2))

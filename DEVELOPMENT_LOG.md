@@ -5334,3 +5334,14 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   SAGE completion precision 为 `2/2` 但属于强 abstention，LOST movement=`0`。reciprocal flow `0/24 >= 0.5`，结果
   `OBSERVATION_UPLIFT_NOT_PRESERVED`；只保留 flow、boundary、range 分解，不接 Android/P1/default App。
 - 结果：[SAGE-LM V1 controlled real-RGB observation](docs/research/goal-copilot/SAGE_LM_V1_CONTROLLED_REAL_RGB_OBSERVATION_RESULT_2026-08-24.md)。
+
+# 2026-08-24 SAGE-LM V1-A all-oracle observation ceiling
+
+- 在同一 24 episode 上新增 evaluator-only `OracleApertureObservationProvider`，读取 truth aperture center/width/start range、
+  source camera positions，并令 geometry confidence=`1`；其输出原样进入既有 `_sage_lm()`，未改 movement、near/alignment、
+  两帧 completion、baseline、cohort 或八条既有标准。
+- all-oracle 得到 target-front arrival `24/24`、direction `100%`、median lateral error `0.000 m`、completion precision
+  `24/24`、premature `0`、controls `6/6`、LOST movement=`0`，八条标准全过。downstream policy ceiling 已建立；V1 严格否决
+  当前 Hough + edge-point LK + single-frame metric-depth adapter，而非一般的真实 RGB 主动视差。
+- 唯一 successor 为 source-pose-assisted two-view boundary geometry；在此之前不修 LK、不换 flow/depth、不改门或 policy。
+- 结果：[SAGE-LM V1-A all-oracle ceiling](docs/research/goal-copilot/SAGE_LM_V1_A_ALL_ORACLE_OBSERVATION_CEILING_RESULT_2026-08-24.md)。

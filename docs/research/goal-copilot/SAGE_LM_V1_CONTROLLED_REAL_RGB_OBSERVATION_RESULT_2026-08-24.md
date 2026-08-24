@@ -20,7 +20,7 @@ ARKitScenes trajectory truth 筛选出的实测横向 baseline 范围为 `0.186�
 |---|---:|---:|
 | target-front arrival | 7/24 (29.2%) | 2/24 (8.3%) |
 | median lateral error | 0.219 m | 0.261 m |
-| completion precision | 7/24 (29.2%) | 2/2 (100%) |
+| completion precision | 7/24 (29.2%) | 100% at 2/24 accepted episodes |
 | premature arrival | 17 | 0 |
 | controls retained | — | 1/6 |
 | movement while LOST | 1 | 0 |
@@ -39,8 +39,10 @@ ARKitScenes trajectory truth 筛选出的实测横向 baseline 范围为 `0.186�
 ## 结论与下一步
 
 结论严格为：`CONTROLLED_REAL_RGB_OBSERVATION_IN_SIMULATED_GEOMETRY_LOOP / OBSERVATION_UPLIFT_NOT_PRESERVED`。
-唯一后续是继续在同一 Development 输入上分解 observation：先检查 active-pair flow reciprocal survival，再修正 boundary pair
-association，最后检查 monocular metric range。不得修改 SAGE-LM policy、baseline、阈值、semantic anchor、Android/default App，也不得写成真实导航。
+V1-A all-oracle ceiling 已在同一 24 episode 上通过，证明 frozen downstream policy 在 evaluator-perfect observation 下有 ceiling；
+见 [`V1-A result`](SAGE_LM_V1_A_ALL_ORACLE_OBSERVATION_CEILING_RESULT_2026-08-24.md)。因此本结果严格否决的是当前
+Hough + edge-point LK + single-frame metric-depth adapter，而不是一般的真实 RGB 主动视差。唯一 successor 是 source-pose-assisted
+two-view boundary geometry；不得修改 SAGE-LM policy、baseline、阈值、semantic anchor、Android/default App，也不得写成真实导航。
 
 本机可复现输出位于 `artifacts.local/evidence/sage-lm-v1/controlled-real-rgb-r1/`：`report.json`、
 `observation_overlay.mp4`、`baseline_vs_sage_lm.mp4` 与 `trajectory_demo.png`。

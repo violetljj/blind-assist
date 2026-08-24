@@ -70,4 +70,7 @@ class RgbEpisodeTruth:
 
 
 class ObservationProvider(Protocol):
+    input: RgbEpisodeInput
+    diagnostics: dict
+
     def observe(self) -> ApertureObservation: ...
