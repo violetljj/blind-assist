@@ -10,6 +10,10 @@ from scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_
 
 
 class SpatialLayoutIdentityVerificationV0Test(unittest.TestCase):
+    def test_official_evaluation_sequence_ids_are_frozen(self) -> None:
+        self.assertEqual(1, sut.REFERENCE_VIDEO)
+        self.assertEqual(4, sut.CANDIDATE_VIDEO)
+
     def test_frame_selection_is_numeric_and_frozen(self) -> None:
         rows = [(index, f"frame-{index}.png") for index in range(10)]
         self.assertEqual("frame-2.png", sut._choose_member(rows, 0.25))

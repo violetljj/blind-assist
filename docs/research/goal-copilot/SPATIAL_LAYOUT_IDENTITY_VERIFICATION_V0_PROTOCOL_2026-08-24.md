@@ -1,6 +1,12 @@
 # Spatial-Layout Identity Verification V0 Protocol
 
-状态：`FROZEN_BEFORE_DATA_DOWNLOAD_OR_MODEL_EXECUTION / DEVELOPMENT / EXECUTION_AUTHORIZED / NO_OUTCOME`
+状态：`R1_MECHANICAL_AMENDMENT_FROZEN_BEFORE_PIXEL_OR_MODEL_EXECUTION / DEVELOPMENT / EXECUTION_AUTHORIZED / NO_OUTCOME`
+
+R1 amendment：官方 ZIP central directory 在未解码像素时显示 evaluation set 的三条 capture sequence 编号为
+`1/2/4`，不是最初按 README “3 video sequences” 语义推定的 `1/2/3`。初始 freeze 因 video 3 不存在而在 roster
+metadata gate 失败，未生成 roster、未解码像素、未运行模型或观察 outcome。R1 只把 candidate video 从不存在的 `3`
+改为实际第三条序列 `4`；数据源、quantile、hard-negative rule、scorer、gates 与 stop rules 全部不变。初始 freeze
+收据保留为不可执行的历史记录。
 
 ## 唯一问题与 claim ceiling
 
@@ -25,15 +31,15 @@ Content-Length: 673456874
 只读取 `*_crop.png` RGB，不读取 depth、mask、pose 或官方 category-recognition split。archive 下载完成后先记录
 SHA-256，再只读取 ZIP central directory，以如下规则冻结 roster，此前不得解码像素：
 
-1. 按 category 名与 instance 数值排序；只接纳同时具有 video `1` 和 `3`、且 category 至少有 2 个合法 instance 的实体。
+1. 按 category 名与 instance 数值排序；只接纳同时具有 video `1` 和 `4`、且 category 至少有 2 个合法 instance 的实体。
 2. 每个 target 的 hard negative 是同 category 排序中的下一个 physical instance，末项循环至首项。
-3. reference 固定为 target video `1` 的 `q=.50` 帧；candidate 固定为 video `3` 的 `q={.25,.50,.75}` 帧。
+3. reference 固定为 target video `1` 的 `q=.50` 帧；candidate 固定为 video `4` 的 `q={.25,.50,.75}` 帧。
 4. 帧按文件名中的数值 frame 排序，以 `floor(q*(n-1))` 取样；target 与 hard candidate 共用 video 与 quantile。
 5. candidate slot 由 `SHA256(pair_id)` 最低位固定；任何缺帧、重复 member、instance/category 解析冲突均 fail closed，
    不得换图补齐。
 
 数据源、physical instances 和 capture videos 均未进入此前 SUN3D、T-LESS、CORe50 identity experiments。这里的
-`source-disjoint` 指本实验相对既有 identity cohorts 的新 dataset，以及每一 pair 内 video 1 reference 对 video 3
+`source-disjoint` 指本实验相对既有 identity cohorts 的新 dataset，以及每一 pair 内 video 1 reference 对 video 4
 candidate 的 capture-source separation；它不代表自然场景、跨设备或跨域 Confirmation。
 
 ## 冻结两臂
