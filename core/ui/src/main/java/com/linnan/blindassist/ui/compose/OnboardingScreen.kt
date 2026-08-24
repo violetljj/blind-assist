@@ -34,7 +34,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Bluetooth
 import androidx.compose.material.icons.rounded.BugReport
-import androidx.compose.material.icons.rounded.CameraAlt
+import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Home
@@ -42,9 +42,9 @@ import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.PhoneAndroid
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material.icons.rounded.Shield
+import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.rounded.Tune
-import androidx.compose.material.icons.rounded.Vibration
+import androidx.compose.material.icons.outlined.Vibration
 import androidx.compose.material.icons.rounded.VolumeUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -105,7 +105,7 @@ fun OnboardingScreen(
     val page = pages[pageIndex]
     val isLastPage = pageIndex == pages.lastIndex
 
-    ScreenColumn(modifier = modifier) {
+    ScreenColumn(modifier = modifier.statusBarsPadding()) {
         ScreenIntro(
             eyebrow = "BLINDASSIST ${pageIndex + 1} / ${pages.size}",
             title = "开始使用 BlindAssist",
@@ -118,7 +118,8 @@ fun OnboardingScreen(
                 .fillMaxWidth()
                 .heightIn(min = 330.dp),
             shape = RoundedCornerShape(28.dp),
-            colors = CardDefaults.cardColors(containerColor = BaPanel)
+            colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
         ) {
             Column(
                 modifier = Modifier.padding(22.dp),
@@ -129,7 +130,7 @@ fun OnboardingScreen(
                 Text(
                     text = page.title,
                     style = MaterialTheme.typography.headlineSmall,
-                    color = BaText,
+                    color = BaHomeInk,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.semantics { heading() }
                 )
@@ -137,14 +138,14 @@ fun OnboardingScreen(
                 Text(
                     text = page.body,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = BaText,
+                    color = BaHomeInk,
                     lineHeight = MaterialTheme.typography.bodyLarge.lineHeight
                 )
                 Spacer(Modifier.height(14.dp))
                 Text(
                     text = page.detail,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = BaTextMuted
+                    color = BaHomeTextMuted
                 )
             }
         }
@@ -161,7 +162,7 @@ fun OnboardingScreen(
                         .height(5.dp)
                         .weight(1f)
                         .clip(RoundedCornerShape(50))
-                        .background(if (index == pageIndex) BaMint else BaPanelSoft)
+                        .background(if (index == pageIndex) BaHomeGreen else BaHomeHairline)
                 )
             }
         }
@@ -178,7 +179,10 @@ fun OnboardingScreen(
                 .fillMaxWidth()
                 .heightIn(min = 56.dp),
             shape = RoundedCornerShape(18.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = BaMint, contentColor = BaInk)
+            colors = ButtonDefaults.buttonColors(
+                containerColor = BaHomeActionEnd,
+                contentColor = BaHomeOnAction
+            )
         ) {
             Text(if (isLastPage) "开始使用" else "下一步")
         }
@@ -209,21 +213,21 @@ private fun onboardingPages(): List<OnboardingPage> = listOf(
         title = "使用手机摄像头进行本地识别",
         body = "打开手机摄像头后，App 会在本机运行 YOLO11n 模型，识别画面中的常见目标和相对方向。",
         detail = "画面不上传、不联网、不保存视频，当前版本优先支持手机摄像头。",
-        icon = Icons.Rounded.CameraAlt,
-        accent = BaMint
+        icon = Icons.Outlined.CameraAlt,
+        accent = BaHomeGreen
     ),
     OnboardingPage(
         title = "通过语音和震动给出辅助提醒",
         body = "当规则层判断近处或迫近风险时，系统会用短句语音和震动帮助你注意前方变化。",
         detail = "你可以在设置页调整语音、震动、关怀模式和提醒档位。",
-        icon = Icons.Rounded.Vibration,
-        accent = BaSky
+        icon = Icons.Outlined.Vibration,
+        accent = BaHomeCobalt
     ),
     OnboardingPage(
         title = "不能替代盲杖、导盲犬或人工判断",
         body = "BlindAssist 是助盲避障原型，提醒可能受光照、遮挡、设备性能和模型识别结果影响。",
         detail = "行走时请继续保留人工判断和专业辅助方式，把 App 提醒作为额外参考。",
-        icon = Icons.Rounded.Shield,
-        accent = BaAmber
+        icon = Icons.Outlined.Shield,
+        accent = BaHomeAmber
     )
 )

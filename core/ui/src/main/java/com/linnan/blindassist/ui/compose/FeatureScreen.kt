@@ -48,8 +48,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -66,7 +64,6 @@ import androidx.compose.ui.unit.sp
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.preferences.DailyUsageMode
-import kotlin.math.max
 
 @Suppress("UNUSED_PARAMETER")
 @Composable
@@ -93,7 +90,7 @@ fun FeatureScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .homeAtmosphere()
+            .appAtmosphere()
     ) {
         Column(
             modifier = Modifier
@@ -479,34 +476,6 @@ private fun HomeInfoRow(
     }
 }
 
-private fun Modifier.homeAtmosphere(): Modifier = drawWithCache {
-    val radius = max(size.width, size.height)
-    val base = Brush.linearGradient(
-        colors = listOf(
-            BaHomeCoolWash,
-            BaHomeBackground,
-            BaHomeWarmWash
-        ),
-        start = Offset.Zero,
-        end = Offset(size.width, size.height * 0.58f)
-    )
-    val sage = Brush.radialGradient(
-        colors = listOf(BaHomeSageWash, Color.Transparent),
-        center = Offset(size.width * 1.08f, size.height * 0.04f),
-        radius = radius * 0.72f
-    )
-    val blue = Brush.radialGradient(
-        colors = listOf(BaHomeBlueWash, Color.Transparent),
-        center = Offset(-size.width * 0.12f, size.height * 1.02f),
-        radius = radius * 0.66f
-    )
-    onDrawBehind {
-        drawRect(base)
-        drawRect(sage)
-        drawRect(blue)
-    }
-}
-
 private fun feedbackSummary(
     controls: AssistControlsUiState,
     language: AppLanguage
@@ -578,19 +547,20 @@ internal fun InfoStrip(
         modifier = Modifier
             .fillMaxWidth()
             .semantics(mergeDescendants = true) {},
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = BaPanel)
+        shape = RoundedCornerShape(22.dp),
+        colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
             modifier = Modifier.padding(18.dp),
             verticalAlignment = Alignment.Top
         ) {
-            IconTile(icon = icon, accent = BaAmber)
+            IconTile(icon = icon, accent = BaHomeAmber)
             Spacer(Modifier.width(14.dp))
             Column {
-                Text(text = title, color = BaText, fontWeight = FontWeight.Bold)
+                Text(text = title, color = BaHomeInk, fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(4.dp))
-                Text(text = body, color = BaTextMuted, style = MaterialTheme.typography.bodyMedium)
+                Text(text = body, color = BaHomeTextMuted, style = MaterialTheme.typography.bodyMedium)
             }
         }
     }

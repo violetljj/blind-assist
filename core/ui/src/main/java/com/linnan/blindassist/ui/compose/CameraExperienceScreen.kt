@@ -325,9 +325,9 @@ fun CameraControlPanel(
             shape = RoundedCornerShape(if (controls.careModeEnabled) 26.dp else 22.dp),
             colors = CardDefaults.cardColors(
                 containerColor = if (controls.careModeEnabled) {
-                    BaNight.copy(alpha = 0.97f)
+                    BaHomeActionEnd.copy(alpha = 0.97f)
                 } else {
-                    BaPanel.copy(alpha = 0.94f)
+                    BaHomeActionStart.copy(alpha = 0.95f)
                 }
             ),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
@@ -524,7 +524,12 @@ fun CameraControlPanel(
                             style = MaterialTheme.typography.bodySmall
                         )
                         Spacer(Modifier.height(10.dp))
-                        FieldTestSummaryBlock(fieldTestSummary)
+                        FieldTestSummaryBlock(
+                            summary = fieldTestSummary,
+                            contentColor = BaText,
+                            mutedColor = BaTextMuted,
+                            accentColor = BaMint
+                        )
                     }
                 }
             }
@@ -584,23 +589,23 @@ private fun CameraTopBar(
             modifier = Modifier
                 .size(48.dp)
                 .clip(CircleShape)
-                .background(BaPanel.copy(alpha = 0.78f))
+                .background(BaHomeActionEnd.copy(alpha = 0.88f))
         ) {
             Icon(
                 Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = if (language == AppLanguage.EN) "Back to features" else "返回功能页",
-                tint = BaText
+                tint = BaHomeOnAction
             )
         }
         Spacer(Modifier.weight(1f))
         Text(
             text = statusBadge,
-            color = BaInk,
+            color = BaHomeInk,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .clip(RoundedCornerShape(50))
-                .background(BaMint.copy(alpha = 0.92f))
+                .background(BaHomeSurface.copy(alpha = 0.94f))
                 .padding(horizontal = 14.dp, vertical = 8.dp)
         )
     }

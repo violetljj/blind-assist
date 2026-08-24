@@ -132,14 +132,14 @@ fun BlindAssistApp(
 
     if (state.cameraActive || state.showOnboarding || state.showGlassesCenter) {
         SystemBarAppearance(
-            darkStatusIcons = false,
-            darkNavigationIcons = false
+            darkStatusIcons = !state.cameraActive,
+            darkNavigationIcons = !state.cameraActive
         )
     }
 
     Surface(
         modifier = modifier.fillMaxSize(),
-        color = BaNight
+        color = BaHomeBackground
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             AnimatedContent(
@@ -264,7 +264,7 @@ private fun MainShell(
     val currentTab = tabs.firstOrNull { it.name == selectedTab } ?: BottomTab.Features
 
     SystemBarAppearance(
-        darkStatusIcons = currentTab == BottomTab.Features,
+        darkStatusIcons = true,
         darkNavigationIcons = true
     )
 
@@ -274,7 +274,7 @@ private fun MainShell(
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = if (currentTab == BottomTab.Features) BaHomeBackground else BaNight,
+        containerColor = BaHomeBackground,
         bottomBar = {
             Box(
                 modifier = Modifier

@@ -137,17 +137,17 @@ fun ProfileScreen(
                 modifier = Modifier
                     .size(58.dp)
                     .clip(RoundedCornerShape(18.dp))
-                    .background(BaMintWash),
+                    .background(BaHomeNavIndicator),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(Icons.Rounded.Person, contentDescription = null, tint = BaMint, modifier = Modifier.size(26.dp))
+                Icon(Icons.Rounded.Person, contentDescription = null, tint = BaHomeGreen, modifier = Modifier.size(26.dp))
             }
             Spacer(Modifier.width(16.dp))
             Column {
                 Text(
                     text = if (language == AppLanguage.EN) "BlindAssist user" else "BlindAssist 用户",
                     style = MaterialTheme.typography.titleMedium,
-                    color = BaText,
+                    color = BaHomeInk,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.semantics { heading() }
                 )
@@ -158,14 +158,14 @@ fun ProfileScreen(
                         "本地原型模式 · 未接入账号系统"
                     },
                     style = MaterialTheme.typography.bodyMedium,
-                    color = BaTextMuted
+                    color = BaHomeTextMuted
                 )
             }
         }
         Spacer(Modifier.height(24.dp))
         Text(
             text = if (language == AppLanguage.EN) "STATUS AT A GLANCE" else "状态概览",
-            color = BaMint,
+            color = BaHomeGreen,
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Bold
         )
@@ -202,4 +202,3 @@ fun ProfileScreen(
         )
     }
 }
-

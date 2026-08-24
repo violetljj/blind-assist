@@ -115,24 +115,26 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun BlindAssistTheme(content: @Composable () -> Unit) {
-    val colors = androidx.compose.material3.darkColorScheme(
-        primary = BaMint,
-        onPrimary = BaInk,
-        secondary = BaSky,
-        tertiary = BaAmber,
-        background = BaNight,
-        surface = BaPanel,
-        surfaceVariant = BaPanelSoft,
-        outline = BaHairline,
-        outlineVariant = BaHairlineSoft,
-        primaryContainer = BaMintWash,
-        onPrimaryContainer = BaMint,
-        secondaryContainer = BaSkyWash,
-        onSecondaryContainer = BaSky,
-        onBackground = BaText,
-        onSurface = BaText,
-        onSurfaceVariant = BaTextMuted,
-        error = BaDanger
+    val colors = androidx.compose.material3.lightColorScheme(
+        primary = BaHomeGreen,
+        onPrimary = BaHomeOnAction,
+        secondary = BaHomeCobalt,
+        onSecondary = BaHomeOnAction,
+        tertiary = BaHomeAmber,
+        background = BaHomeBackground,
+        surface = BaHomeSurface,
+        surfaceVariant = BaHomeControlRail,
+        outline = BaHomeHairline,
+        outlineVariant = BaHomeHairline.copy(alpha = 0.72f),
+        primaryContainer = BaHomeNavIndicator,
+        onPrimaryContainer = BaHomeGreen,
+        secondaryContainer = BaHomeSkySurface,
+        onSecondaryContainer = BaHomeInk,
+        onBackground = BaHomeInk,
+        onSurface = BaHomeInk,
+        onSurfaceVariant = BaHomeTextMuted,
+        error = BaHomeDanger,
+        onError = BaHomeOnAction
     )
     MaterialTheme(
         colorScheme = colors,
@@ -175,6 +177,13 @@ internal val BaHomeSageWash = Color(0x30DDE9D8)
 internal val BaHomeBlueWash = Color(0x42D9E9FB)
 internal val BaHomeNavInactive = Color(0xFF767A7D)
 internal val BaHomeNavIndicator = Color(0xFFEAF2E9)
+internal val BaHomeTextMuted = Color(0xFF5C6870)
+internal val BaHomeSurfaceRaised = Color(0xFFF0F3EF)
+internal val BaHomeSkySurface = Color(0xFFE8F2FC)
+internal val BaHomeAmberSurface = Color(0xFFFFF2D6)
+internal val BaHomeAmber = Color(0xFF8B6112)
+internal val BaHomeDanger = Color(0xFFB3261E)
+internal val BaHomeOnAction = Color.White
 
 private val BlindAssistTypography = Typography(
     headlineLarge = androidx.compose.ui.text.TextStyle(

@@ -2,6 +2,7 @@ package com.linnan.blindassist.ui.compose
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,8 +22,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
@@ -43,20 +46,17 @@ internal fun SettingSwitchRow(
     onCheckedChange: (Boolean) -> Unit
 ) {
     val stateText = LocalizedText.enabled(checked, language)
-    val actionText = if (language == AppLanguage.EN) {
-        if (checked) "Turn off $title" else "Turn on $title"
-    } else {
-        if (checked) "关闭$title" else "开启$title"
-    }
+    val shape = RoundedCornerShape(22.dp)
     Row(
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 80.dp)
-            .background(BaPanel, RoundedCornerShape(18.dp))
-            .clickable(
+            .shadow(elevation = 2.dp, shape = shape)
+            .background(BaHomeSurface, shape)
+            .toggleable(
+                value = checked,
                 role = Role.Switch,
-                onClickLabel = actionText,
-                onClick = { onCheckedChange(!checked) }
+                onValueChange = onCheckedChange
             )
             .semantics(mergeDescendants = true) {
                 stateDescription = stateText
@@ -71,20 +71,17 @@ internal fun SettingSwitchRow(
     ) {
         IconTile(
             icon = icon,
-            accent = if (checked) BaMint else BaTextMuted
+            accent = if (checked) BaHomeGreen else BaHomeTextMuted
         )
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, color = BaText, fontWeight = FontWeight.Bold)
-            Text(body, color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
+            Text(title, color = BaHomeInk, fontWeight = FontWeight.Bold)
+            Text(body, color = BaHomeTextMuted, style = MaterialTheme.typography.bodySmall)
         }
         Switch(
             checked = checked,
-            onCheckedChange = onCheckedChange,
-            modifier = Modifier.semantics {
-                role = Role.Switch
-                stateDescription = stateText
-            }
+            onCheckedChange = null,
+            modifier = Modifier.clearAndSetSemantics { }
         )
     }
 }
@@ -102,20 +99,21 @@ internal fun SettingsActionRow(
             .heightIn(min = 76.dp)
             .clickable(role = Role.Button, onClick = onClick)
             .semantics(mergeDescendants = true) {},
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = BaPanel)
+        shape = RoundedCornerShape(22.dp),
+        colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconTile(icon = icon, accent = BaMint)
+            IconTile(icon = icon, accent = BaHomeGreen)
             Spacer(Modifier.width(14.dp))
             Column(Modifier.weight(1f)) {
-                Text(title, color = BaText, fontWeight = FontWeight.Bold)
-                Text(body, color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
+                Text(title, color = BaHomeInk, fontWeight = FontWeight.Bold)
+                Text(body, color = BaHomeTextMuted, style = MaterialTheme.typography.bodySmall)
             }
-            Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = BaMint.copy(alpha = 0.72f))
+            Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = BaHomeGreen.copy(alpha = 0.82f))
         }
     }
 }

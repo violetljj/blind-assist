@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +34,14 @@ import com.linnan.blindassist.feedback.SpeechStyle
 import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.localization.AppLanguage
 
+@Composable
+private fun selectorChipColors() = FilterChipDefaults.filterChipColors(
+    containerColor = BaHomeSurface,
+    labelColor = BaHomeTextMuted,
+    selectedContainerColor = BaHomeNavIndicator,
+    selectedLabelColor = BaHomeGreen
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ProfileSelector(
@@ -49,21 +59,26 @@ internal fun ProfileSelector(
                     "提醒档位，当前${selected.displayName(language)}。安静减少打扰，敏感更早确认中风险。"
                 }
             },
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = BaPanel)
+        shape = RoundedCornerShape(22.dp),
+        colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(Modifier.padding(16.dp)) {
-            Text(if (language == AppLanguage.EN) "Reminder profile" else "提醒档位", color = BaText, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
-            Text(if (language == AppLanguage.EN) "Quiet reduces interruption, Sensitive confirms medium risk earlier." else "安静减少打扰，敏感更早确认中风险。", color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
+            Text(if (language == AppLanguage.EN) "Reminder profile" else "提醒档位", color = BaHomeInk, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
+            Text(if (language == AppLanguage.EN) "Quiet reduces interruption, Sensitive confirms medium risk earlier." else "安静减少打扰，敏感更早确认中风险。", color = BaHomeTextMuted, style = MaterialTheme.typography.bodySmall)
             Spacer(Modifier.height(10.dp))
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(
+                modifier = Modifier.selectableGroup(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 AlertProfile.values().forEach { profile ->
                     FilterChip(
                         selected = selected == profile,
                         onClick = { onProfileChange(profile) },
                         label = { Text(profile.displayName(language)) },
+                        colors = selectorChipColors(),
                         modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).semantics {
-                            role = Role.Button
+                            role = Role.RadioButton
                             stateDescription = if (selected == profile) {
                                 if (language == AppLanguage.EN) "Current profile" else "当前档位"
                             } else {
@@ -99,14 +114,18 @@ internal fun LanguageSelector(
                     "界面语言，当前中文"
                 }
             },
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = BaPanel)
+        shape = RoundedCornerShape(22.dp),
+        colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(Modifier.padding(16.dp)) {
-            Text(if (selected == AppLanguage.EN) "Interface language" else "界面语言", color = BaText, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
-            Text(if (selected == AppLanguage.EN) "Choose Chinese or English for core reminders and settings." else "选择核心提醒和设置界面的中文或英文。", color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
+            Text(if (selected == AppLanguage.EN) "Interface language" else "界面语言", color = BaHomeInk, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
+            Text(if (selected == AppLanguage.EN) "Choose Chinese or English for core reminders and settings." else "选择核心提醒和设置界面的中文或英文。", color = BaHomeTextMuted, style = MaterialTheme.typography.bodySmall)
             Spacer(Modifier.height(10.dp))
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(
+                modifier = Modifier.selectableGroup(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 AppLanguage.values().forEach { language ->
                     val isEnglishUi = selected == AppLanguage.EN
                     val name = language.displayName(selected)
@@ -114,11 +133,12 @@ internal fun LanguageSelector(
                         selected = selected == language,
                         onClick = { onLanguageChange(language) },
                         label = { Text(name) },
+                        colors = selectorChipColors(),
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(min = 48.dp)
                             .semantics {
-                                role = Role.Button
+                                role = Role.RadioButton
                                 stateDescription = if (selected == language) {
                                     if (isEnglishUi) "Current language" else "当前语言"
                                 } else {
@@ -155,41 +175,48 @@ internal fun ScenarioSelector(
                     "使用场景，当前${selected.displayName(language)}。${selected.description(language)}"
                 }
             },
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = BaPanel)
+        shape = RoundedCornerShape(22.dp),
+        colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(Modifier.padding(16.dp)) {
-            Text(if (language == AppLanguage.EN) "Usage scenario" else "使用场景", color = BaText, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
-            Text(if (language == AppLanguage.EN) "Manually choose the walking environment to tune confirmation, cooldown, and vibration." else "手动选择行走环境，调整提醒确认、冷却和震动计划。", color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
+            Text(if (language == AppLanguage.EN) "Usage scenario" else "使用场景", color = BaHomeInk, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
+            Text(if (language == AppLanguage.EN) "Manually choose the walking environment to tune confirmation, cooldown, and vibration." else "手动选择行走环境，调整提醒确认、冷却和震动计划。", color = BaHomeTextMuted, style = MaterialTheme.typography.bodySmall)
             Spacer(Modifier.height(10.dp))
-            AssistScenario.values().forEach { scenario ->
-                FilterChip(
-                    selected = selected == scenario,
-                    onClick = { onScenarioChange(scenario) },
-                    label = {
-                        Text(
-                            "${scenario.displayName(language)} · ${scenario.description(language)}",
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 48.dp)
-                        .semantics {
-                            role = Role.Button
-                            stateDescription = if (selected == scenario) {
-                                if (language == AppLanguage.EN) "Current scenario" else "当前场景"
-                            } else {
-                                if (language == AppLanguage.EN) "Not selected" else "未选择"
+            Column(
+                modifier = Modifier.selectableGroup(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                AssistScenario.values().forEach { scenario ->
+                    FilterChip(
+                        selected = selected == scenario,
+                        onClick = { onScenarioChange(scenario) },
+                        label = {
+                            Text(
+                                "${scenario.displayName(language)} · ${scenario.description(language)}",
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        },
+                        colors = selectorChipColors(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 48.dp)
+                            .semantics {
+                                role = Role.RadioButton
+                                stateDescription = if (selected == scenario) {
+                                    if (language == AppLanguage.EN) "Current scenario" else "当前场景"
+                                } else {
+                                    if (language == AppLanguage.EN) "Not selected" else "未选择"
+                                }
+                                contentDescription = if (language == AppLanguage.EN) {
+                                    "Choose ${scenario.displayName(language)} usage scenario, ${scenario.description(language)}"
+                                } else {
+                                    "选择${scenario.displayName(language)}使用场景，${scenario.description(language)}"
+                                }
                             }
-                            contentDescription = if (language == AppLanguage.EN) {
-                                "Choose ${scenario.displayName(language)} usage scenario, ${scenario.description(language)}"
-                            } else {
-                                "选择${scenario.displayName(language)}使用场景，${scenario.description(language)}"
-                            }
-                        }
-                )
+                    )
+                }
             }
         }
     }
@@ -212,21 +239,26 @@ internal fun SpeechStyleSelector(
                     "语音风格，当前${selected.displayName(language)}。${selected.description(language)}"
                 }
             },
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = BaPanel)
+        shape = RoundedCornerShape(22.dp),
+        colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(Modifier.padding(16.dp)) {
-            Text(if (language == AppLanguage.EN) "Speech style" else "语音风格", color = BaText, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
-            Text(if (language == AppLanguage.EN) "Brief reduces interruption, Detailed adds object type." else "简短减少打扰，详细会补充目标类别。", color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
+            Text(if (language == AppLanguage.EN) "Speech style" else "语音风格", color = BaHomeInk, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
+            Text(if (language == AppLanguage.EN) "Brief reduces interruption, Detailed adds object type." else "简短减少打扰，详细会补充目标类别。", color = BaHomeTextMuted, style = MaterialTheme.typography.bodySmall)
             Spacer(Modifier.height(10.dp))
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(
+                modifier = Modifier.selectableGroup(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 SpeechStyle.values().forEach { style ->
                     FilterChip(
                         selected = selected == style,
                         onClick = { onSpeechStyleChange(style) },
                         label = { Text(style.displayName(language), maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                        colors = selectorChipColors(),
                         modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).semantics {
-                            role = Role.Button
+                            role = Role.RadioButton
                             stateDescription = if (selected == style) {
                                 if (language == AppLanguage.EN) "Current style" else "当前风格"
                             } else {
@@ -262,21 +294,26 @@ internal fun VibrationStrengthSelector(
                     "震动强度，当前${selected.displayName(language)}。${selected.description(language)}"
                 }
             },
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = BaPanel)
+        shape = RoundedCornerShape(22.dp),
+        colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(Modifier.padding(16.dp)) {
-            Text(if (language == AppLanguage.EN) "Vibration strength" else "震动强度", color = BaText, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
-            Text(if (language == AppLanguage.EN) "Choose soft, standard, or stronger feedback for tactile sensitivity." else "按触觉敏感度选择轻柔、标准或更强提醒。", color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
+            Text(if (language == AppLanguage.EN) "Vibration strength" else "震动强度", color = BaHomeInk, fontWeight = FontWeight.Bold, modifier = Modifier.semantics { heading() })
+            Text(if (language == AppLanguage.EN) "Choose soft, standard, or stronger feedback for tactile sensitivity." else "按触觉敏感度选择轻柔、标准或更强提醒。", color = BaHomeTextMuted, style = MaterialTheme.typography.bodySmall)
             Spacer(Modifier.height(10.dp))
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(
+                modifier = Modifier.selectableGroup(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 VibrationStrength.values().forEach { strength ->
                     FilterChip(
                         selected = selected == strength,
                         onClick = { onVibrationStrengthChange(strength) },
                         label = { Text(strength.displayName(language), maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                        colors = selectorChipColors(),
                         modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).semantics {
-                            role = Role.Button
+                            role = Role.RadioButton
                             stateDescription = if (selected == strength) {
                                 if (language == AppLanguage.EN) "Current strength" else "当前强度"
                             } else {

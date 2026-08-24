@@ -93,10 +93,16 @@ class CameraXFrameSource(
                     )
                     val source = cameraSourceDescriptor(camera.cameraInfo)
                     analysis.setAnalyzer(analysisExecutor) { imageProxy ->
+                        val capturedAtNs = imageProxy.imageInfo.timestamp
+                        val observedReceivedAtNs = SystemClock.elapsedRealtimeNanos()
                         val stamp = FrameStamp(
                             frameId = NEXT_FRAME_ID.getAndIncrement(),
-                            capturedAtNs = imageProxy.imageInfo.timestamp,
-                            receivedAtNs = SystemClock.elapsedRealtimeNanos(),
+                            capturedAtNs = capturedAtNs,
+                            receivedAtNs = normalizedFrameReceiptTime(
+                                capturedAtNs = capturedAtNs,
+                                observedReceivedAtNs = observedReceivedAtNs,
+                                clockDomain = source.clockDomain
+                            ),
                             sourceId = source.sourceId,
                             coordinateFrame = source.coordinateFrame,
                             clockDomain = source.clockDomain
@@ -234,4 +240,14 @@ class CameraXFrameSource(
         private const val ANALYSIS_HEIGHT = 480
         private const val TARGET_FPS = 24
     }
+}
+
+internal fun normalizedFrameReceiptTime(
+    capturedAtNs: Long,
+    observedReceivedAtNs: Long,
+    clockDomain: FrameClockDomain
+): Long = if (clockDomain == FrameClockDomain.ANDROID_ELAPSED_REALTIME) {
+    observedReceivedAtNs.coerceAtLeast(capturedAtNs)
+} else {
+    observedReceivedAtNs
 }

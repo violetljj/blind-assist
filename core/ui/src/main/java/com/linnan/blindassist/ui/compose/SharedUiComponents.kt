@@ -17,7 +17,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -83,6 +82,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -111,6 +111,7 @@ import com.linnan.blindassist.localization.LocalizedText
 import com.linnan.blindassist.preferences.DailyUsageMode
 import com.linnan.blindassist.ui.DetectionOverlayView
 import kotlinx.coroutines.delay
+import kotlin.math.max
 
 
 @Composable
@@ -121,7 +122,7 @@ internal fun ScreenColumn(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(BaNight)
+            .appAtmosphere()
             .verticalScroll(rememberScrollState())
             .padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 36.dp),
         content = content
@@ -139,7 +140,7 @@ internal fun ScreenIntro(
         eyebrow?.let {
             Text(
                 text = it,
-                color = BaMint,
+                color = BaHomeGreen,
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -148,14 +149,14 @@ internal fun ScreenIntro(
         Text(
             text = title,
             style = MaterialTheme.typography.headlineMedium,
-            color = BaText,
+            color = BaHomeInk,
             modifier = Modifier.semantics { heading() }
         )
         Spacer(Modifier.height(6.dp))
         Text(
             text = body,
             style = MaterialTheme.typography.bodyMedium,
-            color = BaTextMuted
+            color = BaHomeTextMuted
         )
     }
 }
@@ -171,12 +172,7 @@ internal fun IconTile(
         modifier = modifier
             .size(if (emphasized) 60.dp else 48.dp)
             .clip(RoundedCornerShape(if (emphasized) 18.dp else 15.dp))
-            .background(accent.copy(alpha = if (emphasized) 0.19f else 0.12f))
-            .border(
-                width = 1.dp,
-                color = accent.copy(alpha = if (emphasized) 0.28f else 0.20f),
-                shape = RoundedCornerShape(if (emphasized) 18.dp else 15.dp)
-            ),
+            .background(accent.copy(alpha = if (emphasized) 0.15f else 0.09f)),
         contentAlignment = Alignment.Center
     ) {
         Icon(
@@ -198,7 +194,8 @@ internal fun FieldTestSummaryCard(summary: FieldTestSummaryUiState) {
                 contentDescription = summary.accessibilityText
             },
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = BaPanel)
+        colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         FieldTestSummaryBlock(
             summary = summary,
@@ -210,7 +207,10 @@ internal fun FieldTestSummaryCard(summary: FieldTestSummaryUiState) {
 @Composable
 internal fun FieldTestSummaryBlock(
     summary: FieldTestSummaryUiState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    contentColor: Color = BaHomeInk,
+    mutedColor: Color = BaHomeTextMuted,
+    accentColor: Color = BaHomeGreen
 ) {
     Column(
         modifier = modifier.semantics(mergeDescendants = true) {
@@ -218,22 +218,22 @@ internal fun FieldTestSummaryBlock(
         }
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Rounded.BugReport, contentDescription = null, tint = BaMint, modifier = Modifier.size(22.dp))
+            Icon(Icons.Rounded.BugReport, contentDescription = null, tint = accentColor, modifier = Modifier.size(22.dp))
             Spacer(Modifier.width(10.dp))
             Column(Modifier.weight(1f)) {
                 Text(
                     text = summary.title,
-                    color = BaText,
+                    color = contentColor,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.semantics { heading() }
                 )
-                Text(summary.statusText, color = BaTextMuted, style = MaterialTheme.typography.bodySmall)
+                Text(summary.statusText, color = mutedColor, style = MaterialTheme.typography.bodySmall)
             }
         }
         Spacer(Modifier.height(10.dp))
         Text(
             text = summary.detailText,
-            color = BaTextMuted,
+            color = mutedColor,
             style = MaterialTheme.typography.bodySmall
         )
     }
@@ -257,14 +257,15 @@ private fun StatusCell(title: String, body: String, modifier: Modifier = Modifie
     Card(
         modifier = modifier.heightIn(min = 100.dp),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = BaPanel)
+        colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(Modifier.padding(horizontal = 16.dp, vertical = 15.dp)) {
-            Text(text = title, color = BaTextMuted, style = MaterialTheme.typography.labelMedium)
+            Text(text = title, color = BaHomeTextMuted, style = MaterialTheme.typography.labelMedium)
             Spacer(Modifier.height(8.dp))
             Text(
                 text = body,
-                color = BaText,
+                color = BaHomeInk,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 3,
@@ -315,8 +316,8 @@ internal fun CompactAction(
     accessibilityText: String = text,
     stateDescriptionText: String? = null
 ) {
-    val background = if (selected) BaMint else BaPanelSoft
-    val foreground = if (selected) BaInk else BaText
+    val background = if (selected) BaHomeActionEnd else BaHomeControlRail
+    val foreground = if (selected) BaHomeOnAction else BaHomeInk
     Button(
         onClick = onClick,
         modifier = modifier
@@ -339,6 +340,30 @@ internal fun CompactAction(
         Icon(icon, contentDescription = null, modifier = Modifier.size(17.dp))
         Spacer(Modifier.width(5.dp))
         Text(text = text, maxLines = 1, overflow = TextOverflow.Ellipsis)
+    }
+}
+
+internal fun Modifier.appAtmosphere(): Modifier = drawWithCache {
+    val radius = max(size.width, size.height)
+    val base = Brush.linearGradient(
+        colors = listOf(BaHomeCoolWash, BaHomeBackground, BaHomeWarmWash),
+        start = Offset.Zero,
+        end = Offset(size.width, size.height * 0.58f)
+    )
+    val sage = Brush.radialGradient(
+        colors = listOf(BaHomeSageWash, Color.Transparent),
+        center = Offset(size.width * 1.08f, size.height * 0.04f),
+        radius = radius * 0.72f
+    )
+    val blue = Brush.radialGradient(
+        colors = listOf(BaHomeBlueWash, Color.Transparent),
+        center = Offset(-size.width * 0.12f, size.height * 1.02f),
+        radius = radius * 0.66f
+    )
+    onDrawBehind {
+        drawRect(base)
+        drawRect(sage)
+        drawRect(blue)
     }
 }
 

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -66,7 +67,11 @@ fun GlassesSimulatorScreen(
         }
     }
 
-    ScreenColumn(modifier = modifier.testTag("glasses_simulator_screen")) {
+    ScreenColumn(
+        modifier = modifier
+            .statusBarsPadding()
+            .testTag("glasses_simulator_screen")
+    ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(
                 onClick = onBack,
@@ -78,12 +83,12 @@ fun GlassesSimulatorScreen(
                     }
                 }
             ) {
-                Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = null, tint = BaText)
+                Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = null, tint = BaHomeInk)
             }
             Text(
                 text = if (english) "Simulated glasses center" else "眼镜设备模拟中心",
                 style = MaterialTheme.typography.headlineSmall,
-                color = BaText,
+                color = BaHomeInk,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.semantics { heading() }
             )
@@ -95,7 +100,7 @@ fun GlassesSimulatorScreen(
             } else {
                 "仅用于模拟：不会扫描蓝牙、不会联网，也未连接真实眼镜。"
             },
-            color = BaAmber,
+            color = BaHomeAmber,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.testTag("glasses_simulation_boundary")
         )
@@ -114,7 +119,10 @@ fun GlassesSimulatorScreen(
                         .heightIn(min = 52.dp)
                         .testTag("simulate_glasses_connect")
                         .semantics { contentDescription = if (english) "Start simulated glasses connection" else "开始模拟连接眼镜设备" },
-                    colors = ButtonDefaults.buttonColors(containerColor = BaMint, contentColor = BaInk)
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = BaHomeActionEnd,
+                        contentColor = BaHomeOnAction
+                    )
                 ) {
                     Icon(Icons.Rounded.Bluetooth, contentDescription = null)
                     Text(if (english) " Simulate connection" else " 模拟连接")
@@ -209,15 +217,16 @@ private fun SimulatorStatusCard(state: GlassesSimulatorUiState, language: AppLan
                 contentDescription = "$connection, $battery, $input, $feedback"
                 stateDescription = connection
             },
-        shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.cardColors(containerColor = BaPanel)
+        shape = RoundedCornerShape(22.dp),
+        colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
     ) {
         Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(if (english) "Simulated device status" else "模拟设备状态", color = BaText, fontWeight = FontWeight.Bold)
-            Text(connection, color = BaMint)
-            Text(if (english) "Simulated battery: $battery" else "模拟电量：$battery", color = BaTextMuted)
-            Text(input, color = BaTextMuted)
-            Text(feedback, color = BaTextMuted)
+            Text(if (english) "Simulated device status" else "模拟设备状态", color = BaHomeInk, fontWeight = FontWeight.Bold)
+            Text(connection, color = BaHomeGreen)
+            Text(if (english) "Simulated battery: $battery" else "模拟电量：$battery", color = BaHomeTextMuted)
+            Text(input, color = BaHomeTextMuted)
+            Text(feedback, color = BaHomeTextMuted)
         }
     }
 }
@@ -232,13 +241,13 @@ private fun ReplaySimulationControls(
     val english = language == AppLanguage.EN
     Text(
         if (english) "Simulated offline replay (debug)" else "模拟离线回放（调试）",
-        color = BaText,
+        color = BaHomeInk,
         fontWeight = FontWeight.Bold,
         modifier = Modifier.semantics { heading() }
     )
     Text(
         if (english) "Local test images enter the real detection and reminder pipeline." else "本地测试素材将进入真实检测与提醒链路。",
-        color = BaTextMuted,
+        color = BaHomeTextMuted,
         style = MaterialTheme.typography.bodySmall
     )
     Spacer(Modifier.height(10.dp))
@@ -271,7 +280,10 @@ private fun ReplaySimulationControls(
             .heightIn(min = 52.dp)
             .testTag("start_offline_replay")
             .semantics { contentDescription = if (english) "Start simulated offline replay" else "开始模拟离线回放" },
-        colors = ButtonDefaults.buttonColors(containerColor = BaSky, contentColor = BaInk)
+        colors = ButtonDefaults.buttonColors(
+            containerColor = BaHomeCobalt,
+            contentColor = BaHomeOnAction
+        )
     ) {
         Icon(Icons.Rounded.PlayArrow, contentDescription = null)
         Text(if (english) " Start simulated replay" else " 开始模拟离线回放")
