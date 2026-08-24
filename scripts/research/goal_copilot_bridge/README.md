@@ -25,11 +25,17 @@ The pre-run hardening keeps raw independent teacher outputs and truth authority 
 truth, refuses unfrozen truth, and stratifies denominators/failure classes by authority tier. Per-frame absence is
 `NOT_VISIBLE`; `LOST` exists only as `VISIBLE -> NOT_VISIBLE_AFTER_VISIBLE`, without identity state.
 
-`last_10m_visual_servo_v1/` is the current algorithm successor. On a fresh automated public real-facade cohort it kept
+`last_10m_visual_servo_v1/` is a closed historical algorithm surface. On a fresh automated public real-facade cohort it kept
 every action current-frame-only and re-grounded after each pan/zoom/rescan. Target proposals were available in `13/13`
 evaluable cases, but detector bbox height caused `9/13` false completions. The interface is therefore rejected:
 proposal/relation may support alignment, while completion now requires an independent depth/nearness plus doorway-
 visibility contract. P1/referent persistence and the default App remain closed.
+
+`semantic_authority_last_mile_v0/` is the active controlled successor. Exact QR/OCR identity is fixed before geometry;
+the V0 challenger triangulates an aperture from a noisy active-parallax pair and uses temporal near/aligned/aperture
+evidence, while the baseline follows semantic-anchor bbox center/scale. The 36-episode procedural Development run changed
+target-front arrival `7 -> 33`, median lateral error `0.592 -> 0.094 m`, and completion precision `19.4% -> 93.3%`.
+Its next surface is a controlled short-monocular-RGB observation adapter, not Android or default-App integration.
 
 ## P1-PA3-C0 public Goal Contract materialization
 

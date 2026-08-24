@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / VISIBLE_ONLY_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / DINOV2_LOCAL_13_OF_17 / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / ACTIVE_APPEARANCE_ANCHOR_NO_UPLIFT / SEMANTIC_ANCHOR_V1_CONTROLLED_DEMO_16_OF_16_ZERO_WRONG_LOCK / SAGE_R_V3_A_NATURAL_WRONG_LOCK_9 / SAGE_R_V3_C_FRESH_6_SOURCES_11_QUERIES_33_OBSERVATIONS / V2_CORRECT_11_WRONG_1 / V3_C_FULL_CORRECT_13_WRONG_5_DIRECTIONAL_0_OF_3_DIRECTORY_FALSE_5 / CLOSE_NATURAL_SAGE_R / CONTROLLED_EXACT_ANCHOR_RETAINED / V3_B_NOT_RUN / V4_NOT_RUN / LIVE_ANDROID_NOT_RUN / NO_P1_PROMOTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / VISIBLE_ONLY_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / SEMANTIC_ANCHOR_V1_CONTROLLED_DEMO_16_OF_16_ZERO_WRONG_LOCK / CLOSE_NATURAL_SAGE_R / CONTROLLED_EXACT_ANCHOR_RETAINED / SAGE_LM_V0_CONTROLLED_36 / TARGET_FRONT_ARRIVAL_7_TO_33 / COMPLETION_PRECISION_19_TO_93 / ACTIVE_MONOCULAR_RGB_OBSERVATION_SUCCESSOR / LIVE_ANDROID_NOT_RUN / NO_P1_PROMOTION / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -183,7 +183,14 @@ completeness。旧 cohort diagnostic 为 `11/36 correct, wrong=2`，但全新预
 V2=`11 correct, wrong=1, directional=2/3, directory false=1`，V3-C full=`13 correct, wrong=5, directional=0/3,
 directory false=5`。candidate permutation `33/33`，所以新增 recall 仍以错误 authority 为代价。状态
 `CLOSE_NATURAL_SAGE_R`：不调本 cohort、不进入 V3-B/V4、不再另立 natural SAGE-R 修补；仅保留 controlled QR/OCR exact-anchor
-demo 与失败 harness，下一算法题需来自 Goal Copilot 其他正信号能力，当前无自动执行授权。
+demo 与失败 harness。
+
+[`SAGE-LM V0 controlled geometry`](SAGE_LM_V0_CONTROLLED_GEOMETRY_RESULT_2026-08-24.md) 是其后新授权的唯一 successor。
+它固定 exact semantic identity，只比较 bbox center/scale 与 authority-conditioned active aperture/progress。36 个 procedural episode 上，
+target-front arrival=`7 -> 33`，direction accuracy=`22.9% -> 67.9%`，中位 lateral error=`0.592 -> 0.094 m`，completion
+precision=`19.4% -> 93.3%`，premature arrival=`29 -> 2`。这是 controlled synthetic geometry 的机制正信号，不是 real-RGB、
+可通行性、导航、安全或产品证据。唯一下一步是保持 identity firewall 与 baseline，接入 controlled short monocular RGB video 的
+真实 boundary/flow/depth observation；不接 Android/P1/default App。
 
 ## V0 与 P1 边界
 

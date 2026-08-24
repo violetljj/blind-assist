@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-24（Asia/Hong_Kong）；执行者：violjjet。natural open-world SAGE-R 保持
+  `CLOSE_NATURAL_SAGE_R`，不再 rescue；新立唯一 successor
+  `SEMANTIC_AUTHORITY_CONDITIONED_LAST_MILE_GEOMETRY_V0`。身份由 exact QR/OCR authority 固定，geometry 不得重绑
+  identity。36 个 ROOM/QR/shelf procedural controlled episode 上，bbox-center/scale 对 SAGE-LM active aperture+progress：
+  target-front arrival `7/36 -> 33/36`、direction `22.9% -> 67.9%`、median lateral error `0.592 -> 0.094 m`、
+  completion precision `19.4% -> 93.3%`、premature arrival `29 -> 2`。这是 controlled synthetic geometry 的 positive
+  mechanism signal；real RGB、traversability、navigation、Android/P1/default App 均未建立。唯一下一步是 controlled short
+  monocular RGB observation adapter。
+
 - 时间：2026-08-24（Asia/Hong_Kong）；执行者：violjjet。完成 SAGE-R V3-C representation pivot：新增
   `TargetToken / ObservedOCRToken / SignCarrier / DirectionCue / PhysicalCandidate`、五类 sign-to-candidate relation 与
   decisive-token completeness，full 仅允许 `LABELS / POINTS` 产生 identity evidence。consumed V3-A natural cohort diagnostic
