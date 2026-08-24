@@ -28,11 +28,14 @@
   and `Resolve-Path`. Inspect the exact source line and patch a small structural
   anchor; do not copy rendered `\\` escaping back into a file that contains `\`,
   or match a long path-bearing paragraph when a heading or key is available.
-- BlindAssist is an Android/Kotlin assistive prototype. Keep the module
+- BlindAssist is an Android/Kotlin **showcase research prototype**, not a
+  product being prepared for real-world use by blind or low-vision users. Keep
+  the module
   boundaries stable: `:app` owns the shell/assets, `:feature:assist` runtime
   coordination, `:core:assist` pure risk logic, `:core:vision` detection,
   `:core:device` Android adapters, and `:core:ui` UI state/rendering.
-- Do not represent the prototype as a substitute for human safety judgment.
+- Do not deploy or represent the prototype as a substitute for human safety
+  judgment without a separate, explicit project reclassification.
   Do not fabricate device measurements, consent, licenses, credentials, user
   decisions, external authorization, or objective ground truth.
 - Do not casually add large frameworks, replace/remove model assets, or change
@@ -81,7 +84,7 @@ risky execution. The mode controls process; it never upgrades evidence.
 
 ### Active BlindAssist mainline
 
-- The sole active product and research mainline is Goal-Driven Visual Copilot V2,
+- The sole active showcase-research mainline is Goal-Driven Visual Copilot V2,
   currently `BA_DESTINATION_GOAL_GROUNDING_R0`; completed BA-ADT work is bounded
   Target Persistence and failure evidence, not an active tiny-object successor. Its current successor is owned by
   `docs/research/goal-copilot/README.md` and mirrored in
@@ -101,10 +104,19 @@ risky execution. The mode controls process; it never upgrades evidence.
 
 ### Research style and graduation objective
 
+- The target is a Goal-Driven Visual Copilot prototype that looks technically
+  strong, works reliably in a live demonstration, and has clear numbers that
+  are easy to explain. Prioritize capabilities with immediately visible effect,
+  demo-friendly scenarios, presentation-friendly metrics, and stable controlled
+  experiments over broad real-world readiness.
+- It is acceptable to curate scenarios, benchmarks, and operating conditions
+  around the prototype's strengths and to optimize Development results on them.
+  State that scope plainly; do not fabricate measurements or present a curated
+  controlled result as universal real-world performance.
 - BlindAssist defaults to **effect first, minimal governance**: first determine
   whether an algorithm or product idea can be made materially stronger than the
-  credible baseline and solve the real user pain point; only then invest in
-  making it comprehensive, hardened, or certification-ready.
+  credible baseline and produce an immediately visible capability; only then
+  invest in making it comprehensive, hardened, or certification-ready.
 - When a method is promising, implement it, run it, and inspect the effect by
   default. Do not first create a large protocol, freeze framework, gate stack,
   audit package, or broad test suite. Plans, schemas, rules, and documents
@@ -122,6 +134,10 @@ risky execution. The mode controls process; it never upgrades evidence.
   non-bypassable deployment, privacy, security, or irreversible-harm risk.
   Safety perfectionism and production certification must not block a reversible,
   honestly labeled experiment.
+- Truth-authority layers, protocol machinery, safety gates, abstention systems,
+  adversarial or extreme-case coverage, and deployment hardening are lowest
+  priority unless they directly improve demo reliability, the chosen benchmark,
+  or the credibility of the result being presented.
 - Proactively propose and test bold, innovative, falsifiable ideas. Reversible
   experiments may change task definitions, representations, objectives, losses,
   geometry or temporal mechanisms, fusion, training strategies, and system
