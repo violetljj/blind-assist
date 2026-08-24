@@ -1,0 +1,16 @@
+{
+  "schema_version": "blindassist_sage_r_v3_c_consumed_carrier_cue_annotations_v1",
+  "data_role": "CONSUMED_V3_A_NATURAL_COHORT_REPRESENTATION_DEVELOPMENT_INPUT",
+  "note": "Boxes are normalized in original source pixels and define only carrier/cue proposals, never relation labels or candidate identity.",
+  "sources": [
+    {"source_id": "S01", "carriers": [{"carrier_id": "S01-C1", "box": [0.08, 0.06, 0.36, 0.29]}], "cues": []},
+    {"source_id": "S02", "carriers": [{"carrier_id": "S02-C1", "box": [0.29, 0.39, 0.58, 0.86]}, {"carrier_id": "S02-C2", "box": [0.54, 0.50, 0.74, 0.71]}], "cues": [{"cue_id": "S02-A1", "carrier_id": "S02-C1", "box": [0.294, 0.687, 0.337, 0.779]}, {"cue_id": "S02-A2", "carrier_id": "S02-C2", "box": [0.548, 0.558, 0.596, 0.660]}]},
+    {"source_id": "S03", "carriers": [{"carrier_id": "S03-C1", "box": [0.895, 0.31, 0.942, 0.40]}], "cues": []},
+    {"source_id": "S04", "carriers": [{"carrier_id": "S04-C1", "box": [0.27, 0.27, 0.86, 0.48]}], "cues": []},
+    {"source_id": "S05", "carriers": [{"carrier_id": "S05-C1", "box": [0.34, 0.01, 0.89, 0.20]}], "cues": []},
+    {"source_id": "S06", "carriers": [{"carrier_id": "S06-C1", "box": [0.30, 0.06, 0.52, 0.27]}, {"carrier_id": "S06-C2", "box": [0.51, 0.05, 0.99, 0.28]}], "cues": []},
+    {"source_id": "S07", "carriers": [{"carrier_id": "S07-C1", "box": [0.17, 0.10, 0.90, 0.57]}], "cues": []},
+    {"source_id": "S08", "carriers": [{"carrier_id": "S08-C1", "box": [0.13, 0.05, 0.93, 0.54]}], "cues": []},
+    {"source_id": "S09", "carriers": [{"carrier_id": "S09-C1", "box": [0.22, 0.16, 0.73, 0.63]}], "cues": []}
+  ]
+}

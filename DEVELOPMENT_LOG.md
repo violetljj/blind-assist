@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-24（Asia/Hong_Kong）；执行者：violjjet。完成 SAGE-R V3-C representation pivot：新增
+  `TargetToken / ObservedOCRToken / SignCarrier / DirectionCue / PhysicalCandidate`、五类 sign-to-candidate relation 与
+  decisive-token completeness，full 仅允许 `LABELS / POINTS` 产生 identity evidence。consumed V3-A natural cohort diagnostic
+  为 `11/36 correct, wrong=2, directory false=0`。随后在任何 OCR/model call 前冻结全新 6-source、11-query、33-observation
+  natural cohort；V2=`11 correct, wrong=1, directional=2/3, directory false=1`，V3-C full=`13 correct, wrong=5,
+  directional=0/3, directory false=5`，candidate permutation `33/33`。按停止条件终态 `CLOSE_NATURAL_SAGE_R`；不在 fresh
+  cohort 调整、不进入 V3-B/V4，不接 Android/P1/default App。保留 controlled QR/OCR exact-anchor demo 与负结果 harness。
+
 - 时间：2026-08-25（Asia/Hong_Kong）；执行者：violjjet。完成 SAGE-R V3-A typed semantic-referent graph：
   `Target/OCR/Candidate` 三类节点、14 类 directed relation、3 层 relation-specific attention/message passing，训练集
   1,600 synthetic graph、validation 320。V2 observability/novelty/belief/NONE/threshold 全冻结，learned reliability/NONE

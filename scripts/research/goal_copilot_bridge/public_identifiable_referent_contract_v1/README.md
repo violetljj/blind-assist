@@ -335,3 +335,17 @@ grouping, sign-to-destination association, directional geometry normalization, a
 message-passing layers.
 
 Result: `docs/research/goal-copilot/SAGE_R_V3_A_NATURAL_PHOTO_SOURCE_DISJOINT_RESULT_2026-08-24.md`.
+
+## SAGE-R V3-C authority-typed sign-destination graph
+
+`authority_typed_sign_destination_graph_v3_c.py` adds `SignCarrier` and `DirectionCue` nodes, synthetic multi-task
+`LABELS / POINTS / LISTS / NEAR / UNRELATED` classification, and decisive-token completeness. Only `LABELS` and `POINTS`
+may create identity evidence in the full arm. `authority_graph_v3_c_development.py` uses the consumed V3-A cohort only for
+representation diagnostics; `authority_graph_v3_c_source_disjoint.py` freezes and evaluates the new natural cohort.
+
+The consumed diagnostic reached `11/36 correct, wrong=2`, but the fresh six-source cohort closed the route: V2 was
+`11/33 correct, wrong=1`; V3-C full was `13/33 correct, wrong=5`, directional `0/3`, directory false binding 5, and
+candidate permutation `33/33`. Status is `CLOSE_NATURAL_SAGE_R`. Do not tune or rerun the fresh cohort, train V3-B, start
+V4, or promote to Android/P1/default App.
+
+Result: `docs/research/goal-copilot/SAGE_R_V3_C_AUTHORITY_TYPED_NATURAL_RESULT_2026-08-24.md`.
