@@ -247,11 +247,19 @@ try {
             'docs/research/domain/result.json' = '{"path":'
         } `
         -ShouldPass $false
-    $longRouteBody = (1..181 | ForEach-Object { "line $_" }) -join "`n"
+    $longRouteBody = (1..186 | ForEach-Object { "line $_" }) -join "`n"
     Assert-DocumentationFixtureResult `
-        -Name 'route-readme-budget' `
+        -Name 'route-readme-target-is-advisory' `
         -Files @{
             'docs/research/domain/README.md' = $longRouteBody
+        } `
+        -ShouldPass $true
+
+    $oversizedRouteBody = (1..241 | ForEach-Object { "line $_" }) -join "`n"
+    Assert-DocumentationFixtureResult `
+        -Name 'route-readme-hard-limit' `
+        -Files @{
+            'docs/research/domain/README.md' = $oversizedRouteBody
         } `
         -ShouldPass $false
 

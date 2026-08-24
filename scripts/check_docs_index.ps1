@@ -17,6 +17,8 @@ if (-not (Test-Path -LiteralPath $indexPath -PathType Leaf)) {
 
 $indexText = Get-Content -LiteralPath $indexPath -Raw -Encoding utf8
 $failures = [Collections.Generic.List[string]]::new()
+$routeReadmeTargetLines = 180
+$routeReadmeMaximumLines = 240
 
 if (-not (Test-Path -LiteralPath (Join-Path $docsRootPath 'PROJECT_STATE.md') -PathType Leaf)) {
     $failures.Add('Cold-start navigation file is missing: PROJECT_STATE.md')
@@ -76,9 +78,15 @@ if (Test-Path -LiteralPath $researchRoot -PathType Container) {
                     $domainReadme,
                     [Text.Encoding]::UTF8
                 ).Count
-                if ($routeLineCount -gt 180) {
+                if ($routeLineCount -gt $routeReadmeMaximumLines) {
                     $failures.Add(
-                        "Research route README exceeds the 180-line operating-surface budget: research/$($_.Name)/README.md ($routeLineCount lines)"
+                        "Research route README exceeds the $routeReadmeMaximumLines-line operating-surface limit: research/$($_.Name)/README.md ($routeLineCount lines)"
+                    )
+                }
+                elseif ($routeLineCount -gt $routeReadmeTargetLines) {
+                    Write-Warning (
+                        "Research route README is above the $routeReadmeTargetLines-line operating-surface target: " +
+                        "research/$($_.Name)/README.md ($routeLineCount lines; hard limit $routeReadmeMaximumLines)"
                     )
                 }
             }

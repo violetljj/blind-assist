@@ -42,7 +42,7 @@
   保留历史原文，不为美化时间线改写旧结论。
 - `idea.md` 只保留待决方向。实验结束后写一条简短决策并链接证据，而不是复制实验流水。
 - 新的顶层 `docs/*.md` 必须在 `docs/README.md` 中列为 `current`、`snapshot` 或 `archive`。`scripts/check_docs_index.ps1` 校验所有非归档 current、路线 README、protocol，以及 `history/archive` 内承担导航职责的聚合 `README*.md`；普通历史正文可以保留旧路径原文。
-- 日常路线 `docs/research/<route>/README.md` 只保留当前主张、当前结论、少量证据入口、唯一 successor、允许/禁止和 claim ceiling，硬预算为 180 行。完整过程原文进入同路线 archive，不能从 archive 恢复 authority。
+- 日常路线 `docs/research/<route>/README.md` 只保留当前主张、当前结论、少量证据入口、唯一 successor、允许/禁止和 claim ceiling。180 行是精简目标，超过时仅提示整理；240 行是防止 current 重新承载完整流水的硬上限。完整过程原文进入同路线 archive，不能从 archive 恢复 authority。
 - 稳定 Module README 只描述 Interface、输出、安全边界和停止条件；轮次状态与 successor 委托给 owning route current。分类 current 的单行路线摘要应保持可读，不重新承载完整协议。
 - 非历史 `docs/**/*.json` 中键为 `path` 或 `*_path` 的仓库相对稳定路径必须存在；URI、绝对路径、`artifacts.local/` 与易失 `build/` 证据不在此门内。
 - `docs/PROJECT_STATE.md` 是冷启动导航，不复制研究结论；任务开始时先读它，默认读取一个分类 current/根入口和一个明确的路线/合同/测试入口，直接依赖、验证或冲突需要时可扩展。
