@@ -1,6 +1,6 @@
 # Public Identifiable Referent Contract V1
 
-状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_4_OF_6 / PDM_UNARY_REJECTED / NEAR_IDENTITY_HARD_NEGATIVE_UNARY_V0_PROTOCOL_FROZEN_NO_OUTCOME / PUBLIC_PRIVATE_FIREWALL / RELIABLE_VERIFIER_NOT_ESTABLISHED`
+状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_4_OF_6 / PDM_UNARY_REJECTED / NEAR_IDENTITY_V0_RESCUE_4_COLLATERAL_17_CONTROL_1_OF_18_COVERAGE_5_OF_135 / NEAR_IDENTITY_MIXED_WITH_COLLATERAL / PUBLIC_PRIVATE_FIREWALL / RELIABLE_VERIFIER_NOT_ESTABLISHED / NO_NONE_AUTHORITY`
 
 This package freezes the user-visible goal before episode observations, candidates, provider output, or outcomes. It
 then separates the provider-public contract from an evaluator-private physical-instance lock.
@@ -197,3 +197,8 @@ The separately authorized protocol is frozen before CORe50 download or model exe
 same frozen DINOv2-S backbone in both arms and trains only one fixed 384→256→128 projection head on source-, category-,
 and physical-object-disjoint data. Test pixels remain sealed until the head, both absence thresholds, and quality
 cutoffs are hash-bound. PDM, layout, fusion, multiple references, threshold sweeps, P1, and App wiring are forbidden.
+
+The consumed run produced `4 rescue / 17 collateral`, retained only `1/18` baseline-correct controls, and accepted
+only `5/135` target-present pairs. Its zero test absence false accepts therefore fail the non-trivial coverage gate and
+do not establish a `NONE` authority. Result:
+`docs/research/goal-copilot/NEAR_IDENTITY_HARD_NEGATIVE_UNARY_V0_RESULT_2026-08-24.md`.
