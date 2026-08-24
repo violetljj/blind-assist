@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-25（Asia/Hong_Kong）；执行者：violjjet。在正确-pose R2 Development cohort 上执行
+  SAGE-LM V1-B-R3/R4。R3 固定官方 DeepLSD MegaDepth distance/orientation field、distance `<=2.5 px`、vertical
+  `<=20 deg`、fragment fusion 与 final support `>=9 px`，保留原 9 px localization、geometry/confidence/arrival；
+  true pair `2 -> 15/24`、geometry `2 -> 13/24`、missing `21 -> 9/24`，但 confident 仍 `0/24`，四个门全未过。
+  预定失败 successor R4 的 pose-conditioned top-96 joint-support 3D hypotheses 退化为 true pair `9/24`、geometry
+  `8/24`、confident `1/24`、missing `15/24`，拒绝该 proposal objective。B2 未运行、association 未裁决；不扫
+  detector zoo，不在已打开 outcome 上调门/grid/top-k，不接 Android/P1/default App。
+
 - 时间：2026-08-24（Asia/Hong_Kong）；执行者：violjjet。按用户授权从 ARKitScenes source 用官方
   world-to-camera inversion 重建 SAGE-LM V1-B-R2：outcome 前冻结 24 episode、三类各 8、6 controls、11 sequences、
   lateral `0.1889–0.2847 m`、forward max `0.4101 m`、24/24 第二视图 aperture 投影可见。B0=`24/24`

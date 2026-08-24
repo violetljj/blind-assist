@@ -1,6 +1,6 @@
 # Semantic-Authority Conditioned Last-Mile Geometry V0
 
-状态：`REVERSIBLE_EXPLORATION / V1_RGB_ADAPTER_FAIL / V1_A_ALL_ORACLE_CEILING_PASS / V1_B_R2_B0_PASS / V1_B_R2_RGB_BOUNDARY_EXTRACTION_FAIL / ASSOCIATION_UNADJUDICATED`
+状态：`REVERSIBLE_EXPLORATION / V1_A_ALL_ORACLE_CEILING_PASS / V1_B_R2_B0_PASS / R3_DENSE_FIELD_PARTIAL_RESCUE_BELOW_GATE / R4_JOINT_SUPPORT_ACCUMULATION_REJECTED / B2_NOT_RUN`
 
 本模块是 natural open-world SAGE-R 关闭后的唯一 Goal Copilot successor。身份由 QR 或 exact OCR semantic
 authority 预先确认；geometry 只能回答目标 aperture 在哪里、如何接近以及是否具备到达证据，不能创建、替换或恢复 identity。
@@ -44,6 +44,11 @@ visibility 与最多 4 episode/source-sequence。24/24 pair gate 通过；B0=`24
 confidence/arrival，B2=`14/24` geometry、`5/24` confidence、`3/24` arrival。当前失败层为 RGB boundary candidate
 extraction；B2 association 被上游 candidate recall 混杂，不作独立否定。
 
+R3 使用官方 DeepLSD MegaDepth checkpoint 的 distance/orientation field，经过短 fragment fusion 后再形成 fitted boundary；
+保留原 9 px localization、geometry、confidence 与 arrival。true pair=`15/24`、geometry=`13/24`、confident=`0/24`、
+missing=`9/24`，四个门全未过。R4 在 x/depth grid 上联合两帧 field support 的 top-96 共享 3D boundary hypothesis，
+退化为 true pair=`9/24`、geometry=`8/24`、confident=`1/24`、missing=`15/24`；joint-support objective rejected，B2 未运行。
+
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd -m `
   scripts.research.goal_copilot_bridge.semantic_authority_last_mile_v0.materialize_rgb_cohort `
@@ -75,4 +80,21 @@ E:\codex-tools\bin\blindassist-python.cmd -m `
   scripts.research.goal_copilot_bridge.semantic_authority_last_mile_v0.two_view_experiment `
   --cohort artifacts.local/evidence/sage-lm-v1b/correct-pose-cohort-r2/cohort.json `
   --output-dir artifacts.local/evidence/sage-lm-v1b/source-pose-two-view-r2
+
+E:\codex-tools\bin\blindassist-python.cmd -m `
+  scripts.research.goal_copilot_bridge.semantic_authority_last_mile_v0.dense_boundary_experiment `
+  --cohort artifacts.local/evidence/sage-lm-v1b/correct-pose-cohort-r2/cohort.json `
+  --deeplsd-root artifacts.local/vendor/DeepLSD `
+  --runtime-root artifacts.local/vendor/deeplsd-runtime `
+  --checkpoint artifacts.local/vendor/DeepLSD/weights/deeplsd_md.tar `
+  --arm b1 `
+  --output-dir artifacts.local/evidence/sage-lm-v1b-r3/deeplsd-dense-boundary-b1-r1
+
+E:\codex-tools\bin\blindassist-python.cmd -m `
+  scripts.research.goal_copilot_bridge.semantic_authority_last_mile_v0.pose_accumulation_experiment `
+  --cohort artifacts.local/evidence/sage-lm-v1b/correct-pose-cohort-r2/cohort.json `
+  --deeplsd-root artifacts.local/vendor/DeepLSD `
+  --runtime-root artifacts.local/vendor/deeplsd-runtime `
+  --checkpoint artifacts.local/vendor/DeepLSD/weights/deeplsd_md.tar `
+  --output-dir artifacts.local/evidence/sage-lm-v1b-r4/pose-conditioned-accumulation-b1-r1
 ```

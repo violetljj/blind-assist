@@ -45,3 +45,6 @@ boundary recall，B2 的额外 output 主要来自 pose-consistent 但非真实 
 
 本机证据：`artifacts.local/evidence/sage-lm-v1b/correct-pose-cohort-r2/cohort.json`、
 `artifacts.local/evidence/sage-lm-v1b/source-pose-two-view-r2/report.json` 与 `observation_ladder.png`。
+
+后续 [`V1-B-R3/R4`](SAGE_LM_V1_B_R3_R4_DENSE_BOUNDARY_RESULT_2026-08-25.md) 已执行：DeepLSD dense field 带来
+partial recall rescue 但未过门；naive pose-conditioned joint-support accumulation 退化，B2 未运行。
