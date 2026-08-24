@@ -5396,3 +5396,13 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
 - B0 raw 为 `23/24`、八条 criteria 全过；B1/B2 raw 分别 `0/24`、`2/24`，但因 pair contract 无效均不裁决。
   终态 `NOT_EVALUABLE_SOURCE_POSE_PAIR_CONTRACT_INVALID`，不关闭 boundary route，也不授权 outcome 后调 detector/association。
 - future materializer 已改用官方 world-to-camera inversion；当前 consumed cohort 未覆盖。结果：[V1-B source-pose two-view](docs/research/goal-copilot/SAGE_LM_V1_B_SOURCE_POSE_TWO_VIEW_BOUNDARY_GEOMETRY_RESULT_2026-08-24.md)。
+
+# 2026-08-25 SAGE-LM V1-E0 privileged geometry teacher ceiling
+
+- 在冻结 V1-B-R2 24 episodes 上新增官方 ARKitScenes 3DOD mesh raycast teacher；RGB 不进入 generator，输出两视图 metric
+  depth、surface normal、LEFT/RIGHT boundary heatmap、signed depth-jump 与 label-valid mask。mesh hole/无 hit 为 ignore。
+- 保持 top-8、9 px 与 R2 triangulation；四边界 Recall@8=`10/24`、true pair/geometry=`9/24`，median center/range error
+  分别 `0.0202/0.0844 m`。R3 missing rescue=`3/9`，但只保留 `6/15` R3 pair。
+- 三个继续门全部失败，终态 `STOP_BEFORE_STUDENT`；不训练 V1-C1 student/signed-field arm/新 backbone，不融合 R3，R6/B2
+  继续不运行。当前只关闭 ARKit mesh + aperture mapping；Faro highres depth 对冻结 pair 的同时间覆盖不足，未形成完整 ceiling。
+- 结果：[V1-E0 privileged geometry ceiling](docs/research/goal-copilot/SAGE_LM_V1_E0_PRIVILEGED_GEOMETRY_TEACHER_CEILING_RESULT_2026-08-25.md)。

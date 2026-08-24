@@ -1,6 +1,6 @@
 # Semantic-Authority Conditioned Last-Mile Geometry V0
 
-状态：`REVERSIBLE_EXPLORATION / V1_A_ALL_ORACLE_CEILING_PASS / V1_B_R2_B0_PASS / R3_CURRENT_CHAMPION / V1_C_PROXY_SUPERVISION_CLOSED / V1_D_ACTIVE_PARALLAX_CLOSED_RESCUE_0_OF_9 / V1_E_PRIVILEGED_GEOMETRY_NEXT / R6_NOT_RUN / B2_NOT_RUN`
+状态：`REVERSIBLE_EXPLORATION / V1_A_ALL_ORACLE_CEILING_PASS / V1_B_R2_B0_PASS / R3_CURRENT_CHAMPION / V1_C_PROXY_SUPERVISION_CLOSED / V1_D_ACTIVE_PARALLAX_CLOSED_RESCUE_0_OF_9 / V1_E0_ARKIT_MESH_TEACHER_LOW_CEILING_RESCUE_3_OF_9 / STOP_BEFORE_STUDENT / R6_NOT_RUN / B2_NOT_RUN`
 
 本模块是 natural open-world SAGE-R 关闭后的唯一 Goal Copilot successor。身份由 QR 或 exact OCR semantic
 authority 预先确认；geometry 只能回答目标 aperture 在哪里、如何接近以及是否具备到达证据，不能创建、替换或恢复 identity。
@@ -65,7 +65,10 @@ strong-line/depth-discontinuity opening proxy，按 7/2 sequence 训练/验证�
 V1-D 保持相同 24 条、anchor、source pose、9 px 与 triangulation，只新增冻结 RAFT-Small 双向 flow、pose-derived
 rotation compensation、forward/backward consistency 与 residual-parallax discontinuity。LEFT/RIGHT 各 top-8 的
 四边界 Recall@8=`4/24`，true pair/geometry=`4/24`，R3 missing rescue=`0/9`；不做 R3 fusion，当前 parallax 实现关闭。
-唯一 successor 是 V1-E mesh/Faro-depth privileged boundary teacher。
+V1-E0 随后用官方 ARKitScenes 3DOD mesh + official pose/intrinsics raycast metric depth/normal，生成 RGB-independent
+heatmap、signed depth jump 与 valid mask。四边界 Recall@8=`10/24`，true pair/geometry=`9/24`，R3 missing rescue=`3/9`、
+retention=`6/15`；三个 teacher ceiling 门全部失败，故停止于 E0，不训练 student。该结果只覆盖全 24 条可用的 ARKit mesh
+teacher；Faro-projected highres depth 因固定 pair 同时刻覆盖不足未形成完整 ceiling。
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd -m `
@@ -137,4 +140,11 @@ E:\codex-tools\bin\blindassist-python.cmd -m `
   --cohort artifacts.local/evidence/sage-lm-v1b/correct-pose-cohort-r2/cohort.json `
   --r3-report artifacts.local/evidence/sage-lm-v1b-r3/deeplsd-dense-boundary-b1-r1/report.json `
   --output-dir artifacts.local/evidence/sage-lm-v1d/active-parallax-boundary-field-b1-r2
+
+uv run --python 3.11 --with open3d --with opencv-python-headless --with numpy --with pillow python -m `
+  scripts.research.goal_copilot_bridge.semantic_authority_last_mile_v0.privileged_geometry_experiment `
+  --cohort artifacts.local/evidence/sage-lm-v1b/correct-pose-cohort-r2/cohort.json `
+  --r3-report artifacts.local/evidence/sage-lm-v1b-r3/deeplsd-dense-boundary-b1-r1/report.json `
+  --mesh-root artifacts.local/evidence/sage-lm-v1e/privileged-source/raw/Training `
+  --output-dir artifacts.local/evidence/sage-lm-v1e/privileged-geometry-teacher-ceiling-e0-r1-r2-cohort
 ```
