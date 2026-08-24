@@ -101,20 +101,27 @@ risky execution. The mode controls process; it never upgrades evidence.
 
 ### Research style and graduation objective
 
-- The primary research objective is real algorithmic progress and a credible
-  graduation contribution. In Discovery, Canary, and Development, optimize for
-  learning speed and information gain rather than procedural completeness,
-  production certification, or repository ceremony.
-- The default deliverable is a working algorithm artifact: executable code, a
-  runnable training or evaluation path, or an interpretable experiment result.
-  Plans, protocols, rules, schemas, test scaffolds, and documents support that
-  deliverable; they are not substitutes for implementing it.
-- Avoid protocol and rule over-design and over-testing. Reuse existing
-  contracts and run the smallest relevant check once. Add a new process layer
-  or broader test matrix only when it protects a named evidence boundary,
-  prevents contamination or data loss, covers an irreversible or high-risk
-  action, or can change the next algorithm decision. If process work starts
-  displacing algorithm work, shrink it and resume implementation or experiment.
+- BlindAssist defaults to **effect first, minimal governance**: first determine
+  whether an algorithm or product idea can be made materially stronger than the
+  credible baseline and solve the real user pain point; only then invest in
+  making it comprehensive, hardened, or certification-ready.
+- When a method is promising, implement it, run it, and inspect the effect by
+  default. Do not first create a large protocol, freeze framework, gate stack,
+  audit package, or broad test suite. Plans, schemas, rules, and documents
+  support a working algorithm artifact; they are not substitutes for one.
+- In Discovery, Canary, and Development, keep only the checks needed to show
+  that the intended code actually ran, inputs and metrics are credible, and the
+  result is not obviously self-deceptive. Prototype loopholes, incomplete edge
+  handling, and occasional errors are acceptable while testing real uplift.
+- Add engineering rigor, broader validation, or a new governance layer only
+  when it can change the next algorithm decision or covers a concrete risk such
+  as evidence contamination, irreversible data loss, or high-impact external
+  action. If process work displaces algorithm work, shrink it and resume the
+  implementation or experiment.
+- Research-stage safety work retains only constraints required to avoid a real,
+  non-bypassable deployment, privacy, security, or irreversible-harm risk.
+  Safety perfectionism and production certification must not block a reversible,
+  honestly labeled experiment.
 - Proactively propose and test bold, innovative, falsifiable ideas. Reversible
   experiments may change task definitions, representations, objectives, losses,
   geometry or temporal mechanisms, fusion, training strategies, and system
