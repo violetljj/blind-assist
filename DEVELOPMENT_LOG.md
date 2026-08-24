@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-25（Asia/Hong_Kong）；执行者：Codex。执行 SAGE-LM V1-C task-specific aperture boundary field。
+  C0/C1 用同一轻量 RGB encoder/decoder 预测 left/right heatmap，C1 在 decoder 接 anchor bbox heatmap；固定 top-8/role、
+  R2 source pose、9 px localization 与 triangulation。TartanAir door-mask r1 synthetic validation 收敛，但真实四边界
+  coverage=`2/24`、`0/24`，两臂 geometry=`0/24`。随后排除评估的 11 source，从余下 9 个 ARKitScenes sequence 的
+  1,350 帧自动得到 336 个 strong-line/depth-discontinuity opening proxy，按 7/2 sequence 训练/验证；同域 r2 C0/C1
+  四边界 Recall@8=`1/24`、`4/24`，true pair/geometry=`1/24`、`3/24`，均显著低于 R3 `15/24`、`13/24`。拒绝当前 CNN +
+  automatic opening-proxy supervision，不外推为所有 task-specific supervision 无效；R6/B2 未运行，App 不变。
+
 - 时间：2026-08-25（Asia/Hong_Kong）；执行者：violjjet。执行 SAGE-LM V1-B-R5 anchor-conditioned aperture
   pair coverage：proposal budget 从单 boundary 改成 96 个完整 LEFT×RIGHT pair，以双侧最小 coverage 为主项，并在
   四投影 x 上做 diversity retention。结果 true pair/geometry=`12/24`、missing=`12/24`；512-pair diagnostic 回到

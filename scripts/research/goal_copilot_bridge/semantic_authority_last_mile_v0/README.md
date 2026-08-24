@@ -1,6 +1,6 @@
 # Semantic-Authority Conditioned Last-Mile Geometry V0
 
-状态：`REVERSIBLE_EXPLORATION / V1_A_ALL_ORACLE_CEILING_PASS / V1_B_R2_B0_PASS / R3_DENSE_FIELD_PARTIAL_RESCUE_BELOW_GATE / R4_JOINT_SUPPORT_ACCUMULATION_REJECTED / R5_DIVERSITY_AWARE_PAIR_COVERAGE_BELOW_R3 / R5S_SEQUENCE_DISJOINT_BOUNDARY_HEAD_REJECTED / R6_NOT_RUN / B2_NOT_RUN`
+状态：`REVERSIBLE_EXPLORATION / V1_A_ALL_ORACLE_CEILING_PASS / V1_B_R2_B0_PASS / R3_DENSE_FIELD_PARTIAL_RESCUE_BELOW_GATE / R4_JOINT_SUPPORT_ACCUMULATION_REJECTED / R5_DIVERSITY_AWARE_PAIR_COVERAGE_BELOW_R3 / R5S_SEQUENCE_DISJOINT_BOUNDARY_HEAD_REJECTED / V1_C0_C1_TASK_BOUNDARY_FIELD_BELOW_R3 / R6_NOT_RUN / B2_NOT_RUN`
 
 本模块是 natural open-world SAGE-R 关闭后的唯一 Goal Copilot successor。身份由 QR 或 exact OCR semantic
 authority 预先确认；geometry 只能回答目标 aperture 在哪里、如何接近以及是否具备到达证据，不能创建、替换或恢复 identity。
@@ -55,6 +55,12 @@ compression objective 仍是损失点，但不是正式成功臂。随后 11-fol
 boundary head，held-out top-8 四边界覆盖仅 `5/24`，最终 true pair/geometry=`11/24`、missing=`13/24`，该
 field-summary-only tiny head 被拒绝。dense support 与旧 confidence contract 不同，故 confident=`0/24` 不解释成全部
 geometry 差；coverage 未过 18/24，R6/B2 均不运行。
+
+V1-C 随后直接学习 RGB left/right boundary heatmap。TartanAir door-mask r1 在 synthetic validation 收敛但真实 cohort
+为 C0/C1 true pair=`0/0`；排除 11 个评估 source 后，从余下 9 个 ARKitScenes sequence 的 1,350 帧自动生成 336 个
+strong-line/depth-discontinuity opening proxy，按 7/2 sequence 训练/验证。同域 r2 的 C0/C1 四边界 Recall@8=`1/24`、
+`4/24`，true pair/geometry=`1/24`、`3/24`，均显著低于 R3。当前 CNN + automatic opening-proxy supervision 被拒绝；
+它不否定具有独立弱边界标签的大规模 task-specific supervision。R6/B2 继续不运行。
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd -m `

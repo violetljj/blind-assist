@@ -209,6 +209,13 @@ pose-conditioned top-96 joint-support accumulation 又退化到 true pair `9/24`
 [`V1-B-R5/R5S`](SAGE_LM_V1_B_R5_ANCHOR_PAIR_COVERAGE_RESULT_2026-08-25.md) 的 96-pair diversity arm 为 true pair/geometry=`12/24`、missing=`12/24`，512-pair diagnostic 回到 `15/24`；source-sequence-disjoint 小型 left/right
 Conv1D head 的 held-out top-8 四边界覆盖仅 `5/24`，最终 true pair/geometry=`11/24`、missing=`13/24`。两臂均未过 18/24；dense support 与旧 confidence contract mismatch 保留，R6/B2 不运行。
 
+[`V1-C task-specific aperture boundary field`](SAGE_LM_V1_C_TASK_SPECIFIC_APERTURE_BOUNDARY_FIELD_RESULT_2026-08-25.md)
+直接学习 RGB left/right heatmap。TartanAir door-mask r1 在 synthetic validation 收敛但真实 coverage 为 C0/C1=`2/24`、
+`0/24`；随后排除评估 11 source，从余下 9 个 ARKitScenes sequence 自动得到 336 个 source-disjoint
+strong-line/depth-discontinuity opening proxy。同域 r2 的 C0/C1 四边界 Recall@8=`1/24`、`4/24`，true pair/geometry=
+`1/24`、`3/24`，均远低于 R3。拒绝当前 CNN + automatic opening-proxy supervision；不把它外推成所有 task-specific
+supervision 无效。R6/B2 继续不运行。
+
 ## V0 与 P1 边界
 
 `FOUND / CONTESTED / NOT_VISIBLE / ABSTAIN / STALE / HANDOFF_READY / COMPLETED_BY_USER` 是 current-frame 状态；`LOST`
