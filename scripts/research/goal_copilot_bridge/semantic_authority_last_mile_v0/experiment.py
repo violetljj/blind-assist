@@ -15,6 +15,8 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Iterable
 
+from .observation import ApertureObservation
+
 
 SCHEMA_VERSION = "semantic_authority_conditioned_last_mile_geometry_v0"
 KINDS = ("ROOM_SIGN", "QR_ENTRANCE", "EXACT_SHELF_TARGET")
@@ -150,41 +152,67 @@ def _run_baseline(episode: Episode, seed: int) -> dict:
     }
 
 
-def _active_aperture_estimate(episode: Episode, rng: random.Random) -> tuple[float, float]:
-    """Return aperture centre and confidence from a controlled parallax pair.
+class SyntheticObservationProvider:
+    """Original V0 noisy-bearing provider retained as a regression arm."""
 
-    The simulator exposes noisy left/right boundary bearings from two camera
-    positions separated by 0.24 m.  This function represents the triangulation
-    output; it never receives or changes the semantic identity label.
-    """
-    baseline_m = 0.24
-    camera_left = episode.start_x_m - baseline_m / 2.0
-    camera_right = episode.start_x_m + baseline_m / 2.0
-    boundary_xs = (
-        episode.aperture_x_m - episode.aperture_width_m / 2.0,
-        episode.aperture_x_m + episode.aperture_width_m / 2.0,
-    )
-    estimates = []
-    confidence_terms = []
-    angular_sigma = episode.observation_noise_m / episode.start_range_m
-    for boundary_x in boundary_xs:
-        tangent_left = (boundary_x - camera_left) / episode.start_range_m + rng.gauss(0.0, angular_sigma)
-        tangent_right = (boundary_x - camera_right) / episode.start_range_m + rng.gauss(0.0, angular_sigma)
-        disparity = tangent_left - tangent_right
-        if disparity <= 1e-4:
-            return episode.start_x_m, 0.0
-        estimated_range = baseline_m / disparity
-        left_estimate = camera_left + estimated_range * tangent_left
-        right_estimate = camera_right + estimated_range * tangent_right
-        estimates.append((left_estimate + right_estimate) / 2.0)
-        expected_disparity = baseline_m / episode.start_range_m
-        relative_error = abs(disparity - expected_disparity) / expected_disparity
-        confidence_terms.append(max(0.0, 1.0 - relative_error))
-    centre = sum(estimates) / 2.0
-    width_estimate = estimates[1] - estimates[0]
-    width_consistency = max(0.0, 1.0 - abs(width_estimate - episode.aperture_width_m) / episode.aperture_width_m)
-    confidence = max(0.0, min(1.0, min(confidence_terms) * width_consistency))
-    return centre, confidence
+    def __init__(self, episode: Episode, rng: random.Random) -> None:
+        self.episode = episode
+        self.rng = rng
+
+    def observe(self) -> ApertureObservation:
+        episode = self.episode
+        rng = self.rng
+        """Return aperture geometry from a controlled synthetic parallax pair.
+
+        This provider is the only V0 component allowed to read ``Episode``
+        aperture truth.  Real RGB providers implement the same observation
+        schema but cannot accept ``Episode`` or ``RgbEpisodeTruth``.
+        """
+        baseline_m = 0.24
+        camera_left = episode.start_x_m - baseline_m / 2.0
+        camera_right = episode.start_x_m + baseline_m / 2.0
+        boundary_xs = (
+            episode.aperture_x_m - episode.aperture_width_m / 2.0,
+            episode.aperture_x_m + episode.aperture_width_m / 2.0,
+        )
+        estimates = []
+        ranges = []
+        confidence_terms = []
+        angular_sigma = episode.observation_noise_m / episode.start_range_m
+        for boundary_x in boundary_xs:
+            tangent_left = (boundary_x - camera_left) / episode.start_range_m + rng.gauss(0.0, angular_sigma)
+            tangent_right = (boundary_x - camera_right) / episode.start_range_m + rng.gauss(0.0, angular_sigma)
+            disparity = tangent_left - tangent_right
+            if disparity <= 1e-4:
+                return ApertureObservation(True, episode.start_x_m, None, None, 0.0, 0.0, 0.0, 0.0)
+            estimated_range = baseline_m / disparity
+            ranges.append(estimated_range)
+            left_estimate = camera_left + estimated_range * tangent_left
+            right_estimate = camera_right + estimated_range * tangent_right
+            estimates.append((left_estimate + right_estimate) / 2.0)
+            expected_disparity = baseline_m / episode.start_range_m
+            relative_error = abs(disparity - expected_disparity) / expected_disparity
+            confidence_terms.append(max(0.0, 1.0 - relative_error))
+        centre = sum(estimates) / 2.0
+        width_estimate = estimates[1] - estimates[0]
+        width_consistency = max(0.0, 1.0 - abs(width_estimate - episode.aperture_width_m) / episode.aperture_width_m)
+        confidence = max(0.0, min(1.0, min(confidence_terms) * width_consistency))
+        return ApertureObservation(
+            True,
+            centre,
+            width_estimate,
+            sum(ranges) / len(ranges),
+            confidence,
+            confidence,
+            width_consistency,
+            confidence,
+        )
+
+
+def _active_aperture_estimate(episode: Episode, rng: random.Random) -> tuple[float, float]:
+    """Compatibility seam for the frozen V0 policy."""
+    observation = SyntheticObservationProvider(episode, rng).observe()
+    return observation.center_x_m or episode.start_x_m, observation.geometry_confidence
 
 
 def _run_sage_lm(episode: Episode, seed: int) -> dict:
@@ -266,7 +294,7 @@ def _aggregate(rows: Iterable[dict]) -> dict:
     errors = sorted(float(row["endpoint_lateral_error_m"]) for row in rows)
     return {
         "episode_count": len(rows),
-        "direction_accuracy": correct / directions,
+        "direction_accuracy": correct / directions if directions else None,
         "target_front_arrival_rate": true_arrivals / len(rows),
         "median_endpoint_lateral_error_m": (errors[len(errors) // 2 - 1] + errors[len(errors) // 2]) / 2,
         "completion_decisions": completions,

@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / VISIBLE_ONLY_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / SEMANTIC_ANCHOR_V1_CONTROLLED_DEMO_16_OF_16_ZERO_WRONG_LOCK / CLOSE_NATURAL_SAGE_R / CONTROLLED_EXACT_ANCHOR_RETAINED / SAGE_LM_V0_CONTROLLED_36 / TARGET_FRONT_ARRIVAL_7_TO_33 / COMPLETION_PRECISION_19_TO_93 / ACTIVE_MONOCULAR_RGB_OBSERVATION_SUCCESSOR / LIVE_ANDROID_NOT_RUN / NO_P1_PROMOTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / VISIBLE_ONLY_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / SEMANTIC_ANCHOR_V1_CONTROLLED_DEMO_16_OF_16_ZERO_WRONG_LOCK / CLOSE_NATURAL_SAGE_R / CONTROLLED_EXACT_ANCHOR_RETAINED / SAGE_LM_V0_SYNTHETIC_POSITIVE / SAGE_LM_V1_CONTROLLED_REAL_RGB_24_FAIL_2_VS_7 / OBSERVATION_DIAGNOSTIC_ONLY / LIVE_ANDROID_NOT_RUN / NO_P1_PROMOTION / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -189,8 +189,13 @@ demo 与失败 harness。
 它固定 exact semantic identity，只比较 bbox center/scale 与 authority-conditioned active aperture/progress。36 个 procedural episode 上，
 target-front arrival=`7 -> 33`，direction accuracy=`22.9% -> 67.9%`，中位 lateral error=`0.592 -> 0.094 m`，completion
 precision=`19.4% -> 93.3%`，premature arrival=`29 -> 2`。这是 controlled synthetic geometry 的机制正信号，不是 real-RGB、
-可通行性、导航、安全或产品证据。唯一下一步是保持 identity firewall 与 baseline，接入 controlled short monocular RGB video 的
-真实 boundary/flow/depth observation；不接 Android/P1/default App。
+可通行性、导航、安全或产品证据。随后完成的
+[`SAGE-LM V1 controlled real-RGB observation`](SAGE_LM_V1_CONTROLLED_REAL_RGB_OBSERVATION_RESULT_2026-08-24.md)
+固定同一 policy/baseline/门，在 24 个 curated ARKitScenes episode 上得到 target-front arrival `7/24 -> 2/24`、median
+lateral error `0.219 -> 0.261 m`、completion precision `29.2% -> 100%`（仅 2 次决定）、LOST movement=`0`；active pair
+实测横向基线为 `0.186–0.295 m`。exact anchor 为 controlled
+composited；真实的是场景、边界、纹理、运动与深度现象。结果为 `OBSERVATION_UPLIFT_NOT_PRESERVED`，唯一下一步只分解
+reciprocal flow survival、boundary association 与 metric-depth range；不改 policy/threshold/baseline/cohort，不接 Android/P1/default App。
 
 ## V0 与 P1 边界
 

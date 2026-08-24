@@ -5322,3 +5322,15 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
 - promotion checks 未通过，状态 `DO_NOT_ENTER_V3_B`；V3-B/V4 不启动。下一 representation 问题为 natural OCR
   grouping、sign-to-destination association、directional geometry normalization 与 missing decisive token 的 open-set behavior。
 - 结果：[SAGE-R V3-A natural-photo source-disjoint](docs/research/goal-copilot/SAGE_R_V3_A_NATURAL_PHOTO_SOURCE_DISJOINT_RESULT_2026-08-24.md)。
+
+# 2026-08-24 SAGE-LM V1 controlled real-RGB observation
+
+- 执行者：violjjet。把 V0 synthetic noisy-bearing 接缝拆为 provider，并新增 frozen boundary + reciprocal LK flow +
+  Depth Anything V2 metric-depth adapter；`RgbEpisodeInput` 与 evaluator-only `RgbEpisodeTruth` 分离，专项测试禁止 provider
+  接收 truth。
+- 自动物化 24 个 curated ARKitScenes episode，三类各 8、每类 2 个 control；exact anchor 为 controlled composited，
+  真实的是场景、纹理、边界、运动与深度现象。14 个 sequence 的 active pair 实测横向 baseline 为 `0.186–0.295 m`。
+- 固定 policy、baseline 与门后，target-front arrival 为 `7/24 -> 2/24`、median lateral error `0.219 -> 0.261 m`；
+  SAGE completion precision 为 `2/2` 但属于强 abstention，LOST movement=`0`。reciprocal flow `0/24 >= 0.5`，结果
+  `OBSERVATION_UPLIFT_NOT_PRESERVED`；只保留 flow、boundary、range 分解，不接 Android/P1/default App。
+- 结果：[SAGE-LM V1 controlled real-RGB observation](docs/research/goal-copilot/SAGE_LM_V1_CONTROLLED_REAL_RGB_OBSERVATION_RESULT_2026-08-24.md)。

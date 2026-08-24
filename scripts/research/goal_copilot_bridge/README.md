@@ -31,11 +31,12 @@ evaluable cases, but detector bbox height caused `9/13` false completions. The i
 proposal/relation may support alignment, while completion now requires an independent depth/nearness plus doorway-
 visibility contract. P1/referent persistence and the default App remain closed.
 
-`semantic_authority_last_mile_v0/` is the active controlled successor. Exact QR/OCR identity is fixed before geometry;
+`semantic_authority_last_mile_v0/` now owns the controlled V1 observation diagnostic. Exact QR/OCR identity is fixed before geometry;
 the V0 challenger triangulates an aperture from a noisy active-parallax pair and uses temporal near/aligned/aperture
 evidence, while the baseline follows semantic-anchor bbox center/scale. The 36-episode procedural Development run changed
 target-front arrival `7 -> 33`, median lateral error `0.592 -> 0.094 m`, and completion precision `19.4% -> 93.3%`.
-Its next surface is a controlled short-monocular-RGB observation adapter, not Android or default-App integration.
+The 24-episode ARKitScenes V1 adapter then produced target-front arrival `7/24 -> 2/24`; boundary/flow/depth observation did
+not preserve the V0 uplift. Only observation-channel decomposition remains active, not policy changes, Android or default-App integration.
 
 ## P1-PA3-C0 public Goal Contract materialization
 
