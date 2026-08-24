@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / VISIBLE_ONLY_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / SEMANTIC_ANCHOR_V1_CONTROLLED_DEMO_16_OF_16_ZERO_WRONG_LOCK / CLOSE_NATURAL_SAGE_R / CONTROLLED_EXACT_ANCHOR_RETAINED / SAGE_LM_V0_SYNTHETIC_POSITIVE / SAGE_LM_V1_CONTROLLED_REAL_RGB_24_FAIL_2_VS_7 / OBSERVATION_DIAGNOSTIC_ONLY / LIVE_ANDROID_NOT_RUN / NO_P1_PROMOTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / SEMANTIC_ANCHOR_V1_CONTROLLED_DEMO_16_OF_16_ZERO_WRONG_LOCK / CLOSE_NATURAL_SAGE_R / CONTROLLED_EXACT_ANCHOR_RETAINED / SAGE_LM_R3_CURRENT_CHAMPION / V1_C_PROXY_SUPERVISION_CLOSED / V1_D_PARALLAX_CLOSED_RESCUE_0_OF_9 / V1_E_PRIVILEGED_GEOMETRY_NEXT / LIVE_ANDROID_NOT_RUN / NO_P1_PROMOTION / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -185,36 +185,27 @@ directory false=5`。candidate permutation `33/33`，所以新增 recall 仍以�
 `CLOSE_NATURAL_SAGE_R`：不调本 cohort、不进入 V3-B/V4、不再另立 natural SAGE-R 修补；仅保留 controlled QR/OCR exact-anchor
 demo 与失败 harness。
 
-[`SAGE-LM V0 controlled geometry`](SAGE_LM_V0_CONTROLLED_GEOMETRY_RESULT_2026-08-24.md) 是其后新授权的唯一 successor。
-它固定 exact semantic identity，只比较 bbox center/scale 与 authority-conditioned active aperture/progress。36 个 procedural episode 上，
-target-front arrival=`7 -> 33`，direction accuracy=`22.9% -> 67.9%`，中位 lateral error=`0.592 -> 0.094 m`，completion
-precision=`19.4% -> 93.3%`，premature arrival=`29 -> 2`。这是 controlled synthetic geometry 的机制正信号，不是 real-RGB、
-可通行性、导航、安全或产品证据。随后完成的
-[`SAGE-LM V1 controlled real-RGB observation`](SAGE_LM_V1_CONTROLLED_REAL_RGB_OBSERVATION_RESULT_2026-08-24.md)
-固定同一 policy/baseline/门，在 24 个 curated ARKitScenes episode 上得到 target-front arrival `7/24 -> 2/24`、median
-lateral error `0.219 -> 0.261 m`、completion precision `100% at 2/24 accepted episodes`、LOST movement=`0`。后续
-source-pose audit 发现原 materializer 把 rotation-vector 列误作 camera positions，因此原称 `0.186–0.295 m` active
-baseline 无效；exact anchor 为 controlled composited，真实运动没有满足冻结合同。结果只能保持为当前 adapter 没有保留 uplift。随后同 cohort 的
+[`SAGE-LM V0 controlled geometry`](SAGE_LM_V0_CONTROLLED_GEOMETRY_RESULT_2026-08-24.md) 固定 exact semantic identity，
+在 36 个 procedural episode 上把 target-front arrival 从 `7` 提至 `33`、median lateral error 从 `0.592` 降至 `0.094 m`；
+这是 synthetic mechanism evidence，不是 real-RGB、导航、安全或产品证据。随后
+[`SAGE-LM V1 controlled real-RGB observation`](SAGE_LM_V1_CONTROLLED_REAL_RGB_OBSERVATION_RESULT_2026-08-24.md) 在 24 个
+curated ARKitScenes episode 上得到 arrival `7/24 -> 2/24`、median lateral error `0.219 -> 0.261 m`。source-pose audit
+发现原 materializer 把 rotation-vector 列误作 camera positions，故原 active baseline 无效，结果只说明该 adapter 未保留 uplift。
+随后同 cohort 的
 [`V1-A all-oracle ceiling`](SAGE_LM_V1_A_ALL_ORACLE_OBSERVATION_CEILING_RESULT_2026-08-24.md) 得到 `24/24` arrival、
 `0.000 m` median error、completion `24/24`、controls `6/6`，原八条标准全过。因此 downstream policy ceiling 已建立，
 [`V1-B source-pose two-view`](SAGE_LM_V1_B_SOURCE_POSE_TWO_VIEW_BOUNDARY_GEOMETRY_RESULT_2026-08-24.md) 实现 B0/B1/B2
 且移除 LK/metric depth，但冻结 pair 仅 `2/24` 通过正确 source-pose motion gate，同 window 只有 `13/24` 存在可替代 pair，
 故 `NOT_EVALUABLE`；B1/B2 raw outcome 不是 boundary negative。新 cohort 须另行显式授权，不接 Android/P1/default App。
 
-用户随后授权从 source 重建完整 cohort。[`V1-B-R2`](SAGE_LM_V1_B_R2_CORRECT_POSE_BOUNDARY_RESULT_2026-08-24.md) 在 outcome 前冻结正确-pose 24 episodes；B0=`24/24`，B1 geometry=`2/24`、missing=`21/24`。继而授权的
-[`V1-B-R3/R4`](SAGE_LM_V1_B_R3_R4_DENSE_BOUNDARY_RESULT_2026-08-25.md) 用官方 DeepLSD dense field + fragment fusion 将 true pair 提升至 `15/24`、geometry `13/24`、missing 降至 `9/24`，但四个成功门全未过；预定失败 successor 的
-pose-conditioned top-96 joint-support accumulation 又退化到 true pair `9/24`、geometry `8/24`、missing `15/24`。因此 sparse line representation 是重要瓶颈，但当前 dense replacement 未打通；naive joint-support proposal objective
-被拒绝。B2 未运行、association 未裁决；不得调 R3/R4 门/grid/top-k，扫 detector zoo 或直接调 B2。
+[`V1-B-R2`](SAGE_LM_V1_B_R2_CORRECT_POSE_BOUNDARY_RESULT_2026-08-24.md) 冻结正确-pose 24 episodes；B0=`24/24`，B1 geometry=`2/24`、missing=`21/24`。[`R3/R4`](SAGE_LM_V1_B_R3_R4_DENSE_BOUNDARY_RESULT_2026-08-25.md) 中 R3 提至 true pair=`15/24`、geometry=`13/24`，R4 退化为 `9/24`、`8/24`；R3 保持当前冠军，R4 objective rejected，B2 不运行。
 
-[`V1-B-R5/R5S`](SAGE_LM_V1_B_R5_ANCHOR_PAIR_COVERAGE_RESULT_2026-08-25.md) 的 96-pair diversity arm 为 true pair/geometry=`12/24`、missing=`12/24`，512-pair diagnostic 回到 `15/24`；source-sequence-disjoint 小型 left/right
-Conv1D head 的 held-out top-8 四边界覆盖仅 `5/24`，最终 true pair/geometry=`11/24`、missing=`13/24`。两臂均未过 18/24；dense support 与旧 confidence contract mismatch 保留，R6/B2 不运行。
+[`R5/R5S`](SAGE_LM_V1_B_R5_ANCHOR_PAIR_COVERAGE_RESULT_2026-08-25.md) 分别为 true pair/geometry=`12/24`、`11/24`，均低于 R3。[`V1-C`](SAGE_LM_V1_C_TASK_SPECIFIC_APERTURE_BOUNDARY_FIELD_RESULT_2026-08-25.md) 的同域 C0/C1 四边界 Recall@8=`1/24`、`4/24`，true pair/geometry=`1/24`、`3/24`；当前 CNN + automatic opening-proxy supervision 正式关闭。
 
-[`V1-C task-specific aperture boundary field`](SAGE_LM_V1_C_TASK_SPECIFIC_APERTURE_BOUNDARY_FIELD_RESULT_2026-08-25.md)
-直接学习 RGB left/right heatmap。TartanAir door-mask r1 在 synthetic validation 收敛但真实 coverage 为 C0/C1=`2/24`、
-`0/24`；随后排除评估 11 source，从余下 9 个 ARKitScenes sequence 自动得到 336 个 source-disjoint
-strong-line/depth-discontinuity opening proxy。同域 r2 的 C0/C1 四边界 Recall@8=`1/24`、`4/24`，true pair/geometry=
-`1/24`、`3/24`，均远低于 R3。拒绝当前 CNN + automatic opening-proxy supervision；不把它外推成所有 task-specific
-supervision 无效。R6/B2 继续不运行。
+[`V1-D active parallax boundary field`](SAGE_LM_V1_D_ACTIVE_PARALLAX_BOUNDARY_FIELD_RESULT_2026-08-25.md)
+固定同一 24 episodes，以 RAFT-Small residual-parallax discontinuity 产生 LEFT/RIGHT top-8；四边界 Recall@8=`4/24`、
+true pair/geometry=`4/24`、R3 missing rescue=`0/9`。不做融合，当前 parallax 实现关闭；唯一 successor 为 V1-E
+mesh/Faro-depth privileged boundary teacher。R6/B2、Android/P1/default App 继续不运行。
 
 ## V0 与 P1 边界
 

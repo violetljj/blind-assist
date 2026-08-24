@@ -1,6 +1,6 @@
 # Semantic-Authority Conditioned Last-Mile Geometry V0
 
-状态：`REVERSIBLE_EXPLORATION / V1_A_ALL_ORACLE_CEILING_PASS / V1_B_R2_B0_PASS / R3_DENSE_FIELD_PARTIAL_RESCUE_BELOW_GATE / R4_JOINT_SUPPORT_ACCUMULATION_REJECTED / R5_DIVERSITY_AWARE_PAIR_COVERAGE_BELOW_R3 / R5S_SEQUENCE_DISJOINT_BOUNDARY_HEAD_REJECTED / V1_C0_C1_TASK_BOUNDARY_FIELD_BELOW_R3 / R6_NOT_RUN / B2_NOT_RUN`
+状态：`REVERSIBLE_EXPLORATION / V1_A_ALL_ORACLE_CEILING_PASS / V1_B_R2_B0_PASS / R3_CURRENT_CHAMPION / V1_C_PROXY_SUPERVISION_CLOSED / V1_D_ACTIVE_PARALLAX_CLOSED_RESCUE_0_OF_9 / V1_E_PRIVILEGED_GEOMETRY_NEXT / R6_NOT_RUN / B2_NOT_RUN`
 
 本模块是 natural open-world SAGE-R 关闭后的唯一 Goal Copilot successor。身份由 QR 或 exact OCR semantic
 authority 预先确认；geometry 只能回答目标 aperture 在哪里、如何接近以及是否具备到达证据，不能创建、替换或恢复 identity。
@@ -61,6 +61,11 @@ V1-C 随后直接学习 RGB left/right boundary heatmap。TartanAir door-mask r1
 strong-line/depth-discontinuity opening proxy，按 7/2 sequence 训练/验证。同域 r2 的 C0/C1 四边界 Recall@8=`1/24`、
 `4/24`，true pair/geometry=`1/24`、`3/24`，均显著低于 R3。当前 CNN + automatic opening-proxy supervision 被拒绝；
 它不否定具有独立弱边界标签的大规模 task-specific supervision。R6/B2 继续不运行。
+
+V1-D 保持相同 24 条、anchor、source pose、9 px 与 triangulation，只新增冻结 RAFT-Small 双向 flow、pose-derived
+rotation compensation、forward/backward consistency 与 residual-parallax discontinuity。LEFT/RIGHT 各 top-8 的
+四边界 Recall@8=`4/24`，true pair/geometry=`4/24`，R3 missing rescue=`0/9`；不做 R3 fusion，当前 parallax 实现关闭。
+唯一 successor 是 V1-E mesh/Faro-depth privileged boundary teacher。
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd -m `
@@ -126,4 +131,10 @@ E:\codex-tools\bin\blindassist-python.cmd -m `
   --runtime-root artifacts.local/vendor/deeplsd-runtime `
   --checkpoint artifacts.local/vendor/DeepLSD/weights/deeplsd_md.tar `
   --output-dir artifacts.local/evidence/sage-lm-v1b-r5s/sequence-disjoint-boundary-head-b1-r2
+
+E:\codex-tools\bin\blindassist-python.cmd -m `
+  scripts.research.goal_copilot_bridge.semantic_authority_last_mile_v0.active_parallax_experiment `
+  --cohort artifacts.local/evidence/sage-lm-v1b/correct-pose-cohort-r2/cohort.json `
+  --r3-report artifacts.local/evidence/sage-lm-v1b-r3/deeplsd-dense-boundary-b1-r1/report.json `
+  --output-dir artifacts.local/evidence/sage-lm-v1d/active-parallax-boundary-field-b1-r2
 ```

@@ -2,6 +2,13 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-25（Asia/Hong_Kong）；执行者：violjjet。执行 SAGE-LM V1-D active parallax boundary field：固定
+  R2 的 24 episodes、anchor、source pose、9 px 与 triangulation；冻结 RAFT-Small 双向 flow，以 pose-derived rotation
+  flow compensation、forward/backward consistency、residual-parallax horizontal discontinuity 的竖直累积生成 LEFT/RIGHT
+  top-8。结果四边界 Recall@8=`4/24`、true pair/geometry=`4/24`、confident=`0/24`，均低于 R3；最关键的 R3 missing
+  rescue=`0/9`，并丢失 11 个 R3 已有 pair。按停止条件关闭当前 parallax 实现，不做 R3 fusion；V1-C 同步正式关闭，
+  唯一 successor 转为 ARKitScenes mesh/Faro-depth privileged weak-boundary teacher。R6/B2、Android/P1/default App 未运行。
+
 - 时间：2026-08-25（Asia/Hong_Kong）；执行者：Codex。执行 SAGE-LM V1-C task-specific aperture boundary field。
   C0/C1 用同一轻量 RGB encoder/decoder 预测 left/right heatmap，C1 在 decoder 接 anchor bbox heatmap；固定 top-8/role、
   R2 source pose、9 px localization 与 triangulation。TartanAir door-mask r1 synthetic validation 收敛，但真实四边界

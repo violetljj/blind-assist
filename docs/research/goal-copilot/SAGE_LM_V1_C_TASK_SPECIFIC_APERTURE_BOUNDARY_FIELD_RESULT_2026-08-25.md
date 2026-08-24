@@ -2,7 +2,7 @@
 
 日期：2026-08-25（Asia/Hong_Kong）
 
-状态：`DEVELOPMENT / V1_C0_TASK_BOUNDARY_FIELD_BELOW_R3 / V1_C1_ANCHOR_CONDITIONED_FIELD_BELOW_R3 / R6_NOT_RUN / B2_NOT_RUN`
+状态：`DEVELOPMENT / V1_C0_C1_CLOSED / PROXY_LABEL_GENERATOR_MISMATCH / V1_D_EXECUTED_SEPARATELY / R6_NOT_RUN / B2_NOT_RUN`
 
 ## 问题与固定面
 
@@ -49,9 +49,11 @@ synthetic bbox-heatmap anchor conditioning；它没有证明 task-specific RGB b
 source-disjoint，但只有 336 个自动正例，且标签生成机制系统性缺少目标中的弱/无显著线 aperture boundary，不能用更多 epoch、
 head、loss、top-k 或在已打开 24 条上调参补救。
 
-DeepLSD/handcrafted proposal family 保持终止；V1-C0/C1 当前实现同样终止。新的 task-specific successor 必须先提供
-独立的、覆盖弱 aperture boundary 的 source-native/人工边界标签分母，不能把现有 opening proxy 重采样或改阈值冒充新信息。
-R6/B2 保持不运行，Android/P1/default App 不变。
+DeepLSD/handcrafted proposal family 保持终止；V1-C0/C1 正式关闭。后续
+[`V1-D active parallax`](SAGE_LM_V1_D_ACTIVE_PARALLAX_BOUNDARY_FIELD_RESULT_2026-08-25.md) 已改变运行时信息源并执行，
+但 true pair=`4/24`、R3 missing rescue=`0/9`，同样关闭。当前唯一 successor 是从 mesh/Faro depth 建立独立弱边界
+teacher 的 V1-E privileged geometry supervision；不能把现有 opening proxy 重采样或改阈值冒充新信息。R6/B2 保持
+不运行，Android/P1/default App 不变。
 
 本机证据：
 
