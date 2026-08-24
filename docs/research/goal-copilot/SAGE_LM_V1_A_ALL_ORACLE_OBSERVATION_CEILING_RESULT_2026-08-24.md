@@ -33,8 +33,9 @@ V1 的失败可以定位于 observation adapter，而不是 downstream policy：
 组合没有保留 V0 synthetic mechanism signal。该结果不证明现有 RGB 中已经恢复了 aperture geometry，也不证明真实导航、
 可通行性、安全或产品效果。
 
-唯一 successor 是固定 source-native pose 的 two-view aperture geometry：两帧独立 boundary、纹理带 support、左右 association、
-triangulation 与 reprojection residual；Depth Anything 只作一致性支持。若该臂失败，关闭当前 boundary/parallax observation 路线；
-若通过，才做 3–6 段明确标注 `real RGB + exact semantic anchor + source-pose-assisted` 的展示 canary。
+随后实现的 [`V1-B source-pose two-view`](SAGE_LM_V1_B_SOURCE_POSE_TWO_VIEW_BOUNDARY_GEOMETRY_RESULT_2026-08-24.md)
+发现原 V1 materializer 把 ARKitScenes rotation-vector 列误当 camera positions；冻结 pair 仅 `2/24` 满足原 motion gate，故
+V1-B 为 `NOT_EVALUABLE`，不能裁决 boundary/parallax observation 路线。新运行须先显式授权正确 source-pose 物化的 cohort；
+不得用 raw B1/B2 outcome 调 detector、association 或 policy。
 
 本机可复现输出：`artifacts.local/evidence/sage-lm-v1a/all-oracle-ceiling-r1/report.json`。

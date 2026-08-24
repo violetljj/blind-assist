@@ -12,7 +12,9 @@ boundary + LK flow + frozen Depth Anything V2 metric-depth observation adapter�
 control。真实部分是 ARKitScenes 室内场景、纹理、边界、相机运动与深度现象；exact QR/OCR-style anchor 是
 controlled composited。source depth 仅用于自动选择 opening proxy 与 evaluator truth，`RgbObservationProvider` 只接收 RGB、
 内参、0.24 m commanded baseline、active-pair index 和 exact-anchor observations。本 cohort 是 curated Development，不是自然分布或 Confirmation。
-ARKitScenes trajectory truth 筛选出的实测横向 baseline 范围为 `0.186–0.295 m`（mean `0.234 m`），覆盖 14 个 sequence。
+后续 V1-B source-pose audit 发现 materializer 将 ARKitScenes rotation-vector 列误作 camera positions；因此本轮原报告的
+`0.186–0.295 m` 实测横向 baseline 主张无效。官方 pose 重算见
+[`V1-B result`](SAGE_LM_V1_B_SOURCE_POSE_TWO_VIEW_BOUNDARY_GEOMETRY_RESULT_2026-08-24.md)。
 
 ## 结果
 
@@ -41,8 +43,9 @@ ARKitScenes trajectory truth 筛选出的实测横向 baseline 范围为 `0.186�
 结论严格为：`CONTROLLED_REAL_RGB_OBSERVATION_IN_SIMULATED_GEOMETRY_LOOP / OBSERVATION_UPLIFT_NOT_PRESERVED`。
 V1-A all-oracle ceiling 已在同一 24 episode 上通过，证明 frozen downstream policy 在 evaluator-perfect observation 下有 ceiling；
 见 [`V1-A result`](SAGE_LM_V1_A_ALL_ORACLE_OBSERVATION_CEILING_RESULT_2026-08-24.md)。因此本结果严格否决的是当前
-Hough + edge-point LK + single-frame metric-depth adapter，而不是一般的真实 RGB 主动视差。唯一 successor 是 source-pose-assisted
-two-view boundary geometry；不得修改 SAGE-LM policy、baseline、阈值、semantic anchor、Android/default App，也不得写成真实导航。
+Hough + edge-point LK + single-frame metric-depth adapter，而不是一般的真实 RGB 主动视差。V1-B 随后发现 active-pair
+source-pose contract 无效，因此本 observation negative 还混入不受控真实相机运动；不得把它升级为对忠实 active-parallax
+geometry 的反证。正确 pose 的新 cohort 需另行授权；不得修改 policy、baseline、阈值、semantic anchor 或接 App。
 
 本机可复现输出位于 `artifacts.local/evidence/sage-lm-v1/controlled-real-rgb-r1/`：`report.json`、
 `observation_overlay.mp4`、`baseline_vs_sage_lm.mp4` 与 `trajectory_demo.png`。

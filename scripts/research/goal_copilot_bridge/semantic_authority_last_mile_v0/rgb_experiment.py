@@ -60,6 +60,11 @@ def _decode_truth(value: dict) -> RgbEpisodeTruth:
         start_range_m=float(value["start_range_m"]),
         camera_positions_m=tuple(tuple(row) for row in value["camera_positions_m"]),
         endpoint_center_x_m=float(value["endpoint_center_x_m"]),
+        source_boundary_x_px=(
+            tuple(float(item) for item in value["source_boundary_x_px"])
+            if value.get("source_boundary_x_px") is not None
+            else None
+        ),
     )
 
 
@@ -182,6 +187,21 @@ def _sage_lm(episode: EvaluatorEpisode, provider: ObservationProvider) -> dict:
     }
 
 
+def _v1_criteria(baseline_metrics: dict, sage_metrics: dict, controls_retained: int) -> dict:
+    """The eight frozen V1 criteria shared by every observation arm."""
+
+    return {
+        "target_front_arrival_at_least_18": int(round(sage_metrics["target_front_arrival_rate"] * 24)) >= 18,
+        "net_success_gain_at_least_8": int(round((sage_metrics["target_front_arrival_rate"] - baseline_metrics["target_front_arrival_rate"]) * 24)) >= 8,
+        "median_lateral_error_at_most_0_20": sage_metrics["median_endpoint_lateral_error_m"] <= 0.20,
+        "median_lateral_error_reduction_at_least_50pct": sage_metrics["median_endpoint_lateral_error_m"] <= baseline_metrics["median_endpoint_lateral_error_m"] * 0.50,
+        "completion_precision_at_least_85pct": (sage_metrics["completion_precision"] or 0.0) >= 0.85,
+        "premature_arrival_at_most_3": sage_metrics["premature_arrival_count"] <= 3,
+        "controls_retained_at_least_5_of_6": controls_retained >= 5,
+        "movement_while_lost_zero": sage_metrics["movement_steps_while_lost"] == 0,
+    }
+
+
 def run(cohort_path: Path, observation_mode: str = "rgb") -> dict:
     if observation_mode not in {"rgb", "oracle"}:
         raise ValueError(f"unsupported observation mode: {observation_mode}")
@@ -259,16 +279,7 @@ def run(cohort_path: Path, observation_mode: str = "rgb") -> dict:
             else "RECIPROCAL_FLOW_SURVIVAL_THEN_BOUNDARY_ASSOCIATION_AND_METRIC_RANGE"
         ),
     }
-    criteria = {
-        "target_front_arrival_at_least_18": int(round(sage_metrics["target_front_arrival_rate"] * 24)) >= 18,
-        "net_success_gain_at_least_8": int(round((sage_metrics["target_front_arrival_rate"] - baseline_metrics["target_front_arrival_rate"]) * 24)) >= 8,
-        "median_lateral_error_at_most_0_20": sage_metrics["median_endpoint_lateral_error_m"] <= 0.20,
-        "median_lateral_error_reduction_at_least_50pct": sage_metrics["median_endpoint_lateral_error_m"] <= baseline_metrics["median_endpoint_lateral_error_m"] * 0.50,
-        "completion_precision_at_least_85pct": (sage_metrics["completion_precision"] or 0.0) >= 0.85,
-        "premature_arrival_at_most_3": sage_metrics["premature_arrival_count"] <= 3,
-        "controls_retained_at_least_5_of_6": controls_retained >= 5,
-        "movement_while_lost_zero": sage_metrics["movement_steps_while_lost"] == 0,
-    }
+    criteria = _v1_criteria(baseline_metrics, sage_metrics, controls_retained)
     return {
         "schema_version": ORACLE_SCHEMA_VERSION if observation_mode == "oracle" else SCHEMA_VERSION,
         "mode": "REVERSIBLE_EXPLORATION_DEVELOPMENT_STANDARD",

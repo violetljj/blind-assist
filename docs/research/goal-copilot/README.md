@@ -192,12 +192,14 @@ precision=`19.4% -> 93.3%`，premature arrival=`29 -> 2`。这是 controlled syn
 可通行性、导航、安全或产品证据。随后完成的
 [`SAGE-LM V1 controlled real-RGB observation`](SAGE_LM_V1_CONTROLLED_REAL_RGB_OBSERVATION_RESULT_2026-08-24.md)
 固定同一 policy/baseline/门，在 24 个 curated ARKitScenes episode 上得到 target-front arrival `7/24 -> 2/24`、median
-lateral error `0.219 -> 0.261 m`、completion precision `100% at 2/24 accepted episodes`、LOST movement=`0`；active pair
-实测横向基线为 `0.186–0.295 m`。exact anchor 为 controlled
-composited；真实的是场景、边界、纹理、运动与深度现象。结果为 `OBSERVATION_UPLIFT_NOT_PRESERVED`。随后同 cohort 的
+lateral error `0.219 -> 0.261 m`、completion precision `100% at 2/24 accepted episodes`、LOST movement=`0`。后续
+source-pose audit 发现原 materializer 把 rotation-vector 列误作 camera positions，因此原称 `0.186–0.295 m` active
+baseline 无效；exact anchor 为 controlled composited，真实运动没有满足冻结合同。结果只能保持为当前 adapter 没有保留 uplift。随后同 cohort 的
 [`V1-A all-oracle ceiling`](SAGE_LM_V1_A_ALL_ORACLE_OBSERVATION_CEILING_RESULT_2026-08-24.md) 得到 `24/24` arrival、
 `0.000 m` median error、completion `24/24`、controls `6/6`，原八条标准全过。因此 downstream policy ceiling 已建立，
-唯一下一步是 source-pose two-view boundary geometry；不改 policy/threshold/baseline/cohort，不接 Android/P1/default App。
+[`V1-B source-pose two-view`](SAGE_LM_V1_B_SOURCE_POSE_TWO_VIEW_BOUNDARY_GEOMETRY_RESULT_2026-08-24.md) 实现 B0/B1/B2
+且移除 LK/metric depth，但冻结 pair 仅 `2/24` 通过正确 source-pose motion gate，同 window 只有 `13/24` 存在可替代 pair，
+故 `NOT_EVALUABLE`；B1/B2 raw outcome 不是 boundary negative。新 cohort 须另行显式授权，不接 Android/P1/default App。
 
 ## V0 与 P1 边界
 

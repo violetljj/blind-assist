@@ -67,6 +67,7 @@ class RgbEpisodeTruth:
     start_range_m: float
     camera_positions_m: tuple[tuple[float, float, float], ...]
     endpoint_center_x_m: float
+    source_boundary_x_px: tuple[float, float] | None = None
 
 
 class ObservationProvider(Protocol):

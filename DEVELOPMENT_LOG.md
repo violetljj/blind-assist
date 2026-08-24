@@ -5328,8 +5328,9 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
 - 执行者：violjjet。把 V0 synthetic noisy-bearing 接缝拆为 provider，并新增 frozen boundary + reciprocal LK flow +
   Depth Anything V2 metric-depth adapter；`RgbEpisodeInput` 与 evaluator-only `RgbEpisodeTruth` 分离，专项测试禁止 provider
   接收 truth。
-- 自动物化 24 个 curated ARKitScenes episode，三类各 8、每类 2 个 control；exact anchor 为 controlled composited，
-  真实的是场景、纹理、边界、运动与深度现象。14 个 sequence 的 active pair 实测横向 baseline 为 `0.186–0.295 m`。
+- 自动物化 24 个 curated ARKitScenes episode，三类各 8、每类 2 个 control；exact anchor 为 controlled composited。
+  当时所记 active pair 实测横向 baseline `0.186–0.295 m` 后被 V1-B 官方 pose audit 判为无效：materializer 误把
+  rotation-vector 列当 camera positions；真实 motion contract 未建立。
 - 固定 policy、baseline 与门后，target-front arrival 为 `7/24 -> 2/24`、median lateral error `0.219 -> 0.261 m`；
   SAGE completion precision 为 `2/2` 但属于强 abstention，LOST movement=`0`。reciprocal flow `0/24 >= 0.5`，结果
   `OBSERVATION_UPLIFT_NOT_PRESERVED`；只保留 flow、boundary、range 分解，不接 Android/P1/default App。
@@ -5345,3 +5346,14 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   当前 Hough + edge-point LK + single-frame metric-depth adapter，而非一般的真实 RGB 主动视差。
 - 唯一 successor 为 source-pose-assisted two-view boundary geometry；在此之前不修 LK、不换 flow/depth、不改门或 policy。
 - 结果：[SAGE-LM V1-A all-oracle ceiling](docs/research/goal-copilot/SAGE_LM_V1_A_ALL_ORACLE_OBSERVATION_CEILING_RESULT_2026-08-24.md)。
+
+# 2026-08-24 SAGE-LM V1-B source-pose two-view boundary geometry
+
+- 实现 B0 oracle pixels、B1 RGB lines + oracle association、B2 RGB lines + automatic pose-constrained association；两帧 image
+  line -> interpretation plane -> 3D boundary line，核心 observation path 不运行 LK 或 Depth Anything metric range，B2 不接 truth。
+- 官方 ARKitScenes pose reader 揭示 V1 materializer 列解释错误：rotation-vector 被写成 `camera_positions_m`。正确 pose 下冻结
+  pair 仅 `2/24` 满足 `0.18–0.30 m lateral / forward <=0.45 m`，actual lateral=`0.015–0.899 m`、max forward=`2.009 m`；
+  同 window 也只有 `13/24` 有任何合格替代 pair，不能在不换 cohort/window 时补齐。
+- B0 raw 为 `23/24`、八条 criteria 全过；B1/B2 raw 分别 `0/24`、`2/24`，但因 pair contract 无效均不裁决。
+  终态 `NOT_EVALUABLE_SOURCE_POSE_PAIR_CONTRACT_INVALID`，不关闭 boundary route，也不授权 outcome 后调 detector/association。
+- future materializer 已改用官方 world-to-camera inversion；当前 consumed cohort 未覆盖。结果：[V1-B source-pose two-view](docs/research/goal-copilot/SAGE_LM_V1_B_SOURCE_POSE_TWO_VIEW_BOUNDARY_GEOMETRY_RESULT_2026-08-24.md)。

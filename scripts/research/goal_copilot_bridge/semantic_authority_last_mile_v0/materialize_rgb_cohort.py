@@ -17,31 +17,27 @@ from pathlib import Path
 import cv2
 import numpy as np
 
+from scripts.research.assistive_geometry.arkitscenes_truth_reader import interpolate_camera_to_world, parse_trajectory
+
 from .experiment import KINDS
 
 
-def _trajectory(path: Path) -> list[tuple[float, np.ndarray, np.ndarray]]:
-    rows = []
-    for line in path.read_text(encoding="utf-8").splitlines():
-        values = [float(value) for value in line.split()]
-        if len(values) == 7:
-            rows.append((values[0], np.asarray(values[1:4], dtype=np.float64), np.asarray(values[4:7], dtype=np.float64)))
-    return rows
+def _trajectory(path: Path) -> np.ndarray:
+    return parse_trajectory(path)
 
 
-def _frame_pose(frame: Path, trajectory: list[tuple[float, np.ndarray, np.ndarray]]) -> tuple[np.ndarray, np.ndarray]:
+def _frame_pose(frame: Path, trajectory: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     timestamp = float(frame.stem.rsplit("_", 1)[1])
-    _, position, rotation = min(trajectory, key=lambda row: abs(row[0] - timestamp))
-    return position, rotation
+    transform, _ = interpolate_camera_to_world(trajectory, timestamp, maximum_gap_seconds=0.25)
+    return transform[:3, 3], transform[:3, :3]
 
 
-def _active_pair(frames: list[Path], trajectory: list[tuple[float, np.ndarray, np.ndarray]]) -> tuple[int, list[list[float]], float] | None:
+def _active_pair(frames: list[Path], trajectory: np.ndarray) -> tuple[int, list[list[float]], float] | None:
     poses = [_frame_pose(frame, trajectory) for frame in frames]
     start_position, start_rotation = poses[0]
-    rotation_matrix, _ = cv2.Rodrigues(start_rotation)
     choices = []
     for index, (position, _) in enumerate(poses[2:], start=2):
-        delta_camera = rotation_matrix.T @ (position - start_position)
+        delta_camera = start_rotation.T @ (position - start_position)
         lateral = float(abs(delta_camera[0]))
         forward = float(abs(delta_camera[2]))
         if 0.18 <= lateral <= 0.30 and forward <= 0.45:
