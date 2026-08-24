@@ -1,6 +1,6 @@
 # Public Identifiable Referent Contract V1
 
-状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_4_OF_6 / PDM_UNARY_REJECTED / NEAR_IDENTITY_V0_RESCUE_4_COLLATERAL_17_CONTROL_1_OF_18_COVERAGE_5_OF_135 / SPATIAL_LAYOUT_BASELINE_702_OF_900_LAYOUT_558_OF_900_RESCUE_74_COLLATERAL_218 / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / SEMANTIC_ANCHOR_V1_16_OF_16_ZERO_WRONG_LOCK_4_OF_4_REACQUISITION_CONTROLLED_DERIVED_DEMO / SAGE_R_V2_SYNTHETIC_OCR_STAGE_CORRECT_3_TO_12_WRONG_LOCK_6_TO_0_NONE_0_TO_3_UNKNOWN_0_TO_3 / PUBLIC_PRIVATE_FIREWALL / RELIABLE_NATURAL_VERIFIER_NOT_ESTABLISHED`
+状态：`C0_C1_CONTRACT_MECHANICS_READY / C2_SMALL_ROSTER_MATERIALIZABLE_7_OF_7 / VISIBLE_ONLY_PROBE_20_FOUND_16_SAME_INSTANCE_4_DISTRACTOR_1_ABSTAIN / ORACLE_COMPETITION_ORDER_COUNTERBALANCED / DINOV2_LOCAL_APPEARANCE_TARGET_OUTRANKS_13_OF_17 / TWO_REFERENCE_ZERO_RESCUE_THREE_COLLATERAL / TLESS_DINO_BASELINE_27_OF_30 / PDM_RESCUE_1_COLLATERAL_4_CONTROL_4_OF_6 / PDM_UNARY_REJECTED / NEAR_IDENTITY_V0_RESCUE_4_COLLATERAL_17_CONTROL_1_OF_18_COVERAGE_5_OF_135 / SPATIAL_LAYOUT_BASELINE_702_OF_900_LAYOUT_558_OF_900_RESCUE_74_COLLATERAL_218 / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / SEMANTIC_ANCHOR_V1_16_OF_16_ZERO_WRONG_LOCK_4_OF_4_REACQUISITION_CONTROLLED_DERIVED_DEMO / SAGE_R_V2_1_RAPIDOCR_CORRECT_1_TO_9_WRONG_LOCK_4_TO_0_NONE_0_TO_3_UNKNOWN_0_TO_2 / GENERATED_PIXEL_SCENES / PUBLIC_PRIVATE_FIREWALL / RELIABLE_NATURAL_VERIFIER_NOT_ESTABLISHED`
 
 This package freezes the user-visible goal before episode observations, candidates, provider output, or outcomes. It
 then separates the provider-public contract from an evaluator-private physical-instance lock.
@@ -279,3 +279,25 @@ E:\codex-tools\bin\blindassist-python.cmd -m `
 ```
 
 Result: `docs/research/goal-copilot/SEMANTIC_ANCHOR_GRAPH_AND_BELIEF_V2_RESULT_2026-08-24.md`.
+
+## SAGE-R V2.1: frozen V2 on RapidOCR polygons
+
+`semantic_anchor_graph_and_belief_v2_1_real_ocr.py` leaves the V2 scorer, belief update, and thresholds unchanged. It
+renders 16 door-sign-style pixel scenes, runs RapidOCR 3.9.2, retains raw line text/confidence/quadrilateral polygons,
+and maps them plus transformed candidate geometry into the V2 seam. A deterministic adapter partitions whitespace
+lines and represents the unique strict target prefix raw `30` as `30?`; raw OCR remains in the evidence.
+
+On the matched generated-pixel cohort, substring + FSM versus frozen V2 was: correct terminal `1 -> 9`, wrong lock
+`4 -> 0`, correct `NONE 0 -> 3`, and low-observability `UNKNOWN 0/2 -> 2/2`. This establishes controlled RapidOCR
+transfer, not natural-photo or camera/open-world calibration.
+
+```powershell
+E:\codex-tools\bin\blindassist-python.cmd -m unittest `
+  scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.test_semantic_anchor_graph_and_belief_v2_1_real_ocr
+
+E:\codex-tools\bin\blindassist-python.cmd -m `
+  scripts.research.goal_copilot_bridge.public_identifiable_referent_contract_v1.semantic_anchor_graph_and_belief_v2_1_real_ocr `
+  --run-dir artifacts.local/evidence/semantic-anchor-graph-belief-v2-1-real-ocr/<new-run>
+```
+
+Result: `docs/research/goal-copilot/SEMANTIC_ANCHOR_GRAPH_AND_BELIEF_V2_1_REAL_OCR_TRANSFER_RESULT_2026-08-24.md`.

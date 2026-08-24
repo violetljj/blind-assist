@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-24（Asia/Hong_Kong）；执行者：violjjet。保持 SAGE-R V2 scorer、belief 与阈值不变，新增
+  V2.1 RapidOCR polygon transfer：16 张自动生成门牌式像素图覆盖 `301/302/320/302A`、directory、partial、
+  absence、blur 与 correlated burst，RapidOCR 3.9.2 实际产生 112 条 text/confidence/quadrilateral line。
+  substring + FSM 到 frozen V2 的 correct terminal=`1 -> 9`、wrong lock=`4 -> 0`、correct `NONE=0 -> 3`、
+  `UNKNOWN=0/2 -> 2/2`，focused tests `9/9`。这建立 generated-pixel RapidOCR transfer，不建立自然照片、
+  CameraX、open-world calibration、Android、导航、安全或产品 authority；下一算法动作是 V3 小型 learned
+  relational scorer，以 domain-randomized graph training 和未参与训练的自然照片门牌/directory test 推进，V4 不启动。
+
 - 时间：2026-08-24（Asia/Hong_Kong）；执行者：violjjet。实现三帧 reference sweep、跨视角稳定 SIFT acquisition
   audit 与 candidate-unique DINO local-anchor voting；受控 cohort 为两个公开 storefront、一个包装商品和一个个人
   物品，共 4 targets × 4 search views，另有 4 次显式 lost/reacquisition。首个 SIFT-only arm 只靠全弃权消除
