@@ -206,6 +206,9 @@ baseline 无效；exact anchor 为 controlled composited，真实运动没有满
 pose-conditioned top-96 joint-support accumulation 又退化到 true pair `9/24`、geometry `8/24`、missing `15/24`。因此 sparse line representation 是重要瓶颈，但当前 dense replacement 未打通；naive joint-support proposal objective
 被拒绝。B2 未运行、association 未裁决；不得调 R3/R4 门/grid/top-k，扫 detector zoo 或直接调 B2。
 
+[`V1-B-R5/R5S`](SAGE_LM_V1_B_R5_ANCHOR_PAIR_COVERAGE_RESULT_2026-08-25.md) 的 96-pair diversity arm 为 true pair/geometry=`12/24`、missing=`12/24`，512-pair diagnostic 回到 `15/24`；source-sequence-disjoint 小型 left/right
+Conv1D head 的 held-out top-8 四边界覆盖仅 `5/24`，最终 true pair/geometry=`11/24`、missing=`13/24`。两臂均未过 18/24；dense support 与旧 confidence contract mismatch 保留，R6/B2 不运行。
+
 ## V0 与 P1 边界
 
 `FOUND / CONTESTED / NOT_VISIBLE / ABSTAIN / STALE / HANDOFF_READY / COMPLETED_BY_USER` 是 current-frame 状态；`LOST`

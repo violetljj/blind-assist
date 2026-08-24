@@ -29,7 +29,8 @@ extractor。field gate 在 outcome 前固定为 distance `<=2.5 px`、vertical o
 R3 显著提高真实 boundary 进入候选池的比例，支持 `SPARSE_LINE_REPRESENTATION_IS_A_MATERIAL_BOTTLENECK`；但四个预设
 目标全部未过，不能写成 dense boundary route pass，也没有资格启动 B2。13 个 geometry output 的 median center error
 `0.0349 m`、median range error `0.1820 m`，说明候选一旦足够接近，既有 geometry 仍保持准确；confidence 仍为 `0/24`
-则说明残余 localization/support 质量不足以通过冻结 confidence chain。
+只说明这些输出没有通过冻结 confidence chain。R3 的 `support_length_px` 已是 dense field supported-row count，而该 chain
+仍按旧 LSD segment support 的归一化合同计算，因此不能把 `0/24` 直接解释成 13 个 geometry 都质量差，也不授权降低门。
 
 ## R4：pose-conditioned multi-view accumulation
 
@@ -55,7 +56,8 @@ top-k、support、9 px 或 confidence 门来追目标。
 
 当前因果链为：正确 pose 与 line-plane geometry 已通过；DeepLSD dense field 证明 sparse segment representation 确实损失
 大量 boundary recall，但单次替换仍低于充分性门；naive joint-support 3D accumulation 又损失 proposal coverage。由于 B1
-仍未建立 `>=18/24` candidate/geometry，B2 automatic association 没有运行，也没有被裁决。
+仍未建立 `>=18/24` candidate/geometry，B2 automatic association 没有运行，也没有被裁决。dense-native confidence
+需要在 coverage 先过门后另立 R6；不能用当前 representation-contract mismatch 反推 geometry failure。
 
 新的 successor 若启动，必须改变 proposal objective，例如有明确 aperture-boundary coverage 目标的 task-specific
 supervision 或带 diversity/coverage 的 geometry-conditioned proposal；不得扫 detector zoo、降低门或直接调 B2。本结果只属于

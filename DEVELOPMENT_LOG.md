@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-25（Asia/Hong_Kong）；执行者：violjjet。执行 SAGE-LM V1-B-R5 anchor-conditioned aperture
+  pair coverage：proposal budget 从单 boundary 改成 96 个完整 LEFT×RIGHT pair，以双侧最小 coverage 为主项，并在
+  四投影 x 上做 diversity retention。结果 true pair/geometry=`12/24`、missing=`12/24`；512-pair diagnostic 回到
+  `15/24`，正式臂仍低于 R3。按预定 fallback 训练 11-fold leave-one-source-sequence-out 的 `24-24-2` Conv1D
+  left/right head；held-out top-8 四边界覆盖=`5/24`，最终 true pair/geometry=`11/24`、missing=`13/24`，拒绝该
+  field-summary-only tiny head。confidence 仍冻结，dense row support 与旧 confidence contract mismatch 不作 geometry
+  质量否定；coverage 未过 18/24，R6/B2 均未运行。
+
 - 时间：2026-08-25（Asia/Hong_Kong）；执行者：violjjet。在正确-pose R2 Development cohort 上执行
   SAGE-LM V1-B-R3/R4。R3 固定官方 DeepLSD MegaDepth distance/orientation field、distance `<=2.5 px`、vertical
   `<=20 deg`、fragment fusion 与 final support `>=9 px`，保留原 9 px localization、geometry/confidence/arrival；

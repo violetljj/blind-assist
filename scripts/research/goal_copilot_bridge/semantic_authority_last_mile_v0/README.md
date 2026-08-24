@@ -1,6 +1,6 @@
 # Semantic-Authority Conditioned Last-Mile Geometry V0
 
-状态：`REVERSIBLE_EXPLORATION / V1_A_ALL_ORACLE_CEILING_PASS / V1_B_R2_B0_PASS / R3_DENSE_FIELD_PARTIAL_RESCUE_BELOW_GATE / R4_JOINT_SUPPORT_ACCUMULATION_REJECTED / B2_NOT_RUN`
+状态：`REVERSIBLE_EXPLORATION / V1_A_ALL_ORACLE_CEILING_PASS / V1_B_R2_B0_PASS / R3_DENSE_FIELD_PARTIAL_RESCUE_BELOW_GATE / R4_JOINT_SUPPORT_ACCUMULATION_REJECTED / R5_DIVERSITY_AWARE_PAIR_COVERAGE_BELOW_R3 / R5S_SEQUENCE_DISJOINT_BOUNDARY_HEAD_REJECTED / R6_NOT_RUN / B2_NOT_RUN`
 
 本模块是 natural open-world SAGE-R 关闭后的唯一 Goal Copilot successor。身份由 QR 或 exact OCR semantic
 authority 预先确认；geometry 只能回答目标 aperture 在哪里、如何接近以及是否具备到达证据，不能创建、替换或恢复 identity。
@@ -48,6 +48,13 @@ R3 使用官方 DeepLSD MegaDepth checkpoint 的 distance/orientation field，�
 保留原 9 px localization、geometry、confidence 与 arrival。true pair=`15/24`、geometry=`13/24`、confident=`0/24`、
 missing=`9/24`，四个门全未过。R4 在 x/depth grid 上联合两帧 field support 的 top-96 共享 3D boundary hypothesis，
 退化为 true pair=`9/24`、geometry=`8/24`、confident=`1/24`、missing=`15/24`；joint-support objective rejected，B2 未运行。
+
+R5 把 96 个 proposal 名额改成完整 aperture pair，并在四个投影 boundary x 上做 farthest-point diversity；结果 true
+pair/geometry=`12/24`、missing=`12/24`，只部分救回 R4，仍低于 R3。512-pair diagnostic 可回到 `15/24`，说明
+compression objective 仍是损失点，但不是正式成功臂。随后 11-fold leave-one-source-sequence-out 的小型 1D left/right
+boundary head，held-out top-8 四边界覆盖仅 `5/24`，最终 true pair/geometry=`11/24`、missing=`13/24`，该
+field-summary-only tiny head 被拒绝。dense support 与旧 confidence contract 不同，故 confident=`0/24` 不解释成全部
+geometry 差；coverage 未过 18/24，R6/B2 均不运行。
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd -m `
@@ -97,4 +104,20 @@ E:\codex-tools\bin\blindassist-python.cmd -m `
   --runtime-root artifacts.local/vendor/deeplsd-runtime `
   --checkpoint artifacts.local/vendor/DeepLSD/weights/deeplsd_md.tar `
   --output-dir artifacts.local/evidence/sage-lm-v1b-r4/pose-conditioned-accumulation-b1-r1
+
+E:\codex-tools\bin\blindassist-python.cmd -m `
+  scripts.research.goal_copilot_bridge.semantic_authority_last_mile_v0.anchor_pair_experiment `
+  --cohort artifacts.local/evidence/sage-lm-v1b/correct-pose-cohort-r2/cohort.json `
+  --deeplsd-root artifacts.local/vendor/DeepLSD `
+  --runtime-root artifacts.local/vendor/deeplsd-runtime `
+  --checkpoint artifacts.local/vendor/DeepLSD/weights/deeplsd_md.tar `
+  --output-dir artifacts.local/evidence/sage-lm-v1b-r5/anchor-conditioned-aperture-pair-b1-r3
+
+E:\codex-tools\bin\blindassist-python.cmd -m `
+  scripts.research.goal_copilot_bridge.semantic_authority_last_mile_v0.boundary_head_experiment `
+  --cohort artifacts.local/evidence/sage-lm-v1b/correct-pose-cohort-r2/cohort.json `
+  --deeplsd-root artifacts.local/vendor/DeepLSD `
+  --runtime-root artifacts.local/vendor/deeplsd-runtime `
+  --checkpoint artifacts.local/vendor/DeepLSD/weights/deeplsd_md.tar `
+  --output-dir artifacts.local/evidence/sage-lm-v1b-r5s/sequence-disjoint-boundary-head-b1-r2
 ```
