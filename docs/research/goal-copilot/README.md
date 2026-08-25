@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / ALGORITHM_MAINLINE=GRAIL_R / M1_REFERENCE_ONLY_STOPPED / GRAIL_R0_REFERENT_75_OF_78 / R1A_REFERENT_51_COMPLETE_38_WITH_FALSE_COMMITS / R1B_REFERENCE_SIDE_GROUP_SOURCE_AUTHORIZED / FORMAL_TEST_UNOPENED / STOP_BEFORE_M2 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / ALGORITHM_MAINLINE=GRAIL_R / M1_REFERENCE_ONLY_STOPPED / GRAIL_R0_REFERENT_75_OF_78 / R1B_REFERENCE_OWNER_74_OF_78 / CROSS_VIEW_ORDINAL_54_OF_78 / R1B_REFERENT_47_COMPLETE_35 / R1C_COORDINATE_PROTOCOL_ONLY / FORMAL_TEST_UNOPENED / STOP_BEFORE_M2 / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -22,7 +22,9 @@ fresh 程序化 metric 2.5D M0 的 36 个 held-out 建筑/实例中，24 个 pos
 
 M1 V2b reference-only Development 已以 GRAIL=`22/78`、B1=`23/78` 停止，formal test 未打开；层级诊断为 frozen target-pose=`64/78`、referent top-1=`44/78`。改变独立信息源后的 [`GRAIL-R0 privileged relational oracle`](GRAIL_R0_PRIVILEGED_RELATIONAL_ORACLE_RESULT_2026-08-25.md) 保持同一 78-case、candidate set、pose head、threshold 与 evaluator，只增加 ProcTHOR native relation signature，得到 referent=`75/78`、complete=`57/78`、wrong-target=`0/43`、absence false commit=`0/78`、complete rescue/collateral=`35/0`。[`R1 signature observability ablation`](GRAIL_R1_SIGNATURE_OBSERVABILITY_ABLATION_RESULT_2026-08-25.md) 将 full recovery 收窄到 `semantic type + native root/part sibling ordinal + nearest stable object type`；去掉 sibling ordinal 仅余 referent=`48/78`、complete=`31/78`。
 
-随后 [`R1A obtainable grouping probe`](GRAIL_R1A_OBTAINABLE_GROUPING_PROBE_RESULT_2026-08-25.md) 不读 `root_id`，使用现有 RGB、bbox proposals、semantic type 与 frozen DINO context。query grouping pair F1=`97.3%`，但 different-root specificity 仅 `39.5%`、exact partition=`62/78`；最佳 aligned-context arm 的 referent=`51/78`、complete=`38/78`，只恢复 R0 uplift 的 `22.6% / 45.7%`，且 wrong-target=`25/43`、absence false commit=`35/78`。因此当前 crop-context arm 不构成干净 obtainable relation；不在同一 artifact 调 affinity/shift/threshold/fusion。唯一 successor 改为新的 reference-side 信息源：保存 full-scene RGB + candidate masks/proposals，或引入独立 part-owner/whole-object signal，再保持 ordinal、pose head、threshold 与 evaluator 不变。M2、formal test、Android/default-App 仍关闭。
+随后 [`R1A obtainable grouping probe`](GRAIL_R1A_OBTAINABLE_GROUPING_PROBE_RESULT_2026-08-25.md) 不读 `root_id`，使用现有 RGB、bbox proposals、semantic type 与 frozen DINO context。query grouping pair F1=`97.3%`，但 different-root specificity 仅 `39.5%`、exact partition=`62/78`；最佳 aligned-context arm 的 referent=`51/78`、complete=`38/78`，且 wrong-target=`25/43`、absence false commit=`35/78`。
+
+[`R1B bilateral grouping probe`](GRAIL_R1B_BILATERAL_GROUPING_PROBE_RESULT_2026-08-25.md) 只把 reference crop 补成 full-scene RGB + 317 proposals/masks，冻结 query grouping、affinity 与全部下游。reference target owner-group exact=`74/78`、bbox ordinal=`74/78`，证明 full-scene ownership observation 基本成立；但 query/reference privileged image-space ordinal 只一致 `54/78`，bbox arm 端到端仅 referent=`47/78`、complete=`35/78`、wrong-target=`11/43`、absence=`29/78`。31 个 referent failure 中 23 个发生在两侧 view-local ordinal 都正确后，故当前 gap 是 owner-local cross-view canonical/equivariant coordinate，而不是继续改善 ownership。下一前门仅为另立 R1C coordinate protocol；affinity/mask encoding/threshold/fusion、M2、formal test、Android/default-App 仍关闭。
 
 ## Goal Copilot 既有 evidence context
 

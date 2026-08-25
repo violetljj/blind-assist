@@ -33,6 +33,10 @@ class GroupingR1ATest(unittest.TestCase):
     def test_ordinal_is_deterministic_within_predicted_group(self) -> None:
         rows = [candidate("Drawer", [0, 0, 10, 10]), candidate("Drawer", [10, 0, 20, 10])]
         self.assertEqual(predicted_ordinals(rows, [0, 0]), [("LEFT", "SINGLE"), ("RIGHT", "SINGLE")])
+        self.assertEqual(
+            predicted_ordinals(rows, [0, 0], centers=[(20.0, 5.0), (10.0, 5.0)]),
+            [("RIGHT", "SINGLE"), ("LEFT", "SINGLE")],
+        )
 
     def test_spatial_context_scores_reward_alignment(self) -> None:
         reference = np.eye(4, dtype=np.float32)

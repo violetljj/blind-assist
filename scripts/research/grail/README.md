@@ -1,6 +1,6 @@
 # GRAIL research module
 
-状态：`active / M1_REFERENCE_ONLY_STOPPED / GRAIL_R0_RELATIONAL_ORACLE_PASS / R1A_GROUPING_CONTEXT_PARTIAL_WITH_FALSE_COMMITS / R1B_REFERENCE_SIDE_GROUP_SOURCE_ONLY / STOP_BEFORE_M2`
+状态：`active / M1_REFERENCE_ONLY_STOPPED / GRAIL_R0_RELATIONAL_ORACLE_PASS / R1B_REFERENCE_OWNER_74_OF_78 / CROSS_VIEW_ORDINAL_54_OF_78 / R1B_COMPLETE_35_BELOW_R1A_38 / R1C_VIEW_EQUIVARIANT_COORDINATE_PROTOCOL_ONLY / STOP_BEFORE_M2`
 
 GRAIL（Goal-Relative Affordance and Interaction Localization）把最后十米重新定义为：给定用户目标，在未见场景中预测一组可到达、目标一致、适合完成交互的 `站立位置 + 朝向`，或显式 `NONE`。
 
@@ -26,6 +26,8 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/research/grail/freeze_grail_m1
 E:\codex-tools\bin\blindassist-python.cmd scripts/research/grail/run_grail_relational_r0.py --dataset <val.jsonl.gz> --collection <v2b-dev-collection.json> --features <v2b-features-dev.pt> --checkpoint <v2b-checkpoint.pt> --development-result <v2b-development-result.json> --output <relational-oracle-result.json>
 E:\codex-tools\bin\blindassist-python.cmd scripts/research/grail/run_grail_relational_observability_r1.py --dataset <val.jsonl.gz> --collection <v2b-dev-collection.json> --features <v2b-features-dev.pt> --checkpoint <v2b-checkpoint.pt> --development-result <v2b-development-result.json> --r0-result <relational-oracle-result.json> --output <signature-observability-ablation.json>
 E:\codex-tools\bin\blindassist-python.cmd scripts/research/grail/run_grail_grouping_r1a.py --dataset <val.jsonl.gz> --collection <v2b-dev-collection.json> --features <v2b-features-dev.pt> --checkpoint <v2b-checkpoint.pt> --development-result <v2b-development-result.json> --r0-result <relational-oracle-result.json> --output <obtainable-grouping-result.json>
+docker run ... python scripts/research/grail/materialize_grail_reference_r1b.py --dataset <val.jsonl.gz> --collection <v2b-dev-collection.json> --collection-root <dataset-v2b-root> --output <reference-supplement-root> --docker-image-id <sha256:...> --dockerfile-sha256 <sha256>
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/grail/run_grail_bilateral_grouping_r1b.py --dataset <val.jsonl.gz> --collection <v2b-dev-collection.json> --features <v2b-features-dev.pt> --checkpoint <v2b-checkpoint.pt> --development-result <v2b-development-result.json> --r0-result <relational-oracle-result.json> --reference-supplement <reference-supplement.json> --reference-root <reference-root> --reference-features <reference-features.pt> --visual-model <frozen-dinov2> --output <bilateral-grouping-result.json>
 E:\codex-tools\bin\blindassist-python.cmd -m unittest discover -s scripts/research/grail -p "test_*.py"
 ```
 
@@ -42,6 +44,8 @@ GRAIL-R0 在同一已消费 Development 78-case 上冻结 candidate set、checkp
 R1 signature observability ablation 继续复用同一 consumed Development，逐组投影 R0 signature。`semantic type + native root/part sibling ordinal + nearest stable object type` 已完整复现 R0 的 `75/78` referent、`57/78` complete、`0/43` wrong-target 与 `0/78` absence false commit；去掉 sibling ordinal 后仅 `48/78`、`31/78`。方向、距离、相对高度、support、room 和 coarse height 在该 cohort 上不是必要字段。这个结果只收窄 student 输入目标；root/part grouping 与 relation 仍来自 privileged metadata，尚未证明 RGB/text 可恢复。
 
 R1A 使用现有 query/reference RGB、oracle candidate bbox、simulator semantic type 与 frozen DINO/M1 features，不读取 `root_id`，也不声称使用 collection 未保存的逐像素 mask。query 侧局部接触 grouping 的 same-root pair F1=`97.3%`，但 different-root specificity 仅 `39.5%`、exact partition=`62/78`；aligned spatial-context DINO 的 target ordinal=`51/78`，最终 referent=`51/78`、complete=`38/78`、wrong-target=`25/43`、absence false commit=`35/78`。它只恢复 complete oracle uplift 的 `45.7%`，且 false commit 明显，不建立干净 obtainable selector。不得在同一 artifact 上调 affinity、shift、threshold 或 fusion；唯一 successor 是改变 reference-side 信息源，提供 full-scene RGB + candidate masks/proposals 或独立 part-owner signal，再用同一确定性 ordinal/evaluator。
+
+R1B replay 同一 reference pose 的 full-scene RGB 与 317 proposals/masks，并保持 query grouping、affinity、selector、pose head、threshold/evaluator 不变。reference target owner-group exact=`74/78`、bbox ordinal=`74/78`，说明 ownership observation 基本成立；但 query/reference privileged image-space ordinal 只一致 `54/78`，bbox arm 端到端仅 referent=`47/78`、complete=`35/78`、wrong-target=`11/43`、absence=`29/78`，低于 R1A。当前 gap 是 owner group 上的跨视角 canonical/equivariant coordinate，不再是 reference ownership。下一步只能先另立 R1C coordinate protocol；本 artifact 不调 affinity、mask encoding、threshold、fusion 或 pose head。
 
 ## 安全边界
 

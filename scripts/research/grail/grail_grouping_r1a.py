@@ -76,24 +76,30 @@ def _rank_bin(value: float, values: list[float], labels: tuple[str, str, str]) -
     return labels[0] if fraction <= 1 / 3 else labels[1] if fraction <= 2 / 3 else labels[2]
 
 
-def predicted_ordinals(candidates: list[dict[str, Any]], groups: list[int]) -> list[tuple[str, str]]:
-    """Deterministically rank bbox centroids within a predicted same-type root group."""
+def predicted_ordinals(
+    candidates: list[dict[str, Any]], groups: list[int],
+    centers: list[tuple[float, float]] | None = None,
+) -> list[tuple[str, str]]:
+    """Deterministically rank supplied or bbox centroids inside each predicted group."""
+    if centers is None:
+        centers = [
+            ((candidate["bbox"][0] + candidate["bbox"][2]) / 2.0,
+             (candidate["bbox"][1] + candidate["bbox"][3]) / 2.0)
+            for candidate in candidates
+        ]
+    if len(centers) != len(candidates):
+        raise ValueError("ordinal center count must match candidate count")
     by_group: dict[tuple[int, str], list[int]] = {}
     for index, (candidate, group) in enumerate(zip(candidates, groups)):
         by_group.setdefault((group, candidate["object_type"]), []).append(index)
     result: list[tuple[str, str]] = []
     for index, (candidate, group) in enumerate(zip(candidates, groups)):
         members = by_group[(group, candidate["object_type"])]
-        centers = [
-            ((candidates[item]["bbox"][0] + candidates[item]["bbox"][2]) / 2.0,
-             (candidates[item]["bbox"][1] + candidates[item]["bbox"][3]) / 2.0)
-            for item in members
-        ]
-        bbox = candidate["bbox"]
-        center_x, center_y = (bbox[0] + bbox[2]) / 2.0, (bbox[1] + bbox[3]) / 2.0
+        member_centers = [centers[item] for item in members]
+        center_x, center_y = centers[index]
         result.append((
-            _rank_bin(center_x, [value[0] for value in centers], ("LEFT", "CENTER", "RIGHT")),
-            _rank_bin(center_y, [value[1] for value in centers], ("TOP", "MIDDLE", "BOTTOM")),
+            _rank_bin(center_x, [value[0] for value in member_centers], ("LEFT", "CENTER", "RIGHT")),
+            _rank_bin(center_y, [value[1] for value in member_centers], ("TOP", "MIDDLE", "BOTTOM")),
         ))
     return result
 

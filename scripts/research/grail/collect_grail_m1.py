@@ -66,13 +66,19 @@ def bbox_for(event: Any, object_id: str) -> tuple[list[int], np.ndarray] | None:
     return [int(xs.min()), int(ys.min()), int(xs.max()) + 1, int(ys.max()) + 1], mask
 
 
-def save_crop(frame: np.ndarray, bbox: list[int], path: Path) -> None:
+def expanded_crop_array(frame: np.ndarray, bbox: list[int]) -> np.ndarray:
     x0, y0, x1, y1 = bbox
     # Tiny actionable parts (especially drawers) need stable object context rather
     # than an upscaled handful of pixels. The same expansion is used at feature time.
     pad_x, pad_y = max(32, x1 - x0), max(32, y1 - y0)
-    crop = frame[max(0, y0-pad_y):min(frame.shape[0], y1+pad_y), max(0, x0-pad_x):min(frame.shape[1], x1+pad_x)]
-    Image.fromarray(crop).save(path)
+    return frame[
+        max(0, y0-pad_y):min(frame.shape[0], y1+pad_y),
+        max(0, x0-pad_x):min(frame.shape[1], x1+pad_x),
+    ]
+
+
+def save_crop(frame: np.ndarray, bbox: list[int], path: Path) -> None:
+    Image.fromarray(expanded_crop_array(frame, bbox)).save(path)
 
 
 def ranked_query_positions(reachable: list[dict[str, float]], target: dict[str, float], key: str) -> list[dict[str, float]]:

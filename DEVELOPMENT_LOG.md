@@ -2,6 +2,15 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-25（Asia/Hong_Kong）；执行者：Codex。执行 GRAIL-R1B bilateral grouping probe：在同一 consumed
+  Development 78-case 上只补 reference full-scene RGB、317 个 actionable proposals/masks，冻结 R1A query grouping、
+  DINO affinity、ordinal、selector、pose head、threshold 与 evaluator。reference target owner-group exact=`74/78`、bbox
+  ordinal=`74/78`，但 query/reference privileged image-space ordinal 只一致 `54/78`；bbox arm referent=`47/78`、
+  complete=`35/78`、wrong-target=`11/43`、absence false commit=`29/78`，低于 R1A `51/78`、`38/78`。31 个 referent
+  failure 中 23 个由两侧 view-local ordinal 均正确后的跨视角 label disagreement 导致。终态为
+  `GRAIL_R1B_REFERENCE_OWNERSHIP_HIGH_BUT_VIEW_LOCAL_ORDINAL_NOT_ALIGNABLE`；不调 matcher，下一步仅允许先另立 R1C
+  owner-local canonical/equivariant coordinate protocol。formal test、M2、Android/default-App 未运行。
+
 - 时间：2026-08-25（Asia/Hong_Kong）；执行者：violjjet。执行 SAGE-LM V1-D active parallax boundary field：固定
   R2 的 24 episodes、anchor、source pose、9 px 与 triangulation；冻结 RAFT-Small 双向 flow，以 pose-derived rotation
   flow compensation、forward/backward consistency、residual-parallax horizontal discontinuity 的竖直累积生成 LEFT/RIGHT

@@ -20,7 +20,7 @@
 | 研究 Module 角色与稳定入口 | 各 Module `README.md`；HFTF 另见 [`INDEX.md`](../scripts/research/hftf/INDEX.md) | 从 `MODULE_INDEX.md` 选择一个 Module |
 | Goal Copilot public-real episode mining、selective guidance 与 authority-separated last-mile geometry | [`goal_copilot_bridge/README.md`](../scripts/research/goal_copilot_bridge/README.md) | `scripts/research/goal_copilot_bridge/`；`semantic_authority_last_mile_v0/` owns synthetic regression plus controlled real-RGB observation diagnostics |
 | Research-only exact semantic anchor + QR planar pose live demo | [`SAGE-LM V2 marker-pose implementation`](research/goal-copilot/SAGE_LM_V2_MARKER_POSE_LIVE_SEAM_IMPLEMENTATION_2026-08-25.md) | `apps/demos/semantic-anchor-demo-app/`；独立 application ID，不修改默认 `:app` |
-| GRAIL set-valued interaction-pose teacher 与 GRAIL-R relational oracle | [`GRAIL-R1A grouping result`](research/goal-copilot/GRAIL_R1A_OBTAINABLE_GROUPING_PROBE_RESULT_2026-08-25.md) | `scripts/research/grail/`；M0 teacher、frozen M1、privileged R0、signature ablation 与 training-free RGB+bbox grouping probe，均不修改默认 `:app` |
+| GRAIL set-valued interaction-pose teacher 与 GRAIL-R relational oracle | [`GRAIL-R1B bilateral grouping result`](research/goal-copilot/GRAIL_R1B_BILATERAL_GROUPING_PROBE_RESULT_2026-08-25.md) | `scripts/research/grail/`；M0 teacher、frozen M1、privileged R0、R1A grouping 与 R1B full-scene reference/cross-view ordinal probe，均不修改默认 `:app` |
 | 配置与冻结合同 | `configs/` | JSON/YAML；先看调用方和协议 |
 | 机器 schema | `schemas/` | JSON Schema 与 validator |
 | 当前文档与研究真源 | [`docs/PROJECT_STATE.md`](PROJECT_STATE.md) | `docs/`、`docs/research/` |
