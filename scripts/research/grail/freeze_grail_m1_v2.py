@@ -29,8 +29,8 @@ def freeze(val: Path, test: Path) -> dict:
                       "val_excluded": [0], "test_excluded": sorted(excluded_test), "reads_visual_or_teacher_outcome": False},
         "rosters": {"train": train_dev[:24], "dev": train_dev[24:30], "test": test_rows[:12]},
         "query_generation": {"distance_m": [1.75, 4.0], "position_order": "sample-hash",
-                             "yaw_candidates_deg_around_target": [-60, -30, 0, 30, 60],
-                             "yaw_order": "sample-hash; first rendered-visible target; target centering is not selected"},
+                             "yaw_candidates_deg_around_target": [-30, 0, 30],
+                             "yaw_order": "sample-hash; one yaw per position; first rendered-visible position; target centering is not selected"},
         "frozen_encoders": {
             "visual": {"id": "facebook/dinov2-small local snapshot", "weights_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1"},
             "depth_baseline_only": {"id": "Depth-Anything-V2-Small-hf local snapshot", "weights_sha256": "3152477ce0d8d6978d76b995120de97cb5b928701fd0f817769f59e249a16b70"},
