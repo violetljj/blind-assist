@@ -68,7 +68,9 @@ def bbox_for(event: Any, object_id: str) -> tuple[list[int], np.ndarray] | None:
 
 def save_crop(frame: np.ndarray, bbox: list[int], path: Path) -> None:
     x0, y0, x1, y1 = bbox
-    pad_x, pad_y = max(4, (x1 - x0) // 10), max(4, (y1 - y0) // 10)
+    # Tiny actionable parts (especially drawers) need stable object context rather
+    # than an upscaled handful of pixels. The same expansion is used at feature time.
+    pad_x, pad_y = max(32, x1 - x0), max(32, y1 - y0)
     crop = frame[max(0, y0-pad_y):min(frame.shape[0], y1+pad_y), max(0, x0-pad_x):min(frame.shape[1], x1+pad_x)]
     Image.fromarray(crop).save(path)
 
@@ -87,11 +89,22 @@ def collect(dataset: Path, manifest_path: Path, role: str, output: Path) -> dict
     houses = load_houses(dataset, roster)
     image_dir = output / role / "images"
     image_dir.mkdir(parents=True, exist_ok=True)
+    partial_path = output / role / "collection.partial.json"
+    manifest_hash, dataset_hash = sha256_file(manifest_path), sha256_file(dataset)
     rows, scene_receipts = [], []
+    if partial_path.exists():
+        partial = json.loads(partial_path.read_text(encoding="utf-8"))
+        if partial.get("manifest_sha256") != manifest_hash or partial.get("dataset_sha256") != dataset_hash:
+            raise ValueError("partial collection identity mismatch")
+        rows, scene_receipts = partial["rows"], partial["scene_receipts"]
+    completed_houses = {int(receipt["house_index"]) for receipt in scene_receipts}
     controller = None
     try:
         for roster_row in roster:
             house_index = int(roster_row["house_index"])
+            if house_index in completed_houses:
+                print(json.dumps({"role": role, "house_index": house_index, "state": "RESUME_SKIP"}), flush=True)
+                continue
             event = controller.reset(scene=houses[house_index]) if controller else None
             if controller is None:
                 controller = start_controller(houses[house_index]); event = controller.last_event
@@ -157,12 +170,21 @@ def collect(dataset: Path, manifest_path: Path, role: str, output: Path) -> dict
                     "same_type_visible_candidates": sum(c["object_type"] == obj["objectType"] for c in visible_candidates),
                 })
             scene_receipts.append({"house_index": house_index, "examples": len(rows)-before, "actionable_objects": len(objects)})
+            checkpoint = {
+                "schema": "blindassist_grail_m1_collection_checkpoint_v1", "role": role,
+                "manifest_sha256": manifest_hash, "dataset_sha256": dataset_hash,
+                "scene_receipts": scene_receipts, "rows": rows,
+            }
+            temporary = partial_path.with_suffix(".tmp")
+            temporary.write_text(json.dumps(checkpoint, indent=2) + "\n", encoding="utf-8")
+            temporary.replace(partial_path)
+            print(json.dumps({"role": role, "house_index": house_index, "state": "CHECKPOINTED", "examples": len(rows)}), flush=True)
     finally:
         if controller is not None:
             controller.stop()
     report = {
         "schema": "blindassist_grail_m1_collection_v1", "role": role,
-        "manifest_sha256": sha256_file(manifest_path), "dataset_sha256": sha256_file(dataset),
+        "manifest_sha256": manifest_hash, "dataset_sha256": dataset_hash,
         "examples": len(rows), "wrong_target_examples": sum(r["same_type_visible_candidates"] >= 2 for r in rows),
         "scene_receipts": scene_receipts, "rows": rows,
     }
