@@ -43,7 +43,7 @@ def freeze(dataset: Path) -> dict:
             "wrong_target_denominator": 43,
             "admission": (
                 "hash-rank same-type-distractor rows first to exactly 43, then hash-rank "
-                "remaining rows to 78; fail NOT_EVALUABLE if either quota is unavailable"
+                "non-distractor rows to exactly 35; fail NOT_EVALUABLE if either quota is unavailable"
             ),
             "admission_salt": "BLINDASSIST_GRAIL_R1C_P_ADMISSION_V1",
             "reads_model_output": False,

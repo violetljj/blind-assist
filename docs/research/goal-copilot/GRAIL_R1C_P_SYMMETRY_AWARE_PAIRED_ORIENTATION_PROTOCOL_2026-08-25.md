@@ -15,7 +15,7 @@ R1C-O 已证明 native owner-local coordinate 能恢复 relational ceiling；R1C
 - 数据仍是 ProcTHOR val revision `439193522244720b86d8c81cde2e51e3a4d150cf`，SHA-256=`d808540514e26b6726cd2790490e669b572eeb94febb5188a2f403591dd21721`。
 - 排除 M1 V2b 已用的 24 train + 6 dev houses。用 salt `BLINDASSIST_GRAIL_R1C_P_FRESH_VAL_V1` hash-rank 12 个新 house；结果由 `freeze_grail_paired_orientation_r1cp.py` 固化。
 - 采集保持 V2b 的 query distance、position/yaw hash order、首个 visible position；额外持久化同一时刻 query/reference full RGB 与所有 visible actionable proposal masks，不读取模型结果。
-- cohort admission 在模型调用前冻结：先从带同类 distractor 的 rows 按 salt `BLINDASSIST_GRAIL_R1C_P_ADMISSION_V1` 取 43 个，再从其余 rows 取到总计 78。任一 quota 不足即 `NOT_EVALUABLE`，不增 house、不改 salt、不重采。
+- cohort admission 在模型调用前冻结：从带同类 distractor 的 rows 按 salt `BLINDASSIST_GRAIL_R1C_P_ADMISSION_V1` 取 43 个，并从不带同类 distractor 的 rows 取 35 个，合计 78。任一 quota 不足即 `NOT_EVALUABLE`，不增 house、不改 salt、不重采。
 
 OA-V2 固定为官方代码 commit `73b11c9dc83e84daeb563d0c766831f2c66b0a18`，checkpoint `demo_ckpts/rotmod_realrotaug_best.pt`，SHA-256=`7b6b7f258d32b95123b9d023005ecca357d8ab944fb83476f532d3cf7a2295eb`，5,048,116,892 bytes。只允许一次 bfloat16 CUDA zero-shot inference；不训练、不校准、不扫 crop、mask、layer、angle bin、mode threshold 或融合权重。
 
