@@ -30,6 +30,18 @@ frozen `+8` point gate. Doorway improved by `+4.29` points and Drawer by
 `+1.82` points, so the effect was positive in both classes but not large enough
 to advance.
 
+An additional constant-prior audit further limits that interpretation.
+`PRESERVE` was a valid mode for `1482/1806 = 82.06%` of validation pairs, so an
+image-independent always-PRESERVE predictor was stronger than OA-V2. The
+selected seed exceeded this prior by only `15` pairs or `+0.83` points, while
+seed `1701` was `8` pairs or `-0.44` points below it. Moreover, `392/1806 =
+21.71%` of pairs allowed both PRESERVE and FLIP and therefore carried no
+PRESERVE/FLIP discrimination. On the remaining `1414` pairs, the selected arm
+was `1105/1414 = 78.15%` versus `1090/1414 = 77.09%` for always-PRESERVE, a
+gain of only `15` pairs or `+1.06` points. Thus task training had a positive
+gain over frozen OA-V2, but its excess over the slot prior was small and did
+not reproduce across both seeds.
+
 Train and validation collection were transparently under their approximate
 pair targets: `12726/20000` and `1806/2000`. Training was nevertheless run as
 Development evidence; this shortfall limits precision but is not a reason to
@@ -51,6 +63,8 @@ bin, loss-weight, seed, or ensemble sweeps.
 ## Claim ceiling
 
 This establishes only a small positive synthetic ProcTHOR Development effect
-on an under-target but house-disjoint collection. It does not establish the
-preregistered advancement effect, final-test generalization, natural-scene,
-live-device, Android/default-App, product, universal, or safety performance.
+relative to frozen OA-V2 on an under-target but house-disjoint collection. It
+does not establish a seed-robust visual gain beyond the slot prior, reliable
+owner-orientation recovery, the preregistered advancement effect, final-test
+generalization, natural-scene, live-device, Android/default-App, product,
+universal, or safety performance.
