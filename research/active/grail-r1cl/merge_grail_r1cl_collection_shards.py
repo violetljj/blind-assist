@@ -43,7 +43,7 @@ def _materialize_asset(source: Path, destination: Path) -> None:
 
 
 def merge(manifest_path: Path, dataset: Path, role: str, shard_root: Path,
-          shard_count: int, output: Path) -> dict[str, Any]:
+          shard_count: int, output: Path, allow_under_minimum: bool = False) -> dict[str, Any]:
     if shard_count < 1:
         raise ValueError("R1C-L shard count must be positive")
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -90,7 +90,7 @@ def merge(manifest_path: Path, dataset: Path, role: str, shard_root: Path,
     pairs = sorted(pairs, key=lambda row: _rank(row["pair_id"]))[:maximum]
     minimum = (manifest["collection"]["validation_pair_range" if role == "validation" else "train_pair_range"][0]
                if role != "final_test" else 0)
-    if len(pairs) < minimum:
+    if len(pairs) < minimum and not allow_under_minimum:
         raise RuntimeError(f"R1C-L_NOT_EVALUABLE_PAIR_QUOTA role={role} pairs={len(pairs)}/{minimum}")
     view_ids = {row["view_id"] for row in views}
     if any(row["reference_view_id"] not in view_ids or row["query_view_id"] not in view_ids for row in pairs):
@@ -108,6 +108,8 @@ def merge(manifest_path: Path, dataset: Path, role: str, shard_root: Path,
         "manifest_sha256": manifest_sha256, "dataset_sha256": dataset_sha256,
         "shard_count": shard_count, "houses": len(receipts), "views": views, "pairs": pairs,
         "scene_receipts": receipts, "summary": summary,
+        "minimum_pairs": minimum, "pair_quota_met": len(pairs) >= minimum,
+        "development_under_minimum": len(pairs) < minimum and allow_under_minimum,
     }
     _atomic_json(output / role / "collection.json", result)
     _atomic_json(output / role / "progress.json", {
@@ -126,8 +128,10 @@ def main() -> int:
     parser.add_argument("--shard-root", type=Path, required=True)
     parser.add_argument("--shard-count", type=int, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--allow-under-minimum", action="store_true")
     args = parser.parse_args()
-    merge(args.manifest, args.dataset, args.role, args.shard_root, args.shard_count, args.output)
+    merge(args.manifest, args.dataset, args.role, args.shard_root, args.shard_count, args.output,
+          args.allow_under_minimum)
     return 0
 
 

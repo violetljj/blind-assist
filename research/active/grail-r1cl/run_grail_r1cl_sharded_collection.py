@@ -88,6 +88,8 @@ def run(args: argparse.Namespace) -> int:
                 "--role", args.role, "--shard-root", str(args.shard_root),
                 "--shard-count", str(args.shard_count), "--output", str(args.output),
             ]
+            if args.allow_under_minimum:
+                merge_command.append("--allow-under-minimum")
             completed = subprocess.run(merge_command, check=False, env=environment)
             if completed.returncode:
                 return completed.returncode
