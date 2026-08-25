@@ -1,6 +1,6 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / ALGORITHM_MAINLINE=GRAIL_R / R1C_O_OWNER_LOCAL_CEILING_ESTABLISHED / R1C_V_FINAL_SLOT_39_OF_78 / REFERENT_38_OF_78 / COMPLETE_27_OF_78 / AXIS_FRONT_DOOR_FAILED / SIGN_ALSO_FAILED / CURRENT_DETERMINISTIC_ESTIMATOR_CLOSED / NO_SUCCESSOR_AUTHORIZED / FORMAL_TEST_UNOPENED / STOP_BEFORE_M2 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / ALGORITHM_MAINLINE=GRAIL_R / R1C_O_OWNER_LOCAL_CEILING_ESTABLISHED / R1C_P_PAIRED_SLOT_37_OF_78 / REFERENT_36_OF_78 / COMPLETE_29_OF_78 / WRONG_TARGET_2_OF_43 / PAIRED_RGB_ORIENTATION_FAILED / STOP_BEFORE_DEPTH_GEOMETRY / NO_SUCCESSOR_AUTHORIZED / FORMAL_TEST_UNOPENED / STOP_BEFORE_M2 / DEFAULT_APP_UNCHANGED`
 
 Goal-Driven Visual Copilot 仍是上位产品主线；GRAIL（Goal-Relative Affordance and Interaction Localization）是唯一算法
 主线。它不恢复旧 exact-instance 或四边界任务，而把最后十米改为 goal-conditioned、set-valued interaction pose prediction，
@@ -17,6 +17,7 @@ privileged image-space ordinal 只一致 `54/78`，端到端反降至 referent=`
 owner-local cross-view canonical/equivariant coordinate。按结果前冻结协议执行的 [`R1C-O`](goal-copilot/GRAIL_R1C_OWNER_LOCAL_CANONICAL_COORDINATE_RESULT_2026-08-25.md)
 使用 AI2-THOR native part position 与 owner yaw，得到 referent=`75/78`、complete=`58/78`、wrong-target=`1/43`、absence=`0/78`，并救回 R1B view-disagreement failures=`20/23`。这建立 synthetic privileged coordinate mechanism ceiling，但不建立 RGB orientation；当时唯一 successor 是另立 R1C-V obtainable-orientation protocol，M2、formal test、matcher/bin/threshold/fusion tuning 与 Android/default-App 保持关闭。
 随后按结果前冻结协议执行的 [`R1C-V`](goal-copilot/GRAIL_R1C_V_VISUAL_OWNER_ORIENTATION_RESULT_2026-08-25.md) deterministic RGB/proposal probe 中，axis-only（oracle sign）slot=`45/78`、sign-only（oracle axis）=`40/78`、final=`39/78`；final referent=`38/78`、complete=`27/78`、wrong-target=`9/43`。axis pair 仅 `29/78` 可评估且 20° 命中=`13/29`；sign pair `16/78` 可评估、仅 `4/16` 正确。按预注册顺序 axis 前门失败，sign 同时失败。当前 estimator 关闭且无自动 successor；R1C-O ceiling 不受影响。
+用户随后另行授权的 [`R1C-P`](goal-copilot/GRAIL_R1C_P_SYMMETRY_AWARE_PAIRED_ORIENTATION_RESULT_2026-08-25.md) 改用 fixed zero-shot OA-V2 paired relative orientation，并换到 fresh、house-disjoint ProcTHOR cohort。evaluator-native owner-local 对照为 referent=`74/78`、complete=`55/78`，但正式 paired arm 仅 slot=`37/78`、referent=`36/78`、complete=`29/78`、wrong-target=`2/43`，且 `39/78` mode unknown。结果说明该固定 RGB orientation source 未建立所需 canonical coordinate；R1C-P 已消费并停止在 depth geometry 之前，无自动 successor。
 
 历史 P0 commitment-policy discovery 已以
 `COMPLEXITY_ONLY_BUYS_ABSTENTION` 收口；现有 P0 grounding/provider 与 evaluator 保持冻结。用户此前显式授权

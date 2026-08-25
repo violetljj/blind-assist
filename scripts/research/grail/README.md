@@ -1,6 +1,6 @@
 # GRAIL research module
 
-状态：`active / M1_REFERENCE_ONLY_STOPPED / R1C_O_OWNER_LOCAL_CEILING_ESTABLISHED / R1C_V_FINAL_SLOT_39_OF_78 / REFERENT_38_OF_78 / COMPLETE_27_OF_78 / AXIS_FRONT_DOOR_FAILED / SIGN_ALSO_FAILED / CURRENT_DETERMINISTIC_ESTIMATOR_CLOSED / NO_SUCCESSOR_AUTHORIZED / STOP_BEFORE_M2`
+状态：`active / M1_REFERENCE_ONLY_STOPPED / R1C_O_OWNER_LOCAL_CEILING_ESTABLISHED / R1C_P_PAIRED_SLOT_37_OF_78 / REFERENT_36_OF_78 / COMPLETE_29_OF_78 / WRONG_TARGET_2_OF_43 / PAIRED_RGB_ORIENTATION_FAILED / STOP_BEFORE_DEPTH_GEOMETRY / NO_SUCCESSOR_AUTHORIZED / STOP_BEFORE_M2`
 
 GRAIL（Goal-Relative Affordance and Interaction Localization）把最后十米重新定义为：给定用户目标，在未见场景中预测一组可到达、目标一致、适合完成交互的 `站立位置 + 朝向`，或显式 `NONE`。
 
@@ -54,6 +54,8 @@ R1B replay 同一 reference pose 的 full-scene RGB 与 317 proposals/masks，�
 R1C-O 按结果前冻结协议，用 AI2-THOR native part position 与 owner yaw 将 sibling slot 改到 owner-local frame，冻结最小字段与全部下游。78/78 targets 可评估，referent=`75/78`、complete=`58/78`、wrong-target=`1/43`、absence=`0/78`，救回 R1B view-disagreement failures=`20/23`，全部预注册门通过。该结果只建立 privileged synthetic coordinate mechanism ceiling；唯一 successor 是另立 R1C-V RGB/mask obtainable orientation 协议，禁止在本 artifact 调 bin、matcher、threshold、fusion 或 pose head。
 
 R1C-V 在实现前冻结 axis×sign 协议，并只运行一次 deterministic RGB/proposal probe。Axis-only（oracle sign）slot=`45/78`，sign-only（oracle axis）=`40/78`，final=`39/78`；final referent=`38/78`、complete=`27/78`、wrong-target=`9/43`、absence=`0/78`。axis pair evaluable=`29/78`、20° 命中=`13/29`；sign pair evaluable=`16/78`、correct=`4/16`，故终态为 `GRAIL_R1C_V_AXIS_NOT_VISUALLY_OBTAINABLE_BY_DETERMINISTIC_PROBE_STOP`，sign 同时失败。当前 estimator 已关闭，无自动 successor；不得在 consumed artifact 调参或转用 diagnostic arm。
+
+R1C-P 按 outcome 前冻结协议换到 fresh、house-disjoint 78-case cohort，并固定 zero-shot OA-V2 paired-relative orientation、symmetry mode 与全部下游。evaluator-native owner-local 对照为 referent=`74/78`、complete=`55/78`；正式 paired arm 仅 slot=`37/78`、referent=`36/78`、complete=`29/78`、wrong-target=`2/43`、absence=`0/78`，`39/78` mode unknown。终态为 `GRAIL_R1C_P_PAIRED_RGB_OWNER_ORIENTATION_NOT_ESTABLISHED_STOP_BEFORE_DEPTH_GEOMETRY`；不得调 symmetry/crop/mode/threshold/selector/pose head，也不运行 depth-geometry successor。
 
 ## 安全边界
 
