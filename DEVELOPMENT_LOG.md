@@ -5439,3 +5439,10 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
 - 新增程序化 metric 2.5D teacher/oracle：12 Development + 36 scene/instance-disjoint held-out 建筑，无人工逐帧标注。held-out 24 个 positive 中 B3 oracle pose/closed-loop=`24/24`，12 个 NONE false commit=`0/12`；B0=`8/24` 且 NONE false commit=`12/12`，B1 最近自由点=`15/24` 且 NONE false commit=`6/12`。几何微扰稳定 `24/24`，四类结构化反事实各实际构造并拒绝 `36/36`。
 - 终态 `GRAIL_M0_PROCEDURAL_ORACLE_UPPER_BOUND_ESTABLISHED`，只建立 task/teacher mechanics，不建立 RGB、自然 3D、学习、设备、产品或安全能力。唯一 successor 为 M1 frozen-encoder、building-disjoint B0/B1/B2/GRAIL Development 对照；默认 App 不变。
 - 结果：[GRAIL M0](docs/research/goal-copilot/GRAIL_M0_ORACLE_INTERACTION_POSE_RESULT_2026-08-25.md)。
+
+# 2026-08-25 GRAIL M0 natural-3D teacher transfer
+
+- 执行者：violjjet。补齐原始 M0 对 fresh scene-disjoint 3D scene 的要求：ARKitScenes source-native mesh/semantic OBB 之外，floor、可走分量、净空、视线和 functional face 均显式标为 derived proxy；两面证据接近时 `AMBIGUOUS/NONE`。
+- 首轮 4 Development + 4 held-out 全 `NONE`，定位为 visibility 错复用身体净空膨胀 mask 并检查到目标中心；只在 Development 修复后为 `4/11` 非空、oracle `4/4`。旧 held-out 作废为诊断。随后 annotation-only 冻结 8 个历史/ledger 未出现且 visit-disjoint 的 fresh scene、79 instances。
+- fresh 结果 `VALID_SET=20/79=25.3%`，未过 50% coverage 门；非空分母 pose/closed-loop=`20/20`。终态 `GRAIL_M0_NATURAL_3D_DERIVED_TEACHER_NOT_ESTABLISHED / STOP_BEFORE_M1`。不在 fresh cohort 调 proxy，不训练 student；唯一 successor 改为具有 source-native navigability/functional-side 或 interaction-pose truth 的新数据源 M0。
+- 结果：[GRAIL natural-3D M0](docs/research/goal-copilot/GRAIL_M0_NATURAL_3D_DERIVED_TEACHER_RESULT_2026-08-25.md)。

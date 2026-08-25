@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / ALGORITHM_MAINLINE=GRAIL / LAST_METER_ALGORITHM_MAINLINE_REOPENED / M0_PROCEDURAL_ORACLE_UPPER_BOUND_ESTABLISHED / M1_AUTHORIZED / PASSIVE_EXACT_INSTANCE_CLOSED / FOUR_BOUNDARY_MAINLINE_CLOSED / MARKER_POSE_CANARY_ONLY / DYNAMIC_RISK_AUXILIARY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / ALGORITHM_MAINLINE=GRAIL / LAST_METER_ALGORITHM_MAINLINE_REOPENED / M0_PROCEDURAL_MECHANICS_PASS / M0_NATURAL_3D_VALID_SET_20_OF_79 / COVERAGE_GATE_FAIL / STOP_BEFORE_M1 / PASSIVE_EXACT_INSTANCE_CLOSED / FOUR_BOUNDARY_MAINLINE_CLOSED / MARKER_POSE_CANARY_ONLY / DYNAMIC_RISK_AUXILIARY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -18,9 +18,10 @@ fresh 程序化 metric 2.5D M0 的 36 个 held-out 建筑/实例中，24 个 pos
 `24/24`，12 个当前无合法位姿的场景 false commit=`0/12`，几何微扰稳定 `24/24`，四类结构化反事实各拒绝
 `36/36`。B1 最近自由点仅 `15/24` 且 `6/12` 无解场景强行提交，证明“可走”不足以定义“可交互”。
 
-该上界只属于程序化 task/teacher mechanics，不是 RGB、自然 3D、学习或泛化结果。唯一 successor 是 M1：冻结视觉编码器，
-在 building-disjoint 3D-derived Development 上比较 B0/B1/B2/GRAIL。旧 exact-instance 与 V1-C/D/E/F 保持关闭；marker-pose
-仅作隐藏 canary，动态风险为辅助能力，默认 App 不变。
+后续 [`natural-3D M0`](GRAIL_M0_NATURAL_3D_DERIVED_TEACHER_RESULT_2026-08-25.md) 在 8 个 fresh ARKitScenes scene、79 个实例上仅生成
+`20/79` 非空 set，未过 50% coverage 门；非空分母的 oracle pose/closed-loop=`20/20`。因此当前 teacher 前提未建立，
+`STOP_BEFORE_M1`：不训练 student、不在 fresh cohort 调 proxy。唯一 successor 必须改变 teacher 信息源，取得 source-native
+navigability/functional-side 或 interaction-pose truth 后另立 source-disjoint M0。旧路线、hidden canary、动态风险和默认 App 角色不变。
 
 ## 当前终态
 

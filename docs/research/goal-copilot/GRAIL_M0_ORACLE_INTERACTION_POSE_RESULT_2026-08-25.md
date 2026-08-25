@@ -4,6 +4,8 @@
 
 状态：`REVERSIBLE_EXPLORATION / DEVELOPMENT_STANDARD / LAST_METER_ALGORITHM_MAINLINE_REOPENED / PROCEDURAL_METRIC_2_5D / ORACLE_REFERENT / ORACLE_GEOMETRY / UPPER_BOUND_ESTABLISHED / M1_AUTHORIZED / DEFAULT_APP_UNCHANGED`
 
+后续状态：[`natural-3D M0`](GRAIL_M0_NATURAL_3D_DERIVED_TEACHER_RESULT_2026-08-25.md) coverage=`20/79`，未过 50% 门，故程序化 M0 的 M1 authorization 已被 current 撤回为 `STOP_BEFORE_M1`；本页只保留 mechanics 结果。
+
 ## 问题
 
 旧最后十米路线让目标框同时承担 referent、affordance、waypoint 和 arrival，单参考 exact-instance 与 V1-C/D/E/F 四边界路线都已按各自证据关闭。GRAIL 将任务改为：给定目标，输出一组可到达、目标可见、位于功能侧且朝向正确的 `站立位置 + yaw`，没有合法解时输出 `NONE`。
