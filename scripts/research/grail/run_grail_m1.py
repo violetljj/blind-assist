@@ -314,6 +314,11 @@ def score_rows(rows: list[dict[str,Any]], checkpoint: dict[str,Any], thresholds:
             raise RuntimeError("no Development GRAIL threshold satisfies frozen guardrails")
         thresholds["GRAIL"]=max(feasible)[1]
     metrics={name:evaluate(name,thresholds[name]) for name in ("B0","B1","B2","GRAIL")}
+    metrics["B2"].update({
+        "wrong_target": None,
+        "wrong_target_denominator": 0,
+        "wrong_target_status": "NOT_EVALUABLE_DIRECT_POSE_WITHOUT_DISTRACTOR_POSE_TRUTH",
+    })
     # Candidate-independent heads plus max must be invariant to reversal; verify exactly on recorded scores.
     permutation=sum(int(np.argmax(r["grail_scores"])) == len(r["grail_scores"])-1-int(np.argmax(list(reversed(r["grail_scores"])))) for r in positive_records)
     return {"thresholds":thresholds,"metrics":metrics,"permutation_consistent":permutation,"permutation_denominator":len(positive_records)}
