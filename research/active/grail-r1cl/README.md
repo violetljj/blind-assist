@@ -1,6 +1,6 @@
 # GRAIL R1C-L
 
-Status: `ACTIVE / EXPLORE / TRAIN_VALIDATION_ONLY / FINAL_UNOPENED`
+Status: `STOPPED / DEVELOPMENT_GATE_NOT_MET / FINAL_UNOPENED`
 
 R1C-L learns a pairwise owner-local slot coordinate from two RGB observations
 and their owner/sibling masks. It is the only active BlindAssist algorithm
@@ -30,13 +30,17 @@ Python, CUDA, backbone, dataset, and output paths before execution.
 - `run_grail_procthor_native_m0.py`: shared ProcTHOR position utilities.
 - `run_grail_r1cl_sharded_collection.py` and
   `merge_grail_r1cl_collection_shards.py`: resumable collection.
+- `evaluate_grail_r1cl_oa_v2_baseline.py`: frozen paired-relative OA-V2
+  validation slot baseline.
 - `grail_r1c_l_manifest_v3.json`: frozen roster and single architecture.
 - `smoke_r1cl.py`: two-sample real DINO forward/loss smoke.
 
 ## Decision
 
-Train and validate the one frozen architecture. If validation slot uplift over
-the frozen OA-V2 baseline is below `+8`, stop without opening final. If it meets
-the gate, update `docs/CURRENT_DECISION.md` before the one final access. This is
+The one frozen architecture completed both seeds. The selected learned arm was
+`1497/1806 = 82.89%`; the paired-relative OA-V2 baseline on the same validation
+pairs was `1456/1806 = 80.62%`. The `+2.27` point uplift is below the frozen
+`+8` gate, so R1C-L stops without final access. See
+`grail_r1c_l_development_result_v1.json` for hashes and exact scope. This is
 controlled synthetic mechanism evidence only; it does not change the Android
 default app or establish natural, product, user, or safety performance.
