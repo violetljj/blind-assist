@@ -60,6 +60,5 @@ class GrailProcThorNativeM0Tests(unittest.TestCase):
         reachable = [{"x": 0.0, "y": 0.9, "z": 0.0}]
         self.assertEqual(nearby_positions(reachable, {"x": 10.0, "z": 10.0}), [])
 
-
 if __name__ == "__main__":
     unittest.main()

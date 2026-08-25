@@ -22,12 +22,15 @@ M0 不训练网络。它在 fresh、split-disjoint 的程序化 metric 2.5D 建�
 E:\codex-tools\bin\blindassist-python.cmd scripts/research/grail/run_grail_m0.py --output-dir artifacts.local/evidence/grail-m0
 E:\codex-tools\bin\blindassist-python.cmd scripts/research/grail/run_grail_natural_3d_m0.py --mesh-root <mesh-root> --annotation-root <annotation-root> --output <report.json>
 E:\codex-tools\bin\blindassist-python.cmd scripts/research/grail/freeze_grail_procthor_native_m0.py --dataset <test.jsonl.gz> --docker-image-id <sha256:...> --output <manifest.json>
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/grail/freeze_grail_m1.py --val <val.jsonl.gz> --test <test.jsonl.gz> --output <manifest.json>
 E:\codex-tools\bin\blindassist-python.cmd -m unittest discover -s scripts/research/grail -p "test_*.py"
 ```
 
 程序化结果写入 `artifacts.local/evidence/grail-m0/`。ARKitScenes source mesh/OBB derived proxy 的 fresh 结果只有 `20/79` 非空 set，未过 50% coverage 门，该信息源保持关闭，不得在原 cohort 调 proxy。
 
 ProcTHOR native M0 V1 因空 position precondition 未被 runner 显式映射为 `NONE` 而在首个 house 终止，状态为 `NOT_EVALUABLE`，不得重跑或解释。V2 以新 salt 和全新 roster 冻结后唯一执行，12 scenes、205 targets、7 types；pose coverage=`199/205`，oracle pose/path=`199/199`，local stability=`191/199`，action canary=`12/12`，NONE false commit=`0/18`，counterfactual=`572/572`。全部门通过，故只在 synthetic/native claim ceiling 内建立 M0 upper bound 并授权 M1。
+
+M1 已在任何视觉 collection/outcome 前冻结 24 train / 6 dev / 12 test houses、DINOv2-S encoder、Depth-Anything-V2-S B1 evidence、B0/B1/B2/GRAIL interface 与 one-shot gates；test houses 与全部已消费 M0 test houses 分离。
 
 ## 安全边界
 
