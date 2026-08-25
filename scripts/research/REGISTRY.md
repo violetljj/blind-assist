@@ -9,6 +9,10 @@ identity，不代表当前 authority。
 全部 Module 的逐项入口和机器校验数量见 [`MODULE_INDEX.md`](MODULE_INDEX.md)，机器分类规则见
 [`module_families.json`](module_families.json)。新增 Module 若未被唯一分类，结构门禁失败。
 
+已关闭但因历史命令或 source identity 需要保留原路径的包登记在
+[`archive_modules.json`](archive_modules.json)。archive 包不承担 current Interface，不进入 Module 数量，
+也不得原位恢复执行；新问题必须建立新的版本化 Module。
+
 ## 当前入口
 
 | 工作域 | 稳定入口 | 当前职责 |

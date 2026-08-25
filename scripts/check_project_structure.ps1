@@ -237,6 +237,37 @@ else {
         $moduleFamilies = $null
     }
 }
+$archiveModuleNames = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+$archiveManifestRelative = Normalize-RepoPath ([string]$policy.research_archive_manifest)
+if (-not [string]::IsNullOrWhiteSpace($archiveManifestRelative)) {
+    $archiveManifestPath = Resolve-FromRepo $archiveManifestRelative
+    if (-not (Test-Path -LiteralPath $archiveManifestPath -PathType Leaf)) {
+        $failures.Add("Research archive manifest is missing: $archiveManifestRelative")
+    }
+    else {
+        try {
+            $archiveManifest = Get-Content -LiteralPath $archiveManifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
+            if ([string]$archiveManifest.contract.status -ne 'archive' -or
+                [bool]$archiveManifest.contract.current_execution -or
+                -not [bool]$archiveManifest.contract.path_stable) {
+                $failures.Add('Research archive manifest contract must be archive, non-executable, and path-stable.')
+            }
+            foreach ($archiveModule in @($archiveManifest.modules)) {
+                $archiveModuleName = [string]$archiveModule
+                if ([string]::IsNullOrWhiteSpace($archiveModuleName) -or $archiveModuleName -notmatch '^[a-z0-9_]+$') {
+                    $failures.Add("Research archive manifest has an invalid module name: $archiveModuleName")
+                    continue
+                }
+                if (-not $archiveModuleNames.Add($archiveModuleName)) {
+                    $failures.Add("Research archive manifest duplicates module: $archiveModuleName")
+                }
+            }
+        }
+        catch {
+            $failures.Add("Research archive manifest is invalid: $($_.Exception.Message)")
+        }
+    }
+}
 $hftfRegistry = Resolve-FromRepo "$researchRoot/hftf/INDEX.md"
 if (-not (Test-Path -LiteralPath $hftfRegistry -PathType Leaf)) {
     $failures.Add("HFTF role index is missing: $researchRoot/hftf/INDEX.md")
@@ -284,7 +315,7 @@ else {
         $failures.Add("HFTF role manifest is invalid: $($_.Exception.Message)")
     }
 }
-$moduleNames = @(
+$allResearchDirectoryNames = @(
     $repoFiles |
         Where-Object { $_.StartsWith($researchPrefix, [StringComparison]::OrdinalIgnoreCase) } |
         ForEach-Object {
@@ -294,6 +325,27 @@ $moduleNames = @(
         Where-Object { $_ } |
         Sort-Object -Unique
 )
+$moduleNames = @($allResearchDirectoryNames | Where-Object { -not $archiveModuleNames.Contains($_) })
+foreach ($archiveModuleName in $archiveModuleNames) {
+    if ($allResearchDirectoryNames -notcontains $archiveModuleName) {
+        $failures.Add("Research archive manifest points to a missing package: $archiveModuleName")
+    }
+    if ($null -ne $moduleFamilies) {
+        $matchedArchiveFamilies = @(
+            foreach ($family in @($moduleFamilies.family_order)) {
+                foreach ($pattern in @($moduleFamilies.families.$family.patterns)) {
+                    if ($archiveModuleName -match [string]$pattern) {
+                        [string]$family
+                        break
+                    }
+                }
+            }
+        )
+        if ($matchedArchiveFamilies.Count -gt 0) {
+            $failures.Add("Archived research package must not match a current family: $archiveModuleName [$($matchedArchiveFamilies -join ', ')]")
+        }
+    }
+}
 foreach ($moduleName in $moduleNames) {
     $readmeRelative = "$researchPrefix$moduleName/README.md"
     $readmePath = Resolve-FromRepo $readmeRelative
@@ -510,24 +562,6 @@ if ($null -ne $currentTruthPolicy) {
                     $failures.Add("Algorithm current route '$routeName' truth status line is not marked current.")
                 }
 
-                # The compact algorithm index may use these established summary labels for
-                # more specific route-truth terminals. Keep this allowlist exact: every
-                # unlisted status token must still match the route status line literally.
-                $statusTokenAliases = @{
-                    'ANGULAR_BOUNDARY_TASK_INERT' = 'ANGULAR_BOUNDARY_FAIL_CLOSED_SAFE_BUT_TASK_INERT'
-                    'R14_R22_TASK_SCORER_FAIL_STOP' = 'R14_R22_TASK_SCORER_TRANSFER_FAIL_STOP'
-                }
-                $statusText = $cells[2].Trim().Trim([char]0x60)
-                foreach ($statusToken in @($statusText -split '\s*/\s*' | ForEach-Object { $_.Trim().Trim([char]0x60) } | Where-Object { $_ })) {
-                    $statusTokenIsPresent = $routeStatusTokens.Contains($statusToken)
-                    if (-not $statusTokenIsPresent -and $statusTokenAliases.ContainsKey($statusToken)) {
-                        $statusTokenIsPresent = $routeStatusTokens.Contains([string]$statusTokenAliases[$statusToken])
-                    }
-                    if (-not $statusTokenIsPresent) {
-                        $failures.Add("Algorithm current route '$routeName' status token is absent from its route current-status line: $statusToken")
-                    }
-                }
-
                 $defaultAppMarker = if ($cells[6] -eq '否') {
                     [string]$currentTruthPolicy.default_app_unchanged_marker
                 }
@@ -536,30 +570,6 @@ if ($null -ne $currentTruthPolicy) {
                 }
                 if ([string]::IsNullOrWhiteSpace($defaultAppMarker) -or -not $routeStatusTokens.Contains($defaultAppMarker)) {
                     $failures.Add("Algorithm current route '$routeName' default-App impact '$($cells[6])' is not synchronized by route marker: $defaultAppMarker")
-                }
-
-                $routeSuccessorMatch = [regex]::Match(
-                    $truthText,
-                    '(?ms)^##\s+唯一 successor\s*\r?\n(?<body>.*?)(?=^##\s+|\z)'
-                )
-                if (-not $routeSuccessorMatch.Success) {
-                    $failures.Add("Algorithm current route '$routeName' truth lacks a unique-successor section.")
-                    continue
-                }
-                $routeSuccessorBody = $routeSuccessorMatch.Groups['body'].Value
-                $successorMatch = [regex]::Match($cells[4], '`(?<successor>[^`]+)`')
-                if ($successorMatch.Success) {
-                    if (-not $routeSuccessorBody.Contains($successorMatch.Groups['successor'].Value)) {
-                        $failures.Add("Algorithm current route '$routeName' successor is absent from its route unique-successor section: $($successorMatch.Groups['successor'].Value)")
-                    }
-                }
-                elseif ($cells[4] -match '^无(?:\s|[;；,，。]|$)') {
-                    if ($routeSuccessorBody -notmatch '(?m)^\s*无(?:\s|[;:；：,，。]|$)') {
-                        $failures.Add("Algorithm current route '$routeName' declares no successor, but its route unique-successor section does not.")
-                    }
-                }
-                else {
-                    $failures.Add("Algorithm current route '$routeName' successor cell must contain one backticked identity or begin with 无.")
                 }
             }
         }

@@ -2,6 +2,13 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-25（Asia/Hong_Kong）；执行者：violjjet。完成研究操作面收口：将 12 个已关闭的
+  `goal_copilot_2*` / `l10m_*` 包登记为 path-stable 原位 archive，不再计入 current Module 或要求补写
+  新式 Interface 合同；current Module 保持 90 个。Goal Copilot current 从 242 行历史流水缩为当前问题、
+  R1C-L 唯一执行、少量证据入口和禁止边界，算法总表从逐实验轮次改为 9 个可操作路线族。结构门禁继续
+  校验唯一真源、本地链接、current/default-App 边界，但不再复制核对长 status/successor token。历史代码、
+  dated result、终态和 evidence identity 均保留，archive 只能通过新版本化 Module 重开。
+
 - 时间：2026-08-25（Asia/Hong_Kong）；执行者：Codex。先以独立提交冻结 R1C-V protocol，再固化 deterministic
   `proposal PCA axis + RGB gradient sign` 实现，之后运行唯一一次 consumed 78-case probe。Axis-only（oracle sign）
   cross-view slot=`45/78`，sign-only（oracle axis）=`40/78`，最终 visual arm=`39/78`；final referent=`38/78`、

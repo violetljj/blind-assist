@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "description": "Closed research packages retained in place for path-stable historical reproduction; they are not current Modules or execution entry points.",
+  "modules": [
+    "goal_copilot_2_audit",
+    "goal_copilot_2a",
+    "goal_copilot_2b",
+    "l10m_b0",
+    "l10m_b1",
+    "l10m_b2",
+    "l10m_b3",
+    "l10m_b3a",
+    "l10m_b4",
+    "l10m_b6_0",
+    "l10m_cbt_0",
+    "l10m_gor_0"
+  ],
+  "contract": {
+    "status": "archive",
+    "current_execution": false,
+    "path_stable": true,
+    "dynamic_truth": "docs/research/goal-copilot/README.md",
+    "reactivation": "Create a new versioned current Module; never mutate or reactivate an archived package in place."
+  }
+}

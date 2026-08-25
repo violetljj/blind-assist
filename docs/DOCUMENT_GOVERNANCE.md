@@ -47,7 +47,7 @@
 - 非历史 `docs/**/*.json` 中键为 `path` 或 `*_path` 的仓库相对稳定路径必须存在；URI、绝对路径、`artifacts.local/` 与易失 `build/` 证据不在此门内。
 - `docs/PROJECT_STATE.md` 是冷启动导航，不复制研究结论；任务开始时先读它，默认读取一个分类 current/根入口和一个明确的路线/合同/测试入口，直接依赖、验证或冲突需要时可扩展。
 - 冷启动导航只允许稳定身份、路径和读取规则；状态、主张、指标、successor、禁止动作和默认 App 权限必须只在对应 current 真源维护。
-- `ALGORITHM_RESEARCH_CURRENT.md` 的 current 路线摘要必须与其唯一真源 README 的顶部 current 状态行、“唯一 successor”段和默认 App 标记同步；历史段落中偶然出现同名 token 不算同步。`SYSTEM_RESEARCH_CURRENT.md` 遇到同一 DepthART/HFTF 执行面时只分类并显式委托，不建立第二份动态真源。
+- `ALGORITHM_RESEARCH_CURRENT.md` 只校验紧凑路线摘要、唯一真源链接和默认 App 标记；详细状态 token、指标与 successor 只在 owning route current 维护，不再双向逐 token 复制。`SYSTEM_RESEARCH_CURRENT.md` 遇到同一 DepthART/HFTF 执行面时只分类并显式委托，不建立第二份动态真源。
 - 研究 Module 数量只在 `scripts/research/MODULE_INDEX.md` 维护，结构门会将其 `N-of-N` 与 Git 可见 Module 目录实时对比；其他导航页不写数字副本。
 
 ## 历史与归档

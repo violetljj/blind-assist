@@ -6,6 +6,9 @@
 Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导。
 机器分类规则见 [`module_families.json`](module_families.json)。
 
+`goal_copilot_2*` 与 `l10m_*` 的 12 个关闭包由
+[`archive_modules.json`](archive_modules.json) 原位保留，不计入 current Module 数量，也不是执行入口。
+
 ## 当前入口与共享实现（7）
 
 - [`ba_adt_real_evidence`](ba_adt_real_evidence/README.md)
@@ -120,3 +123,4 @@ Module README 及对应 `docs/research/*_CURRENT.md`，不得从目录名推导�
 2. current、paused、closed、diagnostic 和 successor 只以 README/current 真源为准。
 3. 新 Module 必须同时被 `module_families.json` 唯一分类并出现在本页。
 4. 默认 App 影响一律为否，除非产品 current 与显式晋级提交同时改写该结论。
+5. archive 包只能通过新版本化 Module 重开，不得在原目录恢复 current 状态。

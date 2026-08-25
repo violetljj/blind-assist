@@ -47,6 +47,7 @@ function New-TestRepository([string]$Name) {
     Write-TestFile $repository 'scripts/research/REGISTRY.md' '# registry'
     Write-TestFile $repository 'scripts/research/MODULE_INDEX.md' "# modules`n- [hftf](hftf/README.md)`n- [demo](demo/README.md)`n- [common](common/README.md)`n"
     Write-TestFile $repository 'scripts/research/module_families.json' '{"schema_version":1,"family_order":["fixture"],"families":{"fixture":{"description":"fixture","patterns":["^(common|demo|hftf)$"],"dynamic_truth":"docs/AI_REVIEW_GOVERNANCE.md"}}}'
+    Write-TestFile $repository 'scripts/research/archive_modules.json' '{"schema_version":1,"modules":[],"contract":{"status":"archive","current_execution":false,"path_stable":true,"dynamic_truth":"docs/research/README.md","reactivation":"new module"}}'
     Write-TestFile $repository 'scripts/research/hftf/README.md' (Research-Readme 'hftf')
     Write-TestFile $repository 'scripts/research/hftf/INDEX.md' '# hftf'
     Write-TestFile $repository 'scripts/research/hftf/roles.json' '{"schema_version":1,"module":"hftf","role_order":["governance","support"],"roles":{"governance":{"description":"fixture","patterns":[".*"]},"support":{"description":"fallback","patterns":["(?!)"]}}}'
@@ -73,6 +74,7 @@ function New-TestRepository([string]$Name) {
             max_age_days = 28
         }
         research_root = 'scripts/research'
+        research_archive_manifest = 'scripts/research/archive_modules.json'
         hftf_support_max_files = 0
         research_readme_required_markers = @('状态：', '## 稳定 Interface', '## 输出', '## 安全边界', '## 停止条件', 'artifacts.local/')
         internal_reference_source_allowlist = @()
@@ -241,6 +243,19 @@ try {
         param($repo)
         Write-TestFile $repo 'scripts/research/demo/README.md' "# demo`n状态：active`n"
     }
+    Assert-Scenario 'archived-package-needs-no-current-contract' $true {
+        param($repo)
+        Write-TestFile $repo 'scripts/research/legacy/tool.py' 'print("historical")'
+        Write-TestFile $repo 'scripts/research/archive_modules.json' '{"schema_version":1,"modules":["legacy"],"contract":{"status":"archive","current_execution":false,"path_stable":true,"dynamic_truth":"docs/research/README.md","reactivation":"new module"}}'
+    }
+    Assert-Scenario 'archive-manifest-stale-path' $false {
+        param($repo)
+        Write-TestFile $repo 'scripts/research/archive_modules.json' '{"schema_version":1,"modules":["missing"],"contract":{"status":"archive","current_execution":false,"path_stable":true,"dynamic_truth":"docs/research/README.md","reactivation":"new module"}}'
+    }
+    Assert-Scenario 'archive-package-cannot-match-current-family' $false {
+        param($repo)
+        Write-TestFile $repo 'scripts/research/archive_modules.json' '{"schema_version":1,"modules":["demo"],"contract":{"status":"archive","current_execution":false,"path_stable":true,"dynamic_truth":"docs/research/README.md","reactivation":"new module"}}'
+    }
     Assert-Scenario 'private-path-reference' $false {
         param($repo)
         Write-TestFile $repo 'scripts/caller.md' 'python scripts/research/demo/tool.py'
@@ -352,14 +367,14 @@ try {
         $index = Get-Content -LiteralPath $indexPath -Raw -Encoding UTF8
         Write-TestFile $repo 'scripts/research/MODULE_INDEX.md' ($index.Replace('3-of-3', '2-of-3'))
     }
-    Assert-Scenario 'current-truth-route-status-drift' $false {
+    Assert-Scenario 'current-summary-status-does-not-duplicate-route-token' $true {
         param($repo)
         Enable-CurrentTruthFixture $repo
         $algorithmPath = Join-Path $repo 'docs/research/ALGORITHM_RESEARCH_CURRENT.md'
         $algorithm = Get-Content -LiteralPath $algorithmPath -Raw -Encoding UTF8
         Write-TestFile $repo 'docs/research/ALGORITHM_RESEARCH_CURRENT.md' ($algorithm.Replace('`ACTIVE`', '`STALE`'))
     }
-    Assert-Scenario 'current-truth-route-status-only-in-history' $false {
+    Assert-Scenario 'current-summary-status-remains-compact-with-route-history' $true {
         param($repo)
         Enable-CurrentTruthFixture $repo
         $routePath = Join-Path $repo 'docs/research/hftf/README.md'
@@ -369,14 +384,14 @@ try {
         $algorithm = Get-Content -LiteralPath $algorithmPath -Raw -Encoding UTF8
         Write-TestFile $repo 'docs/research/ALGORITHM_RESEARCH_CURRENT.md' ($algorithm.Replace('`ACTIVE`', '`STALE`'))
     }
-    Assert-Scenario 'current-truth-route-successor-drift' $false {
+    Assert-Scenario 'current-summary-successor-does-not-duplicate-route-token' $true {
         param($repo)
         Enable-CurrentTruthFixture $repo
         $algorithmPath = Join-Path $repo 'docs/research/ALGORITHM_RESEARCH_CURRENT.md'
         $algorithm = Get-Content -LiteralPath $algorithmPath -Raw -Encoding UTF8
         Write-TestFile $repo 'docs/research/ALGORITHM_RESEARCH_CURRENT.md' ($algorithm.Replace('`FIXTURE_NEXT`', '`STALE_NEXT`'))
     }
-    Assert-Scenario 'current-truth-route-successor-only-in-history' $false {
+    Assert-Scenario 'current-summary-successor-remains-compact-with-route-history' $true {
         param($repo)
         Enable-CurrentTruthFixture $repo
         $routePath = Join-Path $repo 'docs/research/hftf/README.md'
@@ -441,6 +456,7 @@ try {
         root_index_exempt_patterns = @('^test_', '^README\.md$')
         development_log = [ordered]@{ path = 'DEVELOPMENT_LOG.md'; max_lines = 20; max_bytes = 4096; max_age_days = 28 }
         research_root = 'scripts/research'
+        research_archive_manifest = 'scripts/research/archive_modules.json'
         hftf_support_max_files = 0
         research_readme_required_markers = @('状态：', '## 稳定 Interface', '## 输出', '## 安全边界', '## 停止条件', 'artifacts.local/')
         internal_reference_source_allowlist = @()
