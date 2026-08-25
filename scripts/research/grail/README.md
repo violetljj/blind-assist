@@ -21,10 +21,13 @@ M0 不训练网络。它在 fresh、split-disjoint 的程序化 metric 2.5D 建�
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd scripts/research/grail/run_grail_m0.py --output-dir artifacts.local/evidence/grail-m0
 E:\codex-tools\bin\blindassist-python.cmd scripts/research/grail/run_grail_natural_3d_m0.py --mesh-root <mesh-root> --annotation-root <annotation-root> --output <report.json>
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/grail/freeze_grail_procthor_native_m0.py --dataset <test.jsonl.gz> --docker-image-id <sha256:...> --output <manifest.json>
 E:\codex-tools\bin\blindassist-python.cmd -m unittest discover -s scripts/research/grail -p "test_*.py"
 ```
 
 程序化结果写入 `artifacts.local/evidence/grail-m0/`。后续 natural-3D runner 使用 ARKitScenes source mesh/OBB 与显式 derived proxy；fresh 结果只有 `20/79` 非空 set，未过 50% coverage 门，故 M1 当前禁止。唯一 successor 必须改变 teacher 信息源，以 source-native navigability/functional-side 或 interaction-pose truth 另立 source-disjoint M0；不得在 fresh cohort 调 proxy。
+
+当前 successor 已冻结为 ProcTHOR-10K + AI2-THOR native reachable/interactable-pose M0；协议与 roster 见 `procthor_native_m0_manifest_v1.json`。只有全部 one-shot held-out 门通过，才可解除 `STOP_BEFORE_M1`。
 
 ## 安全边界
 
