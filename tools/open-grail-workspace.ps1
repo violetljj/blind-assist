@@ -22,6 +22,28 @@ foreach ($relative in @('config/local.toml', 'local.properties')) {
     }
 }
 
+# A copied local config must keep pointing at machine-owned payloads beside the
+# source checkout. Relative values would otherwise be reinterpreted inside the
+# new worktree, which intentionally contains no datasets or model weights.
+$targetConfig = Join-Path $target 'config/local.toml'
+if (Test-Path -LiteralPath $targetConfig -PathType Leaf) {
+    $pathKeys = @(
+        'research_python', 'r1cl_backbone', 'r1cl_train_dataset',
+        'r1cl_validation_dataset', 'r1cl_output', 'android_sdk', 'java_home',
+        'adb', 'docker', 'export_python'
+    )
+    $rebased = foreach ($line in Get-Content -LiteralPath $targetConfig) {
+        if ($line -match '^([A-Za-z0-9_-]+)\s*=\s*"(.*)"\s*$' -and
+            $Matches[1] -in $pathKeys -and $Matches[2] -and
+            -not [IO.Path]::IsPathRooted($Matches[2])) {
+            $absolute = [IO.Path]::GetFullPath((Join-Path $repo $Matches[2])).Replace('\', '/')
+            "$($Matches[1]) = `"$absolute`""
+        }
+        else { $line }
+    }
+    Set-Content -LiteralPath $targetConfig -Value $rebased -Encoding utf8NoBOM
+}
+
 & (Join-Path $target 'tools/ba.ps1') setup research-r1cl
 if ($LASTEXITCODE -ne 0) { throw 'R1C-L worktree setup failed; worktree was preserved for diagnosis' }
 Write-Output "PASS worktree=$target branch=$Branch"
