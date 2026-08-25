@@ -1,34 +1,26 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / SEMANTIC_ANCHOR_V1_CONTROLLED_DEMO_16_OF_16_ZERO_WRONG_LOCK / CLOSE_NATURAL_SAGE_R / CONTROLLED_EXACT_ANCHOR_RETAINED / SAGE_LM_R3_RETAINED_FROZEN_REFERENCE / V1_C_PROXY_SUPERVISION_CLOSED / V1_D_PARALLAX_CLOSED_RESCUE_0_OF_9 / V1_E0_ARKIT_MESH_TEACHER_LOW_CEILING_RESCUE_3_OF_9 / V1_F_PORTAL_INTERIOR_TRUE_PAIR_0_OF_24_GEOMETRY_10_OF_24_RETENTION_0_OF_18_RESCUE_0_OF_6 / FOUR_BOUNDARY_MAINLINE_REPRESENTATION_CLOSED / STOP_BEFORE_STUDENT / V2_MARKER_POSE_ANDROID_IMPLEMENTED_LIVE_DEVICE_NOT_RUN / NO_P1_PROMOTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / ALGORITHM_MAINLINE=GRAIL / LAST_METER_ALGORITHM_MAINLINE_REOPENED / M0_PROCEDURAL_ORACLE_UPPER_BOUND_ESTABLISHED / M1_AUTHORIZED / PASSIVE_EXACT_INSTANCE_CLOSED / FOUR_BOUNDARY_MAINLINE_CLOSED / MARKER_POSE_CANARY_ONLY / DYNAMIC_RISK_AUXILIARY / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
 
 ## 当前结论
 
-[`Synthetic current-frame arrival closeout`](BLINDASSIST_SYNTHETIC_CURRENT_FRAME_ARRIVAL_CLOSEOUT_2026-08-23.md)
-前向关闭 synthetic current-frame completion / arrival 的产品证明责任：
+[`GRAIL M0`](GRAIL_M0_ORACLE_INTERACTION_POSE_RESULT_2026-08-25.md) 已用新的任务定义重开最后十米算法主线：
 
 ```text
-SYNTHETIC_CURRENT_FRAME_ARRIVAL_AUTHORITY_CLOSED
-DESTINATION_RELATIVE_ARRIVAL_NOT_ESTABLISHED
-PUBLIC_REAL_EPISODE_MINING_V0_IS_CURRENT_SUCCESSOR
+goal-conditioned + set-valued interaction-pose prediction
+referent != affordance != reachability != visibility != arrival
 ```
 
-已建立的 bounded 事实是：合法 public Goal Contract 驱动的 semantic proposal 在受限公开/合成条件下通常能把目标放入
-Top-K；它不等于 referent authority、destination arrival、入口可用性或用户完成。
+fresh 程序化 metric 2.5D M0 的 36 个 held-out 建筑/实例中，24 个 positive 的 oracle set-field 位姿与简单闭环均
+`24/24`，12 个当前无合法位姿的场景 false commit=`0/12`，几何微扰稳定 `24/24`，四类结构化反事实各拒绝
+`36/36`。B1 最近自由点仅 `15/24` 且 `6/12` 无解场景强行提交，证明“可走”不足以定义“可交互”。
 
-已否决或未建立的责任链是：
-
-- detector bbox extent 不能承担 nearness/completion；
-- exact-door component proximity 与 ground-connected proxy 不能承担 functional aperture 或 arrival；
-- route-bearing replay 没有稳定 public destination，不能承担 destination-relative arrival；
-- `STOP_FOR_SAFETY != ARRIVED`，`HANDOFF_READY != COMPLETED`；
-- episode completion 只接受显式用户确认，或独立、受合同约束的可信交互 receipt。
-
-TartanAir/TartanGround 只保留为 regression、controller mechanics、geometry sanity 与 leak check。禁止 D2、S6 或新的
-synthetic completion confirmation cohort；不得通过 detector、SAM、depth model、threshold 或 provider sweep 恢复该权限。
+该上界只属于程序化 task/teacher mechanics，不是 RGB、自然 3D、学习或泛化结果。唯一 successor 是 M1：冻结视觉编码器，
+在 building-disjoint 3D-derived Development 上比较 B0/B1/B2/GRAIL。旧 exact-instance 与 V1-C/D/E/F 保持关闭；marker-pose
+仅作隐藏 canary，动态风险为辅助能力，默认 App 不变。
 
 ## 当前终态
 

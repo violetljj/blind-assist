@@ -5432,3 +5432,10 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
   缺口和历史 Goal Copilot route-token 漂移阻断，失败清单未包含本轮新增 V1-F、marker-pose 路径或链接。本轮不吸收这些
   无关治理修复；专项 tests、APK build 与 scoped diff 仍分别验证。
 - 结果：[V2 marker-pose implementation](docs/research/goal-copilot/SAGE_LM_V2_MARKER_POSE_LIVE_SEAM_IMPLEMENTATION_2026-08-25.md)。
+
+# 2026-08-25 GRAIL M0 interaction-pose oracle upper bound
+
+- 执行者：violjjet。正式把最后十米算法主线从 exact-instance + 四边界恢复改为 GRAIL goal-relative set-valued interaction pose；旧 passive identity 与 V1-C/D/E/F 保持关闭，marker-pose 降为隐藏回归夹具，动态风险降为辅助能力。
+- 新增程序化 metric 2.5D teacher/oracle：12 Development + 36 scene/instance-disjoint held-out 建筑，无人工逐帧标注。held-out 24 个 positive 中 B3 oracle pose/closed-loop=`24/24`，12 个 NONE false commit=`0/12`；B0=`8/24` 且 NONE false commit=`12/12`，B1 最近自由点=`15/24` 且 NONE false commit=`6/12`。几何微扰稳定 `24/24`，四类结构化反事实各实际构造并拒绝 `36/36`。
+- 终态 `GRAIL_M0_PROCEDURAL_ORACLE_UPPER_BOUND_ESTABLISHED`，只建立 task/teacher mechanics，不建立 RGB、自然 3D、学习、设备、产品或安全能力。唯一 successor 为 M1 frozen-encoder、building-disjoint B0/B1/B2/GRAIL Development 对照；默认 App 不变。
+- 结果：[GRAIL M0](docs/research/goal-copilot/GRAIL_M0_ORACLE_INTERACTION_POSE_RESULT_2026-08-25.md)。

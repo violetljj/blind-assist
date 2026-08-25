@@ -1,8 +1,8 @@
 # 动态出行风险候选精读索引
 
-状态：`snapshot / pending candidates / not an active route`
+状态：`snapshot / auxiliary capability / not the algorithm mainline`
 
-本目录保存 2026-08-24 对动态出行风险首批 30 项及筛选后新增 10 项论文、算法和开源项目的一手材料精读。它用于以后复核候选机制、证据强度和不可迁移边界，不建立算法 successor、实验执行、Android、默认 App、生产或安全 authority。
+本目录保存 2026-08-24 对动态出行风险首批 30 项及筛选后新增 10 项论文、算法和开源项目的一手材料精读。动态风险现为 GRAIL 最后十米主线行进过程中的辅助能力，不承担论文核心贡献；本 snapshot 不建立算法 successor、实验执行、Android、默认 App、生产或安全 authority。
 
 ## 入口
 
