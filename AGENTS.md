@@ -129,6 +129,8 @@ After `PROJECT_STATE.md`, read only the route needed for the task:
   and `scripts/check_docs_index.ps1` for top-level/current documentation links.
 - Run broader builds, hygiene suites, device matrices, or formal validators only
   when the changed surface or an explicit delivery gate requires them.
+- When scientifically equivalent, prefer the backend confirmed faster by a short
+  benchmark; prefer GPU for batched tensor work, but speed is not algorithmic evidence.
 
 ## Workspace ownership and delivery
 
@@ -139,11 +141,10 @@ After `PROJECT_STATE.md`, read only the route needed for the task:
   Project-local artifacts belong under ignored `artifacts.local/`.
 - Never amend or rewrite history, force-push, delete branches, change remotes,
   or run destructive Git/file operations without explicit user authorization.
-- Tracked task changes should end in one focused commit and a normal push to the
-  configured default branch when delivery is in scope. Never absorb unrelated
-  changes to make a delivery look clean.
+- Routine research delivery goes directly to the default branch; do not create a
+  PR or wait for CI/review unless requested. Verify local/remote parity after push.
+  Never absorb unrelated changes to make a delivery look clean.
 
-Completion means the requested outcome exists, the narrow falsification check
-passes (or its exact evidence gap is stated), the scoped diff is reviewed, and
-task-owned temporary processes or resources are released. Stop there; do not
-add speculative polish or unrelated validation.
+Completion means the outcome exists, the narrow falsification check passes (or
+its exact evidence gap is stated), the scoped diff is reviewed, and task-owned
+resources are released. Stop without speculative polish or unrelated validation.
