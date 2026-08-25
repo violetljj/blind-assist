@@ -21,6 +21,9 @@ build/
 **/.cxx/
 output/
 local.properties
+config/local.toml
+.venv-export/
+research/active/grail-r1cl/.venv/
 keystore.properties
 *.jks
 *.keystore

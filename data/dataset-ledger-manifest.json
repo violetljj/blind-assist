@@ -1,0 +1,20 @@
+{
+  "schema": "blindassist_dataset_ledger_external_v1",
+  "snapshot_date": "2026-08-26",
+  "archive_tag": "archive/pre-agent-surface-2026-08-26",
+  "generator": "tools/data/generate_dataset_ledger.py",
+  "materialized_output": "artifacts.local/datasets/ledger/DATASET_MASTER_LEDGER.json",
+  "source_snapshot": {
+    "json": {
+      "bytes": 569224796,
+      "sha256": "2227a6adb23aebda5dc4222bbeccdb60fec8e9ed1fbeb29c048219c1f70ebe7f"
+    },
+    "csv": {
+      "bytes": 3814219,
+      "sha256": "0ee0276357237833d9fe836113820b562663c96552e610a814161a8f28b105bd",
+      "rows": 7399
+    }
+  },
+  "summary": "data/dataset-ledger-summary.csv",
+  "note": "Full generated ledger was removed from the default tree and remains recoverable from the archive tag or regenerable under artifacts.local."
+}

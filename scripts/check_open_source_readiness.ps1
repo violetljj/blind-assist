@@ -36,7 +36,7 @@ $requiredFiles = @(
     'GOVERNANCE.md',
     'CITATION.cff',
     'docs/OPEN_SOURCE_PUBLIC_VALUE.md',
-    'docs/CODEX_MAINTAINER_AUTOMATION.md',
+    'docs/operations/CODEX_MAINTAINER_AUTOMATION.md',
     'docs/THREAT_MODEL.md',
     'docs/MODEL_CARD.md',
     '.github/CODEOWNERS',
@@ -111,7 +111,7 @@ if (Test-Path -LiteralPath $readmePath -PathType Leaf) {
         'CONTRIBUTING.md',
         'GOVERNANCE.md',
         'docs/MODEL_CARD.md',
-        'docs/CODEX_MAINTAINER_AUTOMATION.md',
+        'docs/operations/CODEX_MAINTAINER_AUTOMATION.md',
         'docs/THREAT_MODEL.md',
         'SECURITY.md'
     )) {

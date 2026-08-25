@@ -1,69 +1,33 @@
-# BlindAssist 项目冷启动状态
+# Project state
 
-状态：`current / NAVIGATION_ONLY`
-最后核验：2026-08-13
+Updated: 2026-08-26
 
-> 新窗口首先读本页。目标是 30 秒内确定项目是什么、这次任务该读哪两个
-> current/route 文件。
-> 本页只做导航，不复制实验历史；动态结论以表中链接的 current 真源为准。
+BlindAssist is a runnable Android showcase research prototype. The default
+research policy is effect-first: demonstrate a genuine, visible effect in a
+controlled setup, report the setup and metric honestly, and add only checks that
+protect interpretation.
 
-## 项目是什么
+## Current operating surface
 
-BlindAssist 是一个本地 Android 助盲避障原型：手机 CameraX 采集，视觉模型推理，
-规则层生成语音、震动和 Compose 反馈。它不是安全认证设备，不能替代盲杖、导盲犬或人工判断。
+- Exactly one active research route: [GRAIL R1CL](../research/active/grail-r1cl/README.md)
+- Current question and stop condition: [CURRENT_DECISION.md](CURRENT_DECISION.md)
+- Workstation entrypoint: `tools/ba.ps1`
+- Android entrypoint: `scripts/run_android_gradle.ps1`
+- Closed experiment lookup: [history-index.md](history-index.md)
 
-## 动态真源
+## Current evidence
 
-本页不复制会变化的路线、状态、指标、下一步或权限。只按任务类型打开一个 current
-入口；该入口再链接唯一路线真源。
+The R1CL environment doctor and a two-sample DINOv2 CUDA forward/loss/backward
+smoke have passed on the configured local workstation. This proves the local
+mechanics only; it is not a training result, natural-distribution result, live
+camera result, or product-safety claim.
 
-| 范围 | 动态真源 |
-|---|---|
-| 算法 | [算法 current](research/ALGORITHM_RESEARCH_CURRENT.md) |
-| 数据 | [数据 current](research/DATA_RESEARCH_CURRENT.md) |
-| 系统与平台 | [系统 current](research/SYSTEM_RESEARCH_CURRENT.md) |
-| 产品、默认 App、构建 | [根 README](../README.md) |
-| 未决想法 | [idea.md](../idea.md) |
+## Boundaries
 
-如果本页与上述入口不一致，以对应 current 真源和可复现门禁为准；不要在本页修补动态结论。
-
-## 这次任务默认读取哪两个入口
-
-| 任务关键词 | 默认读取路径 |
-|---|---|
-| 算法、模型、Assistive Geometry、TARO、DepthART、DA2、双环、RCLE | 本页 → [算法 current](research/ALGORITHM_RESEARCH_CURRENT.md)；按直接依赖再读路线 README |
-| 数据集、truth、标注、split、coverage | 本页 → [数据 current](research/DATA_RESEARCH_CURRENT.md)；按直接依赖再读 data ledger/contract |
-| 延迟、链路、性能、QNN、HTP、部署 | 本页 → [系统 current](research/SYSTEM_RESEARCH_CURRENT.md)；按直接依赖再读 benchmark/preflight |
-| Android、App、CameraX、UI、构建 | 本页 → [代码地图](CODE_MAP.md)；按直接依赖再读根 README、模块实现或测试 |
-| 文档、索引、归档、冷启动 | 本页 → [文档治理](DOCUMENT_GOVERNANCE.md)；按直接依赖再读 [docs 索引](README.md) |
-| 新想法、暂不推进 | 本页 → [idea.md](../idea.md)；仅在需要时读原始方案/调研文件 |
-
-默认最多读取本页加一个分类 current/根入口和一个直接依赖的路线、合同、ledger
-或测试入口。若直接依赖、验证或状态冲突需要，可继续读取相关文件；不得为了背景
-信息进行无界扫描。
-
-## 默认不要读
-
-除非任务明确要求历史追溯、复现或审计，否则跳过：
-
-- `docs/**/archive/`
-- 日期化 `snapshot`、旧实验报告、完整研究史
-- `DEVELOPMENT_LOG.md` 全文、`docs/history/`
-- `artifacts.local/`、`build/`、`.cxx/` 和其他机器产物
-- 与当前任务无关的研究域、数据台账和共享工作树改动
-
-## 冷启动规则
-
-1. 先读本页，给任务归类。
-2. 默认只读对应分类 current/根入口和一个明确的路线/合同/测试入口。
-3. 直接依赖、验证或冲突需要时可扩展读取范围，并在工作计划中说明原因。
-4. 先检查 `git status --short`，把已有改动视为用户所有。
-5. 只有遇到链接缺失、状态冲突或用户要求历史时，才扩大读取范围。
-6. 完成后把新结论写回唯一 current；未决定的想法留在 `idea.md`，不要创建伪 current。
-
-## 同步契约
-
-- 研究状态、主张、successor、禁止动作或默认 App 权限变化：同一提交更新对应 current 真源。
-- 分类入口只维护本分类摘要；路线 README 只维护本路线摘要；本页不重复这些内容。
-- 新增或移动 current 文档：同一提交更新本页（仅入口）和 `docs/README.md`，再运行索引检查。
-- snapshot、archive、日志和外部方案不会自动改变 current；采用前必须显式登记并写明 successor。
+- Historical routes remain closed unless a new versioned experiment introduces
+  a genuinely new information source.
+- Curated Development evidence may support the showcase, but its scope must be
+  stated.
+- Live-camera behavior requires a ready device and a device run; a build or JVM
+  test is not a substitute.
+- Protected final claims follow [formal governance](formal/RESEARCH_GOVERNANCE.md).

@@ -273,9 +273,6 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Run dependency-free research contract tests
-        run: python scripts/run_research_contract_tests.py
-
       - name: Install TFLite inspection runtime
         shell: pwsh
         run: |

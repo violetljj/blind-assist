@@ -85,5 +85,5 @@ model, deployment, or safety claim. Candidate models remain isolated until the
 applicable quality, device, and release gates pass.
 
 For current research authority, start from
-[`docs/research/README.md`](research/README.md). For release validation, use
+[`docs/PROJECT_STATE.md`](PROJECT_STATE.md). For release validation, use
 [`docs/RELEASE_AND_VERIFICATION.md`](RELEASE_AND_VERIFICATION.md).

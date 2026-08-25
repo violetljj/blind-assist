@@ -121,4 +121,4 @@ or privacy reports must follow [SECURITY.md](../SECURITY.md).
   a product or safety claim.
 
 The stable module map is in [CODE_MAP.md](CODE_MAP.md). The full evidence boundary
-is in [RESEARCH_GOVERNANCE.md](RESEARCH_GOVERNANCE.md).
+is in [RESEARCH_GOVERNANCE.md](formal/RESEARCH_GOVERNANCE.md).

@@ -1,9 +1,0 @@
-{
-  "schema_version": "blindassist.data_identity_manifest.v1",
-  "evidence_id": "TEST-CONFIRMATION-IDENTITY-A",
-  "protocol_id": "TEST_CONFIRMATION",
-  "source_identity": "source-a",
-  "content_identity": "content-a",
-  "independence_group": "group-a",
-  "ancestry": []
-}

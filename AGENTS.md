@@ -70,7 +70,7 @@ or the next decision. Undecided ideas stay in `idea.md`.
 Use `FINAL` only before opening protected final/blind outcomes, producing a
 claim-critical terminal, or placing a number in a final paper table. Before
 outcome access, follow the owning current contract and
-[research governance](docs/RESEARCH_GOVERNANCE.md), freezing only the data,
+[research governance](docs/formal/RESEARCH_GOVERNANCE.md), freezing only the data,
 implementation, metric, threshold, missing-data behavior, and retry semantics
 needed to protect that claim.
 
@@ -105,7 +105,7 @@ After `PROJECT_STATE.md`, read only the route needed for the task:
 | Task | Route |
 | --- | --- |
 | Algorithm, model, training, benchmark, or dataset exploration | One classification current, then its single owning route/code entry; full governance is not required for `EXPLORE` |
-| Protected final/blind evaluation or claim-critical protocol | [research governance](docs/RESEARCH_GOVERNANCE.md) and the owning current contract |
+| Protected final/blind evaluation or claim-critical protocol | [research governance](docs/formal/RESEARCH_GOVERNANCE.md) and the owning current contract |
 | Android, CameraX, UI, or module code | [code map](docs/CODE_MAP.md), affected implementation, and focused test |
 | Device, ADB, streaming, latency, or stability | [device regression](docs/DEVICE_REGRESSION.md) and the affected device contract |
 | Release, versioning, APK delivery, or archive | [release and verification](docs/RELEASE_AND_VERIFICATION.md) |
@@ -118,8 +118,9 @@ After `PROJECT_STATE.md`, read only the route needed for the task:
 - For Android/Gradle tasks use
   `pwsh -NoProfile -File scripts/run_android_gradle.ps1 <tasks...>`; do not
   hand-compose a replacement toolchain.
-- Use `pwsh -NoProfile -File scripts/project.ps1 doctor` only when combined
-  workstation readiness is relevant.
+- Use `pwsh -NoProfile -File tools/ba.ps1 doctor <profile>` for scoped
+  workstation readiness. Profiles are `base`, `research-r1cl`, `android`,
+  `device`, and `export`.
 - Keep machine paths, SDK locations, Python/CUDA paths, credentials, and local
   endpoints out of tracked instructions. Pass them by CLI, ignored local config,
   environment variables, or the owning credential store.

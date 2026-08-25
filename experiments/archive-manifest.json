@@ -1,0 +1,27 @@
+{
+  "schema": "blindassist_agent_surface_archive_v1",
+  "date": "2026-08-26",
+  "archive_tag": "archive/pre-agent-surface-2026-08-26",
+  "archive_tag_object": "c271d85181a8349c7d9b261b018e17c8155bd6da",
+  "archive_commit": "f01a0072160f9b14c0debaf912bd67a4efb52772",
+  "before": {
+    "tracked_scripts": 4027,
+    "tracked_docs": 1926,
+    "tracked_configs": 353,
+    "dataset_ledger_json_bytes": 569224796,
+    "active_or_historical_research_directories": 103
+  },
+  "after": {
+    "tracked_scripts": 19,
+    "tracked_docs": 33,
+    "tracked_configs": 1,
+    "active_research_directories": 1,
+    "tracked_active_route_files": 18,
+    "tracked_files_total_before_this_manifest": 595
+  },
+  "current_branch_change": {
+    "deleted_paths": 6268,
+    "renamed_paths": 14
+  },
+  "recovery": "Use the archive tag in an isolated worktree; it is not current execution authority."
+}

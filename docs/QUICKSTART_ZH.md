@@ -88,4 +88,4 @@ pwsh -NoProfile -File scripts/check_docs_index.ps1
   `artifacts.local/`；
 - 不把 `UNKNOWN`、synthetic evidence、构建成功或 benchmark 写成产品或安全证明。
 
-稳定模块定位见[代码地图](CODE_MAP.md)，完整证据边界见[研究治理](RESEARCH_GOVERNANCE.md)。
+稳定模块定位见[代码地图](CODE_MAP.md)，完整证据边界见[研究治理](formal/RESEARCH_GOVERNANCE.md)。
