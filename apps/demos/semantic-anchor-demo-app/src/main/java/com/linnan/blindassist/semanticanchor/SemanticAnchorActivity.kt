@@ -115,11 +115,13 @@ class SemanticAnchorActivity : ComponentActivity() {
             draftMode = draftMode,
             draftValue = draftValue,
             replayRunning = replayRunning,
+            guidanceArm = state.guidanceArm,
             onMode = { mode ->
                 draftMode = mode
                 draftValue = if (mode == AnchorMode.MARKER) DEFAULT_MARKER_TARGET.value else DEFAULT_OCR_TARGET.value
             },
             onValue = { draftValue = it },
+            onGuidanceArm = { state = session.setGuidanceArm(it) },
             onApplyTarget = { applyTarget() },
             onStartCamera = {
                 if (!applyTarget()) return@SemanticAnchorScreen
@@ -168,8 +170,10 @@ private fun SemanticAnchorScreen(
     draftMode: AnchorMode,
     draftValue: String,
     replayRunning: Boolean,
+    guidanceArm: GuidanceArm,
     onMode: (AnchorMode) -> Unit,
     onValue: (String) -> Unit,
+    onGuidanceArm: (GuidanceArm) -> Unit,
     onApplyTarget: () -> Unit,
     onStartCamera: () -> Unit,
     onReplay: () -> Unit,
@@ -199,10 +203,24 @@ private fun SemanticAnchorScreen(
             singleLine = true,
             modifier = Modifier.fillMaxWidth().testTag("semantic_target_input"),
         )
+        Text("Control arm · QR 物理边长固定 0.16 m · target-front standoff 0.65 m")
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FilterChip(
+                selected = guidanceArm == GuidanceArm.CENTER_BASELINE,
+                onClick = { onGuidanceArm(GuidanceArm.CENTER_BASELINE) },
+                label = { Text("Center baseline") },
+            )
+            FilterChip(
+                selected = guidanceArm == GuidanceArm.PNP_POSE,
+                onClick = { onGuidanceArm(GuidanceArm.PNP_POSE) },
+                label = { Text("PnP pose") },
+            )
+        }
         OutlinedButton(onClick = onApplyTarget, modifier = Modifier.fillMaxWidth()) {
             Text("应用目标并清空旧 lock")
         }
         PhaseCard(state)
+        GuidanceCard(state.guidance)
         if (cameraVisible) {
             Card {
                 AndroidView(
@@ -219,6 +237,23 @@ private fun SemanticAnchorScreen(
             Text(if (replayRunning) "正在回放状态机…" else "运行自动 Replay Canary")
         }
         Text("Replay 只验证状态闭环与演示 UI，不计作真实相机 marker/OCR 结果。", style = MaterialTheme.typography.bodySmall)
+    }
+}
+
+@Composable
+private fun GuidanceCard(guidance: MarkerGuidance) {
+    val color = when (guidance.phase) {
+        GuidancePhase.ARRIVE -> Color(0xFFC8F4D2)
+        GuidancePhase.LOST -> Color(0xFFFFD8D8)
+        GuidancePhase.SEARCH -> Color(0xFFE8EAF6)
+        GuidancePhase.ALIGN -> Color(0xFFFFEDC2)
+        GuidancePhase.ADVANCE -> Color(0xFFD6F3FF)
+    }
+    Card(colors = CardDefaults.cardColors(containerColor = color), modifier = Modifier.fillMaxWidth()) {
+        Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(guidance.command, style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("marker_guidance_command"))
+            Text(guidance.detail, modifier = Modifier.testTag("marker_guidance_detail"))
+        }
     }
 }
 

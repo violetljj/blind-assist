@@ -1,6 +1,6 @@
 # Semantic-Authority Conditioned Last-Mile Geometry V0
 
-状态：`REVERSIBLE_EXPLORATION / V1_A_ALL_ORACLE_CEILING_PASS / V1_B_R2_B0_PASS / R3_CURRENT_CHAMPION / V1_C_PROXY_SUPERVISION_CLOSED / V1_D_ACTIVE_PARALLAX_CLOSED_RESCUE_0_OF_9 / V1_E0_ARKIT_MESH_TEACHER_LOW_CEILING_RESCUE_3_OF_9 / STOP_BEFORE_STUDENT / R6_NOT_RUN / B2_NOT_RUN`
+状态：`REVERSIBLE_EXPLORATION / V1_A_ALL_ORACLE_CEILING_PASS / V1_B_R2_B0_PASS / R3_RETAINED_FROZEN_REFERENCE / V1_C_PROXY_SUPERVISION_CLOSED / V1_D_ACTIVE_PARALLAX_CLOSED_RESCUE_0_OF_9 / V1_E0_ARKIT_MESH_TEACHER_LOW_CEILING_RESCUE_3_OF_9 / V1_F_PORTAL_INTERIOR_TRUE_PAIR_0_OF_24_GEOMETRY_10_OF_24_RETENTION_0_OF_18_RESCUE_0_OF_6 / FOUR_BOUNDARY_MAINLINE_REPRESENTATION_CLOSED / STOP_BEFORE_STUDENT / R6_NOT_RUN / B2_NOT_RUN`
 
 本模块是 natural open-world SAGE-R 关闭后的唯一 Goal Copilot successor。身份由 QR 或 exact OCR semantic
 authority 预先确认；geometry 只能回答目标 aperture 在哪里、如何接近以及是否具备到达证据，不能创建、替换或恢复 identity。
@@ -69,6 +69,14 @@ V1-E0 随后用官方 ARKitScenes 3DOD mesh + official pose/intrinsics raycast m
 heatmap、signed depth jump 与 valid mask。四边界 Recall@8=`10/24`，true pair/geometry=`9/24`，R3 missing rescue=`3/9`、
 retention=`6/15`；三个 teacher ceiling 门全部失败，故停止于 E0，不训练 student。该结果只覆盖全 24 条可用的 ARKit mesh
 teacher；Faro-projected highres depth 因固定 pair 同时刻覆盖不足未形成完整 ceiling。
+
+V1-F 改变 primary prediction object：在 anchor 支撑平面中寻找跨视图一致的 connected behind-plane free-space component，
+输出 portal-interior mask、center/range/width 与 target-front waypoint，只为旧 evaluator 派生边界。fresh Development 的
+24 cases 来自 12 个 ARKitScenes videos、307 个 unique raw frames，与旧 cohort 362 个 frame 的交集为 0；同批冻结 R3
+true pair/geometry=`18/24, 7/24`，V1-F D2=`0/24, 10/24`，retention=`0/18`、missing rescue=`0/6`。仅 geometry uplift
+过门，停止于 teacher ceiling；D2 经 D1 outcome 后聚合修正，明确为 `TUNED_ON_DEVELOPMENT`。四离散边界恢复不再作为
+主线表示继续扩信息源、top-k、配对或 student；R3 只保留为冻结参考。该结果拒绝当前 D2 teacher，不反证所有
+portal-interior 表示。
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd -m `
@@ -147,4 +155,20 @@ uv run --python 3.11 --with open3d --with opencv-python-headless --with numpy --
   --r3-report artifacts.local/evidence/sage-lm-v1b-r3/deeplsd-dense-boundary-b1-r1/report.json `
   --mesh-root artifacts.local/evidence/sage-lm-v1e/privileged-source/raw/Training `
   --output-dir artifacts.local/evidence/sage-lm-v1e/privileged-geometry-teacher-ceiling-e0-r1-r2-cohort
+
+E:\codex-tools\bin\blindassist-python.cmd -m `
+  scripts.research.goal_copilot_bridge.semantic_authority_last_mile_v0.materialize_rgb_cohort `
+  --source-root artifacts.local/datasets/spatial-calibration-head-r1-arkitscenes-20260804/raw `
+  --output-dir artifacts.local/evidence/sage-lm-v1f/fresh-portal-cohort-d1 `
+  --seed 250825 `
+  --exclude-cohort artifacts.local/evidence/sage-lm-v1b/correct-pose-cohort-r2/cohort.json `
+  --required-mesh-root artifacts.local/evidence/sage-lm-v1e/privileged-source/raw/Training `
+  --cohort-tag V1F --source-start-stride-frames 1 --minimum-selection-score 0.40
+
+uv run --python 3.11 --with open3d --with opencv-python-headless --with numpy --with pillow python -m `
+  scripts.research.goal_copilot_bridge.semantic_authority_last_mile_v0.portal_interior_experiment `
+  --cohort artifacts.local/evidence/sage-lm-v1f/fresh-portal-cohort-d1/cohort.json `
+  --r3-report artifacts.local/evidence/sage-lm-v1f/r3-same-cohort-d1/report.json `
+  --mesh-root artifacts.local/evidence/sage-lm-v1e/privileged-source/raw/Training `
+  --output-dir artifacts.local/evidence/sage-lm-v1f/portal-interior-ceiling-d2
 ```

@@ -5406,3 +5406,29 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
 - 三个继续门全部失败，终态 `STOP_BEFORE_STUDENT`；不训练 V1-C1 student/signed-field arm/新 backbone，不融合 R3，R6/B2
   继续不运行。当前只关闭 ARKit mesh + aperture mapping；Faro highres depth 对冻结 pair 的同时间覆盖不足，未形成完整 ceiling。
 - 结果：[V1-E0 privileged geometry ceiling](docs/research/goal-copilot/SAGE_LM_V1_E0_PRIVILEGED_GEOMETRY_TEACHER_CEILING_RESULT_2026-08-25.md)。
+
+# 2026-08-25 SAGE-LM V1-F portal-interior teacher ceiling
+
+- 从 ARKitScenes source 自动物化 24 个 source-frame-ancestry-fresh Development cases：12 videos、307 unique raw frames，
+  与旧 V1-B-R2 的 362 个 consumed raw frames 交集为 0；每 sequence 最多 4 cases。D1 outcome 后聚合修正到 D2，故最终
+  operator 明确为 `TUNED_ON_DEVELOPMENT`，不是 sealed/unseen。
+- teacher 不读 RGB，以 anchor 局部支撑平面、ray plane-hit/behind-plane valid-space/UNKNOWN 三分和跨视图连通分量输出
+  portal interior、center/range/width 与 target-front waypoint；边界只在旧 evaluator adapter 派生。
+- 同批冻结 R3 true pair/geometry=`18/24, 7/24`；V1-F D2=`0/24, 10/24`，retention=`0/18`、rescue=`0/6`。
+  仅 geometry uplift 过门，终态 `STOP_BEFORE_STUDENT`。不训练 student、不补 Faro、不恢复 R3 fusion/R6/B2；四离散边界
+  恢复不再作为主线表示，R3 只保留为冻结参考。结果只拒绝当前 D2 teacher，不反证所有 portal-interior 表示。
+- 结果：[V1-F portal interior field](docs/research/goal-copilot/SAGE_LM_V1_F_ANCHOR_CONDITIONED_PORTAL_INTERIOR_FIELD_RESULT_2026-08-25.md)。
+
+# 2026-08-25 SAGE-LM V2-MARKER-POSE Android live seam implementation
+
+- 在独立 `:semantic-anchor-demo-app` 接通 live exact QR、四角 square-planar pose、Camera2 capture-result actual focal、
+  `0.65 m` target-front waypoint、center baseline 与 PnP control；默认 `:app` 未改变。
+- repeated exact ID 保持 `AMBIGUOUS`；LOST 立即 STOP；同 ID fresh reacquire 恢复；PnP arm 需连续两帧满足 waypoint
+  range/yaw 门才 ARRIVE。frontal/oblique pose、waypoint、controller 与 semantic lifecycle 共 8 项 JVM tests 通过，debug APK
+  build 通过。
+- Android health check 无 ready device，故真实相机、时延和 18-run arrival/lateral/yaw/premature/reacquisition 指标仍为
+  `LIVE_DEVICE_NOT_RUN`；不得把 build/mechanics 写成 live 效果。
+- `check_docs_index.ps1` 通过；`check_project_structure.ps1` 被任务外既有 `goal_copilot_2*`/`l10m_*` module README/index/family
+  缺口和历史 Goal Copilot route-token 漂移阻断，失败清单未包含本轮新增 V1-F、marker-pose 路径或链接。本轮不吸收这些
+  无关治理修复；专项 tests、APK build 与 scoped diff 仍分别验证。
+- 结果：[V2 marker-pose implementation](docs/research/goal-copilot/SAGE_LM_V2_MARKER_POSE_LIVE_SEAM_IMPLEMENTATION_2026-08-25.md)。

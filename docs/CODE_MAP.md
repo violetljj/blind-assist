@@ -19,6 +19,7 @@
 | 研究实现 | [`MODULE_INDEX.md`](../scripts/research/MODULE_INDEX.md) | `scripts/research/<module>/` |
 | 研究 Module 角色与稳定入口 | 各 Module `README.md`；HFTF 另见 [`INDEX.md`](../scripts/research/hftf/INDEX.md) | 从 `MODULE_INDEX.md` 选择一个 Module |
 | Goal Copilot public-real episode mining、selective guidance 与 authority-separated last-mile geometry | [`goal_copilot_bridge/README.md`](../scripts/research/goal_copilot_bridge/README.md) | `scripts/research/goal_copilot_bridge/`；`semantic_authority_last_mile_v0/` owns synthetic regression plus controlled real-RGB observation diagnostics |
+| Research-only exact semantic anchor + QR planar pose live demo | [`SAGE-LM V2 marker-pose implementation`](research/goal-copilot/SAGE_LM_V2_MARKER_POSE_LIVE_SEAM_IMPLEMENTATION_2026-08-25.md) | `apps/demos/semantic-anchor-demo-app/`；独立 application ID，不修改默认 `:app` |
 | 配置与冻结合同 | `configs/` | JSON/YAML；先看调用方和协议 |
 | 机器 schema | `schemas/` | JSON Schema 与 validator |
 | 当前文档与研究真源 | [`docs/PROJECT_STATE.md`](PROJECT_STATE.md) | `docs/`、`docs/research/` |

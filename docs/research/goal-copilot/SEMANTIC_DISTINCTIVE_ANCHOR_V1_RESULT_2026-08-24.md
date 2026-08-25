@@ -1,6 +1,6 @@
 # Semantic Distinctive Anchor V1 Result
 
-状态：`CONTROLLED_DEVELOPMENT / SAME_SEQUENCE_EVIDENCE_INTERVENTION / PASSIVE_TOP1_11_OF_16_TO_SEMANTIC_16_OF_16 / WRONG_LOCK_9_TO_0 / REACQUISITION_3_OF_4_TO_4_OF_4 / SEMANTIC_INFORMATION_GAIN_DEMO_PASS / PASSIVE_APPEARANCE_MAINLINE_REMAINS_CLOSED / LIVE_ANDROID_NOT_RUN / DEFAULT_APP_UNCHANGED`
+状态：`CONTROLLED_DEVELOPMENT / SAME_SEQUENCE_EVIDENCE_INTERVENTION / PASSIVE_TOP1_11_OF_16_TO_SEMANTIC_16_OF_16 / WRONG_LOCK_9_TO_0 / REACQUISITION_3_OF_4_TO_4_OF_4 / SEMANTIC_INFORMATION_GAIN_DEMO_PASS / PASSIVE_APPEARANCE_MAINLINE_REMAINS_CLOSED / ANDROID_MARKER_POSE_IMPLEMENTED_LIVE_DEVICE_NOT_RUN / DEFAULT_APP_UNCHANGED`
 
 ## 结论
 
@@ -73,9 +73,11 @@ anchor、阈值或决策，指标逐项相同。
 `SEARCH -> SEMANTIC LOCK -> LOST -> FRESH REACQUIRE` seam：marker 先做设备 canary，OCR 进入自然门牌/店名，logo/sign
 只在目标语义足够 unique 时锁定；短时 tracker 只能维持已经由 semantic anchor 确认的连续性，不能自行创建或恢复 identity。
 
-本结果尚未运行 live camera/Android、时延、光照/尺度/运动模糊、开放世界重复 anchor、proposal、range/bearing、control、
-导航、安全或用户有效性。`NO_P1 / DEFAULT_APP_UNCHANGED` 继续禁止把旧 appearance lane 晋升；它不禁止下一步另接
-research-only 演示闭环。
+后续 [`SAGE-LM V2-MARKER-POSE live seam`](SAGE_LM_V2_MARKER_POSE_LIVE_SEAM_IMPLEMENTATION_2026-08-25.md)
+已在独立 Android demo 中把 exact QR、四角 planar pose、target-front waypoint、center baseline、PnP controller 与
+LOST/fresh-reacquire 接通，专项 JVM mechanics `8/8` 且 APK build 通过；但当前无 ready device，仍未运行真实相机，
+也没有时延、光照/尺度/运动模糊或 18-run 指标。`NO_P1 / DEFAULT_APP_UNCHANGED` 继续禁止把旧 appearance lane
+或这个未设备验证的 seam 晋升为导航、默认 App、安全或用户有效性。
 
 Claim ceiling：
 

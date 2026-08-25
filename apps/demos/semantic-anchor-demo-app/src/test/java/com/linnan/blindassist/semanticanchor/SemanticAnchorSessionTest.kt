@@ -48,5 +48,17 @@ class SemanticAnchorSessionTest {
         assertThat(reset.reacquisitionCount).isEqualTo(0)
     }
 
+    @Test
+    fun repeatedExactIdRemainsAmbiguous() {
+        val target = AnchorTarget(AnchorMode.MARKER, "A17")
+        val session = SemanticAnchorSession(target)
+
+        repeat(3) { session.observe(observation("A17", "A17")) }
+
+        assertThat(session.state.phase).isEqualTo(AnchorPhase.SEARCH)
+        assertThat(session.state.evidence).contains("AMBIGUOUS")
+        assertThat(session.state.lockCount).isEqualTo(0)
+    }
+
     private fun observation(vararg candidates: String) = AnchorObservation(candidates.toList(), "TEST")
 }

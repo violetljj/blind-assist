@@ -34,6 +34,7 @@ internal data class AnchorTarget(
 internal data class AnchorObservation(
     val candidates: List<String>,
     val source: String = "LIVE",
+    val markerPoses: List<MarkerPoseEstimate> = emptyList(),
 )
 
 internal data class AnchorUiState(
@@ -47,6 +48,8 @@ internal data class AnchorUiState(
     val targetVisible: Boolean = false,
     val evidence: String = "等待语义证据",
     val source: String = "IDLE",
+    val guidanceArm: GuidanceArm = GuidanceArm.PNP_POSE,
+    val guidance: MarkerGuidance = MarkerGuidance(GuidancePhase.SEARCH, "SEARCH", "等待 exact QR ID"),
 )
 
 /**
@@ -57,6 +60,7 @@ internal class SemanticAnchorSession(
     initialTarget: AnchorTarget,
     private val hitsToAcquire: Int = 2,
     private val missesToLose: Int = 5,
+    private val poseController: MarkerPoseController = MarkerPoseController(),
 ) {
     var state: AnchorUiState = AnchorUiState(target = initialTarget)
         private set
@@ -67,13 +71,26 @@ internal class SemanticAnchorSession(
     }
 
     fun reset(target: AnchorTarget = state.target): AnchorUiState {
-        state = AnchorUiState(target = target)
+        poseController.reset()
+        state = AnchorUiState(target = target, guidanceArm = poseController.arm)
+        return state
+    }
+
+    fun setGuidanceArm(arm: GuidanceArm): AnchorUiState {
+        poseController.reset()
+        poseController.arm = arm
+        state = state.copy(
+            guidanceArm = arm,
+            guidance = poseController.update(state.phase, state.guidance.estimate),
+        )
         return state
     }
 
     fun observe(observation: AnchorObservation): AnchorUiState {
         val matches = observation.candidates.filter(state.target::matches)
-        val hit = matches.isNotEmpty()
+        // Repeated exact IDs are not physical-instance authority. The controlled live setup must
+        // keep one visible installation; ambiguity remains SEARCH/LOST.
+        val hit = matches.size == 1
         val nextHits = if (hit) state.hitStreak + 1 else 0
         val nextMisses = if (hit) 0 else state.missStreak + 1
         var nextPhase = state.phase
@@ -94,6 +111,8 @@ internal class SemanticAnchorSession(
             }
         }
 
+        val matchingPose = observation.markerPoses.singleOrNull { state.target.matches(it.payload) }
+        val nextGuidance = poseController.update(nextPhase, matchingPose)
         state = state.copy(
             phase = nextPhase,
             frameCount = state.frameCount + 1,
@@ -104,10 +123,13 @@ internal class SemanticAnchorSession(
             targetVisible = hit,
             evidence = when {
                 hit -> "MATCH · ${matches.first()}"
+                matches.size > 1 -> "AMBIGUOUS · repeated exact ID"
                 observation.candidates.isEmpty() -> "NO SEMANTIC EVIDENCE"
                 else -> "NON-TARGET · ${observation.candidates.take(2).joinToString(" | ")}"
             },
             source = observation.source,
+            guidanceArm = poseController.arm,
+            guidance = nextGuidance,
         )
         return state
     }

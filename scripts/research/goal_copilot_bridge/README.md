@@ -36,7 +36,10 @@ the V0 challenger triangulates an aperture from a noisy active-parallax pair and
 evidence, while the baseline follows semantic-anchor bbox center/scale. The 36-episode procedural Development run changed
 target-front arrival `7 -> 33`, median lateral error `0.592 -> 0.094 m`, and completion precision `19.4% -> 93.3%`.
 The 24-episode ARKitScenes V1 adapter then produced target-front arrival `7/24 -> 2/24`; boundary/flow/depth observation did
-not preserve the V0 uplift. Only observation-channel decomposition remains active, not policy changes, Android or default-App integration.
+not preserve the V0 uplift. V1-F changed the teacher target to connected behind-plane portal interior on 24 source-frame-fresh
+Development cases, but retained `0/18` same-cohort R3 pairs and rescued `0/6` missing cases, so it stopped before student training.
+Four-boundary recovery is closed as the mainline representation; R3 remains a frozen reference. The separate
+`:semantic-anchor-demo-app` owns the research-only Android marker-pose seam and does not modify the default App.
 
 ## P1-PA3-C0 public Goal Contract materialization
 

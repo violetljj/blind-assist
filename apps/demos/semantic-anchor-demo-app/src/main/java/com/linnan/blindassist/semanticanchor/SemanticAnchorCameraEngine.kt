@@ -1,7 +1,15 @@
 package com.linnan.blindassist.semanticanchor
 
 import android.content.Context
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraCaptureSession
+import android.hardware.camera2.CameraManager
+import android.hardware.camera2.CaptureRequest
+import android.hardware.camera2.TotalCaptureResult
 import android.util.Size
+import androidx.camera.camera2.interop.Camera2CameraInfo
+import androidx.camera.camera2.interop.Camera2Interop
+import androidx.camera.camera2.interop.ExperimentalCamera2Interop
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
@@ -26,6 +34,7 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 
+@androidx.annotation.OptIn(markerClass = [ExperimentalCamera2Interop::class])
 internal class SemanticAnchorCameraEngine(
     context: Context,
     private val lifecycleOwner: LifecycleOwner,
@@ -42,6 +51,8 @@ internal class SemanticAnchorCameraEngine(
     private val active = AtomicBoolean(false)
     private val closed = AtomicBoolean(false)
     private val replayPaused = AtomicBoolean(false)
+    private val lensCalibration = AtomicReference<LensCalibration?>(null)
+    private val activeFocalLengthMm = AtomicReference<Double?>(null)
     private val barcodeScanner: BarcodeScanner = BarcodeScanning.getClient(
         BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE).build(),
     )
@@ -68,7 +79,7 @@ internal class SemanticAnchorCameraEngine(
                 if (!active.get()) return@addListener
                 val cameraProvider = future.get(10, TimeUnit.SECONDS)
                 val preview = Preview.Builder().build().also { it.surfaceProvider = previewView.surfaceProvider }
-                val imageAnalysis = ImageAnalysis.Builder()
+                val analysisBuilder = ImageAnalysis.Builder()
                     .setResolutionSelector(
                         ResolutionSelector.Builder().setResolutionStrategy(
                             ResolutionStrategy(
@@ -79,15 +90,30 @@ internal class SemanticAnchorCameraEngine(
                     )
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_YUV_420_888)
-                    .build()
+                Camera2Interop.Extender(analysisBuilder).setSessionCaptureCallback(
+                    object : CameraCaptureSession.CaptureCallback() {
+                        override fun onCaptureCompleted(
+                            session: CameraCaptureSession,
+                            request: CaptureRequest,
+                            result: TotalCaptureResult,
+                        ) {
+                            result.get(android.hardware.camera2.CaptureResult.LENS_FOCAL_LENGTH)
+                                ?.toDouble()
+                                ?.takeIf { it > 0.0 }
+                                ?.let(activeFocalLengthMm::set)
+                        }
+                    },
+                )
+                val imageAnalysis = analysisBuilder.build()
                 imageAnalysis.setAnalyzer(analyzerExecutor, ::analyze)
                 cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(
+                val camera = cameraProvider.bindToLifecycle(
                     lifecycleOwner,
                     CameraSelector.DEFAULT_BACK_CAMERA,
                     preview,
                     imageAnalysis,
                 )
+                lensCalibration.set(readLensCalibration(camera.cameraInfo))
                 provider = cameraProvider
                 analysis = imageAnalysis
                 onStatus("LIVE · 等待独立语义证据")
@@ -125,7 +151,24 @@ internal class SemanticAnchorCameraEngine(
         when (snapshot.mode) {
             AnchorMode.MARKER -> barcodeScanner.process(input)
                 .addOnSuccessListener { barcodes ->
-                    emit(barcodes.mapNotNull { it.rawValue }, "LIVE QR")
+                    val intrinsics = lensCalibration.get()?.intrinsicsFor(
+                        imageProxy.width,
+                        imageProxy.height,
+                        imageProxy.imageInfo.rotationDegrees,
+                        activeFocalLengthMm.get(),
+                    )
+                    val poses = if (intrinsics == null) emptyList() else barcodes.mapNotNull { barcode ->
+                        val payload = barcode.rawValue ?: return@mapNotNull null
+                        val corners = barcode.cornerPoints?.takeIf { it.size == 4 } ?: return@mapNotNull null
+                        SquareMarkerPoseSolver.solve(
+                            payload = payload,
+                            corners = corners.map { PixelPoint(it.x.toDouble(), it.y.toDouble()) },
+                            intrinsics = intrinsics,
+                            markerSizeMeters = MARKER_SIZE_METERS,
+                            standoffMeters = STANDOFF_METERS,
+                        )
+                    }
+                    emit(barcodes.mapNotNull { it.rawValue }, "LIVE QR + PnP", poses)
                 }
                 .addOnFailureListener(::emitFailure)
                 .addOnCompleteListener { finishFrame(imageProxy) }
@@ -138,10 +181,24 @@ internal class SemanticAnchorCameraEngine(
         }
     }
 
-    private fun emit(candidates: List<String>, source: String) {
+    private fun emit(
+        candidates: List<String>,
+        source: String,
+        markerPoses: List<MarkerPoseEstimate> = emptyList(),
+    ) {
         if (active.get() && !replayPaused.get()) {
-            mainExecutor.execute { onObservation(AnchorObservation(candidates, source)) }
+            mainExecutor.execute { onObservation(AnchorObservation(candidates, source, markerPoses)) }
         }
+    }
+
+    private fun readLensCalibration(cameraInfo: androidx.camera.core.CameraInfo): LensCalibration? {
+        val cameraId = Camera2CameraInfo.from(cameraInfo).cameraId
+        val manager = appContext.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        val characteristics = manager.getCameraCharacteristics(cameraId)
+        val focal = characteristics.get(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS)?.firstOrNull()
+            ?: return null
+        val sensor = characteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE) ?: return null
+        return LensCalibration(focal.toDouble(), sensor.width.toDouble(), sensor.height.toDouble())
     }
 
     private fun emitFailure(error: Exception) {
@@ -153,5 +210,36 @@ internal class SemanticAnchorCameraEngine(
     private fun finishFrame(imageProxy: ImageProxy) {
         imageProxy.close()
         processing.set(false)
+    }
+
+    private data class LensCalibration(
+        val focalLengthMm: Double,
+        val sensorWidthMm: Double,
+        val sensorHeightMm: Double,
+    ) {
+        fun intrinsicsFor(
+            rawWidth: Int,
+            rawHeight: Int,
+            rotationDegrees: Int,
+            activeFocalLengthMm: Double?,
+        ): CameraIntrinsics {
+            val rawAspect = rawWidth.toDouble() / rawHeight
+            val sensorAspect = sensorWidthMm / sensorHeightMm
+            val focalMm = activeFocalLengthMm ?: focalLengthMm
+            val focalPixels = if (rawAspect >= sensorAspect) {
+                focalMm / sensorWidthMm * rawWidth
+            } else {
+                focalMm / sensorHeightMm * rawHeight
+            }
+            val rotated = rotationDegrees % 180 != 0
+            val width = if (rotated) rawHeight else rawWidth
+            val height = if (rotated) rawWidth else rawHeight
+            return CameraIntrinsics(focalPixels, focalPixels, width / 2.0, height / 2.0)
+        }
+    }
+
+    private companion object {
+        const val MARKER_SIZE_METERS = 0.16
+        const val STANDOFF_METERS = 0.65
     }
 }

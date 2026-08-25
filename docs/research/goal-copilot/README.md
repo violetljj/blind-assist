@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / SEMANTIC_ANCHOR_V1_CONTROLLED_DEMO_16_OF_16_ZERO_WRONG_LOCK / CLOSE_NATURAL_SAGE_R / CONTROLLED_EXACT_ANCHOR_RETAINED / SAGE_LM_R3_CURRENT_CHAMPION / V1_C_PROXY_SUPERVISION_CLOSED / V1_D_PARALLAX_CLOSED_RESCUE_0_OF_9 / V1_E0_ARKIT_MESH_TEACHER_LOW_CEILING_RESCUE_3_OF_9 / STOP_BEFORE_STUDENT / LIVE_ANDROID_NOT_RUN / NO_P1_PROMOTION / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_AND_RESEARCH_MAINLINE / PUBLIC_IDENTIFIABLE_REFERENT_C2_SMALL_ROSTER_MATERIALIZABLE / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP / SEMANTIC_ANCHOR_V1_CONTROLLED_DEMO_16_OF_16_ZERO_WRONG_LOCK / CLOSE_NATURAL_SAGE_R / CONTROLLED_EXACT_ANCHOR_RETAINED / SAGE_LM_R3_RETAINED_FROZEN_REFERENCE / V1_C_PROXY_SUPERVISION_CLOSED / V1_D_PARALLAX_CLOSED_RESCUE_0_OF_9 / V1_E0_ARKIT_MESH_TEACHER_LOW_CEILING_RESCUE_3_OF_9 / V1_F_PORTAL_INTERIOR_TRUE_PAIR_0_OF_24_GEOMETRY_10_OF_24_RETENTION_0_OF_18_RESCUE_0_OF_6 / FOUR_BOUNDARY_MAINLINE_REPRESENTATION_CLOSED / STOP_BEFORE_STUDENT / V2_MARKER_POSE_ANDROID_IMPLEMENTED_LIVE_DEVICE_NOT_RUN / NO_P1_PROMOTION / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -147,7 +147,7 @@ storefront、商品、个人物品三帧 sweep 最终与 passive 完全相同：
 故 `APPEARANCE_DERIVED_DISTINCTIVE_ANCHOR_NO_UPLIFT`。它关闭 patch/threshold successor，不关闭项目 Demo；
 `NO_P1 / DEFAULT_APP_UNCHANGED` 只禁本 lane 晋升。当时唯一下一动作是独立 OCR/logo/marker semantic anchor；V0 执行时
 OCR runtime 不可执行，故保持 `NOT_EVALUABLE`，也没有用旧部分 canary 输出补分母。
-随后完成的 [`Semantic Distinctive Anchor V1`](SEMANTIC_DISTINCTIVE_ANCHOR_V1_RESULT_2026-08-24.md) 在相同四目标、16 个 present decision、candidate role 与四次 lost 节奏上加入自然 OCR、公开-reference distinctive sign、包装码和 ArUco，零 appearance fallback 得到 top-1=`16/16`、wrong lock=`0/20`、reacquisition=`4/4`、lost `ABSTAIN=4/4`。这是 controlled derived mechanism demo，不是 same-pixel matcher 或 live Android/general OCR/logo confirmation；但已满足另接 research-only `SEARCH -> LOCK -> LOST -> REACQUIRE` seam 的信息增益前提。
+随后完成的 [`Semantic Distinctive Anchor V1`](SEMANTIC_DISTINCTIVE_ANCHOR_V1_RESULT_2026-08-24.md) 在相同四目标、16 个 present decision、candidate role 与四次 lost 节奏上加入自然 OCR、公开-reference distinctive sign、包装码和 ArUco，零 appearance fallback 得到 top-1=`16/16`、wrong lock=`0/20`、reacquisition=`4/4`、lost `ABSTAIN=4/4`。这是 controlled derived mechanism demo，不是 same-pixel matcher 或 general OCR/logo confirmation。后续 [`V2-MARKER-POSE Android seam`](SAGE_LM_V2_MARKER_POSE_LIVE_SEAM_IMPLEMENTATION_2026-08-25.md) 已在独立 demo app 接通 live QR exact ID、Camera2 actual-focal intrinsics、四角 planar pose、target-front waypoint、center baseline、PnP controller 与 LOST/fresh reacquire；JVM mechanics `8/8`、APK build 通过，但无 ready device，真实相机与 18-run 指标仍未运行。
 
 [`Semantic Anchor Graph + Referent Belief V2`](SEMANTIC_ANCHOR_GRAPH_AND_BELIEF_V2_RESULT_2026-08-24.md) 随后在
 23 帧 synthetic OCR-stage hard cohort 上，把同输入 substring + two-frame FSM 的 correct terminal `3 -> 12`、wrong lock
@@ -199,17 +199,15 @@ curated ARKitScenes episode 上得到 arrival `7/24 -> 2/24`、median lateral er
 故 `NOT_EVALUABLE`；B1/B2 raw outcome 不是 boundary negative。新 cohort 须另行显式授权，不接 Android/P1/default App。
 
 [`V1-B-R2`](SAGE_LM_V1_B_R2_CORRECT_POSE_BOUNDARY_RESULT_2026-08-24.md) 冻结正确-pose 24 episodes；B0=`24/24`，B1 geometry=`2/24`、missing=`21/24`。[`R3/R4`](SAGE_LM_V1_B_R3_R4_DENSE_BOUNDARY_RESULT_2026-08-25.md) 中 R3 提至 true pair=`15/24`、geometry=`13/24`，R4 退化为 `9/24`、`8/24`；R3 保持当前冠军，R4 objective rejected，B2 不运行。
-
 [`R5/R5S`](SAGE_LM_V1_B_R5_ANCHOR_PAIR_COVERAGE_RESULT_2026-08-25.md) 分别为 true pair/geometry=`12/24`、`11/24`，均低于 R3。[`V1-C`](SAGE_LM_V1_C_TASK_SPECIFIC_APERTURE_BOUNDARY_FIELD_RESULT_2026-08-25.md) 的同域 C0/C1 四边界 Recall@8=`1/24`、`4/24`，true pair/geometry=`1/24`、`3/24`；当前 CNN + automatic opening-proxy supervision 正式关闭。
 
 [`V1-D active parallax boundary field`](SAGE_LM_V1_D_ACTIVE_PARALLAX_BOUNDARY_FIELD_RESULT_2026-08-25.md)
 固定同一 24 episodes，以 RAFT-Small residual-parallax discontinuity 产生 LEFT/RIGHT top-8；四边界 Recall@8=`4/24`、
-true pair/geometry=`4/24`、R3 missing rescue=`0/9`。不做融合，当前 parallax 实现关闭；唯一 successor 为 V1-E
-mesh/Faro-depth privileged boundary teacher。随后
-[`V1-E0 privileged geometry ceiling`](SAGE_LM_V1_E0_PRIVILEGED_GEOMETRY_TEACHER_CEILING_RESULT_2026-08-25.md)
-使用全 24 条可对齐的官方 ARKit 3DOD mesh，得到四边界 Recall@8=`10/24`、true pair/geometry=`9/24`、R3 missing
-rescue=`3/9`、retention=`6/15`；三个继续门全部失败，停止于 E0，不训练 student。R6/B2、Android/P1/default App
-继续不运行。
+true pair/geometry=`4/24`、R3 missing rescue=`0/9`。不做融合，当前 parallax 实现关闭；当时唯一 successor 为 V1-E
+mesh/Faro-depth privileged boundary teacher，现已由下述 E0 执行。随后
+[`V1-E0 privileged geometry ceiling`](SAGE_LM_V1_E0_PRIVILEGED_GEOMETRY_TEACHER_CEILING_RESULT_2026-08-25.md) 使用全 24 条可对齐的官方 ARKit 3DOD mesh，得到四边界 Recall@8=`10/24`、true pair/geometry=`9/24`、R3 missing rescue=`3/9`、retention=`6/15`；三个继续门全部失败，停止于 E0，不训练 student。
+随后 [`V1-F portal interior field`](SAGE_LM_V1_F_ANCHOR_CONDITIONED_PORTAL_INTERIOR_FIELD_RESULT_2026-08-25.md) 在与旧 cohort raw-frame identity 零重叠的 fresh 24-case Development 上，把 primary teacher target 改为 anchor 支撑平面后的跨视图 connected free-space。冻结 R3 同批 true pair/geometry=`18/24, 7/24`，V1-F D2=`0/24, 10/24`，retention=`0/18`、missing rescue=`0/6`；仅 geometry uplift 过门，且 D2 经 D1 outcome 后调整，明确为 `TUNED_ON_DEVELOPMENT`。
+因此停止于 teacher ceiling，不训练 student、不补 Faro、不恢复 fusion/R6/B2；四离散边界恢复不再作为主线表示继续，R3 仅保留为冻结参考。该结果拒绝当前 D2 teacher，不反证所有 portal-interior 表示。
 
 ## V0 与 P1 边界
 
