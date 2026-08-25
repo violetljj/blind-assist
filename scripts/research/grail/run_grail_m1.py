@@ -149,7 +149,9 @@ class GrailModel(nn.Module):
     def forward(self, query: torch.Tensor, reference: torch.Tensor, candidate: torch.Tensor, geometry: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         ref_input = torch.cat([candidate, reference, candidate*reference, torch.abs(candidate-reference)], dim=-1)
         pose_input = torch.cat([query, candidate, reference, geometry], dim=-1)
-        return self.referent(ref_input).squeeze(-1), self.pose(pose_input).reshape(-1, K_POSES, 4)
+        referent = self.referent(ref_input).squeeze(-1)
+        raw_pose = self.pose(pose_input)
+        return referent, raw_pose.reshape(*raw_pose.shape[:-1], K_POSES, 4)
 
 
 def train_models(train_rows: list[dict[str, Any]], output: Path) -> dict[str, Any]:
