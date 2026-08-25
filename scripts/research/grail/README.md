@@ -1,6 +1,6 @@
 # GRAIL research module
 
-状态：`active / M1_REFERENCE_ONLY_STOPPED / GRAIL_R0_RELATIONAL_ORACLE_PASS / R1_RELATION_ACQUISITION_ONLY / STOP_BEFORE_M2`
+状态：`active / M1_REFERENCE_ONLY_STOPPED / GRAIL_R0_RELATIONAL_ORACLE_PASS / R1_SIGNATURE_OBSERVABILITY_COMPLETE / R1_OBTAINABLE_RELATION_ACQUISITION_ONLY / STOP_BEFORE_M2`
 
 GRAIL（Goal-Relative Affordance and Interaction Localization）把最后十米重新定义为：给定用户目标，在未见场景中预测一组可到达、目标一致、适合完成交互的 `站立位置 + 朝向`，或显式 `NONE`。
 
@@ -24,6 +24,7 @@ E:\codex-tools\bin\blindassist-python.cmd scripts/research/grail/run_grail_natur
 E:\codex-tools\bin\blindassist-python.cmd scripts/research/grail/freeze_grail_procthor_native_m0.py --dataset <test.jsonl.gz> --docker-image-id <sha256:...> --output <manifest.json>
 E:\codex-tools\bin\blindassist-python.cmd scripts/research/grail/freeze_grail_m1.py --val <val.jsonl.gz> --test <test.jsonl.gz> --output <manifest.json>
 E:\codex-tools\bin\blindassist-python.cmd scripts/research/grail/run_grail_relational_r0.py --dataset <val.jsonl.gz> --collection <v2b-dev-collection.json> --features <v2b-features-dev.pt> --checkpoint <v2b-checkpoint.pt> --development-result <v2b-development-result.json> --output <relational-oracle-result.json>
+E:\codex-tools\bin\blindassist-python.cmd scripts/research/grail/run_grail_relational_observability_r1.py --dataset <val.jsonl.gz> --collection <v2b-dev-collection.json> --features <v2b-features-dev.pt> --checkpoint <v2b-checkpoint.pt> --development-result <v2b-development-result.json> --r0-result <relational-oracle-result.json> --output <signature-observability-ablation.json>
 E:\codex-tools\bin\blindassist-python.cmd -m unittest discover -s scripts/research/grail -p "test_*.py"
 ```
 
@@ -36,6 +37,8 @@ M1 已在任何视觉 collection/outcome 前冻结 24 train / 6 dev / 12 test ho
 M1 V1 Development 因 query target-centering leak 在 formal test 前关闭。V2b 用 hash-ranked off-center visible yaw 重建 418 train / 78 dev positives；GRAIL pose=`22/78`、wrong-target=`16/43`、absence false commit=`3/78`、permutation=`78/78`，未超过最强 B1 pose=`23/78`。因此 formal test 保持未打开，当前 `STOP_BEFORE_M2`。
 
 GRAIL-R0 在同一已消费 Development 78-case 上冻结 candidate set、checkpoint、pose head、threshold 与 evaluator，只增加不含 object ID 的 ProcTHOR native coarse relation signature。referent top-1=`75/78`、complete pose=`57/78`、wrong-target=`0/43`、absence false commit=`0/78`、complete rescue/collateral=`35/0`。该 privileged-metadata oracle 只建立“独立关系信息可以击穿 bottleneck”的机制上界；唯一 successor 是 R1 可获得关系表示，不授权 M2 或 formal test。
+
+R1 signature observability ablation 继续复用同一 consumed Development，逐组投影 R0 signature。`semantic type + native root/part sibling ordinal + nearest stable object type` 已完整复现 R0 的 `75/78` referent、`57/78` complete、`0/43` wrong-target 与 `0/78` absence false commit；去掉 sibling ordinal 后仅 `48/78`、`31/78`。方向、距离、相对高度、support、room 和 coarse height 在该 cohort 上不是必要字段。这个结果只收窄 student 输入目标；root/part grouping 与 relation 仍来自 privileged metadata，尚未证明 RGB/text 可恢复。
 
 ## 安全边界
 

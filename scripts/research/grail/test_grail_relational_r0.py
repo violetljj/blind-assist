@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import unittest
 
-from grail_relational_r0 import canonical_signature, select_with_relational_oracle
+from grail_relational_r0 import (
+    canonical_signature,
+    projected_signature,
+    select_with_projected_relations,
+    select_with_relational_oracle,
+)
 
 
 def signature(kind: str, side: str) -> dict:
@@ -36,6 +41,30 @@ class RelationalOracleTest(unittest.TestCase):
 
     def test_signature_is_hashable_and_ordered(self) -> None:
         self.assertEqual(canonical_signature(signature("Chair", "RIGHT"))[0], "Chair")
+
+    def test_projection_can_isolate_nearby_type_from_direction(self) -> None:
+        left = signature("Chair", "LEFT")
+        right = signature("Chair", "RIGHT")
+        self.assertEqual(
+            projected_signature(left, ("semantic_type", "nearby_type")),
+            projected_signature(right, ("semantic_type", "nearby_type")),
+        )
+        self.assertNotEqual(
+            projected_signature(left, ("semantic_type", "nearby_direction")),
+            projected_signature(right, ("semantic_type", "nearby_direction")),
+        )
+
+    def test_projected_selector_exposes_collisions(self) -> None:
+        target = signature("Chair", "RIGHT")
+        candidates = [signature("Chair", "RIGHT"), signature("Chair", "LEFT")]
+        selected = select_with_projected_relations(
+            target, candidates, [0.1, 0.9], ["a", "b"], ("semantic_type", "nearby_type")
+        )
+        self.assertEqual(selected, (1, 0.9, "RELATION_COLLISION_APPEARANCE_TIEBREAK"))
+
+    def test_projection_rejects_unknown_groups(self) -> None:
+        with self.assertRaises(ValueError):
+            projected_signature(signature("Chair", "RIGHT"), ("not_a_field",))
 
 
 if __name__ == "__main__":

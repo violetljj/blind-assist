@@ -17,6 +17,11 @@ STABLE_TYPES = {
     "Sink", "Sofa", "StoveBurner", "Television", "Toilet", "TVStand",
 }
 
+RELATION_FIELD_GROUPS = (
+    "semantic_type", "support", "room_types", "height_band", "sibling_ordinal",
+    "nearby_type", "nearby_direction", "nearby_distance", "nearby_height",
+)
+
 
 def object_type(object_id: str) -> str:
     return object_id.split("|", 1)[0]
@@ -202,6 +207,59 @@ def canonical_signature(signature: dict[str, Any]) -> tuple[Any, ...]:
         signature["height_band"], signature["part_horizontal"], signature["part_vertical"],
         tuple(signature["nearby"]),
     )
+
+
+def projected_signature(signature: dict[str, Any], field_groups: tuple[str, ...]) -> tuple[Any, ...]:
+    """Project an R0 signature onto named, independently ablatable relation groups."""
+    unknown = set(field_groups) - set(RELATION_FIELD_GROUPS)
+    if unknown:
+        raise ValueError(f"unknown relation field groups: {sorted(unknown)}")
+    selected = set(field_groups)
+    projected: list[Any] = []
+    if "semantic_type" in selected:
+        projected.append(("semantic_type", signature["semantic_type"]))
+    if "support" in selected:
+        projected.append(("support", signature["support"]))
+    if "room_types" in selected:
+        projected.append(("room_types", tuple(signature["room_types"])))
+    if "height_band" in selected:
+        projected.append(("height_band", signature["height_band"]))
+    if "sibling_ordinal" in selected:
+        projected.append(("sibling_ordinal", signature["part_horizontal"], signature["part_vertical"]))
+    nearby_indices = {
+        "nearby_type": 0,
+        "nearby_direction": 1,
+        "nearby_distance": 2,
+        "nearby_height": 3,
+    }
+    active_nearby = [(name, index) for name, index in nearby_indices.items() if name in selected]
+    if active_nearby:
+        projected.append((
+            "nearby",
+            tuple(tuple(neighbor[index] for _, index in active_nearby) for neighbor in signature["nearby"]),
+        ))
+    return tuple(projected)
+
+
+def select_with_projected_relations(
+    target_signature: dict[str, Any],
+    candidate_signatures: list[dict[str, Any]],
+    appearance_scores: list[float],
+    spatial_keys: list[Any],
+    field_groups: tuple[str, ...],
+) -> tuple[int | None, float, str]:
+    """R0 selection with only the requested signature field groups visible."""
+    target = projected_signature(target_signature, field_groups)
+    exact = [
+        index for index, signature in enumerate(candidate_signatures)
+        if projected_signature(signature, field_groups) == target
+    ]
+    if not exact:
+        return None, 0.0, "NO_EXACT_RELATION_MATCH"
+    selected = max(exact, key=lambda index: (appearance_scores[index], spatial_keys[index]))
+    if len(exact) == 1:
+        return selected, 1.0, "UNIQUE_RELATION_MATCH"
+    return selected, float(appearance_scores[selected]), "RELATION_COLLISION_APPEARANCE_TIEBREAK"
 
 
 def select_with_relational_oracle(target_signature: dict[str, Any], candidate_signatures: list[dict[str, Any]],
