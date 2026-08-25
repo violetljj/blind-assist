@@ -57,6 +57,8 @@ R1C-V 在实现前冻结 axis×sign 协议，并只运行一次 deterministic RG
 
 R1C-P 按 outcome 前冻结协议换到 fresh、house-disjoint 78-case cohort，并固定 zero-shot OA-V2 paired-relative orientation、symmetry mode 与全部下游。evaluator-native owner-local 对照为 referent=`74/78`、complete=`55/78`；正式 paired arm 仅 slot=`37/78`、referent=`36/78`、complete=`29/78`、wrong-target=`2/43`、absence=`0/78`，`39/78` mode unknown。终态为 `GRAIL_R1C_P_PAIRED_RGB_OWNER_ORIENTATION_NOT_ESTABLISHED_STOP_BEFORE_DEPTH_GEOMETRY`；不得调 symmetry/crop/mode/threshold/selector/pose head，也不运行 depth-geometry successor。
 
+R1C-L 是另行授权的最后一次 RGB-only learned successor。`freeze_grail_pairwise_owner_coordinate_r1cl.py` 冻结 160/20/12 house-disjoint roster 与唯一架构；`collect_grail_pairwise_owner_coordinate_r1cl.py` 物化 2–4 sibling group 的 RGB/union/centroid-mask pairs；`train_grail_pairwise_owner_coordinate_r1cl.py` 用 36-bin slot-marginalized loss 和固定 `0.05` exchange consistency 训练最多两个 seeds。先只运行 train/validation；validation 相对 fixed OA-V2 slot uplift `<+8` 时不得访问 final test。
+
 ## 安全边界
 
 M0 是研究 teacher/oracle 证据，不控制真实用户，也不建立 RGB、自然相机、Android、产品或安全 authority。数据集许可、source identity、分母与 proxy/ground-truth 边界必须随结果保留。

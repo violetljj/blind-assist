@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / ALGORITHM_MAINLINE=GRAIL_R / R1C_O_OWNER_LOCAL_CEILING_ESTABLISHED / R1C_P_PAIRED_SLOT_37_OF_78 / REFERENT_36_OF_78 / COMPLETE_29_OF_78 / WRONG_TARGET_2_OF_43 / PAIRED_RGB_ORIENTATION_FAILED / STOP_BEFORE_DEPTH_GEOMETRY / NO_SUCCESSOR_AUTHORIZED / FORMAL_TEST_UNOPENED / STOP_BEFORE_M2 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / ALGORITHM_MAINLINE=GRAIL_R / R1C_O_OWNER_LOCAL_CEILING_ESTABLISHED / R1C_P_PAIRED_RGB_ORIENTATION_FAILED / R1C_L_TASK_TRAINED_PAIRWISE_OWNER_COORDINATE_AUTHORIZED / FINAL_TEST_UNOPENED / STOP_BEFORE_DEPTH_GEOMETRY_AND_M2 / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -29,6 +29,8 @@ M1 V2b reference-only Development 已以 GRAIL=`22/78`、B1=`23/78` 停止，for
 按结果前冻结协议执行的 [`R1C-O owner-local canonical coordinate ceiling`](GRAIL_R1C_OWNER_LOCAL_CANONICAL_COORDINATE_RESULT_2026-08-25.md) 只用 AI2-THOR native part position、owner 与 owner yaw 改写 sibling slot，保持最小关系字段和全部下游冻结。78/78 targets 可评估，referent=`75/78`、complete=`58/78`、wrong-target=`1/43`、absence=`0/78`，救回 R1B view-disagreement failures=`20/23`，全部预注册门通过。该结果证明 synthetic privileged owner-local coordinate 能恢复 R0 uplift，不证明 RGB/mask orientation 可获得；当时唯一 successor 是另立 R1C-V protocol，bin/matcher/threshold/fusion、M2、formal test、Android/default-App 均不得在本 artifact 重开。
 实现前冻结并一次性执行的 [`R1C-V visual owner orientation probe`](GRAIL_R1C_V_VISUAL_OWNER_ORIENTATION_RESULT_2026-08-25.md) 得到 axis-only（oracle sign）slot=`45/78`、sign-only（oracle axis）=`40/78`、final=`39/78`；final referent=`38/78`、complete=`27/78`、wrong-target=`9/43`、absence=`0/78`。axis pair 仅 `29/78` 可评估且 20° 命中=`13/29`，sign pair `16/78` 可评估且仅 `4/16` 双侧正确。终态为 `GRAIL_R1C_V_AXIS_NOT_VISUALLY_OBTAINABLE_BY_DETERMINISTIC_PROBE_STOP`，sign 同时失败；关闭当前 estimator，无自动 successor，不影响 R1C-O privileged ceiling。
 用户另行授权后，[`R1C-P symmetry-aware paired orientation`](GRAIL_R1C_P_SYMMETRY_AWARE_PAIRED_ORIENTATION_RESULT_2026-08-25.md) 在 fresh、house-disjoint 的 78-case ProcTHOR cohort 上固定 zero-shot OA-V2。evaluator-native owner-local 对照仍为 referent=`74/78`、complete=`55/78`；唯一正式 paired-relative arm 仅 slot=`37/78`、referent=`36/78`、complete=`29/78`、wrong-target=`2/43`、absence=`0/78`，且 `39/78` mode unknown。除 absence 与 permutation 外所有关键门失败。路线以 `GRAIL_R1C_P_PAIRED_RGB_OWNER_ORIENTATION_NOT_ESTABLISHED_STOP_BEFORE_DEPTH_GEOMETRY` 收口；不得在 consumed cohort 调 symmetry/crop/mode/threshold/selector/pose head，预定 depth-geometry successor 不运行。
+
+当前唯一 successor 是用户明确授权的 [`R1C-L task-trained pairwise owner coordinate`](GRAIL_R1C_L_TASK_TRAINED_PAIRWISE_OWNER_COORDINATE_PROTOCOL_2026-08-25.md)。它不换 zero-shot 模型，也不输入 depth；在 160/20 个完全隔离的 ProcTHOR houses 上用 RGB+mask、36-bin symmetry-marginalized slot loss 训练唯一 DINOv2-S/cross-attention 架构，最多两个 seeds。validation 相对 fixed OA-V2 slot uplift `<+8` 时停止且不访问 12-house final roster；M2、depth geometry 与默认 App 保持关闭。
 
 ## Goal Copilot 既有 evidence context
 
