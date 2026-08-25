@@ -1,0 +1,13 @@
+{
+  "schema": "blindassist_grail_m1_v2_lock_v1",
+  "generated_manifest_sha256": "3987b49a4fa11ccfe9eb327b6e1015cfe4c23989fbe3478dd8d9a0b9c4e3db01",
+  "generator": "scripts/research/grail/freeze_grail_m1_v2.py",
+  "val_sha256": "d808540514e26b6726cd2790490e669b572eeb94febb5188a2f403591dd21721",
+  "test_sha256": "9a9fa6f134e76fe87f3fd92c00883651cf9fadf4e9ad4072d6d73be229f001dc",
+  "rosters": {
+    "train": [529, 407, 296, 206, 768, 327, 857, 482, 372, 825, 628, 477, 631, 708, 908, 9, 696, 469, 512, 368, 320, 485, 486, 555],
+    "dev": [663, 513, 636, 403, 860, 910],
+    "test": [599, 898, 561, 911, 339, 14, 513, 169, 203, 419, 651, 478]
+  },
+  "formal_test_outcome_opened": false
+}

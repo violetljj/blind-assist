@@ -32,6 +32,8 @@ ProcTHOR native M0 V1 因空 position precondition 未被 runner 显式映射为
 
 M1 已在任何视觉 collection/outcome 前冻结 24 train / 6 dev / 12 test houses、DINOv2-S encoder、Depth-Anything-V2-S B1 evidence、B0/B1/B2/GRAIL interface 与 one-shot gates；test houses 与全部已消费 M0 test houses 分离。
 
+M1 V1 Development 因 query target-centering leak 在 formal test 前关闭；V2 改为 hash-ranked visible yaw、新 test salt，并把 uplift comparator 修正为 `max(B0,B1,B2)`。V2 test 仍未打开。
+
 ## 安全边界
 
 M0 是研究 teacher/oracle 证据，不控制真实用户，也不建立 RGB、自然相机、Android、产品或安全 authority。数据集许可、source identity、分母与 proxy/ground-truth 边界必须随结果保留。

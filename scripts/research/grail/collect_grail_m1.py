@@ -130,11 +130,18 @@ def collect(dataset: Path, manifest_path: Path, role: str, output: Path) -> dict
                 if ref_bbox_mask is None:
                     continue
                 query_event = None
-                for query_position in ranked_query_positions(reachable, obj["position"], f"{role}:{house_index}:{obj['objectId']}")[:32]:
-                    query_pose = {**query_position, "rotation": yaw_toward(query_position, obj["position"]), "horizon": 0.0, "standing": True}
-                    candidate_event = controller.step(action="TeleportFull", **query_pose)
-                    if bbox_for(candidate_event, obj["objectId"]) is not None:
-                        query_event = candidate_event
+                sample_key = f"{role}:{house_index}:{obj['objectId']}"
+                for query_position in ranked_query_positions(reachable, obj["position"], sample_key)[:32]:
+                    center_yaw = round(yaw_toward(query_position, obj["position"]) / 30.0) * 30.0
+                    rotations = [(center_yaw + delta) % 360.0 for delta in (-60.0, -30.0, 0.0, 30.0, 60.0)]
+                    rotations.sort(key=lambda yaw: hashlib.sha256(f"{sample_key}:{query_position['x']:.3f}:{query_position['z']:.3f}:{yaw:.1f}".encode()).hexdigest())
+                    for rotation in rotations:
+                        query_pose = {**query_position, "rotation": rotation, "horizon": 0.0, "standing": True}
+                        candidate_event = controller.step(action="TeleportFull", **query_pose)
+                        if bbox_for(candidate_event, obj["objectId"]) is not None:
+                            query_event = candidate_event
+                            break
+                    if query_event is not None:
                         break
                 if query_event is None:
                     continue
@@ -183,7 +190,7 @@ def collect(dataset: Path, manifest_path: Path, role: str, output: Path) -> dict
         if controller is not None:
             controller.stop()
     report = {
-        "schema": "blindassist_grail_m1_collection_v1", "role": role,
+        "schema": "blindassist_grail_m1_collection_v2_hash_ranked_visible_yaw", "role": role,
         "manifest_sha256": manifest_hash, "dataset_sha256": dataset_hash,
         "examples": len(rows), "wrong_target_examples": sum(r["same_type_visible_candidates"] >= 2 for r in rows),
         "scene_receipts": scene_receipts, "rows": rows,
