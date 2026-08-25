@@ -242,14 +242,18 @@ def _group_rows(objects: list[dict[str, Any]]) -> list[tuple[str, str, list[dict
 
 
 def collect(dataset: Path, manifest_path: Path, role: str, output: Path,
-            house_limit: int | None = None, allow_under_minimum: bool = False) -> dict[str, Any]:
+            house_limit: int | None = None, allow_under_minimum: bool = False,
+            shard_index: int = 0, shard_count: int = 1) -> dict[str, Any]:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     dataset_key = "test_sha256" if role == "final_test" else "train_sha256"
     if sha256_file(dataset) != manifest["source"][dataset_key]:
         raise ValueError("R1C-L dataset/manifest identity mismatch")
-    roster = manifest["rosters"][role]
+    if shard_count < 1 or not 0 <= shard_index < shard_count:
+        raise ValueError("R1C-L shard identity is invalid")
+    full_roster = manifest["rosters"][role]
     if house_limit is not None:
-        roster = roster[:house_limit]
+        full_roster = full_roster[:house_limit]
+    roster = full_roster[shard_index::shard_count]
     houses = _load_houses(dataset, roster)
     root = output / role
     partial_path = root / "collection.partial.json"
@@ -261,6 +265,8 @@ def collect(dataset: Path, manifest_path: Path, role: str, output: Path,
         partial = json.loads(partial_path.read_text(encoding="utf-8"))
         if partial["manifest_sha256"] != sha256_file(manifest_path) or partial["dataset_sha256"] != sha256_file(dataset):
             raise ValueError("R1C-L partial identity mismatch")
+        if partial.get("shard_index", 0) != shard_index or partial.get("shard_count", 1) != shard_count:
+            raise ValueError("R1C-L partial shard identity mismatch")
         views, pairs, receipts = partial["views"], partial["pairs"], partial["scene_receipts"]
     completed = {int(row["house_index"]) for row in receipts}
     started = time.monotonic()
@@ -347,7 +353,8 @@ def collect(dataset: Path, manifest_path: Path, role: str, output: Path,
             checkpoint = {
                 "schema": "blindassist_grail_r1c_l_collection_checkpoint_v1",
                 "manifest_sha256": sha256_file(manifest_path), "dataset_sha256": sha256_file(dataset),
-                "role": role, "scene_receipts": receipts, "views": views, "pairs": pairs,
+                "role": role, "shard_index": shard_index, "shard_count": shard_count,
+                "scene_receipts": receipts, "views": views, "pairs": pairs,
             }
             _atomic_json(partial_path, checkpoint)
             elapsed = max(time.monotonic() - started, 1e-6)
@@ -366,15 +373,16 @@ def collect(dataset: Path, manifest_path: Path, role: str, output: Path,
             controller.stop()
     maximum = manifest["collection"]["validation_pair_range" if role == "validation" else "train_pair_range"][1] \
         if role != "final_test" else len(pairs)
-    if len(pairs) > maximum:
+    if shard_count == 1 and len(pairs) > maximum:
         pairs = sorted(pairs, key=lambda row: _rank(row["pair_id"]))[:maximum]
     minimum = manifest["collection"]["validation_pair_range" if role == "validation" else "train_pair_range"][0] \
         if role != "final_test" else 0
-    if len(pairs) < minimum and not allow_under_minimum:
+    if shard_count == 1 and len(pairs) < minimum and not allow_under_minimum:
         raise RuntimeError(f"R1C-L_NOT_EVALUABLE_PAIR_QUOTA role={role} pairs={len(pairs)}/{minimum}")
     result = {
         "schema": "blindassist_grail_r1c_l_collection_v1", "role": role,
         "manifest_sha256": sha256_file(manifest_path), "dataset_sha256": sha256_file(dataset),
+        "shard_index": shard_index, "shard_count": shard_count,
         "houses": len(receipts), "views": views, "pairs": pairs, "scene_receipts": receipts,
         "summary": {
             "views": len(views), "pairs": len(pairs),
@@ -402,8 +410,11 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--house-limit", type=int)
     parser.add_argument("--allow-under-minimum", action="store_true")
+    parser.add_argument("--shard-index", type=int, default=0)
+    parser.add_argument("--shard-count", type=int, default=1)
     args = parser.parse_args()
-    collect(args.dataset, args.manifest, args.role, args.output, args.house_limit, args.allow_under_minimum)
+    collect(args.dataset, args.manifest, args.role, args.output, args.house_limit,
+            args.allow_under_minimum, args.shard_index, args.shard_count)
     return 0
 
 

@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import math
+from pathlib import Path
+import tempfile
 import unittest
 
 import torch
@@ -12,6 +14,7 @@ from collect_grail_pairwise_owner_coordinate_r1cl import valid_bins, view_ordina
 from grail_pairwise_owner_coordinate_r1cl import (
     exchange_consistency_loss, predicted_slot_modes, slot_marginalized_loss, slot_mode_correct,
 )
+from merge_grail_r1cl_collection_shards import _materialize_asset
 
 
 def _view(view_id: str, centroids: list[tuple[str, list[float]]]) -> dict:
@@ -21,6 +24,21 @@ def _view(view_id: str, centroids: list[tuple[str, list[float]]]) -> dict:
 
 
 class R1CLMechanicsTest(unittest.TestCase):
+    def test_shard_partition_is_disjoint_and_complete(self) -> None:
+        roster = list(range(17))
+        shards = [roster[index::4] for index in range(4)]
+        self.assertEqual(sorted(item for shard in shards for item in shard), roster)
+        self.assertEqual(sum(len(shard) for shard in shards), len(set(item for shard in shards for item in shard)))
+
+    def test_asset_materialization_reuses_identical_file(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source, destination = root / "source", root / "nested" / "destination"
+            source.write_bytes(b"r1cl")
+            _materialize_asset(source, destination)
+            _materialize_asset(source, destination)
+            self.assertEqual(destination.read_bytes(), b"r1cl")
+
     def test_preserved_slot_permutation_accepts_positive_cosine_bins(self) -> None:
         reference = _view("r", [("a", [10, 10]), ("b", [30, 10])])
         query = _view("q", [("a", [8, 12]), ("b", [28, 12])])
