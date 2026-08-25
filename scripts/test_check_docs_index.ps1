@@ -145,6 +145,18 @@ try {
     Assert-IndexResult -Name 'indexed-research-domain' -IndexText '[domain](research/domain/README.md)' -OtherFiles @('research/domain/README.md') -ShouldPass $true
     Assert-IndexResult -Name 'research-domain-without-readme' -IndexText '# index' -OtherFiles @('research/domain/SNAPSHOT.md') -ShouldPass $false
     Assert-IndexResult -Name 'research-domain-without-top-index-link' -IndexText '# index' -OtherFiles @('research/domain/README.md') -ShouldPass $false
+    # Community entry pages must be reachable from the documentation index
+    Assert-IndexResult `
+        -Name 'community-entry-pages-indexed' `
+        -IndexText "[quickstart](QUICKSTART_EN.md)`n[community launch kit](COMMUNITY_LAUNCH_KIT.md)" `
+        -OtherFiles @('QUICKSTART_EN.md', 'COMMUNITY_LAUNCH_KIT.md') `
+        -ShouldPass $true
+    # A broken local link inside a current entry page must be rejected
+    Assert-AuthoritySurfaceLinkResult `
+        -Name 'community-entry-page-broken-link' `
+        -RelativePath 'research/domain/README.md' `
+        -Content "# Community Entry`n`n状态：current`n`n[missing-resource](NONEXISTENT_RESOURCE.md)`n" `
+        -ShouldPass $false
     Assert-AuthoritySurfaceLinkResult `
         -Name 'current-doc-broken-link' `
         -RelativePath 'research/domain/README.md' `
