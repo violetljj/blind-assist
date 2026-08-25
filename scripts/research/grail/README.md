@@ -27,7 +27,7 @@ E:\codex-tools\bin\blindassist-python.cmd -m unittest discover -s scripts/resear
 
 程序化结果写入 `artifacts.local/evidence/grail-m0/`。后续 natural-3D runner 使用 ARKitScenes source mesh/OBB 与显式 derived proxy；fresh 结果只有 `20/79` 非空 set，未过 50% coverage 门，故 M1 当前禁止。唯一 successor 必须改变 teacher 信息源，以 source-native navigability/functional-side 或 interaction-pose truth 另立 source-disjoint M0；不得在 fresh cohort 调 proxy。
 
-当前 successor 已冻结为 ProcTHOR-10K + AI2-THOR native reachable/interactable-pose M0；协议与 roster 见 `procthor_native_m0_manifest_v1.json`。只有全部 one-shot held-out 门通过，才可解除 `STOP_BEFORE_M1`。
+ProcTHOR native M0 V1 因空 position precondition 未被 runner 显式映射为 `NONE` 而在首个 house 终止，状态为 `NOT_EVALUABLE`，不得重跑或解释。唯一语义修正已用已消耗 house 作 Development 验证；V2 已在 runtime outcome 前用新 salt 和全新 roster 冻结，协议与 roster 见 `procthor_native_m0_manifest_v2.json`。只有 V2 全部 one-shot held-out 门通过，才可解除 `STOP_BEFORE_M1`。
 
 ## 安全边界
 

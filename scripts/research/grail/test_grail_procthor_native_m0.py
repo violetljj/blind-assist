@@ -10,6 +10,7 @@ from grail_procthor_native_m0 import (
     is_action_target,
     reachable_path_exists,
 )
+from run_grail_procthor_native_m0 import nearby_positions
 
 
 def pose(x: float, z: float, rotation: float) -> dict:
@@ -54,6 +55,10 @@ class GrailProcThorNativeM0Tests(unittest.TestCase):
             ["BACK_FACING", "FREE_BUT_UNRELATED", "OUTSIDE_REACHABLE_NAVMESH"],
         )
         self.assertTrue(all(row["rejected"] for row in rows))
+
+    def test_empty_nearby_positions_is_a_valid_none_precondition(self) -> None:
+        reachable = [{"x": 0.0, "y": 0.9, "z": 0.0}]
+        self.assertEqual(nearby_positions(reachable, {"x": 10.0, "z": 10.0}), [])
 
 
 if __name__ == "__main__":

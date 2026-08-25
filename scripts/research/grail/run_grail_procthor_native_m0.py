@@ -136,19 +136,22 @@ def run(dataset: Path, manifest_path: Path) -> dict[str, Any]:
             action_canary_used = False
             for obj in targets:
                 positions = nearby_positions(reachable, obj["position"])
-                pose_event = controller.step(
-                    action="GetInteractablePoses",
-                    objectId=obj["objectId"],
-                    positions=positions,
-                    rotations=list(range(0, 360, 30)),
-                    horizons=[0],
-                    standings=[True],
-                )
-                if not pose_event.metadata.get("lastActionSuccess"):
-                    raise RuntimeError(
-                        f"GetInteractablePoses failed for {obj['objectId']}: {pose_event.metadata.get('errorMessage')}"
+                if positions:
+                    pose_event = controller.step(
+                        action="GetInteractablePoses",
+                        objectId=obj["objectId"],
+                        positions=positions,
+                        rotations=list(range(0, 360, 30)),
+                        horizons=[0],
+                        standings=[True],
                     )
-                poses = pose_event.metadata.get("actionReturn") or []
+                    if not pose_event.metadata.get("lastActionSuccess"):
+                        raise RuntimeError(
+                            f"GetInteractablePoses failed for {obj['objectId']}: {pose_event.metadata.get('errorMessage')}"
+                        )
+                    poses = pose_event.metadata.get("actionReturn") or []
+                else:
+                    poses = []
                 candidate = representative_pose(poses, obj["position"])
                 should_run_action_canary = (
                     not action_canary_used
@@ -260,7 +263,7 @@ def run(dataset: Path, manifest_path: Path) -> dict[str, Any]:
         "two_counterfactual_families_per_valid_target": two_family_targets == len(valid) and len(valid) > 0,
     }
     return {
-        "schema": "blindassist_grail_procthor_native_m0_v1",
+        "schema": manifest["schema"].replace("_manifest_", "_report_"),
         "manifest_sha256": sha256_file(manifest_path),
         "manifest": manifest,
         "metrics": metrics,

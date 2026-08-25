@@ -18,26 +18,33 @@ AI2THOR_COMMIT = "f0825767cd50d69f666c7f282e54abfe58f1e917"
 SELECTION_SALT = "BLINDASSIST_GRAIL_PROCTHOR_NATIVE_M0_V1"
 
 
-def freeze(dataset: Path, docker_image_id: str, roster_size: int = 12) -> dict:
+def freeze(
+    dataset: Path,
+    docker_image_id: str,
+    roster_size: int = 12,
+    selection_salt: str = SELECTION_SALT,
+    excluded_indices: tuple[int, ...] = (0,),
+    manifest_version: int = 1,
+) -> dict:
     dataset_hash = sha256_file(dataset)
     if dataset_hash != EXPECTED_TEST_SHA256:
         raise ValueError(f"unexpected ProcTHOR test SHA-256: {dataset_hash}")
     candidates = []
     with gzip.open(dataset, "rt", encoding="utf-8") as stream:
         for index, line in enumerate(stream):
-            if index == 0:
-                continue  # Earlier runtime work referenced test index 0; do not reuse it.
+            if index in excluded_indices:
+                continue
             house = json.loads(line)
             house_hash = canonical_sha256(house)
             rank = hashlib.sha256(
-                f"{SELECTION_SALT}:{dataset_hash}:{index}:{house_hash}".encode("ascii")
+                f"{selection_salt}:{dataset_hash}:{index}:{house_hash}".encode("ascii")
             ).hexdigest()
             candidates.append((rank, index, house_hash))
     if len(candidates) < roster_size:
         raise ValueError("dataset is smaller than requested roster")
     selected = sorted(candidates)[:roster_size]
     return {
-        "schema": "blindassist_grail_procthor_native_m0_manifest_v1",
+        "schema": f"blindassist_grail_procthor_native_m0_manifest_v{manifest_version}",
         "profile": "FRESH_SOURCE_DISJOINT_ONE_SHOT_TEST",
         "frozen_before_ai2thor_test_outcome": True,
         "source": {
@@ -51,9 +58,9 @@ def freeze(dataset: Path, docker_image_id: str, roster_size: int = 12) -> dict:
         },
         "selection": {
             "algorithm": "lowest SHA256 rank over immutable dataset hash, house index, and canonical house hash",
-            "salt": SELECTION_SALT,
-            "excluded_indices": [0],
-            "excluded_reason": "historical ProcTHOR runtime work referenced test index 0",
+            "salt": selection_salt,
+            "excluded_indices": list(excluded_indices),
+            "excluded_reason": "historical or earlier formal runtime work consumed these indices",
             "reads_runtime_or_teacher_outcome": False,
         },
         "runtime": {
@@ -103,8 +110,19 @@ def main() -> int:
     parser.add_argument("--docker-image-id", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--roster-size", type=int, default=12)
+    parser.add_argument("--selection-salt", default=SELECTION_SALT)
+    parser.add_argument("--exclude-index", type=int, action="append", default=[])
+    parser.add_argument("--manifest-version", type=int, default=1)
     args = parser.parse_args()
-    manifest = freeze(args.dataset, args.docker_image_id, args.roster_size)
+    excluded = tuple(sorted(set(args.exclude_index or [0])))
+    manifest = freeze(
+        args.dataset,
+        args.docker_image_id,
+        args.roster_size,
+        args.selection_salt,
+        excluded,
+        args.manifest_version,
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8", newline="\n") as handle:
         handle.write(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n")
