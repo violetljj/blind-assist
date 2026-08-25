@@ -21,6 +21,7 @@ from torch.nn import functional as F
 VISUAL_WEIGHTS_SHA256 = "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1"
 DEPTH_WEIGHTS_SHA256 = "3152477ce0d8d6978d76b995120de97cb5b928701fd0f817769f59e249a16b70"
 K_POSES = 3
+FEATURE_SCHEMA = "blindassist_grail_m1_features_v2_local_tokens"
 
 
 def sha256_file(path: Path) -> str:
@@ -38,15 +39,27 @@ def expanded_crop(image: Image.Image, bbox: list[int]) -> Image.Image:
 
 
 @torch.inference_mode()
-def encode_images(images: list[Image.Image], processor: Any, model: Any, device: torch.device) -> np.ndarray:
-    outputs = []
+def encode_images(images: list[Image.Image], processor: Any, model: Any, device: torch.device) -> tuple[np.ndarray, np.ndarray]:
+    outputs, token_outputs = [], []
     for start in range(0, len(images), 16):
         batch = processor(images=images[start:start+16], return_tensors="pt")
         batch = {key: value.to(device) for key, value in batch.items()}
-        encoded = model(**batch).pooler_output
-        encoded = F.normalize(encoded.float(), dim=-1)
+        model_output = model(**batch)
+        encoded = F.normalize(model_output.pooler_output.float(), dim=-1)
+        tokens = F.normalize(model_output.last_hidden_state[:, 1:].float(), dim=-1)
         outputs.append(encoded.cpu().numpy())
-    return np.concatenate(outputs, axis=0)
+        token_outputs.append(tokens.cpu().numpy())
+    return np.concatenate(outputs, axis=0), np.concatenate(token_outputs, axis=0)
+
+
+def local_match_features(candidate_tokens: np.ndarray, reference_tokens: np.ndarray) -> np.ndarray:
+    similarity = candidate_tokens @ reference_tokens.T
+    candidate_best = np.max(similarity, axis=1)
+    reference_best = np.max(similarity, axis=0)
+    return np.asarray([
+        float(np.max(similarity)), float(np.mean(candidate_best)),
+        float(np.mean(reference_best)), float(np.mean(np.partition(similarity.ravel(), -16)[-16:])),
+    ], dtype=np.float32)
 
 
 @torch.inference_mode()
@@ -65,7 +78,8 @@ def materialize_features(collection_path: Path, dataset_root: Path, cache_path: 
         cached = torch.load(cache_path, weights_only=False)
         if cached["collection_sha256"] != collection_hash:
             raise ValueError("feature cache collection identity mismatch")
-        return cached
+        if cached.get("schema") == FEATURE_SCHEMA:
+            return cached
     from transformers import AutoImageProcessor, AutoModel, AutoModelForDepthEstimation
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     visual_processor = AutoImageProcessor.from_pretrained(visual_path, local_files_only=True)
@@ -78,7 +92,7 @@ def materialize_features(collection_path: Path, dataset_root: Path, cache_path: 
         query = Image.open(dataset_root / row["query_image"]).convert("RGB")
         reference = Image.open(dataset_root / row["reference_image"]).convert("RGB")
         candidate_crops = [expanded_crop(query, candidate["bbox"]) for candidate in row["candidates"]]
-        embeddings = encode_images([query, reference, *candidate_crops], visual_processor, visual, device)
+        embeddings, tokens = encode_images([query, reference, *candidate_crops], visual_processor, visual, device)
         relative_depth = predict_depth(query, depth_processor, depth, device)
         candidates = []
         for candidate, embedding in zip(row["candidates"], embeddings[2:]):
@@ -86,16 +100,19 @@ def materialize_features(collection_path: Path, dataset_root: Path, cache_path: 
             depth_crop = relative_depth[y0:y1, x0:x1]
             candidates.append({
                 **candidate, "embedding": embedding,
+                "local_match": local_match_features(tokens[2+len(candidates)], tokens[1]),
+                "tokens": tokens[2+len(candidates)].astype(np.float16),
                 "relative_depth": float(np.median(depth_crop)),
                 "geometry": np.asarray([
                     ((x0+x1)/2/320.0 - 0.5) * 2.0, ((y0+y1)/2/240.0 - 0.5) * 2.0,
                     (x1-x0)/320.0, (y1-y0)/240.0, float(np.median(depth_crop)),
                 ], dtype=np.float32),
             })
-        feature_rows.append({**row, "query_embedding": embeddings[0], "reference_embedding": embeddings[1], "candidates": candidates})
+        feature_rows.append({**row, "query_embedding": embeddings[0], "reference_embedding": embeddings[1],
+                             "reference_tokens": tokens[1].astype(np.float16), "candidates": candidates})
         if number % 25 == 0:
             print(json.dumps({"state": "FEATURES", "completed": number, "total": len(collection["rows"])}), flush=True)
-    payload = {"schema": "blindassist_grail_m1_features_v1", "collection_sha256": collection_hash, "rows": feature_rows}
+    payload = {"schema": FEATURE_SCHEMA, "collection_sha256": collection_hash, "rows": feature_rows}
     cache_path.parent.mkdir(parents=True, exist_ok=True)
     temporary = cache_path.with_suffix(".tmp")
     torch.save(payload, temporary); temporary.replace(cache_path)
@@ -144,10 +161,10 @@ class B2Model(nn.Module):
 class GrailModel(nn.Module):
     def __init__(self, dim: int):
         super().__init__()
-        self.referent = nn.Sequential(nn.Linear(dim*4, 256), nn.ReLU(), nn.Linear(256, 1))
+        self.referent = nn.Sequential(nn.Linear(dim*4+4, 256), nn.ReLU(), nn.Linear(256, 1))
         self.pose = nn.Sequential(nn.Linear(dim*3+5, 256), nn.ReLU(), nn.Linear(256, 128), nn.ReLU(), nn.Linear(128, K_POSES*4))
-    def forward(self, query: torch.Tensor, reference: torch.Tensor, candidate: torch.Tensor, geometry: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
-        ref_input = torch.cat([candidate, reference, candidate*reference, torch.abs(candidate-reference)], dim=-1)
+    def forward(self, query: torch.Tensor, reference: torch.Tensor, candidate: torch.Tensor, geometry: torch.Tensor, local_match: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        ref_input = torch.cat([candidate, reference, candidate*reference, torch.abs(candidate-reference), local_match], dim=-1)
         pose_input = torch.cat([query, candidate, reference, geometry], dim=-1)
         referent = self.referent(ref_input).squeeze(-1)
         raw_pose = self.pose(pose_input)
@@ -161,6 +178,11 @@ def train_models(train_rows: list[dict[str, Any]], output: Path) -> dict[str, An
     b2, grail = B2Model(dim).to(device), GrailModel(dim).to(device)
     b2_opt, grail_opt = torch.optim.Adam(b2.parameters(), 2e-3), torch.optim.Adam(grail.parameters(), 2e-3)
     neg_indices = negative_reference_indices(train_rows)
+    negative_matches = [
+        [local_match_features(candidate["tokens"].astype(np.float32), train_rows[neg_indices[index]]["reference_tokens"].astype(np.float32))
+         for candidate in row["candidates"]]
+        for index, row in enumerate(train_rows)
+    ]
     depth_x, depth_y = [], []
     for row in train_rows:
         target = next(c for c in row["candidates"] if c["is_target"])
@@ -184,11 +206,13 @@ def train_models(train_rows: list[dict[str, Any]], output: Path) -> dict[str, An
             b2_loss = b2_loss + F.smooth_l1_loss(pos_pose, pose_target[1])
             b2_loss.backward(); b2_opt.step()
             grail_opt.zero_grad(); logits, poses, labels = [], [], []
-            for candidate in row["candidates"]:
+            for candidate_index, candidate in enumerate(row["candidates"]):
                 cand = torch.tensor(candidate["embedding"], device=device); geom = torch.tensor(candidate["geometry"], device=device)
-                logit, predicted = grail(query, ref, cand, geom); logits.append(logit); labels.append(float(candidate["is_target"]))
+                match = torch.tensor(candidate["local_match"], device=device)
+                logit, predicted = grail(query, ref, cand, geom, match); logits.append(logit); labels.append(float(candidate["is_target"]))
                 if candidate["is_target"]: poses.append(predicted)
-                negative_logit, _ = grail(query, negative_ref, cand, geom); logits.append(negative_logit); labels.append(0.0)
+                negative_match = torch.tensor(negative_matches[index][candidate_index], device=device)
+                negative_logit, _ = grail(query, negative_ref, cand, geom, negative_match); logits.append(negative_logit); labels.append(0.0)
             label_tensor = torch.tensor(labels, device=device)
             pos_weight = torch.tensor(max(1.0, (len(labels)-label_tensor.sum().item())/max(1.0,label_tensor.sum().item())), device=device)
             loss = F.binary_cross_entropy_with_logits(torch.stack(logits), label_tensor, pos_weight=pos_weight)
@@ -240,7 +264,11 @@ def score_rows(rows: list[dict[str,Any]], checkpoint: dict[str,Any], thresholds:
             scores["B2"][kind].append(float(torch.sigmoid(b2_logit)))
             candidate_scores=[]; candidate_poses=[]
             for c in row["candidates"]:
-                logit,poses=grail(torch.tensor(row["query_embedding"],device=device),torch.tensor(ref_np,device=device),torch.tensor(c["embedding"],device=device),torch.tensor(c["geometry"],device=device))
+                match_np = c["local_match"] if kind=="positive" else local_match_features(
+                    c["tokens"].astype(np.float32), rows[neg_indices[i]]["reference_tokens"].astype(np.float32)
+                )
+                match = torch.tensor(match_np,device=device)
+                logit,poses=grail(torch.tensor(row["query_embedding"],device=device),torch.tensor(ref_np,device=device),torch.tensor(c["embedding"],device=device),torch.tensor(c["geometry"],device=device),match)
                 candidate_scores.append(float(torch.sigmoid(logit))); candidate_poses.append(poses.cpu().tolist())
             gsel=int(np.argmax(candidate_scores)); scores["GRAIL"][kind].append(candidate_scores[gsel])
             if kind=="positive":
