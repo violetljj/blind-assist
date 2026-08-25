@@ -5446,3 +5446,9 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
 - 首轮 4 Development + 4 held-out 全 `NONE`，定位为 visibility 错复用身体净空膨胀 mask 并检查到目标中心；只在 Development 修复后为 `4/11` 非空、oracle `4/4`。旧 held-out 作废为诊断。随后 annotation-only 冻结 8 个历史/ledger 未出现且 visit-disjoint 的 fresh scene、79 instances。
 - fresh 结果 `VALID_SET=20/79=25.3%`，未过 50% coverage 门；非空分母 pose/closed-loop=`20/20`。终态 `GRAIL_M0_NATURAL_3D_DERIVED_TEACHER_NOT_ESTABLISHED / STOP_BEFORE_M1`。不在 fresh cohort 调 proxy，不训练 student；唯一 successor 改为具有 source-native navigability/functional-side 或 interaction-pose truth 的新数据源 M0。
 - 结果：[GRAIL natural-3D M0](docs/research/goal-copilot/GRAIL_M0_NATURAL_3D_DERIVED_TEACHER_RESULT_2026-08-25.md)。
+
+# 2026-08-25 GRAIL-R0 privileged relational-information oracle
+
+- 执行者：violjjet。保持 M1 V2b 的 78-case dev、candidate set、checkpoint、K=3 pose head、threshold=`0.9353410602` 与 evaluator 不动；不训练新网络、不读取 formal test，只增加不含 object ID 的 ProcTHOR native coarse relational signature。
+- 冻结 M1 诊断复算为 referent=`44/78`、referent+pose=`34/78`、complete=`22/78`、target-pose oracle=`64/78`。GRAIL-R0 得到 referent=`75/78`、referent+pose=`61/78`、complete=`57/78`，wrong-target=`0/43`、absence false commit=`0/78`、complete rescue/collateral=`35/0`。
+- 终态 `GRAIL_R0_RELATIONAL_INFORMATION_CAN_BREAK_REFERENT_BOTTLENECK`。只建立 synthetic ProcTHOR privileged-metadata Development 机制上界；唯一 successor 是 R1 可获得关系表示。M2、formal test、reference-only tuning、Android/default-App 均未授权。

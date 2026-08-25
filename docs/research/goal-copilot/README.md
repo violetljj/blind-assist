@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / ALGORITHM_MAINLINE=GRAIL / LAST_METER_ALGORITHM_MAINLINE_REOPENED / PROCTHOR_NATIVE_M0_V2_ALL_GATES_PASS / M1_V2B_GRAIL_22_OF_78_VS_B1_23_OF_78 / NO_CLEAR_UPLIFT / FORMAL_TEST_UNOPENED / STOP_BEFORE_M2 / PASSIVE_EXACT_INSTANCE_CLOSED / FOUR_BOUNDARY_MAINLINE_CLOSED / MARKER_POSE_CANARY_ONLY / DYNAMIC_RISK_AUXILIARY / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / ALGORITHM_MAINLINE=GRAIL_R / M1_REFERENCE_ONLY_STOPPED / GRAIL_R0_REFERENT_75_OF_78 / COMPLETE_57_OF_78_VS_B1_23_OF_78 / RELATIONAL_INFORMATION_BREAKS_REFERENT_BOTTLENECK / R1_RELATION_ACQUISITION_AUTHORIZED / FORMAL_TEST_UNOPENED / STOP_BEFORE_M2 / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -20,7 +20,9 @@ fresh 程序化 metric 2.5D M0 的 36 个 held-out 建筑/实例中，24 个 pos
 
 后续 [`natural-3D M0`](GRAIL_M0_NATURAL_3D_DERIVED_TEACHER_RESULT_2026-08-25.md) 在 8 个 fresh ARKitScenes scene、79 个实例上仅生成 `20/79` 非空 set，未过 50% coverage 门；该 derived source 保持关闭。改变信息源后的 [`ProcTHOR native M0 V2`](GRAIL_M0_PROCTHOR_NATIVE_INTERACTION_V2_RESULT_2026-08-25.md) 在冻结的 12 个 held-out house、205 个 target 上得到 pose coverage=`199/205`、oracle pose/path=`199/199`、local stability=`191/199`、action canary=`12/12`、NONE false commit=`0/18` 与 counterfactual=`572/572`，全部预注册门通过。因此 M1 frozen-encoder `B0/B1/B2/GRAIL` 比较已授权；这仍不构成 RGB、自然场景、Android、产品或安全证据。旧路线、hidden canary、动态风险和默认 App 角色不变。
 
-## 当前终态
+M1 V2b reference-only Development 已以 GRAIL=`22/78`、B1=`23/78` 停止，formal test 未打开；层级诊断为 frozen target-pose=`64/78`、referent top-1=`44/78`。改变独立信息源后的 [`GRAIL-R0 privileged relational oracle`](GRAIL_R0_PRIVILEGED_RELATIONAL_ORACLE_RESULT_2026-08-25.md) 保持同一 78-case、candidate set、pose head、threshold 与 evaluator，只增加 ProcTHOR native relation signature，得到 referent=`75/78`、complete=`57/78`、wrong-target=`0/43`、absence false commit=`0/78`、complete rescue/collateral=`35/0`。这建立的是 synthetic privileged-metadata 机制上界，不是视觉关系能力；唯一 successor 是 R1 可获得关系表示，M2、formal test、reference-only tuning 与 Android 仍关闭。
+
+## Goal Copilot 既有 evidence context
 
 [`PUBLIC_REAL_EPISODE_MINING_V0`](BLINDASSIST_PUBLIC_REAL_EPISODE_MINING_V0_RESULT_2026-08-23.md) 已执行并封存，属于 `REVERSIBLE_EXPLORATION`：
 

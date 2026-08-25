@@ -20,7 +20,7 @@
 | 研究 Module 角色与稳定入口 | 各 Module `README.md`；HFTF 另见 [`INDEX.md`](../scripts/research/hftf/INDEX.md) | 从 `MODULE_INDEX.md` 选择一个 Module |
 | Goal Copilot public-real episode mining、selective guidance 与 authority-separated last-mile geometry | [`goal_copilot_bridge/README.md`](../scripts/research/goal_copilot_bridge/README.md) | `scripts/research/goal_copilot_bridge/`；`semantic_authority_last_mile_v0/` owns synthetic regression plus controlled real-RGB observation diagnostics |
 | Research-only exact semantic anchor + QR planar pose live demo | [`SAGE-LM V2 marker-pose implementation`](research/goal-copilot/SAGE_LM_V2_MARKER_POSE_LIVE_SEAM_IMPLEMENTATION_2026-08-25.md) | `apps/demos/semantic-anchor-demo-app/`；独立 application ID，不修改默认 `:app` |
-| GRAIL set-valued interaction-pose teacher/oracle M0 | [`GRAIL M0 result`](research/goal-copilot/GRAIL_M0_ORACLE_INTERACTION_POSE_RESULT_2026-08-25.md) | `scripts/research/grail/`；程序化 metric 2.5D research-only，不修改默认 `:app` |
+| GRAIL set-valued interaction-pose teacher 与 GRAIL-R relational oracle | [`GRAIL-R0 result`](research/goal-copilot/GRAIL_R0_PRIVILEGED_RELATIONAL_ORACLE_RESULT_2026-08-25.md) | `scripts/research/grail/`；M0 teacher、frozen M1 与 privileged relational Development probe，均不修改默认 `:app` |
 | 配置与冻结合同 | `configs/` | JSON/YAML；先看调用方和协议 |
 | 机器 schema | `schemas/` | JSON Schema 与 validator |
 | 当前文档与研究真源 | [`docs/PROJECT_STATE.md`](PROJECT_STATE.md) | `docs/`、`docs/research/` |
