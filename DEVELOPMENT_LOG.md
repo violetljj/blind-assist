@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-25（Asia/Hong_Kong）；执行者：Codex。先以独立提交冻结 R1C-V protocol，再固化 deterministic
+  `proposal PCA axis + RGB gradient sign` 实现，之后运行唯一一次 consumed 78-case probe。Axis-only（oracle sign）
+  cross-view slot=`45/78`，sign-only（oracle axis）=`40/78`，最终 visual arm=`39/78`；final referent=`38/78`、
+  complete=`27/78`、wrong-target=`9/43`、absence=`0/78`、R1B disagreement rescue=`1/23`。axis pair evaluable=`29/78`
+  且 20° 命中=`13/29`；sign pair evaluable=`16/78`、correct=`4/16`，45/78 rows 至少一侧 UNKNOWN。终态为
+  `GRAIL_R1C_V_AXIS_NOT_VISUALLY_OBTAINABLE_BY_DETERMINISTIC_PROBE_STOP`；sign 同时失败。关闭当前 estimator，不调
+  PCA/padding/sign threshold/UNKNOWN/bin/matcher/fusion/pose，不自动授权 learned head、formal test、M2 或 Android/App。
+
 - 时间：2026-08-25（Asia/Hong_Kong）；执行者：Codex。按结果前冻结的 R1C-O 协议，只把 image-space sibling
   ordinal 换成 AI2-THOR privileged native owner-local coordinate，冻结同一 78-case、candidate、M1 checkpoint、
   appearance tiebreak、pose、threshold 与 evaluator。6/6 houses、78/78 targets 有 native owner frame；canonical arm
