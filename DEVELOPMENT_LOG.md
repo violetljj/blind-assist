@@ -5452,3 +5452,11 @@ Current window: 2026-08. Historical entries: [2026-07](docs/history/development-
 - 执行者：violjjet。保持 M1 V2b 的 78-case dev、candidate set、checkpoint、K=3 pose head、threshold=`0.9353410602` 与 evaluator 不动；不训练新网络、不读取 formal test，只增加不含 object ID 的 ProcTHOR native coarse relational signature。
 - 冻结 M1 诊断复算为 referent=`44/78`、referent+pose=`34/78`、complete=`22/78`、target-pose oracle=`64/78`。GRAIL-R0 得到 referent=`75/78`、referent+pose=`61/78`、complete=`57/78`，wrong-target=`0/43`、absence false commit=`0/78`、complete rescue/collateral=`35/0`。
 - 终态 `GRAIL_R0_RELATIONAL_INFORMATION_CAN_BREAK_REFERENT_BOTTLENECK`。只建立 synthetic ProcTHOR privileged-metadata Development 机制上界；唯一 successor 是 R1 可获得关系表示。M2、formal test、reference-only tuning、Android/default-App 均未授权。
+
+# 2026-08-25 GRAIL-R1A training-free obtainable grouping
+
+- 执行者：violjjet。复用 consumed 78-case、frozen M1 checkpoint/pose head/threshold/evaluator，不读 `root_id`；现有 collection 未保存 pixel mask，故只使用 RGB、oracle bbox proposal、semantic type 与 frozen DINO context。
+- query grouping same-root pair F1=`97.3%`，但 different-root specificity=`39.5%`、exact partition=`62/78`；高 F1 被 Drawer positive pairs 主导。aligned-context target ordinal=`51/78`。
+- 最佳 arm referent=`51/78`、complete=`38/78`，R0 uplift recovery=`22.6% / 45.7%`；wrong-target=`25/43`、absence false commit=`35/78`。31 个 R0 selector rescues 仅恢复 `11`，shift-2 无增益。
+- 终态 `GRAIL_R1A_QUERY_GROUPING_HIGH_REFERENCE_ORDINAL_PARTIAL_FALSE_COMMIT_UNRESOLVED`。不在同一 artifact 调 affinity/shift/threshold/fusion；唯一 successor 改为 reference-side full-scene proposals 或独立 part-owner signal。formal test、M2、Android/default-App 保持关闭。
+- 结果：[GRAIL-R1A](docs/research/goal-copilot/GRAIL_R1A_OBTAINABLE_GROUPING_PROBE_RESULT_2026-08-25.md)。
