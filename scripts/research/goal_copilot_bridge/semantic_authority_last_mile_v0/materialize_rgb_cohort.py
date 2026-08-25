@@ -189,7 +189,12 @@ def _draw_anchor(image: np.ndarray, bbox: tuple[int, int, int, int], referent: s
     return output
 
 
-def _source_candidates(source_root: Path) -> list[dict]:
+def _source_candidates(
+    source_root: Path,
+    *,
+    start_stride_frames: int = 3,
+    minimum_selection_score: float = 0.58,
+) -> list[dict]:
     candidates = []
     for rgb_dir in sorted(source_root.glob("*/*/lowres_wide")):
         sequence = rgb_dir.parent
@@ -200,7 +205,7 @@ def _source_candidates(source_root: Path) -> list[dict]:
         depth_dir = sequence / "lowres_depth"
         intr_dir = sequence / "lowres_wide_intrinsics"
         frames = sorted(rgb_dir.glob("*.png"))
-        for start in range(8, max(8, len(frames) - 18), 3):
+        for start in range(8, max(8, len(frames) - 18), start_stride_frames):
             frame = frames[start]
             stem = frame.stem
             depth_path = depth_dir / f"{stem}.png"
@@ -212,7 +217,7 @@ def _source_candidates(source_root: Path) -> list[dict]:
                 continue
             intr = _intrinsics(intr_path)
             truth = _opening_truth(bgr, _metric_depth(depth_path), intr)
-            if truth is None or truth["selection_score"] < 0.58:
+            if truth is None or truth["selection_score"] < minimum_selection_score:
                 continue
             window = frames[start : start + 16]
             if len(window) < 12:
@@ -237,9 +242,52 @@ def _source_candidates(source_root: Path) -> list[dict]:
     return candidates
 
 
-def materialize(source_root: Path, output_dir: Path, seed: int = 240824) -> dict:
+def _excluded_source_frames(cohort_paths: tuple[Path, ...]) -> set[str]:
+    excluded: set[str] = set()
+    for cohort_path in cohort_paths:
+        cohort = json.loads(cohort_path.read_text(encoding="utf-8"))
+        for episode in cohort["episodes"]:
+            first = Path(episode["source"]["first_rgb"])
+            # Materialized frame names preserve source-window order. Rebuild
+            # raw identities from the recorded first frame and window length.
+            source_dir = first.parent
+            source_frames = sorted(source_dir.glob("*.png"))
+            try:
+                start = source_frames.index(first)
+            except ValueError:
+                continue
+            count = len(episode["input"]["rgb_frames"])
+            excluded.update(str(path.resolve()) for path in source_frames[start : start + count])
+    return excluded
+
+
+def materialize(
+    source_root: Path,
+    output_dir: Path,
+    seed: int = 240824,
+    *,
+    exclude_cohorts: tuple[Path, ...] = (),
+    required_mesh_root: Path | None = None,
+    cohort_tag: str = "V1",
+    start_stride_frames: int = 3,
+    minimum_selection_score: float = 0.58,
+) -> dict:
     rng = random.Random(seed)
-    candidates = _source_candidates(source_root)
+    candidates = _source_candidates(
+        source_root,
+        start_stride_frames=start_stride_frames,
+        minimum_selection_score=minimum_selection_score,
+    )
+    excluded_frames = _excluded_source_frames(exclude_cohorts)
+    candidates = [
+        candidate
+        for candidate in candidates
+        if not any(str(path.resolve()) in excluded_frames for path in candidate["frames"])
+        and (
+            required_mesh_root is None
+            or (required_mesh_root / candidate["sequence"].name / f"{candidate['sequence'].name}_3dod_mesh.ply").exists()
+        )
+    ]
     if len(candidates) < 24:
         raise RuntimeError(f"only {len(candidates)} source windows satisfy the real-RGB opening proxy gate")
     selected = []
@@ -264,8 +312,12 @@ def materialize(source_root: Path, output_dir: Path, seed: int = 240824) -> dict
         within_kind = index % 8
         control = within_kind >= 6
         truth = candidate["truth"]
-        episode_id = f"{kind.lower()}-{within_kind + 1:02d}"
-        referent_id = f"SAGE-LM-V1::{episode_id}"
+        episode_id = (
+            f"{cohort_tag.lower()}-{kind.lower()}-{within_kind + 1:02d}"
+            if cohort_tag != "V1"
+            else f"{kind.lower()}-{within_kind + 1:02d}"
+        )
+        referent_id = f"SAGE-LM-{cohort_tag}::{episode_id}"
         episode_dir = output_dir / "episodes" / episode_id
         episode_dir.mkdir(parents=True, exist_ok=True)
         frame_paths = []
@@ -339,6 +391,15 @@ def materialize(source_root: Path, output_dir: Path, seed: int = 240824) -> dict
         "kinds": {kind: 8 for kind in KINDS},
         "controls_per_kind": 2,
         "semantic_anchor_provenance": "CONTROLLED_COMPOSITED_EXACT_ANCHOR",
+        "cohort_tag": cohort_tag,
+        "freshness": {
+            "excluded_cohorts": [str(path.resolve()) for path in exclude_cohorts],
+            "excluded_source_frame_count": len(excluded_frames),
+            "selected_source_frames_overlap_count": sum(
+                str(path.resolve()) in excluded_frames for candidate in selected for path in candidate["frames"]
+            ),
+            "required_mesh_root": str(required_mesh_root.resolve()) if required_mesh_root is not None else None,
+        },
         "real_capture_scope": "SCENE_TEXTURE_BOUNDARIES_MOTION_AND_DEPTH_PHENOMENA",
         "selection_scope": "CURATED_DEVELOPMENT_SOURCE_DEPTH_SUPPORTED_VERTICAL_OPENING_PROXIES",
         "pair_selection_contract": {
@@ -347,7 +408,8 @@ def materialize(source_root: Path, output_dir: Path, seed: int = 240824) -> dict
             "maximum_absolute_forward_delta_m": 0.45,
             "aperture_visibility": "BOTH_PROJECTED_BOUNDARIES_INSIDE_THREE_PERCENT_IMAGE_MARGIN",
             "minimum_projected_aperture_span_fraction": 0.10,
-            "source_start_stride_frames": 3,
+            "source_start_stride_frames": start_stride_frames,
+            "minimum_selection_score": minimum_selection_score,
             "maximum_episodes_per_sequence": 4,
             "selection_excludes": ["B1_RGB_LSD_OUTCOME", "B2_ASSOCIATION_OUTCOME"],
         },
@@ -362,8 +424,22 @@ def main() -> None:
     parser.add_argument("--source-root", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--seed", type=int, default=240824)
+    parser.add_argument("--exclude-cohort", type=Path, action="append", default=[])
+    parser.add_argument("--required-mesh-root", type=Path)
+    parser.add_argument("--cohort-tag", default="V1")
+    parser.add_argument("--source-start-stride-frames", type=int, default=3)
+    parser.add_argument("--minimum-selection-score", type=float, default=0.58)
     args = parser.parse_args()
-    manifest = materialize(args.source_root, args.output_dir, args.seed)
+    manifest = materialize(
+        args.source_root,
+        args.output_dir,
+        args.seed,
+        exclude_cohorts=tuple(args.exclude_cohort),
+        required_mesh_root=args.required_mesh_root,
+        cohort_tag=args.cohort_tag,
+        start_stride_frames=args.source_start_stride_frames,
+        minimum_selection_score=args.minimum_selection_score,
+    )
     print(json.dumps({"episode_count": manifest["episode_count"], "kinds": manifest["kinds"]}, indent=2))
 
 
