@@ -251,11 +251,8 @@ def score_rows(rows: list[dict[str,Any]], checkpoint: dict[str,Any], thresholds:
                 positive_records.append({"row":row,"selected":selected,"b0":b0_pose,"b1":b1_pose,"b2":[b2_pose.cpu().tolist()],
                                          "grail_selected":gsel,"grail":candidate_poses[gsel],"grail_scores":candidate_scores})
         per_ref=None
-    if thresholds is None:
-        thresholds={name:threshold_from_dev(values["positive"],values["negative"]) for name,values in scores.items()}
-    metrics={}
-    for name in ("B0","B1","B2","GRAIL"):
-        committed=[s>=thresholds[name] for s in scores[name]["positive"]]
+    def evaluate(name: str, threshold: float) -> dict[str, int]:
+        committed=[s>=threshold for s in scores[name]["positive"]]
         success=[]; wrong=[]
         for record,commit in zip(positive_records,committed):
             if name in ("B0","B1"):
@@ -266,10 +263,29 @@ def score_rows(rows: list[dict[str,Any]], checkpoint: dict[str,Any], thresholds:
             success.append(commit and target_selected and pose_success(poses,record["row"]["truth_local_poses"]))
             if record["row"]["same_type_visible_candidates"]>=2:
                 wrong.append(bool(commit and selected is not None and not target_selected))
-        metrics[name]={"pose_success":sum(success),"positive_denominator":len(success),
-                       "wrong_target":sum(wrong),"wrong_target_denominator":len(wrong),
-                       "absence_false_commit":sum(s>=thresholds[name] for s in scores[name]["negative"]),
-                       "absence_denominator":len(scores[name]["negative"])}
+        return {"pose_success":sum(success),"positive_denominator":len(success),
+                "wrong_target":sum(wrong),"wrong_target_denominator":len(wrong),
+                "absence_false_commit":sum(s>=threshold for s in scores[name]["negative"]),
+                "absence_denominator":len(scores[name]["negative"])}
+    if thresholds is None:
+        thresholds={name:threshold_from_dev(values["positive"],values["negative"]) for name,values in scores.items()}
+        initial={name:evaluate(name,thresholds[name]) for name in ("B0","B1")}
+        best_simple=max(("B0","B1"),key=lambda name:initial[name]["pose_success"])
+        baseline=initial[best_simple]
+        candidates=sorted(set([0.0,1.0,*scores["GRAIL"]["positive"],*scores["GRAIL"]["negative"]]))
+        feasible=[]
+        for candidate_threshold in candidates:
+            candidate_metrics=evaluate("GRAIL",candidate_threshold)
+            wrong_rate=candidate_metrics["wrong_target"]/candidate_metrics["wrong_target_denominator"]
+            baseline_wrong=baseline["wrong_target"]/baseline["wrong_target_denominator"]
+            absence_rate=candidate_metrics["absence_false_commit"]/candidate_metrics["absence_denominator"]
+            baseline_absence=baseline["absence_false_commit"]/baseline["absence_denominator"]
+            if wrong_rate <= baseline_wrong+0.02 and absence_rate <= baseline_absence:
+                feasible.append((candidate_metrics["pose_success"],candidate_threshold))
+        if not feasible:
+            raise RuntimeError("no Development GRAIL threshold satisfies frozen guardrails")
+        thresholds["GRAIL"]=max(feasible)[1]
+    metrics={name:evaluate(name,thresholds[name]) for name in ("B0","B1","B2","GRAIL")}
     # Candidate-independent heads plus max must be invariant to reversal; verify exactly on recorded scores.
     permutation=sum(int(np.argmax(r["grail_scores"])) == len(r["grail_scores"])-1-int(np.argmax(list(reversed(r["grail_scores"])))) for r in positive_records)
     return {"thresholds":thresholds,"metrics":metrics,"permutation_consistent":permutation,"permutation_denominator":len(positive_records)}
