@@ -1,6 +1,6 @@
 # Goal-Driven Visual Copilot
 
-状态：`current / PRODUCT_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / ALGORITHM_MAINLINE=GRAIL_R / M1_REFERENCE_ONLY_STOPPED / GRAIL_R0_REFERENT_75_OF_78 / R1B_REFERENCE_OWNER_74_OF_78 / CROSS_VIEW_ORDINAL_54_OF_78 / R1B_REFERENT_47_COMPLETE_35 / R1C_COORDINATE_PROTOCOL_ONLY / FORMAL_TEST_UNOPENED / STOP_BEFORE_M2 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / ALGORITHM_MAINLINE=GRAIL_R / M1_REFERENCE_ONLY_STOPPED / GRAIL_R1C_O_REFERENT_75_OF_78 / COMPLETE_58_OF_78 / WRONG_TARGET_1_OF_43 / ABSENCE_0_OF_78 / OWNER_LOCAL_COORDINATE_CEILING_ESTABLISHED / R1C_V_PROTOCOL_ONLY / FORMAL_TEST_UNOPENED / STOP_BEFORE_M2 / DEFAULT_APP_UNCHANGED`
 
 完整系统蓝图见 [`V2 路线图`](BLINDASSIST_GOAL_DRIVEN_VISUAL_COPILOT_V2_ROADMAP_2026-08-21.md)。本页是
 Goal Copilot 动态执行状态唯一真源；日期化 protocol/result、archive、旧 handoff 与历史 successor 不产生当前权限。
@@ -25,6 +25,8 @@ M1 V2b reference-only Development 已以 GRAIL=`22/78`、B1=`23/78` 停止，for
 随后 [`R1A obtainable grouping probe`](GRAIL_R1A_OBTAINABLE_GROUPING_PROBE_RESULT_2026-08-25.md) 不读 `root_id`，使用现有 RGB、bbox proposals、semantic type 与 frozen DINO context。query grouping pair F1=`97.3%`，但 different-root specificity 仅 `39.5%`、exact partition=`62/78`；最佳 aligned-context arm 的 referent=`51/78`、complete=`38/78`，且 wrong-target=`25/43`、absence false commit=`35/78`。
 
 [`R1B bilateral grouping probe`](GRAIL_R1B_BILATERAL_GROUPING_PROBE_RESULT_2026-08-25.md) 只把 reference crop 补成 full-scene RGB + 317 proposals/masks，冻结 query grouping、affinity 与全部下游。reference target owner-group exact=`74/78`、bbox ordinal=`74/78`，证明 full-scene ownership observation 基本成立；但 query/reference privileged image-space ordinal 只一致 `54/78`，bbox arm 端到端仅 referent=`47/78`、complete=`35/78`、wrong-target=`11/43`、absence=`29/78`。31 个 referent failure 中 23 个发生在两侧 view-local ordinal 都正确后，故当前 gap 是 owner-local cross-view canonical/equivariant coordinate，而不是继续改善 ownership。下一前门仅为另立 R1C coordinate protocol；affinity/mask encoding/threshold/fusion、M2、formal test、Android/default-App 仍关闭。
+
+按结果前冻结协议执行的 [`R1C-O owner-local canonical coordinate ceiling`](GRAIL_R1C_OWNER_LOCAL_CANONICAL_COORDINATE_RESULT_2026-08-25.md) 只用 AI2-THOR native part position、owner 与 owner yaw 改写 sibling slot，保持最小关系字段和全部下游冻结。78/78 targets 可评估，referent=`75/78`、complete=`58/78`、wrong-target=`1/43`、absence=`0/78`，救回 R1B view-disagreement failures=`20/23`，全部预注册门通过。该结果证明 synthetic privileged owner-local coordinate 能恢复 R0 uplift，不证明 RGB/mask orientation 可获得；唯一 successor 是另立 R1C-V protocol，bin/matcher/threshold/fusion、M2、formal test、Android/default-App 均不得在本 artifact 重开。
 
 ## Goal Copilot 既有 evidence context
 

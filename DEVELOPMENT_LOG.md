@@ -2,6 +2,14 @@
 
 Current window: 2026-08. Historical entries: [2026-07](docs/history/development-log/2026-07.md).
 
+- 时间：2026-08-25（Asia/Hong_Kong）；执行者：Codex。按结果前冻结的 R1C-O 协议，只把 image-space sibling
+  ordinal 换成 AI2-THOR privileged native owner-local coordinate，冻结同一 78-case、candidate、M1 checkpoint、
+  appearance tiebreak、pose、threshold 与 evaluator。6/6 houses、78/78 targets 有 native owner frame；canonical arm
+  得到 referent=`75/78`、complete=`58/78`、wrong-target=`1/43`、absence=`0/78`，救回 R1B view-disagreement
+  failures=`20/23`，无 baseline collateral，全部预注册门通过。终态为
+  `GRAIL_R1C_O_CANONICAL_COORDINATE_CEILING_ESTABLISHED_R1C_V_PROTOCOL_ONLY`；唯一 successor 是另立 R1C-V
+  RGB/mask obtainable orientation 协议，不调 matcher/bin/threshold/fusion/pose，不运行 formal test、M2 或 Android/App。
+
 - 时间：2026-08-25（Asia/Hong_Kong）；执行者：Codex。执行 GRAIL-R1B bilateral grouping probe：在同一 consumed
   Development 78-case 上只补 reference full-scene RGB、317 个 actionable proposals/masks，冻结 R1A query grouping、
   DINO affinity、ordinal、selector、pose head、threshold 与 evaluator。reference target owner-group exact=`74/78`、bbox

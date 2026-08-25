@@ -1,6 +1,6 @@
 # 算法研究入口
 
-状态：`current / PRODUCT_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / ALGORITHM_MAINLINE=GRAIL_R / M1_REFERENCE_ONLY_STOPPED / GRAIL_R0_REFERENT_75_OF_78 / R1B_REFERENCE_OWNER_74_OF_78 / CROSS_VIEW_ORDINAL_54_OF_78 / R1B_REFERENT_47_COMPLETE_35 / R1C_COORDINATE_PROTOCOL_ONLY / FORMAL_TEST_UNOPENED / STOP_BEFORE_M2 / DEFAULT_APP_UNCHANGED`
+状态：`current / PRODUCT_MAINLINE=GOAL_DRIVEN_VISUAL_COPILOT / ALGORITHM_MAINLINE=GRAIL_R / M1_REFERENCE_ONLY_STOPPED / GRAIL_R1C_O_REFERENT_75_OF_78 / COMPLETE_58_OF_78 / WRONG_TARGET_1_OF_43 / ABSENCE_0_OF_78 / OWNER_LOCAL_COORDINATE_CEILING_ESTABLISHED / R1C_V_PROTOCOL_ONLY / FORMAL_TEST_UNOPENED / STOP_BEFORE_M2 / DEFAULT_APP_UNCHANGED`
 
 Goal-Driven Visual Copilot 仍是上位产品主线；GRAIL（Goal-Relative Affordance and Interaction Localization）是唯一算法
 主线。它不恢复旧 exact-instance 或四边界任务，而把最后十米改为 goal-conditioned、set-valued interaction pose prediction，
@@ -14,7 +14,8 @@ complete=`57/78`、wrong-target=`0/43`、absence false commit=`0/78`、rescue/co
 在现有 RGB+bbox artifact 上只得到 referent=`51/78`、complete=`38/78`、wrong-target=`25/43`、absence=`35/78`。R1B 随后
 只补 reference full-scene RGB + proposals/masks：reference target owner-group exact 和 bbox ordinal 均为 `74/78`，但 query/reference
 privileged image-space ordinal 只一致 `54/78`，端到端反降至 referent=`47/78`、complete=`35/78`。故当前 gap 已从 ownership 修正为
-owner-local cross-view canonical/equivariant coordinate。下一步只允许先另立 R1C coordinate protocol；M2、formal test、matcher tuning 与 Android/default-App 仍关闭。
+owner-local cross-view canonical/equivariant coordinate。按结果前冻结协议执行的 [`R1C-O`](goal-copilot/GRAIL_R1C_OWNER_LOCAL_CANONICAL_COORDINATE_RESULT_2026-08-25.md)
+使用 AI2-THOR native part position 与 owner yaw，得到 referent=`75/78`、complete=`58/78`、wrong-target=`1/43`、absence=`0/78`，并救回 R1B view-disagreement failures=`20/23`。这建立 synthetic privileged coordinate mechanism ceiling，但不建立 RGB orientation。下一步仅允许另立 R1C-V obtainable-orientation protocol；M2、formal test、matcher/bin/threshold/fusion tuning 与 Android/default-App 仍关闭。
 
 历史 P0 commitment-policy discovery 已以
 `COMPLEXITY_ONLY_BUYS_ABSTENTION` 收口；现有 P0 grounding/provider 与 evaluator 保持冻结。用户此前显式授权
@@ -110,7 +111,7 @@ same-domain random audit 不支持 risk ranking 的增量收益，不恢复 D3R6
 
 | 路线 | 主张 | 当前状态 | 唯一真源 | 下一动作（唯一 successor） | 禁止动作 | 影响默认 App |
 |---|---|---|---|---|---|---|
-| GRAIL-R / relational interaction pose | 独立 relational/semantic referent information 能否突破 reference-only selection bottleneck，并复用同一 interaction-pose head | `R0 PRIVILEGED: 75/78,57/78 / R1A: 51/78,38/78 / R1B OWNER EXACT=74/78 BUT CROSS-VIEW ORACLE ORDINAL=54/78; REFERENT=47/78,COMPLETE=35/78 / VIEW-LOCAL ORDINAL NOT ALIGNABLE / STOP_BEFORE_M2` | [GRAIL-R1B result](goal-copilot/GRAIL_R1B_BILATERAL_GROUPING_PROBE_RESULT_2026-08-25.md) | 仅先设计 R1C owner-local canonical/equivariant coordinate protocol；执行须另行授权 | 同 artifact affinity/mask encoding/shift/threshold/fusion tuning；新 pose head；formal test；M2；Android/App 晋升 | 否 |
+| GRAIL-R / relational interaction pose | 独立 relational/semantic referent information 能否突破 reference-only selection bottleneck，并复用同一 interaction-pose head | `R1C-O PRIVILEGED OWNER-LOCAL: REFERENT=75/78, COMPLETE=58/78, WRONG=1/43, ABSENCE=0/78 / R1B VIEW-DISAGREEMENT RESCUE=20/23 / COORDINATE CEILING ESTABLISHED / STOP_BEFORE_M2` | [GRAIL-R1C-O result](goal-copilot/GRAIL_R1C_OWNER_LOCAL_CANONICAL_COORDINATE_RESULT_2026-08-25.md) | 仅先设计 R1C-V RGB/mask obtainable owner-orientation protocol；执行须另行授权 | 同 artifact bin/matcher/threshold/fusion tuning；新 pose head；formal test；M2；Android/App 晋升 | 否 |
 | Goal Copilot / passive exact-instance identity closure | generic appearance、diffusion、multi-reference、learned head、layout 是否建立可迁移的单参考 RGB identity rule | `NEARID_SMALL_HEAD: RESCUE=4 COLLATERAL=17 / LAYOUT: BASELINE=702/900 CHALLENGER=558/900 RESCUE=74 COLLATERAL=218 CONTROL_RETENTION=68.9% STABLE=42.0% / PASSIVE_SINGLE_REFERENCE_RGB_EXACT_INSTANCE_MAINLINE_STOP` | [layout result](goal-copilot/SPATIAL_LAYOUT_IDENTITY_VERIFICATION_V0_RESULT_2026-08-24.md) | 已由 active distinctive V0 改变输入合同；passive 路线保持 closed | 新 passive backbone/head/layout、threshold/fusion/Deep Sets；先跑 open-set calibration；从本终态晋升 P1/App | 否 |
 | Goal Copilot / active distinctive evidence V0 | 三帧 reference sweep 与 candidate-unique local anchors 是否获得 passive 单图没有的新信息 | `4 TARGETS / 16 PRESENT DECISIONS / ACTIVE=PASSIVE: TOP1 11/16, WRONG_LOCK 9/20, REACQUISITION 3/4 / APPEARANCE_DERIVED_DISTINCTIVE_ANCHOR_NO_UPLIFT / OCR_NOT_EVALUABLE` | [active result](goal-copilot/ACTIVE_DISTINCTIVE_EVIDENCE_ACQUISITION_V0_RESULT_2026-08-24.md) | 仅在可执行独立 OCR/logo/marker evidence runtime 建立后另立 semantic-anchor V1 | 调 patch/backbone/aggregation/cosine/margin/lock threshold；用纯弃权当 uplift；旧部分 OCR 输出补分母；identity/P1/default-App 晋升 | 否 |
 | Goal Copilot / semantic anchor + marker pose canary | exact QR/PnP 是否能检查相机、坐标、controller、LOST/reacquire 与 Android seam | `DEBUG_CALIBRATION_CONTROLLER_CANARY / JVM 8/8 / APK BUILT / LIVE DEVICE NOT RUN` | [V2 marker-pose implementation](goal-copilot/SAGE_LM_V2_MARKER_POSE_LIVE_SEAM_IMPLEMENTATION_2026-08-25.md) | 无算法 successor；只在需要回归 GRAIL provider/controller 接缝时运行 | 作为论文贡献或主 Demo；二维码包装成自然 referent；默认 App/导航/安全晋升 | 否 |
