@@ -1,70 +1,79 @@
-# Current decision: GRAIL R1CL
+# Current decision: unseen-location evidence routing
 
-Status: `STOP_R1C_L_WITHOUT_FINAL_TEST / DEVELOPMENT_GATE_NOT_MET / FINAL_UNOPENED`
+Status: `MMS_VPR_COARSE_GPS_SOURCE_REJECTED / ROUTER_NOT_EVALUABLE / TEST_UNOPENED`
 
-## Question
+## Authorized question
 
-Can a pairwise owner-coordinate objective on the frozen GRAIL R1CL data produce
-a visible and measurable improvement over the credible existing baseline while
-keeping the evaluator boundary intact?
+Can a quality-conditioned Evidence Router improve reference-conditioned
+held-out-location retrieval over the strongest static learned fusion when the
+model receives actual image evidence and a map-derived local candidate set?
 
-## Fixed surface
+The current phase predicts only candidate identity and confidence. It does not
+perform named-POI grounding, target boxes/masks, video persistence, navigation,
+entrance finding, or product/safety decisions.
 
-- Code and contract: `research/active/grail-r1cl/`
-- Local dataset: configured by `r1cl_train_dataset`
-- Local DINOv2 backbone: configured by `r1cl_backbone`
-- Runtime: configured by `research_python`
-- Outputs: ignored `artifacts.local/`
+## Frozen surface
 
-Machine paths belong only in ignored `config/local.toml`. The tracked template
-contains portable examples.
+- Protocol and code: `research/active/unseen-location-router/`
+- Source: MMS-VPR images, text metadata, and graph metadata
+- Identity split: 146 train / 31 Development / 31 unopened test locations
+- Reference/query isolation: capture-group disjoint
+- Actual providers: local DINOv2-S and RapidOCR on sampled image pixels
+- Primary comparison: static learned fusion versus quality-conditioned router
+- Frozen seeds: 1701 and 2701
+- Advancement target: at least +8pp in both seeds without increased local error
 
-## Development result
+No goal string, location ID, class index, manual store/sign list, evaluator target,
+box/mask truth, or annotation text substituted for OCR is a model input.
 
-The single architecture and both frozen seeds completed on the house-disjoint
-Development collection. Seed `2701`, epoch `3` was selected at
-`1497/1806 = 82.89%` validation slot accuracy. The frozen paired-relative
-OA-V2 baseline on the identical pairs was `1456/1806 = 80.62%`, so R1C-L
-improved by only `41` pairs or `+2.27` percentage points. This is below the
-frozen `+8` point gate. Doorway improved by `+4.29` points and Drawer by
-`+1.82` points, so the effect was positive in both classes but not large enough
-to advance.
+## Data and canary result
 
-An additional constant-prior audit further limits that interpretation.
-`PRESERVE` was a valid mode for `1482/1806 = 82.06%` of validation pairs, so an
-image-independent always-PRESERVE predictor was stronger than OA-V2. The
-selected seed exceeded this prior by only `15` pairs or `+0.83` points, while
-seed `1701` was `8` pairs or `-0.44` points below it. Moreover, `392/1806 =
-21.71%` of pairs allowed both PRESERVE and FLIP and therefore carried no
-PRESERVE/FLIP discrimination. On the remaining `1414` pairs, the selected arm
-was `1105/1414 = 78.15%` versus `1090/1414 = 77.09%` for always-PRESERVE, a
-gain of only `15` pairs or `+1.06` points. Thus task training had a positive
-gain over frozen OA-V2, but its excess over the slot prior was small and did
-not reproduce across both seeds.
+The complete 110,529-image / 208-location source passed identity and capture-group
+materialization. A bounded real-image canary then extracted DINOv2, actual OCR,
+blur, and available coarse-GPS evidence for 1,060 images; no test pixels were read.
 
-Train and validation collection were transparently under their approximate
-pair targets: `12726/20000` and `1806/2000`. Training was nevertheless run as
-Development evidence; this shortfall limits precision but is not a reason to
-erase the observed comparison. Exact hashes and denominators are in
-`research/active/grail-r1cl/grail_r1c_l_development_result_v1.json`.
+The source failed at candidate construction before the router. MMS-VPR coordinates
+describe source videos/captures rather than each extracted frame. Those frames are
+distributed among many location folders along a pedestrian route. Query GPS was
+about 363 m from evaluator target location at the median.
 
-## Next action
+Consequently, target coverage in GPS-nearest candidate sets was:
 
-Do not access the final-test data or rerun/tune R1C-L on this consumed cohort.
-Any successor must be separately authorized and must change the information
-source rather than sweep this RGB-only model.
+- K=8: train 53/566 (9.36%), Development 45/121 (37.19%);
+- K=16: train 102/566 (18.02%), Development 77/121 (63.64%).
 
-## Stop condition
+The K=8 scorer therefore had only 53 train and 45 Development queries. On that
+diagnostic subset, static learned fusion scored 13/45 (28.89%). Dynamic routing
+scored 13/45 (28.89%, +0.00pp) for seed 1701 and 14/45 (31.11%, +2.22pp) for
+seed 2701. These values are diagnostic only: they neither advance nor reject the
+router because the candidate source destroyed the denominator upstream.
 
-Met: the validation uplift was below `+8`, so this route stops without final
-access. Do not rescue it with threshold, tracker, aggregation, backbone, crop,
-bin, loss-weight, seed, or ensemble sweeps.
+Exact counts, hashes, failure mechanism, and prohibited rescues are recorded in
+`research/active/unseen-location-router/development_canary_result_v1.json`.
+
+## Decision
+
+Reject MMS-VPR as the sole data source for the frozen coarse-GPS Evidence Router
+experiment. Do not repair the consumed canary by injecting evaluator location,
+forcing target inclusion, expanding K to the full split after outcome access,
+using manual annotation text as OCR, or tuning the scorer.
+
+A new run requires either:
+
+1. a source with frame-aligned coarse position and independent references; or
+2. separate authorization for a no-GPS global-retrieval task with a newly frozen
+   question, baselines, denominators, and claim ceiling.
+
+## Preserved prior terminal
+
+GRAIL R1C-L remains closed as
+`STOP_R1C_L_WITHOUT_FINAL_TEST / DEVELOPMENT_GATE_NOT_MET / FINAL_UNOPENED`.
+Its final test was not accessed, rerun, tuned, or fused into this route.
 
 ## Claim ceiling
 
-This establishes only a small positive synthetic ProcTHOR Development effect
-relative to frozen OA-V2 on an under-target but house-disjoint collection. It
-does not establish a seed-robust visual gain beyond the slot prior, reliable
-owner-orientation recovery, the preregistered advancement effect, final-test
-generalization, natural-scene, live-device, Android/default-App, product,
-universal, or safety performance.
+This run proves that the new data contracts, location/capture isolation, real-image
+feature providers, learned baselines, router diagnostics, and evaluator can execute
+on a bounded MMS-VPR canary. It does not prove or disprove dynamic routing on a
+valid local candidate task, unseen-city or named-POI generalization, grounding,
+tracking, navigation, Android/device behavior, product effectiveness, or safety.
