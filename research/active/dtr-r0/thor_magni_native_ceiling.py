@@ -17,6 +17,8 @@ from pathlib import Path
 from typing import Any, Iterable, Sequence
 
 from dtr_r0 import Arm, CausalFrame, DTRConfig, EgoPose, Observation, run_arm
+from dtr_r1 import FROZEN_R1_CONFIG, run_r1_arm
+from dtr_r2 import FROZEN_R2_CONFIG, run_r2_arm
 from jrdb_native_ceiling import (
     ArmAccumulator,
     decision,
@@ -24,10 +26,14 @@ from jrdb_native_ceiling import (
     score_arm,
     sha256_file,
     truth_events,
+    r1_dominance_decision,
+    successor_comparison,
 )
 
 
 SCHEMA = "dtr-r0-thor-magni-native-ceiling-v1"
+R1_SCHEMA = "dtr-r1-thor-magni-native-ceiling-v1"
+R2_SCHEMA = "dtr-r2-thor-magni-native-ceiling-v1"
 CLAIM_CEILING = "PUBLIC_REAL_EXACT_GLOBAL_TRACK_AND_EGO_PRIVILEGED_CEILING_ONLY"
 MANIFEST_GLOB = "thor_magni_window_manifest_d7-r1-thor-magni-window-pupil-*.json"
 HORIZON_S = 3.0
@@ -314,6 +320,7 @@ def evaluate_segment(
     track_id: str,
     samples: Sequence[ThorSample],
     config: DTRConfig,
+    arms: Sequence[Arm] = (Arm.B2_RADIAL_TTC, Arm.C_ROUTE_INTERSECTION),
 ) -> tuple[dict[Arm, ArmAccumulator], int, float]:
     if (
         len(samples) < 2
@@ -331,12 +338,18 @@ def evaluate_segment(
     scored = {
         arm: score_arm(
             samples,
-            run_arm(frames, arm, config),
+            (
+                run_r1_arm(frames)
+                if arm is Arm.D_R1_OCCUPANCY_CONSENSUS
+                else run_r2_arm(frames, config)
+                if arm is Arm.E_R2_GUARDED_CONSENSUS
+                else run_arm(frames, arm, config)
+            ),
             events,
             known,
             truth,
         )
-        for arm in (Arm.B2_RADIAL_TTC, Arm.C_ROUTE_INTERSECTION)
+        for arm in arms
     }
     known_indices = [index for index, value in enumerate(known) if value]
     exposure_s = (
@@ -347,7 +360,12 @@ def evaluate_segment(
     return scored, len(events), exposure_s
 
 
-def evaluate(manifest_dir: Path) -> dict[str, Any]:
+def evaluate(
+    manifest_dir: Path,
+    include_r1: bool = False,
+    include_r2: bool = False,
+) -> dict[str, Any]:
+    include_successor = include_r1 or include_r2
     manifest_paths = sorted(manifest_dir.glob(MANIFEST_GLOB))
     if not manifest_paths:
         raise FileNotFoundError(f"no THOR-MAGNI manifests in {manifest_dir}")
@@ -355,10 +373,13 @@ def evaluate(manifest_dir: Path) -> dict[str, Any]:
         route_horizon_s=HORIZON_S,
         route_half_width_m=ROUTE_HALF_WIDTH_M,
     )
-    pooled = {
-        arm: ArmAccumulator()
-        for arm in (Arm.B2_RADIAL_TTC, Arm.C_ROUTE_INTERSECTION)
-    }
+    arms = (
+        Arm.B2_RADIAL_TTC,
+        Arm.C_ROUTE_INTERSECTION,
+        *((Arm.D_R1_OCCUPANCY_CONSENSUS,) if include_successor else ()),
+        *((Arm.E_R2_GUARDED_CONSENSUS,) if include_r2 else ()),
+    )
+    pooled = {arm: ArmAccumulator() for arm in arms}
     totals = {
         "sessions": 0,
         "source_rows": 0,
@@ -384,10 +405,7 @@ def evaluate(manifest_dir: Path) -> dict[str, Any]:
         if actual_hash != manifest["scenario_csv_sha256"]:
             raise ValueError(f"scenario hash mismatch: {scenario_path}")
         data = read_session(scenario_path, str(manifest["camera_body"]))
-        session_arms = {
-            arm: ArmAccumulator()
-            for arm in (Arm.B2_RADIAL_TTC, Arm.C_ROUTE_INTERSECTION)
-        }
+        session_arms = {arm: ArmAccumulator() for arm in arms}
         session_segments = 0
         evaluable_segments = 0
         critical_events = 0
@@ -402,6 +420,7 @@ def evaluate(manifest_dir: Path) -> dict[str, Any]:
                     f"{manifest['source_session_id']}/{body}/{segment_index}",
                     segment,
                     config,
+                    arms,
                 )
                 if not scored:
                     continue
@@ -424,7 +443,7 @@ def evaluate(manifest_dir: Path) -> dict[str, Any]:
                 "track_segment_exposure_s": exposure_s,
                 "source": data.counts,
                 "arms": {
-                    arm.value: metrics.to_dict()
+                    arm.value: metrics.to_dict(include_escalation=include_successor)
                     for arm, metrics in session_arms.items()
                 },
             }
@@ -452,9 +471,12 @@ def evaluate(manifest_dir: Path) -> dict[str, Any]:
             flush=True,
         )
 
-    pooled_dict = {arm.value: metrics.to_dict() for arm, metrics in pooled.items()}
-    return {
-        "schema_version": SCHEMA,
+    pooled_dict = {
+        arm.value: metrics.to_dict(include_escalation=include_successor)
+        for arm, metrics in pooled.items()
+    }
+    result = {
+        "schema_version": R2_SCHEMA if include_r2 else R1_SCHEMA if include_r1 else SCHEMA,
         "claim_ceiling": CLAIM_CEILING,
         "source": {
             "dataset": "THOR-MAGNI public Pupil 19-session intake",
@@ -485,10 +507,23 @@ def evaluate(manifest_dir: Path) -> dict[str, Any]:
             "route_yaw_minimum_span_s": ROUTE_YAW_MINIMUM_SPAN_S,
             "route_yaw_minimum_speed_mps": ROUTE_YAW_MINIMUM_SPEED_MPS,
             "maximum_sampled_gap_s": MAXIMUM_SAMPLED_GAP_S,
+            "r1": FROZEN_R1_CONFIG.to_dict() if include_successor else None,
+            "r2": FROZEN_R2_CONFIG.to_dict() if include_r2 else None,
         },
         "coverage": totals,
         "pooled": pooled_dict,
         "decision": decision(pooled_dict),
+        "r1_decision": r1_dominance_decision(pooled_dict),
+        "r2_vs_r0": successor_comparison(
+            pooled_dict,
+            Arm.E_R2_GUARDED_CONSENSUS,
+            Arm.C_ROUTE_INTERSECTION,
+        ),
+        "r2_vs_r1": successor_comparison(
+            pooled_dict,
+            Arm.E_R2_GUARDED_CONSENSUS,
+            Arm.D_R1_OCCUPANCY_CONSENSUS,
+        ),
         "by_session": session_results,
         "limitations": [
             "QTM centroids are privileged geometry, not detector or tracker output.",
@@ -498,14 +533,36 @@ def evaluate(manifest_dir: Path) -> dict[str, Any]:
             "No RGB detector, tracker, phone metric depth, Android runtime, or user study is evaluated.",
         ],
     }
+    if not include_successor:
+        result["configuration"].pop("r1")
+        result.pop("r1_decision")
+    if not include_r2:
+        result["configuration"].pop("r2")
+        result.pop("r2_vs_r0")
+        result.pop("r2_vs_r1")
+    return result
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest-dir", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--include-r1",
+        action="store_true",
+        help="Add the fixed robust occupancy-consensus challenger.",
+    )
+    parser.add_argument(
+        "--include-r2",
+        action="store_true",
+        help="Add R1 plus the fixed half-horizon guarded R2 successor.",
+    )
     args = parser.parse_args()
-    result = evaluate(args.manifest_dir)
+    result = evaluate(
+        args.manifest_dir,
+        include_r1=args.include_r1,
+        include_r2=args.include_r2,
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
         json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
@@ -517,6 +574,8 @@ def main() -> int:
                 "output": str(args.output.resolve()),
                 "coverage": result["coverage"],
                 "decision": result["decision"],
+                "r1_decision": result.get("r1_decision"),
+                "r2_vs_r0": result.get("r2_vs_r0"),
             },
             ensure_ascii=False,
             indent=2,

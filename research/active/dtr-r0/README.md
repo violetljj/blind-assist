@@ -1,292 +1,200 @@
-# DTR-R0: Dynamic Travel Risk trajectory-to-route events
+# DTR: route-conditioned obstacle-risk events
 
-Status: `DTR_R0_ACTIVE / FIXED_KNOWN_HEIGHT_RGB_SOURCE_SELECTED /
-ANDROID_EXPERIMENT_BUILD_READY / LIVE_DEVICE_UNVERIFIED`
+Status: `DTR_R2_DYNAMIC_AND_CURVED_STATIC_CEILINGS_ESTABLISHED /
+RGB_RUNTIME_DOWNSTREAM / HEAD_CLEARANCE_POSITIVE_NOT_EVALUABLE`
 
 ## Result first
 
-The narrow R0 question is whether a causal short target track becomes more
-actionable when it is intersected with the wearer's short route, instead of
-warning merely because radial TTC is small.
+DTR now answers a narrower and more useful question than object detection:
 
-The first exact public-real privileged ceiling is positive. On the 19 locally
-available THÖR-MAGNI Pupil sessions, both arms received the same QTM global
-camera-wearer and person centroids. Wearer route yaw was derived from only the
-past 0.5 seconds of ego motion; future QTM positions were evaluator-only truth.
+```text
+wearer future route tube
+        intersect
+object future occupancy
+        within 3 seconds
+        -> ONSET / HOLD / ESCALATE / CLEAR
+```
 
-The run used 10 Hz samples from the 100 Hz source and covered 19 sessions,
-461,182 source rows, 132 wearer-target identities, 357 evaluable contiguous
-track segments, 520.0 target-track seconds, and 10 non-left-censored geometric
-critical events.
+The current algorithm is R2, a robust early-warning branch plus one fixed
+imminent guard. It was evaluated without detector tuning on three public,
+real mobile-platform sources.
 
-| Metric | B2 radial TTC | C route intersection |
-| --- | ---: | ---: |
-| Critical-event recall | `80.0%` (`8/10`) | `90.0%` (`9/10`) |
-| Lateral-crossing recall | `85.7%` (`6/7`) | `85.7%` (`6/7`) |
-| Oncoming-corridor recall | `0.0%` (`0/1`) | `100.0%` (`1/1`) |
-| False alert segments | `96` | `55` |
-| False alert reduction | — | `42.7%` |
-| Median first-alert lead | `1.85 s` | `2.90 s` |
-| Mean alert segments / event | `1.3` | `1.5` |
+| Public-real dynamic cohort | Events | R0 route recall / false | R1 robust recall / false | **R2 guarded recall / false** |
+| --- | ---: | ---: | ---: | ---: |
+| THÖR-MAGNI, exact global route, 19 sessions | 10 | `9/10` / 55 | `9/10` / **37** | **`10/10` / 42** |
+| JRDB test, robot-relative diagnostic, 27 sequences | 175 | `161/175` / 260 | **`164/175` / 255** | **`164/175` / 256** |
+| CODa sequences 18+20, pose-authoritative development | 88 | `88/88` / 199 | `70/88` / **174** | **`86/88` / 190** |
+| CODa sequence 16, rainy heavy-traffic holdout | 34 | `34/34` / **87** | `28/34` / 86 | **`33/34` / 95** |
 
-C preserved the crossing partition, recovered the one oncoming event, raised
-overall recall by 10 percentage points, and reduced target-level false alert
-segments by 42.7%. It therefore crosses the frozen core line of non-decreasing
-critical recall plus at least 40% false-alert reduction. The decision is
-`PRIVILEGED_CEILING_GO_TO_RGB_DETECTOR_TRACKER`.
+R2 strictly dominates R0 on the route-authoritative THÖR ceiling: it recovers
+the last event while deleting `13/55` false-alert segments (`23.6%`). On the
+larger JRDB diagnostic it adds three recalled events and deletes four false
+alerts. It essentially preserves R1 there, at one additional false segment.
 
-At that native stage this was an advancement decision, not obstacle-avoidance
-completion. Only 10
-critical events were evaluable, and no critical event retained enough
-post-event track to score CLEAR. RGB perception, metric projection, product
-utterances, natural walking, and safety remain unproved.
+CODa is the deliberate hard case, not a hidden win. Across its development and
+holdout partitions, R2 recalls `119/122` events (`97.5%`) versus R0's `122/122`,
+with nearly identical false alerts (`285` versus `286`). It recovers 21 of the
+24 events lost by R1's robust filter, but it does not dominate R0 on CODa. This
+is the retained cost of rejecting unstable early motion rather than a threshold
+to tune away.
 
-The durable result is
-`artifacts.local/evidence/dtr-r0/thor-magni-native-ceiling-v1/result.json`,
-SHA-256 `61d8d1993797cf13640c1e09f04337602d9874ad182a177c0a5fe6603e49fd69`.
+All 122 CODa dynamic critical events are pedestrians. Bicycle/micromobility and
+vehicle tracks contribute `24,009` and `11,585` evaluated frames, respectively,
+but zero countable positive critical events. They provide real class exposure
+and false-alert evidence, not bicycle or vehicle recall.
 
-## Fixed JRDB real-RGB bridge
+## Static, wall, and temporary-obstacle ceiling
 
-The next smallest increment has also run. A fixed Development window from
-JRDB train sequence `packard-poster-session-2019-03-20_1` uses stitched RGB
-frames `115..257` (143 frames, 9.99 seconds). Before annotations are opened,
-YOLO11n plus the existing causal tracker writes a truth-blind track ledger.
-The evaluator then binds each current detector-track occurrence to a native
-3-D center through frozen same-frame Hungarian IoU (`>=0.30`). Future native
-geometry remains evaluator-only.
+A second CODa ceiling keeps source-native static 3-D boxes fixed in the world,
+uses current-and-past ego pose to extrapolate a constant-turn-rate-and-velocity
+route, intersects that route with oriented obstacle footprints, and admits only
+the lower-body or bounded head-clearance height bands.
 
-The bridge scored every evaluable target in the window, not only the two
-targets used to select it. It produced 52 evaluable target segments and three
-critical events: two lateral crossings and one oncoming event.
+Across CODa sequences 16, 18, and 20 it evaluates 182,274 known frames and 12
+future path-contact events: six barrier/boundary, five fixed-structure, and one
+temporary-obstacle event.
 
-| Metric | B2 radial TTC | C route intersection |
-| --- | ---: | ---: |
-| Critical-event recall | `100%` (`3/3`) | `100%` (`3/3`) |
-| False alert segments | `7` | `4` |
-| False alert reduction | — | `42.9%` |
-| Median first-alert lead | `3.94 s` | `2.20 s` |
-| Mean alert segments / event | `1.00` | `1.33` |
-| CLEAR on eligible events | `100%` (`2/2`) | `50%` (`1/2`) |
+| Static arm | Event recall | False-alert segments | CLEAR | Median lead |
+| --- | ---: | ---: | ---: | ---: |
+| P0 current 3 m proximity | `12/12` | 104 | `3/4` | `2.70 s` |
+| S1 straight route | `11/12` | 22 | `4/4` | `2.60 s` |
+| S2 straight route + height | `11/12` | 22 | `4/4` | `2.60 s` |
+| **S3 curved route + height** | **`12/12`** | **10** | **`4/4`** | **`3.00 s`** |
 
-The two selection targets were detector-matched on `143/143` frames, although
-their causal identities fragmented across two and four tracker IDs. Across all
-targets, known prediction coverage was `45.97%`. The narrow positive effect
-survived the detector/tracker bridge: critical recall did not fall and false
-alert segments again dropped by more than 40%. The shorter lead and missed
-CLEAR remain real defects; this one curated window is not a new advancement
-gate.
+S3 preserves all proximity events while removing `94/104` false alerts
+(`90.4%`). Relative to the straight route it recovers the turn event and cuts
+false alerts from 22 to 10 (`54.5%`). Its breakdown is barrier/boundary `6/6`
+with one false segment, fixed structure `5/5` with four, and temporary obstacle
+`1/1` with five. All 12 recalled events also reached the one-shot `ESCALATE`
+transition, with `1.40 s` median escalation lead.
 
-The result is
-`artifacts.local/evidence/dtr-r0/jrdb-rgb-bridge-v1/result.json`, SHA-256
-`9dac2d1512cd21ddc2ae5d76d5785c822cd1997a0d7a3798e835fdbe3a73e175`.
-The detector/tracker ledger was sealed before annotation access at
-`result.tracks.jsonl`, SHA-256
-`58873bca0fd120f5d71f18a960bccfc9289b42ac9f98d077996b7a82c90059fc`.
-
-## Causal raw-sensor geometry bridge
-
-The privileged current 3-D center has now been removed from the observation
-path. The final fixed bridge selects the latest upper and lower JRDB Velodyne
-scan whose header timestamp is no later than the image, motion-compensates each
-scan through bag `odom -> base_link`, projects both with the official JRDB
-cylindrical calibration, and keeps points inside a fixed YOLO11n-seg person
-instance mask. The tracker, DTR arms, route horizon, event lifecycle, and
-evaluator stayed unchanged. The sensor ledger was sealed before JRDB identity
-and future event truth were opened. Current observations pair the raw sensor
-center with a fixed `0.30 m` person radius; native body extent is used only by
-the evaluator to define future event truth.
-
-The dual-lidar mask bridge covered `4,363/4,826` detector-track occurrences
-(`90.41%`). Among detector/native evaluator matches, geometry was available in
-`3,174/3,319` cases (`95.63%`), with `0.106 m` median and `0.284 m` p90 planar
-position error.
-
-| Metric | B2 radial TTC | C route intersection |
-| --- | ---: | ---: |
-| Critical-event recall | `100%` (`3/3`) | `100%` (`3/3`) |
-| False alert segments | `18` | `13` |
-| False alert reduction | — | `27.8%` |
-| Median first-alert lead | `3.67 s` | `1.91 s` |
-| Mean alert segments / event | `1.00` | `1.33` |
-| CLEAR on eligible events | `100%` (`2/2`) | `100%` (`2/2`) |
-
-This is a real, causal, directionally positive observation: no critical event
-was lost and five non-actionable ONSET segments disappeared. It does not
-reproduce the frozen `>=40%` strong-effect line, so it is not an advancement or
-Android-promotion result. The earlier full-box upper-lidar estimator also
-remained below that line (`37 -> 33` false alert segments) and is closed rather
-than tuned.
-
-The final result is
-`artifacts.local/evidence/dtr-r0/jrdb-dual-lidar-mask-bridge-v1/result.json`,
-SHA-256
-`bec37a541ff1fb20d0978a04f109d29f737c280f6b5bd023ca74532d787e489d`.
-Its truth-blind sensor ledger is `result.sensor-tracks.jsonl`, SHA-256
-`62909c877068bb36bc9f522229b8e6afdfc20958187279e0e3f8ad5ab7b4a506`.
-
-## Fixed known-height RGB source and Android experiment
-
-The next increment changed the information source instead of tuning the DTR
-matcher. Each current RGB person box uses one fixed `1.70 m` upright-person
-prior and the official vertical focal length to estimate metric range. The
-stitched RGB bbox center supplies bearing. There is no height, boundary,
-tracker, horizon, or threshold sweep, and the truth-blind geometry ledger was
-sealed before evaluator identity and future geometry were opened.
-
-This source produced geometry for all `4,826/4,826` detector-track
-occurrences. Against evaluator-only native centers its position error was
-`0.386 m` median / `1.016 m` p90. Motion-history availability, rather than
-geometry availability, kept known prediction coverage at `45.97%`.
-
-| Metric | B2 radial TTC | C route intersection |
-| --- | ---: | ---: |
-| Critical-event recall | `100%` (`3/3`) | `100%` (`3/3`) |
-| False alert segments | `17` | `9` |
-| False alert reduction | — | `47.1%` |
-| Median first-alert lead | `3.45 s` | `2.06 s` |
-| Mean alert segments / event | `1.00` | `1.00` |
-| CLEAR on eligible events | `100%` (`2/2`) | `100%` (`2/2`) |
-
-The strong route-relevance effect therefore returned with an RGB-only metric
-source that can run on a phone. This is source selection on the same curated,
-already-opened 143-frame Development window, not a new generalization gate.
-Its result is
-`artifacts.local/evidence/dtr-r0/jrdb-known-height-bridge-v1/result.json`,
-SHA-256
-`c990ce353745ec0d1d55b762d64f7da0321db86b662d6c463ab1081689d41298`.
-The sealed geometry ledger is `result.sensor-tracks.jsonl`, SHA-256
-`3027034923468b48160ae95a354a3837c73e770c1984e7608fc37f51fd27f049`.
-
-The selected source is now implemented as the isolated Android build type
-`dtrKnownHeight`. Camera2 focal length and physical sensor size are bound to
-each CameraX analysis frame, rotated into detector coordinates, and combined
-with fixed-height person projection. A causal multi-person tracker and
-1.5-second relative-motion fit drive the three-second route-intersection arm.
-DTR owns `ONSET / HOLD / CLEAR / UNKNOWN`; the shared feedback layer consumes
-those signals directly, so `UNKNOWN` cannot advance clearing and no second
-temporal stabilizer can manufacture or delay an event. The focused JVM check
-distinguishes an intersecting path from a lateral pass and verifies that an
-UNKNOWN frame cannot clear the active event.
-
-This is an implementation path, not live-device evidence. The phone camera
-must remain aligned with the short walking route; head turns, camera pitch,
-seated/child/truncated people, and imperfect boxes can violate the
-fixed-height/relative-frame assumptions. No default-App, independent-walking,
-natural-distribution, user-benefit, or safety claim follows.
-
-## Why JRDB is diagnostic, not the route authority
-
-The processed JRDB labels/timestamps split does not contain synchronized ego
-pose. Its 3-D boxes are robot-relative and `890,153/890,932` used boxes are
-source-marked interpolated. It can test relative closure at scale, but not the
-exact wearer-route intersection that defines this question.
-
-That diagnostic covered 27 sequences and 175 events. C raised recall from
-75.43% to 92.00%, but false alert segments rose from 191 to 260 (`+36.1%`). This
-is a useful generalization warning; it does not override the smaller
-THÖR-MAGNI result because the two sources do not have the same route authority.
-Its result is
-`artifacts.local/evidence/dtr-r0/jrdb-native-ceiling-v1/result.json`, SHA-256
-`c35724c1ba82c8f7956a27d8ac4e7493ac41d2dc9e9aa16181135a0adc579f92`.
+The selected sequences contain no positive vegetation or head-clearance path
+event. Vegetation has 33,954 evaluated frames and zero false alerts, which is
+class exposure without positive recall authority. GOOSE was checked as a
+possible compact supplement:
+its 3-D validation archive contains `tree_crown`, `wire`, and `boom_barrier`
+semantics, but only discrete point clouds/labels, not synchronized wearer-route
+or ground-clearance truth. Treating semantic tree crown as a human head
+collision would manufacture the answer, so positive hanging-branch performance
+is `NOT_EVALUABLE` rather than a reason to download or tune another corpus.
 
 ## Frozen mechanics
 
-All arms consume ordered causal frames and emit a shared
-`ONSET / HOLD / CLEAR / UNKNOWN` lifecycle:
+R1 forms every causal pairwise velocity allowed by a 1.5-second target history,
+uses the component-wise Theil-Sen median as target motion, and analytically
+computes first entry into the 3-second, 0.65 m half-width route tube. The
+fraction of velocity hypotheses entering the tube is diagnostic consensus
+support, not a probability.
 
-| Arm | Decision rule |
-| --- | --- |
-| `B0_detection_reminder` | Any current tracked detection requests a reminder. |
-| `B1_distance_gate` | The nearest current detection requests a reminder inside a fixed distance. |
-| `B2_radial_ttc` | A constant-velocity short track requests a reminder when radial closing time is inside 3 seconds. |
-| `C_route_intersection` | Ego-compensated target occupancy intersects the time-aligned 3-second wearer tube. |
+R2 leaves R1 unchanged. It admits R0's least-squares route intersection only
+when its predicted entry is inside the already defined escalation half-horizon
+(`1.5 s`). There is no new fitted threshold, support sweep, or event-label
+calibration.
 
-World coordinates are a metric 2-D ground plane. Detector observations are
-`forward_m/left_m` in the sensor frame. `body_yaw_rad` owns wearer-route
-direction and `sensor_yaw_rad` owns camera direction. Observations are
-transformed into world coordinates before target velocity is fitted.
+S3 estimates forward speed and yaw rate from the latest 0.5 seconds of causal
+ego pose, samples a three-second curved route every 0.1 seconds, and intersects
+it with source-native oriented boxes. The vertical contract is:
 
-Missing current tracks, pose, or causal motion history produce `UNKNOWN`, never
-`CLEAR`. All arms share a 0.50-second clear grace: one known negative cannot
-fragment an alert, and UNKNOWN cannot complete a clear. Event counts are ONSET
-segments, not positive-frame counts.
+- lower-body occupancy: up to `1.35 m`;
+- head-clearance occupancy: `1.35..2.10 m`;
+- geometry wholly above `2.10 m`: non-actionable.
 
-## Next obstacle-only step
+Known positive frames drive `ONSET`, sustained positives drive `HOLD`, and the
+first entry inside half-horizon emits `ESCALATE` once. A known negative must
+persist for 0.5 seconds before `CLEAR`; missing pose, track, or motion history
+is `UNKNOWN` and cannot manufacture a clear.
 
-Do not record the superseded 24/120 local clips, widen this one window, or tune
-the route matcher, tracker, IoU, horizon, or lifecycle against these opened
-outcomes. The detector/tracker and causal raw-geometry questions have both been
-answered for this R0 window. The native ceiling is strong; the runnable raw
-sensor bridge is positive but below the strong-effect line.
+Frozen fingerprints:
 
-Do not rescue any opened result with temporal-filter, threshold, or matcher
-sweeps. The information-source change has now been made and the isolated
-Android path exists. The only useful next obstacle-only increment is a bounded
-live-device demonstration of the existing build, with the phone facing the
-walking direction; it is not a request for the superseded 24/120 recording
-cohorts or another test matrix.
+- R1: `741b815017297f64cb80f3f9d44282eb7fd16f79f60b04fe4f25ae8a9026f4b8`
+- R2: `4142a575911e9d43508e996b0e0cf5062dc5c86d755dfe63d41279caf56302a8`
 
-## Reproduce the ceilings and fixed bridge
+## Runtime bridge
 
-From this directory or the repository root:
+The algorithm remains source-independent at the `CausalFrame` / metric-box
+boundary. The Android USTRF core now has two adapters:
+
+- metric-depth samples produce lower-body/head-clearance swept occupancy while
+  ignoring geometry wholly above `2.10 m`;
+- privileged native 3-D boxes rasterize oriented lower/head footprints into the
+  same USTRF geometry packet for offline replay.
+
+The earlier fixed-height JRDB RGB bridge remains the deployability hint: on one
+curated 143-frame window, route intersection kept `3/3` recall and reduced
+false alerts from 17 to 9. It is not a new generalization result, and the
+current priority is the public-data algorithm ceiling rather than phone
+recording or live-device promotion.
+
+## Literature basis
+
+The robust slope is grounded in [Sen's Theil-Sen estimator](https://doi.org/10.1080/01621459.1968.10480934),
+and route-tube entry is the finite-horizon single-command case of
+[Velocity Obstacles](https://doi.org/10.1177/027836499801700706). Component-wise
+x/y medians are an engineering extension. R2's imminent fallback and the
+one-shot `ESCALATE` are product-policy mechanisms, not claims from those papers.
+
+`risk_score` and pairwise support remain ordinal diagnostics. A calibrated
+collision probability would require explicit uncertainty and separate
+validation, such as [continuous collision probability](https://arxiv.org/abs/2104.01659)
+or a [Dynamic Lambda-Field](https://arxiv.org/abs/2103.04795). Extended or
+nonholonomic vehicle prediction would require a model such as
+[Generalized Velocity Obstacles](https://doi.org/10.1109/IROS.2009.5354175).
+
+## Evidence receipts
+
+- THÖR R2: `artifacts.local/evidence/dtr-r2/thor-magni-guarded/result.json`,
+  SHA-256 `f1c54804b1d9218cb2bcb1d9bb1f8d5a545c189c8abb1bf3e9b409a220110de4`.
+- JRDB test R2: `artifacts.local/evidence/dtr-r2/jrdb-test-guarded/result.json`,
+  SHA-256 `20bebbdd2aee7d82206552644f6801d0ddd2df61b606747ee071f6da19c74e04`.
+- CODa development R2: `artifacts.local/evidence/dtr-r2/coda-18-20-final/result.json`,
+  SHA-256 `5882f2aaddf4d078f618b2ecf5c269f74f538bdfebfa5843f6205b18873c7c72`.
+- CODa holdout R2: `artifacts.local/evidence/dtr-r2/coda-16-final/result.json`,
+  SHA-256 `6b6b4ec8e37e77d1dc3aa60d07f383cabd8d00d6c29b7ebe14b30283c8fffe7c`.
+- CODa curved static: `artifacts.local/evidence/dtr-static/coda-16-18-20-final/result.json`,
+  SHA-256 `8bf8e11c95ad687e9771f0e2f6de871557044c7ecc7a9eafcadae6406bb409ec`.
+
+## Reproduce
+
+From the repository root:
 
 ```powershell
 python research/active/dtr-r0/thor_magni_native_ceiling.py `
   --manifest-dir F:\ba-data\hftf-d7-public-real\manifests `
-  --output artifacts.local/evidence/dtr-r0/thor-magni-native-ceiling-v1/result.json
+  --include-r1 --include-r2 `
+  --output artifacts.local/evidence/dtr-r2/thor-magni-guarded/result.json
 
 python research/active/dtr-r0/jrdb_native_ceiling.py `
-  --labels-zip artifacts.local/datasets/ustrf-canonical-observation-source-authority-data-pack-r0/jrdb/test_labels.zip `
-  --timestamps-zip artifacts.local/datasets/ustrf-canonical-observation-source-authority-data-pack-r0/jrdb/test_timestamps.zip `
-  --output artifacts.local/evidence/dtr-r0/jrdb-native-ceiling-v1/result.json
+  --labels-zip <jrdb-test-labels.zip> `
+  --timestamps-zip <jrdb-test-timestamps.zip> `
+  --include-r1 --include-r2 `
+  --output artifacts.local/evidence/dtr-r2/jrdb-test-guarded/result.json
 
-python research/active/dtr-r0/jrdb_rgb_bridge.py `
-  --labels-zip <jrdb-train-labels.zip> `
-  --timestamps-zip <jrdb-train-timestamps.zip> `
-  --bag <packard-poster-session-2019-03-20_1.bag> `
-  --images-dir <ignored-image-directory> `
-  --model <yolo11n.pt> `
-  --calibration-defaults <jrdb-toolkit-calibration-defaults.yaml> `
-  --sensor-setup-pdf <Sensor_setup_JRDB.pdf> `
-  --output <ignored-evidence-directory>/result.json
+python research/active/dtr-r0/coda_native_ceiling.py `
+  --sequence-root 20=<coda-sequence-20-native-root> `
+  --sequence-root 18=<coda-sequence-18-native-root> `
+  --output artifacts.local/evidence/dtr-r2/coda-18-20-final/result.json
 
-python research/active/dtr-r0/jrdb_mask_lidar_bridge.py `
-  --rgb-result <ignored-evidence-directory>/jrdb-rgb-bridge-v1/result.json `
-  --rgb-tracks <ignored-evidence-directory>/jrdb-rgb-bridge-v1/result.tracks.jsonl `
-  --labels-zip <jrdb-train-labels.zip> `
-  --timestamps-zip <jrdb-train-timestamps.zip> `
-  --bag <packard-poster-session-2019-03-20_1.bag> `
-  --calibration-dir <jrdb-toolkit>/calibration `
-  --segmentation-model <yolo11n-seg.pt> `
-  --output <ignored-evidence-directory>/jrdb-dual-lidar-mask-bridge-v1/result.json
+python research/active/dtr-r0/coda_native_ceiling.py `
+  --sequence-root 16=<coda-sequence-16-native-root> `
+  --output artifacts.local/evidence/dtr-r2/coda-16-final/result.json
 
-python research/active/dtr-r0/jrdb_known_height_bridge.py `
-  --rgb-result <ignored-evidence-directory>/jrdb-rgb-bridge-v1/result.json `
-  --rgb-tracks <ignored-evidence-directory>/jrdb-rgb-bridge-v1/result.tracks.jsonl `
-  --labels-zip <jrdb-train-labels.zip> `
-  --timestamps-zip <jrdb-train-timestamps.zip> `
-  --bag <packard-poster-session-2019-03-20_1.bag> `
-  --calibration-dir <jrdb-toolkit>/calibration `
-  --output <ignored-evidence-directory>/jrdb-known-height-bridge-v1/result.json
-
-pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:assembleDtrKnownHeight
+python research/active/dtr-r0/coda_static_ceiling.py `
+  --sequence-root 20=<coda-sequence-20-native-root> `
+  --sequence-root 18=<coda-sequence-18-native-root> `
+  --sequence-root 16=<coda-sequence-16-native-root> `
+  --output artifacts.local/evidence/dtr-static/coda-16-18-20-final/result.json
 ```
-
-The synthetic generator and tests remain mechanism diagnostics only. They do
-not contribute to either public-real decision.
 
 ## Claim ceiling
 
-THÖR-MAGNI supplies real, synchronized global QTM geometry, but its run uses
-privileged head/helmet centroids and a fixed 0.30 m person radius in a controlled
-laboratory. It does not establish body collision truth, intended route, detector
-quality, Android behavior, user benefit, natural-distribution performance, or
-safety. The JRDB bridge adds real RGB detection and causal tracking plus exact
-bag odometry. The final dual-lidar bridge also replaces current annotated range
-with raw sensor geometry; annotations remain evaluator-only identity and future
-event truth. The bag has no `tf_static`; the planar static chain is bound to
-external official JRDB calibration and fixed Kinova URDF provenance. The
-known-height increment adds an RGB-only metric-source observation and Android
-implementation, but not a live Android result. This remains one curated
-Development window, not natural-distribution, product, user-benefit,
-independent-mobility, or safety evidence.
+These are privileged algorithm ceilings. THÖR uses exact controlled-lab global
+tracks; JRDB test is a large robot-relative/interpolated diagnostic; CODa uses
+source-native boxes, identities, pose, timestamp, and calibration. The future
+path and future oriented-box contact are evaluator-only, but no RGB/LiDAR
+detector, intent prediction, natural walking, Android runtime, user benefit, or
+safety performance is established.
+
+CODa establishes positive dynamic recall only for pedestrians and positive
+static recall only for the 12 barrier/fixed/temporary events observed. It does
+not establish positive bicycle, vehicle, vegetation, thin-branch, drop-off, or
+head-clearance recall. `UNKNOWN` and `NOT_EVALUABLE` are never counted as safe.

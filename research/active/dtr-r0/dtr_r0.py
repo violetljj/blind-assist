@@ -30,12 +30,14 @@ EPSILON = 1e-9
 
 
 class Arm(str, Enum):
-    """The three matched baselines and the route-intersection challenger."""
+    """Matched baselines plus the route-occupancy challengers."""
 
     B0_DETECTION = "B0_detection_reminder"
     B1_DISTANCE = "B1_distance_gate"
     B2_RADIAL_TTC = "B2_radial_ttc"
     C_ROUTE_INTERSECTION = "C_route_intersection"
+    D_R1_OCCUPANCY_CONSENSUS = "D_r1_robust_occupancy_consensus"
+    E_R2_GUARDED_CONSENSUS = "E_r2_guarded_occupancy_consensus"
 
 
 class Signal(str, Enum):
@@ -47,6 +49,7 @@ class Signal(str, Enum):
 
     ONSET = "ONSET"
     HOLD = "HOLD"
+    ESCALATE = "ESCALATE"
     CLEAR = "CLEAR"
     UNKNOWN = "UNKNOWN"
 
@@ -591,7 +594,7 @@ def compute_event_metrics(
                 item
                 for item in episode_predictions
                 if warning_start <= item.time_s <= event_end
-                and item.signal in (Signal.ONSET, Signal.HOLD)
+                and item.signal in (Signal.ONSET, Signal.HOLD, Signal.ESCALATE)
             ]
             if hits:
                 recalled_count += 1

@@ -21,6 +21,7 @@ from dtr_r0 import (
     run_arm,
 )
 from evaluate import read_jsonl
+from dtr_r1 import run_r1_arm
 
 
 def frame_from_world(
@@ -168,6 +169,26 @@ class RouteIntersectionTests(unittest.TestCase):
         self.assertIs(lifecycle.update(1.0, None), Signal.UNKNOWN)
         self.assertIs(lifecycle.update(1.5, False), Signal.HOLD)
         self.assertIs(lifecycle.update(2.0, False), Signal.CLEAR)
+
+
+class RobustOccupancyR1Tests(unittest.TestCase):
+    def test_crossing_escalates_once_while_parallel_motion_stays_clear(self) -> None:
+        crossing = run_r1_arm(
+            timeline(lambda time_s: Vec2(4.0, 0.80 * (4.0 - time_s)))
+        )
+        parallel = run_r1_arm(
+            timeline(lambda time_s: Vec2(time_s + 0.5, 2.0))
+        )
+        self.assertEqual(
+            [item.signal for item in crossing].count(Signal.ESCALATE), 1
+        )
+        self.assertIn(Signal.ONSET, [item.signal for item in crossing])
+        self.assertFalse(
+            any(
+                item.signal in (Signal.ONSET, Signal.HOLD, Signal.ESCALATE)
+                for item in parallel
+            )
+        )
 
 
 class BaselineAndMetricTests(unittest.TestCase):

@@ -96,6 +96,8 @@ class UstrfMetricDepthGeometryAdapterTest {
         val millimeters = IntArray(9)
         val confidence = FloatArray(9)
         // (u=0,v=2): ground; (u=1,v=2): lower-body; (u=2,v=1): head.
+        // (u=2,v=0) is 2.5 m above ground and must stay outside the swept clearance band.
+        millimeters[2] = 1_000; confidence[2] = 1f
         millimeters[6] = 1_500; confidence[6] = 1f
         millimeters[7] = 1_000; confidence[7] = 1f
         millimeters[5] = 1_000; confidence[5] = 1f

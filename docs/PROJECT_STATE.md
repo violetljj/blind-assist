@@ -10,7 +10,7 @@ that protect interpretation.
 ## Current operating surface
 
 - Current ten-meter route: [L10-R0 Goal-Lock Copilot](../research/active/l10-r0/README.md)
-- Current obstacle/risk route: [Dynamic Travel Risk R0](../research/active/dtr-r0/README.md)
+- Current obstacle/risk route: [Dynamic Travel Risk R2](../research/active/dtr-r0/README.md)
 - Current question and stop condition: [CURRENT_DECISION.md](CURRENT_DECISION.md)
 - Workstation entrypoint: `tools/ba.ps1`
 - Android entrypoint: `scripts/run_android_gradle.ps1`
@@ -26,34 +26,26 @@ collapsed Doorway FLIP to `0/24` in both seeds, and left owner-group macro
 balanced accuracy near chance. No view selector, G0 fusion, or further
 pose/model sweep is authorized from that consumed result.
 
-Dynamic Travel Risk R0 crossed its exact public-real privileged ceiling on the
-19-session THÖR-MAGNI Pupil subset: C route intersection raised geometric
-critical-event recall from 8/10 to 9/10 and reduced target-level false alert
-segments from 96 to 55 (42.7%) relative to radial TTC. Its fixed 143-frame JRDB
-real-RGB bridge is also directionally positive: both arms recalled 3/3 events,
-while C reduced false alert segments from 7 to 4 (42.9%) after YOLO11n and a
-causal tracker. C was weaker on lead time and CLEAR, and overall known prediction
-coverage was 45.97%.
+Dynamic Travel Risk R2 now combines robust finite-horizon occupancy consensus
+with one fixed imminent route-intersection guard and stable
+`ONSET / HOLD / ESCALATE / CLEAR` events. On the 19-session, route-authoritative
+THÖR-MAGNI ceiling it recalls `10/10` events with 42 false-alert segments,
+strictly improving R0's `9/10` and 55. On 27 JRDB test sequences it recalls
+`164/175` with 256 false alerts versus R0's `161/175` and 260. CODa adds a hard
+pose-authoritative development/holdout check: R2 recalls `119/122` pedestrian
+events with 285 false alerts versus R0's `122/122` and 286, retaining the small
+recall cost instead of tuning it away.
 
-The current metric center has now been replaced by a truth-blind causal raw
-sensor chain: YOLO11n-seg person masks gate motion-compensated upper/lower JRDB
-Velodyne points. It covered 90.41% of detector-track occurrences with 0.106 m
-median / 0.284 m p90 position error against evaluator-only native centers. Both
-arms still recalled 3/3 events and cleared 2/2 eligible events; C reduced false
-alert segments from 18 to 13 (27.8%). This is a genuine but weaker effect and
-does not reproduce the frozen 40% strong-effect line. No more recording,
-detector/matcher sweep, Android, product, natural-distribution, user-benefit, or
-safety claim follows.
-
-A fixed phone-transferable RGB source now uses person-box height, one `1.70 m`
-upright-person prior, and camera focal length. On the same curated JRDB window,
-C retained `3/3` event recall and `2/2` CLEAR while reducing false alert
-segments from 17 to 9 (`47.1%`); geometry error was `0.386 m` median / `1.016 m`
-p90 against evaluator-only centers. This source is implemented in the isolated
-Android `dtrKnownHeight` build with frame-bound Camera2 calibration, causal
-multi-person tracking, and explicit `ONSET / HOLD / CLEAR / UNKNOWN` feedback
-semantics. The build compiles and its one focused mechanics check passes, but
-there is not yet a live-device result or default-App/product/safety claim.
+The static CODa ceiling adds causal curved-route and bounded vertical
+occupancy for walls/barriers, fixed structures, and temporary obstacles. It
+recalls all `12/12` observed path-contact events while reducing three-metre
+proximity false alerts from 104 to 10 (`90.4%`) and clearing `4/4` eligible
+events. The selected data contains no positive vegetation/head-clearance event;
+GOOSE lacks the synchronized route/ground-clearance truth needed to turn tree
+crown semantics into honest human head-collision truth, so that partition is
+`NOT_EVALUABLE`. These remain privileged public-data algorithm ceilings, not
+RGB/LiDAR detector, Android runtime, natural-distribution, user-benefit, or
+safety evidence.
 
 L10 is active in parallel and does not depend on GRAIL owner orientation. Its
 first controlled closed-loop result remains positive: 87.5% task completion,

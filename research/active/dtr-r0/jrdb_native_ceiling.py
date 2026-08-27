@@ -33,9 +33,13 @@ from dtr_r0 import (
     Signal,
     run_arm,
 )
+from dtr_r1 import FROZEN_R1_CONFIG, run_r1_arm
+from dtr_r2 import FROZEN_R2_CONFIG, run_r2_arm
 
 
 SCHEMA = "dtr-r0-jrdb-native-ceiling-v1"
+R1_SCHEMA = "dtr-r1-jrdb-native-ceiling-v1"
+R2_SCHEMA = "dtr-r2-jrdb-native-ceiling-v1"
 CLAIM_CEILING = "PUBLIC_REAL_PRIVILEGED_NATIVE_TRACK_CEILING_ONLY"
 LABEL_PREFIXES = ("labels_3d/", "labels/labels_3d/")
 HORIZON_S = 3.0
@@ -84,6 +88,8 @@ class ArmAccumulator:
     false_alert_segments: int = 0
     event_fragments: int = 0
     lead_times_s: list[float] = field(default_factory=list)
+    escalated_events: int = 0
+    escalation_lead_times_s: list[float] = field(default_factory=list)
     clear_delays_s: list[float] = field(default_factory=list)
     clear_eligible_events: int = 0
     cleared_events: int = 0
@@ -99,6 +105,7 @@ class ArmAccumulator:
             "alert_segments",
             "false_alert_segments",
             "event_fragments",
+            "escalated_events",
             "clear_eligible_events",
             "cleared_events",
             "unknown_prediction_frames",
@@ -106,6 +113,7 @@ class ArmAccumulator:
         ):
             setattr(self, name, getattr(self, name) + getattr(other, name))
         self.lead_times_s.extend(other.lead_times_s)
+        self.escalation_lead_times_s.extend(other.escalation_lead_times_s)
         self.clear_delays_s.extend(other.clear_delays_s)
         for category, count in other.category_total.items():
             self.category_total[category] = self.category_total.get(category, 0) + count
@@ -114,7 +122,7 @@ class ArmAccumulator:
                 self.category_recalled.get(category, 0) + count
             )
 
-    def to_dict(self) -> dict[str, Any]:
+    def to_dict(self, *, include_escalation: bool = False) -> dict[str, Any]:
         category_recall = {
             category: {
                 "events": total,
@@ -123,7 +131,7 @@ class ArmAccumulator:
             }
             for category, total in sorted(self.category_total.items())
         }
-        return {
+        result = {
             "critical_events": self.critical_events,
             "critical_events_recalled": self.recalled_events,
             "critical_event_recall": ratio(
@@ -148,6 +156,19 @@ class ArmAccumulator:
                 self.evaluated_prediction_frames,
             ),
         }
+        if include_escalation:
+            result.update(
+                {
+                    "critical_events_escalated": self.escalated_events,
+                    "critical_event_escalation_rate": ratio(
+                        self.escalated_events, self.critical_events
+                    ),
+                    "median_escalation_lead_s": median_or_none(
+                        self.escalation_lead_times_s
+                    ),
+                }
+            )
+        return result
 
 
 def ratio(numerator: int | float, denominator: int | float) -> float | None:
@@ -468,6 +489,16 @@ def score_arm(
             result.lead_times_s.append(
                 samples[event.contact_index].time_s - samples[first_alert].time_s
             )
+        escalations = [
+            index
+            for index in range(event.start_index, event.contact_index + 1)
+            if known[index] and predictions[index].signal is Signal.ESCALATE
+        ]
+        if escalations:
+            result.escalated_events += 1
+            result.escalation_lead_times_s.append(
+                samples[event.contact_index].time_s - samples[escalations[0]].time_s
+            )
 
         next_start = (
             events[event_index + 1].start_index
@@ -493,6 +524,7 @@ def evaluate_track_segment(
     track_id: str,
     samples: Sequence[NativeSample],
     config: DTRConfig,
+    arms: Sequence[Arm] = (Arm.B2_RADIAL_TTC, Arm.C_ROUTE_INTERSECTION),
 ) -> tuple[dict[Arm, ArmAccumulator], int, float]:
     if (
         len(samples) < 2
@@ -510,12 +542,18 @@ def evaluate_track_segment(
     scored = {
         arm: score_arm(
             samples,
-            run_arm(frames, arm, config),
+            (
+                run_r1_arm(frames)
+                if arm is Arm.D_R1_OCCUPANCY_CONSENSUS
+                else run_r2_arm(frames, config)
+                if arm is Arm.E_R2_GUARDED_CONSENSUS
+                else run_arm(frames, arm, config)
+            ),
             events,
             known,
             truth,
         )
-        for arm in (Arm.B2_RADIAL_TTC, Arm.C_ROUTE_INTERSECTION)
+        for arm in arms
     }
     known_indices = [index for index, value in enumerate(known) if value]
     exposure_s = (
@@ -592,20 +630,99 @@ def decision(pooled: dict[str, dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def r1_dominance_decision(pooled: dict[str, dict[str, Any]]) -> dict[str, Any] | None:
+    """Report direct R1-vs-R0 dominance without inventing a new tuned gate."""
+
+    if Arm.D_R1_OCCUPANCY_CONSENSUS.value not in pooled:
+        return None
+    comparator = pooled[Arm.C_ROUTE_INTERSECTION.value]
+    challenger = pooled[Arm.D_R1_OCCUPANCY_CONSENSUS.value]
+    recall_ok = nondecreasing(arm_recall(challenger), arm_recall(comparator))
+    false_delta = (
+        comparator["false_alert_segments"] - challenger["false_alert_segments"]
+    )
+    false_reduction = (
+        false_delta / comparator["false_alert_segments"]
+        if comparator["false_alert_segments"]
+        else None
+    )
+    return {
+        "status": (
+            "R1_DOMINATES_R0"
+            if recall_ok is True and false_delta > 0
+            else "R1_DOES_NOT_DOMINATE_R0"
+        ),
+        "primary_comparator": Arm.C_ROUTE_INTERSECTION.value,
+        "primary_challenger": Arm.D_R1_OCCUPANCY_CONSENSUS.value,
+        "critical_recall_non_decrease": recall_ok,
+        "critical_recall_delta": (
+            None
+            if arm_recall(challenger) is None or arm_recall(comparator) is None
+            else arm_recall(challenger) - arm_recall(comparator)
+        ),
+        "false_alert_segment_delta": false_delta,
+        "false_alert_segment_reduction_fraction": false_reduction,
+    }
+
+
+def successor_comparison(
+    pooled: dict[str, dict[str, Any]],
+    challenger: Arm,
+    comparator: Arm,
+) -> dict[str, Any] | None:
+    if challenger.value not in pooled or comparator.value not in pooled:
+        return None
+    left = pooled[challenger.value]
+    right = pooled[comparator.value]
+    left_recall = left["critical_event_recall"]
+    right_recall = right["critical_event_recall"]
+    recall_delta = (
+        None
+        if left_recall is None or right_recall is None
+        else left_recall - right_recall
+    )
+    false_delta = right["false_alert_segments"] - left["false_alert_segments"]
+    return {
+        "status": (
+            "DOMINATES"
+            if recall_delta is not None and recall_delta >= -1e-12 and false_delta > 0
+            else "DOES_NOT_DOMINATE"
+        ),
+        "challenger": challenger.value,
+        "comparator": comparator.value,
+        "critical_recall_delta": recall_delta,
+        "false_alert_segment_delta": false_delta,
+        "false_alert_segment_reduction_fraction": ratio(
+            false_delta, right["false_alert_segments"]
+        ),
+        "clear_rate_delta": (
+            None
+            if left["clear_rate"] is None or right["clear_rate"] is None
+            else left["clear_rate"] - right["clear_rate"]
+        ),
+    }
+
+
 def evaluate(
     label_zip_path: Path,
     timestamp_zip_path: Path,
     selected_sequences: set[str] | None,
+    include_r1: bool = False,
+    include_r2: bool = False,
 ) -> dict[str, Any]:
+    include_successor = include_r1 or include_r2
     config = DTRConfig(
         route_horizon_s=HORIZON_S,
         route_half_width_m=ROUTE_HALF_WIDTH_M,
         nominal_wearer_speed_mps=0.0,
     )
-    pooled = {
-        arm: ArmAccumulator()
-        for arm in (Arm.B2_RADIAL_TTC, Arm.C_ROUTE_INTERSECTION)
-    }
+    arms = (
+        Arm.B2_RADIAL_TTC,
+        Arm.C_ROUTE_INTERSECTION,
+        *((Arm.D_R1_OCCUPANCY_CONSENSUS,) if include_successor else ()),
+        *((Arm.E_R2_GUARDED_CONSENSUS,) if include_r2 else ()),
+    )
+    pooled = {arm: ArmAccumulator() for arm in arms}
     sequence_results = []
     totals = {
         "sequences": 0,
@@ -637,10 +754,7 @@ def evaluate(
             tracks, source_counts = read_tracks(
                 label_zip, prefix, sequence, timestamps
             )
-            sequence_arms = {
-                arm: ArmAccumulator()
-                for arm in (Arm.B2_RADIAL_TTC, Arm.C_ROUTE_INTERSECTION)
-            }
+            sequence_arms = {arm: ArmAccumulator() for arm in arms}
             track_segments = 0
             evaluable_segments = 0
             critical_events = 0
@@ -651,7 +765,10 @@ def evaluate(
                 ):
                     track_segments += 1
                     scored, event_count, segment_exposure_s = evaluate_track_segment(
-                        f"{sequence}/{track_id}/{segment_index}", segment, config
+                        f"{sequence}/{track_id}/{segment_index}",
+                        segment,
+                        config,
+                        arms,
                     )
                     if not scored:
                         continue
@@ -670,7 +787,7 @@ def evaluate(
                 "critical_events": critical_events,
                 "track_segment_exposure_s": exposure_s,
                 "arms": {
-                    arm.value: metrics.to_dict()
+                    arm.value: metrics.to_dict(include_escalation=include_successor)
                     for arm, metrics in sequence_arms.items()
                 },
             }
@@ -689,9 +806,12 @@ def evaluate(
                 flush=True,
             )
 
-    pooled_dict = {arm.value: metrics.to_dict() for arm, metrics in pooled.items()}
-    return {
-        "schema_version": SCHEMA,
+    pooled_dict = {
+        arm.value: metrics.to_dict(include_escalation=include_successor)
+        for arm, metrics in pooled.items()
+    }
+    result = {
+        "schema_version": R2_SCHEMA if include_r2 else R1_SCHEMA if include_r1 else SCHEMA,
         "claim_ceiling": CLAIM_CEILING,
         "source": {
             "dataset": "JRDB public caller-provided labels/timestamps split",
@@ -725,10 +845,23 @@ def evaluate(
             "minimum_false_alert_reduction_fraction": (
                 MINIMUM_FALSE_ALERT_REDUCTION
             ),
+            "r1": FROZEN_R1_CONFIG.to_dict() if include_successor else None,
+            "r2": FROZEN_R2_CONFIG.to_dict() if include_r2 else None,
         },
         "coverage": totals,
         "pooled": pooled_dict,
         "decision": decision(pooled_dict),
+        "r1_decision": r1_dominance_decision(pooled_dict),
+        "r2_vs_r0": successor_comparison(
+            pooled_dict,
+            Arm.E_R2_GUARDED_CONSENSUS,
+            Arm.C_ROUTE_INTERSECTION,
+        ),
+        "r2_vs_r1": successor_comparison(
+            pooled_dict,
+            Arm.E_R2_GUARDED_CONSENSUS,
+            Arm.D_R1_OCCUPANCY_CONSENSUS,
+        ),
         "by_sequence": sequence_results,
         "limitations": [
             "JRDB 3-D person boxes are privileged source annotations and may be interpolated.",
@@ -737,6 +870,14 @@ def evaluate(
             "No RGB detector, tracker, phone metric depth, Android runtime, or user study is evaluated.",
         ],
     }
+    if not include_successor:
+        result["configuration"].pop("r1")
+        result.pop("r1_decision")
+    if not include_r2:
+        result["configuration"].pop("r2")
+        result.pop("r2_vs_r0")
+        result.pop("r2_vs_r1")
+    return result
 
 
 def main() -> int:
@@ -744,6 +885,16 @@ def main() -> int:
     parser.add_argument("--labels-zip", type=Path, required=True)
     parser.add_argument("--timestamps-zip", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--include-r1",
+        action="store_true",
+        help="Add the fixed robust occupancy-consensus challenger.",
+    )
+    parser.add_argument(
+        "--include-r2",
+        action="store_true",
+        help="Add R1 plus the fixed half-horizon guarded R2 successor.",
+    )
     parser.add_argument(
         "--sequence",
         action="append",
@@ -756,6 +907,8 @@ def main() -> int:
         args.labels_zip,
         args.timestamps_zip,
         set(args.sequence) if args.sequence else None,
+        include_r1=args.include_r1,
+        include_r2=args.include_r2,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(

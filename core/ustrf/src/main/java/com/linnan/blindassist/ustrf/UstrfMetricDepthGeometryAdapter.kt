@@ -54,7 +54,9 @@ data class UstrfMetricDepthGeometryAdapterConfig(
     val minimumSampleConfidence: Float = .70f,
     val groundToleranceMeters: Float = .12f,
     val lowerBodyMaximumMeters: Float = 1.35f,
-    val headMinimumMeters: Float = 1.35f
+    val headMinimumMeters: Float = 1.35f,
+    /** Upper edge of the user's swept vertical clearance; geometry above it is not actionable. */
+    val headMaximumMeters: Float = 2.10f
 ) {
     init {
         require(sampleStridePx >= 1)
@@ -62,6 +64,7 @@ data class UstrfMetricDepthGeometryAdapterConfig(
         require(minimumSampleConfidence in 0f..1f)
         require(groundToleranceMeters > 0f && lowerBodyMaximumMeters > groundToleranceMeters)
         require(headMinimumMeters >= lowerBodyMaximumMeters)
+        require(headMaximumMeters > headMinimumMeters)
     }
 }
 
@@ -154,7 +157,8 @@ class UstrfMetricDepthGeometryAdapter(
                     abs(planeDistance) <= config.groundToleranceMeters -> UstrfGeometryKind.TRAVERSABLE to UstrfHeightBand.GROUND
                     planeDistance > config.groundToleranceMeters && planeDistance < config.lowerBodyMaximumMeters ->
                         UstrfGeometryKind.OCCUPIED to UstrfHeightBand.LOWER_BODY
-                    planeDistance >= config.headMinimumMeters -> UstrfGeometryKind.HEAD_OBSTACLE to UstrfHeightBand.HEAD
+                    planeDistance in config.headMinimumMeters..config.headMaximumMeters ->
+                        UstrfGeometryKind.HEAD_OBSTACLE to UstrfHeightBand.HEAD
                     else -> null
                 } ?: continue
                 evidence += UstrfMetricGeometryEvidence(
