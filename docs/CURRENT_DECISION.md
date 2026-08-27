@@ -1,6 +1,6 @@
-# Current decision: GRAIL active multiview appearance
+# Current decision: stop GRAIL active multiview appearance
 
-Status: `G1_GPU_PROTOCOL_FROZEN / DEVELOPMENT_RUNNING / NO_FINAL_TEST`
+Status: `STOP_G1_ACTIVE_MULTIVIEW_APPEARANCE / DEVELOPMENT_GATE_NOT_MET / NO_FINAL_TEST`
 
 ## Authorized question
 
@@ -43,14 +43,31 @@ No result-dependent alternative gate is available. Camera/owner pose, depth,
 object coordinates, scan geometry, and canonical sign are not model inputs. No
 NBV, pose head, G0 fusion, backbone/loss/threshold sweep, or final test is open.
 
-## Current state
+## Terminal Development result
 
-The protocol and fresh house-disjoint rosters were frozen before collection or
-model outcome. A Linux64/Xvfb startup attempt was interrupted before merge,
-training, or evaluation after CPU contention caused a Unity timeout. The GPU
-renderer amendment changes runtime only; roster, pixels consumed by both arms,
-inputs, model, seeds, metrics, and gate remain matched. Development collection
-and matched two-arm training are running. No outcome claim is available yet.
+The frozen run completed on 24 fresh houses with 1,136 discriminative samples
+(988 PRESERVE, 148 FLIP). Balanced accuracy changed from 77.70% to 77.65%
+(-0.05pp) in seed 1701 and from 80.40% to 79.91% (-0.49pp) in seed 2701.
+Neither seed approached the required +8pp.
+
+G1 had rescue/collateral counts of 97/47 and 57/44, but this did not represent
+recovered FLIP authority: FLIP accuracy declined by 6.08pp and 2.70pp. Mean
+Drawer balanced-accuracy uplift was +0.62pp; mean Doorway uplift was -4.94pp.
+The per-type gate therefore also failed.
+
+The exact result is
+`research/active/grail-r1cg/grail_r1c_g1_development_result_v1.json`. The route
+is closed without accessing a final test. A view selector is not authorized,
+because the fixed left/right acquisition did not first establish useful new
+appearance information. G0 fusion and further pose, backbone, loss, threshold,
+seed, or epoch variants remain closed.
+
+The result is bounded to fresh house-disjoint synthetic ProcTHOR Development,
+the fixed three-view scan, one matched architecture, and two seeds. It does not
+support a universal RGB-impossibility claim. The next owner-orientation route
+must change the task representation or add a different observable information
+source; dynamic risk remains a separate research mainline rather than a G1
+successor.
 
 ## Preserved prior terminals
 

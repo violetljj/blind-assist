@@ -1,0 +1,295 @@
+{
+  "schema": "blindassist_grail_r1c_g1_development_result_v1",
+  "state": "STOP_G1_ACTIVE_MULTIVIEW_APPEARANCE",
+  "gate": "DEVELOPMENT_GATE_NOT_MET",
+  "final": "NO_FINAL_TEST",
+  "cohort": {
+    "houses": 24,
+    "samples": 1296,
+    "discriminative_samples": 1136,
+    "flip_only_samples": 148,
+    "preserve_only_samples": 988,
+    "ambiguous_samples": 160,
+    "Drawer_samples": 1100,
+    "Doorway_samples": 196
+  },
+  "seeds": [
+    {
+      "seed": 1701,
+      "baseline": {
+        "discriminative_samples": 1136,
+        "correct": 860,
+        "accuracy": 0.7570422535211268,
+        "balanced_accuracy": 0.777027027027027,
+        "by_mode": {
+          "PRESERVE": {
+            "correct": 741,
+            "total": 988,
+            "accuracy": 0.75
+          },
+          "FLIP": {
+            "correct": 119,
+            "total": 148,
+            "accuracy": 0.8040540540540541
+          }
+        },
+        "by_type": {
+          "Doorway": {
+            "total": 194,
+            "balanced_accuracy": 0.5308823529411765,
+            "by_mode": {
+              "PRESERVE": {
+                "correct": 138,
+                "total": 170
+              },
+              "FLIP": {
+                "correct": 6,
+                "total": 24
+              }
+            }
+          },
+          "Drawer": {
+            "total": 942,
+            "balanced_accuracy": 0.8242270683807871,
+            "by_mode": {
+              "PRESERVE": {
+                "correct": 603,
+                "total": 818
+              },
+              "FLIP": {
+                "correct": 113,
+                "total": 124
+              }
+            }
+          }
+        },
+        "owner_group_macro": {
+          "eligible_groups_with_both_modes": 17,
+          "all_groups": 107,
+          "balanced_accuracy": 0.5257352941176471
+        },
+        "loss": 1.2925318825830188
+      },
+      "challenger": {
+        "discriminative_samples": 1136,
+        "correct": 910,
+        "accuracy": 0.801056338028169,
+        "balanced_accuracy": 0.7764799212167632,
+        "by_mode": {
+          "PRESERVE": {
+            "correct": 800,
+            "total": 988,
+            "accuracy": 0.8097165991902834
+          },
+          "FLIP": {
+            "correct": 110,
+            "total": 148,
+            "accuracy": 0.7432432432432432
+          }
+        },
+        "by_type": {
+          "Doorway": {
+            "total": 194,
+            "balanced_accuracy": 0.46176470588235297,
+            "by_mode": {
+              "PRESERVE": {
+                "correct": 157,
+                "total": 170
+              },
+              "FLIP": {
+                "correct": 0,
+                "total": 24
+              }
+            }
+          },
+          "Drawer": {
+            "total": 942,
+            "balanced_accuracy": 0.8365801719378501,
+            "by_mode": {
+              "PRESERVE": {
+                "correct": 643,
+                "total": 818
+              },
+              "FLIP": {
+                "correct": 110,
+                "total": 124
+              }
+            }
+          }
+        },
+        "owner_group_macro": {
+          "eligible_groups_with_both_modes": 17,
+          "all_groups": 107,
+          "balanced_accuracy": 0.5363562091503269
+        },
+        "loss": 1.2359411782533107
+      },
+      "balanced_accuracy_uplift_percentage_points": -0.05471058102637372,
+      "preserve_accuracy_drop_percentage_points": -5.971659919028339,
+      "rescue": 97,
+      "collateral": 47,
+      "net_rescue": 50,
+      "by_type_balanced_accuracy_uplift_percentage_points": {
+        "Doorway": -6.911764705882351,
+        "Drawer": 1.2353103557062983
+      },
+      "baseline_best_epoch": 2,
+      "challenger_best_epoch": 4,
+      "baseline_checkpoint_sha256": "39738686b5cf884d60074f27c3f9077a3ec09024917053018db592d70fa5a5c9",
+      "challenger_checkpoint_sha256": "adc7875dee70ceff63c35ee44b6650298c4165791b8cb8079e9ff5ab5457c256"
+    },
+    {
+      "seed": 2701,
+      "baseline": {
+        "discriminative_samples": 1136,
+        "correct": 936,
+        "accuracy": 0.823943661971831,
+        "balanced_accuracy": 0.8039993434730277,
+        "by_mode": {
+          "PRESERVE": {
+            "correct": 821,
+            "total": 988,
+            "accuracy": 0.8309716599190283
+          },
+          "FLIP": {
+            "correct": 115,
+            "total": 148,
+            "accuracy": 0.777027027027027
+          }
+        },
+        "by_type": {
+          "Doorway": {
+            "total": 194,
+            "balanced_accuracy": 0.5031862745098039,
+            "by_mode": {
+              "PRESERVE": {
+                "correct": 164,
+                "total": 170
+              },
+              "FLIP": {
+                "correct": 1,
+                "total": 24
+              }
+            }
+          },
+          "Drawer": {
+            "total": 942,
+            "balanced_accuracy": 0.8612666614086284,
+            "by_mode": {
+              "PRESERVE": {
+                "correct": 657,
+                "total": 818
+              },
+              "FLIP": {
+                "correct": 114,
+                "total": 124
+              }
+            }
+          }
+        },
+        "owner_group_macro": {
+          "eligible_groups_with_both_modes": 17,
+          "all_groups": 107,
+          "balanced_accuracy": 0.506781045751634
+        },
+        "loss": 1.2186409786405168
+      },
+      "challenger": {
+        "discriminative_samples": 1136,
+        "correct": 949,
+        "accuracy": 0.835387323943662,
+        "balanced_accuracy": 0.7990890688259109,
+        "by_mode": {
+          "PRESERVE": {
+            "correct": 838,
+            "total": 988,
+            "accuracy": 0.8481781376518218
+          },
+          "FLIP": {
+            "correct": 111,
+            "total": 148,
+            "accuracy": 0.75
+          }
+        },
+        "by_type": {
+          "Doorway": {
+            "total": 194,
+            "balanced_accuracy": 0.47352941176470587,
+            "by_mode": {
+              "PRESERVE": {
+                "correct": 161,
+                "total": 170
+              },
+              "FLIP": {
+                "correct": 0,
+                "total": 24
+              }
+            }
+          },
+          "Drawer": {
+            "total": 942,
+            "balanced_accuracy": 0.8613948260903856,
+            "by_mode": {
+              "PRESERVE": {
+                "correct": 677,
+                "total": 818
+              },
+              "FLIP": {
+                "correct": 111,
+                "total": 124
+              }
+            }
+          }
+        },
+        "owner_group_macro": {
+          "eligible_groups_with_both_modes": 17,
+          "all_groups": 107,
+          "balanced_accuracy": 0.5129084967320262
+        },
+        "loss": 0.9216942907200846
+      },
+      "balanced_accuracy_uplift_percentage_points": -0.4910274647116797,
+      "preserve_accuracy_drop_percentage_points": -1.720647773279349,
+      "rescue": 57,
+      "collateral": 44,
+      "net_rescue": 13,
+      "by_type_balanced_accuracy_uplift_percentage_points": {
+        "Doorway": -2.9656862745098045,
+        "Drawer": 0.012816468175724793
+      },
+      "baseline_best_epoch": 3,
+      "challenger_best_epoch": 1,
+      "baseline_checkpoint_sha256": "4fb925b10ebf46b3d3a375d57a7ea47a3cf7152d3ad0a55213a34341634c2559",
+      "challenger_checkpoint_sha256": "5f2a307b18dfb43589e2b68081190f489a63989e0b43edce1f2fef45385f4050"
+    }
+  ],
+  "decision": {
+    "minimum_balanced_accuracy_uplift_percentage_points_each_seed": 8.0,
+    "each_seed_uplift_passed": false,
+    "rescue_exceeds_collateral_each_seed": true,
+    "maximum_preserve_accuracy_drop_percentage_points_each_seed": 5.0,
+    "preserve_drop_passed": true,
+    "mean_by_type_balanced_accuracy_uplift_percentage_points": {
+      "Doorway": -4.938725490196077,
+      "Drawer": 0.6240634119410116
+    },
+    "both_object_types_mean_positive_uplift": false,
+    "passed": false
+  },
+  "boundaries": {
+    "fresh_from_r1cl_and_g0": true,
+    "view_selection_used_owner_yaw_or_canonical_sign": false,
+    "model_inputs": [
+      "RGB",
+      "owner_union_mask",
+      "sibling_centroid_mask"
+    ],
+    "camera_or_owner_pose_used_at_inference": false,
+    "next_best_view_policy": false,
+    "g0_fusion": false,
+    "final_test_accessed": false,
+    "claim_ceiling": "Fresh house-disjoint synthetic ProcTHOR Development evidence for the fixed three-view RGB/mask appearance acquisition and direct permutation formulation only."
+  },
+  "manifest_sha256": "de86bfad9641e57800b50791eccc8784c70cb8f0f7724cf37e7aa8f0ba310c8a",
+  "validation_collection_sha256": "e557d864449d82aed178e280d66fd14e7aa682fe94614614ae62420c5b101f9c"
+}

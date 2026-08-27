@@ -1,6 +1,6 @@
 # GRAIL R1C-G1 Active Multiview Appearance
 
-Status: `G1_GPU_PROTOCOL_FROZEN / DEVELOPMENT_RUNNING / NO_FINAL_TEST`
+Status: `STOP_G1_ACTIVE_MULTIVIEW_APPEARANCE / DEVELOPMENT_GATE_NOT_MET / NO_FINAL_TEST`
 
 R1C-G1 asks whether a short fixed three-view reference scan reveals asymmetric
 RGB/mask appearance that a single reference image hides. It is a new
@@ -62,8 +62,36 @@ No subjective "obvious effect" escape clause, NBV policy, pose regression, G0
 fusion, backbone/loss/threshold sweep, or final test is authorized.
 
 The frozen roster and exact protocol are in
-`grail_r1c_g1_manifest_v1.json`. Development outcomes will be added only after
-the complete frozen run terminates.
+`grail_r1c_g1_manifest_v1.json`; the terminal Development result is in
+`grail_r1c_g1_development_result_v1.json`.
+
+## Development result
+
+The fresh Development cohort contains 24 houses and 1,136 discriminative
+samples: 988 PRESERVE and 148 FLIP. G1 did not improve balanced accuracy over
+the matched B1 baseline in either frozen seed:
+
+| Seed | B1 balanced accuracy | G1 balanced accuracy | Uplift | Rescue / collateral |
+| --- | ---: | ---: | ---: | ---: |
+| 1701 | 77.70% | 77.65% | -0.05pp | 97 / 47 |
+| 2701 | 80.40% | 79.91% | -0.49pp | 57 / 44 |
+
+The positive net rescue came from a stronger PRESERVE tendency, not recovered
+canonical sign authority. G1's FLIP accuracy fell from 80.41% to 74.32% in seed
+1701 and from 77.70% to 75.00% in seed 2701. Mean Drawer uplift was +0.62pp,
+while mean Doorway uplift was -4.94pp; both object types therefore did not
+improve.
+
+The frozen `+8pp` condition failed in both seeds and the per-type condition also
+failed. The route closes without final-test access. Fixed three-view appearance
+does not authorize an NBV/view-selector successor, G0 fusion, or further
+pose/model sweeps.
+
+This is evidence only for this fresh synthetic ProcTHOR cohort, fixed scan,
+architecture, budget, and two seeds. It does not establish that all active
+multiview RGB systems are impossible. Operationally, the next owner-orientation
+successor must change the task representation or introduce a different
+observable information source.
 
 ## Preserved prior terminal
 

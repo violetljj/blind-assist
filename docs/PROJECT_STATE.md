@@ -17,11 +17,13 @@ protect interpretation.
 
 ## Current evidence
 
-R1C-G0 closed after relative-camera-yaw transport failed its gate. R1C-G1 now
-freezes a fresh matched comparison between one reference image and a fixed
-anchor/left/right scan. The only experimental input change is additional visual
-appearance; Development collection and training are running, with no outcome
-claim yet.
+R1C-G0 closed after relative-camera-yaw transport failed its gate. R1C-G1 then
+tested a fresh matched comparison between one reference image and a fixed
+anchor/left/right scan. It also closed: three-view balanced-accuracy uplift was
+-0.05pp and -0.49pp in the two frozen seeds, FLIP accuracy declined, and mean
+Doorway uplift was negative. The state is
+`STOP_G1_ACTIVE_MULTIVIEW_APPEARANCE / DEVELOPMENT_GATE_NOT_MET / NO_FINAL_TEST`.
+No view-selector or further pose/model sweep is authorized from this result.
 
 ## Boundaries
 
