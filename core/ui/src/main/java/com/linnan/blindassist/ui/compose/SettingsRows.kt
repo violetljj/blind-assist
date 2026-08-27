@@ -1,11 +1,9 @@
 package com.linnan.blindassist.ui.compose
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.background
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,16 +13,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChevronRight
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -38,6 +35,29 @@ import com.linnan.blindassist.localization.AppLanguage
 import com.linnan.blindassist.localization.LocalizedText
 
 @Composable
+internal fun SettingsGroup(
+    modifier: Modifier = Modifier,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(22.dp),
+        color = BaHomeSurface.copy(alpha = 0.86f),
+        shadowElevation = 1.dp
+    ) {
+        Column(content = content)
+    }
+}
+
+@Composable
+internal fun SettingsDivider(startIndent: Int = 74) {
+    HorizontalDivider(
+        modifier = Modifier.padding(start = startIndent.dp, end = 18.dp),
+        color = BaHomeHairline.copy(alpha = 0.72f)
+    )
+}
+
+@Composable
 internal fun SettingSwitchRow(
     icon: ImageVector,
     title: String,
@@ -48,14 +68,10 @@ internal fun SettingSwitchRow(
     onCheckedChange: (Boolean) -> Unit
 ) {
     val stateText = LocalizedText.enabled(checked, language)
-    val shape = BaShapeCard
     Row(
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 84.dp)
-            .shadow(elevation = 1.dp, shape = shape)
-            .background(BaHomeSurface, shape)
-            .border(BorderStroke(1.dp, BaHomeHairline.copy(alpha = 0.82f)), shape)
             .toggleable(
                 value = checked,
                 role = Role.Switch,
@@ -69,7 +85,7 @@ internal fun SettingSwitchRow(
                     "$title，$body，当前$stateText"
                 }
             }
-            .padding(horizontal = 16.dp, vertical = 13.dp),
+            .padding(horizontal = 18.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconTile(
@@ -96,28 +112,21 @@ internal fun SettingsActionRow(
     body: String,
     onClick: () -> Unit
 ) {
-    Card(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 76.dp)
+            .heightIn(min = 82.dp)
             .clickable(role = Role.Button, onClick = onClick)
-            .semantics(mergeDescendants = true) {},
-        shape = BaShapeCard,
-        colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-        border = BorderStroke(1.dp, BaHomeHairline.copy(alpha = 0.82f))
+            .semantics(mergeDescendants = true) {}
+            .padding(horizontal = 18.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconTile(icon = icon, accent = BaHomeGreen)
-            Spacer(Modifier.width(14.dp))
-            Column(Modifier.weight(1f)) {
-                Text(title, color = BaHomeInk, fontWeight = FontWeight.Bold)
-                Text(body, color = BaHomeTextMuted, style = MaterialTheme.typography.bodySmall)
-            }
-            Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = BaHomeGreen.copy(alpha = 0.82f))
+        IconTile(icon = icon, accent = BaHomeGreen)
+        Spacer(Modifier.width(14.dp))
+        Column(Modifier.weight(1f)) {
+            Text(title, color = BaHomeInk, fontWeight = FontWeight.Bold)
+            Text(body, color = BaHomeTextMuted, style = MaterialTheme.typography.bodySmall)
         }
+        Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = BaHomeGreen.copy(alpha = 0.82f))
     }
 }

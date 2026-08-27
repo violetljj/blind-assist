@@ -40,6 +40,7 @@ import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -548,20 +549,22 @@ internal fun InfoStrip(
     title: String,
     body: String
 ) {
-    Card(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .semantics(mergeDescendants = true) {},
-        shape = BaShapeCard,
-        colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-        border = BorderStroke(1.dp, BaHomeHairline.copy(alpha = 0.82f))
+            .semantics(mergeDescendants = true) {}
     ) {
+        HorizontalDivider(color = BaHomeHairline.copy(alpha = 0.78f))
         Row(
-            modifier = Modifier.padding(18.dp),
+            modifier = Modifier.padding(horizontal = 4.dp, vertical = 18.dp),
             verticalAlignment = Alignment.Top
         ) {
-            IconTile(icon = icon, accent = BaHomeAmber)
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = BaHomeAmber,
+                modifier = Modifier.size(23.dp)
+            )
             Spacer(Modifier.width(14.dp))
             Column {
                 Text(text = title, color = BaHomeInk, fontWeight = FontWeight.Bold)

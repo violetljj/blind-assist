@@ -1,17 +1,29 @@
 package com.linnan.blindassist.ui.compose
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.linnan.blindassist.localization.AppLanguage
 
@@ -25,7 +37,15 @@ fun CameraPermissionExplanationDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            Button(onClick = onContinue, modifier = Modifier.heightIn(min = 48.dp)) {
+            Button(
+                onClick = onContinue,
+                modifier = Modifier.heightIn(min = 48.dp),
+                shape = RoundedCornerShape(18.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = BaHomeActionEnd,
+                    contentColor = BaHomeOnAction
+                )
+            ) {
                 Text(if (english) "Continue and allow" else "继续并授权")
             }
         },
@@ -34,8 +54,14 @@ fun CameraPermissionExplanationDialog(
                 Text(if (english) "Not now" else "暂不打开")
             }
         },
-        icon = { Icon(Icons.Outlined.CameraAlt, contentDescription = null, tint = BaHomeGreen) },
-        title = { Text(if (english) "Camera permission needed" else "需要相机权限") },
+        title = {
+            PermissionDialogTitle(
+                icon = Icons.Outlined.CameraAlt,
+                label = if (english) "LOCAL CAMERA" else "本地相机",
+                title = if (english) "Camera permission needed" else "需要相机权限",
+                accent = BaHomeGreen
+            )
+        },
         text = {
             Text(
                 if (english) {
@@ -45,9 +71,8 @@ fun CameraPermissionExplanationDialog(
                 }
             )
         },
-        shape = BaShapeHero,
+        shape = RoundedCornerShape(22.dp),
         containerColor = BaHomeSurface,
-        iconContentColor = BaHomeGreen,
         titleContentColor = BaHomeInk,
         textContentColor = BaHomeTextMuted
     )
@@ -66,8 +91,14 @@ fun CameraPermissionDeniedDialog(
                 Text(if (english) "Got it" else "知道了")
             }
         },
-        icon = { Icon(Icons.Outlined.Shield, contentDescription = null, tint = BaHomeAmber) },
-        title = { Text(if (english) "Camera permission is off" else "相机权限未开启") },
+        title = {
+            PermissionDialogTitle(
+                icon = Icons.Outlined.Shield,
+                label = if (english) "CAMERA ACCESS" else "相机访问",
+                title = if (english) "Camera permission is off" else "相机权限未开启",
+                accent = BaHomeAmber
+            )
+        },
         text = {
             Text(
                 if (english) {
@@ -77,10 +108,42 @@ fun CameraPermissionDeniedDialog(
                 }
             )
         },
-        shape = BaShapeHero,
+        shape = RoundedCornerShape(22.dp),
         containerColor = BaHomeSurface,
-        iconContentColor = BaHomeAmber,
         titleContentColor = BaHomeInk,
         textContentColor = BaHomeTextMuted
     )
+}
+
+@Composable
+private fun PermissionDialogTitle(
+    icon: ImageVector,
+    label: String,
+    title: String,
+    accent: Color
+) {
+    Column {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = accent,
+                modifier = Modifier.size(19.dp)
+            )
+            Spacer(Modifier.width(8.dp))
+            Text(
+                text = label,
+                color = accent,
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        Spacer(Modifier.height(14.dp))
+        Text(
+            text = title,
+            color = BaHomeInk,
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold
+        )
+    }
 }

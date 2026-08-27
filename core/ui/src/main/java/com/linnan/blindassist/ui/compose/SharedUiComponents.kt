@@ -37,7 +37,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -102,6 +101,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.alert.AssistScenario
@@ -146,19 +146,14 @@ internal fun ScreenIntro(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         eyebrow?.let {
-            Surface(
-                color = BaHomeNavIndicator,
-                contentColor = BaHomeGreen,
-                shape = CircleShape
-            ) {
-                Text(
-                    text = it,
-                    modifier = Modifier.padding(horizontal = 11.dp, vertical = 6.dp),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            Spacer(Modifier.height(12.dp))
+            Text(
+                text = it,
+                color = BaHomeGreen,
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 0.8.sp
+            )
+            Spacer(Modifier.height(16.dp))
         }
         Text(
             text = title,
@@ -169,6 +164,7 @@ internal fun ScreenIntro(
         Spacer(Modifier.height(8.dp))
         Text(
             text = body,
+            modifier = Modifier.widthIn(max = 520.dp),
             style = MaterialTheme.typography.bodyMedium,
             color = BaHomeTextMuted
         )
@@ -201,20 +197,18 @@ internal fun IconTile(
 
 @Composable
 internal fun FieldTestSummaryCard(summary: FieldTestSummaryUiState) {
-    Card(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
+            .heightIn(min = 84.dp)
             .semantics(mergeDescendants = true) {
                 contentDescription = summary.accessibilityText
-            },
-        shape = BaShapeCard,
-        colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-        border = BorderStroke(1.dp, BaHomeHairline.copy(alpha = 0.82f))
+            }
+            .padding(horizontal = 18.dp, vertical = 16.dp)
     ) {
         FieldTestSummaryBlock(
             summary = summary,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }

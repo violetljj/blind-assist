@@ -1,6 +1,5 @@
 package com.linnan.blindassist.ui.compose
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,11 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,37 +40,32 @@ import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.localization.AppLanguage
 
 @Composable
-private fun SelectorCard(
+private fun SelectorSection(
     title: String,
     description: String,
     accessibilityDescription: String,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
-    Card(
+    Column(
         modifier = modifier
             .fillMaxWidth()
-            .semantics { contentDescription = accessibilityDescription },
-        shape = BaShapeCard,
-        colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
-        border = BorderStroke(1.dp, BaHomeHairline),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+            .semantics { contentDescription = accessibilityDescription }
     ) {
-        Column(Modifier.padding(horizontal = 16.dp, vertical = 15.dp)) {
-            Text(
-                text = title,
-                color = BaHomeInk,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.semantics { heading() }
-            )
-            Text(
-                text = description,
-                color = BaHomeTextMuted,
-                style = MaterialTheme.typography.bodySmall
-            )
-            Spacer(Modifier.height(12.dp))
-            content()
-        }
+        Text(
+            text = title,
+            color = BaHomeInk,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.semantics { heading() }
+        )
+        Text(
+            text = description,
+            color = BaHomeTextMuted,
+            style = MaterialTheme.typography.bodySmall
+        )
+        Spacer(Modifier.height(12.dp))
+        content()
     }
 }
 
@@ -84,52 +79,140 @@ private fun <T> SegmentedSelector(
     optionDescription: (T) -> String,
     onSelected: (T) -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(BaShapeControl)
-            .background(BaHomeControlRail)
-            .padding(3.dp)
-            .selectableGroup(),
-        horizontalArrangement = Arrangement.spacedBy(3.dp)
+    val railShape = RoundedCornerShape(30.dp)
+    val optionShape = RoundedCornerShape(25.dp)
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = railShape,
+        color = BaHomeControlRail,
+        shadowElevation = 4.dp
     ) {
-        options.forEach { option ->
-            val isSelected = selected == option
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .heightIn(min = 48.dp)
-                    .clip(BaShapeCompact)
-                    .background(if (isSelected) BaHomeNavIndicator else Color.Transparent)
-                    .selectable(
-                        selected = isSelected,
-                        role = Role.RadioButton,
-                        onClick = { onSelected(option) }
-                    )
-                    .semantics {
-                        role = Role.RadioButton
-                        stateDescription = if (isSelected) {
-                            selectedStateDescription
-                        } else {
-                            unselectedStateDescription
-                        }
-                        contentDescription = optionDescription(option)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp)
+                .selectableGroup(),
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            options.forEach { option ->
+                val isSelected = selected == option
+                Surface(
+                    modifier = Modifier
+                        .weight(1f)
+                        .heightIn(min = 48.dp)
+                        .clip(optionShape)
+                        .selectable(
+                            selected = isSelected,
+                            role = Role.RadioButton,
+                            onClick = { onSelected(option) }
+                        )
+                        .semantics {
+                            role = Role.RadioButton
+                            stateDescription = if (isSelected) {
+                                selectedStateDescription
+                            } else {
+                                unselectedStateDescription
+                            }
+                            contentDescription = optionDescription(option)
+                        },
+                    shape = optionShape,
+                    color = if (isSelected) BaHomeSurface else Color.Transparent,
+                    shadowElevation = if (isSelected) 2.dp else 0.dp
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 48.dp)
+                            .padding(horizontal = 8.dp, vertical = 8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = optionLabel(option),
+                            color = if (isSelected) BaHomeGreen else BaHomeInk,
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center
+                        )
                     }
-                    .padding(horizontal = 8.dp, vertical = 8.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = optionLabel(option),
-                    color = if (isSelected) BaHomeGreen else BaHomeInk,
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center
-                )
+                }
             }
         }
     }
+}
+
+@Composable
+private fun ScenarioRow(
+    scenario: AssistScenario,
+    selected: Boolean,
+    language: AppLanguage,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 4.dp)
+            .heightIn(min = 64.dp)
+            .clip(RoundedCornerShape(18.dp))
+            .background(if (selected) BaHomeNavIndicator else Color.Transparent)
+            .selectable(
+                selected = selected,
+                role = Role.RadioButton,
+                onClick = onClick
+            )
+            .semantics {
+                role = Role.RadioButton
+                stateDescription = if (selected) {
+                    if (language == AppLanguage.EN) "Current scenario" else "当前场景"
+                } else {
+                    if (language == AppLanguage.EN) "Not selected" else "未选择"
+                }
+                contentDescription = if (language == AppLanguage.EN) {
+                    "Choose ${scenario.displayName(language)} usage scenario, ${scenario.description(language)}"
+                } else {
+                    "选择${scenario.displayName(language)}使用场景，${scenario.description(language)}"
+                }
+            }
+            .padding(horizontal = 4.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .width(3.dp)
+                .height(34.dp)
+                .background(if (selected) BaHomeGreen else Color.Transparent)
+        )
+        Spacer(Modifier.width(12.dp))
+        Column(Modifier.weight(1f)) {
+            Text(
+                text = scenario.displayName(language),
+                color = if (selected) BaHomeGreen else BaHomeInk,
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = if (selected) FontWeight.Bold else FontWeight.SemiBold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(Modifier.height(2.dp))
+            Text(
+                text = scenario.description(language),
+                color = BaHomeTextMuted,
+                style = MaterialTheme.typography.bodySmall,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
+@Composable
+private fun ScenarioDivider() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(BaHomeHairline.copy(alpha = 0.72f))
+    )
 }
 
 @Composable
@@ -138,54 +221,17 @@ private fun ScenarioRows(
     language: AppLanguage,
     onScenarioChange: (AssistScenario) -> Unit
 ) {
-    Column(
-        modifier = Modifier.selectableGroup(),
-        verticalArrangement = Arrangement.spacedBy(6.dp)
-    ) {
-        AssistScenario.values().forEach { scenario ->
-            val isSelected = selected == scenario
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 60.dp)
-                    .clip(BaShapeCompact)
-                    .background(if (isSelected) BaHomeNavIndicator else BaHomeControlRail)
-                    .selectable(
-                        selected = isSelected,
-                        role = Role.RadioButton,
-                        onClick = { onScenarioChange(scenario) }
-                    )
-                    .semantics {
-                        role = Role.RadioButton
-                        stateDescription = if (isSelected) {
-                            if (language == AppLanguage.EN) "Current scenario" else "当前场景"
-                        } else {
-                            if (language == AppLanguage.EN) "Not selected" else "未选择"
-                        }
-                        contentDescription = if (language == AppLanguage.EN) {
-                            "Choose ${scenario.displayName(language)} usage scenario, ${scenario.description(language)}"
-                        } else {
-                            "选择${scenario.displayName(language)}使用场景，${scenario.description(language)}"
-                        }
-                    }
-                    .padding(horizontal = 14.dp, vertical = 10.dp)
-            ) {
-                Text(
-                    text = scenario.displayName(language),
-                    color = if (isSelected) BaHomeGreen else BaHomeInk,
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Spacer(Modifier.height(2.dp))
-                Text(
-                    text = scenario.description(language),
-                    color = BaHomeTextMuted,
-                    style = MaterialTheme.typography.bodySmall,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+    val scenarios = AssistScenario.values()
+    Column(modifier = Modifier.selectableGroup()) {
+        scenarios.forEachIndexed { index, scenario ->
+            ScenarioRow(
+                scenario = scenario,
+                selected = selected == scenario,
+                language = language,
+                onClick = { onScenarioChange(scenario) }
+            )
+            if (index != scenarios.lastIndex) {
+                ScenarioDivider()
             }
         }
     }
@@ -198,7 +244,7 @@ internal fun ProfileSelector(
     onProfileChange: (AlertProfile) -> Unit
 ) {
     val english = language == AppLanguage.EN
-    SelectorCard(
+    SelectorSection(
         title = if (english) "Reminder profile" else "提醒档位",
         description = if (english) {
             "Quiet reduces interruption, Sensitive confirms medium risk earlier."
@@ -235,7 +281,7 @@ internal fun LanguageSelector(
     onLanguageChange: (AppLanguage) -> Unit
 ) {
     val english = selected == AppLanguage.EN
-    SelectorCard(
+    SelectorSection(
         title = if (english) "Interface language" else "界面语言",
         description = if (english) {
             "Choose Chinese or English for core reminders and settings."
@@ -271,7 +317,7 @@ internal fun ScenarioSelector(
     onScenarioChange: (AssistScenario) -> Unit
 ) {
     val english = language == AppLanguage.EN
-    SelectorCard(
+    SelectorSection(
         title = if (english) "Usage scenario" else "使用场景",
         description = if (english) {
             "Manually choose the walking environment to tune confirmation, cooldown, and vibration."
@@ -300,7 +346,7 @@ internal fun SpeechStyleSelector(
     onSpeechStyleChange: (SpeechStyle) -> Unit
 ) {
     val english = language == AppLanguage.EN
-    SelectorCard(
+    SelectorSection(
         title = if (english) "Speech style" else "语音风格",
         description = if (english) {
             "Brief reduces interruption, Detailed adds object type."
@@ -338,7 +384,7 @@ internal fun VibrationStrengthSelector(
     onVibrationStrengthChange: (VibrationStrength) -> Unit
 ) {
     val english = language == AppLanguage.EN
-    SelectorCard(
+    SelectorSection(
         title = if (english) "Vibration strength" else "震动强度",
         description = if (english) {
             "Choose soft, standard, or stronger feedback for tactile sensitivity."

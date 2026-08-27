@@ -1,8 +1,6 @@
 package com.linnan.blindassist.ui.compose
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,8 +16,7 @@ import androidx.compose.material.icons.rounded.Link
 import androidx.compose.material.icons.rounded.LinkOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -66,42 +63,50 @@ fun GlassesHardwareScreen(
             ) {
                 Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = null, tint = BaHomeInk)
             }
-            Text(
-                text = if (english) "Glasses device center" else "眼镜外设连接中心",
-                style = MaterialTheme.typography.headlineSmall,
-                color = BaHomeInk,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.semantics { heading() }
-            )
+            Column {
+                Text(
+                    text = if (english) "EXTERNAL DEVICE" else "外接设备",
+                    color = BaHomeGreen,
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = if (english) "Glasses device center" else "眼镜外设连接中心",
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = BaHomeInk,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.semantics { heading() }
+                )
+            }
         }
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(18.dp))
         Text(
             text = if (english) {
                 "Real external-hardware connection. Current adapter: AtomS3R-M12 + ToF4M over local Wi-Fi."
             } else {
                 "真实外界硬件连接入口。当前适配器：AtomS3R-M12 + ToF4M 局域网连接。"
             },
-            color = BaHomeAmber,
+            color = BaHomeTextMuted,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.testTag("glasses_hardware_boundary")
         )
-        Spacer(Modifier.height(16.dp))
-        HardwareStatusCard(state = state, language = language)
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(32.dp))
+        HardwareStatusSection(state = state, language = language)
+        Spacer(Modifier.height(26.dp))
         when (state.connectionState) {
             GlassesConnectionState.DISCONNECTED,
             GlassesConnectionState.CONNECTION_LOST -> Button(
                 onClick = onConnect,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 52.dp)
+                    .heightIn(min = 58.dp)
                     .testTag("connect_glasses_device")
                     .semantics { contentDescription = if (english) "Connect external glasses hardware" else "连接眼镜外界硬件" },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = BaHomeActionEnd,
                     contentColor = BaHomeOnAction
                 ),
-                shape = BaShapeControl
+                shape = RoundedCornerShape(22.dp)
             ) {
                 Icon(Icons.Rounded.Link, contentDescription = null)
                 Text(if (english) " Connect device" else " 连接设备")
@@ -109,7 +114,8 @@ fun GlassesHardwareScreen(
             GlassesConnectionState.CONNECTING -> Button(
                 onClick = {},
                 enabled = false,
-                modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).testTag("connecting_glasses_device")
+                modifier = Modifier.fillMaxWidth().heightIn(min = 58.dp).testTag("connecting_glasses_device"),
+                shape = RoundedCornerShape(22.dp)
             ) {
                 Text(if (english) "Connecting to AtomS3R…" else "正在连接 AtomS3R…")
             }
@@ -117,8 +123,9 @@ fun GlassesHardwareScreen(
                 onClick = onDisconnect,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 52.dp)
-                    .testTag("disconnect_glasses_device")
+                    .heightIn(min = 58.dp)
+                    .testTag("disconnect_glasses_device"),
+                shape = RoundedCornerShape(22.dp)
             ) {
                 Icon(Icons.Rounded.LinkOff, contentDescription = null)
                 Text(if (english) " Disconnect" else " 断开连接")
@@ -130,12 +137,13 @@ fun GlassesHardwareScreen(
                 onClick = { onStartLiveAssist(state.endpoint) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 52.dp)
+                    .heightIn(min = 58.dp)
                     .testTag("start_glasses_live_assist"),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = BaHomeAmber,
                     contentColor = BaHomeOnAction
-                )
+                ),
+                shape = RoundedCornerShape(22.dp)
             ) {
                 Text(if (english) "Use live glasses camera" else "使用眼镜实时画面")
             }
@@ -148,7 +156,7 @@ fun GlassesHardwareScreen(
                 modifier = Modifier.testTag("glasses_connection_error")
             )
         }
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(28.dp))
         InfoStrip(
             icon = Icons.Rounded.Link,
             title = if (english) "Current integration boundary" else "当前接入边界",
@@ -162,39 +170,83 @@ fun GlassesHardwareScreen(
 }
 
 @Composable
-private fun HardwareStatusCard(state: GlassesSimulatorUiState, language: AppLanguage) {
+private fun HardwareStatusSection(state: GlassesSimulatorUiState, language: AppLanguage) {
     val english = language == AppLanguage.EN
     val connection = state.connectionState.hardwareLabel(language)
     val distance = state.tofRangeMm?.let { "$it mm" } ?: if (english) "Unavailable" else "不可用"
-    Card(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .testTag("glasses_device_status")
             .semantics(mergeDescendants = true) {
                 contentDescription = "$connection, ${state.endpoint}, $distance"
                 stateDescription = connection
-            },
-        shape = BaShapeCard,
-        colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-        border = BorderStroke(1.dp, BaHomeHairline.copy(alpha = 0.82f))
+            }
+            .padding(horizontal = 4.dp)
     ) {
-        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(if (english) "External device status" else "外界硬件状态", color = BaHomeInk, fontWeight = FontWeight.Bold)
-            Text(connection, color = if (state.connectionState == GlassesConnectionState.CONNECTED) BaHomeGreen else BaHomeTextMuted)
-            Text(if (english) "Endpoint: ${state.endpoint}" else "设备地址：${state.endpoint}", color = BaHomeTextMuted)
-            state.firmwareVersion?.let { Text(if (english) "Firmware: $it" else "固件：$it", color = BaHomeTextMuted) }
-            state.wifiRssiDbm?.let { Text(if (english) "Wi-Fi RSSI: $it dBm" else "Wi-Fi 信号：$it dBm", color = BaHomeTextMuted) }
-            Text(if (english) "ToF: $distance" else "ToF 距离：$distance", color = BaHomeTextMuted)
-            Text(
+        Text(
+            if (english) "CONNECTION STATUS" else "连接状态",
+            color = BaHomeGreen,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(Modifier.height(10.dp))
+        Text(
+            connection,
+            color = if (state.connectionState == GlassesConnectionState.CONNECTED) BaHomeGreen else BaHomeInk,
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(Modifier.height(22.dp))
+        HorizontalDivider(color = BaHomeHairline.copy(alpha = 0.78f))
+        HardwareStatusRow(
+            label = if (english) "Endpoint" else "设备地址",
+            value = state.endpoint
+        )
+        state.firmwareVersion?.let {
+            HorizontalDivider(color = BaHomeHairline.copy(alpha = 0.58f))
+            HardwareStatusRow(if (english) "Firmware" else "固件", it)
+        }
+        state.wifiRssiDbm?.let {
+            HorizontalDivider(color = BaHomeHairline.copy(alpha = 0.58f))
+            HardwareStatusRow(if (english) "Wi-Fi signal" else "Wi-Fi 信号", "$it dBm")
+        }
+        HorizontalDivider(color = BaHomeHairline.copy(alpha = 0.58f))
+        HardwareStatusRow(if (english) "ToF range" else "ToF 距离", distance)
+        HorizontalDivider(color = BaHomeHairline.copy(alpha = 0.58f))
+        HardwareStatusRow(
+            label = if (english) "Live video" else "实时画面",
+            value =
                 if (state.streamReachable) {
                     if (english) "MJPEG endpoint reachable" else "MJPEG 视频端点可达"
                 } else {
                     if (english) "MJPEG endpoint not verified" else "MJPEG 视频端点未验证"
-                },
-                color = BaHomeTextMuted
-            )
-        }
+                }
+        )
+    }
+}
+
+@Composable
+private fun HardwareStatusRow(label: String, value: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 11.dp),
+        verticalAlignment = Alignment.Top
+    ) {
+        Text(
+            text = label,
+            color = BaHomeTextMuted,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.weight(0.34f)
+        )
+        Text(
+            text = value,
+            color = BaHomeInk,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.weight(0.66f)
+        )
     }
 }
 

@@ -1,99 +1,44 @@
 package com.linnan.blindassist.ui.compose
 
-import android.view.ViewGroup
-import android.widget.FrameLayout
-import androidx.activity.compose.BackHandler
-import androidx.camera.view.PreviewView
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Bluetooth
-import androidx.compose.material.icons.rounded.BugReport
 import androidx.compose.material.icons.outlined.CameraAlt
-import androidx.compose.material.icons.rounded.ChevronRight
-import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.PhoneAndroid
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.outlined.Shield
-import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material.icons.outlined.Vibration
-import androidx.compose.material.icons.rounded.VolumeUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import com.linnan.blindassist.alert.AlertProfile
-import com.linnan.blindassist.alert.AssistScenario
-import com.linnan.blindassist.feedback.SpeechStyle
-import com.linnan.blindassist.feedback.VibrationStrength
-import com.linnan.blindassist.localization.AppLanguage
-import com.linnan.blindassist.localization.LocalizedText
-import com.linnan.blindassist.preferences.DailyUsageMode
-import com.linnan.blindassist.ui.DetectionOverlayView
 
 
 @Composable
@@ -112,47 +57,59 @@ fun OnboardingScreen(
             title = "开始使用 BlindAssist",
             body = "先了解三件事，再进入本地视觉辅助体验。"
         )
-        Spacer(Modifier.height(26.dp))
+        Spacer(Modifier.height(38.dp))
 
-        Card(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 310.dp),
-            shape = BaShapeHero,
-            colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
-            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-            border = BorderStroke(1.dp, BaHomeHairline.copy(alpha = 0.84f))
+                .heightIn(min = 304.dp)
+                .padding(horizontal = 4.dp),
+            horizontalAlignment = Alignment.Start
         ) {
-            Column(
-                modifier = Modifier.padding(24.dp),
-                horizontalAlignment = Alignment.Start
+            Box(
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(CircleShape)
+                    .background(page.accent.copy(alpha = 0.10f)),
+                contentAlignment = Alignment.Center
             ) {
-                IconTile(icon = page.icon, accent = page.accent, emphasized = true)
-                Spacer(Modifier.height(22.dp))
-                Text(
-                    text = page.title,
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = BaHomeInk,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.semantics { heading() }
-                )
-                Spacer(Modifier.height(10.dp))
-                Text(
-                    text = page.body,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = BaHomeInk,
-                    lineHeight = MaterialTheme.typography.bodyLarge.lineHeight
-                )
-                Spacer(Modifier.height(14.dp))
-                Text(
-                    text = page.detail,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = BaHomeTextMuted
+                Icon(
+                    imageVector = page.icon,
+                    contentDescription = null,
+                    tint = page.accent,
+                    modifier = Modifier.size(25.dp)
                 )
             }
+            Spacer(Modifier.height(28.dp))
+            Text(
+                text = page.title,
+                style = MaterialTheme.typography.headlineSmall,
+                color = BaHomeInk,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.semantics { heading() }
+            )
+            Spacer(Modifier.height(14.dp))
+            Text(
+                text = page.body,
+                style = MaterialTheme.typography.bodyLarge,
+                color = BaHomeInk,
+                lineHeight = MaterialTheme.typography.bodyLarge.lineHeight
+            )
+            Spacer(Modifier.height(22.dp))
+            HorizontalDivider(
+                modifier = Modifier.fillMaxWidth(0.18f),
+                thickness = 2.dp,
+                color = page.accent.copy(alpha = 0.62f)
+            )
+            Spacer(Modifier.height(12.dp))
+            Text(
+                text = page.detail,
+                style = MaterialTheme.typography.bodyMedium,
+                color = BaHomeTextMuted
+            )
         }
 
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(24.dp))
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -161,14 +118,14 @@ fun OnboardingScreen(
             pages.forEachIndexed { index, _ ->
                 Box(
                     modifier = Modifier
-                        .height(4.dp)
+                        .height(3.dp)
                         .weight(1f)
                         .clip(RoundedCornerShape(50))
                         .background(if (index == pageIndex) BaHomeGreen else BaHomeHairline)
                 )
             }
         }
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(24.dp))
         Button(
             onClick = {
                 if (isLastPage) {
@@ -180,7 +137,7 @@ fun OnboardingScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = 60.dp),
-            shape = BaShapeControl,
+            shape = RoundedCornerShape(22.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = BaHomeActionEnd,
                 contentColor = BaHomeOnAction

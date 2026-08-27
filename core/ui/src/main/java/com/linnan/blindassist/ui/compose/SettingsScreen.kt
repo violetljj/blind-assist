@@ -59,7 +59,7 @@ fun SettingsScreen(
             selected = controls.appLanguage,
             onLanguageChange = onLanguageChange
         )
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(8.dp))
         SettingSwitchRow(
             icon = Icons.Outlined.FavoriteBorder,
             title = if (language == AppLanguage.EN) "Care Mode" else "关怀模式",
@@ -72,30 +72,32 @@ fun SettingsScreen(
         Spacer(Modifier.height(24.dp))
 
         SettingsSectionHeader(if (language == AppLanguage.EN) "Reminder feedback" else "提醒方式")
-        SettingSwitchRow(
-            icon = Icons.AutoMirrored.Outlined.VolumeUp,
-            title = if (language == AppLanguage.EN) "Speech reminders" else "语音提醒",
-            body = if (language == AppLanguage.EN) "Speak short risk prompts" else "播报短句式风险提示",
-            checked = controls.speechEnabled,
-            language = language,
-            onCheckedChange = onSpeechChange
-        )
-        Spacer(Modifier.height(10.dp))
-        SettingSwitchRow(
-            icon = Icons.Outlined.Vibration,
-            title = if (language == AppLanguage.EN) "Vibration reminders" else "震动提醒",
-            body = if (language == AppLanguage.EN) "Give tactile feedback for near and critical risks" else "在近处和迫近风险时给出触觉反馈",
-            checked = controls.vibrationEnabled,
-            language = language,
-            onCheckedChange = onVibrationChange
-        )
-        Spacer(Modifier.height(12.dp))
+        SettingsGroup {
+            SettingSwitchRow(
+                icon = Icons.AutoMirrored.Outlined.VolumeUp,
+                title = if (language == AppLanguage.EN) "Speech reminders" else "语音提醒",
+                body = if (language == AppLanguage.EN) "Speak short risk prompts" else "播报短句式风险提示",
+                checked = controls.speechEnabled,
+                language = language,
+                onCheckedChange = onSpeechChange
+            )
+            SettingsDivider()
+            SettingSwitchRow(
+                icon = Icons.Outlined.Vibration,
+                title = if (language == AppLanguage.EN) "Vibration reminders" else "震动提醒",
+                body = if (language == AppLanguage.EN) "Give tactile feedback for near and critical risks" else "在近处和迫近风险时给出触觉反馈",
+                checked = controls.vibrationEnabled,
+                language = language,
+                onCheckedChange = onVibrationChange
+            )
+        }
+        Spacer(Modifier.height(18.dp))
         SpeechStyleSelector(
             selected = controls.speechStyle,
             language = language,
             onSpeechStyleChange = onSpeechStyleChange
         )
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(18.dp))
         VibrationStrengthSelector(
             selected = controls.vibrationStrength,
             language = language,
@@ -118,25 +120,27 @@ fun SettingsScreen(
         Spacer(Modifier.height(24.dp))
 
         SettingsSectionHeader(if (language == AppLanguage.EN) "Debug and records" else "调试与记录")
-        SettingSwitchRow(
-            icon = Icons.Outlined.BugReport,
-            title = if (language == AppLanguage.EN) "Debug details" else "调试信息",
-            body = if (language == AppLanguage.EN) "Show FPS, timing, and risk summary on the camera page" else "在相机页显示 FPS、耗时和风险判定摘要",
-            checked = controls.debugVisible,
-            language = language,
-            modifier = Modifier.testTag("settings_debug_toggle"),
-            onCheckedChange = onDebugVisibleChange
-        )
-        Spacer(Modifier.height(16.dp))
-        FieldTestSummaryCard(fieldTestSummary)
-        Spacer(Modifier.height(16.dp))
-        SettingsActionRow(
-            icon = Icons.Outlined.Info,
-            title = if (language == AppLanguage.EN) "Replay onboarding" else "查看新手引导",
-            body = if (language == AppLanguage.EN) "Review camera, local reminders, and safety boundaries" else "重新查看摄像头、本地提醒和安全边界说明",
-            onClick = onShowOnboarding
-        )
-        Spacer(Modifier.height(16.dp))
+        SettingsGroup {
+            SettingSwitchRow(
+                icon = Icons.Outlined.BugReport,
+                title = if (language == AppLanguage.EN) "Debug details" else "调试信息",
+                body = if (language == AppLanguage.EN) "Show FPS, timing, and risk summary on the camera page" else "在相机页显示 FPS、耗时和风险判定摘要",
+                checked = controls.debugVisible,
+                language = language,
+                modifier = Modifier.testTag("settings_debug_toggle"),
+                onCheckedChange = onDebugVisibleChange
+            )
+            SettingsDivider()
+            FieldTestSummaryCard(fieldTestSummary)
+            SettingsDivider()
+            SettingsActionRow(
+                icon = Icons.Outlined.Info,
+                title = if (language == AppLanguage.EN) "Replay onboarding" else "查看新手引导",
+                body = if (language == AppLanguage.EN) "Review camera, local reminders, and safety boundaries" else "重新查看摄像头、本地提醒和安全边界说明",
+                onClick = onShowOnboarding
+            )
+        }
+        Spacer(Modifier.height(22.dp))
         InfoStrip(
             icon = Icons.Outlined.Shield,
             title = if (language == AppLanguage.EN) "Usage boundary" else "使用边界",
@@ -153,9 +157,9 @@ fun SettingsScreen(
 private fun SettingsSectionHeader(text: String) {
     Text(
         text = text,
-        style = MaterialTheme.typography.titleSmall,
-        color = BaHomeGreen,
-        fontWeight = FontWeight.Bold,
+        style = MaterialTheme.typography.titleMedium,
+        color = BaHomeInk,
+        fontWeight = FontWeight.SemiBold,
         modifier = Modifier.semantics { heading() }
     )
     Spacer(Modifier.height(12.dp))
