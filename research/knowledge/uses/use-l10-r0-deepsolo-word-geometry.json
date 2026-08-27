@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-deepsolo-word-geometry",
+  "item_id": "paper-deepsolo-2023",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "ordered-point-text-geometry"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "component",
+  "usage": {
+    "source_scope": "Only the ordered word-level geometry and joint character/centerline representation are in scope.",
+    "project_application": "Replace the merged-line center used by L10 bearing with a word-level geometry carrier on fixed ArTVideo frames while keeping semantic identity and the temporal state machine frozen.",
+    "modifications": "Treat DeepSolo only as a geometry source. Existing OCR remains the lexical authority, and geometry cannot create or rebind target identity.",
+    "expected_effect": "Improve target-word bearing when adjacent words were merged into one OCR line without increasing wrong lexical admission or changing identity persistence."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Even a positive fixed-frame result would establish only a better text-geometry carrier on that replay. It would not establish temporal reacquisition, physical identity, entrance affordance, metric arrival, live-device control, user benefit, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "repo",
+      "ref": "research/active/l10-r0/LITERATURE_RESERVE_20_2026-08-27.md",
+      "summary": "The route-specific literature reserve selected DeepSolo as a geometry-only candidate and fixed the smallest useful comparison."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-27",
+      "change": "Imported the L10 literature candidate into the cross-route reserve without authorizing an experiment or changing the current route."
+    }
+  ],
+  "added_at": "2026-08-27",
+  "updated_at": "2026-08-27"
+}

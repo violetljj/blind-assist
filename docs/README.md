@@ -16,6 +16,12 @@ The hot path is intentionally short:
 - [Host research compute](HOST_RESEARCH_COMPUTE.md)
 - [Glasses hardware route](GLASSES_HARDWARE_ROUTE.md)
 
+## Research knowledge
+
+- [Cross-route knowledge reserve](../research/knowledge/README.md): papers,
+  mechanisms, projects, route-specific usage, reproduction evidence, and
+  falsified hypotheses.
+
 ## Public project material
 
 - [English quickstart](QUICKSTART_EN.md)

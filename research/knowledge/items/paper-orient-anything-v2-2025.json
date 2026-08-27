@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "id": "paper-orient-anything-v2-2025",
+  "kind": "paper",
+  "title": "Orient Anything V2: Unifying Orientation and Rotation Understanding",
+  "canonical_ref": "https://arxiv.org/abs/2601.05573",
+  "authors": [
+    "Zehan Wang",
+    "Ziang Zhang",
+    "Jiayang Xu",
+    "Jialei Wang",
+    "Tianyu Pang",
+    "Chao Du",
+    "Hengshuang Zhao",
+    "Zhou Zhao"
+  ],
+  "year": 2025,
+  "venue": "NeurIPS 2025",
+  "summary": "A symmetry-aware foundation model for object orientation, relative rotation, and rotational-symmetry understanding from single or paired images.",
+  "mechanisms": [
+    {
+      "id": "symmetry-aware-relative-orientation",
+      "name": "Symmetry-aware paired-image relative orientation",
+      "description": "Model zero-to-many valid front-facing modes with a periodic symmetry-aware objective and use paired images to estimate relative object rotation instead of forcing one canonical front.",
+      "inputs": [
+        "single or paired object RGB crops",
+        "frozen model checkpoint"
+      ],
+      "outputs": [
+        "orientation modes",
+        "relative rotation",
+        "rotational-symmetry estimate"
+      ],
+      "limitations": "General orientation and benchmark pose results do not establish the owner-canonical sibling coordinate required by BlindAssist, especially for symmetric or front-undefined object groups."
+    }
+  ],
+  "tags": [
+    "orientation",
+    "relative-rotation",
+    "symmetry",
+    "zero-shot",
+    "grail"
+  ],
+  "aliases": [
+    "oa-v2",
+    "grail:oa-v2"
+  ],
+  "links": [
+    {
+      "label": "Official code",
+      "ref": "https://github.com/SpatialVision/Orient-Anything-V2"
+    }
+  ],
+  "added_at": "2026-08-27",
+  "updated_at": "2026-08-27"
+}

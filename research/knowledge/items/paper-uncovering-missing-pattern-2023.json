@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "id": "paper-uncovering-missing-pattern-2023",
+  "kind": "paper",
+  "title": "Uncovering the Missing Pattern: Unified Framework Towards Trajectory Imputation and Prediction",
+  "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2023/html/Xu_Uncovering_the_Missing_Pattern_Unified_Framework_Towards_Trajectory_Imputation_and_CVPR_2023_paper.html",
+  "authors": [
+    "Yi Xu",
+    "Armin Bazarjani",
+    "Hyung-gun Chi",
+    "Chiho Choi",
+    "Yun Fu"
+  ],
+  "year": 2023,
+  "venue": "CVPR",
+  "summary": "A unified GC-VRNN framework for trajectory imputation and prediction that treats incomplete observations and their temporal missing patterns as first-class inputs.",
+  "mechanisms": [
+    {
+      "id": "missingness-aware-imputation-and-forecast",
+      "name": "Missingness-aware joint imputation and forecasting",
+      "description": "Use a multi-space graph representation plus a temporal-decay conditional recurrent model to encode incomplete multi-agent observations, jointly impute bounded missing history, and predict future trajectories.",
+      "inputs": [
+        "incomplete observed trajectories",
+        "observation masks",
+        "time since observation"
+      ],
+      "outputs": [
+        "imputed bounded history",
+        "future trajectory distribution"
+      ],
+      "limitations": "Benchmark imputation does not prove that a fully unseen target exists. An imputed point is not a sensor observation, identity authority, calibrated collision probability, or evidence of safety; unsupported gaps must remain UNKNOWN."
+    }
+  ],
+  "tags": [
+    "trajectory",
+    "missingness",
+    "occlusion",
+    "forecasting",
+    "dtr"
+  ],
+  "aliases": [
+    "dtr:DR45",
+    "gc-vrnn"
+  ],
+  "links": [
+    {
+      "label": "ArXiv",
+      "ref": "https://arxiv.org/abs/2303.16005"
+    }
+  ],
+  "added_at": "2026-08-27",
+  "updated_at": "2026-08-27"
+}

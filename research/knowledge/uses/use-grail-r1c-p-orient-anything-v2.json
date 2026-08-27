@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "id": "use-grail-r1c-p-orient-anything-v2",
+  "item_id": "paper-orient-anything-v2-2025",
+  "route": "grail-r1c-p",
+  "mechanism_ids": [
+    "symmetry-aware-relative-orientation"
+  ],
+  "use_state": "rejected",
+  "adoption_mode": "component",
+  "usage": {
+    "source_scope": "The fixed zero-shot OA-V2 checkpoint, paired relative orientation, predicted symmetry modes, and consensus behavior were used.",
+    "project_application": "Convert masked owner-group RGB pairs into the canonical sibling slot needed by the frozen downstream referent selector and pose head.",
+    "modifications": "OA-V2 remained frozen; BlindAssist added only the route-specific mode-consensus and canonical-slot conversion while keeping the downstream candidate set, selector, and pose head fixed.",
+    "expected_effect": "Reach at least 70/78 cross-view canonical slot agreement and referent top-1 on the fresh house-disjoint cohort without new wrong-target or absence commits."
+  },
+  "evaluation": {
+    "reproduction_status": "failed",
+    "verdict": "falsified",
+    "setup": "Fresh source-disjoint ProcTHOR validation cohort with 12 houses and 78 positive pairs; one frozen OA-V2 paired-relative final arm; formal test remained unopened.",
+    "effect": "The route obtained 37/78 canonical-slot agreement, 36/78 referent top-1, 29/78 complete pose, and 2/43 wrong-target cases. Absence false commits were 0/78 and permutation consistency was 156/156. An evaluator-only owner-local control still reached 74/78 referent and 55/78 complete pose, localizing the failure to the RGB-orientation-to-canonical-slot evidence path.",
+    "metrics": [
+      "canonical_slot_agreement=37/78; gate>=70/78",
+      "referent_top1=36/78; gate>=70/78",
+      "complete_pose=29/78; gate>=50/78",
+      "wrong_target=2/43; gate<=1/43",
+      "absence_false_commit=0/78; gate<=1/78",
+      "permutation_consistency=156/156"
+    ],
+    "claim_boundary": "This falsifies only the fixed OA-V2 paired-RGB owner-canonical-slot hypothesis on this synthetic, fresh, house-disjoint cohort. It does not refute OA-V2's general orientation capability and does not establish a natural-image, device, product, user-benefit, or safety conclusion."
+  },
+  "evidence": [
+    {
+      "kind": "experiment",
+      "ref": "result-grail-r1c-p-symmetry-aware-paired-orientation-result-2026-08-25",
+      "summary": "The searchable experiment ledger records the route-specific failed terminal and unopened formal test."
+    },
+    {
+      "kind": "git",
+      "ref": "archive/pre-agent-surface-2026-08-26:docs/research/goal-copilot/GRAIL_R1C_P_SYMMETRY_AWARE_PAIRED_ORIENTATION_RESULT_2026-08-25.md",
+      "summary": "Frozen result report with the cohort, metrics, hashes, attribution, claim boundary, and stop condition."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-25",
+      "change": "The frozen paired-relative arm failed the route gates; the cohort was consumed and the route stopped before depth geometry."
+    },
+    {
+      "date": "2026-08-27",
+      "change": "Imported the negative route-specific use into the central reserve without reopening the experiment or broadening its claim."
+    }
+  ],
+  "added_at": "2026-08-27",
+  "updated_at": "2026-08-27"
+}

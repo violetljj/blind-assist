@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-missingness-aware-forecast",
+  "item_id": "paper-uncovering-missing-pattern-2023",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "missingness-aware-imputation-and-forecast"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Observation masks, time-since-seen, and joint bounded imputation plus forecast are in scope; the paper's benchmark claims and complete model stack are not transferred.",
+    "project_application": "Make causal observation gaps explicit at the DTR tracker-to-forecast boundary and test whether bounded gap handling improves route-event behavior over treating imputed positions as observations.",
+    "modifications": "Any reconstructed state remains tagged as imputed, gaps are capped before execution, and unsupported or fully unseen targets remain UNKNOWN rather than becoming free space or synthetic tracks.",
+    "expected_effect": "Reduce event misses caused by short contiguous occlusions while preserving identity continuity and bounding false route events."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "A positive result would be a route-specific Development signal for bounded missing tracks. It would not establish target existence outside observation, detector coverage, calibrated collision probability, wearable RGB performance, user benefit, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "repo",
+      "ref": "research/active/dtr-r0/LITERATURE_RESERVE_2026-08-27.md",
+      "summary": "The DTR literature reserve identifies the mechanism, a bounded-gap falsifier, and the UNKNOWN boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-27",
+      "change": "Imported DR45 as a route-specific candidate; no current DTR decision or in-progress experiment was changed."
+    }
+  ],
+  "added_at": "2026-08-27",
+  "updated_at": "2026-08-27"
+}

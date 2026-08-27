@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "id": "paper-deepsolo-2023",
+  "kind": "paper",
+  "title": "DeepSolo: Let Transformer Decoder With Explicit Points Solo for Text Spotting",
+  "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2023/html/Ye_DeepSolo_Let_Transformer_Decoder_With_Explicit_Points_Solo_for_Text_CVPR_2023_paper.html",
+  "authors": [
+    "Maoyuan Ye",
+    "Jing Zhang",
+    "Shanshan Zhao",
+    "Juhua Liu",
+    "Tongliang Liu",
+    "Bo Du",
+    "Dacheng Tao"
+  ],
+  "year": 2023,
+  "venue": "CVPR",
+  "summary": "A single-decoder text spotter that represents each text instance with ordered explicit point queries and jointly decodes recognition and fine-grained text geometry.",
+  "mechanisms": [
+    {
+      "id": "ordered-point-text-geometry",
+      "name": "Ordered explicit-point text geometry",
+      "description": "Represent a text instance as ordered point queries and jointly decode its character sequence, centerline, boundaries, script, and confidence instead of reducing it to one merged box center.",
+      "inputs": [
+        "scene-image features",
+        "Bezier center-curve proposals"
+      ],
+      "outputs": [
+        "ordered text points",
+        "character sequence",
+        "centerline and boundaries",
+        "confidence"
+      ],
+      "limitations": "This is a text-spotting mechanism on images. It does not establish semantic target identity, physical-instance authority, temporal reacquisition, metric arrival, user completion, or safety."
+    }
+  ],
+  "tags": [
+    "scene-text",
+    "text-geometry",
+    "ocr",
+    "l10"
+  ],
+  "aliases": [
+    "l10:1",
+    "deep-solo"
+  ],
+  "links": [
+    {
+      "label": "Official code",
+      "ref": "https://github.com/ViTAE-Transformer/DeepSolo"
+    }
+  ],
+  "added_at": "2026-08-27",
+  "updated_at": "2026-08-27"
+}
