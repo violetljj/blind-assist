@@ -17,6 +17,8 @@ This file records only current milestones. Full earlier history is preserved at
   `versionCode=38`, `versionName=10.10.0`, debug signing metadata, and 16KB
   alignment; SHA256 is
   `0D12E61078246C10946EE8557BCCF8EB8A2DEE18A7EB68E9BAE78CBA0CE58309`.
+- Archived the verified default APK as
+  `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v10.10.0-debug-20260828-003935.apk`.
 
 ## 2026-08-27 — dynamic travel risk mainline
 

@@ -13,6 +13,7 @@
 - 状态：当前精修后的 Compose 应用替换此前默认界面；`versionCode=38`，`versionName=10.10.0`，正式包名继续使用 `com.linnan.blindassist`，可覆盖升级旧默认 App。
 - 首页、设置页、底部导航、卡片、排版和状态层级统一为同一套暖色视觉系统；提醒方式与调试记录的分组背景改为一致实色，消除半透明合成产生的矩形色块。
 - 保留原有 CameraX、YOLO11n、本地处理、风险规则、语音与震动逻辑、偏好数据和实验构建隔离；本次默认晋级只涉及用户界面与版本身份，不扩大产品或安全结论。
+- 默认 debug APK 已通过包名、版本、签名解析和 16KB 对齐检查；归档为 `E:\linnan\blind-assist-apk-archive\apks\BlindAssist-v10.10.0-debug-20260828-003935.apk`，SHA256 `0D12E61078246C10946EE8557BCCF8EB8A2DEE18A7EB68E9BAE78CBA0CE58309`。
 
 ## v10.9.0 - SANPO 风险事件闭环
 
