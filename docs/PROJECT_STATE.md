@@ -4,12 +4,12 @@ Updated: 2026-08-27
 
 BlindAssist is a runnable Android showcase research prototype. The default
 research policy is effect-first: demonstrate a genuine, visible effect in a
-controlled setup, report the setup and metric honestly, and add only checks that
-protect interpretation.
+controlled setup, report the setup and metric honestly, and add only checks
+that protect interpretation.
 
 ## Current operating surface
 
-- Current decision route: [GRAIL R1C-G1](../research/active/grail-r1cg/README.md)
+- Current algorithm route: [Dynamic Travel Risk R0](../research/active/dtr-r0/README.md)
 - Current question and stop condition: [CURRENT_DECISION.md](CURRENT_DECISION.md)
 - Workstation entrypoint: `tools/ba.ps1`
 - Android entrypoint: `scripts/run_android_gradle.ps1`
@@ -17,20 +17,33 @@ protect interpretation.
 
 ## Current evidence
 
-R1C-G0 closed after relative-camera-yaw transport failed its gate. R1C-G1 then
-tested a fresh matched comparison between one reference image and a fixed
-anchor/left/right scan. It also closed: three-view balanced-accuracy uplift was
--0.05pp and -0.49pp in the two frozen seeds, FLIP accuracy declined, and mean
-Doorway uplift was negative. The state is
-`STOP_G1_ACTIVE_MULTIVIEW_APPEARANCE / DEVELOPMENT_GATE_NOT_MET / NO_FINAL_TEST`.
-No view-selector or further pose/model sweep is authorized from this result.
+GRAIL owner orientation is a completed negative-result chain rather than the
+daily mainline. Its latest terminal remains
+`STOP_G1_ACTIVE_MULTIVIEW_APPEARANCE / DEVELOPMENT_GATE_NOT_MET /
+NO_FINAL_TEST`: fixed three-view appearance increased the PRESERVE tendency,
+collapsed Doorway FLIP to `0/24` in both seeds, and left owner-group macro
+balanced accuracy near chance. No view selector, G0 fusion, or further
+pose/model sweep is authorized from that consumed result.
+
+Dynamic Travel Risk R0 is now the next algorithm mainline. It asks whether
+short causal tracks plus predicted target-occupancy intersection with the
+wearer route can suppress irrelevant alerts without losing crossing or
+oncoming events. The implementation currently supports a synthetic mechanics
+smoke only; the 100--160-event controlled RGB/trajectory cohort is pending, so
+there is no DTR-R0 scientific result yet.
+
+## Demonstration track
+
+Semantic Anchor to Marker Pose remains the live-device showcase closure. Its
+device evidence and DTR-R0 research evidence must be reported separately.
 
 ## Boundaries
 
-- Historical routes remain closed unless a new versioned experiment introduces
-  a genuinely new information source.
+- Historical routes remain closed unless a new versioned experiment changes
+  the task representation or introduces a genuinely new information source.
 - Curated Development evidence may support the showcase, but its scope must be
   stated.
 - Live-camera behavior requires a ready device and a device run; a build or JVM
   test is not a substitute.
+- `UNKNOWN` and `NOT_EVALUABLE` are not negative evidence or proof of safety.
 - Protected final claims follow [formal governance](formal/RESEARCH_GOVERNANCE.md).

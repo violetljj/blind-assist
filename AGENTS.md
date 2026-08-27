@@ -119,7 +119,7 @@ After `PROJECT_STATE.md`, read only the route needed for the task:
   `pwsh -NoProfile -File scripts/run_android_gradle.ps1 <tasks...>`; do not
   hand-compose a replacement toolchain.
 - Use `pwsh -NoProfile -File tools/ba.ps1 doctor <profile>` for scoped
-  workstation readiness. Profiles are `base`, `research-r1cl`, `android`,
+  workstation readiness. Profiles are `base`, `research-dtr-r0`, `android`,
   `device`, and `export`.
 - Keep machine paths, SDK locations, Python/CUDA paths, credentials, and local
   endpoints out of tracked instructions. Pass them by CLI, ignored local config,

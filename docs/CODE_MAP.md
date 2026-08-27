@@ -15,7 +15,7 @@
 ## Research
 
 The only current route is
-[`research/active/grail-r1cg/`](../research/active/grail-r1cg/README.md).
+[`research/active/dtr-r0/`](../research/active/dtr-r0/README.md).
 Closed modules and their exact historical paths are searchable in
 `experiments/index.jsonl` and preserved at the archive tag documented in
 [history-index.md](history-index.md).

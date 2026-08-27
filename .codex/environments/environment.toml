@@ -3,18 +3,18 @@ version = 1
 name = "BlindAssist active workset"
 
 [setup]
-script = "pwsh -NoProfile -File tools/ba.ps1 setup research-r1cl"
+script = "pwsh -NoProfile -File tools/ba.ps1 setup research-dtr-r0"
 
 [[actions]]
-name = "R1C-L doctor"
+name = "DTR-R0 doctor"
 icon = "debug"
-command = "pwsh -NoProfile -File tools/ba.ps1 doctor research-r1cl"
+command = "pwsh -NoProfile -File tools/ba.ps1 doctor research-dtr-r0"
 platform = "win32"
 
 [[actions]]
-name = "R1C-L smoke"
+name = "DTR-R0 smoke"
 icon = "test"
-command = "pwsh -NoProfile -File tools/ba.ps1 smoke research-r1cl"
+command = "pwsh -NoProfile -File tools/ba.ps1 smoke research-dtr-r0"
 platform = "win32"
 
 [[actions]]

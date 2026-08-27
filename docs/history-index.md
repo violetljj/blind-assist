@@ -28,3 +28,17 @@ git worktree remove ..\blindassist-history
 The historical tree is audit/reproduction evidence, not current execution
 authority. Do not copy a closed runner back into the active tree without a new
 decision that identifies the new information source and claim boundary.
+
+## Post-compaction closed routes
+
+Routes completed after the archive tag remain recoverable from their terminal
+commits and are indexed in `experiments/index.jsonl`:
+
+- GRAIL R1C-L: `15fddda3a8c58b0287feb04cd20d72ac59934eee`
+- unseen-location router: `ebc003eb427187bf6f5d26fce17dca67cc30abd4`
+- GRAIL G0/G1 active geometry and multiview appearance: G1 terminal
+  `4db9a11964ff9af9b5b500d59a60d8bb6fc0213b`
+
+These commits are evidence and reproduction anchors, not current execution
+authority. In particular, the consumed GRAIL cohorts and prior dynamic-risk
+signals must not be reopened through tuning or relabeling.

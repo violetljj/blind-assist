@@ -4,7 +4,7 @@ The hot path is intentionally short:
 
 1. [Project state](PROJECT_STATE.md)
 2. [Current research decision](CURRENT_DECISION.md)
-3. [Current GRAIL R1C-G1 route](../research/active/grail-r1cg/README.md)
+3. [Current Dynamic Travel Risk R0 route](../research/active/dtr-r0/README.md)
 
 ## Engineering
 

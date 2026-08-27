@@ -4,16 +4,17 @@ This route covers local or remote training, offline evaluation, and other long
 research jobs. It does not define Android/device execution and contains no
 machine-specific paths or hardware assumptions.
 
-## Current R1CL entrypoint
+## Current DTR-R0 entrypoint
 
 ```powershell
-pwsh -NoProfile -File tools/ba.ps1 doctor research-r1cl
-pwsh -NoProfile -File tools/ba.ps1 run research-r1cl -- <training arguments>
+pwsh -NoProfile -File tools/ba.ps1 doctor research-dtr-r0
+pwsh -NoProfile -File tools/ba.ps1 smoke research-dtr-r0
+pwsh -NoProfile -File tools/ba.ps1 run research-dtr-r0 -EventInput <events.jsonl> -ResultOutput <result.json>
 ```
 
-Resolve Python, CUDA, model, dataset, and output paths through the
-`research-r1cl` profile. Keep datasets, checkpoints, logs, progress state, and
-results under ignored `artifacts.local/`.
+Resolve Python and output paths through the `research-dtr-r0` profile. Keep
+event ledgers, videos, model outputs, logs, progress state, and results under
+ignored `artifacts.local/`.
 
 ## Backend and throughput
 

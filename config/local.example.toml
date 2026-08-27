@@ -1,8 +1,5 @@
 # Copy to config/local.toml. Paths may be absolute and are never committed.
 research_python = ""
-r1cl_backbone = "artifacts.local/models/dinov2-small"
-r1cl_train_dataset = "artifacts.local/datasets/grail-r1cl/train.jsonl.gz"
-r1cl_validation_dataset = ""
-r1cl_output = "artifacts.local/evidence/grail-r1cl"
+dtr_r0_output = "artifacts.local/evidence/dtr-r0"
 docker = ""
 export_python = ""

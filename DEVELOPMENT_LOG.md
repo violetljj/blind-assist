@@ -4,6 +4,17 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-08-27 — dynamic travel risk mainline
+
+- Preserved GRAIL R1C-L/G0/G1 and the unseen-location router at their terminal
+  commits and removed their closed runners from the tracked active surface.
+- Promoted `research/active/dtr-r0/` as the sole tracked algorithm route.
+- Kept the first DTR-R0 question narrow: shared lifecycle, three credible
+  baselines, and one route-tube future-occupancy change.
+- The dependency-free synthetic run is mechanics evidence only. A controlled
+  100--160-event RGB/trajectory cohort is still required before any scientific
+  gate or algorithm claim.
+
 ## 2026-08-26 — agent surface reset
 
 - Reduced the root agent map to stable policy and routed dynamic state through

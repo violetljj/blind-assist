@@ -14,17 +14,19 @@ function Require-Path([string]$Relative, [string]$Type = 'Leaf') {
 
 foreach ($file in @(
     'AGENTS.md', 'docs/PROJECT_STATE.md', 'docs/CURRENT_DECISION.md',
-    'docs/history-index.md', 'research/active/grail-r1cl/README.md',
-    'research/active/grail-r1cl/pyproject.toml',
-    'research/active/grail-r1cl/uv.lock', 'tools/ba.ps1',
+    'docs/history-index.md', 'research/active/dtr-r0/README.md',
+    'research/active/dtr-r0/pyproject.toml',
+    'research/active/dtr-r0/dtr_r0.py', 'tools/ba.ps1',
     'config/local.example.toml', '.codex/environments/environment.toml',
     '.worktreeinclude', 'experiments/index.jsonl',
     'data/dataset-ledger-summary.csv', 'data/dataset-ledger-manifest.json'
 )) { Require-Path $file }
 
-$activeRoot = Join-Path $repoRoot 'research/active'
-$active = if (Test-Path $activeRoot) { @(Get-ChildItem $activeRoot -Directory) } else { @() }
-if ($active.Count -ne 1) { $failures.Add("Expected exactly one active research route; found $($active.Count).") }
+$trackedActiveFiles = @(& git -C $repoRoot ls-files -- 'research/active/*')
+$active = @($trackedActiveFiles | ForEach-Object {
+    if ($_ -match '^research/active/([^/]+)/') { $Matches[1] }
+} | Sort-Object -Unique)
+if ($active.Count -ne 1) { $failures.Add("Expected exactly one tracked active research route; found $($active.Count).") }
 
 $agents = Join-Path $repoRoot 'AGENTS.md'
 if (Test-Path $agents) {
@@ -58,7 +60,7 @@ if ($topDocs.Count -gt 25) { $failures.Add("Top-level docs exceed 25 files: $($t
 
 $hotFiles = @(
     'AGENTS.md', 'README.md', 'docs/PROJECT_STATE.md',
-    'docs/CURRENT_DECISION.md', 'research/active/grail-r1cl/README.md',
+    'docs/CURRENT_DECISION.md', 'research/active/dtr-r0/README.md',
     'config/local.example.toml'
 )
 foreach ($relative in $hotFiles) {
@@ -99,4 +101,4 @@ if ($failures.Count) {
     $failures | ForEach-Object { Write-Host " - $_" }
     exit 1
 }
-Write-Host "Project structure check passed: active=1, scripts=$($topScripts.Count), docs=$($topDocs.Count), AGENTS=$agentLines lines/$agentBytes bytes."
+Write-Host "Project structure check passed: tracked_active=$($active[0]), scripts=$($topScripts.Count), docs=$($topDocs.Count), AGENTS=$agentLines lines/$agentBytes bytes."

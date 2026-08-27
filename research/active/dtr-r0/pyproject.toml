@@ -1,0 +1,10 @@
+[project]
+name = "blindassist-dtr-r0"
+version = "0.1.0"
+description = "Dependency-free DTR-R0 controlled-event research mechanics"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.dtr-r0]
+claim-ceiling = "CONTROLLED_SYNTHETIC_MECHANICS_ONLY"
+test-command = "python -m unittest -v test_dtr_r0.py"

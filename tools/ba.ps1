@@ -4,20 +4,19 @@ param(
     [ValidateSet('setup', 'doctor', 'smoke', 'run', 'clean')]
     [string]$Command = 'doctor',
     [Parameter(Position = 1)]
-    [ValidateSet('base', 'research-r1cl', 'android', 'device', 'export')]
+    [ValidateSet('base', 'research-dtr-r0', 'android', 'device', 'export')]
     [string]$Profile = 'base',
     [string]$Python,
-    [string]$Backbone,
-    [string]$TrainDataset,
-    [string]$ValidationDataset,
     [string]$Docker,
+    [string]$EventInput,
+    [string]$ResultOutput,
     [Parameter(ValueFromRemainingArguments = $true)]
     [string[]]$Arguments
 )
 
 $ErrorActionPreference = 'Stop'
 $RepoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
-$ActiveRoot = Join-Path $RepoRoot 'research/active/grail-r1cl'
+$ActiveRoot = Join-Path $RepoRoot 'research/active/dtr-r0'
 $LocalConfigPath = Join-Path $RepoRoot 'config/local.toml'
 
 function Stop-Ba {
@@ -63,7 +62,7 @@ function Resolve-ConfiguredPath {
 }
 
 function Resolve-ResearchPython {
-    $candidate = Resolve-ConfiguredPath $Python 'research_python' 'BLINDASSIST_RESEARCH_PYTHON' 'research/active/grail-r1cl/.venv/Scripts/python.exe'
+    $candidate = Resolve-ConfiguredPath $Python 'research_python' 'BLINDASSIST_RESEARCH_PYTHON' ''
     if ($candidate -and (Test-Path -LiteralPath $candidate -PathType Leaf)) { return $candidate }
     $launcher = Get-Command 'blindassist-python.cmd' -ErrorAction SilentlyContinue | Select-Object -First 1
     if ($launcher) { return $launcher.Source }
@@ -76,30 +75,21 @@ function Resolve-ExportPython {
     $local = Read-LocalConfig
     $value = if ($local.ContainsKey('export_python')) { $local['export_python'] } else { '' }
     if ([string]::IsNullOrWhiteSpace($value)) { $value = $env:BLINDASSIST_EXPORT_PYTHON }
-    if ([string]::IsNullOrWhiteSpace($value)) { $value = 'research/active/grail-r1cl/.venv/Scripts/python.exe' }
+    if ([string]::IsNullOrWhiteSpace($value)) { $value = '.venv-export/Scripts/python.exe' }
     return Resolve-ConfiguredPath $value '__unused__' '__UNUSED__' $value
 }
 
 function Write-Selection {
-    param([string]$ResearchPython, [string]$BackbonePath, [string]$TrainPath, [string]$ValidationPath, [string]$OutputPath)
+    param([string]$ResearchPython, [string]$OutputPath)
     Write-Host "repo: $RepoRoot"
     if ($ResearchPython) { Write-Host "python: $ResearchPython" }
-    if ($BackbonePath) { Write-Host "backbone: $BackbonePath" }
-    if ($TrainPath) { Write-Host "train_dataset: $TrainPath" }
-    if ($ValidationPath) { Write-Host "validation_dataset: $ValidationPath" }
     if ($OutputPath) { Write-Host "output: $OutputPath" }
 }
 
 function Get-ResearchSelection {
     $selectedPython = Resolve-ResearchPython
-    $selectedBackbone = Resolve-ConfiguredPath $Backbone 'r1cl_backbone' 'BLINDASSIST_R1CL_BACKBONE' 'artifacts.local/models/dinov2-small'
-    $selectedTrain = Resolve-ConfiguredPath $TrainDataset 'r1cl_train_dataset' 'BLINDASSIST_R1CL_TRAIN_DATASET' 'artifacts.local/datasets/grail-r1cl/train.jsonl.gz'
-    $selectedValidation = Resolve-ConfiguredPath $ValidationDataset 'r1cl_validation_dataset' 'BLINDASSIST_R1CL_VALIDATION_DATASET' ''
-    $selectedOutput = Resolve-ConfiguredPath '' 'r1cl_output' 'BLINDASSIST_R1CL_OUTPUT' 'artifacts.local/evidence/grail-r1cl'
-    return @{
-        Python = $selectedPython; Backbone = $selectedBackbone; Train = $selectedTrain
-        Validation = $selectedValidation; Output = $selectedOutput
-    }
+    $selectedOutput = Resolve-ConfiguredPath '' 'dtr_r0_output' 'BLINDASSIST_DTR_R0_OUTPUT' 'artifacts.local/evidence/dtr-r0'
+    return @{ Python = $selectedPython; Output = $selectedOutput }
 }
 
 function Invoke-DoctorBase {
@@ -114,33 +104,30 @@ function Invoke-DoctorBase {
 
 function Invoke-DoctorResearch {
     $selection = Get-ResearchSelection
-    Write-Selection $selection.Python $selection.Backbone $selection.Train $selection.Validation $selection.Output
+    Write-Selection $selection.Python $selection.Output
     if (-not $selection.Python -or -not (Test-Path -LiteralPath $selection.Python -PathType Leaf)) {
-        Stop-Ba 'BA_ENV_PYTHON_MISSING' "research Python is unavailable: $($selection.Python)" 'pwsh -NoProfile -File tools/ba.ps1 setup research-r1cl'
+        Stop-Ba 'BA_ENV_PYTHON_MISSING' "research Python is unavailable: $($selection.Python)" 'install Python 3.11+ or set research_python in config/local.toml'
     }
-    $probe = 'import json,platform,numpy,PIL,torch,transformers; print(json.dumps(dict(python=platform.python_version(),numpy=numpy.__version__,pillow=PIL.__version__,torch=torch.__version__,transformers=transformers.__version__,cuda_available=torch.cuda.is_available(),torch_cuda=torch.version.cuda,device=torch.cuda.get_device_name(0) if torch.cuda.is_available() else None)))'
+    foreach ($required in @('README.md', 'dtr_r0.py', 'evaluate.py', 'generate_smoke.py', 'test_dtr_r0.py')) {
+        if (-not (Test-Path -LiteralPath (Join-Path $ActiveRoot $required) -PathType Leaf)) {
+            Stop-Ba 'BA_ENV_ACTIVE_ROUTE_INCOMPLETE' "missing $required below $ActiveRoot" 'restore the tracked DTR-R0 active route'
+        }
+    }
+    $probe = 'import json,platform,sys; print(json.dumps(dict(python=platform.python_version(),supported=sys.version_info >= (3, 11))))'
     $probeOutput = @(& $selection.Python -c $probe 2>&1)
     if ($LASTEXITCODE -ne 0) {
-        Stop-Ba 'BA_ENV_RESEARCH_IMPORT_FAILED' ($probeOutput -join ' ') 'pwsh -NoProfile -File tools/ba.ps1 setup research-r1cl'
+        Stop-Ba 'BA_ENV_RESEARCH_IMPORT_FAILED' ($probeOutput -join ' ') 'install Python 3.11+ or set research_python in config/local.toml'
     }
     $runtimeLine = $probeOutput | ForEach-Object { $_.ToString() } | Where-Object { $_.TrimStart().StartsWith('{') } | Select-Object -Last 1
     if (-not $runtimeLine) {
-        Stop-Ba 'BA_ENV_RESEARCH_PROBE_INVALID' ($probeOutput -join ' ') 'pwsh -NoProfile -File tools/ba.ps1 setup research-r1cl'
+        Stop-Ba 'BA_ENV_RESEARCH_PROBE_INVALID' ($probeOutput -join ' ') 'install Python 3.11+ or set research_python in config/local.toml'
     }
     $runtime = $runtimeLine | ConvertFrom-Json
     Write-Host "runtime: $($runtime | ConvertTo-Json -Compress)"
-    if (-not $runtime.cuda_available) {
-        Stop-Ba 'BA_ENV_CUDA_UNAVAILABLE' "torch=$($runtime.torch) torch_cuda=$($runtime.torch_cuda) gpu_visible=false" 'install/activate the CUDA research runtime, then run tools/ba.ps1 doctor research-r1cl'
+    if (-not $runtime.supported) {
+        Stop-Ba 'BA_ENV_PYTHON_UNSUPPORTED' "Python $($runtime.python) is older than 3.11" 'install Python 3.11+ or set research_python in config/local.toml'
     }
-    foreach ($required in @('config.json', 'model.safetensors')) {
-        if (-not (Test-Path -LiteralPath (Join-Path $selection.Backbone $required) -PathType Leaf)) {
-            Stop-Ba 'BA_ENV_BACKBONE_MISSING' "missing $required below $($selection.Backbone)" 'set r1cl_backbone in config/local.toml, then rerun doctor'
-        }
-    }
-    if (-not (Test-Path -LiteralPath $selection.Train -PathType Leaf)) {
-        Stop-Ba 'BA_ENV_TRAIN_DATA_MISSING' "training dataset is unavailable: $($selection.Train)" 'set r1cl_train_dataset in config/local.toml, then rerun doctor'
-    }
-    Write-Host 'PASS research-r1cl'
+    Write-Host 'PASS research-dtr-r0'
     return $selection
 }
 
@@ -170,16 +157,7 @@ function Invoke-DoctorExport {
 function Invoke-Setup {
     switch ($Profile) {
         'base' { Invoke-DoctorBase }
-        'research-r1cl' {
-            $selection = Get-ResearchSelection
-            if (-not $selection.Python -or -not (Test-Path -LiteralPath $selection.Python -PathType Leaf)) {
-                $uv = Get-Command uv -ErrorAction SilentlyContinue | Select-Object -First 1
-                if (-not $uv) { Stop-Ba 'BA_ENV_UV_MISSING' 'uv was not found' 'install uv or set research_python in config/local.toml' }
-                Push-Location $ActiveRoot
-                try { Invoke-NativeChecked $uv.Source @('sync', '--frozen') } finally { Pop-Location }
-            }
-            Invoke-DoctorResearch | Out-Null
-        }
+        'research-dtr-r0' { Invoke-DoctorResearch | Out-Null }
         'android' { Invoke-DoctorAndroid }
         'device' { Invoke-DoctorAndroid }
         'export' {
@@ -198,7 +176,7 @@ function Invoke-Setup {
 function Invoke-Doctor {
     switch ($Profile) {
         'base' { Invoke-DoctorBase }
-        'research-r1cl' { Invoke-DoctorResearch | Out-Null }
+        'research-dtr-r0' { Invoke-DoctorResearch | Out-Null }
         'android' { Invoke-DoctorAndroid }
         'device' { Invoke-DoctorAndroid }
         'export' { Invoke-DoctorExport }
@@ -206,18 +184,26 @@ function Invoke-Doctor {
 }
 
 function Invoke-Smoke {
-    if ($Profile -ne 'research-r1cl') { Stop-Ba 'BA_USAGE' 'smoke is currently defined only for research-r1cl' 'use tools/ba.ps1 doctor for this profile' }
+    if ($Profile -ne 'research-dtr-r0') { Stop-Ba 'BA_USAGE' 'smoke is currently defined only for research-dtr-r0' 'use tools/ba.ps1 doctor for this profile' }
     $selection = Invoke-DoctorResearch
-    Invoke-NativeChecked $selection.Python @((Join-Path $ActiveRoot 'smoke_r1cl.py'), '--backbone', $selection.Backbone)
+    Invoke-NativeChecked $selection.Python @('-m', 'unittest', 'discover', '-s', $ActiveRoot, '-p', 'test_*.py')
 }
 
 function Invoke-Run {
     $forward = @($Arguments | Where-Object { $_ -ne '--' })
     switch ($Profile) {
-        'research-r1cl' {
+        'research-dtr-r0' {
             $selection = Invoke-DoctorResearch
-            $trainingArguments = @((Join-Path $ActiveRoot 'train_grail_pairwise_owner_coordinate_r1cl.py')) + $forward
-            Invoke-NativeChecked $selection.Python $trainingArguments
+            if ([string]::IsNullOrWhiteSpace($EventInput)) {
+                Stop-Ba 'BA_USAGE' 'DTR-R0 run needs -EventInput' 'tools/ba.ps1 run research-dtr-r0 -EventInput <events.jsonl> -ResultOutput <result.json>'
+            }
+            $resolvedInput = Resolve-ConfiguredPath $EventInput '__unused__' '__UNUSED__' ''
+            $evaluationArguments = @((Join-Path $ActiveRoot 'evaluate.py'), '--input', $resolvedInput)
+            if (-not [string]::IsNullOrWhiteSpace($ResultOutput)) {
+                $resolvedOutput = Resolve-ConfiguredPath $ResultOutput '__unused__' '__UNUSED__' ''
+                $evaluationArguments += @('--output', $resolvedOutput)
+            }
+            Invoke-NativeChecked $selection.Python $evaluationArguments
         }
         'android' { & (Join-Path $RepoRoot 'scripts/run_android_gradle.ps1') @forward; if ($LASTEXITCODE) { exit $LASTEXITCODE } }
         'device' { & (Join-Path $RepoRoot 'scripts/run_android_gradle.ps1') -RequireDevice @forward; if ($LASTEXITCODE) { exit $LASTEXITCODE } }
@@ -227,17 +213,18 @@ function Invoke-Run {
             $selected = Resolve-ExportPython
             Invoke-NativeChecked $selected $forward
         }
-        default { Stop-Ba 'BA_USAGE' 'base has no run target' 'choose research-r1cl, android, device, or export' }
+        default { Stop-Ba 'BA_USAGE' 'base has no run target' 'choose research-dtr-r0, android, device, or export' }
     }
 }
 
 function Invoke-Clean {
     $target = switch ($Profile) {
-        'research-r1cl' { Join-Path $ActiveRoot '.venv' }
         'export' { Join-Path $RepoRoot '.venv-export' }
         default { $null }
     }
-    if (-not $target) { Stop-Ba 'BA_CLEAN_REFUSED' "$Profile has no profile-owned disposable environment" 'clean only research-r1cl or export' }
+    if (-not $target) {
+        Stop-Ba 'BA_CLEAN_REFUSED' "$Profile has no profile-owned disposable environment" 'clean only export'
+    }
     $resolvedParent = (Resolve-Path -LiteralPath (Split-Path -Parent $target)).Path
     if (-not $target.StartsWith($resolvedParent + '\', [StringComparison]::OrdinalIgnoreCase)) {
         Stop-Ba 'BA_CLEAN_REFUSED' "target escaped its owned parent: $target" 'inspect the profile configuration'

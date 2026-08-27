@@ -1,81 +1,92 @@
-# Current decision: stop GRAIL active multiview appearance
+# Current decision: advance Dynamic Travel Risk R0
 
-Status: `STOP_G1_ACTIVE_MULTIVIEW_APPEARANCE / DEVELOPMENT_GATE_NOT_MET / NO_FINAL_TEST`
+Status: `DTR_R0_ACTIVE / CONTROLLED_EVENT_COHORT_PENDING / NO_RESULT`
 
-## Authorized question
+## Strategic transition
 
-Can a fixed anchor-plus-left-plus-right reference scan reveal symmetry-breaking
-RGB/mask appearance that materially improves direct owner-canonical
-PRESERVE/FLIP prediction over a matched single-anchor model?
+GRAIL owner orientation is no longer the daily algorithm mainline. R1C-V,
+R1C-P, R1C-L, G0, and G1 form a preserved negative-result chain: the available
+RGB/masks, simple pose transport, and fixed multiview representation did not
+reliably recover ProcTHOR owner-canonical sign. The terminal G1 evidence is
+recoverable at commit `4db9a11964ff9af9b5b500d59a60d8bb6fc0213b`.
 
-This is a fresh synthetic ProcTHOR Development experiment. It tests added visual
-observability, not camera-pose transport or a next-best-view policy.
+G1 specifically closed this claim:
 
-## Frozen surface
+> On fresh house-disjoint synthetic ProcTHOR Development data, a fixed
+> camera-lateral anchor/left/right scan, with no view-role, scan-geometry,
+> camera-pose, owner-pose, or canonical-sign input and a shared pair encoder plus
+> permutation-invariant `mean+max` aggregation, did not recover more stable
+> owner-canonical PRESERVE/FLIP authority than its matched single-view model.
 
-- Protocol and code: `research/active/grail-r1cg/`
-- Source: the pinned ProcTHOR-10K train revision used by R1C-L and G0
-- Renderer: AI2-THOR `Linux64` through WSLg Mesa D3D12 on the local NVIDIA GPU
-- Rosters: 96 train houses plus 24 Development houses
-- Exclusions: all 180 R1C-L train/validation houses and all 24 G0 houses
-- B1 input: anchor RGB/masks plus query RGB/masks
-- G1 input: anchor/left/right RGB/masks plus the same query RGB/masks
-- Model: identical shared pair encoder and `mean+max -> MLP` direct mode head
-- Seeds: 1701 and 2701
-- Training: discriminative samples, balanced mode/object sampler, eight epochs
-- Primary metric: discriminative balanced accuracy
+The apparent accuracy gain was a stronger PRESERVE tendency under a 988/148
+class imbalance. Balanced-accuracy uplift was -0.05pp and -0.49pp. Doorway FLIP
+collapsed to `0/24` in both seeds, taking Doorway balanced accuracy from
+53.09% to 46.18% and from 50.32% to 47.35%. Across the 17 owner groups that
+contain both modes, macro balanced accuracy remained near chance:
+52.57% to 53.64% and 50.68% to 51.29%.
 
-The scan is generated on the anchor-camera lateral axis, never an owner or
-canonical axis. Each side requires 0.20--0.45 m lateral displacement and at most
-0.20 m longitudinal drift. Missing side frames make the scan not evaluable;
-anchor duplication is forbidden.
+This does not establish that every active multiview RGB formulation is
+impossible. A future GRAIL successor would need either a different task
+representation, such as a reference-anchored dense correspondence field, or a
+genuinely different information source. Neither is active now.
 
-## Frozen advancement gate
+## Active question
 
-All conditions must hold:
+Can short causal target tracks, ego-motion compensation, and intersection of
+future target occupancy with the wearer's short-horizon route reduce
+non-actionable alerts while preserving truly crossing or oncoming events?
 
-- at least `+8pp` balanced-accuracy uplift over B1 in each seed;
-- rescue greater than collateral in each seed;
-- no more than `5pp` PRESERVE-accuracy loss in either seed;
-- positive mean balanced-accuracy uplift for both Drawer and Doorway.
+The active route is `research/active/dtr-r0/`. The first scientific cohort is
+not yet admitted; the current dependency-free synthetic smoke verifies only
+coordinate, state-machine, and metric mechanics.
 
-No result-dependent alternative gate is available. Camera/owner pose, depth,
-object coordinates, scan geometry, and canonical sign are not model inputs. No
-NBV, pose head, G0 fusion, backbone/loss/threshold sweep, or final test is open.
+## First comparison surface
 
-## Terminal Development result
+All arms use the same causal observation ledger and the same
+`ONSET / HOLD / CLEAR / UNKNOWN` lifecycle:
 
-The frozen run completed on 24 fresh houses with 1,136 discriminative samples
-(988 PRESERVE, 148 FLIP). Balanced accuracy changed from 77.70% to 77.65%
-(-0.05pp) in seed 1701 and from 80.40% to 79.91% (-0.49pp) in seed 2701.
-Neither seed approached the required +8pp.
+- B0: a tracked target is present;
+- B1: target distance crosses a fixed near threshold;
+- B2: radial time-to-collision crosses a fixed horizon;
+- DTR-R0: a short ego-compensated constant-velocity track predicts target
+  occupancy from now through a frozen horizon in 1.5--3.0 seconds and
+  intersects it with the wearer route tube.
 
-G1 had rescue/collateral counts of 97/47 and 57/44, but this did not represent
-recovered FLIP authority: FLIP accuracy declined by 6.08pp and 2.70pp. Mean
-Drawer balanced-accuracy uplift was +0.62pp; mean Doorway uplift was -4.94pp.
-The per-type gate therefore also failed.
+The controlled cohort should contain 100--160 short events, balanced across
+targets crossing into the route, oncoming targets, parallel passers outside the
+route, static roadside targets, ego-turn pseudo-motion, and enter-then-exit
+events. Staged real RGB and source-native synthetic trajectories must be
+reported as separate evidence strata.
 
-The exact result is
-`research/active/grail-r1cg/grail_r1c_g1_development_result_v1.json`. The route
-is closed without accessing a final test. A view selector is not authorized,
-because the fixed left/right acquisition did not first establish useful new
-appearance information. G0 fusion and further pose, backbone, loss, threshold,
-seed, or epoch variants remain closed.
+Primary metrics are critical-event recall, false alerts per minute, first-alert
+lead time, delivered alerts per event, event fragmentation, and CLEAR delay.
 
-The result is bounded to fresh house-disjoint synthetic ProcTHOR Development,
-the fixed three-view scan, one matched architecture, and two seeds. It does not
-support a universal RGB-impossibility claim. The next owner-orientation route
-must change the task representation or add a different observable information
-source; dynamic risk remains a separate research mainline rather than a G1
-successor.
+## Advancement line
 
-## Preserved prior terminals
+DTR-R0 advances only if, relative to the strongest credible baseline:
 
-- G0 remains
-  `STOP_G0_POSE_TRANSPORT / DEVELOPMENT_GATE_NOT_MET / NO_FINAL_TEST`.
-- R1C-L remains
-  `STOP_R1C_L_WITHOUT_FINAL_TEST / DEVELOPMENT_GATE_NOT_MET / FINAL_UNOPENED`.
-- The unseen-location Router remains
-  `MSLS_SOURCE_ADMITTED / ROUTER_DEVELOPMENT_GATE_NOT_MET / TEST_UNOPENED`.
+- critical-event recall does not decrease;
+- non-actionable alerts decrease by at least 40%;
+- median first-alert lead time is at least 1.0 second;
+- mean fragments per event are at most 1.5;
+- route exit produces stable CLEAR behavior.
 
-None of those consumed cohorts is reopened, tuned, rerun, or fused into G1.
+The synthetic mechanism smoke cannot satisfy this line. A scored result needs
+the controlled event cohort, source/episode separation, causal inputs, and
+independent event intervals.
+
+## Boundaries
+
+- G1 remains `STOP_G1_ACTIVE_MULTIVIEW_APPEARANCE /
+  DEVELOPMENT_GATE_NOT_MET / NO_FINAL_TEST`; no extra views, seed/epoch/loss,
+  view selector, larger DINO, G0 fusion, or consumed-subset search is open.
+- Prior USTRF route-target source searches, causal route-intrusion signals, and
+  HFTF selected-box projection outcomes remain historically closed. DTR-R0
+  changes the event representation and requires a new controlled cohort; it is
+  not a renamed rerun.
+- `UNKNOWN` is not CLEAR, and silence is never presented as evidence that the
+  route is safe.
+- No Android/default-App, natural-distribution, user-benefit, product, or safety
+  claim follows from route scaffolding or synthetic trajectories.
+- Semantic Anchor to Marker Pose remains a separate live-device demonstration
+  closure, not DTR-R0 algorithm evidence.
