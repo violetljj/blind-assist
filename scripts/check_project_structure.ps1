@@ -18,6 +18,7 @@ foreach ($file in @(
     'research/active/l10-r0/README.md',
     'research/active/l10-r0/l10_r0.py',
     'research/active/l10-r0/benchmark.py',
+    'research/active/l10-r0/artvideo_replay.py',
     'research/active/dtr-r0/pyproject.toml',
     'research/active/dtr-r0/dtr_r0.py',
     'research/active/dtr-r0/real_observation_adapter.py',

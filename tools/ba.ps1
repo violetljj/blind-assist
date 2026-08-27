@@ -117,7 +117,7 @@ function Invoke-DoctorResearch {
     }
     $activeRoot = if ($Profile -eq 'research-l10-r0') { $L10ActiveRoot } else { $DtrActiveRoot }
     $requiredFiles = if ($Profile -eq 'research-l10-r0') {
-        @('README.md', 'l10_r0.py', 'benchmark.py')
+        @('README.md', 'l10_r0.py', 'benchmark.py', 'artvideo_replay.py')
     } else {
         @(
             'README.md', 'dtr_r0.py', 'evaluate.py', 'generate_smoke.py',
