@@ -59,7 +59,7 @@ fun SettingsScreen(
             selected = controls.appLanguage,
             onLanguageChange = onLanguageChange
         )
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(12.dp))
         SettingSwitchRow(
             icon = Icons.Outlined.FavoriteBorder,
             title = if (language == AppLanguage.EN) "Care Mode" else "关怀模式",
@@ -80,6 +80,7 @@ fun SettingsScreen(
             language = language,
             onCheckedChange = onSpeechChange
         )
+        Spacer(Modifier.height(10.dp))
         SettingSwitchRow(
             icon = Icons.Outlined.Vibration,
             title = if (language == AppLanguage.EN) "Vibration reminders" else "震动提醒",
@@ -151,11 +152,11 @@ fun SettingsScreen(
 @Composable
 private fun SettingsSectionHeader(text: String) {
     Text(
-        text = text.uppercase(),
-        style = MaterialTheme.typography.labelMedium,
+        text = text,
+        style = MaterialTheme.typography.titleSmall,
         color = BaHomeGreen,
         fontWeight = FontWeight.Bold,
         modifier = Modifier.semantics { heading() }
     )
-    Spacer(Modifier.height(10.dp))
+    Spacer(Modifier.height(12.dp))
 }

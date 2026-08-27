@@ -2,6 +2,8 @@ package com.linnan.blindassist.ui.compose
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -46,13 +48,14 @@ internal fun SettingSwitchRow(
     onCheckedChange: (Boolean) -> Unit
 ) {
     val stateText = LocalizedText.enabled(checked, language)
-    val shape = RoundedCornerShape(22.dp)
+    val shape = BaShapeCard
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = 80.dp)
-            .shadow(elevation = 2.dp, shape = shape)
+            .heightIn(min = 84.dp)
+            .shadow(elevation = 1.dp, shape = shape)
             .background(BaHomeSurface, shape)
+            .border(BorderStroke(1.dp, BaHomeHairline.copy(alpha = 0.82f)), shape)
             .toggleable(
                 value = checked,
                 role = Role.Switch,
@@ -66,7 +69,7 @@ internal fun SettingSwitchRow(
                     "$title，$body，当前$stateText"
                 }
             }
-            .padding(horizontal = 14.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 13.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconTile(
@@ -99,9 +102,10 @@ internal fun SettingsActionRow(
             .heightIn(min = 76.dp)
             .clickable(role = Role.Button, onClick = onClick)
             .semantics(mergeDescendants = true) {},
-        shape = RoundedCornerShape(22.dp),
+        shape = BaShapeCard,
         colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        border = BorderStroke(1.dp, BaHomeHairline.copy(alpha = 0.82f))
     ) {
         Row(
             modifier = Modifier.padding(16.dp),

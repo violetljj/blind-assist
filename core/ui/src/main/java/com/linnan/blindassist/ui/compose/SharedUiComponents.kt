@@ -16,6 +16,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -119,14 +120,21 @@ internal fun ScreenColumn(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    Column(
+    Box(
         modifier = modifier
             .fillMaxSize()
-            .appAtmosphere()
-            .verticalScroll(rememberScrollState())
-            .padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 36.dp),
-        content = content
-    )
+            .appAtmosphere(),
+        contentAlignment = Alignment.TopCenter
+    ) {
+        Column(
+            modifier = Modifier
+                .widthIn(max = 680.dp)
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(start = 22.dp, end = 22.dp, top = 30.dp, bottom = 42.dp),
+            content = content
+        )
+    }
 }
 
 @Composable
@@ -138,21 +146,27 @@ internal fun ScreenIntro(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         eyebrow?.let {
-            Text(
-                text = it,
-                color = BaHomeGreen,
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(Modifier.height(6.dp))
+            Surface(
+                color = BaHomeNavIndicator,
+                contentColor = BaHomeGreen,
+                shape = CircleShape
+            ) {
+                Text(
+                    text = it,
+                    modifier = Modifier.padding(horizontal = 11.dp, vertical = 6.dp),
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Spacer(Modifier.height(12.dp))
         }
         Text(
             text = title,
-            style = MaterialTheme.typography.headlineMedium,
+            style = MaterialTheme.typography.headlineLarge,
             color = BaHomeInk,
             modifier = Modifier.semantics { heading() }
         )
-        Spacer(Modifier.height(6.dp))
+        Spacer(Modifier.height(8.dp))
         Text(
             text = body,
             style = MaterialTheme.typography.bodyMedium,
@@ -170,8 +184,8 @@ internal fun IconTile(
 ) {
     Box(
         modifier = modifier
-            .size(if (emphasized) 60.dp else 48.dp)
-            .clip(RoundedCornerShape(if (emphasized) 18.dp else 15.dp))
+            .size(if (emphasized) 58.dp else 46.dp)
+            .clip(if (emphasized) BaShapeControl else BaShapeCompact)
             .background(accent.copy(alpha = if (emphasized) 0.15f else 0.09f)),
         contentAlignment = Alignment.Center
     ) {
@@ -179,7 +193,7 @@ internal fun IconTile(
             imageVector = icon,
             contentDescription = null,
             tint = accent,
-            modifier = Modifier.size(if (emphasized) 28.dp else 22.dp)
+            modifier = Modifier.size(if (emphasized) 27.dp else 21.dp)
         )
     }
 }
@@ -193,9 +207,10 @@ internal fun FieldTestSummaryCard(summary: FieldTestSummaryUiState) {
             .semantics(mergeDescendants = true) {
                 contentDescription = summary.accessibilityText
             },
-        shape = RoundedCornerShape(20.dp),
+        shape = BaShapeCard,
         colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        border = BorderStroke(1.dp, BaHomeHairline.copy(alpha = 0.82f))
     ) {
         FieldTestSummaryBlock(
             summary = summary,
@@ -255,10 +270,11 @@ internal fun StatusGrid(
 @Composable
 private fun StatusCell(title: String, body: String, modifier: Modifier = Modifier) {
     Card(
-        modifier = modifier.heightIn(min = 100.dp),
-        shape = RoundedCornerShape(20.dp),
+        modifier = modifier.heightIn(min = 96.dp),
+        shape = BaShapeCard,
         colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        border = BorderStroke(1.dp, BaHomeHairline.copy(alpha = 0.82f))
     ) {
         Column(Modifier.padding(horizontal = 16.dp, vertical = 15.dp)) {
             Text(text = title, color = BaHomeTextMuted, style = MaterialTheme.typography.labelMedium)
@@ -316,8 +332,8 @@ internal fun CompactAction(
     accessibilityText: String = text,
     stateDescriptionText: String? = null
 ) {
-    val background = if (selected) BaHomeActionEnd else BaHomeControlRail
-    val foreground = if (selected) BaHomeOnAction else BaHomeInk
+    val background = if (selected) BaMint.copy(alpha = 0.14f) else Color.White.copy(alpha = 0.07f)
+    val foreground = if (selected) BaMint else BaTextMuted
     Button(
         onClick = onClick,
         modifier = modifier
@@ -330,7 +346,7 @@ internal fun CompactAction(
                 contentDescription = accessibilityText
                 stateDescriptionText?.let { stateDescription = it }
             },
-        shape = RoundedCornerShape(16.dp),
+        shape = BaShapeCompact,
         colors = ButtonDefaults.buttonColors(
             containerColor = background,
             contentColor = foreground
@@ -348,7 +364,7 @@ internal fun Modifier.appAtmosphere(): Modifier = drawWithCache {
     val base = Brush.linearGradient(
         colors = listOf(BaHomeCoolWash, BaHomeBackground, BaHomeWarmWash),
         start = Offset.Zero,
-        end = Offset(size.width, size.height * 0.58f)
+        end = Offset(size.width, size.height * 0.72f)
     )
     val sage = Brush.radialGradient(
         colors = listOf(BaHomeSageWash, Color.Transparent),

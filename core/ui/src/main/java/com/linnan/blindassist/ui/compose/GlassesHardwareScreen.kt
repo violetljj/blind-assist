@@ -1,6 +1,7 @@
 package com.linnan.blindassist.ui.compose
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -99,7 +100,8 @@ fun GlassesHardwareScreen(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = BaHomeActionEnd,
                     contentColor = BaHomeOnAction
-                )
+                ),
+                shape = BaShapeControl
             ) {
                 Icon(Icons.Rounded.Link, contentDescription = null)
                 Text(if (english) " Connect device" else " 连接设备")
@@ -172,9 +174,10 @@ private fun HardwareStatusCard(state: GlassesSimulatorUiState, language: AppLang
                 contentDescription = "$connection, ${state.endpoint}, $distance"
                 stateDescription = connection
             },
-        shape = RoundedCornerShape(22.dp),
+        shape = BaShapeCard,
         colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        border = BorderStroke(1.dp, BaHomeHairline.copy(alpha = 0.82f))
     ) {
         Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(if (english) "External device status" else "外界硬件状态", color = BaHomeInk, fontWeight = FontWeight.Bold)

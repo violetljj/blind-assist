@@ -5,6 +5,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -22,6 +23,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -29,6 +31,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.outlined.Bolt
 import androidx.compose.material.icons.outlined.CameraAlt
@@ -94,13 +97,25 @@ fun FeatureScreen(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .widthIn(max = 680.dp)
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .align(Alignment.TopCenter)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 22.dp)
-                .padding(top = 84.dp, bottom = 30.dp)
+                .padding(top = 44.dp, bottom = 30.dp)
         ) {
             HomeBrandHeader(language = language)
-            Spacer(Modifier.height(88.dp))
+            Spacer(Modifier.height(52.dp))
+
+            Text(
+                text = if (language == AppLanguage.EN) "PERSONAL VISION COPILOT" else "随行视觉辅助",
+                color = BaHomeGreen,
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 0.6.sp
+            )
+            Spacer(Modifier.height(9.dp))
 
             Text(
                 text = if (language == AppLanguage.EN) {
@@ -109,30 +124,25 @@ fun FeatureScreen(
                     "今天，安心出发"
                 },
                 color = BaHomeInk,
-                fontSize = 38.sp,
-                lineHeight = 46.sp,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = (-0.6).sp,
+                style = MaterialTheme.typography.displaySmall,
                 modifier = Modifier.semantics { heading() }
             )
-            Spacer(Modifier.height(28.dp))
+            Spacer(Modifier.height(24.dp))
 
             PrimaryAssistAction(
                 subtitle = feedbackSummary,
                 language = language,
                 onClick = onOpenCamera
             )
-            Spacer(Modifier.height(38.dp))
+            Spacer(Modifier.height(32.dp))
 
             Text(
                 text = if (language == AppLanguage.EN) "Choose assist mode" else "选择辅助模式",
                 color = BaHomeInk,
-                fontSize = 18.sp,
-                lineHeight = 24.sp,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.semantics { heading() }
             )
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(13.dp))
 
             HomeModeSelector(
                 selectedMode = selectedMode,
@@ -141,31 +151,42 @@ fun FeatureScreen(
                 onQuietClick = onQuietShortcut,
                 onSensitiveClick = onSensitiveShortcut
             )
-            Spacer(Modifier.height(28.dp))
+            Spacer(Modifier.height(24.dp))
 
-            HomeInfoRow(
-                icon = Icons.Outlined.Visibility,
-                iconTint = BaHomeCobalt,
-                title = glassesLabel(glassesConnectionState, language),
-                onClick = onShowGlassesCenter,
-                trailingIcon = Icons.Rounded.ChevronRight,
-                modifier = Modifier.testTag("home_glasses_entry")
-            )
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(BaHomeHairline)
-            )
-            HomeInfoRow(
-                icon = Icons.Outlined.Shield,
-                iconTint = BaHomeGreen,
-                title = if (language == AppLanguage.EN) {
-                    "Processed on device · Images are not uploaded"
-                } else {
-                    "本地处理，不上传画面"
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                color = BaHomeSurface.copy(alpha = 0.9f),
+                shape = BaShapeCard,
+                shadowElevation = 1.dp,
+                border = BorderStroke(1.dp, BaHomeHairline.copy(alpha = 0.84f))
+            ) {
+                Column {
+                    HomeInfoRow(
+                        icon = Icons.Outlined.Visibility,
+                        iconTint = BaHomeCobalt,
+                        title = glassesLabel(glassesConnectionState, language),
+                        onClick = onShowGlassesCenter,
+                        trailingIcon = Icons.Rounded.ChevronRight,
+                        modifier = Modifier.testTag("home_glasses_entry")
+                    )
+                    Box(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .height(1.dp)
+                            .background(BaHomeHairline)
+                    )
+                    HomeInfoRow(
+                        icon = Icons.Outlined.Shield,
+                        iconTint = BaHomeGreen,
+                        title = if (language == AppLanguage.EN) {
+                            "Processed on device · Images are not uploaded"
+                        } else {
+                            "本地处理，不上传画面"
+                        }
+                    )
                 }
-            )
+            }
         }
     }
 }
@@ -187,21 +208,30 @@ private fun HomeBrandHeader(
             fontWeight = FontWeight.Bold,
             letterSpacing = (-0.8).sp
         )
-        Spacer(Modifier.width(20.dp))
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(
-                modifier = Modifier
-                    .size(9.dp)
-                    .clip(CircleShape)
-                    .background(BaHomeGreen)
-            )
-            Spacer(Modifier.width(8.dp))
-            Text(
-                text = if (language == AppLanguage.EN) "Ready" else "已就绪",
-                color = BaHomeGreen,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold
-            )
+        Spacer(Modifier.weight(1f))
+        Surface(
+            color = BaHomeNavIndicator,
+            contentColor = BaHomeGreen,
+            shape = CircleShape
+        ) {
+            Row(
+                modifier = Modifier.padding(horizontal = 11.dp, vertical = 7.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(7.dp)
+                        .clip(CircleShape)
+                        .background(BaHomeGreen)
+                )
+                Spacer(Modifier.width(7.dp))
+                Text(
+                    text = if (language == AppLanguage.EN) "On-device" else "本地运行",
+                    color = BaHomeGreen,
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
         }
     }
 }
@@ -220,19 +250,19 @@ private fun PrimaryAssistAction(
         animationSpec = tween(durationMillis = 120),
         label = "primary-assist-press"
     )
-    val shape = RoundedCornerShape(24.dp)
+    val shape = BaShapeHero
 
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = 118.dp)
+            .heightIn(min = 112.dp)
             .graphicsLayer {
                 scaleX = scale
                 scaleY = scale
             },
         shape = shape,
         color = BaHomeActionEnd,
-        shadowElevation = 8.dp
+        shadowElevation = 5.dp
     ) {
         Row(
             modifier = Modifier
@@ -257,29 +287,29 @@ private fun PrimaryAssistAction(
                         "开始辅助。$subtitle"
                     }
                 }
-                .padding(horizontal = 24.dp, vertical = 22.dp),
+                .padding(horizontal = 20.dp, vertical = 19.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = Icons.Outlined.CameraAlt,
-                contentDescription = null,
-                tint = Color.White,
-                modifier = Modifier.size(42.dp)
-            )
-            Spacer(Modifier.width(22.dp))
             Box(
-                Modifier
-                    .width(1.dp)
-                    .height(64.dp)
-                    .background(Color.White.copy(alpha = 0.22f))
-            )
-            Spacer(Modifier.width(22.dp))
+                modifier = Modifier
+                    .size(56.dp)
+                    .clip(BaShapeControl)
+                    .background(Color.White.copy(alpha = 0.11f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.CameraAlt,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(29.dp)
+                )
+            }
+            Spacer(Modifier.width(17.dp))
             Column(Modifier.weight(1f)) {
                 Text(
                     text = if (language == AppLanguage.EN) "Start assist" else "开始辅助",
                     color = Color.White,
-                    fontSize = 27.sp,
-                    lineHeight = 36.sp,
+                    style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -296,6 +326,13 @@ private fun PrimaryAssistAction(
                     overflow = TextOverflow.Ellipsis
                 )
             }
+            Spacer(Modifier.width(10.dp))
+            Icon(
+                imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
+                contentDescription = null,
+                tint = BaHomeActionTextMuted,
+                modifier = Modifier.size(24.dp)
+            )
         }
     }
 }
@@ -312,18 +349,20 @@ private fun HomeModeSelector(
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .height(72.dp)
+            .heightIn(min = 68.dp)
             .testTag("daily_usage_mode_selector"),
-        shape = RoundedCornerShape(30.dp),
+        shape = BaShapeCard,
         color = BaHomeControlRail,
-        shadowElevation = 4.dp
+        shadowElevation = 1.dp,
+        border = BorderStroke(1.dp, BaHomeHairline.copy(alpha = 0.82f))
     ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(6.dp)
                 .selectableGroup(),
-            horizontalArrangement = Arrangement.spacedBy(2.dp)
+            horizontalArrangement = Arrangement.spacedBy(2.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             HomeModeItem(
                 mode = HomeAssistMode.DAILY,
@@ -377,12 +416,12 @@ private fun HomeModeItem(
         animationSpec = tween(durationMillis = 180),
         label = "home-mode-elevation"
     )
-    val shape = RoundedCornerShape(25.dp)
+    val shape = BaShapeControl
     val label = mode.label(language)
 
     Surface(
         modifier = modifier
-            .fillMaxHeight()
+            .height(56.dp)
             .clip(shape)
             .selectable(
                 selected = selected,
@@ -409,14 +448,13 @@ private fun HomeModeItem(
                 imageVector = icon,
                 contentDescription = null,
                 tint = foreground,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(22.dp)
             )
             Spacer(Modifier.width(7.dp))
             Text(
                 text = label,
                 color = foreground,
-                fontSize = 16.sp,
-                lineHeight = 22.sp,
+                style = MaterialTheme.typography.titleSmall,
                 fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
                 maxLines = 1
             )
@@ -446,23 +484,22 @@ private fun HomeInfoRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = 72.dp)
+            .heightIn(min = 70.dp)
             .then(interactionModifier)
-            .padding(horizontal = 6.dp),
+            .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
             tint = iconTint,
-            modifier = Modifier.size(30.dp)
+            modifier = Modifier.size(25.dp)
         )
-        Spacer(Modifier.width(20.dp))
+        Spacer(Modifier.width(15.dp))
         Text(
             text = title,
             color = BaHomeInk,
-            fontSize = 16.sp,
-            lineHeight = 24.sp,
+            style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.weight(1f)
         )
         trailingIcon?.let {
@@ -547,9 +584,10 @@ internal fun InfoStrip(
         modifier = Modifier
             .fillMaxWidth()
             .semantics(mergeDescendants = true) {},
-        shape = RoundedCornerShape(22.dp),
+        shape = BaShapeCard,
         colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        border = BorderStroke(1.dp, BaHomeHairline.copy(alpha = 0.82f))
     ) {
         Row(
             modifier = Modifier.padding(18.dp),

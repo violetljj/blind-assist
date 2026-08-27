@@ -18,6 +18,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -149,6 +150,8 @@ fun CameraExperienceScreen(
         )
         CameraTopBar(
             statusBadge = guidance.statusBadge,
+            statusBadgeColor = guidance.badgeColor,
+            statusBadgeTextColor = guidance.badgeTextColor,
             language = controls.appLanguage,
             onBack = onBack,
             modifier = Modifier
@@ -305,6 +308,29 @@ fun CameraControlPanel(
     val title = if (controls.careModeEnabled) guidance.careTitle else guidance.title
     val detail = if (controls.careModeEnabled) guidance.careDetail else guidance.detail
     val target = if (controls.careModeEnabled) guidance.careTargetLine else guidance.targetLine
+    val visibleTarget = target.takeIf {
+        it.isNotBlank() && it.trim() !in setOf(title.trim(), detail.trim())
+    }
+    val explanationHeadline = if (controls.careModeEnabled) {
+        guidance.careExplanation
+    } else {
+        guidance.explanationHeadline
+    }
+    val visibleExplanationHeadline = explanationHeadline.takeIf {
+        it.isNotBlank() && it.trim() !in setOf(title.trim(), detail.trim(), target.trim())
+    }
+    val visibleExplanationDetail = if (controls.careModeEnabled) {
+        null
+    } else {
+        guidance.explanationDetail.takeIf {
+            it.isNotBlank() && it.trim() !in setOf(
+                title.trim(),
+                detail.trim(),
+                target.trim(),
+                explanationHeadline.trim()
+            )
+        }
+    }
     val titleStyle = if (controls.careModeEnabled) {
         MaterialTheme.typography.headlineLarge
     } else {
@@ -322,21 +348,27 @@ fun CameraControlPanel(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(max = panelMaxHeight),
-            shape = RoundedCornerShape(if (controls.careModeEnabled) 26.dp else 22.dp),
+            shape = BaShapeHero,
             colors = CardDefaults.cardColors(
-                containerColor = if (controls.careModeEnabled) {
-                    BaHomeActionEnd.copy(alpha = 0.97f)
-                } else {
-                    BaHomeActionStart.copy(alpha = 0.95f)
-                }
+                containerColor = BaNight.copy(alpha = if (controls.careModeEnabled) 0.97f else 0.94f)
             ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+            border = BorderStroke(1.dp, BaHairline.copy(alpha = 0.72f))
         ) {
             Column(
                 Modifier
                     .verticalScroll(rememberScrollState())
-                    .padding(if (controls.careModeEnabled) 20.dp else 16.dp)
+                    .padding(if (controls.careModeEnabled) 22.dp else 18.dp)
             ) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .width(38.dp)
+                    .height(4.dp)
+                    .clip(CircleShape)
+                    .background(BaHairline.copy(alpha = 0.82f))
+            )
+            Spacer(Modifier.height(14.dp))
             goalHandoffState?.let { handoffState ->
                 GoalHandoffCard(
                     state = handoffState,
@@ -354,14 +386,16 @@ fun CameraControlPanel(
                 fontWeight = FontWeight.Bold,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.semantics {
-                    heading()
-                    stateDescription = if (controls.careModeEnabled) {
-                        guidance.careAccessibilitySummary
-                    } else {
-                        guidance.accessibilitySummary
+                modifier = Modifier
+                    .testTag("risk_explanation_headline")
+                    .semantics {
+                        heading()
+                        stateDescription = if (controls.careModeEnabled) {
+                            guidance.careAccessibilitySummary
+                        } else {
+                            guidance.accessibilitySummary
+                        }
                     }
-                }
             )
             Spacer(Modifier.height(if (controls.careModeEnabled) 8.dp else 6.dp))
             Text(
@@ -370,27 +404,32 @@ fun CameraControlPanel(
                 style = if (controls.careModeEnabled) MaterialTheme.typography.titleMedium else MaterialTheme.typography.bodyMedium,
                 fontWeight = if (controls.careModeEnabled) FontWeight.SemiBold else FontWeight.Normal
             )
-            Text(
-                text = target,
-                color = if (controls.careModeEnabled) BaText else BaTextMuted,
-                style = if (controls.careModeEnabled) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodySmall
-            )
+            visibleTarget?.let {
+                Text(
+                    text = it,
+                    color = if (controls.careModeEnabled) BaText else BaTextMuted,
+                    style = if (controls.careModeEnabled) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodySmall
+                )
+            }
             Spacer(Modifier.height(8.dp))
             CameraModeStatusRow(controls = controls, language = language)
-            Spacer(Modifier.height(8.dp))
-            Text(
-                text = if (controls.careModeEnabled) guidance.careExplanation else guidance.explanationHeadline,
-                color = BaText,
-                style = if (controls.careModeEnabled) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodySmall,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.testTag("risk_explanation_headline")
-            )
-            if (!controls.careModeEnabled) {
-                Text(
-                    text = guidance.explanationDetail,
-                    color = BaTextMuted,
-                    style = MaterialTheme.typography.bodySmall
-                )
+            if (visibleExplanationHeadline != null || visibleExplanationDetail != null) {
+                Spacer(Modifier.height(8.dp))
+                visibleExplanationHeadline?.let {
+                    Text(
+                        text = it,
+                        color = BaText,
+                        style = if (controls.careModeEnabled) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+                visibleExplanationDetail?.let {
+                    Text(
+                        text = it,
+                        color = BaTextMuted,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
             }
             Spacer(Modifier.height(if (controls.careModeEnabled) 16.dp else 12.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -546,34 +585,48 @@ private fun CameraModeStatusRow(
     language: AppLanguage
 ) {
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = if (language == AppLanguage.EN) "Scenario: ${controls.assistScenario.displayName(language)}" else "场景：${controls.assistScenario.displayName(language)}",
-            color = BaMint,
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.SemiBold,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .weight(1f)
-                .testTag("camera_scenario_label")
-        )
-        Text(
-            text = if (language == AppLanguage.EN) "Mode: ${controls.dailyUsageMode.displayName(language)}" else "模式：${controls.dailyUsageMode.displayName(language)}",
-            color = BaSky,
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.SemiBold,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .weight(1f)
-                .testTag("camera_daily_mode_label")
-        )
+        Surface(
+            modifier = Modifier.weight(1f),
+            color = BaMint.copy(alpha = 0.12f),
+            contentColor = BaMint,
+            shape = CircleShape
+        ) {
+            Text(
+                text = if (language == AppLanguage.EN) "Scenario: ${controls.assistScenario.displayName(language)}" else "场景：${controls.assistScenario.displayName(language)}",
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .padding(horizontal = 10.dp, vertical = 7.dp)
+                    .testTag("camera_scenario_label")
+            )
+        }
+        Surface(
+            modifier = Modifier.weight(1f),
+            color = BaSky.copy(alpha = 0.12f),
+            contentColor = BaSky,
+            shape = CircleShape
+        ) {
+            Text(
+                text = if (language == AppLanguage.EN) "Mode: ${controls.dailyUsageMode.displayName(language)}" else "模式：${controls.dailyUsageMode.displayName(language)}",
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .padding(horizontal = 10.dp, vertical = 7.dp)
+                    .testTag("camera_daily_mode_label")
+            )
+        }
     }
 }
 
 @Composable
 private fun CameraTopBar(
     statusBadge: String,
+    statusBadgeColor: Int,
+    statusBadgeTextColor: Int,
     language: AppLanguage,
     onBack: () -> Unit,
     modifier: Modifier = Modifier
@@ -598,15 +651,18 @@ private fun CameraTopBar(
             )
         }
         Spacer(Modifier.weight(1f))
-        Text(
-            text = statusBadge,
-            color = BaHomeInk,
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .clip(RoundedCornerShape(50))
-                .background(BaHomeSurface.copy(alpha = 0.94f))
-                .padding(horizontal = 14.dp, vertical = 8.dp)
-        )
+        Surface(
+            color = Color(statusBadgeColor).copy(alpha = 0.94f),
+            contentColor = Color(statusBadgeTextColor),
+            shape = CircleShape,
+            shadowElevation = 2.dp
+        ) {
+            Text(
+                text = statusBadge,
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
+            )
+        }
     }
 }

@@ -68,6 +68,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -139,6 +140,7 @@ fun BlindAssistTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = colors,
         typography = BlindAssistTypography,
+        shapes = BlindAssistShapes,
         content = content
     )
 }
@@ -161,34 +163,53 @@ internal val BaSkyWash = Color(0xFF172D3D)
 
 // Home shell palette derived from the selected warm, spatial light design.
 // These tokens stay separate from the dark camera/control palette above.
-internal val BaHomeBackground = Color(0xFFF8F7F2)
-internal val BaHomeSurface = Color(0xFFFFFEFB)
-internal val BaHomeControlRail = Color(0xFFF4F3EE)
-internal val BaHomeInk = Color(0xFF071B3A)
-internal val BaHomeGreen = Color(0xFF167A50)
-internal val BaHomeCobalt = Color(0xFF1684F8)
-internal val BaHomeHairline = Color(0xFFE4E3DE)
-internal val BaHomeActionStart = Color(0xFF1A3328)
-internal val BaHomeActionEnd = Color(0xFF142A22)
-internal val BaHomeActionTextMuted = Color(0xFFB8D5C7)
-internal val BaHomeCoolWash = Color(0xFFF6F8FA)
-internal val BaHomeWarmWash = Color(0xFFFAF7F0)
-internal val BaHomeSageWash = Color(0x30DDE9D8)
-internal val BaHomeBlueWash = Color(0x42D9E9FB)
-internal val BaHomeNavInactive = Color(0xFF767A7D)
-internal val BaHomeNavIndicator = Color(0xFFEAF2E9)
-internal val BaHomeTextMuted = Color(0xFF5C6870)
-internal val BaHomeSurfaceRaised = Color(0xFFF0F3EF)
-internal val BaHomeSkySurface = Color(0xFFE8F2FC)
-internal val BaHomeAmberSurface = Color(0xFFFFF2D6)
-internal val BaHomeAmber = Color(0xFF8B6112)
+internal val BaHomeBackground = Color(0xFFF7F6F1)
+internal val BaHomeSurface = Color(0xFFFFFDF9)
+internal val BaHomeControlRail = Color(0xFFF0F2ED)
+internal val BaHomeInk = Color(0xFF091A32)
+internal val BaHomeGreen = Color(0xFF197B55)
+internal val BaHomeCobalt = Color(0xFF2267B8)
+internal val BaHomeHairline = Color(0xFFDEDED7)
+internal val BaHomeActionStart = Color(0xFF173E31)
+internal val BaHomeActionEnd = Color(0xFF0F2F26)
+internal val BaHomeActionTextMuted = Color(0xFFBFD8CC)
+internal val BaHomeCoolWash = Color(0xFFF3F7F8)
+internal val BaHomeWarmWash = Color(0xFFFAF6EE)
+internal val BaHomeSageWash = Color(0x38D9E9DD)
+internal val BaHomeBlueWash = Color(0x2FD9E8F5)
+internal val BaHomeNavInactive = Color(0xFF747B80)
+internal val BaHomeNavIndicator = Color(0xFFE5EFE7)
+internal val BaHomeTextMuted = Color(0xFF637078)
+internal val BaHomeSurfaceRaised = Color(0xFFEDF1ED)
+internal val BaHomeSkySurface = Color(0xFFE9F1F8)
+internal val BaHomeAmberSurface = Color(0xFFF8EFD9)
+internal val BaHomeAmber = Color(0xFF806019)
 internal val BaHomeDanger = Color(0xFFB3261E)
 internal val BaHomeOnAction = Color.White
 
+internal val BaShapeCompact = RoundedCornerShape(14.dp)
+internal val BaShapeControl = RoundedCornerShape(18.dp)
+internal val BaShapeCard = RoundedCornerShape(24.dp)
+internal val BaShapeHero = RoundedCornerShape(28.dp)
+
+private val BlindAssistShapes = Shapes(
+    extraSmall = RoundedCornerShape(10.dp),
+    small = BaShapeCompact,
+    medium = BaShapeControl,
+    large = BaShapeCard,
+    extraLarge = RoundedCornerShape(30.dp)
+)
+
 private val BlindAssistTypography = Typography(
+    displaySmall = androidx.compose.ui.text.TextStyle(
+        fontSize = 40.sp,
+        lineHeight = 47.sp,
+        fontWeight = FontWeight.Bold,
+        letterSpacing = (-0.7).sp
+    ),
     headlineLarge = androidx.compose.ui.text.TextStyle(
-        fontSize = 34.sp,
-        lineHeight = 40.sp,
+        fontSize = 35.sp,
+        lineHeight = 42.sp,
         fontWeight = FontWeight.Bold,
         letterSpacing = (-0.5).sp
     ),
@@ -211,6 +232,11 @@ private val BlindAssistTypography = Typography(
     titleMedium = androidx.compose.ui.text.TextStyle(
         fontSize = 17.sp,
         lineHeight = 23.sp,
+        fontWeight = FontWeight.SemiBold
+    ),
+    titleSmall = androidx.compose.ui.text.TextStyle(
+        fontSize = 15.sp,
+        lineHeight = 21.sp,
         fontWeight = FontWeight.SemiBold
     ),
     bodyLarge = androidx.compose.ui.text.TextStyle(
@@ -238,5 +264,11 @@ private val BlindAssistTypography = Typography(
         lineHeight = 16.sp,
         fontWeight = FontWeight.SemiBold,
         letterSpacing = 0.2.sp
+    ),
+    labelSmall = androidx.compose.ui.text.TextStyle(
+        fontSize = 11.sp,
+        lineHeight = 15.sp,
+        fontWeight = FontWeight.SemiBold,
+        letterSpacing = 0.25.sp
     )
 )

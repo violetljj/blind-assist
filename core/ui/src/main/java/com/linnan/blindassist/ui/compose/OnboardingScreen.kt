@@ -9,6 +9,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -116,17 +117,18 @@ fun OnboardingScreen(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 330.dp),
-            shape = RoundedCornerShape(28.dp),
+                .heightIn(min = 310.dp),
+            shape = BaShapeHero,
             colors = CardDefaults.cardColors(containerColor = BaHomeSurface),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+            border = BorderStroke(1.dp, BaHomeHairline.copy(alpha = 0.84f))
         ) {
             Column(
-                modifier = Modifier.padding(22.dp),
+                modifier = Modifier.padding(24.dp),
                 horizontalAlignment = Alignment.Start
             ) {
                 IconTile(icon = page.icon, accent = page.accent, emphasized = true)
-                Spacer(Modifier.height(24.dp))
+                Spacer(Modifier.height(22.dp))
                 Text(
                     text = page.title,
                     style = MaterialTheme.typography.headlineSmall,
@@ -134,7 +136,7 @@ fun OnboardingScreen(
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.semantics { heading() }
                 )
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(10.dp))
                 Text(
                     text = page.body,
                     style = MaterialTheme.typography.bodyLarge,
@@ -150,7 +152,7 @@ fun OnboardingScreen(
             }
         }
 
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(18.dp))
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -159,14 +161,14 @@ fun OnboardingScreen(
             pages.forEachIndexed { index, _ ->
                 Box(
                     modifier = Modifier
-                        .height(5.dp)
+                        .height(4.dp)
                         .weight(1f)
                         .clip(RoundedCornerShape(50))
                         .background(if (index == pageIndex) BaHomeGreen else BaHomeHairline)
                 )
             }
         }
-        Spacer(Modifier.height(22.dp))
+        Spacer(Modifier.height(20.dp))
         Button(
             onClick = {
                 if (isLastPage) {
@@ -177,8 +179,8 @@ fun OnboardingScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 56.dp),
-            shape = RoundedCornerShape(18.dp),
+                .heightIn(min = 60.dp),
+            shape = BaShapeControl,
             colors = ButtonDefaults.buttonColors(
                 containerColor = BaHomeActionEnd,
                 contentColor = BaHomeOnAction

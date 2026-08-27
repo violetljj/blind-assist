@@ -45,7 +45,7 @@ fun CameraPermissionExplanationDialog(
                 }
             )
         },
-        shape = RoundedCornerShape(28.dp),
+        shape = BaShapeHero,
         containerColor = BaHomeSurface,
         iconContentColor = BaHomeGreen,
         titleContentColor = BaHomeInk,
@@ -77,7 +77,7 @@ fun CameraPermissionDeniedDialog(
                 }
             )
         },
-        shape = RoundedCornerShape(28.dp),
+        shape = BaShapeHero,
         containerColor = BaHomeSurface,
         iconContentColor = BaHomeAmber,
         titleContentColor = BaHomeInk,
