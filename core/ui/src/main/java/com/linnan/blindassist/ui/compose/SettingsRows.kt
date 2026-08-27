@@ -42,7 +42,7 @@ internal fun SettingsGroup(
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(22.dp),
-        color = BaHomeSurface.copy(alpha = 0.86f),
+        color = BaHomeSurface,
         shadowElevation = 1.dp
     ) {
         Column(content = content)
