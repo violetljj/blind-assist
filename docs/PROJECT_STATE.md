@@ -48,19 +48,22 @@ RGB/LiDAR detector, Android runtime, natural-distribution, user-benefit, or
 safety evidence.
 
 L10 is active in parallel and does not depend on GRAIL owner orientation. Its
-first controlled closed-loop result remains positive: 87.5% task completion,
-81.2% reacquisition, 93.1% direction accuracy, 1.7% wrong-lock frames, and zero
-false completions in 50 target-absent episodes. A new real-RGB L10-SC0 source
-keeps OCR as identity authority and uses DINOv2-S crop embeddings only for
-short/long continuity. On the two-video Development replay it improved sticky
-text from 80.76% to 84.43% target-frame accuracy, cut wrong selections from 102
-to 5, and raised gap reacquisition from 90% to 100%, at the cost of 48 to 104
-misses. On one previously unseen video12 clip it transferred to 97.24% accuracy,
-zero wrong target-present selections, and 96.97% reacquisition, but did not beat
-that clip's unusually strong sticky OCR baseline on accuracy/reacquisition.
-This is a real-image continuity source effect plus an honest relative holdout
-failure; it is not open-world identity, active-view, navigation, product, or
-safety evidence.
+current L10-SC1W algorithm separates semantic identity, visual continuity, and
+current-camera steering authority. OCR is the only identity/reacquisition
+source; DINOv2-S appearance and motion may request at most two `OBSERVE` frames;
+RapidOCR recognition alignment supplies the goal-related word carrier. On the
+video1+video10 Development replay, this preserved 99.14% navigation precision,
+five wrong frames, and 30/30 reacquisitions while raising identity bearing from
+85.04% to 95.13%, correct-direction coverage from 78.27% to 86.78%, and gap
+observation bearing from 70.59% to 94.12%. A source-disjoint, once-opened
+video14 confirmation then passed all seven frozen gates across eight tracks and
+24 gaps: 100% navigation precision, zero wrong identities, 88.73% target
+support, and 76.67% identity bearing versus the frozen line carrier's 50.00%.
+Identity reacquisition remained 75.0%, so the next L10 step is a new semantic
+reacquisition source plus action-conditioned observation, not threshold tuning.
+These are real-RGB proposal-free OCR replay results with evaluator-injected
+gaps, not live active-view causality, metric arrival, open-world identity,
+product, user-benefit, or safety evidence.
 
 ## Demonstration track
 

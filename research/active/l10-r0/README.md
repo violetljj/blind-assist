@@ -1,6 +1,6 @@
 # L10-R0 Goal-Lock Copilot
 
-Status: `ACTIVE / L10-SC0 SEMANTIC-VISUAL MEMORY + CONTROLLED CLOSED-LOOP DEVELOPMENT`
+Status: `ACTIVE / L10-SC1W SEMANTIC IDENTITY + VISUAL CONTINUITY + CTC WORD CARRIER`
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -142,6 +142,100 @@ frames to 18--22%. Active observation remains in scope only as a
 deficit-specific request (for example, unreadable decisive token or ambiguous
 token-to-door association); it cannot acquire identity or override semantic
 `NONE / UNKNOWN`.
+
+## L10-SC1W: identity, continuity, and steering are different authorities
+
+The video12 replay also exposed a structural mistake hidden by aggregate
+identity accuracy: every one of SC0's 28 wrong selections occurred inside an
+evaluator-injected target-absent gap, and only 18/28 of those selected OCR lines
+had the target's coarse bearing. Across 1,091 correct identity frames, 814
+carriers were merged OCR lines, but only 400/814 merged-line centers agreed with
+the target bearing. A stable identity therefore does not make the OCR line
+center a trustworthy steering point.
+
+`artvideo_dual_state_replay.py` implements SC1W as a three-authority controller:
+
+- fresh lexical evidence owns `TARGET / NONE / UNKNOWN / UNCERTAIN` identity;
+- DINOv2 appearance and camera-relative motion own only short visual
+  `BOUND / COASTING / PROVISIONAL / LOST` continuity;
+- RapidOCR's recognition-timestep alignment supplies a goal-related word
+  carrier for current-camera LEFT / FORWARD / RIGHT steering. This is a
+  CTC-aligned sub-box, not a separately detected physical object box.
+
+Only fresh semantic `TARGET` may emit `NAVIGATE`. Weaker target-related evidence
+may emit `OBSERVE` for at most two frames, but cannot acquire identity, navigate,
+reacquire, or complete by appearance alone. LOST still requires two fresh
+semantic hits. The association weights and gates are unchanged from SC0; the
+new information source changes steering geometry, not the matcher.
+
+On the unchanged video1+video10 Development replay (10 tracks, 30 gaps, 681
+target frames), SC1W preserved SC0's 575 correct identity frames, five wrong
+frames, and 30/30 reacquisitions while changing the control surface:
+
+| Metric | SC0 line carrier | SC1W CTC word carrier | Delta |
+|---|---:|---:|---:|
+| identity bearing accuracy | 85.04% | **95.13%** | **+10.09 pp** |
+| direction-ready coverage | 78.27% | **86.78%** | **+8.51 pp** |
+| gap `OBSERVE` bearing accuracy | 70.59% | **94.12%** | **+23.53 pp** |
+| navigation precision | 99.14% | **99.14%** | 0.00 pp |
+| target-support coverage | 84.43% selection | **91.78% identity-or-observe** | **+7.35 pp** |
+| identity reacquisition | 100.0% | **100.0%** | 0.00 pp |
+
+All 653 steering outputs used an actual RapidOCR word result; no merged-line
+fallback was needed on these two clips. Appearance-only identity violations and
+continuity-only navigation violations were both zero. Two fixed alternatives
+were closed without tuning: character-proportional line splitting fell to
+76.70% bearing accuracy, and morphology-derived carriers fell to 78.09%.
+
+A once-opened video13 predecessor holdout remains a useful negative result, not
+confirmation: its line-carrier SC1 reached 99.74% navigation precision and only
+three wrong identity frames, but just 70.0% reacquisition and 40.23% direction
+accuracy. It exposed the line-level geometry/source bottleneck that SC1W changes;
+video13 is consumed and must not be rerun as fresh confirmation.
+
+SC1W was then frozen before any OCR, embedding, annotation parsing, or outcome
+access on the source-disjoint official ArTVideo video14 clip. Its one permitted
+run covered eight tracks, 24 gap episodes, and 426 target frames and passed all
+seven preregistered gates:
+
+| Frozen video14 metric | SC0 line carrier | SC1W | Delta |
+|---|---:|---:|---:|
+| identity target recall | 84.51% | **84.51%** | 0.00 pp |
+| navigation precision | 100.0% | **100.0%** | 0.00 pp |
+| wrong identity frames | 0 | **0** | 0 |
+| identity reacquisition | 75.0% | **75.0%** | 0.00 pp |
+| target-support coverage | 84.51% | **88.73%** | **+4.22 pp** |
+| identity bearing accuracy | 50.00% | **76.67%** | **+26.67 pp** |
+| correct-direction coverage | 42.25% | **68.08%** | **+25.83 pp** |
+
+The frozen controller used 234 CTC word carriers, 43 single-token boxes, and
+101 explicit merged-line fallbacks. This is a clean transfer of the authority
+split and a large coarse-direction gain on a new clip, while the unchanged
+75.0% reacquisition and only 61.9% CTC-word coverage identify the next source
+work. The frozen protocol SHA-256 is `DADBF91F...F0293`; the single result is
+`23384E49...C8FE7`. No result-driven retry or tuning is permitted on video14.
+
+The cached Development result can be reproduced without OCR or embedding
+recomputation:
+
+```powershell
+$env:PYTHONPATH='artifacts.local/runtime/semantic-anchor-v1/site-packages'
+& 'E:/codex-tools/bin/blindassist-python.cmd' -B `
+  research/active/l10-r0/artvideo_dual_state_replay.py `
+  --dataset artifacts.local/datasets/artvideo-l10-r0 `
+  --ocr-cache artifacts.local/evidence/l10-r4/rapidocr-ctc-word-carrier-v0/ocr-cache.json `
+  --embedding-cache artifacts.local/evidence/l10-r4/rapidocr-ctc-word-carrier-v0/embeddings.npz `
+  --embedding-index artifacts.local/evidence/l10-r4/rapidocr-ctc-word-carrier-v0/embedding-index.json `
+  --models artifacts.local/runtime/semantic-anchor-v1/models `
+  --model artifacts.local/models/p1_a2_dinov2_small_ed25f3a `
+  --videos video1 video10 `
+  --output artifacts.local/evidence/l10-r4/rapidocr-ctc-word-carrier-v0/repro.json
+```
+
+This is real-RGB, proposal-free OCR replay with evaluator-injected target gaps.
+It is evidence for a semantic/continuity/steering representation and
+current-camera coarse direction, not live active-view causality, metric arrival,
+open-world identity, product, user-benefit, or safety.
 
 ## Android text-goal canary
 
