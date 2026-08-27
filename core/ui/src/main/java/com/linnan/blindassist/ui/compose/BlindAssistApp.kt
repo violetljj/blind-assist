@@ -18,7 +18,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -282,19 +281,18 @@ private fun MainShell(
                 modifier = Modifier
                     .fillMaxWidth()
                     .navigationBarsPadding()
-                    .padding(horizontal = 18.dp, vertical = 8.dp)
+                    .padding(horizontal = 22.dp, vertical = 10.dp)
             ) {
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    color = BaHomeSurface.copy(alpha = 0.98f),
+                    color = BaHomeSurface.copy(alpha = 0.97f),
                     contentColor = BaHomeInk,
-                    shape = BaShapeCard,
-                    shadowElevation = 6.dp,
-                    tonalElevation = 0.dp,
-                    border = BorderStroke(1.dp, BaHomeHairline.copy(alpha = 0.8f))
+                    shape = RoundedCornerShape(26.dp),
+                    shadowElevation = 12.dp,
+                    tonalElevation = 0.dp
                 ) {
                     NavigationBar(
-                        modifier = Modifier.height(72.dp),
+                        modifier = Modifier.height(78.dp),
                         containerColor = Color.Transparent,
                         contentColor = BaHomeInk,
                         tonalElevation = 0.dp,
@@ -308,7 +306,7 @@ private fun MainShell(
                                     Icon(
                                         imageVector = tab.icon,
                                         contentDescription = null,
-                                        modifier = Modifier.size(24.dp)
+                                        modifier = Modifier.size(26.dp)
                                     )
                                 },
                                 label = {
