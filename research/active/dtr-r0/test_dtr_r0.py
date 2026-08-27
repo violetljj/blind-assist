@@ -22,6 +22,20 @@ from dtr_r0 import (
 )
 from evaluate import read_jsonl
 from dtr_r1 import run_r1_arm
+from dtr_r3 import (
+    DTRR3Arm,
+    R3Arm,
+    RouteSegment,
+    WorldTargetObservation,
+    _trajectory_evidence,
+)
+from coda_static_ceiling import segment_to_box_entry_fraction
+from jrdb_native_ceiling import (
+    AlertSegment,
+    TruthEvent,
+    average_precision,
+    maximum_event_alert_matching,
+)
 
 
 def frame_from_world(
@@ -192,6 +206,77 @@ class RobustOccupancyR1Tests(unittest.TestCase):
 
 
 class BaselineAndMetricTests(unittest.TestCase):
+    def test_static_continuous_collision_handles_crossing_grazing_and_rotation(self) -> None:
+        crossing = segment_to_box_entry_fraction(
+            -1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.10, 0.10, 0.05
+        )
+        grazing = segment_to_box_entry_fraction(
+            -1.0, 0.10, 1.0, 0.10, 0.0, 0.0, 0.0, 0.10, 0.10, 0.05
+        )
+        miss = segment_to_box_entry_fraction(
+            -1.0, 0.101, 1.0, 0.101, 0.0, 0.0, 0.0, 0.10, 0.10, 0.05
+        )
+        diagonal = math.sqrt(0.5)
+        rotated = segment_to_box_entry_fraction(
+            -diagonal,
+            -diagonal,
+            diagonal,
+            diagonal,
+            0.0,
+            0.0,
+            math.pi / 4.0,
+            0.10,
+            0.10,
+            0.05,
+        )
+        self.assertAlmostEqual(crossing, 0.45)
+        self.assertAlmostEqual(grazing, 0.475)
+        self.assertIsNone(miss)
+        self.assertAlmostEqual(rotated, 0.45)
+
+    def test_r3_continuous_toi_catches_between_sample_crossing(self) -> None:
+        start = Vec2(0.0, -1.0)
+        velocity = Vec2(0.0, 20.0)
+        route = (
+            RouteSegment(0.0, 0.1, Vec2(0.0, 0.0), Vec2(0.0, 0.0)),
+        )
+        self.assertGreater(start.norm(), 0.20)
+        self.assertGreater((start + velocity * 0.1).norm(), 0.20)
+        evidence = _trajectory_evidence(start, velocity, route, 0.20, 0.05)
+        self.assertIsNotNone(evidence.entry_time_s)
+        self.assertGreater(evidence.entry_time_s, 0.0)
+        self.assertLess(evidence.entry_time_s, 0.1)
+
+    def test_r3_distributional_tie_is_not_a_majority(self) -> None:
+        runner = DTRR3Arm(R3Arm.B_STRAIGHT_DISTRIBUTIONAL)
+        decision = runner._evaluate_track(
+            WorldTargetObservation(0.0, "target", Vec2(2.0, 2.0), 0.30),
+            (Vec2(-2.0, -2.0), Vec2(0.0, 0.0)),
+            (
+                RouteSegment(0.0, 3.0, Vec2(0.0, 0.0), Vec2(0.0, 0.0)),
+            ),
+            distributional=True,
+        )
+        self.assertEqual(decision.entry_support, 0.5)
+        self.assertFalse(decision.raw_alert)
+
+    def test_event_matching_and_tie_aware_average_precision(self) -> None:
+        events = [
+            TruthEvent(1, 2, 2, "crossing"),
+            TruthEvent(3, 4, 4, "oncoming"),
+        ]
+        self.assertEqual(
+            maximum_event_alert_matching(
+                [AlertSegment(1, 5), AlertSegment(6, 7)],
+                events,
+            ),
+            1,
+        )
+        self.assertAlmostEqual(
+            average_precision([0.9, 0.8, 0.2], [True, False, True]),
+            5.0 / 6.0,
+        )
+
     def test_smoke_evaluator_rejects_unsealed_scientific_input(self) -> None:
         episode = {
             "schema_version": "dtr-r0-episode-v1",

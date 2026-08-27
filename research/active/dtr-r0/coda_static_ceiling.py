@@ -34,7 +34,7 @@ from dtr_r1 import RiskEventLifecycle
 from jrdb_native_ceiling import ArmAccumulator, ratio, score_arm
 
 
-SCHEMA = "dtr-static-coda-native-box-ceiling-v1"
+SCHEMA = "dtr-static-coda-native-box-ceiling-v2"
 CLAIM_CEILING = "PUBLIC_REAL_PRIVILEGED_STATIC_NATIVE_BOX_POSE_CALIBRATION_CEILING_ONLY"
 HORIZON_S = 3.0
 ROUTE_HALF_WIDTH_M = 0.65
@@ -50,6 +50,7 @@ PROXIMITY_ARM = "P0_proximity_3m"
 ROUTE_XY_ARM = "S1_route_xy"
 ROUTE_VERTICAL_ARM = "S2_route_vertical"
 CURVED_ROUTE_ARM = "S3_curved_route_vertical"
+CONTINUOUS_CURVED_ROUTE_ARM = "S4_continuous_curved_route_vertical"
 ROUTE_MOTION_HISTORY_S = 0.50
 ROUTE_SAMPLE_STEP_S = 0.10
 
@@ -496,9 +497,139 @@ def point_to_box_clearance(
     return math.hypot(outside_forward, outside_lateral)
 
 
+def segment_to_box_entry_fraction(
+    start_x: float,
+    start_y: float,
+    end_x: float,
+    end_y: float,
+    box_x: float,
+    box_y: float,
+    box_yaw: float,
+    length_m: float,
+    width_m: float,
+    clearance_m: float,
+) -> float | None:
+    """Earliest continuous segment entry into an oriented box swept by a disk."""
+
+    cosine = math.cos(box_yaw)
+    sine = math.sin(box_yaw)
+
+    def box_local(point_x: float, point_y: float) -> tuple[float, float]:
+        delta_x = point_x - box_x
+        delta_y = point_y - box_y
+        return (
+            delta_x * cosine + delta_y * sine,
+            -delta_x * sine + delta_y * cosine,
+        )
+
+    start_forward, start_lateral = box_local(start_x, start_y)
+    end_forward, end_lateral = box_local(end_x, end_y)
+    velocity_forward = end_forward - start_forward
+    velocity_lateral = end_lateral - start_lateral
+    half_length = length_m / 2.0
+    half_width = width_m / 2.0
+
+    breakpoints = [0.0, 1.0]
+    for start, velocity, half_extent in (
+        (start_forward, velocity_forward, half_length),
+        (start_lateral, velocity_lateral, half_width),
+    ):
+        if abs(velocity) <= 1e-15:
+            continue
+        for boundary in (-half_extent, half_extent):
+            fraction = (boundary - start) / velocity
+            if 0.0 < fraction < 1.0:
+                breakpoints.append(fraction)
+    breakpoints = sorted(set(breakpoints))
+
+    def outside_coefficients(
+        start: float,
+        velocity: float,
+        half_extent: float,
+        midpoint: float,
+    ) -> tuple[float, float]:
+        value = start + velocity * midpoint
+        if value > half_extent:
+            return start - half_extent, velocity
+        if value < -half_extent:
+            return start + half_extent, velocity
+        return 0.0, 0.0
+
+    radius_squared = clearance_m * clearance_m
+    tolerance = 1e-12
+    for interval_start, interval_end in zip(breakpoints, breakpoints[1:]):
+        midpoint = (interval_start + interval_end) / 2.0
+        forward_offset, forward_slope = outside_coefficients(
+            start_forward,
+            velocity_forward,
+            half_length,
+            midpoint,
+        )
+        lateral_offset, lateral_slope = outside_coefficients(
+            start_lateral,
+            velocity_lateral,
+            half_width,
+            midpoint,
+        )
+        quadratic = forward_slope**2 + lateral_slope**2
+        linear = 2.0 * (
+            forward_offset * forward_slope
+            + lateral_offset * lateral_slope
+        )
+        constant = (
+            forward_offset**2 + lateral_offset**2 - radius_squared
+        )
+
+        def value_at(fraction: float) -> float:
+            return quadratic * fraction * fraction + linear * fraction + constant
+
+        if value_at(interval_start) <= tolerance:
+            return interval_start
+        if quadratic <= tolerance:
+            continue
+        discriminant = linear * linear - 4.0 * quadratic * constant
+        if discriminant < -tolerance:
+            continue
+        root = (-linear - math.sqrt(max(0.0, discriminant))) / (2.0 * quadratic)
+        candidate = max(interval_start, root)
+        if candidate <= interval_end + tolerance and value_at(candidate) <= tolerance:
+            return min(1.0, max(0.0, candidate))
+    return None
+
+
+def ctrv_route_points(
+    current: StaticSample,
+    forward_speed: float,
+    yaw_rate: float,
+) -> list[tuple[float, float, float]]:
+    points = []
+    step_count = round(HORIZON_S / ROUTE_SAMPLE_STEP_S)
+    for step in range(step_count + 1):
+        future_s = step * ROUTE_SAMPLE_STEP_S
+        if abs(yaw_rate) <= 1e-6:
+            ego_x = current.ego_x_m + forward_speed * future_s * math.cos(
+                current.ego_yaw_rad
+            )
+            ego_y = current.ego_y_m + forward_speed * future_s * math.sin(
+                current.ego_yaw_rad
+            )
+        else:
+            future_yaw = current.ego_yaw_rad + yaw_rate * future_s
+            ego_x = current.ego_x_m + forward_speed / yaw_rate * (
+                math.sin(future_yaw) - math.sin(current.ego_yaw_rad)
+            )
+            ego_y = current.ego_y_m - forward_speed / yaw_rate * (
+                math.cos(future_yaw) - math.cos(current.ego_yaw_rad)
+            )
+        points.append((future_s, ego_x, ego_y))
+    return points
+
+
 def curved_route_predictions(
     samples: Sequence[StaticSample],
     config: DTRConfig,
+    *,
+    continuous_collision: bool = False,
 ) -> list[Prediction]:
     lifecycle = RiskEventLifecycle(config.clear_grace_s)
     output: list[Prediction] = []
@@ -533,31 +664,39 @@ def curved_route_predictions(
             )
             box_yaw = current.ego_yaw_rad + current.yaw_rad
             first_entry_s = None
-            step_count = round(HORIZON_S / ROUTE_SAMPLE_STEP_S)
-            for step in range(step_count + 1):
-                future_s = step * ROUTE_SAMPLE_STEP_S
-                if abs(yaw_rate) <= 1e-6:
-                    ego_x = current.ego_x_m + forward_speed * future_s * math.cos(current.ego_yaw_rad)
-                    ego_y = current.ego_y_m + forward_speed * future_s * math.sin(current.ego_yaw_rad)
-                else:
-                    future_yaw = current.ego_yaw_rad + yaw_rate * future_s
-                    ego_x = current.ego_x_m + forward_speed / yaw_rate * (
-                        math.sin(future_yaw) - math.sin(current.ego_yaw_rad)
+            route_points = ctrv_route_points(current, forward_speed, yaw_rate)
+            if continuous_collision:
+                for left, right in zip(route_points, route_points[1:]):
+                    entry_fraction = segment_to_box_entry_fraction(
+                        left[1],
+                        left[2],
+                        right[1],
+                        right[2],
+                        box_x,
+                        box_y,
+                        box_yaw,
+                        current.length_m,
+                        current.width_m,
+                        ROUTE_HALF_WIDTH_M,
                     )
-                    ego_y = current.ego_y_m - forward_speed / yaw_rate * (
-                        math.cos(future_yaw) - math.cos(current.ego_yaw_rad)
-                    )
-                if point_to_box_clearance(
-                    ego_x,
-                    ego_y,
-                    box_x,
-                    box_y,
-                    box_yaw,
-                    current.length_m,
-                    current.width_m,
-                ) <= ROUTE_HALF_WIDTH_M:
-                    first_entry_s = future_s
-                    break
+                    if entry_fraction is not None:
+                        first_entry_s = left[0] + entry_fraction * (
+                            right[0] - left[0]
+                        )
+                        break
+            else:
+                for future_s, ego_x, ego_y in route_points:
+                    if point_to_box_clearance(
+                        ego_x,
+                        ego_y,
+                        box_x,
+                        box_y,
+                        box_yaw,
+                        current.length_m,
+                        current.width_m,
+                    ) <= ROUTE_HALF_WIDTH_M:
+                        first_entry_s = future_s
+                        break
             raw_alert = bool(first_entry_s is not None and current.vertical_kind is not None)
         urgent = bool(first_entry_s is not None and first_entry_s <= HORIZON_S / 2.0 + 1e-9 and raw_alert)
         output.append(
@@ -579,6 +718,11 @@ def curved_route_predictions(
                 track_id=None,
                 diagnostic={
                     "route_model": "causal_constant_turn_rate_and_velocity",
+                    "collision_geometry": (
+                        "continuous_piecewise_linear_time_of_impact"
+                        if continuous_collision
+                        else "discrete_route_sample_points"
+                    ),
                     "route_history_s": ROUTE_MOTION_HISTORY_S,
                     "first_entry_s": first_entry_s if first_entry_s is not None else "none",
                     "vertical_kind": current.vertical_kind or "nonactionable_vertical",
@@ -595,10 +739,6 @@ def evaluate_segment(
 ) -> tuple[dict[str, ArmAccumulator], dict[str, GroupAccumulator], int, float]:
     if len(samples) < 2 or samples[-1].time_s - samples[0].time_s < MINIMUM_HISTORY_S + HORIZON_S:
         return {}, {}, 0, 0.0
-    truth, contacts = future_hits(samples)
-    events, known = truth_events(samples, truth, contacts)
-    if not any(known):
-        return {}, {}, 0, 0.0
     frames = causal_frames(track_id, samples)
     proximity = run_arm(frames, Arm.B1_DISTANCE, config)
     route = run_arm(frames, Arm.C_ROUTE_INTERSECTION, config)
@@ -607,9 +747,25 @@ def evaluate_segment(
         ROUTE_XY_ARM: route,
         ROUTE_VERTICAL_ARM: height_gate(samples, route, config),
         CURVED_ROUTE_ARM: curved_route_predictions(samples, config),
+        CONTINUOUS_CURVED_ROUTE_ARM: curved_route_predictions(
+            samples,
+            config,
+            continuous_collision=True,
+        ),
     }
+    truth, contacts = future_hits(samples)
+    events, known = truth_events(samples, truth, contacts)
+    if not any(known):
+        return {}, {}, 0, 0.0
     scored = {
-        name: score_arm(samples, values, events, known, truth)
+        name: score_arm(
+            samples,
+            values,
+            events,
+            known,
+            truth,
+            clear_grace_s=config.clear_grace_s,
+        )
         for name, values in predictions.items()
     }
     grouped = {
@@ -663,7 +819,13 @@ def evaluate(sequence_roots: Sequence[tuple[str, Path]]) -> dict[str, Any]:
         route_half_width_m=ROUTE_HALF_WIDTH_M,
         nominal_wearer_speed_mps=0.0,
     )
-    arm_names = (PROXIMITY_ARM, ROUTE_XY_ARM, ROUTE_VERTICAL_ARM, CURVED_ROUTE_ARM)
+    arm_names = (
+        PROXIMITY_ARM,
+        ROUTE_XY_ARM,
+        ROUTE_VERTICAL_ARM,
+        CURVED_ROUTE_ARM,
+        CONTINUOUS_CURVED_ROUTE_ARM,
+    )
     pooled = {name: ArmAccumulator() for name in arm_names}
     pooled_groups = {name: GroupAccumulator() for name in arm_names}
     totals = Counter()
@@ -719,6 +881,7 @@ def evaluate(sequence_roots: Sequence[tuple[str, Path]]) -> dict[str, Any]:
             contiguous_track_segments=track_segments,
             evaluable_track_segments=evaluable_segments,
             critical_events=critical_events,
+            track_segment_exposure_s=exposure_s,
         )
         print(
             f"CODa static {sequence}: events={critical_events}, "
@@ -757,6 +920,11 @@ def evaluate(sequence_roots: Sequence[tuple[str, Path]]) -> dict[str, Any]:
                 "type": "causal_constant_turn_rate_and_velocity",
                 "history_s": ROUTE_MOTION_HISTORY_S,
                 "sample_step_s": ROUTE_SAMPLE_STEP_S,
+                "sampled_arm_collision_geometry": "discrete route points",
+                "continuous_arm_collision_geometry": (
+                    "analytic line-segment time-of-impact against oriented box "
+                    "Minkowski-expanded by route half width"
+                ),
                 "inputs": "current-and-past ego pose only",
             },
         },
@@ -766,6 +934,11 @@ def evaluate(sequence_roots: Sequence[tuple[str, Path]]) -> dict[str, Any]:
         "vertical_vs_route_xy": compare(pooled_dict, ROUTE_VERTICAL_ARM, ROUTE_XY_ARM),
         "curved_route_vs_proximity": compare(pooled_dict, CURVED_ROUTE_ARM, PROXIMITY_ARM),
         "curved_route_vs_straight_route": compare(pooled_dict, CURVED_ROUTE_ARM, ROUTE_VERTICAL_ARM),
+        "continuous_curved_route_vs_sampled_curved_route": compare(
+            pooled_dict,
+            CONTINUOUS_CURVED_ROUTE_ARM,
+            CURVED_ROUTE_ARM,
+        ),
         "sequences": sequence_results,
         "limitations": [
             "Privileged source-native boxes, identities, poses, and calibration are an algorithm ceiling.",
@@ -773,6 +946,7 @@ def evaluate(sequence_roots: Sequence[tuple[str, Path]]) -> dict[str, Any]:
             "Box topology cannot resolve thin branches, leaves, wall openings, or point-level free space.",
             "No positive head-clearance event occurs in the selected sequences; the bounded height path is implementation and negative-exposure evidence only.",
             "No drop-off truth, RGB/LiDAR detector, Android runtime, natural-distribution, or safety performance is established.",
+            "CODa truth is sampled at source frames, so between-frame collision recovery is established only by the controlled geometry canary.",
         ],
     }
 
@@ -792,6 +966,12 @@ def main() -> None:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps(result["curved_route_vs_proximity"], indent=2))
+    print(
+        json.dumps(
+            result["continuous_curved_route_vs_sampled_curved_route"],
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":

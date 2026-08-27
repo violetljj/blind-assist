@@ -24,6 +24,7 @@ from typing import Any, Iterable, Sequence
 from dtr_r0 import Arm, CausalFrame, DTRConfig, EgoPose, Observation, Prediction, Signal, run_arm
 from dtr_r1 import FROZEN_R1_CONFIG, run_r1_arm
 from dtr_r2 import FROZEN_R2_CONFIG, run_r2_arm
+from dtr_r3 import FROZEN_R3_CONFIG, R3Arm, run_r3_arm
 from jrdb_native_ceiling import (
     ArmAccumulator,
     alert_segments,
@@ -35,6 +36,7 @@ from jrdb_native_ceiling import (
 
 
 SCHEMA = "dtr-r2-coda-native-ceiling-v1"
+R3_SCHEMA = "dtr-r3-coda-native-ceiling-v1"
 CLAIM_CEILING = "PUBLIC_REAL_PRIVILEGED_MULTICLASS_NATIVE_BOX_POSE_CEILING_ONLY"
 HORIZON_S = 3.0
 ROUTE_HALF_WIDTH_M = 0.65
@@ -77,6 +79,9 @@ class CodaSample:
     left_m: float
     relative_world_x_m: float
     relative_world_y_m: float
+    ego_x_m: float
+    ego_y_m: float
+    ego_yaw_rad: float
     radius_m: float
     length_m: float
     width_m: float
@@ -271,6 +276,9 @@ def read_sequence(
                 left_m=left_m,
                 relative_world_x_m=relative_world_x_m,
                 relative_world_y_m=relative_world_y_m,
+                ego_x_m=pose.x_m,
+                ego_y_m=pose.y_m,
+                ego_yaw_rad=pose.yaw_rad,
                 radius_m=max(0.15, 0.5 * math.hypot(length_m, width_m)),
                 length_m=length_m,
                 width_m=width_m,
@@ -333,6 +341,33 @@ def causal_frames(track_id: str, samples: Sequence[CodaSample]) -> list[CausalFr
                     track_id=track_id,
                     forward_m=sample.relative_world_x_m,
                     left_m=sample.relative_world_y_m,
+                    radius_m=sample.radius_m,
+                ),
+            ),
+            person_detection_count=1,
+        )
+        for sample in samples
+    ]
+
+
+def r3_causal_frames(track_id: str, samples: Sequence[CodaSample]) -> list[CausalFrame]:
+    """Expose CODa's actual causal ego pose to R3 without changing R0/R2."""
+
+    origin = samples[0].time_s
+    return [
+        CausalFrame(
+            time_s=sample.time_s - origin,
+            ego_pose=EgoPose(
+                x_m=sample.ego_x_m,
+                y_m=sample.ego_y_m,
+                body_yaw_rad=sample.ego_yaw_rad,
+                sensor_yaw_rad=sample.ego_yaw_rad,
+            ),
+            observations=(
+                Observation(
+                    track_id=track_id,
+                    forward_m=sample.forward_m,
+                    left_m=sample.left_m,
                     radius_m=sample.radius_m,
                 ),
             ),
@@ -463,18 +498,31 @@ def evaluate_segment(
     track_id: str,
     samples: Sequence[CodaSample],
     config: DTRConfig,
-    arms: Sequence[Arm],
-) -> tuple[dict[Arm, ArmAccumulator], dict[Arm, GroupAccumulator], int, float]:
+    arms: Sequence[Arm | R3Arm],
+) -> tuple[
+    dict[Arm | R3Arm, ArmAccumulator],
+    dict[Arm | R3Arm, GroupAccumulator],
+    int,
+    float,
+]:
     if len(samples) < 2 or samples[-1].time_s - samples[0].time_s < MINIMUM_HISTORY_S + HORIZON_S:
         return {}, {}, 0, 0.0
-    truth, contacts = future_hits(samples)
-    events, known = truth_events(samples, truth, contacts)
-    if not any(known):
-        return {}, {}, 0, 0.0
     frames = causal_frames(track_id, samples)
+    pose_frames = r3_causal_frames(track_id, samples)
     predictions = {
         arm: (
-            run_r1_arm(frames)
+            run_r3_arm(
+                pose_frames,
+                arm,
+                r0_config=config,
+                guard_frames=(
+                    frames
+                    if arm is R3Arm.C_CURVED_DISTRIBUTIONAL_GUARDED
+                    else None
+                ),
+            )
+            if isinstance(arm, R3Arm)
+            else run_r1_arm(frames)
             if arm is Arm.D_R1_OCCUPANCY_CONSENSUS
             else run_r2_arm(frames, config)
             if arm is Arm.E_R2_GUARDED_CONSENSUS
@@ -482,8 +530,19 @@ def evaluate_segment(
         )
         for arm in arms
     }
+    truth, contacts = future_hits(samples)
+    events, known = truth_events(samples, truth, contacts)
+    if not any(known):
+        return {}, {}, 0, 0.0
     scored = {
-        arm: score_arm(samples, arm_predictions, events, known, truth)
+        arm: score_arm(
+            samples,
+            arm_predictions,
+            events,
+            known,
+            truth,
+            clear_grace_s=config.clear_grace_s,
+        )
         for arm, arm_predictions in predictions.items()
     }
     grouped = {
@@ -508,8 +567,8 @@ def parse_sequence_root(value: str) -> tuple[str, Path]:
 
 def compare_arms(
     pooled: dict[str, dict[str, Any]],
-    challenger: Arm,
-    comparator: Arm,
+    challenger: Arm | R3Arm,
+    comparator: Arm | R3Arm,
 ) -> dict[str, Any]:
     left = pooled[challenger.value]
     right = pooled[comparator.value]
@@ -532,7 +591,10 @@ def compare_arms(
     }
 
 
-def evaluate(sequence_roots: Sequence[tuple[str, Path]]) -> dict[str, Any]:
+def evaluate(
+    sequence_roots: Sequence[tuple[str, Path]],
+    include_r3: bool = False,
+) -> dict[str, Any]:
     config = DTRConfig(
         route_horizon_s=HORIZON_S,
         route_half_width_m=ROUTE_HALF_WIDTH_M,
@@ -543,6 +605,7 @@ def evaluate(sequence_roots: Sequence[tuple[str, Path]]) -> dict[str, Any]:
         Arm.C_ROUTE_INTERSECTION,
         Arm.D_R1_OCCUPANCY_CONSENSUS,
         Arm.E_R2_GUARDED_CONSENSUS,
+        *(tuple(R3Arm) if include_r3 else ()),
     )
     pooled = {arm: ArmAccumulator() for arm in arms}
     pooled_groups = {arm: GroupAccumulator() for arm in arms}
@@ -599,6 +662,7 @@ def evaluate(sequence_roots: Sequence[tuple[str, Path]]) -> dict[str, Any]:
             contiguous_track_segments=track_segments,
             evaluable_track_segments=evaluable_segments,
             critical_events=critical_events,
+            track_segment_exposure_s=exposure_s,
         )
         print(
             f"CODa {sequence}: events={critical_events}, "
@@ -612,8 +676,8 @@ def evaluate(sequence_roots: Sequence[tuple[str, Path]]) -> dict[str, Any]:
         }
         for arm in arms
     }
-    return {
-        "schema": SCHEMA,
+    result = {
+        "schema": R3_SCHEMA if include_r3 else SCHEMA,
         "claim_ceiling": CLAIM_CEILING,
         "source": {
             "dataset": "UT Campus Object Dataset (CODa)",
@@ -629,6 +693,7 @@ def evaluate(sequence_roots: Sequence[tuple[str, Path]]) -> dict[str, Any]:
                 "persistent source-native instance IDs",
                 "synchronized timestamps",
                 "dense ego yaw used to express relative tracks in a fixed world orientation",
+                "current-and-past dense ego XY/yaw for R3 wearer-route prediction",
             ],
             "truth_only_after_prediction": "future oriented-box intersection with actual future ego path capsule",
             "algorithm_footprint": "circumscribed circle of current source-native length/width",
@@ -638,6 +703,22 @@ def evaluate(sequence_roots: Sequence[tuple[str, Path]]) -> dict[str, Any]:
             "dynamic_classes": dict(sorted(DYNAMIC_CLASS_GROUP.items())),
             "r1_config": FROZEN_R1_CONFIG.to_dict(),
             "r2_config": FROZEN_R2_CONFIG.to_dict(),
+            "r3_config": FROZEN_R3_CONFIG.to_dict() if include_r3 else None,
+            "r3_route_authority": (
+                "source-native synchronized dense ego XY and yaw"
+                if include_r3
+                else None
+            ),
+            "r3_ablation_interpretation": (
+                "coupled-arm performance only; A/B/C do not isolate a single component"
+                if include_r3
+                else None
+            ),
+            "r3_source_evaluability": (
+                {arm.value: "EVALUABLE_PRIVILEGED_DENSE_POSE_CEILING" for arm in R3Arm}
+                if include_r3
+                else None
+            ),
             "r0_config": {
                 "minimum_history_s": MINIMUM_HISTORY_S,
                 "nominal_wearer_speed_mps": 0.0,
@@ -657,6 +738,16 @@ def evaluate(sequence_roots: Sequence[tuple[str, Path]]) -> dict[str, Any]:
             Arm.E_R2_GUARDED_CONSENSUS,
             Arm.D_R1_OCCUPANCY_CONSENSUS,
         ),
+        "r3_vs_r2": {
+            arm.value: compare_arms(
+                pooled_dict,
+                arm,
+                Arm.E_R2_GUARDED_CONSENSUS,
+            )
+            for arm in R3Arm
+        }
+        if include_r3
+        else None,
         "sequences": sequence_results,
         "limitations": [
             "Privileged native boxes, identities, and poses are an algorithm ceiling, not a deployable detector result.",
@@ -664,8 +755,16 @@ def evaluate(sequence_roots: Sequence[tuple[str, Path]]) -> dict[str, Any]:
             "Circularized algorithm footprints are conservative for long vehicles; oriented rectangles remain truth-only.",
             "Static walls, drop-offs, and vertical head clearance are outside this dynamic-box run.",
             "Risk score/support remain descriptive and uncalibrated.",
+            "False-alert rates are per target-track exposure, not merged user wall-clock alerts per minute.",
         ],
     }
+    if not include_r3:
+        result["protocol"].pop("r3_config")
+        result["protocol"].pop("r3_route_authority")
+        result["protocol"].pop("r3_ablation_interpretation")
+        result["protocol"].pop("r3_source_evaluability")
+        result.pop("r3_vs_r2")
+    return result
 
 
 def main() -> None:
@@ -678,11 +777,18 @@ def main() -> None:
         metavar="SEQUENCE=ROOT",
     )
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument(
+        "--include-r3",
+        action="store_true",
+        help="Add the fixed R3 A/B/C coupled-arm comparison.",
+    )
     args = parser.parse_args()
-    result = evaluate(args.sequence_root)
+    result = evaluate(args.sequence_root, include_r3=args.include_r3)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps(result["r2_vs_r0"], indent=2))
+    if args.include_r3:
+        print(json.dumps(result["r3_vs_r2"], indent=2))
 
 
 if __name__ == "__main__":

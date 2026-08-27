@@ -14,6 +14,7 @@ claim human-authored risk truth, or establish product/safety performance.
 from __future__ import annotations
 
 import argparse
+from array import array
 from dataclasses import dataclass, field
 import hashlib
 import json
@@ -35,11 +36,13 @@ from dtr_r0 import (
 )
 from dtr_r1 import FROZEN_R1_CONFIG, run_r1_arm
 from dtr_r2 import FROZEN_R2_CONFIG, run_r2_arm
+from dtr_r3 import FROZEN_R3_CONFIG, R3Arm, run_r3_arm
 
 
 SCHEMA = "dtr-r0-jrdb-native-ceiling-v1"
 R1_SCHEMA = "dtr-r1-jrdb-native-ceiling-v1"
 R2_SCHEMA = "dtr-r2-jrdb-native-ceiling-v1"
+R3_SCHEMA = "dtr-r3-jrdb-native-ceiling-v1"
 CLAIM_CEILING = "PUBLIC_REAL_PRIVILEGED_NATIVE_TRACK_CEILING_ONLY"
 LABEL_PREFIXES = ("labels_3d/", "labels/labels_3d/")
 HORIZON_S = 3.0
@@ -95,6 +98,18 @@ class ArmAccumulator:
     cleared_events: int = 0
     unknown_prediction_frames: int = 0
     evaluated_prediction_frames: int = 0
+    evaluated_exposure_s: float = 0.0
+    known_negative_exposure_s: float = 0.0
+    matched_event_alerts: int = 0
+    evaluable_event_alert_segments: int = 0
+    fragmented_events: int = 0
+    extra_alert_fragments: int = 0
+    prematurely_cleared_recalled_events: int = 0
+    clear_followup_right_censored_events: int = 0
+    ranking_scores: array = field(default_factory=lambda: array("d"))
+    ranking_labels: bytearray = field(default_factory=bytearray)
+    ranking_evaluable_frames: int = 0
+    missing_ranking_score_frames: int = 0
     category_total: dict[str, int] = field(default_factory=dict)
     category_recalled: dict[str, int] = field(default_factory=dict)
 
@@ -110,11 +125,23 @@ class ArmAccumulator:
             "cleared_events",
             "unknown_prediction_frames",
             "evaluated_prediction_frames",
+            "matched_event_alerts",
+            "evaluable_event_alert_segments",
+            "fragmented_events",
+            "extra_alert_fragments",
+            "prematurely_cleared_recalled_events",
+            "clear_followup_right_censored_events",
+            "ranking_evaluable_frames",
+            "missing_ranking_score_frames",
         ):
             setattr(self, name, getattr(self, name) + getattr(other, name))
+        self.evaluated_exposure_s += other.evaluated_exposure_s
+        self.known_negative_exposure_s += other.known_negative_exposure_s
         self.lead_times_s.extend(other.lead_times_s)
         self.escalation_lead_times_s.extend(other.escalation_lead_times_s)
         self.clear_delays_s.extend(other.clear_delays_s)
+        self.ranking_scores.extend(other.ranking_scores)
+        self.ranking_labels.extend(other.ranking_labels)
         for category, count in other.category_total.items():
             self.category_total[category] = self.category_total.get(category, 0) + count
         for category, count in other.category_recalled.items():
@@ -131,6 +158,11 @@ class ArmAccumulator:
             }
             for category, total in sorted(self.category_total.items())
         }
+        event_precision = ratio(
+            self.matched_event_alerts,
+            self.evaluable_event_alert_segments,
+        )
+        matched_event_recall = ratio(self.matched_event_alerts, self.critical_events)
         result = {
             "critical_events": self.critical_events,
             "critical_events_recalled": self.recalled_events,
@@ -140,20 +172,83 @@ class ArmAccumulator:
             "by_event_geometry": category_recall,
             "alert_segments": self.alert_segments,
             "false_alert_segments": self.false_alert_segments,
+            "alert_segment_precision": ratio(
+                self.alert_segments - self.false_alert_segments,
+                self.alert_segments,
+            ),
+            "event_detection_true_positives": self.matched_event_alerts,
+            "event_detection_evaluable_alert_segments": self.evaluable_event_alert_segments,
+            "event_detection_ignored_alert_segments": (
+                self.alert_segments - self.evaluable_event_alert_segments
+            ),
+            "event_detection_precision": event_precision,
+            "event_detection_recall": matched_event_recall,
+            "event_detection_f1": harmonic_f1(
+                event_precision,
+                matched_event_recall,
+            ),
+            "evaluated_target_track_minutes": self.evaluated_exposure_s / 60.0,
+            "false_alert_segments_per_target_track_minute": ratio(
+                self.false_alert_segments,
+                self.evaluated_exposure_s / 60.0,
+            ),
+            "known_negative_target_track_minutes": self.known_negative_exposure_s / 60.0,
+            "false_alert_segments_per_known_negative_target_track_minute": ratio(
+                self.false_alert_segments,
+                self.known_negative_exposure_s / 60.0,
+            ),
             "mean_alert_segments_per_critical_event": ratio(
                 self.event_fragments, self.critical_events
+            ),
+            "onset_fragments_in_event_windows": self.event_fragments,
+            "mean_onset_fragments_per_matched_event": ratio(
+                self.event_fragments,
+                self.matched_event_alerts,
+            ),
+            "fragmented_events": self.fragmented_events,
+            "fragmented_event_rate": ratio(
+                self.fragmented_events,
+                self.matched_event_alerts,
+            ),
+            "extra_alert_fragments": self.extra_alert_fragments,
+            "extra_onsets_per_matched_event": ratio(
+                self.extra_alert_fragments,
+                self.matched_event_alerts,
             ),
             "median_first_alert_lead_s": median_or_none(self.lead_times_s),
             "clear_eligible_events": self.clear_eligible_events,
             "cleared_events": self.cleared_events,
+            "uncleared_clear_eligible_events": (
+                self.clear_eligible_events - self.cleared_events
+            ),
             "clear_rate": ratio(self.cleared_events, self.clear_eligible_events),
             "median_clear_delay_s": median_or_none(self.clear_delays_s),
+            "prematurely_cleared_recalled_events": self.prematurely_cleared_recalled_events,
+            "clear_followup_right_censored_events": self.clear_followup_right_censored_events,
             "unknown_prediction_frames": self.unknown_prediction_frames,
             "evaluated_prediction_frames": self.evaluated_prediction_frames,
             "known_prediction_coverage": ratio(
                 self.evaluated_prediction_frames
                 - self.unknown_prediction_frames,
                 self.evaluated_prediction_frames,
+            ),
+            "frame_auprc": (
+                average_precision(self.ranking_scores, self.ranking_labels)
+                if self.ranking_scores
+                else None
+            ),
+            "frame_auprc_evaluable_frames": len(self.ranking_scores),
+            "frame_auprc_missing_score_frames": self.missing_ranking_score_frames,
+            "frame_auprc_score_coverage": ratio(
+                len(self.ranking_scores),
+                self.ranking_evaluable_frames,
+            ),
+            "frame_auprc_scope": (
+                "score-known frames among countable-event and known-negative frames"
+            ),
+            "frame_auprc_rankable_frames": self.ranking_evaluable_frames,
+            "frame_auprc_ignored_evaluator_known_frames": (
+                self.evaluated_prediction_frames - self.ranking_evaluable_frames
             ),
         }
         if include_escalation:
@@ -175,6 +270,46 @@ def ratio(numerator: int | float, denominator: int | float) -> float | None:
     if denominator == 0:
         return None
     return numerator / denominator
+
+
+def harmonic_f1(precision: float | None, recall: float | None) -> float | None:
+    if precision is None or recall is None:
+        return None
+    if precision + recall == 0.0:
+        return 0.0
+    return 2.0 * precision * recall / (precision + recall)
+
+
+def average_precision(scores: Sequence[float], labels: Sequence[bool]) -> float | None:
+    """Tie-aware frame-level average precision for a continuous decision score."""
+
+    if len(scores) != len(labels):
+        raise ValueError("ranking score/label lengths differ")
+    positives = sum(labels)
+    if not scores or positives == 0:
+        return None
+    ordered = sorted(range(len(scores)), key=scores.__getitem__, reverse=True)
+    true_positives = 0
+    false_positives = 0
+    previous_recall = 0.0
+    result = 0.0
+    index = 0
+    while index < len(ordered):
+        score = scores[ordered[index]]
+        group_true = 0
+        group_false = 0
+        while index < len(ordered) and scores[ordered[index]] == score:
+            label = bool(labels[ordered[index]])
+            group_true += int(label)
+            group_false += int(not label)
+            index += 1
+        true_positives += group_true
+        false_positives += group_false
+        recall = true_positives / positives
+        precision = true_positives / (true_positives + false_positives)
+        result += (recall - previous_recall) * precision
+        previous_recall = recall
+    return result
 
 
 def median_or_none(values: Sequence[float]) -> float | None:
@@ -437,12 +572,60 @@ def overlaps(segment: AlertSegment, start: int, end: int) -> bool:
     return segment.start_index <= end and segment.end_index >= start
 
 
+def maximum_event_alert_assignment(
+    segments: Sequence[AlertSegment],
+    events: Sequence[TruthEvent],
+) -> dict[int, int]:
+    """Map event index to alert index using ONSET-in-window one-to-one matching."""
+
+    segment_to_event: dict[int, int] = {}
+
+    def assign(event_index: int, visited: set[int]) -> bool:
+        event = events[event_index]
+        for segment_index, segment in enumerate(segments):
+            if (
+                segment_index in visited
+                or not event.start_index
+                <= segment.start_index
+                <= event.contact_index
+            ):
+                continue
+            visited.add(segment_index)
+            previous = segment_to_event.get(segment_index)
+            if previous is None or assign(previous, visited):
+                segment_to_event[segment_index] = event_index
+                return True
+        return False
+
+    for event_index in range(len(events)):
+        assign(event_index, set())
+    return {
+        event_index: segment_index
+        for segment_index, event_index in segment_to_event.items()
+    }
+
+
+def maximum_event_alert_matching(
+    segments: Sequence[AlertSegment],
+    events: Sequence[TruthEvent],
+) -> int:
+    return len(maximum_event_alert_assignment(segments, events))
+
+
+def continuous_decision_score(prediction: Prediction) -> float | None:
+    value = prediction.diagnostic.get("decision_score")
+    if isinstance(value, (int, float)) and math.isfinite(float(value)):
+        return float(value)
+    return None
+
+
 def score_arm(
     samples: Sequence[NativeSample],
     predictions: Sequence[Prediction],
     events: Sequence[TruthEvent],
     known: Sequence[bool],
     truth: Sequence[bool | None],
+    clear_grace_s: float = 0.50,
 ) -> ArmAccumulator:
     result = ArmAccumulator()
     segments = [
@@ -458,11 +641,61 @@ def score_arm(
         )
         for segment in segments
     )
+    countable_positive = {
+        index
+        for event in events
+        for index in range(event.start_index, event.end_index + 1)
+    }
+    ignored_positive = {
+        index
+        for index, (is_known, truth_value) in enumerate(zip(known, truth))
+        if is_known and truth_value is True and index not in countable_positive
+    }
+    precision_segments = [
+        segment
+        for segment in segments
+        if known[segment.start_index]
+        and segment.start_index not in ignored_positive
+    ]
+    result.evaluable_event_alert_segments = len(precision_segments)
+    event_assignment = maximum_event_alert_assignment(
+        precision_segments,
+        events,
+    )
+    result.matched_event_alerts = len(event_assignment)
     result.evaluated_prediction_frames = sum(known)
     result.unknown_prediction_frames = sum(
         is_known and prediction.raw_alert is None
         for is_known, prediction in zip(known, predictions)
     )
+    known_indices = [index for index, is_known in enumerate(known) if is_known]
+    if len(known_indices) > 1:
+        result.evaluated_exposure_s = (
+            samples[known_indices[-1]].time_s - samples[known_indices[0]].time_s
+        )
+    result.known_negative_exposure_s = sum(
+        samples[index + 1].time_s - samples[index].time_s
+        for index in range(len(samples) - 1)
+        if known[index]
+        and known[index + 1]
+        and truth[index] is False
+        and truth[index + 1] is False
+    )
+    for index, (is_known, truth_value, prediction) in enumerate(
+        zip(known, truth, predictions)
+    ):
+        if not is_known or index in ignored_positive:
+            continue
+        result.ranking_evaluable_frames += 1
+        if prediction.raw_alert is None:
+            result.missing_ranking_score_frames += 1
+            continue
+        score = continuous_decision_score(prediction)
+        if score is None:
+            result.missing_ranking_score_frames += 1
+            continue
+        result.ranking_scores.append(score)
+        result.ranking_labels.append(truth_value is True)
 
     for event_index, event in enumerate(events):
         result.critical_events += 1
@@ -477,9 +710,12 @@ def score_arm(
         event_segments = [
             segment
             for segment in segments
-            if overlaps(segment, event.start_index, event.end_index)
+            if event.start_index <= segment.start_index <= event.contact_index
         ]
         result.event_fragments += len(event_segments)
+        if len(event_segments) > 1:
+            result.fragmented_events += 1
+            result.extra_alert_fragments += len(event_segments) - 1
         if warning_segments:
             result.recalled_events += 1
             result.category_recalled[event.category] = (
@@ -505,18 +741,47 @@ def score_arm(
             if event_index + 1 < len(events)
             else len(samples)
         )
+        matched_segment_index = event_assignment.get(event_index)
+        if matched_segment_index is None:
+            continue
+        matched_segment = precision_segments[matched_segment_index]
+        active_through_event = any(
+            segment.end_index >= event.end_index for segment in (matched_segment,)
+        )
+        if not active_through_event:
+            result.prematurely_cleared_recalled_events += 1
+            continue
+        negative_followup: list[int] = []
+        followup_index = event.end_index + 1
+        while (
+            followup_index < next_start
+            and known[followup_index]
+            and truth[followup_index] is False
+        ):
+            negative_followup.append(followup_index)
+            followup_index += 1
+        if not negative_followup:
+            result.clear_followup_right_censored_events += 1
+            continue
         clear_candidates = [
             index
-            for index in range(event.end_index + 1, next_start)
-            if known[index] and predictions[index].signal is Signal.CLEAR
+            for index in negative_followup
+            if predictions[index].signal is Signal.CLEAR
         ]
-        if any(known[index] for index in range(event.end_index + 1, next_start)):
+        followup_span_s = (
+            samples[negative_followup[-1]].time_s
+            - samples[negative_followup[0]].time_s
+        )
+        if followup_span_s + 1e-9 >= clear_grace_s:
             result.clear_eligible_events += 1
             if clear_candidates:
                 result.cleared_events += 1
                 result.clear_delays_s.append(
-                    samples[clear_candidates[0]].time_s - samples[event.end_index].time_s
+                    samples[clear_candidates[0]].time_s
+                    - samples[negative_followup[0]].time_s
                 )
+        else:
+            result.clear_followup_right_censored_events += 1
     return result
 
 
@@ -524,8 +789,8 @@ def evaluate_track_segment(
     track_id: str,
     samples: Sequence[NativeSample],
     config: DTRConfig,
-    arms: Sequence[Arm] = (Arm.B2_RADIAL_TTC, Arm.C_ROUTE_INTERSECTION),
-) -> tuple[dict[Arm, ArmAccumulator], int, float]:
+    arms: Sequence[Arm | R3Arm] = (Arm.B2_RADIAL_TTC, Arm.C_ROUTE_INTERSECTION),
+) -> tuple[dict[Arm | R3Arm, ArmAccumulator], int, float]:
     if (
         len(samples) < 2
         or samples[-1].time_s - samples[0].time_s
@@ -533,6 +798,27 @@ def evaluate_track_segment(
     ):
         return {}, 0, 0.0
     frames = causal_frames(track_id, samples)
+    predictions = {
+        arm: (
+                run_r3_arm(
+                    frames,
+                    arm,
+                    r0_config=config,
+                    guard_frames=(
+                        frames
+                        if arm is R3Arm.C_CURVED_DISTRIBUTIONAL_GUARDED
+                        else None
+                    ),
+                )
+                if isinstance(arm, R3Arm)
+                else run_r1_arm(frames)
+                if arm is Arm.D_R1_OCCUPANCY_CONSENSUS
+                else run_r2_arm(frames, config)
+                if arm is Arm.E_R2_GUARDED_CONSENSUS
+                else run_arm(frames, arm, config)
+            )
+        for arm in arms
+    }
     truth, contacts = future_hits(samples)
     events, known = truth_events(
         samples, truth, contacts, config.minimum_track_span_s
@@ -542,16 +828,11 @@ def evaluate_track_segment(
     scored = {
         arm: score_arm(
             samples,
-            (
-                run_r1_arm(frames)
-                if arm is Arm.D_R1_OCCUPANCY_CONSENSUS
-                else run_r2_arm(frames, config)
-                if arm is Arm.E_R2_GUARDED_CONSENSUS
-                else run_arm(frames, arm, config)
-            ),
+            predictions[arm],
             events,
             known,
             truth,
+            clear_grace_s=config.clear_grace_s,
         )
         for arm in arms
     }
@@ -667,8 +948,8 @@ def r1_dominance_decision(pooled: dict[str, dict[str, Any]]) -> dict[str, Any] |
 
 def successor_comparison(
     pooled: dict[str, dict[str, Any]],
-    challenger: Arm,
-    comparator: Arm,
+    challenger: Arm | R3Arm,
+    comparator: Arm | R3Arm,
 ) -> dict[str, Any] | None:
     if challenger.value not in pooled or comparator.value not in pooled:
         return None
@@ -709,8 +990,10 @@ def evaluate(
     selected_sequences: set[str] | None,
     include_r1: bool = False,
     include_r2: bool = False,
+    include_r3: bool = False,
 ) -> dict[str, Any]:
-    include_successor = include_r1 or include_r2
+    include_r2_effective = include_r2 or include_r3
+    include_successor = include_r1 or include_r2_effective
     config = DTRConfig(
         route_horizon_s=HORIZON_S,
         route_half_width_m=ROUTE_HALF_WIDTH_M,
@@ -720,7 +1003,8 @@ def evaluate(
         Arm.B2_RADIAL_TTC,
         Arm.C_ROUTE_INTERSECTION,
         *((Arm.D_R1_OCCUPANCY_CONSENSUS,) if include_successor else ()),
-        *((Arm.E_R2_GUARDED_CONSENSUS,) if include_r2 else ()),
+        *((Arm.E_R2_GUARDED_CONSENSUS,) if include_r2_effective else ()),
+        *(tuple(R3Arm) if include_r3 else ()),
     )
     pooled = {arm: ArmAccumulator() for arm in arms}
     sequence_results = []
@@ -811,7 +1095,15 @@ def evaluate(
         for arm, metrics in pooled.items()
     }
     result = {
-        "schema_version": R2_SCHEMA if include_r2 else R1_SCHEMA if include_r1 else SCHEMA,
+        "schema_version": (
+            R3_SCHEMA
+            if include_r3
+            else R2_SCHEMA
+            if include_r2
+            else R1_SCHEMA
+            if include_r1
+            else SCHEMA
+        ),
         "claim_ceiling": CLAIM_CEILING,
         "source": {
             "dataset": "JRDB public caller-provided labels/timestamps split",
@@ -846,7 +1138,27 @@ def evaluate(
                 MINIMUM_FALSE_ALERT_REDUCTION
             ),
             "r1": FROZEN_R1_CONFIG.to_dict() if include_successor else None,
-            "r2": FROZEN_R2_CONFIG.to_dict() if include_r2 else None,
+            "r2": FROZEN_R2_CONFIG.to_dict() if include_r2_effective else None,
+            "r3": FROZEN_R3_CONFIG.to_dict() if include_r3 else None,
+            "r3_route_authority": (
+                "robot-relative identity-pose degeneration only; no synchronized ego yaw-rate"
+                if include_r3
+                else None
+            ),
+            "r3_source_evaluability": (
+                {
+                    R3Arm.A_CURVED_ROBUST_CV.value: "NOT_EVALUABLE_CURVED_ROUTE_AUTHORITY_ABSENT",
+                    R3Arm.B_STRAIGHT_DISTRIBUTIONAL.value: "EVALUABLE_IDENTITY_RELATIVE_DIAGNOSTIC",
+                    R3Arm.C_CURVED_DISTRIBUTIONAL_GUARDED.value: "EVALUABLE_STRAIGHT_DEGENERATION_WITH_GUARD_ONLY",
+                }
+                if include_r3
+                else None
+            ),
+            "r3_ablation_interpretation": (
+                "coupled-arm performance only; no single-component causal attribution"
+                if include_r3
+                else None
+            ),
         },
         "coverage": totals,
         "pooled": pooled_dict,
@@ -862,21 +1174,40 @@ def evaluate(
             Arm.E_R2_GUARDED_CONSENSUS,
             Arm.D_R1_OCCUPANCY_CONSENSUS,
         ),
+        "r3_vs_r2": {
+            arm.value: successor_comparison(
+                pooled_dict,
+                arm,
+                Arm.E_R2_GUARDED_CONSENSUS,
+            )
+            for arm in R3Arm
+        }
+        if include_r3
+        else None,
         "by_sequence": sequence_results,
         "limitations": [
             "JRDB 3-D person boxes are privileged source annotations and may be interpolated.",
             "The processed labels/timestamps release has no synchronized ego pose, so this is robot-relative closure rather than exact wearer-route evaluation.",
+            "R3-A/C therefore exercise only the identity-pose straight degeneration here; JRDB does not contribute curved-route evidence.",
             "Geometry-derived route entry is not human-authored alertability or safety truth.",
             "No RGB detector, tracker, phone metric depth, Android runtime, or user study is evaluated.",
+            "False-alert rates are per target-track exposure, not merged user wall-clock alerts per minute.",
+            "This is a retrospective ceiling on a previously inspected public cohort, not a fresh holdout confirmation.",
         ],
     }
     if not include_successor:
         result["configuration"].pop("r1")
         result.pop("r1_decision")
-    if not include_r2:
+    if not include_r2_effective:
         result["configuration"].pop("r2")
         result.pop("r2_vs_r0")
         result.pop("r2_vs_r1")
+    if not include_r3:
+        result["configuration"].pop("r3")
+        result["configuration"].pop("r3_route_authority")
+        result["configuration"].pop("r3_source_evaluability")
+        result["configuration"].pop("r3_ablation_interpretation")
+        result.pop("r3_vs_r2")
     return result
 
 
@@ -896,6 +1227,11 @@ def main() -> int:
         help="Add R1 plus the fixed half-horizon guarded R2 successor.",
     )
     parser.add_argument(
+        "--include-r3",
+        action="store_true",
+        help="Add R1/R2 plus the fixed R3 A/B/C ablation.",
+    )
+    parser.add_argument(
         "--sequence",
         action="append",
         help="Evaluate only the named sequence; repeat for more than one.",
@@ -909,6 +1245,7 @@ def main() -> int:
         set(args.sequence) if args.sequence else None,
         include_r1=args.include_r1,
         include_r2=args.include_r2,
+        include_r3=args.include_r3,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(

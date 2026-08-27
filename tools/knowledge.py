@@ -8,6 +8,7 @@ import json
 import os
 import re
 import sys
+from collections import Counter
 from datetime import date
 from pathlib import Path, PurePosixPath
 from typing import Any, Iterable
@@ -58,6 +59,16 @@ EVIDENCE_KINDS = {"repo", "experiment", "git", "artifact", "external"}
 REFERENCE_PREFIXES = ("https://", "http://", "doi:", "repo:", "git:")
 MIGRATION_DISPOSITIONS = {"migrated", "deduplicated", "synthesis"}
 SHA256_PATTERN = re.compile(r"^[0-9a-fA-F]{64}$")
+CONTEXT_DEFAULT_LIMIT = 12
+CONTEXT_VERDICT_PRIORITY = {
+    "falsified": 0,
+    "negative": 1,
+    "mixed": 2,
+    "not_evaluable": 3,
+    "unknown": 4,
+    "positive": 5,
+    "not_run": 6,
+}
 
 
 class KnowledgeError(RuntimeError):
@@ -725,6 +736,226 @@ def _command_search(args: argparse.Namespace) -> int:
     return 0
 
 
+def _context_bucket(use: dict[str, Any]) -> int:
+    state = use["use_state"]
+    verdict = use["evaluation"]["verdict"]
+    if state == "active":
+        return 0
+    if verdict != "not_run" or state == "rejected":
+        return 1
+    return {
+        "adopted": 2,
+        "planned": 3,
+        "candidate": 4,
+        "retired": 5,
+    }.get(state, 6)
+
+
+def _context_entry(item: dict[str, Any], use: dict[str, Any]) -> dict[str, Any]:
+    mechanisms = {
+        mechanism["id"]: mechanism for mechanism in item.get("mechanisms", [])
+    }
+    latest_change = use.get("history", [])[-1] if use.get("history") else None
+    return {
+        "item": {
+            "id": item["id"],
+            "kind": item["kind"],
+            "title": item["title"],
+            "canonical_ref": item["canonical_ref"],
+            "summary": item["summary"],
+            "aliases": item.get("aliases", []),
+        },
+        "mechanisms": [
+            mechanisms[mechanism_id]
+            for mechanism_id in use.get("mechanism_ids", [])
+            if mechanism_id in mechanisms
+        ],
+        "use": {
+            "id": use["id"],
+            "use_state": use["use_state"],
+            "adoption_mode": use["adoption_mode"],
+            "usage": use["usage"],
+            "evaluation": use["evaluation"],
+            "evidence": use["evidence"],
+            "latest_change": latest_change,
+            "updated_at": use["updated_at"],
+        },
+    }
+
+
+def _context_sort_key(entry: dict[str, Any]) -> tuple[int, int, str, str]:
+    use = entry["use"]
+    return (
+        _context_bucket(use),
+        CONTEXT_VERDICT_PRIORITY[use["evaluation"]["verdict"]],
+        entry["item"]["title"].casefold(),
+        use["id"],
+    )
+
+
+def _select_context_entries(
+    entries: list[dict[str, Any]], limit: int | None
+) -> list[dict[str, Any]]:
+    if limit is None or len(entries) <= limit:
+        return entries
+
+    selected_ids: set[str] = set()
+    represented_buckets: set[int] = set()
+    for entry in entries:
+        bucket = _context_bucket(entry["use"])
+        if bucket in represented_buckets:
+            continue
+        selected_ids.add(entry["use"]["id"])
+        represented_buckets.add(bucket)
+        if len(selected_ids) == limit:
+            break
+    for entry in entries:
+        if len(selected_ids) == limit:
+            break
+        selected_ids.add(entry["use"]["id"])
+    return [entry for entry in entries if entry["use"]["id"] in selected_ids]
+
+
+def _build_context(
+    items: dict[str, dict[str, Any]],
+    uses: dict[str, dict[str, Any]],
+    *,
+    route: str,
+    query: str | None,
+    limit: int | None,
+) -> dict[str, Any]:
+    route_uses = [use for use in uses.values() if use.get("route") == route]
+    if not route_uses:
+        raise KnowledgeError(f"no knowledge uses found for route: {route}")
+
+    entries = [
+        _context_entry(items[use["item_id"]], use) for use in route_uses
+    ]
+    if query:
+        query_folded = query.casefold()
+        entries = [
+            entry
+            for entry in entries
+            if query_folded
+            in json.dumps(entry, ensure_ascii=False).casefold()
+        ]
+    entries.sort(key=_context_sort_key)
+    state_counts = Counter(entry["use"]["use_state"] for entry in entries)
+    verdict_counts = Counter(
+        entry["use"]["evaluation"]["verdict"] for entry in entries
+    )
+    matched_count = len(entries)
+    selected = _select_context_entries(entries, limit)
+    return {
+        "route": route,
+        "query": query,
+        "summary": {
+            "route_total_uses": len(route_uses),
+            "matched_uses": matched_count,
+            "returned_uses": len(selected),
+            "omitted_uses": matched_count - len(selected),
+            "states": dict(sorted(state_counts.items())),
+            "verdicts": dict(sorted(verdict_counts.items())),
+            "selection_policy": (
+                "represent every present priority tier once, then fill active first; "
+                "evaluated or rejected; adopted, planned, candidate, and retired; "
+                "stable title order within each tier"
+            ),
+        },
+        "entries": selected,
+    }
+
+
+def _one_line(value: Any) -> str:
+    return " ".join(str(value).split())
+
+
+def _print_context(payload: dict[str, Any], as_json: bool) -> None:
+    if as_json:
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+
+    summary = payload["summary"]
+    print(f"# Route knowledge context: {payload['route']}")
+    if payload["query"]:
+        print(f"Query: {payload['query']}")
+    print(
+        f"Uses: route={summary['route_total_uses']} matched={summary['matched_uses']} "
+        f"returned={summary['returned_uses']} omitted={summary['omitted_uses']}"
+    )
+    states = ", ".join(
+        f"{name}={count}" for name, count in summary["states"].items()
+    ) or "none"
+    verdicts = ", ".join(
+        f"{name}={count}" for name, count in summary["verdicts"].items()
+    ) or "none"
+    print(f"States: {states}")
+    print(f"Verdicts: {verdicts}")
+
+    for entry in payload["entries"]:
+        item = entry["item"]
+        use = entry["use"]
+        evaluation = use["evaluation"]
+        print()
+        print(
+            f"## {use['use_state']} / {evaluation['verdict']} — {item['title']}"
+        )
+        aliases = ", ".join(item["aliases"]) or "-"
+        print(f"- IDs: {item['id']} | {use['id']} | aliases: {aliases}")
+        print(f"- Source: {item['canonical_ref']}")
+        if entry["mechanisms"]:
+            mechanism_text = "; ".join(
+                f"{mechanism['name']}: {mechanism['description']}"
+                for mechanism in entry["mechanisms"]
+            )
+            print(f"- Mechanism: {_one_line(mechanism_text)}")
+        usage = use["usage"]
+        print(f"- Application: {_one_line(usage['project_application'])}")
+        print(f"- Modification: {_one_line(usage['modifications'])}")
+        print(f"- Expected effect: {_one_line(usage['expected_effect'])}")
+        print(
+            f"- Evaluation: {evaluation['reproduction_status']} / "
+            f"{evaluation['verdict']}"
+        )
+        if evaluation["effect"]:
+            print(f"- Observed effect: {_one_line(evaluation['effect'])}")
+        if evaluation["metrics"]:
+            print(f"- Metrics: {'; '.join(evaluation['metrics'])}")
+        print(f"- Claim boundary: {_one_line(evaluation['claim_boundary'])}")
+        evidence_refs = "; ".join(
+            evidence["ref"] for evidence in use["evidence"]
+        ) or "-"
+        print(f"- Evidence: {evidence_refs}")
+        if use["latest_change"]:
+            latest = use["latest_change"]
+            print(
+                f"- Latest change: {latest['date']} — "
+                f"{_one_line(latest['change'])}"
+            )
+
+    if summary["omitted_uses"]:
+        print()
+        print(
+            f"Omitted {summary['omitted_uses']} lower-priority matches. "
+            "Refine with --query or request the complete route with --all."
+        )
+
+
+def _command_context(args: argparse.Namespace) -> int:
+    items, uses = _require_valid(args.root)
+    if not args.include_all and args.limit < 1:
+        raise KnowledgeError("--limit must be at least 1")
+    payload = _build_context(
+        items,
+        uses,
+        route=args.route,
+        query=args.query,
+        limit=None if args.include_all else args.limit,
+    )
+    _print_context(payload, args.json)
+    return 0
+
+
 def _command_show(args: argparse.Namespace) -> int:
     items, uses = _require_valid(args.root)
     if args.id in uses:
@@ -982,6 +1213,28 @@ def _build_parser() -> argparse.ArgumentParser:
     search_parser.add_argument("--route")
     search_parser.add_argument("--json", action="store_true")
     search_parser.set_defaults(handler=_command_search)
+
+    context_parser = subparsers.add_parser(
+        "context",
+        help="Build a compact route-specific research context.",
+    )
+    context_parser.add_argument("--route", required=True)
+    context_parser.add_argument("--query")
+    context_size = context_parser.add_mutually_exclusive_group()
+    context_size.add_argument(
+        "--limit",
+        type=int,
+        default=CONTEXT_DEFAULT_LIMIT,
+        help=f"Maximum returned uses (default: {CONTEXT_DEFAULT_LIMIT}).",
+    )
+    context_size.add_argument(
+        "--all",
+        action="store_true",
+        dest="include_all",
+        help="Return every matching use for the route.",
+    )
+    context_parser.add_argument("--json", action="store_true")
+    context_parser.set_defaults(handler=_command_context)
 
     show_parser = subparsers.add_parser(
         "show", help="Show an item, alias, or use record."

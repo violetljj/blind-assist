@@ -1,16 +1,15 @@
 # DTR literature reserve: DR41-DR60
 
-Status: `DATED_KNOWLEDGE_RESERVE / NO_ACTIVE_SUCCESSOR /
-DOES_NOT_CHANGE_CURRENT_ROUTE`
+Status: `DATED_KNOWLEDGE_RESERVE / R3_GATE_NOT_MET / DR55_CONSUMED /
+NO_ACTIVE_SUCCESSOR`
 
 Date: 2026-08-27
 
 This note adds 20 peer-reviewed papers to the obstacle-risk knowledge reserve.
 It is deduplicated against DR01-DR40 preserved at
 `archive/pre-agent-surface-2026-08-26` and against the papers already cited in
-this route. It does not authorize post-hoc tuning, changes to the current R2
-decision or in-progress R3 experiment, a new route, Android integration, or
-product/safety claims.
+this route. It does not authorize post-hoc tuning, reopening the failed R3 gate,
+learned R4, a new route, Android integration, or product/safety claims.
 
 The selection target is the current DTR problem:
 
@@ -55,7 +54,7 @@ primary proceedings, publisher pages, author pages, or arXiv manuscripts.
 | DR52 | [Scenario-Based Trajectory Optimization in Uncertain Dynamic Environments](https://doi.org/10.1109/LRA.2021.3074866), IEEE RA-L 2021 | Convert arbitrary obstacle distributions into sampled collision scenarios and geometrically prune only route-irrelevant samples for real-time computation. | Treat pairwise velocities as scenarios; exhaustive and pruned evaluation must recall the same positive events while reducing runtime. | It bounds marginal risk per time step, not automatically the joint probability of a complete DTR event. |
 | DR53 | [RADIUS: Risk-Aware, Real-Time, Reachability-Based Motion Planning](https://www.roboticsproceedings.org/rss19/p083.html), RSS 2023 | Combine offline reachable sets with an online closed-form over-approximation of collision risk for arbitrary obstacle-position distributions. | On frozen stochastic replay, empirical violations must respect a preregistered risk level without collapsing into universal alert or abstention. | Autonomous-driving simulation and hardware with modeled distributions; no BlindAssist calibration or safety transfer. |
 | DR54 | [Integrating Predictive Motion Uncertainties with Distributionally Robust Risk-Aware Control for Safe Robot Navigation in Crowds](https://doi.org/10.1109/ICRA57147.2024.10610404), ICRA 2024 | Place a distributionally robust ambiguity set around predicted motion rather than trusting one fitted distribution. | Under source-disjoint motion shift, compare calibration and event trade-offs against R3 strict-majority support within the same runtime budget. | Planner/controller evidence; its chance constraint is not a validated BlindAssist warning probability. |
-| DR55 | [A Generalized Continuous Collision Detection Framework of Polynomial Trajectory for Mobile Robots in Cluttered Environments](https://doi.org/10.1109/LRA.2022.3191934), IEEE RA-L/IROS 2022 | Solve continuous time-of-impact along polynomial/nonholonomic trajectories instead of relying on discrete route samples. | Generate thin, grazing, and turn-entry contacts between R3's 0.1 s samples; compare with a dense oracle and require fewer interpolation misses without extra event segments. | Known geometry and robot trajectories; no target uncertainty, wearable sensing, or user evidence. |
+| DR55 | [A Generalized Continuous Collision Detection Framework of Polynomial Trajectory for Mobile Robots in Cluttered Environments](https://doi.org/10.1109/LRA.2022.3191934), IEEE RA-L/IROS 2022 | Solve continuous time-of-impact along polynomial/nonholonomic trajectories instead of relying on discrete route samples. | Generate thin, grazing, turn-entry, and fast transverse contacts between static S3's 0.1 s route points; compare S4 with a dense oracle and require fewer interpolation misses without extra public-replay event segments. | Known geometry and robot trajectories; no target uncertainty, wearable sensing, or user evidence. |
 | DR56 | [Distance and Collision Probability Estimation from Gaussian Surface Models](https://www.kshitijgoel.com/goel-distance-2025/index.html), IROS 2025 | Approximate the body and environment as ellipsoids/Gaussian mixtures and compute distance, gradient, and blended collision probability in microseconds on embedded CPUs. | Compare lower-body/head ellipsoids against Monte Carlo geometry under box/surface perturbations and measure phone-class latency. | Primarily static surfaces; no dynamic intent, hanging-branch truth, or drop-off evidence. |
 | DR57 | [Robo-Centric ESDF: A Fast and Accurate Whole-Body Collision Evaluation Tool for Any-Shape Robotic Planning](https://doi.org/10.1109/IROS55552.2023.10342074), IROS 2023 | Use a body-frame ESDF for arbitrary oriented 3-D shapes, including nonconvex bodies, with fast position/rotation queries. | Compare current circular tube plus height bands with a privileged whole-body oracle over turns, narrow gaps, and overhangs. | Robot-body/static-map evidence; it does not supply human dimensions or source-native head/ground truth. |
 | DR58 | [OVPC Mesh: 3D Free-Space Representation for Local Ground Vehicle Navigation](https://doi.org/10.1109/ICRA.2019.8793503), ICRA 2019 | Build a conservative watertight free-space mesh from visible points, retaining overhang and rough-terrain structure while keeping unseen space distinct. | Test overhang, occlusion, and drop-off scenes; known clearance must survive and unobserved gaps must remain `UNKNOWN`. | UGV point clouds; no monocular/mobile RGB, pedestrian envelope, or human head/drop-off outcome. |
@@ -67,22 +66,27 @@ primary proceedings, publisher pages, author pages, or arXiv manuscripts.
 | DR59 | [Evaluation of Trajectory Distribution Predictions with Energy Score](https://proceedings.mlr.press/v235/shahroudi24a.html), ICML 2024 | Shows that truth-selected minimum-of-N metrics are not strictly proper and proposes Energy Score for complete multivariate trajectory distributions. | Construct mode-collapsed and overdispersed forecasts with similar minADE/minFDE; Energy Score should distinguish them before route-event comparison. | Evaluator only; it creates neither a predictor, an abstention policy, nor an operational risk threshold. |
 | DR60 | [Precision and Recall for Time Series](https://proceedings.neurips.cc/paper/2018/hash/8f468c873a32bb0619eaeb2050ba45d1-Abstract.html), NeurIPS 2018 | Range-based precision/recall separates existence, overlap, position bias, and fragmentation/cardinality penalties. | On canonical timelines, early contiguous alerts must outrank late, fragmented, or excessively long alerts; freeze weighting before model comparison. | Generic evaluator whose configurable weights can hide failures if selected after observing results. |
 
-## Highest-value reading order for the current R3 boundary
+## Highest-value reading order after the R3/S4 result
 
-1. **DR55** tests whether R3's 0.1-second route sampling misses thin or grazing
-   contacts before any richer predictor is considered.
-2. **DR42 + DR43** define a better tracker-to-forecast contract: covariance,
-   missingness, novelty, expected error, and explicit `UNKNOWN`.
-3. **DR41** is the most direct answer to detector/NMS disappearance: add a
-   dense residual occupancy head rather than pretending a missing track is free
-   space.
-4. **DR59** prevents best-of-K trajectory metrics from making an overdispersed
+1. **DR55 is consumed at the current evidence ceiling.** Dynamic R2 already
+   solves continuous entry on its straight route, and R3 already solves
+   continuous time-of-impact inside every curved-route chord. Static S3 was the
+   actual point-sampling gap: S4 recovered all four controlled interpolation
+   misses (`0/4` to `4/4`) and added no false segment on CODa 16+18+20, but the
+   public replay stayed tied at `12/12` recall and 10 false segments. The
+   remaining geometric approximation is the polynomial curve by chords.
+2. **DR41 + DR42 + DR43 + DR45** form the next information-bearing route:
+   detector-independent residual occupancy plus covariance, missingness,
+   novelty, time-since-seen, bounded imputation, expected error, and explicit
+   `UNKNOWN`. It needs a real residual/RGB source; native tracks alone cannot
+   falsify it.
+3. **DR59** prevents best-of-K trajectory metrics from making an overdispersed
    model look useful.
-5. **DR60** maps directly to DTR's event fragmentation, useful onset, nuisance
+4. **DR60** maps directly to DTR's event fragmentation, useful onset, nuisance
    duration, and CLEAR behavior.
-6. **DR49** is the strongest longer-term common representation for static and
-   dynamic future occupancy if R3 establishes that richer prediction is worth
-   the complexity.
+5. **DR49** remains the strongest longer-term common representation for static
+   and dynamic future occupancy, but the failed R3 gate does not authorize its
+   added learned-prediction complexity on the current evidence sources.
 
 ## Deliberate exclusions
 

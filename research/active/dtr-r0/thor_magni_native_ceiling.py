@@ -19,6 +19,7 @@ from typing import Any, Iterable, Sequence
 from dtr_r0 import Arm, CausalFrame, DTRConfig, EgoPose, Observation, run_arm
 from dtr_r1 import FROZEN_R1_CONFIG, run_r1_arm
 from dtr_r2 import FROZEN_R2_CONFIG, run_r2_arm
+from dtr_r3 import FROZEN_R3_CONFIG, R3Arm, run_r3_arm
 from jrdb_native_ceiling import (
     ArmAccumulator,
     decision,
@@ -34,6 +35,7 @@ from jrdb_native_ceiling import (
 SCHEMA = "dtr-r0-thor-magni-native-ceiling-v1"
 R1_SCHEMA = "dtr-r1-thor-magni-native-ceiling-v1"
 R2_SCHEMA = "dtr-r2-thor-magni-native-ceiling-v1"
+R3_SCHEMA = "dtr-r3-thor-magni-native-ceiling-v1"
 CLAIM_CEILING = "PUBLIC_REAL_EXACT_GLOBAL_TRACK_AND_EGO_PRIVILEGED_CEILING_ONLY"
 MANIFEST_GLOB = "thor_magni_window_manifest_d7-r1-thor-magni-window-pupil-*.json"
 HORIZON_S = 3.0
@@ -320,34 +322,50 @@ def evaluate_segment(
     track_id: str,
     samples: Sequence[ThorSample],
     config: DTRConfig,
-    arms: Sequence[Arm] = (Arm.B2_RADIAL_TTC, Arm.C_ROUTE_INTERSECTION),
-) -> tuple[dict[Arm, ArmAccumulator], int, float]:
+    arms: Sequence[Arm | R3Arm] = (Arm.B2_RADIAL_TTC, Arm.C_ROUTE_INTERSECTION),
+) -> tuple[dict[Arm | R3Arm, ArmAccumulator], int, float]:
     if (
         len(samples) < 2
         or samples[-1].time_s - samples[0].time_s
         < config.minimum_track_span_s + HORIZON_S
     ):
         return {}, 0, 0.0
+    frames = causal_frames(track_id, samples)
+    predictions = {
+        arm: (
+                run_r3_arm(
+                    frames,
+                    arm,
+                    r0_config=config,
+                    guard_frames=(
+                        frames
+                        if arm is R3Arm.C_CURVED_DISTRIBUTIONAL_GUARDED
+                        else None
+                    ),
+                )
+                if isinstance(arm, R3Arm)
+                else run_r1_arm(frames)
+                if arm is Arm.D_R1_OCCUPANCY_CONSENSUS
+                else run_r2_arm(frames, config)
+                if arm is Arm.E_R2_GUARDED_CONSENSUS
+                else run_arm(frames, arm, config)
+            )
+        for arm in arms
+    }
     truth, contacts = future_hits(samples)
     events, known = truth_events(
         samples, truth, contacts, config.minimum_track_span_s
     )
     if not any(known):
         return {}, 0, 0.0
-    frames = causal_frames(track_id, samples)
     scored = {
         arm: score_arm(
             samples,
-            (
-                run_r1_arm(frames)
-                if arm is Arm.D_R1_OCCUPANCY_CONSENSUS
-                else run_r2_arm(frames, config)
-                if arm is Arm.E_R2_GUARDED_CONSENSUS
-                else run_arm(frames, arm, config)
-            ),
+            predictions[arm],
             events,
             known,
             truth,
+            clear_grace_s=config.clear_grace_s,
         )
         for arm in arms
     }
@@ -364,8 +382,10 @@ def evaluate(
     manifest_dir: Path,
     include_r1: bool = False,
     include_r2: bool = False,
+    include_r3: bool = False,
 ) -> dict[str, Any]:
-    include_successor = include_r1 or include_r2
+    include_r2_effective = include_r2 or include_r3
+    include_successor = include_r1 or include_r2_effective
     manifest_paths = sorted(manifest_dir.glob(MANIFEST_GLOB))
     if not manifest_paths:
         raise FileNotFoundError(f"no THOR-MAGNI manifests in {manifest_dir}")
@@ -377,7 +397,8 @@ def evaluate(
         Arm.B2_RADIAL_TTC,
         Arm.C_ROUTE_INTERSECTION,
         *((Arm.D_R1_OCCUPANCY_CONSENSUS,) if include_successor else ()),
-        *((Arm.E_R2_GUARDED_CONSENSUS,) if include_r2 else ()),
+        *((Arm.E_R2_GUARDED_CONSENSUS,) if include_r2_effective else ()),
+        *(tuple(R3Arm) if include_r3 else ()),
     )
     pooled = {arm: ArmAccumulator() for arm in arms}
     totals = {
@@ -476,7 +497,15 @@ def evaluate(
         for arm, metrics in pooled.items()
     }
     result = {
-        "schema_version": R2_SCHEMA if include_r2 else R1_SCHEMA if include_r1 else SCHEMA,
+        "schema_version": (
+            R3_SCHEMA
+            if include_r3
+            else R2_SCHEMA
+            if include_r2
+            else R1_SCHEMA
+            if include_r1
+            else SCHEMA
+        ),
         "claim_ceiling": CLAIM_CEILING,
         "source": {
             "dataset": "THOR-MAGNI public Pupil 19-session intake",
@@ -508,7 +537,26 @@ def evaluate(
             "route_yaw_minimum_speed_mps": ROUTE_YAW_MINIMUM_SPEED_MPS,
             "maximum_sampled_gap_s": MAXIMUM_SAMPLED_GAP_S,
             "r1": FROZEN_R1_CONFIG.to_dict() if include_successor else None,
-            "r2": FROZEN_R2_CONFIG.to_dict() if include_r2 else None,
+            "r2": FROZEN_R2_CONFIG.to_dict() if include_r2_effective else None,
+            "r3": FROZEN_R3_CONFIG.to_dict() if include_r3 else None,
+            "r3_route_authority": (
+                "QTM ego XY plus causal path-tangent yaw from past 0.5 seconds; not native body orientation"
+                if include_r3
+                else None
+            ),
+            "r3_source_evaluability": (
+                {
+                    arm.value: "EVALUABLE_WITH_CAUSAL_PATH_TANGENT_YAW_LIMITATION"
+                    for arm in R3Arm
+                }
+                if include_r3
+                else None
+            ),
+            "r3_ablation_interpretation": (
+                "coupled-arm performance only; no single-component causal attribution"
+                if include_r3
+                else None
+            ),
         },
         "coverage": totals,
         "pooled": pooled_dict,
@@ -524,6 +572,16 @@ def evaluate(
             Arm.E_R2_GUARDED_CONSENSUS,
             Arm.D_R1_OCCUPANCY_CONSENSUS,
         ),
+        "r3_vs_r2": {
+            arm.value: successor_comparison(
+                pooled_dict,
+                arm,
+                Arm.E_R2_GUARDED_CONSENSUS,
+            )
+            for arm in R3Arm
+        }
+        if include_r3
+        else None,
         "by_session": session_results,
         "limitations": [
             "QTM centroids are privileged geometry, not detector or tracker output.",
@@ -531,15 +589,23 @@ def evaluate(
             "Person radius is fixed at 0.30 m; route-entry truth is geometric, not human-authored alertability or safety truth.",
             "Alert lifecycle is scored per target track; simultaneous target alerts are not merged into a product utterance stream.",
             "No RGB detector, tracker, phone metric depth, Android runtime, or user study is evaluated.",
+            "False-alert rates are per target-track exposure, not merged user wall-clock alerts per minute.",
+            "This is a retrospective ceiling on a previously inspected public cohort, not a fresh holdout confirmation.",
         ],
     }
     if not include_successor:
         result["configuration"].pop("r1")
         result.pop("r1_decision")
-    if not include_r2:
+    if not include_r2_effective:
         result["configuration"].pop("r2")
         result.pop("r2_vs_r0")
         result.pop("r2_vs_r1")
+    if not include_r3:
+        result["configuration"].pop("r3")
+        result["configuration"].pop("r3_route_authority")
+        result["configuration"].pop("r3_source_evaluability")
+        result["configuration"].pop("r3_ablation_interpretation")
+        result.pop("r3_vs_r2")
     return result
 
 
@@ -557,11 +623,17 @@ def main() -> int:
         action="store_true",
         help="Add R1 plus the fixed half-horizon guarded R2 successor.",
     )
+    parser.add_argument(
+        "--include-r3",
+        action="store_true",
+        help="Add R1/R2 plus the fixed R3 A/B/C coupled-arm comparison.",
+    )
     args = parser.parse_args()
     result = evaluate(
         args.manifest_dir,
         include_r1=args.include_r1,
         include_r2=args.include_r2,
+        include_r3=args.include_r3,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
@@ -576,6 +648,7 @@ def main() -> int:
                 "decision": result["decision"],
                 "r1_decision": result.get("r1_decision"),
                 "r2_vs_r0": result.get("r2_vs_r0"),
+                "r3_vs_r2": result.get("r3_vs_r2"),
             },
             ensure_ascii=False,
             indent=2,

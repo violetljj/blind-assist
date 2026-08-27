@@ -16,8 +16,15 @@ state and rendering.
 
 1. Read [project state](docs/PROJECT_STATE.md).
 2. Open only the one classification current that matches the task.
-3. Read one directly affected route, code, test, or contract entry.
-4. Check `git status --short` before editing and preserve all unrelated work.
+3. For algorithm, model, training, benchmark, or dataset work with a known route,
+   run `python tools/knowledge.py context --route <route> --json`; add `--query`
+   when the task already names a mechanism or failure.
+4. Read one directly affected route, code, test, or contract entry.
+5. Check `git status --short` before editing and preserve all unrelated work.
+
+The knowledge context is a compact reusable-mechanism and prior-result view. It
+does not replace the owning route/current as authority and does not reopen a
+retired, rejected, consumed, or otherwise closed experiment.
 
 Do not scan archives, snapshots, complete logs, `artifacts.local/`, generated
 outputs, or unrelated research routes unless the task explicitly needs history,

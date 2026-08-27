@@ -1,103 +1,153 @@
 # DTR: route-conditioned obstacle-risk events
 
-Status: `DTR_R2_DYNAMIC_AND_CURVED_STATIC_CEILINGS_ESTABLISHED /
-RGB_RUNTIME_DOWNSTREAM / HEAD_CLEARANCE_POSITIVE_NOT_EVALUABLE`
+Status: `DTR_R3_GATE_NOT_MET / R2_DYNAMIC_RETAINED /
+S4_CONTINUOUS_GEOMETRY_VALIDATED_NO_PUBLIC_GAIN / R4_NOT_OPENED`
 
 ## Result first
 
-DTR now answers a narrower and more useful question than object detection:
+DTR asks a narrower and more useful question than object detection:
 
 ```text
 wearer future route tube
         intersect
-object future occupancy
+target or obstacle future occupancy
         within 3 seconds
         -> ONSET / HOLD / ESCALATE / CLEAR
 ```
 
-The current algorithm is R2, a robust early-warning branch plus one fixed
-imminent guard. It was evaluated without detector tuning on three public,
-real mobile-platform sources.
+The public-data R3 ceiling is complete. It compared three fixed successors with
+the retained dynamic R2 on THÖR-MAGNI, JRDB test, and CODa 16+18+20. The frozen
+gate required at least 95% pooled critical-event recall and at least 30% fewer
+false-alert segments; the headline target was 97% and 40%.
 
-| Public-real dynamic cohort | Events | R0 route recall / false | R1 robust recall / false | **R2 guarded recall / false** |
-| --- | ---: | ---: | ---: | ---: |
-| THÖR-MAGNI, exact global route, 19 sessions | 10 | `9/10` / 55 | `9/10` / **37** | **`10/10` / 42** |
-| JRDB test, robot-relative diagnostic, 27 sequences | 175 | `161/175` / 260 | **`164/175` / 255** | **`164/175` / 256** |
-| CODa sequences 18+20, pose-authoritative development | 88 | `88/88` / 199 | `70/88` / **174** | **`86/88` / 190** |
-| CODa sequence 16, rainy heavy-traffic holdout | 34 | `34/34` / **87** | `28/34` / 86 | **`33/34` / 95** |
+| Dynamic arm, pooled over 307 events | Recall | False segments | False change from R2 | Decision |
+| --- | ---: | ---: | ---: | --- |
+| **R2 guarded robust occupancy** | **`293/307` (95.44%)** | **583** | baseline | **retained** |
+| R3-A curved CTRV + robust target CV | `285/307` (92.83%) | 673 | 15.44% worse | reject |
+| R3-B straight + distributional occupancy | `280/307` (91.21%) | 554 | 4.97% better | reject |
+| R3-C curved + distributional + R2 imminent guard | `293/307` (95.44%) | 637 | 9.26% worse | reject |
 
-R2 strictly dominates R0 on the route-authoritative THÖR ceiling: it recovers
-the last event while deleting `13/55` false-alert segments (`23.6%`). On the
-larger JRDB diagnostic it adds three recalled events and deletes four false
-alerts. It essentially preserves R1 there, at one additional false segment.
+R3-C preserves R2's pooled recall but adds 54 false segments, so
+`R3_GATE_NOT_MET`. R3-B deletes only 29 false segments while losing 13 recalled
+events. No arm approaches the 30% false-reduction gate, and the conditional
+learned stochastic R4 / three-source LOSO stage is therefore not opened. There
+was no threshold, support, seed, backbone, or cohort sweep after seeing the
+result.
 
-CODa is the deliberate hard case, not a hidden win. Across its development and
-holdout partitions, R2 recalls `119/122` events (`97.5%`) versus R0's `122/122`,
-with nearly identical false alerts (`285` versus `286`). It recovers 21 of the
-24 events lost by R1's robust filter, but it does not dominate R0 on CODa. This
-is the retained cost of rejecting unstable early motion rather than a threshold
-to tune away.
+The source split explains why pooling is not enough:
 
-All 122 CODa dynamic critical events are pedestrians. Bicycle/micromobility and
-vehicle tracks contribute `24,009` and `11,585` evaluated frames, respectively,
-but zero countable positive critical events. They provide real class exposure
-and false-alert evidence, not bicycle or vehicle recall.
+| Source | R2 recall / false | R3-C recall / false | Route authority |
+| --- | ---: | ---: | --- |
+| THÖR-MAGNI | `10/10` / 42 | `10/10` / 98 | exact ego XY; causal path-tangent yaw proxy |
+| JRDB test | `164/175` / 256 | `162/175` / 214 | no synchronized ego pose; straight-relative diagnostic only |
+| CODa 16+18+20 | `119/122` / 285 | `121/122` / 325 | source-native pose-authoritative route |
 
-## Static, wall, and temporary-obstacle ceiling
+On only the two curve-authoritative sources, THÖR plus CODa, R3-C changes
+`129/132` and 327 false segments into `131/132` and 423. Two recovered events
+cost 96 extra false segments. Curvature has a real local effect but not a useful
+trade-off.
 
-A second CODa ceiling keeps source-native static 3-D boxes fixed in the world,
-uses current-and-past ego pose to extrapolate a constant-turn-rate-and-velocity
-route, intersects that route with oriented obstacle footprints, and admits only
-the lower-body or bounded head-clearance height bands.
+## Event-metric audit
 
-Across CODa sequences 16, 18, and 20 it evaluates 182,274 known frames and 12
-future path-contact events: six barrier/boundary, five fixed-structure, and one
+The original frozen gate is retained exactly for comparability, but the replay
+now also reports one-to-one ONSET matching, event precision/F1, target-track
+exposure-normalized false rate, lead, fragmentation, CLEAR, coverage, and
+per-source AUPRC.
+
+| Pooled corrected metric | R2 | R3-C |
+| --- | ---: | ---: |
+| ONSET event precision | 24.17% | 22.86% |
+| ONSET event recall | 80.13% | 80.78% |
+| ONSET event F1 | **37.13%** | 35.63% |
+| False segments / known-negative target-track minute | **0.461** | 0.504 |
+| Fragmented matched-event rate | **10.57%** | 14.11% |
+| CLEAR among eligible matched events | **98.46% (`128/130`)** | 98.44% (`126/128`) |
+
+R3-C's frame AUPRC is 0.309 on THÖR, 0.593 on JRDB, and 0.413 on CODa
+(source macro 0.439). R2 has no compatible continuous score, so those values
+are descriptive rather than an R2-vs-R3 ranking. Evaluator admission coverage
+is 9.54% for THÖR, 91.61% for JRDB, and 61.42% for CODa; the different
+denominators are exposed rather than silently pooled. False alerts per actual
+user wall-clock minute remain `NOT_EVALUABLE` because independent target-track
+streams are not merged into a single wearer timeline.
+
+## Natural non-pedestrian availability
+
+A metadata-first scan of CODa sequences 0..20 found two natural, source-native
+non-pedestrian positives without downloading RGB or LiDAR:
+
+- sequence 6, `Delivery Truck:2`: one lateral-crossing vehicle event;
+- sequence 17, `Scooter:1`: one oncoming micromobility event, right-censored
+  after contact.
+
+R2 and R3-C both recall `1/1` in each group. This establishes that the two event
+types exist and that the replay path handles them; one event per class is not a
+class-generalization claim and does not enter the frozen R3 gate. The scan also
+found 42,151 native Bike boxes but zero countable positive Bike events, so Bike
+positive recall remains `NOT_EVALUABLE`.
+
+## Static and continuous-collision ceiling
+
+The static CODa ceiling keeps source-native 3-D boxes fixed in the world, uses
+current-and-past ego pose for a causal constant-turn route, intersects that
+route with oriented footprints, and admits only lower-body or bounded
+head-clearance height bands.
+
+Across CODa 16, 18, and 20 it evaluates 182,274 known frames and 12 future
+path-contact events: six barrier/boundary, five fixed-structure, and one
 temporary-obstacle event.
 
-| Static arm | Event recall | False-alert segments | CLEAR | Median lead |
+| Static arm | Event recall | False segments | CLEAR | Median escalation lead |
 | --- | ---: | ---: | ---: | ---: |
-| P0 current 3 m proximity | `12/12` | 104 | `3/4` | `2.70 s` |
-| S1 straight route | `11/12` | 22 | `4/4` | `2.60 s` |
-| S2 straight route + height | `11/12` | 22 | `4/4` | `2.60 s` |
-| **S3 curved route + height** | **`12/12`** | **10** | **`4/4`** | **`3.00 s`** |
+| P0 current 3 m proximity | `12/12` | 104 | `2/3` | n/a |
+| S1 straight route | `11/12` | 22 | `1/1` | n/a |
+| S2 straight route + height | `11/12` | 22 | `1/1` | `0.80 s` |
+| **S3 sampled curved route + height** | **`12/12`** | **10** | **`3/3`** | **`1.40 s`** |
+| S4 continuous curved-route collision | `12/12` | 10 | `3/3` | `1.40 s` |
 
-S3 preserves all proximity events while removing `94/104` false alerts
-(`90.4%`). Relative to the straight route it recovers the turn event and cuts
-false alerts from 22 to 10 (`54.5%`). Its breakdown is barrier/boundary `6/6`
-with one false segment, fixed structure `5/5` with four, and temporary obstacle
-`1/1` with five. All 12 recalled events also reached the one-shot `ESCALATE`
-transition, with `1.40 s` median escalation lead.
+S3 remains the public-real champion: versus proximity it preserves all events
+and removes `94/104` false segments (90.4%). S4 replaces point-only collision
+checks with analytic time-of-impact on every 0.1-second curved-route chord. A
+four-case controlled canary deliberately places thin crossing, grazing,
+turn-entry, and fast transverse contacts between sample points: S3-style point
+checks recall `0/4`, while S4 and a 24,000-step-per-chord dense oracle recall
+`4/4` with agreeing entry times.
 
-The selected sequences contain no positive vegetation or head-clearance path
-event. Vegetation has 33,954 evaluated frames and zero false alerts, which is
-class exposure without positive recall authority. GOOSE was checked as a
-possible compact supplement:
-its 3-D validation archive contains `tree_crown`, `wire`, and `boom_barrier`
-semantics, but only discrete point clouds/labels, not synchronized wearer-route
-or ground-clearance truth. Treating semantic tree crown as a human head
-collision would manufacture the answer, so positive hanging-branch performance
-is `NOT_EVALUABLE` rather than a reason to download or tune another corpus.
+On the public CODa replay, S4 is exactly tied with S3: `12/12`, 10 false
+segments, identical CLEAR and lead. Continuous geometry is therefore validated
+and retained as an implementation option, but it is not promoted as a new
+public-real algorithm win. The stress chords are geometry falsifiers, not a
+natural wearer-speed distribution; CODa truth is frame-sampled, so only the
+controlled canary has authority over between-frame contacts.
+
+The selected sequences still contain no positive vegetation or head-clearance
+path event. Vegetation contributes 33,954 evaluated frames and zero false
+alerts, which is exposure without positive recall authority. Positive hanging
+branch, thin-branch, drop-off, narrow-gap, and head-clearance performance remain
+`NOT_EVALUABLE`.
 
 ## Frozen mechanics
 
 R1 forms every causal pairwise velocity allowed by a 1.5-second target history,
 uses the component-wise Theil-Sen median as target motion, and analytically
-computes first entry into the 3-second, 0.65 m half-width route tube. The
-fraction of velocity hypotheses entering the tube is diagnostic consensus
-support, not a probability.
+computes first entry into the 3-second, 0.65 m half-width straight route tube.
+R2 leaves R1 unchanged and admits R0's least-squares route intersection only
+when entry is inside the existing 1.5-second escalation half-horizon.
 
-R2 leaves R1 unchanged. It admits R0's least-squares route intersection only
-when its predicted entry is inside the already defined escalation half-horizon
-(`1.5 s`). There is no new fitted threshold, support sweep, or event-label
-calibration.
+R3 freezes 0.5 seconds of ego history, a minimum 0.2-second ego span, and
+0.1-second route chords. A uses a curved CTRV wearer route and robust target CV;
+B uses a straight route and all causal pairwise target-velocity hypotheses; C
+uses the curved route, the same distributional hypotheses, and R2's imminent
+guard. Distributional entry requires a strict majority (`support > 0.5`); a tie
+is false. A/B/C are coupled performance alternatives, not factorial
+single-component causal ablations.
 
-S3 estimates forward speed and yaw rate from the latest 0.5 seconds of causal
-ego pose, samples a three-second curved route every 0.1 seconds, and intersects
-it with source-native oriented boxes. The vertical contract is:
-
-- lower-body occupancy: up to `1.35 m`;
-- head-clearance occupancy: `1.35..2.10 m`;
-- geometry wholly above `2.10 m`: non-actionable.
+Dynamic R2's straight route entry is already analytic continuous time, and R3
+computes continuous time-of-impact inside each route chord. DR55 therefore
+identified a real point-sampling gap only in static S3. S4 closes that gap by
+solving segment entry against the oriented obstacle rectangle Minkowski-expanded
+by the 0.65 m route radius. The remaining approximation is the CTRV curve by
+0.1-second chords, not endpoint-only collision inside a chord.
 
 Known positive frames drive `ONSET`, sustained positives drive `HOLD`, and the
 first entry inside half-horizon emits `ESCALATE` once. A known negative must
@@ -108,99 +158,114 @@ Frozen fingerprints:
 
 - R1: `741b815017297f64cb80f3f9d44282eb7fd16f79f60b04fe4f25ae8a9026f4b8`
 - R2: `4142a575911e9d43508e996b0e0cf5062dc5c86d755dfe63d41279caf56302a8`
+- R3: `666a29533eff450bf37cfe1c15bc4ec34bea67b27ab1a2279529e78bb588368f`
+
+## Next information-bearing route
+
+The next credible dynamic successor is not another threshold or trajectory
+model. It needs a detector-independent residual-occupancy source so a target
+that disappears through detector/NMS/tracker failure is not interpreted as
+free space. Track covariance, observation availability, time-since-seen, and
+bounded gap imputation must remain explicit; an imputed point must not be
+reported as an observation. This is the DR41/DR42/DR45 route, but it is not
+implemented here because the current native-track ceilings contain no
+independent RGB/dense residual signal.
+
+Stochastic learned occupancy remains closed by the failed R3 gate. Whole-body
+or head-clearance geometry remains the separate static S3/S4 line and requires
+new positive route-grounded source truth before an ellipsoid/ESDF model could
+make an evidence-backed claim.
 
 ## Runtime bridge
 
 The algorithm remains source-independent at the `CausalFrame` / metric-box
-boundary. The Android USTRF core now has two adapters:
-
-- metric-depth samples produce lower-body/head-clearance swept occupancy while
-  ignoring geometry wholly above `2.10 m`;
-- privileged native 3-D boxes rasterize oriented lower/head footprints into the
-  same USTRF geometry packet for offline replay.
-
-The earlier fixed-height JRDB RGB bridge remains the deployability hint: on one
-curated 143-frame window, route intersection kept `3/3` recall and reduced
-false alerts from 17 to 9. It is not a new generalization result, and the
-current priority is the public-data algorithm ceiling rather than phone
-recording or live-device promotion.
+boundary. Android USTRF has adapters for metric-depth lower/head occupancy and
+for privileged native 3-D boxes. The earlier fixed-height JRDB RGB bridge is
+only a deployability hint: on one curated 143-frame window, route intersection
+kept `3/3` recall and reduced false alerts from 17 to 9. It is not a
+generalization result, and no phone recording is required for this ceiling.
 
 ## Literature basis
 
 The dated [DR41-DR60 literature reserve](LITERATURE_RESERVE_2026-08-27.md)
-collects 20 additional papers on missing tracks, stochastic occupancy,
-continuous collision geometry, uncertainty, and event evaluation. It is a
-knowledge reserve only and does not change the current R2 decision or the
-in-progress R3 experiment.
+collects the missing-track, stochastic occupancy, continuous collision,
+uncertainty, whole-body, and event-evaluation mechanisms used to choose these
+falsifiers. It is a mechanism reserve, not transferred BlindAssist evidence.
 
 The robust slope is grounded in [Sen's Theil-Sen estimator](https://doi.org/10.1080/01621459.1968.10480934),
 and route-tube entry is the finite-horizon single-command case of
-[Velocity Obstacles](https://doi.org/10.1177/027836499801700706). Component-wise
-x/y medians are an engineering extension. R2's imminent fallback and the
-one-shot `ESCALATE` are product-policy mechanisms, not claims from those papers.
-
-`risk_score` and pairwise support remain ordinal diagnostics. A calibrated
+[Velocity Obstacles](https://doi.org/10.1177/027836499801700706). A calibrated
 collision probability would require explicit uncertainty and separate
 validation, such as [continuous collision probability](https://arxiv.org/abs/2104.01659)
-or a [Dynamic Lambda-Field](https://arxiv.org/abs/2103.04795). Extended or
-nonholonomic vehicle prediction would require a model such as
-[Generalized Velocity Obstacles](https://doi.org/10.1109/IROS.2009.5354175).
+or a [Dynamic Lambda-Field](https://arxiv.org/abs/2103.04795).
 
 ## Evidence receipts
 
-- THÖR R2: `artifacts.local/evidence/dtr-r2/thor-magni-guarded/result.json`,
-  SHA-256 `f1c54804b1d9218cb2bcb1d9bb1f8d5a545c189c8abb1bf3e9b409a220110de4`.
-- JRDB test R2: `artifacts.local/evidence/dtr-r2/jrdb-test-guarded/result.json`,
-  SHA-256 `20bebbdd2aee7d82206552644f6801d0ddd2df61b606747ee071f6da19c74e04`.
-- CODa development R2: `artifacts.local/evidence/dtr-r2/coda-18-20-final/result.json`,
-  SHA-256 `5882f2aaddf4d078f618b2ecf5c269f74f538bdfebfa5843f6205b18873c7c72`.
-- CODa holdout R2: `artifacts.local/evidence/dtr-r2/coda-16-final/result.json`,
-  SHA-256 `6b6b4ec8e37e77d1dc3aa60d07f383cabd8d00d6c29b7ebe14b30283c8fffe7c`.
-- CODa curved static: `artifacts.local/evidence/dtr-static/coda-16-18-20-final/result.json`,
-  SHA-256 `8bf8e11c95ad687e9771f0e2f6de871557044c7ecc7a9eafcadae6406bb409ec`.
+- R3 cross-source decision:
+  `artifacts.local/evidence/dtr-r3/summary/result.json`, SHA-256
+  `5a892b02e0b3ad836965fe1c4d49b0abf6224fddcd452247f874a1ccade28735`.
+- R3 source inputs recorded by that summary: THÖR
+  `cc9853e252629e2859d0217ef64597cf7ba9981298ecca742b73f2dbc1e62910`, JRDB
+  `98df4106ff1cfca8d9e4dd9b408118f5453f274b42291eb03faabd44d6a071f2`, CODa core
+  `d602daff2bf22797b1cb9a78fe57be45069b3812f85425006b97f7866510a1c4`, and CODa
+  multiclass extension
+  `b79c210f50f29f3e9c5a9aaeec0bfd9910e1bfa0d5be4445b852599c99f6e61b`.
+- S4 controlled geometry canary:
+  `artifacts.local/evidence/dtr-static-continuous/canary/result.json`, SHA-256
+  `c51cc4248921895b2586c9092d1564b8dfe337559dfaf709d296d992cbc79c23`.
+- S3/S4 CODa replay:
+  `artifacts.local/evidence/dtr-static/coda-16-18-20-continuous/result.json`,
+  SHA-256
+  `4795845150501ef3c3498f417a21e08435ffad59df3d2ff7d437ec8e6b5567a0`.
 
 ## Reproduce
 
-From the repository root:
+From the repository root, after placing the already documented native inputs:
 
 ```powershell
 python research/active/dtr-r0/thor_magni_native_ceiling.py `
-  --manifest-dir F:\ba-data\hftf-d7-public-real\manifests `
-  --include-r1 --include-r2 `
-  --output artifacts.local/evidence/dtr-r2/thor-magni-guarded/result.json
+  --manifest-dir <thor-manifest-dir> --include-r3 `
+  --output artifacts.local/evidence/dtr-r3/thor-magni/result.json
 
 python research/active/dtr-r0/jrdb_native_ceiling.py `
   --labels-zip <jrdb-test-labels.zip> `
-  --timestamps-zip <jrdb-test-timestamps.zip> `
-  --include-r1 --include-r2 `
-  --output artifacts.local/evidence/dtr-r2/jrdb-test-guarded/result.json
+  --timestamps-zip <jrdb-test-timestamps.zip> --include-r3 `
+  --output artifacts.local/evidence/dtr-r3/jrdb-test/result.json
 
 python research/active/dtr-r0/coda_native_ceiling.py `
-  --sequence-root 20=<coda-sequence-20-native-root> `
-  --sequence-root 18=<coda-sequence-18-native-root> `
-  --output artifacts.local/evidence/dtr-r2/coda-18-20-final/result.json
+  --sequence-root 20=<coda-20-root> `
+  --sequence-root 18=<coda-18-root> `
+  --sequence-root 16=<coda-16-root> --include-r3 `
+  --output artifacts.local/evidence/dtr-r3/coda-core/result.json
 
-python research/active/dtr-r0/coda_native_ceiling.py `
-  --sequence-root 16=<coda-sequence-16-native-root> `
-  --output artifacts.local/evidence/dtr-r2/coda-16-final/result.json
+python research/active/dtr-r0/dtr_r3_summary.py `
+  --thor artifacts.local/evidence/dtr-r3/thor-magni/result.json `
+  --jrdb artifacts.local/evidence/dtr-r3/jrdb-test/result.json `
+  --coda-core artifacts.local/evidence/dtr-r3/coda-core/result.json `
+  --coda-extension artifacts.local/evidence/dtr-r3/coda-multiclass-extension/result.json `
+  --output artifacts.local/evidence/dtr-r3/summary/result.json
+
+python research/active/dtr-r0/continuous_collision_canary.py `
+  --output artifacts.local/evidence/dtr-static-continuous/canary/result.json
 
 python research/active/dtr-r0/coda_static_ceiling.py `
-  --sequence-root 20=<coda-sequence-20-native-root> `
-  --sequence-root 18=<coda-sequence-18-native-root> `
-  --sequence-root 16=<coda-sequence-16-native-root> `
-  --output artifacts.local/evidence/dtr-static/coda-16-18-20-final/result.json
+  --sequence-root 20=<coda-20-root> `
+  --sequence-root 18=<coda-18-root> `
+  --sequence-root 16=<coda-16-root> `
+  --output artifacts.local/evidence/dtr-static/coda-16-18-20-continuous/result.json
 ```
 
 ## Claim ceiling
 
-These are privileged algorithm ceilings. THÖR uses exact controlled-lab global
-tracks; JRDB test is a large robot-relative/interpolated diagnostic; CODa uses
-source-native boxes, identities, pose, timestamp, and calibration. The future
-path and future oriented-box contact are evaluator-only, but no RGB/LiDAR
-detector, intent prediction, natural walking, Android runtime, user benefit, or
-safety performance is established.
+These are retrospective public-real privileged algorithm ceilings. THÖR uses
+controlled-lab global tracks; JRDB is a large robot-relative/interpolated
+diagnostic without synchronized ego pose; CODa uses source-native boxes,
+identities, pose, timestamps, and calibration. Future path and future contact
+are evaluator-only.
 
-CODa establishes positive dynamic recall only for pedestrians and positive
-static recall only for the 12 barrier/fixed/temporary events observed. It does
-not establish positive bicycle, vehicle, vegetation, thin-branch, drop-off, or
-head-clearance recall. `UNKNOWN` and `NOT_EVALUABLE` are never counted as safe.
+No RGB/LiDAR detector, detector disappearance robustness, calibrated collision
+probability, natural wearer motion, Android runtime, BLV benefit, product
+reliability, or safety performance is established. Dynamic positive authority
+is predominantly pedestrian plus one scooter and one delivery-truck event;
+static positive authority is the 12 observed barrier/fixed/temporary events.
+`UNKNOWN` and `NOT_EVALUABLE` are never counted as safe.
