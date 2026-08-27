@@ -127,6 +127,12 @@ recording or live-device promotion.
 
 ## Literature basis
 
+The dated [DR41-DR60 literature reserve](LITERATURE_RESERVE_2026-08-27.md)
+collects 20 additional papers on missing tracks, stochastic occupancy,
+continuous collision geometry, uncertainty, and event evaluation. It is a
+knowledge reserve only and does not change the current R2 decision or the
+in-progress R3 experiment.
+
 The robust slope is grounded in [Sen's Theil-Sen estimator](https://doi.org/10.1080/01621459.1968.10480934),
 and route-tube entry is the finite-horizon single-command case of
 [Velocity Obstacles](https://doi.org/10.1177/027836499801700706). Component-wise
