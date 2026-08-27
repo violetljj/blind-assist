@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-human-centred-multimodal-wearable",
+  "kind": "paper",
+  "title": "Human-centred Multimodal Wearable",
+  "canonical_ref": "https://doi.org/10.1038/s42256-025-01018-6",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "视觉、音频、触觉、用户适应和训练需要协同设计",
+  "mechanisms": [
+    {
+      "id": "ustrf-p11",
+      "name": "Human-centred Multimodal Wearable — ustrf:P11 route mechanism",
+      "description": "视觉、音频、触觉、用户适应和训练需要协同设计",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "同行评审系统证据强；完整硬件体系与手机原型差异大"
+    }
+  ],
+  "tags": [
+    "ustrf",
+    "frontier-guide",
+    "ustrf-sc"
+  ],
+  "aliases": [
+    "ustrf:P11"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

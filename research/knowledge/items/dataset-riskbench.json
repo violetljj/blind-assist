@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "dataset-riskbench",
+  "kind": "dataset",
+  "title": "RiskBench",
+  "canonical_ref": "https://github.com/HCIS-Lab/RiskBench",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "识别危险物是否真正改变下游行动",
+  "mechanisms": [
+    {
+      "id": "dtr-dr14",
+      "name": "RiskBench — dtr:DR14 route mechanism",
+      "description": "交互/碰撞/障碍/非交互场景分类，风险对象归因、预判与 planning-aware 指标",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "合成 CARLA 驾驶策略不是步行控制 truth；只可借用 taxonomy/评估接口"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR14"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

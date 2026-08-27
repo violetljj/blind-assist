@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-explore-until-confident",
+  "kind": "paper",
+  "title": "Explore until Confident",
+  "canonical_ref": "https://explore-eqa.github.io",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Perceive With Confidence 已把 conformal calibration 与学习感知/规划联结；Explore until Confident 已用 multi-step conformal prediction 校准 EQA 停止。故“conformal + confidence stopping”本身不是 TARO novelty；TARO 的候选差异是 partial-metric factor posterior、body/path clearance、非对称 false-clear risk、人类取证成本和 deterministic reducer，但仍须实验证明。",
+  "mechanisms": [
+    {
+      "id": "taro-t10b",
+      "name": "Explore until Confident — taro:T10b route mechanism",
+      "description": "Perceive With Confidence 已把 conformal calibration 与学习感知/规划联结；Explore until Confident 已用 multi-step conformal prediction 校准 EQA 停止。故“conformal + confidence stopping”本身不是 TARO novelty；TARO 的候选差异是 partial-metric factor posterior、body/path clearance、非对称 false-clear risk、人类取证成本和 deterministic reducer，但仍须实验证明。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+    }
+  ],
+  "tags": [
+    "taro",
+    "adjacent-work",
+    "taro-r0"
+  ],
+  "aliases": [
+    "taro:T10b"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

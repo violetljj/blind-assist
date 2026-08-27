@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-scope-stochastic-cartographic-occupancy-prediction-engine-for-uncertaint",
+  "kind": "paper",
+  "title": "SCOPE: Stochastic Cartographic Occupancy Prediction Engine for Uncertainty-Aware Dynamic Navigation",
+  "canonical_ref": "https://doi.org/10.1109/tro.2025.3578234",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Use one stochastic occupancy representation for ego motion, moving agents, and static geometry, optimized for resource-constrained real-time navigation.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr49",
+      "name": "SCOPE: Stochastic Cartographic Occupancy Prediction Engine for Uncertainty-Aware Dynamic Navigation — dtr:DR49 route mechanism",
+      "description": "Use one stochastic occupancy representation for ego motion, moving agents, and static geometry, optimized for resource-constrained real-time navigation.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "Robot occupancy grids do not establish phone-RGB inference, head clearance, or user benefit. This is distinct from DR10 SOGMP/SOGMP++."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR49"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

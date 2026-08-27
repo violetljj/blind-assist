@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-vlm-navigation-blv-evaluation",
+  "kind": "paper",
+  "title": "VLM Navigation BLV Evaluation",
+  "canonical_ref": "https://arxiv.org/abs/2603.15624",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "现有 VLM 在拥挤计数、相对空间关系和适应性上存在明显差异与失败",
+  "mechanisms": [
+    {
+      "id": "ustrf-p09",
+      "name": "VLM Navigation BLV Evaluation — ustrf:P09 route mechanism",
+      "description": "现有 VLM 在拥挤计数、相对空间关系和适应性上存在明显差异与失败",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "预印本；模型/API 快速变化，非端到端碰撞实验"
+    }
+  ],
+  "tags": [
+    "ustrf",
+    "frontier-guide",
+    "ustrf-sc"
+  ],
+  "aliases": [
+    "ustrf:P09"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

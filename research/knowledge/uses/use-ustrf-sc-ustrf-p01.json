@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ustrf-sc-ustrf-p01",
+  "item_id": "paper-depth-anything-v2",
+  "route": "ustrf-sc",
+  "mechanism_ids": [
+    "ustrf-p01"
+  ],
+  "use_state": "retired",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "提供泛化较强的单帧单目相对深度；Small 权重可作为轻量控制模型",
+    "project_application": "深度 teacher 可替代框面积成为更密集的相对空间表征，但不能自动成为米制距离",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "深度 teacher 可替代框面积成为更密集的相对空间表征，但不能自动成为米制距离"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "强方法证据；无助盲事件和手机安全结论"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/ustrf-sc/USTRF_FRONTIER_PAPER_GUIDE_2026-07-22.md",
+      "summary": "Legacy source for ustrf:P01; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated ustrf:P01 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

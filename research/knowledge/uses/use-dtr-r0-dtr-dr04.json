@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr04",
+  "item_id": "paper-arawareness-araware",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr04"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "用目标类型、速度、距离、预测碰撞时间和严重度决定 alert deadline",
+    "project_application": "用目标类型、速度、距离、预测碰撞时间和严重度决定 alert deadline",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "用目标类型、速度、距离、预测碰撞时间和严重度决定 alert deadline"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "实验由研究者模拟视障用户；检测精度与处理时间不等于避免碰撞"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "summary": "Legacy source for dtr:DR04; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR04 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

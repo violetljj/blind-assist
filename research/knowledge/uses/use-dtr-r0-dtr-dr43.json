@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr43",
+  "item_id": "paper-joint-out-of-distribution-detection-and-uncertainty-estimation-for-traje",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr43"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Keep novelty and expected in-distribution forecast error as two independent abstention signals. Either may force UNKNOWN; neither may create CLEAR.",
+    "project_application": "Freeze development thresholds, then measure cross-dataset/corruption OOD detection, error ranking, retained coverage, and event risk.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Freeze development thresholds, then measure cross-dataset/corruption OOD detection, error ranking, retained coverage, and event risk."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Automotive scene encoders and the Shifts dataset; predicted error is not calibrated coverage or a safety guarantee."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/dtr-r0/LITERATURE_RESERVE_2026-08-27.md",
+      "summary": "Legacy source for dtr:DR43; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR43 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

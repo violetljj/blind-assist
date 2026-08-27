@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-37",
+  "item_id": "paper-doppelgangers-learning-to-disambiguate-images-of-similar-structures",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-37"
+  ],
+  "use_state": "rejected",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "①图像 resize/pad 到 1024²；②MegaDepth 预训练 LoFTR 产生 correspondences，保留 confidence>0.8；③Fundamental-matrix RANSAC 过滤几何外点；④分别栅格化“所有 keypoints”与“verified matches”，每图两张 binary mask；⑤用 verified matches 的 partial affine（RANSAC threshold 20）把 image0 及 masks 朝 image1 warp；⑥按固定方向拼接 6 RGB+4 masks 的 10-channel tensor；⑦三层 residual blocks（128/256/512）、average pool、FC；⑧focal loss 学二分类，SfM 时阈值过滤边。关键不是 match 数量，而是“哪里有/没有匹配”的空间布局。",
+    "project_application": "①图像 resize/pad 到 1024²；②MegaDepth 预训练 LoFTR 产生 correspondences，保留 confidence>0.8；③Fundamental-matrix RANSAC 过滤几何外点；④分别栅格化“所有 keypoints”与“verified matches”，每图两张 binary mask；⑤用 verified matches 的 partial affine（RANSAC threshold 20）把 image0 及 masks 朝 image1 warp；⑥按固定方向拼接 6 RGB+4 masks 的 10-channel tensor；⑦三层 residual blocks（128/256/512）、average pool、FC；⑧focal loss 学二分类，SfM 时阈值过滤边。关键不是 match 数量，而是“哪里有/没有匹配”的空间布局。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "对每个 candidate 独立生成 reference→candidate 与 candidate→reference 两套 match-layout，取保守 min 或经开发集冻结的对称聚合；reference mask 与 candidate mask 限定支持域。用 exact/stable-distractor、遮挡、absent 三类对测试双向差值、低 FPR coverage；集合层仅当最佳候选过绝对阈值且有 margin 才选，否则 NONE。消融 count-only、RGB-only、mask-layout、无 RANSAC。若双向差或低 FPR coverage 不合格即否决。"
+  },
+  "evaluation": {
+    "reproduction_status": "partial",
+    "verdict": "mixed",
+    "setup": "An analytic reciprocal spatial-layout adaptation on 900 source-disjoint Washington RGB-D object pairs; it was not a reproduction of the published Doppelgangers model.",
+    "effect": "Spatial layout produced real rescues and perfect invariance but substantially underperformed the DINO baseline and introduced excessive collateral, closing this passive arm.",
+    "metrics": [
+      "dino_mean_nearest=702/900",
+      "analytic_reciprocal_layout=558/900",
+      "rescue=74",
+      "collateral=218",
+      "control_retention=68.9%",
+      "stable_distractor=29/69",
+      "invariance=100%"
+    ],
+    "claim_boundary": "This rejects the frozen analytic reciprocal-layout adaptation on this protocol, not the Doppelgangers publication, every learned layout verifier, multi-view evidence, or physical-instance identity in general."
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-mainline-additional-10-deep-reading-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:37; imported without changing its recorded evidence boundary."
+    },
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/goal-copilot/SPATIAL_LAYOUT_IDENTITY_VERIFICATION_V0_RESULT_2026-08-24.md",
+      "summary": "Frozen analytic spatial-layout arm with mixed signal and unacceptable collateral."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:37 from the scattered legacy knowledge source; no execution authority was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Attached the later analytic spatial-layout result: mixed signal, excessive collateral, and closed passive arm."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

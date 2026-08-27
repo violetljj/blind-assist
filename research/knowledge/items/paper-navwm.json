@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "paper-navwm",
+  "kind": "paper",
+  "title": "NavWM",
+  "canonical_ref": "https://arxiv.org/abs/2606.24101",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "action-conditioned future observation / navigation world modeling",
+  "mechanisms": [
+    {
+      "id": "hftf-h07b",
+      "name": "NavWM — hftf:H07b route mechanism",
+      "description": "action-conditioned future observation / navigation world modeling",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "The charter records this as an adjacent mechanism, not HFTF evidence. HFTF 不是 world model；只比较任务特定短时风险预测"
+    }
+  ],
+  "tags": [
+    "hftf",
+    "adjacent-work"
+  ],
+  "aliases": [
+    "hftf:H07b"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

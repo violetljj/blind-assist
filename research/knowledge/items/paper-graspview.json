@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-graspview",
+  "kind": "paper",
+  "title": "GraspView",
+  "canonical_ref": "https://arxiv.org/abs/2511.04199",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "Task-Specific Bayesian NBV 已直接优化下游任务视角； GraspView 已把 RGB-only active view 与在线米制对齐 用于抓取。因此 TARO 必须证明 query-identifiability、人体 swept-volume、声明的 metric anchor、 人类受限相机动作和 UNKNOWN 的联合差异。",
+  "mechanisms": [
+    {
+      "id": "taro-t04b",
+      "name": "GraspView — taro:T04b route mechanism",
+      "description": "Task-Specific Bayesian NBV 已直接优化下游任务视角； GraspView 已把 RGB-only active view 与在线米制对齐 用于抓取。因此 TARO 必须证明 query-identifiability、人体 swept-volume、声明的 metric anchor、 人类受限相机动作和 UNKNOWN 的联合差异。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+    }
+  ],
+  "tags": [
+    "taro",
+    "adjacent-work",
+    "taro-r0"
+  ],
+  "aliases": [
+    "taro:T04b"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

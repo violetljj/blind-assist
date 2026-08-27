@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-from-region-arrival-to-instance-level-grounding-in-vision-and-language-n",
+  "kind": "paper",
+  "title": "From Region Arrival to Instance-Level Grounding in Vision-and-Language Navigation",
+  "canonical_ref": "https://arxiv.org/abs/2607.03792",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "把 proximity precision、目标可见性、终帧 grounding 和短程 final approach 分开。",
+  "mechanisms": [
+    {
+      "id": "l10-16",
+      "name": "From Region Arrival to Instance-Level Grounding in Vision-and-Language Navigation — l10:16 route mechanism",
+      "description": "把 proximity precision、目标可见性、终帧 grounding 和短程 final approach 分开。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "REVERIE 派生模拟 VLN；没有 metric entrance aperture、真机控制或用户交接。"
+    }
+  ],
+  "tags": [
+    "l10",
+    "literature-reserve",
+    "l10-r0"
+  ],
+  "aliases": [
+    "l10:16"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

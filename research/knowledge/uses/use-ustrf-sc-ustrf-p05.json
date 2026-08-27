@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ustrf-sc-ustrf-p05",
+  "item_id": "paper-oc-sort",
+  "route": "ustrf-sc",
+  "mechanism_ids": [
+    "ustrf-p05"
+  ],
+  "use_state": "retired",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "observation-centric re-update 可修正遮挡期 Kalman 累积误差",
+    "project_application": "可构建无需重型 ReID 的 observation-centric tracker 对照臂",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "可构建无需重型 ReID 的 observation-centric tracker 对照臂"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "CVPR 方法证据强；CPU 关联速度不含检测，非穿戴相机 TTC 证明"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/ustrf-sc/USTRF_FRONTIER_PAPER_GUIDE_2026-07-22.md",
+      "summary": "Legacy source for ustrf:P05; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated ustrf:P05 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

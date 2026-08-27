@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-pathfinder",
+  "kind": "paper",
+  "title": "PathFinder",
+  "canonical_ref": "https://arxiv.org/abs/2504.20976",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "从单目深度中递归搜索局部自由路径，并做小规模 BLV 可用性研究",
+  "mechanisms": [
+    {
+      "id": "ustrf-p03",
+      "name": "PathFinder — ustrf:P03 route mechanism",
+      "description": "从单目深度中递归搜索局部自由路径，并做小规模 BLV 可用性研究",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "预印本；动态目标、低光、楼梯、坡面与全局路线受限"
+    }
+  ],
+  "tags": [
+    "ustrf",
+    "frontier-guide",
+    "ustrf-sc"
+  ],
+  "aliases": [
+    "ustrf:P03"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

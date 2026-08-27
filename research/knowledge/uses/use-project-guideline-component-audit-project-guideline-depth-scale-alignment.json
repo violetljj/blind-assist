@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-project-guideline-component-audit-project-guideline-depth-scale-alignment",
+  "item_id": "tool-project-guideline",
+  "route": "project-guideline-component-audit",
+  "mechanism_ids": [
+    "project-guideline-depth-scale-alignment"
+  ],
+  "use_state": "planned",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "Project Guideline 的做法。 它用 ARCore 3D tracking features 与相对 ML depth 做 RANSAC，估计 scale + shift 后再生成世界点云 （depth_align_ransac.h； guidance_system.cc）。 BlindAssist 已有对应。 已有相对深度 TFLite 候选和 benchmark 脚手架，但它不是 metric depth。既有 MiDaS 真机 A/B 虽把关键漏报 9 → 7，却把误提醒率 0.037 → 0.185，总 P50/P95 54/56 ms → 276/292 ms，结论为 do_not_promote_depth_fusion （[DETECTOR_BENCHMARK.md](DETECTOR_BENCHMARK.md#单目深度融合候选路线)）。 真实缺口。 缺少与手机相机同帧、已准入的稀疏 metric 3D 特征；没有它，复制 RANSAC 只会产生形式上的 scale，而不是可信尺度。 进入条件。 只有 3.5 的 pose/feature 输入先通过准入，且论文确实需要 metric depth， 才允许一个隔离、小样本、预冻结阈值的 relative depth vs aligned depth 实验。 停止线。 不纳入论文必做项，不接正式提醒，不以 Project Guideline 结果替代本机 准确率、误提醒、延迟和热/功耗测试。",
+    "project_application": "Project Guideline 的做法。 它用 ARCore 3D tracking features 与相对 ML depth 做 RANSAC，估计 scale + shift 后再生成世界点云 （depth_align_ransac.h； guidance_system.cc）。 BlindAssist 已有对应。 已有相对深度 TFLite 候选和 benchmark 脚手架，但它不是 metric depth。既有 MiDaS 真机 A/B 虽把关键漏报 9 → 7，却把误提醒率 0.037 → 0.185，总 P50/P95 54/56 ms → 276/292 ms，结论为 do_not_promote_depth_fusion （[DETECTOR_BENCHMARK.md](DETECTOR_BENCHMARK.md#单目深度融合候选路线)）。 真实缺口。 缺少与手机相机同帧、已准入的稀疏 metric 3D 特征；没有它，复制 RANSAC 只会产生形式上的 scale，而不是可信尺度。 进入条件。 只有 3.5 的 pose/feature 输入先通过准入，且论文确实需要 metric depth， 才允许一个隔离、小样本、预冻结阈值的 relative depth vs aligned depth 实验。 停止线。 不纳入论文必做项，不接正式提醒，不以 Project Guideline 结果替代本机 准确率、误提醒、延迟和热/功耗测试。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Project Guideline 的做法。 它用 ARCore 3D tracking features 与相对 ML depth 做 RANSAC，估计 scale + shift 后再生成世界点云 （depth_align_ransac.h； guidance_system.cc）。 BlindAssist 已有对应。 已有相对深度 TFLite 候选和 benchmark 脚手架，但它不是 metric depth。既有 MiDaS 真机 A/B 虽把关键漏报 9 → 7，却把误提醒率 0.037 → 0.185，总 P50/P95 54/56 ms → 276/292 ms，结论为 do_not_promote_depth_fusion （[DETECTOR_BENCHMARK.md](DETECTOR_BENCHMARK.md#单目深度融合候选路线)）。 真实缺口。 缺少与手机相机同帧、已准入的稀疏 metric 3D 特征；没有它，复制 RANSAC 只会产生形式上的 scale，而不是可信尺度。 进入条件。 只有 3.5 的 pose/feature 输入先通过准入，且论文确实需要 metric depth， 才允许一个隔离、小样本、预冻结阈值的 relative depth vs aligned depth 实验。 停止线。 不纳入论文必做项，不接正式提醒，不以 Project Guideline 结果替代本机 准确率、误提醒、延迟和热/功耗测试。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The component decision is HOLD. The audit absorbs only the stated engineering boundary; it does not import the full C++/Bazel/MediaPipe/ARCore/Unreal stack or establish dynamic-risk, grounding, user, product, or safety evidence."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/PROJECT_GUIDELINE_COMPONENT_ADAPTATION_AUDIT_2026-07-30.md",
+      "summary": "Legacy source for project-guideline:depth-scale-alignment; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated project-guideline:depth-scale-alignment from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-frontier-upgrade-2026-07-frontier-dtern",
+  "item_id": "paper-dual-temporal-exemplar-representation-network-for-video-semantic-segment",
+  "route": "frontier-upgrade-2026-07",
+  "mechanism_ids": [
+    "frontier-dtern"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "DTERN 指出旧 Video Consistency 可以被“全零且始终不变”的输出欺骗，并提出 VEC 同时约束时序一致性与语义有效性。其 VEC 与人工 temporal consistency 的相关性明显高于旧 VC，但完整模型参数和吞吐成本较高。BlindAssist 第一阶段应移植 VEC8/VEC16 和轻量 history-only prototype，而不是完整 DTERN。 BOFP 说明传播特征在遮挡/反遮挡区域会失真，需要专门的 attention 决定何时相信当前帧。完整双向方法依赖未来帧，只能作为离线上界。线上候选只能使用前向 motion/warped IoU，并把短时遮挡转成 OCCLUDED_HOLD：保留事件身份、降低语义信心、禁止创建新提醒。 The Escalator Problem 是 position paper，不提供算法增益，但准确指出稀疏抽帧会丢失扶梯方向、旋转门、自动门和横向交通参与者等低信号连续运动。BlindAssist 应建立外观相同、运动方向相反的 hard pair benchmark，禁止模型只凭单帧外观猜测。 最终时序层必须回答四个问题：这是哪个物理事件、现在处于哪个阶段、是否已经真正提醒、什么时候可以清除。mask 更平滑但事件 recall、清除时延和重复交付不改善，只能判定为失败。",
+    "project_application": "Imported under the report's 3.4 DTERN、BOFP 与 Escalator Problem：时序目标不是平滑，而是有效事件 mechanism group for bounded project comparison.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Imported under the report's 3.4 DTERN、BOFP 与 Escalator Problem：时序目标不是平滑，而是有效事件 mechanism group for bounded project comparison."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The frontier-upgrade report treats this as paper-derived mechanism evidence. It does not independently establish BlindAssist event utility, mobile deployment, BLV user benefit, model promotion, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/frontier-upgrade-2026-07/BLINDASSIST_FRONTIER_PAPER_UPGRADE_REPORT_2026-07.md",
+      "summary": "Legacy source for frontier:DTERN; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated frontier:DTERN from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-bbeep",
+  "kind": "paper",
+  "title": "BBeep",
+  "canonical_ref": "https://wotipati.github.io/projects/BBeep/paper/CHI%2719_BBeep_preprint.pdf",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "行人横穿；恒定告警造成社交和认知负担",
+  "mechanisms": [
+    {
+      "id": "dtr-dr02",
+      "name": "BBeep — dtr:DR02 route mechanism",
+      "description": "RGB-D 跟踪 + 相机旋转补偿 + 行人未来路径与用户 emergency line 交汇；只在预测碰撞时出声",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "机场研究只有 6 名盲人，手提箱形态、线性外推和“旁人主动让路”不能外推到手机独立防撞"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR02"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

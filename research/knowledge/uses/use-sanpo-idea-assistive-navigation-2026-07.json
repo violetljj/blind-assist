@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-sanpo-idea-assistive-navigation-2026-07",
+  "item_id": "survey-assistive-navigation-literature-synthesis-through-2026-07-13",
+  "route": "sanpo",
+  "mechanism_ids": [
+    "idea-assistive-navigation-2026-07"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "当前优先级：先关闭风险事件误提醒门，而不是训练分割模型。现有 RiskEventTracker 已有 APPROACHING -> ALERTED -> PASSED_OR_RECEDING -> CLEARED 状态；下一步应区分“真正通过风险”和“短暂 mask 丢失”，为已提醒事件加入冷却与再入场条件。必须新增并报告 alerts_per_event、duplicate_alert_events、post_pass_alert_frames、false_alert_duration_ms；通过台阶后的重复提醒必须为零。 走廊语义：将“最大分割连通域”升级为“中心近场走廊是否被切断”的证据。建议输出 walkablePathContinuity、corridorBlockedWidthRatio、boundaryCrossesCorridor、nearFieldOccupancy。boundary_step_curb 默认仅是边界证据；只有横断中心走廊，且同时满足近场、持续或相对接近等至少两类证据时才允许提醒。平行路沿不得单独升到提醒等级。 时序证据：TemporalRiskTracker 不能仅因框面积、底边或相对深度的任一变化就认定逼近。下一候选应要求两类一致证据或单一证据持续多帧，并加入低成本的全局相机运动/帧质量 veto，抑制头动、俯仰和视差造成的假逼近。深度仅可作确认或拒绝证据，不得独立提升风险。 模型顺序：事件闭环与走廊规则通过后，才以 SANPO-Synthetic 预训练、SANPO-Real 微调训练全 INT8 MobileNetV3 + Lite R-ASPP 四类分割候选（walkable、boundary_step_curb、obstacle、unknown_nonwalkable）。BiSeNetV2 仅在 MobileNetV3 持续漏掉台阶/路沿边界时作为同数据、同契约的对照；FastDepth 与 Lite-Mono 保持离线相对深度消融，不进入实时提醒主链。",
+    "project_application": "当前优先级：先关闭风险事件误提醒门，而不是训练分割模型。现有 RiskEventTracker 已有 APPROACHING -> ALERTED -> PASSED_OR_RECEDING -> CLEARED 状态；下一步应区分“真正通过风险”和“短暂 mask 丢失”，为已提醒事件加入冷却与再入场条件。必须新增并报告 alerts_per_event、duplicate_alert_events、post_pass_alert_frames、false_alert_duration_ms；通过台阶后的重复提醒必须为零。 走廊语义：将“最大分割连通域”升级为“中心近场走廊是否被切断”的证据。建议输出 walkablePathContinuity、corridorBlockedWidthRatio、boundaryCrossesCorridor、nearFieldOccupancy。boundary_step_curb 默认仅是边界证据；只有横断中心走廊，且同时满足近场、持续或相对接近等至少两类证据时才允许提醒。平行路沿不得单独升到提醒等级。 时序证据：TemporalRiskTracker 不能仅因框面积、底边或相对深度的任一变化就认定逼近。下一候选应要求两类一致证据或单一证据持续多帧，并加入低成本的全局相机运动/帧质量 veto，抑制头动、俯仰和视差造成的假逼近。深度仅可作确认或拒绝证据，不得独立提升风险。 模型顺序：事件闭环与走廊规则通过后，才以 SANPO-Synthetic 预训练、SANPO-Real 微调训练全 INT8 MobileNetV3 + Lite R-ASPP 四类分割候选（walkable、boundary_step_curb、obstacle、unknown_nonwalkable）。BiSeNetV2 仅在 MobileNetV3 持续漏掉台阶/路沿边界时作为同数据、同契约的对照；FastDepth 与 Lite-Mono 保持离线相对深度消融，不进入实时提醒主链。 候选晋级门：在冻结的连续序列与独立盲测 session 上，危险事件提醒召回不得低于当前 88.9%，错误提醒率须不高于几何基线 5.3%，关键漏报不得增加，post_pass_alert_frames=0，并预先登记端到端 P95 延迟预算（当前建议不高于 70ms）。不得用 mIoU、GPU FPS 或单帧深度误差单独宣布模型可上线。 证据状态矩阵：后续报告不得再用单一 training_authorized=true 代表整条路线可发布。至少分开报告 raw-source closure、底层原始资产跨 split 隔离、训练规模/域覆盖、Torch↔TensorFlow 浮点等价、TensorFlow↔全 INT8 TFLite 量化保真、blind 风险事件门和同设备延迟/误提醒门；只有全部绿色才允许进入 App A/B。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Keep the event-lifecycle, corridor, uncertainty, and model-order guidance searchable without inventing missing paper identities."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The archived synthesis names a local reading cache but does not retain enough bibliographic identity for every unnamed paper. It is migrated as one survey record rather than fabricating individual canonical sources. Its guidance is not model, event, user, or safety evidence."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/history/idea/IDEA_ARCHIVE_THROUGH_2026-07-28.md",
+      "summary": "Legacy source for idea:assistive-navigation-2026-07; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated idea:assistive-navigation-2026-07 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

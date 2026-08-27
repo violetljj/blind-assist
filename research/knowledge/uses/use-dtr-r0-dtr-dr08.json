@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr08",
+  "item_id": "tool-project-guideline",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr08"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "可运行 Android/C++ 结构、路径相关障碍 aperture、追踪丢失时 STOP、开放式耳机反馈",
+    "project_application": "可运行 Android/C++ 结构、路径相关障碍 aperture、追踪丢失时 STOP、开放式耳机反馈",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "可运行 Android/C++ 结构、路径相关障碍 aperture、追踪丢失时 STOP、开放式耳机反馈"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "只适用特制宽路和地面引导线，明确要求 sighted spotter；不是通用动态避障系统"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "summary": "Legacy source for dtr:DR08; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR08 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

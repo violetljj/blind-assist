@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-l10-19",
+  "item_id": "paper-detect-and-approach-close-range-navigation-support-for-people-with-blind",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "l10-19"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "单目视频先做目标 3D 定位，再持续估计用户轨迹并修正靠近路径。",
+    "project_application": "可作为 find -> approach -> correct drift 的技术上界，并要求把身份、路径修正和最终交接分别计分。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "可作为 find -> approach -> correct drift 的技术上界，并要求把身份、路径修正和最终交接分别计分。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "受控目标实验；没有可读标牌身份权威、入口 affordance 或用户完成研究。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/l10-r0/LITERATURE_RESERVE_20_2026-08-27.md",
+      "summary": "Legacy source for l10:19; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated l10:19 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

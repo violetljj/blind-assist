@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-l10-8",
+  "item_id": "paper-find-first-track-next-decoupling-identification-and-propagation-in-refer",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "l10-8"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "先选择有可靠语义对齐的 reference frame，再由独立 propagation 模块维持连续性。",
+    "project_application": "保持“新鲜 OCR 建立身份，视觉 carrier 只传播”；重获必须重新经历 identify，而不是 appearance-only handoff。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "保持“新鲜 OCR 建立身份，视觉 carrier 只传播”；重获必须重新经历 identify，而不是 appearance-only handoff。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "论文是离线整段视频选择，语言对齐也不是精确 OCR 身份；没有原生 absent contract。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/l10-r0/LITERATURE_RESERVE_20_2026-08-27.md",
+      "summary": "Legacy source for l10:8; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated l10:8 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

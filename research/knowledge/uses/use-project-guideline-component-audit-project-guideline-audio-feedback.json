@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-project-guideline-component-audit-project-guideline-audio-feedback",
+  "item_id": "tool-project-guideline",
+  "route": "project-guideline-component-audit",
+  "mechanism_ids": [
+    "project-guideline-audio-feedback"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "Project Guideline 的做法。 AAudio + 空间化 sound pack 根据 ControlSignal 提供 低延迟连续引导，并把初始化、ready、guiding、stopping 分成明确声音状态 （README：Audio System； audio_system.h）。 BlindAssist 已有对应。 当前 [FeedbackController.kt](../core/device/src/main/java/com/linnan/blindassist/feedback/FeedbackController.kt) 已有语音、震动、冷却、疲劳控制和“实际是否接受反馈”的回执；任务是离散风险提醒， 不是沿固定线持续转向。 真实缺口。 当前没有空间化连续音频，但这不是已证明的论文主线缺口。更直接的缺口是 系统失效时是否给出可区分、可审计且不过度打扰的反馈；它已被 3.1 的统一原因码覆盖。 决定与停止线。 仅参考“正常提醒与系统失效提示必须可区分”的设计原则。不得复制 sound pack，不引入 AAudio/Resonance Audio，不重构现有语音/震动系统；若未来研究声音， 必须先有人因协议和真实反馈证据。",
+    "project_application": "Project Guideline 的做法。 AAudio + 空间化 sound pack 根据 ControlSignal 提供 低延迟连续引导，并把初始化、ready、guiding、stopping 分成明确声音状态 （README：Audio System； audio_system.h）。 BlindAssist 已有对应。 当前 [FeedbackController.kt](../core/device/src/main/java/com/linnan/blindassist/feedback/FeedbackController.kt) 已有语音、震动、冷却、疲劳控制和“实际是否接受反馈”的回执；任务是离散风险提醒， 不是沿固定线持续转向。 真实缺口。 当前没有空间化连续音频，但这不是已证明的论文主线缺口。更直接的缺口是 系统失效时是否给出可区分、可审计且不过度打扰的反馈；它已被 3.1 的统一原因码覆盖。 决定与停止线。 仅参考“正常提醒与系统失效提示必须可区分”的设计原则。不得复制 sound pack，不引入 AAudio/Resonance Audio，不重构现有语音/震动系统；若未来研究声音， 必须先有人因协议和真实反馈证据。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Project Guideline 的做法。 AAudio + 空间化 sound pack 根据 ControlSignal 提供 低延迟连续引导，并把初始化、ready、guiding、stopping 分成明确声音状态 （README：Audio System； audio_system.h）。 BlindAssist 已有对应。 当前 [FeedbackController.kt](../core/device/src/main/java/com/linnan/blindassist/feedback/FeedbackController.kt) 已有语音、震动、冷却、疲劳控制和“实际是否接受反馈”的回执；任务是离散风险提醒， 不是沿固定线持续转向。 真实缺口。 当前没有空间化连续音频，但这不是已证明的论文主线缺口。更直接的缺口是 系统失效时是否给出可区分、可审计且不过度打扰的反馈；它已被 3.1 的统一原因码覆盖。 决定与停止线。 仅参考“正常提醒与系统失效提示必须可区分”的设计原则。不得复制 sound pack，不引入 AAudio/Resonance Audio，不重构现有语音/震动系统；若未来研究声音， 必须先有人因协议和真实反馈证据。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The component decision is REFERENCE. The audit absorbs only the stated engineering boundary; it does not import the full C++/Bazel/MediaPipe/ARCore/Unreal stack or establish dynamic-risk, grounding, user, product, or safety evidence."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/PROJECT_GUIDELINE_COMPONENT_ADAPTATION_AUDIT_2026-07-30.md",
+      "summary": "Legacy source for project-guideline:audio-feedback; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated project-guideline:audio-feedback from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

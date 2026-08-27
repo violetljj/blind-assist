@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr31",
+  "item_id": "paper-copilot",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr31"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "标准仿真配置在头、骨盆、双腕、双膝放置 6 个相机，输入过去 1 秒、5 Hz 采样的视频。4D space-time-viewpoint attention 交替做“同一时刻跨空间/跨视角”与“同一视角跨空间/跨时间”的注意力；全局池化支路输出总碰撞与 10 个身体部位概率，解码支路输出各视角碰撞热图。训练同时使用总碰撞 BCE、关节 BCE 和热图 KL loss。闭环演示只把热图分左右半区，每步向低风险侧转髋 5°。",
+    "project_application": "借 per-joint 标签、未来碰撞热图和精确仿真接触生成；不借六相机默认部署、29% avoidance 外推或定性 sim-to-real。证据置信度：仿真机制高，真实转移低，辅助出行效果未建立。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "借 per-joint 标签、未来碰撞热图和精确仿真接触生成；不借六相机默认部署、29% avoidance 外推或定性 sim-to-real。证据置信度：仿真机制高，真实转移低，辅助出行效果未建立。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "精确身体碰撞真值全部来自合成 mesh；无 BLV 参与者、真实碰撞率、提醒或认知负担。默认 6 相机不可直接迁移到手机/眼镜，真实世界也没有验证热图是否真的落在接触位置。它只覆盖人体与静态环境，不覆盖行人或车辆进入路径。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/dynamic-travel-risk/DYNAMIC_TRAVEL_RISK_ADDITIONAL_10_DEEP_READING_2026-08-24.md",
+      "summary": "Legacy source for dtr:DR31; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR31 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-aim-my-robot-precision-local-navigation-to-any-object",
+  "kind": "paper",
+  "title": "Aim My Robot: Precision Local Navigation to Any Object",
+  "canonical_ref": "https://arxiv.org/abs/2411.14770",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "控制器显式到达目标相对位姿，包含距离、横向偏移与朝向，并有 sim-to-real 验证。",
+  "mechanisms": [
+    {
+      "id": "l10-17",
+      "name": "Aim My Robot: Precision Local Navigation to Any Object — l10:17 route mechanism",
+      "description": "控制器显式到达目标相对位姿，包含距离、横向偏移与朝向，并有 sim-to-real 验证。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "假设对象与参考位姿已经成立；不解决可读名称身份、入口 affordance 或用户完成。"
+    }
+  ],
+  "tags": [
+    "l10",
+    "literature-reserve",
+    "l10-r0"
+  ],
+  "aliases": [
+    "l10:17"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

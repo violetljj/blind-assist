@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-16",
+  "item_id": "paper-matcher-negative-control",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-16"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "①DINOv2 ViT-L/14 dense features；②reference-mask→target forward matching；③target match 再回 reference，保留落回 reference mask 的 cycles；④K-means++ K=8 选稳定点；⑤按 part/instance/global 策略生成 SAM prompts；⑥SAM-H 产 mask proposals；⑦ILM 以 EMD feature transport、purity、coverage 计分；⑧阈值过滤、合并 masks（§3、App.B）。 4. 训练/依赖：模型本身无训练，但不是无选择超参：附录为 COCO/LVIS、FSS、part、VOS 使用不同 prompt 策略、threshold 和 α/β/λ。VOS 还保存 reference memory 并做时间衰减，因此不是纯 current-frame。 5. 实验证据：Table 1 一样本 COCO/FSS/LVIS=52.7/87.0/33.0，few-shot=60.7/89.6/40.0；Table 3 DAVIS17 J&F=79.5、DAVIS16 86.1。Table 4：无 ILM 为 29.0/76.2/39.9，加 ILM 为 52.7/87.0/79.5；forward 50.6/81.1/73.5，bidirectional 52.7/87.0/79.5。附录 Table 7 的 proposal upper bound 远高于最终选择：COCO 83.6 vs 52.7，LVIS 75.4 vs 31.4，PACO 67.5 vs 32.7。 6. 实际证明：bidirectional matching+SAM+mask filtering 是强的 training-free segmentation baseline；ILM 是主要增益来源。 7. 未证明：论文限制段明确承认 image encoder 的 instance-level matching 有限，真正 instance segmentation 是未来工作。Cycle consistency 只证明闭环相似，不证明同一实体；无 target 时通常仍会给 best mask。 8. 阅读判断：最强 idea 是完整、可拆解、无需训练，特别适合作负控；最弱是不同 benchmark 各自调 threshold。隐藏失败是错 distractor 上的双向 cycle、EMD、purity、coverage 可以全都很高。 9. BlindAssist 映射：E 的 2/4 stable distractor 几乎就是 Matcher 的反例；1/4 order-sensitive 会因全图 mask 推理消失，但那只是移除了槽位偏差，不是解决身份。 10. 最小适配实验：原样冻结 DINOv2-L/SAM-H 及一套在观察结果前确定的参数；输出每 candidate 的 EMD,purity,coverage,cycle_count 和 NO_SUPPORT，不得按不同 D case 调阈值。fresh D 一次完成并含 NONE；若四类历史机制在新 cohort 上没有下降、controls 不能保留或 NONE 仍总选 mask，立即关闭。 11. Verdict：NEGATIVE_CONTROL。",
+    "project_application": "E 的 2/4 stable distractor 几乎就是 Matcher 的反例；1/4 order-sensitive 会因全图 mask 推理消失，但那只是移除了槽位偏差，不是解决身份。 10. 最小适配实验：原样冻结 DINOv2-L/SAM-H 及一套在观察结果前确定的参数；输出每 candidate 的 EMD,purity,coverage,cycle_count 和 NO_SUPPORT，不得按不同 D case 调阈值。fresh D 一次完成并含 NONE；若四类历史机制在新 cohort 上没有下降、controls 不能保留或 NONE 仍总选 mask，立即关闭。 11. Verdict：NEGATIVE_CONTROL。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "E 的 2/4 stable distractor 几乎就是 Matcher 的反例；1/4 order-sensitive 会因全图 mask 推理消失，但那只是移除了槽位偏差，不是解决身份。 10. 最小适配实验：原样冻结 DINOv2-L/SAM-H 及一套在观察结果前确定的参数；输出每 candidate 的 EMD,purity,coverage,cycle_count 和 NO_SUPPORT，不得按不同 D case 调阈值。fresh D 一次完成并含 NONE；若四类历史机制在新 cohort 上没有下降、controls 不能保留或 NONE 仍总选 mask，立即关闭。 11. Verdict：NEGATIVE_CONTROL。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "论文限制段明确承认 image encoder 的 instance-level matching 有限，真正 instance segmentation 是未来工作。Cycle consistency 只证明闭环相似，不证明同一实体；无 target 时通常仍会给 best mask。 8. 阅读判断：最强 idea 是完整、可拆解、无需训练，特别适合作负控；最弱是不同 benchmark 各自调 threshold。隐藏失败是错 distractor 上的双向 cycle、EMD、purity、coverage 可以全都很高。 9. BlindAssist 映射：E 的 2/4 stable distractor 几乎就是 Matcher 的反例；1/4 order-sensitive 会因全图 mask 推理消失，但那只是移除了槽位偏差，不是解决身份。 10. 最小适配实验：原样冻结 DINOv2-L/SAM-H 及一套在观察结果前确定的参数；输出每 candidate 的 EMD,purity,coverage,cycle_count 和 NO_SUPPORT，不得按不同 D case 调阈值。fresh D 一次完成并含 NONE；若四类历史机制在新 cohort 上没有下降、controls 不能保留或 NONE 仍总选 mask，立即关闭。 11. Verdict：NEGATIVE_CONTROL。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:16; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:16 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

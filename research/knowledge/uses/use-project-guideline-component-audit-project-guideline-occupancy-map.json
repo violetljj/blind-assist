@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-project-guideline-component-audit-project-guideline-occupancy-map",
+  "item_id": "tool-project-guideline",
+  "route": "project-guideline-component-audit",
+  "mechanism_ids": [
+    "project-guideline-occupancy-map"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "Project Guideline 的做法。 它把深度点云按人相对坐标更新为 frame-based occupancy map，并在当前轨迹清空区检查障碍 （occupancy_map.h； guidance_system.cc）。 BlindAssist 已有对应。 [UstrfRiskField.kt](../core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfRiskField.kt) 已经是用户局部栅格，包含 occupancy、traversability、drop/head risk、TTC、不确定性、 年龄、来源、衰减和可选的已验证位姿 warp。 真实缺口。 缺的是可准入的手机端 metric geometry / pose 输入，不是“缺一张地图”。 两者的安装姿态、场景假设、感知输入和输出权限不同，不能把 Project Guideline 的 OccupancyMap 结果当成 BlindAssist 的迁移验证。 决定与停止线。 只参考其测试分层和“未知/失效时不沿用旧环境”的思想；不复制实现， 不建立第二个 occupancy map，不重启已关闭的 route-conditioned USTRF program。",
+    "project_application": "Project Guideline 的做法。 它把深度点云按人相对坐标更新为 frame-based occupancy map，并在当前轨迹清空区检查障碍 （occupancy_map.h； guidance_system.cc）。 BlindAssist 已有对应。 [UstrfRiskField.kt](../core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfRiskField.kt) 已经是用户局部栅格，包含 occupancy、traversability、drop/head risk、TTC、不确定性、 年龄、来源、衰减和可选的已验证位姿 warp。 真实缺口。 缺的是可准入的手机端 metric geometry / pose 输入，不是“缺一张地图”。 两者的安装姿态、场景假设、感知输入和输出权限不同，不能把 Project Guideline 的 OccupancyMap 结果当成 BlindAssist 的迁移验证。 决定与停止线。 只参考其测试分层和“未知/失效时不沿用旧环境”的思想；不复制实现， 不建立第二个 occupancy map，不重启已关闭的 route-conditioned USTRF program。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Project Guideline 的做法。 它把深度点云按人相对坐标更新为 frame-based occupancy map，并在当前轨迹清空区检查障碍 （occupancy_map.h； guidance_system.cc）。 BlindAssist 已有对应。 [UstrfRiskField.kt](../core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfRiskField.kt) 已经是用户局部栅格，包含 occupancy、traversability、drop/head risk、TTC、不确定性、 年龄、来源、衰减和可选的已验证位姿 warp。 真实缺口。 缺的是可准入的手机端 metric geometry / pose 输入，不是“缺一张地图”。 两者的安装姿态、场景假设、感知输入和输出权限不同，不能把 Project Guideline 的 OccupancyMap 结果当成 BlindAssist 的迁移验证。 决定与停止线。 只参考其测试分层和“未知/失效时不沿用旧环境”的思想；不复制实现， 不建立第二个 occupancy map，不重启已关闭的 route-conditioned USTRF program。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The component decision is REFERENCE. The audit absorbs only the stated engineering boundary; it does not import the full C++/Bazel/MediaPipe/ARCore/Unreal stack or establish dynamic-risk, grounding, user, product, or safety evidence."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/PROJECT_GUIDELINE_COMPONENT_ADAPTATION_AUDIT_2026-07-30.md",
+      "summary": "Legacy source for project-guideline:occupancy-map; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated project-guideline:occupancy-map from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

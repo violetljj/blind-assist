@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-robo-centric-esdf-a-fast-and-accurate-whole-body-collision-evaluation-to",
+  "kind": "paper",
+  "title": "Robo-Centric ESDF: A Fast and Accurate Whole-Body Collision Evaluation Tool for Any-Shape Robotic Planning",
+  "canonical_ref": "https://doi.org/10.1109/iros55552.2023.10342074",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Use a body-frame ESDF for arbitrary oriented 3-D shapes, including nonconvex bodies, with fast position/rotation queries.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr57",
+      "name": "Robo-Centric ESDF: A Fast and Accurate Whole-Body Collision Evaluation Tool for Any-Shape Robotic Planning — dtr:DR57 route mechanism",
+      "description": "Use a body-frame ESDF for arbitrary oriented 3-D shapes, including nonconvex bodies, with fast position/rotation queries.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "Robot-body/static-map evidence; it does not supply human dimensions or source-native head/ground truth."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR57"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

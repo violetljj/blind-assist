@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-l10-17",
+  "item_id": "paper-aim-my-robot-precision-local-navigation-to-any-object",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "l10-17"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "控制器显式到达目标相对位姿，包含距离、横向偏移与朝向，并有 sim-to-real 验证。",
+    "project_application": "只在身份冻结后作为 WHERE/WHEN 控制参考：把目标相对姿态作为输出，不从 box size 暗推完成。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "只在身份冻结后作为 WHERE/WHEN 控制参考：把目标相对姿态作为输出，不从 box size 暗推完成。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "假设对象与参考位姿已经成立；不解决可读名称身份、入口 affordance 或用户完成。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/l10-r0/LITERATURE_RESERVE_20_2026-08-27.md",
+      "summary": "Legacy source for l10:17; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated l10:17 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

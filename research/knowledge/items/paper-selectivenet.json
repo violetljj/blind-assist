@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-selectivenet",
+  "kind": "paper",
+  "title": "SelectiveNet",
+  "canonical_ref": "https://proceedings.mlr.press/v97/geifman19a.html",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "模型不可信时仍强制输出方向",
+  "mechanisms": [
+    {
+      "id": "dtr-dr17",
+      "name": "SelectiveNet — dtr:DR17 route mechanism",
+      "description": "联合学习 prediction + selection head，显式优化 risk–coverage 曲线",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "通用图像数据；目标 coverage 不提供分布外或安全保证，仍需 BlindAssist 事件损失"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR17"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-calibanyview",
+  "kind": "paper",
+  "title": "CalibAnyView",
+  "canonical_ref": "https://arxiv.org/abs/2605.14615",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "AnyCam 与 CalibAnyView 已覆盖视频 pose/intrinsics 或任意多视图 calibration；“视频标定”本身不是 TARO novelty。",
+  "mechanisms": [
+    {
+      "id": "taro-t02b",
+      "name": "CalibAnyView — taro:T02b route mechanism",
+      "description": "AnyCam 与 CalibAnyView 已覆盖视频 pose/intrinsics 或任意多视图 calibration；“视频标定”本身不是 TARO novelty。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+    }
+  ],
+  "tags": [
+    "taro",
+    "adjacent-work",
+    "taro-r0"
+  ],
+  "aliases": [
+    "taro:T02b"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

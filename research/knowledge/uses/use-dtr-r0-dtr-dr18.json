@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr18",
+  "item_id": "paper-perceive-with-confidence",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr18"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "用 conformal calibration 把 occupancy perception 与 planner 的不确定联结，为退化/分布偏移保留风险上界",
+    "project_application": "用 conformal calibration 把 occupancy perception 与 planner 的不确定联结，为退化/分布偏移保留风险上界",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "用 conformal calibration 把 occupancy perception 与 planner 的不确定联结，为退化/分布偏移保留风险上界"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "室内静态障碍和四足机器人；统计保证依赖校准/偏移假设，不覆盖动态 BLV 事件"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "summary": "Legacy source for dtr:DR18; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR18 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

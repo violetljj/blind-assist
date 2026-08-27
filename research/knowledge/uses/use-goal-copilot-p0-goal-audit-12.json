@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-12",
+  "item_id": "paper-matcha-negative-control",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-12"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "①Stable Diffusion 提取高层 semantic DIFT 与低层 geometric DIFT；②patchify/project；③8 个 self/cross-attention blocks 双向动态融合；④残差拼接+MLP 得语义描述子 Fs、几何描述子 Fg；⑤语义用 CLIP contrastive+dense semantic-flow loss；⑥几何用双向 dual-softmax loss；⑦Fg/Fs/DINOv2 静态拼接成统一 descriptor；⑧NN matching，几何评测再接 SuperPoint、LO-RANSAC/PoseLib（Fig.3、§3、App.A）。 4. 训练/依赖：几何数据为 ScanNet 约 15k sequences、MegaDepth 441 sequences；语义数据 PF-PASCAL 2941 pairs、SPair-71k 53k pairs、AP-10k 10k images/额外 261k pairs。先 150k iterations 几何训练，再联合到 220k；4×H100。推理仍需 Stable Diffusion+DINOv2，论文明确承认运行未优化。 5. 实验证据：Table 4 的统一 MATCHA 在 Aachen AUC@5/10/20=51.7/61.0/68.5，PF-Willow PCK@.05/.1/.15=70.2/91.3/97.0，TAPVid-Davis=87.8/93.5/95.5，跨任务平均 79.6。附录 Table 5 更关键：单独加入 semantic supervision 会使 temporal matching 从 DIFT-sem 71.9/81.4/86.4 降为 MATCHA-Light-sem 64.9/77.9/84.3；说明跨实例语义监督会损害同实例时间对应。 6. 实际证明：一个 descriptor 可在三类标准 correspondence benchmark 上取得强综合表现；低层几何、高层语义和 DINOv2 确有互补。 7. 未证明：没有 same physical instance / distractor / NONE 分类目标；语义 benchmark 甚至奖励把两只不同动物的眼睛相配。对应质量不等于候选身份。 8. 阅读判断：最强 idea 是保留分支能力后再静态拼接，避免联合目标吞掉一种表示；最弱假设是“统一 feature”自然适合下游身份判断。隐藏失败是 analogous distractor 可同时获得语义和局部几何支持。 9. BlindAssist 映射：E 中 2/4 stable distractor 表明“更一致的 correspondence”仍可能稳定支持错物体；1/4 order-sensitive 可由独立计分避免，但并未因此获得 identity authority。 10. 最小适配实验：对冻结 reference mask 与每个 candidate mask 输出 CORR_SUPPORT{reciprocal_matches, foreground_ratio, geometric_inliers, semantic_flow}，不直接输出 TARGET；与 DINO/cosine、Mod-IIN 做同一 fresh D 的 paired rescue/regression。全 cohort 一次后停止；若只提高 match 数而 wrong-instance commit 不降，或 SAME_CLASS_DISTRACTOR 支持同步上升，即证伪其身份用途。 11. Verdict：NEGATIVE_CONTROL。",
+    "project_application": "E 中 2/4 stable distractor 表明“更一致的 correspondence”仍可能稳定支持错物体；1/4 order-sensitive 可由独立计分避免，但并未因此获得 identity authority。 10. 最小适配实验：对冻结 reference mask 与每个 candidate mask 输出 CORR_SUPPORT{reciprocal_matches, foreground_ratio, geometric_inliers, semantic_flow}，不直接输出 TARGET；与 DINO/cosine、Mod-IIN 做同一 fresh D 的 paired rescue/regression。全 cohort 一次后停止；若只提高 match 数而 wrong-instance commit 不降，或 SAME_CLASS_DISTRACTOR 支持同步上升，即证伪其身份用途。 11. Verdict：NEGATIVE_CONTROL。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "E 中 2/4 stable distractor 表明“更一致的 correspondence”仍可能稳定支持错物体；1/4 order-sensitive 可由独立计分避免，但并未因此获得 identity authority。 10. 最小适配实验：对冻结 reference mask 与每个 candidate mask 输出 CORR_SUPPORT{reciprocal_matches, foreground_ratio, geometric_inliers, semantic_flow}，不直接输出 TARGET；与 DINO/cosine、Mod-IIN 做同一 fresh D 的 paired rescue/regression。全 cohort 一次后停止；若只提高 match 数而 wrong-instance commit 不降，或 SAME_CLASS_DISTRACTOR 支持同步上升，即证伪其身份用途。 11. Verdict：NEGATIVE_CONTROL。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "没有 same physical instance / distractor / NONE 分类目标；语义 benchmark 甚至奖励把两只不同动物的眼睛相配。对应质量不等于候选身份。 8. 阅读判断：最强 idea 是保留分支能力后再静态拼接，避免联合目标吞掉一种表示；最弱假设是“统一 feature”自然适合下游身份判断。隐藏失败是 analogous distractor 可同时获得语义和局部几何支持。 9. BlindAssist 映射：E 中 2/4 stable distractor 表明“更一致的 correspondence”仍可能稳定支持错物体；1/4 order-sensitive 可由独立计分避免，但并未因此获得 identity authority。 10. 最小适配实验：对冻结 reference mask 与每个 candidate mask 输出 CORR_SUPPORT{reciprocal_matches, foreground_ratio, geometric_inliers, semantic_flow}，不直接输出 TARGET；与 DINO/cosine、Mod-IIN 做同一 fresh D 的 paired rescue/regression。全 cohort 一次后停止；若只提高 match 数而 wrong-instance commit 不降，或 SAME_CLASS_DISTRACTOR 支持同步上升，即证伪其身份用途。 11. Verdict：NEGATIVE_CONTROL。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:12; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:12 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

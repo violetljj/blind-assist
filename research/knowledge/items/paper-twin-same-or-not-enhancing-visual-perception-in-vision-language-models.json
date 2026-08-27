@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "id": "paper-twin-same-or-not-enhancing-visual-perception-in-vision-language-models",
+  "kind": "paper",
+  "title": "TWIN — Same or Not? Enhancing Visual Perception in Vision-Language Models",
+  "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2026/html/Marsili_Same_or_Not_Enhancing_Visual_Perception_in_Vision-Language_Models_CVPR_2026_paper.html",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "以真实视觉近邻和生成微差负样本训练小 VLM，能显著改善多个 fine-grained pair benchmarks；难负构造和规模均有独立增益。它还证明“仅要求回答同/不同”的训练信号可迁移到若干鸟类、地标、艺术品与长尾对象问题。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-32",
+      "name": "TWIN — Same or Not? Enhancing Visual Perception in Vision-Language Models — goal-audit:32 route mechanism",
+      "description": "① 从 Amazon Reviews 的 36 类、1,836 个产品实例、22,157 张图片形成同实例正对；② 用 CLIP 在不同实例中召回视觉最相似者，由人工挑真实 hard negative 并剔除简单负例；③ 对每个产品用 3–5 图 DreamBooth 个性化，再以通用 prompt 生成“保留大意但改变细节”的 synthetic negative，由人工验收；④ 组成 561,569 个问答：123,393 正、362,283 真实负、75,893 合成负；⑤ 以二元最终答案正确为唯一 reward；⑥ 对 Qwen2.5-VL-3B、InternVL3.5-1B 做全参数 GRPO，batch 内平衡正负；⑦ 用 TWIN-Eval 与 ILIAS、Landmarks、MET、CUB、INQUIRE 组成 FGVQA，既测 pair Yes/No，也测 0–3 个匹配的计数问题。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "没证明唯一物理实体身份、单参考候选定位、current-frame NONE、校准概率或多候选逐个独立证据；multi-image 任务是数有几个 match，而不是给每个候选绑定可审计分数。训练/评测未报告左右交换一致性。商品同 SKU 的图片也可能把“产品型号身份”误当“物理个体身份”。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-32",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:32"
+  ],
+  "links": [
+    {
+      "label": "官方项目",
+      "ref": "https://glab-caltech.github.io/twin"
+    },
+    {
+      "label": "官方代码",
+      "ref": "https://github.com/damianomarsili/TWIN"
+    },
+    {
+      "label": "官方 TWIN 数据",
+      "ref": "https://huggingface.co/datasets/glab-caltech/TWIN"
+    },
+    {
+      "label": "官方 FGVQA",
+      "ref": "https://huggingface.co/datasets/glab-caltech/FGVQA"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

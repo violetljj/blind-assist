@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-offline-annotation-idea-sam2",
+  "item_id": "paper-sam-2-segment-anything-in-images-and-videos",
+  "route": "offline-annotation",
+  "mechanism_ids": [
+    "idea-sam2"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "evaluator",
+  "usage": {
+    "source_scope": "Prompted image/video mask propagation retained as an offline annotation, occlusion, teacher, or upper-bound mechanism.",
+    "project_application": "Use only behind explicit prompts or frozen offline protocols; never let an unprompted mask directly trigger a risk alert.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Use only behind explicit prompts or frozen offline protocols; never let an unprompted mask directly trigger a risk alert."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "SAM 2 masks do not create target identity, route relevance, event truth, user outcome, real-time phone feasibility, or safety authority."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/history/idea/IDEA_ARCHIVE_THROUGH_2026-07-28.md",
+      "summary": "Legacy source for idea:SAM2; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated idea:SAM2 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

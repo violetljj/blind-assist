@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-watch-your-stepp-semantic-traversability-estimation-using-pose-projected",
+  "kind": "paper",
+  "title": "Watch Your STEPP: Semantic Traversability Estimation Using Pose Projected Features",
+  "canonical_ref": "https://arxiv.org/abs/2501.17594",
+  "authors": [],
+  "year": 2025,
+  "venue": "ICRA",
+  "summary": "Watch Your STEPP 把人类行走轨迹投影到图像，用 DINOv2 区域特征和重建误差区分熟悉可走地形与陌生/潜在危险地形，并在 ANYmal 机器人上进行室内外实验。它值得借鉴的是“从走过的轨迹自动产生 traversability 正样本”和“以异常分数补充闭集语义”，而不是把机器人系统直接搬到手机。论文运行约 2.5 Hz，并依赖深度、SLAM、NUC/Jetson；阈值还在同一批标注区域上调优。对 BlindAssist，它只适合作为离线 teacher 或轻量 anomaly head 的蒸馏来源。高异常首先应转成 unknown_motion_or_surface，不能自动转成 obstacle，更不能单独触发提醒。",
+  "mechanisms": [
+    {
+      "id": "frontier-stepp",
+      "name": "Watch Your STEPP: Semantic Traversability Estimation Using Pose Projected Features — frontier:STEPP route mechanism",
+      "description": "Watch Your STEPP 把人类行走轨迹投影到图像，用 DINOv2 区域特征和重建误差区分熟悉可走地形与陌生/潜在危险地形，并在 ANYmal 机器人上进行室内外实验。它值得借鉴的是“从走过的轨迹自动产生 traversability 正样本”和“以异常分数补充闭集语义”，而不是把机器人系统直接搬到手机。论文运行约 2.5 Hz，并依赖深度、SLAM、NUC/Jetson；阈值还在同一批标注区域上调优。对 BlindAssist，它只适合作为离线 teacher 或轻量 anomaly head 的蒸馏来源。高异常首先应转成 unknown_motion_or_surface，不能自动转成 obstacle，更不能单独触发提醒。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "The frontier-upgrade report treats this as paper-derived mechanism evidence. It does not independently establish BlindAssist event utility, mobile deployment, BLV user benefit, model promotion, or safety."
+    }
+  ],
+  "tags": [
+    "frontier-upgrade",
+    "paper-review",
+    "frontier-upgrade-2026-07"
+  ],
+  "aliases": [
+    "frontier:STEPP"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

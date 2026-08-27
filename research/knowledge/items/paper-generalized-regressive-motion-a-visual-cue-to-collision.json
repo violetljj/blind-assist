@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "id": "paper-generalized-regressive-motion-a-visual-cue-to-collision",
+  "kind": "paper",
+  "title": "Generalized Regressive Motion: a Visual Cue to Collision",
+  "canonical_ref": "https://doi.org/10.1088/1748-3190/11/4/046008",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "指出 looming 过去主要用于静态障碍接近；针对两个运动主体提出 GRM。摘要称几何分析支持其作为同类个体碰撞线索，agent-based modeling 中优于 looming。",
+  "mechanisms": [
+    {
+      "id": "rcle-e4",
+      "name": "Generalized Regressive Motion: a Visual Cue to Collision — rcle:E4 route mechanism",
+      "description": "指出 looming 过去主要用于静态障碍接近；针对两个运动主体提出 GRM。摘要称几何分析支持其作为同类个体碰撞线索，agent-based modeling 中优于 looming。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "当前机制审计为负，故 bearing 假设 HOLD。原文不能支持“RCLE 下一步必须加 bearing”的强结论。"
+    }
+  ],
+  "tags": [
+    "rcle",
+    "motion",
+    "related-work"
+  ],
+  "aliases": [
+    "rcle:E4"
+  ],
+  "links": [
+    {
+      "label": "arXiv",
+      "ref": "https://arxiv.org/abs/1510.07573"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

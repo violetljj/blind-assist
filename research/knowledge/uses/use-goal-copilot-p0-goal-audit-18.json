@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-18",
+  "item_id": "paper-t-rex2-defer",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-18"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "①Swin+deformable encoder 得多尺度 features；②box/point 坐标做 sine-cosine embedding；③learnable content queries 加 global aggregation query；④deformable cross-attention 从 reference region 得 visual embedding；⑤CLIP text encoder 得 text embedding；⑥InfoNCE 做 region-level text-visual alignment；⑦Grounding-DINO 式 top-900 query initialization+DINO box decoder；⑧分类为 detection query 与 prompt embedding 点积。generic visual 对 n 个 examples 直接均值；mixed 又对 text/visual 均值（Fig.3、Eq.1–12）。 4. 训练/依赖：visual 采用“current image prompt, current image detect”，没有真实跨图 identity 训练；text 用 O365/OpenImages/GoldG 和 caption/classification pseudo labels。text 总计 3.15M labeled+3.39M pseudo，visual 2.4M labeled+0.65M pseudo。loss 为 focal classification、L1、GIoU、denoising、InfoNCE alignment，text/visual iterations 交替。 5. 实验证据：Table 1 Swin-L 的 Text/Visual-G：COCO 52.2/46.5，LVIS-val 45.8/45.3，ODinW 22.0/27.8，Roboflow100 10.5/18.5。Table 2 Visual-I box 达 COCO 58.5、LVIS-val 65.8，但作者明确说明它已知道测试图内类别存在，比较不公平。Table 4 alignment 令 visual LVIS 30.2→34.9。Table 5 从 1 到16 visual examples，COCO 29.2→38.8、LVIS 26.2→34.9。Table 8 mixed 在 LVIS 37.0，但 COCO 42.5 低于 text-only 45.8。 6. 实际证明：text 与 visual 对长尾类别有互补，region-level alignment 能改善 generic detection。 7. 未证明：目标是 generic category detection，不是 exact instance；visual prompt 训练仍是同图类别检测。论文限制也承认 common objects 上 visual 会干扰 text，且可靠 generic visual 表示需约16 examples。无 NONE、身份或 arrival。 8. 阅读判断：最强 idea 是 late fusion，使一次 image encoding 支持交互；最弱是简单 embedding average 同时承担 category abstraction 与具体外观。隐藏失败是 text alignment 把本来有区分力的实例纹理拉向共同类别锚点。 9. BlindAssist 映射：当前 20/21 FOUND 已说明 category proposal 不是主要短板；E 的 4 distractors 可能因这种 generic synergy 增加，而不是减少。它绕开 A/B 顺序，但不建立物理身份。 10. 最小适配实验：若仅作 proposal audit，在同一冻结 current images 上比较 text-only、visual-only、mixed 的 Recall@K 与 downstream wrong-instance exposure；输出只标 CANDIDATE_BOX + modality_scores，不得输出 TARGET。跑完 fresh D 一次即停；若 Recall@K 无增益或 distractor candidates/commits 增加，即不进入 verifier。 11. Verdict：DEFER。",
+    "project_application": "当前 20/21 FOUND 已说明 category proposal 不是主要短板；E 的 4 distractors 可能因这种 generic synergy 增加，而不是减少。它绕开 A/B 顺序，但不建立物理身份。 10. 最小适配实验：若仅作 proposal audit，在同一冻结 current images 上比较 text-only、visual-only、mixed 的 Recall@K 与 downstream wrong-instance exposure；输出只标 CANDIDATE_BOX + modality_scores，不得输出 TARGET。跑完 fresh D 一次即停；若 Recall@K 无增益或 distractor candidates/commits 增加，即不进入 verifier。 11. Verdict：DEFER。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "当前 20/21 FOUND 已说明 category proposal 不是主要短板；E 的 4 distractors 可能因这种 generic synergy 增加，而不是减少。它绕开 A/B 顺序，但不建立物理身份。 10. 最小适配实验：若仅作 proposal audit，在同一冻结 current images 上比较 text-only、visual-only、mixed 的 Recall@K 与 downstream wrong-instance exposure；输出只标 CANDIDATE_BOX + modality_scores，不得输出 TARGET。跑完 fresh D 一次即停；若 Recall@K 无增益或 distractor candidates/commits 增加，即不进入 verifier。 11. Verdict：DEFER。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "目标是 generic category detection，不是 exact instance；visual prompt 训练仍是同图类别检测。论文限制也承认 common objects 上 visual 会干扰 text，且可靠 generic visual 表示需约16 examples。无 NONE、身份或 arrival。 8. 阅读判断：最强 idea 是 late fusion，使一次 image encoding 支持交互；最弱是简单 embedding average 同时承担 category abstraction 与具体外观。隐藏失败是 text alignment 把本来有区分力的实例纹理拉向共同类别锚点。 9. BlindAssist 映射：当前 20/21 FOUND 已说明 category proposal 不是主要短板；E 的 4 distractors 可能因这种 generic synergy 增加，而不是减少。它绕开 A/B 顺序，但不建立物理身份。 10. 最小适配实验：若仅作 proposal audit，在同一冻结 current images 上比较 text-only、visual-only、mixed 的 Recall@K 与 downstream wrong-instance exposure；输出只标 CANDIDATE_BOX + modality_scores，不得输出 TARGET。跑完 fresh D 一次即停；若 Recall@K 无增益或 distractor candidates/commits 增加，即不进入 verifier。 11. Verdict：DEFER。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:18; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:18 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

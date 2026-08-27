@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-frontier-upgrade-2026-07-frontier-upc",
+  "item_id": "paper-locating-noise-is-halfway-denoising-for-semi-supervised-segmentation",
+  "route": "frontier-upgrade-2026-07",
+  "mechanism_ids": [
+    "frontier-upc"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "MRFP 在训练期扰动高频细纹理和低频风格，论文在 GTA→多个真实域上取得显著平均增益，且推理不保留扰动模块。它适合 synthetic/procedural→real 或跨 session 泛化，但不针对当前 head 初始化问题。过强高频扰动还可能把真正需要的细路沿当成域特征抹掉。因此只能在稳定 head 后先试 HRFP-only，并给扰动单独记录 perturbation_seed。 UPC 证明伪标签噪声往往成片出现并集中在边界附近，patch-wise uncertainty 定位后再用可靠 labeled patch 替换，优于随机 erase/CutMix。但当前 MACHINE 帧并不是无标签数据；它们有来源机器 mask。最接近论文语义的迁移是：HUMAN=train 作为可靠 donor，MACHINE=train 作为 weak target，由仅使用 train 构建的 teacher 产生 pseudo-label。当前只有 38 张 HUMAN train 帧，donor 多样性很低，硬矩形 CutMix 还可能制造伪边界，所以第一版必须是 UPC-lite、单一中等替换率，并审计 donor 垄断和伪边界。 SWSEG 把 weak/strong consistency 扩展到 encoder 表示，通过 Gaussian-SWD 优化 alignment/uniformity。它可能帮助表示覆盖，但论文没有报告跨初始化 seed 方差、unknown 或事件门。错误伪标签一旦进入 weak/strong 流，SWD 也可能让错误表示更稳定。因此 SWSEG 是 P4 正则，而不是 P1 修复；必须在 head 稳定且 UPC 角色清晰后，按 Lswd → Lreg → projection MLP 单因素加入。 三者正确顺序是：结构稳定 → MRFP 或 UPC 二选一 → 证明单模块有效 → 再决定是否引入 SWSEG。第一轮禁止 MRFP+UPC+SWSEG 全开，因为届时特征分布、伪标签、loss landscape 和随机源同时变化，任何提升或退化都无法归因。",
+    "project_application": "Imported under the report's 3.2 MRFP、UPC、SWSEG：三个模块解决三种不同失败，不能一次叠加 mechanism group for bounded project comparison.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Imported under the report's 3.2 MRFP、UPC、SWSEG：三个模块解决三种不同失败，不能一次叠加 mechanism group for bounded project comparison."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The frontier-upgrade report treats this as paper-derived mechanism evidence. It does not independently establish BlindAssist event utility, mobile deployment, BLV user benefit, model promotion, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/frontier-upgrade-2026-07/BLINDASSIST_FRONTIER_PAPER_UPGRADE_REPORT_2026-07.md",
+      "summary": "Legacy source for frontier:UPC; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated frontier:UPC from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

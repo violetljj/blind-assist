@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr17",
+  "item_id": "paper-selectivenet",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr17"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "联合学习 prediction + selection head，显式优化 risk–coverage 曲线",
+    "project_application": "联合学习 prediction + selection head，显式优化 risk–coverage 曲线",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "联合学习 prediction + selection head，显式优化 risk–coverage 曲线"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "通用图像数据；目标 coverage 不提供分布外或安全保证，仍需 BlindAssist 事件损失"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "summary": "Legacy source for dtr:DR17; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR17 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

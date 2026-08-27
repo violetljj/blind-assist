@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-stochastic-occupancy-grid-map-prediction-sogmp-sogmp-plus-plus",
+  "kind": "paper",
+  "title": "Stochastic Occupancy Grid Map Prediction / SOGMP、SOGMP++",
+  "canonical_ref": "https://proceedings.mlr.press/v229/xie23a.html",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "行人可能有多个合理未来，单轨迹会漏掉分支",
+  "mechanisms": [
+    {
+      "id": "dtr-dr10",
+      "name": "Stochastic Occupancy Grid Map Prediction / SOGMP、SOGMP++ — dtr:DR10 route mechanism",
+      "description": "预测随机未来 occupancy map，以均值与样本方差 costmap 对照 body corridor，而不强制单 ID",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "机器人传感和控制栈；VAE 样本方差未做风险校准，也没有头戴相机或 BLV 事件证据"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR10"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

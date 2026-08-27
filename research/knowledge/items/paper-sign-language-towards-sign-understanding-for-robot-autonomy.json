@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-sign-language-towards-sign-understanding-for-robot-autonomy",
+  "kind": "paper",
+  "title": "Sign Language: Towards Sign Understanding for Robot Autonomy",
+  "canonical_ref": "https://arxiv.org/abs/2506.02556",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "提供真实公共空间标识集，并区分 directional cue 与 locational cue。",
+  "mechanisms": [
+    {
+      "id": "l10-13",
+      "name": "Sign Language: Towards Sign Understanding for Robot Autonomy — l10:13 route mechanism",
+      "description": "提供真实公共空间标识集，并区分 directional cue 与 locational cue。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "静态图像理解；没有主动观测、控制、到达或用户研究。"
+    }
+  ],
+  "tags": [
+    "l10",
+    "literature-reserve",
+    "l10-r0"
+  ],
+  "aliases": [
+    "l10:13"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

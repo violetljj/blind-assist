@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-taro-r0-taro-t07",
+  "item_id": "paper-scope",
+  "route": "taro-r0",
+  "mechanism_ids": [
+    "taro-t07"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "SCOPE 已把 robot-inflated safety volume、未知 voxel 与主动 viewpoint search 联结；“swept volume + active observation”也不是 TARO novelty。SCOPE 面向可控 UAV 的已观测自由空间认证与执行规划，TARO 必须证明其不同对象：穿戴式部分米制 factor posterior、局部 task-functional identifiability、人类受限 camera-only 观察、校准 UNKNOWN 及交互成本；TARO 不主张 certified path execution。",
+    "project_application": "SCOPE 已把 robot-inflated safety volume、未知 voxel 与主动 viewpoint search 联结；“swept volume + active observation”也不是 TARO novelty。SCOPE 面向可控 UAV 的已观测自由空间认证与执行规划，TARO 必须证明其不同对象：穿戴式部分米制 factor posterior、局部 task-functional identifiability、人类受限 camera-only 观察、校准 UNKNOWN 及交互成本；TARO 不主张 certified path execution。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "SCOPE 已把 robot-inflated safety volume、未知 voxel 与主动 viewpoint search 联结；“swept volume + active observation”也不是 TARO novelty。SCOPE 面向可控 UAV 的已观测自由空间认证与执行规划，TARO 必须证明其不同对象：穿戴式部分米制 factor posterior、局部 task-functional identifiability、人类受限 camera-only 观察、校准 UNKNOWN 及交互成本；TARO 不主张 certified path execution。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/taro/TARO_R0_RESEARCH_ROUTE_GUIDE_2026-08-10.md",
+      "summary": "Legacy source for taro:T07; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated taro:T07 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

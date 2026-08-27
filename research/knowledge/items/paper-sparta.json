@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-sparta",
+  "kind": "paper",
+  "title": "SPARTA",
+  "canonical_ref": "https://proceedings.mlr.press/v305/dong25a.html",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "SPARTA 已学习 approach-angle/state-conditioned traversability；“按方向或 profile 条件化可通行性”本身不是 TARO novelty。",
+  "mechanisms": [
+    {
+      "id": "taro-t05",
+      "name": "SPARTA — taro:T05 route mechanism",
+      "description": "SPARTA 已学习 approach-angle/state-conditioned traversability；“按方向或 profile 条件化可通行性”本身不是 TARO novelty。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+    }
+  ],
+  "tags": [
+    "taro",
+    "adjacent-work",
+    "taro-r0"
+  ],
+  "aliases": [
+    "taro:T05"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

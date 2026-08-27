@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "project-rt-detr-official-project",
+  "kind": "project",
+  "title": "RT-DETR official project",
+  "canonical_ref": "https://github.com/lyuwenyu/RT-DETR",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Real-time transformer detector family retained only as a detector-adapter comparison candidate.",
+  "mechanisms": [
+    {
+      "id": "idea-rt-detr",
+      "name": "RT-DETR official project — idea:RT-DETR route mechanism",
+      "description": "Real-time transformer detector family retained only as a detector-adapter comparison candidate.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "The project does not establish BlindAssist event recall, critical-miss behavior, phone latency, BLV benefit, or safety."
+    }
+  ],
+  "tags": [
+    "idea-archive",
+    "detector-lab"
+  ],
+  "aliases": [
+    "idea:RT-DETR"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

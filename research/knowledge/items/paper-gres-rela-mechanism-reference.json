@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-gres-rela-mechanism-reference",
+  "kind": "paper",
+  "title": "GRES / ReLA — MECHANISM_REFERENCE",
+  "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2023/html/Liu_GRES_Generalized_Referring_Expression_Segmentation_CVPR_2023_paper.html",
+  "authors": [],
+  "year": 2023,
+  "venue": "",
+  "summary": "zero/one/multi-target 必须作为任务定义与训练标签显式存在；独立 no-target classifier 优于用 mask pixel count 猜 absence；region-region/word 关系有测得增益。 7. 未证明：只有文本，没有 reference image physical identity。其 NONE 是“文字所述对象不存在”，不是“该参考物理实例当前不可见”；不能单独解决同类身份。 8. 阅读判断：最强 idea 是把 empty 设为独立输出而非阈值副作用；最弱是 no-target head 仍高度漏检。隐藏风险是关系模块能正确解释“灰衣人”，却忽略“坐在床上”与“坐在床旁椅子上”的细差，Fig.9 正展示此类失败。 9. BlindAssist 映射：visible E 只有一个 abstain，不能据此评价 NONE；2/4 stable distractor 表明 identity scorer 必须先建立，GRES 只能在其上做集合/absence decision。 10. 最小适配实验：冻结上游 identity evidence，训练/校准独立 NONE head，输入候选分数分布、margin、候选间关系，输出严格为 TARGET_SET(ids) 或 NONE。fresh matched TARGET/SAME_CLASS_DISTRACTOR/NONE cohort 一次结束；以预声明 target coverage 为约束，若 absent false commit 不降或把 visible target 大量清空，即证伪。 11. Verdict：MECHANISM_REFERENCE。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-19",
+      "name": "GRES / ReLA — MECHANISM_REFERENCE — goal-audit:19 route mechanism",
+      "description": "①Swin image encoder 与 BERT text encoder；②pixel decoder 得 mask features；③P×P learnable region queries；④RIA 用 query-image cross-attention 软聚合动态 region features，并以 downsampled GT “minimap”监督空间归属；⑤RLA 先做 region self-attention，再做 region-word cross-attention；⑥每 region 产生 probability x_r 与 mask filter；⑦加权求和 M=Σx_r M_r；⑧global pooled regions 预测独立 no-target score E，若 positive 则强制清空 mask（Fig.4–5、§4）。 4. 训练/依赖：gRefCOCO 有 278,232 expressions，其中 80,022 multi-target、32,202 no-target，覆盖 60,287 instances/19,994 images；与 RefCOCO UNC split兼容。mask、minimap、no-target 均用 cross-entropy；主文未列 optimizer 等补充材料专属超参。 5. 实验证据：Table 2 从 hard-split input gIoU=55.34 到 decoder pooling 60.93、无 minimap 62.06、完整 ReLA 63.60。Table 3 baseline 58.53，加 language attention 60.53，加 region attention 62.38，两者完整 63.60。Table 5 val/testA/testB gIoU=63.60/70.03/61.02。但 Table 6 的 no-target N-acc 仅 56.37/59.02/58.40，而 T-acc 96.32/97.68/95.44；论文明确承认仍漏约40% no-target。 6. 实际证明：zero/one/multi-target 必须作为任务定义与训练标签显式存在；独立 no-target classifier 优于用 mask pixel count 猜 absence；region-region/word 关系有测得增益。 7. 未证明：只有文本，没有 reference image physical identity。其 NONE 是“文字所述对象不存在”，不是“该参考物理实例当前不可见”；不能单独解决同类身份。 8. 阅读判断：最强 idea 是把 empty 设为独立输出而非阈值副作用；最弱是 no-target head 仍高度漏检。隐藏风险是关系模块能正确解释“灰衣人”，却忽略“坐在床上”与“坐在床旁椅子上”的细差，Fig.9 正展示此类失败。 9. BlindAssist 映射：visible E 只有一个 abstain，不能据此评价 NONE；2/4 stable distractor 表明 identity scorer 必须先建立，GRES 只能在其上做集合/absence decision。 10. 最小适配实验：冻结上游 identity evidence，训练/校准独立 NONE head，输入候选分数分布、margin、候选间关系，输出严格为 TARGET_SET(ids) 或 NONE。fresh matched TARGET/SAME_CLASS_DISTRACTOR/NONE cohort 一次结束；以预声明 target coverage 为约束，若 absent false commit 不降或把 visible target 大量清空，即证伪。 11. Verdict：MECHANISM_REFERENCE。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "只有文本，没有 reference image physical identity。其 NONE 是“文字所述对象不存在”，不是“该参考物理实例当前不可见”；不能单独解决同类身份。 8. 阅读判断：最强 idea 是把 empty 设为独立输出而非阈值副作用；最弱是 no-target head 仍高度漏检。隐藏风险是关系模块能正确解释“灰衣人”，却忽略“坐在床上”与“坐在床旁椅子上”的细差，Fig.9 正展示此类失败。 9. BlindAssist 映射：visible E 只有一个 abstain，不能据此评价 NONE；2/4 stable distractor 表明 identity scorer 必须先建立，GRES 只能在其上做集合/absence decision。 10. 最小适配实验：冻结上游 identity evidence，训练/校准独立 NONE head，输入候选分数分布、margin、候选间关系，输出严格为 TARGET_SET(ids) 或 NONE。fresh matched TARGET/SAME_CLASS_DISTRACTOR/NONE cohort 一次结束；以预声明 target coverage 为约束，若 absent false commit 不降或把 visible target 大量清空，即证伪。 11. Verdict：MECHANISM_REFERENCE。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-19",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:19"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

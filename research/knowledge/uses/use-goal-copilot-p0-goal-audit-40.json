@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-40",
+  "item_id": "paper-deep-sets",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-40"
+  ],
+  "use_state": "retired",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "①每个元素共享同一 φ；②以 commutative sum 得 z=Σφ(x)；③用 ρ(z) 得 invariant 输出；④若有 query/meta 信息，可令 φ(x|q) 条件化；⑤per-candidate 输出用共享 equivariant layer，使输入置换只置换对应 logits；⑥单层必要充分形式为 σ(λIx+γ11ᵀx)，即元素自身加集合和；⑦论文也试 max-pooling 变体，但主表示是 sum。官方 PopStats 与 SetExpansion 代码确有 sum(dim=1)/torch.sum，PointCloud 示例则按任务选 mean/max，说明“交换性聚合”比固定 sum 更一般。",
+    "project_application": "①每个元素共享同一 φ；②以 commutative sum 得 z=Σφ(x)；③用 ρ(z) 得 invariant 输出；④若有 query/meta 信息，可令 φ(x|q) 条件化；⑤per-candidate 输出用共享 equivariant layer，使输入置换只置换对应 logits；⑥单层必要充分形式为 σ(λIx+γ11ᵀx)，即元素自身加集合和；⑦论文也试 max-pooling 变体，但主表示是 sum。官方 PopStats 与 SetExpansion 代码确有 sum(dim=1)/torch.sum，PointCloud 示例则按任务选 mean/max，说明“交换性聚合”比固定 sum 更一般。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "先让独立 verifier 产出每候选证据 ei，再用共享 φ(ei) 与全局 Σjφ(ej)，通过共享 ψ(ei,Σ) 输出候选 logits；另加不依赖候选位置的显式 NONE logit/token。对同一帧随机 100 次排列，候选 logits 必须严格同置换、NONE 不变；再测候选数量/复制、stable distractor 与 absent。与 ordered MLP、独立阈值、mean/sum pooling 比较。若排列不变但身份 accuracy/FAR 无改善，应正确结论为“拓扑修复成功，身份证据仍失败”。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "论文证明共享元素映射加交换性聚合可以表达一大类 invariant set functions，并给出受限网络层的 equivariance 条件；实验也显示把集合对称性写进结构能消除位置绑定。它没有证明候选特征含 physical-instance identity、没有给开放集绝对阈值或独立 NONE，更不保证有限维网络在候选数量漂移、重复候选和域外分布下仍正确。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-mainline-additional-10-deep-reading-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:40; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:40 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-l10-12",
+  "item_id": "paper-signscene-visual-sign-grounding-for-mapless-navigation",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "l10-12"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "把复杂标识上的语义指令映射到当前局部 3D 场景元素与动作。",
+    "project_application": "区分“写着目标名的终点标牌”和“指向远方目标的方向标牌”，防止读到文字就误报到达。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "区分“写着目标名的终点标牌”和“指向远方目标的方向标牌”，防止读到文字就误报到达。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "主要证明 sign grounding；不改善可读性，也不验证命名目的地的最终交接。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/l10-r0/LITERATURE_RESERVE_20_2026-08-27.md",
+      "summary": "Legacy source for l10:12; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated l10:12 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

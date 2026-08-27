@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-sanpo-idea-depth-anything-v2",
+  "item_id": "paper-depth-anything-v2",
+  "route": "sanpo",
+  "mechanism_ids": [
+    "idea-depth-anything-v2"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "component",
+  "usage": {
+    "source_scope": "Generalizable monocular relative depth used as an offline teacher or bounded confirmation/abstention evidence source.",
+    "project_application": "Keep relative-depth ablations separate from metric distance and prevent depth alone from promoting an alert.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Keep relative-depth ablations separate from metric distance and prevent depth alone from promoting an alert."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Relative monocular depth is not metric range, route truth, event truth, user evidence, or safety authority; historical conversion/runtime limitations remain separate use evidence."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/history/idea/IDEA_ARCHIVE_THROUGH_2026-07-28.md",
+      "summary": "Legacy source for idea:Depth-Anything-V2; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated idea:Depth-Anything-V2 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

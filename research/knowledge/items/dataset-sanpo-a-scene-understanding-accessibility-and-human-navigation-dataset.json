@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "id": "dataset-sanpo-a-scene-understanding-accessibility-and-human-navigation-dataset",
+  "kind": "dataset",
+  "title": "SANPO: A Scene Understanding, Accessibility and Human Navigation Dataset",
+  "canonical_ref": "https://google-research-datasets.github.io/sanpo_dataset",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Use scene-understanding and accessibility masks as continuous corridor, boundary, obstacle, and unknown evidence with source-aware sequence structure.",
+  "mechanisms": [
+    {
+      "id": "idea-sanpo",
+      "name": "SANPO: A Scene Understanding, Accessibility and Human Navigation Dataset — idea:SANPO route mechanism",
+      "description": "Use scene-understanding and accessibility masks as continuous corridor, boundary, obstacle, and unknown evidence with source-aware sequence structure.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "SANPO source masks are not BlindAssist event onset/clearance truth, collision outcome, user benefit, mobile model promotion, or safety evidence."
+    }
+  ],
+  "tags": [
+    "idea-archive",
+    "sanpo"
+  ],
+  "aliases": [
+    "idea:SANPO"
+  ],
+  "links": [
+    {
+      "label": "WACV 2025 paper",
+      "ref": "https://openaccess.thecvf.com/content/WACV2025/papers/Waghmare_SANPO_A_Scene_Understanding_Accessibility_and_Human_Navigation_Dataset_WACV_2025_paper.pdf"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

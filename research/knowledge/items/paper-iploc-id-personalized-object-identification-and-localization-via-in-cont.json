@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "id": "paper-iploc-id-personalized-object-identification-and-localization-via-in-cont",
+  "kind": "paper",
+  "title": "IPLoc-ID — Personalized Object Identification and Localization via In-Context Inference with Vision-Language Models",
+  "canonical_ref": "https://arxiv.org/abs/2607.00357",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "在四个 tracker 派生、正负平衡的数据集上，给 forced-localization VLM 增加统一的 identity question，可把“永远有框”的 F1 基线大幅提高，同时 TP 条件下的框精度大体维持；VastTrack 的同类负例结果说明它不只靠类别差异。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-33",
+      "name": "IPLoc-ID — Personalized Object Identification and Localization via In-Context Inference with Vision-Language Models — goal-audit:33 route mechanism",
+      "description": "① 把多张 reference 及框、target label 组成 in-context prompt；② VLM 对 query 先自回归生成 bbox B；③ 接固定自问 Q：“这些框是否都包含同一对象？”；④ 再生成 A∈{Yes,No}；⑤ 概率分解为 p(B|x)·p(A|x,B,Q)，即 identification 条件于已生成位置；⑥ 正样本的 B 是真目标框、A=Yes；⑦ 负样本仍提供另一个实例的“最可信候选框”作为 B，仅把 A 设为 No；⑧ 用统一序列目标做 LoRA 微调，最后由文本 interpreter 将回答转为 positive bbox 或空集。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "它并没有取消 forced bbox autoregression：负 query 也必须先生成一个候选框，再说 No；所以显式 ∅ 只是 parser 对后置文本的解释。没有 candidate list、候选顺序不变性、真实入口 stable distractor、概率校准或 all-candidates-absent 操作性评测。单目标、独立图像且无时序。完整训练资产未公开也限制复现。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-33",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:33"
+  ],
+  "links": [
+    {
+      "label": "官方代码",
+      "ref": "https://github.com/kensuke-nakamura/iplocid"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

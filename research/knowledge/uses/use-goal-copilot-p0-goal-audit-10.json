@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-10",
+  "item_id": "paper-rom",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-10"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "（Fig. 1–2，Sec. III）：①ResNet34 对每个 box crop 提取 appearance feature并做 channel-wise max；②MLP 编码归一化 box 坐标，与 appearance 拼接；③分支 MLP 将其分为由 3D position 辅助监督的 view-dependent feature 和由 semantic classification 辅助监督的 view-independent feature；④拼接为 object node；⑤AGNN 交替两轮图内 self-attention 与两图 cross-attention，联合利用当前对象集合关系；⑥跨图 node dot product 形成全 pair score matrix；⑦增加 learnable dustbin row/column；⑧10 次 Sinkhorn 得到近似双随机 partial assignment；可再加 100×log(keypoint-match count) 的 SuperGlue object score 后重新 Sinkhorn。",
+    "project_application": "它直接针对 B0 的 1/4 order-sensitive comparator，并提供原生 dustbin；但 2/4 stable distractor 仍可能在关系层稳定自洽。若只有 singleton reference，论文主张的 self/cross-frame spatial relation 不能按原样成立。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "先做严格接口审计：reference graph 仅一个目标 node，current graph 为冻结 candidates；直接运行/最小重训 ROM，输出完整 assignment matrix 和 TARGET(candidate_id)/DUSTBIN，对 current nodes 做全排列。若 singleton graph 无有效 score variance、模型接口不支持、排列不等变，或相对 unary scorer 没有降低 wrong-instance commit，即停止并记为不适配；不得事后补人工 reference context。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "不证明单 reference crop，因为训练和主评测都需要 reference scene 的多对象关系；不证明真实 outdoor、会移动的物体或不同相机几何。dustbin 表示两图对象不可匹配，但没有单目标 absence calibration。Sec. IV-B 明示 detector、box 重叠、合成静态场景和完整 3D 训练监督都是限制。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:10; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:10 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

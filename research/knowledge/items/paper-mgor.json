@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-mgor",
+  "kind": "paper",
+  "title": "MGOR",
+  "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2026/html/Chen_Object-Generalized_Re-Identification_A_Step_Towards_Universal_Instance_Perception_CVPR_2026_paper.html",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "category-mixture perturbation、跨 episode pair-distribution alignment 和 global/local 双监督，能让统一 ReID encoder 在多种未见类别 benchmark 上比普通 DG-ReID 更稳。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-08",
+      "name": "MGOR — goal-audit:08 route mechanism",
+      "description": "（Fig. 2，Sec. 3.2–3.4）：①EDPS 从多个类别平衡采样 identity pairs，每 identity 取 K 张图；②把 batch 随机分成等大的 meta-train/meta-test，并控制两半类别分布差异；③共享 ViT 使用 global token 和 category-specific/local token；④meta-train 上优化 global ID classification、batch-hard metric 和类别内 local classifier；⑤固定同一参数，在 meta-test 上只计算 global ID loss，模拟语义分布变化而非做快速适配；⑥按 identity prototype 分解 embedding residual，分别构造正/负 pair-distance distributions；⑦用 sliced Wasserstein 对齐 meta-train/test 的正、负距离分布；⑧HSE 让 global path 学跨类别身份拓扑、local path 保留类别细节，推理只保留 global embedding。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "跨类别 benchmark 泛化不等于同类别 physical-instance disambiguation；没有 reference-conditioned proposals、target absence 或当前整帧 clutter。所有指标仍是 gallery 内 retrieval，通常存在真匹配。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-08",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:08"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

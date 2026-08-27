@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "id": "paper-doppelgangers-learning-to-disambiguate-images-of-similar-structures",
+  "kind": "paper",
+  "title": "Doppelgangers — Learning to Disambiguate Images of Similar Structures",
+  "canonical_ref": "https://openaccess.thecvf.com/content/ICCV2023/papers/Cai_Doppelgangers_Learning_to_Disambiguate_Images_of_Similar_Structures_ICCV_2023_paper.pdf",
+  "authors": [],
+  "year": 2023,
+  "venue": "",
+  "summary": "它强力证明 local-match spatial layout 比全局 embedding 或匹配计数更能拆穿相似结构；未证明物体裁剪、遮挡、低纹理及同款实体域的泛化，也没有低 FPR 下可接受 coverage 或显式 NONE。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-37",
+      "name": "Doppelgangers — Learning to Disambiguate Images of Similar Structures — goal-audit:37 route mechanism",
+      "description": "①图像 resize/pad 到 1024²；②MegaDepth 预训练 LoFTR 产生 correspondences，保留 confidence>0.8；③Fundamental-matrix RANSAC 过滤几何外点；④分别栅格化“所有 keypoints”与“verified matches”，每图两张 binary mask；⑤用 verified matches 的 partial affine（RANSAC threshold 20）把 image0 及 masks 朝 image1 warp；⑥按固定方向拼接 6 RGB+4 masks 的 10-channel tensor；⑦三层 residual blocks（128/256/512）、average pool、FC；⑧focal loss 学二分类，SfM 时阈值过滤边。关键不是 match 数量，而是“哪里有/没有匹配”的空间布局。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "它强力证明 local-match spatial layout 比全局 embedding 或匹配计数更能拆穿相似结构；未证明物体裁剪、遮挡、低纹理及同款实体域的泛化，也没有低 FPR 下可接受 coverage 或显式 NONE。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-37",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:37"
+  ],
+  "links": [
+    {
+      "label": "补充材料",
+      "ref": "https://openaccess.thecvf.com/content/ICCV2023/supplemental/Cai_Doppelgangers_Learning_to_ICCV_2023_supplemental.pdf"
+    },
+    {
+      "label": "项目",
+      "ref": "https://doppelgangers-3d.github.io"
+    },
+    {
+      "label": "代码",
+      "ref": "https://github.com/RuojinCai/Doppelgangers"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-prior-p0-r06b",
+  "item_id": "paper-elba",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-prior-p0-r06b"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "agent 可主动向 oracle 提问；DialFRED 有约 53K QA，ELBA 学 when/what to ask 并在 TEACh 上改进 task completion",
+    "project_application": "questioner/performer 分层；澄清动作与物理动作分离；ask cost/utility 的实验框架",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "questioner/performer 分层；澄清动作与物理动作分离；ask cost/utility 的实验框架"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "虚拟室内 manipulation/nav、oracle 可访问 GT；不能把 oracle 答案或 simulator success 直接当 BLV 开放街景证据"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/goal-copilot/P0_PRIOR_ART_ASSIMILATION_2026-08-21.md",
+      "summary": "Legacy source for goal-prior:P0-R06b; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-prior:P0-R06b from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

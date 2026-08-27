@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr60",
+  "item_id": "paper-precision-and-recall-for-time-series",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr60"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Range-based precision/recall separates existence, overlap, position bias, and fragmentation/cardinality penalties.",
+    "project_application": "On canonical timelines, early contiguous alerts must outrank late, fragmented, or excessively long alerts; freeze weighting before model comparison.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "On canonical timelines, early contiguous alerts must outrank late, fragmented, or excessively long alerts; freeze weighting before model comparison."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Generic evaluator whose configurable weights can hide failures if selected after observing results."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/dtr-r0/LITERATURE_RESERVE_2026-08-27.md",
+      "summary": "Legacy source for dtr:DR60; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR60 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

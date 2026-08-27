@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-vl-guide-blv-evaluation",
+  "kind": "paper",
+  "title": "VL-GUIDE BLV Evaluation",
+  "canonical_ref": "https://arxiv.org/abs/2510.00766",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "建立面向 BLV 导航描述的多维偏好数据和自动 evaluator",
+  "mechanisms": [
+    {
+      "id": "ustrf-p10",
+      "name": "VL-GUIDE BLV Evaluation — ustrf:P10 route mechanism",
+      "description": "建立面向 BLV 导航描述的多维偏好数据和自动 evaluator",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "当前有效后继预印本；自动 judge 不能冒充真实 BLV 用户结果"
+    }
+  ],
+  "tags": [
+    "ustrf",
+    "frontier-guide",
+    "ustrf-sc"
+  ],
+  "aliases": [
+    "ustrf:P10"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

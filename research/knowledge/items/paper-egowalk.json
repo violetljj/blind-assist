@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "paper-egowalk",
+  "kind": "paper",
+  "title": "EgoWalk",
+  "canonical_ref": "https://arxiv.org/abs/2505.21282",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "胸前 RGB/depth/odometry 与 future-path 弱标签",
+  "mechanisms": [
+    {
+      "id": "hftf-h04",
+      "name": "EgoWalk — hftf:H04 route mechanism",
+      "description": "胸前 RGB/depth/odometry 与 future-path 弱标签",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "The charter records this as an adjacent mechanism, not HFTF evidence. 非机器人启发式真值；头部/动态风险与 BLV 事件"
+    }
+  ],
+  "tags": [
+    "hftf",
+    "adjacent-work"
+  ],
+  "aliases": [
+    "hftf:H04"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

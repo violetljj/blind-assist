@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-sos",
+  "kind": "paper",
+  "title": "SOS!",
+  "canonical_ref": "https://arxiv.org/abs/2608.15295",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "单 reference、无 CAD、无外部 proposal 的 identity-anchored query 可以在 BOP 上同时完成目标识别与 mask generation，并显著优于被限制到同样单视角的多阶段基线；identity anchoring 是最大消融贡献。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-06",
+      "name": "SOS! — goal-audit:06 route mechanism",
+      "description": "（Fig. 2，Sec. 3.3）：①冻结 DINOv3-L/16 分别编码 scene 和 conditions；②scene token 加空间位置 embedding；③condition token 同时加 patch 位置和 condition identity embedding；④复制一个 universal semantic probe N 次；⑤8 个 transformer blocks 中，query 先对自己对应的 condition 做 masked cross-attention 注入身份，再对 scene 做由上一层 mask 限制的 cross-attention；⑥condition queries 之间 self-attention，用于消解重叠与遮挡；⑦两层 MLP 与 scene token 做空间点积，每层产生 mask logits，并将阈值化结果作为下一层 attention mask；⑧第 2/4/6/8 层用 BCE+Dice deep supervision，因 query-condition 一一对应，无 Hungarian 和分类头。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "虽训练了 negative conditions，论文没有单列 absent precision/recall、coverage-risk 或校准曲线；“in-the-wild”仅 Fig. 8 两组定性例子。Sec. 5 明示无法处理同一 reference 在 scene 中出现多个 identical targets。合成训练域也不证明入口/建筑域。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-06",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:06"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

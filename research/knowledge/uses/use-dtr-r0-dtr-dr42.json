@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr42",
+  "item_id": "paper-pedestrian-trajectory-forecasting-using-deep-ensembles-under-sensing-unc",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr42"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Propagate tracking covariance and observation availability into aleatoric/epistemic future uncertainty instead of passing point tracks only.",
+    "project_application": "Inject bounded position noise and causal observation gaps; require empirical coverage and event trade-offs to improve over mean-only input.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Inject bounded position noise and causal observation gaps; require empirical coverage and event trade-offs to improve over mean-only input."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Benchmark/Kalman sensing uncertainty is not proof that a phone detector exposes trustworthy covariance."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/dtr-r0/LITERATURE_RESERVE_2026-08-27.md",
+      "summary": "Legacy source for dtr:DR42; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR42 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

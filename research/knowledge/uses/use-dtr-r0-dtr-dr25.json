@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr25",
+  "item_id": "dataset-aria-digital-twin-project-aria-tools",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr25"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "多相机+双 IMU+眼动、6DoF 设备/对象 pose、深度、mask 及 Apache-2.0 工具；适合时钟/位姿/输入健康 canary",
+    "project_application": "多相机+双 IMU+眼动、6DoF 设备/对象 pose、深度、mask 及 Apache-2.0 工具；适合时钟/位姿/输入健康 canary",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "多相机+双 IMU+眼动、6DoF 设备/对象 pose、深度、mask 及 Apache-2.0 工具；适合时钟/位姿/输入健康 canary"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "仅两个室内场景约 200 段，活动不是出行风险事件；数据条款需逐次核对"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "summary": "Legacy source for dtr:DR25; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR25 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

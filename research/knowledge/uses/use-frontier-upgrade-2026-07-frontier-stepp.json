@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-frontier-upgrade-2026-07-frontier-stepp",
+  "item_id": "paper-watch-your-stepp-semantic-traversability-estimation-using-pose-projected",
+  "route": "frontier-upgrade-2026-07",
+  "mechanism_ids": [
+    "frontier-stepp"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "Watch Your STEPP 把人类行走轨迹投影到图像，用 DINOv2 区域特征和重建误差区分熟悉可走地形与陌生/潜在危险地形，并在 ANYmal 机器人上进行室内外实验。它值得借鉴的是“从走过的轨迹自动产生 traversability 正样本”和“以异常分数补充闭集语义”，而不是把机器人系统直接搬到手机。论文运行约 2.5 Hz，并依赖深度、SLAM、NUC/Jetson；阈值还在同一批标注区域上调优。对 BlindAssist，它只适合作为离线 teacher 或轻量 anomaly head 的蒸馏来源。高异常首先应转成 unknown_motion_or_surface，不能自动转成 obstacle，更不能单独触发提醒。",
+    "project_application": "Imported under the report's 3.5 Watch Your STEPP：轨迹监督可以教“熟悉的可走区域”，但异常不等于危险 mechanism group for bounded project comparison.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Imported under the report's 3.5 Watch Your STEPP：轨迹监督可以教“熟悉的可走区域”，但异常不等于危险 mechanism group for bounded project comparison."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The frontier-upgrade report treats this as paper-derived mechanism evidence. It does not independently establish BlindAssist event utility, mobile deployment, BLV user benefit, model promotion, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/frontier-upgrade-2026-07/BLINDASSIST_FRONTIER_PAPER_UPGRADE_REPORT_2026-07.md",
+      "summary": "Legacy source for frontier:STEPP; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated frontier:STEPP from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

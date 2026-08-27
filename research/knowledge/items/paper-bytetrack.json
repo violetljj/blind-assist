@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-bytetrack",
+  "kind": "paper",
+  "title": "ByteTrack",
+  "canonical_ref": "https://arxiv.org/abs/2110.06864",
+  "authors": [],
+  "year": 2021,
+  "venue": "",
+  "summary": "低置信检测二次关联可恢复部分被遮挡真目标并减少轨迹碎片",
+  "mechanisms": [
+    {
+      "id": "ustrf-p04",
+      "name": "ByteTrack — ustrf:P04 route mechanism",
+      "description": "低置信检测二次关联可恢复部分被遮挡真目标并减少轨迹碎片",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "ECCV 方法证据强；MOT 指标不等于助盲事件指标，未解决强 ego-motion"
+    }
+  ],
+  "tags": [
+    "ustrf",
+    "frontier-guide",
+    "ustrf-sc"
+  ],
+  "aliases": [
+    "ustrf:P04"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

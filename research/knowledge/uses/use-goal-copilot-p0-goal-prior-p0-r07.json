@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-prior-p0-r07",
+  "item_id": "paper-bridgenav",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-prior-p0-r07"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "定义 prior-free outdoor-to-indoor instruction navigation；55K street-view seed、生成轨迹、20K door-refined manual boxes；用 latent intention 与 optical-flow dynamic perception 做入口级 waypoint prediction",
+    "project_application": "far=target visibility / mid=signage / near=entrance 的阶段化注意力；door refinement；SR@0.1/0.2/0.3m 与 trajectory deviation；真实机器人 qualitative check",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "far=target visibility / mid=signage / near=entrance 的阶段化注意力；door refinement；SR@0.1/0.2/0.3m 与 trajectory deviation；真实机器人 qualitative check"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "主要 benchmark 来自生成视频/轨迹；不是 BLV；短命令通常隐含唯一 POI，不处理 set-valued reference 或 clarification；论文将 BridgeNav 描述为 open-loop waypoint 评估"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/goal-copilot/P0_PRIOR_ART_ASSIMILATION_2026-08-21.md",
+      "summary": "Legacy source for goal-prior:P0-R07; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-prior:P0-R07 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

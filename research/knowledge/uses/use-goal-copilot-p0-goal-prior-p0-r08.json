@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-prior-p0-r08",
+  "item_id": "paper-abot-n1-abotn-poibench",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-prior-p0-r08"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "slow reasoner 输出 pixel goal、fast expert 输出连续 waypoint；POIBench 有 11 个商业区域、163 POI、物理 entrance frame、3DGS closed-loop，指标 SR<2m/SPL；论文报告 77.3/72.6",
+    "project_application": "当前最直接 benchmark/architecture 对照；pixel-grounded slow/fast interface；entrance frame 而非单点；SR/SPL 与 failure attribution",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "当前最直接 benchmark/architecture 对照；pixel-grounded slow/fast interface；entrance frame 而非单点；SR/SPL 与 failure attribution"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "依赖高保真 3DGS、人工 walkability/entrance annotations 和预构建 benchmark；2026 preprint，尚缺独立复现；named POI/entrance truth 已给定，不覆盖含糊角色、多合法入口、BLV 手机交互"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/goal-copilot/P0_PRIOR_ART_ASSIMILATION_2026-08-21.md",
+      "summary": "Legacy source for goal-prior:P0-R08; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-prior:P0-R08 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

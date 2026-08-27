@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-scope",
+  "kind": "paper",
+  "title": "SCOPE",
+  "canonical_ref": "https://arxiv.org/abs/2608.04420",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "SCOPE 已把 robot-inflated safety volume、未知 voxel 与主动 viewpoint search 联结；“swept volume + active observation”也不是 TARO novelty。SCOPE 面向可控 UAV 的已观测自由空间认证与执行规划，TARO 必须证明其不同对象：穿戴式部分米制 factor posterior、局部 task-functional identifiability、人类受限 camera-only 观察、校准 UNKNOWN 及交互成本；TARO 不主张 certified path execution。",
+  "mechanisms": [
+    {
+      "id": "taro-t07",
+      "name": "SCOPE — taro:T07 route mechanism",
+      "description": "SCOPE 已把 robot-inflated safety volume、未知 voxel 与主动 viewpoint search 联结；“swept volume + active observation”也不是 TARO novelty。SCOPE 面向可控 UAV 的已观测自由空间认证与执行规划，TARO 必须证明其不同对象：穿戴式部分米制 factor posterior、局部 task-functional identifiability、人类受限 camera-only 观察、校准 UNKNOWN 及交互成本；TARO 不主张 certified path execution。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+    }
+  ],
+  "tags": [
+    "taro",
+    "adjacent-work",
+    "taro-r0"
+  ],
+  "aliases": [
+    "taro:T07"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

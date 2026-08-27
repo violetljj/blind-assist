@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-binary-ttc-a-temporal-geofence",
+  "kind": "paper",
+  "title": "Binary TTC: A Temporal Geofence",
+  "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2021/html/Badki_Binary_TTC_A_Temporal_Geofence_for_Autonomous_Navigation_CVPR_2021_paper.html",
+  "authors": [],
+  "year": 2021,
+  "venue": "",
+  "summary": "精确 TTC 回归不稳，但仍需快速回答“会不会在某时限内进入”",
+  "mechanisms": [
+    {
+      "id": "dtr-dr09",
+      "name": "Binary TTC: A Temporal Geofence — dtr:DR09 route mechanism",
+      "description": "每像素多 horizon 二值 temporal geofence，作为事件触发的轻量对照",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "TTC 相对相机平面，不是用户身体包络/真实路线的 physical TTC"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR09"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

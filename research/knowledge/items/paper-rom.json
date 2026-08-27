@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-rom",
+  "kind": "paper",
+  "title": "ROM",
+  "canonical_ref": "https://arxiv.org/abs/2305.02398",
+  "authors": [],
+  "year": 2023,
+  "venue": "",
+  "summary": "在静态合成室内场景，图内关系、跨图关系和带 dustbin 的集合级 partial assignment，能在大视角变化下超过 unary object descriptor，并补足 keypoint matcher 的低 recall。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-10",
+      "name": "ROM — goal-audit:10 route mechanism",
+      "description": "（Fig. 1–2，Sec. III）：①ResNet34 对每个 box crop 提取 appearance feature并做 channel-wise max；②MLP 编码归一化 box 坐标，与 appearance 拼接；③分支 MLP 将其分为由 3D position 辅助监督的 view-dependent feature 和由 semantic classification 辅助监督的 view-independent feature；④拼接为 object node；⑤AGNN 交替两轮图内 self-attention 与两图 cross-attention，联合利用当前对象集合关系；⑥跨图 node dot product 形成全 pair score matrix；⑦增加 learnable dustbin row/column；⑧10 次 Sinkhorn 得到近似双随机 partial assignment；可再加 100×log(keypoint-match count) 的 SuperGlue object score 后重新 Sinkhorn。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "不证明单 reference crop，因为训练和主评测都需要 reference scene 的多对象关系；不证明真实 outdoor、会移动的物体或不同相机几何。dustbin 表示两图对象不可匹配，但没有单目标 absence calibration。Sec. IV-B 明示 detector、box 重叠、合成静态场景和完整 3D 训练监督都是限制。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-10",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:10"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "paper-egocentric-future-localization",
+  "kind": "paper",
+  "title": "Egocentric Future Localization",
+  "canonical_ref": "https://openaccess.thecvf.com/content_cvpr_2016/html/Park_Egocentric_Future_Localization_CVPR_2016_paper.html",
+  "authors": [],
+  "year": 2016,
+  "venue": "",
+  "summary": "第一视角未来位置/路径预测",
+  "mechanisms": [
+    {
+      "id": "hftf-h06b",
+      "name": "Egocentric Future Localization — hftf:H06b route mechanism",
+      "description": "第一视角未来位置/路径预测",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "The charter records this as an adjacent mechanism, not HFTF evidence. layered collision field、unknown 与助盲事件效用"
+    }
+  ],
+  "tags": [
+    "hftf",
+    "adjacent-work"
+  ],
+  "aliases": [
+    "hftf:H06b"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

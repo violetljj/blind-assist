@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-l10-3",
+  "item_id": "paper-conformal-predictors-for-efficient-video-text-spotting",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "l10-3"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "对识别字符与框位置做 conformal uncertainty，并利用轨迹对齐传播高置信字符。",
+    "project_application": "在 source-disjoint 校准集上产生“词集合/框区间/UNKNOWN”，以 coverage、错认和错误身份 admission 联合评估。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "在 source-disjoint 校准集上产生“词集合/框区间/UNKNOWN”，以 coverage、错认和错误身份 admission 联合评估。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "建立的是覆盖保证与 VTS 增益，不是 physical identity；校准若换域仍可能失效。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/l10-r0/LITERATURE_RESERVE_20_2026-08-27.md",
+      "summary": "Legacy source for l10:3; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated l10:3 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

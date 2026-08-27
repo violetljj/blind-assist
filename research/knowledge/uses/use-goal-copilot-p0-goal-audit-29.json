@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-29",
+  "item_id": "paper-anyimagenav-precise-image-goal-navigation-via-multi-view-3d-foundation-m",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-29"
+  ],
+  "use_state": "retired",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "DINOv2 goal/current dense feature relevance 被压成深度截断、视锥边缘衰减的 BEV relevance cone，累积到全局图；frontier score 同时用 relevance、geodesic distance、heading 与 information gain，并在 relevance 高时抑制效率项。峰值 relevance >θ=0.0014 才调用短记忆 VGGT；读取 VGGT 最后一层 cross-attention 与 feature similarity，对 goal frame 相对短窗口归一化，合成 S_conf；超过 τ 才接受。随后 Pi3 对长记忆+goal 一次前向预测多相机 pose，以记录的 odometry cameras 做 Umeyama Sim(3) 位置对齐，再补 orientation correction，得到 goal pose；接近过程中若 S_conf 创新高就重算。局部 FMM 还用 EDT 做硬 body-clearance exclusion 与软安全余量。",
+    "project_application": "在允许 map/history 且 exact referent 先成立的未来路线，可借 semantic→geometric cascade 与拒绝/重估；当前 current-frame-only 主线不能引入它。尤其不能把 S_conf 自认证升级为 physical identity 或 arrival authority。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "在允许 map/history 且 exact referent 先成立的未来路线，可借 semantic→geometric cascade 与拒绝/重估；当前 current-frame-only 主线不能引入它。尤其不能把 S_conf 自认证升级为 physical identity 或 arrival authority。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "它强力证明“语义只负责触发，几何负责 pose”比让 embedding 直接承担精确到达更合理，且持续重估优于一次 commit。它没有证明 exact 6-DoF：heading metric 明确按 modulo 180° 计算，正反朝向可被折叠；正文只报告地平面位置与 yaw，不是完整 6-DoF error。它依赖 depth、全程 odometry、persistent long memory，且 15% 失败来自重复房间/家具的伪 correspondence；也没有 functional entrance、门可通行或用户完成的 truth。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:29; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:29 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

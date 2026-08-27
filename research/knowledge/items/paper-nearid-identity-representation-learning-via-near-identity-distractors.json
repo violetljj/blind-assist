@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "paper-nearid-identity-representation-learning-via-near-identity-distractors",
+  "kind": "paper",
+  "title": "NearID — Identity Representation Learning via Near-identity Distractors",
+  "canonical_ref": "https://arxiv.org/abs/2604.01973",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "在它自己的严格、身份互斥、背景受控的闭集比较里，匹配背景的 near-identity negatives 能把通用视觉表示从“看类别/场景”推向身份；损失设计比简单堆 hard negatives 更能保留通用相似性。它还证明不同 inpainting 来源的多样性可提高对未见生成器的迁移。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-31",
+      "name": "NearID — Identity Representation Learning via Near-identity Distractors — goal-audit:31 route mechanism",
+      "description": "① 从 SynCD/Objaverse 多视图身份取得 anchor 与同身份跨背景图；② 以文本条件生成相近但不同实例；③ 用 SDXL、FLUX.1、Qwen-Image、PowerPaint 等把 distractor 精确 inpaint 到 anchor 背景，构造“背景相同、身份不同”的反捷径负样本；④ 冻结 SigLIP2 SO400M patch14-384；⑤ 只训练约 15M 参数的 MAP projection head；⑥ L_disc 以多正样本 InfoNCE 拉近同身份，并把该 anchor 的 NearID distractors 放入分母，同时保留其他 positives 以防塌缩；⑦ L_rank 用 softplus/log-sum-exp 约束 NearID distractor 的相似度高于普通 batch negative，显式形成“同身份 > 近身份 > 泛负样本”的序；⑧ L_NearID=L_disc+αL_rank（τ=.07, α=.5），配合 role-aware foreground masking，使模型不能稳定利用背景。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "训练/主测以刚性常见 Objaverse 对象和生成背景控制为核心；论文明确未覆盖人脸、工业实例和风格化域。没有真实入口、门面、反光、遮挡、极端尺度下的同类稳定干扰物证据；也没有单参考 mask、候选定位、开放集拒识、概率校准或目标缺席评测。高 SSR 不能外推为现实物理 referent authority。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-31",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:31"
+  ],
+  "links": [
+    {
+      "label": "官方项目",
+      "ref": "https://gorluxor.github.io/NearID"
+    },
+    {
+      "label": "官方代码",
+      "ref": "https://github.com/Gorluxor/NearID"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "project-running-guide-agent",
+  "kind": "project",
+  "title": "Running Guide Agent",
+  "canonical_ref": "https://blog.google/innovation-and-ai/models-and-research/google-deepmind/running-guide-agent",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "端侧快速分割 + 低频语义推理",
+  "mechanisms": [
+    {
+      "id": "hftf-h05",
+      "name": "Running Guide Agent — hftf:H05 route mechanism",
+      "description": "端侧快速分割 + 低频语义推理",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "The charter records this as an adjacent mechanism, not HFTF evidence. HFTF 张量与可复核系统评价"
+    }
+  ],
+  "tags": [
+    "hftf",
+    "adjacent-work"
+  ],
+  "aliases": [
+    "hftf:H05"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

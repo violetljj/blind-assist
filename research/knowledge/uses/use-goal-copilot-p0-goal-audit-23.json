@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-23",
+  "item_id": "paper-pinverify-an-offline-embodied-benchmark-for-active-instance-verification",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-23"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "论文非常清楚地证明 active verification 必须拆出 positive 与 same-class negative，并且更多视角不自动更好；检测 crop 质量与 verifier calibration 常比 NBV 策略更关键。它没有证明 reference-image physical identity：query 是语言属性，物体还是仿真注入资产；没有 live locomotion、动态光照和安全；只有单次训练 seed，作者也主动限制结论。训练 reward 使用 per-sector GT，不能作为 BlindAssist provider 可用机制。",
+    "project_application": "应借用它的三分层 cohort、trap/unreachable 标注、positive/neg-same 分项和“未观察不等于反证”；不应照搬 MLLM 属性投票。当前 2/4 stable distractor、1/4 order-sensitive 的结果说明要先建对称、候选独立的 appearance evidence，之后才值得用 PInVerify 式多视角图。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "应借用它的三分层 cohort、trap/unreachable 标注、positive/neg-same 分项和“未观察不等于反证”；不应照搬 MLLM 属性投票。当前 2/4 stable distractor、1/4 order-sensitive 的结果说明要先建对称、候选独立的 appearance evidence，之后才值得用 PInVerify 式多视角图。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "论文非常清楚地证明 active verification 必须拆出 positive 与 same-class negative，并且更多视角不自动更好；检测 crop 质量与 verifier calibration 常比 NBV 策略更关键。它没有证明 reference-image physical identity：query 是语言属性，物体还是仿真注入资产；没有 live locomotion、动态光照和安全；只有单次训练 seed，作者也主动限制结论。训练 reward 使用 per-sector GT，不能作为 BlindAssist provider 可用机制。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:23; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:23 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

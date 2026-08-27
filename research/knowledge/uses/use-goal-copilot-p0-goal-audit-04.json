@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-04",
+  "item_id": "paper-nids-net",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-04"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "（Fig. 2–3，Sec. III）：①GroundingDINO 用统一文本 \"objects\" 产 box；②SAM 在 box 内产 mask，组成 Grounded-SAM proposals；③DINOv2 patch features 在 mask 内做 Foreground Feature Averaging，reference/proposal 都得到一个向量；④只用 template embeddings 训练 adapter，InfoNCE 拉近同实例、分开异实例；⑤Weight Adapter 以 w=sigmoid(MLP(10f)) 产生逐通道权重，ReLU 使权重落在 [0.5,1)，避免重写原特征空间；⑥每实例对 K templates 取最大 cosine；⑦可与 SAM6D patch-appearance score 平均；⑧唯一实例用 stable matching，重复实例用 argmax，再阈值拒绝。",
+    "project_application": "FFA scorer 可直接针对 B0 的 4 个同类错选，并避免 A/B prompt 顺序；但当前一张 reference 无法合法复现论文 WA。此前候选可用性问题也意味着不能把 proposal miss 归咎于 scorer。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "先只测 training-free DINOv2-FFA unary arm；若有 source-disjoint 预训练 WA，再作为第二臂，绝不在 D 上训练。输出每候选 identity_score 和最终 TARGET/NONE。若 K=1 导致 adapter 接口退化、FFA 无法在 matched proposals 上降低 wrong-instance commit，或 WA 相对 FFA 回退，即停止，不增加 views 或改 proposal。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "不证明 K=1 的训练可行性、unseen physical identity authority 或 NONE calibration。附录明确展示 synthetic-real domain gap、重遮挡漏检，以及 GroundingDINO 一个 box 包含多个对象导致 under-segmentation。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:04; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:04 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

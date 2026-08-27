@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-bridgenav",
+  "kind": "paper",
+  "title": "BridgeNav",
+  "canonical_ref": "https://arxiv.org/abs/2602.06427",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "定义 prior-free outdoor-to-indoor instruction navigation；55K street-view seed、生成轨迹、20K door-refined manual boxes；用 latent intention 与 optical-flow dynamic perception 做入口级 waypoint prediction",
+  "mechanisms": [
+    {
+      "id": "goal-prior-p0-r07",
+      "name": "BridgeNav — goal-prior:P0-R07 route mechanism",
+      "description": "定义 prior-free outdoor-to-indoor instruction navigation；55K street-view seed、生成轨迹、20K door-refined manual boxes；用 latent intention 与 optical-flow dynamic perception 做入口级 waypoint prediction",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "主要 benchmark 来自生成视频/轨迹；不是 BLV；短命令通常隐含唯一 POI，不处理 set-valued reference 或 clarification；论文将 BridgeNav 描述为 open-loop waypoint 评估"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "prior-art",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-prior:P0-R07"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

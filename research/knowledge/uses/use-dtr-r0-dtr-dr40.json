@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr40",
+  "item_id": "paper-sighted-by-default-via-agent",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr40"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "iPhone 经 RTC 持续上传视频/语音，Doubao-1.6-thinking-250715 作为基础 VLM。每轮先强制重述当前目标，只保留最近 2 轮交互，响应上限 128 tokens；内部把 claim 自评为高/不确定/低，高置信直接说，不确定时 hedge，低置信拒答或回退。系统保留 1 天会话记忆，并用 RTC 取代离散请求—响应。这里的“calibrated honesty”没有校准集、ECE 或 risk-coverage curve，本质是提示与过滤策略，不是统计校准。",
+    "project_application": "借目标重锚、短上下文、短回答、hedge/refuse、连续输入和尾延迟报告；不借长期记忆作当前事实、模型自评作校准概率或任务成功率作动态安全证据。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "借目标重锚、短上下文、短回答、hedge/refuse、连续输入和尾延迟报告；不借长期记忆作当前事实、模型自评作校准概率或任务成功率作动态安全证据。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "2.8–14.2 秒尾延迟说明它是会话式导航/寻物助手，不是亚秒动态危险报警器。无动态 hazard labels、碰撞、事件级漏报或误报；手机 FoV 导致用户经常瞄不准，且依赖云端网络。两名 BLV 参与迭代调参，是否与正式 9 人完全隔离未说明。1 天记忆也不能成为当前帧事实 authority。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/dynamic-travel-risk/DYNAMIC_TRAVEL_RISK_ADDITIONAL_10_DEEP_READING_2026-08-24.md",
+      "summary": "Legacy source for dtr:DR40; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR40 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

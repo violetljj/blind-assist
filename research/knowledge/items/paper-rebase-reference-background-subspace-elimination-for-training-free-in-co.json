@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "id": "paper-rebase-reference-background-subspace-elimination-for-training-free-in-co",
+  "kind": "paper",
+  "title": "REBASE — Reference-Background Subspace Elimination for Training-Free In-Context Segmentation",
+  "canonical_ref": "https://arxiv.org/abs/2607.09082",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "在五个“reference target 语义在 query 中存在”的分割 benchmark 上，reference-background 的低秩方向确实污染跨图相似性；闭式投影在不训练的条件下能稳定提升多数数据集，尤其结构化医学背景。SW-FPS、dense prior 与 subspace elimination 的增益可分离。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-35",
+      "name": "REBASE — Reference-Background Subspace Elimination for Training-Free In-Context Segmentation — goal-audit:35 route mechanism",
+      "description": "① 冻结 DINOv2 ViT-L/14（518²）和 SAM ViT-H（1024²）；② 对 reference mask 做 patch 面积平均，得到软前景覆盖率；③ reference 每个前景 patch 都作为 prototype，先对 query patch 计算覆盖率加权 mean cosine；④ 用阈值 τ_b=.08 选 reference background patches；⑤ 堆叠其 DINO feature 做 thin SVD，取前 s=ceil(r·n_BG) 个右奇异向量构成背景子空间 B，主文默认 r=.005；⑥ 对 reference 和 query 对称投影 F←F(I−BBᵀ)，删除该 episode 的背景方向并重算相似图；⑦ 在 Ω={S≥μ_positive+σ_positive/2} 中以 similarity-weighted FPS 取 K=8 点，兼顾分数与空间分散（α=.5）；⑧ 相似图 z-normalize 后按均值二值化、3×3 erosion，区域外写背景 logit −2，形成 SAM dense prior；⑨ 正点+dense prior 一次送入冻结 SAM 得最终 mask。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "FSS/parts/lesion/lung 都是 category/part/region correspondence，不测试 same-class exact identity，更不测试同型号不同物理实例。方法没有 target-absent protocol：只要相似图存在数值，就构造候选区域并取 K 个正点，SAM 会被推动生成 mask。没有候选级置信校准、顺序测试或真实入口。官方仓库在核验时只有 README/figures，并写明 “Code release coming soon”，论文中的完整实现暂不能复现审计。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-35",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:35"
+  ],
+  "links": [
+    {
+      "label": "官方代码页",
+      "ref": "https://github.com/ai-and-lab/rebase"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

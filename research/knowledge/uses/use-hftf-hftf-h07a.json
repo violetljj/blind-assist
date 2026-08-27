@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-hftf-hftf-h07a",
+  "item_id": "paper-navigation-world-models",
+  "route": "hftf",
+  "mechanism_ids": [
+    "hftf-h07a"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "action-conditioned future observation / navigation world modeling",
+    "project_application": "HFTF 不是 world model；只比较任务特定短时风险预测",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "HFTF 不是 world model；只比较任务特定短时风险预测"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The charter records this as an adjacent mechanism, not HFTF evidence. HFTF 不是 world model；只比较任务特定短时风险预测"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/hftf/HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md",
+      "summary": "Legacy source for hftf:H07a; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated hftf:H07a from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

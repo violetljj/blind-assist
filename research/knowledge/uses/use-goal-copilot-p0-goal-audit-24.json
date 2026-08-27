@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-24",
+  "item_id": "paper-fgprompt-fine-grained-goal-prompting-for-image-goal-navigation",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-24"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "EF 将 128×128 的 goal/current 沿通道拼成 6-channel 图，由同一 ResNet 联合编码；MF 保留 goal encoder 早期高分辨率 feature map，用 1×1 conv 生成逐层 FiLM 的 γ/β，对 observation encoder 同层 activation 作仿射调制；SF 则用 SuperPoint+SuperGlue 的 top-k 匹配点坐标作为低层旁路。融合向量再进 2 层 GRU actor-critic，以 ZER 的距离、朝向、slack、STOP reward 用 DD-PPO 训练 500M steps。",
+    "project_application": "它支持下一条表示假设——不要继续用单个 pooled DINO/VLM 分数，应让 reference feature 在 candidate 的局部高分辨率特征形成前就参与。但只能在固定 proposals 的 order-invariant candidate scorer 中测试；必须加背景去除/打乱对照，防止 context 冒充 identity。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "它支持下一条表示假设——不要继续用单个 pooled DINO/VLM 分数，应让 reference feature 在 candidate 的局部高分辨率特征形成前就参与。但只能在固定 proposals 的 order-invariant candidate scorer 中测试；必须加背景去除/打乱对照，防止 context 冒充 identity。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "论文强力证明“reference conditioning 必须在高分辨率早层发生”，晚期全局 embedding 丢细节；也证明简单联合建模可优于复杂模块。但它主要证明 ImageNav 目标视点，而非 same physical instance。IIN 的 9.9% 是最关键的反证：在视角/相机差异和长路径下，优势绝对值仍很低。成功只看 1 m STOP，不能拆出同类错实例、NONE 或 arrival integrity。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:24; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:24 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

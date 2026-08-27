@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr35",
+  "item_id": "paper-indoor-future-person-localization",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr35"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "输入为过去 10 帧的人工目标框、OpenPose 25 点姿态与 GoPro 六轴 IMU；2 层 LSTM encoder-decoder，hidden 384、dropout 0.5，逐步输出未来框。训练用 L2、Adam、100 epoch 和 0.5 teacher forcing ratio。IMU 的作用是给网络一个 ego-motion 线索，但论文没有显式几何补偿或独立姿态标定。",
+    "project_application": "借目标行人未来框任务、IMU 对照和 toward/across 分层；不借人工框、总体 0.63 IoU 或把框预测升级成碰撞提醒。claim ceiling 固定为“人工目标轨迹条件下的 1 秒帧级 bbox forecast”。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "借目标行人未来框任务、IMU 对照和 toward/across 分层；不借人工框、总体 0.63 IoU 或把框预测升级成碰撞提醒。claim ceiling 固定为“人工目标轨迹条件下的 1 秒帧级 bbox forecast”。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "过去目标框是人工 oracle，绕开真实部署中检测、关联和 ID swap；无碰撞、身体走廊、TTC 或 event truth。单目标、确定性 L2 无法表达多人和多模态急转。样本高度重叠且约 80% 为 away，最关键的 across 压力层证据最少。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/dynamic-travel-risk/DYNAMIC_TRAVEL_RISK_ADDITIONAL_10_DEEP_READING_2026-08-24.md",
+      "summary": "Legacy source for dtr:DR35; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR35 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

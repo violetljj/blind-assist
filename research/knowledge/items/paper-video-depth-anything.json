@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-video-depth-anything",
+  "kind": "paper",
+  "title": "Video Depth Anything",
+  "canonical_ref": "https://arxiv.org/abs/2501.12375",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "在 DAv2 上加入时空头和长视频窗口策略，提升视频深度时间一致性",
+  "mechanisms": [
+    {
+      "id": "ustrf-p02",
+      "name": "Video Depth Anything — ustrf:P02 route mechanism",
+      "description": "在 DAv2 上加入时空头和长视频窗口策略，提升视频深度时间一致性",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "CVPR 证据较强；A100 速度不是手机速度，窗口含未来帧，非直接因果 runtime"
+    }
+  ],
+  "tags": [
+    "ustrf",
+    "frontier-guide",
+    "ustrf-sc"
+  ],
+  "aliases": [
+    "ustrf:P02"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

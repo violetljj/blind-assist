@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-walkvlm",
+  "kind": "paper",
+  "title": "WalkVLM",
+  "canonical_ref": "https://arxiv.org/abs/2412.20903",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "以约 12k 视频—标注对研究层次化规划和时间自适应提醒，减少冗余输出",
+  "mechanisms": [
+    {
+      "id": "ustrf-p08",
+      "name": "WalkVLM — ustrf:P08 route mechanism",
+      "description": "以约 12k 视频—标注对研究层次化规划和时间自适应提醒，减少冗余输出",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "ICCV 方法证据；VLM 不能成为实时几何或避障 authority"
+    }
+  ],
+  "tags": [
+    "ustrf",
+    "frontier-guide",
+    "ustrf-sc"
+  ],
+  "aliases": [
+    "ustrf:P08"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

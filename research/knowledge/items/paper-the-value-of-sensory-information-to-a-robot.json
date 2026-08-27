@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-the-value-of-sensory-information-to-a-robot",
+  "kind": "paper",
+  "title": "The Value of Sensory Information to a Robot",
+  "canonical_ref": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/e1126028d9f1f69c13571ec462084d31-Abstract-Conference.html",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "The Value of Sensory Information to a Robot 通过在不同任务状态暂时 withholding observation 测量性能 regret；TARO 应继承这种反事实思想， 报告去掉合法观测后的 query-risk 上升与所选动作相对同预算 oracle 的 sensing regret。",
+  "mechanisms": [
+    {
+      "id": "taro-t09",
+      "name": "The Value of Sensory Information to a Robot — taro:T09 route mechanism",
+      "description": "The Value of Sensory Information to a Robot 通过在不同任务状态暂时 withholding observation 测量性能 regret；TARO 应继承这种反事实思想， 报告去掉合法观测后的 query-risk 上升与所选动作相对同预算 oracle 的 sensing regret。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+    }
+  ],
+  "tags": [
+    "taro",
+    "adjacent-work",
+    "taro-r0"
+  ],
+  "aliases": [
+    "taro:T09"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

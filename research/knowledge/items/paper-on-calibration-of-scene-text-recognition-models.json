@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-on-calibration-of-scene-text-recognition-models",
+  "kind": "paper",
+  "title": "On Calibration of Scene-Text Recognition Models",
+  "canonical_ref": "https://doi.org/10.1007/978-3-031-25069-9_18",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "说明字符级校准不必然带来词级校准，识别 admission 应在完整序列层校准。",
+  "mechanisms": [
+    {
+      "id": "l10-6",
+      "name": "On Calibration of Scene-Text Recognition Models — l10:6 route mechanism",
+      "description": "说明字符级校准不必然带来词级校准，识别 admission 应在完整序列层校准。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "主要验证 attention STR，不直接覆盖 RapidOCR CTC 或新场景分布漂移。"
+    }
+  ],
+  "tags": [
+    "l10",
+    "literature-reserve",
+    "l10-r0"
+  ],
+  "aliases": [
+    "l10:6"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "paper-flowverify-combining-deep-learning-and-verification-for-precise-object-i",
+  "kind": "paper",
+  "title": "FlowVerify — Combining Deep Learning and Verification for Precise Object Instance Detection",
+  "canonical_ref": "https://proceedings.mlr.press/v100/ancha20a/ancha20a.pdf",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "理论在“每个 detection 必含已知库物体、存在颜色距离≤γ的模板、正确 flow 完全刚性”等强条件下可推出零 false positive；作者明确说 recall 可任意低，理论还忽略遮挡/背景。实验只报 PR 曲线、mAP 与 maximum precision，没给达到 0.939 时接受了多少，所以高精度确以未知 coverage 和模板可见性换来。官方代码 HardAND 后对通过项只给 detector score 加 1.01，失败项仍在排序中，并非原生拒绝/NONE。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-38",
+      "name": "FlowVerify — Combining Deep Learning and Verification for Precise Object Instance Detection — goal-audit:38 route mechanism",
+      "description": "①TDID 先产生候选；②每个候选对 15 个已知视图运行 FlowMatchNet；③该 FlowNetC 变体用 full cross-correlation 与 CoordConv 预测 template→crop dense flow；④SIMOBJ 检查是否有 IoU≥0.5 的其他 object ID 且分数接近；⑤FCOLOR 计算 warp 后 normalized cross-correlation；⑥FRIGIDITY 以 fundamental-matrix RANSAC inlier ratio 测刚性；⑦FPRECISION/FRECALL 分别测流终点落入 bbox 的比例、流覆盖 bbox 与 detector bbox 的 IoU；⑧五门 hard-AND，任一模板通过即 pass。论文阈值为 rigidity/color/precision/recall 0.9/0.5/0.9/0.3、score margin 0。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "理论在“每个 detection 必含已知库物体、存在颜色距离≤γ的模板、正确 flow 完全刚性”等强条件下可推出零 false positive；作者明确说 recall 可任意低，理论还忽略遮挡/背景。实验只报 PR 曲线、mAP 与 maximum precision，没给达到 0.939 时接受了多少，所以高精度确以未知 coverage 和模板可见性换来。官方代码 HardAND 后对通过项只给 detector score 加 1.01，失败项仍在排序中，并非原生拒绝/NONE。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-38",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:38"
+  ],
+  "links": [
+    {
+      "label": "项目",
+      "ref": "https://jnan1.github.io/FlowVerify"
+    },
+    {
+      "label": "代码",
+      "ref": "https://github.com/siddancha/FlowVerify"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

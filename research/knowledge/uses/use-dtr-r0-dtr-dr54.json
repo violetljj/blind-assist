@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr54",
+  "item_id": "paper-integrating-predictive-motion-uncertainties-with-distributionally-robust",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr54"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Place a distributionally robust ambiguity set around predicted motion rather than trusting one fitted distribution.",
+    "project_application": "Under source-disjoint motion shift, compare calibration and event trade-offs against R3 strict-majority support within the same runtime budget.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Under source-disjoint motion shift, compare calibration and event trade-offs against R3 strict-majority support within the same runtime budget."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Planner/controller evidence; its chance constraint is not a validated BlindAssist warning probability."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/dtr-r0/LITERATURE_RESERVE_2026-08-27.md",
+      "summary": "Legacy source for dtr:DR54; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR54 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

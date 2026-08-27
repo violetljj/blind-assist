@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-2021-dtr-dr01b",
+  "kind": "paper",
+  "title": "2021 居家随机临床试验",
+  "canonical_ref": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8299358",
+  "authors": [],
+  "year": 2021,
+  "venue": "",
+  "summary": "物体在附近但不进入身体路径；高频误报",
+  "mechanisms": [
+    {
+      "id": "dtr-dr01b",
+      "name": "2021 居家随机临床试验 — dtr:DR01b route mechanism",
+      "description": "不标类别，只在预测碰撞点进入身体带且 TTC 足够短时震动",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "两个研究都约降低 37% 接触/碰撞，但前者是外周视野受损障碍课程，后者记录接触而非伤害；设备始终是盲杖/导盲犬的补充"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR01b"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

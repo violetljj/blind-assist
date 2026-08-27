@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "project-heads-up",
+  "kind": "project",
+  "title": "HEADS-UP",
+  "canonical_ref": "https://www.epfl.ch/labs/vita/research/prediction/heads-up",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "头部转动与真实行人相对运动混杂",
+  "mechanisms": [
+    {
+      "id": "dtr-dr03",
+      "name": "HEADS-UP — dtr:DR03 route mechanism",
+      "description": "头戴 RGB-D/IMU 的旋转感知半局部轨迹表示；可做相对轨迹与 ego compensation 对照",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "约 43k 帧/1k tracks，部分标签来自 detector/tracker/VIO 平滑；不是独立碰撞真值或 BLV 用户效果"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR03"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

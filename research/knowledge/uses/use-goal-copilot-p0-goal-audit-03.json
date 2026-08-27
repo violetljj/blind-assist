@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-03",
+  "item_id": "paper-vicp",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-03"
+  ],
+  "use_state": "retired",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "（Fig. 2，Sec. 3.2–3.4）：①DINOv2 编码 support 图；②Q-Former 将每图压成 N 个 token；③每对图 token 后拼接 learnable positive/negative label token；④冻结 LLaMA 对 K 对 context 自回归建模，只在 label token 上计算 ICL loss；⑤附加 M 个 learnable visual-prompt tokens，由 LLM 隐状态和两层 visual head 投影到 DINO 维度；⑥把该 prompt 注入 frozen DINOv2 的每一层；⑦CLS 用 margin triplet ID loss；patch token 用正负对 optimal-transport alignment；⑧测试时每类别只生成一次 prompt 并缓存，随后所有候选独立编码和 cosine retrieval。",
+    "project_application": "B0 已显示直接 pair prompt 只有 1/4 order-robust，VICP Table 6 中“直接 LLM ICL”显著回退与此高度一致；但当前没有构造 64 个合法正负 support pairs 的接口，不能把当前四错例变成训练示例。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "只有在能冻结一个与 D 完全 source-disjoint 的同类别 support bank 后才运行；生成一次 cached prompt，对每个候选独立 embedding，输出 TARGET/NONE。至少做 support-pair permutation 和 candidate permutation。若任一排列改变最终选择、或较 Triplet+ 无增益、或 control retention 低于 12/13，则停止。没有合法 support bank 时直接记为接口不成立，不做零样本改写。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "它不是 one-reference 方法，核心实验使用 64 个带真值 pair；不提供 proposals、NONE 或 target-absence；所有 retrieval 都在已知类别中进行。论文没有独立 Limitations 节，只在结论把“无 exemplar 的 zero-shot ReID”列为未来工作。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:03; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:03 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

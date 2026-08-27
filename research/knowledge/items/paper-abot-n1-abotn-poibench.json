@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-abot-n1-abotn-poibench",
+  "kind": "paper",
+  "title": "ABot-N1 / ABotN-POIBench",
+  "canonical_ref": "https://arxiv.org/abs/2607.10383",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "slow reasoner 输出 pixel goal、fast expert 输出连续 waypoint；POIBench 有 11 个商业区域、163 POI、物理 entrance frame、3DGS closed-loop，指标 SR<2m/SPL；论文报告 77.3/72.6",
+  "mechanisms": [
+    {
+      "id": "goal-prior-p0-r08",
+      "name": "ABot-N1 / ABotN-POIBench — goal-prior:P0-R08 route mechanism",
+      "description": "slow reasoner 输出 pixel goal、fast expert 输出连续 waypoint；POIBench 有 11 个商业区域、163 POI、物理 entrance frame、3DGS closed-loop，指标 SR<2m/SPL；论文报告 77.3/72.6",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "依赖高保真 3DGS、人工 walkability/entrance annotations 和预构建 benchmark；2026 preprint，尚缺独立复现；named POI/entrance truth 已给定，不覆盖含糊角色、多合法入口、BLV 手机交互"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "prior-art",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-prior:P0-R08"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

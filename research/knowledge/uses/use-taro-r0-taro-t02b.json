@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-taro-r0-taro-t02b",
+  "item_id": "paper-calibanyview",
+  "route": "taro-r0",
+  "mechanism_ids": [
+    "taro-t02b"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "AnyCam 与 CalibAnyView 已覆盖视频 pose/intrinsics 或任意多视图 calibration；“视频标定”本身不是 TARO novelty。",
+    "project_application": "AnyCam 与 CalibAnyView 已覆盖视频 pose/intrinsics 或任意多视图 calibration；“视频标定”本身不是 TARO novelty。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "AnyCam 与 CalibAnyView 已覆盖视频 pose/intrinsics 或任意多视图 calibration；“视频标定”本身不是 TARO novelty。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/taro/TARO_R0_RESEARCH_ROUTE_GUIDE_2026-08-10.md",
+      "summary": "Legacy source for taro:T02b; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated taro:T02b from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

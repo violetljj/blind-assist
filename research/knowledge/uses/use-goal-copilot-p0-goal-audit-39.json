@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-39",
+  "item_id": "paper-threshold-consistent-margin-loss-for-open-world-deep-metric-learning",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-39"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "①L2-normalize embedding 并枚举 batch 内正负 pair 的 cosine similarity；②选 hard positives s≤m+；③选 hard negatives s≥m−；④分别惩罚 m+−s 与 s−m−；⑤按各自 hard-pair 数归一化，再以 λ+、λ− 加权；⑥与 ProxyNCA/ArcFace/Smooth-AP/Recall@k-surrogate 等 base loss 相加；⑦用 OPIS 评估类别间 utility 曲线的方差，utility 是 sensitivity 与 specificity 的 harmonic mean，并在部署 calibration interval 上积分。绝对 margins 对单位向量对应距离带 [√(2−2m+), √(2−2m−)]。",
+    "project_application": "①L2-normalize embedding 并枚举 batch 内正负 pair 的 cosine similarity；②选 hard positives s≤m+；③选 hard negatives s≥m−；④分别惩罚 m+−s 与 s−m−；⑤按各自 hard-pair 数归一化，再以 λ+、λ− 加权；⑥与 ProxyNCA/ArcFace/Smooth-AP/Recall@k-surrogate 等 base loss 相加；⑦用 OPIS 评估类别间 utility 曲线的方差，utility 是 sensitivity 与 specificity 的 harmonic mean，并在部署 calibration interval 上积分。绝对 margins 对单位向量对应距离带 [√(2−2m+), √(2−2m−)]。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "它不解决 candidate order；可为独立 pair verifier 的 embedding loss。只有在另有 exact-physical-instance 多视图训练集时，才加入 TCM，冻结一个开发阈值，在未见身份/场景上报告 target-present/absent FAR、FRR、accepted coverage 与 worst-group OPIS，并与同 backbone/base loss 比较；候选均不过阈值即 NONE。若 Recall@k 上升而 fixed-threshold FAR/coverage 不改善，便判无效。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "TCM 确实是绝对 cosine margins，不只是相对 retrieval ranking；多基线上降低 OPIS，说明阈值行为更一致。但它没有给出一个跨 benchmark/域漂移仍有效的冻结全局阈值，也没有证明 FAR/FRR 上界；margins 每库另调，结果主要仍是 Recall@k+OPIS。OPIS 需要每类足量 pairs，论文承认 few-shot 类难估，正好偏离“一张 reference”。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-mainline-additional-10-deep-reading-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:39; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:39 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

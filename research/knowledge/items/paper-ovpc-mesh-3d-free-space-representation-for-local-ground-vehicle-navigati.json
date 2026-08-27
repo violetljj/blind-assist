@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-ovpc-mesh-3d-free-space-representation-for-local-ground-vehicle-navigati",
+  "kind": "paper",
+  "title": "OVPC Mesh: 3D Free-Space Representation for Local Ground Vehicle Navigation",
+  "canonical_ref": "https://doi.org/10.1109/icra.2019.8793503",
+  "authors": [],
+  "year": 2019,
+  "venue": "",
+  "summary": "Build a conservative watertight free-space mesh from visible points, retaining overhang and rough-terrain structure while keeping unseen space distinct.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr58",
+      "name": "OVPC Mesh: 3D Free-Space Representation for Local Ground Vehicle Navigation — dtr:DR58 route mechanism",
+      "description": "Build a conservative watertight free-space mesh from visible points, retaining overhang and rough-terrain structure while keeping unseen space distinct.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "UGV point clouds; no monocular/mobile RGB, pedestrian envelope, or human head/drop-off outcome."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR58"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

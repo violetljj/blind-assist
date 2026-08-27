@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-of-vo-optical-flow-velocity-obstacle",
+  "kind": "paper",
+  "title": "OF-VO：Optical-flow Velocity Obstacle",
+  "canonical_ref": "https://arxiv.org/abs/2004.10976",
+  "authors": [],
+  "year": 2020,
+  "venue": "",
+  "summary": "侧方横穿者与用户路径将来交叉，但当前距离仍远",
+  "mechanisms": [
+    {
+      "id": "dtr-dr15",
+      "name": "OF-VO：Optical-flow Velocity Obstacle — dtr:DR15 route mechanism",
+      "description": "相对运动的 probabilistic velocity-obstacle collision cone",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "Turtlebot 与主动规划依赖 LiDAR；近距离局部可见和跟踪失败会破坏圆锥估计"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR15"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

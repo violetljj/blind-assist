@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr50",
+  "item_id": "paper-online-update-of-safety-assurances-using-confidence-based-predictions",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr50"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Update predictor confidence causally and widen a reachable tube when observed motion stops matching the assumed model.",
+    "project_application": "Inject turns, acceleration, outliers, and identity swaps; confidence must fall before current-model misses and improve recall at a bounded false-event cost.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Inject turns, acceleration, outliers, and identity swaps; confidence must fall before current-model misses and improve recall at a bounded false-event cost."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Driving scenarios and offline reachability machinery; the likelihood model and tube validity still need independent validation."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/dtr-r0/LITERATURE_RESERVE_2026-08-27.md",
+      "summary": "Legacy source for dtr:DR50; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR50 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

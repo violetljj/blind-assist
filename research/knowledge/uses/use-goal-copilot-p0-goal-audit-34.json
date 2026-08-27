@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-34",
+  "item_id": "paper-l2g-det-from-local-matches-to-global-masks",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-34"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "① 用冻结 DINOv3-L 提取模板/查询 patch；② 在每张模板 mask 内取 S=10 个 patch；③ 每个模板 patch 在 query 全图做 cosine argmax，形成 S×K 个被迫局部匹配点；④ 每个点单独提示 SAM，得到 local mask/crop 候选；⑤ 冻结 Perception Encoder，加可训练 residual MLP adapter，以同实例 positive/异实例 negative 的 InfoNCE 学候选与模板表示；⑥ 对每个模板保留距该模板最高分不超过 δ=.01 的候选；⑦ 汇集保留点并用 farthest-point-first 去冗余；⑧ 冻结 SAM2-L 主体，为每个目标单独训练 object token，使用 copy-paste 合成组合及 BCE+Dice+IoU 损失；⑨ 以汇集点和 token 生成 global mask，再用预测 crop 与首张模板的 cosine 给 detection score。",
+    "project_application": "stable distractor：实例 selector 有潜力，但没有真实同类硬负证明；顺序偏差：不读 candidate list，避免列表位置偏差，却可能受模板顺序（首模板终分）与 FPS tie-break 影响，论文未测；NONE：没有，而且检索结构主动制造候选。current-frame 是 query，但身份证据由多模板与对象训练支撑。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "只测试其最低成本前半段：K=1、禁用 per-object token，reference mask 内 DINO 局部匹配→SAM 候选→冻结 selector；在进入 relative-to-best 之前加一个预注册 absolute score gate。用目标存在、stable distractor、absent 与候选/点输入全排列评估。若 absent 仍稳定产出 mask、同类干扰物分数不低于真目标，立即终止路线，不先投入专属 token 训练。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "没有专门的 same-class stable distractor 分层，也没有 single-reference、零 per-object training 的结果。更关键：每个模板 patch 都做 argmax，relative-to-best 过滤必保留该模板的最大候选；即使目标不存在，也会先产生“最佳”局部点。论文/代码没有校准的空候选或 NONE，机器人仅做 8 个目标存在的搜索。它是 exact-instance benchmark，但不代表解决了开放集身份确认。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-mainline-additional-10-deep-reading-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:34; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:34 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

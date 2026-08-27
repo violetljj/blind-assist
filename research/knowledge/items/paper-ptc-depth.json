@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-ptc-depth",
+  "kind": "paper",
+  "title": "PTC-Depth",
+  "canonical_ref": "https://arxiv.org/abs/2604.01791",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "PTC-Depth 已使用已知位移、光流三角化与 Bayesian metric-scale update；“Bayesian scale smoother”本身也不新。",
+  "mechanisms": [
+    {
+      "id": "taro-t03",
+      "name": "PTC-Depth — taro:T03 route mechanism",
+      "description": "PTC-Depth 已使用已知位移、光流三角化与 Bayesian metric-scale update；“Bayesian scale smoother”本身也不新。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+    }
+  ],
+  "tags": [
+    "taro",
+    "adjacent-work",
+    "taro-r0"
+  ],
+  "aliases": [
+    "taro:T03"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

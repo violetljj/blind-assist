@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-frontier-upgrade-2026-07-frontier-pid",
+  "item_id": "paper-pidnet-a-real-time-semantic-segmentation-network-inspired-by-pid-control",
+  "route": "frontier-upgrade-2026-07",
+  "mechanism_ids": [
+    "frontier-pid"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "PIDNet 的核心价值不是 PID 类比本身，而是把 detail、context、boundary 分成不同职责，再由 boundary 决定局部更相信 detail 还是 context。论文消融显示，边界分支和 boundary-aware loss 对其架构有增益；同时，完整 PIDNet-S 仍是约 7.6M 参数、47.6 GFLOPs 的 GPU 方案，不能直接替换当前移动图。 Mobile-Seed 提供了更重要的反例：增加边界流但不加边界监督时，语义指标先提高；直接加 boundary loss 后，主语义指标反而下降；加入双任务一致性才恢复并进一步提升。它说明“有边界标签就加 BCE”并不安全。本文当前按预印本证据降级使用，其 GPU FPS 也不能外推到 Android。 BlindAssist 还必须区分两个概念：boundary_step_curb 是风险语义类，而论文中的 boundary 是相邻语义类别变化的几何边界。推荐新增独立 geometric_boundary 辅助头，主输出仍保留四类 taxonomy。几何边界只负责选择性融合和诊断，不能直接生成障碍提醒。 因此，最小可迁移结构仍可定义为 Mobile-PID-lite，但 P1 已否决直接切换 OS4/OS16，当前不得立即实施。只有 P2 和后续方差审计满足结构重入门后，才按以下受限版本测试： - MobileNetV3Small 保持不变； - 固定已经保留的 OS8 detail / OS32 semantic，不重开端点搜索； - 新增 16 通道左右、使用 GroupNorm 的多尺度 D-lite； - D-lite 输出 geometric_boundary_logit； - 使用 Light-Bag 风格的逐像素 gate 融合 detail/context； - 先不加几何边界辅助损失，证明结构本身有用后再以小权重加入； - 只有出现“几何边界变好、主语义变差”的明确冲突，才增加一致性项。 如果 P2 后 model-seed range 仍不能下降，Mobile-PID-lite 继续停放，先做 2×2 model×sampler 交互与初始化/归一化诊断；不能用“PIDNet 论文有效”绕过本地失败证据。",
+    "project_application": "Imported under the report's 3.1 PIDNet 与 Mobile-Seed：边界必须参与融合，但边界监督可能反伤主任务 mechanism group for bounded project comparison.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Imported under the report's 3.1 PIDNet 与 Mobile-Seed：边界必须参与融合，但边界监督可能反伤主任务 mechanism group for bounded project comparison."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The frontier-upgrade report treats this as paper-derived mechanism evidence. It does not independently establish BlindAssist event utility, mobile deployment, BLV user benefit, model promotion, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/frontier-upgrade-2026-07/BLINDASSIST_FRONTIER_PAPER_UPGRADE_REPORT_2026-07.md",
+      "summary": "Legacy source for frontier:PID; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated frontier:PID from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

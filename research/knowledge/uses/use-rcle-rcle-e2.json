@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-rcle-rcle-e2",
+  "item_id": "paper-optical-flow-in-mostly-rigid-scenes",
+  "route": "rcle",
+  "mechanism_ids": [
+    "rcle-e2"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "将自然场景分成 rigid 与 moving regions；静态区联合估计相机运动和 3D 结构，使用 Plane+Parallax 强约束；运动区用非约束 flow，并显式估计运动物体分割。",
+    "project_application": "若强参考轨迹仍与 LK 一致地保留补偿后残差，应把下一问题指向 translation/depth/non-rigid model insufficiency，而不是继续调 LK。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "若强参考轨迹仍与 LK 一致地保留补偿后残差，应把下一问题指向 translation/depth/non-rigid model insufficiency，而不是继续调 LK。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "DERIVED_INFERENCE。不能把 MR-Flow benchmark 结果外推为助盲、端侧实时或风险有效性。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/rcle/RCLE_PRIOR_MECHANISM_EVIDENCE_MAP_R0_2026-07-28.md",
+      "summary": "Legacy source for rcle:E2; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated rcle:E2 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

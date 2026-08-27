@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-sight-guide",
+  "kind": "paper",
+  "title": "Sight Guide",
+  "canonical_ref": "https://arxiv.org/abs/2506.02676",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "RGB、双类深度、VIO、语义与反馈的互补能覆盖不同传感器失败模式",
+  "mechanisms": [
+    {
+      "id": "ustrf-p13",
+      "name": "Sight Guide — ustrf:P13 route mechanism",
+      "description": "RGB、双类深度、VIO、语义与反馈的互补能覆盖不同传感器失败模式",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "受控比赛系统；95.7% 不是开放世界成功率，细杆、黑色物体和低光仍困难"
+    }
+  ],
+  "tags": [
+    "ustrf",
+    "frontier-guide",
+    "ustrf-sc"
+  ],
+  "aliases": [
+    "ustrf:P13"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

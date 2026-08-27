@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-monitoring-and-adapting-the-physical-state-of-a-camera",
+  "kind": "paper",
+  "title": "Monitoring and Adapting the Physical State of a Camera",
+  "canonical_ref": "https://elib.dlr.de/147340",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "模糊、噪声或曝光问题导致下游检测失效，但系统仍沉默",
+  "mechanisms": [
+    {
+      "id": "dtr-dr19",
+      "name": "Monitoring and Adapting the Physical State of a Camera — dtr:DR19 route mechanism",
+      "description": "任务相关的实时相机 self-health estimator；将输入质量作为独立 evidence channel",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "已演示的主要是 motion blur/传感器噪声与车载检测；不含镜头完全遮挡、路线或助盲事件"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR19"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

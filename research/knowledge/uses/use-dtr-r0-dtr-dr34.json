@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr34",
+  "item_id": "paper-high-level-information-fusion",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr34"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "640×480 RGB/IR depth 被切成三个高度带和 26 个参考点，再汇总为 17 个方向。静态障碍阈值 3 m。系统比较 Haar、Farneback、背景减除和 CamShift，并按传感器运动/光照切换。风险层有两版：一版 Boolean BayesNet 融合动态对象、历史轨迹、静态对象、自由通道及多个距离带；另一版把这些特征分类成低、中、高、很高和近碰。若多个方向风险相同，就选择自由距离更远者。",
+    "project_application": "只借架构方向风险图、多高度带和分层接口；不借走过即安全、17 个固定方向、手工概率或 99.28% 主张。证据定位为历史系统设计，不是碰撞预测基线。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "只借架构方向风险图、多高度带和分层接口；不借走过即安全、17 个固定方向、手工概率或 99.28% 主张。证据定位为历史系统设计，不是碰撞预测基线。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "风险类别来自手工信念，不是实际碰撞频率；系统再用同一信念评价自己与其他系统，形成近似自洽循环。“有人走过”也不是当前通路安全证据，尤其对临时障碍和动态交通可能已经过期。没有未来轨迹、身体走廊、事件 onset/clear 或真实用户避碰。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/dynamic-travel-risk/DYNAMIC_TRAVEL_RISK_ADDITIONAL_10_DEEP_READING_2026-08-24.md",
+      "summary": "Legacy source for dtr:DR34; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR34 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

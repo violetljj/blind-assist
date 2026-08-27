@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-joint-out-of-distribution-detection-and-uncertainty-estimation-for-traje",
+  "kind": "paper",
+  "title": "Joint Out-of-Distribution Detection and Uncertainty Estimation for Trajectory Prediction",
+  "canonical_ref": "https://arxiv.org/abs/2308.01707",
+  "authors": [],
+  "year": 2023,
+  "venue": "",
+  "summary": "Keep novelty and expected in-distribution forecast error as two independent abstention signals. Either may force UNKNOWN; neither may create CLEAR.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr43",
+      "name": "Joint Out-of-Distribution Detection and Uncertainty Estimation for Trajectory Prediction — dtr:DR43 route mechanism",
+      "description": "Keep novelty and expected in-distribution forecast error as two independent abstention signals. Either may force UNKNOWN; neither may create CLEAR.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "Automotive scene encoders and the Shifts dataset; predicted error is not calibrated coverage or a safety guarantee."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR43"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

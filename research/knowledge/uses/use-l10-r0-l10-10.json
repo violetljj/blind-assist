@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-l10-10",
+  "item_id": "paper-signage-aware-exploration-in-open-world-using-venue-maps",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "l10-10"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "用场馆地图名称先验、文字实例检索、2D→3D 多视角融合，并显式靠近/调姿以提高标牌可读性。",
+    "project_application": "最接近 L10 的 source successor：只有在“候选标牌存在但不可读”时请求靠近或调姿，身份仍由新鲜文字确认。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "最接近 L10 的 source successor：只有在“候选标牌存在但不可读”时请求靠近或调姿，身份仍由新鲜文字确认。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "商场机器人与场馆地图设定；标牌识别和搜索效率不等于入口、metric arrival 或用户完成。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/l10-r0/LITERATURE_RESERVE_20_2026-08-27.md",
+      "summary": "Legacy source for l10:10; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated l10:10 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

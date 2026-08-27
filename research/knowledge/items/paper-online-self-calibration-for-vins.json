@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-online-self-calibration-for-vins",
+  "kind": "paper",
+  "title": "Online Self-Calibration for VINS",
+  "canonical_ref": "https://arxiv.org/abs/2201.09170",
+  "authors": [],
+  "year": 2022,
+  "venue": "",
+  "summary": "Online Self-Calibration for VINS 已系统分析完整 VINS 自标定与退化运动；TARO 必须继承“欠激励时只更新可识别子空间”的事实。",
+  "mechanisms": [
+    {
+      "id": "taro-t01",
+      "name": "Online Self-Calibration for VINS — taro:T01 route mechanism",
+      "description": "Online Self-Calibration for VINS 已系统分析完整 VINS 自标定与退化运动；TARO 必须继承“欠激励时只更新可识别子空间”的事实。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+    }
+  ],
+  "tags": [
+    "taro",
+    "adjacent-work",
+    "taro-r0"
+  ],
+  "aliases": [
+    "taro:T01"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

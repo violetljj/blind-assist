@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-01",
+  "item_id": "paper-pdm-where-s-waldo",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-01"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "（Fig. 2–3，Sec. 3.2–3.3）：①将 reference/target 缩放至 512²并做 Stable Diffusion real-image inversion；②在 SDXL-Turbo 第一个反演时刻 t=4、最后一层 U-Net 提取 self-attention 的 Q/K；③以 (Q+K)/2 作为 appearance feature；④以 cross-attention 的投影空间特征和类别 token 作为 semantic feature；⑤用 reference cross-attention 阈值 0.7 或显式 mask 选出 reference 前景 token；⑥reference 前景 token 与 target 各位置点积并平均，得到 appearance map；⑦target semantic feature 与类别 token 点积得到 semantic map；⑧二者等权平均。Retrieval 对最终图全局平均；segmentation 可直接阈值化，或取最高点提示 SAM。",
+    "project_application": "它直接打 B0 的 4 个 same-class wrong-instance；独立 unary score 很适合验证 1/4 order-robust、2/4 stable-distractor、1/4 order-sensitive 的成因。但它不会自行解决当前缺少 fresh NONE evidence 的问题。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "在 fresh D 固定现有 proposals；对 reference mask+goal class 与每个候选独立运行 PDM，输出 match_score、heatmap，最终仅由冻结的绝对阈值和 top1–top2 margin 输出 TARGET(candidate_id) 或 NONE。交换候选枚举顺序必须 100% 同结果。若 matched 20/21 coverage 下 wrong-instance commit 不低于基线、control 回退超过 1/13，或 NONE false-commit 超过预设上限，即停止该路线。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "没有 calibrated target-absence/NONE；没有 physical identity 的独立权威，只测数据集 instance label；不证明入口、建筑等域迁移，也不证明移动端实时性。Sec. 6 明示结果依赖 inversion/reconstruction 质量。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:01; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:01 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

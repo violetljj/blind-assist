@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "dataset-jrdb-family",
+  "kind": "dataset",
+  "title": "JRDB family",
+  "canonical_ref": "https://jrdb.erc.monash.edu",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "密集人群、遮挡、跟踪断裂与社交动作",
+  "mechanisms": [
+    {
+      "id": "dtr-dr24",
+      "name": "JRDB family — dtr:DR24 route mechanism",
+      "description": "360° RGB/RGB-D/LiDAR/里程计、2D/3D tracks、动作、pose 和 trajectory forecasting 评测；用于人群/遮挡分层",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "人体高度机器人仍不是手机/眼镜，且没有用户 intended route 或碰撞事件 truth；下载和许可需现场复核"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR24"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "id": "paper-copilot",
+  "kind": "paper",
+  "title": "COPILOT",
+  "canonical_ref": "https://openaccess.thecvf.com/content/ICCV2023/html/Pan_COPILOT_Human-Environment_Collision_Prediction_and_Localization_from_Egocentric_Videos_ICCV_2023_paper.html",
+  "authors": [],
+  "year": 2023,
+  "venue": "",
+  "summary": "从无需相机标定和人体位姿输入的身体佩戴 RGB 视频，预测未来最多 1 秒内佩戴者是否会与静态环境碰撞、哪个身体关节会撞，以及潜在碰撞区域在各输入视角的什么位置。它不是周围行人预测，也不是 cross-traffic 模型。",
+  "mechanisms": [
+    {
+      "id": "dtr-dr31",
+      "name": "COPILOT — dtr:DR31 route mechanism",
+      "description": "标准仿真配置在头、骨盆、双腕、双膝放置 6 个相机，输入过去 1 秒、5 Hz 采样的视频。4D space-time-viewpoint attention 交替做“同一时刻跨空间/跨视角”与“同一视角跨空间/跨时间”的注意力；全局池化支路输出总碰撞与 10 个身体部位概率，解码支路输出各视角碰撞热图。训练同时使用总碰撞 BCE、关节 BCE 和热图 KL loss。闭环演示只把热图分左右半区，每步向低风险侧转髋 5°。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "精确身体碰撞真值全部来自合成 mesh；无 BLV 参与者、真实碰撞率、提醒或认知负担。默认 6 相机不可直接迁移到手机/眼镜，真实世界也没有验证热图是否真的落在接触位置。它只覆盖人体与静态环境，不覆盖行人或车辆进入路径。"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "deep-reading",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR31"
+  ],
+  "links": [
+    {
+      "label": "作者项目页",
+      "ref": "https://sites.google.com/stanford.edu/copilot"
+    },
+    {
+      "label": "官方仓库",
+      "ref": "https://github.com/leobxpan/COPILOT"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

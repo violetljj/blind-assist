@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ustrf-sc-ustrf-p04",
+  "item_id": "paper-bytetrack",
+  "route": "ustrf-sc",
+  "mechanism_ids": [
+    "ustrf-p04"
+  ],
+  "use_state": "retired",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "低置信检测二次关联可恢复部分被遮挡真目标并减少轨迹碎片",
+    "project_application": "对已冻结 detections 做二阶段关联，可能改善障碍生命周期连续性",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "对已冻结 detections 做二阶段关联，可能改善障碍生命周期连续性"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "ECCV 方法证据强；MOT 指标不等于助盲事件指标，未解决强 ego-motion"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/ustrf-sc/USTRF_FRONTIER_PAPER_GUIDE_2026-07-22.md",
+      "summary": "Legacy source for ustrf:P04; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated ustrf:P04 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

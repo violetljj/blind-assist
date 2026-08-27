@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr30",
+  "item_id": "tool-open-source-soundscape",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr30"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "开源空间音频、head-relative beacon、background coexistence 和 route authoring；可作“紧急事件抢占、非紧急叙述让行”的反馈基线",
+    "project_application": "开源空间音频、head-relative beacon、background coexistence 和 route authoring；可作“紧急事件抢占、非紧急叙述让行”的反馈基线",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "开源空间音频、head-relative beacon、background coexistence 和 route authoring；可作“紧急事件抢占、非紧急叙述让行”的反馈基线"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "MIT 仓库只是原产品的非 turnkey 子集，删除了第三方/部署组件；它不包含动态危险感知"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "summary": "Legacy source for dtr:DR30; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR30 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-yoloe",
+  "kind": "paper",
+  "title": "YOLOE",
+  "canonical_ref": "https://arxiv.org/abs/2503.07465",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "统一文本、视觉和无提示开放词汇检测/分割",
+  "mechanisms": [
+    {
+      "id": "ustrf-p07",
+      "name": "YOLOE — ustrf:P07 route mechanism",
+      "description": "统一文本、视觉和无提示开放词汇检测/分割",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "ICCV 方法证据；LVIS/COCO AP 不证明透明、细小或低反射危险可靠"
+    }
+  ],
+  "tags": [
+    "ustrf",
+    "frontier-guide",
+    "ustrf-sc"
+  ],
+  "aliases": [
+    "ustrf:P07"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

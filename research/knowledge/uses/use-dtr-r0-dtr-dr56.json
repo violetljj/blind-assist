@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr56",
+  "item_id": "paper-distance-and-collision-probability-estimation-from-gaussian-surface-mode",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr56"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Approximate the body and environment as ellipsoids/Gaussian mixtures and compute distance, gradient, and blended collision probability in microseconds on embedded CPUs.",
+    "project_application": "Compare lower-body/head ellipsoids against Monte Carlo geometry under box/surface perturbations and measure phone-class latency.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Compare lower-body/head ellipsoids against Monte Carlo geometry under box/surface perturbations and measure phone-class latency."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Primarily static surfaces; no dynamic intent, hanging-branch truth, or drop-off evidence."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/dtr-r0/LITERATURE_RESERVE_2026-08-27.md",
+      "summary": "Legacy source for dtr:DR56; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR56 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

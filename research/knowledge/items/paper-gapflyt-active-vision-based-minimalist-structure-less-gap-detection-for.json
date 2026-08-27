@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "id": "paper-gapflyt-active-vision-based-minimalist-structure-less-gap-detection-for",
+  "kind": "paper",
+  "title": "GapFlyt — Active Vision Based Minimalist Structure-less Gap Detection for Quadrotor Flight",
+  "canonical_ref": "https://prg.cs.umd.edu/research/gapflyt_files/GapFlyt-RAL2018.pdf",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "它证明对“能否穿过”的任务，主动制造视差可比完整 3D reconstruction 更直接，也证明保守 erosion 可转化为安全余量。它没有证明一般门洞：环境是静态、前景/背景近似两平面且有明显深度双峰，gap 近凸且预先假定足够大；扫描轨迹、N、baseline 都需调，且安全点近似对非凸开口会偏。手机行人无法像 quadrotor 精确执行纯横移。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-26",
+      "name": "GapFlyt — Active Vision Based Minimalist Structure-less Gap Detection for Quadrotor Flight — goal-audit:26 route mechanism",
+      "description": "先故意执行横向/对角扫描并压制相机旋转和前向速度，使 optical flow 近似与 inverse depth 成正比；对 N 帧相对同一参考帧的 flow magnitude 求平均，再对 inverse stacked flow 求空间梯度，前景/背景的深度不连续就显成 gap contour（TS2P）。Canny+形态学得到开口；从开口周围采前景/背景标签，用 KLT 和 focus-of-expansion 约束高速传播；以开口内近似中位/最大安全椭圆中心作为 safe point，Kalman 平滑；PID 让机体投影中心对齐 safe point，同时固定 pitch 前飞。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "它证明对“能否穿过”的任务，主动制造视差可比完整 3D reconstruction 更直接，也证明保守 erosion 可转化为安全余量。它没有证明一般门洞：环境是静态、前景/背景近似两平面且有明显深度双峰，gap 近凸且预先假定足够大；扫描轨迹、N、baseline 都需调，且安全点近似对非凸开口会偏。手机行人无法像 quadrotor 精确执行纯横移。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-26",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:26"
+  ],
+  "links": [
+    {
+      "label": "补充材料",
+      "ref": "https://prg.cs.umd.edu/research/gapflyt_files/Supplementary-GapFlyt.pdf"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

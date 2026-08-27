@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-22",
+  "item_id": "paper-active-gaze-control-for-foveal-scene-exploration",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-22"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "第一步不重新训练 detector，而是按“真实类别 × 离 fovea 的 7 档距离”拟合 detector 分数向量的 Dirichlet 分布，得到 action-dependent observation model；第二步用 Naive Bayes、sum、Kaplan 或 modified Kaplan 规则把多次检测融合进 body-centered semantic map；第三步对所有候选 gaze 预测下一次观测后的 map 分布，用 KL divergence、entropy 或 top-two margin 作为全图不确定性，选期望不确定性最小的注视点。",
+    "project_application": "可把 foveal distance 重解释为 crop scale、motion blur、off-axis 和遮挡程度，给未来 yaw/approach action 建 action-conditioned evidence quality；但当前 exact-instance 表示未成立，不能先上 NBV。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "可把 foveal distance 重解释为 crop scale、motion blur、off-axis 和遮挡程度，给未来 yaw/approach action 建 action-conditioned evidence quality；但当前 exact-instance 表示未成立，不能先上 NBV。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "论文证明“动作改变传感器噪声分布”应先被校准，再谈信息增益；还证明主动视角的收益主要体现在证据获取速度。它没有证明真实 foveal camera、身体平移、遮挡、安全、目标实例、目标缺席或 physical identity；50 张静态 COCO 图也不足以支撑泛化。更危险的是 entropy 降低却 accuracy 不升，说明 calibration 可能只是变得更自信，不一定更正确。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:22; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:22 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

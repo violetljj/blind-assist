@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-guidance-ssd",
+  "kind": "paper",
+  "title": "Guidance-SSD",
+  "canonical_ref": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0247448",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "不把整个视觉场景翻译成复杂声音，只编码障碍的水平角度和距离，真实盲人能否在最多 30 分钟训练后发现并绕开静态障碍。",
+  "mechanisms": [
+    {
+      "id": "dtr-dr38",
+      "name": "Guidance-SSD — dtr:DR38 route mechanism",
+      "description": "Lenovo Phab 2 Pro 的 RGB、深度与运动相机构成 Guidance-SSD，骨传导耳机播放水滴式空间音频。方位由水平双耳空间差编码；越近则滴声间隔越短、基频越高、音量越大。每个物体只取最近点/边缘作为声源，身后物体不发声；约 170°、3 m 的 avoidance 模式在走廊中最多同时产生 3 个声源。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "没有不开 GSSD、白杖或另一反馈方案基线，因此不能把成功因果归给具体编码。障碍都是安静走廊里的大型同形纸箱，没有行人、车辆、天气或噪声。论文没有单独报告误报率，也没有 BRR/SFF/SI 组件消融；“认知负担较低”没有用工作负荷量表直接验证。"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "deep-reading",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR38"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr12",
+  "item_id": "project-conformal-risk-tube-prediction",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr12"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "经 conformal calibration 的时空 risk tube；评估 coverage、onset/release、Risk-IoU 与 nuisance duration",
+    "project_application": "经 conformal calibration 的时空 risk tube；评估 coverage、onset/release、Risk-IoU 与 nuisance duration",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "经 conformal calibration 的时空 risk tube；评估 coverage、onset/release、Risk-IoU 与 nuisance duration"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "ICRA 2026 新项目，车辆/CARLA 域、旧 CUDA 环境且外部复现少；概率覆盖不等于 BLV 安全"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "summary": "Legacy source for dtr:DR12; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR12 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

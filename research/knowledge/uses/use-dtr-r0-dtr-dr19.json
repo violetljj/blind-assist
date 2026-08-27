@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr19",
+  "item_id": "paper-monitoring-and-adapting-the-physical-state-of-a-camera",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr19"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "任务相关的实时相机 self-health estimator；将输入质量作为独立 evidence channel",
+    "project_application": "任务相关的实时相机 self-health estimator；将输入质量作为独立 evidence channel",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "任务相关的实时相机 self-health estimator；将输入质量作为独立 evidence channel"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "已演示的主要是 motion blur/传感器噪声与车载检测；不含镜头完全遮挡、路线或助盲事件"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "summary": "Legacy source for dtr:DR19; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR19 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

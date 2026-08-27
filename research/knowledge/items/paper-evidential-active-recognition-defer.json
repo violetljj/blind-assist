@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-evidential-active-recognition-defer",
+  "kind": "paper",
+  "title": "Evidential Active Recognition — DEFER",
+  "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2024/html/Fan_Evidential_Active_Recognition_Intelligent_and_Prudent_Open-World_Embodied_Perception_CVPR_2024_paper.html",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "在 GT target localization 和已知类别的模拟条件下，逐帧 uncertainty、late fusion 与 uncertainty-aware reward 比若干 fusion/heuristic policy 更好。 7. 未证明：没有搜索/reacquire、exact physical instance、true NONE、动态 STOP、可达/安全控制或实机证据；最终仍强制 argmax 一个已知类。D-S fusion 假设多源 evidence 独立，但相邻视角高度相关，论文没有去相关。 8. 阅读判断：最强 idea 是把“下一视角是否值得”与当前 evidence uncertainty 对齐；最弱是 GT box 每步绕过了 BlindAssist 最困难的 referent localization。隐藏失败是重复观察同一个错误 distractor，会把相关、置信的错误证据不断融合得更强。 9. BlindAssist 映射：E 的 2/4 stable distractor 说明 active scan 不能仅追求更多同类 evidence；在 exact-ID 未成立前，策略可能更积极地确认错物体。visible probe 也没有 fresh NOT_VISIBLE/动作图，无法直接评价 fixed-left replacement。 10. 最小适配实验：先冻结 exact-ID scorer，在预录 multi-view/action graph A 上比较 fixed-left、random 与 uncertainty/expected-information-gain policy，统一 view budget B。输出只允许 NEXT_VIEW(action)、VERIFY_TARGET(id)、NOT_VISIBLE；不得输出 arrival。达到 identity+NONE gate 或耗尽 B 即停。若 correct-referent Recall@B 不升、stable-distractor commit 不降，或 NONE 多余动作增加，即证伪 active acquisition 增益。 11. Verdict：DEFER，直到 exact-instance signal 与 source-native action graph 均建立。 总体上，11–20 中只有 PerSAM 值得作为当前层的直接 reference-conditioned mask 组件；Mod-IIN、MATCHA、SegIC、Matcher 更适合负控。RAS/GRES 提供 per-candidate 与 NONE 的决策结构，而 DINOv/T-Rex2 会把当前已足够强的类别 proposal 做得更强，却未对准同类物理身份。Evidential Active Recognition 应在 identity bottleneck 被 fresh D falsifiable evidence 打通后再进入。 ## 三、Active verification、功能入口、控制与到达（论文 21–30）",
+  "mechanisms": [
+    {
+      "id": "goal-audit-20",
+      "name": "Evidential Active Recognition — DEFER — goal-audit:20 route mechanism",
+      "description": "①Faster R-CNN ROI head 从当前 target box 提 nonnegative class evidence e_k；②Dirichlet α_k=e_k+1；③belief b_k=e_k/S、uncertainty u=K/S；④Dempster-Shafer 规则逐帧 late-fuse，交换次序不影响结果；⑤单帧用 evidential classification loss；⑥KL regularizer 抑制错误类证据；⑦独立 visual encoder+GRU 聚合 policy state；⑧正确类 belief r_t=b_y^t 作 PPO reward，先训练 recognizer、冻结后训 policy（Eq.1–8、Fig.2）。 4. 训练/依赖：train 用非重叠 HM3D 145 scenes，test 用 MP3D 90 spaces，共13,200 instances、27 shared categories；初始距离3–6 m。关键 oracle 是每一步都直接提供目标 GT box/mask，论文只在“实际应用”中建议以后换 tracker。ResNet-50 ImageNet backbone，前3 residual blocks冻结。 5. 实验证据：Table 1 中 Ours easy/moderate/hard/all top-1=69.9/59.7/58.0/64.4，相对 Single-View 67.9/57.1/49.7/60.9，总提升 +3.5；Fixation all=61.8，Random=53.4。Table 2 的 D-S fusion 64.4 优于 max prediction 62.9、last 60.7、average 63.0、vote 62.8；去掉 uncertainty-aware reward 为 61.6，hard 从 58.0 降至 53.4。§6.7 明确承认固定10步，尚不能决定何时停止。 6. 实际证明：在 GT target localization 和已知类别的模拟条件下，逐帧 uncertainty、late fusion 与 uncertainty-aware reward 比若干 fusion/heuristic policy 更好。 7. 未证明：没有搜索/reacquire、exact physical instance、true NONE、动态 STOP、可达/安全控制或实机证据；最终仍强制 argmax 一个已知类。D-S fusion 假设多源 evidence 独立，但相邻视角高度相关，论文没有去相关。 8. 阅读判断：最强 idea 是把“下一视角是否值得”与当前 evidence uncertainty 对齐；最弱是 GT box 每步绕过了 BlindAssist 最困难的 referent localization。隐藏失败是重复观察同一个错误 distractor，会把相关、置信的错误证据不断融合得更强。 9. BlindAssist 映射：E 的 2/4 stable distractor 说明 active scan 不能仅追求更多同类 evidence；在 exact-ID 未成立前，策略可能更积极地确认错物体。visible probe 也没有 fresh NOT_VISIBLE/动作图，无法直接评价 fixed-left replacement。 10. 最小适配实验：先冻结 exact-ID scorer，在预录 multi-view/action graph A 上比较 fixed-left、random 与 uncertainty/expected-information-gain policy，统一 view budget B。输出只允许 NEXT_VIEW(action)、VERIFY_TARGET(id)、NOT_VISIBLE；不得输出 arrival。达到 identity+NONE gate 或耗尽 B 即停。若 correct-referent Recall@B 不升、stable-distractor commit 不降，或 NONE 多余动作增加，即证伪 active acquisition 增益。 11. Verdict：DEFER，直到 exact-instance signal 与 source-native action graph 均建立。 总体上，11–20 中只有 PerSAM 值得作为当前层的直接 reference-conditioned mask 组件；Mod-IIN、MATCHA、SegIC、Matcher 更适合负控。RAS/GRES 提供 per-candidate 与 NONE 的决策结构，而 DINOv/T-Rex2 会把当前已足够强的类别 proposal 做得更强，却未对准同类物理身份。Evidential Active Recognition 应在 identity bottleneck 被 fresh D falsifiable evidence 打通后再进入。 ## 三、Active verification、功能入口、控制与到达（论文 21–30）",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "没有搜索/reacquire、exact physical instance、true NONE、动态 STOP、可达/安全控制或实机证据；最终仍强制 argmax 一个已知类。D-S fusion 假设多源 evidence 独立，但相邻视角高度相关，论文没有去相关。 8. 阅读判断：最强 idea 是把“下一视角是否值得”与当前 evidence uncertainty 对齐；最弱是 GT box 每步绕过了 BlindAssist 最困难的 referent localization。隐藏失败是重复观察同一个错误 distractor，会把相关、置信的错误证据不断融合得更强。 9. BlindAssist 映射：E 的 2/4 stable distractor 说明 active scan 不能仅追求更多同类 evidence；在 exact-ID 未成立前，策略可能更积极地确认错物体。visible probe 也没有 fresh NOT_VISIBLE/动作图，无法直接评价 fixed-left replacement。 10. 最小适配实验：先冻结 exact-ID scorer，在预录 multi-view/action graph A 上比较 fixed-left、random 与 uncertainty/expected-information-gain policy，统一 view budget B。输出只允许 NEXT_VIEW(action)、VERIFY_TARGET(id)、NOT_VISIBLE；不得输出 arrival。达到 identity+NONE gate 或耗尽 B 即停。若 correct-referent Recall@B 不升、stable-distractor commit 不降，或 NONE 多余动作增加，即证伪 active acquisition 增益。 11. Verdict：DEFER，直到 exact-instance signal 与 source-native action graph 均建立。 总体上，11–20 中只有 PerSAM 值得作为当前层的直接 reference-conditioned mask 组件；Mod-IIN、MATCHA、SegIC、Matcher 更适合负控。RAS/GRES 提供 per-candidate 与 NONE 的决策结构，而 DINOv/T-Rex2 会把当前已足够强的类别 proposal 做得更强，却未对准同类物理身份。Evidential Active Recognition 应在 identity bottleneck 被 fresh D falsifiable evidence 打通后再进入。 ## 三、Active verification、功能入口、控制与到达（论文 21–30）"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-20",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:20"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

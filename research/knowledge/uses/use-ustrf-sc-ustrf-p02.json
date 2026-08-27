@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ustrf-sc-ustrf-p02",
+  "item_id": "paper-video-depth-anything",
+  "route": "ustrf-sc",
+  "mechanism_ids": [
+    "ustrf-p02"
+  ],
+  "use_state": "retired",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "在 DAv2 上加入时空头和长视频窗口策略，提升视频深度时间一致性",
+    "project_application": "时序深度适合作为离线 teacher 或非因果上界，检验深度闪烁是否造成风险事件翻转",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "时序深度适合作为离线 teacher 或非因果上界，检验深度闪烁是否造成风险事件翻转"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "CVPR 证据较强；A100 速度不是手机速度，窗口含未来帧，非直接因果 runtime"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/ustrf-sc/USTRF_FRONTIER_PAPER_GUIDE_2026-07-22.md",
+      "summary": "Legacy source for ustrf:P02; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated ustrf:P02 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

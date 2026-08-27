@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-detection-of-fast-incoming-objects-with-a-moving-camera",
+  "kind": "paper",
+  "title": "Detection of Fast Incoming Objects with a Moving Camera",
+  "canonical_ref": "https://www.bmva-archive.org.uk/bmvc/2016/papers/paper146/paper146.pdf",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "用户转头/晃动产生全局 optical flow，被误当作物体接近",
+  "mechanisms": [
+    {
+      "id": "dtr-dr16",
+      "name": "Detection of Fast Incoming Objects with a Moving Camera — dtr:DR16 route mechanism",
+      "description": "全局相机运动补偿后的 residual flow、looming 和质量门",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "无人机/快速物体视频；纹理不足、模糊、遮挡和身体几何仍未解决"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR16"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

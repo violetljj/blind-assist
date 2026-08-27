@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "id": "paper-wearable-obstacle-avoidance-with-cross-modal-learning",
+  "kind": "paper",
+  "title": "Wearable obstacle avoidance with cross-modal learning",
+  "canonical_ref": "https://doi.org/10.1038/s41467-025-58085-x",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "单传感器退化、端到端时延、电池和音频/触觉负担",
+  "mechanisms": [
+    {
+      "id": "dtr-dr07",
+      "name": "Wearable obstacle avoidance with cross-modal learning — dtr:DR07 route mechanism",
+      "description": "video-depth 交叉学习、跨模态一致性/降级和分级音频+触觉调度",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "专用 RGB-ToF/FPGA/手机硬件约 400 g；小规模、非随机研究中的“100% 避障”不可作独立安全证据"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR07"
+  ],
+  "links": [
+    {
+      "label": "WOAD 官方仓库",
+      "ref": "https://github.com/MMCNJUPT/WOAD"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

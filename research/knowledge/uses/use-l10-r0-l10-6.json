@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-l10-6",
+  "item_id": "paper-on-calibration-of-scene-text-recognition-models",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "l10-6"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "说明字符级校准不必然带来词级校准，识别 admission 应在完整序列层校准。",
+    "project_application": "将 L10 的语义 admission 从平均字符分数改为可验证的整词校准问题；先做只读可靠性图与选择性风险。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "将 L10 的语义 admission 从平均字符分数改为可验证的整词校准问题；先做只读可靠性图与选择性风险。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "主要验证 attention STR，不直接覆盖 RapidOCR CTC 或新场景分布漂移。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/l10-r0/LITERATURE_RESERVE_20_2026-08-27.md",
+      "summary": "Legacy source for l10:6; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated l10:6 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

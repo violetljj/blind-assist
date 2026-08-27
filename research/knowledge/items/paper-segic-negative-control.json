@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-segic-negative-control",
+  "kind": "paper",
+  "title": "SegIC — NEGATIVE_CONTROL",
+  "canonical_ref": "https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/5519_ECCV_2024_paper.php",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "frozen VFM 的 dense correspondence 可被压成显式 instructions，并由小 decoder 泛化到多种 segmentation benchmark。 7. 未证明：训练定义主要是类别或同图增强；结论明确把 open-world instance segmentation 留作未来工作。单一 mask 输出也无真正 NONE。高 VOS 分数不等于静态同类实例竞争。 8. 阅读判断：最强 idea 是把几何、外观、meta 分离，便于诊断；最弱是“instance training”名称掩盖了同图 augmentation。隐藏失败是 coarse propagated mask 先锁定 distractor，decoder 将其变成高质量错误 mask。 9. BlindAssist 映射：E 的 2/4 stable distractor 是 SegIC 最可能的失败：dense correspondence 与 semantic vector 会在同类错误实例上共同自洽；它可避开槽位偏差，却未学习物理身份排斥。 10. 最小适配实验：冻结官方权重，禁用 meta class-name 以免类别捷径；reference/current full frame 输出 mask，再映射到冻结 candidates，记录 geo/visual/final 三级 evidence。fresh D 全量一次即停；若 geo 错而 decoder“修正”为同一个 distractor，或 NONE 全部产生 mask，即按 negative control 关闭。 11. Verdict：NEGATIVE_CONTROL。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-15",
+      "name": "SegIC — NEGATIVE_CONTROL — goal-audit:15 route mechanism",
+      "description": "①冻结 VFM 提取 target/reference dense features；②算全对全 cosine correspondence；③reference mask 加权传播为 coarse mask a，取 top-k 坐标 p；④reference foreground mask-pool 得 visual vector v；⑤CLIP text 得 meta vector m；⑥把 a 卷积投影加到 target features，把 p/v/m 投影为 query tokens；⑦一个 learnable object query 经 self-attention、双向 query-image cross-attention；⑧用 Dice+BCE 的 importance-sampled point loss训 decoder，并加 context reversion、negative entity augmentation（Fig.1、§3、App.A）。 4. 训练/依赖：DINOv2 frozen，约 5M decoder parameters；COCO 83k、ADE20K 20k、LVIS约100k，8×V100，batch 32，896²。关键是附录 Algorithm 2：semantic reference 按类别跨图采样；“instance” reference 只是同一图像的两次独立 augmentation，并非真实跨视角同一实例。 5. 实验证据：Table 1 的 SegIC-L 为 COCO-20i 76.1、FSS 86.8、LVIS 44.6、DAVIS 71.4；但严格排除测试类别的 Table 2 降为 53.6，加入 COCO-excluded 混合数据后 62.3。Table 3 的 DINOv2-B 跨任务平均 76.8，明显高于 CLIP 15.3、MAE 12.6。Table 4：geo-only 68.8/87.3/65.8，visual-only 71.0/85.1/67.6，全指令 74.6/87.4/68.4。Table 6 显示 COCO instance annotations 令 DAVIS 45.1→70.1。 6. 实际证明：frozen VFM 的 dense correspondence 可被压成显式 instructions，并由小 decoder 泛化到多种 segmentation benchmark。 7. 未证明：训练定义主要是类别或同图增强；结论明确把 open-world instance segmentation 留作未来工作。单一 mask 输出也无真正 NONE。高 VOS 分数不等于静态同类实例竞争。 8. 阅读判断：最强 idea 是把几何、外观、meta 分离，便于诊断；最弱是“instance training”名称掩盖了同图 augmentation。隐藏失败是 coarse propagated mask 先锁定 distractor，decoder 将其变成高质量错误 mask。 9. BlindAssist 映射：E 的 2/4 stable distractor 是 SegIC 最可能的失败：dense correspondence 与 semantic vector 会在同类错误实例上共同自洽；它可避开槽位偏差，却未学习物理身份排斥。 10. 最小适配实验：冻结官方权重，禁用 meta class-name 以免类别捷径；reference/current full frame 输出 mask，再映射到冻结 candidates，记录 geo/visual/final 三级 evidence。fresh D 全量一次即停；若 geo 错而 decoder“修正”为同一个 distractor，或 NONE 全部产生 mask，即按 negative control 关闭。 11. Verdict：NEGATIVE_CONTROL。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "训练定义主要是类别或同图增强；结论明确把 open-world instance segmentation 留作未来工作。单一 mask 输出也无真正 NONE。高 VOS 分数不等于静态同类实例竞争。 8. 阅读判断：最强 idea 是把几何、外观、meta 分离，便于诊断；最弱是“instance training”名称掩盖了同图 augmentation。隐藏失败是 coarse propagated mask 先锁定 distractor，decoder 将其变成高质量错误 mask。 9. BlindAssist 映射：E 的 2/4 stable distractor 是 SegIC 最可能的失败：dense correspondence 与 semantic vector 会在同类错误实例上共同自洽；它可避开槽位偏差，却未学习物理身份排斥。 10. 最小适配实验：冻结官方权重，禁用 meta class-name 以免类别捷径；reference/current full frame 输出 mask，再映射到冻结 candidates，记录 geo/visual/final 三级 evidence。fresh D 全量一次即停；若 geo 错而 decoder“修正”为同一个 distractor，或 NONE 全部产生 mask，即按 negative control 关闭。 11. Verdict：NEGATIVE_CONTROL。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-15",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:15"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

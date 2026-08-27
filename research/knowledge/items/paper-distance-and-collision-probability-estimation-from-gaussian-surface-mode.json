@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-distance-and-collision-probability-estimation-from-gaussian-surface-mode",
+  "kind": "paper",
+  "title": "Distance and Collision Probability Estimation from Gaussian Surface Models",
+  "canonical_ref": "https://www.kshitijgoel.com/goel-distance-2025/index.html",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Approximate the body and environment as ellipsoids/Gaussian mixtures and compute distance, gradient, and blended collision probability in microseconds on embedded CPUs.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr56",
+      "name": "Distance and Collision Probability Estimation from Gaussian Surface Models — dtr:DR56 route mechanism",
+      "description": "Approximate the body and environment as ellipsoids/Gaussian mixtures and compute distance, gradient, and blended collision probability in microseconds on embedded CPUs.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "Primarily static surfaces; no dynamic intent, hanging-branch truth, or drop-off evidence."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR56"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "paper-l2g-det-from-local-matches-to-global-masks",
+  "kind": "paper",
+  "title": "L2G-Det — From Local Matches to Global Masks",
+  "canonical_ref": "https://arxiv.org/abs/2603.03577",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "局部对应可以绕过整物体 proposal 的 category bias；把多个局部候选经实例适配筛选后汇成 global SAM mask，在两个 object-specific benchmark 上显著超过 NIDS，hard subset 增益尤其大。局部点、候选 selector 与每对象 token 都有独立增益。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-34",
+      "name": "L2G-Det — From Local Matches to Global Masks — goal-audit:34 route mechanism",
+      "description": "① 用冻结 DINOv3-L 提取模板/查询 patch；② 在每张模板 mask 内取 S=10 个 patch；③ 每个模板 patch 在 query 全图做 cosine argmax，形成 S×K 个被迫局部匹配点；④ 每个点单独提示 SAM，得到 local mask/crop 候选；⑤ 冻结 Perception Encoder，加可训练 residual MLP adapter，以同实例 positive/异实例 negative 的 InfoNCE 学候选与模板表示；⑥ 对每个模板保留距该模板最高分不超过 δ=.01 的候选；⑦ 汇集保留点并用 farthest-point-first 去冗余；⑧ 冻结 SAM2-L 主体，为每个目标单独训练 object token，使用 copy-paste 合成组合及 BCE+Dice+IoU 损失；⑨ 以汇集点和 token 生成 global mask，再用预测 crop 与首张模板的 cosine 给 detection score。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "没有专门的 same-class stable distractor 分层，也没有 single-reference、零 per-object training 的结果。更关键：每个模板 patch 都做 argmax，relative-to-best 过滤必保留该模板的最大候选；即使目标不存在，也会先产生“最佳”局部点。论文/代码没有校准的空候选或 NONE，机器人仅做 8 个目标存在的搜索。它是 exact-instance benchmark，但不代表解决了开放集身份确认。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-34",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:34"
+  ],
+  "links": [
+    {
+      "label": "官方项目",
+      "ref": "https://irvlutd.github.io/L2G"
+    },
+    {
+      "label": "官方代码",
+      "ref": "https://github.com/IRVLUTD/L2G"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

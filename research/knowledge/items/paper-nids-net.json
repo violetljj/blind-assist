@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-nids-net",
+  "kind": "paper",
+  "title": "NIDS-Net",
+  "canonical_ref": "https://arxiv.org/abs/2405.17859",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "在多视图 template 场景，前景平均比全局 token 更适合实例匹配；受限逐通道重权比自由残差 adapter 更不容易破坏原空间。它也证明 proposal 质量和 identity embedding 是两个独立瓶颈。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-04",
+      "name": "NIDS-Net — goal-audit:04 route mechanism",
+      "description": "（Fig. 2–3，Sec. III）：①GroundingDINO 用统一文本 \"objects\" 产 box；②SAM 在 box 内产 mask，组成 Grounded-SAM proposals；③DINOv2 patch features 在 mask 内做 Foreground Feature Averaging，reference/proposal 都得到一个向量；④只用 template embeddings 训练 adapter，InfoNCE 拉近同实例、分开异实例；⑤Weight Adapter 以 w=sigmoid(MLP(10f)) 产生逐通道权重，ReLU 使权重落在 [0.5,1)，避免重写原特征空间；⑥每实例对 K templates 取最大 cosine；⑦可与 SAM6D patch-appearance score 平均；⑧唯一实例用 stable matching，重复实例用 argmax，再阈值拒绝。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "不证明 K=1 的训练可行性、unseen physical identity authority 或 NONE calibration。附录明确展示 synthetic-real domain gap、重遮挡漏检，以及 GroundingDINO 一个 box 包含多个对象导致 under-segmentation。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-04",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:04"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-33",
+  "item_id": "paper-iploc-id-personalized-object-identification-and-localization-via-in-cont",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-33"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "① 把多张 reference 及框、target label 组成 in-context prompt；② VLM 对 query 先自回归生成 bbox B；③ 接固定自问 Q：“这些框是否都包含同一对象？”；④ 再生成 A∈{Yes,No}；⑤ 概率分解为 p(B|x)·p(A|x,B,Q)，即 identification 条件于已生成位置；⑥ 正样本的 B 是真目标框、A=Yes；⑦ 负样本仍提供另一个实例的“最可信候选框”作为 B，仅把 A 设为 No；⑧ 用统一序列目标做 LoRA 微调，最后由文本 interpreter 将回答转为 positive bbox 或空集。",
+    "project_application": "stable distractor：VastTrack 同类负例提供一定先验，但没有当前稳定干扰物专门分层；顺序偏差：单 query 没有候选序列，若把多个 candidates 放进 prompt 则完全未证；NONE：任务定义支持 negative query，实际实现仍先生成 bbox、后置 No，属于“可拒绝”而非原生 proposal-free NONE。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "先不训练：按官方 1-shot full-frame 接口跑冻结 current-frame 三组——目标存在、stable same-class distractor、target absent；同时记录原始序列与 parser 输出，并以联合 Yes∧IoU、false accept、false reject 而非 TP-only mIoU 判定。若需接现有 candidates，只能逐候选裁剪做隔离调用（这是 OOD 假设），所有 No 才聚合为 NONE；候选列表全排列后每个候选结果必须一致。若后置 No 不能压住稳定 distractor，则否决其直接接入。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "它并没有取消 forced bbox autoregression：负 query 也必须先生成一个候选框，再说 No；所以显式 ∅ 只是 parser 对后置文本的解释。没有 candidate list、候选顺序不变性、真实入口 stable distractor、概率校准或 all-candidates-absent 操作性评测。单目标、独立图像且无时序。完整训练资产未公开也限制复现。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-mainline-additional-10-deep-reading-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:33; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:33 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

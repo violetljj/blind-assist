@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr46",
+  "item_id": "paper-occupancy-flow-fields-for-motion-forecasting-in-autonomous-driving",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr46"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Predict a time-indexed grid containing both occupancy and 2-D flow, preserving temporal motion consistency and allowing speculative/disoccluded agents.",
+    "project_application": "Compare 0-3 s occupancy/flow and route-event metrics, stratified by visible, disoccluded, and entering-FOV targets.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Compare 0-3 s occupancy/flow and route-event metrics, stratified by visible, disoccluded, and entering-FOV targets."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Vehicle-scale data and sensors; occupancy values are not automatically calibrated collision probabilities."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/dtr-r0/LITERATURE_RESERVE_2026-08-27.md",
+      "summary": "Legacy source for dtr:DR46; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR46 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

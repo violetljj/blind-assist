@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-fgprompt-fine-grained-goal-prompting-for-image-goal-navigation",
+  "kind": "paper",
+  "title": "FGPrompt — Fine-grained Goal Prompting for Image-goal Navigation",
+  "canonical_ref": "https://proceedings.neurips.cc/paper_files/paper/2023/file/27c4e15d9af120d7fef04432c7db577f-Paper-Conference.pdf",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "论文强力证明“reference conditioning 必须在高分辨率早层发生”，晚期全局 embedding 丢细节；也证明简单联合建模可优于复杂模块。但它主要证明 ImageNav 目标视点，而非 same physical instance。IIN 的 9.9% 是最关键的反证：在视角/相机差异和长路径下，优势绝对值仍很低。成功只看 1 m STOP，不能拆出同类错实例、NONE 或 arrival integrity。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-24",
+      "name": "FGPrompt — Fine-grained Goal Prompting for Image-goal Navigation — goal-audit:24 route mechanism",
+      "description": "EF 将 128×128 的 goal/current 沿通道拼成 6-channel 图，由同一 ResNet 联合编码；MF 保留 goal encoder 早期高分辨率 feature map，用 1×1 conv 生成逐层 FiLM 的 γ/β，对 observation encoder 同层 activation 作仿射调制；SF 则用 SuperPoint+SuperGlue 的 top-k 匹配点坐标作为低层旁路。融合向量再进 2 层 GRU actor-critic，以 ZER 的距离、朝向、slack、STOP reward 用 DD-PPO 训练 500M steps。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "论文强力证明“reference conditioning 必须在高分辨率早层发生”，晚期全局 embedding 丢细节；也证明简单联合建模可优于复杂模块。但它主要证明 ImageNav 目标视点，而非 same physical instance。IIN 的 9.9% 是最关键的反证：在视角/相机差异和长路径下，优势绝对值仍很低。成功只看 1 m STOP，不能拆出同类错实例、NONE 或 arrival integrity。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-24",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:24"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

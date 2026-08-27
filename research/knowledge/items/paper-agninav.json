@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "paper-agninav",
+  "kind": "paper",
+  "title": "AgniNav",
+  "canonical_ref": "https://arxiv.org/abs/2606.10903",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "身体碰撞包络、几何/深度标签、单目 student、极坐标 bin、边缘端",
+  "mechanisms": [
+    {
+      "id": "hftf-h01",
+      "name": "AgniNav — hftf:H01 route mechanism",
+      "description": "身体碰撞包络、几何/深度标签、单目 student、极坐标 bin、边缘端",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "The charter records this as an adjacent mechanism, not HFTF evidence. BLV 行人任务、foot/body/head 分层、短时动态场、手机与弃权"
+    }
+  ],
+  "tags": [
+    "hftf",
+    "adjacent-work"
+  ],
+  "aliases": [
+    "hftf:H01"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

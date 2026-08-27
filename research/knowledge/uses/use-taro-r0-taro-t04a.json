@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-taro-r0-taro-t04a",
+  "item_id": "paper-task-specific-bayesian-nbv",
+  "route": "taro-r0",
+  "mechanism_ids": [
+    "taro-t04a"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "Task-Specific Bayesian NBV 已直接优化下游任务视角； GraspView 已把 RGB-only active view 与在线米制对齐 用于抓取。因此 TARO 必须证明 query-identifiability、人体 swept-volume、声明的 metric anchor、 人类受限相机动作和 UNKNOWN 的联合差异。",
+    "project_application": "Task-Specific Bayesian NBV 已直接优化下游任务视角； GraspView 已把 RGB-only active view 与在线米制对齐 用于抓取。因此 TARO 必须证明 query-identifiability、人体 swept-volume、声明的 metric anchor、 人类受限相机动作和 UNKNOWN 的联合差异。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Task-Specific Bayesian NBV 已直接优化下游任务视角； GraspView 已把 RGB-only active view 与在线米制对齐 用于抓取。因此 TARO 必须证明 query-identifiability、人体 swept-volume、声明的 metric anchor、 人类受限相机动作和 UNKNOWN 的联合差异。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/taro/TARO_R0_RESEARCH_ROUTE_GUIDE_2026-08-10.md",
+      "summary": "Legacy source for taro:T04a; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated taro:T04a from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

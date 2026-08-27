@@ -36,7 +36,10 @@
     "missingness",
     "occlusion",
     "forecasting",
-    "dtr"
+    "dtr",
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
   ],
   "aliases": [
     "dtr:DR45",
@@ -49,5 +52,5 @@
     }
   ],
   "added_at": "2026-08-27",
-  "updated_at": "2026-08-27"
+  "updated_at": "2026-08-28"
 }

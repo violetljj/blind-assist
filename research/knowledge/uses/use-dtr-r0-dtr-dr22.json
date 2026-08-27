@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr22",
+  "item_id": "paper-indoor-imminent-danger-detection-with-ground-segmentation",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr22"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "RGB-D+IMU 地面/自由路径 + 去地后点云 residual；建立不依赖物体名称的 traversability 通道",
+    "project_application": "RGB-D+IMU 地面/自由路径 + 去地后点云 residual；建立不依赖物体名称的 traversability 通道",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "RGB-D+IMU 地面/自由路径 + 去地后点云 residual；建立不依赖物体名称的 traversability 通道"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "室内 RGB-D 假设，没有 BLV 行走效果；室外 IR/阳光和细杆失效仍需另行评估"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "summary": "Legacy source for dtr:DR22; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR22 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

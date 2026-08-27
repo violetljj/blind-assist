@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-05",
+  "item_id": "paper-v-sam",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-05"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "（Fig. 2–3，Sec. 3）：①DINOv3 dense cosine correspondence 在 query mask 内将 patch 映到 target；②用 point stratification 保留空间分散且可靠的匹配，转换为 SAM2 coordinate prompts，形成 V²-Anchor；③SAM2 对 query mask 做 mask pooling，得到区域 visual prompt；④VPMatcher 的 feature branch 用 cross-attention 和 spatial gate 将 query 表示映到 target；⑤structural branch 以 mask encoder/decoder 和 FiLM 预测 target 结构先验；⑥构成 Anchor、Visual、Fusion 三个独立 mask experts；⑦Visual/Fusion 用对称 contrastive、structural-mask、BCE+Dice 三类损失训练；⑧PCCS 将每个预测 mask 反投回 query，按回投点到原 mask 采样点的平均距离选择专家。",
+    "project_application": "它绕过候选槽位顺序，直接从 reference mask 到 current-frame mask，适合检查 B0 的 order-sensitive case；但对 2/4 stable distractor 必须用 native instance assignment 判断，不能把 IoU 或循环一致性当成功。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "冻结发布模型，输入一张 reference mask 和完整 current RGB，输出三专家 masks、各自 PCCS score 及最终 mask；外层只允许预冻结阈值输出 TARGET(mask) 或 NONE。若 stable-distractor 比例不低于当前基线、PCCS 对 reference/current 方向或候选枚举不稳、或 fresh NONE 出现不可接受的非空 mask，即停止。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "DAVIS 明确只统计两帧同时可见的对象；没有 NONE/target-absence。Ego-Exo 是时间对齐双相机，不等于任意历史 reference crop。cyclic consistency 只是内部自洽，不是独立 identity truth。论文也没有独立 Limitations 节。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:05; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:05 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

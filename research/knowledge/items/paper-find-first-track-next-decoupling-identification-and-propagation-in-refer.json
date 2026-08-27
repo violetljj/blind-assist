@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-find-first-track-next-decoupling-identification-and-propagation-in-refer",
+  "kind": "paper",
+  "title": "Find First, Track Next: Decoupling Identification and Propagation in Referring Video Object Segmentation",
+  "canonical_ref": "https://openaccess.thecvf.com/content/ICCV2025W/LSVOS/html/Cho_Find_First_Track_Next_Decoupling_Identification_and_Propagation_in_Referring_ICCVW_2025_paper.html",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "先选择有可靠语义对齐的 reference frame，再由独立 propagation 模块维持连续性。",
+  "mechanisms": [
+    {
+      "id": "l10-8",
+      "name": "Find First, Track Next: Decoupling Identification and Propagation in Referring Video Object Segmentation — l10:8 route mechanism",
+      "description": "先选择有可靠语义对齐的 reference frame，再由独立 propagation 模块维持连续性。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "论文是离线整段视频选择，语言对齐也不是精确 OCR 身份；没有原生 absent contract。"
+    }
+  ],
+  "tags": [
+    "l10",
+    "literature-reserve",
+    "l10-r0"
+  ],
+  "aliases": [
+    "l10:8"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

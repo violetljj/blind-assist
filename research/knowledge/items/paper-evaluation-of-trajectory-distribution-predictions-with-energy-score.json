@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-evaluation-of-trajectory-distribution-predictions-with-energy-score",
+  "kind": "paper",
+  "title": "Evaluation of Trajectory Distribution Predictions with Energy Score",
+  "canonical_ref": "https://proceedings.mlr.press/v235/shahroudi24a.html",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Shows that truth-selected minimum-of-N metrics are not strictly proper and proposes Energy Score for complete multivariate trajectory distributions.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr59",
+      "name": "Evaluation of Trajectory Distribution Predictions with Energy Score — dtr:DR59 route mechanism",
+      "description": "Shows that truth-selected minimum-of-N metrics are not strictly proper and proposes Energy Score for complete multivariate trajectory distributions.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "Evaluator only; it creates neither a predictor, an abstention policy, nor an operational risk threshold."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR59"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

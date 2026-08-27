@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-signscene-visual-sign-grounding-for-mapless-navigation",
+  "kind": "paper",
+  "title": "SignScene: Visual Sign Grounding for Mapless Navigation",
+  "canonical_ref": "https://arxiv.org/abs/2602.12686",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "把复杂标识上的语义指令映射到当前局部 3D 场景元素与动作。",
+  "mechanisms": [
+    {
+      "id": "l10-12",
+      "name": "SignScene: Visual Sign Grounding for Mapless Navigation — l10:12 route mechanism",
+      "description": "把复杂标识上的语义指令映射到当前局部 3D 场景元素与动作。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "主要证明 sign grounding；不改善可读性，也不验证命名目的地的最终交接。"
+    }
+  ],
+  "tags": [
+    "l10",
+    "literature-reserve",
+    "l10-r0"
+  ],
+  "aliases": [
+    "l10:12"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

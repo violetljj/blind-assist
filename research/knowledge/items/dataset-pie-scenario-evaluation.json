@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "dataset-pie-scenario-evaluation",
+  "kind": "dataset",
+  "title": "PIE + scenario evaluation",
+  "canonical_ref": "https://github.com/aras62/PIE",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "哪个行人正在变得相关，以及多早提醒才有用",
+  "mechanisms": [
+    {
+      "id": "dtr-dr13",
+      "name": "PIE + scenario evaluation — dtr:DR13 route mechanism",
+      "description": "行人行动/看向/横穿/遮挡标注；事件分层、lead-time、轨迹/意图评估代码",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "车载视角、交叉口横穿为主；不包含穿戴式身体路线或触地事件真值"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR13"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

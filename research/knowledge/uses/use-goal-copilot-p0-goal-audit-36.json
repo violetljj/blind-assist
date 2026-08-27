@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-36",
+  "item_id": "paper-claid-class-agnostic-instance-level-descriptor-for-instance-search",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-36"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "①用 DINO ViT-B/8 提取并 L2 归一化 patch token；②以余弦 affinity 阈值 0.2 建图；③取图度数极值作稳定 seed；④k-sums 二分 patch 集，递归形成 region hierarchy；⑤以子图平均连通度 τ1=0.97 决定停止；⑥按 top-30% L1-energy patch 的占比判“dummy node”，保留其继续分裂但不输出描述子；⑦把每个有效节点 mask/bbox 映射到独立 ResNet-50 Block4.0 feature map，用 RoI-GeM 得定长向量；⑧query 只出一个向量，数据库图以任一 region 首次命中的排名计分。它没有配对式判别头。",
+    "project_application": "①用 DINO ViT-B/8 提取并 L2 归一化 patch token；②以余弦 affinity 阈值 0.2 建图；③取图度数极值作稳定 seed；④k-sums 二分 patch 集，递归形成 region hierarchy；⑤以子图平均连通度 τ1=0.97 决定停止；⑥按 top-30% L1-energy patch 的占比判“dummy node”，保留其继续分裂但不输出描述子；⑦把每个有效节点 mask/bbox 映射到独立 ResNet-50 Block4.0 feature map，用 RoI-GeM 得定长向量；⑧query 只出一个向量，数据库图以任一 region 首次命中的排名计分。它没有配对式判别头。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "判定：NEGATIVE_CONTROL。 可作“检索描述子不等于 exact-instance evidence”的强对照；不应成为身份 authority。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "它证明多粒度无监督 region bank 对图库 mAP 有效且高效；没有证明 descriptor 能区分两个同类、同款、稳定出现的实体，更无 target-absent 的 FAR、绝对阈值或候选置换实验。论文自己承认 patch 会把小实例合并，模糊图和具体人脸等语义特定 query 退化。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-mainline-additional-10-deep-reading-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:36; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:36 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

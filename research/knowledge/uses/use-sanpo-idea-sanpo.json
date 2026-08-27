@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-sanpo-idea-sanpo",
+  "item_id": "dataset-sanpo-a-scene-understanding-accessibility-and-human-navigation-dataset",
+  "route": "sanpo",
+  "mechanism_ids": [
+    "idea-sanpo"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "dataset",
+  "usage": {
+    "source_scope": "Use scene-understanding and accessibility masks as continuous corridor, boundary, obstacle, and unknown evidence with source-aware sequence structure.",
+    "project_application": "Support SANPO segmentation and corridor experiments while keeping source masks below event-lifecycle truth and independent promotion gates.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Support SANPO segmentation and corridor experiments while keeping source masks below event-lifecycle truth and independent promotion gates."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "SANPO source masks are not BlindAssist event onset/clearance truth, collision outcome, user benefit, mobile model promotion, or safety evidence."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/history/idea/IDEA_ARCHIVE_THROUGH_2026-07-28.md",
+      "summary": "Legacy source for idea:SANPO; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated idea:SANPO from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

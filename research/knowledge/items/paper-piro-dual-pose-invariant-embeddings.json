@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-piro-dual-pose-invariant-embeddings",
+  "kind": "paper",
+  "title": "PiRO / Dual Pose-invariant Embeddings",
+  "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2024/html/Sarkar_Dual_Pose-invariant_Embeddings_Learning_Category_and_Object-specific_Discriminative_Representations_for_CVPR_2024_paper.html",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "把类别相似性和实例差异压进同一 embedding 会产生目标冲突；双空间加 same-class hard confuser loss，尤其能提升单视角细粒度实例 retrieval。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-09",
+      "name": "PiRO / Dual Pose-invariant Embeddings — goal-audit:09 route mechanism",
+      "description": "（Fig. 2–4，Sec. 3）：①共享 VGG-16 backbone 提取每 view 视觉特征；②两个独立 FC heads 生成 category/object single-view embeddings；③两套 single-head self-attention 跨 views 聚合，因不加 positional encoding 而对 view 顺序不敏感；④mean pool 得到两套 multi-view embeddings；⑤object loss 在同类别对象对中找距离最近的跨实例 single-view “confusers”；⑥以 hinge loss 把同对象 single-view 拉向其 multi-view embedding，同时将 confusers 和两个对象的 multi-view embeddings推开；⑦category pose-invariant loss 把同类别不同对象的 multi-view embeddings 拉近；⑧L-Softmax 再分开不同类别，三类损失联合训练但作用于不同空间。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "训练时仍需多视角、类别和 identity labels；不证明单 reference 新身份的开放世界验证、完整当前帧 proposals 或 NONE。三个数据集多为对象居中的规范化视图，和入口场景差异明显。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-09",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:09"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

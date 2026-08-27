@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-riskprop",
+  "kind": "paper",
+  "title": "RiskProp",
+  "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2026/html/Zou_RiskProp_Collision-Anchored_Self-Supervised_Risk_Propagation_For_Early_Accident_Anticipation_CVPR_2026_paper.html",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "只有碰撞帧，没有可信的主观“风险开始”帧",
+  "mechanisms": [
+    {
+      "id": "dtr-dr11",
+      "name": "RiskProp — dtr:DR11 route mechanism",
+      "description": "以 collision anchor 向碰撞前的帧反向传播风险信号；可借鉴事件 onset 弱监督和趋势约束",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "驾驶记录仪事故数据；横穿后离开/用户停步时风险不必单调，不得照搬 monotonic prior"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR11"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

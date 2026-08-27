@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-prior-p0-r05",
+  "item_id": "paper-to-ask-or-not-to-ask",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-prior-p0-r05"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "学习检测 VLN instruction 信息缺失，明确区分“何时问”与“问什么”；用 precision/recall balance 评估过度谨慎和过度自信",
+    "project_application": "未来 clarification trigger 的定义；把 ask/guess 作为 calibration 问题",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "未来 clarification trigger 的定义；把 ask/guess 作为 calibration 问题"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "只解决 when-to-ask，不生成澄清问题；不是入口 grounding 或 BLV interaction 验证"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/goal-copilot/P0_PRIOR_ART_ASSIMILATION_2026-08-21.md",
+      "summary": "Legacy source for goal-prior:P0-R05; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-prior:P0-R05 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-pedestrian-trajectory-forecasting-using-deep-ensembles-under-sensing-unc",
+  "kind": "paper",
+  "title": "Pedestrian Trajectory Forecasting Using Deep Ensembles Under Sensing Uncertainty",
+  "canonical_ref": "https://doi.org/10.1109/tits.2024.3382201",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Propagate tracking covariance and observation availability into aleatoric/epistemic future uncertainty instead of passing point tracks only.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr42",
+      "name": "Pedestrian Trajectory Forecasting Using Deep Ensembles Under Sensing Uncertainty — dtr:DR42 route mechanism",
+      "description": "Propagate tracking covariance and observation availability into aleatoric/epistemic future uncertainty instead of passing point tracks only.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "Benchmark/Kalman sensing uncertainty is not proof that a phone detector exposes trustworthy covariance."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR42"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

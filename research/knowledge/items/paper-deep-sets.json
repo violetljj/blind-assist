@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "id": "paper-deep-sets",
+  "kind": "paper",
+  "title": "Deep Sets",
+  "canonical_ref": "https://proceedings.neurips.cc/paper_files/paper/2017/file/f22e4747da1aa27e363d86d40ff442fe-Paper.pdf",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "论文证明共享元素映射加交换性聚合可以表达一大类 invariant set functions，并给出受限网络层的 equivariance 条件；实验也显示把集合对称性写进结构能消除位置绑定。它没有证明候选特征含 physical-instance identity、没有给开放集绝对阈值或独立 NONE，更不保证有限维网络在候选数量漂移、重复候选和域外分布下仍正确。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-40",
+      "name": "Deep Sets — goal-audit:40 route mechanism",
+      "description": "①每个元素共享同一 φ；②以 commutative sum 得 z=Σφ(x)；③用 ρ(z) 得 invariant 输出；④若有 query/meta 信息，可令 φ(x|q) 条件化；⑤per-candidate 输出用共享 equivariant layer，使输入置换只置换对应 logits；⑥单层必要充分形式为 σ(λIx+γ11ᵀx)，即元素自身加集合和；⑦论文也试 max-pooling 变体，但主表示是 sum。官方 PopStats 与 SetExpansion 代码确有 sum(dim=1)/torch.sum，PointCloud 示例则按任务选 mean/max，说明“交换性聚合”比固定 sum 更一般。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "论文证明共享元素映射加交换性聚合可以表达一大类 invariant set functions，并给出受限网络层的 equivariance 条件；实验也显示把集合对称性写进结构能消除位置绑定。它没有证明候选特征含 physical-instance identity、没有给开放集绝对阈值或独立 NONE，更不保证有限维网络在候选数量漂移、重复候选和域外分布下仍正确。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-40",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:40"
+  ],
+  "links": [
+    {
+      "label": "官方代码",
+      "ref": "https://github.com/manzilzaheer/DeepSets"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

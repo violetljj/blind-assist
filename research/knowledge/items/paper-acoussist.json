@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "id": "paper-acoussist",
+  "kind": "paper",
+  "title": "Acoussist",
+  "canonical_ref": "https://doi.org/10.1145/3432216",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "在无信号灯路口，让参与车辆主动发出近超声 chirp，行人手机估计多辆车的速度、方向和距离，再根据停止距离给出二元危险提示。",
+  "mechanisms": [
+    {
+      "id": "dtr-dr36",
+      "name": "Acoussist — dtr:DR36 route mechanism",
+      "description": "车辆播放 17–19 kHz、500 ms chirp，间隔 125 ms；手机至少双麦、64 kHz 采样。STFT 与 Hough 分离每辆车的时频扫线，扫线斜率估相对速度；对分离后的 LoS 分量做 modified GCC，由双麦时差估方向；相隔 500 ms 的两次测量联立求绝对速度和距离。若车距不大于停车视距加处理延迟距离就告警，其中反应时间取 2.5 s、制动减速度取 11.2 ft/s²，系统尾延迟用 90 分位 220.7 ms。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "它只能看到安装并播放 chirp 的参与车辆；对未参与车辆没有负面观测 authority。实验没有真实过街、不守法司机或拥挤道路，且要求静止持机约 1 秒。高速 MDR 重新上升，总试次分母和置信区间披露不足。若产品把“没收到 chirp”解释成“可以通过”，就是把协议覆盖误写成道路安全。"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "deep-reading",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR36"
+  ],
+  "links": [
+    {
+      "label": "作者全文 PDF",
+      "ref": "https://ranger.uta.edu/~mingli/publications/Acoussist.pdf"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

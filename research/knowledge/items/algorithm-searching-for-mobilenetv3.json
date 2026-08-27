@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "algorithm-searching-for-mobilenetv3",
+  "kind": "algorithm",
+  "title": "Searching for MobileNetV3",
+  "canonical_ref": "https://openaccess.thecvf.com/content_ICCV_2019/papers/Howard_Searching_for_MobileNetV3_ICCV_2019_paper.pdf",
+  "authors": [],
+  "year": 2019,
+  "venue": "",
+  "summary": "MobileNetV3Small plus Lite R-ASPP provides a mobile-oriented lightweight segmentation backbone/decoder candidate.",
+  "mechanisms": [
+    {
+      "id": "idea-mobilenetv3",
+      "name": "Searching for MobileNetV3 — idea:MobileNetV3 route mechanism",
+      "description": "MobileNetV3Small plus Lite R-ASPP provides a mobile-oriented lightweight segmentation backbone/decoder candidate.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "The paper does not establish BlindAssist corridor semantics, event utility, INT8 fidelity on the target phone, BLV user benefit, or safety."
+    }
+  ],
+  "tags": [
+    "idea-archive",
+    "sanpo"
+  ],
+  "aliases": [
+    "idea:MobileNetV3"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

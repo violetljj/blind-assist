@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-rcle-rcle-e5",
+  "item_id": "paper-visual-navigation-using-sparse-optical-flow-and-time-to-transit",
+  "route": "rcle",
+  "mechanism_ids": [
+    "rcle-e5"
+  ],
+  "use_state": "retired",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "从 sparse optical flow 计算 time-to-transit；给出理想化 steering law，并用 ROS/Gazebo 与 Jackal robot 实验。实现使用 pyramidal LK、ORB 与多个 ROI；正文明确 perceived tau 在速度、航向或相机对齐不满足时会失真。",
+    "project_application": "只有在独立运动机制成立后，才可测试 reciprocal expansion / tau 的时间一致性是否优于单 pair expansion；当前不执行。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "只有在独立运动机制成立后，才可测试 reciprocal expansion / tau 的时间一致性是否优于单 pair expansion；当前不执行。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "不能把机器人走廊控制结果外推为视障用户碰撞预警、手机端性能或产品安全。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/rcle/RCLE_PRIOR_MECHANISM_EVIDENCE_MAP_R0_2026-07-28.md",
+      "summary": "Legacy source for rcle:E5; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated rcle:E5 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

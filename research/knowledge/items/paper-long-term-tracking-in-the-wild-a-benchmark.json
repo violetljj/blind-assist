@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-long-term-tracking-in-the-wild-a-benchmark",
+  "kind": "paper",
+  "title": "Long-term Tracking in the Wild: a Benchmark",
+  "canonical_ref": "https://openaccess.thecvf.com/content_ECCV_2018/papers/Efstratios_Gavves_Long-term_Tracking_in_ECCV_2018_paper.pdf",
+  "authors": [],
+  "year": 2018,
+  "venue": "",
+  "summary": "OxUvA 把“目标是否存在”和“存在时位置是否正确”分开计分。",
+  "mechanisms": [
+    {
+      "id": "l10-7",
+      "name": "Long-term Tracking in the Wild: a Benchmark — l10:7 route mechanism",
+      "description": "OxUvA 把“目标是否存在”和“存在时位置是否正确”分开计分。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "这是评测合同，不是算法；首帧框也不提供公开语义身份。"
+    }
+  ],
+  "tags": [
+    "l10",
+    "literature-reserve",
+    "l10-r0"
+  ],
+  "aliases": [
+    "l10:7"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

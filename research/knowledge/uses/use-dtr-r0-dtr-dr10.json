@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr10",
+  "item_id": "paper-stochastic-occupancy-grid-map-prediction-sogmp-sogmp-plus-plus",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr10"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "预测随机未来 occupancy map，以均值与样本方差 costmap 对照 body corridor，而不强制单 ID",
+    "project_application": "预测随机未来 occupancy map，以均值与样本方差 costmap 对照 body corridor，而不强制单 ID",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "预测随机未来 occupancy map，以均值与样本方差 costmap 对照 body corridor，而不强制单 ID"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "机器人传感和控制栈；VAE 样本方差未做风险校准，也没有头戴相机或 BLV 事件证据"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "summary": "Legacy source for dtr:DR10; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR10 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

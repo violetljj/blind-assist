@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-31",
+  "item_id": "paper-nearid-identity-representation-learning-via-near-identity-distractors",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-31"
+  ],
+  "use_state": "rejected",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "① 从 SynCD/Objaverse 多视图身份取得 anchor 与同身份跨背景图；② 以文本条件生成相近但不同实例；③ 用 SDXL、FLUX.1、Qwen-Image、PowerPaint 等把 distractor 精确 inpaint 到 anchor 背景，构造“背景相同、身份不同”的反捷径负样本；④ 冻结 SigLIP2 SO400M patch14-384；⑤ 只训练约 15M 参数的 MAP projection head；⑥ L_disc 以多正样本 InfoNCE 拉近同身份，并把该 anchor 的 NearID distractors 放入分母，同时保留其他 positives 以防塌缩；⑦ L_rank 用 softplus/log-sum-exp 约束 NearID distractor 的相似度高于普通 batch negative，显式形成“同身份 > 近身份 > 泛负样本”的序；⑧ L_NearID=L_disc+αL_rank（τ=.07, α=.5），配合 role-aware foreground masking，使模型不能稳定利用背景。",
+    "project_application": "stable distractor：正中问题，可作为候选独立 identity feature；顺序偏差：逐候选单独编码天然不依赖候选数组次序，但后续 winner/margin 聚合仍须独立审计；NONE：完全没有，需要绝对阈值而不能只用 top-1 或 top1-top2。reference mask 可用于前景裁剪/抑制背景，但不是原生输入。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "冻结官方 encoder，不微调：用 reference mask 生成一个前景裁剪，逐个独立编码每个 current candidate；预先固定绝对 similarity 阈值与 top1 margin；在真实同类 stable distractor、候选列表全排列、以及 target-absent 三组上测试。必要条件是每个候选分数在排列前后逐位一致、真实目标 margin 显著高于稳定干扰物、全 absent 的 false accept 低于冻结门槛；任一失败即否决“直接 identity authority”，不允许事后调阈救援。"
+  },
+  "evaluation": {
+    "reproduction_status": "partial",
+    "verdict": "negative",
+    "setup": "A frozen NearID-style DINOv2-S projection arm on a source-disjoint CORe50 protocol; the official NearID SigLIP2/MAP checkpoint was not run.",
+    "effect": "The arm rescued 4 baseline errors but caused 17 collateral regressions, so this specific adaptation was sealed and rejected.",
+    "metrics": [
+      "rescue=4",
+      "collateral=17",
+      "control_retention=5.6%",
+      "same_instance_recall=3.7%"
+    ],
+    "claim_boundary": "This rejects only the frozen DINOv2-S projection-head arm and its protocol. It does not reproduce or falsify the official NearID architecture, every hard-negative method, physical-instance identity, NONE calibration, user benefit, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-mainline-additional-10-deep-reading-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:31; imported without changing its recorded evidence boundary."
+    },
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/goal-copilot/NEAR_IDENTITY_HARD_NEGATIVE_UNARY_V0_RESULT_2026-08-24.md",
+      "summary": "Frozen NearID-style unary arm result and sealed negative verdict."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:31 from the scattered legacy knowledge source; no execution authority was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Attached the later frozen NearID-style unary result: negative with severe collateral; official NearID remained untested."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-safety-oriented-pedestrian-occupancy-forecasting",
+  "kind": "paper",
+  "title": "Safety-Oriented Pedestrian Occupancy Forecasting",
+  "canonical_ref": "https://doi.org/10.1109/iros51168.2021.9636691",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Combine per-track futures with detector-independent dense scene occupancy, so confidence filtering or NMS cannot silently erase every future pedestrian cell.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr41",
+      "name": "Safety-Oriented Pedestrian Occupancy Forecasting — dtr:DR41 route mechanism",
+      "description": "Combine per-track futures with detector-independent dense scene occupancy, so confidence filtering or NMS cannot silently erase every future pedestrian cell.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "LiDAR and HD-map autonomous-driving evidence; no wearable RGB, BLV outcome, or safety authority."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR41"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-reverie",
+  "kind": "paper",
+  "title": "REVERIE",
+  "canonical_ref": "https://arxiv.org/abs/1904.10151",
+  "authors": [],
+  "year": 2019,
+  "venue": "",
+  "summary": "高层自然语言 → 未见室内环境导航 → remote referred object grounding；布局/目的地先验帮助搜索",
+  "mechanisms": [
+    {
+      "id": "goal-prior-p0-r04a",
+      "name": "REVERIE — goal-prior:P0-R04a route mechanism",
+      "description": "高层自然语言 → 未见室内环境导航 → remote referred object grounding；布局/目的地先验帮助搜索",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "Matterport3D 离散室内图与标注 object bbox；通常给定可判定 referent，不覆盖 BLV 街景、入口角色歧义或安全引导"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "prior-art",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-prior:P0-R04a"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

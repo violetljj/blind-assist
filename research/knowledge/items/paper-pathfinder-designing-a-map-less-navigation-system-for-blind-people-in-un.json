@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-pathfinder-designing-a-map-less-navigation-system-for-blind-people-in-un",
+  "kind": "paper",
+  "title": "PathFinder: Designing a Map-less Navigation System for Blind People in Unfamiliar Buildings",
+  "canonical_ref": "https://wotipati.github.io/projects/other_papers/CHI2023_PathFinder/CHI2023_PathFinder_preprint.pdf",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "机器人检测路口、识别标识并向盲人传达，在七名盲人参与者中评估地图外陌生建筑导航体验。",
+  "mechanisms": [
+    {
+      "id": "l10-20",
+      "name": "PathFinder: Designing a Map-less Navigation System for Blind People in Unfamiliar Buildings — l10:20 route mechanism",
+      "description": "机器人检测路口、识别标识并向盲人传达，在七名盲人参与者中评估地图外陌生建筑导航体验。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "原型/用户体验证据；没有精确入口定位、metric arrival 或独立 completion truth。"
+    }
+  ],
+  "tags": [
+    "l10",
+    "literature-reserve",
+    "l10-r0"
+  ],
+  "aliases": [
+    "l10:20"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-sanpo-idea-mobilenetv3",
+  "item_id": "algorithm-searching-for-mobilenetv3",
+  "route": "sanpo",
+  "mechanism_ids": [
+    "idea-mobilenetv3"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "component",
+  "usage": {
+    "source_scope": "MobileNetV3Small plus Lite R-ASPP provides a mobile-oriented lightweight segmentation backbone/decoder candidate.",
+    "project_application": "Retain as a bounded four-class SANPO segmentation candidate only after event and data gates close; compare on event metrics and device latency rather than paper accuracy alone.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Retain as a bounded four-class SANPO segmentation candidate only after event and data gates close; compare on event metrics and device latency rather than paper accuracy alone."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The paper does not establish BlindAssist corridor semantics, event utility, INT8 fidelity on the target phone, BLV user benefit, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/history/idea/IDEA_ARCHIVE_THROUGH_2026-07-28.md",
+      "summary": "Legacy source for idea:MobileNetV3; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated idea:MobileNetV3 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

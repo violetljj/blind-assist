@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-towards-accurate-video-text-spotting-with-text-wise-semantic-reasoning",
+  "kind": "paper",
+  "title": "Towards Accurate Video Text Spotting with Text-wise Semantic Reasoning",
+  "canonical_ref": "https://www.ijcai.org/proceedings/2023/206",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "VLSpotter把文字专用超分、词内语言修正与同帧文字间语义推理组合起来。",
+  "mechanisms": [
+    {
+      "id": "l10-5",
+      "name": "Towards Accurate Video Text Spotting with Text-wise Semantic Reasoning — l10:5 route mechanism",
+      "description": "VLSpotter把文字专用超分、词内语言修正与同帧文字间语义推理组合起来。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "语言/场景语义可“纠正”掉关键房间号；不能直接作为身份权威。"
+    }
+  ],
+  "tags": [
+    "l10",
+    "literature-reserve",
+    "l10-r0"
+  ],
+  "aliases": [
+    "l10:5"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

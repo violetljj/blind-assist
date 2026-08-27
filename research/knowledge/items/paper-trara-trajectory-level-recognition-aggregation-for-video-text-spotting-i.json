@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-trara-trajectory-level-recognition-aggregation-for-video-text-spotting-i",
+  "kind": "paper",
+  "title": "TraRA: Trajectory-level Recognition Aggregation for Video Text Spotting in Urban Surveillance",
+  "canonical_ref": "https://arxiv.org/abs/2606.07161",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "先按视觉/时间一致性切分错误轨迹，再用跨帧碎片与语言上下文重建完整词。",
+  "mechanisms": [
+    {
+      "id": "l10-4",
+      "name": "TraRA: Trajectory-level Recognition Aggregation for Video Text Spotting in Urban Surveillance — l10:4 route mechanism",
+      "description": "先按视觉/时间一致性切分错误轨迹，再用跨帧碎片与语言上下文重建完整词。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "新预印本且依赖上游轨迹；VLM 聚合可能把不可读证据补成看似合理的错误文本。"
+    }
+  ],
+  "tags": [
+    "l10",
+    "literature-reserve",
+    "l10-r0"
+  ],
+  "aliases": [
+    "l10:4"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

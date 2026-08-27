@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-to-ask-or-not-to-ask",
+  "kind": "paper",
+  "title": "To Ask or Not to Ask?",
+  "canonical_ref": "https://openaccess.thecvf.com/content/WACV2025/html/Abraham_To_Ask_or_Not_to_Ask_Detecting_Absence_of_Information_WACV_2025_paper.html",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "学习检测 VLN instruction 信息缺失，明确区分“何时问”与“问什么”；用 precision/recall balance 评估过度谨慎和过度自信",
+  "mechanisms": [
+    {
+      "id": "goal-prior-p0-r05",
+      "name": "To Ask or Not to Ask? — goal-prior:P0-R05 route mechanism",
+      "description": "学习检测 VLN instruction 信息缺失，明确区分“何时问”与“问什么”；用 precision/recall balance 评估过度谨慎和过度自信",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "只解决 when-to-ask，不生成澄清问题；不是入口 grounding 或 BLV interaction 验证"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "prior-art",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-prior:P0-R05"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

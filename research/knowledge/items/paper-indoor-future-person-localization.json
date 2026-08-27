@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-indoor-future-person-localization",
+  "kind": "paper",
+  "title": "Indoor Future Person Localization",
+  "canonical_ref": "https://arxiv.org/abs/2103.04019",
+  "authors": [],
+  "year": 2021,
+  "venue": "",
+  "summary": "从胸前第一视角视频的过去 1 秒，预测画面中一个目标行人未来 1 秒的二维框和中心轨迹，并区分 toward、away、across、still。它预测的是他人相对佩戴者的未来位置，因此比重复预测佩戴者本人轨迹的 TISS 更有新增价值。",
+  "mechanisms": [
+    {
+      "id": "dtr-dr35",
+      "name": "Indoor Future Person Localization — dtr:DR35 route mechanism",
+      "description": "输入为过去 10 帧的人工目标框、OpenPose 25 点姿态与 GoPro 六轴 IMU；2 层 LSTM encoder-decoder，hidden 384、dropout 0.5，逐步输出未来框。训练用 L2、Adam、100 epoch 和 0.5 teacher forcing ratio。IMU 的作用是给网络一个 ego-motion 线索，但论文没有显式几何补偿或独立姿态标定。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "过去目标框是人工 oracle，绕开真实部署中检测、关联和 ID swap；无碰撞、身体走廊、TTC 或 event truth。单目标、确定性 L2 无法表达多人和多模态急转。样本高度重叠且约 80% 为 away，最关键的 across 压力层证据最少。"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "deep-reading",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR35"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

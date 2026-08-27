@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-scene-informer-anchor-based-occlusion-inference-and-trajectory-predictio",
+  "kind": "paper",
+  "title": "Scene Informer: Anchor-based Occlusion Inference and Trajectory Prediction in Partially Observable Environments",
+  "canonical_ref": "https://doi.org/10.1109/icra57147.2024.10611060",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Query only occluded regions that can intersect the planned route, while separating hidden-agent existence probability from its conditional future motion.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr44",
+      "name": "Scene Informer: Anchor-based Occlusion Inference and Trajectory Prediction in Partially Observable Environments — dtr:DR44 route mechanism",
+      "description": "Query only occluded regions that can intersect the planned route, while separating hidden-agent existence probability from its conditional future motion.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "Simulated occlusions on autonomous-driving representations; it cannot establish an unseen person from wearable RGB."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR44"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

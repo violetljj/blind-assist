@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr52",
+  "item_id": "paper-scenario-based-trajectory-optimization-in-uncertain-dynamic-environments",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr52"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Convert arbitrary obstacle distributions into sampled collision scenarios and geometrically prune only route-irrelevant samples for real-time computation.",
+    "project_application": "Treat pairwise velocities as scenarios; exhaustive and pruned evaluation must recall the same positive events while reducing runtime.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Treat pairwise velocities as scenarios; exhaustive and pruned evaluation must recall the same positive events while reducing runtime."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "It bounds marginal risk per time step, not automatically the joint probability of a complete DTR event."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/dtr-r0/LITERATURE_RESERVE_2026-08-27.md",
+      "summary": "Legacy source for dtr:DR52; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR52 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

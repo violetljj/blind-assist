@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-prior-p0-r09",
+  "item_id": "tool-project-guideline",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-prior-p0-r09"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "开源 Android/C++：ARCore pose、perception→world map、多帧聚合、obstacle map、control、空间音频、tracking loss→STOP、simulator/replay",
+    "project_application": "目标锁定后的 runtime 架构与 fail-closed STOP；世界坐标聚合、控制/反馈解耦、仿真与日志",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "目标锁定后的 runtime 架构与 fail-closed STOP；世界坐标聚合、控制/反馈解耦、仿真与日志"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "受控紫色 guideline、特定设备/佩戴方式且要求 sighted spotter；任务不是目标发现或 referential grounding"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/goal-copilot/P0_PRIOR_ART_ASSIMILATION_2026-08-21.md",
+      "summary": "Legacy source for goal-prior:P0-R09; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-prior:P0-R09 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

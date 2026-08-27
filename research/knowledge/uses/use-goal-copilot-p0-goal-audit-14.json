@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-14",
+  "item_id": "paper-persam-persam-f-direct-component",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-14"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "①冻结 SAM 编码 reference/test；②取 reference mask 内所有特征，与 test pixels 做 cosine similarity 并平均成 confidence map；③最大/最小点作为正/负 point prompt；④把 confidence map 加进每层 token-to-image cross-attention；⑤mask-pool reference foreground 得 target semantic embedding，注入 prompt/mask tokens；⑥级联后处理，用首轮 mask/box 再提示 SAM；⑦PerSAM-F 生成 SAM 三尺度 masks；⑧仅学习两个权重，第三权重为 1-w1-w2，加权输出（Fig.4–6、§3.2–3.3）。 4. 训练/依赖：PerSAM 零训练；PerSAM-F 在唯一 reference mask 上冻结整个 SAM，仅调 2 参数，论文报告单 A100 约 10 秒。需要 SAM image encoder/decoder；不含 no-match head。 5. 实验证据：PerSeg 有 40 个对象，每个 5–7 图，固定一对作 reference。Table 1：PerSAM 89.3 mIoU/71.7 bIoU，PerSAM-F 95.3/77.9，SegGPT 94.3/76.5。Table 4 从 positive prior 69.1，加 negative 72.5、post-refine 83.9、guided attention 85.8、semantic prompt 89.3、scale tuning 95.3；正文把第一增量写成 +3.6，而表中实际是 +3.4，应以表为准。Table 6 的 box reference 仍有 PerSAM-F 94.9。 6. 实际证明：reference-conditioned confidence map 能有效自动提示 SAM；尺度歧义可用极小参数适配。 7. 未证明：PerSeg 小且没有专门的同类竞争/目标缺席协议；论文虽展示“多个相似对象”定性图，但没有 physical-instance confusion matrix、NONE 或 swap 测试。平均所有 foreground part similarities 也可能点亮同类 analogous object。 8. 阅读判断：最强 idea 是把 personalization 变成完整图上的 spatial evidence，而非候选 forced-choice；最弱是单一正/负极值点对错误峰非常敏感。隐藏失败是错实例先赢 confidence map，后续 SAM 与 refinement 只会把错误 mask 做得更漂亮。 9. BlindAssist 映射：E 的 4 次 same-class error 正好检验论文未覆盖的边界；全图推理可天然避开 A/B 槽位偏差，但 2/4 stable distractor 可能在其 attention/refinement 中被放大。 10. 最小适配实验：只跑 training-free PerSAM；reference mask→current full-frame mask，再与冻结候选做 overlap assignment。输出 SUPPORT_MASK + candidate_overlap + peak_margin，不得直接升级为 TARGET；低于预冻 gate 输出 NO_SUPPORT。fresh D 一次跑完；若 mask 落在 distractor 的比率不低于现有 4/21，或 candidate 枚举顺序影响 assignment，即停止。 11. Verdict：DIRECT_COMPONENT，仅限 reference-conditioned mask/support proposal，不是身份权威。",
+    "project_application": "E 的 4 次 same-class error 正好检验论文未覆盖的边界；全图推理可天然避开 A/B 槽位偏差，但 2/4 stable distractor 可能在其 attention/refinement 中被放大。 10. 最小适配实验：只跑 training-free PerSAM；reference mask→current full-frame mask，再与冻结候选做 overlap assignment。输出 SUPPORT_MASK + candidate_overlap + peak_margin，不得直接升级为 TARGET；低于预冻 gate 输出 NO_SUPPORT。fresh D 一次跑完；若 mask 落在 distractor 的比率不低于现有 4/21，或 candidate 枚举顺序影响 assignment，即停止。 11. Verdict：DIRECT_COMPONENT，仅限 reference-conditioned mask/support proposal，不是身份权威。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "E 的 4 次 same-class error 正好检验论文未覆盖的边界；全图推理可天然避开 A/B 槽位偏差，但 2/4 stable distractor 可能在其 attention/refinement 中被放大。 10. 最小适配实验：只跑 training-free PerSAM；reference mask→current full-frame mask，再与冻结候选做 overlap assignment。输出 SUPPORT_MASK + candidate_overlap + peak_margin，不得直接升级为 TARGET；低于预冻 gate 输出 NO_SUPPORT。fresh D 一次跑完；若 mask 落在 distractor 的比率不低于现有 4/21，或 candidate 枚举顺序影响 assignment，即停止。 11. Verdict：DIRECT_COMPONENT，仅限 reference-conditioned mask/support proposal，不是身份权威。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "PerSeg 小且没有专门的同类竞争/目标缺席协议；论文虽展示“多个相似对象”定性图，但没有 physical-instance confusion matrix、NONE 或 swap 测试。平均所有 foreground part similarities 也可能点亮同类 analogous object。 8. 阅读判断：最强 idea 是把 personalization 变成完整图上的 spatial evidence，而非候选 forced-choice；最弱是单一正/负极值点对错误峰非常敏感。隐藏失败是错实例先赢 confidence map，后续 SAM 与 refinement 只会把错误 mask 做得更漂亮。 9. BlindAssist 映射：E 的 4 次 same-class error 正好检验论文未覆盖的边界；全图推理可天然避开 A/B 槽位偏差，但 2/4 stable distractor 可能在其 attention/refinement 中被放大。 10. 最小适配实验：只跑 training-free PerSAM；reference mask→current full-frame mask，再与冻结候选做 overlap assignment。输出 SUPPORT_MASK + candidate_overlap + peak_margin，不得直接升级为 TARGET；低于预冻 gate 输出 NO_SUPPORT。fresh D 一次跑完；若 mask 落在 distractor 的比率不低于现有 4/21，或 candidate 枚举顺序影响 assignment，即停止。 11. Verdict：DIRECT_COMPONENT，仅限 reference-conditioned mask/support proposal，不是身份权威。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:14; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:14 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

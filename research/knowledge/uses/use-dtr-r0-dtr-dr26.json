@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr26",
+  "item_id": "dataset-revel",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr26"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "RGB + event + LiDAR + 1 kHz IMU + Vicon 人/传感器 pose；可做跨模态检测、ego compensation 和 source-motion 压力",
+    "project_application": "RGB + event + LiDAR + 1 kHz IMU + Vicon 人/传感器 pose；可做跨模态检测、ego compensation 和 source-motion 压力",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "RGB + event + LiDAR + 1 kHz IMU + Vicon 人/传感器 pose；可做跨模态检测、ego compensation 和 source-motion 压力"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "约 14.1 分钟、2 个行人、室内 arbitrary Vicon frame；没有 body corridor、closest approach 或助盲 event truth"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "summary": "Legacy source for dtr:DR26; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR26 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

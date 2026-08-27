@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-detect-and-approach-close-range-navigation-support-for-people-with-blind",
+  "kind": "paper",
+  "title": "Detect and Approach: Close-Range Navigation Support for People with Blindness and Low Vision",
+  "canonical_ref": "https://arxiv.org/abs/2208.08477",
+  "authors": [],
+  "year": 2022,
+  "venue": "",
+  "summary": "单目视频先做目标 3D 定位，再持续估计用户轨迹并修正靠近路径。",
+  "mechanisms": [
+    {
+      "id": "l10-19",
+      "name": "Detect and Approach: Close-Range Navigation Support for People with Blindness and Low Vision — l10:19 route mechanism",
+      "description": "单目视频先做目标 3D 定位，再持续估计用户轨迹并修正靠近路径。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "受控目标实验；没有可读标牌身份权威、入口 affordance 或用户完成研究。"
+    }
+  ],
+  "tags": [
+    "l10",
+    "literature-reserve",
+    "l10-r0"
+  ],
+  "aliases": [
+    "l10:19"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

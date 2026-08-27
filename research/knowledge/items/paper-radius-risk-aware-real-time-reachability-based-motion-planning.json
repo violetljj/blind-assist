@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-radius-risk-aware-real-time-reachability-based-motion-planning",
+  "kind": "paper",
+  "title": "RADIUS: Risk-Aware, Real-Time, Reachability-Based Motion Planning",
+  "canonical_ref": "https://www.roboticsproceedings.org/rss19/p083.html",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Combine offline reachable sets with an online closed-form over-approximation of collision risk for arbitrary obstacle-position distributions.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr53",
+      "name": "RADIUS: Risk-Aware, Real-Time, Reachability-Based Motion Planning — dtr:DR53 route mechanism",
+      "description": "Combine offline reachable sets with an online closed-form over-approximation of collision risk for arbitrary obstacle-position distributions.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "Autonomous-driving simulation and hardware with modeled distributions; no BlindAssist calibration or safety transfer."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR53"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

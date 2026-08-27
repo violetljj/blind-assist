@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr27",
+  "item_id": "dataset-dynamicstereo-dynamic-replica",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr27"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "动态视频的 depth、camera pose、mask、flow 和长轨迹；作为动态深度/运动 residual 压力源",
+    "project_application": "动态视频的 depth、camera pose、mask、flow 和长轨迹；作为动态深度/运动 residual 压力源",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "动态视频的 depth、camera pose、mask、flow 和长轨迹；作为动态深度/运动 residual 压力源"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "合成、stereo、CC BY-NC 4.0，解压约 2.2 TB；不是当前手机单目输入或真实风险事件"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "summary": "Legacy source for dtr:DR27; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR27 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

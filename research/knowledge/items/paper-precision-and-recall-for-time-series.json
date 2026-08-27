@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-precision-and-recall-for-time-series",
+  "kind": "paper",
+  "title": "Precision and Recall for Time Series",
+  "canonical_ref": "https://proceedings.neurips.cc/paper/2018/hash/8f468c873a32bb0619eaeb2050ba45d1-Abstract.html",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Range-based precision/recall separates existence, overlap, position bias, and fragmentation/cardinality penalties.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr60",
+      "name": "Precision and Recall for Time Series — dtr:DR60 route mechanism",
+      "description": "Range-based precision/recall separates existence, overlap, position bias, and fragmentation/cardinality penalties.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "Generic evaluator whose configurable weights can hide failures if selected after observing results."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR60"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

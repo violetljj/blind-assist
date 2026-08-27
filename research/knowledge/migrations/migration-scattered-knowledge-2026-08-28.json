@@ -1,0 +1,1979 @@
+{
+  "schema_version": 1,
+  "id": "migration-scattered-knowledge-2026-08-28",
+  "created_at": "2026-08-28",
+  "scope": "Curated literature, algorithm-mechanism, dataset, tool, and exemplary-project notes that previously lived in route documents, archive-tag documents, or hash-recorded local deep-reading reports.",
+  "source_groups": [
+    {
+      "id": "dtr-01-30",
+      "source_ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "source_sha256": "a90b7884a0022052ef966a408c3579e77a32f7714e515486ee6a78060f51b793",
+      "expected_entries": 31,
+      "mappings": [
+        {
+          "legacy_id": "dtr:DR01a",
+          "item_id": "paper-collision-point-ttc-2015",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr01a"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR01b",
+          "item_id": "paper-2021-dtr-dr01b",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr01b"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR02",
+          "item_id": "paper-bbeep",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr02"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR03",
+          "item_id": "project-heads-up",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr03"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR04",
+          "item_id": "paper-arawareness-araware",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr04"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR05",
+          "item_id": "paper-mind",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr05"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR06",
+          "item_id": "paper-corridor-walker",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr06"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR07",
+          "item_id": "paper-wearable-obstacle-avoidance-with-cross-modal-learning",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr07"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR08",
+          "item_id": "tool-project-guideline",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr08"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR09",
+          "item_id": "paper-binary-ttc-a-temporal-geofence",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr09"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR10",
+          "item_id": "paper-stochastic-occupancy-grid-map-prediction-sogmp-sogmp-plus-plus",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr10"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR11",
+          "item_id": "paper-riskprop",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr11"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR12",
+          "item_id": "project-conformal-risk-tube-prediction",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr12"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR13",
+          "item_id": "dataset-pie-scenario-evaluation",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr13"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR14",
+          "item_id": "dataset-riskbench",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr14"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR15",
+          "item_id": "paper-of-vo-optical-flow-velocity-obstacle",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr15"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR16",
+          "item_id": "paper-detection-of-fast-incoming-objects-with-a-moving-camera",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr16"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR17",
+          "item_id": "paper-selectivenet",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr17"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR18",
+          "item_id": "paper-perceive-with-confidence",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr18"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR19",
+          "item_id": "paper-monitoring-and-adapting-the-physical-state-of-a-camera",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr19"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR20",
+          "item_id": "paper-gshi",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr20"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR21",
+          "item_id": "paper-evidence-of-absence",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr21"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR22",
+          "item_id": "paper-indoor-imminent-danger-detection-with-ground-segmentation",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr22"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR23",
+          "item_id": "paper-stereo-motion-drop-off-detection",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr23"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR24",
+          "item_id": "dataset-jrdb-family",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr24"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR25",
+          "item_id": "dataset-aria-digital-twin-project-aria-tools",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr25"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR26",
+          "item_id": "dataset-revel",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr26"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR27",
+          "item_id": "dataset-dynamicstereo-dynamic-replica",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr27"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR28",
+          "item_id": "dataset-spring-robustspring",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr28"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR29",
+          "item_id": "dataset-egotraj",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr29"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR30",
+          "item_id": "tool-open-source-soundscape",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr30"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        }
+      ]
+    },
+    {
+      "id": "dtr-31-40",
+      "source_ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/dynamic-travel-risk/DYNAMIC_TRAVEL_RISK_ADDITIONAL_10_DEEP_READING_2026-08-24.md",
+      "source_sha256": "3ceff303b936e1b8ce1011ba6bb9c6840ef7459489721be73877cc4077e37c70",
+      "expected_entries": 10,
+      "mappings": [
+        {
+          "legacy_id": "dtr:DR31",
+          "item_id": "paper-copilot",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr31"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR32",
+          "item_id": "paper-probabilistic-collision-risk",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr32"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR33",
+          "item_id": "paper-simplettc",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr33"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR34",
+          "item_id": "paper-high-level-information-fusion",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr34"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR35",
+          "item_id": "paper-indoor-future-person-localization",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr35"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR36",
+          "item_id": "paper-acoussist",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr36"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR37",
+          "item_id": "paper-guidetouch",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr37"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR38",
+          "item_id": "paper-guidance-ssd",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr38"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR39",
+          "item_id": "paper-vehicle-surge-detection",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr39"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR40",
+          "item_id": "paper-sighted-by-default-via-agent",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr40"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        }
+      ]
+    },
+    {
+      "id": "dtr-41-60",
+      "source_ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/dtr-r0/LITERATURE_RESERVE_2026-08-27.md",
+      "source_sha256": "d8a2b3fcb5ea12dbae2dbdfb0cc8d2387316e679227dae2ab1c3461ea9de5f78",
+      "expected_entries": 20,
+      "mappings": [
+        {
+          "legacy_id": "dtr:DR41",
+          "item_id": "paper-safety-oriented-pedestrian-occupancy-forecasting",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr41"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR42",
+          "item_id": "paper-pedestrian-trajectory-forecasting-using-deep-ensembles-under-sensing-unc",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr42"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR43",
+          "item_id": "paper-joint-out-of-distribution-detection-and-uncertainty-estimation-for-traje",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr43"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR44",
+          "item_id": "paper-scene-informer-anchor-based-occlusion-inference-and-trajectory-predictio",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr44"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR45",
+          "item_id": "paper-uncovering-missing-pattern-2023",
+          "use_ids": [
+            "use-dtr-r0-missingness-aware-forecast"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR46",
+          "item_id": "paper-occupancy-flow-fields-for-motion-forecasting-in-autonomous-driving",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr46"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR47",
+          "item_id": "paper-trajectron-plus-plus-dynamically-feasible-trajectory-forecasting-with-he",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr47"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR48",
+          "item_id": "paper-reliable-probabilistic-human-trajectory-prediction-for-autonomous-applic",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr48"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR49",
+          "item_id": "paper-scope-stochastic-cartographic-occupancy-prediction-engine-for-uncertaint",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr49"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR50",
+          "item_id": "paper-online-update-of-safety-assurances-using-confidence-based-predictions",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr50"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR51",
+          "item_id": "paper-optimal-alarms-for-vehicular-collision-detection",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr51"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR52",
+          "item_id": "paper-scenario-based-trajectory-optimization-in-uncertain-dynamic-environments",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr52"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR53",
+          "item_id": "paper-radius-risk-aware-real-time-reachability-based-motion-planning",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr53"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR54",
+          "item_id": "paper-integrating-predictive-motion-uncertainties-with-distributionally-robust",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr54"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR55",
+          "item_id": "paper-a-generalized-continuous-collision-detection-framework-of-polynomial-tra",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr55"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR56",
+          "item_id": "paper-distance-and-collision-probability-estimation-from-gaussian-surface-mode",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr56"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR57",
+          "item_id": "paper-robo-centric-esdf-a-fast-and-accurate-whole-body-collision-evaluation-to",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr57"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR58",
+          "item_id": "paper-ovpc-mesh-3d-free-space-representation-for-local-ground-vehicle-navigati",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr58"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR59",
+          "item_id": "paper-evaluation-of-trajectory-distribution-predictions-with-energy-score",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr59"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "dtr:DR60",
+          "item_id": "paper-precision-and-recall-for-time-series",
+          "use_ids": [
+            "use-dtr-r0-dtr-dr60"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        }
+      ]
+    },
+    {
+      "id": "l10-01-20",
+      "source_ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/l10-r0/LITERATURE_RESERVE_20_2026-08-27.md",
+      "source_sha256": "7863992730d7dc29c79b15cb0111fd83f072ab05e0340769e56f08b2a8dd71b2",
+      "expected_entries": 20,
+      "mappings": [
+        {
+          "legacy_id": "l10:1",
+          "item_id": "paper-deepsolo-2023",
+          "use_ids": [
+            "use-l10-r0-deepsolo-word-geometry"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:2",
+          "item_id": "paper-character-region-awareness-for-text-detection",
+          "use_ids": [
+            "use-l10-r0-l10-2"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:3",
+          "item_id": "paper-conformal-predictors-for-efficient-video-text-spotting",
+          "use_ids": [
+            "use-l10-r0-l10-3"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:4",
+          "item_id": "paper-trara-trajectory-level-recognition-aggregation-for-video-text-spotting-i",
+          "use_ids": [
+            "use-l10-r0-l10-4"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:5",
+          "item_id": "paper-towards-accurate-video-text-spotting-with-text-wise-semantic-reasoning",
+          "use_ids": [
+            "use-l10-r0-l10-5"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:6",
+          "item_id": "paper-on-calibration-of-scene-text-recognition-models",
+          "use_ids": [
+            "use-l10-r0-l10-6"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:7",
+          "item_id": "paper-long-term-tracking-in-the-wild-a-benchmark",
+          "use_ids": [
+            "use-l10-r0-l10-7"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:8",
+          "item_id": "paper-find-first-track-next-decoupling-identification-and-propagation-in-refer",
+          "use_ids": [
+            "use-l10-r0-l10-8"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:9",
+          "item_id": "paper-active-text-perception-for-mobile-robots",
+          "use_ids": [
+            "use-l10-r0-l10-9"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:10",
+          "item_id": "paper-signage-aware-exploration-in-open-world-using-venue-maps",
+          "use_ids": [
+            "use-l10-r0-l10-10"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:11",
+          "item_id": "paper-next-best-view-for-text-detection-and-recognition-in-port-monitoring-unm",
+          "use_ids": [
+            "use-l10-r0-l10-11"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:12",
+          "item_id": "paper-signscene-visual-sign-grounding-for-mapless-navigation",
+          "use_ids": [
+            "use-l10-r0-l10-12"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:13",
+          "item_id": "paper-sign-language-towards-sign-understanding-for-robot-autonomy",
+          "use_ids": [
+            "use-l10-r0-l10-13"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:14",
+          "item_id": "paper-textinplace-indoor-visual-place-recognition-in-repetitive-structures-wit",
+          "use_ids": [
+            "use-l10-r0-l10-14"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:15",
+          "item_id": "paper-textslam-visual-slam-with-semantic-planar-text-features",
+          "use_ids": [
+            "use-l10-r0-l10-15"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:16",
+          "item_id": "paper-from-region-arrival-to-instance-level-grounding-in-vision-and-language-n",
+          "use_ids": [
+            "use-l10-r0-l10-16"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:17",
+          "item_id": "paper-aim-my-robot-precision-local-navigation-to-any-object",
+          "use_ids": [
+            "use-l10-r0-l10-17"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:18",
+          "item_id": "paper-closing-the-gap-designing-for-the-last-few-meters-wayfinding-problem-for",
+          "use_ids": [
+            "use-l10-r0-l10-18"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:19",
+          "item_id": "paper-detect-and-approach-close-range-navigation-support-for-people-with-blind",
+          "use_ids": [
+            "use-l10-r0-l10-19"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "l10:20",
+          "item_id": "paper-pathfinder-designing-a-map-less-navigation-system-for-blind-people-in-un",
+          "use_ids": [
+            "use-l10-r0-l10-20"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        }
+      ]
+    },
+    {
+      "id": "ustrf-p01-p13",
+      "source_ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/ustrf-sc/USTRF_FRONTIER_PAPER_GUIDE_2026-07-22.md",
+      "source_sha256": "a8a72b3a8722d75d4cdd1ee73fd076652934bc61aa344aaa6bfa5f7299345c4b",
+      "expected_entries": 13,
+      "mappings": [
+        {
+          "legacy_id": "ustrf:P01",
+          "item_id": "paper-depth-anything-v2",
+          "use_ids": [
+            "use-ustrf-sc-ustrf-p01"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "ustrf:P02",
+          "item_id": "paper-video-depth-anything",
+          "use_ids": [
+            "use-ustrf-sc-ustrf-p02"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "ustrf:P03",
+          "item_id": "paper-pathfinder",
+          "use_ids": [
+            "use-ustrf-sc-ustrf-p03"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "ustrf:P04",
+          "item_id": "paper-bytetrack",
+          "use_ids": [
+            "use-ustrf-sc-ustrf-p04"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "ustrf:P05",
+          "item_id": "paper-oc-sort",
+          "use_ids": [
+            "use-ustrf-sc-ustrf-p05"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "ustrf:P06",
+          "item_id": "paper-wearable-steering-assistance",
+          "use_ids": [
+            "use-ustrf-sc-ustrf-p06"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "ustrf:P07",
+          "item_id": "paper-yoloe",
+          "use_ids": [
+            "use-ustrf-sc-ustrf-p07"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "ustrf:P08",
+          "item_id": "paper-walkvlm",
+          "use_ids": [
+            "use-ustrf-sc-ustrf-p08"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "ustrf:P09",
+          "item_id": "paper-vlm-navigation-blv-evaluation",
+          "use_ids": [
+            "use-ustrf-sc-ustrf-p09"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "ustrf:P10",
+          "item_id": "paper-vl-guide-blv-evaluation",
+          "use_ids": [
+            "use-ustrf-sc-ustrf-p10"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "ustrf:P11",
+          "item_id": "paper-human-centred-multimodal-wearable",
+          "use_ids": [
+            "use-ustrf-sc-ustrf-p11"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "ustrf:P12",
+          "item_id": "paper-guidetouch",
+          "use_ids": [
+            "use-ustrf-sc-ustrf-p12"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "ustrf:P13",
+          "item_id": "paper-sight-guide",
+          "use_ids": [
+            "use-ustrf-sc-ustrf-p13"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        }
+      ]
+    },
+    {
+      "id": "goal-prior-art",
+      "source_ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/goal-copilot/P0_PRIOR_ART_ASSIMILATION_2026-08-21.md",
+      "source_sha256": "24713449c7a2425f3abca2c6740fdd75064bb8fd23b3478f1cc49838800ae264",
+      "expected_entries": 12,
+      "mappings": [
+        {
+          "legacy_id": "goal-prior:P0-R01",
+          "item_id": "paper-closing-the-gap-designing-for-the-last-few-meters-wayfinding-problem-for",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-prior-p0-r01"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-prior:P0-R02",
+          "item_id": "paper-navinote",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-prior-p0-r02"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-prior:P0-R03a",
+          "item_id": "project-step-navigation",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-prior-p0-r03a"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-prior:P0-R03b",
+          "item_id": "project-smartais",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-prior-p0-r03b"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-prior:P0-R04a",
+          "item_id": "paper-reverie",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-prior-p0-r04a"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-prior:P0-R04b",
+          "item_id": "paper-layout-aware-dreamer",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-prior-p0-r04b"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-prior:P0-R05",
+          "item_id": "paper-to-ask-or-not-to-ask",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-prior-p0-r05"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-prior:P0-R06a",
+          "item_id": "paper-dialfred",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-prior-p0-r06a"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-prior:P0-R06b",
+          "item_id": "paper-elba",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-prior-p0-r06b"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-prior:P0-R07",
+          "item_id": "paper-bridgenav",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-prior-p0-r07"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-prior:P0-R08",
+          "item_id": "paper-abot-n1-abotn-poibench",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-prior-p0-r08",
+            "use-goal-copilot-p2-abotn-official-waypoint"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-prior:P0-R09",
+          "item_id": "tool-project-guideline",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-prior-p0-r09"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        }
+      ]
+    },
+    {
+      "id": "project-guideline-components",
+      "source_ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/PROJECT_GUIDELINE_COMPONENT_ADAPTATION_AUDIT_2026-07-30.md",
+      "source_sha256": "f2a336bc6c038b42618d854e9cdebf6a51fedb1ac8bee2addc8cec69f4975c27",
+      "expected_entries": 8,
+      "mappings": [
+        {
+          "legacy_id": "project-guideline:stop-failure-semantics",
+          "item_id": "tool-project-guideline",
+          "use_ids": [
+            "use-project-guideline-component-audit-project-guideline-stop-failure-semantics"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "project-guideline:logging-fields",
+          "item_id": "tool-project-guideline",
+          "use_ids": [
+            "use-project-guideline-component-audit-project-guideline-logging-fields"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "project-guideline:replay-recomputation",
+          "item_id": "tool-project-guideline",
+          "use_ids": [
+            "use-project-guideline-component-audit-project-guideline-replay-recomputation"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "project-guideline:occupancy-map",
+          "item_id": "tool-project-guideline",
+          "use_ids": [
+            "use-project-guideline-component-audit-project-guideline-occupancy-map"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "project-guideline:pose-time-alignment",
+          "item_id": "tool-project-guideline",
+          "use_ids": [
+            "use-project-guideline-component-audit-project-guideline-pose-time-alignment"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "project-guideline:depth-scale-alignment",
+          "item_id": "tool-project-guideline",
+          "use_ids": [
+            "use-project-guideline-component-audit-project-guideline-depth-scale-alignment"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "project-guideline:audio-feedback",
+          "item_id": "tool-project-guideline",
+          "use_ids": [
+            "use-project-guideline-component-audit-project-guideline-audio-feedback"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "project-guideline:unreal-pretrained-models",
+          "item_id": "tool-project-guideline",
+          "use_ids": [
+            "use-project-guideline-component-audit-project-guideline-unreal-pretrained-models"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        }
+      ]
+    },
+    {
+      "id": "rcle-e1-e5",
+      "source_ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/rcle/RCLE_PRIOR_MECHANISM_EVIDENCE_MAP_R0_2026-07-28.md",
+      "source_sha256": "8c46ac3f625ac945aa2e40b3a4c829e3e7fd0fb6c28ba0ad4626a20f96067451",
+      "expected_entries": 5,
+      "mappings": [
+        {
+          "legacy_id": "rcle:E1",
+          "item_id": "paper-monocular-obstacle-avoidance-for-blind-people-using-probabilistic-focus",
+          "use_ids": [
+            "use-rcle-rcle-e1"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "rcle:E2",
+          "item_id": "paper-optical-flow-in-mostly-rigid-scenes",
+          "use_ids": [
+            "use-rcle-rcle-e2"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "rcle:E3",
+          "item_id": "paper-scaleflow-plus-plus-robust-and-accurate-estimation-of-3d-motion-from-vid",
+          "use_ids": [
+            "use-rcle-rcle-e3"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "rcle:E4",
+          "item_id": "paper-generalized-regressive-motion-a-visual-cue-to-collision",
+          "use_ids": [
+            "use-rcle-rcle-e4"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "rcle:E5",
+          "item_id": "paper-visual-navigation-using-sparse-optical-flow-and-time-to-transit",
+          "use_ids": [
+            "use-rcle-rcle-e5"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        }
+      ]
+    },
+    {
+      "id": "goal-deep-reading-01-30",
+      "source_ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "source_sha256": "376b35f6890205c51e00267bdcc5474a225804ac42811131fcf94622cd586902",
+      "expected_entries": 30,
+      "mappings": [
+        {
+          "legacy_id": "goal-audit:01",
+          "item_id": "paper-pdm-where-s-waldo",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-01"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:02",
+          "item_id": "paper-idow",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-02"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:03",
+          "item_id": "paper-vicp",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-03"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:04",
+          "item_id": "paper-nids-net",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-04"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:05",
+          "item_id": "paper-v-sam",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-05"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:06",
+          "item_id": "paper-sos",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-06"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:07",
+          "item_id": "paper-clover-mapclover",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-07"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:08",
+          "item_id": "paper-mgor",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-08"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:09",
+          "item_id": "paper-piro-dual-pose-invariant-embeddings",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-09"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:10",
+          "item_id": "paper-rom",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-10"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:11",
+          "item_id": "paper-mod-iin-negative-control",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-11"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:12",
+          "item_id": "paper-matcha-negative-control",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-12"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:13",
+          "item_id": "paper-ras-mechanism-reference",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-13"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:14",
+          "item_id": "paper-persam-persam-f-direct-component",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-14"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:15",
+          "item_id": "paper-segic-negative-control",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-15"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:16",
+          "item_id": "paper-matcher-negative-control",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-16"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:17",
+          "item_id": "paper-dinov-defer",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-17"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:18",
+          "item_id": "paper-t-rex2-defer",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-18"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:19",
+          "item_id": "paper-gres-rela-mechanism-reference",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-19"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:20",
+          "item_id": "paper-evidential-active-recognition-defer",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-20"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:21",
+          "item_id": "paper-ieve-instance-aware-exploration-verification-exploitation-for-instance-i",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-21"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:22",
+          "item_id": "paper-active-gaze-control-for-foveal-scene-exploration",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-22"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:23",
+          "item_id": "paper-pinverify-an-offline-embodied-benchmark-for-active-instance-verification",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-23"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:24",
+          "item_id": "paper-fgprompt-fine-grained-goal-prompting-for-image-goal-navigation",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-24"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:25",
+          "item_id": "paper-sling-last-mile-embodied-visual-navigation",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-25"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:26",
+          "item_id": "paper-gapflyt-active-vision-based-minimalist-structure-less-gap-detection-for",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-26"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:27",
+          "item_id": "paper-visual-servoing-for-autonomous-corridor-following-and-doorway-passing-in",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-27"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:28",
+          "item_id": "paper-deepmpcvs-deep-model-predictive-control-for-visual-servoing",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-28"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:29",
+          "item_id": "paper-anyimagenav-precise-image-goal-navigation-via-multi-view-3d-foundation-m",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-29"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:30",
+          "item_id": "paper-improving-vpr-based-robot-navigation-by-verifying-localization-estimates",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-30"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        }
+      ]
+    },
+    {
+      "id": "goal-deep-reading-31-40",
+      "source_ref": "artifacts.local/research/exa-results/blindassist-mainline-additional-10-deep-reading-2026-08-24.md",
+      "source_sha256": "b43ea491e97c63be1f09b67cc400b9d58679630875d067af450dae5dd616b8e2",
+      "expected_entries": 10,
+      "mappings": [
+        {
+          "legacy_id": "goal-audit:31",
+          "item_id": "paper-nearid-identity-representation-learning-via-near-identity-distractors",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-31"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:32",
+          "item_id": "paper-twin-same-or-not-enhancing-visual-perception-in-vision-language-models",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-32"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:33",
+          "item_id": "paper-iploc-id-personalized-object-identification-and-localization-via-in-cont",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-33"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:34",
+          "item_id": "paper-l2g-det-from-local-matches-to-global-masks",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-34"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:35",
+          "item_id": "paper-rebase-reference-background-subspace-elimination-for-training-free-in-co",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-35"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:36",
+          "item_id": "paper-claid-class-agnostic-instance-level-descriptor-for-instance-search",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-36"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:37",
+          "item_id": "paper-doppelgangers-learning-to-disambiguate-images-of-similar-structures",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-37"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:38",
+          "item_id": "paper-flowverify-combining-deep-learning-and-verification-for-precise-object-i",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-38"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:39",
+          "item_id": "paper-threshold-consistent-margin-loss-for-open-world-deep-metric-learning",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-39"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "goal-audit:40",
+          "item_id": "paper-deep-sets",
+          "use_ids": [
+            "use-goal-copilot-p0-goal-audit-40"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        }
+      ]
+    },
+    {
+      "id": "frontier-upgrade-14",
+      "source_ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/frontier-upgrade-2026-07/refs/paper-inventory.json + f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/frontier-upgrade-2026-07/BLINDASSIST_FRONTIER_PAPER_UPGRADE_REPORT_2026-07.md",
+      "source_sha256": "38bf1b754d3c8480e0be4b21c01329f82a566912943b4c1d89219f0492a456af",
+      "expected_entries": 14,
+      "mappings": [
+        {
+          "legacy_id": "frontier:PID",
+          "item_id": "paper-pidnet-a-real-time-semantic-segmentation-network-inspired-by-pid-control",
+          "use_ids": [
+            "use-frontier-upgrade-2026-07-frontier-pid"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "frontier:MSEED",
+          "item_id": "paper-mobile-seed-joint-semantic-segmentation-and-boundary-detection-for-mobil",
+          "use_ids": [
+            "use-frontier-upgrade-2026-07-frontier-mseed"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "frontier:MRFP",
+          "item_id": "paper-mrfp-learning-generalizable-semantic-segmentation-from-sim-2-real-with-m",
+          "use_ids": [
+            "use-frontier-upgrade-2026-07-frontier-mrfp"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "frontier:UPC",
+          "item_id": "paper-locating-noise-is-halfway-denoising-for-semi-supervised-segmentation",
+          "use_ids": [
+            "use-frontier-upgrade-2026-07-frontier-upc"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "frontier:SWSEG",
+          "item_id": "paper-improving-semi-supervised-semantic-segmentation-with-sliced-wasserstein",
+          "use_ids": [
+            "use-frontier-upgrade-2026-07-frontier-swseg"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "frontier:VALUES",
+          "item_id": "paper-values-a-framework-for-systematic-validation-of-uncertainty-estimation-i",
+          "use_ids": [
+            "use-frontier-upgrade-2026-07-frontier-values"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "frontier:KAND",
+          "item_id": "paper-kandinsky-conformal-prediction-efficient-calibration-of-image-segmentati",
+          "use_ids": [
+            "use-frontier-upgrade-2026-07-frontier-kand"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "frontier:STEPP",
+          "item_id": "paper-watch-your-stepp-semantic-traversability-estimation-using-pose-projected",
+          "use_ids": [
+            "use-frontier-upgrade-2026-07-frontier-stepp"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "frontier:DTERN",
+          "item_id": "paper-dual-temporal-exemplar-representation-network-for-video-semantic-segment",
+          "use_ids": [
+            "use-frontier-upgrade-2026-07-frontier-dtern"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "frontier:BOFP",
+          "item_id": "paper-temporally-consistent-video-semantic-segmentation-with-bidirectional-occ",
+          "use_ids": [
+            "use-frontier-upgrade-2026-07-frontier-bofp"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "frontier:AIGD",
+          "item_id": "paper-ai-guide-dog-egocentric-path-prediction-on-smartphone",
+          "use_ids": [
+            "use-frontier-upgrade-2026-07-frontier-aigd"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "frontier:ESCALATOR",
+          "item_id": "paper-the-escalator-problem-identifying-implicit-motion-blindness-in-ai-for-ac",
+          "use_ids": [
+            "use-frontier-upgrade-2026-07-frontier-escalator"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "frontier:VISASSIST",
+          "item_id": "paper-visassist-a-visually-impaired-captured-video-question-answering-benchmar",
+          "use_ids": [
+            "use-frontier-upgrade-2026-07-frontier-visassist"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "frontier:CLIPBLV",
+          "item_id": "paper-explaining-clip-s-performance-disparities-on-data-from-blind-low-vision",
+          "use_ids": [
+            "use-frontier-upgrade-2026-07-frontier-clipblv"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        }
+      ]
+    },
+    {
+      "id": "hftf-neighbours",
+      "source_ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/hftf/HFTF_CANDIDATE_LANE_CHARTER_R0_2026-08-01.md",
+      "source_sha256": "89c81bd2445c15bd4d20ec306c9aae7cb2084511ce22dd9d6ce09b7b1923fcf6",
+      "expected_entries": 9,
+      "mappings": [
+        {
+          "legacy_id": "hftf:H01",
+          "item_id": "paper-agninav",
+          "use_ids": [
+            "use-hftf-hftf-h01"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "hftf:H02",
+          "item_id": "paper-ai-guide-dog-egocentric-path-prediction-on-smartphone",
+          "use_ids": [
+            "use-hftf-hftf-h02"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "hftf:H03",
+          "item_id": "paper-capability-aware-traversability",
+          "use_ids": [
+            "use-hftf-hftf-h03"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "hftf:H04",
+          "item_id": "paper-egowalk",
+          "use_ids": [
+            "use-hftf-hftf-h04"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "hftf:H05",
+          "item_id": "project-running-guide-agent",
+          "use_ids": [
+            "use-hftf-hftf-h05"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "hftf:H06a",
+          "item_id": "paper-egonav",
+          "use_ids": [
+            "use-hftf-hftf-h06a"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "hftf:H06b",
+          "item_id": "paper-egocentric-future-localization",
+          "use_ids": [
+            "use-hftf-hftf-h06b"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "hftf:H07a",
+          "item_id": "paper-navigation-world-models",
+          "use_ids": [
+            "use-hftf-hftf-h07a"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "hftf:H07b",
+          "item_id": "paper-navwm",
+          "use_ids": [
+            "use-hftf-hftf-h07b"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        }
+      ]
+    },
+    {
+      "id": "taro-adjacent-work",
+      "source_ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/taro/TARO_R0_RESEARCH_ROUTE_GUIDE_2026-08-10.md",
+      "source_sha256": "ad901fc57e3aa9e0da944c0a0dbdf03cd2657e88c1bbecad55eed52381192403",
+      "expected_entries": 16,
+      "mappings": [
+        {
+          "legacy_id": "taro:T01",
+          "item_id": "paper-online-self-calibration-for-vins",
+          "use_ids": [
+            "use-taro-r0-taro-t01"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "taro:T02a",
+          "item_id": "paper-anycam",
+          "use_ids": [
+            "use-taro-r0-taro-t02a"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "taro:T02b",
+          "item_id": "paper-calibanyview",
+          "use_ids": [
+            "use-taro-r0-taro-t02b"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "taro:T03",
+          "item_id": "paper-ptc-depth",
+          "use_ids": [
+            "use-taro-r0-taro-t03"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "taro:T04a",
+          "item_id": "paper-task-specific-bayesian-nbv",
+          "use_ids": [
+            "use-taro-r0-taro-t04a"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "taro:T04b",
+          "item_id": "paper-graspview",
+          "use_ids": [
+            "use-taro-r0-taro-t04b"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "taro:T05",
+          "item_id": "paper-sparta",
+          "use_ids": [
+            "use-taro-r0-taro-t05"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "taro:T06",
+          "item_id": "paper-capnav",
+          "use_ids": [
+            "use-taro-r0-taro-t06"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "taro:T07",
+          "item_id": "paper-scope",
+          "use_ids": [
+            "use-taro-r0-taro-t07"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "taro:T08",
+          "item_id": "paper-fundamental-limits-for-sensor-based-robot-control",
+          "use_ids": [
+            "use-taro-r0-taro-t08"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "taro:T09",
+          "item_id": "paper-the-value-of-sensory-information-to-a-robot",
+          "use_ids": [
+            "use-taro-r0-taro-t09"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "taro:T10a",
+          "item_id": "paper-perceive-with-confidence",
+          "use_ids": [
+            "use-taro-r0-taro-t10a"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "taro:T10b",
+          "item_id": "paper-explore-until-confident",
+          "use_ids": [
+            "use-taro-r0-taro-t10b"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "taro:T11a",
+          "item_id": "paper-mapanything",
+          "use_ids": [
+            "use-taro-r0-taro-t11a"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "taro:T11b",
+          "item_id": "paper-vggt",
+          "use_ids": [
+            "use-taro-r0-taro-t11b"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "taro:T11c",
+          "item_id": "paper-mast3r-slam",
+          "use_ids": [
+            "use-taro-r0-taro-t11c"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        }
+      ]
+    },
+    {
+      "id": "idea-explicit-sources",
+      "source_ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/history/idea/IDEA_ARCHIVE_THROUGH_2026-07-28.md",
+      "source_sha256": "a4f50a99523cc35bf22ddba6d55738ba2edd7f8dc1af7ed041a669d38a34ef29",
+      "expected_entries": 5,
+      "mappings": [
+        {
+          "legacy_id": "idea:SANPO",
+          "item_id": "dataset-sanpo-a-scene-understanding-accessibility-and-human-navigation-dataset",
+          "use_ids": [
+            "use-sanpo-idea-sanpo"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "idea:MobileNetV3",
+          "item_id": "algorithm-searching-for-mobilenetv3",
+          "use_ids": [
+            "use-sanpo-idea-mobilenetv3"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "idea:Depth-Anything-V2",
+          "item_id": "paper-depth-anything-v2",
+          "use_ids": [
+            "use-sanpo-idea-depth-anything-v2"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "idea:RT-DETR",
+          "item_id": "project-rt-detr-official-project",
+          "use_ids": [
+            "use-detector-lab-idea-rt-detr"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        },
+        {
+          "legacy_id": "idea:SAM2",
+          "item_id": "paper-sam-2-segment-anything-in-images-and-videos",
+          "use_ids": [
+            "use-offline-annotation-idea-sam2"
+          ],
+          "disposition": "deduplicated",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        }
+      ]
+    },
+    {
+      "id": "idea-assistive-navigation-synthesis",
+      "source_ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/history/idea/IDEA_ARCHIVE_THROUGH_2026-07-28.md",
+      "source_sha256": "a4f50a99523cc35bf22ddba6d55738ba2edd7f8dc1af7ed041a669d38a34ef29",
+      "expected_entries": 1,
+      "mappings": [
+        {
+          "legacy_id": "idea:assistive-navigation-2026-07",
+          "item_id": "survey-assistive-navigation-literature-synthesis-through-2026-07-13",
+          "use_ids": [
+            "use-sanpo-idea-assistive-navigation-2026-07"
+          ],
+          "disposition": "synthesis",
+          "note": "Deduplicated by canonical identity while retaining this legacy alias and route-use judgment."
+        }
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "scope": "Incidental citations in implementation, status, protocol, and result documents",
+      "reason": "They are evidence pointers rather than deliberately curated reusable knowledge records; result documents remain linked from use evidence when they change a mechanism verdict."
+    },
+    {
+      "scope": "Unnamed papers in the 2026-07 assistive-navigation cache synthesis",
+      "reason": "The archived note does not retain enough canonical bibliographic identity for every unnamed source, so the synthesis is preserved as one survey item instead of fabricating identities."
+    },
+    {
+      "scope": "PDFs, repositories, checkpoints, and raw reproduction artifacts",
+      "reason": "The knowledge reserve stores metadata and evidence references; payloads remain under artifacts.local or their original external locations."
+    }
+  ]
+}

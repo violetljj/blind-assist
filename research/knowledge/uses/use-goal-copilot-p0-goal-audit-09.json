@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-09",
+  "item_id": "paper-piro-dual-pose-invariant-embeddings",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-09"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "（Fig. 2–4，Sec. 3）：①共享 VGG-16 backbone 提取每 view 视觉特征；②两个独立 FC heads 生成 category/object single-view embeddings；③两套 single-head self-attention 跨 views 聚合，因不加 positional encoding 而对 view 顺序不敏感；④mean pool 得到两套 multi-view embeddings；⑤object loss 在同类别对象对中找距离最近的跨实例 single-view “confusers”；⑥以 hinge loss 把同对象 single-view 拉向其 multi-view embedding，同时将 confusers 和两个对象的 multi-view embeddings推开；⑦category pose-invariant loss 把同类别不同对象的 multi-view embeddings 拉近；⑧L-Softmax 再分开不同类别，三类损失联合训练但作用于不同空间。",
+    "project_application": "B0 的 16 正确说明 category/粗语义已基本可用，4 个同类错误说明需要独立 object space；PiRO 正好解释为什么继续改一个混合分数容易反复。其 unary object embeddings 也消除 pair 顺序，但不提供 absence。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "在 source-disjoint 多视角 object bank 训练一个双 head；测试只给一张 reference。每候选输出 category_score 与 identity_score，前者只做 goal-class eligibility，后者决定同类排序；均通过且满足绝对阈值/margin 才输出 TARGET，否则 NONE。若 object head 不降低 4 个同类错误、category recall 使 controls 低于 12/13，或换 candidate 顺序改变选择，即停止。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "训练时仍需多视角、类别和 identity labels；不证明单 reference 新身份的开放世界验证、完整当前帧 proposals 或 NONE。三个数据集多为对象居中的规范化视图，和入口场景差异明显。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:09; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:09 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

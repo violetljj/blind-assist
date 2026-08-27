@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "id": "paper-claid-class-agnostic-instance-level-descriptor-for-instance-search",
+  "kind": "paper",
+  "title": "CLAID — Class Agnostic Instance-level Descriptor for Instance Search",
+  "canonical_ref": "https://arxiv.org/abs/2506.16745",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "它证明多粒度无监督 region bank 对图库 mAP 有效且高效；没有证明 descriptor 能区分两个同类、同款、稳定出现的实体，更无 target-absent 的 FAR、绝对阈值或候选置换实验。论文自己承认 patch 会把小实例合并，模糊图和具体人脸等语义特定 query 退化。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-36",
+      "name": "CLAID — Class Agnostic Instance-level Descriptor for Instance Search — goal-audit:36 route mechanism",
+      "description": "①用 DINO ViT-B/8 提取并 L2 归一化 patch token；②以余弦 affinity 阈值 0.2 建图；③取图度数极值作稳定 seed；④k-sums 二分 patch 集，递归形成 region hierarchy；⑤以子图平均连通度 τ1=0.97 决定停止；⑥按 top-30% L1-energy patch 的占比判“dummy node”，保留其继续分裂但不输出描述子；⑦把每个有效节点 mask/bbox 映射到独立 ResNet-50 Block4.0 feature map，用 RoI-GeM 得定长向量；⑧query 只出一个向量，数据库图以任一 region 首次命中的排名计分。它没有配对式判别头。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "它证明多粒度无监督 region bank 对图库 mAP 有效且高效；没有证明 descriptor 能区分两个同类、同款、稳定出现的实体，更无 target-absent 的 FAR、绝对阈值或候选置换实验。论文自己承认 patch 会把小实例合并，模糊图和具体人脸等语义特定 query 退化。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-36",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:36"
+  ],
+  "links": [
+    {
+      "label": "官方代码",
+      "ref": "https://github.com/wlzhao22/CLAID"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

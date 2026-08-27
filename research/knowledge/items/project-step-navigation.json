@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "project-step-navigation",
+  "kind": "project",
+  "title": "STEP Navigation",
+  "canonical_ref": "https://apps.apple.com/tw/app/step-navigation/id6448701994",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "产品明确面向入口、站点和 last-meter guidance",
+  "mechanisms": [
+    {
+      "id": "goal-prior-p0-r03a",
+      "name": "STEP Navigation — goal-prior:P0-R03a route mechanism",
+      "description": "产品明确面向入口、站点和 last-meter guidance",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "当前公开材料主要是开发者/厂商声明；STEP 依赖 virtual anchors/映射库且公开地图规模有限，未找到可与论文 benchmark 等价的独立结果"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "prior-art",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-prior:P0-R03a"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

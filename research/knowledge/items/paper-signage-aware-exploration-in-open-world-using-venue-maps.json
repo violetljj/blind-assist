@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-signage-aware-exploration-in-open-world-using-venue-maps",
+  "kind": "paper",
+  "title": "Signage-Aware Exploration in Open World using Venue Maps",
+  "canonical_ref": "https://arxiv.org/abs/2410.10143",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "用场馆地图名称先验、文字实例检索、2D→3D 多视角融合，并显式靠近/调姿以提高标牌可读性。",
+  "mechanisms": [
+    {
+      "id": "l10-10",
+      "name": "Signage-Aware Exploration in Open World using Venue Maps — l10:10 route mechanism",
+      "description": "用场馆地图名称先验、文字实例检索、2D→3D 多视角融合，并显式靠近/调姿以提高标牌可读性。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "商场机器人与场馆地图设定；标牌识别和搜索效率不等于入口、metric arrival 或用户完成。"
+    }
+  ],
+  "tags": [
+    "l10",
+    "literature-reserve",
+    "l10-r0"
+  ],
+  "aliases": [
+    "l10:10"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

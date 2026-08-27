@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "id": "paper-ai-guide-dog-egocentric-path-prediction-on-smartphone",
+  "kind": "paper",
+  "title": "AI Guide Dog: Egocentric Path Prediction on Smartphone",
+  "canonical_ref": "https://ojs.aaai.org/index.php/AAAI-SS/article/view/35591",
+  "authors": [],
+  "year": 2025,
+  "venue": "AAAI Spring Symposium",
+  "summary": "AI Guide Dog 把未来 1 秒路径表述为 FRONT/LEFT/RIGHT，使用 57 小时、392,580 个样本，并在 iPhone 13 上以 FP16、2 Hz 运行。但 8 名参与者主要是研究生/实习生，戴黑眼镜模拟，最佳 LEFT/RIGHT recall 约 0.56–0.58。它适合作为低频 intent prior，不足以作为真实 BLV 有效性或近场安全告警证据。 VisAssist 包含 13,413 段真实视障志愿者视频，揭示通用模型在 depth、direction、反射、远距离、信息缺失和低质量画面上的系统性问题。其开放模型在 RTX 3090 上仍是秒级延迟，且任务是 VideoQA，不是实时导航。最值得迁移的是独立 capture_quality 状态：ANSWER_VISIBLE / RECOVERABLE_QUALITY / INFORMATION_MISSING。后两种状态不得生成“前方安全”或精确距离，只能给克制的相机调整提示。 CLIP-BLV disparity 在 ORBIT/VizWiz 等真实 BLV 数据上发现，25 个 CLIP 变体平均比 web 图像低 15 个百分点；残障特定物体、模糊、遮挡、光照和触觉描述均会造成差距。5-shot 在 clean 数据上可显著缩小 gap，在 clutter 中仍保留约 14–15 点差距。所有 foundation teacher、VLM 解释器和未来个性化都必须按 worst-user、quality、device、scene 单独审计，不能只报告平均值。",
+  "mechanisms": [
+    {
+      "id": "frontier-aigd",
+      "name": "AI Guide Dog: Egocentric Path Prediction on Smartphone — frontier:AIGD route mechanism",
+      "description": "AI Guide Dog 把未来 1 秒路径表述为 FRONT/LEFT/RIGHT，使用 57 小时、392,580 个样本，并在 iPhone 13 上以 FP16、2 Hz 运行。但 8 名参与者主要是研究生/实习生，戴黑眼镜模拟，最佳 LEFT/RIGHT recall 约 0.56–0.58。它适合作为低频 intent prior，不足以作为真实 BLV 有效性或近场安全告警证据。 VisAssist 包含 13,413 段真实视障志愿者视频，揭示通用模型在 depth、direction、反射、远距离、信息缺失和低质量画面上的系统性问题。其开放模型在 RTX 3090 上仍是秒级延迟，且任务是 VideoQA，不是实时导航。最值得迁移的是独立 capture_quality 状态：ANSWER_VISIBLE / RECOVERABLE_QUALITY / INFORMATION_MISSING。后两种状态不得生成“前方安全”或精确距离，只能给克制的相机调整提示。 CLIP-BLV disparity 在 ORBIT/VizWiz 等真实 BLV 数据上发现，25 个 CLIP 变体平均比 web 图像低 15 个百分点；残障特定物体、模糊、遮挡、光照和触觉描述均会造成差距。5-shot 在 clean 数据上可显著缩小 gap，在 clutter 中仍保留约 14–15 点差距。所有 foundation teacher、VLM 解释器和未来个性化都必须按 worst-user、quality、device、scene 单独审计，不能只报告平均值。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "The frontier-upgrade report treats this as paper-derived mechanism evidence. It does not independently establish BlindAssist event utility, mobile deployment, BLV user benefit, model promotion, or safety."
+    },
+    {
+      "id": "hftf-h02",
+      "name": "AI Guide Dog — hftf:H02 route mechanism",
+      "description": "1 秒未来方向预测、iPhone/CoreML",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "The charter records this as an adjacent mechanism, not HFTF evidence. 碰撞风险而非未来行进方向；多高度与 unknown"
+    }
+  ],
+  "tags": [
+    "frontier-upgrade",
+    "paper-review",
+    "frontier-upgrade-2026-07",
+    "hftf",
+    "adjacent-work"
+  ],
+  "aliases": [
+    "frontier:AIGD",
+    "hftf:H02"
+  ],
+  "links": [
+    {
+      "label": "Canonical source used by hftf:H02",
+      "ref": "https://arxiv.org/abs/2501.07957"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-project-guideline-component-audit-project-guideline-unreal-pretrained-models",
+  "item_id": "tool-project-guideline",
+  "route": "project-guideline-component-audit",
+  "mechanism_ids": [
+    "project-guideline-unreal-pretrained-models"
+  ],
+  "use_state": "rejected",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "Project Guideline 的做法。 Unreal 4.27 simulator 通过共享 C++ 库/插件注入渲染图像 和 ground-truth pose，但官方说明障碍检测尚未完整支持 （unreal/README.md）。 其模型面向紫色引导线分割和单目深度 （vision/models/README.md）。 BlindAssist 已有对应。 当前论文问题、数据协议、YOLO/QNN 手机链路和 RCLE 几何 研究均不依赖紫色引导线或 Unreal；加入它们会形成新的数据域、构建系统和验证任务。 决定与停止线。 本论文周期 DROP：不下载/集成模型，不建立 Unreal 工程，不接 C++/JNI/Bazel/MediaPipe 构建链，不把合成仿真当真实场景证据。",
+    "project_application": "Project Guideline 的做法。 Unreal 4.27 simulator 通过共享 C++ 库/插件注入渲染图像 和 ground-truth pose，但官方说明障碍检测尚未完整支持 （unreal/README.md）。 其模型面向紫色引导线分割和单目深度 （vision/models/README.md）。 BlindAssist 已有对应。 当前论文问题、数据协议、YOLO/QNN 手机链路和 RCLE 几何 研究均不依赖紫色引导线或 Unreal；加入它们会形成新的数据域、构建系统和验证任务。 决定与停止线。 本论文周期 DROP：不下载/集成模型，不建立 Unreal 工程，不接 C++/JNI/Bazel/MediaPipe 构建链，不把合成仿真当真实场景证据。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Project Guideline 的做法。 Unreal 4.27 simulator 通过共享 C++ 库/插件注入渲染图像 和 ground-truth pose，但官方说明障碍检测尚未完整支持 （unreal/README.md）。 其模型面向紫色引导线分割和单目深度 （vision/models/README.md）。 BlindAssist 已有对应。 当前论文问题、数据协议、YOLO/QNN 手机链路和 RCLE 几何 研究均不依赖紫色引导线或 Unreal；加入它们会形成新的数据域、构建系统和验证任务。 决定与停止线。 本论文周期 DROP：不下载/集成模型，不建立 Unreal 工程，不接 C++/JNI/Bazel/MediaPipe 构建链，不把合成仿真当真实场景证据。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The component decision is DROP. The audit absorbs only the stated engineering boundary; it does not import the full C++/Bazel/MediaPipe/ARCore/Unreal stack or establish dynamic-risk, grounding, user, product, or safety evidence."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/PROJECT_GUIDELINE_COMPONENT_ADAPTATION_AUDIT_2026-07-30.md",
+      "summary": "Legacy source for project-guideline:unreal-pretrained-models; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated project-guideline:unreal-pretrained-models from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

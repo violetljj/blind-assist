@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-trajectron-plus-plus-dynamically-feasible-trajectory-forecasting-with-he",
+  "kind": "paper",
+  "title": "Trajectron++: Dynamically-Feasible Trajectory Forecasting with Heterogeneous Data",
+  "canonical_ref": "https://doi.org/10.1007/978-3-030-58523-5_40",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Produce multimodal, dynamics-aware multi-agent futures conditioned on maps and optionally on the ego plan.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr47",
+      "name": "Trajectron++: Dynamically-Feasible Trajectory Forecasting with Heterogeneous Data — dtr:DR47 route mechanism",
+      "description": "Produce multimodal, dynamics-aware multi-agent futures conditioned on maps and optionally on the ego plan.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "Standard datasets assume usable tracks/maps; benchmark accuracy does not establish wearable deployment or calibrated risk."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR47"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

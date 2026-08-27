@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-project-guideline-component-audit-project-guideline-pose-time-alignment",
+  "item_id": "tool-project-guideline",
+  "route": "project-guideline-component-audit",
+  "mechanism_ids": [
+    "project-guideline-pose-time-alignment"
+  ],
+  "use_state": "planned",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "Project Guideline 的做法。 ARCore 在同一帧时间轴提供相机 pose 和 3D tracking features；GuidanceSystem 对 camera pose 要求对应时间戳，对 features 选择精确或最近 样本 （arcore_motion_tracker.cc； guidance_system.cc）。 BlindAssist 已有对应。 CameraX 已记录 capture/receive 时间、时钟域和坐标帧； [UstrfVioPoseReceipt.kt](../core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfVioPoseReceipt.kt) 已预留 fail-closed VIO 准入合同，要求帧匹配、稳定世界系、时效、置信度、倾角和独立验证 的相机到机身外参。 真实缺口。 当前正式手机链路没有已准入的 ARCore/VIO adapter、稳定 world-frame 政策或独立外参收据；现有合同只是边界，不是设备能力证明。 进入条件。 只有当一个已冻结的手机相机实验明确需要跨帧 metric warp，且能提供 同源时间戳、稳定世界系、跟踪状态、外参、丢跟踪重置规则与离线重放时，才可另立小型 adapter 评估。 停止线。 本审计不添加 ARCore / MediaPipe 依赖，不把 Project Guideline 的腰挂 相机外参迁移到手持手机，不解锁产品或用户反馈权限。",
+    "project_application": "Project Guideline 的做法。 ARCore 在同一帧时间轴提供相机 pose 和 3D tracking features；GuidanceSystem 对 camera pose 要求对应时间戳，对 features 选择精确或最近 样本 （arcore_motion_tracker.cc； guidance_system.cc）。 BlindAssist 已有对应。 CameraX 已记录 capture/receive 时间、时钟域和坐标帧； [UstrfVioPoseReceipt.kt](../core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfVioPoseReceipt.kt) 已预留 fail-closed VIO 准入合同，要求帧匹配、稳定世界系、时效、置信度、倾角和独立验证 的相机到机身外参。 真实缺口。 当前正式手机链路没有已准入的 ARCore/VIO adapter、稳定 world-frame 政策或独立外参收据；现有合同只是边界，不是设备能力证明。 进入条件。 只有当一个已冻结的手机相机实验明确需要跨帧 metric warp，且能提供 同源时间戳、稳定世界系、跟踪状态、外参、丢跟踪重置规则与离线重放时，才可另立小型 adapter 评估。 停止线。 本审计不添加 ARCore / MediaPipe 依赖，不把 Project Guideline 的腰挂 相机外参迁移到手持手机，不解锁产品或用户反馈权限。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Project Guideline 的做法。 ARCore 在同一帧时间轴提供相机 pose 和 3D tracking features；GuidanceSystem 对 camera pose 要求对应时间戳，对 features 选择精确或最近 样本 （arcore_motion_tracker.cc； guidance_system.cc）。 BlindAssist 已有对应。 CameraX 已记录 capture/receive 时间、时钟域和坐标帧； [UstrfVioPoseReceipt.kt](../core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfVioPoseReceipt.kt) 已预留 fail-closed VIO 准入合同，要求帧匹配、稳定世界系、时效、置信度、倾角和独立验证 的相机到机身外参。 真实缺口。 当前正式手机链路没有已准入的 ARCore/VIO adapter、稳定 world-frame 政策或独立外参收据；现有合同只是边界，不是设备能力证明。 进入条件。 只有当一个已冻结的手机相机实验明确需要跨帧 metric warp，且能提供 同源时间戳、稳定世界系、跟踪状态、外参、丢跟踪重置规则与离线重放时，才可另立小型 adapter 评估。 停止线。 本审计不添加 ARCore / MediaPipe 依赖，不把 Project Guideline 的腰挂 相机外参迁移到手持手机，不解锁产品或用户反馈权限。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The component decision is HOLD. The audit absorbs only the stated engineering boundary; it does not import the full C++/Bazel/MediaPipe/ARCore/Unreal stack or establish dynamic-risk, grounding, user, product, or safety evidence."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/PROJECT_GUIDELINE_COMPONENT_ADAPTATION_AUDIT_2026-07-30.md",
+      "summary": "Legacy source for project-guideline:pose-time-alignment; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated project-guideline:pose-time-alignment from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-active-gaze-control-for-foveal-scene-exploration",
+  "kind": "paper",
+  "title": "Active Gaze Control for Foveal Scene Exploration",
+  "canonical_ref": "https://arxiv.org/abs/2208.11594",
+  "authors": [],
+  "year": 2022,
+  "venue": "",
+  "summary": "论文证明“动作改变传感器噪声分布”应先被校准，再谈信息增益；还证明主动视角的收益主要体现在证据获取速度。它没有证明真实 foveal camera、身体平移、遮挡、安全、目标实例、目标缺席或 physical identity；50 张静态 COCO 图也不足以支撑泛化。更危险的是 entropy 降低却 accuracy 不升，说明 calibration 可能只是变得更自信，不一定更正确。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-22",
+      "name": "Active Gaze Control for Foveal Scene Exploration — goal-audit:22 route mechanism",
+      "description": "第一步不重新训练 detector，而是按“真实类别 × 离 fovea 的 7 档距离”拟合 detector 分数向量的 Dirichlet 分布，得到 action-dependent observation model；第二步用 Naive Bayes、sum、Kaplan 或 modified Kaplan 规则把多次检测融合进 body-centered semantic map；第三步对所有候选 gaze 预测下一次观测后的 map 分布，用 KL divergence、entropy 或 top-two margin 作为全图不确定性，选期望不确定性最小的注视点。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "论文证明“动作改变传感器噪声分布”应先被校准，再谈信息增益；还证明主动视角的收益主要体现在证据获取速度。它没有证明真实 foveal camera、身体平移、遮挡、安全、目标实例、目标缺席或 physical identity；50 张静态 COCO 图也不足以支撑泛化。更危险的是 entropy 降低却 accuracy 不升，说明 calibration 可能只是变得更自信，不一定更正确。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-22",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:22"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

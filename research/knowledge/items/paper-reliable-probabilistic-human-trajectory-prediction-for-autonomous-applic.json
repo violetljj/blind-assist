@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-reliable-probabilistic-human-trajectory-prediction-for-autonomous-applic",
+  "kind": "paper",
+  "title": "Reliable Probabilistic Human Trajectory Prediction for Autonomous Applications",
+  "canonical_ref": "https://doi.org/10.1007/978-3-031-91585-7_9",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "A lightweight LSTM-MDN makes reliability, sharpness, short-history behavior, latency, and embedded execution explicit outputs of evaluation.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr48",
+      "name": "Reliable Probabilistic Human Trajectory Prediction for Autonomous Applications — dtr:DR48 route mechanism",
+      "description": "A lightweight LSTM-MDN makes reliability, sharpness, short-history behavior, latency, and embedded execution explicit outputs of evaluation.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "No scene/social context; empirical reliability on its datasets is not universal calibration."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR48"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -56,6 +56,8 @@ VERDICTS = {
 }
 EVIDENCE_KINDS = {"repo", "experiment", "git", "artifact", "external"}
 REFERENCE_PREFIXES = ("https://", "http://", "doi:", "repo:", "git:")
+MIGRATION_DISPOSITIONS = {"migrated", "deduplicated", "synthesis"}
+SHA256_PATTERN = re.compile(r"^[0-9a-fA-F]{64}$")
 
 
 class KnowledgeError(RuntimeError):
@@ -402,6 +404,141 @@ def _validate_use(
     return errors
 
 
+def _validate_migrations(
+    root: Path,
+    items: dict[str, dict[str, Any]],
+    uses: dict[str, dict[str, Any]],
+) -> tuple[list[str], int, int]:
+    """Validate auditable coverage receipts for one-time legacy migrations."""
+
+    directory = root / "migrations"
+    if not directory.exists():
+        return [], 0, 0
+    if not directory.is_dir():
+        return [f"migration path is not a directory: {directory}"], 0, 0
+
+    errors: list[str] = []
+    manifest_count = 0
+    mapping_count = 0
+    seen_legacy_ids: dict[str, str] = {}
+    for path in sorted(directory.glob("*.json")):
+        manifest_count += 1
+        try:
+            manifest = _read_json(path)
+        except KnowledgeError as exc:
+            errors.append(str(exc))
+            continue
+        context = f"migration {path.stem}"
+        if manifest.get("schema_version") != 1:
+            errors.append(f"{context}: schema_version must be 1")
+        identifier = manifest.get("id")
+        if not isinstance(identifier, str) or not ID_PATTERN.fullmatch(identifier):
+            errors.append(f"{context}: id must match {ID_PATTERN.pattern}")
+        elif identifier != path.stem:
+            errors.append(f"{context}: file stem must equal id {identifier}")
+        _check_date(errors, manifest.get("created_at"), "created_at", context)
+        _check_string(errors, manifest, "scope", context)
+
+        source_groups = manifest.get("source_groups")
+        if not isinstance(source_groups, list) or not source_groups:
+            errors.append(f"{context}: source_groups must be a non-empty list")
+            continue
+        group_ids: set[str] = set()
+        for group_index, group in enumerate(source_groups):
+            group_context = f"{context}.source_groups[{group_index}]"
+            if not isinstance(group, dict):
+                errors.append(f"{group_context}: must be an object")
+                continue
+            group_id = group.get("id")
+            if not isinstance(group_id, str) or not ID_PATTERN.fullmatch(group_id):
+                errors.append(f"{group_context}: id must match {ID_PATTERN.pattern}")
+            elif group_id in group_ids:
+                errors.append(f"{group_context}: duplicate source-group id {group_id}")
+            else:
+                group_ids.add(group_id)
+            _check_string(errors, group, "source_ref", group_context)
+            source_sha256 = group.get("source_sha256")
+            if source_sha256 is not None and (
+                not isinstance(source_sha256, str)
+                or not SHA256_PATTERN.fullmatch(source_sha256)
+            ):
+                errors.append(
+                    f"{group_context}: source_sha256 must be null or 64 hex digits"
+                )
+            expected_entries = group.get("expected_entries")
+            mappings = group.get("mappings")
+            if not isinstance(expected_entries, int) or expected_entries < 0:
+                errors.append(f"{group_context}: expected_entries must be >= 0")
+            if not isinstance(mappings, list):
+                errors.append(f"{group_context}: mappings must be a list")
+                continue
+            if isinstance(expected_entries, int) and expected_entries != len(mappings):
+                errors.append(
+                    f"{group_context}: expected_entries={expected_entries} but "
+                    f"mappings={len(mappings)}"
+                )
+            mapping_count += len(mappings)
+            for mapping_index, mapping in enumerate(mappings):
+                mapping_context = f"{group_context}.mappings[{mapping_index}]"
+                if not isinstance(mapping, dict):
+                    errors.append(f"{mapping_context}: must be an object")
+                    continue
+                legacy_id = mapping.get("legacy_id")
+                if not _is_nonempty_string(legacy_id):
+                    errors.append(f"{mapping_context}: legacy_id must be non-empty")
+                elif legacy_id in seen_legacy_ids:
+                    errors.append(
+                        f"{mapping_context}: legacy_id {legacy_id} already mapped by "
+                        f"{seen_legacy_ids[legacy_id]}"
+                    )
+                else:
+                    seen_legacy_ids[legacy_id] = mapping_context
+                if mapping.get("disposition") not in MIGRATION_DISPOSITIONS:
+                    errors.append(
+                        f"{mapping_context}: disposition must be one of "
+                        f"{sorted(MIGRATION_DISPOSITIONS)}"
+                    )
+                item_id = mapping.get("item_id")
+                if not _is_nonempty_string(item_id) or item_id not in items:
+                    errors.append(f"{mapping_context}: unknown item_id {item_id}")
+                elif isinstance(legacy_id, str) and legacy_id not in items[item_id].get(
+                    "aliases", []
+                ):
+                    errors.append(
+                        f"{mapping_context}: item {item_id} does not carry alias "
+                        f"{legacy_id}"
+                    )
+                use_ids = _check_string_list(
+                    errors,
+                    mapping.get("use_ids"),
+                    "use_ids",
+                    mapping_context,
+                    allow_empty=False,
+                )
+                for use_id in use_ids:
+                    if use_id not in uses:
+                        errors.append(f"{mapping_context}: unknown use_id {use_id}")
+                    elif isinstance(item_id, str) and uses[use_id].get("item_id") != item_id:
+                        errors.append(
+                            f"{mapping_context}: use {use_id} belongs to "
+                            f"{uses[use_id].get('item_id')}, not {item_id}"
+                        )
+                _check_string(errors, mapping, "note", mapping_context)
+
+        exclusions = manifest.get("exclusions")
+        if not isinstance(exclusions, list):
+            errors.append(f"{context}: exclusions must be a list")
+        else:
+            for exclusion_index, exclusion in enumerate(exclusions):
+                exclusion_context = f"{context}.exclusions[{exclusion_index}]"
+                if not isinstance(exclusion, dict):
+                    errors.append(f"{exclusion_context}: must be an object")
+                    continue
+                _check_string(errors, exclusion, "scope", exclusion_context)
+                _check_string(errors, exclusion, "reason", exclusion_context)
+    return errors, manifest_count, mapping_count
+
+
 def validate_library(
     root: Path,
 ) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]], list[str]]:
@@ -450,6 +587,8 @@ def validate_library(
                 known_experiments,
             )
         )
+    migration_errors, _, _ = _validate_migrations(root, items, uses)
+    errors.extend(migration_errors)
     return items, uses, errors
 
 
@@ -547,9 +686,11 @@ def _command_validate(args: argparse.Namespace) -> int:
             print(f" - {error}", file=sys.stderr)
         return 1
     routes = {use["route"] for use in uses.values()}
+    _, migration_count, mapping_count = _validate_migrations(args.root, items, uses)
     print(
         f"PASS knowledge library: items={len(items)} uses={len(uses)} "
-        f"routes={len(routes)}"
+        f"routes={len(routes)} migrations={migration_count} "
+        f"legacy_mappings={mapping_count}"
     )
     return 0
 
@@ -927,6 +1068,12 @@ def _build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    # Windows may inherit a legacy code page even though the knowledge records are
+    # UTF-8 and can contain Chinese, mathematical symbols, and author names.
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if callable(reconfigure):
+            reconfigure(encoding="utf-8", errors="backslashreplace")
     parser = _build_parser()
     args = parser.parse_args(argv)
     args.root = args.root.resolve()

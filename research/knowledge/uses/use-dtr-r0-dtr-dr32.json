@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr32",
+  "item_id": "paper-probabilistic-collision-risk",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr32"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "NOA 用 3 台 RealSense D430 形成约 170°×90° 视场，以 15 Hz 生成点云、地面/坑洞/障碍聚类和 Kalman tracks；中央 IMU 为 200 Hz。每个目标状态为二维位置和速度。用户与目标未来位置都表示为随时间扩张的 Gaussian，碰撞概率取二者分布重叠；再用带逃逸率的 survival function 对未来时间积分成对象风险。轨迹仍是线性外推，最终经骨传导给方向提示。事件理想语义是：至少提前 3 秒、当前或未来进入 1 m bubble 时开启，直到目标离开 2 m 才解除。",
+    "project_application": "优先借 Gaussian overlap、survival weighting、迟滞事件和 tracking 分层消融；不借作者阈值、67% 普适准确率或把相对视运动当目标自主运动。任何部署输出仍须保留 UNKNOWN / ABSTAIN。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "优先借 Gaussian overlap、survival weighting、迟滞事件和 tracking 分层消融；不借作者阈值、67% 普适准确率或把相对视运动当目标自主运动。任何部署输出仍须保留 UNKNOWN / ABSTAIN。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "“理想告警”由完整未来轨迹生成，实景真值依赖人工 mask/轨迹，不是实际身体接触；没有 BLV 实走、避碰成功或伤害终点。所有参数由遗传算法调优，独立测试泛化不清楚。设备没有单独估计佩戴者运动，目标速度混入 ego-motion；实景还删去许多无交互空路段。67% 主要来自稳定关联和滤波，不是风险积分单独取得。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/dynamic-travel-risk/DYNAMIC_TRAVEL_RISK_ADDITIONAL_10_DEEP_READING_2026-08-24.md",
+      "summary": "Legacy source for dtr:DR32; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR32 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-deepmpcvs-deep-model-predictive-control-for-visual-servoing",
+  "kind": "paper",
+  "title": "DeepMPCVS — Deep Model Predictive Control for Visual Servoing",
+  "canonical_ref": "https://proceedings.mlr.press/v155/katara21a/katara21a.pdf",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "它证明在已处于目标视觉邻域时，horizon planning 可比单步 IBVS 降低路径和旋转误差；也展示在线优化可补偿近似动力学。它不证明远程导航、障碍安全、目标身份、到达/交接；其最强实验仍是 10 个模拟自由相机场景，控制迭代数很高。论文伪代码的 while 条件还写成误差 ≤ ε 时循环，显然应是 >，复现需以代码为准。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-28",
+      "name": "DeepMPCVS — Deep Model Predictive Control for Visual Servoing — goal-audit:28 route mechanism",
+      "description": "FlowNet2 或 DDFlow 估当前→目标 dense optical flow；用 IBVS interaction matrix L(Z) 把速度映射为短时 flow，并假设小 horizon 内 depth 一致、flow 可加，从而得到未来 T 步 flow 的线性预测；5-cell LSTM 接上一速度，生成 T=5 的速度序列；每个真实控制步在线优化网络参数 100 次，使预测累计 flow 匹配目标 flow，只执行第一步，再以新图重算，构成 receding-horizon MPC。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "它证明在已处于目标视觉邻域时，horizon planning 可比单步 IBVS 降低路径和旋转误差；也展示在线优化可补偿近似动力学。它不证明远程导航、障碍安全、目标身份、到达/交接；其最强实验仍是 10 个模拟自由相机场景，控制迭代数很高。论文伪代码的 while 条件还写成误差 ≤ ε 时循环，显然应是 >，复现需以代码为准。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-28",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:28"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

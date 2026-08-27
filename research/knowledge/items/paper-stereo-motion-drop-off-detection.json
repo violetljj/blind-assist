@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-stereo-motion-drop-off-detection",
+  "kind": "paper",
+  "title": "Stereo + motion drop-off detection",
+  "canonical_ref": "https://homepages.inf.ed.ac.uk/msridhar/Papers/iros08_doffDetect.pdf",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "坑洞、路缘和下行台阶不是“前方物体”",
+  "mechanisms": [
+    {
+      "id": "dtr-dr23",
+      "name": "Stereo + motion drop-off detection — dtr:DR23 route mechanism",
+      "description": "正障碍与 negative obstacle 分离，用 stereo + motion evidence 建独立 drop-off channel",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "2008 机器人 stereo 管线；无穿戴式头动、用户试验或手机单目可行性"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR23"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

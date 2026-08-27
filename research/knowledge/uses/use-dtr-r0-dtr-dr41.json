@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr41",
+  "item_id": "paper-safety-oriented-pedestrian-occupancy-forecasting",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr41"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Combine per-track futures with detector-independent dense scene occupancy, so confidence filtering or NMS cannot silently erase every future pedestrian cell.",
+    "project_application": "On fresh replay, deliberately suppress true tracks and compare track-only versus track-plus-residual-occupancy event recall, false segments, and occupancy calibration.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "On fresh replay, deliberately suppress true tracks and compare track-only versus track-plus-residual-occupancy event recall, false segments, and occupancy calibration."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "LiDAR and HD-map autonomous-driving evidence; no wearable RGB, BLV outcome, or safety authority."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/dtr-r0/LITERATURE_RESERVE_2026-08-27.md",
+      "summary": "Legacy source for dtr:DR41; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR41 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

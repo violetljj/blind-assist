@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "tool-open-source-soundscape",
+  "kind": "tool",
+  "title": "Open Source Soundscape",
+  "canonical_ref": "https://github.com/microsoft/soundscape",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "方向提示不应长时遮蔽环境声，风险提醒还要与导航/后台音频共存",
+  "mechanisms": [
+    {
+      "id": "dtr-dr30",
+      "name": "Open Source Soundscape — dtr:DR30 route mechanism",
+      "description": "开源空间音频、head-relative beacon、background coexistence 和 route authoring；可作“紧急事件抢占、非紧急叙述让行”的反馈基线",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "MIT 仓库只是原产品的非 turnkey 子集，删除了第三方/部署组件；它不包含动态危险感知"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR30"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

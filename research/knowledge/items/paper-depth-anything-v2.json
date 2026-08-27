@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "id": "paper-depth-anything-v2",
+  "kind": "paper",
+  "title": "Depth Anything V2",
+  "canonical_ref": "https://arxiv.org/abs/2406.09414",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "提供泛化较强的单帧单目相对深度；Small 权重可作为轻量控制模型",
+  "mechanisms": [
+    {
+      "id": "ustrf-p01",
+      "name": "Depth Anything V2 — ustrf:P01 route mechanism",
+      "description": "提供泛化较强的单帧单目相对深度；Small 权重可作为轻量控制模型",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "强方法证据；无助盲事件和手机安全结论"
+    },
+    {
+      "id": "idea-depth-anything-v2",
+      "name": "Depth Anything V2 — idea:Depth-Anything-V2 route mechanism",
+      "description": "Generalizable monocular relative depth used as an offline teacher or bounded confirmation/abstention evidence source.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "Relative monocular depth is not metric range, route truth, event truth, user evidence, or safety authority; historical conversion/runtime limitations remain separate use evidence."
+    }
+  ],
+  "tags": [
+    "ustrf",
+    "frontier-guide",
+    "ustrf-sc",
+    "idea-archive",
+    "sanpo"
+  ],
+  "aliases": [
+    "ustrf:P01",
+    "idea:Depth-Anything-V2"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

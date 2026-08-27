@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-frontier-upgrade-2026-07-frontier-values",
+  "item_id": "paper-values-a-framework-for-systematic-validation-of-uncertainty-estimation-i",
+  "route": "frontier-upgrade-2026-07",
+  "mechanism_ids": [
+    "frontier-values"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "ValUES 最有价值的结论是：不确定性不是一个 entropy heatmap，而是 C1 prediction model + C2 uncertainty measure + C3 aggregation + downstream task。论文显示 aggregation 选择可以主导 OoD/failure detection 结果；AU/EU 在 toy 数据上可分，在真实数据上未必能干净分开；ensemble 跨任务最稳，TTA 常是较轻替代。 BlindAssist 应先冻结现有三 seed 输出，离线比较 MSR、predictive entropy 和 ensemble MI，并分别使用固定中心走廊 patch、scene-aware patch、threshold mean 聚合。主产物不是“最佳 entropy 阈值”，而是 pixel/session/event 三层 risk-coverage curve：随着拒判增加，covered accuracy 是否上升、boundary recall 是否保留、critical miss 是否下降。如果拒判越多风险反而不降，不确定性就没有生产价值。 Kandinsky Conformal Prediction 利用空间相似 pixel classifier 共享 non-conformity score，在低 calibration data 下比逐像素校准更数据高效。对胸前相机，底部中心近场、底部左右、远场/地平线和上部背景确实有空间先验。但连续 50 帧不能当 50 个独立 calibration 样本；固定空间 cluster 也会被俯仰和安装角度破坏。 正确做法是新增独立 session calibration split。现有 4 个 dev session 每个 scene 只有 1 个，不能再切走。最低工程方案是四个 scene 各新增至少一个 official-train session，只做经验校准；若要声称 session-level 95% conformal coverage，则需要更多独立 session。任何在 dev/blind 上反复调 α、cluster 或 abstain 规则的做法都会使覆盖结论失效。 同时必须保留三种不同状态： - semantic_unknown：数据 taxonomy 的真实第 4 类； - model_uncertainty：entropy/MI/conformal set size； - extra_abstain：冻结规则拒绝原本的 known prediction。 它们不能全部改写成 obstacle，也不能全部算成同一个 unknown 指标。",
+    "project_application": "Imported under the report's 3.3 ValUES 与 Kandinsky：先回答“不确定性有没有用”，再谈校准 mechanism group for bounded project comparison.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Imported under the report's 3.3 ValUES 与 Kandinsky：先回答“不确定性有没有用”，再谈校准 mechanism group for bounded project comparison."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The frontier-upgrade report treats this as paper-derived mechanism evidence. It does not independently establish BlindAssist event utility, mobile deployment, BLV user benefit, model promotion, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/frontier-upgrade-2026-07/BLINDASSIST_FRONTIER_PAPER_UPGRADE_REPORT_2026-07.md",
+      "summary": "Legacy source for frontier:VALUES; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated frontier:VALUES from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

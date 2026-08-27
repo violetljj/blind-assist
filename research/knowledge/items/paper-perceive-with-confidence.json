@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "paper-perceive-with-confidence",
+  "kind": "paper",
+  "title": "Perceive With Confidence",
+  "canonical_ref": "https://proceedings.mlr.press/v270/dixit25a.html",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "不知道“没有障碍”还是“感知没看见”",
+  "mechanisms": [
+    {
+      "id": "dtr-dr18",
+      "name": "Perceive With Confidence — dtr:DR18 route mechanism",
+      "description": "用 conformal calibration 把 occupancy perception 与 planner 的不确定联结，为退化/分布偏移保留风险上界",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "室内静态障碍和四足机器人；统计保证依赖校准/偏移假设，不覆盖动态 BLV 事件"
+    },
+    {
+      "id": "taro-t10a",
+      "name": "Perceive With Confidence — taro:T10a route mechanism",
+      "description": "Perceive With Confidence 已把 conformal calibration 与学习感知/规划联结；Explore until Confident 已用 multi-step conformal prediction 校准 EQA 停止。故“conformal + confidence stopping”本身不是 TARO novelty；TARO 的候选差异是 partial-metric factor posterior、body/path clearance、非对称 false-clear risk、人类取证成本和 deterministic reducer，但仍须实验证明。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0",
+    "taro",
+    "adjacent-work",
+    "taro-r0"
+  ],
+  "aliases": [
+    "dtr:DR18",
+    "taro:T10a"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-vicp",
+  "kind": "paper",
+  "title": "VICP",
+  "canonical_ref": "https://openaccess.thecvf.com/content/ICCV2025/html/Huang_Generalizable_Object_Re-Identification_via_Visual_In-Context_Prompting_ICCV_2025_paper.html",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "带标签的类别内 support pairs 可以让 LLM 一次性生成 VFM 调制 prompt，在未见类别 ReID 上优于纯 DINO/triplet；“LLM 辅助生成视觉 prompt”优于每对候选直接让 LLM 判断。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-03",
+      "name": "VICP — goal-audit:03 route mechanism",
+      "description": "（Fig. 2，Sec. 3.2–3.4）：①DINOv2 编码 support 图；②Q-Former 将每图压成 N 个 token；③每对图 token 后拼接 learnable positive/negative label token；④冻结 LLaMA 对 K 对 context 自回归建模，只在 label token 上计算 ICL loss；⑤附加 M 个 learnable visual-prompt tokens，由 LLM 隐状态和两层 visual head 投影到 DINO 维度；⑥把该 prompt 注入 frozen DINOv2 的每一层；⑦CLS 用 margin triplet ID loss；patch token 用正负对 optimal-transport alignment；⑧测试时每类别只生成一次 prompt 并缓存，随后所有候选独立编码和 cosine retrieval。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "它不是 one-reference 方法，核心实验使用 64 个带真值 pair；不提供 proposals、NONE 或 target-absence；所有 retrieval 都在已知类别中进行。论文没有独立 Limitations 节，只在结论把“无 exemplar 的 zero-shot ReID”列为未来工作。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-03",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:03"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

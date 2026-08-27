@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-11",
+  "item_id": "paper-mod-iin-negative-control",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-11"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "①深度与位姿构建占据/自由/前沿图；②最近前沿探索；③SuperPoint 提取目标图与当前图局部点；④SuperGlue 给对应及置信度；⑤置信度和超过 τ=24.5 即 Re-ID；⑥Detic 取包含目标图中心的 mask，只保留前景匹配；⑦当前匹配点由深度反投影到地图；⑧FMM 到最近可达目标点并 STOP（Fig.2、§4）。 4. 训练/依赖：所有视觉与规划器均零微调；唯一数据拟合是用训练 split 的 121 个物体、2270 张 goal images 最大化 pairwise F-measure 选阈值。推理强依赖 RGB-D、可靠位姿、地图、Detic、SuperPoint/SuperGlue 和 FMM。 5. 实验证据：HM3D-SEM 216 scenes，145/36/35 train/val/test；Table 1 中 Mod-IIN SR=.561, SPL=.233, NE=3.096，优于 IIN RL .083 和 OVRL-v2-IIN .248。Table 2 中 match-count 降至 .539，中心 crop 定位 .523，类别定位 .488；ResNet/CLIP 仅 .138/.097。双 oracle 上界 .845，但 oracle Re-ID+预测定位反降至 .498。100 个失败中 Re-ID FN/FP 为 41%/23%，探索/定位/局部导航为 13%/12%/11%；真实 Stretch 仅 7/8。 6. 实际证明：透明模块化方案在该模拟任务和小样本机器人演示中优于特定端到端基线；局部匹配是一个有价值的低复杂度基线。 7. 未证明：匹配点不是物理身份权威；论文自己发现 FP 常来自目标图背景。同一 keypoint evidence 同时负责检测和定位，使错误高度相关。benchmark STOP 也不证明入口、通行或 handoff。 8. 阅读判断：最强点是模块边界与失败归因；最弱假设是局部纹理足以代表实例；隐藏风险是错误背景或重复结构既能触发检测又能产生“合理”地图点。 9. BlindAssist 映射：E 的 2/4 stable distractor 正是这种自洽局部对应的危险；它不处理 1/4 order-sensitive，只能绕开外部 A/B 顺序。 10. 最小适配实验：在 fresh D 的冻结 candidates 上独立输出 MATCH_SUPPORT{candidate_id, confidence_sum, foreground_inliers, spatial_dispersion}，再由对称 comparator 产生 TARGET/DISTRACTOR/NONE；每个候选单独算分并做枚举顺序置换。跑完预注册 D 一次即停；若 wrong-instance commit 不降、controls 不能至少维持历史量级或置换改变结论，即关闭路线。 11. Verdict：NEGATIVE_CONTROL。",
+    "project_application": "E 的 2/4 stable distractor 正是这种自洽局部对应的危险；它不处理 1/4 order-sensitive，只能绕开外部 A/B 顺序。 10. 最小适配实验：在 fresh D 的冻结 candidates 上独立输出 MATCH_SUPPORT{candidate_id, confidence_sum, foreground_inliers, spatial_dispersion}，再由对称 comparator 产生 TARGET/DISTRACTOR/NONE；每个候选单独算分并做枚举顺序置换。跑完预注册 D 一次即停；若 wrong-instance commit 不降、controls 不能至少维持历史量级或置换改变结论，即关闭路线。 11. Verdict：NEGATIVE_CONTROL。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "E 的 2/4 stable distractor 正是这种自洽局部对应的危险；它不处理 1/4 order-sensitive，只能绕开外部 A/B 顺序。 10. 最小适配实验：在 fresh D 的冻结 candidates 上独立输出 MATCH_SUPPORT{candidate_id, confidence_sum, foreground_inliers, spatial_dispersion}，再由对称 comparator 产生 TARGET/DISTRACTOR/NONE；每个候选单独算分并做枚举顺序置换。跑完预注册 D 一次即停；若 wrong-instance commit 不降、controls 不能至少维持历史量级或置换改变结论，即关闭路线。 11. Verdict：NEGATIVE_CONTROL。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "匹配点不是物理身份权威；论文自己发现 FP 常来自目标图背景。同一 keypoint evidence 同时负责检测和定位，使错误高度相关。benchmark STOP 也不证明入口、通行或 handoff。 8. 阅读判断：最强点是模块边界与失败归因；最弱假设是局部纹理足以代表实例；隐藏风险是错误背景或重复结构既能触发检测又能产生“合理”地图点。 9. BlindAssist 映射：E 的 2/4 stable distractor 正是这种自洽局部对应的危险；它不处理 1/4 order-sensitive，只能绕开外部 A/B 顺序。 10. 最小适配实验：在 fresh D 的冻结 candidates 上独立输出 MATCH_SUPPORT{candidate_id, confidence_sum, foreground_inliers, spatial_dispersion}，再由对称 comparator 产生 TARGET/DISTRACTOR/NONE；每个候选单独算分并做枚举顺序置换。跑完预注册 D 一次即停；若 wrong-instance commit 不降、controls 不能至少维持历史量级或置换改变结论，即关闭路线。 11. Verdict：NEGATIVE_CONTROL。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:11; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:11 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

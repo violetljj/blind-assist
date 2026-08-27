@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-l10-18",
+  "item_id": "paper-closing-the-gap-designing-for-the-last-few-meters-wayfinding-problem-for",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "l10-18"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "通过视障参与者研究明确“到达附近”与找到准确店面/入口之间的 last-few-meters 缺口。",
+    "project_application": "用它定义产品端点和反馈：算法的“near”不能替代找到可行动入口，更不能替代用户确认。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "用它定义产品端点和反馈：算法的“near”不能替代找到可行动入口，更不能替代用户确认。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "这是需求与设计证据，不是自主 metric-arrival 算法或完成 verifier。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/l10-r0/LITERATURE_RESERVE_20_2026-08-27.md",
+      "summary": "Legacy source for l10:18; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated l10:18 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

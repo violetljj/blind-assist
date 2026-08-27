@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-detector-lab-idea-rt-detr",
+  "item_id": "project-rt-detr-official-project",
+  "route": "detector-lab",
+  "mechanism_ids": [
+    "idea-rt-detr"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "component",
+  "usage": {
+    "source_scope": "Real-time transformer detector family retained only as a detector-adapter comparison candidate.",
+    "project_application": "Compare through the same proposal and event contract; public AP or speed cannot independently authorize a default detector change.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Compare through the same proposal and event contract; public AP or speed cannot independently authorize a default detector change."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The project does not establish BlindAssist event recall, critical-miss behavior, phone latency, BLV benefit, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/history/idea/IDEA_ARCHIVE_THROUGH_2026-07-28.md",
+      "summary": "Legacy source for idea:RT-DETR; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated idea:RT-DETR from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

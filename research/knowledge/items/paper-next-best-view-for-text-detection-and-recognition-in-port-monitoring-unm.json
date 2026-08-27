@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-next-best-view-for-text-detection-and-recognition-in-port-monitoring-unm",
+  "kind": "paper",
+  "title": "Next Best View for Text Detection and Recognition in Port Monitoring Unmanned Aerial Vehicles",
+  "canonical_ref": "https://www.inf.uni-hamburg.de/en/inst/ab/cv/media/guelsoylu-etal-igd-grc2026.pdf",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "用视角、距离、视线遮挡与运动代价构造文字 legibility utility。",
+  "mechanisms": [
+    {
+      "id": "l10-11",
+      "name": "Next Best View for Text Detection and Recognition in Port Monitoring Unmanned Aerial Vehicles — l10:11 route mechanism",
+      "description": "用视角、距离、视线遮挡与运动代价构造文字 legibility utility。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "无人机/集装箱 ID；legibility utility 未证明适用于手持相机、步行控制或自然室内标牌。"
+    }
+  ],
+  "tags": [
+    "l10",
+    "literature-reserve",
+    "l10-r0"
+  ],
+  "aliases": [
+    "l10:11"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

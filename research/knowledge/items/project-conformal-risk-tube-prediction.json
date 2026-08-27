@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "project-conformal-risk-tube-prediction",
+  "kind": "project",
+  "title": "Conformal Risk Tube Prediction",
+  "canonical_ref": "https://github.com/HCIS-Lab/CRTP",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "报警过早/过晚、在时空上闪烁、对不确定未来过度自信",
+  "mechanisms": [
+    {
+      "id": "dtr-dr12",
+      "name": "Conformal Risk Tube Prediction — dtr:DR12 route mechanism",
+      "description": "经 conformal calibration 的时空 risk tube；评估 coverage、onset/release、Risk-IoU 与 nuisance duration",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "ICRA 2026 新项目，车辆/CARLA 域、旧 CUDA 环境且外部复现少；概率覆盖不等于 BLV 安全"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR12"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

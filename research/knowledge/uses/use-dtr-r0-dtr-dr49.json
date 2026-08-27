@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr49",
+  "item_id": "paper-scope-stochastic-cartographic-occupancy-prediction-engine-for-uncertaint",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr49"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Use one stochastic occupancy representation for ego motion, moving agents, and static geometry, optimized for resource-constrained real-time navigation.",
+    "project_application": "On current native sources, compare the common occupancy future with R3 on calibration, event recall, false segments, lead time, and turn strata.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "On current native sources, compare the common occupancy future with R3 on calibration, event recall, false segments, lead time, and turn strata."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Robot occupancy grids do not establish phone-RGB inference, head clearance, or user benefit. This is distinct from DR10 SOGMP/SOGMP++."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/dtr-r0/LITERATURE_RESERVE_2026-08-27.md",
+      "summary": "Legacy source for dtr:DR49; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR49 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

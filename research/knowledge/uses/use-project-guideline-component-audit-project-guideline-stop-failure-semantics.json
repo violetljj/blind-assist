@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-project-guideline-component-audit-project-guideline-stop-failure-semantics",
+  "item_id": "tool-project-guideline",
+  "route": "project-guideline-component-audit",
+  "mechanism_ids": [
+    "project-guideline-stop-failure-semantics"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Project Guideline 的做法。 ControlSignalLite 把 stop 与类型化 StopReason 一起传递，现有原因包括应用主动停止、跟踪状态变化、连续无关键点、 横向量异常和无有效运动 （control_signal.proto）。 跟踪丢失和无关键点超时会清空环境并发出 STOP （guidance_system.cc）。 BlindAssist 已有对应。 - [AssistRuntimeStateMachine.kt](../feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimeStateMachine.kt) 已处理启动、运行、暂停、权限拒绝和相机错误。 - [FeedbackModels.kt](../core/assist/src/main/java/com/linnan/blindassist/feedback/FeedbackModels.kt) 已有类型化反馈原因。 - [UstrfContracts.kt](../core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfContracts.kt) 已有 STOP_AND_REASSESS 及感知过期、位姿丢失、坐标帧不匹配、热降级等原因。 真实缺口。 正式运行时错误仍主要是自由文本 Error(message) / CameraSourceFailed(message)；USTRF 原因、反馈原因、相机错误和 NPU 回退原因彼此 分散，无法稳定聚合“为什么本帧没有给出提醒”。 允许的借鉴。 后续仅增加一层稳定原因码与现有类型的映射；STOP/暂停/错误仍由 现有状态机执行。原因码至少区分： - 用户主动停止； - 权限、相机、模型或后端不可用； - 输入过期、时钟域未知、坐标帧不匹配； - 感知证据不足或质量降级； - 热状态降级； - 反馈设备不可用或冷却抑制。 停止线。 不复制 Project Guideline 的 ControlSystem，不把 USTRF 影子 STOP 接成 用户导航命令，不声称类型化原因码提升了安全性。",
+    "project_application": "Project Guideline 的做法。 ControlSignalLite 把 stop 与类型化 StopReason 一起传递，现有原因包括应用主动停止、跟踪状态变化、连续无关键点、 横向量异常和无有效运动 （control_signal.proto）。 跟踪丢失和无关键点超时会清空环境并发出 STOP （guidance_system.cc）。 BlindAssist 已有对应。 - [AssistRuntimeStateMachine.kt](../feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimeStateMachine.kt) 已处理启动、运行、暂停、权限拒绝和相机错误。 - [FeedbackModels.kt](../core/assist/src/main/java/com/linnan/blindassist/feedback/FeedbackModels.kt) 已有类型化反馈原因。 - [UstrfContracts.kt](../core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfContracts.kt) 已有 STOP_AND_REASSESS 及感知过期、位姿丢失、坐标帧不匹配、热降级等原因。 真实缺口。 正式运行时错误仍主要是自由文本 Error(message) / CameraSourceFailed(message)；USTRF 原因、反馈原因、相机错误和 NPU 回退原因彼此 分散，无法稳定聚合“为什么本帧没有给出提醒”。 允许的借鉴。 后续仅增加一层稳定原因码与现有类型的映射；STOP/暂停/错误仍由 现有状态机执行。原因码至少区分： - 用户主动停止； - 权限、相机、模型或后端不可用； - 输入过期、时钟域未知、坐标帧不匹配； - 感知证据不足或质量降级； - 热状态降级； - 反馈设备不可用或冷却抑制。 停止线。 不复制 Project Guideline 的 ControlSystem，不把 USTRF 影子 STOP 接成 用户导航命令，不声称类型化原因码提升了安全性。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Project Guideline 的做法。 ControlSignalLite 把 stop 与类型化 StopReason 一起传递，现有原因包括应用主动停止、跟踪状态变化、连续无关键点、 横向量异常和无有效运动 （control_signal.proto）。 跟踪丢失和无关键点超时会清空环境并发出 STOP （guidance_system.cc）。 BlindAssist 已有对应。 - [AssistRuntimeStateMachine.kt](../feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimeStateMachine.kt) 已处理启动、运行、暂停、权限拒绝和相机错误。 - [FeedbackModels.kt](../core/assist/src/main/java/com/linnan/blindassist/feedback/FeedbackModels.kt) 已有类型化反馈原因。 - [UstrfContracts.kt](../core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfContracts.kt) 已有 STOP_AND_REASSESS 及感知过期、位姿丢失、坐标帧不匹配、热降级等原因。 真实缺口。 正式运行时错误仍主要是自由文本 Error(message) / CameraSourceFailed(message)；USTRF 原因、反馈原因、相机错误和 NPU 回退原因彼此 分散，无法稳定聚合“为什么本帧没有给出提醒”。 允许的借鉴。 后续仅增加一层稳定原因码与现有类型的映射；STOP/暂停/错误仍由 现有状态机执行。原因码至少区分： - 用户主动停止； - 权限、相机、模型或后端不可用； - 输入过期、时钟域未知、坐标帧不匹配； - 感知证据不足或质量降级； - 热状态降级； - 反馈设备不可用或冷却抑制。 停止线。 不复制 Project Guideline 的 ControlSystem，不把 USTRF 影子 STOP 接成 用户导航命令，不声称类型化原因码提升了安全性。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The component decision is ADAPT. The audit absorbs only the stated engineering boundary; it does not import the full C++/Bazel/MediaPipe/ARCore/Unreal stack or establish dynamic-risk, grounding, user, product, or safety evidence."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/PROJECT_GUIDELINE_COMPONENT_ADAPTATION_AUDIT_2026-07-30.md",
+      "summary": "Legacy source for project-guideline:stop-failure-semantics; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated project-guideline:stop-failure-semantics from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

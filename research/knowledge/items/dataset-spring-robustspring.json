@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "dataset-spring-robustspring",
+  "kind": "dataset",
+  "title": "Spring + RobustSpring",
+  "canonical_ref": "https://spring-benchmark.org",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "模糊、天气、噪声、压缩和深度/双目不一致时，何时应退出",
+  "mechanisms": [
+    {
+      "id": "dtr-dr28",
+      "name": "Spring + RobustSpring — dtr:DR28 route mechanism",
+      "description": "真实高分辨率 flow/disparity/scene-flow truth + 20 类时序一致退化；生成质量–coverage–abstention 曲线",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "汽车 stereo/4K 离线 benchmark；对 corruption 稳健不证明助盲事件或手机时延"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR28"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

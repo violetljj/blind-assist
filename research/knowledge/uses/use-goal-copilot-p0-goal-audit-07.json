@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-07",
+  "item_id": "paper-clover-mapclover",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-07"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "（Fig. 1，Sec. IV–V）：①将 box 扩成以长边加固定 margin 的正方形 crop，实验 margin 10 pixels；②冻结 DINOv2 ViT-L/14，仅训练各层 adapters；③对 adapted patch tokens 做 GeM pooling；④再用 encoder MLP 得到 1024-D descriptor；⑤训练期经 128-D projection head，用 supervised contrastive loss，让同一实例跨视角/天气聚合、全 batch 异实例分开；⑥做 color jitter、box shift、crop scale、rotation、random erasing；⑦推理丢弃 projection head，用 cosine；⑧MapCLOVER 对同实例历史 descriptors 做 k-means，保留有限 cluster centers，并以最大 cosine 匹配新观察。",
+    "project_application": "它用独立 unary descriptor，能消除 B0 的槽位顺序问题；对静态 entrance/building 值得测。但 2/4 stable distractor 说明必须区分真正目标外观与稳定背景偏置，不能把 context-only match 升为 identity authority。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "同一 frozen CLOVER encoder 做两臂：tight crop 与预冻结 margin context；每候选独立 cosine，输出 TARGET/NONE。按场景是否共享 reference 背景分层。若增益只出现在背景重合样本、换 crop margin 后身份翻转、或 context arm 增加 same-class wrong commit，即停止 context 路线；若 tight crop 仍稳定增益才保留 encoder。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "结论明确说不适合人和车等背景会变的动态对象。CODa 的实例标签由全局位置建立，训练/测试仍共享校园环境，无法排除 location/context shortcut；retrieval 候选预先限制为相同 detector class，也没有 NONE calibration。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:07; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:07 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

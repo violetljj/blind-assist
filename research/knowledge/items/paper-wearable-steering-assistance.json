@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-wearable-steering-assistance",
+  "kind": "paper",
+  "title": "Wearable Steering Assistance",
+  "canonical_ref": "https://arxiv.org/abs/2408.00332",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "共享主干联合跑道边界感知、障碍检测与路径规划",
+  "mechanisms": [
+    {
+      "id": "ustrf-p06",
+      "name": "Wearable Steering Assistance — ustrf:P06 route mechanism",
+      "description": "共享主干联合跑道边界感知、障碍检测与路径规划",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "ICRA 系统证据；结构化跑道、约千图数据和 Orin NX 不能外推开放街道/手机"
+    }
+  ],
+  "tags": [
+    "ustrf",
+    "frontier-guide",
+    "ustrf-sc"
+  ],
+  "aliases": [
+    "ustrf:P06"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

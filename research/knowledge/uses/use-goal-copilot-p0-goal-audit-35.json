@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-35",
+  "item_id": "paper-rebase-reference-background-subspace-elimination-for-training-free-in-co",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-35"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "① 冻结 DINOv2 ViT-L/14（518²）和 SAM ViT-H（1024²）；② 对 reference mask 做 patch 面积平均，得到软前景覆盖率；③ reference 每个前景 patch 都作为 prototype，先对 query patch 计算覆盖率加权 mean cosine；④ 用阈值 τ_b=.08 选 reference background patches；⑤ 堆叠其 DINO feature 做 thin SVD，取前 s=ceil(r·n_BG) 个右奇异向量构成背景子空间 B，主文默认 r=.005；⑥ 对 reference 和 query 对称投影 F←F(I−BBᵀ)，删除该 episode 的背景方向并重算相似图；⑦ 在 Ω={S≥μ_positive+σ_positive/2} 中以 similarity-weighted FPS 取 K=8 点，兼顾分数与空间分散（α=.5）；⑧ 相似图 z-normalize 后按均值二值化、3×3 erosion，区域外写背景 logit −2，形成 SAM dense prior；⑨ 正点+dense prior 一次送入冻结 SAM 得最终 mask。",
+    "project_application": "stable distractor：能去 reference-background shortcut，却不能提供独立 exact-instance confirmation；顺序偏差：逐图 dense field 不依赖 candidate list，若用于候选独立预处理可消除列表位置竞争；NONE：原法不支持且会强制正点。它更适合作为 identity encoder 前的去背景机制，而不是用最终 mask 证明身份。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "只移植 SVD 投影：以 reference mask 的背景 patch 建 B，分别对 reference 和每个 candidate 的特征投影，再交给当前冻结 identity scorer；不启用 SW-FPS/SAM 作为身份裁决。预先固定 rank 与绝对 gate，对真目标/稳定同类干扰物的 margin、candidate permutation 一致性和 absent false accept 做 paired 对比。若只提高二者共同相似度、降低真目标 margin 或不能产生全拒绝，则判该机制对身份任务无效。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "FSS/parts/lesion/lung 都是 category/part/region correspondence，不测试 same-class exact identity，更不测试同型号不同物理实例。方法没有 target-absent protocol：只要相似图存在数值，就构造候选区域并取 K 个正点，SAM 会被推动生成 mask。没有候选级置信校准、顺序测试或真实入口。官方仓库在核验时只有 README/figures，并写明 “Code release coming soon”，论文中的完整实现暂不能复现审计。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-mainline-additional-10-deep-reading-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:35; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:35 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

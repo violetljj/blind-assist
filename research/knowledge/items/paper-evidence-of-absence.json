@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-evidence-of-absence",
+  "kind": "paper",
+  "title": "Evidence of Absence",
+  "canonical_ref": "https://arxiv.org/abs/2608.14952",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "相机被挡或路口遮挡时，引擎/胎噪已出现而视觉共证据缺失",
+  "mechanisms": [
+    {
+      "id": "dtr-dr21",
+      "name": "Evidence of Absence — dtr:DR21 route mechanism",
+      "description": "声学方位/接近证据 + “应有视觉但缺失”的跨模态 advisory；在明确假阳预算下只提醒不控制",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "2026-08 工作草稿；移动 ego 噪声是主阻塞，安静电动车/自行车反而是弱项，不能当通用解法"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR21"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

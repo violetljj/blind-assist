@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-visual-navigation-using-sparse-optical-flow-and-time-to-transit",
+  "kind": "paper",
+  "title": "Visual Navigation Using Sparse Optical Flow and Time-to-Transit",
+  "canonical_ref": "https://arxiv.org/abs/2111.09669",
+  "authors": [],
+  "year": 2021,
+  "venue": "",
+  "summary": "从 sparse optical flow 计算 time-to-transit；给出理想化 steering law，并用 ROS/Gazebo 与 Jackal robot 实验。实现使用 pyramidal LK、ORB 与多个 ROI；正文明确 perceived tau 在速度、航向或相机对齐不满足时会失真。",
+  "mechanisms": [
+    {
+      "id": "rcle-e5",
+      "name": "Visual Navigation Using Sparse Optical Flow and Time-to-Transit — rcle:E5 route mechanism",
+      "description": "从 sparse optical flow 计算 time-to-transit；给出理想化 steering law，并用 ROS/Gazebo 与 Jackal robot 实验。实现使用 pyramidal LK、ORB 与多个 ROI；正文明确 perceived tau 在速度、航向或相机对齐不满足时会失真。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "不能把机器人走廊控制结果外推为视障用户碰撞预警、手机端性能或产品安全。"
+    }
+  ],
+  "tags": [
+    "rcle",
+    "motion",
+    "related-work"
+  ],
+  "aliases": [
+    "rcle:E5"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

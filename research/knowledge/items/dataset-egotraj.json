@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "dataset-egotraj",
+  "kind": "dataset",
+  "title": "EgoTraj",
+  "canonical_ref": "https://github.com/yehiahmad/EgoTraj",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "穿戴者在真实城市中的多模态短/长期路径分支",
+  "mechanisms": [
+    {
+      "id": "dtr-dr29",
+      "name": "EgoTraj — dtr:DR29 route mechanism",
+      "description": "75 段同步 RGB、6DoF 头部 pose、3D gaze 和场景标注；可检验 gaze/头动/历史对 wearer-path prediction 的增量",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "2026 预印本，预测的是穿戴者本身轨迹，不是其他目标进入身体路径或碰撞 truth"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR29"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

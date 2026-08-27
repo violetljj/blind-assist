@@ -22,7 +22,9 @@ research/knowledge/
   README.md
   items/   # 一项外部知识一个 JSON 文件
   uses/    # 一条 route × item 使用关系一个 JSON 文件
+  migrations/ # 一次性迁移覆盖清单；不是第二份知识正文
 tools/knowledge.py
+tools/migrate_scattered_knowledge.py
 ```
 
 PDF、源码快照、模型和原始复现实验输出不进 Git；放在
@@ -40,6 +42,10 @@ python tools/knowledge.py search "occlusion"
 python tools/knowledge.py show paper-deepsolo-2023
 python tools/knowledge.py show use-grail-r1c-p-orient-anything-v2
 ```
+
+`validate` 也会核对迁移清单中的每个旧编号/派生键：它必须能解析到一个
+canonical item，而且清单声明的 use 必须存在并真正属于该 item。这样批量迁移
+不会只凭“生成了很多文件”就被视为完成。
 
 `list/search --json` 可向路线代码或 agent 返回完整结构化结果。item 的
 canonical id、aliases 和全文字段都能被 `search/show` 解析。
@@ -93,6 +99,35 @@ python tools/knowledge.py update-use use-example-route-mechanism --state active 
 4. 历史失败和 consumed evidence 可以作为知识与诊断，但不会因入库恢复
    fresh/confirmation authority。
 
-当前三个种子覆盖候选机制和项目内证伪两类情形。原有 L10 与 DTR 文献储备
-仍作为 provenance 保留；已结构化条目用 `l10:1`、`dtr:DR45` 等 aliases
-承接旧编号，后续可逐条迁入而不复制成第二套身份。
+## 2026-08-28 散落知识迁移
+
+迁移收据位于
+`migrations/migration-scattered-knowledge-2026-08-28.json`。它冻结了 15 组
+来源、204 条旧知识映射及各来源内容哈希，覆盖：
+
+- DTR `DR01–DR60`、L10 `1–20`、USTRF `P01–P13`、RCLE `E1–E5`；
+- Goal Copilot prior-art 表和两轮共 40 篇逐篇深读；
+- Frontier Upgrade 14 篇、HFTF 9 个相邻工作、TARO 16 个相邻工作；
+- Project Guideline 八项组件吸收决定；
+- IDEA archive 中可唯一规范化的来源，以及无法可靠拆回单篇来源的联合综述。
+
+跨清单同一来源只保留一个 item，例如 Project Guideline、GuideTouch、
+Closing the Gap、Depth Anything V2 和 AI Guide Dog；各路线的判断仍是独立 use。
+迁移后库内共有 191 个 canonical items、206 个 route uses、14 个 routes。
+
+迁移同时恢复了已有项目结果，而没有把“阅读过”误写成“复现过”：NearID-style
+冻结适配臂记录为 `partial + negative`，analytic spatial-layout 臂记录为
+`partial + mixed + rejected`，ABotN official waypoint 记录为 metric-arrival
+成立但 visual handoff 未成立，Orient Anything V2 的 GRAIL 使用继续保留原有
+`falsified` 边界。
+
+本机仍保留两份 hash 绑定的 `artifacts.local` 深读原文时，可复核迁移是否与冻结
+来源完全一致：
+
+```powershell
+python tools/migrate_scattered_knowledge.py --check
+```
+
+该命令是迁移审计工具，不是日常新增入口。其他机器没有这两份本地深读报告时，
+知识库和 `knowledge.py validate/list/search/show` 仍可正常使用；不要为通过
+`--check` 而伪造报告。后续新知识直接新增 item/use，不追加到旧迁移收据。

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr28",
+  "item_id": "dataset-spring-robustspring",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr28"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "真实高分辨率 flow/disparity/scene-flow truth + 20 类时序一致退化；生成质量–coverage–abstention 曲线",
+    "project_application": "真实高分辨率 flow/disparity/scene-flow truth + 20 类时序一致退化；生成质量–coverage–abstention 曲线",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "真实高分辨率 flow/disparity/scene-flow truth + 20 类时序一致退化；生成质量–coverage–abstention 曲线"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "汽车 stereo/4K 离线 benchmark；对 corruption 稳健不证明助盲事件或手机时延"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "summary": "Legacy source for dtr:DR28; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR28 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

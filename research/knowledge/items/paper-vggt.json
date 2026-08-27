@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-vggt",
+  "kind": "paper",
+  "title": "VGGT",
+  "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2025/html/Wang_VGGT_Visual_Geometry_Grounded_Transformer_CVPR_2025_paper.html",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "MapAnything、 VGGT 与 MASt3R-SLAM 表明 feed-forward metric geometry 与 reconstruction prior 已很强；它们适合作为 proposal、teacher、 initializer 或 upper bound，而不是 TARO 的独立 metric anchor、O0R truth 或三态裁判。 因此，可检验的论文空位不是“校准 + NBV”“人体条件化”或“扫掠体积认证”，而是： > under partial metric evidence and human-constrained sensing, full state can remain underdetermined > while a body/path-specific task functional becomes locally identifiable; when it does not, bounded > evidence selection must reduce query risk without hiding false-clear, coverage or interaction cost. 高质量组合可以成为贡献，但论文必须证明共同 contract、条件调用与 interaction gain；仅把若干强模块 接成 pipeline，或分别引用它们的单项成绩，都不能建立 TARO 的联合主张。",
+  "mechanisms": [
+    {
+      "id": "taro-t11b",
+      "name": "VGGT — taro:T11b route mechanism",
+      "description": "MapAnything、 VGGT 与 MASt3R-SLAM 表明 feed-forward metric geometry 与 reconstruction prior 已很强；它们适合作为 proposal、teacher、 initializer 或 upper bound，而不是 TARO 的独立 metric anchor、O0R truth 或三态裁判。 因此，可检验的论文空位不是“校准 + NBV”“人体条件化”或“扫掠体积认证”，而是： > under partial metric evidence and human-constrained sensing, full state can remain underdetermined > while a body/path-specific task functional becomes locally identifiable; when it does not, bounded > evidence selection must reduce query risk without hiding false-clear, coverage or interaction cost. 高质量组合可以成为贡献，但论文必须证明共同 contract、条件调用与 interaction gain；仅把若干强模块 接成 pipeline，或分别引用它们的单项成绩，都不能建立 TARO 的联合主张。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+    }
+  ],
+  "tags": [
+    "taro",
+    "adjacent-work",
+    "taro-r0"
+  ],
+  "aliases": [
+    "taro:T11b"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

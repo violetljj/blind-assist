@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-textslam-visual-slam-with-semantic-planar-text-features",
+  "kind": "paper",
+  "title": "TextSLAM: Visual SLAM With Semantic Planar Text Features",
+  "canonical_ref": "https://arxiv.org/abs/2305.10029",
+  "authors": [],
+  "year": 2023,
+  "venue": "",
+  "summary": "把文字建模为带语义的平面地标，并联合纹理、平面几何与在线语义更新形成 3D text map。",
+  "mechanisms": [
+    {
+      "id": "l10-15",
+      "name": "TextSLAM: Visual SLAM With Semantic Planar Text Features — l10:15 route mechanism",
+      "description": "把文字建模为带语义的平面地标，并联合纹理、平面几何与在线语义更新形成 3D text map。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "是建图/定位工作；没有主动补观测、目标靠近、功能入口或用户完成证据。"
+    }
+  ],
+  "tags": [
+    "l10",
+    "literature-reserve",
+    "l10-r0"
+  ],
+  "aliases": [
+    "l10:15"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

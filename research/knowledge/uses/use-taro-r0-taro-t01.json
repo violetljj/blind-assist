@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-taro-r0-taro-t01",
+  "item_id": "paper-online-self-calibration-for-vins",
+  "route": "taro-r0",
+  "mechanism_ids": [
+    "taro-t01"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "Online Self-Calibration for VINS 已系统分析完整 VINS 自标定与退化运动；TARO 必须继承“欠激励时只更新可识别子空间”的事实。",
+    "project_application": "Online Self-Calibration for VINS 已系统分析完整 VINS 自标定与退化运动；TARO 必须继承“欠激励时只更新可识别子空间”的事实。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Online Self-Calibration for VINS 已系统分析完整 VINS 自标定与退化运动；TARO 必须继承“欠激励时只更新可识别子空间”的事实。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/taro/TARO_R0_RESEARCH_ROUTE_GUIDE_2026-08-10.md",
+      "summary": "Legacy source for taro:T01; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated taro:T01 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

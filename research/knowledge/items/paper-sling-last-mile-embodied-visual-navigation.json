@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-sling-last-mile-embodied-visual-navigation",
+  "kind": "paper",
+  "title": "SLING — Last-Mile Embodied Visual Navigation",
+  "canonical_ref": "https://proceedings.mlr.press/v205/wasserman23a/wasserman23a.pdf",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "它证明把已发现目标后的局部几何和长程语义探索分开是有效工程分层，也证明退出/恢复比单向 handoff 重要。它不证明局部 correspondence 是 physical-instance identity；ImageNav 的目标是整张场景视点，背景本来就是合法定位信号。它假设 depth、pose、partial overlap 和正确目标邻域，且只作一次 last-mile pose prediction；真实 hard success 20% 仍很低。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-25",
+      "name": "SLING — Last-Mile Embodied Visual Navigation — goal-audit:25 route mechanism",
+      "description": "SuperPoint 类神经兴趣点提取当前/目标局部描述，SuperGlue 的 GNN+optimal transport 做 partial match；当前图匹配点用 depth 抬升为 3D，目标图保留 2D，经 ePnP+RANSAC 求目标相机相对旋转和平移；由平移得到距离与 heading，交给障碍感知局部 metric-map policy。匹配数超过阈值才 explore→exploit；PnP 失败或估距 >4 m 则 exploit→explore，避免一次错误切换永久锁死。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "它证明把已发现目标后的局部几何和长程语义探索分开是有效工程分层，也证明退出/恢复比单向 handoff 重要。它不证明局部 correspondence 是 physical-instance identity；ImageNav 的目标是整张场景视点，背景本来就是合法定位信号。它假设 depth、pose、partial overlap 和正确目标邻域，且只作一次 last-mile pose prediction；真实 hard success 20% 仍很低。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-25",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:25"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

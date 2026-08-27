@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-l10-11",
+  "item_id": "paper-next-best-view-for-text-detection-and-recognition-in-port-monitoring-unm",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "l10-11"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "用视角、距离、视线遮挡与运动代价构造文字 legibility utility。",
+    "project_application": "把通用 EIG 改成可解释的 deficit-specific 观测策略：预测哪一个小动作最可能让目标文字变得可读。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "把通用 EIG 改成可解释的 deficit-specific 观测策略：预测哪一个小动作最可能让目标文字变得可读。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "无人机/集装箱 ID；legibility utility 未证明适用于手持相机、步行控制或自然室内标牌。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/l10-r0/LITERATURE_RESERVE_20_2026-08-27.md",
+      "summary": "Legacy source for l10:11; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated l10:11 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

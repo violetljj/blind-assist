@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-mind",
+  "kind": "paper",
+  "title": "MinD：动态环境中的实时最优局部避碰路径",
+  "canonical_ref": "https://openaccess.thecvf.com/content/ICCV2023W/ACVR/html/Surougi_Real-Time_Optimisation-Based_Path_Planning_for_Visually_Impaired_People_in_Dynamic_ICCVW_2023_paper.html",
+  "authors": [],
+  "year": 2023,
+  "venue": "",
+  "summary": "知道要避让，但不知道怎样最小移动才避开车/摩托",
+  "mechanisms": [
+    {
+      "id": "dtr-dr05",
+      "name": "MinD：动态环境中的实时最优局部避碰路径 — dtr:DR05 route mechanism",
+      "description": "把目标类型、运动模式、TTC 和用户移动约束合成局部避碰优化",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "实车原型参数驱动的模拟不等于开放人行道用户试验；它假设目标跟踪与碰撞时间已可用"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR05"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

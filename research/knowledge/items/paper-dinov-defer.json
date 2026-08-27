@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-dinov-defer",
+  "kind": "paper",
+  "title": "DINOv — DEFER",
+  "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2024/html/Li_Visual_In-Context_Prompting_CVPR_2024_paper.html",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "视觉 prompts 可以统一 generic 与 referring proposal/segmentation；多尺度 prompt encoder 比 CLIP crop 更合适。 7. 未证明：generic 的正确答案本来就是所有同类实例；referring 未在真实跨视角 pair 上训练。无 NONE 与物理身份协议；VOS memory 还会把早期错 mask 平均进后续 prompt，存在 memory poisoning。 8. 阅读判断：最强 idea 是用同一 decoder 但不同分类轴表达 generic/referring；最弱是把同图自指泛化解释为跨图 referring 能力。隐藏失败是第一个错实例进入 8-frame memory 后越来越稳定。 9. BlindAssist 映射：visible 已有 20/21 FOUND，主要瓶颈不是 proposal 数量；E 的 2/4 stable distractor 会被 generic/category 训练强化，memory 也与当前不恢复 persistence 的边界冲突。 10. 最小适配实验：若以后重开，只允许 referring mode、关闭 VOS memory、full-frame 单次输出 MASK_SUPPORT，再独立映射 candidates；禁止 generic aggregation。fresh D 一次即停；若 same-class wrong commit 不降或 NONE 仍强制出 mask，就不再接 selection/control。 11. Verdict：DEFER；仅在现有 reference-conditioned proposal 覆盖退化时再考虑。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-17",
+      "name": "DINOv — DEFER — goal-audit:17 route mechanism",
+      "description": "①Swin-T/L 多尺度编码；②三层 masked cross-attention prompt encoder 提 reference features；③generic 按类别聚合多个 prompts，referring 取单实例 prompt；④同时构造 300 generic latent queries 与多粒度 point queries；⑤共享 MaskDINO decoder 生成 proposals 和 target-adapted prompt features；⑥dot-product PromptClassifier，generic 以 proposal→prompt 为分类轴，referring 以 prompt→proposal 为轴；⑦20×20 grid point inference；⑧VOS 把最近 8 个预测 mask features 与首帧 prompt 平均（Fig.3–5、App.A/B）。 4. 训练/依赖：COCO2017 约110k图 + 20% SA-1B约2M图。决定性细节：referring training 是“self-referring”，reference image 与 target image 完全相同；跨图 referring 只在推理时声称泛化。generic training 才跨图按语义类别聚合正负样本。 5. 实验证据：Table 1 DINOv-L 在 COCO PQ=57.7，接近 MaskDINO 58.3；ADE zero-shot PQ=23.2，SegInW AP avg/median=40.6/44.6。Table 3 DINOv-T DAVIS17 J&F=73.3。Table 4 双 query 的 COCO PQ/DAVIS=49.6/73.3，仅 point=45.2/71.4，仅 generic=46.2/68.9。Table 7 prompt batch 1→64 时 PQ 28.9→49.0，说明类别级跨图 sampling 是重要来源。 6. 实际证明：视觉 prompts 可以统一 generic 与 referring proposal/segmentation；多尺度 prompt encoder 比 CLIP crop 更合适。 7. 未证明：generic 的正确答案本来就是所有同类实例；referring 未在真实跨视角 pair 上训练。无 NONE 与物理身份协议；VOS memory 还会把早期错 mask 平均进后续 prompt，存在 memory poisoning。 8. 阅读判断：最强 idea 是用同一 decoder 但不同分类轴表达 generic/referring；最弱是把同图自指泛化解释为跨图 referring 能力。隐藏失败是第一个错实例进入 8-frame memory 后越来越稳定。 9. BlindAssist 映射：visible 已有 20/21 FOUND，主要瓶颈不是 proposal 数量；E 的 2/4 stable distractor 会被 generic/category 训练强化，memory 也与当前不恢复 persistence 的边界冲突。 10. 最小适配实验：若以后重开，只允许 referring mode、关闭 VOS memory、full-frame 单次输出 MASK_SUPPORT，再独立映射 candidates；禁止 generic aggregation。fresh D 一次即停；若 same-class wrong commit 不降或 NONE 仍强制出 mask，就不再接 selection/control。 11. Verdict：DEFER；仅在现有 reference-conditioned proposal 覆盖退化时再考虑。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "generic 的正确答案本来就是所有同类实例；referring 未在真实跨视角 pair 上训练。无 NONE 与物理身份协议；VOS memory 还会把早期错 mask 平均进后续 prompt，存在 memory poisoning。 8. 阅读判断：最强 idea 是用同一 decoder 但不同分类轴表达 generic/referring；最弱是把同图自指泛化解释为跨图 referring 能力。隐藏失败是第一个错实例进入 8-frame memory 后越来越稳定。 9. BlindAssist 映射：visible 已有 20/21 FOUND，主要瓶颈不是 proposal 数量；E 的 2/4 stable distractor 会被 generic/category 训练强化，memory 也与当前不恢复 persistence 的边界冲突。 10. 最小适配实验：若以后重开，只允许 referring mode、关闭 VOS memory、full-frame 单次输出 MASK_SUPPORT，再独立映射 candidates；禁止 generic aggregation。fresh D 一次即停；若 same-class wrong commit 不降或 NONE 仍强制出 mask，就不再接 selection/control。 11. Verdict：DEFER；仅在现有 reference-conditioned proposal 覆盖退化时再考虑。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-17",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:17"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

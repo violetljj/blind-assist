@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-a-generalized-continuous-collision-detection-framework-of-polynomial-tra",
+  "kind": "paper",
+  "title": "A Generalized Continuous Collision Detection Framework of Polynomial Trajectory for Mobile Robots in Cluttered Environments",
+  "canonical_ref": "https://doi.org/10.1109/lra.2022.3191934",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Solve continuous time-of-impact along polynomial/nonholonomic trajectories instead of relying on discrete route samples.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr55",
+      "name": "A Generalized Continuous Collision Detection Framework of Polynomial Trajectory for Mobile Robots in Cluttered Environments — dtr:DR55 route mechanism",
+      "description": "Solve continuous time-of-impact along polynomial/nonholonomic trajectories instead of relying on discrete route samples.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "Known geometry and robot trajectories; no target uncertainty, wearable sensing, or user evidence."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR55"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "paper-sam-2-segment-anything-in-images-and-videos",
+  "kind": "paper",
+  "title": "SAM 2: Segment Anything in Images and Videos",
+  "canonical_ref": "https://arxiv.org/abs/2408.00714",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "Prompted image/video mask propagation retained as an offline annotation, occlusion, teacher, or upper-bound mechanism.",
+  "mechanisms": [
+    {
+      "id": "idea-sam2",
+      "name": "SAM 2: Segment Anything in Images and Videos — idea:SAM2 route mechanism",
+      "description": "Prompted image/video mask propagation retained as an offline annotation, occlusion, teacher, or upper-bound mechanism.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "SAM 2 masks do not create target identity, route relevance, event truth, user outcome, real-time phone feasibility, or safety authority."
+    }
+  ],
+  "tags": [
+    "idea-archive",
+    "offline-annotation"
+  ],
+  "aliases": [
+    "idea:SAM2"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

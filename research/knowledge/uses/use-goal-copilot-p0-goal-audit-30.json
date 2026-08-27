@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-30",
+  "item_id": "paper-improving-vpr-based-robot-navigation-by-verifying-localization-estimates",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-30"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "不是只阈值化 top-1 distance，而是从四个向量——全 match distances、query feature、top-reference feature、二者差——各提 48 个统计量，拼成 192D；4×128 MLP 用加权 MSE 预测 in/out-of-tolerance，α>1 偏向惩罚危险 false accept。Single-query 直接拒绝不完整定位；HoQ 保存最近 1.5 m 的 match，把所有历史候选先过 integrity gate，再从距离最小的可信旧定位按 odometer 差沿参考轨迹外推。",
+    "project_application": "可迁移的不是 VPR 本身，而是“候选全集统计→order-invariant integrity gate→显式 coverage-risk”这一模式。当前 exact-instance scorer 若建立，可对候选距离分布训练/校准 NONE gate；但必须 fresh source-disjoint，不能在已消费 4 错例上拟合。作为到达层，它只可提供 route-place supporting evidence，不能成为 handoff authority。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "可迁移的不是 VPR 本身，而是“候选全集统计→order-invariant integrity gate→显式 coverage-risk”这一模式。当前 exact-instance scorer 若建立，可对候选距离分布训练/校准 NONE gate；但必须 fresh source-disjoint，不能在已消费 4 错例上拟合。作为到达层，它只可提供 route-place supporting evidence，不能成为 handoff authority。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "它证明应利用整个候选分数分布和特征差统计做 match integrity，而非裸 top-1 confidence；也真实展示 precision/recall 与“过早停/错过后超调”的控制后果。它不证明 object identity、门洞、独立 arrival；定位正确只指沿预采路线在 0.5/1 m 容差内。训练数据仍需代表部署域，lateral shift 被用 GT 强制消除，作者承认真实横移会降低 integrity precision。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:30; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:30 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

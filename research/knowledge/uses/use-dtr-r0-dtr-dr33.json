@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr33",
+  "item_id": "paper-simplettc",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr33"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "YOLOv3 只检测 person/chair/desk，FastDepth 给深度；每个目标每帧压成 [x/W,y/H,w/W,h/H,D_min] 五维，其中 D_min 是框内最小深度。最终网络堆叠 3 帧、10 Hz 的特征，以 8 个隐藏层、每层 60 单元的全连接网络回归当前 TTC。形式上的历史跨度是 0.2 s，正文另称 0.3 s，存在内部不一致。",
+    "project_application": "借五维几何瓶颈、3/6 帧消融和 RGB→mask→几何对照；不借单一最近目标、1 m 伪碰撞或跨域准确主张。定位为工程基线，不是风险 authority。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "借五维几何瓶颈、3/6 帧消融和 RGB→mask→几何对照；不借单一最近目标、1 m 伪碰撞或跨域准确主张。定位为工程基线，不是风险 authority。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "进入 1 m 被叫作 collision，却没有身体走廊交叉或接触真值；无多目标优先级、远离目标、事件级提醒或用户研究。新测试集只有曲线和定性描述，没有汇总指标。论文称“轻量”，但整条感知链并没有在目标手机/眼镜上验证。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/dynamic-travel-risk/DYNAMIC_TRAVEL_RISK_ADDITIONAL_10_DEEP_READING_2026-08-24.md",
+      "summary": "Legacy source for dtr:DR33; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR33 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

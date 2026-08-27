@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-conformal-predictors-for-efficient-video-text-spotting",
+  "kind": "paper",
+  "title": "Conformal Predictors for Efficient Video Text Spotting",
+  "canonical_ref": "https://bmva-archive.org.uk/bmvc/2025/assets/papers/Paper_1118/paper.pdf",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "对识别字符与框位置做 conformal uncertainty，并利用轨迹对齐传播高置信字符。",
+  "mechanisms": [
+    {
+      "id": "l10-3",
+      "name": "Conformal Predictors for Efficient Video Text Spotting — l10:3 route mechanism",
+      "description": "对识别字符与框位置做 conformal uncertainty，并利用轨迹对齐传播高置信字符。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "建立的是覆盖保证与 VTS 增益，不是 physical identity；校准若换域仍可能失效。"
+    }
+  ],
+  "tags": [
+    "l10",
+    "literature-reserve",
+    "l10-r0"
+  ],
+  "aliases": [
+    "l10:3"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

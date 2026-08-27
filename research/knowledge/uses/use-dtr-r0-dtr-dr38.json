@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr38",
+  "item_id": "paper-guidance-ssd",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr38"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Lenovo Phab 2 Pro 的 RGB、深度与运动相机构成 Guidance-SSD，骨传导耳机播放水滴式空间音频。方位由水平双耳空间差编码；越近则滴声间隔越短、基频越高、音量越大。每个物体只取最近点/边缘作为声源，身后物体不发声；约 170°、3 m 的 avoidance 模式在走廊中最多同时产生 3 个声源。",
+    "project_application": "借非遮耳输出、最近边缘、后方抑制和并发上限；不借连续多声源直接进入交通场景，也不外推为动态避碰证据。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "借非遮耳输出、最近边缘、后方抑制和并发上限；不借连续多声源直接进入交通场景，也不外推为动态避碰证据。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "没有不开 GSSD、白杖或另一反馈方案基线，因此不能把成功因果归给具体编码。障碍都是安静走廊里的大型同形纸箱，没有行人、车辆、天气或噪声。论文没有单独报告误报率，也没有 BRR/SFF/SI 组件消融；“认知负担较低”没有用工作负荷量表直接验证。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/dynamic-travel-risk/DYNAMIC_TRAVEL_RISK_ADDITIONAL_10_DEEP_READING_2026-08-24.md",
+      "summary": "Legacy source for dtr:DR38; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR38 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

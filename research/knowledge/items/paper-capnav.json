@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-capnav",
+  "kind": "paper",
+  "title": "CapNav",
+  "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2026/papers/Su_CapNav_Benchmarking_Vision_Language_Models_on_Capability-conditioned_Indoor_Navigation_CVPR_2026_paper.pdf",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "CapNav 已建立 capability-conditioned navigation benchmark；“按人体能力判断路径”不能单独作为贡献。",
+  "mechanisms": [
+    {
+      "id": "taro-t06",
+      "name": "CapNav — taro:T06 route mechanism",
+      "description": "CapNav 已建立 capability-conditioned navigation benchmark；“按人体能力判断路径”不能单独作为贡献。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+    }
+  ],
+  "tags": [
+    "taro",
+    "adjacent-work",
+    "taro-r0"
+  ],
+  "aliases": [
+    "taro:T06"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

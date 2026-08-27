@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-active-text-perception-for-mobile-robots",
+  "kind": "paper",
+  "title": "Active text perception for mobile robots",
+  "canonical_ref": "https://eprints.qut.edu.au/57664",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。",
+  "mechanisms": [
+    {
+      "id": "l10-9",
+      "name": "Active text perception for mobile robots — l10:9 route mechanism",
+      "description": "宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "云台室内机器人、静态文字；没有目标语义绑定、身体靠近、到达或交接。"
+    }
+  ],
+  "tags": [
+    "l10",
+    "literature-reserve",
+    "l10-r0"
+  ],
+  "aliases": [
+    "l10:9"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

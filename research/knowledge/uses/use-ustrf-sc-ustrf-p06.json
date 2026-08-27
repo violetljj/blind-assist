@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ustrf-sc-ustrf-p06",
+  "item_id": "paper-wearable-steering-assistance",
+  "route": "ustrf-sc",
+  "mechanism_ids": [
+    "ustrf-p06"
+  ],
+  "use_state": "retired",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "共享主干联合跑道边界感知、障碍检测与路径规划",
+    "project_application": "支持把 boundary/detail、obstacle/context 与 planning 分开建模",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "支持把 boundary/detail、obstacle/context 与 planning 分开建模"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "ICRA 系统证据；结构化跑道、约千图数据和 Orin NX 不能外推开放街道/手机"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/ustrf-sc/USTRF_FRONTIER_PAPER_GUIDE_2026-07-22.md",
+      "summary": "Legacy source for ustrf:P06; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated ustrf:P06 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

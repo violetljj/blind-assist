@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-gshi",
+  "kind": "paper",
+  "title": "GSHI 退化感知相机可靠性监测",
+  "canonical_ref": "https://arxiv.org/abs/2605.05439",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "雨雪、低照、眩光、运动/离焦模糊、镜头遮挡和压缩等多种失效",
+  "mechanisms": [
+    {
+      "id": "dtr-dr20",
+      "name": "GSHI 退化感知相机可靠性监测 — dtr:DR20 route mechanism",
+      "description": "单 RGB 同时估计退化类型、严重度、空间不确定图和全局健康指数；供“请减速并用盲杖确认”门控",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "2026 预印本，主要用 KITTI 合成退化训练；健康分数不是任务 coverage 保证"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR20"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

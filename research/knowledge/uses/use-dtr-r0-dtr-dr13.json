@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr13",
+  "item_id": "dataset-pie-scenario-evaluation",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr13"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "行人行动/看向/横穿/遮挡标注；事件分层、lead-time、轨迹/意图评估代码",
+    "project_application": "行人行动/看向/横穿/遮挡标注；事件分层、lead-time、轨迹/意图评估代码",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "行人行动/看向/横穿/遮挡标注；事件分层、lead-time、轨迹/意图评估代码"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "车载视角、交叉口横穿为主；不包含穿戴式身体路线或触地事件真值"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "summary": "Legacy source for dtr:DR13; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR13 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

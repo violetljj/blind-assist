@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-08",
+  "item_id": "paper-mgor",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-08"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "（Fig. 2，Sec. 3.2–3.4）：①EDPS 从多个类别平衡采样 identity pairs，每 identity 取 K 张图；②把 batch 随机分成等大的 meta-train/meta-test，并控制两半类别分布差异；③共享 ViT 使用 global token 和 category-specific/local token；④meta-train 上优化 global ID classification、batch-hard metric 和类别内 local classifier；⑤固定同一参数，在 meta-test 上只计算 global ID loss，模拟语义分布变化而非做快速适配；⑥按 identity prototype 分解 embedding residual，分别构造正/负 pair-distance distributions；⑦用 sliced Wasserstein 对齐 meta-train/test 的正、负距离分布；⑧HSE 让 global path 学跨类别身份拓扑、local path 保留类别细节，推理只保留 global embedding。",
+    "project_application": "B0 的主要失败已经是同类内部，不是 category shift，因此 MGOR 只可能改善基础表示的域外稳健性，不能解释或直接修复 2/4 stable distractor。其独立 embedding 至少不会继承 A/B 顺序偏差。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "若有冻结 checkpoint，在 fresh D 上只替换 unary crop encoder，与同 backbone 的 TransReID/DINOv2 比较；goal text 仅用于类别 eligibility，不进入 identity score。输出 TARGET/NONE，候选顺序全排列。若同类错误不降、只有跨类别 easy negatives 改善，或 global embedding 比保留 local token 的版本差，即停止，不启动本地重训练。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "跨类别 benchmark 泛化不等于同类别 physical-instance disambiguation；没有 reference-conditioned proposals、target absence 或当前整帧 clutter。所有指标仍是 gallery 内 retrieval，通常存在真匹配。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:08; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:08 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

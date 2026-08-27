@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-l10-14",
+  "item_id": "paper-textinplace-indoor-visual-place-recognition-in-repetitive-structures-wit",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "l10-14"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "外观分支做粗检索，文字分支筛选 discriminative text 并重排，专门对付重复室内结构。",
+    "project_application": "在相似走廊/相邻门牌中把 appearance 保留为 proposal，把辨识性文字保留为 verification；加入显式 NONE。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "在相似走廊/相邻门牌中把 appearance 保留为 proposal，把辨识性文字保留为 verification；加入显式 NONE。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "VPR/place retrieval，不证明同一功能入口、沿路控制、到达或用户完成。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/l10-r0/LITERATURE_RESERVE_20_2026-08-27.md",
+      "summary": "Legacy source for l10:14; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated l10:14 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "paper-egonav",
+  "kind": "paper",
+  "title": "EgoNav",
+  "canonical_ref": "https://arxiv.org/abs/2403.19026",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "第一视角未来位置/路径预测",
+  "mechanisms": [
+    {
+      "id": "hftf-h06a",
+      "name": "EgoNav — hftf:H06a route mechanism",
+      "description": "第一视角未来位置/路径预测",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "The charter records this as an adjacent mechanism, not HFTF evidence. layered collision field、unknown 与助盲事件效用"
+    }
+  ],
+  "tags": [
+    "hftf",
+    "adjacent-work"
+  ],
+  "aliases": [
+    "hftf:H06a"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

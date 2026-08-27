@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-optimal-alarms-for-vehicular-collision-detection",
+  "kind": "paper",
+  "title": "Optimal Alarms for Vehicular Collision Detection",
+  "canonical_ref": "https://doi.org/10.1109/ivs.2017.7995732",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Define collision as the union of overlap events over a horizon and choose an alarm from explicit false-negative/false-positive costs, with Monte Carlo error bounds.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr51",
+      "name": "Optimal Alarms for Vehicular Collision Detection — dtr:DR51 route mechanism",
+      "description": "Define collision as the union of overlap events over a horizon and choose an alarm from explicit false-negative/false-positive costs, with Monte Carlo error bounds.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "Vehicle simulations and assumed motion distributions; neither costs nor probabilities transfer automatically."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR51"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

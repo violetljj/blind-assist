@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-idow",
+  "kind": "paper",
+  "title": "IDOW",
+  "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2025/html/Shen_Solving_Instance_Detection_from_an_Open-World_Perspective_CVPR_2025_paper.html",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "在多参考 InsDet 中，proposal 与 exact-instance scorer 分开是有效边界；hard same/other-instance negatives、open-space distractors 和 novel-view augmentation 均能带来可测 AP 增益。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-02",
+      "name": "IDOW — goal-audit:02 route mechanism",
+      "description": "（Sec. 3.2，Fig. 2、5）：①GroundingDINO 或 SAM 产生高召回 proposals；②DINOv2 CLS token 编码 reference/proposal；③构造 anchor/positive/negative triplets；④batch-hard 从其他实例 reference 和随机开放世界图像中由 SAM 切出的 distractors 里选最近负例；⑤以 inverse-cosine margin triplet loss 适配 DINOv2；⑥每个实例另训 Zip-NeRF，从多视图 reference 合成新视角；⑦合成图可进入训练，也可在测试时作为更多 templates；⑧计算 proposal-reference 全矩阵，经 stable matching 和固定 0.4 阈值输出匹配。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "不证明单 reference；stable matching 在目标缺失时仍可能给出错误全局配对，0.4 不是 absence calibration；proposal miss 不由 metric learner 修复。Sec. 5 还明确指出 GroundingDINO 非实时、SAM 会漏稀有关键实例、逐实例 NeRF 过慢。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-02",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:02"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

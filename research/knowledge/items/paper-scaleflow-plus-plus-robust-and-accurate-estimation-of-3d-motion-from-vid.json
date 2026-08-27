@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-scaleflow-plus-plus-robust-and-accurate-estimation-of-3d-motion-from-vid",
+  "kind": "paper",
+  "title": "ScaleFlow++: Robust and Accurate Estimation of 3D Motion from Video",
+  "canonical_ref": "https://arxiv.org/abs/2407.09797",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "从一对 RGB 同时估计 optical flow 与 motion-in-depth；核心是跨尺度特征匹配，并以端到端架构统一两项估计。摘要报告 KITTI monocular scene-flow 与 zero-shot 结果。",
+  "mechanisms": [
+    {
+      "id": "rcle-e3",
+      "name": "ScaleFlow++: Robust and Accurate Estimation of 3D Motion from Video — rcle:E3 route mechanism",
+      "description": "从一对 RGB 同时估计 optical flow 与 motion-in-depth；核心是跨尺度特征匹配，并以端到端架构统一两项估计。摘要报告 KITTI monocular scene-flow 与 zero-shot 结果。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "预印本且本表只使用摘要级证据。不得称为 oracle、教师真值或安全证据；模型域偏移与训练数据影响必须保留。"
+    }
+  ],
+  "tags": [
+    "rcle",
+    "motion",
+    "related-work"
+  ],
+  "aliases": [
+    "rcle:E3"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

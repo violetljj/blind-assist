@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-l10-4",
+  "item_id": "paper-trara-trajectory-level-recognition-aggregation-for-video-text-spotting-i",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "l10-4"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "先按视觉/时间一致性切分错误轨迹，再用跨帧碎片与语言上下文重建完整词。",
+    "project_application": "对数字/词被遮挡或分帧出现的轨迹做一次冻结聚合；同时把“恢复正确词”和“语言先验编造词”作为对称端点。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "对数字/词被遮挡或分帧出现的轨迹做一次冻结聚合；同时把“恢复正确词”和“语言先验编造词”作为对称端点。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "新预印本且依赖上游轨迹；VLM 聚合可能把不可读证据补成看似合理的错误文本。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/l10-r0/LITERATURE_RESERVE_20_2026-08-27.md",
+      "summary": "Legacy source for l10:4; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated l10:4 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

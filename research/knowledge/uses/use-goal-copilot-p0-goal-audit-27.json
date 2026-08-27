@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-27",
+  "item_id": "paper-visual-servoing-for-autonomous-corridor-following-and-doorway-passing-in",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-27"
+  ],
+  "use_state": "retired",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "走廊部分从 LSD 线段、Gaussian sphere 投票得到 vanishing point 横坐标 x_f，再从左右墙—地交线估计 corridor median angle θ_m；IBVS 用两特征、一个转向自由度，让相机朝向与横向偏差收敛。门部分先在 vanishing-point 约束的走廊几何搜索区检测梯形门，Moving Edges 跟踪近侧单门柱；门柱脚的像平面 x 给方位 φ_d，y 与已知相机高度给距离 r。期望轨迹不是朝门中心直冲，而是先切向接近以门柱为圆心、半径 m 的虚拟圆，r≈m 后绕圆转；Lyapunov 函数 1/2(φ_d−φ_d*)² 导出 ω，使误差全局渐近收敛。",
+    "project_application": "可作为“控制目标应选可持续观测 feature，而非 bbox centroid”的参考。但当前上游 identity、functional aperture、clearance 均未成立；项目是给人提示，不是直接控制轮椅，作用更间接。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "可作为“控制目标应选可持续观测 feature，而非 bbox centroid”的参考。但当前上游 identity、functional aperture、clearance 均未成立；项目是给人提示，不是直接控制轮椅，作用更间接。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "它证明单门柱就足以构造稳定的低层绕柱转向，不必一直看见两侧门框。它明确没有解决门是开/关、宽度是否容纳轮椅、选哪扇门；这些被交给用户或 home automation。真实流程需用户启动、选墙/门并停止，而且正文说最后在门前定位就停止，因而标题中的 autonomous doorway passing 不能被解读成自主识别并穿越可用入口。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:27; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:27 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

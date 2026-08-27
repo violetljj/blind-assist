@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-06",
+  "item_id": "paper-sos",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-06"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "（Fig. 2，Sec. 3.3）：①冻结 DINOv3-L/16 分别编码 scene 和 conditions；②scene token 加空间位置 embedding；③condition token 同时加 patch 位置和 condition identity embedding；④复制一个 universal semantic probe N 次；⑤8 个 transformer blocks 中，query 先对自己对应的 condition 做 masked cross-attention 注入身份，再对 scene 做由上一层 mask 限制的 cross-attention；⑥condition queries 之间 self-attention，用于消解重叠与遮挡；⑦两层 MLP 与 scene token 做空间点积，每层产生 mask logits，并将阈值化结果作为下一层 attention mask；⑧第 2/4/6/8 层用 BCE+Dice deep supervision，因 query-condition 一一对应，无 Hungarian 和分类头。",
+    "project_application": "对 B0 的 4 个同类错误和 1 个 abstain 都有直接接口；它消除了 A/B candidate slot，但必须专门测试 2/4 stable distractor 是否仍被输出为漂亮、稳定的错误 mask。现有 visible-only 结果不能替代 fresh absent 测试。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "单 condition 模式输入 reference mask+current RGB；输出 mask_logits、mask area、最大/平均 foreground probability，并由预冻结规则输出 TARGET(mask) 或 NONE。另做多 condition 排列测试。若 candidate-order/condition-order 改变结论、same-class false mask 不降、controls 少于 12/13、或 fresh NONE 的非空激活越界，即停止；不靠增加到 3–4 views 补救首轮失败。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "虽训练了 negative conditions，论文没有单列 absent precision/recall、coverage-risk 或校准曲线；“in-the-wild”仅 Fig. 8 两组定性例子。Sec. 5 明示无法处理同一 reference 在 scene 中出现多个 identical targets。合成训练域也不证明入口/建筑域。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:06; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:06 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

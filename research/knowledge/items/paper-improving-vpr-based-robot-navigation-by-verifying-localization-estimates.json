@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-improving-vpr-based-robot-navigation-by-verifying-localization-estimates",
+  "kind": "paper",
+  "title": "Improving VPR-Based Robot Navigation by Verifying Localization Estimates",
+  "canonical_ref": "https://arxiv.org/abs/2407.08162",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "它证明应利用整个候选分数分布和特征差统计做 match integrity，而非裸 top-1 confidence；也真实展示 precision/recall 与“过早停/错过后超调”的控制后果。它不证明 object identity、门洞、独立 arrival；定位正确只指沿预采路线在 0.5/1 m 容差内。训练数据仍需代表部署域，lateral shift 被用 GT 强制消除，作者承认真实横移会降低 integrity precision。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-30",
+      "name": "Improving VPR-Based Robot Navigation by Verifying Localization Estimates — goal-audit:30 route mechanism",
+      "description": "不是只阈值化 top-1 distance，而是从四个向量——全 match distances、query feature、top-reference feature、二者差——各提 48 个统计量，拼成 192D；4×128 MLP 用加权 MSE 预测 in/out-of-tolerance，α>1 偏向惩罚危险 false accept。Single-query 直接拒绝不完整定位；HoQ 保存最近 1.5 m 的 match，把所有历史候选先过 integrity gate，再从距离最小的可信旧定位按 odometer 差沿参考轨迹外推。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "它证明应利用整个候选分数分布和特征差统计做 match integrity，而非裸 top-1 confidence；也真实展示 precision/recall 与“过早停/错过后超调”的控制后果。它不证明 object identity、门洞、独立 arrival；定位正确只指沿预采路线在 0.5/1 m 容差内。训练数据仍需代表部署域，lateral shift 被用 GT 强制消除，作者承认真实横移会降低 integrity precision。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-30",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:30"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

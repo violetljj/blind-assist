@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr53",
+  "item_id": "paper-radius-risk-aware-real-time-reachability-based-motion-planning",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr53"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Combine offline reachable sets with an online closed-form over-approximation of collision risk for arbitrary obstacle-position distributions.",
+    "project_application": "On frozen stochastic replay, empirical violations must respect a preregistered risk level without collapsing into universal alert or abstention.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "On frozen stochastic replay, empirical violations must respect a preregistered risk level without collapsing into universal alert or abstention."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Autonomous-driving simulation and hardware with modeled distributions; no BlindAssist calibration or safety transfer."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/dtr-r0/LITERATURE_RESERVE_2026-08-27.md",
+      "summary": "Legacy source for dtr:DR53; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR53 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -38,7 +38,9 @@
     "scene-text",
     "text-geometry",
     "ocr",
-    "l10"
+    "l10",
+    "literature-reserve",
+    "l10-r0"
   ],
   "aliases": [
     "l10:1",
@@ -48,8 +50,12 @@
     {
       "label": "Official code",
       "ref": "https://github.com/ViTAE-Transformer/DeepSolo"
+    },
+    {
+      "label": "Canonical source used by l10:1",
+      "ref": "https://doi.org/10.1109/cvpr52729.2023.01854"
     }
   ],
   "added_at": "2026-08-27",
-  "updated_at": "2026-08-27"
+  "updated_at": "2026-08-28"
 }

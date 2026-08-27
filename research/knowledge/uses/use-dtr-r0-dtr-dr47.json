@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr47",
+  "item_id": "paper-trajectron-plus-plus-dynamically-feasible-trajectory-forecasting-with-he",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr47"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Produce multimodal, dynamics-aware multi-agent futures conditioned on maps and optionally on the ego plan.",
+    "project_application": "Hold the curved wearer route fixed and compare ego-route-conditioned versus independent target futures with proper distribution and event metrics.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Hold the curved wearer route fixed and compare ego-route-conditioned versus independent target futures with proper distribution and event metrics."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Standard datasets assume usable tracks/maps; benchmark accuracy does not establish wearable deployment or calibrated risk."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/dtr-r0/LITERATURE_RESERVE_2026-08-27.md",
+      "summary": "Legacy source for dtr:DR47; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR47 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

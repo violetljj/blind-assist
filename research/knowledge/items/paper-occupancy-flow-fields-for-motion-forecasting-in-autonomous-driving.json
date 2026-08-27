@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-occupancy-flow-fields-for-motion-forecasting-in-autonomous-driving",
+  "kind": "paper",
+  "title": "Occupancy Flow Fields for Motion Forecasting in Autonomous Driving",
+  "canonical_ref": "https://doi.org/10.1109/lra.2022.3151613",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Predict a time-indexed grid containing both occupancy and 2-D flow, preserving temporal motion consistency and allowing speculative/disoccluded agents.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr46",
+      "name": "Occupancy Flow Fields for Motion Forecasting in Autonomous Driving — dtr:DR46 route mechanism",
+      "description": "Predict a time-indexed grid containing both occupancy and 2-D flow, preserving temporal motion consistency and allowing speculative/disoccluded agents.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "Vehicle-scale data and sensors; occupancy values are not automatically calibrated collision probabilities."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR46"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

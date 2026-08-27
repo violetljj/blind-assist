@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr37",
+  "item_id": "paper-guidetouch",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr37"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "两枚 VL53L5CX 8×8 ToF 传感器垂直布置、夹角 30°，合成约 90° 垂直视场，每 0.1 s 采样；深度图经未充分说明的 temporal outlier filtering 后切分左右/上方区域，激活对应振动马达。设备设计目标不超过 500 g、约 100 美元。3000 rpm 旋转罩用于甩掉水滴，20 次测试成功 18 次，但头部附近噪声约 70 dB。",
+    "project_application": "借简单四点方向映射、接触质量检查与模式复杂度上限；不借避障有效性、3 秒长振动或高噪声清洁机构。动态导航证据为 NOT_EVALUABLE。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "借简单四点方向映射、接触质量检查与模式复杂度上限；不借避障有效性、3 秒长振动或高噪声清洁机构。动态导航证据为 NOT_EVALUABLE。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "所有实验都是静止条件下首次识别触觉模式，没有参与者边走边避障，也没有漏障、误报、接触或行走时间。危险距离、区域边界和告警状态机未公开。70 dB 清洁噪声虽不一定伤听力，却可能遮蔽交通线索；论文没有测试这一点。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/dynamic-travel-risk/DYNAMIC_TRAVEL_RISK_ADDITIONAL_10_DEEP_READING_2026-08-24.md",
+      "summary": "Legacy source for dtr:DR37; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR37 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

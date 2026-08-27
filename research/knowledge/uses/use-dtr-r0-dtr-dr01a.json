@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr01a",
+  "item_id": "paper-collision-point-ttc-2015",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr01a"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "不标类别，只在预测碰撞点进入身体带且 TTC 足够短时震动",
+    "project_application": "不标类别，只在预测碰撞点进入身体带且 TTC 足够短时震动",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "不标类别，只在预测碰撞点进入身体带且 TTC 足够短时震动"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "两个研究都约降低 37% 接触/碰撞，但前者是外周视野受损障碍课程，后者记录接触而非伤害；设备始终是盲杖/导盲犬的补充"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "summary": "Legacy source for dtr:DR01a; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR01a from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

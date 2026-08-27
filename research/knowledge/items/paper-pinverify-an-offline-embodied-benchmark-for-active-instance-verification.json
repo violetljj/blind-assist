@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-pinverify-an-offline-embodied-benchmark-for-active-instance-verification",
+  "kind": "paper",
+  "title": "PInVerify — An Offline Embodied Benchmark for Active Instance Verification",
+  "canonical_ref": "https://arxiv.org/abs/2605.30639",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "论文非常清楚地证明 active verification 必须拆出 positive 与 same-class negative，并且更多视角不自动更好；检测 crop 质量与 verifier calibration 常比 NBV 策略更关键。它没有证明 reference-image physical identity：query 是语言属性，物体还是仿真注入资产；没有 live locomotion、动态光照和安全；只有单次训练 seed，作者也主动限制结论。训练 reward 使用 per-sector GT，不能作为 BlindAssist provider 可用机制。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-23",
+      "name": "PInVerify — An Offline Embodied Benchmark for Active Instance Verification — goal-audit:23 route mechanism",
+      "description": "论文非常清楚地证明 active verification 必须拆出 positive 与 same-class negative，并且更多视角不自动更好；检测 crop 质量与 verifier calibration 常比 NBV 策略更关键。它没有证明 reference-image physical identity：query 是语言属性，物体还是仿真注入资产；没有 live locomotion、动态光照和安全；只有单次训练 seed，作者也主动限制结论。训练 reward 使用 per-sector GT，不能作为 BlindAssist provider 可用机制。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "论文非常清楚地证明 active verification 必须拆出 positive 与 same-class negative，并且更多视角不自动更好；检测 crop 质量与 verifier calibration 常比 NBV 策略更关键。它没有证明 reference-image physical identity：query 是语言属性，物体还是仿真注入资产；没有 live locomotion、动态光照和安全；只有单次训练 seed，作者也主动限制结论。训练 reward 使用 per-sector GT，不能作为 BlindAssist provider 可用机制。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-23",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:23"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

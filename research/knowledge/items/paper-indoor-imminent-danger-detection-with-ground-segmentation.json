@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-indoor-imminent-danger-detection-with-ground-segmentation",
+  "kind": "paper",
+  "title": "Indoor Imminent Danger Detection with Ground Segmentation",
+  "canonical_ref": "https://ieeexplore.ieee.org/document/9211506",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "未知/临时障碍不在类别表内；地面涂色容易造成语义误判",
+  "mechanisms": [
+    {
+      "id": "dtr-dr22",
+      "name": "Indoor Imminent Danger Detection with Ground Segmentation — dtr:DR22 route mechanism",
+      "description": "RGB-D+IMU 地面/自由路径 + 去地后点云 residual；建立不依赖物体名称的 traversability 通道",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "室内 RGB-D 假设，没有 BLV 行走效果；室外 IR/阳光和细杆失效仍需另行评估"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR22"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

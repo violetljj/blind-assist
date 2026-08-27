@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-fundamental-limits-for-sensor-based-robot-control",
+  "kind": "paper",
+  "title": "Fundamental limits for sensor-based robot control",
+  "canonical_ref": "https://journals.sagepub.com/doi/full/10.1177/02783649231190947",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Fundamental limits for sensor-based robot control 已用 task-relevant information potential 研究给定任务下传感器施加的性能上界；因此“信息与任务 相关”本身不是新意，TARO 必须把对象收窄到 clearance functional 的局部可识别性与有限证据动作。",
+  "mechanisms": [
+    {
+      "id": "taro-t08",
+      "name": "Fundamental limits for sensor-based robot control — taro:T08 route mechanism",
+      "description": "Fundamental limits for sensor-based robot control 已用 task-relevant information potential 研究给定任务下传感器施加的性能上界；因此“信息与任务 相关”本身不是新意，TARO 必须把对象收窄到 clearance functional 的局部可识别性与有限证据动作。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+    }
+  ],
+  "tags": [
+    "taro",
+    "adjacent-work",
+    "taro-r0"
+  ],
+  "aliases": [
+    "taro:T08"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

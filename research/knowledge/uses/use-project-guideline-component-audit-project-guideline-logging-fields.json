@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-project-guideline-component-audit-project-guideline-logging-fields",
+  "item_id": "tool-project-guideline",
+  "route": "project-guideline-component-audit",
+  "mechanism_ids": [
+    "project-guideline-logging-fields"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Project Guideline 的做法。 其 protobuf 事件同时携带墙钟时间、帧时间戳和 跟踪、位姿、检测、世界更新、控制信号、点云、占用图、深度等事件类型 （guideline_log.proto）； 文件 logger 以流式 protobuf 写盘 （file_guideline_logger.cc）。 BlindAssist 已有对应。 - [VisionFrame.kt](../core/assist/src/main/java/com/linnan/blindassist/vision/VisionFrame.kt) 已记录帧 ID、采集/接收时刻、来源、坐标帧和时钟域。 - [SessionTrace.kt](../core/assist/src/main/java/com/linnan/blindassist/session/SessionTrace.kt) 已保留最近 30 帧的风险、延迟和反馈摘要。 - [AssistRuntimePerformanceLogger.kt](../feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimePerformanceLogger.kt) 已按秒输出延迟、丢帧、风险、反馈和模型状态。 - [FramePipelineStats.kt](../feature/assist/src/main/java/com/linnan/blindassist/runtime/FramePipelineStats.kt) 已区分 busy、inactive 和 detector unavailable 丢帧。 真实缺口。 当前信息主要是内存摘要和 Logcat 文本，不是版本化、会话级、可持久化 的事件合同；后端路由/回退、时效判定、失效原因与反馈结果也没有统一关联到同一帧。 允许的借鉴。 只设计最小账本字段，不照搬“大而全”的 proto： schemaVersion, sessionId, frameId, capturedAtNs, receivedAtNs, decisionAtNs, clockDomain, coordinateFrame, inputSource, detectorBackend, backendRouteReason, configDigest, freshness/validUntil, dropOrFailureReason, riskAction/reasons, speechAccepted, vibrationAccepted, preprocess/inference/postprocess/totalMs。 温度、电量和功耗若进入论文实验，应作为有采样周期与设备信息的 session 观测，不伪装成 每帧精确功耗；原始图像默认不写入账本。 停止线。 不引入 protobuf、数据库、遥测服务或新的运行依赖；先用项目现有能力能 表达的稳定 schema。隐私、容量、轮转和导出策略未冻结前，不允许默认持久化。",
+    "project_application": "Project Guideline 的做法。 其 protobuf 事件同时携带墙钟时间、帧时间戳和 跟踪、位姿、检测、世界更新、控制信号、点云、占用图、深度等事件类型 （guideline_log.proto）； 文件 logger 以流式 protobuf 写盘 （file_guideline_logger.cc）。 BlindAssist 已有对应。 - [VisionFrame.kt](../core/assist/src/main/java/com/linnan/blindassist/vision/VisionFrame.kt) 已记录帧 ID、采集/接收时刻、来源、坐标帧和时钟域。 - [SessionTrace.kt](../core/assist/src/main/java/com/linnan/blindassist/session/SessionTrace.kt) 已保留最近 30 帧的风险、延迟和反馈摘要。 - [AssistRuntimePerformanceLogger.kt](../feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimePerformanceLogger.kt) 已按秒输出延迟、丢帧、风险、反馈和模型状态。 - [FramePipelineStats.kt](../feature/assist/src/main/java/com/linnan/blindassist/runtime/FramePipelineStats.kt) 已区分 busy、inactive 和 detector unavailable 丢帧。 真实缺口。 当前信息主要是内存摘要和 Logcat 文本，不是版本化、会话级、可持久化 的事件合同；后端路由/回退、时效判定、失效原因与反馈结果也没有统一关联到同一帧。 允许的借鉴。 只设计最小账本字段，不照搬“大而全”的 proto： schemaVersion, sessionId, frameId, capturedAtNs, receivedAtNs, decisionAtNs, clockDomain, coordinateFrame, inputSource, detectorBackend, backendRouteReason, configDigest, freshness/validUntil, dropOrFailureReason, riskAction/reasons, speechAccepted, vibrationAccepted, preprocess/inference/postprocess/totalMs。 温度、电量和功耗若进入论文实验，应作为有采样周期与设备信息的 session 观测，不伪装成 每帧精确功耗；原始图像默认不写入账本。 停止线。 不引入 protobuf、数据库、遥测服务或新的运行依赖；先用项目现有能力能 表达的稳定 schema。隐私、容量、轮转和导出策略未冻结前，不允许默认持久化。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Project Guideline 的做法。 其 protobuf 事件同时携带墙钟时间、帧时间戳和 跟踪、位姿、检测、世界更新、控制信号、点云、占用图、深度等事件类型 （guideline_log.proto）； 文件 logger 以流式 protobuf 写盘 （file_guideline_logger.cc）。 BlindAssist 已有对应。 - [VisionFrame.kt](../core/assist/src/main/java/com/linnan/blindassist/vision/VisionFrame.kt) 已记录帧 ID、采集/接收时刻、来源、坐标帧和时钟域。 - [SessionTrace.kt](../core/assist/src/main/java/com/linnan/blindassist/session/SessionTrace.kt) 已保留最近 30 帧的风险、延迟和反馈摘要。 - [AssistRuntimePerformanceLogger.kt](../feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimePerformanceLogger.kt) 已按秒输出延迟、丢帧、风险、反馈和模型状态。 - [FramePipelineStats.kt](../feature/assist/src/main/java/com/linnan/blindassist/runtime/FramePipelineStats.kt) 已区分 busy、inactive 和 detector unavailable 丢帧。 真实缺口。 当前信息主要是内存摘要和 Logcat 文本，不是版本化、会话级、可持久化 的事件合同；后端路由/回退、时效判定、失效原因与反馈结果也没有统一关联到同一帧。 允许的借鉴。 只设计最小账本字段，不照搬“大而全”的 proto： schemaVersion, sessionId, frameId, capturedAtNs, receivedAtNs, decisionAtNs, clockDomain, coordinateFrame, inputSource, detectorBackend, backendRouteReason, configDigest, freshness/validUntil, dropOrFailureReason, riskAction/reasons, speechAccepted, vibrationAccepted, preprocess/inference/postprocess/totalMs。 温度、电量和功耗若进入论文实验，应作为有采样周期与设备信息的 session 观测，不伪装成 每帧精确功耗；原始图像默认不写入账本。 停止线。 不引入 protobuf、数据库、遥测服务或新的运行依赖；先用项目现有能力能 表达的稳定 schema。隐私、容量、轮转和导出策略未冻结前，不允许默认持久化。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The component decision is ADAPT. The audit absorbs only the stated engineering boundary; it does not import the full C++/Bazel/MediaPipe/ARCore/Unreal stack or establish dynamic-risk, grounding, user, product, or safety evidence."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/PROJECT_GUIDELINE_COMPONENT_ADAPTATION_AUDIT_2026-07-30.md",
+      "summary": "Legacy source for project-guideline:logging-fields; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated project-guideline:logging-fields from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

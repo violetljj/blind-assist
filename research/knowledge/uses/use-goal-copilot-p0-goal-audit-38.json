@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-38",
+  "item_id": "paper-flowverify-combining-deep-learning-and-verification-for-precise-object-i",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-38"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "①TDID 先产生候选；②每个候选对 15 个已知视图运行 FlowMatchNet；③该 FlowNetC 变体用 full cross-correlation 与 CoordConv 预测 template→crop dense flow；④SIMOBJ 检查是否有 IoU≥0.5 的其他 object ID 且分数接近；⑤FCOLOR 计算 warp 后 normalized cross-correlation；⑥FRIGIDITY 以 fundamental-matrix RANSAC inlier ratio 测刚性；⑦FPRECISION/FRECALL 分别测流终点落入 bbox 的比例、流覆盖 bbox 与 detector bbox 的 IoU；⑧五门 hard-AND，任一模板通过即 pass。论文阈值为 rigidity/color/precision/recall 0.9/0.5/0.9/0.3、score margin 0。",
+    "project_application": "①TDID 先产生候选；②每个候选对 15 个已知视图运行 FlowMatchNet；③该 FlowNetC 变体用 full cross-correlation 与 CoordConv 预测 template→crop dense flow；④SIMOBJ 检查是否有 IoU≥0.5 的其他 object ID 且分数接近；⑤FCOLOR 计算 warp 后 normalized cross-correlation；⑥FRIGIDITY 以 fundamental-matrix RANSAC inlier ratio 测刚性；⑦FPRECISION/FRECALL 分别测流终点落入 bbox 的比例、流覆盖 bbox 与 detector bbox 的 IoU；⑧五门 hard-AND，任一模板通过即 pass。论文阈值为 rigidity/color/precision/recall 0.9/0.5/0.9/0.3、score margin 0。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "去掉依赖候选间重叠/基础分数的 SIMOBJ，避免顺序或集合耦合；把 reference RGB+mask 当单模板，对每 candidate 独立计算 [color, rigidity, ref-coverage, cand-coverage]，冻结 hard gate，无候选通过即 NONE。必须画 precision–accepted-coverage 与 target-absent FAR，并以 stable same-SKU distractor 为主要负例；若只提高 max precision 却 coverage 接近零，或 same-SKU 仍通过，则失败。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "理论在“每个 detection 必含已知库物体、存在颜色距离≤γ的模板、正确 flow 完全刚性”等强条件下可推出零 false positive；作者明确说 recall 可任意低，理论还忽略遮挡/背景。实验只报 PR 曲线、mAP 与 maximum precision，没给达到 0.939 时接受了多少，所以高精度确以未知 coverage 和模板可见性换来。官方代码 HardAND 后对通过项只给 detector score 加 1.01，失败项仍在排序中，并非原生拒绝/NONE。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-mainline-additional-10-deep-reading-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:38; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:38 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

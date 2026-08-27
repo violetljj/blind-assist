@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-pdm-where-s-waldo",
+  "kind": "paper",
+  "title": "PDM / Where’s Waldo",
+  "canonical_ref": "https://proceedings.neurips.cc/paper_files/paper/2024/hash/e73f4935d2ef5e23997de852e8a52661-Abstract-Conference.html",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "在作者专门从 BURST 构造、每帧平均 3.1 个对象且含同类实例的 PerMIS/PerMIR 上，diffusion 的外观和语义分解明显强于通用 DINO/SAM 表示；两类特征确实互补。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-01",
+      "name": "PDM / Where’s Waldo — goal-audit:01 route mechanism",
+      "description": "（Fig. 2–3，Sec. 3.2–3.3）：①将 reference/target 缩放至 512²并做 Stable Diffusion real-image inversion；②在 SDXL-Turbo 第一个反演时刻 t=4、最后一层 U-Net 提取 self-attention 的 Q/K；③以 (Q+K)/2 作为 appearance feature；④以 cross-attention 的投影空间特征和类别 token 作为 semantic feature；⑤用 reference cross-attention 阈值 0.7 或显式 mask 选出 reference 前景 token；⑥reference 前景 token 与 target 各位置点积并平均，得到 appearance map；⑦target semantic feature 与类别 token 点积得到 semantic map；⑧二者等权平均。Retrieval 对最终图全局平均；segmentation 可直接阈值化，或取最高点提示 SAM。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "没有 calibrated target-absence/NONE；没有 physical identity 的独立权威，只测数据集 instance label；不证明入口、建筑等域迁移，也不证明移动端实时性。Sec. 6 明示结果依赖 inversion/reconstruction 质量。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-01",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:01"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

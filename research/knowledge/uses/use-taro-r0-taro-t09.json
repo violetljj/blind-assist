@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-taro-r0-taro-t09",
+  "item_id": "paper-the-value-of-sensory-information-to-a-robot",
+  "route": "taro-r0",
+  "mechanism_ids": [
+    "taro-t09"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "The Value of Sensory Information to a Robot 通过在不同任务状态暂时 withholding observation 测量性能 regret；TARO 应继承这种反事实思想， 报告去掉合法观测后的 query-risk 上升与所选动作相对同预算 oracle 的 sensing regret。",
+    "project_application": "The Value of Sensory Information to a Robot 通过在不同任务状态暂时 withholding observation 测量性能 regret；TARO 应继承这种反事实思想， 报告去掉合法观测后的 query-risk 上升与所选动作相对同预算 oracle 的 sensing regret。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "The Value of Sensory Information to a Robot 通过在不同任务状态暂时 withholding observation 测量性能 regret；TARO 应继承这种反事实思想， 报告去掉合法观测后的 query-risk 上升与所选动作相对同预算 oracle 的 sensing regret。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/taro/TARO_R0_RESEARCH_ROUTE_GUIDE_2026-08-10.md",
+      "summary": "Legacy source for taro:T09; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated taro:T09 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

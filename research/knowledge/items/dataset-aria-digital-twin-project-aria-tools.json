@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "dataset-aria-digital-twin-project-aria-tools",
+  "kind": "dataset",
+  "title": "Aria Digital Twin + Project Aria Tools",
+  "canonical_ref": "https://www.projectaria.com/datasets/adt",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "穿戴式时钟、标定、头动、对象位姿和像素/轨迹绑定",
+  "mechanisms": [
+    {
+      "id": "dtr-dr25",
+      "name": "Aria Digital Twin + Project Aria Tools — dtr:DR25 route mechanism",
+      "description": "多相机+双 IMU+眼动、6DoF 设备/对象 pose、深度、mask 及 Apache-2.0 工具；适合时钟/位姿/输入健康 canary",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "仅两个室内场景约 200 段，活动不是出行风险事件；数据条款需逐次核对"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR25"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

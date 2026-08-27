@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-integrating-predictive-motion-uncertainties-with-distributionally-robust",
+  "kind": "paper",
+  "title": "Integrating Predictive Motion Uncertainties with Distributionally Robust Risk-Aware Control for Safe Robot Navigation in Crowds",
+  "canonical_ref": "https://doi.org/10.1109/icra57147.2024.10610404",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Place a distributionally robust ambiguity set around predicted motion rather than trusting one fitted distribution.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr54",
+      "name": "Integrating Predictive Motion Uncertainties with Distributionally Robust Risk-Aware Control for Safe Robot Navigation in Crowds — dtr:DR54 route mechanism",
+      "description": "Place a distributionally robust ambiguity set around predicted motion rather than trusting one fitted distribution.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "Planner/controller evidence; its chance constraint is not a validated BlindAssist warning probability."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR54"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

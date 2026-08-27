@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-collision-point-ttc-2015",
+  "kind": "paper",
+  "title": "Collision-point × TTC 选择性提醒系列：2015 障碍课程",
+  "canonical_ref": "https://iovs.arvojournals.org/article.aspx?articleid=2281664",
+  "authors": [],
+  "year": 2015,
+  "venue": "",
+  "summary": "物体在附近但不进入身体路径；高频误报",
+  "mechanisms": [
+    {
+      "id": "dtr-dr01a",
+      "name": "Collision-point × TTC 选择性提醒系列：2015 障碍课程 — dtr:DR01a route mechanism",
+      "description": "不标类别，只在预测碰撞点进入身体带且 TTC 足够短时震动",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "两个研究都约降低 37% 接触/碰撞，但前者是外周视野受损障碍课程，后者记录接触而非伤害；设备始终是盲杖/导盲犬的补充"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR01a"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

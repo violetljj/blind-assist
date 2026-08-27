@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-21",
+  "item_id": "paper-ieve-instance-aware-exploration-verification-exploitation-for-instance-i",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-21"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "先从目标图得到六类之一的类别；Mask R-CNN/InternImage 将当前 RGB-D 投影到全局语义图；只要同类物体出现，就用 DISK 关键点和 LightGlue 计算目标图—当前图的匹配数；再把“最近候选距离 d + 匹配数 ω”送入手工的双阈值 switch。远距离要求更高匹配数才确认；近距离若匹配数低于下阈值则否定；中间区域不立即判定，而是把候选位置设为 verification goal，主动靠近；确认后永久切换到 exploitation，否定后返回 exploration。局部移动由 FMM 基于语义图执行。",
+    "project_application": "当前 4 个 same-class wrong cases 已显示 forced pairwise VLM 会稳定选 distractor；IEVE 不能修复表示，但可成为 identity scorer 成立后的 active-verification 控制骨架。不得直接把 DISK 匹配数升级为 identity authority，也不得在现有 current-frame-only 主线偷带其全局语义记忆。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "当前 4 个 same-class wrong cases 已显示 forced pairwise VLM 会稳定选 distractor；IEVE 不能修复表示，但可成为 identity scorer 成立后的 active-verification 控制骨架。不得直接把 DISK 匹配数升级为 identity authority，也不得在现有 current-frame-only 主线偷带其全局语义记忆。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "它有力证明“发现疑似实例后先靠近再确认”比一眼即提交更好，也证明 recovery switch 有系统价值。它没有证明关键点数是可靠 physical-identity 证据，更没有证明真实手机视频、目标缺席、动态人群或同一门类高度重复纹理下有效；成功指标仍是仿真里的 1 m + oracle visibility，不是功能入口、穿越或独立到达。确认后被永久保留，也可能把一次误认固化。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:21; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:21 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

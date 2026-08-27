@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr07",
+  "item_id": "paper-wearable-obstacle-avoidance-with-cross-modal-learning",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr07"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "video-depth 交叉学习、跨模态一致性/降级和分级音频+触觉调度",
+    "project_application": "video-depth 交叉学习、跨模态一致性/降级和分级音频+触觉调度",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "video-depth 交叉学习、跨模态一致性/降级和分级音频+触觉调度"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "专用 RGB-ToF/FPGA/手机硬件约 400 g；小规模、非随机研究中的“100% 避障”不可作独立安全证据"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "summary": "Legacy source for dtr:DR07; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR07 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

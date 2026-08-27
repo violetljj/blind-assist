@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-project-guideline-component-audit-project-guideline-replay-recomputation",
+  "item_id": "tool-project-guideline",
+  "route": "project-guideline-component-audit",
+  "mechanism_ids": [
+    "project-guideline-replay-recomputation"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Project Guideline 的做法。 官方只明确承诺将事件文件加载后做详细调试和分析 （README：Logging）； 本审计未发现官方声明“生产日志可完整重算所有控制结果”。因此这里借的是 “事件可追溯”原则，不扩大为不存在的全量 replay 能力。 BlindAssist 已有对应。 - [ReplayFrameSource.kt](../core/device/src/main/java/com/linnan/blindassist/camera/ReplayFrameSource.kt) 能让固定图片走同一帧回调。 - [AssistDecisionKernel.kt](../core/assist/src/main/java/com/linnan/blindassist/session/AssistDecisionKernel.kt) 让生产与 benchmark 复用同一决策顺序。 - [UstrfControlledFaultReplay.kt](../core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfControlledFaultReplay.kt) 已能显式注入位姿、采集、几何、运动、帧不匹配和过期故障。 - [UstrfSessionTraceDigest.kt](../core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfSessionTraceDigest.kt) 已能对结构化结果和失效原因生成确定性摘要。 真实缺口。 正式手机会话没有持久化全部“重算决策所必需且允许保存”的输入、配置 版本和原因码；现有图片回放证明管线可复用，现有 USTRF 回放证明故障可确定重现，但二者 尚未形成正式手机链路的统一可重算证据。 允许的借鉴。 与 3.2 合并成一个候选改动：先定义账本，再用已存在的 AssistDecisionKernel 做确定性重算测试。若缺少原始检测输出、配置摘要或版本标识， 重算结果必须标记 NOT_RECOMPUTABLE，不得补值或推测。 停止线。 不新建第二套业务管线，不把合成故障回放当真实用户或安全证据。",
+    "project_application": "Project Guideline 的做法。 官方只明确承诺将事件文件加载后做详细调试和分析 （README：Logging）； 本审计未发现官方声明“生产日志可完整重算所有控制结果”。因此这里借的是 “事件可追溯”原则，不扩大为不存在的全量 replay 能力。 BlindAssist 已有对应。 - [ReplayFrameSource.kt](../core/device/src/main/java/com/linnan/blindassist/camera/ReplayFrameSource.kt) 能让固定图片走同一帧回调。 - [AssistDecisionKernel.kt](../core/assist/src/main/java/com/linnan/blindassist/session/AssistDecisionKernel.kt) 让生产与 benchmark 复用同一决策顺序。 - [UstrfControlledFaultReplay.kt](../core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfControlledFaultReplay.kt) 已能显式注入位姿、采集、几何、运动、帧不匹配和过期故障。 - [UstrfSessionTraceDigest.kt](../core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfSessionTraceDigest.kt) 已能对结构化结果和失效原因生成确定性摘要。 真实缺口。 正式手机会话没有持久化全部“重算决策所必需且允许保存”的输入、配置 版本和原因码；现有图片回放证明管线可复用，现有 USTRF 回放证明故障可确定重现，但二者 尚未形成正式手机链路的统一可重算证据。 允许的借鉴。 与 3.2 合并成一个候选改动：先定义账本，再用已存在的 AssistDecisionKernel 做确定性重算测试。若缺少原始检测输出、配置摘要或版本标识， 重算结果必须标记 NOT_RECOMPUTABLE，不得补值或推测。 停止线。 不新建第二套业务管线，不把合成故障回放当真实用户或安全证据。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Project Guideline 的做法。 官方只明确承诺将事件文件加载后做详细调试和分析 （README：Logging）； 本审计未发现官方声明“生产日志可完整重算所有控制结果”。因此这里借的是 “事件可追溯”原则，不扩大为不存在的全量 replay 能力。 BlindAssist 已有对应。 - [ReplayFrameSource.kt](../core/device/src/main/java/com/linnan/blindassist/camera/ReplayFrameSource.kt) 能让固定图片走同一帧回调。 - [AssistDecisionKernel.kt](../core/assist/src/main/java/com/linnan/blindassist/session/AssistDecisionKernel.kt) 让生产与 benchmark 复用同一决策顺序。 - [UstrfControlledFaultReplay.kt](../core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfControlledFaultReplay.kt) 已能显式注入位姿、采集、几何、运动、帧不匹配和过期故障。 - [UstrfSessionTraceDigest.kt](../core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfSessionTraceDigest.kt) 已能对结构化结果和失效原因生成确定性摘要。 真实缺口。 正式手机会话没有持久化全部“重算决策所必需且允许保存”的输入、配置 版本和原因码；现有图片回放证明管线可复用，现有 USTRF 回放证明故障可确定重现，但二者 尚未形成正式手机链路的统一可重算证据。 允许的借鉴。 与 3.2 合并成一个候选改动：先定义账本，再用已存在的 AssistDecisionKernel 做确定性重算测试。若缺少原始检测输出、配置摘要或版本标识， 重算结果必须标记 NOT_RECOMPUTABLE，不得补值或推测。 停止线。 不新建第二套业务管线，不把合成故障回放当真实用户或安全证据。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The component decision is ADAPT. The audit absorbs only the stated engineering boundary; it does not import the full C++/Bazel/MediaPipe/ARCore/Unreal stack or establish dynamic-risk, grounding, user, product, or safety evidence."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/PROJECT_GUIDELINE_COMPONENT_ADAPTATION_AUDIT_2026-07-30.md",
+      "summary": "Legacy source for project-guideline:replay-recomputation; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated project-guideline:replay-recomputation from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-28",
+  "item_id": "paper-deepmpcvs-deep-model-predictive-control-for-visual-servoing",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-28"
+  ],
+  "use_state": "retired",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "FlowNet2 或 DDFlow 估当前→目标 dense optical flow；用 IBVS interaction matrix L(Z) 把速度映射为短时 flow，并假设小 horizon 内 depth 一致、flow 可加，从而得到未来 T 步 flow 的线性预测；5-cell LSTM 接上一速度，生成 T=5 的速度序列；每个真实控制步在线优化网络参数 100 次，使预测累计 flow 匹配目标 flow，只执行第一步，再以新图重算，构成 receding-horizon MPC。",
+    "project_application": "只能在 exact identity、aperture 与独立安全守卫都成立后，作为局部 action-suggestion 的机制参考；手机手持人与自由 6-DoF 飞行相差过大。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "只能在 exact identity、aperture 与独立安全守卫都成立后，作为局部 action-suggestion 的机制参考；手机手持人与自由 6-DoF 飞行相差过大。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "它证明在已处于目标视觉邻域时，horizon planning 可比单步 IBVS 降低路径和旋转误差；也展示在线优化可补偿近似动力学。它不证明远程导航、障碍安全、目标身份、到达/交接；其最强实验仍是 10 个模拟自由相机场景，控制迭代数很高。论文伪代码的 while 条件还写成误差 ≤ ε 时循环，显然应是 >，复现需以代码为准。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:28; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:28 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

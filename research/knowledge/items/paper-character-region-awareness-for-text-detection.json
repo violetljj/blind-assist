@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-character-region-awareness-for-text-detection",
+  "kind": "paper",
+  "title": "Character Region Awareness for Text Detection",
+  "canonical_ref": "https://openaccess.thecvf.com/content_CVPR_2019/html/Baek_Character_Region_Awareness_for_Text_Detection_CVPR_2019_paper.html",
+  "authors": [],
+  "year": 2019,
+  "venue": "",
+  "summary": "CRAFT 预测字符区域与字符间 affinity，可把整行候选拆成字符组/词组。",
+  "mechanisms": [
+    {
+      "id": "l10-2",
+      "name": "Character Region Awareness for Text Detection — l10:2 route mechanism",
+      "description": "CRAFT 预测字符区域与字符间 affinity，可把整行候选拆成字符组/词组。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "只做检测/分组；相邻词仍可能错误粘连，也没有 lexical identity。"
+    }
+  ],
+  "tags": [
+    "l10",
+    "literature-reserve",
+    "l10-r0"
+  ],
+  "aliases": [
+    "l10:2"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

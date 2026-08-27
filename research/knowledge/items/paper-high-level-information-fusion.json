@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "id": "paper-high-level-information-fusion",
+  "kind": "paper",
+  "title": "High-Level Information Fusion",
+  "canonical_ref": "https://doi.org/10.1016/j.engappai.2019.02.016",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "腰挂 Kinect 系统 SAS-DV 能否把静态障碍、自由通道、动态对象和动态对象已经走过的历史路径，融合为 17 个方向的风险图，再推荐最低风险方向。",
+  "mechanisms": [
+    {
+      "id": "dtr-dr34",
+      "name": "High-Level Information Fusion — dtr:DR34 route mechanism",
+      "description": "640×480 RGB/IR depth 被切成三个高度带和 26 个参考点，再汇总为 17 个方向。静态障碍阈值 3 m。系统比较 Haar、Farneback、背景减除和 CamShift，并按传感器运动/光照切换。风险层有两版：一版 Boolean BayesNet 融合动态对象、历史轨迹、静态对象、自由通道及多个距离带；另一版把这些特征分类成低、中、高、很高和近碰。若多个方向风险相同，就选择自由距离更远者。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "风险类别来自手工信念，不是实际碰撞频率；系统再用同一信念评价自己与其他系统，形成近似自洽循环。“有人走过”也不是当前通路安全证据，尤其对临时障碍和动态交通可能已经过期。没有未来轨迹、身体走廊、事件 onset/clear 或真实用户避碰。"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "deep-reading",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR34"
+  ],
+  "links": [
+    {
+      "label": "作者博士论文落地页",
+      "ref": "https://repositorio.ufscar.br/items/fa6ada7a-e386-4cee-96bc-79d4c5324535"
+    },
+    {
+      "label": "机构库全文 PDF",
+      "ref": "https://repositorio.ufscar.br/server/api/core/bitstreams/a602f082-60f5-4db3-af13-652a7a4e0949/content"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

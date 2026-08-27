@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "dataset-revel",
+  "kind": "dataset",
+  "title": "REveL",
+  "canonical_ref": "https://uts-ri.github.io/revel",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "安静/快速目标、运动模糊和相机自运动下的人员接近",
+  "mechanisms": [
+    {
+      "id": "dtr-dr26",
+      "name": "REveL — dtr:DR26 route mechanism",
+      "description": "RGB + event + LiDAR + 1 kHz IMU + Vicon 人/传感器 pose；可做跨模态检测、ego compensation 和 source-motion 压力",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "约 14.1 分钟、2 个行人、室内 arbitrary Vicon frame；没有 body corridor、closest approach 或助盲 event truth"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR26"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

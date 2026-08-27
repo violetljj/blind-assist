@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-arawareness-araware",
+  "kind": "paper",
+  "title": "ARAwareness / ARAware",
+  "canonical_ref": "https://www.mdpi.com/1424-8220/24/13/4282",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "快速车辆需要比慢行人更早提醒；早告警过多",
+  "mechanisms": [
+    {
+      "id": "dtr-dr04",
+      "name": "ARAwareness / ARAware — dtr:DR04 route mechanism",
+      "description": "用目标类型、速度、距离、预测碰撞时间和严重度决定 alert deadline",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "实验由研究者模拟视障用户；检测精度与处理时间不等于避免碰撞"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR04"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

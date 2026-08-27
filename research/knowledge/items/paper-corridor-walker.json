@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-corridor-walker",
+  "kind": "paper",
+  "title": "Corridor-Walker",
+  "canonical_ref": "https://www.masakikuribayashi.com/data/project/masaki_kuribayashi_mobilehci_2022/paper.pdf",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "路线相关性、上半身/盲杖盲区、无意义贴墙",
+  "mechanisms": [
+    {
+      "id": "dtr-dr06",
+      "name": "Corridor-Walker — dtr:DR06 route mechanism",
+      "description": "手机 LiDAR occupancy grid → 可通行走廊/交叉口 → 空间音频、震动、TTS",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "14 名盲人的室内静态走廊研究；没有横穿、TTC 或户外动态证据"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR06"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

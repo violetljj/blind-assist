@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-v-sam",
+  "kind": "paper",
+  "title": "V²-SAM",
+  "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2026/html/Pan_V2-SAM_Marrying_SAM2_with_Multi-Prompt_Experts_for_Cross-View_Object_Correspondence_CVPR_2026_paper.html",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "coordinate anchor 和 learned visual prompt 在大视角变化下互补；无需 tracker memory，也能把 query mask 传播到 target mask；三个专家比任何单专家稳定。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-05",
+      "name": "V²-SAM — goal-audit:05 route mechanism",
+      "description": "（Fig. 2–3，Sec. 3）：①DINOv3 dense cosine correspondence 在 query mask 内将 patch 映到 target；②用 point stratification 保留空间分散且可靠的匹配，转换为 SAM2 coordinate prompts，形成 V²-Anchor；③SAM2 对 query mask 做 mask pooling，得到区域 visual prompt；④VPMatcher 的 feature branch 用 cross-attention 和 spatial gate 将 query 表示映到 target；⑤structural branch 以 mask encoder/decoder 和 FiLM 预测 target 结构先验；⑥构成 Anchor、Visual、Fusion 三个独立 mask experts；⑦Visual/Fusion 用对称 contrastive、structural-mask、BCE+Dice 三类损失训练；⑧PCCS 将每个预测 mask 反投回 query，按回投点到原 mask 采样点的平均距离选择专家。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "DAVIS 明确只统计两帧同时可见的对象；没有 NONE/target-absence。Ego-Exo 是时间对齐双相机，不等于任意历史 reference crop。cyclic consistency 只是内部自洽，不是独立 identity truth。论文也没有独立 Limitations 节。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-05",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:05"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-rcle-rcle-e1",
+  "item_id": "paper-monocular-obstacle-avoidance-for-blind-people-using-probabilistic-focus",
+  "route": "rcle",
+  "mechanism_ids": [
+    "rcle-e1"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "头戴单目相机；Farnebäck dense flow；用流向量交点密度估计 FOE 分布；以 inlier proportion 表示 FOE 质量；在 FOE 附近拟合局部仿射 flow，以 divergence 近似接触时间；低质量帧弃用，并要求连续多帧质量合格。",
+    "project_application": "若未来重启比较，应在同一自然 session 上比较 FOE-quality 路线与固定-cell RCLE 的 coverage、弃权和响应，而不是只比较单一触发率。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "若未来重启比较，应在同一自然 session 上比较 FOE-quality 路线与固定-cell RCLE 的 coverage、弃权和响应，而不是只比较单一触发率。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "E1 是直接前人，必须进 related work。RCLE 不能泛称“仿射 expansion、质量门或连续帧确认”为新颖点；创新主张需进一步检索。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/rcle/RCLE_PRIOR_MECHANISM_EVIDENCE_MAP_R0_2026-07-28.md",
+      "summary": "Legacy source for rcle:E1; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated rcle:E1 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

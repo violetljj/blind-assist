@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-navinote",
+  "kind": "paper",
+  "title": "NaviNote",
+  "canonical_ref": "https://arxiv.org/abs/2603.08837",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "预扫描区域内 VPS 亚米级定位、语音/agentic 空间注释；16 人对照中成功到达 14 人，对照 6 人",
+  "mechanisms": [
+    {
+      "id": "goal-prior-p0-r02",
+      "name": "NaviNote — goal-prior:P0-R02 route mechanism",
+      "description": "预扫描区域内 VPS 亚米级定位、语音/agentic 空间注释；16 人对照中成功到达 14 人，对照 6 人",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "目标和空间 anchor 预先存在，依赖 pre-scanned VPS；不解决开放世界入口发现或多 referent truth"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "prior-art",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-prior:P0-R02"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

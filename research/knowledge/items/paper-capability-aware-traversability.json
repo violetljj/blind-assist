@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "paper-capability-aware-traversability",
+  "kind": "paper",
+  "title": "Capability-Aware Traversability",
+  "canonical_ref": "https://arxiv.org/abs/2607.20679",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "embodiment-conditioned traversability",
+  "mechanisms": [
+    {
+      "id": "hftf-h03",
+      "name": "Capability-Aware Traversability — hftf:H03 route mechanism",
+      "description": "embodiment-conditioned traversability",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "The charter records this as an adjacent mechanism, not HFTF evidence. 人体分层、时域与助盲事件效用"
+    }
+  ],
+  "tags": [
+    "hftf",
+    "adjacent-work"
+  ],
+  "aliases": [
+    "hftf:H03"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

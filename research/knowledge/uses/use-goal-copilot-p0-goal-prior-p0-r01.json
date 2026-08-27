@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-prior-p0-r01",
+  "item_id": "paper-closing-the-gap-designing-for-the-last-few-meters-wayfinding-problem-for",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-prior-p0-r01"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "22 人 formative study、13 人 Landmark AI design probe；明确 doorway、连续 storefront、定位粒度与 camera aiming 是 BLV last-few-meters 的真实问题",
+    "project_application": "用户问题定义；landmark/sign/place 三类信息；把 O&M 技能、残余视力与情境纳入交互设计",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "用户问题定义；landmark/sign/place 三类信息；把 O&M 技能、残余视力与情境纳入交互设计"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Landmark AI 是 design probe，place matching 含 Wizard-of-Oz；不是可部署 grounding/navigation baseline"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/goal-copilot/P0_PRIOR_ART_ASSIMILATION_2026-08-21.md",
+      "summary": "Legacy source for goal-prior:P0-R01; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-prior:P0-R01 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

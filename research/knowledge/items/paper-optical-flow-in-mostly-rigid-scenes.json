@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-optical-flow-in-mostly-rigid-scenes",
+  "kind": "paper",
+  "title": "Optical Flow in Mostly Rigid Scenes",
+  "canonical_ref": "https://openaccess.thecvf.com/content_cvpr_2017/html/Wulff_Optical_Flow_in_CVPR_2017_paper.html",
+  "authors": [],
+  "year": 2017,
+  "venue": "",
+  "summary": "将自然场景分成 rigid 与 moving regions；静态区联合估计相机运动和 3D 结构，使用 Plane+Parallax 强约束；运动区用非约束 flow，并显式估计运动物体分割。",
+  "mechanisms": [
+    {
+      "id": "rcle-e2",
+      "name": "Optical Flow in Mostly Rigid Scenes — rcle:E2 route mechanism",
+      "description": "将自然场景分成 rigid 与 moving regions；静态区联合估计相机运动和 3D 结构，使用 Plane+Parallax 强约束；运动区用非约束 flow，并显式估计运动物体分割。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "DERIVED_INFERENCE。不能把 MR-Flow benchmark 结果外推为助盲、端侧实时或风险有效性。"
+    }
+  ],
+  "tags": [
+    "rcle",
+    "motion",
+    "related-work"
+  ],
+  "aliases": [
+    "rcle:E2"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

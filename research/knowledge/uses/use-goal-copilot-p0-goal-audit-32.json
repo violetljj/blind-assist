@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-32",
+  "item_id": "paper-twin-same-or-not-enhancing-visual-perception-in-vision-language-models",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-32"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "① 从 Amazon Reviews 的 36 类、1,836 个产品实例、22,157 张图片形成同实例正对；② 用 CLIP 在不同实例中召回视觉最相似者，由人工挑真实 hard negative 并剔除简单负例；③ 对每个产品用 3–5 图 DreamBooth 个性化，再以通用 prompt 生成“保留大意但改变细节”的 synthetic negative，由人工验收；④ 组成 561,569 个问答：123,393 正、362,283 真实负、75,893 合成负；⑤ 以二元最终答案正确为唯一 reward；⑥ 对 Qwen2.5-VL-3B、InternVL3.5-1B 做全参数 GRPO，batch 内平衡正负；⑦ 用 TWIN-Eval 与 ILIAS、Landmarks、MET、CUB、INQUIRE 组成 FGVQA，既测 pair Yes/No，也测 0–3 个匹配的计数问题。",
+    "project_application": "stable distractor：训练思想高度相关，但模型本身只给 pair judgement；顺序偏差：当前官方数据没有消除 pair order bias，不能直接作为解法；NONE：单对的 No 是有效负类，但多候选场景没有原生 all-No 聚合或缺席校准。把所有候选一起放进一个 prompt 会重新引入序列位置竞争。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "不做联合多图 prompt；对每个 reference–candidate 单独调用、读取固定 Yes/No logits，并把两种图像槽位顺序都跑一次。冻结通过标准：同一 pair 的 swap 结论/分数一致，候选列表排列不改变任何独立 pair 分数，stable distractor 判 No，全部 No 时输出 NONE。若 swapped consistency 不过，TWIN 只能作为 hard-negative 构造参考。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "没证明唯一物理实体身份、单参考候选定位、current-frame NONE、校准概率或多候选逐个独立证据；multi-image 任务是数有几个 match，而不是给每个候选绑定可审计分数。训练/评测未报告左右交换一致性。商品同 SKU 的图片也可能把“产品型号身份”误当“物理个体身份”。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-mainline-additional-10-deep-reading-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:32; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:32 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

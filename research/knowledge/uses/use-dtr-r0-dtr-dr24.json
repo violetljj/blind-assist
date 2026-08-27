@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr24",
+  "item_id": "dataset-jrdb-family",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr24"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "360° RGB/RGB-D/LiDAR/里程计、2D/3D tracks、动作、pose 和 trajectory forecasting 评测；用于人群/遮挡分层",
+    "project_application": "360° RGB/RGB-D/LiDAR/里程计、2D/3D tracks、动作、pose 和 trajectory forecasting 评测；用于人群/遮挡分层",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "360° RGB/RGB-D/LiDAR/里程计、2D/3D tracks、动作、pose 和 trajectory forecasting 评测；用于人群/遮挡分层"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "人体高度机器人仍不是手机/眼镜，且没有用户 intended route 或碰撞事件 truth；下载和许可需现场复核"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:idea.md",
+      "summary": "Legacy source for dtr:DR24; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR24 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

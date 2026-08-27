@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-clover-mapclover",
+  "kind": "paper",
+  "title": "CLOVER / MapCLOVER",
+  "canonical_ref": "https://arxiv.org/abs/2407.09718",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "对静态 outdoor objects，将有限背景 context 视为实例特征，并用 SupCon 训练，能显著提升跨光照、天气和视角 ReID；聚类代表集比单 centroid 更适合长期外观多模态。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-07",
+      "name": "CLOVER / MapCLOVER — goal-audit:07 route mechanism",
+      "description": "（Fig. 1，Sec. IV–V）：①将 box 扩成以长边加固定 margin 的正方形 crop，实验 margin 10 pixels；②冻结 DINOv2 ViT-L/14，仅训练各层 adapters；③对 adapted patch tokens 做 GeM pooling；④再用 encoder MLP 得到 1024-D descriptor；⑤训练期经 128-D projection head，用 supervised contrastive loss，让同一实例跨视角/天气聚合、全 batch 异实例分开；⑥做 color jitter、box shift、crop scale、rotation、random erasing；⑦推理丢弃 projection head，用 cosine；⑧MapCLOVER 对同实例历史 descriptors 做 k-means，保留有限 cluster centers，并以最大 cosine 匹配新观察。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "结论明确说不适合人和车等背景会变的动态对象。CODa 的实例标签由全局位置建立，训练/测试仍共享校园环境，无法排除 location/context shortcut；retrieval 候选预先限制为相同 detector class，也没有 NONE calibration。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-07",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:07"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

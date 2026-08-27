@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p2-abotn-official-waypoint",
+  "item_id": "paper-abot-n1-abotn-poibench",
+  "route": "goal-copilot-p2",
+  "mechanism_ids": [
+    "goal-prior-p0-r08"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "direct_replication",
+  "usage": {
+    "source_scope": "The official ABotN waypoint interface and native metric-arrival evaluation only.",
+    "project_application": "Run the official waypoint stack to separate metric approach from final visual handoff and user completion.",
+    "modifications": "BlindAssist preserved a separate visual-handoff/completion gate instead of treating native metric arrival as destination completion.",
+    "expected_effect": "Establish whether the official waypoint mechanism can reach its native metric threshold while exposing the remaining handoff boundary."
+  },
+  "evaluation": {
+    "reproduction_status": "partial",
+    "verdict": "mixed",
+    "setup": "Official ABotN waypoint runs on named trajectories with native/oracle arrival plus an independent BlindAssist visual-handoff check.",
+    "effect": "One run reached native metric arrival at 0.9246 m, while visual handoff and completion remained false; other trajectories exhausted budget or failed earlier grounding.",
+    "metrics": [
+      "traj_3_distance=12.5335m->2.9600m",
+      "traj_5_final_distance=0.9246m",
+      "traj_5_native_arrival=true",
+      "traj_5_visual_handoff=false"
+    ],
+    "claim_boundary": "This establishes one task's official native metric arrival only. It does not establish public referent grounding, entrance affordance, visual handoff, user completion, BLV benefit, live-device control, generalization, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/goal-copilot/BLINDASSIST_ABOTN_OFFICIAL_WAYPOINT_HANDOFF_V1_RESULT_2026-08-24.md",
+      "summary": "Official waypoint run with metric-arrival versus visual-handoff separation."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated the official ABotN waypoint reproduction result and retained its metric-arrival-only claim ceiling."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

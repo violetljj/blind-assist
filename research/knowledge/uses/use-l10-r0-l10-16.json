@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-l10-16",
+  "item_id": "paper-from-region-arrival-to-instance-level-grounding-in-vision-and-language-n",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "l10-16"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "把 proximity precision、目标可见性、终帧 grounding 和短程 final approach 分开。",
+    "project_application": "L10 终点至少拆成“位置接近、目标仍可见且正确、朝向/终帧可用”，不再让 centered-large-box 代表全部完成。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "L10 终点至少拆成“位置接近、目标仍可见且正确、朝向/终帧可用”，不再让 centered-large-box 代表全部完成。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "REVERIE 派生模拟 VLN；没有 metric entrance aperture、真机控制或用户交接。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/l10-r0/LITERATURE_RESERVE_20_2026-08-27.md",
+      "summary": "Legacy source for l10:16; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated l10:16 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "paper-guidetouch",
+  "kind": "paper",
+  "title": "GuideTouch",
+  "canonical_ref": "https://arxiv.org/abs/2601.13813",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "用低成本围巾式 ToF 设备补足白杖较难发现的头部和上身障碍，并用肩胸四点振动表达危险方向。",
+  "mechanisms": [
+    {
+      "id": "dtr-dr37",
+      "name": "GuideTouch — dtr:DR37 route mechanism",
+      "description": "两枚 VL53L5CX 8×8 ToF 传感器垂直布置、夹角 30°，合成约 90° 垂直视场，每 0.1 s 采样；深度图经未充分说明的 temporal outlier filtering 后切分左右/上方区域，激活对应振动马达。设备设计目标不超过 500 g、约 100 美元。3000 rpm 旋转罩用于甩掉水滴，20 次测试成功 18 次，但头部附近噪声约 70 dB。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "所有实验都是静止条件下首次识别触觉模式，没有参与者边走边避障，也没有漏障、误报、接触或行走时间。危险距离、区域边界和告警状态机未公开。70 dB 清洁噪声虽不一定伤听力，却可能遮蔽交通线索；论文没有测试这一点。"
+    },
+    {
+      "id": "ustrf-p12",
+      "name": "source — ustrf:P12 route mechanism",
+      "description": "两个 ToF、四点触觉和少量方向模式获得较高静态识别率",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "初步研究；93.75% 是方向提示识别率，不是避障成功率"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "deep-reading",
+    "dtr-r0",
+    "ustrf",
+    "frontier-guide",
+    "ustrf-sc"
+  ],
+  "aliases": [
+    "dtr:DR37",
+    "ustrf:P12"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

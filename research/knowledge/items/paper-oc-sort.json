@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-oc-sort",
+  "kind": "paper",
+  "title": "OC-SORT",
+  "canonical_ref": "https://arxiv.org/abs/2203.14360",
+  "authors": [],
+  "year": 2022,
+  "venue": "",
+  "summary": "observation-centric re-update 可修正遮挡期 Kalman 累积误差",
+  "mechanisms": [
+    {
+      "id": "ustrf-p05",
+      "name": "OC-SORT — ustrf:P05 route mechanism",
+      "description": "observation-centric re-update 可修正遮挡期 Kalman 累积误差",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "CVPR 方法证据强；CPU 关联速度不含检测，非穿戴相机 TTC 证明"
+    }
+  ],
+  "tags": [
+    "ustrf",
+    "frontier-guide",
+    "ustrf-sc"
+  ],
+  "aliases": [
+    "ustrf:P05"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

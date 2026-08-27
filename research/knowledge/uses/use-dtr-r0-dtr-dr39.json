@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr39",
+  "item_id": "paper-vehicle-surge-detection",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr39"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "这不是视觉算法，而是把交通事件拆开的人因协议。对比纯电模式 HEV、同一 HEV 加连续 whoosh VSP 和相近 ICE；2 m 静态声级分别约 48.6/58.3/54.6 dBA。车辆在参与者后方约 2 m 随机等待 5–15 s 后加速至 15 km/h；参与者第一次扣扳机报告 SURGE_DETECTED，第二次用左右扳机报告直行或右转。5 s 未报起步算漏检，10 s 未报路径算漏报，方向选错算 false path judgment。",
+    "project_application": "优先借真实盲人协议、两种噪声环境、surge/pathway 两阶段标签和 5/10 秒窗口；不借人工车声作为 BlindAssist 输出，也不把低速起步结果写成实际过街安全。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "优先借真实盲人协议、两种噪声环境、surge/pathway 两阶段标签和 5/10 秒窗口；不借人工车声作为 BlindAssist 输出，也不把低速起步结果写成实际过街安全。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "参与者坐着且没有真正过街；只测一种 VSP 和低速起步，没有快速恒速接近、交通间隙或无车负例，因此不是完整风险告警评测。0 次 VSP 漏起步也不能外推到嘈杂街道、快速电动车或目标入路判断。"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/dynamic-travel-risk/DYNAMIC_TRAVEL_RISK_ADDITIONAL_10_DEEP_READING_2026-08-24.md",
+      "summary": "Legacy source for dtr:DR39; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR39 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

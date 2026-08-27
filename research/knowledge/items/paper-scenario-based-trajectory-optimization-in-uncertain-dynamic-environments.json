@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-scenario-based-trajectory-optimization-in-uncertain-dynamic-environments",
+  "kind": "paper",
+  "title": "Scenario-Based Trajectory Optimization in Uncertain Dynamic Environments",
+  "canonical_ref": "https://doi.org/10.1109/lra.2021.3074866",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Convert arbitrary obstacle distributions into sampled collision scenarios and geometrically prune only route-irrelevant samples for real-time computation.",
+  "mechanisms": [
+    {
+      "id": "dtr-dr52",
+      "name": "Scenario-Based Trajectory Optimization in Uncertain Dynamic Environments — dtr:DR52 route mechanism",
+      "description": "Convert arbitrary obstacle distributions into sampled collision scenarios and geometrically prune only route-irrelevant samples for real-time computation.",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "It bounds marginal risk per time step, not automatically the joint probability of a complete DTR event."
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "literature-reserve",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR52"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

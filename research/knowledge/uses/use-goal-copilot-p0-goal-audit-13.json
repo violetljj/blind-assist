@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-13",
+  "item_id": "paper-ras-mechanism-reference",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-13"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "①SAM/Co-DETR 提案；②CLIP、ConvNeXt-CLIP、SigLIP、DINOv2 ensemble 提特征；③每个 mask 内池化并拼接；④mask projector 映射到 LLM token，区分 reference/candidate special token；⑤与全图 token、文本一并送入 LLaVA-1.5/Vicuna-13B；⑥一次性上下文化所有候选；⑦共享 binary classifier 对每 mask 判是否属于集合；⑧加权 BCE 提高稀少 positive 权重（Fig.2、§3）。 4. 训练/依赖：Stage 1 仅训 mask projector，用 LLaVA image-caption 数据和 SAM masks 做 caption pretext；Stage 2 冻结视觉 encoders，训其余模块做 mask-group BCE。MASKGROUPS-2M 来自 COCO/LVIS、Visual Genome、(G)RES；MASKGROUPS-HQ 共 100,299 groups，96,697 train、3,599 eval，28% 含 reference masks。 5. 实验证据：Table 3 中 ORES finetune 后 text-only gIoU/cIoU=66.71/74.59，visual-enriched=58.72/68.77，overall=64.77/73.13。Table 5 的 GRES-FT val 74.64/70.48/N-acc 69.05，testA N-acc 64.62、testB 62.92。Table 6 显示候选 oracle 与最终选择仍有大差距：ORES 86.39→74.59、RES 87.2→77.8、GRES 87.60→71.79。Table 7 非自回归相对自回归 cIoU 53.75 vs 45.34，延迟 .56 vs 2.13。 6. 实际证明：mask-centric token 和一次性 per-mask binary decoding 更适合零/多目标集合输出；显式 empty/group 任务必须有相应训练数据。 7. 未证明：reference mask 常表达“同类、同色、相对位置”，不是同一物理实体；N-acc 仍只有六成多。候选 token 虽逐个分类，但仍在有位置的序列中共同 contextualize，论文未做 candidate permutation test，不能宣称数学上的顺序不变。 8. 阅读判断：最强 idea 是把 set prediction 改成共享的 per-candidate decision；最弱是用通用 LMM 语义承担细粒度 identity。隐藏失败是所有同类候选均被合理纳入 group。 9. BlindAssist 映射：E 的 1/4 order-sensitive 说明这种共享单候选 head 值得借鉴；但 2/4 stable distractor 说明若 token 只编码类别/属性，架构再对称也会稳定选错。 10. 最小适配实验：不搬 13B 模型，只复用决策形式：每个候选独立 identity features，经共享 scorer 输出 p_target,p_distractor，另设集合级 p_none；完整候选集合做随机置换。fresh D 含 TARGET/SAME_CLASS_DISTRACTOR/NONE，一次跑完即停；任何 permutation disagreement、NONE false commit 未下降或 target coverage 明显塌缩都证伪。 11. Verdict：MECHANISM_REFERENCE。",
+    "project_application": "E 的 1/4 order-sensitive 说明这种共享单候选 head 值得借鉴；但 2/4 stable distractor 说明若 token 只编码类别/属性，架构再对称也会稳定选错。 10. 最小适配实验：不搬 13B 模型，只复用决策形式：每个候选独立 identity features，经共享 scorer 输出 p_target,p_distractor，另设集合级 p_none；完整候选集合做随机置换。fresh D 含 TARGET/SAME_CLASS_DISTRACTOR/NONE，一次跑完即停；任何 permutation disagreement、NONE false commit 未下降或 target coverage 明显塌缩都证伪。 11. Verdict：MECHANISM_REFERENCE。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "E 的 1/4 order-sensitive 说明这种共享单候选 head 值得借鉴；但 2/4 stable distractor 说明若 token 只编码类别/属性，架构再对称也会稳定选错。 10. 最小适配实验：不搬 13B 模型，只复用决策形式：每个候选独立 identity features，经共享 scorer 输出 p_target,p_distractor，另设集合级 p_none；完整候选集合做随机置换。fresh D 含 TARGET/SAME_CLASS_DISTRACTOR/NONE，一次跑完即停；任何 permutation disagreement、NONE false commit 未下降或 target coverage 明显塌缩都证伪。 11. Verdict：MECHANISM_REFERENCE。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "reference mask 常表达“同类、同色、相对位置”，不是同一物理实体；N-acc 仍只有六成多。候选 token 虽逐个分类，但仍在有位置的序列中共同 contextualize，论文未做 candidate permutation test，不能宣称数学上的顺序不变。 8. 阅读判断：最强 idea 是把 set prediction 改成共享的 per-candidate decision；最弱是用通用 LMM 语义承担细粒度 identity。隐藏失败是所有同类候选均被合理纳入 group。 9. BlindAssist 映射：E 的 1/4 order-sensitive 说明这种共享单候选 head 值得借鉴；但 2/4 stable distractor 说明若 token 只编码类别/属性，架构再对称也会稳定选错。 10. 最小适配实验：不搬 13B 模型，只复用决策形式：每个候选独立 identity features，经共享 scorer 输出 p_target,p_distractor，另设集合级 p_none；完整候选集合做随机置换。fresh D 含 TARGET/SAME_CLASS_DISTRACTOR/NONE，一次跑完即停；任何 permutation disagreement、NONE false commit 未下降或 target coverage 明显塌缩都证伪。 11. Verdict：MECHANISM_REFERENCE。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:13; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:13 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

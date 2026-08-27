@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-02",
+  "item_id": "paper-idow",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-02"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "（Sec. 3.2，Fig. 2、5）：①GroundingDINO 或 SAM 产生高召回 proposals；②DINOv2 CLS token 编码 reference/proposal；③构造 anchor/positive/negative triplets；④batch-hard 从其他实例 reference 和随机开放世界图像中由 SAM 切出的 distractors 里选最近负例；⑤以 inverse-cosine margin triplet loss 适配 DINOv2；⑥每个实例另训 Zip-NeRF，从多视图 reference 合成新视角；⑦合成图可进入训练，也可在测试时作为更多 templates；⑧计算 proposal-reference 全矩阵，经 stable matching 和固定 0.4 阈值输出匹配。",
+    "project_application": "最契合 B0 的 4 个同类错误的是 hard-negative metric adaptation，不是 detector 或 NeRF。它能消除 pair prompt 的顺序依赖，但当前只有一张 reference，无法按论文方式对目标实例形成正样本簇。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "只移植“外部 source-disjoint instance bank 上训练的小型 metric projection”，禁止用已消费 C2 或目标 references 训练；当前候选独立得分，输出 TARGET/NONE，stable matching 改为单目标的绝对阈值+margin。若 source-disjoint 适配不能在 matched coverage 下减少 wrong-instance commit，或 proposal Recall@K/controls 下降，立即停止；不得用 NeRF 或增加 references 事后救援。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "不证明单 reference；stable matching 在目标缺失时仍可能给出错误全局配对，0.4 不是 absence calibration；proposal miss 不由 metric learner 修复。Sec. 5 还明确指出 GroundingDINO 非实时、SAM 会漏稀有关键实例、逐实例 NeRF 过慢。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:02; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:02 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-dtr-r0-dtr-dr57",
+  "item_id": "paper-robo-centric-esdf-a-fast-and-accurate-whole-body-collision-evaluation-to",
+  "route": "dtr-r0",
+  "mechanism_ids": [
+    "dtr-dr57"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Use a body-frame ESDF for arbitrary oriented 3-D shapes, including nonconvex bodies, with fast position/rotation queries.",
+    "project_application": "Compare current circular tube plus height bands with a privileged whole-body oracle over turns, narrow gaps, and overhangs.",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "Compare current circular tube plus height bands with a privileged whole-body oracle over turns, narrow gaps, and overhangs."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Robot-body/static-map evidence; it does not supply human dimensions or source-native head/ground truth."
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/dtr-r0/LITERATURE_RESERVE_2026-08-27.md",
+      "summary": "Legacy source for dtr:DR57; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated dtr:DR57 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

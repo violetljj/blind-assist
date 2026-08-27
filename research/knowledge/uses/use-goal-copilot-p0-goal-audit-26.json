@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-26",
+  "item_id": "paper-gapflyt-active-vision-based-minimalist-structure-less-gap-detection-for",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-26"
+  ],
+  "use_state": "adopted",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "先故意执行横向/对角扫描并压制相机旋转和前向速度，使 optical flow 近似与 inverse depth 成正比；对 N 帧相对同一参考帧的 flow magnitude 求平均，再对 inverse stacked flow 求空间梯度，前景/背景的深度不连续就显成 gap contour（TS2P）。Canny+形态学得到开口；从开口周围采前景/背景标签，用 KLT 和 focus-of-expansion 约束高速传播；以开口内近似中位/最大安全椭圆中心作为 safe point，Kalman 平滑；PID 让机体投影中心对齐 safe point，同时固定 pitch 前飞。",
+    "project_application": "它是后续 functional-aperture 层的重要参考，而不是当前 exact-instance 层。可借其主动视差与保守内缩 safe region，但必须有手机可执行动作和 source-native aperture/depth truth；不能用 bbox center 代替可通行区域。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "它是后续 functional-aperture 层的重要参考，而不是当前 exact-instance 层。可借其主动视差与保守内缩 safe region，但必须有手机可执行动作和 source-native aperture/depth truth；不能用 bbox center 代替可通行区域。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "它证明对“能否穿过”的任务，主动制造视差可比完整 3D reconstruction 更直接，也证明保守 erosion 可转化为安全余量。它没有证明一般门洞：环境是静态、前景/背景近似两平面且有明显深度双峰，gap 近凸且预先假定足够大；扫描轨迹、N、baseline 都需调，且安全点近似对非凸开口会偏。手机行人无法像 quadrotor 精确执行纯横移。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:26; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:26 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

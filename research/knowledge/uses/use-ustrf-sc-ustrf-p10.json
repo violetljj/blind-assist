@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ustrf-sc-ustrf-p10",
+  "item_id": "paper-vl-guide-blv-evaluation",
+  "route": "ustrf-sc",
+  "mechanism_ids": [
+    "ustrf-p10"
+  ],
+  "use_state": "retired",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "建立面向 BLV 导航描述的多维偏好数据和自动 evaluator",
+    "project_application": "提醒评价应是多维、BLV-aware 的，不能只依赖 BLEU/CLIP 或一个任意加权总分",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "提醒评价应是多维、BLV-aware 的，不能只依赖 BLEU/CLIP 或一个任意加权总分"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "当前有效后继预印本；自动 judge 不能冒充真实 BLV 用户结果"
+  },
+  "evidence": [
+    {
+      "kind": "git",
+      "ref": "f01a0072160f9b14c0debaf912bd67a4efb52772:docs/research/ustrf-sc/USTRF_FRONTIER_PAPER_GUIDE_2026-07-22.md",
+      "summary": "Legacy source for ustrf:P10; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated ustrf:P10 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

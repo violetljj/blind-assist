@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "id": "paper-threshold-consistent-margin-loss-for-open-world-deep-metric-learning",
+  "kind": "paper",
+  "title": "Threshold-Consistent Margin Loss for Open-World Deep Metric Learning",
+  "canonical_ref": "https://proceedings.iclr.cc/paper_files/paper/2024/file/16336d94a5ffca8de019087ab7fe403f-Paper-Conference.pdf",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "TCM 确实是绝对 cosine margins，不只是相对 retrieval ranking；多基线上降低 OPIS，说明阈值行为更一致。但它没有给出一个跨 benchmark/域漂移仍有效的冻结全局阈值，也没有证明 FAR/FRR 上界；margins 每库另调，结果主要仍是 Recall@k+OPIS。OPIS 需要每类足量 pairs，论文承认 few-shot 类难估，正好偏离“一张 reference”。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-39",
+      "name": "Threshold-Consistent Margin Loss for Open-World Deep Metric Learning — goal-audit:39 route mechanism",
+      "description": "①L2-normalize embedding 并枚举 batch 内正负 pair 的 cosine similarity；②选 hard positives s≤m+；③选 hard negatives s≥m−；④分别惩罚 m+−s 与 s−m−；⑤按各自 hard-pair 数归一化，再以 λ+、λ− 加权；⑥与 ProxyNCA/ArcFace/Smooth-AP/Recall@k-surrogate 等 base loss 相加；⑦用 OPIS 评估类别间 utility 曲线的方差，utility 是 sensitivity 与 specificity 的 harmonic mean，并在部署 calibration interval 上积分。绝对 margins 对单位向量对应距离带 [√(2−2m+), √(2−2m−)]。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "TCM 确实是绝对 cosine margins，不只是相对 retrieval ranking；多基线上降低 OPIS，说明阈值行为更一致。但它没有给出一个跨 benchmark/域漂移仍有效的冻结全局阈值，也没有证明 FAR/FRR 上界；margins 每库另调，结果主要仍是 Recall@k+OPIS。OPIS 需要每类足量 pairs，论文承认 few-shot 类难估，正好偏离“一张 reference”。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-39",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:39"
+  ],
+  "links": [
+    {
+      "label": "Amazon Science 页面",
+      "ref": "https://www.amazon.science/publications/threshold-consistent-margin-loss-for-open-world-deep-metric-learning"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

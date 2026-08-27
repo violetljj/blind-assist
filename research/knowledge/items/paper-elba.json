@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-elba",
+  "kind": "paper",
+  "title": "ELBA",
+  "canonical_ref": "https://openaccess.thecvf.com/content/WACV2025/papers/Shen_ELBA_Learning_by_Asking_for_Embodied_Visual_Navigation_and_Task_WACV_2025_paper.pdf",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "agent 可主动向 oracle 提问；DialFRED 有约 53K QA，ELBA 学 when/what to ask 并在 TEACh 上改进 task completion",
+  "mechanisms": [
+    {
+      "id": "goal-prior-p0-r06b",
+      "name": "ELBA — goal-prior:P0-R06b route mechanism",
+      "description": "agent 可主动向 oracle 提问；DialFRED 有约 53K QA，ELBA 学 when/what to ask 并在 TEACh 上改进 task completion",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "虚拟室内 manipulation/nav、oracle 可访问 GT；不能把 oracle 答案或 simulator success 直接当 BLV 开放街景证据"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "prior-art",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-prior:P0-R06b"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

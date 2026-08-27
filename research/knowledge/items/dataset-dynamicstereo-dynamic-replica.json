@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "dataset-dynamicstereo-dynamic-replica",
+  "kind": "dataset",
+  "title": "DynamicStereo / Dynamic Replica",
+  "canonical_ref": "https://github.com/facebookresearch/dynamic_stereo",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "区分 ego motion 与人/动物运动，并保持时序深度稳定",
+  "mechanisms": [
+    {
+      "id": "dtr-dr27",
+      "name": "DynamicStereo / Dynamic Replica — dtr:DR27 route mechanism",
+      "description": "动态视频的 depth、camera pose、mask、flow 和长轨迹；作为动态深度/运动 residual 压力源",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "合成、stereo、CC BY-NC 4.0，解压约 2.2 TB；不是当前手机单目输入或真实风险事件"
+    }
+  ],
+  "tags": [
+    "dynamic-travel-risk",
+    "legacy-candidate",
+    "dtr-r0"
+  ],
+  "aliases": [
+    "dtr:DR27"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

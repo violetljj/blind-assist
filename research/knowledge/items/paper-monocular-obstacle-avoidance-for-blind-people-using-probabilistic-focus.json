@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "paper-monocular-obstacle-avoidance-for-blind-people-using-probabilistic-focus",
+  "kind": "paper",
+  "title": "Monocular Obstacle Avoidance for Blind People using Probabilistic Focus of Expansion Estimation",
+  "canonical_ref": "https://iis.uibk.ac.at/public/papers/Stabinger-2016-WACV.pdf",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "头戴单目相机；Farnebäck dense flow；用流向量交点密度估计 FOE 分布；以 inlier proportion 表示 FOE 质量；在 FOE 附近拟合局部仿射 flow，以 divergence 近似接触时间；低质量帧弃用，并要求连续多帧质量合格。",
+  "mechanisms": [
+    {
+      "id": "rcle-e1",
+      "name": "Monocular Obstacle Avoidance for Blind People using Probabilistic Focus of Expansion Estimation — rcle:E1 route mechanism",
+      "description": "头戴单目相机；Farnebäck dense flow；用流向量交点密度估计 FOE 分布；以 inlier proportion 表示 FOE 质量；在 FOE 附近拟合局部仿射 flow，以 divergence 近似接触时间；低质量帧弃用，并要求连续多帧质量合格。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "E1 是直接前人，必须进 related work。RCLE 不能泛称“仿射 expansion、质量门或连续帧确认”为新颖点；创新主张需进一步检索。"
+    }
+  ],
+  "tags": [
+    "rcle",
+    "motion",
+    "related-work"
+  ],
+  "aliases": [
+    "rcle:E1"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

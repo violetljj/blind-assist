@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "id": "paper-anyimagenav-precise-image-goal-navigation-via-multi-view-3d-foundation-m",
+  "kind": "paper",
+  "title": "AnyImageNav — Precise Image-Goal Navigation via Multi-View 3D Foundation Models",
+  "canonical_ref": "https://arxiv.org/abs/2604.05351",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "它强力证明“语义只负责触发，几何负责 pose”比让 embedding 直接承担精确到达更合理，且持续重估优于一次 commit。它没有证明 exact 6-DoF：heading metric 明确按 modulo 180° 计算，正反朝向可被折叠；正文只报告地平面位置与 yaw，不是完整 6-DoF error。它依赖 depth、全程 odometry、persistent long memory，且 15% 失败来自重复房间/家具的伪 correspondence；也没有 functional entrance、门可通行或用户完成的 truth。",
+  "mechanisms": [
+    {
+      "id": "goal-audit-29",
+      "name": "AnyImageNav — Precise Image-Goal Navigation via Multi-View 3D Foundation Models — goal-audit:29 route mechanism",
+      "description": "DINOv2 goal/current dense feature relevance 被压成深度截断、视锥边缘衰减的 BEV relevance cone，累积到全局图；frontier score 同时用 relevance、geodesic distance、heading 与 information gain，并在 relevance 高时抑制效率项。峰值 relevance >θ=0.0014 才调用短记忆 VGGT；读取 VGGT 最后一层 cross-attention 与 feature similarity，对 goal frame 相对短窗口归一化，合成 S_conf；超过 τ 才接受。随后 Pi3 对长记忆+goal 一次前向预测多相机 pose，以记录的 odometry cameras 做 Umeyama Sim(3) 位置对齐，再补 orientation correction，得到 goal pose；接近过程中若 S_conf 创新高就重算。局部 FMM 还用 EDT 做硬 body-clearance exclusion 与软安全余量。",
+      "inputs": [],
+      "outputs": [],
+      "limitations": "它强力证明“语义只负责触发，几何负责 pose”比让 embedding 直接承担精确到达更合理，且持续重估优于一次 commit。它没有证明 exact 6-DoF：heading metric 明确按 modulo 180° 计算，正反朝向可被折叠；正文只报告地平面位置与 yaw，不是完整 6-DoF error。它依赖 depth、全程 odometry、persistent long memory，且 15% 失败来自重复房间/家具的伪 correspondence；也没有 functional entrance、门可通行或用户完成的 truth。"
+    }
+  ],
+  "tags": [
+    "goal-copilot",
+    "deep-reading",
+    "paper-29",
+    "goal-copilot-p0"
+  ],
+  "aliases": [
+    "goal-audit:29"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

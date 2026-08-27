@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-goal-copilot-p0-goal-audit-25",
+  "item_id": "paper-sling-last-mile-embodied-visual-navigation",
+  "route": "goal-copilot-p0",
+  "mechanism_ids": [
+    "goal-audit-25"
+  ],
+  "use_state": "retired",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "SuperPoint 类神经兴趣点提取当前/目标局部描述，SuperGlue 的 GNN+optimal transport 做 partial match；当前图匹配点用 depth 抬升为 3D，目标图保留 2D，经 ePnP+RANSAC 求目标相机相对旋转和平移；由平移得到距离与 heading，交给障碍感知局部 metric-map policy。匹配数超过阈值才 explore→exploit；PnP 失败或估距 >4 m 则 exploit→explore，避免一次错误切换永久锁死。",
+    "project_application": "只在 exact identity 和功能入口都成立之后，借用可撤销 handoff 与 PnP 局部化；当前不能拿它救 proposal/identity，更不能把 SLING 的地图、历史或 tracker 引入 current-frame 主线。",
+    "modifications": "Only the documented mechanism and evidence boundary were migrated; no implementation, threshold, route authority, or promotion state changed.",
+    "expected_effect": "只在 exact identity 和功能入口都成立之后，借用可撤销 handoff 与 PnP 局部化；当前不能拿它救 proposal/identity，更不能把 SLING 的地图、历史或 tracker 引入 current-frame 主线。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "它证明把已发现目标后的局部几何和长程语义探索分开是有效工程分层，也证明退出/恢复比单向 handoff 重要。它不证明局部 correspondence 是 physical-instance identity；ImageNav 的目标是整张场景视点，背景本来就是合法定位信号。它假设 depth、pose、partial overlap 和正确目标邻域，且只作一次 last-mile pose prediction；真实 hard success 20% 仍很低。"
+  },
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/exa-results/blindassist-30-papers-deep-reading-notes-2026-08-24.md",
+      "summary": "Legacy source for goal-audit:25; imported without changing its recorded evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Migrated goal-audit:25 from the scattered legacy knowledge source; no execution authority was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}
