@@ -4,6 +4,20 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-08-28 — v10.10.0 default app visual promotion
+
+- Promoted the refined Compose home and settings experience into the default
+  `com.linnan.blindassist` application rather than a candidate package.
+- Bumped the install identity from `versionCode=37 / versionName=10.9.0` to
+  `versionCode=38 / versionName=10.10.0` so the new APK upgrades the previous
+  default app in place when the signing identity matches.
+- Kept camera, detector, risk, feedback, permissions, packaged model, and
+  experimental build isolation unchanged; this is a UI and version promotion.
+- Built the default debug APK and verified package `com.linnan.blindassist`,
+  `versionCode=38`, `versionName=10.10.0`, debug signing metadata, and 16KB
+  alignment; SHA256 is
+  `0D12E61078246C10946EE8557BCCF8EB8A2DEE18A7EB68E9BAE78CBA0CE58309`.
+
 ## 2026-08-27 — dynamic travel risk mainline
 
 - Preserved GRAIL R1C-L/G0/G1 and the unseen-location router at their terminal
