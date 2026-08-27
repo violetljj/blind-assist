@@ -1,6 +1,6 @@
 # L10-R0 Goal-Lock Copilot
 
-Status: `ACTIVE / ANDROID TEXT-ONLY CANARY + CONTROLLED CLOSED-LOOP DEVELOPMENT`
+Status: `ACTIVE / L10-SC0 SEMANTIC-VISUAL MEMORY + CONTROLLED CLOSED-LOOP DEVELOPMENT`
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -82,6 +82,66 @@ the existing gray/edge/HSV long-short crop evidence. It reached zero wrong
 selections but only 57.27% accuracy and 76.67% reacquisition, so that source is
 closed as `CLOSE_SOURCE_NO_FURTHER_MATCHER_TUNING`; it must not be rescued by a
 threshold sweep.
+
+## L10-SC0: semantic admission, visual continuity
+
+`artvideo_semantic_visual_replay.py` implements the first task-level source
+successor. It enforces an authority split rather than blending every cue into
+one identity score:
+
+- OCR lexical evidence is the only source allowed to acquire or reacquire a
+  goal identity;
+- a frozen DINOv2-S crop embedding maintains short/long appearance continuity
+  after semantic admission;
+- current-camera motion is a small continuity prior, not owner-canonical
+  orientation;
+- a failed visual/semantic margin enters LOST instead of silently switching to
+  another proposal.
+
+The local DINOv2-S source runs at about 110 crops/s on the available GPU. On
+clean singleton OCR-to-GT associations, pooled-patch retrieval reached 100%
+top-1; per-video same-vs-different track AUC was 0.993 on video1 and 0.931 on
+video10. GT was attached only after crops had been embedded, so these are
+continuity-source diagnostics rather than identity/verifier claims.
+
+On the unchanged two-video, ten-track, 30-episode proposal-free replay, the
+frozen L10-SC0 controller crossed all three B1 gates:
+
+| Controller | Target-frame accuracy | Wrong selections | Gap reacquire |
+|---|---:|---:|---:|
+| sticky text B1 | 80.76% | 102 | 90.0% |
+| L10-SC0 | **84.43%** | **5** | **100.0%** |
+
+The tradeoff is deliberate abstention: misses rose from 48 to 104. The tracked
+runner reproduces the frozen result from the cached OCR boxes and embeddings:
+
+```powershell
+$env:PYTHONPATH='artifacts.local/runtime/semantic-anchor-v1/site-packages'
+& 'E:/codex-tools/bin/blindassist-python.cmd' -B `
+  research/active/l10-r0/artvideo_semantic_visual_replay.py `
+  --dataset artifacts.local/datasets/artvideo-l10-r0 `
+  --ocr-cache artifacts.local/evidence/l10-r0/artvideo-proposal-free-text-v0/ocr-cache.json `
+  --embedding-cache artifacts.local/evidence/l10-r2/dino-crop-source-v0/embeddings.npz `
+  --embedding-index artifacts.local/evidence/l10-r2/dino-crop-source-v0/embedding-index.json `
+  --videos video1 video10 `
+  --output artifacts.local/evidence/l10-r2/semantic-visual-memory-v0/tracked-repro.json
+```
+
+A previously unseen ArTVideo video12 clip was then opened once with the same
+code, weights, and gates. Absolute transfer was strong across 11 tracks and 33
+gap episodes: 97.24% accuracy, zero wrong target-present selections, and 96.97%
+reacquisition. It did **not** pass the relative holdout gate: this clip's sticky
+OCR baseline already reached 99.55% accuracy and 100% reacquisition; L10-SC0
+only reduced its wrong selections from 50 to 28. Therefore the correct result
+is `SOURCE_GATE_NOT_MET` for cross-video relative uplift, not a generalized
+algorithm win.
+
+One generic top-two expected-information-gain camera policy was also rejected:
+it improved shifted synthetic task success by 1--7 points but raised wrong-lock
+frames to 18--22%. Active observation remains in scope only as a
+deficit-specific request (for example, unreadable decisive token or ambiguous
+token-to-door association); it cannot acquire identity or override semantic
+`NONE / UNKNOWN`.
 
 ## Android text-goal canary
 

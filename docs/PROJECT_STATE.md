@@ -55,12 +55,20 @@ multi-person tracking, and explicit `ONSET / HOLD / CLEAR / UNKNOWN` feedback
 semantics. The build compiles and its one focused mechanics check passes, but
 there is not yet a live-device result or default-App/product/safety claim.
 
-L10-R0 is active in parallel and does not depend on GRAIL owner orientation.
-Its first controlled closed-loop result is positive: 87.5% task completion,
+L10 is active in parallel and does not depend on GRAIL owner orientation. Its
+first controlled closed-loop result remains positive: 87.5% task completion,
 81.2% reacquisition, 93.1% direction accuracy, 1.7% wrong-lock frames, and zero
-false completions in 50 target-absent episodes. The result proves only the
-goal-belief controller mechanics under seeded synthetic observations; real RGB
-perception and a live-device loop remain untested.
+false completions in 50 target-absent episodes. A new real-RGB L10-SC0 source
+keeps OCR as identity authority and uses DINOv2-S crop embeddings only for
+short/long continuity. On the two-video Development replay it improved sticky
+text from 80.76% to 84.43% target-frame accuracy, cut wrong selections from 102
+to 5, and raised gap reacquisition from 90% to 100%, at the cost of 48 to 104
+misses. On one previously unseen video12 clip it transferred to 97.24% accuracy,
+zero wrong target-present selections, and 96.97% reacquisition, but did not beat
+that clip's unusually strong sticky OCR baseline on accuracy/reacquisition.
+This is a real-image continuity source effect plus an honest relative holdout
+failure; it is not open-world identity, active-view, navigation, product, or
+safety evidence.
 
 ## Demonstration track
 
