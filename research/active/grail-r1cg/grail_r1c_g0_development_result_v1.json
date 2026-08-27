@@ -1,0 +1,113 @@
+{
+  "schema": "blindassist_grail_r1c_g0_development_result_v1",
+  "state": "STOP_G0_POSE_TRANSPORT",
+  "cohort": {
+    "houses": 24,
+    "pairs": 2562,
+    "discriminative_pairs": 2094,
+    "flip_only_pairs": 514,
+    "preserve_only_pairs": 1580,
+    "ambiguous_pairs": 468
+  },
+  "arms": {
+    "preserve_prior": {
+      "all_pairs": {
+        "correct": 2048,
+        "total": 2562,
+        "accuracy": 0.7993754879000781
+      },
+      "discriminative": {
+        "correct": 1580,
+        "total": 2094,
+        "accuracy": 0.7545367717287488
+      },
+      "flip_only": {
+        "correct": 0,
+        "total": 514,
+        "accuracy": 0.0
+      },
+      "preserve_only": {
+        "correct": 1580,
+        "total": 1580,
+        "accuracy": 1.0
+      },
+      "ambiguous": {
+        "correct": 468,
+        "total": 468,
+        "accuracy": 1.0
+      },
+      "by_type": {
+        "Doorway": {
+          "correct": 424,
+          "total": 490,
+          "accuracy": 0.8653061224489796
+        },
+        "Drawer": {
+          "correct": 1156,
+          "total": 1604,
+          "accuracy": 0.7206982543640897
+        }
+      }
+    },
+    "g0_pose_transport": {
+      "all_pairs": {
+        "correct": 2044,
+        "total": 2562,
+        "accuracy": 0.7978142076502732
+      },
+      "discriminative": {
+        "correct": 1576,
+        "total": 2094,
+        "accuracy": 0.7526265520534862
+      },
+      "flip_only": {
+        "correct": 82,
+        "total": 514,
+        "accuracy": 0.15953307392996108
+      },
+      "preserve_only": {
+        "correct": 1494,
+        "total": 1580,
+        "accuracy": 0.9455696202531646
+      },
+      "ambiguous": {
+        "correct": 468,
+        "total": 468,
+        "accuracy": 1.0
+      },
+      "by_type": {
+        "Doorway": {
+          "correct": 424,
+          "total": 490,
+          "accuracy": 0.8653061224489796
+        },
+        "Drawer": {
+          "correct": 1152,
+          "total": 1604,
+          "accuracy": 0.7182044887780549
+        }
+      }
+    }
+  },
+  "decision": {
+    "discriminative_uplift_over_preserve_percentage_points": -0.19102196752626144,
+    "by_type_uplift_percentage_points": {
+      "Doorway": 0.0,
+      "Drawer": -0.24937655860348684
+    },
+    "minimum_uplift_percentage_points": 8.0,
+    "minimum_flip_only_accuracy": 0.65,
+    "both_object_types_positive_uplift": false,
+    "passed": false
+  },
+  "boundaries": {
+    "source_native_relative_camera_yaw": true,
+    "owner_pose_or_coordinates_used": false,
+    "model_training": false,
+    "threshold_sweep": false,
+    "final_test_accessed": false,
+    "claim_ceiling": "Synthetic ProcTHOR fresh house-disjoint Development mechanism evidence only; source-native cross-session relative camera yaw is an oracle, not yet a deployable input."
+  },
+  "manifest_sha256": "8b7f6a1ada269de9351f7bbd58207b16190483fb7e607c0bc0cbaab7c443e429",
+  "collection_sha256": "1f2623c778839a2ebf4a951d7bfc8084b8d7fd4540fe069098c5c967ca8835ef"
+}

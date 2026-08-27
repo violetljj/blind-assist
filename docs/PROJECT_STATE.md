@@ -1,6 +1,6 @@
 # Project state
 
-Updated: 2026-08-26
+Updated: 2026-08-27
 
 BlindAssist is a runnable Android showcase research prototype. The default
 research policy is effect-first: demonstrate a genuine, visible effect in a
@@ -9,7 +9,7 @@ protect interpretation.
 
 ## Current operating surface
 
-- Exactly one active research route: [GRAIL R1CL](../research/active/grail-r1cl/README.md)
+- Current decision route: [GRAIL R1C-G0](../research/active/grail-r1cg/README.md)
 - Current question and stop condition: [CURRENT_DECISION.md](CURRENT_DECISION.md)
 - Workstation entrypoint: `tools/ba.ps1`
 - Android entrypoint: `scripts/run_android_gradle.ps1`
@@ -17,10 +17,11 @@ protect interpretation.
 
 ## Current evidence
 
-The R1CL environment doctor and a two-sample DINOv2 CUDA forward/loss/backward
-smoke have passed on the configured local workstation. This proves the local
-mechanics only; it is not a training result, natural-distribution result, live
-camera result, or product-safety claim.
+R1C-G0 completed a fresh 24-house synthetic ProcTHOR Development probe. A fixed
+source-native relative-camera-yaw transport rule scored 75.26% on 2,094
+discriminative pairs versus 75.45% for always PRESERVE and only 15.95% on 514
+FLIP-only pairs. The pose-only mechanism stops; active multiview appearance was
+not evaluated.
 
 ## Boundaries
 

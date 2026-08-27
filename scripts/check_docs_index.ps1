@@ -5,7 +5,7 @@ $sources = @(
     'README.md', 'docs/README.md', 'docs/PROJECT_STATE.md',
     'docs/CURRENT_DECISION.md', 'docs/DOCUMENT_GOVERNANCE.md',
     'docs/history-index.md', 'scripts/README.md',
-    'research/active/grail-r1cl/README.md'
+    'research/active/grail-r1cg/README.md'
 )
 $failures = [Collections.Generic.List[string]]::new()
 $checked = 0
