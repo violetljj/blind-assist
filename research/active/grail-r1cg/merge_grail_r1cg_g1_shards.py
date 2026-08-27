@@ -39,6 +39,7 @@ def merge(role_root: Path, manifest: Path, role: str, shard_count: int) -> dict[
             raise ValueError(f"R1C-G1 shard identity mismatch: {path}")
         shards.append(row)
     views = [view for shard in shards for view in shard["views"]]
+    scans = [scan for shard in shards for scan in shard["scans"]]
     samples = [sample for shard in shards for sample in shard["samples"]]
     receipts = [receipt for shard in shards for receipt in shard["scene_receipts"]]
     sample_range = manifest_value["collection"][f"{role}_sample_range"]
@@ -52,8 +53,10 @@ def merge(role_root: Path, manifest: Path, role: str, shard_count: int) -> dict[
             key=lambda row: hashlib.sha256(row["sample_id"].encode("utf-8")).hexdigest(),
         )[:int(sample_range[1])]
     view_ids = [row["view_id"] for row in views]
+    scan_ids = [row["scan_id"] for row in scans]
     sample_ids = [row["sample_id"] for row in samples]
-    if len(view_ids) != len(set(view_ids)) or len(sample_ids) != len(set(sample_ids)):
+    if (len(view_ids) != len(set(view_ids)) or len(scan_ids) != len(set(scan_ids))
+            or len(sample_ids) != len(set(sample_ids))):
         raise ValueError("R1C-G1 merged IDs are not unique")
     known = set(view_ids)
     for sample in samples:
@@ -64,12 +67,20 @@ def merge(role_root: Path, manifest: Path, role: str, shard_count: int) -> dict[
             raise ValueError(f"R1C-G1 query leaked into reference triplet: {sample['sample_id']}")
         if len(sample["reference_view_ids"]) != 3 or len(set(sample["reference_view_ids"])) != 3:
             raise ValueError(f"R1C-G1 reference triplet is not three distinct views: {sample['sample_id']}")
+    for scan in scans:
+        geometry = scan["acquisition_geometry_audit_only"]
+        if not (-0.45 <= geometry["left_lateral_m"] <= -0.20):
+            raise ValueError(f"R1C-G1 left baseline out of bounds: {scan['scan_id']}")
+        if not (0.20 <= geometry["right_lateral_m"] <= 0.45):
+            raise ValueError(f"R1C-G1 right baseline out of bounds: {scan['scan_id']}")
+        if abs(geometry["left_longitudinal_m"]) > 0.20 or abs(geometry["right_longitudinal_m"]) > 0.20:
+            raise ValueError(f"R1C-G1 longitudinal drift out of bounds: {scan['scan_id']}")
     result = {
         "schema": "blindassist_grail_r1c_g1_collection_v1",
         "manifest_sha256": manifest_hash,
         "dataset_sha256": shards[0]["dataset_sha256"],
         "role": role, "shard_count": shard_count, "houses": len(receipts),
-        "views": views, "samples": samples, "scene_receipts": receipts,
+        "views": views, "scans": scans, "samples": samples, "scene_receipts": receipts,
         "summary": {
             "views": len(views), "samples": len(samples),
             "discriminative_samples": sum(len(row["valid_slot_modes"]) == 1 for row in samples),

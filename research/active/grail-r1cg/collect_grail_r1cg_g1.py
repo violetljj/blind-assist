@@ -252,6 +252,7 @@ def collect(dataset: Path, manifest_path: Path, role: str, output: Path, r1cl_pa
     partial_path = shard_root / "collection.partial.json"
     progress_path = shard_root / "progress.json"
     views: list[dict[str, Any]] = []
+    scan_rows: list[dict[str, Any]] = []
     samples: list[dict[str, Any]] = []
     receipts: list[dict[str, Any]] = []
     if partial_path.exists():
@@ -260,7 +261,9 @@ def collect(dataset: Path, manifest_path: Path, role: str, output: Path, r1cl_pa
                 or partial["dataset_sha256"] != r1cl.sha256_file(dataset)
                 or partial["shard_index"] != shard_index or partial["shard_count"] != shard_count):
             raise ValueError("R1C-G1 partial identity mismatch")
-        views, samples, receipts = partial["views"], partial["samples"], partial["scene_receipts"]
+        views = partial["views"]
+        scan_rows = partial.get("scans", [])
+        samples, receipts = partial["samples"], partial["scene_receipts"]
     completed = {int(row["house_index"]) for row in receipts}
     started = time.monotonic()
     controller = None
@@ -328,6 +331,7 @@ def collect(dataset: Path, manifest_path: Path, role: str, output: Path, r1cl_pa
                         },
                     }
                     scans.append(scan)
+                    scan_rows.append(scan)
                     views.extend(created)
                     valid_scans += 1
                 for reference_scan, query_scan in itertools.permutations(scans, 2):
@@ -365,7 +369,7 @@ def collect(dataset: Path, manifest_path: Path, role: str, output: Path, r1cl_pa
                 "manifest_sha256": r1cl.sha256_file(manifest_path),
                 "dataset_sha256": r1cl.sha256_file(dataset),
                 "role": role, "shard_index": shard_index, "shard_count": shard_count,
-                "scene_receipts": receipts, "views": views, "samples": samples,
+                "scene_receipts": receipts, "views": views, "scans": scan_rows, "samples": samples,
             }
             _atomic_json(partial_path, checkpoint)
             elapsed = max(time.monotonic() - started, 1e-6)
@@ -387,7 +391,8 @@ def collect(dataset: Path, manifest_path: Path, role: str, output: Path, r1cl_pa
         "manifest_sha256": r1cl.sha256_file(manifest_path),
         "dataset_sha256": r1cl.sha256_file(dataset),
         "role": role, "shard_index": shard_index, "shard_count": shard_count,
-        "houses": len(receipts), "views": views, "samples": samples, "scene_receipts": receipts,
+        "houses": len(receipts), "views": views, "scans": scan_rows,
+        "samples": samples, "scene_receipts": receipts,
         "summary": {
             "views": len(views), "samples": len(samples),
             "discriminative_samples": sum(len(row["valid_slot_modes"]) == 1 for row in samples),
