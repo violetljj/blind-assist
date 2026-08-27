@@ -46,6 +46,27 @@ drop-off, and head-clearance positive recall remain unproved. GOOSE does not
 supply synchronized route and ground-clearance truth for a trustworthy hanging
 branch event, so head-clearance is `NOT_EVALUABLE`, not a negative result.
 
+## 2026-08-28 source admission
+
+The next-source canaries are complete without changing either frozen algorithm.
+For L10, DSText V2 public media are accessible but evaluator-authoritative
+annotations remain behind RRC registration, so semantic reacquisition is not
+evaluable from that source. HierText independently confirms the steering
+geometry gap: line center and word center disagree on the frozen coarse
+direction for `20,866/85,380` (`24.439%`) legible words in multi-word validation
+lines. This is static geometry evidence only.
+
+For DTR, RoboSense metadata are compatible but its published raw
+LiDAR/occupancy train-validation stream requires concatenating roughly 239.4 GB,
+so it is not admitted as a minimal residual source. Argoverse 2 Sensor is
+admitted at exact-log granularity: a deterministic 32-sweep, 3.100-second
+validation shard produced a truth-separated current-LiDAR/pose adapter with
+native boxes kept evaluator-only. Its simple straight 12 m admission tube has
+`0` candidate native boxes, so it is not an event cohort. This is source and
+adapter evidence, not a residual-occupancy algorithm gain. If that route is
+opened, freeze a multi-log Development roster before comparing a
+current/past-only residual source against unchanged R2.
+
 ## What stops here
 
 - Do not record the superseded 24 canary or 120 staged local RGB clips.

@@ -294,6 +294,39 @@ spot without adding wrong identities. Repeated identical physical instances,
 executed view-change causality, functional aperture/entrance association,
 metric arrival, and TASK COMPLETE remain open.
 
+## Public text-source admission
+
+The 2026-08-28 source canary changed the information source rather than the
+matcher. DSText V2's official Zenodo record exposes 18 CC-BY-4.0 video archives
+totalling 448,078,468 bytes, and a 9.6 MB sample contained two readable MP4s.
+Neither the record nor the sample contained annotations; the official RRC
+download page requires registration. The result is therefore
+`DSTEXT_V2_ANNOTATION_AUTHORITY_NOT_ADMITTED`: the media are accessible, but no
+track-gap, presence, or semantic-reacquisition evaluation is legal yet.
+
+HierText supplies an independent geometry authority without pretending to fill
+that temporal gap. Across all 1,724 validation images, the fixed cohort contains
+20,400 legible printed multi-word lines and 85,380 legible words. The complete
+line center and the target word center disagree on L10's frozen coarse direction
+for 20,866 words (`24.439%`); mean absolute normalized horizontal displacement is
+`0.0751`, with p90 `0.1891`. This admits word polygons as evaluator geometry for
+the merged-line carrier problem. It does not establish temporal identity,
+reacquisition, active-view utility, arrival, or handoff.
+
+Evidence:
+
+- DSText source result:
+  `artifacts.local/evidence/l10-dstext-v2-source-canary/result.json`, SHA-256
+  `fac7fa3481958e7aaf0dfa5f2ab72f9ea90180326dca7cb9c93298208b4991e3`.
+- HierText geometry result:
+  `artifacts.local/evidence/l10-hiertext-word-carrier-canary/result.json`,
+  SHA-256
+  `7faf93015fc4b46afa17c02678b024239529a68afc9f8a110c790eacda5ce728`.
+- Truth-only adapter sample:
+  `artifacts.local/evidence/l10-hiertext-word-carrier-canary/adapter.jsonl`,
+  SHA-256
+  `3bc752813610e5123c2d7b8c825efb7133781ed8f1e8b84251b146a321fe3668`.
+
 ## Android text-goal canary
 
 `apps/demos/semantic-anchor-demo-app` is now the runnable L10-R0 surface. Its

@@ -176,6 +176,48 @@ or head-clearance geometry remains the separate static S3/S4 line and requires
 new positive route-grounded source truth before an ellipsoid/ESDF model could
 make an evidence-backed claim.
 
+### Residual-source admission
+
+The 2026-08-28 source canary first checked RoboSense rather than inferring
+accessibility from its paper. Its official validation metadata is usable:
+12,034 frames across 702 sequences contain 88,400 3-D boxes, 13,234
+sequence-scoped tracks, 15,839 boxes within a 5 m 3-D radius, synchronized pose,
+and raw-sensor paths. It is not an immediate raw residual source through the
+published distribution, however. The train/validation LiDAR+occupancy payload
+is one combined gzip tar split into 23 pieces totalling 239,392,481,862 bytes;
+no independently extractable exact-log shard is exposed. The terminal is
+`ROBOSENSE_METADATA_ADMITTED_RAW_RESIDUAL_NOT_ADMITTED`.
+
+Changing the source to Argoverse 2 Sensor passed the same accessibility
+question. The first lexicographic public validation log was selected before
+outcome access. Thirty-two consecutive LiDAR sweeps cover 3.100 seconds and
+3,005,181 raw points; all ego poses align at zero timestamp delta. The same
+window contains 854 evaluator-only native boxes across vehicle, pedestrian,
+bicycle/bicyclist, and wheelchair classes, with 32 unique tracks. Its simple
+straight 12 m source-admission tube contains `0` candidate native boxes, so this
+window is not an event-evaluation cohort. The emitted 32-row adapter keeps
+current LiDAR and pose under `causal_input` and native boxes under
+`evaluator_truth`; future frames never enter causal input. This establishes
+`AV2_RAW_LOG_SOURCE_ADMITTED` at exact-log granularity, not a DTR improvement.
+
+The next Development step, if opened, is to freeze a multi-log AV2 roster and a
+current/past-only residual-occupancy representation while retaining R2 as the
+untuned comparator. AV2 remains an automotive retrospective ceiling; it does
+not fill wearer, head-clearance, drop-off, product, or safety evidence.
+
+Evidence:
+
+- RoboSense source result:
+  `artifacts.local/evidence/dtr-robosense-source-canary/result.json`, SHA-256
+  `7d30f41736fd19501ca70f24c4c071f52e84b317a6af023e44cc63b6d08c4da8`.
+- AV2 source result:
+  `artifacts.local/evidence/dtr-av2-source-canary/result.json`, SHA-256
+  `4ddebb8d368b25e29f752d0cc9cd27045d30ef39b455afc6a54a705a84a515d1`.
+- Truth-separated AV2 adapter:
+  `artifacts.local/evidence/dtr-av2-source-canary/causal-frame-source.jsonl`,
+  SHA-256
+  `1e70d887d4cd527e5bacf881e42de7d2d62f73de18fdef95c6b15a8e98540d64`.
+
 ## Runtime bridge
 
 The algorithm remains source-independent at the `CausalFrame` / metric-box
