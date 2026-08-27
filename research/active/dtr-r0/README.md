@@ -1,7 +1,8 @@
 # DTR: route-conditioned obstacle-risk events
 
 Status: `DTR_R3_GATE_NOT_MET / R2_DYNAMIC_RETAINED /
-S4_CONTINUOUS_GEOMETRY_VALIDATED_NO_PUBLIC_GAIN / R4_NOT_OPENED`
+S4_CONTINUOUS_GEOMETRY_VALIDATED_NO_PUBLIC_GAIN /
+R5_RGB_DROPOUT_CANARY_GATE_NOT_MET / R4_NOT_OPENED`
 
 ## Result first
 
@@ -33,6 +34,45 @@ events. No arm approaches the 30% false-reduction gate, and the conditional
 learned stochastic R4 / three-source LOSO stage is therefore not opened. There
 was no threshold, support, seed, backbone, or cohort sweep after seeing the
 result.
+
+## R5 RGB dropout canary
+
+The first detector-independent residual canary is complete and did not pass.
+It freezes R2, the three-second route tube, and the event lifecycle, then removes
+the evaluator-associated true RGB track for the final `0.2 / 0.4 / 0.8 s`
+before contact in each of the three events in the existing curated 143-frame
+JRDB RGB window.
+
+| Arm | Dropout-window alert recall at 0.2 / 0.4 / 0.8 s | Original event recall | Original one-to-one event F1 | Original false segments |
+| --- | ---: | ---: | ---: | ---: |
+| R2 track-only | `0/3 / 0/3 / 0/3` | `3/3` | 22.22% | 12 |
+| R2 + bounded imputation | `2/3 / 2/3 / 2/3` | `3/3` | 16.00% | 19 |
+| R2 + RGB semantic residual occupancy | `0/3 / 0/3 / 0/3` | `3/3` | 22.22% | 12 |
+
+The intervention creates nine dropout-window evidence misses for track-only R2;
+the RGB residual recovers `0/9`. This is not a detector-visibility failure. The
+fixed ADE20K semantic head emits person pixels in `143/143` frames, and a
+residual component is evaluator-associated in every stress trial with maximum
+IoU `0.67-0.93`. The failure is metric occupancy: the fixed-height projection
+puts the nearest residual component at roughly `1.69-1.75 m`, and no residual
+frame intersects the frozen route-risk geometry. Bounded imputation recovers
+window evidence in `6/9` trials but raises original false segments `12 -> 19`
+(`58.3%`), so it is not retained.
+
+Complete-event recall stays `3/3` because missing observations remain `UNKNOWN`
+and cannot manufacture `CLEAR`; short dropout therefore does not by itself
+erase the already active event. Track-only fragmentation is already zero, so a
+fragmentation reduction is `NOT_EVALUABLE`, and this window has no eligible
+CLEAR event. Occupancy calibration is also `NOT_EVALUABLE`: the source exposes
+a hard semantic argmax and JRDB supplies boxes rather than pixel-occupancy
+probabilities/truth.
+
+This is source-level visual presence without a functional route-risk gain.
+`R5_RGB_DROPOUT_CANARY_GATE_NOT_MET`; a learned RGB residual head is not opened
+from this result. Do not rescue the fixed-height proxy with component, IoU,
+distance, route, or lifecycle threshold sweeps. A successor would need a new
+metric current/past occupancy source, such as the admitted AV2 raw-sensor route
+or a separately justified direct metric BEV representation.
 
 The source split explains why pooling is not enough:
 
@@ -167,9 +207,10 @@ model. It needs a detector-independent residual-occupancy source so a target
 that disappears through detector/NMS/tracker failure is not interpreted as
 free space. Track covariance, observation availability, time-since-seen, and
 bounded gap imputation must remain explicit; an imputed point must not be
-reported as an observation. This is the DR41/DR42/DR45 route, but it is not
-implemented here because the current native-track ceilings contain no
-independent RGB/dense residual signal.
+reported as an observation. The DR41/DR42/DR45 RGB canary establishes dense
+visual presence during induced dropout but not metric route-risk occupancy.
+The next source must change that information layer rather than tune the failed
+fixed-height projection or the frozen matcher.
 
 Stochastic learned occupancy remains closed by the failed R3 gate. Whole-body
 or head-clearance geometry remains the separate static S3/S4 line and requires
@@ -217,6 +258,12 @@ Evidence:
   `artifacts.local/evidence/dtr-av2-source-canary/causal-frame-source.jsonl`,
   SHA-256
   `1e70d887d4cd527e5bacf881e42de7d2d62f73de18fdef95c6b15a8e98540d64`.
+- R5 RGB dropout result:
+  `artifacts.local/evidence/dtr-r5/dropout-canary/result.json`, SHA-256
+  `c53981d2ba76a9d696b713169143c44f9dbfc7e04515e5af148c592eb9cc617f`.
+- R5 dropout curve:
+  `artifacts.local/evidence/dtr-r5/dropout-canary/dropout_curve.png`, SHA-256
+  `9b50969acbf78680b61af15d7b2362bf66a59a92f713f305210be64d19745cb2`.
 
 ## Runtime bridge
 
@@ -295,6 +342,17 @@ python research/active/dtr-r0/coda_static_ceiling.py `
   --sequence-root 18=<coda-18-root> `
   --sequence-root 16=<coda-16-root> `
   --output artifacts.local/evidence/dtr-static/coda-16-18-20-continuous/result.json
+
+python research/active/dtr-r0/dtr_r5_dropout_canary.py `
+  --known-height-result <jrdb-known-height-result.json> `
+  --known-height-tracks <jrdb-known-height-sensor-tracks.jsonl> `
+  --labels-zip <jrdb-train-labels.zip> `
+  --timestamps-zip <jrdb-train-timestamps.zip> `
+  --bag <jrdb-sequence.bag> `
+  --images-dir <jrdb-stitched-window-dir> `
+  --semantic-model <ade20k-semantic-model.pt> `
+  --output artifacts.local/evidence/dtr-r5/dropout-canary/result.json `
+  --plot artifacts.local/evidence/dtr-r5/dropout-canary/dropout_curve.png
 ```
 
 ## Claim ceiling
@@ -303,7 +361,9 @@ These are retrospective public-real privileged algorithm ceilings. THÖR uses
 controlled-lab global tracks; JRDB is a large robot-relative/interpolated
 diagnostic without synchronized ego pose; CODa uses source-native boxes,
 identities, pose, timestamps, and calibration. Future path and future contact
-are evaluator-only.
+are evaluator-only. The R5 RGB result is a three-event curated induced-dropout
+stress canary with evaluator-only identity binding, not source-disjoint or
+natural-distribution evidence.
 
 No RGB/LiDAR detector, detector disappearance robustness, calibrated collision
 probability, natural wearer motion, Android runtime, BLV benefit, product
