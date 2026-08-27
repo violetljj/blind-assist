@@ -96,6 +96,30 @@ class AssistSessionCoordinator(
         )
     }
 
+    fun processDtrEvidence(
+        evidence: AssistDtrEvidenceFrame,
+        frameSize: FrameSize,
+        profile: AlertProfile,
+        scenario: AssistScenario,
+        metrics: DetectorMetrics,
+        nowMs: Long,
+        sourceFrame: FrameStamp?,
+        decisionAtNs: Long
+    ): AssistFrameResult {
+        val fps = fpsTracker.onFrame()
+        return decisionKernel.processDtrEvidence(
+            evidence = evidence,
+            frameSize = frameSize,
+            profile = profile,
+            scenario = scenario,
+            metrics = metrics.copy(fps = fps),
+            feedbackGateway = feedbackGateway,
+            nowMs = nowMs,
+            sourceFrame = sourceFrame,
+            decisionAtNs = decisionAtNs
+        )
+    }
+
     private companion object {
         const val NANOS_PER_MILLISECOND = 1_000_000L
         fun monotonicNowMs(): Long = System.nanoTime() / NANOS_PER_MILLISECOND

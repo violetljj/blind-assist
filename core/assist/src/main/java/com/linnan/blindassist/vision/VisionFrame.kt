@@ -2,6 +2,53 @@ package com.linnan.blindassist.vision
 
 import java.nio.ByteBuffer
 
+/** Pinhole calibration in the pixel coordinates of the frame that carries it. */
+data class CameraIntrinsics(
+    val focalLengthXPx: Float,
+    val focalLengthYPx: Float,
+    val principalPointXPx: Float,
+    val principalPointYPx: Float,
+    val coordinateWidthPx: Int,
+    val coordinateHeightPx: Int
+) {
+    init {
+        require(focalLengthXPx.isFinite() && focalLengthXPx > 0f)
+        require(focalLengthYPx.isFinite() && focalLengthYPx > 0f)
+        require(principalPointXPx.isFinite() && principalPointXPx in 0f..coordinateWidthPx.toFloat())
+        require(principalPointYPx.isFinite() && principalPointYPx in 0f..coordinateHeightPx.toFloat())
+        require(coordinateWidthPx > 0 && coordinateHeightPx > 0)
+    }
+
+    /** Match the clockwise display rotation used by the realtime detector. */
+    fun rotatedForDisplay(rotationDegrees: Int): CameraIntrinsics {
+        val rotation = ((rotationDegrees % 360) + 360) % 360
+        require(rotation % 90 == 0) { "camera rotation must be a multiple of 90 degrees" }
+        return when (rotation) {
+            90 -> CameraIntrinsics(
+                focalLengthXPx = focalLengthYPx,
+                focalLengthYPx = focalLengthXPx,
+                principalPointXPx = coordinateHeightPx - principalPointYPx,
+                principalPointYPx = principalPointXPx,
+                coordinateWidthPx = coordinateHeightPx,
+                coordinateHeightPx = coordinateWidthPx
+            )
+            180 -> copy(
+                principalPointXPx = coordinateWidthPx - principalPointXPx,
+                principalPointYPx = coordinateHeightPx - principalPointYPx
+            )
+            270 -> CameraIntrinsics(
+                focalLengthXPx = focalLengthYPx,
+                focalLengthYPx = focalLengthXPx,
+                principalPointXPx = principalPointYPx,
+                principalPointYPx = coordinateWidthPx - principalPointXPx,
+                coordinateWidthPx = coordinateHeightPx,
+                coordinateHeightPx = coordinateWidthPx
+            )
+            else -> this
+        }
+    }
+}
+
 enum class FrameClockDomain {
     /** Comparable with Android elapsed-realtime timestamps and sensor events on calibrated devices. */
     ANDROID_ELAPSED_REALTIME,
@@ -102,6 +149,8 @@ interface VisionFrame : AutoCloseable {
     val width: Int
     val height: Int
     val rotationDegrees: Int
+    /** Optional calibration in the unrotated frame-buffer coordinate system. */
+    val cameraIntrinsics: CameraIntrinsics? get() = null
     /** Live CameraX frames carry this; bitmap/replay/test frames may remain unstamped. */
     val frameStamp: FrameStamp? get() = null
     /** Optional ranging sample explicitly paired by the producing frame source. */

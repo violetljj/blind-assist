@@ -48,6 +48,7 @@ android {
         buildConfigField("boolean", "NPU_CANDIDATE", "false")
         buildConfigField("boolean", "DUAL_LOOP_SHADOW", "false")
         buildConfigField("boolean", "DUAL_LOOP_ACTIVE", "false")
+        buildConfigField("boolean", "DTR_KNOWN_HEIGHT", "false")
     }
 
     signingConfigs {
@@ -93,6 +94,13 @@ android {
             versionNameSuffix = "-dual-loop-active"
             matchingFallbacks += listOf("debug")
             buildConfigField("boolean", "DUAL_LOOP_ACTIVE", "true")
+        }
+        create("dtrKnownHeight") {
+            initWith(getByName("debug"))
+            applicationIdSuffix = ".dtr.knownheight"
+            versionNameSuffix = "-dtr-known-height"
+            matchingFallbacks += listOf("debug")
+            buildConfigField("boolean", "DTR_KNOWN_HEIGHT", "true")
         }
     }
 

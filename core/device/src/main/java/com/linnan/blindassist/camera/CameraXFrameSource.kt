@@ -20,6 +20,7 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.linnan.blindassist.util.FatalThrowables
+import com.linnan.blindassist.vision.CameraIntrinsics
 import com.linnan.blindassist.vision.FrameClockDomain
 import com.linnan.blindassist.vision.FrameStamp
 import com.linnan.blindassist.vision.VisionFrame
@@ -107,7 +108,17 @@ class CameraXFrameSource(
                             coordinateFrame = source.coordinateFrame,
                             clockDomain = source.clockDomain
                         )
-                        val frame = ImageProxyVisionFrame(imageProxy, stamp)
+                        val frame = ImageProxyVisionFrame(
+                            imageProxy = imageProxy,
+                            frameStamp = stamp,
+                            cameraIntrinsics = cameraIntrinsicsForBuffer(
+                                focalLengthMm = source.focalLengthMm,
+                                sensorWidthMm = source.sensorWidthMm,
+                                sensorHeightMm = source.sensorHeightMm,
+                                bufferWidthPx = imageProxy.width,
+                                bufferHeightPx = imageProxy.height
+                            )
+                        )
                         if (!isCurrentSession(generation)) {
                             frame.close()
                             return@setAnalyzer
@@ -204,8 +215,12 @@ class CameraXFrameSource(
     private fun cameraSourceDescriptor(cameraInfo: androidx.camera.core.CameraInfo): CameraSourceDescriptor {
         val cameraId = Camera2CameraInfo.from(cameraInfo).cameraId
         val manager = appContext.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-        val timestampSource = manager.getCameraCharacteristics(cameraId)
-            .get(CameraCharacteristics.SENSOR_INFO_TIMESTAMP_SOURCE)
+        val characteristics = manager.getCameraCharacteristics(cameraId)
+        val timestampSource = characteristics.get(CameraCharacteristics.SENSOR_INFO_TIMESTAMP_SOURCE)
+        val focalLengthMm = characteristics
+            .get(CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS)
+            ?.firstOrNull()
+        val physicalSize = characteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE)
         val clockDomain = if (timestampSource == CameraCharacteristics.SENSOR_INFO_TIMESTAMP_SOURCE_REALTIME) {
             FrameClockDomain.ANDROID_ELAPSED_REALTIME
         } else {
@@ -214,7 +229,10 @@ class CameraXFrameSource(
         return CameraSourceDescriptor(
             sourceId = "camera2:$cameraId",
             coordinateFrame = "camera2:$cameraId:analysis-buffer",
-            clockDomain = clockDomain
+            clockDomain = clockDomain,
+            focalLengthMm = focalLengthMm,
+            sensorWidthMm = physicalSize?.width,
+            sensorHeightMm = physicalSize?.height
         )
     }
 
@@ -231,7 +249,10 @@ class CameraXFrameSource(
     private data class CameraSourceDescriptor(
         val sourceId: String,
         val coordinateFrame: String,
-        val clockDomain: FrameClockDomain
+        val clockDomain: FrameClockDomain,
+        val focalLengthMm: Float?,
+        val sensorWidthMm: Float?,
+        val sensorHeightMm: Float?
     )
 
     companion object {
@@ -250,4 +271,45 @@ internal fun normalizedFrameReceiptTime(
     observedReceivedAtNs.coerceAtLeast(capturedAtNs)
 } else {
     observedReceivedAtNs
+}
+
+/**
+ * Derive the no-digital-zoom analysis calibration from Camera2 physical metadata.
+ * CameraX center-crops the sensor when the requested buffer aspect ratio differs.
+ */
+internal fun cameraIntrinsicsForBuffer(
+    focalLengthMm: Float?,
+    sensorWidthMm: Float?,
+    sensorHeightMm: Float?,
+    bufferWidthPx: Int,
+    bufferHeightPx: Int
+): CameraIntrinsics? {
+    val focal = focalLengthMm ?: return null
+    val sensorWidth = sensorWidthMm ?: return null
+    val sensorHeight = sensorHeightMm ?: return null
+    if (!focal.isFinite() || focal <= 0f ||
+        !sensorWidth.isFinite() || sensorWidth <= 0f ||
+        !sensorHeight.isFinite() || sensorHeight <= 0f ||
+        bufferWidthPx <= 0 || bufferHeightPx <= 0
+    ) return null
+
+    val sensorAspect = sensorWidth / sensorHeight
+    val bufferAspect = bufferWidthPx.toFloat() / bufferHeightPx.toFloat()
+    val effectiveWidthMm: Float
+    val effectiveHeightMm: Float
+    if (bufferAspect >= sensorAspect) {
+        effectiveWidthMm = sensorWidth
+        effectiveHeightMm = sensorWidth / bufferAspect
+    } else {
+        effectiveHeightMm = sensorHeight
+        effectiveWidthMm = sensorHeight * bufferAspect
+    }
+    return CameraIntrinsics(
+        focalLengthXPx = focal / effectiveWidthMm * bufferWidthPx,
+        focalLengthYPx = focal / effectiveHeightMm * bufferHeightPx,
+        principalPointXPx = bufferWidthPx / 2f,
+        principalPointYPx = bufferHeightPx / 2f,
+        coordinateWidthPx = bufferWidthPx,
+        coordinateHeightPx = bufferHeightPx
+    )
 }

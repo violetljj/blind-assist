@@ -22,7 +22,8 @@ enum class AssistRuntimeMode {
     BASELINE,
     DUAL_LOOP_SHADOW,
     DUAL_LOOP_ACTIVE,
-    USTRF_EXPERIMENT
+    USTRF_EXPERIMENT,
+    DTR_KNOWN_HEIGHT
 }
 
 sealed interface AssistRuntimeIntent {

@@ -10,7 +10,9 @@ data class DetectorFrameResult(
     val metrics: DetectorMetrics,
     val sourceFrame: FrameStamp? = null,
     val sourceRanging: RangingSample? = null,
-    val stageTiming: DetectorStageTiming? = null
+    val stageTiming: DetectorStageTiming? = null,
+    /** Calibration in the same display-oriented coordinates as [frameSize] and [detections]. */
+    val cameraIntrinsics: CameraIntrinsics? = null
 )
 
 /** Android elapsed-realtime boundaries for one detector invocation. */

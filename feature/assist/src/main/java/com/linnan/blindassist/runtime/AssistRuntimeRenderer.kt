@@ -104,10 +104,16 @@ internal class AssistRuntimeRenderer(
         } else {
             mappedGuidance.copy(debugText = currentUiState.cameraGuidance.debugText)
         }
-        val guidance = if (mode == AssistRuntimeMode.USTRF_EXPERIMENT) {
-            guidanceWithCachedDiagnostics.withUstrfExperimentalMessage(frameResult.evaluation.rawRisk.message)
-        } else {
-            guidanceWithCachedDiagnostics
+        val guidance = when (mode) {
+            AssistRuntimeMode.USTRF_EXPERIMENT ->
+                guidanceWithCachedDiagnostics.withUstrfExperimentalMessage(
+                    frameResult.evaluation.rawRisk.message
+                )
+            AssistRuntimeMode.DTR_KNOWN_HEIGHT ->
+                guidanceWithCachedDiagnostics.withDtrMessage(
+                    frameResult.evaluation.preTemporalRisk.message
+                )
+            else -> guidanceWithCachedDiagnostics
         }
         val fieldTestSummary = if (refreshDiagnostics) {
             fieldTestSummaryProvider.fromSummary(
@@ -168,6 +174,17 @@ internal class AssistRuntimeRenderer(
             accessibilityKey = "$accessibilityKey-ustrf-experiment"
         )
     }
+
+    private fun CameraGuidanceUiState.withDtrMessage(message: String): CameraGuidanceUiState = copy(
+        detail = message,
+        careDetail = message,
+        explanationHeadline = "DTR 短时路线事件",
+        explanationDetail = message,
+        careExplanation = message,
+        careAccessibilitySummary = "$careTitle，$message",
+        accessibilitySummary = "$title，$message",
+        accessibilityKey = "$accessibilityKey-dtr-known-height"
+    )
 
     private companion object {
         const val DIAGNOSTICS_REFRESH_INTERVAL_MS = 500L

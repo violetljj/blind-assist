@@ -16,6 +16,7 @@ enum class RiskEventState {
 enum class RiskEventClearReason {
     LEFT_CENTER_CORRIDOR,
     THREE_RECEDING_OR_MISSING_FRAMES,
+    DTR_EXPLICIT_CLEAR,
     REPLACED_BY_NEW_TARGET,
     SESSION_RESET
 }
@@ -136,6 +137,54 @@ class RiskEventTracker(
         } else {
             event.recedingOrMissingFrames = 0
         }
+        return snapshot(event)
+    }
+
+    /**
+     * Consume the lifecycle already decided by DTR without inferring another
+     * trend or missing-frame policy. UNKNOWN preserves state and explicit CLEAR
+     * is observable on the returned snapshot.
+     */
+    fun updateExternalSignal(
+        eventKey: String,
+        signal: DtrSignal,
+        nowMs: Long = monotonicNowMs()
+    ): RiskEventSnapshot {
+        require(eventKey.isNotBlank()) { "external DTR event key must be non-blank" }
+        expirePassedEvent(nowMs)
+        if (signal == DtrSignal.UNKNOWN) {
+            val event = active ?: return RiskEventSnapshot.none()
+            return if (event.matchesExternal(eventKey)) snapshot(event) else RiskEventSnapshot.none()
+        }
+        if (signal == DtrSignal.CLEAR) {
+            val event = active ?: return RiskEventSnapshot.none()
+            if (!event.matchesExternal(eventKey)) return RiskEventSnapshot.none()
+            event.state = RiskEventState.CLEARED
+            event.clearReason = RiskEventClearReason.DTR_EXPLICIT_CLEAR
+            val cleared = RiskEventSnapshot(
+                eventId = event.id,
+                state = RiskEventState.CLEARED,
+                active = false,
+                suppressesFeedback = event.wasAlerted,
+                clearReason = RiskEventClearReason.DTR_EXPLICIT_CLEAR
+            )
+            active = null
+            recentlyPassed = null
+            return cleared
+        }
+
+        val current = active
+        if (current == null || !current.matchesExternal(eventKey)) {
+            if (current != null) clear(RiskEventClearReason.REPLACED_BY_NEW_TARGET, nowMs)
+            active = ActiveEvent(
+                id = "dtr-${nextId++}",
+                label = "dtr-route-intersection",
+                centerXRatio = 0.5f,
+                externalEventKey = eventKey
+            )
+        }
+        val event = requireNotNull(active)
+        event.recedingOrMissingFrames = 0
         return snapshot(event)
     }
 

@@ -10,6 +10,7 @@ import com.linnan.blindassist.model.Detection
 import com.linnan.blindassist.model.DetectionSource
 import com.linnan.blindassist.model.FrameSize
 import com.linnan.blindassist.risk.RiskEventTracker
+import com.linnan.blindassist.risk.DtrSignal
 import com.linnan.blindassist.risk.ApproachTrend
 import com.linnan.blindassist.risk.RiskDirection
 import com.linnan.blindassist.risk.RiskEvidenceState
@@ -54,6 +55,46 @@ data class AssistRiskEvidenceFrame(
                 "route-relative risk evidence must use CENTER direction"
             }
             require(rawRisk.evidenceState == RiskEvidenceState.SUPPORTED_TARGET_EVIDENCE)
+        }
+    }
+
+    private companion object {
+        const val SCORE_EPSILON = 1e-6f
+    }
+}
+
+data class AssistDtrEvidenceFrame(
+    val sourceContractId: String,
+    val frameId: String,
+    val eventKey: String,
+    val signal: DtrSignal,
+    val observedAtMs: Long,
+    val validUntilMs: Long,
+    val risk: RiskResult,
+    val evidenceCount: Int
+) {
+    init {
+        require(sourceContractId.isNotBlank() && frameId.isNotBlank() && eventKey.isNotBlank())
+        require(observedAtMs >= 0L && validUntilMs >= observedAtMs)
+        require(evidenceCount > 0)
+        require(risk.sourceDetection == null && risk.distanceEvidence == null)
+        require(risk.approachTrend == ApproachTrend.UNKNOWN)
+        require(risk.riskScore.isFinite() && risk.riskScore in 0f..1f)
+        require(risk.urgencyScore.isFinite() && risk.urgencyScore in 0f..1f)
+        require(kotlin.math.abs(risk.scoreBreakdown.total - risk.riskScore) <= SCORE_EPSILON)
+        when (signal) {
+            DtrSignal.ONSET,
+            DtrSignal.HOLD -> {
+                require(risk.level != RiskLevel.NONE)
+                require(risk.direction == RiskDirection.CENTER)
+                require(risk.evidenceState == RiskEvidenceState.SUPPORTED_TARGET_EVIDENCE)
+            }
+            DtrSignal.CLEAR -> {
+                require(risk.level == RiskLevel.NONE)
+                require(risk.direction == RiskDirection.NONE)
+                require(risk.evidenceState == RiskEvidenceState.NO_SUPPORTED_TARGET_EVIDENCE)
+            }
+            DtrSignal.UNKNOWN -> Unit
         }
     }
 
@@ -288,6 +329,69 @@ class AssistDecisionKernel(
         )
     }
 
+    /** Shared feedback/effect path for a DTR-owned ONSET/HOLD/CLEAR/UNKNOWN lifecycle. */
+    fun processDtrEvidence(
+        evidence: AssistDtrEvidenceFrame,
+        frameSize: FrameSize,
+        profile: AlertProfile,
+        scenario: AssistScenario,
+        metrics: DetectorMetrics,
+        feedbackGateway: FeedbackGateway,
+        nowMs: Long,
+        sourceFrame: FrameStamp? = null,
+        decisionAtNs: Long = nowMs * NANOS_PER_MILLISECOND
+    ): AssistFrameResult {
+        require(evidence.sourceContractId == DTR_EVIDENCE_INPUT_CONTRACT_ID) {
+            "unsupported DTR evidence input contract"
+        }
+        require(evidence.observedAtMs == nowMs) { "DTR evidence must bind to the current frame" }
+        require(nowMs <= evidence.validUntilMs) { "DTR evidence is stale" }
+        val evaluation = assistEngine.evaluateDtrEvidence(
+            risk = evidence.risk,
+            evidenceCount = evidence.evidenceCount,
+            frameSize = frameSize,
+            profile = profile,
+            scenario = scenario,
+            metrics = metrics,
+            nowMs = nowMs,
+            sourceFrame = sourceFrame,
+            decisionAtNs = decisionAtNs
+        )
+        val event = riskEventTracker.updateExternalSignal(
+            eventKey = evidence.eventKey,
+            signal = evidence.signal,
+            nowMs = nowMs
+        )
+        val eventEvaluation = evaluation.copy(riskEvent = event)
+        val feedbackDecision = when (evidence.signal) {
+            DtrSignal.ONSET,
+            DtrSignal.HOLD -> decideFeedback(
+                eventEvaluation,
+                feedbackGateway,
+                requiresActiveEvent = true
+            )
+            DtrSignal.UNKNOWN -> FeedbackDecision(
+                plan = null,
+                triggered = false,
+                reason = FeedbackReason.UNSTABLE_RISK
+            )
+            DtrSignal.CLEAR -> FeedbackDecision(
+                plan = null,
+                triggered = false,
+                reason = FeedbackReason.NO_FEEDBACK_RISK
+            )
+        }
+        val completedEvent = if (evidence.signal == DtrSignal.CLEAR) {
+            event
+        } else {
+            riskEventTracker.recordFeedback(event, feedbackDecision)
+        }
+        return assistEngine.completeFeedback(
+            eventEvaluation.copy(riskEvent = completedEvent),
+            feedbackDecision
+        )
+    }
+
     private fun decideFeedback(
         evaluation: AssistFrameEvaluation,
         feedbackGateway: FeedbackGateway,
@@ -338,5 +442,6 @@ class AssistDecisionKernel(
         private fun monotonicNowMs(): Long = System.nanoTime() / NANOS_PER_MILLISECOND
         const val CONTRACT_ID = "blindassist_shared_decision_kernel_v1"
         const val RISK_EVIDENCE_INPUT_CONTRACT_ID = "blindassist_shared_decision_kernel_risk_evidence_input_v1"
+        const val DTR_EVIDENCE_INPUT_CONTRACT_ID = "blindassist_dtr_event_evidence_input_v1"
     }
 }

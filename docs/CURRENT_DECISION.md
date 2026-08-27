@@ -1,8 +1,8 @@
 # Current decisions: L10-R0 Goal-Lock active; Dynamic Travel Risk R0 advancing
 
 Status: `L10_R0_ACTIVE / CONTROLLED_MECHANISM_POSITIVE` and
-`DTR_R0_ACTIVE / CAUSAL_DUAL_LIDAR_BRIDGE_DIRECTIONALLY_POSITIVE /
-STRONG_EFFECT_NOT_REPRODUCED`
+`DTR_R0_ACTIVE / FIXED_KNOWN_HEIGHT_RGB_SOURCE_SELECTED /
+ANDROID_EXPERIMENT_BUILD_READY / LIVE_DEVICE_UNVERIFIED`
 
 ## Parallel product lines
 
@@ -161,12 +161,32 @@ five false alert segments (`27.8%`), not the frozen `40%` strong-effect line.
 This is `DIRECTIONALLY_POSITIVE / STRONG_EFFECT_NOT_REPRODUCED`, not an Android
 or safety promotion.
 
+The next fixed source replaced lidar with one phone-transferable rule: current
+RGB person-box height, a fixed `1.70 m` upright-person prior, and camera focal
+length. It covered all `4,826/4,826` detector-track occurrences, with `0.386 m`
+median / `1.016 m` p90 position error against evaluator-only native centers.
+On the same three events, both arms recalled `3/3` and cleared `2/2`; C reduced
+false alert segments from `17` to `9` (`47.1%`) with `2.06 s` median lead. No
+height, boundary, tracker, horizon, or threshold sweep was used. Because this
+is the same already-opened curated window, it selects the Android information
+source but is not a new generalization gate.
+
+That fixed source is now wired into an isolated `dtrKnownHeight` Android build:
+Camera2 calibration, CameraX frame binding, causal multi-person tracking,
+known-height projection, relative-motion route intersection, and an explicit
+`ONSET / HOLD / CLEAR / UNKNOWN` decision input to the shared feedback effect
+boundary. It bypasses the legacy temporal stabilizer, so UNKNOWN cannot become
+negative evidence. Compilation and one focused crossing-versus-lateral
+lifecycle check pass; live-device behavior is still unverified.
+
 Do not record the superseded 24/120 local RGB cohorts, widen this window, or
 tune detector, tracker, IoU, horizon, smoothing, aggregation, or lifecycle
 against these opened outcomes. The full-box upper-lidar source and the fixed
-mask-gated dual-lidar source are now consumed observations. A later increment
-must change the metric-motion information source, not rescue this result with a
-matcher/test matrix.
+mask-gated dual-lidar source are now consumed observations. The metric-motion
+source has now changed and the Android experiment exists; do not rescue any
+opened result with a matcher/test matrix. The next useful DTR increment is only
+a bounded live-device demonstration with the camera aligned to the walking
+direction, not the superseded 24/120 recording cohorts.
 
 The larger JRDB processed-label diagnostic remains a warning, not route
 authority: over 175 events C raised recall from 75.43% to 92.00%, but false
@@ -208,3 +228,7 @@ closure rather than the exact wearer route.
   `27.8%` false-alert reduction does not cross the `40%` strong-effect line.
   Learned trajectory models, Transformers, VLM fusion, and DTR-R1 were not
   opened to improve that number.
+- The fixed-height RGB source restores the strong line only on that same
+  curated Development window. The Android build assumes an upright full-body
+  person and a camera aligned with the short route; it has no live-device,
+  default-App, independent-walking, user-benefit, or safety authority.

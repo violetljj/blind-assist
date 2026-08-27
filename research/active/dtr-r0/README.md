@@ -1,7 +1,7 @@
 # DTR-R0: Dynamic Travel Risk trajectory-to-route events
 
-Status: `DTR_R0_ACTIVE / CAUSAL_DUAL_LIDAR_BRIDGE_DIRECTIONALLY_POSITIVE /
-STRONG_EFFECT_NOT_REPRODUCED`
+Status: `DTR_R0_ACTIVE / FIXED_KNOWN_HEIGHT_RGB_SOURCE_SELECTED /
+ANDROID_EXPERIMENT_BUILD_READY / LIVE_DEVICE_UNVERIFIED`
 
 ## Result first
 
@@ -124,6 +124,56 @@ SHA-256
 Its truth-blind sensor ledger is `result.sensor-tracks.jsonl`, SHA-256
 `62909c877068bb36bc9f522229b8e6afdfc20958187279e0e3f8ad5ab7b4a506`.
 
+## Fixed known-height RGB source and Android experiment
+
+The next increment changed the information source instead of tuning the DTR
+matcher. Each current RGB person box uses one fixed `1.70 m` upright-person
+prior and the official vertical focal length to estimate metric range. The
+stitched RGB bbox center supplies bearing. There is no height, boundary,
+tracker, horizon, or threshold sweep, and the truth-blind geometry ledger was
+sealed before evaluator identity and future geometry were opened.
+
+This source produced geometry for all `4,826/4,826` detector-track
+occurrences. Against evaluator-only native centers its position error was
+`0.386 m` median / `1.016 m` p90. Motion-history availability, rather than
+geometry availability, kept known prediction coverage at `45.97%`.
+
+| Metric | B2 radial TTC | C route intersection |
+| --- | ---: | ---: |
+| Critical-event recall | `100%` (`3/3`) | `100%` (`3/3`) |
+| False alert segments | `17` | `9` |
+| False alert reduction | — | `47.1%` |
+| Median first-alert lead | `3.45 s` | `2.06 s` |
+| Mean alert segments / event | `1.00` | `1.00` |
+| CLEAR on eligible events | `100%` (`2/2`) | `100%` (`2/2`) |
+
+The strong route-relevance effect therefore returned with an RGB-only metric
+source that can run on a phone. This is source selection on the same curated,
+already-opened 143-frame Development window, not a new generalization gate.
+Its result is
+`artifacts.local/evidence/dtr-r0/jrdb-known-height-bridge-v1/result.json`,
+SHA-256
+`c990ce353745ec0d1d55b762d64f7da0321db86b662d6c463ab1081689d41298`.
+The sealed geometry ledger is `result.sensor-tracks.jsonl`, SHA-256
+`3027034923468b48160ae95a354a3837c73e770c1984e7608fc37f51fd27f049`.
+
+The selected source is now implemented as the isolated Android build type
+`dtrKnownHeight`. Camera2 focal length and physical sensor size are bound to
+each CameraX analysis frame, rotated into detector coordinates, and combined
+with fixed-height person projection. A causal multi-person tracker and
+1.5-second relative-motion fit drive the three-second route-intersection arm.
+DTR owns `ONSET / HOLD / CLEAR / UNKNOWN`; the shared feedback layer consumes
+those signals directly, so `UNKNOWN` cannot advance clearing and no second
+temporal stabilizer can manufacture or delay an event. The focused JVM check
+distinguishes an intersecting path from a lateral pass and verifies that an
+UNKNOWN frame cannot clear the active event.
+
+This is an implementation path, not live-device evidence. The phone camera
+must remain aligned with the short walking route; head turns, camera pitch,
+seated/child/truncated people, and imperfect boxes can violate the
+fixed-height/relative-frame assumptions. No default-App, independent-walking,
+natural-distribution, user-benefit, or safety claim follows.
+
 ## Why JRDB is diagnostic, not the route authority
 
 The processed JRDB labels/timestamps split does not contain synchronized ego
@@ -169,10 +219,12 @@ outcomes. The detector/tracker and causal raw-geometry questions have both been
 answered for this R0 window. The native ceiling is strong; the runnable raw
 sensor bridge is positive but below the strong-effect line.
 
-Do not rescue it with temporal-filter, threshold, or matcher sweeps. If DTR is
-continued, change the metric-motion information source in a new versioned
-increment; otherwise retain this bridge as the honest R0 ceiling-to-sensor
-result. It is not another cohort-design task.
+Do not rescue any opened result with temporal-filter, threshold, or matcher
+sweeps. The information-source change has now been made and the isolated
+Android path exists. The only useful next obstacle-only increment is a bounded
+live-device demonstration of the existing build, with the phone facing the
+walking direction; it is not a request for the superseded 24/120 recording
+cohorts or another test matrix.
 
 ## Reproduce the ceilings and fixed bridge
 
@@ -207,6 +259,17 @@ python research/active/dtr-r0/jrdb_mask_lidar_bridge.py `
   --calibration-dir <jrdb-toolkit>/calibration `
   --segmentation-model <yolo11n-seg.pt> `
   --output <ignored-evidence-directory>/jrdb-dual-lidar-mask-bridge-v1/result.json
+
+python research/active/dtr-r0/jrdb_known_height_bridge.py `
+  --rgb-result <ignored-evidence-directory>/jrdb-rgb-bridge-v1/result.json `
+  --rgb-tracks <ignored-evidence-directory>/jrdb-rgb-bridge-v1/result.tracks.jsonl `
+  --labels-zip <jrdb-train-labels.zip> `
+  --timestamps-zip <jrdb-train-timestamps.zip> `
+  --bag <packard-poster-session-2019-03-20_1.bag> `
+  --calibration-dir <jrdb-toolkit>/calibration `
+  --output <ignored-evidence-directory>/jrdb-known-height-bridge-v1/result.json
+
+pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:assembleDtrKnownHeight
 ```
 
 The synthetic generator and tests remain mechanism diagnostics only. They do
@@ -222,6 +285,8 @@ safety. The JRDB bridge adds real RGB detection and causal tracking plus exact
 bag odometry. The final dual-lidar bridge also replaces current annotated range
 with raw sensor geometry; annotations remain evaluator-only identity and future
 event truth. The bag has no `tf_static`; the planar static chain is bound to
-external official JRDB calibration and fixed Kinova URDF provenance. This is
-one curated Development window, not RGB-only metric perception, Android
-runtime, natural-distribution, product, user-benefit, or safety evidence.
+external official JRDB calibration and fixed Kinova URDF provenance. The
+known-height increment adds an RGB-only metric-source observation and Android
+implementation, but not a live Android result. This remains one curated
+Development window, not natural-distribution, product, user-benefit,
+independent-mobility, or safety evidence.

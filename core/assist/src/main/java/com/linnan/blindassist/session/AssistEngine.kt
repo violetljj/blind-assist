@@ -85,6 +85,37 @@ class AssistEngine(
         )
     }
 
+    /** DTR already owns motion fitting and lifecycle, so do not add a second temporal gate. */
+    fun evaluateDtrEvidence(
+        risk: RiskResult,
+        evidenceCount: Int,
+        frameSize: FrameSize,
+        profile: AlertProfile,
+        scenario: AssistScenario = AssistScenario.GENERAL,
+        metrics: DetectorMetrics,
+        nowMs: Long = monotonicNowMs(),
+        sourceFrame: FrameStamp? = null,
+        decisionAtNs: Long = nowMs * NANOS_PER_MILLISECOND
+    ): AssistFrameEvaluation {
+        require(risk.sourceDetection == null) { "DTR evidence must remain object agnostic" }
+        require(evidenceCount > 0) { "DTR evidence count must be positive" }
+        return AssistFrameEvaluation(
+            rawRisk = risk,
+            stableRisk = risk,
+            detectionCount = 0,
+            frameSize = frameSize,
+            profile = profile,
+            scenario = scenario,
+            metrics = metrics,
+            preliminaryReason = displayReasonFor(risk, risk, null),
+            evaluatedAtMs = nowMs,
+            riskEvidenceCount = evidenceCount,
+            sourceFrame = sourceFrame,
+            decisionAtNs = decisionAtNs,
+            preTemporalRisk = risk
+        )
+    }
+
     fun completeFeedback(
         evaluation: AssistFrameEvaluation,
         feedbackDecision: FeedbackDecision

@@ -1,6 +1,7 @@
 package com.linnan.blindassist.camera
 
 import androidx.camera.core.ImageProxy
+import com.linnan.blindassist.vision.CameraIntrinsics
 import com.linnan.blindassist.vision.FrameStamp
 import com.linnan.blindassist.vision.RgbaVisionFrame
 import java.nio.ByteBuffer
@@ -8,7 +9,8 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 internal class ImageProxyVisionFrame(
     private val imageProxy: ImageProxy,
-    override val frameStamp: FrameStamp
+    override val frameStamp: FrameStamp,
+    override val cameraIntrinsics: CameraIntrinsics?
 ) : RgbaVisionFrame {
     private val plane = imageProxy.planes.first()
     private val closed = AtomicBoolean(false)

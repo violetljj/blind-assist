@@ -45,6 +45,16 @@ does not reproduce the frozen 40% strong-effect line. No more recording,
 detector/matcher sweep, Android, product, natural-distribution, user-benefit, or
 safety claim follows.
 
+A fixed phone-transferable RGB source now uses person-box height, one `1.70 m`
+upright-person prior, and camera focal length. On the same curated JRDB window,
+C retained `3/3` event recall and `2/2` CLEAR while reducing false alert
+segments from 17 to 9 (`47.1%`); geometry error was `0.386 m` median / `1.016 m`
+p90 against evaluator-only centers. This source is implemented in the isolated
+Android `dtrKnownHeight` build with frame-bound Camera2 calibration, causal
+multi-person tracking, and explicit `ONSET / HOLD / CLEAR / UNKNOWN` feedback
+semantics. The build compiles and its one focused mechanics check passes, but
+there is not yet a live-device result or default-App/product/safety claim.
+
 L10-R0 is active in parallel and does not depend on GRAIL owner orientation.
 Its first controlled closed-loop result is positive: 87.5% task completion,
 81.2% reacquisition, 93.1% direction accuracy, 1.7% wrong-lock frames, and zero

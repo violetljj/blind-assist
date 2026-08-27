@@ -49,13 +49,15 @@ class MainActivity : ComponentActivity() {
             listOf(
                 BuildConfig.USTRF_EXPERIMENT,
                 BuildConfig.DUAL_LOOP_SHADOW,
-                BuildConfig.DUAL_LOOP_ACTIVE
+                BuildConfig.DUAL_LOOP_ACTIVE,
+                BuildConfig.DTR_KNOWN_HEIGHT
             ).count { it } <= 1
         ) {
             "isolated experimental modes cannot be enabled together"
         }
         val runtimeMode = when {
             BuildConfig.USTRF_EXPERIMENT -> AssistRuntimeMode.USTRF_EXPERIMENT
+            BuildConfig.DTR_KNOWN_HEIGHT -> AssistRuntimeMode.DTR_KNOWN_HEIGHT
             BuildConfig.DUAL_LOOP_ACTIVE -> AssistRuntimeMode.DUAL_LOOP_ACTIVE
             BuildConfig.DUAL_LOOP_SHADOW -> AssistRuntimeMode.DUAL_LOOP_SHADOW
             else -> AssistRuntimeMode.BASELINE
@@ -82,6 +84,8 @@ class MainActivity : ComponentActivity() {
                                 "神经—几何双环影子接线版 · 不改变提醒 · 不可用于独立行走"
                             BuildConfig.DUAL_LOOP_ACTIVE ->
                                 "神经—几何双环隔离纠错版 · 开发验证中 · 不可用于独立行走"
+                            BuildConfig.DTR_KNOWN_HEIGHT ->
+                                "DTR短时路线避障实验版 · 手机需朝向行走路线 · 不可用于独立行走"
                             else -> null
                         },
                         cameraActive = uiState.cameraActive,

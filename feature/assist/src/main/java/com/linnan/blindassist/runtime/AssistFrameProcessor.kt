@@ -125,6 +125,16 @@ internal class AssistFrameProcessor(
                             nowMs = eventTimeMs,
                             decisionAtNs = decisionAtNs
                         )
+                    AssistRuntimeMode.DTR_KNOWN_HEIGHT ->
+                        requireNotNull(ustrfAdapters.dtrKnownHeight) {
+                            "DTR known-height mode requires its isolated adapter"
+                        }.process(
+                            frame = detectorFrameWithPipelineStats,
+                            profile = runtimeConfig.alertProfile,
+                            scenario = runtimeConfig.assistScenario,
+                            nowMs = eventTimeMs,
+                            decisionAtNs = decisionAtNs
+                        )
                 }
                 if (mode == AssistRuntimeMode.DUAL_LOOP_SHADOW ||
                     mode == AssistRuntimeMode.DUAL_LOOP_ACTIVE
@@ -166,6 +176,7 @@ internal class AssistFrameProcessor(
 
     fun resetSessionStats() {
         stats.reset()
+        ustrfAdapters.dtrKnownHeight?.reset()
     }
 
     private data class CommittedFrame(
@@ -188,7 +199,8 @@ internal class AssistFrameProcessor(
 }
 
 internal data class UstrfRuntimeAdapters(
-    val experimental: AssistUstrfExperimentalAdapter?
+    val experimental: AssistUstrfExperimentalAdapter?,
+    val dtrKnownHeight: AssistDtrKnownHeightAdapter? = null
 ) {
     companion object {
         fun forMode(
@@ -202,6 +214,10 @@ internal data class UstrfRuntimeAdapters(
             )
             AssistRuntimeMode.USTRF_EXPERIMENT -> UstrfRuntimeAdapters(
                 experimental = AssistUstrfExperimentalAdapter(coordinator)
+            )
+            AssistRuntimeMode.DTR_KNOWN_HEIGHT -> UstrfRuntimeAdapters(
+                experimental = null,
+                dtrKnownHeight = AssistDtrKnownHeightAdapter(coordinator)
             )
         }
     }

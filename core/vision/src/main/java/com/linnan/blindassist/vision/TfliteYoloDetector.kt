@@ -114,6 +114,7 @@ class TfliteYoloDetector(
         return detectFrame(
             frameSize = frameSize,
             sourceFrame = null,
+            cameraIntrinsics = null,
             prepareInput = { preprocessor.prepare(bitmap) }
         )
     }
@@ -123,6 +124,7 @@ class TfliteYoloDetector(
         return detectFrame(
             frameSize = frameSize,
             sourceFrame = frame.frameStamp,
+            cameraIntrinsics = frame.cameraIntrinsics?.rotatedForDisplay(frame.rotationDegrees),
             prepareInput = {
                 when (frame) {
                     is NativeImageVisionFrame -> {
@@ -140,6 +142,7 @@ class TfliteYoloDetector(
     private fun detectFrame(
         frameSize: FrameSize,
         sourceFrame: FrameStamp?,
+        cameraIntrinsics: CameraIntrinsics?,
         prepareInput: () -> ModelInput
     ): DetectorFrameResult {
         synchronized(lifecycleLock) {
@@ -147,7 +150,8 @@ class TfliteYoloDetector(
                 detections = emptyList(),
                 frameSize = frameSize,
                 metrics = currentMetrics(),
-                sourceFrame = sourceFrame
+                sourceFrame = sourceFrame,
+                cameraIntrinsics = cameraIntrinsics
             )
             val totalStart = SystemClock.elapsedRealtimeNanos()
             val preprocessStart = totalStart
@@ -188,6 +192,7 @@ class TfliteYoloDetector(
                 frameSize = frameSize,
                 metrics = currentMetrics(),
                 sourceFrame = sourceFrame,
+                cameraIntrinsics = cameraIntrinsics,
                 stageTiming = DetectorStageTiming(
                     preprocessStartNs = preprocessStart,
                     preprocessCompleteNs = preprocessComplete,
