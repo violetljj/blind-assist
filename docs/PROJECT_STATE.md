@@ -26,15 +26,24 @@ collapsed Doorway FLIP to `0/24` in both seeds, and left owner-group macro
 balanced accuracy near chance. No view selector, G0 fusion, or further
 pose/model sweep is authorized from that consumed result.
 
-Dynamic Travel Risk R0 is now the next algorithm mainline. It asks whether
-short causal tracks plus predicted target-occupancy intersection with the
-wearer route can suppress irrelevant alerts without losing crossing or
-oncoming events. The four-arm mechanics smoke is implemented, and the primary
-comparison is frozen as route intersection versus radial TTC. A 24-event real
-RGB input-materialization canary precedes the exactly 120-event controlled
-Development cohort. Its truth-blind RGB/pose adapter is implemented, but no
-eligible 24-event input exists yet. Neither real stage has run, so there is no
-DTR-R0 scientific result.
+Dynamic Travel Risk R0 crossed its exact public-real privileged ceiling on the
+19-session THÖR-MAGNI Pupil subset: C route intersection raised geometric
+critical-event recall from 8/10 to 9/10 and reduced target-level false alert
+segments from 96 to 55 (42.7%) relative to radial TTC. Its fixed 143-frame JRDB
+real-RGB bridge is also directionally positive: both arms recalled 3/3 events,
+while C reduced false alert segments from 7 to 4 (42.9%) after YOLO11n and a
+causal tracker. C was weaker on lead time and CLEAR, and overall known prediction
+coverage was 45.97%.
+
+The current metric center has now been replaced by a truth-blind causal raw
+sensor chain: YOLO11n-seg person masks gate motion-compensated upper/lower JRDB
+Velodyne points. It covered 90.41% of detector-track occurrences with 0.106 m
+median / 0.284 m p90 position error against evaluator-only native centers. Both
+arms still recalled 3/3 events and cleared 2/2 eligible events; C reduced false
+alert segments from 18 to 13 (27.8%). This is a genuine but weaker effect and
+does not reproduce the frozen 40% strong-effect line. No more recording,
+detector/matcher sweep, Android, product, natural-distribution, user-benefit, or
+safety claim follows.
 
 L10-R0 is active in parallel and does not depend on GRAIL owner orientation.
 Its first controlled closed-loop result is positive: 87.5% task completion,

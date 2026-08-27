@@ -1,13 +1,14 @@
-# Current decisions: L10-R0 Goal-Lock and Dynamic Travel Risk R0
+# Current decisions: L10-R0 Goal-Lock active; Dynamic Travel Risk R0 advancing
 
 Status: `L10_R0_ACTIVE / CONTROLLED_MECHANISM_POSITIVE` and
-`DTR_R0_ACTIVE / REAL_INPUT_CANARY_PENDING / NO_RESULT`
+`DTR_R0_ACTIVE / CAUSAL_DUAL_LIDAR_BRIDGE_DIRECTIONALLY_POSITIVE /
+STRONG_EFFECT_NOT_REPRODUCED`
 
 ## Parallel product lines
 
-Ten-meter goal completion and dynamic obstacle/risk guidance are separate active
+Ten-meter goal completion and dynamic obstacle/risk guidance are separate
 lines. L10-R0 does not wait for DTR-R0, and neither line supplies evidence for
-the other.
+the other. The DTR result and next action do not change the L10-R0 route.
 
 L10-R0 deliberately starts with readable goals such as room signs, exits,
 named entrances, elevator buttons, and service desks. It replaces the former
@@ -57,63 +58,121 @@ impossible. A future GRAIL successor would need either a different task
 representation, such as a reference-anchored dense correspondence field, or a
 genuinely different information source. Neither is active now.
 
-## Active question
+## DTR-R0 exact native-track answer
 
 Can short causal target tracks, ego-motion compensation, and intersection of
 future target occupancy with the wearer's short-horizon route reduce
 non-actionable alerts while preserving truly crossing or oncoming events?
 
-The active route is `research/active/dtr-r0/`. The first scientific cohort is
-not yet admitted. The synthetic smoke verifies only coordinate, state-machine,
-and metric mechanics; the truth-blind real RGB observation adapter is
-implemented, but the 24-event input canary has not been captured or run.
+Yes at the narrow privileged ceiling, with important uncertainty. The primary
+run uses the locally available 19-session THÖR-MAGNI Pupil subset. QTM supplies
+the camera wearer's and other people's helmet centroids in one global metric
+frame. Both arms receive only current-and-past centroids; the wearer route yaw
+comes from the past 0.5 seconds of ego motion. Future synchronized centroids are
+opened only by the evaluator.
 
-## First comparison surface
+At 10 Hz the run covered 461,182 source rows, 132 wearer-target identities, 357
+evaluable track segments, 520.0 target-track seconds, and 10 non-left-censored
+geometric critical events.
 
-All arms use the same causal observation ledger and the same
+## Public privileged comparison
+
+Both compared arms use the same causal observation ledger and the same
 `ONSET / HOLD / CLEAR / UNKNOWN` lifecycle:
 
-- B0: a tracked target is present;
-- B1: target distance crosses a fixed near threshold;
 - B2: radial time-to-collision crosses a fixed horizon;
-- DTR-R0: a short ego-compensated constant-velocity track predicts target
+- C: an ego-compensated short track predicts target
   occupancy from now through a frozen horizon in 1.5--3.0 seconds and
   intersects it with the wearer route tube.
 
-The primary comparison is frozen before real-input access as
-`C_ROUTE_INTERSECTION vs B2_RADIAL_TTC`. Both arms consume causal short tracks,
-so an increment can be attributed to route relevance rather than merely to
-tracking. B0 and B1 remain fully reported explanatory baselines.
+The primary comparison remained `C_ROUTE_INTERSECTION vs B2_RADIAL_TTC`, so an
+increment can be attributed to route relevance rather than merely to tracking.
 
-Before the scientific cohort, a 24-event real-input canary uses four staged
-clips from each of the six scene classes. It can establish only that RGB,
-person detections, causal identity tracks, flat-ground metric projection, and
-time-aligned body/camera pose can materialize a stable observation ledger. It
-has no advancement-gate authority.
+| Metric | B2 radial TTC | C route intersection |
+| --- | ---: | ---: |
+| Critical-event recall | 80.0% (8/10) | 90.0% (9/10) |
+| Lateral-crossing recall | 85.7% (6/7) | 85.7% (6/7) |
+| Oncoming-corridor recall | 0.0% (0/1) | 100.0% (1/1) |
+| False alert segments | 96 | 55 |
+| Median first-alert lead | 1.85 s | 2.90 s |
+| Mean fragments / event | 1.3 | 1.5 |
+| Post-event CLEAR | not evaluable | not evaluable |
 
-If that source-admission canary succeeds under its frozen input contract, the
-controlled Development cohort contains exactly 120 staged real-RGB events:
-20 per scene class. Each clip is 8--12 seconds and includes the pre-event,
-track formation, event, closest approach/crossing, exit, and clear phases.
-Synthetic trajectories remain a separate mechanism-diagnostic stratum and
-never enter the 120-event headline result.
+## DTR decision
 
-Primary metrics are critical-event recall, false alerts per minute, first-alert
-lead time, delivered alerts per event, event fragmentation, and CLEAR delay.
-
-## Advancement line
-
-DTR-R0 advances only if, relative to the frozen B2 radial-TTC baseline:
+DTR-R0's core ceiling line required, relative to B2:
 
 - critical-event recall does not decrease;
 - non-actionable alerts decrease by at least 40%;
-- median first-alert lead time is at least 1.0 second;
-- mean fragments per event are at most 1.5;
-- route exit produces stable CLEAR behavior.
+- event lifecycle is scored as ONSET segments rather than positive frames.
 
-The synthetic mechanism smoke cannot satisfy this line. A scored result needs
-the controlled event cohort, source/episode separation, causal inputs, and
-independent event intervals.
+C raised recall by 10 percentage points, preserved the crossing partition,
+recovered the one oncoming event, and reduced target-level false alert segments
+by 42.7%. It passed the core line. No post-event critical sample remained
+evaluable for CLEAR, so this native ceiling alone is not a completed lifecycle,
+product, or safety result.
+
+The authorized public-data RGB detector/tracker bridge has now run on fixed
+JRDB train sequence `packard-poster-session-2019-03-20_1`, frames `115..257`.
+YOLO11n plus the existing causal tracker was sealed to a truth-blind ledger
+before native labels were opened. Same-frame IoU then supplied an evaluator-only
+identity/metric binding; future geometry remained evaluator-only.
+
+It scored all 52 evaluable target segments in the window and found three
+critical events (two lateral crossings, one oncoming):
+
+| Metric | B2 radial TTC | C route intersection |
+| --- | ---: | ---: |
+| Critical-event recall | 100% (3/3) | 100% (3/3) |
+| False alert segments | 7 | 4 |
+| Median first-alert lead | 3.94 s | 2.20 s |
+| Mean fragments / event | 1.00 | 1.33 |
+| Post-event CLEAR | 100% (2/2) | 50% (1/2) |
+
+Thus the narrow false-alert effect survived real RGB detection and causal
+tracking: no critical event was lost and false alert segments fell 42.9%.
+This is directionally positive, not a new advancement gate. Its shorter lead,
+one missed CLEAR, `45.97%` known prediction coverage across all targets, and
+fragmented tracker identities remain explicit defects.
+
+Current metric geometry has now also been replaced. The final fixed public
+sensor bridge uses the latest causal upper and lower Velodyne scans, compensates
+each scan through bag odometry to image time, projects them with official JRDB
+calibration, and keeps only points inside a fixed YOLO11n-seg person mask. Its
+truth-blind sensor ledger was sealed before evaluator identity/future truth was
+opened. Current observations use a fixed `0.30 m` person radius; native body
+extent remains evaluator-only future event truth.
+
+On the same 52 target segments and three critical events:
+
+| Metric | B2 radial TTC | C route intersection |
+| --- | ---: | ---: |
+| Critical-event recall | 100% (3/3) | 100% (3/3) |
+| False alert segments | 18 | 13 |
+| Median first-alert lead | 3.67 s | 1.91 s |
+| Mean fragments / event | 1.00 | 1.33 |
+| Post-event CLEAR | 100% (2/2) | 100% (2/2) |
+
+The mask-gated dual-lidar source covered `90.41%` of detector-track
+occurrences. Against evaluator-only native centers, matched geometry had
+`0.106 m` median and `0.284 m` p90 position error. The actionable-risk effect
+therefore remains real but weaker: C preserved all three events and removed
+five false alert segments (`27.8%`), not the frozen `40%` strong-effect line.
+This is `DIRECTIONALLY_POSITIVE / STRONG_EFFECT_NOT_REPRODUCED`, not an Android
+or safety promotion.
+
+Do not record the superseded 24/120 local RGB cohorts, widen this window, or
+tune detector, tracker, IoU, horizon, smoothing, aggregation, or lifecycle
+against these opened outcomes. The full-box upper-lidar source and the fixed
+mask-gated dual-lidar source are now consumed observations. A later increment
+must change the metric-motion information source, not rescue this result with a
+matcher/test matrix.
+
+The larger JRDB processed-label diagnostic remains a warning, not route
+authority: over 175 events C raised recall from 75.43% to 92.00%, but false
+alert segments rose from 191 to 260. JRDB's processed labels/timestamps have no
+synchronized ego pose and are mostly interpolated, so this tests relative
+closure rather than the exact wearer route.
 
 ## Boundaries
 
@@ -135,6 +194,17 @@ independent event intervals.
   claim follows from route scaffolding or synthetic trajectories.
 - Semantic Anchor to Marker Pose remains a separate live-device demonstration
   closure, not DTR-R0 algorithm evidence.
-- Probabilistic occupancy, learned trajectory prediction, Transformers, VLMs,
-  and DTR-R1 remain closed unless deterministic R0 first produces a positive
-  controlled real-RGB result.
+- The THÖR-MAGNI result is
+  `PUBLIC_REAL_EXACT_GLOBAL_TRACK_AND_EGO_PRIVILEGED_CEILING_ONLY`: helmet
+  centroids, a fixed person radius, and controlled laboratory motion are not
+  body collision, intended route, natural walking, product, or safety truth.
+- The RGB-only JRDB bridge is
+  `CURATED_PUBLIC_REAL_RGB_DETECTOR_TRACKER_BRIDGE_ONLY`; its current range used
+  native annotations. The later dual-lidar bridge removes that current-range
+  dependency but still uses evaluator-only annotations for identity and future
+  event truth. The bag supplies dynamic odometry but not a self-contained
+  static TF tree.
+- The causal dual-lidar bridge is one curated Development observation. Its
+  `27.8%` false-alert reduction does not cross the `40%` strong-effect line.
+  Learned trajectory models, Transformers, VLM fusion, and DTR-R1 were not
+  opened to improve that number.
