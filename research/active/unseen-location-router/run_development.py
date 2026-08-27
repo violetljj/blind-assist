@@ -1,4 +1,4 @@
-"""Train frozen fusion arms and evaluate held-out MMS-VPR Development locations."""
+"""Train frozen fusion arms and evaluate held-out Development locations."""
 
 from __future__ import annotations
 
@@ -122,10 +122,10 @@ def illumination_by_capture_group(texts_root: Path) -> dict[str, str]:
     return result
 
 
-def load_features(database: Path, texts_root: Path) -> tuple[list[FeatureRow], dict[str, str]]:
+def load_features(database: Path, texts_root: Path | None) -> tuple[list[FeatureRow], dict[str, str]]:
     connection = sqlite3.connect(database)
     metadata = dict(connection.execute("SELECT key, value FROM metadata"))
-    inferred_illumination = illumination_by_capture_group(texts_root)
+    inferred_illumination = illumination_by_capture_group(texts_root) if texts_root else {}
     rows = []
     for row in connection.execute(
         """SELECT image_id, split, role, location_id, capture_group, descriptor, descriptor_dim,
@@ -396,7 +396,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--database", type=Path, required=True)
     parser.add_argument("--manifest", type=Path, required=True)
-    parser.add_argument("--texts-root", type=Path, required=True)
+    parser.add_argument("--texts-root", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--candidate-count", type=int, default=8, choices=(4, 8, 16))
     args = parser.parse_args()

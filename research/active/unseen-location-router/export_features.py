@@ -156,15 +156,17 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--images-root", type=Path, required=True)
-    parser.add_argument("--texts-root", type=Path, required=True)
+    parser.add_argument("--texts-root", type=Path)
     parser.add_argument("--backbone", type=Path, required=True)
     parser.add_argument("--database", type=Path, required=True)
     parser.add_argument("--receipt", type=Path, required=True)
     parser.add_argument("--gallery-per-location", type=int, default=4)
     parser.add_argument("--query-per-location", type=int, default=8)
     parser.add_argument("--ocr-workers", type=int, default=3)
+    parser.add_argument("--ocr-use-cuda", action="store_true")
     parser.add_argument("--dino-batch-size", type=int, default=16)
     parser.add_argument("--reuse-database", type=Path)
+    parser.add_argument("--allow-missing-images", action="store_true")
     parser.add_argument("--selection-salt", default="blindassist-ulr-v1-feature-canary")
     args = parser.parse_args()
 
@@ -181,14 +183,18 @@ def main() -> int:
 
     manifest_bytes = args.manifest.read_bytes()
     manifest = json.loads(manifest_bytes)
-    selected = select_rows(
+    selected_all = select_rows(
         manifest["images"],
         gallery_limit=args.gallery_per_location,
         query_limit=args.query_per_location,
         salt=args.selection_salt,
     )
-    if any(row["split"] == "test" for row in selected):
+    if any(row["split"] == "test" for row in selected_all):
         raise RuntimeError("test images must remain unopened during Development")
+    missing_rows = [row for row in selected_all if not (args.images_root / row["relative_path"]).is_file()]
+    if missing_rows and not args.allow_missing_images:
+        raise RuntimeError(f"{len(missing_rows)} selected images are missing under images-root")
+    selected = [row for row in selected_all if (args.images_root / row["relative_path"]).is_file()]
 
     backbone_hash = sha256_file(args.backbone / "model.safetensors")
     metadata = {
@@ -202,13 +208,24 @@ def main() -> int:
     }
     connection = make_database(args.database, metadata)
     if args.reuse_database is not None and args.reuse_database.exists():
-        selected_ids = {str(row["image_id"]) for row in selected}
+        selected_by_id = {str(row["image_id"]): row for row in selected}
         source = sqlite3.connect(args.reuse_database)
         source_metadata_rows = dict(source.execute("SELECT key, value FROM metadata"))
-        for key in ("schema", "manifest_sha256", "backbone_sha256", "selection_salt"):
+        for key in ("schema", "backbone_sha256", "selection_salt"):
             if source_metadata_rows.get(key) != metadata.get(key):
                 raise RuntimeError(f"reuse database mismatch for {key}")
-        reusable = [row for row in source.execute("SELECT * FROM features") if str(row[0]) in selected_ids]
+        reusable = []
+        for stored in source.execute("SELECT * FROM features"):
+            expected = selected_by_id.get(str(stored[0]))
+            if expected is None:
+                continue
+            identity = (
+                str(expected["relative_path"]), str(expected["split"]), str(expected["role"]),
+                str(expected["location_id"]), str(expected["capture_group"]), str(expected["illumination"]),
+            )
+            if tuple(str(value) for value in stored[1:7]) != identity:
+                raise RuntimeError(f"reuse row identity mismatch for {stored[0]}")
+            reusable.append(stored)
         connection.executemany(
             "INSERT OR IGNORE INTO features VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", reusable
         )
@@ -217,7 +234,7 @@ def main() -> int:
     completed = {row[0] for row in connection.execute("SELECT image_id FROM features")}
 
     build_module = load_build_manifest_module(Path(__file__).with_name("build_manifest.py"))
-    source_metadata = metadata_by_capture_group(build_module, args.texts_root)
+    source_metadata = metadata_by_capture_group(build_module, args.texts_root) if args.texts_root else {}
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     processor = AutoImageProcessor.from_pretrained(args.backbone, local_files_only=True)
     model = AutoModel.from_pretrained(args.backbone, local_files_only=True).eval().to(device)
@@ -227,7 +244,17 @@ def main() -> int:
 
     def run_ocr(image_bgr: np.ndarray) -> tuple[list[str], list[float]]:
         if not hasattr(thread_state, "provider"):
-            thread_state.provider = RapidOCR()
+            params = {"EngineConfig.onnxruntime.use_cuda": True} if args.ocr_use_cuda else None
+            thread_state.provider = RapidOCR(params=params)
+            if args.ocr_use_cuda:
+                engines = (
+                    thread_state.provider.text_det,
+                    thread_state.provider.text_cls,
+                    thread_state.provider.text_rec,
+                )
+                providers = [engine.session.session.get_providers()[0] for engine in engines]
+                if providers != ["CUDAExecutionProvider"] * 3:
+                    raise RuntimeError(f"OCR CUDA requested but providers are {providers}")
         output = thread_state.provider(image_bgr)
         return list(output.txts or ()), [float(value) for value in (output.scores or ())]
 
@@ -245,8 +272,9 @@ def main() -> int:
                 row["image_id"], row["relative_path"], row["split"], row["role"], row["location_id"],
                 row["capture_group"], row["illumination"], descriptor.tobytes(), descriptor.size,
                 blur, json.dumps(texts, ensure_ascii=False), json.dumps(scores),
-                finite_float(capture_metadata.get("Latitude")), finite_float(capture_metadata.get("Longitude")),
-                finite_float(capture_metadata.get("Location Accuracy") or capture_metadata.get("GPS Horizontal Error")),
+                finite_float(row.get("latitude", capture_metadata.get("Latitude"))),
+                finite_float(row.get("longitude", capture_metadata.get("Longitude"))),
+                finite_float(row.get("gps_accuracy_m", capture_metadata.get("Location Accuracy") or capture_metadata.get("GPS Horizontal Error"))),
             ),
         )
         connection.commit()
@@ -289,9 +317,11 @@ def main() -> int:
     missing_gps = int(connection.execute("SELECT COUNT(*) FROM features WHERE latitude IS NULL OR longitude IS NULL").fetchone()[0])
     receipt = {
         "schema": "blindassist.unseen_location_router.feature_receipt.v1",
-        "status": "COMPLETE",
+        "status": "PARTIAL_SOURCE" if missing_rows else "COMPLETE",
         "database": str(args.database),
-        "selected_image_count": total,
+        "selected_image_count": len(selected_all),
+        "available_image_count": total,
+        "missing_image_count": len(missing_rows),
         "counts": counts,
         "images_with_ocr": ocr_count,
         "images_without_gps": missing_gps,
@@ -301,6 +331,7 @@ def main() -> int:
         "selection_salt": args.selection_salt,
         "selection_policy": metadata["selection_policy"],
         "ocr_workers": args.ocr_workers,
+        "ocr_device": "cuda" if args.ocr_use_cuda else "cpu",
         "dino_batch_size": args.dino_batch_size,
         "test_images_read": 0,
     }

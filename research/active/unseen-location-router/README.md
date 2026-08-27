@@ -1,6 +1,6 @@
 # Unseen-Location Evidence Router
 
-Status: `MMS_VPR_COARSE_GPS_SOURCE_REJECTED / ROUTER_NOT_EVALUABLE / TEST_UNOPENED`
+Status: `MSLS_SOURCE_ADMITTED / ROUTER_DEVELOPMENT_GATE_NOT_MET / TEST_UNOPENED`
 
 ## Frozen Development question
 
@@ -36,10 +36,12 @@ The following are forbidden model inputs:
 - text copied from annotations instead of OCR run on the actual image;
 - any feature selected after observing development/test outcomes.
 
-MMS-VPR's official per-class random split is not used because every location
-appears in both training and test. The new split supports a narrower claim:
-held-out-location, reference-conditioned retrieval within one Chengdu commercial
-district. It does not support unseen-city, named-POI, open-world, or product claims.
+MMS-VPR's official per-class random split was not used in the rejected source
+canary because every location appears in both training and test. The MSLS
+successor instead uses the official city separation: Copenhagen and San
+Francisco are unseen during training. This supports only a bounded unseen-city,
+reference-conditioned Development result; it does not support universal VPR,
+named-POI, open-world, or product claims.
 
 ## Frozen arms
 
@@ -86,16 +88,57 @@ result, or treating manual location text as OCR. A successor needs frame-aligned
 coarse position, or separate authorization for a no-GPS global-retrieval task.
 Exact evidence is in `development_canary_result_v1.json`.
 
-Before training, run the dataset admission audit:
+## MSLS successor terminal
+
+The successor kept the retrieval question, DINO/OCR providers, learned arms,
+seeds, primary static-fusion comparator, and `+8pp` advancement gate fixed.  It
+changed only the evidence source to Mapillary Street-Level Sequences (MSLS).
+The official city split supplies 22 training cities, Copenhagen and San
+Francisco as unseen Development cities, and six unopened test cities.
+
+The metadata-only admission canary passed before pixel extraction. Query GPS was
+present for 100% of train and Development frames. With frozen 100 m grid-cell
+coarsening, target coverage was 99.96%/100% at K=8 and 99.99%/100% at K=16 for
+train/Development. Exact evidence is in `msls_source_canary_v1.json`.
+
+The bounded Development run then used 11,587 real images: 9,731 train and 1,856
+Development images from Copenhagen and San Francisco. It read no test images.
+Development K=8 coverage was 826/826. The primary result was:
+
+- static learned fusion: 79.66% and 80.27% Top-1 for seeds 1701 and 2701;
+- quality-conditioned Router: 79.18% and 76.15%;
+- absolute Router gain: -0.48pp and -4.12pp;
+- local-hard-negative error increased in both seeds.
+
+The Router therefore missed the `+8pp` gate in both seeds and is closed on this
+consumed Development cohort. It must not be rescued with weight, quality-feature,
+threshold, backbone, candidate, or seed sweeps. GPS-only already scored 79.66%,
+and the Router assigned 93.7% to 99.7% mean target-candidate weight to geography;
+the learned dynamic mechanism did not add useful evidence routing. Exact results
+are in `msls_development_result_v1.json`.
+
+The run supports a bounded unseen-city Development result, not a universal VPR,
+named-POI, grounding, navigation, product, or safety claim. Only five Development
+queries were labelled night, and OCR has no independent transcription truth.
+The test cities remain unopened.
+
+To reproduce the metadata admission canary, extract official `metadata.zip` under
+`artifacts.local/datasets/unseen-location-router/msls/`, then run:
 
 ```powershell
 E:\codex-tools\bin\blindassist-python.cmd `
-  research/active/unseen-location-router/build_manifest.py `
-  --images-root artifacts.local/datasets/unseen-location-router/mms-vpr/Images `
-  --graph-root "artifacts.local/datasets/unseen-location-router/mms-vpr/Graph Structure" `
-  --output artifacts.local/datasets/unseen-location-router/mms-vpr/split_manifest.json `
-  --audit artifacts.local/evidence/unseen-location-router/data_admission.json
+  research/active/unseen-location-router/build_msls_canary.py `
+  --dataset-root artifacts.local/datasets/unseen-location-router/msls `
+  --output artifacts.local/evidence/unseen-location-router/msls_source_canary.json
 ```
+
+The canary reads only train/validation metadata and admits the source only when
+query frame GPS is 100%, K=8 target coverage is at least 90%, and K=16 target
+coverage is at least 99%.  Test metadata and test pixels remain unopened.  To
+prevent exact MSLS GPS from becoming a label shortcut, candidate construction
+uses the centre of a frozen 100 m metric grid cell; official database positives
+within 10 m define evaluator identity.  If any gate fails, stop before DINO,
+OCR, fusion, or Router training.
 
 Focused contract tests:
 
@@ -108,21 +151,19 @@ The first bounded real-image canary uses at most two reference and four query
 capture groups per train/development location. Test pixels remain unopened:
 
 ```powershell
-$env:PYTHONPATH = "artifacts.local/runtime/semantic-anchor-v1/site-packages"
+$env:PYTHONPATH = "artifacts.local/runtime/ocr-gpu-ort;artifacts.local/runtime/semantic-anchor-v1/site-packages"
 E:\codex-tools\bin\blindassist-python.cmd `
   research/active/unseen-location-router/export_features.py `
-  --manifest artifacts.local/datasets/unseen-location-router/mms-vpr/split_manifest.json `
-  --images-root artifacts.local/datasets/unseen-location-router/mms-vpr/Images `
-  --texts-root artifacts.local/datasets/unseen-location-router/mms-vpr/Texts `
+  --manifest artifacts.local/datasets/unseen-location-router/msls/development_manifest_v3.json `
+  --images-root artifacts.local/datasets/unseen-location-router/msls `
   --backbone artifacts.local/models/p1_a2_dinov2_small_ed25f3a `
-  --database artifacts.local/datasets/unseen-location-router/mms-vpr/development_features_fast.sqlite `
-  --receipt artifacts.local/evidence/unseen-location-router/feature_receipt_fast.json `
-  --gallery-per-location 2 --query-per-location 4 --ocr-workers 2 --dino-batch-size 16
+  --database artifacts.local/datasets/unseen-location-router/msls/development_features_v3.sqlite `
+  --receipt artifacts.local/evidence/unseen-location-router/msls_development_feature_receipt_v3.json `
+  --gallery-per-location 2 --query-per-location 4 --ocr-workers 1 --ocr-use-cuda --dino-batch-size 16
 
 E:\codex-tools\bin\blindassist-python.cmd `
   research/active/unseen-location-router/run_development.py `
-  --database artifacts.local/datasets/unseen-location-router/mms-vpr/development_features_fast.sqlite `
-  --manifest artifacts.local/datasets/unseen-location-router/mms-vpr/split_manifest.json `
-  --texts-root artifacts.local/datasets/unseen-location-router/mms-vpr/Texts `
-  --output artifacts.local/evidence/unseen-location-router/development_result.json
+  --database artifacts.local/datasets/unseen-location-router/msls/development_features_v3.sqlite `
+  --manifest artifacts.local/datasets/unseen-location-router/msls/development_manifest_v3.json `
+  --output artifacts.local/evidence/unseen-location-router/msls_development_result_v1.json
 ```
