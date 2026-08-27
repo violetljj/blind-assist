@@ -299,10 +299,13 @@ metric arrival, and TASK COMPLETE remain open.
 The 2026-08-28 source canary changed the information source rather than the
 matcher. DSText V2's official Zenodo record exposes 18 CC-BY-4.0 video archives
 totalling 448,078,468 bytes, and a 9.6 MB sample contained two readable MP4s.
-Neither the record nor the sample contained annotations; the official RRC
-download page requires registration. The result is therefore
-`DSTEXT_V2_ANNOTATION_AUTHORITY_NOT_ADMITTED`: the media are accessible, but no
-track-gap, presence, or semantic-reacquisition evaluation is legal yet.
+After RRC registration, the official V2 training annotation archive was also
+retrieved: 90 XML ground-truth files, 21,393,054 compressed bytes, SHA-256
+`7f0e72642530390d96f8983e666fba236d3d57c1e1853c5a3fe95c972d2a03f4`.
+The source result is now `DSTEXT_V2_ANNOTATION_SOURCE_ADMITTED`: official media
+and temporal annotation authority are available, so a frozen track-gap audit
+may proceed. This admission alone is not a track-gap, presence, or semantic-
+reacquisition result.
 
 HierText supplies an independent geometry authority without pretending to fill
 that temporal gap. Across all 1,724 validation images, the fixed cohort contains
@@ -317,7 +320,7 @@ Evidence:
 
 - DSText source result:
   `artifacts.local/evidence/l10-dstext-v2-source-canary/result.json`, SHA-256
-  `fac7fa3481958e7aaf0dfa5f2ab72f9ea90180326dca7cb9c93298208b4991e3`.
+  `01a27d353bc7517f1a85e85f0c32840892e76b461aa0312308deff2e05bb411d`.
 - HierText geometry result:
   `artifacts.local/evidence/l10-hiertext-word-carrier-canary/result.json`,
   SHA-256

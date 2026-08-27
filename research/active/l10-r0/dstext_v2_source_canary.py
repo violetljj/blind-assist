@@ -1,9 +1,10 @@
 """Audit DSText V2 public media and annotation authority for L10.
 
 This is a source-admission canary, not an OCR or controller evaluation.  It
-inspects the official Zenodo record, one optional local ZIP sample, and the
-official RRC downloads page.  Missing annotation authority terminates the
-canary before any L10 replay or matcher change.
+inspects the official Zenodo record, one optional local media ZIP sample, the
+official RRC downloads page, and an optional RRC ground-truth ZIP. Missing
+annotation authority terminates the canary before any L10 replay or matcher
+change.
 """
 
 from __future__ import annotations
@@ -21,7 +22,13 @@ from typing import Any
 import certifi
 
 ZENODO_RECORD_URL = "https://zenodo.org/api/records/10010507"
-RRC_DOWNLOADS_URL = "https://rrc.cvc.uab.es/?ch=30&com=downloads"
+RRC_DOWNLOADS_URL = "https://rrc.cvc.uab.es/?ch=22&com=downloads"
+RRC_V2_ANNOTATION_URL = (
+    "https://drive.google.com/file/d/1K_QD75Smw7p7hMjGXfixHxyHZikwd0Sg/view"
+)
+RRC_V2_ANNOTATION_SHA256 = (
+    "7f0e72642530390d96f8983e666fba236d3d57c1e1853c5a3fe95c972d2a03f4"
+)
 USER_AGENT = "BlindAssist-DSText-source-canary/1.0"
 ANNOTATION_SUFFIXES = {".csv", ".json", ".jsonl", ".mat", ".txt", ".xml"}
 MEDIA_SUFFIXES = {".avi", ".mkv", ".mov", ".mp4", ".webm"}
@@ -69,7 +76,11 @@ def audit_archive(path: Path) -> dict[str, Any]:
     }
 
 
-def run(sample_archive: Path | None, rrc_html_path: Path | None) -> dict[str, Any]:
+def run(
+    sample_archive: Path | None,
+    annotation_archive: Path | None,
+    rrc_html_path: Path | None,
+) -> dict[str, Any]:
     record = fetch_json(ZENODO_RECORD_URL)
     files = record.get("files")
     if not isinstance(files, list) or not files:
@@ -94,6 +105,9 @@ def run(sample_archive: Path | None, rrc_html_path: Path | None) -> dict[str, An
         if Path(item["key"]).suffix.lower() in ANNOTATION_SUFFIXES
     ]
     archive_audit = audit_archive(sample_archive) if sample_archive else None
+    annotation_archive_audit = (
+        audit_archive(annotation_archive) if annotation_archive else None
+    )
 
     if rrc_html_path:
         rrc_payload = rrc_html_path.read_bytes()
@@ -108,8 +122,17 @@ def run(sample_archive: Path | None, rrc_html_path: Path | None) -> dict[str, An
 
     sample_has_media = bool(archive_audit and archive_audit["media_entries"])
     sample_has_annotations = bool(archive_audit and archive_audit["annotation_entries"])
+    rrc_archive_has_annotations = bool(
+        annotation_archive_audit and annotation_archive_audit["annotation_entries"]
+    )
+    rrc_archive_hash_matches = bool(
+        annotation_archive_audit
+        and annotation_archive_audit["sha256"] == RRC_V2_ANNOTATION_SHA256
+    )
     annotation_authority_admitted = bool(
-        zenodo_annotation_files or sample_has_annotations
+        zenodo_annotation_files
+        or sample_has_annotations
+        or (rrc_archive_has_annotations and rrc_archive_hash_matches)
     )
 
     if annotation_authority_admitted:
@@ -118,7 +141,7 @@ def run(sample_archive: Path | None, rrc_html_path: Path | None) -> dict[str, An
         verdict = "DSTEXT_V2_ANNOTATION_AUTHORITY_NOT_ADMITTED"
 
     return {
-        "schema_version": "blindassist-l10-dstext-v2-source-canary-v1",
+        "schema_version": "blindassist-l10-dstext-v2-source-canary-v2",
         "source": {
             "record_url": ZENODO_RECORD_URL,
             "record_id": record.get("id"),
@@ -130,8 +153,11 @@ def run(sample_archive: Path | None, rrc_html_path: Path | None) -> dict[str, An
             "files": public_files,
         },
         "sample_archive": archive_audit,
+        "rrc_annotation_archive": annotation_archive_audit,
         "rrc": {
             "downloads_url": RRC_DOWNLOADS_URL,
+            "v2_annotation_url": RRC_V2_ANNOTATION_URL,
+            "v2_annotation_expected_sha256": RRC_V2_ANNOTATION_SHA256,
             "html_path": str(rrc_html_path.resolve()) if rrc_html_path else None,
             "html_sha256": hashlib.sha256(rrc_payload).hexdigest(),
             "lists_dstext_2023": rrc_lists_dstext,
@@ -145,6 +171,12 @@ def run(sample_archive: Path | None, rrc_html_path: Path | None) -> dict[str, An
             "sample_annotation_files": (
                 archive_audit["annotation_entries"] if archive_audit else []
             ),
+            "rrc_annotation_files": (
+                annotation_archive_audit["annotation_entries"]
+                if annotation_archive_audit
+                else []
+            ),
+            "rrc_annotation_archive_sha256_matches": rrc_archive_hash_matches,
             "annotation_authority_admitted": annotation_authority_admitted,
         },
         "verdict": verdict,
@@ -153,11 +185,11 @@ def run(sample_archive: Path | None, rrc_html_path: Path | None) -> dict[str, An
             "admits media access but not evaluator-authoritative annotations; "
             "official ground truth remains behind RRC registration."
             if not annotation_authority_admitted
-            else "Annotation authority is present; a frozen track-gap audit may proceed."
+            else "Official annotation authority is present; a frozen track-gap audit may proceed."
         ),
         "claim_ceiling": (
-            "Public media availability only. No track-gap, presence, semantic "
-            "reacquisition, active-view, arrival, or handoff conclusion."
+            "Source admission only. No track-gap, presence, semantic reacquisition, "
+            "active-view, arrival, or handoff conclusion."
         ),
     }
 
@@ -165,11 +197,12 @@ def run(sample_archive: Path | None, rrc_html_path: Path | None) -> dict[str, An
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sample-archive", type=Path)
+    parser.add_argument("--annotation-archive", type=Path)
     parser.add_argument("--rrc-html", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
-    result = run(args.sample_archive, args.rrc_html)
+    result = run(args.sample_archive, args.annotation_archive, args.rrc_html)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps({"verdict": result["verdict"], "output": str(args.output)}, indent=2))

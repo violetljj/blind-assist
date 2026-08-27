@@ -49,9 +49,10 @@ branch event, so head-clearance is `NOT_EVALUABLE`, not a negative result.
 ## 2026-08-28 source admission
 
 The next-source canaries are complete without changing either frozen algorithm.
-For L10, DSText V2 public media are accessible but evaluator-authoritative
-annotations remain behind RRC registration, so semantic reacquisition is not
-evaluable from that source. HierText independently confirms the steering
+For L10, DSText V2 public media and the RRC-authoritative V2 training annotations
+are now admitted; the annotation archive contains 90 XML ground-truth files.
+This opens a frozen track-gap audit, but is not itself semantic-reacquisition
+evidence. HierText independently confirms the steering
 geometry gap: line center and word center disagree on the frozen coarse
 direction for `20,866/85,380` (`24.439%`) legible words in multi-word validation
 lines. This is static geometry evidence only.
