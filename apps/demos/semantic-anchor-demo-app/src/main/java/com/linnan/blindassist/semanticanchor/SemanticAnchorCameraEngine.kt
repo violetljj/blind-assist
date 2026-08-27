@@ -168,13 +168,42 @@ internal class SemanticAnchorCameraEngine(
                             standoffMeters = STANDOFF_METERS,
                         )
                     }
-                    emit(barcodes.mapNotNull { it.rawValue }, "LIVE QR + PnP", poses)
+                    emit(
+                        barcodes.mapNotNull { barcode ->
+                            barcode.rawValue?.let { AnchorCandidate(it) }
+                        },
+                        "LIVE QR + PnP",
+                        poses,
+                    )
                 }
                 .addOnFailureListener(::emitFailure)
                 .addOnCompleteListener { finishFrame(imageProxy) }
             AnchorMode.OCR -> textRecognizer.process(input)
                 .addOnSuccessListener { text ->
-                    emit(text.text.takeIf(String::isNotBlank)?.let(::listOf).orEmpty(), "LIVE OCR")
+                    val rotated = imageProxy.imageInfo.rotationDegrees % 180 != 0
+                    val frameWidth = if (rotated) imageProxy.height else imageProxy.width
+                    val frameHeight = if (rotated) imageProxy.width else imageProxy.height
+                    val lineCandidates = buildList {
+                        text.textBlocks.forEach { block ->
+                            block.lines.forEach { line ->
+                                candidate(line.text, line.boundingBox, frameWidth, frameHeight)?.let(::add)
+                            }
+                        }
+                    }
+                    val blockCandidates = text.textBlocks.mapNotNull { block ->
+                        if (block.lines.size <= 1) null else {
+                            candidate(block.text, block.boundingBox, frameWidth, frameHeight)
+                        }
+                    }
+                    // Prefer the finest candidate level that can express this goal. This avoids
+                    // counting an overlapping line and its parent block as two physical targets.
+                    val candidates = (
+                        if (lineCandidates.any(snapshot::matches)) lineCandidates
+                        else lineCandidates + blockCandidates
+                    ).distinctBy { candidate ->
+                        "${AnchorTarget.normalize(candidate.value)}|${candidate.bounds}"
+                    }
+                    emit(candidates, "LIVE OCR · line/block boxes")
                 }
                 .addOnFailureListener(::emitFailure)
                 .addOnCompleteListener { finishFrame(imageProxy) }
@@ -182,13 +211,31 @@ internal class SemanticAnchorCameraEngine(
     }
 
     private fun emit(
-        candidates: List<String>,
+        candidates: List<AnchorCandidate>,
         source: String,
         markerPoses: List<MarkerPoseEstimate> = emptyList(),
     ) {
         if (active.get() && !replayPaused.get()) {
             mainExecutor.execute { onObservation(AnchorObservation(candidates, source, markerPoses)) }
         }
+    }
+
+    private fun candidate(
+        value: String,
+        box: android.graphics.Rect?,
+        frameWidth: Int,
+        frameHeight: Int,
+    ): AnchorCandidate? {
+        if (value.isBlank() || box == null) return null
+        val bounds = NormalizedBox.fromPixels(
+            left = box.left,
+            top = box.top,
+            right = box.right,
+            bottom = box.bottom,
+            frameWidth = frameWidth,
+            frameHeight = frameHeight,
+        ) ?: return null
+        return AnchorCandidate(value = value, bounds = bounds)
     }
 
     private fun readLensCalibration(cameraInfo: androidx.camera.core.CameraInfo): LensCalibration? {

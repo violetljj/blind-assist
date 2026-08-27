@@ -1,6 +1,6 @@
 # L10-R0 Goal-Lock Copilot
 
-Status: `ACTIVE / CONTROLLED CLOSED-LOOP DEVELOPMENT`
+Status: `ACTIVE / ANDROID TEXT-ONLY CANARY + CONTROLLED CLOSED-LOOP DEVELOPMENT`
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -46,6 +46,68 @@ The static template was stronger on accuracy/reacquisition (95.7%/96.7%) but
 made 17.6% wrong selections. This is evidence for conservative ambiguity
 rejection only; it does not evaluate detection, OCR, distance, guidance,
 completion, or live camera control.
+
+## Proposal-free OCR replay
+
+`artvideo_ocr_replay.py` starts from full RGB frames rather than GT proposals.
+RapidOCR supplies every text box and transcription; ArTVideo transcription only
+defines the requested goal, and GT track boxes are evaluator-only. A cached run
+can be replayed without rerunning OCR:
+
+```powershell
+$env:PYTHONPATH='artifacts.local/runtime/semantic-anchor-v1/site-packages'
+& 'artifacts.local/runtime/artvideo-l10-ocr-probe/.venv/Scripts/python.exe' `
+  research/active/l10-r0/artvideo_ocr_replay.py `
+  --dataset artifacts.local/datasets/artvideo-l10-r0 `
+  --models artifacts.local/runtime/semantic-anchor-v1/models `
+  --cache artifacts.local/evidence/l10-r0/artvideo-proposal-free-text-v0/ocr-cache.json `
+  --output artifacts.local/evidence/l10-r0/artvideo-proposal-free-text-v0/result.json
+```
+
+Across 83 frames, CPU OCR took about 30--32 seconds (2.59 fps; median 0.262 s,
+p95 0.583 s), and returned text on 81/83 frames. For the ten eligible tracks,
+OCR proposal coverage was 94.22% (261/277) and lexical goal coverage was 93.50%
+(259/277). The same 30 four-frame-gap episodes produced:
+
+| Controller | Target-frame accuracy | Wrong selections | Gap reacquire |
+|---|---:|---:|---:|
+| per-frame text | 78.85% | 115 | 90.0% |
+| sticky text | **80.76%** | 102 | 90.0% |
+| L10 candidate-bound text | 75.62% | **97** | 90.0% |
+
+This establishes a useful raw-RGB OCR source, not an L10 win: candidate-bound
+text reduced five wrong frames versus sticky but lost 35 correct frames and
+added one median reacquisition frame. A single preregistered source change added
+the existing gray/edge/HSV long-short crop evidence. It reached zero wrong
+selections but only 57.27% accuracy and 76.67% reacquisition, so that source is
+closed as `CLOSE_SOURCE_NO_FURTHER_MATCHER_TUNING`; it must not be rescued by a
+threshold sweep.
+
+## Android text-goal canary
+
+`apps/demos/semantic-anchor-demo-app` is now the runnable L10-R0 surface. Its
+CameraX analyzer feeds ML Kit line/block text boxes into a pure Kotlin
+candidate-bound controller. The controller exposes the full demonstration
+loop:
+
+`SEARCH -> TARGET_FOUND -> LOCKED -> LEFT/RIGHT/FORWARD -> LOST -> SCAN -> REACQUIRED -> NEAR -> TASK_COMPLETE`
+
+Belief belongs to one box trajectory, combines short predicted motion with a
+slower spatial prototype, rejects a distant same-text handoff while locked, and
+requires two fresh hits after LOST. NEAR/TASK COMPLETE requires three centered
+large-box frames. That last signal is explicitly a visual-scale proxy, not
+metric distance, navigation safety, or user-confirmed task completion. The
+current bundled recognizer is Latin-script, so the first canary targets are
+English/numeric room signs, exits, entrances, elevator labels, and service-desk
+signs.
+
+The focused JVM check is:
+
+```powershell
+pwsh -NoProfile -File scripts/run_android_gradle.ps1 `
+  :semantic-anchor-demo-app:testDebugUnitTest `
+  --tests com.linnan.blindassist.semanticanchor.SemanticAnchorSessionTest
+```
 
 Mechanism references: [GoMatching long/short matching](https://proceedings.neurips.cc/paper_files/paper/2024/hash/2d66a70c770de7835678f1c1e65fe5e1-Abstract-Conference.html),
 [QueryNLT joint language/visual tracking](https://openaccess.thecvf.com/content/CVPR2024/html/Shao_Context-Aware_Integration_of_Language_and_Visual_References_for_Natural_Language_Tracking_CVPR_2024_paper.html),

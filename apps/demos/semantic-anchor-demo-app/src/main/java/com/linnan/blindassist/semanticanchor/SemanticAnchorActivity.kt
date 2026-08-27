@@ -65,11 +65,11 @@ class SemanticAnchorActivity : ComponentActivity() {
                 scaleType = PreviewView.ScaleType.FILL_CENTER
             }
         }
-        val session = remember { SemanticAnchorSession(DEFAULT_MARKER_TARGET) }
+        val session = remember { SemanticAnchorSession(DEFAULT_OCR_TARGET) }
         var state by remember { mutableStateOf(session.state) }
-        var draftMode by remember { mutableStateOf(AnchorMode.MARKER) }
-        var draftValue by remember { mutableStateOf(DEFAULT_MARKER_TARGET.value) }
-        var status by remember { mutableStateOf("RESEARCH-ONLY · 默认 App 未改变") }
+        var draftMode by remember { mutableStateOf(AnchorMode.OCR) }
+        var draftValue by remember { mutableStateOf(DEFAULT_OCR_TARGET.value) }
+        var status by remember { mutableStateOf("L10 TEXT-ONLY CANARY · 默认 App 未改变") }
         var cameraVisible by remember { mutableStateOf(false) }
         var replayRunning by remember { mutableStateOf(false) }
         val scope = rememberCoroutineScope()
@@ -139,17 +139,29 @@ class SemanticAnchorActivity : ComponentActivity() {
                 status = "REPLAY CANARY · 非真实相机证据"
                 scope.launch {
                     val targetValue = session.state.target.value
-                    val script = buildList {
-                        addAll(List(2) { listOf(targetValue) })
-                        addAll(List(5) { emptyList() })
-                        addAll(List(2) { listOf(targetValue) })
+                    val script = if (session.state.target.mode == AnchorMode.OCR) {
+                        buildList {
+                            addAll(List(2) { listOf(AnchorCandidate(targetValue, box(0.10, 0.40, 0.30, 0.52))) })
+                            add(listOf(AnchorCandidate(targetValue, box(0.18, 0.40, 0.38, 0.52))))
+                            add(listOf(AnchorCandidate(targetValue, box(0.30, 0.40, 0.50, 0.52))))
+                            add(listOf(AnchorCandidate(targetValue, box(0.40, 0.39, 0.62, 0.53))))
+                            addAll(List(5) { emptyList() })
+                            addAll(List(2) { listOf(AnchorCandidate(targetValue, box(0.40, 0.39, 0.62, 0.53))) })
+                            addAll(List(3) { listOf(AnchorCandidate(targetValue, box(0.34, 0.35, 0.66, 0.57))) })
+                        }
+                    } else {
+                        buildList {
+                            addAll(List(2) { listOf(AnchorCandidate(targetValue)) })
+                            addAll(List(5) { emptyList() })
+                            addAll(List(2) { listOf(AnchorCandidate(targetValue)) })
+                        }
                     }
                     script.forEach { candidates ->
                         state = session.observe(AnchorObservation(candidates, "REPLAY CANARY"))
                         delay(220)
                     }
                     replayRunning = false
-                    status = "REPLAY COMPLETE · 期待 REACQUIRED 1/1"
+                    status = "REPLAY COMPLETE · 期待 TASK COMPLETE + reacquire 1/1"
                 }
             },
         )
@@ -158,6 +170,9 @@ class SemanticAnchorActivity : ComponentActivity() {
     private companion object {
         val DEFAULT_MARKER_TARGET = AnchorTarget(AnchorMode.MARKER, "BLINDASSIST:ANCHOR:17")
         val DEFAULT_OCR_TARGET = AnchorTarget(AnchorMode.OCR, "ROOM 302")
+
+        fun box(left: Double, top: Double, right: Double, bottom: Double) =
+            NormalizedBox(left, top, right, bottom)
     }
 }
 
@@ -182,8 +197,8 @@ private fun SemanticAnchorScreen(
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Text("Semantic Anchor Lab", style = MaterialTheme.typography.headlineSmall)
-        Text("Appearance 只提供相似性；QR/OCR 语义证据才拥有物理 referent 的 lock authority。")
+        Text("L10-R0 Goal-Lock Copilot", style = MaterialTheme.typography.headlineSmall)
+        Text("文字先找到目标，候选级 belief 再持续锁定、指路、显式丢失与主动重捕获。")
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             FilterChip(
                 selected = draftMode == AnchorMode.MARKER,
@@ -203,18 +218,22 @@ private fun SemanticAnchorScreen(
             singleLine = true,
             modifier = Modifier.fillMaxWidth().testTag("semantic_target_input"),
         )
-        Text("Control arm · QR 物理边长固定 0.16 m · target-front standoff 0.65 m")
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            FilterChip(
-                selected = guidanceArm == GuidanceArm.CENTER_BASELINE,
-                onClick = { onGuidanceArm(GuidanceArm.CENTER_BASELINE) },
-                label = { Text("Center baseline") },
-            )
-            FilterChip(
-                selected = guidanceArm == GuidanceArm.PNP_POSE,
-                onClick = { onGuidanceArm(GuidanceArm.PNP_POSE) },
-                label = { Text("PnP pose") },
-            )
+        if (draftMode == AnchorMode.MARKER) {
+            Text("Control arm · QR 物理边长固定 0.16 m · target-front standoff 0.65 m")
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                FilterChip(
+                    selected = guidanceArm == GuidanceArm.CENTER_BASELINE,
+                    onClick = { onGuidanceArm(GuidanceArm.CENTER_BASELINE) },
+                    label = { Text("Center baseline") },
+                )
+                FilterChip(
+                    selected = guidanceArm == GuidanceArm.PNP_POSE,
+                    onClick = { onGuidanceArm(GuidanceArm.PNP_POSE) },
+                    label = { Text("PnP pose") },
+                )
+            }
+        } else {
+            Text("L10 dual memory · 2 帧锁定 · 5 帧判丢 · 3 帧近距完成证据")
         }
         OutlinedButton(onClick = onApplyTarget, modifier = Modifier.fillMaxWidth()) {
             Text("应用目标并清空旧 lock")
@@ -236,7 +255,10 @@ private fun SemanticAnchorScreen(
         OutlinedButton(onClick = onReplay, enabled = !replayRunning, modifier = Modifier.fillMaxWidth().height(52.dp)) {
             Text(if (replayRunning) "正在回放状态机…" else "运行自动 Replay Canary")
         }
-        Text("Replay 只验证状态闭环与演示 UI，不计作真实相机 marker/OCR 结果。", style = MaterialTheme.typography.bodySmall)
+        Text(
+            "Replay 只验证状态闭环；OCR 的 NEAR/TASK COMPLETE 是框尺度视觉代理，不是米制到达或安全结论。",
+            style = MaterialTheme.typography.bodySmall,
+        )
     }
 }
 
@@ -251,8 +273,8 @@ private fun GuidanceCard(guidance: MarkerGuidance) {
     }
     Card(colors = CardDefaults.cardColors(containerColor = color), modifier = Modifier.fillMaxWidth()) {
         Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(guidance.command, style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("marker_guidance_command"))
-            Text(guidance.detail, modifier = Modifier.testTag("marker_guidance_detail"))
+            Text(guidance.command, style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("goal_lock_guidance_command"))
+            Text(guidance.detail, modifier = Modifier.testTag("goal_lock_guidance_detail"))
         }
     }
 }
@@ -261,9 +283,12 @@ private fun GuidanceCard(guidance: MarkerGuidance) {
 private fun PhaseCard(state: AnchorUiState) {
     val color = when (state.phase) {
         AnchorPhase.SEARCH -> Color(0xFFE8EAF6)
+        AnchorPhase.TARGET_FOUND -> Color(0xFFFFEDC2)
         AnchorPhase.LOCKED -> Color(0xFFD7F5DE)
         AnchorPhase.LOST -> Color(0xFFFFE2E2)
         AnchorPhase.REACQUIRED -> Color(0xFFD6F3FF)
+        AnchorPhase.NEAR -> Color(0xFFFFF2B8)
+        AnchorPhase.TASK_COMPLETE -> Color(0xFFC8F4D2)
     }
     Card(
         colors = CardDefaults.cardColors(containerColor = color),
@@ -278,6 +303,13 @@ private fun PhaseCard(state: AnchorUiState) {
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.testTag("semantic_counters"),
             )
+            if (state.target.mode == AnchorMode.OCR) {
+                Text(
+                    "belief=${"%.2f".format(java.util.Locale.US, state.beliefScore)} · completion=${state.completionEvidenceFrames}/3",
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.testTag("goal_lock_belief"),
+                )
+            }
         }
     }
 }
