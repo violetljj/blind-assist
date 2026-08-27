@@ -1,8 +1,35 @@
-# Current decision: advance Dynamic Travel Risk R0
+# Current decisions: L10-R0 Goal-Lock and Dynamic Travel Risk R0
 
-Status: `DTR_R0_ACTIVE / REAL_INPUT_CANARY_PENDING / NO_RESULT`
+Status: `L10_R0_ACTIVE / CONTROLLED_MECHANISM_POSITIVE` and
+`DTR_R0_ACTIVE / REAL_INPUT_CANARY_PENDING / NO_RESULT`
 
-## Strategic transition
+## Parallel product lines
+
+Ten-meter goal completion and dynamic obstacle/risk guidance are separate active
+lines. L10-R0 does not wait for DTR-R0, and neither line supplies evidence for
+the other.
+
+L10-R0 deliberately starts with readable goals such as room signs, exits,
+named entrances, elevator buttons, and service desks. It replaces the former
+GRAIL dependency with a goal-conditioned evidence controller: long-term
+text/appearance/structure identity memory, short-term target motion, explicit
+LOST -> REACQUIRE search, and independent near/completion evidence.
+
+In the first 250-episode controlled closed-loop Development benchmark, L10-R0
+reached 87.5% task completion, 81.2% post-occlusion reacquisition among
+prior-locked episodes, 93.1%
+direction accuracy, 1.7% wrong-lock frames, and 0/50 false completions when the
+target was absent. Against the sticky local tracker this is +8.5pp completion,
++13.3pp reacquisition, +13.6pp direction accuracy, and a reduction from 67.1%
+to 1.7% wrong-lock frames. These are synthetic controller/mechanics numbers,
+not real-camera or product evidence. The runnable route is
+`research/active/l10-r0/`.
+
+With the controller frozen, a second 250-episode seed reproduced 88.5% task
+completion, 82.4% reacquisition, 91.9% direction accuracy, 1.8% wrong-lock
+frames, and another 0/50 absent false completions.
+
+## DTR-R0 strategic transition
 
 GRAIL owner orientation is no longer the daily algorithm mainline. R1C-V,
 R1C-P, R1C-L, G0, and G1 form a preserved negative-result chain: the available

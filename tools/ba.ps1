@@ -4,7 +4,7 @@ param(
     [ValidateSet('setup', 'doctor', 'smoke', 'run', 'materialize', 'clean')]
     [string]$Command = 'doctor',
     [Parameter(Position = 1)]
-    [ValidateSet('base', 'research-dtr-r0', 'android', 'device', 'export')]
+    [ValidateSet('base', 'research-dtr-r0', 'research-l10-r0', 'android', 'device', 'export')]
     [string]$Profile = 'base',
     [string]$Python,
     [string]$Docker,
@@ -18,7 +18,8 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $RepoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
-$ActiveRoot = Join-Path $RepoRoot 'research/active/dtr-r0'
+$DtrActiveRoot = Join-Path $RepoRoot 'research/active/dtr-r0'
+$L10ActiveRoot = Join-Path $RepoRoot 'research/active/l10-r0'
 $LocalConfigPath = Join-Path $RepoRoot 'config/local.toml'
 
 function Stop-Ba {
@@ -90,7 +91,11 @@ function Write-Selection {
 
 function Get-ResearchSelection {
     $selectedPython = Resolve-ResearchPython
-    $selectedOutput = Resolve-ConfiguredPath '' 'dtr_r0_output' 'BLINDASSIST_DTR_R0_OUTPUT' 'artifacts.local/evidence/dtr-r0'
+    $selectedOutput = if ($Profile -eq 'research-l10-r0') {
+        Resolve-ConfiguredPath '' 'l10_r0_output' 'BLINDASSIST_L10_R0_OUTPUT' 'artifacts.local/evidence/l10-r0'
+    } else {
+        Resolve-ConfiguredPath '' 'dtr_r0_output' 'BLINDASSIST_DTR_R0_OUTPUT' 'artifacts.local/evidence/dtr-r0'
+    }
     return @{ Python = $selectedPython; Output = $selectedOutput }
 }
 
@@ -110,13 +115,19 @@ function Invoke-DoctorResearch {
     if (-not $selection.Python -or -not (Test-Path -LiteralPath $selection.Python -PathType Leaf)) {
         Stop-Ba 'BA_ENV_PYTHON_MISSING' "research Python is unavailable: $($selection.Python)" 'install Python 3.11+ or set research_python in config/local.toml'
     }
-    foreach ($required in @(
-        'README.md', 'dtr_r0.py', 'evaluate.py', 'generate_smoke.py',
-        'real_observation_adapter.py', 'test_dtr_r0.py',
-        'test_real_observation_adapter.py'
-    )) {
-        if (-not (Test-Path -LiteralPath (Join-Path $ActiveRoot $required) -PathType Leaf)) {
-            Stop-Ba 'BA_ENV_ACTIVE_ROUTE_INCOMPLETE' "missing $required below $ActiveRoot" 'restore the tracked DTR-R0 active route'
+    $activeRoot = if ($Profile -eq 'research-l10-r0') { $L10ActiveRoot } else { $DtrActiveRoot }
+    $requiredFiles = if ($Profile -eq 'research-l10-r0') {
+        @('README.md', 'l10_r0.py', 'benchmark.py')
+    } else {
+        @(
+            'README.md', 'dtr_r0.py', 'evaluate.py', 'generate_smoke.py',
+            'real_observation_adapter.py', 'test_dtr_r0.py',
+            'test_real_observation_adapter.py'
+        )
+    }
+    foreach ($required in $requiredFiles) {
+        if (-not (Test-Path -LiteralPath (Join-Path $activeRoot $required) -PathType Leaf)) {
+            Stop-Ba 'BA_ENV_ACTIVE_ROUTE_INCOMPLETE' "missing $required below $activeRoot" "restore the tracked $Profile active route"
         }
     }
     $probe = 'import json,platform,sys; print(json.dumps(dict(python=platform.python_version(),supported=sys.version_info >= (3, 11))))'
@@ -133,7 +144,7 @@ function Invoke-DoctorResearch {
     if (-not $runtime.supported) {
         Stop-Ba 'BA_ENV_PYTHON_UNSUPPORTED' "Python $($runtime.python) is older than 3.11" 'install Python 3.11+ or set research_python in config/local.toml'
     }
-    Write-Host 'PASS research-dtr-r0'
+    Write-Host "PASS $Profile"
     return $selection
 }
 
@@ -164,6 +175,7 @@ function Invoke-Setup {
     switch ($Profile) {
         'base' { Invoke-DoctorBase }
         'research-dtr-r0' { Invoke-DoctorResearch | Out-Null }
+        'research-l10-r0' { Invoke-DoctorResearch | Out-Null }
         'android' { Invoke-DoctorAndroid }
         'device' { Invoke-DoctorAndroid }
         'export' {
@@ -183,6 +195,7 @@ function Invoke-Doctor {
     switch ($Profile) {
         'base' { Invoke-DoctorBase }
         'research-dtr-r0' { Invoke-DoctorResearch | Out-Null }
+        'research-l10-r0' { Invoke-DoctorResearch | Out-Null }
         'android' { Invoke-DoctorAndroid }
         'device' { Invoke-DoctorAndroid }
         'export' { Invoke-DoctorExport }
@@ -190,9 +203,16 @@ function Invoke-Doctor {
 }
 
 function Invoke-Smoke {
-    if ($Profile -ne 'research-dtr-r0') { Stop-Ba 'BA_USAGE' 'smoke is currently defined only for research-dtr-r0' 'use tools/ba.ps1 doctor for this profile' }
     $selection = Invoke-DoctorResearch
-    Invoke-NativeChecked $selection.Python @('-m', 'unittest', 'discover', '-s', $ActiveRoot, '-p', 'test_*.py')
+    if ($Profile -eq 'research-dtr-r0') {
+        Invoke-NativeChecked $selection.Python @('-m', 'unittest', 'discover', '-s', $DtrActiveRoot, '-p', 'test_*.py')
+        return
+    }
+    if ($Profile -eq 'research-l10-r0') {
+        Invoke-NativeChecked $selection.Python @((Join-Path $L10ActiveRoot 'benchmark.py'), '--episodes', '25')
+        return
+    }
+    Stop-Ba 'BA_USAGE' 'smoke is defined only for research profiles' 'choose research-dtr-r0 or research-l10-r0'
 }
 
 function Invoke-Run {
@@ -204,12 +224,22 @@ function Invoke-Run {
                 Stop-Ba 'BA_USAGE' 'DTR-R0 run needs -EventInput' 'tools/ba.ps1 run research-dtr-r0 -EventInput <events.jsonl> -ResultOutput <result.json>'
             }
             $resolvedInput = Resolve-ConfiguredPath $EventInput '__unused__' '__UNUSED__' ''
-            $evaluationArguments = @((Join-Path $ActiveRoot 'evaluate.py'), '--input', $resolvedInput)
+            $evaluationArguments = @((Join-Path $DtrActiveRoot 'evaluate.py'), '--input', $resolvedInput)
             if (-not [string]::IsNullOrWhiteSpace($ResultOutput)) {
                 $resolvedOutput = Resolve-ConfiguredPath $ResultOutput '__unused__' '__UNUSED__' ''
                 $evaluationArguments += @('--output', $resolvedOutput)
             }
             Invoke-NativeChecked $selection.Python $evaluationArguments
+        }
+        'research-l10-r0' {
+            $selection = Invoke-DoctorResearch
+            $benchmarkArguments = @((Join-Path $L10ActiveRoot 'benchmark.py'))
+            if (-not [string]::IsNullOrWhiteSpace($ResultOutput)) {
+                $resolvedOutput = Resolve-ConfiguredPath $ResultOutput '__unused__' '__UNUSED__' ''
+                $benchmarkArguments += @('--output', $resolvedOutput)
+            }
+            $benchmarkArguments += $forward
+            Invoke-NativeChecked $selection.Python $benchmarkArguments
         }
         'android' { & (Join-Path $RepoRoot 'scripts/run_android_gradle.ps1') @forward; if ($LASTEXITCODE) { exit $LASTEXITCODE } }
         'device' { & (Join-Path $RepoRoot 'scripts/run_android_gradle.ps1') -RequireDevice @forward; if ($LASTEXITCODE) { exit $LASTEXITCODE } }
@@ -219,7 +249,7 @@ function Invoke-Run {
             $selected = Resolve-ExportPython
             Invoke-NativeChecked $selected $forward
         }
-        default { Stop-Ba 'BA_USAGE' 'base has no run target' 'choose research-dtr-r0, android, device, or export' }
+        default { Stop-Ba 'BA_USAGE' 'base has no run target' 'choose a research, android, device, or export profile' }
     }
 }
 
@@ -234,12 +264,12 @@ function Invoke-Materialize {
     $resolvedManifest = Resolve-ConfiguredPath $CanaryManifest '__unused__' '__UNUSED__' ''
     $resolvedOutput = Resolve-ConfiguredPath $CanaryOutput '__unused__' '__UNUSED__' ''
     $adapterArguments = @(
-        (Join-Path $ActiveRoot 'real_observation_adapter.py'),
+        (Join-Path $DtrActiveRoot 'real_observation_adapter.py'),
         '--manifest', $resolvedManifest,
         '--output-dir', $resolvedOutput,
         '--sample-hz', '5.0'
     )
-    Invoke-NativeChecked $selection.Python $adapterArguments
+            Invoke-NativeChecked $selection.Python $adapterArguments
 }
 
 function Invoke-Clean {

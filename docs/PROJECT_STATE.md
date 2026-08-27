@@ -9,7 +9,8 @@ that protect interpretation.
 
 ## Current operating surface
 
-- Current algorithm route: [Dynamic Travel Risk R0](../research/active/dtr-r0/README.md)
+- Current ten-meter route: [L10-R0 Goal-Lock Copilot](../research/active/l10-r0/README.md)
+- Current obstacle/risk route: [Dynamic Travel Risk R0](../research/active/dtr-r0/README.md)
 - Current question and stop condition: [CURRENT_DECISION.md](CURRENT_DECISION.md)
 - Workstation entrypoint: `tools/ba.ps1`
 - Android entrypoint: `scripts/run_android_gradle.ps1`
@@ -34,6 +35,13 @@ RGB input-materialization canary precedes the exactly 120-event controlled
 Development cohort. Its truth-blind RGB/pose adapter is implemented, but no
 eligible 24-event input exists yet. Neither real stage has run, so there is no
 DTR-R0 scientific result.
+
+L10-R0 is active in parallel and does not depend on GRAIL owner orientation.
+Its first controlled closed-loop result is positive: 87.5% task completion,
+81.2% reacquisition, 93.1% direction accuracy, 1.7% wrong-lock frames, and zero
+false completions in 50 target-absent episodes. The result proves only the
+goal-belief controller mechanics under seeded synthetic observations; real RGB
+perception and a live-device loop remain untested.
 
 ## Demonstration track
 

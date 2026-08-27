@@ -4,7 +4,8 @@ The hot path is intentionally short:
 
 1. [Project state](PROJECT_STATE.md)
 2. [Current research decision](CURRENT_DECISION.md)
-3. [Current Dynamic Travel Risk R0 route](../research/active/dtr-r0/README.md)
+3. [Current L10-R0 Goal-Lock route](../research/active/l10-r0/README.md)
+4. [Current Dynamic Travel Risk R0 route](../research/active/dtr-r0/README.md)
 
 ## Engineering
 

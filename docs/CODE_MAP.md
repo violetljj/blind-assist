@@ -14,8 +14,11 @@
 
 ## Research
 
-The only current route is
-[`research/active/dtr-r0/`](../research/active/dtr-r0/README.md).
+The two current, independent routes are
+[`research/active/l10-r0/`](../research/active/l10-r0/README.md) for ten-meter
+goal completion and
+[`research/active/dtr-r0/`](../research/active/dtr-r0/README.md) for dynamic
+obstacle/risk guidance.
 Closed modules and their exact historical paths are searchable in
 `experiments/index.jsonl` and preserved at the archive tag documented in
 [history-index.md](history-index.md).

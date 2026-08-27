@@ -7,7 +7,7 @@ without scanning history.
 
 1. `AGENTS.md` defines stable repository policy.
 2. `docs/PROJECT_STATE.md` routes current work.
-3. `docs/CURRENT_DECISION.md` owns the single active research decision.
+3. `docs/CURRENT_DECISION.md` owns the active research decisions.
 4. `research/active/<route>/README.md` owns runnable route details.
 5. Formal rules apply only to protected final claims or external actions.
 
@@ -17,7 +17,8 @@ by the archive tag documented in [history-index.md](history-index.md).
 
 ## Budgets
 
-- one active directory under `research/active/`;
+- one active directory per explicitly parallel product line under
+  `research/active/`;
 - `AGENTS.md` at most 150 lines and 10 KiB;
 - `DEVELOPMENT_LOG.md` at most 200 lines and 100 KiB;
 - no generated dataset ledger, checkpoint, model, APK, or raw result in tracked
