@@ -35,6 +35,8 @@ manifest 或结果引用。
 
 ```powershell
 python tools/knowledge.py validate
+python tools/knowledge.py context --route dtr-r0
+python tools/knowledge.py context --route goal-copilot-p0 --query "spatial layout" --json
 python tools/knowledge.py list
 python tools/knowledge.py list --route l10-r0
 python tools/knowledge.py list --verdict falsified
@@ -49,6 +51,14 @@ canonical item，而且清单声明的 use 必须存在并真正属于该 item�
 
 `list/search --json` 可向路线代码或 agent 返回完整结构化结果。item 的
 canonical id、aliases 和全文字段都能被 `search/show` 解析。
+
+日常算法研究优先使用 `context --route <route>`。它不会把全库直接塞进上下文，
+而是把同一路线的 use 按以下顺序压缩：`active`，已有实验结论或 `rejected`，
+`adopted`，`planned`，`candidate`，最后是 `retired`。默认返回 12 条，先确保每个
+实际存在的优先级层至少出现一个代表，再按顺序补满；同时报告各状态/判定的总数
+和省略数量。用 `--query` 收窄到当前问题，用 `--all` 获取完整路线，用 `--json`
+直接交给路线脚本或 agent。每条精简记录仍保留机制、项目接法、修改、预期/实际
+效果、claim boundary、证据和最近一次更新。
 
 ## 状态不是一个混合标签
 
@@ -92,7 +102,8 @@ python tools/knowledge.py update-use use-example-route-mechanism --state active 
 
 ## 路线使用规则
 
-1. 开新机制前先按 route、tag 或问题关键词搜索，避免重复探索已消费路线。
+1. 路线冷启动先读取 `context --route <route>`；开新机制前再按 tag 或问题关键词
+   搜索，避免重复探索已消费路线。
 2. 真正采用、复现或证伪时新增/更新 use；当前路线结论仍由
    `docs/CURRENT_DECISION.md` 和 owning route README 持有。
 3. use 必须写清“借了什么、改了什么、观察到什么、不能推出什么”。
