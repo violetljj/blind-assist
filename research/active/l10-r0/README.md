@@ -1,6 +1,6 @@
 # L10-R0 Goal-Lock Copilot
 
-Status: `ACTIVE / L10-SC1W SEMANTIC IDENTITY + VISUAL CONTINUITY + CTC WORD CARRIER`
+Status: `ACTIVE / L10-SC4 GOAL BELIEF ROUTING + OPPORTUNITY-CORRECT ACTIVE SEARCH`
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -236,6 +236,63 @@ This is real-RGB, proposal-free OCR replay with evaluator-injected target gaps.
 It is evidence for a semantic/continuity/steering representation and
 current-camera coarse direction, not live active-view causality, metric arrival,
 open-world identity, product, user-benefit, or safety.
+
+## L10-SC2--SC4: acquire the goal without letting a fallback hijack belief
+
+The video14 aggregate `18/24` result originally looked like a reacquisition
+failure. A failure-layer audit showed that all six misses belonged to two goals
+that RapidOCR never acquired before the injected gap. Among episodes with a
+real pre-gap lock, LOST -> REACQUIRE was already `18/18`. This changed the next
+problem from tracker tuning to acquisition-source coverage.
+
+`artvideo_opportunity_active_search.py` also corrects an invalid control
+inference: a non-exhaustive OCR candidate set cannot prove that the goal is
+absent. It maps evidence deficits to explicit `SWEEP / SCAN / PAN / APPROACH /
+SIDESTEP / HOLD` actions and changes source `STOP` into `UNKNOWN + SEARCH`, while
+leaving identity authority unchanged. On video1+video10 it removed all 124
+source STOP frames and all 24 target-present false-NONE decisions; every
+non-navigation frame received an action. These are action decisions, not proof
+that executing the motion causes a better next view.
+
+The semantic-source successor then evolved through three bounded versions:
+
+- SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text
+  identity and bearing but cannot write the RapidOCR/DINO motion anchor.
+- SC3 assigns fuzzy lexical authority only to a one-token CRAFT word box. A
+  multi-token box such as `Makan Dulu` cannot claim the physical identity of the
+  requested token `Dulu`; it must match the complete goal span.
+- SC4 adds a belief latch: CRAFT is a cold-start acquisition specialist only.
+  Once RapidOCR has ever acquired the target, CRAFT cannot override a later
+  LOST/gap frame. This preserves a strong primary path instead of forcing every
+  detector to vote on every frame.
+
+The evidence is deliberately mixed rather than flattened into one headline:
+
+| Evidence | Primary | Successor | Decision |
+|---|---:|---:|---|
+| video1+video10 Development, SC3 | 84.43% identity recall / 91.78% support / 86.78% direction-ready | **88.84% / 96.18% / 91.19%**, 99.18% navigation precision, five wrong frames, 30/30 end-to-end | effect |
+| consumed video14 diagnostic, SC4 | 84.51% recall / 88.73% support / 75.0% end-to-end | **95.77% / 100% / 100%**, 100% navigation precision, zero wrong frames | cold-start rescue effect |
+| once-opened video15, SC2 exact scope | 0% recall / 0% end-to-end | 7.20% recall / 33.33% end-to-end, 19 correct and zero wrong identity frames | relative effect, **absolute capability inadequate** |
+| once-opened video16, SC3 | primary itself: **96.15% recall, 100% support, 21/21 end-to-end, 100% navigation precision, zero wrong frames** | one fallback inside a target gap added one wrong frame and reduced precision to 99.81% | SC3 gate not met |
+| once-opened video17, SC4 | 48.23% recall / 61.11% end-to-end / 53.26% navigation precision | identical; CRAFT was blocked 16 times after primary lock | safe-neutral routing; base physical-instance belief inadequate |
+
+The video17 failure is not hidden as generic domain shift. Three long tracks are
+repeated product-label instances: `Dairy` has another semantic candidate in
+56/65 frames, and the two `Milk` tracks do so in 42/46 and 15/15 frames. The
+current single-hypothesis controller chooses one semantic equivalent as a
+physical instance and navigates, which is exactly the behavior the first L10
+product should avoid. The next algorithmic step is an explicit multi-hypothesis
+goal belief that emits active disambiguation until a functional target/entrance
+association is available; it is not a return to GRAIL owner-canonical
+orientation.
+
+The supported first-demo claim is therefore narrower but real: on text-rich,
+locally unique targets, source-disjoint video16 establishes a strong
+search/lock/reacquire/direction controller, while video14 establishes that a
+belief-latched second OCR source can rescue a genuine primary acquisition blind
+spot without adding wrong identities. Repeated identical physical instances,
+executed view-change causality, functional aperture/entrance association,
+metric arrival, and TASK COMPLETE remain open.
 
 ## Android text-goal canary
 

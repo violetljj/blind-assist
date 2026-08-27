@@ -1,6 +1,6 @@
 # Project state
 
-Updated: 2026-08-27
+Updated: 2026-08-28
 
 BlindAssist is a runnable Android showcase research prototype. The default
 research policy is effect-first: demonstrate a genuine, visible effect in a
@@ -47,23 +47,36 @@ crown semantics into honest human head-collision truth, so that partition is
 RGB/LiDAR detector, Android runtime, natural-distribution, user-benefit, or
 safety evidence.
 
-L10 is active in parallel and does not depend on GRAIL owner orientation. Its
-current L10-SC1W algorithm separates semantic identity, visual continuity, and
-current-camera steering authority. OCR is the only identity/reacquisition
-source; DINOv2-S appearance and motion may request at most two `OBSERVE` frames;
-RapidOCR recognition alignment supplies the goal-related word carrier. On the
-video1+video10 Development replay, this preserved 99.14% navigation precision,
-five wrong frames, and 30/30 reacquisitions while raising identity bearing from
-85.04% to 95.13%, correct-direction coverage from 78.27% to 86.78%, and gap
-observation bearing from 70.59% to 94.12%. A source-disjoint, once-opened
-video14 confirmation then passed all seven frozen gates across eight tracks and
-24 gaps: 100% navigation precision, zero wrong identities, 88.73% target
-support, and 76.67% identity bearing versus the frozen line carrier's 50.00%.
-Identity reacquisition remained 75.0%, so the next L10 step is a new semantic
-reacquisition source plus action-conditioned observation, not threshold tuning.
-These are real-RGB proposal-free OCR replay results with evaluator-injected
-gaps, not live active-view causality, metric arrival, open-world identity,
-product, user-benefit, or safety evidence.
+L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
+separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC
+word carrier for current-camera steering. SC2 adds opportunity-correct active
+search: an incomplete OCR miss is `UNKNOWN + SEARCH`, with explicit
+`SWEEP/SCAN/PAN/APPROACH/SIDESTEP/HOLD`, rather than false semantic absence or
+terminal STOP. SC4 adds source-isolated, belief-latched OCR routing: CRAFT may
+rescue cold-start acquisition, but after RapidOCR has acquired once it cannot
+override LOST or navigate.
+
+On video1+video10 Development, the broader SC3 word-scope source reached 88.84%
+identity recall, 96.18% target support, 91.19% correct-direction coverage,
+99.18% navigation precision, five wrong frames, and 30/30 end-to-end success.
+On consumed video14, the final SC4 routing diagnostic rescued the two
+primary-never-acquired goals: end-to-end rose 18/24 -> 24/24, identity recall
+84.51% -> 95.77%, target support 88.73% -> 100%, with 100% navigation precision
+and zero wrong identities. Fresh video16 independently showed the primary path
+is strong on locally unique text: 96.15% recall, 100% support, 21/21 end-to-end,
+100% navigation precision, and zero wrong identities. A broader per-frame SC3
+fallback failed its video16 gate after one target-gap false identity; SC4 closes
+that override route.
+
+Fresh video17 then passed SC4's non-regression/safe-neutral gate but exposed the
+next base-controller limit: repeated `Dairy/Milk` package instances reduced the
+unchanged primary to 48.23% identity recall, 61.11% end-to-end, and 53.26%
+navigation precision. The next L10 step is a multi-hypothesis goal belief plus
+active instance/functional-target disambiguation, not GRAIL canonical
+orientation or another threshold sweep. All numbers remain real-RGB,
+proposal-free OCR replay with evaluator-injected gaps; actions were selected but
+not executed, and metric arrival, live product benefit, user benefit, and safety
+remain unproven.
 
 ## Demonstration track
 
