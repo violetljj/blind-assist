@@ -294,6 +294,45 @@ spot without adding wrong identities. Repeated identical physical instances,
 executed view-change causality, functional aperture/entrance association,
 metric arrival, and TASK COMPLETE remain open.
 
+## L10-SC5: task-conditioned multi-hypothesis goal belief
+
+SC5 replaces the implicit `goal -> one carrier` assumption with at most four
+source-latched physical hypotheses. Fresh RapidOCR or word-scope-legal
+cold-start CRAFT evidence may create a hypothesis. Each hypothesis owns its own
+local DINO, 2x-context DINO, neighboring-OCR fingerprint, motion, and evidence
+age. DINO/motion may propagate a candidate but never creates identity, selects
+a target, navigates, arrives, or completes. The frozen SC4 controller remains
+the complete `UNIQUE` path; `SET_VALUED` may choose any legal current instance,
+while `AMBIGUOUS` retains the set and requests observation without navigating.
+
+The consumed video17 diagnostic changes the interpretation of the proposed
+gate. All six public text goals map to multiple annotated physical IDs. With no
+public reference image, initial box, context anchor, or functional role, the
+old exact-track navigation precision of 53.26% is not a legal baseline for an
+any-instance task. Under the legal `SET_VALUED` reading, frozen SC4 already has
+100% navigation precision with 73.45% natural-frame coverage. SC5 preserves
+100% precision and reaches 81.42% coverage (+7.97 pp). For exact-instance use,
+SC5 keeps `AMBIGUOUS`, covers a legal instance on 83.63% of evaluable frames,
+emits zero navigation decisions, and records zero identity-authority
+violations.
+
+The proposed low-cost context fingerprint is not yet the missing source. On
+video17, pairwise physical-continuity AUC was 0.9297 for the 2x-context DINO
+embedding versus 0.9408 for the existing local crop. The context crop lowered
+the negative-pair median similarity (0.5268 versus 0.5665), but that is not a
+net discrimination gain. UNIQUE-path parity was exact on video16 (651/651) and
+video14 (546/546), preserving their frozen results rather than reopening them.
+
+Decision: `SC5_SET_VALUED_COVERAGE_EFFECT_EXACT_INSTANCE_BLOCKED`. Admit a
+public exact-instance binding (reference crop, initial box, or context anchor)
+or evaluator-authoritative functional/aperture association before testing
+exact-instance or functional disambiguation. video17 cannot prove executed
+active-view causality, functional grounding, arrival, or task completion.
+
+Implementation: `artvideo_multi_hypothesis_belief.py`. Evidence:
+`artifacts.local/evidence/l10-r8/sc5-video17-diagnostic-v0/result.json`, SHA-256
+recorded with the terminal delivery.
+
 ## Public text-source admission
 
 The 2026-08-28 source canary changed the information source rather than the

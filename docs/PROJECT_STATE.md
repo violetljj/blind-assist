@@ -70,13 +70,26 @@ that override route.
 
 Fresh video17 then passed SC4's non-regression/safe-neutral gate but exposed the
 next base-controller limit: repeated `Dairy/Milk` package instances reduced the
-unchanged primary to 48.23% identity recall, 61.11% end-to-end, and 53.26%
-navigation precision. The next L10 step is a multi-hypothesis goal belief plus
-active instance/functional-target disambiguation, not GRAIL canonical
-orientation or another threshold sweep. All numbers remain real-RGB,
-proposal-free OCR replay with evaluator-injected gaps; actions were selected but
-not executed, and metric arrival, live product benefit, user benefit, and safety
-remain unproven.
+unchanged exact-track score to 48.23% identity recall, 61.11% end-to-end, and
+53.26% navigation precision. SC5 now represents up to four source-latched
+physical hypotheses with independent local/context DINO, OCR-context, motion,
+and evidence-age state; appearance can propagate but cannot create identity or
+navigate. On the consumed video17 diagnostic, a legal `SET_VALUED` reading kept
+100% navigation precision and raised natural-frame navigation coverage from
+73.45% to 81.42%. The exact-instance `53.26%` score is not a legal baseline for
+that result: every video17 goal maps to multiple physical IDs, while the public
+input supplies no reference, initial box, context anchor, or functional role.
+Exact-instance and functional disambiguation are therefore `NOT_EVALUABLE`, not
+a failed matcher.
+
+The first 2x context fingerprint also did not beat the existing local crop
+signal (`0.9297` versus `0.9408` pairwise AUC), so it is retained as state but
+not promoted as the next information source. Frozen UNIQUE behavior remained
+identical on all 651 video16 and 546 video14 parity decisions. The next SC5
+effect gate requires a public exact-instance binding or evaluator-authoritative
+functional/aperture association; it is not another threshold sweep. Actions
+remain unexecuted, and metric arrival, live product benefit, user benefit, and
+safety remain unproven.
 
 ## Demonstration track
 
