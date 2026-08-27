@@ -2,7 +2,9 @@
 
 Status: `DTR_R3_GATE_NOT_MET / R2_DYNAMIC_RETAINED /
 S4_CONTINUOUS_GEOMETRY_VALIDATED_NO_PUBLIC_GAIN /
-R5_RGB_DROPOUT_CANARY_GATE_NOT_MET / R4_NOT_OPENED`
+R5_RGB_DROPOUT_CANARY_GATE_NOT_MET /
+R6_DIRECT_METRIC_SINGLE_FACTOR_NOT_EVALUABLE_STATIC_OCCUPANCY_MATCHER_UNREACHABLE /
+R4_NOT_OPENED`
 
 ## Result first
 
@@ -73,6 +75,54 @@ from this result. Do not rescue the fixed-height proxy with component, IoU,
 distance, route, or lifecycle threshold sweeps. A successor would need a new
 metric current/past occupancy source, such as the admitted AV2 raw-sensor route
 or a separately justified direct metric BEV representation.
+
+## R6 direct metric occupancy falsifier
+
+The proposed metric-only successor has been executed on the exact same 143
+frames and nine induced-dropout trials. It does **not** support the earlier
+interpretation that fixed-height distance was the only remaining bottleneck.
+
+R6 preserves the sealed R5 semantic mask, residual components,
+evaluator-only current 2-D association, R2, lifecycle, route horizon/width, and
+the `0.2 / 0.4 / 0.8 s` intervention. It replaces only the metric source:
+
+- R6-RGB runs the frozen Depth Anything V2 Hypersim metric checkpoint, without
+  scale/shift alignment, on the five calibrated and undistorted JRDB
+  `752x480` perspective cameras. It never feeds the stitched panorama to the
+  pinhole model.
+- R6-P projects the latest current/past-only upper and lower raw Velodyne
+  sweeps into the same semantic residual through official JRDB calibration.
+  It is a privileged metric-source ceiling, not a product dependency.
+
+| Arm | Dropout-window recovery | Original critical-event recall | Original one-to-one event F1 | Original false segments |
+| --- | ---: | ---: | ---: | ---: |
+| R2 track-only | `0/9` | `3/3` | 22.22% | 12 |
+| R6-RGB direct metric occupancy | `0/9` | `3/3` | 22.22% | 12 |
+| R6-P raw-LiDAR metric occupancy | `0/9` | `3/3` | 22.22% | 12 |
+
+This is **not** a metric-depth negative. The privileged raw-LiDAR arm moved the
+nearest associated occupied surface to `0.68-0.98 m`, versus `1.16-1.67 m` for
+zero-shot RGB metric depth, yet both arms produced zero residual-risk frames.
+The reason is structural: the frozen R5 residual matcher treats the residual
+as static in the world and derives closing velocity only from ego motion. The
+maximum ego speed in the three 0.8-second event windows is only
+`0.000247 / 0.000316 / 0.000095 m/s`, while the frozen matcher requires
+`0.05 m/s`. Thus `0/3` events are mechanically reachable by *any* static
+metric-occupancy source on this cohort.
+
+Terminal:
+`R6_DIRECT_METRIC_SINGLE_FACTOR_NOT_EVALUABLE_STATIC_OCCUPANCY_MATCHER_UNREACHABLE`.
+Do not treat `0/9` as evidence against direct metric depth or LiDAR occupancy,
+and do not rescue it by lowering closing speed, widening the tube, changing
+ONSET/CLEAR, adding imputation, or choosing a different depth backbone after
+seeing the outcome.
+
+The next information layer, only if separately opened, is detector-independent
+**spatiotemporal metric occupancy** with its own causal closing signal (for
+example raw-sensor occupancy flow or scene flow), not another static depth map.
+A privileged current/past-only raw-sensor arm should establish that mechanism
+before any learned RGB occupancy-flow head is trained. Temporal association
+must not use evaluator identity.
 
 The source split explains why pooling is not enough:
 
@@ -264,6 +314,17 @@ Evidence:
 - R5 dropout curve:
   `artifacts.local/evidence/dtr-r5/dropout-canary/dropout_curve.png`, SHA-256
   `9b50969acbf78680b61af15d7b2362bf66a59a92f713f305210be64d19745cb2`.
+- R6 direct metric result:
+  `artifacts.local/evidence/dtr-r6/metric-occupancy-canary/result.json`, SHA-256
+  `cced0f312f32059a9894cc177a62d80841bb70366a81db86f5cd900466f9e879`.
+- R6 truth-blind metric point ledger:
+  `artifacts.local/evidence/dtr-r6/metric-occupancy-canary/result.metric-points.npz`,
+  SHA-256
+  `404a12631ba60c317d67f7223d20313a2d358a8fbb1d0d4a27f6df38d321ff7b`.
+- R6 dropout curve:
+  `artifacts.local/evidence/dtr-r6/metric-occupancy-canary/dropout_curve.png`,
+  SHA-256
+  `dc215850cebf24e4b2bfc07273a47a72bc22f666ea9e8ac36c2947877d9aad9b`.
 
 ## Runtime bridge
 
@@ -353,6 +414,20 @@ python research/active/dtr-r0/dtr_r5_dropout_canary.py `
   --semantic-model <ade20k-semantic-model.pt> `
   --output artifacts.local/evidence/dtr-r5/dropout-canary/result.json `
   --plot artifacts.local/evidence/dtr-r5/dropout-canary/dropout_curve.png
+
+python research/active/dtr-r0/dtr_r6_metric_occupancy_canary.py `
+  --known-height-result <jrdb-known-height-result.json> `
+  --known-height-tracks <jrdb-known-height-sensor-tracks.jsonl> `
+  --labels-zip <jrdb-train-labels.zip> `
+  --timestamps-zip <jrdb-train-timestamps.zip> `
+  --bag <jrdb-sequence.bag> `
+  --dense-ledger <r5-dense-masks.npz> `
+  --dense-manifest <r5-dense-masks.json> `
+  --calibration-dir <jrdb-calibration-dir> `
+  --depth-source <depth-anything-v2-source> `
+  --depth-checkpoint <metric-hypersim-vits.pth> `
+  --output artifacts.local/evidence/dtr-r6/metric-occupancy-canary/result.json `
+  --plot artifacts.local/evidence/dtr-r6/metric-occupancy-canary/dropout_curve.png
 ```
 
 ## Claim ceiling
@@ -371,3 +446,8 @@ reliability, or safety performance is established. Dynamic positive authority
 is predominantly pedestrian plus one scooter and one delivery-truck event;
 static positive authority is the 12 observed barrier/fixed/temporary events.
 `UNKNOWN` and `NOT_EVALUABLE` are never counted as safe.
+
+R6 further shows that the current curated dropout cohort cannot isolate a
+static direct-metric source: all three events lack an admissible residual
+closing-velocity input under the frozen matcher. It establishes neither a
+negative metric-depth result nor a spatiotemporal occupancy capability.

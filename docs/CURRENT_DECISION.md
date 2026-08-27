@@ -68,6 +68,18 @@ adapter evidence, not a residual-occupancy algorithm gain. If that route is
 opened, freeze a multi-log Development roster before comparing a
 current/past-only residual source against unchanged R2.
 
+The same-window R6 direct-metric falsifier is now complete. Calibrated
+perspective zero-shot metric depth and a current/past raw-LiDAR ceiling both
+recover `0/9` induced dropout windows with 12 false segments, but the result is
+`R6_DIRECT_METRIC_SINGLE_FACTOR_NOT_EVALUABLE_STATIC_OCCUPANCY_MATCHER_UNREACHABLE`,
+not a negative metric-depth finding. R5 residual occupancy derives closing
+only from ego motion; the three event windows remain below `0.000316 m/s`
+versus the frozen `0.05 m/s` minimum, so metric geometry alone cannot activate
+the matcher. Do not rescue this cohort with threshold, tube, lifecycle,
+imputation, or depth-backbone changes. A successor requires an independent
+causal spatiotemporal occupancy-flow signal and must not use evaluator identity
+for temporal association.
+
 ## What stops here
 
 - Do not record the superseded 24 canary or 120 staged local RGB clips.
