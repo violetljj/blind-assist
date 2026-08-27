@@ -22,7 +22,8 @@ Closed modules and their exact historical paths are searchable in
 
 ## Stable tooling
 
-- `tools/ba.ps1`: profile-aware setup, doctor, smoke, run, and cleanup
+- `tools/ba.ps1`: profile-aware setup, doctor, smoke, real-input materialize,
+  synthetic run, and cleanup
 - `scripts/run_android_gradle.ps1`: Android/Gradle execution
 - `tools/data/generate_dataset_ledger.py`: regenerate the externalized dataset
   ledger and compact summaries

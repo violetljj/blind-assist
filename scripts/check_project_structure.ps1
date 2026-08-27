@@ -16,7 +16,9 @@ foreach ($file in @(
     'AGENTS.md', 'docs/PROJECT_STATE.md', 'docs/CURRENT_DECISION.md',
     'docs/history-index.md', 'research/active/dtr-r0/README.md',
     'research/active/dtr-r0/pyproject.toml',
-    'research/active/dtr-r0/dtr_r0.py', 'tools/ba.ps1',
+    'research/active/dtr-r0/dtr_r0.py',
+    'research/active/dtr-r0/real_observation_adapter.py',
+    'research/active/dtr-r0/test_real_observation_adapter.py', 'tools/ba.ps1',
     'config/local.example.toml', '.codex/environments/environment.toml',
     '.worktreeinclude', 'experiments/index.jsonl',
     'data/dataset-ledger-summary.csv', 'data/dataset-ledger-manifest.json'

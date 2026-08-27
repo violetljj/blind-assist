@@ -28,9 +28,12 @@ pose/model sweep is authorized from that consumed result.
 Dynamic Travel Risk R0 is now the next algorithm mainline. It asks whether
 short causal tracks plus predicted target-occupancy intersection with the
 wearer route can suppress irrelevant alerts without losing crossing or
-oncoming events. The implementation currently supports a synthetic mechanics
-smoke only; the 100--160-event controlled RGB/trajectory cohort is pending, so
-there is no DTR-R0 scientific result yet.
+oncoming events. The four-arm mechanics smoke is implemented, and the primary
+comparison is frozen as route intersection versus radial TTC. A 24-event real
+RGB input-materialization canary precedes the exactly 120-event controlled
+Development cohort. Its truth-blind RGB/pose adapter is implemented, but no
+eligible 24-event input exists yet. Neither real stage has run, so there is no
+DTR-R0 scientific result.
 
 ## Demonstration track
 

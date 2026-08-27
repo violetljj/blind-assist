@@ -1,7 +1,7 @@
 [CmdletBinding(PositionalBinding = $false)]
 param(
     [Parameter(Position = 0)]
-    [ValidateSet('setup', 'doctor', 'smoke', 'run', 'clean')]
+    [ValidateSet('setup', 'doctor', 'smoke', 'run', 'materialize', 'clean')]
     [string]$Command = 'doctor',
     [Parameter(Position = 1)]
     [ValidateSet('base', 'research-dtr-r0', 'android', 'device', 'export')]
@@ -10,6 +10,8 @@ param(
     [string]$Docker,
     [string]$EventInput,
     [string]$ResultOutput,
+    [string]$CanaryManifest,
+    [string]$CanaryOutput,
     [Parameter(ValueFromRemainingArguments = $true)]
     [string[]]$Arguments
 )
@@ -108,7 +110,11 @@ function Invoke-DoctorResearch {
     if (-not $selection.Python -or -not (Test-Path -LiteralPath $selection.Python -PathType Leaf)) {
         Stop-Ba 'BA_ENV_PYTHON_MISSING' "research Python is unavailable: $($selection.Python)" 'install Python 3.11+ or set research_python in config/local.toml'
     }
-    foreach ($required in @('README.md', 'dtr_r0.py', 'evaluate.py', 'generate_smoke.py', 'test_dtr_r0.py')) {
+    foreach ($required in @(
+        'README.md', 'dtr_r0.py', 'evaluate.py', 'generate_smoke.py',
+        'real_observation_adapter.py', 'test_dtr_r0.py',
+        'test_real_observation_adapter.py'
+    )) {
         if (-not (Test-Path -LiteralPath (Join-Path $ActiveRoot $required) -PathType Leaf)) {
             Stop-Ba 'BA_ENV_ACTIVE_ROUTE_INCOMPLETE' "missing $required below $ActiveRoot" 'restore the tracked DTR-R0 active route'
         }
@@ -217,6 +223,25 @@ function Invoke-Run {
     }
 }
 
+function Invoke-Materialize {
+    if ($Profile -ne 'research-dtr-r0') {
+        Stop-Ba 'BA_USAGE' 'materialize is currently defined only for research-dtr-r0' 'choose the research-dtr-r0 profile'
+    }
+    $selection = Invoke-DoctorResearch
+    if ([string]::IsNullOrWhiteSpace($CanaryManifest) -or [string]::IsNullOrWhiteSpace($CanaryOutput)) {
+        Stop-Ba 'BA_USAGE' 'real-input materialization needs -CanaryManifest and -CanaryOutput' 'tools/ba.ps1 materialize research-dtr-r0 -CanaryManifest <manifest.json> -CanaryOutput <ignored-output-dir>'
+    }
+    $resolvedManifest = Resolve-ConfiguredPath $CanaryManifest '__unused__' '__UNUSED__' ''
+    $resolvedOutput = Resolve-ConfiguredPath $CanaryOutput '__unused__' '__UNUSED__' ''
+    $adapterArguments = @(
+        (Join-Path $ActiveRoot 'real_observation_adapter.py'),
+        '--manifest', $resolvedManifest,
+        '--output-dir', $resolvedOutput,
+        '--sample-hz', '5.0'
+    )
+    Invoke-NativeChecked $selection.Python $adapterArguments
+}
+
 function Invoke-Clean {
     $target = switch ($Profile) {
         'export' { Join-Path $RepoRoot '.venv-export' }
@@ -240,6 +265,7 @@ try {
         'doctor' { Invoke-Doctor }
         'smoke' { Invoke-Smoke }
         'run' { Invoke-Run }
+        'materialize' { Invoke-Materialize }
         'clean' { Invoke-Clean }
     }
 } catch {

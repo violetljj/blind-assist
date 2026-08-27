@@ -9,12 +9,18 @@ machine-specific paths or hardware assumptions.
 ```powershell
 pwsh -NoProfile -File tools/ba.ps1 doctor research-dtr-r0
 pwsh -NoProfile -File tools/ba.ps1 smoke research-dtr-r0
+pwsh -NoProfile -File tools/ba.ps1 materialize research-dtr-r0 -CanaryManifest <manifest.json> -CanaryOutput <ignored-output-dir>
 pwsh -NoProfile -File tools/ba.ps1 run research-dtr-r0 -EventInput <events.jsonl> -ResultOutput <result.json>
 ```
 
 Resolve Python and output paths through the `research-dtr-r0` profile. Keep
 event ledgers, videos, model outputs, logs, progress state, and results under
 ignored `artifacts.local/`.
+
+`materialize` is the real-input canary adapter. It writes only an observation
+ledger and input-health report; it does not read evaluator truth or run the
+scientific Development gate. `run` remains sealed to synthetic mechanics until
+a separate controlled evaluator is frozen.
 
 ## Backend and throughput
 

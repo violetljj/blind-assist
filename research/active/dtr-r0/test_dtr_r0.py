@@ -12,6 +12,7 @@ from dtr_r0 import (
     DTRConfig,
     DTRR0Arm,
     EgoPose,
+    EventLifecycle,
     Observation,
     Prediction,
     Signal,
@@ -149,6 +150,24 @@ class RouteIntersectionTests(unittest.TestCase):
         self.assertIs(onset.signal, Signal.ONSET)
         self.assertIs(missing_pose.signal, Signal.UNKNOWN)
         self.assertIs(resumed.signal, Signal.HOLD)
+
+    def test_single_negative_frame_does_not_fragment_active_event(self) -> None:
+        lifecycle = EventLifecycle(clear_grace_s=0.5)
+        self.assertIs(lifecycle.update(0.0, True), Signal.ONSET)
+        self.assertIs(lifecycle.update(0.2, False), Signal.HOLD)
+        self.assertIs(lifecycle.update(0.4, True), Signal.HOLD)
+
+    def test_continuous_negative_clears_only_after_grace(self) -> None:
+        lifecycle = EventLifecycle(clear_grace_s=0.5)
+        self.assertIs(lifecycle.update(0.0, True), Signal.ONSET)
+        self.assertIs(lifecycle.update(0.1, False), Signal.HOLD)
+        self.assertIs(lifecycle.update(0.59, False), Signal.HOLD)
+        self.assertIs(lifecycle.update(0.6, False), Signal.CLEAR)
+        self.assertIs(lifecycle.update(0.7, True), Signal.ONSET)
+        self.assertIs(lifecycle.update(0.8, False), Signal.HOLD)
+        self.assertIs(lifecycle.update(1.0, None), Signal.UNKNOWN)
+        self.assertIs(lifecycle.update(1.5, False), Signal.HOLD)
+        self.assertIs(lifecycle.update(2.0, False), Signal.CLEAR)
 
 
 class BaselineAndMetricTests(unittest.TestCase):

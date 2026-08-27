@@ -1,6 +1,6 @@
 # DTR-R0: Dynamic Travel Risk trajectory-to-route event mechanics
 
-Status: `DTR_R0_ACTIVE / CONTROLLED_EVENT_COHORT_PENDING / NO_RESULT`
+Status: `DTR_R0_ACTIVE / REAL_INPUT_CANARY_PENDING / NO_RESULT`
 
 ## Question and claim boundary
 
@@ -51,6 +51,11 @@ current track, missing ego pose, or insufficient motion history is `UNKNOWN`,
 never `CLEAR`. `UNKNOWN` also preserves an already-active lifecycle state; the
 next evaluable risky frame remains `HOLD`, not a second `ONSET`.
 
+All four arms share a frozen `0.50 s` clear grace. A known negative frame holds
+an active event until negatives remain continuous for the full grace interval;
+a positive frame cancels the pending clear. `UNKNOWN` cannot complete a clear
+interval and restarts its known-negative observation window.
+
 ## Six balanced scene classes
 
 The planned controlled cohort uses these six classes:
@@ -62,9 +67,12 @@ The planned controlled cohort uses these six classes:
 5. `ego_turn_pseudo_motion` — camera/head rotation creates apparent image motion;
 6. `enter_then_exit` — a target enters, then leaves, exercising stable `CLEAR`.
 
-The future controlled cohort target is `100–160` short-video events, balanced
-across the six classes. The synthetic generator emits only a few deterministic
-episodes per class and is not a substitute for that cohort.
+Before opening Development outcomes, the real-input source canary contains
+exactly `24` short videos: four per class. It tests only whether the observation
+ledger materializes with usable detection, causal-track, projection, and pose
+coverage. If admitted, the controlled Development cohort contains exactly
+`120` staged real-RGB events: twenty per class, with each clip lasting about
+`8–12 s`. The synthetic generator is not a substitute for either real stratum.
 
 ## Event metrics and future advancement gate
 
@@ -80,11 +88,11 @@ Metrics are event-level rather than per-frame success claims:
 - median `CLEAR` delay after route exit;
 - `UNKNOWN` count and known-frame coverage (never folded into negatives).
 
-For the future controlled cohort, all four arms are reported and the comparator
-selection rule must be frozen before outcome access. The synthetic smoke uses
-B0 only for plumbing diagnostics; that comparison has no gate authority.
-Advancement requires every user-specified condition against the frozen
-strongest credible baseline:
+For the future controlled cohort, all four arms are reported. The primary
+comparison is frozen before real-input access as
+`C_ROUTE_INTERSECTION vs B2_RADIAL_TTC`; B0 and B1 are explanatory baselines.
+The synthetic smoke uses B0 only for plumbing diagnostics, and that diagnostic
+has no gate authority. Advancement requires every condition against B2:
 
 - critical-event recall does not decrease;
 - irrelevant reminders decrease by at least `40%`;
@@ -97,6 +105,28 @@ before opening that controlled outcome. The evaluator intentionally labels the
 current smoke `EXCLUDED_SYNTHETIC_MECHANICS_SMOKE` and never returns a gate pass.
 It also rejects any episode not explicitly marked `mechanism_smoke_only`; the
 future controlled cohort requires a separately frozen evaluator version.
+
+Evaluator-only side or overhead footage may provide 2-D trajectories and route
+entry/exit truth, but that information is prohibited from the observation
+adapter.
+
+## Real-input canary adapter
+
+`real_observation_adapter.py` reads one frozen manifest containing exactly four
+videos from each scene class. Every episode supplies its video, causal pose
+JSONL, camera intrinsics, camera height, and fixed downward pitch. Pose rows
+contain `time_s`, `tracking_state`, metric `x_m/y_m`, and separate
+`body_yaw_rad`/`sensor_yaw_rad`; a newer non-TRACKING row blocks older pose.
+
+Run the fixed 5 Hz materializer through the project entrypoint:
+
+```powershell
+pwsh -NoProfile -File tools/ba.ps1 materialize research-dtr-r0 -CanaryManifest <manifest.json> -CanaryOutput <ignored-output-dir>
+```
+
+It writes a truth-blind observation ledger and an input coverage/track
+continuity report only. It does not run B0/B1/B2/C or create a scientific
+result.
 
 ## Run the mechanics smoke
 

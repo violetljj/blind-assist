@@ -11,9 +11,13 @@ This file records only current milestones. Full earlier history is preserved at
 - Promoted `research/active/dtr-r0/` as the sole tracked algorithm route.
 - Kept the first DTR-R0 question narrow: shared lifecycle, three credible
   baselines, and one route-tube future-occupancy change.
-- The dependency-free synthetic run is mechanics evidence only. A controlled
-  100--160-event RGB/trajectory cohort is still required before any scientific
-  gate or algorithm claim.
+- Implemented the shared 0.50-second clear grace before real-input capture and
+  froze route intersection versus radial TTC as the primary comparison.
+- Added a truth-blind RGB, causal-track, flat-ground, and pose observation
+  materializer for the 24-event input canary.
+- The dependency-free synthetic run is mechanics evidence only. A 24-event
+  real-input materialization canary and then an exactly 120-event staged RGB
+  Development cohort are still required before any scientific gate or claim.
 
 ## 2026-08-26 — agent surface reset
 

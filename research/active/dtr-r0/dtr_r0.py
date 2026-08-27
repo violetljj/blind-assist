@@ -118,6 +118,9 @@ class CausalFrame:
     time_s: float
     ego_pose: Optional[EgoPose]
     observations: tuple[Observation, ...] = ()
+    # None means detector availability is unknown. A real-input adapter sets an
+    # explicit count so B0 remains evaluable even when metric projection fails.
+    person_detection_count: Optional[int] = None
 
 
 @dataclass(frozen=True)
@@ -180,20 +183,39 @@ class Prediction:
 
 
 class EventLifecycle:
-    """Map a ternary alert decision onto the shared event lifecycle."""
+    """Map a ternary alert decision onto the shared event lifecycle.
 
-    def __init__(self) -> None:
+    A known negative must remain continuous for ``clear_grace_s`` before an
+    active event clears.  UNKNOWN is not negative evidence: it preserves the
+    active state and restarts the grace observation window.
+    """
+
+    def __init__(self, clear_grace_s: float) -> None:
+        if clear_grace_s < 0.0 or not math.isfinite(clear_grace_s):
+            raise ValueError("clear grace must be finite and non-negative")
+        self.clear_grace_s = clear_grace_s
         self.active = False
+        self._clear_candidate_since_s: Optional[float] = None
 
-    def update(self, raw_alert: Optional[bool]) -> Signal:
+    def update(self, time_s: float, raw_alert: Optional[bool]) -> Signal:
         if raw_alert is None:
+            self._clear_candidate_since_s = None
             return Signal.UNKNOWN
         if raw_alert:
+            self._clear_candidate_since_s = None
             if self.active:
                 return Signal.HOLD
             self.active = True
             return Signal.ONSET
+        if not self.active:
+            self._clear_candidate_since_s = None
+            return Signal.CLEAR
+        if self._clear_candidate_since_s is None:
+            self._clear_candidate_since_s = time_s
+        if time_s - self._clear_candidate_since_s + EPSILON < self.clear_grace_s:
+            return Signal.HOLD
         self.active = False
+        self._clear_candidate_since_s = None
         return Signal.CLEAR
 
 
@@ -268,7 +290,7 @@ class DTRR0Arm:
     def __init__(self, arm: Arm, config: Optional[DTRConfig] = None) -> None:
         self.arm = arm
         self.config = config or DTRConfig()
-        self.lifecycle = EventLifecycle()
+        self.lifecycle = EventLifecycle(self.config.clear_grace_s)
         self._tracks: dict[str, list[WorldObservation]] = {}
         self._last_time_s: Optional[float] = None
 
@@ -276,17 +298,28 @@ class DTRR0Arm:
         self._validate_frame(frame)
         self._last_time_s = frame.time_s
 
-        if not frame.observations:
-            return self._prediction(frame.time_s, None, "missing_current_track")
-
         if self.arm is Arm.B0_DETECTION:
-            first = frame.observations[0]
+            detection_count = frame.person_detection_count
+            if detection_count is None:
+                detection_count = len(frame.observations) if frame.observations else None
+            if detection_count is None:
+                return self._prediction(
+                    frame.time_s, None, "person_detector_unavailable"
+                )
+            first = frame.observations[0] if frame.observations else None
             return self._prediction(
                 frame.time_s,
-                True,
-                "current_detection_present",
-                first.track_id,
+                detection_count > 0,
+                (
+                    "current_person_detection_present"
+                    if detection_count > 0
+                    else "current_person_detection_absent"
+                ),
+                first.track_id if first is not None else None,
+                {"person_detection_count": float(detection_count)},
             )
+        if not frame.observations:
+            return self._prediction(frame.time_s, None, "missing_current_metric_track")
         if self.arm is Arm.B1_DISTANCE:
             nearest = min(
                 frame.observations,
@@ -326,6 +359,13 @@ class DTRR0Arm:
         ):
             raise ValueError("ego pose must contain finite values")
         seen: set[str] = set()
+        if frame.person_detection_count is not None:
+            if frame.person_detection_count < 0:
+                raise ValueError("person detection count must be non-negative")
+            if frame.person_detection_count < len(frame.observations):
+                raise ValueError(
+                    "person detection count cannot be smaller than metric observations"
+                )
         for observation in frame.observations:
             if not observation.track_id or observation.track_id in seen:
                 raise ValueError("track ids must be non-empty and unique per frame")
@@ -446,7 +486,7 @@ class DTRR0Arm:
     ) -> Prediction:
         return Prediction(
             time_s=time_s,
-            signal=self.lifecycle.update(raw_alert),
+            signal=self.lifecycle.update(time_s, raw_alert),
             raw_alert=raw_alert,
             reason=reason,
             track_id=track_id,
@@ -475,6 +515,7 @@ def pose_from_dict(value: Optional[Mapping[str, Any]]) -> Optional[EgoPose]:
 
 
 def frame_from_dict(value: Mapping[str, Any]) -> CausalFrame:
+    detection_count = value.get("person_detection_count")
     return CausalFrame(
         time_s=float(value["time_s"]),
         ego_pose=pose_from_dict(value.get("ego_pose")),
@@ -486,6 +527,9 @@ def frame_from_dict(value: Mapping[str, Any]) -> CausalFrame:
                 radius_m=float(item.get("radius_m", 0.30)),
             )
             for item in value.get("observations", [])
+        ),
+        person_detection_count=(
+            int(detection_count) if detection_count is not None else None
         ),
     )
 

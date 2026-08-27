@@ -1,6 +1,6 @@
 # Current decision: advance Dynamic Travel Risk R0
 
-Status: `DTR_R0_ACTIVE / CONTROLLED_EVENT_COHORT_PENDING / NO_RESULT`
+Status: `DTR_R0_ACTIVE / REAL_INPUT_CANARY_PENDING / NO_RESULT`
 
 ## Strategic transition
 
@@ -37,8 +37,9 @@ future target occupancy with the wearer's short-horizon route reduce
 non-actionable alerts while preserving truly crossing or oncoming events?
 
 The active route is `research/active/dtr-r0/`. The first scientific cohort is
-not yet admitted; the current dependency-free synthetic smoke verifies only
-coordinate, state-machine, and metric mechanics.
+not yet admitted. The synthetic smoke verifies only coordinate, state-machine,
+and metric mechanics; the truth-blind real RGB observation adapter is
+implemented, but the 24-event input canary has not been captured or run.
 
 ## First comparison surface
 
@@ -52,18 +53,30 @@ All arms use the same causal observation ledger and the same
   occupancy from now through a frozen horizon in 1.5--3.0 seconds and
   intersects it with the wearer route tube.
 
-The controlled cohort should contain 100--160 short events, balanced across
-targets crossing into the route, oncoming targets, parallel passers outside the
-route, static roadside targets, ego-turn pseudo-motion, and enter-then-exit
-events. Staged real RGB and source-native synthetic trajectories must be
-reported as separate evidence strata.
+The primary comparison is frozen before real-input access as
+`C_ROUTE_INTERSECTION vs B2_RADIAL_TTC`. Both arms consume causal short tracks,
+so an increment can be attributed to route relevance rather than merely to
+tracking. B0 and B1 remain fully reported explanatory baselines.
+
+Before the scientific cohort, a 24-event real-input canary uses four staged
+clips from each of the six scene classes. It can establish only that RGB,
+person detections, causal identity tracks, flat-ground metric projection, and
+time-aligned body/camera pose can materialize a stable observation ledger. It
+has no advancement-gate authority.
+
+If that source-admission canary succeeds under its frozen input contract, the
+controlled Development cohort contains exactly 120 staged real-RGB events:
+20 per scene class. Each clip is 8--12 seconds and includes the pre-event,
+track formation, event, closest approach/crossing, exit, and clear phases.
+Synthetic trajectories remain a separate mechanism-diagnostic stratum and
+never enter the 120-event headline result.
 
 Primary metrics are critical-event recall, false alerts per minute, first-alert
 lead time, delivered alerts per event, event fragmentation, and CLEAR delay.
 
 ## Advancement line
 
-DTR-R0 advances only if, relative to the strongest credible baseline:
+DTR-R0 advances only if, relative to the frozen B2 radial-TTC baseline:
 
 - critical-event recall does not decrease;
 - non-actionable alerts decrease by at least 40%;
@@ -86,7 +99,15 @@ independent event intervals.
   not a renamed rerun.
 - `UNKNOWN` is not CLEAR, and silence is never presented as evidence that the
   route is safe.
+- All four arms share a frozen 0.50-second clear grace. A single known-negative
+  frame cannot fragment an active event, and UNKNOWN cannot complete a clear.
+- Evaluator-only side/overhead video or ground markers may define wearer and
+  target 2-D trajectories and route entry/exit times, but none of that truth
+  may enter the DTR observation ledger.
 - No Android/default-App, natural-distribution, user-benefit, product, or safety
   claim follows from route scaffolding or synthetic trajectories.
 - Semantic Anchor to Marker Pose remains a separate live-device demonstration
   closure, not DTR-R0 algorithm evidence.
+- Probabilistic occupancy, learned trajectory prediction, Transformers, VLMs,
+  and DTR-R1 remain closed unless deterministic R0 first produces a positive
+  controlled real-RGB result.

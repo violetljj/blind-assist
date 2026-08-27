@@ -77,20 +77,27 @@ def evaluate_episodes(
         "result_status": "NO_SCIENTIFIC_RESULT",
         "gate_evaluation": {
             "status": "EXCLUDED_SYNTHETIC_MECHANICS_SMOKE",
-            "controlled_event_cohort_status": "CONTROLLED_EVENT_COHORT_PENDING",
+            "controlled_event_cohort_status": "REAL_INPUT_CANARY_PENDING",
             "reason": (
                 "Synthetic episodes validate mechanics only and are excluded from "
                 "the DTR-R0 scientific advancement gate."
             ),
             "future_controlled_gate": {
-                "comparison_rule_status": "MUST_FREEZE_BEFORE_CONTROLLED_OUTCOME",
-                "comparator_pool": [arm.value for arm in Arm if arm is not Arm.C_ROUTE_INTERSECTION],
+                "comparison_rule_status": "FROZEN_BEFORE_REAL_INPUT_CANARY",
+                "primary_challenger": Arm.C_ROUTE_INTERSECTION.value,
+                "primary_comparator": Arm.B2_RADIAL_TTC.value,
+                "explanatory_baselines": [
+                    Arm.B0_DETECTION.value,
+                    Arm.B1_DISTANCE.value,
+                ],
                 "require_critical_event_recall_non_decrease": True,
                 "minimum_irrelevant_alert_reduction_fraction": 0.40,
                 "minimum_median_first_alert_lead_s": 1.0,
                 "maximum_mean_alert_segments_per_event": 1.5,
                 "require_stable_clear_after_route_exit": True,
-                "target_cohort_size_events": "100-160",
+                "real_input_canary_events": 24,
+                "target_cohort_size_events": 120,
+                "events_per_scene_class": 20,
                 "require_six_scene_classes_balanced": True,
             },
         },
