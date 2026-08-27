@@ -1,6 +1,6 @@
 # Current decision: GRAIL active multiview appearance
 
-Status: `G1_PROTOCOL_FROZEN / DEVELOPMENT_RUNNING / NO_FINAL_TEST`
+Status: `G1_GPU_PROTOCOL_FROZEN / DEVELOPMENT_RUNNING / NO_FINAL_TEST`
 
 ## Authorized question
 
@@ -15,6 +15,7 @@ observability, not camera-pose transport or a next-best-view policy.
 
 - Protocol and code: `research/active/grail-r1cg/`
 - Source: the pinned ProcTHOR-10K train revision used by R1C-L and G0
+- Renderer: AI2-THOR `Linux64` through WSLg Mesa D3D12 on the local NVIDIA GPU
 - Rosters: 96 train houses plus 24 Development houses
 - Exclusions: all 180 R1C-L train/validation houses and all 24 G0 houses
 - B1 input: anchor RGB/masks plus query RGB/masks
@@ -45,8 +46,11 @@ NBV, pose head, G0 fusion, backbone/loss/threshold sweep, or final test is open.
 ## Current state
 
 The protocol and fresh house-disjoint rosters were frozen before collection or
-model outcome. Development collection and matched two-arm training are running.
-No outcome claim is available yet.
+model outcome. A Linux64/Xvfb startup attempt was interrupted before merge,
+training, or evaluation after CPU contention caused a Unity timeout. The GPU
+renderer amendment changes runtime only; roster, pixels consumed by both arms,
+inputs, model, seeds, metrics, and gate remain matched. Development collection
+and matched two-arm training are running. No outcome claim is available yet.
 
 ## Preserved prior terminals
 

@@ -11,6 +11,7 @@ import importlib.util
 import itertools
 import json
 import math
+import os
 from pathlib import Path
 import sys
 import time
@@ -231,6 +232,24 @@ def _teleport_view(controller: Any, position: dict[str, float], center: dict[str
     return _save_view(event, members, role_root, stem, group_id, scan_id, scan_role, r1cl)
 
 
+def _start_controller(scene: dict[str, Any], renderer_platform: str, r1cl: Any) -> Any:
+    if renderer_platform != "ai2thor.Linux64_WSLg_D3D12":
+        raise ValueError(f"R1C-G1 frozen renderer mismatch: {renderer_platform}")
+    from ai2thor.controller import Controller
+    from ai2thor.platform import Linux64
+    from ai2thor.util.lock import Lock
+    os.environ["GALLIUM_DRIVER"] = "d3d12"
+    os.environ["MESA_D3D12_DEFAULT_ADAPTER_NAME"] = "NVIDIA"
+    if not os.environ.get("DISPLAY"):
+        raise RuntimeError("R1C-G1 WSLg DISPLAY is unavailable")
+    Lock.lock = lambda self: None
+    return Controller(
+        scene=scene, platform=Linux64, width=320, height=240, fieldOfView=90,
+        gridSize=0.25, snapToGrid=False, rotateStepDegrees=30, visibilityDistance=1.5,
+        renderDepthImage=True, renderInstanceSegmentation=True,
+    )
+
+
 def collect(dataset: Path, manifest_path: Path, role: str, output: Path, r1cl_path: Path,
             shard_index: int, shard_count: int, house_limit: int | None = None) -> dict[str, Any]:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -274,7 +293,9 @@ def collect(dataset: Path, manifest_path: Path, role: str, output: Path, r1cl_pa
                 continue
             if controller is not None:
                 controller.stop()
-            controller = r1cl.start_controller(houses[house_index])
+            controller = _start_controller(
+                houses[house_index], manifest["collection"]["renderer_platform"], r1cl
+            )
             reachable_event = controller.step(action="GetReachablePositions")
             reachable = reachable_event.metadata.get("actionReturn") or []
             groups = _groups_without_orientation(reachable_event.metadata.get("objects", []), r1cl)
@@ -409,6 +430,7 @@ def collect(dataset: Path, manifest_path: Path, role: str, output: Path, r1cl_pa
             "camera_or_owner_pose_in_model_input": False,
             "side_views_selected_in_anchor_camera_frame": True,
             "duplicate_anchor_substitution": False,
+            "renderer_platform": manifest["collection"]["renderer_platform"],
         },
     }
     _atomic_json(shard_root / "collection.json", result)

@@ -1,6 +1,6 @@
 # GRAIL R1C-G1 Active Multiview Appearance
 
-Status: `G1_PROTOCOL_FROZEN / DEVELOPMENT_RUNNING / NO_FINAL_TEST`
+Status: `G1_GPU_PROTOCOL_FROZEN / DEVELOPMENT_RUNNING / NO_FINAL_TEST`
 
 R1C-G1 asks whether a short fixed three-view reference scan reveals asymmetric
 RGB/mask appearance that a single reference image hides. It is a new
@@ -24,6 +24,12 @@ The fixed rosters contain 96 training houses and 24 Development houses. They are
 house-disjoint from one another and exclude all 180 R1C-L train/validation
 houses plus all 24 G0 Development houses. The protected R1C-L final data is not
 opened.
+
+Pixel collection uses AI2-THOR `Linux64` through WSLg Mesa D3D12 on the local
+NVIDIA GPU. The
+initial Linux64/Xvfb startup attempt was interrupted before merge, training, or
+evaluation after CPU contention produced a Unity timeout; it is not G1 evidence.
+The roster, model inputs, gate, and all scientific conditions were unchanged.
 
 ## Scan leakage boundary
 

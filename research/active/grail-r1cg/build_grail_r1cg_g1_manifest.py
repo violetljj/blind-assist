@@ -88,6 +88,11 @@ def build_manifest(dataset: Path, r1cl_path: Path, g0_path: Path,
         },
         "rosters": {"train": train, "validation": validation},
         "collection": {
+            "renderer_platform": "ai2thor.Linux64_WSLg_D3D12",
+            "renderer_reason": (
+                "GPU rendering through WSLg Mesa D3D12 on the NVIDIA adapter; B1 and G1 consume "
+                "identical rendered pixels."
+            ),
             "reference_views": ["anchor", "left", "right"],
             "scan_frame": "anchor_camera_lateral_axis",
             "target_lateral_baseline_m": 0.30,
@@ -144,6 +149,13 @@ def build_manifest(dataset: Path, r1cl_path: Path, g0_path: Path,
             "NO_FINAL_TEST",
             "SYNTHETIC_PROCTHOR_DEVELOPMENT_ONLY",
         ],
+        "supersedes": {
+            "manifest_sha256": "c1a9bd8a279b98d78d51e7c17cb88a86c8f888ff29b5506b7e34f9e8a3d2ead5",
+            "reason": (
+                "The Linux64/Xvfb startup attempt was interrupted before merge, training, or evaluation "
+                "after CPU contention caused a Unity CreateHouse timeout. No outcome was inspected."
+            ),
+        },
     }
 
 
