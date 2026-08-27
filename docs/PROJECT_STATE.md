@@ -9,7 +9,7 @@ protect interpretation.
 
 ## Current operating surface
 
-- Current decision route: [GRAIL R1C-G0](../research/active/grail-r1cg/README.md)
+- Current decision route: [GRAIL R1C-G1](../research/active/grail-r1cg/README.md)
 - Current question and stop condition: [CURRENT_DECISION.md](CURRENT_DECISION.md)
 - Workstation entrypoint: `tools/ba.ps1`
 - Android entrypoint: `scripts/run_android_gradle.ps1`
@@ -17,11 +17,11 @@ protect interpretation.
 
 ## Current evidence
 
-R1C-G0 completed a fresh 24-house synthetic ProcTHOR Development probe. A fixed
-source-native relative-camera-yaw transport rule scored 75.26% on 2,094
-discriminative pairs versus 75.45% for always PRESERVE and only 15.95% on 514
-FLIP-only pairs. The pose-only mechanism stops; active multiview appearance was
-not evaluated.
+R1C-G0 closed after relative-camera-yaw transport failed its gate. R1C-G1 now
+freezes a fresh matched comparison between one reference image and a fixed
+anchor/left/right scan. The only experimental input change is additional visual
+appearance; Development collection and training are running, with no outcome
+claim yet.
 
 ## Boundaries
 

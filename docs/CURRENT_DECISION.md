@@ -1,69 +1,60 @@
-# Current decision: GRAIL geometry-observable owner orientation
+# Current decision: GRAIL active multiview appearance
 
-Status: `STOP_G0_POSE_TRANSPORT / DEVELOPMENT_GATE_NOT_MET / NO_FINAL_TEST`
+Status: `G1_PROTOCOL_FROZEN / DEVELOPMENT_RUNNING / NO_FINAL_TEST`
 
 ## Authorized question
 
-Does source-native reference-to-query camera yaw provide the missing information
-needed to identify the owner-canonical PRESERVE versus FLIP permutation?
+Can a fixed anchor-plus-left-plus-right reference scan reveal symmetry-breaking
+RGB/mask appearance that materially improves direct owner-canonical
+PRESERVE/FLIP prediction over a matched single-anchor model?
 
-This is a synthetic ProcTHOR Development mechanism probe. It does not establish
-a deployable cross-session pose source, active multiview behavior, natural-scene
-orientation, Android/device capability, navigation, product, or safety behavior.
+This is a fresh synthetic ProcTHOR Development experiment. It tests added visual
+observability, not camera-pose transport or a next-best-view policy.
 
 ## Frozen surface
 
 - Protocol and code: `research/active/grail-r1cg/`
-- Source: the pinned ProcTHOR-10K train revision used by R1C-L
-- Roster: 24 fresh houses excluding all 180 R1C-L train/validation houses
-- Baseline: always PRESERVE
-- Challenger: PRESERVE iff the cosine of source-native query-minus-reference
-  camera yaw is non-negative; otherwise FLIP
-- Fixed boundary: 90 degrees, with no Development threshold selection
-- Primary evidence: discriminative, FLIP-only, PRESERVE-only, Drawer, Doorway
-- Advancement: at least +8pp overall, at least 65% FLIP-only accuracy, and
-  positive uplift on both object types
+- Source: the pinned ProcTHOR-10K train revision used by R1C-L and G0
+- Rosters: 96 train houses plus 24 Development houses
+- Exclusions: all 180 R1C-L train/validation houses and all 24 G0 houses
+- B1 input: anchor RGB/masks plus query RGB/masks
+- G1 input: anchor/left/right RGB/masks plus the same query RGB/masks
+- Model: identical shared pair encoder and `mean+max -> MLP` direct mode head
+- Seeds: 1701 and 2701
+- Training: discriminative samples, balanced mode/object sampler, eight epochs
+- Primary metric: discriminative balanced accuracy
 
-Owner yaw, owner position, object coordinates, depth, model training, threshold
-sweeps, R1C-L final data, and protected test data were not used.
+The scan is generated on the anchor-camera lateral axis, never an owner or
+canonical axis. Each side requires 0.20--0.45 m lateral displacement and at most
+0.20 m longitudinal drift. Missing side frames make the scan not evaluable;
+anchor duplication is forbidden.
 
-## Development result
+## Frozen advancement gate
 
-The complete roster produced 1,157 views and 2,562 ordered pairs with zero
-runtime timeout. The discriminative subset contained 2,094 pairs: 514 FLIP-only
-and 1,580 PRESERVE-only; 468 additional pairs accepted both modes.
+All conditions must hold:
 
-| Arm | Discriminative | FLIP-only | PRESERVE-only |
-| --- | ---: | ---: | ---: |
-| Always PRESERVE | 75.45% | 0.00% | 100.00% |
-| G0 pose transport | 75.26% | 15.95% | 94.56% |
+- at least `+8pp` balanced-accuracy uplift over B1 in each seed;
+- rescue greater than collateral in each seed;
+- no more than `5pp` PRESERVE-accuracy loss in either seed;
+- positive mean balanced-accuracy uplift for both Drawer and Doorway.
 
-G0 was `-0.19pp` overall versus the prior. Doorway uplift was `0.00pp`; Drawer
-uplift was `-0.25pp`. Recovering 82 FLIP-only pairs cost 86 PRESERVE-only pairs.
-The route therefore missed all advancement conditions and stops without any
-threshold sweep, training, final access, or downstream referent/complete claim.
+No result-dependent alternative gate is available. Camera/owner pose, depth,
+object coordinates, scan geometry, and canonical sign are not model inputs. No
+NBV, pose head, G0 fusion, backbone/loss/threshold sweep, or final test is open.
 
-Exact frozen roster and result hashes are in
-`research/active/grail-r1cg/grail_r1c_g0_manifest_v1.json` and
-`research/active/grail-r1cg/grail_r1c_g0_development_result_v1.json`.
+## Current state
 
-## Decision
-
-Source-native relative camera yaw alone is not the missing owner-orientation
-observable in this bounded setup. Do not rescue G0 by tuning the yaw boundary,
-adding a learned pose head, or fusing it into the consumed R1C-L cohort.
-
-This negative does not test active multiview appearance: extra reference frames
-could still reveal new asymmetric evidence that a scalar relative yaw cannot
-create. Any such G1 must be a new versioned experiment with actual additional
-views and a separately declared product-observable pose contract; it is not an
-automatic continuation of G0.
+The protocol and fresh house-disjoint rosters were frozen before collection or
+model outcome. Development collection and matched two-arm training are running.
+No outcome claim is available yet.
 
 ## Preserved prior terminals
 
-- GRAIL R1C-L remains
+- G0 remains
+  `STOP_G0_POSE_TRANSPORT / DEVELOPMENT_GATE_NOT_MET / NO_FINAL_TEST`.
+- R1C-L remains
   `STOP_R1C_L_WITHOUT_FINAL_TEST / DEVELOPMENT_GATE_NOT_MET / FINAL_UNOPENED`.
 - The unseen-location Router remains
   `MSLS_SOURCE_ADMITTED / ROUTER_DEVELOPMENT_GATE_NOT_MET / TEST_UNOPENED`.
 
-Neither prior cohort was reopened, tuned, rerun, or fused into R1C-G0.
+None of those consumed cohorts is reopened, tuned, rerun, or fused into G1.
