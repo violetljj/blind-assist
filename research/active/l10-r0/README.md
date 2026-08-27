@@ -333,6 +333,54 @@ Implementation: `artvideo_multi_hypothesis_belief.py`. Evidence:
 `artifacts.local/evidence/l10-r8/sc5-video17-diagnostic-v0/result.json`, SHA-256
 recorded with the terminal delivery.
 
+## L10-SC6: public reference-bound exact-instance belief
+
+SC6 changes the information source, not the matcher. A
+`PublicInstanceBinding` freezes goal text, a public anchor frame, and a public
+anchor box/crop before evaluation. Its opaque public identity is mapped to the
+native physical track only inside evaluator-private truth. The anchor may create
+exact-instance identity authority; OCR remains candidate qualification;
+DINO/motion may associate, propagate, and reference-reacquire an authorized
+hypothesis but cannot create identity on appearance alone. SC4 routing, SC5
+`K=4`, TTL, association gates, controller, local/context DINO, and UNIQUE paths
+remain frozen.
+
+The three frozen arms are: `SC5-TEXT`, which correctly remains `AMBIGUOUS`
+without a reference; `RB0-STATELESS`, which independently applies the frozen
+local-DINO reference score on each eligible frame; and `SC6-RB-BELIEF`, which
+binds once and retains/reacquires the authorized hypothesis through SC5 temporal
+state. The consumed video17 diagnostic failed the coverage-gain gate and was not
+used for model or threshold selection.
+
+The formal source-disjoint run uses ArTVideo video18, selected from an
+annotation-only screen before RGB/model access: two public bindings and three
+frozen four-frame proposal-gap episodes per binding. An initial assistant-chosen
+minimum of three bindings admitted no video; before any pixel decode, OCR,
+embedding, or outcome, protocol v1 changed only that roster minimum to two.
+No algorithm, threshold, crop, weight, backbone, metric, or effect gate changed.
+
+| arm | exact precision | coverage | wrong frames | wrong switches | gap reacquisition | end-to-end |
+|---|---:|---:|---:|---:|---:|---:|
+| SC5-TEXT | 0% | 0% | 0 | 0 | 0/6 | 0/6 |
+| RB0-STATELESS | 86.49% | 57.14% | 15 | 6 | 6/6 | 5/6 |
+| **SC6-RB-BELIEF** | **100%** | **91.67%** | **0** | **0** | **6/6** | **6/6** |
+
+SC6 gains 34.53 pp coverage over RB0 while reducing, rather than increasing,
+wrong commits. Identity-authority violations are zero. UNIQUE parity is exact
+on video16 (651/651 decisions) and video14 (546/546 decisions). Decision:
+`SC6_REFERENCE_BOUND_BELIEF_EFFECT`. The legal reference source plus frozen
+temporal belief is sufficient on this small cohort, so the stop condition for
+opening PDM/NearID/Doppelgangers/FlowVerify evidence is not met.
+
+Implementations: `artvideo_public_instance_binding.py` and
+`artvideo_reference_bound_belief.py`. Formal evidence:
+`artifacts.local/evidence/l10-r9/sc6-fresh-reference-bound-v0/formal/result.json`,
+SHA-256 `835632016e77e3fd4d6540ff85ae0c3d36d0115746daf93cfbf3b51375ecb9ff`.
+The claim is limited to public-reference-bound ArTVideo replay with private
+evaluator IDs and injected proposal gaps. It is not executed active motion,
+functional/locational arrival, completion, product, user-benefit, or safety
+evidence.
+
 ## Public text-source admission
 
 The 2026-08-28 source canary changed the information source rather than the

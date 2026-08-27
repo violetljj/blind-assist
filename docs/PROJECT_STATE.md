@@ -84,12 +84,24 @@ a failed matcher.
 
 The first 2x context fingerprint also did not beat the existing local crop
 signal (`0.9297` versus `0.9408` pairwise AUC), so it is retained as state but
-not promoted as the next information source. Frozen UNIQUE behavior remained
-identical on all 651 video16 and 546 video14 parity decisions. The next SC5
-effect gate requires a public exact-instance binding or evaluator-authoritative
-functional/aperture association; it is not another threshold sweep. Actions
-remain unexecuted, and metric arrival, live product benefit, user benefit, and
-safety remain unproven.
+not promoted as the next information source. SC6 adds exactly one legal source:
+`PublicInstanceBinding(goal text + public anchor frame + public anchor box/crop)`.
+The public anchor may create exact-instance authority; OCR only admits
+candidates; DINO/motion may associate, propagate, and reference-reacquire but
+cannot create identity without the binding. Evaluator-native physical IDs stay
+private.
+
+On the fresh source-disjoint video18 cohort (two frozen bindings, six gap
+episodes), stateless reference matching reached 86.49% exact-instance precision
+and 57.14% coverage, with 15 wrong-instance frames and six wrong physical-ID
+switches. The reference-bound temporal belief reached **100% precision, 91.67%
+coverage (+34.53 pp), zero wrong-instance frames, zero wrong switches, 6/6 gap
+reacquisition, 6/6 end-to-end, and zero authority violations**. This passes all
+frozen SC6 gates. The consumed video17 diagnostic was reported but not used for
+model or threshold selection. Frozen UNIQUE behavior remained identical on all
+651 video16 and 546 video14 parity decisions. This is narrow public-reference
+replay evidence; executed active observation, functional grounding, metric
+arrival, live product benefit, user benefit, and safety remain unproven.
 
 ## Demonstration track
 
