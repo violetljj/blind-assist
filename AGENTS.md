@@ -129,8 +129,16 @@ After `PROJECT_STATE.md`, read only the route needed for the task:
   and `scripts/check_docs_index.ps1` for top-level/current documentation links.
 - Run broader builds, hygiene suites, device matrices, or formal validators only
   when the changed surface or an explicit delivery gate requires them.
-- When scientifically equivalent, prefer the backend confirmed faster by a short
-  benchmark; prefer GPU for batched tensor work, but speed is not algorithmic evidence.
+- When GPU execution can materially improve result quality or reduce wall-clock
+  time without violating correctness or a frozen protocol, GPU is the required
+  first-choice backend. Before the real run, verify accelerator availability and
+  the selected backend/device; after launch, confirm actual GPU execution with
+  runtime evidence such as framework-reported device placement plus observed
+  process utilization or memory use. Never infer GPU use from configuration,
+  installed CUDA, or a successful start alone. Detect and explicitly report an
+  unavailable accelerator, idle GPU, CPU-only execution, and partial or full CPU
+  fallback; do not silently continue under a fallback while describing the run
+  as GPU-accelerated. Speed is not algorithmic evidence.
 
 ## Workspace ownership and delivery
 
