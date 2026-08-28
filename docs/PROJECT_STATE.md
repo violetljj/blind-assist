@@ -195,6 +195,31 @@ dual-LiDAR, TF, timestamps, and calibration are already local. Threshold,
 duration, route, lifecycle, score-fusion, local-vote, and global-bias tuning
 remain closed.
 
+C23--C24 then changed correspondence and motion representation rather than
+tuning the route.  Object-rigid temporal confidence reduced R7 false segments
+`20 -> 16` but exposed component-to-cell velocity broadcast as the remaining
+structural error.  C24 replaced it with causal ego-compensated reciprocal 3-D
+point motion plus independent three-frame consistency.  On the consumed
+Packard Development canary it retained `3/3` CONTACT recall and `9/9` dropout
+recovery while returning false segments `20 -> 12` and raising event F1
+22.22% -> 31.58%.  This opened one fixed algorithm-fresh confirmation, not a
+parameter sweep.
+
+C25 has now adjudicated that confirmation on five previously unopened JRDB
+sequences: 3,358 frames, 12 bounded global-OBB CONTACT events, and 130.98 s
+known non-CONTACT time.  R7 reached `11/12`, 52 false segments, 29.33% F1,
+4.200 s median lead, and `30/36` induced-dropout recovery.  Point-local M1-PD
+kept `11/12`, cut false segments to 29, raised F1 to 42.31%, and recovered
+`33/36`.  Hard three-frame M1-PDC reached `12/12`, 21 false segments, and 53.33%
+F1, but delayed median lead to 1.624 s and recovered only `25/36` dropout
+trials.  Therefore
+`DTR_C25_POINT_FLOW_ALGORITHM_FRESH_GATE_NOT_MET_HARD_TEMPORAL_VETO`: the
+point-wise source generalizes, but temporal consistency cannot remain a hard
+evidence-deletion gate.  This cohort is consumed.  The next source-level
+question is route-conditioned residual future occupancy over M1-PD with soft
+confidence/uncertainty, preceded by one realized-future occupancy headroom
+falsifier under the unchanged global-OBB route and lifecycle contract.
+
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC
 word carrier for current-camera steering. SC2 adds opportunity-correct active

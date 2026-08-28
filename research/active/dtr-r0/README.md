@@ -1590,6 +1590,46 @@ selected SciPy cKDTree CPU at `4.5333 ms` versus observed RTX 5060 CUDA cdist
 it was measured faster for these irregular batches, not because CUDA silently
 failed or was bypassed.
 
+## DTR-C25 algorithm-fresh point-motion confirmation
+
+C25 froze C24 without changing its point matching, confidence, route geometry,
+motion bounds, lifecycle, or score threshold.  Before any bag or result was
+opened, it selected the deterministic minimum five-sequence remainder reaching
+the existing C1 admission floor: 3,358 frames, 12 bounded global-OBB CONTACT
+events, 12 unique first-responsible objects, and 130.98 s known non-CONTACT
+wearer time.  Five truth-blind workers sealed all route-conflict timelines
+before the roster and future OBB labels were opened.  The sealed prediction
+SHA-256 is
+`4817321126ca291528ab48c7ff4bf23059b0a064a1617058c26b07d2bef39bd2`.
+
+| arm | CONTACT recall | false segments | event F1 | median first lead | induced dropout recovery |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| R7 component translation | `11/12` | 52 | 29.33% | 4.200 s | `30/36` |
+| M1-PD cell-local direct velocity | `11/12` | 29 | 42.31% | 3.067 s | `33/36` |
+| M1-PDC hard three-frame consistency | **`12/12`** | **21** | **53.33%** | 1.624 s | `25/36` |
+
+The fixed C25 gate is not met.  M1-PDC improves natural recall, cuts R7 false
+segments by 59.6%, and raises event F1 by 24.00 points, but its induced-dropout
+recovery is lower than R7 (`25/36 < 30/36`).  Lead was reported rather than
+gated and exposes a second material cost: median first alert is 2.576 s later
+than R7.  The dropout loss is localized: M1-PDC recovers only `1/6` Gates and
+`0/6` Packard-0 trials versus R7's `6/6` and `3/6`; it matches R7 on the other
+three sequences.  M1-PD itself recovers `33/36` while still cutting false
+segments by 44.2%, so the fresh result supports point-local direct velocity and
+rejects using independent-history consistency as a hard evidence veto.
+
+Accept
+`DTR_C25_POINT_FLOW_ALGORITHM_FRESH_GATE_NOT_MET_HARD_TEMPORAL_VETO`.
+The five sequences are now consumed: do not tune confidence, correspondence,
+route, lifecycle, or thresholds against them.  The next representation change
+is a route-conditioned residual future-occupancy flow over M1-PD tokens, with
+temporal confidence used as a soft weight/uncertainty signal rather than as an
+alert-deleting gate.  First run one realized-future-occupancy headroom falsifier
+through the frozen global-OBB route/lifecycle contract; train no forecasting
+head unless that oracle can materially recover lead without damaging recall or
+false segments.  Result SHA-256 is
+`c7045f39b774093a4ed4fd4a5c4494ea698474a1a2ab7d0e0bf50bf1fdc778a5`.
+
 ## Claim ceiling
 
 These are retrospective public-real privileged algorithm ceilings. THÖR uses

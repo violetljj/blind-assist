@@ -857,6 +857,42 @@ correspondence granularity: five undistorted perspective cameras, raw
 LiDAR-supported point tracks, full ego SE(3) LiDAR-to-image compensation, then
 BEV aggregation. Do not tune C22 confidence, grace, route, or lifecycle.
 
+C23--C24 instead established the required representation change directly in
+raw LiDAR.  C23's object-rigid confidence retained `3/3` critical events and
+`9/9` induced dropout recoveries but left 16 false segments because one
+component translation was still broadcast to all occupied cells.  C24 replaced
+that broadcast with ego-compensated reciprocal point correspondence and a
+causal independent-history consistency observation.  On the consumed Packard
+Development canary, M1-PD reached `3/3`, 13 false segments, 30.00% F1, and
+`9/9`; M1-PDC reached `3/3`, 12 false segments, 31.58% F1, and `9/9`.  The fixed
+Development gate passed and authorized exactly one algorithm-fresh confirmation.
+
+C25 froze that representation and its gate before selecting or acquiring the
+deterministic five-sequence remainder.  Truth-blind workers sealed predictions
+for 3,358 frames before future OBB truth was opened.  On 12 bounded CONTACT
+events, R7 reached `11/12` recall, 52 false segments, 29.33% F1, 4.200 s median
+lead, and `30/36` induced-dropout recovery.  M1-PD reached `11/12`, 29 false,
+42.31% F1, 3.067 s, and `33/36`.  M1-PDC reached `12/12`, 21 false, 53.33% F1,
+1.624 s, and `25/36`.
+
+Accept
+`DTR_C25_POINT_FLOW_ALGORITHM_FRESH_GATE_NOT_MET_HARD_TEMPORAL_VETO`.
+M1-PDC passes the recall, false-segment, and F1 checks but fails the frozen
+dropout non-regression check; its lead loss is also material although not gated.
+The failure is concentrated in Gates (`1/6` versus R7 `6/6`) and Packard-0
+(`0/6` versus `3/6`), while the ungated point-local M1-PD recovers `33/36` and
+still removes 44.2% of R7 false segments.  The justified conclusion is that
+point-local direct velocity generalizes, while independent-history consistency
+must not delete evidence as a hard gate.  Do not tune this consumed cohort.
+
+The next admissible information upgrade is route-conditioned residual future
+occupancy over the causal M1-PD point tokens, using confidence and temporal
+consistency as soft weights and calibrated uncertainty rather than an alert
+source or hard veto.  Before training, run one realized-future occupancy oracle
+through the unchanged global-OBB route/lifecycle scorer.  Continue only if it
+shows material lead headroom without reducing recall or increasing false
+segments; otherwise close the forecasting branch without a model sweep.
+
 ## What stops here
 
 - Do not record the superseded 24 canary or 120 staged local RGB clips.
