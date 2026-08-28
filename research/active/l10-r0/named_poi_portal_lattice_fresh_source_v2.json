@@ -1,0 +1,21 @@
+{
+  "schema": "l10-named-poi-portal-lattice-fresh-source-v2",
+  "mode": "OUTCOME_BLIND_SOURCE_ADMISSION",
+  "target_id": "mixed-public-building-portals",
+  "commons_search": "Hong Kong building glass entrance",
+  "selection_authority": "Commons file-title search only before pixel access. Freeze six named public-building glass-entrance files from distinct entities. Every exact filename is absent from the existing named-poi facade, multifacet v1-v7, IFC active-view, and Central Station J-exhibition sources.",
+  "files": [
+    "HK Kln Tong HKPC Building interior main entrance glass door visitors Mar-2014.JPG",
+    "HKU CYM \u838a\u6708\u660e\u6587\u5a1b\u4e2d\u5fc3 Chong Yuet Ming Building glass wall entrance door Dec-2017 IX1.jpg",
+    "HK Kln Bay MTR Headquarters Building entrance glass door Nov-2014 LG2.jpg",
+    "HK Central \u906e\u6253\u5927\u53a6 Chater House name sign entrance glass door March 2016 DSC 003.JPG",
+    "HK Sheung Wan 143 Connaught Road Central \u73e0\u6c5f\u8239\u52d9\u5927\u5ec8 Chu Kong Shipping Tower glass door entrance Feb-2013.JPG",
+    "HK WC Wan Chai 22 Hennessy Road Methodist Centre name n entrance glass door May 2025 R12S.jpg"
+  ],
+  "admission_question": "Do at least three frozen images expose a current-view repeated-post pedestrian glass-door bank for which one functional portal-set region can be boxed before algorithm execution?",
+  "pass": "ADMIT_AT_LEAST_THREE_FUNCTIONAL_PORTAL_SET_FRAMES",
+  "fail": "NOT_EVALUABLE_INSUFFICIENT_FUNCTIONAL_PORTAL_SET_FRAMES",
+  "stop_rule": "Materialize all six once, inspect pixels once, freeze every evaluable portal-set box, and run the unchanged v2 lattice algorithm only if at least three frames are evaluable.",
+  "fresh_gate": "Top-3 portal-set membership must be at least two thirds and strictly exceed zero recall. Top-1, proposal count, and box completeness are descriptive. Run once without tuning.",
+  "claim_boundary": "A passing result evaluates only current-image glass-door-bank proposal retention. It does not establish requested-entity identity, access, traversability, temporal tracking, guidance, arrival, benefit, or safety."
+}

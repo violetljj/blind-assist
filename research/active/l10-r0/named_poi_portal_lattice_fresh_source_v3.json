@@ -1,0 +1,21 @@
+{
+  "schema": "l10-named-poi-portal-lattice-fresh-source-v3",
+  "mode": "OUTCOME_BLIND_SOURCE_ADMISSION",
+  "target_id": "mixed-public-building-portals-confirmation",
+  "commons_search": "Hong Kong building glass entrance",
+  "selection_authority": "Commons file-title search only before pixel access. Freeze six exact filenames from buildings not used in the v2 fresh cohort; every file is absent from all prior named-poi libraries and portal-lattice sources.",
+  "files": [
+    "HK Central \u906e\u6253\u5927\u53a6 Chater House name sign entrance glass door March 2016 DSC 002.JPG",
+    "HK KCD \u555f\u5fb7 Kai Tak \u5354\u8abf\u9053 Concorde Road building Inland Revenue Centre glass door entrance April 2026 N13P 02.jpg",
+    "HK TKO \u5c07\u8ecd\u6fb3 Tseung Kwan O PopCorn The Wings residential building entrance glass door n visitors May 2019 SSG.jpg",
+    "HK CUHK \u4e2d\u6587\u5927\u5b78 Cheng Yu Tung Building \u99ac\u6599\u6c34 Ma Liu Shui \u6e3e\u7965\u8857 Chak Cheung Street evening glass door entrance Aug-2013.JPG",
+    "HK TST \u6e2f\u5a01\u5927\u5ec8 The Gateway entrance lobby interior night Sept-2013 glass door.JPG",
+    "Cheung Lee Commercial Building main entrance 20201229.jpg"
+  ],
+  "admission_question": "Do at least three frozen images expose a current-view pedestrian glass-door bank or paired-handle entrance for which one functional portal-set region can be boxed before algorithm execution?",
+  "pass": "ADMIT_AT_LEAST_THREE_FUNCTIONAL_PORTAL_SET_FRAMES",
+  "fail": "NOT_EVALUABLE_INSUFFICIENT_FUNCTIONAL_PORTAL_SET_FRAMES",
+  "stop_rule": "Materialize all six once, inspect pixels once, freeze every evaluable portal-set box, and run the unchanged dual-family v3 algorithm only if at least three frames are evaluable.",
+  "fresh_gate": "Top-3 portal-set membership must be at least two thirds. Top-1, per-family rescue, proposal count, and box completeness are descriptive. Run once without tuning.",
+  "claim_boundary": "A passing result evaluates only current-image functional glass-entrance proposal retention. It does not establish requested-entity identity, access, traversability, temporal tracking, guidance, arrival, benefit, or safety."
+}

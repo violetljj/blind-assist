@@ -2,11 +2,11 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-29",
-  "source_fingerprint": "adf00471d3fd1efdf5123f1727fc00066e0cf13d671593d9ebca8a3c1dd03275",
+  "source_fingerprint": "21a5e193e6eb801a29eb9ce9b15712cdf4ccb6d273ada38817d270f09fc4b6eb",
   "counts": {
     "failure_layers": 13,
-    "mechanisms": 254,
-    "uses": 253,
+    "mechanisms": 255,
+    "uses": 254,
     "experiments": 206,
     "current_terminals": 19
   },
@@ -893,6 +893,87 @@
     "生成器不得跨越 evidence claim ceiling：跑通、存在信号、功能门槛、自然分布、产品和安全是不同层。"
   ],
   "mechanisms": [
+    {
+      "id": "algorithm-functional-portal-set-proposer#dual-family-functional-portal-set",
+      "item_id": "algorithm-functional-portal-set-proposer",
+      "mechanism_id": "dual-family-functional-portal-set",
+      "kind": "algorithm",
+      "title": "Dual-family functional portal-set proposer",
+      "canonical_ref": "repo:research/active/l10-r0/named_poi_portal_lattice.py",
+      "summary": "Propose a pedestrian glass entrance as one functional set using either repeated aligned door posts or paired vertical handles, rather than forcing adjacent door leaves to compete as physical target identities.",
+      "tags": [
+        "l10",
+        "entrance",
+        "portal-set",
+        "door-bank",
+        "non-ocr",
+        "active-perception"
+      ],
+      "name": "Repeated-post lattice plus paired-handle aperture",
+      "description": "One family groups vertical segments with shared endpoints into a multi-leaf door lattice. The second pairs aligned vertical handles or posts and infers an aperture from their scale. Their ranked union preserves up to three functional portal hypotheses for active disambiguation.",
+      "inputs": [
+        "Current RGB image",
+        "Separately confirmed target-entity context before downstream admission"
+      ],
+      "outputs": [
+        "Ranked functional portal-set boxes",
+        "Proposal family and structural score"
+      ],
+      "limitations": "The proposer is specialized to repeated-post and paired-handle glass entrances. It does not cover stairs, open passages without vertical structure, revolving doors, shutters, or public-access state; it cannot establish target identity by itself.",
+      "signatures": [],
+      "layer_scores": {
+        "handoff_completion": 3,
+        "identity_binding": 3,
+        "interaction_readiness": 3,
+        "observation_perception": 6,
+        "temporal_belief": 6
+      },
+      "routes": [
+        "l10-r0"
+      ],
+      "uses": [
+        {
+          "id": "use-l10-r0-functional-portal-set-proposer",
+          "route": "l10-r0",
+          "use_state": "active",
+          "reproduction_status": "reproduced",
+          "verdict": "positive",
+          "project_application": "Replace generic single-box door proposals with a top-three functional entrance set before scale-gated active observation, tracking, and reacquisition. Admit it only after a separate target-entity lock.",
+          "expected_effect": "Restore correct entrance proposal availability without OCR and without forcing premature unique-door selection.",
+          "observed_effect": "The fresh cohort achieved top-one truth retention on 5/6 frames and top-three retention on 6/6, passing the 4/6 gate. Among the stored top ten proposals per image, 50/60 belonged to the functional portal region; 14/18 top-three proposals did so. No OCR or learned model inference was used.",
+          "metrics": [
+            "fresh_frames=6",
+            "top1_truth_retention=5/6",
+            "top1_truth_recall=0.833333",
+            "top3_truth_retention=6/6",
+            "top3_truth_recall=1.0",
+            "stored_top10_membership_precision=50/60",
+            "top3_membership_precision=14/18",
+            "ocr_calls=0"
+          ],
+          "claim_boundary": "This supports current-image functional glass-entrance proposal retention only. It does not establish requested-entity identity, public access, traversability, temporal tracking, active-view causality, guidance, arrival, product benefit, user benefit, or safety.",
+          "evidence": [
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/named_poi_functional_portal_set_result_v1.json",
+              "summary": "Frozen mechanism, fresh metrics, hashes, decision, next step, and claim ceiling."
+            },
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/named_poi_portal_lattice_fresh_source_audit_v3.json",
+              "summary": "Human functional portal-set regions frozen before the confirmation run."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r0/named-poi-portal-lattice-fresh-v3/result.json",
+              "summary": "Fresh six-building per-frame proposal output."
+            }
+          ],
+          "updated_at": "2026-08-29"
+        }
+      ],
+      "search_text": "Dual-family functional portal-set proposer Propose a pedestrian glass entrance as one functional set using either repeated aligned door posts or paired vertical handles, rather than forcing adjacent door leaves to compete as physical target identities. l10 entrance portal-set door-bank non-ocr active-perception Repeated-post lattice plus paired-handle aperture One family groups vertical segments with shared endpoints into a multi-leaf door lattice. The second pairs aligned vertical handles or posts and infers an aperture from their scale. Their ranked union preserves up to three functional portal hypotheses for active disambiguation. Current RGB image Separately confirmed target-entity context before downstream admission Ranked functional portal-set boxes Proposal family and structural score The proposer is specialized to repeated-post and paired-handle glass entrances. It does not cover stairs, open passages without vertical structure, revolving doors, shutters, or public-access state; it cannot establish target identity by itself. l10-r0 Replace generic single-box door proposals with a top-three functional entrance set before scale-gated active observation, tracking, and reacquisition. Admit it only after a separate target-entity lock. Restore correct entrance proposal availability without OCR and without forcing premature unique-door selection. The fresh cohort achieved top-one truth retention on 5/6 frames and top-three retention on 6/6, passing the 4/6 gate. Among the stored top ten proposals per image, 50/60 belonged to the functional portal region; 14/18 top-three proposals did so. No OCR or learned model inference was used. fresh_frames=6 top1_truth_retention=5/6 top1_truth_recall=0.833333 top3_truth_retention=6/6 top3_truth_recall=1.0 stored_top10_membership_precision=50/60 top3_membership_precision=14/18 ocr_calls=0 This supports current-image functional glass-entrance proposal retention only. It does not establish requested-entity identity, public access, traversability, temporal tracking, active-view causality, guidance, arrival, product benefit, user benefit, or safety."
+    },
     {
       "id": "algorithm-searching-for-mobilenetv3#idea-mobilenetv3",
       "item_id": "algorithm-searching-for-mobilenetv3",

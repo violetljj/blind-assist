@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "id": "algorithm-functional-portal-set-proposer",
+  "kind": "algorithm",
+  "title": "Dual-family functional portal-set proposer",
+  "canonical_ref": "repo:research/active/l10-r0/named_poi_portal_lattice.py",
+  "authors": [],
+  "year": 2026,
+  "venue": "BlindAssist research",
+  "summary": "Propose a pedestrian glass entrance as one functional set using either repeated aligned door posts or paired vertical handles, rather than forcing adjacent door leaves to compete as physical target identities.",
+  "mechanisms": [
+    {
+      "id": "dual-family-functional-portal-set",
+      "name": "Repeated-post lattice plus paired-handle aperture",
+      "description": "One family groups vertical segments with shared endpoints into a multi-leaf door lattice. The second pairs aligned vertical handles or posts and infers an aperture from their scale. Their ranked union preserves up to three functional portal hypotheses for active disambiguation.",
+      "inputs": ["Current RGB image", "Separately confirmed target-entity context before downstream admission"],
+      "outputs": ["Ranked functional portal-set boxes", "Proposal family and structural score"],
+      "limitations": "The proposer is specialized to repeated-post and paired-handle glass entrances. It does not cover stairs, open passages without vertical structure, revolving doors, shutters, or public-access state; it cannot establish target identity by itself."
+    }
+  ],
+  "tags": ["l10", "entrance", "portal-set", "door-bank", "non-ocr", "active-perception"],
+  "aliases": ["functional portal set", "portal lattice", "handle-pair aperture"],
+  "links": [],
+  "added_at": "2026-08-29",
+  "updated_at": "2026-08-29"
+}

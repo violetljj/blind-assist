@@ -1,0 +1,32 @@
+{
+  "schema": "l10-named-poi-portal-lattice-fresh-source-audit-v3",
+  "source_manifest": "artifacts.local/knowledge/named-poi-portal-lattice-fresh-v3/source_manifest.json",
+  "source_manifest_sha256": "8d5b8c244cbcd14e6b9ddc474d7db1e1edd6b755f0d538a063c33d9a5de79e20",
+  "pixel_access": "ONE_SOURCE_AUDIT_BEFORE_ALGORITHM_EXECUTION",
+  "decision": "ADMIT_AT_LEAST_THREE_FUNCTIONAL_PORTAL_SET_FRAMES",
+  "admitted_frames": [1, 2, 3, 4, 5, 6],
+  "portal_set_truth": {
+    "authority": "HUMAN_PIXEL_REGION_FROZEN_BEFORE_ANY_V3_CONFIRMATION_EXECUTION",
+    "definition": "One current-view pedestrian glass-door bank, paired-handle entrance, or open glass-door aperture. Adjacent leaves and fixed panels form one functional portal set.",
+    "membership_rule": "Candidate center is inside the frozen portal-set region and at least half of candidate area lies inside it.",
+    "frames": {
+      "1": {"local_image_size": [1280, 960], "portal_set_box_xyxy": [0, 330, 1280, 900], "kind": "Chater House multi-leaf glass entrance"},
+      "2": {"local_image_size": [1280, 960], "portal_set_box_xyxy": [580, 420, 1280, 930], "kind": "Inland Revenue Centre open and closed glass door bank"},
+      "3": {"local_image_size": [1280, 960], "portal_set_box_xyxy": [130, 130, 910, 900], "kind": "The Wings glass entrance assembly"},
+      "4": {"local_image_size": [1280, 960], "portal_set_box_xyxy": [0, 180, 930, 910], "kind": "Cheng Yu Tung Building glass door bank"},
+      "5": {"local_image_size": [1280, 960], "portal_set_box_xyxy": [0, 0, 1280, 930], "kind": "Gateway foreground glass entrance plane"},
+      "6": {"local_image_size": [1280, 1707], "portal_set_box_xyxy": [210, 580, 1160, 1660], "kind": "Cheung Lee paired open glass doors"}
+    }
+  },
+  "frame_audit": {
+    "1": "Wide multi-leaf glass entrance with repeated handles.",
+    "2": "Open left leaf plus closed right glass-door bank at the named revenue centre.",
+    "3": "Framed glass entrance assembly with a nested lobby doorway.",
+    "4": "Two open glass leaves and fixed panels at the named teaching building.",
+    "5": "Foreground glass entrance plane with repeated vertical handles.",
+    "6": "Paired open glass doors with large symmetric handles."
+  },
+  "algorithm_calls_before_freeze": 0,
+  "fresh_gate": "Unchanged dual-family v3 top-3 portal-set membership must be at least 4/6. Run once without tuning.",
+  "claim_boundary": "This authority covers current-image functional glass-entrance membership only; not requested-entity identity, public access, traversability, temporal tracking, guidance, arrival, benefit, or safety."
+}

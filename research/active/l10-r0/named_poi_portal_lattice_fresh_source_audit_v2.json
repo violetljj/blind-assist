@@ -1,0 +1,32 @@
+{
+  "schema": "l10-named-poi-portal-lattice-fresh-source-audit-v2",
+  "source_manifest": "artifacts.local/knowledge/named-poi-portal-lattice-fresh-v2/source_manifest.json",
+  "source_manifest_sha256": "259dbf29b59cd5191a4146e138d19d2e32958f4c5988119dcfe0c41dbcde13b8",
+  "pixel_access": "ONE_SOURCE_AUDIT_BEFORE_ALGORITHM_EXECUTION",
+  "decision": "ADMIT_AT_LEAST_THREE_FUNCTIONAL_PORTAL_SET_FRAMES",
+  "admitted_frames": [1, 2, 3, 4, 5, 6],
+  "portal_set_truth": {
+    "authority": "HUMAN_PIXEL_REGION_FROZEN_BEFORE_ANY_FRESH_LATTICE_EXECUTION",
+    "definition": "One current-view pedestrian glass-door bank or glass entrance boundary. Adjacent leaves and fixed glass panels form one functional portal set rather than separate target identities.",
+    "membership_rule": "Candidate center is inside the frozen portal-set region and at least half of candidate area lies inside it.",
+    "frames": {
+      "1": {"local_image_size": [1280, 960], "portal_set_box_xyxy": [0, 300, 1280, 960], "kind": "HKPC main glass exit door bank"},
+      "2": {"local_image_size": [1280, 1916], "portal_set_box_xyxy": [430, 1000, 850, 1870], "kind": "Chong Yuet Ming central double exit door"},
+      "3": {"local_image_size": [1280, 720], "portal_set_box_xyxy": [230, 0, 1279, 720], "kind": "MTR Headquarters foreground glass entrance plane"},
+      "4": {"local_image_size": [1280, 960], "portal_set_box_xyxy": [0, 290, 1280, 930], "kind": "Chater House multi-leaf glass entrance bank"},
+      "5": {"local_image_size": [1280, 1714], "portal_set_box_xyxy": [0, 1030, 900, 1714], "kind": "Chu Kong Shipping Tower lower glass entrance bank"},
+      "6": {"local_image_size": [1280, 960], "portal_set_box_xyxy": [505, 305, 1130, 930], "kind": "Methodist Centre double glass entrance"}
+    }
+  },
+  "frame_audit": {
+    "1": "Current-view glass exit bank with repeated vertical handles and frames.",
+    "2": "Central double exit door inside a larger repeated glass facade.",
+    "3": "Foreground glass entrance plane and opening boundary; distant inner doorway is not the target box.",
+    "4": "Wide multi-leaf glass entrance bank with repeated posts and handles.",
+    "5": "Lower cropped multi-leaf glass entrance bank; upper facade glazing is context only.",
+    "6": "Centered double glass entrance with repeated posts and handles."
+  },
+  "algorithm_calls_before_freeze": 0,
+  "fresh_gate": "Unchanged v2 lattice top-3 portal-set membership must be at least 4/6 and strictly exceed zero recall. Run once without tuning.",
+  "claim_boundary": "This authority covers current-image functional glass-door-bank membership only; not requested-entity identity, public access, traversability, temporal tracking, guidance, arrival, benefit, or safety."
+}

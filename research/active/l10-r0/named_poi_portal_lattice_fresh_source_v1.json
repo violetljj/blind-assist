@@ -1,0 +1,22 @@
+{
+  "schema": "l10-named-poi-portal-lattice-fresh-source-v1",
+  "mode": "OUTCOME_BLIND_SOURCE_ADMISSION",
+  "target_id": "central-station",
+  "commons_category": "Central Station (MTR)",
+  "series": "HK Central MTR Station J exit and entrance Bruce Lee photo exhibition December 2025 N13P",
+  "selection_authority": "Commons category filename metadata only. Freeze the first six numbered J exit and entrance series files after excluding every filename present in named-poi facade, multifacet v1-v7, and the IFC active-view source. No pixels were accessed for this selection.",
+  "files": [
+    "HK \u4e2d\u74b0 Central MTR Station J exit and entrance Bruce Lee photo exhibition December 2025 N13P 01.jpg",
+    "HK \u4e2d\u74b0 Central MTR Station J exit and entrance Bruce Lee photo exhibition December 2025 N13P 02.jpg",
+    "HK \u4e2d\u74b0 Central MTR Station J exit and entrance Bruce Lee photo exhibition December 2025 N13P 03.jpg",
+    "HK \u4e2d\u74b0 Central MTR Station J exit and entrance Bruce Lee photo exhibition December 2025 N13P 04.jpg",
+    "HK \u4e2d\u74b0 Central MTR Station J exit and entrance Bruce Lee photo exhibition December 2025 N13P 05.jpg",
+    "HK \u4e2d\u74b0 Central MTR Station J exit and entrance Bruce Lee photo exhibition December 2025 N13P 06.jpg"
+  ],
+  "admission_question": "Do at least three frozen images expose a repeated-post pedestrian door bank or gate lattice for which one functional portal-set region can be boxed before algorithm execution?",
+  "pass": "ADMIT_AT_LEAST_THREE_FUNCTIONAL_PORTAL_SET_FRAMES",
+  "fail": "NOT_EVALUABLE_INSUFFICIENT_FUNCTIONAL_PORTAL_SET_FRAMES",
+  "stop_rule": "Materialize all six once, inspect pixels once, freeze every evaluable portal-set box, and run the algorithm only if at least three frames are evaluable.",
+  "fresh_gate": "Top-3 portal-set membership must be at least 2/3 and strictly exceed the zero-recall generic proposal result on the IFC mechanism prefix. Top-1 and proposal count are descriptive. Run once without tuning.",
+  "claim_boundary": "Passing source admission establishes only a fresh public RGB functional portal-set cohort. It does not establish target identity, public access, traversability, active-view causality, guidance, arrival, benefit, or safety."
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "l10-named-poi-functional-portal-set-result-v1",
+  "decision": "RETAIN_DUAL_FAMILY_FUNCTIONAL_PORTAL_SET_PROPOSER",
+  "mechanism": {
+    "family_1": "REPEATED_POST_LATTICE groups vertical door-frame segments sharing top and bottom boundaries into one multi-leaf functional portal set.",
+    "family_2": "PAIRED_VERTICAL_HANDLE_APERTURE pairs aligned vertical handles or posts and infers a door aperture from their observed scale.",
+    "fusion": "Rank both structural families together and preserve the top three as a set-valued functional portal proposal. Target identity remains a separate prerequisite authority.",
+    "ocr_calls": 0
+  },
+  "development": {
+    "ifc_reverse_side_mechanism": {"frames": 2, "top1_truth_retention": 1, "top3_truth_retention": 2},
+    "first_six_building_consumed_upgrade": {"frames": 6, "top1_truth_retention": 5, "top3_truth_retention": 5},
+    "claim": "Mechanism development only; both sources were consumed before the final dual-family representation."
+  },
+  "fresh_confirmation": {
+    "source": "Six frozen Commons glass entrances from Chater House, Inland Revenue Centre, The Wings, Cheng Yu Tung Building, The Gateway, and Cheung Lee Commercial Building.",
+    "frames": 6,
+    "top1_truth_retention": 5,
+    "top1_truth_recall": 0.8333333333333334,
+    "top3_truth_retention": 6,
+    "top3_truth_recall": 1.0,
+    "stored_top10_membership": 50,
+    "stored_top10_candidates": 60,
+    "stored_top10_membership_precision": 0.8333333333333334,
+    "top3_membership": 14,
+    "top3_candidates": 18,
+    "top3_membership_precision": 0.7777777777777778,
+    "frozen_gate": "top3_truth_retention_at_least_4_of_6",
+    "gate_passed": true
+  },
+  "hashes": {
+    "algorithm_sha256": "2cf6b0d80a5691150f6a70e9a45e2a6136e87480b4e06fa1fa82ea470386ba61",
+    "source_protocol_sha256": "d44eaa6cb5e8c6661c4c26394953d81c789fea02a959ed92582254c48c7e1337",
+    "source_audit_sha256": "b431f7c5685757e0471c0ab3deff5f0702b49908d2b9ae814bf65946a1026fa9",
+    "source_manifest_sha256": "8d5b8c244cbcd14e6b9ddc474d7db1e1edd6b755f0d538a063c33d9a5de79e20",
+    "result_sha256": "3628b3a5799a214b741c7b374a037c51481252027044a64e84ae217c05e7c36f"
+  },
+  "next_step": "Feed top-three functional portal proposals into the scale-gated active entrance belief only after a separately confirmed target-entity lock. Acquire an ordered or commanded-view source before evaluating temporal commit, reacquisition, guidance, or SkyDiscover policy search.",
+  "claim_scope": "Fresh current-image glass-entrance proposal retention only. This does not establish requested-entity identity, public access, traversability, temporal tracking, active-view causality, guidance, arrival, product benefit, user benefit, or safety."
+}

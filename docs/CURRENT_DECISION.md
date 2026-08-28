@@ -590,10 +590,24 @@ observed false commit but not recovering the door bank. Record
 Do not tune the consumed prompt/ray/policy; change the portal proposal
 representation.
 
-SkyDiscover now has a separate real-perception policy contract with hard
-wrong-portal/arrival gates and AdaEvolve Pareto objectives. Search is blocked
-until a fresh portal-set proposal source retains truth. The obsolete oracle
-benchmark family is excluded from the current route.
+The proposal representation has now changed rather than tuning the consumed
+prompt or thresholds. A non-OCR dual-family functional portal-set proposer
+groups repeated door posts into a multi-leaf entrance and pairs vertical
+handles to infer an aperture. Lattice-only failed its first frozen six-building
+gate at top-three `3/6`; the handle-pair successor was developed only after that
+cohort was consumed. On a separate six-building frozen confirmation cohort, the
+unchanged successor retained portal truth at top-one `5/6` and top-three `6/6`;
+`50/60` stored top-ten candidates and `14/18` top-three candidates lay in the
+human-frozen functional portal regions. Record
+`RETAIN_DUAL_FAMILY_FUNCTIONAL_PORTAL_SET_PROPOSER`.
+
+This crosses the current-image glass-entrance proposal bottleneck, not the full
+last-ten-metre task. Target-entity identity must be confirmed separately before
+these top-three proposals enter the scale-gated active belief. Public access,
+traversability, ordered/commanded-view causality, tracking, reacquisition,
+guidance, arrival, user benefit, and safety remain unproved. SkyDiscover policy
+search remains blocked until a genuine ordered or commanded real episode is
+available; the obsolete oracle benchmark family is excluded from the route.
 
 ## DTR-R2 decision
 

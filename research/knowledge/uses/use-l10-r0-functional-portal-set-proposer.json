@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-functional-portal-set-proposer",
+  "item_id": "algorithm-functional-portal-set-proposer",
+  "route": "l10-r0",
+  "mechanism_ids": ["dual-family-functional-portal-set"],
+  "use_state": "active",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Mechanism development on the consumed two-frame IFC proxy and six-building v2 cohort, followed by one frozen fresh six-building Commons confirmation cohort with human portal-set regions fixed before execution.",
+    "project_application": "Replace generic single-box door proposals with a top-three functional entrance set before scale-gated active observation, tracking, and reacquisition. Admit it only after a separate target-entity lock.",
+    "modifications": "Fuse repeated-post door lattices with paired vertical handle apertures. Adjacent leaves are one functional portal identity, not same-class distractors.",
+    "expected_effect": "Restore correct entrance proposal availability without OCR and without forcing premature unique-door selection."
+  },
+  "evaluation": {
+    "reproduction_status": "reproduced",
+    "verdict": "positive",
+    "setup": "One-shot unchanged dual-family v3 execution on six frozen, previously unopened named public-building glass entrances. The fresh gate required top-three portal-set retention on at least four of six frames.",
+    "effect": "The fresh cohort achieved top-one truth retention on 5/6 frames and top-three retention on 6/6, passing the 4/6 gate. Among the stored top ten proposals per image, 50/60 belonged to the functional portal region; 14/18 top-three proposals did so. No OCR or learned model inference was used.",
+    "metrics": [
+      "fresh_frames=6",
+      "top1_truth_retention=5/6",
+      "top1_truth_recall=0.833333",
+      "top3_truth_retention=6/6",
+      "top3_truth_recall=1.0",
+      "stored_top10_membership_precision=50/60",
+      "top3_membership_precision=14/18",
+      "ocr_calls=0"
+    ],
+    "claim_boundary": "This supports current-image functional glass-entrance proposal retention only. It does not establish requested-entity identity, public access, traversability, temporal tracking, active-view causality, guidance, arrival, product benefit, user benefit, or safety."
+  },
+  "evidence": [
+    {"kind": "repo", "ref": "research/active/l10-r0/named_poi_functional_portal_set_result_v1.json", "summary": "Frozen mechanism, fresh metrics, hashes, decision, next step, and claim ceiling."},
+    {"kind": "repo", "ref": "research/active/l10-r0/named_poi_portal_lattice_fresh_source_audit_v3.json", "summary": "Human functional portal-set regions frozen before the confirmation run."},
+    {"kind": "artifact", "ref": "artifacts.local/evidence/l10-r0/named-poi-portal-lattice-fresh-v3/result.json", "sha256": "3628b3a5799a214b741c7b374a037c51481252027044a64e84ae217c05e7c36f", "summary": "Fresh six-building per-frame proposal output."}
+  ],
+  "history": [
+    {"date": "2026-08-29", "change": "Changed the information representation from generic entrance boxes to functional portal sets. Added a paired-handle family after the consumed lattice-only cohort, then passed the untouched six-building confirmation gate at 6/6 top-three retention."}
+  ],
+  "added_at": "2026-08-29",
+  "updated_at": "2026-08-29"
+}

@@ -1353,12 +1353,30 @@ Result:
 SHA-256 `4562009edb5b3e150644dfc4a727bfd907135b13757bb8f046a7606da4d1e0c8`.
 Do not tune prompts, ray thresholds, or policy on this consumed prefix.
 
-SkyDiscover now has a new `blindassist_last10m_perception_1` contract built
-from scratch around real `SEARCH / SET_VALUED / COMMIT / REACQUIRE` states,
-hard wrong-portal gates, and AdaEvolve Pareto objectives. Its checked episodes
-are mechanics-only. The real prefix is archived as a search-blocking artifact:
-policy search starts only after a new portal-set proposal representation retains
-truth. The obsolete oracle benchmark family is excluded from this route.
+The missing representation is now implemented without OCR. A dual-family
+functional portal-set proposer groups repeated aligned door posts into one
+multi-leaf entrance and pairs aligned vertical handles to infer an aperture;
+adjacent leaves therefore no longer compete as distinct target identities. The
+first frozen six-building lattice-only cohort retained portal truth in the top
+three on `3/6` frames and failed its `>=4/6` gate. After that cohort was consumed,
+the handle-pair family raised mechanism-development retention to `5/6`. The
+unchanged dual-family proposer then ran once on six previously unopened named
+public-building glass entrances: top-one truth retention was `5/6`, top-three
+retention was `6/6`, `50/60` stored top-ten candidates and `14/18` top-three
+candidates belonged to the frozen functional portal regions. The frozen gate
+passed. The earlier Central Station source was correctly marked
+`NOT_EVALUABLE` before any algorithm call because five of six images were
+exhibition walls and the remaining view was ambiguous.
+
+Record `RETAIN_DUAL_FAMILY_FUNCTIONAL_PORTAL_SET_PROPOSER`. This crosses the
+current-image real glass-entrance proposal bottleneck; it does not establish
+requested-entity identity, public access, traversability, temporal tracking,
+active-view causality, guidance, arrival, user benefit, or safety. Downstream
+admission is therefore: separate target-entity lock, then top-three functional
+portal proposals, then the scale-gated active entrance belief. A genuinely
+ordered or commanded-view source is still required before policy search or
+temporal claims. The obsolete oracle benchmark family remains outside this
+route.
 
 V2 result:
 `artifacts.local/evidence/l10-r0/named-poi-multifacet-entrance-v2/result.json`,

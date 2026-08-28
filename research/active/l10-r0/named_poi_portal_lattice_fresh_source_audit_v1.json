@@ -1,0 +1,19 @@
+{
+  "schema": "l10-named-poi-portal-lattice-fresh-source-audit-v1",
+  "source_manifest": "artifacts.local/knowledge/named-poi-portal-lattice-fresh-v1/source_manifest.json",
+  "pixel_access": "ONE_SOURCE_AUDIT_BEFORE_ALGORITHM_EXECUTION",
+  "decision": "NOT_EVALUABLE_INSUFFICIENT_FUNCTIONAL_PORTAL_SET_FRAMES",
+  "evaluable_frames": [],
+  "frame_audit": {
+    "1": "One wrapped double-door-like structure is visible, but it is integrated into the exhibition treatment and is not sufficient to establish an actionable station portal set.",
+    "2": "Exhibition wall only; no portal.",
+    "3": "Exhibition wall only; no portal.",
+    "4": "Exhibition wall only; no portal.",
+    "5": "Exhibition wall only; no portal.",
+    "6": "Wayfinding sign points toward exits, but the actionable portal is outside the image."
+  },
+  "algorithm_calls": 0,
+  "reason": "The frozen gate required at least three pixel-boxable repeated-post door banks or gate lattices. The source supplies none with sufficient actionability authority.",
+  "next_information_change": "Query Commons door, gate, and entrance-structure categories directly. Do not use location-level exit metadata as current-view portal truth.",
+  "claim_boundary": "This is a source negative, not an algorithm negative. It does not evaluate portal lattice proposals, identity, navigation, arrival, benefit, or safety."
+}
