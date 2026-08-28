@@ -146,6 +146,22 @@ After `PROJECT_STATE.md`, read only the route needed for the task:
   unavailable accelerator, idle GPU, CPU-only execution, and partial or full CPU
   fallback; do not silently continue under a fallback while describing the run
   as GPU-accelerated. Speed is not algorithmic evidence.
+- Classify each research workload before launch. Model inference, batch tensor
+  work, and large point-cloud matching are GPU-first: run a short equivalent
+  CPU/GPU probe on representative inputs and use the faster backend, preferring
+  GPU on a tie. Download, decompression/archive work, JSON/metadata handling, and
+  small scalar scoring stay on CPU and do not need a GPU benchmark.
+- A GPU-first workload may select CPU only with a launch record that says either
+  `CPU_FASTER_MEASURED`, `TASK_NOT_GPU_SUITABLE`, `ACCELERATOR_UNAVAILABLE`,
+  `GPU_BACKEND_UNAVAILABLE`, or `FROZEN_PROTOCOL_CPU_ONLY`; measured selection
+  must include both probe timings. Never silently choose CPU from
+  `torch.cuda.is_available()` or provider fallback.
+- GPU-capable experiments must persist the actual framework-reported device,
+  device name, framework/provider list, selection reason, and probe timings in
+  their result or adjacent launch record. A declared CUDA backend that observes
+  CPU tensors or only `CPUExecutionProvider` is a failed launch. Reuse
+  `tools/research_backend.py` for this contract rather than inventing a weaker
+  per-script check.
 
 ## Workspace ownership and delivery
 
