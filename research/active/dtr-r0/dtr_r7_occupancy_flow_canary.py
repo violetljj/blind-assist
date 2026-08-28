@@ -201,6 +201,24 @@ def _causal_pose(samples: Sequence[dict[str, Any]], target_ns: int) -> dict[str,
     }
 
 
+def _sweep_pose(samples: Sequence[dict[str, Any]], target_ns: int) -> dict[str, Any]:
+    """Align a LiDAR sweep, allowing only a bounded first-pose bootstrap."""
+    times = [int(row["timestamp_ns"]) for row in samples]
+    index = bisect.bisect_right(times, target_ns) - 1
+    if index >= 0:
+        return _causal_pose(samples, target_ns)
+    require(bool(samples), f"sweep_pose_unavailable:{target_ns}")
+    row = samples[0]
+    lead_s = (int(row["timestamp_ns"]) - target_ns) / 1e9
+    require(lead_s <= LIDAR_MAX_AGE_S + 1e-12, f"sweep_pose_lead_excessive:{lead_s}")
+    return {
+        "x_m": float(row["translation"][0]),
+        "y_m": float(row["translation"][1]),
+        "yaw_rad": yaw_from_q(row["quaternion_xyzw"]),
+        "causal_age_s": -lead_s,
+    }
+
+
 def _ego_to_world(points: Any, pose: dict[str, Any]) -> Any:
     import numpy as np
 
@@ -375,12 +393,18 @@ def materialize_flow_ledger(
     output_path: Path,
     manifest_path: Path,
     config: FlowConfig = FROZEN_FLOW_CONFIG,
+    sequence: str = SEQUENCE,
+    timestamps_override: dict[int, float] | None = None,
 ) -> dict[str, Any]:
     import numpy as np
     from rosbags.rosbag1 import Reader
     from rosbags.typesys import Stores, get_types_from_msg, get_typestore
 
-    timestamps = load_image_timestamps(timestamps_path)
+    timestamps = (
+        load_image_timestamps(timestamps_path)
+        if timestamps_override is None
+        else dict(timestamps_override)
+    )
     frames = np.asarray(sorted(timestamps), dtype=np.int32)
     target_ns = [round(timestamps[int(frame)] * 1e9) for frame in frames]
     frame_by_index = {index: int(frame) for index, frame in enumerate(frames)}
@@ -449,7 +473,7 @@ def materialize_flow_ledger(
                     [xyz, np.ones((len(xyz), 1), dtype=np.float64)], axis=1
                 ).T
                 ego_xyz = (transforms[sensor] @ homogeneous)[:3].T
-                sweep_pose = _causal_pose(poses, selected[0])
+                sweep_pose = _sweep_pose(poses, selected[0])
                 decoded[key] = _ego_to_world(ego_xyz, sweep_pose)
             parts.append(decoded[key])
         world = np.concatenate(parts) if parts else np.empty((0, 3), dtype=np.float64)
@@ -469,6 +493,8 @@ def materialize_flow_ledger(
     velocity_forward_rows = []
     velocity_left_rows = []
     component_rows = []
+    support_rows = []
+    source_count_rows = []
     offsets = [0]
     frame_counts = {}
     match_counts = {}
@@ -483,6 +509,8 @@ def materialize_flow_ledger(
         frame_vf = []
         frame_vl = []
         frame_component = []
+        frame_support = []
+        frame_source_count = []
         matches = []
         if history is not None:
             span_s = times_s[index] - times_s[history]
@@ -503,6 +531,8 @@ def materialize_flow_ledger(
                 frame_vf.extend([float(velocity_ego[0])] * len(centers_ego))
                 frame_vl.extend([float(velocity_ego[1])] * len(centers_ego))
                 frame_component.extend([local_component_id] * len(centers_ego))
+                frame_support.extend([float(overlap)] * len(centers_ego))
+                frame_source_count.extend([len(component.keys)] * len(centers_ego))
                 overlap_values.append(overlap)
                 speed_values.append(math.hypot(vx, vy))
         forward_rows.append(np.asarray(frame_forward, dtype=np.float32))
@@ -510,18 +540,32 @@ def materialize_flow_ledger(
         velocity_forward_rows.append(np.asarray(frame_vf, dtype=np.float32))
         velocity_left_rows.append(np.asarray(frame_vl, dtype=np.float32))
         component_rows.append(np.asarray(frame_component, dtype=np.int32))
+        support_rows.append(np.asarray(frame_support, dtype=np.float32))
+        source_count_rows.append(np.asarray(frame_source_count, dtype=np.int32))
         offsets.append(offsets[-1] + len(frame_forward))
         frame_counts[f"{frame:06d}"] = len(frame_forward)
         match_counts[f"{frame:06d}"] = len(matches)
 
     arrays = {
         "frames": frames,
+        "frame_time_s": np.asarray(times_s, dtype=np.float64),
+        "frame_ego_x_m": np.asarray(
+            [frame_poses[int(frame)]["x_m"] for frame in frames], dtype=np.float64
+        ),
+        "frame_ego_y_m": np.asarray(
+            [frame_poses[int(frame)]["y_m"] for frame in frames], dtype=np.float64
+        ),
+        "frame_ego_yaw_rad": np.asarray(
+            [frame_poses[int(frame)]["yaw_rad"] for frame in frames], dtype=np.float64
+        ),
         "offsets": np.asarray(offsets, dtype=np.int64),
         "forward_m": np.concatenate(forward_rows),
         "left_m": np.concatenate(left_rows),
         "velocity_forward_mps": np.concatenate(velocity_forward_rows),
         "velocity_left_mps": np.concatenate(velocity_left_rows),
         "component_id": np.concatenate(component_rows),
+        "flow_support": np.concatenate(support_rows),
+        "source_point_count": np.concatenate(source_count_rows),
     }
     atomic_npz(output_path, **arrays)
     z_values = np.concatenate(z_samples) if z_samples else np.empty(0)
@@ -539,8 +583,12 @@ def materialize_flow_ledger(
     manifest = {
         "schema_version": LEDGER_SCHEMA,
         "truth_blind": True,
-        "sequence": SEQUENCE,
-        "frames": {"first": FIRST_FRAME, "last": LAST_FRAME, "count": len(frames)},
+        "sequence": sequence,
+        "frames": {
+            "first": int(frames[0]),
+            "last": int(frames[-1]),
+            "count": len(frames),
+        },
         "causal_inputs": "current/past raw upper+lower Velodyne and odom->base_link pose only",
         "forbidden_inputs": [
             "evaluator physical ID",
@@ -583,6 +631,7 @@ def materialize_flow_ledger(
             "shape_overlap": summary(overlap_values),
             "dynamic_speed_mps": summary(speed_values),
             "dynamic_cells_total": int(len(arrays["forward_m"])),
+            "dynamic_cell_support": summary(arrays["flow_support"]),
             "frames_with_dynamic_cells": sum(value > 0 for value in frame_counts.values()),
         },
         "ledger": str(output_path),
@@ -592,7 +641,13 @@ def materialize_flow_ledger(
     return manifest
 
 
-def load_flow_ledger(path: Path, manifest_path: Path) -> FlowLedger:
+def load_flow_ledger(
+    path: Path,
+    manifest_path: Path,
+    *,
+    expected_sequence: str = SEQUENCE,
+    expected_frames: Sequence[int] | None = None,
+) -> FlowLedger:
     import numpy as np
 
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -606,8 +661,13 @@ def load_flow_ledger(path: Path, manifest_path: Path) -> FlowLedger:
     require(sha256_file(path) == manifest["ledger_sha256"], "flow_ledger_hash_drift")
     values = np.load(path, allow_pickle=False)
     frames = values["frames"]
-    require(len(frames) == LAST_FRAME - FIRST_FRAME + 1, "flow_ledger_frame_count")
-    require(int(frames[0]) == FIRST_FRAME and int(frames[-1]) == LAST_FRAME, "flow_ledger_frame_range")
+    expected = (
+        list(range(FIRST_FRAME, LAST_FRAME + 1))
+        if expected_frames is None
+        else [int(frame) for frame in expected_frames]
+    )
+    require(manifest.get("sequence") == expected_sequence, "flow_ledger_sequence")
+    require(frames.tolist() == expected, "flow_ledger_frame_range")
     return FlowLedger(
         frames=frames,
         offsets=values["offsets"],

@@ -46,6 +46,7 @@ from dtr_r7_occupancy_flow_canary import (
     _ego_to_world,
     _rotate_world_velocity_to_ego,
     _sensor_to_ego,
+    _sweep_pose,
     _world_to_ego_xy,
     atomic_npz,
     evaluate_original,
@@ -138,11 +139,13 @@ def load_native_boxes(
     labels_path: Path,
     timestamps: dict[int, float],
     frame_poses: dict[int, dict[str, Any]],
+    *,
+    sequence: str = SEQUENCE,
 ) -> dict[int, list[NativeBox]]:
     with zipfile.ZipFile(labels_path) as bundle:
-        values = json.loads(bundle.read(f"labels/labels_3d/{SEQUENCE}.json"))["labels"]
+        values = json.loads(bundle.read(f"labels/labels_3d/{sequence}.json"))["labels"]
     output: dict[int, list[NativeBox]] = {}
-    for frame in range(FIRST_FRAME, LAST_FRAME + 1):
+    for frame in sorted(timestamps):
         pose = frame_poses[frame]
         boxes = []
         for item in values[f"{frame:06d}.pcd"]:
@@ -179,7 +182,7 @@ def _box_history(
 ) -> dict[tuple[int, str], NativeBox]:
     history: dict[tuple[int, str], NativeBox] = {}
     seen: dict[str, list[NativeBox]] = {}
-    for frame in range(FIRST_FRAME, LAST_FRAME + 1):
+    for frame in sorted(boxes_by_frame):
         for current in boxes_by_frame.get(frame, ()):
             candidates = [
                 previous
@@ -205,6 +208,7 @@ def load_world_clouds(
     bag_path: Path,
     timestamps_path: Path,
     calibration_dir: Path,
+    timestamps_override: dict[int, float] | None = None,
 ) -> tuple[
     Any,
     dict[int, float],
@@ -216,7 +220,11 @@ def load_world_clouds(
     from rosbags.rosbag1 import Reader
     from rosbags.typesys import Stores, get_types_from_msg, get_typestore
 
-    timestamps = load_image_timestamps(timestamps_path)
+    timestamps = (
+        load_image_timestamps(timestamps_path)
+        if timestamps_override is None
+        else dict(timestamps_override)
+    )
     frames = np.asarray(sorted(timestamps), dtype=np.int32)
     target_ns = [round(timestamps[int(frame)] * 1e9) for frame in frames]
     frame_by_index = {index: int(frame) for index, frame in enumerate(frames)}
@@ -284,7 +292,7 @@ def load_world_clouds(
                     [xyz, np.ones((len(xyz), 1), dtype=np.float64)], axis=1
                 ).T
                 ego_xyz = (transforms[sensor] @ homogeneous)[:3].T
-                decoded[key] = _ego_to_world(ego_xyz, _causal_pose(poses, selected[0]))
+                decoded[key] = _ego_to_world(ego_xyz, _sweep_pose(poses, selected[0]))
             parts.append(decoded[key])
         world_clouds.append(
             np.concatenate(parts) if parts else np.empty((0, 3), dtype=np.float64)
@@ -462,6 +470,8 @@ def materialize_oracle_ledger(
     labels_path: Path,
     output_path: Path,
     manifest_path: Path,
+    sequence: str = SEQUENCE,
+    timestamps_override: dict[int, float] | None = None,
 ) -> dict[str, Any]:
     import numpy as np
 
@@ -469,8 +479,14 @@ def materialize_oracle_ledger(
         bag_path=bag_path,
         timestamps_path=timestamps_path,
         calibration_dir=calibration_dir,
+        timestamps_override=timestamps_override,
     )
-    boxes_by_frame = load_native_boxes(labels_path, timestamps, frame_poses)
+    boxes_by_frame = load_native_boxes(
+        labels_path,
+        timestamps,
+        frame_poses,
+        sequence=sequence,
+    )
     history = _box_history(boxes_by_frame)
     label_indices = {
         label: index
@@ -496,6 +512,18 @@ def materialize_oracle_ledger(
 
     arrays = {
         "frames": frames,
+        "frame_time_s": np.asarray(
+            [timestamps[int(frame)] for frame in frames], dtype=np.float64
+        ),
+        "frame_ego_x_m": np.asarray(
+            [frame_poses[int(frame)]["x_m"] for frame in frames], dtype=np.float64
+        ),
+        "frame_ego_y_m": np.asarray(
+            [frame_poses[int(frame)]["y_m"] for frame in frames], dtype=np.float64
+        ),
+        "frame_ego_yaw_rad": np.asarray(
+            [frame_poses[int(frame)]["yaw_rad"] for frame in frames], dtype=np.float64
+        ),
         "offsets": np.asarray(offsets, dtype=np.int64),
         "forward_m": np.concatenate([row["forward"] for row in rows]),
         "left_m": np.concatenate([row["left"] for row in rows]),
@@ -516,8 +544,12 @@ def materialize_oracle_ledger(
         "schema_version": LEDGER_SCHEMA,
         "oracle": True,
         "truth_blind": False,
-        "sequence": SEQUENCE,
-        "frames": {"first": FIRST_FRAME, "last": LAST_FRAME, "count": len(frames)},
+        "sequence": sequence,
+        "frames": {
+            "first": int(frames[0]),
+            "last": int(frames[-1]),
+            "count": len(frames),
+        },
         "motion_source": (
             "current raw LiDAR point plus current/native past 3-D box piecewise-rigid velocity"
         ),
@@ -558,7 +590,13 @@ def materialize_oracle_ledger(
     return manifest
 
 
-def load_oracle_ledger(path: Path, manifest_path: Path) -> FlowLedger:
+def load_oracle_ledger(
+    path: Path,
+    manifest_path: Path,
+    *,
+    expected_sequence: str = SEQUENCE,
+    expected_frames: Sequence[int] | None = None,
+) -> FlowLedger:
     import numpy as np
 
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -568,8 +606,13 @@ def load_oracle_ledger(path: Path, manifest_path: Path) -> FlowLedger:
     require(sha256_file(path) == manifest["ledger_sha256"], "oracle_ledger_hash_drift")
     values = np.load(path, allow_pickle=False)
     frames = values["frames"]
-    require(len(frames) == LAST_FRAME - FIRST_FRAME + 1, "oracle_frame_count")
-    require(int(frames[0]) == FIRST_FRAME and int(frames[-1]) == LAST_FRAME, "oracle_frame_range")
+    expected = (
+        list(range(FIRST_FRAME, LAST_FRAME + 1))
+        if expected_frames is None
+        else [int(frame) for frame in expected_frames]
+    )
+    require(manifest.get("sequence") == expected_sequence, "oracle_sequence")
+    require(frames.tolist() == expected, "oracle_frame_range")
     require("flow_support" in values.files, "flow_support_missing")
     return FlowLedger(
         frames=frames,

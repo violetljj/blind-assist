@@ -10,6 +10,7 @@ DTR_M2_D_EXTENT_GAP_NOT_SUPPORTED_NO_FRESH_M2_O /
 DTR_M3_D_EVALUATOR_CIRCLE_OBB_SEMANTICS_MISMATCH_NO_FRESH_M3_O /
 DTR_C0_GLOBAL_ORIENTED_RISK_CONTRACT_NOT_EVALUABLE_ALWAYS_CONTACT_WINDOW /
 DTR_C1_FRESH_GLOBAL_OBB_COHORT_ADMITTED_METADATA_ONLY /
+DTR_C2_M1_CTB_CONFIDENCE_TRACK_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL /
 R4_NOT_OPENED`
 
 ## Result first
@@ -483,6 +484,59 @@ Evidence:
   `65dba763bdcc01eeaac72c060b63b032fdbf35d60a2ec8c5d396ca209df647dc`;
 - bounded-event table `result.events.csv`, SHA-256
   `2180a7eb199b8652e50f853321b970f41b328459918aab432e76c9120819b64d`.
+
+## DTR-C2 confidence-aware scene motion and track-gap bridge
+
+C2 acquired only the seven frozen C1 raw bags and replayed the corrected
+wearer-global future-OBB CONTACT contract without route, lifecycle, motion-bound,
+training, or threshold changes. R7-P and M1-CT build temporal motion without
+evaluator identity; current native boxes remain a privileged scorer-side
+spatial attribution ceiling. M1-O remains label-derived. C2 is therefore an
+algorithm/mechanics replay, not a deployable sensor result.
+
+M1-CT adds three causal requirements to every admitted raw-LiDAR occupancy-cell
+velocity: current and past spatial support, ego-compensated forward-advection
+agreement, and velocity consistency with an independent historical sweep. Its
+confidence is the minimum of those terms. M1-CTB then opens a second, narrow
+channel: unfiltered dense motion can bypass confidence only inside an observable
+bounded gap of a previously tracked target. It can bridge occlusion, but cannot
+originate a detector-independent alert.
+
+| Arm | CONTACT recall | False segments | False / non-CONTACT min | Event F1 | Median lead | Dropout recovery |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| R2 track-only | `20/21` | 29 | 4.25 | **57.14%** | 2.05 s | `0/63` |
+| R3-C ceiling | **`21/21`** | 36 | 5.27 | 53.85% | 2.09 s | not scored |
+| R7-P naive dense flow | `20/21` | **90** | 13.18 | 30.53% | **2.44 s** | `29/63` |
+| M1-O label point-velocity ceiling | `19/21` | 86 | 12.60 | 30.16% | 3.68 s | **`50/63`** |
+| M1-CT confidence + consistency | `20/21` | **38** | **5.57** | **50.63%** | 2.08 s | `18/63` |
+| **M1-CTB + bounded track-gap bridge** | **`20/21`** | **38** | **5.57** | **50.63%** | **2.08 s** | **`29/63`** |
+
+Relative to R7-P, M1-CT removes 52 false segments (`57.8%`) while preserving
+`20/21` CONTACT recall. F1 rises `30.53% -> 50.63%` (+20.10 percentage points)
+and median lead remains above two seconds. Confidence alone discards useful
+low-confidence occlusion evidence (`18/63` versus R7's `29/63`); the track-gap
+bridge restores all recovery available from R7 without reopening those cells as
+independent natural-replay alerts. On the earlier consumed R7 stress this same
+composition preserves R7's `9/9` by construction: inside a declared track gap,
+M1-CTB is exactly R7-P.
+
+Decision:
+`DTR_C2_M1_CTB_CONFIDENCE_TRACK_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL`. This is a
+strong fresh mechanism result, but not yet a wholesale R2 replacement: R2 still
+has fewer natural false segments (29 versus 38) and higher natural F1 (57.14%
+versus 50.63%). The next information-bearing increment is a deployable raw-point
+direct-velocity source behind the now-supported confidence/bridge interface,
+with measured GPU selection; do not rescue C2 with route or confidence-threshold
+sweeps. Complex trajectory forecasting and R8 remain closed.
+
+Evidence:
+
+- `artifacts.local/evidence/dtr-c2/fresh-global-obb-replay/result.json`, SHA-256
+  `9c19bfcd09c0ee82e485e72d24b27021b862579b29cf40e856ce84e6412d6a8d`;
+- scorecard `result.scorecard.csv`, SHA-256
+  `17eb81de3fc74e51ffd7f43ec9d337a81a52dfdc6392431f6ac85ff4af85f75f`;
+- frozen-bag acquisition receipt `acquisition.json`, SHA-256
+  `774f5a7b3dcf4ecfc87e69f3c25a3fb36699dcaddb482a679b785d074dd4ad67`.
 
 The source split explains why pooling is not enough:
 

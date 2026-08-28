@@ -127,6 +127,19 @@ future replay denominators, but C1 is not an algorithm result. Raw-sensor
 acquisition plus unchanged R2/R3-C/R7-P/M1-O replay is a separate next stage;
 forecasting, R8, TeFlow/DeltaFlow, estimator competition, and training remain
 closed.
+That C2 replay is now complete. Across seven fresh sequences and 21 bounded
+CONTACT events, R7-P recalled `20/21` with 90 false segments and 30.53% F1.
+Confidence plus identity-free temporal consistency retained `20/21`, reduced
+false segments to 38 (`-57.8%`), raised F1 to 50.63%, and retained 2.08 s median
+lead. Confidence alone recovered `18/63` induced track gaps versus R7's `29/63`.
+M1-CTB therefore permits raw dense motion only inside an observable bounded gap
+of a previously tracked target; it restores `29/63` while keeping natural scores
+identical to M1-CT. This is
+`DTR_C2_M1_CTB_CONFIDENCE_TRACK_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL`, not a full
+R2 replacement: R2 still has 29 natural false segments and 57.14% F1. The next
+source upgrade is deployable raw-point direct velocity behind the supported
+confidence/bridge interface, not route-threshold tuning or trajectory
+forecasting.
 
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC

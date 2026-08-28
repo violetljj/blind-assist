@@ -14,6 +14,7 @@ SC28_REDUNDANCY_GATED_ACTION_FAMILY_CONSUMED_MECHANICS_SIGNAL /
 SC29_REDUNDANCY_GATED_ACTION_FAMILY_FRESH_GATE_NOT_MET /
 SC31_CONFLICT_ADMITTED_REDUNDANCY_GATED_FRESH_DEVELOPMENT_SIGNAL` and
 `DTR_R2_PUBLIC_REAL_PRIVILEGED_CEILINGS_ESTABLISHED /
+DTR_C2_M1_CTB_CONFIDENCE_TRACK_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
 ## Parallel product lines
@@ -500,6 +501,31 @@ the unchanged four arms without training or tuning. Dropout uses only the 21
 unique-first-responsible events and remains a mechanism secondary. Forecasting,
 R8, TeFlow, DeltaFlow, and deployable estimator work remain closed until the
 fresh global replay is adjudicated.
+
+C2 has now adjudicated that replay without changing route geometry, lifecycle,
+motion bounds, or thresholds. R7-P recalled `20/21` bounded CONTACT events but
+created 90 false segments (13.18 per known non-CONTACT minute), for 30.53% F1.
+M1-CT requires raw-LiDAR motion to carry spatial support, ego-compensated
+forward-advection agreement, and velocity consistency with an independent
+historical sweep. It preserved `20/21`, cut false segments to 38 (`-57.8%`),
+raised F1 to 50.63%, and retained 2.08 s median lead.
+
+That confidence gate alone reduced induced-gap recovery from R7's `29/63` to
+`18/63`. M1-CTB therefore keeps a second channel closed by default and admits
+raw dense motion only during an observable bounded gap of a previously tracked
+target. Natural-replay scores remain exactly M1-CT, while recovery returns to
+`29/63`. Accept
+`DTR_C2_M1_CTB_CONFIDENCE_TRACK_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL` as fresh
+evidence that confidence-aware scene motion can suppress pseudo-motion without
+sacrificing the occlusion recovery already available from dense flow.
+
+This does not yet authorize wholesale R2 replacement: R2 has the same `20/21`
+recall with 29 false segments and 57.14% F1 on natural replay. Current native
+boxes are also a privileged spatial-attribution ceiling. The next DTR increment
+may replace the occupancy-cell motion source with deployable raw-point direct
+velocity behind the now-supported confidence/track-gap interface, using measured
+GPU backend selection. Do not tune C2 confidence, route, lifecycle, or motion
+thresholds; do not open complex trajectory forecasting or R8 from this result.
 
 ## What stops here
 
