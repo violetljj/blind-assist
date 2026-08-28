@@ -169,10 +169,20 @@ three-frame confidence. Every arm retained C11's `17/20` recall. C16 improved
 lead to `1.726 s` but raised false segments to 13; C17 reduced false segments to
 8 and reached `75.56%` F1 but delayed median lead to `1.062 s`; C18 reached 9
 false segments and `73.91%` F1 at `1.079 s` lead. No arm met the joint frozen
-gate, so no algorithm-fresh sequence was opened. The evidence now supports a
-two-channel successor that keeps early signed route-conflict mass separate
-from three-frame motion confidence and learns one training-only joint
-calibration. Threshold, duration, route, and lifecycle tuning remain closed.
+gate, so no algorithm-fresh sequence was opened.
+
+C19--C21 then closed three attempts to extract a reliable mover decision from
+the same LiDAR pseudo-flow. Fixed two-channel calibration reached `17/20`, 12
+false segments, `69.39%` F1, and `1.268 s` lead; local position/velocity voting
+was nearly universally supported and reproduced C16; global median scene-bias
+subtraction reached `18/20` but raised false segments to 18 and reduced F1 to
+`64.29%`. The remaining fresh cohort stayed sealed. The structural result is
+that the false motion is locally coherent and cannot be removed by another
+downstream fusion or one global background vector. C22 must change the source:
+compare RGB short point tracks with ego-induced rigid image trajectories and
+lift independent-motion residual confidence into LiDAR cells before unchanged
+route risk. Threshold, duration, route, lifecycle, score-fusion, local-vote,
+and global-bias tuning are closed.
 
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC

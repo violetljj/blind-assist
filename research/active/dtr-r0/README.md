@@ -23,6 +23,9 @@ DTR_C15_COMPONENT_VELOCITY_MIXTURE_DEVELOPMENT_GATE_NOT_MET /
 DTR_C16_EMPIRICAL_VELOCITY_MODES_DEVELOPMENT_GATE_NOT_MET /
 DTR_C17_TEMPORAL_ROUTE_CONSENSUS_DEVELOPMENT_GATE_NOT_MET /
 DTR_C18_THREE_FRAME_MOTION_CONFIDENCE_DEVELOPMENT_GATE_NOT_MET /
+DTR_C19_JOINT_MOTION_CONFIDENCE_DEVELOPMENT_GATE_NOT_MET /
+DTR_C20_LOCAL_MOTION_VOTING_DEVELOPMENT_GATE_NOT_MET /
+DTR_C21_SCENE_BIAS_RESIDUAL_MOTION_DEVELOPMENT_GATE_NOT_MET /
 R4_NOT_OPENED`
 
 ## Result first
@@ -1403,11 +1406,10 @@ was opened.  Result SHA-256 values are:
 - C17: `13ec91eead39222b01616d1145d5e9e2d32b155aa735d97d1f19418bfd901727`;
 - C18: `89c561b7d2fcd601e7e1a77ba4c5061028de87f9c9bdc4039b165e2cf66a48c7`.
 
-The next representation is not another hard gate or route-threshold sweep.
-It should retain C16's early route-conflict mass and C18's three-frame
-confidence as separate channels, then learn one fixed training-only joint
-calibration.  That directly tests whether early motion and trustworthy motion
-are complementary instead of forcing either to erase the other.
+C19 therefore froze C16's early route-conflict mass and C18's three-frame
+confidence as separate channels and learned one training-only joint
+calibration.  This tested whether early motion and trustworthy motion were
+complementary without changing the downstream decision contract.
 
 This route follows dynamic occupancy work that preserves a velocity
 distribution separately from occupancy confidence
@@ -1423,6 +1425,60 @@ and inference ran through the shared research launcher.  Every representative
 CPU/GPU receipt observed a real CUDA tensor on the RTX 5060.  CPU was selected
 with `CPU_FASTER_MEASURED` because these batches took microseconds to a few
 milliseconds on NumPy and CUDA launch/transfer overhead dominated.
+
+## DTR-C19--C21 coherent pseudo-motion closures
+
+C19--C21 kept the same consumed four-sequence Development cohort and the C11
+route, probability, maintenance, and lifecycle contract fixed.  They tested
+three mechanisms without opening the remaining algorithm-fresh sequences:
+
+- C19 fit one fixed L2 logistic calibration over the standardized C16 early
+  score and C18 three-frame confidence.  Both learned coefficients were
+  positive (`0.445112`, `0.172793`), so confidence did not learn a veto; the
+  fusion instead averaged away early evidence.
+- C20 multiplied pair confidence by a threshold-free Gaussian neighborhood
+  vote over position and velocity agreement.  Nearly every cell received local
+  support (for example `44,509/44,562` on `clark-center-2019-02-28_0`), and its
+  event metrics were identical to C16.  The false motion is locally coherent,
+  not a sparse outlier population.
+- C21 subtracted the coordinate-wise median scene velocity from both signed
+  empirical modes.  It recovered one additional event but produced 18 false
+  segments, showing that a global median is not a valid static-background
+  estimator in crowded or co-moving scenes.
+
+| arm | recall | false segments | event F1 | median lead | lead gain vs C11 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| frozen C11 `M1_RROQ_GLOBAL` | `17/20` | 11 | 70.83% | 1.455 s | -- |
+| C19 joint calibration | `17/20` | 12 | 69.39% | 1.268 s | -0.187 s |
+| C20 local motion vote | `17/20` | 13 | 68.00% | 1.726 s | +0.272 s |
+| C21 scene-bias residual | `18/20` | 18 | 64.29% | 1.396 s | -0.059 s |
+
+None met the frozen gate, so the fresh cohort remains sealed.  Result SHA-256
+values are:
+
+- C19: `fe49132e642b6925bb802bbceb7ed2f05378627d5b15151b33ccc4fdbd752c5a`;
+- C20: `897d56ad5f8de62dd3b743f349835fbcaf646104863013c7bde12e84a6ca6858`;
+- C21: `ea29f38ec1f1bde2713c1e2f042eabbf775ceddc5d89c6ab615cec0bfaf2488c`.
+
+This closes downstream fusion, local rigidity voting, and single-vector scene
+bias subtraction on the current LiDAR pseudo-flow.  The next admissible source
+change is C22: compare short RGB point tracks with ego-induced rigid image
+trajectories, treat their residual as independent-motion confidence, and lift
+that cue through existing calibration into LiDAR cells before route risk.  This
+follows the independent-motion residual used by
+[SLIM](https://openaccess.thecvf.com/content/ICCV2021/papers/Baur_SLIM_Self-Supervised_LiDAR_Scene_Flow_and_Motion_Segmentation_ICCV_2021_paper.pdf)
+and the local rigidity evidence in
+[VoteFlow](https://openaccess.thecvf.com/content/CVPR2025/papers/Lin_VoteFlow_Enforcing_Local_Rigidity_in_Self-Supervised_Scene_Flow_CVPR_2025_paper.pdf),
+but changes the information source because C20 shows that local rigidity alone
+cannot separate BlindAssist's coherent pseudo-motion.  These papers motivate
+the component only; they do not establish BlindAssist performance.
+
+All C19--C21 work used the shared research launcher after the DTR doctor passed.
+Representative receipts verified real RTX 5060 CUDA execution.  C19 probability
+inference selected GPU because its measured time was equal/slightly faster
+(`0.4580 ms` versus `0.4586 ms` CPU).  The other small kernels selected CPU with
+`CPU_FASTER_MEASURED`; measured launch/transfer overhead made GPU roughly
+`5--40x` slower, rather than silently falling back from a declared GPU run.
 
 ## Claim ceiling
 

@@ -24,6 +24,9 @@ DTR_C15_COMPONENT_VELOCITY_MIXTURE_DEVELOPMENT_GATE_NOT_MET /
 DTR_C16_EMPIRICAL_VELOCITY_MODES_DEVELOPMENT_GATE_NOT_MET /
 DTR_C17_TEMPORAL_ROUTE_CONSENSUS_DEVELOPMENT_GATE_NOT_MET /
 DTR_C18_THREE_FRAME_MOTION_CONFIDENCE_DEVELOPMENT_GATE_NOT_MET /
+DTR_C19_JOINT_MOTION_CONFIDENCE_DEVELOPMENT_GATE_NOT_MET /
+DTR_C20_LOCAL_MOTION_VOTING_DEVELOPMENT_GATE_NOT_MET /
+DTR_C21_SCENE_BIAS_RESIDUAL_MOTION_DEVELOPMENT_GATE_NOT_MET /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
 ## Parallel product lines
@@ -787,10 +790,22 @@ route-entry consensus reduced false segments to 8 and raised F1 to `75.56%`,
 while lead fell to `1.062 s`. C18's frozen-scale three-frame chain retained
 `17/20`, 9 false segments, and `73.91%` F1, but lead remained `1.079 s`.
 Therefore accept the four Development closures and keep the remaining cohort
-sealed. They establish two complementary signals—early signed motion and
-temporally trustworthy motion—but no single scalar yet preserves both. The
-next admissible representation is a fixed training-only joint calibration of
-those two channels, not a threshold, duration, route, or lifecycle sweep.
+sealed. They establish two distinct signals—early signed motion and temporally
+trustworthy motion—but no single scalar yet preserves both.
+
+C19's fixed training-only joint calibration then retained `17/20` recall but
+produced 12 false segments, `69.39%` F1, and `1.268 s` median lead; both learned
+coefficients were positive, so confidence did not provide a learned veto. C20's
+threshold-free local position/velocity vote was almost universally supported
+and reproduced C16 (`17/20`, 13 false, `1.726 s` lead), proving the pseudo-motion
+is locally coherent rather than isolated. C21's coordinate-wise median scene
+bias subtraction reached `18/20` but also 18 false segments and only `64.29%`
+F1, so one global background motion is invalid in crowded/co-moving scenes.
+Accept all three Development closures and keep the remaining cohort sealed.
+The next admissible C22 changes the information source: RGB short point-track
+residual against ego-induced rigid image trajectories, lifted into LiDAR cells
+before unchanged route risk. Do not continue score fusion, local voting, global
+bias, threshold, duration, route, or lifecycle sweeps.
 
 ## What stops here
 
