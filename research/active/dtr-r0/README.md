@@ -16,6 +16,9 @@ DTR_C4_M1_CT_DETECTOR_INDEPENDENT_GLOBAL_RISK_DEVELOPMENT_SIGNAL /
 DTR_C5_CROSS_ESTIMATOR_CONSENSUS_DEVELOPMENT_NO_GAIN /
 DTR_C9_SELF_SUSTAINING_GLOBAL_RISK_BELIEF_DEVELOPMENT_SIGNAL /
 DTR_C10_FIXED_C9_ALGORITHM_FRESH_CONFIRMATION_SIGNAL /
+DTR_C11_ROUTE_REGION_OCCUPANCY_FRESH_SIGNAL /
+DTR_C12_C13_ROUTE_TIME_REPRESENTATIONS_DEVELOPMENT_GATE_NOT_MET /
+DTR_C14_STOCHASTIC_ROUTE_CONFLICT_DEVELOPMENT_GATE_NOT_MET /
 R4_NOT_OPENED`
 
 ## Result first
@@ -1310,6 +1313,50 @@ python research/active/dtr-r0/dtr_c1_global_obb_cohort_admission.py `
   --output artifacts.local/evidence/dtr-c1/global-obb-cohort-admission/result.json `
   --roster research/active/dtr-r0/dtr_c1_fresh_global_obb_roster.json
 ```
+
+## DTR-C14 confidence-covariant stochastic route conflict
+
+C14 tested the next representation change on the already consumed C11
+Development cohort; it did not change a route threshold.  It replayed the
+truth-blind R7-to-M1 temporal match and recovered each admitted cell's measured
+forward-advection residual, velocity disagreement, history span, and support.
+Those observations define block-diagonal position/velocity covariance.  A
+fixed third-degree cubature rule then advances eight equally weighted 4-D
+state points through the unchanged continuous route-collision geometry.
+
+The design follows three external mechanisms rather than importing a product
+claim: [forward stochastic reachability defines probability-weighted occupied
+sets](https://ar5iv.labs.arxiv.org/html/1803.07180),
+[RigidFlow++ uses spatial and forward/backward consistency to reject unreliable
+scene-flow correspondences](https://ar5iv.labs.arxiv.org/html/2310.11284), and
+[DifFlow3D treats per-point scene-flow uncertainty as a reliability
+quantity](https://arxiv.org/html/2311.17456v4).  Dynamic-BKI additionally
+supports propagating scene occupancy with flow rather than treating motion as
+an object-track-only attribute: <https://ar5iv.labs.arxiv.org/html/2108.03180>.
+
+The fixed Development comparison was:
+
+| arm | recall | false segments | event F1 | median lead |
+| --- | ---: | ---: | ---: | ---: |
+| frozen C11 `M1_RROQ_GLOBAL` | `17/20` | 11 | 70.83% | 1.455 s |
+| C14 `M1_SRC_GLOBAL` | `18/20` | 16 | 66.67% | 1.504 s |
+
+C14 recovered one additional bounded CONTACT event, but added five false
+segments and gained only `0.049 s` median lead.  It therefore failed the frozen
+gate (recall not lower, false segments not higher, median lead gain at least
+`0.3 s`) and no algorithm-fresh sequence was opened.  Result SHA-256:
+`7616044a39a90df846073762d8ba1662985176ab7f3066094889f29cb112fc42`.
+
+This closes symmetric covariance spreading of every admitted cell as a direct
+ONSET replacement.  A successor must add directional or multimodal evidence
+that distinguishes plausible mover futures from uncertainty mass; it must not
+rescue C14 by scanning the probability threshold, covariance scale, cubature
+weights, or route geometry.
+
+All C14 point matching, cubature, collision, Platt fitting, and probability
+inference used the shared research launcher.  Each representative CPU/GPU
+short test observed a real CUDA tensor on the RTX 5060; CPU was selected with
+the recorded reason `CPU_FASTER_MEASURED` for these small workloads.
 
 ## Claim ceiling
 

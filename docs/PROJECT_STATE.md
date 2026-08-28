@@ -153,6 +153,16 @@ false segments, 50.63% F1, and 2.08 s median lead while confirming at least
 spatial attribution remains privileged; detector-independent attribution and
 runtime integration are next, not threshold tuning or trajectory forecasting.
 
+The detector-independent continuation has since established C11 as the current
+fresh baseline: `17/20` CONTACT recall, 11 false segments, 70.83% event F1, and
+1.455 s median lead. C14 recovered point-wise temporal position/velocity
+residual covariance from the truth-blind R7-to-M1 ledger chain and propagated a
+fixed eight-point cubature distribution through continuous route collision.
+It raised recall to `18/20`, but also raised false segments to 16 and gained only
+0.049 s median lead. The fixed Development gate failed, no remaining fresh
+sequence was opened, and symmetric covariance spreading is closed rather than
+rescued with threshold or covariance-scale tuning.
+
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC
 word carrier for current-camera steering. SC2 adds opportunity-correct active

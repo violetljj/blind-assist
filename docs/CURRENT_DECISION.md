@@ -18,6 +18,8 @@ SC34_ORIENTATION_QUOTIENT_ORDINAL_FRESH_GATE_NOT_MET` and
 `DTR_R2_PUBLIC_REAL_PRIVILEGED_CEILINGS_ESTABLISHED /
 DTR_C2_M1_CTB_CONFIDENCE_TRACK_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL /
 DTR_C3_M1_HYBRID_RAW_POINT_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL /
+DTR_C11_ROUTE_REGION_OCCUPANCY_FRESH_SIGNAL /
+DTR_C14_STOCHASTIC_ROUTE_CONFLICT_DEVELOPMENT_GATE_NOT_MET /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
 ## Parallel product lines
@@ -708,6 +710,18 @@ scorer-side spatial attribution. Do not tune C3 voxel size, nearest-neighbor,
 confidence, route, motion, or lifecycle parameters. The next source change is
 detector-independent occupancy attribution and runtime integration; complex
 trajectory forecasting and R8 remain closed.
+
+The later detector-independent line now has an algorithm-fresh C11 baseline:
+calibrated route-region occupancy retained `17/20` bounded CONTACT recall while
+reducing the fixed C9 baseline's 17 false segments to 11, raising event F1 from
+62.96% to 70.83%. C14 then recovered per-cell temporal residual covariance and
+propagated eight fixed sigma points through the unchanged collision geometry.
+On the consumed C11 Development cohort it improved recall `17/20 -> 18/20`, but
+false segments rose `11 -> 16` and median lead improved only `0.049 s`.
+Therefore accept `DTR_C14_STOCHASTIC_ROUTE_CONFLICT_DEVELOPMENT_GATE_NOT_MET`:
+do not open the remaining fresh cohort and do not tune probability, covariance,
+cubature, or route parameters. A successor needs directional or multimodal
+future evidence, not symmetric uncertainty spreading.
 
 ## What stops here
 
