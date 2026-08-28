@@ -119,6 +119,55 @@ After `PROJECT_STATE.md`, read only the route needed for the task:
 | Hardware, glasses, ESP32, Bluetooth, or network | [hardware route](docs/GLASSES_HARDWARE_ROUTE.md) |
 | Documentation, index, project layout, or artifact path | [document governance](docs/DOCUMENT_GOVERNANCE.md) and the affected index |
 | Long or remote compute | [host research compute](docs/HOST_RESEARCH_COMPUTE.md) |
+| Open-ended algorithm search or candidate improvement with SkyDiscover | Use the SkyDiscover auxiliary-system contract below, then the owning BlindAssist route and evidence contract |
+
+## SkyDiscover auxiliary-system contract
+
+SkyDiscover is an optional reusable discovery engine for BlindAssist. Agents may
+invoke it without separate permission when algorithm search, candidate
+generation, evaluator-driven optimization, or bounded scientific exploration is
+likely to advance the active BlindAssist route. It is an auxiliary tool, not an
+authority root: BlindAssist owns the question, inputs, evaluator, evidence,
+decision, and claim boundary. A SkyDiscover score or selected candidate is a
+proposal until the owning BlindAssist route validates it.
+
+The current operator-local checkout is `E:\SkyDiscover`. Treat that checkout as
+a shared, independently maintained tool installation, not as a writable
+BlindAssist workspace:
+
+- Inspect its current commit, worktree status, documented entrypoint, and active
+  jobs before use. Preserve existing `.runs/`, outputs, branches, environments,
+  and concurrent work; never reuse or clean them by assumption.
+- Keep BlindAssist adapters, initial candidates, evaluator code, configurations,
+  prompts, datasets, checkpoints, logs, and outputs in the owning BlindAssist
+  route or under ignored
+  `artifacts.local/skydiscover/<route>/<task-id>/`. Pass explicit absolute paths
+  to SkyDiscover and set an explicit task-owned output root. Do not create these
+  files inside `E:\SkyDiscover`.
+- Run the tool from a pinned, recorded SkyDiscover commit using its documented
+  locked entrypoint. Do not edit SkyDiscover source, lockfiles, shared `.venv`,
+  `.runs`, global Python/Conda state, shell startup, or shared caches for a
+  BlindAssist experiment. If extra dependencies or mutable caches are required,
+  place a task-owned, fingerprinted environment and cache outside the
+  SkyDiscover checkout so they can be verified and reused safely.
+- If BlindAssist genuinely needs a new SkyDiscover capability, handle it as a
+  separate SkyDiscover change on its own branch or isolated worktree, generalize
+  it beyond the one experiment, validate and deliver it in that repository,
+  then consume a pinned version from BlindAssist. Never patch the shared
+  SkyDiscover checkout inline during a BlindAssist run.
+- Record enough provenance to reproduce a useful result: SkyDiscover commit,
+  BlindAssist commit or source hash, config/evaluator/input hashes, model and
+  budget, seed when applicable, output root, and selected-candidate hash.
+  Promote only the relevant candidate and concise evidence into BlindAssist;
+  bulky raw search state remains ignored local evidence.
+- Release only task-owned processes, ports, locks, temporary files, and remote
+  workers at completion. Retain the minimal reusable environment, checkpoint,
+  and provenance needed for an explicit resume or a later comparable run.
+
+Use the smallest bounded search whose result can change the route decision.
+SkyDiscover does not reopen consumed evidence, authorize access to protected
+outcomes, replace fresh confirmation, or raise a claim above the evidence class
+of its evaluator and inputs.
 
 ## Commands and validation
 
