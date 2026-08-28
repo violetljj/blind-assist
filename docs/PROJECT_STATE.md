@@ -58,6 +58,14 @@ original false segments `12 -> 20` while event F1 remained 22.22%; global flow
 route-risk was active in `123/143` frames. The terminal is therefore
 `R7_P_CAUSAL_OCCUPANCY_FLOW_DEVELOPMENT_GATE_NOT_MET_NO_R8`: do not tune the
 consumed cohort and do not open an RGB student from this result.
+Read-only DTR-M0 attribution then separated the 20 false segments into 11
+unchanged R2 inheritance, eight flow-new, and one flow-extended. All nine
+flow-caused/modified entries were unsupported by scorer-side target linear
+velocity: five were `STATIC_PSEUDO_MOTION`, while four moving-target cases had
+large flow/target velocity disagreement and remain
+`ATTRIBUTION_OR_FRAGMENTATION` without a proven split/merge identity. The next
+eligible experiment is a fresh, frozen point-wise scene-flow or direct-velocity
+source ceiling; route/lifecycle tuning and R8 remain closed.
 
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC

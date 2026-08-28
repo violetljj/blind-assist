@@ -162,6 +162,59 @@ voxel size, history, speed, overlap, tube, attribution, or lifecycle against
 this opened cohort. A successor needs genuinely better independent motion
 information or a fresh frozen protocol, not a sweep over this result.
 
+## DTR-M0 read-only R7 error attribution
+
+DTR-M0 replays the sealed R7 ledger and scorer-side JRDB target trajectories
+without changing the flow source, matcher, route tube, lifecycle, evaluator,
+gate, or verdict. It first separates inherited R2 false alerts from changes
+actually caused by R7 flow:
+
+| False-segment provenance | Count |
+| --- | ---: |
+| Unchanged R2 inheritance | 11 |
+| Flow-new | 8 |
+| Flow-extended | 1 |
+| Flow-merged/split | 0 |
+
+The nine flow-caused or flow-modified segments contain 23 flow-only risk
+frames. Their first flow-only frame gives this mutually exclusive primary
+attribution:
+
+| Flow-caused primary attribution | Segments |
+| --- | ---: |
+| `STATIC_PSEUDO_MOTION` | 5 |
+| `ATTRIBUTION_OR_FRAGMENTATION` | 4 |
+| `REAL_MOVER_BUT_NONCRITICAL` | 0 |
+| `BAD_ROUTE_EXTRAPOLATION` | 0 |
+| `NOT_EVALUABLE` | 0 |
+
+All nine R7 route-entry claims are unsupported by the scorer-side target's
+same-history linear velocity. Five target speeds are below the already frozen
+R7 `0.25 m/s` minimum. The other four targets are moving, but their R7 flow
+velocity differs from target velocity by `1.15--3.50 m/s`; this supports a
+motion-attribution mismatch, not the stronger claim that R7 correctly saw a
+real but noncritical mover. Five segments share a responsible frame-local
+component across multiple targets, four show temporal-component discontinuity
+suspicions, and five show velocity discontinuity suspicions. Because component
+IDs reset every frame, none of those flags proves a particular split or merge.
+
+This diagnostic selects the next information source rather than reopening R7.
+A fresh frozen DTR-M1 should replace only component-centroid pseudo-flow with
+point-wise 3-D scene flow or direct-velocity evidence carrying confidence and
+temporal consistency. R2, the route tube, 0--3 s horizon, lifecycle, and
+one-to-one evaluator stay fixed. Route-conditioned future occupancy is not yet
+the localized bottleneck, and R8 remains closed.
+
+Evidence:
+
+- `artifacts.local/evidence/dtr-m0-r7-error-attribution/result.json`, SHA-256
+  `a495ff1c3921ca3617f9ae7a9d40a2b938f889032445835c69a38bd1cba65c92`.
+- `artifacts.local/evidence/dtr-m0-r7-error-attribution/false-segments.csv`,
+  SHA-256
+  `1913b0115ff15689de53bcdf3798e9503b68f8c596fe58437dc9f9e3cd97f1c8`.
+- `artifacts.local/evidence/dtr-m0-r7-error-attribution/timeline.svg`, SHA-256
+  `097d06ef1c9a2dc38e0e874608aa2ba6a753868c3059b097035d240ee04a670d`.
+
 The source split explains why pooling is not enough:
 
 | Source | R2 recall / false | R3-C recall / false | Route authority |
@@ -482,6 +535,14 @@ python research/active/dtr-r0/dtr_r7_occupancy_flow_canary.py `
   --bag <jrdb-sequence.bag> `
   --calibration-dir <jrdb-calibration-dir> `
   --output artifacts.local/evidence/dtr-r7/occupancy-flow-canary/result.json
+
+python research/active/dtr-r0/dtr_m0_r7_error_attribution.py `
+  --r7-result artifacts.local/evidence/dtr-r7/occupancy-flow-canary/result.json `
+  --flow-ledger artifacts.local/evidence/dtr-r7/occupancy-flow-canary/result.occupancy-flow.npz `
+  --flow-manifest artifacts.local/evidence/dtr-r7/occupancy-flow-canary/result.occupancy-flow.json `
+  --output artifacts.local/evidence/dtr-m0-r7-error-attribution/result.json `
+  --table artifacts.local/evidence/dtr-m0-r7-error-attribution/false-segments.csv `
+  --timeline artifacts.local/evidence/dtr-m0-r7-error-attribution/timeline.svg
 ```
 
 ## Claim ceiling
@@ -511,3 +572,8 @@ Development window. Its `9/9` dropout recovery coexists with `20` false
 segments and an 86.0% global route-risk frame rate. It establishes a causal
 motion-information signal, not detector-independent dynamic occupancy quality,
 source-disjoint generalization, or permission to train an RGB student.
+
+DTR-M0 is scorer-side post-outcome attribution on that consumed result. It
+localizes R7's flow-caused errors but adds no performance, generalization,
+product, or safety evidence. Its component-discontinuity flags are not stable
+identity or split/merge truth.

@@ -96,6 +96,26 @@ do not sweep voxel/history/speed/overlap/attribution/tube/lifecycle settings on
 the opened cohort. Any successor must change the motion information source or
 use a separately frozen fresh protocol.
 
+DTR-M0 has now completed the permitted read-only attribution on that sealed
+R7-P result. Of the 20 R7 false segments, 11 are unchanged R2 inheritance,
+eight are flow-new, and one is flow-extended; the last two groups are the nine
+flow-caused or flow-modified segments. At their first flow-only frame, all nine
+R7 route-entry claims are unsupported by the scorer-side target's same-history
+linear velocity. Five targets move below R7's already frozen `0.25 m/s`
+minimum, while the other four are moving but have `1.15--3.50 m/s`
+flow-to-target velocity error. M0 therefore localizes the immediate failure to
+motion selectivity/attribution, with component discontinuity remaining only a
+suspicion because R7 component IDs are frame-local. It does not support a
+route-extrapolation negative or prove a specific split/merge mechanism.
+
+The next admissible successor is a fresh frozen DTR-M1 motion-source
+selectivity ceiling: replace only BEV component-centroid pseudo-flow with
+point-wise 3-D scene flow or direct-velocity evidence that exposes confidence
+and temporal consistency. Keep R2, the route tube, 0--3 s horizon, lifecycle,
+and one-to-one evaluator fixed. Route-conditioned future occupancy and R8 RGB
+training remain closed unless a better independent motion source first retains
+dropout recovery while reducing false segments and increasing event F1.
+
 ## What stops here
 
 - Do not record the superseded 24 canary or 120 staged local RGB clips.
