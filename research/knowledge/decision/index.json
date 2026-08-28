@@ -2,13 +2,13 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "21ac24fe02f1bdfd49ca4f6800dc3cf144aad262df0bf4a86dbbf4ba708da551",
+  "source_fingerprint": "2c1a77fd50dcb3730f1898d4b7e87fe63d0727a37fddf1040ec70ef586be4b01",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 223,
     "uses": 224,
     "experiments": 206,
-    "current_terminals": 9
+    "current_terminals": 12
   },
   "failure_layers": [
     {
@@ -13463,6 +13463,109 @@
         "research/active/l10-r0/README.md"
       ],
       "search_text": "terminal-l10-sc11-task-grounded-rgbd-multiview-functional-proposal ten-meter-copilot SC11_TASK_GROUNDED_RGBD_MULTIVIEW_FUNCTIONAL_PROPOSAL_DEVELOPMENT_SIGNAL On one opened SceneFun3D Development scene, truth-blind task-grounded RGB-D proposals plus multi-view consensus raised proposal recall from 8/10 to 10/10, legal task commits from 3/6 to 4/6, mean target-set recall from 50% to 83.33%, and reduced wrong parts from 8 to 2 versus the single-view arm. A genuinely new candidate-integrity or action-geometry source on separately versioned evidence; the remaining two in-parent false clusters cannot be rescued by tuning the opened cohort. detector or prompt threshold sweeps on visit 420683 DBSCAN, seed, or fusion sweeps on the opened cohort reopening SC9, SC9T, or SC10 with another generic handle detector promoting privileged parent RGB-D evidence to phone, open-world, arrival, completion, product, user, or safety claims"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-sc12-task-conditioned-dual-axis-action-pose",
+      "status": "negative",
+      "question": "On source-disjoint SceneFun3D 421013, static parent-surface geometry already reached 7/9 signed translation-direction hits, while task-signed dual-axis geometry regressed to 6/9 and increased mean angular error from 20.40 to 30.39 degrees.",
+      "baseline": null,
+      "change": "A causal before/after motion source or other genuinely new kinematic evidence; task verbs and static parent geometry cannot close action direction.",
+      "primary_metric": null,
+      "decision": "SC12_TASK_CONDITIONED_DUAL_AXIS_ACTION_POSE_GATE_NOT_MET",
+      "report": "docs/CURRENT_DECISION.md",
+      "source": "decision/terminals.json",
+      "commit": "0f22103b",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "geometry_motion": 30,
+        "interaction_readiness": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A causal before/after motion source or other genuinely new kinematic evidence; task verbs and static parent geometry cannot close action direction.",
+      "forbidden_repeats": [
+        "task-verb remapping on 421013",
+        "OBB face or direction-threshold sweeps",
+        "seed or geometry-fusion rescue",
+        "promoting a static action axis to HANDOFF_READY"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "docs/PROJECT_STATE.md",
+        "research/active/l10-r0/README.md"
+      ],
+      "search_text": "terminal-l10-sc12-task-conditioned-dual-axis-action-pose ten-meter-copilot SC12_TASK_CONDITIONED_DUAL_AXIS_ACTION_POSE_GATE_NOT_MET On source-disjoint SceneFun3D 421013, static parent-surface geometry already reached 7/9 signed translation-direction hits, while task-signed dual-axis geometry regressed to 6/9 and increased mean angular error from 20.40 to 30.39 degrees. A causal before/after motion source or other genuinely new kinematic evidence; task verbs and static parent geometry cannot close action direction. task-verb remapping on 421013 OBB face or direction-threshold sweeps seed or geometry-fusion rescue promoting a static action axis to HANDOFF_READY"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-sc13-decoupled-local-action-frame",
+      "status": "negative",
+      "question": "On fresh SceneFun3D 421010, separating the parent-facing approach axis from a local 3-D contact-surface action normal retained 4/6 direction hits and improved mean error only from 30.39 to 28.18 degrees.",
+      "baseline": null,
+      "change": "Observed causal motion that can distinguish translation from rotation and recover a signed action model; another static normal representation is not eligible.",
+      "primary_metric": null,
+      "decision": "SC13_DECOUPLED_APPROACH_AND_LOCAL_ACTION_FRAME_GATE_NOT_MET",
+      "report": "docs/CURRENT_DECISION.md",
+      "source": "decision/terminals.json",
+      "commit": "0f22103b",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "geometry_motion": 30,
+        "interaction_readiness": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Observed causal motion that can distinguish translation from rotation and recover a signed action model; another static normal representation is not eligible.",
+      "forbidden_repeats": [
+        "local PCA radius sweep on 421010",
+        "surface-normal or OBB-axis detector swaps",
+        "threshold, seed, or fusion rescue",
+        "claiming local contact geometry as reachability or completion"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "docs/PROJECT_STATE.md",
+        "research/active/l10-r0/README.md"
+      ],
+      "search_text": "terminal-l10-sc13-decoupled-local-action-frame ten-meter-copilot SC13_DECOUPLED_APPROACH_AND_LOCAL_ACTION_FRAME_GATE_NOT_MET On fresh SceneFun3D 421010, separating the parent-facing approach axis from a local 3-D contact-surface action normal retained 4/6 direction hits and improved mean error only from 30.39 to 28.18 degrees. Observed causal motion that can distinguish translation from rotation and recover a signed action model; another static normal representation is not eligible. local PCA radius sweep on 421010 surface-normal or OBB-axis detector swaps threshold, seed, or fusion rescue claiming local contact geometry as reachability or completion"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-sc14-causal-micro-motion-action-belief",
+      "status": "positive",
+      "question": "On SceneFun3D 421013, causal paired motion improved type correctness from 7/8 to 8/8, translation-direction hits from 4/7 to 7/7, and mean direction error from 38.89 to 0.91 degrees; the sole rotational axis passed with 2.22 cm pivot-line error.",
+      "baseline": null,
+      "change": "Passive natural before/after RGB-D functional motion or an explicitly authorized benign micro-interaction protocol with observable correspondences and separate safety authority.",
+      "primary_metric": null,
+      "decision": "SC14_CAUSAL_MICRO_MOTION_ACTION_BELIEF_MECHANICS_SIGNAL",
+      "report": "docs/CURRENT_DECISION.md",
+      "source": "decision/terminals.json",
+      "commit": "0f22103b",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "geometry_motion": 30,
+        "temporal_belief": 30,
+        "interaction_readiness": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Passive natural before/after RGB-D functional motion or an explicitly authorized benign micro-interaction protocol with observable correspondences and separate safety authority.",
+      "forbidden_repeats": [
+        "promoting evaluator-paired simulated motion to phone capability",
+        "claiming safe user probing without authorization and evidence",
+        "returning to static action-axis tuning",
+        "emitting HANDOFF_READY, arrival, or completion from action geometry alone"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "docs/PROJECT_STATE.md",
+        "research/active/l10-r0/README.md"
+      ],
+      "search_text": "terminal-l10-sc14-causal-micro-motion-action-belief ten-meter-copilot SC14_CAUSAL_MICRO_MOTION_ACTION_BELIEF_MECHANICS_SIGNAL On SceneFun3D 421013, causal paired motion improved type correctness from 7/8 to 8/8, translation-direction hits from 4/7 to 7/7, and mean direction error from 38.89 to 0.91 degrees; the sole rotational axis passed with 2.22 cm pivot-line error. Passive natural before/after RGB-D functional motion or an explicitly authorized benign micro-interaction protocol with observable correspondences and separate safety authority. promoting evaluator-paired simulated motion to phone capability claiming safe user probing without authorization and evidence returning to static action-axis tuning emitting HANDOFF_READY, arrival, or completion from action geometry alone"
     },
     {
       "kind": "current_terminal",

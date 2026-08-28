@@ -87,6 +87,42 @@
       "commit": "bdef3a0f"
     },
     {
+      "id": "terminal-l10-sc12-task-conditioned-dual-axis-action-pose",
+      "route": "ten-meter-copilot",
+      "failure_layers": ["geometry_motion", "interaction_readiness", "evaluation_evidence"],
+      "status": "negative",
+      "decision": "SC12_TASK_CONDITIONED_DUAL_AXIS_ACTION_POSE_GATE_NOT_MET",
+      "summary": "On source-disjoint SceneFun3D 421013, static parent-surface geometry already reached 7/9 signed translation-direction hits, while task-signed dual-axis geometry regressed to 6/9 and increased mean angular error from 20.40 to 30.39 degrees.",
+      "successor_requires": "A causal before/after motion source or other genuinely new kinematic evidence; task verbs and static parent geometry cannot close action direction.",
+      "forbidden_repeats": ["task-verb remapping on 421013", "OBB face or direction-threshold sweeps", "seed or geometry-fusion rescue", "promoting a static action axis to HANDOFF_READY"],
+      "evidence": ["docs/CURRENT_DECISION.md", "docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "commit": "0f22103b"
+    },
+    {
+      "id": "terminal-l10-sc13-decoupled-local-action-frame",
+      "route": "ten-meter-copilot",
+      "failure_layers": ["geometry_motion", "interaction_readiness", "evaluation_evidence"],
+      "status": "negative",
+      "decision": "SC13_DECOUPLED_APPROACH_AND_LOCAL_ACTION_FRAME_GATE_NOT_MET",
+      "summary": "On fresh SceneFun3D 421010, separating the parent-facing approach axis from a local 3-D contact-surface action normal retained 4/6 direction hits and improved mean error only from 30.39 to 28.18 degrees.",
+      "successor_requires": "Observed causal motion that can distinguish translation from rotation and recover a signed action model; another static normal representation is not eligible.",
+      "forbidden_repeats": ["local PCA radius sweep on 421010", "surface-normal or OBB-axis detector swaps", "threshold, seed, or fusion rescue", "claiming local contact geometry as reachability or completion"],
+      "evidence": ["docs/CURRENT_DECISION.md", "docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "commit": "0f22103b"
+    },
+    {
+      "id": "terminal-l10-sc14-causal-micro-motion-action-belief",
+      "route": "ten-meter-copilot",
+      "failure_layers": ["geometry_motion", "temporal_belief", "interaction_readiness", "evaluation_evidence"],
+      "status": "positive",
+      "decision": "SC14_CAUSAL_MICRO_MOTION_ACTION_BELIEF_MECHANICS_SIGNAL",
+      "summary": "On SceneFun3D 421013, causal paired motion improved type correctness from 7/8 to 8/8, translation-direction hits from 4/7 to 7/7, and mean direction error from 38.89 to 0.91 degrees; the sole rotational axis passed with 2.22 cm pivot-line error.",
+      "successor_requires": "Passive natural before/after RGB-D functional motion or an explicitly authorized benign micro-interaction protocol with observable correspondences and separate safety authority.",
+      "forbidden_repeats": ["promoting evaluator-paired simulated motion to phone capability", "claiming safe user probing without authorization and evidence", "returning to static action-axis tuning", "emitting HANDOFF_READY, arrival, or completion from action geometry alone"],
+      "evidence": ["docs/CURRENT_DECISION.md", "docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "commit": "0f22103b"
+    },
+    {
       "id": "terminal-grail-g1-active-multiview-appearance-closed",
       "route": "goal-copilot-p0",
       "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],
