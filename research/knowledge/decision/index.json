@@ -2,13 +2,13 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "2c1a77fd50dcb3730f1898d4b7e87fe63d0727a37fddf1040ec70ef586be4b01",
+  "source_fingerprint": "1729481c1e7c13f309b9a23f8567cf53cacbd72fe312a9d7d0d0a7274fd2ccc4",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 223,
     "uses": 224,
     "experiments": 206,
-    "current_terminals": 12
+    "current_terminals": 13
   },
   "failure_layers": [
     {
@@ -13331,6 +13331,40 @@
         "research/active/dtr-r0/README.md"
       ],
       "search_text": "terminal-dtr-m1-point-velocity-oracle-gate-not-met obstacle-avoidance DTR_M1_O_POINT_VELOCITY_ORACLE_CEILING_NOT_MET_CLOSE_SCENE_FLOW_ROUTE Causal native-box point velocity suppressed 8/9 M0 diagnostic pseudo-motion entries but recovered only 6/9 dropout trials, created five new motion-source-induced false segments, and reduced event F1 from 22.22% to 16.00% under the frozen hard point/cell downstream. A newly authorized representation-level question and fresh protocol; changing the scene-flow estimator is not eligible under the consumed frozen downstream. TeFlow or DeltaFlow on the consumed protocol another scene-flow estimator R8 training body-dilation/tube/lifecycle tuning route-conditioned forecasting on the consumed cohort"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-dtr-m2-extent-gap-not-supported",
+      "status": "negative",
+      "question": "On the consumed M1 cohort, all three repeated pedestrian:35 misses remained POINT_MISS_FOOTPRINT_MISS under the same direct velocity plus current native swept OBB, while all five M1-induced/modified false segments were FOOTPRINT_HIT_TRUTH_NEGATIVE.",
+      "baseline": null,
+      "change": "A newly frozen information contract that can distinguish realized time-varying future occupancy from a constant-velocity current footprint, plus fresh evidence.",
+      "primary_metric": null,
+      "decision": "DTR_M2_D_EXTENT_GAP_NOT_SUPPORTED_NO_FRESH_M2_O",
+      "report": "docs/CURRENT_DECISION.md",
+      "source": "decision/terminals.json",
+      "commit": "d808051d",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 30,
+        "decision_lifecycle": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A newly frozen information contract that can distinguish realized time-varying future occupancy from a constant-velocity current footprint, plus fresh evidence.",
+      "forbidden_repeats": [
+        "fresh M2-O from the rejected current-extent hypothesis",
+        "TeFlow or DeltaFlow",
+        "another scene-flow estimator",
+        "R8 training",
+        "route-conditioned forecasting without new authorization"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "research/active/dtr-r0/README.md"
+      ],
+      "search_text": "terminal-dtr-m2-extent-gap-not-supported obstacle-avoidance DTR_M2_D_EXTENT_GAP_NOT_SUPPORTED_NO_FRESH_M2_O On the consumed M1 cohort, all three repeated pedestrian:35 misses remained POINT_MISS_FOOTPRINT_MISS under the same direct velocity plus current native swept OBB, while all five M1-induced/modified false segments were FOOTPRINT_HIT_TRUTH_NEGATIVE. A newly frozen information contract that can distinguish realized time-varying future occupancy from a constant-velocity current footprint, plus fresh evidence. fresh M2-O from the rejected current-extent hypothesis TeFlow or DeltaFlow another scene-flow estimator R8 training route-conditioned forecasting without new authorization"
     },
     {
       "kind": "current_terminal",

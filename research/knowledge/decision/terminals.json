@@ -39,6 +39,18 @@
       "commit": "ff7e0ffc"
     },
     {
+      "id": "terminal-dtr-m2-extent-gap-not-supported",
+      "route": "obstacle-avoidance",
+      "failure_layers": ["geometry_motion", "decision_lifecycle", "evaluation_evidence"],
+      "status": "negative",
+      "decision": "DTR_M2_D_EXTENT_GAP_NOT_SUPPORTED_NO_FRESH_M2_O",
+      "summary": "On the consumed M1 cohort, all three repeated pedestrian:35 misses remained POINT_MISS_FOOTPRINT_MISS under the same direct velocity plus current native swept OBB, while all five M1-induced/modified false segments were FOOTPRINT_HIT_TRUTH_NEGATIVE.",
+      "successor_requires": "A newly frozen information contract that can distinguish realized time-varying future occupancy from a constant-velocity current footprint, plus fresh evidence.",
+      "forbidden_repeats": ["fresh M2-O from the rejected current-extent hypothesis", "TeFlow or DeltaFlow", "another scene-flow estimator", "R8 training", "route-conditioned forecasting without new authorization"],
+      "evidence": ["docs/CURRENT_DECISION.md", "research/active/dtr-r0/README.md"],
+      "commit": "d808051d"
+    },
+    {
       "id": "terminal-l10-sc5-set-valued-video17",
       "route": "ten-meter-copilot",
       "failure_layers": ["identity_binding", "temporal_belief", "evaluation_evidence"],
