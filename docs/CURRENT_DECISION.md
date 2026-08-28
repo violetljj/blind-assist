@@ -28,6 +28,7 @@ DTR_C19_JOINT_MOTION_CONFIDENCE_DEVELOPMENT_GATE_NOT_MET /
 DTR_C20_LOCAL_MOTION_VOTING_DEVELOPMENT_GATE_NOT_MET /
 DTR_C21_SCENE_BIAS_RESIDUAL_MOTION_DEVELOPMENT_GATE_NOT_MET /
 DTR_C22_EGO_RIGID_VISUAL_MOTION_DEVELOPMENT_GATE_NOT_MET /
+DTR_C27_PERSISTENT_POINT_SUPPORT_DEVELOPMENT_GATE_NOT_MET /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
 ## Parallel product lines
@@ -921,6 +922,23 @@ with soft confidence and evidence age, expose missingness as `UNKNOWN`, and
 never broadcast one component translation to all cells.  This must demonstrate
 joint recall/false/lead headroom before route-conditioned learned future
 occupancy can reopen.
+
+C27 has now run that bounded positive-support canary on the consumed C25
+cohort.  M1-PDC alone remains `12/12`, 21 false segments, 53.33% F1, 1.624 s
+median lead, and `25/36` induced-gap recovery.  PDC-seeded, reciprocal
+M1-PD-refreshed point lineages retain `12/12`, preserve every PDC event's
+first-alert lead, improve median lead to 2.967 s, and recover `27/36`, but false
+segments rise to 26 and recovery remains below R7's `30/36`.
+
+Accept `DTR_C27_PERSISTENT_POINT_SUPPORT_DEVELOPMENT_GATE_NOT_MET`.  Do not tune
+the `0.8 s` age, confidence decay, reciprocal radius, route, or lifecycle.  The
+five sealed dynamic ledgers contain no current visibility or known-empty
+authority, so positive support cannot distinguish departed, occluded, and
+unsensed states.  C28 changes that source with a conservative raw-LiDAR ray
+ledger: `HIT` confirms presence, `KNOWN_FREE` clears departure, `OCCLUDED`
+alone permits persistence, and `UNSENSED` remains `UNKNOWN`.  It must beat the
+same `12/12`, 21-false, `30/36`, per-event no-later envelope without a parameter
+sweep before learned future occupancy can reopen.
 
 ## What stops here
 

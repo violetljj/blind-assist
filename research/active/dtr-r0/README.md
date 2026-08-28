@@ -1669,6 +1669,37 @@ representation shows recall/false/lead headroom may route-conditioned future
 occupancy reopen.  Result SHA-256 is
 `d555907d815aeca7abd349492ec7ec94f3b69cc8d7a040d99c5f1cbdd66da152`.
 
+## DTR-C27 positive-support point memory
+
+C27 tested the smallest identity-free persistence mechanism on the consumed
+C25 ledgers.  M1-PDC cells originated world-coordinate lineages; reciprocal
+M1-PD cells could refresh position and velocity with soft confidence, and
+unmatched lineages were advected for the already exercised maximum `0.8 s`
+dropout duration.  Evaluator identity and source component IDs were unavailable
+to association.  The frozen M1-PDC lifecycle was mechanically unioned with the
+extension lifecycle so extension `UNKNOWN` could not erase a baseline alert.
+
+| arm | CONTACT recall | false segments | event F1 | median first lead | induced dropout recovery |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| M1-PDC reference | `12/12` | **21** | **53.33%** | 1.624 s | `25/36` |
+| C27 persistent point support | **`12/12`** | 26 | 48.00% | **2.967 s** | `27/36` |
+| R7 recovery reference | `11/12` | 52 | 29.33% | 4.200 s | **`30/36`** |
+
+The fixed gate is not met.  C27 preserves every PDC event's first-alert lead
+and gains two dropout recoveries over PDC, but it adds five false segments and
+remains three recoveries below R7.  The failure is structural: sealed dynamic
+ledgers contain positive support, confidence, and age, but not current
+`KNOWN_FREE`, occluder, or out-of-FoV evidence.  A missing cell therefore cannot
+be distinguished as departed, occluded, or unsensed.
+
+Accept `DTR_C27_PERSISTENT_POINT_SUPPORT_DEVELOPMENT_GATE_NOT_MET`.  Do not tune
+age, half-life, reciprocal radius, confidence, route, or lifecycle on C25.  The
+next information source is the four-state LiDAR visibility sidecar frozen in
+[C28 visibility-conditioned point memory](C28_VISIBILITY_CONDITIONED_POINT_MEMORY_2026-08-28.md):
+`HIT / KNOWN_FREE / OCCLUDED / UNSENSED`.  Only occlusion may retain a positive;
+known-free clears it and unsensed remains `UNKNOWN`.  Result SHA-256 is
+`2ea585c20029f66d64c2435faa38f997615607058734c419ea6d13f3ba78c505`.
+
 ## Claim ceiling
 
 These are retrospective public-real privileged algorithm ceilings. THÖR uses

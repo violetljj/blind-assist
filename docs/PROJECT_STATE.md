@@ -232,6 +232,17 @@ the current M1-PD support is closed; the next representation must first provide
 occlusion-persistent point support with soft confidence/age and explicit
 `UNKNOWN`, without returning to component-wide velocity broadcast.
 
+C27 has now falsified positive-support memory alone.  PDC-seeded,
+PD-refreshed identity-free lineages retained `12/12` CONTACT recall, preserved
+every PDC event's first-alert lead, and improved median lead to 2.967 s, but
+produced 26 false segments versus PDC's 21 and recovered `27/36` induced gaps
+versus R7's `30/36`.  Decision:
+`DTR_C27_PERSISTENT_POINT_SUPPORT_DEVELOPMENT_GATE_NOT_MET`.  The missing input
+is not another age or confidence setting: it is the causal reason a support is
+absent.  C28 therefore adds raw-LiDAR `HIT / KNOWN_FREE / OCCLUDED / UNSENSED`
+ray state so only occlusion may persist, known-free can clear departed ghosts,
+and unsensed space remains `UNKNOWN`.
+
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC
 word carrier for current-camera steering. SC2 adds opportunity-correct active
