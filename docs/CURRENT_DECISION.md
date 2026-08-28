@@ -190,6 +190,23 @@ route-conditioned forecasting on this consumed protocol. Any successor needs
 a newly authorized representation-level question and fresh evidence rather
 than a different estimator.
 
+That representation-level question has now received a read-only M2-D audit.
+It reused the exact M1 ledger and changed no prediction or gate, comparing the
+continuous zero-radius cell paths against current native oriented footprints
+translated by the same robust M1 velocity over 0--3 s. The three failed
+dropout trials are all `POINT_MISS_FOOTPRINT_MISS`, with the nearest footprint
+still 0.0374 m outside the frozen 0.65 m route body. The five M1 new/modified
+false segments are all `FOOTPRINT_HIT_TRUTH_NEGATIVE`.
+
+The terminal is `DTR_M2_D_EXTENT_GAP_NOT_SUPPORTED_NO_FRESH_M2_O`.
+Do not launch a fresh swept-footprint M2-O from the current-extent hypothesis.
+The earlier positive center-plus-body-extent future uses realized future
+native boxes; it is not equivalent to translating the current OBB at constant
+M1 velocity. The remaining gap may require time-varying future occupancy,
+different route/contact semantics, or both, but M2-D does not adjudicate those
+alternatives and does not authorize route-conditioned forecasting, R8, or a
+different scene-flow estimator.
+
 ## What stops here
 
 - Do not record the superseded 24 canary or 120 staged local RGB clips.

@@ -76,6 +76,17 @@ point/cell-to-tube aggregation. The terminal is
 `DTR_M1_O_POINT_VELOCITY_ORACLE_CEILING_NOT_MET_CLOSE_SCENE_FLOW_ROUTE`:
 TeFlow/DeltaFlow, R8, route forecasting, and consumed-cohort aggregation tuning
 remain closed.
+Read-only M2-D then tested whether the missing representation was only target
+extent: the exact M1-attributed cells were compared with the same components'
+current native OBBs translated continuously at the same robust M1 velocity.
+All three repeated `pedestrian:35` misses were
+`POINT_MISS_FOOTPRINT_MISS`; the closest footprint remained 0.0374 m outside
+the 0.65 m route body. All five M1-induced/modified false segments were
+`FOOTPRINT_HIT_TRUTH_NEGATIVE`. The terminal is therefore
+`DTR_M2_D_EXTENT_GAP_NOT_SUPPORTED_NO_FRESH_M2_O`: do not launch fresh M2-O
+from this extent-only hypothesis. The discrepancy between realized future
+native extent and constant-velocity current-footprint geometry remains
+localized but unresolved; it does not reopen forecasting or R8.
 
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC

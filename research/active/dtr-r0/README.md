@@ -6,6 +6,7 @@ R5_RGB_DROPOUT_CANARY_GATE_NOT_MET /
 R6_DIRECT_METRIC_SINGLE_FACTOR_NOT_EVALUABLE_STATIC_OCCUPANCY_MATCHER_UNREACHABLE /
 R7_P_CAUSAL_OCCUPANCY_FLOW_DEVELOPMENT_GATE_NOT_MET_NO_R8 /
 DTR_M1_O_POINT_VELOCITY_ORACLE_CEILING_NOT_MET_CLOSE_SCENE_FLOW_ROUTE /
+DTR_M2_D_EXTENT_GAP_NOT_SUPPORTED_NO_FRESH_M2_O /
 R4_NOT_OPENED`
 
 ## Result first
@@ -275,6 +276,51 @@ Evidence:
 - `artifacts.local/evidence/dtr-m1/point-velocity-oracle/result.point-velocity-oracle.json`,
   SHA-256
   `a57a4984dc9d6581be213a693d523ea9bd9154c8f85e5f58c4325930ed40571a`.
+
+## DTR-M2-D read-only extent-gap terminal
+
+M2-D tested the newly authorized representation-level hypothesis without
+changing any prediction, threshold, route tube, lifecycle, or evaluator gate.
+It replayed the exact sealed M1 ledger and compared each attributed
+zero-radius cell trajectory with the continuous translation of that same
+component's current native oriented box. The box used the robust median M1
+direct velocity, fixed current yaw, the same 0--3 s horizon, and analytic
+Minkowski entry against the frozen 0.65 m route body.
+
+The proposed extent gap is not supported. All three M1 dropout misses--the
+same `pedestrian:35` event repeated at `0.2/0.4/0.8 s`--are
+`POINT_MISS_FOOTPRINT_MISS`, not `POINT_MISS_FOOTPRINT_HIT`. Every diagnostic
+frame contains the target's own native component and box. The closest swept
+footprint still misses the route body by **0.0374 m**; the closest point path
+misses by 0.0292 m. Conversely, all five M1 new/modified false segments are
+`FOOTPRINT_HIT_TRUTH_NEGATIVE`, so the extent primitive retains rather than
+removes those false contacts.
+
+This resolves the apparent M1 asymmetry narrowly. The README's positive
+center-plus-body-extent future uses the realized future native box, whereas
+M2-D translates the current box with the same frozen M1 constant velocity.
+Those are different information contracts. Static current extent alone does
+not reproduce the future event truth here. The remaining discrepancy may
+involve time-varying future pose/shape, route/contact semantics, or both; this
+audit does not distinguish them and does not reopen forecasting.
+
+Terminal: `DTR_M2_D_EXTENT_GAP_NOT_SUPPORTED_NO_FRESH_M2_O`. Do not run the
+fresh M2-O swept-footprint oracle from this hypothesis, and do not reopen
+TeFlow/DeltaFlow, another scene-flow estimator, R8, or route-conditioned
+forecasting. A successor would need a newly frozen information contract that
+can distinguish realized future occupancy from a constant-velocity current
+footprint, plus fresh evidence.
+
+Evidence:
+
+- `artifacts.local/evidence/dtr-m2/extent-gap-audit/result.json`, SHA-256
+  `3c0c276ebc9ff5c8f3a4d36dd993332552b0f8d4c87e58d918a235cd3f320a76`.
+- `artifacts.local/evidence/dtr-m2/extent-gap-audit/result.extent-gap.csv`,
+  SHA-256
+  `a415535f9ccbcc563351648f106782925df3c320fd19f461c7f6740c110a7ef9`.
+- `artifacts.local/evidence/dtr-m2/extent-gap-audit/result.extent-gap.svg`,
+  SHA-256
+  `908bb989f550263e7930933329668e3dc4da15275f996ed0ecaab16f4ad8fdb9`.
 
 The source split explains why pooling is not enough:
 
@@ -614,6 +660,10 @@ python research/active/dtr-r0/dtr_m1_point_velocity_oracle.py `
   --bag artifacts.local/datasets/dtr-r0-jrdb-rgb-bridge-v1/packard-poster-session-2019-03-20_1.bag `
   --calibration-dir artifacts.local/datasets/ustrf-canonical-observation-source-authority-data-pack-r0/jrdb_toolkit/calibration `
   --output artifacts.local/evidence/dtr-m1/point-velocity-oracle/result.json
+
+python research/active/dtr-r0/dtr_m2_extent_gap_audit.py `
+  --m1-result artifacts.local/evidence/dtr-m1/point-velocity-oracle/result.json `
+  --output artifacts.local/evidence/dtr-m2/extent-gap-audit/result.json
 ```
 
 ## Claim ceiling
@@ -654,3 +704,10 @@ window. Its `6/9` dropout recovery and 17 false segments close estimator work
 under the frozen hard point/cell downstream; they do not establish AV2-native
 scene-flow performance, source-disjoint generalization, route-forecasting
 quality, Android behavior, product benefit, or safety.
+
+DTR-M2-D is a privileged read-only geometric diagnosis on that same consumed
+window. Its three `POINT_MISS_FOOTPRINT_MISS` dropout trials and five
+`FOOTPRINT_HIT_TRUTH_NEGATIVE` false segments close only the current-OBB plus
+constant-M1-velocity swept-footprint hypothesis. They are not a general
+negative on time-varying occupancy, route-conditioned forecasting, or body
+collision geometry, and they authorize no fresh M2-O or product claim.
