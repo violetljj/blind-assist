@@ -51,6 +51,18 @@
       "commit": "4f8a1ca5"
     },
     {
+      "id": "terminal-l10-sc8-task-relational-functional-binding",
+      "route": "ten-meter-copilot",
+      "failure_layers": ["functional_grounding", "actionable_region", "handoff_completion"],
+      "status": "positive",
+      "decision": "SC8_TASK_RELATIONAL_FUNCTIONAL_BINDING_DEVELOPMENT_SIGNAL",
+      "summary": "On one SceneFun3D Development scene, task-relational selection over evaluator-provided unlabeled functional-part proposals improved legal commits from 4/6 to 6/6, mean target-set recall from 50% to 100%, and wrong parts from 2 to 0 while preserving the parent binding.",
+      "successor_requires": "A task-conditioned multi-view RGB/RGB-D functional-part proposer behind the frozen parent-binding interface on separately authorized evidence.",
+      "forbidden_repeats": ["using parent-box center as a functional handoff", "claiming GT functional proposals as a deployable detector", "promoting part selection to reachability, arrival, completion, product, user, or safety evidence"],
+      "evidence": ["docs/CURRENT_DECISION.md", "docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "commit": "376b35eb"
+    },
+    {
       "id": "terminal-grail-g1-active-multiview-appearance-closed",
       "route": "goal-copilot-p0",
       "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],

@@ -2,13 +2,13 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "2df1803745d75d554649ac4ca0301a87d6b9c8a38004f3a0c957363fb567c47c",
+  "source_fingerprint": "d84093efc105df3a9646b8047175984f95376f0595067e7d0d649a9bd8e72e2e",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 223,
     "uses": 224,
     "experiments": 206,
-    "current_terminals": 6
+    "current_terminals": 7
   },
   "failure_layers": [
     {
@@ -13315,6 +13315,39 @@
         "research/active/l10-r0/README.md"
       ],
       "search_text": "terminal-l10-sc6-reference-bound-belief-effect ten-meter-copilot SC6_REFERENCE_BOUND_BELIEF_EFFECT On fresh source-disjoint video18, legal public instance binding plus temporal belief achieved 100% precision, 91.67% coverage, zero wrong-instance frames/switches, and 6/6 gap reacquisition/end-to-end episodes. A new claim layer and separately authorized evidence; the replay result itself cannot establish active observation, arrival, product, user, or safety effects. claiming identity from OCR alone using evaluator physical IDs at inference promoting replay evidence to product or safety"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-sc8-task-relational-functional-binding",
+      "status": "positive",
+      "question": "On one SceneFun3D Development scene, task-relational selection over evaluator-provided unlabeled functional-part proposals improved legal commits from 4/6 to 6/6, mean target-set recall from 50% to 100%, and wrong parts from 2 to 0 while preserving the parent binding.",
+      "baseline": null,
+      "change": "A task-conditioned multi-view RGB/RGB-D functional-part proposer behind the frozen parent-binding interface on separately authorized evidence.",
+      "primary_metric": null,
+      "decision": "SC8_TASK_RELATIONAL_FUNCTIONAL_BINDING_DEVELOPMENT_SIGNAL",
+      "report": "docs/CURRENT_DECISION.md",
+      "source": "decision/terminals.json",
+      "commit": "376b35eb",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "functional_grounding": 30,
+        "actionable_region": 30,
+        "handoff_completion": 30
+      },
+      "successor_requires": "A task-conditioned multi-view RGB/RGB-D functional-part proposer behind the frozen parent-binding interface on separately authorized evidence.",
+      "forbidden_repeats": [
+        "using parent-box center as a functional handoff",
+        "claiming GT functional proposals as a deployable detector",
+        "promoting part selection to reachability, arrival, completion, product, user, or safety evidence"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "docs/PROJECT_STATE.md",
+        "research/active/l10-r0/README.md"
+      ],
+      "search_text": "terminal-l10-sc8-task-relational-functional-binding ten-meter-copilot SC8_TASK_RELATIONAL_FUNCTIONAL_BINDING_DEVELOPMENT_SIGNAL On one SceneFun3D Development scene, task-relational selection over evaluator-provided unlabeled functional-part proposals improved legal commits from 4/6 to 6/6, mean target-set recall from 50% to 100%, and wrong parts from 2 to 0 while preserving the parent binding. A task-conditioned multi-view RGB/RGB-D functional-part proposer behind the frozen parent-binding interface on separately authorized evidence. using parent-box center as a functional handoff claiming GT functional proposals as a deployable detector promoting part selection to reachability, arrival, completion, product, user, or safety evidence"
     },
     {
       "kind": "current_terminal",
