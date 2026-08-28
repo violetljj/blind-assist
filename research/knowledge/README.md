@@ -18,10 +18,11 @@
 ## 目录
 
 ```text
-research/knowledge/
+ research/knowledge/
   README.md
   items/   # 一项外部知识一个 JSON 文件
   uses/    # 一条 route × item 使用关系一个 JSON 文件
+  decision/ # 故障分类、当前 terminal、golden cases 和编译索引
   migrations/ # 一次性迁移覆盖清单；不是第二份知识正文
 tools/knowledge.py
 tools/migrate_scattered_knowledge.py
@@ -44,6 +45,42 @@ python tools/knowledge.py search "occlusion"
 python tools/knowledge.py show paper-deepsolo-2023
 python tools/knowledge.py show use-grail-r1c-p-orient-anything-v2
 ```
+
+## 研究决策引擎
+
+日常故障入口是 `diagnose`，不是先搜索更多论文。它从一个预编译 JSON 索引读取
+全部机制、route use、`experiments/index.jsonl` 和当前高权威 terminal；查询过程不
+逐个打开 `items/uses`，也不调用模型或网络：
+
+```powershell
+python tools/knowledge.py diagnose --route dtr-r0 --symptom "静态占据在 dropout 窗口仍为 0/9，matcher 没有 closing speed"
+python tools/knowledge.py diagnose --route l10-r0 --symptom "遮挡后无法 reference-reacquire exact instance" --observed "有 public anchor frame 和 box" --json
+python tools/knowledge.py diagnose --route goal-copilot-p0 --symptom "near-identical instances cause wrong-target identity drift" --write-plan artifacts.local/knowledge/decision/near-id-plan.json
+```
+
+输出固定为四段：
+
+1. 最可能的 1–3 个故障层和仍需核对的证据；
+2. 2–4 个最相关机制、已有路线状态和 contraindication；
+3. 已尝试的 use/experiment/current terminal，以及必须保留的停止边界；
+4. 一个只改变单一信息因子的最小实验，含 baseline、cohort、primary metric、
+   stop、`NOT_EVALUABLE` 和 claim ceiling。
+
+`decision/config.json` 持有故障层、双语签名、机制 override 和实验模板；
+`decision/terminals.json` 只保存当前决策所需的窄 terminal 摘要及仓库证据锚点，
+不替代 owning route README；`decision/golden_cases.json` 冻结真实故障回归集。
+
+当 item、use、experiment、配置或 terminal 变化时，重建索引并运行冻结回归：
+
+```powershell
+python tools/knowledge.py build-decision-index
+python tools/knowledge.py evaluate-decision-engine
+python tools/knowledge.py validate
+```
+
+`validate` 会比较源文件 fingerprint；索引过期时明确失败，不允许悄悄使用旧判断。
+新增知识不是决策引擎的 KPI。只有真实故障暴露召回盲点或 successor 缺少机制时，
+才增加 item；普通升级优先修改故障签名、机制映射、terminal 或 golden case。
 
 `validate` 也会核对迁移清单中的每个旧编号/派生键：它必须能解析到一个
 canonical item，而且清单声明的 use 必须存在并真正属于该 item。这样批量迁移

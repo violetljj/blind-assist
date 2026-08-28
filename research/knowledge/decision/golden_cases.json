@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "id": "blindassist-decision-engine-golden-v1",
+  "frozen_at": "2026-08-28",
+  "gates": {
+    "top2_layer_recall": 0.9,
+    "top4_mechanism_recall": 0.75,
+    "top4_history_recall": 0.8,
+    "max_engine_runtime_ms": 1000.0,
+    "invalid_experiment_count": 0
+  },
+  "cases": [
+    {
+      "id": "dtr-static-occupancy-unreachable",
+      "route": "dtr-r0",
+      "symptom": "静态占据在 9 个事件上仍为 0/9，冻结 matcher 没有 closing speed",
+      "expected_layers": ["geometry_motion"],
+      "expected_mechanisms": ["paper-occupancy-flow-fields-for-motion-forecasting-in-autonomous-driving#dtr-dr46"],
+      "expected_attempts": ["terminal-dtr-r6-static-occupancy-unreachable"]
+    },
+    {
+      "id": "dtr-causal-flow-false-segments",
+      "route": "dtr-r0",
+      "symptom": "causal occupancy flow 恢复 dropout 但 false alert segments 从 12 增至 20",
+      "expected_layers": ["geometry_motion", "decision_lifecycle"],
+      "expected_mechanisms": ["paper-occupancy-flow-fields-for-motion-forecasting-in-autonomous-driving#dtr-dr46"],
+      "expected_attempts": ["terminal-dtr-r7p-causal-occupancy-flow-gate-not-met"]
+    },
+    {
+      "id": "dtr-track-dropout",
+      "route": "dtr-r0",
+      "symptom": "track dropout after short occlusion loses continuity",
+      "expected_layers": ["temporal_belief"],
+      "expected_mechanisms": ["paper-uncovering-missing-pattern-2023#missingness-aware-imputation-and-forecast"]
+    },
+    {
+      "id": "dtr-event-fragmentation",
+      "route": "dtr-r0",
+      "symptom": "a single negative frame causes CLEAR and fragments one event into several alerts",
+      "expected_layers": ["decision_lifecycle"]
+    },
+    {
+      "id": "dtr-unknown-as-clear",
+      "route": "dtr-r0",
+      "symptom": "UNKNOWN observations are treated as CLEAR and release the risk event",
+      "expected_layers": ["decision_lifecycle", "evaluation_evidence"],
+      "expected_mechanisms": ["tool-project-guideline#project-guideline-stop-failure-semantics"]
+    },
+    {
+      "id": "dtr-no-person-detection",
+      "route": "dtr-r0",
+      "symptom": "person detector has repeated false negatives although frames are available",
+      "expected_layers": ["observation_perception"]
+    },
+    {
+      "id": "dtr-pose-time-misalignment",
+      "route": "dtr-r0",
+      "symptom": "camera pose is not frame-aligned and route projection jumps",
+      "expected_layers": ["source_coverage", "geometry_motion"],
+      "expected_mechanisms": ["tool-project-guideline#project-guideline-pose-time-alignment"]
+    },
+    {
+      "id": "dtr-source-authority-conflict",
+      "route": "dtr-r0",
+      "symptom": "README and artifact disagree and private truth fields appear in the input manifest",
+      "expected_layers": ["authority_truth", "evaluation_evidence"]
+    },
+    {
+      "id": "dtr-no-real-canary",
+      "route": "dtr-r0",
+      "symptom": "no canary exists because synchronized body camera pose recordings are unavailable",
+      "expected_layers": ["source_coverage"]
+    },
+    {
+      "id": "dtr-threshold-rescue-consumed",
+      "route": "dtr-r0",
+      "symptom": "proposal asks to sweep closing threshold on a consumed cohort after seeing 0/9",
+      "expected_layers": ["evaluation_evidence", "decision_lifecycle"],
+      "expected_attempts": ["terminal-dtr-r6-static-occupancy-unreachable"]
+    },
+    {
+      "id": "l10-gap-reacquisition",
+      "route": "l10-r0",
+      "symptom": "目标遮挡后 LOST，重新出现时需要用 public reference reacquire exact instance",
+      "expected_layers": ["temporal_belief", "identity_binding", "authority_truth"],
+      "expected_attempts": ["terminal-l10-sc6-reference-bound-belief-effect"]
+    },
+    {
+      "id": "l10-multiple-physical-ids",
+      "route": "l10-r0",
+      "symptom": "one public goal maps to multiple physical IDs so exact-instance score is NOT_EVALUABLE",
+      "expected_layers": ["identity_binding", "evaluation_evidence"],
+      "expected_attempts": ["terminal-l10-sc5-set-valued-video17"]
+    },
+    {
+      "id": "l10-ocr-observation",
+      "route": "l10-r0",
+      "symptom": "OCR misses the target word and returns broken word geometry",
+      "expected_layers": ["observation_perception"],
+      "expected_mechanisms": ["paper-deepsolo-2023#ordered-point-text-geometry"]
+    },
+    {
+      "id": "l10-reference-wrong-instance",
+      "route": "l10-r0",
+      "symptom": "reference matching switches to a wrong same-class physical instance",
+      "expected_layers": ["identity_binding"]
+    },
+    {
+      "id": "goal-near-identical-wrong-target",
+      "route": "goal-copilot-p0",
+      "symptom": "near-identical instances cause wrong-target identity drift",
+      "expected_layers": ["identity_binding"],
+      "expected_mechanisms": ["paper-nearid-identity-representation-learning-via-near-identity-distractors#goal-audit-31"],
+      "expected_attempts": ["use-goal-copilot-p0-goal-audit-31"]
+    },
+    {
+      "id": "goal-repeated-text-owner",
+      "route": "goal-copilot-p0",
+      "symptom": "repeated identical text binds to the wrong owner and referent",
+      "expected_layers": ["identity_binding"]
+    },
+    {
+      "id": "goal-orientation-slot",
+      "route": "goal-copilot-p0",
+      "symptom": "paired owner orientation disagrees across views and selects the wrong slot",
+      "expected_layers": ["geometry_motion", "identity_binding"],
+      "expected_attempts": ["module-grail"]
+    },
+    {
+      "id": "goal-g1-consumed-multiview",
+      "route": "goal-copilot-p0",
+      "symptom": "fixed three-view appearance collapses Doorway FLIP and suggests another view-selector sweep",
+      "expected_layers": ["identity_binding", "evaluation_evidence"],
+      "expected_attempts": ["terminal-grail-g1-active-multiview-appearance-closed"]
+    },
+    {
+      "id": "goal-gps-router-collapse",
+      "route": "goal-copilot-p0",
+      "symptom": "frame-level GPS is admitted but the router collapses toward geo weights and misses the development gate",
+      "expected_layers": ["source_coverage", "evaluation_evidence"],
+      "expected_attempts": ["terminal-msls-router-development-gate-not-met"]
+    },
+    {
+      "id": "goal-bbox-is-not-arrival",
+      "route": "goal-copilot-p0",
+      "symptom": "target bbox is visible but the system reports arrival without a handoff receipt",
+      "expected_layers": ["handoff_completion"]
+    },
+    {
+      "id": "goal-nearest-free-point",
+      "route": "goal-copilot-p2",
+      "symptom": "nearest free point is used as arrival even though waypoint is not completion",
+      "expected_layers": ["handoff_completion", "geometry_motion"],
+      "expected_mechanisms": ["paper-abot-n1-abotn-poibench#goal-prior-p0-r08"]
+    },
+    {
+      "id": "goal-candidate-missing",
+      "route": "goal-copilot-p0",
+      "symptom": "the true target never enters the candidate set although the matcher is tuned",
+      "expected_layers": ["source_coverage"]
+    },
+    {
+      "id": "goal-final-test-request",
+      "route": "goal-copilot-p0",
+      "symptom": "development gate was not met but the proposal asks to open final test",
+      "expected_layers": ["evaluation_evidence"]
+    },
+    {
+      "id": "goal-centered-data-leakage",
+      "route": "goal-copilot-p0",
+      "symptom": "target-centering leaks identity and the baseline can ignore the public reference",
+      "expected_layers": ["authority_truth", "evaluation_evidence"]
+    },
+    {
+      "id": "runtime-gradle-build",
+      "route": "android",
+      "symptom": "Gradle build failed before any scientific sample executed",
+      "expected_layers": ["runtime_infrastructure"]
+    },
+    {
+      "id": "runtime-adb-offline",
+      "route": "android",
+      "symptom": "adb reports device offline and the app cannot launch",
+      "expected_layers": ["runtime_infrastructure"]
+    },
+    {
+      "id": "runtime-transport-decode",
+      "route": "l10m-b1",
+      "symptom": "streaming transport times out and the terminal payload cannot decode",
+      "expected_layers": ["runtime_infrastructure"]
+    },
+    {
+      "id": "evaluation-denominator-missing",
+      "route": "dtr-r0",
+      "symptom": "reported recall has no denominator and UNKNOWN windows were silently dropped",
+      "expected_layers": ["evaluation_evidence"]
+    },
+    {
+      "id": "evaluation-logging-fields",
+      "route": "dtr-r0",
+      "symptom": "failure cannot be localized because the diagnostic log lacks denominator and state-transition fields",
+      "expected_layers": ["evaluation_evidence", "runtime_infrastructure"],
+      "expected_mechanisms": ["tool-project-guideline#project-guideline-logging-fields"]
+    },
+    {
+      "id": "observation-depth-scale",
+      "route": "dtr-r0",
+      "symptom": "monocular depth scale is inconsistent and projected distance is wrong",
+      "expected_layers": ["observation_perception", "geometry_motion"]
+    }
+  ]
+}

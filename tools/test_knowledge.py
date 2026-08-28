@@ -232,6 +232,134 @@ class KnowledgeCliTest(unittest.TestCase):
             [entry["use"]["id"] for entry in selected],
         )
 
+    def test_diagnose_builds_fast_decision_card_from_compiled_index(self) -> None:
+        with TemporaryDirectory(prefix="blindassist-decision-test-") as temporary:
+            root = Path(temporary) / "research" / "knowledge"
+            (root / "decision").mkdir(parents=True)
+            experiment_template = {
+                "hypothesis": "Temporal state is missing.",
+                "baseline": "Frozen stateless baseline.",
+                "single_change": "Add bounded temporal belief only.",
+                "cohort": "Fresh occlusion sequence.",
+                "primary_metric": "reacquisition coverage",
+                "stop_conditions": ["future-frame access"],
+                "not_evaluable_conditions": ["missing timestamps"],
+                "claim_ceiling": "Replay-only temporal evidence.",
+            }
+            index = {
+                "schema_version": 1,
+                "engine_version": "decision-test",
+                "source_fingerprint": "test-fingerprint",
+                "failure_layers": [
+                    {
+                        "id": "temporal_belief",
+                        "name": "Temporal belief",
+                        "description": "Occlusion and reacquisition failures.",
+                        "symptom_signals": ["track dropout", "occlusion"],
+                        "mechanism_signals": ["temporal", "track"],
+                        "required_evidence": ["ordered timestamps"],
+                        "experiment": experiment_template,
+                    }
+                ],
+                "global_guardrails": [
+                    "已消费 cohort cannot be reopened.",
+                    "UNKNOWN must remain distinct.",
+                    "只改变一个 information factor.",
+                ],
+                "mechanisms": [
+                    {
+                        "id": "paper-temporal#bounded-belief",
+                        "item_id": "paper-temporal",
+                        "mechanism_id": "bounded-belief",
+                        "kind": "paper",
+                        "title": "Bounded temporal belief",
+                        "canonical_ref": "https://example.org/temporal",
+                        "summary": "A bounded belief mechanism.",
+                        "tags": ["temporal"],
+                        "name": "Bounded temporal belief",
+                        "description": "Preserve state through short gaps.",
+                        "inputs": ["ordered observations"],
+                        "outputs": ["belief state"],
+                        "limitations": "Does not create identity.",
+                        "signatures": ["track dropout"],
+                        "layer_scores": {"temporal_belief": 20},
+                        "routes": ["smoke-route"],
+                        "uses": [],
+                        "search_text": "track dropout temporal belief",
+                    },
+                    {
+                        "id": "paper-tracker#causal-track",
+                        "item_id": "paper-tracker",
+                        "mechanism_id": "causal-track",
+                        "kind": "paper",
+                        "title": "Causal track",
+                        "canonical_ref": "https://example.org/tracker",
+                        "summary": "A causal tracker.",
+                        "tags": ["track"],
+                        "name": "Causal track",
+                        "description": "Associate adjacent observations.",
+                        "inputs": ["detections"],
+                        "outputs": ["tracks"],
+                        "limitations": "Short gaps only.",
+                        "signatures": ["occlusion"],
+                        "layer_scores": {"temporal_belief": 10},
+                        "routes": [],
+                        "uses": [],
+                        "search_text": "occlusion causal track",
+                    },
+                ],
+                "experiments": [
+                    {
+                        "kind": "current_terminal",
+                        "id": "terminal-old-dropout",
+                        "status": "not_evaluable",
+                        "question": "Static observations did not bridge gaps.",
+                        "decision": "STATIC_DROPOUT_NOT_EVALUABLE",
+                        "report": "docs/result.md",
+                        "commit": "deadbeef",
+                        "routes": ["smoke-route"],
+                        "layer_scores": {"temporal_belief": 30},
+                        "successor_requires": "Causal temporal information.",
+                        "forbidden_repeats": ["threshold sweep"],
+                        "evidence": ["docs/result.md"],
+                        "search_text": "track dropout static observations",
+                    }
+                ],
+            }
+            (root / "decision" / "index.json").write_text(
+                json.dumps(index, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+
+            result, output, stderr = self.run_cli(
+                root,
+                "diagnose",
+                "--route",
+                "smoke-route",
+                "--symptom",
+                "track dropout after occlusion",
+                "--mechanism-limit",
+                "2",
+                "--json",
+            )
+            self.assertEqual(0, result, stderr)
+            card = json.loads(output)
+            self.assertEqual("temporal_belief", card["diagnosis"]["layers"][0]["id"])
+            self.assertEqual(2, len(card["mechanisms"]))
+            self.assertEqual(
+                "paper-temporal#bounded-belief", card["mechanisms"][0]["id"]
+            )
+            self.assertEqual(
+                "terminal-old-dropout", card["prior_attempts"][0]["id"]
+            )
+            self.assertEqual(
+                "paper-temporal#bounded-belief",
+                card["minimum_experiment"]["selected_mechanism"]["id"],
+            )
+            self.assertTrue(
+                knowledge._experiment_plan_is_valid(card["minimum_experiment"])
+            )
+
     def test_migration_receipt_requires_resolvable_alias_and_use(self) -> None:
         with TemporaryDirectory(prefix="blindassist-knowledge-migration-test-") as temporary:
             root = Path(temporary) / "research" / "knowledge"

@@ -4,10 +4,12 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
 import sys
+import time
 from collections import Counter
 from datetime import date
 from pathlib import Path, PurePosixPath
@@ -69,6 +71,13 @@ CONTEXT_VERDICT_PRIORITY = {
     "positive": 5,
     "not_run": 6,
 }
+DECISION_SCHEMA_VERSION = 1
+DECISION_DEFAULT_MECHANISM_LIMIT = 2
+DECISION_DEFAULT_ATTEMPT_LIMIT = 4
+DECISION_CONFIG_RELATIVE = Path("decision") / "config.json"
+DECISION_INDEX_RELATIVE = Path("decision") / "index.json"
+DECISION_TERMINALS_RELATIVE = Path("decision") / "terminals.json"
+DECISION_GOLDEN_RELATIVE = Path("decision") / "golden_cases.json"
 
 
 class KnowledgeError(RuntimeError):
@@ -88,9 +97,8 @@ def _read_json(path: Path) -> dict[str, Any]:
 def _write_json_atomic(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
-    temporary.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
+    temporary.write_bytes(
+        (json.dumps(payload, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
     )
     os.replace(temporary, path)
 
@@ -691,6 +699,8 @@ def _print_rows(rows: list[dict[str, Any]], as_json: bool) -> None:
 
 def _command_validate(args: argparse.Namespace) -> int:
     items, uses, errors = validate_library(args.root)
+    if not errors:
+        errors.extend(_decision_index_validation_errors(args.root, items))
     if errors:
         print("Knowledge library validation failed:", file=sys.stderr)
         for error in errors:
@@ -954,6 +964,1447 @@ def _command_context(args: argparse.Namespace) -> int:
     )
     _print_context(payload, args.json)
     return 0
+
+
+def _decision_config_path(root: Path) -> Path:
+    return root / DECISION_CONFIG_RELATIVE
+
+
+def _decision_index_path(root: Path) -> Path:
+    return root / DECISION_INDEX_RELATIVE
+
+
+def _decision_terminals_path(root: Path) -> Path:
+    return root / DECISION_TERMINALS_RELATIVE
+
+
+def _validate_decision_config(
+    config: dict[str, Any],
+    items: dict[str, dict[str, Any]] | None = None,
+) -> list[str]:
+    errors: list[str] = []
+    if config.get("schema_version") != DECISION_SCHEMA_VERSION:
+        errors.append(
+            f"decision config: schema_version must be {DECISION_SCHEMA_VERSION}"
+        )
+    _check_string(errors, config, "engine_version", "decision config")
+    layers = config.get("failure_layers")
+    layer_ids: set[str] = set()
+    if not isinstance(layers, list) or not layers:
+        errors.append("decision config: failure_layers must be a non-empty list")
+        layers = []
+    for index, layer in enumerate(layers):
+        context = f"decision config.failure_layers[{index}]"
+        if not isinstance(layer, dict):
+            errors.append(f"{context}: must be an object")
+            continue
+        identifier = layer.get("id")
+        if not isinstance(identifier, str) or not ID_PATTERN.fullmatch(identifier):
+            errors.append(f"{context}: id must match {ID_PATTERN.pattern}")
+        elif identifier in layer_ids:
+            errors.append(f"{context}: duplicate layer id {identifier}")
+        else:
+            layer_ids.add(identifier)
+        for field in ("name", "description"):
+            _check_string(errors, layer, field, context)
+        for field in (
+            "symptom_signals",
+            "mechanism_signals",
+            "required_evidence",
+        ):
+            _check_string_list(
+                errors, layer.get(field), field, context, allow_empty=False
+            )
+        experiment = layer.get("experiment")
+        if not isinstance(experiment, dict):
+            errors.append(f"{context}.experiment: must be an object")
+        else:
+            for field in (
+                "hypothesis",
+                "baseline",
+                "single_change",
+                "cohort",
+                "primary_metric",
+                "claim_ceiling",
+            ):
+                _check_string(errors, experiment, field, f"{context}.experiment")
+            for field in ("stop_conditions", "not_evaluable_conditions"):
+                _check_string_list(
+                    errors,
+                    experiment.get(field),
+                    field,
+                    f"{context}.experiment",
+                    allow_empty=False,
+                )
+
+    route_profiles = config.get("route_profiles")
+    if not isinstance(route_profiles, dict):
+        errors.append("decision config: route_profiles must be an object")
+    else:
+        for route, aliases in route_profiles.items():
+            if not _is_nonempty_string(route):
+                errors.append("decision config: route profile key must be non-empty")
+                continue
+            _check_string_list(
+                errors,
+                aliases,
+                f"route_profiles.{route}",
+                "decision config",
+                allow_empty=False,
+            )
+
+    overrides = config.get("mechanism_overrides")
+    if not isinstance(overrides, dict):
+        errors.append("decision config: mechanism_overrides must be an object")
+    else:
+        known_mechanisms: set[str] = set()
+        if items is not None:
+            for item in items.values():
+                for mechanism in item.get("mechanisms", []):
+                    known_mechanisms.add(f"{item['id']}#{mechanism['id']}")
+        for mechanism_key, override in overrides.items():
+            context = f"decision config.mechanism_overrides.{mechanism_key}"
+            if items is not None and mechanism_key not in known_mechanisms:
+                errors.append(f"{context}: unknown item#mechanism key")
+            if not isinstance(override, dict):
+                errors.append(f"{context}: must be an object")
+                continue
+            override_layers = _check_string_list(
+                errors,
+                override.get("failure_layers"),
+                "failure_layers",
+                context,
+                allow_empty=False,
+            )
+            for layer_id in override_layers:
+                if layer_id not in layer_ids:
+                    errors.append(f"{context}: unknown failure layer {layer_id}")
+            _check_string_list(
+                errors,
+                override.get("signatures"),
+                "signatures",
+                context,
+                allow_empty=False,
+            )
+
+    _check_string_list(
+        errors,
+        config.get("global_guardrails"),
+        "global_guardrails",
+        "decision config",
+        allow_empty=False,
+    )
+    return errors
+
+
+def _load_decision_config(
+    root: Path,
+    items: dict[str, dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    path = _decision_config_path(root)
+    if not path.is_file():
+        raise KnowledgeError(f"missing decision config: {path}")
+    config = _read_json(path)
+    errors = _validate_decision_config(config, items)
+    if errors:
+        raise KnowledgeError("invalid decision config:\n - " + "\n - ".join(errors))
+    return config
+
+
+def _decision_source_fingerprint(root: Path) -> str:
+    repo_root = root.parents[1]
+    paths = [_decision_config_path(root)]
+    terminals_path = _decision_terminals_path(root)
+    if terminals_path.is_file():
+        paths.append(terminals_path)
+    paths.extend(sorted((root / "items").glob("*.json")))
+    paths.extend(sorted((root / "uses").glob("*.json")))
+    experiment_ledger = repo_root / "experiments" / "index.jsonl"
+    if experiment_ledger.is_file():
+        paths.append(experiment_ledger)
+    digest = hashlib.sha256()
+    for path in paths:
+        try:
+            relative = path.relative_to(repo_root).as_posix()
+        except ValueError:
+            relative = path.as_posix()
+        digest.update(relative.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(path.read_bytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def _phrase_hits(text: str, phrases: Iterable[str]) -> list[str]:
+    folded = re.sub(
+        r"[^a-z0-9\u3400-\u9fff]+", " ", text.casefold()
+    ).strip()
+    return sorted(
+        {
+            phrase
+            for phrase in phrases
+            if re.sub(
+                r"[^a-z0-9\u3400-\u9fff]+", " ", phrase.casefold()
+            ).strip()
+            in folded
+        },
+        key=lambda value: (-len(value), value.casefold()),
+    )
+
+
+def _layer_scores_for_text(
+    text: str,
+    layers: list[dict[str, Any]],
+    fields: tuple[str, ...],
+) -> dict[str, int]:
+    scores: dict[str, int] = {}
+    for layer in layers:
+        phrases: list[str] = []
+        for field in fields:
+            phrases.extend(layer.get(field, []))
+        hits = _phrase_hits(text, phrases)
+        if hits:
+            scores[layer["id"]] = sum(2 + min(len(hit.split()), 3) for hit in hits)
+    return scores
+
+
+def _read_experiment_rows(repo_root: Path) -> list[dict[str, Any]]:
+    path = repo_root / "experiments" / "index.jsonl"
+    if not path.is_file():
+        return []
+    rows: list[dict[str, Any]] = []
+    for line_number, line in enumerate(
+        path.read_text(encoding="utf-8").splitlines(), start=1
+    ):
+        if not line.strip():
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise KnowledgeError(f"{path}:{line_number}: {exc}") from exc
+        if not isinstance(row, dict) or not _is_nonempty_string(row.get("id")):
+            raise KnowledgeError(f"{path}:{line_number}: experiment row needs string id")
+        rows.append(row)
+    return rows
+
+
+def _read_current_terminals(
+    root: Path,
+    layer_ids: set[str],
+) -> list[dict[str, Any]]:
+    path = _decision_terminals_path(root)
+    if not path.is_file():
+        return []
+    payload = _read_json(path)
+    errors: list[str] = []
+    if payload.get("schema_version") != DECISION_SCHEMA_VERSION:
+        errors.append(
+            f"{path}: schema_version must be {DECISION_SCHEMA_VERSION}"
+        )
+    _check_date(errors, payload.get("updated_at"), "updated_at", str(path))
+    terminals = payload.get("terminals")
+    if not isinstance(terminals, list):
+        errors.append(f"{path}: terminals must be a list")
+        terminals = []
+    seen_ids: set[str] = set()
+    repo_root = root.parents[1]
+    for index, terminal in enumerate(terminals):
+        context = f"{path}.terminals[{index}]"
+        if not isinstance(terminal, dict):
+            errors.append(f"{context}: must be an object")
+            continue
+        identifier = terminal.get("id")
+        if not isinstance(identifier, str) or not ID_PATTERN.fullmatch(identifier):
+            errors.append(f"{context}: id must match {ID_PATTERN.pattern}")
+        elif identifier in seen_ids:
+            errors.append(f"{context}: duplicate id {identifier}")
+        else:
+            seen_ids.add(identifier)
+        for field in (
+            "route",
+            "status",
+            "decision",
+            "summary",
+            "successor_requires",
+            "commit",
+        ):
+            _check_string(errors, terminal, field, context)
+        failure_layers = _check_string_list(
+            errors,
+            terminal.get("failure_layers"),
+            "failure_layers",
+            context,
+            allow_empty=False,
+        )
+        for layer_id in failure_layers:
+            if layer_id not in layer_ids:
+                errors.append(f"{context}: unknown failure layer {layer_id}")
+        _check_string_list(
+            errors,
+            terminal.get("forbidden_repeats"),
+            "forbidden_repeats",
+            context,
+            allow_empty=False,
+        )
+        evidence = _check_string_list(
+            errors,
+            terminal.get("evidence"),
+            "evidence",
+            context,
+            allow_empty=False,
+        )
+        for reference in evidence:
+            if not _is_safe_repo_relative(reference):
+                errors.append(f"{context}: unsafe evidence path {reference}")
+            elif not (repo_root / PurePosixPath(reference)).is_file():
+                errors.append(f"{context}: missing evidence path {reference}")
+    if errors:
+        raise KnowledgeError("invalid decision terminals:\n - " + "\n - ".join(errors))
+    return terminals
+
+
+def _infer_routes(text: str, route_profiles: dict[str, list[str]]) -> list[str]:
+    folded = text.casefold()
+    result: list[str] = []
+    for route, aliases in route_profiles.items():
+        candidates = [route, *aliases]
+        if any(candidate.casefold() in folded for candidate in candidates):
+            result.append(route)
+    return sorted(result)
+
+
+def _compact_use(use: dict[str, Any]) -> dict[str, Any]:
+    evaluation = use["evaluation"]
+    return {
+        "id": use["id"],
+        "route": use["route"],
+        "use_state": use["use_state"],
+        "reproduction_status": evaluation["reproduction_status"],
+        "verdict": evaluation["verdict"],
+        "project_application": use["usage"]["project_application"],
+        "expected_effect": use["usage"]["expected_effect"],
+        "observed_effect": evaluation["effect"],
+        "metrics": evaluation["metrics"],
+        "claim_boundary": evaluation["claim_boundary"],
+        "evidence": [
+            {
+                "kind": evidence["kind"],
+                "ref": evidence["ref"],
+                "summary": evidence["summary"],
+            }
+            for evidence in use.get("evidence", [])
+        ],
+        "updated_at": use["updated_at"],
+    }
+
+
+def _build_decision_index_payload(
+    root: Path,
+    items: dict[str, dict[str, Any]],
+    uses: dict[str, dict[str, Any]],
+    config: dict[str, Any],
+) -> dict[str, Any]:
+    layers = config["failure_layers"]
+    overrides = config["mechanism_overrides"]
+    uses_by_item: dict[str, list[dict[str, Any]]] = {}
+    for use in uses.values():
+        uses_by_item.setdefault(use["item_id"], []).append(use)
+
+    mechanisms: list[dict[str, Any]] = []
+    for item in sorted(items.values(), key=lambda value: value["id"]):
+        linked_uses = uses_by_item.get(item["id"], [])
+        for mechanism in item.get("mechanisms", []):
+            key = f"{item['id']}#{mechanism['id']}"
+            mechanism_uses = [
+                use
+                for use in linked_uses
+                if mechanism["id"] in use.get("mechanism_ids", [])
+            ]
+            override = overrides.get(key, {})
+            search_parts: list[Any] = [
+                item["title"],
+                item["summary"],
+                *item.get("tags", []),
+                mechanism["name"],
+                mechanism["description"],
+                *mechanism.get("inputs", []),
+                *mechanism.get("outputs", []),
+                mechanism["limitations"],
+                *override.get("signatures", []),
+            ]
+            for use in mechanism_uses:
+                search_parts.extend(
+                    [
+                        use["route"],
+                        use["usage"]["project_application"],
+                        use["usage"]["expected_effect"],
+                        use["evaluation"]["effect"],
+                        *use["evaluation"]["metrics"],
+                        use["evaluation"]["claim_boundary"],
+                    ]
+                )
+            search_text = " ".join(str(part) for part in search_parts if part)
+            layer_scores = _layer_scores_for_text(
+                search_text, layers, ("mechanism_signals",)
+            )
+            for layer_id in override.get("failure_layers", []):
+                layer_scores[layer_id] = max(layer_scores.get(layer_id, 0), 20)
+            mechanisms.append(
+                {
+                    "id": key,
+                    "item_id": item["id"],
+                    "mechanism_id": mechanism["id"],
+                    "kind": item["kind"],
+                    "title": item["title"],
+                    "canonical_ref": item["canonical_ref"],
+                    "summary": item["summary"],
+                    "tags": item.get("tags", []),
+                    "name": mechanism["name"],
+                    "description": mechanism["description"],
+                    "inputs": mechanism.get("inputs", []),
+                    "outputs": mechanism.get("outputs", []),
+                    "limitations": mechanism["limitations"],
+                    "signatures": override.get("signatures", []),
+                    "layer_scores": dict(sorted(layer_scores.items())),
+                    "routes": sorted({use["route"] for use in mechanism_uses}),
+                    "uses": [
+                        _compact_use(use)
+                        for use in sorted(mechanism_uses, key=lambda value: value["id"])
+                    ],
+                    "search_text": search_text,
+                }
+            )
+
+    experiments: list[dict[str, Any]] = []
+    repo_root = root.parents[1]
+    current_terminals = _read_current_terminals(
+        root, {layer["id"] for layer in layers}
+    )
+    for terminal in current_terminals:
+        search_text = " ".join(
+            [
+                terminal["id"],
+                terminal["route"],
+                terminal["decision"],
+                terminal["summary"],
+                terminal["successor_requires"],
+                *terminal["forbidden_repeats"],
+            ]
+        )
+        experiments.append(
+            {
+                "kind": "current_terminal",
+                "id": terminal["id"],
+                "status": terminal["status"],
+                "question": terminal["summary"],
+                "baseline": None,
+                "change": terminal["successor_requires"],
+                "primary_metric": None,
+                "decision": terminal["decision"],
+                "report": terminal["evidence"][0],
+                "source": "decision/terminals.json",
+                "commit": terminal["commit"],
+                "routes": [terminal["route"]],
+                "layer_scores": {
+                    layer_id: 30 for layer_id in terminal["failure_layers"]
+                },
+                "successor_requires": terminal["successor_requires"],
+                "forbidden_repeats": terminal["forbidden_repeats"],
+                "evidence": terminal["evidence"],
+                "search_text": search_text,
+            }
+        )
+    for row in _read_experiment_rows(repo_root):
+        search_text = " ".join(
+            str(row.get(field) or "")
+            for field in (
+                "id",
+                "question",
+                "baseline",
+                "change",
+                "primary_metric",
+                "decision",
+                "report",
+                "source",
+            )
+        )
+        experiments.append(
+            {
+                "kind": "experiment",
+                "id": row["id"],
+                "status": row.get("status"),
+                "question": row.get("question"),
+                "baseline": row.get("baseline"),
+                "change": row.get("change"),
+                "primary_metric": row.get("primary_metric"),
+                "decision": row.get("decision"),
+                "report": row.get("report"),
+                "source": row.get("source"),
+                "commit": row.get("commit"),
+                "routes": _infer_routes(search_text, config["route_profiles"]),
+                "layer_scores": _layer_scores_for_text(
+                    search_text,
+                    layers,
+                    ("symptom_signals", "mechanism_signals"),
+                ),
+                "search_text": search_text,
+            }
+        )
+
+    return {
+        "schema_version": DECISION_SCHEMA_VERSION,
+        "engine_version": config["engine_version"],
+        "generated_at": date.today().isoformat(),
+        "source_fingerprint": _decision_source_fingerprint(root),
+        "counts": {
+            "failure_layers": len(layers),
+            "mechanisms": len(mechanisms),
+            "uses": len(uses),
+            "experiments": len(experiments) - len(current_terminals),
+            "current_terminals": len(current_terminals),
+        },
+        "failure_layers": layers,
+        "route_profiles": config["route_profiles"],
+        "global_guardrails": config["global_guardrails"],
+        "mechanisms": mechanisms,
+        "experiments": experiments,
+    }
+
+
+def _command_build_decision_index(args: argparse.Namespace) -> int:
+    items, uses = _require_valid(args.root)
+    config = _load_decision_config(args.root, items)
+    payload = _build_decision_index_payload(args.root, items, uses, config)
+    path = _decision_index_path(args.root)
+    _write_json_atomic(path, payload)
+    counts = payload["counts"]
+    print(
+        f"BUILT {path}: layers={counts['failure_layers']} "
+        f"mechanisms={counts['mechanisms']} uses={counts['uses']} "
+        f"experiments={counts['experiments']} "
+        f"current_terminals={counts['current_terminals']}"
+    )
+    return 0
+
+
+def _decision_index_validation_errors(
+    root: Path,
+    items: dict[str, dict[str, Any]],
+) -> list[str]:
+    config_path = _decision_config_path(root)
+    if not config_path.is_file():
+        return []
+    errors: list[str] = []
+    try:
+        config = _read_json(config_path)
+        errors.extend(_validate_decision_config(config, items))
+    except KnowledgeError as exc:
+        return [str(exc)]
+    if not errors:
+        try:
+            _read_current_terminals(
+                root,
+                {
+                    layer["id"]
+                    for layer in config.get("failure_layers", [])
+                    if isinstance(layer, dict) and isinstance(layer.get("id"), str)
+                },
+            )
+        except KnowledgeError as exc:
+            errors.append(str(exc))
+    index_path = _decision_index_path(root)
+    if not index_path.is_file():
+        errors.append(
+            f"missing decision index: {index_path}; run build-decision-index"
+        )
+        return errors
+    try:
+        payload = _read_json(index_path)
+    except KnowledgeError as exc:
+        errors.append(str(exc))
+        return errors
+    if payload.get("schema_version") != DECISION_SCHEMA_VERSION:
+        errors.append(
+            f"decision index: schema_version must be {DECISION_SCHEMA_VERSION}"
+        )
+    expected = _decision_source_fingerprint(root)
+    if payload.get("source_fingerprint") != expected:
+        errors.append("decision index is stale; run build-decision-index")
+    return errors
+
+
+def _load_decision_index(root: Path) -> dict[str, Any]:
+    path = _decision_index_path(root)
+    if not path.is_file():
+        raise KnowledgeError(
+            f"missing decision index: {path}; run build-decision-index"
+        )
+    payload = _read_json(path)
+    if payload.get("schema_version") != DECISION_SCHEMA_VERSION:
+        raise KnowledgeError(
+            f"unsupported decision index schema: {payload.get('schema_version')}"
+        )
+    for field in ("failure_layers", "mechanisms", "experiments"):
+        if not isinstance(payload.get(field), list):
+            raise KnowledgeError(f"decision index: {field} must be a list")
+    return payload
+
+
+def _diagnose_layers(
+    symptom: str,
+    observations: list[str],
+    layers: list[dict[str, Any]],
+) -> dict[str, Any]:
+    symptom_scores = _layer_scores_for_text(
+        symptom, layers, ("symptom_signals",)
+    )
+    observation_text = " ".join(observations)
+    observation_scores = _layer_scores_for_text(
+        observation_text, layers, ("symptom_signals",)
+    )
+    layer_by_id = {layer["id"]: layer for layer in layers}
+    ranked: list[dict[str, Any]] = []
+    combined_text = f"{symptom} {observation_text}"
+    for layer in layers:
+        score = symptom_scores.get(layer["id"], 0) * 3
+        score += observation_scores.get(layer["id"], 0) * 2
+        if score <= 0:
+            continue
+        hits = _phrase_hits(combined_text, layer["symptom_signals"])
+        ranked.append(
+            {
+                "id": layer["id"],
+                "name": layer["name"],
+                "score": score,
+                "matched_signals": hits,
+                "description": layer["description"],
+                "required_evidence": layer["required_evidence"],
+            }
+        )
+    ranked.sort(key=lambda value: (-value["score"], value["id"]))
+    ranked = ranked[:3]
+    if not ranked:
+        return {
+            "status": "unlocalized",
+            "confidence": "unknown",
+            "layers": [],
+            "next_evidence": [
+                "原始故障文本/退出码或错误样本",
+                "最后一个确认正确的接口输出",
+                "UNKNOWN、缺失与负例的独立计数",
+            ],
+        }
+    top_score = ranked[0]["score"]
+    second_score = ranked[1]["score"] if len(ranked) > 1 else 0
+    if top_score >= 18 and second_score < top_score * 0.65:
+        status = "localized"
+        confidence = "high"
+    elif second_score >= top_score * 0.8:
+        status = "ambiguous"
+        confidence = "medium"
+    else:
+        status = "localized"
+        confidence = "medium"
+    next_evidence: list[str] = []
+    for result in ranked[:2]:
+        next_evidence.extend(layer_by_id[result["id"]]["required_evidence"])
+    return {
+        "status": status,
+        "confidence": confidence,
+        "layers": ranked,
+        "next_evidence": list(dict.fromkeys(next_evidence))[:4],
+    }
+
+
+def _query_terms(text: str) -> list[str]:
+    folded = text.casefold()
+    terms: set[str] = set()
+    for token in re.findall(r"[a-z0-9][a-z0-9._-]+", folded):
+        if len(token) >= 3:
+            terms.add(token)
+        terms.update(
+            part for part in re.split(r"[._-]+", token) if len(part) >= 3
+        )
+    for span in re.findall(r"[\u3400-\u9fff]+", folded):
+        if len(span) <= 4:
+            terms.add(span)
+        else:
+            for size in (2, 3, 4):
+                for start in range(0, len(span) - size + 1):
+                    terms.add(span[start : start + size])
+    return sorted(terms, key=lambda value: (-len(value), value))
+
+
+def _signature_hits(text: str, signatures: Iterable[str]) -> list[str]:
+    exact = set(_phrase_hits(text, signatures))
+    normalized_text = re.sub(
+        r"[^a-z0-9\u3400-\u9fff]+", " ", text.casefold()
+    ).strip()
+    text_tokens = set(normalized_text.split())
+    for signature in signatures:
+        normalized_signature = re.sub(
+            r"[^a-z0-9\u3400-\u9fff]+", " ", signature.casefold()
+        ).strip()
+        signature_tokens = {
+            token for token in normalized_signature.split() if len(token) >= 3
+        }
+        if len(signature_tokens) >= 2 and signature_tokens.issubset(text_tokens):
+            exact.add(signature)
+    return sorted(exact, key=lambda value: (-len(value), value.casefold()))
+
+
+def _maximal_text_hits(hits: Iterable[str], limit: int = 5) -> list[str]:
+    selected: list[str] = []
+    for hit in sorted(set(hits), key=lambda value: (-len(value), value)):
+        if any(hit in existing for existing in selected):
+            continue
+        selected.append(hit)
+        if len(selected) == limit:
+            break
+    return selected
+
+
+def _route_use_preference(use: dict[str, Any]) -> int:
+    score = {
+        "active": 16,
+        "planned": 12,
+        "adopted": 10,
+        "candidate": 6,
+        "retired": -6,
+        "rejected": -14,
+    }.get(use["use_state"], 0)
+    verdict = use["verdict"]
+    score += {
+        "positive": 10,
+        "mixed": 3,
+        "not_run": 0,
+        "unknown": -1,
+        "not_evaluable": -4,
+        "negative": -12,
+        "falsified": -20,
+    }.get(verdict, 0)
+    return score
+
+
+def _rank_mechanisms(
+    index: dict[str, Any],
+    route: str,
+    query_text: str,
+    diagnosis: dict[str, Any],
+    available: list[str],
+    missing: list[str],
+    limit: int,
+) -> list[dict[str, Any]]:
+    terms = _query_terms(query_text)
+    diagnosed_layers = [layer["id"] for layer in diagnosis["layers"]]
+    layer_weights = (70, 42, 24)
+    ranked: list[tuple[int, str, dict[str, Any]]] = []
+    for mechanism in index["mechanisms"]:
+        score = 0
+        reasons: list[str] = []
+        for rank, layer_id in enumerate(diagnosed_layers):
+            layer_score = mechanism["layer_scores"].get(layer_id, 0)
+            if layer_score:
+                score += layer_weights[rank] + min(layer_score, 20)
+                reasons.append(f"匹配故障层 {layer_id}")
+        direct_hits = _signature_hits(
+            query_text, mechanism.get("signatures", [])
+        )
+        if direct_hits:
+            score += 55 + 6 * len(direct_hits)
+            reasons.append("直接故障签名: " + ", ".join(direct_hits[:3]))
+        folded_search = mechanism["search_text"].casefold()
+        lexical_hits = _maximal_text_hits(
+            (term for term in terms if term in folded_search), limit=8
+        )
+        if lexical_hits:
+            score += min(36, len(lexical_hits) * 3)
+            reasons.append("命中: " + ", ".join(lexical_hits[:5]))
+        route_uses = [use for use in mechanism["uses"] if use["route"] == route]
+        if route in mechanism["routes"]:
+            score += 28
+            reasons.append(f"已有 {route} 使用记录")
+        selected_use = None
+        if route_uses:
+            selected_use = max(route_uses, key=_route_use_preference)
+            score += _route_use_preference(selected_use)
+        input_text = " ".join(mechanism.get("inputs", [])).casefold()
+        available_hits = [value for value in available if value.casefold() in input_text]
+        missing_hits = [value for value in missing if value.casefold() in input_text]
+        if available_hits:
+            score += min(12, len(available_hits) * 4)
+            reasons.append("已有输入: " + ", ".join(available_hits))
+        if missing_hits:
+            score -= 35
+        if score <= 0:
+            continue
+        contraindications: list[str] = []
+        if missing_hits:
+            contraindications.append("缺少前置输入: " + ", ".join(missing_hits))
+        if selected_use and selected_use["use_state"] in {"rejected", "retired"}:
+            contraindications.append(
+                f"路线状态为 {selected_use['use_state']}，不得原样重开"
+            )
+        if selected_use and selected_use["verdict"] in {
+            "negative",
+            "falsified",
+            "not_evaluable",
+        }:
+            contraindications.append(
+                f"既有 verdict={selected_use['verdict']}；新实验必须满足 successor 条件"
+            )
+        if mechanism["limitations"]:
+            contraindications.append(mechanism["limitations"])
+        result = {
+            "id": mechanism["id"],
+            "item_id": mechanism["item_id"],
+            "mechanism_id": mechanism["mechanism_id"],
+            "name": mechanism["name"],
+            "source_title": mechanism["title"],
+            "canonical_ref": mechanism["canonical_ref"],
+            "score": score,
+            "why": list(dict.fromkeys(reasons)),
+            "description": mechanism["description"],
+            "inputs": mechanism["inputs"],
+            "outputs": mechanism["outputs"],
+            "route_history": selected_use,
+            "contraindications": contraindications,
+        }
+        ranked.append((score, mechanism["id"], result))
+    ranked.sort(key=lambda value: (-value[0], value[1]))
+    return [result for _, _, result in ranked[:limit]]
+
+
+def _terminal_markers(text: str) -> list[str]:
+    candidates = re.findall(r"[A-Z][A-Z0-9_]{4,}", text or "")
+    terminal_terms = (
+        "STOP",
+        "CLOSE",
+        "NOT_EVALUABLE",
+        "NO_FINAL",
+        "CONSUMED",
+        "FAILED",
+        "GATE_NOT_MET",
+        "HOLD",
+    )
+    return list(
+        dict.fromkeys(
+            candidate
+            for candidate in candidates
+            if any(term in candidate for term in terminal_terms)
+        )
+    )[:8]
+
+
+def _rank_prior_attempts(
+    index: dict[str, Any],
+    route: str,
+    query_text: str,
+    diagnosis: dict[str, Any],
+    mechanisms: list[dict[str, Any]],
+    limit: int,
+) -> list[dict[str, Any]]:
+    terms = _query_terms(query_text)
+    diagnosed_layers = [layer["id"] for layer in diagnosis["layers"]]
+    attempts: list[tuple[int, str, dict[str, Any]]] = []
+    seen_uses: set[str] = set()
+    for mechanism in mechanisms:
+        use = mechanism.get("route_history")
+        if not use or use["id"] in seen_uses:
+            continue
+        if use["verdict"] == "not_run" and use["use_state"] not in {
+            "rejected",
+            "retired",
+        }:
+            continue
+        seen_uses.add(use["id"])
+        summary = use["observed_effect"] or use["expected_effect"]
+        markers = _terminal_markers(f"{summary} {use['claim_boundary']}")
+        attempts.append(
+            (
+                120 + mechanism["score"],
+                use["id"],
+                {
+                    "kind": "route_use",
+                    "id": use["id"],
+                    "status": use["use_state"],
+                    "verdict": use["verdict"],
+                    "summary": summary,
+                    "metrics": use["metrics"],
+                    "evidence": use["evidence"],
+                    "terminal_markers": markers,
+                    "do_not_repeat": (
+                        use["use_state"] in {"rejected", "retired"}
+                        or use["verdict"]
+                        in {"negative", "falsified", "not_evaluable"}
+                    ),
+                },
+            )
+        )
+
+    for experiment in index["experiments"]:
+        if route and experiment["routes"] and route not in experiment["routes"]:
+            continue
+        score = 0
+        if route in experiment["routes"]:
+            score += 45
+        for rank, layer_id in enumerate(diagnosed_layers):
+            if experiment["layer_scores"].get(layer_id, 0):
+                score += (45, 28, 16)[rank]
+        folded = experiment["search_text"].casefold()
+        lexical_hits = [term for term in terms if term in folded]
+        score += min(36, len(lexical_hits) * 4)
+        if experiment.get("kind") == "current_terminal":
+            score += 60 if lexical_hits else 0
+        markers = _terminal_markers(str(experiment.get("decision") or ""))
+        if markers:
+            score += 16
+        if score < 40:
+            continue
+        attempts.append(
+            (
+                score,
+                experiment["id"],
+                {
+                    "kind": experiment.get("kind", "experiment"),
+                    "id": experiment["id"],
+                    "status": experiment.get("status"),
+                    "question": experiment.get("question"),
+                    "decision": experiment.get("decision"),
+                    "report": experiment.get("report"),
+                    "commit": experiment.get("commit"),
+                    "terminal_markers": markers,
+                    "do_not_repeat": bool(markers),
+                    "successor_requires": experiment.get("successor_requires"),
+                    "forbidden_repeats": experiment.get("forbidden_repeats", []),
+                    "evidence": experiment.get("evidence", []),
+                },
+            )
+        )
+    attempts.sort(key=lambda value: (-value[0], value[1]))
+    return [attempt for _, _, attempt in attempts[:limit]]
+
+
+def _slugify(value: str, fallback: str = "fault") -> str:
+    slug = re.sub(r"[^a-z0-9]+", "-", value.casefold()).strip("-")
+    return (slug[:64] or fallback).strip("-")
+
+
+def _mechanism_execution_block(
+    mechanism: dict[str, Any], attempts: list[dict[str, Any]]
+) -> str | None:
+    history = mechanism.get("route_history")
+    if history and history["use_state"] in {"rejected", "retired"}:
+        return f"route use {history['id']} is {history['use_state']}"
+    if history and history["verdict"] in {
+        "negative",
+        "falsified",
+        "not_evaluable",
+    }:
+        return f"route use {history['id']} has verdict={history['verdict']}"
+    mechanism_terms = {
+        token
+        for token in re.findall(
+            r"[a-z0-9][a-z0-9_-]+",
+            f"{mechanism['name']} {mechanism['description']}".casefold(),
+        )
+        if len(token) >= 5
+    }
+    ignored = {
+        "route",
+        "target",
+        "mechanism",
+        "development",
+        "result",
+        "current",
+        "prediction",
+    }
+    mechanism_terms.difference_update(ignored)
+    for attempt in attempts:
+        if attempt.get("kind") != "current_terminal" or not attempt.get(
+            "do_not_repeat"
+        ):
+            continue
+        attempt_text = " ".join(
+            [
+                str(attempt.get("decision") or ""),
+                str(attempt.get("question") or ""),
+                " ".join(attempt.get("forbidden_repeats", [])),
+            ]
+        ).casefold()
+        overlapping = {term for term in mechanism_terms if term in attempt_text}
+        if len(overlapping) >= 2:
+            return (
+                f"current terminal {attempt['id']} already consumed the same "
+                f"mechanism family ({', '.join(sorted(overlapping)[:4])})"
+            )
+    return None
+
+
+def _build_minimum_experiment(
+    index: dict[str, Any],
+    route: str,
+    symptom: str,
+    diagnosis: dict[str, Any],
+    mechanisms: list[dict[str, Any]],
+    attempts: list[dict[str, Any]],
+) -> dict[str, Any]:
+    layer_by_id = {layer["id"]: layer for layer in index["failure_layers"]}
+    if diagnosis["layers"]:
+        layer = layer_by_id[diagnosis["layers"][0]["id"]]
+        template = dict(layer["experiment"])
+        layer_id = layer["id"]
+        layer_name = layer["name"]
+    else:
+        layer_id = "unlocalized"
+        layer_name = "尚未定位"
+        template = {
+            "hypothesis": "故障尚未定位；最后一个正确接口与第一个错误接口之间存在单一断点。",
+            "baseline": "不改变算法，保存原始输入、输出和错误。",
+            "single_change": "只加入逐接口观测，定位第一个错误层。",
+            "cohort": "一个最小复现样本和一个成功对照。",
+            "primary_metric": "first_divergent_interface 被唯一定位",
+            "stop_conditions": ["需要同时修改多个接口", "缺少原始错误或输入 identity"],
+            "not_evaluable_conditions": ["故障不可复现", "没有成功对照"],
+            "claim_ceiling": "只能定位故障层，不能判断机制效果。",
+        }
+    blocked_candidates: list[dict[str, str]] = []
+    selected_mechanism = None
+    blocking_terminal_id: str | None = None
+    for mechanism in mechanisms:
+        blocked_reason = _mechanism_execution_block(mechanism, attempts)
+        if blocked_reason:
+            blocked_candidates.append(
+                {"id": mechanism["id"], "reason": blocked_reason}
+            )
+            if blocked_reason.startswith("current terminal "):
+                blocking_terminal_id = blocked_reason.split()[2]
+                break
+            continue
+        selected_mechanism = mechanism
+        break
+    factor = (
+        selected_mechanism["name"]
+        if selected_mechanism is not None
+        else "interface instrumentation"
+    )
+    terminal_markers: list[str] = []
+    for attempt in attempts:
+        terminal_markers.extend(attempt.get("terminal_markers", []))
+    plan_id = f"minexp-{_slugify(route)}-{_slugify(symptom)}"
+    successor_attempts = [
+        attempt for attempt in attempts if attempt.get("successor_requires")
+    ]
+    successor_attempts.sort(
+        key=lambda attempt: 0 if attempt["id"] == blocking_terminal_id else 1
+    )
+    successor_requirements = list(
+        dict.fromkeys(
+            attempt["successor_requires"] for attempt in successor_attempts
+        )
+    )
+    if selected_mechanism is not None:
+        single_change = f"{template['single_change']} 候选机制：{factor}。"
+        plan_status = "ready"
+    else:
+        successor_text = (
+            successor_requirements[0]
+            if successor_requirements
+            else "需要新的信息源、表示或新鲜协议后才能执行。"
+        )
+        single_change = (
+            "不重开已消费机制；先把 successor requirement 变成一个 source-admission "
+            f"canary：{successor_text}"
+        )
+        plan_status = "successor_required"
+    return {
+        "id": plan_id,
+        "status": plan_status,
+        "route": route,
+        "failure_layer": {"id": layer_id, "name": layer_name},
+        "selected_mechanism": (
+            {
+                "id": selected_mechanism["id"],
+                "name": selected_mechanism["name"],
+            }
+            if selected_mechanism
+            else None
+        ),
+        "hypothesis": template["hypothesis"],
+        "baseline": template["baseline"],
+        "single_change": single_change,
+        "cohort": template["cohort"],
+        "primary_metric": template["primary_metric"],
+        "stop_conditions": template["stop_conditions"],
+        "not_evaluable_conditions": template["not_evaluable_conditions"],
+        "claim_ceiling": template["claim_ceiling"],
+        "guardrails": index["global_guardrails"],
+        "blocked_candidates": blocked_candidates,
+        "successor_requirements": successor_requirements,
+        "prior_terminals_to_preserve": list(dict.fromkeys(terminal_markers)),
+        "default_output": (
+            f"artifacts.local/knowledge/decision/{plan_id}.json"
+        ),
+    }
+
+
+def _build_decision_card(
+    index: dict[str, Any],
+    *,
+    route: str,
+    symptom: str,
+    observations: list[str],
+    available: list[str],
+    missing: list[str],
+    mechanism_limit: int,
+    attempt_limit: int,
+) -> dict[str, Any]:
+    started = time.perf_counter()
+    query_text = " ".join([symptom, *observations])
+    diagnosis = _diagnose_layers(symptom, observations, index["failure_layers"])
+    mechanisms = _rank_mechanisms(
+        index,
+        route,
+        query_text,
+        diagnosis,
+        available,
+        missing,
+        mechanism_limit,
+    )
+    attempts = _rank_prior_attempts(
+        index,
+        route,
+        query_text,
+        diagnosis,
+        mechanisms,
+        attempt_limit,
+    )
+    experiment = _build_minimum_experiment(
+        index, route, symptom, diagnosis, mechanisms, attempts
+    )
+    elapsed_ms = round((time.perf_counter() - started) * 1000, 2)
+    return {
+        "schema_version": DECISION_SCHEMA_VERSION,
+        "engine_version": index["engine_version"],
+        "route": route,
+        "symptom": symptom,
+        "observations": observations,
+        "input_availability": {"available": available, "missing": missing},
+        "diagnosis": diagnosis,
+        "mechanisms": mechanisms,
+        "prior_attempts": attempts,
+        "minimum_experiment": experiment,
+        "runtime_ms": elapsed_ms,
+        "source_fingerprint": index["source_fingerprint"],
+    }
+
+
+def _short_text(value: Any, limit: int = 360) -> str:
+    text_value = _one_line(value or "")
+    if len(text_value) <= limit:
+        return text_value
+    return text_value[: limit - 1].rstrip() + "…"
+
+
+def _print_decision_card(card: dict[str, Any], as_json: bool) -> None:
+    if as_json:
+        print(json.dumps(card, ensure_ascii=False, indent=2))
+        return
+    diagnosis = card["diagnosis"]
+    print(f"# Research decision card — {card['route']}")
+    print(f"Symptom: {_one_line(card['symptom'])}")
+    print(
+        f"Diagnosis: {diagnosis['status']} / {diagnosis['confidence']} "
+        f"({card['runtime_ms']} ms engine time)"
+    )
+    if diagnosis["layers"]:
+        for rank, layer in enumerate(diagnosis["layers"], start=1):
+            signals = ", ".join(layer["matched_signals"]) or "-"
+            print(
+                f"  {rank}. {layer['name']} [{layer['id']}] "
+                f"score={layer['score']} signals={signals}"
+            )
+    else:
+        print("  No layer has enough evidence; run the localization experiment below.")
+    print("Evidence needed: " + "; ".join(diagnosis["next_evidence"]))
+
+    print("\n## Most relevant mechanisms")
+    for rank, mechanism in enumerate(card["mechanisms"], start=1):
+        print(f"{rank}. {mechanism['name']} ({mechanism['id']})")
+        print(f"   Why: {'; '.join(mechanism['why'])}")
+        print(f"   Action: {_short_text(mechanism['description'], 260)}")
+        if mechanism["route_history"]:
+            history = mechanism["route_history"]
+            print(
+                f"   History: {history['use_state']} / {history['verdict']} "
+                f"— {_short_text(history['observed_effect'] or history['expected_effect'], 220)}"
+            )
+        if mechanism["contraindications"]:
+            print(
+                "   Limits: "
+                + _short_text("; ".join(mechanism["contraindications"]), 300)
+            )
+
+    print("\n## What was already tried")
+    if not card["prior_attempts"]:
+        print("No sufficiently related route attempt was found in the compiled ledger.")
+    for attempt in card["prior_attempts"]:
+        if attempt["kind"] == "route_use":
+            print(
+                f"- {attempt['id']}: {attempt['status']} / {attempt['verdict']} "
+                f"— {_short_text(attempt['summary'])}"
+            )
+        else:
+            prefix = (
+                "CURRENT TERMINAL"
+                if attempt["kind"] == "current_terminal"
+                else "experiment"
+            )
+            print(
+                f"- [{prefix}] {attempt['id']}: "
+                f"{_short_text(attempt['decision'] or attempt['question'])}"
+            )
+            if attempt.get("successor_requires"):
+                print(
+                    "  Successor requires: "
+                    + _short_text(attempt["successor_requires"])
+                )
+            if attempt.get("forbidden_repeats"):
+                print(
+                    "  Do not repeat: "
+                    + "; ".join(attempt["forbidden_repeats"])
+                )
+        if attempt["terminal_markers"]:
+            print("  Preserve: " + ", ".join(attempt["terminal_markers"]))
+
+    experiment = card["minimum_experiment"]
+    print("\n## Minimum falsifiable experiment")
+    print(f"ID: {experiment['id']} ({experiment['status']})")
+    for blocked in experiment["blocked_candidates"]:
+        print(f"Blocked candidate: {blocked['id']} — {blocked['reason']}")
+    print(f"Hypothesis: {_one_line(experiment['hypothesis'])}")
+    print(f"Baseline: {_one_line(experiment['baseline'])}")
+    print(f"Only change: {_one_line(experiment['single_change'])}")
+    print(f"Cohort: {_one_line(experiment['cohort'])}")
+    print(f"Primary metric: {_one_line(experiment['primary_metric'])}")
+    print("Stop: " + "; ".join(experiment["stop_conditions"]))
+    print("Not evaluable: " + "; ".join(experiment["not_evaluable_conditions"]))
+    print(f"Claim ceiling: {_one_line(experiment['claim_ceiling'])}")
+    if experiment["prior_terminals_to_preserve"]:
+        print(
+            "Frozen terminals: "
+            + ", ".join(experiment["prior_terminals_to_preserve"])
+        )
+    print(f"Default plan path: {experiment['default_output']}")
+
+
+def _write_decision_plan(
+    root: Path, relative_path: str, card: dict[str, Any]
+) -> Path:
+    if not _is_safe_repo_relative(relative_path):
+        raise KnowledgeError("--write-plan must be a safe repo-relative path")
+    repo_root = root.parents[1]
+    path = repo_root / PurePosixPath(relative_path)
+    _write_json_atomic(path, card)
+    return path
+
+
+def _command_diagnose(args: argparse.Namespace) -> int:
+    if not 2 <= args.mechanism_limit <= 4:
+        raise KnowledgeError("--mechanism-limit must be from 2 to 4")
+    if not 0 <= args.attempt_limit <= 8:
+        raise KnowledgeError("--attempt-limit must be from 0 to 8")
+    index = _load_decision_index(args.root)
+    card = _build_decision_card(
+        index,
+        route=args.route,
+        symptom=args.symptom,
+        observations=args.observed or [],
+        available=args.available or [],
+        missing=args.missing or [],
+        mechanism_limit=args.mechanism_limit,
+        attempt_limit=args.attempt_limit,
+    )
+    _print_decision_card(card, args.json)
+    if args.write_plan:
+        path = _write_decision_plan(args.root, args.write_plan, card)
+        if not args.json:
+            print(f"WROTE {path}")
+    return 0
+
+
+def _experiment_plan_is_valid(plan: dict[str, Any]) -> bool:
+    required_strings = (
+        "hypothesis",
+        "baseline",
+        "single_change",
+        "cohort",
+        "primary_metric",
+        "claim_ceiling",
+    )
+    if any(not _is_nonempty_string(plan.get(field)) for field in required_strings):
+        return False
+    for field in ("stop_conditions", "not_evaluable_conditions", "guardrails"):
+        value = plan.get(field)
+        if not isinstance(value, list) or not value or any(
+            not _is_nonempty_string(item) for item in value
+        ):
+            return False
+    guardrail_text = " ".join(plan["guardrails"])
+    return (
+        "UNKNOWN" in guardrail_text
+        and "已消费" in guardrail_text
+        and "一个" in guardrail_text
+    )
+
+
+def _load_golden_cases(root: Path) -> dict[str, Any]:
+    path = root / DECISION_GOLDEN_RELATIVE
+    if not path.is_file():
+        raise KnowledgeError(f"missing golden cases: {path}")
+    payload = _read_json(path)
+    if payload.get("schema_version") != DECISION_SCHEMA_VERSION:
+        raise KnowledgeError(
+            f"{path}: schema_version must be {DECISION_SCHEMA_VERSION}"
+        )
+    cases = payload.get("cases")
+    gates = payload.get("gates")
+    if not isinstance(cases, list) or not cases:
+        raise KnowledgeError(f"{path}: cases must be a non-empty list")
+    if not isinstance(gates, dict):
+        raise KnowledgeError(f"{path}: gates must be an object")
+    return payload
+
+
+def _evaluate_golden_cases(
+    index: dict[str, Any], payload: dict[str, Any]
+) -> dict[str, Any]:
+    case_results: list[dict[str, Any]] = []
+    layer_passes = 0
+    mechanism_passes = 0
+    mechanism_cases = 0
+    history_passes = 0
+    history_cases = 0
+    invalid_experiments = 0
+    max_runtime_ms = 0.0
+    for case in payload["cases"]:
+        card = _build_decision_card(
+            index,
+            route=case["route"],
+            symptom=case["symptom"],
+            observations=case.get("observed", []),
+            available=case.get("available", []),
+            missing=case.get("missing", []),
+            mechanism_limit=4,
+            attempt_limit=4,
+        )
+        actual_layers = [
+            layer["id"] for layer in card["diagnosis"]["layers"][:2]
+        ]
+        layer_pass = bool(set(case["expected_layers"]).intersection(actual_layers))
+        layer_passes += int(layer_pass)
+        actual_mechanisms = [mechanism["id"] for mechanism in card["mechanisms"]]
+        expected_mechanisms = case.get("expected_mechanisms", [])
+        mechanism_pass = None
+        if expected_mechanisms:
+            mechanism_cases += 1
+            mechanism_pass = all(
+                mechanism in actual_mechanisms for mechanism in expected_mechanisms
+            )
+            mechanism_passes += int(mechanism_pass)
+        actual_attempts = [attempt["id"] for attempt in card["prior_attempts"]]
+        expected_attempts = case.get("expected_attempts", [])
+        history_pass = None
+        if expected_attempts:
+            history_cases += 1
+            history_pass = all(
+                attempt in actual_attempts for attempt in expected_attempts
+            )
+            history_passes += int(history_pass)
+        experiment_valid = _experiment_plan_is_valid(card["minimum_experiment"])
+        invalid_experiments += int(not experiment_valid)
+        max_runtime_ms = max(max_runtime_ms, float(card["runtime_ms"]))
+        case_results.append(
+            {
+                "id": case["id"],
+                "layer_pass": layer_pass,
+                "expected_layers": case["expected_layers"],
+                "actual_layers": actual_layers,
+                "mechanism_pass": mechanism_pass,
+                "expected_mechanisms": expected_mechanisms,
+                "actual_mechanisms": actual_mechanisms,
+                "history_pass": history_pass,
+                "expected_attempts": expected_attempts,
+                "actual_attempts": actual_attempts,
+                "experiment_valid": experiment_valid,
+                "runtime_ms": card["runtime_ms"],
+            }
+        )
+
+    layer_recall = layer_passes / len(case_results)
+    mechanism_recall = (
+        mechanism_passes / mechanism_cases if mechanism_cases else 1.0
+    )
+    history_recall = history_passes / history_cases if history_cases else 1.0
+    gates = payload["gates"]
+    gate_results = {
+        "top2_layer_recall": layer_recall >= gates["top2_layer_recall"],
+        "top4_mechanism_recall": (
+            mechanism_recall >= gates["top4_mechanism_recall"]
+        ),
+        "top4_history_recall": history_recall >= gates["top4_history_recall"],
+        "max_engine_runtime_ms": (
+            max_runtime_ms <= gates["max_engine_runtime_ms"]
+        ),
+        "invalid_experiment_count": (
+            invalid_experiments <= gates["invalid_experiment_count"]
+        ),
+    }
+    return {
+        "id": payload["id"],
+        "cases": len(case_results),
+        "metrics": {
+            "top2_layer_recall": round(layer_recall, 4),
+            "top4_mechanism_recall": round(mechanism_recall, 4),
+            "top4_history_recall": round(history_recall, 4),
+            "max_engine_runtime_ms": round(max_runtime_ms, 2),
+            "invalid_experiment_count": invalid_experiments,
+        },
+        "required_gates": gates,
+        "gate_results": gate_results,
+        "passed": all(gate_results.values()),
+        "case_results": case_results,
+    }
+
+
+def _command_evaluate_decision_engine(args: argparse.Namespace) -> int:
+    index = _load_decision_index(args.root)
+    golden = _load_golden_cases(args.root)
+    result = _evaluate_golden_cases(index, golden)
+    if args.json:
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+    else:
+        status = "PASS" if result["passed"] else "FAIL"
+        print(f"{status} decision engine: cases={result['cases']}")
+        for metric, value in result["metrics"].items():
+            gate = result["required_gates"][metric]
+            gate_pass = result["gate_results"][metric]
+            print(f"- {metric}={value} gate={gate} pass={gate_pass}")
+        failures = [
+            case
+            for case in result["case_results"]
+            if not case["layer_pass"]
+            or case["mechanism_pass"] is False
+            or case["history_pass"] is False
+            or not case["experiment_valid"]
+        ]
+        for case in failures:
+            print(
+                f"- CASE {case['id']}: layers={case['actual_layers']} "
+                f"mechanisms={case['actual_mechanisms']} "
+                f"attempts={case['actual_attempts']}"
+            )
+    return 0 if result["passed"] else 1
 
 
 def _command_show(args: argparse.Namespace) -> int:
@@ -1235,6 +2686,56 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     context_parser.add_argument("--json", action="store_true")
     context_parser.set_defaults(handler=_command_context)
+
+    build_decision_parser = subparsers.add_parser(
+        "build-decision-index",
+        help="Compile items, uses, and experiments into the fast decision index.",
+    )
+    build_decision_parser.set_defaults(handler=_command_build_decision_index)
+
+    diagnose_parser = subparsers.add_parser(
+        "diagnose",
+        help="Locate a failure layer and generate a research decision card.",
+    )
+    diagnose_parser.add_argument("--route", required=True)
+    diagnose_parser.add_argument("--symptom", required=True)
+    diagnose_parser.add_argument(
+        "--observed",
+        action="append",
+        help="Observed fact; repeat for multiple observations.",
+    )
+    diagnose_parser.add_argument(
+        "--available",
+        action="append",
+        help="Available input or capability; repeat as needed.",
+    )
+    diagnose_parser.add_argument(
+        "--missing",
+        action="append",
+        help="Known missing input or capability; repeat as needed.",
+    )
+    diagnose_parser.add_argument(
+        "--mechanism-limit",
+        type=int,
+        default=DECISION_DEFAULT_MECHANISM_LIMIT,
+        help="Number of mechanisms to return (2-4).",
+    )
+    diagnose_parser.add_argument(
+        "--attempt-limit",
+        type=int,
+        default=DECISION_DEFAULT_ATTEMPT_LIMIT,
+        help="Maximum historical attempts to return (0-8).",
+    )
+    diagnose_parser.add_argument("--write-plan")
+    diagnose_parser.add_argument("--json", action="store_true")
+    diagnose_parser.set_defaults(handler=_command_diagnose)
+
+    evaluate_decision_parser = subparsers.add_parser(
+        "evaluate-decision-engine",
+        help="Run the frozen fault-localization and retrieval golden cases.",
+    )
+    evaluate_decision_parser.add_argument("--json", action="store_true")
+    evaluate_decision_parser.set_defaults(handler=_command_evaluate_decision_engine)
 
     show_parser = subparsers.add_parser(
         "show", help="Show an item, alias, or use record."

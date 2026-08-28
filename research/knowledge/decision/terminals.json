@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-08-28",
+  "terminals": [
+    {
+      "id": "terminal-dtr-r6-static-occupancy-unreachable",
+      "route": "dtr-r0",
+      "failure_layers": ["geometry_motion", "evaluation_evidence"],
+      "status": "not_evaluable",
+      "decision": "R6_DIRECT_METRIC_SINGLE_FACTOR_NOT_EVALUABLE_STATIC_OCCUPANCY_MATCHER_UNREACHABLE",
+      "summary": "Perspective metric depth and current/past raw LiDAR both recovered 0/9 dropout windows because the frozen matcher had no admissible closing signal; this is not a metric-depth or LiDAR negative.",
+      "successor_requires": "An independent causal spatiotemporal occupancy-flow signal with evaluator identity excluded from temporal association.",
+      "forbidden_repeats": ["closing threshold sweep", "route-tube widening", "lifecycle tuning", "imputation tuning", "depth-backbone swap on the consumed cohort"],
+      "evidence": ["docs/CURRENT_DECISION.md", "research/active/dtr-r0/README.md"],
+      "commit": "2bc7f681"
+    },
+    {
+      "id": "terminal-dtr-r7p-causal-occupancy-flow-gate-not-met",
+      "route": "dtr-r0",
+      "failure_layers": ["geometry_motion", "decision_lifecycle", "evaluation_evidence"],
+      "status": "negative",
+      "decision": "R7_P_CAUSAL_OCCUPANCY_FLOW_DEVELOPMENT_GATE_NOT_MET_NO_R8",
+      "summary": "Causal raw-LiDAR occupancy flow recovered 9/9 induced windows and 3/3 critical events, proving an independent spatiotemporal signal exists, but false segments rose 12 to 20 and one-to-one event F1 remained 22.22%.",
+      "successor_requires": "A different motion information source or a separately frozen fresh protocol.",
+      "forbidden_repeats": ["R8 training", "voxel/history/speed/overlap sweep", "attribution/tube/lifecycle tuning on the opened cohort"],
+      "evidence": ["docs/CURRENT_DECISION.md", "research/active/dtr-r0/README.md"],
+      "commit": "ff86e37f"
+    },
+    {
+      "id": "terminal-l10-sc5-set-valued-video17",
+      "route": "l10-r0",
+      "failure_layers": ["identity_binding", "temporal_belief", "evaluation_evidence"],
+      "status": "not_evaluable",
+      "decision": "SC5_SET_VALUED_NAVIGATION_SIGNAL_EXACT_INSTANCE_NOT_EVALUABLE",
+      "summary": "On consumed video17, set-valued belief preserved 100% navigation precision and increased coverage from 73.45% to 81.42%; exact-instance identity was not evaluable because each public goal mapped to multiple physical IDs without a public instance reference.",
+      "successor_requires": "A legal public exact-instance authority source rather than matcher tuning.",
+      "forbidden_repeats": ["treating set-valued navigation as exact-instance success", "using evaluator physical IDs", "reopening video17 for selection"],
+      "evidence": ["docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "commit": "238c9733"
+    },
+    {
+      "id": "terminal-l10-sc6-reference-bound-belief-effect",
+      "route": "l10-r0",
+      "failure_layers": ["authority_truth", "identity_binding", "temporal_belief"],
+      "status": "positive",
+      "decision": "SC6_REFERENCE_BOUND_BELIEF_EFFECT",
+      "summary": "On fresh source-disjoint video18, legal public instance binding plus temporal belief achieved 100% precision, 91.67% coverage, zero wrong-instance frames/switches, and 6/6 gap reacquisition/end-to-end episodes.",
+      "successor_requires": "A new claim layer and separately authorized evidence; the replay result itself cannot establish active observation, arrival, product, user, or safety effects.",
+      "forbidden_repeats": ["claiming identity from OCR alone", "using evaluator physical IDs at inference", "promoting replay evidence to product or safety"],
+      "evidence": ["docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "commit": "4f8a1ca5"
+    },
+    {
+      "id": "terminal-grail-g1-active-multiview-appearance-closed",
+      "route": "goal-copilot-p0",
+      "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],
+      "status": "negative",
+      "decision": "STOP_G1_ACTIVE_MULTIVIEW_APPEARANCE_DEVELOPMENT_GATE_NOT_MET_NO_FINAL_TEST",
+      "summary": "Fixed three-view appearance increased PRESERVE bias, collapsed Doorway FLIP to 0/24 in both seeds, and left owner-group macro balanced accuracy near chance.",
+      "successor_requires": "A genuinely new information source or representation under a new versioned protocol.",
+      "forbidden_repeats": ["view-selector tuning", "G0 fusion", "pose/model sweep", "opening final test"],
+      "evidence": ["docs/PROJECT_STATE.md", "docs/CURRENT_DECISION.md"],
+      "commit": "4db9a119"
+    },
+    {
+      "id": "terminal-msls-router-development-gate-not-met",
+      "route": "goal-copilot-p0",
+      "failure_layers": ["source_coverage", "identity_binding", "evaluation_evidence"],
+      "status": "negative",
+      "decision": "MSLS_SOURCE_ADMITTED_ROUTER_DEVELOPMENT_GATE_NOT_MET_TEST_UNOPENED",
+      "summary": "Frame-level MSLS GPS was admitted, but the frozen router underperformed static fusion and collapsed toward GPS; source admission did not establish routing benefit.",
+      "successor_requires": "A new representation or fresh cohort; do not rescue the consumed router cohort.",
+      "forbidden_repeats": ["GPS-weight tuning", "seed sweep", "fusion sweep", "opening test"],
+      "evidence": ["experiments/index.jsonl"],
+      "commit": "ebc003eb"
+    }
+  ]
+}
