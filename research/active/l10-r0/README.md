@@ -753,6 +753,24 @@ safety claim follows. A successor needs a separately admitted source with a
 depth-visible ordinal lattice and enough naturally supported views; it must not
 lower SC39's span, alignment, visibility, or temporal thresholds.
 
+SC40 exhausted the independently unopened remainder before changing route. It
+kept the SC39 `frozen_algorithm` field-for-field identical as a parsed JSON
+object, resumed strictly after visit `435724`, and scanned all 128 remaining
+official one-video scenes. Zero scenes contained even one provider-public
+directional ordinal `plug_in` task, so no point-cloud builder, depth download,
+backend selection, target binding, or evaluator was launched. The decision is
+`SC40_NOT_EVALUABLE_NO_FRESH_DEPTH_VISIBLE_ACTIVE_VIEW`; protocol/result hashes
+are `84690388a48a7f8017d9f6efe31b18aa41799a116c0938dc9b76b7bb81e3b714`
+and `95a2238d458297f915937070e5e02453fed3530e43d10a1c5982296281224d83`.
+
+This closes the official SceneFun3D one-video roster as a fresh confirmation
+source for this exact directional-outlet contract. It does not close the
+visibility-aware ordinal representation. A successor must change the
+information source to a dataset or collected stream that actually contains
+repeated controls, public directional rank language, synchronized depth, and
+enough observable views; parser widening, action-label substitution, and
+threshold relaxation on this opened roster are forbidden.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

@@ -398,6 +398,14 @@ visibility/rank representations only on a separately admitted sufficiently
 observed source; do not tune this cohort or claim RGB, reachability, arrival,
 handoff, product, or safety effects.
 
+SC40 kept that algorithm fixed and exhausted the 128-scene unopened suffix.
+There were zero public directional ordinal `plug_in` tasks, so no point-cloud,
+depth, backend, truth, or evaluator stage opened. The result is
+`SC40_NOT_EVALUABLE_NO_FRESH_DEPTH_VISIBLE_ACTIVE_VIEW`: the current official
+SceneFun3D roster is closed as a fresh confirmation source for this contract,
+while the representation remains eligible on a genuinely new synchronized
+repeated-control source.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

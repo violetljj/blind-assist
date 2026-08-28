@@ -343,6 +343,16 @@ natural observation support. Visibility and hidden-prefix rank mapping may be
 reused unchanged; fresh transfer, RGB, reachability, arrival, and handoff remain
 unestablished.
 
+SC40 then scanned the entire previously unopened official suffix without
+changing the parsed SC39 algorithm object. Across all 128 remaining one-video
+scenes, zero had a public directional ordinal `plug_in` task, so point-cloud,
+depth, backend, target, and evaluator stages never opened. Record
+`SC40_NOT_EVALUABLE_NO_FRESH_DEPTH_VISIBLE_ACTIVE_VIEW`. The SceneFun3D
+one-video roster is exhausted for fresh confirmation of this exact contract;
+do not widen its parser or substitute labels after exposure. Further ordinal
+work requires a new information source with repeated controls, directional rank
+language, synchronized depth, and sufficient visible-view support.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

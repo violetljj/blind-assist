@@ -83,6 +83,9 @@ def admit_sources(
     builder: MeasuredFunctionalCenterBuilder | None = None
     backend_record: dict[str, Any] | None = None
     for visit_id, video_id in _rows(cohort_csv):
+        start_after_visit_id = selection.get("start_after_visit_id")
+        if start_after_visit_id is not None and visit_id <= str(start_after_visit_id):
+            continue
         if visit_id in consumed:
             continue
         if candidates_seen >= int(selection["maximum_candidate_scenes"]):
