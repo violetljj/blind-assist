@@ -823,6 +823,80 @@ The representative launch selected `clip-torch-cpu` because its 234.55 ms
 median beat Torch CUDA's 342.22 ms on the verified RTX 5060 Laptop GPU; model
 identity and actual device/provider matched the frozen receipt.
 
+### SC42: a directed local effect is signal, but OSCaR Frame 3 is not completion truth
+
+SC42 moved to the official public
+[OSCaR dataset](https://huggingface.co/datasets/ali-vosoughi/oscar-dataset),
+whose [NAACL paper](https://aclanthology.org/2024.findings-naacl.226/) reports
+real egocentric object-state-change clips. Before opening any held-out frame
+captions or temporal keys, it selected 64 hash-frozen `open`, `close`, `turn
+on`, and `turn off` clips from the 500-clip human-verified EPIC benchmark split.
+The Goal-Localized Effect Axis selected five CLIP patches by object similarity
+and projected them onto the normalized `after-state - before-state` language
+direction. The static desired-state baseline chose `25/64` (`39.06%`) terminal
+frames; the successor chose `27/64` (`42.19%`), a `+3.125` point change with 13
+rescues and 11 regressions. `close` improved descriptively from `7/20` to
+`11/20`, but the frozen overall gate failed as
+`SC42_GOAL_LOCALIZED_EFFECT_AXIS_GATE_NOT_MET`.
+
+Post-outcome source inspection identified a more important authority boundary.
+OSCaR's held-out `Frame_3` is the temporally last annotated frame, not a promise
+that the requested effect is visible or complete. An independently opened
+Development example explicitly describes a toggled light whose expected
+illumination has not appeared by Frame 3. SC42 therefore measures terminal-frame
+retrieval under a curated action subset, not functional completion. Its small
+uplift is reusable representation evidence only; neither its failure nor its
+score is evidence that BlindAssist can or cannot confirm arrival. Do not tune
+the opened 64 clips or consume the remaining roster against the same inadequate
+completion truth.
+
+The protocol, backend, provider, and result hashes are
+`1f0b2dc91cd67072d1247dce411130b6daee54e9996160a9783030306be3835b`,
+`d7bcf98c634f68afec5f61048eb7ee755458ed246e9e763c571e12072f46ccac`,
+`c82754a34bf6922b18e9a4cefb37ed8e290963f71111b7a949d720a9b251a619`,
+and `141fb43331182ce693bde07c3463a050cb15ad74d87431bc1868aeddd0183ea0`.
+The representative launch selected CPU because its 145.14 ms median beat CUDA's
+367.66 ms with exact device identity and no provider fallback.
+
+### SC43: hidden causal prompting collapses before it becomes a state model
+
+SC43 then opened the independently unused official SWITCH
+`final_state/img2img` task, whose 95 rows ask which of four visual states occurs
+first after an action from a shown current state. This gives the immediate
+effect authority missing from OSCaR Frame 3. A fixed Qwen2-VL-2B baseline used
+plain four-choice next-token logits. The successor used a Causal Intervention
+Logit Contrast: log probability under a structured `do(action)` prompt minus
+the matching `do(no-action)` log probability. GT was removed before JSON parsing
+and remained unavailable until the provider was sealed.
+
+| selector | correct | accuracy |
+| --- | ---: | ---: |
+| plain multi-image VLM | 19/95 | 20.00% |
+| intervention logit contrast | 24/95 | 25.26% |
+
+The successor gained `+5.26` points but caused 16 regressions and failed the
+frozen gate as `SC43_CAUSAL_INTERVENTION_LOGIT_CONTRAST_GATE_NOT_MET`. The
+read-only output audit is decisive: the successor predicted A on `95/95` rows;
+the causal arm predicted A on 94 and D on one, while the no-action arm split
+only between C (43) and D (52). The apparent gain is therefore label-prior
+arithmetic, not content-sensitive causal state reasoning. Do not repair it by
+changing label tokens, prompt wording, resolution, contrast scaling, examples,
+or self-consistency on this opened task, and do not reopen its paired video/text
+modalities as if shared IDs were fresh scientific cohorts.
+
+The reusable successor requirement is now explicit: expose and supervise
+`actuator`, `effect carrier`, `before state`, `after state`, and `conflict` as
+separate visual variables, then let a deterministic reducer decide immediate
+effect or `UNKNOWN`. A letter logit may consume those variables only after their
+visual grounding is independently observable; prompting a small VLM to keep
+them hidden is closed. The protocol, backend, provider, and result hashes are
+`f404838b2c652fc0772144cfc925fe9ffedbe85b5253d901f219ed21020d07c8`,
+`ecced33725cc6afa58a6c19db4ef5a3517d7e1df78484777b18ff1b653d22da2`,
+`afb32e730469ac515fc4f860a323d77f06c69cd6e489529a795cc86eff704102`,
+and `cab9d77a240508ba152eaadb6ea4b7ca76470a890a7006c60fa68d838e4926ee`.
+The real three-prompt workload selected the verified RTX 5060 GPU at 3.96 s
+versus 71.67 s on CPU, with exact CUDA execution and no fallback.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

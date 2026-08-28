@@ -418,6 +418,23 @@ explicit localized before/after effect and use a new unexposed cohort. No demo,
 device, navigation, reachability, action-execution, arrival, product, or safety
 claim is added.
 
+SC42 introduced an explicit Goal-Localized Effect Axis on 64 fresh real OSCaR
+`open/close/on/off` clips. It moved static desired-state selection from `25/64`
+to `27/64`, but missed its gate. The source audit also found that OSCaR Frame 3
+is only a temporal endpoint and may precede a visible requested effect, so this
+is not completion truth and the remaining roster is not an authorized arrival
+confirmation source.
+
+SC43 moved to 95 fresh SWITCH immediate-final-state tasks and tested a local
+Qwen2-VL-2B `do(action) - do(no-action)` logit contrast. It moved `19/95` to
+`24/95` but predicted A on all 95 rows, exposing label-prior collapse rather
+than visual causal reasoning. The terminal is
+`SC43_CAUSAL_INTERVENTION_LOGIT_CONTRAST_GATE_NOT_MET`; its shared-ID modality
+variants and prompt/token tweaks are closed. The next endpoint route must
+visibly ground actuator, effect carrier, before state, after state, and conflict
+before deterministic completion reduction. No demo or product integration is
+authorized by SC42/SC43.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

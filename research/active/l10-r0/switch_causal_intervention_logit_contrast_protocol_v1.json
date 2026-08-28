@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC43-FRESH-SWITCH-CAUSAL-INTERVENTION-LOGIT-CONTRAST",
+  "source": {
+    "dataset": "BAAI-Agents/SWITCH-Basic-v1-open",
+    "repository_url": "https://huggingface.co/datasets/BAAI-Agents/SWITCH-Basic-v1-open",
+    "revision": "510a96b59c8688a2122d725d142c5b720962cc47",
+    "task_path": "final_state/img2img",
+    "annotation_path": "final_state/img2img/vqa.json",
+    "annotation_size_bytes": 54782,
+    "annotation_sha256": "102954b122db796b9573765bf5809e50cd3aab04a513472f81c294db7cdb3279",
+    "expected_task_count": 95,
+    "license": "CC-BY-NC-4.0",
+    "source_authority": "Official 30 percent public SWITCH-Basic v1 subset; final-state image-to-image task"
+  },
+  "model": {
+    "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+    "revision": "895c3a49bc3fa70a340399125c650a463535e71c",
+    "framework": "transformers",
+    "cpu_dtype": "float32",
+    "cuda_dtype": "float16",
+    "minimum_pixels": 50176,
+    "maximum_pixels": 100352,
+    "label_tokens": {
+      "A": "1",
+      "B": "2",
+      "C": "3",
+      "D": "4"
+    },
+    "candidate_semantics": "Frozen zero-shot multi-image next-token logits; no SWITCH training, examples, outcome prompting, generation sampling, or calibration"
+  },
+  "frozen_algorithm": {
+    "name": "Causal Intervention Logit Contrast v1",
+    "action_extraction": "Extract the single quoted action following the word action; fail closed when absent or ambiguous.",
+    "image_order": "Current-state query image first, followed by official options A, B, C, D.",
+    "plain_prompt": "Image 1 is the current state. Images 2, 3, 4, and 5 are options A, B, C, and D. The action is: {action}. Which option will happen first after this action? Reply with exactly one digit: 1 for A, 2 for B, 3 for C, or 4 for D. Answer:",
+    "causal_prompt": "Image 1 is the current state. Images 2, 3, 4, and 5 are options A, B, C, and D. Treat this as one causal intervention: {action}. Identify the actuator, the immediate physical effect carrier, and the smallest visible state change directly caused by that action. Choose the earliest direct consequence. Reject an unchanged copy of the current state and reject states requiring an extra action or a later downstream effect. Reply with exactly one digit: 1 for A, 2 for B, 3 for C, or 4 for D. Answer:",
+    "no_action_prompt": "Image 1 is the current state. Images 2, 3, 4, and 5 are options A, B, C, and D. Counterfactual: the action {action} is NOT performed, so its physical effect does not occur. Which option is most compatible with the scene continuing without that action's effect? Reply with exactly one digit: 1 for A, 2 for B, 3 for C, or 4 for D. Answer:",
+    "baseline": "Choose the option with maximum next-token log probability under the plain action prompt.",
+    "successor": "For each option, subtract its no-action next-token log probability from its causal-action next-token log probability; choose the maximum contrast.",
+    "normalization": "Apply log_softmax across the four frozen label-token logits independently for each prompt before subtraction.",
+    "tie_break": "Lexicographically smallest option label",
+    "abstention": "UNKNOWN when action parsing, five-image roster, media, single-token labels, exact model identity, or actual device/provider is invalid.",
+    "truth_firewall": "GT is removed from raw annotation text before JSON parsing and is forbidden during media acquisition, model loading, backend selection, prompt construction, logits, prediction, and provider sealing."
+  },
+  "frozen_gate": {
+    "minimum_evaluable_tasks": 80,
+    "minimum_successor_accuracy": 0.5,
+    "minimum_absolute_accuracy_gain": 0.125,
+    "maximum_baseline_correct_to_successor_wrong": 10
+  },
+  "decision_labels": {
+    "source_admitted": "SC43_SWITCH_FINAL_STATE_SOURCE_ADMITTED",
+    "source_incomplete": "SC43_SWITCH_FINAL_STATE_SOURCE_INCOMPLETE",
+    "pass": "SC43_CAUSAL_INTERVENTION_LOGIT_CONTRAST_FRESH_SIGNAL",
+    "fail": "SC43_CAUSAL_INTERVENTION_LOGIT_CONTRAST_GATE_NOT_MET",
+    "not_evaluable": "SC43_NOT_EVALUABLE_INSUFFICIENT_FINAL_STATE_TASKS"
+  },
+  "forbidden_after_outcome": [
+    "change source, task, model, image resolution, prompts, label tokens, normalization, contrast, tie break, or gate",
+    "add demonstrations, chain-of-thought examples, sampling, self-consistency, or calibration on the opened task",
+    "remove actions, devices, difficult images, parse failures, or errors",
+    "claim general terminal verification, online target discovery, metric approach, reachability, user arrival, handoff, product benefit, or safety"
+  ],
+  "claim_boundary": "One fresh public real-world four-choice mechanism test of whether an explicit do(action) versus do(no-action) logit contrast improves immediate final-state selection over a plain multi-image VLM prompt. Current image, action, candidates, and truth are benchmark-provided. It does not establish online search, identity grounding, localization, navigation, physical execution, delayed-effect verification, user arrival, HANDOFF_READY, product benefit, or safety."
+}

@@ -373,6 +373,38 @@ new unexposed cohort; the `9/16` baseline is descriptive, not a positive gate.
 No navigation, approach, reachability, executed action, user arrival, handoff,
 product, or safety claim follows.
 
+## 2026-08-28 explicit state-effect decisions
+
+SC42 tested a new Goal-Localized Effect Axis on 64 hash-frozen real OSCaR
+`open/close/on/off` clips. Object-selected CLIP patches were projected onto an
+explicit `after - before` language direction. The static desired-state baseline
+was `25/64`; the successor was `27/64`, with 13 rescues, 11 regressions, and a
+descriptive `close` change from `7/20` to `11/20`. Record
+`SC42_GOAL_LOCALIZED_EFFECT_AXIS_GATE_NOT_MET`. More importantly, OSCaR Frame 3
+is temporal endpoint truth, not functional completion truth; official captions
+can state that a requested effect is still not visible. Do not tune this cohort
+or score the unopened remainder against the same inadequate arrival authority.
+The result is narrow evidence that a directed local state axis carries some
+signal, not a completion result.
+
+SC43 used the genuinely effect-authoritative SWITCH `final_state/img2img` task:
+95 current-state/action/four-outcome rows, with truth hidden until provider
+seal. Plain Qwen2-VL-2B selected `19/95`; a frozen `do(action) - do(no-action)`
+log-probability contrast selected `24/95`, a `+5.26` point change with 16
+regressions. Record `SC43_CAUSAL_INTERVENTION_LOGIT_CONTRAST_GATE_NOT_MET`.
+The successor chose A on all 95 rows, proving label-prior collapse rather than
+content-sensitive causal reasoning. Do not change prompts, label tokens,
+resolution, scaling, examples, or sampling on this opened task, and do not count
+its shared-ID video/text variants as fresh confirmation.
+
+The next legal terminal-state algorithm must expose `actuator`, `effect
+carrier`, `before`, `after`, and `conflict` as separately grounded variables and
+use a deterministic reducer with `UNKNOWN`; hidden reasoning compressed directly
+into a choice token is closed. It requires new visual supervision and a genuinely
+new outcome-authoritative cohort. No online search, identity, localization,
+navigation, physical execution, arrival, handoff, product, or safety claim
+follows.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

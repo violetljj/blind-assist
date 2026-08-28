@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC42-FRESH-OSCAR-GOAL-LOCALIZED-EFFECT-AXIS",
+  "source": {
+    "dataset": "ali-vosoughi/oscar-dataset",
+    "repository_url": "https://huggingface.co/datasets/ali-vosoughi/oscar-dataset",
+    "paper_url": "https://aclanthology.org/2024.findings-naacl.226/",
+    "revision": "a080cc45f17b047aa62d5d66022bde0ae0a3d656",
+    "split_path": "splits/data_mapping_final_EK_test.csv",
+    "split_size_bytes": 375468,
+    "split_sha256": "fa682f2b2540dfb90d74cf6d1a300e4ca92f2229ef6118ea30063f068c20ae2a",
+    "public_benchmark_clip_count": 500,
+    "eligible_action_regex": "^(open|close|turn on|turn off|switch on|switch off)\\b",
+    "eligible_clip_count": 127,
+    "expected_task_count": 64,
+    "candidate_frame_count": 3,
+    "source_authority": "Official public OSCaR human-verified EPIC benchmark split",
+    "license_note": "The Hugging Face release is marked other and contains EPIC-KITCHENS-derived assets; this research use inherits source terms."
+  },
+  "cohort": {
+    "selection": "Filter only by the public action_narration regex, then take the 64 clip IDs with the lexicographically smallest SHA-256 of SC42_OSCAR_GLEA_V1 NUL clip_id.",
+    "candidate_selection": "Use the three image_path rows whose basename is not state_change.jpg.",
+    "candidate_order": "Sort by SHA-256 of SC42_OPTION_V1 NUL clip_id NUL image_path; expose labels A, B, C only.",
+    "input_fields": [
+      "clip_id",
+      "object",
+      "action_narration",
+      "three unordered candidate images"
+    ],
+    "forbidden_before_provider_seal": [
+      "caption_key",
+      "caption_path",
+      "QA or conversation annotations",
+      "frame captions",
+      "State_change_caption",
+      "temporal order or Frame_3 identity"
+    ]
+  },
+  "model": {
+    "model_id": "openai/clip-vit-base-patch32",
+    "revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+    "framework": "transformers",
+    "candidate_semantics": "Frozen zero-shot CLIP global and 7x7 patch embeddings; no OSCaR training or outcome calibration"
+  },
+  "frozen_algorithm": {
+    "name": "Goal-Localized Effect Axis v1",
+    "state_scripts": {
+      "open": {
+        "before": "a photo of a closed {object}",
+        "after": "a photo of an open {object}"
+      },
+      "close": {
+        "before": "a photo of an open {object}",
+        "after": "a photo of a closed {object}"
+      },
+      "turn_on": {
+        "before": "a photo of the {object} switched off and inactive",
+        "after": "a photo of the {object} switched on and active"
+      },
+      "turn_off": {
+        "before": "a photo of the {object} switched on and active",
+        "after": "a photo of the {object} switched off and inactive"
+      }
+    },
+    "entity_prompt": "a photo of the {object}",
+    "action_mapping": "open->open, close->close, turn/switch on->turn_on, turn/switch off->turn_off; fail closed otherwise",
+    "baseline": "Choose the candidate with maximum global cosine similarity to the scripted after-state prompt.",
+    "effect_axis": "L2-normalize(after-state text embedding minus before-state text embedding).",
+    "localization": "For each candidate independently, select the five CLIP patch embeddings with highest cosine similarity to the entity prompt.",
+    "successor": "Choose the candidate with maximum mean projection of its five entity-selected patches onto the effect axis; use global effect-axis projection and then lexicographically smallest option label only as ties.",
+    "patch_top_k": 5,
+    "tie_break": "localized effect, then global effect, then A before B before C",
+    "abstention": "UNKNOWN when the action script, three-image roster, media, exact model identity, or actual device/provider is invalid.",
+    "truth_firewall": "Only public goal/object text and three content images may reach inference. Caption keys, captions, temporal order, and Frame_3 identity are forbidden until the provider is written and SHA-256 sealed."
+  },
+  "frozen_gate": {
+    "minimum_evaluable_tasks": 48,
+    "minimum_successor_accuracy": 0.5,
+    "minimum_absolute_accuracy_gain": 0.125,
+    "maximum_baseline_correct_to_successor_wrong": 8
+  },
+  "decision_labels": {
+    "source_admitted": "SC42_OSCAR_EFFECT_SOURCE_ADMITTED",
+    "source_incomplete": "SC42_OSCAR_EFFECT_SOURCE_INCOMPLETE",
+    "pass": "SC42_GOAL_LOCALIZED_EFFECT_AXIS_FRESH_SIGNAL",
+    "fail": "SC42_GOAL_LOCALIZED_EFFECT_AXIS_GATE_NOT_MET",
+    "not_evaluable": "SC42_NOT_EVALUABLE_INSUFFICIENT_EFFECT_TASKS"
+  },
+  "forbidden_after_outcome": [
+    "change source filter, cohort, model, prompts, templates, patch count, pooling, tie break, or gate",
+    "train, calibrate, rescale, or tune on the opened 64 clips",
+    "remove dark, blurred, delayed-effect, difficult, or failed clips",
+    "claim general arrival, online search, metric approach, reachability, executed user action, handoff, product benefit, or safety"
+  ],
+  "claim_boundary": "One fresh public real-egocentric three-frame mechanism test on a curated open/close/on/off action subset. It tests whether an entity-localized language effect direction identifies the most completed observation better than static desired-state similarity. Frame candidates and action/object text are benchmark-provided. It does not establish online target discovery, exact-instance grounding, spatial guidance, physical approach, reachability, user action, arrival, HANDOFF_READY, product benefit, or safety."
+}
