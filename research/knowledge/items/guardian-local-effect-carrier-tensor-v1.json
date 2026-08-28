@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "id": "guardian-local-effect-carrier-tensor-v1",
+  "kind": "algorithm",
+  "title": "Guardian Local Effect Carrier Tensor v1",
+  "canonical_ref": "repo:research/active/l10-r0/guardian_local_effect_carrier_tensor.py",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "Task-grounded entity and gripper interaction representation on fresh real multi-view executions; SC46 produced a large relative but sub-gate gain.",
+  "mechanisms": [
+    {
+      "id": "local-effect-carrier-tensor-v1",
+      "name": "Local Effect Carrier Tensor",
+      "description": "Grounds task entities and the robot gripper in three start/end views, encodes global, entity-local, and joint interaction-region state changes, adds explicit region geometry, learns fixed probabilities from source-native training, and delegates final authority to localization eligibility plus a split-conformal singleton reducer.",
+      "inputs": [
+        "Task and subtask text, three start/end RGB viewpoints, disjoint source-native training/calibration labels."
+      ],
+      "outputs": [
+        "Execution success, failure, or UNKNOWN plus an 80-dimensional local effect tensor and calibrated probabilities."
+      ],
+      "limitations": "SC46 missed its frozen absolute and failure-recall gates. Detection availability was not limiting; confidence/count features dominated intended state deltas, and translation-object failures remained weak. Do not retune the consumed split or infer arrival/completion authority."
+    }
+  ],
+  "tags": [
+    "l10",
+    "terminal-state",
+    "effect-carrier",
+    "grounding-dino",
+    "interaction-region",
+    "conformal-unknown"
+  ],
+  "aliases": [
+    "SC46"
+  ],
+  "links": [
+    {
+      "label": "Guardian UR5-Fail training split",
+      "ref": "https://huggingface.co/datasets/paulpacaud/ur5fail_train_dataset"
+    },
+    {
+      "label": "Guardian UR5-Fail validation split",
+      "ref": "https://huggingface.co/datasets/paulpacaud/ur5fail_val_dataset"
+    },
+    {
+      "label": "Guardian UR5-Fail test split",
+      "ref": "https://huggingface.co/datasets/paulpacaud/ur5fail_test_dataset"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

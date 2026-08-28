@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-guardian-local-effect-carrier-tensor-v1",
+  "item_id": "guardian-local-effect-carrier-tensor-v1",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "local-effect-carrier-tensor-v1"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Guardian UR5-Fail source-defined train/validation/test splits at pinned revisions; 400/30/140 execution rows and three start/end RealSense views.",
+    "project_application": "Endpoint execution-state recognition before HANDOFF_READY, with grounded local evidence separated from deterministic success/failure/UNKNOWN authority.",
+    "modifications": "Task-conditioned GroundingDINO task/gripper regions, global/task/interaction CLIP deltas, explicit region geometry, fixed 80-dimensional tensor, StandardScaler plus logistic regression, and alpha 0.2 split conformal reduction.",
+    "expected_effect": "Improve execution-state discrimination by tying visual changes to the manipulated entity and actuator rather than relying on a global frame delta."
+  },
+  "evaluation": {
+    "reproduction_status": "partial",
+    "verdict": "mixed",
+    "setup": "Source-native 400 training and 30 validation rows fit/calibrated the frozen representation; 140 test rows remained outcome-invisible until provider seal. Both GroundingDINO and CLIP used measured CUDA backends without fallback.",
+    "effect": "Local carriers improved same-known balanced accuracy by 10.15 points at 76.43 percent coverage, but reached only 59.94 percent selective balanced accuracy and 57.14 percent failure recall, below the frozen gates.",
+    "metrics": [
+      "baseline_all_balanced_accuracy=0.498469",
+      "successor_selective_balanced_accuracy=0.599440",
+      "known_coverage=0.764286",
+      "same_known_balanced_accuracy_gain=0.101541",
+      "failure_recall=0.571429",
+      "success_recall=0.627451"
+    ],
+    "claim_boundary": "SC46 shows a large relative execution-state gain from local carriers on one fresh real UR5 source, but misses absolute and per-class gates; no online identity, navigation, arrival, completion, product, or safety authority."
+  },
+  "evidence": [
+    {
+      "kind": "repo",
+      "ref": "research/active/l10-r0/guardian_local_effect_carrier_tensor_protocol_v1.json",
+      "summary": "Frozen SC46 source identities, truth firewall, local carrier representation, reducer, and gates."
+    },
+    {
+      "kind": "repo",
+      "ref": "research/active/l10-r0/README.md",
+      "summary": "SC46 metrics, backend and artifact hashes, error localization, and claim boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Consumed SC46 test split: do not tune prompt, detector threshold, crop construction, classifier, conformal alpha, or gate. Next successor needs explicit object-state/change or contact/release evidence on a new frozen cohort."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

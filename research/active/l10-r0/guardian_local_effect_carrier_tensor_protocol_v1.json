@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "experiment_id": "L10-SC46-GUARDIAN-LOCAL-EFFECT-CARRIER-TENSOR",
+  "frozen_at": "2026-08-28",
+  "question": "On a fresh real multi-view manipulation cohort, does task-conditioned local entity and gripper interaction evidence improve execution-success recognition over a global before/after goal-axis baseline?",
+  "source": {
+    "name": "Guardian UR5-Fail",
+    "license": "Apache-2.0",
+    "authority": "Source-defined train, validation, and test execution splits with manual execution-success labels and three RealSense viewpoints at start/end.",
+    "splits": {
+      "training": {
+        "dataset_id": "paulpacaud/ur5fail_train_dataset",
+        "revision": "1681389a407e3e035c7d6972586d895134a2b016",
+        "metadata_file": "train/metadata_execution.jsonl",
+        "metadata_size_bytes": 426875,
+        "metadata_sha256": "6122228cc4f0e08afcfa9db97b358308377f5ad08d6d42b5abcf58ff218ddc45",
+        "media_archive": "train/records.tar.gz",
+        "media_archive_size_bytes": 242735836,
+        "media_archive_sha256": "85656b7fc4f7f1567e170cadb2f25bc33d3908d3e492a0c92098469599f981e3",
+        "expected_rows": 400
+      },
+      "calibration": {
+        "dataset_id": "paulpacaud/ur5fail_val_dataset",
+        "revision": "64578afc8d7e1cb6233aa2a698dd4e0444f4f499",
+        "metadata_file": "val/metadata_execution.jsonl",
+        "metadata_size_bytes": 24002,
+        "metadata_sha256": "1fa492b5501f21c89252132825aff28a7cd39605f1bbbdeb89d2d8275d50e937",
+        "media_archive": "val/records.tar.gz",
+        "media_archive_size_bytes": 13206109,
+        "media_archive_sha256": "1533cf3bd28b9a843dc59243ad0f9622e8ac2527392a9accea95858c206f7826",
+        "expected_rows": 30
+      },
+      "evaluation": {
+        "dataset_id": "paulpacaud/ur5fail_test_dataset",
+        "revision": "fedfcb3346b92f6a2bfeb14dc254635c9a5013f1",
+        "metadata_file": "test/metadata_execution.jsonl",
+        "metadata_size_bytes": 102667,
+        "metadata_sha256": "541953393c7b8a2d1448360f5ac0f4a3902dafb64fe4ff0e74fb956f760e3030",
+        "media_archive": "test/records.tar.gz",
+        "media_archive_size_bytes": 54848824,
+        "media_archive_sha256": "ef56f7b0c4e196a758a8571ee24acafba5f27043102b55e25d32f423d79f45e1",
+        "expected_rows": 140
+      }
+    }
+  },
+  "truth_firewall": "Before provider sealing, evaluation metadata may expose only taskvar, task_instruction, episode_id, images, detailed_subtask_name, and plan. evaluation execution_reward, reward, planning_reward, failure_mode, and failure_reason are forbidden for representation design, fitting, calibration, backend selection, and prediction.",
+  "models": {
+    "grounder": {
+      "model_id": "IDEA-Research/grounding-dino-tiny",
+      "revision": "a2bb814dd30d776dcf7e30523b00659f4f141c71",
+      "local_dir": "grounding-dino-tiny-a2bb814",
+      "weights_file": "model.safetensors",
+      "weights_sha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3",
+      "box_threshold": 0.25,
+      "text_threshold": 0.25,
+      "batch_size": 4,
+      "representative_batch_size": 1
+    },
+    "encoder": {
+      "model_id": "openai/clip-vit-base-patch32",
+      "revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+      "local_dir": "clip-vit-base-patch32-3d74acf",
+      "weights_file": "pytorch_model.bin",
+      "weights_sha256": "a63082132ba4f97a80bea76823f544493bffa8082296d62d71581a4feff1576f",
+      "image_batch_size": 48,
+      "representative_batch_size": 8
+    }
+  },
+  "frozen_algorithm": {
+    "grounding_prompt": "{detailed_subtask_name}. {task_instruction}. robot gripper.",
+    "gripper_label_tokens": ["gripper", "robot", "arm"],
+    "task_box_limit": 2,
+    "task_box_nms_iou": 0.5,
+    "crop_padding_fraction": 0.1,
+    "state_prompts": [
+      "before executing {detailed_subtask_name} for the task {task_instruction}",
+      "after successfully executing {detailed_subtask_name} for the task {task_instruction}"
+    ],
+    "per_view_features": [
+      "global_goal_axis_delta",
+      "task_region_goal_axis_delta",
+      "interaction_region_goal_axis_delta",
+      "task_confidence_start",
+      "task_confidence_end",
+      "gripper_confidence_start",
+      "gripper_confidence_end",
+      "task_box_count_start_scaled",
+      "task_box_count_end_scaled",
+      "task_area_start",
+      "task_area_end",
+      "task_area_delta",
+      "gripper_task_distance_start",
+      "gripper_task_distance_end",
+      "gripper_task_distance_delta",
+      "task_region_start_end_iou"
+    ],
+    "cross_view_aggregation": ["mean", "standard_deviation"],
+    "feature_dimension": 80,
+    "missing_distance_value": 1.5,
+    "localization_eligibility": "task region present at start and end in at least two of three views, and gripper present at start and end in at least one view",
+    "scaler": "StandardScaler fit on training rows only",
+    "learner": {
+      "type": "LogisticRegression",
+      "solver": "liblinear",
+      "penalty": "l2",
+      "C": 0.25,
+      "class_weight": "balanced",
+      "max_iter": 2000,
+      "tol": 0.0001,
+      "random_state": 4601
+    },
+    "conformal": {
+      "method": "split conformal label set",
+      "alpha": 0.2,
+      "calibration_split": "source native validation split",
+      "singleton_only": true
+    },
+    "baseline": "Global CLIP after-success minus before-state axis, averaged across the three end-minus-start viewpoint deltas; score greater than zero means success.",
+    "final_authority": "The learned model supplies probabilities only. The frozen localization eligibility plus singleton conformal-set reducer alone emits success, failure, or UNKNOWN."
+  },
+  "gate": {
+    "evaluation_rows": 140,
+    "known_coverage_min": 0.5,
+    "successor_selective_balanced_accuracy_min": 0.7,
+    "balanced_accuracy_gain_on_same_known_min": 0.05,
+    "successor_known_class_recall_min": 0.6
+  },
+  "invalidators": [
+    "read evaluation truth before provider sealing",
+    "change source splits, prompts, thresholds, box selection, crop construction, features, eligibility, learner, conformal alpha, reducer, baseline, or gate after evaluation truth is loaded",
+    "actual model device or provider differs from the selected backend receipt",
+    "reuse SC45 evaluation rows or tune against this evaluation split"
+  ],
+  "claim_boundary": "One fresh source-held-out mechanism test of whether task-grounded local entity state and gripper interaction carriers improve execution-success recognition over a global visual goal-axis baseline. It does not establish BlindAssist target identity, active search, metric localization, navigation guidance, reacquisition, reachability, physical execution, user arrival, explicit completion confirmation, product benefit, or safety."
+}

@@ -993,6 +993,65 @@ This is endpoint-mechanism evidence only; it does not establish online identity,
 search, localization, navigation, reachability, physical execution, user
 arrival, explicit completion confirmation, product benefit, or safety.
 
+### SC46: local effect carriers produce a large relative gain but remain sub-gate
+
+SC46 follows the SC45 failure localization instead of tuning its consumed split.
+Exa reviewed 95 result slots across three source workstreams (progress/reward,
+failure/recovery, and hand-object/state-change localization). Guardian UR5-Fail
+was selected because its public Apache-2.0 train, validation, and test datasets
+provide a small immediately runnable real UR5 cohort with three RealSense views,
+start/end images, task/subtask text, and execution-success labels. The frozen
+source-native roles contain `400/30/140` rows and balanced train/calibration
+truth (`200/200`, `15/15`) without resampling.
+
+The Local Effect Carrier Tensor uses GroundingDINO to materialize up to two
+task-conditioned entity boxes plus a robot-gripper box in each of three
+start/end viewpoints. CLIP then encodes the full frame, the task-entity union,
+and the joint task-entity/gripper interaction crop against a before/successful-
+after text axis. Detection confidence/count, region area/IoU, and gripper-task
+distance join those state deltas. The three per-view vectors plus cross-view
+mean and standard deviation form a fixed 80-dimensional tensor. A standardized
+logistic learner supplies probabilities; only frozen localization eligibility
+and a split-conformal singleton set may emit success/failure, otherwise
+`UNKNOWN`.
+
+| selector | scope | balanced accuracy | coverage |
+| --- | --- | ---: | ---: |
+| global CLIP goal axis | all 140 | 49.85% | 100% |
+| local effect carrier tensor | 107 known rows | 59.94% | 76.43% |
+| baseline on the same 107 known rows | 107 known rows | 49.79% | 76.43% |
+
+The `+10.15` point same-known gain is much larger than SC45's `+3.47` points,
+so local carriers are a real representation advance. The frozen gate still
+fails: absolute selective balanced accuracy is below `70%`, and failure recall
+is `57.14%` versus the required `60%` (`success` recall `62.75%`). Record
+`SC46_GUARDIAN_LOCAL_EFFECT_CARRIER_TENSOR_GATE_NOT_MET`. All `140/140`
+evaluation rows satisfied localization eligibility; 33 `UNKNOWN`s came only
+from non-singleton conformal sets. The residual is semantic: `translation_object`
+failures were only `7/15` correct, and coefficient mass is led by task/gripper
+confidence and counts rather than the intended task/interaction state deltas.
+The next legal successor therefore needs explicit object-state/change or
+contact/release evidence on a new cohort, not prompt, detector-threshold,
+classifier, alpha, or split tuning.
+
+The protocol, implementation, grounder receipt, encoder receipt, sealed
+provider, and result hashes are
+`faebbbc1f82650bd0a3181712ef6c4161baadc611e7d38b3b49c995228510414`,
+`ee2056ece4b19a2b3e6f2e663bd2b6229c2e58367f27f3d2b865675dafeb0548`,
+`e35abbf3ed712359b4ef9fdd571526aeca17ce5a0d88bc9a2edb84197337b428`,
+`48be5a8870a73a1455d4c1b2135f2b5355a405f4edd90e9ca4e2a0233a327beb`,
+`9b17671df00ef399581462cec1259d1b357500d172d8aae9be27b5fc386886c1`,
+and `ca407cefb26cc5c68c7ed53c7d0c9c556aadb5ca8a423d48092f62cc551e0330`.
+Both representative model probes selected verified RTX 5060 CUDA with no
+fallback: GroundingDINO `0.976 s` versus CPU `2.707 s`, and CLIP `0.073 s`
+versus CPU `0.265 s`. Source pages:
+[train](https://huggingface.co/datasets/paulpacaud/ur5fail_train_dataset),
+[validation](https://huggingface.co/datasets/paulpacaud/ur5fail_val_dataset), and
+[test](https://huggingface.co/datasets/paulpacaud/ur5fail_test_dataset). This
+is endpoint-mechanism evidence only; it does not establish target identity,
+active search, metric localization, navigation, reachability, physical
+execution, user arrival, explicit confirmation, product benefit, or safety.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

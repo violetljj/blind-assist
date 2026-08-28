@@ -449,6 +449,30 @@ new object/hand-local effect-carrier representation and use another frozen
 cohort; global CLIP factor tensors remain reusable as a baseline, not endpoint
 authority.
 
+SC46 executed that successor on Guardian UR5-Fail without reusing SC45 rows.
+The source-native roles are 400 training, 30 calibration, and 140 evaluation
+executions. A task-conditioned GroundingDINO carrier exposes up to two task
+entities and the robot gripper in all three start/end views. CLIP supplies global,
+task-region, and combined interaction-region goal-axis deltas; box confidence,
+area, overlap, count, and gripper-task distance complete the 80-dimensional
+tensor. A fixed learner supplies probabilities and the localization-plus-
+conformal reducer alone may emit success, failure, or `UNKNOWN`.
+
+The global baseline reached `49.85%` balanced accuracy. SC46 resolved `107/140`
+(`76.43%` coverage) at `59.94%` selective balanced accuracy, versus `49.79%`
+for the baseline on those same rows: a material `+10.15` point gain. It still
+missed the frozen `70%` absolute gate and the `60%` per-class floor because
+failure recall was `57.14%`; record
+`SC46_GUARDIAN_LOCAL_EFFECT_CARRIER_TENSOR_GATE_NOT_MET`. All 140 evaluation
+rows met the localization eligibility rule, so the remaining error is not
+missing boxes. The learned mass is dominated by task/gripper detection
+confidence and counts, while task and interaction goal-axis deltas remain
+weaker; `translation_object` failures are only `7/15` correct. Do not tune this
+opened split, detector threshold, prompt, conformal alpha, or classifier. A
+legal successor needs explicit object state/change or contact/release evidence
+on a new frozen cohort; local effect carriers remain a promising mechanism, not
+endpoint authority.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

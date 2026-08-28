@@ -470,6 +470,22 @@ specific (`human_pika` `59.78%`, `libero_data` `71.91%`); the next representatio
 must localize hands and the physical effect carrier rather than retune this
 global tensor. No demo or product integration is authorized by SC45.
 
+SC46 made that representation change on the fresh Guardian UR5-Fail source-
+defined `400/30/140` train/validation/test execution splits. GroundingDINO
+localized task entities plus the robot gripper in three start/end viewpoints;
+CLIP encoded global, task-region, and joint interaction-region state changes;
+a frozen 80-dimensional factor tensor and split-conformal reducer retained 33
+`UNKNOWN`s. The global baseline was `49.85%` balanced accuracy. SC46 reached
+`59.94%` selective balanced accuracy at `76.43%` coverage, a real `+10.15`
+point gain over the baseline on the same 107 known rows, but missed the frozen
+`70%` absolute gate and `60%` per-class recall floor (failure recall `57.14%`).
+Record `SC46_GUARDIAN_LOCAL_EFFECT_CARRIER_TENSOR_GATE_NOT_MET`. Localization
+was present on all 140 test rows; the residual is semantic state discrimination,
+especially `translation_object`, not box availability. Do not retune the opened
+split. The next legal successor needs an explicit object-state/change carrier
+or contact/release representation on another fresh cohort. No demo or product
+integration is authorized by SC46.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

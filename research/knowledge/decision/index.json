@@ -2,11 +2,11 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "1eae054979d50ece005a6b972f423dd9d54bb9ec18e9dbca60e38d1f0d5acca8",
+  "source_fingerprint": "cf24dc74586e290513fc94c0822ef3b1d0336f2ce31be3cc22ed5a60113f97d1",
   "counts": {
     "failure_layers": 13,
-    "mechanisms": 246,
-    "uses": 247,
+    "mechanisms": 247,
+    "uses": 248,
     "experiments": 206,
     "current_terminals": 19
   },
@@ -1545,6 +1545,80 @@
         }
       ],
       "search_text": "Spring + RobustSpring 模糊、天气、噪声、压缩和深度/双目不一致时，何时应退出 dynamic-travel-risk legacy-candidate dtr-r0 Spring + RobustSpring — dtr:DR28 route mechanism 真实高分辨率 flow/disparity/scene-flow truth + 20 类时序一致退化；生成质量–coverage–abstention 曲线 汽车 stereo/4K 离线 benchmark；对 corruption 稳健不证明助盲事件或手机时延 obstacle-avoidance 真实高分辨率 flow/disparity/scene-flow truth + 20 类时序一致退化；生成质量–coverage–abstention 曲线 真实高分辨率 flow/disparity/scene-flow truth + 20 类时序一致退化；生成质量–coverage–abstention 曲线 汽车 stereo/4K 离线 benchmark；对 corruption 稳健不证明助盲事件或手机时延"
+    },
+    {
+      "id": "guardian-local-effect-carrier-tensor-v1#local-effect-carrier-tensor-v1",
+      "item_id": "guardian-local-effect-carrier-tensor-v1",
+      "mechanism_id": "local-effect-carrier-tensor-v1",
+      "kind": "algorithm",
+      "title": "Guardian Local Effect Carrier Tensor v1",
+      "canonical_ref": "repo:research/active/l10-r0/guardian_local_effect_carrier_tensor.py",
+      "summary": "Task-grounded entity and gripper interaction representation on fresh real multi-view executions; SC46 produced a large relative but sub-gate gain.",
+      "tags": [
+        "l10",
+        "terminal-state",
+        "effect-carrier",
+        "grounding-dino",
+        "interaction-region",
+        "conformal-unknown"
+      ],
+      "name": "Local Effect Carrier Tensor",
+      "description": "Grounds task entities and the robot gripper in three start/end views, encodes global, entity-local, and joint interaction-region state changes, adds explicit region geometry, learns fixed probabilities from source-native training, and delegates final authority to localization eligibility plus a split-conformal singleton reducer.",
+      "inputs": [
+        "Task and subtask text, three start/end RGB viewpoints, disjoint source-native training/calibration labels."
+      ],
+      "outputs": [
+        "Execution success, failure, or UNKNOWN plus an 80-dimensional local effect tensor and calibrated probabilities."
+      ],
+      "limitations": "SC46 missed its frozen absolute and failure-recall gates. Detection availability was not limiting; confidence/count features dominated intended state deltas, and translation-object failures remained weak. Do not retune the consumed split or infer arrival/completion authority.",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 6,
+        "evaluation_evidence": 9,
+        "geometry_motion": 3,
+        "handoff_completion": 9,
+        "identity_binding": 3,
+        "observation_perception": 6,
+        "source_coverage": 6
+      },
+      "routes": [
+        "l10-r0"
+      ],
+      "uses": [
+        {
+          "id": "use-l10-r0-guardian-local-effect-carrier-tensor-v1",
+          "route": "l10-r0",
+          "use_state": "candidate",
+          "reproduction_status": "partial",
+          "verdict": "mixed",
+          "project_application": "Endpoint execution-state recognition before HANDOFF_READY, with grounded local evidence separated from deterministic success/failure/UNKNOWN authority.",
+          "expected_effect": "Improve execution-state discrimination by tying visual changes to the manipulated entity and actuator rather than relying on a global frame delta.",
+          "observed_effect": "Local carriers improved same-known balanced accuracy by 10.15 points at 76.43 percent coverage, but reached only 59.94 percent selective balanced accuracy and 57.14 percent failure recall, below the frozen gates.",
+          "metrics": [
+            "baseline_all_balanced_accuracy=0.498469",
+            "successor_selective_balanced_accuracy=0.599440",
+            "known_coverage=0.764286",
+            "same_known_balanced_accuracy_gain=0.101541",
+            "failure_recall=0.571429",
+            "success_recall=0.627451"
+          ],
+          "claim_boundary": "SC46 shows a large relative execution-state gain from local carriers on one fresh real UR5 source, but misses absolute and per-class gates; no online identity, navigation, arrival, completion, product, or safety authority.",
+          "evidence": [
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/guardian_local_effect_carrier_tensor_protocol_v1.json",
+              "summary": "Frozen SC46 source identities, truth firewall, local carrier representation, reducer, and gates."
+            },
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/README.md",
+              "summary": "SC46 metrics, backend and artifact hashes, error localization, and claim boundary."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "Guardian Local Effect Carrier Tensor v1 Task-grounded entity and gripper interaction representation on fresh real multi-view executions; SC46 produced a large relative but sub-gate gain. l10 terminal-state effect-carrier grounding-dino interaction-region conformal-unknown Local Effect Carrier Tensor Grounds task entities and the robot gripper in three start/end views, encodes global, entity-local, and joint interaction-region state changes, adds explicit region geometry, learns fixed probabilities from source-native training, and delegates final authority to localization eligibility plus a split-conformal singleton reducer. Task and subtask text, three start/end RGB viewpoints, disjoint source-native training/calibration labels. Execution success, failure, or UNKNOWN plus an 80-dimensional local effect tensor and calibrated probabilities. SC46 missed its frozen absolute and failure-recall gates. Detection availability was not limiting; confidence/count features dominated intended state deltas, and translation-object failures remained weak. Do not retune the consumed split or infer arrival/completion authority. l10-r0 Endpoint execution-state recognition before HANDOFF_READY, with grounded local evidence separated from deterministic success/failure/UNKNOWN authority. Improve execution-state discrimination by tying visual changes to the manipulated entity and actuator rather than relying on a global frame delta. Local carriers improved same-known balanced accuracy by 10.15 points at 76.43 percent coverage, but reached only 59.94 percent selective balanced accuracy and 57.14 percent failure recall, below the frozen gates. baseline_all_balanced_accuracy=0.498469 successor_selective_balanced_accuracy=0.599440 known_coverage=0.764286 same_known_balanced_accuracy_gain=0.101541 failure_recall=0.571429 success_recall=0.627451 SC46 shows a large relative execution-state gain from local carriers on one fresh real UR5 source, but misses absolute and per-class gates; no online identity, navigation, arrival, completion, product, or safety authority."
     },
     {
       "id": "paper-2021-dtr-dr01b#dtr-dr01b",
