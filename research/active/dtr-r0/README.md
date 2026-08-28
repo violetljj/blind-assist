@@ -27,6 +27,8 @@ DTR_C19_JOINT_MOTION_CONFIDENCE_DEVELOPMENT_GATE_NOT_MET /
 DTR_C20_LOCAL_MOTION_VOTING_DEVELOPMENT_GATE_NOT_MET /
 DTR_C21_SCENE_BIAS_RESIDUAL_MOTION_DEVELOPMENT_GATE_NOT_MET /
 DTR_C22_EGO_RIGID_VISUAL_MOTION_DEVELOPMENT_GATE_NOT_MET /
+DTR_C23_RIGID_TEMPORAL_OBJECT_FLOW_DEVELOPMENT_GATE_NOT_MET /
+DTR_C24_CYCLE_CONSISTENT_POINT_FLOW_DEVELOPMENT_GATE_MET /
 R4_NOT_OPENED`
 
 ## Result first
@@ -1525,6 +1527,68 @@ device and no SparsePyrLK CUDA provider.  The representative 512-track probe
 therefore selected `opencv-cpu-sparse-pyrlk` in `0.0510 s` with the explicit
 receipt reason `GPU_BACKEND_UNAVAILABLE`; this was a provider limitation, not
 a silent CUDA fallback.
+
+## DTR-C23--C24 confidence-aware point scene motion
+
+C23 first tested the object-level hypothesis on the same consumed R7 Packard
+canary.  It associated R7 frame-local components, fit one rigid SE(2) transform
+per candidate, and combined rigidity residual, inlier support, size agreement,
+association margin, R7/rigid velocity agreement, and up to five causal velocity
+observations into a motion confidence.  It preserved critical recall `3/3` and
+all `9/9` induced-dropout recoveries, improved event F1 from `22.22%` to
+`26.09%`, and reduced target false segments from `20` to `16`, but missed the
+fixed `<=14` target.  Result SHA-256 is
+`56a281c805e51702194f993abc15dd81588d5f2e5bf93e37c003f63bbb456d36`.
+
+The failure was structural, not a confidence-threshold problem.  The seven C23
+factors had event-versus-nuisance AUC only `0.474--0.517`; raising confidence
+would preferentially remove dropout evidence.  Segment attribution showed that
+C23 removed four R7-added false segments and added none, while the four
+remaining R7 additions came from one component translation being broadcast to
+all cells.  One component triggered two targets, and another target inherited
+motion from only one edge cell.  Replacing that translation with the rigid
+centroid velocity also left 16 false segments and lost one of three events.
+
+C24 therefore changed the representation to point-local motion.  It reopened
+the raw upper/lower LiDAR causally, applied ego compensation and 3-D voxel
+reciprocal-nearest correspondence (`M1-PD`), then required an independent prior
+flow observation to advect to the current cell with consistent velocity
+(`M1-PDC`).  Route geometry, speed range, event lifecycle, and all scoring
+thresholds stayed unchanged.
+
+| arm | critical recall | target false segments | event F1 | median first lead | induced dropout recovery |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| R7 component translation | `3/3` | 20 | 22.22% | 2.740 s | `9/9` |
+| M1-PD cell-local direct velocity | `3/3` | 13 | 30.00% | 2.463 s | `9/9` |
+| **C24 M1-PDC three-frame consistency** | **`3/3`** | **12** | **31.58%** | **2.381 s** | **`9/9`** |
+
+C24 meets the requested M1 Development gate: it keeps R7's `9/9` recovery and
+removes all eight R7-added target false segments, returning to the R2 false
+count while increasing event F1 by `9.36` points.  Attributed cells fall from
+`24,141` to `1,684`; the explicit trade-off is median first-alert lead
+`-0.359 s`, while median escalation lead remains identical at `1.438 s`.
+Result SHA-256 is
+`2cd71c4d8934a38956c9d5d2c2d10f2c0f36cf7eed4e9924889574cc230c838e`.
+The algorithm-fresh cohort remains sealed; this authorizes one fresh
+confirmation of the fixed C24 representation, not more Packard tuning.
+
+The mechanism follows the static/dynamic and correct-association decomposition
+in [SeFlow](https://www.ecva.net/papers/eccv_2024/papers_ECCV/html/143_ECCV_2024_paper.php),
+the associate-then-fit rigid-object order in
+[ICP-Flow](https://openaccess.thecvf.com/content/CVPR2024/html/Lin_ICP-Flow_LiDAR_Scene_Flow_Estimation_with_ICP_CVPR_2024_paper.html),
+the local rigidity principle in
+[VoteFlow](https://openaccess.thecvf.com/content/CVPR2025/html/Lin_VoteFlow_Enforcing_Local_Rigidity_in_Self-Supervised_Scene_Flow_CVPR_2025_paper.html),
+and explicit multi-frame context in [Flow4D](https://arxiv.org/html/2407.07995v1).
+These sources motivated the representation only; they are not evidence of
+BlindAssist performance.
+
+Both runs used the shared research launcher after the DTR doctor verified the
+RTX 5060 CUDA runtime.  Representative C23 component ICP selected NumPy CPU at
+`0.2535 ms` versus Torch CUDA `3.6737 ms`.  C24's `4x2048` raw-point match
+selected SciPy cKDTree CPU at `4.5333 ms` versus observed RTX 5060 CUDA cdist
+`7.8822 ms`.  Both receipts state `CPU_FASTER_MEASURED`; CPU was chosen because
+it was measured faster for these irregular batches, not because CUDA silently
+failed or was bypassed.
 
 ## Claim ceiling
 
