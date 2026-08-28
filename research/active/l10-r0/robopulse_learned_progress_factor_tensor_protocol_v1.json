@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC45-FRESH-ROBOPULSE-LEARNED-PROGRESS-FACTOR-TENSOR",
+  "source": {
+    "dataset": "yuheng2000/RoboPulse",
+    "repository_url": "https://huggingface.co/datasets/yuheng2000/RoboPulse",
+    "revision": "c3b2f7c6a692e8dd157d9f8416d4b89723dae497",
+    "annotation_file": "RoboPulse.json",
+    "annotation_size_bytes": 7098083,
+    "annotation_sha256": "db3b862d004e5c46aa24bdc3241bd7cf662ce7469c9fc97c13064ff57fb39ec0",
+    "media_archive": "images.zip",
+    "media_archive_size_bytes": 357529220,
+    "media_archive_sha256": "7a85dba087e2762d347a0a11a8694acd66b6ca8698ce151f3311e34645bbcb61",
+    "expected_rows": 1800,
+    "expected_sources": 9,
+    "rows_per_source": 200,
+    "license": "not specified by the dataset card; internal research evidence only"
+  },
+  "role_freeze": {
+    "source_order": "Sort image_dataset by sha256(UTF-8 source name).",
+    "training_sources": [
+      "agilex_newdragon",
+      "galaxea_r1lite",
+      "human_egodex",
+      "robotwin2_agilex_part1",
+      "agibotworld",
+      "robocasa_data"
+    ],
+    "calibration_sources": ["droid_oxe"],
+    "evaluation_sources": ["human_pika", "libero_data"],
+    "sc44_exclusion": "Within every source, exclude the first 10 rows after sorting by sha256(id), then id; these are the consumed SC44 rows.",
+    "expected_training_rows": 1140,
+    "expected_calibration_rows": 190,
+    "expected_evaluation_rows": 380,
+    "evaluation_truth_firewall": "Evaluation labels and Hop fields are forbidden during embedding, feature construction, fitting, conformal calibration, backend selection, and provider sealing. Only training and calibration labels may be loaded before provider seal."
+  },
+  "model": {
+    "model_id": "openai/clip-vit-base-patch32",
+    "revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+    "framework": "transformers",
+    "image_batch_size": 64,
+    "text_task_batch_size": 128,
+    "representative_batch_size": 32,
+    "embedding_dimension": 512,
+    "image_order": "reference start, reference completed end, BEFORE front/left-wrist/right-wrist, AFTER front/left-wrist/right-wrist"
+  },
+  "frozen_algorithm": {
+    "name": "Learned Progress Factor Tensor v1",
+    "task_start_prompt": "a photo before beginning the task: {task}",
+    "task_end_prompt": "a photo after successfully completing the task: {task}",
+    "factor_groups": {
+      "effect_carrier": "Front-view change projected onto the visual start-to-end axis, task-text start-to-end axis, completed reference, starting reference, and task-end text.",
+      "actuator_contact": "The same five directional changes for left and right wrist views.",
+      "spatial_orientation": "Front-view change magnitude and absolute similarity to visual start/end anchors before and after.",
+      "conflict_integrity": "Cross-view dispersion, weakest directional evidence, and pairwise agreement between front and wrist change vectors.",
+      "handoff_distance": "Reduction in visual distance to the completed reference for front and mean views plus absolute before/after completed-reference similarity."
+    },
+    "feature_dimension": 32,
+    "normalization": "L2-normalize CLIP image/text embeddings; fit StandardScaler on training factor tensors only.",
+    "learner": {
+      "type": "sklearn.linear_model.LogisticRegression",
+      "solver": "liblinear",
+      "penalty": "l2",
+      "C": 1.0,
+      "class_weight": "balanced",
+      "max_iter": 2000,
+      "tol": 0.000001,
+      "random_state": 0
+    },
+    "baseline": "Progress iff the mean of front/left-wrist/right-wrist image-change projections onto the normalized visual reference-end minus reference-start axis is strictly positive; otherwise regression.",
+    "conformal": {
+      "method": "split conformal label set",
+      "alpha": 0.25,
+      "nonconformity": "1 - predicted probability assigned to the calibration truth label",
+      "quantile": "sorted score at zero-based min(n-1, ceil((n+1)*(1-alpha))-1)",
+      "known_rule": "Emit a class only when exactly one label has nonconformity <= q; otherwise emit UNKNOWN."
+    },
+    "final_authority": "The learned model supplies probabilities only; the frozen conformal set reducer alone emits progress, regression, or UNKNOWN.",
+    "tie_break": "Baseline zero is regression; no tie break is permitted for a multi-label or empty conformal set.",
+    "failure_behavior": "Invalid source/model/backend/media/role/feature/schema or missing truth is NOT_EVALUABLE; UNKNOWN is never scored as a negative prediction or success."
+  },
+  "frozen_gate": {
+    "minimum_evaluation_rows": 380,
+    "minimum_known_coverage": 0.5,
+    "minimum_selective_balanced_accuracy": 0.65,
+    "minimum_balanced_accuracy_gain_over_baseline_on_known": 0.05,
+    "minimum_per_source_known_coverage": 0.3
+  },
+  "decision_labels": {
+    "pass": "SC45_LEARNED_PROGRESS_FACTOR_TENSOR_FRESH_SIGNAL",
+    "fail": "SC45_LEARNED_PROGRESS_FACTOR_TENSOR_GATE_NOT_MET",
+    "not_evaluable": "SC45_NOT_EVALUABLE_INVALID_OR_INSUFFICIENT_FACTOR_EVIDENCE"
+  },
+  "forbidden_after_outcome": [
+    "change source roles, SC44 exclusions, model, prompts, features, scaler, learner, conformal alpha, reducer, tie behavior, or gate",
+    "move rows or sources between training, calibration, and evaluation",
+    "use evaluation labels for fitting, calibration, selection, thresholding, or error repair",
+    "drop UNKNOWN, sources, difficult rows, media failures, or classes",
+    "claim online identity, search, localization, navigation, physical execution, user arrival, explicit confirmation, product benefit, or safety"
+  ],
+  "claim_boundary": "One source-held-out mechanism test of whether a learned, role-structured multi-view before/after factor tensor plus split-conformal UNKNOWN improves signed physical progress recognition over an untrained visual goal-axis projection. It does not establish BlindAssist identity, active search, metric localization, guidance, reacquisition, reachability, physical execution, user arrival, explicit completion confirmation, product benefit, or safety."
+}

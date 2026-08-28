@@ -446,6 +446,20 @@ factors are now closed; the legal successor needs a learned differential factor
 representation, calibrated `UNKNOWN`, disjoint supervision, and a new frozen
 evaluation cohort. No demo or product integration is authorized by SC44.
 
+SC45 delivered that learned representation on a fully disjoint role split after
+excluding every SC44 ID. Six RoboPulse sources trained a 32-dimensional
+multi-view Progress Factor Tensor, `droid_oxe` calibrated a split-conformal
+`UNKNOWN`, and 380 fresh `human_pika`/`libero_data` rows remained evaluation-only
+until provider seal. The untrained goal-axis baseline was `61.58%` balanced
+accuracy. SC45 reached `65.96%` selective balanced accuracy at `93.95%` known
+coverage, a `+3.47` point gain over the baseline on the same known rows. This is
+the first content-sensitive endpoint gain after SC42-SC44, but it missed the
+frozen `+5` point gate and is recorded as
+`SC45_LEARNED_PROGRESS_FACTOR_TENSOR_GATE_NOT_MET`. The residual is source-
+specific (`human_pika` `59.78%`, `libero_data` `71.91%`); the next representation
+must localize hands and the physical effect carrier rather than retune this
+global tensor. No demo or product integration is authorized by SC45.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

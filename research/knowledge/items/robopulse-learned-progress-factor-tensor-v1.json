@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "id": "robopulse-learned-progress-factor-tensor-v1",
+  "kind": "algorithm",
+  "title": "RoboPulse Learned Progress Factor Tensor v1",
+  "canonical_ref": "repo:research/active/l10-r0/robopulse_learned_progress_factor_tensor.py",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "Source-held-out multi-view before/after progress representation with conformal UNKNOWN; SC45 produced a real but sub-gate gain.",
+  "mechanisms": [
+    {
+      "id": "learned-progress-factor-tensor-v1",
+      "name": "Learned Progress Factor Tensor",
+      "description": "Projects front and wrist before/after CLIP changes against visual and task completion axes, groups them as effect, actuator, spatial, conflict, and handoff factors, learns a fixed linear probability model, and delegates final authority to a split-conformal set reducer.",
+      "inputs": [
+        "Task start/end references, before/after front and wrist images, task text, disjoint training/calibration labels."
+      ],
+      "outputs": [
+        "Progress, regression, or UNKNOWN plus factor tensor and calibrated probabilities."
+      ],
+      "limitations": "SC45 missed its frozen gain gate; global features transferred unevenly to human-hand video, do not retune the consumed split, and do not infer arrival or completion authority."
+    }
+  ],
+  "tags": [
+    "l10",
+    "terminal-state",
+    "progress",
+    "conformal-unknown",
+    "factor-tensor"
+  ],
+  "aliases": [
+    "SC45"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

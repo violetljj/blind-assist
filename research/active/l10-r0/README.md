@@ -942,6 +942,57 @@ The representative launch selected the verified RTX 5060 GPU at 8.73 s versus
 navigation, physical execution, user arrival, explicit confirmation, product,
 or safety claim follows.
 
+### SC45: a learned progress tensor breaks the constant-label collapse, narrowly
+
+SC45 changes both representation and cohort rather than repairing SC44. It
+excludes the 10 hash-selected SC44 rows from every RoboPulse source, trains on
+six whole source domains (`1,140` rows), calibrates only on `droid_oxe` (`190`
+rows), and leaves `human_pika` plus `libero_data` (`380` rows) outcome-invisible
+until provider seal. The class counts were balanced without resampling:
+training `572/568`, calibration `95/95`, and evaluation `190/190`
+progress/regression.
+
+The 32-dimensional Progress Factor Tensor is constructed from normalized CLIP
+image and task-text embeddings. It keeps five named groups: front-view effect
+carrier direction, left/right wrist actuator/contact direction, absolute
+front-view spatial anchors, cross-view conflict/agreement, and distance to the
+completed reference. A fixed standardized logistic learner supplies class
+probabilities. A split-conformal set at frozen `alpha=0.25` is the only final
+reducer: singleton sets become progress/regression and non-singletons remain
+`UNKNOWN`.
+
+| selector | scope | balanced accuracy | coverage |
+| --- | --- | ---: | ---: |
+| untrained visual goal axis | all 380 | 61.58% | 100% |
+| learned factor tensor | 357 known rows | 65.96% | 93.95% |
+| baseline on the same 357 known rows | 357 known rows | 62.49% | 93.95% |
+
+The successor gains `+3.47` points on identical known rows and retains 23
+explicit `UNKNOWN`s, so it breaks SC44's `90/90` constant-progress collapse.
+However, the preregistered gate required at least `+5` points; record
+`SC45_LEARNED_PROGRESS_FACTOR_TENSOR_GATE_NOT_MET`. Correct-known-per-total is
+`235/380` (`61.84%`), so abstention was not used to hide the denominator.
+
+The outcome localizes the remaining representation deficit. `libero_data`
+reaches `71.91%` selective accuracy at `93.68%` coverage, while the human-hand
+`human_pika` source reaches only `59.78%` at `94.21%`. Learned coefficient L2
+mass is largest for effect carrier (`1.23`) and cross-view conflict (`0.89`),
+then actuator/contact (`0.60`), handoff distance (`0.56`), and spatial
+orientation (`0.22`). The next legal successor therefore needs object/hand-
+localized effect-carrier deltas on a new cohort, not another C/threshold/alpha
+or source-role sweep.
+
+The protocol, backend, provider, and result hashes are
+`6fc16c63bc97f7d94d682473ccd1733ae2f5303e28ecf0bb78f0c1de02bf5c71`,
+`bf1761343b0f96d21bf0621f047838d64a66f2493f23957d1fd322402a8971a9`,
+`bbb4acde7be06e4b9ab28e07e6415bd1f607a0640564c1c4ad1dd96b37d7ce85`,
+and `f1b70d49fd249dd172ae9433a918c7aa759213742c30f23492dcc59c54682b70`.
+The representative 32-image batch selected the verified RTX 5060 GPU at
+`0.423 s` versus CPU `0.605 s`, with exact CUDA execution and no fallback.
+This is endpoint-mechanism evidence only; it does not establish online identity,
+search, localization, navigation, reachability, physical execution, user
+arrival, explicit completion confirmation, product benefit, or safety.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

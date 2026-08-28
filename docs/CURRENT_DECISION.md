@@ -425,6 +425,28 @@ representation from disjoint supervision and expose calibrated `UNKNOWN` before
 the same deterministic reducer; it must use a new frozen evaluation cohort. No
 demo or product integration follows.
 
+SC45 implemented that representation change without reopening SC44. It excluded
+all 90 consumed IDs, used six source domains for training, one source for split-
+conformal calibration, and held out `human_pika` plus `libero_data` as 380 fresh
+evaluation rows. A 32-dimensional Progress Factor Tensor separates effect
+carrier, wrist actuator/contact, front-view spatial orientation, cross-view
+conflict, and completed-reference handoff distance. A fixed linear learner emits
+probabilities; only the frozen conformal set reducer may emit progress,
+regression, or `UNKNOWN`.
+
+The untrained visual goal-axis baseline reached `234/380` (`61.58%` balanced
+accuracy). SC45 resolved `357/380` (`93.95%` coverage) at `65.96%` selective
+balanced accuracy, versus `62.49%` for the baseline on those same known rows: a
+real `+3.47` point cross-source gain, but below the frozen `+5` point gate.
+Record `SC45_LEARNED_PROGRESS_FACTOR_TENSOR_GATE_NOT_MET`. The source split is
+diagnostic: selective accuracy was `59.78%` on `human_pika` and `71.91%` on
+`libero_data`. The strongest learned groups were effect carrier and cross-view
+conflict; spatial orientation was weakest. Do not tune the opened split,
+regularization, conformal alpha, or factor weights. A legal successor must add a
+new object/hand-local effect-carrier representation and use another frozen
+cohort; global CLIP factor tensors remain reusable as a baseline, not endpoint
+authority.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-robopulse-learned-progress-factor-tensor-v1",
+  "item_id": "robopulse-learned-progress-factor-tensor-v1",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "learned-progress-factor-tensor-v1"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "RoboPulse revision c3b2f7c; SC44 IDs excluded; six training sources, droid_oxe calibration, human_pika and libero_data evaluation.",
+    "project_application": "Endpoint progress recognition before HANDOFF_READY, with learned factors separated from deterministic progress/regression/UNKNOWN authority.",
+    "modifications": "32 fixed factor scalars, StandardScaler plus fixed logistic regression, split-conformal alpha 0.25, source-held-out evaluation.",
+    "expected_effect": "Break constant-label VLM collapse and improve signed progress recognition while retaining explicit UNKNOWN."
+  },
+  "evaluation": {
+    "reproduction_status": "partial",
+    "verdict": "mixed",
+    "setup": "SC44 IDs excluded; 1140 rows from six sources fit the fixed learner, 190 droid_oxe rows calibrated alpha 0.25 conformal sets, and 380 human_pika/libero_data rows stayed outcome-invisible until provider seal.",
+    "effect": "Global learned factors broke constant-progress collapse and improved same-known balanced accuracy by 3.47 points at 93.95 percent coverage, but missed the frozen 5 point gain gate and transferred unevenly to human-hand video.",
+    "metrics": [
+      "baseline_all_balanced_accuracy=0.615789",
+      "successor_selective_balanced_accuracy=0.659557",
+      "known_coverage=0.939474",
+      "same_known_balanced_accuracy_gain=0.034652"
+    ],
+    "claim_boundary": "SC45 reached 65.96 percent selective balanced accuracy at 93.95 percent coverage and plus 3.47 points over the same-known baseline, but missed the plus 5 point gate; no online identity, navigation, arrival, completion, product, or safety authority."
+  },
+  "evidence": [
+    {
+      "kind": "repo",
+      "ref": "research/active/l10-r0/robopulse_learned_progress_factor_tensor_protocol_v1.json",
+      "summary": "Frozen SC45 source roles, factors, conformal reducer, and gate."
+    },
+    {
+      "kind": "repo",
+      "ref": "research/active/l10-r0/README.md",
+      "summary": "SC45 metrics, hashes, failure localization, and claim boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Consumed SC45 split: do not tune C, alpha, source roles, factor weights, or thresholds. Next successor needs object and hand localized effect-carrier deltas on a new cohort."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "SC45 evaluated and sealed as mixed sub-gate evidence; preserve global tensor as baseline and require object/hand-local effect deltas on a new cohort."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}
