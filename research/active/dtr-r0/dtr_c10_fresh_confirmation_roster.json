@@ -1,0 +1,414 @@
+{
+  "claim_ceiling": "METADATA_ONLY_FRESH_CONFIRMATION_COHORT_NO_ALGORITHM_RESULT",
+  "contract": {
+    "bounded_event": "CONTACT interval preceded and followed by known non-CONTACT",
+    "future_horizon_s": 3.0,
+    "primary": "wearer-global realized future native OBB union within 0-3 s",
+    "responsibility": "component identities at the earliest realized OBB hit from event onset; diagnostic only",
+    "route_body_radius_m": 0.65,
+    "secondary": "circle-only PROXIMITY"
+  },
+  "dataset": "JRDB public train split",
+  "forbidden": [
+    "changing C9, route thresholds, lifecycle, confidence, or cohort after raw-sensor acquisition",
+    "using these future OBB labels before the C9 prediction artifact is hash sealed",
+    "adding an algorithm-exposed sequence",
+    "treating confirmation as product or safety evidence"
+  ],
+  "schema": "blindassist-dtr-c1-fresh-global-obb-roster-v1",
+  "selected_sequences": [
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "jordan-hall-2019-04-22_0:contact:001",
+          "first_frame": 161,
+          "first_index": 161,
+          "first_time_s": 1555958983.0633328,
+          "last_frame": 224,
+          "last_index": 224,
+          "last_time_s": 1555958987.473628,
+          "onset_first_hit_delta_s": 2.9947972297668457,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:16"
+          ],
+          "sequence": "jordan-hall-2019-04-22_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "jordan-hall-2019-04-22_0:contact:002",
+          "first_frame": 283,
+          "first_index": 283,
+          "first_time_s": 1555958991.5273325,
+          "last_frame": 480,
+          "last_index": 480,
+          "last_time_s": 1555959005.0015566,
+          "onset_first_hit_delta_s": 2.935884475708008,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:1"
+          ],
+          "sequence": "jordan-hall-2019-04-22_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "jordan-hall-2019-04-22_0:contact:003",
+          "first_frame": 590,
+          "first_index": 590,
+          "first_time_s": 1555959012.4525251,
+          "last_frame": 681,
+          "last_index": 681,
+          "last_time_s": 1555959018.6992848,
+          "onset_first_hit_delta_s": 2.997828245162964,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:57"
+          ],
+          "sequence": "jordan-hall-2019-04-22_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "jordan-hall-2019-04-22_0:contact:004",
+          "first_frame": 825,
+          "first_index": 825,
+          "first_time_s": 1555959028.7086167,
+          "last_frame": 1155,
+          "last_index": 1155,
+          "last_time_s": 1555959051.5604107,
+          "onset_first_hit_delta_s": 2.931971311569214,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:71"
+          ],
+          "sequence": "jordan-hall-2019-04-22_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "jordan-hall-2019-04-22_0:contact:005",
+          "first_frame": 1168,
+          "first_index": 1168,
+          "first_time_s": 1555959052.436662,
+          "last_frame": 1316,
+          "last_index": 1316,
+          "last_time_s": 1555959062.7411497,
+          "onset_first_hit_delta_s": 2.9844796657562256,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:114"
+          ],
+          "sequence": "jordan-hall-2019-04-22_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "jordan-hall-2019-04-22_0:contact:006",
+          "first_frame": 1374,
+          "first_index": 1374,
+          "first_time_s": 1555959066.6750677,
+          "last_frame": 1438,
+          "last_index": 1438,
+          "last_time_s": 1555959071.1491866,
+          "onset_first_hit_delta_s": 2.933793067932129,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:89"
+          ],
+          "sequence": "jordan-hall-2019-04-22_0",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 6,
+      "first_frame": 0,
+      "frames": 1524,
+      "known_non_contact_s": 36.31547665596008,
+      "last_frame": 1523,
+      "sequence": "jordan-hall-2019-04-22_0",
+      "timeline_duration_s": 104.93107056617737,
+      "unique_responsible_events": 6
+    },
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "packard-poster-session-2019-03-20_2:contact:001",
+          "first_frame": 49,
+          "first_index": 49,
+          "first_time_s": 1553122434.1973064,
+          "last_frame": 108,
+          "last_index": 108,
+          "last_time_s": 1553122438.250193,
+          "onset_first_hit_delta_s": 2.9903788566589355,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:56"
+          ],
+          "sequence": "packard-poster-session-2019-03-20_2",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "packard-poster-session-2019-03-20_2:contact:002",
+          "first_frame": 111,
+          "first_index": 111,
+          "first_time_s": 1553122438.4639397,
+          "last_frame": 187,
+          "last_index": 187,
+          "last_time_s": 1553122443.8119342,
+          "onset_first_hit_delta_s": 2.9324331283569336,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:57"
+          ],
+          "sequence": "packard-poster-session-2019-03-20_2",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "packard-poster-session-2019-03-20_2:contact:003",
+          "first_frame": 242,
+          "first_index": 242,
+          "first_time_s": 1553122447.7274365,
+          "last_frame": 307,
+          "last_index": 307,
+          "last_time_s": 1553122452.2407331,
+          "onset_first_hit_delta_s": 2.996540069580078,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:60"
+          ],
+          "sequence": "packard-poster-session-2019-03-20_2",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "packard-poster-session-2019-03-20_2:contact:004",
+          "first_frame": 359,
+          "first_index": 359,
+          "first_time_s": 1553122455.7746158,
+          "last_frame": 420,
+          "last_index": 420,
+          "last_time_s": 1553122459.9735575,
+          "onset_first_hit_delta_s": 2.9970970153808594,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:58"
+          ],
+          "sequence": "packard-poster-session-2019-03-20_2",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "packard-poster-session-2019-03-20_2:contact:005",
+          "first_frame": 493,
+          "first_index": 493,
+          "first_time_s": 1553122464.96829,
+          "last_frame": 641,
+          "last_index": 641,
+          "last_time_s": 1553122475.2973526,
+          "onset_first_hit_delta_s": 2.9908411502838135,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:50"
+          ],
+          "sequence": "packard-poster-session-2019-03-20_2",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "packard-poster-session-2019-03-20_2:contact:006",
+          "first_frame": 867,
+          "first_index": 867,
+          "first_time_s": 1553122490.950226,
+          "last_frame": 1052,
+          "last_index": 1052,
+          "last_time_s": 1553122503.7393847,
+          "onset_first_hit_delta_s": 2.988865613937378,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:12"
+          ],
+          "sequence": "packard-poster-session-2019-03-20_2",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "packard-poster-session-2019-03-20_2:contact:007",
+          "first_frame": 1090,
+          "first_index": 1090,
+          "first_time_s": 1553122506.2749972,
+          "last_frame": 1209,
+          "last_index": 1209,
+          "last_time_s": 1553122514.4710505,
+          "onset_first_hit_delta_s": 2.985931396484375,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:60"
+          ],
+          "sequence": "packard-poster-session-2019-03-20_2",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "packard-poster-session-2019-03-20_2:contact:008",
+          "first_frame": 1220,
+          "first_index": 1220,
+          "first_time_s": 1553122515.1945674,
+          "last_frame": 1280,
+          "last_index": 1280,
+          "last_time_s": 1553122519.3279378,
+          "onset_first_hit_delta_s": 2.956542491912842,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:45"
+          ],
+          "sequence": "packard-poster-session-2019-03-20_2",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 8,
+      "first_frame": 0,
+      "frames": 1373,
+      "known_non_contact_s": 37.830199241638184,
+      "last_frame": 1372,
+      "sequence": "packard-poster-session-2019-03-20_2",
+      "timeline_duration_s": 94.92580604553223,
+      "unique_responsible_events": 8
+    },
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "stlc-111-2019-04-19_0:contact:001",
+          "first_frame": 71,
+          "first_index": 71,
+          "first_time_s": 1555701641.7379112,
+          "last_frame": 123,
+          "last_index": 123,
+          "last_time_s": 1555701645.3187833,
+          "onset_first_hit_delta_s": 2.9209811687469482,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:15"
+          ],
+          "sequence": "stlc-111-2019-04-19_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "stlc-111-2019-04-19_0:contact:002",
+          "first_frame": 266,
+          "first_index": 266,
+          "first_time_s": 1555701655.2568743,
+          "last_frame": 336,
+          "last_index": 336,
+          "last_time_s": 1555701660.0541904,
+          "onset_first_hit_delta_s": 2.9408018589019775,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:22"
+          ],
+          "sequence": "stlc-111-2019-04-19_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "stlc-111-2019-04-19_0:contact:003",
+          "first_frame": 853,
+          "first_index": 853,
+          "first_time_s": 1555701695.7141318,
+          "last_frame": 900,
+          "last_index": 900,
+          "last_time_s": 1555701698.8904552,
+          "onset_first_hit_delta_s": 2.971679210662842,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:107"
+          ],
+          "sequence": "stlc-111-2019-04-19_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "stlc-111-2019-04-19_0:contact:004",
+          "first_frame": 904,
+          "first_index": 904,
+          "first_time_s": 1555701699.165846,
+          "last_frame": 981,
+          "last_index": 981,
+          "last_time_s": 1555701704.4274871,
+          "onset_first_hit_delta_s": 2.9189107418060303,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:59"
+          ],
+          "sequence": "stlc-111-2019-04-19_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "stlc-111-2019-04-19_0:contact:005",
+          "first_frame": 1074,
+          "first_index": 1074,
+          "first_time_s": 1555701710.878444,
+          "last_frame": 1130,
+          "last_index": 1130,
+          "last_time_s": 1555701714.7500484,
+          "onset_first_hit_delta_s": 2.9977059364318848,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:83"
+          ],
+          "sequence": "stlc-111-2019-04-19_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "stlc-111-2019-04-19_0:contact:006",
+          "first_frame": 1144,
+          "first_index": 1144,
+          "first_time_s": 1555701715.6775174,
+          "last_frame": 1203,
+          "last_index": 1203,
+          "last_time_s": 1555701719.6718245,
+          "onset_first_hit_delta_s": 2.987438440322876,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:22"
+          ],
+          "sequence": "stlc-111-2019-04-19_0",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 6,
+      "first_frame": 0,
+      "frames": 1737,
+      "known_non_contact_s": 91.81444334983826,
+      "last_frame": 1736,
+      "sequence": "stlc-111-2019-04-19_0",
+      "timeline_duration_s": 119.89888429641724,
+      "unique_responsible_events": 6
+    }
+  ],
+  "selected_totals": {
+    "bounded_contact_events": 20,
+    "frames": 4634,
+    "known_non_contact_s": 165.96011924743652,
+    "sequences": 3,
+    "timeline_duration_s": 319.75576090812683,
+    "unique_responsible_events": 20
+  },
+  "selection_policy": {
+    "algorithm_consumed_sequences_excluded": [
+      "bytes-cafe-2019-02-07_0",
+      "clark-center-2019-02-28_0",
+      "clark-center-2019-02-28_1",
+      "clark-center-intersection-2019-02-28_0",
+      "cubberly-auditorium-2019-04-22_0",
+      "forbes-cafe-2019-01-22_0",
+      "gates-159-group-meeting-2019-04-03_0",
+      "packard-poster-session-2019-03-20_1"
+    ],
+    "candidate_sequences": 19,
+    "combinations_considered": 1159,
+    "gate": {
+      "bounded_contact_events": 20,
+      "known_non_contact_s": 120.0,
+      "unique_responsible_events": 10
+    },
+    "ordering": "minimum sequence cardinality meeting unchanged preferred gate; then minimum total frames; then lexicographic sequence tuple"
+  },
+  "source_authority": {
+    "c1_result": "F:\\ba-data\\blindassist-artifacts-20260805\\evidence\\dtr-c1\\global-obb-cohort-admission\\result.json",
+    "c1_result_sha256": "2f6504f642327811892f71f7d2ff5998d15f73f27272f2b24a09880649f99cd8",
+    "labels_archive_name": "train_labels.zip",
+    "labels_sha256": "6691816ab12a109c1769f25657a0db17fe56164f3bfbf76a2d01c63a73450df1",
+    "timestamps_archive_name": "train_timestamps.zip",
+    "timestamps_sha256": "60b440f4fd69b93a96b84ae07b957c169f8af304106a61b5f297286ed04b2e30"
+  },
+  "status": "DTR_C1_FRESH_GLOBAL_OBB_COHORT_ADMITTED_METADATA_ONLY"
+}
