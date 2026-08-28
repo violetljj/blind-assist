@@ -1700,6 +1700,61 @@ next information source is the four-state LiDAR visibility sidecar frozen in
 known-free clears it and unsensed remains `UNKNOWN`.  Result SHA-256 is
 `2ea585c20029f66d64c2435faa38f997615607058734c419ea6d13f3ba78c505`.
 
+## DTR-C28 visibility-conditioned point memory
+
+C28 added the missing causal ray state rather than changing a route threshold.
+Each remembered point retained its raw endpoint height voxels, and current
+upper/lower LiDAR rays classified those 3-D supports as `HIT`, `KNOWN_FREE`,
+`OCCLUDED`, or `UNSENSED`.  `KNOWN_FREE` cleared the lineage, `UNSENSED` stayed
+unknown, and only `OCCLUDED` could emit bounded old-velocity persistence.  A
+current occupancy `HIT` without motion-consistent PD evidence did not inherit
+the old velocity.
+
+| arm | CONTACT recall | false segments | event F1 | median first lead | induced dropout recovery |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| M1-PDC reference | `12/12` | **21** | **53.33%** | 1.624 s | `25/36` |
+| C28 visibility-conditioned memory | **`12/12`** | 46 | 34.29% | **2.532 s** | `26/36` |
+| R7 recovery reference | `11/12` | 52 | 29.33% | 4.200 s | **`30/36`** |
+
+The route is evaluable: `66,732 / 68,240` absent-lineage observations received
+a causal ray state.  Nevertheless, visibility did not validate motion identity.
+An `OCCLUDED` cell explains why a support is hidden but does not prove its old
+velocity remains correct; repeated motion hits can also refresh static
+pseudo-motion.  C28 therefore preserves `12/12` and earlier lead but adds 25
+false segments for only one dropout recovery.
+
+Accept
+`DTR_C28_VISIBILITY_CONDITIONED_POINT_MEMORY_DEVELOPMENT_GATE_NOT_MET`.  Do not
+tune C28 on the consumed C25 cohort.  Retain the four-state sidecar as an input,
+not as alert authority.  The successor must search the structure that grants
+dense motion authority only under observable uncertainty and current temporal
+motion consistency.  Result SHA-256 is
+`ea3a485cb0f94dfe7eda320e57e1107052f50e5446082ed0646355fc2695bd1f`.
+
+## DTR-C30 confidence + temporal-consistency authority
+
+C30 expanded the truth-blind authority trace with all current M1-PD reciprocal
+residual cells, then used a frozen 16-iteration SkyDiscover AdaEvolve search to
+discover point-wise motion authority.  The retained rule requires supported
+direct flow, displacement/velocity temporal consistency, and compatible local
+velocity peers or an observed lineage.  Occupancy visibility alone never grants
+a motion vector.
+
+| arm | CONTACT recall | false segments | event F1 | median first lead | induced dropout recovery |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| M1-PDC baseline | `12/12` | 21 | 53.33% | 1.624 s | `25/36` |
+| C30 retained consensus authority | **`12/12`** | **20** | **54.55%** | **1.734 s** | `29/36` |
+| C30 best recovery Pareto arm | `12/12` | 29 | 45.28% | 2.869 s | **`33/36`** |
+
+The retained candidate preserves every event with no later alert, removes one
+false segment, improves F1 and lead, and recovers four additional dropout
+samples.  It nevertheless misses the frozen `>=30/36` gate by one sample.
+Accept
+`DTR_C30_CONFIDENCE_TEMPORAL_CONSENSUS_DEVELOPMENT_GATE_NOT_MET`; retain this
+candidate as the representation baseline, but do not tune its constants on
+C25.  The next falsifier is a causal short-window component state that can add
+the one missing recovery without adding a false segment.
+
 ## Claim ceiling
 
 These are retrospective public-real privileged algorithm ceilings. THÖR uses

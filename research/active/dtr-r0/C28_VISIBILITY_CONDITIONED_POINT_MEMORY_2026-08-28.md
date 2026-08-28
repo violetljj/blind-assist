@@ -78,6 +78,42 @@ cover enough remembered support to distinguish these states, record
 `NOT_EVALUABLE`; do not sweep angular bins, voxel size, grace, route, lifecycle,
 or age.
 
+## Result
+
+The corrected fixed candidate is evaluable but does not meet the gate:
+
+| arm | CONTACT recall | false segments | event F1 | median first lead | induced dropout recovery |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| M1-PDC reference | `12/12` | **21** | **53.33%** | 1.624 s | `25/36` |
+| C28 visibility-conditioned memory | **`12/12`** | 46 | 34.29% | **2.532 s** | `26/36` |
+| R7 recovery reference | `11/12` | 52 | 29.33% | 4.200 s | **`30/36`** |
+
+Across absent lineage observations, C28 classified `46,202` as `HIT`, `6,986`
+as `KNOWN_FREE`, `13,544` as `OCCLUDED`, and `1,508` as `UNSENSED`.  Thus raw
+rays supplied a causal state for `66,732 / 68,240` classified absences; lack of
+ray coverage is not the failure.  All 12 events remain no later than M1-PDC,
+but occlusion-conditioned old-velocity propagation and PD-hit refresh create 25
+additional false segments while gaining only one dropout recovery.
+
+The decisive distinction is now sharper: `HIT` proves occupancy, not mover
+identity; `OCCLUDED` explains missing visibility, not velocity correctness.
+Visibility cause is necessary state, but it cannot by itself authorize an old
+motion vector.  The next candidate must grant dense residual alert authority
+from motion-consistent evidence under an observable uncertainty state, not from
+occupancy persistence alone.
+
+Accept
+`DTR_C28_VISIBILITY_CONDITIONED_POINT_MEMORY_DEVELOPMENT_GATE_NOT_MET`.  Do not
+tune the four-state aggregation, voxel, memory age, route, or lifecycle on C25.
+Result SHA-256 is
+`ea3a485cb0f94dfe7eda320e57e1107052f50e5446082ed0646355fc2695bd1f`;
+sealed predictions SHA-256 is
+`fc36632ce1a0493164b6d19b54700532832d5a915f3ea79697ec12fd91f2d18d`.
+The representative ray-box workload selected real CUDA (`3.950 ms` versus
+CPU `8.029 ms`); sparse reciprocal lineage matching selected CPU with the
+explicit measured reason `CPU_FASTER_MEASURED` (`0.430 ms` versus CUDA
+`0.650 ms`).
+
 ## Evidence boundary
 
 This is a public-real consumed-cohort Development successor.  Future OBB truth

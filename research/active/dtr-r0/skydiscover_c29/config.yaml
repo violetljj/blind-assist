@@ -1,0 +1,75 @@
+language: python
+max_iterations: 16
+checkpoint_interval: 4
+random_seed: 42
+max_parallel_iterations: 1
+diff_based_generation: true
+
+llm:
+  models:
+    - name: "codex-cli/gpt-5.6-sol"
+      weight: 1.0
+  reasoning_effort: medium
+  max_tokens: 12000
+  timeout: 900
+  retries: 1
+  retry_delay: 5
+  codex_executable: "E:/codex-tools/bin/codex.exe"
+
+search:
+  type: adaevolve
+  num_context_programs: 4
+  database:
+    population_size: 16
+    num_islands: 2
+    pareto_objectives:
+      - contact_recall
+      - dropout_recovery
+      - false_alert_segments
+      - median_first_alert_lead_s
+      - event_f1
+    higher_is_better:
+      contact_recall: true
+      dropout_recovery: true
+      false_alert_segments: false
+      median_first_alert_lead_s: true
+      event_f1: true
+    fitness_key: combined_score
+    pareto_objectives_weight: 0.4
+    use_dynamic_islands: false
+    use_paradigm_breakthrough: true
+
+prompt:
+  system_message: |-
+    Discover a causal dense-motion authority rule for BlindAssist obstacle risk.
+    Improve only select_extension inside the C30 EVOLVE-BLOCK and preserve the
+    frozen interface. M1-PDC is already the baseline. Select residual point rows
+    only when current/past motion consistency, visibility cause, confidence,
+    geometry, or local consensus justifies granting them alert authority.
+    Exact useful status names are RAW_PD_RESIDUAL, OBSERVED_PD_HIT,
+    VISIBILITY_OCCLUDED, VISIBILITY_HIT, VISIBILITY_KNOWN_FREE, and
+    VISIBILITY_UNSENSED. RAW_PD_RESIDUAL is current reciprocal raw-point direct
+    velocity and exposes q, flow_support, source_point_count, local position and
+    velocity. Each row also exposes exact vector aliases position=(forward,left)
+    and velocity=(vf,vl), plus speed_mps, quality, motion_support, and
+    support_count. The legacy h field means memory_decay and w means
+    fusion_weight; they are not geometry extents. Prefer relative local
+    velocity/geometry consensus over arbitrary
+    absolute threshold sweeps. Occupancy HIT alone is not mover identity;
+    OCCLUDED alone is not velocity correctness; UNKNOWN is not CLEAR. Seek
+    Pareto improvement in 12/12 contact
+    recall, at least 30/36 induced dropout recovery, no more than 21 false
+    segments, and no later event alert. Do not use files, labels, future truth,
+    sequence identity, frame indices, timestamps, fixed answer tables, or route
+    threshold changes.
+
+evaluator:
+  timeout: 120
+  max_retries: 0
+  cascade_evaluation: false
+  inject_evaluator_context: false
+
+monitor:
+  enabled: false
+
+max_solution_length: 30000

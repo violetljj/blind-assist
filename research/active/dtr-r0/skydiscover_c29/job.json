@@ -1,0 +1,10 @@
+{
+  "schema": "skydiscover-assist-job-v1",
+  "consumer": "blindassist",
+  "working_directory": "../../../..",
+  "initial_program": "initial_program.py",
+  "evaluator": "evaluator.py",
+  "config": "config.yaml",
+  "output": "../../../../artifacts.local/evidence/dtr-c30/skydiscover-raw-residual-authority-search-v2",
+  "evaluator_timeout_s": 110
+}
