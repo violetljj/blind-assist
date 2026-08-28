@@ -1,6 +1,7 @@
 # L10-R0 Goal-Lock Copilot
 
-Status: `ACTIVE / L10-SC14 CAUSAL MICRO-MOTION ACTION BELIEF`
+Status: `ACTIVE / L10-SC14 CAUSAL MICRO-MOTION ACTION BELIEF /
+CORE SC1W-SC2 SEEK-GUIDE-REACQUIRE CONTROLLER`
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -253,6 +254,23 @@ leaving identity authority unchanged. On video1+video10 it removed all 124
 source STOP frames and all 24 target-present false-NONE decisions; every
 non-navigation frame received an action. These are action decisions, not proof
 that executing the motion causes a better next view.
+
+This SC1W/SC2 authority split now runs in `core:assist` through
+`GoalCopilotController.kt`. The controller admits only goal/session/entity/
+current-frame-bound evidence: fresh semantics may acquire, navigate, and
+reacquire; continuity-only evidence may request at most two better views;
+missing or non-exhaustive proposals become `UNKNOWN + SWEEP/SCAN`, never
+terminal absence. LOST requires two later fresh semantic hits before guidance
+resumes. It also owns the product handoff reducer: missing identity or endpoint
+evidence revokes an earlier `HANDOFF_READY`, preventing stale confirmation.
+
+The focused JVM sequence check covers search, guide, bounded coast, two-hit
+reacquisition, endpoint admission, readiness revocation, and explicit user
+completion. This ports the already measured Development representation effect
+(`124 -> 0` STOP frames, `24 -> 0` target-present false-NONE frames, 100%
+non-navigation action coverage, `30/30` end-to-end episodes); it is not a new
+camera-action experiment and still does not establish causal readability gain,
+metric arrival, product benefit, or safety.
 
 The semantic-source successor then evolved through three bounded versions:
 

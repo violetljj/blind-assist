@@ -1,7 +1,8 @@
 # Current decisions: L10-R0 active; Dynamic Travel Risk R2 established
 
 Status: `L10_R0_ACTIVE / SC14_CAUSAL_MICRO_MOTION_ACTION_BELIEF_MECHANICS_SIGNAL /
-SC14_CORE_CAUSAL_ACTION_HANDOFF_GUARD_IMPLEMENTED` and
+SC14_CORE_CAUSAL_ACTION_HANDOFF_GUARD_IMPLEMENTED /
+L10_CORE_SEEK_GUIDE_REACQUIRE_CONTROLLER_IMPLEMENTED` and
 `DTR_R2_PUBLIC_REAL_PRIVILEGED_CEILINGS_ESTABLISHED /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
@@ -81,6 +82,17 @@ grounding, orientation, and reachability plus a `LOCKED` causal action model.
 Explicit user confirmation remains the only completion transition. This is a
 runtime contract implementation, not evidence that a live RGB-D source or any
 of those endpoint conditions currently succeeds.
+
+The earlier SC1W/SC2 semantic-carrier and opportunity policy is now also in
+`core:assist`. Fresh semantic evidence alone can acquire, guide, or reacquire;
+continuity-only evidence is limited to two observation requests, and LOST
+requires two later fresh hits. Non-exhaustive proposal failure maps to
+`UNKNOWN + SWEEP/SCAN`, not `NONE/STOP`. Any identity loss or missing current
+endpoint evidence revokes `HANDOFF_READY` back to `Approach`. This runtime port
+inherits the existing Development representation result (`124 -> 0` STOP,
+`24 -> 0` target-present false-NONE, 100% non-navigation action coverage,
+`30/30` end-to-end episodes) but adds no executed-view causality, live-camera,
+metric-arrival, product, user-benefit, or safety evidence.
 
 ## DTR-R2 decision
 

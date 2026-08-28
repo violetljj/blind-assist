@@ -214,6 +214,16 @@ position, visibility, grounding, orientation, and reachability to be `READY`;
 completion still requires explicit user confirmation. This closes a software
 bypass but creates no new live-source, arrival, product, or safety evidence.
 
+The front half of the loop is now a core runtime contract as well. The ported
+SC1W/SC2 controller separates fresh semantic identity, bounded appearance
+continuity, and carrier bearing; emits explicit seek/observe/guide actions;
+requires two fresh hits after LOST; and revokes stale handoff readiness. Its
+source Development artifact records `124 -> 0` terminal STOP frames,
+`24 -> 0` target-present false-NONE frames, 100% action coverage on
+non-navigation frames, and `30/30` end-to-end replay episodes. Those are replay
+decision metrics, not evidence that a physical camera/user action improves the
+next observation.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

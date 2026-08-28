@@ -62,6 +62,11 @@ sealed interface GoalHandoffEvent {
         val readiness: GoalHandoffReadinessDecision
     ) : GoalHandoffEvent
 
+    /** Revokes a previously ready endpoint when its current evidence is lost or expires. */
+    data class ReadinessRevoked(
+        val reason: String
+    ) : GoalHandoffEvent
+
     data class UserConfirmed(
         val timestamp: Long,
         val modality: ConfirmationModality
@@ -184,6 +189,14 @@ object GoalHandoffReducer {
                         state = GoalHandoffState.CompletedByUser(receipt),
                         completionReceipt = receipt
                     )
+                }
+            }
+
+            current is GoalHandoffState.HandoffReady && event is GoalHandoffEvent.ReadinessRevoked -> {
+                if (event.reason.isBlank()) {
+                    rejected(current, "HANDOFF_READY revocation requires a reason")
+                } else {
+                    accepted(GoalHandoffState.Approach(current.goalId, current.sessionId))
                 }
             }
 

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "4630b6f55238ac5cd44f36610fffaf10ea8145c5141caea84fc321881dd1557b",
+  "source_fingerprint": "bf58b5f84c3138146cdf6b0f57b7fccede2ca9dfa463300b930822183a41ae0d",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 223,
@@ -1841,11 +1841,14 @@
       "limitations": "云台室内机器人、静态文字；没有目标语义绑定、身体靠近、到达或交接。",
       "signatures": [],
       "layer_scores": {
-        "evaluation_evidence": 3,
-        "handoff_completion": 6,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 9,
+        "handoff_completion": 9,
         "identity_binding": 3,
-        "observation_perception": 3,
-        "source_coverage": 3
+        "observation_perception": 6,
+        "runtime_infrastructure": 3,
+        "source_coverage": 9,
+        "temporal_belief": 3
       },
       "routes": [
         "ten-meter-copilot"
@@ -1854,25 +1857,40 @@
         {
           "id": "use-l10-r0-l10-9",
           "route": "ten-meter-copilot",
-          "use_state": "candidate",
-          "reproduction_status": "not_attempted",
-          "verdict": "not_run",
-          "project_application": "定义 TEXT_TOO_SMALL -> CENTER / ZOOM 的确定性补观测基线，替代无差别 expected-information-gain 扫描。",
-          "expected_effect": "定义 TEXT_TOO_SMALL -> CENTER / ZOOM 的确定性补观测基线，替代无差别 expected-information-gain 扫描。",
-          "observed_effect": "",
-          "metrics": [],
-          "claim_boundary": "云台室内机器人、静态文字；没有目标语义绑定、身体靠近、到达或交接。",
+          "use_state": "active",
+          "reproduction_status": "mechanics_only",
+          "verdict": "positive",
+          "project_application": "已落入 core:assist 的目标控制器：按证据缺口选择 SWEEP/SCAN/PAN/APPROACH/SIDESTEP/HOLD，且只有新鲜语义可锁定、导航和重捕获。",
+          "expected_effect": "消除 OCR 非命中导致的错误 STOP/假 NONE，为每个不可导航帧产生有界且可解释的补观测动作，同时阻止连续性证据越权。",
+          "observed_effect": "Terminal STOP frames fell from 124 to 0, target-present false-NONE frames from 24 to 0, every non-navigation frame received an explicit action, and all 30 episodes retained end-to-end acquisition plus reacquisition.",
+          "metrics": [
+            "source_stop_frames=124; normalized_stop_frames=0",
+            "source_false_none_target_present_frames=24; normalized_false_none_target_present_frames=0",
+            "explicit_non_navigation_action_coverage=1.0",
+            "end_to_end_successful_episodes=30/30"
+          ],
+          "claim_boundary": "Development replay representation and runtime contract evidence only. The replay did not execute camera or body actions, so it does not establish causal readability gain, natural-distribution performance, metric arrival, product benefit, user benefit, or safety.",
           "evidence": [
             {
               "kind": "git",
               "ref": "1aec08abfc193fc5d868fb1e8274613886751f00:research/active/l10-r0/LITERATURE_RESERVE_20_2026-08-27.md",
               "summary": "Legacy source for l10:9; imported without changing its recorded evidence boundary."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r5/sc2-opportunity-active-search-v0/dev-result.json",
+              "summary": "SC2 Development representation result, SHA-256 fa8811d12775c19facd612b86d06476e8d8a7641b4b7e37463e2846579ef2180."
+            },
+            {
+              "kind": "repo",
+              "ref": "core/assist/src/main/java/com/linnan/blindassist/goal/GoalCopilotController.kt",
+              "summary": "Runtime seek, bounded observation, guide, two-hit reacquisition, handoff revocation, and explicit completion controller."
             }
           ],
           "updated_at": "2026-08-28"
         }
       ],
-      "search_text": "Active text perception for mobile robots 宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。 l10 literature-reserve l10-r0 Active text perception for mobile robots — l10:9 route mechanism 宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。 云台室内机器人、静态文字；没有目标语义绑定、身体靠近、到达或交接。 ten-meter-copilot 定义 TEXT_TOO_SMALL -> CENTER / ZOOM 的确定性补观测基线，替代无差别 expected-information-gain 扫描。 定义 TEXT_TOO_SMALL -> CENTER / ZOOM 的确定性补观测基线，替代无差别 expected-information-gain 扫描。 云台室内机器人、静态文字；没有目标语义绑定、身体靠近、到达或交接。"
+      "search_text": "Active text perception for mobile robots 宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。 l10 literature-reserve l10-r0 Active text perception for mobile robots — l10:9 route mechanism 宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。 云台室内机器人、静态文字；没有目标语义绑定、身体靠近、到达或交接。 ten-meter-copilot 已落入 core:assist 的目标控制器：按证据缺口选择 SWEEP/SCAN/PAN/APPROACH/SIDESTEP/HOLD，且只有新鲜语义可锁定、导航和重捕获。 消除 OCR 非命中导致的错误 STOP/假 NONE，为每个不可导航帧产生有界且可解释的补观测动作，同时阻止连续性证据越权。 Terminal STOP frames fell from 124 to 0, target-present false-NONE frames from 24 to 0, every non-navigation frame received an explicit action, and all 30 episodes retained end-to-end acquisition plus reacquisition. source_stop_frames=124; normalized_stop_frames=0 source_false_none_target_present_frames=24; normalized_false_none_target_present_frames=0 explicit_non_navigation_action_coverage=1.0 end_to_end_successful_episodes=30/30 Development replay representation and runtime contract evidence only. The replay did not execute camera or body actions, so it does not establish causal readability gain, natural-distribution performance, metric arrival, product benefit, user benefit, or safety."
     },
     {
       "id": "paper-agninav#hftf-h01",
