@@ -405,6 +405,26 @@ new outcome-authoritative cohort. No online search, identity, localization,
 navigation, physical execution, arrival, handoff, product, or safety claim
 follows.
 
+SC44 supplied that new outcome authority from the public ungated RoboPulse hard
+subset. Ninety rows were frozen by source-stratified ID hash across nine real and
+simulated manipulation sources; each row includes task-start/task-end references,
+BEFORE/AFTER front and wrist views, and signed progress truth. The Goal-Anchored
+Factor Reducer exposed effect carrier, actuator/contact, spatial orientation,
+conflict integrity, and handoff distance as separate Qwen2-VL-2B label margins,
+then required positive conflict integrity and at least three positive factors.
+The direct baseline scored `43/90` with `49.90%` balanced accuracy. The reducer
+also scored `43/90` with `50.00%` balanced accuracy and one regression, so record
+`SC44_GOAL_ANCHORED_FACTOR_REDUCER_GATE_NOT_MET`.
+
+The factor audit is the decision: every one of the five margins was positive on
+all `90/90` rows, and the successor therefore predicted progress on `90/90`.
+Explicit factor names do not make frozen VLM logits into grounded state
+variables. Do not tune prompts, tokens, thresholds, weights, or this cohort.
+The next legal successor must learn a content-sensitive differential factor
+representation from disjoint supervision and expose calibrated `UNKNOWN` before
+the same deterministic reducer; it must use a new frozen evaluation cohort. No
+demo or product integration follows.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

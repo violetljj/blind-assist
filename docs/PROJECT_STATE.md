@@ -435,6 +435,17 @@ visibly ground actuator, effect carrier, before state, after state, and conflict
 before deterministic completion reduction. No demo or product integration is
 authorized by SC42/SC43.
 
+SC44 admitted the public ungated RoboPulse hard subset as a genuinely new signed
+progress source. A source-stratified hash froze 90 rows across nine manipulation
+sources, each with start/end task anchors and BEFORE/AFTER front plus wrist views.
+The new deterministic reducer consumed five explicit factor margins, but all five
+Qwen2-VL factors were positive on all `90/90` rows. Baseline balanced accuracy was
+`49.90%`; the reducer was `50.00%` and predicted progress on every row. The
+terminal is `SC44_GOAL_ANCHORED_FACTOR_REDUCER_GATE_NOT_MET`. Prompt-exposed
+factors are now closed; the legal successor needs a learned differential factor
+representation, calibrated `UNKNOWN`, disjoint supervision, and a new frozen
+evaluation cohort. No demo or product integration is authorized by SC44.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

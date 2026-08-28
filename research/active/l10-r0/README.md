@@ -897,6 +897,51 @@ and `cab9d77a240508ba152eaadb6ea4b7ca76470a890a7006c60fa68d838e4926ee`.
 The real three-prompt workload selected the verified RTX 5060 GPU at 3.96 s
 versus 71.67 s on CPU, with exact CUDA execution and no fallback.
 
+### SC44: named factors still collapse unless the representation learns them
+
+SC44 opened the public ungated
+[RoboPulse hard subset](https://huggingface.co/datasets/yuheng2000/RoboPulse),
+whose 1,800 rows provide a task-start reference, completed-task reference,
+BEFORE and AFTER front/left-wrist/right-wrist views, and a signed physical
+progress label. A source-stratified SHA-256 selection froze ten rows from each
+of nine manipulation sources (`90` total) without consulting conversations or
+Hop labels. This is fresh progress/regression authority rather than OSCaR's
+temporal endpoint or SWITCH's four-choice label roster.
+
+The Goal-Anchored Factor Reducer queried five separately named physical margins:
+effect carrier, actuator/contact, spatial orientation, conflict integrity, and
+handoff distance. A deterministic reducer returned progress only when conflict
+integrity was positive and at least three of five factors were positive.
+
+| selector | correct | balanced accuracy |
+| --- | ---: | ---: |
+| direct binary Qwen2-VL-2B | 43/90 | 49.90% |
+| goal-anchored factor reducer | 43/90 | 50.00% |
+
+The result is `SC44_GOAL_ANCHORED_FACTOR_REDUCER_GATE_NOT_MET`. Only one
+baseline-correct row regressed, but this apparent stability has no value: every
+factor margin was positive for all `90/90` rows, so the reducer predicted
+progress on all 90. Margin ranges never crossed zero (effect carrier
+`0.72..2.70`, actuator/contact `0.69..2.20`, spatial/orientation `0.81..2.98`,
+conflict/integrity `0.64..1.62`, handoff distance `0.55..2.08`). The direct
+baseline was nearly as collapsed at 88 progress predictions and two regression
+predictions.
+
+This closes prompt-only factor exposure, not factorized state modeling. Do not
+change prompt wording, label tokens, factor thresholds, reducer weights, or the
+opened cohort. A legal successor must learn content-sensitive before/after
+factor differences from disjoint supervision, expose calibrated `UNKNOWN`, and
+freeze a new evaluation cohort before outcome access. The protocol, backend,
+provider, and result hashes are
+`30672f0cdbb963cffe0a79385295df16e1e0f4a2a67c9d3cd97e27f22b187980`,
+`d8bf4fb4caac66cd8e780688c82b9b9fceb4387c2717f0120604e91e2fa955e7`,
+`82cf70a7b9f05ff0dd04e7b55afd93478561096179be6b9e30accfd47845b493`,
+and `9be2c7cf87da89d3730b0ac6412de59e7ec4e39eb1878be045e867d75b92c6b7`.
+The representative launch selected the verified RTX 5060 GPU at 8.73 s versus
+53.40 s on CPU, with exact CUDA execution and no fallback. No target identity,
+navigation, physical execution, user arrival, explicit confirmation, product,
+or safety claim follows.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

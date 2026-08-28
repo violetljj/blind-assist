@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC44-FRESH-ROBOPULSE-GOAL-ANCHORED-FACTOR-REDUCER",
+  "source": {
+    "dataset": "yuheng2000/RoboPulse",
+    "repository_url": "https://huggingface.co/datasets/yuheng2000/RoboPulse",
+    "revision": "c3b2f7c6a692e8dd157d9f8416d4b89723dae497",
+    "annotation_file": "RoboPulse.json",
+    "annotation_size_bytes": 7098083,
+    "annotation_sha256": "db3b862d004e5c46aa24bdc3241bd7cf662ce7469c9fc97c13064ff57fb39ec0",
+    "media_archive": "images.zip",
+    "media_archive_size_bytes": 357529220,
+    "media_archive_sha256": "7a85dba087e2762d347a0a11a8694acd66b6ca8698ce151f3311e34645bbcb61",
+    "expected_rows": 1800,
+    "expected_unique_images": 13059,
+    "expected_sources": 9,
+    "license": "not specified by the dataset card; internal research evidence only",
+    "source_authority": "Public ungated RoboPulse hard subset with task start/end reference frames, before/after front and wrist views, and signed relative-progress labels"
+  },
+  "cohort": {
+    "selection": "Within each image_dataset, sort by sha256(id) then id and take the first 10 rows.",
+    "rows_per_source": 10,
+    "expected_rows": 90,
+    "truth_independence": "Selection uses only id and image_dataset; conversations, hop_value, hop_absolute_value, and hop_category are forbidden until the provider is sealed."
+  },
+  "model": {
+    "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+    "revision": "895c3a49bc3fa70a340399125c650a463535e71c",
+    "framework": "transformers",
+    "cpu_dtype": "float32",
+    "cuda_dtype": "float16",
+    "minimum_pixels": 50176,
+    "maximum_pixels": 100352,
+    "label_tokens": {
+      "progress": "1",
+      "regression": "2"
+    }
+  },
+  "frozen_algorithm": {
+    "name": "Goal-Anchored Factor Reducer v1",
+    "image_order": "Reference start, reference completed end, BEFORE front/left-wrist/right-wrist, AFTER front/left-wrist/right-wrist.",
+    "baseline_prompt": "The eight images are: reference task start, reference task completed end, BEFORE front/left-wrist/right-wrist, then AFTER front/left-wrist/right-wrist. Task: {task}. Is AFTER physically closer to completing the task than BEFORE? Use all views. Reply with exactly one digit: 1 for progress, 2 for regression. Answer:",
+    "factor_prompt_template": "The eight images are: reference task start, reference task completed end, BEFORE front/left-wrist/right-wrist, then AFTER front/left-wrist/right-wrist. Task: {task}. Judge only this factor: {factor}. Compare AFTER against BEFORE and the completed reference. Reply with exactly one digit: 1 if this factor supports real progress, 2 if it supports regression or failure. Answer:",
+    "factors": {
+      "effect_carrier": "The task-relevant object or physical effect carrier is in the intended state, or visibly closer to it.",
+      "actuator_contact": "The hand or gripper engagement, contact, grasp, or release is more correct and useful for this task.",
+      "spatial_orientation": "The task-relevant object position, pose, orientation, and approach geometry are closer to the completed reference.",
+      "conflict_integrity": "There is less evidence of wrong-object action, collision, slippage, instability, damage, or cross-view contradiction.",
+      "handoff_distance": "Fewer physical actions remain before a competent user could perform or confirm the final handoff."
+    },
+    "factor_margin": "For each factor, log_softmax(progress token, regression token); margin is progress minus regression log probability.",
+    "baseline": "Choose the larger frozen direct-prompt label-token log probability.",
+    "successor": "Return progress only when conflict_integrity margin is strictly positive and at least three of five factor margins are strictly positive; otherwise return regression.",
+    "tie_break": "A zero label margin is regression; direct baseline ties are regression.",
+    "abstention": "UNKNOWN and fail closed when source identity, cohort size, eight-image roster, media, model revision, single-token labels, provider, or actual device is invalid.",
+    "truth_firewall": "Inference rows contain only id, task, image paths, and image_dataset. conversations and all hop fields are discarded before cohort selection, input construction, backend selection, or inference. Truth is parsed again only after the provider file is sealed."
+  },
+  "frozen_gate": {
+    "minimum_evaluable_rows": 90,
+    "minimum_successor_balanced_accuracy": 0.6,
+    "minimum_absolute_balanced_accuracy_gain": 0.05,
+    "maximum_baseline_correct_to_successor_wrong": 10
+  },
+  "decision_labels": {
+    "source_admitted": "SC44_ROBOPULSE_PROGRESS_SOURCE_ADMITTED",
+    "pass": "SC44_GOAL_ANCHORED_FACTOR_REDUCER_FRESH_SIGNAL",
+    "fail": "SC44_GOAL_ANCHORED_FACTOR_REDUCER_GATE_NOT_MET",
+    "not_evaluable": "SC44_NOT_EVALUABLE_INVALID_OR_INSUFFICIENT_ROWS"
+  },
+  "forbidden_after_outcome": [
+    "change source, cohort, model, image resolution, prompts, factors, reducer, labels, tie break, or gate",
+    "calibrate factor thresholds or weights on the opened cohort",
+    "drop sources, labels, difficult rows, parse failures, or errors",
+    "claim target identity, online navigation, reachability, user arrival, physical execution, product benefit, or safety"
+  ],
+  "claim_boundary": "One fresh public multi-source mechanism test of whether explicit goal-anchored physical factors plus a deterministic conflict-aware reducer improve signed task-progress recognition over a direct binary VLM prompt. Benchmark start/end references, before/after views, and labels are provided. It does not establish BlindAssist target identity, online search, localization, navigation, physical execution, reachability, user arrival, explicit user confirmation, product benefit, or safety."
+}
