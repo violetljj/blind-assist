@@ -1,6 +1,6 @@
 # L10-R0 Goal-Lock Copilot
 
-Status: `ACTIVE / L10-SC4 GOAL BELIEF ROUTING + OPPORTUNITY-CORRECT ACTIVE SEARCH`
+Status: `ACTIVE / L10-SC8 INSTANCE-BOUND TASK-RELATIONAL FUNCTIONAL PARTS`
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -407,6 +407,46 @@ EgoTracks source and freeze train/val cohorts once credentials are provisioned.
 Protocol: `L10_SC7_GENERAL_GOAL_LOCKED_PROTOCOL.md`. Implementations:
 `general_goal_locked_belief.py`, `egotracks_sc7_source_audit.py`, and
 `prepare_egotracks_sc7.ps1`.
+
+## L10-SC8: instance-bound task-relational functional parts
+
+SC8 advances a different claim layer while SC7 remains credential-blocked. It
+does not ask whether L10 can keep following the right parent instance; it asks
+whether an already-authorized parent can be converted into the task-specific
+handle or interaction part without using the parent box center as a handoff.
+
+`functional_part_binding.py` keeps the parent binding opaque and immutable. It
+uses only the public task description and unlabeled functional-part proposal
+centroids, returning `UNIQUE`, `SET_VALUED`, `AMBIGUOUS`, or `NOT_EVALUABLE`.
+Ordinal relations such as `top`, `second`, and `bottom` select a horizontal part
+row; appearance, affordance labels, and evaluator target IDs are not inputs.
+Multiple functionally legal handles remain a set for downstream geometry rather
+than being collapsed into an arbitrary completion point.
+
+The first SceneFun3D Development canary freezes one real scene, ARKit parent
+boxes, evaluator-only description-to-part truth, and GT functional masks as the
+proposal source. Six of ten task descriptions have a unique parent binding and
+are evaluable; four lack an ARKit parent box and remain `NOT_EVALUABLE`.
+
+| Arm | legal task commit | mean target-set recall | wrong parts |
+|---|---:|---:|---:|
+| nearest part to parent center | 4/6 (66.67%) | 50.0% | 2 |
+| **SC8 task-relational binding** | **6/6 (100%)** | **100%** | **0** |
+
+The parent center itself lies more than the fixed 2 cm functional-contact
+tolerance from the requested part in all 6/6 tasks. SC8 crosses the frozen
++25 pp legal-commit gate with zero cross-parent identity violations, yielding
+`SC8_TASK_RELATIONAL_FUNCTIONAL_BINDING_DEVELOPMENT_SIGNAL`.
+
+This is proposal-conditional part-selection evidence, not an RGB functional-
+part detector. It does not establish reachability, orientation, approach pose,
+arrival, completion, product benefit, user benefit, or safety. The next source
+increment is a task-conditioned multi-view RGB/RGB-D part proposer behind this
+frozen binding interface; parent-box or box-scale completion must not return.
+
+Implementation: `scenefun3d_functional_handoff_ceiling.py`. Evidence:
+`artifacts.local/evidence/l10-r10/sc8-scenefun3d-functional-binding-v0/result.json`,
+SHA-256 `db9068a4d9a01ed6af73ce81853f98ec6210c7e5b80526fdcd68cc2b758c6d7f`.
 
 ## Public text-source admission
 

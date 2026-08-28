@@ -1,6 +1,6 @@
 # Current decisions: L10-R0 active; Dynamic Travel Risk R2 established
 
-Status: `L10_R0_ACTIVE / CONTROLLED_MECHANISM_POSITIVE` and
+Status: `L10_R0_ACTIVE / SC8_TASK_RELATIONAL_FUNCTIONAL_BINDING_DEVELOPMENT_SIGNAL` and
 `DTR_R2_PUBLIC_REAL_PRIVILEGED_CEILINGS_ESTABLISHED /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
@@ -17,6 +17,23 @@ and `0/50` target-absent false completions. A second seed reproduced 88.5%
 completion, 82.4% reacquisition, 91.9% direction accuracy, 1.8% wrong-lock
 frames, and another `0/50` false completions. These remain controller/mechanics
 results, not real-camera or product evidence.
+
+The current L10 increment is SC8 functional grounding. On one SceneFun3D
+Development scene, six task descriptions had evaluator-authoritative functional
+parts inside one ARKit parent instance. Parent-center nearest-part selection was
+legal on `4/6` tasks with 50% mean target-set recall and two wrong parts. The
+task-relational selector used only the public task text, opaque parent binding,
+and unlabeled proposal geometry; it reached `6/6`, 100%, and zero respectively,
+with zero cross-parent identity violations. Four other descriptions remain
+`NOT_EVALUABLE_PARENT_BINDING` rather than negative.
+
+Accept `SC8_TASK_RELATIONAL_FUNCTIONAL_BINDING_DEVELOPMENT_SIGNAL` as evidence
+that a hierarchical `exact instance -> task functional part set` representation
+can remove this named parent-box failure. Do not promote it to RGB part
+generation, reachability, orientation, approach, arrival, completion, product,
+user-benefit, or safety evidence. The next L10 algorithm source is a
+task-conditioned multi-view RGB/RGB-D part proposer behind the frozen SC8
+interface; do not restore parent-box center or visual scale as completion truth.
 
 ## DTR-R2 decision
 

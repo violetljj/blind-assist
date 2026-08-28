@@ -2,7 +2,7 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "af3802f6835a325511491a6706dcab773c2001d03bda4485213aba3226b604f2",
+  "source_fingerprint": "2df1803745d75d554649ac4ca0301a87d6b9c8a38004f3a0c957363fb567c47c",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 223,
@@ -1401,11 +1401,13 @@
         "父对象框"
       ],
       "layer_scores": {
-        "authority_truth": 6,
-        "evaluation_evidence": 3,
+        "authority_truth": 3,
+        "evaluation_evidence": 6,
         "functional_grounding": 20,
+        "geometry_motion": 6,
         "handoff_completion": 12,
-        "identity_binding": 15,
+        "identity_binding": 18,
+        "interaction_readiness": 3,
         "source_coverage": 9
       },
       "routes": [
@@ -1415,25 +1417,36 @@
         {
           "id": "use-ten-meter-copilot-scenefun3d-2024",
           "route": "ten-meter-copilot",
-          "use_state": "candidate",
-          "reproduction_status": "not_attempted",
-          "verdict": "not_run",
+          "use_state": "active",
+          "reproduction_status": "partial",
+          "verdict": "positive",
           "project_application": "作为 L10 功能落点候选：先绑定正确实例，再在实例内部定位门把手、按钮、座位接触面等真正执行功能的区域。",
           "expected_effect": "在实例身份正确但功能部件错误的故障上，提高 functional-element 命中率并降低 parent-box false handoff。",
-          "observed_effect": "",
-          "metrics": [],
-          "claim_boundary": "SceneFun3D 的公开标注与基准只证明其任务定义和数据可用性；未在 BlindAssist 复现，不能推出手机端、开放世界、导航完成、用户收益或安全能力。",
+          "observed_effect": "SC8 task-relational functional binding improved legal commits from 4/6 to 6/6, mean target-set recall from 0.50 to 1.00, and wrong parts from 2 to 0; parent centers were false handoff points in 6/6 evaluable tasks.",
+          "metrics": [
+            "evaluable_tasks=6/10 descriptions; 4 NOT_EVALUABLE_PARENT_BINDING",
+            "legal_commit_rate=0.6667 baseline vs 1.0000 SC8",
+            "mean_target_set_recall=0.50 baseline vs 1.00 SC8",
+            "wrong_part_count=2 baseline vs 0 SC8",
+            "parent_center_false_handoff=6/6; identity_parent_violations=0"
+          ],
+          "claim_boundary": "The positive result is limited to one SceneFun3D Development scene with evaluator-provided functional-part proposals and ARKit parent boxes. It does not establish RGB proposal generation, phone-camera transfer, open-world coverage, reachability, orientation, arrival, completion, product benefit, user benefit, or safety.",
           "evidence": [
             {
               "kind": "external",
               "ref": "https://scenefun3d.github.io/documentation/",
               "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r10/sc8-scenefun3d-functional-binding-v0/result.json",
+              "summary": "Proposal-conditional SC8 result, SHA-256 db9068a4d9a01ed6af73ce81853f98ec6210c7e5b80526fdcd68cc2b758c6d7f."
             }
           ],
           "updated_at": "2026-08-28"
         }
       ],
-      "search_text": "SceneFun3D: Fine-Grained Functionality and Affordance Understanding in 3D Scenes A dataset, toolkit, and benchmark for grounding task-specific functional elements and affordance regions inside 3D scenes. ten-meter-copilot functional-grounding functional-affordance Task-specific functional-element annotations Represents a scene object through the fine-grained part that performs a requested function, rather than treating the parent object bounding box as the action target. 3D scene task description multi-view RGB-D observations functional element mask affordance region Dataset supervision and benchmark performance do not establish zero-shot transfer, phone-camera reliability, exact-instance identity, navigation completion, or user benefit. parent object box functional element 功能部件 父对象框 ten-meter-copilot 作为 L10 功能落点候选：先绑定正确实例，再在实例内部定位门把手、按钮、座位接触面等真正执行功能的区域。 在实例身份正确但功能部件错误的故障上，提高 functional-element 命中率并降低 parent-box false handoff。 SceneFun3D 的公开标注与基准只证明其任务定义和数据可用性；未在 BlindAssist 复现，不能推出手机端、开放世界、导航完成、用户收益或安全能力。"
+      "search_text": "SceneFun3D: Fine-Grained Functionality and Affordance Understanding in 3D Scenes A dataset, toolkit, and benchmark for grounding task-specific functional elements and affordance regions inside 3D scenes. ten-meter-copilot functional-grounding functional-affordance Task-specific functional-element annotations Represents a scene object through the fine-grained part that performs a requested function, rather than treating the parent object bounding box as the action target. 3D scene task description multi-view RGB-D observations functional element mask affordance region Dataset supervision and benchmark performance do not establish zero-shot transfer, phone-camera reliability, exact-instance identity, navigation completion, or user benefit. parent object box functional element 功能部件 父对象框 ten-meter-copilot 作为 L10 功能落点候选：先绑定正确实例，再在实例内部定位门把手、按钮、座位接触面等真正执行功能的区域。 在实例身份正确但功能部件错误的故障上，提高 functional-element 命中率并降低 parent-box false handoff。 SC8 task-relational functional binding improved legal commits from 4/6 to 6/6, mean target-set recall from 0.50 to 1.00, and wrong parts from 2 to 0; parent centers were false handoff points in 6/6 evaluable tasks. evaluable_tasks=6/10 descriptions; 4 NOT_EVALUABLE_PARENT_BINDING legal_commit_rate=0.6667 baseline vs 1.0000 SC8 mean_target_set_recall=0.50 baseline vs 1.00 SC8 wrong_part_count=2 baseline vs 0 SC8 parent_center_false_handoff=6/6; identity_parent_violations=0 The positive result is limited to one SceneFun3D Development scene with evaluator-provided functional-part proposals and ARKit parent boxes. It does not establish RGB proposal generation, phone-camera transfer, open-world coverage, reachability, orientation, arrival, completion, product benefit, user benefit, or safety."
     },
     {
       "id": "dataset-spring-robustspring#dtr-dr28",

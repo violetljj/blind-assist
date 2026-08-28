@@ -123,6 +123,27 @@ model or threshold selection. Frozen UNIQUE behavior remained identical on all
 replay evidence; executed active observation, functional grounding, metric
 arrival, live product benefit, user benefit, and safety remain unproven.
 
+SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
+Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
+because the approved AWS profile is absent. That is a source-access condition,
+not an algorithm negative.
+
+SC8 advances the next functional-grounding layer without waiting for SC7. On one
+real SceneFun3D Development scene, evaluator-provided functional masks supply
+unlabeled proposals while ARKit boxes freeze the parent instance. Of ten public
+task descriptions, six have a single parent binding and four remain
+`NOT_EVALUABLE_PARENT_BINDING`. Nearest-part selection from the parent center
+made legal commits on `4/6`, averaged 50% target-set recall, and selected two
+wrong parts. The instance-bound task-relational selector reached **6/6 legal
+commits, 100% target-set recall, zero wrong parts, and zero cross-parent identity
+violations**. The parent center was outside the requested functional region in
+all `6/6` tasks. Decision:
+`SC8_TASK_RELATIONAL_FUNCTIONAL_BINDING_DEVELOPMENT_SIGNAL`.
+
+This is proposal-conditional selection evidence. It does not establish RGB
+functional-part proposal generation, reachability, orientation, approach pose,
+arrival, completion, product benefit, user benefit, or safety.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its
