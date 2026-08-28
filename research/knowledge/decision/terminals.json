@@ -75,6 +75,18 @@
       "commit": "d1e51734"
     },
     {
+      "id": "terminal-dtr-c1-fresh-global-obb-cohort-admitted",
+      "route": "obstacle-avoidance",
+      "failure_layers": ["authority_truth", "evaluation_evidence"],
+      "status": "positive",
+      "decision": "DTR_C1_FRESH_GLOBAL_OBB_COHORT_ADMITTED_METADATA_ONLY",
+      "summary": "A metadata-only scan excluded the consumed Packard sequence and froze the lexicographic seven-sequence JRDB prefix with 21 bounded global-OBB CONTACT events, 21 unique-first-responsible events, and 409.66 s known non-CONTACT wearer time. This admits evaluation denominators, not an algorithm result.",
+      "successor_requires": "Acquire raw sensors only for the frozen C1 sequence/event roster, then replay unchanged R2/R3-C/R7-P/M1-O under the global OBB CONTACT plus secondary PROXIMITY contract without training or tuning.",
+      "forbidden_repeats": ["reordering sequences by event yield", "adding the consumed C0 sequence", "claiming algorithm performance from metadata admission", "using multi-responsible events for single-target dropout", "forecasting or R8", "TeFlow or DeltaFlow training"],
+      "evidence": ["docs/CURRENT_DECISION.md", "research/active/dtr-r0/README.md", "research/active/dtr-r0/dtr_c1_fresh_global_obb_roster.json"],
+      "commit": "0e0b75d8"
+    },
+    {
       "id": "terminal-l10-sc5-set-valued-video17",
       "route": "ten-meter-copilot",
       "failure_layers": ["identity_binding", "temporal_belief", "evaluation_evidence"],

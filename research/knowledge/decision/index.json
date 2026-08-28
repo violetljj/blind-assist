@@ -2,13 +2,13 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "64dc714fecee5d622f68e1903a89451ea4f7f4371065e26953e1011d7997cacd",
+  "source_fingerprint": "294f4d4a12e79dba3e5669e00f3a262096c8a5abd566b6482686299f9c7ebdf0",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 223,
     "uses": 224,
     "experiments": 206,
-    "current_terminals": 18
+    "current_terminals": 19
   },
   "failure_layers": [
     {
@@ -13495,6 +13495,41 @@
         "research/active/dtr-r0/README.md"
       ],
       "search_text": "terminal-dtr-c0-global-oriented-risk-always-contact-not-evaluable obstacle-avoidance DTR_C0_GLOBAL_ORIENTED_RISK_CONTRACT_NOT_EVALUABLE_ALWAYS_CONTACT_WINDOW C0 adopts wearer-global realized-OBB CONTACT plus simultaneous circle-only PROXIMITY, but overlapping p33/p34/p36 futures make all 143/143 consumed frames CONTACT, leaving zero bounded events and 0.0 known non-CONTACT wearer minutes. Primary F1 and false segments/minute are therefore not evaluable; M1/R7 stressed-target contribution is only a consumed 6/6 mechanism diagnostic. A fresh frozen global-OBB cohort containing bounded CONTACT events and known non-CONTACT wearer time before algorithm comparison or deployable motion-estimator work. claiming descriptive 1.0 overlap F1 as performance claiming zero false alerts without non-CONTACT authority promoting consumed 6/6 to recovery success deployable motion-estimator work forecasting or R8"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-dtr-c1-fresh-global-obb-cohort-admitted",
+      "status": "positive",
+      "question": "A metadata-only scan excluded the consumed Packard sequence and froze the lexicographic seven-sequence JRDB prefix with 21 bounded global-OBB CONTACT events, 21 unique-first-responsible events, and 409.66 s known non-CONTACT wearer time. This admits evaluation denominators, not an algorithm result.",
+      "baseline": null,
+      "change": "Acquire raw sensors only for the frozen C1 sequence/event roster, then replay unchanged R2/R3-C/R7-P/M1-O under the global OBB CONTACT plus secondary PROXIMITY contract without training or tuning.",
+      "primary_metric": null,
+      "decision": "DTR_C1_FRESH_GLOBAL_OBB_COHORT_ADMITTED_METADATA_ONLY",
+      "report": "docs/CURRENT_DECISION.md",
+      "source": "decision/terminals.json",
+      "commit": "0e0b75d8",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Acquire raw sensors only for the frozen C1 sequence/event roster, then replay unchanged R2/R3-C/R7-P/M1-O under the global OBB CONTACT plus secondary PROXIMITY contract without training or tuning.",
+      "forbidden_repeats": [
+        "reordering sequences by event yield",
+        "adding the consumed C0 sequence",
+        "claiming algorithm performance from metadata admission",
+        "using multi-responsible events for single-target dropout",
+        "forecasting or R8",
+        "TeFlow or DeltaFlow training"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "research/active/dtr-r0/README.md",
+        "research/active/dtr-r0/dtr_c1_fresh_global_obb_roster.json"
+      ],
+      "search_text": "terminal-dtr-c1-fresh-global-obb-cohort-admitted obstacle-avoidance DTR_C1_FRESH_GLOBAL_OBB_COHORT_ADMITTED_METADATA_ONLY A metadata-only scan excluded the consumed Packard sequence and froze the lexicographic seven-sequence JRDB prefix with 21 bounded global-OBB CONTACT events, 21 unique-first-responsible events, and 409.66 s known non-CONTACT wearer time. This admits evaluation denominators, not an algorithm result. Acquire raw sensors only for the frozen C1 sequence/event roster, then replay unchanged R2/R3-C/R7-P/M1-O under the global OBB CONTACT plus secondary PROXIMITY contract without training or tuning. reordering sequences by event yield adding the consumed C0 sequence claiming algorithm performance from metadata admission using multi-responsible events for single-target dropout forecasting or R8 TeFlow or DeltaFlow training"
     },
     {
       "kind": "current_terminal",
