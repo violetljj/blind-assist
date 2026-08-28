@@ -381,6 +381,33 @@ evaluator IDs and injected proposal gaps. It is not executed active motion,
 functional/locational arrival, completion, product, user-benefit, or safety
 evidence.
 
+## L10-SC7: zero-OCR goal-locked door-instance route
+
+SC7 first removes text as identity authority instead of turning L10 into a
+stronger OCR system. The frozen G0 question is whether one provider-neutral
+reference-bound belief can acquire, retain, and reacquire a specified building
+door instance in real egocentric video. Ego4D EgoTracks supplies the public
+visual template, dense long-term boxes, natural exits/occlusions, and re-entry
+needed for evaluator truth; `object_title` and target boxes are forbidden after
+source-order cohort admission.
+
+The comparison is frozen as stateless reference matching versus the same
+reference evidence plus target-blind temporal geometry. The gate requires at
+least +10 pp exact-instance coverage and +10 pp correct-direction coverage,
+at least 95% precision, zero wrong/absent commits, and 80% gap recovery within
+three visible frames. OCR is absent from the goal and every candidate vector.
+
+The signed Ego4D agreement is complete, the official CLI runtime is installed,
+and the source-audit and provider-neutral belief seams have focused tests. The
+machine does not yet have the approved AWS profile, so annotation admission and
+real-video evaluation remain `NOT_EVALUABLE_CREDENTIALS_PENDING`; this is not
+an algorithm negative. `prepare_egotracks_sc7.ps1` will download only the
+EgoTracks source and freeze train/val cohorts once credentials are provisioned.
+
+Protocol: `L10_SC7_GENERAL_GOAL_LOCKED_PROTOCOL.md`. Implementations:
+`general_goal_locked_belief.py`, `egotracks_sc7_source_audit.py`, and
+`prepare_egotracks_sc7.ps1`.
+
 ## Public text-source admission
 
 The 2026-08-28 source canary changed the information source rather than the
