@@ -15,6 +15,7 @@ DTR_C3_M1_HYBRID_RAW_POINT_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL /
 DTR_C4_M1_CT_DETECTOR_INDEPENDENT_GLOBAL_RISK_DEVELOPMENT_SIGNAL /
 DTR_C5_CROSS_ESTIMATOR_CONSENSUS_DEVELOPMENT_NO_GAIN /
 DTR_C9_SELF_SUSTAINING_GLOBAL_RISK_BELIEF_DEVELOPMENT_SIGNAL /
+DTR_C10_FIXED_C9_ALGORITHM_FRESH_CONFIRMATION_SIGNAL /
 R4_NOT_OPENED`
 
 ## Result first
@@ -761,6 +762,55 @@ Evidence:
   `7d852751f7d14ed01684e78dd2da76a3cf655ea3b28dbd3f138adb9e4ef04046`,
   result SHA-256
   `c9ca1b9fe6e26e19355baac91a9d766e3151962ad5e6d47f3b21aeaef99bdb89`.
+
+## DTR-C10 fixed-C9 fresh confirmation
+
+C10 freezes the smallest still-unscored JRDB subset meeting the unchanged C1
+event and non-CONTACT denominators, then applies C9 without changing its
+confidence, motion, route, belief, or lifecycle settings. The three raw-bag
+workers see timestamps and calibration but not the roster or native future OBB
+truth. Their predictions are independently hash sealed, then merged and sealed
+again before the score phase first opens truth.
+
+| Fixed C9 cohort | CONTACT recall | False segments | False / non-CONTACT min | Event F1 | Median lead |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Seven-sequence Development | `18/21` (85.71%) | 28 | 4.10 | 53.73% | 1.01 s |
+| **Three-sequence algorithm-fresh confirmation** | **`17/20` (85.00%)** | **11** | **3.98** | **70.83%** | **1.79 s** |
+
+The fixed mechanism therefore retains recall, slightly lowers false-alert rate,
+and improves event F1 and lead on this fresh preferred cohort. The result is
+heterogeneous rather than universally solved: the three sequences contribute
+`6/6` with 3 false segments, `6/8` with 1 false segment, and `5/6` with 7 false
+segments. C9's central state-authority claim also remains observable: remembered
+world occupancy supplies 465 belief-only maintenance frames across the cohort,
+while 31 belief-risk frames are blocked from originating an alert in CLEAR.
+
+Decision: `DTR_C10_FIXED_C9_ALGORITHM_FRESH_CONFIRMATION_SIGNAL`. The
+track-only -> dense recovery -> pseudo-motion -> confidence-aware motion ->
+route-risk state story now has an algorithm-fresh confirmation, not merely a
+same-cohort Development improvement. This does not calibrate risk probability.
+Probability calibration must use a separate future cohort because cell
+occupancy scores are not automatically calibrated probabilities, and spatially
+correlated cells cannot be combined with an independence product. The admitted
+next source upgrade is therefore a separately calibrated route-region occupancy
+probability with flow-reachability support, not a C9 threshold sweep.
+
+All GPU-capable launch classes were measured on the shared research runtime.
+For these irregular component sets and per-frame collision batches, CPU was
+faster on every worker and was selected with `CPU_FASTER_MEASURED`; the receipts
+also verify that each CUDA candidate actually ran on the RTX 5060 before CPU was
+chosen.
+
+Evidence:
+
+- committed fresh roster SHA-256
+  `07ddb799df04178ef7a1ed649f33b21eb1e5fac471f7d4582d11b4c2ba68543e`;
+- acquisition SHA-256
+  `959cf20c4573c49f6659be80a76c4ee268b410f23eb265f13499286595e63bfc`;
+- combined truth-blind prediction SHA-256
+  `ce2c5afb22d18f46767feb87cbbb242163a775275ee327764c995fd72302bb10`;
+- result SHA-256
+  `6ba84a5615aa91156fc9f8fc9005b813b8634232ce5ecb3fefdd41d442239976`.
 
 The source split explains why pooling is not enough:
 
