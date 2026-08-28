@@ -63,6 +63,18 @@
       "commit": "8a604df3"
     },
     {
+      "id": "terminal-dtr-c0-global-oriented-risk-always-contact-not-evaluable",
+      "route": "obstacle-avoidance",
+      "failure_layers": ["authority_truth", "geometry_motion", "evaluation_evidence"],
+      "status": "not_evaluable",
+      "decision": "DTR_C0_GLOBAL_ORIENTED_RISK_CONTRACT_NOT_EVALUABLE_ALWAYS_CONTACT_WINDOW",
+      "summary": "C0 adopts wearer-global realized-OBB CONTACT plus simultaneous circle-only PROXIMITY, but overlapping p33/p34/p36 futures make all 143/143 consumed frames CONTACT, leaving zero bounded events and 0.0 known non-CONTACT wearer minutes. Primary F1 and false segments/minute are therefore not evaluable; M1/R7 stressed-target contribution is only a consumed 6/6 mechanism diagnostic.",
+      "successor_requires": "A fresh frozen global-OBB cohort containing bounded CONTACT events and known non-CONTACT wearer time before algorithm comparison or deployable motion-estimator work.",
+      "forbidden_repeats": ["claiming descriptive 1.0 overlap F1 as performance", "claiming zero false alerts without non-CONTACT authority", "promoting consumed 6/6 to recovery success", "deployable motion-estimator work", "forecasting or R8"],
+      "evidence": ["docs/CURRENT_DECISION.md", "research/active/dtr-r0/README.md"],
+      "commit": "d1e51734"
+    },
+    {
       "id": "terminal-l10-sc5-set-valued-video17",
       "route": "ten-meter-copilot",
       "failure_layers": ["identity_binding", "temporal_belief", "evaluation_evidence"],

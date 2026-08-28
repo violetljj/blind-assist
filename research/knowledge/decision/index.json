@@ -2,13 +2,13 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "4c7abe8947ee2e10c7518568dea02766e6e84046961f857ee7deb8fea689fdeb",
+  "source_fingerprint": "c152f9daa8aad2152ff69973164b9181cdde3df9f96e03637ef485bc1dd68ed6",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 223,
     "uses": 224,
     "experiments": 206,
-    "current_terminals": 17
+    "current_terminals": 18
   },
   "failure_layers": [
     {
@@ -13447,6 +13447,40 @@
         "research/active/dtr-r0/README.md"
       ],
       "search_text": "terminal-dtr-m3-evaluator-circle-obb-semantics-mismatch obstacle-avoidance DTR_M3_D_EVALUATOR_CIRCLE_OBB_SEMANTICS_MISMATCH_NO_FRESH_M3_O All three repeated pedestrian:35 dropout rows are positive under the evaluator's realized-center circle but negative under every realized future native OBB; at first contact the circle is 0.0209 m inside while the OBB is 0.0374 m outside. Three M1 false rows are target-owned realized-OBB misses and two are other-component attribution errors. Choose and freeze circularized proximity versus oriented-body contact; an OBB-contact claim requires evaluator revision and fresh cohort rescoring before any dynamics ceiling. fresh M3-O before truth-contract revision learned or residual future occupancy route-conditioned forecasting R8 training another scene-flow estimator"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-dtr-c0-global-oriented-risk-always-contact-not-evaluable",
+      "status": "not_evaluable",
+      "question": "C0 adopts wearer-global realized-OBB CONTACT plus simultaneous circle-only PROXIMITY, but overlapping p33/p34/p36 futures make all 143/143 consumed frames CONTACT, leaving zero bounded events and 0.0 known non-CONTACT wearer minutes. Primary F1 and false segments/minute are therefore not evaluable; M1/R7 stressed-target contribution is only a consumed 6/6 mechanism diagnostic.",
+      "baseline": null,
+      "change": "A fresh frozen global-OBB cohort containing bounded CONTACT events and known non-CONTACT wearer time before algorithm comparison or deployable motion-estimator work.",
+      "primary_metric": null,
+      "decision": "DTR_C0_GLOBAL_ORIENTED_RISK_CONTRACT_NOT_EVALUABLE_ALWAYS_CONTACT_WINDOW",
+      "report": "docs/CURRENT_DECISION.md",
+      "source": "decision/terminals.json",
+      "commit": "d1e51734",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A fresh frozen global-OBB cohort containing bounded CONTACT events and known non-CONTACT wearer time before algorithm comparison or deployable motion-estimator work.",
+      "forbidden_repeats": [
+        "claiming descriptive 1.0 overlap F1 as performance",
+        "claiming zero false alerts without non-CONTACT authority",
+        "promoting consumed 6/6 to recovery success",
+        "deployable motion-estimator work",
+        "forecasting or R8"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "research/active/dtr-r0/README.md"
+      ],
+      "search_text": "terminal-dtr-c0-global-oriented-risk-always-contact-not-evaluable obstacle-avoidance DTR_C0_GLOBAL_ORIENTED_RISK_CONTRACT_NOT_EVALUABLE_ALWAYS_CONTACT_WINDOW C0 adopts wearer-global realized-OBB CONTACT plus simultaneous circle-only PROXIMITY, but overlapping p33/p34/p36 futures make all 143/143 consumed frames CONTACT, leaving zero bounded events and 0.0 known non-CONTACT wearer minutes. Primary F1 and false segments/minute are therefore not evaluable; M1/R7 stressed-target contribution is only a consumed 6/6 mechanism diagnostic. A fresh frozen global-OBB cohort containing bounded CONTACT events and known non-CONTACT wearer time before algorithm comparison or deployable motion-estimator work. claiming descriptive 1.0 overlap F1 as performance claiming zero false alerts without non-CONTACT authority promoting consumed 6/6 to recovery success deployable motion-estimator work forecasting or R8"
     },
     {
       "kind": "current_terminal",
