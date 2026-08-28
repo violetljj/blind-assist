@@ -1,0 +1,365 @@
+{
+  "claim_ceiling": "ALGORITHM_FRESH_PUBLIC_REPLAY_NO_PRODUCT_OR_SAFETY_CLAIM",
+  "contract": {
+    "bounded_event": "CONTACT interval preceded and followed by known non-CONTACT",
+    "future_horizon_s": 3.0,
+    "primary": "wearer-global realized future native OBB union within 0-3 s",
+    "responsibility": "component identities at the earliest realized OBB hit from event onset; diagnostic only",
+    "route_body_radius_m": 0.65,
+    "secondary": "circle-only PROXIMITY"
+  },
+  "dataset": "JRDB public train split",
+  "forbidden": [
+    "changing point matching, confidence, route, motion bounds, lifecycle, or gate after acquisition",
+    "opening selected future OBB labels before all global predictions are sealed",
+    "adding an algorithm-exposed sequence",
+    "rerunning a failed arm with different parameters"
+  ],
+  "frozen_algorithm": {
+    "arms": [
+      "R7_P_GLOBAL",
+      "M1_PD_GLOBAL",
+      "M1_PDC_GLOBAL"
+    ],
+    "files": [
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_c25_fresh_point_flow_confirmation.py",
+        "sha256": "eaef7b87db4c1d924151f604bbd21a80811b7bb13b5053e364bb6d7ed7590378"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_m1_raw_point_direct_velocity.py",
+        "sha256": "39699b96a04ad2df8e3ad458c83c00cbc4bf1dd072cbb252c5bea35ddf77e1c2"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_m1_confident_direct_velocity.py",
+        "sha256": "aae6c33ae5f9db439fc02d45ab633c4afd4042d11cb346f051ef9e3d2c1b8f60"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_r7_occupancy_flow_canary.py",
+        "sha256": "41076ce6b6c4952d8d653a4b76dcb11a418fd3d2f09812743d6ce02af0f21b67"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_c4_detector_independent_global_risk.py",
+        "sha256": "83aa543d428f5474ef889e9c4176d6d87685e4cb445a757c0663d5c122c7b339"
+      }
+    ],
+    "gate": {
+      "m1_pdc_contact_recall_not_lower_than_r7": true,
+      "m1_pdc_dropout_recovery_not_lower_than_r7": true,
+      "m1_pdc_event_f1_higher_than_r7": true,
+      "m1_pdc_false_segment_factor_vs_r7": 0.7
+    },
+    "representation": "R7 component translation versus reciprocal raw-point direct velocity versus three-frame point-local consistency",
+    "route_geometry_motion_bounds_and_lifecycle": "UNCHANGED"
+  },
+  "schema": "blindassist-dtr-c1-fresh-global-obb-roster-v1",
+  "selected_sequences": [
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "gates-ai-lab-2019-02-08_0:contact:001",
+          "first_frame": 143,
+          "first_index": 143,
+          "first_time_s": 1549667224.8303375,
+          "last_frame": 219,
+          "last_index": 219,
+          "last_time_s": 1549667229.9526858,
+          "onset_first_hit_delta_s": 2.936399221420288,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:1"
+          ],
+          "sequence": "gates-ai-lab-2019-02-08_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "gates-ai-lab-2019-02-08_0:contact:002",
+          "first_frame": 324,
+          "first_index": 324,
+          "first_time_s": 1549667237.0855334,
+          "last_frame": 402,
+          "last_index": 402,
+          "last_time_s": 1549667242.3970451,
+          "onset_first_hit_delta_s": 2.9306397438049316,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:6"
+          ],
+          "sequence": "gates-ai-lab-2019-02-08_0",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 2,
+      "first_frame": 0,
+      "frames": 467,
+      "known_non_contact_s": 14.394779205322266,
+      "last_frame": 466,
+      "sequence": "gates-ai-lab-2019-02-08_0",
+      "timeline_duration_s": 31.83821749687195,
+      "unique_responsible_events": 2
+    },
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "packard-poster-session-2019-03-20_0:contact:001",
+          "first_frame": 462,
+          "first_index": 462,
+          "first_time_s": 1553121533.9177797,
+          "last_frame": 589,
+          "last_index": 589,
+          "last_time_s": 1553121542.6285887,
+          "onset_first_hit_delta_s": 2.9921138286590576,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:12"
+          ],
+          "sequence": "packard-poster-session-2019-03-20_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "packard-poster-session-2019-03-20_0:contact:002",
+          "first_frame": 649,
+          "first_index": 649,
+          "first_time_s": 1553121546.7653482,
+          "last_frame": 708,
+          "last_index": 708,
+          "last_time_s": 1553121550.7729974,
+          "onset_first_hit_delta_s": 2.9506492614746094,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:60"
+          ],
+          "sequence": "packard-poster-session-2019-03-20_0",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 2,
+      "first_frame": 0,
+      "frames": 718,
+      "known_non_contact_s": 25.26266884803772,
+      "last_frame": 717,
+      "sequence": "packard-poster-session-2019-03-20_0",
+      "timeline_duration_s": 49.68807530403137,
+      "unique_responsible_events": 2
+    },
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "svl-meeting-gates-2-2019-04-08_0:contact:001",
+          "first_frame": 71,
+          "first_index": 71,
+          "first_time_s": 1554750012.9557996,
+          "last_frame": 172,
+          "last_index": 172,
+          "last_time_s": 1554750020.0481408,
+          "onset_first_hit_delta_s": 2.99396014213562,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:0"
+          ],
+          "sequence": "svl-meeting-gates-2-2019-04-08_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "svl-meeting-gates-2-2019-04-08_0:contact:002",
+          "first_frame": 226,
+          "first_index": 226,
+          "first_time_s": 1554750023.6948032,
+          "last_frame": 275,
+          "last_index": 275,
+          "last_time_s": 1554750027.1511257,
+          "onset_first_hit_delta_s": 2.93911075592041,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:0"
+          ],
+          "sequence": "svl-meeting-gates-2-2019-04-08_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "svl-meeting-gates-2-2019-04-08_0:contact:003",
+          "first_frame": 466,
+          "first_index": 466,
+          "first_time_s": 1554750040.353,
+          "last_frame": 576,
+          "last_index": 576,
+          "last_time_s": 1554750047.942199,
+          "onset_first_hit_delta_s": 2.9906113147735596,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:0"
+          ],
+          "sequence": "svl-meeting-gates-2-2019-04-08_0",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 3,
+      "first_frame": 0,
+      "frames": 868,
+      "known_non_contact_s": 35.29411840438843,
+      "last_frame": 867,
+      "sequence": "svl-meeting-gates-2-2019-04-08_0",
+      "timeline_duration_s": 59.69976830482483,
+      "unique_responsible_events": 3
+    },
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "svl-meeting-gates-2-2019-04-08_1:contact:001",
+          "first_frame": 88,
+          "first_index": 88,
+          "first_time_s": 1554750253.931034,
+          "last_frame": 189,
+          "last_index": 189,
+          "last_time_s": 1554750261.117153,
+          "onset_first_hit_delta_s": 2.921610116958618,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:13"
+          ],
+          "sequence": "svl-meeting-gates-2-2019-04-08_1",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "svl-meeting-gates-2-2019-04-08_1:contact:002",
+          "first_frame": 220,
+          "first_index": 220,
+          "first_time_s": 1554750263.1736858,
+          "last_frame": 273,
+          "last_index": 273,
+          "last_time_s": 1554750266.7985334,
+          "onset_first_hit_delta_s": 2.999336004257202,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:4"
+          ],
+          "sequence": "svl-meeting-gates-2-2019-04-08_1",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "svl-meeting-gates-2-2019-04-08_1:contact:003",
+          "first_frame": 615,
+          "first_index": 615,
+          "first_time_s": 1554750290.1727178,
+          "last_frame": 679,
+          "last_index": 679,
+          "last_time_s": 1554750294.6344464,
+          "onset_first_hit_delta_s": 2.992227077484131,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:23"
+          ],
+          "sequence": "svl-meeting-gates-2-2019-04-08_1",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "svl-meeting-gates-2-2019-04-08_1:contact:004",
+          "first_frame": 681,
+          "first_index": 681,
+          "first_time_s": 1554750294.7545073,
+          "last_frame": 791,
+          "last_index": 791,
+          "last_time_s": 1554750302.276505,
+          "onset_first_hit_delta_s": 2.9400463104248047,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:19"
+          ],
+          "sequence": "svl-meeting-gates-2-2019-04-08_1",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 4,
+      "first_frame": 0,
+      "frames": 873,
+      "known_non_contact_s": 33.97599267959595,
+      "last_frame": 872,
+      "sequence": "svl-meeting-gates-2-2019-04-08_1",
+      "timeline_duration_s": 59.94099044799805,
+      "unique_responsible_events": 4
+    },
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "tressider-2019-03-16_0:contact:001",
+          "first_frame": 133,
+          "first_index": 133,
+          "first_time_s": 1552772927.010471,
+          "last_frame": 203,
+          "last_index": 203,
+          "last_time_s": 1552772931.862216,
+          "onset_first_hit_delta_s": 2.9418582916259766,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:3"
+          ],
+          "sequence": "tressider-2019-03-16_0",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 1,
+      "first_frame": 0,
+      "frames": 432,
+      "known_non_contact_s": 22.048263549804688,
+      "last_frame": 431,
+      "sequence": "tressider-2019-03-16_0",
+      "timeline_duration_s": 29.92190933227539,
+      "unique_responsible_events": 1
+    }
+  ],
+  "selected_totals": {
+    "bounded_contact_events": 12,
+    "frames": 3358,
+    "known_non_contact_s": 130.97582268714905,
+    "sequences": 5,
+    "timeline_duration_s": 231.0889608860016,
+    "unique_responsible_events": 12
+  },
+  "selection_policy": {
+    "algorithm_consumed_sequences_excluded": [
+      "bytes-cafe-2019-02-07_0",
+      "clark-center-2019-02-28_0",
+      "clark-center-2019-02-28_1",
+      "clark-center-intersection-2019-02-28_0",
+      "cubberly-auditorium-2019-04-22_0",
+      "forbes-cafe-2019-01-22_0",
+      "gates-159-group-meeting-2019-04-03_0",
+      "gates-basement-elevators-2019-01-17_1",
+      "hewlett-packard-intersection-2019-01-24_0",
+      "jordan-hall-2019-04-22_0",
+      "nvidia-aud-2019-04-18_0",
+      "packard-poster-session-2019-03-20_1",
+      "packard-poster-session-2019-03-20_2",
+      "stlc-111-2019-04-19_0",
+      "tressider-2019-04-26_2"
+    ],
+    "candidate_sequences": 12,
+    "combinations_considered": 1585,
+    "gate": {
+      "bounded_contact_events": 12,
+      "known_non_contact_s": 60.0,
+      "unique_responsible_events": 6
+    },
+    "ordering": "minimum sequence cardinality meeting the existing minimum gate; then minimum total frames; then lexicographic sequence tuple",
+    "preferred_gate_unreachable_on_remaining_pool": true
+  },
+  "source_authority": {
+    "c1_result": "F:\\ba-data\\blindassist-artifacts-20260805\\evidence\\dtr-c1\\global-obb-cohort-admission\\result.json",
+    "c1_result_sha256": "2f6504f642327811892f71f7d2ff5998d15f73f27272f2b24a09880649f99cd8",
+    "consumed_rosters": [
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_c10_fresh_confirmation_roster.json",
+        "sha256": "07ddb799df04178ef7a1ed649f33b21eb1e5fac471f7d4582d11b4c2ba68543e"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_c11_fresh_confirmation_roster.json",
+        "sha256": "88063217b7a4ffd0ee9bcb2c8e71a29c58c4461cf64333d3107406206b26bab9"
+      }
+    ],
+    "labels_archive_name": "train_labels.zip",
+    "labels_sha256": "6691816ab12a109c1769f25657a0db17fe56164f3bfbf76a2d01c63a73450df1",
+    "timestamps_archive_name": "train_timestamps.zip",
+    "timestamps_sha256": "60b440f4fd69b93a96b84ae07b957c169f8af304106a61b5f297286ed04b2e30"
+  },
+  "status": "DTR_C1_FRESH_GLOBAL_OBB_COHORT_ADMITTED_METADATA_ONLY"
+}
