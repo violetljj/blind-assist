@@ -27,6 +27,18 @@
       "commit": "ff86e37f"
     },
     {
+      "id": "terminal-dtr-m1-point-velocity-oracle-gate-not-met",
+      "route": "obstacle-avoidance",
+      "failure_layers": ["geometry_motion", "decision_lifecycle", "evaluation_evidence"],
+      "status": "negative",
+      "decision": "DTR_M1_O_POINT_VELOCITY_ORACLE_CEILING_NOT_MET_CLOSE_SCENE_FLOW_ROUTE",
+      "summary": "Causal native-box point velocity suppressed 8/9 M0 diagnostic pseudo-motion entries but recovered only 6/9 dropout trials, created five new motion-source-induced false segments, and reduced event F1 from 22.22% to 16.00% under the frozen hard point/cell downstream.",
+      "successor_requires": "A newly authorized representation-level question and fresh protocol; changing the scene-flow estimator is not eligible under the consumed frozen downstream.",
+      "forbidden_repeats": ["TeFlow or DeltaFlow on the consumed protocol", "another scene-flow estimator", "R8 training", "body-dilation/tube/lifecycle tuning", "route-conditioned forecasting on the consumed cohort"],
+      "evidence": ["docs/CURRENT_DECISION.md", "research/active/dtr-r0/README.md"],
+      "commit": "ff7e0ffc"
+    },
+    {
       "id": "terminal-l10-sc5-set-valued-video17",
       "route": "ten-meter-copilot",
       "failure_layers": ["identity_binding", "temporal_belief", "evaluation_evidence"],

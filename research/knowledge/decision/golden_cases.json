@@ -57,6 +57,14 @@
       "expected_attempts": ["terminal-dtr-r7p-causal-occupancy-flow-gate-not-met"]
     },
     {
+      "id": "dtr-point-velocity-oracle-downstream-unreachable",
+      "route": "obstacle-avoidance",
+      "symptom": "native point velocity removes most pseudo-motion but loses one event at all three dropout durations and still creates five new false segments",
+      "expected_layers": ["geometry_motion", "decision_lifecycle"],
+      "expected_mechanisms": ["paper-occupancy-flow-fields-for-motion-forecasting-in-autonomous-driving#dtr-dr46"],
+      "expected_attempts": ["terminal-dtr-m1-point-velocity-oracle-gate-not-met"]
+    },
+    {
       "id": "dtr-track-dropout",
       "route": "obstacle-avoidance",
       "symptom": "track dropout after short occlusion loses continuity",
