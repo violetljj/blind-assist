@@ -5,6 +5,7 @@ S4_CONTINUOUS_GEOMETRY_VALIDATED_NO_PUBLIC_GAIN /
 R5_RGB_DROPOUT_CANARY_GATE_NOT_MET /
 R6_DIRECT_METRIC_SINGLE_FACTOR_NOT_EVALUABLE_STATIC_OCCUPANCY_MATCHER_UNREACHABLE /
 R7_P_CAUSAL_OCCUPANCY_FLOW_DEVELOPMENT_GATE_NOT_MET_NO_R8 /
+DTR_M1_O_POINT_VELOCITY_ORACLE_CEILING_NOT_MET_CLOSE_SCENE_FLOW_ROUTE /
 R4_NOT_OPENED`
 
 ## Result first
@@ -214,6 +215,66 @@ Evidence:
   `1913b0115ff15689de53bcdf3798e9503b68f8c596fe58437dc9f9e3cd97f1c8`.
 - `artifacts.local/evidence/dtr-m0-r7-error-attribution/timeline.svg`, SHA-256
   `097d06ef1c9a2dc38e0e874608aa2ba6a753868c3059b097035d240ee04a670d`.
+
+## DTR-M1-O causal point-velocity oracle terminal
+
+M1-O has now executed the frozen same-window ceiling. The originally proposed
+AV2 native-flow arm cannot directly adjudicate R7's `9/9` or its nine modified
+false segments: those denominators belong to the JRDB window, while the already
+admitted 32-sweep AV2 shard is a different cohort with zero native boxes in the
+frozen 12 m admission tube. Mixing those results would change the cohort and
+the denominator at the same time as the motion source.
+
+The valid ceiling therefore used the same construction principle as AV2 native
+flow on the sealed JRDB window: current raw LiDAR points inside a native 3-D
+box receive the causal piecewise-rigid velocity implied by that box and its
+latest frozen-history past instance. `flow_support=1.0` denotes oracle support,
+not a calibrated probability. Point velocities are reduced with a per-instance
+BEV-cell median; R2, route tube, 0--3 s horizon, hard cell propagation,
+lifecycle, induced dropout, and one-to-one evaluator remain unchanged.
+
+| Arm | Dropout recovery | Critical-event recall | One-to-one event F1 | False segments | Motion-source-induced false segments |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| R2 track-only | `0/9` | `3/3` | 22.22% | 12 | 0 |
+| R7-P coarse occupancy flow | **`9/9`** | `3/3` | 22.22% | 20 | 9 |
+| M1-O native-box point velocity oracle | **`6/9`** | `3/3` | **16.00%** | **17** | **5** |
+
+M1-O suppresses the first diagnostic risk in eight of the nine M0
+flow-caused/modified segments. That confirms the narrower mechanism: direct
+velocity is much more selective than component-centroid pseudo-flow. It still
+fails the functional ceiling. The same `pedestrian:35` oncoming event is not
+recovered under any of the three `0.2/0.4/0.8 s` dropout interventions, so the
+three misses are one event repeated at three stress durations, not three
+independent failures. The oracle also creates five new target-aware false
+segments, reduces one-to-one true positives from three to two, and lowers event
+F1 from 22.22% to 16.00%.
+
+The oncoming miss localizes the remaining boundary further. Native point
+velocities near the target agree with its scorer-side motion, but the observed
+hard surface points do not enter the frozen route tube in the 0--3 s point-cell
+propagation even when center-plus-body-extent future truth becomes positive.
+Thus a correct selective velocity source is not sufficient under the present
+hard point/cell aggregation. This is not permission to tune the tube, add body
+dilation, change the lifecycle, or reopen route forecasting on the consumed
+cohort.
+
+Terminal:
+`DTR_M1_O_POINT_VELOCITY_ORACLE_CEILING_NOT_MET_CLOSE_SCENE_FLOW_ROUTE`.
+Do not run TeFlow, DeltaFlow, another scene-flow estimator, R8 training, or
+route-conditioned forecasting under this frozen protocol. A successor would
+need a newly authorized representation-level question and fresh protocol; it
+cannot rescue this result by changing the estimator.
+
+Evidence:
+
+- `artifacts.local/evidence/dtr-m1/point-velocity-oracle/result.json`, SHA-256
+  `81ecf662c784208c14d5d2af451e324866cf4240ab884449d50997f3ab1b3e83`.
+- `artifacts.local/evidence/dtr-m1/point-velocity-oracle/result.point-velocity-oracle.npz`,
+  SHA-256
+  `0dc135c90c0f23cb92aa5d9fdc83dfdf9d7cf584bb5b8451d60338a5de7bc906`.
+- `artifacts.local/evidence/dtr-m1/point-velocity-oracle/result.point-velocity-oracle.json`,
+  SHA-256
+  `a57a4984dc9d6581be213a693d523ea9bd9154c8f85e5f58c4325930ed40571a`.
 
 The source split explains why pooling is not enough:
 
@@ -543,6 +604,16 @@ python research/active/dtr-r0/dtr_m0_r7_error_attribution.py `
   --output artifacts.local/evidence/dtr-m0-r7-error-attribution/result.json `
   --table artifacts.local/evidence/dtr-m0-r7-error-attribution/false-segments.csv `
   --timeline artifacts.local/evidence/dtr-m0-r7-error-attribution/timeline.svg
+
+python research/active/dtr-r0/dtr_m1_point_velocity_oracle.py `
+  --r7-result artifacts.local/evidence/dtr-r7/occupancy-flow-canary/result.json `
+  --m0-result artifacts.local/evidence/dtr-m0-r7-error-attribution/result.json `
+  --known-height-tracks artifacts.local/evidence/dtr-r0/jrdb-known-height-bridge-v1/result.sensor-tracks.jsonl `
+  --labels-zip artifacts.local/datasets/dtr-r0-jrdb-rgb-bridge-v1/train_labels.zip `
+  --timestamps-zip artifacts.local/datasets/dtr-r0-jrdb-rgb-bridge-v1/train_timestamps.zip `
+  --bag artifacts.local/datasets/dtr-r0-jrdb-rgb-bridge-v1/packard-poster-session-2019-03-20_1.bag `
+  --calibration-dir artifacts.local/datasets/ustrf-canonical-observation-source-authority-data-pack-r0/jrdb_toolkit/calibration `
+  --output artifacts.local/evidence/dtr-m1/point-velocity-oracle/result.json
 ```
 
 ## Claim ceiling
@@ -577,3 +648,9 @@ DTR-M0 is scorer-side post-outcome attribution on that consumed result. It
 localizes R7's flow-caused errors but adds no performance, generalization,
 product, or safety evidence. Its component-discontinuity flags are not stable
 identity or split/merge truth.
+
+DTR-M1-O is a privileged, label-dependent oracle on the same consumed JRDB
+window. Its `6/9` dropout recovery and 17 false segments close estimator work
+under the frozen hard point/cell downstream; they do not establish AV2-native
+scene-flow performance, source-disjoint generalization, route-forecasting
+quality, Android behavior, product benefit, or safety.

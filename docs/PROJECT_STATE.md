@@ -66,6 +66,16 @@ large flow/target velocity disagreement and remain
 `ATTRIBUTION_OR_FRAGMENTATION` without a proven split/merge identity. The next
 eligible experiment is a fresh, frozen point-wise scene-flow or direct-velocity
 source ceiling; route/lifecycle tuning and R8 remain closed.
+That M1-O ceiling is now complete on the same JRDB window using causal
+native-box piecewise-rigid point velocity over current raw LiDAR. It suppressed
+`8/9` M0 diagnostic false entries but retained only `6/9` dropout recoveries,
+produced five new motion-source-induced false segments, and reduced event F1 to
+16.00%. The oncoming miss repeats across all three dropout durations and shows
+that correct selective velocity is insufficient under the frozen hard
+point/cell-to-tube aggregation. The terminal is
+`DTR_M1_O_POINT_VELOCITY_ORACLE_CEILING_NOT_MET_CLOSE_SCENE_FLOW_ROUTE`:
+TeFlow/DeltaFlow, R8, route forecasting, and consumed-cohort aggregation tuning
+remain closed.
 
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC

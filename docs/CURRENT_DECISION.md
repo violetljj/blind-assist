@@ -133,6 +133,27 @@ and one-to-one evaluator fixed. Route-conditioned future occupancy and R8 RGB
 training remain closed unless a better independent motion source first retains
 dropout recovery while reducing false segments and increasing event F1.
 
+That DTR-M1-O ceiling is now complete and negative under the frozen downstream.
+AV2 native point flow could not honestly test R7's `9/9` or its nine modified
+false segments because the admitted AV2 shard is a different zero-event cohort.
+M1-O instead used current raw JRDB LiDAR plus causal native current/past 3-D
+boxes to construct piecewise-rigid point velocity, then robustly aggregated it
+before the unchanged R7 route-risk. It suppressed the first diagnostic risk in
+`8/9` M0 flow-caused segments, showing markedly better motion selectivity, but
+recovered only `6/9` dropout trials. The same oncoming event failed at all three
+dropout durations. Original false segments were 17, including five new
+point-velocity-induced segments; one-to-one true positives fell `3 -> 2` and
+event F1 fell `22.22% -> 16.00%`.
+
+The terminal is
+`DTR_M1_O_POINT_VELOCITY_ORACLE_CEILING_NOT_MET_CLOSE_SCENE_FLOW_ROUTE`.
+Correct point velocity is not sufficient under the frozen hard
+point/cell-to-route aggregation. Do not run TeFlow, DeltaFlow, another
+scene-flow estimator, R8, body-dilation/tube/lifecycle tuning, or
+route-conditioned forecasting on this consumed protocol. Any successor needs
+a newly authorized representation-level question and fresh evidence rather
+than a different estimator.
+
 ## What stops here
 
 - Do not record the superseded 24 canary or 120 staged local RGB clips.
