@@ -236,6 +236,18 @@ non-navigation frames, and `30/30` end-to-end replay episodes. Those are replay
 decision metrics, not evidence that a physical camera/user action improves the
 next observation.
 
+SC15--SC17 tested whether that missing observation effect could be recovered
+cheaply. Passive direction alignment on ArTVideo failed (`0.6667` aligned mean
+semantic gain versus `0.8000` opposed; 16.67% versus 0% wrong-gate creation).
+A fresh protocol-frozen DSText V2 indoor run then produced 2,824 OCR
+observations and 2,677 natural transitions, but a Pareto height/sharpness/
+centering improvement yielded only `+0.0093` semantic-gain delta and worse gate
+crossing. Fixed three-view exact consensus raised precision only +0.91 pp and
+still formed wrong consensus on 5/49 tracks. These are terminal negatives for
+the opened proxy representations, not evidence against active observation
+itself. The next source must record issued action -> before/after result so the
+controller can repair policy from causal outcome.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

@@ -2,13 +2,13 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "3ce3a1b7502712cfa36db6302e98264cf06a5b5507e935ac40cf5cd163b061e6",
+  "source_fingerprint": "33a68e1d1651d83ac2bbecbcb46fea1aa2cfabccf4052d107585cff8730450f8",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 223,
     "uses": 224,
     "experiments": 206,
-    "current_terminals": 14
+    "current_terminals": 17
   },
   "failure_layers": [
     {
@@ -1843,12 +1843,12 @@
       "layer_scores": {
         "decision_lifecycle": 3,
         "evaluation_evidence": 9,
+        "geometry_motion": 3,
         "handoff_completion": 9,
-        "identity_binding": 3,
-        "observation_perception": 6,
-        "runtime_infrastructure": 3,
+        "identity_binding": 6,
+        "observation_perception": 12,
         "source_coverage": 9,
-        "temporal_belief": 3
+        "temporal_belief": 6
       },
       "routes": [
         "ten-meter-copilot"
@@ -1859,17 +1859,20 @@
           "route": "ten-meter-copilot",
           "use_state": "active",
           "reproduction_status": "mechanics_only",
-          "verdict": "positive",
+          "verdict": "mixed",
           "project_application": "已落入 core:assist 的目标控制器：按证据缺口选择 SWEEP/SCAN/PAN/APPROACH/SIDESTEP/HOLD，且只有新鲜语义可锁定、导航和重捕获。",
           "expected_effect": "消除 OCR 非命中导致的错误 STOP/假 NONE，为每个不可导航帧产生有界且可解释的补观测动作，同时阻止连续性证据越权。",
-          "observed_effect": "Terminal STOP frames fell from 124 to 0, target-present false-NONE frames from 24 to 0, every non-navigation frame received an explicit action, and all 30 episodes retained end-to-end acquisition plus reacquisition.",
+          "observed_effect": "SC2 still removes terminal STOP/false-NONE and covers every observation opportunity, but SC15 direction alignment, SC16 height-sharpness-centering Pareto quality, and SC17 exact tri-view consensus all failed to establish reliable semantic observation gain.",
           "metrics": [
             "source_stop_frames=124; normalized_stop_frames=0",
             "source_false_none_target_present_frames=24; normalized_false_none_target_present_frames=0",
             "explicit_non_navigation_action_coverage=1.0",
-            "end_to_end_successful_episodes=30/30"
+            "end_to_end_successful_episodes=30/30",
+            "SC15 mean_target_semantic_gain=0.6667 aligned vs 0.8000 opposed; wrong_gate=0.1667 vs 0.0",
+            "SC16 transitions=2677; mean_gain_delta=0.0093; improvement_rate_delta=0.0322; gate_crossing=0.0166 aligned vs 0.0428 opposed",
+            "SC17 precision=0.9097 baseline vs 0.9188 consensus; wrong_reduction=0.2431; wrong_consensus_tracks=5/49"
           ],
-          "claim_boundary": "Development replay representation and runtime contract evidence only. The replay did not execute camera or body actions, so it does not establish causal readability gain, natural-distribution performance, metric arrival, product benefit, user benefit, or safety.",
+          "claim_boundary": "SC2 supports an action interface, not action benefit. SC15 and SC16 are passive recorded-motion associations; SC17 reuses consumed observations. No issued physical action, causal readability gain, detector, exact-instance selection, metric arrival, product benefit, user benefit, or safety was established.",
           "evidence": [
             {
               "kind": "git",
@@ -1885,12 +1888,22 @@
               "kind": "repo",
               "ref": "core/assist/src/main/java/com/linnan/blindassist/goal/GoalCopilotController.kt",
               "summary": "Runtime seek, bounded observation, guide, two-hit reacquisition, handoff revocation, and explicit completion controller."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r18/sc16-dstext-pareto-observability-v0/result.json",
+              "summary": "Fresh DSText V2 Pareto observability terminal, SHA-256 9b97f1c59945d46e891f1ee584d1d7372cc47432ba8f64e75049e1cc56cf9f14."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r19/sc17-triview-semantic-consensus-development-v0/result.json",
+              "summary": "Consumed-observation tri-view consensus diagnostic, SHA-256 7807d5f419ef6d81690a3896fcf4ac63f26045dd671cd88973e94b182c148e4e."
             }
           ],
           "updated_at": "2026-08-28"
         }
       ],
-      "search_text": "Active text perception for mobile robots 宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。 l10 literature-reserve l10-r0 Active text perception for mobile robots — l10:9 route mechanism 宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。 云台室内机器人、静态文字；没有目标语义绑定、身体靠近、到达或交接。 ten-meter-copilot 已落入 core:assist 的目标控制器：按证据缺口选择 SWEEP/SCAN/PAN/APPROACH/SIDESTEP/HOLD，且只有新鲜语义可锁定、导航和重捕获。 消除 OCR 非命中导致的错误 STOP/假 NONE，为每个不可导航帧产生有界且可解释的补观测动作，同时阻止连续性证据越权。 Terminal STOP frames fell from 124 to 0, target-present false-NONE frames from 24 to 0, every non-navigation frame received an explicit action, and all 30 episodes retained end-to-end acquisition plus reacquisition. source_stop_frames=124; normalized_stop_frames=0 source_false_none_target_present_frames=24; normalized_false_none_target_present_frames=0 explicit_non_navigation_action_coverage=1.0 end_to_end_successful_episodes=30/30 Development replay representation and runtime contract evidence only. The replay did not execute camera or body actions, so it does not establish causal readability gain, natural-distribution performance, metric arrival, product benefit, user benefit, or safety."
+      "search_text": "Active text perception for mobile robots 宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。 l10 literature-reserve l10-r0 Active text perception for mobile robots — l10:9 route mechanism 宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。 云台室内机器人、静态文字；没有目标语义绑定、身体靠近、到达或交接。 ten-meter-copilot 已落入 core:assist 的目标控制器：按证据缺口选择 SWEEP/SCAN/PAN/APPROACH/SIDESTEP/HOLD，且只有新鲜语义可锁定、导航和重捕获。 消除 OCR 非命中导致的错误 STOP/假 NONE，为每个不可导航帧产生有界且可解释的补观测动作，同时阻止连续性证据越权。 SC2 still removes terminal STOP/false-NONE and covers every observation opportunity, but SC15 direction alignment, SC16 height-sharpness-centering Pareto quality, and SC17 exact tri-view consensus all failed to establish reliable semantic observation gain. source_stop_frames=124; normalized_stop_frames=0 source_false_none_target_present_frames=24; normalized_false_none_target_present_frames=0 explicit_non_navigation_action_coverage=1.0 end_to_end_successful_episodes=30/30 SC15 mean_target_semantic_gain=0.6667 aligned vs 0.8000 opposed; wrong_gate=0.1667 vs 0.0 SC16 transitions=2677; mean_gain_delta=0.0093; improvement_rate_delta=0.0322; gate_crossing=0.0166 aligned vs 0.0428 opposed SC17 precision=0.9097 baseline vs 0.9188 consensus; wrong_reduction=0.2431; wrong_consensus_tracks=5/49 SC2 supports an action interface, not action benefit. SC15 and SC16 are passive recorded-motion associations; SC17 reuses consumed observations. No issued physical action, causal readability gain, detector, exact-instance selection, metric arrival, product benefit, user benefit, or safety was established."
     },
     {
       "id": "paper-agninav#hftf-h01",
@@ -13658,6 +13671,108 @@
         "research/active/l10-r0/README.md"
       ],
       "search_text": "terminal-l10-sc14-causal-micro-motion-action-belief ten-meter-copilot SC14_CAUSAL_MICRO_MOTION_ACTION_BELIEF_MECHANICS_SIGNAL On SceneFun3D 421013, causal paired motion improved type correctness from 7/8 to 8/8, translation-direction hits from 4/7 to 7/7, and mean direction error from 38.89 to 0.91 degrees; the sole rotational axis passed with 2.22 cm pivot-line error. Passive natural before/after RGB-D functional motion or an explicitly authorized benign micro-interaction protocol with observable correspondences and separate safety authority. promoting evaluator-paired simulated motion to phone capability claiming safe user probing without authorization and evidence returning to static action-axis tuning emitting HANDOFF_READY, arrival, or completion from action geometry alone"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-sc15-passive-action-conditioned-observation-gain",
+      "status": "negative",
+      "question": "Across 17 consumed ArTVideo Development PAN/SCAN opportunities, 12 geometrically aligned transitions had lower mean target semantic gain than five opposed transitions (0.6667 vs 0.8000) and higher wrong-gate creation (16.67% vs 0%).",
+      "baseline": null,
+      "change": "A new action-quality representation and source-disjoint evidence, or an actually issued observation action with before/after outcome receipt.",
+      "primary_metric": null,
+      "decision": "SC15_PASSIVE_ACTION_CONDITIONED_OBSERVATION_GAIN_GATE_NOT_MET",
+      "report": "docs/CURRENT_DECISION.md",
+      "source": "decision/terminals.json",
+      "commit": "2d192300",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "geometry_motion": 30,
+        "observation_perception": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A new action-quality representation and source-disjoint evidence, or an actually issued observation action with before/after outcome receipt.",
+      "forbidden_repeats": [
+        "changing the three-frame horizon",
+        "centering-gain thresholds",
+        "adding consumed video subsets",
+        "claiming passive alignment as action causality"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "docs/PROJECT_STATE.md",
+        "research/active/l10-r0/README.md"
+      ],
+      "search_text": "terminal-l10-sc15-passive-action-conditioned-observation-gain ten-meter-copilot SC15_PASSIVE_ACTION_CONDITIONED_OBSERVATION_GAIN_GATE_NOT_MET Across 17 consumed ArTVideo Development PAN/SCAN opportunities, 12 geometrically aligned transitions had lower mean target semantic gain than five opposed transitions (0.6667 vs 0.8000) and higher wrong-gate creation (16.67% vs 0%). A new action-quality representation and source-disjoint evidence, or an actually issued observation action with before/after outcome receipt. changing the three-frame horizon centering-gain thresholds adding consumed video subsets claiming passive alignment as action causality"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-sc16-pareto-observability-semantic-gain",
+      "status": "negative",
+      "question": "On fresh protocol-frozen DSText V2 indoor video, 422 Pareto-aligned versus 444 opposed transitions produced only +0.0093 mean semantic-gain delta, +0.0322 improvement-rate delta, and lower gate crossing (1.66% vs 4.28%).",
+      "baseline": null,
+      "change": "An action-outcome source that can observe causal information gain and repair policy, or genuinely new semantic/identity information.",
+      "primary_metric": null,
+      "decision": "SC16_PARETO_OBSERVABILITY_SEMANTIC_GAIN_GATE_NOT_MET",
+      "report": "docs/CURRENT_DECISION.md",
+      "source": "decision/terminals.json",
+      "commit": "2d192300",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "An action-outcome source that can observe causal information gain and repair policy, or genuinely new semantic/identity information.",
+      "forbidden_repeats": [
+        "height, sharpness, or centering weight sweeps",
+        "quality thresholds",
+        "horizon changes",
+        "opening another video with the same Pareto rule"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "docs/PROJECT_STATE.md",
+        "research/active/l10-r0/README.md"
+      ],
+      "search_text": "terminal-l10-sc16-pareto-observability-semantic-gain ten-meter-copilot SC16_PARETO_OBSERVABILITY_SEMANTIC_GAIN_GATE_NOT_MET On fresh protocol-frozen DSText V2 indoor video, 422 Pareto-aligned versus 444 opposed transitions produced only +0.0093 mean semantic-gain delta, +0.0322 improvement-rate delta, and lower gate crossing (1.66% vs 4.28%). An action-outcome source that can observe causal information gain and repair policy, or genuinely new semantic/identity information. height, sharpness, or centering weight sweeps quality thresholds horizon changes opening another video with the same Pareto rule"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-sc17-triview-semantic-consensus-development",
+      "status": "negative",
+      "question": "A fixed exact-normalized majority over views 0/3/6 raised precision only 90.97% to 91.88%, reduced wrong outputs 24.31%, and still formed wrong consensus on 5/49 consumed SC16 tracks.",
+      "baseline": null,
+      "change": "Causal action-outcome feedback or a new independent identity source; no fresh video is authorized for this consensus rule.",
+      "primary_metric": null,
+      "decision": "SC17_TRIVIEW_SEMANTIC_CONSENSUS_DEVELOPMENT_GATE_NOT_MET",
+      "report": "docs/CURRENT_DECISION.md",
+      "source": "decision/terminals.json",
+      "commit": "2d192300",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "temporal_belief": 30,
+        "observation_perception": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Causal action-outcome feedback or a new independent identity source; no fresh video is authorized for this consensus rule.",
+      "forbidden_repeats": [
+        "view-offset sweeps",
+        "edit-distance matching",
+        "vote-count or confidence tuning",
+        "opening a fresh DSText video with SC17"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "docs/PROJECT_STATE.md",
+        "research/active/l10-r0/README.md"
+      ],
+      "search_text": "terminal-l10-sc17-triview-semantic-consensus-development ten-meter-copilot SC17_TRIVIEW_SEMANTIC_CONSENSUS_DEVELOPMENT_GATE_NOT_MET A fixed exact-normalized majority over views 0/3/6 raised precision only 90.97% to 91.88%, reduced wrong outputs 24.31%, and still formed wrong consensus on 5/49 consumed SC16 tracks. Causal action-outcome feedback or a new independent identity source; no fresh video is authorized for this consensus rule. view-offset sweeps edit-distance matching vote-count or confidence tuning opening a fresh DSText video with SC17"
     },
     {
       "kind": "current_terminal",

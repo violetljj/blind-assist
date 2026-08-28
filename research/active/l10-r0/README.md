@@ -272,6 +272,61 @@ non-navigation action coverage, `30/30` end-to-end episodes); it is not a new
 camera-action experiment and still does not establish causal readability gain,
 metric arrival, product benefit, or safety.
 
+### SC15--SC17: cheap active-view proxies do not predict identity gain
+
+SC15 first asked whether the frozen SC2 action already aligned with useful
+natural view changes on the consumed video1+video10 Development stream. Action
+output was sealed before evaluator target geometry and target-associated OCR
+outcomes were read. There were 17 evaluable `PAN/SCAN` opportunities: 12
+geometrically aligned and five opposed. Aligned transitions had lower mean
+semantic gain than opposed transitions (`0.6667` versus `0.8000`) and created
+wrong semantic gates in 16.67% versus 0%. Decision:
+`SC15_PASSIVE_ACTION_CONDITIONED_OBSERVATION_GAIN_GATE_NOT_MET`.
+
+SC16 then changed both source and representation. Before any payload or OCR
+outcome was opened, a protocol selected the only `Street_View_Indoor` entry in
+the already-admitted DSText V2 archive and defined a three-coordinate Pareto
+view quality vector: rectified text height, crop sharpness, and horizontal
+centering. The official track quadrilateral was evaluator-authoritative and
+PP-OCRv6 recognition-only supplied the independent semantic result. Across 216
+natural frames, 49 eligible tracks, 2,824 observations, and 2,677 transitions,
+422 were Pareto-aligned and 444 Pareto-opposed. Aligned minus opposed mean
+semantic gain was only `+0.0093` against the frozen `+0.10` gate; improvement
+rate delta was `+0.0322` against `+0.15`, and semantic gate crossing was lower
+(`1.66%` versus `4.28%`). Decision:
+`SC16_PARETO_OBSERVABILITY_SEMANTIC_GAIN_GATE_NOT_MET`.
+
+One final Development-only mechanism check reused the now-consumed SC16 OCR
+observations without opening another video. SC17 required an exact normalized
+majority across views at offsets `0/3/6`. Precision increased only 90.97% to
+91.88% (`+0.91 pp`), wrong outputs fell 24.31%, correct coverage remained
+85.05%, and five of 49 tracks still formed at least one wrong consensus. It did
+not earn a fresh test:
+`SC17_TRIVIEW_SEMANTIC_CONSENSUS_DEVELOPMENT_GATE_NOT_MET`.
+
+These terminals close centering/last-bearing as an observability proxy, a
+height-sharpness-centering Pareto rule, and fixed three-view OCR majority on
+their opened evidence. Do not sweep horizon, feature weights, quality
+thresholds, edit distance, vote count, or semantic gates. The next eligible
+algorithm needs a new source that records an actually issued observation action
+and its before/after result, then learns or repairs policy from causal outcome;
+alternatively it must introduce genuinely new identity information. Passive
+video association remains useful only as a source audit.
+
+Implementations: `artvideo_passive_action_gain.py`,
+`dstext_pareto_observability.py`, and
+`dstext_triview_semantic_consensus.py`; frozen SC16 protocol:
+`dstext_observability_protocol_v0.json`. Evidence:
+
+- SC15 result: `artifacts.local/evidence/l10-r17/sc15-passive-action-conditioned-observation-gain-v0/result.json`,
+  SHA-256 `e1d170dda9fedf5b2edb38d7c107dd84431bad8f40fa9373c5131fd646ff5455`.
+- SC16 protocol: `research/active/l10-r0/dstext_observability_protocol_v0.json`,
+  SHA-256 `cc7bea02855763cd3907094c977a9aa87957fa88314d7312447d7bf4fb7299bd`.
+- SC16 result: `artifacts.local/evidence/l10-r18/sc16-dstext-pareto-observability-v0/result.json`,
+  SHA-256 `9b97f1c59945d46e891f1ee584d1d7372cc47432ba8f64e75049e1cc56cf9f14`.
+- SC17 result: `artifacts.local/evidence/l10-r19/sc17-triview-semantic-consensus-development-v0/result.json`,
+  SHA-256 `7807d5f419ef6d81690a3896fcf4ac63f26045dd671cd88973e94b182c148e4e`.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

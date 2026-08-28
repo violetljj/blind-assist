@@ -147,6 +147,42 @@
       "commit": "0f22103b"
     },
     {
+      "id": "terminal-l10-sc15-passive-action-conditioned-observation-gain",
+      "route": "ten-meter-copilot",
+      "failure_layers": ["geometry_motion", "observation_perception", "evaluation_evidence"],
+      "status": "negative",
+      "decision": "SC15_PASSIVE_ACTION_CONDITIONED_OBSERVATION_GAIN_GATE_NOT_MET",
+      "summary": "Across 17 consumed ArTVideo Development PAN/SCAN opportunities, 12 geometrically aligned transitions had lower mean target semantic gain than five opposed transitions (0.6667 vs 0.8000) and higher wrong-gate creation (16.67% vs 0%).",
+      "successor_requires": "A new action-quality representation and source-disjoint evidence, or an actually issued observation action with before/after outcome receipt.",
+      "forbidden_repeats": ["changing the three-frame horizon", "centering-gain thresholds", "adding consumed video subsets", "claiming passive alignment as action causality"],
+      "evidence": ["docs/CURRENT_DECISION.md", "docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "commit": "2d192300"
+    },
+    {
+      "id": "terminal-l10-sc16-pareto-observability-semantic-gain",
+      "route": "ten-meter-copilot",
+      "failure_layers": ["observation_perception", "geometry_motion", "evaluation_evidence"],
+      "status": "negative",
+      "decision": "SC16_PARETO_OBSERVABILITY_SEMANTIC_GAIN_GATE_NOT_MET",
+      "summary": "On fresh protocol-frozen DSText V2 indoor video, 422 Pareto-aligned versus 444 opposed transitions produced only +0.0093 mean semantic-gain delta, +0.0322 improvement-rate delta, and lower gate crossing (1.66% vs 4.28%).",
+      "successor_requires": "An action-outcome source that can observe causal information gain and repair policy, or genuinely new semantic/identity information.",
+      "forbidden_repeats": ["height, sharpness, or centering weight sweeps", "quality thresholds", "horizon changes", "opening another video with the same Pareto rule"],
+      "evidence": ["docs/CURRENT_DECISION.md", "docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "commit": "2d192300"
+    },
+    {
+      "id": "terminal-l10-sc17-triview-semantic-consensus-development",
+      "route": "ten-meter-copilot",
+      "failure_layers": ["temporal_belief", "observation_perception", "evaluation_evidence"],
+      "status": "negative",
+      "decision": "SC17_TRIVIEW_SEMANTIC_CONSENSUS_DEVELOPMENT_GATE_NOT_MET",
+      "summary": "A fixed exact-normalized majority over views 0/3/6 raised precision only 90.97% to 91.88%, reduced wrong outputs 24.31%, and still formed wrong consensus on 5/49 consumed SC16 tracks.",
+      "successor_requires": "Causal action-outcome feedback or a new independent identity source; no fresh video is authorized for this consensus rule.",
+      "forbidden_repeats": ["view-offset sweeps", "edit-distance matching", "vote-count or confidence tuning", "opening a fresh DSText video with SC17"],
+      "evidence": ["docs/CURRENT_DECISION.md", "docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "commit": "2d192300"
+    },
+    {
       "id": "terminal-grail-g1-active-multiview-appearance-closed",
       "route": "goal-copilot-p0",
       "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],

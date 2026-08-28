@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "experiment": "l10_sc16_dstext_pareto_observability_v0",
+  "frozen_before_payload_or_outcome_access": true,
+  "source": {
+    "dataset": "DSText V2 official training media and annotations",
+    "media_archive": "artifacts.local/datasets/dstext-v2-source-canary/split_18.zip",
+    "media_entry": "Street_View_Indoor/Video_191_9_1.mp4",
+    "annotation_archive": "artifacts.local/datasets/dstext-v2-source-canary/V2_Ann_Train.zip",
+    "annotation_entry": "Street_View_Indoor/Video_191_9_1_GT.xml",
+    "selection_rule": "the only Street_View_Indoor entry exposed by the already-admitted archive metadata",
+    "other_media_opened": false
+  },
+  "task": "Predict whether a naturally occurring future view improves target-text semantic readability without using OCR outcome in view classification.",
+  "provider": {
+    "target_region": "evaluator-authoritative DSText quadrilateral for this mechanics canary only",
+    "recognizer": "existing PP-OCRv6 small recognition model; detection disabled",
+    "rectification": "perspective crop at native quadrilateral resolution",
+    "semantic_score": "frozen L10 lexical similarity between official transcription and recognized text"
+  },
+  "eligibility": {
+    "track_transcription": "not ### and at least three normalized alphanumeric characters",
+    "minimum_annotated_frames": 12,
+    "quadrilateral": "four finite points producing a non-empty in-frame perspective crop",
+    "sampling": "all eligible annotated track frames; no track, frame, or outcome subset selection"
+  },
+  "transition": {
+    "horizon_annotated_frames": 3,
+    "quality_vector": [
+      "log_rectified_text_height_px",
+      "log_laplacian_variance_plus_one",
+      "negative_absolute_horizontal_center_error"
+    ],
+    "pareto_aligned": "future is no worse on all three quality coordinates and strictly better on at least one",
+    "pareto_opposed": "future is no better on all three quality coordinates and strictly worse on at least one",
+    "mixed": "excluded from the primary aligned-vs-opposed comparison"
+  },
+  "gates": {
+    "minimum_aligned_transitions": 20,
+    "minimum_opposed_transitions": 20,
+    "minimum_mean_semantic_gain_delta": 0.10,
+    "minimum_semantic_improvement_rate_delta": 0.15,
+    "aligned_gate_crossing_rate_not_below_opposed": true
+  },
+  "sweeps": [],
+  "schema_adaptation_note": "Eligibility fields were added after reading only the XML element and attribute schema and before any OCR outcome was produced; no gate or cohort selection changed.",
+  "claim_ceiling": "Fresh public natural-video observability mechanics only. GT quadrilaterals are privileged proposals and recorded motion is passive, not controller-executed. No detector, exact-instance selection, live active-view causality, arrival, product, user-benefit, or safety claim."
+}

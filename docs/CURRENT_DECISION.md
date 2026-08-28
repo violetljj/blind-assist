@@ -2,7 +2,8 @@
 
 Status: `L10_R0_ACTIVE / SC14_CAUSAL_MICRO_MOTION_ACTION_BELIEF_MECHANICS_SIGNAL /
 SC14_CORE_CAUSAL_ACTION_HANDOFF_GUARD_IMPLEMENTED /
-L10_CORE_SEEK_GUIDE_REACQUIRE_CONTROLLER_IMPLEMENTED` and
+L10_CORE_SEEK_GUIDE_REACQUIRE_CONTROLLER_IMPLEMENTED /
+SC15_SC16_SC17_ACTIVE_VIEW_PROXY_ROUTES_CLOSED` and
 `DTR_R2_PUBLIC_REAL_PRIVILEGED_CEILINGS_ESTABLISHED /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
@@ -93,6 +94,26 @@ inherits the existing Development representation result (`124 -> 0` STOP,
 `24 -> 0` target-present false-NONE, 100% non-navigation action coverage,
 `30/30` end-to-end episodes) but adds no executed-view causality, live-camera,
 metric-arrival, product, user-benefit, or safety evidence.
+
+Three bounded successors now close the cheap-observability branch. On consumed
+ArTVideo Development, SC15 found 17 passive `PAN/SCAN` transitions; aligned
+motion had lower semantic gain than opposed motion (`0.6667` versus `0.8000`)
+and higher wrong-gate creation (16.67% versus 0%). On a protocol-frozen fresh
+DSText V2 indoor video, SC16 processed 2,824 recognition observations and 2,677
+transitions; Pareto improvement in text height, sharpness, and centering yielded
+only `+0.0093` aligned-minus-opposed semantic gain and lower gate crossing
+(1.66% versus 4.28%). SC17 then reused that consumed Development result for one
+fixed three-view exact-consensus rule; precision moved only 90.97% to 91.88%,
+wrong outputs fell 24.31%, and five of 49 tracks still formed wrong consensus.
+
+Accept the three frozen gate negatives. Do not sweep temporal horizon, quality
+weights, centering/scale thresholds, edit distance, vote count, or OCR gates on
+the opened sources. The next active-observation algorithm must use a new source
+with an actually issued action plus before/after observation receipt, allowing
+causal outcome feedback and policy repair, or add genuinely new identity
+information. None of SC15--SC17 changes the existing SC2 action-interface
+mechanics result or establishes live active-view, arrival, product, user, or
+safety benefit.
 
 ## DTR-R2 decision
 
