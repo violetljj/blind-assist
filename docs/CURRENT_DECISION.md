@@ -17,6 +17,7 @@ SC32_BOUNDARY_ORDINAL_SOURCE_NOT_EVALUABLE /
 SC34_ORIENTATION_QUOTIENT_ORDINAL_FRESH_GATE_NOT_MET` and
 `DTR_R2_PUBLIC_REAL_PRIVILEGED_CEILINGS_ESTABLISHED /
 DTR_C2_M1_CTB_CONFIDENCE_TRACK_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL /
+DTR_C3_M1_HYBRID_RAW_POINT_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
 ## Parallel product lines
@@ -552,6 +553,36 @@ may replace the occupancy-cell motion source with deployable raw-point direct
 velocity behind the now-supported confidence/track-gap interface, using measured
 GPU backend selection. Do not tune C2 confidence, route, lifecycle, or motion
 thresholds; do not open complex trajectory forecasting or R8 from this result.
+
+C3 has now replaced the motion observation with causal ego-compensated raw-point
+direct velocity. Three-dimensional 0.24 m voxel centroids emit velocity only
+under reciprocal nearest correspondence and the unchanged R7 speed bounds.
+Backend choice was measured per sequence before matching: one sequence selected
+Torch CUDA and six selected SciPy KD-tree because it was faster on their actual
+point counts; every receipt records the observed device.
+
+M1-PD preserves `20/21` natural CONTACT recall and raises induced-gap recovery
+from R7's `29/63` to `52/63`, but 85 natural false segments make it unsuitable
+as an independent alert source. Applying the existing independent-history hard
+gate reduces false segments to 53 and F1 rises to 42.55%, but recovery falls to
+`36/63`. This localizes the tradeoff to evidence routing rather than a missing
+confidence threshold.
+
+Accept `DTR_C3_M1_HYBRID_RAW_POINT_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL`.
+M1-HYBRID uses M1-CT on normal frames and opens reciprocal M1-PD plus sealed R7
+fallback only inside an observable bounded gap of a previously tracked target.
+Its natural replay therefore remains `20/21`, 38 false segments, 50.63% F1, and
+2.08 s median lead, while M1-PD alone confirms a lower bound of `52/63` recovery
+for the gap union. Relative to R7 this is 52 fewer natural false segments,
++20.10 F1 points, and at least 23 more fresh dropout recoveries. Keeping R7 as a
+gap fallback also preserves the earlier consumed `9/9` mechanism by
+construction.
+
+This remains public LiDAR replay with privileged current native boxes for
+scorer-side spatial attribution. Do not tune C3 voxel size, nearest-neighbor,
+confidence, route, motion, or lifecycle parameters. The next source change is
+detector-independent occupancy attribution and runtime integration; complex
+trajectory forecasting and R8 remain closed.
 
 ## What stops here
 

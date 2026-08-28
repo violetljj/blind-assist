@@ -140,6 +140,18 @@ R2 replacement: R2 still has 29 natural false segments and 57.14% F1. The next
 source upgrade is deployable raw-point direct velocity behind the supported
 confidence/bridge interface, not route-threshold tuning or trajectory
 forecasting.
+C3 has now executed that raw-point upgrade across the same seven frozen
+sequences. Ego-compensated reciprocal 3-D voxel direct velocity retains `20/21`
+CONTACT recall and recovers `52/63` induced track gaps, versus R7's `29/63`, but
+its 85 natural false segments are too broad for independent alert creation. An
+independent-history gate reduces false segments to 53 but recovery to `36/63`.
+The selected M1-HYBRID therefore uses M1-CT normally and admits M1-PD plus R7
+fallback only inside an observable prior-track gap. It keeps C2's 38 natural
+false segments, 50.63% F1, and 2.08 s median lead while confirming at least
+`52/63` gap recoveries. Decision:
+`DTR_C3_M1_HYBRID_RAW_POINT_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL`. Current-box
+spatial attribution remains privileged; detector-independent attribution and
+runtime integration are next, not threshold tuning or trajectory forecasting.
 
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC

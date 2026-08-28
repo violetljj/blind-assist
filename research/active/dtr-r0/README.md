@@ -11,6 +11,7 @@ DTR_M3_D_EVALUATOR_CIRCLE_OBB_SEMANTICS_MISMATCH_NO_FRESH_M3_O /
 DTR_C0_GLOBAL_ORIENTED_RISK_CONTRACT_NOT_EVALUABLE_ALWAYS_CONTACT_WINDOW /
 DTR_C1_FRESH_GLOBAL_OBB_COHORT_ADMITTED_METADATA_ONLY /
 DTR_C2_M1_CTB_CONFIDENCE_TRACK_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL /
+DTR_C3_M1_HYBRID_RAW_POINT_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL /
 R4_NOT_OPENED`
 
 ## Result first
@@ -537,6 +538,62 @@ Evidence:
   `17eb81de3fc74e51ffd7f43ec9d337a81a52dfdc6392431f6ac85ff4af85f75f`;
 - frozen-bag acquisition receipt `acquisition.json`, SHA-256
   `774f5a7b3dcf4ecfc87e69f3c25a3fb36699dcaddb482a679b785d074dd4ad67`.
+
+## DTR-C3 raw-point direct velocity and multi-resolution evidence routing
+
+C3 changes the motion observation rather than the route matcher. After causal
+ego compensation, current and historical raw LiDAR points are reduced to fixed
+0.24 m 3-D voxel centroids. Only reciprocal nearest correspondences inside the
+unchanged R7 speed range emit direct velocity; raw point counts provide spatial
+support. Evaluator identity and future boxes never enter matching. The design is
+a deliberately small direct-velocity analogue of the ego-compensated local
+correspondence direction used by [ICP-Flow](https://openaccess.thecvf.com/content/CVPR2024/html/Lin_ICP-Flow_LiDAR_Scene_Flow_Estimation_with_ICP_CVPR_2024_paper.html),
+with confidence/motion separation motivated by
+[SLIM](https://openaccess.thecvf.com/content/ICCV2021/html/Baur_SLIM_Self-Supervised_LiDAR_Scene_Flow_and_Motion_Segmentation_ICCV_2021_paper.html).
+It is not a reproduction of either model.
+
+Every sequence benchmarked equivalent SciPy KD-tree and Torch CUDA matching
+through the shared execution contract before launch. The actual data selected
+CUDA on one sequence and CPU on six; all receipts record measured latency and
+the observed device. CPU was retained only when measured faster.
+
+| Arm | CONTACT recall | False segments | Event F1 | Median lead | Dropout recovery |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| R7-P naive dense flow | `20/21` | 90 | 30.53% | 2.44 s | `29/63` |
+| M1-CTB cell confidence bridge | `20/21` | **38** | **50.63%** | 2.08 s | `29/63` |
+| M1-PD reciprocal raw-point velocity | `20/21` | 85 | 31.75% | 2.83 s | **`52/63`** |
+| M1-PDC + independent-history hard gate | `20/21` | 53 | 42.55% | 2.08 s | `36/63` |
+| M1-PDCB raw-point gap bridge | `20/21` | 53 | 42.55% | 2.08 s | **`52/63`** |
+| **M1-HYBRID multi-resolution router** | **`20/21`** | **38** | **50.63%** | **2.08 s** | **at least `52/63`** |
+
+Raw-point reciprocal motion is much better occlusion evidence than R7 on this
+cohort (`52/63` versus `29/63`) but is too broad to originate alerts by itself.
+The old independent-history cell gate cuts M1-PD false segments `85 -> 53`, yet
+also cuts recovery `52 -> 36` and sometimes fragments one false interval into
+several. M1-HYBRID therefore routes evidence by observable state: normal frames
+use the lower-false M1-CT path; a bounded gap of an already tracked target may
+use M1-PD, with sealed R7 retained as fallback. Its natural score is exactly
+M1-CTB, while `52/63` is the confirmed M1-PD lower bound for the union. Retaining
+R7 in the gap also preserves the earlier consumed `9/9` recovery by construction.
+
+Decision:
+`DTR_C3_M1_HYBRID_RAW_POINT_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL`. Relative to
+R7-P, the selected structure confirms the same `20/21` recall, 52 fewer natural
+false segments (`-57.8%`), +20.10 F1 points, and at least 23 additional fresh
+dropout recoveries. This is the strongest DTR motion mechanism so far, but it
+still uses privileged current boxes for scorer-side spatial attribution and does
+not beat R2's natural 29 false segments. Do not tune voxel size, correspondence,
+confidence, route, or lifecycle on C3. The next layer is detector-independent
+occupancy attribution and product-facing sensor integration, not complex
+trajectory forecasting.
+
+Evidence:
+
+- `artifacts.local/evidence/dtr-c3/raw-point-direct-velocity-canary/result.json`,
+  SHA-256
+  `499367d4f059bbe063d7beefd55b3ec6e2ebd3bafce425cc53eb87320c7af5d8`;
+- seven per-sequence raw-point manifests and backend receipts under
+  `artifacts.local/evidence/dtr-c3/raw-point-direct-velocity-canary/ledgers/`.
 
 The source split explains why pooling is not enough:
 
