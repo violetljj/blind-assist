@@ -176,6 +176,25 @@ tasks still fail because a wrong cluster survives inside the correct parent.
 It is not open-vocabulary, phone-camera, reachability, orientation, arrival,
 completion, product, user-benefit, or safety evidence.
 
+SC12 and SC13 opened the next action-geometry layer on two source-disjoint
+SceneFun3D scenes. Task-signed parent geometry regressed (`7/9 -> 6/9` signed
+translation-direction hits), while a decoupled local contact-surface normal
+retained `4/6` hits and improved mean error only 30.39 -> 28.18 degrees. These
+static routes are terminal negatives on their consumed scenes; axis, PCA,
+threshold, seed, and fusion sweeps are forbidden.
+
+SC14 replaces static inference with causal paired functional-point motion. On
+scene 421013, motion-type correctness improved `7/8 -> 8/8`, translation
+direction hits `4/7 -> 7/7`, and mean direction error 38.89 -> 0.91 degrees.
+The one rotational action passed its axis gate and had 2.22 cm pivot-line error.
+Decision: `SC14_CAUSAL_MICRO_MOTION_ACTION_BELIEF_MECHANICS_SIGNAL`.
+
+The positive is only a simulated paired-point mechanics ceiling generated from
+SceneFun3D motion truth. Correspondences, perturbation, and safety are
+privileged; no real user action or natural RGB-D motion was observed. It does
+not establish RGB tracking, safe probing, reachability, body orientation,
+arrival, `HANDOFF_READY`, user completion, product benefit, or safety.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

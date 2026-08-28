@@ -2,7 +2,7 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "7a1a89482839779760c9d761ade13e1d9ed802fd2214c7b6f0a59c88d5389f54",
+  "source_fingerprint": "21ac24fe02f1bdfd49ca4f6800dc3cf144aad262df0bf4a86dbbf4ba708da551",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 223,
@@ -1404,12 +1404,12 @@
         "authority_truth": 3,
         "evaluation_evidence": 9,
         "functional_grounding": 20,
-        "geometry_motion": 9,
+        "geometry_motion": 12,
         "handoff_completion": 12,
         "identity_binding": 18,
         "interaction_readiness": 3,
-        "observation_perception": 3,
-        "source_coverage": 9
+        "source_coverage": 9,
+        "temporal_belief": 3
       },
       "routes": [
         "ten-meter-copilot"
@@ -1423,7 +1423,7 @@
           "verdict": "positive",
           "project_application": "作为 L10 功能落点候选：先绑定正确实例，再在实例内部定位门把手、按钮、座位接触面等真正执行功能的区域。",
           "expected_effect": "在实例身份正确但功能部件错误的故障上，提高 functional-element 命中率并降低 parent-box false handoff。",
-          "observed_effect": "SC8 proved task-relational selection (4/6 to 6/6 legal, 0.50 to 1.00 recall, 2 to 0 wrong). SC11 then replaced evaluator proposals: multi-view proposal recall reached 10/10 and improved legal tasks 3/6 to 4/6, mean recall 0.50 to 0.8333, and wrong parts 8 to 2 versus single-view.",
+          "observed_effect": "SC12 and SC13 retained terminal static-geometry negatives. SC14 changed the source to causal paired motion: type 7/8 to 8/8, translation hits 4/7 to 7/7, mean error 38.89 to 0.91 degrees, and one rotational pivot line within 2.22 cm.",
           "metrics": [
             "evaluable_tasks=6/10 descriptions; 4 NOT_EVALUABLE_PARENT_BINDING",
             "legal_commit_rate=0.6667 baseline vs 1.0000 SC8",
@@ -1434,9 +1434,15 @@
             "SC11 proposal_recall=0.80 single-view vs 1.00 multi-view",
             "SC11 legal_commit_rate=0.50 single-view vs 0.6667 multi-view",
             "SC11 mean_target_set_recall=0.50 single-view vs 0.8333 multi-view",
-            "SC11 wrong_part_count=8 single-view vs 2 multi-view"
+            "SC11 wrong_part_count=8 single-view vs 2 multi-view",
+            "SC12 signed_direction_hit=7/9 baseline vs 6/9 task-signed",
+            "SC13 signed_direction_hit=4/6 baseline vs 4/6 local-contact",
+            "SC14 motion_type_correct=7/8 static vs 8/8 causal",
+            "SC14 translation_direction_hit=4/7 static vs 7/7 causal",
+            "SC14 mean_translation_error_deg=38.89 static vs 0.91 causal",
+            "SC14 rotation_axis_hit=1/1; pivot_line_error_m=0.0222"
           ],
-          "claim_boundary": "Positive evidence is limited to one opened SceneFun3D Development scene. SC8 used evaluator proposals; SC11 used privileged parent geometry and posed native RGB-D. Neither establishes phone-camera or open-world coverage, reachability, orientation, arrival, completion, product benefit, user benefit, or safety.",
+          "claim_boundary": "SC14 is simulated paired-point mechanics evidence with privileged functional seeds, parent OBBs, motion perturbations, and correspondences. It does not establish RGB tracking, safe probing, reachability, body orientation, arrival, HANDOFF_READY, user completion, product benefit, or safety.",
           "evidence": [
             {
               "kind": "external",
@@ -1452,12 +1458,17 @@
               "kind": "artifact",
               "ref": "artifacts.local/evidence/l10-r13/sc11-task-grounded-rgbd-functional-proposer-v0/result.json",
               "summary": "Truth-blind SC11 proposal-provider result, SHA-256 ec188e8396159b3cc364bd759be7328eb1d458e6082ca219dd98e99af1e9c380."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r16/sc14-causal-micro-motion-421013-v0/result.json",
+              "summary": "Causal action-belief mechanics result, SHA-256 bb11fa3b87ea350ad793d3c62daf81e183b6806f08c82b2c1df1535677d1ca01."
             }
           ],
           "updated_at": "2026-08-28"
         }
       ],
-      "search_text": "SceneFun3D: Fine-Grained Functionality and Affordance Understanding in 3D Scenes A dataset, toolkit, and benchmark for grounding task-specific functional elements and affordance regions inside 3D scenes. ten-meter-copilot functional-grounding functional-affordance Task-specific functional-element annotations Represents a scene object through the fine-grained part that performs a requested function, rather than treating the parent object bounding box as the action target. 3D scene task description multi-view RGB-D observations functional element mask affordance region Dataset supervision and benchmark performance do not establish zero-shot transfer, phone-camera reliability, exact-instance identity, navigation completion, or user benefit. parent object box functional element 功能部件 父对象框 ten-meter-copilot 作为 L10 功能落点候选：先绑定正确实例，再在实例内部定位门把手、按钮、座位接触面等真正执行功能的区域。 在实例身份正确但功能部件错误的故障上，提高 functional-element 命中率并降低 parent-box false handoff。 SC8 proved task-relational selection (4/6 to 6/6 legal, 0.50 to 1.00 recall, 2 to 0 wrong). SC11 then replaced evaluator proposals: multi-view proposal recall reached 10/10 and improved legal tasks 3/6 to 4/6, mean recall 0.50 to 0.8333, and wrong parts 8 to 2 versus single-view. evaluable_tasks=6/10 descriptions; 4 NOT_EVALUABLE_PARENT_BINDING legal_commit_rate=0.6667 baseline vs 1.0000 SC8 mean_target_set_recall=0.50 baseline vs 1.00 SC8 wrong_part_count=2 baseline vs 0 SC8 parent_center_false_handoff=6/6; identity_parent_violations=0 SC8 legal_commit_rate=0.6667 baseline vs 1.0000 selector SC11 proposal_recall=0.80 single-view vs 1.00 multi-view SC11 legal_commit_rate=0.50 single-view vs 0.6667 multi-view SC11 mean_target_set_recall=0.50 single-view vs 0.8333 multi-view SC11 wrong_part_count=8 single-view vs 2 multi-view Positive evidence is limited to one opened SceneFun3D Development scene. SC8 used evaluator proposals; SC11 used privileged parent geometry and posed native RGB-D. Neither establishes phone-camera or open-world coverage, reachability, orientation, arrival, completion, product benefit, user benefit, or safety."
+      "search_text": "SceneFun3D: Fine-Grained Functionality and Affordance Understanding in 3D Scenes A dataset, toolkit, and benchmark for grounding task-specific functional elements and affordance regions inside 3D scenes. ten-meter-copilot functional-grounding functional-affordance Task-specific functional-element annotations Represents a scene object through the fine-grained part that performs a requested function, rather than treating the parent object bounding box as the action target. 3D scene task description multi-view RGB-D observations functional element mask affordance region Dataset supervision and benchmark performance do not establish zero-shot transfer, phone-camera reliability, exact-instance identity, navigation completion, or user benefit. parent object box functional element 功能部件 父对象框 ten-meter-copilot 作为 L10 功能落点候选：先绑定正确实例，再在实例内部定位门把手、按钮、座位接触面等真正执行功能的区域。 在实例身份正确但功能部件错误的故障上，提高 functional-element 命中率并降低 parent-box false handoff。 SC12 and SC13 retained terminal static-geometry negatives. SC14 changed the source to causal paired motion: type 7/8 to 8/8, translation hits 4/7 to 7/7, mean error 38.89 to 0.91 degrees, and one rotational pivot line within 2.22 cm. evaluable_tasks=6/10 descriptions; 4 NOT_EVALUABLE_PARENT_BINDING legal_commit_rate=0.6667 baseline vs 1.0000 SC8 mean_target_set_recall=0.50 baseline vs 1.00 SC8 wrong_part_count=2 baseline vs 0 SC8 parent_center_false_handoff=6/6; identity_parent_violations=0 SC8 legal_commit_rate=0.6667 baseline vs 1.0000 selector SC11 proposal_recall=0.80 single-view vs 1.00 multi-view SC11 legal_commit_rate=0.50 single-view vs 0.6667 multi-view SC11 mean_target_set_recall=0.50 single-view vs 0.8333 multi-view SC11 wrong_part_count=8 single-view vs 2 multi-view SC12 signed_direction_hit=7/9 baseline vs 6/9 task-signed SC13 signed_direction_hit=4/6 baseline vs 4/6 local-contact SC14 motion_type_correct=7/8 static vs 8/8 causal SC14 translation_direction_hit=4/7 static vs 7/7 causal SC14 mean_translation_error_deg=38.89 static vs 0.91 causal SC14 rotation_axis_hit=1/1; pivot_line_error_m=0.0222 SC14 is simulated paired-point mechanics evidence with privileged functional seeds, parent OBBs, motion perturbations, and correspondences. It does not establish RGB tracking, safe probing, reachability, body orientation, arrival, HANDOFF_READY, user completion, product benefit, or safety."
     },
     {
       "id": "dataset-spring-robustspring#dtr-dr28",
@@ -3849,11 +3860,13 @@
         "独立开门回执"
       ],
       "layer_scores": {
+        "geometry_motion": 6,
         "handoff_completion": 20,
         "identity_binding": 3,
         "interaction_readiness": 20,
         "observation_perception": 3,
-        "source_coverage": 3
+        "source_coverage": 3,
+        "temporal_belief": 3
       },
       "routes": [
         "ten-meter-copilot"
@@ -3862,25 +3875,35 @@
         {
           "id": "use-ten-meter-copilot-doorbot-2025",
           "route": "ten-meter-copilot",
-          "use_state": "candidate",
-          "reproduction_status": "not_attempted",
-          "verdict": "not_run",
+          "use_state": "active",
+          "reproduction_status": "mechanics_only",
+          "verdict": "positive",
           "project_application": "作为 completion 设计原则：视觉只能提出门/把手动作，完成必须由独立 outcome signal 确认。",
           "expected_effect": "阻止把看似正确的动作点或接近姿态误当成门已打开/任务已完成。",
-          "observed_effect": "",
-          "metrics": [],
-          "claim_boundary": "DoorBot 的机器人、触觉和 20 门实验不可迁移为手机能力；此处只吸收闭环合同，未复现其系统或成功率。",
+          "observed_effect": "SC14 improved motion-type correctness from 7/8 static to 8/8 causal; translational direction hits from 4/7 to 7/7; mean direction error from 38.89 to 0.91 degrees; the single rotational axis passed and pivot-line error was 2.22 cm.",
+          "metrics": [
+            "motion_type_correct=7/8 static vs 8/8 causal",
+            "translation_direction_hit=4/7 static vs 7/7 causal at 15 degrees",
+            "mean_translation_error_deg=38.89 static vs 0.91 causal",
+            "rotation_axis_hit=1/1; pivot_line_error_m=0.0222"
+          ],
+          "claim_boundary": "Mechanics-only adaptation of the independent-outcome principle. SceneFun3D generated the motion and evaluator supplied point correspondences; no robot haptics, natural RGB-D tracking, safe user probe, reachability, arrival, HANDOFF_READY, completion, product benefit, or safety was established.",
           "evidence": [
             {
               "kind": "external",
               "ref": "https://github.com/TX-Leo/DoorBot",
               "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r16/sc14-causal-micro-motion-421013-v0/result.json",
+              "summary": "SC14 mechanics result, SHA-256 bb11fa3b87ea350ad793d3c62daf81e183b6806f08c82b2c1df1535677d1ca01."
             }
           ],
           "updated_at": "2026-08-28"
         }
       ],
-      "search_text": "DoorBot: Closed-Loop Task Planning and Manipulation for Door Opening in the Wild with Haptic Feedback A closed-loop door-opening system that uses haptic feedback to verify outcomes and repair visually generated plans. ten-meter-copilot completion door closed-loop Haptic closed-loop door-function verification Uses contact feedback after an action to distinguish visual plan plausibility from actual latch, handle, and door response, then replans when the outcome disagrees. visual observation planned door action haptic feedback verified action outcome replanned manipulation Requires a robot and contact sensing; success on 20 unseen doors does not establish phone-only sensing, safe human passage, or general door coverage. independent door outcome receipt haptic outcome 独立开门回执 ten-meter-copilot 作为 completion 设计原则：视觉只能提出门/把手动作，完成必须由独立 outcome signal 确认。 阻止把看似正确的动作点或接近姿态误当成门已打开/任务已完成。 DoorBot 的机器人、触觉和 20 门实验不可迁移为手机能力；此处只吸收闭环合同，未复现其系统或成功率。"
+      "search_text": "DoorBot: Closed-Loop Task Planning and Manipulation for Door Opening in the Wild with Haptic Feedback A closed-loop door-opening system that uses haptic feedback to verify outcomes and repair visually generated plans. ten-meter-copilot completion door closed-loop Haptic closed-loop door-function verification Uses contact feedback after an action to distinguish visual plan plausibility from actual latch, handle, and door response, then replans when the outcome disagrees. visual observation planned door action haptic feedback verified action outcome replanned manipulation Requires a robot and contact sensing; success on 20 unseen doors does not establish phone-only sensing, safe human passage, or general door coverage. independent door outcome receipt haptic outcome 独立开门回执 ten-meter-copilot 作为 completion 设计原则：视觉只能提出门/把手动作，完成必须由独立 outcome signal 确认。 阻止把看似正确的动作点或接近姿态误当成门已打开/任务已完成。 SC14 improved motion-type correctness from 7/8 static to 8/8 causal; translational direction hits from 4/7 to 7/7; mean direction error from 38.89 to 0.91 degrees; the single rotational axis passed and pivot-line error was 2.22 cm. motion_type_correct=7/8 static vs 8/8 causal translation_direction_hit=4/7 static vs 7/7 causal at 15 degrees mean_translation_error_deg=38.89 static vs 0.91 causal rotation_axis_hit=1/1; pivot_line_error_m=0.0222 Mechanics-only adaptation of the independent-outcome principle. SceneFun3D generated the motion and evaluator supplied point correspondences; no robot haptics, natural RGB-D tracking, safe user probe, reachability, arrival, HANDOFF_READY, completion, product benefit, or safety was established."
     },
     {
       "id": "paper-doppelgangers-learning-to-disambiguate-images-of-similar-structures#goal-audit-37",

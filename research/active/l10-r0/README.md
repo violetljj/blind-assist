@@ -1,6 +1,6 @@
 # L10-R0 Goal-Lock Copilot
 
-Status: `ACTIVE / L10-SC11 TASK-GROUNDED RGB-D MULTI-VIEW FUNCTIONAL PARTS`
+Status: `ACTIVE / L10-SC14 CAUSAL MICRO-MOTION ACTION BELIEF`
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -511,6 +511,80 @@ Implementations: `scenefun3d_multiview_functional_proposer.py`,
   SHA-256 `bc8e7f509cf2ebc1538127fe3dcdf59663292145c7c042c8ed81303f118a0d0b`.
 - SC11 result: `artifacts.local/evidence/l10-r13/sc11-task-grounded-rgbd-functional-proposer-v0/result.json`,
   SHA-256 `ec188e8396159b3cc364bd759be7328eb1d458e6082ca219dd98e99af1e9c380`.
+
+## L10-SC12--SC14: do not infer action kinematics from static appearance
+
+SC12 advances from functional grounding toward orientation and handoff while
+keeping completion authority separate. It predicts two axes: where the camera
+should approach and face the authorized functional contact, and how that
+contact should translate or rotate. Motion annotations are loaded only after
+the action-pose provider is sealed.
+
+The first static representation failed on a source-disjoint SceneFun3D scene
+(`421013 / 42444703`). Parent-surface geometry already gave `7/9` signed
+translation-direction hits, while task-signed geometry fell to `6/9`; mean
+angular error regressed from 20.40 to 30.39 degrees. SC13 therefore decoupled
+the parent-facing approach axis from a local 3D contact-surface action axis and
+kept door/window kinematics set-valued. On another fresh scene
+(`421010 / 42444709`), direction hits remained `4/6` and mean error improved
+only from 30.39 to 28.18 degrees. Decisions:
+
+- `SC12_TASK_CONDITIONED_DUAL_AXIS_ACTION_POSE_GATE_NOT_MET`;
+- `SC13_DECOUPLED_APPROACH_AND_LOCAL_ACTION_FRAME_GATE_NOT_MET`.
+
+These are consumed static-geometry negatives. Task-verb remapping, local PCA
+radius, OBB face selection, thresholds, seeds, and geometry fusion must not be
+swept to rescue either opened scene. The failure is structural: static geometry
+can suggest an axis but does not reveal whether a door slides or hinges, nor
+whether a control surface actually moves along that axis.
+
+SC14 changes the information source instead of the matcher. A causal action
+belief consumes paired before/after points on the already-authorized functional
+region. It compares translation-only and rigid-motion explanations, recovers a
+signed translation direction or a rotation axis and pivot line, and locks the
+action model only after motion evidence. The canary freezes a 2 cm translation
+or 5 degree rotation, 1.5 mm measurement noise, and at most 128 evaluator-paired
+points. A rank-deficient pivot-line solve is gauge-fixed by choosing the point
+on the axis closest to the coordinate origin; this is a numerical invariant,
+not a scientific parameter.
+
+On `421013`, eight actions had enough paired functional points:
+
+| Arm | motion type | translation direction hit | mean translation error | rotation axis / pivot |
+|---|---:|---:|---:|---:|
+| static task/parent geometry | 7/8 | 4/7 | 38.89 deg | not action-observed |
+| **SC14 causal micro-motion** | **8/8** | **7/7** | **0.91 deg** | **1/1 axis; 2.22 cm pivot-line error** |
+
+This crosses the frozen gate and yields
+`SC14_CAUSAL_MICRO_MOTION_ACTION_BELIEF_MECHANICS_SIGNAL`. The independent
+`421010` diagnostic produced only four sufficiently dense paired regions and is
+`SC14_NOT_EVALUABLE_INSUFFICIENT_CAUSAL_PROBES`; its causal translation arm was
+still `4/4` versus the static `2/4`, but it is not promoted to confirmation.
+The `421005` source audit had only two parent-bound tasks and is likewise
+`NOT_EVALUABLE`, not negative evidence.
+
+SC14 is a simulated paired-point mechanics ceiling. SceneFun3D motion truth
+generates the perturbation, point correspondences are evaluator-authoritative,
+and no real user action was requested. It does not establish RGB tracking,
+safe probing, collision-free reachability, body orientation, arrival,
+`HANDOFF_READY`, user completion, product benefit, or safety. The next legal
+source is passive natural before/after RGB-D motion or an explicitly authorized
+benign micro-interaction protocol; static action-axis guessing is closed.
+
+Implementations: `scenefun3d_action_ready_pose.py`,
+`scenefun3d_decoupled_action_pose.py`, and
+`scenefun3d_causal_action_probe.py`. Evidence:
+
+- SC12: `artifacts.local/evidence/l10-r14/sc12-task-conditioned-dual-axis-action-pose-v0/result.json`,
+  SHA-256 `6373cb5595a43a824649b852b5771a3c096e1957ae0910f87be7671ef46156ce`.
+- SC13: `artifacts.local/evidence/l10-r15/sc13-decoupled-approach-local-action-frame-v0/result.json`,
+  SHA-256 `f828369e8dfab033befc21e5b14bcac03718ae1177fd1381b17d1b1c21df8a07`.
+- SC14 observations: `artifacts.local/evidence/l10-r16/sc14-causal-micro-motion-421013-v0/observations.json`,
+  SHA-256 `9c7a42ac44b32c75be22bbb14ad9b410d40dc6e6237a13e634c5260f1d31d946`.
+- SC14 provider: `artifacts.local/evidence/l10-r16/sc14-causal-micro-motion-421013-v0/provider.json`,
+  SHA-256 `2208d2ee765273d4fb9050c2e88471a065257e3dd505760d4dd8dffb8e787e9f`.
+- SC14 result: `artifacts.local/evidence/l10-r16/sc14-causal-micro-motion-421013-v0/result.json`,
+  SHA-256 `bb11fa3b87ea350ad793d3c62daf81e183b6806f08c82b2c1df1535677d1ca01`.
 
 ## Public text-source admission
 

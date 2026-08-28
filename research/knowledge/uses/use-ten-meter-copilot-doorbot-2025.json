@@ -6,7 +6,7 @@
   "mechanism_ids": [
     "haptic-closed-loop-door-function"
   ],
-  "use_state": "candidate",
+  "use_state": "active",
   "adoption_mode": "mechanism_adaptation",
   "usage": {
     "source_scope": "用触觉结果回路验证门功能是否真正发生。",
@@ -15,24 +15,38 @@
     "expected_effect": "阻止把看似正确的动作点或接近姿态误当成门已打开/任务已完成。"
   },
   "evaluation": {
-    "reproduction_status": "not_attempted",
-    "verdict": "not_run",
-    "setup": "未执行；最小证伪实验：在不引入触觉硬件的最小模拟中，冻结 proposal，仅加入独立 outcome receipt/absent receipt；主指标为 false_completion=0 和 valid receipt coverage。",
-    "effect": "",
-    "metrics": [],
-    "claim_boundary": "DoorBot 的机器人、触觉和 20 门实验不可迁移为手机能力；此处只吸收闭环合同，未复现其系统或成功率。"
+    "reproduction_status": "mechanics_only",
+    "verdict": "positive",
+    "setup": "SceneFun3D 421013 action-geometry mechanics canary; evaluator motion annotations generated fixed 2 cm translations or 5 degree rotations over up to 128 paired functional points with 1.5 mm noise; the causal estimator saw only before/after points.",
+    "effect": "SC14 improved motion-type correctness from 7/8 static to 8/8 causal; translational direction hits from 4/7 to 7/7; mean direction error from 38.89 to 0.91 degrees; the single rotational axis passed and pivot-line error was 2.22 cm.",
+    "metrics": [
+      "motion_type_correct=7/8 static vs 8/8 causal",
+      "translation_direction_hit=4/7 static vs 7/7 causal at 15 degrees",
+      "mean_translation_error_deg=38.89 static vs 0.91 causal",
+      "rotation_axis_hit=1/1; pivot_line_error_m=0.0222"
+    ],
+    "claim_boundary": "Mechanics-only adaptation of the independent-outcome principle. SceneFun3D generated the motion and evaluator supplied point correspondences; no robot haptics, natural RGB-D tracking, safe user probe, reachability, arrival, HANDOFF_READY, completion, product benefit, or safety was established."
   },
   "evidence": [
     {
       "kind": "external",
       "ref": "https://github.com/TX-Leo/DoorBot",
       "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    },
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/evidence/l10-r16/sc14-causal-micro-motion-421013-v0/result.json",
+      "summary": "SC14 mechanics result, SHA-256 bb11fa3b87ea350ad793d3c62daf81e183b6806f08c82b2c1df1535677d1ca01."
     }
   ],
   "history": [
     {
       "date": "2026-08-28",
       "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Executed the causal-outcome adaptation after SC12 and SC13 showed that static task/geometry axes were insufficient. The next source must provide natural before/after RGB-D motion or an explicitly authorized benign interaction; static action-axis tuning is closed."
     }
   ],
   "added_at": "2026-08-28",

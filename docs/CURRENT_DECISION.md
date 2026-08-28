@@ -1,6 +1,6 @@
 # Current decisions: L10-R0 active; Dynamic Travel Risk R2 established
 
-Status: `L10_R0_ACTIVE / SC11_TASK_GROUNDED_RGBD_MULTIVIEW_FUNCTIONAL_PROPOSAL_DEVELOPMENT_SIGNAL` and
+Status: `L10_R0_ACTIVE / SC14_CAUSAL_MICRO_MOTION_ACTION_BELIEF_MECHANICS_SIGNAL` and
 `DTR_R2_PUBLIC_REAL_PRIVILEGED_CEILINGS_ESTABLISHED /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
@@ -45,6 +45,31 @@ or safety evidence. The next L10 source must add independently motivated
 candidate-integrity or action geometry on separately versioned evidence; do not
 rescue the two opened failures by detector, prompt, DBSCAN, seed, or fusion
 sweeps, and do not restore parent-box center or visual scale as completion truth.
+
+The next claim layer is action geometry. SC12 task-signed parent geometry
+regressed against its static baseline on source-disjoint SceneFun3D 421013
+(`7/9 -> 6/9` signed translation hits; 20.40 -> 30.39 degree mean error).
+SC13 separated the approach-facing axis from a local contact-surface action axis
+on fresh scene 421010, but retained `4/6` hits and improved mean error only
+30.39 -> 28.18 degrees. Both static routes are closed on their consumed scenes;
+do not sweep task mappings, PCA radii, OBB faces, thresholds, seeds, or fusion.
+
+SC14 changes the source to causal before/after functional-point motion. On
+421013, eight regions had enough evaluator-paired points. Relative to static
+task/parent geometry, motion-type correctness improved `7/8 -> 8/8`; all seven
+translations were within 15 degrees (`4/7 -> 7/7`) and mean error fell from
+38.89 to 0.91 degrees. The single rotation axis passed and its estimated pivot
+line was 2.22 cm from evaluator truth. Accept
+`SC14_CAUSAL_MICRO_MOTION_ACTION_BELIEF_MECHANICS_SIGNAL` as evidence that
+action kinematics should remain uncertain until causal motion closes them.
+
+This is simulated paired-point mechanics evidence: the perturbation and point
+correspondences are evaluator-authoritative, with no real user action, RGB
+tracking, or safety authority. It cannot emit `HANDOFF_READY` and does not prove
+reachability, body orientation, arrival, user completion, product benefit, or
+safety. The next legal source is passive natural before/after RGB-D motion or an
+explicitly authorized benign micro-interaction protocol; do not return to
+static action-axis inference.
 
 ## DTR-R2 decision
 

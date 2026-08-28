@@ -17,8 +17,8 @@
   "evaluation": {
     "reproduction_status": "partial",
     "verdict": "positive",
-    "setup": "SC8 and SC11 on one SceneFun3D Development scene (visit 420683, video 42445137): ARKit parent binding; SC8 evaluator masks as unlabeled proposals; SC11 truth-blind task-grounded RGB-D proposals sealed before evaluator truth.",
-    "effect": "SC8 proved task-relational selection (4/6 to 6/6 legal, 0.50 to 1.00 recall, 2 to 0 wrong). SC11 then replaced evaluator proposals: multi-view proposal recall reached 10/10 and improved legal tasks 3/6 to 4/6, mean recall 0.50 to 0.8333, and wrong parts 8 to 2 versus single-view.",
+    "setup": "SC8/SC11 functional grounding plus SC12-SC14 action-geometry studies across SceneFun3D 420683, 421010, and 421013. SC14 used evaluator-generated paired functional-point motion after sealing the causal estimator boundary.",
+    "effect": "SC12 and SC13 retained terminal static-geometry negatives. SC14 changed the source to causal paired motion: type 7/8 to 8/8, translation hits 4/7 to 7/7, mean error 38.89 to 0.91 degrees, and one rotational pivot line within 2.22 cm.",
     "metrics": [
       "evaluable_tasks=6/10 descriptions; 4 NOT_EVALUABLE_PARENT_BINDING",
       "legal_commit_rate=0.6667 baseline vs 1.0000 SC8",
@@ -29,9 +29,15 @@
       "SC11 proposal_recall=0.80 single-view vs 1.00 multi-view",
       "SC11 legal_commit_rate=0.50 single-view vs 0.6667 multi-view",
       "SC11 mean_target_set_recall=0.50 single-view vs 0.8333 multi-view",
-      "SC11 wrong_part_count=8 single-view vs 2 multi-view"
+      "SC11 wrong_part_count=8 single-view vs 2 multi-view",
+      "SC12 signed_direction_hit=7/9 baseline vs 6/9 task-signed",
+      "SC13 signed_direction_hit=4/6 baseline vs 4/6 local-contact",
+      "SC14 motion_type_correct=7/8 static vs 8/8 causal",
+      "SC14 translation_direction_hit=4/7 static vs 7/7 causal",
+      "SC14 mean_translation_error_deg=38.89 static vs 0.91 causal",
+      "SC14 rotation_axis_hit=1/1; pivot_line_error_m=0.0222"
     ],
-    "claim_boundary": "Positive evidence is limited to one opened SceneFun3D Development scene. SC8 used evaluator proposals; SC11 used privileged parent geometry and posed native RGB-D. Neither establishes phone-camera or open-world coverage, reachability, orientation, arrival, completion, product benefit, user benefit, or safety."
+    "claim_boundary": "SC14 is simulated paired-point mechanics evidence with privileged functional seeds, parent OBBs, motion perturbations, and correspondences. It does not establish RGB tracking, safe probing, reachability, body orientation, arrival, HANDOFF_READY, user completion, product benefit, or safety."
   },
   "evidence": [
     {
@@ -48,6 +54,11 @@
       "kind": "artifact",
       "ref": "artifacts.local/evidence/l10-r13/sc11-task-grounded-rgbd-functional-proposer-v0/result.json",
       "summary": "Truth-blind SC11 proposal-provider result, SHA-256 ec188e8396159b3cc364bd759be7328eb1d458e6082ca219dd98e99af1e9c380."
+    },
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/evidence/l10-r16/sc14-causal-micro-motion-421013-v0/result.json",
+      "summary": "Causal action-belief mechanics result, SHA-256 bb11fa3b87ea350ad793d3c62daf81e183b6806f08c82b2c1df1535677d1ca01."
     }
   ],
   "history": [
@@ -66,6 +77,10 @@
     {
       "date": "2026-08-28",
       "change": "Appended the SC11 real RGB-D proposal-source result while preserving SC8 as proposal-conditional selection evidence and keeping four parent-binding cases NOT_EVALUABLE."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Added the SC12/SC13 static-action negatives and SC14 causal mechanics signal. The route now requires a real before/after motion source rather than further static-geometry tuning."
     }
   ],
   "added_at": "2026-08-28",
