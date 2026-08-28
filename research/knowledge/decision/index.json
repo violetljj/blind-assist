@@ -2,13 +2,13 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "bf58b5f84c3138146cdf6b0f57b7fccede2ca9dfa463300b930822183a41ae0d",
+  "source_fingerprint": "3ce3a1b7502712cfa36db6302e98264cf06a5b5507e935ac40cf5cd163b061e6",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 223,
     "uses": 224,
     "experiments": 206,
-    "current_terminals": 13
+    "current_terminals": 14
   },
   "failure_layers": [
     {
@@ -13389,6 +13389,40 @@
         "research/active/dtr-r0/README.md"
       ],
       "search_text": "terminal-dtr-m2-extent-gap-not-supported obstacle-avoidance DTR_M2_D_EXTENT_GAP_NOT_SUPPORTED_NO_FRESH_M2_O On the consumed M1 cohort, all three repeated pedestrian:35 misses remained POINT_MISS_FOOTPRINT_MISS under the same direct velocity plus current native swept OBB, while all five M1-induced/modified false segments were FOOTPRINT_HIT_TRUTH_NEGATIVE. A newly frozen information contract that can distinguish realized time-varying future occupancy from a constant-velocity current footprint, plus fresh evidence. fresh M2-O from the rejected current-extent hypothesis TeFlow or DeltaFlow another scene-flow estimator R8 training route-conditioned forecasting without new authorization"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-dtr-m3-evaluator-circle-obb-semantics-mismatch",
+      "status": "not_evaluable",
+      "question": "All three repeated pedestrian:35 dropout rows are positive under the evaluator's realized-center circle but negative under every realized future native OBB; at first contact the circle is 0.0209 m inside while the OBB is 0.0374 m outside. Three M1 false rows are target-owned realized-OBB misses and two are other-component attribution errors.",
+      "baseline": null,
+      "change": "Choose and freeze circularized proximity versus oriented-body contact; an OBB-contact claim requires evaluator revision and fresh cohort rescoring before any dynamics ceiling.",
+      "primary_metric": null,
+      "decision": "DTR_M3_D_EVALUATOR_CIRCLE_OBB_SEMANTICS_MISMATCH_NO_FRESH_M3_O",
+      "report": "docs/CURRENT_DECISION.md",
+      "source": "decision/terminals.json",
+      "commit": "8a604df3",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Choose and freeze circularized proximity versus oriented-body contact; an OBB-contact claim requires evaluator revision and fresh cohort rescoring before any dynamics ceiling.",
+      "forbidden_repeats": [
+        "fresh M3-O before truth-contract revision",
+        "learned or residual future occupancy",
+        "route-conditioned forecasting",
+        "R8 training",
+        "another scene-flow estimator"
+      ],
+      "evidence": [
+        "docs/CURRENT_DECISION.md",
+        "research/active/dtr-r0/README.md"
+      ],
+      "search_text": "terminal-dtr-m3-evaluator-circle-obb-semantics-mismatch obstacle-avoidance DTR_M3_D_EVALUATOR_CIRCLE_OBB_SEMANTICS_MISMATCH_NO_FRESH_M3_O All three repeated pedestrian:35 dropout rows are positive under the evaluator's realized-center circle but negative under every realized future native OBB; at first contact the circle is 0.0209 m inside while the OBB is 0.0374 m outside. Three M1 false rows are target-owned realized-OBB misses and two are other-component attribution errors. Choose and freeze circularized proximity versus oriented-body contact; an OBB-contact claim requires evaluator revision and fresh cohort rescoring before any dynamics ceiling. fresh M3-O before truth-contract revision learned or residual future occupancy route-conditioned forecasting R8 training another scene-flow estimator"
     },
     {
       "kind": "current_terminal",

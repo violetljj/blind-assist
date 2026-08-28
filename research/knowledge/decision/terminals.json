@@ -51,6 +51,18 @@
       "commit": "d808051d"
     },
     {
+      "id": "terminal-dtr-m3-evaluator-circle-obb-semantics-mismatch",
+      "route": "obstacle-avoidance",
+      "failure_layers": ["authority_truth", "geometry_motion", "evaluation_evidence"],
+      "status": "not_evaluable",
+      "decision": "DTR_M3_D_EVALUATOR_CIRCLE_OBB_SEMANTICS_MISMATCH_NO_FRESH_M3_O",
+      "summary": "All three repeated pedestrian:35 dropout rows are positive under the evaluator's realized-center circle but negative under every realized future native OBB; at first contact the circle is 0.0209 m inside while the OBB is 0.0374 m outside. Three M1 false rows are target-owned realized-OBB misses and two are other-component attribution errors.",
+      "successor_requires": "Choose and freeze circularized proximity versus oriented-body contact; an OBB-contact claim requires evaluator revision and fresh cohort rescoring before any dynamics ceiling.",
+      "forbidden_repeats": ["fresh M3-O before truth-contract revision", "learned or residual future occupancy", "route-conditioned forecasting", "R8 training", "another scene-flow estimator"],
+      "evidence": ["docs/CURRENT_DECISION.md", "research/active/dtr-r0/README.md"],
+      "commit": "8a604df3"
+    },
+    {
       "id": "terminal-l10-sc5-set-valued-video17",
       "route": "ten-meter-copilot",
       "failure_layers": ["identity_binding", "temporal_belief", "evaluation_evidence"],
