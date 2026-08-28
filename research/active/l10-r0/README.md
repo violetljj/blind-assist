@@ -1300,11 +1300,12 @@ The legal next step is temporal active observation, not another threshold.
 
 `named_poi_active_entrance_belief.py` now lands that seam. `SET_VALUED`
 requests `CENTER_AND_APPROACH`; a candidate commits only after remaining
-target-bound in two consecutive active views while competitors clear. A lost
-commit becomes `REACQUIRE / SCAN_LAST_BEARING` and resumes tracking when
-reobserved. The mechanism check passes ambiguity -> active view -> commit ->
-lost -> reacquired tracking. This is runtime-ready mechanics, not temporal
-public-video evidence yet.
+target-bound in two consecutive active views while competitors clear and its
+normalized scale does not decrease. A lost commit becomes
+`REACQUIRE / SCAN_LAST_BEARING` and resumes tracking when reobserved. The
+scale condition prevents geometric persistence alone from promoting an
+action-inconsistent distractor. This is runtime-ready mechanics, not temporal
+public-video evidence by itself.
 
 V4 result SHA-256:
 `c14832f9fad8bd5eb860dbfb529e8c18adad53bc572289ae95b690e34d568c2f`.
@@ -1320,6 +1321,44 @@ and `a55304b881fd889bd9f9c08b775c1144464266c8bb444b9c4e63006e3e70a488`.
 Every run made zero OCR calls. These are curated Development current-image
 results; public access, traversability, metric guidance, temporal confirmation,
 arrival, product benefit, user benefit, and safety remain unproved.
+
+#### Real ordered portal source and SkyDiscover bridge
+
+An outcome-blind Commons audit checked 455 files across six named-POI
+categories and found no video. The IFC Man Cheung Street numbered series did,
+however, contain six previously unopened files after the V7 cutoff. They were
+frozen from filename metadata, materialized once, and pixel-audited before any
+model inference. Frames 06 and 07 show the same exterior glass door bank from a
+wide upper-interior view and a closer escalator-aligned view; the remaining four
+frames do not preserve that portal. Record
+`ADMIT_REVERSE_SIDE_SAME_PORTAL_ACTIVE_VIEW_PROXY`. Source manifest SHA-256 is
+`a2c19fbb16325be4f9dc95567fd4819d7a3071fc5de5141b7273cba86dcfd02d`;
+the six-image inventory SHA-256 is
+`f318ff5503fe58e4892bb26262c48f751e60ed913809edbd42c36b47ac2bfc73`.
+
+The source is deliberately narrow: it is a reverse-side exit approach, filename
+order is not measured pose or commanded motion, and it cannot establish outside
+entrance finding. Its legal use is one real-perception bridge episode.
+
+The first non-OCR inference on those two frames exposed a real failure rather
+than a search opportunity. The generic proposal prompt selected an almost-full
+image box and then the foreground escalator; an entrance-only prompt still left
+portal-set truth outside the retained candidates in `0/2` frames. The raw
+temporal rule falsely produced `SET_VALUED -> COMMIT`. Replaying the frozen
+observations with the approach-scale gate produced `SET_VALUED -> SET_VALUED`,
+removing this observed false commit but not locating the door bank. Record
+`ACTIVE_VIEW_SCALE_GATE_PREVENTS_OBSERVED_FALSE_COMMIT_PROPOSAL_SOURCE_STILL_MISSING`.
+Result:
+`artifacts.local/evidence/l10-r0/named-poi-active-view-perception-v2/result.json`,
+SHA-256 `4562009edb5b3e150644dfc4a727bfd907135b13757bb8f046a7606da4d1e0c8`.
+Do not tune prompts, ray thresholds, or policy on this consumed prefix.
+
+SkyDiscover now has a new `blindassist_last10m_perception_1` contract built
+from scratch around real `SEARCH / SET_VALUED / COMMIT / REACQUIRE` states,
+hard wrong-portal gates, and AdaEvolve Pareto objectives. Its checked episodes
+are mechanics-only. The real prefix is archived as a search-blocking artifact:
+policy search starts only after a new portal-set proposal representation retains
+truth. The obsolete oracle benchmark family is excluded from this route.
 
 V2 result:
 `artifacts.local/evidence/l10-r0/named-poi-multifacet-entrance-v2/result.json`,

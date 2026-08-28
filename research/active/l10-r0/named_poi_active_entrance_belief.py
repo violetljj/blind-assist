@@ -52,6 +52,8 @@ class _Track:
     box_xyxy: tuple[float, float, float, float]
     edge_score: float
     consecutive_hits: int
+    approach_consistent_hits: int
+    normalized_area: float
     last_frame_index: int
 
 
@@ -72,6 +74,12 @@ def _center_distance(
     dx = (left_x - right_x) / max(float(image_width), 1.0)
     dy = (left_y - right_y) / max(float(image_height), 1.0)
     return (dx * dx + dy * dy) ** 0.5
+
+
+def _normalized_area(box: Sequence[float], image_width: int, image_height: int) -> float:
+    width = max(0.0, float(box[2]) - float(box[0]))
+    height = max(0.0, float(box[3]) - float(box[1]))
+    return (width * height) / max(float(image_width * image_height), 1.0)
 
 
 class ActiveEntranceBelief:
@@ -113,6 +121,8 @@ class ActiveEntranceBelief:
                     self._last_committed_box,
                     0.0,
                     2,
+                    2,
+                    _normalized_area(self._last_committed_box, image_width, image_height),
                     self._frame_index - 1,
                 )
             )
@@ -140,14 +150,23 @@ class ActiveEntranceBelief:
                 track_id = f"entrance-track-{self._next_track_number:03d}"
                 self._next_track_number += 1
                 consecutive_hits = 1
+                approach_consistent_hits = 1
             else:
                 prior = previous_by_id[track_id]
                 consecutive_hits = prior.consecutive_hits + 1
+                current_area = _normalized_area(candidate.box_xyxy, image_width, image_height)
+                approach_consistent_hits = (
+                    prior.approach_consistent_hits + 1
+                    if current_area >= prior.normalized_area
+                    else 1
+                )
             current_tracks[track_id] = _Track(
                 track_id,
                 candidate.box_xyxy,
                 float(candidate.edge_score),
                 consecutive_hits,
+                approach_consistent_hits,
+                _normalized_area(candidate.box_xyxy, image_width, image_height),
                 self._frame_index,
             )
         self._tracks = current_tracks
@@ -183,7 +202,11 @@ class ActiveEntranceBelief:
                 None,
                 "NO_TARGET_BOUND_ENTRANCE_CANDIDATE",
             )
-        if len(ordered) == 1 and ordered[0].consecutive_hits >= 2:
+        if (
+            len(ordered) == 1
+            and ordered[0].consecutive_hits >= 2
+            and ordered[0].approach_consistent_hits >= 2
+        ):
             winner = ordered[0]
             self._committed_track_id = winner.track_id
             self._last_committed_box = winner.box_xyxy
@@ -196,13 +219,18 @@ class ActiveEntranceBelief:
                 "SOLE_TARGET_BOUND_CANDIDATE_SURVIVED_CONSECUTIVE_ACTIVE_VIEWS",
             )
         probe = ordered[0]
+        reason = (
+            "ACTIVE_CLOSER_VIEW_DID_NOT_INCREASE_TARGET_SCALE"
+            if len(ordered) == 1 and probe.consecutive_hits >= 2
+            else "ACTIVE_CLOSER_VIEW_REQUIRED_TO_CLEAR_COMPETITORS"
+        )
         return ActiveEntranceDecision(
             ActiveEntranceState.SET_VALUED,
             ObservationAction.CENTER_AND_APPROACH,
             None,
             tuple(track.track_id for track in ordered),
             probe.box_xyxy,
-            "ACTIVE_CLOSER_VIEW_REQUIRED_TO_CLEAR_COMPETITORS",
+            reason,
         )
 
 

@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "engine_version": "decision-v1",
-  "generated_at": "2026-08-28",
-  "source_fingerprint": "56da74b4870a163e58fefc74d09d51447c3822c2725126df2e438084336ac1ba",
+  "generated_at": "2026-08-29",
+  "source_fingerprint": "adf00471d3fd1efdf5123f1727fc00066e0cf13d671593d9ebca8a3c1dd03275",
   "counts": {
     "failure_layers": 13,
-    "mechanisms": 252,
-    "uses": 252,
+    "mechanisms": 254,
+    "uses": 253,
     "experiments": 206,
     "current_terminals": 19
   },
@@ -15085,6 +15085,176 @@
         }
       ],
       "search_text": "Project Guideline 从手机感知到可听行动的完整工程接口 dynamic-travel-risk legacy-candidate dtr-r0 goal-copilot prior-art goal-copilot-p0 project-guideline component-audit adapt project-guideline-component-audit reference hold drop Google Research Project Guideline — project-guideline:unreal-pretrained-models route mechanism Project Guideline 的做法。 Unreal 4.27 simulator 通过共享 C++ 库/插件注入渲染图像 和 ground-truth pose，但官方说明障碍检测尚未完整支持 （unreal/README.md）。 其模型面向紫色引导线分割和单目深度 （vision/models/README.md）。 BlindAssist 已有对应。 当前论文问题、数据协议、YOLO/QNN 手机链路和 RCLE 几何 研究均不依赖紫色引导线或 Unreal；加入它们会形成新的数据域、构建系统和验证任务。 决定与停止线。 本论文周期 DROP：不下载/集成模型，不建立 Unreal 工程，不接 C++/JNI/Bazel/MediaPipe 构建链，不把合成仿真当真实场景证据。 The component decision is DROP. The audit absorbs only the stated engineering boundary; it does not import the full C++/Bazel/MediaPipe/ARCore/Unreal stack or establish dynamic-risk, grounding, user, product, or safety evidence. project-guideline-component-audit Project Guideline 的做法。 Unreal 4.27 simulator 通过共享 C++ 库/插件注入渲染图像 和 ground-truth pose，但官方说明障碍检测尚未完整支持 （unreal/README.md）。 其模型面向紫色引导线分割和单目深度 （vision/models/README.md）。 BlindAssist 已有对应。 当前论文问题、数据协议、YOLO/QNN 手机链路和 RCLE 几何 研究均不依赖紫色引导线或 Unreal；加入它们会形成新的数据域、构建系统和验证任务。 决定与停止线。 本论文周期 DROP：不下载/集成模型，不建立 Unreal 工程，不接 C++/JNI/Bazel/MediaPipe 构建链，不把合成仿真当真实场景证据。 Project Guideline 的做法。 Unreal 4.27 simulator 通过共享 C++ 库/插件注入渲染图像 和 ground-truth pose，但官方说明障碍检测尚未完整支持 （unreal/README.md）。 其模型面向紫色引导线分割和单目深度 （vision/models/README.md）。 BlindAssist 已有对应。 当前论文问题、数据协议、YOLO/QNN 手机链路和 RCLE 几何 研究均不依赖紫色引导线或 Unreal；加入它们会形成新的数据域、构建系统和验证任务。 决定与停止线。 本论文周期 DROP：不下载/集成模型，不建立 Unreal 工程，不接 C++/JNI/Bazel/MediaPipe 构建链，不把合成仿真当真实场景证据。 The component decision is DROP. The audit absorbs only the stated engineering boundary; it does not import the full C++/Bazel/MediaPipe/ARCore/Unreal stack or establish dynamic-risk, grounding, user, product, or safety evidence."
+    },
+    {
+      "id": "tool-skydiscover-optimize-2026#executable-pareto-search",
+      "item_id": "tool-skydiscover-optimize-2026",
+      "mechanism_id": "executable-pareto-search",
+      "kind": "tool",
+      "title": "SkyDiscover Optimize and Synthesize capability boundary, 2026 main",
+      "canonical_ref": "https://github.com/skydiscover-ai/skydiscover",
+      "summary": "The current framework separates evaluator-driven Optimize from skill-based system Synthesize. Optimize supports adaptive program search, container evaluators, evaluator artifacts, and AdaEvolve Pareto objectives; Synthesize is described as Codex/Claude-compatible tooling but is not the same as the Optimize CLI search surface.",
+      "tags": [
+        "skydiscover",
+        "adaevolve",
+        "evox",
+        "pareto",
+        "algorithm-search",
+        "system-synthesis"
+      ],
+      "name": "Executable multi-objective algorithm search",
+      "description": "AdaEvolve adapts exploration across populations and can optimize explicit Pareto objectives while evaluator artifacts feed failure mechanisms into later candidate prompts.",
+      "inputs": [
+        "Mutable candidate program",
+        "Frozen evaluator",
+        "Numeric objectives",
+        "Failure artifacts"
+      ],
+      "outputs": [
+        "Evaluated candidate archive",
+        "Pareto frontier",
+        "Checkpointed best programs"
+      ],
+      "limitations": "Search cannot create missing observation information and will exploit evaluator shortcuts if truth, denominators, hard invalidity, or hidden boundaries are weak.",
+      "signatures": [],
+      "layer_scores": {
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 6,
+        "geometry_motion": 3,
+        "handoff_completion": 6,
+        "identity_binding": 3,
+        "observation_perception": 3,
+        "runtime_infrastructure": 3,
+        "source_coverage": 3,
+        "temporal_belief": 9
+      },
+      "routes": [
+        "l10-r0"
+      ],
+      "uses": [
+        {
+          "id": "use-l10-r0-skydiscover-real-perception-bridge",
+          "route": "l10-r0",
+          "use_state": "active",
+          "reproduction_status": "partial",
+          "verdict": "not_evaluable",
+          "project_application": "Use a new evaluator whose only target observations are BlindAssist support-ray and temporal-belief SEARCH, SET_VALUED, COMMIT, and REACQUIRE states from real ordered portal views.",
+          "expected_effect": "Discover active disambiguation policies that improve task completion without buying precision through abstention or relying on OCR-only identity.",
+          "observed_effect": "The first real prefix retained correct portal-set truth in 0/2 frames. The raw belief falsely changed SET_VALUED to COMMIT on a large foreground/escalator proposal; requiring center-and-approach scale consistency changed it to SET_VALUED to SET_VALUED and removed that observed false commit. Correct localization was not recovered, so SkyDiscover search is not authorized yet.",
+          "metrics": [
+            "maximize=correct_portal_commit,truth_retention,reacquisition_success,arrival_quality",
+            "minimize=false_portal_commit,instruction_count,runtime",
+            "hard_invalidity=wrong_portal_arrival,premature_arrival,unsafe_motion"
+          ],
+          "claim_boundary": "This is an integration decision, not evidence that SkyDiscover improves real BlindAssist perception, navigation, arrival, product benefit, user benefit, or safety.",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://github.com/skydiscover-ai/skydiscover",
+              "summary": "Current Optimize/Synthesize positioning, evaluators, artifacts, Pareto support, and search methods."
+            },
+            {
+              "kind": "external",
+              "ref": "https://github.com/violetljj/SkyDiscover/tree/codex/l10-real-perception-bridge/benchmarks/blindassist_last10m_perception_1",
+              "summary": "New perception-policy contract with hard false-commit and arrival gates plus explicit AdaEvolve Pareto objectives."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r0/named-poi-active-view-perception-v2/result.json",
+              "summary": "First real non-OCR ordered-view prefix: 0/2 portal-set truth retention before the scale-consistency belief replay."
+            },
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/named_poi_active_view_source_audit_v1.json",
+              "summary": "Frozen portal-set truth and the reverse-side proxy claim boundary."
+            }
+          ],
+          "updated_at": "2026-08-29"
+        }
+      ],
+      "search_text": "SkyDiscover Optimize and Synthesize capability boundary, 2026 main The current framework separates evaluator-driven Optimize from skill-based system Synthesize. Optimize supports adaptive program search, container evaluators, evaluator artifacts, and AdaEvolve Pareto objectives; Synthesize is described as Codex/Claude-compatible tooling but is not the same as the Optimize CLI search surface. skydiscover adaevolve evox pareto algorithm-search system-synthesis Executable multi-objective algorithm search AdaEvolve adapts exploration across populations and can optimize explicit Pareto objectives while evaluator artifacts feed failure mechanisms into later candidate prompts. Mutable candidate program Frozen evaluator Numeric objectives Failure artifacts Evaluated candidate archive Pareto frontier Checkpointed best programs Search cannot create missing observation information and will exploit evaluator shortcuts if truth, denominators, hard invalidity, or hidden boundaries are weak. l10-r0 Use a new evaluator whose only target observations are BlindAssist support-ray and temporal-belief SEARCH, SET_VALUED, COMMIT, and REACQUIRE states from real ordered portal views. Discover active disambiguation policies that improve task completion without buying precision through abstention or relying on OCR-only identity. The first real prefix retained correct portal-set truth in 0/2 frames. The raw belief falsely changed SET_VALUED to COMMIT on a large foreground/escalator proposal; requiring center-and-approach scale consistency changed it to SET_VALUED to SET_VALUED and removed that observed false commit. Correct localization was not recovered, so SkyDiscover search is not authorized yet. maximize=correct_portal_commit,truth_retention,reacquisition_success,arrival_quality minimize=false_portal_commit,instruction_count,runtime hard_invalidity=wrong_portal_arrival,premature_arrival,unsafe_motion This is an integration decision, not evidence that SkyDiscover improves real BlindAssist perception, navigation, arrival, product benefit, user benefit, or safety."
+    },
+    {
+      "id": "tool-skydiscover-optimize-2026#system-synthesis-boundary",
+      "item_id": "tool-skydiscover-optimize-2026",
+      "mechanism_id": "system-synthesis-boundary",
+      "kind": "tool",
+      "title": "SkyDiscover Optimize and Synthesize capability boundary, 2026 main",
+      "canonical_ref": "https://github.com/skydiscover-ai/skydiscover",
+      "summary": "The current framework separates evaluator-driven Optimize from skill-based system Synthesize. Optimize supports adaptive program search, container evaluators, evaluator artifacts, and AdaEvolve Pareto objectives; Synthesize is described as Codex/Claude-compatible tooling but is not the same as the Optimize CLI search surface.",
+      "tags": [
+        "skydiscover",
+        "adaevolve",
+        "evox",
+        "pareto",
+        "algorithm-search",
+        "system-synthesis"
+      ],
+      "name": "Optimize versus Synthesize boundary",
+      "description": "Optimize evolves a bounded program against an evaluator. The README presents Synthesize as separate test-driven or inductive-deductive skill tooling for multi-file systems; Optimize agentic mode currently exposes read_file and search rather than arbitrary repository mutation.",
+      "inputs": [
+        "Algorithm task or system specification"
+      ],
+      "outputs": [
+        "Bounded optimized program or separately synthesized system"
+      ],
+      "limitations": "Do not claim that the Optimize CLI is a general Codex-style multi-file implementation agent.",
+      "signatures": [],
+      "layer_scores": {
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 3,
+        "geometry_motion": 3,
+        "handoff_completion": 6,
+        "identity_binding": 3,
+        "observation_perception": 6,
+        "runtime_infrastructure": 3,
+        "temporal_belief": 9
+      },
+      "routes": [
+        "l10-r0"
+      ],
+      "uses": [
+        {
+          "id": "use-l10-r0-skydiscover-real-perception-bridge",
+          "route": "l10-r0",
+          "use_state": "active",
+          "reproduction_status": "partial",
+          "verdict": "not_evaluable",
+          "project_application": "Use a new evaluator whose only target observations are BlindAssist support-ray and temporal-belief SEARCH, SET_VALUED, COMMIT, and REACQUIRE states from real ordered portal views.",
+          "expected_effect": "Discover active disambiguation policies that improve task completion without buying precision through abstention or relying on OCR-only identity.",
+          "observed_effect": "The first real prefix retained correct portal-set truth in 0/2 frames. The raw belief falsely changed SET_VALUED to COMMIT on a large foreground/escalator proposal; requiring center-and-approach scale consistency changed it to SET_VALUED to SET_VALUED and removed that observed false commit. Correct localization was not recovered, so SkyDiscover search is not authorized yet.",
+          "metrics": [
+            "maximize=correct_portal_commit,truth_retention,reacquisition_success,arrival_quality",
+            "minimize=false_portal_commit,instruction_count,runtime",
+            "hard_invalidity=wrong_portal_arrival,premature_arrival,unsafe_motion"
+          ],
+          "claim_boundary": "This is an integration decision, not evidence that SkyDiscover improves real BlindAssist perception, navigation, arrival, product benefit, user benefit, or safety.",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://github.com/skydiscover-ai/skydiscover",
+              "summary": "Current Optimize/Synthesize positioning, evaluators, artifacts, Pareto support, and search methods."
+            },
+            {
+              "kind": "external",
+              "ref": "https://github.com/violetljj/SkyDiscover/tree/codex/l10-real-perception-bridge/benchmarks/blindassist_last10m_perception_1",
+              "summary": "New perception-policy contract with hard false-commit and arrival gates plus explicit AdaEvolve Pareto objectives."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r0/named-poi-active-view-perception-v2/result.json",
+              "summary": "First real non-OCR ordered-view prefix: 0/2 portal-set truth retention before the scale-consistency belief replay."
+            },
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/named_poi_active_view_source_audit_v1.json",
+              "summary": "Frozen portal-set truth and the reverse-side proxy claim boundary."
+            }
+          ],
+          "updated_at": "2026-08-29"
+        }
+      ],
+      "search_text": "SkyDiscover Optimize and Synthesize capability boundary, 2026 main The current framework separates evaluator-driven Optimize from skill-based system Synthesize. Optimize supports adaptive program search, container evaluators, evaluator artifacts, and AdaEvolve Pareto objectives; Synthesize is described as Codex/Claude-compatible tooling but is not the same as the Optimize CLI search surface. skydiscover adaevolve evox pareto algorithm-search system-synthesis Optimize versus Synthesize boundary Optimize evolves a bounded program against an evaluator. The README presents Synthesize as separate test-driven or inductive-deductive skill tooling for multi-file systems; Optimize agentic mode currently exposes read_file and search rather than arbitrary repository mutation. Algorithm task or system specification Bounded optimized program or separately synthesized system Do not claim that the Optimize CLI is a general Codex-style multi-file implementation agent. l10-r0 Use a new evaluator whose only target observations are BlindAssist support-ray and temporal-belief SEARCH, SET_VALUED, COMMIT, and REACQUIRE states from real ordered portal views. Discover active disambiguation policies that improve task completion without buying precision through abstention or relying on OCR-only identity. The first real prefix retained correct portal-set truth in 0/2 frames. The raw belief falsely changed SET_VALUED to COMMIT on a large foreground/escalator proposal; requiring center-and-approach scale consistency changed it to SET_VALUED to SET_VALUED and removed that observed false commit. Correct localization was not recovered, so SkyDiscover search is not authorized yet. maximize=correct_portal_commit,truth_retention,reacquisition_success,arrival_quality minimize=false_portal_commit,instruction_count,runtime hard_invalidity=wrong_portal_arrival,premature_arrival,unsafe_motion This is an integration decision, not evidence that SkyDiscover improves real BlindAssist perception, navigation, arrival, product benefit, user benefit, or safety."
     }
   ],
   "experiments": [

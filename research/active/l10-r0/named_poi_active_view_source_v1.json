@@ -1,0 +1,21 @@
+{
+  "schema": "l10-named-poi-active-view-source-v1",
+  "mode": "OUTCOME_BLIND_SOURCE_ADMISSION",
+  "target_id": "international-finance-centre",
+  "commons_category": "International Finance Centre",
+  "series": "HK 中環 Central IFC mall 民祥街 Man Cheung Street February 2020 SS2",
+  "selection_authority": "Commons category filename metadata only. The series contains eleven numbered files; 01 through 05 were consumed as V7 independent images, so only previously unopened 06 through 11 are admitted here in filename order before pixel access.",
+  "files": [
+    "HK 中環 Central IFC mall 民祥街 Man Cheung Street February 2020 SS2 06.jpg",
+    "HK 中環 Central IFC mall 民祥街 Man Cheung Street February 2020 SS2 07.jpg",
+    "HK 中環 Central IFC mall 民祥街 Man Cheung Street February 2020 SS2 08.jpg",
+    "HK 中環 Central IFC mall 民祥街 Man Cheung Street February 2020 SS2 09.jpg",
+    "HK 中環 Central IFC mall 民祥街 Man Cheung Street February 2020 SS2 10.jpg",
+    "HK 中環 Central IFC mall 民祥街 Man Cheung Street February 2020 SS2 11.jpg"
+  ],
+  "admission_question": "Do these ordered, previously unopened real images contain at least two views of the same target-building pedestrian entrance with an observable viewpoint or approach change?",
+  "pass": "ADMIT_SAME_ENTRANCE_ORDERED_ACTIVE_VIEW_PROXY",
+  "fail": "NOT_EVALUABLE_NO_SAME_ENTRANCE_ORDERED_VIEWS",
+  "stop_rule": "Inspect all six source images once, record exact entrance truth and ordering evidence, then either admit one fixed sequence or stop without model inference.",
+  "claim_boundary": "Passing establishes only a real ordered active-view proxy source. Filename order is not commanded motion, camera pose, public access, traversability, guidance, arrival, product benefit, user benefit, or safety authority."
+}

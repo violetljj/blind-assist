@@ -570,10 +570,30 @@ locator gate did not pass because correct unique commits remained `2/6`.
 Retain the ray as a false-commit/candidate-preservation mechanism only.
 
 The next active seam is implemented: `SET_VALUED` requests a centered closer
-view; commit requires the same target-bound candidate in two consecutive views
-after competitors clear; loss enters last-bearing reacquire. Temporal
-confirmation on repeated active views remains pending. This advances search and
-reacquisition without making OCR the main path.
+view; a sole surviving candidate may commit only if normalized target scale does
+not decrease; loss enters last-bearing reacquire. This prevents persistence
+alone from promoting an action-inconsistent distractor.
+
+The first real ordered portal source is now admitted without inference. Commons
+contained no videos across six named-POI categories, but the previously unopened
+IFC Man Cheung Street series frames 06--07 show the same exterior glass door
+bank from a wide upper-interior view and a closer escalator-aligned view. Record
+`ADMIT_REVERSE_SIDE_SAME_PORTAL_ACTIVE_VIEW_PROXY`. This is an exit-side proxy,
+not an outside entrance route or commanded-action proof.
+
+The first real non-OCR two-frame prefix retained portal-set truth in `0/2`
+frames. The original temporal belief falsely changed `SET_VALUED -> COMMIT` on
+an almost-full-image/foreground-escalator trajectory. The new approach-scale
+gate changes the frozen replay to `SET_VALUED -> SET_VALUED`, eliminating that
+observed false commit but not recovering the door bank. Record
+`ACTIVE_VIEW_SCALE_GATE_PREVENTS_OBSERVED_FALSE_COMMIT_PROPOSAL_SOURCE_STILL_MISSING`.
+Do not tune the consumed prompt/ray/policy; change the portal proposal
+representation.
+
+SkyDiscover now has a separate real-perception policy contract with hard
+wrong-portal/arrival gates and AdaEvolve Pareto objectives. Search is blocked
+until a fresh portal-set proposal source retains truth. The obsolete oracle
+benchmark family is excluded from the current route.
 
 ## DTR-R2 decision
 

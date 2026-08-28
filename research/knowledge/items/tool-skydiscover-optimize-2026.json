@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "id": "tool-skydiscover-optimize-2026",
+  "kind": "tool",
+  "title": "SkyDiscover Optimize and Synthesize capability boundary, 2026 main",
+  "canonical_ref": "https://github.com/skydiscover-ai/skydiscover",
+  "authors": ["SkyDiscover team"],
+  "year": 2026,
+  "venue": "Open-source framework",
+  "summary": "The current framework separates evaluator-driven Optimize from skill-based system Synthesize. Optimize supports adaptive program search, container evaluators, evaluator artifacts, and AdaEvolve Pareto objectives; Synthesize is described as Codex/Claude-compatible tooling but is not the same as the Optimize CLI search surface.",
+  "mechanisms": [
+    {
+      "id": "executable-pareto-search",
+      "name": "Executable multi-objective algorithm search",
+      "description": "AdaEvolve adapts exploration across populations and can optimize explicit Pareto objectives while evaluator artifacts feed failure mechanisms into later candidate prompts.",
+      "inputs": ["Mutable candidate program", "Frozen evaluator", "Numeric objectives", "Failure artifacts"],
+      "outputs": ["Evaluated candidate archive", "Pareto frontier", "Checkpointed best programs"],
+      "limitations": "Search cannot create missing observation information and will exploit evaluator shortcuts if truth, denominators, hard invalidity, or hidden boundaries are weak."
+    },
+    {
+      "id": "system-synthesis-boundary",
+      "name": "Optimize versus Synthesize boundary",
+      "description": "Optimize evolves a bounded program against an evaluator. The README presents Synthesize as separate test-driven or inductive-deductive skill tooling for multi-file systems; Optimize agentic mode currently exposes read_file and search rather than arbitrary repository mutation.",
+      "inputs": ["Algorithm task or system specification"],
+      "outputs": ["Bounded optimized program or separately synthesized system"],
+      "limitations": "Do not claim that the Optimize CLI is a general Codex-style multi-file implementation agent."
+    }
+  ],
+  "tags": ["skydiscover", "adaevolve", "evox", "pareto", "algorithm-search", "system-synthesis"],
+  "aliases": ["SkyDiscover Optimize", "SkyDiscover Synthesize"],
+  "links": [
+    {"label": "AdaEvolve", "ref": "https://arxiv.org/abs/2602.20133"},
+    {"label": "EvoX", "ref": "https://arxiv.org/abs/2602.23413"},
+    {"label": "Jitskit", "ref": "https://arxiv.org/abs/2605.23109"},
+    {"label": "IDS", "ref": "https://arxiv.org/abs/2605.24096"}
+  ],
+  "added_at": "2026-08-29",
+  "updated_at": "2026-08-29"
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-skydiscover-real-perception-bridge",
+  "item_id": "tool-skydiscover-optimize-2026",
+  "route": "l10-r0",
+  "mechanism_ids": ["executable-pareto-search", "system-synthesis-boundary"],
+  "use_state": "active",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "SkyDiscover main merged locally at c475ed4009071159b4d5b777715f1af9202cebba on 2026-08-28. The obsolete oracle L10 benchmark family is excluded from the current route rather than migrated.",
+    "project_application": "Use a new evaluator whose only target observations are BlindAssist support-ray and temporal-belief SEARCH, SET_VALUED, COMMIT, and REACQUIRE states from real ordered portal views.",
+    "modifications": "Search only the active-observation and commitment policy block. Use AdaEvolve Pareto objectives for correct portal retention/commit/reacquisition versus false commits, instruction burden, and runtime; wrong-portal or premature ARRIVED remains a hard invalidity.",
+    "expected_effect": "Discover active disambiguation policies that improve task completion without buying precision through abstention or relying on OCR-only identity."
+  },
+  "evaluation": {
+    "reproduction_status": "partial",
+    "verdict": "not_evaluable",
+    "setup": "A new SkyDiscover policy/evaluator contract and one real non-OCR two-frame IFC reverse-side prefix were frozen. Evaluator truth is private and mechanics fixtures are explicitly non-scientific.",
+    "effect": "The first real prefix retained correct portal-set truth in 0/2 frames. The raw belief falsely changed SET_VALUED to COMMIT on a large foreground/escalator proposal; requiring center-and-approach scale consistency changed it to SET_VALUED to SET_VALUED and removed that observed false commit. Correct localization was not recovered, so SkyDiscover search is not authorized yet.",
+    "metrics": [
+      "maximize=correct_portal_commit,truth_retention,reacquisition_success,arrival_quality",
+      "minimize=false_portal_commit,instruction_count,runtime",
+      "hard_invalidity=wrong_portal_arrival,premature_arrival,unsafe_motion"
+    ],
+    "claim_boundary": "This is an integration decision, not evidence that SkyDiscover improves real BlindAssist perception, navigation, arrival, product benefit, user benefit, or safety."
+  },
+  "evidence": [
+    {"kind": "external", "ref": "https://github.com/skydiscover-ai/skydiscover", "summary": "Current Optimize/Synthesize positioning, evaluators, artifacts, Pareto support, and search methods."},
+    {"kind": "external", "ref": "https://github.com/violetljj/SkyDiscover/tree/codex/l10-real-perception-bridge/benchmarks/blindassist_last10m_perception_1", "summary": "New perception-policy contract with hard false-commit and arrival gates plus explicit AdaEvolve Pareto objectives."},
+    {"kind": "artifact", "ref": "artifacts.local/evidence/l10-r0/named-poi-active-view-perception-v2/result.json", "sha256": "4562009edb5b3e150644dfc4a727bfd907135b13757bb8f046a7606da4d1e0c8", "summary": "First real non-OCR ordered-view prefix: 0/2 portal-set truth retention before the scale-consistency belief replay."},
+    {"kind": "repo", "ref": "research/active/l10-r0/named_poi_active_view_source_audit_v1.json", "summary": "Frozen portal-set truth and the reverse-side proxy claim boundary."}
+  ],
+  "history": [
+    {"date": "2026-08-29", "change": "Revised SkyDiscover from a narrow Best-of-N/EvoX policy search role to an AdaEvolve Pareto real-perception bridge, while keeping Synthesize separate from the algorithm search loop."},
+    {"date": "2026-08-29", "change": "Excluded the obsolete oracle benchmark family, landed the new perception-policy contract, and blocked search after the first real prefix exposed 0/2 portal truth retention. Added an approach-scale causal gate that removes the observed false commit without claiming localization."}
+  ],
+  "added_at": "2026-08-29",
+  "updated_at": "2026-08-29"
+}

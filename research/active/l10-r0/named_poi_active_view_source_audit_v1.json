@@ -1,0 +1,31 @@
+{
+  "schema": "l10-named-poi-active-view-source-audit-v1",
+  "source_manifest": "artifacts.local/knowledge/named-poi-active-view-v1/source_manifest.json",
+  "source_manifest_sha256": "a2c19fbb16325be4f9dc95567fd4819d7a3071fc5de5141b7273cba86dcfd02d",
+  "image_count": 6,
+  "image_bytes": 2858919,
+  "inventory_sha256": "f318ff5503fe58e4892bb26262c48f751e60ed913809edbd42c36b47ac2bfc73",
+  "pixel_access": "ONE_SOURCE_AUDIT_BEFORE_MODEL_INFERENCE",
+  "decision": "ADMIT_REVERSE_SIDE_SAME_PORTAL_ACTIVE_VIEW_PROXY",
+  "admitted_ordered_frames": [1, 2],
+  "ordering_evidence": "Commons filename order 06 then 07 from one named February 2020 Man Cheung Street series. Frame 1 is a wide upper-interior view of the exterior glass door bank; frame 2 is a closer view while descending the aligned escalator toward the same door bank.",
+  "portal_identity": "Same IFC Man Cheung Street exterior glass door bank viewed from the interior/exit side.",
+  "portal_set_truth": {
+    "authority": "HUMAN_PIXEL_REGION_FROZEN_BEFORE_ANY_ACTIVE_VIEW_MODEL_INFERENCE",
+    "definition": "The actionable pedestrian glass-door bank is one functional portal set; individual adjacent door leaves are not distinct target identities.",
+    "frames": {
+      "1": {"local_image_size": [1280, 960], "portal_set_box_xyxy": [238, 662, 1275, 886]},
+      "2": {"local_image_size": [1280, 1707], "portal_set_box_xyxy": [275, 342, 1175, 673]}
+    },
+    "candidate_truth_rule": "A proposal belongs to the portal set when its box center lies inside the frozen region. This is functional-set membership, not exact leaf IoU."
+  },
+  "rejected_frames": {
+    "3": "Exterior road and taxi queue; the same actionable portal is not visible.",
+    "4": "Opposite-side facade across the road; no same-portal active view.",
+    "5": "Interior wall and wayfinding context; no portal.",
+    "6": "Interior escalator bank; no exterior portal."
+  },
+  "admission_scope": "Two real ordered views of one physical target-building portal with an apparent closer observation.",
+  "limitations": "The images are a reverse-side exit approach, not an outside-to-entrance route. Filename order is not measured pose or a commanded action. This cannot establish public access, active-view causality, outside entrance finding, navigation, arrival, product benefit, user benefit, or safety.",
+  "next_use": "One frozen real-perception bridge episode may replace oracle target fields with support-ray candidate states. Do not score the other four frames as algorithm negatives."
+}
