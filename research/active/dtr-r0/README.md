@@ -9,6 +9,7 @@ DTR_M1_O_POINT_VELOCITY_ORACLE_CEILING_NOT_MET_CLOSE_SCENE_FLOW_ROUTE /
 DTR_M2_D_EXTENT_GAP_NOT_SUPPORTED_NO_FRESH_M2_O /
 DTR_M3_D_EVALUATOR_CIRCLE_OBB_SEMANTICS_MISMATCH_NO_FRESH_M3_O /
 DTR_C0_GLOBAL_ORIENTED_RISK_CONTRACT_NOT_EVALUABLE_ALWAYS_CONTACT_WINDOW /
+DTR_C1_FRESH_GLOBAL_OBB_COHORT_ADMITTED_METADATA_ONLY /
 R4_NOT_OPENED`
 
 ## Result first
@@ -424,6 +425,65 @@ Evidence:
   SHA-256
   `ad5eb88dd6868730557302d270479003d39a2e8325a2d26b84dd8dcd65ac8e82`.
 
+## DTR-C1 metadata-first fresh cohort admission
+
+C1 resolves C0's missing denominators before touching an algorithm. It reads
+only the JRDB train native 3-D label and image-timestamp archives. It does not
+download or open RGB, LiDAR, bags, detector/tracker output, or predictions.
+The entire consumed `packard-poster-session-2019-03-20_1` sequence is excluded,
+not only frames 115--257. The other 26 sequences are scanned under the exact
+C0 wearer-global OBB CONTACT plus secondary circle-only PROXIMITY contract.
+
+Admission ordering and denominators were fixed before the scan: sequences are
+sorted lexicographically, with no event-yield ranking. The roster is the
+shortest prefix reaching the preferred `20 bounded CONTACT / 10 unique-first-
+responsible / 120 s known non-CONTACT` target; if unavailable, it falls back
+to the shortest prefix reaching the minimum `12 / 6 / 60 s` gate. A bounded
+event must be preceded and followed by known non-CONTACT, so an interval ending
+against `UNKNOWN` is not counted as evaluable.
+
+The preferred gate passes with the first seven fresh sequences:
+
+| Sequence | Bounded CONTACT | Unique responsible | Known non-CONTACT | CONTACT duty |
+| --- | ---: | ---: | ---: | ---: |
+| bytes-cafe-2019-02-07_0 | 4 | 4 | 94.14 s | 19.44% |
+| clark-center-2019-02-28_0 | 1 | 1 | 33.31 s | 9.89% |
+| clark-center-2019-02-28_1 | 0 | 0 | 96.92 s | 0.00% |
+| clark-center-intersection-2019-02-28_0 | 1 | 1 | 59.74 s | 10.60% |
+| cubberly-auditorium-2019-04-22_0 | 7 | 7 | 54.30 s | 37.59% |
+| forbes-cafe-2019-01-22_0 | 6 | 6 | 60.63 s | 37.44% |
+| gates-159-group-meeting-2019-04-03_0 | 2 | 2 | 10.62 s | 82.01% |
+| **Frozen total** | **21** | **21** | **409.66 s** | **26.91%** |
+
+The roster contains 8,368 frames and 578.91 s of wearer timeline: 150.84 s
+CONTACT, 19.53 s PROXIMITY, 390.13 s CLEAR, and 18.40 s right-censored
+UNKNOWN. The zero-event Clark Center sequence is retained by the ordering rule
+and supplies clean negative exposure. All 21 bounded event onsets have exactly
+one earliest responsible component, so they are eligible for a later frozen
+single-target dropout stress; component identity still does not enter global
+alert correctness.
+
+Decision: `DTR_C1_FRESH_GLOBAL_OBB_COHORT_ADMITTED_METADATA_ONLY`. JRDB is not
+cohort-insufficient. Freeze the tracked roster and its 21 event definitions.
+Raw-sensor acquisition and unchanged R2/R3-C/R7-P/M1-O replay may be
+protocolized as a separate second stage, but no arm has run and no algorithm
+ranking, recovery, direct-velocity, deployment, product, or safety claim
+follows from C1. Forecasting, R8, TeFlow, DeltaFlow, and training remain closed.
+
+Evidence:
+
+- frozen roster: `dtr_c1_fresh_global_obb_roster.json`, SHA-256
+  `1ea5067207b957c3c1c7462aed3f5df63231413e5a6da58467b3c36190cf5ae6`;
+- `artifacts.local/evidence/dtr-c1/global-obb-cohort-admission/result.json`,
+  SHA-256
+  `2f6504f642327811892f71f7d2ff5998d15f73f27272f2b24a09880649f99cd8`;
+- per-frame truth ledger `result.timeline.jsonl`, SHA-256
+  `175429630dcebc8ec1cbb6185a7dae222ba0e7b2709cb341dae6709bbc721166`;
+- sequence table `result.sequences.csv`, SHA-256
+  `65dba763bdcc01eeaac72c060b63b032fdbf35d60a2ec8c5d396ca209df647dc`;
+- bounded-event table `result.events.csv`, SHA-256
+  `2180a7eb199b8652e50f853321b970f41b328459918aab432e76c9120819b64d`.
+
 The source split explains why pooling is not enough:
 
 | Source | R2 recall / false | R3-C recall / false | Route authority |
@@ -774,6 +834,12 @@ python research/active/dtr-r0/dtr_m3_realized_future_contract_decomposition.py `
 python research/active/dtr-r0/dtr_c0_global_oriented_risk_contract.py `
   --m3-result artifacts.local/evidence/dtr-m3/realized-future-contract-decomposition/result.json `
   --output artifacts.local/evidence/dtr-c0/global-oriented-risk-contract/result.json
+
+python research/active/dtr-r0/dtr_c1_global_obb_cohort_admission.py `
+  --labels artifacts.local/datasets/dtr-r0-jrdb-rgb-bridge-v1/train_labels.zip `
+  --timestamps artifacts.local/datasets/dtr-r0-jrdb-rgb-bridge-v1/train_timestamps.zip `
+  --output artifacts.local/evidence/dtr-c1/global-obb-cohort-admission/result.json `
+  --roster research/active/dtr-r0/dtr_c1_fresh_global_obb_roster.json
 ```
 
 ## Claim ceiling
@@ -835,3 +901,10 @@ denominator. Its descriptive overlap scores and `6/6` M1/R7 target-component
 diagnostic are not performance evidence. Fresh global-OBB confirmation is
 required before estimator work; no Android, product, user, or safety claim
 follows.
+
+DTR-C1 is metadata-only source/cohort admission. Its 21 bounded events and
+409.66 s non-CONTACT exposure prove that the frozen JRDB roster has evaluation
+denominators, not that any algorithm detects them. Event identities are frozen
+only for later dropout intervention and attribution; global correctness remains
+wearer-level. No raw-sensor replay, detector robustness, direct-motion
+estimation, product behavior, user benefit, or safety performance is established.

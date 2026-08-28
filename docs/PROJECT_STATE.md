@@ -115,6 +115,18 @@ in `6/6`; R2/R3-C global alerts occur in `5/6` but the target contributes in
 A fresh global-OBB cohort must contain bounded CONTACT and known non-CONTACT
 wearer time before any deployable motion-estimator work; forecasting and R8
 remain closed.
+C1 has now completed that metadata-only admission without reading RGB, LiDAR,
+bags, detector output, or predictions. After excluding the entire consumed
+Packard sequence, a lexicographic shortest-prefix rule freezes seven fresh
+JRDB train sequences with 21 bounded CONTACT events, 21 unique-first-
+responsible events, and 409.66 s known non-CONTACT wearer time across 8,368
+frames. The cohort CONTACT duty cycle is 26.91%, including a retained zero-
+CONTACT sequence with 96.92 s negative exposure. The decision is
+`DTR_C1_FRESH_GLOBAL_OBB_COHORT_ADMITTED_METADATA_ONLY`: JRDB supplies valid
+future replay denominators, but C1 is not an algorithm result. Raw-sensor
+acquisition plus unchanged R2/R3-C/R7-P/M1-O replay is a separate next stage;
+forecasting, R8, TeFlow/DeltaFlow, estimator competition, and training remain
+closed.
 
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC

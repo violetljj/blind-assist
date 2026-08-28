@@ -343,6 +343,26 @@ fresh cohort with bounded contact events and known non-contact wearer time
 before comparing algorithms or opening a deployable direct-motion estimator.
 Forecasting, R8, and scene-flow estimator competition remain closed.
 
+C1 has now frozen that fresh truth roster without opening an algorithm. The
+train label/timestamp archives contain 27 common sequences; the entire consumed
+`packard-poster-session-2019-03-20_1` sequence is excluded. The other 26 were
+scanned metadata-only in lexicographic order. The shortest prefix reaching the
+predeclared preferred `20 bounded / 10 unique responsible / 120 s non-CONTACT`
+target contains seven sequences and provides `21 / 21 / 409.66 s` across
+8,368 frames. CONTACT occupies 150.84 s of 560.51 s known truth, for a 26.91%
+duty cycle; one selected sequence contains no CONTACT and contributes 96.92 s
+of negative exposure.
+
+Accept `DTR_C1_FRESH_GLOBAL_OBB_COHORT_ADMITTED_METADATA_ONLY`. This establishes
+that JRDB can supply event recall/F1 and false-segments-per-non-CONTACT-minute
+denominators under the corrected global OBB contract. It does not establish
+R2, R3-C, R7-P, or M1-O performance. Freeze the tracked sequence/event roster;
+if the second stage is opened, acquire raw data only for that roster and replay
+the unchanged four arms without training or tuning. Dropout uses only the 21
+unique-first-responsible events and remains a mechanism secondary. Forecasting,
+R8, TeFlow, DeltaFlow, and deployable estimator work remain closed until the
+fresh global replay is adjudicated.
+
 ## What stops here
 
 - Do not record the superseded 24 canary or 120 staged local RGB clips.

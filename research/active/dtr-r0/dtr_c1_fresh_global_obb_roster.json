@@ -1,0 +1,468 @@
+{
+  "claim_ceiling": "METADATA_ONLY_TRUTH_COHORT_ADMISSION_NO_ALGORITHM_RESULT",
+  "contract": {
+    "bounded_event": "CONTACT interval preceded and followed by known non-CONTACT",
+    "future_horizon_s": 3.0,
+    "primary": "wearer-global realized future native OBB union within 0-3 s",
+    "responsibility": "component identities at the earliest realized OBB hit from event onset; diagnostic only",
+    "route_body_radius_m": 0.65,
+    "secondary": "circle-only PROXIMITY"
+  },
+  "dataset": "JRDB public train split",
+  "excluded_consumed_sequences": [
+    "packard-poster-session-2019-03-20_1"
+  ],
+  "forbidden": [
+    "training or tuning on C1 truth",
+    "reordering sequences by observed event yield",
+    "adding the consumed C0 sequence",
+    "treating multi-responsible events as single-target dropout stress",
+    "forecasting, R8, TeFlow, or DeltaFlow work before frozen replay"
+  ],
+  "ordering": "lexicographic sequence name; shortest preferred prefix, else shortest minimum prefix",
+  "schema": "blindassist-dtr-c1-fresh-global-obb-roster-v1",
+  "selected_sequences": [
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "bytes-cafe-2019-02-07_0:contact:001",
+          "first_frame": 492,
+          "first_index": 492,
+          "first_time_s": 1549576890.4615717,
+          "last_frame": 577,
+          "last_index": 577,
+          "last_time_s": 1549576896.4526074,
+          "onset_first_hit_delta_s": 2.93310546875,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:8"
+          ],
+          "sequence": "bytes-cafe-2019-02-07_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "bytes-cafe-2019-02-07_0:contact:002",
+          "first_frame": 686,
+          "first_index": 686,
+          "first_time_s": 1549576904.0564559,
+          "last_frame": 763,
+          "last_index": 763,
+          "last_time_s": 1549576909.447784,
+          "onset_first_hit_delta_s": 2.9880447387695312,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:1"
+          ],
+          "sequence": "bytes-cafe-2019-02-07_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "bytes-cafe-2019-02-07_0:contact:003",
+          "first_frame": 925,
+          "first_index": 925,
+          "first_time_s": 1549576920.6449275,
+          "last_frame": 991,
+          "last_index": 991,
+          "last_time_s": 1549576925.1504827,
+          "onset_first_hit_delta_s": 2.975503921508789,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:8"
+          ],
+          "sequence": "bytes-cafe-2019-02-07_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "bytes-cafe-2019-02-07_0:contact:004",
+          "first_frame": 1465,
+          "first_index": 1465,
+          "first_time_s": 1549576957.9463875,
+          "last_frame": 1559,
+          "last_index": 1559,
+          "last_time_s": 1549576964.5318265,
+          "onset_first_hit_delta_s": 2.9888346195220947,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:21"
+          ],
+          "sequence": "bytes-cafe-2019-02-07_0",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 4,
+      "contact_duty_cycle": 0.19437700864455174,
+      "first_frame": 0,
+      "frames": 1728,
+      "known_non_contact_s": 94.1390233039856,
+      "last_frame": 1727,
+      "sequence": "bytes-cafe-2019-02-07_0",
+      "unique_responsible_events": 4
+    },
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "clark-center-2019-02-28_0:contact:001",
+          "first_frame": 182,
+          "first_index": 182,
+          "first_time_s": 1551386137.1402535,
+          "last_frame": 234,
+          "last_index": 234,
+          "last_time_s": 1551386140.7158763,
+          "onset_first_hit_delta_s": 2.9863460063934326,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:32"
+          ],
+          "sequence": "clark-center-2019-02-28_0",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 1,
+      "contact_duty_cycle": 0.09889309481150405,
+      "first_frame": 0,
+      "frames": 580,
+      "known_non_contact_s": 33.30510997772217,
+      "last_frame": 579,
+      "sequence": "clark-center-2019-02-28_0",
+      "unique_responsible_events": 1
+    },
+    {
+      "bounded_contact_event_details": [],
+      "bounded_contact_events": 0,
+      "contact_duty_cycle": 0.0,
+      "first_frame": 0,
+      "frames": 1441,
+      "known_non_contact_s": 96.92497515678406,
+      "last_frame": 1440,
+      "sequence": "clark-center-2019-02-28_1",
+      "unique_responsible_events": 0
+    },
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "clark-center-intersection-2019-02-28_0:contact:001",
+          "first_frame": 790,
+          "first_index": 790,
+          "first_time_s": 1551384489.9104629,
+          "last_frame": 891,
+          "last_index": 891,
+          "last_time_s": 1551384496.9339416,
+          "onset_first_hit_delta_s": 2.9437649250030518,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:7"
+          ],
+          "sequence": "clark-center-intersection-2019-02-28_0",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 1,
+      "contact_duty_cycle": 0.10597625917297257,
+      "first_frame": 0,
+      "frames": 1009,
+      "known_non_contact_s": 59.74131727218628,
+      "last_frame": 1008,
+      "sequence": "clark-center-intersection-2019-02-28_0",
+      "unique_responsible_events": 1
+    },
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "cubberly-auditorium-2019-04-22_0:contact:001",
+          "first_frame": 218,
+          "first_index": 218,
+          "first_time_s": 1555960835.7892802,
+          "last_frame": 337,
+          "last_index": 337,
+          "last_time_s": 1555960843.9932,
+          "onset_first_hit_delta_s": 2.9968154430389404,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:11"
+          ],
+          "sequence": "cubberly-auditorium-2019-04-22_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "cubberly-auditorium-2019-04-22_0:contact:002",
+          "first_frame": 376,
+          "first_index": 376,
+          "first_time_s": 1555960846.7273629,
+          "last_frame": 452,
+          "last_index": 452,
+          "last_time_s": 1555960851.997628,
+          "onset_first_hit_delta_s": 2.920664072036743,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:35"
+          ],
+          "sequence": "cubberly-auditorium-2019-04-22_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "cubberly-auditorium-2019-04-22_0:contact:003",
+          "first_frame": 499,
+          "first_index": 499,
+          "first_time_s": 1555960855.2476547,
+          "last_frame": 547,
+          "last_index": 547,
+          "last_time_s": 1555960858.5703297,
+          "onset_first_hit_delta_s": 2.9378349781036377,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:56"
+          ],
+          "sequence": "cubberly-auditorium-2019-04-22_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "cubberly-auditorium-2019-04-22_0:contact:004",
+          "first_frame": 681,
+          "first_index": 681,
+          "first_time_s": 1555960867.8193154,
+          "last_frame": 744,
+          "last_index": 744,
+          "last_time_s": 1555960872.1591575,
+          "onset_first_hit_delta_s": 2.9588077068328857,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:135"
+          ],
+          "sequence": "cubberly-auditorium-2019-04-22_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "cubberly-auditorium-2019-04-22_0:contact:005",
+          "first_frame": 778,
+          "first_index": 778,
+          "first_time_s": 1555960874.5653496,
+          "last_frame": 842,
+          "last_index": 842,
+          "last_time_s": 1555960878.910382,
+          "onset_first_hit_delta_s": 2.9996964931488037,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:67"
+          ],
+          "sequence": "cubberly-auditorium-2019-04-22_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "cubberly-auditorium-2019-04-22_0:contact:006",
+          "first_frame": 1071,
+          "first_index": 1071,
+          "first_time_s": 1555960894.674793,
+          "last_frame": 1118,
+          "last_index": 1118,
+          "last_time_s": 1555960897.9382956,
+          "onset_first_hit_delta_s": 2.9960334300994873,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:113"
+          ],
+          "sequence": "cubberly-auditorium-2019-04-22_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "cubberly-auditorium-2019-04-22_0:contact:007",
+          "first_frame": 1120,
+          "first_index": 1120,
+          "first_time_s": 1555960898.087567,
+          "last_frame": 1171,
+          "last_index": 1171,
+          "last_time_s": 1555960901.616056,
+          "onset_first_hit_delta_s": 2.980783462524414,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:67"
+          ],
+          "sequence": "cubberly-auditorium-2019-04-22_0",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 7,
+      "contact_duty_cycle": 0.37588818081129743,
+      "first_frame": 0,
+      "frames": 1298,
+      "known_non_contact_s": 54.30401015281677,
+      "last_frame": 1297,
+      "sequence": "cubberly-auditorium-2019-04-22_0",
+      "unique_responsible_events": 7
+    },
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "forbes-cafe-2019-01-22_0:contact:001",
+          "first_frame": 168,
+          "first_index": 168,
+          "first_time_s": 1548185837.9572647,
+          "last_frame": 291,
+          "last_index": 291,
+          "last_time_s": 1548185846.3680336,
+          "onset_first_hit_delta_s": 2.8788204193115234,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:160"
+          ],
+          "sequence": "forbes-cafe-2019-01-22_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "forbes-cafe-2019-01-22_0:contact:002",
+          "first_frame": 406,
+          "first_index": 406,
+          "first_time_s": 1548185854.3430095,
+          "last_frame": 452,
+          "last_index": 452,
+          "last_time_s": 1548185857.4733675,
+          "onset_first_hit_delta_s": 2.9959473609924316,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:26"
+          ],
+          "sequence": "forbes-cafe-2019-01-22_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "forbes-cafe-2019-01-22_0:contact:003",
+          "first_frame": 584,
+          "first_index": 584,
+          "first_time_s": 1548185866.4796143,
+          "last_frame": 643,
+          "last_index": 643,
+          "last_time_s": 1548185870.5955987,
+          "onset_first_hit_delta_s": 2.9308576583862305,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:85"
+          ],
+          "sequence": "forbes-cafe-2019-01-22_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "forbes-cafe-2019-01-22_0:contact:004",
+          "first_frame": 809,
+          "first_index": 809,
+          "first_time_s": 1548185882.1858873,
+          "last_frame": 860,
+          "last_index": 860,
+          "last_time_s": 1548185885.7979286,
+          "onset_first_hit_delta_s": 2.9942643642425537,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:91"
+          ],
+          "sequence": "forbes-cafe-2019-01-22_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "forbes-cafe-2019-01-22_0:contact:005",
+          "first_frame": 876,
+          "first_index": 876,
+          "first_time_s": 1548185886.8698971,
+          "last_frame": 950,
+          "last_index": 950,
+          "last_time_s": 1548185891.905995,
+          "onset_first_hit_delta_s": 2.9852802753448486,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:3"
+          ],
+          "sequence": "forbes-cafe-2019-01-22_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "forbes-cafe-2019-01-22_0:contact:006",
+          "first_frame": 1226,
+          "first_index": 1226,
+          "first_time_s": 1548185910.9616504,
+          "last_frame": 1393,
+          "last_index": 1393,
+          "last_time_s": 1548185922.5038612,
+          "onset_first_hit_delta_s": 2.9981536865234375,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:3"
+          ],
+          "sequence": "forbes-cafe-2019-01-22_0",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 6,
+      "contact_duty_cycle": 0.37441691145134937,
+      "first_frame": 0,
+      "frames": 1448,
+      "known_non_contact_s": 60.62832593917847,
+      "last_frame": 1447,
+      "sequence": "forbes-cafe-2019-01-22_0",
+      "unique_responsible_events": 6
+    },
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "gates-159-group-meeting-2019-04-03_0:contact:001",
+          "first_frame": 127,
+          "first_index": 127,
+          "first_time_s": 1554317698.012069,
+          "last_frame": 713,
+          "last_index": 713,
+          "last_time_s": 1554317738.5692885,
+          "onset_first_hit_delta_s": 2.9276278018951416,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:1"
+          ],
+          "sequence": "gates-159-group-meeting-2019-04-03_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "gates-159-group-meeting-2019-04-03_0:contact:002",
+          "first_frame": 722,
+          "first_index": 722,
+          "first_time_s": 1554317739.158652,
+          "last_frame": 835,
+          "last_index": 835,
+          "last_time_s": 1554317746.885024,
+          "onset_first_hit_delta_s": 2.988042116165161,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:1"
+          ],
+          "sequence": "gates-159-group-meeting-2019-04-03_0",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 2,
+      "contact_duty_cycle": 0.8200727130157196,
+      "first_frame": 0,
+      "frames": 864,
+      "known_non_contact_s": 10.619362354278564,
+      "last_frame": 863,
+      "sequence": "gates-159-group-meeting-2019-04-03_0",
+      "unique_responsible_events": 2
+    }
+  ],
+  "selected_totals": {
+    "bounded_contact_events": 21,
+    "contact_duty_cycle": 0.2691207439500352,
+    "frames": 8368,
+    "known_non_contact_s": 409.6621241569519,
+    "sequences": 7,
+    "timeline_duration_s": 578.9085419178009,
+    "truth_duration_s": {
+      "CLEAR": 390.1339945793152,
+      "CONTACT": 150.84376072883606,
+      "PROXIMITY": 19.52812957763672,
+      "UNKNOWN": 18.40265703201294
+    },
+    "unique_responsible_events": 21
+  },
+  "source_authority": {
+    "labels_archive_name": "train_labels.zip",
+    "labels_sha256": "6691816ab12a109c1769f25657a0db17fe56164f3bfbf76a2d01c63a73450df1",
+    "timestamps_archive_name": "train_timestamps.zip",
+    "timestamps_sha256": "60b440f4fd69b93a96b84ae07b957c169f8af304106a61b5f297286ed04b2e30"
+  },
+  "stage2_authorization": "RAW_SENSOR_ACQUISITION_AND_FROZEN_REPLAY_MAY_BE_PROTOCOLIZED_SEPARATELY",
+  "status": "DTR_C1_FRESH_GLOBAL_OBB_COHORT_ADMITTED_METADATA_ONLY"
+}
