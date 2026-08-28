@@ -34,7 +34,15 @@ from dtr_c2_fresh_global_obb_replay import _tracks  # noqa: E402
 from dtr_c4_detector_independent_global_risk import _prediction_frames  # noqa: E402
 from dtr_r5_dropout_canary import cases_from_tracks  # noqa: E402
 from dtr_r7_occupancy_flow_canary import FlowLedger, load_flow_ledger  # noqa: E402
-from skydiscover.evaluation import EvaluationResult  # type: ignore  # noqa: E402
+try:
+    from skydiscover.evaluation import EvaluationResult  # type: ignore  # noqa: E402
+except ModuleNotFoundError:  # Shared BlindAssist runtime does not install SkyDiscover.
+    from dataclasses import dataclass
+
+    @dataclass(frozen=True)
+    class EvaluationResult:  # type: ignore[no-redef]
+        metrics: Mapping[str, float]
+        artifacts: Mapping[str, str]
 
 
 C25_ROOT = REPO / "artifacts.local" / "evidence" / "dtr-c25" / "fresh-point-flow-confirmation"

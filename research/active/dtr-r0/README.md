@@ -1755,6 +1755,31 @@ candidate as the representation baseline, but do not tune its constants on
 C25.  The next falsifier is a causal short-window component state that can add
 the one missing recovery without adding a false segment.
 
+## DTR-C31 temporal velocity-component authority
+
+C31 corrected the remaining representation defect: C30's raw residual
+`dp_m/dv_mps` fields were zero-filled, so local consensus was not genuine
+cross-frame consistency.  All supported reciprocal raw rows now vote into local
+velocity components.  A component becomes hard authority only after its
+observed center is better explained by `c + v * dt` than by staying at `c`.
+During a short observed occlusion, its last real support footprint is transported
+with decay; `KNOWN_FREE` revokes it and ordinary `HIT/UNSENSED` never refresh it.
+
+| arm | CONTACT recall | false segments | event F1 | median first lead | induced dropout recovery |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| M1-PDC | `12/12` | 21 | 53.33% | 1.624 s | `25/36` |
+| C30 local consensus | `12/12` | **20** | **54.55%** | 1.734 s | `29/36` |
+| broad C31 soft-to-hard component | `12/12` | 28 | 46.15% | **2.732 s** | **`33/36`** |
+| **C31 signed transport authority** | **`12/12`** | **21** | **53.33%** | **2.667 s** | **`30/36`** |
+
+Accept `DTR_C31_TEMPORAL_COMPONENT_AUTHORITY_DEVELOPMENT_GATE_MET`.  Relative
+to PDC it adds five dropout recoveries and `1.043 s` median lead without adding
+false segments or losing/delaying an event.  Relative to broad component birth,
+the static-versus-transported residual removes seven false segments.  This
+consumed-cohort gate authorizes source-disjoint confirmation of the frozen C31
+mechanism, not further C25 tuning.  Result SHA-256 is
+`1787d88a13c5dcc689dc28ce8a4f46c2d7ae6b0c3114ffab2e05d6c5acfe1e8d`.
+
 ## Claim ceiling
 
 These are retrospective public-real privileged algorithm ceilings. THÖR uses
