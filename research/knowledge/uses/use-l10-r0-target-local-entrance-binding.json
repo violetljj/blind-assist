@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-target-local-entrance-binding",
+  "item_id": "algorithm-target-local-entrance-binding",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "target-local-entrance-edge"
+  ],
+  "use_state": "active",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Pure deterministic mechanism check informed by closed Commons multi-facet diagnostics; no real successor cohort opened.",
+    "project_application": "Replace scene-level identity AND entrance gating with candidate-specific target-to-entrance edges before tracking and guidance.",
+    "modifications": "Use expanded proposal context, a public target roster, harmonic entrance/identity edge evidence, set-valued ambiguity, and fail-closed search.",
+    "expected_effect": "Recover true entrances whose whole-scene identity is weak while rejecting generic high-score doors belonging to a different nearby entity."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The mechanism check passes generic-distractor, wrong-target-only, and same-target-twin cases. Real-image gain, exact entrance pixels, navigation, arrival, product, user-benefit, and safety remain unproved."
+  },
+  "evidence": [],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Next fresh run must evaluate proposal-context features directly; do not reopen V1/V2 or tune their thresholds."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

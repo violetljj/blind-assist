@@ -1,0 +1,101 @@
+{
+  "schema": "l10-named-poi-multifacet-entrance-protocol-v2",
+  "question": "On entirely new public views with entrance visibility frozen by human audit before inference, does the unchanged entity-bound entrance graph suppress identity-only false readiness without losing true readiness?",
+  "mode": "EXPLORE_DEVELOPMENT",
+  "supersedes": "V1 metadata-defined truth is NOT_EVALUABLE because three supposed negatives visibly contained stairs, escalators, or passage structures.",
+  "sources": {
+    "reference_library": {
+      "path": "artifacts.local/knowledge/named-poi-facade-v2/target_library.json",
+      "sha256": "68fa8c8df0386c7993bc5b1b0d46d6fac2f79361e589d4b5a11909ee0ca6c885"
+    },
+    "fresh_multifacet_library": {
+      "path": "artifacts.local/knowledge/named-poi-multifacet-v2/multifacet_library.json",
+      "sha256": "e3e1c25fa6ed6c75e8defe932bdc95e3c073947247c45d78a9fa37ae5c915a17",
+      "image_count": 29,
+      "image_bytes": 9905101,
+      "inventory_sha256": "4a38b5b875b2ccdf4c34e5c674281d1c585b954309443e02605348a98f07d66f",
+      "selection_authority": "Commons filename metadata before pixel access; every v2 facade-library and multifacet-v1 filename excluded."
+    }
+  },
+  "targets": {
+    "central-station": {
+      "reference_indices": [1, 4],
+      "calibration_indices": [1, 4],
+      "evaluation_indices": [2, 3, 5, 6, 7, 8]
+    },
+    "hku-main-building": {
+      "reference_indices": [1, 4],
+      "calibration_indices": [1, 6],
+      "evaluation_indices": [2, 3, 4, 5, 7, 8]
+    },
+    "queen-mary-hospital": {
+      "reference_indices": [1, 5],
+      "calibration_indices": [1, 2],
+      "evaluation_indices": [3, 4, 5, 6, 7, 8]
+    },
+    "ruttonjee-hospital": {
+      "reference_indices": [1, 3],
+      "calibration_indices": [2, 1],
+      "evaluation_indices": []
+    }
+  },
+  "human_entrance_labels": {
+    "central-station": {"1": true, "2": true, "3": false, "4": false, "5": false, "6": false, "7": false, "8": false},
+    "hku-main-building": {"1": true, "2": true, "3": true, "4": true, "5": false, "6": false, "7": true, "8": true},
+    "queen-mary-hospital": {"1": true, "2": false, "3": false, "4": false, "5": false, "6": true, "7": true, "8": false},
+    "ruttonjee-hospital": {"1": false, "2": true}
+  },
+  "source_audit": {
+    "performed_before_model_inference": true,
+    "positive_definition": "A distinct pedestrian entry aperture, doorway, stairs/escalator entry, or destination-bound passage continuation is visibly actionable in the current image.",
+    "negative_definition": "The target or its context may be visible, but no distinct actionable entry aperture or passage choice is visible.",
+    "excluded": {
+      "ruttonjee-hospital": {"3": "operating-table museum object", "4": "generic skyline", "5": "historical stone marker"}
+    },
+    "authority": "HUMAN_SOURCE_AUDIT_DEVELOPMENT_LABELS_BEFORE_ANY_V2_MODEL_CALL",
+    "limitations": "Image-level entrance visibility only; labels do not establish exact pixels, public access, accessibility, traversability, or metric approach."
+  },
+  "models": {
+    "clip": {
+      "path": "artifacts.local/models/clip-vit-base-patch32-3d74acf",
+      "weights_sha256": "a63082132ba4f97a80bea76823f544493bffa8082296d62d71581a4feff1576f"
+    },
+    "dinov2": {
+      "path": "artifacts.local/models/p1_a2_dinov2_small_ed25f3a",
+      "weights_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+      "patch_grid": 9
+    },
+    "grounding_dino": {
+      "path": "artifacts.local/models/grounding-dino-tiny-a2bb814",
+      "weights_sha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3",
+      "prompt": "pedestrian entrance. building entrance. station entrance. doorway. gate. stairs. escalator. passageway.",
+      "box_threshold": 0.05,
+      "text_threshold": 0.05
+    }
+  },
+  "identity": {
+    "score": "Unchanged V1: 0.35 * max CLIP reference similarity + 0.25 * max pooled DINO similarity + 0.40 * max mutual-patch affine-consistency score",
+    "goal_margin": "goal score minus strongest other admitted entity",
+    "threshold": "Non-negative calibration threshold maximizing balanced accuracy over true goals and every wrong goal; tie chooses larger threshold.",
+    "ocr_calls": 0
+  },
+  "entrance_graph": {
+    "clip_prompt": "a clear pedestrian entrance or passage into the destination",
+    "proposal_score": "Unchanged V1: GroundingDINO confidence * (0.5 + 0.5 * normalized bottom edge) * min(1, box area / 2% image area)",
+    "graph_score": "Unchanged V1: 0.55 * CLIP entrance similarity + 0.45 * maximum proposal score",
+    "threshold": "Calibration threshold maximizing balanced accuracy on frozen human entrance-visible versus entrance-not-visible views; tie chooses larger threshold.",
+    "ready_rule": "READY only if goal identity is confirmed and entrance graph score reaches threshold; otherwise UNKNOWN_KEEP_SEARCHING."
+  },
+  "baselines": {
+    "identity_only_ready": "Identity confirmation alone emits READY.",
+    "clip_entrance_ready": "Identity confirmation plus CLIP entrance-view score emits READY.",
+    "entity_bound_entrance_graph": "Identity confirmation plus CLIP and localized entrance proposal evidence emits READY."
+  },
+  "primary_metrics": [
+    "fresh entity top-1 and confirmation recall",
+    "joint READY precision, recall, F1",
+    "false READY count on human-negative views",
+    "wrong-entity READY count"
+  ],
+  "stop_condition": "Run evaluation once. Retain the unchanged graph only if it reduces identity-only false READY by at least 50% without reducing joint true READY count; otherwise do not tune this cohort and change the entrance information source."
+}

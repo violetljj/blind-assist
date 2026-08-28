@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "id": "algorithm-target-local-entrance-binding",
+  "kind": "algorithm",
+  "title": "Target-local entrance evidence graph",
+  "canonical_ref": "git:research/active/l10-r0/named_poi_entrance_binding.py",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Bind each entrance proposal to the requested public POI using proposal-context appearance instead of combining a global scene identity bit with a generic door bit.",
+  "mechanisms": [
+    {
+      "id": "target-local-entrance-edge",
+      "name": "Candidate-conditioned POI to entrance edge",
+      "description": "Expand each door, gate, stairs, escalator, or passage proposal; compare its context against the public target roster; combine entrance support with normalized target margin; emit COMMIT, SET_VALUED, or SEARCH.",
+      "inputs": [
+        "Entrance proposals, proposal-context CLIP and DINO vectors, public target reference bank, user goal"
+      ],
+      "outputs": [
+        "Unique target-bound entrance, bounded same-target entrance set, or fail-closed search"
+      ],
+      "limitations": "Current evidence is a pure mechanism check only. Fresh real views must establish proposal-context identity, exact entrance truth remains absent, and no public-access, traversability, localization, navigation, arrival, product, user-benefit, or safety claim follows."
+    }
+  ],
+  "tags": [
+    "l10",
+    "named-poi",
+    "entrance",
+    "non-ocr",
+    "evidence-graph"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

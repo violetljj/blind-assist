@@ -2,11 +2,11 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "afaac8bda63cb8e5c024a6a2b0a2022aa818c01b28c1960d78a79b191bad5cdc",
+  "source_fingerprint": "d53fa10425e09362a8f18a2f6e204a9cff35e713656f066e8e81a2674edcbb26",
   "counts": {
     "failure_layers": 13,
-    "mechanisms": 249,
-    "uses": 250,
+    "mechanisms": 250,
+    "uses": 251,
     "experiments": 206,
     "current_terminals": 19
   },
@@ -946,6 +946,61 @@
       "search_text": "Searching for MobileNetV3 MobileNetV3Small plus Lite R-ASPP provides a mobile-oriented lightweight segmentation backbone/decoder candidate. idea-archive sanpo Searching for MobileNetV3 — idea:MobileNetV3 route mechanism MobileNetV3Small plus Lite R-ASPP provides a mobile-oriented lightweight segmentation backbone/decoder candidate. The paper does not establish BlindAssist corridor semantics, event utility, INT8 fidelity on the target phone, BLV user benefit, or safety. sanpo Retain as a bounded four-class SANPO segmentation candidate only after event and data gates close; compare on event metrics and device latency rather than paper accuracy alone. Retain as a bounded four-class SANPO segmentation candidate only after event and data gates close; compare on event metrics and device latency rather than paper accuracy alone. The paper does not establish BlindAssist corridor semantics, event utility, INT8 fidelity on the target phone, BLV user benefit, or safety."
     },
     {
+      "id": "algorithm-target-local-entrance-binding#target-local-entrance-edge",
+      "item_id": "algorithm-target-local-entrance-binding",
+      "mechanism_id": "target-local-entrance-edge",
+      "kind": "algorithm",
+      "title": "Target-local entrance evidence graph",
+      "canonical_ref": "git:research/active/l10-r0/named_poi_entrance_binding.py",
+      "summary": "Bind each entrance proposal to the requested public POI using proposal-context appearance instead of combining a global scene identity bit with a generic door bit.",
+      "tags": [
+        "l10",
+        "named-poi",
+        "entrance",
+        "non-ocr",
+        "evidence-graph"
+      ],
+      "name": "Candidate-conditioned POI to entrance edge",
+      "description": "Expand each door, gate, stairs, escalator, or passage proposal; compare its context against the public target roster; combine entrance support with normalized target margin; emit COMMIT, SET_VALUED, or SEARCH.",
+      "inputs": [
+        "Entrance proposals, proposal-context CLIP and DINO vectors, public target reference bank, user goal"
+      ],
+      "outputs": [
+        "Unique target-bound entrance, bounded same-target entrance set, or fail-closed search"
+      ],
+      "limitations": "Current evidence is a pure mechanism check only. Fresh real views must establish proposal-context identity, exact entrance truth remains absent, and no public-access, traversability, localization, navigation, arrival, product, user-benefit, or safety claim follows.",
+      "signatures": [],
+      "layer_scores": {
+        "evaluation_evidence": 3,
+        "handoff_completion": 3,
+        "identity_binding": 3,
+        "interaction_readiness": 3,
+        "observation_perception": 3,
+        "source_coverage": 3,
+        "temporal_belief": 3
+      },
+      "routes": [
+        "l10-r0"
+      ],
+      "uses": [
+        {
+          "id": "use-l10-r0-target-local-entrance-binding",
+          "route": "l10-r0",
+          "use_state": "active",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "Replace scene-level identity AND entrance gating with candidate-specific target-to-entrance edges before tracking and guidance.",
+          "expected_effect": "Recover true entrances whose whole-scene identity is weak while rejecting generic high-score doors belonging to a different nearby entity.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "The mechanism check passes generic-distractor, wrong-target-only, and same-target-twin cases. Real-image gain, exact entrance pixels, navigation, arrival, product, user-benefit, and safety remain unproved.",
+          "evidence": [],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "Target-local entrance evidence graph Bind each entrance proposal to the requested public POI using proposal-context appearance instead of combining a global scene identity bit with a generic door bit. l10 named-poi entrance non-ocr evidence-graph Candidate-conditioned POI to entrance edge Expand each door, gate, stairs, escalator, or passage proposal; compare its context against the public target roster; combine entrance support with normalized target margin; emit COMMIT, SET_VALUED, or SEARCH. Entrance proposals, proposal-context CLIP and DINO vectors, public target reference bank, user goal Unique target-bound entrance, bounded same-target entrance set, or fail-closed search Current evidence is a pure mechanism check only. Fresh real views must establish proposal-context identity, exact entrance truth remains absent, and no public-access, traversability, localization, navigation, arrival, product, user-benefit, or safety claim follows. l10-r0 Replace scene-level identity AND entrance gating with candidate-specific target-to-entrance edges before tracking and guidance. Recover true entrances whose whole-scene identity is weak while rejecting generic high-score doors belonging to a different nearby entity. The mechanism check passes generic-distractor, wrong-target-only, and same-target-twin cases. Real-image gain, exact entrance pixels, navigation, arrival, product, user-benefit, and safety remain unproved."
+    },
+    {
       "id": "dataset-aria-digital-twin-project-aria-tools#dtr-dr25",
       "item_id": "dataset-aria-digital-twin-project-aria-tools",
       "mechanism_id": "dtr-dr25",
@@ -1571,9 +1626,11 @@
       "limitations": "Commons categories contain portraits, events, interiors, and distant context; category membership is not current-frame target visibility truth and reference coverage must be source-audited before evaluation.",
       "signatures": [],
       "layer_scores": {
-        "authority_truth": 4,
+        "authority_truth": 7,
         "decision_lifecycle": 3,
-        "evaluation_evidence": 3,
+        "evaluation_evidence": 6,
+        "geometry_motion": 3,
+        "handoff_completion": 3,
         "identity_binding": 6,
         "observation_perception": 3,
         "runtime_infrastructure": 3,
@@ -1588,18 +1645,31 @@
           "id": "use-l10-r0-wikidata-commons-poi-reference",
           "route": "l10-r0",
           "use_state": "active",
-          "reproduction_status": "not_attempted",
-          "verdict": "not_run",
+          "reproduction_status": "partial",
+          "verdict": "mixed",
           "project_application": "Supply a non-OCR identity branch for the find-correct-building stage before entrance binding and temporal guidance.",
           "expected_effect": "Reject wrong named entities when text is absent or unreadable, while a richer multi-facet reference bank should raise correct-entity retrieval.",
-          "observed_effect": "",
-          "metrics": [],
-          "claim_boundary": "The first frozen run kept top-1 at 6/11, reduced wrong-goal false confirmations 3 to 0 versus global references, and improved balanced accuracy 65.45% to 68.18%, but failed the predeclared top-1 gate. Do not tune this cohort; expand the reference information source before another fresh run.",
-          "evidence": [],
+          "observed_effect": "Facade geometry removed wrong-goal confirmations without improving top-1; metadata entrance truth was invalid; human-labelled fresh views showed entrance ranking signal but scene-level identity AND entrance collapsed.",
+          "metrics": [
+            "facade_fingerprint_top1=6/11",
+            "facade_wrong_goal_false_confirmations=0/55",
+            "fresh_identity_top1=12/18",
+            "fresh_identity_wrong_goal_false_confirmations=0",
+            "entrance_graph_score_auc=0.725",
+            "scene_level_joint_true_ready=0/8"
+          ],
+          "claim_boundary": "Public reference banks supply useful non-OCR identity and entrance ranking evidence, but neither scene-level identity nor filename facets establish target-to-entrance binding, exact entrance truth, navigation, or arrival.",
+          "evidence": [
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r0/named-poi-multifacet-entrance-v2/result.json",
+              "summary": "Fresh human-labelled entrance-view evaluation."
+            }
+          ],
           "updated_at": "2026-08-28"
         }
       ],
-      "search_text": "Wikidata plus Wikimedia Commons named-POI reference bank Public entity identities, coordinates, aliases, and Commons images can form a reusable target knowledge pack for named destination grounding. l10 named-poi facade public-reference Public POI multi-view reference bank Bind a user-named public entity to multiple facade, entrance, architectural-context, and wayfinding views before online search; compare live observations against the bank without requiring readable OCR. Wikidata QID, coordinates, aliases, Commons category and image metadata Hash-frozen entity-specific reference views with provenance and license metadata Commons categories contain portraits, events, interiors, and distant context; category membership is not current-frame target visibility truth and reference coverage must be source-audited before evaluation. l10-r0 Supply a non-OCR identity branch for the find-correct-building stage before entrance binding and temporal guidance. Reject wrong named entities when text is absent or unreadable, while a richer multi-facet reference bank should raise correct-entity retrieval. The first frozen run kept top-1 at 6/11, reduced wrong-goal false confirmations 3 to 0 versus global references, and improved balanced accuracy 65.45% to 68.18%, but failed the predeclared top-1 gate. Do not tune this cohort; expand the reference information source before another fresh run."
+      "search_text": "Wikidata plus Wikimedia Commons named-POI reference bank Public entity identities, coordinates, aliases, and Commons images can form a reusable target knowledge pack for named destination grounding. l10 named-poi facade public-reference Public POI multi-view reference bank Bind a user-named public entity to multiple facade, entrance, architectural-context, and wayfinding views before online search; compare live observations against the bank without requiring readable OCR. Wikidata QID, coordinates, aliases, Commons category and image metadata Hash-frozen entity-specific reference views with provenance and license metadata Commons categories contain portraits, events, interiors, and distant context; category membership is not current-frame target visibility truth and reference coverage must be source-audited before evaluation. l10-r0 Supply a non-OCR identity branch for the find-correct-building stage before entrance binding and temporal guidance. Reject wrong named entities when text is absent or unreadable, while a richer multi-facet reference bank should raise correct-entity retrieval. Facade geometry removed wrong-goal confirmations without improving top-1; metadata entrance truth was invalid; human-labelled fresh views showed entrance ranking signal but scene-level identity AND entrance collapsed. facade_fingerprint_top1=6/11 facade_wrong_goal_false_confirmations=0/55 fresh_identity_top1=12/18 fresh_identity_wrong_goal_false_confirmations=0 entrance_graph_score_auc=0.725 scene_level_joint_true_ready=0/8 Public reference banks supply useful non-OCR identity and entrance ranking evidence, but neither scene-level identity nor filename facets establish target-to-entrance binding, exact entrance truth, navigation, or arrival."
     },
     {
       "id": "droid-ood-privileged-phase-distillation-v1#privileged-phase-distillation-v1",

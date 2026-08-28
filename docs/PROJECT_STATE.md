@@ -545,6 +545,27 @@ next source change is a richer facade/entrance/sign/context reference bank, not
 weight or threshold tuning on this opened cohort. No entrance, navigation,
 metric arrival, product, user-benefit, or safety claim follows.
 
+That source change has now materialized 50 prior-file-disjoint Commons facets
+and a second 29-image fresh source. Filename-derived entrance truth was rejected
+as `NOT_EVALUABLE` after all three alleged false-ready frames visibly contained
+stairs, escalators, or passage structures. On 18 fresh human-labelled views,
+scene identity retrieved `12/18`, confirmed seven, and produced zero wrong-goal
+confirmations. Identity-only readiness had `2/8` true ready and five false
+ready; adding the frozen CLIP/GroundingDINO entrance graph suppressed every
+ready decision, including all eight positives. Although the entrance graph
+score retained `0.725` AUC, the scene-level identity-AND-entrance join failed.
+Record `NAMED_POI_SCENE_LEVEL_IDENTITY_AND_ENTRANCE_GATE_NOT_MET`; do not tune
+the opened sources.
+
+A target-local binding reducer is now implemented. It expands every entrance
+proposal, compares that proposal context against the public target roster, and
+emits `COMMIT / SET_VALUED / SEARCH` from the candidate-specific edge. Its
+mechanism check rejects a higher-scoring door belonging to another target,
+preserves two same-target entrances as a set, and fails closed when no target-
+local edge exists. Real-image evidence for this successor remains pending on a
+fresh cohort; no entrance, navigation, metric arrival, product, user-benefit,
+or safety claim follows.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

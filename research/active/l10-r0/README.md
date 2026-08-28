@@ -1166,6 +1166,65 @@ not establish natural-video search, exact entrance selection, metric
 localization, guidance, reacquisition, arrival, product benefit, user benefit,
 or safety.
 
+### Multi-facet entrance evidence: scene-level AND is the wrong binding seam
+
+The source was then changed rather than tuning the 11-image facade cohort. A
+metadata-prioritized Commons materializer excluded every prior filename and
+added 50 new views across Central Station, HKU Main Building, Queen Mary
+Hospital, Ruttonjee Hospital, and Hong Kong Sanatorium. Filename metadata
+supplied entrance/facade/wayfinding hints before pixel access; CLIP+DINO kept
+the frozen non-OCR entity score, while GroundingDINO proposed pedestrian
+entrances, doors, gates, stairs, escalators, and passageways. The first join
+required scene identity and entrance-view evidence simultaneously.
+
+V1's filename-derived entrance truth is `NOT_EVALUABLE`: all three supposed
+false-ready images visibly contain stairs, escalators, or passage structures.
+Commons filename hints are useful for acquiring data but are not entrance
+visibility truth. No V1 score is promoted as algorithm evidence.
+
+V2 therefore downloaded another 29 source-disjoint images and froze human
+entrance visibility before any model call. Eighteen images remained evaluation
+after eight calibration views and source-invalid portraits/history objects were
+excluded. The unchanged scene-level join produced:
+
+| arm | true ready | false ready | precision | recall | F1 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| identity-only readiness | 2/8 | 5 | 28.57% | 25.0% | 0.267 |
+| identity + CLIP entrance | 1/8 | 1 | 50.0% | 12.5% | 0.200 |
+| identity + CLIP/GroundingDINO graph | 0/8 | 0 | 0% | 0% | 0 |
+
+Fresh entity retrieval was `12/18`; seven identities were confirmed and no
+wrong goal was confirmed. On the same evaluation views, entrance-only scores
+still had usable ranking signal: CLIP AUC `0.7125`, GroundingDINO proposal AUC
+`0.675`, and their graph score AUC `0.725`. The collapse occurs at the join:
+global identity rejects most HKU/Queen Mary entrance views, and the small
+calibration threshold then rejects the surviving target-local evidence. Record
+`NAMED_POI_SCENE_LEVEL_IDENTITY_AND_ENTRANCE_GATE_NOT_MET`. Do not tune the
+opened roles, thresholds, prompt, or weights.
+
+The successor representation is now implemented in
+`named_poi_entrance_binding.py`. Every entrance proposal receives an expanded
+context crop; that crop, rather than the whole scene, must rank the requested
+public target above the map roster. A harmonic target-local edge combines
+entrance support and normalized identity margin. The reducer emits `COMMIT`
+only for a unique edge, preserves same-target twins as `SET_VALUED`, and returns
+`SEARCH` when only a generic high-scoring door belongs to another target. Its
+pure mechanism check passes all three cases. This is implementation mechanics,
+not a real-image gain; a fresh cohort must now evaluate proposal-context
+features without reopening V1/V2.
+
+V2 result:
+`artifacts.local/evidence/l10-r0/named-poi-multifacet-entrance-v2/result.json`,
+SHA-256 `dff6fcd89460f185fc3785549131800869ce7661d35d5119b3f5dd4d58488f51`.
+Encoder and GroundingDINO backend receipts are
+`f9771304ef3d2665b6e8fbada9330aa118b690fe5def8c8b1a85abc8c54c6771`
+and `f5a29bcbcc3fac435fda39a25cf4abe16cd99d06d16e670358bcd2dd230b6c92`.
+The encoder selected measured-faster CPU (`0.125 s` versus CUDA `0.314 s`);
+GroundingDINO selected verified RTX 5060 CUDA (`1.186 s` versus CPU `3.788 s`).
+No OCR calls were made. Image-level human entrance visibility still does not
+establish exact entrance pixels, public access, traversability, accessibility,
+metric approach, arrival, product benefit, user benefit, or safety.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

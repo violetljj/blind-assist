@@ -527,6 +527,27 @@ high-precision branch; it cannot be the only identity authority, and no branch
 alone can emit arrival. A fresh successor must improve correct-entity retrieval
 before the route spends work on entrance binding and continuous guidance.
 
+The multi-facet source change is now complete. Fifty prior-file-disjoint
+Commons views supplied entrance/facade/wayfinding facets, followed by a second
+29-image fresh source after filename-derived truth proved invalid. On 18
+human-labelled evaluation views, the unchanged entity score retrieved `12/18`,
+confirmed seven, and made zero wrong-goal confirmations. Identity-only readiness
+gave `2/8` true ready with five false ready; the scene-level CLIP plus
+GroundingDINO entrance graph emitted no ready decisions at all. Its raw entrance
+ranking still reached `0.725` AUC, so the terminal is
+`NAMED_POI_SCENE_LEVEL_IDENTITY_AND_ENTRANCE_GATE_NOT_MET`, not evidence that
+entrance cues are absent.
+
+The next algorithm has therefore moved the identity seam inside each entrance
+candidate. For every proposed door, stairs, gate, or passage, an expanded
+context crop must itself rank the requested POI over the map roster. The new
+reducer commits one target-local edge, preserves multiple same-target entrances
+as `SET_VALUED`, and otherwise keeps searching. The mechanism is implemented
+and its three-case check passes, but it has no real-image gain yet. Do not tune
+or reopen either consumed entrance cohort; the next fresh run evaluates this
+proposal-context representation directly, then only a successful edge may feed
+tracking, bearing guidance, and arrival logic.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

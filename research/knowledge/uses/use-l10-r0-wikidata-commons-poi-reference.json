@@ -15,18 +15,35 @@
     "expected_effect": "Reject wrong named entities when text is absent or unreadable, while a richer multi-facet reference bank should raise correct-entity retrieval."
   },
   "evaluation": {
-    "reproduction_status": "not_attempted",
-    "verdict": "not_run",
-    "setup": "",
-    "effect": "",
-    "metrics": [],
-    "claim_boundary": "The first frozen run kept top-1 at 6/11, reduced wrong-goal false confirmations 3 to 0 versus global references, and improved balanced accuracy 65.45% to 68.18%, but failed the predeclared top-1 gate. Do not tune this cohort; expand the reference information source before another fresh run."
+    "reproduction_status": "partial",
+    "verdict": "mixed",
+    "setup": "Frozen zero-OCR facade identity followed by two source-disjoint multi-facet entrance-view runs.",
+    "effect": "Facade geometry removed wrong-goal confirmations without improving top-1; metadata entrance truth was invalid; human-labelled fresh views showed entrance ranking signal but scene-level identity AND entrance collapsed.",
+    "metrics": [
+      "facade_fingerprint_top1=6/11",
+      "facade_wrong_goal_false_confirmations=0/55",
+      "fresh_identity_top1=12/18",
+      "fresh_identity_wrong_goal_false_confirmations=0",
+      "entrance_graph_score_auc=0.725",
+      "scene_level_joint_true_ready=0/8"
+    ],
+    "claim_boundary": "Public reference banks supply useful non-OCR identity and entrance ranking evidence, but neither scene-level identity nor filename facets establish target-to-entrance binding, exact entrance truth, navigation, or arrival."
   },
-  "evidence": [],
+  "evidence": [
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/evidence/l10-r0/named-poi-multifacet-entrance-v2/result.json",
+      "summary": "Fresh human-labelled entrance-view evaluation."
+    }
+  ],
   "history": [
     {
       "date": "2026-08-28",
       "change": "Category membership is not visibility truth; teacher or metadata source admission cannot be promoted to evaluator truth."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Changed the successor from scene-level conjunction to proposal-context target identity; both opened entrance cohorts are closed to tuning."
     }
   ],
   "added_at": "2026-08-28",
