@@ -291,7 +291,17 @@ def fit_platt(x: np.ndarray, y: np.ndarray, backend: str) -> np.ndarray:
     return _fit_numpy(x, y)
 
 
-def _probability(score: np.ndarray, params: Sequence[float]) -> np.ndarray:
+def _probability(
+    score: np.ndarray,
+    params: Sequence[float],
+    backend: str = "numpy-platt-inference",
+) -> np.ndarray:
+    if backend == "torch-cuda-platt-inference":
+        import torch
+
+        values = torch.as_tensor(score, dtype=torch.float64, device="cuda")
+        probability = torch.sigmoid(float(params[0]) * values + float(params[1]))
+        return probability.cpu().numpy()
     logits = np.clip(float(params[0]) * score + float(params[1]), -40.0, 40.0)
     return 1.0 / (1.0 + np.exp(-logits))
 
@@ -324,12 +334,15 @@ def predict(
     evidence: SequenceEvidence,
     onset: Sequence[float],
     maintenance: Sequence[float],
+    probability_backend: str = "numpy-platt-inference",
 ) -> dict[str, Any]:
     config = DTRConfig(route_horizon_s=HORIZON_S, route_half_width_m=ROUTE_HALF_WIDTH_M)
     lifecycle = RiskEventLifecycle(config.clear_grace_s)
     guard = config.route_horizon_s * FROZEN_R2_CONFIG.imminent_horizon_fraction
-    onset_probability = _probability(evidence.current_score, onset)
-    maintenance_probability = _probability(evidence.reachable_score, maintenance)
+    onset_probability = _probability(evidence.current_score, onset, probability_backend)
+    maintenance_probability = _probability(
+        evidence.reachable_score, maintenance, probability_backend
+    )
     output: dict[str, Any] = {
         "raw_alert_frames": [],
         "active_alert_frames": [],

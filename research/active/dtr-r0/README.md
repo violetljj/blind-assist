@@ -812,6 +812,78 @@ Evidence:
 - result SHA-256
   `6ba84a5615aa91156fc9f8fc9005b813b8634232ce5ecb3fefdd41d442239976`.
 
+## DTR-C11 calibrated route-region occupancy
+
+C11 replaces C9's raw route-risk state score with a calibrated route-region
+occupancy question: how much confidence-weighted, temporally fresh scene motion
+is currently entering the route, and how much remains flow-reachable from the
+last admitted state? It voxel-collapses correlated point evidence, normalizes
+the intensity by cell area, and fits separate Platt maps for alert onset and
+maintenance. It does not multiply spatial cells as if they were independent.
+The probability decision is frozen at `0.5`; the unchanged imminent continuous
+collision geometry remains the only below-threshold safety bypass.
+
+The coefficients were fitted once on ten consumed sequences, then frozen before
+the four raw bags below were acquired. The truth-blind workers sealed both the
+fixed C9 arm (`M1_SRB_GLOBAL`) and C11 (`M1_RROQ_GLOBAL`) before scoring opened
+the labels.
+
+| Four-sequence fresh cohort | CONTACT recall | False segments | False / non-CONTACT min | Event F1 | Median lead |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Fixed C9 route-risk state | `17/20` (85.00%) | 17 | 5.14 | 62.96% | 2.01 s |
+| **C11 calibrated route-region occupancy** | **`17/20` (85.00%)** | **11** | **3.32** | **70.83%** | **1.45 s** |
+
+C11 therefore preserves all 17 recalled events while removing 6 of 17 C9
+false segments (`-35.3%`) and adding 7.87 event-F1 points. The cost is 0.56 s
+less median lead. Fresh frame calibration is useful but not solved: 5,069 known
+frames give Brier `0.2023`, NLL `0.5874`, and equal-count 10-bin ECE `0.1574`.
+These are public-replay calibration measurements, not deployment calibration.
+
+Decision: `DTR_C11_ROUTE_REGION_OCCUPANCY_FRESH_SIGNAL`. The evidence supports
+the intended story at route-risk level: dense confidence-aware motion can keep
+fresh event recall while calibrated route-region authority suppresses
+pseudo-motion alerts. Flow reachability is support, not alert authority: a
+development-only variant that allowed multi-observation flow traces to originate
+alerts kept `34/41` recall but increased false segments from 33 to 38, so it was
+rejected before the fresh run. The smallest next falsifier is a new frozen
+cohort on which route-conditioned reachability either preserves recall without
+erasing useful lead, or fails; no C11 threshold sweep is authorized.
+
+Mechanism basis and evidence boundary:
+
+- [Occupancy Flow Fields](https://arxiv.org/html/2211.04340v2) motivates jointly
+  representing future occupancy and flow rather than treating motion and
+  occupancy as unrelated outputs; C11 borrows only the reachability idea.
+- [Waymo Occupancy Flow Fields](https://waymo.com/research/occupancy-flow-fields-for-motion-forecasting-in-autonomous-driving/)
+  reinforces flow-traced occupancy, but its autonomous-driving benchmark is not
+  BlindAssist product evidence.
+- [Continuous Occupancy Fields](https://arxiv.org/html/2501.16480) motivates
+  avoiding grid-resolution-dependent probability mass; C11's cell-area
+  normalization is the narrow adopted mechanism.
+- [Probabilistic Occupancy Grid Mapping](https://arxiv.org/html/2103.04795)
+  supports explicit uncertainty treatment, not a claim that correlated cells
+  are independent or that public replay is deployment calibrated.
+
+All GPU-capable launch classes used the shared research launcher and emitted
+backend receipts. CUDA execution was verified on the RTX 5060, but the
+representative batches selected CPU with `CPU_FASTER_MEASURED`: route collision
+was about `0.13 ms` on CPU versus `1.2-1.6 ms` on CUDA, and Platt inference was
+about `0.025-0.033 ms` versus `0.35-0.40 ms`. The batches are too small to repay
+GPU launch and transfer overhead.
+
+Evidence:
+
+- committed calibrator SHA-256
+  `925f9016786122f363ff13e10ab3373398b526b7523dab43c8ce5c8e5d686ec3`;
+- committed fresh roster SHA-256
+  `88063217b7a4ffd0ee9bcb2c8e71a29c58c4461cf64333d3107406206b26bab9`;
+- acquisition SHA-256
+  `544e5e2069b35edf9b08b16c2e10d3f4e4d518c52320ca79abf6507abec0bfe5`;
+- combined truth-blind prediction SHA-256
+  `55fc4831f7429fcefdeb4763c5f58cb24ebba7d84b02dd35e0232c360383eccb`;
+- result SHA-256
+  `bf38d7bac8cb43bc8b69967fbbbf2e7bf1893709e2d6e950d08140dd3e630629`.
+
 The source split explains why pooling is not enough:
 
 | Source | R2 recall / false | R3-C recall / false | Route authority |
