@@ -1,0 +1,135 @@
+{
+  "backends": {
+    "fit": {
+      "receipt": "F:\\ba-data\\blindassist-artifacts-20260805\\evidence\\dtr-c11\\route-region-probability\\backend-fit.json",
+      "receipt_sha256": "bff8a4aa63adf620e6b76d8b599cf3a31d3fbc381e34e0f113bcfc8ca9e2d5cc",
+      "selected_backend": "numpy-newton-platt",
+      "selected_device_type": "cpu",
+      "selection_reason": "CPU_FASTER_MEASURED"
+    },
+    "route": {
+      "receipt": "F:\\ba-data\\blindassist-artifacts-20260805\\evidence\\dtr-c11\\route-region-probability\\backend-route.json",
+      "receipt_sha256": "4dc1a8a959212c1718ebf33a5c7e26c64040fe0b2e84b8064ee0fa8d114adc98",
+      "selected_backend": "numpy-relative-collision",
+      "selected_device_type": "cpu",
+      "selection_reason": "CPU_FASTER_MEASURED"
+    }
+  },
+  "claim_limits": [
+    "The coefficients use only already consumed sequences; leave-one-sequence-out results are Development model-selection evidence.",
+    "M1 confidence is calibrated into route-region CONTACT probability, not asserted to be cell occupancy probability.",
+    "A separate algorithm-fresh cohort is required before C11 performance is claimed."
+  ],
+  "development_leave_one_sequence_out": {
+    "event_score": {
+      "bounded_contact_event_f1": 0.6296296296296297,
+      "bounded_contact_event_precision": 0.5074626865671642,
+      "bounded_contact_event_recall": 0.8292682926829268,
+      "bounded_contact_events": 41,
+      "bounded_contact_events_recalled": 34,
+      "false_alert_segments": 33,
+      "false_alert_segments_per_known_non_contact_minute": 3.4397558862384034,
+      "known_non_contact_wearer_minutes": 9.593704056739806,
+      "lead_times_s": [
+        0.45950937271118164,
+        0.26538729667663574,
+        -0.5564324855804443,
+        -0.748558759689331,
+        0.1541891098022461,
+        1.4078397750854492,
+        0.7992866039276123,
+        -0.4759037494659424,
+        0.8119769096374512,
+        2.157987356185913,
+        1.2092065811157227,
+        1.1899309158325195,
+        2.1481857299804688,
+        4.390389919281006,
+        -1.7338945865631104,
+        -3.268800973892212,
+        -2.388170003890991,
+        -0.34154510498046875,
+        -2.1409823894500732,
+        -0.793989896774292,
+        2.1359305381774902,
+        -1.1469011306762695,
+        0.9339561462402344,
+        3.1780741214752197,
+        1.5163116455078125,
+        2.54504656791687,
+        2.510680913925171,
+        -1.8129959106445312,
+        -0.81978440284729,
+        1.7918586730957031,
+        3.4580278396606445,
+        3.5220751762390137,
+        -0.2677016258239746,
+        0.24312448501586914
+      ],
+      "median_first_alert_lead_s": 0.629397988319397,
+      "sequences": 10
+    },
+    "maintenance_calibration": {
+      "brier": 0.2198380352597492,
+      "ece_equal_count_10": 0.1627236621075127,
+      "frames": 12600,
+      "nll": 0.6357929656663281,
+      "positive_fraction": 0.33976190476190476
+    },
+    "onset_calibration": {
+      "brier": 0.2265042373046526,
+      "ece_equal_count_10": 0.19607945523651069,
+      "frames": 12600,
+      "nll": 0.651407883685943,
+      "positive_fraction": 0.33976190476190476
+    },
+    "sequences": 10
+  },
+  "feature": {
+    "belief_cannot_originate_from_clear": true,
+    "formula": "log1p(voxel_area * sum over unique advected route cells of max(confidence * exp(-entry/3s) * exp(-age/0.5s))))",
+    "grid_resolution_m": 0.12,
+    "maintenance_source": "0.5s flow-advected M1-CT belief collapsed after transport",
+    "name": "flow-reachable route-region hazard intensity",
+    "onset_authority": "calibrated current route-region probability >= 0.5 or unchanged imminent continuous-collision geometry",
+    "onset_source": "current M1-CT route-entry cells"
+  },
+  "model": {
+    "decision_probability": 0.5,
+    "l2": 0.001,
+    "maintenance_platt_intercept": -0.8602314332710852,
+    "maintenance_platt_slope": 22.46999250934913,
+    "newton_steps": 25,
+    "onset_platt_intercept": -0.7639637724607592,
+    "onset_platt_slope": 33.83875263252805
+  },
+  "schema": "blindassist-dtr-c11-route-region-probability-calibrator-v1",
+  "sources": {
+    "labels": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\dtr-r0-jrdb-rgb-bridge-v1\\train_labels.zip",
+    "labels_sha256": "6691816ab12a109c1769f25657a0db17fe56164f3bfbf76a2d01c63a73450df1",
+    "ledger_roots": [
+      "F:\\ba-data\\blindassist-artifacts-20260805\\evidence\\dtr-c2\\fresh-global-obb-replay\\ledgers",
+      "F:\\ba-data\\blindassist-artifacts-20260805\\evidence\\dtr-c10\\fresh-confirmation\\ledgers"
+    ],
+    "timestamps": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\dtr-r0-jrdb-rgb-bridge-v1\\train_timestamps.zip",
+    "timestamps_sha256": "60b440f4fd69b93a96b84ae07b957c169f8af304106a61b5f297286ed04b2e30"
+  },
+  "status": "DTR_C11_ROUTE_REGION_PROBABILITY_CALIBRATOR_FROZEN",
+  "training": {
+    "contact_frames": 4281,
+    "known_frames": 12600,
+    "sequences": [
+      "bytes-cafe-2019-02-07_0",
+      "clark-center-2019-02-28_0",
+      "clark-center-2019-02-28_1",
+      "clark-center-intersection-2019-02-28_0",
+      "cubberly-auditorium-2019-04-22_0",
+      "forbes-cafe-2019-01-22_0",
+      "gates-159-group-meeting-2019-04-03_0",
+      "jordan-hall-2019-04-22_0",
+      "packard-poster-session-2019-03-20_2",
+      "stlc-111-2019-04-19_0"
+    ],
+    "truth_role": "consumed Development plus consumed fixed-C9 confirmation only"
+  }
+}
