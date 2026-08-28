@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-voteflow-2025",
+  "kind": "paper",
+  "title": "VoteFlow — Enforcing Local Rigidity in Self-Supervised Scene Flow",
+  "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2025/html/Lin_VoteFlow_Enforcing_Local_Rigidity_in_Self-Supervised_Scene_Flow_CVPR_2025_paper.html",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "若 training-free 速度源确认“有可学信号但不够准”，它是比大 trajectory model 更对准故障的 learned head。",
+  "mechanisms": [
+    {
+      "id": "voteflow",
+      "name": "VoteFlow",
+      "description": "把局部平移离散为候选 bins，邻域点对局部 translation 投票，用局部刚性归纳偏置抑制独立点噪声。",
+      "inputs": [
+        "输入连续 LiDAR sweeps；输出 point/pillar flow。"
+      ],
+      "outputs": [
+        "输入连续 LiDAR sweeps；输出 point/pillar flow。"
+      ],
+      "limitations": "局部投票会平滑相邻但独立的行人；缺少原生 event confidence。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "direct-velocity"
+  ],
+  "aliases": [
+    "targeted:DTR-V5"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

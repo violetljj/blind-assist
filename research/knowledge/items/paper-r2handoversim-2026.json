@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-r2handoversim-2026",
+  "kind": "paper",
+  "title": "R2HandoverSim — Factorized Simulation and Human Evaluation for Robot-to-Human Handover",
+  "canonical_ref": "https://arxiv.org/abs/2606.21011",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "直接支持 L10 将 READY 拆成多个端点，并单列用户感受/执行。",
+  "mechanisms": [
+    {
+      "id": "r2handoversim",
+      "name": "R2HandoverSim",
+      "description": "将 handover 拆成 planning feasibility、reachability、grasp stability、grasp affordance 与 safety，而不是一个 success bit。",
+      "inputs": [
+        "Source-defined observations and task context."
+      ],
+      "outputs": [
+        "Source-defined mechanism output."
+      ],
+      "limitations": "handover 任务与固定设施操作有差异；仿真指标不能替代真实用户。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "interaction-ready"
+  ],
+  "aliases": [
+    "targeted:L10-H11"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

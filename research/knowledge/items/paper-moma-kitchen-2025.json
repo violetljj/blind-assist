@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-moma-kitchen-2025",
+  "kind": "paper",
+  "title": "MoMa-Kitchen — A 100K Benchmark for Affordance-Grounded Last-Mile Navigation in Mobile Manipulation",
+  "canonical_ref": "https://arxiv.org/abs/2503.11081",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "last-mile endpoint 应由 downstream task success 定义，距离最近点往往不是最佳站位。",
+  "mechanisms": [
+    {
+      "id": "moma-kitchen",
+      "name": "MoMa-Kitchen",
+      "description": "在大量厨房与不同 robot embodiments 中运行真实/仿真 manipulation； 把地面位置、朝向与下游动作成功绑定成 floor affordance； 区分“能导航到附近”和“站在这里可以完成动作”。",
+      "inputs": [
+        "输入 RGB-D、任务对象与移动机器人状态；输出让后续 manipulation 成功的最终 base pose，而非仅靠近目标。"
+      ],
+      "outputs": [
+        "输入 RGB-D、任务对象与移动机器人状态；输出让后续 manipulation 成功的最终 base pose，而非仅靠近目标。"
+      ],
+      "limitations": "robot reachability、碰撞与操控偏好不等于人的手臂、白杖、身体朝向或个体能力。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "interaction-ready"
+  ],
+  "aliases": [
+    "targeted:L10-H1"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

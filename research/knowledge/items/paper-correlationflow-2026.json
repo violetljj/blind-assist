@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-correlationflow-2026",
+  "kind": "paper",
+  "title": "CorrelationFlow — A Training-Free Geometric Approach for LiDAR Scene Flow",
+  "canonical_ref": "https://arxiv.org/abs/2607.29237",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "无需学习模型，component geometry 和匹配即可提供一个有竞争力、可解释、可快速接入的 direct-velocity baseline。",
+  "mechanisms": [
+    {
+      "id": "correlationflow",
+      "name": "CorrelationFlow",
+      "description": "ego compensation 后把点投到 BEV occupancy； 以 space-time connected components 获得候选实体； dense 版本通过 normalized cross-correlation 搜索平移； keypoint 版本对 distance-transform boundary descriptor 做匹配、ratio test 和几何筛选； 以 component 内稳健统计把匹配稠密化到点。",
+      "inputs": [
+        "输入相邻或短间隔 LiDAR sweeps 与 ego pose；输出 point/component 2-D scene flow，不依赖训练标签。"
+      ],
+      "outputs": [
+        "输入相邻或短间隔 LiDAR sweeps 与 ego pose；输出 point/component 2-D scene flow，不依赖训练标签。"
+      ],
+      "limitations": "没有原生 calibrated confidence；component merge 会把相邻人群合成一个刚体；不能处理显著旋转或非刚性；汽车数据不等于 JRDB 穿戴回放。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "direct-velocity"
+  ],
+  "aliases": [
+    "targeted:DTR-V1"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

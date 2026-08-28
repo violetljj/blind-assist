@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "use-obstacle-avoidance-teflow-2026",
+  "item_id": "paper-teflow-2026",
+  "route": "obstacle-avoidance",
+  "mechanism_ids": [
+    "teflow"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "建跨帧 candidate pool； 区分内部模型候选与外部几何候选； 对一致运动进行 temporal voting； 做 cluster-balanced supervision，避免大静态区域压倒 VRU。",
+    "project_application": "只借“多个候选速度的 temporal consensus”，不要复活完整训练主线。适合在 CorrelationFlow、ICP-Flow 与当前 cell-flow 之间做共识。",
+    "modifications": "只借用报告明确映射的机制；保留当前 route contract、truth authority、stop conditions 与 claim ceiling。",
+    "expected_effect": "若时序共识只能降低 flow error、却不降低 event false segments，就不晋级。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "若时序共识只能降低 flow error、却不降低 event false segments，就不晋级。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "时序一致也可能稳定错误 pseudo-motion；部分监督/伪真值来自 driving annotations。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2602.19053",
+      "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided 2026-08-28 DTR targeted knowledge expansion as a candidate only; no route authority or experimental result was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Recorded the report-defined minimal falsification setup and primary external source."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

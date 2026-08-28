@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-moma-pos-2024",
+  "kind": "paper",
+  "title": "MoMa-Pos — Task-Oriented Mobile Manipulator Positioning for Articulated Objects",
+  "canonical_ref": "https://arxiv.org/abs/2403.19940",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "抽屉、柜门、冰箱门的 endpoint 必须考虑完整动作轨迹；静态地“手能碰到把手”不足以保证拉开/转开。",
+  "mechanisms": [
+    {
+      "id": "moma-pos",
+      "name": "MoMa-Pos",
+      "description": "用 task-object graph、必要时选择性重建 articulated object model，再结合 inverse reachability 与关节运动学选 base pose。",
+      "inputs": [
+        "Source-defined observations and task context."
+      ],
+      "outputs": [
+        "Source-defined mechanism output."
+      ],
+      "limitations": "依赖 privileged 3-D boxes、点云和 articulated model；机器人动作范围不是用户范围。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "interaction-ready"
+  ],
+  "aliases": [
+    "targeted:L10-H5"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

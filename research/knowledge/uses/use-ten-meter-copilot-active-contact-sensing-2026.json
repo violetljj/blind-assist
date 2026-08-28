@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-active-contact-sensing-2026",
+  "item_id": "paper-active-contact-sensing-2026",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "active-contact-sensing-for-robust-robot-to-human-handover"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Bayesian contact model + active information-gain action，区分 firm grasp、incidental touch 和未接触。",
+    "project_application": "强化当前架构边界：READY_TO_INTERACT 不是 COMPLETED。完成仍需用户明确确认，或未来有独立因果动作结果。",
+    "modifications": "只借用报告明确映射的机制；保留当前 route contract、truth authority、stop conditions 与 claim ceiling。",
+    "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "依赖 force sensor 和机器人主动动作；不能直接用于手机。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2605.04610",
+      "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided 2026-08-28 L10 targeted knowledge expansion as a candidate only; no route authority or experimental result was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Recorded the report-defined minimal falsification setup and primary external source."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

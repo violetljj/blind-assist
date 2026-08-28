@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-active-contact-sensing-2026",
+  "kind": "paper",
+  "title": "Active Contact Sensing for Robust Robot-to-Human Handover",
+  "canonical_ref": "https://arxiv.org/abs/2605.04610",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "视觉上“手到了”不能证明 transfer 完成；因果结果比静态外观更可靠。",
+  "mechanisms": [
+    {
+      "id": "active-contact-sensing-for-robust-robot-to-human-handover",
+      "name": "Active Contact Sensing for Robust Robot-to-Human Handover",
+      "description": "Bayesian contact model + active information-gain action，区分 firm grasp、incidental touch 和未接触。",
+      "inputs": [
+        "视觉已显示对方接触物体后，通过小幅 probing motion 与 force response 判断是真正稳定抓住，还是偶然触碰。"
+      ],
+      "outputs": [
+        "视觉已显示对方接触物体后，通过小幅 probing motion 与 force response 判断是真正稳定抓住，还是偶然触碰。"
+      ],
+      "limitations": "依赖 force sensor 和机器人主动动作；不能直接用于手机。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "interaction-ready"
+  ],
+  "aliases": [
+    "targeted:L10-H13"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

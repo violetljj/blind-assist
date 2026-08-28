@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-synflow-2026",
+  "kind": "paper",
+  "title": "SynFlow — Scaling Up LiDAR Scene Flow with Synthetic Data",
+  "canonical_ref": "https://arxiv.org/abs/2604.09411",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "若 fresh C2 证明点级速度确有 headroom，但真实训练标签不足，可用它预训练。",
+  "mechanisms": [
+    {
+      "id": "synflow",
+      "name": "SynFlow",
+      "description": "构造约 4,000 sequences、约 940k frames 的合成 scene-flow 数据，用大规模精确 point motion 补真实标签不足。",
+      "inputs": [
+        "Source-defined observations and task context."
+      ],
+      "outputs": [
+        "Source-defined mechanism output."
+      ],
+      "limitations": "合成行人行为、传感器噪声与穿戴视角仍可能错配。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "direct-velocity"
+  ],
+  "aliases": [
+    "targeted:DTR-V9"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

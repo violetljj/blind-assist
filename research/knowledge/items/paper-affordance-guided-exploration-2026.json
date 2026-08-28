@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-affordance-guided-exploration-2026",
+  "kind": "paper",
+  "title": "Affordance-Guided Coarse-to-Fine Exploration for Mobile Manipulation",
+  "canonical_ref": "https://doi.org/10.1609/aaai.v40i22.38909",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "提供 contact point -> stand region 的直接几何构造，不要求一开始训练完整 floor-affordance network。",
+  "mechanisms": [
+    {
+      "id": "affordance-guided-coarse-to-fine-exploration-for-mobile-manipulation",
+      "name": "Affordance-Guided Coarse-to-Fine Exploration for Mobile Manipulation",
+      "description": "GroundedSAM 与 VLM 找 affordance keypoint，投到 obstacle map；以截断 Gaussian 生成候选站位，从语义粗定位切到局部几何。",
+      "inputs": [
+        "Source-defined observations and task context."
+      ],
+      "outputs": [
+        "Source-defined mechanism output."
+      ],
+      "limitations": "VLM keypoint 会 hallucinate；机器人地图/动作设置；总成功率无法归因到 affordance。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "interaction-ready"
+  ],
+  "aliases": [
+    "targeted:L10-H7"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

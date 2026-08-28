@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "use-obstacle-avoidance-trackcue-2026",
+  "item_id": "paper-trackcue-2026",
+  "route": "obstacle-avoidance",
+  "mechanism_ids": [
+    "trackcue"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "把候选动态 LiDAR 点投进相机； 用 CoTracker3 在 6-frame clip 中获得 image tracks； 根据深度与 ego pose计算纯静态世界应产生的 rigid image track； 两条轨迹偏离超过阈值、且跨帧投票充分时，记为 independent motion witness； cue 回投到最近 LiDAR 点并用于标签/监督增强。",
+    "project_application": "只移植 cue 逻辑，不先训练大模型。JRDB 已有同步 RGB/LiDAR/ego pose，可对疑似 moving components 计算 image-vs-rigid residual。",
+    "modifications": "只借用报告明确映射的机制；保留当前 route contract、truth authority、stop conditions 与 claim ceiling。",
+    "expected_effect": "比较加入 TrackCue 前后，STATIC_PSEUDO_MOTION 与真实 person CONTACT 的保留率。cue 缺失必须是 UNKNOWN，不得当静态反证。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "比较加入 TrackCue 前后，STATIC_PSEUDO_MOTION 与真实 person CONTACT 的保留率。cue 缺失必须是 UNKNOWN，不得当静态反证。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "2-D track 偏离不等于正确 3-D velocity；投影覆盖不足时不能输出 CLEAR；高算力训练结果不能直接迁移到手机。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2605.16922",
+      "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided 2026-08-28 DTR targeted knowledge expansion as a candidate only; no route authority or experimental result was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Recorded the report-defined minimal falsification setup and primary external source."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

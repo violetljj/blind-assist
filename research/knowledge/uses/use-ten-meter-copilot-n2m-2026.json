@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-n2m-2026",
+  "item_id": "paper-n2m-2026",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "n2m"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "只从成功 rollouts 学正向 pose preference；Point-BERT 编码几何，GMM 表示多模态站位，并用 viewpoint augmentation 增强。",
+    "project_application": "提醒我们先建立 geometric ceiling，再通过少量真实/受控用户操作数据学习“更容易完成”的 pose preference。",
+    "modifications": "只借用报告明确映射的机制；保留当前 route contract、truth authority、stop conditions 与 claim ceiling。",
+    "expected_effect": "先不训练。对同一任务比较所有几何可达站位的 visibility、action-axis alignment 与操作成功，判断是否存在显著 pose preference headroom。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "先不训练。对同一任务比较所有几何可达站位的 visibility、action-axis alignment 与操作成功，判断是否存在显著 pose preference headroom。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "结果高度依赖具体 robot policy、深度与正样本 rollouts；不能直接学习用户行为。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2509.18671",
+      "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided 2026-08-28 L10 targeted knowledge expansion as a candidate only; no route authority or experimental result was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Recorded the report-defined minimal falsification setup and primary external source."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

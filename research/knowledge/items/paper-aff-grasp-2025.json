@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-aff-grasp-2025",
+  "kind": "paper",
+  "title": "Aff-Grasp — Learning Precise Affordances from Egocentric Videos",
+  "canonical_ref": "https://arxiv.org/abs/2408.10123",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "第一视角视频中的“手即将接触哪里”能提供比物体框更精细的功能接触监督。",
+  "mechanisms": [
+    {
+      "id": "aff-grasp",
+      "name": "Aff-Grasp",
+      "description": "从 hand-object pre-contact 片段自动生成 affordance supervision； DINOv2 + geometry-guided transformer 预测像素级功能区域； 只在 affordance mask 内生成 grasp。",
+      "inputs": [
+        "输入第一视角 RGB；输出精确 graspable 与 functional affordance masks，并生成候选抓取。"
+      ],
+      "outputs": [
+        "输入第一视角 RGB；输出精确 graspable 与 functional affordance masks，并生成候选抓取。"
+      ],
+      "limitations": "robot grasp success 不等于视障用户可达、舒适或完成；对按钮、插孔、门把手的任务定义不同。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "interaction-ready"
+  ],
+  "aliases": [
+    "targeted:L10-H6"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

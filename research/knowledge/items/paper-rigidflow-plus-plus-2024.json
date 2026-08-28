@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-rigidflow-plus-plus-2024",
+  "kind": "paper",
+  "title": "RigidFlow++ — Self-Supervised 3D Scene Flow with Local Rigidity Prior",
+  "canonical_ref": "https://arxiv.org/abs/2310.11284",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "点级 motion 应带一个 validity mask；“有数值”不等于“这次速度可用”。",
+  "mechanisms": [
+    {
+      "id": "rigidflow",
+      "name": "RigidFlow++",
+      "description": "将场景分为局部 supervoxels； correspondence、confidence 与局部 rigid transform 交替优化； confidence 同时由 forward/backward consistency、空间接近和局部刚性残差决定； 低可信点不强迫参与伪标签或损失。",
+      "inputs": [
+        "输入两帧点云和初始 correspondences；输出 scene flow、局部刚性变换和 point-wise confidence/validity。"
+      ],
+      "outputs": [
+        "输入两帧点云和初始 correspondences；输出 scene flow、局部刚性变换和 point-wise confidence/validity。"
+      ],
+      "limitations": "confidence 不是针对 DTR event 的校准概率；局部刚性可在墙面、重复结构或错误 cluster 上稳定自洽。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "direct-velocity"
+  ],
+  "aliases": [
+    "targeted:DTR-V3"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

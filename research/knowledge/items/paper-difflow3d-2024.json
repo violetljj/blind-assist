@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-difflow3d-2024",
+  "kind": "paper",
+  "title": "DifFlow3D — Uncertainty-Aware Scene Flow with Diffusion",
+  "canonical_ref": "https://arxiv.org/abs/2311.17456",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "提供一个“速度分布而非单点速度”的上界参考。",
+  "mechanisms": [
+    {
+      "id": "difflow3d",
+      "name": "DifFlow3D",
+      "description": "以条件 diffusion 多步精化 point flow，并输出 per-point uncertainty。",
+      "inputs": [
+        "Source-defined observations and task context."
+      ],
+      "outputs": [
+        "Source-defined mechanism output."
+      ],
+      "limitations": "重模型；论文 uncertainty 未证明对 CONTACT false segments 有校准意义；diffusion 多步不适合首轮低延迟原型。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "direct-velocity"
+  ],
+  "aliases": [
+    "targeted:DTR-V10"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

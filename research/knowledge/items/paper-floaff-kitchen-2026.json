@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-floaff-kitchen-2026",
+  "kind": "paper",
+  "title": "FloAff-Kitchen — Canonical Floor Affordance for Last-Mile Mobile Manipulation",
+  "canonical_ref": "https://arxiv.org/abs/2607.24207",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "一个 endpoint 不应由单一距离或单一 IK bit 决定；可把多项因子保留为可解释 affordance field。",
+  "mechanisms": [
+    {
+      "id": "floaff-kitchen",
+      "name": "FloAff-Kitchen",
+      "description": "用 canonical floor affordance representation 去掉场景朝向、布局等 nuisance； 先学习跨任务共享 floor prior，再以 task-specific head 区分操作； 同时考虑 reachability、collision-free execution、visibility、manipulability 与 articulated motion direction。",
+      "inputs": [
+        "Source-defined observations and task context."
+      ],
+      "outputs": [
+        "Source-defined mechanism output."
+      ],
+      "limitations": "仍由机器人 rollouts 定义标签；新 benchmark 的跨域与用户证据有限。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "interaction-ready"
+  ],
+  "aliases": [
+    "targeted:L10-H2"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

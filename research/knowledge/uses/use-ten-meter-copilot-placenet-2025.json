@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-placenet-2025",
+  "item_id": "paper-placenet-2025",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "placenet"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "用大量 IK/collision queries 离线生成 supervision，PointNet+MLP 预测 base pose 可行性，并递归选择位置。",
+    "project_application": "作为最简单 stand-region map 结构基线；监督必须换成人体模型/用户数据。",
+    "modifications": "只借用报告明确映射的机制；保留当前 route contract、truth authority、stop conditions 与 claim ceiling。",
+    "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "标签来自 robot IK 与 collision；人的关节、身体宽度、平衡与舒适度完全不同。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://doi.org/10.1109/IROS60139.2025.11247631",
+      "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided 2026-08-28 L10 targeted knowledge expansion as a candidate only; no route authority or experimental result was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Recorded the report-defined minimal falsification setup and primary external source."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

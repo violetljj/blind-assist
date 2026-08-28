@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "use-obstacle-avoidance-himo-seflow-plus-plus-2025",
+  "item_id": "paper-himo-seflow-plus-plus-2025",
+  "route": "obstacle-avoidance",
+  "mechanism_ids": [
+    "himo-seflow"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "同时估计 ego 与 object motion，处理一帧扫描内部的时间畸变；用更精细自动标签、对称 flow loss 和三帧 backbone 强化高速目标。",
+    "project_application": "M1 目前把 sweep 当近似同时刻；高速移动或自转时，单帧内部已被拉伸。raw-point velocity 若忽略 timestamp，会把畸变误当速度。",
+    "modifications": "只借用报告明确映射的机制；保留当前 route contract、truth authority、stop conditions 与 claim ceiling。",
+    "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "高速道路、多 LiDAR 与穿戴行人分布差异大。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2503.00803",
+      "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided 2026-08-28 DTR targeted knowledge expansion as a candidate only; no route authority or experimental result was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Recorded the report-defined minimal falsification setup and primary external source."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

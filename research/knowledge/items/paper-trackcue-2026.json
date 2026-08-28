@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-trackcue-2026",
+  "kind": "paper",
+  "title": "TrackCue — Motion Cues from Image-based Point Tracking for LiDAR Scene Flow Estimation",
+  "canonical_ref": "https://arxiv.org/abs/2605.16922",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "比较“真实 image track”和“纯 ego rigid track”能提供与 LiDAR correspondence 不同源的运动证据。",
+  "mechanisms": [
+    {
+      "id": "trackcue",
+      "name": "TrackCue",
+      "description": "把候选动态 LiDAR 点投进相机； 用 CoTracker3 在 6-frame clip 中获得 image tracks； 根据深度与 ego pose计算纯静态世界应产生的 rigid image track； 两条轨迹偏离超过阈值、且跨帧投票充分时，记为 independent motion witness； cue 回投到最近 LiDAR 点并用于标签/监督增强。",
+      "inputs": [
+        "输入同步多相机 RGB、LiDAR、标定与 ego pose；输出“哪些 LiDAR 点具有非 ego motion”的稀疏运动 cue。"
+      ],
+      "outputs": [
+        "输入同步多相机 RGB、LiDAR、标定与 ego pose；输出“哪些 LiDAR 点具有非 ego motion”的稀疏运动 cue。"
+      ],
+      "limitations": "2-D track 偏离不等于正确 3-D velocity；投影覆盖不足时不能输出 CLEAR；高算力训练结果不能直接迁移到手机。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "direct-velocity"
+  ],
+  "aliases": [
+    "targeted:DTR-V4"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

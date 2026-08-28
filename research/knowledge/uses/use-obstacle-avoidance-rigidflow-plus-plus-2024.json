@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "use-obstacle-avoidance-rigidflow-plus-plus-2024",
+  "item_id": "paper-rigidflow-plus-plus-2024",
+  "route": "obstacle-avoidance",
+  "mechanism_ids": [
+    "rigidflow"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "将场景分为局部 supervoxels； correspondence、confidence 与局部 rigid transform 交替优化； confidence 同时由 forward/backward consistency、空间接近和局部刚性残差决定； 低可信点不强迫参与伪标签或损失。",
+    "project_application": "直接替换 M1-CT 中过于粗糙的 cell confidence。建议输出 spatial_support / FB_consistency / rigid_residual / overlap 四个分量，不先压成不可解释总分。",
+    "modifications": "只借用报告明确映射的机制；保留当前 route contract、truth authority、stop conditions 与 claim ceiling。",
+    "expected_effect": "固定 direct-velocity source，只添加 point validity；要求 static pseudo-motion false segments 显著下降，同时 pedestrian CONTACT 与 bounded-gap recovery 非劣。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "固定 direct-velocity source，只添加 point validity；要求 static pseudo-motion false segments 显著下降，同时 pedestrian CONTACT 与 bounded-gap recovery 非劣。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "confidence 不是针对 DTR event 的校准概率；局部刚性可在墙面、重复结构或错误 cluster 上稳定自洽。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2310.11284",
+      "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided 2026-08-28 DTR targeted knowledge expansion as a candidate only; no route authority or experimental result was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Recorded the report-defined minimal falsification setup and primary external source."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

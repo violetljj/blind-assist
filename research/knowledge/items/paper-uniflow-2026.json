@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-uniflow-2026",
+  "kind": "paper",
+  "title": "UniFlow — Zero-Shot LiDAR Scene Flow via Cross-Domain Generalization",
+  "canonical_ref": "https://arxiv.org/abs/2511.18254",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "如果下一步需要训练，域泛化比在单一 AV2 leaderboard 上追分更重要。",
+  "mechanisms": [
+    {
+      "id": "uniflow",
+      "name": "UniFlow",
+      "description": "统一不同 LiDAR sensor、数据集和帧率的表示，在 AV2、Waymo、nuScenes 等多域联合训练。",
+      "inputs": [
+        "Source-defined observations and task context."
+      ],
+      "outputs": [
+        "Source-defined mechanism output."
+      ],
+      "limitations": "训练代价大，且仍不提供 BlindAssist event calibration。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "direct-velocity"
+  ],
+  "aliases": [
+    "targeted:DTR-V8"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-help-human-reachability-2026",
+  "kind": "paper",
+  "title": "HELP — Knowing When Not to Help: Active Estimation of Human Reachability",
+  "canonical_ref": "https://roboticsconference.org/program/papers/119/",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "人体 reach 是个体化、方向相关且带不确定性的；固定臂长球会系统性误判。",
+  "mechanisms": [
+    {
+      "id": "help",
+      "name": "HELP",
+      "description": "用可变形 box 与局部 Gaussian primitives 表示 reach boundary； 在带 biomechanical/clinical anchors 的低维 latent manifold 上建个体模型； Bayesian belief 表示仍未知的 reachability； 主动选择最有信息的 calibration query。",
+      "inputs": [
+        "通过少量主动询问/动作，估计某个具体人的 joint-space reachable set 与不确定性。"
+      ],
+      "outputs": [
+        "通过少量主动询问/动作，估计某个具体人的 joint-space reachable set 与不确定性。"
+      ],
+      "limitations": "校准负担、人工约束环境、指标仍非真实操作完成率。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "interaction-ready"
+  ],
+  "aliases": [
+    "targeted:L10-H10"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

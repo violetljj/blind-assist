@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-aff-grasp-2025",
+  "item_id": "paper-aff-grasp-2025",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "aff-grasp"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "从 hand-object pre-contact 片段自动生成 affordance supervision； DINOv2 + geometry-guided transformer 预测像素级功能区域； 只在 affordance mask 内生成 grasp。",
+    "project_application": "作为 RGB functional-contact mask challenger；必须与 SC11/SC14 的 task functional set 和动作轴绑定。",
+    "modifications": "只借用报告明确映射的机制；保留当前 route contract、truth authority、stop conditions 与 claim ceiling。",
+    "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "robot grasp success 不等于视障用户可达、舒适或完成；对按钮、插孔、门把手的任务定义不同。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2408.10123",
+      "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided 2026-08-28 L10 targeted knowledge expansion as a candidate only; no route authority or experimental result was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Recorded the report-defined minimal falsification setup and primary external source."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

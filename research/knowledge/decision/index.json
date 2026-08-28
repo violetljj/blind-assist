@@ -2,11 +2,11 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "294f4d4a12e79dba3e5669e00f3a262096c8a5abd566b6482686299f9c7ebdf0",
+  "source_fingerprint": "23c38d647d21b596905391b883d32c7c572ef360c638d8570e5a082730519d8f",
   "counts": {
     "failure_layers": 13,
-    "mechanisms": 223,
-    "uses": 224,
+    "mechanisms": 245,
+    "uses": 246,
     "experiments": 206,
     "current_terminals": 19
   },
@@ -1401,15 +1401,14 @@
         "父对象框"
       ],
       "layer_scores": {
-        "authority_truth": 3,
+        "authority_truth": 6,
         "evaluation_evidence": 9,
         "functional_grounding": 20,
-        "geometry_motion": 12,
+        "geometry_motion": 9,
         "handoff_completion": 12,
         "identity_binding": 18,
         "interaction_readiness": 3,
-        "source_coverage": 9,
-        "temporal_belief": 3
+        "source_coverage": 15
       },
       "routes": [
         "ten-meter-copilot"
@@ -1423,7 +1422,7 @@
           "verdict": "positive",
           "project_application": "作为 L10 功能落点候选：先绑定正确实例，再在实例内部定位门把手、按钮、座位接触面等真正执行功能的区域。",
           "expected_effect": "在实例身份正确但功能部件错误的故障上，提高 functional-element 命中率并降低 parent-box false handoff。",
-          "observed_effect": "SC12 and SC13 retained terminal static-geometry negatives. SC14 changed the source to causal paired motion: type 7/8 to 8/8, translation hits 4/7 to 7/7, mean error 38.89 to 0.91 degrees, and one rotational pivot line within 2.22 cm.",
+          "observed_effect": "SC14 changed static geometry to causal paired motion. SC22 showed a large consumed endpoint-composition gain. SC24/SC26/SC28 established consumed semantic/topology mechanisms. SC30 then aligned source admission to provider-public same-parent action-family conflicts, and SC31 produced the first fresh aggregate semantic-integrity signal while exposing a repeated-control ordinal failure.",
           "metrics": [
             "evaluable_tasks=6/10 descriptions; 4 NOT_EVALUABLE_PARENT_BINDING",
             "legal_commit_rate=0.6667 baseline vs 1.0000 SC8",
@@ -1440,9 +1439,17 @@
             "SC14 motion_type_correct=7/8 static vs 8/8 causal",
             "SC14 translation_direction_hit=4/7 static vs 7/7 causal",
             "SC14 mean_translation_error_deg=38.89 static vs 0.91 causal",
-            "SC14 rotation_axis_hit=1/1; pivot_line_error_m=0.0222"
+            "SC14 rotation_axis_hit=1/1; pivot_line_error_m=0.0222",
+            "SC22 consumed endpoint recall=0.6486 to 0.8324; F1=0.784 to 0.906; task coverage=5/6 to 6/6",
+            "SC24 consumed exact-semantic legal commits=13 to 16; wrong parts=49 to 41; recall=0.9054 to 0.9324",
+            "SC26 consumed action-family legal commits=9 to 11; wrong parts=61 to 54; recall=0.7258 to 0.7903",
+            "SC27 fresh action-family wrong parts=32 to 27 but recall=0.8333 to 0.7917; gate not met",
+            "SC28 consumed redundancy gate preserved recall=0.8333 and wrong parts=32 to 30",
+            "SC29 fresh tasks=29; semantic admissions=27; changed tasks=0; arms identical",
+            "SC30 V2 source admission=3 eligible scenes after 32 candidates; each has one redundancy-eligible conflict parent",
+            "SC31 fresh legal commits=3 to 4; wrong parts=24 to 20; recall=0.625 unchanged; cross-parent violations=0"
           ],
-          "claim_boundary": "SC14 is simulated paired-point mechanics evidence with privileged functional seeds, parent OBBs, motion perturbations, and correspondences. It does not establish RGB tracking, safe probing, reachability, body orientation, arrival, HANDOFF_READY, user completion, product benefit, or safety.",
+          "claim_boundary": "SC14 is simulated paired-point mechanics. SC22-SC31 use privileged functional proposals or action labels. SC31 is a fresh conflict-admitted aggregate Development signal, not task-wise no-regret, natural-distribution performance, or RGB proposal evidence. No result establishes safe probing, reachability, arrival, HANDOFF_READY, product benefit, or safety.",
           "evidence": [
             {
               "kind": "external",
@@ -1463,12 +1470,27 @@
               "kind": "artifact",
               "ref": "artifacts.local/evidence/l10-r16/sc14-causal-micro-motion-421013-v0/result.json",
               "summary": "Causal action-belief mechanics result, SHA-256 bb11fa3b87ea350ad793d3c62daf81e183b6806f08c82b2c1df1535677d1ca01."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r23/sc24-semantic-topology-integrity-consumed-v0/result.json",
+              "summary": "Consumed exact-semantic topology mechanism result, SHA-256 2eef62fe41c98987b84d3fa08cfe01974f9cacbcf7550d42320756747e1dc91d."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r28/sc29-fresh-redundancy-gated-action-family-v1/result.json",
+              "summary": "Fresh redundancy-gated result with zero changed tasks, SHA-256 3fc9ca5aeceba09a719c08c316711f9b5f24e768b42dc94c67ac6eceef9bec7b."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r31/sc31-conflict-admitted-redundancy-gated-v1/result.json",
+              "summary": "Fresh conflict-admitted aggregate semantic-integrity signal, SHA-256 7d594da76e7e812c9176993a819cd61144525133341fb00e23c5ef450810474e."
             }
           ],
           "updated_at": "2026-08-28"
         }
       ],
-      "search_text": "SceneFun3D: Fine-Grained Functionality and Affordance Understanding in 3D Scenes A dataset, toolkit, and benchmark for grounding task-specific functional elements and affordance regions inside 3D scenes. ten-meter-copilot functional-grounding functional-affordance Task-specific functional-element annotations Represents a scene object through the fine-grained part that performs a requested function, rather than treating the parent object bounding box as the action target. 3D scene task description multi-view RGB-D observations functional element mask affordance region Dataset supervision and benchmark performance do not establish zero-shot transfer, phone-camera reliability, exact-instance identity, navigation completion, or user benefit. parent object box functional element 功能部件 父对象框 ten-meter-copilot 作为 L10 功能落点候选：先绑定正确实例，再在实例内部定位门把手、按钮、座位接触面等真正执行功能的区域。 在实例身份正确但功能部件错误的故障上，提高 functional-element 命中率并降低 parent-box false handoff。 SC12 and SC13 retained terminal static-geometry negatives. SC14 changed the source to causal paired motion: type 7/8 to 8/8, translation hits 4/7 to 7/7, mean error 38.89 to 0.91 degrees, and one rotational pivot line within 2.22 cm. evaluable_tasks=6/10 descriptions; 4 NOT_EVALUABLE_PARENT_BINDING legal_commit_rate=0.6667 baseline vs 1.0000 SC8 mean_target_set_recall=0.50 baseline vs 1.00 SC8 wrong_part_count=2 baseline vs 0 SC8 parent_center_false_handoff=6/6; identity_parent_violations=0 SC8 legal_commit_rate=0.6667 baseline vs 1.0000 selector SC11 proposal_recall=0.80 single-view vs 1.00 multi-view SC11 legal_commit_rate=0.50 single-view vs 0.6667 multi-view SC11 mean_target_set_recall=0.50 single-view vs 0.8333 multi-view SC11 wrong_part_count=8 single-view vs 2 multi-view SC12 signed_direction_hit=7/9 baseline vs 6/9 task-signed SC13 signed_direction_hit=4/6 baseline vs 4/6 local-contact SC14 motion_type_correct=7/8 static vs 8/8 causal SC14 translation_direction_hit=4/7 static vs 7/7 causal SC14 mean_translation_error_deg=38.89 static vs 0.91 causal SC14 rotation_axis_hit=1/1; pivot_line_error_m=0.0222 SC14 is simulated paired-point mechanics evidence with privileged functional seeds, parent OBBs, motion perturbations, and correspondences. It does not establish RGB tracking, safe probing, reachability, body orientation, arrival, HANDOFF_READY, user completion, product benefit, or safety."
+      "search_text": "SceneFun3D: Fine-Grained Functionality and Affordance Understanding in 3D Scenes A dataset, toolkit, and benchmark for grounding task-specific functional elements and affordance regions inside 3D scenes. ten-meter-copilot functional-grounding functional-affordance Task-specific functional-element annotations Represents a scene object through the fine-grained part that performs a requested function, rather than treating the parent object bounding box as the action target. 3D scene task description multi-view RGB-D observations functional element mask affordance region Dataset supervision and benchmark performance do not establish zero-shot transfer, phone-camera reliability, exact-instance identity, navigation completion, or user benefit. parent object box functional element 功能部件 父对象框 ten-meter-copilot 作为 L10 功能落点候选：先绑定正确实例，再在实例内部定位门把手、按钮、座位接触面等真正执行功能的区域。 在实例身份正确但功能部件错误的故障上，提高 functional-element 命中率并降低 parent-box false handoff。 SC14 changed static geometry to causal paired motion. SC22 showed a large consumed endpoint-composition gain. SC24/SC26/SC28 established consumed semantic/topology mechanisms. SC30 then aligned source admission to provider-public same-parent action-family conflicts, and SC31 produced the first fresh aggregate semantic-integrity signal while exposing a repeated-control ordinal failure. evaluable_tasks=6/10 descriptions; 4 NOT_EVALUABLE_PARENT_BINDING legal_commit_rate=0.6667 baseline vs 1.0000 SC8 mean_target_set_recall=0.50 baseline vs 1.00 SC8 wrong_part_count=2 baseline vs 0 SC8 parent_center_false_handoff=6/6; identity_parent_violations=0 SC8 legal_commit_rate=0.6667 baseline vs 1.0000 selector SC11 proposal_recall=0.80 single-view vs 1.00 multi-view SC11 legal_commit_rate=0.50 single-view vs 0.6667 multi-view SC11 mean_target_set_recall=0.50 single-view vs 0.8333 multi-view SC11 wrong_part_count=8 single-view vs 2 multi-view SC12 signed_direction_hit=7/9 baseline vs 6/9 task-signed SC13 signed_direction_hit=4/6 baseline vs 4/6 local-contact SC14 motion_type_correct=7/8 static vs 8/8 causal SC14 translation_direction_hit=4/7 static vs 7/7 causal SC14 mean_translation_error_deg=38.89 static vs 0.91 causal SC14 rotation_axis_hit=1/1; pivot_line_error_m=0.0222 SC22 consumed endpoint recall=0.6486 to 0.8324; F1=0.784 to 0.906; task coverage=5/6 to 6/6 SC24 consumed exact-semantic legal commits=13 to 16; wrong parts=49 to 41; recall=0.9054 to 0.9324 SC26 consumed action-family legal commits=9 to 11; wrong parts=61 to 54; recall=0.7258 to 0.7903 SC27 fresh action-family wrong parts=32 to 27 but recall=0.8333 to 0.7917; gate not met SC28 consumed redundancy gate preserved recall=0.8333 and wrong parts=32 to 30 SC29 fresh tasks=29; semantic admissions=27; changed tasks=0; arms identical SC30 V2 source admission=3 eligible scenes after 32 candidates; each has one redundancy-eligible conflict parent SC31 fresh legal commits=3 to 4; wrong parts=24 to 20; recall=0.625 unchanged; cross-parent violations=0 SC14 is simulated paired-point mechanics. SC22-SC31 use privileged functional proposals or action labels. SC31 is a fresh conflict-admitted aggregate Development signal, not task-wise no-regret, natural-distribution performance, or RGB proposal evidence. No result establishes safe probing, reachability, arrival, HANDOFF_READY, product benefit, or safety."
     },
     {
       "id": "dataset-spring-robustspring#dtr-dr28",
@@ -1767,6 +1789,59 @@
       "search_text": "Acoussist 在无信号灯路口，让参与车辆主动发出近超声 chirp，行人手机估计多辆车的速度、方向和距离，再根据停止距离给出二元危险提示。 dynamic-travel-risk deep-reading dtr-r0 Acoussist — dtr:DR36 route mechanism 车辆播放 17–19 kHz、500 ms chirp，间隔 125 ms；手机至少双麦、64 kHz 采样。STFT 与 Hough 分离每辆车的时频扫线，扫线斜率估相对速度；对分离后的 LoS 分量做 modified GCC，由双麦时差估方向；相隔 500 ms 的两次测量联立求绝对速度和距离。若车距不大于停车视距加处理延迟距离就告警，其中反应时间取 2.5 s、制动减速度取 11.2 ft/s²，系统尾延迟用 90 分位 220.7 ms。 它只能看到安装并播放 chirp 的参与车辆；对未参与车辆没有负面观测 authority。实验没有真实过街、不守法司机或拥挤道路，且要求静止持机约 1 秒。高速 MDR 重新上升，总试次分母和置信区间披露不足。若产品把“没收到 chirp”解释成“可以通过”，就是把协议覆盖误写成道路安全。 obstacle-avoidance 借停止距离、尾延迟、多车聚合、MDR/FAR 和振动反馈；不借车辆主动发声依赖、1 秒静止采样或任何“未检出即可过街”的表述。 借停止距离、尾延迟、多车聚合、MDR/FAR 和振动反馈；不借车辆主动发声依赖、1 秒静止采样或任何“未检出即可过街”的表述。 它只能看到安装并播放 chirp 的参与车辆；对未参与车辆没有负面观测 authority。实验没有真实过街、不守法司机或拥挤道路，且要求静止持机约 1 秒。高速 MDR 重新上升，总试次分母和置信区间披露不足。若产品把“没收到 chirp”解释成“可以通过”，就是把协议覆盖误写成道路安全。"
     },
     {
+      "id": "paper-active-contact-sensing-2026#active-contact-sensing-for-robust-robot-to-human-handover",
+      "item_id": "paper-active-contact-sensing-2026",
+      "mechanism_id": "active-contact-sensing-for-robust-robot-to-human-handover",
+      "kind": "paper",
+      "title": "Active Contact Sensing for Robust Robot-to-Human Handover",
+      "canonical_ref": "https://arxiv.org/abs/2605.04610",
+      "summary": "视觉上“手到了”不能证明 transfer 完成；因果结果比静态外观更可靠。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "interaction-ready"
+      ],
+      "name": "Active Contact Sensing for Robust Robot-to-Human Handover",
+      "description": "Bayesian contact model + active information-gain action，区分 firm grasp、incidental touch 和未接触。",
+      "inputs": [
+        "视觉已显示对方接触物体后，通过小幅 probing motion 与 force response 判断是真正稳定抓住，还是偶然触碰。"
+      ],
+      "outputs": [
+        "视觉已显示对方接触物体后，通过小幅 probing motion 与 force response 判断是真正稳定抓住，还是偶然触碰。"
+      ],
+      "limitations": "依赖 force sensor 和机器人主动动作；不能直接用于手机。",
+      "signatures": [],
+      "layer_scores": {
+        "geometry_motion": 3,
+        "handoff_completion": 3
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-active-contact-sensing-2026",
+          "route": "ten-meter-copilot",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "强化当前架构边界：READY_TO_INTERACT 不是 COMPLETED。完成仍需用户明确确认，或未来有独立因果动作结果。",
+          "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "依赖 force sensor 和机器人主动动作；不能直接用于手机。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2605.04610",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "Active Contact Sensing for Robust Robot-to-Human Handover 视觉上“手到了”不能证明 transfer 完成；因果结果比静态外观更可靠。 targeted-knowledge-expansion interaction-ready Active Contact Sensing for Robust Robot-to-Human Handover Bayesian contact model + active information-gain action，区分 firm grasp、incidental touch 和未接触。 视觉已显示对方接触物体后，通过小幅 probing motion 与 force response 判断是真正稳定抓住，还是偶然触碰。 视觉已显示对方接触物体后，通过小幅 probing motion 与 force response 判断是真正稳定抓住，还是偶然触碰。 依赖 force sensor 和机器人主动动作；不能直接用于手机。 ten-meter-copilot 强化当前架构边界：READY_TO_INTERACT 不是 COMPLETED。完成仍需用户明确确认，或未来有独立因果动作结果。 Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling. 依赖 force sensor 和机器人主动动作；不能直接用于手机。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+    },
+    {
       "id": "paper-active-gaze-control-for-foveal-scene-exploration#goal-audit-22",
       "item_id": "paper-active-gaze-control-for-foveal-scene-exploration",
       "mechanism_id": "goal-audit-22",
@@ -1929,6 +2004,174 @@
         }
       ],
       "search_text": "Active text perception for mobile robots 宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。 l10 literature-reserve l10-r0 Active text perception for mobile robots — l10:9 route mechanism 宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。 云台室内机器人、静态文字；没有目标语义绑定、身体靠近、到达或交接。 ten-meter-copilot 已落入 core:assist：补观测动作签发执行回执；缺口×相机方向的上下文 UCB 只从匹配执行确认后的可比较结果学习动作效用，并在硬安全候选集内选择修复动作。 把固定 SWEEP/SCAN/PAN/APPROACH/SIDESTEP/HOLD 映射升级为证据缺口条件化的在线主动感知策略，同时保留身份权威和安全动作边界。 SC15-SC17 closed proxy routes; SC18 established action-outcome repair mechanics. SC19 learned heterogeneous deficit-conditioned utilities, improved authored-world authoritative outcomes, sharply reduced regret, and removed blind approach from ambiguous contexts. source_stop_frames=124; normalized_stop_frames=0 source_false_none_target_present_frames=24; normalized_false_none_target_present_frames=0 explicit_non_navigation_action_coverage=1.0 end_to_end_successful_episodes=30/30 SC15 mean_target_semantic_gain=0.6667 aligned vs 0.8000 opposed; wrong_gate=0.1667 vs 0.0 SC16 transitions=2677; mean_gain_delta=0.0093; improvement_rate_delta=0.0322; gate_crossing=0.0166 aligned vs 0.0428 opposed SC17 precision=0.9097 baseline vs 0.9188 consensus; wrong_reduction=0.2431; wrong_consensus_tracks=5/49 SC18 repeated_no_gain_action_rate=182/206 baseline vs 0/215 repair SC18 task_success_rate=0.885 both; absent_false_completion=0/50 both; reacquire=0.8235 baseline vs 0.8075 repair SC19 authoritative_improvement=419/1045 fixed vs 658/1045 UCB; delta=0.2287 SC19 expected_regret=302.40 fixed vs 20.38 UCB; reduction=0.9326 SC19 final_optimal_action_rate=0.4286 fixed vs 0.9952 UCB; ambiguous_unsafe_approach=1.0 vs 0.0 SC19 supports receipt-gated contextual learning and candidate-boundary mechanics only. Context probabilities are authored, so metric magnitudes do not transfer. No physical phone/user action, causal live readability gain, natural optimal policy, detector, exact-instance selection, metric arrival, product benefit, user benefit, or safety was established."
+    },
+    {
+      "id": "paper-aff-grasp-2025#aff-grasp",
+      "item_id": "paper-aff-grasp-2025",
+      "mechanism_id": "aff-grasp",
+      "kind": "paper",
+      "title": "Aff-Grasp — Learning Precise Affordances from Egocentric Videos",
+      "canonical_ref": "https://arxiv.org/abs/2408.10123",
+      "summary": "第一视角视频中的“手即将接触哪里”能提供比物体框更精细的功能接触监督。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "interaction-ready"
+      ],
+      "name": "Aff-Grasp",
+      "description": "从 hand-object pre-contact 片段自动生成 affordance supervision； DINOv2 + geometry-guided transformer 预测像素级功能区域； 只在 affordance mask 内生成 grasp。",
+      "inputs": [
+        "输入第一视角 RGB；输出精确 graspable 与 functional affordance masks，并生成候选抓取。"
+      ],
+      "outputs": [
+        "输入第一视角 RGB；输出精确 graspable 与 functional affordance masks，并生成候选抓取。"
+      ],
+      "limitations": "robot grasp success 不等于视障用户可达、舒适或完成；对按钮、插孔、门把手的任务定义不同。",
+      "signatures": [],
+      "layer_scores": {
+        "geometry_motion": 6,
+        "handoff_completion": 6,
+        "identity_binding": 3,
+        "source_coverage": 3
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-aff-grasp-2025",
+          "route": "ten-meter-copilot",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "作为 RGB functional-contact mask challenger；必须与 SC11/SC14 的 task functional set 和动作轴绑定。",
+          "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "robot grasp success 不等于视障用户可达、舒适或完成；对按钮、插孔、门把手的任务定义不同。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2408.10123",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "Aff-Grasp — Learning Precise Affordances from Egocentric Videos 第一视角视频中的“手即将接触哪里”能提供比物体框更精细的功能接触监督。 targeted-knowledge-expansion interaction-ready Aff-Grasp 从 hand-object pre-contact 片段自动生成 affordance supervision； DINOv2 + geometry-guided transformer 预测像素级功能区域； 只在 affordance mask 内生成 grasp。 输入第一视角 RGB；输出精确 graspable 与 functional affordance masks，并生成候选抓取。 输入第一视角 RGB；输出精确 graspable 与 functional affordance masks，并生成候选抓取。 robot grasp success 不等于视障用户可达、舒适或完成；对按钮、插孔、门把手的任务定义不同。 ten-meter-copilot 作为 RGB functional-contact mask challenger；必须与 SC11/SC14 的 task functional set 和动作轴绑定。 Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling. robot grasp success 不等于视障用户可达、舒适或完成；对按钮、插孔、门把手的任务定义不同。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+    },
+    {
+      "id": "paper-affordance-guided-exploration-2026#affordance-guided-coarse-to-fine-exploration-for-mobile-manipulation",
+      "item_id": "paper-affordance-guided-exploration-2026",
+      "mechanism_id": "affordance-guided-coarse-to-fine-exploration-for-mobile-manipulation",
+      "kind": "paper",
+      "title": "Affordance-Guided Coarse-to-Fine Exploration for Mobile Manipulation",
+      "canonical_ref": "https://doi.org/10.1609/aaai.v40i22.38909",
+      "summary": "提供 contact point -> stand region 的直接几何构造，不要求一开始训练完整 floor-affordance network。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "interaction-ready"
+      ],
+      "name": "Affordance-Guided Coarse-to-Fine Exploration for Mobile Manipulation",
+      "description": "GroundedSAM 与 VLM 找 affordance keypoint，投到 obstacle map；以截断 Gaussian 生成候选站位，从语义粗定位切到局部几何。",
+      "inputs": [
+        "Source-defined observations and task context."
+      ],
+      "outputs": [
+        "Source-defined mechanism output."
+      ],
+      "limitations": "VLM keypoint 会 hallucinate；机器人地图/动作设置；总成功率无法归因到 affordance。",
+      "signatures": [],
+      "layer_scores": {
+        "geometry_motion": 6,
+        "handoff_completion": 3,
+        "interaction_readiness": 3,
+        "source_coverage": 6
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-affordance-guided-exploration-2026",
+          "route": "ten-meter-copilot",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "可把 SC11 functional points 和 SC14 motion axis 转成一个 bounded stand-region proposal。",
+          "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "VLM keypoint 会 hallucinate；机器人地图/动作设置；总成功率无法归因到 affordance。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://doi.org/10.1609/aaai.v40i22.38909",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "Affordance-Guided Coarse-to-Fine Exploration for Mobile Manipulation 提供 contact point -> stand region 的直接几何构造，不要求一开始训练完整 floor-affordance network。 targeted-knowledge-expansion interaction-ready Affordance-Guided Coarse-to-Fine Exploration for Mobile Manipulation GroundedSAM 与 VLM 找 affordance keypoint，投到 obstacle map；以截断 Gaussian 生成候选站位，从语义粗定位切到局部几何。 Source-defined observations and task context. Source-defined mechanism output. VLM keypoint 会 hallucinate；机器人地图/动作设置；总成功率无法归因到 affordance。 ten-meter-copilot 可把 SC11 functional points 和 SC14 motion axis 转成一个 bounded stand-region proposal。 Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling. VLM keypoint 会 hallucinate；机器人地图/动作设置；总成功率无法归因到 affordance。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+    },
+    {
+      "id": "paper-agent-aware-affordances-2022#agent-aware-affordances-for-articulated-object-interaction",
+      "item_id": "paper-agent-aware-affordances-2022",
+      "mechanism_id": "agent-aware-affordances-for-articulated-object-interaction",
+      "kind": "paper",
+      "title": "Agent-Aware Affordances for Articulated Object Interaction",
+      "canonical_ref": "https://arxiv.org/abs/2209.05802",
+      "summary": "同一个把手对不同 agent/动作不一定可操作；contact affordance 必须与身体/执行器共同定义。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "interaction-ready"
+      ],
+      "name": "Agent-Aware Affordances for Articulated Object Interaction",
+      "description": "point-level affordance 不只看物体表面，还条件于整个 agent geometry、collision 与控制；动作中可闭环重新查询 interaction pose。",
+      "inputs": [
+        "Source-defined observations and task context."
+      ],
+      "outputs": [
+        "Source-defined mechanism output."
+      ],
+      "limitations": "robot agent；需要完整几何；没有人的个体差异。",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 3,
+        "decision_lifecycle": 3,
+        "geometry_motion": 9,
+        "handoff_completion": 3,
+        "interaction_readiness": 3,
+        "observation_perception": 3,
+        "source_coverage": 3
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-agent-aware-affordances-2022",
+          "route": "ten-meter-copilot",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "不要把 affordance mask 当 authority；必须和用户 body/reach model、动作方向以及 clearance 交叉。",
+          "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "robot agent；需要完整几何；没有人的个体差异。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2209.05802",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "Agent-Aware Affordances for Articulated Object Interaction 同一个把手对不同 agent/动作不一定可操作；contact affordance 必须与身体/执行器共同定义。 targeted-knowledge-expansion interaction-ready Agent-Aware Affordances for Articulated Object Interaction point-level affordance 不只看物体表面，还条件于整个 agent geometry、collision 与控制；动作中可闭环重新查询 interaction pose。 Source-defined observations and task context. Source-defined mechanism output. robot agent；需要完整几何；没有人的个体差异。 ten-meter-copilot 不要把 affordance mask 当 authority；必须和用户 body/reach model、动作方向以及 clearance 交叉。 Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling. robot agent；需要完整几何；没有人的个体差异。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
     },
     {
       "id": "paper-agninav#hftf-h01",
@@ -3147,22 +3390,27 @@
           "use_state": "candidate",
           "reproduction_status": "not_attempted",
           "verdict": "not_run",
-          "project_application": "用于“把功能目标交到人可用的位置”这一完成定义，而不是只判断物体在画面中心。",
-          "expected_effect": "减少视觉上已对准但用户无法自然接触目标时的 false completion。",
+          "project_application": "HANDOFF_READY 必须保留用户要接触的 intended-use region；相机/系统不应建议一个把目标压在墙角或遮住把手的站位。",
+          "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
           "observed_effect": "",
           "metrics": [],
-          "claim_boundary": "论文在 27 个物体上的可见性/可达性结果属于机器人交接；BlindAssist 未复现，不能推出盲人偏好、导航完成、产品或安全。",
+          "claim_boundary": "机器人递物，不是用户主动接近固定设施；人体模型和任务范围有限。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
           "evidence": [
             {
               "kind": "external",
               "ref": "https://arxiv.org/abs/2404.01402",
               "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+            },
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2404.01402",
+              "summary": "Primary source re-reviewed in the user-provided 2026-08-28 targeted expansion; no BlindAssist reproduction is implied."
             }
           ],
           "updated_at": "2026-08-28"
         }
       ],
-      "search_text": "ContactHandover: Contact-Guided Robot-to-Human Object Handover A robot-to-human handover system that preserves human contact regions during robot grasping and optimizes delivery for human visibility, reachability, and comfort. ten-meter-copilot completion handover human-affordance Human-contact-aware handover Predicts human contact points, penalizes robot grasps that block them, and chooses a delivery pose that makes those contacts easier for the receiver to reach. object observation robot grasp candidates human contact map contact-preserving grasp human-oriented delivery pose Robot-object handover on household objects does not establish assistive navigation, blind-user preferences, phone sensing, or safety. human contact visibility reachability 人类接触区可达 ten-meter-copilot 用于“把功能目标交到人可用的位置”这一完成定义，而不是只判断物体在画面中心。 减少视觉上已对准但用户无法自然接触目标时的 false completion。 论文在 27 个物体上的可见性/可达性结果属于机器人交接；BlindAssist 未复现，不能推出盲人偏好、导航完成、产品或安全。"
+      "search_text": "ContactHandover: Contact-Guided Robot-to-Human Object Handover A robot-to-human handover system that preserves human contact regions during robot grasping and optimizes delivery for human visibility, reachability, and comfort. ten-meter-copilot completion handover human-affordance Human-contact-aware handover Predicts human contact points, penalizes robot grasps that block them, and chooses a delivery pose that makes those contacts easier for the receiver to reach. object observation robot grasp candidates human contact map contact-preserving grasp human-oriented delivery pose Robot-object handover on household objects does not establish assistive navigation, blind-user preferences, phone sensing, or safety. human contact visibility reachability 人类接触区可达 ten-meter-copilot HANDOFF_READY 必须保留用户要接触的 intended-use region；相机/系统不应建议一个把目标压在墙角或遮住把手的站位。 Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling. 机器人递物，不是用户主动接近固定设施；人体模型和任务范围有限。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
     },
     {
       "id": "paper-copilot#dtr-dr31",
@@ -3216,6 +3464,62 @@
         }
       ],
       "search_text": "COPILOT 从无需相机标定和人体位姿输入的身体佩戴 RGB 视频，预测未来最多 1 秒内佩戴者是否会与静态环境碰撞、哪个身体关节会撞，以及潜在碰撞区域在各输入视角的什么位置。它不是周围行人预测，也不是 cross-traffic 模型。 dynamic-travel-risk deep-reading dtr-r0 COPILOT — dtr:DR31 route mechanism 标准仿真配置在头、骨盆、双腕、双膝放置 6 个相机，输入过去 1 秒、5 Hz 采样的视频。4D space-time-viewpoint attention 交替做“同一时刻跨空间/跨视角”与“同一视角跨空间/跨时间”的注意力；全局池化支路输出总碰撞与 10 个身体部位概率，解码支路输出各视角碰撞热图。训练同时使用总碰撞 BCE、关节 BCE 和热图 KL loss。闭环演示只把热图分左右半区，每步向低风险侧转髋 5°。 精确身体碰撞真值全部来自合成 mesh；无 BLV 参与者、真实碰撞率、提醒或认知负担。默认 6 相机不可直接迁移到手机/眼镜，真实世界也没有验证热图是否真的落在接触位置。它只覆盖人体与静态环境，不覆盖行人或车辆进入路径。 obstacle-avoidance 借 per-joint 标签、未来碰撞热图和精确仿真接触生成；不借六相机默认部署、29% avoidance 外推或定性 sim-to-real。证据置信度：仿真机制高，真实转移低，辅助出行效果未建立。 借 per-joint 标签、未来碰撞热图和精确仿真接触生成；不借六相机默认部署、29% avoidance 外推或定性 sim-to-real。证据置信度：仿真机制高，真实转移低，辅助出行效果未建立。 精确身体碰撞真值全部来自合成 mesh；无 BLV 参与者、真实碰撞率、提醒或认知负担。默认 6 相机不可直接迁移到手机/眼镜，真实世界也没有验证热图是否真的落在接触位置。它只覆盖人体与静态环境，不覆盖行人或车辆进入路径。"
+    },
+    {
+      "id": "paper-correlationflow-2026#correlationflow",
+      "item_id": "paper-correlationflow-2026",
+      "mechanism_id": "correlationflow",
+      "kind": "paper",
+      "title": "CorrelationFlow — A Training-Free Geometric Approach for LiDAR Scene Flow",
+      "canonical_ref": "https://arxiv.org/abs/2607.29237",
+      "summary": "无需学习模型，component geometry 和匹配即可提供一个有竞争力、可解释、可快速接入的 direct-velocity baseline。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "direct-velocity"
+      ],
+      "name": "CorrelationFlow",
+      "description": "ego compensation 后把点投到 BEV occupancy； 以 space-time connected components 获得候选实体； dense 版本通过 normalized cross-correlation 搜索平移； keypoint 版本对 distance-transform boundary descriptor 做匹配、ratio test 和几何筛选； 以 component 内稳健统计把匹配稠密化到点。",
+      "inputs": [
+        "输入相邻或短间隔 LiDAR sweeps 与 ego pose；输出 point/component 2-D scene flow，不依赖训练标签。"
+      ],
+      "outputs": [
+        "输入相邻或短间隔 LiDAR sweeps 与 ego pose；输出 point/component 2-D scene flow，不依赖训练标签。"
+      ],
+      "limitations": "没有原生 calibrated confidence；component merge 会把相邻人群合成一个刚体；不能处理显著旋转或非刚性；汽车数据不等于 JRDB 穿戴回放。",
+      "signatures": [],
+      "layer_scores": {
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 6,
+        "geometry_motion": 12,
+        "observation_perception": 3,
+        "source_coverage": 9
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-correlationflow-2026",
+          "route": "obstacle-avoidance",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "作为 M1 的第一替代速度源。保留每个 component 的 NCC peak、ratio、matched-support、boundary coverage，不能只输出一个速度。",
+          "expected_effect": "在 frozen C2 七段 replay 上替换 occupancy-cell velocity，其余 route/lifecycle/bridge 全不变。若 false segments 不能低于 38，或 20/21 recall、29/63 recovery 任一下降，则不晋级。",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "没有原生 calibrated confidence；component merge 会把相邻人群合成一个刚体；不能处理显著旋转或非刚性；汽车数据不等于 JRDB 穿戴回放。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2607.29237",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "CorrelationFlow — A Training-Free Geometric Approach for LiDAR Scene Flow 无需学习模型，component geometry 和匹配即可提供一个有竞争力、可解释、可快速接入的 direct-velocity baseline。 targeted-knowledge-expansion direct-velocity CorrelationFlow ego compensation 后把点投到 BEV occupancy； 以 space-time connected components 获得候选实体； dense 版本通过 normalized cross-correlation 搜索平移； keypoint 版本对 distance-transform boundary descriptor 做匹配、ratio test 和几何筛选； 以 component 内稳健统计把匹配稠密化到点。 输入相邻或短间隔 LiDAR sweeps 与 ego pose；输出 point/component 2-D scene flow，不依赖训练标签。 输入相邻或短间隔 LiDAR sweeps 与 ego pose；输出 point/component 2-D scene flow，不依赖训练标签。 没有原生 calibrated confidence；component merge 会把相邻人群合成一个刚体；不能处理显著旋转或非刚性；汽车数据不等于 JRDB 穿戴回放。 obstacle-avoidance 作为 M1 的第一替代速度源。保留每个 component 的 NCC peak、ratio、matched-support、boundary coverage，不能只输出一个速度。 在 frozen C2 七段 replay 上替换 occupancy-cell velocity，其余 route/lifecycle/bridge 全不变。若 false segments 不能低于 38，或 20/21 recall、29/63 recovery 任一下降，则不晋级。 没有原生 calibrated confidence；component merge 会把相邻人群合成一个刚体；不能处理显著旋转或非刚性；汽车数据不等于 JRDB 穿戴回放。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
     },
     {
       "id": "paper-corridor-walker#dtr-dr06",
@@ -3712,6 +4016,60 @@
         }
       ],
       "search_text": "DialFRED agent 可主动向 oracle 提问；DialFRED 有约 53K QA，ELBA 学 when/what to ask 并在 TEACh 上改进 task completion goal-copilot prior-art goal-copilot-p0 DialFRED — goal-prior:P0-R06a route mechanism agent 可主动向 oracle 提问；DialFRED 有约 53K QA，ELBA 学 when/what to ask 并在 TEACh 上改进 task completion 虚拟室内 manipulation/nav、oracle 可访问 GT；不能把 oracle 答案或 simulator success 直接当 BLV 开放街景证据 goal-copilot-p0 questioner/performer 分层；澄清动作与物理动作分离；ask cost/utility 的实验框架 questioner/performer 分层；澄清动作与物理动作分离；ask cost/utility 的实验框架 虚拟室内 manipulation/nav、oracle 可访问 GT；不能把 oracle 答案或 simulator success 直接当 BLV 开放街景证据"
+    },
+    {
+      "id": "paper-difflow3d-2024#difflow3d",
+      "item_id": "paper-difflow3d-2024",
+      "mechanism_id": "difflow3d",
+      "kind": "paper",
+      "title": "DifFlow3D — Uncertainty-Aware Scene Flow with Diffusion",
+      "canonical_ref": "https://arxiv.org/abs/2311.17456",
+      "summary": "提供一个“速度分布而非单点速度”的上界参考。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "direct-velocity"
+      ],
+      "name": "DifFlow3D",
+      "description": "以条件 diffusion 多步精化 point flow，并输出 per-point uncertainty。",
+      "inputs": [
+        "Source-defined observations and task context."
+      ],
+      "outputs": [
+        "Source-defined mechanism output."
+      ],
+      "limitations": "重模型；论文 uncertainty 未证明对 CONTACT false segments 有校准意义；diffusion 多步不适合首轮低延迟原型。",
+      "signatures": [],
+      "layer_scores": {
+        "decision_lifecycle": 3,
+        "geometry_motion": 3,
+        "source_coverage": 3
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-difflow3d-2024",
+          "route": "obstacle-avoidance",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "提供一个“速度分布而非单点速度”的上界参考。",
+          "expected_effect": "只把其 uncertainty 当 read-only ranking 与现有 consistency confidence 对照；若不能更好排序 event error，不接入。",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "重模型；论文 uncertainty 未证明对 CONTACT false segments 有校准意义；diffusion 多步不适合首轮低延迟原型。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2311.17456",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "DifFlow3D — Uncertainty-Aware Scene Flow with Diffusion 提供一个“速度分布而非单点速度”的上界参考。 targeted-knowledge-expansion direct-velocity DifFlow3D 以条件 diffusion 多步精化 point flow，并输出 per-point uncertainty。 Source-defined observations and task context. Source-defined mechanism output. 重模型；论文 uncertainty 未证明对 CONTACT false segments 有校准意义；diffusion 多步不适合首轮低延迟原型。 obstacle-avoidance 提供一个“速度分布而非单点速度”的上界参考。 只把其 uncertainty 当 read-only ranking 与现有 consistency confidence 对照；若不能更好排序 event error，不接入。 重模型；论文 uncertainty 未证明对 CONTACT false segments 有校准意义；diffusion 多步不适合首轮低延迟原型。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
     },
     {
       "id": "paper-dinov-defer#goal-audit-17",
@@ -4294,6 +4652,58 @@
       "search_text": "ELBA agent 可主动向 oracle 提问；DialFRED 有约 53K QA，ELBA 学 when/what to ask 并在 TEACh 上改进 task completion goal-copilot prior-art goal-copilot-p0 ELBA — goal-prior:P0-R06b route mechanism agent 可主动向 oracle 提问；DialFRED 有约 53K QA，ELBA 学 when/what to ask 并在 TEACh 上改进 task completion 虚拟室内 manipulation/nav、oracle 可访问 GT；不能把 oracle 答案或 simulator success 直接当 BLV 开放街景证据 goal-copilot-p0 questioner/performer 分层；澄清动作与物理动作分离；ask cost/utility 的实验框架 questioner/performer 分层；澄清动作与物理动作分离；ask cost/utility 的实验框架 虚拟室内 manipulation/nav、oracle 可访问 GT；不能把 oracle 答案或 simulator success 直接当 BLV 开放街景证据"
     },
     {
+      "id": "paper-eulerflow-2025#eulerflow",
+      "item_id": "paper-eulerflow-2025",
+      "mechanism_id": "eulerflow",
+      "kind": "paper",
+      "title": "EulerFlow — Neural Eulerian Scene Flow Fields",
+      "canonical_ref": "https://arxiv.org/abs/2410.02031",
+      "summary": "可作离线 privileged ceiling，判断某个片段是否真的存在可恢复运动。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "direct-velocity"
+      ],
+      "name": "EulerFlow",
+      "description": "用连续 ODE 表示 Eulerian velocity field，以多帧 Chamfer、cycle consistency 等自监督约束优化。",
+      "inputs": [
+        "对整段点云序列做 scene-specific continuous space-time flow field optimization。"
+      ],
+      "outputs": [
+        "对整段点云序列做 scene-specific continuous space-time flow field optimization。"
+      ],
+      "limitations": "每场景优化昂贵；Chamfer/cycle 在重复静态几何上也会自洽；不适合 deployable M1。",
+      "signatures": [],
+      "layer_scores": {
+        "geometry_motion": 9
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-eulerflow-2025",
+          "route": "obstacle-avoidance",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "可作离线 privileged ceiling，判断某个片段是否真的存在可恢复运动。",
+          "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "每场景优化昂贵；Chamfer/cycle 在重复静态几何上也会自洽；不适合 deployable M1。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2410.02031",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "EulerFlow — Neural Eulerian Scene Flow Fields 可作离线 privileged ceiling，判断某个片段是否真的存在可恢复运动。 targeted-knowledge-expansion direct-velocity EulerFlow 用连续 ODE 表示 Eulerian velocity field，以多帧 Chamfer、cycle consistency 等自监督约束优化。 对整段点云序列做 scene-specific continuous space-time flow field optimization。 对整段点云序列做 scene-specific continuous space-time flow field optimization。 每场景优化昂贵；Chamfer/cycle 在重复静态几何上也会自洽；不适合 deployable M1。 obstacle-avoidance 可作离线 privileged ceiling，判断某个片段是否真的存在可恢复运动。 Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling. 每场景优化昂贵；Chamfer/cycle 在重复静态几何上也会自洽；不适合 deployable M1。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+    },
+    {
       "id": "paper-evaluation-of-trajectory-distribution-predictions-with-energy-score#dtr-dr59",
       "item_id": "paper-evaluation-of-trajectory-distribution-predictions-with-energy-score",
       "mechanism_id": "dtr-dr59",
@@ -4665,6 +5075,65 @@
         }
       ],
       "search_text": "Find First, Track Next: Decoupling Identification and Propagation in Referring Video Object Segmentation 先选择有可靠语义对齐的 reference frame，再由独立 propagation 模块维持连续性。 l10 literature-reserve l10-r0 Find First, Track Next: Decoupling Identification and Propagation in Referring Video Object Segmentation — l10:8 route mechanism 先选择有可靠语义对齐的 reference frame，再由独立 propagation 模块维持连续性。 论文是离线整段视频选择，语言对齐也不是精确 OCR 身份；没有原生 absent contract。 ten-meter-copilot 保持“新鲜 OCR 建立身份，视觉 carrier 只传播”；重获必须重新经历 identify，而不是 appearance-only handoff。 保持“新鲜 OCR 建立身份，视觉 carrier 只传播”；重获必须重新经历 identify，而不是 appearance-only handoff。 论文是离线整段视频选择，语言对齐也不是精确 OCR 身份；没有原生 absent contract。"
+    },
+    {
+      "id": "paper-floaff-kitchen-2026#floaff-kitchen",
+      "item_id": "paper-floaff-kitchen-2026",
+      "mechanism_id": "floaff-kitchen",
+      "kind": "paper",
+      "title": "FloAff-Kitchen — Canonical Floor Affordance for Last-Mile Mobile Manipulation",
+      "canonical_ref": "https://arxiv.org/abs/2607.24207",
+      "summary": "一个 endpoint 不应由单一距离或单一 IK bit 决定；可把多项因子保留为可解释 affordance field。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "interaction-ready"
+      ],
+      "name": "FloAff-Kitchen",
+      "description": "用 canonical floor affordance representation 去掉场景朝向、布局等 nuisance； 先学习跨任务共享 floor prior，再以 task-specific head 区分操作； 同时考虑 reachability、collision-free execution、visibility、manipulability 与 articulated motion direction。",
+      "inputs": [
+        "Source-defined observations and task context."
+      ],
+      "outputs": [
+        "Source-defined mechanism output."
+      ],
+      "limitations": "仍由机器人 rollouts 定义标签；新 benchmark 的跨域与用户证据有限。",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 3,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 6,
+        "geometry_motion": 6,
+        "handoff_completion": 3,
+        "interaction_readiness": 3,
+        "observation_perception": 3,
+        "source_coverage": 3
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-floaff-kitchen-2026",
+          "route": "ten-meter-copilot",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "最适合定义 L10 的 factorized interaction field：contact_visible / within_reach / action_clear / body_pose_ok。",
+          "expected_effect": "不用训练网络，先按同样因子生成 privileged oracle；若 oracle 相对 SC22 无增益，则 learned affordance 没有必要。",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "仍由机器人 rollouts 定义标签；新 benchmark 的跨域与用户证据有限。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2607.24207",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "FloAff-Kitchen — Canonical Floor Affordance for Last-Mile Mobile Manipulation 一个 endpoint 不应由单一距离或单一 IK bit 决定；可把多项因子保留为可解释 affordance field。 targeted-knowledge-expansion interaction-ready FloAff-Kitchen 用 canonical floor affordance representation 去掉场景朝向、布局等 nuisance； 先学习跨任务共享 floor prior，再以 task-specific head 区分操作； 同时考虑 reachability、collision-free execution、visibility、manipulability 与 articulated motion direction。 Source-defined observations and task context. Source-defined mechanism output. 仍由机器人 rollouts 定义标签；新 benchmark 的跨域与用户证据有限。 ten-meter-copilot 最适合定义 L10 的 factorized interaction field：contact_visible / within_reach / action_clear / body_pose_ok。 不用训练网络，先按同样因子生成 privileged oracle；若 oracle 相对 SC22 无增益，则 learned affordance 没有必要。 仍由机器人 rollouts 定义标签；新 benchmark 的跨域与用户证据有限。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
     },
     {
       "id": "paper-flowverify-combining-deep-learning-and-verification-for-precise-object-i#goal-audit-38",
@@ -5397,6 +5866,63 @@
       "search_text": "GuideTouch 用低成本围巾式 ToF 设备补足白杖较难发现的头部和上身障碍，并用肩胸四点振动表达危险方向。 dynamic-travel-risk deep-reading dtr-r0 ustrf frontier-guide ustrf-sc source — ustrf:P12 route mechanism 两个 ToF、四点触觉和少量方向模式获得较高静态识别率 初步研究；93.75% 是方向提示识别率，不是避障成功率 ustrf-sc 触觉编码应少而明确，先验证方向识别再验证动态避障 触觉编码应少而明确，先验证方向识别再验证动态避障 初步研究；93.75% 是方向提示识别率，不是避障成功率"
     },
     {
+      "id": "paper-help-human-reachability-2026#help",
+      "item_id": "paper-help-human-reachability-2026",
+      "mechanism_id": "help",
+      "kind": "paper",
+      "title": "HELP — Knowing When Not to Help: Active Estimation of Human Reachability",
+      "canonical_ref": "https://roboticsconference.org/program/papers/119/",
+      "summary": "人体 reach 是个体化、方向相关且带不确定性的；固定臂长球会系统性误判。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "interaction-ready"
+      ],
+      "name": "HELP",
+      "description": "用可变形 box 与局部 Gaussian primitives 表示 reach boundary； 在带 biomechanical/clinical anchors 的低维 latent manifold 上建个体模型； Bayesian belief 表示仍未知的 reachability； 主动选择最有信息的 calibration query。",
+      "inputs": [
+        "通过少量主动询问/动作，估计某个具体人的 joint-space reachable set 与不确定性。"
+      ],
+      "outputs": [
+        "通过少量主动询问/动作，估计某个具体人的 joint-space reachable set 与不确定性。"
+      ],
+      "limitations": "校准负担、人工约束环境、指标仍非真实操作完成率。",
+      "signatures": [],
+      "layer_scores": {
+        "evaluation_evidence": 6,
+        "geometry_motion": 9,
+        "handoff_completion": 3,
+        "interaction_readiness": 3,
+        "source_coverage": 3,
+        "temporal_belief": 3
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-help-human-reachability-2026",
+          "route": "ten-meter-copilot",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "展示型原型可先用 3–5 个简单动作标定一个轻量 personalized reach posterior；不能把 UNKNOWN 填成不可达。",
+          "expected_effect": "比较固定臂长、简单身体参数模型与少量个体校准，在按钮/抽屉/把手三类上的 false-ready 和 coverage。",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "校准负担、人工约束环境、指标仍非真实操作完成率。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://roboticsconference.org/program/papers/119/",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "HELP — Knowing When Not to Help: Active Estimation of Human Reachability 人体 reach 是个体化、方向相关且带不确定性的；固定臂长球会系统性误判。 targeted-knowledge-expansion interaction-ready HELP 用可变形 box 与局部 Gaussian primitives 表示 reach boundary； 在带 biomechanical/clinical anchors 的低维 latent manifold 上建个体模型； Bayesian belief 表示仍未知的 reachability； 主动选择最有信息的 calibration query。 通过少量主动询问/动作，估计某个具体人的 joint-space reachable set 与不确定性。 通过少量主动询问/动作，估计某个具体人的 joint-space reachable set 与不确定性。 校准负担、人工约束环境、指标仍非真实操作完成率。 ten-meter-copilot 展示型原型可先用 3–5 个简单动作标定一个轻量 personalized reach posterior；不能把 UNKNOWN 填成不可达。 比较固定臂长、简单身体参数模型与少量个体校准，在按钮/抽屉/把手三类上的 false-ready 和 coverage。 校准负担、人工约束环境、指标仍非真实操作完成率。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+    },
+    {
       "id": "paper-high-level-information-fusion#dtr-dr34",
       "item_id": "paper-high-level-information-fusion",
       "mechanism_id": "dtr-dr34",
@@ -5450,6 +5976,58 @@
       "search_text": "High-Level Information Fusion 腰挂 Kinect 系统 SAS-DV 能否把静态障碍、自由通道、动态对象和动态对象已经走过的历史路径，融合为 17 个方向的风险图，再推荐最低风险方向。 dynamic-travel-risk deep-reading dtr-r0 High-Level Information Fusion — dtr:DR34 route mechanism 640×480 RGB/IR depth 被切成三个高度带和 26 个参考点，再汇总为 17 个方向。静态障碍阈值 3 m。系统比较 Haar、Farneback、背景减除和 CamShift，并按传感器运动/光照切换。风险层有两版：一版 Boolean BayesNet 融合动态对象、历史轨迹、静态对象、自由通道及多个距离带；另一版把这些特征分类成低、中、高、很高和近碰。若多个方向风险相同，就选择自由距离更远者。 风险类别来自手工信念，不是实际碰撞频率；系统再用同一信念评价自己与其他系统，形成近似自洽循环。“有人走过”也不是当前通路安全证据，尤其对临时障碍和动态交通可能已经过期。没有未来轨迹、身体走廊、事件 onset/clear 或真实用户避碰。 obstacle-avoidance 只借架构方向风险图、多高度带和分层接口；不借走过即安全、17 个固定方向、手工概率或 99.28% 主张。证据定位为历史系统设计，不是碰撞预测基线。 只借架构方向风险图、多高度带和分层接口；不借走过即安全、17 个固定方向、手工概率或 99.28% 主张。证据定位为历史系统设计，不是碰撞预测基线。 风险类别来自手工信念，不是实际碰撞频率；系统再用同一信念评价自己与其他系统，形成近似自洽循环。“有人走过”也不是当前通路安全证据，尤其对临时障碍和动态交通可能已经过期。没有未来轨迹、身体走廊、事件 onset/clear 或真实用户避碰。"
     },
     {
+      "id": "paper-himo-seflow-plus-plus-2025#himo-seflow",
+      "item_id": "paper-himo-seflow-plus-plus-2025",
+      "mechanism_id": "himo-seflow",
+      "kind": "paper",
+      "title": "HiMo / SeFlow++ — High-Speed Objects Motion Compensation",
+      "canonical_ref": "https://arxiv.org/abs/2503.00803",
+      "summary": "M1 目前把 sweep 当近似同时刻；高速移动或自转时，单帧内部已被拉伸。raw-point velocity 若忽略 timestamp，会把畸变误当速度。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "direct-velocity"
+      ],
+      "name": "HiMo / SeFlow++",
+      "description": "同时估计 ego 与 object motion，处理一帧扫描内部的时间畸变；用更精细自动标签、对称 flow loss 和三帧 backbone 强化高速目标。",
+      "inputs": [
+        "输入扫描期间连续采样的 raw LiDAR；输出补偿非 ego 运动后的点云/scene flow。"
+      ],
+      "outputs": [
+        "输入扫描期间连续采样的 raw LiDAR；输出补偿非 ego 运动后的点云/scene flow。"
+      ],
+      "limitations": "高速道路、多 LiDAR 与穿戴行人分布差异大。",
+      "signatures": [],
+      "layer_scores": {
+        "geometry_motion": 9
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-himo-seflow-plus-plus-2025",
+          "route": "obstacle-avoidance",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "M1 目前把 sweep 当近似同时刻；高速移动或自转时，单帧内部已被拉伸。raw-point velocity 若忽略 timestamp，会把畸变误当速度。",
+          "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "高速道路、多 LiDAR 与穿戴行人分布差异大。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2503.00803",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "HiMo / SeFlow++ — High-Speed Objects Motion Compensation M1 目前把 sweep 当近似同时刻；高速移动或自转时，单帧内部已被拉伸。raw-point velocity 若忽略 timestamp，会把畸变误当速度。 targeted-knowledge-expansion direct-velocity HiMo / SeFlow++ 同时估计 ego 与 object motion，处理一帧扫描内部的时间畸变；用更精细自动标签、对称 flow loss 和三帧 backbone 强化高速目标。 输入扫描期间连续采样的 raw LiDAR；输出补偿非 ego 运动后的点云/scene flow。 输入扫描期间连续采样的 raw LiDAR；输出补偿非 ego 运动后的点云/scene flow。 高速道路、多 LiDAR 与穿戴行人分布差异大。 obstacle-avoidance M1 目前把 sweep 当近似同时刻；高速移动或自转时，单帧内部已被拉伸。raw-point velocity 若忽略 timestamp，会把畸变误当速度。 Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling. 高速道路、多 LiDAR 与穿戴行人分布差异大。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+    },
+    {
       "id": "paper-human-centred-multimodal-wearable#ustrf-p11",
       "item_id": "paper-human-centred-multimodal-wearable",
       "mechanism_id": "ustrf-p11",
@@ -5497,6 +6075,60 @@
         }
       ],
       "search_text": "Human-centred Multimodal Wearable 视觉、音频、触觉、用户适应和训练需要协同设计 ustrf frontier-guide ustrf-sc Human-centred Multimodal Wearable — ustrf:P11 route mechanism 视觉、音频、触觉、用户适应和训练需要协同设计 同行评审系统证据强；完整硬件体系与手机原型差异大 ustrf-sc 产品反馈不能只优化模型准确率；音频、触觉与训练应有独立角色 产品反馈不能只优化模型准确率；音频、触觉与训练应有独立角色 同行评审系统证据强；完整硬件体系与手机原型差异大"
+    },
+    {
+      "id": "paper-icp-flow-2024#icp-flow",
+      "item_id": "paper-icp-flow-2024",
+      "mechanism_id": "icp-flow",
+      "kind": "paper",
+      "title": "ICP-Flow — LiDAR Scene Flow Estimation with ICP",
+      "canonical_ref": "https://arxiv.org/abs/2402.17351",
+      "summary": "对大部分刚体交通参与者，先估一个可审计的 rigid transform，往往比自由 point flow 更稳。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "direct-velocity"
+      ],
+      "name": "ICP-Flow",
+      "description": "ego compensation、地面删除和几何 clustering； 以空间直方图/粗平移初始化候选； 对候选组件运行 ICP； 用重叠、残差、点数和变换合理性拒绝匹配； 把 rigid transform 传播到 component 内点。",
+      "inputs": [
+        "输入两帧 ego-compensated LiDAR；输出 cluster-level rigid SE(3) 与 point flow。"
+      ],
+      "outputs": [
+        "输入两帧 ego-compensated LiDAR；输出 cluster-level rigid SE(3) 与 point flow。"
+      ],
+      "limitations": "cluster fragmentation/merge、低纹理几何、严重遮挡和人的非刚性会破坏 ICP；ICP 的低残差也可能在错误静态结构上自洽。",
+      "signatures": [],
+      "layer_scores": {
+        "geometry_motion": 12,
+        "source_coverage": 3,
+        "temporal_belief": 3
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-icp-flow-2024",
+          "route": "obstacle-avoidance",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "作为 CorrelationFlow 的独立几何臂；重点观察人群、柱体、墙边和静态 pseudo-motion。",
+          "expected_effect": "同一组件同时跑 CorrelationFlow 与 ICP-Flow；两者速度方向/幅值冲突时输出低 confidence，而不是事后选择更有利的一臂。",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "cluster fragmentation/merge、低纹理几何、严重遮挡和人的非刚性会破坏 ICP；ICP 的低残差也可能在错误静态结构上自洽。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2402.17351",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "ICP-Flow — LiDAR Scene Flow Estimation with ICP 对大部分刚体交通参与者，先估一个可审计的 rigid transform，往往比自由 point flow 更稳。 targeted-knowledge-expansion direct-velocity ICP-Flow ego compensation、地面删除和几何 clustering； 以空间直方图/粗平移初始化候选； 对候选组件运行 ICP； 用重叠、残差、点数和变换合理性拒绝匹配； 把 rigid transform 传播到 component 内点。 输入两帧 ego-compensated LiDAR；输出 cluster-level rigid SE(3) 与 point flow。 输入两帧 ego-compensated LiDAR；输出 cluster-level rigid SE(3) 与 point flow。 cluster fragmentation/merge、低纹理几何、严重遮挡和人的非刚性会破坏 ICP；ICP 的低残差也可能在错误静态结构上自洽。 obstacle-avoidance 作为 CorrelationFlow 的独立几何臂；重点观察人群、柱体、墙边和静态 pseudo-motion。 同一组件同时跑 CorrelationFlow 与 ICP-Flow；两者速度方向/幅值冲突时输出低 confidence，而不是事后选择更有利的一臂。 cluster fragmentation/merge、低纹理几何、严重遮挡和人的非刚性会破坏 ICP；ICP 的低残差也可能在错误静态结构上自洽。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
     },
     {
       "id": "paper-idow#goal-audit-02",
@@ -5910,11 +6542,11 @@
         "意图使用区域"
       ],
       "layer_scores": {
+        "authority_truth": 3,
         "functional_grounding": 20,
-        "geometry_motion": 3,
+        "geometry_motion": 9,
         "handoff_completion": 20,
-        "identity_binding": 3,
-        "observation_perception": 3
+        "observation_perception": 6
       },
       "routes": [
         "ten-meter-copilot"
@@ -5926,22 +6558,27 @@
           "use_state": "candidate",
           "reproduction_status": "not_attempted",
           "verdict": "not_run",
-          "project_application": "让 L10 的完成判定与用户具体意图绑定：同一物体的可用交接区可因“拿来使用”方式不同而变化。",
-          "expected_effect": "减少目标对象正确但交接区域不符合用户用途的错误。",
+          "project_application": "只借“任务决定 intended-use region”，不借 VLM 自信。目标是 打开抽屉 时必须把把手/拉动方向保留给用户，而非任何可抓区域。",
+          "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
           "observed_effect": "",
           "metrics": [],
-          "claim_boundary": "Intent-Handover 的机器人系统与用户研究未在 BlindAssist 复现；成功也只支持命名意图条件下的区域选择，不支持自然导航或安全。",
+          "claim_boundary": "VLM 延迟过高，意图识别和用户评分不等于实际可达；不能作为实时 endpoint authority。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
           "evidence": [
             {
               "kind": "external",
               "ref": "https://robot-future.github.io/intent-handover/",
               "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+            },
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2503.03579",
+              "summary": "Primary source re-reviewed in the user-provided 2026-08-28 targeted expansion; no BlindAssist reproduction is implied."
             }
           ],
           "updated_at": "2026-08-28"
         }
       ],
-      "search_text": "Intent-Handover: Grounding Language in Human-Usage Regions for Trustworthy Robot-to-Human Handovers A language-conditioned handover framework that identifies human-usage regions and avoids blocking them with the robot hand or gripper. ten-meter-copilot completion handover intent Intent and human-usage-region handover Maps the receiver's intended use to a human-usage region and plans handover so the region remains accessible and collision-free. language intent object geometry human and robot contact constraints usage-region-aware handover pose A language-to-usage-region result and user study do not establish phone-only localization, blind-user intent inference, navigation arrival, or safety. intent-conditioned usage region 意图使用区域 ten-meter-copilot 让 L10 的完成判定与用户具体意图绑定：同一物体的可用交接区可因“拿来使用”方式不同而变化。 减少目标对象正确但交接区域不符合用户用途的错误。 Intent-Handover 的机器人系统与用户研究未在 BlindAssist 复现；成功也只支持命名意图条件下的区域选择，不支持自然导航或安全。"
+      "search_text": "Intent-Handover: Grounding Language in Human-Usage Regions for Trustworthy Robot-to-Human Handovers A language-conditioned handover framework that identifies human-usage regions and avoids blocking them with the robot hand or gripper. ten-meter-copilot completion handover intent Intent and human-usage-region handover Maps the receiver's intended use to a human-usage region and plans handover so the region remains accessible and collision-free. language intent object geometry human and robot contact constraints usage-region-aware handover pose A language-to-usage-region result and user study do not establish phone-only localization, blind-user intent inference, navigation arrival, or safety. intent-conditioned usage region 意图使用区域 ten-meter-copilot 只借“任务决定 intended-use region”，不借 VLM 自信。目标是 打开抽屉 时必须把把手/拉动方向保留给用户，而非任何可抓区域。 Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling. VLM 延迟过高，意图识别和用户评分不等于实际可达；不能作为实时 endpoint authority。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
     },
     {
       "id": "paper-iploc-id-personalized-object-identification-and-localization-via-in-cont#goal-audit-33",
@@ -6746,6 +7383,121 @@
       "search_text": "Mod-IIN — NEGATIVE_CONTROL 透明模块化方案在该模拟任务和小样本机器人演示中优于特定端到端基线；局部匹配是一个有价值的低复杂度基线。 7. 未证明：匹配点不是物理身份权威；论文自己发现 FP 常来自目标图背景。同一 keypoint evidence 同时负责检测和定位，使错误高度相关。benchmark STOP 也不证明入口、通行或 handoff。 8. 阅读判断：最强点是模块边界与失败归因；最弱假设是局部纹理足以代表实例；隐藏风险是错误背景或重复结构既能触发检测又能产生“合理”地图点。 9. BlindAssist 映射：E 的 2/4 stable distractor 正是这种自洽局部对应的危险；它不处理 1/4 order-sensitive，只能绕开外部 A/B 顺序。 10. 最小适配实验：在 fresh D 的冻结 candidates 上独立输出 MATCH_SUPPORT{candidate_id, confidence_sum, foreground_inliers, spatial_dispersion}，再由对称 comparator 产生 TARGET/DISTRACTOR/NONE；每个候选单独算分并做枚举顺序置换。跑完预注册 D 一次即停；若 wrong-instance commit 不降、controls 不能至少维持历史量级或置换改变结论，即关闭路线。 11. Verdict：NEGATIVE_CONTROL。 goal-copilot deep-reading paper-11 goal-copilot-p0 Mod-IIN — NEGATIVE_CONTROL — goal-audit:11 route mechanism ①深度与位姿构建占据/自由/前沿图；②最近前沿探索；③SuperPoint 提取目标图与当前图局部点；④SuperGlue 给对应及置信度；⑤置信度和超过 τ=24.5 即 Re-ID；⑥Detic 取包含目标图中心的 mask，只保留前景匹配；⑦当前匹配点由深度反投影到地图；⑧FMM 到最近可达目标点并 STOP（Fig.2、§4）。 4. 训练/依赖：所有视觉与规划器均零微调；唯一数据拟合是用训练 split 的 121 个物体、2270 张 goal images 最大化 pairwise F-measure 选阈值。推理强依赖 RGB-D、可靠位姿、地图、Detic、SuperPoint/SuperGlue 和 FMM。 5. 实验证据：HM3D-SEM 216 scenes，145/36/35 train/val/test；Table 1 中 Mod-IIN SR=.561, SPL=.233, NE=3.096，优于 IIN RL .083 和 OVRL-v2-IIN .248。Table 2 中 match-count 降至 .539，中心 crop 定位 .523，类别定位 .488；ResNet/CLIP 仅 .138/.097。双 oracle 上界 .845，但 oracle Re-ID+预测定位反降至 .498。100 个失败中 Re-ID FN/FP 为 41%/23%，探索/定位/局部导航为 13%/12%/11%；真实 Stretch 仅 7/8。 6. 实际证明：透明模块化方案在该模拟任务和小样本机器人演示中优于特定端到端基线；局部匹配是一个有价值的低复杂度基线。 7. 未证明：匹配点不是物理身份权威；论文自己发现 FP 常来自目标图背景。同一 keypoint evidence 同时负责检测和定位，使错误高度相关。benchmark STOP 也不证明入口、通行或 handoff。 8. 阅读判断：最强点是模块边界与失败归因；最弱假设是局部纹理足以代表实例；隐藏风险是错误背景或重复结构既能触发检测又能产生“合理”地图点。 9. BlindAssist 映射：E 的 2/4 stable distractor 正是这种自洽局部对应的危险；它不处理 1/4 order-sensitive，只能绕开外部 A/B 顺序。 10. 最小适配实验：在 fresh D 的冻结 candidates 上独立输出 MATCH_SUPPORT{candidate_id, confidence_sum, foreground_inliers, spatial_dispersion}，再由对称 comparator 产生 TARGET/DISTRACTOR/NONE；每个候选单独算分并做枚举顺序置换。跑完预注册 D 一次即停；若 wrong-instance commit 不降、controls 不能至少维持历史量级或置换改变结论，即关闭路线。 11. Verdict：NEGATIVE_CONTROL。 匹配点不是物理身份权威；论文自己发现 FP 常来自目标图背景。同一 keypoint evidence 同时负责检测和定位，使错误高度相关。benchmark STOP 也不证明入口、通行或 handoff。 8. 阅读判断：最强点是模块边界与失败归因；最弱假设是局部纹理足以代表实例；隐藏风险是错误背景或重复结构既能触发检测又能产生“合理”地图点。 9. BlindAssist 映射：E 的 2/4 stable distractor 正是这种自洽局部对应的危险；它不处理 1/4 order-sensitive，只能绕开外部 A/B 顺序。 10. 最小适配实验：在 fresh D 的冻结 candidates 上独立输出 MATCH_SUPPORT{candidate_id, confidence_sum, foreground_inliers, spatial_dispersion}，再由对称 comparator 产生 TARGET/DISTRACTOR/NONE；每个候选单独算分并做枚举顺序置换。跑完预注册 D 一次即停；若 wrong-instance commit 不降、controls 不能至少维持历史量级或置换改变结论，即关闭路线。 11. Verdict：NEGATIVE_CONTROL。 goal-copilot-p0 E 的 2/4 stable distractor 正是这种自洽局部对应的危险；它不处理 1/4 order-sensitive，只能绕开外部 A/B 顺序。 10. 最小适配实验：在 fresh D 的冻结 candidates 上独立输出 MATCH_SUPPORT{candidate_id, confidence_sum, foreground_inliers, spatial_dispersion}，再由对称 comparator 产生 TARGET/DISTRACTOR/NONE；每个候选单独算分并做枚举顺序置换。跑完预注册 D 一次即停；若 wrong-instance commit 不降、controls 不能至少维持历史量级或置换改变结论，即关闭路线。 11. Verdict：NEGATIVE_CONTROL。 E 的 2/4 stable distractor 正是这种自洽局部对应的危险；它不处理 1/4 order-sensitive，只能绕开外部 A/B 顺序。 10. 最小适配实验：在 fresh D 的冻结 candidates 上独立输出 MATCH_SUPPORT{candidate_id, confidence_sum, foreground_inliers, spatial_dispersion}，再由对称 comparator 产生 TARGET/DISTRACTOR/NONE；每个候选单独算分并做枚举顺序置换。跑完预注册 D 一次即停；若 wrong-instance commit 不降、controls 不能至少维持历史量级或置换改变结论，即关闭路线。 11. Verdict：NEGATIVE_CONTROL。 匹配点不是物理身份权威；论文自己发现 FP 常来自目标图背景。同一 keypoint evidence 同时负责检测和定位，使错误高度相关。benchmark STOP 也不证明入口、通行或 handoff。 8. 阅读判断：最强点是模块边界与失败归因；最弱假设是局部纹理足以代表实例；隐藏风险是错误背景或重复结构既能触发检测又能产生“合理”地图点。 9. BlindAssist 映射：E 的 2/4 stable distractor 正是这种自洽局部对应的危险；它不处理 1/4 order-sensitive，只能绕开外部 A/B 顺序。 10. 最小适配实验：在 fresh D 的冻结 candidates 上独立输出 MATCH_SUPPORT{candidate_id, confidence_sum, foreground_inliers, spatial_dispersion}，再由对称 comparator 产生 TARGET/DISTRACTOR/NONE；每个候选单独算分并做枚举顺序置换。跑完预注册 D 一次即停；若 wrong-instance commit 不降、controls 不能至少维持历史量级或置换改变结论，即关闭路线。 11. Verdict：NEGATIVE_CONTROL。"
     },
     {
+      "id": "paper-moma-kitchen-2025#moma-kitchen",
+      "item_id": "paper-moma-kitchen-2025",
+      "mechanism_id": "moma-kitchen",
+      "kind": "paper",
+      "title": "MoMa-Kitchen — A 100K Benchmark for Affordance-Grounded Last-Mile Navigation in Mobile Manipulation",
+      "canonical_ref": "https://arxiv.org/abs/2503.11081",
+      "summary": "last-mile endpoint 应由 downstream task success 定义，距离最近点往往不是最佳站位。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "interaction-ready"
+      ],
+      "name": "MoMa-Kitchen",
+      "description": "在大量厨房与不同 robot embodiments 中运行真实/仿真 manipulation； 把地面位置、朝向与下游动作成功绑定成 floor affordance； 区分“能导航到附近”和“站在这里可以完成动作”。",
+      "inputs": [
+        "输入 RGB-D、任务对象与移动机器人状态；输出让后续 manipulation 成功的最终 base pose，而非仅靠近目标。"
+      ],
+      "outputs": [
+        "输入 RGB-D、任务对象与移动机器人状态；输出让后续 manipulation 成功的最终 base pose，而非仅靠近目标。"
+      ],
+      "limitations": "robot reachability、碰撞与操控偏好不等于人的手臂、白杖、身体朝向或个体能力。",
+      "signatures": [],
+      "layer_scores": {
+        "evaluation_evidence": 3,
+        "geometry_motion": 3,
+        "handoff_completion": 6,
+        "identity_binding": 3,
+        "interaction_readiness": 10,
+        "observation_perception": 3,
+        "source_coverage": 6
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-moma-kitchen-2025",
+          "route": "ten-meter-copilot",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "把 SC22 READY 的目标从“观察条件满足”升级为“支持下一动作的 stand region”，但先做 privileged ceiling，不直接训练机器人模型。",
+          "expected_effect": "用 SceneFun3D privileged functional point/axis 构造一组候选站位；比较 nearest/centered 与 task-conditioned stand region 的 false-ready、coverage 和 reposition distance。",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "robot reachability、碰撞与操控偏好不等于人的手臂、白杖、身体朝向或个体能力。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2503.11081",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "MoMa-Kitchen — A 100K Benchmark for Affordance-Grounded Last-Mile Navigation in Mobile Manipulation last-mile endpoint 应由 downstream task success 定义，距离最近点往往不是最佳站位。 targeted-knowledge-expansion interaction-ready MoMa-Kitchen 在大量厨房与不同 robot embodiments 中运行真实/仿真 manipulation； 把地面位置、朝向与下游动作成功绑定成 floor affordance； 区分“能导航到附近”和“站在这里可以完成动作”。 输入 RGB-D、任务对象与移动机器人状态；输出让后续 manipulation 成功的最终 base pose，而非仅靠近目标。 输入 RGB-D、任务对象与移动机器人状态；输出让后续 manipulation 成功的最终 base pose，而非仅靠近目标。 robot reachability、碰撞与操控偏好不等于人的手臂、白杖、身体朝向或个体能力。 ten-meter-copilot 把 SC22 READY 的目标从“观察条件满足”升级为“支持下一动作的 stand region”，但先做 privileged ceiling，不直接训练机器人模型。 用 SceneFun3D privileged functional point/axis 构造一组候选站位；比较 nearest/centered 与 task-conditioned stand region 的 false-ready、coverage 和 reposition distance。 robot reachability、碰撞与操控偏好不等于人的手臂、白杖、身体朝向或个体能力。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+    },
+    {
+      "id": "paper-moma-pos-2024#moma-pos",
+      "item_id": "paper-moma-pos-2024",
+      "mechanism_id": "moma-pos",
+      "kind": "paper",
+      "title": "MoMa-Pos — Task-Oriented Mobile Manipulator Positioning for Articulated Objects",
+      "canonical_ref": "https://arxiv.org/abs/2403.19940",
+      "summary": "抽屉、柜门、冰箱门的 endpoint 必须考虑完整动作轨迹；静态地“手能碰到把手”不足以保证拉开/转开。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "interaction-ready"
+      ],
+      "name": "MoMa-Pos",
+      "description": "用 task-object graph、必要时选择性重建 articulated object model，再结合 inverse reachability 与关节运动学选 base pose。",
+      "inputs": [
+        "Source-defined observations and task context."
+      ],
+      "outputs": [
+        "Source-defined mechanism output."
+      ],
+      "limitations": "依赖 privileged 3-D boxes、点云和 articulated model；机器人动作范围不是用户范围。",
+      "signatures": [],
+      "layer_scores": {
+        "decision_lifecycle": 3,
+        "geometry_motion": 12,
+        "interaction_readiness": 10,
+        "observation_perception": 3,
+        "source_coverage": 3,
+        "temporal_belief": 3
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-moma-pos-2024",
+          "route": "ten-meter-copilot",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "直接补 SC14 causal action axis 与 SC22 endpoint 之间的缺口：用已锁定的 motion axis 构造 swept clearance。",
+          "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "依赖 privileged 3-D boxes、点云和 articulated model；机器人动作范围不是用户范围。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2403.19940",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "MoMa-Pos — Task-Oriented Mobile Manipulator Positioning for Articulated Objects 抽屉、柜门、冰箱门的 endpoint 必须考虑完整动作轨迹；静态地“手能碰到把手”不足以保证拉开/转开。 targeted-knowledge-expansion interaction-ready MoMa-Pos 用 task-object graph、必要时选择性重建 articulated object model，再结合 inverse reachability 与关节运动学选 base pose。 Source-defined observations and task context. Source-defined mechanism output. 依赖 privileged 3-D boxes、点云和 articulated model；机器人动作范围不是用户范围。 ten-meter-copilot 直接补 SC14 causal action axis 与 SC22 endpoint 之间的缺口：用已锁定的 motion axis 构造 swept clearance。 Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling. 依赖 privileged 3-D boxes、点云和 articulated model；机器人动作范围不是用户范围。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+    },
+    {
       "id": "paper-monitoring-and-adapting-the-physical-state-of-a-camera#dtr-dr19",
       "item_id": "paper-monitoring-and-adapting-the-physical-state-of-a-camera",
       "mechanism_id": "dtr-dr19",
@@ -6968,6 +7720,63 @@
         }
       ],
       "search_text": "MRFP: Learning Generalizable Semantic Segmentation from Sim-2-Real with Multi-Resolution Feature Perturbation MRFP 在训练期扰动高频细纹理和低频风格，论文在 GTA→多个真实域上取得显著平均增益，且推理不保留扰动模块。它适合 synthetic/procedural→real 或跨 session 泛化，但不针对当前 head 初始化问题。过强高频扰动还可能把真正需要的细路沿当成域特征抹掉。因此只能在稳定 head 后先试 HRFP-only，并给扰动单独记录 perturbation_seed。 UPC 证明伪标签噪声往往成片出现并集中在边界附近，patch-wise uncertainty 定位后再用可靠 labeled patch 替换，优于随机 erase/CutMix。但当前 MACHINE 帧并不是无标签数据；它们有来源机器 mask。最接近论文语义的迁移是：HUMAN=train 作为可靠 donor，MACHINE=train 作为 weak target，由仅使用 train 构建的 teacher 产生 pseudo-label。当前只有 38 张 HUMAN train 帧，donor 多样性很低，硬矩形 CutMix 还可能制造伪边界，所以第一版必须是 UPC-lite、单一中等替换率，并审计 donor 垄断和伪边界。 SWSEG 把 weak/strong consistency 扩展到 encoder 表示，通过 Gaussian-SWD 优化 alignment/uniformity。它可能帮助表示覆盖，但论文没有报告跨初始化 seed 方差、unknown 或事件门。错误伪标签一旦进入 weak/strong 流，SWD 也可能让错误表示更稳定。因此 SWSEG 是 P4 正则，而不是 P1 修复；必须在 head 稳定且 UPC 角色清晰后，按 Lswd → Lreg → projection MLP 单因素加入。 三者正确顺序是：结构稳定 → MRFP 或 UPC 二选一 → 证明单模块有效 → 再决定是否引入 SWSEG。第一轮禁止 MRFP+UPC+SWSEG 全开，因为届时特征分布、伪标签、loss landscape 和随机源同时变化，任何提升或退化都无法归因。 frontier-upgrade paper-review frontier-upgrade-2026-07 MRFP: Learning Generalizable Semantic Segmentation from Sim-2-Real with Multi-Resolution Feature Perturbation — frontier:MRFP route mechanism MRFP 在训练期扰动高频细纹理和低频风格，论文在 GTA→多个真实域上取得显著平均增益，且推理不保留扰动模块。它适合 synthetic/procedural→real 或跨 session 泛化，但不针对当前 head 初始化问题。过强高频扰动还可能把真正需要的细路沿当成域特征抹掉。因此只能在稳定 head 后先试 HRFP-only，并给扰动单独记录 perturbation_seed。 UPC 证明伪标签噪声往往成片出现并集中在边界附近，patch-wise uncertainty 定位后再用可靠 labeled patch 替换，优于随机 erase/CutMix。但当前 MACHINE 帧并不是无标签数据；它们有来源机器 mask。最接近论文语义的迁移是：HUMAN=train 作为可靠 donor，MACHINE=train 作为 weak target，由仅使用 train 构建的 teacher 产生 pseudo-label。当前只有 38 张 HUMAN train 帧，donor 多样性很低，硬矩形 CutMix 还可能制造伪边界，所以第一版必须是 UPC-lite、单一中等替换率，并审计 donor 垄断和伪边界。 SWSEG 把 weak/strong consistency 扩展到 encoder 表示，通过 Gaussian-SWD 优化 alignment/uniformity。它可能帮助表示覆盖，但论文没有报告跨初始化 seed 方差、unknown 或事件门。错误伪标签一旦进入 weak/strong 流，SWD 也可能让错误表示更稳定。因此 SWSEG 是 P4 正则，而不是 P1 修复；必须在 head 稳定且 UPC 角色清晰后，按 Lswd → Lreg → projection MLP 单因素加入。 三者正确顺序是：结构稳定 → MRFP 或 UPC 二选一 → 证明单模块有效 → 再决定是否引入 SWSEG。第一轮禁止 MRFP+UPC+SWSEG 全开，因为届时特征分布、伪标签、loss landscape 和随机源同时变化，任何提升或退化都无法归因。 The frontier-upgrade report treats this as paper-derived mechanism evidence. It does not independently establish BlindAssist event utility, mobile deployment, BLV user benefit, model promotion, or safety. frontier-upgrade-2026-07 Imported under the report's 3.2 MRFP、UPC、SWSEG：三个模块解决三种不同失败，不能一次叠加 mechanism group for bounded project comparison. Imported under the report's 3.2 MRFP、UPC、SWSEG：三个模块解决三种不同失败，不能一次叠加 mechanism group for bounded project comparison. The frontier-upgrade report treats this as paper-derived mechanism evidence. It does not independently establish BlindAssist event utility, mobile deployment, BLV user benefit, model promotion, or safety."
+    },
+    {
+      "id": "paper-n2m-2026#n2m",
+      "item_id": "paper-n2m-2026",
+      "mechanism_id": "n2m",
+      "kind": "paper",
+      "title": "N2M — Bridging Navigation and Manipulation by Learning Pose Preference from Policy Rollouts",
+      "canonical_ref": "https://arxiv.org/abs/2509.18671",
+      "summary": "几何“够得到”不等于下游动作容易成功；动作策略有自己的姿态偏好。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "interaction-ready"
+      ],
+      "name": "N2M",
+      "description": "只从成功 rollouts 学正向 pose preference；Point-BERT 编码几何，GMM 表示多模态站位，并用 viewpoint augmentation 增强。",
+      "inputs": [
+        "输入 egocentric point cloud 与任务；输出下游 manipulation policy 真正偏好的初始 base pose 分布。"
+      ],
+      "outputs": [
+        "输入 egocentric point cloud 与任务；输出下游 manipulation policy 真正偏好的初始 base pose 分布。"
+      ],
+      "limitations": "结果高度依赖具体 robot policy、深度与正样本 rollouts；不能直接学习用户行为。",
+      "signatures": [],
+      "layer_scores": {
+        "evaluation_evidence": 3,
+        "geometry_motion": 9,
+        "handoff_completion": 3,
+        "interaction_readiness": 7,
+        "observation_perception": 9,
+        "source_coverage": 3
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-n2m-2026",
+          "route": "ten-meter-copilot",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "提醒我们先建立 geometric ceiling，再通过少量真实/受控用户操作数据学习“更容易完成”的 pose preference。",
+          "expected_effect": "先不训练。对同一任务比较所有几何可达站位的 visibility、action-axis alignment 与操作成功，判断是否存在显著 pose preference headroom。",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "结果高度依赖具体 robot policy、深度与正样本 rollouts；不能直接学习用户行为。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2509.18671",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "N2M — Bridging Navigation and Manipulation by Learning Pose Preference from Policy Rollouts 几何“够得到”不等于下游动作容易成功；动作策略有自己的姿态偏好。 targeted-knowledge-expansion interaction-ready N2M 只从成功 rollouts 学正向 pose preference；Point-BERT 编码几何，GMM 表示多模态站位，并用 viewpoint augmentation 增强。 输入 egocentric point cloud 与任务；输出下游 manipulation policy 真正偏好的初始 base pose 分布。 输入 egocentric point cloud 与任务；输出下游 manipulation policy 真正偏好的初始 base pose 分布。 结果高度依赖具体 robot policy、深度与正样本 rollouts；不能直接学习用户行为。 ten-meter-copilot 提醒我们先建立 geometric ceiling，再通过少量真实/受控用户操作数据学习“更容易完成”的 pose preference。 先不训练。对同一任务比较所有几何可达站位的 visibility、action-axis alignment 与操作成功，判断是否存在显著 pose preference headroom。 结果高度依赖具体 robot policy、深度与正样本 rollouts；不能直接学习用户行为。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
     },
     {
       "id": "paper-navigation-world-models#hftf-h07a",
@@ -8515,6 +9324,62 @@
       "search_text": "PiRO / Dual Pose-invariant Embeddings 把类别相似性和实例差异压进同一 embedding 会产生目标冲突；双空间加 same-class hard confuser loss，尤其能提升单视角细粒度实例 retrieval。 goal-copilot deep-reading paper-09 goal-copilot-p0 PiRO / Dual Pose-invariant Embeddings — goal-audit:09 route mechanism （Fig. 2–4，Sec. 3）：①共享 VGG-16 backbone 提取每 view 视觉特征；②两个独立 FC heads 生成 category/object single-view embeddings；③两套 single-head self-attention 跨 views 聚合，因不加 positional encoding 而对 view 顺序不敏感；④mean pool 得到两套 multi-view embeddings；⑤object loss 在同类别对象对中找距离最近的跨实例 single-view “confusers”；⑥以 hinge loss 把同对象 single-view 拉向其 multi-view embedding，同时将 confusers 和两个对象的 multi-view embeddings推开；⑦category pose-invariant loss 把同类别不同对象的 multi-view embeddings 拉近；⑧L-Softmax 再分开不同类别，三类损失联合训练但作用于不同空间。 训练时仍需多视角、类别和 identity labels；不证明单 reference 新身份的开放世界验证、完整当前帧 proposals 或 NONE。三个数据集多为对象居中的规范化视图，和入口场景差异明显。 goal-copilot-p0 B0 的 16 正确说明 category/粗语义已基本可用，4 个同类错误说明需要独立 object space；PiRO 正好解释为什么继续改一个混合分数容易反复。其 unary object embeddings 也消除 pair 顺序，但不提供 absence。 在 source-disjoint 多视角 object bank 训练一个双 head；测试只给一张 reference。每候选输出 category_score 与 identity_score，前者只做 goal-class eligibility，后者决定同类排序；均通过且满足绝对阈值/margin 才输出 TARGET，否则 NONE。若 object head 不降低 4 个同类错误、category recall 使 controls 低于 12/13，或换 candidate 顺序改变选择，即停止。 训练时仍需多视角、类别和 identity labels；不证明单 reference 新身份的开放世界验证、完整当前帧 proposals 或 NONE。三个数据集多为对象居中的规范化视图，和入口场景差异明显。"
     },
     {
+      "id": "paper-placenet-2025#placenet",
+      "item_id": "paper-placenet-2025",
+      "mechanism_id": "placenet",
+      "kind": "paper",
+      "title": "PlaceNet — Task-Conditioned Base Placement for Mobile Manipulation",
+      "canonical_ref": "https://doi.org/10.1109/IROS60139.2025.11247631",
+      "summary": "可把“在地面哪里站”做成显式 dense map，而不是一次启发式搜索。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "interaction-ready"
+      ],
+      "name": "PlaceNet",
+      "description": "用大量 IK/collision queries 离线生成 supervision，PointNet+MLP 预测 base pose 可行性，并递归选择位置。",
+      "inputs": [
+        "输入场景 point cloud、任务目标/poses；输出 SE(2) base placement 的 reachability map。"
+      ],
+      "outputs": [
+        "输入场景 point cloud、任务目标/poses；输出 SE(2) base placement 的 reachability map。"
+      ],
+      "limitations": "标签来自 robot IK 与 collision；人的关节、身体宽度、平衡与舒适度完全不同。",
+      "signatures": [],
+      "layer_scores": {
+        "evaluation_evidence": 3,
+        "geometry_motion": 3,
+        "interaction_readiness": 7,
+        "observation_perception": 3,
+        "source_coverage": 3
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-placenet-2025",
+          "route": "ten-meter-copilot",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "作为最简单 stand-region map 结构基线；监督必须换成人体模型/用户数据。",
+          "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "标签来自 robot IK 与 collision；人的关节、身体宽度、平衡与舒适度完全不同。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://doi.org/10.1109/IROS60139.2025.11247631",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "PlaceNet — Task-Conditioned Base Placement for Mobile Manipulation 可把“在地面哪里站”做成显式 dense map，而不是一次启发式搜索。 targeted-knowledge-expansion interaction-ready PlaceNet 用大量 IK/collision queries 离线生成 supervision，PointNet+MLP 预测 base pose 可行性，并递归选择位置。 输入场景 point cloud、任务目标/poses；输出 SE(2) base placement 的 reachability map。 输入场景 point cloud、任务目标/poses；输出 SE(2) base placement 的 reachability map。 标签来自 robot IK 与 collision；人的关节、身体宽度、平衡与舒适度完全不同。 ten-meter-copilot 作为最简单 stand-region map 结构基线；监督必须换成人体模型/用户数据。 Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling. 标签来自 robot IK 与 collision；人的关节、身体宽度、平衡与舒适度完全不同。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+    },
+    {
       "id": "paper-precision-and-recall-for-time-series#dtr-dr60",
       "item_id": "paper-precision-and-recall-for-time-series",
       "mechanism_id": "dtr-dr60",
@@ -8665,6 +9530,62 @@
         }
       ],
       "search_text": "PTC-Depth PTC-Depth 已使用已知位移、光流三角化与 Bayesian metric-scale update；“Bayesian scale smoother”本身也不新。 taro adjacent-work taro-r0 PTC-Depth — taro:T03 route mechanism PTC-Depth 已使用已知位移、光流三角化与 Bayesian metric-scale update；“Bayesian scale smoother”本身也不新。 This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety. taro-r0 PTC-Depth 已使用已知位移、光流三角化与 Bayesian metric-scale update；“Bayesian scale smoother”本身也不新。 PTC-Depth 已使用已知位移、光流三角化与 Bayesian metric-scale update；“Bayesian scale smoother”本身也不新。 This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+    },
+    {
+      "id": "paper-r2handoversim-2026#r2handoversim",
+      "item_id": "paper-r2handoversim-2026",
+      "mechanism_id": "r2handoversim",
+      "kind": "paper",
+      "title": "R2HandoverSim — Factorized Simulation and Human Evaluation for Robot-to-Human Handover",
+      "canonical_ref": "https://arxiv.org/abs/2606.21011",
+      "summary": "直接支持 L10 将 READY 拆成多个端点，并单列用户感受/执行。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "interaction-ready"
+      ],
+      "name": "R2HandoverSim",
+      "description": "将 handover 拆成 planning feasibility、reachability、grasp stability、grasp affordance 与 safety，而不是一个 success bit。",
+      "inputs": [
+        "Source-defined observations and task context."
+      ],
+      "outputs": [
+        "Source-defined mechanism output."
+      ],
+      "limitations": "handover 任务与固定设施操作有差异；仿真指标不能替代真实用户。",
+      "signatures": [],
+      "layer_scores": {
+        "evaluation_evidence": 6,
+        "geometry_motion": 3,
+        "handoff_completion": 3,
+        "interaction_readiness": 3,
+        "source_coverage": 3
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-r2handoversim-2026",
+          "route": "ten-meter-copilot",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "直接支持 L10 将 READY 拆成多个端点，并单列用户感受/执行。",
+          "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "handover 任务与固定设施操作有差异；仿真指标不能替代真实用户。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2606.21011",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "R2HandoverSim — Factorized Simulation and Human Evaluation for Robot-to-Human Handover 直接支持 L10 将 READY 拆成多个端点，并单列用户感受/执行。 targeted-knowledge-expansion interaction-ready R2HandoverSim 将 handover 拆成 planning feasibility、reachability、grasp stability、grasp affordance 与 safety，而不是一个 success bit。 Source-defined observations and task context. Source-defined mechanism output. handover 任务与固定设施操作有差异；仿真指标不能替代真实用户。 ten-meter-copilot 直接支持 L10 将 READY 拆成多个端点，并单列用户感受/执行。 Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling. handover 任务与固定设施操作有差异；仿真指标不能替代真实用户。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
     },
     {
       "id": "paper-radius-risk-aware-real-time-reachability-based-motion-planning#dtr-dr53",
@@ -8994,6 +9915,60 @@
         }
       ],
       "search_text": "REVERIE 高层自然语言 → 未见室内环境导航 → remote referred object grounding；布局/目的地先验帮助搜索 goal-copilot prior-art goal-copilot-p0 REVERIE — goal-prior:P0-R04a route mechanism 高层自然语言 → 未见室内环境导航 → remote referred object grounding；布局/目的地先验帮助搜索 Matterport3D 离散室内图与标注 object bbox；通常给定可判定 referent，不覆盖 BLV 街景、入口角色歧义或安全引导 goal-copilot-p0 task decomposition；navigation success 与 object grounding 分开；语言、布局、object pointer 联合建模 task decomposition；navigation success 与 object grounding 分开；语言、布局、object pointer 联合建模 Matterport3D 离散室内图与标注 object bbox；通常给定可判定 referent，不覆盖 BLV 街景、入口角色歧义或安全引导"
+    },
+    {
+      "id": "paper-rigidflow-plus-plus-2024#rigidflow",
+      "item_id": "paper-rigidflow-plus-plus-2024",
+      "mechanism_id": "rigidflow",
+      "kind": "paper",
+      "title": "RigidFlow++ — Self-Supervised 3D Scene Flow with Local Rigidity Prior",
+      "canonical_ref": "https://arxiv.org/abs/2310.11284",
+      "summary": "点级 motion 应带一个 validity mask；“有数值”不等于“这次速度可用”。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "direct-velocity"
+      ],
+      "name": "RigidFlow++",
+      "description": "将场景分为局部 supervoxels； correspondence、confidence 与局部 rigid transform 交替优化； confidence 同时由 forward/backward consistency、空间接近和局部刚性残差决定； 低可信点不强迫参与伪标签或损失。",
+      "inputs": [
+        "输入两帧点云和初始 correspondences；输出 scene flow、局部刚性变换和 point-wise confidence/validity。"
+      ],
+      "outputs": [
+        "输入两帧点云和初始 correspondences；输出 scene flow、局部刚性变换和 point-wise confidence/validity。"
+      ],
+      "limitations": "confidence 不是针对 DTR event 的校准概率；局部刚性可在墙面、重复结构或错误 cluster 上稳定自洽。",
+      "signatures": [],
+      "layer_scores": {
+        "decision_lifecycle": 3,
+        "geometry_motion": 6,
+        "source_coverage": 3
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-rigidflow-plus-plus-2024",
+          "route": "obstacle-avoidance",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "直接替换 M1-CT 中过于粗糙的 cell confidence。建议输出 spatial_support / FB_consistency / rigid_residual / overlap 四个分量，不先压成不可解释总分。",
+          "expected_effect": "固定 direct-velocity source，只添加 point validity；要求 static pseudo-motion false segments 显著下降，同时 pedestrian CONTACT 与 bounded-gap recovery 非劣。",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "confidence 不是针对 DTR event 的校准概率；局部刚性可在墙面、重复结构或错误 cluster 上稳定自洽。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2310.11284",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "RigidFlow++ — Self-Supervised 3D Scene Flow with Local Rigidity Prior 点级 motion 应带一个 validity mask；“有数值”不等于“这次速度可用”。 targeted-knowledge-expansion direct-velocity RigidFlow++ 将场景分为局部 supervoxels； correspondence、confidence 与局部 rigid transform 交替优化； confidence 同时由 forward/backward consistency、空间接近和局部刚性残差决定； 低可信点不强迫参与伪标签或损失。 输入两帧点云和初始 correspondences；输出 scene flow、局部刚性变换和 point-wise confidence/validity。 输入两帧点云和初始 correspondences；输出 scene flow、局部刚性变换和 point-wise confidence/validity。 confidence 不是针对 DTR event 的校准概率；局部刚性可在墙面、重复结构或错误 cluster 上稳定自洽。 obstacle-avoidance 直接替换 M1-CT 中过于粗糙的 cell confidence。建议输出 spatial_support / FB_consistency / rigid_residual / overlap 四个分量，不先压成不可解释总分。 固定 direct-velocity source，只添加 point validity；要求 static pseudo-motion false segments 显著下降，同时 pedestrian CONTACT 与 bounded-gap recovery 非劣。 confidence 不是针对 DTR event 的校准概率；局部刚性可在墙面、重复结构或错误 cluster 上稳定自洽。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
     },
     {
       "id": "paper-riskprop#dtr-dr11",
@@ -10346,6 +11321,59 @@
       "search_text": "Stochastic Occupancy Grid Map Prediction / SOGMP、SOGMP++ 行人可能有多个合理未来，单轨迹会漏掉分支 dynamic-travel-risk legacy-candidate dtr-r0 Stochastic Occupancy Grid Map Prediction / SOGMP、SOGMP++ — dtr:DR10 route mechanism 预测随机未来 occupancy map，以均值与样本方差 costmap 对照 body corridor，而不强制单 ID 机器人传感和控制栈；VAE 样本方差未做风险校准，也没有头戴相机或 BLV 事件证据 obstacle-avoidance 预测随机未来 occupancy map，以均值与样本方差 costmap 对照 body corridor，而不强制单 ID 预测随机未来 occupancy map，以均值与样本方差 costmap 对照 body corridor，而不强制单 ID 机器人传感和控制栈；VAE 样本方差未做风险校准，也没有头戴相机或 BLV 事件证据"
     },
     {
+      "id": "paper-synflow-2026#synflow",
+      "item_id": "paper-synflow-2026",
+      "mechanism_id": "synflow",
+      "kind": "paper",
+      "title": "SynFlow — Scaling Up LiDAR Scene Flow with Synthetic Data",
+      "canonical_ref": "https://arxiv.org/abs/2604.09411",
+      "summary": "若 fresh C2 证明点级速度确有 headroom，但真实训练标签不足，可用它预训练。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "direct-velocity"
+      ],
+      "name": "SynFlow",
+      "description": "构造约 4,000 sequences、约 940k frames 的合成 scene-flow 数据，用大规模精确 point motion 补真实标签不足。",
+      "inputs": [
+        "Source-defined observations and task context."
+      ],
+      "outputs": [
+        "Source-defined mechanism output."
+      ],
+      "limitations": "合成行人行为、传感器噪声与穿戴视角仍可能错配。",
+      "signatures": [],
+      "layer_scores": {
+        "geometry_motion": 6,
+        "source_coverage": 6
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-synflow-2026",
+          "route": "obstacle-avoidance",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "若 fresh C2 证明点级速度确有 headroom，但真实训练标签不足，可用它预训练。",
+          "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "合成行人行为、传感器噪声与穿戴视角仍可能错配。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2604.09411",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "SynFlow — Scaling Up LiDAR Scene Flow with Synthetic Data 若 fresh C2 证明点级速度确有 headroom，但真实训练标签不足，可用它预训练。 targeted-knowledge-expansion direct-velocity SynFlow 构造约 4,000 sequences、约 940k frames 的合成 scene-flow 数据，用大规模精确 point motion 补真实标签不足。 Source-defined observations and task context. Source-defined mechanism output. 合成行人行为、传感器噪声与穿戴视角仍可能错配。 obstacle-avoidance 若 fresh C2 证明点级速度确有 headroom，但真实训练标签不足，可用它预训练。 Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling. 合成行人行为、传感器噪声与穿戴视角仍可能错配。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+    },
+    {
       "id": "paper-t-funs3d-2026#hierarchical-instance-to-functional-part",
       "item_id": "paper-t-funs3d-2026",
       "mechanism_id": "hierarchical-instance-to-functional-part",
@@ -10586,6 +11614,62 @@
         }
       ],
       "search_text": "Task-Specific Bayesian NBV Task-Specific Bayesian NBV 已直接优化下游任务视角； GraspView 已把 RGB-only active view 与在线米制对齐 用于抓取。因此 TARO 必须证明 query-identifiability、人体 swept-volume、声明的 metric anchor、 人类受限相机动作和 UNKNOWN 的联合差异。 taro adjacent-work taro-r0 Task-Specific Bayesian NBV — taro:T04a route mechanism Task-Specific Bayesian NBV 已直接优化下游任务视角； GraspView 已把 RGB-only active view 与在线米制对齐 用于抓取。因此 TARO 必须证明 query-identifiability、人体 swept-volume、声明的 metric anchor、 人类受限相机动作和 UNKNOWN 的联合差异。 This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety. taro-r0 Task-Specific Bayesian NBV 已直接优化下游任务视角； GraspView 已把 RGB-only active view 与在线米制对齐 用于抓取。因此 TARO 必须证明 query-identifiability、人体 swept-volume、声明的 metric anchor、 人类受限相机动作和 UNKNOWN 的联合差异。 Task-Specific Bayesian NBV 已直接优化下游任务视角； GraspView 已把 RGB-only active view 与在线米制对齐 用于抓取。因此 TARO 必须证明 query-identifiability、人体 swept-volume、声明的 metric anchor、 人类受限相机动作和 UNKNOWN 的联合差异。 This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+    },
+    {
+      "id": "paper-teflow-2026#teflow",
+      "item_id": "paper-teflow-2026",
+      "mechanism_id": "teflow",
+      "kind": "paper",
+      "title": "TeFlow — Temporal Ensembling for LiDAR Scene Flow",
+      "canonical_ref": "https://arxiv.org/abs/2602.19053",
+      "summary": "小型动态目标需要跨帧候选共识和类别/cluster 平衡，单对 sweep 容易被稀疏性支配。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "direct-velocity"
+      ],
+      "name": "TeFlow",
+      "description": "建跨帧 candidate pool； 区分内部模型候选与外部几何候选； 对一致运动进行 temporal voting； 做 cluster-balanced supervision，避免大静态区域压倒 VRU。",
+      "inputs": [
+        "输入多帧 sweeps 与候选 flows；输出经跨帧共识改善的 scene flow/监督信号。"
+      ],
+      "outputs": [
+        "输入多帧 sweeps 与候选 flows；输出经跨帧共识改善的 scene flow/监督信号。"
+      ],
+      "limitations": "时序一致也可能稳定错误 pseudo-motion；部分监督/伪真值来自 driving annotations。",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 6,
+        "decision_lifecycle": 3,
+        "geometry_motion": 12,
+        "source_coverage": 6,
+        "temporal_belief": 6
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-teflow-2026",
+          "route": "obstacle-avoidance",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "只借“多个候选速度的 temporal consensus”，不要复活完整训练主线。适合在 CorrelationFlow、ICP-Flow 与当前 cell-flow 之间做共识。",
+          "expected_effect": "若时序共识只能降低 flow error、却不降低 event false segments，就不晋级。",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "时序一致也可能稳定错误 pseudo-motion；部分监督/伪真值来自 driving annotations。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2602.19053",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "TeFlow — Temporal Ensembling for LiDAR Scene Flow 小型动态目标需要跨帧候选共识和类别/cluster 平衡，单对 sweep 容易被稀疏性支配。 targeted-knowledge-expansion direct-velocity TeFlow 建跨帧 candidate pool； 区分内部模型候选与外部几何候选； 对一致运动进行 temporal voting； 做 cluster-balanced supervision，避免大静态区域压倒 VRU。 输入多帧 sweeps 与候选 flows；输出经跨帧共识改善的 scene flow/监督信号。 输入多帧 sweeps 与候选 flows；输出经跨帧共识改善的 scene flow/监督信号。 时序一致也可能稳定错误 pseudo-motion；部分监督/伪真值来自 driving annotations。 obstacle-avoidance 只借“多个候选速度的 temporal consensus”，不要复活完整训练主线。适合在 CorrelationFlow、ICP-Flow 与当前 cell-flow 之间做共识。 若时序共识只能降低 flow error、却不降低 event false segments，就不晋级。 时序一致也可能稳定错误 pseudo-motion；部分监督/伪真值来自 driving annotations。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
     },
     {
       "id": "paper-temporally-consistent-video-semantic-segmentation-with-bidirectional-occ#frontier-bofp",
@@ -11012,6 +12096,63 @@
       "search_text": "Towards Accurate Video Text Spotting with Text-wise Semantic Reasoning VLSpotter把文字专用超分、词内语言修正与同帧文字间语义推理组合起来。 l10 literature-reserve l10-r0 Towards Accurate Video Text Spotting with Text-wise Semantic Reasoning — l10:5 route mechanism VLSpotter把文字专用超分、词内语言修正与同帧文字间语义推理组合起来。 语言/场景语义可“纠正”掉关键房间号；不能直接作为身份权威。 ten-meter-copilot 优先只检验文字超分这个新像素源：冻结 OCR 与控制，比较精确 token 恢复和错误 lexical admission。 优先只检验文字超分这个新像素源：冻结 OCR 与控制，比较精确 token 恢复和错误 lexical admission。 语言/场景语义可“纠正”掉关键房间号；不能直接作为身份权威。"
     },
     {
+      "id": "paper-trackcue-2026#trackcue",
+      "item_id": "paper-trackcue-2026",
+      "mechanism_id": "trackcue",
+      "kind": "paper",
+      "title": "TrackCue — Motion Cues from Image-based Point Tracking for LiDAR Scene Flow Estimation",
+      "canonical_ref": "https://arxiv.org/abs/2605.16922",
+      "summary": "比较“真实 image track”和“纯 ego rigid track”能提供与 LiDAR correspondence 不同源的运动证据。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "direct-velocity"
+      ],
+      "name": "TrackCue",
+      "description": "把候选动态 LiDAR 点投进相机； 用 CoTracker3 在 6-frame clip 中获得 image tracks； 根据深度与 ego pose计算纯静态世界应产生的 rigid image track； 两条轨迹偏离超过阈值、且跨帧投票充分时，记为 independent motion witness； cue 回投到最近 LiDAR 点并用于标签/监督增强。",
+      "inputs": [
+        "输入同步多相机 RGB、LiDAR、标定与 ego pose；输出“哪些 LiDAR 点具有非 ego motion”的稀疏运动 cue。"
+      ],
+      "outputs": [
+        "输入同步多相机 RGB、LiDAR、标定与 ego pose；输出“哪些 LiDAR 点具有非 ego motion”的稀疏运动 cue。"
+      ],
+      "limitations": "2-D track 偏离不等于正确 3-D velocity；投影覆盖不足时不能输出 CLEAR；高算力训练结果不能直接迁移到手机。",
+      "signatures": [],
+      "layer_scores": {
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 3,
+        "geometry_motion": 15,
+        "observation_perception": 6,
+        "source_coverage": 6,
+        "temporal_belief": 9
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-trackcue-2026",
+          "route": "obstacle-avoidance",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "只移植 cue 逻辑，不先训练大模型。JRDB 已有同步 RGB/LiDAR/ego pose，可对疑似 moving components 计算 image-vs-rigid residual。",
+          "expected_effect": "比较加入 TrackCue 前后，STATIC_PSEUDO_MOTION 与真实 person CONTACT 的保留率。cue 缺失必须是 UNKNOWN，不得当静态反证。",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "2-D track 偏离不等于正确 3-D velocity；投影覆盖不足时不能输出 CLEAR；高算力训练结果不能直接迁移到手机。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2605.16922",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "TrackCue — Motion Cues from Image-based Point Tracking for LiDAR Scene Flow Estimation 比较“真实 image track”和“纯 ego rigid track”能提供与 LiDAR correspondence 不同源的运动证据。 targeted-knowledge-expansion direct-velocity TrackCue 把候选动态 LiDAR 点投进相机； 用 CoTracker3 在 6-frame clip 中获得 image tracks； 根据深度与 ego pose计算纯静态世界应产生的 rigid image track； 两条轨迹偏离超过阈值、且跨帧投票充分时，记为 independent motion witness； cue 回投到最近 LiDAR 点并用于标签/监督增强。 输入同步多相机 RGB、LiDAR、标定与 ego pose；输出“哪些 LiDAR 点具有非 ego motion”的稀疏运动 cue。 输入同步多相机 RGB、LiDAR、标定与 ego pose；输出“哪些 LiDAR 点具有非 ego motion”的稀疏运动 cue。 2-D track 偏离不等于正确 3-D velocity；投影覆盖不足时不能输出 CLEAR；高算力训练结果不能直接迁移到手机。 obstacle-avoidance 只移植 cue 逻辑，不先训练大模型。JRDB 已有同步 RGB/LiDAR/ego pose，可对疑似 moving components 计算 image-vs-rigid residual。 比较加入 TrackCue 前后，STATIC_PSEUDO_MOTION 与真实 person CONTACT 的保留率。cue 缺失必须是 UNKNOWN，不得当静态反证。 2-D track 偏离不等于正确 3-D velocity；投影覆盖不足时不能输出 CLEAR；高算力训练结果不能直接迁移到手机。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+    },
+    {
       "id": "paper-trajectron-plus-plus-dynamically-feasible-trajectory-forecasting-with-he#dtr-dr47",
       "item_id": "paper-trajectron-plus-plus-dynamically-feasible-trajectory-forecasting-with-he",
       "mechanism_id": "dtr-dr47",
@@ -11242,6 +12383,61 @@
         }
       ],
       "search_text": "Uncovering the Missing Pattern: Unified Framework Towards Trajectory Imputation and Prediction A unified GC-VRNN framework for trajectory imputation and prediction that treats incomplete observations and their temporal missing patterns as first-class inputs. trajectory missingness occlusion forecasting dtr dynamic-travel-risk literature-reserve dtr-r0 Missingness-aware joint imputation and forecasting Use a multi-space graph representation plus a temporal-decay conditional recurrent model to encode incomplete multi-agent observations, jointly impute bounded missing history, and predict future trajectories. incomplete observed trajectories observation masks time since observation imputed bounded history future trajectory distribution Benchmark imputation does not prove that a fully unseen target exists. An imputed point is not a sensor observation, identity authority, calibrated collision probability, or evidence of safety; unsupported gaps must remain UNKNOWN. track dropout missing observation time since seen 短时缺测 轨迹断裂 obstacle-avoidance Make causal observation gaps explicit at the DTR tracker-to-forecast boundary and test whether bounded gap handling improves route-event behavior over treating imputed positions as observations. Reduce event misses caused by short contiguous occlusions while preserving identity continuity and bounding false route events. A positive result would be a route-specific Development signal for bounded missing tracks. It would not establish target existence outside observation, detector coverage, calibrated collision probability, wearable RGB performance, user benefit, or safety."
+    },
+    {
+      "id": "paper-uniflow-2026#uniflow",
+      "item_id": "paper-uniflow-2026",
+      "mechanism_id": "uniflow",
+      "kind": "paper",
+      "title": "UniFlow — Zero-Shot LiDAR Scene Flow via Cross-Domain Generalization",
+      "canonical_ref": "https://arxiv.org/abs/2511.18254",
+      "summary": "如果下一步需要训练，域泛化比在单一 AV2 leaderboard 上追分更重要。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "direct-velocity"
+      ],
+      "name": "UniFlow",
+      "description": "统一不同 LiDAR sensor、数据集和帧率的表示，在 AV2、Waymo、nuScenes 等多域联合训练。",
+      "inputs": [
+        "Source-defined observations and task context."
+      ],
+      "outputs": [
+        "Source-defined mechanism output."
+      ],
+      "limitations": "训练代价大，且仍不提供 BlindAssist event calibration。",
+      "signatures": [],
+      "layer_scores": {
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 3,
+        "geometry_motion": 3,
+        "source_coverage": 6
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-uniflow-2026",
+          "route": "obstacle-avoidance",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "如果下一步需要训练，域泛化比在单一 AV2 leaderboard 上追分更重要。",
+          "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "训练代价大，且仍不提供 BlindAssist event calibration。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2511.18254",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "UniFlow — Zero-Shot LiDAR Scene Flow via Cross-Domain Generalization 如果下一步需要训练，域泛化比在单一 AV2 leaderboard 上追分更重要。 targeted-knowledge-expansion direct-velocity UniFlow 统一不同 LiDAR sensor、数据集和帧率的表示，在 AV2、Waymo、nuScenes 等多域联合训练。 Source-defined observations and task context. Source-defined mechanism output. 训练代价大，且仍不提供 BlindAssist event calibration。 obstacle-avoidance 如果下一步需要训练，域泛化比在单一 AV2 leaderboard 上追分更重要。 Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling. 训练代价大，且仍不提供 BlindAssist event calibration。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
     },
     {
       "id": "paper-unilm-nav-2026#view-affordance-base-pose",
@@ -11890,6 +13086,60 @@
         }
       ],
       "search_text": "VLM Navigation BLV Evaluation 现有 VLM 在拥挤计数、相对空间关系和适应性上存在明显差异与失败 ustrf frontier-guide ustrf-sc VLM Navigation BLV Evaluation — ustrf:P09 route mechanism 现有 VLM 在拥挤计数、相对空间关系和适应性上存在明显差异与失败 预印本；模型/API 快速变化，非端到端碰撞实验 ustrf-sc VLM 应隔离在解释、问答和高层语义层，不能独立开启方向性避障动作 VLM 应隔离在解释、问答和高层语义层，不能独立开启方向性避障动作 预印本；模型/API 快速变化，非端到端碰撞实验"
+    },
+    {
+      "id": "paper-voteflow-2025#voteflow",
+      "item_id": "paper-voteflow-2025",
+      "mechanism_id": "voteflow",
+      "kind": "paper",
+      "title": "VoteFlow — Enforcing Local Rigidity in Self-Supervised Scene Flow",
+      "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2025/html/Lin_VoteFlow_Enforcing_Local_Rigidity_in_Self-Supervised_Scene_Flow_CVPR_2025_paper.html",
+      "summary": "若 training-free 速度源确认“有可学信号但不够准”，它是比大 trajectory model 更对准故障的 learned head。",
+      "tags": [
+        "targeted-knowledge-expansion",
+        "direct-velocity"
+      ],
+      "name": "VoteFlow",
+      "description": "把局部平移离散为候选 bins，邻域点对局部 translation 投票，用局部刚性归纳偏置抑制独立点噪声。",
+      "inputs": [
+        "输入连续 LiDAR sweeps；输出 point/pillar flow。"
+      ],
+      "outputs": [
+        "输入连续 LiDAR sweeps；输出 point/pillar flow。"
+      ],
+      "limitations": "局部投票会平滑相邻但独立的行人；缺少原生 event confidence。",
+      "signatures": [],
+      "layer_scores": {
+        "decision_lifecycle": 6,
+        "geometry_motion": 6,
+        "source_coverage": 9
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-voteflow-2025",
+          "route": "obstacle-avoidance",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "若 training-free 速度源确认“有可学信号但不够准”，它是比大 trajectory model 更对准故障的 learned head。",
+          "expected_effect": "只在 source-disjoint scene-flow 数据训练，冻结后进 C2；不得用七段 replay 调训练或阈值。",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "局部投票会平滑相邻但独立的行人；缺少原生 event confidence。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://openaccess.thecvf.com/content/CVPR2025/html/Lin_VoteFlow_Enforcing_Local_Rigidity_in_Self-Supervised_Scene_Flow_CVPR_2025_paper.html",
+              "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "VoteFlow — Enforcing Local Rigidity in Self-Supervised Scene Flow 若 training-free 速度源确认“有可学信号但不够准”，它是比大 trajectory model 更对准故障的 learned head。 targeted-knowledge-expansion direct-velocity VoteFlow 把局部平移离散为候选 bins，邻域点对局部 translation 投票，用局部刚性归纳偏置抑制独立点噪声。 输入连续 LiDAR sweeps；输出 point/pillar flow。 输入连续 LiDAR sweeps；输出 point/pillar flow。 局部投票会平滑相邻但独立的行人；缺少原生 event confidence。 obstacle-avoidance 若 training-free 速度源确认“有可学信号但不够准”，它是比大 trajectory model 更对准故障的 learned head。 只在 source-disjoint scene-flow 数据训练，冻结后进 C2；不得用七段 replay 调训练或阈值。 局部投票会平滑相邻但独立的行人；缺少原生 event confidence。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
     },
     {
       "id": "paper-walkvlm#ustrf-p08",

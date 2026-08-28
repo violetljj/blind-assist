@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-agent-aware-affordances-2022",
+  "kind": "paper",
+  "title": "Agent-Aware Affordances for Articulated Object Interaction",
+  "canonical_ref": "https://arxiv.org/abs/2209.05802",
+  "authors": [],
+  "year": 2022,
+  "venue": "",
+  "summary": "同一个把手对不同 agent/动作不一定可操作；contact affordance 必须与身体/执行器共同定义。",
+  "mechanisms": [
+    {
+      "id": "agent-aware-affordances-for-articulated-object-interaction",
+      "name": "Agent-Aware Affordances for Articulated Object Interaction",
+      "description": "point-level affordance 不只看物体表面，还条件于整个 agent geometry、collision 与控制；动作中可闭环重新查询 interaction pose。",
+      "inputs": [
+        "Source-defined observations and task context."
+      ],
+      "outputs": [
+        "Source-defined mechanism output."
+      ],
+      "limitations": "robot agent；需要完整几何；没有人的个体差异。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "interaction-ready"
+  ],
+  "aliases": [
+    "targeted:L10-H8"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

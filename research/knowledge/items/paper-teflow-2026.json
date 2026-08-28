@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-teflow-2026",
+  "kind": "paper",
+  "title": "TeFlow — Temporal Ensembling for LiDAR Scene Flow",
+  "canonical_ref": "https://arxiv.org/abs/2602.19053",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "小型动态目标需要跨帧候选共识和类别/cluster 平衡，单对 sweep 容易被稀疏性支配。",
+  "mechanisms": [
+    {
+      "id": "teflow",
+      "name": "TeFlow",
+      "description": "建跨帧 candidate pool； 区分内部模型候选与外部几何候选； 对一致运动进行 temporal voting； 做 cluster-balanced supervision，避免大静态区域压倒 VRU。",
+      "inputs": [
+        "输入多帧 sweeps 与候选 flows；输出经跨帧共识改善的 scene flow/监督信号。"
+      ],
+      "outputs": [
+        "输入多帧 sweeps 与候选 flows；输出经跨帧共识改善的 scene flow/监督信号。"
+      ],
+      "limitations": "时序一致也可能稳定错误 pseudo-motion；部分监督/伪真值来自 driving annotations。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "direct-velocity"
+  ],
+  "aliases": [
+    "targeted:DTR-V6"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-n2m-2026",
+  "kind": "paper",
+  "title": "N2M — Bridging Navigation and Manipulation by Learning Pose Preference from Policy Rollouts",
+  "canonical_ref": "https://arxiv.org/abs/2509.18671",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "几何“够得到”不等于下游动作容易成功；动作策略有自己的姿态偏好。",
+  "mechanisms": [
+    {
+      "id": "n2m",
+      "name": "N2M",
+      "description": "只从成功 rollouts 学正向 pose preference；Point-BERT 编码几何，GMM 表示多模态站位，并用 viewpoint augmentation 增强。",
+      "inputs": [
+        "输入 egocentric point cloud 与任务；输出下游 manipulation policy 真正偏好的初始 base pose 分布。"
+      ],
+      "outputs": [
+        "输入 egocentric point cloud 与任务；输出下游 manipulation policy 真正偏好的初始 base pose 分布。"
+      ],
+      "limitations": "结果高度依赖具体 robot policy、深度与正样本 rollouts；不能直接学习用户行为。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "interaction-ready"
+  ],
+  "aliases": [
+    "targeted:L10-H3"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "use-obstacle-avoidance-difflow3d-2024",
+  "item_id": "paper-difflow3d-2024",
+  "route": "obstacle-avoidance",
+  "mechanism_ids": [
+    "difflow3d"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "以条件 diffusion 多步精化 point flow，并输出 per-point uncertainty。",
+    "project_application": "提供一个“速度分布而非单点速度”的上界参考。",
+    "modifications": "只借用报告明确映射的机制；保留当前 route contract、truth authority、stop conditions 与 claim ceiling。",
+    "expected_effect": "只把其 uncertainty 当 read-only ranking 与现有 consistency confidence 对照；若不能更好排序 event error，不接入。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "只把其 uncertainty 当 read-only ranking 与现有 consistency confidence 对照；若不能更好排序 event error，不接入。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "重模型；论文 uncertainty 未证明对 CONTACT false segments 有校准意义；diffusion 多步不适合首轮低延迟原型。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2311.17456",
+      "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided 2026-08-28 DTR targeted knowledge expansion as a candidate only; no route authority or experimental result was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Recorded the report-defined minimal falsification setup and primary external source."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

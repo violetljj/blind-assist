@@ -9,30 +9,39 @@
   "use_state": "candidate",
   "adoption_mode": "mechanism_adaptation",
   "usage": {
-    "source_scope": "从语言意图定位 human-usage region，并避免机器人占用该区域。",
-    "project_application": "让 L10 的完成判定与用户具体意图绑定：同一物体的可用交接区可因“拿来使用”方式不同而变化。",
-    "modifications": "意图必须由用户显式给出或保持 UNKNOWN；禁止从对象类别猜测意图后直接完成。",
-    "expected_effect": "减少目标对象正确但交接区域不符合用户用途的错误。"
+    "source_scope": "VLM识别预期用途区域，预测 human grasp，robot grasp 避免挡住功能区，并优化符合人体工学的递送姿态。",
+    "project_application": "只借“任务决定 intended-use region”，不借 VLM 自信。目标是 打开抽屉 时必须把把手/拉动方向保留给用户，而非任何可抓区域。",
+    "modifications": "只借用报告明确映射的机制；保留当前 route contract、truth authority、stop conditions 与 claim ceiling。",
+    "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling."
   },
   "evaluation": {
     "reproduction_status": "not_attempted",
     "verdict": "not_run",
-    "setup": "未执行；最小证伪实验：冻结对象与几何，在同物多意图的最小新鲜集上仅改变显式 intent conditioning；主指标为 usage-region hit、blocked-region rate 和 unknown-intent false completion。",
+    "setup": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
     "effect": "",
     "metrics": [],
-    "claim_boundary": "Intent-Handover 的机器人系统与用户研究未在 BlindAssist 复现；成功也只支持命名意图条件下的区域选择，不支持自然导航或安全。"
+    "claim_boundary": "VLM 延迟过高，意图识别和用户评分不等于实际可达；不能作为实时 endpoint authority。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
   },
   "evidence": [
     {
       "kind": "external",
       "ref": "https://robot-future.github.io/intent-handover/",
       "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    },
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2503.03579",
+      "summary": "Primary source re-reviewed in the user-provided 2026-08-28 targeted expansion; no BlindAssist reproduction is implied."
     }
   ],
   "history": [
     {
       "date": "2026-08-28",
       "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Enriched from the user-provided 2026-08-28 targeted expansion without changing candidate status or route authority."
     }
   ],
   "added_at": "2026-08-28",

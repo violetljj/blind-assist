@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-moma-kitchen-2025",
+  "item_id": "paper-moma-kitchen-2025",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "moma-kitchen"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "在大量厨房与不同 robot embodiments 中运行真实/仿真 manipulation； 把地面位置、朝向与下游动作成功绑定成 floor affordance； 区分“能导航到附近”和“站在这里可以完成动作”。",
+    "project_application": "把 SC22 READY 的目标从“观察条件满足”升级为“支持下一动作的 stand region”，但先做 privileged ceiling，不直接训练机器人模型。",
+    "modifications": "只借用报告明确映射的机制；保留当前 route contract、truth authority、stop conditions 与 claim ceiling。",
+    "expected_effect": "用 SceneFun3D privileged functional point/axis 构造一组候选站位；比较 nearest/centered 与 task-conditioned stand region 的 false-ready、coverage 和 reposition distance。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "用 SceneFun3D privileged functional point/axis 构造一组候选站位；比较 nearest/centered 与 task-conditioned stand region 的 false-ready、coverage 和 reposition distance。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "robot reachability、碰撞与操控偏好不等于人的手臂、白杖、身体朝向或个体能力。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2503.11081",
+      "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided 2026-08-28 L10 targeted knowledge expansion as a candidate only; no route authority or experimental result was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Recorded the report-defined minimal falsification setup and primary external source."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

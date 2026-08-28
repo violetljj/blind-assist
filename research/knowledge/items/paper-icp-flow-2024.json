@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-icp-flow-2024",
+  "kind": "paper",
+  "title": "ICP-Flow — LiDAR Scene Flow Estimation with ICP",
+  "canonical_ref": "https://arxiv.org/abs/2402.17351",
+  "authors": [],
+  "year": 2024,
+  "venue": "",
+  "summary": "对大部分刚体交通参与者，先估一个可审计的 rigid transform，往往比自由 point flow 更稳。",
+  "mechanisms": [
+    {
+      "id": "icp-flow",
+      "name": "ICP-Flow",
+      "description": "ego compensation、地面删除和几何 clustering； 以空间直方图/粗平移初始化候选； 对候选组件运行 ICP； 用重叠、残差、点数和变换合理性拒绝匹配； 把 rigid transform 传播到 component 内点。",
+      "inputs": [
+        "输入两帧 ego-compensated LiDAR；输出 cluster-level rigid SE(3) 与 point flow。"
+      ],
+      "outputs": [
+        "输入两帧 ego-compensated LiDAR；输出 cluster-level rigid SE(3) 与 point flow。"
+      ],
+      "limitations": "cluster fragmentation/merge、低纹理几何、严重遮挡和人的非刚性会破坏 ICP；ICP 的低残差也可能在错误静态结构上自洽。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "direct-velocity"
+  ],
+  "aliases": [
+    "targeted:DTR-V2"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

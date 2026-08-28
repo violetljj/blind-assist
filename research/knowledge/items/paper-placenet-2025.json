@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-placenet-2025",
+  "kind": "paper",
+  "title": "PlaceNet — Task-Conditioned Base Placement for Mobile Manipulation",
+  "canonical_ref": "https://doi.org/10.1109/IROS60139.2025.11247631",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "可把“在地面哪里站”做成显式 dense map，而不是一次启发式搜索。",
+  "mechanisms": [
+    {
+      "id": "placenet",
+      "name": "PlaceNet",
+      "description": "用大量 IK/collision queries 离线生成 supervision，PointNet+MLP 预测 base pose 可行性，并递归选择位置。",
+      "inputs": [
+        "输入场景 point cloud、任务目标/poses；输出 SE(2) base placement 的 reachability map。"
+      ],
+      "outputs": [
+        "输入场景 point cloud、任务目标/poses；输出 SE(2) base placement 的 reachability map。"
+      ],
+      "limitations": "标签来自 robot IK 与 collision；人的关节、身体宽度、平衡与舒适度完全不同。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "interaction-ready"
+  ],
+  "aliases": [
+    "targeted:L10-H4"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

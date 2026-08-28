@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "use-obstacle-avoidance-correlationflow-2026",
+  "item_id": "paper-correlationflow-2026",
+  "route": "obstacle-avoidance",
+  "mechanism_ids": [
+    "correlationflow"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "ego compensation 后把点投到 BEV occupancy； 以 space-time connected components 获得候选实体； dense 版本通过 normalized cross-correlation 搜索平移； keypoint 版本对 distance-transform boundary descriptor 做匹配、ratio test 和几何筛选； 以 component 内稳健统计把匹配稠密化到点。",
+    "project_application": "作为 M1 的第一替代速度源。保留每个 component 的 NCC peak、ratio、matched-support、boundary coverage，不能只输出一个速度。",
+    "modifications": "只借用报告明确映射的机制；保留当前 route contract、truth authority、stop conditions 与 claim ceiling。",
+    "expected_effect": "在 frozen C2 七段 replay 上替换 occupancy-cell velocity，其余 route/lifecycle/bridge 全不变。若 false segments 不能低于 38，或 20/21 recall、29/63 recovery 任一下降，则不晋级。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "在 frozen C2 七段 replay 上替换 occupancy-cell velocity，其余 route/lifecycle/bridge 全不变。若 false segments 不能低于 38，或 20/21 recall、29/63 recovery 任一下降，则不晋级。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "没有原生 calibrated confidence；component merge 会把相邻人群合成一个刚体；不能处理显著旋转或非刚性；汽车数据不等于 JRDB 穿戴回放。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2607.29237",
+      "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided 2026-08-28 DTR targeted knowledge expansion as a candidate only; no route authority or experimental result was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Recorded the report-defined minimal falsification setup and primary external source."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

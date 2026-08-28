@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "use-obstacle-avoidance-icp-flow-2024",
+  "item_id": "paper-icp-flow-2024",
+  "route": "obstacle-avoidance",
+  "mechanism_ids": [
+    "icp-flow"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "ego compensation、地面删除和几何 clustering； 以空间直方图/粗平移初始化候选； 对候选组件运行 ICP； 用重叠、残差、点数和变换合理性拒绝匹配； 把 rigid transform 传播到 component 内点。",
+    "project_application": "作为 CorrelationFlow 的独立几何臂；重点观察人群、柱体、墙边和静态 pseudo-motion。",
+    "modifications": "只借用报告明确映射的机制；保留当前 route contract、truth authority、stop conditions 与 claim ceiling。",
+    "expected_effect": "同一组件同时跑 CorrelationFlow 与 ICP-Flow；两者速度方向/幅值冲突时输出低 confidence，而不是事后选择更有利的一臂。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "同一组件同时跑 CorrelationFlow 与 ICP-Flow；两者速度方向/幅值冲突时输出低 confidence，而不是事后选择更有利的一臂。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "cluster fragmentation/merge、低纹理几何、严重遮挡和人的非刚性会破坏 ICP；ICP 的低残差也可能在错误静态结构上自洽。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2402.17351",
+      "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided 2026-08-28 DTR targeted knowledge expansion as a candidate only; no route authority or experimental result was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Recorded the report-defined minimal falsification setup and primary external source."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

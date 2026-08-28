@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-himo-seflow-plus-plus-2025",
+  "kind": "paper",
+  "title": "HiMo / SeFlow++ — High-Speed Objects Motion Compensation",
+  "canonical_ref": "https://arxiv.org/abs/2503.00803",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "M1 目前把 sweep 当近似同时刻；高速移动或自转时，单帧内部已被拉伸。raw-point velocity 若忽略 timestamp，会把畸变误当速度。",
+  "mechanisms": [
+    {
+      "id": "himo-seflow",
+      "name": "HiMo / SeFlow++",
+      "description": "同时估计 ego 与 object motion，处理一帧扫描内部的时间畸变；用更精细自动标签、对称 flow loss 和三帧 backbone 强化高速目标。",
+      "inputs": [
+        "输入扫描期间连续采样的 raw LiDAR；输出补偿非 ego 运动后的点云/scene flow。"
+      ],
+      "outputs": [
+        "输入扫描期间连续采样的 raw LiDAR；输出补偿非 ego 运动后的点云/scene flow。"
+      ],
+      "limitations": "高速道路、多 LiDAR 与穿戴行人分布差异大。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "direct-velocity"
+  ],
+  "aliases": [
+    "targeted:DTR-V7"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

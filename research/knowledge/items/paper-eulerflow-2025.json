@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "paper-eulerflow-2025",
+  "kind": "paper",
+  "title": "EulerFlow — Neural Eulerian Scene Flow Fields",
+  "canonical_ref": "https://arxiv.org/abs/2410.02031",
+  "authors": [],
+  "year": 2025,
+  "venue": "",
+  "summary": "可作离线 privileged ceiling，判断某个片段是否真的存在可恢复运动。",
+  "mechanisms": [
+    {
+      "id": "eulerflow",
+      "name": "EulerFlow",
+      "description": "用连续 ODE 表示 Eulerian velocity field，以多帧 Chamfer、cycle consistency 等自监督约束优化。",
+      "inputs": [
+        "对整段点云序列做 scene-specific continuous space-time flow field optimization。"
+      ],
+      "outputs": [
+        "对整段点云序列做 scene-specific continuous space-time flow field optimization。"
+      ],
+      "limitations": "每场景优化昂贵；Chamfer/cycle 在重复静态几何上也会自洽；不适合 deployable M1。"
+    }
+  ],
+  "tags": [
+    "targeted-knowledge-expansion",
+    "direct-velocity"
+  ],
+  "aliases": [
+    "targeted:DTR-V11"
+  ],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

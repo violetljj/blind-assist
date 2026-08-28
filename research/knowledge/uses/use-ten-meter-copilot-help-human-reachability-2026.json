@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-help-human-reachability-2026",
+  "item_id": "paper-help-human-reachability-2026",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "help"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "用可变形 box 与局部 Gaussian primitives 表示 reach boundary； 在带 biomechanical/clinical anchors 的低维 latent manifold 上建个体模型； Bayesian belief 表示仍未知的 reachability； 主动选择最有信息的 calibration query。",
+    "project_application": "展示型原型可先用 3–5 个简单动作标定一个轻量 personalized reach posterior；不能把 UNKNOWN 填成不可达。",
+    "modifications": "只借用报告明确映射的机制；保留当前 route contract、truth authority、stop conditions 与 claim ceiling。",
+    "expected_effect": "比较固定臂长、简单身体参数模型与少量个体校准，在按钮/抽屉/把手三类上的 false-ready 和 coverage。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "比较固定臂长、简单身体参数模型与少量个体校准，在按钮/抽屉/把手三类上的 false-ready 和 coverage。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "校准负担、人工约束环境、指标仍非真实操作完成率。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://roboticsconference.org/program/papers/119/",
+      "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided 2026-08-28 L10 targeted knowledge expansion as a candidate only; no route authority or experimental result was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Recorded the report-defined minimal falsification setup and primary external source."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

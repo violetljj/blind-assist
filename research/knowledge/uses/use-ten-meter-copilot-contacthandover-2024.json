@@ -9,30 +9,39 @@
   "use_state": "candidate",
   "adoption_mode": "mechanism_adaptation",
   "usage": {
-    "source_scope": "保留人类接触区，并以可见性与可达性优化交付姿态。",
-    "project_application": "用于“把功能目标交到人可用的位置”这一完成定义，而不是只判断物体在画面中心。",
-    "modifications": "不继承机器人抓取；转译为 contact region 可见、可达、未被遮挡的交接检查。",
-    "expected_effect": "减少视觉上已对准但用户无法自然接触目标时的 false completion。"
+    "source_scope": "预测人最可能/最适合接触的区域； robot grasp 避免挡住该区域； 优化 delivery pose，使 contact region 可见、可达且人体工学成本较低。",
+    "project_application": "HANDOFF_READY 必须保留用户要接触的 intended-use region；相机/系统不应建议一个把目标压在墙角或遮住把手的站位。",
+    "modifications": "只借用报告明确映射的机制；保留当前 route contract、truth authority、stop conditions 与 claim ceiling。",
+    "expected_effect": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling."
   },
   "evaluation": {
     "reproduction_status": "not_attempted",
     "verdict": "not_run",
-    "setup": "未执行；最小证伪实验：冻结目标与站位，在可见/遮挡、可达/不可达的 2×2 小型新鲜集上仅加入 human-contact verifier；主指标为 false_completion 与 valid_handoff coverage。",
+    "setup": "Use a fresh or frozen-authorized cohort, change only this information factor, and retain the current route contract and claim ceiling.",
     "effect": "",
     "metrics": [],
-    "claim_boundary": "论文在 27 个物体上的可见性/可达性结果属于机器人交接；BlindAssist 未复现，不能推出盲人偏好、导航完成、产品或安全。"
+    "claim_boundary": "机器人递物，不是用户主动接近固定设施；人体模型和任务范围有限。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
   },
   "evidence": [
     {
       "kind": "external",
       "ref": "https://arxiv.org/abs/2404.01402",
       "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    },
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2404.01402",
+      "summary": "Primary source re-reviewed in the user-provided 2026-08-28 targeted expansion; no BlindAssist reproduction is implied."
     }
   ],
   "history": [
     {
       "date": "2026-08-28",
       "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Enriched from the user-provided 2026-08-28 targeted expansion without changing candidate status or route authority."
     }
   ],
   "added_at": "2026-08-28",

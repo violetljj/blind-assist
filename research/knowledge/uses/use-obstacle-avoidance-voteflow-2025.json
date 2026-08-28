@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "use-obstacle-avoidance-voteflow-2025",
+  "item_id": "paper-voteflow-2025",
+  "route": "obstacle-avoidance",
+  "mechanism_ids": [
+    "voteflow"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "把局部平移离散为候选 bins，邻域点对局部 translation 投票，用局部刚性归纳偏置抑制独立点噪声。",
+    "project_application": "若 training-free 速度源确认“有可学信号但不够准”，它是比大 trajectory model 更对准故障的 learned head。",
+    "modifications": "只借用报告明确映射的机制；保留当前 route contract、truth authority、stop conditions 与 claim ceiling。",
+    "expected_effect": "只在 source-disjoint scene-flow 数据训练，冻结后进 C2；不得用七段 replay 调训练或阈值。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "只在 source-disjoint scene-flow 数据训练，冻结后进 C2；不得用七段 replay 调训练或阈值。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "局部投票会平滑相邻但独立的行人；缺少原生 event confidence。 入库不产生路线晋级、实验结果、用户效果、产品或安全授权。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://openaccess.thecvf.com/content/CVPR2025/html/Lin_VoteFlow_Enforcing_Local_Rigidity_in_Self-Supervised_Scene_Flow_CVPR_2025_paper.html",
+      "summary": "Primary source identified in the user-provided targeted deep-reading report; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided 2026-08-28 DTR targeted knowledge expansion as a candidate only; no route authority or experimental result was created."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Recorded the report-defined minimal falsification setup and primary external source."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}
