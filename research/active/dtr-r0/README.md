@@ -19,6 +19,10 @@ DTR_C10_FIXED_C9_ALGORITHM_FRESH_CONFIRMATION_SIGNAL /
 DTR_C11_ROUTE_REGION_OCCUPANCY_FRESH_SIGNAL /
 DTR_C12_C13_ROUTE_TIME_REPRESENTATIONS_DEVELOPMENT_GATE_NOT_MET /
 DTR_C14_STOCHASTIC_ROUTE_CONFLICT_DEVELOPMENT_GATE_NOT_MET /
+DTR_C15_COMPONENT_VELOCITY_MIXTURE_DEVELOPMENT_GATE_NOT_MET /
+DTR_C16_EMPIRICAL_VELOCITY_MODES_DEVELOPMENT_GATE_NOT_MET /
+DTR_C17_TEMPORAL_ROUTE_CONSENSUS_DEVELOPMENT_GATE_NOT_MET /
+DTR_C18_THREE_FRAME_MOTION_CONFIDENCE_DEVELOPMENT_GATE_NOT_MET /
 R4_NOT_OPENED`
 
 ## Result first
@@ -1357,6 +1361,68 @@ All C14 point matching, cubature, collision, Platt fitting, and probability
 inference used the shared research launcher.  Each representative CPU/GPU
 short test observed a real CUDA tensor on the RTX 5060; CPU was selected with
 the recorded reason `CPU_FASTER_MEASURED` for these small workloads.
+
+## DTR-C15--C18 confidence-aware scene-motion closures
+
+C15--C18 kept the C11 route geometry, probability decision at `0.5`,
+maintenance model, and `0.5 s` lifecycle fixed.  They changed only the motion
+representation on the already consumed four-sequence C11 Development cohort:
+
+- C15 fit equal-prior static-versus-rigid velocity hypotheses inside each
+  frame-local occupancy component.  Mean mover posteriors were `0.979--0.990`,
+  showing that the component partition was not a useful mover identity.
+- C16 retained the current and causally matched historical signed velocities
+  as two empirical modes.  This removed C14's invented symmetric directions
+  and recovered `0.272 s` lead, but either mode could still create risk mass.
+- C17 required both empirical modes to agree on discounted route entry.  It
+  strongly reduced false alerts but delayed useful early evidence.
+- C18 retained C16's mean collision mass and replaced its two-frame confidence
+  with a three-frame causal chain: the minimum of both frozen pair confidences
+  and frozen-scale velocity-delta consistency.  A missing second-level match is
+  `UNKNOWN` and contributes zero onset mass.
+
+The fixed Development comparison was:
+
+| arm | recall | false segments | event F1 | median lead | lead gain vs C11 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| frozen C11 `M1_RROQ_GLOBAL` | `17/20` | 11 | 70.83% | 1.455 s | -- |
+| C15 `M1_CVM_GLOBAL` | `17/20` | 12 | 69.39% | 1.455 s | 0.000 s |
+| C16 `M1_EVM_GLOBAL` | `17/20` | 13 | 68.00% | 1.726 s | +0.272 s |
+| C17 `M1_TRC_GLOBAL` | `17/20` | 8 | 75.56% | 1.062 s | -0.392 s |
+| C18 `M1_TFMC_GLOBAL` | `17/20` | 9 | 73.91% | 1.079 s | -0.376 s |
+
+All four retained C11 recall.  C16 established that signed historical motion
+contains earlier route-entry information; C17/C18 established that temporal
+consistency can suppress pseudo-motion below C11's false-alert count.  None
+simultaneously met the frozen gate of recall not lower, false segments not
+higher, and at least `0.3 s` median lead gain, so no algorithm-fresh sequence
+was opened.  Result SHA-256 values are:
+
+- C15: `e2950f3e230323a966355108ad96f495e5d7b852caf93daf94b823a633bc6e98`;
+- C16: `c9df4ffd5aa98983d6ece7971c8173db9dd170da39740acc2ad247bc9b95da39`;
+- C17: `13ec91eead39222b01616d1145d5e9e2d32b155aa735d97d1f19418bfd901727`;
+- C18: `89c561b7d2fcd601e7e1a77ba4c5061028de87f9c9bdc4039b165e2cf66a48c7`.
+
+The next representation is not another hard gate or route-threshold sweep.
+It should retain C16's early route-conflict mass and C18's three-frame
+confidence as separate channels, then learn one fixed training-only joint
+calibration.  That directly tests whether early motion and trustworthy motion
+are complementary instead of forcing either to erase the other.
+
+This route follows dynamic occupancy work that preserves a velocity
+distribution separately from occupancy confidence
+([Nuss et al.](https://ar5iv.labs.arxiv.org/html/1605.02406)) and multi-frame
+scene-flow work that uses preceding-frame or delta cues for temporal
+consistency ([M-FUSE](https://openaccess.thecvf.com/content/WACV2023/papers/Mehl_M-FUSE_Multi-Frame_Fusion_for_Scene_Flow_Estimation_WACV_2023_paper.pdf),
+[DeltaFlow](https://proceedings.neurips.cc/paper_files/paper/2025/file/80613b043d43ffaae9824ee9d4b291e5-Paper-Conference.pdf)).
+These papers motivate components only; they do not establish BlindAssist
+performance.
+
+All C15--C18 point matching, tensor transforms, collision geometry, calibration,
+and inference ran through the shared research launcher.  Every representative
+CPU/GPU receipt observed a real CUDA tensor on the RTX 5060.  CPU was selected
+with `CPU_FASTER_MEASURED` because these batches took microseconds to a few
+milliseconds on NumPy and CUDA launch/transfer overhead dominated.
 
 ## Claim ceiling
 

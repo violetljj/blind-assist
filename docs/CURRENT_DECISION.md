@@ -20,6 +20,10 @@ DTR_C2_M1_CTB_CONFIDENCE_TRACK_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL /
 DTR_C3_M1_HYBRID_RAW_POINT_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL /
 DTR_C11_ROUTE_REGION_OCCUPANCY_FRESH_SIGNAL /
 DTR_C14_STOCHASTIC_ROUTE_CONFLICT_DEVELOPMENT_GATE_NOT_MET /
+DTR_C15_COMPONENT_VELOCITY_MIXTURE_DEVELOPMENT_GATE_NOT_MET /
+DTR_C16_EMPIRICAL_VELOCITY_MODES_DEVELOPMENT_GATE_NOT_MET /
+DTR_C17_TEMPORAL_ROUTE_CONSENSUS_DEVELOPMENT_GATE_NOT_MET /
+DTR_C18_THREE_FRAME_MOTION_CONFIDENCE_DEVELOPMENT_GATE_NOT_MET /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
 ## Parallel product lines
@@ -773,6 +777,20 @@ Therefore accept `DTR_C14_STOCHASTIC_ROUTE_CONFLICT_DEVELOPMENT_GATE_NOT_MET`:
 do not open the remaining fresh cohort and do not tune probability, covariance,
 cubature, or route parameters. A successor needs directional or multimodal
 future evidence, not symmetric uncertainty spreading.
+
+C15--C18 then tested confidence-aware directional motion without changing the
+route, probability threshold, maintenance model, or lifecycle. C15's
+frame-local component mixture labelled nearly every component moving and did
+not improve C11. C16's signed current/history modes retained `17/20` recall and
+raised median lead to `1.726 s`, but false segments rose to 13. C17's
+route-entry consensus reduced false segments to 8 and raised F1 to `75.56%`,
+while lead fell to `1.062 s`. C18's frozen-scale three-frame chain retained
+`17/20`, 9 false segments, and `73.91%` F1, but lead remained `1.079 s`.
+Therefore accept the four Development closures and keep the remaining cohort
+sealed. They establish two complementary signals—early signed motion and
+temporally trustworthy motion—but no single scalar yet preserves both. The
+next admissible representation is a fixed training-only joint calibration of
+those two channels, not a threshold, duration, route, or lifecycle sweep.
 
 ## What stops here
 

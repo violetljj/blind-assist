@@ -163,6 +163,17 @@ It raised recall to `18/20`, but also raised false segments to 16 and gained onl
 sequence was opened, and symmetric covariance spreading is closed rather than
 rescued with threshold or covariance-scale tuning.
 
+C15--C18 replaced that symmetric uncertainty with component hypotheses,
+signed current/history velocity modes, route-entry consensus, and frozen-scale
+three-frame confidence. Every arm retained C11's `17/20` recall. C16 improved
+lead to `1.726 s` but raised false segments to 13; C17 reduced false segments to
+8 and reached `75.56%` F1 but delayed median lead to `1.062 s`; C18 reached 9
+false segments and `73.91%` F1 at `1.079 s` lead. No arm met the joint frozen
+gate, so no algorithm-fresh sequence was opened. The evidence now supports a
+two-channel successor that keeps early signed route-conflict mass separate
+from three-frame motion confidence and learns one training-only joint
+calibration. Threshold, duration, route, and lifecycle tuning remain closed.
+
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC
 word carrier for current-camera steering. SC2 adds opportunity-correct active
