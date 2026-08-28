@@ -178,11 +178,22 @@ was nearly universally supported and reproduced C16; global median scene-bias
 subtraction reached `18/20` but raised false segments to 18 and reduced F1 to
 `64.29%`. The remaining fresh cohort stayed sealed. The structural result is
 that the false motion is locally coherent and cannot be removed by another
-downstream fusion or one global background vector. C22 must change the source:
-compare RGB short point tracks with ego-induced rigid image trajectories and
-lift independent-motion residual confidence into LiDAR cells before unchanged
-route risk. Threshold, duration, route, lifecycle, score-fusion, local-vote,
-and global-bias tuning are closed.
+downstream fusion or one global background vector.
+
+C22 changed the source on the consumed R7 canary: ego-rigid RGB point-track
+residual confidence cut target-attributed false segments `20 -> 12`, exactly
+removing the eight R7-added segments, while frozen-base critical recall remained
+`3/3`. The visually admitted flow nevertheless recovered `0/9` induced dropout
+windows and matched only `2/3` events, so the gate failed and no fresh cohort
+opened. The cue is a strong pseudo-motion suppressor, but coarse stitched
+cell-level projection is too sparse/time-misaligned for detector-independent
+recovery. C23 must improve observation correspondence rather than tune C22:
+track raw LiDAR-supported points in all five undistorted perspective cameras,
+apply full ego SE(3) LiDAR-to-image compensation, subtract exact rigid
+reprojection, and aggregate only afterward to BEV cells. Required C11 bag RGB,
+dual-LiDAR, TF, timestamps, and calibration are already local. Threshold,
+duration, route, lifecycle, score-fusion, local-vote, and global-bias tuning
+remain closed.
 
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC

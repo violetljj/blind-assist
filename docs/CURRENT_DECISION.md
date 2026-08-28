@@ -27,6 +27,7 @@ DTR_C18_THREE_FRAME_MOTION_CONFIDENCE_DEVELOPMENT_GATE_NOT_MET /
 DTR_C19_JOINT_MOTION_CONFIDENCE_DEVELOPMENT_GATE_NOT_MET /
 DTR_C20_LOCAL_MOTION_VOTING_DEVELOPMENT_GATE_NOT_MET /
 DTR_C21_SCENE_BIAS_RESIDUAL_MOTION_DEVELOPMENT_GATE_NOT_MET /
+DTR_C22_EGO_RIGID_VISUAL_MOTION_DEVELOPMENT_GATE_NOT_MET /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
 ## Parallel product lines
@@ -802,10 +803,19 @@ is locally coherent rather than isolated. C21's coordinate-wise median scene
 bias subtraction reached `18/20` but also 18 false segments and only `64.29%`
 F1, so one global background motion is invalid in crowded/co-moving scenes.
 Accept all three Development closures and keep the remaining cohort sealed.
-The next admissible C22 changes the information source: RGB short point-track
-residual against ego-induced rigid image trajectories, lifted into LiDAR cells
-before unchanged route risk. Do not continue score fusion, local voting, global
-bias, threshold, duration, route, or lifecycle sweeps.
+
+C22 then changed the information source on the consumed R7 canary. Ego-rigid
+RGB point-track residual confidence reduced target-attributed false segments
+`20 -> 12` while the frozen base still retained `3/3` critical recall. But the
+visually admitted flow recovered `0/9` induced dropout windows, matched only
+`2/3` events, and left event F1 unchanged at `22.22%`. Accept
+`DTR_C22_EGO_RIGID_VISUAL_MOTION_DEVELOPMENT_GATE_NOT_MET`. It establishes that
+independent visual residual can remove the eight added pseudo-motion segments,
+but coarse stitched cell projection does not provide sufficiently dense,
+time-aligned target support. Keep all fresh cohorts sealed. C23 must change
+correspondence granularity: five undistorted perspective cameras, raw
+LiDAR-supported point tracks, full ego SE(3) LiDAR-to-image compensation, then
+BEV aggregation. Do not tune C22 confidence, grace, route, or lifecycle.
 
 ## What stops here
 

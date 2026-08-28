@@ -26,6 +26,7 @@ DTR_C18_THREE_FRAME_MOTION_CONFIDENCE_DEVELOPMENT_GATE_NOT_MET /
 DTR_C19_JOINT_MOTION_CONFIDENCE_DEVELOPMENT_GATE_NOT_MET /
 DTR_C20_LOCAL_MOTION_VOTING_DEVELOPMENT_GATE_NOT_MET /
 DTR_C21_SCENE_BIAS_RESIDUAL_MOTION_DEVELOPMENT_GATE_NOT_MET /
+DTR_C22_EGO_RIGID_VISUAL_MOTION_DEVELOPMENT_GATE_NOT_MET /
 R4_NOT_OPENED`
 
 ## Result first
@@ -1461,10 +1462,10 @@ values are:
 - C21: `ea29f38ec1f1bde2713c1e2f042eabbf775ceddc5d89c6ab615cec0bfaf2488c`.
 
 This closes downstream fusion, local rigidity voting, and single-vector scene
-bias subtraction on the current LiDAR pseudo-flow.  The next admissible source
-change is C22: compare short RGB point tracks with ego-induced rigid image
-trajectories, treat their residual as independent-motion confidence, and lift
-that cue through existing calibration into LiDAR cells before route risk.  This
+bias subtraction on the current LiDAR pseudo-flow.  It authorized C22 to
+compare short RGB point tracks with ego-induced rigid image trajectories, treat
+their residual as independent-motion confidence, and lift that cue through
+existing calibration into LiDAR cells before route risk.  This
 follows the independent-motion residual used by
 [SLIM](https://openaccess.thecvf.com/content/ICCV2021/papers/Baur_SLIM_Self-Supervised_LiDAR_Scene_Flow_and_Motion_Segmentation_ICCV_2021_paper.pdf)
 and the local rigidity evidence in
@@ -1479,6 +1480,51 @@ inference selected GPU because its measured time was equal/slightly faster
 (`0.4580 ms` versus `0.4586 ms` CPU).  The other small kernels selected CPU with
 `CPU_FASTER_MEASURED`; measured launch/transfer overhead made GPU roughly
 `5--40x` slower, rather than silently falling back from a declared GPU run.
+
+## DTR-C22 ego-rigid visual-motion confidence
+
+C22 changed the information source on the already consumed R7 143-frame,
+three-event, nine-dropout canary.  Each R7 cell proposed its prior world
+position from signed velocity.  Five fixed vertical anchors were projected
+into the cylindrical RGB panorama; sparse forward/backward PyrLK tracks were
+compared with both the ego-rigid static reprojection and the R7-proposed moving
+reprojection.  Agreement, forward/backward consistency, and valid-track
+coverage formed one component confidence before the unchanged R7 route test.
+Missing or failed tracks contributed low confidence, not a static/safe label.
+
+The source change produced the desired false-alert effect but failed the
+dropout requirement:
+
+| arm | critical recall | target false segments | event F1 | induced dropout recovery |
+| --- | ---: | ---: | ---: | ---: |
+| R7 occupancy flow | `3/3` | 20 | 22.22% | `9/9` |
+| C22 visual-validated flow | `3/3` | 12 | 22.22% | `0/9` |
+
+C22 removed exactly the eight R7-added false segments, reducing attributed
+flow cells from `24,141` to `3,771`.  However, only 9 target-attributed flow-risk
+frames remained, event matching covered `2/3`, and none overlapped the fixed
+dropout windows.  Therefore accept
+`DTR_C22_EGO_RIGID_VISUAL_MOTION_DEVELOPMENT_GATE_NOT_MET`: the independent
+visual residual is a strong pseudo-motion suppressor, but this coarse stitched
+cell projection is too sparse and time-misaligned to retain detector-independent
+recovery.  Result SHA-256 is
+`16ada5327f089a0c740f6b639e43b914074c0f1fdef7acbc8fb80bd91ec38ad8`.
+
+Do not rescue C22 with a confidence threshold or temporal grace sweep.  C23
+must improve the observation correspondence itself: track raw LiDAR-supported
+points independently in the five undistorted perspective cameras, compensate
+LiDAR-to-image time with full ego SE(3), subtract exact per-point rigid
+reprojection, and only then aggregate residual confidence to the existing BEV
+cell.  The four consumed C11 bags already contain all five RGB streams, both
+LiDARs, TF, timestamps, and official intrinsics/extrinsics; no new download or
+depth model is required.
+
+C22 ran through the shared launcher after the DTR doctor passed.  The launcher
+verified the RTX 5060 CUDA runtime, while the OpenCV 4.10 wheel reported no CUDA
+device and no SparsePyrLK CUDA provider.  The representative 512-track probe
+therefore selected `opencv-cpu-sparse-pyrlk` in `0.0510 s` with the explicit
+receipt reason `GPU_BACKEND_UNAVAILABLE`; this was a provider limitation, not
+a silent CUDA fallback.
 
 ## Claim ceiling
 
