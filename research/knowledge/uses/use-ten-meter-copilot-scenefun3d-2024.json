@@ -18,7 +18,7 @@
     "reproduction_status": "partial",
     "verdict": "positive",
     "setup": "SC8/SC11 functional grounding, SC12-SC14 action geometry, and SC21-SC29 candidate-integrity studies across source-disjoint SceneFun3D cohorts. Later semantic/topology runs sealed providers before target membership evaluation.",
-    "effect": "SC14 changed static geometry to causal paired motion. SC22 showed a large consumed endpoint-composition gain. SC24/SC26/SC28 established consumed semantic/topology mechanisms, but SC23/SC27 fresh gates failed and SC25 was not evaluable; SC29 had no conflict opportunities. Fresh semantic-integrity confirmation is not established.",
+    "effect": "SC14 changed static geometry to causal paired motion. SC22 showed a large consumed endpoint-composition gain. SC24/SC26/SC28 established consumed semantic/topology mechanisms. SC30 then aligned source admission to provider-public same-parent action-family conflicts, and SC31 produced the first fresh aggregate semantic-integrity signal while exposing a repeated-control ordinal failure.",
     "metrics": [
       "evaluable_tasks=6/10 descriptions; 4 NOT_EVALUABLE_PARENT_BINDING",
       "legal_commit_rate=0.6667 baseline vs 1.0000 SC8",
@@ -41,9 +41,11 @@
       "SC26 consumed action-family legal commits=9 to 11; wrong parts=61 to 54; recall=0.7258 to 0.7903",
       "SC27 fresh action-family wrong parts=32 to 27 but recall=0.8333 to 0.7917; gate not met",
       "SC28 consumed redundancy gate preserved recall=0.8333 and wrong parts=32 to 30",
-      "SC29 fresh tasks=29; semantic admissions=27; changed tasks=0; arms identical"
+      "SC29 fresh tasks=29; semantic admissions=27; changed tasks=0; arms identical",
+      "SC30 V2 source admission=3 eligible scenes after 32 candidates; each has one redundancy-eligible conflict parent",
+      "SC31 fresh legal commits=3 to 4; wrong parts=24 to 20; recall=0.625 unchanged; cross-parent violations=0"
     ],
-    "claim_boundary": "SC14 is simulated paired-point mechanics. SC22-SC29 use privileged functional proposals or action labels; only SC23/SC25/SC27/SC29 are source-disjoint, and none establishes a fresh positive semantic-integrity effect. No result establishes RGB semantic proposal quality, safe probing, reachability, arrival, HANDOFF_READY, product benefit, or safety."
+    "claim_boundary": "SC14 is simulated paired-point mechanics. SC22-SC31 use privileged functional proposals or action labels. SC31 is a fresh conflict-admitted aggregate Development signal, not task-wise no-regret, natural-distribution performance, or RGB proposal evidence. No result establishes safe probing, reachability, arrival, HANDOFF_READY, product benefit, or safety."
   },
   "evidence": [
     {
@@ -75,6 +77,11 @@
       "kind": "artifact",
       "ref": "artifacts.local/evidence/l10-r28/sc29-fresh-redundancy-gated-action-family-v1/result.json",
       "summary": "Fresh redundancy-gated result with zero changed tasks, SHA-256 3fc9ca5aeceba09a719c08c316711f9b5f24e768b42dc94c67ac6eceef9bec7b."
+    },
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/evidence/l10-r31/sc31-conflict-admitted-redundancy-gated-v1/result.json",
+      "summary": "Fresh conflict-admitted aggregate semantic-integrity signal, SHA-256 7d594da76e7e812c9176993a819cd61144525133341fb00e23c5ef450810474e."
     }
   ],
   "history": [
@@ -101,6 +108,10 @@
     {
       "date": "2026-08-28",
       "change": "Added SC21-SC29 candidate-integrity evidence. Semantic and redundancy-gated topology showed consumed mechanisms, but fresh confirmation remains open because generic multi-target source admission did not guarantee same-parent cross-action-family conflicts."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Added SC30 provider-public conflict admission and SC31 fresh aggregate signal. The next gap is target-conditioned ordinal structure for repeated same-action controls, not further action-family tuning."
     }
   ],
   "added_at": "2026-08-28",

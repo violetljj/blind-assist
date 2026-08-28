@@ -11,7 +11,8 @@ SC21_FUNCTIONAL_SET_INTEGRITY_FRESH_SOURCE_NOT_EVALUABLE /
 SC22_INTEGRITY_ENDPOINT_COMPOSITION_MECHANICS_SIGNAL /
 SC24_SEMANTIC_TOPOLOGY_INTEGRITY_CONSUMED_MECHANICS_SIGNAL /
 SC28_REDUNDANCY_GATED_ACTION_FAMILY_CONSUMED_MECHANICS_SIGNAL /
-SC29_REDUNDANCY_GATED_ACTION_FAMILY_FRESH_GATE_NOT_MET` and
+SC29_REDUNDANCY_GATED_ACTION_FAMILY_FRESH_GATE_NOT_MET /
+SC31_CONFLICT_ADMITTED_REDUNDANCY_GATED_FRESH_DEVELOPMENT_SIGNAL` and
 `DTR_R2_PUBLIC_REAL_PRIVILEGED_CEILINGS_ESTABLISHED /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
@@ -262,6 +263,36 @@ provider-public, same-parent cross-action-family conflict opportunities without
 using target membership or algorithm outcome; otherwise no fresh integrity
 claim is evaluable. Reachability remains `UNKNOWN` and handoff remains
 forbidden.
+
+SC30 fixes the source denominator instead of changing SC28. It ignores task
+target membership and selector output, groups provider functional proposals by
+parent OBB and frozen action family, and admits only scenes containing a parent
+with at least two action families plus at least two proposals in one family.
+The first bounded 20-scene roster found only one eligible scene and was
+`NOT_EVALUABLE`. V2 changed only the roster ceiling (`20 -> 80`), preserved all
+thresholds and ordering, and admitted the first three eligible scenes after 32
+candidates: `421267`, `422356`, and `422377`. Each contained exactly one
+provider-public redundancy-eligible conflict parent; no target IDs or algorithm
+outcomes entered selection.
+
+On this source-disjoint cohort, SC31 had 16 parent-bound tasks, 10 semantic
+admissions, and two metric-changing tasks. Relative to SC21 topology, the
+unchanged SC28 successor improved legal commits `3 -> 4`, reduced wrong parts
+`24 -> 20` (-16.67%), preserved mean target-set recall at 62.5%, and produced
+zero cross-parent violations. Accept
+`SC31_CONFLICT_ADMITTED_REDUNDANCY_GATED_FRESH_DEVELOPMENT_SIGNAL` as the first
+fresh proposal-conditional evidence that source-aligned action semantics can
+remove same-parent functional interference without aggregate recall loss.
+
+The result is not task-wise no-regret. `Unplug the printer` improved from an
+all-wrong set to one legal target, while `second outlet of the power strip`
+lost its target after repeated same-action candidates were reduced by topology;
+the gains offset at aggregate recall. Do not tune SC31, ordinal words, topology,
+or the admitted scenes. The next legal representation is a fresh target-
+conditioned ordinal axis for repeated same-action controls (for example second,
+third, fourth outlet), with action-family filtering unchanged. Candidate labels
+are still privileged, reachability remains `UNKNOWN`, and `HANDOFF_READY`
+remains forbidden.
 
 ## DTR-R2 decision
 

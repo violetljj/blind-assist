@@ -611,6 +611,60 @@ semantic proposal quality, exact-instance acquisition, reachability, arrival,
 `HANDOFF_READY`, product benefit, or safety. Do not tune the opened cohorts or
 semantic rules; change the source opportunity representation next.
 
+### SC30--SC31: conflict-aligned source admission earns the first fresh signal
+
+SC29 showed that semantic admission count is not enough: a scene may contain
+many action-cued tasks while no authorized parent contains cross-action-family
+interference. SC30 therefore moves the opportunity definition entirely into
+provider-public proposal space. It groups functional proposals by parent OBB
+and three frozen action families (`CONNECT`, `ACTIVATE_CONTROL`, and
+`OPEN_CLOSE`). A scene is eligible only when one parent contains at least two
+families and at least one family has two proposals, matching SC28's redundancy
+gate. Description target IDs, target membership, task selector output, and
+evaluator scores are never read.
+
+The bounded V1 roster found only one eligible scene in 20 candidates. V2
+changed only the roster ceiling from 20 to 80; ordering, mappings, thresholds,
+and required three-scene count stayed fixed. It stopped after 32 candidates and
+admitted `421267 / 42444733`, `422356 / 42446579`, and
+`422377 / 42447329`, each with one redundancy-eligible conflict parent.
+
+The unchanged SC28 algorithm then crossed every frozen SC31 aggregate gate:
+
+| Fresh conflict-admitted SC31, 16 evaluable tasks | SC21 topology | + redundancy-gated action semantics |
+|---|---:|---:|
+| legal commits | 3/16 (18.75%) | **4/16 (25.0%)** |
+| mean target-set recall | **62.5%** | **62.5%** |
+| wrong parts | 24 | **20** |
+| cross-parent violations | 0 | **0** |
+
+There were 10 semantic admissions and two metric-changing tasks. `Unplug the
+printer` improved from zero target recall and two wrong parts to one legal
+target. Conversely, `Plug the device in the second outlet` lost its target
+while removing two wrong parts: all candidates shared the correct action label,
+but the current topology lacked the requested outlet's ordinal axis. SC31 is
+therefore a fresh aggregate Development signal, not task-wise no-regret or
+general functional grounding.
+
+Evidence SHA-256:
+
+- SC30 V1 result:
+  `03ce206143c976e8ac5558f9a4b54736db1c2831dac88468d5c7a93bd93ad6e0`;
+- SC30 V2 protocol/result:
+  `13e1f9026006b9505fc830e247e6f9084a98cd5997ceece5c82f9d39ec709c54` /
+  `c45b4915fa3ece3fe1bd376f1746cd42e0b1e8897c5971f7e1d3f0e510550ab0`;
+- SC31 protocol/provider/result:
+  `ca4f5316c064dab32600ee7d39cdbddb96620f85052a24ae1ad24f6d93552355` /
+  `5606754b9db206bb26ec21b6beb013e77945a9a896bc87eaa0a13a135306b4a7` /
+  `7d594da76e7e812c9176993a819cd61144525133341fb00e23c5ef450810474e`.
+
+Implementations: `scenefun3d_conflict_source_admission.py` and the unchanged
+`scenefun3d_semantic_topology_integrity.py`. Do not tune this cohort. The next
+eligible successor must add a frozen task-conditioned ordinal representation
+for repeated same-action controls on separately admitted evidence. SC31 still
+uses privileged functional labels and does not establish RGB proposal quality,
+reachability, arrival, `HANDOFF_READY`, product benefit, or safety.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

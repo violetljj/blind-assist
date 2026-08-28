@@ -1,0 +1,80 @@
+{
+  "schema_version": 2,
+  "experiment": "L10-SC30-PROVIDER-PUBLIC-CONFLICT-OPPORTUNITY-SOURCE-ADMISSION-V2",
+  "predecessor": {
+    "protocol_sha256": "55e36db199e42209b4ccb82ec52bc9669b3609a61373a0668e0988920d7ae704",
+    "result_sha256": "03ce206143c976e8ac5558f9a4b54736db1c2831dac88468d5c7a93bd93ad6e0",
+    "decision": "SC30_NOT_EVALUABLE_INSUFFICIENT_CONFLICT_SCENES",
+    "unchanged_fields": "ordering, prefilter, action families, conflict definitions, eligibility thresholds, and required scene count"
+  },
+  "source": {
+    "dataset": "SceneFun3D train split",
+    "scenefun3d_base_url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1",
+    "arkitscenes_base_url": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1",
+    "cohort_csv_sha256": "a570b18aee43058a2f44db653a606ca799f64f054013b17dac95948fa590d5b1",
+    "arkitscenes_metadata_sha256": "ff4b3d3203525bdf12ebbb3fcaea0b9cf0bda5d584a48d42f21a096135c26621"
+  },
+  "consumed_visit_ids": [
+    "420673",
+    "420683",
+    "420693",
+    "421002",
+    "421005",
+    "421010",
+    "421013",
+    "421015",
+    "421069",
+    "421254",
+    "422007",
+    "422011",
+    "422383",
+    "422384",
+    "423325",
+    "423438",
+    "423474",
+    "423966"
+  ],
+  "action_families": {
+    "CONNECT": ["plug_in", "unplug"],
+    "ACTIVATE_CONTROL": ["key_press", "rotate", "tip_push"],
+    "OPEN_CLOSE": ["foot_push", "hook_pull", "hook_turn", "pinch_pull"]
+  },
+  "selection": {
+    "ordering": "ascending visit_id then video_id from the official one-video CSV",
+    "maximum_candidate_scenes": 80,
+    "minimum_descriptions_per_scene": 8,
+    "minimum_cross_family_parents": 1,
+    "minimum_redundancy_eligible_conflict_parents": 1,
+    "selected_scene_count": 3,
+    "stop_rule": "Stop immediately after the first three eligible scenes."
+  },
+  "conflict_definition": {
+    "cross_family_parent": "One provider-bound parent contains proposals from at least two frozen action families.",
+    "redundancy_eligible_conflict_parent": "A cross-family parent also contains at least two proposals in one family, so SC28 may filter without weakening its redundancy gate.",
+    "authority": "Functional proposal label, proposal geometry, and parent OBB containment only. Description target IDs and selector outputs are forbidden."
+  },
+  "post_admission": {
+    "algorithm": "Frozen SC28 redundancy-gated action-family witness before unchanged SC21 topology integrity.",
+    "frozen_gate": {
+      "minimum_evaluable_tasks": 8,
+      "minimum_semantic_admissions": 4,
+      "minimum_wrong_part_reduction": 2,
+      "legal_commit_noninferiority": true,
+      "target_set_recall_noninferiority": true,
+      "maximum_cross_parent_violations": 0
+    }
+  },
+  "decision_labels": {
+    "pass": "SC30_V2_PROVIDER_PUBLIC_CONFLICT_SOURCE_ADMITTED",
+    "incomplete": "SC30_V2_SOURCE_ADMISSION_INCOMPLETE",
+    "insufficient": "SC30_V2_NOT_EVALUABLE_INSUFFICIENT_CONFLICT_SCENES"
+  },
+  "forbidden_after_source_access": [
+    "change action-family membership or thresholds",
+    "reorder candidates or skip an eligible scene",
+    "read description annot_id values",
+    "run task-relational, semantic, topology, or evaluator selection during admission",
+    "select scenes by target membership, wrong-part reduction, or algorithm outcome"
+  ],
+  "claim_boundary": "Extended provider-public source admission after the bounded V1 roster was not evaluable. Only the roster ceiling changes from 20 to 80; action families, conflict definition, thresholds, order, and required scene count stay frozen. Passing admission is not algorithm success, RGB semantic proposal performance, reachability, HANDOFF_READY, product benefit, or safety."
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC31-FRESH-CONFLICT-OPPORTUNITY-COHORT",
+  "source_admission": {
+    "protocol_sha256": "13e1f9026006b9505fc830e247e6f9084a98cd5997ceece5c82f9d39ec709c54",
+    "result_sha256": "c45b4915fa3ece3fe1bd376f1746cd42e0b1e8897c5971f7e1d3f0e510550ab0",
+    "decision": "SC30_V2_PROVIDER_PUBLIC_CONFLICT_SOURCE_ADMITTED",
+    "selection_authority": "provider proposal action family and parent geometry only; no task target membership or selector output"
+  },
+  "cohort": [
+    {
+      "visit_id": "421267",
+      "video_id": "42444733",
+      "sha256": {
+        "annotations": "57f08468322e6ba01ab0bfe07ec44d4f083e4bb2b342901cfd41d006de0d67e7",
+        "descriptions": "61d7d4ddcc9936b6022dd92848b227c228a108575e30bcd031084726c2752fc9",
+        "laser_scan": "e5bca8f9d04e7487de86e4e34a1f35b9b29779f8751fbad867a48c296b602353",
+        "transform": "d4403c8616dec3d95b15d7f7d35ffeecd11ee85d74eda41df26311c1d838831c",
+        "object_boxes": "a8a31e36d01049e5af02cb616e6e7ce5969179841a5a4f4b1dfc54f38f2d6769"
+      }
+    },
+    {
+      "visit_id": "422356",
+      "video_id": "42446579",
+      "sha256": {
+        "annotations": "d474db055f795f52e445eb6843292fa0211848e280c07337772141ed046a3bb5",
+        "descriptions": "df6b89c3f04de284290f05f1c0bc004b25c47b36e3ef22d0e5c192d365da8325",
+        "laser_scan": "f795658d630d4e91f3e1444ff0a515c8f544f87d13465fe557b2678719f7187e",
+        "transform": "e414107ccd1b09e4b9dae78b2bf3fc54b1e68dabc6a25acf385dd768e9e8d3ca",
+        "object_boxes": "a98f6d2824e951c0849d3c4b137a89e129479e29e86761bfe494b7dff83fc7a9"
+      }
+    },
+    {
+      "visit_id": "422377",
+      "video_id": "42447329",
+      "sha256": {
+        "annotations": "d5331938432fd77b45a7161f685ad7eff32b1a913d41654307de8edff5ec7a23",
+        "descriptions": "07f9d5fe78ae4d5bf582cff420c18666a8e459dbacb65a259e83a3e677991d95",
+        "laser_scan": "f9c43601f1fefa1e511a5b0923589d87fd0f4e85373937ff7c800e58dd90c1bb",
+        "transform": "e1382ca7fc0a3147426fe1e3eca08e338eb82cadcd9582bbfa0e55c1863bfa93",
+        "object_boxes": "22d5845acd9024571458b524fa5d93c77b538f0f836d9d0c610d7ffb11fa50ef"
+      }
+    }
+  ],
+  "claim_boundary": "Exact source-disjoint SceneFun3D cohort admitted by provider-public same-parent action-family conflicts before SC31 algorithm execution. Cohort admission alone is not algorithm, RGB proposal, reachability, HANDOFF_READY, product, or safety evidence."
+}

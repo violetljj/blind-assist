@@ -333,6 +333,19 @@ same-parent cross-action-family conflict opportunity, not generic multi-target
 count; all current semantics remain privileged proposal ceilings, reachability
 is `UNKNOWN`, and handoff is forbidden.
 
+SC30 replaced generic multi-target source admission with provider-public
+conflict admission: functional proposals are grouped by parent and frozen
+action family without reading task target IDs or selector outputs. A 20-scene
+roster found only one eligible scene; an unchanged-threshold V2 expanded the
+roster ceiling and admitted three scenes after 32 candidates. SC31 then produced
+the first fresh proposal-conditional semantic-integrity signal: on 16 evaluable
+tasks, legal commits improved `3 -> 4`, wrong parts fell `24 -> 20`, mean recall
+stayed 62.5%, and cross-parent violations remained zero. The aggregate result
+contains one improved printer-unplug task and one regressed repeated-outlet
+task, so task-wise no-regret is not established. The next representation must
+model target-conditioned ordinal structure inside repeated same-action controls;
+candidate semantics remain privileged and reachability remains `UNKNOWN`.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its
