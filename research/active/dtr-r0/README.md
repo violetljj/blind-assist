@@ -884,6 +884,75 @@ Evidence:
 - result SHA-256
   `bf38d7bac8cb43bc8b69967fbbbf2e7bf1893709e2d6e950d08140dd3e630629`.
 
+## DTR-C12/C13 route-time onset closures
+
+C11's fresh false-alert reduction cost 0.56 s of median lead relative to its
+fixed C9 arm. C12 and C13 therefore kept the complete frozen C11 decision as an
+independent baseline and tested whether a new route-time representation could
+extend the same alert earlier. Both used the original ten consumed sequences
+for fitting and the four now-consumed C11 confirmation sequences for a single
+Development decision. The fixed opening gate required no lower recall, no more
+false segments, and at least `+0.3 s` median lead. Probability remained `0.5`.
+
+| Consumed four-sequence Development | CONTACT recall | False segments | Event F1 | Median lead | Lead gain |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Frozen C11 | `17/20` | **11** | **70.83%** | 1.455 s | - |
+| C12 conflict-endpoint first-passage innovation | `17/20` | 12 | 69.39% | 1.455 s | 0.000 s |
+| C13 peak collision-probability rate | `17/20` | 12 | 69.39% | 1.530 s | +0.075 s |
+
+C12 maps every current M1-CT route-entry cell to the predicted world conflict
+endpoint and absolute hit time. Repeated occupancy in the same `0.25 m × 0.5 s`
+tubelet is removed from the current route intensity, so only probability mass
+newly entering the conflict set can originate the additional channel. It
+extended one already-recalled event by about 0.14 s but added one NVIDIA false
+segment; pooled median lead did not move.
+
+C13 instead groups current route entries into the existing 0.5 s lifecycle
+bins and calibrates the peak time-bin intensity. This tests whether a real mover
+forms a temporally concentrated collision-probability rate while pseudo-motion
+is diffuse. It preserved recall and extended several events, but its pooled
+gain was only 0.075 s and it retained the same added NVIDIA false segment.
+
+Decisions:
+
+- `DTR_C12_CONFLICT_ENDPOINT_FIRST_PASSAGE_DEVELOPMENT_GATE_NOT_MET`;
+- `DTR_C13_COLLISION_PROBABILITY_RATE_DEVELOPMENT_GATE_NOT_MET`.
+
+Neither candidate is frozen and neither may enter the remaining algorithm-fresh
+JRDB sequences. Do not rescue them with probability, voxel, time-bin, route, or
+lifecycle sweeps. The remaining twelve unexposed sequences stay sealed. The
+next admissible source upgrade is a stochastic reachability kernel whose spread
+comes from point-velocity uncertainty; deterministic point estimates summarized
+by another scalar are closed by C12/C13.
+
+The mechanism reserve came from two primary-source themes. Continuous-time
+first-exit risk accumulates newly entering probability mass instead of repeatedly
+counting occupancy already in collision ([Collision Probabilities for
+Continuous-Time Systems](https://arxiv.org/html/2006.01109)). Collision risk is
+more naturally represented as a probability rate over time than as a separate
+TTC prerequisite ([What Is the Collision Probability?](https://arxiv.org/abs/1711.07060v3)).
+For the successor, [SCOPE](https://arxiv.org/html/2407.00144) provides the useful
+component hypothesis that ego motion, dynamic occupancy, static structure, and
+uncertainty should produce a distribution of future states, while
+[Safety-Oriented Pedestrian Occupancy Forecasting](https://arxiv.org/html/2101.02385)
+supports retaining dense instance-free occupancy when detector post-processing
+drops partially occluded pedestrians. None of those benchmarks is BlindAssist
+performance authority.
+
+All three GPU-capable workload classes emitted shared-runtime receipts and
+verified real RTX 5060 CUDA execution. CPU was selected with
+`CPU_FASTER_MEASURED`: representative route collision was roughly
+`0.13-0.25 ms` on CPU versus `0.76-1.02 ms` on CUDA, fitting was roughly
+`1.7-2.3 ms` versus `16-18 ms`, and probability inference was roughly
+`0.13-0.18 ms` versus `0.33-0.41 ms`.
+
+Evidence:
+
+- C12 result SHA-256
+  `bac5f1624e235b7613d338ec31821ff7d6e6f700ba7b99e8eea1c0fbb5a1b3db`;
+- C13 result SHA-256
+  `ba21410ace87e15e8b687dbbef42bad32274c66c666ffec03d55969ccfbb9add`.
+
 The source split explains why pooling is not enough:
 
 | Source | R2 recall / false | R3-C recall / false | Route authority |
