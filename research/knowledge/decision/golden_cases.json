@@ -11,8 +11,38 @@
   },
   "cases": [
     {
+      "id": "functional-correct-instance-wrong-handle",
+      "route": "ten-meter-copilot",
+      "symptom": "已经锁定正确的门，但落点仍在父对象框中心，没有定位把手的功能部件",
+      "observed": ["exact-instance truth 可用，真门已进入候选"],
+      "available": ["task description", "multi-view RGB-D observations"],
+      "missing": [],
+      "expected_layers": ["functional_grounding"],
+      "expected_mechanisms": ["dataset-scenefun3d-2024#task-functional-element-annotations", "paper-fun3du-2025#task-conditioned-multiview-functional-grounding"]
+    },
+    {
+      "id": "actionable-button-centroid-wrong",
+      "route": "ten-meter-copilot",
+      "symptom": "按钮功能部件已经分割，但 mask centroid 落在不可按区域，需要 action keypoint",
+      "observed": ["功能部件 mask 已冻结"],
+      "available": ["RGB image", "natural-language instruction"],
+      "missing": [],
+      "expected_layers": ["actionable_region"],
+      "expected_mechanisms": ["paper-robopoint-2025#instruction-to-action-keypoint", "paper-where2act-2021#per-point-actionability-and-action-proposals"]
+    },
+    {
+      "id": "interaction-near-but-not-reachable",
+      "route": "ten-meter-copilot",
+      "symptom": "已经靠近并看见目标，但站在错误侧面，用户够不到且净空不足，不能判定交互就绪",
+      "observed": ["目标与动作点已锁定"],
+      "available": ["3D scene", "agent model", "candidate region"],
+      "missing": [],
+      "expected_layers": ["interaction_readiness"],
+      "expected_mechanisms": ["paper-sceneteract-2026#agent-conditioned-functional-verification", "paper-unilm-nav-2026#view-affordance-base-pose"]
+    },
+    {
       "id": "dtr-static-occupancy-unreachable",
-      "route": "dtr-r0",
+      "route": "obstacle-avoidance",
       "symptom": "静态占据在 9 个事件上仍为 0/9，冻结 matcher 没有 closing speed",
       "expected_layers": ["geometry_motion"],
       "expected_mechanisms": ["paper-occupancy-flow-fields-for-motion-forecasting-in-autonomous-driving#dtr-dr46"],
@@ -20,7 +50,7 @@
     },
     {
       "id": "dtr-causal-flow-false-segments",
-      "route": "dtr-r0",
+      "route": "obstacle-avoidance",
       "symptom": "causal occupancy flow 恢复 dropout 但 false alert segments 从 12 增至 20",
       "expected_layers": ["geometry_motion", "decision_lifecycle"],
       "expected_mechanisms": ["paper-occupancy-flow-fields-for-motion-forecasting-in-autonomous-driving#dtr-dr46"],
@@ -28,80 +58,80 @@
     },
     {
       "id": "dtr-track-dropout",
-      "route": "dtr-r0",
+      "route": "obstacle-avoidance",
       "symptom": "track dropout after short occlusion loses continuity",
       "expected_layers": ["temporal_belief"],
       "expected_mechanisms": ["paper-uncovering-missing-pattern-2023#missingness-aware-imputation-and-forecast"]
     },
     {
       "id": "dtr-event-fragmentation",
-      "route": "dtr-r0",
+      "route": "obstacle-avoidance",
       "symptom": "a single negative frame causes CLEAR and fragments one event into several alerts",
       "expected_layers": ["decision_lifecycle"]
     },
     {
       "id": "dtr-unknown-as-clear",
-      "route": "dtr-r0",
+      "route": "obstacle-avoidance",
       "symptom": "UNKNOWN observations are treated as CLEAR and release the risk event",
       "expected_layers": ["decision_lifecycle", "evaluation_evidence"],
       "expected_mechanisms": ["tool-project-guideline#project-guideline-stop-failure-semantics"]
     },
     {
       "id": "dtr-no-person-detection",
-      "route": "dtr-r0",
+      "route": "obstacle-avoidance",
       "symptom": "person detector has repeated false negatives although frames are available",
       "expected_layers": ["observation_perception"]
     },
     {
       "id": "dtr-pose-time-misalignment",
-      "route": "dtr-r0",
+      "route": "obstacle-avoidance",
       "symptom": "camera pose is not frame-aligned and route projection jumps",
       "expected_layers": ["source_coverage", "geometry_motion"],
       "expected_mechanisms": ["tool-project-guideline#project-guideline-pose-time-alignment"]
     },
     {
       "id": "dtr-source-authority-conflict",
-      "route": "dtr-r0",
+      "route": "obstacle-avoidance",
       "symptom": "README and artifact disagree and private truth fields appear in the input manifest",
       "expected_layers": ["authority_truth", "evaluation_evidence"]
     },
     {
       "id": "dtr-no-real-canary",
-      "route": "dtr-r0",
+      "route": "obstacle-avoidance",
       "symptom": "no canary exists because synchronized body camera pose recordings are unavailable",
       "expected_layers": ["source_coverage"]
     },
     {
       "id": "dtr-threshold-rescue-consumed",
-      "route": "dtr-r0",
+      "route": "obstacle-avoidance",
       "symptom": "proposal asks to sweep closing threshold on a consumed cohort after seeing 0/9",
       "expected_layers": ["evaluation_evidence", "decision_lifecycle"],
       "expected_attempts": ["terminal-dtr-r6-static-occupancy-unreachable"]
     },
     {
       "id": "l10-gap-reacquisition",
-      "route": "l10-r0",
+      "route": "ten-meter-copilot",
       "symptom": "目标遮挡后 LOST，重新出现时需要用 public reference reacquire exact instance",
       "expected_layers": ["temporal_belief", "identity_binding", "authority_truth"],
       "expected_attempts": ["terminal-l10-sc6-reference-bound-belief-effect"]
     },
     {
       "id": "l10-multiple-physical-ids",
-      "route": "l10-r0",
+      "route": "ten-meter-copilot",
       "symptom": "one public goal maps to multiple physical IDs so exact-instance score is NOT_EVALUABLE",
       "expected_layers": ["identity_binding", "evaluation_evidence"],
       "expected_attempts": ["terminal-l10-sc5-set-valued-video17"]
     },
     {
       "id": "l10-ocr-observation",
-      "route": "l10-r0",
+      "route": "ten-meter-copilot",
       "symptom": "OCR misses the target word and returns broken word geometry",
       "expected_layers": ["observation_perception"],
       "expected_mechanisms": ["paper-deepsolo-2023#ordered-point-text-geometry"]
     },
     {
       "id": "l10-reference-wrong-instance",
-      "route": "l10-r0",
+      "route": "ten-meter-copilot",
       "symptom": "reference matching switches to a wrong same-class physical instance",
       "expected_layers": ["identity_binding"]
     },
@@ -191,20 +221,20 @@
     },
     {
       "id": "evaluation-denominator-missing",
-      "route": "dtr-r0",
+      "route": "obstacle-avoidance",
       "symptom": "reported recall has no denominator and UNKNOWN windows were silently dropped",
       "expected_layers": ["evaluation_evidence"]
     },
     {
       "id": "evaluation-logging-fields",
-      "route": "dtr-r0",
+      "route": "obstacle-avoidance",
       "symptom": "failure cannot be localized because the diagnostic log lacks denominator and state-transition fields",
       "expected_layers": ["evaluation_evidence", "runtime_infrastructure"],
       "expected_mechanisms": ["tool-project-guideline#project-guideline-logging-fields"]
     },
     {
       "id": "observation-depth-scale",
-      "route": "dtr-r0",
+      "route": "obstacle-avoidance",
       "symptom": "monocular depth scale is inconsistent and projected distance is wrong",
       "expected_layers": ["observation_perception", "geometry_motion"]
     }

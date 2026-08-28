@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "paper-robopoint-2025",
+  "kind": "paper",
+  "title": "RoboPoint: A Vision-Language Model for Spatial Affordance Prediction in Robotics",
+  "canonical_ref": "https://proceedings.mlr.press/v270/yuan25c.html",
+  "authors": [
+    "Wentao Yuan",
+    "Jiafei Duan",
+    "Valts Blukis",
+    "Wilbert Pumacay",
+    "Ranjay Krishna",
+    "Adithyavairavan Murali",
+    "Arsalan Mousavian",
+    "Dieter Fox"
+  ],
+  "year": 2025,
+  "venue": "CoRL / PMLR 270",
+  "summary": "A vision-language model that answers language instructions with spatially actionable image keypoints for robotics.",
+  "mechanisms": [
+    {
+      "id": "instruction-to-action-keypoint",
+      "name": "Instruction-to-action keypoint prediction",
+      "description": "Represents a requested action as one or more image points on the region where the action should occur, rather than a whole-object box.",
+      "inputs": [
+        "RGB image",
+        "natural-language instruction"
+      ],
+      "outputs": [
+        "actionable image keypoints"
+      ],
+      "limitations": "Image-point accuracy does not guarantee depth validity, reachability, collision clearance, exact-instance identity, or successful action execution."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "actionable-region",
+    "keypoint"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

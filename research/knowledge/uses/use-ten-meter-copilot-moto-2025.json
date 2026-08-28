@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-moto-2025",
+  "item_id": "paper-moto-2025",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "interaction-keypoint-docking-optimization"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "交互关键点、多视角一致性与 docking point 优化。",
+    "project_application": "作为 L10 action-ready 站位机制的参考，把“接近物体”改为“接近能执行目标动作的位置”。",
+    "modifications": "不采用机器人手臂轨迹；保留 keypoint-to-stance 几何约束，并以用户可达/净空替代机械臂可达。",
+    "expected_effect": "减少在错误侧面、距离虽近但不可操作的位置停止。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：冻结目标识别与导航轨迹，仅比较 nearest-target 与 interaction-keypoint stance；主指标为 ready-pose precision、distance-matched false-ready 和 wrong-side rate。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "MoTo 的 OVMM/真实机器人结果未在 BlindAssist 复现；机器人 docking 增益不能外推为盲人导航、产品或安全能力。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://proceedings.mlr.press/v305/wu25c.html",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

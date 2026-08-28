@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "paper-intent-handover-2026",
+  "kind": "paper",
+  "title": "Intent-Handover: Grounding Language in Human-Usage Regions for Trustworthy Robot-to-Human Handovers",
+  "canonical_ref": "https://robot-future.github.io/intent-handover/",
+  "authors": [
+    "Hanxin Zhang",
+    "Abdulqader Dhafer",
+    "Hongbiao Dong",
+    "Zhou Daniel Hao"
+  ],
+  "year": 2026,
+  "venue": "IROS 2026",
+  "summary": "A language-conditioned handover framework that identifies human-usage regions and avoids blocking them with the robot hand or gripper.",
+  "mechanisms": [
+    {
+      "id": "intent-and-human-usage-region-handover",
+      "name": "Intent and human-usage-region handover",
+      "description": "Maps the receiver's intended use to a human-usage region and plans handover so the region remains accessible and collision-free.",
+      "inputs": [
+        "language intent",
+        "object geometry",
+        "human and robot contact constraints"
+      ],
+      "outputs": [
+        "usage-region-aware handover pose"
+      ],
+      "limitations": "A language-to-usage-region result and user study do not establish phone-only localization, blind-user intent inference, navigation arrival, or safety."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "completion",
+    "handover",
+    "intent"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

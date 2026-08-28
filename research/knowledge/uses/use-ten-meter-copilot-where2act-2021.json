@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-where2act-2021",
+  "item_id": "paper-where2act-2021",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "per-point-actionability-and-action-proposals"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "逐点 actionability、动作 proposal 与成功概率。",
+    "project_application": "用于区分“看见功能部件”和“该点能执行所需动作”，尤其门、抽屉、开关等铰接对象。",
+    "modifications": "只借用 actionability 表示；不继承模拟器真值、动作集合或成功阈值。",
+    "expected_effect": "让候选点以动作可行性而非纯视觉显著性排序。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：冻结功能部件 mask，在含可动/不可动点的最小新鲜集上仅加入 point actionability；主指标为 actionable_point precision 与 frozen downstream success proxy。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "SAPIEN 等模拟与原作 primitive 不等于 BlindAssist 真实门/开关；未复现，不能推出真实动作成功、导航完成、用户收益或安全。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://cs.stanford.edu/~kaichun/where2act/",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

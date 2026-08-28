@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-oval-prompt-2024",
+  "item_id": "paper-oval-prompt-2024",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "open-vocabulary-part-affordance-prompting"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "开放词汇的语言到部件 affordance grounding。",
+    "project_application": "用于生成候选功能部件名称/提示，随后必须由视觉与几何证据验证。",
+    "modifications": "LLM 只产生 proposal；不读取 private truth，不直接决定完成，也不能覆盖 absent/UNKNOWN。",
+    "expected_effect": "提高长尾功能部件的候选覆盖，同时保留可验证的视觉落点。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：冻结视觉候选与 evaluator，只比较固定类别词表和开放词汇部件提示；主指标为 true-part proposal recall、wrong-part precision 和 absent false proposal。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "语义上合理的 LLM 输出不是物理 affordance 真值；未在 BlindAssist 复现，不能推出开放世界可靠性、真实操控、用户收益或安全。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2404.11000",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

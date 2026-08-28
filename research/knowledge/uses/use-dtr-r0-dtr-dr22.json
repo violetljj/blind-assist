@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "use-dtr-r0-dtr-dr22",
   "item_id": "paper-indoor-imminent-danger-detection-with-ground-segmentation",
-  "route": "dtr-r0",
+  "route": "obstacle-avoidance",
   "mechanism_ids": [
     "dtr-dr22"
   ],

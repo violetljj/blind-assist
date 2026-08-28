@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "id": "paper-rekep-2024",
+  "kind": "paper",
+  "title": "ReKep: Spatio-Temporal Reasoning of Relational Keypoint Constraints for Robotic Manipulation",
+  "canonical_ref": "https://rekep-robot.github.io/",
+  "authors": [
+    "Wenlong Huang",
+    "Chen Wang",
+    "Yunzhu Li",
+    "Ruohan Zhang",
+    "Li Fei-Fei"
+  ],
+  "year": 2024,
+  "venue": "arXiv",
+  "summary": "A manipulation framework that expresses tasks as optimizable relational keypoint constraints across temporal stages.",
+  "mechanisms": [
+    {
+      "id": "relational-keypoint-constraints",
+      "name": "Relational keypoint constraints",
+      "description": "Turns semantic keypoints and their spatial-temporal relations into explicit cost functions that can be checked and optimized stage by stage.",
+      "inputs": [
+        "RGB-D observations",
+        "task instruction",
+        "keypoints"
+      ],
+      "outputs": [
+        "stage constraints",
+        "optimized actions"
+      ],
+      "limitations": "Optimization assumes meaningful keypoints and robot control; it cannot recover missing source information or certify human-safe completion."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "actionable-region",
+    "constraint-reasoning"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "id": "paper-contacthandover-2024",
+  "kind": "paper",
+  "title": "ContactHandover: Contact-Guided Robot-to-Human Object Handover",
+  "canonical_ref": "https://arxiv.org/abs/2404.01402",
+  "authors": [
+    "Zixi Wang",
+    "Zeyi Liu",
+    "Nicolas Ouporov",
+    "Shuran Song"
+  ],
+  "year": 2024,
+  "venue": "IROS 2024",
+  "summary": "A robot-to-human handover system that preserves human contact regions during robot grasping and optimizes delivery for human visibility, reachability, and comfort.",
+  "mechanisms": [
+    {
+      "id": "human-contact-aware-handover",
+      "name": "Human-contact-aware handover",
+      "description": "Predicts human contact points, penalizes robot grasps that block them, and chooses a delivery pose that makes those contacts easier for the receiver to reach.",
+      "inputs": [
+        "object observation",
+        "robot grasp candidates",
+        "human contact map"
+      ],
+      "outputs": [
+        "contact-preserving grasp",
+        "human-oriented delivery pose"
+      ],
+      "limitations": "Robot-object handover on household objects does not establish assistive navigation, blind-user preferences, phone sensing, or safety."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "completion",
+    "handover",
+    "human-affordance"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

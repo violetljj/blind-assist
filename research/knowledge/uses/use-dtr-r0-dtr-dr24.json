@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "use-dtr-r0-dtr-dr24",
   "item_id": "dataset-jrdb-family",
-  "route": "dtr-r0",
+  "route": "obstacle-avoidance",
   "mechanism_ids": [
     "dtr-dr24"
   ],

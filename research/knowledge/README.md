@@ -36,10 +36,10 @@ manifest 或结果引用。
 
 ```powershell
 python tools/knowledge.py validate
-python tools/knowledge.py context --route dtr-r0
+python tools/knowledge.py context --route obstacle-avoidance
 python tools/knowledge.py context --route goal-copilot-p0 --query "spatial layout" --json
 python tools/knowledge.py list
-python tools/knowledge.py list --route l10-r0
+python tools/knowledge.py list --route ten-meter-copilot
 python tools/knowledge.py list --verdict falsified
 python tools/knowledge.py search "occlusion"
 python tools/knowledge.py show paper-deepsolo-2023
@@ -53,8 +53,8 @@ python tools/knowledge.py show use-grail-r1c-p-orient-anything-v2
 逐个打开 `items/uses`，也不调用模型或网络：
 
 ```powershell
-python tools/knowledge.py diagnose --route dtr-r0 --symptom "静态占据在 dropout 窗口仍为 0/9，matcher 没有 closing speed"
-python tools/knowledge.py diagnose --route l10-r0 --symptom "遮挡后无法 reference-reacquire exact instance" --observed "有 public anchor frame 和 box" --json
+python tools/knowledge.py diagnose --route obstacle-avoidance --symptom "静态占据在 dropout 窗口仍为 0/9，matcher 没有 closing speed"
+python tools/knowledge.py diagnose --route ten-meter-copilot --symptom "遮挡后无法 reference-reacquire exact instance" --observed "有 public anchor frame 和 box" --json
 python tools/knowledge.py diagnose --route goal-copilot-p0 --symptom "near-identical instances cause wrong-target identity drift" --write-plan artifacts.local/knowledge/decision/near-id-plan.json
 ```
 
@@ -139,7 +139,12 @@ python tools/knowledge.py update-use use-example-route-mechanism --state active 
 
 ## 路线使用规则
 
-1. 路线冷启动先读取 `context --route <route>`；开新机制前再按 tag 或问题关键词
+`route` 使用不会随 SC、R0、F1 等实验或协议名变化的稳定主线 id。当前两条主线固定为
+`obstacle-avoidance`（避障）和 `ten-meter-copilot`（十米副驾）。具体实验名只写入
+use id、`evaluation.setup`、evidence、history 或 `experiments/index.jsonl`，不得作为新
+use 的 route。这样实验改名或换代后，同一主线仍能检索全部历史尝试与停止边界。
+
+1. 主线冷启动先读取 `context --route <route>`；开新机制前再按 tag 或问题关键词
    搜索，避免重复探索已消费路线。
 2. 真正采用、复现或证伪时新增/更新 use；当前路线结论仍由
    `docs/CURRENT_DECISION.md` 和 owning route README 持有。

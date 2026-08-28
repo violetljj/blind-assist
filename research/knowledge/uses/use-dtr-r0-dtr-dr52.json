@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "use-dtr-r0-dtr-dr52",
   "item_id": "paper-scenario-based-trajectory-optimization-in-uncertain-dynamic-environments",
-  "route": "dtr-r0",
+  "route": "obstacle-avoidance",
   "mechanism_ids": [
     "dtr-dr52"
   ],

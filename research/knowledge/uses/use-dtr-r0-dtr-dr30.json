@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "use-dtr-r0-dtr-dr30",
   "item_id": "tool-open-source-soundscape",
-  "route": "dtr-r0",
+  "route": "obstacle-avoidance",
   "mechanism_ids": [
     "dtr-dr30"
   ],

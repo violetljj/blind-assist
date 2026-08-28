@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-passage-aware-structural-mapping-2026",
+  "item_id": "paper-passage-aware-structural-mapping-2026",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "passage-evidence-structural-map"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "用几何、语义、拓扑与历史穿越证据表示 passage。",
+    "project_application": "入口/门洞故障中，将“门样外观”与“当前可通过的开口”分离。",
+    "modifications": "passage 只作为候选证据；若缺当前状态或独立 clearance truth，必须返回 UNKNOWN/NOT_EVALUABLE。",
+    "expected_effect": "减少把墙面门框、关闭门或不可通行开口当作可穿越入口。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：冻结检测器，在含开门、关门、假门框和未知状态的最小序列上仅加入 passage evidence；主指标为 traversable-passage precision 和 UNKNOWN calibration。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "该预印本的结构建图结果不证明实时门状态或安全通行；BlindAssist 未复现，不能推出自然分布、产品或安全能力。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2604.24707",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

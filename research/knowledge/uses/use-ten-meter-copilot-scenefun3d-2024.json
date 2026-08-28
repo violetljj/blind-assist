@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-scenefun3d-2024",
+  "item_id": "dataset-scenefun3d-2024",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "task-functional-element-annotations"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "dataset",
+  "usage": {
+    "source_scope": "面向任务的细粒度功能部件与 affordance 标注。",
+    "project_application": "作为 L10 功能落点候选：先绑定正确实例，再在实例内部定位门把手、按钮、座位接触面等真正执行功能的区域。",
+    "modifications": "保持现有 exact-instance authority 与候选分母；只新增 functional-element 表示，不允许用父对象 bbox 直接充当动作目标。",
+    "expected_effect": "在实例身份正确但功能部件错误的故障上，提高 functional-element 命中率并降低 parent-box false handoff。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：冻结实例候选和 evaluator，在含真功能部件、相邻非功能部件及 absent 对照的小型新鲜集上，仅比较 parent-box 基线与 functional-element 表示；主指标为 functional_part_hit_rate 和 false_handoff_count。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "SceneFun3D 的公开标注与基准只证明其任务定义和数据可用性；未在 BlindAssist 复现，不能推出手机端、开放世界、导航完成、用户收益或安全能力。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://scenefun3d.github.io/documentation/",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

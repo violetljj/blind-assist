@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "use-dtr-r0-dtr-dr53",
   "item_id": "paper-radius-risk-aware-real-time-reachability-based-motion-planning",
-  "route": "dtr-r0",
+  "route": "obstacle-avoidance",
   "mechanism_ids": [
     "dtr-dr53"
   ],

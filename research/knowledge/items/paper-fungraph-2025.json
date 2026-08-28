@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "paper-fungraph-2025",
+  "kind": "paper",
+  "title": "FunGraph: Functionality Aware 3D Scene Graphs for Language-Prompted Scene Interaction",
+  "canonical_ref": "https://fungraph.github.io/",
+  "authors": [
+    "Dennis Rotondi",
+    "Fabio Scaparro",
+    "Hermann Blum",
+    "Kai O. Arras"
+  ],
+  "year": 2025,
+  "venue": "IROS 2025",
+  "summary": "A functionality-aware 3D scene graph that represents affordance-relevant object parts for language-prompted scene interaction.",
+  "mechanisms": [
+    {
+      "id": "functional-part-scene-graph",
+      "name": "Functional-part scene graph",
+      "description": "Adds functional elements and their relations to an open-vocabulary 3D scene graph so a language request can resolve both the object and the part used for interaction.",
+      "inputs": [
+        "3D scene",
+        "language prompt",
+        "object and part observations"
+      ],
+      "outputs": [
+        "functional scene graph",
+        "interaction-relevant part"
+      ],
+      "limitations": "A scene graph can organize candidate evidence but does not by itself verify physical reachability, interaction outcome, or exact-instance authority."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "functional-grounding",
+    "scene-graph"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

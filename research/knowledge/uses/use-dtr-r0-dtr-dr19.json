@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "use-dtr-r0-dtr-dr19",
   "item_id": "paper-monitoring-and-adapting-the-physical-state-of-a-camera",
-  "route": "dtr-r0",
+  "route": "obstacle-avoidance",
   "mechanism_ids": [
     "dtr-dr19"
   ],

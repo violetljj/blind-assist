@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "use-l10-r0-deepsolo-word-geometry",
   "item_id": "paper-deepsolo-2023",
-  "route": "l10-r0",
+  "route": "ten-meter-copilot",
   "mechanism_ids": [
     "ordered-point-text-geometry"
   ],

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-sceneteract-2026",
+  "item_id": "paper-sceneteract-2026",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "agent-conditioned-functional-verification"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "显式验证 navigability、reachability、interactability、clearance 与 visibility。",
+    "project_application": "作为 L10 interaction-ready 层的候选 verifier，避免语义正确但物理不可用。",
+    "modifications": "将 agent 模型限制为预注册用户/设备几何假设；任何缺失谓词返回 UNKNOWN，不由 VLM 自行补全。",
+    "expected_effect": "把功能目标错误进一步定位为语义 grounding 失败或物理 predicate 失败。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：冻结候选功能区，仅加入五项 predicate verifier；在每次只破坏一个条件的最小对照集上测故障层识别与 false-ready。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "SceneTeract 的 3D/VLM 证据不能直接代表真实用户；BlindAssist 未复现，predicate 通过也不是动作结果、用户收益或安全证据。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://sceneteract.github.io/",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "id": "paper-moto-2025",
+  "kind": "paper",
+  "title": "MoTo: A Zero-shot Plug-in Interaction-aware Navigation for General Mobile Manipulation",
+  "canonical_ref": "https://proceedings.mlr.press/v305/wu25c.html",
+  "authors": [
+    "Zhenyu Wu",
+    "Angyuan Ma",
+    "Xiuwei Xu",
+    "Hang Yin",
+    "Yinan Liang",
+    "Ziwei Wang",
+    "Jiwen Lu",
+    "Haibin Yan"
+  ],
+  "year": 2025,
+  "venue": "CoRL 2025",
+  "summary": "A zero-shot interaction-aware navigation module that uses multi-view interaction keypoints and trajectory objectives to select manipulation-ready docking points.",
+  "mechanisms": [
+    {
+      "id": "interaction-keypoint-docking-optimization",
+      "name": "Interaction-keypoint docking optimization",
+      "description": "Matches target and arm interaction keypoints under multi-view consistency, then optimizes base and arm motion toward a physically feasible docking configuration.",
+      "inputs": [
+        "multi-view RGB observations",
+        "task instruction",
+        "robot geometry"
+      ],
+      "outputs": [
+        "interaction keypoints",
+        "docking point",
+        "feasible trajectory objective"
+      ],
+      "limitations": "Robot docking and manipulation success do not establish human-reachable stance, handheld localization, exact-instance identity, or safety."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "interaction-ready",
+    "docking",
+    "keypoint"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -4,7 +4,7 @@
   "terminals": [
     {
       "id": "terminal-dtr-r6-static-occupancy-unreachable",
-      "route": "dtr-r0",
+      "route": "obstacle-avoidance",
       "failure_layers": ["geometry_motion", "evaluation_evidence"],
       "status": "not_evaluable",
       "decision": "R6_DIRECT_METRIC_SINGLE_FACTOR_NOT_EVALUABLE_STATIC_OCCUPANCY_MATCHER_UNREACHABLE",
@@ -16,7 +16,7 @@
     },
     {
       "id": "terminal-dtr-r7p-causal-occupancy-flow-gate-not-met",
-      "route": "dtr-r0",
+      "route": "obstacle-avoidance",
       "failure_layers": ["geometry_motion", "decision_lifecycle", "evaluation_evidence"],
       "status": "negative",
       "decision": "R7_P_CAUSAL_OCCUPANCY_FLOW_DEVELOPMENT_GATE_NOT_MET_NO_R8",
@@ -28,7 +28,7 @@
     },
     {
       "id": "terminal-l10-sc5-set-valued-video17",
-      "route": "l10-r0",
+      "route": "ten-meter-copilot",
       "failure_layers": ["identity_binding", "temporal_belief", "evaluation_evidence"],
       "status": "not_evaluable",
       "decision": "SC5_SET_VALUED_NAVIGATION_SIGNAL_EXACT_INSTANCE_NOT_EVALUABLE",
@@ -40,7 +40,7 @@
     },
     {
       "id": "terminal-l10-sc6-reference-bound-belief-effect",
-      "route": "l10-r0",
+      "route": "ten-meter-copilot",
       "failure_layers": ["authority_truth", "identity_binding", "temporal_belief"],
       "status": "positive",
       "decision": "SC6_REFERENCE_BOUND_BELIEF_EFFECT",

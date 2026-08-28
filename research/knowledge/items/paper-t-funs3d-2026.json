@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "paper-t-funs3d-2026",
+  "kind": "paper",
+  "title": "T-FunS3D: Task-Driven Hierarchical Open-Vocabulary 3D Functionality Segmentation",
+  "canonical_ref": "https://t-funs3d.github.io/",
+  "authors": [
+    "Jingkun Feng",
+    "Reza Sabzevari"
+  ],
+  "year": 2026,
+  "venue": "ICRA 2026",
+  "summary": "A hierarchical open-vocabulary pipeline that selects a task-relevant instance and then segments its functional components.",
+  "mechanisms": [
+    {
+      "id": "hierarchical-instance-to-functional-part",
+      "name": "Hierarchical instance-to-functional-part grounding",
+      "description": "Separates open-vocabulary instance selection from task-conditioned functional-component segmentation to avoid treating all visible parts as equally relevant.",
+      "inputs": [
+        "task prompt",
+        "open-vocabulary 3D scene graph",
+        "multi-view observations"
+      ],
+      "outputs": [
+        "selected instance",
+        "functional-component mask"
+      ],
+      "limitations": "Published efficiency and benchmark evidence do not establish handheld tracking, exact-instance truth, interaction readiness, or completion."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "functional-grounding",
+    "hierarchical-grounding"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

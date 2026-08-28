@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "paper-fun3du-2025",
+  "kind": "paper",
+  "title": "Fun3DU: Functionality Understanding and Segmentation in 3D Scenes",
+  "canonical_ref": "https://github.com/tev-fbk/fun3du",
+  "authors": [
+    "Jaime Corsetti",
+    "Francesco Giuliari",
+    "Alice Fasoli",
+    "Davide Boscaini",
+    "Fabio Poiesi"
+  ],
+  "year": 2025,
+  "venue": "CVPR 2025",
+  "summary": "A training-free pipeline that uses language guidance, context-object localization, functional-part segmentation, and multi-view agreement for 3D functionality grounding.",
+  "mechanisms": [
+    {
+      "id": "task-conditioned-multiview-functional-grounding",
+      "name": "Task-conditioned multi-view functional grounding",
+      "description": "Uses an LLM to identify the relevant context object, segments the functional part in selected views, and consolidates evidence through multi-view agreement.",
+      "inputs": [
+        "task description",
+        "posed RGB-D views",
+        "3D scene"
+      ],
+      "outputs": [
+        "3D functional-part segmentation"
+      ],
+      "limitations": "Requires suitable views and geometry; published benchmark results do not prove robustness to handheld egocentric video, exact-instance ambiguity, or real-time deployment."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "functional-grounding",
+    "multiview"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

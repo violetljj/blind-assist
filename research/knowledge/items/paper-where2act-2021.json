@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "id": "paper-where2act-2021",
+  "kind": "paper",
+  "title": "Where2Act: From Pixels to Actions for Articulated 3D Objects",
+  "canonical_ref": "https://cs.stanford.edu/~kaichun/where2act/",
+  "authors": [
+    "Kaichun Mo",
+    "Leonidas Guibas",
+    "Mustafa Mukadam",
+    "Abhinav Gupta",
+    "Shubham Tulsiani"
+  ],
+  "year": 2021,
+  "venue": "ICCV 2021",
+  "summary": "A method that predicts per-point actionability, action proposals, and expected success for articulated 3D objects.",
+  "mechanisms": [
+    {
+      "id": "per-point-actionability-and-action-proposals",
+      "name": "Per-point actionability and action proposals",
+      "description": "Scores where an interaction primitive can succeed on an articulated object and proposes an action conditioned on the selected point.",
+      "inputs": [
+        "3D point cloud",
+        "interaction primitive"
+      ],
+      "outputs": [
+        "actionability map",
+        "action proposal",
+        "success likelihood"
+      ],
+      "limitations": "Training on articulated-object simulation and primitive actions does not establish transfer to unstructured egocentric scenes or assistive navigation."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "actionable-region",
+    "articulated-object"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

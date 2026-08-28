@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-fungraph-2025",
+  "item_id": "paper-fungraph-2025",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "functional-part-scene-graph"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "把功能部件作为 scene-graph 节点与关系，而非只保存物体类别。",
+    "project_application": "为 L10 的 instance → functional part → interaction zone 建立显式可审计中间表示。",
+    "modifications": "图中必须分别记录 public referent、功能部件和动作区；禁止把关系推断当作独立完成回执。",
+    "expected_effect": "让错误可定位到 object binding、part grounding 或 interaction-zone 三个不同阶段。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：用同一批场景冻结 perception，比较 object-only graph 与 functional-part graph；主指标为逐阶段可判定率和错误层定位准确率。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "图结构改善可解释性不等于功能成功；未执行 BlindAssist 实验，不能推出开放世界覆盖、物理可达、用户收益或安全。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://fungraph.github.io/",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

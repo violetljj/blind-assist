@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "id": "paper-passage-aware-structural-mapping-2026",
+  "kind": "paper",
+  "title": "Passage-Aware Structural Mapping for RGB-D Visual SLAM",
+  "canonical_ref": "https://arxiv.org/abs/2604.24707",
+  "authors": [
+    "Ali Tourani",
+    "Miguel Fernandez-Cortizas",
+    "Saad Ejaz",
+    "David Pérez Saura",
+    "Asier Bikandi-Noya",
+    "Jose Luis Sanchez-Lopez",
+    "Holger Voos"
+  ],
+  "year": 2026,
+  "venue": "arXiv",
+  "summary": "A structural RGB-D mapping approach that combines geometric, semantic, topological, and traversal-history evidence to represent passages.",
+  "mechanisms": [
+    {
+      "id": "passage-evidence-structural-map",
+      "name": "Passage-evidence structural map",
+      "description": "Models a passage as an opening supported by geometry, semantics, topology, and traversal evidence instead of equating a door-like rectangle with traversability.",
+      "inputs": [
+        "RGB-D sequence",
+        "camera trajectory",
+        "structural observations"
+      ],
+      "outputs": [
+        "passage-aware structural map"
+      ],
+      "limitations": "Qualitative mapping evidence does not establish door-state recognition, collision-free traversal, dynamic-obstacle handling, or assistive-user outcomes."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "interaction-ready",
+    "passage",
+    "doorway"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

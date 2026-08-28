@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "paper-oval-prompt-2024",
+  "kind": "paper",
+  "title": "OVAL-Prompt: Open-Vocabulary Affordance Localization for Robot Manipulation through LLM Affordance-Grounding",
+  "canonical_ref": "https://arxiv.org/abs/2404.11000",
+  "authors": [
+    "Edmond Tong",
+    "Anthony Opipari",
+    "Stanley Lewis",
+    "Zhen Zeng",
+    "Odest Chadwicke Jenkins"
+  ],
+  "year": 2024,
+  "venue": "arXiv",
+  "summary": "An open-vocabulary pipeline that combines visual part segmentation with language-model affordance grounding for manipulation without task-specific fine-tuning.",
+  "mechanisms": [
+    {
+      "id": "open-vocabulary-part-affordance-prompting",
+      "name": "Open-vocabulary part-affordance prompting",
+      "description": "Uses language reasoning to map an instruction to an object part, then grounds that part visually for manipulation.",
+      "inputs": [
+        "RGB-D observation",
+        "language instruction",
+        "part proposals"
+      ],
+      "outputs": [
+        "affordance-relevant part localization"
+      ],
+      "limitations": "LLM part selection can be semantically plausible yet physically wrong; manipulation demonstrations do not prove egocentric navigation completion or safe use."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "functional-grounding",
+    "open-vocabulary"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

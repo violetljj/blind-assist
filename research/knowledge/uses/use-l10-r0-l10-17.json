@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "use-l10-r0-l10-17",
   "item_id": "paper-aim-my-robot-precision-local-navigation-to-any-object",
-  "route": "l10-r0",
+  "route": "ten-meter-copilot",
   "mechanism_ids": [
     "l10-17"
   ],

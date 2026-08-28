@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-intent-handover-2026",
+  "item_id": "paper-intent-handover-2026",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "intent-and-human-usage-region-handover"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "从语言意图定位 human-usage region，并避免机器人占用该区域。",
+    "project_application": "让 L10 的完成判定与用户具体意图绑定：同一物体的可用交接区可因“拿来使用”方式不同而变化。",
+    "modifications": "意图必须由用户显式给出或保持 UNKNOWN；禁止从对象类别猜测意图后直接完成。",
+    "expected_effect": "减少目标对象正确但交接区域不符合用户用途的错误。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：冻结对象与几何，在同物多意图的最小新鲜集上仅改变显式 intent conditioning；主指标为 usage-region hit、blocked-region rate 和 unknown-intent false completion。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Intent-Handover 的机器人系统与用户研究未在 BlindAssist 复现；成功也只支持命名意图条件下的区域选择，不支持自然导航或安全。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://robot-future.github.io/intent-handover/",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

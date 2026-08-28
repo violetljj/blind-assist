@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-doorbot-2025",
+  "item_id": "paper-doorbot-2025",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "haptic-closed-loop-door-function"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "用触觉结果回路验证门功能是否真正发生。",
+    "project_application": "作为 completion 设计原则：视觉只能提出门/把手动作，完成必须由独立 outcome signal 确认。",
+    "modifications": "BlindAssist 当前无机器人触觉，故仅保留“结果回执独立于视觉 proposal”的合同，不声称可直接实现 DoorBot。",
+    "expected_effect": "阻止把看似正确的动作点或接近姿态误当成门已打开/任务已完成。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：在不引入触觉硬件的最小模拟中，冻结 proposal，仅加入独立 outcome receipt/absent receipt；主指标为 false_completion=0 和 valid receipt coverage。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "DoorBot 的机器人、触觉和 20 门实验不可迁移为手机能力；此处只吸收闭环合同，未复现其系统或成功率。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://github.com/TX-Leo/DoorBot",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

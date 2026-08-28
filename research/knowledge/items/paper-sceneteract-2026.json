@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "id": "paper-sceneteract-2026",
+  "kind": "paper",
+  "title": "SceneTeract: Agentic Functional Affordances and VLM Grounding in 3D Scenes",
+  "canonical_ref": "https://sceneteract.github.io/",
+  "authors": [
+    "Léopold Maillard",
+    "Francis Engelmann",
+    "Tom Durand",
+    "Boxiao Pan",
+    "Yang You",
+    "Or Litany",
+    "Leonidas Guibas",
+    "Maks Ovsjanikov"
+  ],
+  "year": 2026,
+  "venue": "arXiv",
+  "summary": "A 3D-scene framework that grounds functional affordances and explicitly evaluates navigability, reachability, interactability, clearance, and visibility for an embodied agent.",
+  "mechanisms": [
+    {
+      "id": "agent-conditioned-functional-verification",
+      "name": "Agent-conditioned functional verification",
+      "description": "Conditions affordance validity on the agent and checks physical predicates such as visibility, reachability, interactability, navigability, and clearance.",
+      "inputs": [
+        "3D scene",
+        "agent model",
+        "task",
+        "candidate region"
+      ],
+      "outputs": [
+        "functional affordance",
+        "physical-predicate verification"
+      ],
+      "limitations": "A 3D agent model and VLM grounding can diverge from real users and phone sensing; predicate satisfaction is not an outcome receipt."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "interaction-ready",
+    "functional-affordance",
+    "physical-verification"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

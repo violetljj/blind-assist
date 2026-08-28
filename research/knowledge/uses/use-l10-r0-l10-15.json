@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "use-l10-r0-l10-15",
   "item_id": "paper-textslam-visual-slam-with-semantic-planar-text-features",
-  "route": "l10-r0",
+  "route": "ten-meter-copilot",
   "mechanism_ids": [
     "l10-15"
   ],

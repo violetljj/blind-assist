@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-aros-2023",
+  "item_id": "paper-aros-2023",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "one-shot-human-scene-affordance"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "人体姿态、接触邻近与净空共同定义可供性。",
+    "project_application": "用于座位和可接近区域：从“这是椅子”升级为“该位置是否支持目标人体姿态且有必要净空”。",
+    "modifications": "只借用 contact/clearance verifier；不生成用户身体轨迹，不把 crowd preference 当 BlindAssist 用户效果。",
+    "expected_effect": "过滤类别正确但被堵塞、尺度不合或缺少人体净空的交互位置。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：冻结座位检测，在可坐、被占、净空不足和未知几何的小型新鲜集上仅加入人体 contact/clearance；主指标为 interaction-ready precision 和 NOT_EVALUABLE 分母。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "AROS 在三维扫描与众包偏好上的结果不能外推到盲人导航；BlindAssist 未复现，成功也只支持命名几何 verifier。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2023.1076780/full",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

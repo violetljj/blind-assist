@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "id": "paper-doorbot-2025",
+  "kind": "paper",
+  "title": "DoorBot: Closed-Loop Task Planning and Manipulation for Door Opening in the Wild with Haptic Feedback",
+  "canonical_ref": "https://github.com/TX-Leo/DoorBot",
+  "authors": [
+    "Zhi Wang",
+    "Yuchen Mo",
+    "Shengmiao Jin",
+    "Wenzhen Yuan"
+  ],
+  "year": 2025,
+  "venue": "ICRA 2025",
+  "summary": "A closed-loop door-opening system that uses haptic feedback to verify outcomes and repair visually generated plans.",
+  "mechanisms": [
+    {
+      "id": "haptic-closed-loop-door-function",
+      "name": "Haptic closed-loop door-function verification",
+      "description": "Uses contact feedback after an action to distinguish visual plan plausibility from actual latch, handle, and door response, then replans when the outcome disagrees.",
+      "inputs": [
+        "visual observation",
+        "planned door action",
+        "haptic feedback"
+      ],
+      "outputs": [
+        "verified action outcome",
+        "replanned manipulation"
+      ],
+      "limitations": "Requires a robot and contact sensing; success on 20 unseen doors does not establish phone-only sensing, safe human passage, or general door coverage."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "completion",
+    "door",
+    "closed-loop"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "id": "paper-tasa-2025",
+  "kind": "paper",
+  "title": "TASA: Task-Aware 3D Affordance Segmentation via 2D Guidance and Geometric Refinement",
+  "canonical_ref": "https://github.com/LianHe00/TASA-main",
+  "authors": [
+    "Lian He",
+    "Meng Liu",
+    "Qilang Ye",
+    "Yu Zhou",
+    "Xiang Deng",
+    "Gangyi Ding"
+  ],
+  "year": 2025,
+  "venue": "AAAI 2026",
+  "summary": "A task-aware 3D affordance segmentation method combining 2D guidance with 3D geometric refinement.",
+  "mechanisms": [
+    {
+      "id": "task-aware-2d-guided-3d-refinement",
+      "name": "Task-aware 2D guidance with 3D refinement",
+      "description": "Selects task-relevant 2D affordance evidence and refines it geometrically in 3D to localize a functional region.",
+      "inputs": [
+        "task text",
+        "RGB-D views",
+        "3D geometry"
+      ],
+      "outputs": [
+        "task-conditioned 3D affordance segmentation"
+      ],
+      "limitations": "Depends on reliable geometry and view selection; benchmark gains do not establish causal utility in an egocentric handoff pipeline."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "functional-grounding",
+    "geometric-refinement"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "id": "paper-door-status-detection-2023",
+  "kind": "paper",
+  "title": "Enhancing Door-Status Detection for Autonomous Mobile Robots during Environment-Specific Operational Use",
+  "canonical_ref": "https://arxiv.org/abs/2203.03959",
+  "authors": [
+    "Michele Antonazzi",
+    "Matteo Luperto",
+    "Nicola Basilico",
+    "N. Alberto Borghese"
+  ],
+  "year": 2023,
+  "venue": "ECMR 2023",
+  "summary": "A door-presence and open/closed-status detector adapted to environment-specific mobile-robot operation.",
+  "mechanisms": [
+    {
+      "id": "door-presence-status-qualification",
+      "name": "Door presence and status qualification",
+      "description": "Separates door detection from open/closed state because the state changes the topological connectivity available to a robot.",
+      "inputs": [
+        "robot camera image",
+        "environment-specific observations"
+      ],
+      "outputs": [
+        "door presence",
+        "open/closed status"
+      ],
+      "limitations": "Environment-specific fine-tuning and robot-camera evaluation do not establish cross-building generalization, passage clearance, or safe human guidance."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "interaction-ready",
+    "door-status"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

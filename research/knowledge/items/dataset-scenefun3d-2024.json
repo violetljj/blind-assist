@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "dataset-scenefun3d-2024",
+  "kind": "dataset",
+  "title": "SceneFun3D: Fine-Grained Functionality and Affordance Understanding in 3D Scenes",
+  "canonical_ref": "https://scenefun3d.github.io/documentation/",
+  "authors": [
+    "Alexandros Delitzas",
+    "Ayça Takmaz",
+    "Federico Tombari",
+    "Robert W. Sumner",
+    "Marc Pollefeys",
+    "Francis Engelmann"
+  ],
+  "year": 2024,
+  "venue": "CVPR 2024",
+  "summary": "A dataset, toolkit, and benchmark for grounding task-specific functional elements and affordance regions inside 3D scenes.",
+  "mechanisms": [
+    {
+      "id": "task-functional-element-annotations",
+      "name": "Task-specific functional-element annotations",
+      "description": "Represents a scene object through the fine-grained part that performs a requested function, rather than treating the parent object bounding box as the action target.",
+      "inputs": [
+        "3D scene",
+        "task description",
+        "multi-view RGB-D observations"
+      ],
+      "outputs": [
+        "functional element mask",
+        "affordance region"
+      ],
+      "limitations": "Dataset supervision and benchmark performance do not establish zero-shot transfer, phone-camera reliability, exact-instance identity, navigation completion, or user benefit."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "functional-grounding",
+    "functional-affordance"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

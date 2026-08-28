@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-rekep-2024",
+  "item_id": "paper-rekep-2024",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "relational-keypoint-constraints"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "把关键点之间的关系写成可优化、分阶段的时空约束。",
+    "project_application": "作为 action-ready handoff 的显式检查表：目标点、接近方向、间隙与阶段完成必须分别成立。",
+    "modifications": "不接入机器人控制；只将约束转成可审计 verifier，且 UNKNOWN 不得被优化成成功。",
+    "expected_effect": "把“靠近目标”拆成可见、对齐、间隙、接触/完成等可证伪条件。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：冻结候选动作点，仅增加一组预注册关系约束；在有效、不可达、被遮挡和缺 truth 对照上测 false-ready 与 evaluable coverage。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "ReKep 的机器人操控结果不能外推到 BlindAssist；约束通过只是命名 verifier 条件成立，不证明真实交互、用户收益或安全。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://rekep-robot.github.io/",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

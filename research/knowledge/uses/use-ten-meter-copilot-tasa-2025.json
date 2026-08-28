@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-tasa-2025",
+  "item_id": "paper-tasa-2025",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "task-aware-2d-guided-3d-refinement"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "任务感知的 2D affordance 选择与 3D 几何细化。",
+    "project_application": "作为功能部件边界粗糙时的候选表示，检验几何细化是否在冻结下游下真正改变可用动作区。",
+    "modifications": "仅替换 part representation；实例、相机轨迹、下游 handoff 和 evaluator 全部冻结。",
+    "expected_effect": "减少功能区域越界到相邻表面，并提高冻结动作点选择器的结构可达性。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：在功能部件边界附近构造新鲜正负点，仅比较无细化与 3D refinement；主指标为 boundary false-positive、point hit 和 downstream reachability。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "原作数据与任务上的分割结果不能外推到手机深度、自然视频、exact-instance 或真实交互；若下游仍结构不可达，不得继续调阈值救结果。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://github.com/LianHe00/TASA-main",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-unilm-nav-2026",
+  "item_id": "paper-unilm-nav-2026",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "view-affordance-base-pose"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "视角选择、任务 affordance 点与 geometry-aware base pose。",
+    "project_application": "用于 L10 最后一步，把“目标可见/已接近”与“站位已可交互”分开。",
+    "modifications": "不接入机器人控制；把 base-pose 条件改写为用户侧可见、可达、净空、方位四项 verifier。",
+    "expected_effect": "降低 near-target 但无法伸手、被遮挡或朝向错误时的过早完成。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：冻结目标定位，仅加入 interaction-ready verifier；在近但不可达、可达但遮挡、正确站位和 absent 对照上测 false-ready 与 valid-ready coverage。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "UniLM-Nav 的零样本机器人结果尚未在 BlindAssist 复现；即使 verifier 有效，也不能推出导航完成、用户收益或安全。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://unilm-nav.github.io/",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

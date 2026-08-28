@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-door-status-detection-2023",
+  "item_id": "paper-door-status-detection-2023",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "door-presence-status-qualification"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "门存在与 open/closed 状态的分离判断。",
+    "project_application": "用于门洞候选的状态资格检查，避免“检测到门”直接升级为可通过。",
+    "modifications": "不沿用 environment-specific outcome 后调参；新建筑必须视为新 source/cohort，并保留 unknown 状态。",
+    "expected_effect": "减少关闭门被误判成当前 passage 的 false-ready。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：冻结 door detector，只新增 status head；在新鲜开/关/半开/遮挡集上测 status accuracy、false-traversable 和 UNKNOWN rate。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "环境专用检测结果不能外推到开放建筑或手机视角；状态正确仍不证明净空、路线可达、用户收益或安全。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2203.03959",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

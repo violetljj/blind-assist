@@ -171,6 +171,78 @@
       }
     },
     {
+      "id": "functional_grounding",
+      "name": "功能部件与任务落点",
+      "description": "实例身份已正确，但请求的功能被落到父对象、错误部件或仅有语义相关而无实际功能的区域。",
+      "symptom_signals": [
+        "wrong functional part", "functional element", "parent object box", "whole object box", "handle", "button", "switch", "seat surface", "wrong part", "功能部件", "功能落点", "父对象框", "整物体框", "把手", "按钮", "开关", "座位接触面", "部件错误"
+      ],
+      "mechanism_signals": [
+        "functionality", "functional element", "functional part", "affordance segmentation", "part grounding", "task-conditioned part", "功能部件", "功能分割", "任务落点", "部件定位"
+      ],
+      "required_evidence": [
+        "已冻结的 exact-instance 候选与身份 truth", "任务所需功能部件的独立标注", "父对象与相邻非功能部件负例"
+      ],
+      "experiment": {
+        "hypothesis": "实例绑定已成立，故障来自父对象表示没有提供任务所需的细粒度功能部件。",
+        "baseline": "冻结 exact-instance 候选、视图、几何、下游 handoff 和 evaluator，使用父对象框或现有部件表示。",
+        "single_change": "只加入一种 task-conditioned functional-element 表示。",
+        "cohort": "包含真功能部件、相邻非功能部件、同类实例和 absent 对照的最小新鲜集。",
+        "primary_metric": "functional_part_hit_rate、wrong_part_count 与 parent_box_false_handoff",
+        "stop_conditions": ["真实例未进入候选", "需要改变身份分母或 outcome 后调阈值", "功能标注来自模型自身输出"],
+        "not_evaluable_conditions": ["没有独立功能部件 truth", "任务无法唯一规定所需功能"],
+        "claim_ceiling": "只能证明命名 cohort 上的功能部件 grounding，不证明动作可达、完成、用户收益或安全。"
+      }
+    },
+    {
+      "id": "actionable_region",
+      "name": "可行动区域与关键点",
+      "description": "功能部件已找到，但动作点、接触区、关键点或 actionability 表示落在不可操作位置。",
+      "symptom_signals": [
+        "action point", "actionable point", "keypoint", "contact region", "affordance point", "mask centroid", "box center", "where to act", "wrong side", "动作点", "操作点", "可行动区域", "关键点", "接触区", "掩码质心", "框中心", "错误侧面"
+      ],
+      "mechanism_signals": [
+        "actionability", "action keypoint", "affordance point", "contact map", "relational keypoint", "action proposal", "可行动", "动作关键点", "接触点", "动作建议"
+      ],
+      "required_evidence": [
+        "冻结的功能部件 mask", "动作点或接触区独立 truth", "不可操作点与 absent 对照"
+      ],
+      "experiment": {
+        "hypothesis": "功能部件正确，但 box center 或 mask centroid 不是执行目标动作的有效点。",
+        "baseline": "冻结实例、功能部件、深度、下游与 evaluator，使用当前动作点规则。",
+        "single_change": "只替换为一种 actionability/keypoint/contact-region 表示。",
+        "cohort": "包含有效动作点、不可动点、遮挡点和 absent 对照的最小新鲜集。",
+        "primary_metric": "point_in_actionable_region、3d_valid_rate 与 false_ready_count",
+        "stop_conditions": ["功能部件本身错误", "需要同步修改深度或完成阈值", "把 proposal 分数当 outcome truth"],
+        "not_evaluable_conditions": ["没有动作点或接触区 truth", "深度与图像未对齐"],
+        "claim_ceiling": "只能证明命名 action-point 表示的单因素作用，不证明物理可达、真实动作成功或安全。"
+      }
+    },
+    {
+      "id": "interaction_readiness",
+      "name": "交互就绪与站位",
+      "description": "目标和动作区可见或已接近，但可达性、净空、朝向、通行状态或人体使用条件尚未满足。",
+      "symptom_signals": [
+        "interaction ready", "manipulation ready", "docking point", "clearance", "reachable", "interactable", "passage", "door status", "visible but not reachable", "near but unusable", "wrong side", "交互就绪", "可达", "净空", "站位", "朝向", "可通过", "门状态", "看见但够不到", "靠近但不可用", "错误侧面"
+      ],
+      "mechanism_signals": [
+        "docking", "base pose", "clearance", "reachability", "interactability", "human affordance", "passage", "door status", "interaction-aware", "站位", "净空", "可达性", "人体可供性", "通行"
+      ],
+      "required_evidence": [
+        "目标/动作区与用户或 agent 几何", "可见、可达、净空、朝向或通行状态的独立标注", "near-but-not-ready 负例"
+      ],
+      "experiment": {
+        "hypothesis": "目标定位成立，但缺少 interaction-ready verifier 导致在不可用站位过早交接。",
+        "baseline": "冻结目标、动作点、导航轨迹和 completion evaluator，使用距离或可见性基线。",
+        "single_change": "只加入一个预注册的 interaction-ready predicate 或站位表示。",
+        "cohort": "包含近但不可达、可达但遮挡、净空不足、状态未知和正确站位的最小新鲜集。",
+        "primary_metric": "false_ready=0、valid_ready_coverage 与 NOT_EVALUABLE denominator",
+        "stop_conditions": ["把接近或可见直接当完成", "缺失 predicate 被 VLM 或默认值补成成功", "同时修改导航或 completion 阈值"],
+        "not_evaluable_conditions": ["缺少用户/agent 几何", "没有独立交互就绪 truth", "门或 passage 当前状态未知"],
+        "claim_ceiling": "只能证明命名交互就绪条件，不证明动作结果、端到端导航、用户收益或安全。"
+      }
+    },
+    {
       "id": "handoff_completion",
       "name": "交接与完成判定",
       "description": "把 referent、affordance、waypoint、可见或接近误当作 arrival/completion。",
@@ -244,10 +316,10 @@
     }
   ],
   "route_profiles": {
-    "dtr-r0": ["dtr", "dynamic travel risk", "route tube", "route_tube", "riskseg", "metric depth", "occupancy flow"],
+    "obstacle-avoidance": ["obstacle-avoidance", "obstacle avoidance", "避障", "dtr-r0", "dtr", "dynamic travel risk", "route tube", "route_tube", "riskseg", "metric depth", "occupancy flow"],
     "goal-copilot-p0": ["goal-copilot", "goal copilot", "grail", "sage-r", "semantic anchor", "spatial layout", "nearid"],
     "goal-copilot-p2": ["goal-copilot-p2", "abotn", "official waypoint"],
-    "l10-r0": ["l10", "ten meter", "reference-bound", "reacquisition"],
+    "ten-meter-copilot": ["ten-meter-copilot", "ten meter copilot", "十米副驾", "l10-r0", "l10", "ten meter", "reference-bound", "reacquisition"],
     "grail-r1c-p": ["grail-r1c-p", "orient anything", "paired orientation"],
     "sanpo": ["sanpo"],
     "taro-r0": ["taro"],
@@ -256,6 +328,78 @@
     "rcle": ["rcle"]
   },
   "mechanism_overrides": {
+    "dataset-scenefun3d-2024#task-functional-element-annotations": {
+      "failure_layers": ["functional_grounding"],
+      "signatures": ["parent object box", "functional element", "功能部件", "父对象框"]
+    },
+    "paper-fun3du-2025#task-conditioned-multiview-functional-grounding": {
+      "failure_layers": ["functional_grounding"],
+      "signatures": ["multiview functional part", "wrong functional part", "多视角功能部件"]
+    },
+    "paper-fungraph-2025#functional-part-scene-graph": {
+      "failure_layers": ["functional_grounding"],
+      "signatures": ["functional part scene graph", "object to functional part", "功能部件图"]
+    },
+    "paper-tasa-2025#task-aware-2d-guided-3d-refinement": {
+      "failure_layers": ["functional_grounding"],
+      "signatures": ["task-aware affordance segmentation", "functional boundary", "功能区域边界"]
+    },
+    "paper-t-funs3d-2026#hierarchical-instance-to-functional-part": {
+      "failure_layers": ["identity_binding", "functional_grounding"],
+      "signatures": ["instance then functional part", "实例到功能部件"]
+    },
+    "paper-oval-prompt-2024#open-vocabulary-part-affordance-prompting": {
+      "failure_layers": ["functional_grounding"],
+      "signatures": ["open vocabulary affordance part", "开放词汇功能部件"]
+    },
+    "paper-robopoint-2025#instruction-to-action-keypoint": {
+      "failure_layers": ["actionable_region"],
+      "signatures": ["action keypoint", "box center is not actionable", "动作关键点", "框中心不可操作"]
+    },
+    "paper-where2act-2021#per-point-actionability-and-action-proposals": {
+      "failure_layers": ["actionable_region"],
+      "signatures": ["where to act", "per-point actionability", "逐点可行动"]
+    },
+    "paper-rekep-2024#relational-keypoint-constraints": {
+      "failure_layers": ["actionable_region", "interaction_readiness"],
+      "signatures": ["relational keypoint constraint", "staged readiness", "关系关键点约束"]
+    },
+    "paper-passage-aware-structural-mapping-2026#passage-evidence-structural-map": {
+      "failure_layers": ["interaction_readiness"],
+      "signatures": ["passage not door rectangle", "traversable opening", "可通行开口"]
+    },
+    "paper-door-status-detection-2023#door-presence-status-qualification": {
+      "failure_layers": ["interaction_readiness"],
+      "signatures": ["door open closed status", "door is not passage", "门状态", "门不等于通道"]
+    },
+    "paper-doorbot-2025#haptic-closed-loop-door-function": {
+      "failure_layers": ["interaction_readiness", "handoff_completion"],
+      "signatures": ["independent door outcome receipt", "haptic outcome", "独立开门回执"]
+    },
+    "paper-aros-2023#one-shot-human-scene-affordance": {
+      "failure_layers": ["interaction_readiness"],
+      "signatures": ["human contact clearance", "seat blocked", "人体接触净空", "座位被堵"]
+    },
+    "paper-unilm-nav-2026#view-affordance-base-pose": {
+      "failure_layers": ["interaction_readiness"],
+      "signatures": ["manipulation-ready base pose", "near but not reachable", "交互就绪站位"]
+    },
+    "paper-sceneteract-2026#agent-conditioned-functional-verification": {
+      "failure_layers": ["functional_grounding", "interaction_readiness"],
+      "signatures": ["visibility reachability interactability clearance", "语义正确物理不可用", "看见但够不到", "可达", "净空"]
+    },
+    "paper-contacthandover-2024#human-contact-aware-handover": {
+      "failure_layers": ["interaction_readiness", "handoff_completion"],
+      "signatures": ["human contact visibility reachability", "人类接触区可达"]
+    },
+    "paper-intent-handover-2026#intent-and-human-usage-region-handover": {
+      "failure_layers": ["functional_grounding", "handoff_completion"],
+      "signatures": ["intent-conditioned usage region", "意图使用区域"]
+    },
+    "paper-moto-2025#interaction-keypoint-docking-optimization": {
+      "failure_layers": ["actionable_region", "interaction_readiness"],
+      "signatures": ["interaction keypoint docking point", "wrong side docking", "交互关键点站位"]
+    },
     "paper-occupancy-flow-fields-for-motion-forecasting-in-autonomous-driving#dtr-dr46": {
       "failure_layers": ["geometry_motion", "temporal_belief"],
       "signatures": ["spatiotemporal occupancy flow", "static occupancy unreachable", "closing signal", "静态占据不可达", "因果占据流"]

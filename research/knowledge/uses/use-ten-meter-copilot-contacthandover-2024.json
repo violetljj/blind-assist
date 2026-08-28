@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-contacthandover-2024",
+  "item_id": "paper-contacthandover-2024",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "human-contact-aware-handover"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "保留人类接触区，并以可见性与可达性优化交付姿态。",
+    "project_application": "用于“把功能目标交到人可用的位置”这一完成定义，而不是只判断物体在画面中心。",
+    "modifications": "不继承机器人抓取；转译为 contact region 可见、可达、未被遮挡的交接检查。",
+    "expected_effect": "减少视觉上已对准但用户无法自然接触目标时的 false completion。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：冻结目标与站位，在可见/遮挡、可达/不可达的 2×2 小型新鲜集上仅加入 human-contact verifier；主指标为 false_completion 与 valid_handoff coverage。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "论文在 27 个物体上的可见性/可达性结果属于机器人交接；BlindAssist 未复现，不能推出盲人偏好、导航完成、产品或安全。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2404.01402",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

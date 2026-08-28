@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "use-dtr-r0-dtr-dr44",
   "item_id": "paper-scene-informer-anchor-based-occlusion-inference-and-trajectory-predictio",
-  "route": "dtr-r0",
+  "route": "obstacle-avoidance",
   "mechanism_ids": [
     "dtr-dr44"
   ],

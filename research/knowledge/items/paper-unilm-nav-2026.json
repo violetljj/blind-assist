@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "id": "paper-unilm-nav-2026",
+  "kind": "paper",
+  "title": "UniLM-Nav: A Unified Framework for Zero-Shot Last-Mile Navigation",
+  "canonical_ref": "https://unilm-nav.github.io/",
+  "authors": [
+    "Zhuofan Zhang",
+    "Tianxu Wang",
+    "Guoxi Zhang",
+    "Yixiong Lin",
+    "Xilin Wang",
+    "Hongming Xu",
+    "Qing Li",
+    "Song-Chun Zhu",
+    "Lifeng Fan"
+  ],
+  "year": 2026,
+  "venue": "arXiv",
+  "summary": "A last-mile navigation framework that selects a view, predicts a task-affordance point, and derives a geometry-aware manipulation-ready base pose.",
+  "mechanisms": [
+    {
+      "id": "view-affordance-base-pose",
+      "name": "View, affordance point, and manipulation-ready base pose",
+      "description": "Jointly reasons over what view exposes the target, where the interaction should occur, and where the base should dock so the target is reachable.",
+      "inputs": [
+        "multi-view observations",
+        "task instruction",
+        "scene geometry"
+      ],
+      "outputs": [
+        "selected view",
+        "affordance point",
+        "base pose"
+      ],
+      "limitations": "Robot last-mile benchmarks and base-pose success do not establish blind-user guidance, phone localization, exact-instance identity, or safe navigation."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "interaction-ready",
+    "last-mile",
+    "docking"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

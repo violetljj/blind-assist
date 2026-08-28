@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "paper-aros-2023",
+  "kind": "paper",
+  "title": "AROS: Affordance Recognition with One-Shot Human Stances",
+  "canonical_ref": "https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2023.1076780/full",
+  "authors": [
+    "Abel Pacheco-Ortega",
+    "Walterio Mayol-Cuevas"
+  ],
+  "year": 2023,
+  "venue": "Frontiers in Robotics and AI",
+  "summary": "A one-shot geometric descriptor of human-scene interactions using proximity and clearance around articulated human poses.",
+  "mechanisms": [
+    {
+      "id": "one-shot-human-scene-affordance",
+      "name": "One-shot human-scene affordance",
+      "description": "Characterizes where a human pose can interact with a scene using contact-proximity and collision-clearance geometry rather than object class alone.",
+      "inputs": [
+        "3D scene mesh",
+        "example human stance"
+      ],
+      "outputs": [
+        "human-affordance locations",
+        "posed human-body proposals"
+      ],
+      "limitations": "Requires 3D geometry and an example stance; crowd preference and physical plausibility do not establish mobile navigation, accessibility benefit, or safety."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "interaction-ready",
+    "human-affordance",
+    "clearance"
+  ],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

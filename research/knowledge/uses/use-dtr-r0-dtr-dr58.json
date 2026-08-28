@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "use-dtr-r0-dtr-dr58",
   "item_id": "paper-ovpc-mesh-3d-free-space-representation-for-local-ground-vehicle-navigati",
-  "route": "dtr-r0",
+  "route": "obstacle-avoidance",
   "mechanism_ids": [
     "dtr-dr58"
   ],

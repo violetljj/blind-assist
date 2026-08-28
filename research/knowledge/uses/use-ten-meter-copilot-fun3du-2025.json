@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-fun3du-2025",
+  "item_id": "paper-fun3du-2025",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "task-conditioned-multiview-functional-grounding"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "任务条件、上下文对象、功能部件分割与多视角一致性。",
+    "project_application": "用于检验 L10 是否能在已锁定实例内稳定定位功能部件，而不是继续扩大类别或候选搜索。",
+    "modifications": "冻结 instance lock；把 LLM 只用于产生任务相关部件提示，不授予它 outcome truth 或完成判定权限。",
+    "expected_effect": "跨视角保留同一功能部件，并减少单视图遮挡导致的错误功能落点。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：冻结实例与视图序列，仅加入多视角功能部件聚合；在短遮挡、视角切换和相邻部件对照上测 part IoU/point hit 与 wrong-part flip。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "原作在其 3D 数据与协议上的结果不等于 BlindAssist 手机视频复现；成功也只支持命名 cohort 的功能部件定位，不支持 arrival、completion、产品或安全结论。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://github.com/tev-fbk/fun3du",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

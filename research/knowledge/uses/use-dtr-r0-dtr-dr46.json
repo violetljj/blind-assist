@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "use-dtr-r0-dtr-dr46",
   "item_id": "paper-occupancy-flow-fields-for-motion-forecasting-in-autonomous-driving",
-  "route": "dtr-r0",
+  "route": "obstacle-avoidance",
   "mechanism_ids": [
     "dtr-dr46"
   ],

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-robopoint-2025",
+  "item_id": "paper-robopoint-2025",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "instruction-to-action-keypoint"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "从指令直接预测图像中的可行动关键点。",
+    "project_application": "把 L10 的功能部件进一步压缩为可交给几何模块的动作点候选。",
+    "modifications": "关键点必须绑定现有 exact instance，并接受深度、可见性和可达性验证；不得从点存在直接宣告完成。",
+    "expected_effect": "减少父框中心或掩码质心落在不可操作区域的错误。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：冻结实例、深度和下游，在按钮/把手/座位小集上仅替换 box-center 为 action keypoint；主指标为 point-in-functional-region、3D-valid rate 和 false-completion。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "RoboPoint 的论文结果只支持其数据与机器人任务；BlindAssist 尚未复现，关键点命中也不等于可达、完成、用户收益或安全。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://proceedings.mlr.press/v270/yuan25c.html",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-t-funs3d-2026",
+  "item_id": "paper-t-funs3d-2026",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "hierarchical-instance-to-functional-part"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "先选任务相关实例，再分割该实例的功能组件。",
+    "project_application": "对应 L10 中 identity binding 已成立但 action target 仍过粗的故障层。",
+    "modifications": "复用现有 public-reference instance lock；层级方法不得重新选择一个仅凭类别更像的实例。",
+    "expected_effect": "将 wrong-instance 与 wrong-functional-part 两类错误分开，并降低类别先验覆盖 exact-instance 的风险。"
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "未执行；最小证伪实验：冻结 exact-instance 候选，在同类多实例场景中仅加入层级 part head；主指标为 identity_preservation、functional_part_hit 和 wrong-instance regression。",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "该方法不能替代 exact-instance authority；BlindAssist 尚未复现，成功也不证明交互区可达、完成事件、产品或安全。"
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://t-funs3d.github.io/",
+      "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Added from the user-provided directed literature review as a candidate only; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}
