@@ -7,6 +7,7 @@ R6_DIRECT_METRIC_SINGLE_FACTOR_NOT_EVALUABLE_STATIC_OCCUPANCY_MATCHER_UNREACHABL
 R7_P_CAUSAL_OCCUPANCY_FLOW_DEVELOPMENT_GATE_NOT_MET_NO_R8 /
 DTR_M1_O_POINT_VELOCITY_ORACLE_CEILING_NOT_MET_CLOSE_SCENE_FLOW_ROUTE /
 DTR_M2_D_EXTENT_GAP_NOT_SUPPORTED_NO_FRESH_M2_O /
+DTR_M3_D_EVALUATOR_CIRCLE_OBB_SEMANTICS_MISMATCH_NO_FRESH_M3_O /
 R4_NOT_OPENED`
 
 ## Result first
@@ -321,6 +322,56 @@ Evidence:
 - `artifacts.local/evidence/dtr-m2/extent-gap-audit/result.extent-gap.svg`,
   SHA-256
   `908bb989f550263e7930933329668e3dc4da15275f996ed0ecaab16f4ad8fdb9`.
+
+## DTR-M3-D realized-future truth-contract terminal
+
+M3-D corrects the remaining M2 interpretation before any forecasting work. It
+is a scorer-side, read-only decomposition on the same consumed eight rows. At
+each M2 diagnostic origin it evaluates the exact future-discrete evaluator
+circle, realized future OBB, realized center with current OBB, and M1
+constant-velocity center with realized future shape. A discrete CV/current-OBB
+control and the original continuous M2 control are retained. No arm changes a
+prediction, event, threshold, lifecycle, or gate.
+
+All three repeated `pedestrian:35` dropout rows are
+`EVAL_CIRCLE_HIT_REALIZED_OBB_MISS`. At the evaluator's first contact frame
+185, the circularized contract is 0.0209 m inside its threshold, while the
+realized native OBB remains 0.0374 m outside the 0.65 m route body. The
+realized-center versus M1-CV center residual is only 0.0103 m at that frame.
+The contact flip is therefore explained by circle-versus-OBB semantics, not by
+demonstrated future-dynamics headroom. The longer 0.8 s counterfactual
+realized-center/current-shape arm does hit later, but the actual realized OBB
+never hits; that hybrid alone cannot authorize a dynamics model.
+
+The five M1 new/modified false segments also split cleanly. Three target-owned
+risks (`pedestrian:26`, `pedestrian:3`, and `pedestrian:5`) remain realized-OBB
+misses and are genuine constant-transport false positives. Two are attribution
+errors: the `pedestrian:32` row is driven by `pedestrian:26`, and the
+`pedestrian:9` row by `pedestrian:34`. The latter source component is genuinely
+positive under both evaluator-circle and realized-OBB geometry, but was bound
+to the wrong target row.
+
+Terminal:
+`DTR_M3_D_EVALUATOR_CIRCLE_OBB_SEMANTICS_MISMATCH_NO_FRESH_M3_O`. Do not open
+M3-O, learned/residual future occupancy, route-conditioned forecasting, R8, or
+another scene-flow estimator. First choose and freeze the intended event
+semantics: circularized proximity or oriented-body contact. If oriented-body
+collision is the intended claim, the current evaluator must be revised and a
+fresh cohort must be rescored before any dynamics ceiling. M3-D does not claim
+that circular proximity is intrinsically wrong; it proves that it is not the
+same truth contract as OBB collision on the decisive event.
+
+Evidence:
+
+- `artifacts.local/evidence/dtr-m3/realized-future-contract-decomposition/result.json`,
+  SHA-256
+  `2cdd82e4a1677c1d03042635aaeac06cac7ec3a07e3d14318945791efc04e297`.
+- `artifacts.local/evidence/dtr-m3/realized-future-contract-decomposition/result.contract-decomposition.csv`,
+  SHA-256
+  `e4b815e5e936dcc9893ffc1b750f7461921728db6f100806e7d04961a860e79a`.
+- `artifacts.local/evidence/dtr-m3/realized-future-contract-decomposition/result.contract-decomposition.svg`,
+  SHA-256
+  `306856d96f41dcb9e81415f530f9398da4ebf03664e7b91f1621c1bbdc394858`.
 
 The source split explains why pooling is not enough:
 
@@ -664,6 +715,10 @@ python research/active/dtr-r0/dtr_m1_point_velocity_oracle.py `
 python research/active/dtr-r0/dtr_m2_extent_gap_audit.py `
   --m1-result artifacts.local/evidence/dtr-m1/point-velocity-oracle/result.json `
   --output artifacts.local/evidence/dtr-m2/extent-gap-audit/result.json
+
+python research/active/dtr-r0/dtr_m3_realized_future_contract_decomposition.py `
+  --m2-result artifacts.local/evidence/dtr-m2/extent-gap-audit/result.json `
+  --output artifacts.local/evidence/dtr-m3/realized-future-contract-decomposition/result.json
 ```
 
 ## Claim ceiling
@@ -711,3 +766,10 @@ window. Its three `POINT_MISS_FOOTPRINT_MISS` dropout trials and five
 constant-M1-velocity swept-footprint hypothesis. They are not a general
 negative on time-varying occupancy, route-conditioned forecasting, or body
 collision geometry, and they authorize no fresh M2-O or product claim.
+
+DTR-M3-D opens realized future labels only for read-only truth-contract
+decomposition. Its decisive event is positive under the evaluator circle but
+negative under every realized future OBB. It therefore closes fresh M3-O until
+the intended contact semantics are chosen and rescored on fresh evidence. The
+result is not learned forecasting, causal future-information, product, or
+safety evidence.

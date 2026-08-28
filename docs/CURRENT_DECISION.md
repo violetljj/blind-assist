@@ -230,6 +230,30 @@ different route/contact semantics, or both, but M2-D does not adjudicate those
 alternatives and does not authorize route-conditioned forecasting, R8, or a
 different scene-flow estimator.
 
+M3-D has now performed the required realized-future contract decomposition
+without changing any prediction or event. For all three repeated
+`pedestrian:35` dropout rows, the evaluator's realized-center circular radius
+hits while the realized future native OBB misses. At first contact frame 185,
+the evaluator circle is 0.0209 m inside threshold and the true oriented box is
+0.0374 m outside the 0.65 m route body; the realized-center versus M1-CV center
+residual is only 0.0103 m. Thus the decisive flip is circle-versus-OBB truth
+semantics, not demonstrated causal future-dynamics headroom.
+
+The false rows separate into three target-owned realized-OBB misses--genuine
+constant-transport false positives--and two other-component attribution
+errors. In particular, `pedestrian:9` is triggered by `pedestrian:34`, whose
+own realized future is positive under both circle and OBB contracts.
+
+The terminal is
+`DTR_M3_D_EVALUATOR_CIRCLE_OBB_SEMANTICS_MISMATCH_NO_FRESH_M3_O`. Keep M3-O,
+learned/residual future occupancy, route-conditioned forecasting, R8, and
+scene-flow estimator competition closed. The next admissible action is to
+choose and freeze the event meaning. If the intended claim is oriented-body
+collision, revise the evaluator and rescore a fresh cohort before testing any
+dynamics model. If circularized proximity is intentional, describe it as
+such; M3-D establishes a semantics difference, not that one definition is
+universally correct.
+
 ## What stops here
 
 - Do not record the superseded 24 canary or 120 staged local RGB clips.

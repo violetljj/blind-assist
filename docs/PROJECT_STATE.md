@@ -87,6 +87,18 @@ the 0.65 m route body. All five M1-induced/modified false segments were
 from this extent-only hypothesis. The discrepancy between realized future
 native extent and constant-velocity current-footprint geometry remains
 localized but unresolved; it does not reopen forecasting or R8.
+M3-D has now decomposed that discrepancy with realized future labels. All
+three repeated `pedestrian:35` rows are
+`EVAL_CIRCLE_HIT_REALIZED_OBB_MISS`: at first evaluator contact, the circle is
+0.0209 m inside threshold while the realized OBB is 0.0374 m outside, with
+only 0.0103 m realized-center versus M1-CV residual. Of the five M1 false
+segments, three target-owned rows are realized-OBB forecast false positives
+and two are other-component attribution errors. The terminal is
+`DTR_M3_D_EVALUATOR_CIRCLE_OBB_SEMANTICS_MISMATCH_NO_FRESH_M3_O`.
+Fresh M3-O, residual future occupancy, route forecasting, R8, and scene-flow
+estimator work remain closed. The next decision is semantic, not a model run:
+freeze whether the event means circularized proximity or oriented-body
+contact; an OBB-contact claim requires evaluator revision and fresh rescoring.
 
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC
