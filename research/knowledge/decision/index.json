@@ -2,7 +2,7 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "1729481c1e7c13f309b9a23f8567cf53cacbd72fe312a9d7d0d0a7274fd2ccc4",
+  "source_fingerprint": "4630b6f55238ac5cd44f36610fffaf10ea8145c5141caea84fc321881dd1557b",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 223,
@@ -3860,13 +3860,14 @@
         "独立开门回执"
       ],
       "layer_scores": {
-        "geometry_motion": 6,
+        "geometry_motion": 12,
         "handoff_completion": 20,
         "identity_binding": 3,
         "interaction_readiness": 20,
         "observation_perception": 3,
+        "runtime_infrastructure": 3,
         "source_coverage": 3,
-        "temporal_belief": 3
+        "temporal_belief": 6
       },
       "routes": [
         "ten-meter-copilot"
@@ -3878,8 +3879,8 @@
           "use_state": "active",
           "reproduction_status": "mechanics_only",
           "verdict": "positive",
-          "project_application": "作为 completion 设计原则：视觉只能提出门/把手动作，完成必须由独立 outcome signal 确认。",
-          "expected_effect": "阻止把看似正确的动作点或接近姿态误当成门已打开/任务已完成。",
+          "project_application": "作为 completion 设计原则并已落入 core:assist：配对 RGB-D 微运动只形成 UNKNOWN/SET_VALUED/LOCKED 动作信念；HANDOFF_READY 还必须联合 position、visibility、grounding、orientation、reachability。",
+          "expected_effect": "阻止静态动作猜测、旧帧、多解动作点或单一接近姿态越权成为 HANDOFF_READY 或任务完成。",
           "observed_effect": "SC14 improved motion-type correctness from 7/8 static to 8/8 causal; translational direction hits from 4/7 to 7/7; mean direction error from 38.89 to 0.91 degrees; the single rotational axis passed and pivot-line error was 2.22 cm.",
           "metrics": [
             "motion_type_correct=7/8 static vs 8/8 causal",
@@ -3887,7 +3888,7 @@
             "mean_translation_error_deg=38.89 static vs 0.91 causal",
             "rotation_axis_hit=1/1; pivot_line_error_m=0.0222"
           ],
-          "claim_boundary": "Mechanics-only adaptation of the independent-outcome principle. SceneFun3D generated the motion and evaluator supplied point correspondences; no robot haptics, natural RGB-D tracking, safe user probe, reachability, arrival, HANDOFF_READY, completion, product benefit, or safety was established.",
+          "claim_boundary": "Mechanics-only adaptation of the independent-outcome principle plus a runtime fail-closed contract. SceneFun3D generated the motion and evaluator supplied point correspondences; no live paired-RGB-D provider, robot haptics, natural RGB-D tracking, safe user probe, reachability, arrival, product benefit, or safety was established. The code can authorize HANDOFF_READY only after all endpoint conditions are separately ready; it does not show that they are achievable.",
           "evidence": [
             {
               "kind": "external",
@@ -3898,12 +3899,17 @@
               "kind": "artifact",
               "ref": "artifacts.local/evidence/l10-r16/sc14-causal-micro-motion-421013-v0/result.json",
               "summary": "SC14 mechanics result, SHA-256 bb11fa3b87ea350ad793d3c62daf81e183b6806f08c82b2c1df1535677d1ca01."
+            },
+            {
+              "kind": "repo",
+              "ref": "core/assist/src/main/java/com/linnan/blindassist/goal/CausalActionGeometry.kt",
+              "summary": "Pure-Kotlin causal rigid-motion estimator, evidence admission, and five-condition handoff readiness join."
             }
           ],
           "updated_at": "2026-08-28"
         }
       ],
-      "search_text": "DoorBot: Closed-Loop Task Planning and Manipulation for Door Opening in the Wild with Haptic Feedback A closed-loop door-opening system that uses haptic feedback to verify outcomes and repair visually generated plans. ten-meter-copilot completion door closed-loop Haptic closed-loop door-function verification Uses contact feedback after an action to distinguish visual plan plausibility from actual latch, handle, and door response, then replans when the outcome disagrees. visual observation planned door action haptic feedback verified action outcome replanned manipulation Requires a robot and contact sensing; success on 20 unseen doors does not establish phone-only sensing, safe human passage, or general door coverage. independent door outcome receipt haptic outcome 独立开门回执 ten-meter-copilot 作为 completion 设计原则：视觉只能提出门/把手动作，完成必须由独立 outcome signal 确认。 阻止把看似正确的动作点或接近姿态误当成门已打开/任务已完成。 SC14 improved motion-type correctness from 7/8 static to 8/8 causal; translational direction hits from 4/7 to 7/7; mean direction error from 38.89 to 0.91 degrees; the single rotational axis passed and pivot-line error was 2.22 cm. motion_type_correct=7/8 static vs 8/8 causal translation_direction_hit=4/7 static vs 7/7 causal at 15 degrees mean_translation_error_deg=38.89 static vs 0.91 causal rotation_axis_hit=1/1; pivot_line_error_m=0.0222 Mechanics-only adaptation of the independent-outcome principle. SceneFun3D generated the motion and evaluator supplied point correspondences; no robot haptics, natural RGB-D tracking, safe user probe, reachability, arrival, HANDOFF_READY, completion, product benefit, or safety was established."
+      "search_text": "DoorBot: Closed-Loop Task Planning and Manipulation for Door Opening in the Wild with Haptic Feedback A closed-loop door-opening system that uses haptic feedback to verify outcomes and repair visually generated plans. ten-meter-copilot completion door closed-loop Haptic closed-loop door-function verification Uses contact feedback after an action to distinguish visual plan plausibility from actual latch, handle, and door response, then replans when the outcome disagrees. visual observation planned door action haptic feedback verified action outcome replanned manipulation Requires a robot and contact sensing; success on 20 unseen doors does not establish phone-only sensing, safe human passage, or general door coverage. independent door outcome receipt haptic outcome 独立开门回执 ten-meter-copilot 作为 completion 设计原则并已落入 core:assist：配对 RGB-D 微运动只形成 UNKNOWN/SET_VALUED/LOCKED 动作信念；HANDOFF_READY 还必须联合 position、visibility、grounding、orientation、reachability。 阻止静态动作猜测、旧帧、多解动作点或单一接近姿态越权成为 HANDOFF_READY 或任务完成。 SC14 improved motion-type correctness from 7/8 static to 8/8 causal; translational direction hits from 4/7 to 7/7; mean direction error from 38.89 to 0.91 degrees; the single rotational axis passed and pivot-line error was 2.22 cm. motion_type_correct=7/8 static vs 8/8 causal translation_direction_hit=4/7 static vs 7/7 causal at 15 degrees mean_translation_error_deg=38.89 static vs 0.91 causal rotation_axis_hit=1/1; pivot_line_error_m=0.0222 Mechanics-only adaptation of the independent-outcome principle plus a runtime fail-closed contract. SceneFun3D generated the motion and evaluator supplied point correspondences; no live paired-RGB-D provider, robot haptics, natural RGB-D tracking, safe user probe, reachability, arrival, product benefit, or safety was established. The code can authorize HANDOFF_READY only after all endpoint conditions are separately ready; it does not show that they are achievable."
     },
     {
       "id": "paper-doppelgangers-learning-to-disambiguate-images-of-similar-structures#goal-audit-37",

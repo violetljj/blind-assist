@@ -571,9 +571,30 @@ safe probing, collision-free reachability, body orientation, arrival,
 source is passive natural before/after RGB-D motion or an explicitly authorized
 benign micro-interaction protocol; static action-axis guessing is closed.
 
+### Runtime landing: causal action belief cannot bypass endpoint readiness
+
+The SC14 representation now has a pure-Kotlin runtime contract in
+`core/assist/.../goal/CausalActionGeometry.kt`. It fits paired parent-frame 3-D
+points with a Horn rigid transform, keeps low-motion or high-residual evidence
+`SET_VALUED`, and emits a signed translation axis or rotation axis plus a
+gauge-fixed pivot line only as `LOCKED`. Admission is fail-closed on provider
+identity, goal/session/parent binding, exact current frame, comparable clock,
+availability, and expiry.
+
+`GoalHandoffEvent.HandoffReady` now requires the result of an endpoint join.
+That join accepts only a current `LOCKED` action belief together with `READY`
+position, visibility, grounding, orientation, and reachability. A blocked join
+is rejected by the reducer, while `CompletedByUser` still requires the existing
+explicit button or voice confirmation. This is implementation landing, not a
+new empirical result: no live paired-RGB-D provider has been admitted, the
+SceneFun3D canary cannot enter the product path, and no arrival, product, user,
+or safety claim changes.
+
 Implementations: `scenefun3d_action_ready_pose.py`,
 `scenefun3d_decoupled_action_pose.py`, and
-`scenefun3d_causal_action_probe.py`. Evidence:
+`scenefun3d_causal_action_probe.py`; runtime bridge:
+`core/assist/src/main/java/com/linnan/blindassist/goal/CausalActionGeometry.kt`.
+Evidence:
 
 - SC12: `artifacts.local/evidence/l10-r14/sc12-task-conditioned-dual-axis-action-pose-v0/result.json`,
   SHA-256 `6373cb5595a43a824649b852b5771a3c096e1957ae0910f87be7671ef46156ce`.

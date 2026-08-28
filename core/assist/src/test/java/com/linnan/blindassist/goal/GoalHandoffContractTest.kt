@@ -6,6 +6,8 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import com.linnan.blindassist.vision.FrameClockDomain
+import com.linnan.blindassist.vision.FrameStamp
 
 class GoalHandoffContractTest {
     @Test
@@ -14,7 +16,11 @@ class GoalHandoffContractTest {
         val approach = accepted(found.state, GoalHandoffEvent.Approach)
         val handoff = accepted(
             approach.state,
-            GoalHandoffEvent.HandoffReady(1_000L, "CURRENT_FRAME_HANDOFF_READY")
+            GoalHandoffEvent.HandoffReady(
+                1_000L,
+                "CURRENT_FRAME_HANDOFF_READY",
+                readyDecision("goal-1", "session-1")
+            )
         )
 
         assertNull(handoff.completionReceipt)
@@ -49,7 +55,7 @@ class GoalHandoffContractTest {
         val found = accepted(inactive, GoalHandoffEvent.Found("g", "s"))
         val prematureHandoff = GoalHandoffReducer.reduce(
             found.state,
-            GoalHandoffEvent.HandoffReady(2L, "too-early")
+            GoalHandoffEvent.HandoffReady(2L, "too-early", readyDecision("g", "s"))
         )
         assertTrue(prematureHandoff is GoalHandoffTransition.Rejected)
         assertSame(found.state, prematureHandoff.state)
@@ -79,6 +85,38 @@ class GoalHandoffContractTest {
 
         assertTrue(result is GoalHandoffTransition.Rejected)
         assertSame(handoff.state, result.state)
+    }
+
+    @Test
+    fun incompleteEndpointOrSetValuedActionCannotCreateHandoffReady() {
+        val found = accepted(GoalHandoffState.Inactive, GoalHandoffEvent.Found("g", "s"))
+        val approach = accepted(found.state, GoalHandoffEvent.Approach)
+        val evidence = endpointEvidence(
+            goalId = "g",
+            sessionId = "s",
+            reachability = GoalEndpointCondition.UNKNOWN,
+            actionState = ActionGeometryBeliefState.SET_VALUED
+        )
+        val decision = GoalHandoffReadinessGuard.evaluate(
+            evidence = evidence,
+            expectedGoalId = "g",
+            expectedSessionId = "s",
+            expectedParentBindingId = "binding-1",
+            currentFrame = evidence.currentFrame,
+            decisionAtNs = 30L,
+            decisionClockDomain = FrameClockDomain.ANDROID_ELAPSED_REALTIME
+        )
+
+        assertEquals(
+            GoalHandoffReadinessDecision.Blocked(GoalHandoffReadinessBlock.REACHABILITY_NOT_READY),
+            decision
+        )
+        val transition = GoalHandoffReducer.reduce(
+            approach.state,
+            GoalHandoffEvent.HandoffReady(1_000L, "must-not-pass", decision)
+        )
+        assertTrue(transition is GoalHandoffTransition.Rejected)
+        assertSame(approach.state, transition.state)
     }
 
     @Test
@@ -143,7 +181,82 @@ class GoalHandoffContractTest {
         val approach = accepted(found.state, GoalHandoffEvent.Approach)
         return accepted(
             approach.state,
-            GoalHandoffEvent.HandoffReady(handoffTimestamp, "CURRENT_FRAME_HANDOFF_READY")
+            GoalHandoffEvent.HandoffReady(
+                handoffTimestamp,
+                "CURRENT_FRAME_HANDOFF_READY",
+                readyDecision("g", "s")
+            )
+        )
+    }
+
+    private fun readyDecision(
+        goalId: String,
+        sessionId: String
+    ): GoalHandoffReadinessDecision {
+        val evidence = endpointEvidence(goalId, sessionId)
+        return GoalHandoffReadinessGuard.evaluate(
+            evidence = evidence,
+            expectedGoalId = goalId,
+            expectedSessionId = sessionId,
+            expectedParentBindingId = "binding-1",
+            currentFrame = evidence.currentFrame,
+            decisionAtNs = 30L,
+            decisionClockDomain = FrameClockDomain.ANDROID_ELAPSED_REALTIME
+        )
+    }
+
+    private fun endpointEvidence(
+        goalId: String,
+        sessionId: String,
+        reachability: GoalEndpointCondition = GoalEndpointCondition.READY,
+        actionState: ActionGeometryBeliefState = ActionGeometryBeliefState.LOCKED
+    ): GoalEndpointEvidence {
+        val frame = FrameStamp(
+            frameId = 2L,
+            capturedAtNs = 20L,
+            receivedAtNs = 21L,
+            sourceId = "camera",
+            coordinateFrame = "camera",
+            clockDomain = FrameClockDomain.ANDROID_ELAPSED_REALTIME
+        )
+        val estimate = CausalActionGeometryEstimate(
+            state = actionState,
+            motionType = if (actionState == ActionGeometryBeliefState.LOCKED) {
+                ActionMotionType.TRANSLATION
+            } else {
+                null
+            },
+            axis = if (actionState == ActionGeometryBeliefState.LOCKED) {
+                ActionVector3(1.0, 0.0, 0.0)
+            } else {
+                null
+            },
+            pairCount = 6
+        )
+        return GoalEndpointEvidence(
+            sourceContractId = GoalHandoffReadinessGuard.CONTRACT_ID,
+            goalId = goalId,
+            sessionId = sessionId,
+            parentBindingId = "binding-1",
+            currentFrame = frame,
+            availableAtNs = 22L,
+            validUntilNs = 40L,
+            availabilityClockDomain = FrameClockDomain.ANDROID_ELAPSED_REALTIME,
+            position = GoalEndpointCondition.READY,
+            visibility = GoalEndpointCondition.READY,
+            grounding = GoalEndpointCondition.READY,
+            orientation = GoalEndpointCondition.READY,
+            reachability = reachability,
+            actionGeometry = CausalActionGeometryObservation(
+                disposition = CausalActionGeometryDisposition.ADMITTED,
+                state = actionState,
+                goalId = goalId,
+                sessionId = sessionId,
+                parentBindingId = "binding-1",
+                currentFrame = frame,
+                sourceId = CausalActionGeometryAdmitter.PAIRED_RGBD_SOURCE_ID,
+                estimate = estimate
+            )
         )
     }
 

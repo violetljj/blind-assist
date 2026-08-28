@@ -1,6 +1,7 @@
 # Current decisions: L10-R0 active; Dynamic Travel Risk R2 established
 
-Status: `L10_R0_ACTIVE / SC14_CAUSAL_MICRO_MOTION_ACTION_BELIEF_MECHANICS_SIGNAL` and
+Status: `L10_R0_ACTIVE / SC14_CAUSAL_MICRO_MOTION_ACTION_BELIEF_MECHANICS_SIGNAL /
+SC14_CORE_CAUSAL_ACTION_HANDOFF_GUARD_IMPLEMENTED` and
 `DTR_R2_PUBLIC_REAL_PRIVILEGED_CEILINGS_ESTABLISHED /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
@@ -70,6 +71,16 @@ reachability, body orientation, arrival, user completion, product benefit, or
 safety. The next legal source is passive natural before/after RGB-D motion or an
 explicitly authorized benign micro-interaction protocol; do not return to
 static action-axis inference.
+
+The mechanics representation is now implemented in `core:assist`: a causal
+paired-point Horn fit produces `UNKNOWN / SET_VALUED / LOCKED`, and a fail-closed
+admitter binds it to provider, goal, session, parent entity, exact frame, clock,
+and freshness. The product handoff reducer now rejects `HANDOFF_READY` unless a
+separate endpoint join supplies current `READY` position, visibility,
+grounding, orientation, and reachability plus a `LOCKED` causal action model.
+Explicit user confirmation remains the only completion transition. This is a
+runtime contract implementation, not evidence that a live RGB-D source or any
+of those endpoint conditions currently succeeds.
 
 ## DTR-R2 decision
 

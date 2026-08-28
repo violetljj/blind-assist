@@ -206,6 +206,14 @@ privileged; no real user action or natural RGB-D motion was observed. It does
 not establish RGB tracking, safe probing, reachability, body orientation,
 arrival, `HANDOFF_READY`, user completion, product benefit, or safety.
 
+The action representation has nevertheless landed in `core:assist`. Runtime
+paired 3-D correspondences now produce a fail-closed
+`UNKNOWN / SET_VALUED / LOCKED` action belief with source, identity, frame,
+clock, and freshness admission. `HANDOFF_READY` additionally requires current
+position, visibility, grounding, orientation, and reachability to be `READY`;
+completion still requires explicit user confirmation. This closes a software
+bypass but creates no new live-source, arrival, product, or safety evidence.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

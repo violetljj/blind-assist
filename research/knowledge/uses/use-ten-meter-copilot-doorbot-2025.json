@@ -10,9 +10,9 @@
   "adoption_mode": "mechanism_adaptation",
   "usage": {
     "source_scope": "用触觉结果回路验证门功能是否真正发生。",
-    "project_application": "作为 completion 设计原则：视觉只能提出门/把手动作，完成必须由独立 outcome signal 确认。",
-    "modifications": "BlindAssist 当前无机器人触觉，故仅保留“结果回执独立于视觉 proposal”的合同，不声称可直接实现 DoorBot。",
-    "expected_effect": "阻止把看似正确的动作点或接近姿态误当成门已打开/任务已完成。"
+    "project_application": "作为 completion 设计原则并已落入 core:assist：配对 RGB-D 微运动只形成 UNKNOWN/SET_VALUED/LOCKED 动作信念；HANDOFF_READY 还必须联合 position、visibility、grounding、orientation、reachability。",
+    "modifications": "BlindAssist 当前无机器人触觉；以 Horn 刚体拟合、实体/帧/时钟/新鲜度准入和显式用户确认替代机器人闭环，不声称可直接实现 DoorBot。",
+    "expected_effect": "阻止静态动作猜测、旧帧、多解动作点或单一接近姿态越权成为 HANDOFF_READY 或任务完成。"
   },
   "evaluation": {
     "reproduction_status": "mechanics_only",
@@ -25,7 +25,7 @@
       "mean_translation_error_deg=38.89 static vs 0.91 causal",
       "rotation_axis_hit=1/1; pivot_line_error_m=0.0222"
     ],
-    "claim_boundary": "Mechanics-only adaptation of the independent-outcome principle. SceneFun3D generated the motion and evaluator supplied point correspondences; no robot haptics, natural RGB-D tracking, safe user probe, reachability, arrival, HANDOFF_READY, completion, product benefit, or safety was established."
+    "claim_boundary": "Mechanics-only adaptation of the independent-outcome principle plus a runtime fail-closed contract. SceneFun3D generated the motion and evaluator supplied point correspondences; no live paired-RGB-D provider, robot haptics, natural RGB-D tracking, safe user probe, reachability, arrival, product benefit, or safety was established. The code can authorize HANDOFF_READY only after all endpoint conditions are separately ready; it does not show that they are achievable."
   },
   "evidence": [
     {
@@ -37,6 +37,11 @@
       "kind": "artifact",
       "ref": "artifacts.local/evidence/l10-r16/sc14-causal-micro-motion-421013-v0/result.json",
       "summary": "SC14 mechanics result, SHA-256 bb11fa3b87ea350ad793d3c62daf81e183b6806f08c82b2c1df1535677d1ca01."
+    },
+    {
+      "kind": "repo",
+      "ref": "core/assist/src/main/java/com/linnan/blindassist/goal/CausalActionGeometry.kt",
+      "summary": "Pure-Kotlin causal rigid-motion estimator, evidence admission, and five-condition handoff readiness join."
     }
   ],
   "history": [
@@ -47,6 +52,10 @@
     {
       "date": "2026-08-28",
       "change": "Executed the causal-outcome adaptation after SC12 and SC13 showed that static task/geometry axes were insufficient. The next source must provide natural before/after RGB-D motion or an explicitly authorized benign interaction; static action-axis tuning is closed."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Landed the SC14 representation in core:assist and made HANDOFF_READY require a current five-condition endpoint join plus a LOCKED causal action belief; explicit user confirmation remains the only completion authority."
     }
   ],
   "added_at": "2026-08-28",

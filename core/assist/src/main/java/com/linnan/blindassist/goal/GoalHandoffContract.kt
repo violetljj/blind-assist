@@ -57,7 +57,9 @@ sealed interface GoalHandoffEvent {
 
     data class HandoffReady(
         val timestamp: Long,
-        val reason: String
+        val reason: String,
+        /** A current-frame endpoint join; perception alone cannot fabricate completion. */
+        val readiness: GoalHandoffReadinessDecision
     ) : GoalHandoffEvent
 
     data class UserConfirmed(
@@ -144,8 +146,16 @@ object GoalHandoffReducer {
             }
 
             current is GoalHandoffState.Approach && event is GoalHandoffEvent.HandoffReady -> {
+                val readiness = event.readiness
                 if (event.timestamp < 0L || event.reason.isBlank()) {
                     rejected(current, "HANDOFF_READY requires a timestamp and reason")
+                } else if (readiness !is GoalHandoffReadinessDecision.Ready) {
+                    val detail = (readiness as GoalHandoffReadinessDecision.Blocked).reason
+                    rejected(current, "HANDOFF_READY blocked by $detail")
+                } else if (readiness.receipt.goalId != current.goalId ||
+                    readiness.receipt.sessionId != current.sessionId
+                ) {
+                    rejected(current, "HANDOFF_READY readiness identity does not match active goal")
                 } else {
                     accepted(
                         GoalHandoffState.HandoffReady(
