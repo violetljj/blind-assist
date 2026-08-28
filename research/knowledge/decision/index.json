@@ -2,11 +2,11 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "6d48cb4e0f5d43a391fd73dd3346e1a4de60ca48a85030451980e4dc4aa609da",
+  "source_fingerprint": "afaac8bda63cb8e5c024a6a2b0a2022aa818c01b28c1960d78a79b191bad5cdc",
   "counts": {
     "failure_layers": 13,
-    "mechanisms": 248,
-    "uses": 249,
+    "mechanisms": 249,
+    "uses": 250,
     "experiments": 206,
     "current_terminals": 19
   },
@@ -1545,6 +1545,61 @@
         }
       ],
       "search_text": "Spring + RobustSpring 模糊、天气、噪声、压缩和深度/双目不一致时，何时应退出 dynamic-travel-risk legacy-candidate dtr-r0 Spring + RobustSpring — dtr:DR28 route mechanism 真实高分辨率 flow/disparity/scene-flow truth + 20 类时序一致退化；生成质量–coverage–abstention 曲线 汽车 stereo/4K 离线 benchmark；对 corruption 稳健不证明助盲事件或手机时延 obstacle-avoidance 真实高分辨率 flow/disparity/scene-flow truth + 20 类时序一致退化；生成质量–coverage–abstention 曲线 真实高分辨率 flow/disparity/scene-flow truth + 20 类时序一致退化；生成质量–coverage–abstention 曲线 汽车 stereo/4K 离线 benchmark；对 corruption 稳健不证明助盲事件或手机时延"
+    },
+    {
+      "id": "dataset-wikidata-commons-poi-reference#public-poi-multiview-reference-bank",
+      "item_id": "dataset-wikidata-commons-poi-reference",
+      "mechanism_id": "public-poi-multiview-reference-bank",
+      "kind": "dataset",
+      "title": "Wikidata plus Wikimedia Commons named-POI reference bank",
+      "canonical_ref": "https://www.wikidata.org/",
+      "summary": "Public entity identities, coordinates, aliases, and Commons images can form a reusable target knowledge pack for named destination grounding.",
+      "tags": [
+        "l10",
+        "named-poi",
+        "facade",
+        "public-reference"
+      ],
+      "name": "Public POI multi-view reference bank",
+      "description": "Bind a user-named public entity to multiple facade, entrance, architectural-context, and wayfinding views before online search; compare live observations against the bank without requiring readable OCR.",
+      "inputs": [
+        "Wikidata QID, coordinates, aliases, Commons category and image metadata"
+      ],
+      "outputs": [
+        "Hash-frozen entity-specific reference views with provenance and license metadata"
+      ],
+      "limitations": "Commons categories contain portraits, events, interiors, and distant context; category membership is not current-frame target visibility truth and reference coverage must be source-audited before evaluation.",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 4,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 3,
+        "identity_binding": 6,
+        "observation_perception": 3,
+        "runtime_infrastructure": 3,
+        "source_coverage": 9,
+        "temporal_belief": 3
+      },
+      "routes": [
+        "l10-r0"
+      ],
+      "uses": [
+        {
+          "id": "use-l10-r0-wikidata-commons-poi-reference",
+          "route": "l10-r0",
+          "use_state": "active",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "Supply a non-OCR identity branch for the find-correct-building stage before entrance binding and temporal guidance.",
+          "expected_effect": "Reject wrong named entities when text is absent or unreadable, while a richer multi-facet reference bank should raise correct-entity retrieval.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "The first frozen run kept top-1 at 6/11, reduced wrong-goal false confirmations 3 to 0 versus global references, and improved balanced accuracy 65.45% to 68.18%, but failed the predeclared top-1 gate. Do not tune this cohort; expand the reference information source before another fresh run.",
+          "evidence": [],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "Wikidata plus Wikimedia Commons named-POI reference bank Public entity identities, coordinates, aliases, and Commons images can form a reusable target knowledge pack for named destination grounding. l10 named-poi facade public-reference Public POI multi-view reference bank Bind a user-named public entity to multiple facade, entrance, architectural-context, and wayfinding views before online search; compare live observations against the bank without requiring readable OCR. Wikidata QID, coordinates, aliases, Commons category and image metadata Hash-frozen entity-specific reference views with provenance and license metadata Commons categories contain portraits, events, interiors, and distant context; category membership is not current-frame target visibility truth and reference coverage must be source-audited before evaluation. l10-r0 Supply a non-OCR identity branch for the find-correct-building stage before entrance binding and temporal guidance. Reject wrong named entities when text is absent or unreadable, while a richer multi-facet reference bank should raise correct-entity retrieval. The first frozen run kept top-1 at 6/11, reduced wrong-goal false confirmations 3 to 0 versus global references, and improved balanced accuracy 65.45% to 68.18%, but failed the predeclared top-1 gate. Do not tune this cohort; expand the reference information source before another fresh run."
     },
     {
       "id": "droid-ood-privileged-phase-distillation-v1#privileged-phase-distillation-v1",

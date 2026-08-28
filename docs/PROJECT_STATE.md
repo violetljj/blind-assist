@@ -533,6 +533,18 @@ evidence. Do not tune the consumed validation split. The next legal successor
 needs direct, object-bound final-state supervision on a new cohort. No demo or
 product integration is authorized by SC47.
 
+The named-destination front half now has a zero-OCR public-reference falsifier.
+Across six source-audited Hong Kong entities and 11 frozen evaluation images,
+CLIP name-only and global CLIP+DINO references each retrieved `6/11` correct
+entities. Adding mutual DINO patch matches plus affine consistency kept `6/11`
+but reduced wrong-goal confirmations from `3/55` to `0/55` and raised balanced
+accuracy from `65.45%` to `68.18%`. The predeclared top-1 gate failed, so record
+`NAMED_POI_FACADE_FINGERPRINT_DO_NOT_TUNE_LOCALIZE_REFERENCE_COVERAGE_GAP`.
+Local geometry is a useful non-OCR veto but not yet a sufficient finder. The
+next source change is a richer facade/entrance/sign/context reference bank, not
+weight or threshold tuning on this opened cohort. No entrance, navigation,
+metric arrival, product, user-benefit, or safety claim follows.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

@@ -1121,6 +1121,51 @@ training proxies, pseudo-progress is not physical truth, and no identity,
 search, navigation, reachability, human action readiness, arrival, explicit
 confirmation, product, or safety claim follows.
 
+### Named-POI facade fingerprint: OCR is optional evidence, not identity authority
+
+The current front-half increment moves from readable indoor labels to named
+physical destinations. A frozen Wikidata/Wikimedia source contains 50 images
+for ten real Hong Kong entities. Before inference, a visual source audit
+admitted six entities with complementary facade, entrance/on-site identity,
+and disjoint additional views. It froze 12 public references, six calibration
+queries, and 11 evaluation queries; every evaluation image was also paired
+with all five wrong admitted goals. No OCR engine or OCR-derived observation
+was called.
+
+Three fixed arms separate semantic naming from physical appearance:
+
+| arm | top-1 entity | confirmed correct goal | wrong-goal confirms | balanced accuracy |
+| --- | ---: | ---: | ---: | ---: |
+| CLIP public name only | 6/11 | 1/11 | 2/55 | 52.73% |
+| global CLIP + pooled DINO references | 6/11 | 4/11 | 3/55 | 65.45% |
+| global references + mutual-patch affine consistency | 6/11 | 4/11 | **0/55** | **68.18%** |
+
+Local geometry is therefore a useful veto signal: it removed all three
+wrong-goal confirmations without OCR. It did not improve the frozen `6/11`
+top-1 score, so the predeclared gate failed and the decision is
+`NAMED_POI_FACADE_FINGERPRINT_DO_NOT_TUNE_LOCALIZE_REFERENCE_COVERAGE_GAP`.
+The opened cohort, weights, threshold reducer, and role split must not be
+tuned. The next legal increment changes the information source to a larger
+multi-facet target knowledge pack: facade, entrance, logo/sign, architectural
+context, and on-site wayfinding references. OCR may later contribute an
+independent high-precision branch, but neither OCR nor appearance alone may
+emit arrival.
+
+The CPU/GPU probe used the combined CLIP+DINO representative inference. CPU
+was measured faster (`0.190 s` versus verified RTX 5060 CUDA `0.469 s`) and was
+selected with persisted `CPU_FASTER_MEASURED`; this was not silent fallback.
+Protocol and implementation:
+`named_poi_facade_fingerprint_protocol_v1.json` and
+`named_poi_facade_fingerprint.py`. Result:
+`artifacts.local/evidence/l10-r0/named-poi-facade-fingerprint-v1/result.json`,
+SHA-256 `349362e6be8b02e4b1a9d45bab2c3f27648ab1c3eafc04b77106e60410e64184`;
+backend receipt SHA-256
+`3dada8c403d7d293f7cba447d86f96f2094e75dc1ea604342ff58f5b519ed6ce`.
+This is small, source-curated image retrieval/confirmation evidence. It does
+not establish natural-video search, exact entrance selection, metric
+localization, guidance, reacquisition, arrival, product benefit, user benefit,
+or safety.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "dataset-wikidata-commons-poi-reference",
+  "kind": "dataset",
+  "title": "Wikidata plus Wikimedia Commons named-POI reference bank",
+  "canonical_ref": "https://www.wikidata.org/",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Public entity identities, coordinates, aliases, and Commons images can form a reusable target knowledge pack for named destination grounding.",
+  "mechanisms": [
+    {
+      "id": "public-poi-multiview-reference-bank",
+      "name": "Public POI multi-view reference bank",
+      "description": "Bind a user-named public entity to multiple facade, entrance, architectural-context, and wayfinding views before online search; compare live observations against the bank without requiring readable OCR.",
+      "inputs": [
+        "Wikidata QID, coordinates, aliases, Commons category and image metadata"
+      ],
+      "outputs": [
+        "Hash-frozen entity-specific reference views with provenance and license metadata"
+      ],
+      "limitations": "Commons categories contain portraits, events, interiors, and distant context; category membership is not current-frame target visibility truth and reference coverage must be source-audited before evaluation."
+    }
+  ],
+  "tags": [
+    "l10",
+    "named-poi",
+    "facade",
+    "public-reference"
+  ],
+  "aliases": [],
+  "links": [
+    {
+      "label": "wikidata",
+      "ref": "https://www.wikidata.org/"
+    },
+    {
+      "label": "commons",
+      "ref": "https://commons.wikimedia.org/"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -508,6 +508,25 @@ sampling, teacher targets, classifier, or conformal alpha. A legal successor
 must bind an explicit final object-state description to the target entity on a
 new cohort; high-frequency derivative teachers are closed.
 
+The user-facing priority is now the named-destination front half rather than a
+demo. A first zero-OCR public-reference run froze six Hong Kong entities, 12
+reference images, six calibration views, 11 evaluation views, and all 55 wrong
+goal pairs. CLIP name-only and global CLIP+DINO references each retrieved
+`6/11`; adding mutual DINO patch matches with affine consistency still retrieved
+`6/11`, but reduced wrong-goal confirmations `3 -> 0` and improved balanced
+accuracy `65.45% -> 68.18%`. Accept the false-confirmation reduction as a
+mechanism observation, but record
+`NAMED_POI_FACADE_FINGERPRINT_DO_NOT_TUNE_LOCALIZE_REFERENCE_COVERAGE_GAP`
+because the frozen top-1 gate failed.
+
+Do not tune weights, patch geometry, calibration thresholds, or roles on this
+opened cohort. Change the information source: build a larger public target
+knowledge pack with explicit facade, real entrance, logo/sign, architectural
+context, and on-site wayfinding facets. OCR remains one independent
+high-precision branch; it cannot be the only identity authority, and no branch
+alone can emit arrival. A fresh successor must improve correct-entity retrieval
+before the route spends work on entrance binding and continuous guidance.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

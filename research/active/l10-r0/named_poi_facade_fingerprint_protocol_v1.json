@@ -1,0 +1,70 @@
+{
+  "schema": "l10-named-poi-facade-fingerprint-protocol-v1",
+  "question": "Can a public-reference facade fingerprint confirm the user-named physical entity without any OCR observation, and reject every other admitted goal?",
+  "mode": "EXPLORE_DEVELOPMENT",
+  "source": {
+    "library": "artifacts.local/knowledge/named-poi-facade-v2/target_library.json",
+    "library_sha256": "68fa8c8df0386c7993bc5b1b0d46d6fac2f79361e589d4b5a11909ee0ca6c885",
+    "image_count": 50,
+    "image_bytes": 19889621,
+    "image_inventory_sha256": "de07f25db4c6912fda82cbd1828cf8dfad58aff047b73c314a19e2cb7b5ae609",
+    "authority": "Wikidata supplies public entity identity and coordinates; Wikimedia Commons supplies public reference images. A pre-inference visual source audit admits only entities with a wide or contextual view, an entrance or on-site identity view, and at least one disjoint additional view.",
+    "claim_scope": "Six real Hong Kong named entities with public-reference images; source-curated Development evidence, not citywide, natural-video, metric-arrival, product, user-benefit, or safety evidence."
+  },
+  "role_freeze": {
+    "indexing": "One-based reference_images order in the frozen target library.",
+    "targets": {
+      "queen-mary-hospital": {"reference": [1, 5], "calibration": [3], "evaluation": [2, 4]},
+      "ruttonjee-hospital": {"reference": [1, 3], "calibration": [4], "evaluation": [2, 5]},
+      "hong-kong-sanatorium": {"reference": [1, 5], "calibration": [3], "evaluation": [4]},
+      "hku-main-building": {"reference": [1, 4], "calibration": [3], "evaluation": [2, 5]},
+      "causeway-bay-station": {"reference": [1, 2], "calibration": [3], "evaluation": [4, 5]},
+      "central-station": {"reference": [1, 4], "calibration": [3], "evaluation": [2, 5]}
+    },
+    "excluded_entities": {
+      "hong-kong-central-library": "Fewer than four views with a stable facade, entrance, or navigational identity carrier.",
+      "hkcec": "Firework and haze frames do not provide stable current-frame entity evidence.",
+      "international-finance-centre": "Two portrait/event frames leave fewer than four stable entity views.",
+      "times-square-hong-kong": "Event imagery does not separate the venue from temporary content strongly enough for source truth."
+    },
+    "negative_goals": "For every query, all five other admitted entity identities are evaluated as wrong goals; no hard-negative selection uses model output."
+  },
+  "models": {
+    "clip": {
+      "path": "artifacts.local/models/clip-vit-base-patch32-3d74acf",
+      "revision": "3d74acf9",
+      "weights_sha256": "a63082132ba4f97a80bea76823f544493bffa8082296d62d71581a4feff1576f"
+    },
+    "dinov2": {
+      "path": "artifacts.local/models/p1_a2_dinov2_small_ed25f3a",
+      "revision": "ed25f3a",
+      "weights_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+      "patch_grid": 9
+    }
+  },
+  "arms": {
+    "name_only": "CLIP image-to-public-name similarity. It uses no OCR and no reference image.",
+    "global_reference": "0.55 * maximum CLIP reference similarity + 0.45 * maximum pooled DINOv2 reference similarity.",
+    "facade_fingerprint": "0.35 * maximum CLIP reference similarity + 0.25 * maximum pooled DINOv2 reference similarity + 0.40 * maximum mutual-patch affine-consistency score."
+  },
+  "geometry": {
+    "mutual_nearest_neighbors": true,
+    "maximum_matches": 32,
+    "minimum_affine_matches": 4,
+    "ransac_reprojection_threshold_normalized": 0.12,
+    "score": "mean mutual similarity * (0.5 + 0.5 * affine inlier ratio) * min(1, match_count / 12)"
+  },
+  "decision": {
+    "candidate_score": "goal score minus the strongest other admitted entity score",
+    "threshold": "For each arm, choose the non-negative threshold with maximum balanced accuracy on the frozen calibration positives and all calibration wrong-goal pairs; break ties toward the larger threshold.",
+    "confirm": "Confirm only when the user goal wins the entity roster and its calibrated margin reaches threshold; otherwise return UNKNOWN/KEEP_SEARCHING.",
+    "ocr_policy": "No OCR engine or OCR-derived observation is called in this experiment. OCR remains an independent future evidence branch, never the sole identity authority."
+  },
+  "primary_metrics": [
+    "evaluation top-1 entity retrieval",
+    "positive-goal confirmation recall",
+    "wrong-goal false-confirmation count across every other admitted entity",
+    "selective balanced accuracy"
+  ],
+  "stop_condition": "Run the frozen evaluation once. Retain local geometry only if facade_fingerprint improves top-1 retrieval over global_reference without increasing wrong-goal false confirmations; otherwise localize the missing information source and do not tune this cohort."
+}

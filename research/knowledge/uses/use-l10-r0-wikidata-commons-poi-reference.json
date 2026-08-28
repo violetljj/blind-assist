@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-wikidata-commons-poi-reference",
+  "item_id": "dataset-wikidata-commons-poi-reference",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "public-poi-multiview-reference-bank"
+  ],
+  "use_state": "active",
+  "adoption_mode": "dataset",
+  "usage": {
+    "source_scope": "Six source-audited Hong Kong named entities, 12 public reference images, 6 calibration views, and 11 evaluation views drawn from a frozen 50-image Commons library.",
+    "project_application": "Supply a non-OCR identity branch for the find-correct-building stage before entrance binding and temporal guidance.",
+    "modifications": "CLIP global reference similarity, DINOv2 pooled appearance, and mutual-patch affine consistency; OCR calls fixed at zero for the first falsifier.",
+    "expected_effect": "Reject wrong named entities when text is absent or unreadable, while a richer multi-facet reference bank should raise correct-entity retrieval."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "The first frozen run kept top-1 at 6/11, reduced wrong-goal false confirmations 3 to 0 versus global references, and improved balanced accuracy 65.45% to 68.18%, but failed the predeclared top-1 gate. Do not tune this cohort; expand the reference information source before another fresh run."
+  },
+  "evidence": [],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Category membership is not visibility truth; teacher or metadata source admission cannot be promoted to evaluator truth."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}
