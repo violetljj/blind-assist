@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC22-INTEGRITY-FILTERED-FACTORIZED-ENDPOINT",
+  "source": {
+    "visit_id": "420683",
+    "video_id": "42445137",
+    "sc20_provider_sha256": "fe1ab068991e1f70881c33c96eec76477975ca2cb0021ae0ce87380b7498ec5c",
+    "sc20_result_sha256": "95a5a36b6cb0074689b0b98c14d9e3d4e2ec38c0e8ee6bfc7bee203aaf2f3188",
+    "sc11_provider_sha256": "bc8e7f509cf2ebc1538127fe3dcdf59663292145c7c042c8ed81303f118a0d0b",
+    "sc11_result_sha256": "ec188e8396159b3cc364bd759be7328eb1d458e6082ca219dd98e99af1e9c380",
+    "sc21_protocol_sha256": "c882f9dee4f3a2617578459886a7cef869ca6db7968c0993d240d95bb0e06986"
+  },
+  "frozen_composition": {
+    "candidate_integrity": "SC21 unique-largest parent-normalized connected component",
+    "endpoint_factors": "SC20 horizontal stand-off + depth visibility + camera orientation",
+    "new_parameters": 0,
+    "reachability": "UNKNOWN_NO_FREE_SPACE_OR_HUMAN_BODY_AUTHORITY",
+    "handoff_ready": "FORBIDDEN_WITH_UNKNOWN_REACHABILITY"
+  },
+  "frozen_gate": {
+    "minimum_tasks_with_true_ready": 6,
+    "maximum_false_ready_frames": 1,
+    "minimum_precision": 0.98,
+    "minimum_recall": 0.6486486486486487,
+    "minimum_f1": 0.7843137254901961
+  },
+  "forbidden_after_outcome": [
+    "SC20 endpoint threshold changes",
+    "SC21 component radius or dominance changes",
+    "task removal",
+    "candidate relabeling",
+    "reachability promotion"
+  ],
+  "claim_boundary": "Read-only composition mechanics on the already-consumed SceneFun3D 420683 path. A positive result can show that fixed candidate integrity closes the localized SC20 endpoint-coverage gap without reopening false arrival. It is not fresh transfer, controller-executed motion, reachability, HANDOFF_READY, product, user-benefit, or safety evidence."
+}

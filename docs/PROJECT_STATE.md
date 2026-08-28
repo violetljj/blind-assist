@@ -307,6 +307,17 @@ of six tasks versus six of six for the proxy, so the frozen gate remains not
 met. Reachability is absent and explicitly `UNKNOWN`; no `HANDOFF_READY`, real
 arrival, product, user-benefit, or safety claim follows.
 
+SC21 adds a parent-normalized connected-component integrity layer before the
+endpoint join. Its frozen two-scene fresh source was `NOT_EVALUABLE` (`3/20`
+parent-bound tasks, zero integrity opportunities), but an unchanged read-only
+SC11 diagnostic removed the 1.445 m isolated under-bed candidate, improving
+legal functional commits `4/6 -> 5/6` and wrong parts `2 -> 1` without recall
+loss. SC22 then composed the fixed SC21 rule with SC20. On the consumed real
+RGB-D trajectory it restored endpoint task coverage `5/6 -> 6/6`, improved
+recall 64.86% -> 83.24% and F1 0.784 -> 0.906, while retaining one false-ready
+frame and above-99% precision. This is a composition-mechanics signal, not
+fresh transfer; reachability remains `UNKNOWN` and handoff remains forbidden.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

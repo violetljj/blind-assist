@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC21-TASK-FUNCTIONAL-SET-INTEGRITY",
+  "cohort": [
+    {
+      "visit_id": "421002",
+      "video_id": "42444873",
+      "sha256": {
+        "annotations": "9883a73c09843d9ef15277523cc1c4f8c166f73b2abd51cbe118b8d7d7b10591",
+        "descriptions": "5101e027def25686a666a3a691a5a87e4de3a8d2120ae5a3b466f87a9fee9ec3",
+        "laser_scan": "404e6ffbcf28d8e4715c21ef645a057400383bfce8adc8e2e73ddfbfc450c501",
+        "transform": "e043cb8c713132f85d144cb24cd1f9efa9c4b4d4ec05e5b4bc2721888aaa1ea0",
+        "object_boxes": "645515ca73afb5a4c708f82385fa7a2da7c38a42af43283a2c4818054f81b5c6"
+      }
+    },
+    {
+      "visit_id": "420673",
+      "video_id": "42445198",
+      "sha256": {
+        "annotations": "4c577e330a8818c9a2e2d2273d72f5bb8f85065d49754aa345eced23cb53d0ad",
+        "descriptions": "10f24752328bc587d3689b68a536f3b99fcd8d889b50c774e3e5879201dcedcf",
+        "laser_scan": "34e940eae43fbf60ff03b9357065ed607920351e7aa6a72381dcaf3f62b9570c",
+        "transform": "783d53c1766f62484724cf1194c70635d7ddc6d0cee82421da2606729b075b72",
+        "object_boxes": "98367827911e48160182b28c73c49d207fc84e976af1598b97c61f8bd85310a7"
+      }
+    }
+  ],
+  "frozen_algorithm": {
+    "baseline": "TaskRelationalFunctionalSelector",
+    "successor": "unique-largest parent-normalized connected component inside the baseline selected set",
+    "normalized_component_link_radius": 0.4,
+    "minimum_dominant_component_size": 2,
+    "tie_policy": "KEEP_SET_VALUED_AND_REQUEST_INTEGRITY_VIEW",
+    "singleton_policy": "KEEP_SET_VALUED",
+    "identity_authority": "UNCHANGED_AUTHORIZED_EXACT_PARENT_BINDING",
+    "candidate_authority": "EVALUATOR_FUNCTIONAL_REGIONS_AS_UNLABELED_PROPOSAL_CEILING"
+  },
+  "frozen_gate": {
+    "minimum_evaluable_tasks": 8,
+    "minimum_integrity_opportunities": 2,
+    "minimum_wrong_part_reduction": 2,
+    "legal_commit_noninferiority": true,
+    "target_set_recall_noninferiority": true,
+    "maximum_cross_parent_violations": 0
+  },
+  "forbidden_after_outcome": [
+    "component radius sweep",
+    "minimum component size sweep",
+    "scene or task removal",
+    "task relation remapping",
+    "candidate relabeling",
+    "using evaluator target IDs in component selection"
+  ],
+  "claim_boundary": "Proposal-conditional functional-set integrity on two source-disjoint SceneFun3D scenes. Functional masks are privileged unlabeled proposals and exact parent binding is authorized. This is not RGB proposal generation, live identity, reachability, arrival, product, user-benefit, or safety evidence."
+}

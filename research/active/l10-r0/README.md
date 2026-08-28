@@ -459,6 +459,81 @@ change the information source: separately versioned functional candidate
 integrity, or independent free-space and human-reachability evidence. Explicit
 user confirmation remains the only completion authority.
 
+### SC21--SC22: candidate-set integrity closes the localized endpoint gap
+
+SC20's only uncovered task contained a structurally suspicious selected set:
+two candidates lay 5--6 cm from the under-bed drawer truth, while a third was
+1.445 m away. SC21 introduces one representation change before endpoint
+reasoning. It builds connected components in parent-normalized 3-D coordinates
+inside the already selected task-relational set. A candidate may be quarantined
+only when there is one unique largest component with at least two members;
+ties, all-singleton sets, and singleton selections stay `SET_VALUED` and request
+another integrity view. Exact-parent identity authority is unchanged.
+
+The component radius (`0.4` normalized parent extent), minimum component size
+(`2`), source roster, and gates were frozen before opening the source-disjoint
+`421002 + 420673` cohort. That formal source cannot adjudicate SC21:
+
+- 20 task descriptions;
+- only 3 parent-bound evaluable tasks and 17 `NOT_EVALUABLE_PARENT_BINDING`;
+- zero integrity opportunities;
+- decision `SC21_NOT_EVALUABLE_INSUFFICIENT_PARENT_BOUND_TASKS`.
+
+This rejects the cohort as an integrity benchmark; it is not a negative result
+for the algorithm. One permitted read-only diagnostic then applied exactly the
+same frozen rule to the consumed SC11 RGB-D candidates. It produced one
+integrity opportunity, quarantined the 1.445 m under-bed outlier, and retained
+the two 5.33/5.80 cm candidates:
+
+| Consumed SC11 diagnostic | task-relational set | + SC21 integrity |
+|---|---:|---:|
+| legal functional commits | 4/6 | **5/6** |
+| mean target-set recall | 83.33% | **83.33%** |
+| wrong parts | 2 | **1** |
+
+SC22 then composes that fixed representation with the unchanged SC20
+stand-off, depth-visibility, and orientation factors. It has no new parameter:
+
+| Consumed 420683 endpoint metric | SC20 | SC21 + SC20 |
+|---|---:|---:|
+| ready frames | 121 | 155 |
+| true / false ready | 120 / 1 | **154 / 1** |
+| precision | 99.17% | **99.35%** |
+| recall | 64.86% | **83.24%** |
+| F1 | 0.784 | **0.906** |
+| tasks with true-ready evidence | 5/6 | **6/6** |
+
+The under-bed task alone moved from `0/35` to `34/35` true-ready frames. This
+crosses every frozen SC22 composition gate and yields
+`SC22_INTEGRITY_ENDPOINT_COMPOSITION_MECHANICS_SIGNAL`. It establishes a strong
+compositional mechanism: factorized arrival works better when selected
+functional sets first reject spatially disconnected hypotheses. It is still a
+read-only result on an already-consumed real RGB-D path, not fresh transfer or
+controller-executed motion.
+
+Implementations and protocols:
+
+- `scenefun3d_functional_set_integrity.py` and
+  `functional_set_integrity_protocol_v0.json`, protocol SHA-256
+  `c882f9dee4f3a2617578459886a7cef869ca6db7968c0993d240d95bb0e06986`;
+- `sc11_functional_set_integrity_diagnostic.py`, consumed diagnostic SHA-256
+  `ffa0832c6d8b92d9c1b4a09ee52c4aab074992ce1fa97c09a08405f124565d57`;
+- SC21 fresh provider/result SHA-256
+  `d7a417b9f8e8a5642c3903c824fbe72fdaa90eb7fc95d499d822708111d29501` /
+  `cd397293816ca5b3e53bfd13a90252e9a2491fb4b3334313fc86dad45504cde4`;
+- `scenefun3d_integrity_endpoint_observer.py` and
+  `integrity_endpoint_protocol_v0.json`, protocol SHA-256
+  `785d47525296e52a0466f2a9edcec60727a82a4fbe5ae9546c210fac2e5767e9`;
+- SC22 provider/result SHA-256
+  `a19844bc12be56966f3d0063dda60cb56a67329aed361b1f71866dfc5b7d67c9` /
+  `bbe7bc15f52db13b9215d51f3d68ebd29ee40f03dcb2bee262d1f1c3d232812e`.
+
+Do not tune either component on 420683. Fresh confirmation requires a real
+RGB-D proposal cohort with enough authorized parent-bound tasks and actual
+integrity opportunities. Reachability is still `UNKNOWN`, so SC22 cannot emit
+`HANDOFF_READY`; explicit user confirmation remains the only completion
+authority.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

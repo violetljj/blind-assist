@@ -6,7 +6,9 @@ L10_CORE_SEEK_GUIDE_REACQUIRE_CONTROLLER_IMPLEMENTED /
 SC15_SC16_SC17_ACTIVE_VIEW_PROXY_ROUTES_CLOSED /
 SC18_CAUSAL_ACTION_OUTCOME_REPAIR_MECHANICS_SIGNAL /
 SC19_DEFICIT_CONDITIONED_ACTION_UTILITY_MECHANICS_SIGNAL /
-SC20_FACTORIZED_ENDPOINT_FALSE_READY_SUPPRESSION_GATE_NOT_MET` and
+SC20_FACTORIZED_ENDPOINT_FALSE_READY_SUPPRESSION_GATE_NOT_MET /
+SC21_FUNCTIONAL_SET_INTEGRITY_FRESH_SOURCE_NOT_EVALUABLE /
+SC22_INTEGRITY_ENDPOINT_COMPOSITION_MECHANICS_SIGNAL` and
 `DTR_R2_PUBLIC_REAL_PRIVILEGED_CEILINGS_ESTABLISHED /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
@@ -178,6 +180,38 @@ thresholds on this consumed scene. Reachability remains `UNKNOWN`, so SC20
 cannot emit `HANDOFF_READY`; the next eligible endpoint source must add
 candidate integrity on separately versioned evidence or independent free-space
 and human-reachability authority.
+
+SC21 changes candidate representation rather than repairing SC20 thresholds.
+Inside a task-relational selected set, candidates are connected in parent-
+normalized 3-D coordinates; only a unique largest component of at least two
+members may quarantine isolated candidates. Ties and singleton sets remain
+`SET_VALUED + REQUEST_INTEGRITY_VIEW`. The radius (`0.4` normalized parent
+extent) and dominance rule were frozen before opening the two-scene
+`421002 + 420673` cohort. That source is `NOT_EVALUABLE`: only `3/20` tasks had
+an authorized exact parent binding and there were zero integrity opportunities.
+This is a source-denominator result, not an algorithm negative.
+
+A read-only diagnostic then applied the unchanged rule to consumed SC11. It
+quarantined the under-bed drawer's isolated candidate at 1.445 m while retaining
+the two candidates 5.33 cm and 5.80 cm from functional truth. Legal commits rose
+`4/6 -> 5/6`, wrong parts fell `2 -> 1`, and mean target-set recall stayed
+83.33%. This is a localized consumed-source mechanism effect only.
+
+SC22 composes that fixed integrity rule with unchanged SC20 endpoint factors and
+adds no parameter. On the same consumed real RGB-D trajectory, observation-
+ready task coverage rose `5/6 -> 6/6`; true-ready recall rose 64.86% -> 83.24%
+and F1 0.784 -> 0.906. Precision stayed above 99% (99.17% -> 99.35%) and false
+ready frames stayed `1 -> 1`. The missing under-bed task recovered 34 of its 35
+evaluator-ready frames. Accept
+`SC22_INTEGRITY_ENDPOINT_COMPOSITION_MECHANICS_SIGNAL` under a strict consumed-
+trajectory ceiling: it shows that candidate-set integrity and factorized
+arrival are complementary, not that transfer or product arrival is confirmed.
+
+Do not tune SC20 or SC21 on 420683. Fresh confirmation needs an RGB-D proposal
+cohort with enough authorized parent-bound tasks and actual integrity
+opportunities. Reachability remains `UNKNOWN`; SC22 cannot emit
+`HANDOFF_READY`, and explicit user confirmation remains the only completion
+authority.
 
 ## DTR-R2 decision
 
