@@ -2,11 +2,11 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "cf24dc74586e290513fc94c0822ef3b1d0336f2ce31be3cc22ed5a60113f97d1",
+  "source_fingerprint": "6d48cb4e0f5d43a391fd73dd3346e1a4de60ca48a85030451980e4dc4aa609da",
   "counts": {
     "failure_layers": 13,
-    "mechanisms": 247,
-    "uses": 248,
+    "mechanisms": 248,
+    "uses": 249,
     "experiments": 206,
     "current_terminals": 19
   },
@@ -1545,6 +1545,82 @@
         }
       ],
       "search_text": "Spring + RobustSpring 模糊、天气、噪声、压缩和深度/双目不一致时，何时应退出 dynamic-travel-risk legacy-candidate dtr-r0 Spring + RobustSpring — dtr:DR28 route mechanism 真实高分辨率 flow/disparity/scene-flow truth + 20 类时序一致退化；生成质量–coverage–abstention 曲线 汽车 stereo/4K 离线 benchmark；对 corruption 稳健不证明助盲事件或手机时延 obstacle-avoidance 真实高分辨率 flow/disparity/scene-flow truth + 20 类时序一致退化；生成质量–coverage–abstention 曲线 真实高分辨率 flow/disparity/scene-flow truth + 20 类时序一致退化；生成质量–coverage–abstention 曲线 汽车 stereo/4K 离线 benchmark；对 corruption 稳健不证明助盲事件或手机时延"
+    },
+    {
+      "id": "droid-ood-privileged-phase-distillation-v1#privileged-phase-distillation-v1",
+      "item_id": "droid-ood-privileged-phase-distillation-v1",
+      "mechanism_id": "privileged-phase-distillation-v1",
+      "kind": "algorithm",
+      "title": "DROID-OOD Privileged Phase Distillation v1",
+      "canonical_ref": "repo:research/active/l10-r0/droid_ood_privileged_phase_distillation.py",
+      "summary": "Distills training-only pseudo-progress and recorded robot phase signals into visual-only endpoint features; SC47 learned contact/lift process but remained weak on terminal success.",
+      "tags": [
+        "l10",
+        "terminal-state",
+        "privileged-distillation",
+        "progress",
+        "gripper",
+        "conformal-unknown"
+      ],
+      "name": "Privileged Phase Distillation",
+      "description": "Uses dense pseudo-progress plus recorded gripper and Cartesian phase signals only during training to supervise task-conditioned multi-view visual sequences, then evaluates with video and task text alone under a split-conformal endpoint reducer.",
+      "inputs": [
+        "Training: task text, three-view video, pseudo-progress, gripper position, Cartesian position, and success labels. Evaluation provider: task text and three-view video only."
+      ],
+      "outputs": [
+        "Visual-only success, failure, or UNKNOWN plus distilled progress/contact/lift/release sequences."
+      ],
+      "limitations": "SC47 missed absolute accuracy, coverage, and success-recall gates. Progress, gripper closure, and lift were learnable, but speed/opening derivatives and correct final object state were not. Robot signals are privileged proxies, reward_progress is pseudo-progress, and the consumed validation split must not be retuned.",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 6,
+        "evaluation_evidence": 9,
+        "handoff_completion": 9,
+        "observation_perception": 3,
+        "runtime_infrastructure": 3,
+        "source_coverage": 3
+      },
+      "routes": [
+        "l10-r0"
+      ],
+      "uses": [
+        {
+          "id": "use-l10-r0-droid-ood-privileged-phase-distillation-v1",
+          "route": "l10-r0",
+          "use_state": "candidate",
+          "reproduction_status": "partial",
+          "verdict": "mixed",
+          "project_application": "Visual-only endpoint-state recognition before HANDOFF_READY, using robot phase signals only as training-time supervision and retaining deterministic conformal authority.",
+          "expected_effect": "Transfer observable progress, contact, lift, and release structure into phone-camera-compatible visual features without requiring robot state at runtime.",
+          "observed_effect": "Same-known balanced accuracy improved by 9.11 points, but the successor reached only 63.22 percent at 61 percent coverage and 32 percent success recall. Calibration showed progress, closure, and lift were visually distillable while speed and release-rate were not.",
+          "metrics": [
+            "baseline_all_balanced_accuracy=0.616071",
+            "successor_selective_balanced_accuracy=0.632222",
+            "known_coverage=0.610000",
+            "same_known_balanced_accuracy_gain=0.091111",
+            "failure_recall=0.944444",
+            "success_recall=0.320000",
+            "dense_progress_r2=0.620278",
+            "gripper_closedness_r2=0.725103",
+            "vertical_displacement_r2=0.746171"
+          ],
+          "claim_boundary": "SC47 shows that training-only robot phase proxies can improve a visual-only endpoint representation, but process phase does not establish correct final object state, human readiness, arrival, completion, product benefit, or safety.",
+          "evidence": [
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/droid_ood_privileged_phase_distillation_protocol_v1.json",
+              "summary": "Frozen source inventory, roles, truth firewall, privileged targets, visual-only provider, reducer, and gates."
+            },
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/README.md",
+              "summary": "SC47 metrics, distillation diagnostics, backend and artifact hashes, failure localization, and claim boundary."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "DROID-OOD Privileged Phase Distillation v1 Distills training-only pseudo-progress and recorded robot phase signals into visual-only endpoint features; SC47 learned contact/lift process but remained weak on terminal success. l10 terminal-state privileged-distillation progress gripper conformal-unknown Privileged Phase Distillation Uses dense pseudo-progress plus recorded gripper and Cartesian phase signals only during training to supervise task-conditioned multi-view visual sequences, then evaluates with video and task text alone under a split-conformal endpoint reducer. Training: task text, three-view video, pseudo-progress, gripper position, Cartesian position, and success labels. Evaluation provider: task text and three-view video only. Visual-only success, failure, or UNKNOWN plus distilled progress/contact/lift/release sequences. SC47 missed absolute accuracy, coverage, and success-recall gates. Progress, gripper closure, and lift were learnable, but speed/opening derivatives and correct final object state were not. Robot signals are privileged proxies, reward_progress is pseudo-progress, and the consumed validation split must not be retuned. l10-r0 Visual-only endpoint-state recognition before HANDOFF_READY, using robot phase signals only as training-time supervision and retaining deterministic conformal authority. Transfer observable progress, contact, lift, and release structure into phone-camera-compatible visual features without requiring robot state at runtime. Same-known balanced accuracy improved by 9.11 points, but the successor reached only 63.22 percent at 61 percent coverage and 32 percent success recall. Calibration showed progress, closure, and lift were visually distillable while speed and release-rate were not. baseline_all_balanced_accuracy=0.616071 successor_selective_balanced_accuracy=0.632222 known_coverage=0.610000 same_known_balanced_accuracy_gain=0.091111 failure_recall=0.944444 success_recall=0.320000 dense_progress_r2=0.620278 gripper_closedness_r2=0.725103 vertical_displacement_r2=0.746171 SC47 shows that training-only robot phase proxies can improve a visual-only endpoint representation, but process phase does not establish correct final object state, human readiness, arrival, completion, product benefit, or safety."
     },
     {
       "id": "guardian-local-effect-carrier-tensor-v1#local-effect-carrier-tensor-v1",

@@ -486,6 +486,21 @@ split. The next legal successor needs an explicit object-state/change carrier
 or contact/release representation on another fresh cohort. No demo or product
 integration is authorized by SC46.
 
+SC47 tested whether training-only robot phase signals could supply the missing
+state semantics without becoming runtime inputs. On the fresh DROID-OOD
+`200/50/100` train/calibration/evaluation roles, CLIP video features distilled
+dense pseudo-progress (`R2=0.62`), gripper closedness (`0.73`), and vertical
+displacement (`0.75`) on calibration, while speed and gripper-opening rate were
+not learnable. The learned visual baseline reached `61.61%` balanced accuracy.
+The conformal successor reached `63.22%` selective balanced accuracy at `61%`
+coverage, a `+9.11` point gain over the baseline on the same 61 known rows, but
+missed coverage, absolute-accuracy, and per-class gates; success recall was only
+`32%`. Record `SC47_DROID_OOD_PRIVILEGED_PHASE_DISTILLATION_GATE_NOT_MET`.
+Process phase is visually recoverable, but it is not terminal object-state
+evidence. Do not tune the consumed validation split. The next legal successor
+needs direct, object-bound final-state supervision on a new cohort. No demo or
+product integration is authorized by SC47.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

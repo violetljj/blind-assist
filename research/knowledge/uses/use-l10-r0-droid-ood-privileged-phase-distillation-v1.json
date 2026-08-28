@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-droid-ood-privileged-phase-distillation-v1",
+  "item_id": "droid-ood-privileged-phase-distillation-v1",
+  "route": "l10-r0",
+  "mechanism_ids": [
+    "privileged-phase-distillation-v1"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "DROID-OOD pinned revision 0fd7c566; 200 task-stratified source-train rows for fitting, 50 for calibration, and all 100 source-val rows for evaluation.",
+    "project_application": "Visual-only endpoint-state recognition before HANDOFF_READY, using robot phase signals only as training-time supervision and retaining deterministic conformal authority.",
+    "modifications": "Twelve timepoints, three CLIP views, five ridge-distilled teacher sequences, 40 visual baseline statistics, 50 teacher statistics, ten causal phase features, fixed endpoint learners, and alpha 0.2 split conformal reduction.",
+    "expected_effect": "Transfer observable progress, contact, lift, and release structure into phone-camera-compatible visual features without requiring robot state at runtime."
+  },
+  "evaluation": {
+    "reproduction_status": "partial",
+    "verdict": "mixed",
+    "setup": "The 703-file 384 MB source subset was hash-frozen. Evaluation state, action, reward, latents, and success were forbidden until provider seal; the selected CPU backend was faster than the verified CUDA probe.",
+    "effect": "Same-known balanced accuracy improved by 9.11 points, but the successor reached only 63.22 percent at 61 percent coverage and 32 percent success recall. Calibration showed progress, closure, and lift were visually distillable while speed and release-rate were not.",
+    "metrics": [
+      "baseline_all_balanced_accuracy=0.616071",
+      "successor_selective_balanced_accuracy=0.632222",
+      "known_coverage=0.610000",
+      "same_known_balanced_accuracy_gain=0.091111",
+      "failure_recall=0.944444",
+      "success_recall=0.320000",
+      "dense_progress_r2=0.620278",
+      "gripper_closedness_r2=0.725103",
+      "vertical_displacement_r2=0.746171"
+    ],
+    "claim_boundary": "SC47 shows that training-only robot phase proxies can improve a visual-only endpoint representation, but process phase does not establish correct final object state, human readiness, arrival, completion, product benefit, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "repo",
+      "ref": "research/active/l10-r0/droid_ood_privileged_phase_distillation_protocol_v1.json",
+      "summary": "Frozen source inventory, roles, truth firewall, privileged targets, visual-only provider, reducer, and gates."
+    },
+    {
+      "kind": "repo",
+      "ref": "research/active/l10-r0/README.md",
+      "summary": "SC47 metrics, distillation diagnostics, backend and artifact hashes, failure localization, and claim boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-28",
+      "change": "Consumed SC47 source-val split: do not tune role hash, timepoints, phase targets, endpoint learners, or conformal alpha. Next successor needs direct target-bound final-object-state supervision on a new cohort."
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "droid-ood-privileged-phase-distillation-v1",
+  "kind": "algorithm",
+  "title": "DROID-OOD Privileged Phase Distillation v1",
+  "canonical_ref": "repo:research/active/l10-r0/droid_ood_privileged_phase_distillation.py",
+  "authors": [],
+  "year": 2026,
+  "venue": "",
+  "summary": "Distills training-only pseudo-progress and recorded robot phase signals into visual-only endpoint features; SC47 learned contact/lift process but remained weak on terminal success.",
+  "mechanisms": [
+    {
+      "id": "privileged-phase-distillation-v1",
+      "name": "Privileged Phase Distillation",
+      "description": "Uses dense pseudo-progress plus recorded gripper and Cartesian phase signals only during training to supervise task-conditioned multi-view visual sequences, then evaluates with video and task text alone under a split-conformal endpoint reducer.",
+      "inputs": [
+        "Training: task text, three-view video, pseudo-progress, gripper position, Cartesian position, and success labels. Evaluation provider: task text and three-view video only."
+      ],
+      "outputs": [
+        "Visual-only success, failure, or UNKNOWN plus distilled progress/contact/lift/release sequences."
+      ],
+      "limitations": "SC47 missed absolute accuracy, coverage, and success-recall gates. Progress, gripper closure, and lift were learnable, but speed/opening derivatives and correct final object state were not. Robot signals are privileged proxies, reward_progress is pseudo-progress, and the consumed validation split must not be retuned."
+    }
+  ],
+  "tags": [
+    "l10",
+    "terminal-state",
+    "privileged-distillation",
+    "progress",
+    "gripper",
+    "conformal-unknown"
+  ],
+  "aliases": [
+    "SC47"
+  ],
+  "links": [
+    {
+      "label": "DROID-OOD dataset card",
+      "ref": "https://huggingface.co/datasets/yilin-wu/droid_ood_data"
+    }
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

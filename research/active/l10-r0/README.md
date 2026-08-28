@@ -1052,6 +1052,75 @@ is endpoint-mechanism evidence only; it does not establish target identity,
 active search, metric localization, navigation, reachability, physical
 execution, user arrival, explicit confirmation, product benefit, or safety.
 
+### SC47: privileged phase distillation learns process, not terminal state
+
+SC47 follows SC46's semantic-state failure instead of tuning the consumed
+Guardian test split. Exa reviewed 90 result slots across three workstreams:
+object-state change, grasp/contact/release, and small immediately runnable
+public datasets. DROID-OOD was selected because its needed subset is only
+384,056,897 bytes yet contains 350 real three-view trajectories, task text,
+recorded gripper/Cartesian state, dense pseudo-progress, and source success
+labels. The selected 703-file inventory is pinned at revision
+`0fd7c566e1812b90b63dca1c295818b781de8a7c` with aggregate SHA-256
+`8312e18413c7961a5652791d80a3eb884421abf0262c11c6ff353b70c3b1a47e`.
+The dataset is public and ungated; no license field was found in its dataset
+metadata, so no broader redistribution claim is made.
+
+Within each of five tasks, a frozen hash assigned 40 of 50 source-train rows to
+training and 10 to calibration. All 100 source-validation rows remained
+evaluation-only until provider seal. Twelve normalized timepoints from each
+960x192 video were split into left/right/wrist views. A fixed CLIP encoder
+produced task-conditioned trajectories. Training-only privileged targets were
+dense pseudo-progress, recorded gripper closedness, vertical displacement,
+Cartesian speed, and gripper-opening rate. A ridge teacher distilled those five
+signals into video-only sequences; an endpoint learner combined their frozen
+statistics and causal phase order with the learned visual goal-axis baseline.
+Only a split-conformal singleton set could emit success/failure; evaluation
+state, action, reward, latent, and success fields never entered the provider.
+
+Teacher transfer on the 50-row calibration role was selective:
+
+| distilled signal | calibration frame-level R2 |
+| --- | ---: |
+| vertical displacement | 0.746 |
+| gripper closedness | 0.725 |
+| dense pseudo-progress | 0.620 |
+| Cartesian speed | -0.190 |
+| gripper-opening rate | -0.207 |
+
+| selector | scope | balanced accuracy | coverage |
+| --- | --- | ---: | ---: |
+| learned visual goal-axis baseline | all 100 | 61.61% | 100% |
+| phase-distilled successor | 61 known rows | 63.22% | 61% |
+| baseline on the same 61 known rows | 61 known rows | 54.11% | 61% |
+
+The successor gains `+9.11` points on identical known rows, but records
+`SC47_DROID_OOD_PRIVILEGED_PHASE_DISTILLATION_GATE_NOT_MET`: coverage and
+absolute balanced accuracy miss the frozen `70%` gates, and success recall is
+only `32%` versus failure recall `94.44%`. Thirty-nine non-singleton sets are
+balanced by truth (20 failure, 19 success), so abstention did not simply hide
+one class. Only ten rows received singleton success. Coefficient mass confirms
+that gripper closedness (`1.14`) and dense progress (`0.95`) contribute after
+the visual baseline (`1.21`), but phase evidence remains asymmetric. The legal
+successor is therefore direct target-bound final-object-state supervision on a
+new cohort, not another phase derivative, split, C, or alpha sweep.
+
+The protocol, implementation, backend receipt, visual feature cache, sealed
+provider, and result hashes are
+`76c879a610a54163a8f8c6ae90ae8503043806554e9ccfbd4acb8fff315b5c84`,
+`24b406b391e868e0c07e1c4dfda7c7ed48b0738600203cbad06f410b640389d5`,
+`bd036fb84dc96c90d8b9fdd2e1489decdf95efe5a1a3e24e31454824af9c2d4e`,
+`ff23f0273c6ac19af7cc0153fea90e5a9d5280b24d1fd38bf21c488d52960edf`,
+`6661b1a7a72acfc2d5d85a41264eb5ed5e38ed553601e3623127dbc4fc065fc1`,
+and `9ab42595ebc80a40c60a3d3d6b305fea55029162367824e5fbf2991a46c48b55`.
+The representative batch selected CPU at `0.249 s` versus verified RTX 5060
+CUDA at `0.368 s`; the persisted reason is `CPU_FASTER_MEASURED`, not silent
+fallback. Source: [DROID-OOD dataset card](https://huggingface.co/datasets/yilin-wu/droid_ood_data).
+This is endpoint-mechanism evidence only. Robot-state signals are privileged
+training proxies, pseudo-progress is not physical truth, and no identity,
+search, navigation, reachability, human action readiness, arrival, explicit
+confirmation, product, or safety claim follows.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

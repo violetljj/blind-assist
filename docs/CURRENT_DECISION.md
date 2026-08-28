@@ -473,6 +473,33 @@ legal successor needs explicit object state/change or contact/release evidence
 on a new frozen cohort; local effect carriers remain a promising mechanism, not
 endpoint authority.
 
+SC47 then changed the supervision source rather than retuning SC46. The public,
+ungated DROID-OOD source supplied 250 source-train and 100 source-validation
+real robot trajectories. A task-stratified hash assigned 200 rows to training
+and 50 to conformal calibration; all 100 source-validation rows stayed outcome-
+invisible until provider seal. Training-only dense pseudo-progress, gripper
+closedness, vertical displacement, Cartesian speed, and gripper-opening rate
+supervised a five-channel phase teacher. Evaluation provider inputs were only
+task text and twelve three-view video samples.
+
+The teacher transferred dense progress (`R2=0.620`), gripper closedness
+(`0.725`), and vertical displacement (`0.746`) to held-out calibration video,
+but failed on Cartesian speed (`-0.190`) and opening rate (`-0.207`). The learned
+visual baseline reached `61.61%` balanced accuracy on all 100 evaluation rows.
+The phase-distilled successor resolved `61/100` at `63.22%`, versus `54.11%`
+for the baseline on those same known rows: `+9.11` points, but below the frozen
+`70%` accuracy and coverage gates. Its failure recall was `94.44%`, while
+success recall collapsed to `32%`; only ten evaluation rows received a
+singleton success set. Record
+`SC47_DROID_OOD_PRIVILEGED_PHASE_DISTILLATION_GATE_NOT_MET`.
+
+The decision is sharper than generic domain shift: visible approach/contact/
+lift phase is learnable, but process completion is not proof that the correct
+object reached the requested final state. Do not tune the consumed split,
+sampling, teacher targets, classifier, or conformal alpha. A legal successor
+must bind an explicit final object-state description to the target entity on a
+new cohort; high-frequency derivative teachers are closed.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

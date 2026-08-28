@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "experiment_id": "L10-SC47-DROID-OOD-PRIVILEGED-PHASE-DISTILLATION",
+  "frozen_at": "2026-08-28",
+  "question": "Can training-only dense progress and robot phase signals be distilled into a visual-only multi-view endpoint representation that improves fresh execution-success recognition over a learned visual goal-axis baseline?",
+  "source": {
+    "name": "DROID-OOD World Model Robot Manipulation Dataset",
+    "dataset_id": "yilin-wu/droid_ood_data",
+    "revision": "0fd7c566e1812b90b63dca1c295818b781de8a7c",
+    "public": true,
+    "gated": false,
+    "selected_inventory": {
+      "definition": "SHA-256 of sorted UTF-8 lines path<TAB>bytes<TAB>file_sha256<LF> over README.md, norm_stats_recorded.json, norm_stats_relabel.json, annotations/train/*.json, annotations/val/*.json, videos/train/*.mp4, and videos/val/*.mp4.",
+      "files": 703,
+      "bytes": 384056897,
+      "aggregate_sha256": "8312e18413c7961a5652791d80a3eb884421abf0262c11c6ff353b70c3b1a47e",
+      "groups": {
+        "annotations/train": {
+          "files": 250,
+          "bytes": 103310285,
+          "aggregate_sha256": "0e4857c57212f850a149991f49d69bbb3bbc8a240c4ad3c6d0e0d9463cee0578"
+        },
+        "annotations/val": {
+          "files": 100,
+          "bytes": 37408523,
+          "aggregate_sha256": "d147d6a99d6caecba1cec5205c9c0eb3934ed9f87e6831433e96bd51f269d0c3"
+        },
+        "videos/train": {
+          "files": 250,
+          "bytes": 180472396,
+          "aggregate_sha256": "b1f8a63b04f90ef422d7b3b51b089254f210220156855f273bc23a169ea357ef"
+        },
+        "videos/val": {
+          "files": 100,
+          "bytes": 62858092,
+          "aggregate_sha256": "9a860d0debadbdbf3091091202328d7d74eb35c7b441290e00fe126e0a1c4eb1"
+        }
+      }
+    },
+    "native_structure": {
+      "tasks": ["bag_our", "marker_our", "pour_our", "stack_our", "towel_our"],
+      "source_train_rows_per_task": 50,
+      "source_val_rows_per_task": 20,
+      "video_resolution": [960, 192],
+      "video_fps": 5,
+      "views": ["left", "right", "wrist"]
+    }
+  },
+  "role_freeze": {
+    "training": "Within each task in source train, sort by sha256(episode_id_orig) then episode_id_orig; first 40 rows.",
+    "calibration": "Within each task in source train, same ordering; final 10 rows.",
+    "evaluation": "All 100 source val rows in integer filename order.",
+    "expected_training_rows": 200,
+    "expected_calibration_rows": 50,
+    "expected_evaluation_rows": 100,
+    "evaluation_truth_firewall": "Before provider sealing, evaluation JSON may expose only texts, episode_id, episode_id_orig, video_length, video_path, and num_cameras. Evaluation success, states, observation.*, action.*, reward_*, text_features, latent_path, raw_length, and state_length are forbidden during sampling, embedding, teacher fitting, endpoint fitting, calibration, backend selection, and prediction."
+  },
+  "model": {
+    "model_id": "openai/clip-vit-base-patch32",
+    "revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+    "local_dir": "clip-vit-base-patch32-3d74acf",
+    "weights_file": "pytorch_model.bin",
+    "weights_sha256": "a63082132ba4f97a80bea76823f544493bffa8082296d62d71581a4feff1576f",
+    "representative_batch_size": 12,
+    "image_batch_size": 64,
+    "text_batch_size": 32
+  },
+  "frozen_algorithm": {
+    "sampled_timepoints": 12,
+    "sample_index_rule": "round(i*(video_frame_count-1)/(sampled_timepoints-1)) for i=0..sampled_timepoints-1",
+    "view_split": "Split every 960x192 frame into three ordered 320x192 crops: left, right, wrist.",
+    "state_prompts": [
+      "an initial scene before completing the task: {task}",
+      "a completed scene after successfully completing the task: {task}"
+    ],
+    "teacher_input": "Concatenate the three L2-normalized 512-dimensional CLIP view embeddings, their three task-axis projections, and normalized time; dimension 1540.",
+    "privileged_teacher_targets": [
+      "dense_progress",
+      "gripper_closedness",
+      "vertical_displacement",
+      "cartesian_speed",
+      "gripper_opening_rate"
+    ],
+    "teacher_target_definitions": {
+      "dense_progress": "source reward_progress resampled to the 12 video timepoints; pseudo-progress supervision, not physical truth",
+      "gripper_closedness": "1 - clip(recorded gripper position, 0, 1)",
+      "vertical_displacement": "recorded end-effector z minus its first sampled value",
+      "cartesian_speed": "Euclidean first difference of recorded xyz per normalized video interval, first value zero",
+      "gripper_opening_rate": "positive first difference of recorded gripper position per normalized video interval, first value zero"
+    },
+    "teacher_input_scaler": "StandardScaler fit on training frame rows only",
+    "teacher_target_scaler": "StandardScaler fit on training teacher targets only",
+    "teacher_regressor": {
+      "type": "Ridge",
+      "alpha": 10.0,
+      "fit_intercept": true
+    },
+    "sequence_statistics": [
+      "first",
+      "last",
+      "delta",
+      "minimum",
+      "maximum",
+      "mean",
+      "standard_deviation",
+      "least_squares_slope",
+      "positive_step_fraction",
+      "maximum_drawdown"
+    ],
+    "baseline_features": "Ten sequence statistics for each of three task-axis view trajectories plus their cross-view mean; dimension 40.",
+    "phase_features": [
+      "closure_peak_time",
+      "lift_peak_time",
+      "release_peak_time",
+      "closure_before_lift_before_release",
+      "maximum_lift_after_closure",
+      "maximum_release_after_lift",
+      "distilled_progress_last",
+      "distilled_progress_maximum",
+      "distilled_progress_drawdown",
+      "distilled_progress_late_mean"
+    ],
+    "successor_features": "Baseline 40 plus ten statistics for each of five distilled teacher sequences plus ten frozen causal phase features; dimension 100.",
+    "baseline_learner": {
+      "type": "LogisticRegression",
+      "solver": "liblinear",
+      "penalty": "l2",
+      "C": 0.25,
+      "class_weight": "balanced",
+      "max_iter": 2000,
+      "tol": 0.0001,
+      "random_state": 4701
+    },
+    "successor_learner": {
+      "type": "LogisticRegression",
+      "solver": "liblinear",
+      "penalty": "l2",
+      "C": 0.25,
+      "class_weight": "balanced",
+      "max_iter": 2000,
+      "tol": 0.0001,
+      "random_state": 4702
+    },
+    "feature_scalers": "Separate StandardScaler instances fit on training trajectory rows only.",
+    "conformal": {
+      "method": "split conformal label set",
+      "alpha": 0.2,
+      "calibration_role": "50 task-stratified held-out source-train rows",
+      "singleton_only": true
+    },
+    "final_authority": "The distilled teacher and endpoint learner supply visual-only probabilities. Only the frozen singleton conformal reducer emits success, failure, or UNKNOWN. Evaluation robot state, action, reward, latent, and success fields never enter the provider."
+  },
+  "gate": {
+    "evaluation_rows": 100,
+    "known_coverage_min": 0.7,
+    "successor_selective_balanced_accuracy_min": 0.7,
+    "balanced_accuracy_gain_on_same_known_min": 0.05,
+    "successor_known_class_recall_min": 0.65
+  },
+  "invalidators": [
+    "read any forbidden evaluation field before provider sealing",
+    "use source latents or any evaluation state, action, reward, or success value as a provider input",
+    "change role hash, sampled frames, prompts, teacher targets, scalers, regressors, statistics, causal features, endpoint learners, conformal alpha, reducer, or gate after evaluation truth is loaded",
+    "actual CLIP device or provider differs from the selected backend receipt",
+    "tune against the consumed source val split"
+  ],
+  "claim_boundary": "One fresh visual-only endpoint mechanism test of whether training-only pseudo-progress and recorded robot phase signals can be distilled into a task-conditioned multi-view representation. Recorded gripper/cartesian signals are robot-state proxies, reward_progress is pseudo-progress, and neither establishes physical contact truth. The result does not establish BlindAssist target identity, active search, metric localization, navigation guidance, reacquisition, reachability, human action readiness, user arrival, explicit completion confirmation, product benefit, or safety."
+}
