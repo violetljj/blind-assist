@@ -353,6 +353,26 @@ do not widen its parser or substitute labels after exposure. Further ordinal
 work requires a new information source with repeated controls, directional rank
 language, synchronized depth, and sufficient visible-view support.
 
+## 2026-08-28 terminal verification decision
+
+SC41 opened a genuinely new source and froze all scoring before truth access:
+the official SWITCH Basic v1 open `verification_state/video2img` task at commit
+`510a96b59c8688a2122d725d142c5b720962cc47`. All 16 real-video tasks were
+evaluable. Desired-outcome CLIP selected `9/16` correct, while the proposed
+goal-conditioned incomplete-state contrast plus maximum current-video
+similarity selected `3/16`, a `-37.5` point change with seven regressions.
+
+Record `SC41_SWITCH_CAUSAL_TERMINAL_VERIFICATION_GATE_NOT_MET`. The diagnostic
+same-scene term had the largest median candidate span (`0.1425`) but its argmax
+was correct on `0/16`: a successful outcome should often look different from
+the pre-completion video. Current-scene appearance persistence is therefore not
+terminal-state evidence for this task. Do not tune weights, prompts, scales,
+sampling, model, or membership after exposure. A legal successor must add an
+explicit localized state-transition/effect representation and evaluate it on a
+new unexposed cohort; the `9/16` baseline is descriptive, not a positive gate.
+No navigation, approach, reachability, executed action, user arrival, handoff,
+product, or safety claim follows.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

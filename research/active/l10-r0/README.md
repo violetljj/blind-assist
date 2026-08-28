@@ -771,6 +771,58 @@ repeated controls, public directional rank language, synchronized depth, and
 enough observable views; parser widening, action-label substitution, and
 threshold relaxation on this opened roster are forbidden.
 
+### SC41: current-scene similarity is not terminal-state evidence
+
+SC41 changed information source rather than reopening the consumed ordinal
+cohort. A broad public-source audit routed terminal verification to the official
+[SWITCH](https://github.com/BAAI-Agents/SWITCH) 30% open subset instead of the
+gated 1.27 TB VL-LN release or BusyBox's public LeRobot rows, whose published
+feature schema does not expose the optional instrumented interface-state
+telemetry. The frozen source is
+`BAAI-Agents/SWITCH-Basic-v1-open@510a96b59c8688a2122d725d142c5b720962cc47`,
+task `verification_state/video2img`: 16 real current-state/task videos, each
+paired with four candidate outcome images and a natural-language goal.
+
+Before truth was opened, SC41 sealed a provider for two fixed zero-shot CLIP
+selectors. The baseline chose the candidate most similar to the desired visible
+outcome. The successor added a goal-conditioned incomplete-state contrast and
+maximum similarity to eight uniformly sampled frames from the task video. The
+ground-truth field was stripped before JSON parsing and remained unavailable
+through download, backend selection, embedding, scoring, prediction, and
+provider sealing.
+
+| selector | correct | accuracy |
+| --- | ---: | ---: |
+| desired-state text baseline | 9/16 | 56.25% |
+| counterfactual + same-scene successor | 3/16 | 18.75% |
+
+The absolute gain is `-37.5` points, with seven baseline-correct tasks regressed,
+so the frozen gate decisively fails as
+`SC41_SWITCH_CAUSAL_TERMINAL_VERIFICATION_GATE_NOT_MET`. A read-only diagnostic
+explains the failure without reopening the cohort: the median four-candidate
+score span was `0.0400` for desired text, `0.0164` for the counterfactual margin,
+and `0.1425` for same-scene similarity; the same-scene argmax was correct on
+`0/16` tasks. The correct terminal image often contains the requested visible
+state change, so rewarding resemblance to the pre-completion video is an
+anti-causal signal, not continuity evidence.
+
+Do not tune prompts, weights, scales, sampling, model, or task membership on
+this opened cohort. The reusable result is the need for an explicit transition
+or effect variable--for example, a localized control state before/after the
+action--rather than raw appearance persistence. Desired-state CLIP's `9/16` is
+descriptive signal, not a predeclared positive. The test establishes no online
+search, physical approach, reachability, executed action, user arrival,
+`HANDOFF_READY`, product, or safety effect.
+
+The frozen protocol, backend launch, provider, and result SHA-256 values are
+`c8deb74c4f3fcb260280f0f04589fb5efa8a7bb0c089f8587933074fc0232329`,
+`eb1e4d6d54b0041c1b4aa4206dd19e38b6855abedc57461bb5e80da0405bea03`,
+`2274126fa7a8bc5877965f40c5f031b04438cf844ced1f7875a20256fbe70dd8`,
+and `b54f8f837385306361ecbffb420dd086cf2a68d970d5abd565871498564ddbba`.
+The representative launch selected `clip-torch-cpu` because its 234.55 ms
+median beat Torch CUDA's 342.22 ms on the verified RTX 5060 Laptop GPU; model
+identity and actual device/provider matched the frozen receipt.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

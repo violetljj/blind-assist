@@ -406,6 +406,18 @@ SceneFun3D roster is closed as a fresh confirmation source for this contract,
 while the representation remains eligible on a genuinely new synchronized
 repeated-control source.
 
+SC41 moved to the fresh official SWITCH terminal-verification source and tested
+whether goal-conditioned incomplete-state contrast plus current-video
+similarity improved desired-state CLIP. It did not: the baseline was `9/16`, the
+successor `3/16`, with seven regressions. The same-scene term dominated score
+variation but its argmax was correct on `0/16`, establishing that raw appearance
+persistence is anti-causal when task completion should visibly change state.
+The terminal is `SC41_SWITCH_CAUSAL_TERMINAL_VERIFICATION_GATE_NOT_MET`. This
+opened cohort is closed to tuning; the next terminal-state route must encode an
+explicit localized before/after effect and use a new unexposed cohort. No demo,
+device, navigation, reachability, action-execution, arrival, product, or safety
+claim is added.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

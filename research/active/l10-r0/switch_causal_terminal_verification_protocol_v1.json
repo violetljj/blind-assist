@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC41-FRESH-SWITCH-CAUSAL-TERMINAL-VERIFICATION",
+  "source": {
+    "dataset": "BAAI-Agents/SWITCH-Basic-v1-open",
+    "repository_url": "https://huggingface.co/datasets/BAAI-Agents/SWITCH-Basic-v1-open",
+    "revision": "510a96b59c8688a2122d725d142c5b720962cc47",
+    "task_path": "verification_state/video2img",
+    "annotation_path": "verification_state/video2img/vqa.json",
+    "annotation_size_bytes": 9878,
+    "expected_task_count": 16,
+    "license": "CC-BY-NC-4.0",
+    "source_authority": "Official 30 percent public SWITCH-Basic v1 subset"
+  },
+  "model": {
+    "model_id": "openai/clip-vit-base-patch32",
+    "revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+    "framework": "transformers",
+    "candidate_semantics": "Zero-shot CLIP image-text similarity ceiling; no SWITCH training or tuning"
+  },
+  "frozen_algorithm": {
+    "video_frame_samples": 8,
+    "video_sampling": "Uniform inclusive sampling from decoded first through last frame",
+    "goal_extraction": "Extract the quoted task after flow of; fail closed when absent or ambiguous",
+    "desired_prompt": "a photograph showing the successful visible outcome after completing: {goal}",
+    "counterfactual_prompt": "a photograph where this task is not yet complete: {goal}",
+    "baseline": "Choose the candidate image with maximum cosine similarity to the desired prompt.",
+    "successor": "Choose the candidate maximizing desired-prompt cosine minus counterfactual-prompt cosine plus maximum cosine to any sampled frame from the task video.",
+    "score_weights": {
+      "desired_similarity": 1.0,
+      "counterfactual_similarity": -1.0,
+      "same_scene_similarity": 1.0
+    },
+    "tie_break": "Lexicographically smallest option label",
+    "abstention": "UNKNOWN when the goal cannot be extracted, media cannot be decoded, there are not exactly four candidate images, or model/device identity is not exact.",
+    "truth_firewall": "GT is forbidden during source parsing, media acquisition, backend selection, embedding, scoring, prediction, and provider sealing."
+  },
+  "frozen_gate": {
+    "minimum_evaluable_tasks": 12,
+    "minimum_successor_accuracy": 0.5,
+    "minimum_absolute_accuracy_gain": 0.125,
+    "maximum_baseline_correct_to_successor_wrong": 1
+  },
+  "decision_labels": {
+    "source_admitted": "SC41_SWITCH_TERMINAL_VERIFICATION_SOURCE_ADMITTED",
+    "source_incomplete": "SC41_SWITCH_TERMINAL_VERIFICATION_SOURCE_INCOMPLETE",
+    "pass": "SC41_SWITCH_CAUSAL_TERMINAL_VERIFICATION_FRESH_SIGNAL",
+    "fail": "SC41_SWITCH_CAUSAL_TERMINAL_VERIFICATION_GATE_NOT_MET",
+    "not_evaluable": "SC41_NOT_EVALUABLE_INSUFFICIENT_TERMINAL_TASKS"
+  },
+  "forbidden_after_outcome": [
+    "change prompts, weights, frame count, sampling, tie break, gate, model, or cohort",
+    "train or calibrate on the opened SWITCH task",
+    "remove tasks, options, difficult device types, or decode failures",
+    "claim navigation, physical reachability, user arrival, autonomous manipulation, product benefit, or safety"
+  ],
+  "claim_boundary": "One fresh public real-video multiple-choice mechanism test of whether goal-conditioned counterfactual and same-scene evidence improve terminal-state selection over desired-text similarity alone. Candidate images and answer options are benchmark-provided. It does not establish online target discovery, metric approach, reachability, executed user action, real deployment, HANDOFF_READY, product benefit, or safety."
+}
