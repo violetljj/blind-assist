@@ -65,7 +65,17 @@ function Resolve-ConfiguredPath {
 }
 
 function Resolve-ResearchPython {
-    $candidate = Resolve-ConfiguredPath $Python 'research_python' 'BLINDASSIST_RESEARCH_PYTHON' ''
+    $local = Read-LocalConfig
+    $profileKey = if ($Profile -eq 'research-l10-r0') { 'l10_r0_python' } else { 'dtr_r0_python' }
+    $profileEnvironment = if ($Profile -eq 'research-l10-r0') { 'BLINDASSIST_L10_R0_PYTHON' } else { 'BLINDASSIST_DTR_R0_PYTHON' }
+    $candidate = $Python
+    if ([string]::IsNullOrWhiteSpace($candidate) -and $local.ContainsKey($profileKey)) { $candidate = $local[$profileKey] }
+    if ([string]::IsNullOrWhiteSpace($candidate)) { $candidate = [Environment]::GetEnvironmentVariable($profileEnvironment) }
+    if ([string]::IsNullOrWhiteSpace($candidate) -and $local.ContainsKey('research_python')) { $candidate = $local['research_python'] }
+    if ([string]::IsNullOrWhiteSpace($candidate)) { $candidate = $env:BLINDASSIST_RESEARCH_PYTHON }
+    if (-not [string]::IsNullOrWhiteSpace($candidate)) {
+        $candidate = Resolve-ConfiguredPath $candidate '__unused__' '__UNUSED__' ''
+    }
     if ($candidate -and (Test-Path -LiteralPath $candidate -PathType Leaf)) { return $candidate }
     $launcher = Get-Command 'blindassist-python.cmd' -ErrorAction SilentlyContinue | Select-Object -First 1
     if ($launcher) { return $launcher.Source }
@@ -144,6 +154,20 @@ function Invoke-DoctorResearch {
     if (-not $runtime.supported) {
         Stop-Ba 'BA_ENV_PYTHON_UNSUPPORTED' "Python $($runtime.python) is older than 3.11" 'install Python 3.11+ or set research_python in config/local.toml'
     }
+    $gpuProbe = Join-Path $RepoRoot 'tools/probe_research_gpu.py'
+    $gpuProbeOutput = @(& $selection.Python $gpuProbe '--profile' $Profile 2>&1)
+    if ($LASTEXITCODE -ne 0) {
+        Stop-Ba 'BA_ENV_RESEARCH_GPU_UNAVAILABLE' ($gpuProbeOutput -join ' ') "set $profileKey to the shared BlindAssist GPU launcher"
+    }
+    $gpuRuntimeLine = $gpuProbeOutput | ForEach-Object { $_.ToString() } | Where-Object { $_.TrimStart().StartsWith('{') } | Select-Object -Last 1
+    if (-not $gpuRuntimeLine) {
+        Stop-Ba 'BA_ENV_RESEARCH_GPU_PROBE_INVALID' ($gpuProbeOutput -join ' ') "run $($selection.Python) tools/probe_research_gpu.py --profile $Profile"
+    }
+    $gpuRuntime = $gpuRuntimeLine | ConvertFrom-Json
+    if ($gpuRuntime.status -ne 'PASS') {
+        Stop-Ba 'BA_ENV_RESEARCH_GPU_PROBE_FAILED' ($gpuRuntimeLine) 'repair the shared GPU runtime before launching GPU-capable work'
+    }
+    Write-Host "gpu_runtime: $gpuRuntimeLine"
     Write-Host "PASS $Profile"
     return $selection
 }

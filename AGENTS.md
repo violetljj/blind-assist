@@ -126,8 +126,12 @@ After `PROJECT_STATE.md`, read only the route needed for the task:
   `pwsh -NoProfile -File scripts/run_android_gradle.ps1 <tasks...>`; do not
   hand-compose a replacement toolchain.
 - Use `pwsh -NoProfile -File tools/ba.ps1 doctor <profile>` for scoped
-  workstation readiness. Profiles are `base`, `research-dtr-r0`, `android`,
-  `device`, and `export`.
+  workstation readiness. Profiles are `base`, `research-dtr-r0`,
+  `research-l10-r0`, `android`, `device`, and `export`.
+- DTR and L10 GPU-capable work must use the Python selected by their respective
+  `research-dtr-r0` or `research-l10-r0` profile. Do not launch it from a
+  dataset-local or experiment-local CPU venv. Each research doctor runs real
+  Torch, CuPy, and Numba CUDA kernels plus both routes' critical import probe.
 - Keep machine paths, SDK locations, Python/CUDA paths, credentials, and local
   endpoints out of tracked instructions. Pass them by CLI, ignored local config,
   environment variables, or the owning credential store.
