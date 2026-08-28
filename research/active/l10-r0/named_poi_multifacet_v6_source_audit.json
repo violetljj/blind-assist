@@ -1,0 +1,17 @@
+{
+  "schema": "l10-named-poi-multifacet-v6-source-audit-v1",
+  "source_manifest": "artifacts.local/knowledge/named-poi-multifacet-v6/multifacet_library.json",
+  "source_manifest_sha256": "506b54a6cacaece1c2ae9a4ee12e0d280913c8623bd0c425e67ef16dfc95c3a6",
+  "image_count": 20,
+  "image_bytes": 9312245,
+  "inventory_sha256": "e2e08f8b90409ca5f88239406d101dacd77c683da7ac39dfbafd291b03b684c5",
+  "audit_timing": "BEFORE_ANY_V6_MODEL_INFERENCE",
+  "status": "NOT_EVALUABLE_NO_TARGET_ENTRANCE_POSITIVES",
+  "findings": [
+    "The apparent Hong Kong Central Library entrance is the Délifrance tenant entrance, not the target-building entrance.",
+    "The apparent IFC entrance is a Lane Crawford tenant escalator or interior circulation view, not an IFC entry boundary.",
+    "The apparent Times Square entrance is a Lane Crawford tenant entrance or event context, not a distinct target-building entrance."
+  ],
+  "decision": "Do not run a locator evaluation or convert tenant entrances into target positives. Expand Commons category pagination and change source coverage.",
+  "claim_boundary": "This is a source-validity audit only; it is neither an algorithm negative nor entrance-localization evidence."
+}

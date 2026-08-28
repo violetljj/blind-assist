@@ -17,6 +17,7 @@ from typing import Any, Iterable
 
 USER_AGENT = "BlindAssist-L10-Multifacet/1.0 (research prototype)"
 IMAGE_MIMES = {"image/jpeg", "image/png", "image/webp"}
+MAX_CATEGORY_FILES = 500
 FACET_TERMS = {
     "entrance": ("entrance", "entry", "exit", "gate", "door", "portal", "入口", "出口", "大門", "门"),
     "facade": ("facade", "façade", "front", "exterior", "building", "tower", "大樓", "大楼", "外觀", "外观"),
@@ -42,36 +43,50 @@ def _claim_values(entity: dict[str, Any], property_id: str) -> list[Any]:
 
 
 def _category_files(category: str) -> list[str]:
-    payload = _api_json(
-        "https://commons.wikimedia.org/w/api.php",
-        action="query",
-        list="categorymembers",
-        cmtitle=f"Category:{category}",
-        cmnamespace="6",
-        cmlimit="50",
-        format="json",
-    )
-    return [row["title"].removeprefix("File:") for row in payload["query"]["categorymembers"]]
+    files = []
+    continuation = None
+    while len(files) < MAX_CATEGORY_FILES:
+        parameters = {
+            "action": "query",
+            "list": "categorymembers",
+            "cmtitle": f"Category:{category}",
+            "cmnamespace": "6",
+            "cmlimit": "50",
+            "format": "json",
+        }
+        if continuation is not None:
+            parameters["cmcontinue"] = continuation
+        payload = _api_json("https://commons.wikimedia.org/w/api.php", **parameters)
+        files.extend(
+            row["title"].removeprefix("File:")
+            for row in payload["query"]["categorymembers"]
+        )
+        continuation = payload.get("continue", {}).get("cmcontinue")
+        if continuation is None:
+            break
+    return files[:MAX_CATEGORY_FILES]
 
 
 def _file_metadata(names: Iterable[str]) -> dict[str, dict[str, Any]]:
-    titles = "|".join(f"File:{name}" for name in names)
-    if not titles:
+    names = list(names)
+    if not names:
         return {}
-    payload = _api_json(
-        "https://commons.wikimedia.org/w/api.php",
-        action="query",
-        prop="imageinfo",
-        titles=titles,
-        format="json",
-        iiprop="url|mime|size|extmetadata",
-        iiurlwidth="1280",
-    )
     output = {}
-    for page in payload["query"]["pages"].values():
-        info = (page.get("imageinfo") or [None])[0]
-        if info:
-            output[page["title"].removeprefix("File:")] = info
+    for start in range(0, len(names), 50):
+        titles = "|".join(f"File:{name}" for name in names[start : start + 50])
+        payload = _api_json(
+            "https://commons.wikimedia.org/w/api.php",
+            action="query",
+            prop="imageinfo",
+            titles=titles,
+            format="json",
+            iiprop="url|mime|size|extmetadata",
+            iiurlwidth="1280",
+        )
+        for page in payload["query"]["pages"].values():
+            info = (page.get("imageinfo") or [None])[0]
+            if info:
+                output[page["title"].removeprefix("File:")] = info
     return output
 
 

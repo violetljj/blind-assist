@@ -618,6 +618,24 @@ match target-support field joined spatially to entrance proposals, not OCR-only
 recognition or tuning this consumed cohort. No entrance, navigation, metric
 arrival, product, user-benefit, or safety claim follows.
 
+That support branch has now reached its single-frame ceiling. A coarse 9x9
+field failed; native 16x16 downward support rays reduced false commits on a
+25-image fresh batch from 24 to nine while preserving one correct commit. A
+source audit then refused tenant entrances as target truth and expanded Commons
+pagination from 50 to 500 files. On the resulting 32-image V7 batch, a
+multi-facet reference bank plus unchanged rays preserved `2/6` correct unique
+commits, reduced false commits `30 -> 7`, raised precision
+`6.25% -> 22.22%`, and retained every oracle-available true entrance (`4/6`)
+in `COMMIT / SET_VALUED`.
+
+The frozen terminal is
+`NAMED_POI_MULTIFACET_SUPPORT_RAY_PROPOSAL_CEILING_REACHED_SINGLE_FRAME_UNIQUENESS_NOT_MET`:
+retain the ray as a candidate-preserving veto, not a finished locator. The
+active entrance belief now converts ambiguity into `CENTER_AND_APPROACH`,
+requires two consecutive bound views before commit, and enters last-bearing
+reacquisition after loss. Temporal real-input evidence remains pending; no
+public access, guidance, arrival, product, user-benefit, or safety claim follows.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

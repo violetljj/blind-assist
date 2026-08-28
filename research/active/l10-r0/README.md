@@ -1250,6 +1250,77 @@ No OCR calls were made. The human boxes establish only a current-image aperture
 or passage assembly, not public access, traversability, accessibility, metric
 approach, tracking, guidance, arrival, product benefit, user benefit, or safety.
 
+### Target support, multi-facet references, and active disambiguation
+
+V4 changed representation rather than tuning V3. Reciprocal DINO patch matches
+plus affine consistency produced a target-support field, and entrances had to
+attach to that field. On 12 new views with five boxed positives, the proposal
+oracle covered `4/5`. The generic arm made one correct and 11 false commits;
+the 9x9 support field made zero correct and four false commits. Record
+`NAMED_POI_COARSE_TARGET_SUPPORT_FIELD_GATE_NOT_MET`: coarse spatial identity
+was a useful veto but too diffuse to localize a door.
+
+V5 retained native 16x16 DINO patches and replaced local overlap with downward
+support rays: identity patches vote only for entrance proposals in the same
+image columns below them. On 25 new views, four boxed entrances, and 21
+negatives, the proposal oracle covered `4/4`. The generic arm made one correct
+and 24 false commits. Native rays preserved one correct, reduced false commits
+to nine, improved precision `4.0% -> 10.0%`, and kept two positives in
+`COMMIT / SET_VALUED`. The locator gate still failed because correct commits
+did not increase. Record
+`NAMED_POI_NATIVE_SUPPORT_RAY_LOCATOR_GATE_NOT_MET_RETAIN_FILTER`.
+
+V6 was source-audited before inference and was not run. Its apparent Central
+Library entrance was a Délifrance tenant entrance; apparent IFC/Times Square
+entries were Lane Crawford or interior circulation. Record
+`NOT_EVALUABLE_NO_TARGET_ENTRANCE_POSITIVES`, not an algorithm negative. The
+acquisition bottleneck was then fixed: Commons pagination now inspects up to
+500 category files and batches metadata requests instead of silently using
+only the first 50.
+
+V7 changed only the reference information source. Twelve previously opened V5
+entrance/interior/facade views formed a five-target multi-facet bank; the native
+support-ray algorithm and thresholds remained unchanged. Pagination supplied
+32 entirely new queries across HKCEC, Central Library, IFC, and Times Square;
+six target-building entrances and 26 strong negatives were pixel-boxed before
+inference:
+
+| arm | correct unique commits | false commits | precision | positive recall | COMMIT/SET truth coverage |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| strongest generic proposal | 2/6 | 30 | 6.25% | 33.33% | 2/6 |
+| **multi-facet native support ray** | **2/6** | **7** | **22.22%** | **33.33%** | **4/6** |
+
+The successor removes `23/30` false commits (`76.7%`), multiplies precision by
+`3.56x`, and retains every truth-overlapping proposal made available by the
+proposal oracle (`4/6`). It does not pass the locator gate: correct unique
+commits stayed at two, while 23/32 frames remained deliberately `SET_VALUED`.
+Record
+`NAMED_POI_MULTIFACET_SUPPORT_RAY_PROPOSAL_CEILING_REACHED_SINGLE_FRAME_UNIQUENESS_NOT_MET`.
+The legal next step is temporal active observation, not another threshold.
+
+`named_poi_active_entrance_belief.py` now lands that seam. `SET_VALUED`
+requests `CENTER_AND_APPROACH`; a candidate commits only after remaining
+target-bound in two consecutive active views while competitors clear. A lost
+commit becomes `REACQUIRE / SCAN_LAST_BEARING` and resumes tracking when
+reobserved. The mechanism check passes ambiguity -> active view -> commit ->
+lost -> reacquired tracking. This is runtime-ready mechanics, not temporal
+public-video evidence yet.
+
+V4 result SHA-256:
+`c14832f9fad8bd5eb860dbfb529e8c18adad53bc572289ae95b690e34d568c2f`.
+V5 result SHA-256:
+`2ad6841f7941f96a5692dad91454c69b8d64d0d4d5c9a98458c351a5062e05c1`.
+V7 result SHA-256:
+`6c097818b134f77120a75743972c5070294b4109ed29d210ecceed45c09f722f`.
+For V7 the encoder selected measured-faster CPU (`0.126 s` versus CUDA
+`0.281 s`); GroundingDINO selected verified RTX 5060 CUDA (`1.136 s` versus
+CPU `3.715 s`). Receipt SHA-256 values are
+`524a4f90fddb1d6bbe11dd22dc2569f4ffc6dc416b424a8dc8b7c2bfa6c102ba`
+and `a55304b881fd889bd9f9c08b775c1144464266c8bb444b9c4e63006e3e70a488`.
+Every run made zero OCR calls. These are curated Development current-image
+results; public access, traversability, metric guidance, temporal confirmation,
+arrival, product benefit, user benefit, and safety remain unproved.
+
 V2 result:
 `artifacts.local/evidence/l10-r0/named-poi-multifacet-entrance-v2/result.json`,
 SHA-256 `dff6fcd89460f185fc3785549131800869ce7661d35d5119b3f5dd4d58488f51`.

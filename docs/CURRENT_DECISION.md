@@ -555,6 +555,26 @@ to overlap or connect to that target-support field. Only a correct unique edge
 may feed tracking, bearing guidance, and arrival logic. OCR remains an optional
 high-precision branch, not the main or sole authority.
 
+The spatial successor is now consumed through V7. Coarse 9x9 support failed,
+while native 16x16 downward target-support rays became a strong veto. On the
+final 32-image source with six target-building entrances and 26 strong
+negatives, changing only to a multi-facet public reference bank preserved two
+correct commits, reduced false commits `30 -> 7`, raised precision
+`6.25% -> 22.22%`, and retained truth in `COMMIT / SET_VALUED` on `4/6`
+positives. That equals the proposal oracle's `4/6` availability ceiling.
+
+Record
+`NAMED_POI_MULTIFACET_SUPPORT_RAY_PROPOSAL_CEILING_REACHED_SINGLE_FRAME_UNIQUENESS_NOT_MET`.
+Do not tune V4/V5/V7 grids, ray width, thresholds, boxes, or roles. The static
+locator gate did not pass because correct unique commits remained `2/6`.
+Retain the ray as a false-commit/candidate-preservation mechanism only.
+
+The next active seam is implemented: `SET_VALUED` requests a centered closer
+view; commit requires the same target-bound candidate in two consecutive views
+after competitors clear; loss enters last-bearing reacquire. Temporal
+confirmation on repeated active views remains pending. This advances search and
+reacquisition without making OCR the main path.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

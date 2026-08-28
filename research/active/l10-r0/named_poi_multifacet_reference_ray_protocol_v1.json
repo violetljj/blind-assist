@@ -1,0 +1,73 @@
+{
+  "schema": "l10-named-poi-multifacet-reference-ray-protocol-v1",
+  "question": "On a seventh prior-file-disjoint public-image batch, does changing from facade-only references to target-specific entrance, interior, and facade references let the unchanged native support-ray reducer make more correct unique entrance commits without OCR?",
+  "mode": "EXPLORE_DEVELOPMENT_ONE_SHOT",
+  "sources": {
+    "reference_multifacet_library": {
+      "path": "artifacts.local/knowledge/named-poi-multifacet-v5/multifacet_library.json",
+      "sha256": "7953ab9370b8b05efcb5af06ef09c1fd46a74fb41452a5e62808337521d74f33",
+      "image_count": 25,
+      "image_bytes": 13701269,
+      "inventory_sha256": "dc9cda4e765aced7fe3359570a221f13eec38c1f9b3d1f1a77a5db2ab5ae0d40",
+      "selection_authority": "V5 pixels were already open. Reference indices were selected before any V7 model call to cover target-specific entrance/interior/facade views; they are information-source inputs, not V7 truth."
+    },
+    "fresh_multifacet_library": {
+      "path": "artifacts.local/knowledge/named-poi-multifacet-v7/multifacet_library.json",
+      "sha256": "4824a13cc74a3371b75725d73c57124bb2b401b0b3e0a0bd39470efc3b6e98ed",
+      "image_count": 32,
+      "image_bytes": 12519892,
+      "inventory_sha256": "86d9706b70c9f5d79f5576fa9fcad190aa734551320045a3cf7361af80fb704b",
+      "selection_authority": "Commons category pagination to 500 files; every multifacet-v1 through v6 file excluded before metadata ranking."
+    }
+  },
+  "targets": {
+    "causeway-bay-station": {"reference_indices": [1], "evaluation_indices": []},
+    "hkcec": {"reference_indices": [1, 2, 3], "evaluation_indices": [1, 2, 3, 4, 5, 6, 7, 8]},
+    "hong-kong-central-library": {"reference_indices": [1, 6], "evaluation_indices": [1, 2, 3, 4, 5, 6, 7, 8]},
+    "international-finance-centre": {"reference_indices": [1, 2, 3], "evaluation_indices": [1, 2, 3, 4, 5, 6, 7, 8]},
+    "times-square-hong-kong": {"reference_indices": [1, 3, 4], "evaluation_indices": [1, 2, 3, 4, 5, 6, 7, 8]}
+  },
+  "exact_entrance_truth": {
+    "causeway-bay-station": {},
+    "hkcec": {
+      "1": {"image_size": [1120, 840], "boxes_xyxy": [[0, 545, 690, 840]], "kind": "Harbour Road covered entrance"},
+      "2": {"image_size": [1280, 960], "boxes_xyxy": [[0, 500, 500, 805], [955, 500, 1280, 805]], "kind": "covered pedestrian entrance passages"}
+    },
+    "hong-kong-central-library": {
+      "7": {"image_size": [1280, 960], "boxes_xyxy": [[0, 525, 500, 850]], "kind": "main library entrance"}
+    },
+    "international-finance-centre": {
+      "1": {"image_size": [1280, 960], "boxes_xyxy": [[180, 250, 1190, 800]], "kind": "Man Yiu Street glass entrance"},
+      "2": {"image_size": [1280, 960], "boxes_xyxy": [[410, 220, 1280, 820]], "kind": "Man Yiu Street glass entrance"},
+      "8": {"image_size": [1280, 960], "boxes_xyxy": [[80, 190, 860, 960]], "kind": "street exit doors"}
+    },
+    "times-square-hong-kong": {}
+  },
+  "source_audit": {
+    "performed_before_any_v7_model_inference": true,
+    "positive_definition": "A distinct target-building pedestrian entrance, covered passage, or exterior door boundary is visibly actionable in the current image.",
+    "negative_definition": "Wrong-entity station/store entrance, target context without a distinct target entry boundary, interior area already beyond entry, distant facade, event crowd, object, person, or road view.",
+    "rejected_metadata_false_positives": "V7 library images 1/2 are Tin Hau Station exits, not Central Library entrances. V6 Délifrance and Lane Crawford apertures are tenant entrances, not target-building entrances.",
+    "box_authority": "HUMAN_PIXEL_BOX_DEVELOPMENT_TRUTH_FROZEN_BEFORE_ANY_V7_MODEL_CALL",
+    "limitations": "Current-image target entrance truth only; no public-access, accessibility, traversability, metric-distance, safe-approach, or arrival authority."
+  },
+  "models": {
+    "clip": {"path": "artifacts.local/models/clip-vit-base-patch32-3d74acf", "weights_sha256": "a63082132ba4f97a80bea76823f544493bffa8082296d62d71581a4feff1576f"},
+    "dinov2": {"path": "artifacts.local/models/p1_a2_dinov2_small_ed25f3a", "weights_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1", "native_patch_grid": 16},
+    "grounding_dino": {"path": "artifacts.local/models/grounding-dino-tiny-a2bb814", "weights_sha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3", "prompt": "pedestrian entrance. building entrance. station entrance. doorway. gate. stairs. escalator. passageway.", "box_threshold": 0.05, "text_threshold": 0.05, "maximum_proposals": 10}
+  },
+  "native_support_ray": {
+    "field": "Unchanged V5 reciprocal native 16x16 DINO support, affine consistency, strongest-reference target support, and strongest-distractor subtraction.",
+    "ray": "Unchanged V5 downward 1.5-width structural ray with linear vertical proximity.",
+    "configuration": "Use unchanged SupportFieldConfig and SupportRayConfig defaults; only the public reference information source changes."
+  },
+  "evaluation": {
+    "iou_threshold": 0.30,
+    "baseline": "Commit the maximum GroundingDINO bound-score proposal when its score is at least 0.10.",
+    "successor": "Commit only the entrance selected by the unchanged native support-ray reducer using the multi-facet reference bank.",
+    "primary_metrics": ["correct unique commits", "false commits", "commit precision", "positive-image recall"],
+    "secondary_metrics": ["proposal-oracle positive coverage", "COMMIT-or-SET_VALUED truth coverage"],
+    "stop_condition": "Run once. Retain only if correct unique commits strictly increase, at least two positive images are correctly committed, and false commits decrease versus the generic baseline. Otherwise do not tune this cohort."
+  },
+  "ocr_calls": 0
+}

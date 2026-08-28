@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-target-support-ray-active-belief",
+  "item_id": "algorithm-target-support-ray-active-belief",
+  "route": "l10-r0",
+  "mechanism_ids": ["native-target-support-ray", "active-entrance-belief"],
+  "use_state": "active",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "V4/V5/V7 prior-file-disjoint Commons Development batches with human pixel boxes; V7 uses 12 earlier multi-facet reference views, 32 new queries, six target-building positives, and 26 strong negatives.",
+    "project_application": "Provide a non-OCR target-to-entrance candidate filter, then convert residual single-frame ambiguity into an explicit closer-view and reacquisition loop before tracking and guidance.",
+    "modifications": "Reciprocal native DINO support, distractor subtraction, downward structural rays, set-valued authority, two-consecutive-view commit, and last-bearing reacquisition.",
+    "expected_effect": "Reduce wrong entrance commitments without dropping oracle-available target entrances, then resolve same-frame ambiguity with active evidence rather than a lower threshold."
+  },
+  "evaluation": {
+    "reproduction_status": "partial",
+    "verdict": "mixed",
+    "setup": "One-shot zero-OCR V7 comparison with source identities, multi-facet references, human target-entrance boxes, native-grid representation, reducer, and gates frozen before inference.",
+    "effect": "Support rays preserved two correct unique commits while reducing false commits from 30 to 7 and increasing precision 3.56x. COMMIT or SET_VALUED retained truth on all four positives for which GroundingDINO supplied an IoU-qualified proposal. Correct unique commits did not increase, so the single-frame locator gate failed and temporal active disambiguation remains mechanics-only.",
+    "metrics": [
+      "generic_correct_unique_commits=2/6",
+      "generic_false_commits=30",
+      "generic_commit_precision=0.0625",
+      "support_ray_correct_unique_commits=2/6",
+      "support_ray_false_commits=7",
+      "support_ray_commit_precision=0.222222",
+      "false_commit_reduction=76.7%",
+      "precision_multiplier=3.56x",
+      "proposal_oracle_positive_coverage=4/6",
+      "commit_or_set_valued_truth_coverage=4/6"
+    ],
+    "claim_boundary": "This supports a non-OCR candidate-preserving veto and an active-observation control seam. It does not establish a finished unique entrance locator, temporal disambiguation, tracking, public access, navigation, arrival, product benefit, user benefit, or safety."
+  },
+  "evidence": [
+    {"kind": "repo", "ref": "research/active/l10-r0/named_poi_multifacet_reference_ray_protocol_v1.json", "summary": "Frozen V7 multi-facet source, exact target-entrance truth, unchanged algorithm, metrics, and stop rule."},
+    {"kind": "repo", "ref": "research/active/l10-r0/named_poi_active_entrance_belief.py", "summary": "Deterministic ambiguity, closer-view, commit, loss, and reacquisition mechanism."},
+    {"kind": "repo", "ref": "research/active/l10-r0/README.md", "summary": "V4 through V7 metrics, backend receipts, source audit, terminal, next step, and claim boundaries."}
+  ],
+  "history": [
+    {"date": "2026-08-28", "change": "Consumed V4, V5, and V7 without retuning. Retain native support rays only as a candidate-preserving false-commit filter; next evidence must be temporal active-view disambiguation."}
+  ],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

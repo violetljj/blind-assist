@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "id": "algorithm-target-support-ray-active-belief",
+  "kind": "algorithm",
+  "title": "Multi-facet target support rays with active entrance belief",
+  "canonical_ref": "git:research/active/l10-r0/named_poi_active_entrance_belief.py",
+  "authors": [],
+  "year": null,
+  "venue": "",
+  "summary": "Transport non-OCR public-reference identity through native reciprocal patch support to entrance candidates, preserve ambiguous candidates, and actively acquire a closer view before committing or reacquiring.",
+  "mechanisms": [
+    {
+      "id": "native-target-support-ray",
+      "name": "Native target-support ray",
+      "description": "Build a discriminative native DINO patch field from reciprocal affine-consistent public-reference matches; cast support downward in image columns and bind only entrance proposals below target evidence.",
+      "inputs": ["Multi-facet public target references", "Current RGB image", "Entrance proposals", "User goal target"],
+      "outputs": ["Target-attached entrance edge scores", "COMMIT, SET_VALUED, or SEARCH"],
+      "limitations": "V7 reduced false commits by 76.7 percent and reached proposal-oracle candidate coverage, but did not increase correct unique commits. It is not a finished single-frame locator."
+    },
+    {
+      "id": "active-entrance-belief",
+      "name": "Active multi-view entrance belief",
+      "description": "Treat SET_VALUED as an observation request; center and approach a candidate, require consecutive target-bound survival after competitors clear, and reacquire a lost commit from its last bearing.",
+      "inputs": ["Per-frame target-bound candidate set", "Candidate boxes and edge scores", "Image size"],
+      "outputs": ["SWEEP, CENTER_AND_APPROACH, TRACK, or SCAN_LAST_BEARING", "Temporal SEARCH, SET_VALUED, COMMIT, or REACQUIRE state"],
+      "limitations": "The deterministic sequence check passes, but no public active-view video has yet established temporal disambiguation, tracking, approach, or arrival."
+    }
+  ],
+  "tags": ["l10", "named-poi", "entrance", "non-ocr", "active-perception", "reacquisition"],
+  "aliases": [],
+  "links": [],
+  "added_at": "2026-08-28",
+  "updated_at": "2026-08-28"
+}

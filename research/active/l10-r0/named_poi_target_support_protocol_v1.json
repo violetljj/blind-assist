@@ -1,0 +1,67 @@
+{
+  "schema": "l10-named-poi-target-support-protocol-v1",
+  "question": "On a fourth prior-file-disjoint public-image batch, can reciprocal reference-to-query patch support spatially attach entrance proposals to the requested POI and produce correct unique entrance commits without OCR?",
+  "mode": "EXPLORE_DEVELOPMENT_ONE_SHOT",
+  "sources": {
+    "reference_library": {
+      "path": "artifacts.local/knowledge/named-poi-facade-v2/target_library.json",
+      "sha256": "68fa8c8df0386c7993bc5b1b0d46d6fac2f79361e589d4b5a11909ee0ca6c885"
+    },
+    "fresh_multifacet_library": {
+      "path": "artifacts.local/knowledge/named-poi-multifacet-v4/multifacet_library.json",
+      "sha256": "92a569298c429fb97720fecfc198b7166391cabe1323c4583d26caeaf3043f32",
+      "image_count": 12,
+      "image_bytes": 3924927,
+      "inventory_sha256": "e750fd2d89f1f4309487f330860a5a19d6f5a63887336578ac3a761c793791a1",
+      "selection_authority": "Commons filename metadata before pixel access; every multifacet-v1, v2, and v3 file excluded. Central Station had no additional eligible file in the source category."
+    }
+  },
+  "targets": {
+    "central-station": {"reference_indices": [1, 4], "calibration_indices": [], "evaluation_indices": []},
+    "hku-main-building": {"reference_indices": [1, 4], "calibration_indices": [], "evaluation_indices": [1, 2, 3, 4, 5, 6, 7, 8]},
+    "queen-mary-hospital": {"reference_indices": [1, 5], "calibration_indices": [], "evaluation_indices": [1, 2, 3, 4]}
+  },
+  "human_entrance_labels": {
+    "central-station": {},
+    "hku-main-building": {"1": false, "2": false, "3": false, "4": true, "5": true, "6": true, "7": true, "8": true},
+    "queen-mary-hospital": {"1": false, "2": false, "3": false, "4": false}
+  },
+  "exact_entrance_truth": {
+    "central-station": {},
+    "hku-main-building": {
+      "4": {"image_size": [1280, 865], "boxes_xyxy": [[205, 285, 350, 545], [500, 285, 610, 545], [695, 285, 805, 545]], "kind": "courtyard pedestrian doors"},
+      "5": {"image_size": [1280, 865], "boxes_xyxy": [[55, 45, 230, 440], [425, 55, 610, 420], [1080, 20, 1275, 405]], "kind": "arcade pedestrian doors"},
+      "6": {"image_size": [1280, 865], "boxes_xyxy": [[585, 390, 740, 610]], "kind": "courtyard-end doorway"},
+      "7": {"image_size": [1280, 853], "boxes_xyxy": [[545, 555, 650, 715]], "kind": "main facade ground doorway"},
+      "8": {"image_size": [1280, 1920], "boxes_xyxy": [[885, 1485, 1015, 1815]], "kind": "ground-floor pedestrian door"}
+    },
+    "queen-mary-hospital": {}
+  },
+  "source_audit": {
+    "performed_before_any_v4_model_inference": true,
+    "positive_definition": "A distinct pedestrian door or destination-bound entry aperture is visibly actionable in the current image.",
+    "negative_definition": "Historical/distant context, an object, or a target-context view without a distinct actionable current-view entry choice.",
+    "box_authority": "HUMAN_PIXEL_BOX_DEVELOPMENT_TRUTH_FROZEN_BEFORE_ANY_V4_MODEL_CALL",
+    "limitations": "Current-image aperture truth only; no public-access, accessibility, traversability, metric-distance, safe-approach, or arrival authority."
+  },
+  "models": {
+    "clip": {"path": "artifacts.local/models/clip-vit-base-patch32-3d74acf", "weights_sha256": "a63082132ba4f97a80bea76823f544493bffa8082296d62d71581a4feff1576f"},
+    "dinov2": {"path": "artifacts.local/models/p1_a2_dinov2_small_ed25f3a", "weights_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1", "patch_grid": 9},
+    "grounding_dino": {"path": "artifacts.local/models/grounding-dino-tiny-a2bb814", "weights_sha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3", "prompt": "pedestrian entrance. building entrance. station entrance. doorway. gate. stairs. escalator. passageway.", "box_threshold": 0.05, "text_threshold": 0.05, "maximum_proposals": 10}
+  },
+  "target_support_field": {
+    "configuration": "Use unchanged SupportFieldConfig defaults in named_poi_target_support_field.py.",
+    "construction": "For every target reference, retain reciprocal DINO patch matches consistent with one affine RANSAC layout; take the strongest target support per query patch; subtract the strongest distractor support; normalize the positive goal margin field.",
+    "attachment": "A proposal attaches to target support inside its fixed 1.5-width box extended one proposal-height upward. Support score is 0.60 field-mass fraction plus 0.40 local peak; combine harmonically with entrance score.",
+    "states": "COMMIT for one separated eligible edge, SET_VALUED for close edges, SEARCH when no entrance is attached to discriminative target support."
+  },
+  "evaluation": {
+    "iou_threshold": 0.30,
+    "baseline": "Commit the maximum GroundingDINO bound-score proposal when its score is at least 0.10.",
+    "successor": "Commit only the entrance selected by the frozen target-support-field reducer.",
+    "primary_metrics": ["correct unique commits", "false commits", "commit precision", "positive-image recall"],
+    "secondary_metrics": ["proposal-oracle positive coverage", "COMMIT-or-SET_VALUED truth coverage"],
+    "stop_condition": "Run once. Retain as a locator only if it makes at least one correct unique commit, strictly improves correct commits over the generic baseline, and reduces false commits. Otherwise do not tune this cohort."
+  },
+  "ocr_calls": 0
+}

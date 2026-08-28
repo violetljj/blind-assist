@@ -2,11 +2,11 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "1446790d593eb80517605d23a6c946c0f1457d8d242f1023b18d00ac2bd6d744",
+  "source_fingerprint": "56da74b4870a163e58fefc74d09d51447c3822c2725126df2e438084336ac1ba",
   "counts": {
     "failure_layers": 13,
-    "mechanisms": 250,
-    "uses": 251,
+    "mechanisms": 252,
+    "uses": 252,
     "experiments": 206,
     "current_terminals": 19
   },
@@ -1019,6 +1019,184 @@
         }
       ],
       "search_text": "Target-local entrance evidence graph Bind each entrance proposal to the requested public POI using proposal-context appearance instead of combining a global scene identity bit with a generic door bit. l10 named-poi entrance non-ocr evidence-graph Candidate-conditioned POI to entrance edge Expand each door, gate, stairs, escalator, or passage proposal; compare its context against the public target roster; combine entrance support with normalized target margin; emit COMMIT, SET_VALUED, or SEARCH. Entrance proposals, proposal-context CLIP and DINO vectors, public target reference bank, user goal Unique target-bound entrance, bounded same-target entrance set, or fail-closed search On 20 fresh public images the reducer removed 75 percent of generic false commits but made no correct unique entrance commit. Human pixel boxes exist only as Development current-view aperture truth; public access, traversability, localization, navigation, arrival, product, user-benefit, and safety remain unproved. l10-r0 Replace scene-level identity AND entrance gating with candidate-specific target-to-entrance edges before tracking and guidance. Reject generic high-score doors belonging to a different nearby entity and, if proposal context carries enough identity, recover a correct unique target entrance. GroundingDINO covered all four positive boxes. Target-local crop binding reduced false commits from 20 to 5 but made zero correct unique commits, so it is retained only as a safety filter and not as an entrance locator. proposal_oracle_positive_coverage=4/4 generic_correct_unique_commits=0/4 generic_false_commits=20 target_local_correct_unique_commits=0/4 target_local_false_commits=5 false_commit_reduction=75% commit_or_set_valued_truth_coverage=1/4 This supports a fail-closed false-commit filter and localizes the missing target-to-proposal evidence. It does not establish a correct entrance locator, public access, traversability, navigation, tracking, arrival, product benefit, user benefit, or safety."
+    },
+    {
+      "id": "algorithm-target-support-ray-active-belief#native-target-support-ray",
+      "item_id": "algorithm-target-support-ray-active-belief",
+      "mechanism_id": "native-target-support-ray",
+      "kind": "algorithm",
+      "title": "Multi-facet target support rays with active entrance belief",
+      "canonical_ref": "git:research/active/l10-r0/named_poi_active_entrance_belief.py",
+      "summary": "Transport non-OCR public-reference identity through native reciprocal patch support to entrance candidates, preserve ambiguous candidates, and actively acquire a closer view before committing or reacquiring.",
+      "tags": [
+        "l10",
+        "named-poi",
+        "entrance",
+        "non-ocr",
+        "active-perception",
+        "reacquisition"
+      ],
+      "name": "Native target-support ray",
+      "description": "Build a discriminative native DINO patch field from reciprocal affine-consistent public-reference matches; cast support downward in image columns and bind only entrance proposals below target evidence.",
+      "inputs": [
+        "Multi-facet public target references",
+        "Current RGB image",
+        "Entrance proposals",
+        "User goal target"
+      ],
+      "outputs": [
+        "Target-attached entrance edge scores",
+        "COMMIT, SET_VALUED, or SEARCH"
+      ],
+      "limitations": "V7 reduced false commits by 76.7 percent and reached proposal-oracle candidate coverage, but did not increase correct unique commits. It is not a finished single-frame locator.",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 7,
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 3,
+        "handoff_completion": 3,
+        "identity_binding": 3,
+        "observation_perception": 3,
+        "runtime_infrastructure": 6,
+        "source_coverage": 6,
+        "temporal_belief": 9
+      },
+      "routes": [
+        "l10-r0"
+      ],
+      "uses": [
+        {
+          "id": "use-l10-r0-target-support-ray-active-belief",
+          "route": "l10-r0",
+          "use_state": "active",
+          "reproduction_status": "partial",
+          "verdict": "mixed",
+          "project_application": "Provide a non-OCR target-to-entrance candidate filter, then convert residual single-frame ambiguity into an explicit closer-view and reacquisition loop before tracking and guidance.",
+          "expected_effect": "Reduce wrong entrance commitments without dropping oracle-available target entrances, then resolve same-frame ambiguity with active evidence rather than a lower threshold.",
+          "observed_effect": "Support rays preserved two correct unique commits while reducing false commits from 30 to 7 and increasing precision 3.56x. COMMIT or SET_VALUED retained truth on all four positives for which GroundingDINO supplied an IoU-qualified proposal. Correct unique commits did not increase, so the single-frame locator gate failed and temporal active disambiguation remains mechanics-only.",
+          "metrics": [
+            "generic_correct_unique_commits=2/6",
+            "generic_false_commits=30",
+            "generic_commit_precision=0.0625",
+            "support_ray_correct_unique_commits=2/6",
+            "support_ray_false_commits=7",
+            "support_ray_commit_precision=0.222222",
+            "false_commit_reduction=76.7%",
+            "precision_multiplier=3.56x",
+            "proposal_oracle_positive_coverage=4/6",
+            "commit_or_set_valued_truth_coverage=4/6"
+          ],
+          "claim_boundary": "This supports a non-OCR candidate-preserving veto and an active-observation control seam. It does not establish a finished unique entrance locator, temporal disambiguation, tracking, public access, navigation, arrival, product benefit, user benefit, or safety.",
+          "evidence": [
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/named_poi_multifacet_reference_ray_protocol_v1.json",
+              "summary": "Frozen V7 multi-facet source, exact target-entrance truth, unchanged algorithm, metrics, and stop rule."
+            },
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/named_poi_active_entrance_belief.py",
+              "summary": "Deterministic ambiguity, closer-view, commit, loss, and reacquisition mechanism."
+            },
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/README.md",
+              "summary": "V4 through V7 metrics, backend receipts, source audit, terminal, next step, and claim boundaries."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "Multi-facet target support rays with active entrance belief Transport non-OCR public-reference identity through native reciprocal patch support to entrance candidates, preserve ambiguous candidates, and actively acquire a closer view before committing or reacquiring. l10 named-poi entrance non-ocr active-perception reacquisition Native target-support ray Build a discriminative native DINO patch field from reciprocal affine-consistent public-reference matches; cast support downward in image columns and bind only entrance proposals below target evidence. Multi-facet public target references Current RGB image Entrance proposals User goal target Target-attached entrance edge scores COMMIT, SET_VALUED, or SEARCH V7 reduced false commits by 76.7 percent and reached proposal-oracle candidate coverage, but did not increase correct unique commits. It is not a finished single-frame locator. l10-r0 Provide a non-OCR target-to-entrance candidate filter, then convert residual single-frame ambiguity into an explicit closer-view and reacquisition loop before tracking and guidance. Reduce wrong entrance commitments without dropping oracle-available target entrances, then resolve same-frame ambiguity with active evidence rather than a lower threshold. Support rays preserved two correct unique commits while reducing false commits from 30 to 7 and increasing precision 3.56x. COMMIT or SET_VALUED retained truth on all four positives for which GroundingDINO supplied an IoU-qualified proposal. Correct unique commits did not increase, so the single-frame locator gate failed and temporal active disambiguation remains mechanics-only. generic_correct_unique_commits=2/6 generic_false_commits=30 generic_commit_precision=0.0625 support_ray_correct_unique_commits=2/6 support_ray_false_commits=7 support_ray_commit_precision=0.222222 false_commit_reduction=76.7% precision_multiplier=3.56x proposal_oracle_positive_coverage=4/6 commit_or_set_valued_truth_coverage=4/6 This supports a non-OCR candidate-preserving veto and an active-observation control seam. It does not establish a finished unique entrance locator, temporal disambiguation, tracking, public access, navigation, arrival, product benefit, user benefit, or safety."
+    },
+    {
+      "id": "algorithm-target-support-ray-active-belief#active-entrance-belief",
+      "item_id": "algorithm-target-support-ray-active-belief",
+      "mechanism_id": "active-entrance-belief",
+      "kind": "algorithm",
+      "title": "Multi-facet target support rays with active entrance belief",
+      "canonical_ref": "git:research/active/l10-r0/named_poi_active_entrance_belief.py",
+      "summary": "Transport non-OCR public-reference identity through native reciprocal patch support to entrance candidates, preserve ambiguous candidates, and actively acquire a closer view before committing or reacquiring.",
+      "tags": [
+        "l10",
+        "named-poi",
+        "entrance",
+        "non-ocr",
+        "active-perception",
+        "reacquisition"
+      ],
+      "name": "Active multi-view entrance belief",
+      "description": "Treat SET_VALUED as an observation request; center and approach a candidate, require consecutive target-bound survival after competitors clear, and reacquire a lost commit from its last bearing.",
+      "inputs": [
+        "Per-frame target-bound candidate set",
+        "Candidate boxes and edge scores",
+        "Image size"
+      ],
+      "outputs": [
+        "SWEEP, CENTER_AND_APPROACH, TRACK, or SCAN_LAST_BEARING",
+        "Temporal SEARCH, SET_VALUED, COMMIT, or REACQUIRE state"
+      ],
+      "limitations": "The deterministic sequence check passes, but no public active-view video has yet established temporal disambiguation, tracking, approach, or arrival.",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 7,
+        "decision_lifecycle": 9,
+        "evaluation_evidence": 3,
+        "geometry_motion": 3,
+        "handoff_completion": 3,
+        "identity_binding": 3,
+        "observation_perception": 3,
+        "runtime_infrastructure": 3,
+        "source_coverage": 6,
+        "temporal_belief": 12
+      },
+      "routes": [
+        "l10-r0"
+      ],
+      "uses": [
+        {
+          "id": "use-l10-r0-target-support-ray-active-belief",
+          "route": "l10-r0",
+          "use_state": "active",
+          "reproduction_status": "partial",
+          "verdict": "mixed",
+          "project_application": "Provide a non-OCR target-to-entrance candidate filter, then convert residual single-frame ambiguity into an explicit closer-view and reacquisition loop before tracking and guidance.",
+          "expected_effect": "Reduce wrong entrance commitments without dropping oracle-available target entrances, then resolve same-frame ambiguity with active evidence rather than a lower threshold.",
+          "observed_effect": "Support rays preserved two correct unique commits while reducing false commits from 30 to 7 and increasing precision 3.56x. COMMIT or SET_VALUED retained truth on all four positives for which GroundingDINO supplied an IoU-qualified proposal. Correct unique commits did not increase, so the single-frame locator gate failed and temporal active disambiguation remains mechanics-only.",
+          "metrics": [
+            "generic_correct_unique_commits=2/6",
+            "generic_false_commits=30",
+            "generic_commit_precision=0.0625",
+            "support_ray_correct_unique_commits=2/6",
+            "support_ray_false_commits=7",
+            "support_ray_commit_precision=0.222222",
+            "false_commit_reduction=76.7%",
+            "precision_multiplier=3.56x",
+            "proposal_oracle_positive_coverage=4/6",
+            "commit_or_set_valued_truth_coverage=4/6"
+          ],
+          "claim_boundary": "This supports a non-OCR candidate-preserving veto and an active-observation control seam. It does not establish a finished unique entrance locator, temporal disambiguation, tracking, public access, navigation, arrival, product benefit, user benefit, or safety.",
+          "evidence": [
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/named_poi_multifacet_reference_ray_protocol_v1.json",
+              "summary": "Frozen V7 multi-facet source, exact target-entrance truth, unchanged algorithm, metrics, and stop rule."
+            },
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/named_poi_active_entrance_belief.py",
+              "summary": "Deterministic ambiguity, closer-view, commit, loss, and reacquisition mechanism."
+            },
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/README.md",
+              "summary": "V4 through V7 metrics, backend receipts, source audit, terminal, next step, and claim boundaries."
+            }
+          ],
+          "updated_at": "2026-08-28"
+        }
+      ],
+      "search_text": "Multi-facet target support rays with active entrance belief Transport non-OCR public-reference identity through native reciprocal patch support to entrance candidates, preserve ambiguous candidates, and actively acquire a closer view before committing or reacquiring. l10 named-poi entrance non-ocr active-perception reacquisition Active multi-view entrance belief Treat SET_VALUED as an observation request; center and approach a candidate, require consecutive target-bound survival after competitors clear, and reacquire a lost commit from its last bearing. Per-frame target-bound candidate set Candidate boxes and edge scores Image size SWEEP, CENTER_AND_APPROACH, TRACK, or SCAN_LAST_BEARING Temporal SEARCH, SET_VALUED, COMMIT, or REACQUIRE state The deterministic sequence check passes, but no public active-view video has yet established temporal disambiguation, tracking, approach, or arrival. l10-r0 Provide a non-OCR target-to-entrance candidate filter, then convert residual single-frame ambiguity into an explicit closer-view and reacquisition loop before tracking and guidance. Reduce wrong entrance commitments without dropping oracle-available target entrances, then resolve same-frame ambiguity with active evidence rather than a lower threshold. Support rays preserved two correct unique commits while reducing false commits from 30 to 7 and increasing precision 3.56x. COMMIT or SET_VALUED retained truth on all four positives for which GroundingDINO supplied an IoU-qualified proposal. Correct unique commits did not increase, so the single-frame locator gate failed and temporal active disambiguation remains mechanics-only. generic_correct_unique_commits=2/6 generic_false_commits=30 generic_commit_precision=0.0625 support_ray_correct_unique_commits=2/6 support_ray_false_commits=7 support_ray_commit_precision=0.222222 false_commit_reduction=76.7% precision_multiplier=3.56x proposal_oracle_positive_coverage=4/6 commit_or_set_valued_truth_coverage=4/6 This supports a non-OCR candidate-preserving veto and an active-observation control seam. It does not establish a finished unique entrance locator, temporal disambiguation, tracking, public access, navigation, arrival, product benefit, user benefit, or safety."
     },
     {
       "id": "dataset-aria-digital-twin-project-aria-tools#dtr-dr25",
