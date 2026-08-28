@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC36-TARGET-EXPOSED-ACTIVE-VIEW-DIRECTIONAL-MECHANISM-SOURCE",
+  "predecessor": {
+    "protocol_sha256": "b7ae8aee2265427a2e5c00ad5f272a945b94107db0b6ad204f877c7ac7277b1a",
+    "result_sha256": "8e75fa36629dbf32c535fb0043ebb5a7538c2469878a29d470bc5abca7e82c64",
+    "decision": "SC35_V4_NOT_EVALUABLE_NO_SELF_CARRIER_ACTIVE_VIEW",
+    "reason_for_consumed_mechanism_only": "The next source with multiple explicit from-left power-strip tasks, visit 422200, had opaque target IDs displayed before this protocol was frozen. It may test mechanics but cannot support a fresh claim."
+  },
+  "source": {
+    "dataset": "SceneFun3D train split plus ARKitScenes low-resolution ARKit camera trajectory",
+    "scenefun3d_base_url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1",
+    "arkitscenes_base_url": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1",
+    "camera_pose_asset": "lowres_wide.traj",
+    "camera_pose_frame": "ARKit camera-to-world after official trajectory inversion",
+    "cohort_csv_sha256": "a570b18aee43058a2f44db653a606ca799f64f054013b17dac95948fa590d5b1",
+    "arkitscenes_metadata_sha256": "ff4b3d3203525bdf12ebbb3fcaea0b9cf0bda5d584a48d42f21a096135c26621"
+  },
+  "consumed_or_target_exposed_visit_ids": [
+    "420673", "420683", "420693", "421002", "421005", "421010",
+    "421013", "421015", "421069", "421254", "421267", "421658",
+    "422007", "422011", "422356", "422377", "422383", "422384",
+    "423325", "423438", "423474", "423966"
+  ],
+  "selection": {
+    "ordering": "ascending visit_id then video_id from the official one-video CSV",
+    "maximum_candidate_scenes": 80,
+    "minimum_horizontal_directional_ordinal_connect_tasks": 1,
+    "selected_scene_count": 1,
+    "stop_rule": "Stop immediately after the first self-carrier active-view opportunity."
+  },
+  "frozen_algorithm": {
+    "ordinal_mode": "SELF_CARRIER_ACTIVE_VIEW_IMAGE_HORIZONTAL",
+    "carrier_mode": "SELF_CARRIER_LOCAL_ACTION_LATTICE",
+    "supported_directional_cues": ["FROM_LEFT", "FROM_RIGHT"],
+    "candidate_action_label": "plug_in",
+    "local_lattice_link_radius_m": 0.5,
+    "minimum_same_action_candidates": 2,
+    "minimum_metric_pitch_m": 0.03,
+    "maximum_metric_pitch_m": 0.5,
+    "maximum_pitch_relative_deviation": 0.35,
+    "maximum_orthogonal_residual_pitch_ratio": 0.25,
+    "minimum_camera_depth_m": 0.2,
+    "maximum_camera_depth_m": 5.0,
+    "maximum_absolute_normalized_image_coordinate": 1.2,
+    "minimum_horizontal_normalized_span": 0.03,
+    "minimum_horizontal_to_vertical_span_ratio": 1.5,
+    "view_selection": "Among real trajectory poses that contain every lattice candidate inside the frozen normalized frustum, maximize horizontal span, then minimize median depth, then choose earliest timestamp.",
+    "left_right_authority": "Camera-frame projected x coordinate from the selected real pose; smaller x is left.",
+    "baseline": "All candidates in the admitted local same-action lattice remain set-valued.",
+    "no_match_policy": "KEEP_SELF_CARRIER_LATTICE_SET_AND_REQUEST_ACTIVE_ORDINAL_VIEW",
+    "candidate_semantic_authority": "PRIVILEGED_SCENEFUN3D_FUNCTION_LABEL_CEILING"
+  },
+  "decision_labels": {
+    "pass": "SC36_TARGET_EXPOSED_ACTIVE_VIEW_MECHANISM_SOURCE_ADMITTED",
+    "incomplete": "SC36_TARGET_EXPOSED_MECHANISM_SOURCE_INCOMPLETE",
+    "insufficient": "SC36_NOT_EVALUABLE_NO_TARGET_EXPOSED_ACTIVE_VIEW_SOURCE"
+  },
+  "forbidden_after_source_access": [
+    "claim fresh transfer or generalization",
+    "read description annot_id values during provider construction",
+    "change lattice, view, or ranking thresholds",
+    "choose candidates or poses using evaluator outcomes"
+  ],
+  "claim_boundary": "Target-exposed consumed-mechanism source admission for a self-carrier functional lattice plus real active view. A positive result may establish mechanics only, never fresh transfer, RGB proposal quality, online view reachability, tracking, arrival, HANDOFF_READY, product benefit, or safety."
+}

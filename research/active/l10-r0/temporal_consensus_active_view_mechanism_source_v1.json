@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC37-TARGET-EXPOSED-TEMPORAL-CONSENSUS-ACTIVE-VIEW-SOURCE",
+  "predecessor": {
+    "protocol_sha256": "21b9e1b4c1a3c1e92cd2f581a343063990300790ea00e7740e1d5f3eb54799d0",
+    "result_sha256": "d638a9301c512bb4a425dc75f4b8060c154db866a4f0790d7747a673c93c13f2",
+    "decision": "SC36_NOT_EVALUABLE_NO_TARGET_EXPOSED_ACTIVE_VIEW_SOURCE",
+    "diagnostic_sha256": "a3bd7c49bd477132b5e1f5920b8121866f45eb51c8d8eb1f79287d8de706e559",
+    "diagnosis": "The 422200 power-strip component is a three-candidate 0.052 m uniform lattice. Sixty real poses meet the horizontal-span gate, but the maximum single-frame horizontal-to-vertical ratio is 1.48245 versus the frozen 1.5 gate.",
+    "information_change": "Replace single-frame axis-dominance admission with temporal consensus over real adjacent poses. Keep source, lattice, depth, frustum, and horizontal-span thresholds unchanged."
+  },
+  "source": {
+    "dataset": "SceneFun3D train split plus ARKitScenes low-resolution ARKit camera trajectory",
+    "scenefun3d_base_url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1",
+    "arkitscenes_base_url": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1",
+    "camera_pose_asset": "lowres_wide.traj",
+    "camera_pose_frame": "ARKit camera-to-world after official trajectory inversion",
+    "cohort_csv_sha256": "a570b18aee43058a2f44db653a606ca799f64f054013b17dac95948fa590d5b1",
+    "arkitscenes_metadata_sha256": "ff4b3d3203525bdf12ebbb3fcaea0b9cf0bda5d584a48d42f21a096135c26621"
+  },
+  "consumed_or_target_exposed_visit_ids": [
+    "420673", "420683", "420693", "421002", "421005", "421010",
+    "421013", "421015", "421069", "421254", "421267", "421658",
+    "422007", "422011", "422356", "422377", "422383", "422384",
+    "423325", "423438", "423474", "423966"
+  ],
+  "selection": {
+    "ordering": "ascending visit_id then video_id from the official one-video CSV",
+    "maximum_candidate_scenes": 80,
+    "minimum_horizontal_directional_ordinal_connect_tasks": 1,
+    "selected_scene_count": 1,
+    "stop_rule": "Stop immediately after the first temporally stable self-carrier active-view opportunity."
+  },
+  "frozen_algorithm": {
+    "ordinal_mode": "SELF_CARRIER_TEMPORAL_CONSENSUS_ACTIVE_VIEW",
+    "carrier_mode": "SELF_CARRIER_LOCAL_ACTION_LATTICE",
+    "view_selection_mode": "TEMPORAL_ORDER_CONSENSUS",
+    "supported_directional_cues": ["FROM_LEFT", "FROM_RIGHT"],
+    "candidate_action_label": "plug_in",
+    "local_lattice_link_radius_m": 0.5,
+    "minimum_same_action_candidates": 2,
+    "minimum_metric_pitch_m": 0.03,
+    "maximum_metric_pitch_m": 0.5,
+    "maximum_pitch_relative_deviation": 0.35,
+    "maximum_orthogonal_residual_pitch_ratio": 0.25,
+    "minimum_camera_depth_m": 0.2,
+    "maximum_camera_depth_m": 5.0,
+    "maximum_absolute_normalized_image_coordinate": 1.2,
+    "minimum_horizontal_normalized_span": 0.03,
+    "consensus_window_seconds": 0.25,
+    "minimum_consensus_support_poses": 5,
+    "minimum_consensus_support_fraction": 0.8,
+    "view_selection": "Among poses passing depth/frustum/span, require at least five poses within plus/minus 0.25 seconds and at least 80% exact left-to-right order agreement; then maximize horizontal span, consensus fraction, support count, and inverse median depth.",
+    "left_right_authority": "Temporally agreed camera-frame projected x order; smaller x is left.",
+    "baseline": "All candidates in the admitted local same-action lattice remain set-valued.",
+    "no_match_policy": "KEEP_SELF_CARRIER_LATTICE_SET_AND_REQUEST_MORE_ORDINAL_OBSERVATIONS",
+    "candidate_semantic_authority": "PRIVILEGED_SCENEFUN3D_FUNCTION_LABEL_CEILING"
+  },
+  "decision_labels": {
+    "pass": "SC37_TEMPORAL_CONSENSUS_ACTIVE_VIEW_MECHANISM_SOURCE_ADMITTED",
+    "incomplete": "SC37_TEMPORAL_CONSENSUS_SOURCE_INCOMPLETE",
+    "insufficient": "SC37_NOT_EVALUABLE_NO_TEMPORALLY_STABLE_ACTIVE_VIEW"
+  },
+  "forbidden_after_source_access": [
+    "claim fresh transfer or generalization",
+    "read description annot_id values during provider construction",
+    "change lattice, temporal window, support, span, frustum, depth, or ranking thresholds",
+    "choose candidates, pose windows, or orders using evaluator outcomes"
+  ],
+  "claim_boundary": "Target-exposed consumed-mechanism source admission for a self-carrier functional lattice plus temporally stable real active views. A positive result may establish mechanics only, never fresh transfer, RGB proposal quality, online view reachability, tracking, arrival, HANDOFF_READY, product benefit, or safety."
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC35-PROVIDER-PUBLIC-ACTIVE-VIEW-DIRECTIONAL-ORDINAL-SOURCE-ADMISSION",
+  "predecessor": {
+    "protocol_sha256": "7879981a20a6b28d704f5f4a4729c784738d1783459192dda65871bca068525d",
+    "result_sha256": "2c057a788646232eabf6697e2e2ea7e17e2d8ad23c86429350f694858a5c4f4e",
+    "decision": "SC34_ORIENTATION_QUOTIENT_ORDINAL_FRESH_GATE_NOT_MET",
+    "information_change": "Add a real camera-trajectory observation that projects the candidate axis into the current image frame; do not infer polarity from RGB appearance or a support-object boundary."
+  },
+  "source": {
+    "dataset": "SceneFun3D train split plus ARKitScenes high-resolution camera trajectory",
+    "scenefun3d_base_url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1",
+    "arkitscenes_base_url": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1",
+    "cohort_csv_sha256": "a570b18aee43058a2f44db653a606ca799f64f054013b17dac95948fa590d5b1",
+    "arkitscenes_metadata_sha256": "ff4b3d3203525bdf12ebbb3fcaea0b9cf0bda5d584a48d42f21a096135c26621"
+  },
+  "consumed_or_target_exposed_visit_ids": [
+    "420673", "420683", "420693", "421002", "421005", "421010",
+    "421013", "421015", "421069", "421254", "421267", "421658",
+    "422007", "422011", "422200", "422356", "422377", "422383",
+    "422384", "423325", "423438", "423474", "423966"
+  ],
+  "selection": {
+    "ordering": "ascending visit_id then video_id from the official one-video CSV",
+    "maximum_candidate_scenes": 80,
+    "minimum_horizontal_directional_ordinal_connect_tasks": 1,
+    "selected_scene_count": 1,
+    "stop_rule": "Stop immediately after the first scene containing an admissible parent-level active-view opportunity."
+  },
+  "frozen_algorithm": {
+    "ordinal_mode": "ACTIVE_VIEW_IMAGE_HORIZONTAL",
+    "supported_directional_cues": ["FROM_LEFT", "FROM_RIGHT"],
+    "candidate_action_label": "plug_in",
+    "minimum_same_action_candidates": 2,
+    "minimum_normalized_pitch": 0.02,
+    "maximum_pitch_relative_deviation": 0.25,
+    "maximum_orthogonal_residual_pitch_ratio": 0.15,
+    "minimum_camera_depth_m": 0.2,
+    "maximum_camera_depth_m": 5.0,
+    "maximum_absolute_normalized_image_coordinate": 1.2,
+    "minimum_horizontal_normalized_span": 0.03,
+    "minimum_horizontal_to_vertical_span_ratio": 1.5,
+    "view_selection": "Among real trajectory poses that contain every same-action candidate inside the frozen normalized frustum, maximize horizontal span, then minimize median depth, then choose earliest timestamp.",
+    "left_right_authority": "Camera-frame projected x coordinate from the selected real pose; smaller x is left.",
+    "normalized_component_link_radius": 0.4,
+    "minimum_dominant_component_size": 2,
+    "no_match_policy": "PRESERVE_SC31_AND_REQUEST_ACTIVE_ORDINAL_VIEW",
+    "identity_authority": "UNCHANGED_AUTHORIZED_EXACT_PARENT_BINDING",
+    "candidate_semantic_authority": "PRIVILEGED_SCENEFUN3D_FUNCTION_LABEL_CEILING"
+  },
+  "decision_labels": {
+    "pass": "SC35_PROVIDER_PUBLIC_ACTIVE_VIEW_ORDINAL_SOURCE_ADMITTED",
+    "incomplete": "SC35_ACTIVE_VIEW_ORDINAL_SOURCE_ADMISSION_INCOMPLETE",
+    "insufficient": "SC35_NOT_EVALUABLE_NO_DIRECTIONALLY_OBSERVABLE_ORDINAL_SCENE"
+  },
+  "forbidden_after_source_access": [
+    "read description annot_id values or target membership",
+    "choose a camera pose using target identity, selector output, or evaluator score",
+    "change frustum, depth, span, dominance, lattice, or view-ranking thresholds",
+    "use RGB gradients, target appearance, sibling target order, or support-boundary polarity",
+    "reorder candidates or skip the first eligible scene"
+  ],
+  "claim_boundary": "Outcome-blind source admission for a real-pose active-view directional ordinal ceiling. Public task text, privileged functional labels, provider geometry, and camera trajectory are visible; target IDs and selector outcomes remain sealed. Passing does not establish RGB proposal quality, online view reachability, live tracking, arrival, HANDOFF_READY, product benefit, or safety."
+}

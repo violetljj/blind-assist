@@ -708,6 +708,51 @@ NumPy CPU was measured faster than Torch CUDA (38.37 ms versus 189.67 ms median)
 so CPU execution is an explicit `CPU_FASTER_MEASURED` selection rather than a
 device or provider fallback.
 
+### SC35--SC39: real-view polarity needs visibility and enough observation support
+
+SC35 changed the information source from an unoriented lattice to real
+ARKitScenes camera trajectories. The official high-resolution pose asset was
+HTTP 403, while the admitted low-resolution trajectory exposed 1,870 poses on
+the fresh `422155 / 42445680` scene. That scene had 18 functional annotations
+but only four parent-bound annotations, no active-view parent, no 3DOD door
+anchor, and no self-carrier local action lattice. All four frozen source
+variants are therefore `INCOMPLETE` or `NOT_EVALUABLE`, not active-view
+algorithm negatives.
+
+The target-exposed `422200 / 42445100` scene was then used only as a consumed
+mechanism diagnostic. It contains one provider-public three-outlet metric
+lattice and public directional ordinal inventory `[2, 3, 4]`. SC37 found a
+stable `5/5` camera-frame order, but SC38 showed that stable projection alone is
+not semantic polarity: the selected reverse-side view swapped the second and
+third outlets. Mean recall fell `100% -> 33.33%`, wrong parts fell `6 -> 4`, and
+two of three tasks regressed, yielding
+`SC38_TEMPORAL_CONSENSUS_ACTIVE_VIEW_CONSUMED_GATE_NOT_MET`. Do not flip this
+opened order from target IDs or tune its trajectory/view thresholds.
+
+SC39 adds two authorities rather than changing those thresholds. Frame-aligned
+measured depth must agree with every candidate, and the public ordinal inventory
+maps absolute ranks even when the first physical slot is not annotated. Across
+592 poses, 592 aligned depth/intrinsic frames, 168 geometry-valid views, and 22
+true-image in-frame views, all 22 in-frame views were depth-consistent for every
+candidate; the best maximum candidate residual was 7.48 mm. Only four views met
+the frozen horizontal-span requirement, however, so none reached the unchanged
+five-pose temporal-consensus minimum. The formal source decision is
+`SC39_NOT_EVALUABLE_NO_DEPTH_VISIBLE_ACTIVE_VIEW`: the visibility and hidden-slot
+representations are reusable, but this source cannot adjudicate their ordinal
+effect and no SC40 evaluation is authorized.
+
+SC39 protocol/result/backend hashes are
+`6214c4d34ea6697e9b66cd2a9b13d1ad7b4962f17cdeffb77f6681e6e88aca2d`,
+`f7c77420c4594b268838757d22bd103df67e5fe0618f8abda65db2b7bc0efcc9`,
+and `4b62ad95879fd871db97d286870ac69f1a62934f565299da0eb9369b29840989`.
+The measured point-center launch selected NumPy CPU because its 214.44 ms median
+beat Torch CUDA's 355.65 ms; depth download, extraction, decoding, and scalar
+visibility scoring stayed CPU by contract. No fresh transfer, RGB proposal,
+online view reachability, tracking, arrival, `HANDOFF_READY`, product, user, or
+safety claim follows. A successor needs a separately admitted source with a
+depth-visible ordinal lattice and enough naturally supported views; it must not
+lower SC39's span, alignment, visibility, or temporal thresholds.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

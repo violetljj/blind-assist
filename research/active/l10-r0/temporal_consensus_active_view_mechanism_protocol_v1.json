@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC38-TARGET-EXPOSED-TEMPORAL-CONSENSUS-ACTIVE-VIEW-MECHANISM",
+  "source": {
+    "cohort_protocol_sha256": "d531fa9fb470bae6b005fc23055ca745c15acb890d5d8ce1a664d4806dbd17e1",
+    "source_admission_protocol_sha256": "6bb7934ff218d8a4bc4b6568387e31725e7a04e54e1210ab91c1494a91356494",
+    "source_admission_result_sha256": "83db3272c998726fb85bdfbc67e5e67511458899a6d6fa4bee08e3aa9dab084d",
+    "authority": "Target-exposed consumed cohort; source implementation used only public task text, privileged functional centers, and real camera poses"
+  },
+  "frozen_algorithm": {
+    "baseline": "All candidates in the admitted local same-action lattice remain set-valued.",
+    "successor": "Select the requested from-left/from-right rank using a temporally agreed camera-frame x order.",
+    "carrier_mode": "SELF_CARRIER_LOCAL_ACTION_LATTICE",
+    "view_selection_mode": "TEMPORAL_ORDER_CONSENSUS",
+    "minimum_camera_depth_m": 0.2,
+    "maximum_camera_depth_m": 5.0,
+    "maximum_absolute_normalized_image_coordinate": 1.2,
+    "minimum_horizontal_normalized_span": 0.03,
+    "consensus_window_seconds": 0.25,
+    "minimum_consensus_support_poses": 5,
+    "minimum_consensus_support_fraction": 0.8,
+    "left_right_authority": "Temporally agreed camera-frame projected x order; smaller x is left.",
+    "no_match_policy": "KEEP_SELF_CARRIER_LATTICE_SET_AND_REQUEST_MORE_ORDINAL_OBSERVATIONS",
+    "candidate_semantic_authority": "PRIVILEGED_SCENEFUN3D_FUNCTION_LABEL_CEILING"
+  },
+  "frozen_gate": {
+    "minimum_evaluable_tasks": 3,
+    "minimum_legal_commit_gain": 1,
+    "minimum_wrong_part_reduction": 1,
+    "target_set_recall_noninferiority": true,
+    "maximum_taskwise_regressions": 0
+  },
+  "decision_labels": {
+    "insufficient_tasks": "SC38_NOT_EVALUABLE_INSUFFICIENT_DIRECTIONAL_TASKS",
+    "pass": "SC38_TEMPORAL_CONSENSUS_ACTIVE_VIEW_CONSUMED_MECHANICS_SIGNAL",
+    "fail": "SC38_TEMPORAL_CONSENSUS_ACTIVE_VIEW_CONSUMED_GATE_NOT_MET"
+  },
+  "claim_layer": "CONSUMED_TARGET_EXPOSED_PRIVILEGED_ACTIVE_VIEW_MECHANICS",
+  "forbidden_after_outcome": [
+    "claim fresh transfer or generalization",
+    "flip camera order using target IDs or evaluator results",
+    "change temporal, lattice, view, or gate thresholds",
+    "remove tasks or replace the cohort"
+  ],
+  "claim_boundary": "Target-exposed consumed mechanism test of temporally stable camera-frame ordering over a privileged functional lattice. It is not fresh evidence and does not establish linguistic canonical left/right, RGB proposal quality, online view reachability, tracking, arrival, HANDOFF_READY, product benefit, or safety."
+}

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import platform
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -27,6 +28,13 @@ from scenefun3d_functional_handoff_ceiling import (  # noqa: E402
     _load_ply_xyz,
 )
 from scenefun3d_functional_set_integrity import _build_proposals  # noqa: E402
+
+
+@dataclass(frozen=True)
+class FunctionalCenter:
+    candidate_id: str
+    label: str
+    center: np.ndarray
 
 
 def _torch_build_proposals(
@@ -191,3 +199,129 @@ class MeasuredProposalBuilder:
             proposals, unmatched, _ = _torch_build_proposals(paths)
             return proposals, unmatched
         return _build_proposals(paths)
+
+
+def _numpy_functional_centers(paths: dict[str, Path]) -> dict[str, FunctionalCenter]:
+    xyz = _load_ply_xyz(paths["laser_scan"])
+    transform = np.load(paths["transform"])
+    centers: dict[str, FunctionalCenter] = {}
+    for annotation in _load_json(paths["annotations"])["annotations"]:
+        if annotation["label"] == "exclude":
+            continue
+        points = np.asarray(xyz[np.asarray(annotation["indices"], dtype=np.int64)])
+        homogeneous = np.column_stack((points, np.ones(len(points))))
+        transformed = (homogeneous @ transform.T)[:, :3]
+        centers[annotation["annot_id"]] = FunctionalCenter(
+            annotation["annot_id"], annotation["label"], transformed.mean(axis=0)
+        )
+    return centers
+
+
+def _torch_functional_centers(
+    paths: dict[str, Path], device: str = "cuda"
+) -> tuple[dict[str, FunctionalCenter], Any]:
+    import torch
+
+    xyz = _load_ply_xyz(paths["laser_scan"])
+    transform = torch.as_tensor(
+        np.load(paths["transform"]), dtype=torch.float64, device=device
+    )
+    centers: dict[str, FunctionalCenter] = {}
+    sentinel = torch.empty(1, device=device)
+    for annotation in _load_json(paths["annotations"])["annotations"]:
+        if annotation["label"] == "exclude":
+            continue
+        points = torch.as_tensor(
+            np.asarray(xyz[np.asarray(annotation["indices"], dtype=np.int64)]),
+            dtype=torch.float64,
+            device=device,
+        )
+        homogeneous = torch.cat(
+            (points, torch.ones((len(points), 1), dtype=points.dtype, device=device)),
+            dim=1,
+        )
+        center = ((homogeneous @ transform.T)[:, :3]).mean(dim=0).cpu().numpy()
+        centers[annotation["annot_id"]] = FunctionalCenter(
+            annotation["annot_id"], annotation["label"], center
+        )
+    return centers, sentinel
+
+
+class MeasuredFunctionalCenterBuilder:
+    def __init__(self, representative_paths: dict[str, Path], receipt_path: Path) -> None:
+        self.representative_paths = representative_paths
+        self.receipt_path = receipt_path
+        self._last_cpu: dict[str, FunctionalCenter] | None = None
+        self._last_gpu: tuple[dict[str, FunctionalCenter], Any] | None = None
+        self.selected_backend = ""
+
+    def select(self) -> dict[str, Any]:
+        capabilities = runtime_capabilities()
+
+        def run_cpu() -> dict[str, FunctionalCenter]:
+            self._last_cpu = _numpy_functional_centers(self.representative_paths)
+            return self._last_cpu
+
+        cpu = BackendCandidate(
+            "numpy-cpu",
+            "cpu",
+            run_cpu,
+            lambda _: DeviceObservation(
+                "cpu", platform.processor() or "CPU", f"numpy-{np.__version__}"
+            ),
+        )
+        gpu: BackendCandidate | None = None
+        cpu_reason: str | None = None
+        torch_capability = capabilities.get("torch", {})
+        if torch_capability.get("available") and torch_capability.get("cuda_available"):
+            import torch
+
+            def run_gpu() -> tuple[dict[str, FunctionalCenter], Any]:
+                self._last_gpu = _torch_functional_centers(self.representative_paths)
+                return self._last_gpu
+
+            gpu = BackendCandidate(
+                "torch-cuda",
+                "cuda",
+                run_gpu,
+                lambda output: torch_observation(output=output[1]),
+                torch.cuda.synchronize,
+            )
+        else:
+            cpu_reason = "ACCELERATOR_UNAVAILABLE"
+        record = select_backend(
+            Workload.POINT_CLOUD_MATCHING,
+            cpu=cpu,
+            gpu=gpu,
+            cpu_reason=cpu_reason,
+            record_path=self.receipt_path,
+            warmups=0,
+            repeats=2,
+            capabilities=capabilities,
+        )
+        if self._last_cpu is not None and self._last_gpu is not None:
+            gpu_centers = self._last_gpu[0]
+            if set(self._last_cpu) != set(gpu_centers):
+                raise ValueError("CPU_GPU_FUNCTIONAL_CENTER_SET_MISMATCH")
+            for candidate_id, cpu_center in self._last_cpu.items():
+                if not np.allclose(
+                    cpu_center.center,
+                    gpu_centers[candidate_id].center,
+                    rtol=0.0,
+                    atol=1e-9,
+                ):
+                    raise ValueError(f"CPU_GPU_FUNCTIONAL_CENTER_MISMATCH:{candidate_id}")
+        self.selected_backend = str(record["selected_backend"])
+        return record
+
+    def build(self, paths: dict[str, Path]) -> dict[str, FunctionalCenter]:
+        if not self.selected_backend:
+            raise RuntimeError("BACKEND_NOT_SELECTED")
+        if paths == self.representative_paths:
+            if self.selected_backend == "torch-cuda" and self._last_gpu is not None:
+                return self._last_gpu[0]
+            if self.selected_backend == "numpy-cpu" and self._last_cpu is not None:
+                return self._last_cpu
+        if self.selected_backend == "torch-cuda":
+            return _torch_functional_centers(paths)[0]
+        return _numpy_functional_centers(paths)

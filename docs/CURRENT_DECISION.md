@@ -322,6 +322,27 @@ reopen the cohort. The next information source must authorize axis polarity
 (for example a live view/gravity relation) to resolve first/last, while RGB
 proposal quality, reachability, arrival, and `HANDOFF_READY` remain unknown.
 
+SC35--SC39 attempted to supply that polarity authority from real camera poses
+without touching the demo path. Fresh scene `422155` was source-inadequate: the
+low-resolution trajectory was available, but its functional controls had no
+admissible parent/context/self-carrier ordinal lattice. Those source outcomes
+are `NOT_EVALUABLE`, not algorithm negatives.
+
+On target-exposed `422200`, SC37's `5/5` temporal image order was stable yet
+reverse-side. SC38 consequently swapped the second and third outlets and
+regressed two of three tasks (`100% -> 33.33%` mean recall), proving that camera
+x-order without visibility cannot authorize linguistic left/right. SC39 then
+added frame-aligned measured depth plus the provider-public ordinal inventory
+`[2,3,4]`: all 22 real-image in-frame views agreed with candidate depth, with a
+best maximum residual of 7.48 mm, but only four views had the frozen horizontal
+span and none reached the frozen five-pose temporal support. Record
+`SC39_NOT_EVALUABLE_NO_DEPTH_VISIBLE_ACTIVE_VIEW`; do not lower or sweep its
+thresholds, and do not run an evaluator on an unadmitted source. The next legal
+source must supply a depth-visible repeated-control lattice with sufficient
+natural observation support. Visibility and hidden-prefix rank mapping may be
+reused unchanged; fresh transfer, RGB, reachability, arrival, and handoff remain
+unestablished.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

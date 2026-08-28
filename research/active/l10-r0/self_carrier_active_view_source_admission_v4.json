@@ -1,0 +1,68 @@
+{
+  "schema_version": 4,
+  "experiment": "L10-SC35-V4-SELF-CARRIER-ACTIVE-VIEW-SOURCE-ADMISSION",
+  "predecessor": {
+    "protocol_sha256": "288fb1d008310edb1bf39a13e054fa18f94641606c80bd631cc6b39455746428",
+    "result_sha256": "6e5195778153b77511c342fc0fbca8d867b0e9067c7b8b6821e6c38bcb502921",
+    "decision": "SC35_V3_NOT_EVALUABLE_NO_CONTEXTUAL_LATTICE_ACTIVE_VIEW",
+    "diagnosis": "All 18 functional centers, including three plug_in centers, were available, but the provider exposed zero door 3DOD anchors.",
+    "information_change": "Let a local regular same-action lattice be its own carrier when object-box and explicit context carriers are absent. Keep clustering, lattice, active-view thresholds, roster, and task prefilter unchanged."
+  },
+  "source": {
+    "dataset": "SceneFun3D train split plus ARKitScenes low-resolution ARKit camera trajectory",
+    "scenefun3d_base_url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1",
+    "arkitscenes_base_url": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1",
+    "camera_pose_asset": "lowres_wide.traj",
+    "camera_pose_frame": "ARKit camera-to-world after official trajectory inversion",
+    "cohort_csv_sha256": "a570b18aee43058a2f44db653a606ca799f64f054013b17dac95948fa590d5b1",
+    "arkitscenes_metadata_sha256": "ff4b3d3203525bdf12ebbb3fcaea0b9cf0bda5d584a48d42f21a096135c26621"
+  },
+  "consumed_or_target_exposed_visit_ids": [
+    "420673", "420683", "420693", "421002", "421005", "421010",
+    "421013", "421015", "421069", "421254", "421267", "421658",
+    "422007", "422011", "422200", "422356", "422377", "422383",
+    "422384", "423325", "423438", "423474", "423966"
+  ],
+  "selection": {
+    "ordering": "ascending visit_id then video_id from the official one-video CSV",
+    "maximum_candidate_scenes": 80,
+    "minimum_horizontal_directional_ordinal_connect_tasks": 1,
+    "selected_scene_count": 1,
+    "stop_rule": "Stop immediately after the first scene containing an admissible self-carrier active-view opportunity."
+  },
+  "frozen_algorithm": {
+    "ordinal_mode": "SELF_CARRIER_ACTIVE_VIEW_IMAGE_HORIZONTAL",
+    "carrier_mode": "SELF_CARRIER_LOCAL_ACTION_LATTICE",
+    "supported_directional_cues": ["FROM_LEFT", "FROM_RIGHT"],
+    "candidate_action_label": "plug_in",
+    "local_lattice_link_radius_m": 0.5,
+    "minimum_same_action_candidates": 2,
+    "minimum_metric_pitch_m": 0.03,
+    "maximum_metric_pitch_m": 0.5,
+    "maximum_pitch_relative_deviation": 0.35,
+    "maximum_orthogonal_residual_pitch_ratio": 0.25,
+    "minimum_camera_depth_m": 0.2,
+    "maximum_camera_depth_m": 5.0,
+    "maximum_absolute_normalized_image_coordinate": 1.2,
+    "minimum_horizontal_normalized_span": 0.03,
+    "minimum_horizontal_to_vertical_span_ratio": 1.5,
+    "view_selection": "Among real trajectory poses that contain every lattice candidate inside the frozen normalized frustum, maximize horizontal span, then minimize median depth, then choose earliest timestamp.",
+    "left_right_authority": "Camera-frame projected x coordinate from the selected real pose; smaller x is left.",
+    "baseline": "All candidates in the admitted local same-action lattice remain set-valued.",
+    "no_match_policy": "KEEP_SELF_CARRIER_LATTICE_SET_AND_REQUEST_ACTIVE_ORDINAL_VIEW",
+    "candidate_semantic_authority": "PRIVILEGED_SCENEFUN3D_FUNCTION_LABEL_CEILING"
+  },
+  "decision_labels": {
+    "pass": "SC35_V4_SELF_CARRIER_ACTIVE_VIEW_SOURCE_ADMITTED",
+    "incomplete": "SC35_V4_SELF_CARRIER_SOURCE_ADMISSION_INCOMPLETE",
+    "insufficient": "SC35_V4_NOT_EVALUABLE_NO_SELF_CARRIER_ACTIVE_VIEW"
+  },
+  "forbidden_after_source_access": [
+    "read description annot_id values or target membership",
+    "choose the lattice, component, camera pose, or polarity using selector output or evaluator score",
+    "change lattice radius, pitch, residual, frustum, depth, span, dominance, or view-ranking thresholds",
+    "merge disconnected same-action centers or use sibling target order",
+    "reorder candidates or skip the first eligible scene"
+  ],
+  "claim_boundary": "Outcome-blind source admission for a carrier-free local functional lattice plus a real-pose active view. It uses public task text, privileged functional labels/centers, and camera trajectory but no target IDs or selector outcomes. Passing does not establish RGB proposal quality, online view reachability, tracking, arrival, HANDOFF_READY, product benefit, or safety."
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC38-TARGET-EXPOSED-TEMPORAL-CONSENSUS-ACTIVE-VIEW-COHORT",
+  "source_admission": {
+    "protocol_sha256": "6bb7934ff218d8a4bc4b6568387e31725e7a04e54e1210ab91c1494a91356494",
+    "result_sha256": "83db3272c998726fb85bdfbc67e5e67511458899a6d6fa4bee08e3aa9dab084d",
+    "backend_receipt_sha256": "d3c8343435f11b7528f87f96ca7bca59bbc3ece841e7a9b4190a06f77e9ecb0b",
+    "decision": "SC37_TEMPORAL_CONSENSUS_ACTIVE_VIEW_MECHANISM_SOURCE_ADMITTED",
+    "selection_authority": "public directional text plus privileged functional centers and camera trajectory; no target IDs used by the source implementation",
+    "freshness_boundary": "Visit 422200 target IDs had been displayed before protocol freeze, so this cohort is consumed mechanism evidence only."
+  },
+  "cohort": [
+    {
+      "visit_id": "422200",
+      "video_id": "42445100",
+      "sha256": {
+        "annotations": "88adb7aa71d915a3257ad3ea9c5c720e286d026b6d31ac209e67be9c2f0e038a",
+        "descriptions": "432ee749b904e2394d731f0ea09409edd8c6cd6c24394c1f2d74d441445e323b",
+        "laser_scan": "52b6a15cf79387c9f4619d54e7197fac8a51e50bcb95e3b504288f4994bda6fa",
+        "transform": "952b2e6889a6e5dc8dc490d06f1dbb480031f377d9a394a01953499c648ff62b",
+        "object_boxes": "4790218f65bdddc440f390073c1bbd8340d4d70cfe284976ce1876340952dfbf",
+        "camera_poses": "5dd2dbc42aea6d938ad505d95269b3a6ac7817067a04c2489d2b9f1afcfa7bc9"
+      }
+    }
+  ],
+  "claim_boundary": "Target-exposed consumed mechanism cohort. It can diagnose temporal active-view ordinal behavior but cannot support fresh transfer or generalization."
+}

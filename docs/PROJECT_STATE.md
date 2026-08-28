@@ -383,6 +383,21 @@ fresh false-negative-recovery effect. Endpoint ranks remain set-valued pending
 an authorized orientation observation; no RGB, reachability, arrival, handoff,
 product, or safety claim follows.
 
+SC35--SC39 next sought real-view polarity while keeping demo/device integration
+paused. Fresh `422155` exposed low-resolution camera poses but no admissible
+parent, contextual, or self-carrier ordinal lattice, so its source outcomes are
+`NOT_EVALUABLE`. On target-exposed `422200`, a stable temporal camera order
+proved reverse-side and swapped the second/third outlets in SC38, reducing mean
+recall `100% -> 33.33%` with two task-wise regressions. SC39 added frame-aligned
+depth visibility and public ordinal-inventory offset `[2,3,4]`. All 22 in-frame
+views were depth-consistent for all candidates (best maximum residual 7.48 mm),
+but only four satisfied the frozen horizontal span and zero met the five-pose
+temporal consensus gate. The terminal is
+`SC39_NOT_EVALUABLE_NO_DEPTH_VISIBLE_ACTIVE_VIEW`, not a negative. Reuse the
+visibility/rank representations only on a separately admitted sufficiently
+observed source; do not tune this cohort or claim RGB, reachability, arrival,
+handoff, product, or safety effects.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

@@ -1,0 +1,70 @@
+{
+  "schema_version": 3,
+  "experiment": "L10-SC35-V3-CONTEXTUAL-LATTICE-ACTIVE-VIEW-SOURCE-ADMISSION",
+  "predecessor": {
+    "protocol_sha256": "9a77446772e7624ef1e6957c79d55bf18e56fe850dca5c1952d857f1378fadd0",
+    "result_sha256": "66de27ec7278e6522246c9d0d6e1641acd5ddb728f6ba8e098cc8e4fa8fff344",
+    "decision": "SC35_V2_NOT_EVALUABLE_NO_DIRECTIONALLY_OBSERVABLE_ORDINAL_SCENE",
+    "diagnosis": "The only directional scene exposed 1870 real poses, but 14/18 functional annotations were discarded by object-box parent binding and no parent retained an ordinal lattice.",
+    "information_change": "Replace mandatory object-box carrier binding with an outcome-blind local same-action lattice linked to an explicit contextual anchor noun from task text. Keep the active-view thresholds unchanged."
+  },
+  "source": {
+    "dataset": "SceneFun3D train split plus ARKitScenes low-resolution ARKit camera trajectory",
+    "scenefun3d_base_url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1",
+    "arkitscenes_base_url": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1",
+    "camera_pose_asset": "lowres_wide.traj",
+    "camera_pose_frame": "ARKit camera-to-world after official trajectory inversion",
+    "cohort_csv_sha256": "a570b18aee43058a2f44db653a606ca799f64f054013b17dac95948fa590d5b1",
+    "arkitscenes_metadata_sha256": "ff4b3d3203525bdf12ebbb3fcaea0b9cf0bda5d584a48d42f21a096135c26621"
+  },
+  "consumed_or_target_exposed_visit_ids": [
+    "420673", "420683", "420693", "421002", "421005", "421010",
+    "421013", "421015", "421069", "421254", "421267", "421658",
+    "422007", "422011", "422200", "422356", "422377", "422383",
+    "422384", "423325", "423438", "423474", "423966"
+  ],
+  "selection": {
+    "ordering": "ascending visit_id then video_id from the official one-video CSV",
+    "maximum_candidate_scenes": 80,
+    "minimum_horizontal_directional_ordinal_connect_tasks": 1,
+    "selected_scene_count": 1,
+    "stop_rule": "Stop immediately after the first scene containing an admissible contextual-lattice active-view opportunity."
+  },
+  "frozen_algorithm": {
+    "ordinal_mode": "CONTEXTUAL_LATTICE_ACTIVE_VIEW_IMAGE_HORIZONTAL",
+    "supported_directional_cues": ["FROM_LEFT", "FROM_RIGHT"],
+    "candidate_action_label": "plug_in",
+    "context_anchor_rules": {"door": "3D object label contains token door"},
+    "maximum_candidate_to_anchor_obb_distance_m": 1.5,
+    "local_lattice_link_radius_m": 0.5,
+    "minimum_same_action_candidates": 2,
+    "minimum_metric_pitch_m": 0.03,
+    "maximum_metric_pitch_m": 0.5,
+    "maximum_pitch_relative_deviation": 0.35,
+    "maximum_orthogonal_residual_pitch_ratio": 0.25,
+    "minimum_camera_depth_m": 0.2,
+    "maximum_camera_depth_m": 5.0,
+    "maximum_absolute_normalized_image_coordinate": 1.2,
+    "minimum_horizontal_normalized_span": 0.03,
+    "minimum_horizontal_to_vertical_span_ratio": 1.5,
+    "view_selection": "Among real trajectory poses that contain every lattice candidate inside the frozen normalized frustum, maximize horizontal span, then minimize median depth, then choose earliest timestamp.",
+    "left_right_authority": "Camera-frame projected x coordinate from the selected real pose; smaller x is left.",
+    "baseline": "All same-action candidates in the admitted contextual lattice remain set-valued.",
+    "no_match_policy": "KEEP_CONTEXTUAL_LATTICE_SET_AND_REQUEST_ACTIVE_ORDINAL_VIEW",
+    "candidate_semantic_authority": "PRIVILEGED_SCENEFUN3D_FUNCTION_LABEL_CEILING",
+    "context_anchor_authority": "PRIVILEGED_ARKITSCENES_3DOD_LABEL_AND_OBB_CEILING"
+  },
+  "decision_labels": {
+    "pass": "SC35_V3_CONTEXTUAL_LATTICE_ACTIVE_VIEW_SOURCE_ADMITTED",
+    "incomplete": "SC35_V3_CONTEXTUAL_LATTICE_SOURCE_ADMISSION_INCOMPLETE",
+    "insufficient": "SC35_V3_NOT_EVALUABLE_NO_CONTEXTUAL_LATTICE_ACTIVE_VIEW"
+  },
+  "forbidden_after_source_access": [
+    "read description annot_id values or target membership",
+    "choose the anchor, lattice, component, camera pose, or polarity using selector output or evaluator score",
+    "change anchor distance, lattice radius, pitch, residual, frustum, depth, span, dominance, or view-ranking thresholds",
+    "use RGB gradients, target appearance, sibling target order, or discarded object-box parent assignments",
+    "reorder candidates or skip the first eligible scene"
+  ],
+  "claim_boundary": "Outcome-blind source admission for a carrier-free contextual functional lattice plus a real-pose active view. It uses public task text, privileged functional labels/centers, privileged 3D contextual anchors, and camera trajectory, but no target IDs or selector outcomes. Passing does not establish RGB proposal quality, learned contextual grounding, online view reachability, tracking, arrival, HANDOFF_READY, product benefit, or safety."
+}

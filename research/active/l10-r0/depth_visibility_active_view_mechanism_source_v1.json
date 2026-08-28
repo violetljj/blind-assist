@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC39-TARGET-EXPOSED-DEPTH-VISIBLE-ACTIVE-VIEW-SOURCE",
+  "predecessor": {
+    "protocol_sha256": "be2b021242bb3b8846738a676282c610ba1e5891e1502186678581309fd86122",
+    "result_sha256": "45acebc59b7876bc204457f8dbc3aad07e05b1f17487003e483bbd9339963ccd",
+    "decision": "SC38_TEMPORAL_CONSENSUS_ACTIVE_VIEW_CONSUMED_GATE_NOT_MET",
+    "diagnosis": "Temporal image-order consensus was stable but selected a reverse-side geometric projection: second and third were swapped, causing two taskwise regressions and recall 1.0 to 0.333.",
+    "information_change": "Add frame-aligned measured depth and intrinsics so a pose is admissible only when every candidate agrees with observed depth. Reuse the SC34 public ordinal-inventory representation to recover a hidden leading-slot offset without target membership. Keep lattice, pose, frustum, span, and temporal-consensus thresholds unchanged."
+  },
+  "source": {
+    "dataset": "SceneFun3D plus ARKitScenes low-resolution poses, depth, and wide-camera intrinsics",
+    "scenefun3d_base_url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1",
+    "arkitscenes_base_url": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1",
+    "camera_pose_asset": "lowres_wide.traj",
+    "depth_asset": "lowres_depth.zip",
+    "intrinsics_asset": "lowres_wide_intrinsics.zip",
+    "cohort_csv_sha256": "a570b18aee43058a2f44db653a606ca799f64f054013b17dac95948fa590d5b1",
+    "arkitscenes_metadata_sha256": "ff4b3d3203525bdf12ebbb3fcaea0b9cf0bda5d584a48d42f21a096135c26621"
+  },
+  "consumed_or_target_exposed_visit_ids": [
+    "420673", "420683", "420693", "421002", "421005", "421010",
+    "421013", "421015", "421069", "421254", "421267", "421658",
+    "422007", "422011", "422356", "422377", "422383", "422384",
+    "423325", "423438", "423474", "423966"
+  ],
+  "selection": {
+    "ordering": "ascending visit_id then video_id from the official one-video CSV",
+    "maximum_candidate_scenes": 80,
+    "minimum_horizontal_directional_ordinal_connect_tasks": 1,
+    "selected_scene_count": 1,
+    "stop_rule": "Stop immediately after the first depth-visible temporally stable self-carrier active-view opportunity."
+  },
+  "frozen_algorithm": {
+    "ordinal_mode": "SELF_CARRIER_DEPTH_VISIBLE_TEMPORAL_ACTIVE_VIEW",
+    "carrier_mode": "SELF_CARRIER_LOCAL_ACTION_LATTICE",
+    "view_selection_mode": "DEPTH_VISIBLE_TEMPORAL_ORDER_CONSENSUS",
+    "supported_directional_cues": ["FROM_LEFT", "FROM_RIGHT"],
+    "candidate_action_label": "plug_in",
+    "local_lattice_link_radius_m": 0.5,
+    "minimum_same_action_candidates": 2,
+    "minimum_metric_pitch_m": 0.03,
+    "maximum_metric_pitch_m": 0.5,
+    "maximum_pitch_relative_deviation": 0.35,
+    "maximum_orthogonal_residual_pitch_ratio": 0.25,
+    "minimum_camera_depth_m": 0.2,
+    "maximum_camera_depth_m": 5.0,
+    "maximum_absolute_normalized_image_coordinate": 1.2,
+    "minimum_horizontal_normalized_span": 0.03,
+    "maximum_frame_alignment_seconds": 0.02,
+    "depth_window_radius_pixels": 2,
+    "depth_absolute_tolerance_m": 0.08,
+    "depth_relative_tolerance": 0.05,
+    "minimum_valid_depth_pixels_per_candidate": 3,
+    "ordinal_inventory_rule": "For each directional cue independently, public task ordinals must be consecutive and their cardinality must equal the sealed lattice cardinality.",
+    "absolute_rank_mapping": "Map the requested ordinal to its zero-based position in the admitted public ordinal inventory, then apply the visible left-to-right or right-to-left camera order.",
+    "consensus_window_seconds": 0.25,
+    "minimum_consensus_support_poses": 5,
+    "minimum_consensus_support_fraction": 0.8,
+    "view_selection": "Require every candidate projection to agree with observed depth, then require the unchanged temporal left-to-right order consensus and maximize horizontal span.",
+    "left_right_authority": "Depth-visible temporally agreed camera-frame projected x order; smaller x is left. Public task ordinal inventory supplies only the hidden-prefix offset.",
+    "baseline": "All candidates in the admitted local same-action lattice remain set-valued.",
+    "no_match_policy": "KEEP_SELF_CARRIER_LATTICE_SET_AND_REQUEST_VISIBLE_ORDINAL_VIEW",
+    "candidate_semantic_authority": "PRIVILEGED_SCENEFUN3D_FUNCTION_LABEL_CEILING",
+    "visibility_authority": "PROVIDER_PUBLIC_FRAME_ALIGNED_ARKITSCENES_DEPTH_CEILING",
+    "absolute_rank_authority": "PROVIDER_PUBLIC_DIRECTIONAL_TASK_ORDINAL_INVENTORY"
+  },
+  "decision_labels": {
+    "pass": "SC39_DEPTH_VISIBLE_ACTIVE_VIEW_MECHANISM_SOURCE_ADMITTED",
+    "incomplete": "SC39_DEPTH_VISIBLE_SOURCE_INCOMPLETE",
+    "insufficient": "SC39_NOT_EVALUABLE_NO_DEPTH_VISIBLE_ACTIVE_VIEW"
+  },
+  "forbidden_after_source_access": [
+    "claim fresh transfer or generalization",
+    "read description annot_id values during provider construction",
+    "change depth, alignment, lattice, temporal, span, frustum, or ranking thresholds",
+    "choose candidates, frames, pose windows, or orders using evaluator outcomes"
+  ],
+  "claim_boundary": "Target-exposed consumed-mechanism source admission for a privileged functional lattice plus frame-aligned depth-visible real active views. A positive result may establish mechanics only, never fresh transfer, RGB proposal quality, online view reachability, tracking, arrival, HANDOFF_READY, product benefit, or safety."
+}
