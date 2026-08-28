@@ -14,6 +14,7 @@ DTR_C2_M1_CTB_CONFIDENCE_TRACK_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL /
 DTR_C3_M1_HYBRID_RAW_POINT_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL /
 DTR_C4_M1_CT_DETECTOR_INDEPENDENT_GLOBAL_RISK_DEVELOPMENT_SIGNAL /
 DTR_C5_CROSS_ESTIMATOR_CONSENSUS_DEVELOPMENT_NO_GAIN /
+DTR_C9_SELF_SUSTAINING_GLOBAL_RISK_BELIEF_DEVELOPMENT_SIGNAL /
 R4_NOT_OPENED`
 
 ## Result first
@@ -679,6 +680,87 @@ Evidence:
 - `artifacts.local/evidence/dtr-c5/cross-estimator-consensus/result.json`,
   SHA-256
   `ede3ca21c725d8f935b7cefa4043ed3a9c27c33afafe611b2f03d64c380fdfa2`.
+
+## DTR-C6--C9 wearer route, world occupancy belief, and risk state
+
+C6 corrects a geometry mismatch left by C4. M1-CT velocity is ego-compensated
+scene motion in the world, but collision depends on motion relative to the
+wearer's short-term route. C6 estimates wearer velocity only from past poses,
+transforms confident cells into the world frame, advects them through the
+unchanged 0.5 second lifecycle grace, and then evaluates continuous relative
+collision geometry. Prediction is hash sealed before the C1 roster or future
+OBBs are opened.
+
+| Detector-independent arm | CONTACT recall | False segments | False / non-CONTACT min | Event F1 | Median lead |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| C4 M1-CT global current motion | `17/21` | 34 | 4.98 | 47.22% | 0.46 s |
+| C6 wearer-relative current motion | `17/21` | 51 | 7.47 | 38.20% | 0.80 s |
+| C6 wearer-relative world belief | `19/21` | 53 | 7.76 | 40.86% | **1.82 s** |
+| C8 fixed-window global-risk bridge | `17/21` | 30 | 4.39 | 50.00% | 0.81 s |
+| **C9 self-sustaining global risk belief** | **`18/21`** | **28** | **4.10** | **53.73%** | **1.01 s** |
+
+The C6 result establishes that world occupancy memory contains missing causal
+information: it recovers two events and adds 1.36 seconds of median lead over
+C4, but allowing any remembered cell to originate an alert is too broad. A
+motion-authority router using the already frozen 0.25 m/s floor did not change
+the aggregate and was closed without a parameter sweep.
+
+C8/C9 instead split alert authority by state. Current confidence-aware motion
+is the only independent ONSET source. World occupancy may only continue an
+already active global route-conflict event; it can never originate one from
+CLEAR. C8's fixed bridge window reduced false segments but was too short to
+recover an event. C9 lets valid belief maintain the active event for as long as
+causal occupancy remains, then delegates clearing to the unchanged lifecycle.
+This has the same useful asymmetry as
+[Occupancy Flow Fields](https://arxiv.org/pdf/2203.03875): flow-traced occupancy
+is reachable from current occupancy and can erase unsupported future occupancy,
+rather than granting every future cell equal authority. It also keeps the
+relative-motion/path-overlap separation emphasized by
+[PORA](https://arxiv.org/html/2501.16480).
+This recovers one event, reduces false segments `34 -> 28`, raises F1
+`47.22% -> 53.73%`, and doubles median lead `0.46 -> 1.01 s` relative to C4.
+Its 28 false segments are also below the privileged track-only R2's 29, although
+R2 still has higher recall (`20/21`) and F1 (57.14%).
+
+This produces the intended algorithm story:
+
+```text
+track-only loses occluded hazards
+  -> dense motion restores evidence but creates pseudo-motion
+  -> confidence-aware direct velocity suppresses pseudo-motion
+  -> global motion originates risk without a detector box
+  -> wearer-relative world occupancy supplies causal continuity
+  -> route-risk state separates ONSET authority from belief maintenance
+```
+
+Decision:
+`DTR_C9_SELF_SUSTAINING_GLOBAL_RISK_BELIEF_DEVELOPMENT_SIGNAL`. C9 becomes the
+detector-independent natural alert-origin path. M1-HYBRID remains the bounded
+detector-gap recovery layer, so the earlier consumed R7 `9/9` recovery is
+preserved by composition. The remaining three misses have no M1-PDC evidence
+while a C9 state is active; opening raw-point motion as an independent origin
+would return to the already measured 68 false segments and is not justified.
+Do not tune the belief horizon, route threshold, confidence, or motion floor on
+these consumed seven sequences. The next confirmation should use a new cohort;
+the next algorithm source upgrade is calibrated occupancy probability or a
+semantic route plan, not another same-source gate.
+
+Evidence:
+
+- C6 sealed prediction SHA-256
+  `64880b1b130503fc4fd8f6f475fdd934e78df3dc8a15714845f75ea2b504f315`,
+  result SHA-256
+  `de001057ea0b22cff460a86a25641778aa25ec010e11bd89029e254818c0c086`;
+- C8 sealed prediction SHA-256
+  `ba32f91984a7ba9faf39f67ae4444d41917336cf7a9e8d53dc7ab401b280ad67`,
+  result SHA-256
+  `0affd5f151fef5aa5e20dfdb50d18bb7b980d3c47e1349ef4d1b4e50d3a6891a`;
+- C9 backend receipt SHA-256
+  `668221ca84014961fe6482bae502501939d4cf62afb8a5b23a78c0033571ca9f`,
+  sealed prediction SHA-256
+  `7d852751f7d14ed01684e78dd2da76a3cf655ea3b28dbd3f138adb9e4ef04046`,
+  result SHA-256
+  `c9ca1b9fe6e26e19355baac91a9d766e3151962ad5e6d47f3b21aeaef99bdb89`.
 
 The source split explains why pooling is not enough:
 
