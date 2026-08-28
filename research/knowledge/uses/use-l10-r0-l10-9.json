@@ -10,15 +10,15 @@
   "adoption_mode": "mechanism_adaptation",
   "usage": {
     "source_scope": "宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。",
-    "project_application": "已落入 core:assist 的目标控制器：按证据缺口选择 SWEEP/SCAN/PAN/APPROACH/SIDESTEP/HOLD，且只有新鲜语义可锁定、导航和重捕获。",
-    "modifications": "把机器人云台动作改为人持手机的相机相对提示；外观连续性最多保留两帧补观测权限，不能取得身份。LOST 后需两次新鲜语义命中，身份或终点证据丢失会撤销 HANDOFF_READY。",
-    "expected_effect": "消除 OCR 非命中导致的错误 STOP/假 NONE，为每个不可导航帧产生有界且可解释的补观测动作，同时阻止连续性证据越权。"
+    "project_application": "已落入 core:assist 的目标控制器：按证据缺口选择 SWEEP/SCAN/PAN/APPROACH/SIDESTEP/HOLD；每个补观测动作签发因果回执，只有匹配的执行确认和后续可比较语义证据才能决定改进、无增益、矛盾或未知。",
+    "modifications": "把机器人云台动作改为人持手机的相机相对提示；外观连续性最多保留两帧补观测权限，不能取得身份。LOST 后需两次新鲜语义命中；仅发出但未确认执行、缺失或无权威的动作后观测保持 UNKNOWN；可比较的 NO_GAIN 会阻止立即重复同一动作。",
+    "expected_effect": "消除 OCR 非命中导致的错误 STOP/假 NONE，并把补观测从静态动作映射升级为可由真实动作后果修复的闭环，同时阻止连续性或缺失证据越权。"
   },
   "evaluation": {
     "reproduction_status": "mechanics_only",
     "verdict": "mixed",
-    "setup": "SC2 ArTVideo action-interface Development replay plus SC15 passive transition audit, fresh protocol-frozen SC16 DSText V2 indoor observability canary, and one consumed-observation SC17 tri-view consensus diagnostic.",
-    "effect": "SC2 still removes terminal STOP/false-NONE and covers every observation opportunity, but SC15 direction alignment, SC16 height-sharpness-centering Pareto quality, and SC17 exact tri-view consensus all failed to establish reliable semantic observation gain.",
+    "setup": "SC2 ArTVideo action-interface Development replay; SC15-SC17 passive/proxy audits; and SC18 protocol-frozen 250-episode controlled-world comparison of unchanged GoalLock versus causal one-step action repair.",
+    "effect": "SC2 removes terminal STOP/false-NONE; SC15-SC17 failed to establish proxy-based semantic gain. SC18's issued-action receipt and repair eliminated repeated same-action choices after comparable no gain without reducing controlled task success or creating absent-target false completion, while reacquisition decreased slightly within the frozen margin.",
     "metrics": [
       "source_stop_frames=124; normalized_stop_frames=0",
       "source_false_none_target_present_frames=24; normalized_false_none_target_present_frames=0",
@@ -26,9 +26,11 @@
       "end_to_end_successful_episodes=30/30",
       "SC15 mean_target_semantic_gain=0.6667 aligned vs 0.8000 opposed; wrong_gate=0.1667 vs 0.0",
       "SC16 transitions=2677; mean_gain_delta=0.0093; improvement_rate_delta=0.0322; gate_crossing=0.0166 aligned vs 0.0428 opposed",
-      "SC17 precision=0.9097 baseline vs 0.9188 consensus; wrong_reduction=0.2431; wrong_consensus_tracks=5/49"
+      "SC17 precision=0.9097 baseline vs 0.9188 consensus; wrong_reduction=0.2431; wrong_consensus_tracks=5/49",
+      "SC18 repeated_no_gain_action_rate=182/206 baseline vs 0/215 repair",
+      "SC18 task_success_rate=0.885 both; absent_false_completion=0/50 both; reacquire=0.8235 baseline vs 0.8075 repair"
     ],
-    "claim_boundary": "SC2 supports an action interface, not action benefit. SC15 and SC16 are passive recorded-motion associations; SC17 reuses consumed observations. No issued physical action, causal readability gain, detector, exact-instance selection, metric arrival, product benefit, user benefit, or safety was established."
+    "claim_boundary": "SC18 supports causal receipt and policy-repair mechanics only. Its zero-repeat primary result is structurally expected and the world is synthetic; no physical phone/user action, causal live readability gain, optimal repair policy, detector, exact-instance selection, metric arrival, product benefit, user benefit, or safety was established."
   },
   "evidence": [
     {
@@ -55,6 +57,16 @@
       "kind": "artifact",
       "ref": "artifacts.local/evidence/l10-r19/sc17-triview-semantic-consensus-development-v0/result.json",
       "summary": "Consumed-observation tri-view consensus diagnostic, SHA-256 7807d5f419ef6d81690a3896fcf4ac63f26045dd671cd88973e94b182c148e4e."
+    },
+    {
+      "kind": "repo",
+      "ref": "core/assist/src/main/java/com/linnan/blindassist/goal/GoalObservationActionOutcome.kt",
+      "summary": "Goal/session/entity/frame/clock-bound issued-action receipt and four-state causal outcome contract."
+    },
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/l10-r0/sc18/action_outcome_result.json",
+      "summary": "SC18 controlled repair result, SHA-256 92eb8554559e0012aad4db4f8cdbcc901558c25ecfa5f2bb7b04847b4b12413b."
     }
   ],
   "history": [
@@ -69,6 +81,10 @@
     {
       "date": "2026-08-28",
       "change": "Closed passive direction alignment, Pareto image-quality gain, and fixed tri-view OCR consensus after SC15-SC17 missed their gates. The next source must expose issued actions and before/after outcomes or add new identity information."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Landed issued-action receipts and one-step causal repair. SC18 met its synthetic mechanics gate without task-success or false-completion regression; real deficit-conditioned action utility remains the next source gap."
     }
   ],
   "added_at": "2026-08-28",

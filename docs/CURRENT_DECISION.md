@@ -3,7 +3,8 @@
 Status: `L10_R0_ACTIVE / SC14_CAUSAL_MICRO_MOTION_ACTION_BELIEF_MECHANICS_SIGNAL /
 SC14_CORE_CAUSAL_ACTION_HANDOFF_GUARD_IMPLEMENTED /
 L10_CORE_SEEK_GUIDE_REACQUIRE_CONTROLLER_IMPLEMENTED /
-SC15_SC16_SC17_ACTIVE_VIEW_PROXY_ROUTES_CLOSED` and
+SC15_SC16_SC17_ACTIVE_VIEW_PROXY_ROUTES_CLOSED /
+SC18_CAUSAL_ACTION_OUTCOME_REPAIR_MECHANICS_SIGNAL` and
 `DTR_R2_PUBLIC_REAL_PRIVILEGED_CEILINGS_ESTABLISHED /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
@@ -114,6 +115,26 @@ causal outcome feedback and policy repair, or add genuinely new identity
 information. None of SC15--SC17 changes the existing SC2 action-interface
 mechanics result or establishes live active-view, arrival, product, user, or
 safety benefit.
+
+SC18 now lands the causal successor in `core:assist`. Each observation action
+issues a current goal/session/entity/frame/clock-bound receipt; only a later
+admitted comparable observation can classify the result as improved, no gain,
+or contradicted. The caller must acknowledge that the matching instruction was
+executed; a merely issued prompt has no outcome authority. Missing, stale,
+mismatched, unauthorized, or unexecuted evidence remains `UNKNOWN`. A
+comparable no-gain result prevents an immediate repeat and selects a different
+observation action.
+
+On one protocol-frozen 250-episode controlled-world comparison, repeated
+same-action choices after no gain fell from `182/206` to `0/215`; task success
+was unchanged at 88.5%, target-absent false completion remained 0/50, and
+reacquisition moved from 82.35% to 80.75%, within the frozen tolerance. Accept
+`SC18_CAUSAL_ACTION_OUTCOME_REPAIR_MECHANICS_SIGNAL`, with a strict synthetic-
+mechanics ceiling. The zero-repeat primary result is structurally expected and
+does not prove that the chosen opposite pan is optimal. The next source must
+collect real issued-action receipts so action utility can be learned per
+evidence deficit; do not tune the consumed seed or return to passive quality
+proxies.
 
 ## DTR-R2 decision
 

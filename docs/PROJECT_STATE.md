@@ -248,6 +248,18 @@ the opened proxy representations, not evidence against active observation
 itself. The next source must record issued action -> before/after result so the
 controller can repair policy from causal outcome.
 
+SC18 implements that receipt seam in `core:assist`: observation actions are
+bound to goal/session/entity/frame/clock and the pre-action semantic deficit;
+only later comparable admitted evidence may report improvement, no gain, or
+contradiction, and only after a matching execution acknowledgement; an issued-
+only prompt, missing observation, or invalid evidence remains `UNKNOWN`. A
+no-gain receipt changes the next repeated action. In a frozen 250-episode controlled
+world, repeated no-gain actions fell `182/206 -> 0/215`, task success stayed
+88.5%, absent false completion stayed 0/50, and reacquisition changed 82.35% ->
+80.75%. This is a synthetic mechanism signal, not live executed-view evidence.
+The next active increment is deficit-conditioned action utility from real
+issued-action receipts, not a sweep of the fixed repair rule or old proxies.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

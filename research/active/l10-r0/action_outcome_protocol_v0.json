@@ -1,0 +1,23 @@
+{
+  "protocol_id": "L10-SC18-ACTION-OUTCOME-REPAIR-V0",
+  "frozen_before_outcome": true,
+  "claim_ceiling": "CONTROLLED_SYNTHETIC_SEARCH_REPAIR_MECHANICS_ONLY",
+  "world": "benchmark.GoalLockWorld",
+  "episode_count": 250,
+  "seed": 20260828,
+  "max_steps": 90,
+  "baseline": "L10_R0_goal_lock",
+  "candidate": "L10_R0_action_outcome_repair",
+  "intervention": "When an issued SEARCH or LOST action is followed by another SEARCH or LOST observation and the base policy would repeat that action, issue the opposite pan once. TARGET_FOUND, LOCKED, NEAR, and TASK_COMPLETE count as semantic improvement. No hidden truth is available to the policy.",
+  "primary_metric": "repeated_no_gain_action_rate",
+  "development_gate": {
+    "minimum_relative_reduction_repeated_no_gain_action_rate": 0.5,
+    "maximum_task_success_rate_drop": 0.02,
+    "maximum_reacquire_success_rate_drop": 0.05,
+    "maximum_absent_false_complete_rate": 0.0
+  },
+  "prohibitions": [
+    "No threshold, seed, horizon, or repair-rule change after observing this result.",
+    "No real-world, product, completion, or safety claim follows from this simulator."
+  ]
+}

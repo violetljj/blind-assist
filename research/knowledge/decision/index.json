@@ -2,7 +2,7 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "33a68e1d1651d83ac2bbecbcb46fea1aa2cfabccf4052d107585cff8730450f8",
+  "source_fingerprint": "4c7abe8947ee2e10c7518568dea02766e6e84046961f857ee7deb8fea689fdeb",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 223,
@@ -1843,12 +1843,11 @@
       "layer_scores": {
         "decision_lifecycle": 3,
         "evaluation_evidence": 9,
-        "geometry_motion": 3,
-        "handoff_completion": 9,
+        "handoff_completion": 18,
         "identity_binding": 6,
         "observation_perception": 12,
         "source_coverage": 9,
-        "temporal_belief": 6
+        "temporal_belief": 9
       },
       "routes": [
         "ten-meter-copilot"
@@ -1860,9 +1859,9 @@
           "use_state": "active",
           "reproduction_status": "mechanics_only",
           "verdict": "mixed",
-          "project_application": "已落入 core:assist 的目标控制器：按证据缺口选择 SWEEP/SCAN/PAN/APPROACH/SIDESTEP/HOLD，且只有新鲜语义可锁定、导航和重捕获。",
-          "expected_effect": "消除 OCR 非命中导致的错误 STOP/假 NONE，为每个不可导航帧产生有界且可解释的补观测动作，同时阻止连续性证据越权。",
-          "observed_effect": "SC2 still removes terminal STOP/false-NONE and covers every observation opportunity, but SC15 direction alignment, SC16 height-sharpness-centering Pareto quality, and SC17 exact tri-view consensus all failed to establish reliable semantic observation gain.",
+          "project_application": "已落入 core:assist 的目标控制器：按证据缺口选择 SWEEP/SCAN/PAN/APPROACH/SIDESTEP/HOLD；每个补观测动作签发因果回执，只有匹配的执行确认和后续可比较语义证据才能决定改进、无增益、矛盾或未知。",
+          "expected_effect": "消除 OCR 非命中导致的错误 STOP/假 NONE，并把补观测从静态动作映射升级为可由真实动作后果修复的闭环，同时阻止连续性或缺失证据越权。",
+          "observed_effect": "SC2 removes terminal STOP/false-NONE; SC15-SC17 failed to establish proxy-based semantic gain. SC18's issued-action receipt and repair eliminated repeated same-action choices after comparable no gain without reducing controlled task success or creating absent-target false completion, while reacquisition decreased slightly within the frozen margin.",
           "metrics": [
             "source_stop_frames=124; normalized_stop_frames=0",
             "source_false_none_target_present_frames=24; normalized_false_none_target_present_frames=0",
@@ -1870,9 +1869,11 @@
             "end_to_end_successful_episodes=30/30",
             "SC15 mean_target_semantic_gain=0.6667 aligned vs 0.8000 opposed; wrong_gate=0.1667 vs 0.0",
             "SC16 transitions=2677; mean_gain_delta=0.0093; improvement_rate_delta=0.0322; gate_crossing=0.0166 aligned vs 0.0428 opposed",
-            "SC17 precision=0.9097 baseline vs 0.9188 consensus; wrong_reduction=0.2431; wrong_consensus_tracks=5/49"
+            "SC17 precision=0.9097 baseline vs 0.9188 consensus; wrong_reduction=0.2431; wrong_consensus_tracks=5/49",
+            "SC18 repeated_no_gain_action_rate=182/206 baseline vs 0/215 repair",
+            "SC18 task_success_rate=0.885 both; absent_false_completion=0/50 both; reacquire=0.8235 baseline vs 0.8075 repair"
           ],
-          "claim_boundary": "SC2 supports an action interface, not action benefit. SC15 and SC16 are passive recorded-motion associations; SC17 reuses consumed observations. No issued physical action, causal readability gain, detector, exact-instance selection, metric arrival, product benefit, user benefit, or safety was established.",
+          "claim_boundary": "SC18 supports causal receipt and policy-repair mechanics only. Its zero-repeat primary result is structurally expected and the world is synthetic; no physical phone/user action, causal live readability gain, optimal repair policy, detector, exact-instance selection, metric arrival, product benefit, user benefit, or safety was established.",
           "evidence": [
             {
               "kind": "git",
@@ -1898,12 +1899,22 @@
               "kind": "artifact",
               "ref": "artifacts.local/evidence/l10-r19/sc17-triview-semantic-consensus-development-v0/result.json",
               "summary": "Consumed-observation tri-view consensus diagnostic, SHA-256 7807d5f419ef6d81690a3896fcf4ac63f26045dd671cd88973e94b182c148e4e."
+            },
+            {
+              "kind": "repo",
+              "ref": "core/assist/src/main/java/com/linnan/blindassist/goal/GoalObservationActionOutcome.kt",
+              "summary": "Goal/session/entity/frame/clock-bound issued-action receipt and four-state causal outcome contract."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/research/l10-r0/sc18/action_outcome_result.json",
+              "summary": "SC18 controlled repair result, SHA-256 92eb8554559e0012aad4db4f8cdbcc901558c25ecfa5f2bb7b04847b4b12413b."
             }
           ],
           "updated_at": "2026-08-28"
         }
       ],
-      "search_text": "Active text perception for mobile robots 宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。 l10 literature-reserve l10-r0 Active text perception for mobile robots — l10:9 route mechanism 宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。 云台室内机器人、静态文字；没有目标语义绑定、身体靠近、到达或交接。 ten-meter-copilot 已落入 core:assist 的目标控制器：按证据缺口选择 SWEEP/SCAN/PAN/APPROACH/SIDESTEP/HOLD，且只有新鲜语义可锁定、导航和重捕获。 消除 OCR 非命中导致的错误 STOP/假 NONE，为每个不可导航帧产生有界且可解释的补观测动作，同时阻止连续性证据越权。 SC2 still removes terminal STOP/false-NONE and covers every observation opportunity, but SC15 direction alignment, SC16 height-sharpness-centering Pareto quality, and SC17 exact tri-view consensus all failed to establish reliable semantic observation gain. source_stop_frames=124; normalized_stop_frames=0 source_false_none_target_present_frames=24; normalized_false_none_target_present_frames=0 explicit_non_navigation_action_coverage=1.0 end_to_end_successful_episodes=30/30 SC15 mean_target_semantic_gain=0.6667 aligned vs 0.8000 opposed; wrong_gate=0.1667 vs 0.0 SC16 transitions=2677; mean_gain_delta=0.0093; improvement_rate_delta=0.0322; gate_crossing=0.0166 aligned vs 0.0428 opposed SC17 precision=0.9097 baseline vs 0.9188 consensus; wrong_reduction=0.2431; wrong_consensus_tracks=5/49 SC2 supports an action interface, not action benefit. SC15 and SC16 are passive recorded-motion associations; SC17 reuses consumed observations. No issued physical action, causal readability gain, detector, exact-instance selection, metric arrival, product benefit, user benefit, or safety was established."
+      "search_text": "Active text perception for mobile robots 宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。 l10 literature-reserve l10-r0 Active text perception for mobile robots — l10:9 route mechanism 宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。 云台室内机器人、静态文字；没有目标语义绑定、身体靠近、到达或交接。 ten-meter-copilot 已落入 core:assist 的目标控制器：按证据缺口选择 SWEEP/SCAN/PAN/APPROACH/SIDESTEP/HOLD；每个补观测动作签发因果回执，只有匹配的执行确认和后续可比较语义证据才能决定改进、无增益、矛盾或未知。 消除 OCR 非命中导致的错误 STOP/假 NONE，并把补观测从静态动作映射升级为可由真实动作后果修复的闭环，同时阻止连续性或缺失证据越权。 SC2 removes terminal STOP/false-NONE; SC15-SC17 failed to establish proxy-based semantic gain. SC18's issued-action receipt and repair eliminated repeated same-action choices after comparable no gain without reducing controlled task success or creating absent-target false completion, while reacquisition decreased slightly within the frozen margin. source_stop_frames=124; normalized_stop_frames=0 source_false_none_target_present_frames=24; normalized_false_none_target_present_frames=0 explicit_non_navigation_action_coverage=1.0 end_to_end_successful_episodes=30/30 SC15 mean_target_semantic_gain=0.6667 aligned vs 0.8000 opposed; wrong_gate=0.1667 vs 0.0 SC16 transitions=2677; mean_gain_delta=0.0093; improvement_rate_delta=0.0322; gate_crossing=0.0166 aligned vs 0.0428 opposed SC17 precision=0.9097 baseline vs 0.9188 consensus; wrong_reduction=0.2431; wrong_consensus_tracks=5/49 SC18 repeated_no_gain_action_rate=182/206 baseline vs 0/215 repair SC18 task_success_rate=0.885 both; absent_false_completion=0/50 both; reacquire=0.8235 baseline vs 0.8075 repair SC18 supports causal receipt and policy-repair mechanics only. Its zero-repeat primary result is structurally expected and the world is synthetic; no physical phone/user action, causal live readability gain, optimal repair policy, detector, exact-instance selection, metric arrival, product benefit, user benefit, or safety was established."
     },
     {
       "id": "paper-agninav#hftf-h01",

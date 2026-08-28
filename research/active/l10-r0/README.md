@@ -327,6 +327,47 @@ Implementations: `artvideo_passive_action_gain.py`,
 - SC17 result: `artifacts.local/evidence/l10-r19/sc17-triview-semantic-consensus-development-v0/result.json`,
   SHA-256 `7807d5f419ef6d81690a3896fcf4ac63f26045dd671cd88973e94b182c148e4e`.
 
+### SC18: causal action-outcome receipt and one-step policy repair
+
+SC18 implements the successor required by the three proxy negatives. Every
+runtime observation-seeking instruction now emits a goal/session/entity/frame/
+clock-bound receipt containing the pre-action semantic state and evidence
+deficit. Only a later, admitted, comparable observation may close it as
+`IMPROVED`, `NO_GAIN`, or `CONTRADICTED`; absent, stale, mismatched, or
+non-admitted evidence closes as `UNKNOWN`. A matching execution acknowledgement
+is mandatory; issuing a prompt alone cannot claim an action effect. A
+comparable no-gain outcome stops
+the controller from repeating the same instruction and selects a distinct
+repair action. Guidance actions do not manufacture observation receipts.
+
+A protocol-frozen controlled-world check compared the unchanged GoalLock
+controller with this one-step repair on 250 episodes (200 target-present, 50
+target-absent). Repeated same-action decisions after an observable no-gain
+transition fell from `182/206` (88.35%) to `0/215`; target-present task success
+was unchanged at 88.5%, and target-absent false completion remained 0/50.
+Reacquisition decreased slightly from 82.35% to 80.75%, inside the frozen
+five-point non-inferiority margin. All preregistered gates passed, yielding
+`SC18_CAUSAL_ACTION_OUTCOME_REPAIR_MECHANICS_SIGNAL`.
+
+The primary reduction is partly structural—the candidate is designed not to
+repeat the just-failed action. Its useful evidence is the absence of a task-
+success or false-completion regression in this controlled world, not a claim
+that the opposite pan is optimal. This remains synthetic search mechanics: no
+phone/user action was executed, simulator state is not natural observation,
+and no live readability, identity, arrival, product, user-benefit, or safety
+claim follows. The next algorithmic step is deficit-conditioned action utility
+learned from real issued-action receipts, not another static image-quality
+proxy or a repair-rule sweep on this consumed seed.
+
+Implementations: `GoalObservationActionOutcome.kt`, the receipt/repair path in
+`GoalCopilotController.kt`, `action_outcome_benchmark.py`; frozen protocol:
+`action_outcome_protocol_v0.json`. Evidence:
+
+- SC18 protocol: `research/active/l10-r0/action_outcome_protocol_v0.json`,
+  SHA-256 `103287b676fc81a3a5c27d74d2fcf3cab143e4b24f384caf075659d4da27b680`.
+- SC18 result: `artifacts.local/research/l10-r0/sc18/action_outcome_result.json`,
+  SHA-256 `92eb8554559e0012aad4db4f8cdbcc901558c25ecfa5f2bb7b04847b4b12413b`.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

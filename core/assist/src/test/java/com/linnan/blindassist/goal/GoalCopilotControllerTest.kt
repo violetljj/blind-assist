@@ -86,6 +86,71 @@ class GoalCopilotControllerTest {
         assertTrue(listOf(first, second, expired).none(GoalCopilotStep::freshSemanticIdentity))
     }
 
+    @Test
+    fun comparableNoGainRepairsActionAndFreshTargetClosesReceipt() {
+        val controller = controller()
+        step(controller, frame(1L), CameraRelativeBearing.LEFT)
+
+        val issued = uncertainStep(controller, frame(2L), CameraRelativeBearing.LEFT)
+        assertEquals(GoalCopilotAction.PAN_LEFT_TO_IDENTITY, issued.action)
+        assertEquals(GoalCopilotAction.PAN_LEFT_TO_IDENTITY, issued.issuedActionReceipt?.action)
+
+        val repaired = uncertainStep(
+            controller,
+            frame(3L),
+            CameraRelativeBearing.LEFT,
+            execution = execution(issued.issuedActionReceipt!!)
+        )
+        assertEquals(GoalObservationActionOutcomeState.NO_GAIN, repaired.priorActionOutcome?.state)
+        assertEquals(GoalCopilotAction.SIDESTEP_FOR_DISAMBIGUATION, repaired.action)
+        assertEquals(GoalCopilotAction.SIDESTEP_FOR_DISAMBIGUATION, repaired.issuedActionReceipt?.action)
+
+        val improved = step(
+            controller,
+            frame(4L),
+            CameraRelativeBearing.RIGHT,
+            priorActionExecution = execution(repaired.issuedActionReceipt!!)
+        )
+        assertEquals(GoalObservationActionOutcomeState.IMPROVED, improved.priorActionOutcome?.state)
+        assertEquals(GoalCopilotAction.GUIDE_RIGHT, improved.action)
+        assertEquals(null, improved.issuedActionReceipt)
+    }
+
+    @Test
+    fun absentFollowupIsUnknownOutcomeNotActionFailure() {
+        val controller = controller()
+        step(controller, frame(1L), CameraRelativeBearing.LEFT)
+        val issued = uncertainStep(controller, frame(2L), CameraRelativeBearing.LEFT)
+
+        val missingFrame = frame(3L)
+        val missing = controller.step(
+            evidence = null,
+            currentFrame = missingFrame,
+            decisionAtNs = decisionAt(missingFrame),
+            decisionClockDomain = CLOCK,
+            sessionTimestampMs = 1_030L,
+            priorActionExecution = execution(issued.issuedActionReceipt!!)
+        )
+
+        assertEquals(GoalObservationActionOutcomeState.UNKNOWN, missing.priorActionOutcome?.state)
+        assertEquals("ACTION_OUTCOME_EVIDENCE_ABSENT", missing.priorActionOutcome?.reason)
+        assertEquals(GoalCopilotAction.SCAN_LAST_LEFT, missing.action)
+    }
+
+    @Test
+    fun issuedButUnconfirmedActionCannotClaimOutcomeOrTriggerRepair() {
+        val controller = controller()
+        step(controller, frame(1L), CameraRelativeBearing.LEFT)
+        val issued = uncertainStep(controller, frame(2L), CameraRelativeBearing.LEFT)
+        assertEquals(GoalCopilotAction.PAN_LEFT_TO_IDENTITY, issued.action)
+
+        val unconfirmed = uncertainStep(controller, frame(3L), CameraRelativeBearing.LEFT)
+
+        assertEquals(GoalObservationActionOutcomeState.UNKNOWN, unconfirmed.priorActionOutcome?.state)
+        assertEquals("ACTION_EXECUTION_NOT_CONFIRMED", unconfirmed.priorActionOutcome?.reason)
+        assertEquals(GoalCopilotAction.PAN_LEFT_TO_IDENTITY, unconfirmed.action)
+    }
+
     private fun controller() = GoalCopilotController(
         goalId = GOAL,
         sessionId = SESSION,
@@ -96,7 +161,8 @@ class GoalCopilotControllerTest {
         controller: GoalCopilotController,
         frame: FrameStamp,
         bearing: CameraRelativeBearing,
-        endpointEvidence: GoalEndpointEvidence? = null
+        endpointEvidence: GoalEndpointEvidence? = null,
+        priorActionExecution: GoalObservationActionExecution? = null
     ): GoalCopilotStep = controller.step(
         evidence = observation(
             frame = frame,
@@ -109,13 +175,15 @@ class GoalCopilotControllerTest {
         decisionAtNs = decisionAt(frame),
         decisionClockDomain = CLOCK,
         sessionTimestampMs = 1_000L + frame.frameId * 10L,
-        endpointEvidence = endpointEvidence
+        endpointEvidence = endpointEvidence,
+        priorActionExecution = priorActionExecution
     )
 
     private fun uncertainStep(
         controller: GoalCopilotController,
         frame: FrameStamp,
-        bearing: CameraRelativeBearing
+        bearing: CameraRelativeBearing,
+        execution: GoalObservationActionExecution? = null
     ): GoalCopilotStep = controller.step(
         evidence = observation(
             frame = frame,
@@ -127,8 +195,21 @@ class GoalCopilotControllerTest {
         currentFrame = frame,
         decisionAtNs = decisionAt(frame),
         decisionClockDomain = CLOCK,
-        sessionTimestampMs = 1_000L + frame.frameId * 10L
+        sessionTimestampMs = 1_000L + frame.frameId * 10L,
+        priorActionExecution = execution
     )
+
+    private fun execution(receipt: GoalObservationActionReceipt): GoalObservationActionExecution {
+        return GoalObservationActionExecution(
+            receiptId = receipt.receiptId,
+            goalId = GOAL,
+            sessionId = SESSION,
+            parentBindingId = BINDING,
+            action = receipt.action,
+            executedAtNs = receipt.issuedAtNs + 1L,
+            clockDomain = CLOCK
+        )
+    }
 
     private fun observation(
         frame: FrameStamp,

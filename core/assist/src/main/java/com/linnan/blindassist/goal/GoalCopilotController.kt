@@ -97,7 +97,9 @@ data class GoalCopilotStep(
     val freshSemanticIdentity: Boolean,
     val frameId: Long,
     val handoffState: GoalHandoffState,
-    val readinessDecision: GoalHandoffReadinessDecision? = null
+    val readinessDecision: GoalHandoffReadinessDecision? = null,
+    val priorActionOutcome: GoalObservationActionOutcome? = null,
+    val issuedActionReceipt: GoalObservationActionReceipt? = null
 )
 
 /**
@@ -126,6 +128,7 @@ class GoalCopilotController(
     private var pendingReacquireHits = 0
     private var everBound = false
     private var handoffState: GoalHandoffState = initialHandoffState
+    private var pendingActionReceipt: GoalObservationActionReceipt? = null
 
     init {
         require(goalId.isNotBlank() && sessionId.isNotBlank() && parentBindingId.isNotBlank())
@@ -142,7 +145,8 @@ class GoalCopilotController(
         decisionAtNs: Long,
         decisionClockDomain: FrameClockDomain,
         sessionTimestampMs: Long,
-        endpointEvidence: GoalEndpointEvidence? = null
+        endpointEvidence: GoalEndpointEvidence? = null,
+        priorActionExecution: GoalObservationActionExecution? = null
     ): GoalCopilotStep {
         val disposition = admit(
             evidence = evidence,
@@ -150,11 +154,22 @@ class GoalCopilotController(
             decisionAtNs = decisionAtNs,
             decisionClockDomain = decisionClockDomain
         )
+        val priorActionOutcome = consumeActionOutcome(
+            evidence = evidence,
+            disposition = disposition,
+            currentFrame = currentFrame,
+            decisionAtNs = decisionAtNs,
+            decisionClockDomain = decisionClockDomain,
+            execution = priorActionExecution
+        )
         if (evidence == null || disposition != GoalObservationDisposition.ADMITTED) {
             return lose(
                 disposition = disposition,
                 semanticState = GoalSemanticState.UNKNOWN,
-                frame = currentFrame
+                frame = currentFrame,
+                decisionAtNs = decisionAtNs,
+                decisionClockDomain = decisionClockDomain,
+                priorActionOutcome = priorActionOutcome
             )
         }
 
@@ -165,14 +180,26 @@ class GoalCopilotController(
                 decisionAtNs = decisionAtNs,
                 decisionClockDomain = decisionClockDomain,
                 sessionTimestampMs = sessionTimestampMs,
-                endpointEvidence = endpointEvidence
+                endpointEvidence = endpointEvidence,
+                priorActionOutcome = priorActionOutcome
             )
-            GoalSemanticState.UNCERTAIN -> onUncertain(evidence, currentFrame)
+            GoalSemanticState.UNCERTAIN -> onUncertain(
+                evidence,
+                currentFrame,
+                decisionAtNs,
+                decisionClockDomain,
+                priorActionOutcome
+            )
             GoalSemanticState.UNKNOWN,
             GoalSemanticState.AUTHORIZED_ABSENT -> lose(
                 disposition = disposition,
                 semanticState = evidence.semanticState,
-                frame = currentFrame
+                frame = currentFrame,
+                decisionAtNs = decisionAtNs,
+                decisionClockDomain = decisionClockDomain,
+                priorActionOutcome = priorActionOutcome,
+                deficit = evidence.deficit,
+                bearing = evidence.bearing
             )
         }
     }
@@ -197,7 +224,8 @@ class GoalCopilotController(
         decisionAtNs: Long,
         decisionClockDomain: FrameClockDomain,
         sessionTimestampMs: Long,
-        endpointEvidence: GoalEndpointEvidence?
+        endpointEvidence: GoalEndpointEvidence?,
+        priorActionOutcome: GoalObservationActionOutcome?
     ): GoalCopilotStep {
         if (evidence.bearing != CameraRelativeBearing.UNKNOWN) lastBearing = evidence.bearing
         if (continuityState == GoalContinuityState.LOST ||
@@ -218,7 +246,12 @@ class GoalCopilotController(
                     semanticState = GoalSemanticState.UNCERTAIN,
                     action = GoalCopilotAction.HOLD_STEADY_CONFIRM,
                     freshSemantic = true,
-                    frame = currentFrame
+                    frame = currentFrame,
+                    decisionAtNs = decisionAtNs,
+                    decisionClockDomain = decisionClockDomain,
+                    priorActionOutcome = priorActionOutcome,
+                    deficit = GoalObservationDeficit.REACQUIRE_CONFIRMATION_PENDING,
+                    bearing = evidence.bearing
                 )
             }
         }
@@ -261,13 +294,21 @@ class GoalCopilotController(
             action = guidanceAction(evidence.bearing),
             freshSemantic = true,
             frame = currentFrame,
-            readiness = readiness
+            readiness = readiness,
+            decisionAtNs = decisionAtNs,
+            decisionClockDomain = decisionClockDomain,
+            priorActionOutcome = priorActionOutcome,
+            deficit = evidence.deficit,
+            bearing = evidence.bearing
         )
     }
 
     private fun onUncertain(
         evidence: GoalObservationEvidence,
-        currentFrame: FrameStamp
+        currentFrame: FrameStamp,
+        decisionAtNs: Long,
+        decisionClockDomain: FrameClockDomain,
+        priorActionOutcome: GoalObservationActionOutcome?
     ): GoalCopilotStep {
         revokeReadiness("FRESH_TARGET_IDENTITY_NOT_AVAILABLE")
         val mayCoast = continuityState in setOf(
@@ -283,20 +324,35 @@ class GoalCopilotController(
                 semanticState = GoalSemanticState.UNCERTAIN,
                 action = observationAction(evidence),
                 freshSemantic = false,
-                frame = currentFrame
+                frame = currentFrame,
+                decisionAtNs = decisionAtNs,
+                decisionClockDomain = decisionClockDomain,
+                priorActionOutcome = priorActionOutcome,
+                deficit = evidence.deficit,
+                bearing = evidence.bearing
             )
         }
         return lose(
             disposition = GoalObservationDisposition.ADMITTED,
             semanticState = GoalSemanticState.UNCERTAIN,
-            frame = currentFrame
+            frame = currentFrame,
+            decisionAtNs = decisionAtNs,
+            decisionClockDomain = decisionClockDomain,
+            priorActionOutcome = priorActionOutcome,
+            deficit = evidence.deficit,
+            bearing = evidence.bearing
         )
     }
 
     private fun lose(
         disposition: GoalObservationDisposition,
         semanticState: GoalSemanticState,
-        frame: FrameStamp
+        frame: FrameStamp,
+        decisionAtNs: Long,
+        decisionClockDomain: FrameClockDomain,
+        priorActionOutcome: GoalObservationActionOutcome?,
+        deficit: GoalObservationDeficit = GoalObservationDeficit.NO_LOCALIZABLE_EVIDENCE,
+        bearing: CameraRelativeBearing = CameraRelativeBearing.UNKNOWN
     ): GoalCopilotStep {
         revokeReadiness("CURRENT_TARGET_EVIDENCE_LOST")
         continuityState = if (everBound) GoalContinuityState.LOST else GoalContinuityState.UNBOUND
@@ -308,8 +364,93 @@ class GoalCopilotController(
             semanticState = semanticState,
             action = searchAction(),
             freshSemantic = false,
-            frame = frame
+            frame = frame,
+            decisionAtNs = decisionAtNs,
+            decisionClockDomain = decisionClockDomain,
+            priorActionOutcome = priorActionOutcome,
+            deficit = deficit,
+            bearing = bearing
         )
+    }
+
+    private fun consumeActionOutcome(
+        evidence: GoalObservationEvidence?,
+        disposition: GoalObservationDisposition,
+        currentFrame: FrameStamp,
+        decisionAtNs: Long,
+        decisionClockDomain: FrameClockDomain,
+        execution: GoalObservationActionExecution?
+    ): GoalObservationActionOutcome? {
+        val receipt = pendingActionReceipt ?: return null
+        pendingActionReceipt = null
+        val unknownReason = when {
+            receipt.goalId != goalId || receipt.sessionId != sessionId ||
+                receipt.parentBindingId != parentBindingId -> "ACTION_RECEIPT_IDENTITY_MISMATCH"
+            receipt.clockDomain != decisionClockDomain ||
+                currentFrame.clockDomain != decisionClockDomain -> "ACTION_OUTCOME_CLOCK_MISMATCH"
+            currentFrame.frameId <= receipt.issuedFrame.frameId -> "ACTION_OUTCOME_NOT_AFTER_ACTION"
+            decisionAtNs > receipt.validUntilNs -> "ACTION_OUTCOME_RECEIPT_EXPIRED"
+            execution == null -> "ACTION_EXECUTION_NOT_CONFIRMED"
+            execution.receiptId != receipt.receiptId || execution.action != receipt.action ||
+                execution.goalId != receipt.goalId || execution.sessionId != receipt.sessionId ||
+                execution.parentBindingId != receipt.parentBindingId -> "ACTION_EXECUTION_MISMATCH"
+            execution.clockDomain != receipt.clockDomain -> "ACTION_EXECUTION_CLOCK_MISMATCH"
+            execution.executedAtNs < receipt.issuedAtNs ||
+                execution.executedAtNs > decisionAtNs ||
+                currentFrame.capturedAtNs < execution.executedAtNs -> "ACTION_EXECUTION_TIME_INVALID"
+            evidence == null -> "ACTION_OUTCOME_EVIDENCE_ABSENT"
+            disposition != GoalObservationDisposition.ADMITTED -> "ACTION_OUTCOME_EVIDENCE_NOT_ADMITTED"
+            else -> null
+        }
+        if (unknownReason != null) {
+            return GoalObservationActionOutcome(
+                receipt = receipt,
+                state = GoalObservationActionOutcomeState.UNKNOWN,
+                observedFrameId = currentFrame.frameId,
+                reason = unknownReason
+            )
+        }
+        check(evidence != null)
+        if (evidence.semanticState == GoalSemanticState.AUTHORIZED_ABSENT) {
+            return GoalObservationActionOutcome(
+                receipt = receipt,
+                state = GoalObservationActionOutcomeState.CONTRADICTED,
+                observedFrameId = currentFrame.frameId,
+                reason = "VERIFIED_ABSENCE_AFTER_ACTION"
+            )
+        }
+        val priorRank = semanticRank(receipt.priorSemanticState)
+        val currentRank = semanticRank(evidence.semanticState)
+        val bearingResolved = receipt.priorBearing == CameraRelativeBearing.UNKNOWN &&
+            evidence.bearing != CameraRelativeBearing.UNKNOWN
+        val deficitResolved = receipt.priorDeficit != GoalObservationDeficit.NONE &&
+            evidence.deficit == GoalObservationDeficit.NONE
+        return if (currentRank > priorRank || bearingResolved || deficitResolved) {
+            GoalObservationActionOutcome(
+                receipt = receipt,
+                state = GoalObservationActionOutcomeState.IMPROVED,
+                observedFrameId = currentFrame.frameId,
+                reason = when {
+                    currentRank > priorRank -> "SEMANTIC_EVIDENCE_RANK_INCREASED"
+                    bearingResolved -> "CAMERA_RELATIVE_BEARING_RESOLVED"
+                    else -> "OBSERVATION_DEFICIT_RESOLVED"
+                }
+            )
+        } else {
+            GoalObservationActionOutcome(
+                receipt = receipt,
+                state = GoalObservationActionOutcomeState.NO_GAIN,
+                observedFrameId = currentFrame.frameId,
+                reason = "COMPARABLE_EVIDENCE_DID_NOT_IMPROVE"
+            )
+        }
+    }
+
+    private fun semanticRank(state: GoalSemanticState): Int = when (state) {
+        GoalSemanticState.TARGET -> 2
+        GoalSemanticState.UNCERTAIN -> 1
+        GoalSemanticState.UNKNOWN,
+        GoalSemanticState.AUTHORIZED_ABSENT -> 0
     }
 
     private fun admit(
@@ -412,16 +553,85 @@ class GoalCopilotController(
         action: GoalCopilotAction,
         freshSemantic: Boolean,
         frame: FrameStamp,
-        readiness: GoalHandoffReadinessDecision? = null
-    ) = GoalCopilotStep(
-        observationDisposition = disposition,
-        semanticState = semanticState,
-        continuityState = continuityState,
-        action = action,
-        freshSemanticIdentity = freshSemantic,
-        frameId = frame.frameId,
-        handoffState = handoffState,
-        readinessDecision = readiness
+        readiness: GoalHandoffReadinessDecision? = null,
+        decisionAtNs: Long,
+        decisionClockDomain: FrameClockDomain,
+        priorActionOutcome: GoalObservationActionOutcome?,
+        deficit: GoalObservationDeficit,
+        bearing: CameraRelativeBearing
+    ): GoalCopilotStep {
+        val repairedAction = repairAction(action, priorActionOutcome)
+        val receipt = if (repairedAction.isObservationSeeking()) {
+            GoalObservationActionReceipt(
+                receiptId = "$sessionId:${frame.frameId}:$decisionAtNs:${repairedAction.name}",
+                goalId = goalId,
+                sessionId = sessionId,
+                parentBindingId = parentBindingId,
+                action = repairedAction,
+                issuedFrame = frame,
+                issuedAtNs = decisionAtNs,
+                validUntilNs = decisionAtNs + ACTION_OUTCOME_TTL_NS,
+                clockDomain = decisionClockDomain,
+                priorSemanticState = semanticState,
+                priorDeficit = deficit,
+                priorBearing = bearing
+            )
+        } else {
+            null
+        }
+        pendingActionReceipt = receipt
+        return GoalCopilotStep(
+            observationDisposition = disposition,
+            semanticState = semanticState,
+            continuityState = continuityState,
+            action = repairedAction,
+            freshSemanticIdentity = freshSemantic,
+            frameId = frame.frameId,
+            handoffState = handoffState,
+            readinessDecision = readiness,
+            priorActionOutcome = priorActionOutcome,
+            issuedActionReceipt = receipt
+        )
+    }
+
+    private fun repairAction(
+        proposed: GoalCopilotAction,
+        outcome: GoalObservationActionOutcome?
+    ): GoalCopilotAction {
+        if (outcome == null || outcome.state !in setOf(
+                GoalObservationActionOutcomeState.NO_GAIN,
+                GoalObservationActionOutcomeState.CONTRADICTED
+            )
+        ) return proposed
+        if (outcome.state == GoalObservationActionOutcomeState.CONTRADICTED) {
+            return if (outcome.receipt.action == GoalCopilotAction.SWEEP_SEARCH) {
+                GoalCopilotAction.HOLD_STEADY_LOCALIZE
+            } else {
+                GoalCopilotAction.SWEEP_SEARCH
+            }
+        }
+        if (proposed != outcome.receipt.action) return proposed
+        return when (proposed) {
+            GoalCopilotAction.SCAN_LAST_LEFT,
+            GoalCopilotAction.SCAN_LAST_FORWARD,
+            GoalCopilotAction.SCAN_LAST_RIGHT -> GoalCopilotAction.SWEEP_SEARCH
+            GoalCopilotAction.PAN_LEFT_TO_IDENTITY,
+            GoalCopilotAction.PAN_RIGHT_TO_IDENTITY,
+            GoalCopilotAction.APPROACH_FOR_IDENTITY,
+            GoalCopilotAction.HOLD_STEADY_CONFIRM -> GoalCopilotAction.SIDESTEP_FOR_DISAMBIGUATION
+            GoalCopilotAction.SIDESTEP_FOR_DISAMBIGUATION -> GoalCopilotAction.APPROACH_FOR_IDENTITY
+            GoalCopilotAction.HOLD_STEADY_LOCALIZE,
+            GoalCopilotAction.SWEEP_SEARCH -> GoalCopilotAction.HOLD_STEADY_LOCALIZE
+            GoalCopilotAction.GUIDE_LEFT,
+            GoalCopilotAction.GUIDE_FORWARD,
+            GoalCopilotAction.GUIDE_RIGHT -> proposed
+        }
+    }
+
+    private fun GoalCopilotAction.isObservationSeeking(): Boolean = this !in setOf(
+        GoalCopilotAction.GUIDE_LEFT,
+        GoalCopilotAction.GUIDE_FORWARD,
+        GoalCopilotAction.GUIDE_RIGHT
     )
 
     private fun GoalHandoffState.goalAndSessionOrNull(): Pair<String, String>? = when (this) {
@@ -438,6 +648,7 @@ class GoalCopilotController(
         const val DEFAULT_COAST_LIMIT_FRAMES = 2
         const val REQUIRED_REACQUIRE_HITS = 2
         const val CURRENT_FRAME_ENDPOINT_READY = "CURRENT_FRAME_ENDPOINT_READY"
+        const val ACTION_OUTCOME_TTL_NS = 2_000_000_000L
     }
 }
 
