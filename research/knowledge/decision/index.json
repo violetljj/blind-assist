@@ -2,7 +2,7 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-28",
-  "source_fingerprint": "d84093efc105df3a9646b8047175984f95376f0595067e7d0d649a9bd8e72e2e",
+  "source_fingerprint": "f1c882d61d23a2551463bf78a658519031cb9a0ac734843db16947320e3f4e8e",
   "counts": {
     "failure_layers": 13,
     "mechanisms": 223,
@@ -1402,12 +1402,13 @@
       ],
       "layer_scores": {
         "authority_truth": 3,
-        "evaluation_evidence": 6,
+        "evaluation_evidence": 9,
         "functional_grounding": 20,
-        "geometry_motion": 6,
+        "geometry_motion": 9,
         "handoff_completion": 12,
         "identity_binding": 18,
         "interaction_readiness": 3,
+        "observation_perception": 3,
         "source_coverage": 9
       },
       "routes": [
@@ -1422,15 +1423,20 @@
           "verdict": "positive",
           "project_application": "作为 L10 功能落点候选：先绑定正确实例，再在实例内部定位门把手、按钮、座位接触面等真正执行功能的区域。",
           "expected_effect": "在实例身份正确但功能部件错误的故障上，提高 functional-element 命中率并降低 parent-box false handoff。",
-          "observed_effect": "SC8 task-relational functional binding improved legal commits from 4/6 to 6/6, mean target-set recall from 0.50 to 1.00, and wrong parts from 2 to 0; parent centers were false handoff points in 6/6 evaluable tasks.",
+          "observed_effect": "SC8 proved task-relational selection (4/6 to 6/6 legal, 0.50 to 1.00 recall, 2 to 0 wrong). SC11 then replaced evaluator proposals: multi-view proposal recall reached 10/10 and improved legal tasks 3/6 to 4/6, mean recall 0.50 to 0.8333, and wrong parts 8 to 2 versus single-view.",
           "metrics": [
             "evaluable_tasks=6/10 descriptions; 4 NOT_EVALUABLE_PARENT_BINDING",
             "legal_commit_rate=0.6667 baseline vs 1.0000 SC8",
             "mean_target_set_recall=0.50 baseline vs 1.00 SC8",
             "wrong_part_count=2 baseline vs 0 SC8",
-            "parent_center_false_handoff=6/6; identity_parent_violations=0"
+            "parent_center_false_handoff=6/6; identity_parent_violations=0",
+            "SC8 legal_commit_rate=0.6667 baseline vs 1.0000 selector",
+            "SC11 proposal_recall=0.80 single-view vs 1.00 multi-view",
+            "SC11 legal_commit_rate=0.50 single-view vs 0.6667 multi-view",
+            "SC11 mean_target_set_recall=0.50 single-view vs 0.8333 multi-view",
+            "SC11 wrong_part_count=8 single-view vs 2 multi-view"
           ],
-          "claim_boundary": "The positive result is limited to one SceneFun3D Development scene with evaluator-provided functional-part proposals and ARKit parent boxes. It does not establish RGB proposal generation, phone-camera transfer, open-world coverage, reachability, orientation, arrival, completion, product benefit, user benefit, or safety.",
+          "claim_boundary": "Positive evidence is limited to one opened SceneFun3D Development scene. SC8 used evaluator proposals; SC11 used privileged parent geometry and posed native RGB-D. Neither establishes phone-camera or open-world coverage, reachability, orientation, arrival, completion, product benefit, user benefit, or safety.",
           "evidence": [
             {
               "kind": "external",
@@ -1441,12 +1447,17 @@
               "kind": "artifact",
               "ref": "artifacts.local/evidence/l10-r10/sc8-scenefun3d-functional-binding-v0/result.json",
               "summary": "Proposal-conditional SC8 result, SHA-256 db9068a4d9a01ed6af73ce81853f98ec6210c7e5b80526fdcd68cc2b758c6d7f."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r13/sc11-task-grounded-rgbd-functional-proposer-v0/result.json",
+              "summary": "Truth-blind SC11 proposal-provider result, SHA-256 ec188e8396159b3cc364bd759be7328eb1d458e6082ca219dd98e99af1e9c380."
             }
           ],
           "updated_at": "2026-08-28"
         }
       ],
-      "search_text": "SceneFun3D: Fine-Grained Functionality and Affordance Understanding in 3D Scenes A dataset, toolkit, and benchmark for grounding task-specific functional elements and affordance regions inside 3D scenes. ten-meter-copilot functional-grounding functional-affordance Task-specific functional-element annotations Represents a scene object through the fine-grained part that performs a requested function, rather than treating the parent object bounding box as the action target. 3D scene task description multi-view RGB-D observations functional element mask affordance region Dataset supervision and benchmark performance do not establish zero-shot transfer, phone-camera reliability, exact-instance identity, navigation completion, or user benefit. parent object box functional element 功能部件 父对象框 ten-meter-copilot 作为 L10 功能落点候选：先绑定正确实例，再在实例内部定位门把手、按钮、座位接触面等真正执行功能的区域。 在实例身份正确但功能部件错误的故障上，提高 functional-element 命中率并降低 parent-box false handoff。 SC8 task-relational functional binding improved legal commits from 4/6 to 6/6, mean target-set recall from 0.50 to 1.00, and wrong parts from 2 to 0; parent centers were false handoff points in 6/6 evaluable tasks. evaluable_tasks=6/10 descriptions; 4 NOT_EVALUABLE_PARENT_BINDING legal_commit_rate=0.6667 baseline vs 1.0000 SC8 mean_target_set_recall=0.50 baseline vs 1.00 SC8 wrong_part_count=2 baseline vs 0 SC8 parent_center_false_handoff=6/6; identity_parent_violations=0 The positive result is limited to one SceneFun3D Development scene with evaluator-provided functional-part proposals and ARKit parent boxes. It does not establish RGB proposal generation, phone-camera transfer, open-world coverage, reachability, orientation, arrival, completion, product benefit, user benefit, or safety."
+      "search_text": "SceneFun3D: Fine-Grained Functionality and Affordance Understanding in 3D Scenes A dataset, toolkit, and benchmark for grounding task-specific functional elements and affordance regions inside 3D scenes. ten-meter-copilot functional-grounding functional-affordance Task-specific functional-element annotations Represents a scene object through the fine-grained part that performs a requested function, rather than treating the parent object bounding box as the action target. 3D scene task description multi-view RGB-D observations functional element mask affordance region Dataset supervision and benchmark performance do not establish zero-shot transfer, phone-camera reliability, exact-instance identity, navigation completion, or user benefit. parent object box functional element 功能部件 父对象框 ten-meter-copilot 作为 L10 功能落点候选：先绑定正确实例，再在实例内部定位门把手、按钮、座位接触面等真正执行功能的区域。 在实例身份正确但功能部件错误的故障上，提高 functional-element 命中率并降低 parent-box false handoff。 SC8 proved task-relational selection (4/6 to 6/6 legal, 0.50 to 1.00 recall, 2 to 0 wrong). SC11 then replaced evaluator proposals: multi-view proposal recall reached 10/10 and improved legal tasks 3/6 to 4/6, mean recall 0.50 to 0.8333, and wrong parts 8 to 2 versus single-view. evaluable_tasks=6/10 descriptions; 4 NOT_EVALUABLE_PARENT_BINDING legal_commit_rate=0.6667 baseline vs 1.0000 SC8 mean_target_set_recall=0.50 baseline vs 1.00 SC8 wrong_part_count=2 baseline vs 0 SC8 parent_center_false_handoff=6/6; identity_parent_violations=0 SC8 legal_commit_rate=0.6667 baseline vs 1.0000 selector SC11 proposal_recall=0.80 single-view vs 1.00 multi-view SC11 legal_commit_rate=0.50 single-view vs 0.6667 multi-view SC11 mean_target_set_recall=0.50 single-view vs 0.8333 multi-view SC11 wrong_part_count=8 single-view vs 2 multi-view Positive evidence is limited to one opened SceneFun3D Development scene. SC8 used evaluator proposals; SC11 used privileged parent geometry and posed native RGB-D. Neither establishes phone-camera or open-world coverage, reachability, orientation, arrival, completion, product benefit, user benefit, or safety."
     },
     {
       "id": "dataset-spring-robustspring#dtr-dr28",
@@ -4706,11 +4717,12 @@
         "多视角功能部件"
       ],
       "layer_scores": {
-        "evaluation_evidence": 9,
+        "evaluation_evidence": 6,
         "functional_grounding": 20,
-        "geometry_motion": 3,
+        "geometry_motion": 9,
         "handoff_completion": 6,
         "identity_binding": 6,
+        "interaction_readiness": 3,
         "observation_perception": 6,
         "runtime_infrastructure": 3,
         "source_coverage": 6,
@@ -4723,25 +4735,36 @@
         {
           "id": "use-ten-meter-copilot-fun3du-2025",
           "route": "ten-meter-copilot",
-          "use_state": "candidate",
-          "reproduction_status": "not_attempted",
-          "verdict": "not_run",
+          "use_state": "active",
+          "reproduction_status": "partial",
+          "verdict": "positive",
           "project_application": "用于检验 L10 是否能在已锁定实例内稳定定位功能部件，而不是继续扩大类别或候选搜索。",
           "expected_effect": "跨视角保留同一功能部件，并减少单视图遮挡导致的错误功能落点。",
-          "observed_effect": "",
-          "metrics": [],
-          "claim_boundary": "原作在其 3D 数据与协议上的结果不等于 BlindAssist 手机视频复现；成功也只支持命名 cohort 的功能部件定位，不支持 arrival、completion、产品或安全结论。",
+          "observed_effect": "SC11 multi-view aggregation improved functional-proposal recall from 8/10 to 10/10, legal task commits from 3/6 to 4/6, mean target-set recall from 0.50 to 0.8333, and wrong parts from 8 to 2; proposal precision was 0.8462.",
+          "metrics": [
+            "proposal_recall=0.80 single-view vs 1.00 multi-view",
+            "proposal_precision=0.9444 single-view vs 0.8462 multi-view",
+            "legal_commit_rate=0.50 single-view vs 0.6667 multi-view",
+            "mean_target_set_recall=0.50 single-view vs 0.8333 multi-view",
+            "wrong_part_count=8 single-view vs 2 multi-view"
+          ],
+          "claim_boundary": "Narrow one-scene privileged-parent posed-RGB-D Development evidence only. It does not establish open-vocabulary or phone-camera coverage, exact-instance acquisition, reachability, orientation, arrival, completion, product benefit, user benefit, or safety.",
           "evidence": [
             {
               "kind": "external",
               "ref": "https://github.com/tev-fbk/fun3du",
               "summary": "Primary source reviewed for mechanism and evidence boundary; no BlindAssist reproduction is implied."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r13/sc11-task-grounded-rgbd-functional-proposer-v0/result.json",
+              "summary": "SC11 result, SHA-256 ec188e8396159b3cc364bd759be7328eb1d458e6082ca219dd98e99af1e9c380."
             }
           ],
           "updated_at": "2026-08-28"
         }
       ],
-      "search_text": "Fun3DU: Functionality Understanding and Segmentation in 3D Scenes A training-free pipeline that uses language guidance, context-object localization, functional-part segmentation, and multi-view agreement for 3D functionality grounding. ten-meter-copilot functional-grounding multiview Task-conditioned multi-view functional grounding Uses an LLM to identify the relevant context object, segments the functional part in selected views, and consolidates evidence through multi-view agreement. task description posed RGB-D views 3D scene 3D functional-part segmentation Requires suitable views and geometry; published benchmark results do not prove robustness to handheld egocentric video, exact-instance ambiguity, or real-time deployment. multiview functional part wrong functional part 多视角功能部件 ten-meter-copilot 用于检验 L10 是否能在已锁定实例内稳定定位功能部件，而不是继续扩大类别或候选搜索。 跨视角保留同一功能部件，并减少单视图遮挡导致的错误功能落点。 原作在其 3D 数据与协议上的结果不等于 BlindAssist 手机视频复现；成功也只支持命名 cohort 的功能部件定位，不支持 arrival、completion、产品或安全结论。"
+      "search_text": "Fun3DU: Functionality Understanding and Segmentation in 3D Scenes A training-free pipeline that uses language guidance, context-object localization, functional-part segmentation, and multi-view agreement for 3D functionality grounding. ten-meter-copilot functional-grounding multiview Task-conditioned multi-view functional grounding Uses an LLM to identify the relevant context object, segments the functional part in selected views, and consolidates evidence through multi-view agreement. task description posed RGB-D views 3D scene 3D functional-part segmentation Requires suitable views and geometry; published benchmark results do not prove robustness to handheld egocentric video, exact-instance ambiguity, or real-time deployment. multiview functional part wrong functional part 多视角功能部件 ten-meter-copilot 用于检验 L10 是否能在已锁定实例内稳定定位功能部件，而不是继续扩大类别或候选搜索。 跨视角保留同一功能部件，并减少单视图遮挡导致的错误功能落点。 SC11 multi-view aggregation improved functional-proposal recall from 8/10 to 10/10, legal task commits from 3/6 to 4/6, mean target-set recall from 0.50 to 0.8333, and wrong parts from 8 to 2; proposal precision was 0.8462. proposal_recall=0.80 single-view vs 1.00 multi-view proposal_precision=0.9444 single-view vs 0.8462 multi-view legal_commit_rate=0.50 single-view vs 0.6667 multi-view mean_target_set_recall=0.50 single-view vs 0.8333 multi-view wrong_part_count=8 single-view vs 2 multi-view Narrow one-scene privileged-parent posed-RGB-D Development evidence only. It does not establish open-vocabulary or phone-camera coverage, exact-instance acquisition, reachability, orientation, arrival, completion, product benefit, user benefit, or safety."
     },
     {
       "id": "paper-fundamental-limits-for-sensor-based-robot-control#taro-t08",

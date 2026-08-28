@@ -17,16 +17,21 @@
   "evaluation": {
     "reproduction_status": "partial",
     "verdict": "positive",
-    "setup": "One SceneFun3D v1 train scene (visit 420683, video 42445137); ARKit OBB parent binding; GT functional masks used only as unlabeled proposals and evaluator truth; public task text drives the selector.",
-    "effect": "SC8 task-relational functional binding improved legal commits from 4/6 to 6/6, mean target-set recall from 0.50 to 1.00, and wrong parts from 2 to 0; parent centers were false handoff points in 6/6 evaluable tasks.",
+    "setup": "SC8 and SC11 on one SceneFun3D Development scene (visit 420683, video 42445137): ARKit parent binding; SC8 evaluator masks as unlabeled proposals; SC11 truth-blind task-grounded RGB-D proposals sealed before evaluator truth.",
+    "effect": "SC8 proved task-relational selection (4/6 to 6/6 legal, 0.50 to 1.00 recall, 2 to 0 wrong). SC11 then replaced evaluator proposals: multi-view proposal recall reached 10/10 and improved legal tasks 3/6 to 4/6, mean recall 0.50 to 0.8333, and wrong parts 8 to 2 versus single-view.",
     "metrics": [
       "evaluable_tasks=6/10 descriptions; 4 NOT_EVALUABLE_PARENT_BINDING",
       "legal_commit_rate=0.6667 baseline vs 1.0000 SC8",
       "mean_target_set_recall=0.50 baseline vs 1.00 SC8",
       "wrong_part_count=2 baseline vs 0 SC8",
-      "parent_center_false_handoff=6/6; identity_parent_violations=0"
+      "parent_center_false_handoff=6/6; identity_parent_violations=0",
+      "SC8 legal_commit_rate=0.6667 baseline vs 1.0000 selector",
+      "SC11 proposal_recall=0.80 single-view vs 1.00 multi-view",
+      "SC11 legal_commit_rate=0.50 single-view vs 0.6667 multi-view",
+      "SC11 mean_target_set_recall=0.50 single-view vs 0.8333 multi-view",
+      "SC11 wrong_part_count=8 single-view vs 2 multi-view"
     ],
-    "claim_boundary": "The positive result is limited to one SceneFun3D Development scene with evaluator-provided functional-part proposals and ARKit parent boxes. It does not establish RGB proposal generation, phone-camera transfer, open-world coverage, reachability, orientation, arrival, completion, product benefit, user benefit, or safety."
+    "claim_boundary": "Positive evidence is limited to one opened SceneFun3D Development scene. SC8 used evaluator proposals; SC11 used privileged parent geometry and posed native RGB-D. Neither establishes phone-camera or open-world coverage, reachability, orientation, arrival, completion, product benefit, user benefit, or safety."
   },
   "evidence": [
     {
@@ -38,6 +43,11 @@
       "kind": "artifact",
       "ref": "artifacts.local/evidence/l10-r10/sc8-scenefun3d-functional-binding-v0/result.json",
       "summary": "Proposal-conditional SC8 result, SHA-256 db9068a4d9a01ed6af73ce81853f98ec6210c7e5b80526fdcd68cc2b758c6d7f."
+    },
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/evidence/l10-r13/sc11-task-grounded-rgbd-functional-proposer-v0/result.json",
+      "summary": "Truth-blind SC11 proposal-provider result, SHA-256 ec188e8396159b3cc364bd759be7328eb1d458e6082ca219dd98e99af1e9c380."
     }
   ],
   "history": [
@@ -52,6 +62,10 @@
     {
       "date": "2026-08-28",
       "change": "Tightened the claim boundary after the SC8 result so the partial proposal-conditional reproduction is not described as unexecuted or promoted to downstream capability."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Appended the SC11 real RGB-D proposal-source result while preserving SC8 as proposal-conditional selection evidence and keeping four parent-binding cases NOT_EVALUABLE."
     }
   ],
   "added_at": "2026-08-28",

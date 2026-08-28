@@ -1,6 +1,6 @@
 # Current decisions: L10-R0 active; Dynamic Travel Risk R2 established
 
-Status: `L10_R0_ACTIVE / SC8_TASK_RELATIONAL_FUNCTIONAL_BINDING_DEVELOPMENT_SIGNAL` and
+Status: `L10_R0_ACTIVE / SC11_TASK_GROUNDED_RGBD_MULTIVIEW_FUNCTIONAL_PROPOSAL_DEVELOPMENT_SIGNAL` and
 `DTR_R2_PUBLIC_REAL_PRIVILEGED_CEILINGS_ESTABLISHED /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
@@ -18,22 +18,33 @@ completion, 82.4% reacquisition, 91.9% direction accuracy, 1.8% wrong-lock
 frames, and another `0/50` false completions. These remain controller/mechanics
 results, not real-camera or product evidence.
 
-The current L10 increment is SC8 functional grounding. On one SceneFun3D
-Development scene, six task descriptions had evaluator-authoritative functional
-parts inside one ARKit parent instance. Parent-center nearest-part selection was
-legal on `4/6` tasks with 50% mean target-set recall and two wrong parts. The
-task-relational selector used only the public task text, opaque parent binding,
-and unlabeled proposal geometry; it reached `6/6`, 100%, and zero respectively,
-with zero cross-parent identity violations. Four other descriptions remain
-`NOT_EVALUABLE_PARENT_BINDING` rather than negative.
+SC8 established the proposal-conditional `exact instance -> task functional
+part set` selector. SC9, SC9T, and SC10 then removed evaluator masks from the
+proposal source. Generic-handle RGB, ray-triangulated RGB, and generic-handle
+native-depth routes all failed the frozen source gate; their best proposal
+recall was 50% and their best legal-task result was `2/6`. These are consumed
+mechanism negatives, not invitations to tune thresholds, clustering, or the
+opened cohort.
 
-Accept `SC8_TASK_RELATIONAL_FUNCTIONAL_BINDING_DEVELOPMENT_SIGNAL` as evidence
-that a hierarchical `exact instance -> task functional part set` representation
-can remove this named parent-box failure. Do not promote it to RGB part
-generation, reachability, orientation, approach, arrival, completion, product,
-user-benefit, or safety evidence. The next L10 algorithm source is a
-task-conditioned multi-view RGB/RGB-D part proposer behind the frozen SC8
-interface; do not restore parent-box center or visual scale as completion truth.
+The current increment is SC11. On the same SceneFun3D Development scene, a
+truth-blind task-grounded Grounding DINO provider plus native depth, authorized
+parent geometry, and frozen multi-view consensus raised functional-proposal
+recall from `8/10` single-view to `10/10`, while precision remained `84.62%`.
+Across the six evaluable task descriptions, legal commits improved from `3/6`
+to `4/6`, mean target-set recall from 50% to 83.33%, and wrong parts fell from
+eight to two. Four descriptions remain `NOT_EVALUABLE_PARENT_BINDING`; two
+evaluable tasks still contain a wrong in-parent functional cluster.
+
+Accept
+`SC11_TASK_GROUNDED_RGBD_MULTIVIEW_FUNCTIONAL_PROPOSAL_DEVELOPMENT_SIGNAL` as
+evidence that task-conditioned semantics plus metric multi-view consistency can
+replace privileged functional masks at this narrow source layer. Do not promote
+it to open-vocabulary or phone-camera coverage, exact-instance acquisition,
+reachability, orientation, approach, arrival, completion, product, user-benefit,
+or safety evidence. The next L10 source must add independently motivated
+candidate-integrity or action geometry on separately versioned evidence; do not
+rescue the two opened failures by detector, prompt, DBSCAN, seed, or fusion
+sweeps, and do not restore parent-box center or visual scale as completion truth.
 
 ## DTR-R2 decision
 

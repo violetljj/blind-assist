@@ -1,6 +1,6 @@
 # L10-R0 Goal-Lock Copilot
 
-Status: `ACTIVE / L10-SC8 INSTANCE-BOUND TASK-RELATIONAL FUNCTIONAL PARTS`
+Status: `ACTIVE / L10-SC11 TASK-GROUNDED RGB-D MULTI-VIEW FUNCTIONAL PARTS`
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -447,6 +447,70 @@ frozen binding interface; parent-box or box-scale completion must not return.
 Implementation: `scenefun3d_functional_handoff_ceiling.py`. Evidence:
 `artifacts.local/evidence/l10-r10/sc8-scenefun3d-functional-binding-v0/result.json`,
 SHA-256 `db9068a4d9a01ed6af73ce81853f98ec6210c7e5b80526fdcd68cc2b758c6d7f`.
+
+## L10-SC9--SC11: make the functional proposals observable
+
+SC9 starts where SC8 deliberately stopped: the frozen task-relational selector
+no longer receives evaluator masks as proposals. The provider sees posed RGB or
+RGB-D observations, the authorized ARKit parent box, and—only in SC11—the public
+task concept. Functional annotations and description-to-part IDs are loaded
+only after the provider artifact is sealed. All four variants ran on the same
+opened SceneFun3D Development scene, so the sequence is a mechanism/source
+audit, not a parameter search or an independent confirmation cohort.
+
+The three generic-handle routes did not cross the frozen proposal gate:
+
+| Source | proposal recall | proposal precision | legal task commit | mean task recall | wrong parts |
+|---|---:|---:|---:|---:|---:|
+| SC9 RGB + parent surface | 50.0% | 55.56% | 2/6 | 33.33% | 6 |
+| SC9T RGB + ray triangulation | 40.0% | 44.44% | 1/6 | 16.67% | 8 |
+| SC10 generic RGB + native depth | 50.0% | 50.0% | 1/6 | 16.67% | 6 |
+
+Ray triangulation changed the 3D representation but regressed, while native
+depth removed the ray-depth ambiguity without removing generic detector false
+handles. These consumed negatives are retained; detector thresholds, DBSCAN,
+seeds, fusion weights, and the opened cohort must not be swept to rescue them.
+
+SC11 changes the missing information source. A task-grounded Grounding DINO
+provider proposes `drawer handle`/`cabinet knob` regions, native ARKit depth
+back-projects them, parent geometry rejects cross-instance observations, and
+the frozen multi-view consensus supplies functional candidates to SC8. The
+proposal provider remains evaluator-truth blind.
+
+| Arm | proposal recall | proposal precision | legal task commit | mean task recall | wrong parts |
+|---|---:|---:|---:|---:|---:|
+| single-view grounded RGB-D | 8/10 (80.0%) | 94.44% | 3/6 (50.0%) | 50.0% | 8 |
+| **multi-view grounded RGB-D** | **10/10 (100%)** | **84.62%** | **4/6 (66.67%)** | **83.33%** | **2** |
+
+This crosses the frozen source gate: multi-view aggregation increases task
+legal commits and target-set recall while reducing wrong parts, yielding
+`SC11_TASK_GROUNDED_RGBD_MULTIVIEW_FUNCTIONAL_PROPOSAL_DEVELOPMENT_SIGNAL`.
+Execution used an NVIDIA GeForce RTX 5060 Laptop GPU (`cuda:0`), 248 sampled
+frames, and 3.12 GB recorded peak CUDA memory. Two of six evaluable tasks still
+fail because a wrong functional cluster survives inside the correct parent;
+four other descriptions remain `NOT_EVALUABLE_PARENT_BINDING`.
+
+SC11 is narrow, privileged-parent, posed-RGB-D Development evidence. It does
+not establish open-vocabulary or phone-camera coverage, exact-instance
+acquisition, reachability, orientation, approach pose, arrival, completion,
+product benefit, user benefit, or safety. A successor must add a genuinely new
+candidate-integrity or action-geometry source on separately versioned evidence;
+it must not tune this opened result.
+
+Implementations: `scenefun3d_multiview_functional_proposer.py`,
+`scenefun3d_depth_functional_proposer.py`, and
+`scenefun3d_grounded_depth_functional_proposer.py`. Evidence:
+
+- SC9: `artifacts.local/evidence/l10-r11/sc9-multiview-functional-proposer-v0/result.json`,
+  SHA-256 `ebb57ab5acb8e746f142ae4c87bd431607eaeac3e03da0cd8bceade535b578ee`.
+- SC9T: `artifacts.local/evidence/l10-r11/sc9t-multiview-ray-functional-proposer-v1/result.json`,
+  SHA-256 `298df0805d383ee0229b1a68ec37523e7d1a8895da837a4dba0587feaa269099`.
+- SC10: `artifacts.local/evidence/l10-r12/sc10-native-depth-functional-proposer-v0/result.json`,
+  SHA-256 `3bcc5fac308eeedde023c1f26329d46cd2452bc9af6a2e2fd5e74a8fd6676ea6`.
+- SC11 provider: `artifacts.local/evidence/l10-r13/sc11-task-grounded-rgbd-functional-proposer-v0/provider.json`,
+  SHA-256 `bc8e7f509cf2ebc1538127fe3dcdf59663292145c7c042c8ed81303f118a0d0b`.
+- SC11 result: `artifacts.local/evidence/l10-r13/sc11-task-grounded-rgbd-functional-proposer-v0/result.json`,
+  SHA-256 `ec188e8396159b3cc364bd759be7328eb1d458e6082ca219dd98e99af1e9c380`.
 
 ## Public text-source admission
 

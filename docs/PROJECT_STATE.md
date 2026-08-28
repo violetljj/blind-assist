@@ -154,6 +154,28 @@ This is proposal-conditional selection evidence. It does not establish RGB
 functional-part proposal generation, reachability, orientation, approach pose,
 arrival, completion, product benefit, user benefit, or safety.
 
+SC9--SC11 then exercised real proposal generation behind the frozen SC8 seam on
+the same opened scene. Generic-handle RGB with parent-surface lifting (SC9), RGB
+ray triangulation (SC9T), and generic-handle RGB plus native depth (SC10) all
+missed the source gate: proposal recall was at most 50%, and legal task commits
+were at most `2/6`. Those routes are preserved negatives and are not eligible
+for threshold, clustering, seed, or fusion rescue on this cohort.
+
+SC11 changed the information source to task-grounded Grounding DINO regions,
+then used native ARKit depth, the authorized parent box, and multi-view
+consensus. Relative to its single-view arm, proposal recall improved from `8/10`
+to `10/10`, legal task commits from `3/6` to `4/6`, mean target-set recall from
+50% to 83.33%, and wrong parts from eight to two; proposal precision was 84.62%.
+The provider was sealed before evaluator functional truth was loaded, and the
+run executed on CUDA. Decision:
+`SC11_TASK_GROUNDED_RGBD_MULTIVIEW_FUNCTIONAL_PROPOSAL_DEVELOPMENT_SIGNAL`.
+
+This is one-scene, privileged-parent, posed-RGB-D Development evidence. Four
+descriptions remain `NOT_EVALUABLE_PARENT_BINDING`, and two of six evaluable
+tasks still fail because a wrong cluster survives inside the correct parent.
+It is not open-vocabulary, phone-camera, reachability, orientation, arrival,
+completion, product, user-benefit, or safety evidence.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its
