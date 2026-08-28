@@ -12,6 +12,8 @@ DTR_C0_GLOBAL_ORIENTED_RISK_CONTRACT_NOT_EVALUABLE_ALWAYS_CONTACT_WINDOW /
 DTR_C1_FRESH_GLOBAL_OBB_COHORT_ADMITTED_METADATA_ONLY /
 DTR_C2_M1_CTB_CONFIDENCE_TRACK_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL /
 DTR_C3_M1_HYBRID_RAW_POINT_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL /
+DTR_C4_M1_CT_DETECTOR_INDEPENDENT_GLOBAL_RISK_DEVELOPMENT_SIGNAL /
+DTR_C5_CROSS_ESTIMATOR_CONSENSUS_DEVELOPMENT_NO_GAIN /
 R4_NOT_OPENED`
 
 ## Result first
@@ -594,6 +596,89 @@ Evidence:
   `499367d4f059bbe063d7beefd55b3ec6e2ebd3bafce425cc53eb87320c7af5d8`;
 - seven per-sequence raw-point manifests and backend receipts under
   `artifacts.local/evidence/dtr-c3/raw-point-direct-velocity-canary/ledgers/`.
+
+## DTR-C4 detector-independent global route risk
+
+C4 removes the remaining scorer-side current-box attribution. Before the C1
+roster or native OBB archive is opened, every cell in each sealed truth-blind
+motion ledger is queried directly against the unchanged route tube and passed
+through the unchanged ONSET/HOLD/ESCALATE/CLEAR lifecycle. The resulting global
+alert timeline is written and hash sealed; only then does the evaluator open
+future OBB truth. This changes the risk representation, not a route threshold.
+
+The mechanism follows the same architectural separation seen in
+[Drive-OccWorld](https://ojs.aaai.org/index.php/AAAI/article/download/33010/35165),
+where future occupancy/flow is conditioned on ego action and queried by an
+occupancy cost, and in
+[PORA](https://arxiv.org/html/2501.16480), where a planned path is evaluated
+against spatiotemporal probabilistic occupancy. C4 is deliberately smaller: it
+tests current causal direct velocity plus continuous route-entry geometry, not a
+learned or multimodal future forecaster.
+
+| Detector-independent arm | CONTACT recall | False segments | False / non-CONTACT min | Event F1 | Median lead |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| R7-P global naive dense flow | **`21/21`** | 149 | 21.82 | 21.99% | **2.91 s** |
+| **M1-CT global confidence motion** | `17/21` | **34** | **4.98** | **47.22%** | 0.46 s |
+| M1-PD global raw-point velocity | **`21/21`** | 121 | 17.72 | 25.77% | 2.53 s |
+| M1-PDC global confident raw-point velocity | `20/21` | 68 | 9.96 | 36.70% | 1.87 s |
+
+This is the first target/detector-independent global-risk signal in DTR. M1-CT
+keeps 17 of 21 bounded CONTACT events with only 34 false segments and 47.22% F1.
+That is close to the privileged current-box M1-CT ceiling (`20/21`, 38 false,
+50.63% F1) while removing target identity and current native boxes from the
+prediction path. The price is material: four events are missed and several
+matched intervals begin after physical contact, so this arm is not ready to
+replace M1-HYBRID. M1-PDC recovers three of those events but doubles false
+segments; opening it globally is not the answer.
+
+Decision:
+`DTR_C4_M1_CT_DETECTOR_INDEPENDENT_GLOBAL_RISK_DEVELOPMENT_SIGNAL`. The same
+seven C1 sequences were already opened by C2/C3, so this is Development evidence,
+not a fresh confirmation. Do not tune route, confidence, or lifecycle on this
+cohort. The next representation change is a wearer-global causal occupancy
+belief that advects high-confidence motion anchors through short observation
+gaps and exposes calibrated occupancy uncertainty to route-risk.
+
+Evidence:
+
+- `artifacts.local/evidence/dtr-c4/detector-independent-global-risk/predictions.json`,
+  SHA-256
+  `9914ffb202417527dc856c8db1433b832a2da477fe3aa0db47a24e022a38b560`;
+- `artifacts.local/evidence/dtr-c4/detector-independent-global-risk/result.json`,
+  SHA-256
+  `dda143125dc484f22b55ae68dd26247ce1883cfea066d4047bec2c0d941480b9`.
+
+## DTR-C5 cross-estimator consensus ablation
+
+C5 tested one narrow explanation for the C4 misses. M1-PDC could add a global
+route-entry cell only when a current M1-CT cell independently agreed in position
+and velocity at the already frozen M1 half-confidence boundary. This was not a
+threshold sweep: the position and velocity radii were derived directly from
+the existing Gaussian confidence scales.
+
+The result was negative: C5 remained at `17/21` recall, increased false segments
+`34 -> 39`, and reduced F1 `47.22% -> 44.16%`. It improved median matched lead
+`0.46 -> 0.81 s` but recovered none of the four missed events. Same-frame source
+agreement therefore does not supply the missing information. This agrees with
+[SeFlow](https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/00143.pdf),
+which motivates explicit dynamic/static separation and object/cluster motion
+consistency, and with
+[ICP-Flow](https://openaccess.thecvf.com/content/CVPR2024/html/Lin_ICP-Flow_LiDAR_Scene_Flow_Estimation_with_ICP_CVPR_2024_paper.html),
+which uses locally rigid temporal association rather than isolated point
+agreement.
+
+The required backend probe selected SciPy CPU because its measured median was
+0.156 ms versus 2.022 ms for Torch CUDA on this tiny batched match; the receipt
+records `CPU_FASTER_MEASURED` and the observed RTX 5060 CUDA device. C5 is closed
+as `DTR_C5_CROSS_ESTIMATOR_CONSENSUS_DEVELOPMENT_NO_GAIN`; do not iterate its
+matching radii on the consumed cohort.
+
+Evidence:
+
+- `artifacts.local/evidence/dtr-c5/cross-estimator-consensus/backend.json`;
+- `artifacts.local/evidence/dtr-c5/cross-estimator-consensus/result.json`,
+  SHA-256
+  `ede3ca21c725d8f935b7cefa4043ed3a9c27c33afafe611b2f03d64c380fdfa2`.
 
 The source split explains why pooling is not enough:
 
