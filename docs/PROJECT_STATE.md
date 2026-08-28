@@ -298,10 +298,20 @@ reached 99.52%, and ambiguous-context approach fell 100% -> 0. This validates
 the online learning mechanics only. Real promotion still requires live phone
 actions producing the same confirmed receipts without relaxing safety sets.
 
+With device/demo integration paused, SC20 moves to the endpoint algorithm
+instead. On the consumed SceneFun3D 420683 posed RGB-D trajectory, replacing a
+centered-large-parent proxy with a factorized task-functional endpoint observer
+reduced false ready frames `300 -> 1`, increased precision `30.07% -> 99.17%`,
+and increased F1 `0.420 -> 0.784`. It retained true-ready coverage on only five
+of six tasks versus six of six for the proxy, so the frozen gate remains not
+met. Reachability is absent and explicitly `UNKNOWN`; no `HANDOFF_READY`, real
+arrival, product, user-benefit, or safety claim follows.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its
-device evidence and DTR-R0 research evidence must be reported separately.
+device evidence and DTR-R0 research evidence must be reported separately. It is
+not the current work priority and receives no new integration in SC20.
 
 ## Boundaries
 

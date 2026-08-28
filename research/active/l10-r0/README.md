@@ -412,6 +412,53 @@ Implementation: `GoalActionUtilityPolicy.kt`; controlled evaluator:
 - SC19 result: `artifacts.local/research/l10-r0/sc19/action_utility_result.json`,
   SHA-256 `499aa8411eacc9711000eec4cde6ad94897ec18272362f918139edc3e264de62`.
 
+### SC20: factorized functional endpoint observer
+
+SC20 pauses device/demo integration and attacks a different missing algorithm
+layer: rejecting false arrival. It reuses the consumed SceneFun3D 420683 ARKit
+trajectory and SC11's frozen task-functional candidate sets, then compares the
+old centered-large-parent proxy with an explicit join of horizontal stand-off,
+depth-consistent functional-point visibility, camera orientation, and upstream
+grounding support. Reachability has no authority in this source and is fixed to
+`UNKNOWN`; therefore neither arm may emit `HANDOFF_READY`.
+
+Across six tasks, 901 real posed RGB-D frames, 5,406 task-frames, and 185
+evaluator observation-ready frames:
+
+| Metric | centered-large parent proxy | factorized functional endpoint |
+|---|---:|---:|
+| ready frames | 429 | 121 |
+| true / false ready | 129 / 300 | **120 / 1** |
+| precision | 30.07% | **99.17%** |
+| recall | **69.73%** | 64.86% |
+| F1 | 0.420 | **0.784** |
+| tasks with at least one true-ready frame | **6/6** | 5/6 |
+
+The result is formally
+`SC20_FACTORIZED_ENDPOINT_GATE_NOT_MET`: the frozen gate required no loss of
+task coverage. The missing under-bed drawer task had 35 evaluator-ready frames,
+but no factorized output jointly satisfied stand-off and visibility; at valid
+stand-off, no more than one of its three selected SC11 points was depth-visible.
+This localizes the next problem to candidate integrity/visibility rather than
+justifying threshold repair. The 300 -> 1 false-ready reduction is a strong
+mechanism effect, but it does not override the failed coverage gate.
+
+Implementation: `scenefun3d_factorized_endpoint_observer.py`. Evidence:
+
+- SC20 provider:
+  `artifacts.local/evidence/l10-r19/sc20-factorized-endpoint-420683-v0/provider.json`,
+  SHA-256 `fe1ab068991e1f70881c33c96eec76477975ca2cb0021ae0ce87380b7498ec5c`.
+- SC20 result:
+  `artifacts.local/evidence/l10-r19/sc20-factorized-endpoint-420683-v0/result.json`,
+  SHA-256 `95a5a36b6cb0074689b0b98c14d9e3d4e2ec38c0e8ee6bfc7bee203aaf2f3188`.
+
+This is a Development diagnostic on an already-consumed path with privileged
+parent bindings, not a fresh confirmation or controller-executed trajectory.
+Do not sweep endpoint thresholds on 420683. The next endpoint successor must
+change the information source: separately versioned functional candidate
+integrity, or independent free-space and human-reachability evidence. Explicit
+user confirmation remains the only completion authority.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

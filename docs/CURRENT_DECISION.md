@@ -5,7 +5,8 @@ SC14_CORE_CAUSAL_ACTION_HANDOFF_GUARD_IMPLEMENTED /
 L10_CORE_SEEK_GUIDE_REACQUIRE_CONTROLLER_IMPLEMENTED /
 SC15_SC16_SC17_ACTIVE_VIEW_PROXY_ROUTES_CLOSED /
 SC18_CAUSAL_ACTION_OUTCOME_REPAIR_MECHANICS_SIGNAL /
-SC19_DEFICIT_CONDITIONED_ACTION_UTILITY_MECHANICS_SIGNAL` and
+SC19_DEFICIT_CONDITIONED_ACTION_UTILITY_MECHANICS_SIGNAL /
+SC20_FACTORIZED_ENDPOINT_FALSE_READY_SUPPRESSION_GATE_NOT_MET` and
 `DTR_R2_PUBLIC_REAL_PRIVILEGED_CEILINGS_ESTABLISHED /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
@@ -155,6 +156,28 @@ metric size cannot be transferred to natural video or users. The next evidence
 source is live execution-confirmed action receipts under unchanged safety
 candidate sets; do not tune SC19's consumed contexts, probabilities, seed, or
 exploration coefficient.
+
+Device/demo integration is intentionally paused. SC20 instead opens the
+factorized endpoint layer on the already-consumed SceneFun3D 420683 trajectory.
+Across six tasks, 901 real posed RGB-D frames, and 5,406 task-frames, the
+evaluator contained 185 observation-ready task-frames. A centered-large-parent
+proxy emitted 429 ready frames, of which 300 were false (30.07% precision,
+69.73% recall, F1 0.420). The task-functional observer joins horizontal
+stand-off, depth-consistent visibility, camera orientation, and the existing
+SC11 grounding support; it emitted 121 frames, of which 120 were true and one
+was false (99.17% precision, 64.86% recall, F1 0.784).
+
+The frozen Development gate is nevertheless not met because true-ready task
+coverage fell from `6/6` to `5/6`. The missing under-bed drawer task had 35
+evaluator-ready frames, but no predicted frame jointly satisfied position and
+visibility; at eligible stand-off, at most one of its three selected functional
+points was depth-visible. Read this as strong false-arrival suppression plus a
+localized upstream candidate-integrity/visibility deficit, not endpoint
+completion. Do not tune standoff, visibility, orientation, or parent-proxy
+thresholds on this consumed scene. Reachability remains `UNKNOWN`, so SC20
+cannot emit `HANDOFF_READY`; the next eligible endpoint source must add
+candidate integrity on separately versioned evidence or independent free-space
+and human-reachability authority.
 
 ## DTR-R2 decision
 
