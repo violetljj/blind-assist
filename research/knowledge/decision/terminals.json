@@ -75,6 +75,18 @@
       "commit": "376b35eb"
     },
     {
+      "id": "terminal-l10-sc11-task-grounded-rgbd-multiview-functional-proposal",
+      "route": "ten-meter-copilot",
+      "failure_layers": ["functional_grounding", "observation_perception", "geometry_motion", "evaluation_evidence"],
+      "status": "positive",
+      "decision": "SC11_TASK_GROUNDED_RGBD_MULTIVIEW_FUNCTIONAL_PROPOSAL_DEVELOPMENT_SIGNAL",
+      "summary": "On one opened SceneFun3D Development scene, truth-blind task-grounded RGB-D proposals plus multi-view consensus raised proposal recall from 8/10 to 10/10, legal task commits from 3/6 to 4/6, mean target-set recall from 50% to 83.33%, and reduced wrong parts from 8 to 2 versus the single-view arm.",
+      "successor_requires": "A genuinely new candidate-integrity or action-geometry source on separately versioned evidence; the remaining two in-parent false clusters cannot be rescued by tuning the opened cohort.",
+      "forbidden_repeats": ["detector or prompt threshold sweeps on visit 420683", "DBSCAN, seed, or fusion sweeps on the opened cohort", "reopening SC9, SC9T, or SC10 with another generic handle detector", "promoting privileged parent RGB-D evidence to phone, open-world, arrival, completion, product, user, or safety claims"],
+      "evidence": ["docs/CURRENT_DECISION.md", "docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
+      "commit": "bdef3a0f"
+    },
+    {
       "id": "terminal-grail-g1-active-multiview-appearance-closed",
       "route": "goal-copilot-p0",
       "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],
