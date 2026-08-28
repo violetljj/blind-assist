@@ -534,6 +534,83 @@ integrity opportunities. Reachability is still `UNKNOWN`, so SC22 cannot emit
 `HANDOFF_READY`; explicit user confirmation remains the only completion
 authority.
 
+### SC23--SC29: semantic witnesses prevent topology from deleting another function
+
+SC23 used a frozen, outcome-blind source admission over the official SceneFun3D
+one-video roster. It selected the first three scenes meeting description and
+multi-target-count requirements, without running the selector. The fresh result
+showed that SC21's spatial coherence is insufficient by itself:
+
+| Fresh SC23, 37 evaluable tasks | task-relational set | + topology |
+|---|---:|---:|
+| legal commits | 12 | **13** |
+| mean target-set recall | **93.24%** | 90.54% |
+| wrong parts | 50 | **49** |
+
+Both integrity opportunities shared one parent. For `Plug the device in the
+socket behind the TV`, the isolated candidate was a wrong `key_press` region;
+for `Turn on the TV using the remote control`, that same isolated candidate was
+the only target. Geometry had no authority to distinguish the tasks. SC24 adds
+a task-action semantic witness before unchanged topology. It never receives
+target membership, but its functional action labels are a privileged
+SceneFun3D proposal ceiling:
+
+| Consumed SC23 diagnostic | SC21 topology | + exact action semantics |
+|---|---:|---:|
+| legal commits | 13 | **16** |
+| mean target-set recall | 90.54% | **93.24%** |
+| wrong parts | 49 | **41** |
+
+Fresh SC25 had 31 evaluable tasks but only two exact semantic admissions, below
+the frozen minimum four, so it is `NOT_EVALUABLE`. SC26 then introduces
+hierarchical action families: exact cues remain precise, while broad
+`open/close` and activation families exclude only other families and retain all
+within-family candidates. On consumed SC25 this raised legal commits `9 -> 11`,
+recall 72.58% -> 79.03%, and reduced wrong parts `61 -> 54`.
+
+Fresh SC27 exposed a no-regret failure. The family layer reduced wrong parts
+`32 -> 27` and raised legal commits `5 -> 7`, but recall fell 83.33% -> 79.17%:
+an `Open the storage drawer of the fireplace` target had action label `rotate`,
+while one `hook_turn` candidate satisfied the broad open family. SC28 therefore
+requires redundant family support. Exact cues may filter with one compatible
+candidate; a broad family needs at least two compatible candidates or the full
+set is preserved. On consumed SC27 it restored recall to 83.33% and retained a
+`32 -> 30` wrong-part reduction.
+
+Fresh SC29 was fully evaluable but did not exercise the mechanism: 29 tasks, 27
+semantic admissions, zero changed tasks, and identical arms (12 legal commits,
+82.76% recall, 21 wrong parts). Its gate is correctly not met. Multi-target
+count is not the right source denominator for semantic integrity. The next
+source admission must count same-parent cross-action-family conflicts using
+provider-public candidate labels and geometry, while remaining blind to target
+membership and algorithm outcome.
+
+Key evidence SHA-256:
+
+- SC23 fresh provider/result:
+  `17f636394b9691ccf1238e792b1fca28b4230b92cdc560713ccb22cb4a052174` /
+  `bd1291efe48781056ade2d205c2f14fd854b9119a78ff77718a1aef249657994`;
+- SC24 consumed semantic provider/result:
+  `2e2e74011342390afc99ca65075177ac49b82f1a995080203b10c316c5d8dc1b` /
+  `2eef62fe41c98987b84d3fa08cfe01974f9cacbcf7550d42320756747e1dc91d`;
+- SC25 fresh result:
+  `7f7051cc6a149f9d77821cef31b5334d3947d765fef60629d3363bb08f195c93`;
+- SC26 consumed action-family result:
+  `e774357d1f3d363e0215d59d243e18cf196ecf9526a20dffe9fe32b2d87b301b`;
+- SC27 fresh result:
+  `386dbd9bac97719a25e4b009aa74f3c73c8a949848c1e6a369b9887e9196301b`;
+- SC28 consumed redundancy-gated result:
+  `87b459a3cc35896fd476b6216b161ae91cd2c57e10d7daf7b48aea9a69c6e07c`;
+- SC29 fresh provider/result:
+  `dd8c5bfb7c097e4729d71e29a352db841e73dfa740ef682cde9f84848602b443` /
+  `3fc9ca5aeceba09a719c08c316711f9b5f24e768b42dc94c67ac6eceef9bec7b`.
+
+Implementations: `scenefun3d_integrity_source_admission.py` and
+`scenefun3d_semantic_topology_integrity.py`. These results do not establish RGB
+semantic proposal quality, exact-instance acquisition, reachability, arrival,
+`HANDOFF_READY`, product benefit, or safety. Do not tune the opened cohorts or
+semantic rules; change the source opportunity representation next.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

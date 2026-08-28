@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC26-HIERARCHICAL-ACTION-FAMILY-TOPOLOGY-INTEGRITY",
+  "source": {
+    "cohort_protocol_sha256": "fcb79eb3e81a606715e5f1f098daf5359f4af73b77b7c459ab4d3253f797a24d",
+    "opened_sc25_provider_sha256": "a4b6c4ea5f290e979edada0cc7324fe92f8a25c4581001ff4587fd5bf6e18165",
+    "opened_sc25_result_sha256": "7f7051cc6a149f9d77821cef31b5334d3947d765fef60629d3363bb08f195c93",
+    "authority": "Consumed SC25 cohort for mechanism diagnosis only"
+  },
+  "frozen_algorithm": {
+    "baseline": "SC21 parent-normalized connected-component integrity",
+    "successor": "hierarchical task-action semantic witness before unchanged SC21 topology integrity",
+    "semantic_mode": "EXACT_THEN_ACTION_FAMILY",
+    "exact_rules": "Unchanged SC24 high-precision unplug, plug/connect, remote, control-setting, light-switch, and fan rules",
+    "action_family_rules_in_priority_order": [
+      {
+        "task_cue": "open or close",
+        "candidate_labels": ["foot_push", "hook_pull", "hook_turn", "pinch_pull"]
+      },
+      {
+        "task_cue": "turn on, start, activate, or control",
+        "candidate_labels": ["key_press", "rotate", "tip_push"]
+      }
+    ],
+    "family_semantics": "Filter only across action families; retain all candidates inside an admitted family.",
+    "semantic_no_match_policy": "PRESERVE_FULL_SET_AND_REQUEST_SEMANTIC_VIEW",
+    "normalized_component_link_radius": 0.4,
+    "minimum_dominant_component_size": 2,
+    "tie_policy": "KEEP_SET_VALUED_AND_REQUEST_INTEGRITY_VIEW",
+    "singleton_policy": "KEEP_SET_VALUED",
+    "identity_authority": "UNCHANGED_AUTHORIZED_EXACT_PARENT_BINDING",
+    "candidate_semantic_authority": "PRIVILEGED_SCENEFUN3D_FUNCTION_LABEL_CEILING"
+  },
+  "frozen_gate": {
+    "minimum_evaluable_tasks": 8,
+    "minimum_semantic_admissions": 4,
+    "minimum_wrong_part_reduction": 2,
+    "legal_commit_noninferiority": true,
+    "target_set_recall_noninferiority": true,
+    "maximum_cross_parent_violations": 0
+  },
+  "decision_labels": {
+    "insufficient_tasks": "SC26_NOT_EVALUABLE_INSUFFICIENT_PARENT_BOUND_TASKS",
+    "insufficient_semantic_admissions": "SC26_NOT_EVALUABLE_INSUFFICIENT_SEMANTIC_ADMISSIONS",
+    "pass": "SC26_ACTION_FAMILY_TOPOLOGY_CONSUMED_MECHANICS_SIGNAL",
+    "fail": "SC26_ACTION_FAMILY_TOPOLOGY_GATE_NOT_MET"
+  },
+  "claim_layer": "CONSUMED_PRIVILEGED_ACTION_FAMILY_PROPOSAL_MECHANICS",
+  "forbidden_after_outcome": [
+    "semantic cue, exact rule, family, or label remapping",
+    "component radius sweep",
+    "minimum component size sweep",
+    "scene or task removal",
+    "candidate relabeling",
+    "using evaluator target membership in semantic selection"
+  ],
+  "claim_boundary": "Consumed-cohort mechanism diagnosis of hierarchical action-family plus topology integrity with privileged SceneFun3D function labels. A positive result can justify a fresh action-family proposal experiment, but is not fresh transfer, RGB semantic proposal performance, reachability, HANDOFF_READY, product benefit, or safety evidence."
+}

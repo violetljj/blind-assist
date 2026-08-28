@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC28-REDUNDANCY-GATED-ACTION-FAMILY-TOPOLOGY",
+  "source": {
+    "cohort_protocol_sha256": "9faea0af43164095eeec82e5168de8bf27f23724f72ffc023041b052d376ff2a",
+    "opened_sc27_provider_sha256": "cf48d1fb58eca2e27de7515c1abbe1a99129546b7807516d260de9ac9d1f0262",
+    "opened_sc27_result_sha256": "386dbd9bac97719a25e4b009aa74f3c73c8a949848c1e6a369b9887e9196301b",
+    "authority": "Consumed SC27 cohort for mechanism diagnosis only"
+  },
+  "frozen_algorithm": {
+    "baseline": "SC21 parent-normalized connected-component integrity",
+    "successor": "redundancy-gated hierarchical task-action witness before unchanged SC21 topology integrity",
+    "semantic_mode": "EXACT_THEN_REDUNDANCY_GATED_ACTION_FAMILY",
+    "exact_rules": "Unchanged SC24 high-precision rules may filter with one compatible candidate.",
+    "action_family_rules": "Unchanged SC26 open-close and activation families.",
+    "family_admission": "A broad family may filter only when at least two compatible candidates witness that family inside the authorized parent.",
+    "family_singleton_policy": "PRESERVE_FULL_SET_AND_REQUEST_SEMANTIC_VIEW",
+    "normalized_component_link_radius": 0.4,
+    "minimum_dominant_component_size": 2,
+    "tie_policy": "KEEP_SET_VALUED_AND_REQUEST_INTEGRITY_VIEW",
+    "singleton_policy": "KEEP_SET_VALUED",
+    "identity_authority": "UNCHANGED_AUTHORIZED_EXACT_PARENT_BINDING",
+    "candidate_semantic_authority": "PRIVILEGED_SCENEFUN3D_FUNCTION_LABEL_CEILING"
+  },
+  "frozen_gate": {
+    "minimum_evaluable_tasks": 8,
+    "minimum_semantic_admissions": 4,
+    "minimum_wrong_part_reduction": 2,
+    "legal_commit_noninferiority": true,
+    "target_set_recall_noninferiority": true,
+    "maximum_cross_parent_violations": 0
+  },
+  "decision_labels": {
+    "insufficient_tasks": "SC28_NOT_EVALUABLE_INSUFFICIENT_PARENT_BOUND_TASKS",
+    "insufficient_semantic_admissions": "SC28_NOT_EVALUABLE_INSUFFICIENT_REDUNDANT_SEMANTIC_ADMISSIONS",
+    "pass": "SC28_REDUNDANCY_GATED_ACTION_FAMILY_CONSUMED_MECHANICS_SIGNAL",
+    "fail": "SC28_REDUNDANCY_GATED_ACTION_FAMILY_GATE_NOT_MET"
+  },
+  "claim_layer": "CONSUMED_PRIVILEGED_REDUNDANCY_GATED_ACTION_FAMILY_MECHANICS",
+  "forbidden_after_outcome": [
+    "semantic cue, family, label, or redundancy threshold remapping",
+    "component radius sweep",
+    "minimum component size sweep",
+    "scene or task removal",
+    "candidate relabeling",
+    "using evaluator target membership in semantic admission"
+  ],
+  "claim_boundary": "Consumed-cohort mechanism diagnosis of redundancy-gated action-family plus topology integrity with privileged SceneFun3D function labels. A positive result can justify a fresh experiment, but is not fresh transfer, RGB semantic proposal performance, reachability, HANDOFF_READY, product benefit, or safety evidence."
+}

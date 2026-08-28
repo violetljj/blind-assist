@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC27-FRESH-ACTION-FAMILY-TOPOLOGY-COHORT",
+  "source_admission": {
+    "protocol_sha256": "d7e582f3acba182ca284d3d593b4fe13120200898bece258234800eed243dec5",
+    "result_sha256": "342497d766c27da8f0cb9d610db6c33fd83c0fb71d476797619d22774b3cf433",
+    "experiment": "L10-SC27-FRESH-ACTION-FAMILY-TOPOLOGY-SOURCE-ADMISSION",
+    "decision_recorded_by_shared_script": "SC23_SOURCE_ADMITTED",
+    "selection_authority": "description count and target-region multiplicity only; no action-family or topology selector output"
+  },
+  "cohort": [
+    {
+      "visit_id": "422383",
+      "video_id": "42447294",
+      "sha256": {
+        "annotations": "5199ae714c504c2362f4c5dacd74410db45bc4a83c5772b838c035a7dc05f25d",
+        "descriptions": "788040f4b6c64e4391b16c6ce2b27075aa09f35c5dae63fa9cee7a4c116e805c",
+        "laser_scan": "5beaaf8cbece47090cb2666750afdb6aa323f8df16aa06d81d97a3dc7a59838f",
+        "transform": "768383b9c3cba902f4066ee07ff0cf4437aa0ac58d4bc007555ede4ca7ca3c6c",
+        "object_boxes": "308a507693cc19e88700123f9c2cfe6dcb6e009c6ec910fff68c85ff03f46ca3"
+      }
+    },
+    {
+      "visit_id": "422384",
+      "video_id": "42446607",
+      "sha256": {
+        "annotations": "ab84aa8fe1d4fcd9d823a8d2f00260c6eac08028ada96deffb78db2a33d4e8a7",
+        "descriptions": "d371d0568e36bb6dbd9930f7a8ebe41fb03ceb613d26f1200359535779b103d7",
+        "laser_scan": "39b5f170dff79272ba3e9dc6efed1eaf724e5291d2aa3204b37d22261e0f9ad1",
+        "transform": "bf447fe18db6f90add19d79d07566773c71998944b97c0d3f864e767cfc87feb",
+        "object_boxes": "e95ebc0e3539a8cf76804b6e1d3cdbae08c179afa11abddb6b378480166f6601"
+      }
+    },
+    {
+      "visit_id": "423325",
+      "video_id": "42897722",
+      "sha256": {
+        "annotations": "516404498c4b9463e7dd17705365b24716048a1874ca36f19a0b96483a1fd56c",
+        "descriptions": "3245a26f8327d6aa38f5ae6e2f5f34dda1b98e1b8d019cc74ab8f7918e0a1ec6",
+        "laser_scan": "23c08178931d04184b812bf76c89ee30dd6eda339802e2455fbf72eef0358243",
+        "transform": "1c077cbeadd904b905e55f5008cdde0419ef8c76edffb29e770a77d42b75e04c",
+        "object_boxes": "390ea5aa8a859487bbc15786116c171accda6b31fb9ece50aa39a4fa52a6f458"
+      }
+    }
+  ],
+  "claim_boundary": "Exact source-disjoint SceneFun3D cohort admitted before SC27 algorithm execution. Cohort admission alone is not algorithm, RGB proposal, reachability, HANDOFF_READY, product, or safety evidence."
+}

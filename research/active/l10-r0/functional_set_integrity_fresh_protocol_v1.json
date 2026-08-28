@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC23-FRESH-FUNCTIONAL-SET-INTEGRITY",
+  "source_admission": {
+    "protocol_sha256": "957c21f5723f2203aa3f80bacc3c4ad6d5e77d2a33c01214f7df9145a45b6aa7",
+    "result_sha256": "15101a8261fc75a76095d38a7a15cfd6669dfa9f38cf7afc11546ed0a361886f",
+    "decision": "SC23_SOURCE_ADMITTED",
+    "selection_authority": "description count and target-region multiplicity only; no selector output or evaluator score"
+  },
+  "cohort": [
+    {
+      "visit_id": "420693",
+      "video_id": "42445173",
+      "sha256": {
+        "annotations": "8ac7d16c0414a6bcc0febc99fde166461a4ade47e8ef596a42e472fd0bc4eed9",
+        "descriptions": "fdb3f8b331f60fbb94231ac598c91d0732454cf2024e232837865dabca5efdc5",
+        "laser_scan": "5a44102417637beb5f13b2b82a903900ea222fffd2a6ef7cc2f7ac76a8ee8f78",
+        "transform": "12a860af252c104189648b18d588c1ea07c2ee9396dd4d28e5bf4b929da288d3",
+        "object_boxes": "5ab983d53b0562a1d4e10d8ad124467b376490bffb424f5ce28d61a85b8e62df"
+      }
+    },
+    {
+      "visit_id": "421015",
+      "video_id": "42444789",
+      "sha256": {
+        "annotations": "495e5b07667ba36fa7a2b56537c3d70dbb583e5b387504f4629614dc9e05139d",
+        "descriptions": "8b8fd3010a9240e3dcc5663ddfe33990c2a11de0c509f6f0edf64159b4e1735f",
+        "laser_scan": "516aba870851c573d4d41e52cad81b86b69a3627d1463fb93dc3f5e32b085f75",
+        "transform": "d8f2acc59247fdaac86716d9c223521bfa6ca95ca0bdbc4b276eb82b978d7ad2",
+        "object_boxes": "afaed382c2febabf3a2178624b4399a945cb66eef4585794cbe3d8681e722142"
+      }
+    },
+    {
+      "visit_id": "421069",
+      "video_id": "42444490",
+      "sha256": {
+        "annotations": "6d0d57e8a5ecdb7d218ce27e1a3f762fd2ad8c0e47f903c92d5c01cdc1a9eed6",
+        "descriptions": "729339582dafc3dbe8cbcc5bccef8a354acd8bb18e7d4d37fe2eeadeabe389c9",
+        "laser_scan": "62a6365b814c109ecc1611e4a0c648a96eaf4e565c1fa3698fc0abd0f54d6d26",
+        "transform": "b29e5794d2cf811a31e810cebbcad67c6fabb5bf12ed64ae6c0d664b2493aae9",
+        "object_boxes": "1511b36d6716b6acc7c5a61e55856a24622c72a15ef7da045be6457eeb61daeb"
+      }
+    }
+  ],
+  "frozen_algorithm": {
+    "baseline": "TaskRelationalFunctionalSelector",
+    "successor": "unique-largest parent-normalized connected component inside the baseline selected set",
+    "normalized_component_link_radius": 0.4,
+    "minimum_dominant_component_size": 2,
+    "tie_policy": "KEEP_SET_VALUED_AND_REQUEST_INTEGRITY_VIEW",
+    "singleton_policy": "KEEP_SET_VALUED",
+    "identity_authority": "UNCHANGED_AUTHORIZED_EXACT_PARENT_BINDING",
+    "candidate_authority": "EVALUATOR_FUNCTIONAL_REGIONS_AS_UNLABELED_PROPOSAL_CEILING"
+  },
+  "frozen_gate": {
+    "minimum_evaluable_tasks": 8,
+    "minimum_integrity_opportunities": 2,
+    "minimum_wrong_part_reduction": 2,
+    "legal_commit_noninferiority": true,
+    "target_set_recall_noninferiority": true,
+    "maximum_cross_parent_violations": 0
+  },
+  "forbidden_after_outcome": [
+    "component radius sweep",
+    "minimum component size sweep",
+    "scene or task removal",
+    "task relation remapping",
+    "candidate relabeling",
+    "using evaluator target IDs in component selection",
+    "replacing or extending the admitted cohort"
+  ],
+  "claim_boundary": "Fresh source-disjoint proposal-conditional functional-set integrity on three SceneFun3D scenes admitted without selector outcomes. Functional masks remain privileged unlabeled proposals and exact parent binding remains authorized. This is not RGB proposal generation, live identity, reachability, arrival, HANDOFF_READY, product, user-benefit, or safety evidence."
+}

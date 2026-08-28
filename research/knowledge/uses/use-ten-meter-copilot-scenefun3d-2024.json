@@ -17,8 +17,8 @@
   "evaluation": {
     "reproduction_status": "partial",
     "verdict": "positive",
-    "setup": "SC8/SC11 functional grounding plus SC12-SC14 action-geometry studies across SceneFun3D 420683, 421010, and 421013. SC14 used evaluator-generated paired functional-point motion after sealing the causal estimator boundary.",
-    "effect": "SC12 and SC13 retained terminal static-geometry negatives. SC14 changed the source to causal paired motion: type 7/8 to 8/8, translation hits 4/7 to 7/7, mean error 38.89 to 0.91 degrees, and one rotational pivot line within 2.22 cm.",
+    "setup": "SC8/SC11 functional grounding, SC12-SC14 action geometry, and SC21-SC29 candidate-integrity studies across source-disjoint SceneFun3D cohorts. Later semantic/topology runs sealed providers before target membership evaluation.",
+    "effect": "SC14 changed static geometry to causal paired motion. SC22 showed a large consumed endpoint-composition gain. SC24/SC26/SC28 established consumed semantic/topology mechanisms, but SC23/SC27 fresh gates failed and SC25 was not evaluable; SC29 had no conflict opportunities. Fresh semantic-integrity confirmation is not established.",
     "metrics": [
       "evaluable_tasks=6/10 descriptions; 4 NOT_EVALUABLE_PARENT_BINDING",
       "legal_commit_rate=0.6667 baseline vs 1.0000 SC8",
@@ -35,9 +35,15 @@
       "SC14 motion_type_correct=7/8 static vs 8/8 causal",
       "SC14 translation_direction_hit=4/7 static vs 7/7 causal",
       "SC14 mean_translation_error_deg=38.89 static vs 0.91 causal",
-      "SC14 rotation_axis_hit=1/1; pivot_line_error_m=0.0222"
+      "SC14 rotation_axis_hit=1/1; pivot_line_error_m=0.0222",
+      "SC22 consumed endpoint recall=0.6486 to 0.8324; F1=0.784 to 0.906; task coverage=5/6 to 6/6",
+      "SC24 consumed exact-semantic legal commits=13 to 16; wrong parts=49 to 41; recall=0.9054 to 0.9324",
+      "SC26 consumed action-family legal commits=9 to 11; wrong parts=61 to 54; recall=0.7258 to 0.7903",
+      "SC27 fresh action-family wrong parts=32 to 27 but recall=0.8333 to 0.7917; gate not met",
+      "SC28 consumed redundancy gate preserved recall=0.8333 and wrong parts=32 to 30",
+      "SC29 fresh tasks=29; semantic admissions=27; changed tasks=0; arms identical"
     ],
-    "claim_boundary": "SC14 is simulated paired-point mechanics evidence with privileged functional seeds, parent OBBs, motion perturbations, and correspondences. It does not establish RGB tracking, safe probing, reachability, body orientation, arrival, HANDOFF_READY, user completion, product benefit, or safety."
+    "claim_boundary": "SC14 is simulated paired-point mechanics. SC22-SC29 use privileged functional proposals or action labels; only SC23/SC25/SC27/SC29 are source-disjoint, and none establishes a fresh positive semantic-integrity effect. No result establishes RGB semantic proposal quality, safe probing, reachability, arrival, HANDOFF_READY, product benefit, or safety."
   },
   "evidence": [
     {
@@ -59,6 +65,16 @@
       "kind": "artifact",
       "ref": "artifacts.local/evidence/l10-r16/sc14-causal-micro-motion-421013-v0/result.json",
       "summary": "Causal action-belief mechanics result, SHA-256 bb11fa3b87ea350ad793d3c62daf81e183b6806f08c82b2c1df1535677d1ca01."
+    },
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/evidence/l10-r23/sc24-semantic-topology-integrity-consumed-v0/result.json",
+      "summary": "Consumed exact-semantic topology mechanism result, SHA-256 2eef62fe41c98987b84d3fa08cfe01974f9cacbcf7550d42320756747e1dc91d."
+    },
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/evidence/l10-r28/sc29-fresh-redundancy-gated-action-family-v1/result.json",
+      "summary": "Fresh redundancy-gated result with zero changed tasks, SHA-256 3fc9ca5aeceba09a719c08c316711f9b5f24e768b42dc94c67ac6eceef9bec7b."
     }
   ],
   "history": [
@@ -81,6 +97,10 @@
     {
       "date": "2026-08-28",
       "change": "Added the SC12/SC13 static-action negatives and SC14 causal mechanics signal. The route now requires a real before/after motion source rather than further static-geometry tuning."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Added SC21-SC29 candidate-integrity evidence. Semantic and redundancy-gated topology showed consumed mechanisms, but fresh confirmation remains open because generic multi-target source admission did not guarantee same-parent cross-action-family conflicts."
     }
   ],
   "added_at": "2026-08-28",

@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC25-FRESH-TASK-SEMANTIC-TOPOLOGY-INTEGRITY",
+  "source": {
+    "cohort_protocol_sha256": "fcb79eb3e81a606715e5f1f098daf5359f4af73b77b7c459ab4d3253f797a24d",
+    "mechanism_protocol_sha256": "aa71c94f853bef1880864772c918b2de92c06698f250b7acb352530998b979a6",
+    "authority": "Source-disjoint SC25 cohort admitted without semantic or topology selector outcomes"
+  },
+  "frozen_algorithm": {
+    "baseline": "SC21 parent-normalized connected-component integrity",
+    "successor": "task-action semantic witness before unchanged SC21 topology integrity",
+    "semantic_rules_in_priority_order": [
+      {
+        "task_cue": "unplug",
+        "candidate_labels": ["unplug"]
+      },
+      {
+        "task_cue": "plug or connect",
+        "candidate_labels": ["plug_in"]
+      },
+      {
+        "task_cue": "remote control",
+        "candidate_labels": ["key_press"]
+      },
+      {
+        "task_cue": "intensity, dial, temperature, heat, lock, tap, program, timer, or settings",
+        "candidate_labels": ["rotate", "key_press"]
+      },
+      {
+        "task_cue": "turn on a lamp or light, or use a switch",
+        "candidate_labels": ["tip_push"]
+      },
+      {
+        "task_cue": "start or oscillate a fan",
+        "candidate_labels": ["key_press", "tip_push"]
+      }
+    ],
+    "semantic_no_match_policy": "PRESERVE_FULL_SET_AND_REQUEST_SEMANTIC_VIEW",
+    "open_close_policy": "NO_SEMANTIC_FILTER_BECAUSE_HANDLE_MECHANICS_ARE_NOT_TEXT_IDENTIFIABLE",
+    "normalized_component_link_radius": 0.4,
+    "minimum_dominant_component_size": 2,
+    "tie_policy": "KEEP_SET_VALUED_AND_REQUEST_INTEGRITY_VIEW",
+    "singleton_policy": "KEEP_SET_VALUED",
+    "identity_authority": "UNCHANGED_AUTHORIZED_EXACT_PARENT_BINDING",
+    "candidate_semantic_authority": "PRIVILEGED_SCENEFUN3D_FUNCTION_LABEL_CEILING"
+  },
+  "frozen_gate": {
+    "minimum_evaluable_tasks": 8,
+    "minimum_semantic_admissions": 4,
+    "minimum_wrong_part_reduction": 2,
+    "legal_commit_noninferiority": true,
+    "target_set_recall_noninferiority": true,
+    "maximum_cross_parent_violations": 0
+  },
+  "decision_labels": {
+    "insufficient_tasks": "SC25_NOT_EVALUABLE_INSUFFICIENT_PARENT_BOUND_TASKS",
+    "insufficient_semantic_admissions": "SC25_NOT_EVALUABLE_INSUFFICIENT_SEMANTIC_ADMISSIONS",
+    "pass": "SC25_SEMANTIC_TOPOLOGY_INTEGRITY_FRESH_DEVELOPMENT_SIGNAL",
+    "fail": "SC25_SEMANTIC_TOPOLOGY_INTEGRITY_FRESH_GATE_NOT_MET"
+  },
+  "claim_layer": "FRESH_PRIVILEGED_SEMANTIC_PROPOSAL_CONDITIONAL_DEVELOPMENT",
+  "forbidden_after_outcome": [
+    "semantic cue or label remapping",
+    "component radius sweep",
+    "minimum component size sweep",
+    "scene or task removal",
+    "candidate relabeling",
+    "using evaluator target membership in semantic selection",
+    "replacing or extending the admitted cohort"
+  ],
+  "claim_boundary": "Fresh source-disjoint proposal-conditional semantic-topology integrity on three SceneFun3D scenes admitted without selector outcomes. Candidate function labels remain privileged and exact parent binding remains authorized. This is not RGB semantic proposal generation, live identity, reachability, arrival, HANDOFF_READY, product, user-benefit, or safety evidence."
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC24-TASK-SEMANTIC-TOPOLOGY-INTEGRITY",
+  "source": {
+    "cohort_protocol_sha256": "dedd708c6d53077ff52cd8c85cf09a566aab9dc42357936663698928a89e38bb",
+    "opened_sc23_provider_sha256": "17f636394b9691ccf1238e792b1fca28b4230b92cdc560713ccb22cb4a052174",
+    "opened_sc23_result_sha256": "bd1291efe48781056ade2d205c2f14fd854b9119a78ff77718a1aef249657994",
+    "authority": "Consumed SC23 cohort for mechanism diagnosis only"
+  },
+  "frozen_algorithm": {
+    "baseline": "SC21 parent-normalized connected-component integrity",
+    "successor": "task-action semantic witness before unchanged SC21 topology integrity",
+    "semantic_rules_in_priority_order": [
+      {
+        "task_cue": "unplug",
+        "candidate_labels": ["unplug"]
+      },
+      {
+        "task_cue": "plug or connect",
+        "candidate_labels": ["plug_in"]
+      },
+      {
+        "task_cue": "remote control",
+        "candidate_labels": ["key_press"]
+      },
+      {
+        "task_cue": "intensity, dial, temperature, heat, lock, tap, program, timer, or settings",
+        "candidate_labels": ["rotate", "key_press"]
+      },
+      {
+        "task_cue": "turn on a lamp or light, or use a switch",
+        "candidate_labels": ["tip_push"]
+      },
+      {
+        "task_cue": "start or oscillate a fan",
+        "candidate_labels": ["key_press", "tip_push"]
+      }
+    ],
+    "semantic_no_match_policy": "PRESERVE_FULL_SET_AND_REQUEST_SEMANTIC_VIEW",
+    "open_close_policy": "NO_SEMANTIC_FILTER_BECAUSE_HANDLE_MECHANICS_ARE_NOT_TEXT_IDENTIFIABLE",
+    "normalized_component_link_radius": 0.4,
+    "minimum_dominant_component_size": 2,
+    "tie_policy": "KEEP_SET_VALUED_AND_REQUEST_INTEGRITY_VIEW",
+    "singleton_policy": "KEEP_SET_VALUED",
+    "identity_authority": "UNCHANGED_AUTHORIZED_EXACT_PARENT_BINDING",
+    "candidate_semantic_authority": "PRIVILEGED_SCENEFUN3D_FUNCTION_LABEL_CEILING"
+  },
+  "frozen_gate": {
+    "minimum_evaluable_tasks": 8,
+    "minimum_semantic_admissions": 4,
+    "minimum_wrong_part_reduction": 2,
+    "legal_commit_noninferiority": true,
+    "target_set_recall_noninferiority": true,
+    "maximum_cross_parent_violations": 0
+  },
+  "forbidden_after_outcome": [
+    "semantic cue or label remapping",
+    "component radius sweep",
+    "minimum component size sweep",
+    "scene or task removal",
+    "candidate relabeling",
+    "using evaluator target membership in semantic selection"
+  ],
+  "claim_boundary": "Consumed-cohort mechanism diagnosis of action-semantic plus topology integrity with privileged SceneFun3D function labels. A positive result can justify a new semantic proposal representation, but is not fresh transfer, RGB semantic proposal performance, reachability, HANDOFF_READY, product benefit, or safety evidence."
+}

@@ -318,6 +318,21 @@ recall 64.86% -> 83.24% and F1 0.784 -> 0.906, while retaining one false-ready
 frame and above-99% precision. This is a composition-mechanics signal, not
 fresh transfer; reachability remains `UNKNOWN` and handoff remains forbidden.
 
+SC23--SC29 tested transfer of candidate integrity on three successive
+source-disjoint, outcome-blind SceneFun3D cohorts. Pure topology failed fresh
+SC23 because same-parent functions can be spatially separated. Adding an exact
+task-action semantic witness produced a consumed mechanism gain (`13 -> 16`
+legal commits, `49 -> 41` wrong parts, 90.54% -> 93.24% recall), but fresh SC25
+had only two semantic opportunities and was `NOT_EVALUABLE`. Hierarchical
+action families increased coverage but fresh SC27 traded `32 -> 27` wrong parts
+for 83.33% -> 79.17% recall. A redundancy gate removed that regression on the
+consumed cohort while retaining `32 -> 30` wrong-part reduction. Fresh SC29 had
+29 evaluable tasks but zero candidate-changing cross-family conflicts, so its
+identical arms do not confirm the algorithm. The next source must admit by
+same-parent cross-action-family conflict opportunity, not generic multi-target
+count; all current semantics remain privileged proposal ceilings, reachability
+is `UNKNOWN`, and handoff is forbidden.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

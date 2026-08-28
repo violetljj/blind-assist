@@ -8,7 +8,10 @@ SC18_CAUSAL_ACTION_OUTCOME_REPAIR_MECHANICS_SIGNAL /
 SC19_DEFICIT_CONDITIONED_ACTION_UTILITY_MECHANICS_SIGNAL /
 SC20_FACTORIZED_ENDPOINT_FALSE_READY_SUPPRESSION_GATE_NOT_MET /
 SC21_FUNCTIONAL_SET_INTEGRITY_FRESH_SOURCE_NOT_EVALUABLE /
-SC22_INTEGRITY_ENDPOINT_COMPOSITION_MECHANICS_SIGNAL` and
+SC22_INTEGRITY_ENDPOINT_COMPOSITION_MECHANICS_SIGNAL /
+SC24_SEMANTIC_TOPOLOGY_INTEGRITY_CONSUMED_MECHANICS_SIGNAL /
+SC28_REDUNDANCY_GATED_ACTION_FAMILY_CONSUMED_MECHANICS_SIGNAL /
+SC29_REDUNDANCY_GATED_ACTION_FAMILY_FRESH_GATE_NOT_MET` and
 `DTR_R2_PUBLIC_REAL_PRIVILEGED_CEILINGS_ESTABLISHED /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
@@ -212,6 +215,53 @@ cohort with enough authorized parent-bound tasks and actual integrity
 opportunities. Reachability remains `UNKNOWN`; SC22 cannot emit
 `HANDOFF_READY`, and explicit user confirmation remains the only completion
 authority.
+
+SC23--SC29 then tested whether SC21 transfers beyond the localized under-bed
+case. An outcome-blind source admission scanned the official SceneFun3D
+one-video roster in order and selected scenes only by description count and
+target-region multiplicity. On the first three fresh scenes, SC21 had 37
+parent-bound tasks and two integrity opportunities, but legal commits changed
+`12 -> 13`, wrong parts `50 -> 49`, and mean target-set recall fell
+93.24% -> 90.54%. Accept
+`SC23_FUNCTIONAL_SET_INTEGRITY_FRESH_GATE_NOT_MET`: pure spatial connectivity
+cannot distinguish two functions that share one parent.
+
+The observed conflict was exact: two socket regions (`plug_in`) formed the
+largest component while a remote-control region (`key_press`) was spatially
+isolated. SC24 therefore adds a task-action semantic witness before unchanged
+SC21 topology. On consumed SC23, legal commits improved `13 -> 16`, wrong parts
+`49 -> 41`, and recall recovered 90.54% -> 93.24%. This is
+`SC24_SEMANTIC_TOPOLOGY_INTEGRITY_CONSUMED_MECHANICS_SIGNAL`, not fresh
+confirmation; candidate function labels are privileged SceneFun3D proposals.
+
+The next fresh SC25 source had 31 evaluable tasks but only two exact semantic
+admissions, below the frozen minimum four. It is `NOT_EVALUABLE`, despite a
+directional `9 -> 10` legal-commit, `61 -> 58` wrong-part, and 72.58% -> 75.81%
+recall change. SC26 widened semantics only across action families while keeping
+all candidates within a family set-valued. On consumed SC25 it admitted 31/31
+tasks, improved legal commits `9 -> 11`, reduced wrong parts `61 -> 54`, and
+raised recall 72.58% -> 79.03%.
+
+Fresh SC27 showed why broad semantic deletion must remain selective: legal
+commits improved `5 -> 7` and wrong parts `32 -> 27`, but recall fell 83.33% ->
+79.17% because an `Open the storage drawer` target was labeled `rotate` while a
+single `hook_turn` candidate satisfied the broad open/close family. SC28 adds a
+no-regret redundancy condition: exact task-action cues may filter directly,
+but a broad family needs at least two compatible candidates or it preserves the
+full set. On consumed SC27 this restored recall to 83.33% and still reduced
+wrong parts `32 -> 30`, yielding
+`SC28_REDUNDANCY_GATED_ACTION_FAMILY_CONSUMED_MECHANICS_SIGNAL`.
+
+The independently admitted SC29 cohort was evaluable (29 tasks, 27 semantic
+admissions) but contained zero candidate-changing cross-family conflicts; both
+arms were identical at 12 legal commits, 82.76% recall, and 21 wrong parts.
+Therefore `SC29_REDUNDANCY_GATED_ACTION_FAMILY_FRESH_GATE_NOT_MET` is a source-
+opportunity terminal, not a regression. Do not tune SC23--SC29 or keep selecting
+cohorts by multi-target count. The next legal source admission must count
+provider-public, same-parent cross-action-family conflict opportunities without
+using target membership or algorithm outcome; otherwise no fresh integrity
+claim is evaluable. Reachability remains `UNKNOWN` and handoff remains
+forbidden.
 
 ## DTR-R2 decision
 

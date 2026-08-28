@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC27-FRESH-ACTION-FAMILY-TOPOLOGY-SOURCE-ADMISSION",
+  "source": {
+    "dataset": "SceneFun3D train split",
+    "official_base_url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1",
+    "cohort_csv_sha256": "a570b18aee43058a2f44db653a606ca799f64f054013b17dac95948fa590d5b1",
+    "metadata_asset": "descriptions",
+    "metadata_use": "Count descriptions and target-region multiplicity only; do not run or score action-family or topology selection."
+  },
+  "consumed_visit_ids": [
+    "420673",
+    "420683",
+    "420693",
+    "421002",
+    "421005",
+    "421010",
+    "421013",
+    "421015",
+    "421069",
+    "421254",
+    "422007",
+    "422011"
+  ],
+  "selection": {
+    "ordering": "ascending visit_id then video_id from the official one-video CSV",
+    "maximum_candidate_scenes": 80,
+    "minimum_descriptions_per_scene": 8,
+    "minimum_multi_target_tasks_per_scene": 3,
+    "selected_scene_count": 3,
+    "stop_rule": "Stop immediately after the first three eligible scenes."
+  },
+  "post_admission": {
+    "required_assets": [
+      "annotations",
+      "descriptions",
+      "laser_scan_5mm",
+      "3dod_annotation",
+      "transform"
+    ],
+    "algorithm": "Frozen SC26 hierarchical action-family witness before unchanged SC21 topology integrity.",
+    "frozen_gate": {
+      "minimum_evaluable_tasks": 8,
+      "minimum_semantic_admissions": 4,
+      "minimum_wrong_part_reduction": 2,
+      "legal_commit_noninferiority": true,
+      "target_set_recall_noninferiority": true,
+      "maximum_cross_parent_violations": 0
+    }
+  },
+  "forbidden_after_metadata_access": [
+    "reorder candidate scenes",
+    "change admission thresholds",
+    "skip an eligible scene",
+    "inspect action-family or topology selector output during source admission",
+    "select scenes by wrong-part reduction or algorithm outcome"
+  ],
+  "claim_boundary": "Outcome-blind SceneFun3D source admission for a fresh SC26 action-family-topology transfer check. Target-region identities and selector outputs are not used for scene ranking. Passing admission does not establish algorithm success, RGB semantic proposal generation, reachability, HANDOFF_READY, product benefit, or safety."
+}
