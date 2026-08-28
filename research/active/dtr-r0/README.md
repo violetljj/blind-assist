@@ -1630,6 +1630,45 @@ head unless that oracle can materially recover lead without damaging recall or
 false segments.  Result SHA-256 is
 `c7045f39b774093a4ed4fd4a5c4494ea698474a1a2ab7d0e0bf50bf1fdc778a5`.
 
+## DTR-C26 support-conditioned future-occupancy headroom
+
+C26 ran the one consumed-cohort falsifier required before any forecasting
+training.  It did not use global CONTACT truth as a free alert.  It began only
+from cells already present in the sealed M1-PD ledger, associated a cell only
+when exactly one current native OBB lay within the frozen 0.08485 m cell margin,
+and required the same identity to have complete realized OBB support through
+the full 3 s horizon.  Only those cells replaced constant velocity with their
+first realized future OBB route entry.  Unsupported, ambiguous, and
+right-censored cells retained M1-PD.  The combined raw signal then passed
+through the unchanged urgent boundary and `RiskEventLifecycle`.
+
+| arm | CONTACT recall | false segments | event F1 | median first lead |
+| --- | ---: | ---: | ---: | ---: |
+| R7 reference | `11/12` | 52 | 29.33% | **4.200 s** |
+| M1-PD reference | `11/12` | 29 | 42.31% | 3.067 s |
+| M1-PDC reference | **`12/12`** | **21** | **53.33%** | 1.624 s |
+| supported realized-future oracle | `11/12` | 25 | 45.83% | 2.261 s |
+
+The oracle fails all three componentwise-envelope checks.  It does not recover
+the one M1-PD miss, removes seven of the original 29 false segments but produces
+a net reduction of only four after lifecycle segmentation, and loses 0.806 s
+median lead.  All 12 responsible objects have some unique support inside their CONTACT
+window, but the missed SVL-1 event remains missed; support arriving somewhere
+inside an event is not equivalent to causal support at an origin that can
+anticipate it.  Across the 29 false-segment windows, unsupported/ambiguous and
+right-censored evidence dominates the cell-frame ledger, so a future head
+restricted to current M1-PD support cannot reliably remove the remaining risk.
+
+Accept `DTR_C26_SUPPORTED_FUTURE_OCCUPANCY_HEADROOM_NOT_MET`.  Do not train or
+sweep a residual future-occupancy model on the current M1-PD representation.
+The next information change must first create an occlusion-persistent,
+identity-free point support field: retain point-local velocity (no component
+broadcast), propagate evidence with soft confidence/age rather than a hard
+three-frame veto, and expose missingness as `UNKNOWN`.  Only after that support
+representation shows recall/false/lead headroom may route-conditioned future
+occupancy reopen.  Result SHA-256 is
+`d555907d815aeca7abd349492ec7ec94f3b69cc8d7a040d99c5f1cbdd66da152`.
+
 ## Claim ceiling
 
 These are retrospective public-real privileged algorithm ceilings. THÖR uses

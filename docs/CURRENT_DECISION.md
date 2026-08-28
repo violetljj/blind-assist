@@ -899,6 +899,29 @@ through the unchanged global-OBB route/lifecycle scorer.  Continue only if it
 shows material lead headroom without reducing recall or increasing false
 segments; otherwise close the forecasting branch without a model sweep.
 
+C26 has now executed that single falsifier.  It did not convert global CONTACT
+truth directly into an alert.  Future OBB motion could replace M1-PD constant
+velocity only where a sealed point cell associated to exactly one current
+native OBB under the existing 0.08485 m margin and that identity remained fully
+observed for the complete 3 s horizon.  Unsupported, ambiguous, and
+right-censored cells retained M1-PD, and the combined raw evidence passed through
+the unchanged R2 urgent boundary and lifecycle.
+
+The support-conditioned oracle scored `11/12` CONTACT recall, 25 false segments,
+45.83% F1, and 2.261 s median lead.  It removed seven of M1-PD's 29 original false
+segments but gained zero net event recall and lost 0.806 s median lead.  It therefore
+failed every componentwise C25 envelope check: PDC's `12/12` recall, PDC's 21
+false segments, and R7's 4.200 s lead.  Accept
+`DTR_C26_SUPPORTED_FUTURE_OCCUPANCY_HEADROOM_NOT_MET` and do not train or sweep
+a residual future-occupancy model on current M1-PD tokens.
+
+The next admissible source change is an occlusion-persistent identity-free point
+support field.  Preserve cell-local direct velocity, carry each token forward
+with soft confidence and evidence age, expose missingness as `UNKNOWN`, and
+never broadcast one component translation to all cells.  This must demonstrate
+joint recall/false/lead headroom before route-conditioned learned future
+occupancy can reopen.
+
 ## What stops here
 
 - Do not record the superseded 24 canary or 120 staged local RGB clips.

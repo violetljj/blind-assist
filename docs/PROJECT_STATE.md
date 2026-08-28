@@ -220,6 +220,18 @@ question is route-conditioned residual future occupancy over M1-PD with soft
 confidence/uncertainty, preceded by one realized-future occupancy headroom
 falsifier under the unchanged global-OBB route and lifecycle contract.
 
+C26 has now run that falsifier without training.  Perfect realized future OBB
+motion was permitted only for uniquely current-box-supported cells from the
+sealed M1-PD ledger; ambiguous, unsupported, or right-censored cells kept their
+original constant-velocity entry, and the combined signal used the unchanged
+lifecycle.  The privileged oracle remained `11/12`, reduced false segments only
+`29 -> 25`, and lowered median lead `3.067 -> 2.261 s`.  It therefore reached none of
+the C25 componentwise best anchors (`12/12`, 21 false, 4.200 s).  Decision:
+`DTR_C26_SUPPORTED_FUTURE_OCCUPANCY_HEADROOM_NOT_MET`.  A forecasting model on
+the current M1-PD support is closed; the next representation must first provide
+occlusion-persistent point support with soft confidence/age and explicit
+`UNKNOWN`, without returning to component-wide velocity broadcast.
+
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC
 word carrier for current-camera steering. SC2 adds opportunity-correct active
