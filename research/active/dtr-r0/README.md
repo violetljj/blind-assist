@@ -4,6 +4,7 @@ Status: `DTR_R3_GATE_NOT_MET / R2_DYNAMIC_RETAINED /
 S4_CONTINUOUS_GEOMETRY_VALIDATED_NO_PUBLIC_GAIN /
 R5_RGB_DROPOUT_CANARY_GATE_NOT_MET /
 R6_DIRECT_METRIC_SINGLE_FACTOR_NOT_EVALUABLE_STATIC_OCCUPANCY_MATCHER_UNREACHABLE /
+R7_P_CAUSAL_OCCUPANCY_FLOW_DEVELOPMENT_GATE_NOT_MET_NO_R8 /
 R4_NOT_OPENED`
 
 ## Result first
@@ -123,6 +124,43 @@ example raw-sensor occupancy flow or scene flow), not another static depth map.
 A privileged current/past-only raw-sensor arm should establish that mechanism
 before any learned RGB occupancy-flow head is trained. Temporal association
 must not use evaluator identity.
+
+## R7-P causal occupancy-flow ceiling
+
+R7-P has now executed the separately opened information-bearing successor on
+the same 143 frames and nine induced-dropout trials. It does not use the R5
+semantic mask or detector boxes. Before labels are opened, current/past upper
+and lower raw Velodyne sweeps are transformed with latest-at-or-before causal
+ego poses, voxelized into BEV, and linked by component correspondence. Each
+matched dynamic occupied cell carries `(x, y, vx, vy)` and is extrapolated for
+0--3 seconds against the unchanged 0.65 m route tube. Evaluator physical IDs
+never enter temporal association; native 3-D centers/radii are used only after
+the truth-blind flow ledger is hash sealed to attribute current cells for
+scoring.
+
+| Arm | Dropout-window recovery | Original critical-event recall | Original one-to-one event F1 | Original false segments |
+| --- | ---: | ---: | ---: | ---: |
+| R2 track-only | `0/9` | `3/3` | 22.22% | 12 |
+| R6-P static raw-LiDAR occupancy | `0/9` | `3/3` | 22.22% | 12 |
+| R7-P causal raw-LiDAR occupancy flow | **`9/9`** | `3/3` | 22.22% | **20** |
+
+This is a real information gain but not a functional-gate pass. R7-P raises
+one-to-one true positives from 2 to 3, while evaluable alert segments grow from
+15 to 24; event F1 therefore remains 22.22%. False segments increase `12 -> 20`
+(`+66.7%`), above the frozen `13.2` limit. The truth-blind ledger contains
+dynamic cells in `139/143` frames and its un-attributed global route-risk signal
+is active in `123/143` frames, so the result is consistent with an overly broad
+motion field rather than a clean detector-independent risk source.
+
+Terminal:
+`R7_P_CAUSAL_OCCUPANCY_FLOW_DEVELOPMENT_GATE_NOT_MET_NO_R8`. The controlled
+result supports the narrow mechanism statement that temporal raw-sensor flow
+can restore route-entry evidence that static distance cannot. It does not
+support promotion from track-based risk to detector-independent dynamic
+occupancy, and it does not authorize R8 RGB student training. Do not tune
+voxel size, history, speed, overlap, tube, attribution, or lifecycle against
+this opened cohort. A successor needs genuinely better independent motion
+information or a fresh frozen protocol, not a sweep over this result.
 
 The source split explains why pooling is not enough:
 
@@ -325,6 +363,13 @@ Evidence:
   `artifacts.local/evidence/dtr-r6/metric-occupancy-canary/dropout_curve.png`,
   SHA-256
   `dc215850cebf24e4b2bfc07273a47a72bc22f666ea9e8ac36c2947877d9aad9b`.
+- R7-P causal occupancy-flow result:
+  `artifacts.local/evidence/dtr-r7/occupancy-flow-canary/result.json`, SHA-256
+  `019eb7a6c47670c821942fe6a72401899994a9e7bf7115afa9af5eacb8b3b6de`.
+- R7-P truth-blind occupancy-flow ledger:
+  `artifacts.local/evidence/dtr-r7/occupancy-flow-canary/result.occupancy-flow.npz`,
+  SHA-256
+  `7ee7302a15393fed44c07b438c1377dea54bc02d6156d07b66f871c68cd6491d`.
 
 ## Runtime bridge
 
@@ -428,6 +473,15 @@ python research/active/dtr-r0/dtr_r6_metric_occupancy_canary.py `
   --depth-checkpoint <metric-hypersim-vits.pth> `
   --output artifacts.local/evidence/dtr-r6/metric-occupancy-canary/result.json `
   --plot artifacts.local/evidence/dtr-r6/metric-occupancy-canary/dropout_curve.png
+
+python research/active/dtr-r0/dtr_r7_occupancy_flow_canary.py `
+  --r6-result artifacts.local/evidence/dtr-r6/metric-occupancy-canary/result.json `
+  --known-height-tracks <jrdb-known-height-sensor-tracks.jsonl> `
+  --labels-zip <jrdb-train-labels.zip> `
+  --timestamps-zip <jrdb-train-timestamps.zip> `
+  --bag <jrdb-sequence.bag> `
+  --calibration-dir <jrdb-calibration-dir> `
+  --output artifacts.local/evidence/dtr-r7/occupancy-flow-canary/result.json
 ```
 
 ## Claim ceiling
@@ -451,3 +505,9 @@ R6 further shows that the current curated dropout cohort cannot isolate a
 static direct-metric source: all three events lack an admissible residual
 closing-velocity input under the frozen matcher. It establishes neither a
 negative metric-depth result nor a spatiotemporal occupancy capability.
+
+R7-P is a privileged classical raw-LiDAR motion ceiling on the same consumed
+Development window. Its `9/9` dropout recovery coexists with `20` false
+segments and an 86.0% global route-risk frame rate. It establishes a causal
+motion-information signal, not detector-independent dynamic occupancy quality,
+source-disjoint generalization, or permission to train an RGB student.

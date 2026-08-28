@@ -47,18 +47,17 @@ crown semantics into honest human head-collision truth, so that partition is
 RGB/LiDAR detector, Android runtime, natural-distribution, user-benefit, or
 safety evidence.
 
-The detector-dropout residual route has now exposed a stricter boundary. R5
-found person masks in all 143 curated JRDB frames but recovered `0/9` induced
-dropout windows. R6 replaced fixed-height geometry with calibrated perspective
-zero-shot metric depth and a current/past raw-LiDAR ceiling; both also recovered
-`0/9` with false segments unchanged at 12. This is `NOT_EVALUABLE`, not a
-metric-depth negative: the frozen residual matcher obtains closing velocity
-only from ego motion, while all three event windows have maximum ego speed
-below `0.000316 m/s` against its fixed `0.05 m/s` minimum. A static metric
-source is therefore structurally unable to enter the route tube on this
-cohort. The next new information layer, if opened, is causal spatiotemporal
-metric occupancy/flow without evaluator identity, not threshold or depth-model
-tuning.
+The detector-dropout residual route now separates static geometry from temporal
+motion. R5 person masks and R6 calibrated RGB/raw-LiDAR metric occupancy each
+recovered `0/9` induced windows; R6 is `NOT_EVALUABLE` because its static
+matcher has no admissible closing signal on the nearly stationary wearer
+window. R7-P then sealed a truth-blind, latest-past-pose raw-LiDAR BEV
+occupancy-flow ledger without evaluator identity in temporal association. It
+recovered `9/9`, proving a narrow spatiotemporal information effect, but raised
+original false segments `12 -> 20` while event F1 remained 22.22%; global flow
+route-risk was active in `123/143` frames. The terminal is therefore
+`R7_P_CAUSAL_OCCUPANCY_FLOW_DEVELOPMENT_GATE_NOT_MET_NO_R8`: do not tune the
+consumed cohort and do not open an RGB student from this result.
 
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC

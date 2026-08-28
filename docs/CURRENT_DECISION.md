@@ -80,6 +80,22 @@ imputation, or depth-backbone changes. A successor requires an independent
 causal spatiotemporal occupancy-flow signal and must not use evaluator identity
 for temporal association.
 
+That R7-P successor is now complete on the same consumed Development window.
+Its full flow ledger is produced from latest-at-or-before causal ego poses plus
+current/past raw upper/lower Velodyne before labels are loaded; temporal
+association is voxel-component correspondence, never evaluator physical ID.
+It recovers all `9/9` induced windows versus `0/9` for both R2 and R6-P and
+keeps critical-event recall at `3/3`. However, original false segments increase
+`12 -> 20` (`+66.7%`), one-to-one event F1 remains 22.22%, and global flow
+route-risk is active in `123/143` frames. The frozen false-segment gate fails:
+`R7_P_CAUSAL_OCCUPANCY_FLOW_DEVELOPMENT_GATE_NOT_MET_NO_R8`.
+
+Interpret this as existence of an independent spatiotemporal signal, not as a
+detector-independent dynamic-occupancy algorithm success. Do not train R8, and
+do not sweep voxel/history/speed/overlap/attribution/tube/lifecycle settings on
+the opened cohort. Any successor must change the motion information source or
+use a separately frozen fresh protocol.
+
 ## What stops here
 
 - Do not record the superseded 24 canary or 120 staged local RGB clips.
