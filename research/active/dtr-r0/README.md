@@ -8,6 +8,7 @@ R7_P_CAUSAL_OCCUPANCY_FLOW_DEVELOPMENT_GATE_NOT_MET_NO_R8 /
 DTR_M1_O_POINT_VELOCITY_ORACLE_CEILING_NOT_MET_CLOSE_SCENE_FLOW_ROUTE /
 DTR_M2_D_EXTENT_GAP_NOT_SUPPORTED_NO_FRESH_M2_O /
 DTR_M3_D_EVALUATOR_CIRCLE_OBB_SEMANTICS_MISMATCH_NO_FRESH_M3_O /
+DTR_C0_GLOBAL_ORIENTED_RISK_CONTRACT_NOT_EVALUABLE_ALWAYS_CONTACT_WINDOW /
 R4_NOT_OPENED`
 
 ## Result first
@@ -373,6 +374,56 @@ Evidence:
   SHA-256
   `306856d96f41dcb9e81415f530f9398da4ebf03664e7b91f1621c1bbdc394858`.
 
+## DTR-C0 global oriented-risk contract terminal
+
+C0 adopts the corrected task contract without changing any model or frozen
+prediction. Primary `CONTACT` is the wearer-level union of all realized future
+native OBB intersections with the 0.65 m route body. Legacy circles remain a
+simultaneous secondary `PROXIMITY` component set. Per-target R2, R3-C, R7-P,
+and M1-O alert timelines are unioned for global correctness; target/component
+identity remains diagnostic only. This makes false segments per actual wearer
+timeline minute well-defined on a cohort containing both bounded contacts and
+known non-contact time.
+
+The consumed M1/M3 window cannot evaluate that metric. Its OBB futures form an
+overlapping `pedestrian:33 -> pedestrian:34 -> pedestrian:36` chain, so all
+`143/143` frames are primary `CONTACT`. There is one left- and right-censored
+global contact interval, zero bounded CONTACT events, and exactly 0.0 minutes
+of known non-CONTACT authority. All four arms descriptively overlap that
+always-positive interval, yielding a vacuous 1.0 overlap F1 and zero unmatched
+segments. C0 records those values only as descriptive diagnostics; primary
+CONTACT recall/F1 and false segments per wearer minute are `NOT_EVALUABLE`,
+not 100%/zero-false results.
+
+The legacy nine dropout rows reset to six OBB-CONTACT rows: all three repeated
+`pedestrian:35` circle-only trials are excluded. On those six non-independent
+rows, R7-P and M1-O each have target-component raw motion evidence in `6/6`.
+R2 and R3-C produce a global alert in `5/6`, but the stressed target contributes
+in `0/6`; unrelated simultaneous targets create those alerts. These are
+consumed-cohort mechanism diagnostics, not recovery performance or a fresh
+100% ceiling. Secondary circle-only contribution segments are `1 / 1 / 2 / 2`
+for R2 / R3-C / R7-P / M1-O respectively.
+
+Terminal:
+`DTR_C0_GLOBAL_ORIENTED_RISK_CONTRACT_NOT_EVALUABLE_ALWAYS_CONTACT_WINDOW`.
+The contract is retained, but this window cannot rank algorithms or estimate
+false alerts per wearer minute. The next admissible experiment is a fresh,
+frozen global-OBB cohort with at least one bounded CONTACT event and known
+non-CONTACT wearer time. Forecasting, R8, scene-flow competition, and a
+deployable direct-motion estimator remain closed until that confirmation.
+
+Evidence:
+
+- `artifacts.local/evidence/dtr-c0/global-oriented-risk-contract/result.json`,
+  SHA-256
+  `df7f2bf40efa9dbc8438bb9e47ec1afdbdcd7ddd25765c228239f896275ae0f7`.
+- `artifacts.local/evidence/dtr-c0/global-oriented-risk-contract/result.global-scorecard.csv`,
+  SHA-256
+  `ed40837b97807849181264d060dd9665e73afb780b31939e262f21564571d508`.
+- `artifacts.local/evidence/dtr-c0/global-oriented-risk-contract/result.global-scorecard.svg`,
+  SHA-256
+  `ad5eb88dd6868730557302d270479003d39a2e8325a2d26b84dd8dcd65ac8e82`.
+
 The source split explains why pooling is not enough:
 
 | Source | R2 recall / false | R3-C recall / false | Route authority |
@@ -719,6 +770,10 @@ python research/active/dtr-r0/dtr_m2_extent_gap_audit.py `
 python research/active/dtr-r0/dtr_m3_realized_future_contract_decomposition.py `
   --m2-result artifacts.local/evidence/dtr-m2/extent-gap-audit/result.json `
   --output artifacts.local/evidence/dtr-m3/realized-future-contract-decomposition/result.json
+
+python research/active/dtr-r0/dtr_c0_global_oriented_risk_contract.py `
+  --m3-result artifacts.local/evidence/dtr-m3/realized-future-contract-decomposition/result.json `
+  --output artifacts.local/evidence/dtr-c0/global-oriented-risk-contract/result.json
 ```
 
 ## Claim ceiling
@@ -773,3 +828,10 @@ negative under every realized future OBB. It therefore closes fresh M3-O until
 the intended contact semantics are chosen and rescored on fresh evidence. The
 result is not learned forecasting, causal future-information, product, or
 safety evidence.
+
+DTR-C0 adopts global realized-OBB CONTACT plus simultaneous circle-only
+PROXIMITY, but the consumed window is CONTACT-saturated and has no non-contact
+denominator. Its descriptive overlap scores and `6/6` M1/R7 target-component
+diagnostic are not performance evidence. Fresh global-OBB confirmation is
+required before estimator work; no Android, product, user, or safety claim
+follows.

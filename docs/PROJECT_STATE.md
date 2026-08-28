@@ -99,6 +99,22 @@ Fresh M3-O, residual future occupancy, route forecasting, R8, and scene-flow
 estimator work remain closed. The next decision is semantic, not a model run:
 freeze whether the event means circularized proximity or oriented-body
 contact; an OBB-contact claim requires evaluator revision and fresh rescoring.
+C0 now selects oriented-body CONTACT as primary truth and retains circle-only
+PROXIMITY as a simultaneous secondary label. Correctness is wearer-global: all
+future native OBBs are unioned, while component identity is diagnostic only.
+However, the consumed window is structurally saturated: overlapping p33, p34,
+and p36 contacts make all `143/143` frames CONTACT, with zero bounded events
+and 0.0 known non-CONTACT wearer minutes. Primary global recall/F1 and
+false-segments/minute are therefore `NOT_EVALUABLE`; the descriptive 1.0
+overlap scores are not algorithm success.
+The legacy nine dropout rows become six OBB-CONTACT rows after excluding the
+three p35 circle-only repetitions. R7-P and M1-O contribute the stressed target
+in `6/6`; R2/R3-C global alerts occur in `5/6` but the target contributes in
+`0/6`. This is consumed mechanism diagnosis only. The terminal is
+`DTR_C0_GLOBAL_ORIENTED_RISK_CONTRACT_NOT_EVALUABLE_ALWAYS_CONTACT_WINDOW`.
+A fresh global-OBB cohort must contain bounded CONTACT and known non-CONTACT
+wearer time before any deployable motion-estimator work; forecasting and R8
+remain closed.
 
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC

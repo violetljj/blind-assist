@@ -296,6 +296,33 @@ dynamics model. If circularized proximity is intentional, describe it as
 such; M3-D establishes a semantics difference, not that one definition is
 universally correct.
 
+The task contract is now reset by C0: primary truth is the wearer-level union
+of realized future OBB CONTACT, legacy circle-only proximity is a simultaneous
+secondary label, and target identity cannot make an otherwise correct global
+route-risk alert false. Frozen R2, R3-C, R7-P, and M1-O predictions were
+replayed without training or tuning.
+
+This consumed window is not a valid global scorecard. Overlapping p33, p34,
+and p36 OBB-contact horizons cover `143/143` frames, producing one left- and
+right-censored always-CONTACT interval, zero bounded events, and 0.0 minutes of
+known non-CONTACT wearer time. Consequently global CONTACT recall/F1 and false
+segments per wearer minute are `NOT_EVALUABLE`. The descriptive 1.0 overlap
+F1 and zero unmatched segments for every arm are saturation artifacts, not
+performance.
+
+After removing the three p35 circle-only repetitions, the dropout contract has
+six OBB-CONTACT rows. R7-P and M1-O contain stressed-target raw contributions
+in `6/6`; R2 and R3-C have a global raw alert in `5/6` only because other
+targets contribute, while the stressed target contributes in `0/6`. Do not
+promote this consumed `6/6` diagnostic to a 100% recovery claim.
+
+The terminal is
+`DTR_C0_GLOBAL_ORIENTED_RISK_CONTRACT_NOT_EVALUABLE_ALWAYS_CONTACT_WINDOW`.
+Retain the global OBB CONTACT plus secondary PROXIMITY contract, but freeze a
+fresh cohort with bounded contact events and known non-contact wearer time
+before comparing algorithms or opening a deployable direct-motion estimator.
+Forecasting, R8, and scene-flow estimator competition remain closed.
+
 ## What stops here
 
 - Do not record the superseded 24 canary or 120 staged local RGB clips.
