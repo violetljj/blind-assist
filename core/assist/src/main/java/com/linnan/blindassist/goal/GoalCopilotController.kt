@@ -99,7 +99,8 @@ data class GoalCopilotStep(
     val handoffState: GoalHandoffState,
     val readinessDecision: GoalHandoffReadinessDecision? = null,
     val priorActionOutcome: GoalObservationActionOutcome? = null,
-    val issuedActionReceipt: GoalObservationActionReceipt? = null
+    val issuedActionReceipt: GoalObservationActionReceipt? = null,
+    val actionUtilitySelection: GoalActionUtilitySelection? = null
 )
 
 /**
@@ -118,7 +119,8 @@ class GoalCopilotController(
         GoalObservationSourceIdentity(CONTRACT_ID, SEMANTIC_CARRIER_SOURCE_ID)
     ),
     private val coastLimitFrames: Int = DEFAULT_COAST_LIMIT_FRAMES,
-    initialHandoffState: GoalHandoffState = GoalHandoffState.Inactive
+    initialHandoffState: GoalHandoffState = GoalHandoffState.Inactive,
+    private val actionUtilityPolicy: GoalActionUtilityPolicy = GoalActionUtilityPolicy()
 ) {
     private val admittedSources = admittedSources.toSet()
     private var continuityState = GoalContinuityState.UNBOUND
@@ -217,6 +219,8 @@ class GoalCopilotController(
     }
 
     fun currentHandoffState(): GoalHandoffState = handoffState
+
+    fun actionUtilitySnapshot(): List<GoalActionUtilityStats> = actionUtilityPolicy.snapshot()
 
     private fun onFreshTarget(
         evidence: GoalObservationEvidence,
@@ -560,7 +564,11 @@ class GoalCopilotController(
         deficit: GoalObservationDeficit,
         bearing: CameraRelativeBearing
     ): GoalCopilotStep {
-        val repairedAction = repairAction(action, priorActionOutcome)
+        val utilitySelection = priorActionOutcome?.let { outcome ->
+            actionUtilityPolicy.observe(outcome)
+            actionUtilityPolicy.selectRepair(outcome)
+        }
+        val repairedAction = utilitySelection?.action ?: action
         val receipt = if (repairedAction.isObservationSeeking()) {
             GoalObservationActionReceipt(
                 receiptId = "$sessionId:${frame.frameId}:$decisionAtNs:${repairedAction.name}",
@@ -590,42 +598,9 @@ class GoalCopilotController(
             handoffState = handoffState,
             readinessDecision = readiness,
             priorActionOutcome = priorActionOutcome,
-            issuedActionReceipt = receipt
+            issuedActionReceipt = receipt,
+            actionUtilitySelection = utilitySelection
         )
-    }
-
-    private fun repairAction(
-        proposed: GoalCopilotAction,
-        outcome: GoalObservationActionOutcome?
-    ): GoalCopilotAction {
-        if (outcome == null || outcome.state !in setOf(
-                GoalObservationActionOutcomeState.NO_GAIN,
-                GoalObservationActionOutcomeState.CONTRADICTED
-            )
-        ) return proposed
-        if (outcome.state == GoalObservationActionOutcomeState.CONTRADICTED) {
-            return if (outcome.receipt.action == GoalCopilotAction.SWEEP_SEARCH) {
-                GoalCopilotAction.HOLD_STEADY_LOCALIZE
-            } else {
-                GoalCopilotAction.SWEEP_SEARCH
-            }
-        }
-        if (proposed != outcome.receipt.action) return proposed
-        return when (proposed) {
-            GoalCopilotAction.SCAN_LAST_LEFT,
-            GoalCopilotAction.SCAN_LAST_FORWARD,
-            GoalCopilotAction.SCAN_LAST_RIGHT -> GoalCopilotAction.SWEEP_SEARCH
-            GoalCopilotAction.PAN_LEFT_TO_IDENTITY,
-            GoalCopilotAction.PAN_RIGHT_TO_IDENTITY,
-            GoalCopilotAction.APPROACH_FOR_IDENTITY,
-            GoalCopilotAction.HOLD_STEADY_CONFIRM -> GoalCopilotAction.SIDESTEP_FOR_DISAMBIGUATION
-            GoalCopilotAction.SIDESTEP_FOR_DISAMBIGUATION -> GoalCopilotAction.APPROACH_FOR_IDENTITY
-            GoalCopilotAction.HOLD_STEADY_LOCALIZE,
-            GoalCopilotAction.SWEEP_SEARCH -> GoalCopilotAction.HOLD_STEADY_LOCALIZE
-            GoalCopilotAction.GUIDE_LEFT,
-            GoalCopilotAction.GUIDE_FORWARD,
-            GoalCopilotAction.GUIDE_RIGHT -> proposed
-        }
     }
 
     private fun GoalCopilotAction.isObservationSeeking(): Boolean = this !in setOf(

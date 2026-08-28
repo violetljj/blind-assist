@@ -1,0 +1,130 @@
+{
+  "protocol_id": "L10-SC19-DEFICIT-CONDITIONED-ACTION-UTILITY-V0",
+  "frozen_before_outcome": true,
+  "claim_ceiling": "CONTROLLED_SYNTHETIC_CONTEXTUAL_ACTION_UTILITY_MECHANICS_ONLY",
+  "seed": 20260829,
+  "trials_per_context": 180,
+  "unknown_outcome_rate": 0.15,
+  "exploration_strength": 0.35,
+  "final_window_per_context": 60,
+  "arms": [
+    "SC18_FIXED_ONE_STEP_REPAIR",
+    "SC19_DEFICIT_CONDITIONED_UCB"
+  ],
+  "contexts": [
+    {
+      "id": "IDENTITY_UNREADABLE_LEFT",
+      "failed_action": "PAN_LEFT_TO_IDENTITY",
+      "fixed_action": "SIDESTEP_FOR_DISAMBIGUATION",
+      "allowed_actions": [
+        "SIDESTEP_FOR_DISAMBIGUATION",
+        "HOLD_STEADY_CONFIRM",
+        "APPROACH_FOR_IDENTITY"
+      ],
+      "improvement_probability": {
+        "SIDESTEP_FOR_DISAMBIGUATION": 0.72,
+        "HOLD_STEADY_CONFIRM": 0.35,
+        "APPROACH_FOR_IDENTITY": 0.48
+      }
+    },
+    {
+      "id": "IDENTITY_UNREADABLE_FORWARD",
+      "failed_action": "APPROACH_FOR_IDENTITY",
+      "fixed_action": "SIDESTEP_FOR_DISAMBIGUATION",
+      "allowed_actions": [
+        "SIDESTEP_FOR_DISAMBIGUATION",
+        "HOLD_STEADY_CONFIRM",
+        "PAN_LEFT_TO_IDENTITY",
+        "PAN_RIGHT_TO_IDENTITY"
+      ],
+      "improvement_probability": {
+        "SIDESTEP_FOR_DISAMBIGUATION": 0.28,
+        "HOLD_STEADY_CONFIRM": 0.72,
+        "PAN_LEFT_TO_IDENTITY": 0.42,
+        "PAN_RIGHT_TO_IDENTITY": 0.42
+      }
+    },
+    {
+      "id": "ASSOCIATION_AMBIGUOUS_LEFT",
+      "failed_action": "SIDESTEP_FOR_DISAMBIGUATION",
+      "fixed_action": "APPROACH_FOR_IDENTITY",
+      "allowed_actions": [
+        "HOLD_STEADY_CONFIRM",
+        "PAN_LEFT_TO_IDENTITY",
+        "SWEEP_SEARCH"
+      ],
+      "improvement_probability": {
+        "APPROACH_FOR_IDENTITY": 0.22,
+        "HOLD_STEADY_CONFIRM": 0.66,
+        "PAN_LEFT_TO_IDENTITY": 0.38,
+        "SWEEP_SEARCH": 0.32
+      }
+    },
+    {
+      "id": "TARGET_NOT_PROPOSED_LEFT",
+      "failed_action": "SCAN_LAST_LEFT",
+      "fixed_action": "SWEEP_SEARCH",
+      "allowed_actions": [
+        "SWEEP_SEARCH",
+        "HOLD_STEADY_LOCALIZE"
+      ],
+      "improvement_probability": {
+        "SWEEP_SEARCH": 0.68,
+        "HOLD_STEADY_LOCALIZE": 0.25
+      }
+    },
+    {
+      "id": "NO_LOCALIZABLE_UNKNOWN",
+      "failed_action": "SWEEP_SEARCH",
+      "fixed_action": "HOLD_STEADY_LOCALIZE",
+      "allowed_actions": [
+        "HOLD_STEADY_LOCALIZE"
+      ],
+      "improvement_probability": {
+        "HOLD_STEADY_LOCALIZE": 0.45
+      }
+    },
+    {
+      "id": "REACQUIRE_PENDING_FORWARD",
+      "failed_action": "HOLD_STEADY_CONFIRM",
+      "fixed_action": "SIDESTEP_FOR_DISAMBIGUATION",
+      "allowed_actions": [
+        "SCAN_LAST_FORWARD",
+        "SWEEP_SEARCH",
+        "SIDESTEP_FOR_DISAMBIGUATION"
+      ],
+      "improvement_probability": {
+        "SCAN_LAST_FORWARD": 0.55,
+        "SWEEP_SEARCH": 0.70,
+        "SIDESTEP_FOR_DISAMBIGUATION": 0.35
+      }
+    },
+    {
+      "id": "FUNCTIONAL_TARGET_UNKNOWN_LEFT",
+      "failed_action": "SIDESTEP_FOR_DISAMBIGUATION",
+      "fixed_action": "APPROACH_FOR_IDENTITY",
+      "allowed_actions": [
+        "HOLD_STEADY_CONFIRM",
+        "PAN_LEFT_TO_IDENTITY",
+        "SWEEP_SEARCH"
+      ],
+      "improvement_probability": {
+        "APPROACH_FOR_IDENTITY": 0.20,
+        "HOLD_STEADY_CONFIRM": 0.40,
+        "PAN_LEFT_TO_IDENTITY": 0.65,
+        "SWEEP_SEARCH": 0.35
+      }
+    }
+  ],
+  "development_gate": {
+    "minimum_improvement_rate_delta": 0.10,
+    "minimum_expected_regret_reduction": 0.50,
+    "minimum_final_window_optimal_action_rate": 0.70,
+    "maximum_unsafe_approach_rate_in_ambiguous_contexts": 0.0
+  },
+  "prohibitions": [
+    "No probability, context, seed, window, exploration, candidate-set, or gate change after outcome.",
+    "UNKNOWN outcomes cannot update either successes or failures.",
+    "No live-camera, human-action, product, completion, or safety claim follows from this authored simulator."
+  ]
+}

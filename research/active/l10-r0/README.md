@@ -368,6 +368,50 @@ Implementations: `GoalObservationActionOutcome.kt`, the receipt/repair path in
 - SC18 result: `artifacts.local/research/l10-r0/sc18/action_outcome_result.json`,
   SHA-256 `92eb8554559e0012aad4db4f8cdbcc901558c25ecfa5f2bb7b04847b4b12413b`.
 
+### SC19: deficit-conditioned online action utility
+
+SC19 removes the fixed repair graph as the long-term policy. A bounded
+contextual UCB learner now keys utility by observation deficit and camera-
+relative bearing, updates only from execution-confirmed `IMPROVED / NO_GAIN /
+CONTRADICTED` receipts, deduplicates receipt IDs, and ignores `UNKNOWN`
+entirely. Its candidate sets are safety boundaries rather than learned
+preferences: for example, `ASSOCIATION_AMBIGUOUS` cannot explore
+`APPROACH_FOR_IDENTITY`. The policy object can be shared across goal sessions,
+while its public snapshot contains only context/action counts rather than goal
+identity.
+
+The frozen controlled mechanism world contains seven heterogeneous deficit
+contexts, 180 trials per context, a fixed 15% unknown-outcome process, and the
+same `0.35` exploration coefficient as runtime. Compared with SC18's fixed
+one-step repair:
+
+| Metric | fixed repair | contextual utility |
+|---|---:|---:|
+| authoritative improvements | 419/1,045 (40.10%) | 658/1,045 (62.97%) |
+| expected cumulative regret | 302.40 | 20.38 |
+| final-window optimal-action rate | 42.86% | 99.52% |
+| ambiguous-context unsafe approach | 100% | 0% |
+
+Improvement rose `+22.87 pp` and expected regret fell 93.26%, crossing every
+preregistered gate and yielding
+`SC19_DEFICIT_CONDITIONED_ACTION_UTILITY_MECHANICS_SIGNAL`. This is a stronger
+algorithmic mechanism than fixed opposite-pan repair, but the effect sizes come
+from authored context probabilities. They do not establish natural action
+utility, live-phone compliance, causal readability, exact identity, arrival,
+product benefit, user benefit, or safety. Real promotion requires logging the
+same execution-confirmed receipt schema on live actions and checking whether
+the learned ranking transfers without changing the frozen candidate safety
+sets.
+
+Implementation: `GoalActionUtilityPolicy.kt`; controlled evaluator:
+`action_utility_benchmark.py`; frozen protocol:
+`action_utility_protocol_v0.json`. Evidence:
+
+- SC19 protocol: `research/active/l10-r0/action_utility_protocol_v0.json`,
+  SHA-256 `7d5cef68311c9047bbb431ae9a8549fbae11569f2ea51a4ffbda73fd6eaf03ce`.
+- SC19 result: `artifacts.local/research/l10-r0/sc19/action_utility_result.json`,
+  SHA-256 `499aa8411eacc9711000eec4cde6ad94897ec18272362f918139edc3e264de62`.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

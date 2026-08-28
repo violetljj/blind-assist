@@ -4,7 +4,8 @@ Status: `L10_R0_ACTIVE / SC14_CAUSAL_MICRO_MOTION_ACTION_BELIEF_MECHANICS_SIGNAL
 SC14_CORE_CAUSAL_ACTION_HANDOFF_GUARD_IMPLEMENTED /
 L10_CORE_SEEK_GUIDE_REACQUIRE_CONTROLLER_IMPLEMENTED /
 SC15_SC16_SC17_ACTIVE_VIEW_PROXY_ROUTES_CLOSED /
-SC18_CAUSAL_ACTION_OUTCOME_REPAIR_MECHANICS_SIGNAL` and
+SC18_CAUSAL_ACTION_OUTCOME_REPAIR_MECHANICS_SIGNAL /
+SC19_DEFICIT_CONDITIONED_ACTION_UTILITY_MECHANICS_SIGNAL` and
 `DTR_R2_PUBLIC_REAL_PRIVILEGED_CEILINGS_ESTABLISHED /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
@@ -135,6 +136,25 @@ does not prove that the chosen opposite pan is optimal. The next source must
 collect real issued-action receipts so action utility can be learned per
 evidence deficit; do not tune the consumed seed or return to passive quality
 proxies.
+
+SC19 replaces long-term fixed repair with bounded online utility learning.
+Utility is keyed only by evidence deficit and camera-relative bearing; updates
+require execution-confirmed comparable receipts, duplicate receipt IDs are
+ignored, and `UNKNOWN` never becomes success or failure. Candidate sets remain
+hard safety boundaries: notably, association ambiguity cannot explore blind
+approach.
+
+In a protocol-frozen authored seven-context world, with 1,260 trials and 215
+unknown outcomes, authoritative improvement rose from `419/1,045` (40.10%) to
+`658/1,045` (62.97%). Expected cumulative regret fell 302.40 -> 20.38
+(-93.26%), final-window optimal selection rose 42.86% -> 99.52%, and ambiguous-
+context approach fell 100% -> 0. Accept
+`SC19_DEFICIT_CONDITIONED_ACTION_UTILITY_MECHANICS_SIGNAL` under a strict
+synthetic contextual-policy ceiling. The probabilities are authored, so the
+metric size cannot be transferred to natural video or users. The next evidence
+source is live execution-confirmed action receipts under unchanged safety
+candidate sets; do not tune SC19's consumed contexts, probabilities, seed, or
+exploration coefficient.
 
 ## DTR-R2 decision
 

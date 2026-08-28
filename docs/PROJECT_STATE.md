@@ -276,6 +276,16 @@ world, repeated no-gain actions fell `182/206 -> 0/215`, task success stayed
 The next active increment is deficit-conditioned action utility from real
 issued-action receipts, not a sweep of the fixed repair rule or old proxies.
 
+That algorithmic increment is now implemented as SC19. A reusable contextual
+UCB policy learns separate action utility for each evidence-deficit/bearing
+context, updates only from execution-confirmed comparable outcomes, ignores
+`UNKNOWN`, deduplicates receipts, and keeps unsafe actions outside the candidate
+set. On a frozen authored seven-context mechanism world, improvement increased
+40.10% -> 62.97%, expected regret fell 93.26%, final-window optimal selection
+reached 99.52%, and ambiguous-context approach fell 100% -> 0. This validates
+the online learning mechanics only. Real promotion still requires live phone
+actions producing the same confirmed receipts without relaxing safety sets.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

@@ -10,15 +10,15 @@
   "adoption_mode": "mechanism_adaptation",
   "usage": {
     "source_scope": "宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。",
-    "project_application": "已落入 core:assist 的目标控制器：按证据缺口选择 SWEEP/SCAN/PAN/APPROACH/SIDESTEP/HOLD；每个补观测动作签发因果回执，只有匹配的执行确认和后续可比较语义证据才能决定改进、无增益、矛盾或未知。",
-    "modifications": "把机器人云台动作改为人持手机的相机相对提示；外观连续性最多保留两帧补观测权限，不能取得身份。LOST 后需两次新鲜语义命中；仅发出但未确认执行、缺失或无权威的动作后观测保持 UNKNOWN；可比较的 NO_GAIN 会阻止立即重复同一动作。",
-    "expected_effect": "消除 OCR 非命中导致的错误 STOP/假 NONE，并把补观测从静态动作映射升级为可由真实动作后果修复的闭环，同时阻止连续性或缺失证据越权。"
+    "project_application": "已落入 core:assist：补观测动作签发执行回执；缺口×相机方向的上下文 UCB 只从匹配执行确认后的可比较结果学习动作效用，并在硬安全候选集内选择修复动作。",
+    "modifications": "把机器人云台动作改为人持手机的相机相对提示；连续性不能取得身份。未确认执行、缺失或无权威结果保持 UNKNOWN 且不更新；回执去重；关联歧义候选集禁止盲目前进；效用策略可跨目标会话共享。",
+    "expected_effect": "把固定 SWEEP/SCAN/PAN/APPROACH/SIDESTEP/HOLD 映射升级为证据缺口条件化的在线主动感知策略，同时保留身份权威和安全动作边界。"
   },
   "evaluation": {
     "reproduction_status": "mechanics_only",
     "verdict": "mixed",
-    "setup": "SC2 ArTVideo action-interface Development replay; SC15-SC17 passive/proxy audits; and SC18 protocol-frozen 250-episode controlled-world comparison of unchanged GoalLock versus causal one-step action repair.",
-    "effect": "SC2 removes terminal STOP/false-NONE; SC15-SC17 failed to establish proxy-based semantic gain. SC18's issued-action receipt and repair eliminated repeated same-action choices after comparable no gain without reducing controlled task success or creating absent-target false completion, while reacquisition decreased slightly within the frozen margin.",
+    "setup": "SC2 ArTVideo action-interface replay; SC15-SC17 proxy audits; SC18 controlled one-step causal repair; and SC19 protocol-frozen seven-context comparison of fixed repair versus execution-receipt-trained contextual UCB.",
+    "effect": "SC15-SC17 closed proxy routes; SC18 established action-outcome repair mechanics. SC19 learned heterogeneous deficit-conditioned utilities, improved authored-world authoritative outcomes, sharply reduced regret, and removed blind approach from ambiguous contexts.",
     "metrics": [
       "source_stop_frames=124; normalized_stop_frames=0",
       "source_false_none_target_present_frames=24; normalized_false_none_target_present_frames=0",
@@ -28,9 +28,12 @@
       "SC16 transitions=2677; mean_gain_delta=0.0093; improvement_rate_delta=0.0322; gate_crossing=0.0166 aligned vs 0.0428 opposed",
       "SC17 precision=0.9097 baseline vs 0.9188 consensus; wrong_reduction=0.2431; wrong_consensus_tracks=5/49",
       "SC18 repeated_no_gain_action_rate=182/206 baseline vs 0/215 repair",
-      "SC18 task_success_rate=0.885 both; absent_false_completion=0/50 both; reacquire=0.8235 baseline vs 0.8075 repair"
+      "SC18 task_success_rate=0.885 both; absent_false_completion=0/50 both; reacquire=0.8235 baseline vs 0.8075 repair",
+      "SC19 authoritative_improvement=419/1045 fixed vs 658/1045 UCB; delta=0.2287",
+      "SC19 expected_regret=302.40 fixed vs 20.38 UCB; reduction=0.9326",
+      "SC19 final_optimal_action_rate=0.4286 fixed vs 0.9952 UCB; ambiguous_unsafe_approach=1.0 vs 0.0"
     ],
-    "claim_boundary": "SC18 supports causal receipt and policy-repair mechanics only. Its zero-repeat primary result is structurally expected and the world is synthetic; no physical phone/user action, causal live readability gain, optimal repair policy, detector, exact-instance selection, metric arrival, product benefit, user benefit, or safety was established."
+    "claim_boundary": "SC19 supports receipt-gated contextual learning and candidate-boundary mechanics only. Context probabilities are authored, so metric magnitudes do not transfer. No physical phone/user action, causal live readability gain, natural optimal policy, detector, exact-instance selection, metric arrival, product benefit, user benefit, or safety was established."
   },
   "evidence": [
     {
@@ -67,6 +70,16 @@
       "kind": "artifact",
       "ref": "artifacts.local/research/l10-r0/sc18/action_outcome_result.json",
       "summary": "SC18 controlled repair result, SHA-256 92eb8554559e0012aad4db4f8cdbcc901558c25ecfa5f2bb7b04847b4b12413b."
+    },
+    {
+      "kind": "repo",
+      "ref": "core/assist/src/main/java/com/linnan/blindassist/goal/GoalActionUtilityPolicy.kt",
+      "summary": "Execution-receipt-gated deficit-conditioned UCB with deduplication, UNKNOWN abstention, snapshots, and hard action candidate boundaries."
+    },
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/research/l10-r0/sc19/action_utility_result.json",
+      "summary": "SC19 contextual utility result, SHA-256 499aa8411eacc9711000eec4cde6ad94897ec18272362f918139edc3e264de62."
     }
   ],
   "history": [
@@ -85,6 +98,10 @@
     {
       "date": "2026-08-28",
       "change": "Landed issued-action receipts and one-step causal repair. SC18 met its synthetic mechanics gate without task-success or false-completion regression; real deficit-conditioned action utility remains the next source gap."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Replaced long-term fixed repair with receipt-gated deficit-conditioned UCB. SC19 crossed its authored contextual mechanics gate; live execution-confirmed phone receipts remain required for promotion."
     }
   ],
   "added_at": "2026-08-28",

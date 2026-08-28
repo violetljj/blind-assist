@@ -104,6 +104,11 @@ class GoalCopilotControllerTest {
         assertEquals(GoalObservationActionOutcomeState.NO_GAIN, repaired.priorActionOutcome?.state)
         assertEquals(GoalCopilotAction.SIDESTEP_FOR_DISAMBIGUATION, repaired.action)
         assertEquals(GoalCopilotAction.SIDESTEP_FOR_DISAMBIGUATION, repaired.issuedActionReceipt?.action)
+        assertEquals(
+            GoalObservationDeficit.DECISIVE_IDENTITY_UNREADABLE,
+            repaired.actionUtilitySelection?.context?.deficit
+        )
+        assertEquals(1L, controller.actionUtilitySnapshot().single().noGain)
 
         val improved = step(
             controller,
