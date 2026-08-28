@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC34-FRESH-ORIENTATION-QUOTIENT-ORDINAL-INTEGRITY",
+  "source": {
+    "cohort_protocol_sha256": "554e0b85fc2268bf9c61213bfdc27c183f13f46cd579599a45ac1ade15b8444c",
+    "source_admission_protocol_sha256": "e525836665b2a8d8c3c2c8972442506ed3e2ccd9ba2e72b8c1bb1fd2313419de",
+    "source_admission_result_sha256": "3830e5623ba4777182341963dc2e4a2ab2fe388ef9e139fa792c9922b1291914",
+    "authority": "Fresh cohort admitted by complete public ordinal inventory and provider-public unoriented lattice before target membership was opened"
+  },
+  "frozen_algorithm": {
+    "baseline": "SC31 redundancy-gated task-action semantics followed by SC21 parent-normalized topology integrity",
+    "successor": "SC31 plus orientation-quotient ordinal commitment",
+    "ordinal_mode": "ORIENTATION_QUOTIENT_COMPLETE_INVENTORY",
+    "minimum_same_action_candidates": 3,
+    "minimum_normalized_pitch": 0.02,
+    "maximum_pitch_relative_deviation": 0.25,
+    "maximum_orthogonal_residual_pitch_ratio": 0.15,
+    "normalized_component_link_radius": 0.4,
+    "minimum_dominant_component_size": 2,
+    "unique_commit_rule": "For requested rank k among N candidates, retain both PCA polarities. Commit only if positions k and N+1-k are the same candidate.",
+    "ambiguous_rank_policy": "PRESERVE_SC31_AND_REQUEST_ORDINAL_ORIENTATION_VIEW",
+    "directional_cue_policy": "NOT_EVALUABLE_UNTIL_VIEW_ORIENTATION_IS_AUTHORIZED",
+    "identity_authority": "UNCHANGED_AUTHORIZED_EXACT_PARENT_BINDING",
+    "candidate_semantic_authority": "PRIVILEGED_SCENEFUN3D_FUNCTION_LABEL_CEILING"
+  },
+  "frozen_gate": {
+    "minimum_evaluable_tasks": 3,
+    "minimum_ordinal_admissions": 1,
+    "minimum_legal_commit_gain": 1,
+    "minimum_wrong_part_reduction": 1,
+    "target_set_recall_noninferiority": true,
+    "maximum_taskwise_regressions": 0
+  },
+  "decision_labels": {
+    "insufficient_tasks": "SC34_NOT_EVALUABLE_INSUFFICIENT_ORDINAL_TASKS",
+    "insufficient_admissions": "SC34_NOT_EVALUABLE_NO_POLARITY_INVARIANT_RANK",
+    "pass": "SC34_ORIENTATION_QUOTIENT_ORDINAL_FRESH_DEVELOPMENT_SIGNAL",
+    "fail": "SC34_ORIENTATION_QUOTIENT_ORDINAL_FRESH_GATE_NOT_MET"
+  },
+  "claim_layer": "FRESH_PRIVILEGED_PROPOSAL_CONDITIONAL_ORDINAL_GROUNDING",
+  "forbidden_after_outcome": [
+    "choose or flip the PCA sign using target IDs or evaluator output",
+    "change ordinal parsing, task inventory, pitch, or residual thresholds",
+    "reinterpret first or last as unique without orientation authority",
+    "remove tasks or replace the admitted scene",
+    "use sibling task target order to label the axis"
+  ],
+  "claim_boundary": "Fresh one-scene proposal-conditional evidence for a polarity-invariant ordinal rank under a complete public rank inventory. Candidate function labels and exact parent binding remain privileged. This does not establish RGB proposal quality, general ordinal direction, live orientation, reachability, arrival, HANDOFF_READY, product benefit, user benefit, or safety."
+}

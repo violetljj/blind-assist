@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "experiment": "L10-SC34-FRESH-ORIENTATION-QUOTIENT-ORDINAL-COHORT",
+  "source_admission": {
+    "protocol_sha256": "e525836665b2a8d8c3c2c8972442506ed3e2ccd9ba2e72b8c1bb1fd2313419de",
+    "result_sha256": "3830e5623ba4777182341963dc2e4a2ab2fe388ef9e139fa792c9922b1291914",
+    "backend_receipt_sha256": "5d8e2d3eaab152703a93cecf534d07ae8bfa41b2fd192d04a09b40d2dc0a8618",
+    "decision": "SC33_PROVIDER_PUBLIC_ORIENTATION_QUOTIENT_SOURCE_ADMITTED",
+    "selection_authority": "public nondirectional ordinal task inventory plus privileged functional labels, proposal geometry, and parent OBBs; no task target membership or selector output"
+  },
+  "cohort": [
+    {
+      "visit_id": "421658",
+      "video_id": "42445769",
+      "sha256": {
+        "annotations": "d3882950c597a5cfa000ffba90a13e080d7f52a80209f60352c89ec54be98d45",
+        "descriptions": "c57509726782dfa71867531e00eeeaac6fd911b3e0e1839cb4cc6706fa3ee63c",
+        "laser_scan": "46119da4d130f92f064d94a8a6abe5e5f27a53ddfaf63194e2639164be8ef08d",
+        "transform": "48d8010918a8c4c88f983d6e3ed2cdad537f63c5161622099a1b47d20e4bd9ea",
+        "object_boxes": "6a8dcbad9bbce086378869a39354e6fd8ac3d0818c9529f93a4da9900c8edcad"
+      }
+    }
+  ],
+  "claim_boundary": "Exact source-disjoint SceneFun3D cohort admitted before ordinal selector execution. Source admission exposes a complete public rank inventory and an unoriented provider-public candidate lattice but no target membership or evaluator result."
+}

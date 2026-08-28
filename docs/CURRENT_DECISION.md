@@ -12,7 +12,9 @@ SC22_INTEGRITY_ENDPOINT_COMPOSITION_MECHANICS_SIGNAL /
 SC24_SEMANTIC_TOPOLOGY_INTEGRITY_CONSUMED_MECHANICS_SIGNAL /
 SC28_REDUNDANCY_GATED_ACTION_FAMILY_CONSUMED_MECHANICS_SIGNAL /
 SC29_REDUNDANCY_GATED_ACTION_FAMILY_FRESH_GATE_NOT_MET /
-SC31_CONFLICT_ADMITTED_REDUNDANCY_GATED_FRESH_DEVELOPMENT_SIGNAL` and
+SC31_CONFLICT_ADMITTED_REDUNDANCY_GATED_FRESH_DEVELOPMENT_SIGNAL /
+SC32_BOUNDARY_ORDINAL_SOURCE_NOT_EVALUABLE /
+SC34_ORIENTATION_QUOTIENT_ORDINAL_FRESH_GATE_NOT_MET` and
 `DTR_R2_PUBLIC_REAL_PRIVILEGED_CEILINGS_ESTABLISHED /
 DTR_C2_M1_CTB_CONFIDENCE_TRACK_GAP_BRIDGE_FRESH_MECHANICS_SIGNAL /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
@@ -294,6 +296,30 @@ conditioned ordinal axis for repeated same-action controls (for example second,
 third, fourth outlet), with action-family filtering unchanged. Candidate labels
 are still privileged, reachability remains `UNKNOWN`, and `HANDOFF_READY`
 remains forbidden.
+
+## 2026-08-28 ordinal grounding decision
+
+SC32 tested a parent-boundary-anchored absolute ordinal axis and admitted no
+scene in its frozen 80-candidate roster. The failure is source/representation
+specific, not an ordinal-algorithm negative: the diagnostic scene's three
+near-uniform outlet proposals were authorized to the bed OBB, so the parent
+boundary could not honestly define the power strip's first slot. Do not relax
+the opened boundary, pitch, or residual thresholds.
+
+SC33 replaced that unavailable polarity source with an orientation quotient.
+When public task text supplies a complete rank inventory and provider-public
+geometry supplies an unoriented odd-length lattice, only the reversal-invariant
+middle rank may uniquely commit; endpoint ranks retain both hypotheses and ask
+for an orientation observation. Source admission selected `421658 / 42445769`
+after 16 candidates without reading target IDs. The fresh SC34 run recovered
+`second outlet` from an empty SC31 selection to the unique correct proposal,
+raising legal commits `0/3 -> 1/3` and mean target-set recall `66.67% -> 100%`
+with zero task-wise regressions. Wrong parts stayed `4`, so the frozen composite
+gate requiring wrong-part reduction was not met. Record this as a fresh narrow
+false-negative-recovery effect inside a formal gate failure; do not tune or
+reopen the cohort. The next information source must authorize axis polarity
+(for example a live view/gravity relation) to resolve first/last, while RGB
+proposal quality, reachability, arrival, and `HANDOFF_READY` remain unknown.
 
 ## DTR-R2 decision
 

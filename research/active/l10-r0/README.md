@@ -665,6 +665,49 @@ for repeated same-action controls on separately admitted evidence. SC31 still
 uses privileged functional labels and does not establish RGB proposal quality,
 reachability, arrival, `HANDOFF_READY`, product benefit, or safety.
 
+### SC32--SC34: polarity-safe ordinal grounding recovers the middle control
+
+SC32 froze a parent-normalized, boundary-anchored absolute slot axis. Its
+80-candidate source roster admitted zero scenes. A sealed diagnostic showed why:
+three outlet proposals were regular and collinear, but their authorized parent
+was the enclosing bed OBB, not the power strip. The support-object boundary is
+therefore not an honest source of outlet numbering; the opened thresholds and
+cohort remain closed.
+
+SC33 changes the representation instead of the matcher. For a complete public
+rank inventory over an odd-length provider-public lattice, it retains both PCA
+axis polarities. Requested rank `k` maps to both positions `k` and `N+1-k`;
+only when those hypotheses coincide may the selector uniquely commit. Thus the
+middle of three candidates is grounded without inventing left/right authority,
+while first and third remain set-valued and request an orientation view.
+
+The outcome-blind admission stopped after 16 candidates on
+`421658 / 42445769`. Fresh SC34 results on its three outlet tasks were:
+
+| Metric | SC31 baseline | + orientation quotient |
+|---|---:|---:|
+| legal commits | 0/3 | **1/3** |
+| mean target-set recall | 66.67% | **100%** |
+| wrong parts | 4 | 4 |
+| task-wise regressions | 0 | **0** |
+
+`second outlet` changed from an empty selection to the unique correct proposal.
+The formal decision is still
+`SC34_ORIENTATION_QUOTIENT_ORDINAL_FRESH_GATE_NOT_MET` because the frozen gate
+also required wrong-part reduction; this route repaired a false negative rather
+than removing a wrong candidate. Treat it as a narrow fresh mechanism effect
+inside a composite-gate failure. Do not reopen the scene or thresholds. The next
+legal source must add view/gravity polarity authority to distinguish endpoint
+ranks. Privileged labels and exact parent binding remain ceilings; RGB proposal,
+reachability, arrival, `HANDOFF_READY`, product, and safety claims remain
+forbidden.
+
+Execution receipts used the shared `research-l10-r0` environment and
+`tools/research_backend.py`. On the real `421658` point-cloud matching probe,
+NumPy CPU was measured faster than Torch CUDA (38.37 ms versus 189.67 ms median),
+so CPU execution is an explicit `CPU_FASTER_MEASURED` selection rather than a
+device or provider fallback.
+
 The semantic-source successor then evolved through three bounded versions:
 
 - SC2 isolates RapidOCR and CRAFT memory. CRAFT may provide current-frame text

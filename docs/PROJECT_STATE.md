@@ -359,6 +359,18 @@ task, so task-wise no-regret is not established. The next representation must
 model target-conditioned ordinal structure inside repeated same-action controls;
 candidate semantics remain privileged and reachability remains `UNKNOWN`.
 
+SC32--SC34 now isolate that ordinal gap. A frozen parent-boundary axis found no
+eligible source in 80 candidates because functional controls can be bound to a
+larger support OBB rather than their physical carrier. The successor therefore
+keeps both PCA polarities and commits only a reversal-invariant rank. On the
+fresh `421658` three-outlet cohort, the middle-rank rule changed `second outlet`
+from empty/zero-recall to a unique correct commit: legal commits `0 -> 1`, mean
+recall `66.67% -> 100%`, zero task-wise regressions. Wrong parts remained `4`,
+so SC34 is formally `GATE_NOT_MET` under its frozen composite gate despite the
+fresh false-negative-recovery effect. Endpoint ranks remain set-valued pending
+an authorized orientation observation; no RGB, reachability, arrival, handoff,
+product, or safety claim follows.
+
 ## Demonstration track
 
 Semantic Anchor to Marker Pose remains the live-device showcase closure. Its

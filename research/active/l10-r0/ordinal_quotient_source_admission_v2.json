@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "experiment": "L10-SC33-PROVIDER-PUBLIC-ORIENTATION-QUOTIENT-ORDINAL-SOURCE-ADMISSION",
+  "predecessor": {
+    "protocol_sha256": "857df489e82ba5bccd8d4b08fc9ff81fdb840f1817f3be68d3892866e4bac1e5",
+    "result_sha256": "6ed7bb47a3c77fc885a431916c01e14099c31d358b5c8f8e2ec45e8d86f430c8",
+    "decision": "SC32_NOT_EVALUABLE_INSUFFICIENT_ORDINAL_LATTICE_SCENES",
+    "diagnosis_sha256": "22375367fb7f9afaebef685cbdf7c0287b09f5ba4efb9dc22548e72ec620e0f6",
+    "information_change": "Replace unjustified parent-boundary polarity with a two-polarity quotient. Only ranks invariant to axis reversal may commit."
+  },
+  "source": {
+    "dataset": "SceneFun3D train split",
+    "scenefun3d_base_url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1",
+    "arkitscenes_base_url": "https://docs-assets.developer.apple.com/ml-research/datasets/arkitscenes/v1",
+    "cohort_csv_sha256": "a570b18aee43058a2f44db653a606ca799f64f054013b17dac95948fa590d5b1",
+    "arkitscenes_metadata_sha256": "ff4b3d3203525bdf12ebbb3fcaea0b9cf0bda5d584a48d42f21a096135c26621"
+  },
+  "consumed_visit_ids": [
+    "420673", "420683", "420693", "421002", "421005", "421010",
+    "421013", "421015", "421069", "421254", "421267", "422007",
+    "422011", "422356", "422377", "422383", "422384", "423325",
+    "423438", "423474", "423966"
+  ],
+  "selection": {
+    "ordering": "ascending visit_id then video_id from the official one-video CSV",
+    "maximum_candidate_scenes": 80,
+    "minimum_nondirectional_ordinal_connect_tasks": 3,
+    "selected_scene_count": 1,
+    "stop_rule": "Stop immediately after the first eligible scene."
+  },
+  "frozen_algorithm": {
+    "ordinal_mode": "ORIENTATION_QUOTIENT_COMPLETE_INVENTORY",
+    "representation": "parent-normalized PCA lattice retaining both axis polarities; complete public ordinal inventory supplies rank cardinality but not target membership",
+    "minimum_same_action_candidates": 3,
+    "minimum_normalized_pitch": 0.02,
+    "maximum_pitch_relative_deviation": 0.25,
+    "maximum_orthogonal_residual_pitch_ratio": 0.15,
+    "normalized_component_link_radius": 0.4,
+    "minimum_dominant_component_size": 2,
+    "unique_commit_rule": "Commit only when forward rank and reversed rank identify the same candidate; otherwise preserve SC31 and request an orientation observation.",
+    "directional_cue_policy": "NOT_EVALUABLE_UNTIL_VIEW_ORIENTATION_IS_AUTHORIZED",
+    "no_match_policy": "PRESERVE_SC31_SET_AND_REQUEST_ORDINAL_ORIENTATION_VIEW",
+    "identity_authority": "UNCHANGED_AUTHORIZED_EXACT_PARENT_BINDING",
+    "candidate_semantic_authority": "PRIVILEGED_SCENEFUN3D_FUNCTION_LABEL_CEILING"
+  },
+  "decision_labels": {
+    "pass": "SC33_PROVIDER_PUBLIC_ORIENTATION_QUOTIENT_SOURCE_ADMITTED",
+    "incomplete": "SC33_ORDINAL_QUOTIENT_SOURCE_ADMISSION_INCOMPLETE",
+    "insufficient": "SC33_NOT_EVALUABLE_INSUFFICIENT_ORDINAL_QUOTIENT_SCENES"
+  },
+  "forbidden_after_source_access": [
+    "choose a PCA sign using task target IDs, sibling target order, or evaluator output",
+    "change ordinal parsing, lattice, pitch, or residual thresholds",
+    "read description annot_id values or target membership",
+    "run SC31 or quotient selector outcomes during admission",
+    "reorder candidates or skip an eligible scene"
+  ],
+  "claim_boundary": "Outcome-blind provider-public admission for orientation-quotient ordinal grounding. Public task text may establish a complete rank inventory and privileged proposal geometry may establish an unoriented lattice; target IDs and selector outcomes remain sealed. Passing is not algorithm success, RGB proposal performance, live orientation, reachability, arrival, HANDOFF_READY, product benefit, or safety evidence."
+}
