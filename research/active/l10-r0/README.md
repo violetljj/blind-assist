@@ -1202,16 +1202,53 @@ calibration threshold then rejects the surviving target-local evidence. Record
 `NAMED_POI_SCENE_LEVEL_IDENTITY_AND_ENTRANCE_GATE_NOT_MET`. Do not tune the
 opened roles, thresholds, prompt, or weights.
 
-The successor representation is now implemented in
+The successor representation is implemented in
 `named_poi_entrance_binding.py`. Every entrance proposal receives an expanded
 context crop; that crop, rather than the whole scene, must rank the requested
 public target above the map roster. A harmonic target-local edge combines
 entrance support and normalized identity margin. The reducer emits `COMMIT`
 only for a unique edge, preserves same-target twins as `SET_VALUED`, and returns
 `SEARCH` when only a generic high-scoring door belongs to another target. Its
-pure mechanism check passes all three cases. This is implementation mechanics,
-not a real-image gain; a fresh cohort must now evaluate proposal-context
-features without reopening V1/V2.
+pure mechanism check passes all three cases.
+
+V3 then froze a third prior-file-disjoint source before inference: 20 public
+images, four human-boxed actionable entrance views, and 16 negatives. Original-
+resolution audit removed HKU image 05 before the model call because its apparent
+lower opening is a window, not an entrance. GroundingDINO supplied at least one
+proposal at IoU >= 0.30 for all `4/4` positive images, so localized proposal
+availability is not the current bottleneck. The one-shot comparison was:
+
+| arm | correct unique commits | false commits | precision | positive recall |
+| --- | ---: | ---: | ---: | ---: |
+| strongest generic entrance proposal | 0/4 | 20 | 0% | 0% |
+| proposal-context target-local binding | 0/4 | **5** | 0% | 0% |
+
+The target-local reducer therefore removes `15/20` false commits (`75%`) and
+is retained only as a fail-closed safety filter. It is not retained as a
+successful entrance locator: it produced no correct unique commit. Seven views
+remained `SET_VALUED`, eight remained `SEARCH`, and five were incorrect
+`COMMIT`; only one positive view had truth inside the retained candidate set.
+This localizes the next information gap. An expanded crop is still mostly a
+generic door/corridor descriptor and does not transport entity evidence to the
+specific entrance. The next legal representation is a target-support field:
+project reciprocal reference-to-query patch matches into the current image,
+then bind entrance proposals by overlap/connectivity to that target support
+rather than by another global crop embedding. Do not tune context scale,
+thresholds, boxes, prompt, or weights on V3.
+
+V3 implementation and protocol:
+`named_poi_target_local_entrance_eval.py` and
+`named_poi_target_local_entrance_protocol_v1.json`. Result:
+`artifacts.local/evidence/l10-r0/named-poi-target-local-entrance-v1/result.json`,
+SHA-256 `5777b52914553913b5016222dab36b5ffda309433f2c46045a67c49c509e4b03`.
+The encoder selected measured-faster CPU (`0.173 s` versus verified CUDA
+`0.443 s`), while GroundingDINO selected verified RTX 5060 CUDA (`1.093 s`
+versus CPU `3.912 s`); receipt SHA-256 values are
+`95b1e69b4f83ba6317f08525e5928e8e0f5a24c1c64b851ae63c8a0657052d3a`
+and `eeea35e1c457f89841009cde8b45749e5f3c867f65a8ee87ac2c32ce937d827e`.
+No OCR calls were made. The human boxes establish only a current-image aperture
+or passage assembly, not public access, traversability, accessibility, metric
+approach, tracking, guidance, arrival, product benefit, user benefit, or safety.
 
 V2 result:
 `artifacts.local/evidence/l10-r0/named-poi-multifacet-entrance-v2/result.json`,

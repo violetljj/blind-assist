@@ -9,24 +9,47 @@
   "use_state": "active",
   "adoption_mode": "mechanism_adaptation",
   "usage": {
-    "source_scope": "Pure deterministic mechanism check informed by closed Commons multi-facet diagnostics; no real successor cohort opened.",
+    "source_scope": "Third prior-file-disjoint Commons batch with 20 images, four human-boxed actionable entrance views, 16 negatives, and six public target reference images.",
     "project_application": "Replace scene-level identity AND entrance gating with candidate-specific target-to-entrance edges before tracking and guidance.",
     "modifications": "Use expanded proposal context, a public target roster, harmonic entrance/identity edge evidence, set-valued ambiguity, and fail-closed search.",
-    "expected_effect": "Recover true entrances whose whole-scene identity is weak while rejecting generic high-score doors belonging to a different nearby entity."
+    "expected_effect": "Reject generic high-score doors belonging to a different nearby entity and, if proposal context carries enough identity, recover a correct unique target entrance."
   },
   "evaluation": {
-    "reproduction_status": "not_attempted",
-    "verdict": "not_run",
-    "setup": "",
-    "effect": "",
-    "metrics": [],
-    "claim_boundary": "The mechanism check passes generic-distractor, wrong-target-only, and same-target-twin cases. Real-image gain, exact entrance pixels, navigation, arrival, product, user-benefit, and safety remain unproved."
+    "reproduction_status": "partial",
+    "verdict": "mixed",
+    "setup": "One-shot zero-OCR Development comparison on a third source-disjoint 20-image batch. Entrance boxes were frozen before inference; CPU/GPU probes and device receipts were persisted.",
+    "effect": "GroundingDINO covered all four positive boxes. Target-local crop binding reduced false commits from 20 to 5 but made zero correct unique commits, so it is retained only as a safety filter and not as an entrance locator.",
+    "metrics": [
+      "proposal_oracle_positive_coverage=4/4",
+      "generic_correct_unique_commits=0/4",
+      "generic_false_commits=20",
+      "target_local_correct_unique_commits=0/4",
+      "target_local_false_commits=5",
+      "false_commit_reduction=75%",
+      "commit_or_set_valued_truth_coverage=1/4"
+    ],
+    "claim_boundary": "This supports a fail-closed false-commit filter and localizes the missing target-to-proposal evidence. It does not establish a correct entrance locator, public access, traversability, navigation, tracking, arrival, product benefit, user benefit, or safety."
   },
-  "evidence": [],
+  "evidence": [
+    {
+      "kind": "repo",
+      "ref": "research/active/l10-r0/named_poi_target_local_entrance_protocol_v1.json",
+      "summary": "Frozen V3 source inventory, exact human entrance boxes, unchanged reducer configuration, metrics, and one-shot stop rule."
+    },
+    {
+      "kind": "repo",
+      "ref": "research/active/l10-r0/README.md",
+      "summary": "V3 outcome, backend receipts, failure localization, next representation, and claim boundary."
+    }
+  ],
   "history": [
     {
       "date": "2026-08-28",
       "change": "Next fresh run must evaluate proposal-context features directly; do not reopen V1/V2 or tune their thresholds."
+    },
+    {
+      "date": "2026-08-28",
+      "change": "Consumed V3: retain candidate-local binding only as a 75 percent false-commit filter. Do not tune the opened cohort; next transport target evidence with a reciprocal patch-support field."
     }
   ],
   "added_at": "2026-08-28",

@@ -538,15 +538,21 @@ ranking still reached `0.725` AUC, so the terminal is
 `NAMED_POI_SCENE_LEVEL_IDENTITY_AND_ENTRANCE_GATE_NOT_MET`, not evidence that
 entrance cues are absent.
 
-The next algorithm has therefore moved the identity seam inside each entrance
-candidate. For every proposed door, stairs, gate, or passage, an expanded
-context crop must itself rank the requested POI over the map roster. The new
-reducer commits one target-local edge, preserves multiple same-target entrances
-as `SET_VALUED`, and otherwise keeps searching. The mechanism is implemented
-and its three-case check passes, but it has no real-image gain yet. Do not tune
-or reopen either consumed entrance cohort; the next fresh run evaluates this
-proposal-context representation directly, then only a successful edge may feed
-tracking, bearing guidance, and arrival logic.
+The identity seam was then moved inside each entrance candidate. On a third
+prior-file-disjoint 20-image source, GroundingDINO covered all `4/4` human-boxed
+actionable entrances at IoU >= 0.30. Committing its strongest generic proposal
+made 20 false commits and zero correct commits. Candidate-local CLIP+DINO target
+binding reduced false commits `20 -> 5` but still made zero correct unique
+entrance commits; one of four positives survived only in a `SET_VALUED` set.
+Retain this reducer only as a `75%` false-commit filter, not as a locator. Record
+`NAMED_POI_TARGET_LOCAL_CROP_BINDING_SAFETY_FILTER_ONLY_NO_CORRECT_COMMIT`.
+
+Do not tune V3 context scale, thresholds, boxes, prompt, or weights. The next
+representation must transport entity evidence spatially: project reciprocal
+reference-to-query patch support into the image and require an entrance proposal
+to overlap or connect to that target-support field. Only a correct unique edge
+may feed tracking, bearing guidance, and arrival logic. OCR remains an optional
+high-precision branch, not the main or sole authority.
 
 ## DTR-R2 decision
 

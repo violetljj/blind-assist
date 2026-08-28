@@ -582,14 +582,18 @@ score retained `0.725` AUC, the scene-level identity-AND-entrance join failed.
 Record `NAMED_POI_SCENE_LEVEL_IDENTITY_AND_ENTRANCE_GATE_NOT_MET`; do not tune
 the opened sources.
 
-A target-local binding reducer is now implemented. It expands every entrance
-proposal, compares that proposal context against the public target roster, and
-emits `COMMIT / SET_VALUED / SEARCH` from the candidate-specific edge. Its
-mechanism check rejects a higher-scoring door belonging to another target,
-preserves two same-target entrances as a set, and fails closed when no target-
-local edge exists. Real-image evidence for this successor remains pending on a
-fresh cohort; no entrance, navigation, metric arrival, product, user-benefit,
-or safety claim follows.
+A target-local binding reducer now has fresh real-image evidence. On 20 third-
+batch public images, GroundingDINO proposed a truth-overlapping candidate for
+all `4/4` human-boxed entrances. The generic highest-score rule nevertheless
+made zero correct and 20 false commits. Proposal-context CLIP+DINO binding cut
+false commits to five but also made zero correct unique commits; it is retained
+only as a fail-closed filter. Record
+`NAMED_POI_TARGET_LOCAL_CROP_BINDING_SAFETY_FILTER_ONLY_NO_CORRECT_COMMIT`.
+The bottleneck is no longer proposal availability but transporting POI identity
+to the correct proposal. The next source/representation is a reciprocal patch-
+match target-support field joined spatially to entrance proposals, not OCR-only
+recognition or tuning this consumed cohort. No entrance, navigation, metric
+arrival, product, user-benefit, or safety claim follows.
 
 ## Demonstration track
 
