@@ -642,6 +642,28 @@ cohort with GroundingDINO prompt, threshold, scale, cap, crop, SAM, priority, or
 assignment changes. PB16 changes to native SAM 3.1 text-conditioned concept
 instance masks on fresh source-disjoint pixels.
 
+PB16 loaded the SAM 3.1 multiplex detector through a custom strict image-only
+adapter assembled from Meta's multiplex recipe: all `1,166` detector keys
+loaded with zero missing or unexpected keys, while no tracker or video predictor
+was instantiated. This is not an official supported SAM 3.1 image API. The
+public SAM 3 image builder had already failed a synthetic smoke because its
+four-scale dual neck does not match the checkpoint's three-scale detector. A
+separate first formal launch stopped before model load, RGB decoding, or output
+when WDDM exposed `8,150` rather than the frozen `8,151` MiB; only the same-GPU
+minimum-memory contract was corrected to `8,000` MiB.
+
+The valid frozen run completed `88` model calls in `34.94 s`, peaking at
+`4,685,969,920` allocated CUDA bytes. It produced `0/4` true positives, `0/4`
+control false positives, and balanced accuracy `0.500`. Record
+`L10_PB16_SAM3_NATIVE_PART_TOPOLOGY_DEVELOPMENT_GATE_NOT_MET`. The parent
+concept `architectural door` returned zero native instances in all eight frames;
+operation-part masks still appeared on three positives, furniture concepts were
+active, and both control families remained clean. The route therefore failed
+before topology at architectural-parent semantics. The cohort is consumed: do
+not rescue it with concept wording, confidence, cap, assignment, adapter, or
+topology changes. Any successor must change both supported weight/API and parent
+semantic representation on fresh source-disjoint pixels.
+
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
 because the approved AWS profile is absent. That is a source-access condition,

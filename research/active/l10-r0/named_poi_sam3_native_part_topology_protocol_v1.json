@@ -1,0 +1,328 @@
+{
+  "schema": "l10-named-poi-sam3-native-part-topology-protocol-v1",
+  "created_at": "2026-08-29",
+  "status": "FROZEN_BEFORE_FRESH_COHORT_MODEL_OUTPUT",
+  "experiment": "L10-PB16 SAM3.1 Native Full-Frame Part Topology",
+  "short_name": "SNPT",
+  "question": "Can one frozen SAM3.1 detector representation, exposed through a strict image-only adapter, and ten native full-frame text concepts distinguish an architectural door leaf with an attached operation part from handled furniture doors and doorless openings?",
+  "single_change_from_pb15": "Replace the GroundingDINO-to-SAM2.1 box-prompt chain and all parent crops with the exact three-scale SAM3.1 multiplex detector, strict-loaded as an image-only adapter, on the complete source RGB image. Encode each frame once, reuse that image representation for exactly ten fixed text prompts, and retain only mask-level parent-child topology.",
+  "information_source": {
+    "model_repository": "facebook/sam3.1",
+    "model_repository_host": "ModelScope mirror of the official named repository",
+    "model_repository_origin": "https://www.modelscope.cn/facebook/sam3.1.git",
+    "model_repository_commit": "616acbee0b9ed4177f1f389e3c13594a0a1f6398",
+    "model_snapshot_path": "artifacts.local/models/sam3.1-modelscope",
+    "checkpoint": {
+      "path": "artifacts.local/models/sam3.1-modelscope/sam3.1_multiplex.pt",
+      "bytes": 3502755717,
+      "sha256": "0567debeec80ba4ac6369540c6c248025283cb3ff2b92827509e57e2b3541cb6",
+      "load_role": "The PB16 strict image-only adapter assembles the exact three-scale Sam3MultiplexDetector component recipe from the official SAM3.1 video builder, loads only detector.* with strict=True, and never instantiates the tracker or video predictor."
+    },
+    "model_files": [
+      {
+        "path": "config.json",
+        "bytes": 26739,
+        "sha256": "9593725533302a100d8e4ff1e29c0799e5a04c696b76c65fa4ee28dcd036b16b"
+      },
+      {
+        "path": "processor_config.json",
+        "bytes": 1792,
+        "sha256": "d76e8fbdc561ba6af3b44937b7e99a433440cb0251ff11237b0b7d0654dd8474"
+      }
+    ],
+    "source_repository": "facebookresearch/sam3",
+    "source_repository_origin": "https://github.com/facebookresearch/sam3.git",
+    "source_commit": "8f0b7f4d4e7eda2ed606ebde6702c93359ad01da",
+    "source_path": "artifacts.local/models/sam3-source-v1",
+    "source_package_version": "0.1.0",
+    "source_files": [
+      {
+        "path": "sam3/model_builder.py",
+        "bytes": 44074,
+        "sha256": "c78af29c3db0f0ef3c9ec66dcfe32d6a9fd70b82f660142e97908a5ce61c469f"
+      },
+      {
+        "path": "sam3/model/sam3_image_processor.py",
+        "bytes": 9217,
+        "sha256": "e5167f53bc756e121df6c53e3cde2367a0e0f7d2b2de9d2093ef27f4691b805d"
+      },
+      {
+        "path": "sam3/model/sam3_multiplex_detector.py",
+        "bytes": 42639,
+        "sha256": "dc951b516538ec8bcf9e03f1005b9603c8194f454554af5274618de4364f65ac"
+      },
+      {
+        "path": "sam3/model/vl_combiner.py",
+        "bytes": 15494,
+        "sha256": "c04e3f911db8c950ceb6a31f77ce49d47cac15d99493bdced9ed57d2a3aa7443"
+      },
+      {
+        "path": "sam3/assets/bpe_simple_vocab_16e6.txt.gz",
+        "bytes": 1356917,
+        "sha256": "924691ac288e54409236115652ad4aa250f48203de50a9e4722a6ecd48d6804a"
+      },
+      {
+        "path": "LICENSE",
+        "bytes": 7414,
+        "sha256": "67f67e15efa517e0f67f59ff2d2f603a624da5d2f5458b0c5b366ccd66bb3eea"
+      }
+    ],
+    "license": {
+      "name": "SAM License",
+      "last_updated": "2025-11-19",
+      "contract": "This is the custom SAM Agreement, not Apache-2.0. It grants a non-exclusive, worldwide, non-transferable, royalty-free limited license to use, reproduce, distribute, copy, modify, and create derivative works. Redistribution must remain under the Agreement and include it; research publications must acknowledge SAM Materials; use must comply with law, privacy/data-protection law, and Trade Controls; the Agreement also contains reverse-engineering, ITAR, prohibited-end-use, warranty, liability, termination/deletion, California-law, and modification terms. The frozen source LICENSE text is authoritative over this summary.",
+      "execution_requirement": "A formal run is permitted only after the operator has accepted and can comply with the frozen SAM License."
+    },
+    "training_source_boundary": "The complete SAM3.1 pretraining inventory is unavailable, so exact SUN RGB-D training-image exclusion is not claimed. PB16 is Development-only."
+  },
+  "execution_readiness_at_freeze": {
+    "ready": true,
+    "blockers": [],
+    "synthetic_smoke_only_before_formal_freeze": true,
+    "rejected_incompatible_public_dual_image_builder": "The first synthetic-only load exposed four randomly initialized convs.3 parameters because build_sam3_image_model constructs a four-scale Dual neck for a three-scale SAM3.1 checkpoint. No PB16 cohort image or output was involved; that builder is forbidden.",
+    "strict_adapter_smoke_receipt": {
+      "path": "artifacts.local/models/sam3.1-modelscope/pb16_sam31_strict_image_adapter_smoke_receipt_v1.json",
+      "bytes": 3396,
+      "sha256": "ed21163ba2e600b6ac37185980a678d45e1d5d05064d4c4bbb1cef0da4bdefcf",
+      "status": "PASS"
+    },
+    "pre_model_runtime_rebinding": "The first formal start terminated before model construction, RGB decode, or output because Windows/WDDM reported 8150 rather than the previously observed 8151 MiB. Exact total-memory identity was replaced by a frozen minimum of 8000 MiB; no model, prompt, topology, metric, gate, or cohort field changed.",
+    "no_pb16_cohort_model_output_was_observed_before_freeze": true,
+    "no_pb16_cohort_rgb_was_read_to_freeze_this_protocol": true
+  },
+  "runtime": {
+    "launcher": "E:/codex-tools/bin/blindassist-sam3-research-gpu.cmd",
+    "launcher_sha256": "4ca5d26dc0ee957b6574dbe4a518792200fa7f2a1a397806ddeed0a7452e74cb",
+    "python_executable": "E:/codex-tools/tools/venvs/blindassist-sam3-gpu/Scripts/python.exe",
+    "python_executable_sha256": "21bb438c0d4a6f1f164b9a646f6ee000340185e5871180aec06db8d3f07c0082",
+    "python": "3.11.9",
+    "numpy": "1.26.4",
+    "torch": "2.11.0+cu130",
+    "torchvision": "0.26.0+cu130",
+    "triton": "3.6.0",
+    "triton_distribution": "triton-windows 3.6.0.post26",
+    "sam3": "0.1.0",
+    "timm": "1.0.28",
+    "ftfy": "6.1.1",
+    "iopath": "0.1.10",
+    "pycocotools": "2.0.11",
+    "pillow": "12.2.0",
+    "cuda_runtime": "13.0",
+    "device": "cuda:0",
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "gpu_memory_mib_min": 8000,
+    "model_dtype": "float32 parameters with CUDA BF16 autocast for all model inference",
+    "autocast": "torch.autocast(device_type='cuda', dtype=torch.bfloat16, enabled=True)",
+    "inference_mode": true,
+    "compile": false,
+    "offline": true,
+    "environment": {
+      "HF_HUB_OFFLINE": "1",
+      "TRANSFORMERS_OFFLINE": "1"
+    },
+    "execution_requirement": "Before any cohort image is decoded, fail closed unless CUDA:0 is available, every frozen source/model/runtime identity matches, the checkpoint is the materialized 3502755717-byte object with the frozen SHA-256, no download or installation is attempted, and the output path does not already exist."
+  },
+  "model_load": {
+    "builder": "PB16_STRICT_SAM31_IMAGE_ONLY_MULTIPLEX_DETECTOR_ADAPTER",
+    "builder_arguments": {
+      "recipe_source": "sam3.model_builder.build_sam3_multiplex_video_predictor detector construction block",
+      "detector_class": "sam3.model.sam3_multiplex_detector.Sam3MultiplexDetector",
+      "backbone_class": "sam3.model.vl_combiner.SAM3VLBackboneTri",
+      "tri_neck_factory": "sam3.model_builder._create_multiplex_tri_backbone",
+      "tri_neck_scale_factors": [
+        4.0,
+        2.0,
+        1.0
+      ],
+      "bpe_path": "artifacts.local/models/sam3-source-v1/sam3/assets/bpe_simple_vocab_16e6.txt.gz",
+      "checkpoint_path": "artifacts.local/models/sam3.1-modelscope/sam3.1_multiplex.pt",
+      "checkpoint_namespace": "detector.",
+      "strict_state_dict_loading": true,
+      "use_fa3": false,
+      "use_rope_real": false,
+      "device": "cuda",
+      "eval_mode": true,
+      "compile": false,
+      "tracker_instantiated": false,
+      "video_predictor_instantiated": false
+    },
+    "processor": "sam3.model.sam3_image_processor.Sam3Processor",
+    "processor_arguments": {
+      "resolution": 1008,
+      "device": "cuda",
+      "confidence_threshold": 0.5
+    },
+    "forbidden_load_paths": [
+      "build_sam3_image_model with the SAM3.1 checkpoint",
+      "build_sam3_video_model",
+      "build_sam3_multiplex_video_model",
+      "build_sam3_multiplex_video_predictor",
+      "build_sam3_predictor",
+      "automatic Hugging Face or ModelScope download",
+      "torch.compile or any compile=True path"
+    ]
+  },
+  "cohort_freeze": {
+    "dataset": "SUN RGB-D",
+    "frames": 8,
+    "distinct_capture_sequences": 8,
+    "roles": {
+      "ARCHITECTURAL_DOOR_WITH_VISIBLE_OPERATION_PART": 4,
+      "HANDLED_FURNITURE_DOOR_NEGATIVE": 2,
+      "LARGE_DOORLESS_OPENING_OOD": 2
+    },
+    "prior_overlap": "Zero capture-sequence overlap with all formal PB11 through PB15 sequences.",
+    "positive_admission": "Official annotation contains exact door and a handle, knob, push bar, panic bar, or hinge label; human RGB audit confirms a room-scale architectural door leaf and a visible operation part.",
+    "negative_admission": "Official annotation contains no exact door; human RGB audit confirms a handled cabinet, wardrobe, closet, cupboard, or refrigerator door.",
+    "ood_admission": "Official annotation contains no exact door; human RGB audit confirms a broad room or corridor opening without a spanning leaf.",
+    "sealed_before_model_output": [
+      "canonical source path and capture sequence",
+      "RGB and all admission-evidence SHA-256 values",
+      "role, official class-name evidence, and human RGB audit note",
+      "protocol SHA-256, model/source/runtime identities, prompt order/text, inference, caps/order, topology, metric, and gate"
+    ],
+    "execution_binding": "A separate frozen cohort JSON must name this protocol by exact SHA-256. All cohort paths, roles, hashes, and distinct-sequence requirements fail closed."
+  },
+  "image_input": {
+    "source": "The exact full-resolution frozen cohort RGB file only.",
+    "decode": "Pillow Image.open followed by convert('RGB'); do not apply EXIF transpose, crop, pad, rescale, recolor, enhance, or otherwise alter source pixels before Sam3Processor.",
+    "batch_size": 1,
+    "depth_use": "NONE",
+    "parent_crop": "FORBIDDEN",
+    "child_crop": "FORBIDDEN",
+    "processor_transform": "The official frozen Sam3Processor converts to uint8, resizes directly to (1008,1008), converts to float32 scaled to [0,1], and normalizes each channel with mean 0.5 and standard deviation 0.5."
+  },
+  "native_text_inference": {
+    "image_feature_contract": "Within BF16 autocast and inference_mode, call processor.set_image(full_rgb) exactly once per frame. Reuse the returned state and its backbone_out for every text call. Do not call set_image, set_image_batch, reset_all_prompts, add_geometric_prompt, or mutate backbone_out between prompts.",
+    "prompt_calls_in_order": [
+      {
+        "global_call_index": 0,
+        "family": "PARENT",
+        "class_id": "architectural_leaf",
+        "text": "architectural door"
+      },
+      {
+        "global_call_index": 1,
+        "family": "PARENT",
+        "class_id": "cabinet_door",
+        "text": "cabinet door"
+      },
+      {
+        "global_call_index": 2,
+        "family": "PARENT",
+        "class_id": "closet_door",
+        "text": "closet door"
+      },
+      {
+        "global_call_index": 3,
+        "family": "PARENT",
+        "class_id": "refrigerator_door",
+        "text": "refrigerator door"
+      },
+      {
+        "global_call_index": 4,
+        "family": "PARENT",
+        "class_id": "doorless_opening",
+        "text": "doorway"
+      },
+      {
+        "global_call_index": 5,
+        "family": "CHILD",
+        "class_id": "handle",
+        "text": "door handle"
+      },
+      {
+        "global_call_index": 6,
+        "family": "CHILD",
+        "class_id": "knob",
+        "text": "door knob"
+      },
+      {
+        "global_call_index": 7,
+        "family": "CHILD",
+        "class_id": "push_bar",
+        "text": "door push bar"
+      },
+      {
+        "global_call_index": 8,
+        "family": "CHILD",
+        "class_id": "panic_bar",
+        "text": "door panic bar"
+      },
+      {
+        "global_call_index": 9,
+        "family": "CHILD",
+        "class_id": "hinge",
+        "text": "door hinge"
+      }
+    ],
+    "text_call": "For each entry in exact global_call_index order, call processor.set_text_prompt(text, state) once. Bind every returned instance to that call's family, class_id, exact text, and native filtered-output index; do not use any decoded or inferred alternative class identity.",
+    "score_definition": "The official processor computes sigmoid(pred_logits) multiplied by sigmoid(presence_logit_dec), then retains only scores strictly greater than confidence_threshold 0.5. A score exactly equal to 0.5 is rejected.",
+    "mask_definition": "The official processor bilinearly interpolates each retained raw pred_mask to the original source (H,W) with align_corners=False, applies sigmoid, and defines the boolean mask by a strict probability > 0.5 test. The returned key masks_logits is already this post-sigmoid probability tensor despite its name; do not sigmoid it a second time. Require returned masks to equal masks_logits > 0.5 exactly.",
+    "expected_output_shapes": {
+      "scores": "[N]",
+      "boxes": "[N,4] source-pixel xyxy from the official processor; record only and never use for topology",
+      "masks_logits": "[N,1,H,W] post-sigmoid probabilities at original source size",
+      "masks": "[N,1,H,W] bool at original source size"
+    },
+    "per_prompt_order_and_cap": "For each prompt independently, stable-sort retained instances by descending score, preserving native filtered-output order for exact score ties, then keep at most the first 12. Assign stable_instance_index 0..N_kept-1 after this sort. Do not pool prompt outputs before the cap.",
+    "maximum_instances_per_prompt": 12,
+    "postprocessing": "Squeeze only the singleton mask channel for mask geometry. Do not clamp or use boxes, perform NMS, fuse or deduplicate across prompts, merge masks, recalibrate or re-threshold scores, alter masks morphologically, select connected components, or run any second model.",
+    "calls_per_frame": {
+      "set_image": 1,
+      "set_text_prompt": 10,
+      "parent_prompts": 5,
+      "child_prompts": 5
+    }
+  },
+  "native_mask_topology": {
+    "parent_pool": "All retained source-native boolean masks from the five PARENT prompt calls, without cross-prompt suppression or fusion.",
+    "child_pool": "All retained source-native boolean masks from the five CHILD prompt calls, without cross-prompt suppression or fusion.",
+    "mask_area": "Count true pixels in the squeezed HxW boolean mask using an integer accumulator.",
+    "empty_child_mask": "If a retained child mask has zero true pixels, record it as EMPTY_UNASSIGNED with no representative; it cannot authorize and must not be silently discarded.",
+    "child_representative": "For every retained nonempty child mask, take the arithmetic mean of the integer x indices and integer y indices of all true source-mask pixels independently, then set representative_x=floor(mean_x+0.5) and representative_y=floor(mean_y+0.5). Do not use the box center, component center, weighted centroid, clamp, or crop mapping.",
+    "containment": "A parent contains a child representative if and only if its HxW boolean mask is true at [representative_y, representative_x].",
+    "parent_class_priority_for_equal_area": [
+      "cabinet_door",
+      "closet_door",
+      "refrigerator_door",
+      "doorless_opening",
+      "architectural_leaf"
+    ],
+    "assignment": "Among all retained parent masks containing the representative, assign the child to the parent with the smallest true-pixel area. For equal areas, choose the lower index in parent_class_priority_for_equal_area; if class and area are equal, choose the lower stable_instance_index. A child with no containing parent is UNASSIGNED. Prompt call order must not be used as an additional tie-break.",
+    "authorization": "SAM3_NATIVE_FULL_FRAME_PART_TOPOLOGY is true if and only if at least one retained child mask is assigned to an architectural_leaf parent mask. Children assigned to cabinet_door, closet_door, refrigerator_door, or doorless_opening, and UNASSIGNED children, never authorize.",
+    "depth_or_metric_geometry": "FORBIDDEN; PB16 is RGB native-mask topology only.",
+    "learned_or_selected_postprocessing_thresholds": 0
+  },
+  "metrics": {
+    "per_frame": [
+      "role and expected binary label",
+      "one set_image receipt and ten ordered text-call receipts",
+      "per-prompt native count, retained count, scores, boxes for audit only, stable order, mask shape, true-pixel area, and SHA-256 of C-order squeezed uint8 mask bytes",
+      "every child representative, containing-parent candidates, deterministic assignment, and authorization",
+      "wall latency by image encoding and text call, peak CUDA allocated bytes, and peak CUDA reserved bytes"
+    ],
+    "aggregate": [
+      "architectural-door true-positive count out of 4",
+      "handled-furniture false-positive count out of 2",
+      "doorless-opening OOD false-positive count out of 2",
+      "positive recall",
+      "negative specificity over all 4 controls",
+      "balanced accuracy"
+    ],
+    "balanced_accuracy": "0.5 * ((true_positive_count / 4) + (true_negative_count / 4)); the four negatives are the two handled-furniture and two doorless-opening controls."
+  },
+  "gate": {
+    "development_promotion": "Exactly 4/4 architectural-door positives authorize, exactly 0/2 handled-furniture negatives authorize, exactly 0/2 doorless-opening OOD controls authorize, and balanced accuracy is exactly 1.0.",
+    "pass": "Record only a Development gate met, freeze this exact SAM3.1 native full-frame topology route, and test one fresh source-disjoint confirmation cohort.",
+    "fail": "Close this exact SAM3.1 native full-frame topology route on the frozen cohort and change the information source or representation; do not tune or rerun it on these pixels."
+  },
+  "result_contract": {
+    "formal_attempts": 1,
+    "stable_json": "UTF-8 JSON, indent 2, ensure_ascii false, sort_keys true, newline terminated, and no non-finite numbers.",
+    "atomic_output": "Require the final result path not to exist. Write a task-owned temporary file in the same directory, flush and fsync it, then create the final result atomically without overwriting any path. An exception, identity mismatch, shape mismatch, or incomplete frame leaves no valid formal result.",
+    "required_identity_receipts": "Record protocol and cohort SHA-256, every model/source/runtime identity and preflight result, exact prompt list, processor settings, CUDA device, and output schema version in the result."
+  },
+  "forbidden_rescue": "After any frozen-cohort model output, do not change rows, roles, either repository or commit, checkpoint, runtime, model builder, BF16 autocast, compile setting, processor resolution, confidence or mask threshold, prompt text/order, image decode, full-frame-only execution, feature reuse, per-prompt cap/order, masks, representative, parent priority, assignment, authorization, metric, or gate. Do not add crops, boxes as topology evidence, NMS, fusion, deduplication, threshold sweeps, prompt variants, seed sweeps, model-size alternatives, depth, or another model on these pixels.",
+  "claim_boundary": "PB16 is a current-frame RGB Development-only experiment. Even a gate pass is not source-disjoint Confirmation, exact named-target ownership, public access, open/closed actuation state, metric traversability, active-view causality, temporal persistence, guidance quality, arrival, product benefit, user benefit, or safety evidence."
+}

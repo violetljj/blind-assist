@@ -1,0 +1,2923 @@
+{
+  "claim_boundary": "PB16 is a current-frame RGB Development-only experiment. Even a gate pass is not source-disjoint Confirmation, exact named-target ownership, public access, open/closed actuation state, metric traversability, active-view causality, temporal persistence, guidance quality, arrival, product benefit, user benefit, or safety evidence.",
+  "completed_at": "2026-08-29T22:50:29.662736+08:00",
+  "configuration": {
+    "authorization": "AT_LEAST_ONE_RETAINED_CHILD_ASSIGNED_TO_ARCHITECTURAL_LEAF",
+    "autocast": "CUDA_BFLOAT16",
+    "boxes_used_for_topology": false,
+    "builder": "PB16_STRICT_SAM31_IMAGE_ONLY_MULTIPLEX_DETECTOR_ADAPTER",
+    "builder_arguments": {
+      "backbone_class": "sam3.model.vl_combiner.SAM3VLBackboneTri",
+      "bpe_path": "artifacts.local/models/sam3-source-v1/sam3/assets/bpe_simple_vocab_16e6.txt.gz",
+      "checkpoint_namespace": "detector.",
+      "checkpoint_path": "artifacts.local/models/sam3.1-modelscope/sam3.1_multiplex.pt",
+      "compile": false,
+      "detector_class": "sam3.model.sam3_multiplex_detector.Sam3MultiplexDetector",
+      "device": "cuda",
+      "eval_mode": true,
+      "recipe_source": "sam3.model_builder.build_sam3_multiplex_video_predictor detector construction block",
+      "strict_state_dict_loading": true,
+      "tracker_instantiated": false,
+      "tri_neck_factory": "sam3.model_builder._create_multiplex_tri_backbone",
+      "tri_neck_scale_factors": [
+        4.0,
+        2.0,
+        1.0
+      ],
+      "use_fa3": false,
+      "use_rope_real": false,
+      "video_predictor_instantiated": false
+    },
+    "checkpoint_load": {
+      "adapter": "PB16_STRICT_SAM31_IMAGE_ONLY_MULTIPLEX_DETECTOR_ADAPTER",
+      "checkpoint_namespace": "detector.",
+      "checkpoint_total_state_keys": 1623,
+      "detector_state_keys": 1166,
+      "ignored_non_detector_state_keys": 457,
+      "missing_keys": [],
+      "recipe_source": "sam3.model_builder.build_sam3_multiplex_video_predictor detector construction block",
+      "strict_state_dict_loading": true,
+      "tracker_instantiated": false,
+      "unexpected_keys": [],
+      "video_predictor_instantiated": false
+    },
+    "compile": false,
+    "device": "cuda",
+    "enable_inst_interactivity": false,
+    "enable_segmentation": true,
+    "eval_mode": true,
+    "full_frame_only": true,
+    "inference_mode": true,
+    "mask_threshold": "STRICTLY_GREATER_THAN_0.5_ON_RETURNED_POST_SIGMOID_PROBABILITY",
+    "maximum_instances_per_prompt": 12,
+    "parent_class_priority_for_equal_area": [
+      "cabinet_door",
+      "closet_door",
+      "refrigerator_door",
+      "doorless_opening",
+      "architectural_leaf"
+    ],
+    "per_prompt_order": "STABLE_DESCENDING_SCORE_NATIVE_OUTPUT_ORDER_FOR_TIES",
+    "processor": {
+      "confidence_threshold": 0.5,
+      "device": "cuda",
+      "resolution": 1008
+    },
+    "prompt_calls_in_order": [
+      {
+        "class_id": "architectural_leaf",
+        "family": "PARENT",
+        "global_call_index": 0,
+        "text": "architectural door"
+      },
+      {
+        "class_id": "cabinet_door",
+        "family": "PARENT",
+        "global_call_index": 1,
+        "text": "cabinet door"
+      },
+      {
+        "class_id": "closet_door",
+        "family": "PARENT",
+        "global_call_index": 2,
+        "text": "closet door"
+      },
+      {
+        "class_id": "refrigerator_door",
+        "family": "PARENT",
+        "global_call_index": 3,
+        "text": "refrigerator door"
+      },
+      {
+        "class_id": "doorless_opening",
+        "family": "PARENT",
+        "global_call_index": 4,
+        "text": "doorway"
+      },
+      {
+        "class_id": "handle",
+        "family": "CHILD",
+        "global_call_index": 5,
+        "text": "door handle"
+      },
+      {
+        "class_id": "knob",
+        "family": "CHILD",
+        "global_call_index": 6,
+        "text": "door knob"
+      },
+      {
+        "class_id": "push_bar",
+        "family": "CHILD",
+        "global_call_index": 7,
+        "text": "door push bar"
+      },
+      {
+        "class_id": "panic_bar",
+        "family": "CHILD",
+        "global_call_index": 8,
+        "text": "door panic bar"
+      },
+      {
+        "class_id": "hinge",
+        "family": "CHILD",
+        "global_call_index": 9,
+        "text": "door hinge"
+      }
+    ],
+    "set_image_calls_per_frame": 1
+  },
+  "evaluator": {
+    "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\named_poi_sam3_native_part_topology.py",
+    "sha256": "495df0e6c4fa225d2cd71d0d7993fce8d89bb6d526df7f992daf3d99561da9dd"
+  },
+  "experiment": "L10-PB16 SAM3.1 Native Full-Frame Part Topology",
+  "frames": [
+    {
+      "audit_note": "Human RGB audit confirms a black double corridor door dominating the left side with a clearly visible bright horizontal push bar/handle.",
+      "canonical_source_path": "SUNRGBD/xtion/sun3ddata/brown_cogsci_7/brown_cogsci_7/0000445-000015084745",
+      "capture_sequence_id": "SUNRGBD/xtion/sun3ddata/brown_cogsci_7/brown_cogsci_7",
+      "expected_binary_label": true,
+      "files": {
+        "depth": {
+          "bytes": 84848,
+          "local_path": "sunrgbd-pixel-door-part-audit-pool-v1/SUNRGBD/xtion/sun3ddata/brown_cogsci_7/brown_cogsci_7/0000445-000015084745/depth/0000447-000015082901.png",
+          "official_path": "SUNRGBD/xtion/sun3ddata/brown_cogsci_7/brown_cogsci_7/0000445-000015084745/depth/0000447-000015082901.png",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pixel-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\brown_cogsci_7\\brown_cogsci_7\\0000445-000015084745\\depth\\0000447-000015082901.png",
+          "sha256": "451efe082c5bae050c33c68d534488090240ed08abb72edc80497472a28b1769"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "local_path": "sunrgbd-pixel-door-part-audit-pool-v1/SUNRGBD/xtion/sun3ddata/brown_cogsci_7/brown_cogsci_7/0000445-000015084745/intrinsics.txt",
+          "official_path": "SUNRGBD/xtion/sun3ddata/brown_cogsci_7/brown_cogsci_7/0000445-000015084745/intrinsics.txt",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pixel-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\brown_cogsci_7\\brown_cogsci_7\\0000445-000015084745\\intrinsics.txt",
+          "sha256": "0e11a8aee9c9a74a1b3317476bf72a216fd88266f4e692baa71f90fdb2360963"
+        },
+        "polygon": {
+          "bytes": 1999,
+          "local_path": "sunrgbd-pixel-door-part-audit-pool-v1/SUNRGBD/xtion/sun3ddata/brown_cogsci_7/brown_cogsci_7/0000445-000015084745/annotation2Dfinal/index.json",
+          "official_path": "SUNRGBD/xtion/sun3ddata/brown_cogsci_7/brown_cogsci_7/0000445-000015084745/annotation2Dfinal/index.json",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pixel-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\brown_cogsci_7\\brown_cogsci_7\\0000445-000015084745\\annotation2Dfinal\\index.json",
+          "sha256": "0fcd49c0e014cd9feff5922713a35bdcc3575caa246f017f06eb0ab103c73917"
+        },
+        "rgb": {
+          "bytes": 26021,
+          "local_path": "sunrgbd-pixel-door-part-audit-pool-v1/SUNRGBD/xtion/sun3ddata/brown_cogsci_7/brown_cogsci_7/0000445-000015084745/image/0000445-000015084745.jpg",
+          "official_path": "SUNRGBD/xtion/sun3ddata/brown_cogsci_7/brown_cogsci_7/0000445-000015084745/image/0000445-000015084745.jpg",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pixel-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\brown_cogsci_7\\brown_cogsci_7\\0000445-000015084745\\image\\0000445-000015084745.jpg",
+          "sha256": "f4d5749fedf98f3e71f60c98e473580fb26f01fe2c7af57adcffd0b3b21c4580"
+        },
+        "scene_metadata": {
+          "bytes": 8,
+          "local_path": "sunrgbd-pixel-door-part-audit-pool-v1/SUNRGBD/xtion/sun3ddata/brown_cogsci_7/brown_cogsci_7/0000445-000015084745/scene.txt",
+          "official_path": "SUNRGBD/xtion/sun3ddata/brown_cogsci_7/brown_cogsci_7/0000445-000015084745/scene.txt",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pixel-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\brown_cogsci_7\\brown_cogsci_7\\0000445-000015084745\\scene.txt",
+          "sha256": "fd09da605e5804b35ee408d27c1bed7c7932a1af861948e042283615be0bd3d0"
+        }
+      },
+      "frame_id": "0000445-000015084745",
+      "index": 1,
+      "native_inference": {
+        "child_instance_ids_in_prompt_then_stable_order": [
+          "child:000",
+          "child:001",
+          "child:002"
+        ],
+        "child_parent_assignments": [
+          {
+            "assigned_parent_class_id": null,
+            "assigned_parent_instance_id": null,
+            "authorizes": false,
+            "child_class_id": "handle",
+            "child_instance_id": "child:000",
+            "child_mask_area_pixels": 1069,
+            "containing_parents_in_assignment_order": [],
+            "mean_integer_true_mask_pixel_xy": [
+              75.55659494855004,
+              323.7979420018709
+            ],
+            "representative_pixel_xy": [
+              76,
+              324
+            ],
+            "status": "UNASSIGNED"
+          },
+          {
+            "assigned_parent_class_id": "doorless_opening",
+            "assigned_parent_instance_id": "parent:000",
+            "authorizes": false,
+            "child_class_id": "handle",
+            "child_instance_id": "child:001",
+            "child_mask_area_pixels": 1298,
+            "containing_parents_in_assignment_order": [
+              {
+                "class_priority": 3,
+                "mask_area_pixels": 70024,
+                "parent_class_id": "doorless_opening",
+                "parent_instance_id": "parent:000",
+                "stable_instance_index": 0
+              }
+            ],
+            "mean_integer_true_mask_pixel_xy": [
+              108.98536209553158,
+              310.9668721109399
+            ],
+            "representative_pixel_xy": [
+              109,
+              311
+            ],
+            "status": "ASSIGNED"
+          },
+          {
+            "assigned_parent_class_id": "doorless_opening",
+            "assigned_parent_instance_id": "parent:000",
+            "authorizes": false,
+            "child_class_id": "push_bar",
+            "child_instance_id": "child:002",
+            "child_mask_area_pixels": 2248,
+            "containing_parents_in_assignment_order": [
+              {
+                "class_priority": 3,
+                "mask_area_pixels": 70024,
+                "parent_class_id": "doorless_opening",
+                "parent_instance_id": "parent:000",
+                "stable_instance_index": 0
+              }
+            ],
+            "mean_integer_true_mask_pixel_xy": [
+              93.60364768683274,
+              317.0462633451957
+            ],
+            "representative_pixel_xy": [
+              94,
+              317
+            ],
+            "status": "ASSIGNED"
+          }
+        ],
+        "parent_instance_ids_in_prompt_then_stable_order": [
+          "parent:000"
+        ],
+        "peak_cuda_allocated_bytes": 4348175360,
+        "peak_cuda_reserved_bytes": 4664066048,
+        "set_image": {
+          "calls": 1,
+          "full_frame_rgb_only": true,
+          "inference_seconds": 0.9675214000162669,
+          "processor_input_resolution": 1008,
+          "source_image_size_wh": [
+            591,
+            441
+          ]
+        },
+        "text_calls": [
+          {
+            "class_id": "architectural_leaf",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 0,
+            "inference_and_native_postprocess_seconds": 0.6914928999904078,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "architectural door"
+          },
+          {
+            "class_id": "cabinet_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 1,
+            "inference_and_native_postprocess_seconds": 0.10333499999251217,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "cabinet door"
+          },
+          {
+            "class_id": "closet_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 2,
+            "inference_and_native_postprocess_seconds": 0.10530669998843223,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "closet door"
+          },
+          {
+            "class_id": "refrigerator_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 3,
+            "inference_and_native_postprocess_seconds": 0.11874170001829043,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "refrigerator door"
+          },
+          {
+            "class_id": "doorless_opening",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 4,
+            "inference_and_native_postprocess_seconds": 0.1082870000100229,
+            "invalid_output_count": 0,
+            "native_filtered_count": 1,
+            "retained_count": 1,
+            "retained_instance_ids": [
+              "parent:000"
+            ],
+            "retained_instances": [
+              {
+                "box_xyxy": [
+                  -1.229557991027832,
+                  81.39803314208984,
+                  227.01583862304688,
+                  439.853515625
+                ],
+                "class_id": "doorless_opening",
+                "family": "PARENT",
+                "global_call_index": 4,
+                "instance_id": "parent:000",
+                "mask": {
+                  "binary_uint8_sha256": "2def4437ba136522e3bfd933c31bfc4c87bcf49cda30ad80d587c1fadb1fa570",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    441,
+                    591
+                  ],
+                  "true_pixels": 70024
+                },
+                "native_filtered_output_index": 0,
+                "score": 0.6716944575309753,
+                "stable_instance_index": 0,
+                "text": "doorway"
+              }
+            ],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "doorway"
+          },
+          {
+            "class_id": "handle",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 5,
+            "inference_and_native_postprocess_seconds": 0.11480969999684021,
+            "invalid_output_count": 0,
+            "native_filtered_count": 2,
+            "retained_count": 2,
+            "retained_instance_ids": [
+              "child:000",
+              "child:001"
+            ],
+            "retained_instances": [
+              {
+                "box_xyxy": [
+                  -2.490123987197876,
+                  311.9902648925781,
+                  151.41537475585938,
+                  338.239013671875
+                ],
+                "class_id": "handle",
+                "family": "CHILD",
+                "global_call_index": 5,
+                "instance_id": "child:000",
+                "mask": {
+                  "binary_uint8_sha256": "5ddd8ae8d6ea90911e2ce49a365296a248900d76b906a2db2e8cf4ff3558760e",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    441,
+                    591
+                  ],
+                  "true_pixels": 1069
+                },
+                "native_filtered_output_index": 0,
+                "score": 0.5665681958198547,
+                "stable_instance_index": 0,
+                "text": "door handle"
+              },
+              {
+                "box_xyxy": [
+                  46.50957489013672,
+                  298.5773010253906,
+                  180.13902282714844,
+                  323.6578063964844
+                ],
+                "class_id": "handle",
+                "family": "CHILD",
+                "global_call_index": 5,
+                "instance_id": "child:001",
+                "mask": {
+                  "binary_uint8_sha256": "363c99a0c489537d05d08393255757b7e6c98764cc1444f0fe1a38d7c140b48d",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    441,
+                    591
+                  ],
+                  "true_pixels": 1298
+                },
+                "native_filtered_output_index": 1,
+                "score": 0.5198616981506348,
+                "stable_instance_index": 1,
+                "text": "door handle"
+              }
+            ],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door handle"
+          },
+          {
+            "class_id": "knob",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 6,
+            "inference_and_native_postprocess_seconds": 0.11291769999661483,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door knob"
+          },
+          {
+            "class_id": "push_bar",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 7,
+            "inference_and_native_postprocess_seconds": 0.11652500001946464,
+            "invalid_output_count": 0,
+            "native_filtered_count": 1,
+            "retained_count": 1,
+            "retained_instance_ids": [
+              "child:002"
+            ],
+            "retained_instances": [
+              {
+                "box_xyxy": [
+                  -2.911536693572998,
+                  299.05950927734375,
+                  179.6371307373047,
+                  338.5396423339844
+                ],
+                "class_id": "push_bar",
+                "family": "CHILD",
+                "global_call_index": 7,
+                "instance_id": "child:002",
+                "mask": {
+                  "binary_uint8_sha256": "47389da64ddde23538ab36defe6381d60ab1301d2fd1f3176ddbda1ad78b4b01",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    441,
+                    591
+                  ],
+                  "true_pixels": 2248
+                },
+                "native_filtered_output_index": 0,
+                "score": 0.5458333492279053,
+                "stable_instance_index": 0,
+                "text": "door push bar"
+              }
+            ],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door push bar"
+          },
+          {
+            "class_id": "panic_bar",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 8,
+            "inference_and_native_postprocess_seconds": 0.1086823999939952,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door panic bar"
+          },
+          {
+            "class_id": "hinge",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 9,
+            "inference_and_native_postprocess_seconds": 0.10737260000314564,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door hinge"
+          }
+        ]
+      },
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "supporting_object_names": [
+          "door",
+          "handle"
+        ]
+      },
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_OPERATION_PART",
+      "sam3_native_full_frame_part_topology": false,
+      "sensor_source_bucket": "xtion/sun3ddata",
+      "source_image_size_wh": [
+        591,
+        441
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms a foreground white room door filling the right side with a clearly visible dark lever and lock plate.",
+      "canonical_source_path": "SUNRGBD/xtion/sun3ddata/home_amo/floor2-1/0001236-000041759017",
+      "capture_sequence_id": "SUNRGBD/xtion/sun3ddata/home_amo/floor2-1",
+      "expected_binary_label": true,
+      "files": {
+        "depth": {
+          "bytes": 111465,
+          "local_path": "sunrgbd-door-part-topology-audit-pool-v1/SUNRGBD/xtion/sun3ddata/home_amo/floor2-1/0001236-000041759017/depth/0001244-000041744931.png",
+          "official_path": "SUNRGBD/xtion/sun3ddata/home_amo/floor2-1/0001236-000041759017/depth/0001244-000041744931.png",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-door-part-topology-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\home_amo\\floor2-1\\0001236-000041759017\\depth\\0001244-000041744931.png",
+          "sha256": "dc063288e7107cd17f6ffd849b4c6d81a733b46bb77709a3f4f5d65ef4af3c47"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "local_path": "sunrgbd-door-part-topology-audit-pool-v1/SUNRGBD/xtion/sun3ddata/home_amo/floor2-1/0001236-000041759017/intrinsics.txt",
+          "official_path": "SUNRGBD/xtion/sun3ddata/home_amo/floor2-1/0001236-000041759017/intrinsics.txt",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-door-part-topology-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\home_amo\\floor2-1\\0001236-000041759017\\intrinsics.txt",
+          "sha256": "0e11a8aee9c9a74a1b3317476bf72a216fd88266f4e692baa71f90fdb2360963"
+        },
+        "polygon": {
+          "bytes": 767,
+          "local_path": "sunrgbd-door-part-topology-audit-pool-v1/SUNRGBD/xtion/sun3ddata/home_amo/floor2-1/0001236-000041759017/annotation2Dfinal/index.json",
+          "official_path": "SUNRGBD/xtion/sun3ddata/home_amo/floor2-1/0001236-000041759017/annotation2Dfinal/index.json",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-door-part-topology-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\home_amo\\floor2-1\\0001236-000041759017\\annotation2Dfinal\\index.json",
+          "sha256": "a4883b8f89af7ec72ff52b50bf37b6d298c88d227fec3cd5b25a0a1af6c4addd"
+        },
+        "rgb": {
+          "bytes": 28419,
+          "local_path": "sunrgbd-door-part-topology-audit-pool-v1/SUNRGBD/xtion/sun3ddata/home_amo/floor2-1/0001236-000041759017/image/0001236-000041759017.jpg",
+          "official_path": "SUNRGBD/xtion/sun3ddata/home_amo/floor2-1/0001236-000041759017/image/0001236-000041759017.jpg",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-door-part-topology-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\home_amo\\floor2-1\\0001236-000041759017\\image\\0001236-000041759017.jpg",
+          "sha256": "f56de8e2cf90e50e4fa74a35077c5a22f065451d6d7ef35e96500f0fa9a5bbc3"
+        },
+        "scene_metadata": {
+          "bytes": 7,
+          "local_path": "sunrgbd-door-part-topology-audit-pool-v1/SUNRGBD/xtion/sun3ddata/home_amo/floor2-1/0001236-000041759017/scene.txt",
+          "official_path": "SUNRGBD/xtion/sun3ddata/home_amo/floor2-1/0001236-000041759017/scene.txt",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-door-part-topology-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\home_amo\\floor2-1\\0001236-000041759017\\scene.txt",
+          "sha256": "a05e6feb79c854166f6c73783754dc0111ee87edd58bca22a77c3a8721fa729c"
+        }
+      },
+      "frame_id": "0001236-000041759017",
+      "index": 2,
+      "native_inference": {
+        "child_instance_ids_in_prompt_then_stable_order": [
+          "child:000"
+        ],
+        "child_parent_assignments": [
+          {
+            "assigned_parent_class_id": null,
+            "assigned_parent_instance_id": null,
+            "authorizes": false,
+            "child_class_id": "handle",
+            "child_instance_id": "child:000",
+            "child_mask_area_pixels": 1236,
+            "containing_parents_in_assignment_order": [],
+            "mean_integer_true_mask_pixel_xy": [
+              355.41100323624596,
+              318.542071197411
+            ],
+            "representative_pixel_xy": [
+              355,
+              319
+            ],
+            "status": "UNASSIGNED"
+          }
+        ],
+        "parent_instance_ids_in_prompt_then_stable_order": [],
+        "peak_cuda_allocated_bytes": 4683880960,
+        "peak_cuda_reserved_bytes": 4922015744,
+        "set_image": {
+          "calls": 1,
+          "full_frame_rgb_only": true,
+          "inference_seconds": 0.4192936999897938,
+          "processor_input_resolution": 1008,
+          "source_image_size_wh": [
+            591,
+            441
+          ]
+        },
+        "text_calls": [
+          {
+            "class_id": "architectural_leaf",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 0,
+            "inference_and_native_postprocess_seconds": 0.09864650000235997,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "architectural door"
+          },
+          {
+            "class_id": "cabinet_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 1,
+            "inference_and_native_postprocess_seconds": 0.10940039998968132,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "cabinet door"
+          },
+          {
+            "class_id": "closet_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 2,
+            "inference_and_native_postprocess_seconds": 0.11022599998977967,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "closet door"
+          },
+          {
+            "class_id": "refrigerator_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 3,
+            "inference_and_native_postprocess_seconds": 0.11202559998491779,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "refrigerator door"
+          },
+          {
+            "class_id": "doorless_opening",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 4,
+            "inference_and_native_postprocess_seconds": 0.10441040000296198,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "doorway"
+          },
+          {
+            "class_id": "handle",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 5,
+            "inference_and_native_postprocess_seconds": 0.11569230002351105,
+            "invalid_output_count": 0,
+            "native_filtered_count": 1,
+            "retained_count": 1,
+            "retained_instance_ids": [
+              "child:000"
+            ],
+            "retained_instances": [
+              {
+                "box_xyxy": [
+                  339.1526184082031,
+                  287.7141418457031,
+                  367.4241638183594,
+                  352.3214111328125
+                ],
+                "class_id": "handle",
+                "family": "CHILD",
+                "global_call_index": 5,
+                "instance_id": "child:000",
+                "mask": {
+                  "binary_uint8_sha256": "bba1636eb3acc343a2d13431ed1d02c6da2f46cac6fa9c159355a07ba81a69e0",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    441,
+                    591
+                  ],
+                  "true_pixels": 1236
+                },
+                "native_filtered_output_index": 0,
+                "score": 0.5973692536354065,
+                "stable_instance_index": 0,
+                "text": "door handle"
+              }
+            ],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door handle"
+          },
+          {
+            "class_id": "knob",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 6,
+            "inference_and_native_postprocess_seconds": 0.10250209999503568,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door knob"
+          },
+          {
+            "class_id": "push_bar",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 7,
+            "inference_and_native_postprocess_seconds": 0.10215819999575615,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door push bar"
+          },
+          {
+            "class_id": "panic_bar",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 8,
+            "inference_and_native_postprocess_seconds": 0.10872639997978695,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door panic bar"
+          },
+          {
+            "class_id": "hinge",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 9,
+            "inference_and_native_postprocess_seconds": 0.11325419999775477,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door hinge"
+          }
+        ]
+      },
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "supporting_object_names": [
+          "door",
+          "handle"
+        ]
+      },
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_OPERATION_PART",
+      "sam3_native_full_frame_part_topology": false,
+      "sensor_source_bucket": "xtion/sun3ddata",
+      "source_image_size_wh": [
+        591,
+        441
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms a wooden office door at left with a plainly visible silver lever.",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/000136_2014-05-20_17-04-10_260595134347_rgbf000200-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/000136_2014-05-20_17-04-10_260595134347",
+      "expected_binary_label": true,
+      "files": {
+        "depth": {
+          "bytes": 329380,
+          "local_path": "sunrgbd-pixel-door-part-audit-pool-v1/SUNRGBD/kv2/kinect2data/000136_2014-05-20_17-04-10_260595134347_rgbf000200-resize/depth/0000200.png",
+          "official_path": "SUNRGBD/kv2/kinect2data/000136_2014-05-20_17-04-10_260595134347_rgbf000200-resize/depth/0000200.png",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pixel-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\000136_2014-05-20_17-04-10_260595134347_rgbf000200-resize\\depth\\0000200.png",
+          "sha256": "75a5b47e17f8e95ea112d4d76dcecff8236c5b0c743d394b3462d74ba899bea8"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "local_path": "sunrgbd-pixel-door-part-audit-pool-v1/SUNRGBD/kv2/kinect2data/000136_2014-05-20_17-04-10_260595134347_rgbf000200-resize/intrinsics.txt",
+          "official_path": "SUNRGBD/kv2/kinect2data/000136_2014-05-20_17-04-10_260595134347_rgbf000200-resize/intrinsics.txt",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pixel-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\000136_2014-05-20_17-04-10_260595134347_rgbf000200-resize\\intrinsics.txt",
+          "sha256": "22c236c26f5e1c8cda15b4c7de7f78720c857198583985843e2c8ef9a9c6d6b4"
+        },
+        "polygon": {
+          "bytes": 11366,
+          "local_path": "sunrgbd-pixel-door-part-audit-pool-v1/SUNRGBD/kv2/kinect2data/000136_2014-05-20_17-04-10_260595134347_rgbf000200-resize/annotation2Dfinal/index.json",
+          "official_path": "SUNRGBD/kv2/kinect2data/000136_2014-05-20_17-04-10_260595134347_rgbf000200-resize/annotation2Dfinal/index.json",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pixel-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\000136_2014-05-20_17-04-10_260595134347_rgbf000200-resize\\annotation2Dfinal\\index.json",
+          "sha256": "f4e947035d9fe6cb7e0031eefa3fbd8e2b71ef32c985caa690629e8af13454d2"
+        },
+        "rgb": {
+          "bytes": 49575,
+          "local_path": "sunrgbd-pixel-door-part-audit-pool-v1/SUNRGBD/kv2/kinect2data/000136_2014-05-20_17-04-10_260595134347_rgbf000200-resize/image/0000200.jpg",
+          "official_path": "SUNRGBD/kv2/kinect2data/000136_2014-05-20_17-04-10_260595134347_rgbf000200-resize/image/0000200.jpg",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pixel-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\000136_2014-05-20_17-04-10_260595134347_rgbf000200-resize\\image\\0000200.jpg",
+          "sha256": "36befbdf8c5ba2af679c7f7d43b971de544f93966ec1269f327a686c6e83000c"
+        },
+        "scene_metadata": {
+          "bytes": 6,
+          "local_path": "sunrgbd-pixel-door-part-audit-pool-v1/SUNRGBD/kv2/kinect2data/000136_2014-05-20_17-04-10_260595134347_rgbf000200-resize/scene.txt",
+          "official_path": "SUNRGBD/kv2/kinect2data/000136_2014-05-20_17-04-10_260595134347_rgbf000200-resize/scene.txt",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pixel-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\000136_2014-05-20_17-04-10_260595134347_rgbf000200-resize\\scene.txt",
+          "sha256": "5cc3f82838ba7260203e4590ce03d00e1663d41f6a5167144f5c95d6be2166a0"
+        }
+      },
+      "frame_id": "rgbf000200-resize",
+      "index": 3,
+      "native_inference": {
+        "child_instance_ids_in_prompt_then_stable_order": [
+          "child:000",
+          "child:001",
+          "child:002"
+        ],
+        "child_parent_assignments": [
+          {
+            "assigned_parent_class_id": null,
+            "assigned_parent_instance_id": null,
+            "authorizes": false,
+            "child_class_id": "handle",
+            "child_instance_id": "child:000",
+            "child_mask_area_pixels": 1019,
+            "containing_parents_in_assignment_order": [],
+            "mean_integer_true_mask_pixel_xy": [
+              45.18056918547596,
+              152.31599607458293
+            ],
+            "representative_pixel_xy": [
+              45,
+              152
+            ],
+            "status": "UNASSIGNED"
+          },
+          {
+            "assigned_parent_class_id": null,
+            "assigned_parent_instance_id": null,
+            "authorizes": false,
+            "child_class_id": "knob",
+            "child_instance_id": "child:001",
+            "child_mask_area_pixels": 1013,
+            "containing_parents_in_assignment_order": [],
+            "mean_integer_true_mask_pixel_xy": [
+              45.2675222112537,
+              152.27739387956564
+            ],
+            "representative_pixel_xy": [
+              45,
+              152
+            ],
+            "status": "UNASSIGNED"
+          },
+          {
+            "assigned_parent_class_id": null,
+            "assigned_parent_instance_id": null,
+            "authorizes": false,
+            "child_class_id": "hinge",
+            "child_instance_id": "child:002",
+            "child_mask_area_pixels": 161,
+            "containing_parents_in_assignment_order": [],
+            "mean_integer_true_mask_pixel_xy": [
+              79.22360248447205,
+              156.51552795031057
+            ],
+            "representative_pixel_xy": [
+              79,
+              157
+            ],
+            "status": "UNASSIGNED"
+          }
+        ],
+        "parent_instance_ids_in_prompt_then_stable_order": [],
+        "peak_cuda_allocated_bytes": 4683880960,
+        "peak_cuda_reserved_bytes": 4922015744,
+        "set_image": {
+          "calls": 1,
+          "full_frame_rgb_only": true,
+          "inference_seconds": 0.42357290000654757,
+          "processor_input_resolution": 1008,
+          "source_image_size_wh": [
+            730,
+            530
+          ]
+        },
+        "text_calls": [
+          {
+            "class_id": "architectural_leaf",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 0,
+            "inference_and_native_postprocess_seconds": 0.10108670001500286,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "architectural door"
+          },
+          {
+            "class_id": "cabinet_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 1,
+            "inference_and_native_postprocess_seconds": 0.10875279997708276,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "cabinet door"
+          },
+          {
+            "class_id": "closet_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 2,
+            "inference_and_native_postprocess_seconds": 0.11248060001526028,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "closet door"
+          },
+          {
+            "class_id": "refrigerator_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 3,
+            "inference_and_native_postprocess_seconds": 0.09963020001305267,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "refrigerator door"
+          },
+          {
+            "class_id": "doorless_opening",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 4,
+            "inference_and_native_postprocess_seconds": 0.10212910000700504,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "doorway"
+          },
+          {
+            "class_id": "handle",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 5,
+            "inference_and_native_postprocess_seconds": 0.09734450001269579,
+            "invalid_output_count": 0,
+            "native_filtered_count": 1,
+            "retained_count": 1,
+            "retained_instance_ids": [
+              "child:000"
+            ],
+            "retained_instances": [
+              {
+                "box_xyxy": [
+                  11.392663955688477,
+                  137.41482543945312,
+                  69.25137329101562,
+                  167.07798767089844
+                ],
+                "class_id": "handle",
+                "family": "CHILD",
+                "global_call_index": 5,
+                "instance_id": "child:000",
+                "mask": {
+                  "binary_uint8_sha256": "398418fd4df6e5600c7d1393b81c8d4e871aca5d3e530a2e0b546b6c901f6e55",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    530,
+                    730
+                  ],
+                  "true_pixels": 1019
+                },
+                "native_filtered_output_index": 0,
+                "score": 0.8710252046585083,
+                "stable_instance_index": 0,
+                "text": "door handle"
+              }
+            ],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door handle"
+          },
+          {
+            "class_id": "knob",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 6,
+            "inference_and_native_postprocess_seconds": 0.10611699998844415,
+            "invalid_output_count": 0,
+            "native_filtered_count": 1,
+            "retained_count": 1,
+            "retained_instance_ids": [
+              "child:001"
+            ],
+            "retained_instances": [
+              {
+                "box_xyxy": [
+                  11.409396171569824,
+                  137.52040100097656,
+                  69.1608657836914,
+                  167.09213256835938
+                ],
+                "class_id": "knob",
+                "family": "CHILD",
+                "global_call_index": 6,
+                "instance_id": "child:001",
+                "mask": {
+                  "binary_uint8_sha256": "987dd754efee1ff2205e96ed7dd2ea631454c0cb102e1ab55d17ca85d033377e",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    530,
+                    730
+                  ],
+                  "true_pixels": 1013
+                },
+                "native_filtered_output_index": 0,
+                "score": 0.8066406846046448,
+                "stable_instance_index": 0,
+                "text": "door knob"
+              }
+            ],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door knob"
+          },
+          {
+            "class_id": "push_bar",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 7,
+            "inference_and_native_postprocess_seconds": 0.10424970000167377,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door push bar"
+          },
+          {
+            "class_id": "panic_bar",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 8,
+            "inference_and_native_postprocess_seconds": 0.10322079999605194,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door panic bar"
+          },
+          {
+            "class_id": "hinge",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 9,
+            "inference_and_native_postprocess_seconds": 0.10129740001866594,
+            "invalid_output_count": 0,
+            "native_filtered_count": 1,
+            "retained_count": 1,
+            "retained_instance_ids": [
+              "child:002"
+            ],
+            "retained_instances": [
+              {
+                "box_xyxy": [
+                  74.88932800292969,
+                  142.19036865234375,
+                  84.49503326416016,
+                  171.6015625
+                ],
+                "class_id": "hinge",
+                "family": "CHILD",
+                "global_call_index": 9,
+                "instance_id": "child:002",
+                "mask": {
+                  "binary_uint8_sha256": "41b9781938a620c123b9afe6187c0b7176f424f5feaa116ba693df8537a0d751",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    530,
+                    730
+                  ],
+                  "true_pixels": 161
+                },
+                "native_filtered_output_index": 0,
+                "score": 0.6387131214141846,
+                "stable_instance_index": 0,
+                "text": "door hinge"
+              }
+            ],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door hinge"
+          }
+        ]
+      },
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "supporting_object_names": [
+          "door",
+          "doorhandle"
+        ]
+      },
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_OPERATION_PART",
+      "sam3_native_full_frame_part_topology": false,
+      "sensor_source_bucket": "kv2/kinect2data",
+      "source_image_size_wh": [
+        730,
+        530
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms a foreground restroom stall door along the left edge with visible black latch/lock hardware; the leaf is partially cropped.",
+      "canonical_source_path": "SUNRGBD/realsense/lg/2014_10_25-17_27_03-1311000073",
+      "capture_sequence_id": "SUNRGBD/realsense/lg/2014_10_25-17_27_03-1311000073",
+      "expected_binary_label": true,
+      "files": {
+        "depth": {
+          "bytes": 228014,
+          "local_path": "sunrgbd-door-part-topology-audit-pool-v1/SUNRGBD/realsense/lg/2014_10_25-17_27_03-1311000073/depth/0000069.png",
+          "official_path": "SUNRGBD/realsense/lg/2014_10_25-17_27_03-1311000073/depth/0000069.png",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-door-part-topology-audit-pool-v1\\SUNRGBD\\realsense\\lg\\2014_10_25-17_27_03-1311000073\\depth\\0000069.png",
+          "sha256": "6fba164bf80952f640889e2613a853d0ec5cf9746a7a778ab5d52b3e73a6e1b0"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "local_path": "sunrgbd-door-part-topology-audit-pool-v1/SUNRGBD/realsense/lg/2014_10_25-17_27_03-1311000073/intrinsics.txt",
+          "official_path": "SUNRGBD/realsense/lg/2014_10_25-17_27_03-1311000073/intrinsics.txt",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-door-part-topology-audit-pool-v1\\SUNRGBD\\realsense\\lg\\2014_10_25-17_27_03-1311000073\\intrinsics.txt",
+          "sha256": "fc925577bc6e32fe31b67e1134a051ada71ef847e6c6bc2648cb909217b6caa7"
+        },
+        "polygon": {
+          "bytes": 4393,
+          "local_path": "sunrgbd-door-part-topology-audit-pool-v1/SUNRGBD/realsense/lg/2014_10_25-17_27_03-1311000073/annotation2Dfinal/index.json",
+          "official_path": "SUNRGBD/realsense/lg/2014_10_25-17_27_03-1311000073/annotation2Dfinal/index.json",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-door-part-topology-audit-pool-v1\\SUNRGBD\\realsense\\lg\\2014_10_25-17_27_03-1311000073\\annotation2Dfinal\\index.json",
+          "sha256": "802b72a5a91ea955fc40124f543d23da5606f0985652f077c082480159b3e958"
+        },
+        "rgb": {
+          "bytes": 45829,
+          "local_path": "sunrgbd-door-part-topology-audit-pool-v1/SUNRGBD/realsense/lg/2014_10_25-17_27_03-1311000073/image/0000069.jpg",
+          "official_path": "SUNRGBD/realsense/lg/2014_10_25-17_27_03-1311000073/image/0000069.jpg",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-door-part-topology-audit-pool-v1\\SUNRGBD\\realsense\\lg\\2014_10_25-17_27_03-1311000073\\image\\0000069.jpg",
+          "sha256": "b1a7c2fedba07ed8a391640fb12e279363acddb3b1df34baa145d307af8529da"
+        },
+        "scene_metadata": {
+          "bytes": 8,
+          "local_path": "sunrgbd-door-part-topology-audit-pool-v1/SUNRGBD/realsense/lg/2014_10_25-17_27_03-1311000073/scene.txt",
+          "official_path": "SUNRGBD/realsense/lg/2014_10_25-17_27_03-1311000073/scene.txt",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-door-part-topology-audit-pool-v1\\SUNRGBD\\realsense\\lg\\2014_10_25-17_27_03-1311000073\\scene.txt",
+          "sha256": "3486577cd905f87072a2d812114b5c5c73009e26e2f99d9057f6f719e0859401"
+        }
+      },
+      "frame_id": "2014_10_25-17_27_03-1311000073",
+      "index": 4,
+      "native_inference": {
+        "child_instance_ids_in_prompt_then_stable_order": [],
+        "child_parent_assignments": [],
+        "parent_instance_ids_in_prompt_then_stable_order": [],
+        "peak_cuda_allocated_bytes": 4685969920,
+        "peak_cuda_reserved_bytes": 4922015744,
+        "set_image": {
+          "calls": 1,
+          "full_frame_rgb_only": true,
+          "inference_seconds": 0.4191848000045866,
+          "processor_input_resolution": 1008,
+          "source_image_size_wh": [
+            681,
+            531
+          ]
+        },
+        "text_calls": [
+          {
+            "class_id": "architectural_leaf",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 0,
+            "inference_and_native_postprocess_seconds": 0.09898510001949035,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "architectural door"
+          },
+          {
+            "class_id": "cabinet_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 1,
+            "inference_and_native_postprocess_seconds": 0.10496980001335032,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "cabinet door"
+          },
+          {
+            "class_id": "closet_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 2,
+            "inference_and_native_postprocess_seconds": 0.10375199999543838,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "closet door"
+          },
+          {
+            "class_id": "refrigerator_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 3,
+            "inference_and_native_postprocess_seconds": 0.09785459999693558,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "refrigerator door"
+          },
+          {
+            "class_id": "doorless_opening",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 4,
+            "inference_and_native_postprocess_seconds": 0.10807590000331402,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "doorway"
+          },
+          {
+            "class_id": "handle",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 5,
+            "inference_and_native_postprocess_seconds": 0.11296450000372715,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door handle"
+          },
+          {
+            "class_id": "knob",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 6,
+            "inference_and_native_postprocess_seconds": 0.0890685000049416,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door knob"
+          },
+          {
+            "class_id": "push_bar",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 7,
+            "inference_and_native_postprocess_seconds": 0.07777939998777583,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door push bar"
+          },
+          {
+            "class_id": "panic_bar",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 8,
+            "inference_and_native_postprocess_seconds": 0.08356320002349094,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door panic bar"
+          },
+          {
+            "class_id": "hinge",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 9,
+            "inference_and_native_postprocess_seconds": 0.1005390000063926,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door hinge"
+          }
+        ]
+      },
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "supporting_object_names": [
+          "door",
+          "handle"
+        ]
+      },
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_OPERATION_PART",
+      "sam3_native_full_frame_part_topology": false,
+      "sensor_source_bucket": "realsense/lg",
+      "source_image_size_wh": [
+        681,
+        531
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms a tall black AV/storage cabinet at rear right with paired small round pulls visible and no architectural door; the pulls are low contrast.",
+      "canonical_source_path": "SUNRGBD/realsense/shr/2014_12_18-15_55_09-1311000073",
+      "capture_sequence_id": "SUNRGBD/realsense/shr/2014_12_18-15_55_09-1311000073",
+      "expected_binary_label": false,
+      "files": {
+        "depth": {
+          "bytes": 176390,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/realsense/shr/2014_12_18-15_55_09-1311000073/depth/0000061.png",
+          "official_path": "SUNRGBD/realsense/shr/2014_12_18-15_55_09-1311000073/depth/0000061.png",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\realsense\\shr\\2014_12_18-15_55_09-1311000073\\depth\\0000061.png",
+          "sha256": "be575ab48862aaa5c6377ebe89d6f458d2f44b30b51f2d368f076131e4f6f4cd"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/realsense/shr/2014_12_18-15_55_09-1311000073/intrinsics.txt",
+          "official_path": "SUNRGBD/realsense/shr/2014_12_18-15_55_09-1311000073/intrinsics.txt",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\realsense\\shr\\2014_12_18-15_55_09-1311000073\\intrinsics.txt",
+          "sha256": "fc925577bc6e32fe31b67e1134a051ada71ef847e6c6bc2648cb909217b6caa7"
+        },
+        "polygon": {
+          "bytes": 1921,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/realsense/shr/2014_12_18-15_55_09-1311000073/annotation2Dfinal/index.json",
+          "official_path": "SUNRGBD/realsense/shr/2014_12_18-15_55_09-1311000073/annotation2Dfinal/index.json",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\realsense\\shr\\2014_12_18-15_55_09-1311000073\\annotation2Dfinal\\index.json",
+          "sha256": "b2dd1262806deaffcbd9d0bf32e847ada78fa9d1025b65250e3ed2e3f7554761"
+        },
+        "rgb": {
+          "bytes": 26395,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/realsense/shr/2014_12_18-15_55_09-1311000073/image/0000061.jpg",
+          "official_path": "SUNRGBD/realsense/shr/2014_12_18-15_55_09-1311000073/image/0000061.jpg",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\realsense\\shr\\2014_12_18-15_55_09-1311000073\\image\\0000061.jpg",
+          "sha256": "96861ad95b96ff3841cf857dc211acb737a47f730c559a939586d686352fcc2c"
+        },
+        "scene_metadata": {
+          "bytes": 9,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/realsense/shr/2014_12_18-15_55_09-1311000073/scene.txt",
+          "official_path": "SUNRGBD/realsense/shr/2014_12_18-15_55_09-1311000073/scene.txt",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\realsense\\shr\\2014_12_18-15_55_09-1311000073\\scene.txt",
+          "sha256": "83d82a74a67aebdecd3846a42bc5235254fb77f8da9a189bf49c321f450dcccd"
+        }
+      },
+      "frame_id": "2014_12_18-15_55_09-1311000073",
+      "index": 5,
+      "native_inference": {
+        "child_instance_ids_in_prompt_then_stable_order": [],
+        "child_parent_assignments": [],
+        "parent_instance_ids_in_prompt_then_stable_order": [
+          "parent:000",
+          "parent:001"
+        ],
+        "peak_cuda_allocated_bytes": 4684008960,
+        "peak_cuda_reserved_bytes": 4922015744,
+        "set_image": {
+          "calls": 1,
+          "full_frame_rgb_only": true,
+          "inference_seconds": 0.4100400000170339,
+          "processor_input_resolution": 1008,
+          "source_image_size_wh": [
+            681,
+            531
+          ]
+        },
+        "text_calls": [
+          {
+            "class_id": "architectural_leaf",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 0,
+            "inference_and_native_postprocess_seconds": 0.09892789999139495,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "architectural door"
+          },
+          {
+            "class_id": "cabinet_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 1,
+            "inference_and_native_postprocess_seconds": 0.10460720001719892,
+            "invalid_output_count": 0,
+            "native_filtered_count": 1,
+            "retained_count": 1,
+            "retained_instance_ids": [
+              "parent:000"
+            ],
+            "retained_instances": [
+              {
+                "box_xyxy": [
+                  525.3308715820312,
+                  139.1081085205078,
+                  598.3005981445312,
+                  531.55322265625
+                ],
+                "class_id": "cabinet_door",
+                "family": "PARENT",
+                "global_call_index": 1,
+                "instance_id": "parent:000",
+                "mask": {
+                  "binary_uint8_sha256": "638aa5bf11441b0712810cc9752c8fda5a88cbc5ab597d605a313cfbb46f38a0",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    531,
+                    681
+                  ],
+                  "true_pixels": 20531
+                },
+                "native_filtered_output_index": 0,
+                "score": 0.6191914677619934,
+                "stable_instance_index": 0,
+                "text": "cabinet door"
+              }
+            ],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "cabinet door"
+          },
+          {
+            "class_id": "closet_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 2,
+            "inference_and_native_postprocess_seconds": 0.10197640000842512,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "closet door"
+          },
+          {
+            "class_id": "refrigerator_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 3,
+            "inference_and_native_postprocess_seconds": 0.1055155000067316,
+            "invalid_output_count": 0,
+            "native_filtered_count": 1,
+            "retained_count": 1,
+            "retained_instance_ids": [
+              "parent:001"
+            ],
+            "retained_instances": [
+              {
+                "box_xyxy": [
+                  524.908203125,
+                  138.1241455078125,
+                  598.3792724609375,
+                  531.5018310546875
+                ],
+                "class_id": "refrigerator_door",
+                "family": "PARENT",
+                "global_call_index": 3,
+                "instance_id": "parent:001",
+                "mask": {
+                  "binary_uint8_sha256": "d9cd6648fee2aed26204a62c4673259d15e358e6210b6c6d832112848e323203",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    531,
+                    681
+                  ],
+                  "true_pixels": 20713
+                },
+                "native_filtered_output_index": 0,
+                "score": 0.5873879194259644,
+                "stable_instance_index": 0,
+                "text": "refrigerator door"
+              }
+            ],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "refrigerator door"
+          },
+          {
+            "class_id": "doorless_opening",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 4,
+            "inference_and_native_postprocess_seconds": 0.10434980000718497,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "doorway"
+          },
+          {
+            "class_id": "handle",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 5,
+            "inference_and_native_postprocess_seconds": 0.10491940000792965,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door handle"
+          },
+          {
+            "class_id": "knob",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 6,
+            "inference_and_native_postprocess_seconds": 0.11396789998980239,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door knob"
+          },
+          {
+            "class_id": "push_bar",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 7,
+            "inference_and_native_postprocess_seconds": 0.11683700000867248,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door push bar"
+          },
+          {
+            "class_id": "panic_bar",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 8,
+            "inference_and_native_postprocess_seconds": 0.12514540000120178,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door panic bar"
+          },
+          {
+            "class_id": "hinge",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 9,
+            "inference_and_native_postprocess_seconds": 0.12907920000725426,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door hinge"
+          }
+        ]
+      },
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": [
+          "cabinet"
+        ]
+      },
+      "role": "HANDLED_FURNITURE_DOOR_NEGATIVE",
+      "sam3_native_full_frame_part_topology": false,
+      "sensor_source_bucket": "realsense/shr",
+      "source_image_size_wh": [
+        681,
+        531
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms grey under-counter cabinet doors at right with multiple bright silver bar pulls and no architectural door.",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/001479_2014-06-19_17-34-11_260595134347_rgbf000054-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/001479_2014-06-19_17-34-11_260595134347",
+      "expected_binary_label": false,
+      "files": {
+        "depth": {
+          "bytes": 329473,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/001479_2014-06-19_17-34-11_260595134347_rgbf000054-resize/depth/0000054.png",
+          "official_path": "SUNRGBD/kv2/kinect2data/001479_2014-06-19_17-34-11_260595134347_rgbf000054-resize/depth/0000054.png",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\001479_2014-06-19_17-34-11_260595134347_rgbf000054-resize\\depth\\0000054.png",
+          "sha256": "7099d1521884c63cc255694c593c6d316f4ffaa762263cbc89def7e7555af674"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/001479_2014-06-19_17-34-11_260595134347_rgbf000054-resize/intrinsics.txt",
+          "official_path": "SUNRGBD/kv2/kinect2data/001479_2014-06-19_17-34-11_260595134347_rgbf000054-resize/intrinsics.txt",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\001479_2014-06-19_17-34-11_260595134347_rgbf000054-resize\\intrinsics.txt",
+          "sha256": "22c236c26f5e1c8cda15b4c7de7f78720c857198583985843e2c8ef9a9c6d6b4"
+        },
+        "polygon": {
+          "bytes": 2909,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/001479_2014-06-19_17-34-11_260595134347_rgbf000054-resize/annotation2Dfinal/index.json",
+          "official_path": "SUNRGBD/kv2/kinect2data/001479_2014-06-19_17-34-11_260595134347_rgbf000054-resize/annotation2Dfinal/index.json",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\001479_2014-06-19_17-34-11_260595134347_rgbf000054-resize\\annotation2Dfinal\\index.json",
+          "sha256": "d9215de57db7d22b2577ca017249a26d07dec820937ebd4e958bb83614ff57d2"
+        },
+        "rgb": {
+          "bytes": 55414,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/001479_2014-06-19_17-34-11_260595134347_rgbf000054-resize/image/0000054.jpg",
+          "official_path": "SUNRGBD/kv2/kinect2data/001479_2014-06-19_17-34-11_260595134347_rgbf000054-resize/image/0000054.jpg",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\001479_2014-06-19_17-34-11_260595134347_rgbf000054-resize\\image\\0000054.jpg",
+          "sha256": "14bdda10bf84c2bb74687e703fccab0b925f738d333c433f4e26339e47e195e1"
+        },
+        "scene_metadata": {
+          "bytes": 12,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/001479_2014-06-19_17-34-11_260595134347_rgbf000054-resize/scene.txt",
+          "official_path": "SUNRGBD/kv2/kinect2data/001479_2014-06-19_17-34-11_260595134347_rgbf000054-resize/scene.txt",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\001479_2014-06-19_17-34-11_260595134347_rgbf000054-resize\\scene.txt",
+          "sha256": "35844af9e34052e52d7fa5434dbd6a9814dcbff5efcb3ce882c1aa068c1c8d6f"
+        }
+      },
+      "frame_id": "rgbf000054-resize",
+      "index": 6,
+      "native_inference": {
+        "child_instance_ids_in_prompt_then_stable_order": [
+          "child:000",
+          "child:001",
+          "child:002",
+          "child:003",
+          "child:004"
+        ],
+        "child_parent_assignments": [
+          {
+            "assigned_parent_class_id": "cabinet_door",
+            "assigned_parent_instance_id": "parent:001",
+            "authorizes": false,
+            "child_class_id": "handle",
+            "child_instance_id": "child:000",
+            "child_mask_area_pixels": 257,
+            "containing_parents_in_assignment_order": [
+              {
+                "class_priority": 0,
+                "mask_area_pixels": 14105,
+                "parent_class_id": "cabinet_door",
+                "parent_instance_id": "parent:001",
+                "stable_instance_index": 1
+              }
+            ],
+            "mean_integer_true_mask_pixel_xy": [
+              670.4980544747082,
+              210.73540856031127
+            ],
+            "representative_pixel_xy": [
+              670,
+              211
+            ],
+            "status": "ASSIGNED"
+          },
+          {
+            "assigned_parent_class_id": "cabinet_door",
+            "assigned_parent_instance_id": "parent:000",
+            "authorizes": false,
+            "child_class_id": "handle",
+            "child_instance_id": "child:001",
+            "child_mask_area_pixels": 281,
+            "containing_parents_in_assignment_order": [
+              {
+                "class_priority": 0,
+                "mask_area_pixels": 9702,
+                "parent_class_id": "cabinet_door",
+                "parent_instance_id": "parent:000",
+                "stable_instance_index": 0
+              }
+            ],
+            "mean_integer_true_mask_pixel_xy": [
+              497.1494661921708,
+              170.39501779359432
+            ],
+            "representative_pixel_xy": [
+              497,
+              170
+            ],
+            "status": "ASSIGNED"
+          },
+          {
+            "assigned_parent_class_id": null,
+            "assigned_parent_instance_id": null,
+            "authorizes": false,
+            "child_class_id": "handle",
+            "child_instance_id": "child:002",
+            "child_mask_area_pixels": 202,
+            "containing_parents_in_assignment_order": [],
+            "mean_integer_true_mask_pixel_xy": [
+              636.8712871287129,
+              151.74257425742573
+            ],
+            "representative_pixel_xy": [
+              637,
+              152
+            ],
+            "status": "UNASSIGNED"
+          },
+          {
+            "assigned_parent_class_id": "cabinet_door",
+            "assigned_parent_instance_id": "parent:002",
+            "authorizes": false,
+            "child_class_id": "handle",
+            "child_instance_id": "child:003",
+            "child_mask_area_pixels": 254,
+            "containing_parents_in_assignment_order": [
+              {
+                "class_priority": 0,
+                "mask_area_pixels": 8144,
+                "parent_class_id": "cabinet_door",
+                "parent_instance_id": "parent:002",
+                "stable_instance_index": 2
+              }
+            ],
+            "mean_integer_true_mask_pixel_xy": [
+              701.7007874015748,
+              219.6811023622047
+            ],
+            "representative_pixel_xy": [
+              702,
+              220
+            ],
+            "status": "ASSIGNED"
+          },
+          {
+            "assigned_parent_class_id": null,
+            "assigned_parent_instance_id": null,
+            "authorizes": false,
+            "child_class_id": "handle",
+            "child_instance_id": "child:004",
+            "child_mask_area_pixels": 161,
+            "containing_parents_in_assignment_order": [],
+            "mean_integer_true_mask_pixel_xy": [
+              534.5714285714286,
+              130.2049689440994
+            ],
+            "representative_pixel_xy": [
+              535,
+              130
+            ],
+            "status": "UNASSIGNED"
+          }
+        ],
+        "parent_instance_ids_in_prompt_then_stable_order": [
+          "parent:000",
+          "parent:001",
+          "parent:002",
+          "parent:003"
+        ],
+        "peak_cuda_allocated_bytes": 4683291136,
+        "peak_cuda_reserved_bytes": 4922015744,
+        "set_image": {
+          "calls": 1,
+          "full_frame_rgb_only": true,
+          "inference_seconds": 0.42246590001741424,
+          "processor_input_resolution": 1008,
+          "source_image_size_wh": [
+            730,
+            530
+          ]
+        },
+        "text_calls": [
+          {
+            "class_id": "architectural_leaf",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 0,
+            "inference_and_native_postprocess_seconds": 0.11189120000926778,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "architectural door"
+          },
+          {
+            "class_id": "cabinet_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 1,
+            "inference_and_native_postprocess_seconds": 0.11602869999478571,
+            "invalid_output_count": 0,
+            "native_filtered_count": 4,
+            "retained_count": 4,
+            "retained_instance_ids": [
+              "parent:000",
+              "parent:001",
+              "parent:002",
+              "parent:003"
+            ],
+            "retained_instances": [
+              {
+                "box_xyxy": [
+                  483.37078857421875,
+                  139.2182159423828,
+                  579.858154296875,
+                  276.56500244140625
+                ],
+                "class_id": "cabinet_door",
+                "family": "PARENT",
+                "global_call_index": 1,
+                "instance_id": "parent:000",
+                "mask": {
+                  "binary_uint8_sha256": "0043b362b8bebdc8576409b718ef39856e7f4a1ae01f0da484b653b1a76a6cc2",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    530,
+                    730
+                  ],
+                  "true_pixels": 9702
+                },
+                "native_filtered_output_index": 3,
+                "score": 0.9191895127296448,
+                "stable_instance_index": 0,
+                "text": "cabinet door"
+              },
+              {
+                "box_xyxy": [
+                  560.6199340820312,
+                  159.90557861328125,
+                  692.6661376953125,
+                  316.7119140625
+                ],
+                "class_id": "cabinet_door",
+                "family": "PARENT",
+                "global_call_index": 1,
+                "instance_id": "parent:001",
+                "mask": {
+                  "binary_uint8_sha256": "d4e5ca0c6f5bfa44e292eedc0d90d439e3268f17861f82019cf009bb0137b28d",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    530,
+                    730
+                  ],
+                  "true_pixels": 14105
+                },
+                "native_filtered_output_index": 1,
+                "score": 0.9153754115104675,
+                "stable_instance_index": 1,
+                "text": "cabinet door"
+              },
+              {
+                "box_xyxy": [
+                  657.7901611328125,
+                  187.3854522705078,
+                  732.2846069335938,
+                  356.3929748535156
+                ],
+                "class_id": "cabinet_door",
+                "family": "PARENT",
+                "global_call_index": 1,
+                "instance_id": "parent:002",
+                "mask": {
+                  "binary_uint8_sha256": "fb8a8a6673da15f6469cc778ec1425407ff57d93f1e6ba0db9d76f30a7163d2e",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    530,
+                    730
+                  ],
+                  "true_pixels": 8144
+                },
+                "native_filtered_output_index": 2,
+                "score": 0.8848133087158203,
+                "stable_instance_index": 2,
+                "text": "cabinet door"
+              },
+              {
+                "box_xyxy": [
+                  469.780517578125,
+                  141.20359802246094,
+                  492.8183288574219,
+                  249.95309448242188
+                ],
+                "class_id": "cabinet_door",
+                "family": "PARENT",
+                "global_call_index": 1,
+                "instance_id": "parent:003",
+                "mask": {
+                  "binary_uint8_sha256": "08ec41ee6acadd0aeaaae9f89362704efb160e2ba262ee5311ef801acabb3520",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    530,
+                    730
+                  ],
+                  "true_pixels": 927
+                },
+                "native_filtered_output_index": 0,
+                "score": 0.6167006492614746,
+                "stable_instance_index": 3,
+                "text": "cabinet door"
+              }
+            ],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "cabinet door"
+          },
+          {
+            "class_id": "closet_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 2,
+            "inference_and_native_postprocess_seconds": 0.10498679999727756,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "closet door"
+          },
+          {
+            "class_id": "refrigerator_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 3,
+            "inference_and_native_postprocess_seconds": 0.10583630000473931,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "refrigerator door"
+          },
+          {
+            "class_id": "doorless_opening",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 4,
+            "inference_and_native_postprocess_seconds": 0.10665250002057292,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "doorway"
+          },
+          {
+            "class_id": "handle",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 5,
+            "inference_and_native_postprocess_seconds": 0.10013340000296012,
+            "invalid_output_count": 0,
+            "native_filtered_count": 5,
+            "retained_count": 5,
+            "retained_instance_ids": [
+              "child:000",
+              "child:001",
+              "child:002",
+              "child:003",
+              "child:004"
+            ],
+            "retained_instances": [
+              {
+                "box_xyxy": [
+                  663.2463989257812,
+                  193.25881958007812,
+                  678.9926147460938,
+                  230.5355987548828
+                ],
+                "class_id": "handle",
+                "family": "CHILD",
+                "global_call_index": 5,
+                "instance_id": "child:000",
+                "mask": {
+                  "binary_uint8_sha256": "c109d39eb09d15e0786757ae19c6e6fb6110ccd55db695d71533484125ead560",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    530,
+                    730
+                  ],
+                  "true_pixels": 257
+                },
+                "native_filtered_output_index": 4,
+                "score": 0.6650391221046448,
+                "stable_instance_index": 0,
+                "text": "door handle"
+              },
+              {
+                "box_xyxy": [
+                  490.0039978027344,
+                  147.86611938476562,
+                  504.1474609375,
+                  196.2742462158203
+                ],
+                "class_id": "handle",
+                "family": "CHILD",
+                "global_call_index": 5,
+                "instance_id": "child:001",
+                "mask": {
+                  "binary_uint8_sha256": "135d21bfc548e9860d1a3d342fcdaf2960d3c34ee95da079e3ebee77de3bb2dd",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    530,
+                    730
+                  ],
+                  "true_pixels": 281
+                },
+                "native_filtered_output_index": 1,
+                "score": 0.6378152370452881,
+                "stable_instance_index": 1,
+                "text": "door handle"
+              },
+              {
+                "box_xyxy": [
+                  619.2828979492188,
+                  146.0400390625,
+                  656.95654296875,
+                  158.535888671875
+                ],
+                "class_id": "handle",
+                "family": "CHILD",
+                "global_call_index": 5,
+                "instance_id": "child:002",
+                "mask": {
+                  "binary_uint8_sha256": "7cbe158788fd3064eb70d5dc05b31a2bd90f3860c986baaa1ed1f7a1b5843f5f",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    530,
+                    730
+                  ],
+                  "true_pixels": 202
+                },
+                "native_filtered_output_index": 0,
+                "score": 0.6299314498901367,
+                "stable_instance_index": 2,
+                "text": "door handle"
+              },
+              {
+                "box_xyxy": [
+                  694.2776489257812,
+                  201.0658721923828,
+                  710.09716796875,
+                  239.14027404785156
+                ],
+                "class_id": "handle",
+                "family": "CHILD",
+                "global_call_index": 5,
+                "instance_id": "child:003",
+                "mask": {
+                  "binary_uint8_sha256": "6b04d7b695aa3cc8c0ac6bd00153f31332a779f7e8827fe646dd9490bbe87022",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    530,
+                    730
+                  ],
+                  "true_pixels": 254
+                },
+                "native_filtered_output_index": 2,
+                "score": 0.6098895072937012,
+                "stable_instance_index": 3,
+                "text": "door handle"
+              },
+              {
+                "box_xyxy": [
+                  519.893310546875,
+                  125.51471710205078,
+                  551.2490234375,
+                  135.8812255859375
+                ],
+                "class_id": "handle",
+                "family": "CHILD",
+                "global_call_index": 5,
+                "instance_id": "child:004",
+                "mask": {
+                  "binary_uint8_sha256": "5b82b35cca9bd593811380c40e34d3f3192954177cf1d8671cc58bd851db17c8",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    530,
+                    730
+                  ],
+                  "true_pixels": 161
+                },
+                "native_filtered_output_index": 3,
+                "score": 0.6029687523841858,
+                "stable_instance_index": 4,
+                "text": "door handle"
+              }
+            ],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door handle"
+          },
+          {
+            "class_id": "knob",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 6,
+            "inference_and_native_postprocess_seconds": 0.10222209998755716,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door knob"
+          },
+          {
+            "class_id": "push_bar",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 7,
+            "inference_and_native_postprocess_seconds": 0.1014695999911055,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door push bar"
+          },
+          {
+            "class_id": "panic_bar",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 8,
+            "inference_and_native_postprocess_seconds": 0.09833089998573996,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door panic bar"
+          },
+          {
+            "class_id": "hinge",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 9,
+            "inference_and_native_postprocess_seconds": 0.09914740000385791,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door hinge"
+          }
+        ]
+      },
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": [
+          "CABINET x3"
+        ]
+      },
+      "role": "HANDLED_FURNITURE_DOOR_NEGATIVE",
+      "sam3_native_full_frame_part_topology": false,
+      "sensor_source_bucket": "kv2/kinect2data",
+      "source_image_size_wh": [
+        730,
+        530
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms a tall wood-trim room opening at right with a dark room beyond and no spanning leaf or operation part.",
+      "canonical_source_path": "SUNRGBD/xtion/sun3ddata/mit_w85_basement/wg_big_lounge_1/0000200-000006669684",
+      "capture_sequence_id": "SUNRGBD/xtion/sun3ddata/mit_w85_basement/wg_big_lounge_1",
+      "expected_binary_label": false,
+      "files": {
+        "depth": {
+          "bytes": 90384,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/xtion/sun3ddata/mit_w85_basement/wg_big_lounge_1/0000200-000006669684/depth/0000200-000006663358.png",
+          "official_path": "SUNRGBD/xtion/sun3ddata/mit_w85_basement/wg_big_lounge_1/0000200-000006669684/depth/0000200-000006663358.png",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\mit_w85_basement\\wg_big_lounge_1\\0000200-000006669684\\depth\\0000200-000006663358.png",
+          "sha256": "b9bae76372b285ae4bf7a0afcb32833bdbd4c06316dce8b7ed1dc2229ad2496b"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/xtion/sun3ddata/mit_w85_basement/wg_big_lounge_1/0000200-000006669684/intrinsics.txt",
+          "official_path": "SUNRGBD/xtion/sun3ddata/mit_w85_basement/wg_big_lounge_1/0000200-000006669684/intrinsics.txt",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\mit_w85_basement\\wg_big_lounge_1\\0000200-000006669684\\intrinsics.txt",
+          "sha256": "0e11a8aee9c9a74a1b3317476bf72a216fd88266f4e692baa71f90fdb2360963"
+        },
+        "polygon": {
+          "bytes": 3358,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/xtion/sun3ddata/mit_w85_basement/wg_big_lounge_1/0000200-000006669684/annotation2Dfinal/index.json",
+          "official_path": "SUNRGBD/xtion/sun3ddata/mit_w85_basement/wg_big_lounge_1/0000200-000006669684/annotation2Dfinal/index.json",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\mit_w85_basement\\wg_big_lounge_1\\0000200-000006669684\\annotation2Dfinal\\index.json",
+          "sha256": "9561f90cfc1ec54f0992a323a1a8e7a4c6c663b7bf243724fe5d23cd17792768"
+        },
+        "rgb": {
+          "bytes": 27302,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/xtion/sun3ddata/mit_w85_basement/wg_big_lounge_1/0000200-000006669684/image/0000200-000006669684.jpg",
+          "official_path": "SUNRGBD/xtion/sun3ddata/mit_w85_basement/wg_big_lounge_1/0000200-000006669684/image/0000200-000006669684.jpg",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\mit_w85_basement\\wg_big_lounge_1\\0000200-000006669684\\image\\0000200-000006669684.jpg",
+          "sha256": "57723a006606d8116becd9d029b88c9bd53d15412e2d888cdd913946900c6543"
+        },
+        "scene_metadata": {
+          "bytes": 10,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/xtion/sun3ddata/mit_w85_basement/wg_big_lounge_1/0000200-000006669684/scene.txt",
+          "official_path": "SUNRGBD/xtion/sun3ddata/mit_w85_basement/wg_big_lounge_1/0000200-000006669684/scene.txt",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\mit_w85_basement\\wg_big_lounge_1\\0000200-000006669684\\scene.txt",
+          "sha256": "1afbccf7bdda1edd90afde2395d0b5c8bfd4c8fb9e41687218d74c04c65136e3"
+        }
+      },
+      "frame_id": "0000200-000006669684",
+      "index": 7,
+      "native_inference": {
+        "child_instance_ids_in_prompt_then_stable_order": [],
+        "child_parent_assignments": [],
+        "parent_instance_ids_in_prompt_then_stable_order": [
+          "parent:000"
+        ],
+        "peak_cuda_allocated_bytes": 4683550208,
+        "peak_cuda_reserved_bytes": 4922015744,
+        "set_image": {
+          "calls": 1,
+          "full_frame_rgb_only": true,
+          "inference_seconds": 0.41671590000623837,
+          "processor_input_resolution": 1008,
+          "source_image_size_wh": [
+            591,
+            441
+          ]
+        },
+        "text_calls": [
+          {
+            "class_id": "architectural_leaf",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 0,
+            "inference_and_native_postprocess_seconds": 0.10611079999944195,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "architectural door"
+          },
+          {
+            "class_id": "cabinet_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 1,
+            "inference_and_native_postprocess_seconds": 0.10091549999197014,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "cabinet door"
+          },
+          {
+            "class_id": "closet_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 2,
+            "inference_and_native_postprocess_seconds": 0.10319409999647178,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "closet door"
+          },
+          {
+            "class_id": "refrigerator_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 3,
+            "inference_and_native_postprocess_seconds": 0.10676460000104271,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "refrigerator door"
+          },
+          {
+            "class_id": "doorless_opening",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 4,
+            "inference_and_native_postprocess_seconds": 0.10042299999622628,
+            "invalid_output_count": 0,
+            "native_filtered_count": 1,
+            "retained_count": 1,
+            "retained_instance_ids": [
+              "parent:000"
+            ],
+            "retained_instances": [
+              {
+                "box_xyxy": [
+                  472.6054992675781,
+                  50.54732894897461,
+                  570.87890625,
+                  441.3214111328125
+                ],
+                "class_id": "doorless_opening",
+                "family": "PARENT",
+                "global_call_index": 4,
+                "instance_id": "parent:000",
+                "mask": {
+                  "binary_uint8_sha256": "dc3e75330a0fa2627db9211c258ab6e677c90daa2673b218b226be2a92968222",
+                  "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+                  "shape_hw": [
+                    441,
+                    591
+                  ],
+                  "true_pixels": 16370
+                },
+                "native_filtered_output_index": 0,
+                "score": 0.7395832538604736,
+                "stable_instance_index": 0,
+                "text": "doorway"
+              }
+            ],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "doorway"
+          },
+          {
+            "class_id": "handle",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 5,
+            "inference_and_native_postprocess_seconds": 0.10288320001563989,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door handle"
+          },
+          {
+            "class_id": "knob",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 6,
+            "inference_and_native_postprocess_seconds": 0.10151729997596703,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door knob"
+          },
+          {
+            "class_id": "push_bar",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 7,
+            "inference_and_native_postprocess_seconds": 0.10352710000006482,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door push bar"
+          },
+          {
+            "class_id": "panic_bar",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 8,
+            "inference_and_native_postprocess_seconds": 0.10309409999172203,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door panic bar"
+          },
+          {
+            "class_id": "hinge",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 9,
+            "inference_and_native_postprocess_seconds": 0.10133039997890592,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door hinge"
+          }
+        ]
+      },
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": [
+          "doorway"
+        ]
+      },
+      "role": "LARGE_DOORLESS_OPENING_OOD",
+      "sam3_native_full_frame_part_topology": false,
+      "sensor_source_bucket": "xtion/sun3ddata",
+      "source_image_size_wh": [
+        591,
+        441
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms a bright full-height passage at upper left behind a display bed with no spanning leaf or operation part; its lower portion is occluded by furniture.",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/002250_2014-06-28_18-45-47_260595134347_rgbf000049-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/002250_2014-06-28_18-45-47_260595134347",
+      "expected_binary_label": false,
+      "files": {
+        "depth": {
+          "bytes": 269508,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/002250_2014-06-28_18-45-47_260595134347_rgbf000049-resize/depth/0000049.png",
+          "official_path": "SUNRGBD/kv2/kinect2data/002250_2014-06-28_18-45-47_260595134347_rgbf000049-resize/depth/0000049.png",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\002250_2014-06-28_18-45-47_260595134347_rgbf000049-resize\\depth\\0000049.png",
+          "sha256": "6f5e4816f117d13d48f64712b5ca3e459fcef0c385883260f4c3d30d5a46524d"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/002250_2014-06-28_18-45-47_260595134347_rgbf000049-resize/intrinsics.txt",
+          "official_path": "SUNRGBD/kv2/kinect2data/002250_2014-06-28_18-45-47_260595134347_rgbf000049-resize/intrinsics.txt",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\002250_2014-06-28_18-45-47_260595134347_rgbf000049-resize\\intrinsics.txt",
+          "sha256": "22c236c26f5e1c8cda15b4c7de7f78720c857198583985843e2c8ef9a9c6d6b4"
+        },
+        "polygon": {
+          "bytes": 6426,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/002250_2014-06-28_18-45-47_260595134347_rgbf000049-resize/annotation2Dfinal/index.json",
+          "official_path": "SUNRGBD/kv2/kinect2data/002250_2014-06-28_18-45-47_260595134347_rgbf000049-resize/annotation2Dfinal/index.json",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\002250_2014-06-28_18-45-47_260595134347_rgbf000049-resize\\annotation2Dfinal\\index.json",
+          "sha256": "477f3030092f8750d5c6faa5c56dfd1213187f13f06049d17e66e1a04eaabd81"
+        },
+        "rgb": {
+          "bytes": 46413,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/002250_2014-06-28_18-45-47_260595134347_rgbf000049-resize/image/0000049.jpg",
+          "official_path": "SUNRGBD/kv2/kinect2data/002250_2014-06-28_18-45-47_260595134347_rgbf000049-resize/image/0000049.jpg",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\002250_2014-06-28_18-45-47_260595134347_rgbf000049-resize\\image\\0000049.jpg",
+          "sha256": "b81d5bbc8feea9f02922cf02ebf0f11cf8988248b00c90a03f37171b859000d1"
+        },
+        "scene_metadata": {
+          "bytes": 15,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/002250_2014-06-28_18-45-47_260595134347_rgbf000049-resize/scene.txt",
+          "official_path": "SUNRGBD/kv2/kinect2data/002250_2014-06-28_18-45-47_260595134347_rgbf000049-resize/scene.txt",
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-metric-portal-closure-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\002250_2014-06-28_18-45-47_260595134347_rgbf000049-resize\\scene.txt",
+          "sha256": "07533f7779824c84698ba18b61340f5c574d5930f4767c4cd8de94646d10503e"
+        }
+      },
+      "frame_id": "rgbf000049-resize",
+      "index": 8,
+      "native_inference": {
+        "child_instance_ids_in_prompt_then_stable_order": [],
+        "child_parent_assignments": [],
+        "parent_instance_ids_in_prompt_then_stable_order": [],
+        "peak_cuda_allocated_bytes": 4684140032,
+        "peak_cuda_reserved_bytes": 4922015744,
+        "set_image": {
+          "calls": 1,
+          "full_frame_rgb_only": true,
+          "inference_seconds": 0.4242728999815881,
+          "processor_input_resolution": 1008,
+          "source_image_size_wh": [
+            730,
+            530
+          ]
+        },
+        "text_calls": [
+          {
+            "class_id": "architectural_leaf",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 0,
+            "inference_and_native_postprocess_seconds": 0.09796009998535737,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "architectural door"
+          },
+          {
+            "class_id": "cabinet_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 1,
+            "inference_and_native_postprocess_seconds": 0.1078175000147894,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "cabinet door"
+          },
+          {
+            "class_id": "closet_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 2,
+            "inference_and_native_postprocess_seconds": 0.10237409998080693,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "closet door"
+          },
+          {
+            "class_id": "refrigerator_door",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 3,
+            "inference_and_native_postprocess_seconds": 0.10432360001141205,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "refrigerator door"
+          },
+          {
+            "class_id": "doorless_opening",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "PARENT",
+            "global_call_index": 4,
+            "inference_and_native_postprocess_seconds": 0.10579760000109673,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "doorway"
+          },
+          {
+            "class_id": "handle",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 5,
+            "inference_and_native_postprocess_seconds": 0.10597569998935796,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door handle"
+          },
+          {
+            "class_id": "knob",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 6,
+            "inference_and_native_postprocess_seconds": 0.10780899997917004,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door knob"
+          },
+          {
+            "class_id": "push_bar",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 7,
+            "inference_and_native_postprocess_seconds": 0.1127967000065837,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door push bar"
+          },
+          {
+            "class_id": "panic_bar",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 8,
+            "inference_and_native_postprocess_seconds": 0.09946019999915734,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door panic bar"
+          },
+          {
+            "class_id": "hinge",
+            "discarded_by_per_prompt_cap": 0,
+            "family": "CHILD",
+            "global_call_index": 9,
+            "inference_and_native_postprocess_seconds": 0.10239000001456589,
+            "invalid_output_count": 0,
+            "native_filtered_count": 0,
+            "retained_count": 0,
+            "retained_instance_ids": [],
+            "retained_instances": [],
+            "stable_sort": "DESCENDING_SCORE_NATIVE_ORDER_TIES",
+            "text": "door hinge"
+          }
+        ]
+      },
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": [
+          "doorway"
+        ]
+      },
+      "role": "LARGE_DOORLESS_OPENING_OOD",
+      "sam3_native_full_frame_part_topology": false,
+      "sensor_source_bucket": "kv2/kinect2data",
+      "source_image_size_wh": [
+        730,
+        530
+      ]
+    }
+  ],
+  "gate": {
+    "balanced_accuracy_is_one": false,
+    "decision": "L10_PB16_SAM3_NATIVE_PART_TOPOLOGY_DEVELOPMENT_GATE_NOT_MET",
+    "development_gate_met": false,
+    "four_of_four_architectural_doors_authorized": false,
+    "zero_of_two_handled_furniture_controls_authorized": true,
+    "zero_of_two_large_doorless_opening_controls_authorized": true
+  },
+  "inputs": {
+    "cohort": {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\named_poi_sam3_native_part_topology_development_cohort_v1.json",
+      "schema": "l10-named-poi-sam3-native-part-topology-cohort-v1",
+      "sha256": "6b383da2f8c9f7d0ad064f53a375bd9d0c102504e74eaaff0512750a76200811",
+      "status": "FROZEN_BEFORE_MODEL_OUTPUT"
+    },
+    "extracted_root": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets",
+    "model_and_source": {
+      "checkpoint": {
+        "bytes": 3502755717,
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\sam3.1-modelscope\\sam3.1_multiplex.pt",
+        "sha256": "0567debeec80ba4ac6369540c6c248025283cb3ff2b92827509e57e2b3541cb6"
+      },
+      "model_files": [
+        {
+          "bytes": 26739,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\sam3.1-modelscope\\config.json",
+          "sha256": "9593725533302a100d8e4ff1e29c0799e5a04c696b76c65fa4ee28dcd036b16b"
+        },
+        {
+          "bytes": 1792,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\sam3.1-modelscope\\processor_config.json",
+          "sha256": "d76e8fbdc561ba6af3b44937b7e99a433440cb0251ff11237b0b7d0654dd8474"
+        }
+      ],
+      "source_commit": "8f0b7f4d4e7eda2ed606ebde6702c93359ad01da",
+      "source_files": [
+        {
+          "bytes": 44074,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\sam3-source-v1\\sam3\\model_builder.py",
+          "sha256": "c78af29c3db0f0ef3c9ec66dcfe32d6a9fd70b82f660142e97908a5ce61c469f"
+        },
+        {
+          "bytes": 9217,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\sam3-source-v1\\sam3\\model\\sam3_image_processor.py",
+          "sha256": "e5167f53bc756e121df6c53e3cde2367a0e0f7d2b2de9d2093ef27f4691b805d"
+        },
+        {
+          "bytes": 42639,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\sam3-source-v1\\sam3\\model\\sam3_multiplex_detector.py",
+          "sha256": "dc951b516538ec8bcf9e03f1005b9603c8194f454554af5274618de4364f65ac"
+        },
+        {
+          "bytes": 15494,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\sam3-source-v1\\sam3\\model\\vl_combiner.py",
+          "sha256": "c04e3f911db8c950ceb6a31f77ce49d47cac15d99493bdced9ed57d2a3aa7443"
+        },
+        {
+          "bytes": 1356917,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\sam3-source-v1\\sam3\\assets\\bpe_simple_vocab_16e6.txt.gz",
+          "sha256": "924691ac288e54409236115652ad4aa250f48203de50a9e4722a6ecd48d6804a"
+        },
+        {
+          "bytes": 7414,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\sam3-source-v1\\LICENSE",
+          "sha256": "67f67e15efa517e0f67f59ff2d2f603a624da5d2f5458b0c5b366ccd66bb3eea"
+        }
+      ],
+      "source_git_clean": true,
+      "source_origin": "https://github.com/facebookresearch/sam3.git",
+      "source_repository": "facebookresearch/sam3",
+      "source_root": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\sam3-source-v1"
+    },
+    "protocol": {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\named_poi_sam3_native_part_topology_protocol_v1.json",
+      "schema": "l10-named-poi-sam3-native-part-topology-protocol-v1",
+      "sha256": "3c3f3984e6acb895a4033990bcab4cc23820b413f9127de894695b34dc51bcc4"
+    },
+    "verified_local_member_bytes": 1958756,
+    "verified_local_members": 40
+  },
+  "metrics": {
+    "assigned_children": 5,
+    "balanced_accuracy": 0.5,
+    "discarded_by_per_prompt_cap": 0,
+    "doorless_opening_ood_false_positive_count": 0,
+    "empty_child_masks_retained_unassigned": 0,
+    "false_negative_count": 4,
+    "false_positive_count": 0,
+    "frames": 8,
+    "handled_furniture_false_positive_count": 0,
+    "image_encoding_seconds": 3.9030675000394695,
+    "native_instances_by_class_id": {
+      "architectural_leaf": 0,
+      "cabinet_door": 5,
+      "closet_door": 0,
+      "doorless_opening": 2,
+      "handle": 9,
+      "hinge": 1,
+      "knob": 1,
+      "panic_bar": 0,
+      "push_bar": 1,
+      "refrigerator_door": 1
+    },
+    "negative_false_positive_rate": 0.0,
+    "negative_true_negative_rate": 1.0,
+    "positive_recall": 0.0,
+    "retained_instances_by_class_id": {
+      "architectural_leaf": 0,
+      "cabinet_door": 5,
+      "closet_door": 0,
+      "doorless_opening": 2,
+      "handle": 9,
+      "hinge": 1,
+      "knob": 1,
+      "panic_bar": 0,
+      "push_bar": 1,
+      "refrigerator_door": 1
+    },
+    "set_image_calls": 8,
+    "set_text_prompt_calls": 80,
+    "text_inference_and_native_postprocess_seconds": 9.006862800044473,
+    "total_model_calls": 88,
+    "true_negative_count": 4,
+    "true_positive_count": 0
+  },
+  "runtime": {
+    "cuda": {
+      "capability": [
+        12,
+        0
+      ],
+      "device": "cuda:0",
+      "name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+      "runtime": "13.0",
+      "total_memory_bytes": 8546484224,
+      "total_memory_mib_floor": 8150
+    },
+    "distributions": {
+      "Pillow": "12.2.0",
+      "ftfy": "6.1.1",
+      "iopath": "0.1.10",
+      "numpy": "1.26.4",
+      "pycocotools": "2.0.11",
+      "sam3": "0.1.0",
+      "timm": "1.0.28",
+      "torch": "2.11.0+cu130",
+      "torchvision": "0.26.0+cu130",
+      "triton-windows": "3.6.0.post26"
+    },
+    "elapsed_seconds": 34.94279539998388,
+    "launcher": {
+      "bytes": 116,
+      "path": "E:\\codex-tools\\bin\\blindassist-sam3-research-gpu.cmd",
+      "sha256": "4ca5d26dc0ee957b6574dbe4a518792200fa7f2a1a397806ddeed0a7452e74cb"
+    },
+    "loaded_model": {
+      "checkpoint_load": {
+        "adapter": "PB16_STRICT_SAM31_IMAGE_ONLY_MULTIPLEX_DETECTOR_ADAPTER",
+        "checkpoint_namespace": "detector.",
+        "checkpoint_total_state_keys": 1623,
+        "detector_state_keys": 1166,
+        "ignored_non_detector_state_keys": 457,
+        "missing_keys": [],
+        "recipe_source": "sam3.model_builder.build_sam3_multiplex_video_predictor detector construction block",
+        "strict_state_dict_loading": true,
+        "tracker_instantiated": false,
+        "unexpected_keys": [],
+        "video_predictor_instantiated": false
+      },
+      "image_only_adapter": "PB16_STRICT_SAM31_IMAGE_ONLY_MULTIPLEX_DETECTOR_ADAPTER",
+      "instance_interactivity_enabled": false,
+      "is_multiplex": true,
+      "model_type": "Sam3MultiplexDetector",
+      "parameter_count": 853556534,
+      "parameter_devices": [
+        "cuda:0"
+      ],
+      "parameter_dtypes": [
+        "torch.float32"
+      ],
+      "processor": {
+        "confidence_threshold": 0.5,
+        "device": "cuda",
+        "resolution": 1008
+      },
+      "training": false,
+      "vision_neck_scale_count": 3,
+      "vision_neck_type": "Sam3TriViTDetNeck"
+    },
+    "maximum_frame_peak_cuda_allocated_bytes": 4685969920,
+    "maximum_frame_peak_cuda_reserved_bytes": 4922015744,
+    "model_load_seconds": 11.187649400002556,
+    "module_versions": {
+      "numpy": "1.26.4",
+      "pillow": "12.2.0",
+      "torch": "2.11.0+cu130",
+      "torchvision": "0.26.0+cu130",
+      "triton": "3.6.0"
+    },
+    "offline_environment": {
+      "HF_HUB_OFFLINE": "1",
+      "TRANSFORMERS_OFFLINE": "1"
+    },
+    "python": "3.11.9",
+    "python_executable": {
+      "bytes": 274712,
+      "path": "E:\\codex-tools\\tools\\venvs\\blindassist-sam3-gpu\\Scripts\\python.exe",
+      "sha256": "21bb438c0d4a6f1f164b9a646f6ee000340185e5871180aec06db8d3f07c0082"
+    },
+    "python_user_site_disabled": true,
+    "sam3_import_path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\sam3-source-v1\\sam3\\__init__.py",
+    "sam_license_acceptance_asserted": true
+  },
+  "schema": "l10-named-poi-sam3-native-part-topology-development-result-v1"
+}

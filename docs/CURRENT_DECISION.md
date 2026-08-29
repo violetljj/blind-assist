@@ -892,6 +892,32 @@ assignment rule on the consumed pixels. PB16 must replace the grounded-box chain
 with a native text-conditioned concept-instance mask source on a fresh cohort;
 the current admissible source is SAM 3.1.
 
+PB16 froze SAM 3.1 multiplex weights, a strict image-only detector adapter,
+five parent concepts, five operation-part concepts, and eight further
+source-disjoint SUN RGB-D captures. The public SAM 3 image builder was rejected
+during pre-formal smoke because this SAM 3.1 checkpoint exposes a three-scale
+multiplex detector rather than the builder's four-scale dual neck. PB16 instead
+assembled the detector components from Meta's multiplex recipe and strictly
+loaded all `1,166` detector keys with zero missing or unexpected keys; this is a
+custom image-only adapter, not an official supported SAM 3.1 image API. A first
+formal launch then stopped before model load, RGB decoding, or output because
+WDDM reported `8,150` rather than the frozen `8,151` MiB. Only that mechanical
+contract was corrected to the same GPU with an `8,000` MiB minimum.
+
+The valid run completed `8` image encodes plus `80` text calls in `34.94 s`,
+with `4,685,969,920` peak allocated CUDA bytes. It authorized `0/4`
+architectural doors and `0/4` controls: positive recall `0`, true-negative rate
+`1`, and balanced accuracy `0.500`. Record
+`L10_PB16_SAM3_NATIVE_PART_TOPOLOGY_DEVELOPMENT_GATE_NOT_MET`. The decisive
+observable is global: the frozen `architectural door` parent concept returned
+zero instances on all eight frames. Child masks still appeared on three of four
+positives, while furniture parent concepts and both control classes behaved
+cleanly, so topology never received an architectural parent to authorize. PB16
+is closed as a parent semantic/source failure. Do not alter its concept text,
+confidence, caps, mask assignment, adapter, or topology on the consumed pixels.
+A successor must change the supported weight/API representation and parent
+semantic representation together, then use a fresh source-disjoint cohort.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

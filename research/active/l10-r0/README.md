@@ -1710,6 +1710,37 @@ mask priority, and topology changes are forbidden. PB16 replaces the separate
 grounder-and-box-mask chain with native SAM 3.1 text-conditioned concept-instance
 masks on a fresh source-disjoint cohort.
 
+PB16 froze the SAM 3.1 multiplex checkpoint, a strict image-only detector
+adapter, five parent concepts, five operation-part concepts, and eight more
+source-disjoint SUN RGB-D captures. The public SAM 3 image builder failed a
+pre-formal synthetic smoke because it constructs a four-scale dual neck while
+the SAM 3.1 multiplex detector checkpoint contains a three-scale neck. The
+frozen evaluator instead assembled the detector components from Meta's
+multiplex-predictor recipe and strictly loaded all `1,166` detector keys with
+zero missing or unexpected keys; it instantiated neither tracker nor video
+predictor. This is a PB16 custom image-only adapter, not an official supported
+SAM 3.1 image API.
+
+The first formal launch stopped before model load, cohort RGB decoding, or
+output because WDDM exposed `8,150` rather than the frozen `8,151` MiB. Only the
+mechanical same-GPU contract was corrected to a minimum of `8,000` MiB and all
+dependent hashes were rebound. The valid run completed `8` image encodes and
+`80` text-prompt calls in `34.94 s`, with `4,685,969,920` peak allocated and
+`4,922,015,744` peak reserved CUDA bytes.
+
+The route authorized no frame: `0/4` architectural positives, `0/2` handled
+furniture false positives, and `0/2` large-opening false positives, for positive
+recall `0`, true-negative rate `1`, and balanced accuracy `0.500`. Record
+`L10_PB16_SAM3_NATIVE_PART_TOPOLOGY_DEVELOPMENT_GATE_NOT_MET`. The decisive
+failure precedes topology: `architectural door` returned zero native instances
+on every frame. Child masks appeared on positives `1` through `3`, including
+handle, knob, push-bar, and hinge evidence, but no architectural parent existed
+to authorize them; positive `4` exposed neither parent nor child. Furniture
+concepts remained active and both control families were rejected. Close PB16 on
+these pixels without changing concept wording, confidence, cap, mask assignment,
+adapter, or topology. A successor must change both supported weight/API and
+architectural-parent semantic representation on a fresh source-disjoint cohort.
+
 Durable PB10 summary:
 `named_poi_trans4trans_glass_door_plane_development_result_v1.json`.
 
@@ -1747,6 +1778,14 @@ PB15 protocol, frozen cohort, evaluator, and durable negative result:
 `named_poi_grounded_sam_multiscale_part_topology_development_result_v1.json`.
 The result SHA-256 is
 `76d172298d9a1d98371b481ae2db808db5ed1329ec0cbc3b18d9bbf1b50c5c76`.
+
+PB16 protocol, frozen cohort, evaluator, and durable negative result:
+`named_poi_sam3_native_part_topology_protocol_v1.json`,
+`named_poi_sam3_native_part_topology_development_cohort_v1.json`,
+`named_poi_sam3_native_part_topology.py`, and
+`named_poi_sam3_native_part_topology_development_result_v1.json`. The result
+SHA-256 is
+`c56116c95cc10ba3c7b1c9f4f07489b5e4ac42f61de2a842c27e4a713d8fb9ab`.
 
 The `x/120` column is not physical target-absence authority. The source audit
 did not exhaustively freeze every gallery building co-visible in dense
