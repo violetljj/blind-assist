@@ -34,21 +34,14 @@
     "The frozen X21 arm needs an explicit observable-source adapter before any CARLA replay and still requires separate real source-disjoint confirmation."
   ],
   "next_target": {
-    "name": "DTR-CARLA causal benchmark",
+    "name": "DTR-CARLA C1 planned-route source canary",
     "scenario_families": [
-      "same_geometry_different_motion",
-      "same_motion_different_route",
-      "same_motion_different_ttc",
-      "same_scene_different_visibility",
-      "same_target_visible_then_occluded",
-      "same_background_static_then_dynamic"
+      "same_motion_different_route"
     ],
     "oracle_ladder": [
-      "O0_RGB",
-      "O1_RGB_DEPTH",
-      "O2_RGB_DEPTH_FLOW",
-      "O3_PRIVILEGED_TRUTH"
+      "O3_PRIVILEGED_CURRENT_STATE",
+      "O3R_PRIVILEGED_CURRENT_STATE_PLUS_PLANNED_ROUTE"
     ],
-    "decision_boundary": "Build this as a fresh synthetic Development benchmark; do not use it to replace real source-disjoint confirmation or to retune consumed cohorts."
+    "decision_boundary": "Use a fresh route-twin cohort to test the missing planned-route information source; do not tune thresholds on consumed C0, promote CARLA teacher flow, or replace real source-disjoint confirmation."
   }
 }

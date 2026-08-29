@@ -1,6 +1,6 @@
 # Project state
 
-Updated: 2026-08-29
+Updated: 2026-08-30
 
 BlindAssist is a runnable Android showcase research prototype. The default
 research policy is effect-first: demonstrate a genuine, visible effect in a
@@ -43,6 +43,16 @@ the corrected V17 valid negative by exact status, authority, result path, and
 SHA-256, then materializes an ignored project-side context for experiments.
 This makes CARLA available as a synthetic DTR causal lab without adding it to
 Android or treating it as source-disjoint X21 confirmation.
+
+DTR-CARLA-C0 now turns that bridge into a runnable algorithm benchmark: six
+causal twin families, 12 episodes, four separately replayed sensor modalities,
+and a truth-blind RGB -> RGB-D -> CARLA-flow-teacher -> privileged-current-state
+comparison through unchanged R2. All arms recalled `7/7` events, but O0 RGB was
+best (`3` false segments, 82.35% event F1); O1/O2T/O3 produced `6/8/7` false
+segments. The route-turn pair failed in all arms and O2T also failed the
+static/dynamic background pair. Therefore no observation-increment effect is
+claimed. The next fresh source is planned future wearer route, not threshold
+tuning on consumed C0 or promotion of CARLA flow to deployment input.
 
 The static CODa ceiling adds causal curved-route and bounded vertical
 occupancy for walls/barriers, fixed structures, and temporary obstacles. It

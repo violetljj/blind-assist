@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "experiment_id": "DTR_CARLA_C0_CAUSAL_BENCHMARK_CANARY_V1",
+  "evidence_class": "synthetic_causal_development_canary",
+  "objective": "Run the unchanged frozen DTR R2 logic across six paired CARLA interventions and four observation levels while changing only the observable source presented to R2.",
+  "environment": {
+    "carla_version": "0.9.16",
+    "map": "Carla/Maps/Town10HD_Opt",
+    "weather": "ClearNoon",
+    "duration_seconds": 8.0,
+    "sample_seconds": 0.05,
+    "simulation_tick_seconds": 0.025,
+    "walker_origin_z_m": 0.9516997933387756,
+    "anchor": {
+      "center_xy_m": [-46.934195, 36.51329],
+      "forward_xy": [0.999999564, 0.000933925],
+      "right_xy": [-0.000933925, 0.999999564]
+    }
+  },
+  "camera": {
+    "resolution": [320, 180],
+    "fov_degrees": 90.0,
+    "relative_transform": {
+      "x_m": 0.0,
+      "y_m": 0.0,
+      "z_m": 0.65,
+      "pitch_degrees": -12.0,
+      "yaw_degrees": 10.0,
+      "roll_degrees": 0.0
+    }
+  },
+  "capture": {
+    "sensor_order": ["instance", "rgb", "depth", "flow"],
+    "one_long_lived_camera_per_modality": true,
+    "fresh_server_per_modality": true,
+    "actor_blueprints": {
+      "ego": "walker.pedestrian.0001",
+      "target": "walker.pedestrian.0002",
+      "occluder": "static.prop.advertisement"
+    }
+  },
+  "route_contract": {
+    "future_horizon_seconds": 3.0,
+    "route_body_radius_m": 0.65,
+    "target_observation_radius_m": 0.3
+  },
+  "observation_ladder": {
+    "O0_RGB": "YOLO person bbox, causal image tracker, and frozen flat-ground projection",
+    "O1_RGB_DEPTH": "The same RGB detections and tracks with CARLA depth replacing flat-ground range",
+    "O2T_RGB_DEPTH_CARLA_FLOW": "O1 plus bounded 0.50-second transport from CARLA sensor flow; synthetic teacher arm, not deployment flow",
+    "O3_PRIVILEGED_CURRENT_STATE": "Current CARLA target identity and metric position only; privileged Oracle prediction ceiling",
+    "Y_REALIZED_FUTURE_TRUTH": "Realized future OBB/contact opened by the scorer only after prediction SHA-256 is sealed"
+  },
+  "twin_contracts": [
+    {
+      "family": "same_geometry_different_motion",
+      "a": "motion_cross",
+      "b": "motion_hold",
+      "identical_before_s": 1.0,
+      "allowed_difference": "target_velocity_after_1s"
+    },
+    {
+      "family": "same_motion_different_route",
+      "a": "route_straight",
+      "b": "route_turn_right",
+      "identical_before_s": 2.0,
+      "allowed_difference": "ego_route_velocity_after_2s"
+    },
+    {
+      "family": "same_motion_different_ttc",
+      "a": "ttc_early",
+      "b": "ttc_delayed",
+      "identical_before_s": 0.0,
+      "allowed_difference": "target_motion_start_time"
+    },
+    {
+      "family": "same_scene_different_visibility",
+      "a": "visibility_forward",
+      "b": "visibility_head_away",
+      "identical_before_s": 2.4,
+      "allowed_difference": "sensor_yaw_only_between_2.4s_and_4.6s",
+      "visibility_gate": {
+        "window_start_s": 2.4,
+        "window_end_s": 4.6,
+        "minimum_visible_frame_drop": 20
+      }
+    },
+    {
+      "family": "same_target_visible_then_occluded",
+      "a": "occlusion_clear",
+      "b": "occlusion_blocked",
+      "identical_before_s": 0.0,
+      "allowed_difference": "physical_occluder_presence",
+      "visibility_gate": {
+        "minimum_visible_frame_drop": 5
+      }
+    },
+    {
+      "family": "same_background_static_then_dynamic",
+      "a": "background_static",
+      "b": "background_dynamic",
+      "identical_before_s": 1.0,
+      "allowed_difference": "off_route_target_velocity_after_1s"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "motion_cross",
+      "family": "same_geometry_different_motion",
+      "twin": "a",
+      "expected_critical": true,
+      "ego": {"start_forward_m": -4.0, "start_right_m": 0.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 1.0, "velocity_right_mps": 0.0}]},
+      "target": {"start_forward_m": 0.0, "start_right_m": 4.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0}, {"start_s": 1.0, "velocity_forward_mps": 0.0, "velocity_right_mps": -1.3333333333333333}]}
+    },
+    {
+      "id": "motion_hold",
+      "family": "same_geometry_different_motion",
+      "twin": "b",
+      "expected_critical": false,
+      "ego": {"start_forward_m": -4.0, "start_right_m": 0.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 1.0, "velocity_right_mps": 0.0}]},
+      "target": {"start_forward_m": 0.0, "start_right_m": 4.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0}]}
+    },
+    {
+      "id": "route_straight",
+      "family": "same_motion_different_route",
+      "twin": "a",
+      "expected_critical": true,
+      "ego": {"start_forward_m": -4.0, "start_right_m": 0.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 1.0, "velocity_right_mps": 0.0}]},
+      "target": {"start_forward_m": 0.0, "start_right_m": 4.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": -1.0}]}
+    },
+    {
+      "id": "route_turn_right",
+      "family": "same_motion_different_route",
+      "twin": "b",
+      "expected_critical": false,
+      "ego": {"start_forward_m": -4.0, "start_right_m": 0.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 1.0, "velocity_right_mps": 0.0}, {"start_s": 2.0, "velocity_forward_mps": 0.7071067811865476, "velocity_right_mps": 0.7071067811865476}]},
+      "target": {"start_forward_m": 0.0, "start_right_m": 4.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": -1.0}]}
+    },
+    {
+      "id": "ttc_early",
+      "family": "same_motion_different_ttc",
+      "twin": "a",
+      "expected_critical": true,
+      "ego": {"start_forward_m": -4.0, "start_right_m": 0.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 1.0, "velocity_right_mps": 0.0}]},
+      "target": {"start_forward_m": 0.0, "start_right_m": 4.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": -1.0}]}
+    },
+    {
+      "id": "ttc_delayed",
+      "family": "same_motion_different_ttc",
+      "twin": "b",
+      "expected_critical": false,
+      "ego": {"start_forward_m": -4.0, "start_right_m": 0.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 1.0, "velocity_right_mps": 0.0}]},
+      "target": {"start_forward_m": 0.0, "start_right_m": 4.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0}, {"start_s": 1.5, "velocity_forward_mps": 0.0, "velocity_right_mps": -1.0}]}
+    },
+    {
+      "id": "visibility_forward",
+      "family": "same_scene_different_visibility",
+      "twin": "a",
+      "expected_critical": true,
+      "ego": {"start_forward_m": -4.0, "start_right_m": 0.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 1.0, "velocity_right_mps": 0.0}]},
+      "target": {"start_forward_m": 0.0, "start_right_m": 4.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": -1.0}]}
+    },
+    {
+      "id": "visibility_head_away",
+      "family": "same_scene_different_visibility",
+      "twin": "b",
+      "expected_critical": true,
+      "ego": {"start_forward_m": -4.0, "start_right_m": 0.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 1.0, "velocity_right_mps": 0.0}]},
+      "target": {"start_forward_m": 0.0, "start_right_m": 4.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": -1.0}]},
+      "camera_yaw_offsets": [{"start_s": 0.0, "yaw_degrees": 0.0}, {"start_s": 2.4, "yaw_degrees": -75.0}, {"start_s": 4.6, "yaw_degrees": 0.0}]
+    },
+    {
+      "id": "occlusion_clear",
+      "family": "same_target_visible_then_occluded",
+      "twin": "a",
+      "expected_critical": true,
+      "ego": {"start_forward_m": -8.0, "start_right_m": 0.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 1.25, "velocity_right_mps": 0.0}]},
+      "target": {"start_forward_m": 0.06, "start_right_m": 8.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": -1.25}]}
+    },
+    {
+      "id": "occlusion_blocked",
+      "family": "same_target_visible_then_occluded",
+      "twin": "b",
+      "expected_critical": true,
+      "ego": {"start_forward_m": -8.0, "start_right_m": 0.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 1.25, "velocity_right_mps": 0.0}]},
+      "target": {"start_forward_m": 0.06, "start_right_m": 8.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": -1.25}]},
+      "occluder": {"forward_m": -1.44, "right_m": 1.44, "surface_offset_m": 0.05, "world_yaw_degrees": -123.94649003169064}
+    },
+    {
+      "id": "background_static",
+      "family": "same_background_static_then_dynamic",
+      "twin": "a",
+      "expected_critical": false,
+      "ego": {"start_forward_m": -4.0, "start_right_m": 0.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 1.0, "velocity_right_mps": 0.0}]},
+      "target": {"start_forward_m": 2.0, "start_right_m": 2.5, "segments": [{"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0}]}
+    },
+    {
+      "id": "background_dynamic",
+      "family": "same_background_static_then_dynamic",
+      "twin": "b",
+      "expected_critical": false,
+      "ego": {"start_forward_m": -4.0, "start_right_m": 0.0, "segments": [{"start_s": 0.0, "velocity_forward_mps": 1.0, "velocity_right_mps": 0.0}]},
+      "target": {"start_forward_m": 2.0, "start_right_m": 2.5, "segments": [{"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0}, {"start_s": 1.0, "velocity_forward_mps": -0.6, "velocity_right_mps": 0.0}]}
+    }
+  ],
+  "claim_boundary": [
+    "C0 is a twelve-episode synthetic Development canary, not a source-disjoint real confirmation or product result.",
+    "O2T consumes CARLA ground-truth sensor flow and is a teacher arm, not a deployable observation arm.",
+    "O3 consumes privileged current CARLA identity and metric state only as an Oracle ceiling; it never receives realized future contact.",
+    "O0 through O2 use observable sensor payloads, but synthetic-to-real generalization is not established.",
+    "The unchanged frozen R2 configuration and lifecycle are evaluated; this protocol does not authorize threshold tuning on the consumed C0 episodes."
+  ]
+}

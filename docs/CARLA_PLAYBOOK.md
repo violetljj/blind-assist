@@ -63,13 +63,37 @@ These are mechanism and source Development assets. They are not a frozen X21
 source-disjoint confirmation, natural tracking evidence, real-device evidence,
 or a safety result.
 
-## Next integration layer
+## Runnable DTR-CARLA-C0 benchmark
 
-The next useful CARLA surface is a fresh DTR causal benchmark, not bulk random
-image generation. It should cover six paired interventions: motion, route,
-time-to-contact, visibility, visible-to-occluded continuity, and
-static-to-dynamic background. Evaluate the same episodes with an Oracle ladder
-from RGB-only through depth and optical-flow observations to privileged truth.
+Run a fresh benchmark with a unique `RunId`:
+
+```powershell
+pwsh -NoProfile -File tools/run_dtr_carla_c0.ps1 -RunId c0-canary-YYYYMMDD-HHMMSS
+```
+
+The runner uses one fresh packaged CARLA server and one long-lived camera per
+modality in the fixed order `instance -> rgb -> depth -> flow`. The instance
+gate must admit all six twin families before observable payload capture
+continues. Partial run directories are never overwritten; use a new `RunId`
+after a failed capture. Raw evidence stays under the external CARLA library,
+while joined observation, teacher, truth, sealed prediction, and result files
+are written under ignored `artifacts.local/evidence/dtr-carla-c0/<RunId>`.
+
+The first complete run is
+[`DTR_CARLA_C0_RESULT_2026-08-30.md`](../research/active/dtr-r0/carla/DTR_CARLA_C0_RESULT_2026-08-30.md).
+All four frozen-R2 arms recalled `7/7` events, but O0 RGB was best with three
+false segments and 82.35% event F1. O1 depth produced six false segments, O2T
+CARLA flow produced eight, and O3 privileged current state produced seven. The
+route-turn pair failed in every arm; teacher flow also broke the static/dynamic
+background pair.
+
+## Next algorithm layer
+
+The completed C0 changes the next question. More current visual information did
+not repair the route twin, even at the privileged-current-state ceiling. The
+next fresh CARLA source should expose the wearer's planned future route to a
+route-conditioned arm and test whether it removes the route-turn false alert
+without sacrificing the contact twin. Do not tune thresholds on consumed C0.
 
 CARLA optical flow may first serve as teacher/evaluator evidence. Making flow a
 deployment input or a new threshold gate is a separate source decision. A
