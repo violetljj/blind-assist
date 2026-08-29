@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "id": "algorithm-specialized-place-identity-source",
+  "kind": "algorithm",
+  "title": "Specialized visual-place-recognition identity source",
+  "canonical_ref": "repo:research/active/l10-r0/named_poi_place_identity_eval.py",
+  "authors": [],
+  "year": 2026,
+  "venue": "BlindAssist research",
+  "summary": "Test whether dedicated VPR descriptors provide cross-view positive place authority before any target-to-portal spatial grounding.",
+  "mechanisms": [
+    {
+      "id": "single-frame-vpr-place-identity-ceiling",
+      "name": "Single-frame VPR place-identity ceiling",
+      "description": "Freeze portal and active-view modules; compare whole-image CLIP, DINOv2, fixed CLIP+DINO, SALAD, and MixVPR with Development-calibrated requested-entity acceptance on a building-disjoint cohort.",
+      "inputs": ["Public target reference image", "Current single RGB image", "Building-disjoint reference gallery"],
+      "outputs": ["Building ranking", "Requested-entity accept or reject"],
+      "limitations": "On the first PB2-A confirmation, SALAD reduced the source-label negative proxy but lost correct positive coverage, while MixVPR recovered coverage only with an excessive proxy rate. Physical target-absent rejection was not evaluable because co-visible gallery identities were not exhaustively frozen. The frozen single-frame appearance-only route is closed on that cohort."
+    }
+  ],
+  "tags": ["l10", "named-poi", "place-identity", "visual-place-recognition", "salad", "mixvpr", "open-set-rejection"],
+  "aliases": ["L10-PB2-A", "Place Identity Source"],
+  "links": [
+    {"label": "Official SALAD repository", "ref": "https://github.com/serizba/salad"},
+    {"label": "Official MixVPR repository", "ref": "https://github.com/amaralibey/MixVPR"}
+  ],
+  "added_at": "2026-08-29",
+  "updated_at": "2026-08-29"
+}

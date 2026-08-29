@@ -1,0 +1,96 @@
+{
+  "schema": "l10-named-poi-place-identity-protocol-v1",
+  "mode": "DEVELOPMENT_SELECTION_PLUS_BUILDING_DISJOINT_CONFIRMATION",
+  "frozen_at": "2026-08-29",
+  "question": "Can a specialized visual-place-recognition identity source confirm a requested building from one public RGB view more reliably than the frozen generic CLIP/DINO identity sources?",
+  "sources": {
+    "source_spec": {
+      "path": "research/active/l10-r0/named_poi_place_identity_source_v1.json",
+      "sha256": "e3210e8d33eaa2b06db160ba2673f85be1bc71beaf07fadd014bbb4e6a490018"
+    },
+    "source_audit": {
+      "path": "research/active/l10-r0/named_poi_place_identity_source_audit_v1.json",
+      "sha256": "3ab4ff18eccc389c470f9d295d18e0fb77d93ff8206ac0d0b7721577bfde0d0a"
+    },
+    "dataset_manifest": {
+      "path": "artifacts.local/knowledge/named-poi-place-identity-v1/dataset_manifest.json",
+      "sha256": "4ad38b7ac26090cc9c59813d8591d996c2401487a4dfc843cbdf48ee174f9e83",
+      "inventory_sha256": "1966afa94ee3653332b64ac3add53ecbd8a3bee7ede526b21f1020b0f5fe13e8"
+    }
+  },
+  "frozen_scope": {
+    "development": "Six entities, 24 queries, one reference per entity.",
+    "test": "Six different entities, 24 queries, one reference per entity.",
+    "facets": ["facade", "entrance", "side", "partial"],
+    "prior_exclusion": "All 12 entities are absent from the 20-entity PB1 manifest; the six PB1 confirmation buildings cannot select or evaluate a PB2 arm.",
+    "portal_boundary": "Portal proposer, portal crops, support rays, PB1 head, COMMIT, SET_VALUED, NONE, tracking, and active observation are not invoked."
+  },
+  "arms": {
+    "B0_CLIP": {
+      "source": "artifacts.local/models/clip-vit-base-patch32-3d74acf",
+      "weights_sha256": "a63082132ba4f97a80bea76823f544493bffa8082296d62d71581a4feff1576f",
+      "descriptor": "L2-normalized frozen whole-image CLIP image embedding"
+    },
+    "B1_DINOv2": {
+      "source": "artifacts.local/models/p1_a2_dinov2_small_ed25f3a",
+      "weights_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+      "descriptor": "L2-normalized mean of frozen whole-image DINOv2 patch tokens"
+    },
+    "B2_CLIP_DINO": {
+      "descriptor": "Fixed arithmetic mean of per-query z-scored B0 and B1 entity-score vectors; no learned weight"
+    },
+    "C1_SALAD": {
+      "official_repository": "https://github.com/serizba/salad",
+      "repository_commit": "6aede13a3f6c25750bf7fde10209c06cb73060bb",
+      "repository_license": "GPL-3.0",
+      "dinov2_torch_hub_dependency": {
+        "official_repository": "https://github.com/facebookresearch/dinov2",
+        "repository_commit": "7764ea0f912e53c92e82eb78a2a1631e92725fc8",
+        "local_path": "artifacts.local/models/dinov2-official"
+      },
+      "checkpoint": "artifacts.local/models/salad-official/dino_salad.ckpt",
+      "checkpoint_sha256": "6b3f1720954293e83da6966c5cfcfc6713200d7fefadcca76fc51aeb80b3cada",
+      "descriptor": "Official DINOv2-B/14 SALAD 8448-D descriptor; 322x322 bilinear resize and ImageNet normalization"
+    },
+    "C2_MixVPR": {
+      "official_repository": "https://github.com/amaralibey/MixVPR",
+      "repository_commit": "4043915cef24818003ece1a8112bc8a24e69abe0",
+      "repository_license": "NO_LICENSE_FILE_IN_FROZEN_REPOSITORY; INTERNAL_RESEARCH_EXECUTION_ONLY; DO_NOT_REDISTRIBUTE_CODE_OR_WEIGHTS",
+      "checkpoint": "artifacts.local/models/mixvpr-official/resnet50_MixVPR_4096.ckpt",
+      "checkpoint_sha256": "97528606773e9920e93ca4d211daeabf1c7312480f38b45379ee5551a1b4dd24",
+      "descriptor": "Official ResNet50 MixVPR 4096-D descriptor; 320x320 bicubic resize and ImageNet normalization"
+    }
+  },
+  "scoring": {
+    "entity_score": "Maximum cosine similarity to that entity's frozen reference bank; v1 contains one reference per entity.",
+    "ranking": "Rank all six entities within the query split by descending entity score with stable entity-ID tie breaking.",
+    "positive_episode": "Pair every query with its audited true entity.",
+    "wrong_building_episode": "Pair every query with each of the other five entities in its split.",
+    "acceptance": "Accept a requested entity iff its pair score is at least the arm-specific threshold.",
+    "threshold_selection": "On Development only, enumerate all observed positive and negative score midpoints and maximize balanced accuracy; tie-break by higher positive acceptance, lower wrong-building false confirmation, then higher threshold.",
+    "baseline_selection": "On Development choose B0/B1/B2 lexicographically by Recall@1, positive acceptance, lower wrong-building false-confirmation rate, then Recall@3.",
+    "challenger_selection": "On Development choose C1/C2 with the same lexicographic order. Carry the selected baseline, selected challenger, thresholds, and all formulas unchanged to test."
+  },
+  "metrics": [
+    "query-level Building Recall@1",
+    "query-level Building Recall@3",
+    "entity-macro Recall@1",
+    "target-present positive acceptance",
+    "wrong-building false confirmation",
+    "target-absent rejection",
+    "facade/entrance/side/partial stratified Recall@1 and positive acceptance",
+    "accept/reject state counts"
+  ],
+  "promotion_gate": {
+    "identity_gain": "Selected challenger test Recall@1 must improve by at least 0.10 absolute OR positive acceptance must improve by at least 0.10 absolute over the selected baseline.",
+    "wrong_building_guardrail": "Selected challenger wrong-building false-confirmation rate must be no more than selected baseline plus 0.02 absolute.",
+    "positive_authority_guardrail": "Selected challenger positive acceptance must be at least 0.25 and no more than 0.05 below the selected baseline.",
+    "decision": "All three clauses are required for L10_PB2A_SPECIALIZED_VPR_IDENTITY_GATE_MET. Otherwise record L10_PB2A_SPECIALIZED_VPR_IDENTITY_GATE_NOT_MET_STOP_SINGLE_FRAME_APPEARANCE_ONLY."
+  },
+  "successor": {
+    "gate_met": "Open PB2-B spatial place support; retain portal and active-view blocks until spatial grounding passes.",
+    "ranking_only_or_gate_not_met": "Stop backbone, score, seed, threshold, and fusion sweeps on this cohort. Change information source to logo/OCR/map/metadata/GPS or a genuinely ordered multi-view observation."
+  },
+  "backend": "For each executable arm, time an equivalent frozen Development batch on CPU and verified CUDA. Select the faster backend, GPU on a tie; record actual tensor device, GPU name, timings, peak allocated memory, and selection reason.",
+  "claim_boundary": "Curated public-image single-frame place-identity Development plus algorithm-fresh-by-PB2 building-disjoint confirmation. This is not a fresh-final or universal VPR benchmark. It establishes no portal ownership, access, traversability, active motion, tracking, guidance, arrival, product benefit, user benefit, or safety."
+}

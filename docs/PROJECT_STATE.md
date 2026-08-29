@@ -339,6 +339,26 @@ tuning. L10-AV0 remains blocked until a changed target-identity information
 source or representation produces a correctly admitted portal on a new
 building-disjoint cohort.
 
+PB2-A has now changed that source rather than retuning PB1. A source-only audit
+froze 12 PB1-disjoint public buildings with one reference plus facade,
+entrance, side, and partial queries, split six Development / six confirmation.
+Development selected fixed whole-image CLIP+DINO as the generic baseline and
+SALAD as the specialized VPR challenger. On 24 confirmation queries SALAD
+changed Recall@1 `9/24 -> 8/24`, Recall@3 `18/24 -> 20/24`, correct positive
+acceptance `12/24 -> 8/24`, and wrong-building confirmation `23/120 -> 3/120`.
+MixVPR accepted `16/24` positives but also `48/120` wrong buildings. Record
+`L10_PB2A_SPECIALIZED_VPR_IDENTITY_GATE_NOT_MET_STOP_SINGLE_FRAME_APPEARANCE_ONLY`.
+Do not sweep backbone, threshold, normalization, reference weighting, or fusion
+on this consumed cohort. The next legal successor must add information such as
+logo/OCR, map or POI metadata, coarse GPS, or genuinely ordered multi-view
+evidence. PB2-B and L10-AV0 remain blocked.
+
+The cross-paired `x/120` values are source-label negative proxies, not physical
+target-absence authority: dense same-city images were not exhaustively labeled
+for every co-visible gallery building. Physical target-absent rejection is
+therefore `NOT_EVALUABLE`; the negative decision is unchanged because Recall@1
+and target-present positive acceptance independently fail the gate.
+
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
 because the approved AWS profile is absent. That is a source-access condition,

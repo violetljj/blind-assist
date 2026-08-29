@@ -1,0 +1,19 @@
+{
+  "schema": "l10-named-poi-place-identity-integrity-adjudication-v1",
+  "date": "2026-08-29",
+  "raw_result_sha256": "1c40187e7b0269fc48b77b77d64c2f657f0a14e265c46b0c78ffd023443a03fd",
+  "finding": "The v1 evaluator pairs each query with the other five source labels. Building IDs are disjoint, but the source audit did not freeze an exhaustive per-image mask of co-visible gallery entities. In dense same-city views, a non-source-label building can be physically visible in the frame.",
+  "authority_correction": {
+    "wrong_building_false_confirmation": "SOURCE_LABEL_NEGATIVE_PROXY_ONLY",
+    "target_absent_rejection": "NOT_EVALUABLE_PHYSICAL_ABSENCE_NOT_EXHAUSTIVELY_FROZEN",
+    "ranking_metrics": "UNCHANGED",
+    "target_present_positive_acceptance": "UNCHANGED",
+    "model_outputs": "UNCHANGED",
+    "thresholds": "UNCHANGED",
+    "denominators": "UNCHANGED"
+  },
+  "decision_effect": "NO_CHANGE. The selected challenger already fails the identity-gain clause (Recall@1 -1/24 and positive acceptance -4/24) and the positive-authority guardrail. Those failures do not depend on the source-label negative proxy.",
+  "corrected_decision": "L10_PB2A_SPECIALIZED_VPR_IDENTITY_GATE_NOT_MET_STOP_SINGLE_FRAME_APPEARANCE_ONLY",
+  "future_requirement": "A future physical target-absent claim must freeze per-query visible-gallery-entity truth or use absent frames whose geography and field of view rule out every requested target. Do not reuse this consumed cohort to tune that truth, thresholds, weights, or fusion.",
+  "claim_boundary": "The reported 3/120, 23/120, 40/120, and 48/120 values remain reproducible source-label negative proxies, not authoritative physical target-absence rates. The negative PB2-A identity decision is supported independently by ranking and target-present acceptance."
+}

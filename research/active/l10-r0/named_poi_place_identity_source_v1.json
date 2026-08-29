@@ -1,0 +1,153 @@
+{
+  "schema": "l10-named-poi-place-identity-source-v1",
+  "selection_authority": "EXACT_WIKIMEDIA_COMMONS_FILENAMES_SELECTED_FROM_CATEGORY_METADATA_BEFORE_ANY_PB2_MODEL_EXECUTION",
+  "selected_at": "2026-08-29",
+  "excluded_prior_cohort": "artifacts.local/knowledge/named-poi-portal-binding-v1/dataset_manifest.json",
+  "entities": [
+    {
+      "id": "hsbc-hong-kong-headquarters",
+      "name": "HSBC Hong Kong headquarters building",
+      "split": "development",
+      "reference": "HSBC Building 2016.jpg",
+      "queries": [
+        {"commons_file": "Hong Kong HSBC.jpg", "facet": "facade"},
+        {"commons_file": "HSBC Entrance.jpg", "facet": "entrance"},
+        {"commons_file": "HSBC Building & Bank of China Tower 20170808.jpg", "facet": "side"},
+        {"commons_file": "HK CH 中環 Central 德輔道中 Des Voeux Road Central HSBC HQ facade tram view Bank Street August 2025 N13P 04.jpg", "facet": "partial"}
+      ]
+    },
+    {
+      "id": "cheung-kong-center",
+      "name": "Cheung Kong Center",
+      "split": "development",
+      "reference": "HK Central Connaught Road Central near City Hall view office buildings Cheung Kong Center n Bank of China Tower n Hong Kong Club March 2026 N13P 01.jpg",
+      "queries": [
+        {"commons_file": "HK Central Connaught Road Central near City Hall view office buildings HSBC HQ n Cheung Kong Center n Bank of China Tower n SCBank HQ March 2026 N13P 01.jpg", "facet": "facade"},
+        {"commons_file": "Cheung Kong Center Car Entrance.jpg", "facet": "entrance"},
+        {"commons_file": "HK Central 中環 Cheung Kong Park 長江公園 Garden Road footbridge Dec-2010.JPG", "facet": "side"},
+        {"commons_file": "Bank of China Tower with reflection of Cheung Kong Center.jpg", "facet": "partial"}
+      ]
+    },
+    {
+      "id": "the-center-hong-kong",
+      "name": "The Center, Hong Kong",
+      "split": "development",
+      "reference": "The Center 2018.jpg",
+      "queries": [
+        {"commons_file": "The Center (30511089300).jpg", "facet": "facade"},
+        {"commons_file": "The Center Access 2015.jpg", "facet": "entrance"},
+        {"commons_file": "The Center, Hong Kong looking upwards from ground level (231655581).jpg", "facet": "side"},
+        {"commons_file": "HK Piers First Ferry VI The Center Four Season Hotel.JPG", "facet": "partial"}
+      ]
+    },
+    {
+      "id": "hopewell-centre",
+      "name": "Hopewell Centre, Hong Kong",
+      "split": "development",
+      "reference": "Hopewell Centre Hong Kong.jpg",
+      "queries": [
+        {"commons_file": "HK WC 灣仔 Wan Chai 利東街 Lee Tung Avenue 皇后大道東 Queen's Road East Hopewell Centre construction site night September 2023 Px3.jpg", "facet": "facade"},
+        {"commons_file": "Hopewell Centre Entrance view 201507.jpg", "facet": "entrance"},
+        {"commons_file": "HK Wan Chai 合和中心 Hopewell Centre night Podium entrance.jpg", "facet": "side"},
+        {"commons_file": "HK Wan Chai 合和中心 Hopewell Centre main entrance sign Queen's Road East 183.jpg", "facet": "partial"}
+      ]
+    },
+    {
+      "id": "lippo-centre",
+      "name": "Lippo Centre, Hong Kong",
+      "split": "development",
+      "reference": "HK Lippo Centre Front View.jpg",
+      "queries": [
+        {"commons_file": "Lippo Centre 14-04-2026.jpg", "facet": "facade"},
+        {"commons_file": "Lippo Centre Ruth's Chris Steak House 22-04-2026.jpg", "facet": "entrance"},
+        {"commons_file": "HK Bus 10 view Admiralty September 2019 SSG 12.jpg", "facet": "side"},
+        {"commons_file": "Steel and garden. - Flickr - massless.jpg", "facet": "partial"}
+      ]
+    },
+    {
+      "id": "jardine-house",
+      "name": "Jardine House",
+      "split": "development",
+      "reference": "HK 中環 Central Jardine House facade blue sky July 2020 SS2.jpg",
+      "queries": [
+        {"commons_file": "Jardine House (30913565151).jpg", "facet": "facade"},
+        {"commons_file": "HK Central Connaught Place Jardine House mall escalators September 2022 Px3.jpg", "facet": "entrance"},
+        {"commons_file": "HK 中環 Central 干諾道中 Connaught Road Central 康樂廣場 Connaught Place 怡和大廈 Jardine House square Post Office October 2024 R12S.jpg", "facet": "side"},
+        {"commons_file": "A thousand... (5805101476).jpg", "facet": "partial"}
+      ]
+    },
+    {
+      "id": "the-murray-hong-kong",
+      "name": "The Murray, Hong Kong",
+      "split": "test",
+      "reference": "HK 中環 Central Garden Road October 2021 SS2.jpg",
+      "queries": [
+        {"commons_file": "HK 中環 Central 金鐘 Admiralty 花園道 Garden Road hotel January 2021 SS2.jpg", "facet": "facade"},
+        {"commons_file": "The Murray Drop off area 2018.jpg", "facet": "entrance"},
+        {"commons_file": "HK 金鐘 Admiralty 紅棉道 Cotton Tree Drive footbridge view Mid-Levels buildings June 2020 SS2 01.jpg", "facet": "side"},
+        {"commons_file": "The Murray Building arches view1 2018.jpg", "facet": "partial"}
+      ]
+    },
+    {
+      "id": "exchange-square",
+      "name": "Exchange Square, Hong Kong",
+      "split": "test",
+      "reference": "Exchange Square building 1.jpg",
+      "queries": [
+        {"commons_file": "Exchange Square building 2.jpg", "facet": "facade"},
+        {"commons_file": "Exchange Square Phase 3 Access 201407.jpg", "facet": "entrance"},
+        {"commons_file": "HK Central Exchange Square Two 2.JPG", "facet": "side"},
+        {"commons_file": "Glass and Steel (HONG KONG-ARCHITECTURE) III (1232274968).jpg", "facet": "partial"}
+      ]
+    },
+    {
+      "id": "hong-kong-museum-of-art",
+      "name": "Hong Kong Museum of Art",
+      "split": "test",
+      "reference": "Hong Kong Art Museum（2022）.jpg",
+      "queries": [
+        {"commons_file": "Hong Kong Museum of Art (52902418335).jpg", "facet": "facade"},
+        {"commons_file": "Hong Kong Museum of Art (Entrance Hall).JPG", "facet": "entrance"},
+        {"commons_file": "Museum of art in hong kong (8515291255).jpg", "facet": "side"},
+        {"commons_file": "13-08-08-hongkong-by-RalfR-086 cropped.jpg", "facet": "partial"}
+      ]
+    },
+    {
+      "id": "hong-kong-museum-of-history",
+      "name": "Hong Kong Museum of History",
+      "split": "test",
+      "reference": "Hong Kong Museum of History 03-07-2022.jpg",
+      "queries": [
+        {"commons_file": "Hong Kong Museum of History 4682-Hong-Kong (27055581346).jpg", "facet": "facade"},
+        {"commons_file": "Hong Kong Museum of History, ground floor entrance (Hong Kong).jpg", "facet": "entrance"},
+        {"commons_file": "Hong Kong Museum of History and Hong Kong Science Museum.JPG", "facet": "side"},
+        {"commons_file": "HK TST East Hong Kong Museum of History tree Aug-2012.JPG", "facet": "partial"}
+      ]
+    },
+    {
+      "id": "hong-kong-cultural-centre",
+      "name": "Hong Kong Cultural Centre",
+      "split": "test",
+      "reference": "HKCulturalCentre.JPG",
+      "queries": [
+        {"commons_file": "Hong Kong Cultural Centre Outside View.jpg", "facet": "facade"},
+        {"commons_file": "Hong Kong Cultural Centre Enterance 201007.jpg", "facet": "entrance"},
+        {"commons_file": "Hong Kong Cultural Centre viewed from Victoria Harbour.JPG", "facet": "side"},
+        {"commons_file": "Blue triangle (20147634710).jpg", "facet": "partial"}
+      ]
+    },
+    {
+      "id": "hong-kong-space-museum",
+      "name": "Hong Kong Space Museum",
+      "split": "test",
+      "reference": "Hong Kong Space Museum (30812155365).jpg",
+      "queries": [
+        {"commons_file": "Hong Kong Space Museum 20191222 04.jpg", "facet": "facade"},
+        {"commons_file": "HK TST 尖沙咀 Tsim Sha Tsui 梳士巴利道 Salisbury Road Garden Hong Kong Space Museum ramp October 2022 Px3.jpg", "facet": "entrance"},
+        {"commons_file": "HK TST 尖沙咀 Tsim Sha Tsui 梳士巴利道 Salisbury Road Garden 香港太空館 Hong Kong Space Museum July 2021 SS2 03.jpg", "facet": "side"},
+        {"commons_file": "Hong Kong layers (30177165843).jpg", "facet": "partial"}
+      ]
+    }
+  ],
+  "claim_boundary": "Curated public-image single-frame place identity only. Filenames are provisional until a source-only pixel audit freezes entity presence and facet labels. No portal ownership, access, traversability, motion, navigation, arrival, user-benefit, or safety claim."
+}

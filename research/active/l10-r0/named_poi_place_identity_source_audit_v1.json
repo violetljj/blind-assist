@@ -1,0 +1,55 @@
+{
+  "schema": "l10-named-poi-place-identity-source-audit-v1",
+  "audited_at": "2026-08-29",
+  "authority": "HUMAN_SOURCE_ONLY_PIXEL_AUDIT_BEFORE_ANY_PB2_MODEL_EXECUTION",
+  "source_spec_sha256": "e3210e8d33eaa2b06db160ba2673f85be1bc71beaf07fadd014bbb4e6a490018",
+  "dataset_manifest_sha256": "4ad38b7ac26090cc9c59813d8591d996c2401487a4dfc843cbdf48ee174f9e83",
+  "inventory_sha256": "1966afa94ee3653332b64ac3add53ecbd8a3bee7ede526b21f1020b0f5fe13e8",
+  "contact_sheets": {
+    "development": {
+      "path": "artifacts.local/knowledge/named-poi-place-identity-v1/audit/development-source-audit.jpg",
+      "sha256": "767cb9955318db27bfdf1cb25648b60995e854b22d9bd5da7923c02adb914138"
+    },
+    "test": {
+      "path": "artifacts.local/knowledge/named-poi-place-identity-v1/audit/test-source-audit.jpg",
+      "sha256": "8ca0b106904836e7abc879123897b525f4b0fa9f17c9a1aff48202ce3d2f77de"
+    }
+  },
+  "counts": {
+    "development_entities_admitted": 6,
+    "test_entities_admitted": 6,
+    "references_admitted": 12,
+    "queries_admitted": 48,
+    "queries_by_facet": {
+      "facade": 12,
+      "entrance": 12,
+      "side": 12,
+      "partial": 12
+    },
+    "source_rows_rejected_before_freeze": 12,
+    "model_calls_before_freeze": 0
+  },
+  "facet_contract": {
+    "facade": "The place exterior or dominant building mass is visible.",
+    "entrance": "An entrance, approach aperture, drop-off, lobby threshold, or immediately connected entrance interior is visible.",
+    "side": "An oblique side, adjacent plaza, shared complex view, or lateral approach retains place structure.",
+    "partial": "Only a structural fragment, reflection, close detail, occluded view, or distant contextual view remains; target presence is still source-auditable."
+  },
+  "entity_status": {
+    "hsbc-hong-kong-headquarters": "ADMITTED_REFERENCE_PLUS_FOUR_FACETS",
+    "cheung-kong-center": "ADMITTED_REFERENCE_PLUS_FOUR_FACETS; PARTIAL_IS_REFLECTED_TARGET_STRUCTURE",
+    "the-center-hong-kong": "ADMITTED_REFERENCE_PLUS_FOUR_FACETS",
+    "hopewell-centre": "ADMITTED_REFERENCE_PLUS_FOUR_FACETS",
+    "lippo-centre": "ADMITTED_REFERENCE_PLUS_FOUR_FACETS",
+    "jardine-house": "ADMITTED_REFERENCE_PLUS_FOUR_FACETS",
+    "the-murray-hong-kong": "ADMITTED_REFERENCE_PLUS_FOUR_FACETS",
+    "exchange-square": "ADMITTED_REFERENCE_PLUS_FOUR_FACETS",
+    "hong-kong-museum-of-art": "ADMITTED_REFERENCE_PLUS_FOUR_FACETS; ENTRANCE_IS_INTERIOR_THRESHOLD_AND_PARTIAL_IS_DISTANT_CONTEXT",
+    "hong-kong-museum-of-history": "ADMITTED_REFERENCE_PLUS_FOUR_FACETS",
+    "hong-kong-cultural-centre": "ADMITTED_REFERENCE_PLUS_FOUR_FACETS; PARTIAL_IS_INTERIOR_STRUCTURAL_FRAGMENT",
+    "hong-kong-space-museum": "ADMITTED_REFERENCE_PLUS_FOUR_FACETS"
+  },
+  "rejections": "The pre-freeze audit replaced one non-building development reference, several neighbor/exhibit-only rows, and the Hong Kong Heritage Museum entity whose selected query rows were mostly maps or exhibits. Rejected rows never entered a PB2 model call.",
+  "split_integrity": "All 12 PB2 entities are absent from the 20-entity PB1 manifest. Development and test entity IDs are disjoint. Test pixels, labels, descriptors, and metrics cannot select a model, fusion rule, threshold objective, or baseline.",
+  "claim_boundary": "Curated public-image source truth for single-frame place identity. Entity presence and facet labels are human-audited; public access, portal ownership, traversability, temporal causality, navigation, arrival, product benefit, user benefit, and safety are not established."
+}

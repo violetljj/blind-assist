@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-specialized-place-identity-source",
+  "item_id": "algorithm-specialized-place-identity-source",
+  "route": "l10-r0",
+  "mechanism_ids": ["single-frame-vpr-place-identity-ceiling"],
+  "use_state": "rejected",
+  "adoption_mode": "direct_replication",
+  "usage": {
+    "source_scope": "Twelve PB1-disjoint public Hong Kong building identities, split into six Development and six confirmation entities; one reference and four audited facade/entrance/side/partial queries per entity.",
+    "project_application": "Establish requested-place identity before spatially assigning the retained functional portal set.",
+    "modifications": "Use official frozen SALAD and MixVPR checkpoints, whole-image descriptors, a fixed one-reference entity bank, Development-only threshold and arm selection, and explicit wrong-building pairings.",
+    "expected_effect": "Improve Recall@1 or correct positive acceptance by at least 10 percentage points without raising wrong-building confirmation more than two points or collapsing positive coverage."
+  },
+  "evaluation": {
+    "reproduction_status": "reproduced",
+    "verdict": "negative",
+    "setup": "Source-only audit rejected 12 invalid or mislabeled rows before any model call. Development selected CLIP+DINO as baseline and SALAD as challenger; thresholds and selections were frozen before test. All executable arms ran on measured-faster verified RTX 5060 CUDA.",
+    "effect": "On 24 test queries SALAD scored Recall@1 8/24 versus 9/24, Recall@3 20/24 versus 18/24, and correct acceptance 8/24 versus 12/24. Its source-label negative proxy was 3/120 versus 23/120. MixVPR scored Recall@1 7/24 and accepted 16/24 positives, but its source-label negative proxy was 48/120. Neither arm crossed the coupled identity gate; physical target-absent rejection remains NOT_EVALUABLE because co-visible gallery entities were not exhaustively frozen.",
+    "metrics": [
+      "selected_baseline=B2_CLIP_DINO",
+      "selected_challenger=C1_SALAD",
+      "baseline_recall_at_1=9/24",
+      "salad_recall_at_1=8/24",
+      "baseline_recall_at_3=18/24",
+      "salad_recall_at_3=20/24",
+      "baseline_positive_acceptance=12/24",
+      "salad_positive_acceptance=8/24",
+      "baseline_source_label_negative_proxy=23/120",
+      "salad_source_label_negative_proxy=3/120",
+      "mixvpr_positive_acceptance=16/24",
+      "mixvpr_source_label_negative_proxy=48/120",
+      "physical_target_absent_rejection=NOT_EVALUABLE"
+    ],
+    "claim_boundary": "This rejects the frozen B0-B2/C1-C2 single-frame appearance-only place-identity route on one curated public-image cohort. Cross-paired negatives are source-label proxies and physical target-absent rejection is NOT_EVALUABLE. It does not reject VPR generally and establishes no portal ownership, access, traversability, motion, navigation, arrival, product benefit, user benefit, or safety."
+  },
+  "evidence": [
+    {"kind": "repo", "ref": "research/active/l10-r0/named_poi_place_identity_protocol_v1.json", "summary": "Frozen source, arms, split isolation, scoring, threshold selection, metrics, gate, successor, and claim boundary."},
+    {"kind": "repo", "ref": "research/active/l10-r0/named_poi_place_identity_result_v1.json", "summary": "Durable metrics, interpretation, decision, backend receipts, and evidence hashes."},
+    {"kind": "repo", "ref": "research/active/l10-r0/named_poi_place_identity_adjudication_v1.json", "summary": "Post-result authority correction: cross-paired negatives are source-label proxies, not exhaustive physical target-absence truth; the gate decision is unchanged."},
+    {"kind": "artifact", "ref": "artifacts.local/evidence/l10-r0/named-poi-place-identity-v1/result.json", "sha256": "1c40187e7b0269fc48b77b77d64c2f657f0a14e265c46b0c78ffd023443a03fd", "summary": "Per-arm Development/test metrics, per-query records, thresholds, selections, backends, and gate clauses."}
+  ],
+  "history": [
+    {"date": "2026-08-29", "change": "Ran PB2-A once on the frozen building-disjoint cohort; rejected specialized single-frame appearance identity and kept PB2-B plus L10-AV0 blocked."}
+  ],
+  "added_at": "2026-08-29",
+  "updated_at": "2026-08-29"
+}

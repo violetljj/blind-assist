@@ -2,11 +2,11 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-29",
-  "source_fingerprint": "513d2af84d43dddcef19ea91cd6f306c7f95ead0ee2138c361973c9fd3cefd80",
+  "source_fingerprint": "15cab80a0c495085717e4df12fc4517486baf54c6ad960719b71302af201f1bb",
   "counts": {
     "failure_layers": 13,
-    "mechanisms": 256,
-    "uses": 255,
+    "mechanisms": 257,
+    "uses": 256,
     "experiments": 206,
     "current_terminals": 19
   },
@@ -1025,6 +1025,102 @@
         }
       ],
       "search_text": "Searching for MobileNetV3 MobileNetV3Small plus Lite R-ASPP provides a mobile-oriented lightweight segmentation backbone/decoder candidate. idea-archive sanpo Searching for MobileNetV3 — idea:MobileNetV3 route mechanism MobileNetV3Small plus Lite R-ASPP provides a mobile-oriented lightweight segmentation backbone/decoder candidate. The paper does not establish BlindAssist corridor semantics, event utility, INT8 fidelity on the target phone, BLV user benefit, or safety. sanpo Retain as a bounded four-class SANPO segmentation candidate only after event and data gates close; compare on event metrics and device latency rather than paper accuracy alone. Retain as a bounded four-class SANPO segmentation candidate only after event and data gates close; compare on event metrics and device latency rather than paper accuracy alone. The paper does not establish BlindAssist corridor semantics, event utility, INT8 fidelity on the target phone, BLV user benefit, or safety."
+    },
+    {
+      "id": "algorithm-specialized-place-identity-source#single-frame-vpr-place-identity-ceiling",
+      "item_id": "algorithm-specialized-place-identity-source",
+      "mechanism_id": "single-frame-vpr-place-identity-ceiling",
+      "kind": "algorithm",
+      "title": "Specialized visual-place-recognition identity source",
+      "canonical_ref": "repo:research/active/l10-r0/named_poi_place_identity_eval.py",
+      "summary": "Test whether dedicated VPR descriptors provide cross-view positive place authority before any target-to-portal spatial grounding.",
+      "tags": [
+        "l10",
+        "named-poi",
+        "place-identity",
+        "visual-place-recognition",
+        "salad",
+        "mixvpr",
+        "open-set-rejection"
+      ],
+      "name": "Single-frame VPR place-identity ceiling",
+      "description": "Freeze portal and active-view modules; compare whole-image CLIP, DINOv2, fixed CLIP+DINO, SALAD, and MixVPR with Development-calibrated requested-entity acceptance on a building-disjoint cohort.",
+      "inputs": [
+        "Public target reference image",
+        "Current single RGB image",
+        "Building-disjoint reference gallery"
+      ],
+      "outputs": [
+        "Building ranking",
+        "Requested-entity accept or reject"
+      ],
+      "limitations": "On the first PB2-A confirmation, SALAD reduced the source-label negative proxy but lost correct positive coverage, while MixVPR recovered coverage only with an excessive proxy rate. Physical target-absent rejection was not evaluable because co-visible gallery identities were not exhaustively frozen. The frozen single-frame appearance-only route is closed on that cohort.",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 6,
+        "evaluation_evidence": 3,
+        "geometry_motion": 3,
+        "handoff_completion": 3,
+        "identity_binding": 10,
+        "observation_perception": 3,
+        "runtime_infrastructure": 3,
+        "source_coverage": 6
+      },
+      "routes": [
+        "l10-r0"
+      ],
+      "uses": [
+        {
+          "id": "use-l10-r0-specialized-place-identity-source",
+          "route": "l10-r0",
+          "use_state": "rejected",
+          "reproduction_status": "reproduced",
+          "verdict": "negative",
+          "project_application": "Establish requested-place identity before spatially assigning the retained functional portal set.",
+          "expected_effect": "Improve Recall@1 or correct positive acceptance by at least 10 percentage points without raising wrong-building confirmation more than two points or collapsing positive coverage.",
+          "observed_effect": "On 24 test queries SALAD scored Recall@1 8/24 versus 9/24, Recall@3 20/24 versus 18/24, and correct acceptance 8/24 versus 12/24. Its source-label negative proxy was 3/120 versus 23/120. MixVPR scored Recall@1 7/24 and accepted 16/24 positives, but its source-label negative proxy was 48/120. Neither arm crossed the coupled identity gate; physical target-absent rejection remains NOT_EVALUABLE because co-visible gallery entities were not exhaustively frozen.",
+          "metrics": [
+            "selected_baseline=B2_CLIP_DINO",
+            "selected_challenger=C1_SALAD",
+            "baseline_recall_at_1=9/24",
+            "salad_recall_at_1=8/24",
+            "baseline_recall_at_3=18/24",
+            "salad_recall_at_3=20/24",
+            "baseline_positive_acceptance=12/24",
+            "salad_positive_acceptance=8/24",
+            "baseline_source_label_negative_proxy=23/120",
+            "salad_source_label_negative_proxy=3/120",
+            "mixvpr_positive_acceptance=16/24",
+            "mixvpr_source_label_negative_proxy=48/120",
+            "physical_target_absent_rejection=NOT_EVALUABLE"
+          ],
+          "claim_boundary": "This rejects the frozen B0-B2/C1-C2 single-frame appearance-only place-identity route on one curated public-image cohort. Cross-paired negatives are source-label proxies and physical target-absent rejection is NOT_EVALUABLE. It does not reject VPR generally and establishes no portal ownership, access, traversability, motion, navigation, arrival, product benefit, user benefit, or safety.",
+          "evidence": [
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/named_poi_place_identity_protocol_v1.json",
+              "summary": "Frozen source, arms, split isolation, scoring, threshold selection, metrics, gate, successor, and claim boundary."
+            },
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/named_poi_place_identity_result_v1.json",
+              "summary": "Durable metrics, interpretation, decision, backend receipts, and evidence hashes."
+            },
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/named_poi_place_identity_adjudication_v1.json",
+              "summary": "Post-result authority correction: cross-paired negatives are source-label proxies, not exhaustive physical target-absence truth; the gate decision is unchanged."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r0/named-poi-place-identity-v1/result.json",
+              "summary": "Per-arm Development/test metrics, per-query records, thresholds, selections, backends, and gate clauses."
+            }
+          ],
+          "updated_at": "2026-08-29"
+        }
+      ],
+      "search_text": "Specialized visual-place-recognition identity source Test whether dedicated VPR descriptors provide cross-view positive place authority before any target-to-portal spatial grounding. l10 named-poi place-identity visual-place-recognition salad mixvpr open-set-rejection Single-frame VPR place-identity ceiling Freeze portal and active-view modules; compare whole-image CLIP, DINOv2, fixed CLIP+DINO, SALAD, and MixVPR with Development-calibrated requested-entity acceptance on a building-disjoint cohort. Public target reference image Current single RGB image Building-disjoint reference gallery Building ranking Requested-entity accept or reject On the first PB2-A confirmation, SALAD reduced the source-label negative proxy but lost correct positive coverage, while MixVPR recovered coverage only with an excessive proxy rate. Physical target-absent rejection was not evaluable because co-visible gallery identities were not exhaustively frozen. The frozen single-frame appearance-only route is closed on that cohort. l10-r0 Establish requested-place identity before spatially assigning the retained functional portal set. Improve Recall@1 or correct positive acceptance by at least 10 percentage points without raising wrong-building confirmation more than two points or collapsing positive coverage. On 24 test queries SALAD scored Recall@1 8/24 versus 9/24, Recall@3 20/24 versus 18/24, and correct acceptance 8/24 versus 12/24. Its source-label negative proxy was 3/120 versus 23/120. MixVPR scored Recall@1 7/24 and accepted 16/24 positives, but its source-label negative proxy was 48/120. Neither arm crossed the coupled identity gate; physical target-absent rejection remains NOT_EVALUABLE because co-visible gallery entities were not exhaustively frozen. selected_baseline=B2_CLIP_DINO selected_challenger=C1_SALAD baseline_recall_at_1=9/24 salad_recall_at_1=8/24 baseline_recall_at_3=18/24 salad_recall_at_3=20/24 baseline_positive_acceptance=12/24 salad_positive_acceptance=8/24 baseline_source_label_negative_proxy=23/120 salad_source_label_negative_proxy=3/120 mixvpr_positive_acceptance=16/24 mixvpr_source_label_negative_proxy=48/120 physical_target_absent_rejection=NOT_EVALUABLE This rejects the frozen B0-B2/C1-C2 single-frame appearance-only place-identity route on one curated public-image cohort. Cross-paired negatives are source-label proxies and physical target-absent rejection is NOT_EVALUABLE. It does not reject VPR generally and establishes no portal ownership, access, traversability, motion, navigation, arrival, product benefit, user benefit, or safety."
     },
     {
       "id": "algorithm-target-conditioned-portal-binding-head#shared-portal-score-set-summary-none",

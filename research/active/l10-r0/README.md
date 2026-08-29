@@ -1425,6 +1425,55 @@ The encoder ran on measured-faster CPU (`0.451 s` versus verified RTX 5060 CUDA
 traversability, active motion, tracking, guidance, arrival, product benefit,
 user benefit, and safety remain unproved.
 
+#### PB2-A specialized VPR place identity
+
+PB2-A changed the identity information source instead of tuning PB1. A
+source-only audit rejected 12 invalid or mislabeled Commons rows before any
+model call, then froze 12 PB1-disjoint buildings into six Development and six
+confirmation entities. Every entity has one reference and four audited query
+facets: facade, entrance, side, and partial. Portal proposals, portal crops,
+PB1 decisions, tracking, and active observation were not invoked.
+
+Development alone selected the fixed whole-image CLIP+DINO arm as the generic
+baseline and official SALAD as the specialized challenger. Confirmation was:
+
+| arm | Recall@1 | Recall@3 | positive acceptance | source-label negative proxy |
+| --- | ---: | ---: | ---: | ---: |
+| CLIP | 10/24 | 19/24 | 16/24 | 40/120 |
+| DINOv2 | 9/24 | 16/24 | 3/24 | 1/120 |
+| selected CLIP+DINO | 9/24 | 18/24 | 12/24 | 23/120 |
+| selected SALAD | 8/24 | 20/24 | 8/24 | 3/120 |
+| MixVPR | 7/24 | 18/24 | 16/24 | 48/120 |
+
+SALAD improved latent Top-3 and rejection, but did not improve Top-1 and lost
+four correctly accepted target-present views. MixVPR recovered positive
+acceptance only by more than doubling wrong-building confirmations relative to
+the selected baseline. Record
+`L10_PB2A_SPECIALIZED_VPR_IDENTITY_GATE_NOT_MET_STOP_SINGLE_FRAME_APPEARANCE_ONLY`.
+Do not sweep backbones, fusion, thresholds, normalization, seeds, or reference
+weights on this consumed cohort. Add a genuinely new information source such as
+logo/OCR, map or POI metadata, coarse GPS, or ordered multi-view evidence.
+PB2-B and L10-AV0 remain blocked.
+
+The `x/120` column is not physical target-absence authority. The source audit
+did not exhaustively freeze every gallery building co-visible in dense
+same-city frames, so physical target-absent rejection is `NOT_EVALUABLE`. A
+post-result integrity adjudication changed no model output, positive label,
+threshold, denominator, or decision: Recall@1 and target-present acceptance
+already fail the gate independently.
+
+Protocol and durable summary are
+`named_poi_place_identity_protocol_v1.json` and
+`named_poi_place_identity_result_v1.json`; the authority correction is
+`named_poi_place_identity_adjudication_v1.json` (SHA-256
+`ed08e330df0902bd78e5a74510ef664adc0a6f8888103182a79d796e9d7f9523`).
+Raw result SHA-256 is
+`1c40187e7b0269fc48b77b77d64c2f657f0a14e265c46b0c78ffd023443a03fd`.
+The generic baseline, SALAD, and MixVPR all selected verified RTX 5060 CUDA
+after measured CPU/GPU probes. This curated confirmation does not reject VPR
+generally and establishes no portal ownership, access, traversability, active
+motion, navigation, arrival, product benefit, user benefit, or safety.
+
 V2 result:
 `artifacts.local/evidence/l10-r0/named-poi-multifacet-entrance-v2/result.json`,
 SHA-256 `dff6fcd89460f185fc3785549131800869ce7661d35d5119b3f5dd4d58488f51`.

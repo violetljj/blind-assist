@@ -1,0 +1,60 @@
+{
+  "schema": "l10-named-poi-place-identity-durable-result-v1",
+  "date": "2026-08-29",
+  "experiment": "L10-PB2-A specialized VPR place-identity source ceiling",
+  "source": {
+    "entities": 12,
+    "development_entities": 6,
+    "test_entities": 6,
+    "queries_per_split": 24,
+    "queries_per_facet_total": 12,
+    "pb1_entity_overlap": 0,
+    "source_rows_rejected_before_model_execution": 12,
+    "source_spec_sha256": "e3210e8d33eaa2b06db160ba2673f85be1bc71beaf07fadd014bbb4e6a490018",
+    "source_audit_sha256": "3ab4ff18eccc389c470f9d295d18e0fb77d93ff8206ac0d0b7721577bfde0d0a",
+    "dataset_manifest_sha256": "4ad38b7ac26090cc9c59813d8591d996c2401487a4dfc843cbdf48ee174f9e83",
+    "inventory_sha256": "1966afa94ee3653332b64ac3add53ecbd8a3bee7ede526b21f1020b0f5fe13e8"
+  },
+  "selection": {
+    "authority": "DEVELOPMENT_ONLY",
+    "baseline": "B2_CLIP_DINO",
+    "challenger": "C1_SALAD",
+    "test_did_not_select_arm_or_threshold": true
+  },
+  "test_metrics": {
+    "B0_CLIP": {"recall_at_1": "10/24", "recall_at_3": "19/24", "positive_acceptance": "16/24", "wrong_building_false_confirmation": "40/120"},
+    "B1_DINOv2": {"recall_at_1": "9/24", "recall_at_3": "16/24", "positive_acceptance": "3/24", "wrong_building_false_confirmation": "1/120"},
+    "B2_CLIP_DINO": {"recall_at_1": "9/24", "recall_at_3": "18/24", "positive_acceptance": "12/24", "wrong_building_false_confirmation": "23/120"},
+    "C1_SALAD": {"recall_at_1": "8/24", "recall_at_3": "20/24", "positive_acceptance": "8/24", "wrong_building_false_confirmation": "3/120"},
+    "C2_MixVPR": {"recall_at_1": "7/24", "recall_at_3": "18/24", "positive_acceptance": "16/24", "wrong_building_false_confirmation": "48/120"}
+  },
+  "selected_comparison": {
+    "recall_at_1_gain": -0.041666666666666664,
+    "positive_acceptance_gain": -0.16666666666666666,
+    "wrong_building_false_confirmation_gain": -0.16666666666666666,
+    "identity_gain_clause": false,
+    "wrong_building_guardrail": true,
+    "positive_authority_guardrail": false
+  },
+  "interpretation": "SALAD improved latent Recall@3 and strongly reduced the source-label negative proxy, but did not improve Recall@1 and lost four of 24 correctly accepted target-present views. MixVPR recovered positive acceptance only by increasing that proxy to 48/120. Neither specialized VPR source supplies transferable single-frame positive authority on this cohort.",
+  "metric_adjudication": {
+    "wrong_building_false_confirmation": "SOURCE_LABEL_NEGATIVE_PROXY_ONLY",
+    "target_absent_rejection": "NOT_EVALUABLE_PHYSICAL_ABSENCE_NOT_EXHAUSTIVELY_FROZEN",
+    "decision_changed": false,
+    "reason": "Recall@1 and target-present positive acceptance independently fail the frozen identity gate."
+  },
+  "backend": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "baseline": {"selected": "cuda", "cpu_seconds": 0.47395859999232925, "cuda_seconds": 0.3516711000120267, "receipt_sha256": "1e47711a95ba65b55a5491bf946ffd0a3618c56bf86b7c15b7438f25a32f42b8"},
+    "salad": {"selected": "cuda", "cpu_seconds": 1.4087513000122271, "cuda_seconds": 0.35021150001557544, "peak_cuda_memory_bytes": 802271232, "receipt_sha256": "ea5ae81901cd55adb5ae28133dd9b2516d6753d34618e9941869d06e06955509"},
+    "mixvpr": {"selected": "cuda", "cpu_seconds": 0.385534800007008, "cuda_seconds": 0.07516199999372475, "peak_cuda_memory_bytes": 233475584, "receipt_sha256": "b1cc67af216c83005454d720cad83c83b75c9b4413c5b68d854eab9d07420f48"}
+  },
+  "evidence": {
+    "protocol_sha256": "7f656070d35c3cc7383a5300429d22ea45d1870574ed404441b2eb049d2cecec",
+    "raw_result_sha256": "1c40187e7b0269fc48b77b77d64c2f657f0a14e265c46b0c78ffd023443a03fd",
+    "adjudication_sha256": "ed08e330df0902bd78e5a74510ef664adc0a6f8888103182a79d796e9d7f9523"
+  },
+  "decision": "L10_PB2A_SPECIALIZED_VPR_IDENTITY_GATE_NOT_MET_STOP_SINGLE_FRAME_APPEARANCE_ONLY",
+  "next_action": "Do not sweep backbone, fusion, threshold, score normalization, seed, or reference weighting on this consumed cohort. Change the information source to a high-precision logo/OCR channel, map or POI metadata, coarse GPS, or genuinely ordered multi-view evidence. PB2-B and L10-AV0 remain blocked.",
+  "claim_boundary": "This rejects the frozen B0-B2/C1-C2 single-frame appearance-only place-identity route on one curated public-image cohort. It does not reject VPR generally and establishes no portal ownership, access, traversability, motion, navigation, arrival, product benefit, user benefit, or safety."
+}

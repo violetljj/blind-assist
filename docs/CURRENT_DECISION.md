@@ -636,6 +636,38 @@ A legal successor must change the public target-identity information source or
 representation and use a new building-disjoint confirmation cohort. L10-AV0
 remains blocked because there is still no correctly admitted portal to act on.
 
+L10-PB2-A changed the identity representation to dedicated VPR rather than
+reopening PB1. Twelve PB1-disjoint buildings were source-audited before any
+model call and split without overlap into six Development and six confirmation
+entities; every entity has one reference and four facade / entrance / side /
+partial queries. Portal proposals, portal crops, PB1 decisions, tracking, and
+active observation were not invoked. Development alone selected fixed
+whole-image CLIP+DINO as baseline and SALAD as challenger.
+
+On 24 confirmation queries the selected baseline versus SALAD was Recall@1
+`9/24` versus `8/24`, Recall@3 `18/24` versus `20/24`, correct requested-place
+acceptance `12/24` versus `8/24`, and wrong-building confirmation `23/120`
+versus `3/120`. SALAD therefore provided stronger rejection and slightly better
+latent Top-3 ranking, but no positive identity gain. MixVPR reached `16/24`
+positive acceptance only with `48/120` wrong-building confirmations. All arms
+used Development-frozen thresholds; test did not select an arm or threshold.
+
+Post-result integrity review limits every cross-paired `x/120` value to a
+source-label negative proxy. The audit did not exhaustively mark every gallery
+building that may be co-visible in a dense same-city image, so physical
+target-absent rejection is `NOT_EVALUABLE`. No model output, positive label,
+threshold, or denominator changed. The decision is unaffected because Recall@1
+and target-present positive acceptance already fail the identity gate.
+
+Record
+`L10_PB2A_SPECIALIZED_VPR_IDENTITY_GATE_NOT_MET_STOP_SINGLE_FRAME_APPEARANCE_ONLY`.
+This closes CLIP, DINOv2, fixed CLIP+DINO, SALAD, MixVPR, threshold,
+normalization, reference-weighting, and fusion sweeps on this consumed cohort.
+Do not open PB2-B or L10-AV0. Change the information source to logo/OCR, map or
+POI metadata, coarse GPS, or genuinely ordered multi-view evidence. This is a
+curated public-image confirmation, not a universal VPR negative or any access,
+navigation, arrival, user-benefit, product, or safety result.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust
