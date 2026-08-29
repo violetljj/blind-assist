@@ -29,6 +29,7 @@ DTR_C21_SCENE_BIAS_RESIDUAL_MOTION_DEVELOPMENT_GATE_NOT_MET /
 DTR_C22_EGO_RIGID_VISUAL_MOTION_DEVELOPMENT_GATE_NOT_MET /
 DTR_C23_RIGID_TEMPORAL_OBJECT_FLOW_DEVELOPMENT_GATE_NOT_MET /
 DTR_C24_CYCLE_CONSISTENT_POINT_FLOW_DEVELOPMENT_GATE_MET /
+DTR_X0_MOTION_SOURCE_ATTRIBUTION_COMPLETE /
 R4_NOT_OPENED`
 
 ## Result first
@@ -1804,6 +1805,32 @@ must change component information/authority rather than spread the same
 accepted components with uncertainty. The full failure localization and
 receipts are in `C31_FRESH_CONFIRMATION_2026-08-29.md`.
 
+## DTR-X0 motion-source attribution
+
+X0 opened only the already consumed confirmation truth and attributed the two
+missed CONTACT events, all 25 PDC false segments, and the ten C31 false ranges
+that do not overlap a PDC false range. It did not alter or rescore predictions.
+
+The two misses separate cleanly. Huang-2 has 32 responsible-OBB raw cells over
+23 frames, including correct motion in six frames and three frames before the
+existing 1.5 s urgent boundary, but no correct cell enters the frozen route
+tube: `ROUTE_GEOMETRY_MISS`. Huang-lane has zero responsible-OBB raw cells in
+the full `-3..0 s` window: `NO_MOTION_SUPPORT`.
+
+| sealed diagnostic set | bad flow | static pseudo-motion | real mover, noncritical | total |
+| --- | ---: | ---: | ---: | ---: |
+| M1-PDC false segments | 14 | 10 | 1 | 25 |
+| C31 non-overlapping incremental false segments | 2 | 8 | 0 | 10 |
+
+Accept `DTR_X0_MOTION_SOURCE_ATTRIBUTION_COMPLETE`. Source errors account for
+`34/35` false units, so learned motion authority is not the next experiment.
+Freeze the risk scorer and compare current raw direct flow with exactly one
+stronger scene-flow source. Retain continuous collision/body-route geometry as
+a bounded Huang-2 canary, not as a substitute for the missing Huang-lane source
+or false-flow repair. C31 tuning, C32, forecasting, and model training remain
+closed. Full definitions, rows, hashes, and claim limits are in
+`X0_MOTION_SOURCE_ATTRIBUTION_2026-08-29.md`.
+
 ## Claim ceiling
 
 These are retrospective public-real privileged algorithm ceilings. THÖR uses
@@ -1836,6 +1863,12 @@ DTR-M0 is scorer-side post-outcome attribution on that consumed result. It
 localizes R7's flow-caused errors but adds no performance, generalization,
 product, or safety evidence. Its component-discontinuity flags are not stable
 identity or split/merge truth.
+
+DTR-X0 is likewise scorer-side post-outcome attribution, now on the consumed
+C31 source-disjoint confirmation. Its native identity/trajectory labels choose
+the next source experiment but add no performance or generalization evidence.
+Unmatched risk cells are consistent with static pseudo-motion, not proof that
+every unmatched cell belongs to a static surface.
 
 DTR-M1-O is a privileged, label-dependent oracle on the same consumed JRDB
 window. Its `6/9` dropout recovery and 17 false segments close estimator work

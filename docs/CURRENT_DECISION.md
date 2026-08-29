@@ -1035,9 +1035,22 @@ Accept `DTR_C31_SOURCE_DISJOINT_CONFIRMATION_GATE_NOT_MET`. The mechanism
 recovered neither missed event, added no lead, gained only one dropout recovery
 versus the frozen `+2` requirement, and added ten false segments. Do not tune
 C31 and do not open C32 probabilistic body-route occupancy on the same support.
-The next admissible route must change component information or authority before
-uncertainty propagation; it cannot rescue this consumed result with covariance,
-radius, decay, route, lifecycle, or model sweeps.
+X0 has now opened only this consumed truth to choose that successor. Huang-2's
+miss contains correct raw motion in six frames, including three early frames,
+but none enters the frozen route tube (`ROUTE_GEOMETRY_MISS`). Huang-lane has
+zero responsible-OBB raw cells in the entire `-3..0 s` window
+(`NO_MOTION_SUPPORT`). Of 25 PDC false segments, 14 are `BAD_FLOW`, ten are
+`STATIC_PSEUDO_MOTION`, and one is a real noncritical mover. The ten
+non-overlapping C31 additions are two `BAD_FLOW` and eight
+`STATIC_PSEUDO_MOTION`.
+
+Accept `DTR_X0_MOTION_SOURCE_ATTRIBUTION_COMPLETE`. Because source errors are
+`34/35` false units and one miss has no raw support, learned motion authority is
+not yet authorized. The next dynamic-risk falsifier replaces only current raw
+direct flow with exactly one stronger scene-flow source while freezing route,
+horizon, lifecycle, cohort, and evaluator. A separate continuous-geometry
+canary is admissible only for the localized Huang-2 miss. C31, C32,
+probabilistic occupancy, and model training remain closed.
 
 ## What stops here
 

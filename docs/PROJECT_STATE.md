@@ -1,6 +1,6 @@
 # Project state
 
-Updated: 2026-08-28
+Updated: 2026-08-29
 
 BlindAssist is a runnable Android showcase research prototype. The default
 research policy is effect-first: demonstrate a genuine, visible effect in a
@@ -254,6 +254,19 @@ lead, and `6/18`. Decision:
 `DTR_C31_SOURCE_DISJOINT_CONFIRMATION_GATE_NOT_MET`. Do not tune C31 or open
 C32 probabilistic body-route occupancy on the same component support; a
 successor must first change component information/authority.
+
+X0 has now selected that successor using read-only scorer-side attribution on
+the already opened six-sequence truth. Huang-2 has correct early raw motion but
+no frozen point/route entry (`ROUTE_GEOMETRY_MISS`); Huang-lane has no
+responsible-object raw support in the `-3..0 s` window
+(`NO_MOTION_SUPPORT`). PDC's 25 false segments are 14 `BAD_FLOW`, ten
+`STATIC_PSEUDO_MOTION`, and one real noncritical mover. C31's ten
+non-overlapping additions are two `BAD_FLOW` and eight
+`STATIC_PSEUDO_MOTION`. Source errors therefore account for `34/35` false
+units. Decision: `DTR_X0_MOTION_SOURCE_ATTRIBUTION_COMPLETE`; next compare the
+current direct flow with exactly one stronger scene-flow source under the
+unchanged scorer. Learned authority remains closed, while continuous geometry
+is only a bounded Huang-2 canary.
 
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC
