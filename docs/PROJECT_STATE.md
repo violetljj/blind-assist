@@ -625,6 +625,23 @@ YOLOE prompts, thresholds, image size, parent ordering, crops, or mask assignmen
 on the consumed cohort. PB15 changes the information source to two-scale
 GroundingDINO boxes plus SAM2.1 box-conditioned masks on another fresh cohort.
 
+PB15 ran that frozen source on eight more source-disjoint SUN RGB-D captures.
+After a pre-model, pre-RGB receipt-digest typo was corrected and all dependent
+hashes were rebound, the valid run completed `195` GroundingDINO and `37` SAM2.1
+calls in `90.90 s`, with `2,096,144,896` peak allocated CUDA bytes. It authorized
+three of four architectural doors, one of two handled-furniture controls, and
+zero of two large doorless openings: recall `0.75`, control false-positive rate
+`0.25`, and balanced accuracy `0.750`. Record
+`L10_PB15_GROUNDED_SAM_MULTISCALE_PART_TOPOLOGY_DEVELOPMENT_GATE_NOT_MET`.
+The shared failure is upstream of topology: mutually exclusive part prompts
+frequently produced the same nearly full-parent box, and SAM2.1 therefore made
+nearly identical whole-object masks. Small parent-mask area differences then
+created both the architectural false negative and furniture false positive, and
+also contaminate the three apparent true positives. Do not rescue the consumed
+cohort with GroundingDINO prompt, threshold, scale, cap, crop, SAM, priority, or
+assignment changes. PB16 changes to native SAM 3.1 text-conditioned concept
+instance masks on fresh source-disjoint pixels.
+
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
 because the approved AWS profile is absent. That is a source-access condition,

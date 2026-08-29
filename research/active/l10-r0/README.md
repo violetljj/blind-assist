@@ -1682,6 +1682,34 @@ image size, parent cap/order, crop expansion, model size, and topology rescue
 are forbidden. PB15 changes to two-scale GroundingDINO grounding followed by
 SAM2.1 box-conditioned native masks on a fresh source-disjoint cohort.
 
+PB15 froze five parent prompts, five child prompts, GroundingDINO-tiny,
+SAM2.1-Hiera-Small, and eight further source-disjoint SUN RGB-D sequences before
+model output. Its first launch stopped before model load or cohort RGB decoding:
+the GroundingDINO tree-receipt digest had been copied with one missing
+hexadecimal character. Correcting only that receipt digest and rebinding the
+protocol/cohort left no formal output to overwrite. The valid run then completed
+`195` GroundingDINO calls and `37` SAM2.1 calls in `90.90 s`, with
+`2,096,144,896` peak allocated and `2,443,182,080` peak reserved CUDA bytes.
+
+The frozen topology authorized positives `1`, `2`, and `4`, missed positive `3`,
+rejected furniture `5`, falsely authorized furniture `6`, and rejected both
+large-opening controls. Thus positive authorization was `3/4`, handled-furniture
+leakage `1/2`, large-opening leakage `0/2`, and balanced accuracy `0.750`.
+Record
+`L10_PB15_GROUNDED_SAM_MULTISCALE_PART_TOPOLOGY_DEVELOPMENT_GATE_NOT_MET`.
+
+This is not a near-pass suitable for threshold rescue. Multiple handle, knob,
+push-bar, panic-bar, and hinge calls returned nearly the entire parent crop, so
+SAM2.1 produced whole-object pseudo-part masks. On positive `3`, an architectural
+parent existed but the slightly smaller cabinet mask absorbed its pseudo-parts.
+On furniture `6`, a slightly smaller architectural mask absorbed whole-cabinet
+pseudo-parts and caused the false authorization. The same collapse contaminates
+the three nominal true positives. Close the exact PB15 source on these pixels;
+prompt text, confidence, parent/child cap, crop geometry, SAM postprocessing,
+mask priority, and topology changes are forbidden. PB16 replaces the separate
+grounder-and-box-mask chain with native SAM 3.1 text-conditioned concept-instance
+masks on a fresh source-disjoint cohort.
+
 Durable PB10 summary:
 `named_poi_trans4trans_glass_door_plane_development_result_v1.json`.
 
@@ -1711,6 +1739,14 @@ PB14 protocol, frozen cohort, evaluator, and durable negative result:
 `named_poi_yoloe_multiscale_part_topology_development_result_v1.json`. The
 result SHA-256 is
 `a729b850c21bd14976aebbaf32c654da2e81b1c07b12f42401dae5b586c7c887`.
+
+PB15 protocol, frozen cohort, evaluator, and durable negative result:
+`named_poi_grounded_sam_multiscale_part_topology_protocol_v1.json`,
+`named_poi_grounded_sam_multiscale_part_topology_development_cohort_v1.json`,
+`named_poi_grounded_sam_multiscale_part_topology.py`, and
+`named_poi_grounded_sam_multiscale_part_topology_development_result_v1.json`.
+The result SHA-256 is
+`76d172298d9a1d98371b481ae2db808db5ed1329ec0cbc3b18d9bbf1b50c5c76`.
 
 The `x/120` column is not physical target-absence authority. The source audit
 did not exhaustively freeze every gallery building co-visible in dense

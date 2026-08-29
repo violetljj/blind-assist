@@ -1,0 +1,188 @@
+{
+  "schema": "l10-named-poi-grounded-sam-multiscale-part-topology-protocol-v1",
+  "created_at": "2026-08-29",
+  "status": "FROZEN_BEFORE_COHORT_MODEL_OUTPUT",
+  "experiment": "L10-PB15 Grounded-SAM Multiscale Part Topology",
+  "short_name": "GSMPT",
+  "question": "Can separately grounded room-door and furniture-door boxes, converted to independent SAM2.1 pixel masks, retain architectural door parts after a deterministic parent-box rescale without authorizing handled furniture or doorless openings?",
+  "single_change_from_pb14": "Replace YOLOE joint open-vocabulary masks with one GroundingDINO call per frozen semantic class and an independent SAM2.1 box-to-mask source; retain the two-scale crop and competitor-conservative pixel topology.",
+  "information_sources": {
+    "grounder": {
+      "repository": "IDEA-Research/grounding-dino-tiny",
+      "revision": "a2bb814dd30d776dcf7e30523b00659f4f141c71",
+      "snapshot_path": "artifacts.local/models/grounding-dino-tiny-a2bb814",
+      "official_files": [
+        {"path": ".gitattributes", "bytes": 1519, "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361"},
+        {"path": "added_tokens.json", "bytes": 82, "sha256": "909e96cb32d92ce728a01bc99850cbba26196d74115c17ebeb019275412588f2"},
+        {"path": "config.json", "bytes": 1644, "sha256": "eec82c5ab66e16df12a9a212e68ac011779927c2536cf9078658e35d85f0c67a"},
+        {"path": "model.safetensors", "bytes": 689359096, "sha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3"},
+        {"path": "preprocessor_config.json", "bytes": 457, "sha256": "8454179ba95e2ad22947835aad7b45862a601fc0055ab88bf1ee70892d3aea60"},
+        {"path": "pytorch_model.bin", "bytes": 691914602, "sha256": "f4d69c8403b9a569d90362c5fe8c6ea93dee4c8f08166df5b39e5eca8d227bbe"},
+        {"path": "README.md", "bytes": 2580, "sha256": "cf46f74c7b6850f1d5cbe406028324d8798148726016d46a69a365b4a2d3e89f"},
+        {"path": "special_tokens_map.json", "bytes": 125, "sha256": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3"},
+        {"path": "tokenizer_config.json", "bytes": 1237, "sha256": "d40ab645b68211910b9170d22433d43186a6ec8ee6fd10ba170524b25bf4fb56"},
+        {"path": "tokenizer.json", "bytes": 711396, "sha256": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66"},
+        {"path": "vocab.txt", "bytes": 231508, "sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"}
+      ],
+      "tree_receipt_path": "artifacts.local/models/grounding-dino-tiny-a2bb814/.cache/huggingface/trees/a2bb814dd30d776dcf7e30523b00659f4f141c71.json",
+      "tree_receipt_sha256": "d541cd1c6f7fa793cff08b87619ed6f6b84f35b650a45af61677e4b89aaae8fc",
+      "load_contract": "AutoProcessor and AutoModelForZeroShotObjectDetection from the frozen local snapshot, local_files_only=True, use_safetensors=True, float32, eval, CUDA:0.",
+      "license_boundary": "The official model card at the frozen revision declares Apache-2.0; the local snapshot has no separate LICENSE file."
+    },
+    "masker": {
+      "repository": "facebook/sam2.1-hiera-small",
+      "revision": "ee5bba1d82bb8749febdf90f45e84b687142ba03",
+      "snapshot_path": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+      "asset_receipt_path": "artifacts.local/models/facebook--sam2.1-hiera-small/pb15_asset_and_synthetic_smoke_receipt_v1.json",
+      "asset_receipt_sha256": "c55b80721e9e88da7d09bc825f2cc9320c7b933b32cb7ab057b63712c93e581b",
+      "official_files": [
+        {"path": ".gitattributes", "bytes": 1519, "sha256": "11ad7efa24975ee4b0c3c3a38ed18737f0658a5f75a0a96787b576a78a023361"},
+        {"path": "README.md", "bytes": 19974, "sha256": "6ec2d54879e41ad876d8cded0d641e8bc6ab74d5e095a73afc3f8406372ee6e9"},
+        {"path": "config.json", "bytes": 5698, "sha256": "97ff9f65b76d107acda4247885f0a5555d0048850ae3c5f97183df289aaecde9"},
+        {"path": "model.safetensors", "bytes": 184305280, "sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60"},
+        {"path": "preprocessor_config.json", "bytes": 683, "sha256": "6ebf229ee259368ce4a8d4f2fe893a72b053023710853e257253939e601f583d"},
+        {"path": "processor_config.json", "bytes": 95, "sha256": "f8a68e865cfad115c1c2763f3d93eca7b1c622da06da2a9273eb437fb2389b6d"},
+        {"path": "sam2.1_hiera_s.yaml", "bytes": 3761, "sha256": "632e5cd0104f5ab6cd4f9d2dfd80a8e7240e481ad7960a13cad2ae3504b88dbd"},
+        {"path": "sam2.1_hiera_small.pt", "bytes": 184416285, "sha256": "6d1aa6f30de5c92224f8172114de081d104bbd23dd9dc5c58996f0cad5dc4d38"},
+        {"path": "video_preprocessor_config.json", "bytes": 705, "sha256": "9fccfe5f464ec38c2f236d0e6a68e95511c80c22132fc2fa4b9f7b65f24fad95"}
+      ],
+      "load_contract": "Sam2Processor and Sam2Model from the frozen local snapshot, local_files_only=True, use_safetensors=True, float32, eval, CUDA:0.",
+      "license_boundary": "The official model metadata and downloaded model-card front matter at the frozen revision declare Apache-2.0."
+    },
+    "source_boundary": "Both pretrained inventories are unavailable, so exact SUN RGB-D training-image exclusion is not claimed. PB15 is Development-only and does not reuse any PB11-PB14 formal capture sequence."
+  },
+  "runtime": {
+    "launcher": "E:/codex-tools/bin/blindassist-research-gpu.cmd",
+    "python_executable": "E:/codex-tools/tools/venvs/blindassist-torch-gpu/Scripts/python.exe",
+    "python_executable_sha256": "21bb438c0d4a6f1f164b9a646f6ee000340185e5871180aec06db8d3f07c0082",
+    "python": "3.11.9",
+    "torch": "2.11.0+cu130",
+    "torchvision": "0.26.0+cu130",
+    "transformers": "5.14.1",
+    "huggingface_hub": "1.24.0",
+    "safetensors": "0.8.0",
+    "numpy": "2.4.4",
+    "pillow": "12.2.0",
+    "cuda_runtime": "13.0",
+    "HF_HUB_OFFLINE": "1",
+    "TRANSFORMERS_OFFLINE": "1",
+    "execution_requirement": "CUDA:0 must be available. Both snapshots, runtime, prompts, box postprocessing, SAM mask postprocessing, crop mapping, topology, and gate must match this protocol or execution stops before a valid formal result."
+  },
+  "pre_freeze_smoke": {
+    "cohort_or_sunrgbd_images_read": false,
+    "grounder": {
+      "source": "in-memory synthetic RGB 640x480",
+      "load_seconds": 2.053,
+      "input_tensor_shape": [1, 3, 800, 1066],
+      "raw_logits_shape": [1, 900, 256],
+      "raw_boxes_shape": [1, 900, 4],
+      "warm_forward_seconds": 0.231,
+      "peak_allocated_memory_bytes": 1894010880,
+      "peak_reserved_memory_bytes": 2258632704,
+      "finding": "Merged multi-class prompts decoded ambiguous phrases such as door door and handle hinge, so the formal contract binds class identity by one prompt per model call and ignores decoded text labels."
+    },
+    "masker": {
+      "source": "in-memory synthetic RGB 320x240 with one box",
+      "raw_mask_shape": [1, 1, 1, 256, 256],
+      "native_mask_shape": [1, 1, 240, 320],
+      "native_mask_dtype": "bool",
+      "inference_seconds": 1.3812862999911886,
+      "peak_allocated_memory_bytes": 484144640,
+      "peak_reserved_memory_bytes": 736100352
+    },
+    "formal_prompt_or_threshold_selection_from_smoke": false
+  },
+  "cohort_freeze": {
+    "dataset": "SUN RGB-D",
+    "frames": 8,
+    "distinct_capture_sequences": 8,
+    "roles": {
+      "ARCHITECTURAL_DOOR_WITH_VISIBLE_OPERATION_PART": 4,
+      "HANDLED_FURNITURE_DOOR_NEGATIVE": 2,
+      "LARGE_DOORLESS_OPENING_OOD": 2
+    },
+    "prior_overlap": "Zero capture-sequence overlap with all 32 formal PB11, PB12, PB13, and PB14 sequences.",
+    "positive_admission": "Official annotation contains exact door and a handle, knob, push bar, or hinge label; human RGB audit confirms a room-scale architectural door leaf and visible operation part.",
+    "negative_admission": "Official annotation contains no exact door; human RGB audit confirms a handled cabinet, wardrobe, closet, cupboard, or refrigerator door.",
+    "ood_admission": "Official annotation contains no exact door; human RGB audit confirms a broad room or corridor opening without a spanning leaf.",
+    "diversity": "Use at least four SUN RGB-D sensor/source buckets and no more than three frames from one bucket.",
+    "sealed_before_output": [
+      "canonical source path and capture sequence",
+      "RGB, official polygon annotation, depth, intrinsics, and scene metadata SHA-256",
+      "role, official class-name evidence, and human RGB audit note",
+      "model snapshots, prompts, inference, box clamp, caps, mask mapping, topology, and gate"
+    ]
+  },
+  "grounding": {
+    "processor_defaults": {
+      "do_resize": true,
+      "do_rescale": true,
+      "do_normalize": true,
+      "do_pad": true,
+      "shortest_edge": 800,
+      "longest_edge": 1333,
+      "image_mean": [0.485, 0.456, 0.406],
+      "image_std": [0.229, 0.224, 0.225]
+    },
+    "batch": 1,
+    "model_dtype": "float32",
+    "box_threshold": 0.4,
+    "text_threshold": 0.3,
+    "target_size_order": "HEIGHT_WIDTH",
+    "processor_text_call": "Pass each frozen text as a single-element candidate-label list [text], never as a scalar string. Transformers 5.14.1 deterministically lowercases and appends the model-required terminal period to candidate-label lists.",
+    "postprocess": "processor.post_process_grounded_object_detection(outputs, inputs.input_ids, threshold=0.4, text_threshold=0.3, target_sizes=[(H,W)]); keep strict score > threshold and ignore decoded labels/text_labels.",
+    "box_contract": "Bind every postprocessed detection to the identity of its single prompt call and its postprocess index. Clamp xyxy independently to [0,W] and [0,H]; discard only non-finite or empty boxes. Do not apply NMS, cross-prompt deduplication, fusion, score calibration, or a second threshold.",
+    "parent_prompt_calls_in_order": [
+      {"call_index": 0, "class_id": "architectural_leaf", "text": "door", "role": "PARENT"},
+      {"call_index": 1, "class_id": "cabinet_door", "text": "cabinet door", "role": "COMPETING_PARENT"},
+      {"call_index": 2, "class_id": "closet_door", "text": "closet door", "role": "COMPETING_PARENT"},
+      {"call_index": 3, "class_id": "refrigerator_door", "text": "refrigerator door", "role": "COMPETING_PARENT"},
+      {"call_index": 4, "class_id": "doorless_opening", "text": "doorway", "role": "COMPETING_PARENT"}
+    ],
+    "child_prompt_calls_in_order": [
+      {"call_index": 0, "class_id": "operation_part", "subtype": "handle", "text": "door handle", "role": "CHILD"},
+      {"call_index": 1, "class_id": "operation_part", "subtype": "knob", "text": "door knob", "role": "CHILD"},
+      {"call_index": 2, "class_id": "operation_part", "subtype": "push_bar", "text": "push bar", "role": "CHILD"},
+      {"call_index": 3, "class_id": "operation_part", "subtype": "panic_bar", "text": "panic bar", "role": "CHILD"},
+      {"call_index": 4, "class_id": "hinge", "subtype": "hinge", "text": "door hinge", "role": "CHILD"}
+    ],
+    "parent_order_and_cap": "Merge the five parent-call outputs, then sort by descending score, class priority cabinet_door, closet_door, refrigerator_door, doorless_opening, architectural_leaf, lexicographic clamped xyxy, prompt call index, and postprocess index. Retain at most 12 per frame.",
+    "child_order_and_cap": "Within each parent crop, merge the five child-call outputs, then sort by descending score, prompt call index, lexicographic clamped xyxy, and postprocess index. Retain at most 24 per crop.",
+    "maximum_parent_boxes_per_frame": 12,
+    "maximum_child_boxes_per_parent_crop": 24
+  },
+  "sam_masking": {
+    "input": "Use the exact clamped GroundingDINO box list, in its retained order, as SAM2 input_boxes for the associated full RGB image or exact RGB crop.",
+    "processor": "Sam2Processor(images=image, input_boxes=[boxes], return_tensors='pt')",
+    "forward": "Sam2Model(**inputs.to(cuda:0), multimask_output=False) under inference_mode",
+    "postprocess": "processor.post_process_masks(pred_masks.cpu(), original_sizes, mask_threshold=0.0, binarize=True, max_hole_area=0.0, max_sprinkle_area=0.0, apply_non_overlapping_constraints=False)[0]",
+    "selection": "Require exactly one bool mask per input box after multimask_output=False; bind by original box order. Ignore iou_scores and do not select, threshold, merge, morph, smooth, or resize beyond the official native-size postprocess.",
+    "mask_contract": "Every parent mask must equal source HxW and every child mask must equal exact crop HxW. Record shape, true-pixel area, and SHA-256 of C-order uint8 mask bytes."
+  },
+  "two_scale_topology": {
+    "lane_1_full_frame": "Run the five single-class parent calls on the full source RGB, retain the frozen top 12, and obtain one SAM2 source-native mask per retained parent.",
+    "lane_2_parent_rescale": "For each retained parent box, use left/top=floor and right/bottom=ceil after clipping to source bounds, with no expansion. Crop exact RGB; run the five single-class child calls on that crop, retain frozen top 24, and obtain one SAM2 crop-native mask per retained child.",
+    "child_mapping": "Place each child crop mask into its exact half-open source crop rectangle. Do not resize, dilate, erode, smooth, merge, or deduplicate.",
+    "child_representative": "Mean integer x and y indices of all true mapped child-mask pixels; test source pixel floor(mean + 0.5), clipped only to source bounds.",
+    "assignment": "Assign each child to the smallest-area full-frame parent mask containing its representative pixel. Break equal-area ties by cabinet_door, closet_door, refrigerator_door, doorless_opening, architectural_leaf, then lower stable parent index.",
+    "authorization": "GROUNDED_SAM_PARENT_RESCALED_PIXEL_PART_TOPOLOGY is true if and only if at least one lane-2 operation_part or hinge child is assigned to an architectural_leaf parent.",
+    "negative_competition": "Children assigned to furniture or doorless-opening parents do not authorize. A parent without an assigned child does not authorize.",
+    "learned_or_selected_postprocessing_thresholds_beyond_grounder_and_sam": 0
+  },
+  "metrics": [
+    "per-frame grounded boxes, scores, prompt-call identities, SAM mask receipts, crop bindings, representatives, and assignments",
+    "per-class and per-subtype grounded box counts by lane",
+    "per-role authorized-frame counts",
+    "architectural-door positive recall",
+    "control false-positive rate",
+    "balanced accuracy",
+    "grounder and masker calls, latency, and peak CUDA memory"
+  ],
+  "gate": {
+    "development_promotion": "All 4/4 architectural-door positives authorize, all 0/2 handled-furniture negatives authorize, all 0/2 large-opening OOD controls authorize, and balanced accuracy is 1.0.",
+    "pass": "Record a Development gate met, freeze this exact two-model pipeline, and test one fresh source-disjoint confirmation cohort.",
+    "fail": "Close this exact grounding/masking/topology route on the frozen cohort and change information source or representation; do not tune it on these pixels."
+  },
+  "forbidden_rescue": "After any cohort model output, do not change rows, roles, either model, prompt text/order, GroundingDINO thresholds, processor defaults, class binding, box clamp, caps/order, crop coordinates or expansion, SAM multimask or postprocess, mask mapping, representative point, parent priority, authorization, or gate; do not compare prompt, threshold, crop, model-size, or fusion alternatives on these pixels.",
+  "claim_boundary": "PB15 is a current-frame RGB Development experiment. Even a pass is not source-disjoint Confirmation, exact target ownership, public access, open or closed actuation state, metric traversability, active-view causality, temporal persistence, guidance, arrival, product benefit, user benefit, or safety evidence."
+}

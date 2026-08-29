@@ -867,6 +867,31 @@ box-to-mask branch: fixed two-scale GroundingDINO parent/part grounding followed
 by SAM2.1 box masks and the same competitor-conservative pixel assignment, on a
 new PB15 cohort.
 
+PB15 completed that branch on eight further source-disjoint SUN RGB-D captures.
+The first launch stopped before model load or cohort RGB decoding because the
+frozen GroundingDINO tree-receipt digest was missing one hexadecimal character;
+the receipt digest and dependent protocol/cohort bindings were corrected before
+any output existed. The valid frozen run completed `195` GroundingDINO calls and
+`37` SAM2.1 calls in `90.90 s`, with `2,096,144,896` peak allocated CUDA bytes.
+It authorized `3/4` architectural doors, leaked on `1/2` handled-furniture
+controls, rejected both large doorless openings, and reached balanced accuracy
+`0.750`. Record
+`L10_PB15_GROUNDED_SAM_MULTISCALE_PART_TOPOLOGY_DEVELOPMENT_GATE_NOT_MET`.
+
+The attractive positives are not clean part evidence. GroundingDINO repeatedly
+mapped mutually exclusive child prompts such as handle, push bar, panic bar, and
+hinge to nearly the entire parent crop; SAM2.1 faithfully converted those boxes
+to nearly identical whole-object masks. In the false negative, a slightly
+smaller cabinet mask absorbed the pseudo-parts despite an architectural parent
+being present. In the furniture false positive, a slightly smaller
+architectural mask absorbed whole-cabinet pseudo-parts. The same collapse is
+present in the three nominal true positives. PB15 is therefore closed as a
+semantic/localization-source failure, not a matcher opportunity: do not tune its
+prompts, thresholds, caps, crop geometry, SAM settings, parent priority, or
+assignment rule on the consumed pixels. PB16 must replace the grounded-box chain
+with a native text-conditioned concept-instance mask source on a fresh cohort;
+the current admissible source is SAM 3.1.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust
