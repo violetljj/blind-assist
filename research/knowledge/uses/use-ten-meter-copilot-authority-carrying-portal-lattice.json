@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-authority-carrying-portal-lattice",
+  "item_id": "algorithm-authority-carrying-portal-lattice",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": ["scil-token-plus-structural-opportunity"],
+  "use_state": "rejected",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "All six consumed PB4 test frames with a correct same-frame SCIL proof: three glass-portal positives, two no-portal negative controls, and one open architectural entrance outside the frozen paired-handle representation.",
+    "project_application": "Test whether separately proved place identity can authorize a retained portal set without wrong-request, no-portal, OOD, UNKNOWN, or COMMIT leakage.",
+    "modifications": "Add a typed entity authority token and a truth-blind paired-handle opportunity predicate frozen from the previous six-frame source-disjoint positive portal result. Run the unchanged proposer on every proof-positive frame; audit labels cannot gate execution.",
+    "expected_effect": "Retain at least 2/3 correct portal sets while authorizing neither no-portal controls nor the representation-OOD aperture and preserving zero wrong-request and UNKNOWN leakage."
+  },
+  "evaluation": {
+    "reproduction_status": "reproduced",
+    "verdict": "negative",
+    "setup": "The PB5 source audit froze all six SCIL-proof-positive rows before any portal proposer call on these frames. The opportunity predicate came only from the prior six positive fresh portal frames. One mechanical launch failed before proposer execution; the output-bearing run used refrozen hashes and made zero new OCR or embedding calls.",
+    "effect": "Raw proposer truth retention was 2/3 at both top one and top three, but only 1/3 positives retained an authorized truth member. One of two no-portal controls falsely authorized a portal. The OOD aperture, all 18 wrong-request pairs, both identity-UNKNOWN rows, and every COMMIT/navigation state remained blocked. The joined geometry-only authorization gate is rejected rather than rescued by tuning.",
+    "metrics": [
+      "raw_portal_truth_retained_top1=2/3",
+      "raw_portal_truth_retained_top3=2/3",
+      "identity_bound_truth_retained_top3=1/3",
+      "negative_control_false_authorization_frames=1/2",
+      "out_of_scope_authorization_leakage_frames=0/1",
+      "joined_wrong_request_authorizations=0/18",
+      "relative_wrong_request_authorization_reduction=100%",
+      "identity_unknown_portal_ownership_leakage=0/2",
+      "new_ocr_calls=0",
+      "new_embedding_calls=0"
+    ],
+    "claim_boundary": "Consumed-identity/current-image Development composition evidence on a curated opportunity cohort. It rejects only the frozen geometry authorization layer. Wrong requests are source-label proxies. No portal ownership, access, traversability, active view, guidance, arrival, product, user, or safety claim follows."
+  },
+  "evidence": [
+    {"kind": "repo", "ref": "research/active/l10-r0/named_poi_authority_portal_protocol_v1.json", "summary": "Frozen PB5 source, independent structural opportunity predicate, truth-blind execution contract, controls, and stop rule."},
+    {"kind": "repo", "ref": "research/active/l10-r0/named_poi_authority_portal_result_v1.json", "summary": "Durable PB5 metrics, failed gates, diagnosis, hashes, forbidden rescue, and successor."},
+    {"kind": "artifact", "ref": "artifacts.local/evidence/l10-r0/named-poi-authority-portal-v1/result.json", "sha256": "8ab58d7329930c941a97d6ba53b2b1e17a389f27084e04622c6e6ffbb84c1366", "summary": "Per-frame proposals, structural admission, truth membership, authority tokens, controls, metrics, and gate clauses."}
+  ],
+  "history": [
+    {"date": "2026-08-29", "change": "Executed PB5 once after source and opportunity-gate freeze. Rejected geometry-only portal authorization after positive coverage and no-portal specificity both failed; closed threshold and geometry tuning on this cohort."}
+  ],
+  "added_at": "2026-08-29",
+  "updated_at": "2026-08-29"
+}

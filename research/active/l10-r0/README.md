@@ -1534,6 +1534,47 @@ source-label proxies. No open-world identity, portal ownership, access,
 active-view, navigation, arrival, product, user-benefit, or safety claim
 follows.
 
+#### PB5 Script-Proved Authority-Carrying Portal Lattice
+
+PB5 tested the PB4-to-portal seam without reading portal truth into runtime
+logic. All six test frames with a correct SCIL proof were retained: three
+in-scope glass-door positives, two no-portal negative controls, and one visible
+monumental entrance recorded as outside the frozen paired-handle
+representation. Human labels evaluated output only. The unchanged dual-family
+proposer ran on every proof-positive frame.
+
+SP-ACPL hashes the same-frame SCIL proof, requested entity, image, and sealed
+PB4 result into an authority token. A proposal could carry that token only if
+it passed a truth-blind paired-handle opportunity predicate frozen from the
+earlier six source-disjoint positive portal frames. Text-`UNKNOWN`, OOD, and
+all `COMMIT` or guidance states remained blocked.
+
+| PB5 composition metric | result |
+|---|---:|
+| raw portal truth retained at Top-1 / Top-3 | 2/3 / 2/3 |
+| identity-bound truth retained at Top-3 | **1/3** |
+| no-portal false authorization | **1/2** |
+| OOD entrance authorization leakage | 0/1 |
+| wrong-request authorization after identity join | 0/18 |
+| identity-`UNKNOWN` ownership leakage | 0/2 |
+
+The identity join itself remained asymmetric and precise, but the geometry
+opportunity layer failed both positive coverage and no-portal specificity. The
+frozen gate therefore records
+`L10_PB5_SCRIPT_PROVED_AUTHORITY_CARRYING_PORTAL_LATTICE_GATE_NOT_MET`.
+Do not rescue these consumed rows with score, box, family, SCIL, or geometry
+threshold sweeps. SCIL remains the conditional place-identity authority and
+the dual-family method remains a portal proposal mechanism, but their
+geometry-only authorization join is closed on this cohort.
+
+The next legal successor must change the information source or representation:
+freeze an independent semantic door/opening evidence layer and evaluate it on
+a source-disjoint cohort containing both no-portal and open-aperture controls.
+This result is retrospective Development composition evidence, not fresh
+confirmation or portal ownership. It establishes no access, traversability,
+active-view causality, temporal persistence, guidance, arrival, product,
+user-benefit, or safety claim.
+
 The `x/120` column is not physical target-absence authority. The source audit
 did not exhaustively freeze every gallery building co-visible in dense
 same-city frames, so physical target-absent rejection is `NOT_EVALUABLE`. A

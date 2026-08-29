@@ -2,11 +2,11 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-29",
-  "source_fingerprint": "464aa7270c475fd5dc0955baf2bd424149eaf769b3e35eafca4d3596b140611b",
+  "source_fingerprint": "fdab2fcfa6dd3ed961f126e701780c30219d4e001df8dd931109b56634fdf14d",
   "counts": {
     "failure_layers": 13,
-    "mechanisms": 259,
-    "uses": 258,
+    "mechanisms": 260,
+    "uses": 259,
     "experiments": 206,
     "current_terminals": 19
   },
@@ -893,6 +893,93 @@
     "生成器不得跨越 evidence claim ceiling：跑通、存在信号、功能门槛、自然分布、产品和安全是不同层。"
   ],
   "mechanisms": [
+    {
+      "id": "algorithm-authority-carrying-portal-lattice#scil-token-plus-structural-opportunity",
+      "item_id": "algorithm-authority-carrying-portal-lattice",
+      "mechanism_id": "scil-token-plus-structural-opportunity",
+      "kind": "algorithm",
+      "title": "Script-proved authority-carrying portal lattice",
+      "canonical_ref": "repo:research/active/l10-r0/named_poi_authority_portal_eval.py",
+      "summary": "Carry a requested-place identity token from a correct same-frame SCIL proof only onto portal proposals admitted by an independent truth-blind structural opportunity gate; preserve UNKNOWN, no-portal, and representation-OOD states without COMMIT.",
+      "tags": [
+        "l10",
+        "named-poi",
+        "portal-binding",
+        "authority-token",
+        "unknown",
+        "negative-control",
+        "functional-grounding"
+      ],
+      "name": "Asymmetric identity token plus structural portal opportunity",
+      "description": "Hash the SCIL proof authority, frame identity, requested entity, image, and sealed PB4 result into a typed token. Attach it only to top-three paired-handle proposals satisfying a frozen score, scale, and image-position predicate. Human portal truth evaluates output but never controls authorization.",
+      "inputs": [
+        "Sealed same-frame SCIL proof",
+        "Current RGB image",
+        "Frozen dual-family portal proposals"
+      ],
+      "outputs": [
+        "Identity-token-carrying portal hypotheses",
+        "Portal-not-observable or representation-OOD deficit state"
+      ],
+      "limitations": "The first truth-blind composition gate retained correct authorized portal truth on only 1/3 positives and falsely authorized 1/2 no-portal controls. Geometry-only opportunity authorization is closed on that cohort.",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 9,
+        "evaluation_evidence": 6,
+        "geometry_motion": 3,
+        "handoff_completion": 3,
+        "identity_binding": 9,
+        "observation_perception": 6,
+        "source_coverage": 3
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-authority-carrying-portal-lattice",
+          "route": "ten-meter-copilot",
+          "use_state": "rejected",
+          "reproduction_status": "reproduced",
+          "verdict": "negative",
+          "project_application": "Test whether separately proved place identity can authorize a retained portal set without wrong-request, no-portal, OOD, UNKNOWN, or COMMIT leakage.",
+          "expected_effect": "Retain at least 2/3 correct portal sets while authorizing neither no-portal controls nor the representation-OOD aperture and preserving zero wrong-request and UNKNOWN leakage.",
+          "observed_effect": "Raw proposer truth retention was 2/3 at both top one and top three, but only 1/3 positives retained an authorized truth member. One of two no-portal controls falsely authorized a portal. The OOD aperture, all 18 wrong-request pairs, both identity-UNKNOWN rows, and every COMMIT/navigation state remained blocked. The joined geometry-only authorization gate is rejected rather than rescued by tuning.",
+          "metrics": [
+            "raw_portal_truth_retained_top1=2/3",
+            "raw_portal_truth_retained_top3=2/3",
+            "identity_bound_truth_retained_top3=1/3",
+            "negative_control_false_authorization_frames=1/2",
+            "out_of_scope_authorization_leakage_frames=0/1",
+            "joined_wrong_request_authorizations=0/18",
+            "relative_wrong_request_authorization_reduction=100%",
+            "identity_unknown_portal_ownership_leakage=0/2",
+            "new_ocr_calls=0",
+            "new_embedding_calls=0"
+          ],
+          "claim_boundary": "Consumed-identity/current-image Development composition evidence on a curated opportunity cohort. It rejects only the frozen geometry authorization layer. Wrong requests are source-label proxies. No portal ownership, access, traversability, active view, guidance, arrival, product, user, or safety claim follows.",
+          "evidence": [
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/named_poi_authority_portal_protocol_v1.json",
+              "summary": "Frozen PB5 source, independent structural opportunity predicate, truth-blind execution contract, controls, and stop rule."
+            },
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/named_poi_authority_portal_result_v1.json",
+              "summary": "Durable PB5 metrics, failed gates, diagnosis, hashes, forbidden rescue, and successor."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r0/named-poi-authority-portal-v1/result.json",
+              "summary": "Per-frame proposals, structural admission, truth membership, authority tokens, controls, metrics, and gate clauses."
+            }
+          ],
+          "updated_at": "2026-08-29"
+        }
+      ],
+      "search_text": "Script-proved authority-carrying portal lattice Carry a requested-place identity token from a correct same-frame SCIL proof only onto portal proposals admitted by an independent truth-blind structural opportunity gate; preserve UNKNOWN, no-portal, and representation-OOD states without COMMIT. l10 named-poi portal-binding authority-token unknown negative-control functional-grounding Asymmetric identity token plus structural portal opportunity Hash the SCIL proof authority, frame identity, requested entity, image, and sealed PB4 result into a typed token. Attach it only to top-three paired-handle proposals satisfying a frozen score, scale, and image-position predicate. Human portal truth evaluates output but never controls authorization. Sealed same-frame SCIL proof Current RGB image Frozen dual-family portal proposals Identity-token-carrying portal hypotheses Portal-not-observable or representation-OOD deficit state The first truth-blind composition gate retained correct authorized portal truth on only 1/3 positives and falsely authorized 1/2 no-portal controls. Geometry-only opportunity authorization is closed on that cohort. ten-meter-copilot Test whether separately proved place identity can authorize a retained portal set without wrong-request, no-portal, OOD, UNKNOWN, or COMMIT leakage. Retain at least 2/3 correct portal sets while authorizing neither no-portal controls nor the representation-OOD aperture and preserving zero wrong-request and UNKNOWN leakage. Raw proposer truth retention was 2/3 at both top one and top three, but only 1/3 positives retained an authorized truth member. One of two no-portal controls falsely authorized a portal. The OOD aperture, all 18 wrong-request pairs, both identity-UNKNOWN rows, and every COMMIT/navigation state remained blocked. The joined geometry-only authorization gate is rejected rather than rescued by tuning. raw_portal_truth_retained_top1=2/3 raw_portal_truth_retained_top3=2/3 identity_bound_truth_retained_top3=1/3 negative_control_false_authorization_frames=1/2 out_of_scope_authorization_leakage_frames=0/1 joined_wrong_request_authorizations=0/18 relative_wrong_request_authorization_reduction=100% identity_unknown_portal_ownership_leakage=0/2 new_ocr_calls=0 new_embedding_calls=0 Consumed-identity/current-image Development composition evidence on a curated opportunity cohort. It rejects only the frozen geometry authorization layer. Wrong requests are source-label proxies. No portal ownership, access, traversability, active view, guidance, arrival, product, user, or safety claim follows."
+    },
     {
       "id": "algorithm-functional-portal-set-proposer#dual-family-functional-portal-set",
       "item_id": "algorithm-functional-portal-set-proposer",

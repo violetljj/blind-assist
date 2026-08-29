@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "id": "algorithm-authority-carrying-portal-lattice",
+  "kind": "algorithm",
+  "title": "Script-proved authority-carrying portal lattice",
+  "canonical_ref": "repo:research/active/l10-r0/named_poi_authority_portal_eval.py",
+  "authors": [],
+  "year": 2026,
+  "venue": "BlindAssist research",
+  "summary": "Carry a requested-place identity token from a correct same-frame SCIL proof only onto portal proposals admitted by an independent truth-blind structural opportunity gate; preserve UNKNOWN, no-portal, and representation-OOD states without COMMIT.",
+  "mechanisms": [
+    {
+      "id": "scil-token-plus-structural-opportunity",
+      "name": "Asymmetric identity token plus structural portal opportunity",
+      "description": "Hash the SCIL proof authority, frame identity, requested entity, image, and sealed PB4 result into a typed token. Attach it only to top-three paired-handle proposals satisfying a frozen score, scale, and image-position predicate. Human portal truth evaluates output but never controls authorization.",
+      "inputs": ["Sealed same-frame SCIL proof", "Current RGB image", "Frozen dual-family portal proposals"],
+      "outputs": ["Identity-token-carrying portal hypotheses", "Portal-not-observable or representation-OOD deficit state"],
+      "limitations": "The first truth-blind composition gate retained correct authorized portal truth on only 1/3 positives and falsely authorized 1/2 no-portal controls. Geometry-only opportunity authorization is closed on that cohort."
+    }
+  ],
+  "tags": ["l10", "named-poi", "portal-binding", "authority-token", "unknown", "negative-control", "functional-grounding"],
+  "aliases": ["L10-PB5", "SP-ACPL", "authority-carrying portal"],
+  "links": [],
+  "added_at": "2026-08-29",
+  "updated_at": "2026-08-29"
+}

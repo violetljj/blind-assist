@@ -405,6 +405,26 @@ the already frozen functional portal-set proposer. Text-`UNKNOWN` remains
 blocked and requests `APPROACH_TEXT / SWEEP_SIGN`. No portal ownership,
 active-view, navigation, arrival, user, product, or safety result is implied.
 
+PB5 then joined the sealed SCIL proof to the unchanged dual-family portal
+proposer through a typed entity authority token and a truth-blind structural
+opportunity predicate. The audit froze all six proof-positive frames before
+portal execution: three in-scope glass-door positives, two no-portal controls,
+and one monumental open-entrance OOD challenge. Human labels never controlled
+authorization.
+
+Raw Top-1/Top-3 portal truth retention was `2/3` / `2/3`; the structurally
+authorized set retained truth on only **`1/3`** positives and falsely authorized
+**`1/2`** no-portal controls. The OOD entrance (`0/1` leakage), 18 wrong-request
+pairs, two SCIL-`UNKNOWN` rows, and all `COMMIT`/guidance states remained
+blocked. Record
+`L10_PB5_SCRIPT_PROVED_AUTHORITY_CARRYING_PORTAL_LATTICE_GATE_NOT_MET`.
+
+SCIL remains conditional identity authority, but geometry-only portal
+authorization is closed on these consumed rows. Do not sweep its thresholds or
+boxes. Change the portal-opportunity information source or representation and
+confirm it on a source-disjoint cohort containing no-portal and open-aperture
+controls before claiming portal ownership.
+
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
 because the approved AWS profile is absent. That is a source-access condition,

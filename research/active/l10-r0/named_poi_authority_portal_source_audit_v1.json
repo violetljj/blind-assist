@@ -1,0 +1,80 @@
+{
+  "schema": "l10-named-poi-authority-portal-source-audit-v1",
+  "audited_at": "2026-08-29",
+  "audit_stage": "AFTER_SEALED_PB4_IDENTITY_RESULT_BEFORE_ANY_PORTAL_PROPOSER_CALL_ON_THESE_FRAMES",
+  "selection_authority": "All and only PB4 test C2_SCIL rows with a correct same-frame proof; portal visibility did not affect frame selection.",
+  "dataset_manifest_sha256": "db03c626ea70b836b889cee2aa3b8fd74a50ded2a7ff7168ad33171a46e93377",
+  "pb4_formal_result_sha256": "6d73e396960a1b2c7316f27bcf1ccbb86a8232e067f0096fb048b2daace64d00",
+  "portal_opportunity_definition": "The in-scope positive is a visually bounded current-view pedestrian glass-door bank with paired vertical handles or posts. Monumental open architectural apertures are recorded separately as representation OOD. These labels do not establish public access, opening state, traversability, or destination completion.",
+  "portal_set_membership_rule": "Candidate center is inside the frozen portal-set region and at least half of candidate area lies inside it.",
+  "frames": [
+    {
+      "key": "query:test:hong-kong-arts-centre:01",
+      "image_sha256": "3656ea849b430252435e039f7cf7f98eca39599b01ea214f18a776bda4806c44",
+      "local_image_size": [1280, 853],
+      "status": "IN_SCOPE_PORTAL_PRESENT",
+      "portal_set_box_xyxy": [455, 150, 1190, 735],
+      "kind": "Multi-leaf glass entrance directly beside the Arts Centre identity sign",
+      "source_observation": "The framed glass-door bank and paired vertical handles are clearly bounded in the right side of the image."
+    },
+    {
+      "key": "query:test:hong-kong-arts-centre:02",
+      "image_sha256": "c9102333cc2fe55bc404f278a861e4d275f0d17c5b8a9615eec020252e03e0f8",
+      "local_image_size": [1280, 1920],
+      "status": "NEGATIVE_NO_PORTAL",
+      "deficit_action": "APPROACH_PORTAL_OR_SWEEP_ENTRANCE",
+      "source_observation": "The tower identity is visible, but the street-level entrance is distant and obscured by trees and neighboring structures."
+    },
+    {
+      "key": "query:test:xiqu-centre:01",
+      "image_sha256": "96c7fc0cc3a44fb1b74a4fce6aecde68cc89345ea61f43ae966b93481220a4c2",
+      "local_image_size": [1280, 960],
+      "status": "IN_SCOPE_PORTAL_PRESENT",
+      "portal_set_box_xyxy": [55, 10, 1225, 890],
+      "kind": "Multi-leaf interior glass doorway carrying the Xiqu Centre premises panel",
+      "source_observation": "The full-width glass-door assembly has repeated paired handles and a clearly visible pedestrian passage plane."
+    },
+    {
+      "key": "query:test:xiqu-centre:02",
+      "image_sha256": "8e1a4a08a71766b79e1e7eed70d56baec0f64047678baa51cc58c2162e3247bc",
+      "local_image_size": [1280, 960],
+      "status": "OUT_OF_SCOPE_ARCHITECTURAL_ENTRANCE",
+      "deficit_action": "CHANGE_PORTAL_REPRESENTATION_OR_APPROACH",
+      "kind": "Large open pedestrian entrance aperture outside the frozen paired-handle or glass-door representation",
+      "source_observation": "The building-scale opening and occupied pedestrian approach are visible; no public-access or route-safety inference is made."
+    },
+    {
+      "key": "query:test:hong-kong-wetland-park:01",
+      "image_sha256": "cc147794117134a26cff01fe78d37774f30c337241bfabde276e5a67ce911b9a",
+      "local_image_size": [1280, 719],
+      "status": "NEGATIVE_NO_PORTAL",
+      "deficit_action": "APPROACH_PORTAL_OR_SWEEP_ENTRANCE",
+      "source_observation": "The image is a close identity-wall view; no doorway or entrance aperture is present in the pixels."
+    },
+    {
+      "key": "query:test:asiaworld-expo:01",
+      "image_sha256": "3fcb056f3c1db9ac01d44ac786c7a2a0828f2f2c49daf7a643d8694650e33cfd",
+      "local_image_size": [1280, 960],
+      "status": "IN_SCOPE_PORTAL_PRESENT",
+      "portal_set_box_xyxy": [575, 575, 930, 835],
+      "kind": "Right-hand foreground glass entrance bank below the AsiaWorld-Expo identity marks",
+      "source_observation": "A contiguous pedestrian glass-door bank is visibly bounded on the right side of the lower facade and is partially crowd-occluded."
+    }
+  ],
+  "identity_unknown_not_admitted": [
+    "query:test:hong-kong-wetland-park:02",
+    "query:test:asiaworld-expo:02"
+  ],
+  "checks": {
+    "all_pb4_correct_scil_test_proofs_included": true,
+    "portal_visibility_did_not_select_the_identity_cohort": true,
+    "three_in_scope_glass_portal_positives_frozen": true,
+    "two_no_portal_negative_controls_frozen": true,
+    "one_architectural_entrance_ood_challenge_frozen": true,
+    "portal_proposer_calls_before_freeze": 0,
+    "new_ocr_calls_before_freeze": 0,
+    "new_embedding_calls_before_freeze": 0
+  },
+  "decision": "ADMIT_PB5_SAME_FRAME_PROOF_TO_PORTAL_COMPOSITION_COHORT",
+  "claim_boundary": "Source-only current-image portal opportunity labels on a consumed identity cohort. NOT_EVALUABLE is not a negative result. The audit does not establish identity performance, public access, traversability, active-view causality, guidance, arrival, product benefit, user benefit, or safety."
+}

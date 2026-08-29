@@ -734,6 +734,34 @@ is deliberate opportunity evidence and wrong-request rows remain source-label
 proxies; no natural prevalence, open-world identity, access, active-view,
 navigation, arrival, product, user-benefit, or safety claim follows.
 
+L10-PB5 has now tested that exact seam and stopped it at the correct layer. The
+Script-Proved Authority-Carrying Portal Lattice (SP-ACPL) retained every sealed
+PB4 test frame with a correct SCIL proof. A source-only portal audit froze three
+in-scope glass-door positives, two no-portal negative controls, and one visible
+monumental entrance outside the paired-handle representation before any portal
+proposer call on these frames. Human labels were evaluator truth only: the
+unchanged proposer ran on all six proof-positive frames.
+
+A truth-blind opportunity predicate, frozen from the earlier six
+source-disjoint positive portal frames, allowed only sufficiently strong,
+scaled, lower-image paired-handle proposals to carry the SCIL entity token. Raw
+portal truth retention was `2/3` at Top-1 and Top-3, but authorized truth
+retention was only **`1/3`** and one of two no-portal controls falsely received
+portal authority. The OOD aperture stayed blocked (`0/1` leakage), as did all
+18 source-label wrong-request pairs, both SCIL-`UNKNOWN` rows, and every
+`COMMIT` or directional state. The failed positive-coverage and negative-control
+clauses record
+`L10_PB5_SCRIPT_PROVED_AUTHORITY_CARRYING_PORTAL_LATTICE_GATE_NOT_MET`.
+
+Retain SCIL as conditional identity authority, but do not attach portal
+ownership from this geometry-only opportunity gate. Score, box, family, SCIL,
+and geometry threshold tuning is closed on the consumed PB5 rows. The next
+legal experiment must change the portal-opportunity information source or
+representation, preferably a frozen semantic door/opening layer tested on a
+source-disjoint cohort with no-portal and open-aperture controls. No access,
+traversability, active-view, tracking, guidance, arrival, product,
+user-benefit, or safety result follows.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

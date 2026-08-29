@@ -1,0 +1,110 @@
+{
+  "schema": "l10-named-poi-authority-carrying-portal-protocol-v1",
+  "created_at": "2026-08-29",
+  "mode": "CONSUMED_IDENTITY_CURRENT_IMAGE_COMPOSITION_GATE",
+  "mechanism": {
+    "name": "Script-Proved Authority-Carrying Portal Lattice",
+    "short_name": "SP-ACPL",
+    "description": "A typed evidence join in which the sealed same-frame SCIL identity proof supplies the requested-entity authority token, while the separately frozen geometry proposer supplies only a top-k functional portal set. Neither layer may borrow the other's truth.",
+    "innovation_boundary": "The contribution is asymmetric authority propagation across identity and affordance layers, with explicit UNKNOWN and portal-not-observable deficit states. It is not a new OCR model, a new portal detector, or a navigation policy."
+  },
+  "sources": {
+    "dataset_manifest": {
+      "path": "artifacts.local/knowledge/named-poi-biscript-v1/dataset_manifest.json",
+      "sha256": "db03c626ea70b836b889cee2aa3b8fd74a50ded2a7ff7168ad33171a46e93377"
+    },
+    "pb4_formal_result": {
+      "path": "artifacts.local/evidence/l10-r0/named-poi-biscript-v1/result.json",
+      "sha256": "6d73e396960a1b2c7316f27bcf1ccbb86a8232e067f0096fb048b2daace64d00"
+    },
+    "pb4_protocol": {
+      "path": "research/active/l10-r0/named_poi_biscript_protocol_v1.json",
+      "sha256": "4ac63d9af03f47218e1a06d066a7dcf84e8ba7ea67fd12fc2ea75a4c5d993aef"
+    },
+    "portal_opportunity_audit": {
+      "path": "research/active/l10-r0/named_poi_authority_portal_source_audit_v1.json",
+      "sha256": "a49858a239ff1612cf0697fdefb04f1c17474119fad73778733ed08ea9040584"
+    },
+    "portal_fresh_result": {
+      "path": "artifacts.local/evidence/l10-r0/named-poi-portal-lattice-fresh-v3/result.json",
+      "sha256": "3628b3a5799a214b741c7b374a037c51481252027044a64e84ae217c05e7c36f"
+    }
+  },
+  "frozen_components": {
+    "portal_proposer": {
+      "path": "research/active/l10-r0/named_poi_portal_lattice.py",
+      "sha256": "2cf6b0d80a5691150f6a70e9a45e2a6136e87480b4e06fa1fa82ea470386ba61",
+      "configuration": "PortalLatticeConfig defaults from the retained dual-family v3 result",
+      "maximum_authorized_candidates": 3
+    },
+    "portal_proposer_authority": {
+      "path": "research/active/l10-r0/named_poi_functional_portal_set_result_v1.json",
+      "sha256": "2fa9a9f87d1d43bc89a2f8b80b6d1339cc0cb504bb83b6c4e957bbc9214a420f"
+    },
+    "evaluator": {
+      "path": "research/active/l10-r0/named_poi_authority_portal_eval.py",
+      "sha256": "f94277918c5ce68329979f6db6304b4d780f5b05692ffac930e6a9504933ec4c"
+    }
+  },
+  "structural_opportunity_gate": {
+    "authority": "Frozen from the six source-disjoint positive glass entrances in portal-lattice-fresh-v3 before any PB5 proposer output was opened.",
+    "required_family": "PAIRED_VERTICAL_HANDLE_APERTURE",
+    "minimum_proposal_score": 0.9,
+    "minimum_normalized_height": 0.15,
+    "minimum_box_bottom_fraction": 0.5,
+    "scope": "Apply to the unchanged proposer's top three. A frame can carry portal authority only for proposals that pass this truth-blind observable predicate.",
+    "prior_positive_check": "Every one of the six frozen portal-lattice-fresh-v3 positive frames had at least one truth-member top-three proposal satisfying this predicate. PB5 supplies the first frozen no-portal and representation-OOD controls."
+  },
+  "cohort_contract": {
+    "required_pb4_decision": "L10_PB4_SCRIPT_CONTRASTIVE_IDENTITY_LATTICE_GATE_MET",
+    "selection": "All and only sealed PB4 test C2_SCIL rows whose proof is non-null and correct. Portal visibility cannot select or remove an identity-proof-positive frame.",
+    "proof_positive_frames": 6,
+    "portal_opportunity_denominator": "The three proof-positive frames labeled IN_SCOPE_PORTAL_PRESENT before proposer execution. Two NEGATIVE_NO_PORTAL rows and one OUT_OF_SCOPE_ARCHITECTURAL_ENTRANCE row are mandatory false-authorization controls, not denominator exclusions from execution.",
+    "not_evaluable_rule": "The unchanged proposer runs on every proof-positive frame. Human opportunity labels are evaluator truth only and cannot control authorization. A no-portal frame must emit no structurally authorized proposal and requests APPROACH_PORTAL_OR_SWEEP_ENTRANCE.",
+    "out_of_scope_rule": "The monumental open Xiqu aperture is visible but outside the frozen paired-handle/glass-door representation. It must remain unbound and requests a changed representation or closer view.",
+    "identity_unknown_rule": "A PB4 SCIL UNKNOWN frame cannot receive a portal authority token even if geometry is present; it requests APPROACH_TEXT_OR_SWEEP_SIGN."
+  },
+  "authority_contract": {
+    "token_payload": [
+      "authority",
+      "frame_key",
+      "requested_entity",
+      "image_sha256",
+      "pb4_result_sha256"
+    ],
+    "positive_authorization": "A top-three geometry proposal may carry the requested entity's token only when it satisfies the frozen truth-blind structural opportunity predicate and the same frame has a correct SCIL proof for that requested entity. Human portal labels never enter this decision.",
+    "wrong_request_proxy": "Cross-pair each evaluable frame with every other test entity. These are source-label wrong-request proxies, not physical target-absence trials. The asymmetric join must authorize none.",
+    "forbidden_outputs": [
+      "COMMIT",
+      "HANDOFF",
+      "ARRIVED",
+      "GUIDE_LEFT",
+      "GUIDE_RIGHT",
+      "GUIDE_FORWARD"
+    ]
+  },
+  "metrics": [
+    "proof-positive frames",
+    "evaluable portal opportunities",
+    "top-1 and top-3 portal truth retention",
+    "identity-bound top-3 truth retention",
+    "no-portal false authorization",
+    "representation-OOD authorization leakage",
+    "source-label wrong-request portal authorization",
+    "wrong-request authorization reduction versus an ungated geometry attachment",
+    "identity-UNKNOWN portal ownership leakage",
+    "forbidden COMMIT or navigation state leakage"
+  ],
+  "promotion_gate": {
+    "primary_positive_count": 3,
+    "minimum_authorized_top3_truth_retained": 2,
+    "require_zero_negative_control_authorization": true,
+    "require_zero_out_of_scope_authorization": true,
+    "require_correct_identity_authority": true,
+    "require_zero_wrong_request_authorization": true,
+    "require_zero_identity_unknown_leakage": true,
+    "require_no_commit_or_navigation_state": true,
+    "stop_rule": "Run the unchanged proposer and frozen structural opportunity predicate once on all six proof-positive rows. Do not tune boxes, thresholds, detector families, opportunity predicate, or SCIL on these pixels after opening output. If fewer than two of three positives retain an authorized truth member, either negative control authorizes a portal, or the OOD aperture leaks through, close this join and change the representation or source."
+  },
+  "claim_boundary": "Consumed-identity/current-image composition evidence on a deliberately identity-opportunity-stratified public-image cohort. A positive result establishes only that same-frame SCIL identity authority can be attached without leakage to retained top-k functional portal proposals. Source-label wrong requests are proxies. No natural prevalence, open-world identity, public access, opening state, traversability, active-view causality, temporal persistence, tracking, directional guidance, arrival, handoff, product benefit, user benefit, or safety claim follows."
+}

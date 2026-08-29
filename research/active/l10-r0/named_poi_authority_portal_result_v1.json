@@ -1,0 +1,59 @@
+{
+  "schema": "l10-named-poi-authority-carrying-portal-durable-result-v1",
+  "decision": "L10_PB5_SCRIPT_PROVED_AUTHORITY_CARRYING_PORTAL_LATTICE_GATE_NOT_MET",
+  "mechanism": {
+    "name": "Script-Proved Authority-Carrying Portal Lattice",
+    "short_name": "SP-ACPL",
+    "join": "A correct same-frame PB4 SCIL identity proof may attach its entity token only to a top-three portal proposal that passes a frozen, truth-blind paired-handle structural opportunity predicate.",
+    "opportunity_predicate": "PAIRED_VERTICAL_HANDLE_APERTURE, proposal_score at least 0.90, normalized height at least 0.15, and box bottom at or below half image height.",
+    "predicate_authority": "Frozen from six earlier source-disjoint positive glass entrances, all of which had at least one truth-member top-three proposal satisfying it. No PB5 output was used to choose or change it."
+  },
+  "cohort": {
+    "selection": "All six sealed PB4 test rows with a correct C2_SCIL same-frame proof.",
+    "in_scope_glass_portal_positives": 3,
+    "no_portal_negative_controls": 2,
+    "architectural_entrance_ood_challenges": 1,
+    "identity_unknown_blocked_controls": 2,
+    "audit_boundary": "Human portal labels evaluated output only; they did not control proposer execution or authorization."
+  },
+  "metrics": {
+    "raw_portal_truth_retained_top1": "2/3",
+    "raw_portal_truth_retained_top3": "2/3",
+    "identity_bound_truth_retained_top3": "1/3",
+    "identity_bound_truth_retained_top3_rate": 0.3333333333333333,
+    "negative_control_false_authorization_frames": "1/2",
+    "out_of_scope_authorization_leakage_frames": "0/1",
+    "source_label_wrong_request_authorizations_before_identity_join": "9",
+    "source_label_wrong_request_authorizations_after_identity_join": "0/18 pairs",
+    "relative_wrong_request_authorization_reduction": 1.0,
+    "identity_unknown_portal_ownership_leakage": "0/2",
+    "new_ocr_calls": 0,
+    "new_embedding_calls": 0
+  },
+  "gate": {
+    "frozen_primary_positive_count": true,
+    "authorized_top3_truth_retention": false,
+    "zero_negative_control_authorization": false,
+    "zero_out_of_scope_authorization": true,
+    "correct_identity_authority": true,
+    "zero_wrong_request_authorization": true,
+    "zero_identity_unknown_leakage": true,
+    "no_commit_or_navigation_state": true
+  },
+  "diagnosis": {
+    "retained_signal": "SCIL remains an effective asymmetric identity authority: all 18 wrong-request cross-pairs and both identity-UNKNOWN frames remained unbound, and no COMMIT or navigation state leaked.",
+    "failed_layer": "The truth-blind geometric opportunity predicate is not a portal-presence or portal-ownership representation. It rejected a correct Arts Centre door, authorized an incorrect AsiaWorld proposal instead of the frozen door bank, and falsely authorized one Arts Centre no-portal frame.",
+    "forbidden_rescue": "Do not tune proposal score, geometry, truth boxes, family thresholds, SCIL, or cross-pair logic on these consumed rows."
+  },
+  "execution_note": "The first launch stopped before any portal proposer call because the evaluator expected one nonexistent intermediate JSON key. The mechanical path was corrected and all hashes were refrozen before the single output-bearing run.",
+  "hashes": {
+    "protocol_sha256": "9b18b6768395c97aa2d3a185bc58f01e3aa06f9033a3880df2142ff23e0bddaa",
+    "evaluator_sha256": "f94277918c5ce68329979f6db6304b4d780f5b05692ffac930e6a9504933ec4c",
+    "source_audit_sha256": "a49858a239ff1612cf0697fdefb04f1c17474119fad73778733ed08ea9040584",
+    "pb4_formal_result_sha256": "6d73e396960a1b2c7316f27bcf1ccbb86a8232e067f0096fb048b2daace64d00",
+    "portal_proposer_sha256": "2cf6b0d80a5691150f6a70e9a45e2a6136e87480b4e06fa1fa82ea470386ba61",
+    "formal_result_sha256": "8ab58d7329930c941a97d6ba53b2b1e17a389f27084e04622c6e6ffbb84c1366"
+  },
+  "next_step": "Close PB5 geometry and threshold tuning. A legal successor must change the portal-opportunity information source or representation, for example a frozen semantic door/opening evidence layer evaluated on a source-disjoint cohort with both no-portal and open-aperture controls. SCIL remains frozen positive identity authority.",
+  "claim_boundary": "Consumed-identity/current-image Development composition evidence on a deliberately curated public-image opportunity cohort. It rejects this frozen structural authorization gate; it does not reject SCIL or the portal proposer as separate proposal mechanisms. Wrong requests are source-label proxies. No portal ownership, public access, opening state, traversability, active-view causality, temporal persistence, guidance, arrival, handoff, product benefit, user benefit, or safety claim follows."
+}
