@@ -243,6 +243,18 @@ absent.  C28 therefore adds raw-LiDAR `HIT / KNOWN_FREE / OCCLUDED / UNSENSED`
 ray state so only occlusion may persist, known-free can clear departed ghosts,
 and unsensed space remains `UNKNOWN`.
 
+C28--C31 then produced a consumed-cohort Development win, but the single
+authorized C31 source-disjoint confirmation did not transfer. One of seven
+remaining JRDB sequences was structurally `NOT_EVALUABLE` before prediction
+because its first frame had no current-or-past native pose. On the final six
+sequences (4,811 frames, six CONTACT events, 18 dropout trials, and 278.08 s
+known non-CONTACT), M1-PDC scored `4/6`, 25 false segments, 22.86% F1, 2.291 s
+median lead, and `5/18`; frozen C31 scored `4/6`, 35 false, 17.78% F1, the same
+lead, and `6/18`. Decision:
+`DTR_C31_SOURCE_DISJOINT_CONFIRMATION_GATE_NOT_MET`. Do not tune C31 or open
+C32 probabilistic body-route occupancy on the same component support; a
+successor must first change component information/authority.
+
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC
 word carrier for current-camera steering. SC2 adds opportunity-correct active

@@ -1021,6 +1021,24 @@ alone permits persistence, and `UNSENSED` remains `UNKNOWN`.  It must beat the
 same `12/12`, 21-false, `30/36`, per-event no-later envelope without a parameter
 sweep before learned future occupancy can reopen.
 
+C28--C31 completed that representation path on the consumed C25 cohort, and
+C31 met its Development gate there (`12/12`, 21 false segments, 53.33% F1,
+2.667 s median lead, `30/36` dropout recovery). Its one authorized
+source-disjoint confirmation has now failed. A raw-source preflight retained
+six algorithm-unexposed JRDB sequences (4,811 frames, six CONTACT events, 18
+dropout trials, 278.08 s known non-CONTACT); Gates-to-Clark was structurally
+`NOT_EVALUABLE` because frame 0 had no causal native pose. After predictions
+were sealed, M1-PDC scored `4/6`, 25 false, 22.86% F1, 2.291 s, and `5/18`.
+C31 scored `4/6`, 35 false, 17.78% F1, the same 2.291 s, and `6/18`.
+
+Accept `DTR_C31_SOURCE_DISJOINT_CONFIRMATION_GATE_NOT_MET`. The mechanism
+recovered neither missed event, added no lead, gained only one dropout recovery
+versus the frozen `+2` requirement, and added ten false segments. Do not tune
+C31 and do not open C32 probabilistic body-route occupancy on the same support.
+The next admissible route must change component information or authority before
+uncertainty propagation; it cannot rescue this consumed result with covariance,
+radius, decay, route, lifecycle, or model sweeps.
+
 ## What stops here
 
 - Do not record the superseded 24 canary or 120 staged local RGB clips.

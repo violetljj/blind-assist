@@ -1,0 +1,320 @@
+{
+  "claim_ceiling": "ALGORITHM_FRESH_PUBLIC_REPLAY_NO_PRODUCT_OR_SAFETY_CLAIM",
+  "contract": {
+    "bounded_event": "CONTACT interval preceded and followed by known non-CONTACT",
+    "future_horizon_s": 3.0,
+    "primary": "wearer-global realized future native OBB union within 0-3 s",
+    "responsibility": "component identities at the earliest realized OBB hit from event onset; diagnostic only",
+    "route_body_radius_m": 0.65,
+    "secondary": "circle-only PROXIMITY"
+  },
+  "dataset": "JRDB public train split",
+  "forbidden": [
+    "changing C31/C30/C25 thresholds, radii, decay, lifecycle, route, or gate after admission",
+    "opening selected future OBB labels before all C30/C31 predictions are sealed",
+    "adding or replacing a sequence after observing an outcome",
+    "rerunning a failed arm with different parameters"
+  ],
+  "frozen_algorithm": {
+    "arms": [
+      "M1_PDC_GLOBAL",
+      "C30_CONSENSUS",
+      "C31_SIGNED_TRANSPORT"
+    ],
+    "files": [
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_c31_fresh_confirmation.py",
+        "sha256": "a3cc0255d561cf2ab1a6ea41b7a1b1ea8d3809b78b14be6dd35d47c93a8943b3"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_c31_temporal_component_authority.py",
+        "sha256": "51c97b4dfdab54053cea525f810cede74da4500bd362a891c8d0567f2ca64112"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_c30_consensus_motion_authority.py",
+        "sha256": "7c6847ca1c7e49b3dcb7f0a45be4d70fc436e038c4547dec1e0010ce8baa05b5"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_c25_fresh_point_flow_confirmation.py",
+        "sha256": "eaef7b87db4c1d924151f604bbd21a80811b7bb13b5053e364bb6d7ed7590378"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_c28_visibility_conditioned_point_memory.py",
+        "sha256": "db5b6ecdb998ce12e4bfefa9476375164e9f06d70d2d6c420c6724e5e3418d5a"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_c30_raw_residual_authority_trace.py",
+        "sha256": "962791cb73a2c562a897da3fb6d338937fb16f504091aeea2422d99c82f4149c"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_c27_persistent_point_support.py",
+        "sha256": "e7a4680b6613eb2f2d282a24aba0ef76acee7a3be537dc8b7c2820e2310220b6"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_m1_raw_point_direct_velocity.py",
+        "sha256": "39699b96a04ad2df8e3ad458c83c00cbc4bf1dd072cbb252c5bea35ddf77e1c2"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_m1_confident_direct_velocity.py",
+        "sha256": "aae6c33ae5f9db439fc02d45ab633c4afd4042d11cb346f051ef9e3d2c1b8f60"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_r7_occupancy_flow_canary.py",
+        "sha256": "41076ce6b6c4952d8d653a4b76dcb11a418fd3d2f09812743d6ce02af0f21b67"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_c4_detector_independent_global_risk.py",
+        "sha256": "83aa543d428f5474ef889e9c4176d6d87685e4cb445a757c0663d5c122c7b339"
+      }
+    ],
+    "gate": {
+      "c31_contact_recall_all_events": true,
+      "c31_contact_recall_not_lower_than_pdc": true,
+      "c31_every_pdc_recalled_event_no_later_than_pdc": true,
+      "c31_false_segments_not_higher_than_pdc": true,
+      "m1_pdc_contact_recall_not_lower_than_r7": true,
+      "m1_pdc_dropout_recovery_not_lower_than_r7": true,
+      "m1_pdc_event_f1_higher_than_r7": true,
+      "m1_pdc_false_segment_factor_vs_r7": 0.7,
+      "stable_gain": "dropout recovery gain >= max(1, ceil(10% of induced trials)) OR median first-alert lead gain >= 0.25 s"
+    },
+    "representation": "sealed M1-PDC versus frozen C30 local consensus versus frozen C31 temporal velocity components with signed transport authority",
+    "route_geometry_motion_bounds_and_lifecycle": "UNCHANGED"
+  },
+  "schema": "blindassist-dtr-c1-fresh-global-obb-roster-v1",
+  "selected_sequences": [
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "huang-2-2019-01-25_0:contact:001",
+          "first_frame": 36,
+          "first_index": 36,
+          "first_time_s": 1548457061.431673,
+          "last_frame": 94,
+          "last_index": 94,
+          "last_time_s": 1548457065.3601556,
+          "onset_first_hit_delta_s": 2.995518922805786,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:9"
+          ],
+          "sequence": "huang-2-2019-01-25_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "huang-2-2019-01-25_0:contact:002",
+          "first_frame": 450,
+          "first_index": 450,
+          "first_time_s": 1548457089.5398622,
+          "last_frame": 617,
+          "last_index": 617,
+          "last_time_s": 1548457100.991123,
+          "onset_first_hit_delta_s": 2.9912145137786865,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:41"
+          ],
+          "sequence": "huang-2-2019-01-25_0",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 2,
+      "first_frame": 0,
+      "frames": 874,
+      "known_non_contact_s": 39.549999713897705,
+      "last_frame": 873,
+      "sequence": "huang-2-2019-01-25_0",
+      "timeline_duration_s": 59.8343768119812,
+      "unique_responsible_events": 2
+    },
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "huang-basement-2019-01-25_0:contact:001",
+          "first_frame": 828,
+          "first_index": 828,
+          "first_time_s": 1548456048.1925569,
+          "last_frame": 872,
+          "last_index": 872,
+          "last_time_s": 1548456051.2470105,
+          "onset_first_hit_delta_s": 2.981431007385254,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:16"
+          ],
+          "sequence": "huang-basement-2019-01-25_0",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 1,
+      "first_frame": 0,
+      "frames": 1156,
+      "known_non_contact_s": 71.12411236763,
+      "last_frame": 1155,
+      "sequence": "huang-basement-2019-01-25_0",
+      "timeline_duration_s": 79.80385732650757,
+      "unique_responsible_events": 1
+    },
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "huang-lane-2019-02-12_0:contact:001",
+          "first_frame": 173,
+          "first_index": 173,
+          "first_time_s": 1550001877.558517,
+          "last_frame": 215,
+          "last_index": 215,
+          "last_time_s": 1550001880.5607007,
+          "onset_first_hit_delta_s": 2.9319193363189697,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:56"
+          ],
+          "sequence": "huang-lane-2019-02-12_0",
+          "unique_responsible_component": true
+        },
+        {
+          "event_id": "huang-lane-2019-02-12_0:contact:002",
+          "first_frame": 270,
+          "first_index": 270,
+          "first_time_s": 1550001884.2998486,
+          "last_frame": 336,
+          "last_index": 336,
+          "last_time_s": 1550001888.809083,
+          "onset_first_hit_delta_s": 2.9835431575775146,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:26"
+          ],
+          "sequence": "huang-lane-2019-02-12_0",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 2,
+      "first_frame": 0,
+      "frames": 725,
+      "known_non_contact_s": 38.000696659088135,
+      "last_frame": 724,
+      "sequence": "huang-lane-2019-02-12_0",
+      "timeline_duration_s": 49.829864263534546,
+      "unique_responsible_events": 2
+    },
+    {
+      "bounded_contact_event_details": [
+        {
+          "event_id": "memorial-court-2019-03-16_0:contact:001",
+          "first_frame": 637,
+          "first_index": 637,
+          "first_time_s": 1552771337.6154652,
+          "last_frame": 679,
+          "last_index": 679,
+          "last_time_s": 1552771340.5501277,
+          "onset_first_hit_delta_s": 2.9346625804901123,
+          "responsible_component_count": 1,
+          "responsible_components": [
+            "pedestrian:7"
+          ],
+          "sequence": "memorial-court-2019-03-16_0",
+          "unique_responsible_component": true
+        }
+      ],
+      "bounded_contact_events": 1,
+      "first_frame": 0,
+      "frames": 1091,
+      "known_non_contact_s": 68.74325633049011,
+      "last_frame": 1090,
+      "sequence": "memorial-court-2019-03-16_0",
+      "timeline_duration_s": 74.68217468261719,
+      "unique_responsible_events": 1
+    },
+    {
+      "bounded_contact_event_details": [],
+      "bounded_contact_events": 0,
+      "first_frame": 0,
+      "frames": 460,
+      "known_non_contact_s": 28.798752784729004,
+      "last_frame": 459,
+      "sequence": "meyer-green-2019-03-16_0",
+      "timeline_duration_s": 31.710718393325806,
+      "unique_responsible_events": 0
+    },
+    {
+      "bounded_contact_event_details": [],
+      "bounded_contact_events": 0,
+      "first_frame": 0,
+      "frames": 505,
+      "known_non_contact_s": 31.860807180404663,
+      "last_frame": 504,
+      "sequence": "tressider-2019-03-16_1",
+      "timeline_duration_s": 34.78102135658264,
+      "unique_responsible_events": 0
+    }
+  ],
+  "selected_totals": {
+    "bounded_contact_events": 6,
+    "frames": 4811,
+    "known_non_contact_s": 278.0776250362396,
+    "sequences": 6,
+    "timeline_duration_s": 330.64201283454895,
+    "unique_responsible_events": 6
+  },
+  "selection_policy": {
+    "algorithm_consumed_sequences_excluded": [
+      "bytes-cafe-2019-02-07_0",
+      "clark-center-2019-02-28_0",
+      "clark-center-2019-02-28_1",
+      "clark-center-intersection-2019-02-28_0",
+      "cubberly-auditorium-2019-04-22_0",
+      "forbes-cafe-2019-01-22_0",
+      "gates-159-group-meeting-2019-04-03_0",
+      "gates-ai-lab-2019-02-08_0",
+      "gates-basement-elevators-2019-01-17_1",
+      "hewlett-packard-intersection-2019-01-24_0",
+      "jordan-hall-2019-04-22_0",
+      "nvidia-aud-2019-04-18_0",
+      "packard-poster-session-2019-03-20_0",
+      "packard-poster-session-2019-03-20_1",
+      "packard-poster-session-2019-03-20_2",
+      "stlc-111-2019-04-19_0",
+      "svl-meeting-gates-2-2019-04-08_0",
+      "svl-meeting-gates-2-2019-04-08_1",
+      "tressider-2019-03-16_0",
+      "tressider-2019-04-26_2"
+    ],
+    "candidate_sequences": 7,
+    "ordering": "all remaining algorithm-unexposed JRDB train sequences, lexicographic",
+    "selected_all_structurally_evaluable_remaining": true,
+    "source_preflight_applied": true,
+    "structurally_not_evaluable": [
+      {
+        "reason": "causal_pose_unavailable:1551383339631791360",
+        "sequence": "gates-to-clark-2019-02-28_1"
+      }
+    ]
+  },
+  "source_authority": {
+    "c1_result": "F:\\ba-data\\blindassist-artifacts-20260805\\evidence\\dtr-c1\\global-obb-cohort-admission\\result.json",
+    "c1_result_sha256": "2f6504f642327811892f71f7d2ff5998d15f73f27272f2b24a09880649f99cd8",
+    "consumed_rosters": [
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_c10_fresh_confirmation_roster.json",
+        "sha256": "07ddb799df04178ef7a1ed649f33b21eb1e5fac471f7d4582d11b4c2ba68543e"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_c11_fresh_confirmation_roster.json",
+        "sha256": "88063217b7a4ffd0ee9bcb2c8e71a29c58c4461cf64333d3107406206b26bab9"
+      },
+      {
+        "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\dtr_c25_fresh_confirmation_roster.json",
+        "sha256": "2b93283e7bc2e93ac036306ebb53ddadc1744cf16f8a2d2b79b0144637b3380d"
+      }
+    ],
+    "labels_archive_name": "train_labels.zip",
+    "labels_sha256": "6691816ab12a109c1769f25657a0db17fe56164f3bfbf76a2d01c63a73450df1",
+    "source_preflight": "F:\\ba-data\\blindassist-artifacts-20260805\\evidence\\dtr-c31\\fresh-confirmation\\source-preflight.json",
+    "source_preflight_sha256": "1f9560eff0ba19d5a7c97b0b45b82bdb2a699945ac3b710e48a53593d9b09c71",
+    "timestamps_archive_name": "train_timestamps.zip",
+    "timestamps_sha256": "60b440f4fd69b93a96b84ae07b957c169f8af304106a61b5f297286ed04b2e30"
+  },
+  "status": "DTR_C1_FRESH_GLOBAL_OBB_COHORT_ADMITTED_METADATA_ONLY"
+}

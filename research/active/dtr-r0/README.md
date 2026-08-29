@@ -1780,6 +1780,30 @@ consumed-cohort gate authorizes source-disjoint confirmation of the frozen C31
 mechanism, not further C25 tuning.  Result SHA-256 is
 `1787d88a13c5dcc689dc28ce8a4f46c2d7ae6b0c3114ffab2e05d6c5acfe1e8d`.
 
+## DTR-C31 source-disjoint confirmation
+
+The frozen mechanism did not transfer. A truth-blind source preflight retained
+six of the seven remaining algorithm-unexposed JRDB sequences; Gates-to-Clark
+was `NOT_EVALUABLE` because frame 0 preceded every causal native pose. The
+final cohort contains 4,811 frames, six bounded CONTACT events, 18 induced
+dropout trials, and 278.08 seconds of known non-CONTACT exposure. All C30/C31
+predictions and dropout ledgers were sealed before labels were opened.
+
+| arm | CONTACT recall | false segments | Event F1 | median first lead | dropout recovery |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| M1-PDC | `4/6` | **25** | **22.86%** | **2.291 s** | `5/18` |
+| C30 local consensus | `4/6` | 27 | 21.62% | 2.291 s | `5/18` |
+| C31 signed transport | `4/6` | 35 | 17.78% | 2.291 s | `6/18` |
+
+Accept `DTR_C31_SOURCE_DISJOINT_CONFIRMATION_GATE_NOT_MET`. C31 gained only
+one dropout recovery versus the frozen required `+2`, recovered neither missed
+event, added no lead, and added ten false segments. Do not tune C31 and do not
+open C32 probabilistic body-route occupancy on this support. The false
+inflation is concentrated in four CONTACT-bearing sequences, so a successor
+must change component information/authority rather than spread the same
+accepted components with uncertainty. The full failure localization and
+receipts are in `C31_FRESH_CONFIRMATION_2026-08-29.md`.
+
 ## Claim ceiling
 
 These are retrospective public-real privileged algorithm ceilings. THÖR uses
