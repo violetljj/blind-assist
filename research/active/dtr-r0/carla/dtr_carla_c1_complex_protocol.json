@@ -1,0 +1,358 @@
+{
+  "schema_version": 1,
+  "experiment_id": "DTR_CARLA_C1_COMPLEX_SCENE_ASSET_CANARY_V1",
+  "evidence_class": "synthetic_complex_scene_engineering_canary",
+  "objective": "Materialize eight deterministic wearable CARLA episodes with a multi-actor work-zone, physical occlusion, immutable issued-route receipts, independently scripted execution, and truth-separated evidence.",
+  "environment": {
+    "carla_version": "0.9.16",
+    "map": "Carla/Maps/Town10HD_Opt",
+    "weather": "ClearNoon",
+    "duration_seconds": 7.0,
+    "sample_seconds": 0.05,
+    "walker_origin_z_m": 0.9516997933387756,
+    "anchor": {
+      "center_xy_m": [-46.934195, 36.51329],
+      "forward_xy": [0.999999564, 0.000933925],
+      "right_xy": [-0.000933925, 0.999999564]
+    }
+  },
+  "capture": {
+    "seed": 41017,
+    "sensor_order": ["instance", "wearable", "depth", "witness"],
+    "fresh_server_per_sensor": true,
+    "one_long_lived_camera_per_sensor": true,
+    "wearable_resolution": [320, 180],
+    "witness_resolution": [320, 180],
+    "fov_degrees": 90.0,
+    "keyframe_times_s": [0.0, 1.5, 2.5, 4.0, 5.5, 6.0, 7.0],
+    "contact_sheet_time_s": 6.0,
+    "wearable_relative_transform": {
+      "x_m": 0.05,
+      "y_m": 0.0,
+      "z_m": 0.65,
+      "pitch_degrees": -12.0,
+      "yaw_degrees": 12.0,
+      "roll_degrees": 0.0
+    },
+    "witness": {
+      "forward_m": -2.5,
+      "right_m": -11.0,
+      "z_m": 14.0,
+      "look_at_forward_m": 0.5,
+      "look_at_right_m": 0.0,
+      "look_at_z_m": 0.8
+    }
+  },
+  "route_contract": {
+    "wearer_body_radius_m": 0.45,
+    "future_horizon_seconds": 3.0
+  },
+  "admission": {
+    "required_role_counts": {
+      "wearer": 1,
+      "primary_crossing": 1,
+      "cyclist_distractor": 1,
+      "parallel_walker": 1,
+      "child_distractor": 1,
+      "physical_occluder": 1,
+      "barrier": 2,
+      "traffic_cone": 6,
+      "warning_sign": 1
+    },
+    "minimum_keyframes_per_view_per_episode": 7
+  },
+  "trajectory_library": {
+    "wearer_straight": {
+      "start_forward_m": -6.0,
+      "start_right_m": 0.0,
+      "segments": [{"start_s": 0.0, "velocity_forward_mps": 1.0, "velocity_right_mps": 0.0}]
+    },
+    "wearer_turn_left": {
+      "start_forward_m": -6.0,
+      "start_right_m": 0.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": 1.0, "velocity_right_mps": 0.0},
+        {"start_s": 2.5, "velocity_forward_mps": 0.75, "velocity_right_mps": -0.75}
+      ]
+    },
+    "primary_cross": {
+      "start_forward_m": 0.0,
+      "start_right_m": 5.5,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0},
+        {"start_s": 1.0, "velocity_forward_mps": 0.0, "velocity_right_mps": -1.1}
+      ]
+    },
+    "primary_stop_short": {
+      "start_forward_m": 0.0,
+      "start_right_m": 5.5,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0},
+        {"start_s": 1.0, "velocity_forward_mps": 0.0, "velocity_right_mps": -1.1},
+        {"start_s": 4.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0}
+      ]
+    },
+    "cyclist_safe_cross": {
+      "start_forward_m": 4.0,
+      "start_right_m": -5.0,
+      "segments": [{"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.55}]
+    },
+    "parallel_walker": {
+      "start_forward_m": -5.0,
+      "start_right_m": -5.5,
+      "segments": [{"start_s": 0.0, "velocity_forward_mps": 0.8, "velocity_right_mps": 0.0}]
+    },
+    "child_hold": {
+      "start_forward_m": 2.0,
+      "start_right_m": 4.8,
+      "segments": [{"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0}]
+    }
+  },
+  "asset_cluster": [
+    {
+      "asset_key": "wearer",
+      "track_id": "o_00",
+      "role": "wearer",
+      "kind": "walker",
+      "blueprint_candidates": ["walker.pedestrian.0001", "walker.pedestrian.0004"],
+      "trajectory_ref": "wearer",
+      "surface_offset_m": 0.8,
+      "collision_relevant": false
+    },
+    {
+      "asset_key": "target_primary",
+      "track_id": "o_01",
+      "role": "primary_crossing",
+      "kind": "walker",
+      "blueprint_candidates": ["walker.pedestrian.0002", "walker.pedestrian.0005"],
+      "trajectory_ref": "target_primary",
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    {
+      "asset_key": "cyclist",
+      "track_id": "o_02",
+      "role": "cyclist_distractor",
+      "kind": "vehicle",
+      "blueprint_candidates": ["vehicle.bh.crossbike", "vehicle.diamondback.century", "vehicle.gazelle.omafiets"],
+      "trajectory_ref": "cyclist",
+      "surface_offset_m": 0.25,
+      "collision_relevant": true
+    },
+    {
+      "asset_key": "parallel",
+      "track_id": "o_03",
+      "role": "parallel_walker",
+      "kind": "walker",
+      "blueprint_candidates": ["walker.pedestrian.0003", "walker.pedestrian.0007"],
+      "trajectory_ref": "parallel",
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    {
+      "asset_key": "child",
+      "track_id": "o_04",
+      "role": "child_distractor",
+      "kind": "walker",
+      "blueprint_candidates": ["walker.pedestrian.0013", "walker.pedestrian.0010", "walker.pedestrian.0009"],
+      "trajectory_ref": "child",
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    {
+      "asset_key": "occluder_van",
+      "track_id": "o_05",
+      "role": "physical_occluder",
+      "kind": "vehicle",
+      "blueprint_candidates": ["vehicle.mercedes.sprinter", "vehicle.volkswagen.t2_2021", "vehicle.mitsubishi.fusorosa", "vehicle.carlamotors.carlacola"],
+      "fixed_pose": {"forward_m": -0.8, "right_m": 2.8, "yaw_offset_degrees": 0.0},
+      "surface_offset_m": 0.3,
+      "collision_relevant": true
+    },
+    {
+      "asset_key": "barrier_01",
+      "track_id": "o_06",
+      "role": "barrier",
+      "kind": "prop",
+      "blueprint_candidates": ["static.prop.streetbarrier"],
+      "fixed_pose": {"forward_m": 1.5, "right_m": 2.5, "yaw_offset_degrees": 90.0},
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    {
+      "asset_key": "barrier_02",
+      "track_id": "o_07",
+      "role": "barrier",
+      "kind": "prop",
+      "blueprint_candidates": ["static.prop.streetbarrier"],
+      "fixed_pose": {"forward_m": 3.2, "right_m": 2.5, "yaw_offset_degrees": 90.0},
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    {
+      "asset_key": "cone_01",
+      "track_id": "o_08",
+      "role": "traffic_cone",
+      "kind": "prop",
+      "blueprint_candidates": ["static.prop.constructioncone", "static.prop.trafficcone01", "static.prop.trafficcone02"],
+      "fixed_pose": {"forward_m": 1.1, "right_m": 1.9, "yaw_offset_degrees": 0.0},
+      "surface_offset_m": 0.03,
+      "collision_relevant": false
+    },
+    {
+      "asset_key": "cone_02",
+      "track_id": "o_09",
+      "role": "traffic_cone",
+      "kind": "prop",
+      "blueprint_candidates": ["static.prop.constructioncone", "static.prop.trafficcone01", "static.prop.trafficcone02"],
+      "fixed_pose": {"forward_m": 1.8, "right_m": 1.9, "yaw_offset_degrees": 0.0},
+      "surface_offset_m": 0.03,
+      "collision_relevant": false
+    },
+    {
+      "asset_key": "cone_03",
+      "track_id": "o_10",
+      "role": "traffic_cone",
+      "kind": "prop",
+      "blueprint_candidates": ["static.prop.constructioncone", "static.prop.trafficcone01", "static.prop.trafficcone02"],
+      "fixed_pose": {"forward_m": 2.5, "right_m": 1.9, "yaw_offset_degrees": 0.0},
+      "surface_offset_m": 0.03,
+      "collision_relevant": false
+    },
+    {
+      "asset_key": "cone_04",
+      "track_id": "o_11",
+      "role": "traffic_cone",
+      "kind": "prop",
+      "blueprint_candidates": ["static.prop.constructioncone", "static.prop.trafficcone01", "static.prop.trafficcone02"],
+      "fixed_pose": {"forward_m": 1.1, "right_m": 3.2, "yaw_offset_degrees": 0.0},
+      "surface_offset_m": 0.03,
+      "collision_relevant": false
+    },
+    {
+      "asset_key": "cone_05",
+      "track_id": "o_12",
+      "role": "traffic_cone",
+      "kind": "prop",
+      "blueprint_candidates": ["static.prop.constructioncone", "static.prop.trafficcone01", "static.prop.trafficcone02"],
+      "fixed_pose": {"forward_m": 1.8, "right_m": 3.2, "yaw_offset_degrees": 0.0},
+      "surface_offset_m": 0.03,
+      "collision_relevant": false
+    },
+    {
+      "asset_key": "cone_06",
+      "track_id": "o_13",
+      "role": "traffic_cone",
+      "kind": "prop",
+      "blueprint_candidates": ["static.prop.constructioncone", "static.prop.trafficcone01", "static.prop.trafficcone02"],
+      "fixed_pose": {"forward_m": 2.5, "right_m": 3.2, "yaw_offset_degrees": 0.0},
+      "surface_offset_m": 0.03,
+      "collision_relevant": false
+    },
+    {
+      "asset_key": "warning",
+      "track_id": "o_14",
+      "role": "warning_sign",
+      "kind": "prop",
+      "blueprint_candidates": ["static.prop.warningconstruction", "static.prop.trafficwarning", "static.prop.warningaccident", "static.prop.advertisement"],
+      "fixed_pose": {"forward_m": 0.7, "right_m": 3.4, "yaw_offset_degrees": -90.0},
+      "surface_offset_m": 0.05,
+      "collision_relevant": false
+    }
+  ],
+  "twin_contracts": [
+    {"family": "same_plan_execution_different_target_stop", "a": "ep_01", "b": "ep_02", "identical_before_s": 4.0, "allowed_difference": "primary_velocity_after_4s"},
+    {"family": "same_plan_different_execution", "a": "ep_03", "b": "ep_04", "identical_before_s": 2.5, "allowed_difference": "wearer_velocity_after_2_5s"},
+    {"family": "same_execution_invalid_route_authority", "a": "ep_05", "b": "ep_06", "identical_before_s": 7.0, "allowed_difference": "stale_receipt_versus_missing_receipt"},
+    {"family": "same_complex_scene_different_primary_outcome", "a": "ep_07", "b": "ep_08", "identical_before_s": 4.0, "allowed_difference": "primary_velocity_after_4s"}
+  ],
+  "scenarios": [
+    {
+      "episode_id": "ep_01",
+      "scenario_role": "valid_straight_follow_contact",
+      "twin_role": "a",
+      "plan_session_id": "session_pair_01",
+      "expected_contact": true,
+      "wearer_trajectory": "wearer_straight",
+      "asset_trajectories": {"target_primary": "primary_cross", "cyclist": "cyclist_safe_cross", "parallel": "parallel_walker", "child": "child_hold"},
+      "issued_plan": {"plan_id": "plan_pair_01", "session_id": "session_pair_01", "issued_at_s": 0.0, "expires_at_s": 7.0, "time_parameterized_waypoints": [{"time_s": 0.0, "forward_m": -6.0, "right_m": 0.0}, {"time_s": 2.5, "forward_m": -3.5, "right_m": 0.0}, {"time_s": 6.0, "forward_m": 0.0, "right_m": 0.0}, {"time_s": 7.0, "forward_m": 1.0, "right_m": 0.0}]}
+    },
+    {
+      "episode_id": "ep_02",
+      "scenario_role": "valid_straight_follow_safe_stop",
+      "twin_role": "b",
+      "plan_session_id": "session_pair_01",
+      "expected_contact": false,
+      "wearer_trajectory": "wearer_straight",
+      "asset_trajectories": {"target_primary": "primary_stop_short", "cyclist": "cyclist_safe_cross", "parallel": "parallel_walker", "child": "child_hold"},
+      "issued_plan": {"plan_id": "plan_pair_01", "session_id": "session_pair_01", "issued_at_s": 0.0, "expires_at_s": 7.0, "time_parameterized_waypoints": [{"time_s": 0.0, "forward_m": -6.0, "right_m": 0.0}, {"time_s": 2.5, "forward_m": -3.5, "right_m": 0.0}, {"time_s": 6.0, "forward_m": 0.0, "right_m": 0.0}, {"time_s": 7.0, "forward_m": 1.0, "right_m": 0.0}]}
+    },
+    {
+      "episode_id": "ep_03",
+      "scenario_role": "valid_turn_follow_safe",
+      "twin_role": "a",
+      "plan_session_id": "session_pair_02",
+      "expected_contact": false,
+      "wearer_trajectory": "wearer_turn_left",
+      "asset_trajectories": {"target_primary": "primary_cross", "cyclist": "cyclist_safe_cross", "parallel": "parallel_walker", "child": "child_hold"},
+      "issued_plan": {"plan_id": "plan_pair_02", "session_id": "session_pair_02", "issued_at_s": 0.0, "expires_at_s": 7.0, "time_parameterized_waypoints": [{"time_s": 0.0, "forward_m": -6.0, "right_m": 0.0}, {"time_s": 2.5, "forward_m": -3.5, "right_m": 0.0}, {"time_s": 5.5, "forward_m": -1.25, "right_m": -2.25}, {"time_s": 7.0, "forward_m": -0.125, "right_m": -3.375}]}
+    },
+    {
+      "episode_id": "ep_04",
+      "scenario_role": "valid_turn_ignored_contact",
+      "twin_role": "b",
+      "plan_session_id": "session_pair_02",
+      "expected_contact": true,
+      "wearer_trajectory": "wearer_straight",
+      "asset_trajectories": {"target_primary": "primary_cross", "cyclist": "cyclist_safe_cross", "parallel": "parallel_walker", "child": "child_hold"},
+      "issued_plan": {"plan_id": "plan_pair_02", "session_id": "session_pair_02", "issued_at_s": 0.0, "expires_at_s": 7.0, "time_parameterized_waypoints": [{"time_s": 0.0, "forward_m": -6.0, "right_m": 0.0}, {"time_s": 2.5, "forward_m": -3.5, "right_m": 0.0}, {"time_s": 5.5, "forward_m": -1.25, "right_m": -2.25}, {"time_s": 7.0, "forward_m": -0.125, "right_m": -3.375}]}
+    },
+    {
+      "episode_id": "ep_05",
+      "scenario_role": "stale_turn_actual_straight_contact",
+      "twin_role": "a",
+      "plan_session_id": "session_pair_03",
+      "expected_contact": true,
+      "wearer_trajectory": "wearer_straight",
+      "asset_trajectories": {"target_primary": "primary_cross", "cyclist": "cyclist_safe_cross", "parallel": "parallel_walker", "child": "child_hold"},
+      "issued_plan": {"plan_id": "plan_pair_03_stale", "session_id": "session_pair_03", "issued_at_s": -10.0, "valid_from_s": -10.0, "expires_at_s": -1.0, "time_parameterized_waypoints": [{"time_s": 0.0, "forward_m": -6.0, "right_m": 0.0}, {"time_s": 2.5, "forward_m": -3.5, "right_m": 0.0}, {"time_s": 5.5, "forward_m": -1.25, "right_m": -2.25}, {"time_s": 7.0, "forward_m": -0.125, "right_m": -3.375}]}
+    },
+    {
+      "episode_id": "ep_06",
+      "scenario_role": "missing_plan_actual_straight_contact",
+      "twin_role": "b",
+      "plan_session_id": "session_pair_03",
+      "expected_contact": true,
+      "wearer_trajectory": "wearer_straight",
+      "asset_trajectories": {"target_primary": "primary_cross", "cyclist": "cyclist_safe_cross", "parallel": "parallel_walker", "child": "child_hold"},
+      "issued_plan": null
+    },
+    {
+      "episode_id": "ep_07",
+      "scenario_role": "mixed_four_targets_none_contact",
+      "twin_role": "a",
+      "plan_session_id": "session_pair_04",
+      "expected_contact": false,
+      "wearer_trajectory": "wearer_straight",
+      "asset_trajectories": {"target_primary": "primary_stop_short", "cyclist": "cyclist_safe_cross", "parallel": "parallel_walker", "child": "child_hold"},
+      "issued_plan": {"plan_id": "plan_pair_04", "session_id": "session_pair_04", "issued_at_s": 0.0, "expires_at_s": 7.0, "time_parameterized_waypoints": [{"time_s": 0.0, "forward_m": -6.0, "right_m": 0.0}, {"time_s": 2.5, "forward_m": -3.5, "right_m": 0.0}, {"time_s": 6.0, "forward_m": 0.0, "right_m": 0.0}, {"time_s": 7.0, "forward_m": 1.0, "right_m": 0.0}]}
+    },
+    {
+      "episode_id": "ep_08",
+      "scenario_role": "mixed_four_targets_one_contact",
+      "twin_role": "b",
+      "plan_session_id": "session_pair_04",
+      "expected_contact": true,
+      "wearer_trajectory": "wearer_straight",
+      "asset_trajectories": {"target_primary": "primary_cross", "cyclist": "cyclist_safe_cross", "parallel": "parallel_walker", "child": "child_hold"},
+      "issued_plan": {"plan_id": "plan_pair_04", "session_id": "session_pair_04", "issued_at_s": 0.0, "expires_at_s": 7.0, "time_parameterized_waypoints": [{"time_s": 0.0, "forward_m": -6.0, "right_m": 0.0}, {"time_s": 2.5, "forward_m": -3.5, "right_m": 0.0}, {"time_s": 6.0, "forward_m": 0.0, "right_m": 0.0}, {"time_s": 7.0, "forward_m": 1.0, "right_m": 0.0}]}
+    }
+  ],
+  "claim_boundary": [
+    "This is a scripted-kinematics CARLA Development scene/asset canary, not real wearable confirmation or a product safety result.",
+    "Issued plans are immutable synthetic receipts and are not inferred from human intention.",
+    "Wearer and actor motion are teleported deterministically; the run does not claim native pedestrian or bicycle dynamics.",
+    "Witness RGB, instance segmentation, actual execution, contact, semantic roles, and twin labels are evaluator-only and must not enter the model root.",
+    "Successful materialization proves controllable complex-scene engineering and evidence separation only; it does not prove an algorithmic C1 gain."
+  ]
+}
