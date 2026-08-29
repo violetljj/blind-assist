@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "algorithm-metadata-backed-text-identity",
+  "kind": "algorithm",
+  "title": "Metadata-backed lexical place-identity proof",
+  "canonical_ref": "repo:research/active/l10-r0/named_poi_geolex_eval.py",
+  "authors": [],
+  "year": 2026,
+  "venue": "BlindAssist research",
+  "summary": "Use a public POI alias pack as an asymmetric positive identity witness: a unique scene-text proof may authorize or veto a requested place, while absent text remains UNKNOWN and falls back to appearance.",
+  "mechanisms": [
+    {
+      "id": "asymmetric-geolex-identity-join",
+      "name": "Asymmetric metadata-plus-text identity join",
+      "description": "Match OCR line windows to public POI aliases with a Development-frozen score and uniqueness margin. A proof accepts only its named entity and rejects other requests; no proof preserves the frozen appearance decision instead of emitting NONE.",
+      "inputs": ["Public POI alias pack", "Current RGB image", "Frozen appearance identity scores"],
+      "outputs": ["Proved entity or UNKNOWN", "Pairwise requested-entity acceptance"],
+      "limitations": "The first fresh test was perfectly precise on five proofs but covered only two of four source-labeled identity-bearing views; fixed digital tiling added no proof. The branch is not yet generally available."
+    }
+  ],
+  "tags": ["l10", "named-poi", "ocr", "metadata", "identity", "unknown", "evidence-join"],
+  "aliases": ["L10-PB3", "GeoLex identity proof"],
+  "links": [
+    {"label": "Wikimedia Commons", "ref": "https://commons.wikimedia.org/"}
+  ],
+  "added_at": "2026-08-29",
+  "updated_at": "2026-08-29"
+}

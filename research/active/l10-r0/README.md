@@ -1455,6 +1455,43 @@ weights on this consumed cohort. Add a genuinely new information source such as
 logo/OCR, map or POI metadata, coarse GPS, or ordered multi-view evidence.
 PB2-B and L10-AV0 remain blocked.
 
+#### PB3 metadata-backed lexical identity proof
+
+PB3 changed the information source to public POI aliases plus scene text and
+made the evidence join asymmetric. A unique alias proof may accept only its
+entity and veto other requested identities. Missing or ambiguous text is
+`UNKNOWN`; it preserves the frozen appearance decision and can never create
+semantic `NONE`. A source-only audit froze eight entities absent from PB1 and
+PB2-A, split four Development / four test, with one identity-bearing and one
+context query per entity before any PB3 OCR or embedding call.
+
+Development selected DINOv2 and froze the text score plus uniqueness margin.
+On eight test queries:
+
+| Test metric | appearance | metadata text / asymmetric join |
+|---|---:|---:|
+| Recall@1 | 6/8 | not a ranking arm |
+| positive acceptance | 8/8 | **8/8** |
+| source-label-negative wrong accepts | 23/24 | **9/24** |
+| emitted text proofs | n/a | **5/5 correct** |
+| identity-bearing correct proofs | n/a | **2/4** |
+
+The 60.87% relative wrong-accept reduction with unchanged positive acceptance
+is a strong precision/veto mechanism signal. It does not pass the frozen branch
+gate because identity-bearing correct-proof coverage required at least `3/4`.
+Record `L10_PB3_METADATA_BACKED_TEXT_IDENTITY_BRANCH_GATE_NOT_MET`. Canonical
+names and metadata aliases both reached `5/5` precision and `5/8` coverage; a
+post-result target-blind four-tile diagnostic added zero proofs. Do not tune
+aliases, lexical thresholds, OCR models, or crops on this cohort.
+
+The next legal source must add a fresh logo or Chinese identity representation,
+or a genuinely ordered executed `APPROACH_TEXT / SWEEP_SIGN` observation with a
+before/after receipt. PB2-B and general L10-AV0 remain blocked. The identity-
+bearing stratum is deliberately curated and wrong-request rows are source-label
+proxies; neither is prevalence or exhaustive physical-absence authority. No
+portal ownership, navigation, arrival, product, user-benefit, or safety claim
+follows.
+
 The `x/120` column is not physical target-absence authority. The source audit
 did not exhaustively freeze every gallery building co-visible in dense
 same-city frames, so physical target-absent rejection is `NOT_EVALUABLE`. A

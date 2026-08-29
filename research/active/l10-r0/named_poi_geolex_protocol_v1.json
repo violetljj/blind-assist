@@ -1,0 +1,74 @@
+{
+  "schema": "l10-named-poi-geolex-protocol-v1",
+  "frozen_at": "2026-08-29",
+  "question": "Can a public POI alias pack plus high-precision scene-text proof add positive named-place authority and suppress appearance false confirmations on fresh buildings without turning absent text into NONE?",
+  "sources": {
+    "source_spec": {
+      "path": "research/active/l10-r0/named_poi_geolex_source_v1.json",
+      "sha256": "20a80e8f26b30044d02122f6b56327ba5de0cd3e1e701022bb4b11c36ee43517"
+    },
+    "source_audit": {
+      "path": "research/active/l10-r0/named_poi_geolex_source_audit_v1.json",
+      "sha256": "2da5235804fbffa4547237379d20ce7887f445fca765e3a197ce65472c4c3527"
+    },
+    "dataset_manifest": {
+      "path": "artifacts.local/knowledge/named-poi-geolex-v1/dataset_manifest.json",
+      "sha256": "ba1285b5889642744cd7097f26a58ff1e65917b6afc7a2ccba98d690ea8b1b70",
+      "inventory_sha256": "b7874e7cc10a8e972ba5950d22e7c971dfa1f54e9c1bb7b882915540d138ce72"
+    }
+  },
+  "frozen_scope": {
+    "development": "Four entities and eight queries: one source-labeled identity-bearing view and one context view per entity.",
+    "test": "Four different entities and eight queries with the same source-only strata.",
+    "prior_exclusion": "All eight entities are absent from the 20 PB1 and 12 PB2-A entities.",
+    "negative_boundary": "Pairwise wrong-request rows are source-label negatives only; physical absence of every other entity is not claimed.",
+    "portal_boundary": "Portal proposals, portal crops, PB1 decisions, COMMIT, tracking, and active observation are not invoked."
+  },
+  "runtime": {
+    "ocr": "RapidOCR 3.9.2 with ONNX Runtime CPUExecutionProvider",
+    "ocr_models": {
+      "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+      "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+      "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+    },
+    "appearance_models": {
+      "clip": "artifacts.local/models/clip-vit-base-patch32-3d74acf",
+      "clip_weights_sha256": "a63082132ba4f97a80bea76823f544493bffa8082296d62d71581a4feff1576f",
+      "dinov2": "artifacts.local/models/p1_a2_dinov2_small_ed25f3a",
+      "dinov2_weights_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1"
+    }
+  },
+  "arms": {
+    "B0_APPEARANCE": "Development selects CLIP, DINOv2, or fixed z-scored CLIP+DINO by Recall@1, positive acceptance, lower source-label-negative false confirmation, then Recall@3. Its balanced-accuracy threshold is also Development-only.",
+    "C0_CANONICAL_TEXT": "Only the canonical English entity name is eligible to produce a lexical proof; all non-proofs are UNKNOWN.",
+    "C1_METADATA_ALIAS_PROOF": "The frozen public alias list is eligible. OCR lines and adjacent line windows are normalized to lowercase ASCII alphanumerics. Alias similarity is SequenceMatcher ratio.",
+    "C2_ASYMMETRIC_EVIDENCE_JOIN": "If C1 proves exactly one entity, accept only a request for that entity and reject other requests. If C1 is UNKNOWN, preserve the B0 appearance decision. Text can authorize or veto on a proved frame; absent text never becomes NONE."
+  },
+  "development_selection": {
+    "text_thresholds": "Enumerate observed alias-score midpoints plus 0 and 1.",
+    "margin_thresholds": "Enumerate observed top1-minus-top2 margin midpoints plus 0 and 1.",
+    "objective": "For C1, maximize proof precision, then correct proof coverage, then identity-bearing correct proof coverage, then higher score threshold and margin threshold. C0 uses the selected C1 thresholds unchanged so it cannot tune separately.",
+    "no_test_adaptation": "Test pixels, OCR, scores, labels, and outcomes are not opened until B0 arm/threshold and C1 score/margin thresholds are sealed."
+  },
+  "metrics": [
+    "query-level appearance Recall@1 and Recall@3",
+    "target-present positive acceptance",
+    "source-label-negative false confirmation",
+    "lexical proof precision and query coverage",
+    "identity-bearing and context correct-proof coverage",
+    "C2 acceptance gain and false-confirmation reduction versus B0",
+    "UNKNOWN count"
+  ],
+  "promotion_gate": {
+    "proof_precision": "C1 test proof precision must be at least 0.95 with no wrong-entity proof.",
+    "identity_bearing_coverage": "C1 must correctly prove at least 3/4 test identity-bearing queries.",
+    "positive_guardrail": "C2 test positive acceptance must be no lower than B0.",
+    "false_confirmation_effect": "C2 must reduce B0 source-label-negative false confirmations by at least 50% relative or 0.10 absolute.",
+    "decision": "All four clauses are required for L10_PB3_METADATA_BACKED_TEXT_IDENTITY_BRANCH_GATE_MET."
+  },
+  "successor": {
+    "gate_met": "Retain GeoLex as an independent high-precision identity authority. Only C1-proved episodes may open a separately frozen portal-binding join; UNKNOWN episodes remain blocked or request SWEEP_SIGN/APPROACH_TEXT.",
+    "gate_not_met": "Close single-frame OCR alias proof on this source. Change to logo, external localization, or genuinely ordered multi-view evidence; do not tune aliases, thresholds, OCR models, or the opened cohort."
+  },
+  "claim_boundary": "Fresh building-disjoint public-image confirmation of a conditional metadata-plus-text identity branch. It is not text-visibility prevalence, exhaustive physical absence, universal OCR, portal ownership, navigation, arrival, product, user-benefit, or safety evidence."
+}

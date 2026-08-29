@@ -2,11 +2,11 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-29",
-  "source_fingerprint": "15cab80a0c495085717e4df12fc4517486baf54c6ad960719b71302af201f1bb",
+  "source_fingerprint": "e972cc34141508e38bca52b4ae5d82ebe93f86d2ee4026ba00460b22f8d53794",
   "counts": {
     "failure_layers": 13,
-    "mechanisms": 257,
-    "uses": 256,
+    "mechanisms": 258,
+    "uses": 257,
     "experiments": 206,
     "current_terminals": 19
   },
@@ -973,6 +973,99 @@
         }
       ],
       "search_text": "Dual-family functional portal-set proposer Propose a pedestrian glass entrance as one functional set using either repeated aligned door posts or paired vertical handles, rather than forcing adjacent door leaves to compete as physical target identities. l10 entrance portal-set door-bank non-ocr active-perception Repeated-post lattice plus paired-handle aperture One family groups vertical segments with shared endpoints into a multi-leaf door lattice. The second pairs aligned vertical handles or posts and infers an aperture from their scale. Their ranked union preserves up to three functional portal hypotheses for active disambiguation. Current RGB image Separately confirmed target-entity context before downstream admission Ranked functional portal-set boxes Proposal family and structural score The proposer is specialized to repeated-post and paired-handle glass entrances. It does not cover stairs, open passages without vertical structure, revolving doors, shutters, or public-access state; it cannot establish target identity by itself. l10-r0 Replace generic single-box door proposals with a top-three functional entrance set before scale-gated active observation, tracking, and reacquisition. Admit it only after a separate target-entity lock. Restore correct entrance proposal availability without OCR and without forcing premature unique-door selection. The fresh cohort achieved top-one truth retention on 5/6 frames and top-three retention on 6/6, passing the 4/6 gate. Among the stored top ten proposals per image, 50/60 belonged to the functional portal region; 14/18 top-three proposals did so. No OCR or learned model inference was used. fresh_frames=6 top1_truth_retention=5/6 top1_truth_recall=0.833333 top3_truth_retention=6/6 top3_truth_recall=1.0 stored_top10_membership_precision=50/60 top3_membership_precision=14/18 ocr_calls=0 This supports current-image functional glass-entrance proposal retention only. It does not establish requested-entity identity, public access, traversability, temporal tracking, active-view causality, guidance, arrival, product benefit, user benefit, or safety."
+    },
+    {
+      "id": "algorithm-metadata-backed-text-identity#asymmetric-geolex-identity-join",
+      "item_id": "algorithm-metadata-backed-text-identity",
+      "mechanism_id": "asymmetric-geolex-identity-join",
+      "kind": "algorithm",
+      "title": "Metadata-backed lexical place-identity proof",
+      "canonical_ref": "repo:research/active/l10-r0/named_poi_geolex_eval.py",
+      "summary": "Use a public POI alias pack as an asymmetric positive identity witness: a unique scene-text proof may authorize or veto a requested place, while absent text remains UNKNOWN and falls back to appearance.",
+      "tags": [
+        "l10",
+        "named-poi",
+        "ocr",
+        "metadata",
+        "identity",
+        "unknown",
+        "evidence-join"
+      ],
+      "name": "Asymmetric metadata-plus-text identity join",
+      "description": "Match OCR line windows to public POI aliases with a Development-frozen score and uniqueness margin. A proof accepts only its named entity and rejects other requests; no proof preserves the frozen appearance decision instead of emitting NONE.",
+      "inputs": [
+        "Public POI alias pack",
+        "Current RGB image",
+        "Frozen appearance identity scores"
+      ],
+      "outputs": [
+        "Proved entity or UNKNOWN",
+        "Pairwise requested-entity acceptance"
+      ],
+      "limitations": "The first fresh test was perfectly precise on five proofs but covered only two of four source-labeled identity-bearing views; fixed digital tiling added no proof. The branch is not yet generally available.",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 6,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 6,
+        "geometry_motion": 6,
+        "handoff_completion": 3,
+        "identity_binding": 3,
+        "observation_perception": 3,
+        "source_coverage": 6
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-metadata-backed-text-identity",
+          "route": "ten-meter-copilot",
+          "use_state": "rejected",
+          "reproduction_status": "reproduced",
+          "verdict": "negative",
+          "project_application": "Supply positive named-place authority before any retained functional portal is allowed to bind or guide approach.",
+          "expected_effect": "Preserve target-present acceptance while reducing appearance-driven wrong-place confirmations.",
+          "observed_effect": "On eight test queries, alias proof was correct on 5/5 emitted proofs and the asymmetric join preserved 8/8 positive acceptance while reducing source-label-negative false confirmations from 23/24 to 9/24. The frozen identity-bearing coverage gate failed at 2/4 versus the required 3/4. A fixed target-blind tiling diagnostic added zero proofs.",
+          "metrics": [
+            "appearance_recall_at_1=6/8",
+            "appearance_positive_acceptance=8/8",
+            "appearance_source_label_negative_proxy=23/24",
+            "alias_proof_precision=5/5",
+            "alias_correct_proof_coverage=5/8",
+            "alias_identity_bearing_correct_proofs=2/4",
+            "join_positive_acceptance=8/8",
+            "join_source_label_negative_proxy=9/24",
+            "relative_false_confirmation_reduction=60.87%",
+            "fixed_tiling_correct_proof_gain=0"
+          ],
+          "claim_boundary": "Fresh confirmation of a conditional public metadata-plus-text mechanism, but a failed promotion gate because identity-bearing coverage was insufficient. Cross-paired negatives are source-label proxies, and curated identity-bearing views are not prevalence. No portal, active-view, navigation, arrival, product, user, or safety claim follows.",
+          "evidence": [
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/named_poi_geolex_protocol_v1.json",
+              "summary": "Frozen source isolation, arms, Development-only selection, metrics, gate, and successor."
+            },
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/named_poi_geolex_result_v1.json",
+              "summary": "Durable PB3 metrics, decision, diagnostic, evidence hashes, and claim boundary."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r0/named-poi-geolex-v1/result.json",
+              "summary": "Development/test appearance, text, asymmetric join, raw records, backend, and gate clauses."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r0/named-poi-geolex-v1/tiling_diagnostic.json",
+              "summary": "Consumed-cohort fixed target-blind tiling diagnostic with no coverage gain."
+            }
+          ],
+          "updated_at": "2026-08-29"
+        }
+      ],
+      "search_text": "Metadata-backed lexical place-identity proof Use a public POI alias pack as an asymmetric positive identity witness: a unique scene-text proof may authorize or veto a requested place, while absent text remains UNKNOWN and falls back to appearance. l10 named-poi ocr metadata identity unknown evidence-join Asymmetric metadata-plus-text identity join Match OCR line windows to public POI aliases with a Development-frozen score and uniqueness margin. A proof accepts only its named entity and rejects other requests; no proof preserves the frozen appearance decision instead of emitting NONE. Public POI alias pack Current RGB image Frozen appearance identity scores Proved entity or UNKNOWN Pairwise requested-entity acceptance The first fresh test was perfectly precise on five proofs but covered only two of four source-labeled identity-bearing views; fixed digital tiling added no proof. The branch is not yet generally available. ten-meter-copilot Supply positive named-place authority before any retained functional portal is allowed to bind or guide approach. Preserve target-present acceptance while reducing appearance-driven wrong-place confirmations. On eight test queries, alias proof was correct on 5/5 emitted proofs and the asymmetric join preserved 8/8 positive acceptance while reducing source-label-negative false confirmations from 23/24 to 9/24. The frozen identity-bearing coverage gate failed at 2/4 versus the required 3/4. A fixed target-blind tiling diagnostic added zero proofs. appearance_recall_at_1=6/8 appearance_positive_acceptance=8/8 appearance_source_label_negative_proxy=23/24 alias_proof_precision=5/5 alias_correct_proof_coverage=5/8 alias_identity_bearing_correct_proofs=2/4 join_positive_acceptance=8/8 join_source_label_negative_proxy=9/24 relative_false_confirmation_reduction=60.87% fixed_tiling_correct_proof_gain=0 Fresh confirmation of a conditional public metadata-plus-text mechanism, but a failed promotion gate because identity-bearing coverage was insufficient. Cross-paired negatives are source-label proxies, and curated identity-bearing views are not prevalence. No portal, active-view, navigation, arrival, product, user, or safety claim follows."
     },
     {
       "id": "algorithm-searching-for-mobilenetv3#idea-mobilenetv3",

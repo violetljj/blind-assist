@@ -1,0 +1,43 @@
+{
+  "schema": "l10-named-poi-geolex-source-audit-v1",
+  "audited_at": "2026-08-29",
+  "audit_stage": "SOURCE_ONLY_BEFORE_ANY_PB3_OCR_OR_EMBEDDING_CALL",
+  "source_spec_sha256": "20a80e8f26b30044d02122f6b56327ba5de0cd3e1e701022bb4b11c36ee43517",
+  "dataset_manifest_sha256": "ba1285b5889642744cd7097f26a58ff1e65917b6afc7a2ccba98d690ea8b1b70",
+  "inventory_sha256": "b7874e7cc10a8e972ba5950d22e7c971dfa1f54e9c1bb7b882915540d138ce72",
+  "checks": {
+    "entities_absent_from_pb1_and_pb2a": true,
+    "development_test_building_disjoint": true,
+    "all_24_images_decode": true,
+    "all_references_show_the_named_entity": true,
+    "all_16_queries_show_the_named_entity_or_its_immediate_premises": true,
+    "each_split_has_one_identity_bearing_and_one_context_query_per_entity": true,
+    "identity_bearing_is_source_label_not_model_output": true,
+    "ocr_calls_before_freeze": 0,
+    "embedding_calls_before_freeze": 0
+  },
+  "identity_bearing_observations": {
+    "hong-kong-science-museum": "Full English public name is visibly printed on the ticketing sign.",
+    "hong-kong-palace-museum": "Public HKPM alias is visibly printed on the foreground information display; broader museum context is visible.",
+    "hong-kong-maritime-museum": "The bilingual public museum name spans the entrance header and is repeated on opening placards.",
+    "hong-kong-railway-museum": "Full English public name is visibly printed on the entrance sign.",
+    "hong-kong-film-archive": "Full English public name is visibly mounted on the facade.",
+    "dr-sun-yat-sen-museum": "The public Chinese museum name is present at the historic entrance; this remains a stress case for the frozen English-normalized lexical branch.",
+    "hong-kong-museum-of-medical-sciences": "Full English public name is visibly printed above the entrance.",
+    "hong-kong-heritage-discovery-centre": "Public heritage-centre signage is visible at the entrance approach."
+  },
+  "replacement_history": [
+    {
+      "entity": "hong-kong-palace-museum",
+      "rejected_before_model_access": "HKJC Auditorium floorplan image",
+      "reason": "The image named a subfacility but exposed no museum identity alias."
+    },
+    {
+      "entity": "hong-kong-palace-museum",
+      "rejected_before_model_access": "Museum Drive bus-stop view",
+      "reason": "The photographed scene did not establish that the visible distant building was the named museum and the sign was not legible at image scale."
+    }
+  ],
+  "decision": "ADMIT_L10_PB3_GEOLEX_SOURCE_V1",
+  "claim_boundary": "Human source audit of a deliberately stratified public-image cohort. The identity-bearing stratum measures conditional opportunity, not encounter prevalence. No OCR performance, identity gate, portal ownership, access, navigation, arrival, product, user-benefit, or safety claim follows from source admission."
+}

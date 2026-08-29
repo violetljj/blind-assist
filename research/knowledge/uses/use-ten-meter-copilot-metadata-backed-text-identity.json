@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-metadata-backed-text-identity",
+  "item_id": "algorithm-metadata-backed-text-identity",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": ["asymmetric-geolex-identity-join"],
+  "use_state": "rejected",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Eight PB1/PB2-A-disjoint Hong Kong public entities, split four Development and four test, with one human-audited identity-bearing and one context query per entity.",
+    "project_application": "Supply positive named-place authority before any retained functional portal is allowed to bind or guide approach.",
+    "modifications": "Retain OCR as an independent high-precision witness rather than the sole route. Missing text is UNKNOWN and preserves the appearance decision; a unique alias proof can authorize its entity and veto other requested entities.",
+    "expected_effect": "Preserve target-present acceptance while reducing appearance-driven wrong-place confirmations."
+  },
+  "evaluation": {
+    "reproduction_status": "reproduced",
+    "verdict": "negative",
+    "setup": "Source-only audit froze eight new entities before any PB3 OCR or embedding call. Development alone selected DINOv2 appearance acceptance and lexical score/margin thresholds; test remained sealed. RapidOCR used frozen PP-OCRv6 models, and appearance ran on measured-faster verified RTX 5060 CUDA.",
+    "effect": "On eight test queries, alias proof was correct on 5/5 emitted proofs and the asymmetric join preserved 8/8 positive acceptance while reducing source-label-negative false confirmations from 23/24 to 9/24. The frozen identity-bearing coverage gate failed at 2/4 versus the required 3/4. A fixed target-blind tiling diagnostic added zero proofs.",
+    "metrics": [
+      "appearance_recall_at_1=6/8",
+      "appearance_positive_acceptance=8/8",
+      "appearance_source_label_negative_proxy=23/24",
+      "alias_proof_precision=5/5",
+      "alias_correct_proof_coverage=5/8",
+      "alias_identity_bearing_correct_proofs=2/4",
+      "join_positive_acceptance=8/8",
+      "join_source_label_negative_proxy=9/24",
+      "relative_false_confirmation_reduction=60.87%",
+      "fixed_tiling_correct_proof_gain=0"
+    ],
+    "claim_boundary": "Fresh confirmation of a conditional public metadata-plus-text mechanism, but a failed promotion gate because identity-bearing coverage was insufficient. Cross-paired negatives are source-label proxies, and curated identity-bearing views are not prevalence. No portal, active-view, navigation, arrival, product, user, or safety claim follows."
+  },
+  "evidence": [
+    {"kind": "repo", "ref": "research/active/l10-r0/named_poi_geolex_protocol_v1.json", "summary": "Frozen source isolation, arms, Development-only selection, metrics, gate, and successor."},
+    {"kind": "repo", "ref": "research/active/l10-r0/named_poi_geolex_result_v1.json", "summary": "Durable PB3 metrics, decision, diagnostic, evidence hashes, and claim boundary."},
+    {"kind": "artifact", "ref": "artifacts.local/evidence/l10-r0/named-poi-geolex-v1/result.json", "sha256": "b186b3e6fdd61f21f05fa30ee7503dc1c93dad44a059b01af4c3bea6e912cbb", "summary": "Development/test appearance, text, asymmetric join, raw records, backend, and gate clauses."},
+    {"kind": "artifact", "ref": "artifacts.local/evidence/l10-r0/named-poi-geolex-v1/tiling_diagnostic.json", "sha256": "b5f12110a9c55d2e0541269b73b30f44f8e0d8c284adac78d1c755fcc6d40a78", "summary": "Consumed-cohort fixed target-blind tiling diagnostic with no coverage gain."}
+  ],
+  "history": [
+    {"date": "2026-08-29", "change": "Ran PB3 once; retained the asymmetric high-precision mechanism signal but rejected branch promotion because source-labeled identity-bearing coverage missed its frozen gate."}
+  ],
+  "added_at": "2026-08-29",
+  "updated_at": "2026-08-29"
+}

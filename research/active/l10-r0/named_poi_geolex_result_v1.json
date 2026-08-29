@@ -1,0 +1,77 @@
+{
+  "schema": "l10-named-poi-geolex-durable-result-v1",
+  "date": "2026-08-29",
+  "decision": "L10_PB3_METADATA_BACKED_TEXT_IDENTITY_BRANCH_GATE_NOT_MET",
+  "source": {
+    "entities": {"development": 4, "test": 4},
+    "queries": {"development": 8, "test": 8},
+    "facets_per_entity": ["identity-bearing", "context"],
+    "prior_entity_overlap": 0,
+    "source_audit_model_calls_before_freeze": 0,
+    "inventory_sha256": "b7874e7cc10a8e972ba5950d22e7c971dfa1f54e9c1bb7b882915540d138ce72"
+  },
+  "development_selection": {
+    "appearance_baseline": "B1_DINOv2",
+    "appearance_threshold": 0.33350491523742676,
+    "text_score_threshold": 0.43243243243243246,
+    "text_margin_threshold": 0.14893617021276595,
+    "text_proof_precision": "4/4",
+    "text_correct_proof_coverage": "4/8",
+    "authority": "DEVELOPMENT_ONLY"
+  },
+  "test": {
+    "appearance_baseline": {
+      "recall_at_1": "6/8",
+      "recall_at_3": "7/8",
+      "positive_acceptance": "8/8",
+      "source_label_negative_false_confirmation": "23/24"
+    },
+    "canonical_text": {
+      "proof_precision": "5/5",
+      "correct_proof_coverage": "5/8",
+      "identity_bearing_correct_proof_coverage": "2/4",
+      "context_correct_proof_coverage": "3/4"
+    },
+    "metadata_alias_text": {
+      "proof_precision": "5/5",
+      "wrong_entity_proofs": 0,
+      "correct_proof_coverage": "5/8",
+      "identity_bearing_correct_proof_coverage": "2/4",
+      "context_correct_proof_coverage": "3/4",
+      "unknown": "3/8"
+    },
+    "asymmetric_evidence_join": {
+      "positive_acceptance": "8/8",
+      "source_label_negative_false_confirmation": "9/24",
+      "relative_false_confirmation_reduction": 0.6086956521739131,
+      "absolute_false_confirmation_reduction": 0.5833333333333334
+    }
+  },
+  "gate": {
+    "proof_precision_at_least_0_95_and_zero_wrong": true,
+    "identity_bearing_correct_proofs_at_least_3_of_4": false,
+    "positive_acceptance_not_lower_than_baseline": true,
+    "false_confirmation_reduction_effect": true,
+    "passed": false
+  },
+  "post_result_diagnostic": {
+    "only_change": "Target-blind full frame plus four fixed 60%-width/height corner tiles.",
+    "test_correct_proof_gain": 0,
+    "test_wrong_proof_gain": 0,
+    "test_identity_bearing_correct_proof_gain": 0,
+    "decision": "PB3_FIXED_TILING_OBSERVABILITY_GATE_NOT_MET"
+  },
+  "interpretation": "Public metadata-backed text proof is a precise independent identity witness and its asymmetric join sharply suppresses appearance false confirmations without losing accepted positives. It did not reach the frozen coverage needed to become a generally available identity authority, and public aliases did not outperform canonical names on confirmation. Fixed digital tiling did not recover the missing evidence.",
+  "successor": "Do not tune aliases, lexical thresholds, OCR models, or crops on this cohort. The next legal source must add a fresh logo or Chinese identity representation, or a genuinely ordered executed APPROACH_TEXT/SWEEP_SIGN observation with a before/after receipt. PB2-B and general L10-AV0 remain blocked; only a future independently confirmed proof-positive branch may be joined to portal binding.",
+  "artifacts": {
+    "formal_result": {
+      "path": "artifacts.local/evidence/l10-r0/named-poi-geolex-v1/result.json",
+      "sha256": "b186b3e6fdd61f21f05fa30ee7503dc1c93dad44a059b01af4c3bea6e912cbb"
+    },
+    "tiling_diagnostic": {
+      "path": "artifacts.local/evidence/l10-r0/named-poi-geolex-v1/tiling_diagnostic.json",
+      "sha256": "b5f12110a9c55d2e0541269b73b30f44f8e0d8c284adac78d1c755fcc6d40a78"
+    }
+  },
+  "claim_boundary": "Fresh building-disjoint public-image evidence for a conditional metadata-plus-text identity branch. Wrong-request pairs are source-label negatives, not exhaustive physical absence. The identity-bearing stratum is deliberately curated and is not encounter prevalence. No portal ownership, access, active-view causality, tracking, guidance, navigation, arrival, product, user-benefit, or safety claim follows."
+}

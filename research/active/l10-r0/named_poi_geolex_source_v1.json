@@ -1,0 +1,96 @@
+{
+  "schema": "l10-named-poi-geolex-source-v1",
+  "created_at": "2026-08-29",
+  "selection": "Eight entities absent from PB1 and PB2-A; filenames were selected from public Commons categories/search before image download or OCR execution.",
+  "entities": [
+    {
+      "id": "hong-kong-science-museum",
+      "name": "Hong Kong Science Museum",
+      "aliases": ["Hong Kong Science Museum", "HK Science Museum", "HKSM"],
+      "split": "development",
+      "reference": "HKScienceMuseumview.jpg",
+      "queries": [
+        {"commons_file": "HK TST East 尖沙咀東 Tsim Sha Tsui East 香港科學館 Hong Kong Science Museum sign Opening hours June 2020 SS2 01.jpg", "facet": "identity-bearing"},
+        {"commons_file": "HKSM GF Entrance 2011.jpg", "facet": "context"}
+      ]
+    },
+    {
+      "id": "hong-kong-palace-museum",
+      "name": "Hong Kong Palace Museum",
+      "aliases": ["Hong Kong Palace Museum", "HKPM", "Hong Kong Palace"],
+      "split": "development",
+      "reference": "香港故宮文化博物館（2022）.jpg",
+      "queries": [
+        {"commons_file": "HK YTM 西九龍文化區 West Kowloon Cultural District HKPM 香港故宮文化博物館 Hong Kong Palace Museum July 2022 Px3 06.jpg", "facet": "identity-bearing"},
+        {"commons_file": "HK YTM 西九龍文化區 West Kowloon Cultural District 博物館道 Museum Drive HKPM 香港故宮文化博物館 Hong Kong Palace Museum ground floor entrance July 2022 Px3 01.jpg", "facet": "context"}
+      ]
+    },
+    {
+      "id": "hong-kong-maritime-museum",
+      "name": "Hong Kong Maritime Museum",
+      "aliases": ["Hong Kong Maritime Museum", "HK Maritime Museum", "HKMM"],
+      "split": "development",
+      "reference": "HK Maritime Museum.JPG",
+      "queries": [
+        {"commons_file": "HK Maritime Museum 香港海事博物館 name sign Central grand opening flowers 25-Feb-2013.JPG", "facet": "identity-bearing"},
+        {"commons_file": "Hong Kong Maritime Museum entry 26-04-2015.jpg", "facet": "context"}
+      ]
+    },
+    {
+      "id": "hong-kong-railway-museum",
+      "name": "Hong Kong Railway Museum",
+      "aliases": ["Hong Kong Railway Museum", "HK Railway Museum"],
+      "split": "development",
+      "reference": "Hong Kong Railway Museum.jpg",
+      "queries": [
+        {"commons_file": "Hong Kong Railway Museum Entrance Sign - August 2018.jpg", "facet": "identity-bearing"},
+        {"commons_file": "Hong Kong Railway Museum 12-01-2023.jpg", "facet": "context"}
+      ]
+    },
+    {
+      "id": "hong-kong-film-archive",
+      "name": "Hong Kong Film Archive",
+      "aliases": ["Hong Kong Film Archive", "HK Film Archive", "HKFA"],
+      "split": "test",
+      "reference": "Hong Kong Film Archive01.jpg",
+      "queries": [
+        {"commons_file": "Hong Kong Film Archive02.jpg", "facet": "identity-bearing"},
+        {"commons_file": "Hong Kong Film Archive 2026.jpg", "facet": "context"}
+      ]
+    },
+    {
+      "id": "dr-sun-yat-sen-museum",
+      "name": "Dr Sun Yat-sen Museum",
+      "aliases": ["Dr Sun Yat-sen Museum", "Dr Sun Yat Sen Museum", "Sun Yat-sen Museum", "Kom Tong Hall"],
+      "split": "test",
+      "reference": "Dr.SunYat-senMuseum.JPG",
+      "queries": [
+        {"commons_file": "HK Dr Sun Yat Sen KomTongHall entrance.JPG", "facet": "identity-bearing"},
+        {"commons_file": "HK Mid-Levels Castle Road Dr Sun Yat-Sen Museum front facade Sept-2012.JPG", "facet": "context"}
+      ]
+    },
+    {
+      "id": "hong-kong-museum-of-medical-sciences",
+      "name": "Hong Kong Museum of Medical Sciences",
+      "aliases": ["Hong Kong Museum of Medical Sciences", "Museum of Medical Sciences", "HKMMS"],
+      "split": "test",
+      "reference": "HK HongKongMuseumOfMedicalSciences Front.JPG",
+      "queries": [
+        {"commons_file": "HK HongKongMuseumOfMedicalSciences Entrance.JPG", "facet": "identity-bearing"},
+        {"commons_file": "Hong Kong Museum of Medical Sciences facade 2024.JPG", "facet": "context"}
+      ]
+    },
+    {
+      "id": "hong-kong-heritage-discovery-centre",
+      "name": "Hong Kong Heritage Discovery Centre",
+      "aliases": ["Hong Kong Heritage Discovery Centre", "Heritage Discovery Centre", "HKHDC"],
+      "split": "test",
+      "reference": "HK Heritage Discovery Centre 1.jpg",
+      "queries": [
+        {"commons_file": "HK TST 尖沙咀 Tsim Sha Tsui 九龍公園 Kln Park HKHDC 香港文物探知館 Hong Kong Heritage Discovery Centre museum August 2022 Px3 front entrance.jpg", "facet": "identity-bearing"},
+        {"commons_file": "HK TST 尖沙咀 Tsim Sha Tsui 九龍公園 Kln Park HKHDC 香港文物探知館 Hong Kong Heritage Discovery Centre museum August 2022 Px3 front entrance stairs 01.jpg", "facet": "context"}
+      ]
+    }
+  ],
+  "claim_boundary": "Curated public-image metadata-plus-scene-text identity cohort. The identity-bearing/context facet is a source-only filename/category stratum and must be pixel-audited before OCR. It is not representative prevalence and establishes no portal ownership, access, navigation, arrival, product, user-benefit, or safety claim."
+}

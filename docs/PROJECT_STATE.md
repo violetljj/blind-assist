@@ -359,6 +359,27 @@ for every co-visible gallery building. Physical target-absent rejection is
 therefore `NOT_EVALUABLE`; the negative decision is unchanged because Recall@1
 and target-present positive acceptance independently fail the gate.
 
+PB3 changed to a public POI alias pack plus high-precision scene-text evidence
+with an asymmetric join: a unique text proof may authorize its entity and veto
+other requests; missing text remains `UNKNOWN` and falls back to the frozen
+appearance decision. The new PB1/PB2-A-disjoint cohort contains four
+Development and four test entities with one identity-bearing plus one context
+query each, frozen by human source audit before any PB3 model call.
+
+On test, Development-selected DINOv2 accepted all `8/8` positives but also
+`23/24` source-label-negative wrong requests. Metadata-backed text produced
+`5/5` correct proofs, and the asymmetric join kept positive acceptance at
+`8/8` while reducing wrong accepts to `9/24` (60.87% relative). The frozen
+coverage clause nevertheless failed: only `2/4` identity-bearing queries were
+proved, below `3/4`. Record
+`L10_PB3_METADATA_BACKED_TEXT_IDENTITY_BRANCH_GATE_NOT_MET`. Fixed target-blind
+tiling added no proof. Retain the precision/veto mechanism only; do not promote
+it to portal binding or active view, and do not tune aliases, OCR, thresholds,
+or crops on the consumed source. The next legal increment is a fresh logo or
+Chinese identity source, or a genuinely ordered execution-receipt-backed
+`APPROACH_TEXT / SWEEP_SIGN` observation. PB2-B and general L10-AV0 remain
+blocked.
+
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
 because the approved AWS profile is absent. That is a source-access condition,

@@ -668,6 +668,36 @@ POI metadata, coarse GPS, or genuinely ordered multi-view evidence. This is a
 curated public-image confirmation, not a universal VPR negative or any access,
 navigation, arrival, user-benefit, product, or safety result.
 
+L10-PB3 then changed both the information source and decision authority. A
+public POI alias pack plus frozen RapidOCR may produce a unique positive entity
+proof; such a proof accepts only that requested entity and vetoes other
+requests. If text is absent or ambiguous, the result remains `UNKNOWN` and the
+frozen appearance decision is preserved rather than converted to `NONE`.
+Eight entities absent from PB1 and PB2-A were source-audited before any PB3
+model call and split four Development / four test, with one deliberately
+identity-bearing and one context query per entity.
+
+Development selected DINOv2 as the appearance baseline and froze lexical score
+and uniqueness-margin thresholds. On eight fresh test queries, the appearance
+baseline reached Recall@1 `6/8` and positive acceptance `8/8`, but accepted
+`23/24` source-label-negative wrong requests. Metadata-backed text emitted five
+proofs, all correct, and the asymmetric join preserved positive acceptance at
+`8/8` while reducing wrong-request accepts to `9/24` (`60.87%` relative
+reduction). However, it correctly proved only `2/4` source-labeled
+identity-bearing views versus the frozen `3/4` requirement. Record
+`L10_PB3_METADATA_BACKED_TEXT_IDENTITY_BRANCH_GATE_NOT_MET`.
+
+This is a strong precision/veto mechanism signal, not a promoted general
+identity branch. Canonical names and the public alias pack were identical at
+`5/5` precision and `5/8` coverage on test. A permitted target-blind full-frame
+plus four-tile diagnostic added zero proofs, so digital crop/scale tuning is
+closed too. Do not tune aliases, lexical thresholds, OCR models, or crops on
+this cohort. The next legal source must add a fresh logo or Chinese identity
+representation, or a genuinely ordered executed `APPROACH_TEXT / SWEEP_SIGN`
+observation with before/after receipt. PB2-B and general L10-AV0 remain blocked;
+wrong-request counts remain source-label proxies rather than exhaustive
+physical target-absence authority.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust
