@@ -310,6 +310,37 @@ and same-source consistency-filter routes; the next source must add a static
 world anchor or independently observable dynamic evidence, not filter the same
 unsemantic geometric flow again.
 
+X6 added the first such independent source: causal raw-LiDAR occupancy in world
+coordinates under native ego pose. Its single 60-frame falsifier retained three
+correct positive frames and two correct route-entry frames, suppressed `26/34`
+source-error units, and met the one-scan-period compute check. Decision:
+`DTR_X6_STATIC_WORLD_PERSISTENCE_FALSIFIER_GATE_MET`; this opened one frozen
+full replay only.
+
+X7 completed all 4,811 cohort timeline frames (4,787 source-supported plus 24
+fail-closed causal warm-up frames). The anchor removed 340,734 of 642,217 X3
+candidate cells and cut false segments `94 -> 72`, while preserving X3's `6/6`
+CONTACT recall, `3.816 s` median lead, and `8/18` dropout recovery. Event F1
+rose `11.32% -> 14.29%` but remained below PDC's `22.86%`; the false-segment,
+F1, and below-PDC selectivity checks all failed. Decision:
+`DTR_X7_FULL_STATIC_WORLD_ANCHOR_GATE_NOT_MET`. Retain the world anchor as a
+useful component, close it as a standalone source, and require an independent
+scene-motion observation next rather than a map-radius or scorer sweep.
+
+X8 supplied synchronized stitched-RGB track residual as that independent
+observation. Its one 60-frame falsifier retained three correct positive frames
+and two correct route-entry frames, suppressed `27/34` source-error units, and
+met the frame-local compute bound. Decision:
+`DTR_X8_RGB_STATIC_VETO_FALSIFIER_GATE_MET`; this opened one frozen full replay.
+
+X9 processed the complete X7 timeline and vetoed 62,757 of 301,483 cells. It
+preserved `6/6` CONTACT recall, `3.816 s` aggregate median lead, and `8/18`
+dropout recovery, while reducing false segments `72 -> 64` and raising F1
+`14.29% -> 15.79%`. The false-segment maximum, F1 minimum, and below-PDC checks
+still failed. Decision: `DTR_X9_FULL_RGB_STATIC_VETO_GATE_NOT_MET`. The two
+independent static observations have additive but insufficient selectivity;
+do not tune their constants on this opened cohort.
+
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC
 word carrier for current-camera steering. SC2 adds opportunity-correct active

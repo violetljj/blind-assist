@@ -34,6 +34,10 @@ DTR_X3_FULL_LAG_FLOXEL_GATE_NOT_MET /
 DTR_X3_FULL_REPLAY_FAILURE_ATTRIBUTION_COMPLETE /
 DTR_X4_DETERMINISTIC_CLUSTER_VOTE_REPEATABILITY_GATE_NOT_MET /
 DTR_X5_OVERLAP_CYCLE_SOURCE_FALSIFIER_GATE_NOT_MET /
+DTR_X6_STATIC_WORLD_PERSISTENCE_FALSIFIER_GATE_MET /
+DTR_X7_FULL_STATIC_WORLD_ANCHOR_GATE_NOT_MET /
+DTR_X8_RGB_STATIC_VETO_FALSIFIER_GATE_MET /
+DTR_X9_FULL_RGB_STATIC_VETO_GATE_NOT_MET /
 R4_NOT_OPENED`
 
 ## Result first
@@ -1874,6 +1878,47 @@ units but retained one correct positive frame and zero correct route-entry
 frames.  Accept `DTR_X5_OVERLAP_CYCLE_SOURCE_FALSIFIER_GATE_NOT_MET`: close
 same-source consistency filtering and require a static-world anchor or an
 independently observable dynamic signal.
+
+## DTR-X6--X7 causal static-world anchor
+
+X6 introduced an independent causal raw-LiDAR world-occupancy anchor while
+retaining X3 candidates, velocity, route geometry, and scorer. On the same
+60-frame positive/error roster it preserved three correct positive frames and
+two correct route-entry frames, suppressed `26/34` source-error units, and met
+the one-scan-period compute bound. Accept
+`DTR_X6_STATIC_WORLD_PERSISTENCE_FALSIFIER_GATE_MET`; the pass authorized one
+frozen full replay only.
+
+X7 completed all 4,811 timeline frames across the six opened Development
+sequences. Relative to X3, it reduced false segments `94 -> 72` and improved
+Event F1 `11.32% -> 14.29%`, while preserving `6/6` CONTACT recall, `3.816 s`
+median lead, and `8/18` dropout recovery. Relative to PDC it still has 47 more
+false segments and lower F1. Accept
+`DTR_X7_FULL_STATIC_WORLD_ANCHOR_GATE_NOT_MET`: the anchor contributes real
+selectivity but is insufficient as a standalone source. Do not tune the opened
+map radius or age; require independently observable scene-motion evidence.
+Full mechanics, count amendment, hashes, and claim limits are in
+`X6_X9_STATIC_WORLD_RGB_AUTHORITY_2026-08-29.md`.
+
+## DTR-X8--X9 independent RGB static evidence
+
+X8 compared synchronized stitched-RGB tracks against ego-rigid static and
+X7-moving reprojections. It vetoed only when valid tracks favored the static
+hypothesis; missing or invalid visual evidence retained the X7 candidate. On
+the 60-frame roster it preserved three correct positive frames and two correct
+route-entry frames, suppressed `27/34` source-error units, and met the
+frame-local compute bound. Accept
+`DTR_X8_RGB_STATIC_VETO_FALSIFIER_GATE_MET`; one frozen full replay followed.
+
+X9 matched all 4,811 requested RGB frames and evaluated 4,803 consecutive
+pairs. It vetoed 62,757 of 301,483 X7 cells and reduced false segments
+`72 -> 64`, with Event F1 `14.29% -> 15.79%`; `6/6` CONTACT recall, `3.816 s`
+aggregate median lead, and `8/18` dropout recovery were unchanged. Accept
+`DTR_X9_FULL_RGB_STATIC_VETO_GATE_NOT_MET`: the independent source has additive
+effect but remains far above PDC's 25 false segments and below the frozen 35%
+F1 floor. Close this fixed visual veto without threshold or camera-fusion
+tuning. Mechanics, hashes, and claim limits are in
+`X6_X9_STATIC_WORLD_RGB_AUTHORITY_2026-08-29.md`.
 
 ## Claim ceiling
 
