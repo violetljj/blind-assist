@@ -380,6 +380,31 @@ Chinese identity source, or a genuinely ordered execution-receipt-backed
 `APPROACH_TEXT / SWEEP_SIGN` observation. PB2-B and general L10-AV0 remain
 blocked.
 
+PB4 changed the representation rather than reopening PB3. SCIL decomposes
+official bilingual metadata into English-word, traditional/simplified-folded
+Han, and public-mark carriers; distinctive atoms are weighted against the
+frozen candidate pack, strong carrier disagreement becomes `UNKNOWN`, and a
+proof authorizes only its own entity. A source-only audit rejected invalid
+sign/directory/exhibit/wayfinding candidates before model access and froze four
+Development plus four test entities, each with one identity-bearing and one
+context view.
+
+On fresh test, the Development-selected CLIP appearance arm reached Recall@1
+`5/8`, positive acceptance `2/8`, identity-bearing acceptance `0/4`, and
+source-label-negative wrong acceptance `1/24`. English canonical and flat
+bilingual whole-alias controls produced `0/8` and `1/8` correct proofs. SCIL
+produced **`6/6` correct proofs, zero wrong proofs, `4/4` identity-bearing
+coverage**, and five Han/public-mark-participating proofs. The asymmetric join
+raised positive acceptance to **`6/8`** and reduced the wrong-request proxy to
+**`0/24`**. All six frozen gates passed:
+`L10_PB4_SCRIPT_CONTRASTIVE_IDENTITY_LATTICE_GATE_MET`.
+
+Retain SCIL as conditional positive place-identity authority. The next seam is
+not another OCR/alias/threshold sweep: join only a current SCIL-proved frame to
+the already frozen functional portal-set proposer. Text-`UNKNOWN` remains
+blocked and requests `APPROACH_TEXT / SWEEP_SIGN`. No portal ownership,
+active-view, navigation, arrival, user, product, or safety result is implied.
+
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
 because the approved AWS profile is absent. That is a source-access condition,

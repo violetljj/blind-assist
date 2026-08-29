@@ -1492,6 +1492,48 @@ proxies; neither is prevalence or exhaustive physical-absence authority. No
 portal ownership, navigation, arrival, product, user-benefit, or safety claim
 follows.
 
+#### PB4 Script-Contrastive Identity Lattice
+
+PB4 uses a fresh bilingual identity representation instead of tuning PB3.
+SCIL keeps three independent evidence carriers: English word atoms, Han
+uni/bi-grams after a fixed traditional/simplified fold, and public marks.
+Candidate-pack IDF downweights generic atoms, a small agreement bonus rewards
+corroboration, and independently strong carriers that disagree force
+`UNKNOWN`. A unique proof authorizes only its own entity; missing evidence
+falls back to appearance and cannot emit semantic `NONE`.
+
+Before model access, the source-only audit rejected interior placards,
+directories, exhibits, wayfinding maps, neighbor-dominated signs, and an entity
+already seen in the PB2-A human rejection audit. The final 24-image source has
+four Development and four test entities absent from the PB1/PB2-A/PB3 formal
+cohorts, with one identity-bearing and one context query per entity.
+
+| Fresh test metric | appearance | English canonical | flat bilingual alias | **SCIL / join** |
+|---|---:|---:|---:|---:|
+| Recall@1 | 5/8 | n/a | n/a | n/a |
+| positive acceptance | 2/8 | n/a | n/a | **6/8** |
+| identity-bearing positive/proof | 0/4 | 0/4 | 0/4 | **4/4** |
+| correct text proofs | n/a | 0/8 | 1/8 | **6/8** |
+| wrong text proofs | n/a | 0 | 0 | **0** |
+| source-label-negative wrong accepts | 1/24 | n/a | n/a | **0/24** |
+
+SCIL produced `6/6` precision, five Han/public-mark-participating correct
+proofs, and two proofs with at least two strong script carriers. The
+asymmetric join gained four accepted positives (`+50 pp`) while removing the
+only appearance wrong accept (`100%` relative, `4.17 pp` absolute). All six
+frozen clauses passed. Record
+`L10_PB4_SCRIPT_CONTRASTIVE_IDENTITY_LATTICE_GATE_MET`.
+
+The mechanism is promoted only as conditional proof-positive named-place
+authority. The next eligible experiment may bind the already frozen functional
+portal-set proposer only on a current SCIL-proved frame. `UNKNOWN` remains
+blocked and requests `APPROACH_TEXT / SWEEP_SIGN`; the consumed PB4 aliases,
+fold, atom weights, OCR, thresholds, and pixels must not be tuned. The curated
+identity-bearing stratum is not prevalence, and cross-paired wrong requests are
+source-label proxies. No open-world identity, portal ownership, access,
+active-view, navigation, arrival, product, user-benefit, or safety claim
+follows.
+
 The `x/120` column is not physical target-absence authority. The source audit
 did not exhaustively freeze every gallery building co-visible in dense
 same-city frames, so physical target-absent rejection is `NOT_EVALUABLE`. A

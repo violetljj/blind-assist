@@ -1,0 +1,93 @@
+{
+  "schema": "l10-named-poi-biscript-durable-result-v1",
+  "date": "2026-08-29",
+  "decision": "L10_PB4_SCRIPT_CONTRASTIVE_IDENTITY_LATTICE_GATE_MET",
+  "algorithm": {
+    "name": "Script-Contrastive Identity Lattice",
+    "short_name": "SCIL",
+    "representation": "Split official public identity metadata into English-word, traditional/simplified-folded Han unigram/bigram, and exact public-mark carriers. Weight evidence atoms by frozen candidate-pack distinctiveness, fuse agreeing carriers, veto strong cross-carrier disagreement to UNKNOWN, and preserve the appearance decision when no proof exists."
+  },
+  "source": {
+    "entities": {"development": 4, "test": 4},
+    "queries": {"development": 8, "test": 8},
+    "facets_per_entity": ["identity-bearing", "context"],
+    "prior_formal_entity_overlap": 0,
+    "source_audit_model_calls_before_freeze": 0,
+    "inventory_sha256": "db717b35fd71c97c180b4b8b26be8bec50c4c2f1d0976031032b4283569099d1"
+  },
+  "development_selection": {
+    "appearance_baseline": "B0_CLIP",
+    "appearance_threshold": 0.7765825688838959,
+    "scil_score_threshold": 0.4768178970490568,
+    "scil_margin_threshold": 0.034304215834340235,
+    "scil_proof_precision": "6/6",
+    "scil_correct_proof_coverage": "6/8",
+    "scil_identity_bearing_correct_proofs": "4/4",
+    "authority": "DEVELOPMENT_ONLY"
+  },
+  "test": {
+    "appearance_baseline": {
+      "recall_at_1": "5/8",
+      "recall_at_3": "6/8",
+      "positive_acceptance": "2/8",
+      "identity_bearing_positive_acceptance": "0/4",
+      "source_label_negative_false_confirmation": "1/24"
+    },
+    "english_canonical": {
+      "correct_proofs": "0/8",
+      "identity_bearing_correct_proofs": "0/4",
+      "unknown": "8/8"
+    },
+    "flat_biscript_alias": {
+      "proof_precision": "1/1",
+      "correct_proof_coverage": "1/8",
+      "identity_bearing_correct_proofs": "0/4",
+      "wrong_entity_proofs": 0
+    },
+    "scil": {
+      "proof_precision": "6/6",
+      "wrong_entity_proofs": 0,
+      "correct_proof_coverage": "6/8",
+      "identity_bearing_correct_proofs": "4/4",
+      "context_correct_proofs": "2/4",
+      "unknown": "2/8",
+      "correct_proofs_with_han_or_mark_participation": 5,
+      "proofs_with_two_or_more_strong_scripts": 2,
+      "carrier_conflicts": 0,
+      "correct_proof_gain_over_flat_biscript": 5
+    },
+    "asymmetric_join": {
+      "positive_acceptance": "6/8",
+      "positive_acceptance_gain_vs_appearance": "+4/8 (+50 percentage points)",
+      "source_label_negative_false_confirmation": "0/24",
+      "relative_false_confirmation_reduction": 1.0,
+      "absolute_false_confirmation_reduction": 0.041666666666666664
+    }
+  },
+  "gate": {
+    "proof_precision_at_least_0_95_and_zero_wrong": true,
+    "identity_bearing_correct_proofs_at_least_3_of_4": true,
+    "positive_acceptance_not_lower_than_baseline": true,
+    "false_confirmation_reduction_effect": true,
+    "pareto_dominates_or_ties_flat_alias": true,
+    "han_or_mark_carrier_utility": true,
+    "passed": true
+  },
+  "interpretation": "SCIL crossed the frozen conditional identity gate and repaired the exact PB3 failure mode. On the fresh test split it proved every source-labeled identity-bearing view with zero wrong proofs, while the flat bilingual whole-alias matcher proved none of those four views. Weighted partial Han evidence also recovered the Xiqu Centre context frame from the OCR corruption 截曲中心 without turning the two text-absent contexts into NONE.",
+  "successor": "Retain SCIL as a conditional proof-positive named-place authority. The next legal experiment may join only a current SCIL-proved frame to a separately frozen functional portal-set proposal. Text-UNKNOWN frames remain blocked from portal ownership and request APPROACH_TEXT or SWEEP_SIGN; do not tune the consumed PB4 cohort.",
+  "artifacts": {
+    "protocol": {
+      "path": "research/active/l10-r0/named_poi_biscript_protocol_v1.json",
+      "sha256": "4ac63d9af03f47218e1a06d066a7dcf84e8ba7ea67fd12fc2ea75a4c5d993aef"
+    },
+    "formal_result": {
+      "path": "artifacts.local/evidence/l10-r0/named-poi-biscript-v1/result.json",
+      "sha256": "6d73e396960a1b2c7316f27bcf1ccbb86a8232e067f0096fb048b2daace64d00"
+    },
+    "appearance_backend_receipt": {
+      "path": "artifacts.local/evidence/l10-r0/named-poi-biscript-v1/appearance_backend_receipt.json",
+      "sha256": "683842ece902f8be5a5b8a8633e482386ae7324695106d2930fab3912cbb331a"
+    }
+  },
+  "claim_boundary": "Fresh entity-disjoint public-image confirmation of conditional bilingual signage identity on a deliberately identity-opportunity-stratified cohort. Wrong-request pairs are source-label proxies rather than exhaustive physical absence. The result does not establish natural prevalence, open-world identity, portal ownership, access, active-view causality, tracking, guidance, navigation, arrival, product benefit, user benefit, or safety."
+}

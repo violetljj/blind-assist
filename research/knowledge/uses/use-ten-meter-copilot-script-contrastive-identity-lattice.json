@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-script-contrastive-identity-lattice",
+  "item_id": "algorithm-script-contrastive-identity-lattice",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": ["script-contrastive-identity-lattice"],
+  "use_state": "active",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Eight entities absent from the PB1/PB2-A/PB3 formal cohorts, split four Development and four test, with one source-audited identity-bearing and one context query per entity.",
+    "project_application": "Supply conditional positive named-place authority before a functional portal may bind to the requested entity.",
+    "modifications": "Replace whole-alias-only matching with distinctive English/Han/public-mark carriers, fixed traditional/simplified folding, split-local metadata IDF, cross-carrier conflict veto, and an asymmetric proof/appearance join. Missing text remains UNKNOWN.",
+    "expected_effect": "Recover partially corrupted bilingual identity evidence without wrong-entity proofs, preserve target-present fallback, and sharply reduce appearance-driven wrong-place confirmation."
+  },
+  "evaluation": {
+    "reproduction_status": "reproduced",
+    "verdict": "positive",
+    "setup": "Source-only pixel audit froze 24 Commons images before any PB4 model call. Development alone selected the CLIP appearance arm and per-text-arm score/margin thresholds. RapidOCR used frozen PP-OCRv6 models; appearance selected measured-faster verified RTX 5060 CUDA.",
+    "effect": "On eight fresh test queries, SCIL emitted 6/6 correct proofs with zero wrong proofs, including all 4/4 identity-bearing views. English canonical matching emitted 0 proofs and flat bilingual alias matching emitted 1 correct context proof. The asymmetric join raised positive acceptance from 2/8 to 6/8 and reduced the source-label-negative proxy from 1/24 to 0/24.",
+    "metrics": [
+      "appearance_recall_at_1=5/8",
+      "appearance_positive_acceptance=2/8",
+      "appearance_identity_bearing_positive_acceptance=0/4",
+      "english_canonical_correct_proofs=0/8",
+      "flat_biscript_correct_proofs=1/8",
+      "scil_proof_precision=6/6",
+      "scil_identity_bearing_correct_proofs=4/4",
+      "scil_wrong_entity_proofs=0",
+      "scil_han_or_mark_participating_correct_proofs=5",
+      "join_positive_acceptance=6/8",
+      "join_source_label_negative_proxy=0/24",
+      "relative_false_confirmation_reduction=100%"
+    ],
+    "claim_boundary": "Fresh conditional bilingual-signage identity evidence on a curated opportunity stratum. Wrong-request rows are source-label proxies, not exhaustive physical absence. No open-world identity, portal ownership, active-view, navigation, arrival, product, user, or safety claim follows."
+  },
+  "evidence": [
+    {"kind": "repo", "ref": "research/active/l10-r0/named_poi_biscript_protocol_v1.json", "summary": "Frozen source, algorithm, controls, Development-only selection, six-clause gate, and successor."},
+    {"kind": "repo", "ref": "research/active/l10-r0/named_poi_biscript_result_v1.json", "summary": "Durable PB4 metrics, gate decision, interpretation, evidence hashes, and claim boundary."},
+    {"kind": "artifact", "ref": "artifacts.local/evidence/l10-r0/named-poi-biscript-v1/result.json", "sha256": "6d73e396960a1b2c7316f27bcf1ccbb86a8232e067f0096fb048b2daace64d00", "summary": "Development/test controls, carrier scores, OCR texts, asymmetric join, raw records, backend, and gate clauses."},
+    {"kind": "artifact", "ref": "artifacts.local/evidence/l10-r0/named-poi-biscript-v1/appearance_backend_receipt.json", "sha256": "683842ece902f8be5a5b8a8633e482386ae7324695106d2930fab3912cbb331a", "summary": "Measured CPU/CUDA selection and verified actual device execution."}
+  ],
+  "history": [
+    {"date": "2026-08-29", "change": "Executed PB4 once and promoted SCIL as a conditional proof-positive identity authority after all six frozen gates passed."}
+  ],
+  "added_at": "2026-08-29",
+  "updated_at": "2026-08-29"
+}

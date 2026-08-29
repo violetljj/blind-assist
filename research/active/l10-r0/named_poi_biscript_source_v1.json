@@ -1,0 +1,128 @@
+{
+  "schema": "l10-named-poi-biscript-source-v1",
+  "created_at": "2026-08-29",
+  "selection": "Eight PB1/PB2-A/PB3-disjoint public places selected from Wikimedia Commons metadata for a declared bilingual-identity stress stratum before any PB4 OCR or embedding call. Exact files and identity-bearing/context roles were then frozen by a source-only pixel audit.",
+  "entities": [
+    {
+      "id": "hong-kong-correctional-services-museum",
+      "name": "Hong Kong Correctional Services Museum",
+      "aliases": {
+        "latin": ["Hong Kong Correctional Services Museum", "Correctional Services Museum", "CSD Museum"],
+        "han": ["香港懲教博物館", "懲教博物館"],
+        "marks": ["HKCSM"]
+      },
+      "split": "development",
+      "reference": "香港惩教博物馆 Hong Kong Correctional Services Museum - panoramio.jpg",
+      "queries": [
+        {"commons_file": "Hong Kong Correctional Services Museum front facade.jpg", "facet": "identity-bearing"},
+        {"commons_file": "Hong Kong Correctional Services Museum from driveway.jpg", "facet": "context"}
+      ]
+    },
+    {
+      "id": "hong-kong-visual-arts-centre",
+      "name": "Hong Kong Visual Arts Centre",
+      "aliases": {
+        "latin": ["Hong Kong Visual Arts Centre", "Visual Arts Centre", "Visual Arts Center"],
+        "han": ["香港視覺藝術中心", "視覺藝術中心"],
+        "marks": ["vA"]
+      },
+      "split": "development",
+      "reference": "Hong Kong Visual Arts Centre.jpg",
+      "queries": [
+        {"commons_file": "HK ML 半山區 Mid-levels 堅尼地道 7A Kennedy Road 香港視覺藝術中心 Hong Kong Visual Arts Centre January 2021 SS2 02.jpg", "facet": "identity-bearing"},
+        {"commons_file": "Side view of Hong Kong Visual Arts Centre.JPG", "facet": "context"}
+      ]
+    },
+    {
+      "id": "hong-kong-design-institute",
+      "name": "Hong Kong Design Institute",
+      "aliases": {
+        "latin": ["Hong Kong Design Institute", "Design Institute"],
+        "han": ["香港知專設計學院", "知專設計學院"],
+        "marks": ["HKDI"]
+      },
+      "split": "development",
+      "reference": "Hong Kong Design Institute.JPG",
+      "queries": [
+        {"commons_file": "HK SKD TKO TKL 調景嶺 Tiu Keng Leng 景嶺路 King Ling Road 香港知專設計學院 HKDI school name sign December 2022 Px3.jpg", "facet": "identity-bearing"},
+        {"commons_file": "Hong Kong Design Institute Campus 201009.jpg", "facet": "context"}
+      ]
+    },
+    {
+      "id": "hong-kong-academy-for-performing-arts",
+      "name": "The Hong Kong Academy for Performing Arts",
+      "aliases": {
+        "latin": ["The Hong Kong Academy for Performing Arts", "Hong Kong Academy for Performing Arts", "Academy for Performing Arts"],
+        "han": ["香港演藝學院", "演藝學院"],
+        "marks": ["HKAPA"]
+      },
+      "split": "development",
+      "reference": "The Hong Kong Academy for Performing Arts 201808.jpg",
+      "queries": [
+        {"commons_file": "HK Wan Chai North HKAPA 香港演藝學院 The Hong Kong Academy For Performing Arts Nov-2013 outdoor park name sign night.JPG", "facet": "identity-bearing"},
+        {"commons_file": "HK Wan Chai North HKAPA 香港演藝學院 The Hong Kong Academy For Performing Arts Nov-2013 Adminstration building entrance gate off opening hours.JPG", "facet": "context"}
+      ]
+    },
+    {
+      "id": "hong-kong-arts-centre",
+      "name": "Hong Kong Arts Centre",
+      "aliases": {
+        "latin": ["Hong Kong Arts Centre", "Hong Kong Arts Center", "Arts Centre"],
+        "han": ["香港藝術中心", "藝術中心"],
+        "marks": ["HKAC"]
+      },
+      "split": "test",
+      "reference": "Hong Kong Arts Centre.jpg",
+      "queries": [
+        {"commons_file": "HK 灣仔 Wan Chai 香港藝術中心 Hong Kong Arts Centre name sign footbridge entrance glass door October 2018.jpg", "facet": "identity-bearing"},
+        {"commons_file": "Hong Kong Arts Centre 2019.jpg", "facet": "context"}
+      ]
+    },
+    {
+      "id": "xiqu-centre",
+      "name": "Xiqu Centre",
+      "aliases": {
+        "latin": ["Xiqu Centre", "Xiqu Center"],
+        "han": ["戲曲中心"],
+        "marks": ["XIQU"]
+      },
+      "split": "test",
+      "reference": "Xiqu Centre Main Entrance.jpg",
+      "queries": [
+        {"commons_file": "HK 香港 西九龍文化區 West Kln 戲曲中心 Xiqu Centre sign January 2019 SSG.jpg", "facet": "identity-bearing"},
+        {"commons_file": "Xiqu Centre viewed from Canton Road.jpg", "facet": "context"}
+      ]
+    },
+    {
+      "id": "hong-kong-wetland-park",
+      "name": "Hong Kong Wetland Park",
+      "aliases": {
+        "latin": ["Hong Kong Wetland Park", "Wetland Park"],
+        "han": ["香港濕地公園", "濕地公園"],
+        "marks": ["HKWP"]
+      },
+      "split": "test",
+      "reference": "Hkwetlandparkoutdoor.jpg",
+      "queries": [
+        {"commons_file": "Hong Kong Wetland Park 7616.JPG", "facet": "identity-bearing"},
+        {"commons_file": "HK Wetland ParkEnterance2007.jpg", "facet": "context"}
+      ]
+    },
+    {
+      "id": "asiaworld-expo",
+      "name": "AsiaWorld-Expo",
+      "aliases": {
+        "latin": ["AsiaWorld-Expo", "AsiaWorld Expo", "Asia World Expo"],
+        "han": ["亞洲國際博覽館", "亞洲博覽館", "機場博覽館"],
+        "marks": ["AWE"]
+      },
+      "split": "test",
+      "reference": "AsiaWorld-Expo from Skydeck.JPG",
+      "queries": [
+        {"commons_file": "HK AsiaWorld -Expo front.jpg", "facet": "identity-bearing"},
+        {"commons_file": "AisaWorld-Expo 14-07-2025.jpg", "facet": "context"}
+      ]
+    }
+  ],
+  "claim_boundary": "Deliberately stratified public-image bilingual identity opportunity only. Source admission will not establish natural encounter prevalence, OCR performance, portal ownership, access, navigation, arrival, product benefit, user benefit, or safety."
+}

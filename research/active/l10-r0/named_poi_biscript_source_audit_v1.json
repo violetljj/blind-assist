@@ -1,0 +1,56 @@
+{
+  "schema": "l10-named-poi-biscript-source-audit-v1",
+  "audited_at": "2026-08-29",
+  "audit_stage": "SOURCE_ONLY_BEFORE_ANY_PB4_OCR_OR_EMBEDDING_CALL",
+  "source_spec_sha256": "91c227def1559c5f1da6aedfd1dfd9aa489f8450f3753186fb4a42b02627906b",
+  "dataset_manifest_sha256": "db03c626ea70b836b889cee2aa3b8fd74a50ded2a7ff7168ad33171a46e93377",
+  "inventory_sha256": "db717b35fd71c97c180b4b8b26be8bec50c4c2f1d0976031032b4283569099d1",
+  "checks": {
+    "entities_absent_from_pb1_pb2a_pb3_formal_cohorts": true,
+    "development_test_entity_disjoint": true,
+    "all_24_images_decode": true,
+    "all_24_file_hashes_unique": true,
+    "all_references_show_the_named_entity": true,
+    "all_queries_show_the_named_entity_or_its_immediate_premises": true,
+    "each_split_has_one_identity_bearing_and_one_context_query_per_entity": true,
+    "identity_bearing_is_human_source_label_not_model_output": true,
+    "contact_sheet_has_no_obvious_near_duplicate_query_reference_pair": true,
+    "official_public_names_and_script_aliases_checked_before_freeze": true,
+    "ocr_calls_before_freeze": 0,
+    "embedding_calls_before_freeze": 0
+  },
+  "identity_bearing_observations": {
+    "hong-kong-correctional-services-museum": "The full English museum name and departmental emblem are visibly mounted on the facade.",
+    "hong-kong-visual-arts-centre": "The entrance pylon visibly carries the vA mark, Chinese public name, and English public name.",
+    "hong-kong-design-institute": "The public hillside pylon visibly carries the stylized HKDI mark, English public name, and Chinese public name.",
+    "hong-kong-academy-for-performing-arts": "A premises wall visibly carries the Academy logo plus full English and Chinese public names.",
+    "hong-kong-arts-centre": "The entrance wall visibly carries the stacked English public name and A-shaped public mark.",
+    "xiqu-centre": "The current-image premises panel visibly carries both 戲曲中心 and Xiqu Centre; the text occupies a small but readable region.",
+    "hong-kong-wetland-park": "The exterior stone wall visibly carries the full Chinese and English public names.",
+    "asiaworld-expo": "The exterior entrance visibly carries the full English and Chinese public names, with a separate Hong Kong destination mark nearby."
+  },
+  "replacement_history": [
+    {
+      "rejected_before_model_access": "Law Uk Folk Museum provisional row",
+      "reason": "The proposed context view was an interior exhibit and the identity view was a historical placard, so the pair did not test exterior place identity cleanly."
+    },
+    {
+      "rejected_before_model_access": "Jao Tsung-I Academy provisional row",
+      "reason": "The proposed identity view was a directory without the public entity name and the context view was a generic cafe interior."
+    },
+    {
+      "rejected_before_model_access": "Hong Kong Heritage Museum provisional row",
+      "reason": "The entity had already appeared in the PB2-A source-only rejection audit and was not strictly fresh at the human-source layer."
+    },
+    {
+      "rejected_before_model_access": "Flagstaff House Museum of Tea Ware provisional row",
+      "reason": "The selected pixels showed exhibits, a tactile map, and brochures rather than the venue identity."
+    },
+    {
+      "rejected_before_model_access": "Jockey Club Creative Arts Centre provisional rows",
+      "reason": "One candidate was dominated by a neighboring contractor sign; its replacement was a route map, which was wayfinding evidence rather than on-premises entity identity."
+    }
+  ],
+  "decision": "ADMIT_L10_PB4_BISCRIPT_SOURCE_V1",
+  "claim_boundary": "Human admission of a deliberately stratified bilingual signage cohort. It measures conditional identity opportunity, not natural prevalence. Admission is not OCR performance, open-world identity, portal ownership, access, navigation, arrival, product benefit, user benefit, or safety evidence."
+}

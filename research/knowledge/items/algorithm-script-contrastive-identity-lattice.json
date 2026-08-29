@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "algorithm-script-contrastive-identity-lattice",
+  "kind": "algorithm",
+  "title": "Script-Contrastive Identity Lattice",
+  "canonical_ref": "repo:research/active/l10-r0/named_poi_biscript_eval.py",
+  "authors": [],
+  "year": 2026,
+  "venue": "BlindAssist research",
+  "summary": "Fuse distinctive English-word, Han-character, and public-mark evidence as independent positive place-identity carriers; carrier conflict or missing evidence remains UNKNOWN, and a proof is joined asymmetrically to the appearance fallback.",
+  "mechanisms": [
+    {
+      "id": "script-contrastive-identity-lattice",
+      "name": "Distinctive multilingual carrier lattice with conflict veto",
+      "description": "Fold traditional/simplified Han variants, weight English words and Han uni/bi-grams by candidate-pack distinctiveness, keep public marks separate, add only a small agreement bonus, veto strong cross-carrier disagreement, and let a proved entity authorize only itself while UNKNOWN preserves appearance.",
+      "inputs": ["Official bilingual POI metadata", "Current RGB image", "Frozen appearance identity scores"],
+      "outputs": ["Proved entity or UNKNOWN", "Carrier scores and conflict state", "Pairwise requested-entity acceptance"],
+      "limitations": "Confirmed only on eight fresh curated public-image queries in the test split. Identity-bearing opportunity was deliberately stratified; the mechanism is not open-world place recognition and does not bind a portal by itself."
+    }
+  ],
+  "tags": ["l10", "named-poi", "ocr", "bilingual", "chinese", "identity", "unknown", "evidence-lattice"],
+  "aliases": ["L10-PB4", "SCIL", "BiScript identity"],
+  "links": [
+    {"label": "Wikimedia Commons", "ref": "https://commons.wikimedia.org/"}
+  ],
+  "added_at": "2026-08-29",
+  "updated_at": "2026-08-29"
+}

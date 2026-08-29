@@ -698,6 +698,42 @@ observation with before/after receipt. PB2-B and general L10-AV0 remain blocked;
 wrong-request counts remain source-label proxies rather than exhaustive
 physical target-absence authority.
 
+L10-PB4 has now crossed the missing identity-coverage gate with a genuinely
+new representation. The Script-Contrastive Identity Lattice (SCIL) separates
+official public metadata into English-word, traditional/simplified-folded Han
+uni/bi-gram, and public-mark carriers. Candidate-pack distinctiveness weights
+the atoms, agreeing carriers receive only a small bonus, and independently
+strong carriers that name different entities veto the frame to `UNKNOWN`.
+Only a unique SCIL proof authorizes its entity; no proof preserves the frozen
+appearance decision.
+
+A source-only pixel audit rejected placard, directory, exhibit, wayfinding,
+neighbor-sign, and previously human-opened candidates before any PB4 model
+call. It froze eight PB1/PB2-A/PB3-formal-cohort-disjoint entities into four
+Development and four test entities, each with one identity-bearing and one
+context query. Development selected CLIP for appearance and independently
+froze all text score/margin thresholds. Test remained sealed.
+
+On eight test queries, appearance reached Recall@1 `5/8`, accepted only `2/8`
+correct requests and `0/4` identity-bearing requests, and accepted `1/24`
+source-label-negative wrong requests. English canonical matching proved `0/8`;
+flat bilingual whole-alias matching proved `1/8`. SCIL emitted **`6/6` correct
+proofs with zero wrong proofs**, including **`4/4` identity-bearing views** and
+five proofs with Han or public-mark participation. Its asymmetric join raised
+positive acceptance from `2/8` to **`6/8`** and reduced the wrong-request proxy
+from `1/24` to **`0/24`** (`100%` relative, `4.17 pp` absolute). All six frozen
+clauses passed. Record
+`L10_PB4_SCRIPT_CONTRASTIVE_IDENTITY_LATTICE_GATE_MET`.
+
+SCIL is now the conditional proof-positive named-place authority; PB3 remains
+closed and its cohort must not be tuned. This does not yet bind an entrance.
+The next legal experiment may join only a current SCIL-proved frame to the
+separately frozen functional portal-set proposer. `UNKNOWN` frames remain
+blocked and request `APPROACH_TEXT / SWEEP_SIGN`. The identity-bearing stratum
+is deliberate opportunity evidence and wrong-request rows remain source-label
+proxies; no natural prevalence, open-world identity, access, active-view,
+navigation, arrival, product, user-benefit, or safety claim follows.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

@@ -1,0 +1,77 @@
+{
+  "schema": "l10-named-poi-biscript-protocol-v1",
+  "frozen_at": "2026-08-29",
+  "question": "Can a script-contrastive evidence lattice turn official English, Traditional-Chinese, and public-mark metadata into a high-precision named-place proof on fresh bilingual signage, while keeping unreadable views UNKNOWN and preserving the appearance fallback?",
+  "sources": {
+    "source_spec": {
+      "path": "research/active/l10-r0/named_poi_biscript_source_v1.json",
+      "sha256": "91c227def1559c5f1da6aedfd1dfd9aa489f8450f3753186fb4a42b02627906b"
+    },
+    "source_audit": {
+      "path": "research/active/l10-r0/named_poi_biscript_source_audit_v1.json",
+      "sha256": "0e4661abe22cc641e9bd33072f9da3dff9bcb9480f6c80637aa586b32ecc0e16"
+    },
+    "dataset_manifest": {
+      "path": "artifacts.local/knowledge/named-poi-biscript-v1/dataset_manifest.json",
+      "sha256": "db03c626ea70b836b889cee2aa3b8fd74a50ded2a7ff7168ad33171a46e93377",
+      "inventory_sha256": "db717b35fd71c97c180b4b8b26be8bec50c4c2f1d0976031032b4283569099d1"
+    }
+  },
+  "evaluator": {
+    "path": "research/active/l10-r0/named_poi_biscript_eval.py",
+    "sha256": "49a391ee937ddbd23d48c1f2554d3874d8f1242a9458bdf15ef7a31d0e5c9754"
+  },
+  "frozen_scope": {
+    "development": "Four entities and eight queries: one human-labeled identity-bearing view and one context view per entity.",
+    "test": "Four different entities and eight queries with the same source-only strata.",
+    "prior_exclusion": "All eight entities are absent from the PB1, PB2-A, and PB3 formal cohorts; Hong Kong Heritage Museum was removed because it appeared in the earlier PB2-A human rejection audit.",
+    "negative_boundary": "Pairwise wrong-request rows are source-label negatives only; exhaustive physical absence of every other entity is not claimed.",
+    "portal_boundary": "No portal proposal, portal ownership, COMMIT, tracking, active observation, navigation, or arrival decision is invoked."
+  },
+  "runtime": {
+    "ocr": "RapidOCR 3.9.2 with ONNX Runtime CPUExecutionProvider",
+    "ocr_models": {
+      "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+      "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+      "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+    },
+    "appearance_models": {
+      "clip": "artifacts.local/models/clip-vit-base-patch32-3d74acf",
+      "clip_weights_sha256": "a63082132ba4f97a80bea76823f544493bffa8082296d62d71581a4feff1576f",
+      "dinov2": "artifacts.local/models/p1_a2_dinov2_small_ed25f3a",
+      "dinov2_weights_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1"
+    }
+  },
+  "arms": {
+    "B0_APPEARANCE": "Development selects CLIP, DINOv2, or fixed z-scored CLIP+DINO by the frozen PB2-A selection order. The balanced-accuracy acceptance threshold is Development-only.",
+    "C0_ENGLISH_CANONICAL": "SequenceMatcher over the canonical English name and OCR line/contiguous-line windows; no Chinese alias or mark is visible to this control.",
+    "C1_FLAT_BISCRIPT_ALIAS": "Take the maximum SequenceMatcher score over frozen English aliases, Han aliases after a fixed traditional/simplified fold, and public marks. There is no atom weighting, agreement bonus, or conflict veto.",
+    "C2_SCIL": "Script-Contrastive Identity Lattice. English word atoms, Han unigrams/bigrams after a fixed traditional/simplified fold, and exact public-mark atoms receive split-local inverse-document-frequency weights computed from the frozen candidate metadata only. Each carrier mixes SequenceMatcher and weighted atom recall at 0.45/0.55; the entity score is its strongest carrier plus 0.10 of the second. If independently strong carriers (>=0.72) name different entities, all entity scores become zero and the frame remains UNKNOWN.",
+    "C3_ASYMMETRIC_JOIN": "A C2 proof authorizes only that requested entity and vetoes other requested entities. C2 UNKNOWN preserves B0 instead of becoming NONE, so missing text cannot erase a target-present appearance decision."
+  },
+  "development_selection": {
+    "appearance": "Select arm and acceptance threshold on Development only.",
+    "text": "For C0, C1, and C2 independently, enumerate observed top-score and top1-minus-top2 midpoint thresholds plus 0 and 1; maximize proof precision, then correct-proof coverage, then identity-bearing coverage, then the stricter thresholds.",
+    "test_seal": "Test OCR, carrier scores, labels, and outcomes are not inspected until every appearance and text choice is fixed by Development."
+  },
+  "metrics": [
+    "appearance Recall@1, Recall@3, positive acceptance, and source-label-negative false confirmation",
+    "C0/C1/C2 proof precision, correct-proof coverage, identity-bearing/context coverage, wrong proofs, and UNKNOWN",
+    "C2 carrier conflicts, multi-script proofs, and correct proofs with Han or mark participation",
+    "C3 positive acceptance and false-confirmation reduction versus B0"
+  ],
+  "promotion_gate": {
+    "proof_precision": "C2 test proof precision must be at least 0.95 with zero wrong-entity proofs.",
+    "identity_bearing_coverage": "C2 must correctly prove at least 3/4 test identity-bearing queries.",
+    "positive_guardrail": "C3 test positive acceptance must be no lower than B0.",
+    "false_confirmation_effect": "C3 must reduce B0 source-label-negative false confirmations by at least 50% relative or 0.10 absolute.",
+    "flat_alias_pareto": "C2 must have at least as many correct proofs and no more wrong proofs than C1 on test.",
+    "script_utility": "At least one correct C2 test proof must have Han or public-mark carrier score >=0.45.",
+    "decision": "All six clauses are required for L10_PB4_SCRIPT_CONTRASTIVE_IDENTITY_LATTICE_GATE_MET."
+  },
+  "successor": {
+    "gate_met": "Retain C2 as a conditional positive identity authority. The next experiment may join only C2-proved current images to a separately frozen functional portal set; UNKNOWN continues to request APPROACH_TEXT or SWEEP_SIGN.",
+    "gate_not_met": "Close this single-frame bilingual representation. Change to external localization, a separately observed logo reference, or execution-receipt-backed active observation; do not tune aliases, folds, atom weights, thresholds, OCR models, or pixels on the opened cohort."
+  },
+  "claim_boundary": "Fresh entity-disjoint public-image evidence for conditional bilingual signage identity only. The cohort is deliberately identity-opportunity stratified and is not natural encounter prevalence. Wrong-request pairs are source-label proxies. No open-world identity, portal ownership, access, active-view causality, tracking, navigation, arrival, product benefit, user benefit, or safety claim follows."
+}
