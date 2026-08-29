@@ -37,6 +37,7 @@ DTR_X6_STATIC_WORLD_PERSISTENCE_FALSIFIER_GATE_MET /
 DTR_X7_FULL_STATIC_WORLD_ANCHOR_GATE_NOT_MET /
 DTR_X8_RGB_STATIC_VETO_FALSIFIER_GATE_MET /
 DTR_X9_FULL_RGB_STATIC_VETO_GATE_NOT_MET /
+DTR_X10_CROSS_FITTED_MOTION_AUTHORITY_GATE_NOT_MET /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
 ## Parallel product lines
@@ -1255,7 +1256,7 @@ three selectivity checks still failed. Accept
 source-level effect but is not a selective standalone risk source. Do not tune
 its map age or radius. The next admissible source must add independently
 observable scene-motion evidence; details and sealed hashes are in
-`X6_X9_STATIC_WORLD_RGB_AUTHORITY_2026-08-29.md`.
+`X6_X10_STATIC_VISUAL_LEARNED_AUTHORITY_2026-08-29.md`.
 
 X8 added that observation as synchronized stitched-RGB image tracks compared
 against ego-rigid static and X7-moving reprojections. Missing visual evidence
@@ -1273,6 +1274,18 @@ maximum of 16. Accept `DTR_X9_FULL_RGB_STATIC_VETO_GATE_NOT_MET` and close this
 fixed RGB veto without a threshold or camera-fusion rescue. Static-world and
 RGB evidence both have measurable additive effect, but neither supplies enough
 authority for selective event risk.
+
+X10 then tested one fixed sequence-held-out learned authority on the sealed X9
+cells. Six L2-logistic folds used native-OBB labels from the other five
+sequences only, with exact label-member access receipts and a frozen `0.5`
+threshold. It retained 108,403 of 238,726 cells, reduced false segments
+`64 -> 47`, and raised Event F1 `15.79% -> 20.34%`, while preserving `6/6`
+CONTACT recall and `8/18` dropout recovery; aggregate median lead moved from
+`3.816 s` to `3.526 s`. Accept
+`DTR_X10_CROSS_FITTED_MOTION_AUTHORITY_GATE_NOT_MET`: the learned authority has
+cross-sequence effect but still fails all three selectivity checks. Do not
+rescue it by changing model, feature set, regularization, or threshold on these
+opened folds; the next successor must add a new observable motion signal.
 
 ## What stops here
 

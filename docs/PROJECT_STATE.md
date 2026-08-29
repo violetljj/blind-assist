@@ -341,6 +341,17 @@ still failed. Decision: `DTR_X9_FULL_RGB_STATIC_VETO_GATE_NOT_MET`. The two
 independent static observations have additive but insufficient selectivity;
 do not tune their constants on this opened cohort.
 
+X10 added one fixed sequence-held-out learned motion-authority head on the
+sealed X9 cells. Every fold trained on the other five sequences only and sealed
+held-out probabilities before scoring. With a fixed L2 logistic model and
+`0.5` threshold it retained 108,403/238,726 cells, cut false segments
+`64 -> 47`, raised Event F1 `15.79% -> 20.34%`, preserved `6/6` CONTACT recall
+and `8/18` dropout recovery, and kept `3.526 s` aggregate median lead. Decision:
+`DTR_X10_CROSS_FITTED_MOTION_AUTHORITY_GATE_NOT_MET`. This is a real
+cross-sequence learned-authority gain but remains above PDC's 25 false segments
+and below the frozen 35% F1 floor. Close same-feature model/threshold changes;
+the next source must add a new observable motion signal.
+
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC
 word carrier for current-camera steering. SC2 adds opportunity-correct active

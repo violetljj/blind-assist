@@ -38,6 +38,7 @@ DTR_X6_STATIC_WORLD_PERSISTENCE_FALSIFIER_GATE_MET /
 DTR_X7_FULL_STATIC_WORLD_ANCHOR_GATE_NOT_MET /
 DTR_X8_RGB_STATIC_VETO_FALSIFIER_GATE_MET /
 DTR_X9_FULL_RGB_STATIC_VETO_GATE_NOT_MET /
+DTR_X10_CROSS_FITTED_MOTION_AUTHORITY_GATE_NOT_MET /
 R4_NOT_OPENED`
 
 ## Result first
@@ -1898,7 +1899,26 @@ false segments and lower F1. Accept
 selectivity but is insufficient as a standalone source. Do not tune the opened
 map radius or age; require independently observable scene-motion evidence.
 Full mechanics, count amendment, hashes, and claim limits are in
-`X6_X9_STATIC_WORLD_RGB_AUTHORITY_2026-08-29.md`.
+`X6_X10_STATIC_VISUAL_LEARNED_AUTHORITY_2026-08-29.md`.
+
+## DTR-X10 cross-fitted learned motion authority
+
+X10 applied one fixed standardized L2 logistic head to the sealed X9 cells.
+Six folds trained only on the other five sequences' native-OBB motion-validity
+labels; each held-out probability ledger was sealed before its labels were
+available to scoring. The inference features contain current geometry, motion,
+support, X7/X9 retention, and local velocity dispersion, but no route, event,
+future, or label input.
+
+At the frozen `0.5` threshold, X10 retained 108,403/238,726 cells, reduced false
+segments `64 -> 47`, improved Event F1 `15.79% -> 20.34%`, preserved `6/6`
+CONTACT recall and `8/18` dropout recovery, and retained `3.526 s` aggregate
+median lead. Accept
+`DTR_X10_CROSS_FITTED_MOTION_AUTHORITY_GATE_NOT_MET`: the cross-sequence effect
+is real, but false segments remain above PDC and F1 below 35%. Do not try a
+second classifier, feature reweighting, or threshold on the consumed folds;
+require a new observable motion signal. Full hashes and boundaries are in
+`X6_X10_STATIC_VISUAL_LEARNED_AUTHORITY_2026-08-29.md`.
 
 ## DTR-X8--X9 independent RGB static evidence
 

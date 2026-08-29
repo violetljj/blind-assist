@@ -1,4 +1,4 @@
-# DTR X6-X9 static-world and RGB source authority
+# DTR X6-X10 static, visual, and learned motion authority
 
 Date: 2026-08-29
 
@@ -154,6 +154,44 @@ Key v2 SHA-256 values:
 - sealed predictions: `5e200b0e96fe7b9060580b7304e88e7fcdb15fdb4a7430b305cea10dc061e9e6`;
 - result: `d8b4afcac35398132a53e98b03673e4ae0433c694451fab22d266e9091512eef`.
 
+## X10 sequence-held-out learned motion authority
+
+X10 tested the learned-authority direction once, without a model or threshold
+sweep. The candidate universe is the 238,726 sealed X9 cells. Each of six folds
+trains a fixed standardized L2 logistic regression on native-OBB
+motion-validity labels from the other five sequences only. Its restricted
+reader can open only those five exact ZIP members; the held-out member remains
+forbidden until its probability ledger is hash sealed. All six fold receipts
+record five accessed members and no forbidden access.
+
+Inference features are current-frame deployable quantities only: range,
+bearing, speed, radial/tangential velocity, point count, flow support, X3-to-X7
+and X7-to-X9 local retention, and local velocity MAD. Route entry, event state,
+future frames, and native labels are not inference inputs. The model, L2
+regularization, class balancing, and `0.5` probability threshold were frozen
+before execution. X3 velocity, route, lifecycle, and scorer remain unchanged.
+
+| arm | CONTACT recall | false segments | Event F1 | median first lead | dropout recovery |
+|---|---:|---:|---:|---:|---:|
+| X9 fixed RGB veto | `6/6` | 64 | 15.79% | **`3.816 s`** | `8/18` |
+| X10 cross-fitted authority | `6/6` | **47** | **20.34%** | `3.526 s` | `8/18` |
+
+X10 removes another 17 false segments and preserves all recalled CONTACT and
+dropout trials, establishing a real cross-sequence learned-authority effect.
+It still fails the `<=16` false-segment, `>=35%` Event-F1, and below-PDC
+selectivity checks. Accept
+`DTR_X10_CROSS_FITTED_MOTION_AUTHORITY_GATE_NOT_MET`; do not change the model,
+features, regularization, or threshold on these opened folds. A successor must
+add a new observable motion signal, not reweight the same sealed features.
+
+Key v2 SHA-256 values:
+
+- X10 script: `ca5a2a616d908716210d90d1dccd39b9ccb37fa41ec1925ca78ec02978b6cee4`;
+- freeze: `2f2ed24c637ff653346db6dd14f8def61de6749ce030d58e7a9c8e1276fe39d8`;
+- materialization: `8b099a4febc96ecaff3d2ad7ae15ec80634a50ee1a0422de532d712d0686bb96`;
+- sealed predictions: `312fe995bfbd3f1915c64160c137c3c7d941a5a0fb2ed1a6cb7e5d00b9a673e4`;
+- result: `ca25823b5bc6421a6a8a9728205a1f1ce8699f2bdfcfbf9af95233d4689f2fdf`.
+
 ## Timeline-count amendment
 
 The frozen X7 assembler initially compared 4,811 timeline rows with X3's 4,787
@@ -173,11 +211,13 @@ Key SHA-256 values:
 
 ## Claim boundary
 
-X6--X9 are privileged Development evidence on the already opened C31/X0
+X6--X10 are privileged Development evidence on the already opened C31/X0
 six-sequence cohort. They establish that causal world persistence and
 synchronized ego-rigid RGB residuals can each remove some static pseudo-motion
-while retaining X3's recovered events. The RGB component is a sparse
-frame-local source mechanism evaluated with public robot-camera data, not an
-end-to-end RGB obstacle system. These results do not establish source-disjoint
+while a sequence-held-out learned head can further suppress errors without
+using held-out labels at inference. The RGB component is a sparse frame-local
+source mechanism evaluated with public robot-camera data, not an end-to-end RGB
+obstacle system. X10 is cross-fitted on a six-sequence consumed cohort, not a
+new confirmation cohort. These results do not establish source-disjoint
 confirmation, total decode/runtime latency, Android behavior, user benefit,
 reliability, or safety.
