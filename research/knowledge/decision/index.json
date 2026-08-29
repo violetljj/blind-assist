@@ -2,11 +2,11 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-29",
-  "source_fingerprint": "21a5e193e6eb801a29eb9ce9b15712cdf4ccb6d273ada38817d270f09fc4b6eb",
+  "source_fingerprint": "513d2af84d43dddcef19ea91cd6f306c7f95ead0ee2138c361973c9fd3cefd80",
   "counts": {
     "failure_layers": 13,
-    "mechanisms": 255,
-    "uses": 254,
+    "mechanisms": 256,
+    "uses": 255,
     "experiments": 206,
     "current_terminals": 19
   },
@@ -1025,6 +1025,100 @@
         }
       ],
       "search_text": "Searching for MobileNetV3 MobileNetV3Small plus Lite R-ASPP provides a mobile-oriented lightweight segmentation backbone/decoder candidate. idea-archive sanpo Searching for MobileNetV3 — idea:MobileNetV3 route mechanism MobileNetV3Small plus Lite R-ASPP provides a mobile-oriented lightweight segmentation backbone/decoder candidate. The paper does not establish BlindAssist corridor semantics, event utility, INT8 fidelity on the target phone, BLV user benefit, or safety. sanpo Retain as a bounded four-class SANPO segmentation candidate only after event and data gates close; compare on event metrics and device latency rather than paper accuracy alone. Retain as a bounded four-class SANPO segmentation candidate only after event and data gates close; compare on event metrics and device latency rather than paper accuracy alone. The paper does not establish BlindAssist corridor semantics, event utility, INT8 fidelity on the target phone, BLV user benefit, or safety."
+    },
+    {
+      "id": "algorithm-target-conditioned-portal-binding-head#shared-portal-score-set-summary-none",
+      "item_id": "algorithm-target-conditioned-portal-binding-head",
+      "mechanism_id": "shared-portal-score-set-summary-none",
+      "kind": "algorithm",
+      "title": "Target-conditioned functional portal binding head",
+      "canonical_ref": "repo:research/active/l10-r0/named_poi_portal_binding.py",
+      "summary": "Score each functional portal independently against a public target reference pack, summarize the candidate set symmetrically, and represent target absence with an explicit NONE logit.",
+      "tags": [
+        "l10",
+        "named-poi",
+        "portal-binding",
+        "set-valued",
+        "explicit-none",
+        "permutation-invariant"
+      ],
+      "name": "Shared portal scorer plus symmetric set summary and NONE",
+      "description": "Freeze CLIP, DINOv2, and the dual-family portal proposer. Build candidate-local, expanded-context, upper-facade, global-identity, structural, and support-ray features. Apply one shared MLP to every candidate; derive NONE from mean/max/min set summaries; train with multi-positive listwise likelihood.",
+      "inputs": [
+        "Public target reference images",
+        "Current RGB image",
+        "Top-K functional portal-set proposals"
+      ],
+      "outputs": [
+        "Ranked target-conditioned portal candidates",
+        "COMMIT, SET_VALUED, or NONE"
+      ],
+      "limitations": "The first building-disjoint confirmation collapsed to universal NONE. Latent Top-3 ranking was 6/6 and wrong-target rejection 30/30, but correct COMMIT/SET_VALUED coverage was 0/6. The learned embedding/fusion arm is closed on that cohort.",
+      "signatures": [],
+      "layer_scores": {
+        "evaluation_evidence": 6,
+        "geometry_motion": 3,
+        "handoff_completion": 3,
+        "identity_binding": 10,
+        "observation_perception": 3,
+        "runtime_infrastructure": 3,
+        "source_coverage": 9,
+        "temporal_belief": 6
+      },
+      "routes": [
+        "l10-r0"
+      ],
+      "uses": [
+        {
+          "id": "use-l10-r0-target-conditioned-portal-binding-head",
+          "route": "l10-r0",
+          "use_state": "rejected",
+          "reproduction_status": "reproduced",
+          "verdict": "negative",
+          "project_application": "Bind a separately requested public entity to the retained dual-family functional portal proposals before active belief, tracking, or guidance.",
+          "expected_effect": "Improve target portal ranking or halve wrong portal commits without losing Top-3, while preserving non-degenerate correct COMMIT/SET_VALUED coverage and rejecting wrong buildings.",
+          "observed_effect": "The learned head kept Top-1 at 4/6, improved latent Top-3 from 5/6 to 6/6, and reduced wrong-building confirmations from 27/30 to 0/30. It nevertheless emitted NONE on all 36 test target/query episodes, reducing correct COMMIT/SET_VALUED truth coverage from 4/6 to 0/6. The route is therefore rejected rather than promoted by abstention collapse.",
+          "metrics": [
+            "baseline_top1=4/6",
+            "head_top1=4/6",
+            "baseline_top3=5/6",
+            "head_top3=6/6",
+            "baseline_wrong_portal_commits=2",
+            "head_wrong_portal_commits=0",
+            "baseline_commit_or_set_truth_coverage=4/6",
+            "head_commit_or_set_truth_coverage=0/6",
+            "baseline_wrong_building_confirmations=27/30",
+            "head_wrong_building_confirmations=0/30",
+            "head_false_none_on_available_positive=6/6",
+            "head_state_counts=NONE:36,SET_VALUED:0,COMMIT:0"
+          ],
+          "claim_boundary": "This rejects the frozen PB1 embedding/fusion head on the consumed public-image cohort. It does not reject a changed target-identity source/representation and establishes no access, traversability, active motion, tracking, guidance, arrival, product, user-benefit, or safety result.",
+          "evidence": [
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/named_poi_portal_binding_protocol_v1.json",
+              "summary": "Frozen sources, split contract, model components, features, baselines, metrics, and original promotion expression."
+            },
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/named_poi_portal_binding_result_v1.json",
+              "summary": "Durable metrics, evaluator-integrity correction, terminal decision, evidence hashes, and claim boundary."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r0/named-poi-portal-binding-v1/result.json",
+              "summary": "Raw deterministic training, baseline, test, backend, and per-episode output."
+            },
+            {
+              "kind": "artifact",
+              "ref": "artifacts.local/evidence/l10-r0/named-poi-portal-binding-v1/adjudication.json",
+              "summary": "Post-result all-NONE integrity adjudication; no outputs, labels, or denominators changed."
+            }
+          ],
+          "updated_at": "2026-08-29"
+        }
+      ],
+      "search_text": "Target-conditioned functional portal binding head Score each functional portal independently against a public target reference pack, summarize the candidate set symmetrically, and represent target absence with an explicit NONE logit. l10 named-poi portal-binding set-valued explicit-none permutation-invariant Shared portal scorer plus symmetric set summary and NONE Freeze CLIP, DINOv2, and the dual-family portal proposer. Build candidate-local, expanded-context, upper-facade, global-identity, structural, and support-ray features. Apply one shared MLP to every candidate; derive NONE from mean/max/min set summaries; train with multi-positive listwise likelihood. Public target reference images Current RGB image Top-K functional portal-set proposals Ranked target-conditioned portal candidates COMMIT, SET_VALUED, or NONE The first building-disjoint confirmation collapsed to universal NONE. Latent Top-3 ranking was 6/6 and wrong-target rejection 30/30, but correct COMMIT/SET_VALUED coverage was 0/6. The learned embedding/fusion arm is closed on that cohort. l10-r0 Bind a separately requested public entity to the retained dual-family functional portal proposals before active belief, tracking, or guidance. Improve target portal ranking or halve wrong portal commits without losing Top-3, while preserving non-degenerate correct COMMIT/SET_VALUED coverage and rejecting wrong buildings. The learned head kept Top-1 at 4/6, improved latent Top-3 from 5/6 to 6/6, and reduced wrong-building confirmations from 27/30 to 0/30. It nevertheless emitted NONE on all 36 test target/query episodes, reducing correct COMMIT/SET_VALUED truth coverage from 4/6 to 0/6. The route is therefore rejected rather than promoted by abstention collapse. baseline_top1=4/6 head_top1=4/6 baseline_top3=5/6 head_top3=6/6 baseline_wrong_portal_commits=2 head_wrong_portal_commits=0 baseline_commit_or_set_truth_coverage=4/6 head_commit_or_set_truth_coverage=0/6 baseline_wrong_building_confirmations=27/30 head_wrong_building_confirmations=0/30 head_false_none_on_available_positive=6/6 head_state_counts=NONE:36,SET_VALUED:0,COMMIT:0 This rejects the frozen PB1 embedding/fusion head on the consumed public-image cohort. It does not reject a changed target-identity source/representation and establishes no access, traversability, active motion, tracking, guidance, arrival, product, user-benefit, or safety result."
     },
     {
       "id": "algorithm-target-local-entrance-binding#target-local-entrance-edge",

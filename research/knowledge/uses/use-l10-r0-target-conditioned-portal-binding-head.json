@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "id": "use-l10-r0-target-conditioned-portal-binding-head",
+  "item_id": "algorithm-target-conditioned-portal-binding-head",
+  "route": "l10-r0",
+  "mechanism_ids": ["shared-portal-score-set-summary-none"],
+  "use_state": "rejected",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Twenty public building identities split without overlap into 10 train, four Development, and six PB1-unseen confirmation entities; 27 references and 48 current-view queries. Test portal pixels were previously used only for the separate proposer confirmation.",
+    "project_application": "Bind a separately requested public entity to the retained dual-family functional portal proposals before active belief, tracking, or guidance.",
+    "modifications": "Train only a small shared 32-to-16 candidate MLP and a mean/max/min set-summary NONE head over frozen structural, CLIP, DINOv2, facade-context, and support-ray features.",
+    "expected_effect": "Improve target portal ranking or halve wrong portal commits without losing Top-3, while preserving non-degenerate correct COMMIT/SET_VALUED coverage and rejecting wrong buildings."
+  },
+  "evaluation": {
+    "reproduction_status": "reproduced",
+    "verdict": "negative",
+    "setup": "Fixed building-disjoint PB1 Development/training/confirmation. Development selected the native support ray baseline. Test entities did not affect feature normalization, checkpoint selection, or baseline selection. A post-result adjudication corrected an all-NONE loophole without changing outputs or denominators.",
+    "effect": "The learned head kept Top-1 at 4/6, improved latent Top-3 from 5/6 to 6/6, and reduced wrong-building confirmations from 27/30 to 0/30. It nevertheless emitted NONE on all 36 test target/query episodes, reducing correct COMMIT/SET_VALUED truth coverage from 4/6 to 0/6. The route is therefore rejected rather than promoted by abstention collapse.",
+    "metrics": [
+      "baseline_top1=4/6",
+      "head_top1=4/6",
+      "baseline_top3=5/6",
+      "head_top3=6/6",
+      "baseline_wrong_portal_commits=2",
+      "head_wrong_portal_commits=0",
+      "baseline_commit_or_set_truth_coverage=4/6",
+      "head_commit_or_set_truth_coverage=0/6",
+      "baseline_wrong_building_confirmations=27/30",
+      "head_wrong_building_confirmations=0/30",
+      "head_false_none_on_available_positive=6/6",
+      "head_state_counts=NONE:36,SET_VALUED:0,COMMIT:0"
+    ],
+    "claim_boundary": "This rejects the frozen PB1 embedding/fusion head on the consumed public-image cohort. It does not reject a changed target-identity source/representation and establishes no access, traversability, active motion, tracking, guidance, arrival, product, user-benefit, or safety result."
+  },
+  "evidence": [
+    {
+      "kind": "repo",
+      "ref": "research/active/l10-r0/named_poi_portal_binding_protocol_v1.json",
+      "summary": "Frozen sources, split contract, model components, features, baselines, metrics, and original promotion expression."
+    },
+    {
+      "kind": "repo",
+      "ref": "research/active/l10-r0/named_poi_portal_binding_result_v1.json",
+      "summary": "Durable metrics, evaluator-integrity correction, terminal decision, evidence hashes, and claim boundary."
+    },
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/evidence/l10-r0/named-poi-portal-binding-v1/result.json",
+      "sha256": "fe0b012612860419160407d2768fb6a22536d033bfb1ffebe44cee7483ac1b22",
+      "summary": "Raw deterministic training, baseline, test, backend, and per-episode output."
+    },
+    {
+      "kind": "artifact",
+      "ref": "artifacts.local/evidence/l10-r0/named-poi-portal-binding-v1/adjudication.json",
+      "sha256": "e17cc3e336aa47bf7370cf980dc70d1cede17da52bf306e7ecde27d6ae7fc630",
+      "summary": "Post-result all-NONE integrity adjudication; no outputs, labels, or denominators changed."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-29",
+      "change": "Ran PB1 once on the frozen building-disjoint cohort. Rejected the learned head after universal NONE collapse; closed weight, threshold, embedding, backbone, and fusion tuning on this cohort. L10-AV0 remains blocked."
+    }
+  ],
+  "added_at": "2026-08-29",
+  "updated_at": "2026-08-29"
+}

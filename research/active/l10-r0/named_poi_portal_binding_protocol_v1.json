@@ -1,0 +1,115 @@
+{
+  "schema": "l10-named-poi-portal-binding-protocol-v1",
+  "mode": "DEVELOPMENT_TRAINING_PLUS_BUILDING_DISJOINT_CONFIRMATION",
+  "sources": {
+    "source_spec": {
+      "path": "research/active/l10-r0/named_poi_portal_binding_source_v1.json",
+      "sha256": "a5da9fe4ca2d97c52ecae29562172640d7a4bc04173ae088d1e98811a0c85e19"
+    },
+    "source_audit": {
+      "path": "research/active/l10-r0/named_poi_portal_binding_source_audit_v1.json",
+      "sha256": "78f39a7ca8b748aec673d89ffaa9215c7e41c72141bf6e2d5a4a8257ff69467a"
+    },
+    "dataset_manifest": {
+      "path": "artifacts.local/knowledge/named-poi-portal-binding-v1/dataset_manifest.json",
+      "sha256": "726bddd6acef2410dc73c8c7ff8af67aa6e5c31540e16f67cbf5cc06e7c1e736",
+      "inventory_sha256": "3b40ad8356bbbbec8abdf23516f37d45131dbf3dc234b71edd6420f88da4612c"
+    }
+  },
+  "frozen_components": {
+    "portal_proposer": {
+      "path": "research/active/l10-r0/named_poi_portal_lattice.py",
+      "sha256": "2cf6b0d80a5691150f6a70e9a45e2a6136e87480b4e06fa1fa82ea470386ba61",
+      "maximum_candidates": 10,
+      "configuration": "PortalLatticeConfig defaults from retained dual-family v3"
+    },
+    "clip": {
+      "path": "artifacts.local/models/clip-vit-base-patch32-3d74acf",
+      "weights_sha256": "a63082132ba4f97a80bea76823f544493bffa8082296d62d71581a4feff1576f"
+    },
+    "dinov2": {
+      "path": "artifacts.local/models/p1_a2_dinov2_small_ed25f3a",
+      "weights_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+      "patch_grid": 9
+    }
+  },
+  "candidate_context": {
+    "context_expansion_scale": 1.8,
+    "upper_facade_height_multiplier": 1.0,
+    "upper_facade_candidate_fraction": 0.25
+  },
+  "feature_names": [
+    "proposal_score",
+    "is_repeated_post_lattice",
+    "post_count_normalized",
+    "normalized_span",
+    "normalized_height",
+    "spacing_regularity",
+    "horizontal_boundary_support",
+    "box_area_fraction",
+    "box_bottom_fraction",
+    "local_clip_target",
+    "local_clip_margin",
+    "local_dino_target",
+    "local_dino_margin",
+    "context_clip_target",
+    "context_clip_margin",
+    "context_dino_target",
+    "context_dino_margin",
+    "upper_clip_target",
+    "upper_clip_margin",
+    "upper_dino_target",
+    "upper_dino_margin",
+    "global_clip_target",
+    "global_clip_margin",
+    "global_dino_target",
+    "global_dino_margin",
+    "global_geometry_target",
+    "global_geometry_margin",
+    "ray_score",
+    "ray_mass_fraction",
+    "ray_peak",
+    "ray_patch_fraction"
+  ],
+  "training": {
+    "head": "shared MLP candidate scorer plus mean/max/min permutation-invariant set summary and explicit NONE head",
+    "hidden_size": 32,
+    "embedding_size": 16,
+    "learning_rate": 0.003,
+    "weight_decay": 0.0001,
+    "maximum_epochs": 240,
+    "early_stopping_patience": 35,
+    "minimum_delta": 0.0001,
+    "candidate_set_logit_gap": 0.35,
+    "seed": 20260829,
+    "loss": "multi-positive listwise target likelihood with explicit NONE",
+    "feature_normalization": "train candidates only",
+    "checkpoint_selection": "lowest building-disjoint Development loss"
+  },
+  "baselines": {
+    "structure_rank": "Unchanged portal proposal_score order; always COMMIT top one.",
+    "candidate_local_clip_dino": {
+      "score": "mean(local CLIP target margin, local DINO target margin)",
+      "none_threshold": 0.0,
+      "set_margin": 0.03
+    },
+    "target_support_ray": "Unchanged SupportFieldConfig and SupportRayConfig over the dual-family portal boxes."
+  },
+  "episode_contract": {
+    "correct_target": "Frozen portal-set members are positive candidates. If the proposer supplies none, NONE is the only legal proposal-conditional output and the episode remains a Top-K miss.",
+    "wrong_target": "Pair each query with every other entity in its split; all candidates are negative and NONE is the only legal output.",
+    "test_isolation": "Test entities, references, truth, features, and metrics cannot affect training normalization, checkpoint selection, or baseline selection."
+  },
+  "baseline_selection": "On Development choose the baseline lexicographically by Top-1 truth recall, Top-3 truth recall, then lower non-NONE false-accept rate; carry that one baseline name unchanged to test.",
+  "metrics": [
+    "Top-1 truth retention",
+    "Top-3 truth retention",
+    "wrong-building confirmation",
+    "wrong portal COMMIT",
+    "SET_VALUED truth coverage",
+    "NONE false accept",
+    "false NONE on proposer-available positive"
+  ],
+  "promotion_gate": "On the six building-disjoint test entities, PB1 must retain Top-3 at least as often as the selected strongest baseline and either improve Top-1 by at least one building or reduce wrong portal COMMIT by at least 50 percent. Otherwise stop embedding/fusion tuning and change the information source or representation.",
+  "claim_boundary": "Curated public-image target-to-functional-portal binding only. The test is algorithm-fresh for PB1 but its portal pixels were previously used for proposer confirmation. No public-access, traversability, active motion, tracking, guidance, arrival, product, user-benefit, or safety claim."
+}

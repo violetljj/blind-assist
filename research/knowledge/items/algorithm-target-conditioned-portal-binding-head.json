@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "id": "algorithm-target-conditioned-portal-binding-head",
+  "kind": "algorithm",
+  "title": "Target-conditioned functional portal binding head",
+  "canonical_ref": "repo:research/active/l10-r0/named_poi_portal_binding.py",
+  "authors": [],
+  "year": 2026,
+  "venue": "BlindAssist research",
+  "summary": "Score each functional portal independently against a public target reference pack, summarize the candidate set symmetrically, and represent target absence with an explicit NONE logit.",
+  "mechanisms": [
+    {
+      "id": "shared-portal-score-set-summary-none",
+      "name": "Shared portal scorer plus symmetric set summary and NONE",
+      "description": "Freeze CLIP, DINOv2, and the dual-family portal proposer. Build candidate-local, expanded-context, upper-facade, global-identity, structural, and support-ray features. Apply one shared MLP to every candidate; derive NONE from mean/max/min set summaries; train with multi-positive listwise likelihood.",
+      "inputs": ["Public target reference images", "Current RGB image", "Top-K functional portal-set proposals"],
+      "outputs": ["Ranked target-conditioned portal candidates", "COMMIT, SET_VALUED, or NONE"],
+      "limitations": "The first building-disjoint confirmation collapsed to universal NONE. Latent Top-3 ranking was 6/6 and wrong-target rejection 30/30, but correct COMMIT/SET_VALUED coverage was 0/6. The learned embedding/fusion arm is closed on that cohort."
+    }
+  ],
+  "tags": ["l10", "named-poi", "portal-binding", "set-valued", "explicit-none", "permutation-invariant"],
+  "aliases": ["Portal Binding Head", "L10-PB1"],
+  "links": [],
+  "added_at": "2026-08-29",
+  "updated_at": "2026-08-29"
+}

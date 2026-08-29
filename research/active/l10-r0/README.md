@@ -1378,6 +1378,53 @@ ordered or commanded-view source is still required before policy search or
 temporal claims. The obsolete oracle benchmark family remains outside this
 route.
 
+#### PB1 target-conditioned functional portal binding
+
+PB1 froze the retained dual-family proposer and the existing CLIP/DINOv2
+backbones, then trained only a shared candidate MLP plus a permutation-invariant
+set summary and explicit `NONE` head. The public-image cohort contains 20
+building identities split without overlap into 10 train, four Development, and
+six confirmation entities. The confirmation entities were unseen by PB1
+training, normalization, checkpoint selection, and baseline selection; their
+pixels were previously opened only for the independent proposer confirmation,
+so this is algorithm-fresh for PB1 rather than universally fresh imagery.
+
+Development selected the unchanged native support ray as the strongest
+baseline. Confirmation results were:
+
+| arm | Top-1 | Top-3 | wrong portal commit | COMMIT/SET truth coverage | wrong-building confirmation |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| native support ray | 4/6 | 5/6 | 2 | 4/6 | 27/30 |
+| learned PB1 head | 4/6 | 6/6 | 0 | **0/6** | **0/30** |
+
+The learned score contains ranking signal and is a perfect wrong-building veto
+on this narrow cohort, but it is not a portal binder: every one of 36 test
+episodes was reduced to `NONE`, including all `6/6` proposer-available correct
+targets. The original promotion expression mechanically passed because it did
+not couple false-commit reduction to positive admission coverage. A post-result
+integrity adjudication changed no model output, label, or denominator and added
+the missing non-degeneracy invariant: correct `COMMIT / SET_VALUED` coverage
+must be nonzero and no lower than the selected baseline.
+
+Record
+`L10_PB1_FRESH_BUILDING_GATE_NOT_MET_ALL_NONE_STOP_EMBEDDING_FUSION`. Do not tune
+weights, thresholds, embeddings, backbones, or fusion on this consumed cohort.
+Any successor must change the target-identity information source or
+representation and use a new building-disjoint confirmation cohort. L10-AV0 is
+not opened: active observation still lacks a correctly admitted real portal.
+
+Protocol and durable summary:
+`named_poi_portal_binding_protocol_v1.json` and
+`named_poi_portal_binding_result_v1.json`. Raw result SHA-256 is
+`fe0b012612860419160407d2768fb6a22536d033bfb1ffebe44cee7483ac1b22`;
+adjudication SHA-256 is
+`e17cc3e336aa47bf7370cf980dc70d1cede17da52bf306e7ecde27d6ae7fc630`.
+The encoder ran on measured-faster CPU (`0.451 s` versus verified RTX 5060 CUDA
+`0.522 s` for the frozen batch probe); the small head trained on CPU as
+`TASK_NOT_GPU_SUITABLE`. No OCR calls were made. Public access,
+traversability, active motion, tracking, guidance, arrival, product benefit,
+user benefit, and safety remain unproved.
+
 V2 result:
 `artifacts.local/evidence/l10-r0/named-poi-multifacet-entrance-v2/result.json`,
 SHA-256 `dff6fcd89460f185fc3785549131800869ce7661d35d5119b3f5dd4d58488f51`.

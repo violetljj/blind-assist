@@ -1,0 +1,63 @@
+{
+  "schema": "l10-named-poi-portal-binding-summary-v1",
+  "date": "2026-08-29",
+  "question": "Can a learned target-conditioned shared portal scorer bind the requested public entity to one of the frozen dual-family functional portal proposals while preserving explicit NONE and set-valued ambiguity?",
+  "data": {
+    "entities": 20,
+    "split_entities": {"train": 10, "development": 4, "test": 6},
+    "split_overlap": 0,
+    "reference_images": 27,
+    "query_images": 48,
+    "test_status": "BUILDING_DISJOINT_AND_ALGORITHM_FRESH_FOR_PB1; TEST_PORTAL_PIXELS_PREVIOUSLY_USED_ONLY_FOR_PROPOSER_CONFIRMATION",
+    "dataset_manifest_sha256": "726bddd6acef2410dc73c8c7ff8af67aa6e5c31540e16f67cbf5cc06e7c1e736"
+  },
+  "model": {
+    "frozen_backbones": ["CLIP ViT-B/32", "DINOv2-small"],
+    "frozen_proposer": "dual-family repeated-post lattice plus paired-handle aperture",
+    "trainable_component": "shared 32-to-16 MLP candidate head plus mean/max/min permutation-invariant set summary and explicit NONE head",
+    "training_device": "CPU",
+    "training_device_reason": "TASK_NOT_GPU_SUITABLE",
+    "encoder_device": "CPU",
+    "encoder_device_reason": "CPU_FASTER_MEASURED",
+    "encoder_cpu_seconds": 0.4508336999861058,
+    "encoder_cuda_seconds": 0.521802100003697,
+    "head_best_epoch": 6,
+    "head_artifact_sha256": "3b483bc7f693299b210c7ed4ad0380f15ee3f4368b13b454684f5f2de842f956"
+  },
+  "test": {
+    "selected_baseline": "target_support_ray",
+    "baseline": {
+      "top1_truth_retention": "4/6",
+      "top3_truth_retention": "5/6",
+      "correct_portal_commits": 1,
+      "wrong_portal_commits": 2,
+      "commit_or_set_truth_coverage": "4/6",
+      "wrong_building_confirmations": "27/30"
+    },
+    "portal_binding_head": {
+      "top1_truth_retention": "4/6",
+      "top3_truth_retention": "6/6",
+      "correct_portal_commits": 0,
+      "wrong_portal_commits": 0,
+      "commit_or_set_truth_coverage": "0/6",
+      "wrong_building_confirmations": "0/30",
+      "false_none_on_proposer_available_positive": "6/6",
+      "state_counts": {"NONE": 36, "SET_VALUED": 0, "COMMIT": 0}
+    }
+  },
+  "evaluator_integrity": {
+    "original_mechanical_gate_passed": true,
+    "problem": "The original gate could be satisfied by universal NONE: it counted ranking Top-3 separately from admitted COMMIT/SET_VALUED coverage.",
+    "correction": "A portal binder must have nonzero correct COMMIT/SET_VALUED coverage and may not lower that coverage relative to the selected baseline.",
+    "corrected_gate_passed": false
+  },
+  "decision": "L10_PB1_FRESH_BUILDING_GATE_NOT_MET_ALL_NONE_STOP_EMBEDDING_FUSION",
+  "next_step": "Do not tune weights, thresholds, embeddings, backbones, or fusion on this consumed cohort. A successor must change the target-identity information source or representation and use a new building-disjoint confirmation cohort. L10-AV0 remains blocked.",
+  "evidence": {
+    "protocol_sha256": "313c8e28d1e68b5f748d83aa29bf37eb5a6feb814f668e9ca5699d3e3537172d",
+    "result_sha256": "fe0b012612860419160407d2768fb6a22536d033bfb1ffebe44cee7483ac1b22",
+    "adjudication_sha256": "e17cc3e336aa47bf7370cf980dc70d1cede17da52bf306e7ecde27d6ae7fc630",
+    "encoder_backend_receipt_sha256": "fbac792131d88bee9993769c43309f69dba4af97bb5b3933eb9a272fea592223"
+  },
+  "claim_boundary": "Curated public-image target-to-functional-portal Development evidence only. The negative closes this learned embedding/fusion head on the consumed cohort; it does not reject portal binding with a changed identity source/representation and establishes no access, traversability, active motion, tracking, guidance, arrival, product, user-benefit, or safety result."
+}

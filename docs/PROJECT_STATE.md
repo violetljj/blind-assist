@@ -299,6 +299,21 @@ model or threshold selection. Frozen UNIQUE behavior remained identical on all
 replay evidence; executed active observation, functional grounding, metric
 arrival, live product benefit, user benefit, and safety remain unproven.
 
+The parallel Named-POI functional-entrance branch now has a retained non-OCR
+dual-family portal proposer, but PB1 did not close target-to-portal binding. A
+shared candidate head with a permutation-invariant set summary was trained on a
+20-building, building-disjoint public-image cohort. On six PB1-unseen
+confirmation buildings it ranked truth at Top-3 `6/6` and rejected `30/30`
+wrong-target pairings, but collapsed to `NONE` on all 36 episodes, reducing
+correct `COMMIT / SET_VALUED` truth coverage from the selected support-ray
+baseline's `4/6` to `0/6`. The corrected decision is
+`L10_PB1_FRESH_BUILDING_GATE_NOT_MET_ALL_NONE_STOP_EMBEDDING_FUSION`; the
+mechanical original pass was rejected as an evaluator-integrity defect. The
+consumed cohort is closed to embedding, weight, threshold, backbone, and fusion
+tuning. L10-AV0 remains blocked until a changed target-identity information
+source or representation produces a correctly admitted portal on a new
+building-disjoint cohort.
+
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
 because the approved AWS profile is absent. That is a source-access condition,

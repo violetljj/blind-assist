@@ -1,0 +1,136 @@
+{
+  "schema": "l10-named-poi-portal-binding-source-v1",
+  "mode": "DEVELOPMENT_WITH_BUILDING_DISJOINT_CONFIRMATION",
+  "selection_authority": "Exact Commons filenames and frozen prior portal cohorts selected before any PB1 feature extraction or training. The five added training queries are metadata-selected glass-entrance files; their pixel truth must be frozen in the separate source audit before model execution.",
+  "splits": {
+    "train": {
+      "prior_portal_source": {
+        "manifest": "artifacts.local/knowledge/named-poi-portal-lattice-fresh-v2/source_manifest.json",
+        "manifest_sha256": "259dbf29b59cd5191a4146e138d19d2e32958f4c5988119dcfe0c41dbcde13b8",
+        "audit": "research/active/l10-r0/named_poi_portal_lattice_fresh_source_audit_v2.json",
+        "audit_sha256": "782e6d28b1b533789b68ab94c39e049825dcd311da06b7cc4ce862ddb2f055d9",
+        "entities": [
+          {
+            "id": "hkpc-building",
+            "name": "Hong Kong Productivity Council Building",
+            "frame": 1,
+            "reference_commons_file": "HK 九龍塘 Kln Tong 達之路 Tat Chee Avenue 香港生產力大樓 Hong Kong Productivity Council HKPC Building September 2019 SSG 07.jpg"
+          },
+          {
+            "id": "chong-yuet-ming-building",
+            "name": "Chong Yuet Ming Building",
+            "frame": 2,
+            "reference_commons_file": "HKU 香港大學 Pokfulam compus 莊月明 Chong Yuet Ming Building glass window n door entrance August 2025 N13P 01.jpg"
+          },
+          {
+            "id": "mtr-headquarters-building",
+            "name": "MTR Headquarters Building",
+            "frame": 3,
+            "reference_commons_file": "Hong Kong MTR Headquarters (Kowloon Bay).jpg"
+          },
+          {
+            "id": "chu-kong-shipping-tower",
+            "name": "Chu Kong Shipping Tower",
+            "frame": 5,
+            "reference_commons_file": "HK SW Sheung Wan Connaught Road Central Chu Kong Shipping Tower March 2026 N13P 01.jpg"
+          },
+          {
+            "id": "methodist-centre",
+            "name": "Methodist Centre",
+            "frame": 6,
+            "reference_commons_file": "Methodist Centre 07-05-2023.jpg"
+          }
+        ]
+      },
+      "added_entities": [
+        {
+          "id": "laguna-plaza",
+          "name": "Laguna Plaza",
+          "query_commons_file": "HK Kwun Tong 麗港城商場 Laguna Plaza main Entrance.JPG",
+          "reference_commons_file": "Laguna Plaza.JPG"
+        },
+        {
+          "id": "infinitus-plaza",
+          "name": "Infinitus Plaza",
+          "query_commons_file": "HK SW Sheung Wan Des Voeux Road Central Infinitus Plaza office building entrance glass door March 2026 N13P.jpg",
+          "reference_commons_file": "Infinitus Plaza (Hong Kong).jpg"
+        },
+        {
+          "id": "nan-fung-treasure-centre",
+          "name": "Nan Fung Treasure Centre",
+          "query_commons_file": "HK KTD 觀塘 Kwun Tong 鴻圖道 Hung To Road Nan Fung Treasure Centre main entrance glass door CNY decor March 2026 N13P 01.jpg",
+          "reference_commons_file": "HK KTD 觀塘 Kwun Tong 鴻圖道 Hung To Road Nan Fung Treasure Centre glass door notice n CNY tree March 2026 N13P 02.jpg"
+        },
+        {
+          "id": "otb-building",
+          "name": "OTB Building",
+          "query_commons_file": "HK SW 上環 Sheung Wan 德輔道中 265 Des Voeux Road Central 海外銀行大廈 OTB Building office main entrance April 2026 N13P 01.jpg",
+          "reference_commons_file": "HK Sheung Wan OTB Des Voeux Road C 257.jpg"
+        },
+        {
+          "id": "central-market",
+          "name": "Central Market",
+          "query_commons_file": "HK 中環 Central 域多利皇后街 Queen Victoria Street Central Market mall glass door exit and entrance June 2026 N13P 01.jpg",
+          "reference_commons_file": "Central Market,Central,Hong Kong.jpg"
+        }
+      ]
+    },
+    "development": {
+      "protocol": "research/active/l10-r0/named_poi_multifacet_reference_ray_protocol_v1.json",
+      "protocol_sha256": "9b5e21b1f865e79c3591a8b4d05b862d39b0a5e7423afa7ae7b07cdc927e92b1",
+      "reference_library": "artifacts.local/knowledge/named-poi-multifacet-v5/multifacet_library.json",
+      "reference_library_sha256": "7953ab9370b8b05efcb5af06ef09c1fd46a74fb41452a5e62808337521d74f33",
+      "query_library": "artifacts.local/knowledge/named-poi-multifacet-v7/multifacet_library.json",
+      "query_library_sha256": "4824a13cc74a3371b75725d73c57124bb2b401b0b3e0a0bd39470efc3b6e98ed"
+    },
+    "test": {
+      "prior_portal_source": {
+        "manifest": "artifacts.local/knowledge/named-poi-portal-lattice-fresh-v3/source_manifest.json",
+        "manifest_sha256": "8d5b8c244cbcd14e6b9ddc474d7db1e1edd6b755f0d538a063c33d9a5de79e20",
+        "audit": "research/active/l10-r0/named_poi_portal_lattice_fresh_source_audit_v3.json",
+        "audit_sha256": "b431f7c5685757e0471c0ab3deff5f0702b49908d2b9ae814bf65946a1026fa9",
+        "entities": [
+          {
+            "id": "chater-house",
+            "name": "Chater House",
+            "frame": 1,
+            "reference_commons_file": "HK Chater House.jpg"
+          },
+          {
+            "id": "inland-revenue-centre",
+            "name": "Inland Revenue Centre",
+            "frame": 2,
+            "reference_commons_file": "HK Inland Revenue Centre 2023-01-07.jpg"
+          },
+          {
+            "id": "the-wings",
+            "name": "The Wings",
+            "frame": 3,
+            "reference_commons_file": "HK TKO 將軍澳 Tseung Kwan O 商場 PopCorn mall The Wings residential building entrance January 2023 Px3.jpg"
+          },
+          {
+            "id": "cheng-yu-tung-building",
+            "name": "Cheng Yu Tung Building",
+            "frame": 4,
+            "reference_commons_file": "CUHK Cheng Yu Tung Building 2010.jpg"
+          },
+          {
+            "id": "the-gateway",
+            "name": "The Gateway",
+            "frame": 5,
+            "reference_commons_file": "The Gateway 2008.jpg"
+          },
+          {
+            "id": "cheung-lee-commercial-building",
+            "name": "Cheung Lee Commercial Building",
+            "frame": 6,
+            "reference_commons_file": "HK TST 尖沙咀 Tsim Sha Tsui 金巴利道 25 Kimberley Road Knutsford Terrace Cheung Lee Commercial Building April 2022 Px3.jpg"
+          }
+        ]
+      }
+    }
+  },
+  "split_contract": "All entity IDs must be disjoint across train, development, and test. Test queries and references may not be used for training, threshold selection, epoch selection, or feature normalization.",
+  "negative_contract": "Within each split, pair every query with every other split target to create explicit NONE episodes. Correct-target candidates outside the frozen functional portal region are same-image hard negatives.",
+  "claim_boundary": "Curated public-image Development and algorithm-fresh-by-PB1 confirmation only. No public-access, traversability, executed motion, navigation, arrival, user-benefit, or safety claim."
+}

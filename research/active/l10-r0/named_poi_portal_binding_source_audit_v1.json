@@ -1,0 +1,54 @@
+{
+  "schema": "l10-named-poi-portal-binding-source-audit-v1",
+  "source": "research/active/l10-r0/named_poi_portal_binding_source_v1.json",
+  "pixel_access": "ADDED_TRAINING_IMAGES_AND_REFERENCES_ONLY_BEFORE_ANY_MODEL_OR_FEATURE_CALL",
+  "decision": "ADMIT_FIVE_ADDED_TARGET_PORTAL_PAIRS",
+  "rejected_before_model": [
+    {
+      "commons_file": "HK TKO 寶琳 Po Lam MCP 新都城中心 Metro City Plaza residential building entrance May 2022 Px3.jpg",
+      "reason": "The visible entrance is explicitly signed The Metropolis / 都會豪庭, while the frozen target reference was Metro City Plaza. Treating it as a correct target-to-portal pair would create identity-label contamination."
+    }
+  ],
+  "portal_set_truth": {
+    "authority": "HUMAN_PIXEL_REGION_FROZEN_BEFORE_ANY_PB1_FEATURE_EXTRACTION_OR_MODEL_EXECUTION",
+    "definition": "One current-view pedestrian glass-door bank or functional aperture belonging to the visibly named entity. Adjacent leaves and fixed glass panels form one functional portal set.",
+    "membership_rule": "Candidate center is inside the frozen portal-set region and at least half of candidate area lies inside it.",
+    "entities": {
+      "laguna-plaza": {
+        "image_size": [1280, 960],
+        "portal_set_box_xyxy": [130, 120, 1090, 900],
+        "kind": "Laguna Plaza signed multi-leaf glass entrance"
+      },
+      "infinitus-plaza": {
+        "image_size": [1280, 960],
+        "portal_set_box_xyxy": [0, 250, 1080, 940],
+        "kind": "Infinitus Plaza signed multi-leaf glass entrance; adjacent tenant door excluded"
+      },
+      "nan-fung-treasure-centre": {
+        "image_size": [1280, 960],
+        "portal_set_box_xyxy": [0, 0, 1280, 960],
+        "kind": "Nan Fung Treasure Centre paired open glass doors"
+      },
+      "otb-building": {
+        "image_size": [1280, 1707],
+        "portal_set_box_xyxy": [190, 690, 1110, 1540],
+        "kind": "OTB Building recessed double glass entrance"
+      },
+      "central-market": {
+        "image_size": [1280, 960],
+        "portal_set_box_xyxy": [250, 430, 1280, 960],
+        "kind": "Central Market street-level sliding glass entrance"
+      }
+    }
+  },
+  "reference_audit": {
+    "laguna-plaza": "Different interior view contains Laguna Plaza wall identity and circulation context.",
+    "infinitus-plaza": "Different exterior night view contains the Infinitus facade name and architectural skin.",
+    "nan-fung-treasure-centre": "Different current-day close view contains Nan Fung property-management and Treasure Centre door-band evidence; narrow target-local reference, not a facade claim.",
+    "otb-building": "Different street view contains the OTB Building bilingual sign and entrance context.",
+    "central-market": "Different exterior view contains the historic Central Market facade and surrounding street context."
+  },
+  "algorithm_calls_before_freeze": 0,
+  "model_calls_before_freeze": 0,
+  "claim_boundary": "The audit establishes curated current-image target portal regions and public reference relevance only; not access, traversability, active motion, navigation, arrival, benefit, or safety."
+}

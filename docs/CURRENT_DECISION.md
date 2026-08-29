@@ -609,6 +609,33 @@ guidance, arrival, user benefit, and safety remain unproved. SkyDiscover policy
 search remains blocked until a genuine ordered or commanded real episode is
 available; the obsolete oracle benchmark family is excluded from the route.
 
+L10-PB1 has now tested that missing target-to-portal seam rather than tuning the
+proposer. Twenty building identities were split without overlap into 10 train,
+four Development, and six confirmation entities. The dual-family proposer,
+CLIP, and DINOv2 were frozen; only a shared candidate MLP plus a symmetric set
+summary and explicit `NONE` head were trained. The six confirmation buildings
+were unseen by PB1 training/selection, although their pixels had previously
+served the separate proposer-only confirmation.
+
+Development selected the unchanged native support ray as the strongest
+baseline. On confirmation it retained truth at Top-1 `4/6`, Top-3 `5/6`, made
+two wrong portal commits, covered truth in `COMMIT / SET_VALUED` on `4/6`, and
+wrongly admitted `27/30` wrong-target pairings. The learned head ranked truth at
+Top-1 `4/6` and Top-3 `6/6` and rejected all `30/30` wrong-target pairings, but
+it also emitted `NONE` on every one of the 36 target/query episodes: correct
+`COMMIT / SET_VALUED` coverage fell `4/6 -> 0/6` and false `NONE` was `6/6` on
+proposer-available positives.
+
+The original mechanical promotion expression therefore had an evaluator bug:
+zero commits could satisfy “wrong portal commit reduced” while Top-3 was counted
+from latent rankings. The post-result integrity adjudication changes no outputs,
+labels, or denominators and refuses that degenerate pass. Record
+`L10_PB1_FRESH_BUILDING_GATE_NOT_MET_ALL_NONE_STOP_EMBEDDING_FUSION`. Do not tune
+weights, thresholds, embeddings, backbones, or fusion on this consumed cohort.
+A legal successor must change the public target-identity information source or
+representation and use a new building-disjoint confirmation cohort. L10-AV0
+remains blocked because there is still no correctly admitted portal to act on.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust
