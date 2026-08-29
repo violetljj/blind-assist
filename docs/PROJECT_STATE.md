@@ -13,6 +13,7 @@ that protect interpretation.
 - Current obstacle/risk route: [Dynamic Travel Risk R2](../research/active/dtr-r0/README.md)
 - Current question and stop condition: [CURRENT_DECISION.md](CURRENT_DECISION.md)
 - Workstation entrypoint: `tools/ba.ps1`
+- CARLA DTR asset bridge: [CARLA integration playbook](CARLA_PLAYBOOK.md)
 - Android entrypoint: `scripts/run_android_gradle.ps1`
 - Closed experiment lookup: [history-index.md](history-index.md)
 
@@ -35,6 +36,13 @@ strictly improving R0's `9/10` and 55. On 27 JRDB test sequences it recalls
 pose-authoritative development/holdout check: R2 recalls `119/122` pedestrian
 events with 285 false alerts versus R0's `122/122` and 286, retaining the small
 recall cost instead of tuning it away.
+
+CARLA 0.9.16 is now connected through a BlindAssist-owned, external-process
+asset contract. The bridge admits the frozen V16 privileged-source canary and
+the corrected V17 valid negative by exact status, authority, result path, and
+SHA-256, then materializes an ignored project-side context for experiments.
+This makes CARLA available as a synthetic DTR causal lab without adding it to
+Android or treating it as source-disjoint X21 confirmation.
 
 The static CODa ceiling adds causal curved-route and bounded vertical
 occupancy for walls/barriers, fixed structures, and temporary obstacles. It

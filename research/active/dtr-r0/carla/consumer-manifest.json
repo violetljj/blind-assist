@@ -1,0 +1,54 @@
+{
+  "schema_version": "blindassist-carla-consumer-v1",
+  "consumer": "blindassist-dtr-r0",
+  "runtime": {
+    "required_version": "0.9.16",
+    "bridge_mode": "external_process_boundary"
+  },
+  "required_assets": [
+    {
+      "id": "c2-v16-payload-authority",
+      "expected_status": "CARLA_C2_WEARABLE_PHYSICAL_OCCLUSION_SOURCE_ADMITTED",
+      "expected_authority": "SOURCE_ADMITTED_DEVELOPMENT",
+      "result": {
+        "path": "experiments/c2-wearable-occlusion-source-v1/evidence/authority-v16-20260829-225123/result.json",
+        "sha256": "B501195C1C6F6891FA729957DB4B2AD4C64DB6131C7772278EB0DE5F82894697"
+      },
+      "blindassist_role": "Synthetic privileged-source canary with capture-time payload authority."
+    },
+    {
+      "id": "c2-v17-footprint-guarded",
+      "expected_status": "CARLA_C2_FOOTPRINT_GUARDED_SAME_ID_EFFECT_NOT_OBSERVED",
+      "expected_authority": "VALID_NEGATIVE_DEVELOPMENT",
+      "result": {
+        "path": "experiments/c2-wearable-occlusion-source-v1/evidence/guarded-v17-20260829-231902/result.json",
+        "sha256": "707ACBB87F44EE639833D68A9D7E7C9A8CE9BB8F8FBAAE8FC698499379C2899F"
+      },
+      "blindassist_role": "Corrected guard-before-refresh mechanism result and valid synthetic negative."
+    }
+  ],
+  "claim_boundary": [
+    "These assets are synthetic Development inputs and mechanism evidence, not source-disjoint X21 confirmation.",
+    "CARLA actor identity, masks, geometry, route, and contact truth remain privileged evaluator-only information.",
+    "CARLA is not an Android runtime or Gradle dependency and establishes no product, user-benefit, reliability, or safety claim.",
+    "The frozen X21 arm needs an explicit observable-source adapter before any CARLA replay and still requires separate real source-disjoint confirmation."
+  ],
+  "next_target": {
+    "name": "DTR-CARLA causal benchmark",
+    "scenario_families": [
+      "same_geometry_different_motion",
+      "same_motion_different_route",
+      "same_motion_different_ttc",
+      "same_scene_different_visibility",
+      "same_target_visible_then_occluded",
+      "same_background_static_then_dynamic"
+    ],
+    "oracle_ladder": [
+      "O0_RGB",
+      "O1_RGB_DEPTH",
+      "O2_RGB_DEPTH_FLOW",
+      "O3_PRIVILEGED_TRUTH"
+    ],
+    "decision_boundary": "Build this as a fresh synthetic Development benchmark; do not use it to replace real source-disjoint confirmation or to retune consumed cohorts."
+  }
+}

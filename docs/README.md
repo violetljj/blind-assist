@@ -14,6 +14,7 @@ The hot path is intentionally short:
 - [Release and verification](RELEASE_AND_VERIFICATION.md)
 - [Local artifacts](LOCAL_ARTIFACTS.md)
 - [Host research compute](HOST_RESEARCH_COMPUTE.md)
+- [CARLA integration](CARLA_PLAYBOOK.md)
 - [Glasses hardware route](GLASSES_HARDWARE_ROUTE.md)
 
 ## Research knowledge
