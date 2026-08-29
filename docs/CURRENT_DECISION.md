@@ -29,6 +29,10 @@ DTR_C20_LOCAL_MOTION_VOTING_DEVELOPMENT_GATE_NOT_MET /
 DTR_C21_SCENE_BIAS_RESIDUAL_MOTION_DEVELOPMENT_GATE_NOT_MET /
 DTR_C22_EGO_RIGID_VISUAL_MOTION_DEVELOPMENT_GATE_NOT_MET /
 DTR_C27_PERSISTENT_POINT_SUPPORT_DEVELOPMENT_GATE_NOT_MET /
+DTR_X3_FULL_LAG_FLOXEL_GATE_NOT_MET /
+DTR_X3_FULL_REPLAY_FAILURE_ATTRIBUTION_COMPLETE /
+DTR_X4_DETERMINISTIC_CLUSTER_VOTE_REPEATABILITY_GATE_NOT_MET /
+DTR_X5_OVERLAP_CYCLE_SOURCE_FALSIFIER_GATE_NOT_MET /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
 ## Parallel product lines
@@ -1177,6 +1181,58 @@ direct flow with exactly one stronger scene-flow source while freezing route,
 horizon, lifecycle, cohort, and evaluator. A separate continuous-geometry
 canary is admissible only for the localized Huang-2 miss. C31, C32,
 probabilistic occupancy, and model training remain closed.
+
+X1--X3 replaced only the motion source with one independent
+Floxels-inspired, symmetric five-scan field transported through a measured
+two-scan lag. The localized gates passed: X1c found three correct positive
+frames and two correct route-entry frames, while X2 suppressed `25/34` frozen
+source-error units. The sealed full six-sequence replay then scored `6/6`
+CONTACT recall, 94 false segments, 11.32% F1, 3.816 s median lead, and `8/18`
+dropout recovery, versus PDC's `4/6`, 25, 22.86%, 2.291 s, and `5/18`.
+
+Accept `DTR_X3_FULL_LAG_FLOXEL_GATE_NOT_MET`. Higher recall, lead, and dropout
+recovery do not compensate for 69 added false segments and lower F1. The run is
+opened Development only; one Huang-lane empty-support frame was emitted
+fail-closed by a truth-blind amendment and explicitly bound into the sealed
+evidence chain. The CUDA-autograd source also showed ledger-level cold-rerun
+drift, although its X1c/X2 decisions repeated. Do not tune this consumed source,
+route, threshold, horizon, or lifecycle.
+
+X4 tested the narrow deterministic alternative: CPU float64 rigid-cluster
+multi-scan votes, no autograd, random seed, optimizer, or early stopping. Three
+cold roots had identical canonical arrays and effects and suppressed `31/34`
+error units, but produced zero correct positive or route-entry frames out of 19;
+p95 source compute was `0.399--0.450 s` against a `0.0696 s` scan period.
+Accept `DTR_X4_DETERMINISTIC_CLUSTER_VOTE_REPEATABILITY_GATE_NOT_MET` and close
+that representation without a parameter sweep. The only admissible next step
+is read-only X3 full-replay failure attribution that identifies the missing
+source information; no new full replay opens until a bounded source-only
+falsifier preserves the X3 positives and removes its false-motion mechanism.
+
+The read-only X3 full-replay attribution is now complete. Of 94 X3 false
+segments, 66 are `STATIC_PSEUDO_MOTION`, 14 are bad-flow magnitude, and one is
+a direction reversal, so source failures account for `81/94` (86.17%). X3
+resolved nine PDC false segments but created 73 new ones; static pseudo-motion
+or bad flow accounts for `65/73` (89.04%) of those additions. The remaining
+primary causes are five real noncritical movers, four wrong bindings, three
+fragmentation segments, and one route-geometry miss; 11 segments also carry a
+comparative temporal-fragment flag.
+
+Accept `DTR_X3_FULL_REPLAY_FAILURE_ATTRIBUTION_COMPLETE`. The next admissible
+information source is `STATIC_AWARE_DIRECTION_CONSISTENT_SCENE_FLOW`: it must
+preserve X3's recovered positive motion while explicitly distinguishing static
+surfaces and rejecting direction-inconsistent transport. This is a source
+authority change, not permission to sweep threshold, seed, backbone, tracker,
+route, horizon, lifecycle, fusion, or scorer.
+
+X5 then applied one source-only causal check to the sealed X3 cells: local flow
+had to agree reciprocally with the preceding overlapping five-scan window. On
+60 opened frames it suppressed `32/34` frozen source-error units, but recovered
+only one correct positive frame and zero correct route-entry frames. Accept
+`DTR_X5_OVERLAP_CYCLE_SOURCE_FALSIFIER_GATE_NOT_MET` and close same-source
+cycle filtering without a threshold sweep. The surviving direction is narrower:
+introduce a static-world anchor or independently observable dynamic evidence;
+do not derive another authority from the same unsemantic geometric flow.
 
 ## What stops here
 

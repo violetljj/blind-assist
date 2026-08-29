@@ -30,6 +30,10 @@ DTR_C22_EGO_RIGID_VISUAL_MOTION_DEVELOPMENT_GATE_NOT_MET /
 DTR_C23_RIGID_TEMPORAL_OBJECT_FLOW_DEVELOPMENT_GATE_NOT_MET /
 DTR_C24_CYCLE_CONSISTENT_POINT_FLOW_DEVELOPMENT_GATE_MET /
 DTR_X0_MOTION_SOURCE_ATTRIBUTION_COMPLETE /
+DTR_X3_FULL_LAG_FLOXEL_GATE_NOT_MET /
+DTR_X3_FULL_REPLAY_FAILURE_ATTRIBUTION_COMPLETE /
+DTR_X4_DETERMINISTIC_CLUSTER_VOTE_REPEATABILITY_GATE_NOT_MET /
+DTR_X5_OVERLAP_CYCLE_SOURCE_FALSIFIER_GATE_NOT_MET /
 R4_NOT_OPENED`
 
 ## Result first
@@ -1830,6 +1834,46 @@ a bounded Huang-2 canary, not as a substitute for the missing Huang-lane source
 or false-flow repair. C31 tuning, C32, forecasting, and model training remain
 closed. Full definitions, rows, hashes, and claim limits are in
 `X0_MOTION_SOURCE_ATTRIBUTION_2026-08-29.md`.
+
+## DTR-X1--X4 lagged scene-flow source terminal
+
+X1c and X2 opened one full source-only replay after the two-scan-lag voxel
+source recovered Huang-lane motion headroom and suppressed `25/34` frozen
+source-error representatives.  On the full six-sequence opened Development
+cohort, X3 recovered CONTACT `4/6 -> 6/6`, improved median lead
+`2.291 -> 3.816 s`, and raised dropout recovery `5/18 -> 8/18`.  It also raised
+false segments `25 -> 94` and reduced Event F1 `22.86% -> 11.32%`.
+
+Accept `DTR_X3_FULL_LAG_FLOXEL_GATE_NOT_MET`.  The recall, lead, and dropout
+checks passed, but all three selectivity checks failed.  Close X3 without
+tuning; this consumed Development result does not authorize source-disjoint
+confirmation.
+
+X4 then replaced autograd flow with a deterministic, single-threaded float64
+rigid-cluster vote on only the opened positive/error slices.  Three independent
+cold roots had identical canonical arrays and effects.  Every run suppressed
+`31/34` source-error units; across 19 evaluated positive frames, 17 had
+associated cells but none had correct motion or route entry.  X4 also
+missed the one-scan-period compute gate (`0.3990--0.4502 s` p95 versus
+`0.06961 s`).  Accept
+`DTR_X4_DETERMINISTIC_CLUSTER_VOTE_REPEATABILITY_GATE_NOT_MET`; the negative is
+deterministic, X4 is closed, and no full X4 replay or parameter sweep is
+authorized.  Full gates, hashes, and claim limits are in
+`X1_X3_LAG_FLOXEL_SOURCE_2026-08-29.md`.
+
+Read-only full-replay attribution then assigned `81/94` X3 false segments to
+source failure: 66 static pseudo-motion, 14 bad-flow magnitude, and one
+direction reversal.  Of 73 X3-only additions, `65/73` (89.04%) have the same
+source causes.  Accept `DTR_X3_FULL_REPLAY_FAILURE_ATTRIBUTION_COMPLETE` and
+require the next source to be static-aware and direction-consistent; do not
+rescue X3 through threshold, seed, backbone, route, lifecycle, or scorer work.
+
+X5 tested reciprocal cycle agreement across overlapping causal five-scan
+windows using only the sealed X3 cells.  It suppressed `32/34` source-error
+units but retained one correct positive frame and zero correct route-entry
+frames.  Accept `DTR_X5_OVERLAP_CYCLE_SOURCE_FALSIFIER_GATE_NOT_MET`: close
+same-source consistency filtering and require a static-world anchor or an
+independently observable dynamic signal.
 
 ## Claim ceiling
 

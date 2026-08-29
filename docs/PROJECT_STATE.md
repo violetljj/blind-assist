@@ -268,6 +268,48 @@ current direct flow with exactly one stronger scene-flow source under the
 unchanged scorer. Learned authority remains closed, while continuous geometry
 is only a bounded Huang-2 canary.
 
+X1--X3 then tested one independent Floxels-inspired five-scan source. The
+two-scan-lag causal adapter retained localized positive headroom (three correct
+frames, two correct route-entry frames), and the frozen 35-unit error slice
+suppressed `25/34` source-error units. The sealed full six-sequence Development
+replay did not transfer that local effect: lag-Floxel improved CONTACT recall
+from `4/6` to `6/6`, median lead from `2.291 s` to `3.816 s`, and dropout
+recovery from `5/18` to `8/18`, but false segments rose from 25 to 94 and F1
+fell from 22.86% to 11.32%. Decision:
+`DTR_X3_FULL_LAG_FLOXEL_GATE_NOT_MET`. The result includes one truth-blind,
+fail-closed empty-support amendment at Huang-lane frame 4, bound by the sealed
+evidence chain; it remains opened Development, not confirmation, deployment,
+real-time, or safety evidence. Do not tune the source, route, thresholds, or
+lifecycle against these outcomes.
+
+X4 separately removed CUDA autograd and early stopping with a deterministic
+CPU float64 rigid-cluster vote. Three cold runs produced identical canonical
+array hashes and effect signatures, and suppressed `31/34` error units, but
+recovered `0/19` positive frames and had `0/19` correct route-entry frames.
+Its p95 source compute was `0.399--0.450 s` versus a `0.0696 s` median scan
+period. Decision:
+`DTR_X4_DETERMINISTIC_CLUSTER_VOTE_REPEATABILITY_GATE_NOT_MET`; close this
+representation without a parameter sweep. The next DTR action is read-only
+full-replay failure attribution on X3, not another scorer rescue.
+
+That attribution is now complete. Of X3's 94 false segments, 66 are
+`STATIC_PSEUDO_MOTION`, 14 are bad-flow magnitude, and one is a direction
+reversal: source failures are `81/94` (86.17%). X3 resolved nine PDC false
+segments but added 73 new ones; `65/73` incremental errors (89.04%) are still
+static pseudo-motion or bad flow. Decision:
+`DTR_X3_FULL_REPLAY_FAILURE_ATTRIBUTION_COMPLETE`. The next admissible source
+must be `STATIC_AWARE_DIRECTION_CONSISTENT_SCENE_FLOW`; threshold, seed,
+backbone, tracker, route, lifecycle, and scorer sweeps remain closed.
+
+X5 tested whether reciprocal cycle agreement between causal overlapping
+five-scan windows could supply that authority from the sealed X3 cells. On its
+60-frame opened falsifier it suppressed `32/34` source-error units, but retained
+only one correct positive frame and zero correct route-entry frames. Decision:
+`DTR_X5_OVERLAP_CYCLE_SOURCE_FALSIFIER_GATE_NOT_MET`. Close both rigid-cluster
+and same-source consistency-filter routes; the next source must add a static
+world anchor or independently observable dynamic evidence, not filter the same
+unsemantic geometric flow again.
+
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC
 word carrier for current-camera steering. SC2 adds opportunity-correct active
