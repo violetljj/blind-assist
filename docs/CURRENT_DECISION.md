@@ -38,6 +38,12 @@ DTR_X7_FULL_STATIC_WORLD_ANCHOR_GATE_NOT_MET /
 DTR_X8_RGB_STATIC_VETO_FALSIFIER_GATE_MET /
 DTR_X9_FULL_RGB_STATIC_VETO_GATE_NOT_MET /
 DTR_X10_CROSS_FITTED_MOTION_AUTHORITY_GATE_NOT_MET /
+DTR_X11_RAW_MULTIVIEW_STATIC_VETO_FALSIFIER_GATE_NOT_MET /
+DTR_X12_CIWT_TRACK_MOTION_AGREEMENT_FALSIFIER_GATE_NOT_MET /
+DTR_X13_STITCHED_DYNAMIC_BIRTH_AUTHORITY_FALSIFIER_GATE_NOT_MET /
+DTR_X14_RGB_AUTHORIZED_MOTION_CONTINUATION_FALSIFIER_GATE_MET /
+DTR_X15_FULL_RGB_AUTHORIZED_CONTINUATION_GATE_NOT_MET /
+DTR_X16_CROSSFIT_RGB_AUTHORIZED_CONTINUATION_GATE_NOT_MET /
 NO_LOCAL_RECORDING / DETECTOR_RUNTIME_DOWNSTREAM`
 
 ## Parallel product lines
@@ -1287,6 +1293,21 @@ cross-sequence effect but still fails all three selectivity checks. Do not
 rescue it by changing model, feature set, regularization, or threshold on these
 opened folds; the next successor must add a new observable motion signal.
 
+X11--X15 supplied that signal through calibrated RGB motion. Raw multiview and
+CIWT authority closed, and frame-local stitched RGB birth was too short-lived.
+The X14 bounded-continuation canary passed; its X15 full replay reached `5/6`
+CONTACT, 18 false segments, 34.48% Event F1, `3.061 s` median lead, and `2/18`
+dropout recovery. Accept
+`DTR_X15_FULL_RGB_AUTHORIZED_CONTINUATION_GATE_NOT_MET`: it is the strongest
+current Development reference, but it narrowly misses false/F1 and materially
+regresses dropout. X16 composed X10 ahead of the same RGB birth/continuation;
+it reached 15 false segments and `3.630 s` lead but fell to `4/6` recall, 32%
+F1, and the same `2/18` dropout. Accept
+`DTR_X16_CROSSFIT_RGB_AUTHORIZED_CONTINUATION_GATE_NOT_MET` and close the
+over-selective composition without rescue. Eleven of X15's 18 false ranges
+remain concentrated in memorial-court; the next source change must model that
+persistent non-contact motion and gap continuity, not add another cell filter.
+
 ## What stops here
 
 - Do not record the superseded 24 canary or 120 staged local RGB clips.
@@ -1296,8 +1317,10 @@ opened folds; the next successor must add a new observable motion signal.
   complete.
 - Do not treat `UNKNOWN` or `NOT_EVALUABLE` as safe.
 
-The next increment, only when deployment evidence is wanted, is to replace
-privileged boxes/tracks with a real RGB/LiDAR detector and tracker behind the
-already frozen metric-frame adapters. Phone recording and live-device testing
-are not the current blocker or current priority. Full methods, receipts, and
-claim limits are in [the DTR route README](../research/active/dtr-r0/README.md).
+The next algorithm increment is a new representation for persistent
+non-contact motion plus detector-gap continuity, localized first to the
+memorial-court residual. When deployment evidence is wanted, privileged
+boxes/tracks must still be replaced with a real RGB/LiDAR detector and tracker
+behind the frozen metric-frame adapters. Phone recording and live-device
+testing are not the current blocker. Full methods, receipts, and claim limits
+are in [the DTR route README](../research/active/dtr-r0/README.md).

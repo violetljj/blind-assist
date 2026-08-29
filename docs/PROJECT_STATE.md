@@ -352,6 +352,37 @@ cross-sequence learned-authority gain but remains above PDC's 25 false segments
 and below the frozen 35% F1 floor. Close same-feature model/threshold changes;
 the next source must add a new observable motion signal.
 
+X11--X15 added that observable through calibrated raw and stitched RGB motion.
+Raw multiview and CIWT positive authority closed; frame-local stitched RGB
+dynamic birth also failed because correct motion did not survive to route
+entry. Reusing the frozen R1 `0.50 s` clear grace as causal motion continuation
+changed the result: the X14 canary met all checks, and the X15 six-sequence
+replay reached `5/6` CONTACT, 18 false segments, 34.48% Event F1, `3.061 s`
+median lead, and `2/18` dropout recovery. Accept
+`DTR_X15_FULL_RGB_AUTHORIZED_CONTINUATION_GATE_NOT_MET`: this is the strongest
+current Development mechanism, but it misses the false/F1 gates narrowly and
+regresses dropout materially. Eleven of its 18 false ranges are concentrated
+in memorial-court.
+
+X16 then composed the frozen X10 held-out authority before the unchanged RGB
+birth and continuation. It crossed the selectivity target with 15 false
+segments and `3.630 s` lead, but recall fell to `4/6`, Event F1 to 32%, and
+dropout remained `2/18`. Accept
+`DTR_X16_CROSSFIT_RGB_AUTHORIZED_CONTINUATION_GATE_NOT_MET` and close this
+over-strict composition without a model, threshold, or duration sweep. Retain
+X15 as the active algorithm reference; the next representation must explain
+memorial's persistent non-contact motion and restore detector-gap continuity,
+not add another deletion filter.
+
+Read-only residual replay confirms the failure layer. All 18 X15 false ranges
+contain births authorized outside the route and later transported into it;
+14/18 contain no same-frame risky birth at all. In memorial, seven of 11 ranges
+are transport-only and four are mixed. Of 684 active false frames, 537 have raw
+risk and 147 are lifecycle HOLD tails. The next observable therefore needs
+ego-compensated movable-instance identity/masks across frames before birth;
+shortening HOLD, merging ranges, or repeating cell-level motion closure would
+not remove the originating transport cohorts.
+
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC
 word carrier for current-camera steering. SC2 adds opportunity-correct active

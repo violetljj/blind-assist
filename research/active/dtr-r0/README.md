@@ -1920,6 +1920,46 @@ second classifier, feature reweighting, or threshold on the consumed folds;
 require a new observable motion signal. Full hashes and boundaries are in
 `X6_X10_STATIC_VISUAL_LEARNED_AUTHORITY_2026-08-29.md`.
 
+## DTR-X11--X16 RGB-authorized continuation
+
+X11--X13 tested raw-camera static veto, CIWT track agreement, and stitched-RGB
+positive dynamic birth. All three frame-local routes closed: X11 was weaker
+than stitched X8, X12 deleted every positive, and X13 retained correct motion
+but no correct route-entry frame. X14 supplied the missing causal structure:
+only an independently RGB-authorized birth may move at its unchanged X7
+velocity for the frozen R1 `0.50 s` clear-grace interval. Its 60-frame canary
+kept 13 correct frames and four correct route frames, suppressed `30/34`
+source-error units, and met the compute gate.
+
+X15 replayed that frozen mechanism over all 4,811 frames. Relative to PDC it
+improved CONTACT recall `4/6 -> 5/6`, false segments `25 -> 18`, Event F1
+`22.86% -> 34.48%`, and median lead `2.291 -> 3.061 s`; dropout recovery fell
+`5/18 -> 2/18`. Accept
+`DTR_X15_FULL_RGB_AUTHORIZED_CONTINUATION_GATE_NOT_MET`. The false/F1 misses
+are narrow, but the dropout regression is material and no duration or visual
+confidence sweep is authorized.
+
+X16 composed the already frozen X10 sequence-held-out authority ahead of the
+same RGB birth and continuation. It reduced false segments to 15 and raised
+median lead to `3.630 s`, but CONTACT recall fell to `4/6`, Event F1 to 32%,
+and dropout stayed `2/18`. Accept
+`DTR_X16_CROSSFIT_RGB_AUTHORIZED_CONTINUATION_GATE_NOT_MET`; the composition is
+over-selective and closes without rescue. X15 remains the current algorithm
+reference. Eleven of its 18 false ranges are in memorial-court, so the next
+information change must attribute that scene's persistent non-contact motion
+and add gap-persistent identity/occupancy rather than another cell filter.
+Mechanics, hashes, and claim limits are in
+`X11_X15_RGB_AUTHORIZED_CONTINUATION_2026-08-29.md`.
+
+Read-only X15 attribution sharpens that successor. Every one of the 18 false
+ranges contains RGB authorization outside the route followed by transport into
+the route; 14 ranges have no same-frame risky birth. In memorial, seven of 11
+ranges are transport-only and four are mixed. Lifecycle HOLD accounts for 147
+of 684 active false frames, so it lengthens exposure but does not create the
+repeated transport cohorts. The next single falsifier should require an
+ego-compensated, temporally persistent RGB movable-instance mask/track before
+birth, then leave X15 continuation and downstream logic frozen.
+
 ## DTR-X8--X9 independent RGB static evidence
 
 X8 compared synchronized stitched-RGB tracks against ego-rigid static and
