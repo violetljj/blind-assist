@@ -11,6 +11,7 @@ sealed.  The R7 motion bounds, route-entry geometry, and lifecycle are fixed.
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import json
 import math
 import os
@@ -66,8 +67,8 @@ def _paths(root: Path, sequence: str | None = None) -> dict[str, Path]:
     base = root if sequence is None else root / "sequences" / sequence
     return {
         "freeze": root / "freeze.json",
-        "lock": root / "materialize.lock.json",
-        "progress": root / "progress.json",
+        "lock": base / "materialize.lock.json",
+        "progress": base / "progress.json",
         "predictions": root / "predictions.json",
         "result": root / "result.json",
         "ledger": base / "lag-floxel.npz",
@@ -288,9 +289,12 @@ def materialize(args: argparse.Namespace) -> dict[str, Any]:
     x2_result = json.loads(args.x2_result.resolve(strict=True).read_text(encoding="utf-8"))
     require(x2_result.get("status") == "DTR_X2_FLOXEL_ERROR_SLICE_GATE_MET", "x3_x2_gate")
     _baseline, baseline_rows = _load_baseline(args)
+    if args.sequence is not None:
+        require(args.sequence in baseline_rows, f"x3_unknown_sequence:{args.sequence}")
+        baseline_rows = {args.sequence: baseline_rows[args.sequence]}
     root = args.root.resolve()
     root.mkdir(parents=True, exist_ok=True)
-    paths = _paths(root)
+    paths = _paths(root, args.sequence)
     fingerprint = _fingerprint(args)
     if paths["freeze"].exists():
         require(json.loads(paths["freeze"].read_text(encoding="utf-8")) == fingerprint, "x3_freeze_drift")
@@ -335,6 +339,7 @@ def materialize(args: argparse.Namespace) -> dict[str, Any]:
             cloud_by_frame = {int(frame): cloud for frame, cloud in zip(loaded_frames, world_clouds)}
             seq_paths["checkpoints"].mkdir(parents=True, exist_ok=True)
             diagnostics = []
+            pending = []
             for output_index, output_frame in enumerate(frames[4:], start=4):
                 checkpoint = seq_paths["checkpoints"] / f"{output_frame:06d}.npz"
                 if _checkpoint_valid(checkpoint, output_frame):
@@ -345,8 +350,14 @@ def materialize(args: argparse.Namespace) -> dict[str, Any]:
                                 "seconds": float(values["optimization_s"][0]),
                                 "delay_s": float(values["delay_s"][0]),
                             }
-                        )
+                    )
                     continue
+                pending.append((output_index, output_frame, checkpoint))
+
+            device = torch.device("cuda:0")
+
+            def build_frame(task: tuple[int, int, Path]) -> dict[str, Any]:
+                output_index, output_frame, checkpoint = task
                 reference = output_frame - x1c.LAG_SCANS
                 pose = poses[reference]
                 current, counts = x1._voxel_centroids(
@@ -365,13 +376,64 @@ def materialize(args: argparse.Namespace) -> dict[str, Any]:
                     len(current) > 0 and all(len(row) > 0 for row in supports),
                     f"x3_empty_cloud:{sequence}:{output_frame}",
                 )
+                return {
+                    "output_index": output_index,
+                    "output_frame": output_frame,
+                    "checkpoint": checkpoint,
+                    "reference": reference,
+                    "current": current,
+                    "counts": counts,
+                    "supports": supports,
+                    "scan_offsets": scan_offsets,
+                }
+
+            def prepare_one(task: tuple[int, int, Path]) -> dict[str, Any]:
+                prepared = build_frame(task)
+                lower = (
+                    x1.REAR_ROI_FORWARD_M[0],
+                    x1.FROZEN_FLOW_CONFIG.roi_left_m[0],
+                    x1.FROZEN_FLOW_CONFIG.roi_height_m[0],
+                )
+                upper = (
+                    x1.REAR_ROI_FORWARD_M[1],
+                    x1.FROZEN_FLOW_CONFIG.roi_left_m[1],
+                    x1.FROZEN_FLOW_CONFIG.roi_height_m[1],
+                )
+                dt_lower = tuple(value - 1.5 for value in lower)
+                dt_upper = tuple(value + 1.5 for value in upper)
+                labels = x1._cluster_labels(prepared["current"])
+                distances = [
+                    x1._distance_volume(
+                        points, dt_lower, dt_upper, device=torch.device("cpu")
+                    ).numpy()
+                    for points in prepared["supports"]
+                ]
+                prepared["labels"] = labels
+                prepared["distances"] = distances
+                return prepared
+
+            def optimize_one(prepared: Mapping[str, Any]) -> dict[str, Any]:
+                output_index = int(prepared["output_index"])
+                output_frame = int(prepared["output_frame"])
+                checkpoint = Path(prepared["checkpoint"])
+                reference = int(prepared["reference"])
+                prepared_kwargs = {}
+                if "labels" in prepared:
+                    prepared_kwargs = {
+                        "prepared_labels": prepared["labels"],
+                        "prepared_distances": prepared["distances"],
+                    }
                 displacement, detail = x1._optimize_frame(
-                    current, supports, scan_offsets=scan_offsets, device=torch.device("cuda:0")
+                    prepared["current"],
+                    prepared["supports"],
+                    scan_offsets=prepared["scan_offsets"],
+                    device=device,
+                    **prepared_kwargs,
                 )
                 local_times = [frame_times[frame] for frame in frames[output_index - 4 : output_index + 1]]
                 one_step_s = float(np.median(np.diff(local_times)))
                 positions, velocities, source_counts = x1._aggregate(
-                    current, displacement / one_step_s, counts
+                    prepared["current"], displacement / one_step_s, prepared["counts"]
                 )
                 delay_s = frame_times[output_frame] - frame_times[reference]
                 positions, velocities = x2._transport(
@@ -392,36 +454,53 @@ def materialize(args: argparse.Namespace) -> dict[str, Any]:
                     optimization_s=np.asarray([detail["seconds"]], dtype=np.float64),
                     delay_s=np.asarray([delay_s], dtype=np.float64),
                 )
-                completed += 1
-                diagnostics.append(
-                    {
-                        "output_frame": output_frame,
-                        "seconds": detail["seconds"],
-                        "delay_s": delay_s,
-                    }
+                return {
+                    "output_frame": output_frame,
+                    "seconds": detail["seconds"],
+                    "delay_s": delay_s,
+                }
+
+            if args.workers == 1:
+                prepared_batches = ([build_frame(task)] for task in pending)
+            else:
+                executor = concurrent.futures.ThreadPoolExecutor(max_workers=args.workers)
+                prepared_batches = (
+                    [executor.submit(prepare_one, task) for task in pending[start : start + args.workers]]
+                    for start in range(0, len(pending), args.workers)
                 )
-                _write_progress(
-                    paths["progress"],
-                    completed=completed,
-                    total=total,
-                    sequence=sequence,
-                    frame=output_frame,
-                    started=started,
-                    completed_at_start=completed_at_start,
-                )
-                if completed % 25 == 0:
-                    print(
-                        json.dumps(
-                            {
-                                "progress": f"{completed}/{total}",
-                                "percent": round(100.0 * completed / total, 2),
-                                "sequence": sequence,
-                                "frame": output_frame,
-                            },
-                            sort_keys=True,
-                        ),
-                        flush=True,
-                    )
+            try:
+                for batch in prepared_batches:
+                    for item in batch:
+                        prepared = item.result() if isinstance(item, concurrent.futures.Future) else item
+                        detail = optimize_one(prepared)
+                        completed += 1
+                        diagnostics.append(detail)
+                        _write_progress(
+                            paths["progress"],
+                            completed=completed,
+                            total=total,
+                            sequence=sequence,
+                            frame=int(detail["output_frame"]),
+                            started=started,
+                            completed_at_start=completed_at_start,
+                        )
+                        if completed % 25 == 0:
+                            print(
+                                json.dumps(
+                                    {
+                                        "progress": f"{completed}/{total}",
+                                        "percent": round(100.0 * completed / total, 2),
+                                        "sequence": sequence,
+                                        "frame": int(detail["output_frame"]),
+                                    },
+                                    sort_keys=True,
+                                ),
+                                flush=True,
+                            )
+            finally:
+                if args.workers != 1:
+                    executor.shutdown(wait=True, cancel_futures=True)
+            diagnostics.sort(key=lambda row: int(row["output_frame"]))
             manifest = _assemble_sequence(
                 root=root,
                 sequence=sequence,
@@ -432,6 +511,16 @@ def materialize(args: argparse.Namespace) -> dict[str, Any]:
                 diagnostics=diagnostics,
             )
             sequence_receipts.append(manifest)
+        if args.sequence is not None:
+            return {
+                "schema": "blindassist-dtr-x3-sequence-materialization-v1",
+                "status": "SEQUENCE_COMPLETE",
+                "sequence": args.sequence,
+                "optimized_frames": total,
+                "elapsed_s_this_process": time.perf_counter() - started,
+                "manifest": str(_paths(root, args.sequence)["manifest"]),
+                "manifest_sha256": sha256_file(_paths(root, args.sequence)["manifest"]),
+            }
         receipt = {
             "schema": "blindassist-dtr-x3-full-materialization-v1",
             "status": "COMPLETE",
@@ -446,6 +535,7 @@ def materialize(args: argparse.Namespace) -> dict[str, Any]:
                 "cuda": torch.version.cuda,
                 "device": torch.cuda.get_device_name(0),
                 "python": platform.python_version(),
+                "cpu_preparation_workers": args.workers,
             },
             "freeze": str(paths["freeze"]),
             "freeze_sha256": sha256_file(paths["freeze"]),
@@ -725,17 +815,31 @@ def status(args: argparse.Namespace) -> dict[str, Any]:
             frames_by_sequence[sequence] = [int(value) for value in values["frames"]]
     total = sum(max(0, len(frames) - 4) for frames in frames_by_sequence.values())
     completed = _completed_count(root, frames_by_sequence)
-    progress_path = _paths(root)["progress"]
-    progress = json.loads(progress_path.read_text(encoding="utf-8")) if progress_path.exists() else {}
+    progress_rows = []
+    root_progress = _paths(root)["progress"]
+    if root_progress.exists():
+        progress_rows.append(json.loads(root_progress.read_text(encoding="utf-8")))
+    for sequence in frames_by_sequence:
+        progress_path = _paths(root, sequence)["progress"]
+        if progress_path.exists():
+            progress_rows.append(json.loads(progress_path.read_text(encoding="utf-8")))
+    latest = max(progress_rows, key=lambda row: float(row.get("last_activity_unix_s", 0.0)), default={})
+    active = [
+        {"sequence": row.get("active_sequence"), "frame": row.get("active_frame")}
+        for row in progress_rows
+        if row.get("active_sequence") not in (None, "COMPLETE")
+    ]
     return {
         "completed": completed,
         "total": total,
         "percent": 100.0 * completed / total if total else 100.0,
-        "active_sequence": progress.get("active_sequence"),
-        "active_frame": progress.get("active_frame"),
-        "last_activity_unix_s": progress.get("last_activity_unix_s"),
-        "eta_s": progress.get("eta_s_this_process_rate"),
-        "failures": progress.get("failures", 0),
+        "active_workers": active,
+        "last_activity_unix_s": latest.get("last_activity_unix_s"),
+        "eta_s": max(
+            (float(row["eta_s_this_process_rate"]) for row in progress_rows if row.get("eta_s_this_process_rate") is not None),
+            default=None,
+        ),
+        "failures": sum(int(row.get("failures", 0)) for row in progress_rows),
         "materialization_complete": (root / "materialization.json").exists(),
     }
 
@@ -767,6 +871,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("mode", choices=("materialize", "predict", "score", "run", "status", "cleanup"))
     parser.add_argument("--root", type=Path, default=root)
+    parser.add_argument("--workers", type=int, choices=range(1, 9), default=1)
+    parser.add_argument("--sequence")
     parser.add_argument("--baseline-predictions", type=Path, default=c31 / "baseline-predictions.json")
     parser.add_argument("--baseline-result", type=Path, default=c31 / "result.json")
     parser.add_argument("--roster", type=Path, default=REPO / "research" / "active" / "dtr-r0" / "dtr_c31_fresh_confirmation_roster.json")

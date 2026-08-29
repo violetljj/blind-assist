@@ -203,6 +203,8 @@ def _optimize_frame(
     *,
     scan_offsets: Sequence[int] | None = None,
     device: Any,
+    prepared_labels: np.ndarray | None = None,
+    prepared_distances: Sequence[np.ndarray] | None = None,
 ) -> tuple[np.ndarray, dict[str, Any]]:
     import torch
 
@@ -230,12 +232,19 @@ def _optimize_frame(
         )
     )
     current_tensor = torch.as_tensor(current, dtype=torch.float32, device=device)
-    labels_numpy = _cluster_labels(current)
+    labels_numpy = _cluster_labels(current) if prepared_labels is None else prepared_labels
     labels = torch.as_tensor(labels_numpy, dtype=torch.int64, device=device)
-    distance_volumes = [
-        _distance_volume(points, dt_lower, dt_upper, device=device)
-        for points in supports
-    ]
+    if prepared_distances is None:
+        distance_volumes = [
+            _distance_volume(points, dt_lower, dt_upper, device=device)
+            for points in supports
+        ]
+    else:
+        require(len(prepared_distances) == len(supports), "x1_prepared_distance_count")
+        distance_volumes = [
+            torch.as_tensor(distance, dtype=torch.float32, device=device)
+            for distance in prepared_distances
+        ]
     optimizer = torch.optim.Adam((grid,), lr=LEARNING_RATE, weight_decay=0.0)
     scheduler = torch.optim.lr_scheduler.MultiStepLR(
         optimizer, milestones=(10, 20), gamma=0.5
