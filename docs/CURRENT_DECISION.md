@@ -1308,6 +1308,19 @@ over-selective composition without rescue. Eleven of X15's 18 false ranges
 remain concentrated in memorial-court; the next source change must model that
 persistent non-contact motion and gap continuity, not add another cell filter.
 
+X17--X21 resolved that tradeoff with learned instance persistence plus bounded
+component ancestry. Mask-wide X17/X18/X19 bridges restored dropout but produced
+31--33 false segments. X20 restricted continuation to an exact
+`(class, track, X7 component)` lineage and reached `5/6` CONTACT, 16 false
+segments, 37.04% Event F1, and `3.785 s` lead, but only `2/18` dropout. X21
+keeps raw X13 birth as the only entry and transports only the stored component
+row while its anchor remains inside the same live track mask; it never absorbs
+a new current-X7 cell. The sealed Development replay reached **`5/6` CONTACT,
+11 false segments, 45.45% Event F1, `3.061 s` median lead, and `8/18` dropout
+recovery**. Accept `DTR_X21_TRACK_CARRIED_COMPONENT_ANCESTRY_GATE_MET` for
+Development. Freeze the arm and move to source-disjoint confirmation; do not
+tune the consumed six sequences.
+
 ## What stops here
 
 - Do not record the superseded 24 canary or 120 staged local RGB clips.
@@ -1317,10 +1330,8 @@ persistent non-contact motion and gap continuity, not add another cell filter.
   complete.
 - Do not treat `UNKNOWN` or `NOT_EVALUABLE` as safe.
 
-The next algorithm increment is a new representation for persistent
-non-contact motion plus detector-gap continuity, localized first to the
-memorial-court residual. When deployment evidence is wanted, privileged
-boxes/tracks must still be replaced with a real RGB/LiDAR detector and tracker
-behind the frozen metric-frame adapters. Phone recording and live-device
-testing are not the current blocker. Full methods, receipts, and claim limits
-are in [the DTR route README](../research/active/dtr-r0/README.md).
+The next algorithm action is one frozen, source-disjoint X21 confirmation.
+When deployment evidence is wanted, privileged evaluation boxes/tracks must
+still be replaced behind the frozen metric-frame adapters. Phone recording and
+live-device testing are not the current blocker. Full methods, receipts, and
+claim limits are in [the DTR route README](../research/active/dtr-r0/README.md).

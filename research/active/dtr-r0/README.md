@@ -1960,6 +1960,33 @@ repeated transport cohorts. The next single falsifier should require an
 ego-compensated, temporally persistent RGB movable-instance mask/track before
 birth, then leave X15 continuation and downstream logic frozen.
 
+## DTR-X17--X21 track-carried component ancestry
+
+X17 confirmed that YOLO11 instance-track persistence is a strong continuity
+source (`5/6` CONTACT, `14/18` dropout, `4.922 s` lead), but mask-wide X7
+admission produced 33 false segments. X18's dense X15 seeding was
+score-equivalent. X19 restricted seeding to raw X13 births yet retained
+mask-wide admission; 30 of its 31 false segments overlapped X17. This closes
+seed and tracker tuning: the failure was authority amplification inside a live
+instance mask.
+
+X20 keyed continuation to exact `(class, track, X7 component)` ancestry. It
+reached `5/6` CONTACT, 16 false segments, 37.04% Event F1, and `3.785 s` lead,
+but only `2/18` dropout recovery because current-X7 component support still
+broke inside the induced gaps.
+
+X21 removes that final dependency without reopening mask-wide birth. A raw X13
+birth inside a track is the only state origin; later frames transport only the
+stored component row, and retain it only while its anchor remains inside the
+same current live track mask. No new current-X7 cell is absorbed. On the sealed
+4,811-frame Development replay X21 reached **`5/6` CONTACT, 11 false segments,
+45.45% Event F1, `3.061 s` median lead, and `8/18` dropout recovery**. All six
+frozen checks passed. Accept
+`DTR_X21_TRACK_CARRIED_COMPONENT_ANCESTRY_GATE_MET` for Development and move the
+unchanged arm to one source-disjoint confirmation; do not tune the consumed
+cohort. Mechanics, hashes, and claim limits are in
+`X17_X21_TRACK_CARRIED_COMPONENT_ANCESTRY_2026-08-29.md`.
+
 ## DTR-X8--X9 independent RGB static evidence
 
 X8 compared synchronized stitched-RGB tracks against ego-rigid static and

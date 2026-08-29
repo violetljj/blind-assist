@@ -383,6 +383,19 @@ ego-compensated movable-instance identity/masks across frames before birth;
 shortening HOLD, merging ranges, or repeating cell-level motion closure would
 not remove the originating transport cohorts.
 
+X17--X21 then isolated persistence from admission. X17/X18 learned tracks gave
+`14/18` dropout recovery but 33 false segments; X19's cleaner raw-X13 seed still
+gave 31 because the live mask could absorb unrelated X7 components. X20 keyed
+authority to exact `(class, track, X7 component)` ancestry and reached `5/6`
+CONTACT, 16 false segments, 37.04% Event F1, and `3.785 s` lead, but retained
+only `2/18` dropout recovery. X21 carries only the already authorized component
+row through the same live track mask, with no current-X7 absorption. Its sealed
+six-sequence replay reached **`5/6` CONTACT, 11 false segments, 45.45% Event
+F1, `3.061 s` lead, and `8/18` dropout recovery**; all frozen checks passed.
+Record `DTR_X21_TRACK_CARRIED_COMPONENT_ANCESTRY_GATE_MET` as Development
+promotion and move the unchanged arm to source-disjoint confirmation. This is
+not product, real-device, safety, or cross-source evidence.
+
 L10 is active in parallel and does not depend on GRAIL owner orientation. SC1W
 separates fresh semantic identity, DINO/motion continuity, and a RapidOCR CTC
 word carrier for current-camera steering. SC2 adds opportunity-correct active
