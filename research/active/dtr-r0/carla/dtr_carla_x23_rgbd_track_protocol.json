@@ -1,0 +1,79 @@
+{
+  "schema": "blindassist-dtr-carla-v18-x23-protocol-v1",
+  "experiment_id": "CARLA_DTR_V18_X23_RGBD_TRACK_SOURCE_ONE_SCORE",
+  "scenarios": [
+    "static_clear_mirror",
+    "moving_parallel_clear_mirror",
+    "crossing_clear_mirror",
+    "crossing_physical_occlusion_mirror"
+  ],
+  "expected_frames": 804,
+  "evaluator_manifest_expected_sha256": "4AACFBE648A999C3E22FBDC349D92E63747B14B0D4D9D0FDD518696E1E94DC36",
+  "source_admission": {
+    "clear_crossing_scenario": "crossing_clear_mirror",
+    "occluded_crossing_scenario": "crossing_physical_occlusion_mirror",
+    "same_source_baseline": "X21 arm copied without modification from the frozen X22 sealed predictions"
+  },
+  "x23_contract": {
+    "fixed_constants": {
+      "minimum_foreground_depth_points": 32,
+      "camera_yaw_in_carla_degrees": 10.0,
+      "camera_forward_offset_m": 0.2,
+      "velocity_window_seconds": 0.5,
+      "hold_window_seconds": 0.6,
+      "risk_confirmation_consecutive_frames": 2,
+      "route_half_width_m": 0.65,
+      "route_horizon_seconds": 3.0,
+      "minimum_closing_speed_mps": 0.05,
+      "track_radius_m": 0.0
+    },
+    "one_score_gates": {
+      "expected_physical_gap_frames": 11,
+      "minimum_occluded_gap_frames": 9,
+      "minimum_x23_minus_x21_gap_coverage": 0.5,
+      "minimum_occluded_first_alert_lead_seconds": 2.5,
+      "minimum_clear_first_alert_lead_seconds": 2.5,
+      "maximum_new_static_route_risk_frames": 0,
+      "maximum_new_parallel_route_risk_frames": 0,
+      "maximum_new_prethreat_route_risk_frames": 0
+    },
+    "forbidden": [
+      "parameter sweep",
+      "threshold sweep",
+      "seed sweep",
+      "tracker sweep",
+      "post-score retune",
+      "evaluator open during freeze",
+      "evaluator open during predict",
+      "instance online",
+      "actor identity online",
+      "contact truth online",
+      "route truth online"
+    ]
+  },
+  "frozen_files": {
+    "project_adapter": {
+      "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\carla\\carla_raw_source.py",
+      "sha256": "28835CA9DC256AA7BA60BA3DAFFD5410B0A2C8360C5C09E5C224D12C87B28566"
+    },
+    "project_x22_evaluator": {
+      "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\carla\\dtr_carla_x22_flow_veto.py",
+      "sha256": "0EF02EF1E2FC11188990FBC070F3965EA6500805128489CCA57898869F5155AF"
+    },
+    "project_x23": {
+      "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\carla\\dtr_carla_x23_rgbd_track_source.py",
+      "sha256": "E6DAACD4E6363673CE878E48E106C63B113E4956BBEA04CA735CE8B229060DD9"
+    }
+  },
+  "claim_boundary": {
+    "role": "SYNTHETIC_DEVELOPMENT_ONLY",
+    "prediction": "Truth-blind same-source X21 versus X23 route-risk prediction on frozen CARLA V18 model inputs",
+    "score": "One evaluator open after an exclusive attempt receipt",
+    "not_claimed": [
+      "real-world confirmation",
+      "production readiness",
+      "identity authority",
+      "post-score tuning authority"
+    ]
+  }
+}
