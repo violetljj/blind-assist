@@ -1,0 +1,99 @@
+{
+  "schema": "l10-named-poi-semantic-portal-fresh-source-audit-v1",
+  "created_at": "2026-08-29",
+  "source_spec_sha256": "06c8d6a7de5af8a36f089516091c59ee7cc03537c02885b073d66792d4f3ad6e",
+  "source_manifest_sha256": "4307bbb8d4e4f54b97f630f7c16645f043e1d9fe34d8bfdc004c8f5ae52964d6",
+  "audit_authority": "Human pixel audit of the exact local files after source selection and integrity freeze, before any PB6 OCR, SPPF, or portal-proposer call.",
+  "checks": {
+    "all_eight_entities_prior_route_name_hits": 0,
+    "source_spec_frozen_before_download": true,
+    "identity_profiles_frozen_before_ocr": true,
+    "portal_roles_frozen_before_semantic_or_geometry": true,
+    "ocr_calls_before_freeze": 0,
+    "semantic_calls_before_freeze": 0,
+    "geometry_calls_before_freeze": 0
+  },
+  "frames": [
+    {
+      "index": 1,
+      "id": "apm-millennium-city-5",
+      "image_sha256": "41ae4eb2c2e5b1ef405d05b2b47ebae8d8aa389f68ef3baf36d087c9e7031cc5",
+      "local_image_size": [1280, 960],
+      "status": "IN_SCOPE_DOOR_LEVEL_POSITIVE",
+      "identity_opportunity": true,
+      "portal_set_box_xyxy": [0, 355, 1190, 930],
+      "kind": "apm multi-leaf glass entrance"
+    },
+    {
+      "index": 2,
+      "id": "tko-spot",
+      "image_sha256": "82ef2aaee51e48cea048b8cb861a961057726be88b1daf30cd54eceb0fb3890e",
+      "local_image_size": [1280, 960],
+      "status": "IN_SCOPE_DOOR_LEVEL_POSITIVE",
+      "identity_opportunity": true,
+      "portal_set_box_xyxy": [0, 190, 1280, 905],
+      "kind": "TKO SPOT multi-leaf glass entrance"
+    },
+    {
+      "index": 3,
+      "id": "choi-ming-shopping-centre",
+      "image_sha256": "e66a794dfb2b7ae402b789ae5d88bb510e6bc27b68015350e177febd8d57ed9f",
+      "local_image_size": [1280, 960],
+      "status": "IN_SCOPE_DOOR_LEVEL_POSITIVE",
+      "identity_opportunity": true,
+      "portal_set_box_xyxy": [0, 175, 1280, 925],
+      "kind": "Choi Ming multi-leaf glass entrance"
+    },
+    {
+      "index": 4,
+      "id": "hong-kong-news-expo",
+      "image_sha256": "5cbb4cb67b41f92254f0198b9846d92d9bdcca14efa9b06130af7dc56788c2e0",
+      "local_image_size": [1280, 1707],
+      "status": "IN_SCOPE_DOOR_LEVEL_POSITIVE",
+      "identity_opportunity": true,
+      "portal_set_box_xyxy": [710, 1000, 1275, 1510],
+      "kind": "Hong Kong News-Expo door-scale open entrance"
+    },
+    {
+      "index": 5,
+      "id": "the-mills",
+      "image_sha256": "b43a03525143e2c78b589e5720952418b5f391a877f7b88cc77b4e42f063b7bb",
+      "local_image_size": [1280, 960],
+      "status": "NO_PORTAL_NEGATIVE",
+      "identity_opportunity": true,
+      "portal_set_box_xyxy": null,
+      "kind": "identity sign on solid wall"
+    },
+    {
+      "index": 6,
+      "id": "hong-kong-police-museum",
+      "image_sha256": "ddc8f47eb5ff9c28d43de4fa9e35f6b917153b83e9ffd12286d9fb309ba13894",
+      "local_image_size": [1280, 853],
+      "status": "NO_PORTAL_NEGATIVE",
+      "identity_opportunity": true,
+      "portal_set_box_xyxy": null,
+      "kind": "identity-bearing directional sign without building pixels"
+    },
+    {
+      "index": 7,
+      "id": "pmq",
+      "image_sha256": "c2903c8230013e97c9bf7851979b4df19fee294462884992e2ffa2d70a3157b0",
+      "local_image_size": [1280, 853],
+      "status": "LARGE_OPEN_ENTRANCE_OOD",
+      "identity_opportunity": true,
+      "portal_set_box_xyxy": [300, 170, 1100, 700],
+      "kind": "campus-scale stepped open gateway"
+    },
+    {
+      "index": 8,
+      "id": "airside",
+      "image_sha256": "926fe1cb78cca02bf13acc1d0ce227b109151aeb9cb0706ed57980015d9a749a",
+      "local_image_size": [1280, 1707],
+      "status": "LARGE_OPEN_ENTRANCE_OOD",
+      "identity_opportunity": true,
+      "portal_set_box_xyxy": [80, 950, 1240, 1700],
+      "kind": "multi-storey atrium-scale entrance with door leaves"
+    }
+  ],
+  "claim_boundary": "Human truth is evaluator-only and cannot control OCR, SPPF admission, geometry proposal generation, or requested-entity authority. The cohort is deliberately identity-opportunity stratified."
+}

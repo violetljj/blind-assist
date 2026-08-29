@@ -1,0 +1,42 @@
+{
+  "schema": "l10-named-poi-yoloe-portal-presence-durable-development-result-v1",
+  "date": "2026-08-29",
+  "decision": "L10_PB6_YOLOE_PORTAL_PRESENCE_DEVELOPMENT_GATE_NOT_MET",
+  "provider": {
+    "name": "Generic Semantic Entrance Proposal Field",
+    "model": "YOLOE-26n-seg",
+    "fixed_prompt": "building entrance",
+    "identity_input_used": false,
+    "pb5_geometry_input_used": false
+  },
+  "development": {
+    "positive_source": "Six portal-lattice-fresh-v3 door-level positives with pre-existing portal-set boxes.",
+    "negative_source": "Sixteen target-local-v1 views frozen as no distinct actionable entrance.",
+    "confidence_floor_top3_truth": "6/6",
+    "confidence_floor_false_presence": "15/16",
+    "best_truth_retention_with_false_presence_at_most_1_of_16": "1/6",
+    "minimum_false_presence_while_retaining_at_least_5_of_6_truth": "3/16",
+    "gate": "Top-3 truth at least 5/6 and no-portal false presence at most 1/16",
+    "gate_passed": false,
+    "post_output_tuning": 0
+  },
+  "provider_selection": {
+    "selected": "SPPF",
+    "reason": "The generic prompt produced full boxes but could not separate actionable entrance evidence from no-portal views. The already-frozen SPPF Development result retained 4/6 truth with 0/16 false presence and therefore remains the sole provider for fresh PB6.",
+    "next_action": "Run one source-disjoint SCIL plus SPPF plus unchanged geometry Top-3 confirmation without changing the SPPF threshold."
+  },
+  "backend": {
+    "selected": "yoloe-torch-cuda",
+    "cpu_seconds": 0.04860290000215173,
+    "cuda_seconds": 0.027955199999269098,
+    "measured_speedup": 1.738640695167568
+  },
+  "hashes": {
+    "protocol_sha256": "9659235f18def701add64c329ea2fbdba3f225123e8a4ccd4ee1bf98fbed3e4b",
+    "evaluator_sha256": "52307488c3cdf1b76bb58ff1203729b8427c7828d159e2829a1b194d74de5c63",
+    "model_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+    "text_encoder_sha256": "35d7f213e4d75f38514e4656ad3cb91158bd33e3805d8ac349f23b186f66982f",
+    "formal_result_sha256": "ec246cfcc28eaf50c7ae760d2758590d2f95ea00dee0c7ac644b840b70a5f0ad"
+  },
+  "claim_boundary": "Development-only provider comparison on consumed source-disjoint cohorts. Failure closes this prompt/model route without tuning; it is not a negative result for other semantic representations."
+}

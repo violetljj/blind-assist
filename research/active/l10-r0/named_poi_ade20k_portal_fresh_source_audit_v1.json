@@ -1,0 +1,99 @@
+{
+  "schema": "l10-named-poi-ade20k-portal-fresh-source-audit-v1",
+  "created_at": "2026-08-29",
+  "source_spec_sha256": "060c014076e99c58c27e5f8041bfdbf43067b13e41501dfefb144e0cab88b8c1",
+  "source_manifest_sha256": "6d8133c166902bbc1594fd71dc311aeef61a72d892ca0e3cfe1b56297c47771f",
+  "audit_authority": "Human pixel audit of all eight exact local files after source selection and download-integrity freeze, before any PB7 OCR or ADE20K semantic call.",
+  "checks": {
+    "all_eight_entities_prior_route_name_hits": 0,
+    "source_spec_frozen_before_download": true,
+    "identity_profiles_frozen_before_ocr": true,
+    "portal_roles_frozen_before_semantic": true,
+    "ocr_calls_before_freeze": 0,
+    "semantic_calls_before_freeze": 0,
+    "geometry_calls_before_freeze": 0
+  },
+  "frames": [
+    {
+      "index": 1,
+      "id": "cityplaza",
+      "image_sha256": "05a0604653adbfbb5238c38cf66ec96ea10865bb1b9ea28e277285fb5f82e77c",
+      "local_image_size": [1280, 960],
+      "status": "IN_SCOPE_DOOR_LEVEL_POSITIVE",
+      "identity_opportunity": true,
+      "portal_set_box_xyxy": [15, 450, 1280, 930],
+      "kind": "three visible multi-leaf glass entrance assemblies"
+    },
+    {
+      "index": 2,
+      "id": "hong-kong-public-records-building",
+      "image_sha256": "ded7a4bda2b06b779c2efb1926ad7cd2a9efbb2c8952abc959731d375d33d770",
+      "local_image_size": [974, 648],
+      "status": "IN_SCOPE_DOOR_LEVEL_POSITIVE",
+      "identity_opportunity": true,
+      "portal_set_box_xyxy": [0, 205, 195, 635],
+      "kind": "left-edge glass facade entrance"
+    },
+    {
+      "index": 3,
+      "id": "tin-shui-wai-sports-centre",
+      "image_sha256": "8c25d0778a13e2590e2dd186d05c78690354c17303e07f78fdae03f03fab6356",
+      "local_image_size": [1280, 1707],
+      "status": "IN_SCOPE_DOOR_LEVEL_POSITIVE",
+      "identity_opportunity": true,
+      "portal_set_box_xyxy": [175, 585, 1125, 1705],
+      "kind": "frontal automatic glass double-door assembly"
+    },
+    {
+      "index": 4,
+      "id": "the-wai",
+      "image_sha256": "f8090c40bb4ec0b20ec8ac66c5c95c9b31f731154bce6202308eed6b5d9cf182",
+      "local_image_size": [1280, 960],
+      "status": "IN_SCOPE_DOOR_LEVEL_POSITIVE",
+      "identity_opportunity": true,
+      "portal_set_box_xyxy": [0, 285, 1280, 960],
+      "kind": "multi-leaf glass mall entrance"
+    },
+    {
+      "index": 5,
+      "id": "morse-park-no-3",
+      "image_sha256": "a5324c43a565e3f54bdb5d9047f23e701cad9401221f1b585d73efeaa0b263d8",
+      "local_image_size": [1280, 960],
+      "status": "NO_PORTAL_NEGATIVE",
+      "identity_opportunity": true,
+      "portal_set_box_xyxy": null,
+      "kind": "identity text on a solid wall without a portal"
+    },
+    {
+      "index": 6,
+      "id": "on-king-street-park",
+      "image_sha256": "f798156eb076bc516d7e041a7a0bd21ebd6d6daa7f407030f5f69bb22f72c745",
+      "local_image_size": [1280, 960],
+      "status": "NO_PORTAL_NEGATIVE",
+      "identity_opportunity": true,
+      "portal_set_box_xyxy": null,
+      "kind": "identity sign against foliage and fence without a building entrance"
+    },
+    {
+      "index": 7,
+      "id": "cheung-chau-market",
+      "image_sha256": "65435b5a1121753fc8eff06c97eb74d7f57abc49f28698d84a0017157d6cdc67",
+      "local_image_size": [1280, 853],
+      "status": "LARGE_OPEN_ENTRANCE_OOD",
+      "identity_opportunity": true,
+      "portal_set_box_xyxy": [165, 245, 1110, 720],
+      "kind": "two bay-wide doorless market mouths above full-width stairs"
+    },
+    {
+      "index": 8,
+      "id": "tai-po-market-station",
+      "image_sha256": "561f3ae19caf490494005f5464f4c85ca312409f83b1951469eb04b1a39c65c8",
+      "local_image_size": [1280, 853],
+      "status": "LARGE_OPEN_ENTRANCE_OOD",
+      "identity_opportunity": true,
+      "portal_set_box_xyxy": [205, 225, 1280, 850],
+      "kind": "station-scale doorless open concourse mouth"
+    }
+  ],
+  "claim_boundary": "Human truth is evaluator-only and cannot control OCR, semantic component generation, thresholding, ranking, or requested-entity authority. The cohort is deliberately identity-opportunity stratified and entity-disjoint."
+}

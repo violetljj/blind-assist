@@ -1,0 +1,109 @@
+{
+  "schema": "l10-named-poi-metric-portal-closure-development-durable-result-v1",
+  "date": "2026-08-29",
+  "mode": "FROZEN_FRESH_SUNRGBD_PRIVILEGED_SENSOR_DEPTH_MECHANISM_TEST",
+  "decision": "L10_PB11_METRIC_PORTAL_CLOSURE_P0_PRIVILEGED_GATE_NOT_MET",
+  "question": "Does calibrated metric 3D relief relative to an aperture-rim plane strictly separate real door leaves from portal-shaped planar distractors and large doorless openings?",
+  "single_change_from_pb10": "Replace relative-depth and two-dimensional semantic closure with source-calibrated metric 3D relief relative to a fitted aperture-rim plane.",
+  "source": {
+    "dataset": "SUN RGB-D",
+    "official_url": "https://rgbd.cs.princeton.edu/data/SUNRGBD.zip",
+    "archive_bytes": 6885481608,
+    "archive_sha256": "1a6dbf2a1c9044c4805a35ee648d616ea39a231fd5bd6f77e84cd2b8287fe41c",
+    "source_audit": {
+      "captures": 10335,
+      "rejected_captures": 133,
+      "resolved_capture_sequences": 4807,
+      "unresolved_sequence_frames": 2596,
+      "exact_door_candidates": 1883,
+      "no_exact_door_candidates": 5718,
+      "near_label_candidates": 112,
+      "door_label_without_valid_polygon_frames": 5,
+      "automatic_none_or_ood_decisions": false
+    }
+  },
+  "cohort": {
+    "status": "FROZEN_BEFORE_P0_OUTPUT",
+    "frames": 8,
+    "distinct_capture_sequences": 8,
+    "roles": {
+      "DOOR_PLANE_POSITIVE": 4,
+      "NO_PORTAL_NEGATIVE": 2,
+      "LARGE_DOORLESS_OPENING_OOD": 2
+    },
+    "sensor_source_buckets": {
+      "kv2/kinect2data": 3,
+      "realsense/shr": 1,
+      "realsense/sa": 1,
+      "xtion/sun3ddata": 3
+    },
+    "source_depth_admission": "All frozen rim and interior regions had at least 60 percent valid source depth before any plane fit or closure output.",
+    "ood_visible_clear_spans_m": [1.5381, 1.7735],
+    "model_outputs_used_for_selection": 0
+  },
+  "representation": {
+    "rim": "Outer 15 percent of a projectively normalized aperture quadrilateral.",
+    "interior": "Central 70 by 70 percent.",
+    "plane": "Unweighted total-least-squares fit to valid rim points back-projected with source K.",
+    "relief": "clip((observed_z - ray_plane_expected_z) / max(expected_z, 0.1 m), 0, 1), summarized by Type-7 q75.",
+    "closure_score": "exp(-median_absolute_rim_residual/median_rim_range) * exp(-relief_q75)",
+    "learned_models_loaded": 0,
+    "learned_or_selected_thresholds": 0
+  },
+  "metrics": {
+    "evaluable_frames": "8/8",
+    "evaluable_frames_by_role": {
+      "DOOR_PLANE_POSITIVE": "4/4",
+      "NO_PORTAL_NEGATIVE": "2/2",
+      "LARGE_DOORLESS_OPENING_OOD": "2/2"
+    },
+    "positive_scores": [
+      0.9979728085392695,
+      0.9893774326613728,
+      0.9466575902738661,
+      0.7165886968173866
+    ],
+    "no_portal_negative_scores": [
+      0.9831029546307334,
+      0.9569689729133073
+    ],
+    "large_doorless_opening_ood_scores": [
+      0.9024990197964781,
+      0.8503988865540179
+    ],
+    "minimum_positive_score": 0.7165886968173866,
+    "maximum_control_score": 0.9831029546307334,
+    "strict_separation_margin": -0.2665142578133468,
+    "roc_auc": 0.625,
+    "midpoint_threshold": null,
+    "balanced_accuracy_at_midpoint": null,
+    "privileged_mechanism_gate_met": false
+  },
+  "attribution": {
+    "positive_signal": "Three opaque door leaves scored from 0.9467 to 0.9980, so calibrated source depth can expose a strong planar-closure signal on ordinary doors.",
+    "decisive_failure": "The planar wall-storage panel and filing cabinet scored 0.9831 and 0.9570, while the glass double door scored 0.7166. Metric plane closure identifies planar occlusion, not door semantics, and therefore cannot strictly distinguish the target class even with privileged measured depth.",
+    "large_opening_behavior": "Both doorless openings were lower than the two planar no-portal controls but still scored 0.9025 and 0.8504; the representation also lacks enough free-space contrast for strict ordering.",
+    "closed": [
+      "PB11 metric rim-plane closure as a door authority",
+      "DepthART C1 on this frozen representation",
+      "Any rescue by cohort, quadrilateral, rim, interior, quantile, threshold, depth source, or checkpoint changes on these pixels"
+    ],
+    "next_information_needed": "RGB door-part topology that distinguishes leaf-frame-handle or hinge relationships from generic planar cabinets, with depth retained only as a geometric consistency check."
+  },
+  "protocol_outcome": {
+    "outcome": "P0_FAIL",
+    "required_action": "Close metric rim-plane closure and do not run or tune C1_DEPTHART_METRIC.",
+    "depthart_runs": 0,
+    "post_output_tuning": 0
+  },
+  "hashes": {
+    "protocol_sha256": "041a1be9b744a4f4f83eeaa2b1bae6bc198a0f02f65b1567c3911beee65499b2",
+    "cohort_sha256": "684946f75b19f8af97121145135bb7a2736cc0810dd37276dc8b29a4b5eda3bb",
+    "source_audit_result_sha256": "b2fd44f08781f3032ff8c5f537ae5fdaf2ef99a2f7a4987f23925f112063b827",
+    "source_audit_driver_sha256": "5bb3a1df008c1ceeb73b243aac8b191fdd3ecaad39f8ccfe4554275662f0715e",
+    "scorer_sha256": "5000a2eba2ccdfb2cc5abcd1d86a7f37dbb69393009685ef6e4973161c978c85",
+    "p0_result_sha256": "f55cf10ac0f76e545be250c5e1607205ec938d88059d249f8500187e24504fce"
+  },
+  "next_step": "Run one fresh, pre-frozen RGB door-part topology development test. Require the same door positives to retain leaf-frame-handle or hinge consistency while the planar cabinet controls are rejected; use metric depth only after semantic topology exists, never to rescue PB11.",
+  "claim_boundary": "PB11 is a fresh Development mechanism falsification using privileged measured depth. It is not target ownership, public access, open or closed actuation state, traversability, active-view causality, temporal persistence, guidance, arrival, product benefit, user benefit, or safety evidence."
+}

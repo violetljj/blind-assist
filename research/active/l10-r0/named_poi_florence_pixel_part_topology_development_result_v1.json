@@ -1,0 +1,64 @@
+{
+  "schema": "l10-named-poi-florence-pixel-part-topology-development-abort-v1",
+  "experiment": "L10-PB13 Florence Pixel Part-Parent Topology",
+  "recorded_at": "2026-08-29T20:29:09.6853934+08:00",
+  "status": "NOT_EVALUABLE",
+  "decision": "L10_PB13_FLORENCE_PIXEL_PART_TOPOLOGY_DEVELOPMENT_NOT_EVALUABLE_OUTPUT_CONTRACT_FAILURE",
+  "inputs": {
+    "protocol": {
+      "path": "research/active/l10-r0/named_poi_florence_pixel_part_topology_protocol_v1.json",
+      "sha256": "fb6353f2c285e2398ede9bd459af7a482ec89401f3a5a239ae30e972b29b6db2"
+    },
+    "cohort": {
+      "path": "research/active/l10-r0/named_poi_florence_pixel_part_topology_development_cohort_v1.json",
+      "sha256": "6e4de32805a2e8d166994bd0adbd9ad127410c4f85961220f4ad01045a0e0900",
+      "status": "FROZEN_BEFORE_MODEL_OUTPUT",
+      "consumed": true
+    },
+    "evaluator": {
+      "path": "research/active/l10-r0/named_poi_florence_pixel_part_topology.py",
+      "sha256": "dd0bbe04b2f1c0484af28e884c4b6628c4f0127dc3ecce04d199c65ca296fcff"
+    },
+    "model": {
+      "repository": "microsoft/Florence-2-large-ft",
+      "revision": "7c0fd5647b7d9dc0670820f053197167946cc26f",
+      "model_safetensors_sha256": "8b4e610c952eef90a836c56cda0f398a672a3a6ca7b4d96b0e09a86dee42e2c3",
+      "verification_manifest_sha256": "de33b1bcd06cc43a37c6619eefdb47e94793bdd390fd98135bd95f94680e40ea"
+    }
+  },
+  "execution_history": [
+    {
+      "attempt": 1,
+      "status": "ABORTED_BEFORE_MODEL_LOAD_AND_COHORT_IMAGE_DECODE",
+      "error": "OFFLINE_ENVIRONMENT_MISMATCH:USE_TF='0'",
+      "cohort_model_outputs_observed": false,
+      "result_file_created": false,
+      "recovery": "Corrected only the pre-output environment assertion from the mistaken expected value 1 to the protocol-frozen USE_TF=0 value."
+    },
+    {
+      "attempt": 2,
+      "status": "ABORTED_AFTER_COHORT_MODEL_OUTPUT",
+      "error": "POLYGON_SHAPE_INVALID:operation_part:0:0",
+      "error_interpretation": "On frozen frame 1 and the third frozen expression, operation_part instance 0 component 0 had fewer than three postprocessed vertices or otherwise violated the preregistered even finite polygon-shape contract.",
+      "generation_calls_completed_before_abort": 3,
+      "generation_call_count_basis": "Inferred from the frozen frame-major, expression-major evaluator loop and the operation_part failure position.",
+      "fully_adjudicated_frames": 0,
+      "cohort_model_outputs_observed": true,
+      "raw_model_outputs_persisted": false,
+      "result_file_created": false
+    }
+  ],
+  "metrics": null,
+  "gate": {
+    "development_gate_met": null,
+    "not_evaluable": true,
+    "reason": "The frozen output contract failed after cohort pixels were consumed, before any frame or aggregate metric could be adjudicated."
+  },
+  "route_disposition": {
+    "exact_model_prompt_topology_closed_on_this_cohort": true,
+    "cohort_may_be_rerun": false,
+    "parser_or_prompt_rescue_on_consumed_pixels_forbidden": true,
+    "next_admissible_action": "Change the information source or representation and use a fresh cohort."
+  },
+  "claim_boundary": "PB13 is neither a positive nor a negative model-quality result. It provides no recall, false-positive-rate, balanced-accuracy, arrival, guidance, product, user-benefit, or safety evidence."
+}

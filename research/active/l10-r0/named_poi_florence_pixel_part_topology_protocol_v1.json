@@ -1,0 +1,149 @@
+{
+  "schema": "l10-named-poi-florence-pixel-part-topology-protocol-v1",
+  "created_at": "2026-08-29",
+  "status": "FROZEN_BEFORE_COHORT_MODEL_OUTPUT",
+  "experiment": "L10-PB13 Florence Pixel Part-Parent Topology",
+  "short_name": "FPPT",
+  "question": "Can text-conditioned pixel masks bind an architectural room-door leaf to one of its visible operation parts while explicit furniture-door masks absorb cabinet and closet confounders?",
+  "single_change_from_pb12": "Replace the coarse four-class detector boxes with independently prompted Florence-2 pixel polygons for architectural door leaves, frames, operation parts, and competing furniture-door parents.",
+  "information_source": {
+    "model_repository": "microsoft/Florence-2-large-ft",
+    "revision": "7c0fd5647b7d9dc0670820f053197167946cc26f",
+    "local_model_path": "artifacts.local/models/microsoft-florence-2-large-ft-7c0fd56",
+    "verification_manifest_path": "artifacts.local/models/microsoft-florence-2-large-ft-7c0fd56/verification.json",
+    "verification_manifest_sha256": "de33b1bcd06cc43a37c6619eefdb47e94793bdd390fd98135bd95f94680e40ea",
+    "upstream_file_count": 11,
+    "upstream_total_bytes": 1543630083,
+    "model_safetensors_bytes": 1540980506,
+    "model_safetensors_sha256": "8b4e610c952eef90a836c56cda0f398a672a3a6ca7b4d96b0e09a86dee42e2c3",
+    "configuration_sha256": "653bafddc9651eaff1583a16db4a2bb27d33ec7d541dfab7201aaa4ecaa1cfbf",
+    "modeling_sha256": "9fd1b4659a6623a075750bf18d8df3dd906ab186f4c4a110411d6c380a9a5617",
+    "processing_sha256": "4bd7158536cbf1c7891fc8efd94437d79fd09f07f539c7398fab8a885d7d8bca",
+    "checkpoint_role": "DEVELOPMENT_ONLY",
+    "source_boundary": "This pretrained foundation-model source is distinct from PB12's DoorDetect-trained YOLO checkpoint. Its public pretraining mixture does not establish exact image-level exclusion of SUN RGB-D, so PB13 is Development evidence and not source-disjoint Confirmation.",
+    "license_boundary": "MIT-licensed upstream snapshot; internal Development evaluation only."
+  },
+  "runtime": {
+    "python_executable": "E:/codex-tools/tools/venvs/blindassist-venv-export312/Scripts/python.exe",
+    "python_executable_sha256": "21bb438c0d4a6f1f164b9a646f6ee000340185e5871180aec06db8d3f07c0082",
+    "python": "3.11.9",
+    "torch": "2.11.0+cu128",
+    "transformers": "4.57.1",
+    "tokenizers": "0.22.2",
+    "pillow": "12.2.0",
+    "attention_implementation": "eager",
+    "model_dtype": "float16",
+    "pixel_values_dtype": "float16",
+    "offline_environment": {
+      "HF_HUB_OFFLINE": "1",
+      "TRANSFORMERS_OFFLINE": "1",
+      "USE_TF": "0"
+    },
+    "synthetic_runtime_smoke": "Before freeze, one generated 64x64 blank synthetic image produced a valid empty parsed result on the fixed runtime. No cohort or SUN RGB-D image was read by that smoke.",
+    "execution_requirement": "CUDA must be available, the actual device must be recorded, and all model files and runtime versions must match this protocol; otherwise stop without creating a formal result."
+  },
+  "cohort_freeze": {
+    "dataset": "SUN RGB-D",
+    "frames": 8,
+    "distinct_capture_sequences": 8,
+    "roles": {
+      "ARCHITECTURAL_DOOR_WITH_VISIBLE_OPERATION_PART": 4,
+      "HANDLED_FURNITURE_DOOR_NEGATIVE": 2,
+      "LARGE_DOORLESS_OPENING_OOD": 2
+    },
+    "positive_admission": "Official annotation contains exact door and an operation-part label; human RGB audit confirms a room-scale architectural door leaf plus a visible handle, knob, or push bar on that leaf.",
+    "negative_admission": "Official annotation contains no exact door; a handled cabinet, wardrobe, or closet door is visibly present as the strongest part-topology confounder.",
+    "ood_admission": "Official annotation contains no exact door; a broad room or corridor opening is visibly present without a door leaf spanning it.",
+    "diversity": "Use at least four SUN RGB-D sensor/source buckets and no more than three frames from one bucket.",
+    "sealed_before_output": [
+      "canonical source path",
+      "RGB, official polygon annotation, and scene metadata SHA-256",
+      "capture sequence identity and sensor/source bucket",
+      "role and human RGB audit note",
+      "model, runtime, prompts, generation, mask topology, and gate"
+    ]
+  },
+  "inference": {
+    "task_token": "<REFERRING_EXPRESSION_SEGMENTATION>",
+    "prompt_construction": "Concatenate the task token and the frozen expression with no separator.",
+    "expressions_in_order": [
+      {
+        "expression_id": "architectural_leaf",
+        "text": "architectural room door leaf",
+        "role": "PARENT"
+      },
+      {
+        "expression_id": "architectural_frame",
+        "text": "architectural room door frame",
+        "role": "DIAGNOSTIC_ONLY"
+      },
+      {
+        "expression_id": "operation_part",
+        "text": "architectural room door handle, knob, or push bar",
+        "role": "CHILD"
+      },
+      {
+        "expression_id": "hinge",
+        "text": "architectural room door hinge",
+        "role": "CHILD"
+      },
+      {
+        "expression_id": "cabinet_door",
+        "text": "cabinet door",
+        "role": "COMPETING_PARENT"
+      },
+      {
+        "expression_id": "wardrobe_closet_door",
+        "text": "wardrobe or closet door",
+        "role": "COMPETING_PARENT"
+      }
+    ],
+    "input": "Each full source RGB image once for each of the six expressions, in frozen frame then expression order; no depth, intrinsics, crops, tiles, augmentation, prompt alternatives, ensembles, or cross-image state.",
+    "batch": 1,
+    "processor_resize": "Official pinned processor; 768x768 resize with no center crop.",
+    "generation": {
+      "max_new_tokens": 1024,
+      "num_beams": 3,
+      "do_sample": false,
+      "early_stopping": false,
+      "use_cache": true
+    },
+    "decode_skip_special_tokens": false,
+    "decode_clean_up_tokenization_spaces": false,
+    "postprocess": "Call the pinned processor's post_process_generation with the task token and original source image size."
+  },
+  "mask_topology": {
+    "instance_definition": "Each top-level polygon instance returned for one expression is rasterized as the union of all its valid sub-polygons at original source resolution.",
+    "rasterization": "Use Pillow ImageDraw.polygon on the unmodified postprocessed coordinates. Any non-finite, odd-length, fewer-than-three-vertex, or out-of-image polygon is a contract error; use no morphology, dilation, erosion, smoothing, minimum-area threshold, or score threshold.",
+    "parent_expression_ids": [
+      "architectural_leaf",
+      "cabinet_door",
+      "wardrobe_closet_door"
+    ],
+    "child_expression_ids": [
+      "operation_part",
+      "hinge"
+    ],
+    "child_representative": "Mean integer x and y indices of all true child-mask pixels; test the containing pixel obtained by floor(mean + 0.5), clipped only to the source image bounds.",
+    "assignment": "Assign each child to the smallest-area parent mask containing its representative pixel. Break equal-area ties by competitor-conservative parent priority cabinet_door, wardrobe_closet_door, architectural_leaf, then lower stable instance index.",
+    "authorization": "PIXEL_PART_TOPOLOGY is true if and only if at least one operation_part or hinge child is assigned to an architectural_leaf parent.",
+    "negative_competition": "A child assigned to a cabinet or wardrobe/closet parent does not authorize. An architectural leaf without an assigned child does not authorize.",
+    "frame_diagnostic": "architectural_frame polygons are recorded but do not affect assignment or the gate.",
+    "learned_or_selected_postprocessing_thresholds": 0
+  },
+  "metrics": [
+    "per-frame decoded text, parsed polygons, mask areas, and deterministic assignments",
+    "per-expression polygon-instance counts",
+    "per-role authorized-frame counts",
+    "architectural-door positive recall",
+    "control false-positive rate",
+    "balanced accuracy"
+  ],
+  "gate": {
+    "development_promotion": "All 4/4 architectural-door positives authorize, all 0/2 handled-furniture negatives authorize, all 0/2 large-opening OOD controls authorize, and balanced accuracy is 1.0.",
+    "pass": "Record a Development gate met, freeze this model/prompt/topology unchanged, and test one fresh source-disjoint confirmation cohort.",
+    "fail": "Close this exact model/prompt/topology route on the frozen cohort and change the information source, representation, or cohort; do not tune it on these pixels."
+  },
+  "forbidden_rescue": "After any cohort model output, do not change rows, roles, model revision, runtime, task token, expression wording or order, processor, tensor dtype, attention mode, generation parameters, polygon parsing, rasterization, parent or child expressions, representative point, assignment priority, authorization rule, or gate; do not run alternate prompts, beams, models, masks, crops, thresholds, or fusion on these pixels.",
+  "claim_boundary": "PB13 is a current-frame RGB pixel part-parent topology Development experiment. Even a pass is not source-disjoint Confirmation, exact target ownership, public access, open or closed actuation state, metric traversability, active-view causality, temporal persistence, guidance, arrival, product benefit, user benefit, or safety evidence."
+}

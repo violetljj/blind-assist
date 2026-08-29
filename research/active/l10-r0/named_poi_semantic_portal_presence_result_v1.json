@@ -1,0 +1,50 @@
+{
+  "schema": "l10-named-poi-semantic-portal-presence-durable-development-result-v1",
+  "decision": "L10_PB6_SEMANTIC_PORTAL_PRESENCE_DEVELOPMENT_GATE_MET",
+  "representation": {
+    "name": "Semantic Portal Presence Field",
+    "short_name": "SPPF",
+    "change_from_pb5": "An independently trained background/door per-pixel field replaces vertical-line and paired-handle score heuristics as the portal-presence authority.",
+    "candidate_rule": "Raw eight-connected door-class components ranked by predicted door-pixel area; no morphology, prompt, crop, TTA, target identity, or ensemble.",
+    "selected_component_area_fraction": 0.000028483072916666667,
+    "selection_interpretation": "At 1280 by 960 this is 35 predicted door pixels; the fraction, not a fixed pixel count, is frozen for confirmation."
+  },
+  "development": {
+    "positive_source": "Six source-disjoint portal-lattice-fresh-v3 glass-door frames with pre-existing portal-set boxes.",
+    "negative_source": "Sixteen target-local-v1 frames frozen as containing no distinct actionable entrance before that route's model call.",
+    "pb5_pixels_used": false,
+    "identity_input_used": false,
+    "positive_truth_retained_top3": "4/6",
+    "positive_presence_frames": "4/6",
+    "negative_false_authorization_frames": "0/16",
+    "negative_specificity": 1.0,
+    "balanced_accuracy": 0.8333333333333333,
+    "gate": "positive truth retention at least 4/6 and no-portal false authorization at most 2/16",
+    "gate_passed": true
+  },
+  "backend": {
+    "selected": "semantic-door-torch-cuda",
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "framework": "torch-2.11.0+cu130",
+    "selection_reason": "GPU_FASTER_OR_EQUAL_MEASURED",
+    "cpu_seconds": 0.16207130000111647,
+    "cuda_seconds": 0.013082699995720759,
+    "measured_speedup": 12.3882149750532,
+    "peak_selected_run_allocated_bytes": 86770688,
+    "peak_selected_run_reserved_bytes": 125829120
+  },
+  "integrity": {
+    "first_launch": "Stopped before model inference because the installed Ultralytics version differed from the historical provider pin.",
+    "mechanical_repair": "Froze the already installed and model-compatible Ultralytics 8.4.102; no package upgrade, model change, source change, or output-dependent change was made.",
+    "output_bearing_runs": 1,
+    "post_output_tuning": 0
+  },
+  "hashes": {
+    "protocol_sha256": "39725a114a8ada6e09d09fa17d1a11535a7b80e1db9feebdbd4e20520904e2c9",
+    "evaluator_sha256": "55e93b4269ce50c2abdd95de51c766d1f23047ceb60ef15152140d5ab04d2ee9",
+    "model_sha256": "c01293ae986a14c15aadd3c1f44054fe9a5af97b0aa3c57e418480d2bcbe0f9b",
+    "formal_result_sha256": "1881de744accac062b5f2a2710d7e7465bcc1f9ea75e45cf4dba75e0018755c5"
+  },
+  "next_step": "Freeze the selected normalized area threshold and test one source-disjoint PB6 cohort. SCIL must independently prove the requested entity; SPPF must admit door presence; the unchanged portal proposer must retain the human portal set at Top-3. Include no-portal and open-aperture OOD controls and forbid COMMIT or guidance.",
+  "claim_boundary": "Algorithm-fresh Development evidence on consumed public-image cohorts. The result justifies a source-disjoint confirmation of semantic presence-gated portal proposals. It is not identity, portal ownership, public access, opening state, traversability, active-view causality, temporal persistence, guidance, arrival, product benefit, user benefit, or safety evidence."
+}

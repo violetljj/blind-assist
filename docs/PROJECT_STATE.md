@@ -553,6 +553,78 @@ boxes. Change the portal-opportunity information source or representation and
 confirm it on a source-disjoint cohort containing no-portal and open-aperture
 controls before claiming portal ownership.
 
+PB6 through PB10 have now executed that information-source ladder without
+retuning PB5. Synthetic door semantics passed Development and failed fresh
+(`0/4` positive truth Top-3); ADE20K door components did the same (`3/4` in
+Development, `0/4` fresh). A typed Qwen2-VL grid retained truth on only `1/4`
+and typed all four controls as doors, while a specialized door ontology retained
+no candidate on any positive. Those sources are closed on their consumed rows.
+
+The strongest retained signal is complementary rather than authoritative. A
+fixed row-wise relative-depth aperture construction retained portal truth in
+Top-3 on `4/4`; official Trans4Trans class-5 glass-door masks aligned to a
+truth-member aperture on the same `4/4`. The join still fired on `1/2`
+no-portal and `1/2` open-mouth controls (balanced accuracy `0.750`). A
+threshold-free glass cut removed all control errors but collapsed positive
+coverage to `1/4` (balanced accuracy `0.625`). Record
+`L10_PB10_GLASS_DOOR_PLANE_AND_TOPOLOGICAL_CUT_DEVELOPMENT_GATE_NOT_MET`.
+
+PB11 then froze metric relief behind a calibrated aperture-rim plane on eight
+fresh SUN RGB-D capture sequences: four door planes, two NONE controls, and two
+doorless openings with visible source-depth clear spans of `1.5381 m` and
+`1.7735 m`. Source sensor depth made all `8/8` rows evaluable, but the minimum
+door score was `0.7166` while the maximum control score was `0.9831`; strict
+margin was `-0.2665` and ROC AUC `0.625`. The planar cabinet controls scored
+like opaque doors, while the glass double door was the weakest positive.
+Record `L10_PB11_METRIC_PORTAL_CLOSURE_P0_PRIVILEGED_GATE_NOT_MET`. This closes
+metric rim-plane closure as door authority; per protocol, DepthART was not run
+and no scorer or cohort parameter was tuned after output. The next admissible
+representation is RGB door-part topology (leaf/frame/handle or hinge), with
+depth used only after semantic topology exists.
+
+PB12 tested that successor on another eight fresh SUN RGB-D capture sequences
+with a source-disjoint detector trained on `door`, `handle`, `cabinet door`, and
+`refrigerator door`. The frozen smallest-enclosing-parent rule rejected both
+handled-furniture controls and both large doorless openings, but authorized
+`0/4` real architectural doors: positive recall `0.0`, control false-positive
+rate `0.0`, and balanced accuracy `0.500`. The model did expose real structure
+(door parents on `2/4`, door handles on `2/4`, and coherent cabinet-door/handle
+groups), but parent and child never formed an authorized real-door pair. Record
+`L10_PB12_DOOR_PART_TOPOLOGY_DEVELOPMENT_GATE_NOT_MET`. Do not tune its boxes,
+parent priority, confidence, crop, image size, or checkpoint on these rows. The
+next admissible representation is a distinct pixel-level door-part source that
+localizes leaf, frame, handle, and furniture-door competitors.
+
+PB13 attempted that pixel representation with a pinned Florence-2-large-ft
+snapshot, six pre-frozen referring-segmentation expressions, and a new eight-row
+SUN RGB-D cohort spanning four source buckets. Its first formal launch stopped
+before model load because the evaluator guard incorrectly compared the
+protocol-frozen `USE_TF=0` with `1`; one unchanged mechanical replay was legal
+because no cohort image or output had been consumed. On the replay, the first
+frame's `operation_part` output contained a component that violated the frozen
+minimum-three-vertex polygon contract. The process stopped after three model
+calls, before any frame or aggregate metric was adjudicated. Record
+`L10_PB13_FLORENCE_PIXEL_PART_TOPOLOGY_DEVELOPMENT_NOT_EVALUABLE_OUTPUT_CONTRACT_FAILURE`.
+This is neither a positive nor negative quality result. The cohort is consumed:
+do not repair the parser, prompts, beams, or topology on these pixels. PB14 must
+use a new proposal/segmentation information source and a fresh cohort.
+
+PB14 supplied that new source with a frozen YOLOE-26n-seg open-vocabulary mask
+model, one full-frame parent lane, and one exact-parent-box child-rescale lane on
+eight further fresh SUN RGB-D sequences. The execution was mechanically complete
+in `9.60 s` with 17 fixed calls and `104,960,512` peak allocated CUDA bytes, but
+the information source produced zero `architectural_leaf`, `operation_part`, or
+`hinge` instances. It instead emitted two `closet_door` and six
+`doorless_opening` parents on the positives; the nine parent crops still produced
+no child instance. Consequently all four positives and all four controls remained
+unauthorized: recall `0.0`, control false-positive rate `0.0`, and balanced
+accuracy `0.500`. Record
+`L10_PB14_YOLOE_MULTISCALE_PART_TOPOLOGY_DEVELOPMENT_GATE_NOT_MET`. This localizes
+the failure before topology, at open-vocabulary semantic grounding. Do not tune
+YOLOE prompts, thresholds, image size, parent ordering, crops, or mask assignment
+on the consumed cohort. PB15 changes the information source to two-scale
+GroundingDINO boxes plus SAM2.1 box-conditioned masks on another fresh cohort.
+
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
 because the approved AWS profile is absent. That is a source-access condition,

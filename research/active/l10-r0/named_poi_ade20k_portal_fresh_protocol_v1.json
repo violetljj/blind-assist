@@ -1,0 +1,122 @@
+{
+  "schema": "l10-named-poi-ade20k-portal-fresh-protocol-v1",
+  "created_at": "2026-08-29",
+  "mode": "SOURCE_AND_ENTITY_DISJOINT_FRESH_CONFIRMATION",
+  "mechanism": {
+    "name": "Script-Proved Broad-Domain Door Component Field",
+    "short_name": "SCIL + BD-DCF",
+    "description": "Frozen same-frame SCIL proves the requested public entity, while a generic ADE20K scene parser independently supplies raw door or screen-door connected components. Only the conjunction can attach entity authority to a Top-3 component.",
+    "single_structural_change": "Relative to failed PB6, replace the synthetic public-door classifier and hand-crafted geometry proposer with raw broad-domain ADE20K door-component regions. Identity cannot create a door component and door semantics cannot name an entity.",
+    "information_source_change": "The new information is a generic indoor/outdoor scene-semantic field with explicit door classes; no PB6 matcher threshold, seed, backbone comparison, crop, tracker, morphology, or fusion sweep is used."
+  },
+  "sources": {
+    "source_spec": {
+      "path": "research/active/l10-r0/named_poi_ade20k_portal_fresh_source_v1.json",
+      "sha256": "060c014076e99c58c27e5f8041bfdbf43067b13e41501dfefb144e0cab88b8c1"
+    },
+    "source_manifest": {
+      "path": "artifacts.local/knowledge/named-poi-ade20k-portal-fresh-v1/source_manifest.json",
+      "sha256": "6d8133c166902bbc1594fd71dc311aeef61a72d892ca0e3cfe1b56297c47771f"
+    },
+    "source_audit": {
+      "path": "research/active/l10-r0/named_poi_ade20k_portal_fresh_source_audit_v1.json",
+      "sha256": "1cb2d336a0400e020593422557be32ca4ec08ca7768d91d26654f9e88bba00fb"
+    }
+  },
+  "frozen_files": {
+    "scil_evaluator": {
+      "path": "research/active/l10-r0/named_poi_biscript_eval.py",
+      "sha256": "49a391ee937ddbd23d48c1f2554d3874d8f1242a9458bdf15ef7a31d0e5c9754"
+    },
+    "scil_result": {
+      "path": "research/active/l10-r0/named_poi_biscript_result_v1.json",
+      "sha256": "86c5c43ec395d6e94d90a0ff80a6fdce6cea48b0c4cabbaed6d0c08476dd137c"
+    },
+    "door_field_development_evaluator": {
+      "path": "research/active/l10-r0/named_poi_ade20k_portal_development_eval.py",
+      "sha256": "74c3e426024c5af422949f15990179646f1efbeadf1b99c93ae0ad3e660e8086"
+    },
+    "door_field_development_protocol": {
+      "path": "research/active/l10-r0/named_poi_ade20k_portal_development_protocol_v1.json",
+      "sha256": "11175e280f638a0698871b54d385a009e4066ebd22f9d80b78bdd673be1ac1aa"
+    },
+    "door_field_development_result": {
+      "path": "research/active/l10-r0/named_poi_ade20k_portal_development_result_v1.json",
+      "sha256": "7b3959f5b7771e7f5a679987162e3a84f58dc9d30e5eaab8695af553e0221ec4"
+    },
+    "semantic_model": {
+      "path": "artifacts.local/models/yolo26-sem-ade20k/yolo26x-sem-ade20k.pt",
+      "sha256": "aa51833f1aa5dc73b378d7ba99f914ef9fa82e434cb23d7b1705dd24bd33b621"
+    }
+  },
+  "evaluator": {
+    "path": "research/active/l10-r0/named_poi_ade20k_portal_fresh_eval.py",
+    "sha256": "e2e194cb69742036527d4ab7b0b1b4ec8159024b6225c7218fb315cdc8ff1d1c"
+  },
+  "scil": {
+    "authority": "PB4 Development-selected SCIL thresholds copied exactly and applied to the eight frozen candidate profiles as one pack.",
+    "score_threshold": 0.4768178970490568,
+    "margin_threshold": 0.034304215834340235,
+    "proof_rule": "The highest entity score must meet both thresholds with no cross-carrier conflict. Only an exact proof for the source entity can carry its authority token; UNKNOWN and wrong proofs authorize nothing."
+  },
+  "door_field": {
+    "authority": "PB7 Development selected this raw component-area threshold once on the consumed PB6 cohort, retaining a truth-member Top-3 component on three of four positives with zero presence on both no-portal negatives.",
+    "classes": {
+      "door": 14,
+      "screen_door": 58
+    },
+    "component_area_fraction": 0.1759326171875,
+    "minimum_box_bottom_fraction": 0.5,
+    "maximum_authorized_candidates": 3,
+    "component_rule": "Union door and screen-door ADE20K pixels, form raw eight-connected components, rank by semantic pixel area, and retain the first three meeting the frozen normalized-area and bottom priors.",
+    "truth_membership": "A component box is a portal-set member when its center lies inside the frozen human region and at least half of its own area lies inside that region.",
+    "forbidden_processing": "No morphology, crop, TTA, class sweep, model-size comparison, geometry proposer, OCR input, target identity, or ensemble."
+  },
+  "cohort": {
+    "entities": 8,
+    "door_level_positives": 4,
+    "no_portal_negatives": 2,
+    "large_open_entrance_ood": 2,
+    "prior_route_entity_name_hits": 0,
+    "pre_freeze_model_calls": 0,
+    "wrong_request_proxy": "Every frame is cross-paired with the other seven frozen entity requests. A typed authority token can name only the SCIL-proved entity.",
+    "freshness": "No PB7 OCR or ADE20K semantic output was observed before exact files, aliases, roles, local sizes, hashes, and human portal regions were frozen."
+  },
+  "runtime": {
+    "ultralytics_version": "8.4.102",
+    "image_size": 640,
+    "semantic_backend": "CUDA-only with fail-closed actual-device verification.",
+    "ocr_backend": "RapidOCR 3.9.2 with ONNX Runtime CPUExecutionProvider",
+    "ocr_model_root": "artifacts.local/runtime/semantic-anchor-v1/models",
+    "ocr_models": {
+      "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+      "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+      "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+    }
+  },
+  "metrics": [
+    "SCIL correct proof, wrong proof, and UNKNOWN counts",
+    "raw door-component presence on positives, no-portal negatives, and OOD",
+    "joined Top-3 truth retention on four door-level positives",
+    "no-portal false authorization and open-entrance OOD authorization leakage",
+    "wrong-request authorization reduction versus unbound component attachment",
+    "balanced accuracy over four positives and four controls",
+    "forbidden COMMIT or navigation state leakage"
+  ],
+  "promotion_gate": {
+    "minimum_total_correct_scil_proofs": 6,
+    "minimum_positive_identity_proofs": 3,
+    "minimum_identity_evaluable_controls": 3,
+    "minimum_joined_top3_truth_retention": 3,
+    "require_zero_wrong_scil_proofs": true,
+    "require_zero_no_portal_presence": true,
+    "require_zero_no_portal_authorization": true,
+    "require_zero_ood_authorization": true,
+    "require_zero_wrong_request_authorization": true,
+    "require_zero_identity_unknown_authorization": true,
+    "require_no_commit_or_navigation_state": true
+  },
+  "stop_rule": "Run exactly once. Do not change source files, aliases, human roles or boxes, SCIL thresholds, semantic model, classes, component rule, threshold, join, or gate after output. A failure closes this representation on the frozen cohort rather than triggering a rescue sweep.",
+  "next_step": "If the gate passes, retain SCIL + BD-DCF as current-frame entity-bound portal-region proposal authority and test one frozen active-view action against a no-action control. If it fails, change the information modality rather than tune this cohort.",
+  "claim_boundary": "Fresh entity-disjoint public-image confirmation of conditional same-frame entity proof plus coarse broad-domain door-component proposal authority. Door-component boxes may cover a portal region rather than precise door leaves. A pass would not establish natural prevalence, physical portal ownership, public access, opening state, traversability, active-view causality, temporal persistence, directional guidance, arrival, product benefit, user benefit, or safety."
+}

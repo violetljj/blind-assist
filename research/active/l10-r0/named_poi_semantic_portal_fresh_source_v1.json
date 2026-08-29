@@ -1,0 +1,144 @@
+{
+  "schema": "l10-named-poi-semantic-portal-fresh-source-v1",
+  "created_at": "2026-08-29",
+  "target_id": "pb6-semantic-portal-fresh-v1",
+  "selection_authority": "Eight exact Wikimedia Commons files were selected and source-only pixel-audited before any PB6 OCR, semantic, or geometry model call. All eight entity names had zero hits under research/active/l10-r0 and were checked against the prior PB1-PB5 and portal-lattice-fresh-v3 entity inventories.",
+  "cohort": [
+    {
+      "index": 1,
+      "id": "apm-millennium-city-5",
+      "name": "apm",
+      "aliases": {
+        "latin": ["apm", "apm Millennium City 5", "Millennium City 5"],
+        "han": ["創紀之城五期"],
+        "marks": ["APM"]
+      },
+      "role": "IN_SCOPE_DOOR_LEVEL_POSITIVE",
+      "portal_kind": "multi-leaf glass mall entrance",
+      "commons_file": "HK KTD 觀塘道 418 Kwun Tong Road near Apm mall entrance glass door July 2021 SS2.jpg",
+      "official_name_source": "https://www.shkp.com/html/mcity/english/mc5_body.htm",
+      "source_audit_note": "Large apm Millennium City 5 identity sign above several complete glass door leaves."
+    },
+    {
+      "index": 2,
+      "id": "tko-spot",
+      "name": "TKO SPOT",
+      "aliases": {
+        "latin": ["TKO SPOT", "TKO Spot"],
+        "han": [],
+        "marks": ["TKO SPOT"]
+      },
+      "role": "IN_SCOPE_DOOR_LEVEL_POSITIVE",
+      "portal_kind": "multi-leaf glass mall entrance",
+      "commons_file": "HK SKD TKO 將軍澳 Tseung Kwan O Sheung Tak Estate TKO Spot Shopping mall name sign n entrance glass door June 2022 Px3.jpg",
+      "official_name_source": "https://www.linkreit.com/tc/business/properties/tko-spot/",
+      "source_audit_note": "TKO SPOT logo spans the glass entrance; dense promotional stickers are a declared visual distractor."
+    },
+    {
+      "index": 3,
+      "id": "choi-ming-shopping-centre",
+      "name": "Choi Ming Shopping Centre",
+      "aliases": {
+        "latin": ["Choi Ming Shopping Centre", "Choi Ming"],
+        "han": ["彩明商場", "彩明"],
+        "marks": []
+      },
+      "role": "IN_SCOPE_DOOR_LEVEL_POSITIVE",
+      "portal_kind": "multi-leaf glass mall entrance",
+      "commons_file": "HK TKL 調景嶺 Tiu Keng Leng 彩明街 Choi Ming Street 景嶺道 King Ling Road 彩明商場 Choi Ming Shopping Centre glass door entrance Link REIT sign January 2023 Px3 01.jpg",
+      "official_name_source": "https://www.linkreit.com/en/business/properties/choi-ming-shopping-centre/",
+      "source_audit_note": "Frozen logo aliases are 彩明 and Choi Ming only in this shopping-centre profile; the Link logo is not an identity alias."
+    },
+    {
+      "index": 4,
+      "id": "hong-kong-news-expo",
+      "name": "Hong Kong News-Expo",
+      "aliases": {
+        "latin": ["Hong Kong News-Expo", "Hong Kong News Expo", "News-Expo"],
+        "han": ["香港新聞博覽館"],
+        "marks": []
+      },
+      "role": "IN_SCOPE_DOOR_LEVEL_POSITIVE",
+      "portal_kind": "door-scale open museum entrance",
+      "commons_file": "HK Central 中環 Bridges Street Hong Kong News-Expo Museum March 2021 SS2 01.jpg",
+      "official_name_source": "https://hkne.org.hk/en/",
+      "source_audit_note": "Full bilingual facade identity and a normal door-scale illuminated open entrance are simultaneously visible."
+    },
+    {
+      "index": 5,
+      "id": "the-mills",
+      "name": "The Mills",
+      "aliases": {
+        "latin": ["The Mills"],
+        "han": ["南豐紗廠"],
+        "marks": []
+      },
+      "role": "NO_PORTAL_NEGATIVE",
+      "portal_kind": "none visible",
+      "commons_file": "HK 荃灣 Tsuen Wan 白田壩街 45 Pak Tin Par Street 南豐紗廠 The Mills mall December 2018 SSG name sign.jpg",
+      "official_name_source": "https://www.themills.com.hk/",
+      "source_audit_note": "Large bilingual identity logo on a solid wall; no door leaf, frame, or traversable opening is visible."
+    },
+    {
+      "index": 6,
+      "id": "hong-kong-police-museum",
+      "name": "Hong Kong Police Museum",
+      "aliases": {
+        "latin": ["Hong Kong Police Museum", "Police Museum"],
+        "han": ["警隊博物館"],
+        "marks": []
+      },
+      "role": "NO_PORTAL_NEGATIVE",
+      "portal_kind": "none visible",
+      "commons_file": "HK Hiking December 2018 IX2 63 Hong Kong Police Museum sign.jpg",
+      "official_name_source": "https://www.police.gov.hk/museum/en/",
+      "source_audit_note": "Identity-bearing directional sign with road, vegetation, and street furniture only; no building or entrance pixels."
+    },
+    {
+      "index": 7,
+      "id": "pmq",
+      "name": "PMQ",
+      "aliases": {
+        "latin": ["PMQ"],
+        "han": ["元創方"],
+        "marks": ["PMQ"]
+      },
+      "role": "LARGE_OPEN_ENTRANCE_OOD",
+      "portal_kind": "campus-scale open gateway",
+      "commons_file": "HK 中環 Central 鴨巴甸街 Aberdeen Street PMQ entrance June 2019 IX2 02.jpg",
+      "official_name_source": "https://www.pmq.org.hk/about/about-pmq/?lang=ch",
+      "source_audit_note": "PMQ identity is visible beside a wide stepped gateway leading to a courtyard; it is intentionally outside door-level scope."
+    },
+    {
+      "index": 8,
+      "id": "airside",
+      "name": "AIRSIDE",
+      "aliases": {
+        "latin": ["AIRSIDE"],
+        "han": [],
+        "marks": ["AIRSIDE"]
+      },
+      "role": "LARGE_OPEN_ENTRANCE_OOD",
+      "portal_kind": "multi-storey atrium-scale entrance",
+      "commons_file": "HK KCD 啟德 Kai Tak AIRSIDE Shopping Mall 商場 entrance sign January 2024 R12S 01.jpg",
+      "official_name_source": "https://www.airside.com.hk/visit",
+      "source_audit_note": "AIRSIDE identity spans a transparent multi-storey atrium with multiple open door leaves; OOD is defined by gateway scale, not absence of doors."
+    }
+  ],
+  "files": [
+    "HK KTD 觀塘道 418 Kwun Tong Road near Apm mall entrance glass door July 2021 SS2.jpg",
+    "HK SKD TKO 將軍澳 Tseung Kwan O Sheung Tak Estate TKO Spot Shopping mall name sign n entrance glass door June 2022 Px3.jpg",
+    "HK TKL 調景嶺 Tiu Keng Leng 彩明街 Choi Ming Street 景嶺道 King Ling Road 彩明商場 Choi Ming Shopping Centre glass door entrance Link REIT sign January 2023 Px3 01.jpg",
+    "HK Central 中環 Bridges Street Hong Kong News-Expo Museum March 2021 SS2 01.jpg",
+    "HK 荃灣 Tsuen Wan 白田壩街 45 Pak Tin Par Street 南豐紗廠 The Mills mall December 2018 SSG name sign.jpg",
+    "HK Hiking December 2018 IX2 63 Hong Kong Police Museum sign.jpg",
+    "HK 中環 Central 鴨巴甸街 Aberdeen Street PMQ entrance June 2019 IX2 02.jpg",
+    "HK KCD 啟德 Kai Tak AIRSIDE Shopping Mall 商場 entrance sign January 2024 R12S 01.jpg"
+  ],
+  "freeze_rules": {
+    "identity_profiles": "The aliases above are frozen before OCR. Historical names and unrelated co-brands are excluded.",
+    "portal_roles": "Rows 1-4 are door-level positives, 5-6 contain no portal pixels, and 7-8 are large open-entrance OOD controls.",
+    "model_access": "No OCR, SPPF, portal proposer, or identity model may run before local source integrity and human portal truth are frozen."
+  },
+  "claim_boundary": "Deliberately identity-opportunity-stratified fresh public-image cohort. It can confirm conditional current-frame identity plus portal proposal behavior, not natural prevalence, physical ownership, public access, traversability, active-view causality, guidance, arrival, product benefit, user benefit, or safety."
+}

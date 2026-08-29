@@ -777,6 +777,96 @@ source-disjoint cohort with no-portal and open-aperture controls. No access,
 traversability, active-view, tracking, guidance, arrival, product,
 user-benefit, or safety result follows.
 
+PB6--PB9 then changed that source four times and closed each failed
+representation instead of tuning it. PB6 synthetic semantics reached `4/6`
+positive truth Top-3 with `0/16` false controls in Development, then failed a
+new cohort at `0/4` with `1/2` no-portal and `1/2` open-mouth leakage. PB7
+ADE20K components reached `3/4`, `0/2`, and `0/2` in Development, then retained
+no positive on fresh pixels. PB8's typed VLM selected `DOOR` on all eight
+frames and retained truth in only `1/4`; PB9's author-final specialized
+detector retained no door candidate on any positive. Do not reopen their
+prompts, classes, confidence, boxes, crops, model sizes, or thresholds.
+
+PB10 changed modality. Frozen row-relative far-depth components retained a
+truth member in Top-3 on **`4/4`** positives, and official Trans4Trans class-5
+argmax masks aligned to a truth-member component on **`4/4`**. But one of two
+no-portal controls and one of two large open-mouth controls also fired, for
+balanced accuracy `0.750`. A separately frozen, threshold-free bottom-to-far
+glass cut achieved `0/2` and `0/2` control leakage but only `1/4` positive
+coverage, balanced accuracy `0.625`. Record
+`L10_PB10_GLASS_DOOR_PLANE_AND_TOPOLOGICAL_CUT_DEVELOPMENT_GATE_NOT_MET`.
+RDAT remains only a coarse proposal diagnostic and Trans4Trans only a semantic
+alignment source.
+
+PB11 Metric Portal Closure is now closed. Its cohort was frozen before output
+across eight distinct SUN RGB-D captures with true K, official depth, sealed
+aperture quadrilaterals, and role counts `4 + 2 + 2`. All `8/8` rows evaluated,
+but `min(door)=0.7166` was below `max(control)=0.9831`; strict margin was
+`-0.2665` and ROC AUC `0.625`. The strongest no-portal result was a planar wall
+storage panel, while the weakest positive was a glass double door. Record
+`L10_PB11_METRIC_PORTAL_CLOSURE_P0_PRIVILEGED_GATE_NOT_MET`.
+
+This is a representation failure, not a metric-depth checkpoint failure:
+rim-plane closure identifies planar occlusion but cannot say that the plane is
+a door. Do not run DepthART C1 or reopen the cohort, quadrilateral, rim,
+interior, relief, quantile, threshold, or score on these rows. The next decision
+must add RGB door-part topology (leaf-frame-handle or hinge relationships) and
+may use depth only as a subsequent geometry consistency check.
+
+PB12 Door Part-Parent Topology has now tested and closed one such box-level
+source. A DoorDetect-trained four-class YOLO11n checkpoint was frozen before
+output on eight new SUN RGB-D captures: four handled architectural doors, two
+handled furniture-door controls, and two large doorless openings. The exact
+rule assigned each handle to the smallest enclosing `door`, `cabinet door`, or
+`refrigerator door` parent and authorized only a handle assigned to `door`.
+It rejected all `4/4` controls but also authorized `0/4` positives, giving
+positive recall `0.0`, control false-positive rate `0.0`, and balanced accuracy
+`0.500`. Record `L10_PB12_DOOR_PART_TOPOLOGY_DEVELOPMENT_GATE_NOT_MET`.
+
+The useful signal is narrower: architectural door parents were present on
+`2/4`, visible architectural-door handles on `2/4`, the closet produced
+coherent cabinet-door/handle assignments, and both large openings stayed
+silent. The failure is that parent and child did not co-occur reliably, plus one
+real door had overlapping door/cabinet parents that assigned the handle to the
+cabinet class. Do not repair this by changing thresholds, crops, box overlap,
+parent priority, image size, checkpoint, or fusion on the consumed cohort. The
+next decision must change to a distinct pixel-level door-part information source
+that explicitly localizes leaf, frame, handle, and furniture-door competitors.
+
+PB13 changed to text-conditioned Florence-2 pixel polygons and froze six
+expressions plus an eight-frame, four-bucket cohort before any output. A first
+pre-output environment-guard bug consumed no pixels and allowed one mechanical
+replay. That replay stopped on frame 1 after the `operation_part` result exposed
+a component with fewer than three valid vertices under the preregistered polygon
+contract. Zero frames and zero aggregate metrics were adjudicated. Record
+`L10_PB13_FLORENCE_PIXEL_PART_TOPOLOGY_DEVELOPMENT_NOT_EVALUABLE_OUTPUT_CONTRACT_FAILURE`;
+do not call it a miss or a safe rejection.
+
+The PB13 cohort is consumed and cannot be rerun with a relaxed parser or revised
+prompt. The next decision must change both information source/representation and
+cohort; a native open-vocabulary mask source or a separately grounded box-to-mask
+pipeline is admissible, but Florence prompt/parser rescue on these pixels is not.
+
+PB14 tested the native-mask branch with pinned YOLOE-26n-seg and MobileCLIP2-B.
+The frozen representation ran all eight full frames plus nine exact parent-box
+crops (`17` calls total) in `9.60 s`, with peak allocated CUDA memory
+`104,960,512` bytes. It rejected all four controls, but authorized none of the
+four visible-part architectural doors. Full-frame output contained zero
+`architectural_leaf`, zero `operation_part`, and zero `hinge` instances; two
+positives were instead split into `closet_door` plus `doorless_opening`, and the
+other two had no parent. Parent rescaling recovered no handle or hinge. Metrics
+are positive recall `0.0`, control false-positive rate `0.0`, balanced accuracy
+`0.500`; record
+`L10_PB14_YOLOE_MULTISCALE_PART_TOPOLOGY_DEVELOPMENT_GATE_NOT_MET`.
+
+This is a source-semantic failure before the frozen pixel topology, not evidence
+for revising the matcher. The PB14 rows are consumed: do not compare alternate
+prompt wording, confidence, NMS, image size, crop expansion, YOLOE size, parent
+priority, or fusion on them. The next decision takes the separately grounded
+box-to-mask branch: fixed two-scale GroundingDINO parent/part grounding followed
+by SAM2.1 box masks and the same competitor-conservative pixel assignment, on a
+new PB15 cohort.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

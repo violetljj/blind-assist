@@ -1,0 +1,70 @@
+{
+  "schema": "l10-named-poi-yoloe-portal-presence-development-protocol-v1",
+  "created_at": "2026-08-29",
+  "mode": "ALGORITHM_FRESH_DEVELOPMENT_ON_CONSUMED_SOURCE_DISJOINT_COHORTS",
+  "question": "Can a generic current-image semantic entrance prompt supply full portal proposals with higher positive retention and equal or better no-portal rejection than the already-passing pixel-semantic presence source?",
+  "representation": {
+    "name": "Generic Semantic Entrance Proposal Field",
+    "short_name": "GSEPF",
+    "fixed_prompt": "building entrance",
+    "change_from_pb5": "Replace hand-crafted vertical-line opportunity admission with full semantic entrance boxes produced from current RGB and one generic class prompt.",
+    "pb1_separation": "PB1 scored portal crops against the requested building identity using reference appearance and context. GSEPF receives no requested entity, reference image, SCIL score, portal lattice, or place identity; it only proposes instances of a generic entrance class."
+  },
+  "sources": {
+    "portal_positive_manifest": {
+      "path": "artifacts.local/knowledge/named-poi-portal-lattice-fresh-v3/source_manifest.json",
+      "sha256": "8d5b8c244cbcd14e6b9ddc474d7db1e1edd6b755f0d538a063c33d9a5de79e20"
+    },
+    "portal_positive_audit": {
+      "path": "research/active/l10-r0/named_poi_portal_lattice_fresh_source_audit_v3.json",
+      "sha256": "b431f7c5685757e0471c0ab3deff5f0702b49908d2b9ae814bf65946a1026fa9"
+    },
+    "no_portal_protocol": {
+      "path": "research/active/l10-r0/named_poi_target_local_entrance_protocol_v1.json",
+      "sha256": "aee5753bdc943e8050723ce0785bbdc71887e158ce2172fddab1f1fe6d475e57"
+    },
+    "no_portal_library": {
+      "path": "artifacts.local/knowledge/named-poi-multifacet-v3/multifacet_library.json",
+      "sha256": "d7761fd6ebdc554a8505796381c4b8793c63f8138c52b28affa3c49a76ca7c60"
+    }
+  },
+  "model": {
+    "path": "artifacts.local/models/yoloe-26n-seg.pt",
+    "sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+    "training_role": "Generic open-vocabulary instance proposal model; no PB1-PB6 pixel, truth, or identity input"
+  },
+  "text_encoder": {
+    "path": "artifacts.local/models/mobileclip2_b.ts",
+    "sha256": "35d7f213e4d75f38514e4656ad3cb91158bd33e3805d8ac349f23b186f66982f"
+  },
+  "evaluator": {
+    "path": "research/active/l10-r0/named_poi_yoloe_portal_presence_eval.py",
+    "sha256": "52307488c3cdf1b76bb58ff1203729b8427c7828d159e2829a1b194d74de5c63"
+  },
+  "runtime": {
+    "ultralytics_version": "8.4.102",
+    "image_size": 640,
+    "confidence_floor": 0.001,
+    "provider_max_det": 100,
+    "bounded_pool_size": 10,
+    "backend_selection": "Warm one equivalent CPU and CUDA inference, time one inference on each, and choose the faster backend; CUDA wins a tie.",
+    "proposal_extraction": "Rank raw YOLOE boxes by provider confidence and retain at most ten. No crop, target prompt, morphology, TTA, context fusion, NMS change, or model ensemble."
+  },
+  "development_cohort": {
+    "positives": "All six previously frozen source-disjoint portal-lattice-fresh-v3 glass-door frames and their pre-existing human portal-set boxes.",
+    "negatives": "All sixteen target-local-v1 rows frozen as no distinct actionable entrance before that route's model call.",
+    "excluded_from_selection": "The four broad target-local-v1 positive apertures mix fare gates, open arches, and corridor doors outside the narrow door-level confirmation target.",
+    "pb5_pixels": "FORBIDDEN",
+    "identity_input": "FORBIDDEN"
+  },
+  "candidate_membership": "A proposal is a portal-set member when its box center lies inside the frozen portal-set region and at least half of its own box area lies inside that region. This differs from the historical FacadeElements IoU criterion because these six truth regions denote a functional multi-leaf door bank, for which a correct individual door leaf is a set member rather than a full-region replica.",
+  "threshold_selection": "Enumerate only observed Development raw proposal scores plus zero and the next value above the maximum. Among thresholds retaining a portal-set member in Top-3 on at least five of six positive frames and falsely authorizing at most one of sixteen no-portal frames, minimize false-authorized negative frames, then maximize positive truth retention, then choose the largest threshold. If none qualifies, close this provider without changing prompt, model, image size, pool size, or gate.",
+  "development_gate": {
+    "minimum_positive_truth_retained_top3": 5,
+    "maximum_negative_false_authorization_frames": 1
+  },
+  "provider_selection": "If this stricter YOLOE gate passes, freeze GSEPF as the sole semantic portal provider for fresh PB6 because it directly supplies full proposal boxes. If it fails, retain the already-frozen passing SPPF source and its unchanged geometry proposer. This selection rule is frozen before YOLOE output and will not be revisited on fresh pixels.",
+  "stop_rule": "Run this Development selection once. After output, do not alter sources, labels, model, text encoder, prompt, image size, confidence floor, pool size, membership, threshold candidates, selection order, or gate on these rows. The selected provider must then face one source-disjoint PB6 confirmation without tuning.",
+  "next_step": "Freeze exactly one semantic provider and test it once on new entities with independently frozen SCIL identity opportunity, door-level positives, no-portal controls, and large open-entrance OOD controls. Require wrong-request and UNKNOWN abstention and forbid COMMIT or navigation guidance.",
+  "claim_boundary": "Algorithm-fresh Development reuse of consumed public-image cohorts. A pass only selects a semantic proposal representation for source-disjoint confirmation. It does not bind a requested entity, prove portal ownership, public access, opening state, traversability, active-view causality, guidance, arrival, product benefit, user benefit, or safety."
+}

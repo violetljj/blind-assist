@@ -1,0 +1,286 @@
+{
+  "schema": "l10-named-poi-door-part-topology-cohort-v1",
+  "status": "FROZEN_BEFORE_MODEL_OUTPUT",
+  "frozen_at": "2026-08-29",
+  "protocol": {
+    "schema": "l10-named-poi-door-part-topology-protocol-v1",
+    "sha256": "0f6f3096a305444a832f70543c7974afb10586092d00166eff113c7975e39a7e"
+  },
+  "source": {
+    "dataset": "SUN RGB-D",
+    "archive_bytes": 6885481608,
+    "archive_sha256": "1a6dbf2a1c9044c4805a35ee648d616ea39a231fd5bd6f77e84cd2b8287fe41c",
+    "source_audit_sha256": "b2fd44f08781f3032ff8c5f537ae5fdaf2ef99a2f7a4987f23925f112063b827",
+    "extracted_root": "artifacts.local/datasets/sunrgbd-door-part-topology-audit-pool-v1",
+    "prior_pb11_frame_overlap": 0,
+    "selection_provenance": "Official exact-door annotation prefilter plus human RGB audit; no PB12 checkpoint output or other learned output was observed on these eight frames before freeze."
+  },
+  "inference": {
+    "checkpoint_sha256": "4f05c7a88fc9350cef88157a60eeab040de549e6bdbfe4ec5f9c628835ee2f43",
+    "batch": 8,
+    "imgsz": 640,
+    "conf": 0.25,
+    "iou": 0.7,
+    "max_det": 300,
+    "device": 0,
+    "half": false,
+    "rect": false,
+    "augment": false,
+    "agnostic_nms": false
+  },
+  "frames": [
+    {
+      "index": 1,
+      "frame_id": "rgbf000042-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/001404_2014-06-19_16-13-42_260595134347",
+      "sensor_source_bucket": "kv2/kinect2data",
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_HANDLE",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/001404_2014-06-19_16-13-42_260595134347_rgbf000042-resize",
+      "audit_note": "Official exact door object 2 and doorknob annotation; human RGB audit confirms the right-hand wooden room door leaf and its silver lever are clearly visible.",
+      "source_image_size": [730, 530],
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "exact_door_object_indices": [2],
+        "supporting_object_names": ["door", "doorknob"]
+      },
+      "files": {
+        "rgb": {
+          "path": "SUNRGBD/kv2/kinect2data/001404_2014-06-19_16-13-42_260595134347_rgbf000042-resize/image/0000042.jpg",
+          "bytes": 44479,
+          "sha256": "7b56921c3e26504a9628700c87ffef89bbdf4050a59c1b96e78e6e56064cda70"
+        },
+        "polygon": {
+          "path": "SUNRGBD/kv2/kinect2data/001404_2014-06-19_16-13-42_260595134347_rgbf000042-resize/annotation2Dfinal/index.json",
+          "bytes": 1689,
+          "sha256": "d8be0f04b9ba1ff055244a25c8b6184ea7524eae20940f12dedef660c5b85eb7"
+        },
+        "scene_metadata": {
+          "path": "SUNRGBD/kv2/kinect2data/001404_2014-06-19_16-13-42_260595134347_rgbf000042-resize/scene.txt",
+          "bytes": 3,
+          "sha256": "c6e5e46c59267114f91d64df0e069b0dae176f9a134656820bba1e6164318980"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "frame_id": "rgbf000510-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/002489_2014-06-16_16-23-02_260595134347",
+      "sensor_source_bucket": "kv2/kinect2data",
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_HANDLE",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/002489_2014-06-16_16-23-02_260595134347_rgbf000510-resize",
+      "audit_note": "Official exact door objects 15 and 41 plus DoorHandle; human RGB audit confirms the dominant grey corridor door at right and its round knob are clearly visible.",
+      "source_image_size": [730, 530],
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "exact_door_object_indices": [15, 41],
+        "supporting_object_names": ["Door", "DoorHandle", "DoorFrame"]
+      },
+      "files": {
+        "rgb": {
+          "path": "SUNRGBD/kv2/kinect2data/002489_2014-06-16_16-23-02_260595134347_rgbf000510-resize/image/0000510.jpg",
+          "bytes": 34632,
+          "sha256": "4a933de49df85173f2c7c9c41376bfd2a7bb0c7e71408732cee271499aa2f63a"
+        },
+        "polygon": {
+          "path": "SUNRGBD/kv2/kinect2data/002489_2014-06-16_16-23-02_260595134347_rgbf000510-resize/annotation2Dfinal/index.json",
+          "bytes": 9699,
+          "sha256": "d148df5807031bc2ee97c28bd787708196a69bddc922f9a5a7884d974bbb03de"
+        },
+        "scene_metadata": {
+          "path": "SUNRGBD/kv2/kinect2data/002489_2014-06-16_16-23-02_260595134347_rgbf000510-resize/scene.txt",
+          "bytes": 8,
+          "sha256": "fd09da605e5804b35ee408d27c1bed7c7932a1af861948e042283615be0bd3d0"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "frame_id": "2014_10_22-15_27_26-1311000073",
+      "capture_sequence_id": "SUNRGBD/realsense/sa/2014_10_22-15_27_26-1311000073",
+      "sensor_source_bucket": "realsense/sa",
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_HANDLE",
+      "canonical_source_path": "SUNRGBD/realsense/sa/2014_10_22-15_27_26-1311000073",
+      "audit_note": "Official exact Door object 3 and DoorHandle; human RGB audit confirms the brown corridor door leaf at left and its silver lever are clearly visible.",
+      "source_image_size": [681, 531],
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "exact_door_object_indices": [3],
+        "supporting_object_names": ["Door", "DoorHandle"]
+      },
+      "files": {
+        "rgb": {
+          "path": "SUNRGBD/realsense/sa/2014_10_22-15_27_26-1311000073/image/0000063.jpg",
+          "bytes": 37255,
+          "sha256": "1643649a59af9a1d097c62c76544c7fdf608090d0ca7d3e2e8c5df2af13c2e07"
+        },
+        "polygon": {
+          "path": "SUNRGBD/realsense/sa/2014_10_22-15_27_26-1311000073/annotation2Dfinal/index.json",
+          "bytes": 4251,
+          "sha256": "dca6215d0f4cafc0d794b3bdc5cf41170e96cadbc87ccdab460469403485c5d8"
+        },
+        "scene_metadata": {
+          "path": "SUNRGBD/realsense/sa/2014_10_22-15_27_26-1311000073/scene.txt",
+          "bytes": 8,
+          "sha256": "fd09da605e5804b35ee408d27c1bed7c7932a1af861948e042283615be0bd3d0"
+        }
+      }
+    },
+    {
+      "index": 4,
+      "frame_id": "0008201-000274884492",
+      "capture_sequence_id": "SUNRGBD/xtion/sun3ddata/mit_36_ti_lab/tian_lab_1",
+      "sensor_source_bucket": "xtion/sun3ddata",
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_HANDLE",
+      "canonical_source_path": "SUNRGBD/xtion/sun3ddata/mit_36_ti_lab/tian_lab_1/0008201-000274884492",
+      "audit_note": "Official exact door object 3 and doorhandle; human RGB audit confirms the red industrial room-door leaf and its large round handle are clearly visible.",
+      "source_image_size": [591, 441],
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "exact_door_object_indices": [3],
+        "supporting_object_names": ["door", "doorhandle"]
+      },
+      "files": {
+        "rgb": {
+          "path": "SUNRGBD/xtion/sun3ddata/mit_36_ti_lab/tian_lab_1/0008201-000274884492/image/0008201-000274884492.jpg",
+          "bytes": 35405,
+          "sha256": "e7df98b25a6c037164e6c0aac73bde1b47970f1e09f484aaad4a8237ef0329e3"
+        },
+        "polygon": {
+          "path": "SUNRGBD/xtion/sun3ddata/mit_36_ti_lab/tian_lab_1/0008201-000274884492/annotation2Dfinal/index.json",
+          "bytes": 3186,
+          "sha256": "3437e39f16c0228ca88b6ce232bafbd75c2711fcf93dd292c4565da040450b0a"
+        },
+        "scene_metadata": {
+          "path": "SUNRGBD/xtion/sun3ddata/mit_36_ti_lab/tian_lab_1/0008201-000274884492/scene.txt",
+          "bytes": 3,
+          "sha256": "a51146d38077ff992eba84cf1d5e9b249073503eb74868699016153b031a38f7"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "frame_id": "2014_10_26-13_53_54-1311000073",
+      "capture_sequence_id": "SUNRGBD/realsense/lg/2014_10_26-13_53_54-1311000073",
+      "sensor_source_bucket": "realsense/lg",
+      "role": "HANDLED_FURNITURE_DOOR_NEGATIVE",
+      "canonical_source_path": "SUNRGBD/realsense/lg/2014_10_26-13_53_54-1311000073",
+      "audit_note": "No official exact door; official cabinetdoor and cabinethandle labels plus human RGB audit confirm handled grey mail-room cabinet leaves and no traversable architectural door.",
+      "source_image_size": [681, 531],
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": ["cabinetdoor", "cabinethandle"]
+      },
+      "files": {
+        "rgb": {
+          "path": "SUNRGBD/realsense/lg/2014_10_26-13_53_54-1311000073/image/0000063.jpg",
+          "bytes": 53392,
+          "sha256": "38c79c2a0b8a178adffbf53e3983bde563b118b34cdc4bd7a0bf6c9fd5cc29ce"
+        },
+        "polygon": {
+          "path": "SUNRGBD/realsense/lg/2014_10_26-13_53_54-1311000073/annotation2Dfinal/index.json",
+          "bytes": 8845,
+          "sha256": "ab3e826e8357c3265e91ea9e541fc16b0c900c1e7d977c666e0fa4fb3da87835"
+        },
+        "scene_metadata": {
+          "path": "SUNRGBD/realsense/lg/2014_10_26-13_53_54-1311000073/scene.txt",
+          "bytes": 9,
+          "sha256": "37d1fcc48ccae2300917a5b153ec02dead8742603e731d836032580ffd31cab3"
+        }
+      }
+    },
+    {
+      "index": 6,
+      "frame_id": "0001016-000044271847",
+      "capture_sequence_id": "SUNRGBD/xtion/sun3ddata/mit_dorm_mcc_313/dorm_mcc_313_oct_31_2012_scan1_erika",
+      "sensor_source_bucket": "xtion/sun3ddata",
+      "role": "HANDLED_FURNITURE_DOOR_NEGATIVE",
+      "canonical_source_path": "SUNRGBD/xtion/sun3ddata/mit_dorm_mcc_313/dorm_mcc_313_oct_31_2012_scan1_erika/0001016-000044271847",
+      "audit_note": "No official exact door; official CABINETDOOR labels plus human RGB audit confirm large wooden sliding closet leaves with recessed handles and no traversable architectural door.",
+      "source_image_size": [591, 441],
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": ["CABINETDOOR", "cabinet"]
+      },
+      "files": {
+        "rgb": {
+          "path": "SUNRGBD/xtion/sun3ddata/mit_dorm_mcc_313/dorm_mcc_313_oct_31_2012_scan1_erika/0001016-000044271847/image/0001016-000044271847.jpg",
+          "bytes": 37722,
+          "sha256": "05bf65f700a07902b1a57e3eef33fc8a293bb39a101a9b7492c6b94d419d0c29"
+        },
+        "polygon": {
+          "path": "SUNRGBD/xtion/sun3ddata/mit_dorm_mcc_313/dorm_mcc_313_oct_31_2012_scan1_erika/0001016-000044271847/annotation2Dfinal/index.json",
+          "bytes": 7415,
+          "sha256": "16c72335970db72f7813f6b34ad64d5f2e0a09d6ff61b1dd2238a63f5ac5b228"
+        },
+        "scene_metadata": {
+          "path": "SUNRGBD/xtion/sun3ddata/mit_dorm_mcc_313/dorm_mcc_313_oct_31_2012_scan1_erika/0001016-000044271847/scene.txt",
+          "bytes": 7,
+          "sha256": "a05e6feb79c854166f6c73783754dc0111ee87edd58bca22a77c3a8721fa729c"
+        }
+      }
+    },
+    {
+      "index": 7,
+      "frame_id": "rgbf000075-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/002115_2014-06-25_20-29-43_260595134347",
+      "sensor_source_bucket": "kv2/kinect2data",
+      "role": "LARGE_DOORLESS_OPENING_OOD",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/002115_2014-06-25_20-29-43_260595134347_rgbf000075-resize",
+      "audit_note": "No official exact door; human RGB audit confirms the broad bright lobby circulation opening at right has no door leaf spanning it.",
+      "source_image_size": [730, 530],
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": ["floor", "wall", "ceiling", "window"]
+      },
+      "files": {
+        "rgb": {
+          "path": "SUNRGBD/kv2/kinect2data/002115_2014-06-25_20-29-43_260595134347_rgbf000075-resize/image/0000075.jpg",
+          "bytes": 42144,
+          "sha256": "a140234d96a862ddb6184ee843a63bd99c54bfaf81450e07e94047098bb517df"
+        },
+        "polygon": {
+          "path": "SUNRGBD/kv2/kinect2data/002115_2014-06-25_20-29-43_260595134347_rgbf000075-resize/annotation2Dfinal/index.json",
+          "bytes": 2184,
+          "sha256": "7bb629ec89cc0a9a01d51238c11bdd83f78961df15a3fd8ecad92ada58c57a9e"
+        },
+        "scene_metadata": {
+          "path": "SUNRGBD/kv2/kinect2data/002115_2014-06-25_20-29-43_260595134347_rgbf000075-resize/scene.txt",
+          "bytes": 5,
+          "sha256": "4b5dc076e7b9c122b3c89121a9710fc73b490d48e1ff3661557919175e505633"
+        }
+      }
+    },
+    {
+      "index": 8,
+      "frame_id": "2014_10_24-13_16_45-1311000073",
+      "capture_sequence_id": "SUNRGBD/realsense/lg/2014_10_24-13_16_45-1311000073",
+      "sensor_source_bucket": "realsense/lg",
+      "role": "LARGE_DOORLESS_OPENING_OOD",
+      "canonical_source_path": "SUNRGBD/realsense/lg/2014_10_24-13_16_45-1311000073",
+      "audit_note": "No official exact door; official Doorway labels and human RGB audit confirm a broad open printer-room junction with no door leaf spanning it.",
+      "source_image_size": [681, 531],
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": ["Doorway", "Floor", "Wall"]
+      },
+      "files": {
+        "rgb": {
+          "path": "SUNRGBD/realsense/lg/2014_10_24-13_16_45-1311000073/image/0000065.jpg",
+          "bytes": 41472,
+          "sha256": "d9583b9c94dc71e07b39432d69130811f04d4cc7aa2d977a85b69a054d556287"
+        },
+        "polygon": {
+          "path": "SUNRGBD/realsense/lg/2014_10_24-13_16_45-1311000073/annotation2Dfinal/index.json",
+          "bytes": 5285,
+          "sha256": "1caa7701f0dee046db8cb4a90a3b7aef1a27126dbf91fcfb49798577e5e968ce"
+        },
+        "scene_metadata": {
+          "path": "SUNRGBD/realsense/lg/2014_10_24-13_16_45-1311000073/scene.txt",
+          "bytes": 12,
+          "sha256": "35844af9e34052e52d7fa5434dbd6a9814dcbff5efcb3ce882c1aa068c1c8d6f"
+        }
+      }
+    }
+  ],
+  "claim_boundary": "Frozen PB12 Development cohort only. The eight identities, roles, visible-part audits, source hashes, checkpoint, inference contract, topology rule, and gate were sealed before any PB12 model output."
+}

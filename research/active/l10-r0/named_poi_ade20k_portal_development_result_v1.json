@@ -1,0 +1,43 @@
+{
+  "schema": "l10-named-poi-ade20k-portal-development-durable-result-v1",
+  "date": "2026-08-29",
+  "decision": "L10_PB7_ADE20K_DOOR_COMPONENT_DEVELOPMENT_GATE_MET",
+  "representation": {
+    "name": "Broad-Domain Door Component Field",
+    "short_name": "BD-DCF",
+    "model": "YOLO26x semantic on ADE20K",
+    "classes": ["door", "screen door"],
+    "component_rule": "Raw eight-connected class-union components whose box bottom reaches at least half image height; rank by semantic pixel area.",
+    "selected_component_area_fraction": 0.1759326171875,
+    "identity_input_used": false,
+    "geometry_proposer_used": false
+  },
+  "development": {
+    "positive_truth_retained_top3": "3/4",
+    "positive_presence": "3/4",
+    "no_portal_false_presence": "0/2",
+    "large_open_entrance_ood_presence": "0/2",
+    "balanced_accuracy": 0.875,
+    "gate": "Top-3 truth at least 3/4 and no-portal false presence 0/2",
+    "gate_passed": true,
+    "post_output_tuning": 0,
+    "interpretation": "Changing the training-domain information source reversed SPPF's failure: door-level recall rose from 0/4 to 3/4 while both no-portal and both scale-OOD controls remained absent."
+  },
+  "backend": {
+    "selected": "ade20k-semantic-torch-cuda",
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "framework": "torch-2.11.0+cu130",
+    "median_all_frames_seconds": 0.057632349999039434,
+    "median_post_warmup_seconds": 0.05190109999966808,
+    "peak_allocated_bytes": 1701953024,
+    "peak_reserved_bytes": 2604662784
+  },
+  "hashes": {
+    "protocol_sha256": "11175e280f638a0698871b54d385a009e4066ebd22f9d80b78bdd673be1ac1aa",
+    "evaluator_sha256": "74c3e426024c5af422949f15990179646f1efbeadf1b99c93ae0ad3e660e8086",
+    "model_sha256": "aa51833f1aa5dc73b378d7ba99f914ef9fa82e434cb23d7b1705dd24bd33b621",
+    "formal_result_sha256": "62ddc451bf26408f244b7cb37039c2acc0624ff9d447761d4c9195ed424cdfc2"
+  },
+  "next_step": "Freeze the selected normalized component-area threshold and run one new entity-disjoint SCIL plus BD-DCF confirmation. Do not use the consumed PB6 pixels for promotion.",
+  "claim_boundary": "Development-only evidence on the consumed PB6 cohort. The coarse component boxes are set-valued portal regions, not precise door-leaf localization, physical ownership, public access, opening state, traversability, active-view causality, guidance, arrival, user benefit, or safety evidence."
+}

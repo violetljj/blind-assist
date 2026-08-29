@@ -1,0 +1,137 @@
+{
+  "schema": "l10-named-poi-door-part-topology-development-durable-result-v1",
+  "date": "2026-08-29",
+  "mode": "FROZEN_FRESH_SUNRGBD_RGB_PART_PARENT_TOPOLOGY_TEST",
+  "decision": "L10_PB12_DOOR_PART_TOPOLOGY_DEVELOPMENT_GATE_NOT_MET",
+  "question": "Can a detector trained to distinguish architectural doors from furniture doors authorize a room-door parent with an enclosed handle while rejecting handled cabinets, closets, and large doorless openings?",
+  "single_change_from_pb11": "Replace depth-only planar closure with a learned RGB semantic part-parent graph whose competing parent classes are door, cabinet door, and refrigerator door.",
+  "information_source": {
+    "model": "YOLO11n room-vs-furniture-door detector",
+    "training_dataset": "MiguelARD/DoorDetect-Dataset",
+    "training_source_commit": "1db107fe1b808fc5712f898b35bde0976ba0c0af",
+    "training_images": 1211,
+    "classes": ["door", "handle", "cabinet door", "refrigerator door"],
+    "checkpoint_role": "DEVELOPMENT_ONLY",
+    "source_disjoint_boundary": "The named DoorDetect Dataset training source is distinct from SUN RGB-D. Exact cross-source image-hash exclusion is not claimed because the original training image tree is no longer present at its manifest-era path."
+  },
+  "cohort": {
+    "status": "FROZEN_BEFORE_MODEL_OUTPUT",
+    "frames": 8,
+    "distinct_capture_sequences": 8,
+    "roles": {
+      "ARCHITECTURAL_DOOR_WITH_VISIBLE_HANDLE": 4,
+      "HANDLED_FURNITURE_DOOR_NEGATIVE": 2,
+      "LARGE_DOORLESS_OPENING_OOD": 2
+    },
+    "sensor_source_buckets": {
+      "kv2/kinect2data": 3,
+      "realsense/sa": 1,
+      "realsense/lg": 2,
+      "xtion/sun3ddata": 2
+    },
+    "prior_pb11_frame_overlap": 0,
+    "model_outputs_used_for_selection": 0
+  },
+  "representation": {
+    "input": "Each full source RGB image once at 640 square inference; no crops, tiles, depth, augmentation, class filtering, or test-time ensemble.",
+    "inference": {
+      "batch": 8,
+      "imgsz": 640,
+      "conf": 0.25,
+      "iou": 0.7,
+      "max_det": 300,
+      "half": false,
+      "rect": false,
+      "augment": false,
+      "agnostic_nms": false
+    },
+    "assignment": "Assign each handle to the smallest-area enclosing parent box; break ties by higher parent confidence, lower class index, then lexicographic box coordinates.",
+    "authorization": "At least one handle must be assigned to a class-0 door parent. Cabinet-door and refrigerator-door parents compete and cannot authorize.",
+    "learned_or_selected_postprocessing_thresholds": 0
+  },
+  "metrics": {
+    "architectural_door_authorized": "0/4",
+    "handled_furniture_false_authorized": "0/2",
+    "large_doorless_opening_false_authorized": "0/2",
+    "door_positive_recall": 0.0,
+    "control_false_positive_rate": 0.0,
+    "true_negative_rate": 1.0,
+    "balanced_accuracy": 0.5,
+    "development_gate_met": false
+  },
+  "frame_attribution": [
+    {
+      "index": 1,
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_HANDLE",
+      "result": "The visible room-door handle was detected at confidence 0.6644, but no door parent was detected around it. Four cabinet-door panels and their handles were separately classified and assigned correctly."
+    },
+    {
+      "index": 2,
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_HANDLE",
+      "result": "Door, handle, and overlapping cabinet-door boxes were detected. The handle center lay just outside the door box but inside the cabinet-door box, so the frozen rule assigned it to cabinet door and rejected the frame."
+    },
+    {
+      "index": 3,
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_HANDLE",
+      "result": "Only a refrigerator-door false parent was retained; no handle was detected."
+    },
+    {
+      "index": 4,
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_HANDLE",
+      "result": "The red architectural door was detected at confidence 0.4428, but its visible handle was not detected."
+    },
+    {
+      "index": 5,
+      "role": "HANDLED_FURNITURE_DOOR_NEGATIVE",
+      "result": "No detection survived, so the mail-room cabinet was correctly not authorized."
+    },
+    {
+      "index": 6,
+      "role": "HANDLED_FURNITURE_DOOR_NEGATIVE",
+      "result": "The sliding closet produced multiple cabinet-door and handle detections; enclosed handles were assigned to cabinet-door parents and the frame was correctly not authorized."
+    },
+    {
+      "indices": [7, 8],
+      "role": "LARGE_DOORLESS_OPENING_OOD",
+      "result": "Neither large opening produced a retained detection or authorization."
+    }
+  ],
+  "attribution": {
+    "positive_signal": "The source learned meaningful part semantics: it found architectural door parents on 2/4 positives, a visible architectural-door handle on 2/4, dense cabinet-door/handle structure on the strongest furniture controls, and rejected both large openings.",
+    "decisive_failure": "Parent and child recall did not co-occur reliably on any of the four real doors. One real door also received overlapping door and cabinet-door parent hypotheses whose frozen enclosure geometry favored the wrong semantic parent.",
+    "failure_layer": "The bottleneck is the detector's box-level part/parent representation and cross-domain semantic calibration, not the absence of all door-part evidence and not the large-opening rejection rule.",
+    "closed": [
+      "This frozen YOLO11n checkpoint plus center-in-smallest-parent topology on the consumed PB12 cohort",
+      "Any rescue by confidence, image size, NMS, crop, tile, area, overlap, parent priority, alternate epoch, checkpoint, YOLO size, or fusion on these pixels"
+    ],
+    "next_information_needed": "A distinct pixel-level door-part source that can localize leaf, frame, handle, and furniture-door competitors without depending on overlapping whole-object boxes."
+  },
+  "execution_recovery": {
+    "attempt_1": "Inference completed in memory, but the evaluator rejected Ultralytics synthetic batch display path image0.jpg before writing a result. No detections or metrics were shown to the operator and no result file existed.",
+    "mechanical_change": "Removed only the non-scoring backend display-path assertion and retained positional result binding to the same frozen ordered and hashed input list.",
+    "attempt_2": "One unchanged mechanical replay created the formal result. Protocol, cohort, checkpoint, inference parameters, topology, and gate were unchanged.",
+    "model_or_metric_dependent_change": 0
+  },
+  "protocol_outcome": {
+    "outcome": "FAIL",
+    "required_action": "Close the checkpoint/topology pair on this cohort and change the information source or representation.",
+    "post_output_tuning": 0
+  },
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "torch": "2.11.0+cu130",
+    "ultralytics": "8.4.102",
+    "cuda_runtime": "13.0",
+    "peak_allocated_memory_bytes": 282559488
+  },
+  "hashes": {
+    "protocol_sha256": "0f6f3096a305444a832f70543c7974afb10586092d00166eff113c7975e39a7e",
+    "cohort_sha256": "edb68294941c617d4c20f5a502065685f593b6faf221106bc3613dd5df91f71e",
+    "evaluator_sha256": "9171b7703e6b31f8410df9ad15dac79284beed84123b1f6905eea246c66c68e8",
+    "checkpoint_sha256": "4f05c7a88fc9350cef88157a60eeab040de549e6bdbfe4ec5f9c628835ee2f43",
+    "training_manifest_sha256": "dd733656d0b45d537dfd39687d0e0be64408a47336e0fd2cea12a27efc8c0816",
+    "formal_result_sha256": "ffeaff41f4d54583bf6cbbabcaa7504ede80fe7478c01d6c18515386bda34cdc"
+  },
+  "next_step": "Run one fresh, pre-frozen pixel-level door-part topology Development test with a distinct information source. Do not tune or fuse the PB12 detector on its consumed pixels.",
+  "claim_boundary": "PB12 is a fresh Development falsification of one frozen RGB detector/topology pair. It does not reject door-part models generally and establishes no exact target ownership, public access, open or closed actuation state, traversability, active-view causality, temporal persistence, guidance, arrival, product benefit, user benefit, or safety authority."
+}

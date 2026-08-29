@@ -1,0 +1,47 @@
+{
+  "schema": "l10-named-poi-semantic-portal-fresh-durable-result-v1",
+  "date": "2026-08-29",
+  "decision": "L10_PB6_SCRIPT_PROVED_SEMANTIC_GATED_PORTAL_LATTICE_GATE_NOT_MET",
+  "fresh_cohort": {
+    "entities": 8,
+    "prior_route_entity_name_hits": 0,
+    "door_level_positives": 4,
+    "no_portal_negatives": 2,
+    "large_open_entrance_ood": 2,
+    "pre_freeze_ocr_semantic_geometry_calls": 0
+  },
+  "identity_result": {
+    "algorithm": "SCIL",
+    "correct_proofs": "8/8",
+    "wrong_proofs": 0,
+    "unknown": 0,
+    "proof_precision": 1.0,
+    "coverage": 1.0,
+    "interpretation": "The frozen bilingual/mark identity representation generalized perfectly to all eight new public entities, including four controls. Identity is not the blocking layer."
+  },
+  "portal_result": {
+    "sppf_positive_presence": "0/4",
+    "sppf_no_portal_false_presence": "1/2",
+    "sppf_ood_presence": "1/2",
+    "unchanged_geometry_top3_truth": "2/4",
+    "joined_top3_truth": "0/4",
+    "no_portal_false_authorization": "1/2",
+    "ood_authorization_leakage": "1/2",
+    "wrong_request_authorization": 0,
+    "wrong_request_relative_reduction": 1.0,
+    "balanced_accuracy": 0.25
+  },
+  "attribution": {
+    "failure_layer": "SPPF public-facade domain shift, followed by insufficient geometry coverage",
+    "closed": "Synthetic two-class SPPF plus unchanged geometry join",
+    "post_output_tuning": 0,
+    "successor": "Keep frozen SCIL and replace only the portal information source with broad-domain ADE20K door components."
+  },
+  "hashes": {
+    "protocol_sha256": "e9e2713aa861c44399ef27937ed666843ed55911cecfbe97f11b53ab09c42938",
+    "evaluator_sha256": "c11808b9616e2c5fb1f261f5db1f2679e4b0a5b92fa33a95cd84bd8d56f3f485",
+    "source_manifest_sha256": "4307bbb8d4e4f54b97f630f7c16645f043e1d9fe34d8bfdc004c8f5ae52964d6",
+    "formal_result_sha256": "246624e3135e63e1865a2184f96c06c5854767c4ba6430a75108795edcf0387e"
+  },
+  "claim_boundary": "Fresh entity-disjoint public-image result. SCIL's perfect result is conditional identity-opportunity evidence; the failed portal join is not active-view, guidance, arrival, user-benefit, or safety evidence."
+}

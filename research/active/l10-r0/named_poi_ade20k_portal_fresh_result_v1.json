@@ -1,0 +1,47 @@
+{
+  "schema": "l10-named-poi-ade20k-portal-fresh-durable-result-v1",
+  "date": "2026-08-29",
+  "decision": "L10_PB7_SCRIPT_PROVED_BROAD_DOMAIN_DOOR_COMPONENT_GATE_NOT_MET",
+  "fresh_cohort": {
+    "entities": 8,
+    "prior_route_entity_name_hits": 0,
+    "door_level_positives": 4,
+    "no_portal_negatives": 2,
+    "large_open_entrance_ood": 2,
+    "pre_freeze_ocr_semantic_calls": 0
+  },
+  "identity_result": {
+    "algorithm": "SCIL",
+    "correct_proofs": "8/8",
+    "wrong_proofs": 0,
+    "unknown": 0,
+    "proof_precision": 1.0,
+    "coverage": 1.0,
+    "interpretation": "Frozen SCIL generalized perfectly for the second consecutive eight-entity public-image cohort. Identity remains solved within the deliberately identity-opportunity-stratified setting."
+  },
+  "portal_result": {
+    "positive_door_component_presence": "0/4",
+    "joined_top3_truth": "0/4",
+    "no_portal_presence": "0/2",
+    "large_open_entrance_ood_presence": "0/2",
+    "no_portal_false_authorization": "0/2",
+    "ood_authorization_leakage": "0/2",
+    "wrong_request_authorization": 0,
+    "balanced_accuracy": 0.5
+  },
+  "attribution": {
+    "failure_layer": "Frozen ADE20K connected-component scale did not transfer: two positive frames produced no door pixels and the other two produced maximum normalized components of 0.13749405023432923 and 0.15402018229166667, both below the frozen 0.1759326171875 threshold.",
+    "closed": "Raw ADE20K door/screen-door connected components with the Development-selected normalized-area threshold",
+    "post_output_tuning": 0,
+    "successor_rule": "Keep frozen SCIL and change the portal information modality. Do not lower the component threshold, change semantic classes, compare model sizes, add crops, or otherwise rescue BD-DCF on this consumed cohort."
+  },
+  "hashes": {
+    "source_spec_sha256": "060c014076e99c58c27e5f8041bfdbf43067b13e41501dfefb144e0cab88b8c1",
+    "source_manifest_sha256": "6d8133c166902bbc1594fd71dc311aeef61a72d892ca0e3cfe1b56297c47771f",
+    "source_audit_sha256": "1cb2d336a0400e020593422557be32ca4ec08ca7768d91d26654f9e88bba00fb",
+    "evaluator_sha256": "e2e194cb69742036527d4ab7b0b1b4ec8159024b6225c7218fb315cdc8ff1d1c",
+    "formal_result_sha256": "425497ff53c8355ea25335146f19f932e805ea49a220d92fcdf635aac52ec272"
+  },
+  "next_step": "Use the now-consumed PB7 cohort for one Development-only test of a typed vision-language portal representation with explicit door-level, NONE, and large-open-mouth states; promote only through a new entity-disjoint confirmation.",
+  "claim_boundary": "Fresh entity-disjoint public-image falsification of the frozen BD-DCF join. It confirms SCIL identity under visible text opportunity but establishes no portal proposal authority, active-view causality, guidance, arrival, product benefit, user benefit, or safety."
+}

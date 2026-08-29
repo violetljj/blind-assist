@@ -1,0 +1,246 @@
+{
+  "schema": "l10-named-poi-yoloe-multiscale-part-topology-cohort-v1",
+  "status": "FROZEN_BEFORE_MODEL_OUTPUT",
+  "frozen_at": "2026-08-29",
+  "protocol": {
+    "schema": "l10-named-poi-yoloe-multiscale-part-topology-protocol-v1",
+    "sha256": "d79d2c09fd47618aad6b8d79d99431613646e7d3e53dea723c991d745b80bf20"
+  },
+  "source": {
+    "dataset": "SUN RGB-D",
+    "archive_path": "F:/ba-data/blindassist-artifacts-20260805/datasets/sunrgbd-2015/SUNRGBD.zip",
+    "archive_bytes": 6885481608,
+    "archive_sha256": "1a6dbf2a1c9044c4805a35ee648d616ea39a231fd5bd6f77e84cd2b8287fe41c",
+    "extracted_root": "artifacts.local/datasets/sunrgbd-pb14-door-part-audit-pool-v1",
+    "official_members": 40,
+    "official_member_bytes": 1993686,
+    "official_member_verification": "Every extracted member was matched to the official ZIP member by byte count and SHA-256 before freeze.",
+    "prior_pb11_sequence_overlap": 0,
+    "prior_pb12_sequence_overlap": 0,
+    "prior_pb13_sequence_overlap": 0,
+    "selection_provenance": "Official annotation prefilter plus human RGB audit; no YOLOE or other PB14 learned output was observed on these eight frames before freeze."
+  },
+  "model": {
+    "weights_path": "artifacts.local/models/yoloe-26n-seg.pt",
+    "weights_bytes": 11710443,
+    "weights_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+    "text_encoder_path": "artifacts.local/models/mobileclip2_b.ts",
+    "text_encoder_bytes": 253794476,
+    "text_encoder_sha256": "35d7f213e4d75f38514e4656ad3cb91158bd33e3805d8ac349f23b186f66982f"
+  },
+  "inference": {
+    "class_ids_in_order": [
+      "architectural_leaf",
+      "architectural_frame",
+      "operation_part",
+      "hinge",
+      "cabinet_door",
+      "closet_door",
+      "refrigerator_door",
+      "doorless_opening"
+    ],
+    "class_texts_in_order": [
+      "architectural door leaf",
+      "door frame",
+      "door handle",
+      "door hinge",
+      "cabinet door",
+      "closet door",
+      "refrigerator door",
+      "doorless wall opening"
+    ],
+    "batch": 1,
+    "imgsz": 640,
+    "conf": 0.25,
+    "iou": 0.7,
+    "max_det": 300,
+    "device": 0,
+    "half": false,
+    "rect": false,
+    "augment": false,
+    "agnostic_nms": false,
+    "retina_masks": true,
+    "save": false,
+    "maximum_parent_crops_per_frame": 12
+  },
+  "diversity": {
+    "distinct_capture_sequences": 8,
+    "sensor_source_buckets": {
+      "kv2/kinect2data": 3,
+      "xtion/sun3ddata": 3,
+      "realsense/sa": 1,
+      "realsense/shr": 1
+    },
+    "maximum_frames_in_one_bucket": 3
+  },
+  "frames": [
+    {
+      "index": 1,
+      "frame_id": "rgbf000074-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/002718_2014-06-22_11-44-54_094959634447",
+      "sensor_source_bucket": "kv2/kinect2data",
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_OPERATION_PART",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/002718_2014-06-22_11-44-54_094959634447_rgbf000074-resize",
+      "audit_note": "Human RGB audit confirms multiple complete architectural doors with clearly visible lever handles.",
+      "source_image_size": [730, 530],
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "supporting_object_names": ["door x5", "doorhandle x5", "doorwindow", "doorjamb x2"]
+      },
+      "files": {
+        "rgb": {"path": "SUNRGBD/kv2/kinect2data/002718_2014-06-22_11-44-54_094959634447_rgbf000074-resize/image/0000074.jpg", "bytes": 27321, "sha256": "66c8f27374d2b3034a05a403092c54c26341ce61fa075dfffe353433096619df"},
+        "depth": {"path": "SUNRGBD/kv2/kinect2data/002718_2014-06-22_11-44-54_094959634447_rgbf000074-resize/depth/0000074.png", "bytes": 338846, "sha256": "3447104cbec3ebc2d419b25200527028ad77da9ffc76951008fdf1a9f33e17ed"},
+        "intrinsics": {"path": "SUNRGBD/kv2/kinect2data/002718_2014-06-22_11-44-54_094959634447_rgbf000074-resize/intrinsics.txt", "bytes": 89, "sha256": "22c236c26f5e1c8cda15b4c7de7f78720c857198583985843e2c8ef9a9c6d6b4"},
+        "scene_metadata": {"path": "SUNRGBD/kv2/kinect2data/002718_2014-06-22_11-44-54_094959634447_rgbf000074-resize/scene.txt", "bytes": 8, "sha256": "fd09da605e5804b35ee408d27c1bed7c7932a1af861948e042283615be0bd3d0"},
+        "polygon": {"path": "SUNRGBD/kv2/kinect2data/002718_2014-06-22_11-44-54_094959634447_rgbf000074-resize/annotation2Dfinal/index.json", "bytes": 8856, "sha256": "cee96bf5c4cae6a42825eaf5b1a219ffc26cbcc3d06923fef14a8e84d1342887"}
+      }
+    },
+    {
+      "index": 2,
+      "frame_id": "rgbf000041-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/002716_2014-06-22_11-44-09_094959634447",
+      "sensor_source_bucket": "kv2/kinect2data",
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_OPERATION_PART",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/002716_2014-06-22_11-44-09_094959634447_rgbf000041-resize",
+      "audit_note": "Human RGB audit confirms multiple architectural doors with visible lever handles and a horizontal push bar on the rear door.",
+      "source_image_size": [730, 530],
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "supporting_object_names": ["door x4", "doorhandle x4", "doorwindow x3"]
+      },
+      "files": {
+        "rgb": {"path": "SUNRGBD/kv2/kinect2data/002716_2014-06-22_11-44-09_094959634447_rgbf000041-resize/image/0000041.jpg", "bytes": 44495, "sha256": "c4996afb5f5782c93cf3f46435e4c5351b1026e92380a47dcc740acbbcb28886"},
+        "depth": {"path": "SUNRGBD/kv2/kinect2data/002716_2014-06-22_11-44-09_094959634447_rgbf000041-resize/depth/0000041.png", "bytes": 332265, "sha256": "71b11041b17dff5d06878c72a26feaeda0e0cbcc8204d797d1ddb85503f7e48b"},
+        "intrinsics": {"path": "SUNRGBD/kv2/kinect2data/002716_2014-06-22_11-44-09_094959634447_rgbf000041-resize/intrinsics.txt", "bytes": 89, "sha256": "22c236c26f5e1c8cda15b4c7de7f78720c857198583985843e2c8ef9a9c6d6b4"},
+        "scene_metadata": {"path": "SUNRGBD/kv2/kinect2data/002716_2014-06-22_11-44-09_094959634447_rgbf000041-resize/scene.txt", "bytes": 10, "sha256": "1afbccf7bdda1edd90afde2395d0b5c8bfd4c8fb9e41687218d74c04c65136e3"},
+        "polygon": {"path": "SUNRGBD/kv2/kinect2data/002716_2014-06-22_11-44-09_094959634447_rgbf000041-resize/annotation2Dfinal/index.json", "bytes": 11841, "sha256": "68cb6569a2052b59e692c7df0b45bcab652db07dac9067ccf5cff7293c936088"}
+      }
+    },
+    {
+      "index": 3,
+      "frame_id": "0004595-000985940979",
+      "capture_sequence_id": "SUNRGBD/xtion/sun3ddata/home_ac/home_ac_scan2_2012_aug_22",
+      "sensor_source_bucket": "xtion/sun3ddata",
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_OPERATION_PART",
+      "canonical_source_path": "SUNRGBD/xtion/sun3ddata/home_ac/home_ac_scan2_2012_aug_22/0004595-000985940979",
+      "audit_note": "Human RGB audit confirms a foreground architectural door occupying most of the frame with a clearly visible round knob.",
+      "source_image_size": [591, 441],
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "supporting_object_names": ["door x2", "doorlock", "doorknob", "doorframe"]
+      },
+      "files": {
+        "rgb": {"path": "SUNRGBD/xtion/sun3ddata/home_ac/home_ac_scan2_2012_aug_22/0004595-000985940979/image/0004595-000985940979.jpg", "bytes": 22101, "sha256": "c7a1b444326f7c8ba90a447c751123bb0bc523048fc9cbd7907e421defae9719"},
+        "depth": {"path": "SUNRGBD/xtion/sun3ddata/home_ac/home_ac_scan2_2012_aug_22/0004595-000985940979/depth/0004595-000985940979.png", "bytes": 92243, "sha256": "e5563d0c33efc4f1491d8415f5a9af9acc8d86e6c30be7e285ee238543a9df6e"},
+        "intrinsics": {"path": "SUNRGBD/xtion/sun3ddata/home_ac/home_ac_scan2_2012_aug_22/0004595-000985940979/intrinsics.txt", "bytes": 89, "sha256": "d82ccf3d83460dca86a438dec88899791c7eef82ea33c9a66e29395ef1501937"},
+        "scene_metadata": {"path": "SUNRGBD/xtion/sun3ddata/home_ac/home_ac_scan2_2012_aug_22/0004595-000985940979/scene.txt", "bytes": 3, "sha256": "c6e5e46c59267114f91d64df0e069b0dae176f9a134656820bba1e6164318980"},
+        "polygon": {"path": "SUNRGBD/xtion/sun3ddata/home_ac/home_ac_scan2_2012_aug_22/0004595-000985940979/annotation2Dfinal/index.json", "bytes": 2376, "sha256": "aa8fbb8b2bce91f1b271ff9b893fa0df03459266966e31492c101b1963034027"}
+      }
+    },
+    {
+      "index": 4,
+      "frame_id": "0001951-000084637884",
+      "capture_sequence_id": "SUNRGBD/xtion/sun3ddata/mit_dorm_mcc_wflr7/dorm_mcc_wflr7_oct_31_2012_scan1_erika",
+      "sensor_source_bucket": "xtion/sun3ddata",
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_OPERATION_PART",
+      "canonical_source_path": "SUNRGBD/xtion/sun3ddata/mit_dorm_mcc_wflr7/dorm_mcc_wflr7_oct_31_2012_scan1_erika/0001951-000084637884",
+      "audit_note": "Human RGB audit confirms a large unobstructed architectural door leaf at right with a clearly visible round knob.",
+      "source_image_size": [591, 441],
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "supporting_object_names": ["door x2", "knob x2", "doorframe"]
+      },
+      "files": {
+        "rgb": {"path": "SUNRGBD/xtion/sun3ddata/mit_dorm_mcc_wflr7/dorm_mcc_wflr7_oct_31_2012_scan1_erika/0001951-000084637884/image/0001951-000084637884.jpg", "bytes": 21235, "sha256": "0b2c17db43173aa1c92434dddcbe401396cab75de4a52bce388e77de3e3424a8"},
+        "depth": {"path": "SUNRGBD/xtion/sun3ddata/mit_dorm_mcc_wflr7/dorm_mcc_wflr7_oct_31_2012_scan1_erika/0001951-000084637884/depth/0001949-000084624418.png", "bytes": 98893, "sha256": "e89f20ffd7dd9021d351f8ca569733affa0b2c05f64b97f9cec85d139ccb7c09"},
+        "intrinsics": {"path": "SUNRGBD/xtion/sun3ddata/mit_dorm_mcc_wflr7/dorm_mcc_wflr7_oct_31_2012_scan1_erika/0001951-000084637884/intrinsics.txt", "bytes": 89, "sha256": "0e11a8aee9c9a74a1b3317476bf72a216fd88266f4e692baa71f90fdb2360963"},
+        "scene_metadata": {"path": "SUNRGBD/xtion/sun3ddata/mit_dorm_mcc_wflr7/dorm_mcc_wflr7_oct_31_2012_scan1_erika/0001951-000084637884/scene.txt", "bytes": 8, "sha256": "fd09da605e5804b35ee408d27c1bed7c7932a1af861948e042283615be0bd3d0"},
+        "polygon": {"path": "SUNRGBD/xtion/sun3ddata/mit_dorm_mcc_wflr7/dorm_mcc_wflr7_oct_31_2012_scan1_erika/0001951-000084637884/annotation2Dfinal/index.json", "bytes": 2203, "sha256": "5a4ad949e42949c09e4fba0e0d76b73a3e4ba2cf555a4909ddb8899b383ef816"}
+      }
+    },
+    {
+      "index": 5,
+      "frame_id": "2014_10_23-15_46_56-1311000073",
+      "capture_sequence_id": "SUNRGBD/realsense/sa/2014_10_23-15_46_56-1311000073",
+      "sensor_source_bucket": "realsense/sa",
+      "role": "HANDLED_FURNITURE_DOOR_NEGATIVE",
+      "canonical_source_path": "SUNRGBD/realsense/sa/2014_10_23-15_46_56-1311000073",
+      "audit_note": "Human RGB audit confirms two foreground cupboard doors with clear metal pulls and a lock, and no architectural door.",
+      "source_image_size": [681, 531],
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": ["Cupboard", "Handle x2", "Lock"]
+      },
+      "files": {
+        "rgb": {"path": "SUNRGBD/realsense/sa/2014_10_23-15_46_56-1311000073/image/0000063.jpg", "bytes": 39084, "sha256": "04dca7ec09e03f83125f213094ad6510c8709657cddb549898a9b607ddf9bd6e"},
+        "depth": {"path": "SUNRGBD/realsense/sa/2014_10_23-15_46_56-1311000073/depth/0000063.png", "bytes": 241083, "sha256": "b328add269100b990df33e0acc529ef8f5084d8bb8da3cbf52e78086296d08fe"},
+        "intrinsics": {"path": "SUNRGBD/realsense/sa/2014_10_23-15_46_56-1311000073/intrinsics.txt", "bytes": 89, "sha256": "fc925577bc6e32fe31b67e1134a051ada71ef847e6c6bc2648cb909217b6caa7"},
+        "scene_metadata": {"path": "SUNRGBD/realsense/sa/2014_10_23-15_46_56-1311000073/scene.txt", "bytes": 7, "sha256": "b718f1354f7247312eca086d9a024afe5fa717ddea5adeddd6f12bcf945b2e8c"},
+        "polygon": {"path": "SUNRGBD/realsense/sa/2014_10_23-15_46_56-1311000073/annotation2Dfinal/index.json", "bytes": 8829, "sha256": "32bc30fcce39459f83c53f9721bb82d270229787c17f4f148ad83b545f0d0aef"}
+      }
+    },
+    {
+      "index": 6,
+      "frame_id": "2014_12_18-15_59_41-1311000073",
+      "capture_sequence_id": "SUNRGBD/realsense/shr/2014_12_18-15_59_41-1311000073",
+      "sensor_source_bucket": "realsense/shr",
+      "role": "HANDLED_FURNITURE_DOOR_NEGATIVE",
+      "canonical_source_path": "SUNRGBD/realsense/shr/2014_12_18-15_59_41-1311000073",
+      "audit_note": "Human RGB audit confirms large cupboard and cabinet doors with multiple clear metal pulls, and no architectural door.",
+      "source_image_size": [681, 531],
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": ["cupboard x2", "Cupboard", "Handle x3"]
+      },
+      "files": {
+        "rgb": {"path": "SUNRGBD/realsense/shr/2014_12_18-15_59_41-1311000073/image/0000063.jpg", "bytes": 34954, "sha256": "6f1bcd4f662db5a9a77e38f6d65411d362ca9ed1b2c8cd2f721afefc2e11fa67"},
+        "depth": {"path": "SUNRGBD/realsense/shr/2014_12_18-15_59_41-1311000073/depth/0000063.png", "bytes": 171048, "sha256": "d357d63ddef79c36d5a8d93080e16abfdab69d44bc07121c724cddfde055f726"},
+        "intrinsics": {"path": "SUNRGBD/realsense/shr/2014_12_18-15_59_41-1311000073/intrinsics.txt", "bytes": 89, "sha256": "fc925577bc6e32fe31b67e1134a051ada71ef847e6c6bc2648cb909217b6caa7"},
+        "scene_metadata": {"path": "SUNRGBD/realsense/shr/2014_12_18-15_59_41-1311000073/scene.txt", "bytes": 9, "sha256": "83d82a74a67aebdecd3846a42bc5235254fb77f8da9a189bf49c321f450dcccd"},
+        "polygon": {"path": "SUNRGBD/realsense/shr/2014_12_18-15_59_41-1311000073/annotation2Dfinal/index.json", "bytes": 7219, "sha256": "5decb7f3c5f735f6c67fcff35385b9a5207ec7797ec16f47ddf49a148396057e"}
+      }
+    },
+    {
+      "index": 7,
+      "frame_id": "rgbf000092-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/001760_2014-06-26_19-54-20_260595134347",
+      "sensor_source_bucket": "kv2/kinect2data",
+      "role": "LARGE_DOORLESS_OPENING_OOD",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/001760_2014-06-26_19-54-20_260595134347_rgbf000092-resize",
+      "audit_note": "Human RGB audit confirms a full-height opening at left into an adjacent corridor with no spanning door leaf or operation part.",
+      "source_image_size": [730, 530],
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": ["HallwayWall", "HallwayCeiling", "PartialDoorway"]
+      },
+      "files": {
+        "rgb": {"path": "SUNRGBD/kv2/kinect2data/001760_2014-06-26_19-54-20_260595134347_rgbf000092-resize/image/0000092.jpg", "bytes": 49768, "sha256": "0e0885124423b6ce497ae76afd34765e756c1be97b41389a955637b5c194ef25"},
+        "depth": {"path": "SUNRGBD/kv2/kinect2data/001760_2014-06-26_19-54-20_260595134347_rgbf000092-resize/depth/0000092.png", "bytes": 262641, "sha256": "822183a58c3642d548afea833aa0c984fb97be44889ba14c8e05269ddc40dfb4"},
+        "intrinsics": {"path": "SUNRGBD/kv2/kinect2data/001760_2014-06-26_19-54-20_260595134347_rgbf000092-resize/intrinsics.txt", "bytes": 89, "sha256": "22c236c26f5e1c8cda15b4c7de7f78720c857198583985843e2c8ef9a9c6d6b4"},
+        "scene_metadata": {"path": "SUNRGBD/kv2/kinect2data/001760_2014-06-26_19-54-20_260595134347_rgbf000092-resize/scene.txt", "bytes": 15, "sha256": "07533f7779824c84698ba18b61340f5c574d5930f4767c4cd8de94646d10503e"},
+        "polygon": {"path": "SUNRGBD/kv2/kinect2data/001760_2014-06-26_19-54-20_260595134347_rgbf000092-resize/annotation2Dfinal/index.json", "bytes": 6263, "sha256": "ba44f802112cae648bab761d5e77ef741763b535831b571f8f3619a7448ec2ce"}
+      }
+    },
+    {
+      "index": 8,
+      "frame_id": "0007769-000332099605",
+      "capture_sequence_id": "SUNRGBD/xtion/sun3ddata/home_bksh/home_bksh_2012_oct_19_scan1",
+      "sensor_source_bucket": "xtion/sun3ddata",
+      "role": "LARGE_DOORLESS_OPENING_OOD",
+      "canonical_source_path": "SUNRGBD/xtion/sun3ddata/home_bksh/home_bksh_2012_oct_19_scan1/0007769-000332099605",
+      "audit_note": "Human RGB audit confirms a large framed opening at center connecting two rooms with no spanning door leaf or operation part.",
+      "source_image_size": [591, 441],
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": ["doorframe"]
+      },
+      "files": {
+        "rgb": {"path": "SUNRGBD/xtion/sun3ddata/home_bksh/home_bksh_2012_oct_19_scan1/0007769-000332099605/image/0007769-000332099605.jpg", "bytes": 35197, "sha256": "6d2037d9406315317a720bfb820d08e649fe5f13864644aef2d29241a2314ba2"},
+        "depth": {"path": "SUNRGBD/xtion/sun3ddata/home_bksh/home_bksh_2012_oct_19_scan1/0007769-000332099605/depth/0007779-000332090776.png", "bytes": 131582, "sha256": "220ff3415ea682d0bc17520199f50d19d99e767961e8625b9044944bfd64d6de"},
+        "intrinsics": {"path": "SUNRGBD/xtion/sun3ddata/home_bksh/home_bksh_2012_oct_19_scan1/0007769-000332099605/intrinsics.txt", "bytes": 89, "sha256": "0e11a8aee9c9a74a1b3317476bf72a216fd88266f4e692baa71f90fdb2360963"},
+        "scene_metadata": {"path": "SUNRGBD/xtion/sun3ddata/home_bksh/home_bksh_2012_oct_19_scan1/0007769-000332099605/scene.txt", "bytes": 8, "sha256": "fd09da605e5804b35ee408d27c1bed7c7932a1af861948e042283615be0bd3d0"},
+        "polygon": {"path": "SUNRGBD/xtion/sun3ddata/home_bksh/home_bksh_2012_oct_19_scan1/0007769-000332099605/annotation2Dfinal/index.json", "bytes": 2563, "sha256": "3e800c2259a99833944bbd2b3c6baee54c915c43cccd6488c34fffa07a14c694"}
+      }
+    }
+  ]
+}

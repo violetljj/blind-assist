@@ -1,0 +1,168 @@
+{
+  "schema": "l10-named-poi-yoloe-multiscale-part-topology-protocol-v1",
+  "created_at": "2026-08-29",
+  "status": "FROZEN_BEFORE_COHORT_MODEL_OUTPUT",
+  "experiment": "L10-PB14 YOLOE Parent-Rescaled Pixel Part Topology",
+  "short_name": "YMPPT",
+  "question": "Can one open-vocabulary instance-segmentation source find room-door and furniture-door parent masks at full-frame scale, then recover small handles or hinges only after a deterministic parent-box rescale?",
+  "single_change_from_pb13": "Replace Florence's generative text-to-polygon representation with YOLOE native scored instance masks and split inference into one full-frame parent lane plus one exact-parent-box child lane.",
+  "information_source": {
+    "detector_segmenter": "YOLOE-26n-seg",
+    "weights_path": "artifacts.local/models/yoloe-26n-seg.pt",
+    "weights_bytes": 11710443,
+    "weights_sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b",
+    "checkpoint_model_type": "YOLOESegModel/segment",
+    "checkpoint_ultralytics": "8.4.24",
+    "checkpoint_training_commit": "6bec7a00ead88ac515ad0c4b130e19031f1afcc9",
+    "text_encoder": "MobileCLIP2-B TorchScript",
+    "text_encoder_path": "artifacts.local/models/mobileclip2_b.ts",
+    "text_encoder_bytes": 253794476,
+    "text_encoder_sha256": "35d7f213e4d75f38514e4656ad3cb91158bd33e3805d8ac349f23b186f66982f",
+    "checkpoint_role": "DEVELOPMENT_ONLY",
+    "source_boundary": "This open-vocabulary mask source is distinct from PB12's DoorDetect-specific four-box checkpoint and PB13's Florence generative polygon source. Its full pretraining image inventory is unavailable, so exact training-image exclusion of SUN RGB-D is not claimed.",
+    "license_boundary": "AGPL-3.0 upstream checkpoint; internal Development research only pending any product-integration license review."
+  },
+  "runtime": {
+    "launcher": "E:/codex-tools/bin/blindassist-research-gpu.cmd",
+    "python_executable": "E:/codex-tools/tools/venvs/blindassist-torch-gpu/Scripts/python.exe",
+    "python_executable_sha256": "21bb438c0d4a6f1f164b9a646f6ee000340185e5871180aec06db8d3f07c0082",
+    "python": "3.11.9",
+    "torch": "2.11.0+cu130",
+    "torchvision": "0.26.0+cu130",
+    "ultralytics": "8.4.102",
+    "clip": "1.0",
+    "numpy": "2.4.4",
+    "pillow": "12.2.0",
+    "YOLO_AUTOINSTALL": "false",
+    "execution_requirement": "CUDA must be available and the result must record the actual device. Weight, text-encoder, runtime, and prompt identities must match this protocol or execution stops before formal model output."
+  },
+  "pre_freeze_smoke": {
+    "cohort_or_sunrgbd_images_read": false,
+    "blank_formal_prompt_smoke": "A synthetic black 640x640 image produced zero detections with the fixed eight formal classes.",
+    "mask_geometry_smoke": "A non-cohort SAM3 documentation truck image prompted only as truck produced one YOLOE instance; retina_masks shape exactly matched the 1200x1800 source image.",
+    "formal_prompt_or_threshold_selection_from_smoke": false,
+    "peak_cuda_allocated_bytes": 323870208
+  },
+  "cohort_freeze": {
+    "dataset": "SUN RGB-D",
+    "frames": 8,
+    "distinct_capture_sequences": 8,
+    "roles": {
+      "ARCHITECTURAL_DOOR_WITH_VISIBLE_OPERATION_PART": 4,
+      "HANDLED_FURNITURE_DOOR_NEGATIVE": 2,
+      "LARGE_DOORLESS_OPENING_OOD": 2
+    },
+    "prior_overlap": "Zero canonical-frame overlap with PB11, PB12, or PB13.",
+    "positive_admission": "Official annotation contains exact door and a handle, knob, push bar, or hinge label; human RGB audit confirms a room-scale architectural door leaf and visible operation part.",
+    "negative_admission": "Official annotation contains no exact door; human RGB audit confirms a handled cabinet, wardrobe, closet, or refrigerator door.",
+    "ood_admission": "Official annotation contains no exact door; human RGB audit confirms a broad room or corridor opening without a spanning leaf.",
+    "diversity": "Use at least four SUN RGB-D sensor/source buckets and no more than three frames from one bucket.",
+    "sealed_before_output": [
+      "canonical source path and capture sequence",
+      "RGB, official polygon annotation, and scene metadata SHA-256",
+      "role, official class-name evidence, and human RGB audit note",
+      "weights, text encoder, prompts, inference, crop mapping, topology, and gate"
+    ]
+  },
+  "class_prompts_in_order": [
+    {
+      "class_index": 0,
+      "class_id": "architectural_leaf",
+      "text": "architectural door leaf",
+      "role": "PARENT"
+    },
+    {
+      "class_index": 1,
+      "class_id": "architectural_frame",
+      "text": "door frame",
+      "role": "DIAGNOSTIC_ONLY"
+    },
+    {
+      "class_index": 2,
+      "class_id": "operation_part",
+      "text": "door handle",
+      "role": "CHILD"
+    },
+    {
+      "class_index": 3,
+      "class_id": "hinge",
+      "text": "door hinge",
+      "role": "CHILD"
+    },
+    {
+      "class_index": 4,
+      "class_id": "cabinet_door",
+      "text": "cabinet door",
+      "role": "COMPETING_PARENT"
+    },
+    {
+      "class_index": 5,
+      "class_id": "closet_door",
+      "text": "closet door",
+      "role": "COMPETING_PARENT"
+    },
+    {
+      "class_index": 6,
+      "class_id": "refrigerator_door",
+      "text": "refrigerator door",
+      "role": "COMPETING_PARENT"
+    },
+    {
+      "class_index": 7,
+      "class_id": "doorless_opening",
+      "text": "doorless wall opening",
+      "role": "COMPETING_PARENT"
+    }
+  ],
+  "inference": {
+    "input": "Full source RGB only; no depth, intrinsics, augmentation, TTA, alternative prompts, model ensembles, or cross-image state.",
+    "batch": 1,
+    "imgsz": 640,
+    "conf": 0.25,
+    "iou": 0.7,
+    "max_det": 300,
+    "device": 0,
+    "half": false,
+    "rect": false,
+    "augment": false,
+    "agnostic_nms": false,
+    "retina_masks": true,
+    "save": false,
+    "lane_1_full_frame": "Run one prediction with all eight frozen classes. Retain architectural_leaf, cabinet_door, closet_door, refrigerator_door, and doorless_opening as parent masks; record architectural_frame only as a diagnostic. Full-frame operation_part and hinge detections are recorded but never authorize.",
+    "parent_crop_order": "Sort full-frame parents by descending confidence, then competitor-conservative class priority cabinet_door, closet_door, refrigerator_door, doorless_opening, architectural_leaf, then lexicographic xyxy. Retain at most the first 12 parents.",
+    "lane_2_parent_rescale": "For each retained parent, crop its predicted xyxy using left/top=floor and right/bottom=ceil after clipping to source bounds, with no expansion. Convert the exact RGB crop to contiguous BGR ndarray only to match the Ultralytics ndarray-loader contract, resize only through the same YOLOE imgsz=640 path, and run the same eight classes once; retain only operation_part and hinge detections as children.",
+    "child_mapping": "Place every retained child crop mask back into its exact half-open source crop rectangle. Do not resize, dilate, erode, smooth, score again, merge, or deduplicate child masks beyond the frozen YOLOE postprocessor.",
+    "maximum_parent_crops_per_frame": 12
+  },
+  "mask_topology": {
+    "parent_class_ids": [
+      "architectural_leaf",
+      "cabinet_door",
+      "closet_door",
+      "refrigerator_door",
+      "doorless_opening"
+    ],
+    "child_class_ids": ["operation_part", "hinge"],
+    "mask_contract": "retina_masks must match the full source or exact crop pixel dimensions and align one-to-one with detection boxes; otherwise the formal run stops without substituting boxes or polygons.",
+    "child_representative": "Mean integer x and y indices of all true mapped child-mask pixels; test the source pixel floor(mean + 0.5), clipped only to source bounds.",
+    "assignment": "Assign each child to the smallest-area full-frame parent mask containing its representative pixel. Break equal-area ties by cabinet_door, closet_door, refrigerator_door, doorless_opening, architectural_leaf, then lower stable parent index.",
+    "authorization": "PARENT_RESCALED_PIXEL_PART_TOPOLOGY is true if and only if at least one lane-2 operation_part or hinge child is assigned to an architectural_leaf parent.",
+    "negative_competition": "Children assigned to furniture or doorless-opening parents do not authorize. A parent without an assigned child does not authorize. Lane-1 child detections and architectural-frame detections do not authorize.",
+    "learned_or_selected_postprocessing_thresholds_beyond_yoloe": 0
+  },
+  "metrics": [
+    "per-frame full-parent and parent-rescaled-child masks, boxes, scores, crop bindings, and deterministic assignments",
+    "per-class instance counts by lane",
+    "per-role authorized-frame counts",
+    "architectural-door positive recall",
+    "control false-positive rate",
+    "balanced accuracy"
+  ],
+  "gate": {
+    "development_promotion": "All 4/4 architectural-door positives authorize, all 0/2 handled-furniture negatives authorize, all 0/2 large-opening OOD controls authorize, and balanced accuracy is 1.0.",
+    "pass": "Record a Development gate met, freeze this exact model/text/crop/topology pipeline, and test one fresh source-disjoint confirmation cohort.",
+    "fail": "Close this exact model/text/crop/topology route on the frozen cohort and change information source or representation; do not tune it on these pixels."
+  },
+  "forbidden_rescue": "After any cohort model output, do not change rows, roles, model, text encoder, prompt spelling or order, image size, confidence, IoU, NMS, maximum detections, parent count or order, crop coordinates or expansion, lane filter, mask mapping, representative point, parent priority, authorization, or gate; do not compare prompt, threshold, crop, model-size, or fusion alternatives on these pixels.",
+  "claim_boundary": "PB14 is a current-frame RGB open-vocabulary instance-mask Development experiment. Even a pass is not source-disjoint Confirmation, exact target ownership, public access, open or closed actuation state, metric traversability, active-view causality, temporal persistence, guidance, arrival, product benefit, user benefit, or safety evidence."
+}

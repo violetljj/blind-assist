@@ -1,0 +1,395 @@
+{
+  "schema": "l10-named-poi-metric-portal-closure-cohort-v1",
+  "status": "FROZEN_BEFORE_P0_OUTPUT",
+  "frozen_at": "2026-08-29",
+  "arm": "P0_PRIVILEGED_SENSOR_DEPTH",
+  "protocol": {
+    "schema": "l10-named-poi-metric-portal-closure-protocol-v1",
+    "sha256": "041a1be9b744a4f4f83eeaa2b1bae6bc198a0f02f65b1567c3911beee65499b2"
+  },
+  "depth_contract": {
+    "container": "PNG_UINT16_GRAYSCALE",
+    "encoding": "SUNRGBD_ROTATE_RIGHT_3_MM",
+    "decoded_unit": "millimeter",
+    "meters_per_decoded_unit": 0.001,
+    "invalid_decoded_values": [
+      0
+    ],
+    "maximum_depth_m": 8.0,
+    "above_maximum_behavior": "CLAMP_TO_MAXIMUM"
+  },
+  "intrinsics_contract": {
+    "encoding": "SUNRGBD_TXT_MATLAB_3X3"
+  },
+  "pixel_coordinate_contract": "ZERO_BASED_INTEGER_PIXEL_CENTERS_XY",
+  "quad_contract": "TOP_LEFT_TOP_RIGHT_BOTTOM_RIGHT_BOTTOM_LEFT",
+  "source_admission_contract": {
+    "model_outputs_observed": false,
+    "depth_validity_check": "Decode only the frozen source representation and measure valid-pixel fractions in the already specified rim and interior regions; do not fit a plane or compute a closure score.",
+    "ood_width_check": "Back-project the median valid source depth from two frozen 7 by 7 endpoint patches and use their Euclidean 3D separation as a visible lower-bound clear span.",
+    "role_assignment": "Human RGB audit plus official annotation prefilter; no model score or learned output participated in role or quadrilateral selection."
+  },
+  "frames": [
+    {
+      "index": 1,
+      "frame_id": "rgbf000089-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/001283_2014-06-16_16-21-06_260595134347",
+      "sensor_source_bucket": "kv2/kinect2data",
+      "role": "DOOR_PLANE_POSITIVE",
+      "audit_note": "Official exact door polygon object 1; a closed grey corridor door leaf is visibly present at right, and the quadrilateral freezes its visible leaf extent.",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/001283_2014-06-16_16-21-06_260595134347_rgbf000089-resize",
+      "aperture_quad_xy": [
+        [426, 0],
+        [729, 0],
+        [729, 529],
+        [426, 529]
+      ],
+      "source_admission": {
+        "official_exact_door_polygon": true,
+        "door_leaf_visibly_present": true,
+        "source_image_size": [730, 530],
+        "rim_source_depth_valid_fraction": 0.924686,
+        "interior_source_depth_valid_fraction": 1.0
+      },
+      "files": {
+        "rgb": {
+          "path": "SUNRGBD/kv2/kinect2data/001283_2014-06-16_16-21-06_260595134347_rgbf000089-resize/image/0000089.jpg",
+          "sha256": "c7cd802afbf5a14b10fda0cb5a3d517684179b86b9e2d19697d8cf47c4f9c688"
+        },
+        "depth": {
+          "path": "SUNRGBD/kv2/kinect2data/001283_2014-06-16_16-21-06_260595134347_rgbf000089-resize/depth/0000089.png",
+          "sha256": "81373241a5463707004379474b1ca1d4d4e478c8557d2ae88cd60391f8cc3ae7"
+        },
+        "intrinsics": {
+          "path": "SUNRGBD/kv2/kinect2data/001283_2014-06-16_16-21-06_260595134347_rgbf000089-resize/intrinsics.txt",
+          "sha256": "22c236c26f5e1c8cda15b4c7de7f78720c857198583985843e2c8ef9a9c6d6b4"
+        },
+        "polygon": {
+          "path": "SUNRGBD/kv2/kinect2data/001283_2014-06-16_16-21-06_260595134347_rgbf000089-resize/annotation2Dfinal/index.json",
+          "sha256": "e0d160ec10109ab9affa7e57f496b4cecbecb50b3dc0570cc5f4685d21aef117"
+        },
+        "scene_metadata": {
+          "path": "SUNRGBD/kv2/kinect2data/001283_2014-06-16_16-21-06_260595134347_rgbf000089-resize/scene.txt",
+          "sha256": "fd09da605e5804b35ee408d27c1bed7c7932a1af861948e042283615be0bd3d0"
+        }
+      }
+    },
+    {
+      "index": 2,
+      "frame_id": "2014_12_18-12_20_02-1311000073",
+      "capture_sequence_id": "SUNRGBD/realsense/shr/2014_12_18-12_20_02-1311000073",
+      "sensor_source_bucket": "realsense/shr",
+      "role": "DOOR_PLANE_POSITIVE",
+      "audit_note": "Official exact Door polygon object 1; a closed brown door leaf is visibly present behind the chair, and the quadrilateral freezes the unoccluded visible leaf region.",
+      "canonical_source_path": "SUNRGBD/realsense/shr/2014_12_18-12_20_02-1311000073",
+      "aperture_quad_xy": [
+        [455, 0],
+        [680, 0],
+        [680, 360],
+        [565, 350]
+      ],
+      "source_admission": {
+        "official_exact_door_polygon": true,
+        "door_leaf_visibly_present": true,
+        "source_image_size": [681, 531],
+        "rim_source_depth_valid_fraction": 0.999796,
+        "interior_source_depth_valid_fraction": 1.0
+      },
+      "files": {
+        "rgb": {
+          "path": "SUNRGBD/realsense/shr/2014_12_18-12_20_02-1311000073/image/0000067.jpg",
+          "sha256": "68069a53e433adef1716e4ac7f92767bb9b83ec04a84042e96b9ec7b9231e71b"
+        },
+        "depth": {
+          "path": "SUNRGBD/realsense/shr/2014_12_18-12_20_02-1311000073/depth/0000067.png",
+          "sha256": "061bd61129d932573145c9e89462ec1987c9df3465acbb8c04a78efca1c9c11c"
+        },
+        "intrinsics": {
+          "path": "SUNRGBD/realsense/shr/2014_12_18-12_20_02-1311000073/intrinsics.txt",
+          "sha256": "fc925577bc6e32fe31b67e1134a051ada71ef847e6c6bc2648cb909217b6caa7"
+        },
+        "polygon": {
+          "path": "SUNRGBD/realsense/shr/2014_12_18-12_20_02-1311000073/annotation2Dfinal/index.json",
+          "sha256": "65fb93b2dc7243df14a322fc70fb0cd78906864968bf3349a949e4845fb147aa"
+        },
+        "scene_metadata": {
+          "path": "SUNRGBD/realsense/shr/2014_12_18-12_20_02-1311000073/scene.txt",
+          "sha256": "83d82a74a67aebdecd3846a42bc5235254fb77f8da9a189bf49c321f450dcccd"
+        }
+      }
+    },
+    {
+      "index": 3,
+      "frame_id": "rgbf002468-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/003469_2014-05-21_14-57-18_094959634447",
+      "sensor_source_bucket": "kv2/kinect2data",
+      "role": "DOOR_PLANE_POSITIVE",
+      "audit_note": "Official exact door polygon object 0; a closed brown classroom door leaf is visibly present at right, and the quadrilateral freezes its visible source-image extent.",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/003469_2014-05-21_14-57-18_094959634447_rgbf002468-resize",
+      "aperture_quad_xy": [
+        [534, 0],
+        [729, 0],
+        [729, 529],
+        [495, 529]
+      ],
+      "source_admission": {
+        "official_exact_door_polygon": true,
+        "door_leaf_visibly_present": true,
+        "source_image_size": [730, 530],
+        "rim_source_depth_valid_fraction": 0.643367,
+        "interior_source_depth_valid_fraction": 0.836998
+      },
+      "files": {
+        "rgb": {
+          "path": "SUNRGBD/kv2/kinect2data/003469_2014-05-21_14-57-18_094959634447_rgbf002468-resize/image/0002468.jpg",
+          "sha256": "a28750d42c89b2ad59e4619f8d450c428162a68bd4f2cd3c6470ffa5d659058a"
+        },
+        "depth": {
+          "path": "SUNRGBD/kv2/kinect2data/003469_2014-05-21_14-57-18_094959634447_rgbf002468-resize/depth/0002468.png",
+          "sha256": "5d5ef50e536dcd2c576b3307bdba802f4f903bae5e9daec008b01c6c31fcd591"
+        },
+        "intrinsics": {
+          "path": "SUNRGBD/kv2/kinect2data/003469_2014-05-21_14-57-18_094959634447_rgbf002468-resize/intrinsics.txt",
+          "sha256": "22c236c26f5e1c8cda15b4c7de7f78720c857198583985843e2c8ef9a9c6d6b4"
+        },
+        "polygon": {
+          "path": "SUNRGBD/kv2/kinect2data/003469_2014-05-21_14-57-18_094959634447_rgbf002468-resize/annotation2Dfinal/index.json",
+          "sha256": "636f5047646e4e8ed409c49536c3a0b6d51d2c0c0b3863a03ab0f18dd4814736"
+        },
+        "scene_metadata": {
+          "path": "SUNRGBD/kv2/kinect2data/003469_2014-05-21_14-57-18_094959634447_rgbf002468-resize/scene.txt",
+          "sha256": "83d82a74a67aebdecd3846a42bc5235254fb77f8da9a189bf49c321f450dcccd"
+        }
+      }
+    },
+    {
+      "index": 4,
+      "frame_id": "0001857-000073835748",
+      "capture_sequence_id": "SUNRGBD/xtion/sun3ddata/mit_lab_hj/lab_hj_hall5_nov_2_2012_scan1_erika",
+      "sensor_source_bucket": "xtion/sun3ddata",
+      "role": "DOOR_PLANE_POSITIVE",
+      "audit_note": "Official exact door polygon object 4; closed glass double-door leaves and handles are visibly present, with the annotated polygon mapped into the aligned 591 by 441 source image.",
+      "canonical_source_path": "SUNRGBD/xtion/sun3ddata/mit_lab_hj/lab_hj_hall5_nov_2_2012_scan1_erika/0001857-000073835748",
+      "aperture_quad_xy": [
+        [257, 111],
+        [576, 40],
+        [580, 425],
+        [255, 420]
+      ],
+      "source_admission": {
+        "official_exact_door_polygon": true,
+        "door_leaf_visibly_present": true,
+        "source_image_size": [591, 441],
+        "rim_source_depth_valid_fraction": 0.608629,
+        "interior_source_depth_valid_fraction": 0.672109
+      },
+      "files": {
+        "rgb": {
+          "path": "SUNRGBD/xtion/sun3ddata/mit_lab_hj/lab_hj_hall5_nov_2_2012_scan1_erika/0001857-000073835748/image/0001857-000073835748.jpg",
+          "sha256": "c9f6feca6e14cd581823e3e10171f6051241af7e184acae2cfadb8d4be937940"
+        },
+        "depth": {
+          "path": "SUNRGBD/xtion/sun3ddata/mit_lab_hj/lab_hj_hall5_nov_2_2012_scan1_erika/0001857-000073835748/depth/0001846-000073846291.png",
+          "sha256": "9c6def590e0df552e47afae470e5463a1f6c2a0f3057d9de5d16cafe597b3ba7"
+        },
+        "intrinsics": {
+          "path": "SUNRGBD/xtion/sun3ddata/mit_lab_hj/lab_hj_hall5_nov_2_2012_scan1_erika/0001857-000073835748/intrinsics.txt",
+          "sha256": "0e11a8aee9c9a74a1b3317476bf72a216fd88266f4e692baa71f90fdb2360963"
+        },
+        "polygon": {
+          "path": "SUNRGBD/xtion/sun3ddata/mit_lab_hj/lab_hj_hall5_nov_2_2012_scan1_erika/0001857-000073835748/annotation2Dfinal/index.json",
+          "sha256": "db9c719b94650dbd8fc29826947756eeb53ec9b2fa65bd6f8be3c00a748db81a"
+        },
+        "scene_metadata": {
+          "path": "SUNRGBD/xtion/sun3ddata/mit_lab_hj/lab_hj_hall5_nov_2_2012_scan1_erika/0001857-000073835748/scene.txt",
+          "sha256": "fd09da605e5804b35ee408d27c1bed7c7932a1af861948e042283615be0bd3d0"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "frame_id": "2014_10_21-18_13_09-1311000073",
+      "capture_sequence_id": "SUNRGBD/realsense/sa/2014_10_21-18_13_09-1311000073",
+      "sensor_source_bucket": "realsense/sa",
+      "role": "NO_PORTAL_NEGATIVE",
+      "audit_note": "No official exact door polygon; human RGB audit finds no traversable door or large opening, and freezes the tall wall-storage panel as the strongest portal-shaped distractor.",
+      "canonical_source_path": "SUNRGBD/realsense/sa/2014_10_21-18_13_09-1311000073",
+      "aperture_quad_xy": [
+        [235, 0],
+        [485, 0],
+        [485, 530],
+        [235, 530]
+      ],
+      "source_admission": {
+        "official_exact_door_polygon": false,
+        "visible_traversable_portal": false,
+        "distractor": "TALL_WALL_STORAGE_PANEL",
+        "source_image_size": [681, 531],
+        "rim_source_depth_valid_fraction": 0.993695,
+        "interior_source_depth_valid_fraction": 0.999692
+      },
+      "files": {
+        "rgb": {
+          "path": "SUNRGBD/realsense/sa/2014_10_21-18_13_09-1311000073/image/0000063.jpg",
+          "sha256": "6e2cf4996dc88196c669577498ac7b1b2a4c683ae8f5db47266dbd9fd798c699"
+        },
+        "depth": {
+          "path": "SUNRGBD/realsense/sa/2014_10_21-18_13_09-1311000073/depth/0000063.png",
+          "sha256": "13a6a98da139856d861c08db4531a637301b7d7e3eb6c9322a05a398199e2de1"
+        },
+        "intrinsics": {
+          "path": "SUNRGBD/realsense/sa/2014_10_21-18_13_09-1311000073/intrinsics.txt",
+          "sha256": "fc925577bc6e32fe31b67e1134a051ada71ef847e6c6bc2648cb909217b6caa7"
+        },
+        "polygon": {
+          "path": "SUNRGBD/realsense/sa/2014_10_21-18_13_09-1311000073/annotation2Dfinal/index.json",
+          "sha256": "275d56d57bdb78f228323caa5d8fa9de8b3eb9b1d5fb5d28b15c7cb855ea8a0c"
+        },
+        "scene_metadata": {
+          "path": "SUNRGBD/realsense/sa/2014_10_21-18_13_09-1311000073/scene.txt",
+          "sha256": "c6e5e46c59267114f91d64df0e069b0dae176f9a134656820bba1e6164318980"
+        }
+      }
+    },
+    {
+      "index": 6,
+      "frame_id": "rgbf000112-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/001083_2014-06-08_22-36-18_260595134347",
+      "sensor_source_bucket": "kv2/kinect2data",
+      "role": "NO_PORTAL_NEGATIVE",
+      "audit_note": "No official exact door polygon; human RGB audit finds no traversable door or large opening, and freezes the tall grey filing cabinet as the strongest portal-shaped distractor.",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/001083_2014-06-08_22-36-18_260595134347_rgbf000112-resize",
+      "aperture_quad_xy": [
+        [0, 20],
+        [188, 40],
+        [188, 475],
+        [0, 430]
+      ],
+      "source_admission": {
+        "official_exact_door_polygon": false,
+        "visible_traversable_portal": false,
+        "distractor": "TALL_FILING_CABINET",
+        "source_image_size": [730, 530],
+        "rim_source_depth_valid_fraction": 0.689098,
+        "interior_source_depth_valid_fraction": 0.797002
+      },
+      "files": {
+        "rgb": {
+          "path": "SUNRGBD/kv2/kinect2data/001083_2014-06-08_22-36-18_260595134347_rgbf000112-resize/image/0000112.jpg",
+          "sha256": "8a863138f21542d3f4e4a2cb8931eb0b4ca4b73cd9b8bbf2118c07f9834210ba"
+        },
+        "depth": {
+          "path": "SUNRGBD/kv2/kinect2data/001083_2014-06-08_22-36-18_260595134347_rgbf000112-resize/depth/0000112.png",
+          "sha256": "ab8037e30f1efecd892f9370c88f3772754e1eddd86a4f03f8d8bc839ec1dd02"
+        },
+        "intrinsics": {
+          "path": "SUNRGBD/kv2/kinect2data/001083_2014-06-08_22-36-18_260595134347_rgbf000112-resize/intrinsics.txt",
+          "sha256": "22c236c26f5e1c8cda15b4c7de7f78720c857198583985843e2c8ef9a9c6d6b4"
+        },
+        "polygon": {
+          "path": "SUNRGBD/kv2/kinect2data/001083_2014-06-08_22-36-18_260595134347_rgbf000112-resize/annotation2Dfinal/index.json",
+          "sha256": "8e3b5fd64b2e996a5fe3cb6bb5b38d1fd114c8d38d017bbc3d7855ddda6ad265"
+        },
+        "scene_metadata": {
+          "path": "SUNRGBD/kv2/kinect2data/001083_2014-06-08_22-36-18_260595134347_rgbf000112-resize/scene.txt",
+          "sha256": "5cc3f82838ba7260203e4590ce03d00e1663d41f6a5167144f5c95d6be2166a0"
+        }
+      }
+    },
+    {
+      "index": 7,
+      "frame_id": "0000174-000005798268",
+      "capture_sequence_id": "SUNRGBD/xtion/sun3ddata/mit_3_huge_office/cl_1",
+      "sensor_source_bucket": "xtion/sun3ddata",
+      "role": "LARGE_DOORLESS_OPENING_OOD",
+      "audit_note": "No official exact door polygon; human RGB audit identifies the open office hallway with no door leaf. Source-depth endpoint patches at (200,380) and (580,380) give a 1.5381 m visible clear floor span.",
+      "canonical_source_path": "SUNRGBD/xtion/sun3ddata/mit_3_huge_office/cl_1/0000174-000005798268",
+      "aperture_quad_xy": [
+        [460, 80],
+        [590, 80],
+        [590, 426],
+        [200, 426]
+      ],
+      "source_admission": {
+        "official_exact_door_polygon": false,
+        "door_leaf_across_opening": false,
+        "source_image_size": [591, 441],
+        "rim_source_depth_valid_fraction": 0.923147,
+        "interior_source_depth_valid_fraction": 0.791418,
+        "width_endpoints_xy": [[200, 380], [580, 380]],
+        "width_patch_radius_px": 3,
+        "visible_clear_span_m": 1.5381
+      },
+      "files": {
+        "rgb": {
+          "path": "SUNRGBD/xtion/sun3ddata/mit_3_huge_office/cl_1/0000174-000005798268/image/0000174-000005798268.jpg",
+          "sha256": "84bebb6416b0f4553cfee3ff8f90a2ef6d5fd18b1cedf5369eb24d58c7dc2296"
+        },
+        "depth": {
+          "path": "SUNRGBD/xtion/sun3ddata/mit_3_huge_office/cl_1/0000174-000005798268/depth/0000174-000005792944.png",
+          "sha256": "1f0e0d254c4ebcc0a84790cd43aff79b3a7c41dbc3edbceffe853558d43ae0c2"
+        },
+        "intrinsics": {
+          "path": "SUNRGBD/xtion/sun3ddata/mit_3_huge_office/cl_1/0000174-000005798268/intrinsics.txt",
+          "sha256": "0e11a8aee9c9a74a1b3317476bf72a216fd88266f4e692baa71f90fdb2360963"
+        },
+        "polygon": {
+          "path": "SUNRGBD/xtion/sun3ddata/mit_3_huge_office/cl_1/0000174-000005798268/annotation2Dfinal/index.json",
+          "sha256": "b85a3bdbc3fec26d8a4715da1fdd3013d79abd74e87835a3f43be8e3fd7253c6"
+        },
+        "scene_metadata": {
+          "path": "SUNRGBD/xtion/sun3ddata/mit_3_huge_office/cl_1/0000174-000005798268/scene.txt",
+          "sha256": "fd09da605e5804b35ee408d27c1bed7c7932a1af861948e042283615be0bd3d0"
+        }
+      }
+    },
+    {
+      "index": 8,
+      "frame_id": "0001945-000065155104",
+      "capture_sequence_id": "SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge1_1",
+      "sensor_source_bucket": "xtion/sun3ddata",
+      "role": "LARGE_DOORLESS_OPENING_OOD",
+      "audit_note": "No official exact door polygon; human RGB audit identifies the broad doorless room-to-hall junction. Source-depth endpoint patches at (140,380) and (580,380) give a 1.7735 m visible clear floor span.",
+      "canonical_source_path": "SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge1_1/0001945-000065155104",
+      "aperture_quad_xy": [
+        [450, 0],
+        [590, 0],
+        [590, 440],
+        [135, 440]
+      ],
+      "source_admission": {
+        "official_exact_door_polygon": false,
+        "door_leaf_across_opening": false,
+        "source_image_size": [591, 441],
+        "rim_source_depth_valid_fraction": 0.987222,
+        "interior_source_depth_valid_fraction": 0.964735,
+        "width_endpoints_xy": [[140, 380], [580, 380]],
+        "width_patch_radius_px": 3,
+        "visible_clear_span_m": 1.7735
+      },
+      "files": {
+        "rgb": {
+          "path": "SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge1_1/0001945-000065155104/image/0001945-000065155104.jpg",
+          "sha256": "a4f5798dd681b12bc333a001a61aba818d2ec693feadab406574be9f25c89cf8"
+        },
+        "depth": {
+          "path": "SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge1_1/0001945-000065155104/depth/0001953-000065157935.png",
+          "sha256": "c4780706427c0151d6cdc7fafcb9fb81fca6ee2bdaac2504e5494bd4aea332f1"
+        },
+        "intrinsics": {
+          "path": "SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge1_1/0001945-000065155104/intrinsics.txt",
+          "sha256": "0e11a8aee9c9a74a1b3317476bf72a216fd88266f4e692baa71f90fdb2360963"
+        },
+        "polygon": {
+          "path": "SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge1_1/0001945-000065155104/annotation2Dfinal/index.json",
+          "sha256": "4636187b9d3c244ad98d2385ebb4d51a807680812d5ecf8ed5053731c3c73667"
+        },
+        "scene_metadata": {
+          "path": "SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge1_1/0001945-000065155104/scene.txt",
+          "sha256": "fd09da605e5804b35ee408d27c1bed7c7932a1af861948e042283615be0bd3d0"
+        }
+      }
+    }
+  ],
+  "claim_boundary": "Frozen Development cohort for the PB11 privileged source-depth mechanism test only. Role assignment, source identities, hashes, quadrilaterals, and source-admission evidence were sealed before any closure output."
+}

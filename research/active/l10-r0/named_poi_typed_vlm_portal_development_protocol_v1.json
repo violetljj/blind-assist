@@ -1,0 +1,99 @@
+{
+  "schema": "l10-named-poi-typed-vlm-portal-development-protocol-v1",
+  "created_at": "2026-08-29",
+  "mode": "NEW_MODALITY_DEVELOPMENT_ON_CONSUMED_PB7_COHORT",
+  "question": "Can a compact frozen vision-language model explicitly separate door-level entrances, no-entrance scenes, and large doorless entry mouths, then retain the correct door region in a fixed Top-3 grid without semantic-threshold tuning?",
+  "representation": {
+    "name": "Typed VLM Portal Grid",
+    "short_name": "TVPG",
+    "single_change": "Replace failed closed-set door pixels with two frozen Qwen2-VL forced-choice heads: a three-state entrance-topology decision and a fixed 3x3 door-center localization distribution.",
+    "why_different": "The source is joint scene-language topology with explicit NONE and large-open-mouth states, not a door-class score, connected-component threshold, open-vocabulary object prompt, handle heuristic, appearance matcher, or geometry-proposal rescue.",
+    "authority_separation": "TVPG never receives the requested entity name or OCR text. Frozen SCIL supplies entity identity separately; TVPG supplies only a generic door-level state and coarse grid region."
+  },
+  "sources": {
+    "source_spec": {
+      "path": "research/active/l10-r0/named_poi_ade20k_portal_fresh_source_v1.json",
+      "sha256": "060c014076e99c58c27e5f8041bfdbf43067b13e41501dfefb144e0cab88b8c1"
+    },
+    "source_manifest": {
+      "path": "artifacts.local/knowledge/named-poi-ade20k-portal-fresh-v1/source_manifest.json",
+      "sha256": "6d8133c166902bbc1594fd71dc311aeef61a72d892ca0e3cfe1b56297c47771f"
+    },
+    "source_audit": {
+      "path": "research/active/l10-r0/named_poi_ade20k_portal_fresh_source_audit_v1.json",
+      "sha256": "1cb2d336a0400e020593422557be32ca4ec08ca7768d91d26654f9e88bba00fb"
+    }
+  },
+  "frozen_files": {
+    "pb7_formal_result": {
+      "path": "artifacts.local/evidence/l10-r0/named-poi-ade20k-portal-fresh-v1/result.json",
+      "sha256": "425497ff53c8355ea25335146f19f932e805ea49a220d92fcdf635aac52ec272"
+    },
+    "pb7_durable_result": {
+      "path": "research/active/l10-r0/named_poi_ade20k_portal_fresh_result_v1.json",
+      "sha256": "a623b91eec8699259bdc7a0d15f5c11abb16069d166f7acd110f4d3c1e6c18c0"
+    }
+  },
+  "model": {
+    "model_id": "Qwen/Qwen2-VL-2B-Instruct",
+    "revision": "895c3a49bc3fa70a340399125c650a463535e71c",
+    "path": "artifacts.local/models/huggingface/models--Qwen--Qwen2-VL-2B-Instruct/snapshots/895c3a49bc3fa70a340399125c650a463535e71c",
+    "minimum_pixels": 200704,
+    "maximum_pixels": 401408,
+    "precision": "float16",
+    "hashed_files": {
+      "config.json": "422adefa19e62dd175961cec85bc0400344fe5bf9b22bd1182e05aaae78556e0",
+      "preprocessor_config.json": "b5eaad0c2815f07631535dcc58f3c462b0d73693638ad21d19f3c50820eae1cc",
+      "model.safetensors.index.json": "260ab9fa1418d6d6ab79daa1d9da2c47264f3b72edb4630fc799077ac67d27c6"
+    },
+    "shard_sizes": {
+      "model-00001-of-00002.safetensors": 3988609112,
+      "model-00002-of-00002.safetensors": 429441656
+    },
+    "training_role": "Generic pretrained vision-language instruction model; no PB1-PB8 image, entity, portal truth, or navigation supervision."
+  },
+  "evaluator": {
+    "path": "research/active/l10-r0/named_poi_typed_vlm_portal_development_eval.py",
+    "sha256": "9eb4f4dd2baa01251d072a5502463103a09aaa0ea811cab7459a8a0e34821013"
+  },
+  "prompts": {
+    "typed_scene": "Classify only the entrance topology visible in this image. Reply with exactly one digit: 1 if a pedestrian-scale doorway is visible and at least one door leaf, jamb, or door frame defines it, including open automatic glass doors; 2 if no building entrance is visible; 3 if the visible entry is a station-, market-, campus-, or atrium-scale open mouth without a door-level boundary. Ignore signs and entity identity. Answer:",
+    "grid_localization": "Divide the image into a 3 by 3 grid numbered 1 through 9 from left to right, top to bottom. Locate the center of the clearest pedestrian-scale doorway defined by a visible door leaf, jamb, or door frame. Reply with exactly one digit for its cell. Ignore signs, text, large doorless station or market mouths, and unrelated interior doors. Answer:"
+  },
+  "forced_choice_rule": {
+    "scene_labels": {
+      "1": "door-level entrance",
+      "2": "no visible building entrance",
+      "3": "large doorless open-mouth OOD"
+    },
+    "localization_labels": "Digits 1-9 represent a fixed 3x3 grid in reading order.",
+    "decision": "For each head, select the largest next-token logit among only the declared single-token labels. No generated text, threshold, calibration, retry, crop, chain of thought, or prompt ensemble.",
+    "top3": "Rank the nine fixed grid cells by localization label log probability and retain three. Attach source identity only when the scene label is 1 and PB7 SCIL proved the exact source entity."
+  },
+  "development_cohort": {
+    "authority": "The eight PB7 images are consumed Development data after the frozen BD-DCF confirmation failed.",
+    "door_level_positives": 4,
+    "no_portal_negatives": 2,
+    "large_open_entrance_ood": 2,
+    "identity": "Reuse the already sealed PB7 SCIL result: 8/8 correct proofs, zero wrong proofs, zero UNKNOWN. OCR is not rerun.",
+    "fresh_confirmation_authority": false
+  },
+  "runtime": {
+    "transformers_version": "5.14.1",
+    "backend": "CUDA-only after verified availability; fail closed on actual CPU fallback."
+  },
+  "development_gate": {
+    "minimum_typed_scene_correct": 7,
+    "minimum_positive_door_level_classifications": 3,
+    "minimum_joined_top3_truth_retention": 3,
+    "require_both_no_portal_controls_typed_none": true,
+    "require_both_open_mouth_controls_typed_ood": true,
+    "require_zero_no_portal_authorization": true,
+    "require_zero_ood_authorization": true,
+    "require_zero_wrong_request_authorization": true,
+    "require_no_commit_or_navigation_state": true
+  },
+  "stop_rule": "Run exactly once. Do not change prompts, definitions, image pixels, resolution, labels, logit rule, grid, Top-3, model, precision, role truth, human boxes, or gate after output. A pass earns one new entity-disjoint confirmation; a failure closes this direct typed-VLM representation without prompt or model sweeps.",
+  "next_step": "If the Development gate passes, freeze the exact TVPG representation and run one new entity-disjoint same-frame SCIL plus TVPG confirmation. If it fails, change the information modality rather than tune prompts or logits on this cohort.",
+  "claim_boundary": "Development-only evidence on the consumed PB7 cohort. A Top-3 grid cell is a coarse current-frame portal region, not a precise door-leaf mask. A pass would not prove fresh generalization, natural prevalence, physical portal ownership, public access, opening state, traversability, active-view causality, temporal persistence, directional guidance, arrival, product benefit, user benefit, or safety."
+}

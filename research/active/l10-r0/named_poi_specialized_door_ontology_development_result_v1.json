@@ -1,0 +1,44 @@
+{
+  "schema": "l10-named-poi-specialized-door-ontology-development-durable-result-v1",
+  "date": "2026-08-29",
+  "decision": "L10_PB9_SPECIALIZED_DOOR_ONTOLOGY_DEVELOPMENT_GATE_NOT_MET",
+  "representation": {
+    "name": "Specialized Door Ontology Proposer",
+    "short_name": "SDOP",
+    "model": "perseusdg/doorway-door-people-window-seg revision fc5fb4cc8ccc164d8c8618fc28417ebe98e638e2",
+    "ontology": "doorway, door, people, window, and author-internal mirror classes",
+    "author_contract": "Ultralytics inference at imgsz 640 and conf 0.10, followed by the unmodified author mirror suppression, output confidence 0.35, and door/doorway deduplication.",
+    "post_output_tuning": 0
+  },
+  "development": {
+    "positive_portal_presence": "0/4",
+    "joined_top3_truth": "0/4",
+    "no_portal_false_authorization": "0/2",
+    "open_mouth_authorization_leakage": "0/2",
+    "wrong_request_authorization": 0,
+    "balanced_accuracy": 0.5,
+    "post_output_tuning": 0
+  },
+  "attribution": {
+    "failure_layer": "The frozen author pipeline retained no class-0 doorway or class-1 door candidate on any of the eight frames. Raw low-confidence door-like detections on two positives were removed by the author's output contract; the remaining author-final detections were people or windows.",
+    "closed": "Direct current-frame RGB proposal generation with this frozen specialized door ontology and author postprocessor",
+    "forbidden_rescue": "No confidence, image-size, NMS, crop, class, area, scale, postprocessor, model, or test-time-augmentation sweep on this consumed cohort."
+  },
+  "backend": {
+    "selected": "perseusdg-yolo26n-seg-torch-cuda",
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "torch": "2.11.0+cu130",
+    "ultralytics": "8.4.102",
+    "peak_allocated_bytes": 100965376,
+    "peak_reserved_bytes": 184549376
+  },
+  "hashes": {
+    "protocol_sha256": "65e1a96667a76e17abd17fcb4cfa850218e6bd8a28e0ad96a33209506d0dd88b",
+    "evaluator_sha256": "01b06821f81a5f2ad613f2404296095c91459cd7a83ddd1f98f02bf0b8c6ce73",
+    "formal_result_sha256": "049ae2a0e9aa66a818e3a33b5c5fb0ff0672279c9fdce5f4f1463496c9a976a1",
+    "weights_sha256": "4c9c09fd97d151d5e4bb7345b1409017f67d3d8803279334cbabb830dc2a0ce2",
+    "postprocessor_sha256": "09138b60eea6810cdfe10ae3596f34b20b50e72521727d12e9ae64a40d8adf89"
+  },
+  "next_step": "Retain frozen SCIL and change information modality to direct relative-depth aperture topology. Do not rescue this detector.",
+  "claim_boundary": "Development-only negative result on the consumed PB7 public-image cohort. It does not reject specialized door detectors generally, and establishes no portal, access, opening-state, traversability, active-view, guidance, arrival, product, user-benefit, or safety authority."
+}

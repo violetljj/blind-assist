@@ -1,0 +1,1237 @@
+{
+  "claim_boundary": "PB14 is a current-frame RGB open-vocabulary instance-mask Development experiment. Even a pass is not source-disjoint Confirmation, exact target ownership, public access, open or closed actuation state, metric traversability, active-view causality, temporal persistence, guidance, arrival, product benefit, user benefit, or safety evidence.",
+  "completed_at": "2026-08-29T21:00:30.225489+08:00",
+  "evaluator": {
+    "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\named_poi_yoloe_multiscale_part_topology.py",
+    "sha256": "1db5ba4ec8a8241f945207e4624dad378459e0689199045e99c8bad756519571"
+  },
+  "experiment": "L10-PB14 YOLOE Parent-Rescaled Pixel Part Topology",
+  "frames": [
+    {
+      "audit_note": "Human RGB audit confirms multiple complete architectural doors with clearly visible lever handles.",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/002718_2014-06-22_11-44-54_094959634447_rgbf000074-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/002718_2014-06-22_11-44-54_094959634447",
+      "child_parent_assignments": [],
+      "files": {
+        "depth": {
+          "bytes": 338846,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\002718_2014-06-22_11-44-54_094959634447_rgbf000074-resize\\depth\\0000074.png",
+          "sha256": "3447104cbec3ebc2d419b25200527028ad77da9ffc76951008fdf1a9f33e17ed"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\002718_2014-06-22_11-44-54_094959634447_rgbf000074-resize\\intrinsics.txt",
+          "sha256": "22c236c26f5e1c8cda15b4c7de7f78720c857198583985843e2c8ef9a9c6d6b4"
+        },
+        "polygon": {
+          "bytes": 8856,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\002718_2014-06-22_11-44-54_094959634447_rgbf000074-resize\\annotation2Dfinal\\index.json",
+          "sha256": "cee96bf5c4cae6a42825eaf5b1a219ffc26cbcc3d06923fef14a8e84d1342887"
+        },
+        "rgb": {
+          "bytes": 27321,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\002718_2014-06-22_11-44-54_094959634447_rgbf000074-resize\\image\\0000074.jpg",
+          "sha256": "66c8f27374d2b3034a05a403092c54c26341ce61fa075dfffe353433096619df"
+        },
+        "scene_metadata": {
+          "bytes": 8,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\002718_2014-06-22_11-44-54_094959634447_rgbf000074-resize\\scene.txt",
+          "sha256": "fd09da605e5804b35ee408d27c1bed7c7932a1af861948e042283615be0bd3d0"
+        }
+      },
+      "frame_id": "rgbf000074-resize",
+      "index": 1,
+      "lane_1_full_frame": {
+        "architectural_frame_is_diagnostic_only": true,
+        "counts_by_class_id": {
+          "architectural_frame": 0,
+          "architectural_leaf": 0,
+          "cabinet_door": 0,
+          "closet_door": 1,
+          "doorless_opening": 3,
+          "hinge": 0,
+          "operation_part": 0,
+          "refrigerator_door": 0
+        },
+        "inference_seconds": 0.7946266000217292,
+        "instances": [
+          {
+            "box_xyxy": [
+              314.5681457519531,
+              0.22894823551177979,
+              443.23712158203125,
+              247.80955505371094
+            ],
+            "class_id": "closet_door",
+            "class_index": 5,
+            "class_text": "closet door",
+            "confidence": 0.6189190149307251,
+            "mask": {
+              "binary_uint8_sha256": "5a81c8a64c78d3478453dce4a66c4889a838099a6d4bd14df2faba0542f7db8b",
+              "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+              "size_hw": [
+                530,
+                730
+              ],
+              "true_pixels": 31251
+            },
+            "mask_area_pixels": 31251,
+            "raw_detection_index": 0,
+            "retained_for_lane_2": true,
+            "retained_parent_instance_id": "parent:000"
+          },
+          {
+            "box_xyxy": [
+              314.5681457519531,
+              0.22894823551177979,
+              443.23712158203125,
+              247.80955505371094
+            ],
+            "class_id": "doorless_opening",
+            "class_index": 7,
+            "class_text": "doorless wall opening",
+            "confidence": 0.42712506651878357,
+            "mask": {
+              "binary_uint8_sha256": "5a81c8a64c78d3478453dce4a66c4889a838099a6d4bd14df2faba0542f7db8b",
+              "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+              "size_hw": [
+                530,
+                730
+              ],
+              "true_pixels": 31251
+            },
+            "mask_area_pixels": 31251,
+            "raw_detection_index": 1,
+            "retained_for_lane_2": true,
+            "retained_parent_instance_id": "parent:001"
+          },
+          {
+            "box_xyxy": [
+              0.6537412405014038,
+              0.0,
+              199.83770751953125,
+              443.2352294921875
+            ],
+            "class_id": "doorless_opening",
+            "class_index": 7,
+            "class_text": "doorless wall opening",
+            "confidence": 0.32827702164649963,
+            "mask": {
+              "binary_uint8_sha256": "e5ae38f26e0bfe0bb47f3d7f059979202d036a5068146855b3a11ce0b934bccb",
+              "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+              "size_hw": [
+                530,
+                730
+              ],
+              "true_pixels": 76112
+            },
+            "mask_area_pixels": 76112,
+            "raw_detection_index": 2,
+            "retained_for_lane_2": true,
+            "retained_parent_instance_id": "parent:002"
+          },
+          {
+            "box_xyxy": [
+              516.1232299804688,
+              0.05943655967712402,
+              639.6449584960938,
+              477.87872314453125
+            ],
+            "class_id": "doorless_opening",
+            "class_index": 7,
+            "class_text": "doorless wall opening",
+            "confidence": 0.28661400079727173,
+            "mask": {
+              "binary_uint8_sha256": "69f5adfc6252f4fa08eff076a56adc711a6aff934d1dad3ac388bea1abf2f438",
+              "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+              "size_hw": [
+                530,
+                730
+              ],
+              "true_pixels": 38948
+            },
+            "mask_area_pixels": 38948,
+            "raw_detection_index": 3,
+            "retained_for_lane_2": true,
+            "retained_parent_instance_id": "parent:003"
+          }
+        ],
+        "lane_1_children_authorize": false,
+        "raw_instance_count": 4,
+        "retained_parent_instance_ids_in_crop_order": [
+          "parent:000",
+          "parent:001",
+          "parent:002",
+          "parent:003"
+        ]
+      },
+      "lane_2_parent_crops": [
+        {
+          "counts_by_class_id": {
+            "architectural_frame": 0,
+            "architectural_leaf": 0,
+            "cabinet_door": 0,
+            "closet_door": 0,
+            "doorless_opening": 1,
+            "hinge": 0,
+            "operation_part": 0,
+            "refrigerator_door": 0
+          },
+          "crop_box_xyxy_half_open": [
+            314,
+            0,
+            444,
+            248
+          ],
+          "crop_size_wh": [
+            130,
+            248
+          ],
+          "inference_seconds": 0.024393800005782396,
+          "raw_instance_count": 1,
+          "retained_child_instances": [],
+          "rgb_to_contiguous_bgr": true,
+          "source_parent_class_id": "closet_door",
+          "source_parent_instance_id": "parent:000"
+        },
+        {
+          "counts_by_class_id": {
+            "architectural_frame": 0,
+            "architectural_leaf": 0,
+            "cabinet_door": 0,
+            "closet_door": 0,
+            "doorless_opening": 1,
+            "hinge": 0,
+            "operation_part": 0,
+            "refrigerator_door": 0
+          },
+          "crop_box_xyxy_half_open": [
+            314,
+            0,
+            444,
+            248
+          ],
+          "crop_size_wh": [
+            130,
+            248
+          ],
+          "inference_seconds": 0.014994099998148158,
+          "raw_instance_count": 1,
+          "retained_child_instances": [],
+          "rgb_to_contiguous_bgr": true,
+          "source_parent_class_id": "doorless_opening",
+          "source_parent_instance_id": "parent:001"
+        },
+        {
+          "counts_by_class_id": {
+            "architectural_frame": 0,
+            "architectural_leaf": 0,
+            "cabinet_door": 0,
+            "closet_door": 0,
+            "doorless_opening": 1,
+            "hinge": 0,
+            "operation_part": 0,
+            "refrigerator_door": 0
+          },
+          "crop_box_xyxy_half_open": [
+            0,
+            0,
+            200,
+            444
+          ],
+          "crop_size_wh": [
+            200,
+            444
+          ],
+          "inference_seconds": 0.013086699997074902,
+          "raw_instance_count": 1,
+          "retained_child_instances": [],
+          "rgb_to_contiguous_bgr": true,
+          "source_parent_class_id": "doorless_opening",
+          "source_parent_instance_id": "parent:002"
+        },
+        {
+          "counts_by_class_id": {
+            "architectural_frame": 0,
+            "architectural_leaf": 0,
+            "cabinet_door": 0,
+            "closet_door": 0,
+            "doorless_opening": 0,
+            "hinge": 0,
+            "operation_part": 0,
+            "refrigerator_door": 0
+          },
+          "crop_box_xyxy_half_open": [
+            516,
+            0,
+            640,
+            478
+          ],
+          "crop_size_wh": [
+            124,
+            478
+          ],
+          "inference_seconds": 0.01271509999060072,
+          "raw_instance_count": 0,
+          "retained_child_instances": [],
+          "rgb_to_contiguous_bgr": true,
+          "source_parent_class_id": "doorless_opening",
+          "source_parent_instance_id": "parent:003"
+        }
+      ],
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "supporting_object_names": [
+          "door x5",
+          "doorhandle x5",
+          "doorwindow",
+          "doorjamb x2"
+        ]
+      },
+      "parent_rescaled_pixel_part_topology": false,
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_OPERATION_PART",
+      "sensor_source_bucket": "kv2/kinect2data",
+      "source_image_size": [
+        730,
+        530
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms multiple architectural doors with visible lever handles and a horizontal push bar on the rear door.",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/002716_2014-06-22_11-44-09_094959634447_rgbf000041-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/002716_2014-06-22_11-44-09_094959634447",
+      "child_parent_assignments": [],
+      "files": {
+        "depth": {
+          "bytes": 332265,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\002716_2014-06-22_11-44-09_094959634447_rgbf000041-resize\\depth\\0000041.png",
+          "sha256": "71b11041b17dff5d06878c72a26feaeda0e0cbcc8204d797d1ddb85503f7e48b"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\002716_2014-06-22_11-44-09_094959634447_rgbf000041-resize\\intrinsics.txt",
+          "sha256": "22c236c26f5e1c8cda15b4c7de7f78720c857198583985843e2c8ef9a9c6d6b4"
+        },
+        "polygon": {
+          "bytes": 11841,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\002716_2014-06-22_11-44-09_094959634447_rgbf000041-resize\\annotation2Dfinal\\index.json",
+          "sha256": "68cb6569a2052b59e692c7df0b45bcab652db07dac9067ccf5cff7293c936088"
+        },
+        "rgb": {
+          "bytes": 44495,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\002716_2014-06-22_11-44-09_094959634447_rgbf000041-resize\\image\\0000041.jpg",
+          "sha256": "c4996afb5f5782c93cf3f46435e4c5351b1026e92380a47dcc740acbbcb28886"
+        },
+        "scene_metadata": {
+          "bytes": 10,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\002716_2014-06-22_11-44-09_094959634447_rgbf000041-resize\\scene.txt",
+          "sha256": "1afbccf7bdda1edd90afde2395d0b5c8bfd4c8fb9e41687218d74c04c65136e3"
+        }
+      },
+      "frame_id": "rgbf000041-resize",
+      "index": 2,
+      "lane_1_full_frame": {
+        "architectural_frame_is_diagnostic_only": true,
+        "counts_by_class_id": {
+          "architectural_frame": 0,
+          "architectural_leaf": 0,
+          "cabinet_door": 0,
+          "closet_door": 1,
+          "doorless_opening": 3,
+          "hinge": 0,
+          "operation_part": 0,
+          "refrigerator_door": 0
+        },
+        "inference_seconds": 0.015822999994270504,
+        "instances": [
+          {
+            "box_xyxy": [
+              640.4239501953125,
+              0.45895814895629883,
+              729.9844970703125,
+              251.33108520507812
+            ],
+            "class_id": "closet_door",
+            "class_index": 5,
+            "class_text": "closet door",
+            "confidence": 0.6490335464477539,
+            "mask": {
+              "binary_uint8_sha256": "f169c84c4b0c131533f84fdcb75d93a9b4f008d7db346ee5b0cf2c9d2f810b79",
+              "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+              "size_hw": [
+                530,
+                730
+              ],
+              "true_pixels": 17106
+            },
+            "mask_area_pixels": 17106,
+            "raw_detection_index": 0,
+            "retained_for_lane_2": true,
+            "retained_parent_instance_id": "parent:000"
+          },
+          {
+            "box_xyxy": [
+              640.4239501953125,
+              0.45895814895629883,
+              729.9844970703125,
+              251.33108520507812
+            ],
+            "class_id": "doorless_opening",
+            "class_index": 7,
+            "class_text": "doorless wall opening",
+            "confidence": 0.28259584307670593,
+            "mask": {
+              "binary_uint8_sha256": "f169c84c4b0c131533f84fdcb75d93a9b4f008d7db346ee5b0cf2c9d2f810b79",
+              "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+              "size_hw": [
+                530,
+                730
+              ],
+              "true_pixels": 17106
+            },
+            "mask_area_pixels": 17106,
+            "raw_detection_index": 1,
+            "retained_for_lane_2": true,
+            "retained_parent_instance_id": "parent:001"
+          },
+          {
+            "box_xyxy": [
+              450.0753173828125,
+              0.0,
+              600.37060546875,
+              197.52256774902344
+            ],
+            "class_id": "doorless_opening",
+            "class_index": 7,
+            "class_text": "doorless wall opening",
+            "confidence": 0.2765268087387085,
+            "mask": {
+              "binary_uint8_sha256": "20721d0bacdafb340effec6880d7299d2924fe7116850ba31ab5992316660699",
+              "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+              "size_hw": [
+                530,
+                730
+              ],
+              "true_pixels": 26342
+            },
+            "mask_area_pixels": 26342,
+            "raw_detection_index": 2,
+            "retained_for_lane_2": true,
+            "retained_parent_instance_id": "parent:002"
+          },
+          {
+            "box_xyxy": [
+              262.50439453125,
+              0.0,
+              360.2318420410156,
+              224.12745666503906
+            ],
+            "class_id": "doorless_opening",
+            "class_index": 7,
+            "class_text": "doorless wall opening",
+            "confidence": 0.2591073215007782,
+            "mask": {
+              "binary_uint8_sha256": "cf19cbb36449c88c1f2cc0f12681dd9de1f92e1c9789b4b327e1259da50a49f0",
+              "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+              "size_hw": [
+                530,
+                730
+              ],
+              "true_pixels": 19531
+            },
+            "mask_area_pixels": 19531,
+            "raw_detection_index": 3,
+            "retained_for_lane_2": true,
+            "retained_parent_instance_id": "parent:003"
+          }
+        ],
+        "lane_1_children_authorize": false,
+        "raw_instance_count": 4,
+        "retained_parent_instance_ids_in_crop_order": [
+          "parent:000",
+          "parent:001",
+          "parent:002",
+          "parent:003"
+        ]
+      },
+      "lane_2_parent_crops": [
+        {
+          "counts_by_class_id": {
+            "architectural_frame": 0,
+            "architectural_leaf": 0,
+            "cabinet_door": 0,
+            "closet_door": 0,
+            "doorless_opening": 0,
+            "hinge": 0,
+            "operation_part": 0,
+            "refrigerator_door": 1
+          },
+          "crop_box_xyxy_half_open": [
+            640,
+            0,
+            730,
+            252
+          ],
+          "crop_size_wh": [
+            90,
+            252
+          ],
+          "inference_seconds": 0.011076199996750802,
+          "raw_instance_count": 1,
+          "retained_child_instances": [],
+          "rgb_to_contiguous_bgr": true,
+          "source_parent_class_id": "closet_door",
+          "source_parent_instance_id": "parent:000"
+        },
+        {
+          "counts_by_class_id": {
+            "architectural_frame": 0,
+            "architectural_leaf": 0,
+            "cabinet_door": 0,
+            "closet_door": 0,
+            "doorless_opening": 0,
+            "hinge": 0,
+            "operation_part": 0,
+            "refrigerator_door": 1
+          },
+          "crop_box_xyxy_half_open": [
+            640,
+            0,
+            730,
+            252
+          ],
+          "crop_size_wh": [
+            90,
+            252
+          ],
+          "inference_seconds": 0.013926399988122284,
+          "raw_instance_count": 1,
+          "retained_child_instances": [],
+          "rgb_to_contiguous_bgr": true,
+          "source_parent_class_id": "doorless_opening",
+          "source_parent_instance_id": "parent:001"
+        },
+        {
+          "counts_by_class_id": {
+            "architectural_frame": 0,
+            "architectural_leaf": 0,
+            "cabinet_door": 0,
+            "closet_door": 0,
+            "doorless_opening": 0,
+            "hinge": 0,
+            "operation_part": 0,
+            "refrigerator_door": 0
+          },
+          "crop_box_xyxy_half_open": [
+            450,
+            0,
+            601,
+            198
+          ],
+          "crop_size_wh": [
+            151,
+            198
+          ],
+          "inference_seconds": 0.01210769999306649,
+          "raw_instance_count": 0,
+          "retained_child_instances": [],
+          "rgb_to_contiguous_bgr": true,
+          "source_parent_class_id": "doorless_opening",
+          "source_parent_instance_id": "parent:002"
+        },
+        {
+          "counts_by_class_id": {
+            "architectural_frame": 0,
+            "architectural_leaf": 0,
+            "cabinet_door": 0,
+            "closet_door": 0,
+            "doorless_opening": 0,
+            "hinge": 0,
+            "operation_part": 0,
+            "refrigerator_door": 0
+          },
+          "crop_box_xyxy_half_open": [
+            262,
+            0,
+            361,
+            225
+          ],
+          "crop_size_wh": [
+            99,
+            225
+          ],
+          "inference_seconds": 0.012945499998750165,
+          "raw_instance_count": 0,
+          "retained_child_instances": [],
+          "rgb_to_contiguous_bgr": true,
+          "source_parent_class_id": "doorless_opening",
+          "source_parent_instance_id": "parent:003"
+        }
+      ],
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "supporting_object_names": [
+          "door x4",
+          "doorhandle x4",
+          "doorwindow x3"
+        ]
+      },
+      "parent_rescaled_pixel_part_topology": false,
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_OPERATION_PART",
+      "sensor_source_bucket": "kv2/kinect2data",
+      "source_image_size": [
+        730,
+        530
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms a foreground architectural door occupying most of the frame with a clearly visible round knob.",
+      "canonical_source_path": "SUNRGBD/xtion/sun3ddata/home_ac/home_ac_scan2_2012_aug_22/0004595-000985940979",
+      "capture_sequence_id": "SUNRGBD/xtion/sun3ddata/home_ac/home_ac_scan2_2012_aug_22",
+      "child_parent_assignments": [],
+      "files": {
+        "depth": {
+          "bytes": 92243,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\home_ac\\home_ac_scan2_2012_aug_22\\0004595-000985940979\\depth\\0004595-000985940979.png",
+          "sha256": "e5563d0c33efc4f1491d8415f5a9af9acc8d86e6c30be7e285ee238543a9df6e"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\home_ac\\home_ac_scan2_2012_aug_22\\0004595-000985940979\\intrinsics.txt",
+          "sha256": "d82ccf3d83460dca86a438dec88899791c7eef82ea33c9a66e29395ef1501937"
+        },
+        "polygon": {
+          "bytes": 2376,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\home_ac\\home_ac_scan2_2012_aug_22\\0004595-000985940979\\annotation2Dfinal\\index.json",
+          "sha256": "aa8fbb8b2bce91f1b271ff9b893fa0df03459266966e31492c101b1963034027"
+        },
+        "rgb": {
+          "bytes": 22101,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\home_ac\\home_ac_scan2_2012_aug_22\\0004595-000985940979\\image\\0004595-000985940979.jpg",
+          "sha256": "c7a1b444326f7c8ba90a447c751123bb0bc523048fc9cbd7907e421defae9719"
+        },
+        "scene_metadata": {
+          "bytes": 3,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\home_ac\\home_ac_scan2_2012_aug_22\\0004595-000985940979\\scene.txt",
+          "sha256": "c6e5e46c59267114f91d64df0e069b0dae176f9a134656820bba1e6164318980"
+        }
+      },
+      "frame_id": "0004595-000985940979",
+      "index": 3,
+      "lane_1_full_frame": {
+        "architectural_frame_is_diagnostic_only": true,
+        "counts_by_class_id": {
+          "architectural_frame": 0,
+          "architectural_leaf": 0,
+          "cabinet_door": 0,
+          "closet_door": 0,
+          "doorless_opening": 0,
+          "hinge": 0,
+          "operation_part": 0,
+          "refrigerator_door": 0
+        },
+        "inference_seconds": 0.014025699987541884,
+        "instances": [],
+        "lane_1_children_authorize": false,
+        "raw_instance_count": 0,
+        "retained_parent_instance_ids_in_crop_order": []
+      },
+      "lane_2_parent_crops": [],
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "supporting_object_names": [
+          "door x2",
+          "doorlock",
+          "doorknob",
+          "doorframe"
+        ]
+      },
+      "parent_rescaled_pixel_part_topology": false,
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_OPERATION_PART",
+      "sensor_source_bucket": "xtion/sun3ddata",
+      "source_image_size": [
+        591,
+        441
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms a large unobstructed architectural door leaf at right with a clearly visible round knob.",
+      "canonical_source_path": "SUNRGBD/xtion/sun3ddata/mit_dorm_mcc_wflr7/dorm_mcc_wflr7_oct_31_2012_scan1_erika/0001951-000084637884",
+      "capture_sequence_id": "SUNRGBD/xtion/sun3ddata/mit_dorm_mcc_wflr7/dorm_mcc_wflr7_oct_31_2012_scan1_erika",
+      "child_parent_assignments": [],
+      "files": {
+        "depth": {
+          "bytes": 98893,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\mit_dorm_mcc_wflr7\\dorm_mcc_wflr7_oct_31_2012_scan1_erika\\0001951-000084637884\\depth\\0001949-000084624418.png",
+          "sha256": "e89f20ffd7dd9021d351f8ca569733affa0b2c05f64b97f9cec85d139ccb7c09"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\mit_dorm_mcc_wflr7\\dorm_mcc_wflr7_oct_31_2012_scan1_erika\\0001951-000084637884\\intrinsics.txt",
+          "sha256": "0e11a8aee9c9a74a1b3317476bf72a216fd88266f4e692baa71f90fdb2360963"
+        },
+        "polygon": {
+          "bytes": 2203,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\mit_dorm_mcc_wflr7\\dorm_mcc_wflr7_oct_31_2012_scan1_erika\\0001951-000084637884\\annotation2Dfinal\\index.json",
+          "sha256": "5a4ad949e42949c09e4fba0e0d76b73a3e4ba2cf555a4909ddb8899b383ef816"
+        },
+        "rgb": {
+          "bytes": 21235,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\mit_dorm_mcc_wflr7\\dorm_mcc_wflr7_oct_31_2012_scan1_erika\\0001951-000084637884\\image\\0001951-000084637884.jpg",
+          "sha256": "0b2c17db43173aa1c92434dddcbe401396cab75de4a52bce388e77de3e3424a8"
+        },
+        "scene_metadata": {
+          "bytes": 8,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\mit_dorm_mcc_wflr7\\dorm_mcc_wflr7_oct_31_2012_scan1_erika\\0001951-000084637884\\scene.txt",
+          "sha256": "fd09da605e5804b35ee408d27c1bed7c7932a1af861948e042283615be0bd3d0"
+        }
+      },
+      "frame_id": "0001951-000084637884",
+      "index": 4,
+      "lane_1_full_frame": {
+        "architectural_frame_is_diagnostic_only": true,
+        "counts_by_class_id": {
+          "architectural_frame": 0,
+          "architectural_leaf": 0,
+          "cabinet_door": 0,
+          "closet_door": 0,
+          "doorless_opening": 0,
+          "hinge": 0,
+          "operation_part": 0,
+          "refrigerator_door": 0
+        },
+        "inference_seconds": 0.016500300000188872,
+        "instances": [],
+        "lane_1_children_authorize": false,
+        "raw_instance_count": 0,
+        "retained_parent_instance_ids_in_crop_order": []
+      },
+      "lane_2_parent_crops": [],
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "supporting_object_names": [
+          "door x2",
+          "knob x2",
+          "doorframe"
+        ]
+      },
+      "parent_rescaled_pixel_part_topology": false,
+      "role": "ARCHITECTURAL_DOOR_WITH_VISIBLE_OPERATION_PART",
+      "sensor_source_bucket": "xtion/sun3ddata",
+      "source_image_size": [
+        591,
+        441
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms two foreground cupboard doors with clear metal pulls and a lock, and no architectural door.",
+      "canonical_source_path": "SUNRGBD/realsense/sa/2014_10_23-15_46_56-1311000073",
+      "capture_sequence_id": "SUNRGBD/realsense/sa/2014_10_23-15_46_56-1311000073",
+      "child_parent_assignments": [],
+      "files": {
+        "depth": {
+          "bytes": 241083,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\realsense\\sa\\2014_10_23-15_46_56-1311000073\\depth\\0000063.png",
+          "sha256": "b328add269100b990df33e0acc529ef8f5084d8bb8da3cbf52e78086296d08fe"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\realsense\\sa\\2014_10_23-15_46_56-1311000073\\intrinsics.txt",
+          "sha256": "fc925577bc6e32fe31b67e1134a051ada71ef847e6c6bc2648cb909217b6caa7"
+        },
+        "polygon": {
+          "bytes": 8829,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\realsense\\sa\\2014_10_23-15_46_56-1311000073\\annotation2Dfinal\\index.json",
+          "sha256": "32bc30fcce39459f83c53f9721bb82d270229787c17f4f148ad83b545f0d0aef"
+        },
+        "rgb": {
+          "bytes": 39084,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\realsense\\sa\\2014_10_23-15_46_56-1311000073\\image\\0000063.jpg",
+          "sha256": "04dca7ec09e03f83125f213094ad6510c8709657cddb549898a9b607ddf9bd6e"
+        },
+        "scene_metadata": {
+          "bytes": 7,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\realsense\\sa\\2014_10_23-15_46_56-1311000073\\scene.txt",
+          "sha256": "b718f1354f7247312eca086d9a024afe5fa717ddea5adeddd6f12bcf945b2e8c"
+        }
+      },
+      "frame_id": "2014_10_23-15_46_56-1311000073",
+      "index": 5,
+      "lane_1_full_frame": {
+        "architectural_frame_is_diagnostic_only": true,
+        "counts_by_class_id": {
+          "architectural_frame": 0,
+          "architectural_leaf": 0,
+          "cabinet_door": 0,
+          "closet_door": 0,
+          "doorless_opening": 0,
+          "hinge": 0,
+          "operation_part": 0,
+          "refrigerator_door": 0
+        },
+        "inference_seconds": 0.018051499995635822,
+        "instances": [],
+        "lane_1_children_authorize": false,
+        "raw_instance_count": 0,
+        "retained_parent_instance_ids_in_crop_order": []
+      },
+      "lane_2_parent_crops": [],
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": [
+          "Cupboard",
+          "Handle x2",
+          "Lock"
+        ]
+      },
+      "parent_rescaled_pixel_part_topology": false,
+      "role": "HANDLED_FURNITURE_DOOR_NEGATIVE",
+      "sensor_source_bucket": "realsense/sa",
+      "source_image_size": [
+        681,
+        531
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms large cupboard and cabinet doors with multiple clear metal pulls, and no architectural door.",
+      "canonical_source_path": "SUNRGBD/realsense/shr/2014_12_18-15_59_41-1311000073",
+      "capture_sequence_id": "SUNRGBD/realsense/shr/2014_12_18-15_59_41-1311000073",
+      "child_parent_assignments": [],
+      "files": {
+        "depth": {
+          "bytes": 171048,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\realsense\\shr\\2014_12_18-15_59_41-1311000073\\depth\\0000063.png",
+          "sha256": "d357d63ddef79c36d5a8d93080e16abfdab69d44bc07121c724cddfde055f726"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\realsense\\shr\\2014_12_18-15_59_41-1311000073\\intrinsics.txt",
+          "sha256": "fc925577bc6e32fe31b67e1134a051ada71ef847e6c6bc2648cb909217b6caa7"
+        },
+        "polygon": {
+          "bytes": 7219,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\realsense\\shr\\2014_12_18-15_59_41-1311000073\\annotation2Dfinal\\index.json",
+          "sha256": "5decb7f3c5f735f6c67fcff35385b9a5207ec7797ec16f47ddf49a148396057e"
+        },
+        "rgb": {
+          "bytes": 34954,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\realsense\\shr\\2014_12_18-15_59_41-1311000073\\image\\0000063.jpg",
+          "sha256": "6f1bcd4f662db5a9a77e38f6d65411d362ca9ed1b2c8cd2f721afefc2e11fa67"
+        },
+        "scene_metadata": {
+          "bytes": 9,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\realsense\\shr\\2014_12_18-15_59_41-1311000073\\scene.txt",
+          "sha256": "83d82a74a67aebdecd3846a42bc5235254fb77f8da9a189bf49c321f450dcccd"
+        }
+      },
+      "frame_id": "2014_12_18-15_59_41-1311000073",
+      "index": 6,
+      "lane_1_full_frame": {
+        "architectural_frame_is_diagnostic_only": true,
+        "counts_by_class_id": {
+          "architectural_frame": 0,
+          "architectural_leaf": 0,
+          "cabinet_door": 1,
+          "closet_door": 0,
+          "doorless_opening": 0,
+          "hinge": 0,
+          "operation_part": 0,
+          "refrigerator_door": 0
+        },
+        "inference_seconds": 0.015119599993340671,
+        "instances": [
+          {
+            "box_xyxy": [
+              45.28024673461914,
+              180.78973388671875,
+              284.5124816894531,
+              454.1103820800781
+            ],
+            "class_id": "cabinet_door",
+            "class_index": 4,
+            "class_text": "cabinet door",
+            "confidence": 0.2861965298652649,
+            "mask": {
+              "binary_uint8_sha256": "035a1309519650df3c89182e257eeec9161e0837b77b59f1267485f27c79de50",
+              "encoding": "C_ORDER_UINT8_BINARY_RECEIPT_ONLY",
+              "size_hw": [
+                531,
+                681
+              ],
+              "true_pixels": 39333
+            },
+            "mask_area_pixels": 39333,
+            "raw_detection_index": 0,
+            "retained_for_lane_2": true,
+            "retained_parent_instance_id": "parent:000"
+          }
+        ],
+        "lane_1_children_authorize": false,
+        "raw_instance_count": 1,
+        "retained_parent_instance_ids_in_crop_order": [
+          "parent:000"
+        ]
+      },
+      "lane_2_parent_crops": [
+        {
+          "counts_by_class_id": {
+            "architectural_frame": 0,
+            "architectural_leaf": 0,
+            "cabinet_door": 0,
+            "closet_door": 0,
+            "doorless_opening": 0,
+            "hinge": 0,
+            "operation_part": 0,
+            "refrigerator_door": 0
+          },
+          "crop_box_xyxy_half_open": [
+            45,
+            180,
+            285,
+            455
+          ],
+          "crop_size_wh": [
+            240,
+            275
+          ],
+          "inference_seconds": 0.012239000003319234,
+          "raw_instance_count": 0,
+          "retained_child_instances": [],
+          "rgb_to_contiguous_bgr": true,
+          "source_parent_class_id": "cabinet_door",
+          "source_parent_instance_id": "parent:000"
+        }
+      ],
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": [
+          "cupboard x2",
+          "Cupboard",
+          "Handle x3"
+        ]
+      },
+      "parent_rescaled_pixel_part_topology": false,
+      "role": "HANDLED_FURNITURE_DOOR_NEGATIVE",
+      "sensor_source_bucket": "realsense/shr",
+      "source_image_size": [
+        681,
+        531
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms a full-height opening at left into an adjacent corridor with no spanning door leaf or operation part.",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/001760_2014-06-26_19-54-20_260595134347_rgbf000092-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/001760_2014-06-26_19-54-20_260595134347",
+      "child_parent_assignments": [],
+      "files": {
+        "depth": {
+          "bytes": 262641,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\001760_2014-06-26_19-54-20_260595134347_rgbf000092-resize\\depth\\0000092.png",
+          "sha256": "822183a58c3642d548afea833aa0c984fb97be44889ba14c8e05269ddc40dfb4"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\001760_2014-06-26_19-54-20_260595134347_rgbf000092-resize\\intrinsics.txt",
+          "sha256": "22c236c26f5e1c8cda15b4c7de7f78720c857198583985843e2c8ef9a9c6d6b4"
+        },
+        "polygon": {
+          "bytes": 6263,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\001760_2014-06-26_19-54-20_260595134347_rgbf000092-resize\\annotation2Dfinal\\index.json",
+          "sha256": "ba44f802112cae648bab761d5e77ef741763b535831b571f8f3619a7448ec2ce"
+        },
+        "rgb": {
+          "bytes": 49768,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\001760_2014-06-26_19-54-20_260595134347_rgbf000092-resize\\image\\0000092.jpg",
+          "sha256": "0e0885124423b6ce497ae76afd34765e756c1be97b41389a955637b5c194ef25"
+        },
+        "scene_metadata": {
+          "bytes": 15,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\kv2\\kinect2data\\001760_2014-06-26_19-54-20_260595134347_rgbf000092-resize\\scene.txt",
+          "sha256": "07533f7779824c84698ba18b61340f5c574d5930f4767c4cd8de94646d10503e"
+        }
+      },
+      "frame_id": "rgbf000092-resize",
+      "index": 7,
+      "lane_1_full_frame": {
+        "architectural_frame_is_diagnostic_only": true,
+        "counts_by_class_id": {
+          "architectural_frame": 0,
+          "architectural_leaf": 0,
+          "cabinet_door": 0,
+          "closet_door": 0,
+          "doorless_opening": 0,
+          "hinge": 0,
+          "operation_part": 0,
+          "refrigerator_door": 0
+        },
+        "inference_seconds": 0.016449599992483854,
+        "instances": [],
+        "lane_1_children_authorize": false,
+        "raw_instance_count": 0,
+        "retained_parent_instance_ids_in_crop_order": []
+      },
+      "lane_2_parent_crops": [],
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": [
+          "HallwayWall",
+          "HallwayCeiling",
+          "PartialDoorway"
+        ]
+      },
+      "parent_rescaled_pixel_part_topology": false,
+      "role": "LARGE_DOORLESS_OPENING_OOD",
+      "sensor_source_bucket": "kv2/kinect2data",
+      "source_image_size": [
+        730,
+        530
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms a large framed opening at center connecting two rooms with no spanning door leaf or operation part.",
+      "canonical_source_path": "SUNRGBD/xtion/sun3ddata/home_bksh/home_bksh_2012_oct_19_scan1/0007769-000332099605",
+      "capture_sequence_id": "SUNRGBD/xtion/sun3ddata/home_bksh/home_bksh_2012_oct_19_scan1",
+      "child_parent_assignments": [],
+      "files": {
+        "depth": {
+          "bytes": 131582,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\home_bksh\\home_bksh_2012_oct_19_scan1\\0007769-000332099605\\depth\\0007779-000332090776.png",
+          "sha256": "220ff3415ea682d0bc17520199f50d19d99e767961e8625b9044944bfd64d6de"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\home_bksh\\home_bksh_2012_oct_19_scan1\\0007769-000332099605\\intrinsics.txt",
+          "sha256": "0e11a8aee9c9a74a1b3317476bf72a216fd88266f4e692baa71f90fdb2360963"
+        },
+        "polygon": {
+          "bytes": 2563,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\home_bksh\\home_bksh_2012_oct_19_scan1\\0007769-000332099605\\annotation2Dfinal\\index.json",
+          "sha256": "3e800c2259a99833944bbd2b3c6baee54c915c43cccd6488c34fffa07a14c694"
+        },
+        "rgb": {
+          "bytes": 35197,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\home_bksh\\home_bksh_2012_oct_19_scan1\\0007769-000332099605\\image\\0007769-000332099605.jpg",
+          "sha256": "6d2037d9406315317a720bfb820d08e649fe5f13864644aef2d29241a2314ba2"
+        },
+        "scene_metadata": {
+          "bytes": 8,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1\\SUNRGBD\\xtion\\sun3ddata\\home_bksh\\home_bksh_2012_oct_19_scan1\\0007769-000332099605\\scene.txt",
+          "sha256": "fd09da605e5804b35ee408d27c1bed7c7932a1af861948e042283615be0bd3d0"
+        }
+      },
+      "frame_id": "0007769-000332099605",
+      "index": 8,
+      "lane_1_full_frame": {
+        "architectural_frame_is_diagnostic_only": true,
+        "counts_by_class_id": {
+          "architectural_frame": 0,
+          "architectural_leaf": 0,
+          "cabinet_door": 0,
+          "closet_door": 0,
+          "doorless_opening": 0,
+          "hinge": 0,
+          "operation_part": 0,
+          "refrigerator_door": 0
+        },
+        "inference_seconds": 0.016114999976707622,
+        "instances": [],
+        "lane_1_children_authorize": false,
+        "raw_instance_count": 0,
+        "retained_parent_instance_ids_in_crop_order": []
+      },
+      "lane_2_parent_crops": [],
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": [
+          "doorframe"
+        ]
+      },
+      "parent_rescaled_pixel_part_topology": false,
+      "role": "LARGE_DOORLESS_OPENING_OOD",
+      "sensor_source_bucket": "xtion/sun3ddata",
+      "source_image_size": [
+        591,
+        441
+      ]
+    }
+  ],
+  "gate": {
+    "balanced_accuracy_is_one": false,
+    "decision": "L10_PB14_YOLOE_MULTISCALE_PART_TOPOLOGY_DEVELOPMENT_GATE_NOT_MET",
+    "development_gate_met": false,
+    "four_of_four_architectural_doors_authorized": false,
+    "zero_of_two_handled_furniture_controls_authorized": true,
+    "zero_of_two_large_openings_authorized": true
+  },
+  "inference": {
+    "agnostic_nms": false,
+    "augment": false,
+    "batch": 1,
+    "class_prompts_in_order": [
+      {
+        "class_id": "architectural_leaf",
+        "class_index": 0,
+        "role": "PARENT",
+        "text": "architectural door leaf"
+      },
+      {
+        "class_id": "architectural_frame",
+        "class_index": 1,
+        "role": "DIAGNOSTIC_ONLY",
+        "text": "door frame"
+      },
+      {
+        "class_id": "operation_part",
+        "class_index": 2,
+        "role": "CHILD",
+        "text": "door handle"
+      },
+      {
+        "class_id": "hinge",
+        "class_index": 3,
+        "role": "CHILD",
+        "text": "door hinge"
+      },
+      {
+        "class_id": "cabinet_door",
+        "class_index": 4,
+        "role": "COMPETING_PARENT",
+        "text": "cabinet door"
+      },
+      {
+        "class_id": "closet_door",
+        "class_index": 5,
+        "role": "COMPETING_PARENT",
+        "text": "closet door"
+      },
+      {
+        "class_id": "refrigerator_door",
+        "class_index": 6,
+        "role": "COMPETING_PARENT",
+        "text": "refrigerator door"
+      },
+      {
+        "class_id": "doorless_opening",
+        "class_index": 7,
+        "role": "COMPETING_PARENT",
+        "text": "doorless wall opening"
+      }
+    ],
+    "conf": 0.25,
+    "device": 0,
+    "half": false,
+    "imgsz": 640,
+    "iou": 0.7,
+    "max_det": 300,
+    "maximum_parent_crops_per_frame": 12,
+    "rect": false,
+    "retina_masks": true,
+    "save": false
+  },
+  "inputs": {
+    "cohort": {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\named_poi_yoloe_multiscale_part_topology_development_cohort_v1.json",
+      "schema": "l10-named-poi-yoloe-multiscale-part-topology-cohort-v1",
+      "sha256": "aded42ce06863c9fa9de6fb164dde739e4ec890f505a92c3019a10669d224c90",
+      "status": "FROZEN_BEFORE_MODEL_OUTPUT"
+    },
+    "extracted_root": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\sunrgbd-pb14-door-part-audit-pool-v1",
+    "protocol": {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\named_poi_yoloe_multiscale_part_topology_protocol_v1.json",
+      "schema": "l10-named-poi-yoloe-multiscale-part-topology-protocol-v1",
+      "sha256": "d79d2c09fd47618aad6b8d79d99431613646e7d3e53dea723c991d745b80bf20"
+    },
+    "text_encoder": {
+      "bytes": 253794476,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\mobileclip2_b.ts",
+      "sha256": "35d7f213e4d75f38514e4656ad3cb91158bd33e3805d8ac349f23b186f66982f"
+    },
+    "weights": {
+      "bytes": 11710443,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\models\\yoloe-26n-seg.pt",
+      "sha256": "1741c1f8da3cea47e2c01829c334a50dc0b9bbd05e685b90a3ce84fae32c8c1b"
+    }
+  },
+  "metrics": {
+    "architectural_door_positive_recall": 0.0,
+    "authorized_frames_by_role": {
+      "ARCHITECTURAL_DOOR_WITH_VISIBLE_OPERATION_PART": 0,
+      "HANDLED_FURNITURE_DOOR_NEGATIVE": 0,
+      "LARGE_DOORLESS_OPENING_OOD": 0
+    },
+    "balanced_accuracy": 0.5,
+    "control_false_positive_rate": 0.0,
+    "frames": 8,
+    "lane_1_instances_by_class_id": {
+      "architectural_frame": 0,
+      "architectural_leaf": 0,
+      "cabinet_door": 1,
+      "closet_door": 2,
+      "doorless_opening": 6,
+      "hinge": 0,
+      "operation_part": 0,
+      "refrigerator_door": 0
+    },
+    "lane_1_model_calls": 8,
+    "lane_2_instances_by_class_id": {
+      "architectural_frame": 0,
+      "architectural_leaf": 0,
+      "cabinet_door": 0,
+      "closet_door": 0,
+      "doorless_opening": 3,
+      "hinge": 0,
+      "operation_part": 0,
+      "refrigerator_door": 2
+    },
+    "lane_2_model_calls": 9,
+    "retained_parent_crops": 9,
+    "total_model_calls": 17,
+    "true_negative_rate": 1.0
+  },
+  "runtime": {
+    "YOLO_AUTOINSTALL": "false",
+    "actual_device_capability": [
+      12,
+      0
+    ],
+    "actual_device_index": 0,
+    "actual_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "clip": "1.0",
+    "cuda_runtime": "13.0",
+    "device_total_memory_bytes": 8546484224,
+    "elapsed_seconds": 9.604887499997858,
+    "loaded_model_task": "segment",
+    "loaded_model_type": "YOLOESegModel",
+    "loaded_parameter_device": "cuda:0",
+    "loaded_parameter_dtype": "torch.float32",
+    "loaded_text_model": "mobileclip2:b",
+    "numpy": "2.4.4",
+    "peak_allocated_memory_bytes": 104960512,
+    "pillow": "12.2.0",
+    "python": "3.11.9",
+    "python_executable": "E:\\codex-tools\\tools\\venvs\\blindassist-torch-gpu\\Scripts\\python.exe",
+    "python_executable_sha256": "21bb438c0d4a6f1f164b9a646f6ee000340185e5871180aec06db8d3f07c0082",
+    "torch": "2.11.0+cu130",
+    "torchvision": "0.26.0+cu130",
+    "ultralytics": "8.4.102"
+  },
+  "schema": "l10-named-poi-yoloe-multiscale-part-topology-development-result-v1",
+  "topology": {
+    "architectural_frame_is_diagnostic_only": true,
+    "assignment_order": "MIN_PARENT_MASK_AREA_THEN_COMPETITOR_CONSERVATIVE_CLASS_PRIORITY_THEN_STABLE_PARENT_INDEX",
+    "authorization": "AT_LEAST_ONE_LANE2_CHILD_ASSIGNED_TO_ARCHITECTURAL_LEAF",
+    "child_class_ids": [
+      "operation_part",
+      "hinge"
+    ],
+    "lane_1_children_authorize": false,
+    "parent_class_ids": [
+      "architectural_leaf",
+      "cabinet_door",
+      "closet_door",
+      "refrigerator_door",
+      "doorless_opening"
+    ],
+    "representative": "ROUND_HALF_UP_MEAN_INTEGER_TRUE_MAPPED_CHILD_MASK_PIXEL_INDICES"
+  }
+}

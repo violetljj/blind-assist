@@ -1,0 +1,102 @@
+{
+  "schema": "l10-named-poi-specialized-door-ontology-development-protocol-v1",
+  "created_at": "2026-08-29",
+  "mode": "NEW_TASK_SPECIALIZED_SOURCE_DEVELOPMENT_ON_CONSUMED_PB7_COHORT",
+  "question": "Can an external SAM3-distilled doorway/door instance source retain door-level portal boxes while abstaining on source-proved no-portal views and large doorless station or market mouths?",
+  "representation": {
+    "name": "Specialized Door Ontology Proposer",
+    "short_name": "SDOP",
+    "single_change": "Replace generic ADE20K door pixels and direct VLM typing with a task-specialized YOLO26n instance source trained to separate doorway, door, people, window, and internal mirror classes.",
+    "why_different": "The new evidence is an externally trained, portal-specific instance ontology distilled from SAM3 across ADE20K, DoorDetect, Trans10K-v2, COCO-person, and walkthrough data. No prior L10 threshold, component, prompt, candidate geometry, or appearance matcher is reused.",
+    "authority_separation": "The source never receives the requested entity name or OCR. It proposes only generic class-0 doorway and class-1 door boxes; frozen SCIL separately attaches source identity."
+  },
+  "sources": {
+    "source_spec": {
+      "path": "research/active/l10-r0/named_poi_ade20k_portal_fresh_source_v1.json",
+      "sha256": "060c014076e99c58c27e5f8041bfdbf43067b13e41501dfefb144e0cab88b8c1"
+    },
+    "source_manifest": {
+      "path": "artifacts.local/knowledge/named-poi-ade20k-portal-fresh-v1/source_manifest.json",
+      "sha256": "6d8133c166902bbc1594fd71dc311aeef61a72d892ca0e3cfe1b56297c47771f"
+    },
+    "source_audit": {
+      "path": "research/active/l10-r0/named_poi_ade20k_portal_fresh_source_audit_v1.json",
+      "sha256": "1cb2d336a0400e020593422557be32ca4ec08ca7768d91d26654f9e88bba00fb"
+    }
+  },
+  "frozen_files": {
+    "pb7_formal_result": {
+      "path": "artifacts.local/evidence/l10-r0/named-poi-ade20k-portal-fresh-v1/result.json",
+      "sha256": "425497ff53c8355ea25335146f19f932e805ea49a220d92fcdf635aac52ec272"
+    },
+    "pb8_durable_result": {
+      "path": "research/active/l10-r0/named_poi_typed_vlm_portal_development_result_v1.json",
+      "sha256": "ecf57947f280ed0cfa9b97cfbf917f6bbe580bfae099a6d1f308c51e06d811d5"
+    }
+  },
+  "model": {
+    "model_id": "perseusdg/doorway-door-people-window-seg",
+    "revision": "fc5fb4cc8ccc164d8c8618fc28417ebe98e638e2",
+    "license": "AGPL-3.0; internal research only pending any product-integration license review",
+    "weights": {
+      "path": "artifacts.local/models/perseusdg-doorway-door-people-window-seg-fc5fb4c/doorway_seg_yolo26n.pt",
+      "sha256": "4c9c09fd97d151d5e4bb7345b1409017f67d3d8803279334cbabb830dc2a0ce2"
+    },
+    "postprocessor": {
+      "path": "artifacts.local/models/perseusdg-doorway-door-people-window-seg-fc5fb4c/mirror_suppress.py",
+      "sha256": "09138b60eea6810cdfe10ae3596f34b20b50e72521727d12e9ae64a40d8adf89"
+    },
+    "model_card": {
+      "path": "artifacts.local/models/perseusdg-doorway-door-people-window-seg-fc5fb4c/README.md",
+      "sha256": "d2881c70b0bebef5e54f993eb7c3dcdb8c17ab35f4405aa582786f18feb63296"
+    },
+    "ontology": {
+      "0": "doorway",
+      "1": "door",
+      "2": "people",
+      "3": "window",
+      "4": "mirror-internal"
+    },
+    "training_boundary": "The public card lists training families but not a complete image inventory. PB7 is algorithmically unseen by this evaluator, but training-source disjointness is not claimed."
+  },
+  "author_contract": {
+    "image_size": 640,
+    "predict_confidence": 0.1,
+    "output_confidence": 0.35,
+    "mirror_minimum_confidence": 0.1,
+    "mirror_containment_suppression": 0.5,
+    "door_doorway_iou_deduplication": 0.4,
+    "door_doorway_containment_deduplication": 0.6,
+    "candidate_classes": [0, 1],
+    "candidate_ranking": "After the unmodified author postprocessor, sort class-0/1 boxes by descending confidence, then class id and box coordinates; retain Top-3.",
+    "defaults": "All other inference and NMS behavior is frozen to Ultralytics 8.4.102 defaults. No crop, TTA, area/scale filter, class change, window veto, threshold change, or model comparison."
+  },
+  "evaluator": {
+    "path": "research/active/l10-r0/named_poi_specialized_door_ontology_development_eval.py",
+    "sha256": "01b06821f81a5f2ad613f2404296095c91459cd7a83ddd1f98f02bf0b8c6ce73"
+  },
+  "development_cohort": {
+    "authority": "The eight PB7 images are consumed Development data after BD-DCF and TVPG failed.",
+    "door_level_positives": 4,
+    "no_portal_negatives": 2,
+    "large_open_entrance_ood": 2,
+    "identity": "Reuse the sealed PB7 SCIL result: 8/8 correct proofs, zero wrong proofs, zero UNKNOWN. OCR is not rerun.",
+    "ood_semantics": "Absence of class-0/1 on the two large open mouths is only safe abstention. The model has no native OOD state and cannot earn an OOD-classification claim.",
+    "fresh_confirmation_authority": false
+  },
+  "runtime": {
+    "ultralytics_version": "8.4.102",
+    "backend": "CUDA-only with fail-closed actual-device verification."
+  },
+  "development_gate": {
+    "minimum_positive_presence": 3,
+    "minimum_joined_top3_truth_retention": 3,
+    "require_zero_no_portal_authorization": true,
+    "require_zero_large_open_mouth_authorization": true,
+    "require_zero_wrong_request_authorization": true,
+    "require_no_commit_or_navigation_state": true
+  },
+  "stop_rule": "Run exactly once. Do not change author confidence thresholds, postprocessor, image size, class set, area or scale rules, NMS defaults, candidate ranking, Top-3, model, role truth, human boxes, or gate after output. Any failure closes this direct RGB door-ontology source rather than triggering a detector or threshold sweep.",
+  "next_step": "If the gate passes, freeze exact SDOP and run one new entity-disjoint same-frame SCIL plus SDOP confirmation. If it fails, move to a different information modality such as relative-depth aperture topology rather than tune this detector.",
+  "claim_boundary": "Development-only evidence on consumed PB7. Doorway or door detections are coarse current-frame proposals only: they do not establish a native NONE/OOD classifier, training-source disjointness, physical ownership, public access, opening state, traversability, active-view causality, temporal persistence, directional guidance, arrival, product benefit, user benefit, or safety."
+}

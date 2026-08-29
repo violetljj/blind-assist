@@ -1,0 +1,74 @@
+{
+  "schema": "l10-named-poi-ade20k-portal-development-protocol-v1",
+  "created_at": "2026-08-29",
+  "mode": "NEW_REPRESENTATION_DEVELOPMENT_ON_CONSUMED_PB6_COHORT",
+  "question": "After SPPF failed under public-facade domain shift, can a broad-scene ADE20K semantic model directly produce door-component portal boxes with high positive retention and zero no-portal presence?",
+  "representation": {
+    "name": "Broad-Domain Door Component Field",
+    "short_name": "BD-DCF",
+    "single_change": "Replace the synthetic two-class SPPF model and the separate geometry proposer with raw connected components of ADE20K door and screen-door semantic pixels.",
+    "why_this_source": "ADE20K spans indoor and outdoor scene semantics and explicitly distinguishes door, screen door, glass, signboard, wall, road, and building. This directly targets the observed SPPF domain-shift failure instead of changing a matcher threshold.",
+    "accuracy_choice": "Freeze YOLO26x-sem rather than compare model sizes; the objective is first to prove the strongest visible effect."
+  },
+  "sources": {
+    "source_spec": {
+      "path": "research/active/l10-r0/named_poi_semantic_portal_fresh_source_v1.json",
+      "sha256": "06c8d6a7de5af8a36f089516091c59ee7cc03537c02885b073d66792d4f3ad6e"
+    },
+    "source_manifest": {
+      "path": "artifacts.local/knowledge/named-poi-semantic-portal-fresh-v1/source_manifest.json",
+      "sha256": "4307bbb8d4e4f54b97f630f7c16645f043e1d9fe34d8bfdc004c8f5ae52964d6"
+    },
+    "source_audit": {
+      "path": "research/active/l10-r0/named_poi_semantic_portal_fresh_source_audit_v1.json",
+      "sha256": "a5b9bff5361dbde0f69b0711aafe00dd90dabb2666bff94a87d3fc9e3bacfd27"
+    },
+    "pb6_failed_result": {
+      "path": "artifacts.local/evidence/l10-r0/named-poi-semantic-portal-fresh-v1/result.json",
+      "sha256": "246624e3135e63e1865a2184f96c06c5854767c4ba6430a75108795edcf0387e"
+    }
+  },
+  "model": {
+    "path": "artifacts.local/models/yolo26-sem-ade20k/yolo26x-sem-ade20k.pt",
+    "sha256": "aa51833f1aa5dc73b378d7ba99f914ef9fa82e434cb23d7b1705dd24bd33b621",
+    "task": "semantic",
+    "class_ids": {
+      "door": 14,
+      "screen_door": 58
+    },
+    "forbidden_classes": ["glass", "windowpane", "building", "signboard"],
+    "training_role": "Generic ADE20K scene parsing; no PB1-PB7 pixels, identities, or human truth used for training"
+  },
+  "evaluator": {
+    "path": "research/active/l10-r0/named_poi_ade20k_portal_development_eval.py",
+    "sha256": "74c3e426024c5af422949f15990179646f1efbeadf1b99c93ae0ad3e660e8086"
+  },
+  "runtime": {
+    "ultralytics_version": "8.4.102",
+    "image_size": 640,
+    "backend": "CUDA-only after the shared research-l10-r0 doctor verified real tensor execution; fail closed on unavailable CUDA or actual CPU fallback."
+  },
+  "component_rule": {
+    "connectivity": 8,
+    "classes": [14, 58],
+    "minimum_box_bottom_fraction": 0.5,
+    "ranking": "Rank raw union-class components by semantic pixel area and retain Top-3.",
+    "truth_membership": "A component box is a portal-set member when its center lies inside the frozen region and at least half of its own area lies inside the region.",
+    "forbidden_processing": "No morphology, crop, TTA, class sweep, model-size comparison, geometry proposer, OCR input, target identity, or ensemble."
+  },
+  "development_cohort": {
+    "positives": "The four consumed PB6 door-level positives.",
+    "negatives": "The two consumed PB6 identity-bearing views with no entrance pixels.",
+    "ood_challenges": "PMQ and AIRSIDE are recorded but excluded from threshold selection because both visibly contain a real open entrance or door leaves; their presence result is descriptive, not a false-positive label for this semantic source.",
+    "identity_input": "FORBIDDEN",
+    "fresh_confirmation_authority": false
+  },
+  "threshold_selection": "Enumerate only observed Development component-area fractions from the four positives and two no-portal negatives, plus zero and the next value above the maximum. Among thresholds retaining a truth-member component in Top-3 on at least three of four positives and producing zero presence on both no-portal negatives, minimize negative false presence, maximize positive truth retention, then choose the largest threshold.",
+  "development_gate": {
+    "minimum_positive_truth_retained_top3": 3,
+    "maximum_negative_false_presence_frames": 0
+  },
+  "stop_rule": "Run once. Do not change model size, semantic classes, bottom prior, connectivity, component ranking, threshold candidates, source roles, or gate after output. A pass freezes one new source-disjoint confirmation; a failure closes ADE20K door semantics without a class or model sweep.",
+  "next_step": "If the Development gate passes, freeze the selected normalized area threshold and run one new entity-disjoint confirmation joined to unchanged SCIL. If it fails, change the information modality rather than tune this cohort.",
+  "claim_boundary": "Development-only reuse of the consumed PB6 public-image cohort. A pass would show that broad-domain door semantics deserve fresh confirmation, not that a requested entity owns a portal or that the portal is public, open, traversable, actively observed, safe, or reached."
+}

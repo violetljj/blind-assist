@@ -1,0 +1,128 @@
+{
+  "schema": "l10-named-poi-semantic-portal-fresh-protocol-v1",
+  "created_at": "2026-08-29",
+  "mode": "SOURCE_DISJOINT_FRESH_CONFIRMATION",
+  "mechanism": {
+    "name": "Script-Proved Semantic-Gated Portal Lattice",
+    "short_name": "SP-SGPL",
+    "description": "A three-way typed join: frozen same-frame SCIL proves the requested public entity, frozen SPPF independently admits observable door semantics, and the unchanged dual-family geometry proposer supplies only a Top-3 portal set.",
+    "single_structural_change": "Relative to PB5, replace hand-crafted paired-handle authorization with independently trained door-semantic presence. Identity cannot create a portal, semantic presence cannot name an entity, and geometry cannot carry authority without both proofs.",
+    "information_source_change": "The new information is a per-pixel background/door semantic field trained without PB1-PB6 images, not a threshold, seed, backbone, tracker, or appearance-fusion rescue."
+  },
+  "sources": {
+    "source_spec": {
+      "path": "research/active/l10-r0/named_poi_semantic_portal_fresh_source_v1.json",
+      "sha256": "06c8d6a7de5af8a36f089516091c59ee7cc03537c02885b073d66792d4f3ad6e"
+    },
+    "source_manifest": {
+      "path": "artifacts.local/knowledge/named-poi-semantic-portal-fresh-v1/source_manifest.json",
+      "sha256": "4307bbb8d4e4f54b97f630f7c16645f043e1d9fe34d8bfdc004c8f5ae52964d6"
+    },
+    "source_audit": {
+      "path": "research/active/l10-r0/named_poi_semantic_portal_fresh_source_audit_v1.json",
+      "sha256": "a5b9bff5361dbde0f69b0711aafe00dd90dabb2666bff94a87d3fc9e3bacfd27"
+    }
+  },
+  "frozen_files": {
+    "scil_evaluator": {
+      "path": "research/active/l10-r0/named_poi_biscript_eval.py",
+      "sha256": "49a391ee937ddbd23d48c1f2554d3874d8f1242a9458bdf15ef7a31d0e5c9754"
+    },
+    "scil_result": {
+      "path": "research/active/l10-r0/named_poi_biscript_result_v1.json",
+      "sha256": "86c5c43ec395d6e94d90a0ff80a6fdce6cea48b0c4cabbaed6d0c08476dd137c"
+    },
+    "semantic_development_protocol": {
+      "path": "research/active/l10-r0/named_poi_semantic_portal_presence_protocol_v1.json",
+      "sha256": "39725a114a8ada6e09d09fa17d1a11535a7b80e1db9feebdbd4e20520904e2c9"
+    },
+    "semantic_development_result": {
+      "path": "research/active/l10-r0/named_poi_semantic_portal_presence_result_v1.json",
+      "sha256": "aba28f533bb0596390175e7d3cce096763d80c842530d9694ae7d90b07fe7e85"
+    },
+    "semantic_model": {
+      "path": "artifacts.local/models/public-door-semantic-v2/yolo26n_public_door_semantic/weights/best.pt",
+      "sha256": "c01293ae986a14c15aadd3c1f44054fe9a5af97b0aa3c57e418480d2bcbe0f9b"
+    },
+    "portal_proposer": {
+      "path": "research/active/l10-r0/named_poi_portal_lattice.py",
+      "sha256": "2cf6b0d80a5691150f6a70e9a45e2a6136e87480b4e06fa1fa82ea470386ba61"
+    },
+    "portal_proposer_result": {
+      "path": "research/active/l10-r0/named_poi_functional_portal_set_result_v1.json",
+      "sha256": "2fa9a9f87d1d43bc89a2f8b80b6d1339cc0cb504bb83b6c4e957bbc9214a420f"
+    }
+  },
+  "evaluator": {
+    "path": "research/active/l10-r0/named_poi_semantic_portal_fresh_eval.py",
+    "sha256": "c11808b9616e2c5fb1f261f5db1f2679e4b0a5b92fa33a95cd84bd8d56f3f485"
+  },
+  "scil": {
+    "authority": "PB4 Development-selected thresholds are copied exactly and evaluated against the eight frozen candidate profiles as one pack.",
+    "thresholds": {
+      "score": 0.4768178970490568,
+      "margin": 0.034304215834340235
+    },
+    "proof_rule": "The highest SCIL entity must meet both thresholds with no cross-carrier conflict. Only an exact proof for the requested source entity can carry its authority token; UNKNOWN and wrong proofs authorize nothing."
+  },
+  "semantic_presence": {
+    "authority": "SPPF Development selected this normalized component-area threshold once on six prior positives and sixteen no-portal negatives, yielding 4/6 truth presence and 0/16 false presence.",
+    "door_class": 1,
+    "component_area_fraction": 0.000028483072916666667,
+    "rule": "The current frame is semantically admitted when at least one raw eight-connected door-class component among the largest twenty meets the frozen normalized-area threshold. No morphology, crop, TTA, ensemble, or fresh threshold selection."
+  },
+  "portal_set": {
+    "provider": "Unchanged PortalLatticeConfig defaults from the retained functional portal-set result.",
+    "maximum_authorized_candidates": 3,
+    "truth_membership": "A proposal is a human portal-set member when its center is inside the frozen truth region and at least half of its own area lies inside that region.",
+    "execution": "Run the proposer on every frame for outcome-blind diagnostics. Runtime authority is attached to Top-3 only when correct source-request SCIL proof and SPPF presence coexist."
+  },
+  "cohort": {
+    "entities": 8,
+    "door_level_positives": 4,
+    "no_portal_negatives": 2,
+    "large_open_entrance_ood": 2,
+    "prior_route_entity_name_hits": 0,
+    "pre_freeze_model_calls": 0,
+    "wrong_request_proxy": "Every frame is cross-paired with the other seven frozen entity requests. A typed authority token can name only the SCIL-proved entity.",
+    "freshness": "No PB6 OCR, SPPF, or geometry output was observed before exact files, aliases, roles, sizes, hashes, and human portal regions were frozen."
+  },
+  "runtime": {
+    "ultralytics_version": "8.4.102",
+    "semantic_image_size": 640,
+    "semantic_backend": "Freeze the measured Development winner semantic-door-torch-cuda; fail closed on unavailable CUDA or actual CPU fallback.",
+    "ocr_backend": "RapidOCR 3.9.2 with ONNX Runtime CPUExecutionProvider",
+    "ocr_model_root": "artifacts.local/runtime/semantic-anchor-v1/models",
+    "ocr_models": {
+      "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+      "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+      "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+    }
+  },
+  "metrics": [
+    "SCIL correct proof, wrong proof, and UNKNOWN counts",
+    "SPPF presence on positives, no-portal negatives, and OOD",
+    "unchanged geometry Top-3 truth retention",
+    "three-way joined Top-3 truth retention",
+    "no-portal false authorization and OOD authorization leakage",
+    "wrong-request authorization reduction versus unbound attachment",
+    "balanced accuracy over four positives and four controls",
+    "forbidden COMMIT or navigation state leakage"
+  ],
+  "promotion_gate": {
+    "minimum_total_correct_scil_proofs": 6,
+    "minimum_positive_identity_proofs": 3,
+    "minimum_identity_evaluable_controls": 3,
+    "minimum_joined_top3_truth_retention": 3,
+    "require_zero_wrong_scil_proofs": true,
+    "require_zero_no_portal_semantic_presence": true,
+    "require_zero_no_portal_authorization": true,
+    "require_zero_ood_authorization": true,
+    "require_zero_wrong_request_authorization": true,
+    "require_zero_identity_unknown_authorization": true,
+    "require_no_commit_or_navigation_state": true
+  },
+  "stop_rule": "Run exactly once. Do not change source files, aliases, human roles or boxes, SCIL thresholds, SPPF model or threshold, portal proposer, join, or gate after output. If the gate fails, close this three-way join and change the information representation rather than tuning this cohort.",
+  "next_step": "If the gate passes, retain SP-SGPL as current-frame proposal authority and move to a frozen active-view intervention that can test whether APPROACH, SIDESTEP, or SWEEP causally improves identity-plus-portal observability. If it fails, use the failed layer attribution to choose one new information source; do not tune this cohort.",
+  "claim_boundary": "Fresh entity-disjoint public-image confirmation of a conditional same-frame identity-plus-door-semantic-plus-Top-3 portal proposal join. The cohort is deliberately identity-opportunity stratified and wrong requests are source-label proxies. A pass would not establish natural prevalence, physical portal ownership, public access, opening state, traversability, active-view causality, temporal persistence, directional guidance, arrival, product benefit, user benefit, or safety."
+}

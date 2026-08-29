@@ -1,0 +1,107 @@
+{
+  "schema": "l10-named-poi-trans4trans-glass-door-plane-development-durable-result-v1",
+  "date": "2026-08-29",
+  "mode": "PORTAL_CLOSURE_INFORMATION_SOURCE_DIAGNOSTIC_ON_CONSUMED_PB7_COHORT",
+  "decision": "L10_PB10_GLASS_DOOR_PLANE_AND_TOPOLOGICAL_CUT_DEVELOPMENT_GATE_NOT_MET",
+  "question": "Can relative-depth apertures plus an independently trained door-status or transparent-glass-door source retain real door-level portals while rejecting no-portal views and large doorless open mouths?",
+  "cohort": {
+    "source": "Frozen consumed PB7 cohort",
+    "door_level_positives": 4,
+    "no_portal_negatives": 2,
+    "large_open_entrance_ood": 2,
+    "identity_authority": "Frozen SCIL was correct on all 8/8 entities; identity was not passed into any portal source.",
+    "authority": "Development-only source diagnosis; this cohort cannot promote a successor."
+  },
+  "source_lifecycle": {
+    "relative_depth_aperture": {
+      "name": "RDAT row-rank aperture",
+      "model": "depth-anything/Depth-Anything-V2-Small-hf",
+      "revision": "5426e4f0f36572d16453bbda7a8389317b1bef99",
+      "model_sha256": "3152477ce0d8d6978d76b995120de97cb5b928701fd0f817769f59e249a16b70",
+      "formula": "Per-image q02-q98 normalized relative inverse depth; within-row far-depth rank at or below 0.25; raw 8-connectivity; retain components intersecting the lower image third; area Top-3.",
+      "positive_truth_top3": "4/4",
+      "explicit_none": "0/2",
+      "ood_diagnosis": "Tai Po station was scale-separable, but Cheung Chau market bays overlapped the positive width and frame-structure range.",
+      "retained_authority": "COARSE_PROPOSAL_DIAGNOSTIC_ONLY"
+    },
+    "aislab_door_status": {
+      "source": "https://github.com/aislabunimi/robotic-vision-door-detection",
+      "source_commit": "24f29bc3ee72def38d6dcdb11eca40f6487d38ce",
+      "model": "yolov5m_161 trained on DeepDoors2 plus photorealistic Gibson",
+      "weights_sha256": "1421aaadc3a8c78d66cc97ead65ceb1e3bb86f9eb8babff05b246a4f320f6f4d",
+      "direct_positive_truth_top3": "2/4",
+      "rdat_joined_positive_truth_top3": "1/4",
+      "direct_no_portal_false_presence": "1/2",
+      "rdat_joined_no_portal_false_presence": "0/2",
+      "direct_ood_leakage": "1/2",
+      "rdat_joined_ood_leakage": "1/2",
+      "decision": "CLOSED_NO_TUNING"
+    },
+    "translab_availability": {
+      "source": "https://github.com/xieenze/Segment_Transparent_Objects",
+      "source_commit": "06a9c806d32fec178e37700095f0c5443a4f109a",
+      "official_checkpoint_status": "NOT_AVAILABLE_IN_THE_LINKED_OFFICIAL_DRIVE_FOLDER_AT_AUDIT_TIME",
+      "observed_official_file": "TransLab_resnet50_trans10k_boundary.txt",
+      "decision": "NO_GO_EXACT_CHECKPOINT; no mirror substitution or retraining"
+    },
+    "trans4trans_semantic_plane": {
+      "source": "https://github.com/jamycheung/Trans4Trans",
+      "source_commit": "5e4e3b29276c2ba1f5c2566453db4a9870b723ec",
+      "official_checkpoint_drive_id": "1p6G5yRMUnH5uqnNrHAQg1W_KJaqdSx8g",
+      "weights_sha256": "141bb61c9d9252de2135a6dec54e01ba512d18f9ab128c4376f5993db499f159",
+      "weights_bytes": 157585054,
+      "selected_class": "Trans10K-v2 class 5 Glass Door",
+      "author_contract": "Whole RGB image resized to 512 by 512, ImageNet normalization, one forward pass, per-pixel argmax, nearest resize to source dimensions.",
+      "composition": "Assign each raw 8-connected class-5 component to the frozen RDAT Top-3 component with maximum pixel overlap; discard zero-overlap assignments; preserve RDAT set semantics.",
+      "positive_truth_top3": "4/4",
+      "no_portal_false_presence": "1/2",
+      "large_open_entrance_ood_leakage": "1/2",
+      "balanced_accuracy": 0.75,
+      "gate_passed": false,
+      "post_output_tuning": 0
+    },
+    "threshold_free_topological_cut": {
+      "name": "RDAT-Anchored Glass Door Cut",
+      "short_name": "RA-GDC",
+      "rule": "Within each exact frozen RDAT aperture, class-5 must intersect the aperture and disconnect the original 4-connected path between its lowest occupied row and its minimum inverse-depth pixels.",
+      "positive_truth_top3": "1/4",
+      "no_portal_false_presence": "0/2",
+      "large_open_entrance_ood_leakage": "0/2",
+      "balanced_accuracy": 0.625,
+      "gate_passed": false,
+      "post_output_tuning": 0,
+      "decision": "CLOSED_NO_SEED_CONNECTIVITY_CLASS_OR_MORPHOLOGY_CHANGES"
+    }
+  },
+  "attribution": {
+    "positive_signal": "RDAT and Trans4Trans are complementary: the first retained coarse portal geometry at 4/4 and the second aligned glass-door semantics to a truth-member RDAT proposal at 4/4.",
+    "remaining_failure": "Neither two-dimensional source supplies reliable absence or separates all door leaves from doorless framed openings. The topological cut bought specificity by collapsing positive coverage from 4/4 to 1/4.",
+    "closed": [
+      "AISLab two-class door-status detections on the consumed PB7 pixels",
+      "Trans4Trans class-5 maximum-overlap as a typed portal authority",
+      "RA-GDC bottom-to-far topological cut"
+    ],
+    "forbidden_rescue": "No confidence, area, component, class-union, crop, prompt, seed, connectivity, morphology, resolution, model, or threshold sweep on the consumed PB7 cohort."
+  },
+  "backend": {
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "torch": "2.11.0+cu130",
+    "rdat_peak_reserved_bytes": 645922816,
+    "aislab_peak_reserved_bytes": 532676608,
+    "trans4trans_peak_reserved_bytes": 480247808
+  },
+  "hashes": {
+    "rdat_probe_summary_sha256": "80f868bf68d1a9edd72dc47561422b1ac0f165ad1de6d9a545f14d8398ba3f62",
+    "rdat_row_rank_structural_summary_sha256": "3c53dda321665d8fd82f82941ca5e770f073914484dee57919b97f79409eab12",
+    "aislab_result_sha256": "ce5292c9bc2b77227307c4072a00880424c76f15c814202476625c30a718b0e0",
+    "trans4trans_semantic_result_sha256": "e91205096c729702c067c9188e6a0b3480652af85dac663cd9f60fcf22fbc9fe",
+    "trans4trans_cut_result_sha256": "fe8052524cd5613e56fc6a427488bb60379b8dc0602c44b77a395409e9414b90",
+    "rdat_probe_driver_sha256": "b0d0bc7677c65fac12aea39d6b15127414b1983b90fa360cdc5c5bfd53930fd4",
+    "rdat_structure_analyzer_sha256": "8fcac3d122a53f0adbdef5cafc14d844aa88a02ae005d8179ec18eccd5efed3f",
+    "aislab_probe_sha256": "b29d8748943f06871e5253d5358512e420f88f756f32cbd64f05ddc975f469d5",
+    "trans4trans_semantic_probe_sha256": "8eaae09cd3eb871989e7d77f0fe9610d20ca73b3d722d8a2168bbd22003790e7",
+    "trans4trans_cut_probe_sha256": "efe97addcdfbb641c1f35921f023c90a6da60ba96b5d62c20a8b6a07cf6a259f"
+  },
+  "next_step": "Use a new RGB cohort with real camera intrinsics for one metric-depth 3D portal-plane closure experiment. Freeze the cohort and camera calibration before model output; require positive planarity/closure separation from both no-portal and large-open-mouth controls. If no admissible K-known cohort exists, record NOT_EVALUABLE_SOURCE instead of guessing intrinsics or tuning PB7.",
+  "claim_boundary": "Development-only diagnosis on a consumed public-image cohort. RDAT and Trans4Trans remain coarse proposal and semantic-alignment evidence, not physical portal ownership, access, opening state, traversability, active-view causality, guidance, arrival, product benefit, user benefit, or safety authority."
+}

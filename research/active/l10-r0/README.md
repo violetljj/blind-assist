@@ -1575,6 +1575,143 @@ confirmation or portal ownership. It establishes no access, traversability,
 active-view causality, temporal persistence, guidance, arrival, product,
 user-benefit, or safety claim.
 
+#### PB6--PB10 portal information-source ladder
+
+PB6 through PB10 changed the portal information source five times without
+reopening PB5 geometry or SCIL identity. The decisive results are:
+
+| representation | positive truth Top-3 | no-portal false | open-mouth leakage | balanced accuracy |
+|---|---:|---:|---:|---:|
+| PB6 synthetic semantic field, fresh | 0/4 | 1/2 | 1/2 | 0.250 |
+| PB7 ADE20K door components, Development | 3/4 | 0/2 | 0/2 | **0.875** |
+| PB7 frozen ADE20K, fresh | 0/4 | 0/2 | 0/2 | 0.500 |
+| PB8 typed Qwen2-VL grid | 1/4 | 2/2 | 2/2 | 0.125 |
+| PB9 specialized door ontology | 0/4 | 0/2 | 0/2 | 0.500 |
+| PB10 RDAT + Trans4Trans class-5 | **4/4** | 1/2 | 1/2 | **0.750** |
+| PB10 threshold-free glass cut | 1/4 | **0/2** | **0/2** | 0.625 |
+
+PB6 and PB7 each produced an attractive Development result and then failed its
+single source-disjoint confirmation. PB8 selected `DOOR` on all eight frames.
+PB9 produced no author-final door or doorway candidate. These routes are
+closed on their consumed pixels; do not rescue them with prompt, class,
+confidence, component, crop, scale, or threshold sweeps.
+
+PB10 supplied the first complementary geometric/semantic pair. A fixed
+row-wise far-depth construction retained a truth-member region in RDAT Top-3
+on **4/4** positives. Official Trans4Trans class-5 `Glass Door` argmax masks
+aligned to a truth-member RDAT proposal on the same **4/4**, with no learned
+threshold or morphology. It still fired on one of two no-portal controls and
+one of two large open-mouth controls. A preregistered threshold-free
+bottom-to-far cut removed all four control errors but collapsed positive
+coverage to `1/4`. Record
+`L10_PB10_GLASS_DOOR_PLANE_AND_TOPOLOGICAL_CUT_DEVELOPMENT_GATE_NOT_MET`.
+
+Retain RDAT only as a coarse portal proposer and Trans4Trans only as a
+glass-door semantic alignment source. PB11 executed the next legal experiment
+on a fresh, pre-frozen K-known SUN RGB-D cohort. All `8/8` rows were evaluable,
+but its privileged source-depth closure score produced
+`min(door)=0.7166`, `max(control)=0.9831`, strict margin `-0.2665`, and ROC AUC
+`0.625`. The planar wall-storage and filing-cabinet controls scored `0.9831`
+and `0.9570`; the glass double door scored `0.7166`. Record
+`L10_PB11_METRIC_PORTAL_CLOSURE_P0_PRIVILEGED_GATE_NOT_MET`.
+
+PB11 therefore closes metric rim-plane closure as door authority. The frozen
+protocol requires no DepthART C1 run after this P0 failure, and no cohort,
+quadrilateral, rim, interior, relief, quantile, score, or threshold change is
+legal on these pixels. The next structural successor is RGB door-part topology
+(leaf/frame/handle or hinge), with metric depth retained only as a downstream
+geometric consistency check. No portal ownership, access, opening-state,
+traversability, active-view, guidance, arrival, product, user-benefit, or safety
+claim follows.
+
+PB12 then froze a source-disjoint four-class `door / handle / cabinet door /
+refrigerator door` detector and a deterministic smallest-enclosing-parent rule
+on eight new SUN RGB-D captures. It authorized only a handle assigned to class
+`door`. All `2/2` handled furniture controls and `2/2` large doorless openings
+were rejected, but no real door formed an authorized parent-child pair:
+architectural-door authorization `0/4`, positive recall `0.0`, control false
+positive rate `0.0`, and balanced accuracy `0.500`. Record
+`L10_PB12_DOOR_PART_TOPOLOGY_DEVELOPMENT_GATE_NOT_MET`.
+
+This is not an absence-of-signal result. Door parents appeared on `2/4`
+positives, visible architectural-door handles on `2/4`, the sliding closet
+produced coherent cabinet-door/handle assignments, and both large openings
+remained silent. The decisive failure is box-level parent/child co-occurrence
+and semantic competition: one true door's handle was enclosed by the competing
+cabinet parent, while the other positives lacked either the parent or child.
+Do not rescue the consumed cohort with confidence, image size, NMS, crops,
+tiles, area, overlap, parent priority, alternate epochs/checkpoints, or fusion.
+Change to a distinct pixel-level part source.
+
+The first formal process performed inference but stopped before writing a
+result because Ultralytics returned synthetic display paths for a batch-list
+input. No detections or metrics were shown and no result file existed. One
+mechanical replay removed only that non-scoring path assertion; all frozen
+inputs, inference parameters, topology, and gate remained unchanged. The
+durable result records both attempts.
+
+PB13 then replaced boxes with Florence-2 referring-segmentation polygons. Six
+expressions and eight PB11/PB12-disjoint SUN RGB-D frames from four source
+buckets were frozen before output. The first launch failed its environment guard
+before model load or cohort image decoding; correcting the guard to the already
+frozen `USE_TF=0` value permitted one mechanical replay. The replay produced
+three calls on frame 1, then `operation_part` instance 0 component 0 violated the
+frozen polygon-shape contract. No frame or metric was adjudicated. Record
+`L10_PB13_FLORENCE_PIXEL_PART_TOPOLOGY_DEVELOPMENT_NOT_EVALUABLE_OUTPUT_CONTRACT_FAILURE`.
+It is neither a positive nor negative model result. The cohort is consumed, so
+parser, prompt, beam, mask, or topology rescue is forbidden; PB14 must use a new
+information source and fresh pixels.
+
+PB14 changed to native YOLOE-26n-seg instance masks and froze two scales before
+output: one full-frame parent pass, then one exact predicted-parent-box pass for
+small operation parts. Eight PB11--PB13-disjoint SUN RGB-D sequences from four
+source buckets were sealed with five official file receipts each. The run
+completed all eight full-frame calls and nine retained-parent crops in `9.60 s`
+with `104,960,512` peak allocated CUDA bytes. It produced no
+`architectural_leaf`, `operation_part`, or `hinge` anywhere. Lane 1 instead
+returned one `cabinet_door`, two `closet_door`, and six `doorless_opening`
+instances; Lane 2 returned no child. Thus positive authorization was `0/4`,
+handled-furniture leakage `0/2`, large-opening leakage `0/2`, and balanced
+accuracy `0.500`. Record
+`L10_PB14_YOLOE_MULTISCALE_PART_TOPOLOGY_DEVELOPMENT_GATE_NOT_MET`.
+
+The falsifier is upstream of topology: the open-vocabulary source did not expose
+the required architectural parent or operation-part observables. Close this
+exact YOLOE route on the consumed pixels; prompt spelling, threshold, NMS,
+image size, parent cap/order, crop expansion, model size, and topology rescue
+are forbidden. PB15 changes to two-scale GroundingDINO grounding followed by
+SAM2.1 box-conditioned native masks on a fresh source-disjoint cohort.
+
+Durable PB10 summary:
+`named_poi_trans4trans_glass_door_plane_development_result_v1.json`.
+
+PB11 protocol, frozen cohort, source audit, evaluator, and durable summary:
+`named_poi_metric_portal_closure_protocol_v1.json`,
+`named_poi_metric_portal_closure_development_cohort_v1.json`,
+`named_poi_sunrgbd_metric_closure_source_audit.py`,
+`named_poi_metric_portal_closure.py`, and
+`named_poi_metric_portal_closure_development_result_v1.json`.
+
+PB12 protocol, frozen cohort, evaluator, and durable summary:
+`named_poi_door_part_topology_protocol_v1.json`,
+`named_poi_door_part_topology_development_cohort_v1.json`,
+`named_poi_door_part_topology.py`, and
+`named_poi_door_part_topology_development_result_v1.json`.
+
+PB13 protocol, frozen cohort, evaluator, and durable NOT_EVALUABLE receipt:
+`named_poi_florence_pixel_part_topology_protocol_v1.json`,
+`named_poi_florence_pixel_part_topology_development_cohort_v1.json`,
+`named_poi_florence_pixel_part_topology.py`, and
+`named_poi_florence_pixel_part_topology_development_result_v1.json`.
+
+PB14 protocol, frozen cohort, evaluator, and durable negative result:
+`named_poi_yoloe_multiscale_part_topology_protocol_v1.json`,
+`named_poi_yoloe_multiscale_part_topology_development_cohort_v1.json`,
+`named_poi_yoloe_multiscale_part_topology.py`, and
+`named_poi_yoloe_multiscale_part_topology_development_result_v1.json`. The
+result SHA-256 is
+`a729b850c21bd14976aebbaf32c654da2e81b1c07b12f42401dae5b586c7c887`.
+
 The `x/120` column is not physical target-absence authority. The source audit
 did not exhaustively freeze every gallery building co-visible in dense
 same-city frames, so physical target-absent rejection is `NOT_EVALUABLE`. A

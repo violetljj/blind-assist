@@ -1,0 +1,46 @@
+{
+  "schema": "l10-named-poi-typed-vlm-portal-development-durable-result-v1",
+  "date": "2026-08-29",
+  "decision": "L10_PB8_TYPED_VLM_GRID_DEVELOPMENT_GATE_NOT_MET",
+  "representation": {
+    "name": "Typed VLM Portal Grid",
+    "short_name": "TVPG",
+    "model": "Qwen2-VL-2B-Instruct revision 895c3a49bc3fa70a340399125c650a463535e71c",
+    "scene_rule": "Forced next-token choice among door-level entrance, no visible entrance, and large doorless open-mouth OOD.",
+    "localization_rule": "Forced next-token choice over a fixed 3x3 grid; retain Top-3 cells.",
+    "thresholds_or_generated_text": 0
+  },
+  "development": {
+    "typed_scene_correct": "4/8",
+    "positive_door_level_classifications": "4/4",
+    "no_portal_typed_none": "0/2",
+    "open_mouth_typed_ood": "0/2",
+    "joined_top3_truth": "1/4",
+    "no_portal_false_authorization": "2/2",
+    "ood_authorization_leakage": "2/2",
+    "wrong_request_authorization": 0,
+    "balanced_accuracy": 0.125,
+    "absolute_balanced_accuracy_gain_over_pb7": -0.375,
+    "post_output_tuning": 0
+  },
+  "attribution": {
+    "failure_layer": "The forced scene head selected DOOR on all eight frames, while the localization head was strongly biased toward top-row cells: frames 1, 3, and 7 ranked cells 1,2,3; only The Wai retained a truth-member cell.",
+    "closed": "Direct Qwen2-VL forced-choice scene typing plus fixed-grid next-token localization",
+    "forbidden_rescue": "No prompt rewrite, alternative label tokens, generated-text parsing, grid change, resolution change, model sweep, logit calibration, or retry on this consumed cohort."
+  },
+  "backend": {
+    "selected": "qwen2-vl-2b-torch-cuda",
+    "device": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "torch": "2.11.0+cu130",
+    "transformers": "5.14.1",
+    "peak_allocated_bytes": 4625465344,
+    "peak_reserved_bytes": 5064622080
+  },
+  "hashes": {
+    "protocol_sha256": "14b6c3273cd8b3e1560788a2c42b6da035ad08b3d722efdff9eef494aaa6fbfc",
+    "evaluator_sha256": "9eb4f4dd2baa01251d072a5502463103a09aaa0ea811cab7459a8a0e34821013",
+    "formal_result_sha256": "c9ce11add30fbe9bc15f721d2fa66fef9f18e792b83a1849a9463194dac70484"
+  },
+  "next_step": "Retain frozen SCIL and change to a task-specialized portal proposal source or a geometric/depth aperture topology. Do not rescue the direct VLM representation.",
+  "claim_boundary": "Development-only negative result on the consumed PB7 public-image cohort. It does not reject larger VLMs generally, but closes this frozen direct forced-choice representation and establishes no portal, active-view, guidance, arrival, product, user-benefit, or safety authority."
+}

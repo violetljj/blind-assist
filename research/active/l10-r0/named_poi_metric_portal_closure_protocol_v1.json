@@ -1,0 +1,86 @@
+{
+  "schema": "l10-named-poi-metric-portal-closure-protocol-v1",
+  "created_at": "2026-08-29",
+  "status": "FROZEN_BEFORE_COHORT_IMAGE_EXTRACTION_AND_MODEL_OUTPUT",
+  "experiment": "L10-PB11 Metric Portal Closure",
+  "short_name": "MPC",
+  "question": "Does a camera-calibrated 3D aperture have a positive door-plane closure signal that strictly separates real door leaves from no-portal distractors and large doorless openings?",
+  "single_change_from_pb10": "Replace relative-depth and two-dimensional semantic closure with metric 3D relief relative to a fitted aperture-rim plane.",
+  "source": {
+    "dataset": "SUN RGB-D",
+    "official_url": "https://rgbd.cs.princeton.edu/data/SUNRGBD.zip",
+    "expected_archive_bytes": 6885481608,
+    "reason": "The official bundle provides real RGB, depth, per-frame intrinsics, scene metadata, and dense 2D polygons including door labels.",
+    "license_boundary": "Publicly downloadable research source with citation requirements; no independent open data license was located. Use only for internal non-commercial research and do not redistribute source media.",
+    "prior_l10_pixel_overlap_allowed": false
+  },
+  "cohort_freeze": {
+    "frames": 8,
+    "distinct_capture_sequences": 8,
+    "roles": {
+      "DOOR_PLANE_POSITIVE": 4,
+      "NO_PORTAL_NEGATIVE": 2,
+      "LARGE_DOORLESS_OPENING_OOD": 2
+    },
+    "positive_admission": "Official 2D polygon is labeled door; a door leaf rather than only a frame is visibly present; the source depth has enough valid pixels for the frozen score.",
+    "none_admission": "No official door polygon and a pre-model human audit records no visible traversable door or large opening; freeze the strongest portal-shaped visual distractor as the aperture quadrilateral.",
+    "ood_admission": "No official door polygon; a pre-model human audit records a doorless room/hall opening whose metric clear width is at least 1.5 m; freeze its aperture quadrilateral.",
+    "diversity": "Use at least three SUN RGB-D sensor/source buckets and at most three frames from any one bucket.",
+    "sealed_before_output": [
+      "canonical source path",
+      "RGB, depth, intrinsics, polygon and scene metadata SHA-256",
+      "capture sequence identity and sensor/source bucket",
+      "role and audit note",
+      "aperture quadrilateral in source-image coordinates"
+    ],
+    "failure": "If any denominator cannot be formed without relaxing these clauses, record NOT_EVALUABLE_SOURCE and do not run DepthART."
+  },
+  "representation": {
+    "aperture_coordinates": "Map each frozen quadrilateral to a unit square only to define regions; all 3D points are back-projected from original pixels with the original K.",
+    "rim": "Outer 15 percent of normalized aperture width or height.",
+    "interior": "Remaining central 70 by 70 percent normalized aperture region.",
+    "rim_plane": "Unweighted total-least-squares plane fit to valid rim points in camera coordinates.",
+    "expected_interior_depth": "Intersect each valid interior camera ray with the fitted rim plane.",
+    "positive_relative_relief": "clip((observed_z - expected_z) / max(expected_z, 0.1 m), 0, 1).",
+    "relief_statistic": "75th percentile over valid interior pixels.",
+    "rim_residual_ratio": "Median absolute rim point-to-plane distance divided by median rim range.",
+    "closure_score": "exp(-rim_residual_ratio) * exp(-relief_q75). Higher means a planar closure at the aperture rather than free space behind its rim.",
+    "evaluable": "At least 60 percent valid rim pixels, at least 60 percent valid interior pixels, and a non-degenerate TLS plane.",
+    "learned_or_selected_thresholds": 0
+  },
+  "arms": {
+    "P0_PRIVILEGED_SENSOR_DEPTH": {
+      "input": "Source RGB-D depth and source K",
+      "purpose": "Test whether the geometric mechanism exists with measured depth."
+    },
+    "C1_DEPTHART_METRIC": {
+      "input": "RGB plus the same source K",
+      "model_source": "https://github.com/xuefeng-cvr/DepthART",
+      "source_commit": "0384521b3bcb4c64adf03eeb5d55ebdb1cbdd84c",
+      "checkpoint": "depthart_metric_indoor_s_448.pth",
+      "checkpoint_sha256": "597631ac7aeab8346f4db013c3c65ef3203df373e21c7265d7a147093c667e65",
+      "author_contract": "Indoor metric inference at lower-bound 640 by 480, preserving aspect ratio and scaling K with the image.",
+      "license_boundary": "No license file was found in the inspected source commit; internal research evaluation only, no redistribution or product claim."
+    }
+  },
+  "metrics": [
+    "evaluable frames by role",
+    "positive and control closure scores",
+    "minimum positive score",
+    "maximum control score",
+    "strict separation margin",
+    "ROC AUC",
+    "balanced accuracy at the midpoint of the strict-separation gap when one exists"
+  ],
+  "gate": {
+    "privileged_mechanism": "P0 evaluates 8/8 and min positive score is strictly greater than max control score.",
+    "development_promotion": "C1 evaluates 8/8 and independently satisfies the same strict ordering on the frozen cohort.",
+    "outcomes": {
+      "P0_FAIL": "Close metric rim-plane closure; do not run or tune C1.",
+      "P0_PASS_C1_FAIL": "Retain PRIVILEGED_SENSOR_CEILING_ONLY; change the metric-depth information source or collect paired data, not the scorer.",
+      "P0_PASS_C1_PASS": "Record a Development gate met and run one new source-disjoint K-known confirmation with the entire scorer and checkpoint frozen."
+    }
+  },
+  "forbidden_rescue": "After any output, do not change cohort rows, quadrilaterals, rim width, interior region, depth-validity clauses, plane fit, quantile, score, checkpoint, model size/domain, image resolution, K, or gate; do not add Trans4Trans, AISLab, RDAT ranking, morphology, crop variants, or thresholds on these pixels.",
+  "claim_boundary": "PB11 is a current-frame metric door-plane closure experiment. Even a pass is not target ownership, public access, open/closed actuation state, traversability, active-view causality, temporal persistence, guidance, arrival, product benefit, user benefit, or safety evidence."
+}

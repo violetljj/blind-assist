@@ -1,0 +1,200 @@
+{
+  "schema": "l10-named-poi-ade20k-portal-fresh-source-v1",
+  "created_at": "2026-08-29",
+  "target_id": "pb7-ade20k-door-component-fresh-v1",
+  "selection_authority": "Eight exact Wikimedia Commons files were selected and visually source-audited before any PB7 OCR or ADE20K semantic call. Every exact filename and every frozen English or Chinese entity name had zero hits under research/active/l10-r0. The cohort is entity-disjoint from PB1-PB6 and the prior portal-lattice inventories.",
+  "cohort": [
+    {
+      "index": 1,
+      "id": "cityplaza",
+      "name": "Cityplaza",
+      "aliases": {
+        "latin": ["Cityplaza"],
+        "han": ["太古城中心"],
+        "marks": ["Cityplaza"]
+      },
+      "role": "IN_SCOPE_DOOR_LEVEL_POSITIVE",
+      "portal_kind": "multi-leaf glass mall entrance",
+      "commons_file": "Cityplaza entrance.jpg",
+      "official_name_source": "https://www.cityplaza.com/en",
+      "source_metadata": {
+        "source_page": "https://commons.wikimedia.org/wiki/File:Cityplaza_entrance.jpg",
+        "original_url": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Cityplaza_entrance.jpg",
+        "author": "LN5806",
+        "license": "CC BY-SA 3.0",
+        "original_size": [1600, 1200]
+      },
+      "source_audit_note": "The bilingual identity mark is centered above multiple complete glass door leaves; a tree partially occludes the middle entrance."
+    },
+    {
+      "index": 2,
+      "id": "hong-kong-public-records-building",
+      "name": "Hong Kong Public Records Building",
+      "aliases": {
+        "latin": ["Hong Kong Public Records Building", "Public Records Building"],
+        "han": ["香港歷史檔案大樓"],
+        "marks": []
+      },
+      "role": "IN_SCOPE_DOOR_LEVEL_POSITIVE",
+      "portal_kind": "glass facade entrance",
+      "commons_file": "Entrance of Hong Kong Public Records Building.JPG",
+      "official_name_source": "https://www.grs.gov.hk/en/our_building.html",
+      "source_metadata": {
+        "source_page": "https://commons.wikimedia.org/wiki/File:Entrance_of_Hong_Kong_Public_Records_Building.JPG",
+        "original_url": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Entrance_of_Hong_Kong_Public_Records_Building.JPG",
+        "author": "Isaac Wong",
+        "license": "Public domain",
+        "original_size": [974, 648]
+      },
+      "source_audit_note": "High-contrast bilingual entity text and a glass entrance are visible in the same frame; the entrance is small and near the left edge."
+    },
+    {
+      "index": 3,
+      "id": "tin-shui-wai-sports-centre",
+      "name": "Tin Shui Wai Sports Centre",
+      "aliases": {
+        "latin": ["Tin Shui Wai Sports Centre"],
+        "han": ["天水圍體育館"],
+        "marks": []
+      },
+      "role": "IN_SCOPE_DOOR_LEVEL_POSITIVE",
+      "portal_kind": "automatic double glass door",
+      "commons_file": "HK TSW 天水圍體育館 Tin Shui Wai Sports Centre entrance door n name sign LCSD logo Dec 2016 Lnv2.jpg",
+      "official_name_source": "https://www.lcsd.gov.hk/clpss/en/webApp/Facility/Details.do?did=18&fid=195",
+      "source_metadata": {
+        "source_page": "https://commons.wikimedia.org/wiki/File:HK_TSW_%E5%A4%A9%E6%B0%B4%E5%9C%8D%E9%AB%94%E8%82%B2%E9%A4%A8_Tin_Shui_Wai_Sports_Centre_entrance_door_n_name_sign_LCSD_logo_Dec_2016_Lnv2.jpg",
+        "original_url": "https://upload.wikimedia.org/wikipedia/commons/3/39/HK_TSW_%E5%A4%A9%E6%B0%B4%E5%9C%8D%E9%AB%94%E8%82%B2%E9%A4%A8_Tin_Shui_Wai_Sports_Centre_entrance_door_n_name_sign_LCSD_logo_Dec_2016_Lnv2.jpg",
+        "author": "Lockafaimchezo",
+        "license": "CC BY-SA 4.0",
+        "original_size": [2448, 3264]
+      },
+      "source_audit_note": "Large bilingual identity text is directly above a complete frontal automatic glass double door; LCSD is a co-brand and is excluded from identity aliases."
+    },
+    {
+      "index": 4,
+      "id": "the-wai",
+      "name": "The Wai",
+      "aliases": {
+        "latin": ["The Wai"],
+        "han": ["圍方"],
+        "marks": ["The Wai"]
+      },
+      "role": "IN_SCOPE_DOOR_LEVEL_POSITIVE",
+      "portal_kind": "multi-leaf glass mall entrance",
+      "commons_file": "HK STD 大圍 Tai Wai 圍方 The Wai Shopping mall entrance escalators n name sign December 2022 Px3 01.jpg",
+      "official_name_source": "https://www.thewaimall.com/en",
+      "source_metadata": {
+        "source_page": "https://commons.wikimedia.org/wiki/File:HK_STD_%E5%A4%A7%E5%9C%8D_Tai_Wai_%E5%9C%8D%E6%96%B9_The_Wai_Shopping_mall_entrance_escalators_n_name_sign_December_2022_Px3_01.jpg",
+        "original_url": "https://upload.wikimedia.org/wikipedia/commons/5/5b/HK_STD_%E5%A4%A7%E5%9C%8D_Tai_Wai_%E5%9C%8D%E6%96%B9_The_Wai_Shopping_mall_entrance_escalators_n_name_sign_December_2022_Px3_01.jpg",
+        "author": "NineSteyeblow H980",
+        "license": "CC BY-SA 4.0",
+        "original_size": [4000, 3000]
+      },
+      "source_audit_note": "A large bilingual composite identity mark is adjacent to multiple glass door leaves; MTR Malls is a co-brand and is excluded from identity aliases."
+    },
+    {
+      "index": 5,
+      "id": "morse-park-no-3",
+      "name": "Morse Park (Park No. 3)",
+      "aliases": {
+        "latin": ["Morse Park (Park No. 3)", "Morse Park"],
+        "han": ["摩士公園（三號公園）", "摩士公園"],
+        "marks": []
+      },
+      "role": "NO_PORTAL_NEGATIVE",
+      "portal_kind": "none visible",
+      "commons_file": "HK Wong Tai Sin 摩士公園 Morse Park No3 LCSD name sign May-2013 tree.JPG",
+      "official_name_source": "https://www.lcsd.gov.hk/en/parks/mp/index.html",
+      "source_metadata": {
+        "source_page": "https://commons.wikimedia.org/wiki/File:HK_Wong_Tai_Sin_%E6%91%A9%E5%A3%AB%E5%85%AC%E5%9C%92_Morse_Park_No3_LCSD_name_sign_May-2013_tree.JPG",
+        "original_url": "https://upload.wikimedia.org/wikipedia/commons/d/d0/HK_Wong_Tai_Sin_%E6%91%A9%E5%A3%AB%E5%85%AC%E5%9C%92_Morse_Park_No3_LCSD_name_sign_May-2013_tree.JPG",
+        "author": "Chanjoetan",
+        "license": "CC BY-SA 3.0",
+        "original_size": [2048, 1536]
+      },
+      "source_audit_note": "Clear bilingual entity text is painted on a solid wall; the frame contains wall, trees, a notice frame, and handrails but no door, frame, or traversable opening."
+    },
+    {
+      "index": 6,
+      "id": "on-king-street-park",
+      "name": "On King Street Park",
+      "aliases": {
+        "latin": ["On King Street Park"],
+        "han": ["安景街公園"],
+        "marks": []
+      },
+      "role": "NO_PORTAL_NEGATIVE",
+      "portal_kind": "none visible",
+      "commons_file": "HK Shatin On King Street Park name sign Sept-2012.JPG",
+      "official_name_source": "https://www.fa.gov.hk/en/park/on-king-street-park.html",
+      "source_metadata": {
+        "source_page": "https://commons.wikimedia.org/wiki/File:HK_Shatin_On_King_Street_Park_name_sign_Sept-2012.JPG",
+        "original_url": "https://upload.wikimedia.org/wikipedia/commons/a/a9/HK_Shatin_On_King_Street_Park_name_sign_Sept-2012.JPG",
+        "author": "Osaerpsen",
+        "license": "CC BY-SA 3.0",
+        "original_size": [2592, 1944]
+      },
+      "source_audit_note": "The bilingual identity sign fills the view against foliage and a dense blue fence; no building entrance, door frame, or open path is visible."
+    },
+    {
+      "index": 7,
+      "id": "cheung-chau-market",
+      "name": "Cheung Chau Market",
+      "aliases": {
+        "latin": ["Cheung Chau Market"],
+        "han": ["長洲街市"],
+        "marks": []
+      },
+      "role": "LARGE_OPEN_ENTRANCE_OOD",
+      "portal_kind": "two bay-wide open market entrances above stairs",
+      "commons_file": "HK 長洲 Cheung Chau 大新海傍路 Tai San Praya Road May 2018 IX2 Praya Street Market building entrance name sign.jpg",
+      "official_name_source": "https://www.fehd.gov.hk/english/map/market/market_pt.html?mapID=635&type=market",
+      "source_metadata": {
+        "source_page": "https://commons.wikimedia.org/wiki/File:HK_%E9%95%B7%E6%B4%B2_Cheung_Chau_%E5%A4%A7%E6%96%B0%E6%B5%B7%E5%82%8D%E8%B7%AF_Tai_San_Praya_Road_May_2018_IX2_Praya_Street_Market_building_entrance_name_sign.jpg",
+        "original_url": "https://upload.wikimedia.org/wikipedia/commons/e/e7/HK_%E9%95%B7%E6%B4%B2_Cheung_Chau_%E5%A4%A7%E6%96%B0%E6%B5%B7%E5%82%8D%E8%B7%AF_Tai_San_Praya_Road_May_2018_IX2_Praya_Street_Market_building_entrance_name_sign.jpg",
+        "author": "Manshuwncvlwoo",
+        "license": "CC BY-SA 4.0",
+        "original_size": [3648, 2432]
+      },
+      "source_audit_note": "Two bilingual Cheung Chau Market signs sit above two doorless bay-wide openings and a full-width stair; the filename's Praya Street Market phrase is excluded from aliases."
+    },
+    {
+      "index": 8,
+      "id": "tai-po-market-station",
+      "name": "Tai Po Market Station",
+      "aliases": {
+        "latin": ["Tai Po Market Station", "Tai Po Market"],
+        "han": ["大埔墟站", "大埔墟"],
+        "marks": []
+      },
+      "role": "LARGE_OPEN_ENTRANCE_OOD",
+      "portal_kind": "station-scale open concourse mouth",
+      "commons_file": "HK MTR 大埔墟站 Tai Po Market Station June 2018 IX2 entrance n name sign.jpg",
+      "official_name_source": "https://www.mtr.com.hk/en/customer/services/system_map.html",
+      "source_metadata": {
+        "source_page": "https://commons.wikimedia.org/wiki/File:HK_MTR_%E5%A4%A7%E5%9F%94%E5%A2%9F%E7%AB%99_Tai_Po_Market_Station_June_2018_IX2_entrance_n_name_sign.jpg",
+        "original_url": "https://upload.wikimedia.org/wikipedia/commons/9/91/HK_MTR_%E5%A4%A7%E5%9F%94%E5%A2%9F%E7%AB%99_Tai_Po_Market_Station_June_2018_IX2_entrance_n_name_sign.jpg",
+        "author": "SANGFIRECHONGST",
+        "license": "CC BY-SA 4.0",
+        "original_size": [3648, 2432]
+      },
+      "source_audit_note": "A large bilingual station name and MTR roundel sit over a frame-wide doorless concourse mouth; internal shops and pedestrians are declared distractors."
+    }
+  ],
+  "files": [
+    "Cityplaza entrance.jpg",
+    "Entrance of Hong Kong Public Records Building.JPG",
+    "HK TSW 天水圍體育館 Tin Shui Wai Sports Centre entrance door n name sign LCSD logo Dec 2016 Lnv2.jpg",
+    "HK STD 大圍 Tai Wai 圍方 The Wai Shopping mall entrance escalators n name sign December 2022 Px3 01.jpg",
+    "HK Wong Tai Sin 摩士公園 Morse Park No3 LCSD name sign May-2013 tree.JPG",
+    "HK Shatin On King Street Park name sign Sept-2012.JPG",
+    "HK 長洲 Cheung Chau 大新海傍路 Tai San Praya Road May 2018 IX2 Praya Street Market building entrance name sign.jpg",
+    "HK MTR 大埔墟站 Tai Po Market Station June 2018 IX2 entrance n name sign.jpg"
+  ],
+  "freeze_rules": {
+    "identity_profiles": "The aliases above are frozen before OCR. LCSD, MTR Malls, FEHD, MTR, historical filename phrases, and unrelated co-brands are excluded from entity aliases.",
+    "portal_roles": "Rows 1-4 are door-level positives, 5-6 contain no portal pixels, and 7-8 are large doorless open-entrance OOD controls.",
+    "model_access": "No OCR, ADE20K semantic model, portal proposer, or identity model may run before local source integrity and human portal truth are frozen."
+  },
+  "claim_boundary": "Deliberately identity-opportunity-stratified, entity-disjoint public-image cohort. It can confirm conditional current-frame identity plus broad-domain door-component behavior, not natural prevalence, physical ownership, public access, traversability, active-view causality, guidance, arrival, product benefit, user benefit, or safety."
+}
