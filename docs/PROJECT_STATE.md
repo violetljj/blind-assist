@@ -664,6 +664,27 @@ not rescue it with concept wording, confidence, cap, assignment, adapter, or
 topology changes. Any successor must change both supported weight/API and parent
 semantic representation on fresh source-disjoint pixels.
 
+PB17 then used the original `facebook/sam3` Safetensors weights through the
+official Transformers `Sam3Model`/`Sam3Processor` image API and changed the
+observable to direct nonempty native masks for the simple noun `door`, with no
+mandatory operation part or parent-child assignment. A synthetic mechanical
+smoke strictly loaded all weights and peaked at `3,928,569,856` allocated CUDA
+bytes. Its eight formal capture sequences had zero overlap with all 48 PB11--PB16
+sequences.
+
+The one-shot run stopped on frame 1 after one image encode and one text call:
+the mask tensor kept native spatial dimensions instead of the frozen source
+size. Processor-only diagnosis verified the requested target was exactly the
+source `[530,730]`. In the frozen Transformers implementation every positive
+retained count is resized, while a zero count preserves native dimensions; the
+error therefore mechanically establishes no `door` instance on the first fresh
+positive at `0.5`. The required `4/4` positive gate is false. Record
+`L10_PB17_OFFICIAL_SAM3_DOOR_STATE_DEVELOPMENT_GATE_NOT_MET`; aggregate balanced
+accuracy remains unevaluable and is not reported. The cohort is consumed and
+cannot be rerun with an empty-output-contract, prompt, threshold, processor, or
+postprocessing repair. A successor must add a distinct observable source on
+fresh pixels.
+
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
 because the approved AWS profile is absent. That is a source-access condition,

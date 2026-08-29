@@ -1,0 +1,491 @@
+{
+  "diversity": {
+    "distinct_capture_sequences": 8,
+    "maximum_frames_in_one_bucket": 4,
+    "sensor_source_buckets": {
+      "kv2/kinect2data": 4,
+      "realsense/lg": 1,
+      "xtion/sun3ddata": 3
+    }
+  },
+  "frames": [
+    {
+      "audit_note": "Human RGB audit confirms a large right-side architectural door leaf with a clearly visible lever; a foreground chair occludes only the lower central scene.",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/001428_2014-06-19_16-50-02_260595134347_rgbf000043-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/001428_2014-06-19_16-50-02_260595134347",
+      "files": {
+        "depth": {
+          "bytes": 317445,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/001428_2014-06-19_16-50-02_260595134347_rgbf000043-resize/depth/0000043.png",
+          "path": "SUNRGBD/kv2/kinect2data/001428_2014-06-19_16-50-02_260595134347_rgbf000043-resize/depth/0000043.png",
+          "sha256": "9e44ec8650703ff3db112df973cd7fbc9dab1a2a80a7360c1aaf45a0c3bf8423"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/001428_2014-06-19_16-50-02_260595134347_rgbf000043-resize/intrinsics.txt",
+          "path": "SUNRGBD/kv2/kinect2data/001428_2014-06-19_16-50-02_260595134347_rgbf000043-resize/intrinsics.txt",
+          "sha256": "22c236c26f5e1c8cda15b4c7de7f78720c857198583985843e2c8ef9a9c6d6b4"
+        },
+        "polygon": {
+          "bytes": 2909,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/001428_2014-06-19_16-50-02_260595134347_rgbf000043-resize/annotation2Dfinal/index.json",
+          "path": "SUNRGBD/kv2/kinect2data/001428_2014-06-19_16-50-02_260595134347_rgbf000043-resize/annotation2Dfinal/index.json",
+          "sha256": "bd06b367278f8c60526bdbe5e2916c38fd6dadfc592e97dd4fe7e16160e0e5ce"
+        },
+        "rgb": {
+          "bytes": 38780,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/001428_2014-06-19_16-50-02_260595134347_rgbf000043-resize/image/0000043.jpg",
+          "path": "SUNRGBD/kv2/kinect2data/001428_2014-06-19_16-50-02_260595134347_rgbf000043-resize/image/0000043.jpg",
+          "sha256": "201ad729d03bdae32ac2037ba92aa9917d041058c1f2539217112f3d00c8dde2"
+        },
+        "scene_metadata": {
+          "bytes": 8,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/001428_2014-06-19_16-50-02_260595134347_rgbf000043-resize/scene.txt",
+          "path": "SUNRGBD/kv2/kinect2data/001428_2014-06-19_16-50-02_260595134347_rgbf000043-resize/scene.txt",
+          "sha256": "fd09da605e5804b35ee408d27c1bed7c7932a1af861948e042283615be0bd3d0"
+        }
+      },
+      "frame_id": "rgbf000043-resize",
+      "index": 1,
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "supporting_object_names": [
+          "door"
+        ]
+      },
+      "role": "ARCHITECTURAL_DOOR_LEAF",
+      "sensor_source_bucket": "kv2/kinect2data",
+      "source_image_size_wh": [
+        730,
+        530
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms a large open white room-door leaf at right with its round knob visible.",
+      "canonical_source_path": "SUNRGBD/xtion/sun3ddata/home_pt/home_pt_scan1_2012_oct_19/0002046-000068540220",
+      "capture_sequence_id": "SUNRGBD/xtion/sun3ddata/home_pt/home_pt_scan1_2012_oct_19",
+      "files": {
+        "depth": {
+          "bytes": 105361,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/xtion/sun3ddata/home_pt/home_pt_scan1_2012_oct_19/0002046-000068540220/depth/0002054-000068525874.png",
+          "path": "SUNRGBD/xtion/sun3ddata/home_pt/home_pt_scan1_2012_oct_19/0002046-000068540220/depth/0002054-000068525874.png",
+          "sha256": "63e3df41c25753ebecb73715c8b5149acbcd6079850c7ba1a4597a43ef5cc53d"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/xtion/sun3ddata/home_pt/home_pt_scan1_2012_oct_19/0002046-000068540220/intrinsics.txt",
+          "path": "SUNRGBD/xtion/sun3ddata/home_pt/home_pt_scan1_2012_oct_19/0002046-000068540220/intrinsics.txt",
+          "sha256": "0e11a8aee9c9a74a1b3317476bf72a216fd88266f4e692baa71f90fdb2360963"
+        },
+        "polygon": {
+          "bytes": 2193,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/xtion/sun3ddata/home_pt/home_pt_scan1_2012_oct_19/0002046-000068540220/annotation2Dfinal/index.json",
+          "path": "SUNRGBD/xtion/sun3ddata/home_pt/home_pt_scan1_2012_oct_19/0002046-000068540220/annotation2Dfinal/index.json",
+          "sha256": "d259e079962bd17e58717fbc57326fcd319ee090a310b470eef7b1e1a93aa2d7"
+        },
+        "rgb": {
+          "bytes": 31005,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/xtion/sun3ddata/home_pt/home_pt_scan1_2012_oct_19/0002046-000068540220/image/0002046-000068540220.jpg",
+          "path": "SUNRGBD/xtion/sun3ddata/home_pt/home_pt_scan1_2012_oct_19/0002046-000068540220/image/0002046-000068540220.jpg",
+          "sha256": "1449de44c11ecb8ef3ff95893643aad63e4c88543c5636fa40b65cecba63080e"
+        },
+        "scene_metadata": {
+          "bytes": 8,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/xtion/sun3ddata/home_pt/home_pt_scan1_2012_oct_19/0002046-000068540220/scene.txt",
+          "path": "SUNRGBD/xtion/sun3ddata/home_pt/home_pt_scan1_2012_oct_19/0002046-000068540220/scene.txt",
+          "sha256": "fd09da605e5804b35ee408d27c1bed7c7932a1af861948e042283615be0bd3d0"
+        }
+      },
+      "frame_id": "0002046-000068540220",
+      "index": 2,
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "supporting_object_names": [
+          "door"
+        ]
+      },
+      "role": "ARCHITECTURAL_DOOR_LEAF",
+      "sensor_source_bucket": "xtion/sun3ddata",
+      "source_image_size_wh": [
+        591,
+        441
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms a near-full-height open wooden architectural leaf at left with a round knob and visible hinges.",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/000919_2014-06-09_22-47-08_260595134347_rgbf000081-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/000919_2014-06-09_22-47-08_260595134347",
+      "files": {
+        "depth": {
+          "bytes": 311424,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/000919_2014-06-09_22-47-08_260595134347_rgbf000081-resize/depth/0000081.png",
+          "path": "SUNRGBD/kv2/kinect2data/000919_2014-06-09_22-47-08_260595134347_rgbf000081-resize/depth/0000081.png",
+          "sha256": "07aee35729844dfd1c5384cd93b2e7ad36955375fc0baa35b6ed6ab768fce8d2"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/000919_2014-06-09_22-47-08_260595134347_rgbf000081-resize/intrinsics.txt",
+          "path": "SUNRGBD/kv2/kinect2data/000919_2014-06-09_22-47-08_260595134347_rgbf000081-resize/intrinsics.txt",
+          "sha256": "22c236c26f5e1c8cda15b4c7de7f78720c857198583985843e2c8ef9a9c6d6b4"
+        },
+        "polygon": {
+          "bytes": 3433,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/000919_2014-06-09_22-47-08_260595134347_rgbf000081-resize/annotation2Dfinal/index.json",
+          "path": "SUNRGBD/kv2/kinect2data/000919_2014-06-09_22-47-08_260595134347_rgbf000081-resize/annotation2Dfinal/index.json",
+          "sha256": "9b6a7b6cb4cbe080bc7e02a9e3a3a5ba1ecb2c1206fce19551bcffb1ef537ae2"
+        },
+        "rgb": {
+          "bytes": 43394,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/000919_2014-06-09_22-47-08_260595134347_rgbf000081-resize/image/0000081.jpg",
+          "path": "SUNRGBD/kv2/kinect2data/000919_2014-06-09_22-47-08_260595134347_rgbf000081-resize/image/0000081.jpg",
+          "sha256": "ac956a1c56e77a95cca36540a2e9c88d198a1a1eb541f27a17e1e064b42689ce"
+        },
+        "scene_metadata": {
+          "bytes": 7,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/000919_2014-06-09_22-47-08_260595134347_rgbf000081-resize/scene.txt",
+          "path": "SUNRGBD/kv2/kinect2data/000919_2014-06-09_22-47-08_260595134347_rgbf000081-resize/scene.txt",
+          "sha256": "3171d89ad00530ffa19a244f040e9401a657903cbbbca724996b90a56df2c189"
+        }
+      },
+      "frame_id": "rgbf000081-resize",
+      "index": 3,
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "supporting_object_names": [
+          "door"
+        ]
+      },
+      "role": "ARCHITECTURAL_DOOR_LEAF",
+      "sensor_source_bucket": "kv2/kinect2data",
+      "source_image_size_wh": [
+        730,
+        530
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms a full closed wooden restroom door leaf with a vertical pull and visible hinges.",
+      "canonical_source_path": "SUNRGBD/xtion/sun3ddata/brown_cogsci_8/brown_cogsci_8/0000925-000031169880",
+      "capture_sequence_id": "SUNRGBD/xtion/sun3ddata/brown_cogsci_8/brown_cogsci_8",
+      "files": {
+        "depth": {
+          "bytes": 124846,
+          "local_path": "sunrgbd-pixel-door-part-audit-pool-v1/SUNRGBD/xtion/sun3ddata/brown_cogsci_8/brown_cogsci_8/0000925-000031169880/depth/0000928-000031182024.png",
+          "path": "SUNRGBD/xtion/sun3ddata/brown_cogsci_8/brown_cogsci_8/0000925-000031169880/depth/0000928-000031182024.png",
+          "sha256": "48c53ab10fbd215be3345fada9afc22a29bfe13e7b07d32f92e036702a99c50a"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "local_path": "sunrgbd-pixel-door-part-audit-pool-v1/SUNRGBD/xtion/sun3ddata/brown_cogsci_8/brown_cogsci_8/0000925-000031169880/intrinsics.txt",
+          "path": "SUNRGBD/xtion/sun3ddata/brown_cogsci_8/brown_cogsci_8/0000925-000031169880/intrinsics.txt",
+          "sha256": "0e11a8aee9c9a74a1b3317476bf72a216fd88266f4e692baa71f90fdb2360963"
+        },
+        "polygon": {
+          "bytes": 1529,
+          "local_path": "sunrgbd-pixel-door-part-audit-pool-v1/SUNRGBD/xtion/sun3ddata/brown_cogsci_8/brown_cogsci_8/0000925-000031169880/annotation2Dfinal/index.json",
+          "path": "SUNRGBD/xtion/sun3ddata/brown_cogsci_8/brown_cogsci_8/0000925-000031169880/annotation2Dfinal/index.json",
+          "sha256": "824c0cadc9ce51ea1f0ffd0ba2768239fc869a5bba58255eab4a97e400c31cf5"
+        },
+        "rgb": {
+          "bytes": 21151,
+          "local_path": "sunrgbd-pixel-door-part-audit-pool-v1/SUNRGBD/xtion/sun3ddata/brown_cogsci_8/brown_cogsci_8/0000925-000031169880/image/0000925-000031169880.jpg",
+          "path": "SUNRGBD/xtion/sun3ddata/brown_cogsci_8/brown_cogsci_8/0000925-000031169880/image/0000925-000031169880.jpg",
+          "sha256": "134f2e73824482077a582a3d0d398d86d444c155b52312c6a0c17c05b310e861"
+        },
+        "scene_metadata": {
+          "bytes": 8,
+          "local_path": "sunrgbd-pixel-door-part-audit-pool-v1/SUNRGBD/xtion/sun3ddata/brown_cogsci_8/brown_cogsci_8/0000925-000031169880/scene.txt",
+          "path": "SUNRGBD/xtion/sun3ddata/brown_cogsci_8/brown_cogsci_8/0000925-000031169880/scene.txt",
+          "sha256": "3486577cd905f87072a2d812114b5c5c73009e26e2f99d9057f6f719e0859401"
+        }
+      },
+      "frame_id": "0000925-000031169880",
+      "index": 4,
+      "official_evidence": {
+        "annotation_prefilter": "EXACT_DOOR",
+        "supporting_object_names": [
+          "door"
+        ]
+      },
+      "role": "ARCHITECTURAL_DOOR_LEAF",
+      "sensor_source_bucket": "xtion/sun3ddata",
+      "source_image_size_wh": [
+        591,
+        441
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms an antique desk and cabinet face with multiple metal pulls and no architectural door leaf.",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/001637_2014-06-20_11-44-48_260595134347_rgbf000051-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/001637_2014-06-20_11-44-48_260595134347",
+      "files": {
+        "depth": {
+          "bytes": 318533,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/001637_2014-06-20_11-44-48_260595134347_rgbf000051-resize/depth/0000051.png",
+          "path": "SUNRGBD/kv2/kinect2data/001637_2014-06-20_11-44-48_260595134347_rgbf000051-resize/depth/0000051.png",
+          "sha256": "4413ba8d6b810f02100c05e9128658af45ac6675ced1d2d34331f257641b98b0"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/001637_2014-06-20_11-44-48_260595134347_rgbf000051-resize/intrinsics.txt",
+          "path": "SUNRGBD/kv2/kinect2data/001637_2014-06-20_11-44-48_260595134347_rgbf000051-resize/intrinsics.txt",
+          "sha256": "22c236c26f5e1c8cda15b4c7de7f78720c857198583985843e2c8ef9a9c6d6b4"
+        },
+        "polygon": {
+          "bytes": 2634,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/001637_2014-06-20_11-44-48_260595134347_rgbf000051-resize/annotation2Dfinal/index.json",
+          "path": "SUNRGBD/kv2/kinect2data/001637_2014-06-20_11-44-48_260595134347_rgbf000051-resize/annotation2Dfinal/index.json",
+          "sha256": "8a39858fffbda2cf5193d74b2e48dfccc68572447cb6ea307f786d4cbb97c129"
+        },
+        "rgb": {
+          "bytes": 41488,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/001637_2014-06-20_11-44-48_260595134347_rgbf000051-resize/image/0000051.jpg",
+          "path": "SUNRGBD/kv2/kinect2data/001637_2014-06-20_11-44-48_260595134347_rgbf000051-resize/image/0000051.jpg",
+          "sha256": "ddf6c7f5c0096aca36ad4fddbb0ac5e51136d65ba93b6f1535d02589986fb000"
+        },
+        "scene_metadata": {
+          "bytes": 5,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/001637_2014-06-20_11-44-48_260595134347_rgbf000051-resize/scene.txt",
+          "path": "SUNRGBD/kv2/kinect2data/001637_2014-06-20_11-44-48_260595134347_rgbf000051-resize/scene.txt",
+          "sha256": "4b5dc076e7b9c122b3c89121a9710fc73b490d48e1ff3661557919175e505633"
+        }
+      },
+      "frame_id": "rgbf000051-resize",
+      "index": 5,
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": [
+          "Cabinet",
+          "Table"
+        ]
+      },
+      "role": "HANDLED_FURNITURE_CONTROL",
+      "sensor_source_bucket": "kv2/kinect2data",
+      "source_image_size_wh": [
+        730,
+        530
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms dishwasher, cabinet, and drawer fronts with clear pulls and no architectural door leaf.",
+      "canonical_source_path": "SUNRGBD/realsense/lg/2014_10_24-13_25_14-1311000073",
+      "capture_sequence_id": "SUNRGBD/realsense/lg/2014_10_24-13_25_14-1311000073",
+      "files": {
+        "depth": {
+          "bytes": 185492,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/realsense/lg/2014_10_24-13_25_14-1311000073/depth/0000063.png",
+          "path": "SUNRGBD/realsense/lg/2014_10_24-13_25_14-1311000073/depth/0000063.png",
+          "sha256": "9701acdb5702a8fda9a107c8be3c7db249e0889eb1aad5612743686aab91342e"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/realsense/lg/2014_10_24-13_25_14-1311000073/intrinsics.txt",
+          "path": "SUNRGBD/realsense/lg/2014_10_24-13_25_14-1311000073/intrinsics.txt",
+          "sha256": "fc925577bc6e32fe31b67e1134a051ada71ef847e6c6bc2648cb909217b6caa7"
+        },
+        "polygon": {
+          "bytes": 4895,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/realsense/lg/2014_10_24-13_25_14-1311000073/annotation2Dfinal/index.json",
+          "path": "SUNRGBD/realsense/lg/2014_10_24-13_25_14-1311000073/annotation2Dfinal/index.json",
+          "sha256": "bc3ba5520530ceb70ec400e9c3645639e7d4d3db77e6cc15828a2d10d2267752"
+        },
+        "rgb": {
+          "bytes": 39499,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/realsense/lg/2014_10_24-13_25_14-1311000073/image/0000063.jpg",
+          "path": "SUNRGBD/realsense/lg/2014_10_24-13_25_14-1311000073/image/0000063.jpg",
+          "sha256": "0b396319b7cb1ebaff89950d693f486eb0d7111a6547971f3b58755c7c4939f7"
+        },
+        "scene_metadata": {
+          "bytes": 13,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/realsense/lg/2014_10_24-13_25_14-1311000073/scene.txt",
+          "path": "SUNRGBD/realsense/lg/2014_10_24-13_25_14-1311000073/scene.txt",
+          "sha256": "ce6ba13155936405edd828e17835b7681ca583a58f5a02fb2d8db7794e59b11a"
+        }
+      },
+      "frame_id": "2014_10_24-13_25_14-1311000073",
+      "index": 6,
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": [
+          "DISHWASHER",
+          "cabinet",
+          "drawer"
+        ]
+      },
+      "role": "HANDLED_FURNITURE_CONTROL",
+      "sensor_source_bucket": "realsense/lg",
+      "source_image_size_wh": [
+        681,
+        531
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms a large rectangular wall opening behind sofas with no spanning door leaf or operation part.",
+      "canonical_source_path": "SUNRGBD/kv2/kinect2data/002165_2014-06-28_18-27-32_260595134347_rgbf000031-resize",
+      "capture_sequence_id": "SUNRGBD/kv2/kinect2data/002165_2014-06-28_18-27-32_260595134347",
+      "files": {
+        "depth": {
+          "bytes": 285785,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/002165_2014-06-28_18-27-32_260595134347_rgbf000031-resize/depth/0000031.png",
+          "path": "SUNRGBD/kv2/kinect2data/002165_2014-06-28_18-27-32_260595134347_rgbf000031-resize/depth/0000031.png",
+          "sha256": "d6f275c24ce1652414a6ac969f263a34884bf7be05c94b389c1771f5ac6a826e"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/002165_2014-06-28_18-27-32_260595134347_rgbf000031-resize/intrinsics.txt",
+          "path": "SUNRGBD/kv2/kinect2data/002165_2014-06-28_18-27-32_260595134347_rgbf000031-resize/intrinsics.txt",
+          "sha256": "22c236c26f5e1c8cda15b4c7de7f78720c857198583985843e2c8ef9a9c6d6b4"
+        },
+        "polygon": {
+          "bytes": 1888,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/002165_2014-06-28_18-27-32_260595134347_rgbf000031-resize/annotation2Dfinal/index.json",
+          "path": "SUNRGBD/kv2/kinect2data/002165_2014-06-28_18-27-32_260595134347_rgbf000031-resize/annotation2Dfinal/index.json",
+          "sha256": "ceb6589e4d17cc4e1251ba2478fc07166756bec429d9136f276bba46cefa56e9"
+        },
+        "rgb": {
+          "bytes": 38671,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/002165_2014-06-28_18-27-32_260595134347_rgbf000031-resize/image/0000031.jpg",
+          "path": "SUNRGBD/kv2/kinect2data/002165_2014-06-28_18-27-32_260595134347_rgbf000031-resize/image/0000031.jpg",
+          "sha256": "324e3a00cada5a605af294efee40c4d4e9a5b2061b06d29e496de0515180b809"
+        },
+        "scene_metadata": {
+          "bytes": 10,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/kv2/kinect2data/002165_2014-06-28_18-27-32_260595134347_rgbf000031-resize/scene.txt",
+          "path": "SUNRGBD/kv2/kinect2data/002165_2014-06-28_18-27-32_260595134347_rgbf000031-resize/scene.txt",
+          "sha256": "1afbccf7bdda1edd90afde2395d0b5c8bfd4c8fb9e41687218d74c04c65136e3"
+        }
+      },
+      "frame_id": "rgbf000031-resize",
+      "index": 7,
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": [
+          "opening"
+        ]
+      },
+      "role": "LARGE_DOORLESS_OPENING_CONTROL",
+      "sensor_source_bucket": "kv2/kinect2data",
+      "source_image_size_wh": [
+        730,
+        530
+      ]
+    },
+    {
+      "audit_note": "Human RGB audit confirms a wide open stair passage with no spanning door leaf or operation part; this is an open-passage control, not a strict four-sided doorway.",
+      "canonical_source_path": "SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge3_1/0000234-000007839493",
+      "capture_sequence_id": "SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge3_1",
+      "files": {
+        "depth": {
+          "bytes": 161171,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge3_1/0000234-000007839493/depth/0000236-000007841774.png",
+          "path": "SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge3_1/0000234-000007839493/depth/0000236-000007841774.png",
+          "sha256": "06dbf0277c35df1aa5870f5265f1a1da029da0cead26d06313af4acaaee86ec5"
+        },
+        "intrinsics": {
+          "bytes": 89,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge3_1/0000234-000007839493/intrinsics.txt",
+          "path": "SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge3_1/0000234-000007839493/intrinsics.txt",
+          "sha256": "0e11a8aee9c9a74a1b3317476bf72a216fd88266f4e692baa71f90fdb2360963"
+        },
+        "polygon": {
+          "bytes": 2132,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge3_1/0000234-000007839493/annotation2Dfinal/index.json",
+          "path": "SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge3_1/0000234-000007839493/annotation2Dfinal/index.json",
+          "sha256": "ce7bd1b9b2a097bfa738a9de2ac90ee8f2103def507ac7e2820964602d2bb9ab"
+        },
+        "rgb": {
+          "bytes": 33737,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge3_1/0000234-000007839493/image/0000234-000007839493.jpg",
+          "path": "SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge3_1/0000234-000007839493/image/0000234-000007839493.jpg",
+          "sha256": "60549214b6f941b3e5e456a6b9ba7d02ef7a1b618d490c785a7a2b218d6a9bc6"
+        },
+        "scene_metadata": {
+          "bytes": 8,
+          "local_path": "sunrgbd-metric-portal-closure-audit-pool-v1/SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge3_1/0000234-000007839493/scene.txt",
+          "path": "SUNRGBD/xtion/sun3ddata/harvard_corridor_lounge/hv_lounge3_1/0000234-000007839493/scene.txt",
+          "sha256": "fd09da605e5804b35ee408d27c1bed7c7932a1af861948e042283615be0bd3d0"
+        }
+      },
+      "frame_id": "0000234-000007839493",
+      "index": 8,
+      "official_evidence": {
+        "annotation_prefilter": "NO_EXACT_DOOR",
+        "supporting_object_names": [
+          "stairs",
+          "opening"
+        ]
+      },
+      "role": "LARGE_DOORLESS_OPENING_CONTROL",
+      "sensor_source_bucket": "xtion/sun3ddata",
+      "source_image_size_wh": [
+        591,
+        441
+      ]
+    }
+  ],
+  "freshness": {
+    "prior_cohorts": [
+      {
+        "bytes": 19274,
+        "path": "research/active/l10-r0/named_poi_metric_portal_closure_development_cohort_v1.json",
+        "sha256": "684946f75b19f8af97121145135bb7a2736cc0810dd37276dc8b29a4b5eda3bb"
+      },
+      {
+        "bytes": 13865,
+        "path": "research/active/l10-r0/named_poi_door_part_topology_development_cohort_v1.json",
+        "sha256": "edb68294941c617d4c20f5a502065685f593b6faf221106bc3613dd5df91f71e"
+      },
+      {
+        "bytes": 13887,
+        "path": "research/active/l10-r0/named_poi_florence_pixel_part_topology_development_cohort_v1.json",
+        "sha256": "6e4de32805a2e8d166994bd0adbd9ad127410c4f85961220f4ad01045a0e0900"
+      },
+      {
+        "bytes": 17474,
+        "path": "research/active/l10-r0/named_poi_yoloe_multiscale_part_topology_development_cohort_v1.json",
+        "sha256": "aded42ce06863c9fa9de6fb164dde739e4ec890f505a92c3019a10669d224c90"
+      },
+      {
+        "bytes": 18187,
+        "path": "research/active/l10-r0/named_poi_grounded_sam_multiscale_part_topology_development_cohort_v1.json",
+        "sha256": "c88cd328af96ea3c02f5c711c3a7ca3aadcc043f960c36fa019e87d585affe26"
+      },
+      {
+        "bytes": 24748,
+        "path": "research/active/l10-r0/named_poi_sam3_native_part_topology_development_cohort_v1.json",
+        "sha256": "6b383da2f8c9f7d0ad064f53a375bd9d0c102504e74eaaff0512750a76200811"
+      }
+    ],
+    "prior_distinct_capture_sequences": 48,
+    "selected_distinct_capture_sequences": 8,
+    "selected_prior_overlap": [],
+    "selected_prior_overlap_count": 0,
+    "selection_happened_before_any_pb17_cohort_model_output": true
+  },
+  "frozen_at": "2026-08-29T23:19:54.727834+08:00",
+  "model": {
+    "model_safetensors": {
+      "bytes": 3439938512,
+      "path": "artifacts.local/models/sam3-modelscope/model.safetensors",
+      "sha256": "6d06f0a5f84e435071fe6603e61d0b4cc7b40e0d39d487cfd4d67d8cc11cc14a"
+    },
+    "repository": "facebook/sam3",
+    "repository_commit": "96f3e1b404ba14f2cfac60ee6ae87c269a7b7923"
+  },
+  "protocol": {
+    "schema": "l10-named-poi-sam3-official-door-state-protocol-v1",
+    "sha256": "09a4d85f8956379a66be95ee1d0efe19f340625caf1a838e3510a15a02ef7828"
+  },
+  "roles": {
+    "ARCHITECTURAL_DOOR_LEAF": 4,
+    "HANDLED_FURNITURE_CONTROL": 2,
+    "LARGE_DOORLESS_OPENING_CONTROL": 2
+  },
+  "schema": "l10-named-poi-sam3-official-door-state-cohort-v1",
+  "source": {
+    "authority": "Official extracted RGB/depth/intrinsics/scene/polygon members with frozen byte and SHA-256 receipts; human RGB audit determines the generic door-state role.",
+    "dataset": "SUN RGB-D",
+    "local_root": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets",
+    "model_input": "RGB only"
+  },
+  "status": "FROZEN_BEFORE_MODEL_OUTPUT"
+}

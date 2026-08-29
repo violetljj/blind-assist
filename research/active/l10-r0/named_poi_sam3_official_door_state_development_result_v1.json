@@ -1,0 +1,113 @@
+{
+  "schema": "l10-named-poi-sam3-official-door-state-development-partial-adjudication-v1",
+  "experiment": "L10-PB17 Official SAM3 Direct Door-State Source Ceiling",
+  "recorded_at": "2026-08-29T23:37:00+08:00",
+  "status": "DEVELOPMENT_GATE_NOT_MET_WITH_PARTIAL_OUTPUT_CONTRACT_ADJUDICATION",
+  "decision": "L10_PB17_OFFICIAL_SAM3_DOOR_STATE_DEVELOPMENT_GATE_NOT_MET",
+  "inputs": {
+    "protocol": {
+      "path": "research/active/l10-r0/named_poi_sam3_official_door_state_protocol_v1.json",
+      "bytes": 10832,
+      "sha256": "09a4d85f8956379a66be95ee1d0efe19f340625caf1a838e3510a15a02ef7828"
+    },
+    "cohort": {
+      "path": "research/active/l10-r0/named_poi_sam3_official_door_state_development_cohort_v1.json",
+      "bytes": 26345,
+      "sha256": "f188043559d65edca030c80ec30ade743b63325691fe9bee4b42138045f61de4",
+      "status": "FROZEN_BEFORE_MODEL_OUTPUT",
+      "consumed": true
+    },
+    "evaluator": {
+      "path": "research/active/l10-r0/named_poi_sam3_official_door_state.py",
+      "sha256": "e5318c7a3e9b6593a29c6ca5f488b9c43342b81100a1a0c53b36f3eaa8b57168"
+    },
+    "synthetic_smoke": {
+      "path": "artifacts.local/models/sam3-modelscope/pb17_official_transformers_image_smoke_receipt_v1.json",
+      "sha256": "130fcb6f227187e002f852ffa1ad53ec3552779cea68990ed2b00660077efe62",
+      "status": "PASS"
+    },
+    "model": {
+      "repository": "facebook/sam3",
+      "mirror_repository_commit": "96f3e1b404ba14f2cfac60ee6ae87c269a7b7923",
+      "model_safetensors_bytes": 3439938512,
+      "model_safetensors_sha256": "6d06f0a5f84e435071fe6603e61d0b4cc7b40e0d39d487cfd4d67d8cc11cc14a",
+      "transformers": "5.14.1"
+    }
+  },
+  "preflight": {
+    "status": "PASS",
+    "verified_local_members": 40,
+    "verified_local_member_bytes": 2120174,
+    "selected_capture_sequences": 8,
+    "prior_pb11_through_pb16_distinct_capture_sequences": 48,
+    "selected_prior_overlap": [],
+    "cohort_images_decoded": 0,
+    "model_calls": 0
+  },
+  "execution_history": [
+    {
+      "attempt": 1,
+      "status": "ABORTED_AFTER_COHORT_MODEL_OUTPUT_BEFORE_RESULT_WRITE",
+      "frame_index": 1,
+      "frame_role": "ARCHITECTURAL_DOOR_LEAF",
+      "completed_model_calls_before_abort": {
+        "image_encoding_calls": 1,
+        "text_conditioned_calls": 1,
+        "text": "door"
+      },
+      "error": "MASK_SIZE_DIFFERS_FROM_SOURCE_IMAGE_AT_FRAME_1",
+      "raw_model_outputs_persisted": false,
+      "formal_result_written_by_evaluator": false
+    }
+  ],
+  "post_run_integrity_adjudication": {
+    "model_was_not_rerun": true,
+    "cohort_rgb_was_not_changed": true,
+    "prompt_threshold_or_gate_was_not_changed": true,
+    "processor_input_metadata_only": {
+      "pil_size_wh": [
+        730,
+        530
+      ],
+      "processor_original_sizes_hw": [
+        [
+          530,
+          730
+        ]
+      ],
+      "pixel_values_shape": [
+        1,
+        3,
+        1008,
+        1008
+      ]
+    },
+    "official_postprocessor_mechanism": "Transformers 5.14.1 filters masks by score, resizes to target_sizes whenever the retained count is positive, and leaves the native spatial shape only when the retained count is zero.",
+    "mechanical_implication": "Because target_sizes was exactly [530,730] and the frozen assertion nevertheless observed a different spatial shape, the first positive frame retained zero instances for the exact text door at confidence 0.5.",
+    "gate_implication": "The preregistered gate required door-mask presence on all 4/4 positives. One mechanically established positive miss makes that conjunction false regardless of every unobserved row.",
+    "critical_transformers_source": {
+      "path": "E:/codex-tools/tools/venvs/blindassist-torch-gpu/Lib/site-packages/transformers/models/sam3/image_processing_sam3.py",
+      "bytes": 40263,
+      "sha256": "7a6a4e9da557c8d7008393d60328b490db7bac99461fc2f4b21fb0d5ff935053"
+    }
+  },
+  "metrics": {
+    "fully_adjudicated_frames": 0,
+    "aggregate_confusion_matrix": null,
+    "balanced_accuracy": null,
+    "mechanically_established_positive_misses_at_least": 1,
+    "four_of_four_positive_presence": false
+  },
+  "gate": {
+    "development_gate_met": false,
+    "reason": "The exact door prompt retained zero instances on the first positive, so the required 4/4 positive conjunction is impossible.",
+    "aggregate_metrics_evaluable": false
+  },
+  "route_disposition": {
+    "exact_original_sam3_direct_door_representation_closed_on_this_cohort": true,
+    "cohort_may_be_rerun": false,
+    "empty-output-contract_or_prompt_rescue_on_consumed_pixels_forbidden": true,
+    "next_admissible_action": "Change the information source or representation and use a fresh cohort; do not repair the empty-mask shape assertion and rerun PB17."
+  },
+  "claim_boundary": "PB17 establishes only that the frozen original-SAM3 direct-door Development gate was not met because at least one fresh positive retained no door instance. It does not provide a complete confusion matrix or balanced accuracy, and it is not source-disjoint Confirmation, portal completeness, named-target ownership, access, traversability, active-view, guidance, arrival, product, user-benefit, or safety evidence."
+}

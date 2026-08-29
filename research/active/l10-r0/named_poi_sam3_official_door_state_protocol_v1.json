@@ -1,0 +1,238 @@
+{
+  "claim_boundary": "PB17 is a current-frame RGB Development-only generic door-state source ceiling. Even a gate pass is not source-disjoint Confirmation, functional portal-set completeness, exact named-target ownership, public access, open/closed actuation state, metric traversability, active-view causality, temporal persistence, guidance quality, arrival, product benefit, user benefit, or safety evidence.",
+  "cohort_freeze": {
+    "architectural_door_leaf_positives": 4,
+    "distinct_capture_sequences_required": 8,
+    "handled_furniture_controls": 2,
+    "large_doorless_opening_controls": 2,
+    "rows": 8,
+    "selection": "Human RGB audit plus official SUN RGB-D metadata only; no PB17 model output.",
+    "sequence_disjoint_from": "PB11 through PB16"
+  },
+  "created_at": "2026-08-29T23:19:54.727834+08:00",
+  "execution_readiness_at_freeze": {
+    "blockers": [],
+    "human_rgb_audit_completed_before_freeze": true,
+    "no_pb17_cohort_model_output_was_observed_before_freeze": true,
+    "ready": true,
+    "synthetic_smoke_corrections": [
+      "The first synthetic-only run rejected the official binary mask because it expected torch.bool while the processor returns binary torch.int64; the contract was corrected to require only values in {0,1}.",
+      "The second synthetic-only run reached valid inference but the temporary receipt serializer encountered set-valued loading metadata; serialization was normalized to lists."
+    ],
+    "synthetic_smoke_only_before_formal_freeze": true,
+    "synthetic_smoke_receipt": {
+      "bytes": 2884,
+      "path": "artifacts.local/models/sam3-modelscope/pb17_official_transformers_image_smoke_receipt_v1.json",
+      "sha256": "130fcb6f227187e002f852ffa1ad53ec3552779cea68990ed2b00660077efe62",
+      "status": "PASS"
+    }
+  },
+  "experiment": "L10-PB17 Official SAM3 Direct Door-State Source Ceiling",
+  "forbidden_rescue": [
+    "prompt wording or class changes",
+    "confidence or mask-threshold sweeps",
+    "image crop, resolution, scale, tiling, or batch changes",
+    "checkpoint, dtype, processor, or Transformers revision changes",
+    "using diagnostic competitors as a post-result veto",
+    "box, mask, area, component, topology, or assignment rescue",
+    "rerunning any PB11-PB17 consumed cohort"
+  ],
+  "gate": {
+    "development_promotion": "Exactly 4/4 architectural-door positives contain a nonempty door mask, exactly 0/2 handled-furniture controls and 0/2 large-doorless-opening controls contain a door mask, and balanced accuracy is exactly 1.0.",
+    "fail": "Close this exact original-SAM3 direct-door representation on the frozen cohort; do not tune prompt wording, confidence, mask threshold, image preprocessing, dtype, cap, diagnostic competitors, or postprocessing on these pixels.",
+    "pass": "Freeze this exact direct door-state source and run one fresh source-disjoint confirmation cohort before any active-view or arrival claim."
+  },
+  "image_input": {
+    "depth_used_for_inference": false,
+    "intrinsics_used_for_inference": false,
+    "modality": "current full-frame RGB only",
+    "one_vision_encode_per_frame": true,
+    "polygon_annotations_used_for_inference": false,
+    "vision_embedding_reused_for_every_text_prompt": true
+  },
+  "inference": {
+    "authorization": "AT_LEAST_ONE_NONEMPTY_NATIVE_MASK_FOR_EXACT_TEXT_DOOR",
+    "boxes_used_for_authorization": false,
+    "competitor_prompts": "DIAGNOSTIC_ONLY_NO_VETO_NO_RESCUE",
+    "confidence_threshold": 0.5,
+    "empty_masks": "DISCARDED_WITH_RECEIPT",
+    "mask_threshold": 0.5,
+    "maximum_instances_per_prompt": 12,
+    "prompts_in_order": [
+      {
+        "class_id": "architectural_leaf",
+        "text": "door"
+      },
+      {
+        "class_id": "cabinet_door",
+        "text": "cabinet door"
+      },
+      {
+        "class_id": "closet_door",
+        "text": "closet door"
+      },
+      {
+        "class_id": "refrigerator_door",
+        "text": "refrigerator door"
+      },
+      {
+        "class_id": "doorless_opening",
+        "text": "doorway"
+      }
+    ],
+    "stable_order": "DESCENDING_SCORE_THEN_NATIVE_INDEX",
+    "topology_or_assignment_used": false
+  },
+  "information_change": {
+    "checkpoint_and_api": "Original facebook/sam3 model.safetensors through official transformers.Sam3Model and Sam3Processor, with strict loading receipt and official get_vision_features reuse.",
+    "semantic_observable": "Direct current-frame native instance masks for the simple noun door; no mandatory small operation-part observation and no parent-child matcher.",
+    "why_not_prompt_rescue": "PB16 is not rerun. The checkpoint, API, semantic observable, decision rule, and all eight capture sequences change together before any PB17 cohort model output."
+  },
+  "metrics": [
+    "architectural-door positive recall",
+    "handled-furniture false-positive rate",
+    "large-doorless-opening false-positive rate",
+    "true-negative rate",
+    "balanced accuracy",
+    "native instance counts by frozen diagnostic class"
+  ],
+  "model": {
+    "files": {
+      "config": {
+        "bytes": 26739,
+        "path": "artifacts.local/models/sam3-modelscope/config.json",
+        "sha256": "9593725533302a100d8e4ff1e29c0799e5a04c696b76c65fa4ee28dcd036b16b"
+      },
+      "license": {
+        "bytes": 7412,
+        "path": "artifacts.local/models/sam3-modelscope/LICENSE",
+        "sha256": "a6b0b9c66ac38752bb9481468e8d738c80742fef988b93bceac8be1a15f66ed9"
+      },
+      "merges": {
+        "bytes": 573514,
+        "path": "artifacts.local/models/sam3-modelscope/merges.txt",
+        "sha256": "0bc7695944744789d6fd6d0ab754bcbbb9e36f1c182df0a006d619ce70a1e052"
+      },
+      "model": {
+        "bytes": 3439938512,
+        "path": "artifacts.local/models/sam3-modelscope/model.safetensors",
+        "sha256": "6d06f0a5f84e435071fe6603e61d0b4cc7b40e0d39d487cfd4d67d8cc11cc14a"
+      },
+      "processor_config": {
+        "bytes": 1792,
+        "path": "artifacts.local/models/sam3-modelscope/processor_config.json",
+        "sha256": "d76e8fbdc561ba6af3b44937b7e99a433440cb0251ff11237b0b7d0654dd8474"
+      },
+      "special_tokens_map": {
+        "bytes": 618,
+        "path": "artifacts.local/models/sam3-modelscope/special_tokens_map.json",
+        "sha256": "21abc4f322cffab753eee2a06eb5456acf0f25e34ac71f83e0b98f57c41b4d44"
+      },
+      "tokenizer": {
+        "bytes": 3642073,
+        "path": "artifacts.local/models/sam3-modelscope/tokenizer.json",
+        "sha256": "6d9109cc838977f3ca94a379eec36aecc7c807e1785cd729660ca2fc0171fb35"
+      },
+      "tokenizer_config": {
+        "bytes": 832,
+        "path": "artifacts.local/models/sam3-modelscope/tokenizer_config.json",
+        "sha256": "a3579e101e01488d4dfdb655b8972eabc384fc218951caabf8c70e25276cbf07"
+      },
+      "vocab": {
+        "bytes": 862328,
+        "path": "artifacts.local/models/sam3-modelscope/vocab.json",
+        "sha256": "5047b556ce86ccaf6aa22b3ffccfc52d391ea4accdab9c2f2407da5b742d4363"
+      }
+    },
+    "license": "SAM License; internal research only under previously asserted acceptance",
+    "load": {
+      "device": "cuda",
+      "eval_mode": true,
+      "local_files_only": true,
+      "model_class": "transformers.Sam3Model",
+      "output_loading_info": true,
+      "processor_class": "transformers.Sam3Processor",
+      "required_empty_loading_fields": [
+        "missing_keys",
+        "unexpected_keys",
+        "mismatched_keys",
+        "error_msgs"
+      ],
+      "tracker_instantiated": false,
+      "use_safetensors": true,
+      "video_predictor_instantiated": false
+    },
+    "mirror_repository": "https://www.modelscope.cn/facebook/sam3.git",
+    "repository": "facebook/sam3",
+    "repository_commit": "96f3e1b404ba14f2cfac60ee6ae87c269a7b7923",
+    "synthetic_mechanical_receipt": {
+      "critical_transformers_sources": [
+        {
+          "bytes": 102993,
+          "path": "E:\\codex-tools\\tools\\venvs\\blindassist-torch-gpu\\Lib\\site-packages\\transformers\\models\\sam3\\modeling_sam3.py",
+          "sha256": "856a5ca81a182b307485bd26a9402f39dda705e223e24976597983bc451fb5ea"
+        },
+        {
+          "bytes": 28781,
+          "path": "E:\\codex-tools\\tools\\venvs\\blindassist-torch-gpu\\Lib\\site-packages\\transformers\\models\\sam3\\processing_sam3.py",
+          "sha256": "7d32288ca4c9edac010891810294ed1c38643a992e6d799956a941ad91631538"
+        },
+        {
+          "bytes": 40263,
+          "path": "E:\\codex-tools\\tools\\venvs\\blindassist-torch-gpu\\Lib\\site-packages\\transformers\\models\\sam3\\image_processing_sam3.py",
+          "sha256": "7a6a4e9da557c8d7008393d60328b490db7bac99461fc2f4b21fb0d5ff935053"
+        }
+      ],
+      "parameter_count": 840376374,
+      "peak_allocated_bytes": 3928569856,
+      "peak_reserved_bytes": 4276092928,
+      "strict_loading": {
+        "error_msgs": [],
+        "mismatched_keys": [],
+        "missing_keys": [],
+        "unexpected_keys": []
+      }
+    }
+  },
+  "question": "Can the officially supported original SAM3 image model, prompted with the simple noun door, expose a nonempty architectural door-leaf mask on four fresh positives while remaining silent on handled furniture and large doorless openings?",
+  "runtime": {
+    "compile": false,
+    "cuda_runtime": "13.0",
+    "device": "cuda:0",
+    "distributions": {
+      "Pillow": "12.2.0",
+      "numpy": "2.4.4",
+      "safetensors": "0.8.0",
+      "tokenizers": "0.22.2",
+      "torch": "2.11.0+cu130",
+      "torchvision": "0.26.0+cu130",
+      "transformers": "5.14.1"
+    },
+    "environment": {
+      "BLINDASSIST_SAM_LICENSE_ACCEPTED": "1",
+      "HF_HUB_OFFLINE": "1",
+      "PYTHONNOUSERSITE": "1",
+      "TRANSFORMERS_OFFLINE": "1"
+    },
+    "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "gpu_memory_mib_min": 8000,
+    "inference_mode": true,
+    "launcher": {
+      "bytes": 444,
+      "path": "E:\\codex-tools\\bin\\blindassist-research-gpu.cmd",
+      "sha256": "3741ceb399ee4786cf0d84503757cf07e50e130b2a7edbd406db308bbb119294"
+    },
+    "model_dtype": "float32 parameters with CUDA BF16 autocast",
+    "offline": true,
+    "python": "3.11.9",
+    "python_executable": {
+      "bytes": 274712,
+      "path": "E:\\codex-tools\\tools\\venvs\\blindassist-torch-gpu\\Scripts\\python.exe",
+      "sha256": "21bb438c0d4a6f1f164b9a646f6ee000340185e5871180aec06db8d3f07c0082"
+    }
+  },
+  "schema": "l10-named-poi-sam3-official-door-state-protocol-v1",
+  "short_name": "PB17-ODS3",
+  "single_change_from_pb16": "Replace the custom SAM3.1 multiplex adapter and architectural-door-plus-child topology with the original SAM3 official Transformers image API and direct native-mask presence for the simple noun door. Cabinet, closet, refrigerator-door, and doorway prompts are frozen diagnostics only and cannot rescue authorization.",
+  "status": "FROZEN_BEFORE_FRESH_COHORT_MODEL_OUTPUT"
+}

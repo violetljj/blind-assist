@@ -918,6 +918,28 @@ confidence, caps, mask assignment, adapter, or topology on the consumed pixels.
 A successor must change the supported weight/API representation and parent
 semantic representation together, then use a fresh source-disjoint cohort.
 
+PB17 made both changes: it materialized the original `facebook/sam3`
+Safetensors checkpoint, used the official Transformers image API with reusable
+vision embeddings, and replaced parent-plus-child topology with direct native
+mask presence for the simple noun `door`. A synthetic-only smoke strictly loaded
+all weights with zero missing, unexpected, mismatched, or error keys; its peak
+CUDA allocation was `3,928,569,856` bytes. The formal cohort froze eight new
+capture sequences with zero overlap against the 48 PB11--PB16 sequences.
+
+The formal run stopped on the first positive after one image encode and one
+`door` call because the postprocessed mask tensor retained its native spatial
+shape rather than the frozen source-image shape. Input-only diagnosis confirmed
+the processor supplied the correct `[530,730]` target. The frozen Transformers
+implementation resizes every nonempty retained mask and leaves native shape only
+when the retained count is zero; therefore the first fresh positive had no
+`door` instance at confidence `0.5`. That single miss makes the required `4/4`
+positive conjunction impossible. Record
+`L10_PB17_OFFICIAL_SAM3_DOOR_STATE_DEVELOPMENT_GATE_NOT_MET`. No full confusion
+matrix or balanced accuracy is claimed. Do not repair the empty-mask assertion,
+prompt, threshold, processor, or postprocessing and rerun the consumed cohort.
+The next route must add genuinely different observable information on fresh
+pixels rather than try another open-vocabulary door phrasing.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

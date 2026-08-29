@@ -1741,6 +1741,32 @@ these pixels without changing concept wording, confidence, cap, mask assignment,
 adapter, or topology. A successor must change both supported weight/API and
 architectural-parent semantic representation on a fresh source-disjoint cohort.
 
+PB17 materialized the original `facebook/sam3` `model.safetensors` and
+`tokenizer.json`, then used the official Transformers image API rather than a
+custom source adapter. Its synthetic-only smoke loaded 840,376,374 parameters
+with zero missing, unexpected, mismatched, or error keys, reused one vision
+embedding for text, and peaked at `3,928,569,856` allocated and `4,276,092,928`
+reserved CUDA bytes. The formal representation removed mandatory operation-part
+evidence: a frame authorized exactly when the simple noun `door` returned at
+least one nonempty native mask. Four competitor prompts were diagnostic only and
+could not veto or rescue that decision.
+
+Eight new SUN RGB-D capture sequences were frozen before PB17 cohort output;
+they have zero overlap with the 48 distinct PB11--PB16 sequences. The formal run
+stopped on the first positive after one image encode and one `door` call because
+the returned mask tensor kept native spatial dimensions rather than the frozen
+source size. No evaluator result was written and no raw output was persisted.
+Input-only diagnosis verified that the official processor supplied `[530,730]`,
+exactly the source height and width. The frozen Transformers postprocessor
+resizes whenever any mask survives and leaves native dimensions only for a zero
+retained count. The failure therefore mechanically establishes one fresh
+positive miss, making the preregistered `4/4` conjunction impossible. Record
+`L10_PB17_OFFICIAL_SAM3_DOOR_STATE_DEVELOPMENT_GATE_NOT_MET`. The complete
+confusion matrix and balanced accuracy remain unevaluable. Close PB17 on these
+pixels without repairing the empty-mask contract, prompt, confidence, mask
+threshold, processor, or postprocessing; the successor must add a genuinely
+different observable information source on another fresh cohort.
+
 Durable PB10 summary:
 `named_poi_trans4trans_glass_door_plane_development_result_v1.json`.
 
@@ -1786,6 +1812,14 @@ PB16 protocol, frozen cohort, evaluator, and durable negative result:
 `named_poi_sam3_native_part_topology_development_result_v1.json`. The result
 SHA-256 is
 `c56116c95cc10ba3c7b1c9f4f07489b5e4ac42f61de2a842c27e4a713d8fb9ab`.
+
+PB17 protocol, frozen cohort, evaluator, and durable partial adjudication:
+`named_poi_sam3_official_door_state_protocol_v1.json`,
+`named_poi_sam3_official_door_state_development_cohort_v1.json`,
+`named_poi_sam3_official_door_state.py`, and
+`named_poi_sam3_official_door_state_development_result_v1.json`. The result
+SHA-256 is
+`ce644f3763363b201dcf9d4a7f17e2d7bcd05e634ae949fbf5044bab0cd12d6f`.
 
 The `x/120` column is not physical target-absence authority. The source audit
 did not exhaustively freeze every gallery building co-visible in dense
