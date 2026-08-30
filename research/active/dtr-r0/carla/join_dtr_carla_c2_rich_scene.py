@@ -820,7 +820,7 @@ def main() -> int:
             "-thumbnail",
             "640x360",
             "-tile",
-            "2x4",
+            f"2x{len(protocol['scenarios'])}",
             "-geometry",
             "+8+8",
             str(contact_sheet),

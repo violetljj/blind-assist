@@ -8,6 +8,8 @@ param(
     [string]$CarlaPython = 'E:\linnan\CARLA\client-env\Scripts\python.exe',
     [string]$RawEvidenceRoot = 'E:\linnan\CARLA\experiments\dtr-carla-c2-rich-scene\evidence',
     [string]$Protocol = 'research/active/dtr-r0/carla/dtr_carla_c2_rich_scene_protocol.json',
+    [ValidateRange(1024, 65533)]
+    [int]$RpcPort = 2000,
     [ValidateRange(120, 7200)]
     [int]$CaptureTimeoutSeconds = 3600
 )
@@ -17,11 +19,12 @@ $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $false
 
 $script:RepoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
-$script:RpcPort = 2000
-$script:CarlaPorts = @(2000, 2001, 2002)
+$script:RpcPort = $RpcPort
+$script:CarlaPorts = @($RpcPort, $RpcPort + 1, $RpcPort + 2)
 $script:CarlaHost = '127.0.0.1'
 $script:StartupTimeoutSeconds = 120
 $script:StartupMinimumSeconds = 45
+$script:RenderQualityLevel = 'Epic'
 $script:RawRunPath = ''
 $script:CarlaInstallRootPath = ''
 $script:CarlaPythonPath = ''
@@ -102,14 +105,17 @@ function Get-CarlaListeners {
     )
 }
 
-function Get-CarlaInstallProcesses {
+function Get-OwnedCarlaProcesses {
     $prefix = $script:CarlaInstallRootPath.TrimEnd('\', '/') + [IO.Path]::DirectorySeparatorChar
+    $portArgument = "-carla-rpc-port=$($script:RpcPort)"
     @(
         Get-CimInstance Win32_Process -ErrorAction Stop |
             Where-Object {
                 $executable = [string]$_.ExecutablePath
+                $commandLine = [string]$_.CommandLine
                 -not [string]::IsNullOrWhiteSpace($executable) -and
-                $executable.StartsWith($prefix, [StringComparison]::OrdinalIgnoreCase)
+                $executable.StartsWith($prefix, [StringComparison]::OrdinalIgnoreCase) -and
+                $commandLine.IndexOf($portArgument, [StringComparison]::OrdinalIgnoreCase) -ge 0
             }
     )
 }
@@ -140,9 +146,9 @@ function Assert-CarlaIdle {
     if ($listeners.Count -ne 0) {
         throw "CARLA ports are already in use: $($listeners.LocalPort -join ',')"
     }
-    $processes = @(Get-CarlaInstallProcesses)
+    $processes = @(Get-OwnedCarlaProcesses)
     if ($processes.Count -ne 0) {
-        throw "Packaged CARLA is already running: $($processes.ProcessId -join ',')"
+        throw "CARLA is already running on RPC port $($script:RpcPort): $($processes.ProcessId -join ',')"
     }
 }
 
@@ -171,14 +177,14 @@ function Stop-OwnedPython {
 function Stop-OwnedCarla {
     $deadline = (Get-Date).AddSeconds(30)
     do {
-        $remaining = @(Get-CarlaInstallProcesses)
+        $remaining = @(Get-OwnedCarlaProcesses)
         if ($remaining.Count -ne 0) {
             Stop-Process -Id $remaining.ProcessId -Force -ErrorAction SilentlyContinue
         }
         Start-Sleep -Milliseconds 500
         $listeners = @(Get-CarlaListeners)
     } while (($remaining.Count -ne 0 -or $listeners.Count -ne 0) -and (Get-Date) -lt $deadline)
-    $remaining = @(Get-CarlaInstallProcesses)
+    $remaining = @(Get-OwnedCarlaProcesses)
     $listeners = @(Get-CarlaListeners)
     if ($remaining.Count -ne 0 -or $listeners.Count -ne 0) {
         throw (
@@ -251,7 +257,7 @@ function Invoke-SensorCapture {
                 '-dx12',
                 '-RenderOffScreen',
                 '-nosound',
-                '-quality-level=Epic',
+                "-quality-level=$($script:RenderQualityLevel)",
                 "-carla-rpc-port=$($script:RpcPort)"
             ) `
             -WorkingDirectory $script:CarlaInstallRootPath `
@@ -388,6 +394,12 @@ try {
     $sensorOrder = @($protocolValue.capture.sensor_order | ForEach-Object { [string]$_ })
     if (($sensorOrder -join ',') -ne 'instance,wearable,depth,witness') {
         throw "Unexpected C2 sensor order: $($sensorOrder -join ',')"
+    }
+    if ($null -ne $protocolValue.capture.render_quality_level) {
+        $script:RenderQualityLevel = [string]$protocolValue.capture.render_quality_level
+    }
+    if ($script:RenderQualityLevel -notin @('Low', 'Epic')) {
+        throw "Unsupported CARLA render quality: $($script:RenderQualityLevel)"
     }
     $script:ExpectedFramesPerSensor = 0
     foreach ($scenario in @($protocolValue.scenarios)) {
