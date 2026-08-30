@@ -1,0 +1,89 @@
+{
+  "schema": "blindassist-l10-hypersim-posed-portal-protocol-v1",
+  "authority": "EXPLORE_DEVELOPMENT_SYNTHETIC_MECHANISM_CEILING",
+  "question": "With an independently posed reference door mask and world-position image, can one frozen geometric transfer recover the same exact door instance in a different camera trajectory for three door-disjoint episodes?",
+  "information_change": "Replace unanchored outdoor pixels with a directly posed portal surface. Keep identity selection, projection, evaluator and thresholds frozen; do not sweep matcher, backbone, tracker, fusion, seed or thresholds.",
+  "provider": {
+    "name": "Apple Hypersim",
+    "repository": "https://github.com/apple/ml-hypersim",
+    "repository_commit": "c85b2879c8da8ded2f4c24d2630c1ab4451999b2",
+    "selective_download_tool": "contrib/99991/download.py",
+    "scene_archive": "https://docs-assets.developer.apple.com/ml-research/datasets/hypersim/v1/scenes/ai_034_001.zip",
+    "scene_archive_etag_observed_before_freeze": "dc0d605db122c47f33b26766d7340ea5-915",
+    "license": "CC BY-SA 3.0 for Hypersim data; repository code licenses remain file-specific"
+  },
+  "frozen_scene": {
+    "scene_name": "ai_034_001",
+    "official_split": "train",
+    "scene_type": "Office (home)",
+    "image_width": 1024,
+    "image_height": 768,
+    "camera_trajectories": [
+      "cam_00",
+      "cam_01",
+      "cam_02"
+    ],
+    "frames_per_trajectory": 100,
+    "semantic_door_id_nyu40": 8
+  },
+  "pre_rgb_selector": {
+    "allowed_inputs": [
+      "mesh_objects_si.hdf5",
+      "mesh_objects_sii.hdf5",
+      "semantic_instance.hdf5"
+    ],
+    "forbidden_before_cohort_freeze": [
+      "color.jpg",
+      "color.hdf5",
+      "depth_meters.hdf5",
+      "position.hdf5",
+      "camera poses",
+      "model output"
+    ],
+    "door_instance_ids": "Unique semantic-instance IDs whose mesh-object semantic ID is NYU40 door=8.",
+    "eligible_role_frame": {
+      "minimum_target_pixels": 4096,
+      "minimum_bbox_width_pixels": 64,
+      "minimum_bbox_height_pixels": 64,
+      "minimum_bbox_image_margin_pixels": 8,
+      "maximum_target_image_fraction": 0.35
+    },
+    "episode_eligibility": "The same door instance has an eligible frame in at least two distinct camera trajectories. The query trajectory must have an eligible frame containing at least one other visible door instance.",
+    "episode_order": "Ascending door semantic-instance ID; take the first three eligible instances.",
+    "role_order": "REFERENCE is the lexicographically first eligible trajectory. QUERY is the lexicographically first later trajectory with an eligible distractor frame.",
+    "frame_order": "Within a role maximize target pixels, then minimize frame ID.",
+    "cohort_size": 3,
+    "pixels_before_freeze": 0
+  },
+  "frozen_transfer": {
+    "reference_inputs": [
+      "target semantic-instance mask",
+      "world-position image",
+      "reference camera pose",
+      "official per-scene projection matrix"
+    ],
+    "query_inputs": [
+      "query camera pose",
+      "official per-scene projection matrix"
+    ],
+    "query_evaluator_only": [
+      "query semantic-instance mask",
+      "other query door masks",
+      "query RGB preview"
+    ],
+    "surface_rule": "Extract every external contour of the reference target mask, lift contour pixels through the provider world-position image, project them with the official query pose and per-scene M_proj, and fill the convex hull as the transferred portal envelope.",
+    "truth_rule": "Fill the convex hull of the evaluator-only query mask for the same instance. Door-surface truth is not promoted to aperture or traversability truth.",
+    "instance_rule": "Rank every visible query door by IoU between its truth envelope and the one transferred envelope. No abstention and no threshold selection are permitted.",
+    "action_ray_rule": "Use the transferred envelope centroid as one observation ray endpoint and test whether it lies inside the target truth envelope.",
+    "occlusion_rule": "No query depth, query position, semantic mesh or z-buffer truth is available to the transfer. Occlusion error remains visible in the metrics."
+  },
+  "decision_gate": {
+    "correct_door_instance": "3/3 top-1",
+    "wrong_door_commit": "0/3",
+    "centroid_inside_target_envelope": "3/3",
+    "median_envelope_iou_minimum": 0.5,
+    "failure_semantics": "Any failed condition closes this posed-reference transfer as frozen. Do not retune it on the consumed cohort."
+  },
+  "stop_condition": "One pre-RGB cohort freeze followed by one six-image replay. No parameter, source-pair, target-instance or projection sweep after RGB materialization.",
+  "claim_boundary": "A pass is synthetic indoor Development evidence that exact pose plus a directly posed reference door surface is sufficient for cross-trajectory exact-door projection. It is not real outdoor confirmation, a named entrance, a doorway aperture, public or legal access, accessibility, traversability, approach, waypoint, arrival, HANDOFF_READY, product benefit, user benefit or mobility-safety evidence. Panoramax is not reopened unless paired with an independent sub-meter portal anchor."
+}

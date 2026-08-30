@@ -1072,6 +1072,35 @@ only when paired with that independent geometric authority. These results do
 not establish access, traversability, arrival, `HANDOFF_READY`, product benefit,
 user benefit, or mobility-safety evidence.
 
+That directly posed source change has now produced a positive synthetic
+mechanism ceiling. Before any RGB was materialized, one Hypersim scene froze
+300 semantic-instance masks from three independent camera trajectories, nine
+provider-labeled door instances, and the first three door-disjoint instances
+meeting the fixed size, margin, cross-trajectory, and query-distractor rules.
+The frozen transfer lifted only the reference door contour through its
+world-position image and projected it with the official per-scene projection
+matrix and query pose. Query RGB and all query door masks remained
+evaluator-only; there was no query depth, model call, parameter sweep, source
+reselection, or Panoramax pixel call.
+
+Across camera baselines of `0.940-3.843 m`, the one replay selected the exact
+door instance on `3/3`, made `0/3` wrong-door commits, and placed the projected
+centroid inside the target envelope on `3/3`. Episode envelope IoUs were
+`0.7063`, `0.4944`, and `0.7528`; median IoU was `0.7063`, and mean centroid
+error was `20.04 px`. Record
+`L10_HYPERSIM_POSED_PORTAL_TRANSFER_DEVELOPMENT_GATE_MET`.
+
+This result isolates the missing information: exact pose plus a directly posed
+reference door surface is sufficient for exact cross-trajectory door selection
+on this synthetic indoor ceiling. It does not turn a door surface into a
+traversable aperture and does not confirm real imagery, outdoor named
+entrances, access, approach, waypoint, arrival, `HANDOFF_READY`, product,
+user-benefit, or safety claims. The next confirmation source is real posed door
+geometry such as ScanNet++ after access/materialization. For outdoor evidence,
+obtain sub-metre cameras in the same Ingolstadt LoD3 door frame or another
+directly co-registered portal source. A Panoramax-only SfM canary remains
+`RELATIVE_REGISTRATION_ONLY / NOT_PORTAL_BOUND` and is not the active next run.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

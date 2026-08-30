@@ -1992,6 +1992,48 @@ camera-to-portal registration or a directly posed portal mask/mesh. Panoramax
 may carry the pixels only when that independent pose/registration is supplied;
 generic Panoramax mining is closed.
 
+#### Directly posed portal transfer ceiling
+
+The next source change replaced unanchored outdoor pixels with a provider-posed
+reference door surface. Hypersim `ai_034_001` supplied three independent camera
+trajectories, 300 public semantic-instance masks, and nine door instance IDs.
+Before opening RGB, the source selector froze the first three door-disjoint
+instances satisfying one fixed mask-size/margin rule, visibility in two camera
+trajectories, and at least one query distractor door. The selected targets were
+instance IDs `32`, `33`, and `36`; no RGB, depth, pose, or model output was used
+to select them.
+
+One frozen mechanism then lifted each reference target contour through the
+provider world-position image and projected it into the independent query
+trajectory with Hypersim's official per-scene `M_proj` and query pose. It filled
+one convex portal envelope, ranked every visible query door by envelope IoU,
+and emitted the projected centroid as one observation ray endpoint. Query RGB,
+query semantic masks, other-door truth, and preview overlays remained
+evaluator-only; query depth and query world positions were not inputs.
+
+| Posed-portal metric | HP01 | HP02 | HP03 | aggregate |
+|---|---:|---:|---:|---:|
+| target / selected instance | 32 / 32 | 33 / 33 | 36 / 36 | 3/3 correct |
+| camera baseline | 3.843 m | 1.051 m | 0.940 m | 0.940-3.843 m |
+| envelope IoU | 0.7063 | 0.4944 | 0.7528 | 0.7063 median |
+| precision / recall | 1.0000 / 0.7063 | 0.5951 / 0.7451 | 0.9493 / 0.7843 | -- |
+| centroid error | 8.65 px | 34.95 px | 16.51 px | 20.04 px mean |
+| wrong-door commit | 0 | 0 | 0 | 0/3 |
+| centroid inside target | yes | yes | yes | 3/3 |
+
+Record `L10_HYPERSIM_POSED_PORTAL_TRANSFER_DEVELOPMENT_GATE_MET`. This is the
+first positive result after the Panoramax source ceiling because it adds the
+missing camera-to-portal registration instead of tuning the consumed matcher.
+It remains a privileged synthetic indoor mechanism ceiling: semantic door
+surface is not doorway aperture or traversability, and the run establishes no
+real/outdoor, named-entrance, access, approach, waypoint, arrival,
+`HANDOFF_READY`, product, user-benefit, or safety authority. The next
+confirmation should use real posed door geometry, preferably ScanNet++ after
+access and materialization. Outdoor confirmation still needs sub-metre imagery
+co-registered with the existing LoD3 doors. A Panoramax-only relative SfM
+canary is insufficient and stays parked as
+`RELATIVE_REGISTRATION_ONLY / NOT_PORTAL_BOUND`.
+
 Independent-extent protocols, source builders, audits, and results:
 `l10_lod3_panoramax_door_reachability_result_v1.json`,
 `l10_width_first_perspective_portal_protocol_v1.json`,
@@ -2003,6 +2045,12 @@ Independent-extent protocols, source builders, audits, and results:
 `l10_width_first_perspective_portal_query_audit_v1.json`,
 `l10_width_first_perspective_portal_adjudicate.py`, and
 `l10_width_first_perspective_portal_source_admission_result_v1.json`.
+
+Posed-portal protocol, frozen pre-RGB cohort, one replay implementation, and
+result: `l10_hypersim_posed_portal_protocol_v1.json`,
+`l10_hypersim_posed_portal_cohort_v1.json`,
+`l10_hypersim_posed_portal_transfer.py`, and
+`l10_hypersim_posed_portal_result_v1.json`.
 
 Credential successor protocols, evaluators, frozen sources, and results:
 `l10_panolab_node_credential_protocol_v1.json`,

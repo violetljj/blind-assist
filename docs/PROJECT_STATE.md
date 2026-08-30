@@ -832,6 +832,27 @@ Panoramax retained only as the pixel carrier. This is not access,
 traversability, arrival, `HANDOFF_READY`, product, user-benefit, or safety
 evidence.
 
+The directly posed successor has now met a frozen synthetic Development gate.
+Hypersim scene `ai_034_001` supplied three trajectories of 100
+semantic-instance masks and nine door instance IDs. Before RGB materialization,
+the selector froze the first three door-disjoint instances satisfying fixed
+mask-size/margin, cross-trajectory, and query-distractor rules. The single
+replay lifted the reference contour from the provider world-position image and
+projected it with the official scene projection matrix and held-out trajectory
+pose; query RGB and query masks were evaluator-only.
+
+The result was exact door Top-1 `3/3`, wrong-door commits `0/3`, centroid inside
+target `3/3`, episode IoU `0.7063 / 0.4944 / 0.7528`, median IoU `0.7063`, and
+mean centroid error `20.04 px` over `0.940-3.843 m` camera baselines. Record
+`L10_HYPERSIM_POSED_PORTAL_TRANSFER_DEVELOPMENT_GATE_MET`. This proves the
+posed-reference mechanism only on a privileged synthetic indoor ceiling. It
+does not prove a doorway aperture, real/outdoor transfer, named-entrance
+ownership, access, traversability, approach, arrival, `HANDOFF_READY`, product,
+user-benefit, or safety. Real posed-door confirmation (prefer ScanNet++ when
+access is available) is next; outdoor confirmation still requires same-domain
+sub-metre camera-to-LoD3-door registration. Panoramax-only relative SfM is
+parked because it cannot create that absolute portal anchor.
+
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
 because the approved AWS profile is absent. That is a source-access condition,

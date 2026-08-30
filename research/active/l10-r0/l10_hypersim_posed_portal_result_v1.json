@@ -1,0 +1,215 @@
+{
+  "schema": "blindassist-l10-hypersim-posed-portal-result-v1",
+  "authority": "EXPLORE_DEVELOPMENT_SYNTHETIC_MECHANISM_RESULT",
+  "protocol_path": "l10_hypersim_posed_portal_protocol_v1.json",
+  "protocol_sha256": "b79ecad27b0ee7657fbbff2636db263431a8fb70ade14ea29aa3cdee5ffde829",
+  "cohort_path": "l10_hypersim_posed_portal_cohort_v1.json",
+  "cohort_sha256": "82ec8cab8cd6f86d6d5bcd251c158d581139c086fbf2d15086322a9533c6679b",
+  "conclusion": "L10_HYPERSIM_POSED_PORTAL_TRANSFER_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "summary": {
+    "episodes": 3,
+    "correct_door_instance": 3,
+    "wrong_door_commit": 0,
+    "centroid_inside_target_envelope": 3,
+    "median_target_envelope_iou": 0.70628,
+    "minimum_target_envelope_iou": 0.494427,
+    "mean_centroid_error_pixels": 20.037591
+  },
+  "episodes": [
+    {
+      "episode_id": "HP01",
+      "target_door_instance_id": 32,
+      "selected_door_instance_id": 32,
+      "correct_door_instance": true,
+      "wrong_door_commit": false,
+      "visible_query_door_instance_ids": [
+        32,
+        36,
+        37
+      ],
+      "instance_envelope_iou": {
+        "32": 0.70628,
+        "36": 0.0,
+        "37": 0.023545
+      },
+      "target_envelope_iou": 0.70628,
+      "target_precision": 1.0,
+      "target_recall": 0.70628,
+      "centroid_error_pixels": 8.65395,
+      "centroid_error_image_diagonal_fraction": 0.006761,
+      "centroid_inside_target_envelope": true,
+      "camera_baseline_m": 3.842927,
+      "reference_contour_points": 680,
+      "projected_contour_points": 680,
+      "predicted_envelope_pixels": 16498,
+      "target_truth_envelope_pixels": 23359,
+      "preview_path": "E:\\linnan\\linnan\\artifacts.local\\results\\l10-hypersim-posed-portals-v1\\hp01-posed-portal-transfer.jpg",
+      "input_sha256": {
+        "payload/ai_034_001/_detail/cam_00/camera_keyframe_frame_indices.hdf5": "543712f484948ac36214aa354a3b190b0569d2e598047813beaa652909e85256",
+        "payload/ai_034_001/_detail/cam_00/camera_keyframe_orientations.hdf5": "5a18ba19cbfbfa67b0124b3a93e40cecac368a1df931a3072eb50e82c677d3fc",
+        "payload/ai_034_001/_detail/cam_00/camera_keyframe_positions.hdf5": "69b4d39d32d35f9222b7b3e35a5d60171a3f80aa325a6b6b19c28d3aeb9f57d2",
+        "payload/ai_034_001/_detail/cam_02/camera_keyframe_frame_indices.hdf5": "34ae2cfb960ba4abaf03ca23ce0c0272649b45ef9d179f8b2a127974eda8e93f",
+        "payload/ai_034_001/_detail/cam_02/camera_keyframe_orientations.hdf5": "d410674499a7ed22cc811e8d7877c0ab5d5cd9c376f7e8250c125fa56cc61d86",
+        "payload/ai_034_001/_detail/cam_02/camera_keyframe_positions.hdf5": "41cbeb9e035f7588608e94a7ebd0d89a342dcbaf0072f74d7842c21c729728ae",
+        "payload/ai_034_001/images/scene_cam_00_final_preview/frame.0089.color.jpg": "2aaec059089e01dd4d2b825f6e4a4b6dc11898db5c6bf2d9d143e00e9538a12e",
+        "payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0089.position.hdf5": "93d9ea61038249ab24b9565e410aa009cb57acae2654096659891af7d9169805",
+        "payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0089.semantic_instance.hdf5": "77b64503d6531121bed5308053d713cfeddd8504d79a0e1aea57fb79d102af8d",
+        "payload/ai_034_001/images/scene_cam_02_final_preview/frame.0022.color.jpg": "62319f9bae526588ef5dccf308fd1b24a827e1b6efaa673ae31acb324841e246",
+        "payload/ai_034_001/images/scene_cam_02_geometry_hdf5/frame.0022.semantic_instance.hdf5": "d9e32080eaf6f74b614c309bf52da45dac0e446b61640c53a2a19c67ea2494da"
+      }
+    },
+    {
+      "episode_id": "HP02",
+      "target_door_instance_id": 33,
+      "selected_door_instance_id": 33,
+      "correct_door_instance": true,
+      "wrong_door_commit": false,
+      "visible_query_door_instance_ids": [
+        33,
+        36,
+        37,
+        68,
+        70,
+        72
+      ],
+      "instance_envelope_iou": {
+        "33": 0.494427,
+        "36": 0.0,
+        "37": 0.0,
+        "68": 0.0,
+        "70": 0.0,
+        "72": 0.0
+      },
+      "target_envelope_iou": 0.494427,
+      "target_precision": 0.59508,
+      "target_recall": 0.745102,
+      "centroid_error_pixels": 34.946419,
+      "centroid_error_image_diagonal_fraction": 0.027302,
+      "centroid_inside_target_envelope": true,
+      "camera_baseline_m": 1.051033,
+      "reference_contour_points": 1036,
+      "projected_contour_points": 1036,
+      "predicted_envelope_pixels": 51062,
+      "target_truth_envelope_pixels": 40781,
+      "preview_path": "E:\\linnan\\linnan\\artifacts.local\\results\\l10-hypersim-posed-portals-v1\\hp02-posed-portal-transfer.jpg",
+      "input_sha256": {
+        "payload/ai_034_001/_detail/cam_00/camera_keyframe_frame_indices.hdf5": "543712f484948ac36214aa354a3b190b0569d2e598047813beaa652909e85256",
+        "payload/ai_034_001/_detail/cam_00/camera_keyframe_orientations.hdf5": "5a18ba19cbfbfa67b0124b3a93e40cecac368a1df931a3072eb50e82c677d3fc",
+        "payload/ai_034_001/_detail/cam_00/camera_keyframe_positions.hdf5": "69b4d39d32d35f9222b7b3e35a5d60171a3f80aa325a6b6b19c28d3aeb9f57d2",
+        "payload/ai_034_001/_detail/cam_01/camera_keyframe_frame_indices.hdf5": "e0ed571359ed871ce9e26b49927995fc9aef10d00fa1066fc36faffc46e3a3c0",
+        "payload/ai_034_001/_detail/cam_01/camera_keyframe_orientations.hdf5": "5cc660e0c66ae9a5c0ab5fdec3b67dad32b60059bb12d50f91ca5235b2fa8b3d",
+        "payload/ai_034_001/_detail/cam_01/camera_keyframe_positions.hdf5": "0a175b9e712febe98a8b4c1c157a6655ec5cf049b527e6dd67790263c8f85e11",
+        "payload/ai_034_001/images/scene_cam_00_final_preview/frame.0002.color.jpg": "8819d1d37e0d7d5e01d6f097192cb4d4e7b25765bf031029fd5bbf2cef396570",
+        "payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0002.position.hdf5": "c700f42629b4c2b2e296ce4b25d8cdd0eed19b712e40b4bc1957868f0f0570aa",
+        "payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0002.semantic_instance.hdf5": "33b3958da4d3c43aec77be7a45925df2a9585212f6a4275d54bdf61f236d3532",
+        "payload/ai_034_001/images/scene_cam_01_final_preview/frame.0051.color.jpg": "aabde92edbfd3eedff9eeebb1379f04de0bfa32dd47ccbfe5c2de967ab6c7b59",
+        "payload/ai_034_001/images/scene_cam_01_geometry_hdf5/frame.0051.semantic_instance.hdf5": "eb0a17fd46f59177fa17dc14b9f427b9ce778404d3e4d243787ad63a4d022b0e"
+      }
+    },
+    {
+      "episode_id": "HP03",
+      "target_door_instance_id": 36,
+      "selected_door_instance_id": 36,
+      "correct_door_instance": true,
+      "wrong_door_commit": false,
+      "visible_query_door_instance_ids": [
+        33,
+        36,
+        37,
+        38,
+        68
+      ],
+      "instance_envelope_iou": {
+        "33": 0.206002,
+        "36": 0.752818,
+        "37": 0.0,
+        "38": 0.0,
+        "68": 0.0
+      },
+      "target_envelope_iou": 0.752818,
+      "target_precision": 0.94934,
+      "target_recall": 0.784326,
+      "centroid_error_pixels": 16.512404,
+      "centroid_error_image_diagonal_fraction": 0.0129,
+      "centroid_inside_target_envelope": true,
+      "camera_baseline_m": 0.939956,
+      "reference_contour_points": 800,
+      "projected_contour_points": 800,
+      "predicted_envelope_pixels": 69305,
+      "target_truth_envelope_pixels": 83886,
+      "preview_path": "E:\\linnan\\linnan\\artifacts.local\\results\\l10-hypersim-posed-portals-v1\\hp03-posed-portal-transfer.jpg",
+      "input_sha256": {
+        "payload/ai_034_001/_detail/cam_00/camera_keyframe_frame_indices.hdf5": "543712f484948ac36214aa354a3b190b0569d2e598047813beaa652909e85256",
+        "payload/ai_034_001/_detail/cam_00/camera_keyframe_orientations.hdf5": "5a18ba19cbfbfa67b0124b3a93e40cecac368a1df931a3072eb50e82c677d3fc",
+        "payload/ai_034_001/_detail/cam_00/camera_keyframe_positions.hdf5": "69b4d39d32d35f9222b7b3e35a5d60171a3f80aa325a6b6b19c28d3aeb9f57d2",
+        "payload/ai_034_001/_detail/cam_01/camera_keyframe_frame_indices.hdf5": "e0ed571359ed871ce9e26b49927995fc9aef10d00fa1066fc36faffc46e3a3c0",
+        "payload/ai_034_001/_detail/cam_01/camera_keyframe_orientations.hdf5": "5cc660e0c66ae9a5c0ab5fdec3b67dad32b60059bb12d50f91ca5235b2fa8b3d",
+        "payload/ai_034_001/_detail/cam_01/camera_keyframe_positions.hdf5": "0a175b9e712febe98a8b4c1c157a6655ec5cf049b527e6dd67790263c8f85e11",
+        "payload/ai_034_001/images/scene_cam_00_final_preview/frame.0013.color.jpg": "13fd2b64dbb233eb5e9f61e125aaef53400dd95580f07eb3fc7184a1a10d0d35",
+        "payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0013.position.hdf5": "2094f8ffaad624eb5d19f0a55a9e7888ca188f93c6f11d0ac41749959d785207",
+        "payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0013.semantic_instance.hdf5": "ef5f1abc60dc66ee240d9a4f1fff773d41839eafdb3de274922cf0e2f1d252ae",
+        "payload/ai_034_001/images/scene_cam_01_final_preview/frame.0066.color.jpg": "935fcb0bff3bca507aa474d5aa0e620b57d1033cb3dfc68309851cec3f5564bd",
+        "payload/ai_034_001/images/scene_cam_01_geometry_hdf5/frame.0066.semantic_instance.hdf5": "e5e1e189cb5df8f5433b5822e3c42954c1a1c5be7bc5b089769a2c4bbd678bc0"
+      }
+    }
+  ],
+  "input_boundary": {
+    "reference_inputs": [
+      "target semantic-instance mask",
+      "world-position image",
+      "reference camera pose",
+      "official per-scene projection matrix"
+    ],
+    "query_inputs": [
+      "query camera pose",
+      "official per-scene projection matrix"
+    ],
+    "query_evaluator_only": [
+      "query semantic-instance mask",
+      "other query door masks",
+      "query RGB preview"
+    ],
+    "surface_rule": "Extract every external contour of the reference target mask, lift contour pixels through the provider world-position image, project them with the official query pose and per-scene M_proj, and fill the convex hull as the transferred portal envelope.",
+    "truth_rule": "Fill the convex hull of the evaluator-only query mask for the same instance. Door-surface truth is not promoted to aperture or traversability truth.",
+    "instance_rule": "Rank every visible query door by IoU between its truth envelope and the one transferred envelope. No abstention and no threshold selection are permitted.",
+    "action_ray_rule": "Use the transferred envelope centroid as one observation ray endpoint and test whether it lies inside the target truth envelope.",
+    "occlusion_rule": "No query depth, query position, semantic mesh or z-buffer truth is available to the transfer. Occlusion error remains visible in the metrics."
+  },
+  "decision_gate": {
+    "correct_door_instance": "3/3 top-1",
+    "wrong_door_commit": "0/3",
+    "centroid_inside_target_envelope": "3/3",
+    "median_envelope_iou_minimum": 0.5,
+    "failure_semantics": "Any failed condition closes this posed-reference transfer as frozen. Do not retune it on the consumed cohort."
+  },
+  "claim_boundary": "A pass is synthetic indoor Development evidence that exact pose plus a directly posed reference door surface is sufficient for cross-trajectory exact-door projection. It is not real outdoor confirmation, a named entrance, a doorway aperture, public or legal access, accessibility, traversability, approach, waypoint, arrival, HANDOFF_READY, product benefit, user benefit or mobility-safety evidence. Panoramax is not reopened unless paired with an independent sub-meter portal anchor.",
+  "all_input_sha256": {
+    "E:\\linnan\\.worktrees\\l10-panoramax-federated\\research\\active\\l10-r0\\l10_hypersim_posed_portal_cohort_v1.json": "82ec8cab8cd6f86d6d5bcd251c158d581139c086fbf2d15086322a9533c6679b",
+    "E:\\linnan\\.worktrees\\l10-panoramax-federated\\research\\active\\l10-r0\\l10_hypersim_posed_portal_protocol_v1.json": "b79ecad27b0ee7657fbbff2636db263431a8fb70ade14ea29aa3cdee5ffde829",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\_detail\\cam_00\\camera_keyframe_frame_indices.hdf5": "543712f484948ac36214aa354a3b190b0569d2e598047813beaa652909e85256",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\_detail\\cam_00\\camera_keyframe_orientations.hdf5": "5a18ba19cbfbfa67b0124b3a93e40cecac368a1df931a3072eb50e82c677d3fc",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\_detail\\cam_00\\camera_keyframe_positions.hdf5": "69b4d39d32d35f9222b7b3e35a5d60171a3f80aa325a6b6b19c28d3aeb9f57d2",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\_detail\\cam_01\\camera_keyframe_frame_indices.hdf5": "e0ed571359ed871ce9e26b49927995fc9aef10d00fa1066fc36faffc46e3a3c0",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\_detail\\cam_01\\camera_keyframe_orientations.hdf5": "5cc660e0c66ae9a5c0ab5fdec3b67dad32b60059bb12d50f91ca5235b2fa8b3d",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\_detail\\cam_01\\camera_keyframe_positions.hdf5": "0a175b9e712febe98a8b4c1c157a6655ec5cf049b527e6dd67790263c8f85e11",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\_detail\\cam_02\\camera_keyframe_frame_indices.hdf5": "34ae2cfb960ba4abaf03ca23ce0c0272649b45ef9d179f8b2a127974eda8e93f",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\_detail\\cam_02\\camera_keyframe_orientations.hdf5": "d410674499a7ed22cc811e8d7877c0ab5d5cd9c376f7e8250c125fa56cc61d86",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\_detail\\cam_02\\camera_keyframe_positions.hdf5": "41cbeb9e035f7588608e94a7ebd0d89a342dcbaf0072f74d7842c21c729728ae",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\images\\scene_cam_00_final_preview\\frame.0002.color.jpg": "8819d1d37e0d7d5e01d6f097192cb4d4e7b25765bf031029fd5bbf2cef396570",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\images\\scene_cam_00_final_preview\\frame.0013.color.jpg": "13fd2b64dbb233eb5e9f61e125aaef53400dd95580f07eb3fc7184a1a10d0d35",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\images\\scene_cam_00_final_preview\\frame.0089.color.jpg": "2aaec059089e01dd4d2b825f6e4a4b6dc11898db5c6bf2d9d143e00e9538a12e",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\images\\scene_cam_00_geometry_hdf5\\frame.0002.position.hdf5": "c700f42629b4c2b2e296ce4b25d8cdd0eed19b712e40b4bc1957868f0f0570aa",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\images\\scene_cam_00_geometry_hdf5\\frame.0002.semantic_instance.hdf5": "33b3958da4d3c43aec77be7a45925df2a9585212f6a4275d54bdf61f236d3532",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\images\\scene_cam_00_geometry_hdf5\\frame.0013.position.hdf5": "2094f8ffaad624eb5d19f0a55a9e7888ca188f93c6f11d0ac41749959d785207",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\images\\scene_cam_00_geometry_hdf5\\frame.0013.semantic_instance.hdf5": "ef5f1abc60dc66ee240d9a4f1fff773d41839eafdb3de274922cf0e2f1d252ae",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\images\\scene_cam_00_geometry_hdf5\\frame.0089.position.hdf5": "93d9ea61038249ab24b9565e410aa009cb57acae2654096659891af7d9169805",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\images\\scene_cam_00_geometry_hdf5\\frame.0089.semantic_instance.hdf5": "77b64503d6531121bed5308053d713cfeddd8504d79a0e1aea57fb79d102af8d",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\images\\scene_cam_01_final_preview\\frame.0051.color.jpg": "aabde92edbfd3eedff9eeebb1379f04de0bfa32dd47ccbfe5c2de967ab6c7b59",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\images\\scene_cam_01_final_preview\\frame.0066.color.jpg": "935fcb0bff3bca507aa474d5aa0e620b57d1033cb3dfc68309851cec3f5564bd",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\images\\scene_cam_01_geometry_hdf5\\frame.0051.semantic_instance.hdf5": "eb0a17fd46f59177fa17dc14b9f427b9ce778404d3e4d243787ad63a4d022b0e",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\images\\scene_cam_01_geometry_hdf5\\frame.0066.semantic_instance.hdf5": "e5e1e189cb5df8f5433b5822e3c42954c1a1c5be7bc5b089769a2c4bbd678bc0",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\images\\scene_cam_02_final_preview\\frame.0022.color.jpg": "62319f9bae526588ef5dccf308fd1b24a827e1b6efaa673ae31acb324841e246",
+    "E:\\linnan\\linnan\\artifacts.local\\sources\\l10-hypersim-posed-portals-v1\\payload\\ai_034_001\\images\\scene_cam_02_geometry_hdf5\\frame.0022.semantic_instance.hdf5": "d9e32080eaf6f74b614c309bf52da45dac0e446b61640c53a2a19c67ea2494da"
+  }
+}

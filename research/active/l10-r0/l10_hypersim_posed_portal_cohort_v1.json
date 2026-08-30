@@ -1,0 +1,332 @@
+{
+  "schema": "blindassist-l10-hypersim-posed-portal-cohort-v1",
+  "authority": "FROZEN_PRE_RGB_DEVELOPMENT_COHORT",
+  "protocol_path": "l10_hypersim_posed_portal_protocol_v1.json",
+  "protocol_sha256": "b79ecad27b0ee7657fbbff2636db263431a8fb70ade14ea29aa3cdee5ffde829",
+  "source": {
+    "provider": {
+      "name": "Apple Hypersim",
+      "repository": "https://github.com/apple/ml-hypersim",
+      "repository_commit": "c85b2879c8da8ded2f4c24d2630c1ab4451999b2",
+      "selective_download_tool": "contrib/99991/download.py",
+      "scene_archive": "https://docs-assets.developer.apple.com/ml-research/datasets/hypersim/v1/scenes/ai_034_001.zip",
+      "scene_archive_etag_observed_before_freeze": "dc0d605db122c47f33b26766d7340ea5-915",
+      "license": "CC BY-SA 3.0 for Hypersim data; repository code licenses remain file-specific"
+    },
+    "scene_name": "ai_034_001",
+    "semantic_instance_mask_count": 300,
+    "semantic_instance_mask_bytes": 4263303,
+    "door_instance_ids": [
+      32,
+      33,
+      34,
+      36,
+      37,
+      38,
+      68,
+      70,
+      72
+    ],
+    "mesh_objects_si_sha256": "5c2992a7b07f3d077be9a17b10f3796119ba3ef3b530e83bbe130b553726c9b4",
+    "mesh_objects_sii_sha256": "48431b7fa7e7154984632436edc32898184bbb83c6e927510e3ef32c573bf638",
+    "camera_parameters_sha256": "4286fa032705ede8650b547e6a6fc54160223fd1c98b92a0bcd70a463c66ca59",
+    "rgb_files_at_freeze": 0
+  },
+  "selection": {
+    "allowed_inputs": [
+      "mesh_objects_si.hdf5",
+      "mesh_objects_sii.hdf5",
+      "semantic_instance.hdf5"
+    ],
+    "forbidden_before_cohort_freeze": [
+      "color.jpg",
+      "color.hdf5",
+      "depth_meters.hdf5",
+      "position.hdf5",
+      "camera poses",
+      "model output"
+    ],
+    "door_instance_ids": "Unique semantic-instance IDs whose mesh-object semantic ID is NYU40 door=8.",
+    "eligible_role_frame": {
+      "minimum_target_pixels": 4096,
+      "minimum_bbox_width_pixels": 64,
+      "minimum_bbox_height_pixels": 64,
+      "minimum_bbox_image_margin_pixels": 8,
+      "maximum_target_image_fraction": 0.35
+    },
+    "episode_eligibility": "The same door instance has an eligible frame in at least two distinct camera trajectories. The query trajectory must have an eligible frame containing at least one other visible door instance.",
+    "episode_order": "Ascending door semantic-instance ID; take the first three eligible instances.",
+    "role_order": "REFERENCE is the lexicographically first eligible trajectory. QUERY is the lexicographically first later trajectory with an eligible distractor frame.",
+    "frame_order": "Within a role maximize target pixels, then minimize frame ID.",
+    "cohort_size": 3,
+    "pixels_before_freeze": 0
+  },
+  "selection_audit": [
+    {
+      "door_instance_id": 32,
+      "eligible_trajectories": [
+        "cam_00",
+        "cam_02"
+      ],
+      "episode_eligible": true,
+      "reason": "ELIGIBLE"
+    },
+    {
+      "door_instance_id": 33,
+      "eligible_trajectories": [
+        "cam_00",
+        "cam_01",
+        "cam_02"
+      ],
+      "episode_eligible": true,
+      "reason": "ELIGIBLE"
+    },
+    {
+      "door_instance_id": 34,
+      "eligible_trajectories": [
+        "cam_02"
+      ],
+      "episode_eligible": false,
+      "reason": "FEWER_THAN_TWO_ELIGIBLE_TRAJECTORIES"
+    },
+    {
+      "door_instance_id": 36,
+      "eligible_trajectories": [
+        "cam_00",
+        "cam_01",
+        "cam_02"
+      ],
+      "episode_eligible": true,
+      "reason": "ELIGIBLE"
+    },
+    {
+      "door_instance_id": 37,
+      "eligible_trajectories": [
+        "cam_00",
+        "cam_01",
+        "cam_02"
+      ],
+      "episode_eligible": true,
+      "reason": "ELIGIBLE"
+    },
+    {
+      "door_instance_id": 38,
+      "eligible_trajectories": [
+        "cam_00",
+        "cam_01"
+      ],
+      "episode_eligible": true,
+      "reason": "ELIGIBLE"
+    },
+    {
+      "door_instance_id": 68,
+      "eligible_trajectories": [
+        "cam_00",
+        "cam_01",
+        "cam_02"
+      ],
+      "episode_eligible": true,
+      "reason": "ELIGIBLE"
+    },
+    {
+      "door_instance_id": 70,
+      "eligible_trajectories": [
+        "cam_00",
+        "cam_01",
+        "cam_02"
+      ],
+      "episode_eligible": true,
+      "reason": "ELIGIBLE"
+    },
+    {
+      "door_instance_id": 72,
+      "eligible_trajectories": [
+        "cam_00",
+        "cam_02"
+      ],
+      "episode_eligible": true,
+      "reason": "ELIGIBLE"
+    }
+  ],
+  "episodes": [
+    {
+      "episode_id": "HP01",
+      "scene_name": "ai_034_001",
+      "target_door_instance_id": 32,
+      "reference": {
+        "camera": "cam_00",
+        "frame": 89,
+        "path": "payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0089.semantic_instance.hdf5",
+        "eligible": true,
+        "pixels": 8791,
+        "image_fraction": 0.011178334554036459,
+        "bbox_xyxy": [
+          177,
+          112,
+          269,
+          431
+        ],
+        "bbox_width": 92,
+        "bbox_height": 319,
+        "bbox_margin": 112,
+        "other_door_instance_ids": [
+          70
+        ],
+        "sha256": "77b64503d6531121bed5308053d713cfeddd8504d79a0e1aea57fb79d102af8d"
+      },
+      "query": {
+        "camera": "cam_02",
+        "frame": 22,
+        "path": "payload/ai_034_001/images/scene_cam_02_geometry_hdf5/frame.0022.semantic_instance.hdf5",
+        "eligible": true,
+        "pixels": 16710,
+        "image_fraction": 0.02124786376953125,
+        "bbox_xyxy": [
+          562,
+          136,
+          675,
+          577
+        ],
+        "bbox_width": 113,
+        "bbox_height": 441,
+        "bbox_margin": 136,
+        "other_door_instance_ids": [
+          36,
+          37
+        ],
+        "sha256": "d9e32080eaf6f74b614c309bf52da45dac0e446b61640c53a2a19c67ea2494da"
+      }
+    },
+    {
+      "episode_id": "HP02",
+      "scene_name": "ai_034_001",
+      "target_door_instance_id": 33,
+      "reference": {
+        "camera": "cam_00",
+        "frame": 2,
+        "path": "payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0002.semantic_instance.hdf5",
+        "eligible": true,
+        "pixels": 8461,
+        "image_fraction": 0.010758717854817709,
+        "bbox_xyxy": [
+          354,
+          79,
+          489,
+          602
+        ],
+        "bbox_width": 135,
+        "bbox_height": 523,
+        "bbox_margin": 79,
+        "other_door_instance_ids": [
+          36,
+          38
+        ],
+        "sha256": "33b3958da4d3c43aec77be7a45925df2a9585212f6a4275d54bdf61f236d3532"
+      },
+      "query": {
+        "camera": "cam_01",
+        "frame": 51,
+        "path": "payload/ai_034_001/images/scene_cam_01_geometry_hdf5/frame.0051.semantic_instance.hdf5",
+        "eligible": true,
+        "pixels": 10540,
+        "image_fraction": 0.013402303059895834,
+        "bbox_xyxy": [
+          835,
+          52,
+          970,
+          483
+        ],
+        "bbox_width": 135,
+        "bbox_height": 431,
+        "bbox_margin": 52,
+        "other_door_instance_ids": [
+          36,
+          37,
+          68,
+          70,
+          72
+        ],
+        "sha256": "eb0a17fd46f59177fa17dc14b9f427b9ce778404d3e4d243787ad63a4d022b0e"
+      }
+    },
+    {
+      "episode_id": "HP03",
+      "scene_name": "ai_034_001",
+      "target_door_instance_id": 36,
+      "reference": {
+        "camera": "cam_00",
+        "frame": 13,
+        "path": "payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0013.semantic_instance.hdf5",
+        "eligible": true,
+        "pixels": 6041,
+        "image_fraction": 0.007681528727213542,
+        "bbox_xyxy": [
+          400,
+          16,
+          538,
+          421
+        ],
+        "bbox_width": 138,
+        "bbox_height": 405,
+        "bbox_margin": 16,
+        "other_door_instance_ids": [
+          33,
+          37,
+          70
+        ],
+        "sha256": "ef5f1abc60dc66ee240d9a4f1fff773d41839eafdb3de274922cf0e2f1d252ae"
+      },
+      "query": {
+        "camera": "cam_01",
+        "frame": 66,
+        "path": "payload/ai_034_001/images/scene_cam_01_geometry_hdf5/frame.0066.semantic_instance.hdf5",
+        "eligible": true,
+        "pixels": 11380,
+        "image_fraction": 0.014470418294270834,
+        "bbox_xyxy": [
+          797,
+          10,
+          996,
+          528
+        ],
+        "bbox_width": 199,
+        "bbox_height": 518,
+        "bbox_margin": 10,
+        "other_door_instance_ids": [
+          33,
+          37,
+          38,
+          68
+        ],
+        "sha256": "e5e1e189cb5df8f5433b5822e3c42954c1a1c5be7bc5b089769a2c4bbd678bc0"
+      }
+    }
+  ],
+  "materialize_after_freeze": {
+    "camera_metadata": [
+      "payload/ai_034_001/_detail/cam_00/camera_keyframe_frame_indices.hdf5",
+      "payload/ai_034_001/_detail/cam_00/camera_keyframe_orientations.hdf5",
+      "payload/ai_034_001/_detail/cam_00/camera_keyframe_positions.hdf5",
+      "payload/ai_034_001/_detail/cam_01/camera_keyframe_frame_indices.hdf5",
+      "payload/ai_034_001/_detail/cam_01/camera_keyframe_orientations.hdf5",
+      "payload/ai_034_001/_detail/cam_01/camera_keyframe_positions.hdf5",
+      "payload/ai_034_001/_detail/cam_02/camera_keyframe_frame_indices.hdf5",
+      "payload/ai_034_001/_detail/cam_02/camera_keyframe_orientations.hdf5",
+      "payload/ai_034_001/_detail/cam_02/camera_keyframe_positions.hdf5"
+    ],
+    "reference_positions": [
+      "payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0089.position.hdf5",
+      "payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0002.position.hdf5",
+      "payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0013.position.hdf5"
+    ],
+    "rgb_previews": [
+      "payload/ai_034_001/images/scene_cam_00_final_preview/frame.0089.color.jpg",
+      "payload/ai_034_001/images/scene_cam_02_final_preview/frame.0022.color.jpg",
+      "payload/ai_034_001/images/scene_cam_00_final_preview/frame.0002.color.jpg",
+      "payload/ai_034_001/images/scene_cam_01_final_preview/frame.0051.color.jpg",
+      "payload/ai_034_001/images/scene_cam_00_final_preview/frame.0013.color.jpg",
+      "payload/ai_034_001/images/scene_cam_01_final_preview/frame.0066.color.jpg"
+    ]
+  },
+  "claim_boundary": "A pass is synthetic indoor Development evidence that exact pose plus a directly posed reference door surface is sufficient for cross-trajectory exact-door projection. It is not real outdoor confirmation, a named entrance, a doorway aperture, public or legal access, accessibility, traversability, approach, waypoint, arrival, HANDOFF_READY, product benefit, user benefit or mobility-safety evidence. Panoramax is not reopened unless paired with an independent sub-meter portal anchor."
+}
