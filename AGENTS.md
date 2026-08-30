@@ -69,6 +69,10 @@ After `PROJECT_STATE.md`, read only the route needed for the task:
 | Long or remote compute | [host research compute](docs/HOST_RESEARCH_COMPUTE.md) |
 | Open-ended algorithm search or candidate improvement with SkyDiscover | [SkyDiscover playbook](docs/SKYDISCOVER_PLAYBOOK.md), then the owning BlindAssist route and evidence contract |
 
+## External search and research discovery
+
+For external web search, literature discovery, and multi-source research, actively prefer and make liberal use of the `Exa` plugin when it can improve recall, coverage, or research depth. Fall back to other search tools when Exa is unavailable or not well suited to the task.
+
 ## SkyDiscover auxiliary-system contract
 
 SkyDiscover is an optional reusable engine agents may invoke without separate permission. BlindAssist owns the question, evaluator, evidence, decision, and claim; candidates remain proposals until route validation. Use the playbook's isolated launcher/task output. Never mutate or clean SkyDiscover's checkout, environment, runs, or caches. It cannot supply missing information, reopen consumed evidence, access protected outcomes, replace fresh confirmation, or exceed its input/evaluator evidence.
