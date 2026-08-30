@@ -20,7 +20,7 @@ This is a same-source scripted-CARLA **Development** result. It is not blind, so
 
 The CONTACT and SAFE pair has the same observation prefix and the same `0.40 s` complete physical occlusion at samples `22–29`. X24 also produces route risk during that identical SAFE prefix; those frames are deliberately not counted as false alerts because the outcome has not yet causally diverged. The frozen false-alert score begins at `2.70 s`, after the `2.00 s` fork plus `0.70 s` grace, and finds zero new X24-only segments.
 
-All ten predeclared score checks passed. The result decision is `RETAIN_X24_AS_C2_DEVELOPMENT_SUCCESSOR_CANDIDATE`.
+All eleven predeclared score checks passed. The result decision is `RETAIN_X24_AS_C2_DEVELOPMENT_SUCCESSOR_CANDIDATE`.
 
 ## Structural upgrade
 
