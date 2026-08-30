@@ -12,8 +12,9 @@ Status: `L10_R0_ACTIVE / DTR_R2_DYNAMIC_RETAINED`
 - **L10 pixel/posed portal line:** generic Panoramax pixel-portal mining is
   closed (`0/3` joint width-first admissions). Hypersim met a synthetic posed
   transfer gate, while real SceneNN terminates at
-  `L10_SCENENN_REAL_RGBD_PARTIAL_METRIC_PORTAL_TRANSFER_CONFIRMATION_GATE_NOT_MET`
-  because reference visibility was not authoritative.
+  `L10_SCENENN_VISIBLE_METRIC_PORTAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET`:
+  z-buffer visibility repaired local plane authority, but all frozen references
+  were edge-clipped fragments without complete portal extent.
 - **DTR JRDB/public line:** X21 is frozen at
   `DTR_X21_TRACK_CARRIED_COMPONENT_ANCESTRY_GATE_MET` for Development only; a
   new source-disjoint confirmation remains required.
@@ -1100,6 +1101,25 @@ door-instance mask or z-buffered labelled triangles checked against synchronized
 depth. Query RGB/depth stays evaluator-only. Generic Panoramax mining and
 Panoramax-only SfM remain closed because neither supplies the missing absolute
 portal anchor.
+
+That one strict-triangle visibility successor has now run on fresh SceneNN
+scenes `246 / 032 / 073`. It froze all geometry and implementation identities
+before opening RGB-D, verified the three selected ONIs against official MD5,
+sealed only six synchronized frames, and executed one replay. Exact-door Top-1
+was `2/3`, wrong commits `1/3`, visible query predictions `2/3`, centroid-inside
+`2/3`, median IoU `0.0408`, and median world-centroid error `0.685 m`. Record
+`L10_SCENENN_VISIBLE_METRIC_PORTAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET`.
+
+The structural gain is real but insufficient: mean reference-plane normal
+error fell from `34.54 deg` to `8.00 deg`, confirming that the z-buffer removed
+foreground depth contamination. All three reference masks, however, touched
+the right image edge and were only `66-118 px` wide. The credential therefore
+carried a correct local plane fragment without the complete portal extent;
+query target recall was only `0.1215 / 0.0232 / 0.0000`. Do not add a margin or
+retune consumed SceneNN. The next active source change is a fresh 3RScan
+reference/rescan pair with stable door or doorframe instance identity and the
+official scan-to-reference transform, subject to dataset access approval.
+Panoramax remains closed until independently registered portal extent exists.
 
 ## DTR-R2 decision
 

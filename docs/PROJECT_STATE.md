@@ -1,6 +1,6 @@
 # Project state
 
-Updated: 2026-08-30
+Updated: 2026-08-31
 
 BlindAssist is a runnable Android showcase research prototype. The default
 research policy is effect-first: demonstrate a genuine, visible effect in a
@@ -28,8 +28,10 @@ Current route snapshot:
 - L10 PanoLab active entrance-ray recovery passed `4/4`; this does not establish
   a pixel portal. Generic Panoramax pixel-portal mining is closed.
 - Hypersim established a synthetic posed-portal mechanism ceiling. SceneNN real
-  RGB-D confirmation did not meet the gate because reference-side visibility
-  was not authoritative; a fresh visibility-qualified real source is required.
+  RGB-D strict-triangle visibility repaired the local reference plane but did
+  not meet the transfer gate because the credential still lacked complete
+  portal extent; 3RScan cross-rescan stable identity is the next source after
+  access approval.
 
 ## Current evidence
 
@@ -881,6 +883,23 @@ Do not tune the consumed frames, plane fit, or gates. The next real source must
 add source-side visibility authority through a provider 2D instance mask or
 z-buffered labelled mesh/depth consistency on a fresh cohort; generic Panoramax
 and Panoramax-only SfM remain closed.
+
+The fresh strict-triangle SceneNN successor has also terminated. It used a
+full-scene z-buffer to admit only visible target-door triangles in scenes
+`246 / 032 / 073`, bound the selector and sparse synchronized extractor before
+RGB-D materialization, and ran one six-frame replay. It improved mean plane-
+normal error from `34.54 deg` to `8.00 deg`, but did not meet any aggregate
+gate: correct door `2/3`, wrong commit `1/3`, centroid-inside `2/3`, median IoU
+`0.0408`, and median world-centroid error `0.685 m`. Record
+`L10_SCENENN_VISIBLE_METRIC_PORTAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET`.
+
+All three reference credentials were unoccluded but image-edge-clipped portal
+fragments only `66-118 px` wide. Source visibility is therefore repaired, while
+source extent remains missing. Do not tune an image margin or reuse these
+scenes. The next L10 real-source successor is 3RScan cross-rescan stable
+door/doorframe identity plus the official scan-to-reference transform, after
+Terms-of-Use access; Panoramax remains parked without independent sub-metre
+portal extent.
 
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`

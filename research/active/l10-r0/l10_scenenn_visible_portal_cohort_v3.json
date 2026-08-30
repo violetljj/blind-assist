@@ -1,0 +1,627 @@
+{
+  "schema": "blindassist-l10-scenenn-visible-portal-cohort-v3",
+  "authority": "FROZEN_PRE_RGBD_STRICT_TRIANGLE_VISIBILITY_COHORT",
+  "protocol_path": "l10_scenenn_visible_portal_protocol_v3.json",
+  "protocol_sha256": "a5759375636e2e5e4b5911ba1bb91cd71e3147a4c82537ec2ef92d457bc818ff",
+  "source": {
+    "provider": {
+      "name": "SceneNN",
+      "project": "https://scenenn.net/",
+      "repository": "https://github.com/hkust-vgd/scenenn",
+      "repository_commit": "265446606e5ed4217e2a8c6a4e306367171603ea",
+      "server_root": "https://hkust-vgd.ust.hk/scenenn/main/",
+      "sensor": "Asus Xtion",
+      "image_width": 640,
+      "image_height": 480,
+      "depth_unit": "millimetre",
+      "world_unit": "metre",
+      "pose_convention": "trajectory.log transforms camera-space points to world space",
+      "license_boundary": "Free for educational and research use; contact SceneNN before commercial use. Raw assets are not redistributed by BlindAssist."
+    },
+    "input_manifest": {
+      "payload/intrinsic/asus.ini": {
+        "bytes": 253,
+        "sha256": "51a3ccc2fa33ce8600ca423c1bbea4ce8a4fb480ceb170179e4c19bcaf25ff18"
+      },
+      "payload/032/032.ply": {
+        "bytes": 120861355,
+        "sha256": "2d494b21d16684c4ae8b0d0644035834fb7221e1395fd5f45ea487ab463de4bf",
+        "md5": "6243c9a3bda503dca309614f7264b16e"
+      },
+      "payload/032/032.xml": {
+        "bytes": 59911,
+        "sha256": "e9927e64b7e3936a8bd9cd0d5adcb584869592689b78275d825f1750e53b2201",
+        "md5": "d6819339c0350987fd50b64dfd4f1f57"
+      },
+      "payload/032/trajectory.log": {
+        "bytes": 914714,
+        "sha256": "a2ef0c26f068e7e0900695244cbb8addb6e9391185ac48d4f96ffed9b6a4e308",
+        "md5": "ce6c33788ac0f70b4e54b9e18ecb7823"
+      },
+      "payload/043/043.ply": {
+        "bytes": 106516403,
+        "sha256": "c50f7caff1fdc823e31ca643d4a052a90c063ee3e5020ae005c035c6ef2d8576",
+        "md5": "e298af3a6f0e7284845a9c2874bbf553"
+      },
+      "payload/043/043.xml": {
+        "bytes": 55380,
+        "sha256": "d54ae8640b6b48589db0c0933ddc8f158551745fd431b9c0c84ae1255d6f4a84",
+        "md5": "510f0d422475173dddef514c11d23c01"
+      },
+      "payload/043/trajectory.log": {
+        "bytes": 1053009,
+        "sha256": "f7fa40d5a51727f0b23d0a3c6975d5542c640b4b66ce82bba31957e8e23c028c",
+        "md5": "43f4bf353e1ba176298c60538c42ac2d"
+      },
+      "payload/246/246.ply": {
+        "bytes": 79056429,
+        "sha256": "ecd022dfa21576efc849ee83998251584d959cefe1c6ace0a7fdcb8d3a613739",
+        "md5": "96f795beec168bee81842e928840f35d"
+      },
+      "payload/246/246.xml": {
+        "bytes": 21420,
+        "sha256": "5d83cc353c41709b49ecb9293adee48b9c47611d6c5cddb4aac82cfb4adab4f3",
+        "md5": "5ca801a92427f246c2ecee2b7808d01c"
+      },
+      "payload/246/trajectory.log": {
+        "bytes": 792358,
+        "sha256": "680e141b889765874e5f75ca19d0a3a136ad965bbf4b72c07acf4538a5c5e9ea",
+        "md5": "7c16bf617a27083f3f30b66b7eeff924"
+      },
+      "payload/038/038.ply": {
+        "bytes": 134113878,
+        "sha256": "f3d71beb5fd17838f333fdf53374cdc6075d7bf9e26b60769d3a1dd84c43bc54",
+        "md5": "243303af25e75612ade0a5c804131298"
+      },
+      "payload/038/038.xml": {
+        "bytes": 81315,
+        "sha256": "fbaa7873b0121bec4f19579d851e498c63160127d748dad5031e4ef2b3f6b34e",
+        "md5": "d2c31cf7eb5903eb18a7bd25e04e951d"
+      },
+      "payload/038/trajectory.log": {
+        "bytes": 1082375,
+        "sha256": "51db0e90d4af026ee1dcae9cbd7a37ac7e88d86eff41b483714037ee8f39cbdf",
+        "md5": "8376bd1b2adc170a93b11e22dbc9121a"
+      },
+      "payload/073/073.ply": {
+        "bytes": 76543778,
+        "sha256": "90c03c491c296ca36c1037cecc326c0640f79f92b521a5742c339a0dab5b8a0f",
+        "md5": "2e6630b309f7cf29c066688950863315"
+      },
+      "payload/073/073.xml": {
+        "bytes": 42597,
+        "sha256": "d79467a8eb556e075bd25e0d5160c46465145b60d07f29fea6b1798888ff3d28",
+        "md5": "de192314de1479dc6527e07c9ece0753"
+      },
+      "payload/073/trajectory.log": {
+        "bytes": 983815,
+        "sha256": "8afab85ceb7adf8155b6745c5e537996c027fdb7a22155139782e0d6111e27c6",
+        "md5": "75b617f68796c3240d13544a1eeb2227"
+      },
+      "payload/225/225.ply": {
+        "bytes": 76668241,
+        "sha256": "3074c33290225a9b781f1bd7f53f14486c4be8d916704bb3cf72722e1d45942d",
+        "md5": "4bd40c3b749902ebe2589e79cee3b3c8"
+      },
+      "payload/225/225.xml": {
+        "bytes": 35001,
+        "sha256": "78ff095838fb1a483f4c503a70b3787280608d9e28358f59a76e59c03db67ea9",
+        "md5": "c10402ce7e924ce26951debb0c01824d"
+      },
+      "payload/225/trajectory.log": {
+        "bytes": 834860,
+        "sha256": "47604db50a79122c946e5aa6693f149203a396f2cfacab7e2cc4fad3aa7ecb7c",
+        "md5": "5de2a1549fe097dbcb91de4e436a9cee"
+      }
+    },
+    "rgbd_files_at_freeze": 0
+  },
+  "selection": {
+    "allowed_inputs": [
+      "frozen XML shortlist and target IDs",
+      "PLY xyz, faces and uint instance labels",
+      "trajectory.log camera-to-world matrices",
+      "asus.ini intrinsics"
+    ],
+    "forbidden_before_cohort_freeze": [
+      "ONI color frames",
+      "ONI depth frames",
+      "provider 2D annotations",
+      "rendered RGB previews",
+      "model output"
+    ],
+    "strict_target_face_rule": "A target face is admitted only when all three vertex labels equal the frozen target door instance ID.",
+    "renderer": {
+      "implementation": "CuPy CUDA triangle rasterizer",
+      "numeric_type": "float32",
+      "image_width": 640,
+      "image_height": 480,
+      "near_plane_metres": 0.02,
+      "near_plane_face_rule": "Reject a face unless all three vertices are strictly beyond the near plane; do not clip crossing faces.",
+      "triangle_sidedness": "double-sided",
+      "pixel_sample": "pixel centre with screen-barycentric inside tolerance 1e-5",
+      "depth_interpolation": "perspective-correct reciprocal depth",
+      "z_buffer": "atomic minimum over positive IEEE-754 float bits",
+      "visibility_rule": "A strict target pixel is visible when target_depth is finite and target_depth <= full_scene_depth + 0.005 m.",
+      "visibility_tolerance_metres": 0.005
+    },
+    "eligible_frame": {
+      "minimum_visible_target_pixels": 4096,
+      "minimum_bbox_width_pixels": 64,
+      "minimum_bbox_height_pixels": 128,
+      "minimum_visible_to_target_raster_ratio": 0.9,
+      "maximum_visible_target_image_fraction": 0.45,
+      "maximum_camera_to_target_centroid_metres": 10.0
+    },
+    "pair_rule": "Require reference frame index lower than query frame index, frame gap at least 30 and camera-centre baseline at least 0.5 m. Rank pairs by baseline descending, then the smaller visible-target pixel count descending, then the smaller visibility ratio descending, then reference and query frame ascending.",
+    "scene_rule": "A candidate must produce one eligible ordered pair. Rank candidates by the pair's smaller visible-target pixel count descending, baseline descending, target XML area descending and scene ID ascending; freeze the top three.",
+    "failure_semantics": "If fewer than three shortlisted scenes produce an eligible ordered pair, return NOT_EVALUABLE. Do not substitute a scene or alter the renderer, admission or ranking after any fresh RGB-D is opened.",
+    "candidate_scenes": 6,
+    "cohort_size": 3,
+    "rgbd_frames_before_cohort_freeze": 0
+  },
+  "implementation": {
+    "path": "l10_scenenn_visible_portal_transfer.py",
+    "sha256": "f74d419dc189899a571768fd65c470c264eb8d2ae90b4aef102cea715f4c50d6",
+    "helper_path": "l10_scenenn_real_posed_portal_transfer.py",
+    "helper_sha256": "a99b9800dc3b98d07abf944d10fa6fec2f476428dc13d6fab56b62f00e7e8d9b",
+    "extractor_source_path": "l10_scenenn_extract_selected_sync.cpp",
+    "extractor_source_sha256": "33ffdc6b45ef939e925b55b6f6f0702435a2b1cfa172617402273a1ba72739e2",
+    "runtime": {
+      "cupy_version": "14.1.1",
+      "cuda_runtime_version": 12090,
+      "cuda_driver_version": 13030,
+      "device_id": 0,
+      "device_name": "NVIDIA GeForce RTX 5060 Laptop GPU"
+    }
+  },
+  "selection_audit": [
+    {
+      "scene_id": "032",
+      "target_door_instance_id": 483,
+      "target_xml_area": 46200,
+      "trajectory_frames": 5400,
+      "mesh_vertices": 2108426,
+      "mesh_faces": 4269218,
+      "target_ply_vertices": 76718,
+      "strict_target_faces": 150683,
+      "eligible_frames": 647,
+      "frame_reason_counts": {
+        "ELIGIBLE": 647,
+        "HEIGHT+VISIBILITY": 18,
+        "PIXELS+HEIGHT+VISIBILITY": 21,
+        "PIXELS+VISIBILITY": 41,
+        "PIXELS+WIDTH": 11,
+        "PIXELS+WIDTH+HEIGHT": 37,
+        "PIXELS+WIDTH+HEIGHT+VISIBILITY": 4334,
+        "VISIBILITY": 226,
+        "WIDTH": 54,
+        "WIDTH+VISIBILITY": 11
+      },
+      "ordered_pair_found": true,
+      "selected_pair": {
+        "reference_frame": 706,
+        "query_frame": 2439,
+        "camera_baseline_m": 2.3233043417957355,
+        "smaller_visible_target_pixels": 17763
+      }
+    },
+    {
+      "scene_id": "043",
+      "target_door_instance_id": 747444,
+      "target_xml_area": 44875,
+      "trajectory_frames": 6200,
+      "mesh_vertices": 1876132,
+      "mesh_faces": 3719692,
+      "target_ply_vertices": 75272,
+      "strict_target_faces": 148798,
+      "eligible_frames": 1640,
+      "frame_reason_counts": {
+        "ELIGIBLE": 1640,
+        "FRACTION": 35,
+        "HEIGHT": 3,
+        "PIXELS": 6,
+        "PIXELS+HEIGHT": 24,
+        "PIXELS+WIDTH": 61,
+        "PIXELS+WIDTH+HEIGHT": 206,
+        "PIXELS+WIDTH+HEIGHT+VISIBILITY": 4196,
+        "WIDTH": 29
+      },
+      "ordered_pair_found": true,
+      "selected_pair": {
+        "reference_frame": 2575,
+        "query_frame": 3127,
+        "camera_baseline_m": 2.029343297277396,
+        "smaller_visible_target_pixels": 6601
+      }
+    },
+    {
+      "scene_id": "246",
+      "target_door_instance_id": 1107814,
+      "target_xml_area": 43184,
+      "trajectory_frames": 4700,
+      "mesh_vertices": 1374884,
+      "mesh_faces": 2802670,
+      "target_ply_vertices": 59596,
+      "strict_target_faces": 118882,
+      "eligible_frames": 689,
+      "frame_reason_counts": {
+        "ELIGIBLE": 689,
+        "FRACTION": 101,
+        "HEIGHT": 78,
+        "PIXELS+HEIGHT": 9,
+        "PIXELS+WIDTH": 11,
+        "PIXELS+WIDTH+HEIGHT": 40,
+        "PIXELS+WIDTH+HEIGHT+VISIBILITY": 3718,
+        "PIXELS+WIDTH+VISIBILITY": 3,
+        "VISIBILITY": 5,
+        "WIDTH": 42,
+        "WIDTH+HEIGHT": 1,
+        "WIDTH+VISIBILITY": 3
+      },
+      "ordered_pair_found": true,
+      "selected_pair": {
+        "reference_frame": 3153,
+        "query_frame": 4108,
+        "camera_baseline_m": 2.174975526587138,
+        "smaller_visible_target_pixels": 20443
+      }
+    },
+    {
+      "scene_id": "038",
+      "target_door_instance_id": 717,
+      "target_xml_area": 40835,
+      "trajectory_frames": 6400,
+      "mesh_vertices": 2391199,
+      "mesh_faces": 4614338,
+      "target_ply_vertices": 66173,
+      "strict_target_faces": 122465,
+      "eligible_frames": 293,
+      "frame_reason_counts": {
+        "ELIGIBLE": 293,
+        "HEIGHT+VISIBILITY": 40,
+        "PIXELS": 2,
+        "PIXELS+WIDTH": 10,
+        "PIXELS+WIDTH+HEIGHT": 16,
+        "PIXELS+WIDTH+HEIGHT+VISIBILITY": 5696,
+        "PIXELS+WIDTH+VISIBILITY": 127,
+        "VISIBILITY": 125,
+        "WIDTH": 82,
+        "WIDTH+VISIBILITY": 9
+      },
+      "ordered_pair_found": true,
+      "selected_pair": {
+        "reference_frame": 3367,
+        "query_frame": 3600,
+        "camera_baseline_m": 0.8682061898011327,
+        "smaller_visible_target_pixels": 5795
+      }
+    },
+    {
+      "scene_id": "073",
+      "target_door_instance_id": 445,
+      "target_xml_area": 35322,
+      "trajectory_frames": 5800,
+      "mesh_vertices": 1365904,
+      "mesh_faces": 2630803,
+      "target_ply_vertices": 50326,
+      "strict_target_faces": 107821,
+      "eligible_frames": 891,
+      "frame_reason_counts": {
+        "ELIGIBLE": 891,
+        "PIXELS+WIDTH": 28,
+        "PIXELS+WIDTH+HEIGHT": 51,
+        "PIXELS+WIDTH+HEIGHT+VISIBILITY": 4529,
+        "PIXELS+WIDTH+VISIBILITY": 25,
+        "VISIBILITY": 201,
+        "WIDTH": 65,
+        "WIDTH+VISIBILITY": 10
+      },
+      "ordered_pair_found": true,
+      "selected_pair": {
+        "reference_frame": 401,
+        "query_frame": 4650,
+        "camera_baseline_m": 1.1410036754651582,
+        "smaller_visible_target_pixels": 10365
+      }
+    },
+    {
+      "scene_id": "225",
+      "target_door_instance_id": 153525,
+      "target_xml_area": 35007,
+      "trajectory_frames": 5000,
+      "mesh_vertices": 1343539,
+      "mesh_faces": 2693709,
+      "target_ply_vertices": 49025,
+      "strict_target_faces": 109049,
+      "eligible_frames": 700,
+      "frame_reason_counts": {
+        "ELIGIBLE": 700,
+        "HEIGHT": 37,
+        "PIXELS+WIDTH": 27,
+        "PIXELS+WIDTH+HEIGHT": 28,
+        "PIXELS+WIDTH+HEIGHT+VISIBILITY": 4127,
+        "WIDTH": 77,
+        "WIDTH+HEIGHT": 1,
+        "WIDTH+HEIGHT+VISIBILITY": 3
+      },
+      "ordered_pair_found": true,
+      "selected_pair": {
+        "reference_frame": 3939,
+        "query_frame": 4752,
+        "camera_baseline_m": 1.267170222551414,
+        "smaller_visible_target_pixels": 6653
+      }
+    }
+  ],
+  "episodes": [
+    {
+      "episode_id": "SV01",
+      "scene_id": "246",
+      "target_door_instance_id": 1107814,
+      "target_xml": {
+        "instance_id": 1107814,
+        "text": "door",
+        "color_rgb": [
+          160,
+          196,
+          177
+        ],
+        "area": 43184
+      },
+      "target_ply_vertices": 59596,
+      "strict_target_faces": 118882,
+      "reference": {
+        "frame": 3153,
+        "trajectory_header": [
+          3153,
+          3153,
+          3154
+        ],
+        "camera_center_world": [
+          2.42927,
+          1.27147,
+          -0.412451
+        ],
+        "camera_to_target_centroid_m": 0.39552452927173576,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 20443,
+        "target_raster_pixels": 20443,
+        "visible_to_target_raster_ratio": 1.0,
+        "visible_image_fraction": 0.06654622395833333,
+        "bbox_xyxy": [
+          522,
+          132,
+          640,
+          480
+        ],
+        "bbox_width": 118,
+        "bbox_height": 348,
+        "visible_mask_sha256": "f32c0783fff417fa9bebe36fc26151939fe40a2d4d6271dcac1c91afe269f8f1"
+      },
+      "query": {
+        "frame": 4108,
+        "trajectory_header": [
+          4108,
+          4108,
+          4109
+        ],
+        "camera_center_world": [
+          0.261253,
+          1.29099,
+          -0.239709
+        ],
+        "camera_to_target_centroid_m": 2.4191078055049426,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 25126,
+        "target_raster_pixels": 26409,
+        "visible_to_target_raster_ratio": 0.9514180771706615,
+        "visible_image_fraction": 0.08179036458333333,
+        "bbox_xyxy": [
+          528,
+          0,
+          640,
+          289
+        ],
+        "bbox_width": 112,
+        "bbox_height": 289,
+        "visible_mask_sha256": "595a755b1177abdcc6e13eaf7e6591ad3f7de560aca23aadd1b90ed997752088"
+      },
+      "camera_baseline_m": 2.174975526587138,
+      "playback_mapping": {
+        "reference": "playback frame 03154 -> sealed frame 3153",
+        "query": "playback frame 04109 -> sealed frame 4108"
+      }
+    },
+    {
+      "episode_id": "SV02",
+      "scene_id": "032",
+      "target_door_instance_id": 483,
+      "target_xml": {
+        "instance_id": 483,
+        "text": "door",
+        "color_rgb": [
+          165,
+          44,
+          36
+        ],
+        "area": 46200
+      },
+      "target_ply_vertices": 76718,
+      "strict_target_faces": 150683,
+      "reference": {
+        "frame": 706,
+        "trajectory_header": [
+          706,
+          706,
+          707
+        ],
+        "camera_center_world": [
+          -1.00296,
+          1.73539,
+          -1.01522
+        ],
+        "camera_to_target_centroid_m": 1.0432458371181232,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 17763,
+        "target_raster_pixels": 17854,
+        "visible_to_target_raster_ratio": 0.9949031029461185,
+        "visible_image_fraction": 0.057822265625,
+        "bbox_xyxy": [
+          574,
+          0,
+          640,
+          480
+        ],
+        "bbox_width": 66,
+        "bbox_height": 480,
+        "visible_mask_sha256": "13debd8be94c86a40cdc8c62bc4975c7cca133e1a728a80d34fa3037322fb496"
+      },
+      "query": {
+        "frame": 2439,
+        "trajectory_header": [
+          2439,
+          2439,
+          2440
+        ],
+        "camera_center_world": [
+          1.02682,
+          1.24824,
+          0.00479034
+        ],
+        "camera_to_target_centroid_m": 3.223544428388962,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 40253,
+        "target_raster_pixels": 44561,
+        "visible_to_target_raster_ratio": 0.903323534032001,
+        "visible_image_fraction": 0.13103190104166668,
+        "bbox_xyxy": [
+          473,
+          0,
+          640,
+          380
+        ],
+        "bbox_width": 167,
+        "bbox_height": 380,
+        "visible_mask_sha256": "a9ecf7fe5742f6cd02d7cb72d885ad2312a30dc2e72e80d5033dbf0a9641d11b"
+      },
+      "camera_baseline_m": 2.3233043417957355,
+      "playback_mapping": {
+        "reference": "playback frame 00707 -> sealed frame 0706",
+        "query": "playback frame 02440 -> sealed frame 2439"
+      }
+    },
+    {
+      "episode_id": "SV03",
+      "scene_id": "073",
+      "target_door_instance_id": 445,
+      "target_xml": {
+        "instance_id": 445,
+        "text": "door",
+        "color_rgb": [
+          157,
+          94,
+          12
+        ],
+        "area": 35322
+      },
+      "target_ply_vertices": 50326,
+      "strict_target_faces": 107821,
+      "reference": {
+        "frame": 401,
+        "trajectory_header": [
+          401,
+          401,
+          402
+        ],
+        "camera_center_world": [
+          0.692443,
+          1.13802,
+          0.217103
+        ],
+        "camera_to_target_centroid_m": 1.23496064433009,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 10365,
+        "target_raster_pixels": 10365,
+        "visible_to_target_raster_ratio": 1.0,
+        "visible_image_fraction": 0.033740234375,
+        "bbox_xyxy": [
+          573,
+          208,
+          640,
+          480
+        ],
+        "bbox_width": 67,
+        "bbox_height": 272,
+        "visible_mask_sha256": "3f17077bdf1c6895cd7f85a883f7861a03646f088128529b8c49837e06ba8855"
+      },
+      "query": {
+        "frame": 4650,
+        "trajectory_header": [
+          4650,
+          4650,
+          4651
+        ],
+        "camera_center_world": [
+          -0.202389,
+          0.951219,
+          0.899943
+        ],
+        "camera_to_target_centroid_m": 2.245381067623039,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "visible_pixels": 13561,
+        "target_raster_pixels": 13561,
+        "visible_to_target_raster_ratio": 1.0,
+        "visible_image_fraction": 0.04414388020833333,
+        "bbox_xyxy": [
+          0,
+          0,
+          72,
+          211
+        ],
+        "bbox_width": 72,
+        "bbox_height": 211,
+        "visible_mask_sha256": "0002504ba9fa8d0b20d95e3fff1172a7676ab7caceb7c5da5eb58b4d8535fdf8"
+      },
+      "camera_baseline_m": 1.1410036754651582,
+      "playback_mapping": {
+        "reference": "playback frame 00402 -> sealed frame 0401",
+        "query": "playback frame 04651 -> sealed frame 4650"
+      }
+    }
+  ],
+  "materialize_after_freeze": {
+    "oni": [
+      {
+        "scene_id": "246",
+        "url": "https://hkust-vgd.ust.hk/scenenn/main/oni/246.oni",
+        "content_length": 853323075,
+        "etag": "61a4e2f9-32dcad43",
+        "md5": "d2a7c4be312ae2a99d91cb8ea9fbd08a"
+      },
+      {
+        "scene_id": "032",
+        "url": "https://hkust-vgd.ust.hk/scenenn/main/oni/032.oni",
+        "content_length": 945101379,
+        "etag": "61a4d727-38551a43",
+        "md5": "880f308147deeb2c759cb7bb7c1895f4"
+      },
+      {
+        "scene_id": "073",
+        "url": "https://hkust-vgd.ust.hk/scenenn/main/oni/073.oni",
+        "content_length": 1149475702,
+        "etag": "61a4da82-44839b76",
+        "md5": "e020cc1f6d2cfc8ce6a96f484050e90f"
+      }
+    ],
+    "sealed_frame_layout": "payload/<scene>/selected/{image,depth}/frame.<trajectory-index:04d>.png",
+    "playback_index_rule": "Official Playback.exe output index is trajectory frame index plus one."
+  },
+  "claim_boundary": "A pass is fresh-scene real indoor RGB-D Development evidence that exact reconstructed pose plus a z-buffer-visible reference-side metric door-surface credential can transfer one physical door across views. SceneNN mesh, poses and RGB-D come from the same capture, and the reference mask uses privileged reconstructed geometry, so this is neither source-disjoint confirmation nor a deployable perception result. It is not a doorway aperture, named entrance, access, traversability, APPROACH waypoint, arrival, HANDOFF_READY, product benefit, user benefit or mobility-safety result. Panoramax remains closed until an independent sub-metre portal anchor exists."
+}

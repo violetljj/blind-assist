@@ -1,0 +1,209 @@
+{
+  "schema": "blindassist-l10-scenenn-visible-portal-protocol-v3",
+  "authority": "FROZEN_PRE_RGBD_STRICT_TRIANGLE_VISIBILITY_SUCCESSOR_PROTOCOL",
+  "predecessor": {
+    "protocol_path": "l10_scenenn_real_posed_portal_protocol_v2.json",
+    "protocol_sha256": "d5ccffea48f0376fc74340aeee7e5508e13ce414c58f63c4977a32d86cab72c6",
+    "cohort_path": "l10_scenenn_real_posed_portal_cohort_v2.json",
+    "cohort_sha256": "9d0ff69eaf77695bf1b8badc78d29c9d4b78f6bb9dfd9fce4ea04fd0ebf9d796",
+    "result_path": "l10_scenenn_real_posed_portal_result_v2.json",
+    "result_sha256": "0d57cf234cfdf7bc73c403473a73ab5dea7d2c8fdd94275042dca7e482a8c99d",
+    "observed_failure": "SN01's convex projection enclosed an occluder although no strict target-door triangle rasterized in the reference view; the resulting real-depth plane had 0.0025 m median residual but 82.47 degree target-normal error and transferred outside the query image."
+  },
+  "question": "On a fresh SceneNN cohort, can a reference credential formed only from z-buffer-visible strict target-door triangles plus synchronized real depth transfer the same physical door surface to a later posed view?",
+  "information_change": "Change only the reference-mask information source: replace the convex hull of target-labelled vertices with strict target-instance mesh triangles filtered by a full-scene z-buffer. Keep the real-depth plane fit, cross-pose transfer, query inputs, evaluator, metrics and decision gates from v2 unchanged.",
+  "provider": {
+    "name": "SceneNN",
+    "project": "https://scenenn.net/",
+    "repository": "https://github.com/hkust-vgd/scenenn",
+    "repository_commit": "265446606e5ed4217e2a8c6a4e306367171603ea",
+    "server_root": "https://hkust-vgd.ust.hk/scenenn/main/",
+    "sensor": "Asus Xtion",
+    "image_width": 640,
+    "image_height": 480,
+    "depth_unit": "millimetre",
+    "world_unit": "metre",
+    "pose_convention": "trajectory.log transforms camera-space points to world space",
+    "license_boundary": "Free for educational and research use; contact SceneNN before commercial use. Raw assets are not redistributed by BlindAssist."
+  },
+  "fresh_scene_shortlist": {
+    "freeze_boundary": "Frozen before parsing any fresh-scene PLY, opening any fresh trajectory row, or materializing any fresh ONI/RGB-D frame.",
+    "universe_rule": "Enumerate the 95 official SceneNN scene directories, exclude consumed scenes 014, 249 and 521, keep scenes whose XML contains exact text=door and whose PLY, XML, trajectory and ONI endpoints all return HTTP 200, choose the largest-area XML door per scene with lower instance ID as tie-break, rank by target XML area descending then scene ID ascending, and take six candidates.",
+    "candidates": [
+      {
+        "scene_id": "032",
+        "target_door_instance_id": 483,
+        "target_xml_color_rgb": [165, 44, 36],
+        "target_xml_area": 46200,
+        "inventory_xml_sha256": "e9927e64b7e3936a8bd9cd0d5adcb584869592689b78275d825f1750e53b2201",
+        "files": {
+          "032.ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/032/032.ply", "content_length": 120861355, "etag": "61a4d471-73432ab"},
+          "032.xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/032/032.xml", "content_length": 59911, "etag": "61a4d471-ea07"},
+          "trajectory.log": {"url": "https://hkust-vgd.ust.hk/scenenn/main/032/trajectory.log", "content_length": 914714, "etag": "61a4d471-df51a"},
+          "032.oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/032.oni", "content_length": 945101379, "etag": "61a4d727-38551a43"}
+        }
+      },
+      {
+        "scene_id": "043",
+        "target_door_instance_id": 747444,
+        "target_xml_color_rgb": [157, 229, 8],
+        "target_xml_area": 44875,
+        "inventory_xml_sha256": "d54ae8640b6b48589db0c0933ddc8f158551745fd431b9c0c84ae1255d6f4a84",
+        "files": {
+          "043.ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/043/043.ply", "content_length": 106516403, "etag": "61a4d48c-6594fb3"},
+          "043.xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/043/043.xml", "content_length": 55380, "etag": "61a4d48c-d854"},
+          "trajectory.log": {"url": "https://hkust-vgd.ust.hk/scenenn/main/043/trajectory.log", "content_length": 1053009, "etag": "61a4d48c-101151"},
+          "043.oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/043.oni", "content_length": 1143737634, "etag": "61a4d81a-442c0d22"}
+        }
+      },
+      {
+        "scene_id": "246",
+        "target_door_instance_id": 1107814,
+        "target_xml_color_rgb": [160, 196, 177],
+        "target_xml_area": 43184,
+        "inventory_xml_sha256": "5d83cc353c41709b49ecb9293adee48b9c47611d6c5cddb4aac82cfb4adab4f3",
+        "files": {
+          "246.ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/246/246.ply", "content_length": 79056429, "etag": "61a4d55d-4b64e2d"},
+          "246.xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/246/246.xml", "content_length": 21420, "etag": "61a4d55d-53ac"},
+          "trajectory.log": {"url": "https://hkust-vgd.ust.hk/scenenn/main/246/trajectory.log", "content_length": 792358, "etag": "61a4d55d-c1726"},
+          "246.oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/246.oni", "content_length": 853323075, "etag": "61a4e2f9-32dcad43"}
+        }
+      },
+      {
+        "scene_id": "038",
+        "target_door_instance_id": 717,
+        "target_xml_color_rgb": [194, 42, 87],
+        "target_xml_area": 40835,
+        "inventory_xml_sha256": "fbaa7873b0121bec4f19579d851e498c63160127d748dad5031e4ef2b3f6b34e",
+        "files": {
+          "038.ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/038/038.ply", "content_length": 134113878, "etag": "61a4d47f-7fe6a56"},
+          "038.xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/038/038.xml", "content_length": 81315, "etag": "61a4d47f-13da3"},
+          "trajectory.log": {"url": "https://hkust-vgd.ust.hk/scenenn/main/038/trajectory.log", "content_length": 1082375, "etag": "61a4d47f-108407"},
+          "038.oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/038.oni", "content_length": 1152493389, "etag": "61a4d798-44b1a74d"}
+        }
+      },
+      {
+        "scene_id": "073",
+        "target_door_instance_id": 445,
+        "target_xml_color_rgb": [157, 94, 12],
+        "target_xml_area": 35322,
+        "inventory_xml_sha256": "d79467a8eb556e075bd25e0d5160c46465145b60d07f29fea6b1798888ff3d28",
+        "files": {
+          "073.ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/073/073.ply", "content_length": 76543778, "etag": "61a4d4c2-48ff722"},
+          "073.xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/073/073.xml", "content_length": 42597, "etag": "61a4d4c2-a665"},
+          "trajectory.log": {"url": "https://hkust-vgd.ust.hk/scenenn/main/073/trajectory.log", "content_length": 983815, "etag": "61a4d4c2-f0307"},
+          "073.oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/073.oni", "content_length": 1149475702, "etag": "61a4da82-44839b76"}
+        }
+      },
+      {
+        "scene_id": "225",
+        "target_door_instance_id": 153525,
+        "target_xml_color_rgb": [216, 166, 207],
+        "target_xml_area": 35007,
+        "inventory_xml_sha256": "78ff095838fb1a483f4c503a70b3787280608d9e28358f59a76e59c03db67ea9",
+        "files": {
+          "225.ply": {"url": "https://hkust-vgd.ust.hk/scenenn/main/225/225.ply", "content_length": 76668241, "etag": "61a4d544-491dd51"},
+          "225.xml": {"url": "https://hkust-vgd.ust.hk/scenenn/main/225/225.xml", "content_length": 35001, "etag": "61a4d544-88b9"},
+          "trajectory.log": {"url": "https://hkust-vgd.ust.hk/scenenn/main/225/trajectory.log", "content_length": 834860, "etag": "61a4d544-cbd2c"},
+          "225.oni": {"url": "https://hkust-vgd.ust.hk/scenenn/main/oni/225.oni", "content_length": 902684952, "etag": "61a4e1ef-35cde118"}
+        }
+      }
+    ]
+  },
+  "shared_intrinsic": {
+    "url": "https://hkust-vgd.ust.hk/scenenn/main/intrinsic/asus.ini",
+    "content_length": 253,
+    "etag": "61a4d5fd-fd",
+    "fx": 544.47329,
+    "fy": 544.47329,
+    "cx": 320.0,
+    "cy": 240.0
+  },
+  "official_md5": {
+    "manifest": "https://hkust-vgd.ust.hk/scenenn/check.txt",
+    "032": {"ply": "6243c9a3bda503dca309614f7264b16e", "trajectory": "ce6c33788ac0f70b4e54b9e18ecb7823", "oni": "880f308147deeb2c759cb7bb7c1895f4", "xml": "d6819339c0350987fd50b64dfd4f1f57"},
+    "038": {"ply": "243303af25e75612ade0a5c804131298", "trajectory": "8376bd1b2adc170a93b11e22dbc9121a", "oni": "39ed2a5745e54bdd6a6b8f85b08ddd9a", "xml": "d2c31cf7eb5903eb18a7bd25e04e951d"},
+    "043": {"ply": "e298af3a6f0e7284845a9c2874bbf553", "trajectory": "43f4bf353e1ba176298c60538c42ac2d", "oni": "054dd2ac5110b9d8d368616d6f24f513", "xml": "510f0d422475173dddef514c11d23c01"},
+    "073": {"ply": "2e6630b309f7cf29c066688950863315", "trajectory": "75b617f68796c3240d13544a1eeb2227", "oni": "e020cc1f6d2cfc8ce6a96f484050e90f", "xml": "de192314de1479dc6527e07c9ece0753"},
+    "225": {"ply": "4bd40c3b749902ebe2589e79cee3b3c8", "trajectory": "5de2a1549fe097dbcb91de4e436a9cee", "oni": "80b90b9da5a77523761a465ea6d23847", "xml": "c10402ce7e924ce26951debb0c01824d"},
+    "246": {"ply": "96f795beec168bee81842e928840f35d", "trajectory": "7c16bf617a27083f3f30b66b7eeff924", "oni": "d2a7c4be312ae2a99d91cb8ea9fbd08a", "xml": "5ca801a92427f246c2ecee2b7808d01c"}
+  },
+  "pre_rgbd_selector": {
+    "allowed_inputs": [
+      "frozen XML shortlist and target IDs",
+      "PLY xyz, faces and uint instance labels",
+      "trajectory.log camera-to-world matrices",
+      "asus.ini intrinsics"
+    ],
+    "forbidden_before_cohort_freeze": [
+      "ONI color frames",
+      "ONI depth frames",
+      "provider 2D annotations",
+      "rendered RGB previews",
+      "model output"
+    ],
+    "strict_target_face_rule": "A target face is admitted only when all three vertex labels equal the frozen target door instance ID.",
+    "renderer": {
+      "implementation": "CuPy CUDA triangle rasterizer",
+      "numeric_type": "float32",
+      "image_width": 640,
+      "image_height": 480,
+      "near_plane_metres": 0.02,
+      "near_plane_face_rule": "Reject a face unless all three vertices are strictly beyond the near plane; do not clip crossing faces.",
+      "triangle_sidedness": "double-sided",
+      "pixel_sample": "pixel centre with screen-barycentric inside tolerance 1e-5",
+      "depth_interpolation": "perspective-correct reciprocal depth",
+      "z_buffer": "atomic minimum over positive IEEE-754 float bits",
+      "visibility_rule": "A strict target pixel is visible when target_depth is finite and target_depth <= full_scene_depth + 0.005 m.",
+      "visibility_tolerance_metres": 0.005
+    },
+    "eligible_frame": {
+      "minimum_visible_target_pixels": 4096,
+      "minimum_bbox_width_pixels": 64,
+      "minimum_bbox_height_pixels": 128,
+      "minimum_visible_to_target_raster_ratio": 0.9,
+      "maximum_visible_target_image_fraction": 0.45,
+      "maximum_camera_to_target_centroid_metres": 10.0
+    },
+    "pair_rule": "Require reference frame index lower than query frame index, frame gap at least 30 and camera-centre baseline at least 0.5 m. Rank pairs by baseline descending, then the smaller visible-target pixel count descending, then the smaller visibility ratio descending, then reference and query frame ascending.",
+    "scene_rule": "A candidate must produce one eligible ordered pair. Rank candidates by the pair's smaller visible-target pixel count descending, baseline descending, target XML area descending and scene ID ascending; freeze the top three.",
+    "failure_semantics": "If fewer than three shortlisted scenes produce an eligible ordered pair, return NOT_EVALUABLE. Do not substitute a scene or alter the renderer, admission or ranking after any fresh RGB-D is opened.",
+    "candidate_scenes": 6,
+    "cohort_size": 3,
+    "rgbd_frames_before_cohort_freeze": 0
+  },
+  "frozen_transfer": {
+    "reference_inputs": [
+      "frozen z-buffer-visible strict target-door triangle mask",
+      "synchronized 16-bit reference depth",
+      "reference camera-to-world pose",
+      "asus.ini intrinsics"
+    ],
+    "query_inputs": [
+      "query camera-to-world pose",
+      "asus.ini intrinsics"
+    ],
+    "query_evaluator_only": [
+      "image-clipped convex hull of query target-labelled mesh vertices",
+      "query projections of other annotated instances",
+      "query RGB preview"
+    ],
+    "plane_rule": "Back-project every valid depth pixel inside the reference mask, fit one deterministic robust plane by SVD, retain the 70 percent with smallest absolute residual, and refit once. No randomized RANSAC or threshold search is permitted.",
+    "surface_rule": "Intersect every external reference-mask contour ray with the fitted plane, transform those metric 3D contour points to world space, project them through the query pose, clip to the image, and fill one convex portal-surface envelope.",
+    "truth_rule": "Keep v2 evaluation unchanged: fill the image-clipped convex hull of evaluator-only query target-mesh vertices. Door-surface truth is not promoted to doorway aperture or traversability truth.",
+    "instance_rule": "Keep v2 evaluation unchanged: rank every visible XML-annotated query instance by IoU between its provider-mesh envelope and the transferred envelope. No abstention or threshold selection is permitted.",
+    "action_ray_rule": "Use the transferred envelope centroid as the observation ray endpoint and report its query-image error plus the metric world-centroid error of the transported contour.",
+    "occlusion_rule": "The full-scene z-buffer is reference-side cohort information only. No query RGB, query depth, query mesh, XML label or z-buffer is available to the transfer."
+  },
+  "decision_gate": {
+    "correct_target_instance": "3/3 top-1 among visible annotated instances",
+    "wrong_instance_commit": "0/3",
+    "centroid_inside_target_envelope": "3/3",
+    "median_target_envelope_iou_minimum": 0.5,
+    "median_metric_world_centroid_error_metres_maximum": 0.25,
+    "failure_semantics": "Any failed condition closes this frozen real-RGB-D successor. Do not tune it on the consumed scenes."
+  },
+  "stop_condition": "One fresh six-scene geometry selector, one top-three cohort freeze, then one six-frame RGB-D replay. No scene, frame, visibility tolerance, plane, geometry, threshold, seed, matcher or backbone sweep after RGB-D materialization.",
+  "execution_identity": "The frozen cohort records the SHA-256 of the v3 entrypoint, imported v2 helper and synchronized selected-frame extractor source. Replay must match the Python hashes and a selected-frame receipt bound to this cohort before opening RGB-D.",
+  "claim_boundary": "A pass is fresh-scene real indoor RGB-D Development evidence that exact reconstructed pose plus a z-buffer-visible reference-side metric door-surface credential can transfer one physical door across views. SceneNN mesh, poses and RGB-D come from the same capture, and the reference mask uses privileged reconstructed geometry, so this is neither source-disjoint confirmation nor a deployable perception result. It is not a doorway aperture, named entrance, access, traversability, APPROACH waypoint, arrival, HANDOFF_READY, product benefit, user benefit or mobility-safety result. Panoramax remains closed until an independent sub-metre portal anchor exists."
+}
