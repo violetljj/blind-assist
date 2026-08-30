@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "id": "paper-habit-2026",
+  "kind": "paper",
+  "title": "HABIT: Human Action Benchmark for Interactive Traffic in CARLA",
+  "canonical_ref": "https://openaccess.thecvf.com/content/WACV2026/html/Ramesh_HABIT_Human_Action_Benchmark_for_Interactive_Traffic_in_CARLA_WACV_2026_paper.html",
+  "authors": [
+    "Mohan Ramesh",
+    "Mark Azer",
+    "Fabian Flohr"
+  ],
+  "year": 2026,
+  "venue": "WACV 2026",
+  "summary": "HABIT retargets real mocap and video human motion into CARLA and curates 4,730 traffic-compatible SMPL motions to expose perception, prediction, and planning failures hidden by deterministic pedestrian scripts.",
+  "mechanisms": [
+    {
+      "id": "real-motion-retargeted-carla-pedestrians",
+      "name": "Real-motion-retargeted CARLA pedestrians",
+      "description": "Replace simple scripted pedestrian trajectories with physically consistent, diverse human motions retargeted from real mocap and video while holding the CARLA scene and agent evaluation contract fixed.",
+      "inputs": [
+        "mocap and video human motion",
+        "SMPL-standardized motion",
+        "CARLA traffic scenario"
+      ],
+      "outputs": [
+        "diverse interactive pedestrian behavior",
+        "behavior-stratified agent failures",
+        "matched scripted-versus-retargeted comparisons"
+      ],
+      "limitations": "Automotive planning failures under retargeted pedestrians do not establish wearable sensing, BlindAssist event correctness, natural-world frequency, Android runtime, BLV user benefit, product readiness, or safety."
+    }
+  ],
+  "tags": [
+    "obstacle-avoidance",
+    "carla",
+    "human-motion",
+    "pedestrian-behavior",
+    "motion-retargeting",
+    "behavior-benchmark",
+    "deep-read-priority"
+  ],
+  "aliases": [
+    "HABIT",
+    "Human Action Benchmark for Interactive Traffic"
+  ],
+  "links": [],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

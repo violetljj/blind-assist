@@ -2,11 +2,11 @@
   "schema_version": 1,
   "engine_version": "decision-v1",
   "generated_at": "2026-08-30",
-  "source_fingerprint": "b1f3696489c0e13f25352f4f613be2eab94fef7dcfc1622a2590cad53c01b9f7",
+  "source_fingerprint": "8177767e5ecf34e778cadd4e0a5557f8a6d4b28156e2f0bf1b25e9f02f34d73f",
   "counts": {
     "failure_layers": 13,
-    "mechanisms": 263,
-    "uses": 262,
+    "mechanisms": 272,
+    "uses": 271,
     "experiments": 217,
     "current_terminals": 29
   },
@@ -1799,6 +1799,73 @@
         }
       ],
       "search_text": "Aria Digital Twin + Project Aria Tools 穿戴式时钟、标定、头动、对象位姿和像素/轨迹绑定 dynamic-travel-risk legacy-candidate dtr-r0 Aria Digital Twin + Project Aria Tools — dtr:DR25 route mechanism 多相机+双 IMU+眼动、6DoF 设备/对象 pose、深度、mask 及 Apache-2.0 工具；适合时钟/位姿/输入健康 canary 仅两个室内场景约 200 段，活动不是出行风险事件；数据条款需逐次核对 obstacle-avoidance 多相机+双 IMU+眼动、6DoF 设备/对象 pose、深度、mask 及 Apache-2.0 工具；适合时钟/位姿/输入健康 canary 多相机+双 IMU+眼动、6DoF 设备/对象 pose、深度、mask 及 Apache-2.0 工具；适合时钟/位姿/输入健康 canary 仅两个室内场景约 200 段，活动不是出行风险事件；数据条款需逐次核对"
+    },
+    {
+      "id": "dataset-carlaocc-2026#instance-centric-panoptic-occupancy-truth",
+      "item_id": "dataset-carlaocc-2026",
+      "mechanism_id": "instance-centric-panoptic-occupancy-truth",
+      "kind": "dataset",
+      "title": "CarlaOcc: An Instance-Centric Panoptic Occupancy Prediction Benchmark for Autonomous Driving",
+      "canonical_ref": "https://github.com/fengyi233/carlaocc",
+      "summary": "CarlaOcc provides 100K CARLA frames with instance-level panoptic occupancy, voxel resolution up to 0.05 m, exportable actor meshes, and physically consistent mesh voxelization tooling.",
+      "tags": [
+        "obstacle-avoidance",
+        "carla",
+        "panoptic-occupancy",
+        "voxelization",
+        "mesh-truth",
+        "dataset-reference"
+      ],
+      "name": "Instance-centric panoptic occupancy truth",
+      "description": "Export foreground and background scene meshes and voxelize them into dense, physically consistent semantic and instance occupancy labels instead of inferring truth from rendered pixels alone.",
+      "inputs": [
+        "CARLA UE5 scene and actors",
+        "exported meshes",
+        "semantic actor labels",
+        "voxelization configuration"
+      ],
+      "outputs": [
+        "panoptic occupancy grids",
+        "semantic and instance voxel labels",
+        "scene and actor mesh provenance"
+      ],
+      "limitations": "CarlaOcc targets CARLA UE5 0.10.0 and automotive rigs, while BlindAssist currently uses CARLA 0.9.16. Higher-resolution synthetic truth is not natural-distribution, wearable-sensor, product, user-benefit, or safety evidence.",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 3,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 6,
+        "geometry_motion": 7,
+        "identity_binding": 3,
+        "runtime_infrastructure": 3,
+        "source_coverage": 6
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-carlaocc-truth-reference",
+          "route": "obstacle-avoidance",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "Audit one matched CARLA scene by comparing the current DTR truth path with CarlaOcc-style mesh voxelization on voxel agreement, instance consistency, and route-tube contact parity before considering any larger data import.",
+          "expected_effect": "Reveal whether current occupancy truth has a decision-changing instance or voxelization defect. Stop if differences are explained only by resolution or simulator-version mismatch, or if route-tube contact is unchanged.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "Synthetic panoptic occupancy truth is not source-disjoint real-world confirmation, phone sensing, natural pedestrian behavior, Android performance, user benefit, product readiness, or safety evidence.",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://github.com/fengyi233/carlaocc",
+              "summary": "Official project repository verified for 100K frames, up-to-0.05 m panoptic occupancy, mesh export, physical voxelization, and the CARLA UE5 0.10.0 requirement."
+            }
+          ],
+          "updated_at": "2026-08-30"
+        }
+      ],
+      "search_text": "CarlaOcc: An Instance-Centric Panoptic Occupancy Prediction Benchmark for Autonomous Driving CarlaOcc provides 100K CARLA frames with instance-level panoptic occupancy, voxel resolution up to 0.05 m, exportable actor meshes, and physically consistent mesh voxelization tooling. obstacle-avoidance carla panoptic-occupancy voxelization mesh-truth dataset-reference Instance-centric panoptic occupancy truth Export foreground and background scene meshes and voxelize them into dense, physically consistent semantic and instance occupancy labels instead of inferring truth from rendered pixels alone. CARLA UE5 scene and actors exported meshes semantic actor labels voxelization configuration panoptic occupancy grids semantic and instance voxel labels scene and actor mesh provenance CarlaOcc targets CARLA UE5 0.10.0 and automotive rigs, while BlindAssist currently uses CARLA 0.9.16. Higher-resolution synthetic truth is not natural-distribution, wearable-sensor, product, user-benefit, or safety evidence. obstacle-avoidance Audit one matched CARLA scene by comparing the current DTR truth path with CarlaOcc-style mesh voxelization on voxel agreement, instance consistency, and route-tube contact parity before considering any larger data import. Reveal whether current occupancy truth has a decision-changing instance or voxelization defect. Stop if differences are explained only by resolution or simulator-version mismatch, or if route-tube contact is unchanged. Synthetic panoptic occupancy truth is not source-disjoint real-world confirmation, phone sensing, natural pedestrian behavior, Android performance, user benefit, product readiness, or safety evidence."
     },
     {
       "id": "dataset-dynamicstereo-dynamic-replica#dtr-dr27",
@@ -3750,6 +3817,71 @@
       "search_text": "BBeep 行人横穿；恒定告警造成社交和认知负担 dynamic-travel-risk legacy-candidate dtr-r0 BBeep — dtr:DR02 route mechanism RGB-D 跟踪 + 相机旋转补偿 + 行人未来路径与用户 emergency line 交汇；只在预测碰撞时出声 机场研究只有 6 名盲人，手提箱形态、线性外推和“旁人主动让路”不能外推到手机独立防撞 obstacle-avoidance RGB-D 跟踪 + 相机旋转补偿 + 行人未来路径与用户 emergency line 交汇；只在预测碰撞时出声 RGB-D 跟踪 + 相机旋转补偿 + 行人未来路径与用户 emergency line 交汇；只在预测碰撞时出声 机场研究只有 6 名盲人，手提箱形态、线性外推和“旁人主动让路”不能外推到手机独立防撞"
     },
     {
+      "id": "paper-beyondsight-2026#existence-observability-decoupling",
+      "item_id": "paper-beyondsight-2026",
+      "mechanism_id": "existence-observability-decoupling",
+      "kind": "paper",
+      "title": "BeyondSight: Object Permanence for End-to-End Autonomous Driving",
+      "canonical_ref": "https://arxiv.org/abs/2607.09138",
+      "summary": "BeyondSight decouples actor existence from instantaneous observability, propagates persistent actor hypotheses through occlusion, and evaluates visible and unobservable actors separately.",
+      "tags": [
+        "obstacle-avoidance",
+        "object-permanence",
+        "existence",
+        "observability",
+        "occlusion",
+        "x31-successor"
+      ],
+      "name": "Existence-observability decoupling",
+      "description": "Maintain an actor-existence hypothesis across temporary invisibility while updating it with observation-conditioned evidence and reporting performance separately for observable and unobservable actors.",
+      "inputs": [
+        "temporal scene observations",
+        "actor queries or hypotheses",
+        "observability-conditioned supervision"
+      ],
+      "outputs": [
+        "persistent actor-existence hypotheses",
+        "current observability state",
+        "visibility-stratified detection and planning metrics"
+      ],
+      "limitations": "Automotive end-to-end results and nuScenes-Permanence supervision do not establish that an unseen actor exists in wearable DTR, that a lineage is correct, or that a retained hypothesis is calibrated collision risk.",
+      "signatures": [],
+      "layer_scores": {
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 6,
+        "geometry_motion": 3,
+        "identity_binding": 3,
+        "observation_perception": 3,
+        "temporal_belief": 6
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-beyondsight-object-permanence",
+          "route": "obstacle-avoidance",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "In a successor after X31/C11, add orthogonal existence and observability states ahead of the existing set-valued lineage and motion branches while keeping route scoring and lifecycle fixed.",
+          "expected_effect": "Improve unobservable-interval CONTACT recall and dropout recovery without unbounded false persistence. Stop if false segments rise without a matched recovery gain or if the mechanism needs privileged identity online; do not rescue by extending the retention window.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "Object permanence is a representation hypothesis, not proof that an unseen actor exists, that its lineage or motion is correct, or that retained risk is calibrated, deployable, beneficial, or safe.",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2607.09138",
+              "summary": "Primary preprint reviewed for existence-observability decoupling and observability-conditioned evaluation."
+            }
+          ],
+          "updated_at": "2026-08-30"
+        }
+      ],
+      "search_text": "BeyondSight: Object Permanence for End-to-End Autonomous Driving BeyondSight decouples actor existence from instantaneous observability, propagates persistent actor hypotheses through occlusion, and evaluates visible and unobservable actors separately. obstacle-avoidance object-permanence existence observability occlusion x31-successor Existence-observability decoupling Maintain an actor-existence hypothesis across temporary invisibility while updating it with observation-conditioned evidence and reporting performance separately for observable and unobservable actors. temporal scene observations actor queries or hypotheses observability-conditioned supervision persistent actor-existence hypotheses current observability state visibility-stratified detection and planning metrics Automotive end-to-end results and nuScenes-Permanence supervision do not establish that an unseen actor exists in wearable DTR, that a lineage is correct, or that a retained hypothesis is calibrated collision risk. obstacle-avoidance In a successor after X31/C11, add orthogonal existence and observability states ahead of the existing set-valued lineage and motion branches while keeping route scoring and lifecycle fixed. Improve unobservable-interval CONTACT recall and dropout recovery without unbounded false persistence. Stop if false segments rise without a matched recovery gain or if the mechanism needs privileged identity online; do not rescue by extending the retention window. Object permanence is a representation hypothesis, not proof that an unseen actor exists, that its lineage or motion is correct, or that retained risk is calibrated, deployable, beneficial, or safe."
+    },
+    {
       "id": "paper-binary-ttc-a-temporal-geofence#dtr-dr09",
       "item_id": "paper-binary-ttc-a-temporal-geofence",
       "mechanism_id": "dtr-dr09",
@@ -4492,6 +4624,74 @@
         }
       ],
       "search_text": "Conformal Predictors for Efficient Video Text Spotting 对识别字符与框位置做 conformal uncertainty，并利用轨迹对齐传播高置信字符。 l10 literature-reserve l10-r0 Conformal Predictors for Efficient Video Text Spotting — l10:3 route mechanism 对识别字符与框位置做 conformal uncertainty，并利用轨迹对齐传播高置信字符。 建立的是覆盖保证与 VTS 增益，不是 physical identity；校准若换域仍可能失效。 ten-meter-copilot 在 source-disjoint 校准集上产生“词集合/框区间/UNKNOWN”，以 coverage、错认和错误身份 admission 联合评估。 在 source-disjoint 校准集上产生“词集合/框区间/UNKNOWN”，以 coverage、错认和错误身份 admission 联合评估。 建立的是覆盖保证与 VTS 增益，不是 physical identity；校准若换域仍可能失效。"
+    },
+    {
+      "id": "paper-consistent-instance-field-2026#occupancy-conditional-instance-field",
+      "item_id": "paper-consistent-instance-field-2026",
+      "mechanism_id": "occupancy-conditional-instance-field",
+      "kind": "paper",
+      "title": "Consistent Instance Field for Dynamic Scene Understanding",
+      "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2026/html/Wu_Consistent_Instance_Field_for_Dynamic_Scene_Understanding_CVPR_2026_paper.html",
+      "summary": "Consistent Instance Field represents a dynamic scene as a continuous probabilistic field with separate occupancy probability and conditional instance distribution at each space-time point.",
+      "tags": [
+        "obstacle-avoidance",
+        "dynamic-scene",
+        "probabilistic-occupancy",
+        "instance-distribution",
+        "visibility",
+        "lineage",
+        "representation-reserve"
+      ],
+      "name": "Occupancy plus conditional instance field",
+      "description": "Factor physical occupancy from conditional instance identity so persistence and identity uncertainty can evolve separately across viewpoint, deformation, and occlusion.",
+      "inputs": [
+        "multi-view RGB",
+        "instance masks",
+        "deformable 3D Gaussian representation"
+      ],
+      "outputs": [
+        "space-time occupancy probability",
+        "conditional instance distribution",
+        "cross-view persistent instance field"
+      ],
+      "limitations": "Novel-view panoptic segmentation and 4D querying do not establish online wearable occupancy, DTR lineage authority, motion-branch correctness, collision risk, real-time phone execution, user benefit, or safety.",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 3,
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 3,
+        "geometry_motion": 6,
+        "identity_binding": 6,
+        "observation_perception": 3,
+        "runtime_infrastructure": 6,
+        "temporal_belief": 6
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-consistent-instance-field",
+          "route": "obstacle-avoidance",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "Run a read-only post-C11 ledger canary to test whether X31-style hard track/cell states hide distinct existence and identity uncertainty during occlusion, split, merge, and reappearance.",
+          "expected_effect": "Improve failure attribution for false persistence and lineage swaps. Stop if the factorization changes neither attribution nor event decisions; do not train a 4D field or use rendering quality as a risk metric.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "A factorized field or improved novel-view segmentation would not establish online DTR observation quality, actor identity, future motion, collision risk, Android runtime, user benefit, product readiness, or safety.",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://openaccess.thecvf.com/content/CVPR2026/html/Wu_Consistent_Instance_Field_for_Dynamic_Scene_Understanding_CVPR_2026_paper.html",
+              "summary": "Primary CVPR paper reviewed for separate occupancy probability and conditional instance distribution at each space-time point."
+            }
+          ],
+          "updated_at": "2026-08-30"
+        }
+      ],
+      "search_text": "Consistent Instance Field for Dynamic Scene Understanding Consistent Instance Field represents a dynamic scene as a continuous probabilistic field with separate occupancy probability and conditional instance distribution at each space-time point. obstacle-avoidance dynamic-scene probabilistic-occupancy instance-distribution visibility lineage representation-reserve Occupancy plus conditional instance field Factor physical occupancy from conditional instance identity so persistence and identity uncertainty can evolve separately across viewpoint, deformation, and occlusion. multi-view RGB instance masks deformable 3D Gaussian representation space-time occupancy probability conditional instance distribution cross-view persistent instance field Novel-view panoptic segmentation and 4D querying do not establish online wearable occupancy, DTR lineage authority, motion-branch correctness, collision risk, real-time phone execution, user benefit, or safety. obstacle-avoidance Run a read-only post-C11 ledger canary to test whether X31-style hard track/cell states hide distinct existence and identity uncertainty during occlusion, split, merge, and reappearance. Improve failure attribution for false persistence and lineage swaps. Stop if the factorization changes neither attribution nor event decisions; do not train a 4D field or use rendering quality as a risk metric. A factorized field or improved novel-view segmentation would not establish online DTR observation quality, actor identity, future motion, collision risk, Android runtime, user benefit, product readiness, or safety."
     },
     {
       "id": "paper-contacthandover-2024#human-contact-aware-handover",
@@ -6407,6 +6607,72 @@
       "search_text": "ForeSightGuide: An Anticipatory Framework toward Accurate and Low-Redundancy Guidance for the Visually Impaired An anticipatory assistive-guidance framework that combines semantic scene understanding with predicted obstacle motion to suppress non-threatening objects and produce concise guidance for visually impaired travelers. obstacle-avoidance blv-guidance anticipatory-guidance low-redundancy comparator Anticipatory low-redundancy BLV guidance Uses predictive hazard assessment rather than reactive object mention alone to filter non-threatening objects and reduce redundant guidance while retaining hazard coverage. dynamic scene observations semantic scene interpretation predicted obstacle motion anticipated hazard assessment concise actionable guidance missed-hazard and redundant-alert measurements This is a recent preprint with paper-reported benchmark and dataset results. It has not been independently reproduced for BlindAssist, and low redundancy or a low missed-hazard rate does not establish real-world BLV benefit, product readiness, or safety. obstacle-avoidance Candidate comparator for whether BlindAssist obstacle guidance can be anticipatory and low-redundancy: compare missed-hazard rate and redundant alerts per guidance output under the same frozen observation and event contract. Expose the tradeoff between anticipatory hazard coverage and guidance redundancy instead of rewarding either verbose object narration or silence in isolation. Comparator status and any future offline metric comparison cannot establish safe walking, avoided collisions, BLV user benefit, product quality, deployment readiness, or safety. No product or safety claim follows from this knowledge entry."
     },
     {
+      "id": "paper-foundation-deocclusion-2026#depth-aware-generative-deocclusion",
+      "item_id": "paper-foundation-deocclusion-2026",
+      "mechanism_id": "depth-aware-generative-deocclusion",
+      "kind": "paper",
+      "title": "Fast Generative DeOcclusion for Visual Geometry and Robotics",
+      "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2026F/papers/Chen_Fast_Generative_DeOcclusion_for_Visual_Geometry_and_Robotics_CVPRF_2026_paper.pdf",
+      "summary": "A fast geometry-aware generative de-occlusion framework that selects informative views, performs 2D amodal completion, and fuses the results through depth-aware 3D integration.",
+      "tags": [
+        "ten-meter-copilot",
+        "deocclusion",
+        "visibility",
+        "depth-aware-fusion",
+        "mechanism-reserve"
+      ],
+      "name": "Depth-aware generative de-occlusion",
+      "description": "Separate observed and occluded content, generate amodal hypotheses for hidden regions, and integrate them into a 3D representation with depth-aware fusion.",
+      "inputs": [
+        "partial RGB observations",
+        "depth or point-cloud geometry",
+        "selected informative viewpoints"
+      ],
+      "outputs": [
+        "visible versus occluded strata",
+        "generated amodal appearance",
+        "depth-aware 3D completion"
+      ],
+      "limitations": "Generated hidden appearance or geometry is a hypothesis, not geometric truth, exact-instance authority, a visible-door measurement, or a confirmation source. BlindAssist may reuse the occlusion stratification but must never score generated completion as reference truth.",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 3,
+        "evaluation_evidence": 6,
+        "geometry_motion": 6,
+        "handoff_completion": 6,
+        "identity_binding": 3,
+        "observation_perception": 3,
+        "source_coverage": 3,
+        "temporal_belief": 3
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-foundation-deocclusion-occlusion-state",
+          "route": "ten-meter-copilot",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "Use a read-only visible/occluded stratification to test whether SceneNN reference-plane errors concentrate in occluded pixels before considering any downstream geometry change.",
+          "expected_effect": "Sharpen failure attribution and visibility gating. Stop immediately if an apparent gain depends on generated hidden appearance or geometry.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "Generated de-occlusion is a hypothesis and can never become geometric truth, exact-instance authority, visible-door evidence, arrival evidence, product benefit, or safety evidence.",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://openaccess.thecvf.com/content/CVPR2026F/papers/Chen_Fast_Generative_DeOcclusion_for_Visual_Geometry_and_Robotics_CVPRF_2026_paper.pdf",
+              "summary": "Primary paper link and author publication pages were reviewed for generative de-occlusion and depth-aware 3D integration; the BlindAssist use deliberately excludes generated truth."
+            }
+          ],
+          "updated_at": "2026-08-30"
+        }
+      ],
+      "search_text": "Fast Generative DeOcclusion for Visual Geometry and Robotics A fast geometry-aware generative de-occlusion framework that selects informative views, performs 2D amodal completion, and fuses the results through depth-aware 3D integration. ten-meter-copilot deocclusion visibility depth-aware-fusion mechanism-reserve Depth-aware generative de-occlusion Separate observed and occluded content, generate amodal hypotheses for hidden regions, and integrate them into a 3D representation with depth-aware fusion. partial RGB observations depth or point-cloud geometry selected informative viewpoints visible versus occluded strata generated amodal appearance depth-aware 3D completion Generated hidden appearance or geometry is a hypothesis, not geometric truth, exact-instance authority, a visible-door measurement, or a confirmation source. BlindAssist may reuse the occlusion stratification but must never score generated completion as reference truth. ten-meter-copilot Use a read-only visible/occluded stratification to test whether SceneNN reference-plane errors concentrate in occluded pixels before considering any downstream geometry change. Sharpen failure attribution and visibility gating. Stop immediately if an apparent gain depends on generated hidden appearance or geometry. Generated de-occlusion is a hypothesis and can never become geometric truth, exact-instance authority, visible-door evidence, arrival evidence, product benefit, or safety evidence."
+    },
+    {
       "id": "paper-from-region-arrival-to-instance-level-grounding-in-vision-and-language-n#l10-16",
       "item_id": "paper-from-region-arrival-to-instance-level-grounding-in-vision-and-language-n",
       "mechanism_id": "l10-16",
@@ -7080,6 +7346,73 @@
         }
       ],
       "search_text": "GuideTouch 用低成本围巾式 ToF 设备补足白杖较难发现的头部和上身障碍，并用肩胸四点振动表达危险方向。 dynamic-travel-risk deep-reading dtr-r0 ustrf frontier-guide ustrf-sc source — ustrf:P12 route mechanism 两个 ToF、四点触觉和少量方向模式获得较高静态识别率 初步研究；93.75% 是方向提示识别率，不是避障成功率 ustrf-sc 触觉编码应少而明确，先验证方向识别再验证动态避障 触觉编码应少而明确，先验证方向识别再验证动态避障 初步研究；93.75% 是方向提示识别率，不是避障成功率"
+    },
+    {
+      "id": "paper-habit-2026#real-motion-retargeted-carla-pedestrians",
+      "item_id": "paper-habit-2026",
+      "mechanism_id": "real-motion-retargeted-carla-pedestrians",
+      "kind": "paper",
+      "title": "HABIT: Human Action Benchmark for Interactive Traffic in CARLA",
+      "canonical_ref": "https://openaccess.thecvf.com/content/WACV2026/html/Ramesh_HABIT_Human_Action_Benchmark_for_Interactive_Traffic_in_CARLA_WACV_2026_paper.html",
+      "summary": "HABIT retargets real mocap and video human motion into CARLA and curates 4,730 traffic-compatible SMPL motions to expose perception, prediction, and planning failures hidden by deterministic pedestrian scripts.",
+      "tags": [
+        "obstacle-avoidance",
+        "carla",
+        "human-motion",
+        "pedestrian-behavior",
+        "motion-retargeting",
+        "behavior-benchmark",
+        "deep-read-priority"
+      ],
+      "name": "Real-motion-retargeted CARLA pedestrians",
+      "description": "Replace simple scripted pedestrian trajectories with physically consistent, diverse human motions retargeted from real mocap and video while holding the CARLA scene and agent evaluation contract fixed.",
+      "inputs": [
+        "mocap and video human motion",
+        "SMPL-standardized motion",
+        "CARLA traffic scenario"
+      ],
+      "outputs": [
+        "diverse interactive pedestrian behavior",
+        "behavior-stratified agent failures",
+        "matched scripted-versus-retargeted comparisons"
+      ],
+      "limitations": "Automotive planning failures under retargeted pedestrians do not establish wearable sensing, BlindAssist event correctness, natural-world frequency, Android runtime, BLV user benefit, product readiness, or safety.",
+      "signatures": [],
+      "layer_scores": {
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 9,
+        "geometry_motion": 6,
+        "observation_perception": 3,
+        "runtime_infrastructure": 6,
+        "source_coverage": 3,
+        "temporal_belief": 3
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-habit-behavior-reference",
+          "route": "obstacle-avoidance",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "For a later CARLA source experiment, freeze map, weather, wearer route, actor count, spawn geometry, and DTR algorithm, then replace one deterministic scripted-motion arm with a matched retargeted-motion arm covering hesitation, acceleration, stop-go, return, nonlinear crossing, posture change, and occlusion reappearance.",
+          "expected_effect": "Expose route-risk failures hidden by deterministic pedestrian scripts. Stop if the retargeted arm adds no new behavior/event strata or if integration cost dominates the information gain; do not add more weather or static scenery as a substitute.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "Retargeted CARLA motion remains synthetic behavior evidence. It cannot establish natural frequency, wearable perception, source-disjoint generalization, Android behavior, BLV user benefit, product reliability, or safety.",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://openaccess.thecvf.com/content/WACV2026/html/Ramesh_HABIT_Human_Action_Benchmark_for_Interactive_Traffic_in_CARLA_WACV_2026_paper.html",
+              "summary": "Primary WACV paper reviewed for retargeting approximately 30K real motions into 4,730 traffic-compatible SMPL motions and its CARLA benchmark boundary."
+            }
+          ],
+          "updated_at": "2026-08-30"
+        }
+      ],
+      "search_text": "HABIT: Human Action Benchmark for Interactive Traffic in CARLA HABIT retargets real mocap and video human motion into CARLA and curates 4,730 traffic-compatible SMPL motions to expose perception, prediction, and planning failures hidden by deterministic pedestrian scripts. obstacle-avoidance carla human-motion pedestrian-behavior motion-retargeting behavior-benchmark deep-read-priority Real-motion-retargeted CARLA pedestrians Replace simple scripted pedestrian trajectories with physically consistent, diverse human motions retargeted from real mocap and video while holding the CARLA scene and agent evaluation contract fixed. mocap and video human motion SMPL-standardized motion CARLA traffic scenario diverse interactive pedestrian behavior behavior-stratified agent failures matched scripted-versus-retargeted comparisons Automotive planning failures under retargeted pedestrians do not establish wearable sensing, BlindAssist event correctness, natural-world frequency, Android runtime, BLV user benefit, product readiness, or safety. obstacle-avoidance For a later CARLA source experiment, freeze map, weather, wearer route, actor count, spawn geometry, and DTR algorithm, then replace one deterministic scripted-motion arm with a matched retargeted-motion arm covering hesitation, acceleration, stop-go, return, nonlinear crossing, posture change, and occlusion reappearance. Expose route-risk failures hidden by deterministic pedestrian scripts. Stop if the retargeted arm adds no new behavior/event strata or if integration cost dominates the information gain; do not add more weather or static scenery as a substitute. Retargeted CARLA motion remains synthetic behavior evidence. It cannot establish natural frequency, wearable perception, source-disjoint generalization, Android behavior, BLV user benefit, product reliability, or safety."
     },
     {
       "id": "paper-help-human-reachability-2026#help",
@@ -9371,6 +9704,81 @@
         }
       ],
       "search_text": "OC-SORT observation-centric re-update 可修正遮挡期 Kalman 累积误差 ustrf frontier-guide ustrf-sc OC-SORT — ustrf:P05 route mechanism observation-centric re-update 可修正遮挡期 Kalman 累积误差 CVPR 方法证据强；CPU 关联速度不含检测，非穿戴相机 TTC 证明 ustrf-sc 可构建无需重型 ReID 的 observation-centric tracker 对照臂 可构建无需重型 ReID 的 observation-centric tracker 对照臂 CVPR 方法证据强；CPU 关联速度不含检测，非穿戴相机 TTC 证明"
+    },
+    {
+      "id": "paper-occstep-2025#occupancy-spatiotemporal-persistence-stress-test",
+      "item_id": "paper-occstep-2025",
+      "mechanism_id": "occupancy-spatiotemporal-persistence-stress-test",
+      "kind": "paper",
+      "title": "OccSTeP: Benchmarking 4D Occupancy Spatio-Temporal Persistence",
+      "canonical_ref": "https://arxiv.org/abs/2512.15621",
+      "summary": "OccSTeP benchmarks reactive and action-conditioned proactive 4D occupancy forecasting under temporal disturbances such as dropped frames, missing or noisy history, and erroneous semantic labels.",
+      "tags": [
+        "obstacle-avoidance",
+        "4d-occupancy",
+        "persistence",
+        "missingness",
+        "proactive-occupancy",
+        "evaluator",
+        "deep-read-priority"
+      ],
+      "name": "Occupancy spatio-temporal persistence stress test",
+      "description": "Evaluate whether a recurrent 4D scene state remains useful when observation history is missing or corrupted and when future occupancy is conditioned on a proposed ego action.",
+      "inputs": [
+        "temporal 3D observations",
+        "ego motion",
+        "history perturbations",
+        "candidate future action"
+      ],
+      "outputs": [
+        "reactive future occupancy",
+        "proactive action-conditioned occupancy",
+        "perturbation-stratified persistence metrics"
+      ],
+      "limitations": "Autonomous-driving occupancy IoU does not establish calibrated DTR collision risk, wearable sensing, identity persistence, Android runtime, BLV benefit, or safety. A higher occupancy score may still worsen event behavior.",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 6,
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 15,
+        "geometry_motion": 6,
+        "identity_binding": 3,
+        "observation_perception": 3,
+        "runtime_infrastructure": 6,
+        "source_coverage": 6,
+        "temporal_belief": 6
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-occstep-persistence-evaluator",
+          "route": "obstacle-avoidance",
+          "use_state": "planned",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "For a new protocol after the frozen X31/C11 terminal, hold the DTR scorer and proposed ego action fixed while injecting dropped frames, viewpoint loss, semantic corruption, and history disturbance, then stratify visible and unobservable intervals.",
+          "expected_effect": "Expose whether persistence survives the exact disturbances that create dropout failures and whether any occupancy gain improves CONTACT recall, false segments, dropout recovery, lead time, and calibration. Stop if occupancy gains do not improve event behavior.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "This evaluator plan creates no X31 result, source-disjoint confirmation, calibrated collision probability, wearable-sensor evidence, Android result, user benefit, product claim, or safety authority.",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2512.15621",
+              "summary": "Primary preprint reviewed for 4D occupancy persistence, dropped-frame and semantic-error perturbations, and action-conditioned proactive forecasting."
+            },
+            {
+              "kind": "repo",
+              "ref": "research/active/dtr-r0/README.md",
+              "summary": "Owning route preserves the frozen X31/C11 state and its current evidence ceiling."
+            }
+          ],
+          "updated_at": "2026-08-30"
+        }
+      ],
+      "search_text": "OccSTeP: Benchmarking 4D Occupancy Spatio-Temporal Persistence OccSTeP benchmarks reactive and action-conditioned proactive 4D occupancy forecasting under temporal disturbances such as dropped frames, missing or noisy history, and erroneous semantic labels. obstacle-avoidance 4d-occupancy persistence missingness proactive-occupancy evaluator deep-read-priority Occupancy spatio-temporal persistence stress test Evaluate whether a recurrent 4D scene state remains useful when observation history is missing or corrupted and when future occupancy is conditioned on a proposed ego action. temporal 3D observations ego motion history perturbations candidate future action reactive future occupancy proactive action-conditioned occupancy perturbation-stratified persistence metrics Autonomous-driving occupancy IoU does not establish calibrated DTR collision risk, wearable sensing, identity persistence, Android runtime, BLV benefit, or safety. A higher occupancy score may still worsen event behavior. obstacle-avoidance For a new protocol after the frozen X31/C11 terminal, hold the DTR scorer and proposed ego action fixed while injecting dropped frames, viewpoint loss, semantic corruption, and history disturbance, then stratify visible and unobservable intervals. Expose whether persistence survives the exact disturbances that create dropout failures and whether any occupancy gain improves CONTACT recall, false segments, dropout recovery, lead time, and calibration. Stop if occupancy gains do not improve event behavior. This evaluator plan creates no X31 result, source-disjoint confirmation, calibrated collision probability, wearable-sensor evidence, Android result, user benefit, product claim, or safety authority."
     },
     {
       "id": "paper-occupancy-flow-fields-for-motion-forecasting-in-autonomous-driving#dtr-dr46",
@@ -13939,6 +14347,73 @@
       "search_text": "VGGT MapAnything、 VGGT 与 MASt3R-SLAM 表明 feed-forward metric geometry 与 reconstruction prior 已很强；它们适合作为 proposal、teacher、 initializer 或 upper bound，而不是 TARO 的独立 metric anchor、O0R truth 或三态裁判。 因此，可检验的论文空位不是“校准 + NBV”“人体条件化”或“扫掠体积认证”，而是： > under partial metric evidence and human-constrained sensing, full state can remain underdetermined > while a body/path-specific task functional becomes locally identifiable; when it does not, bounded > evidence selection must reduce query risk without hiding false-clear, coverage or interaction cost. 高质量组合可以成为贡献，但论文必须证明共同 contract、条件调用与 interaction gain；仅把若干强模块 接成 pipeline，或分别引用它们的单项成绩，都不能建立 TARO 的联合主张。 taro adjacent-work taro-r0 VGGT — taro:T11b route mechanism MapAnything、 VGGT 与 MASt3R-SLAM 表明 feed-forward metric geometry 与 reconstruction prior 已很强；它们适合作为 proposal、teacher、 initializer 或 upper bound，而不是 TARO 的独立 metric anchor、O0R truth 或三态裁判。 因此，可检验的论文空位不是“校准 + NBV”“人体条件化”或“扫掠体积认证”，而是： > under partial metric evidence and human-constrained sensing, full state can remain underdetermined > while a body/path-specific task functional becomes locally identifiable; when it does not, bounded > evidence selection must reduce query risk without hiding false-clear, coverage or interaction cost. 高质量组合可以成为贡献，但论文必须证明共同 contract、条件调用与 interaction gain；仅把若干强模块 接成 pipeline，或分别引用它们的单项成绩，都不能建立 TARO 的联合主张。 This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety. taro-r0 MapAnything、 VGGT 与 MASt3R-SLAM 表明 feed-forward metric geometry 与 reconstruction prior 已很强；它们适合作为 proposal、teacher、 initializer 或 upper bound，而不是 TARO 的独立 metric anchor、O0R truth 或三态裁判。 因此，可检验的论文空位不是“校准 + NBV”“人体条件化”或“扫掠体积认证”，而是： > under partial metric evidence and human-constrained sensing, full state can remain underdetermined > while a body/path-specific task functional becomes locally identifiable; when it does not, bounded > evidence selection must reduce query risk without hiding false-clear, coverage or interaction cost. 高质量组合可以成为贡献，但论文必须证明共同 contract、条件调用与 interaction gain；仅把若干强模块 接成 pipeline，或分别引用它们的单项成绩，都不能建立 TARO 的联合主张。 MapAnything、 VGGT 与 MASt3R-SLAM 表明 feed-forward metric geometry 与 reconstruction prior 已很强；它们适合作为 proposal、teacher、 initializer 或 upper bound，而不是 TARO 的独立 metric anchor、O0R truth 或三态裁判。 因此，可检验的论文空位不是“校准 + NBV”“人体条件化”或“扫掠体积认证”，而是： > under partial metric evidence and human-constrained sensing, full state can remain underdetermined > while a body/path-specific task functional becomes locally identifiable; when it does not, bounded > evidence selection must reduce query risk without hiding false-clear, coverage or interaction cost. 高质量组合可以成为贡献，但论文必须证明共同 contract、条件调用与 interaction gain；仅把若干强模块 接成 pipeline，或分别引用它们的单项成绩，都不能建立 TARO 的联合主张。 This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
     },
     {
+      "id": "paper-vggt-segmentor-2026#geometry-enhanced-cross-view-mask-transfer",
+      "item_id": "paper-vggt-segmentor-2026",
+      "mechanism_id": "geometry-enhanced-cross-view-mask-transfer",
+      "kind": "paper",
+      "title": "VGGT-Segmentor: Geometry-Enhanced Cross-View Segmentation",
+      "canonical_ref": "https://arxiv.org/abs/2604.13596",
+      "summary": "VGGT-Segmentor transfers an object mask across severe viewpoint, scale, and occlusion changes by combining VGGT cross-view features with prompt fusion, point-guided prediction, and iterative mask refinement.",
+      "tags": [
+        "ten-meter-copilot",
+        "cross-view-segmentation",
+        "visibility",
+        "portal-transfer",
+        "vggt",
+        "deep-read-priority"
+      ],
+      "name": "Geometry-enhanced cross-view mask transfer",
+      "description": "Use a source object mask and geometry-aware cross-view features to form coarse projected point prompts, then refine them into a pixel-accurate target-view mask.",
+      "inputs": [
+        "source image and object mask",
+        "target view",
+        "VGGT cross-view representation"
+      ],
+      "outputs": [
+        "target-view object mask",
+        "cross-view segmentation overlap"
+      ],
+      "limitations": "Cross-view segmentation performance on Ego-Exo4D does not establish physical door identity, metric door geometry, functional entrance status, arrival, user benefit, or safety. The source mask must already be authorized.",
+      "signatures": [],
+      "layer_scores": {
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 3,
+        "geometry_motion": 6,
+        "handoff_completion": 6,
+        "identity_binding": 3,
+        "interaction_readiness": 3,
+        "observation_perception": 3,
+        "source_coverage": 6,
+        "temporal_belief": 3
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-vggt-segmentor-door-transfer",
+          "route": "ten-meter-copilot",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "After a z-buffer-visible reference door face is established, compare VGGT-Segmentor with the existing fixed cross-view transfer on identical source masks, query frames, candidates, and evaluator mappings.",
+          "expected_effect": "Improve exact-door Top-1, median IoU, centroid-inside, and world-centroid error without more wrong-door commits. Close the challenger if it fails this joint comparison; no prompt or threshold rescue.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "Cross-view mask transfer does not establish public physical identity, functional entrance status, reachability, arrival, handoff, user benefit, product readiness, or safety.",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2604.13596",
+              "summary": "Primary preprint reviewed for source-mask-conditioned geometry-enhanced cross-view segmentation and its Ego-Exo4D evidence boundary."
+            }
+          ],
+          "updated_at": "2026-08-30"
+        }
+      ],
+      "search_text": "VGGT-Segmentor: Geometry-Enhanced Cross-View Segmentation VGGT-Segmentor transfers an object mask across severe viewpoint, scale, and occlusion changes by combining VGGT cross-view features with prompt fusion, point-guided prediction, and iterative mask refinement. ten-meter-copilot cross-view-segmentation visibility portal-transfer vggt deep-read-priority Geometry-enhanced cross-view mask transfer Use a source object mask and geometry-aware cross-view features to form coarse projected point prompts, then refine them into a pixel-accurate target-view mask. source image and object mask target view VGGT cross-view representation target-view object mask cross-view segmentation overlap Cross-view segmentation performance on Ego-Exo4D does not establish physical door identity, metric door geometry, functional entrance status, arrival, user benefit, or safety. The source mask must already be authorized. ten-meter-copilot After a z-buffer-visible reference door face is established, compare VGGT-Segmentor with the existing fixed cross-view transfer on identical source masks, query frames, candidates, and evaluator mappings. Improve exact-door Top-1, median IoU, centroid-inside, and world-centroid error without more wrong-door commits. Close the challenger if it fails this joint comparison; no prompt or threshold rescue. Cross-view mask transfer does not establish public physical identity, functional entrance status, reachability, arrival, handoff, user benefit, product readiness, or safety."
+    },
+    {
       "id": "paper-vicp#goal-audit-03",
       "item_id": "paper-vicp",
       "mechanism_id": "goal-audit-03",
@@ -14043,6 +14518,66 @@
         }
       ],
       "search_text": "Video Depth Anything 在 DAv2 上加入时空头和长视频窗口策略，提升视频深度时间一致性 ustrf frontier-guide ustrf-sc Video Depth Anything — ustrf:P02 route mechanism 在 DAv2 上加入时空头和长视频窗口策略，提升视频深度时间一致性 CVPR 证据较强；A100 速度不是手机速度，窗口含未来帧，非直接因果 runtime ustrf-sc 时序深度适合作为离线 teacher 或非因果上界，检验深度闪烁是否造成风险事件翻转 时序深度适合作为离线 teacher 或非因果上界，检验深度闪烁是否造成风险事件翻转 CVPR 证据较强；A100 速度不是手机速度，窗口含未来帧，非直接因果 runtime"
+    },
+    {
+      "id": "paper-video2doortraversal-2026#single-video-articulated-door-twin",
+      "item_id": "paper-video2doortraversal-2026",
+      "mechanism_id": "single-video-articulated-door-twin",
+      "kind": "paper",
+      "title": "Video2DoorTraversal: Push Door Traversal via Simulated Door Twins",
+      "canonical_ref": "https://arxiv.org/abs/2608.20251",
+      "summary": "A single-video real-to-sim-to-real pipeline reconstructs an instance-aligned articulated door twin, refines executable demonstrations in simulation, and trains coordinated approach, opening, and traversal control.",
+      "tags": [
+        "ten-meter-copilot",
+        "door-structure",
+        "articulation",
+        "door-twin",
+        "later-reserve"
+      ],
+      "name": "Single-video articulated door twin",
+      "description": "Recover metric door geometry, appearance, articulation, and interaction structure from one real video so downstream simulation can reason about panels, handles, hinges, opening, and traversal.",
+      "inputs": [
+        "single real RGB video of a door"
+      ],
+      "outputs": [
+        "instance-aligned articulated door twin",
+        "door structure and articulation",
+        "simulated interaction demonstrations"
+      ],
+      "limitations": "The paper assumes a specific door video and robotic platform. Its traversal success rates do not establish BlindAssist visible-door identity, functional entrance selection, phone sensing, user completion, product benefit, or safety.",
+      "signatures": [],
+      "layer_scores": {
+        "evaluation_evidence": 3,
+        "geometry_motion": 3,
+        "handoff_completion": 3,
+        "identity_binding": 6
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-video2doortraversal-structure-reserve",
+          "route": "ten-meter-copilot",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "Retain as a later structural reference only after L10 has independently established a visible exact door. A first future check would compare reconstructed panel, handle, and hinge geometry against held-out metric structure.",
+          "expected_effect": "Potentially upgrade a confirmed door from a visible portal surface to an articulated structural model. Do not start while the active bottleneck remains visibility or cross-view exact-door transfer.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "Door-twin reconstruction and robot traversal results do not establish BlindAssist exact-instance acquisition, a usable entrance, phone sensing, user completion, product benefit, or safety.",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2608.20251",
+              "summary": "Primary preprint reviewed for single-video articulated door-twin reconstruction and its robot-specific evidence boundary."
+            }
+          ],
+          "updated_at": "2026-08-30"
+        }
+      ],
+      "search_text": "Video2DoorTraversal: Push Door Traversal via Simulated Door Twins A single-video real-to-sim-to-real pipeline reconstructs an instance-aligned articulated door twin, refines executable demonstrations in simulation, and trains coordinated approach, opening, and traversal control. ten-meter-copilot door-structure articulation door-twin later-reserve Single-video articulated door twin Recover metric door geometry, appearance, articulation, and interaction structure from one real video so downstream simulation can reason about panels, handles, hinges, opening, and traversal. single real RGB video of a door instance-aligned articulated door twin door structure and articulation simulated interaction demonstrations The paper assumes a specific door video and robotic platform. Its traversal success rates do not establish BlindAssist visible-door identity, functional entrance selection, phone sensing, user completion, product benefit, or safety. ten-meter-copilot Retain as a later structural reference only after L10 has independently established a visible exact door. A first future check would compare reconstructed panel, handle, and hinge geometry against held-out metric structure. Potentially upgrade a confirmed door from a visible portal surface to an articulated structural model. Do not start while the active bottleneck remains visibility or cross-view exact-door transfer. Door-twin reconstruction and robot traversal results do not establish BlindAssist exact-instance acquisition, a usable entrance, phone sensing, user completion, product benefit, or safety."
     },
     {
       "id": "paper-visassist-a-visually-impaired-captured-video-question-answering-benchmar#frontier-visassist",
@@ -15828,6 +16363,81 @@
         }
       ],
       "search_text": "Project Guideline 从手机感知到可听行动的完整工程接口 dynamic-travel-risk legacy-candidate dtr-r0 goal-copilot prior-art goal-copilot-p0 project-guideline component-audit adapt project-guideline-component-audit reference hold drop Google Research Project Guideline — project-guideline:unreal-pretrained-models route mechanism Project Guideline 的做法。 Unreal 4.27 simulator 通过共享 C++ 库/插件注入渲染图像 和 ground-truth pose，但官方说明障碍检测尚未完整支持 （unreal/README.md）。 其模型面向紫色引导线分割和单目深度 （vision/models/README.md）。 BlindAssist 已有对应。 当前论文问题、数据协议、YOLO/QNN 手机链路和 RCLE 几何 研究均不依赖紫色引导线或 Unreal；加入它们会形成新的数据域、构建系统和验证任务。 决定与停止线。 本论文周期 DROP：不下载/集成模型，不建立 Unreal 工程，不接 C++/JNI/Bazel/MediaPipe 构建链，不把合成仿真当真实场景证据。 The component decision is DROP. The audit absorbs only the stated engineering boundary; it does not import the full C++/Bazel/MediaPipe/ARCore/Unreal stack or establish dynamic-risk, grounding, user, product, or safety evidence. project-guideline-component-audit Project Guideline 的做法。 Unreal 4.27 simulator 通过共享 C++ 库/插件注入渲染图像 和 ground-truth pose，但官方说明障碍检测尚未完整支持 （unreal/README.md）。 其模型面向紫色引导线分割和单目深度 （vision/models/README.md）。 BlindAssist 已有对应。 当前论文问题、数据协议、YOLO/QNN 手机链路和 RCLE 几何 研究均不依赖紫色引导线或 Unreal；加入它们会形成新的数据域、构建系统和验证任务。 决定与停止线。 本论文周期 DROP：不下载/集成模型，不建立 Unreal 工程，不接 C++/JNI/Bazel/MediaPipe 构建链，不把合成仿真当真实场景证据。 Project Guideline 的做法。 Unreal 4.27 simulator 通过共享 C++ 库/插件注入渲染图像 和 ground-truth pose，但官方说明障碍检测尚未完整支持 （unreal/README.md）。 其模型面向紫色引导线分割和单目深度 （vision/models/README.md）。 BlindAssist 已有对应。 当前论文问题、数据协议、YOLO/QNN 手机链路和 RCLE 几何 研究均不依赖紫色引导线或 Unreal；加入它们会形成新的数据域、构建系统和验证任务。 决定与停止线。 本论文周期 DROP：不下载/集成模型，不建立 Unreal 工程，不接 C++/JNI/Bazel/MediaPipe 构建链，不把合成仿真当真实场景证据。 The component decision is DROP. The audit absorbs only the stated engineering boundary; it does not import the full C++/Bazel/MediaPipe/ARCore/Unreal stack or establish dynamic-risk, grounding, user, product, or safety evidence."
+    },
+    {
+      "id": "tool-scannetpp-visibility-rasterization#mesh-zbuffer-visible-instance-projection",
+      "item_id": "tool-scannetpp-visibility-rasterization",
+      "mechanism_id": "mesh-zbuffer-visible-instance-projection",
+      "kind": "tool",
+      "title": "ScanNet++ official toolkit",
+      "canonical_ref": "https://github.com/scannetpp/scannetpp",
+      "summary": "The official ScanNet++ toolkit rasterizes scene meshes into DSLR or iPhone images, records pixel-to-face and z-buffer mappings, projects semantic and instance annotations, and computes object visibility and view coverage.",
+      "tags": [
+        "ten-meter-copilot",
+        "scannetpp",
+        "visibility",
+        "z-buffer",
+        "mesh-rasterization",
+        "portal-transfer",
+        "deep-read-priority"
+      ],
+      "name": "Mesh z-buffer visible-instance projection",
+      "description": "Rasterize the authoritative mesh into the camera view and retain target pixels that survive z-buffer visibility and instance projection before reading depth or fitting geometry.",
+      "inputs": [
+        "posed RGB or RGB-D frame",
+        "scene mesh",
+        "mesh instance annotation",
+        "camera calibration"
+      ],
+      "outputs": [
+        "pixel-to-face map",
+        "z-buffer depth",
+        "visible target-instance pixels",
+        "object visibility and coverage"
+      ],
+      "limitations": "The toolkit provides projection and visibility machinery, not a door detector, cross-view identity proof, functional entrance label, arrival verifier, or BlindAssist result. Dataset access and label quality still bound any experiment.",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 9,
+        "decision_lifecycle": 6,
+        "evaluation_evidence": 9,
+        "geometry_motion": 6,
+        "handoff_completion": 6,
+        "identity_binding": 6,
+        "observation_perception": 9,
+        "source_coverage": 12
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-scannetpp-visible-door-face",
+          "route": "ten-meter-copilot",
+          "use_state": "planned",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "For the next visibility-qualified L10 source, replace SceneNN reference-side envelope depth reads with z-buffer-visible target-instance pixels, depth consistency, and a visible-face plane fit while keeping candidate identity and query transfer fixed.",
+          "expected_effect": "Reduce foreground-contaminated reference planes and improve exact-door Top-1, centroid-inside, median IoU, and world-centroid error without increasing wrong-door commits. Stop if the joint geometry/identity result does not improve; do not rescue with prompt, backbone, plane-residual, or threshold sweeps.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "This plan creates no new L10 evidence or execution authority. Even a positive posed-source result would remain a real-data geometry/transfer result, not open-world door identity, phone-camera coverage, metric arrival, user completion, product benefit, or safety.",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://github.com/scannetpp/scannetpp",
+              "summary": "Official toolkit documentation verified for mesh rasterization, pixel-to-face and z-buffer output, 2D instance projection, and object-visibility selection."
+            },
+            {
+              "kind": "repo",
+              "ref": "research/active/l10-r0/README.md",
+              "summary": "Owning route records the SceneNN terminal and requires a fresh visibility-qualified real source."
+            }
+          ],
+          "updated_at": "2026-08-30"
+        }
+      ],
+      "search_text": "ScanNet++ official toolkit The official ScanNet++ toolkit rasterizes scene meshes into DSLR or iPhone images, records pixel-to-face and z-buffer mappings, projects semantic and instance annotations, and computes object visibility and view coverage. ten-meter-copilot scannetpp visibility z-buffer mesh-rasterization portal-transfer deep-read-priority Mesh z-buffer visible-instance projection Rasterize the authoritative mesh into the camera view and retain target pixels that survive z-buffer visibility and instance projection before reading depth or fitting geometry. posed RGB or RGB-D frame scene mesh mesh instance annotation camera calibration pixel-to-face map z-buffer depth visible target-instance pixels object visibility and coverage The toolkit provides projection and visibility machinery, not a door detector, cross-view identity proof, functional entrance label, arrival verifier, or BlindAssist result. Dataset access and label quality still bound any experiment. ten-meter-copilot For the next visibility-qualified L10 source, replace SceneNN reference-side envelope depth reads with z-buffer-visible target-instance pixels, depth consistency, and a visible-face plane fit while keeping candidate identity and query transfer fixed. Reduce foreground-contaminated reference planes and improve exact-door Top-1, centroid-inside, median IoU, and world-centroid error without increasing wrong-door commits. Stop if the joint geometry/identity result does not improve; do not rescue with prompt, backbone, plane-residual, or threshold sweeps. This plan creates no new L10 evidence or execution authority. Even a positive posed-source result would remain a real-data geometry/transfer result, not open-world door identity, phone-camera coverage, metric arrival, user completion, product benefit, or safety."
     },
     {
       "id": "tool-skydiscover-optimize-2026#executable-pareto-search",

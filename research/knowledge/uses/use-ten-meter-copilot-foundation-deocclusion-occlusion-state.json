@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-foundation-deocclusion-occlusion-state",
+  "item_id": "paper-foundation-deocclusion-2026",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "depth-aware-generative-deocclusion"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "Observed-versus-occluded stratification, informative-view selection, and depth-aware fusion concepts; generated hidden content is explicitly excluded.",
+    "project_application": "Use a read-only visible/occluded stratification to test whether SceneNN reference-plane errors concentrate in occluded pixels before considering any downstream geometry change.",
+    "modifications": "Do not generate labels, fill hidden door surfaces, or admit completed pixels into plane fitting, identity, scoring, or confirmation. Only measured visible pixels remain eligible evidence.",
+    "expected_effect": "Sharpen failure attribution and visibility gating. Stop immediately if an apparent gain depends on generated hidden appearance or geometry."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "Mechanism reserve for occlusion-state attribution only.",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Generated de-occlusion is a hypothesis and can never become geometric truth, exact-instance authority, visible-door evidence, arrival evidence, product benefit, or safety evidence."
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://openaccess.thecvf.com/content/CVPR2026F/papers/Chen_Fast_Generative_DeOcclusion_for_Visual_Geometry_and_Robotics_CVPRF_2026_paper.pdf",
+      "summary": "Primary paper link and author publication pages were reviewed for generative de-occlusion and depth-aware 3D integration; the BlindAssist use deliberately excludes generated truth."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-30",
+      "change": "Added as an occlusion-stratification reserve with a hard prohibition on treating generated hidden geometry as truth."
+    }
+  ],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

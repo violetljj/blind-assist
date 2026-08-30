@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "id": "paper-vggt-segmentor-2026",
+  "kind": "paper",
+  "title": "VGGT-Segmentor: Geometry-Enhanced Cross-View Segmentation",
+  "canonical_ref": "https://arxiv.org/abs/2604.13596",
+  "authors": [
+    "Yulu Gao",
+    "Bohao Zhang",
+    "Zongheng Tang",
+    "Jitong Liao",
+    "Wenjun Wu",
+    "Si Liu"
+  ],
+  "year": 2026,
+  "venue": "arXiv preprint",
+  "summary": "VGGT-Segmentor transfers an object mask across severe viewpoint, scale, and occlusion changes by combining VGGT cross-view features with prompt fusion, point-guided prediction, and iterative mask refinement.",
+  "mechanisms": [
+    {
+      "id": "geometry-enhanced-cross-view-mask-transfer",
+      "name": "Geometry-enhanced cross-view mask transfer",
+      "description": "Use a source object mask and geometry-aware cross-view features to form coarse projected point prompts, then refine them into a pixel-accurate target-view mask.",
+      "inputs": [
+        "source image and object mask",
+        "target view",
+        "VGGT cross-view representation"
+      ],
+      "outputs": [
+        "target-view object mask",
+        "cross-view segmentation overlap"
+      ],
+      "limitations": "Cross-view segmentation performance on Ego-Exo4D does not establish physical door identity, metric door geometry, functional entrance status, arrival, user benefit, or safety. The source mask must already be authorized."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "cross-view-segmentation",
+    "visibility",
+    "portal-transfer",
+    "vggt",
+    "deep-read-priority"
+  ],
+  "aliases": [
+    "VGGT-Segmentor",
+    "VGGT-S",
+    "arXiv:2604.13596"
+  ],
+  "links": [],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

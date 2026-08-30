@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "id": "paper-occstep-2025",
+  "kind": "paper",
+  "title": "OccSTeP: Benchmarking 4D Occupancy Spatio-Temporal Persistence",
+  "canonical_ref": "https://arxiv.org/abs/2512.15621",
+  "authors": [
+    "Yu Zheng",
+    "Jie Hu",
+    "Kailun Yang",
+    "Jiaming Zhang"
+  ],
+  "year": 2025,
+  "venue": "arXiv preprint",
+  "summary": "OccSTeP benchmarks reactive and action-conditioned proactive 4D occupancy forecasting under temporal disturbances such as dropped frames, missing or noisy history, and erroneous semantic labels.",
+  "mechanisms": [
+    {
+      "id": "occupancy-spatiotemporal-persistence-stress-test",
+      "name": "Occupancy spatio-temporal persistence stress test",
+      "description": "Evaluate whether a recurrent 4D scene state remains useful when observation history is missing or corrupted and when future occupancy is conditioned on a proposed ego action.",
+      "inputs": [
+        "temporal 3D observations",
+        "ego motion",
+        "history perturbations",
+        "candidate future action"
+      ],
+      "outputs": [
+        "reactive future occupancy",
+        "proactive action-conditioned occupancy",
+        "perturbation-stratified persistence metrics"
+      ],
+      "limitations": "Autonomous-driving occupancy IoU does not establish calibrated DTR collision risk, wearable sensing, identity persistence, Android runtime, BLV benefit, or safety. A higher occupancy score may still worsen event behavior."
+    }
+  ],
+  "tags": [
+    "obstacle-avoidance",
+    "4d-occupancy",
+    "persistence",
+    "missingness",
+    "proactive-occupancy",
+    "evaluator",
+    "deep-read-priority"
+  ],
+  "aliases": [
+    "OccSTeP",
+    "arXiv:2512.15621"
+  ],
+  "links": [
+    {
+      "label": "Official code",
+      "ref": "https://github.com/FaterYU/OccSTeP"
+    }
+  ],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

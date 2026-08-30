@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-scannetpp-visible-door-face",
+  "item_id": "tool-scannetpp-visibility-rasterization",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "mesh-zbuffer-visible-instance-projection"
+  ],
+  "use_state": "planned",
+  "adoption_mode": "component",
+  "usage": {
+    "source_scope": "Official mesh-to-image rasterization, pixel-to-face, z-buffer, 2D instance projection, and object-visibility utilities only.",
+    "project_application": "For the next visibility-qualified L10 source, replace SceneNN reference-side envelope depth reads with z-buffer-visible target-instance pixels, depth consistency, and a visible-face plane fit while keeping candidate identity and query transfer fixed.",
+    "modifications": "Use the toolkit as deterministic visibility machinery for a door-labeled real posed source. Do not treat ScanNet++ semantic labels as functional entrance, exact public identity, arrival, or user completion truth.",
+    "expected_effect": "Reduce foreground-contaminated reference planes and improve exact-door Top-1, centroid-inside, median IoU, and world-centroid error without increasing wrong-door commits. Stop if the joint geometry/identity result does not improve; do not rescue with prompt, backbone, plane-residual, or threshold sweeps."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "Planned single-variable visibility-source comparison after the consumed SceneNN result.",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "This plan creates no new L10 evidence or execution authority. Even a positive posed-source result would remain a real-data geometry/transfer result, not open-world door identity, phone-camera coverage, metric arrival, user completion, product benefit, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://github.com/scannetpp/scannetpp",
+      "summary": "Official toolkit documentation verified for mesh rasterization, pixel-to-face and z-buffer output, 2D instance projection, and object-visibility selection."
+    },
+    {
+      "kind": "repo",
+      "ref": "research/active/l10-r0/README.md",
+      "summary": "Owning route records the SceneNN terminal and requires a fresh visibility-qualified real source."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-30",
+      "change": "Added as the planned visibility-source mechanism after the SceneNN reference-side visibility failure; no experiment was executed or authorized by this entry."
+    }
+  ],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-obstacle-avoidance-beyondsight-object-permanence",
+  "item_id": "paper-beyondsight-2026",
+  "route": "obstacle-avoidance",
+  "mechanism_ids": [
+    "existence-observability-decoupling"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Decoupling actor existence from instantaneous observability, temporally propagating actor hypotheses, and evaluating visible and unobservable actors separately.",
+    "project_application": "In a successor after X31/C11, add orthogonal existence and observability states ahead of the existing set-valued lineage and motion branches while keeping route scoring and lifecycle fixed.",
+    "modifications": "A retained hypothesis must expose its current observability and uncertainty; invisibility may not imply deletion, but persistence may not create certain occupancy or CLEAR. No evaluator identity may enter online updates.",
+    "expected_effect": "Improve unobservable-interval CONTACT recall and dropout recovery without unbounded false persistence. Stop if false segments rise without a matched recovery gain or if the mechanism needs privileged identity online; do not rescue by extending the retention window."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "Candidate post-C11 representation change; not part of the frozen X31/C11 run.",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Object permanence is a representation hypothesis, not proof that an unseen actor exists, that its lineage or motion is correct, or that retained risk is calibrated, deployable, beneficial, or safe."
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2607.09138",
+      "summary": "Primary preprint reviewed for existence-observability decoupling and observability-conditioned evaluation."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-30",
+      "change": "Added as a post-C11 object-permanence candidate with explicit false-persistence and privileged-identity stop conditions."
+    }
+  ],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

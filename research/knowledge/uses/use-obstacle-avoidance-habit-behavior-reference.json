@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-obstacle-avoidance-habit-behavior-reference",
+  "item_id": "paper-habit-2026",
+  "route": "obstacle-avoidance",
+  "mechanism_ids": [
+    "real-motion-retargeted-carla-pedestrians"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "dataset",
+  "usage": {
+    "source_scope": "The real-mocap/video motion-retargeting pipeline and curated traffic-compatible pedestrian motion set; automotive injury and braking metrics are not imported as DTR authority.",
+    "project_application": "For a later CARLA source experiment, freeze map, weather, wearer route, actor count, spawn geometry, and DTR algorithm, then replace one deterministic scripted-motion arm with a matched retargeted-motion arm covering hesitation, acceleration, stop-go, return, nonlinear crossing, posture change, and occlusion reappearance.",
+    "modifications": "Score unchanged DTR CONTACT, false segments, lead time, event F1, and dropout recovery by behavior stratum. Keep current frozen CARLA protocols and any concurrent natural-dynamics work untouched.",
+    "expected_effect": "Expose route-risk failures hidden by deterministic pedestrian scripts. Stop if the retargeted arm adds no new behavior/event strata or if integration cost dominates the information gain; do not add more weather or static scenery as a substitute."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "Candidate matched scripted-versus-retargeted CARLA behavior experiment after current frozen work terminates.",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Retargeted CARLA motion remains synthetic behavior evidence. It cannot establish natural frequency, wearable perception, source-disjoint generalization, Android behavior, BLV user benefit, product reliability, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://openaccess.thecvf.com/content/WACV2026/html/Ramesh_HABIT_Human_Action_Benchmark_for_Interactive_Traffic_in_CARLA_WACV_2026_paper.html",
+      "summary": "Primary WACV paper reviewed for retargeting approximately 30K real motions into 4,730 traffic-compatible SMPL motions and its CARLA benchmark boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-30",
+      "change": "Added as a later matched behavior-distribution candidate and explicitly held outside current frozen or concurrent CARLA work."
+    }
+  ],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "id": "paper-video2doortraversal-2026",
+  "kind": "paper",
+  "title": "Video2DoorTraversal: Push Door Traversal via Simulated Door Twins",
+  "canonical_ref": "https://arxiv.org/abs/2608.20251",
+  "authors": [
+    "Xincheng Tang",
+    "Yiji Chen",
+    "Youhan Xie",
+    "Wanyu Li",
+    "Zhengjie Shu",
+    "Lai Jiang",
+    "Wenkang Hu",
+    "Yitong Li",
+    "Jinchuang Zhang",
+    "Xibin Song",
+    "Ruigang Yang"
+  ],
+  "year": 2026,
+  "venue": "arXiv preprint",
+  "summary": "A single-video real-to-sim-to-real pipeline reconstructs an instance-aligned articulated door twin, refines executable demonstrations in simulation, and trains coordinated approach, opening, and traversal control.",
+  "mechanisms": [
+    {
+      "id": "single-video-articulated-door-twin",
+      "name": "Single-video articulated door twin",
+      "description": "Recover metric door geometry, appearance, articulation, and interaction structure from one real video so downstream simulation can reason about panels, handles, hinges, opening, and traversal.",
+      "inputs": [
+        "single real RGB video of a door"
+      ],
+      "outputs": [
+        "instance-aligned articulated door twin",
+        "door structure and articulation",
+        "simulated interaction demonstrations"
+      ],
+      "limitations": "The paper assumes a specific door video and robotic platform. Its traversal success rates do not establish BlindAssist visible-door identity, functional entrance selection, phone sensing, user completion, product benefit, or safety."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "door-structure",
+    "articulation",
+    "door-twin",
+    "later-reserve"
+  ],
+  "aliases": [
+    "Video2DoorTraversal",
+    "DoorTwin",
+    "arXiv:2608.20251"
+  ],
+  "links": [
+    {
+      "label": "Project page",
+      "ref": "https://video2doortraversal.github.io/"
+    }
+  ],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

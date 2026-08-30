@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-video2doortraversal-structure-reserve",
+  "item_id": "paper-video2doortraversal-2026",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "single-video-articulated-door-twin"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "Single-video recovery of articulated metric door structure and a simulation-ready door twin; robotic policy and demonstration-generation claims are out of scope.",
+    "project_application": "Retain as a later structural reference only after L10 has independently established a visible exact door. A first future check would compare reconstructed panel, handle, and hinge geometry against held-out metric structure.",
+    "modifications": "Do not import its wheel-legged robot control, simulation refinement, or success-rate claims. Keep door identity, functional portal, reachability, arrival, and handoff as separate authorities.",
+    "expected_effect": "Potentially upgrade a confirmed door from a visible portal surface to an articulated structural model. Do not start while the active bottleneck remains visibility or cross-view exact-door transfer."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "Later reserve; no current experiment planned.",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Door-twin reconstruction and robot traversal results do not establish BlindAssist exact-instance acquisition, a usable entrance, phone sensing, user completion, product benefit, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2608.20251",
+      "summary": "Primary preprint reviewed for single-video articulated door-twin reconstruction and its robot-specific evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-30",
+      "change": "Added as a later door-structure reserve and explicitly held behind visible exact-door qualification."
+    }
+  ],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

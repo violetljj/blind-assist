@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "id": "paper-consistent-instance-field-2026",
+  "kind": "paper",
+  "title": "Consistent Instance Field for Dynamic Scene Understanding",
+  "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2026/html/Wu_Consistent_Instance_Field_for_Dynamic_Scene_Understanding_CVPR_2026_paper.html",
+  "authors": [
+    "Junyi Wu",
+    "Van Nguyen Nguyen",
+    "Benjamin Planche",
+    "Jiachen Tao",
+    "Changchang Sun",
+    "Zhongpai Gao",
+    "Zhenghao Zhao",
+    "Anwesa Choudhuri",
+    "Gengyu Zhang",
+    "Meng Zheng",
+    "Feiran Wang",
+    "Terrence Chen",
+    "Yan Yan",
+    "Ziyan Wu"
+  ],
+  "year": 2026,
+  "venue": "CVPR 2026",
+  "summary": "Consistent Instance Field represents a dynamic scene as a continuous probabilistic field with separate occupancy probability and conditional instance distribution at each space-time point.",
+  "mechanisms": [
+    {
+      "id": "occupancy-conditional-instance-field",
+      "name": "Occupancy plus conditional instance field",
+      "description": "Factor physical occupancy from conditional instance identity so persistence and identity uncertainty can evolve separately across viewpoint, deformation, and occlusion.",
+      "inputs": [
+        "multi-view RGB",
+        "instance masks",
+        "deformable 3D Gaussian representation"
+      ],
+      "outputs": [
+        "space-time occupancy probability",
+        "conditional instance distribution",
+        "cross-view persistent instance field"
+      ],
+      "limitations": "Novel-view panoptic segmentation and 4D querying do not establish online wearable occupancy, DTR lineage authority, motion-branch correctness, collision risk, real-time phone execution, user benefit, or safety."
+    }
+  ],
+  "tags": [
+    "obstacle-avoidance",
+    "dynamic-scene",
+    "probabilistic-occupancy",
+    "instance-distribution",
+    "visibility",
+    "lineage",
+    "representation-reserve"
+  ],
+  "aliases": [
+    "Consistent Instance Field",
+    "CIF dynamic scene"
+  ],
+  "links": [],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

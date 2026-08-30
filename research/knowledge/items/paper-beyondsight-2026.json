@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "id": "paper-beyondsight-2026",
+  "kind": "paper",
+  "title": "BeyondSight: Object Permanence for End-to-End Autonomous Driving",
+  "canonical_ref": "https://arxiv.org/abs/2607.09138",
+  "authors": [
+    "Sandro Papais",
+    "Letian Wang",
+    "Mudit Jain",
+    "Behnaz Rezaei",
+    "Steven L. Waslander"
+  ],
+  "year": 2026,
+  "venue": "arXiv preprint",
+  "summary": "BeyondSight decouples actor existence from instantaneous observability, propagates persistent actor hypotheses through occlusion, and evaluates visible and unobservable actors separately.",
+  "mechanisms": [
+    {
+      "id": "existence-observability-decoupling",
+      "name": "Existence-observability decoupling",
+      "description": "Maintain an actor-existence hypothesis across temporary invisibility while updating it with observation-conditioned evidence and reporting performance separately for observable and unobservable actors.",
+      "inputs": [
+        "temporal scene observations",
+        "actor queries or hypotheses",
+        "observability-conditioned supervision"
+      ],
+      "outputs": [
+        "persistent actor-existence hypotheses",
+        "current observability state",
+        "visibility-stratified detection and planning metrics"
+      ],
+      "limitations": "Automotive end-to-end results and nuScenes-Permanence supervision do not establish that an unseen actor exists in wearable DTR, that a lineage is correct, or that a retained hypothesis is calibrated collision risk."
+    }
+  ],
+  "tags": [
+    "obstacle-avoidance",
+    "object-permanence",
+    "existence",
+    "observability",
+    "occlusion",
+    "x31-successor"
+  ],
+  "aliases": [
+    "BeyondSight",
+    "nuScenes-Permanence",
+    "arXiv:2607.09138"
+  ],
+  "links": [],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

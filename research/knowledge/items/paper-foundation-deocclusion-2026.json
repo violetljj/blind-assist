@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "id": "paper-foundation-deocclusion-2026",
+  "kind": "paper",
+  "title": "Fast Generative DeOcclusion for Visual Geometry and Robotics",
+  "canonical_ref": "https://openaccess.thecvf.com/content/CVPR2026F/papers/Chen_Fast_Generative_DeOcclusion_for_Visual_Geometry_and_Robotics_CVPRF_2026_paper.pdf",
+  "authors": [
+    "Jieneng Chen",
+    "Tiezheng Zhang",
+    "Xiwei Xuan",
+    "Ju He",
+    "Yifan Yin",
+    "Haojun Shi",
+    "Suyu Ye",
+    "Xinyi Li",
+    "Ruisheng Yuan",
+    "Tianmin Shu",
+    "Alan Yuille"
+  ],
+  "year": 2026,
+  "venue": "CVPR Findings 2026",
+  "summary": "A fast geometry-aware generative de-occlusion framework that selects informative views, performs 2D amodal completion, and fuses the results through depth-aware 3D integration.",
+  "mechanisms": [
+    {
+      "id": "depth-aware-generative-deocclusion",
+      "name": "Depth-aware generative de-occlusion",
+      "description": "Separate observed and occluded content, generate amodal hypotheses for hidden regions, and integrate them into a 3D representation with depth-aware fusion.",
+      "inputs": [
+        "partial RGB observations",
+        "depth or point-cloud geometry",
+        "selected informative viewpoints"
+      ],
+      "outputs": [
+        "visible versus occluded strata",
+        "generated amodal appearance",
+        "depth-aware 3D completion"
+      ],
+      "limitations": "Generated hidden appearance or geometry is a hypothesis, not geometric truth, exact-instance authority, a visible-door measurement, or a confirmation source. BlindAssist may reuse the occlusion stratification but must never score generated completion as reference truth."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "deocclusion",
+    "visibility",
+    "depth-aware-fusion",
+    "mechanism-reserve"
+  ],
+  "aliases": [
+    "FoundationDeOcclusion",
+    "Fast Generative DeOcclusion"
+  ],
+  "links": [],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

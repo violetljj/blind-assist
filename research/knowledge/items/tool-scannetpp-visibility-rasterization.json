@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "id": "tool-scannetpp-visibility-rasterization",
+  "kind": "tool",
+  "title": "ScanNet++ official toolkit",
+  "canonical_ref": "https://github.com/scannetpp/scannetpp",
+  "authors": [
+    "Chandan Yeshwanth",
+    "Yueh-Cheng Liu",
+    "Matthias Niessner",
+    "Angela Dai"
+  ],
+  "year": 2023,
+  "venue": "ICCV 2023 dataset toolkit",
+  "summary": "The official ScanNet++ toolkit rasterizes scene meshes into DSLR or iPhone images, records pixel-to-face and z-buffer mappings, projects semantic and instance annotations, and computes object visibility and view coverage.",
+  "mechanisms": [
+    {
+      "id": "mesh-zbuffer-visible-instance-projection",
+      "name": "Mesh z-buffer visible-instance projection",
+      "description": "Rasterize the authoritative mesh into the camera view and retain target pixels that survive z-buffer visibility and instance projection before reading depth or fitting geometry.",
+      "inputs": [
+        "posed RGB or RGB-D frame",
+        "scene mesh",
+        "mesh instance annotation",
+        "camera calibration"
+      ],
+      "outputs": [
+        "pixel-to-face map",
+        "z-buffer depth",
+        "visible target-instance pixels",
+        "object visibility and coverage"
+      ],
+      "limitations": "The toolkit provides projection and visibility machinery, not a door detector, cross-view identity proof, functional entrance label, arrival verifier, or BlindAssist result. Dataset access and label quality still bound any experiment."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "scannetpp",
+    "visibility",
+    "z-buffer",
+    "mesh-rasterization",
+    "portal-transfer",
+    "deep-read-priority"
+  ],
+  "aliases": [
+    "ScanNet++ toolkit",
+    "scannetpp/scannetpp"
+  ],
+  "links": [],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "id": "use-obstacle-avoidance-occstep-persistence-evaluator",
+  "item_id": "paper-occstep-2025",
+  "route": "obstacle-avoidance",
+  "mechanism_ids": [
+    "occupancy-spatiotemporal-persistence-stress-test"
+  ],
+  "use_state": "planned",
+  "adoption_mode": "evaluator",
+  "usage": {
+    "source_scope": "Perturbation-stratified reactive and action-conditioned proactive occupancy evaluation under dropped frames, semantic errors, and missing or noisy history.",
+    "project_application": "For a new protocol after the frozen X31/C11 terminal, hold the DTR scorer and proposed ego action fixed while injecting dropped frames, viewpoint loss, semantic corruption, and history disturbance, then stratify visible and unobservable intervals.",
+    "modifications": "Pair occupancy persistence metrics with unchanged DTR event metrics and UNKNOWN handling. Do not modify the currently frozen X31/C11 protocol or treat occupancy IoU as sufficient event evidence.",
+    "expected_effect": "Expose whether persistence survives the exact disturbances that create dropout failures and whether any occupancy gain improves CONTACT recall, false segments, dropout recovery, lead time, and calibration. Stop if occupancy gains do not improve event behavior."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "Planned evaluator pattern for a post-C11 protocol; X31/C11 remain unchanged.",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "This evaluator plan creates no X31 result, source-disjoint confirmation, calibrated collision probability, wearable-sensor evidence, Android result, user benefit, product claim, or safety authority."
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2512.15621",
+      "summary": "Primary preprint reviewed for 4D occupancy persistence, dropped-frame and semantic-error perturbations, and action-conditioned proactive forecasting."
+    },
+    {
+      "kind": "repo",
+      "ref": "research/active/dtr-r0/README.md",
+      "summary": "Owning route preserves the frozen X31/C11 state and its current evidence ceiling."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-30",
+      "change": "Added as a post-C11 persistence-evaluator plan; the current frozen X31/C11 protocol and authority were not changed."
+    }
+  ],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

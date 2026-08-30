@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "id": "dataset-carlaocc-2026",
+  "kind": "dataset",
+  "title": "CarlaOcc: An Instance-Centric Panoptic Occupancy Prediction Benchmark for Autonomous Driving",
+  "canonical_ref": "https://github.com/fengyi233/carlaocc",
+  "authors": [
+    "Yi Feng",
+    "Junwu E",
+    "Zizhan Guo",
+    "Yu Ma",
+    "Hanli Wang",
+    "Rui Fan"
+  ],
+  "year": 2026,
+  "venue": "CVPR 2026",
+  "summary": "CarlaOcc provides 100K CARLA frames with instance-level panoptic occupancy, voxel resolution up to 0.05 m, exportable actor meshes, and physically consistent mesh voxelization tooling.",
+  "mechanisms": [
+    {
+      "id": "instance-centric-panoptic-occupancy-truth",
+      "name": "Instance-centric panoptic occupancy truth",
+      "description": "Export foreground and background scene meshes and voxelize them into dense, physically consistent semantic and instance occupancy labels instead of inferring truth from rendered pixels alone.",
+      "inputs": [
+        "CARLA UE5 scene and actors",
+        "exported meshes",
+        "semantic actor labels",
+        "voxelization configuration"
+      ],
+      "outputs": [
+        "panoptic occupancy grids",
+        "semantic and instance voxel labels",
+        "scene and actor mesh provenance"
+      ],
+      "limitations": "CarlaOcc targets CARLA UE5 0.10.0 and automotive rigs, while BlindAssist currently uses CARLA 0.9.16. Higher-resolution synthetic truth is not natural-distribution, wearable-sensor, product, user-benefit, or safety evidence."
+    }
+  ],
+  "tags": [
+    "obstacle-avoidance",
+    "carla",
+    "panoptic-occupancy",
+    "voxelization",
+    "mesh-truth",
+    "dataset-reference"
+  ],
+  "aliases": [
+    "CarlaOcc",
+    "CarlaOccV1"
+  ],
+  "links": [],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

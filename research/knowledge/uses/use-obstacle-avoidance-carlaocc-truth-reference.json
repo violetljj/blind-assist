@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-obstacle-avoidance-carlaocc-truth-reference",
+  "item_id": "dataset-carlaocc-2026",
+  "route": "obstacle-avoidance",
+  "mechanism_ids": [
+    "instance-centric-panoptic-occupancy-truth"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "dataset",
+  "usage": {
+    "source_scope": "Instance-centric panoptic occupancy labels, actor/background mesh export, and physically consistent mesh voxelization tooling.",
+    "project_application": "Audit one matched CARLA scene by comparing the current DTR truth path with CarlaOcc-style mesh voxelization on voxel agreement, instance consistency, and route-tube contact parity before considering any larger data import.",
+    "modifications": "Treat the UE5 0.10.0 pipeline as a truth-design reference, not a drop-in replacement for the frozen CARLA 0.9.16 source. Preserve simulator/version provenance and do not download the full dataset for the first canary.",
+    "expected_effect": "Reveal whether current occupancy truth has a decision-changing instance or voxelization defect. Stop if differences are explained only by resolution or simulator-version mismatch, or if route-tube contact is unchanged."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "Candidate one-scene truth-generation audit; no full dataset acquisition planned.",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Synthetic panoptic occupancy truth is not source-disjoint real-world confirmation, phone sensing, natural pedestrian behavior, Android performance, user benefit, product readiness, or safety evidence."
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://github.com/fengyi233/carlaocc",
+      "summary": "Official project repository verified for 100K frames, up-to-0.05 m panoptic occupancy, mesh export, physical voxelization, and the CARLA UE5 0.10.0 requirement."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-30",
+      "change": "Added as a bounded truth-generation reference with an explicit one-scene audit and simulator-version stop condition."
+    }
+  ],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

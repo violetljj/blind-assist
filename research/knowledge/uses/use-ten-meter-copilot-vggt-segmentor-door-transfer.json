@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-vggt-segmentor-door-transfer",
+  "item_id": "paper-vggt-segmentor-2026",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "geometry-enhanced-cross-view-mask-transfer"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "mechanism_adaptation",
+  "usage": {
+    "source_scope": "Source-mask-conditioned, geometry-enhanced cross-view segmentation with point-guided prediction and iterative mask refinement.",
+    "project_application": "After a z-buffer-visible reference door face is established, compare VGGT-Segmentor with the existing fixed cross-view transfer on identical source masks, query frames, candidates, and evaluator mappings.",
+    "modifications": "Keep exact-instance authority outside the model and retain explicit NONE/UNKNOWN. The challenger may transfer only an already authorized source mask and may not create a door identity from appearance similarity.",
+    "expected_effect": "Improve exact-door Top-1, median IoU, centroid-inside, and world-centroid error without more wrong-door commits. Close the challenger if it fails this joint comparison; no prompt or threshold rescue."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "Candidate challenger after reference-side visibility is independently qualified.",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Cross-view mask transfer does not establish public physical identity, functional entrance status, reachability, arrival, handoff, user benefit, product readiness, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2604.13596",
+      "summary": "Primary preprint reviewed for source-mask-conditioned geometry-enhanced cross-view segmentation and its Ego-Exo4D evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-30",
+      "change": "Added as a direct cross-view transfer challenger conditional on independently authorized reference visibility; no current route decision changed."
+    }
+  ],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

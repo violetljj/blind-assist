@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-obstacle-avoidance-consistent-instance-field",
+  "item_id": "paper-consistent-instance-field-2026",
+  "route": "obstacle-avoidance",
+  "mechanism_ids": [
+    "occupancy-conditional-instance-field"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "The factorization of occupancy probability and conditional instance distribution; deformable Gaussian rendering and open-vocabulary querying are not current DTR components.",
+    "project_application": "Run a read-only post-C11 ledger canary to test whether X31-style hard track/cell states hide distinct existence and identity uncertainty during occlusion, split, merge, and reappearance.",
+    "modifications": "Represent the factorization on existing DTR ledgers before considering a learned 4D field. Keep motion branches, route events, UNKNOWN, and current evidence authority separate.",
+    "expected_effect": "Improve failure attribution for false persistence and lineage swaps. Stop if the factorization changes neither attribution nor event decisions; do not train a 4D field or use rendering quality as a risk metric."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "Representation reserve for a read-only factorization canary after the frozen protocol.",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "A factorized field or improved novel-view segmentation would not establish online DTR observation quality, actor identity, future motion, collision risk, Android runtime, user benefit, product readiness, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://openaccess.thecvf.com/content/CVPR2026/html/Wu_Consistent_Instance_Field_for_Dynamic_Scene_Understanding_CVPR_2026_paper.html",
+      "summary": "Primary CVPR paper reviewed for separate occupancy probability and conditional instance distribution at each space-time point."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-30",
+      "change": "Added as a representation reserve for existence-versus-identity factorization, starting with a read-only ledger canary rather than a learned 4D field."
+    }
+  ],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}
