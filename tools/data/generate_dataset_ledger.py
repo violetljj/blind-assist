@@ -9,7 +9,7 @@ are surfaced again in SOURCE_ROLE_CONFLICTS.md.
 Default invocation (from the repository root):
 
     E:\\codex-tools\\bin\\blindassist-python.cmd \\
-        tools\\data\\generate_dataset_ledger.py --output-dir artifacts.local/datasets/ledger
+        tools\\data\\generate_dataset_ledger.py --output-dir artifacts.local/evidence/resource-fabric/reports/dataset-ledger
 
 Generated files belong under ``artifacts.local`` and are not tracked. Junction
 aliases inside the checkout are not followed, so local aliases are not
@@ -1878,7 +1878,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
     parser.add_argument(
         "--output-dir", type=Path,
-        default=DEFAULT_REPO_ROOT / "artifacts.local" / "datasets" / "ledger",
+        default=(
+            DEFAULT_REPO_ROOT
+            / "artifacts.local"
+            / "evidence"
+            / "resource-fabric"
+            / "reports"
+            / "dataset-ledger"
+        ),
     )
     parser.add_argument("--no-outer-root", action="store_true", help="Do not scan E:\\linnan\\artifacts.local.")
     parser.add_argument("--no-hash", action="store_true", help="Skip SHA-256/MD5. Intended only for a fast dry run.")

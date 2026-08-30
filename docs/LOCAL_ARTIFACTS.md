@@ -36,6 +36,25 @@ artifacts.local/
   tmp/             # 短期文件；只有完成引用/authority 检查后才可按任务清理
 ```
 
+六个顶层类别不变；跨实验复用由 [Resource fabric](RESOURCE_FABRIC.md) 在这些
+类别内部提供：
+
+```text
+downloads/resource-store/          # 可重获原始数据的内容寻址对象
+models/resource-store/             # 模型内容寻址对象
+evidence/resource-store/           # 不可替代或 sealed 原始对象
+work/resource-cache/normalized/    # 共享规范化数据
+work/resource-cache/features/      # 共享特征
+evidence/resource-fabric/          # catalog、lifecycle、难例、薄实验和实时报告
+```
+
+新数据/模型优先通过 `tools/data/resource_fabric.py ingest` 登记；同一内容只产生
+一个 resource id。Development 数据消费后不得重新取得 fresh authority，但应以
+`development_consumed` 证据状态和 `shared` 存储状态继续服务训练、诊断、
+特征缓存、难例挖掘、回归和明确披露的 Development replay。新实验目录只保留
+manifest、参数、小型结果和证据边界，重型媒体、张量和权重通过 resource/cache
+id 引用。
+
 新调用方只能写入上述六个顶层类别，并在其下使用清楚的领域/协议/version 子目录。`tmp/` 不是“随时可清空”的同义词：当前任务可能暂存尚未登记的 lock、audit 或迁移指针；清理必须按精确子目录确认所有者和持久化去向。
 
 ## 本地构建与编译产物
