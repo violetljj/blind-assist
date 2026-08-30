@@ -11,9 +11,9 @@ Status: `L10_R0_ACTIVE / DTR_R2_DYNAMIC_RETAINED`
   pixel-portal identity.
 - **L10 SEVN bridge:** 24 address-disjoint annotation/graph episodes now replay
   through the PanoLab action contract (`0/24` HOLD, `24/24` one-step oracle).
-  The first high-resolution pixel canary reads `16/22` visible house numbers and
-  binds `11/24` correct target doors, but `3` wrong bindings exceed the frozen
-  maximum of `2`; retain a mechanism signal without advancing the pixel gate.
+  Frozen multi-scale OCR plus mask topology now reads `19/22` visible house
+  numbers and binds `14/24` correct target doors with `2` wrong and `8` UNKNOWN;
+  all six Development gates pass over the V1 `11/3/10` result.
 - **L10 pixel/posed portal line:** generic Panoramax pixel-portal mining is
   closed (`0/3` joint width-first admissions). Hypersim met a synthetic posed
   transfer gate, while real SceneNN terminates at
@@ -1009,6 +1009,19 @@ question is multi-scale number OCR plus mask-level credential-to-portal topology
 not another threshold sweep. This remains curated SEVN Development, not a
 learned action policy, Panoramax/OSM confirmation, arrival, handoff, or safety
 evidence.
+
+That representation-changing successor has now run once under a new frozen
+protocol. It uses one native OCR view plus six overlapping `1.6667x` tiles,
+deduplicates repeated door instances by mask IoU or containment, and admits an
+exact number only within an adaptive upper-mask credential neighborhood. Exact
+visible-number OCR rises `16/22 -> 19/22`, with three tile-only recoveries;
+correct/wrong/UNKNOWN changes `11/3/10 -> 14/2/8`. It retains `10/11` V1 correct
+episodes and recovers four V1 failures, including two former wrong bindings, but
+also creates two new wrong bindings. All six frozen gates pass. Record
+`L10_SEVN_MULTISCALE_MASK_TOPOLOGY_DEVELOPMENT_GATE_MET`, freeze this V2 stack,
+and do not tune tiling, mask radii, overlap scoring, OCR matching, or thresholds
+on the consumed panel. The next executable check is one new address-disjoint
+SEVN panel; it remains same-source Development even if it passes.
 
 Three source-changing Panoramax successors have now localized that missing
 credential. Entrance-node text on eight exact nodes and 22 real views produced

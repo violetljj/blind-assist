@@ -10,10 +10,10 @@ Status: `ACTIVE`
   reciprocal `SIDESTEP_TO_ENTRANCE_FACE` recoveries). This authorizes an exact
   entrance ray geometrically, not a pixel portal.
 - **SEVN backend:** the address-door metadata adapter is ready on 24 distinct
-  addresses (`8` left-pan, `8` right-pan, `8` graph-approach episodes). The first
-  hash-verified high-resolution pixel replay reads `16/22` visible house numbers
-  exactly and binds `11/24` target doors, with `3` wrong and `10` UNKNOWN. This is
-  a real pixel mechanism signal, but its frozen wrong-binding gate did not pass.
+  addresses (`8` left-pan, `8` right-pan, `8` graph-approach episodes). Frozen V2
+  multi-scale OCR plus mask topology reads `19/22` visible house numbers and binds
+  `14/24` target doors, with `2` wrong and `8` UNKNOWN. All six Development gates
+  pass, improving the V1 `11/3/10` correct/wrong/UNKNOWN result.
 - **Pixel portal:** generic Panoramax mining is closed after the width-first
   source admitted `0/3` reference, `0/3` query, and `0/3` joint portals. It may
   carry imagery only with independent sub-metre portal registration.
@@ -1985,6 +1985,43 @@ Implementation and durable result: `l10_sevn_pixel_replay.py`,
 `l10_sevn_pixel_replay_result_v1.json`; cleanup is recorded in
 `l10_sevn_pixel_replay_cleanup_v1.json`. The result SHA-256 is
 `7c8ffe37f141d6770993cb891a6228f48572a7772516cb2eba2fbe337b25fbdf`.
+
+#### PB22 SEVN multi-scale OCR and mask-topology successor
+
+V2 preserves the same 24 episodes, prescribed one-step actions, high-resolution
+renderer, OCR weights, and portal model. The single representation change is a
+source-blind seven-pass OCR field—one native full view plus six overlapping
+`1.6667x` tiles—joined to rasterized instance masks instead of nearest boxes.
+Same-portal masks are removed by IoU or containment; an exact house-number token
+may bind only inside an adaptive neighborhood of the upper 55% of a door mask.
+SEVN annotations remain evaluator-only and enter after runtime output.
+
+The frozen one-shot result improves truth-visible exact OCR from `16/22` to
+`19/22`; all three gains are tile-only. Correct/wrong/UNKNOWN changes from
+`11/3/10` to `14/2/8`. V2 retains `10/11` V1 correct episodes, turns four V1
+non-correct episodes into correct bindings, repairs two of three V1 wrong
+bindings, and converts the remaining old wrong binding to UNKNOWN. It also
+introduces two new wrong bindings, so this is material progress rather than a
+unilateral safety gain.
+
+All six frozen gates pass exactly or better: all 24 episodes rendered, at least
+`18` visible signs read (`19`), at least `14` correct bindings (`14`), at most two
+wrong (`2`), at least ten V1 correct retained (`10`), and at least four V1
+non-correct recovered (`4`). By action class, correct/wrong/UNKNOWN is `6/1/1`
+for left pan, `4/1/3` for right pan, and `4/0/4` for approach. Record
+`L10_SEVN_MULTISCALE_MASK_TOPOLOGY_DEVELOPMENT_GATE_MET`.
+
+This authorizes the frozen representation as the SEVN Development baseline. It
+does not establish autonomous action selection, held-out or cross-source
+generalization, arrival, handoff, or safety. The next decision-changing check is
+one new address-disjoint SEVN panel with the entire V2 stack frozen; even a pass
+there remains same-source evidence before a real-source confirmation.
+
+Implementation and durable evidence: `l10_sevn_pixel_topology_replay.py`,
+`l10_sevn_pixel_topology_protocol_v2.json`,
+`l10_sevn_pixel_topology_result_v2.json`, and
+`l10_sevn_pixel_topology_cleanup_v2.json`. The result SHA-256 is
+`b831af55e575030866b4cb7cf8c31d82954630d5c173f39f00409ef8787f5f7e`.
 
 LychSim remains a conditional secondary synthetic lab, not this route's
 replacement. The source/hardware screen and one bounded go/no-go test are in

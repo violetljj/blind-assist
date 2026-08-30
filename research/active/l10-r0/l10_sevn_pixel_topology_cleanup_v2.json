@@ -1,0 +1,45 @@
+{
+  "schema": "blindassist-task-retention-cleanup-receipt-v1",
+  "generated_at_utc": "2026-08-30T18:35:09.1997763Z",
+  "task": "L10 SEVN multi-scale OCR and mask-topology replay v2",
+  "retained": {
+    "evaluator": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_replay.py",
+      "sha256": "9cc2d79f57401f7b782a0d44c6a3c2b69c0441297ff8c75ebfa6889836037d5a"
+    },
+    "protocol": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_protocol_v2.json",
+      "sha256": "dca586d98356ce71723d58b4701c93babb0c3bf0608d1f909c8fb741ff7eb175"
+    },
+    "result": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_result_v2.json",
+      "sha256": "b831af55e575030866b4cb7cf8c31d82954630d5c173f39f00409ef8787f5f7e"
+    },
+    "source_archive": {
+      "path": "F:\\ba-data\\SEVN\\high-res-panos.zip",
+      "bytes": 27819151974,
+      "md5": "1e46ca1de01cdba68b0e9ff7de6dc3df",
+      "exists_after_cleanup": true
+    }
+  },
+  "formal_run": {
+    "panorama_crop_tile_mask_overlay_or_cache_files_written": 0,
+    "reconstructible_intermediate_files_retained": 0,
+    "method": "All 24 panoramas, 168 OCR observations, raster masks, topology maps, and truth intersections were processed in memory; only the detailed result JSON was written."
+  },
+  "deleted": {
+    "files": [],
+    "directories": [],
+    "bytes": 0,
+    "reason": "No task-owned intermediate file or directory was created, so no filesystem deletion was necessary."
+  },
+  "verification": {
+    "task_temp_directory_absent": true,
+    "task_python_bytecode_absent": true,
+    "active_evaluator_processes": 0,
+    "durable_result_exists": true,
+    "source_archive_exists": true,
+    "f_drive_free_gib_after_snapshot": 269.268,
+    "free_space_note": "Snapshot only; no free-space delta is attributed to this zero-intermediate run."
+  }
+}

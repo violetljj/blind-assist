@@ -1,0 +1,200 @@
+{
+  "schema": "blindassist-l10-sevn-multiscale-mask-topology-protocol-v2",
+  "name": "L10 SEVN multi-scale OCR and mask-topology successor",
+  "evidence_class": "CURATED_REAL_SEVN_REPRESENTATION_CHANGE_DEVELOPMENT",
+  "question": "Does source-blind multi-scale house-number OCR plus upper-mask credential-to-portal topology materially improve the frozen V1 SEVN address-door pixel result without increasing wrong bindings?",
+  "cohort": {
+    "episodes_per_scenario": 8,
+    "episode_count": 24,
+    "address_disjoint": true,
+    "scenario_classes": [
+      "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "APPROACH_ADDRESS_DOOR_RECOVERY"
+    ],
+    "development_note": "The cohort and V1 outcomes are consumed Development. SEVN001 was used for one pre-freeze implementation smoke verifying tile coordinate mapping, mask recovery, containment de-duplication, and an admissible UPPER_RIGHT topology. No other V2 episode output was observed before freeze."
+  },
+  "frozen_inputs": {
+    "public_source": {
+      "path": "research/active/l10-r0/l10_sevn_panolab_source_v1.json",
+      "sha256": "a6478c29610f986fc50dd101de378f187f7ba9e69c201cc31d3b12b6cf7912da"
+    },
+    "evaluator_truth": {
+      "path": "research/active/l10-r0/l10_sevn_panolab_truth_v1.json",
+      "sha256": "bced8f620a55b04ebe2402cf8ee9d25e55f8839e9c5b2e8a9e785cbd65462387"
+    },
+    "v1_result": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_replay_result_v1.json",
+      "sha256": "7c8ffe37f141d6770993cb891a6228f48572a7772516cb2eba2fbe337b25fbdf"
+    },
+    "v1_runtime_dependency": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_replay.py",
+      "sha256": "d20f714af0a5448b0917267211d9c51d42c7ee411d9ad5776a40438bea0c4bb2"
+    }
+  },
+  "high_resolution_archive": {
+    "provider": "SEVN 1.0 / Zenodo 3526490",
+    "record": "https://zenodo.org/records/3526490",
+    "expected_local_path": "F:\\ba-data\\SEVN\\high-res-panos.zip",
+    "bytes": 27819151974,
+    "md5": "1e46ca1de01cdba68b0e9ff7de6dc3df",
+    "member_pattern": "panos/pano_{frame_id:06d}.png",
+    "access": "Stream the same 24 action-result members directly from the ZIP; write no extracted panorama or rendered image."
+  },
+  "action_control": {
+    "maximum_steps": 1,
+    "scenario_to_action": {
+      "PAN_LEFT_ADDRESS_DOOR_RECOVERY": "PAN_LEFT",
+      "PAN_RIGHT_ADDRESS_DOOR_RECOVERY": "PAN_RIGHT",
+      "APPROACH_ADDRESS_DOOR_RECOVERY": "APPROACH"
+    },
+    "selection_authority": "Evaluator truth selects the same frozen scenario-designated action used by V1 before pixel inference.",
+    "runtime_observation": "Runtime receives only the public target house number and the action-result pixels. No SEVN door, text, visibility, address-match, or binding label enters OCR, portal proposals, mask de-duplication, or topology.",
+    "claim_boundary": "V2 tests a pixel binding representation after a prescribed active observation. It still does not test autonomous action selection."
+  },
+  "render_contract": {
+    "source_projection": "Unchanged V1 SEVN equirectangular ring crop",
+    "panorama_shape_hwc": [1280, 3840, 3],
+    "horizontal_fov_degrees": 135.0,
+    "viewport_shape_hwc": [1280, 1440, 3],
+    "annotation_canvas_width": 224,
+    "annotation_canvas_height": 84,
+    "unchanged_from_v1": true
+  },
+  "models": {
+    "portal_model": {
+      "model_id": "perseusdg/doorway-door-people-window-seg",
+      "revision": "fc5fb4cc8ccc164d8c8618fc28417ebe98e638e2",
+      "license": "AGPL-3.0; internal research only pending product-integration license review",
+      "weights": {
+        "path": "artifacts.local/models/perseusdg-doorway-door-people-window-seg-fc5fb4c/doorway_seg_yolo26n.pt",
+        "sha256": "4c9c09fd97d151d5e4bb7345b1409017f67d3d8803279334cbabb830dc2a0ce2"
+      },
+      "postprocessor": {
+        "path": "artifacts.local/models/perseusdg-doorway-door-people-window-seg-fc5fb4c/mirror_suppress.py",
+        "sha256": "09138b60eea6810cdfe10ae3596f34b20b50e72521727d12e9ae64a40d8adf89"
+      },
+      "model_card": {
+        "path": "artifacts.local/models/perseusdg-doorway-door-people-window-seg-fc5fb4c/README.md",
+        "sha256": "d2881c70b0bebef5e54f993eb7c3dcdb8c17ab35f4405aa582786f18feb63296"
+      }
+    },
+    "ocr": {
+      "backend": "RapidOCR 3.9.2 / PP-OCRv6 small / ONNX Runtime CPUExecutionProvider",
+      "model_root": "artifacts.local/runtime/semantic-anchor-v1/models",
+      "sha256": {
+        "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+        "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+        "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+      }
+    }
+  },
+  "pixel_contract": {
+    "ocr": {
+      "minimum_score": 0.5,
+      "intra_op_threads": 4,
+      "target_match": "Unchanged exact alphanumeric equality after deleting punctuation and spaces; no fuzzy aliases.",
+      "passes": "One native 1440x1280 full viewport plus six source-blind overlapping tiles.",
+      "tile_pass": {
+        "width_fraction": 0.6,
+        "height_fraction": 0.6,
+        "columns": 3,
+        "rows": 2,
+        "placement": "Evenly span zero to the final valid tile origin on each axis.",
+        "resize": "Each 864x768 tile is bicubic-resized to 1440x1280, a 1.666667x magnification, then OCR polygons are mapped back to viewport coordinates."
+      },
+      "deduplication": {
+        "same_token_only": true,
+        "minimum_box_iou": 0.3,
+        "maximum_normalized_center_distance": 0.01,
+        "ranking": "Keep higher OCR confidence, then stable pass and box order, while retaining the set of passes that observed each merged token."
+      }
+    },
+    "portal_model": {
+      "cuda_device": 0,
+      "image_size": 1280,
+      "predict_confidence": 0.05,
+      "output_confidence": 0.1,
+      "author_postprocess": "Unchanged V1 mirror suppression and cross-class doorway/door de-duplication.",
+      "mask_reconstruction": "Rasterize each surviving Ultralytics instance polygon at the original 1440x1280 viewport.",
+      "deduplication": {
+        "minimum_mask_iou": 0.55,
+        "minimum_mask_containment": 0.65,
+        "ranking": "Keep higher confidence before class and stable mask bounds."
+      }
+    },
+    "association": {
+      "upper_mask_fraction": 0.55,
+      "horizontal_radius_fraction": 0.35,
+      "vertical_radius_fraction": 0.25,
+      "minimum_radius_pixels": 8,
+      "maximum_radius_pixels": 256,
+      "admission": "An exact target token must lie within the adaptive expanded upper-mask bounds and its text rectangle must be no farther from actual upper-mask pixels than the Euclidean adaptive radius.",
+      "ranking": "Among admissible text-mask pairs, minimize upper-mask distance divided by adaptive radius, then lateral offset in portal widths, vertical offset in portal heights, and prefer portal and OCR confidence.",
+      "relations": ["UPPER_LEFT", "UPPER_RIGHT", "ABOVE", "OVER_UPPER_MASK"],
+      "abstention": "No exact target token, no surviving portal mask, or no admissible upper-mask topology returns UNKNOWN."
+    },
+    "evaluation": {
+      "minimum_selected_mask_precision": 0.2,
+      "minimum_target_box_coverage": 0.1,
+      "correct": "The selected mask centroid lies inside the scaled SEVN target-door box, or both selected-mask precision and target-box coverage meet their frozen minima.",
+      "wrong": "A mask-topology proposal is selected but neither frozen mask truth rule is met.",
+      "unknown": "The runtime abstains before a mask-topology proposal."
+    }
+  },
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_sevn_pixel_topology_replay.py",
+    "sha256": "9cc2d79f57401f7b782a0d44c6a3c2b69c0441297ff8c75ebfa6889836037d5a"
+  },
+  "runtime": {
+    "versions": {
+      "torch": "2.11.0+cu130",
+      "ultralytics": "8.4.102",
+      "rapidocr": "3.9.2",
+      "onnxruntime": "1.27.0",
+      "opencv-python": "5.0.0.93",
+      "numpy": "2.4.4"
+    },
+    "portal_backend": "CUDA required with actual-device verification",
+    "ocr_backend": "ONNX Runtime CPU"
+  },
+  "baseline": {
+    "v1_exact_visible_ocr": 16,
+    "v1_correct_target_door_bindings": 11,
+    "v1_wrong_door_bindings": 3,
+    "v1_unknown": 10
+  },
+  "gate": {
+    "episode_count": 24,
+    "minimum_visible_text_exact_ocr": 18,
+    "minimum_correct_target_door_bindings": 14,
+    "maximum_wrong_door_bindings": 2,
+    "minimum_v1_correct_retained": 10,
+    "minimum_v1_noncorrect_to_correct": 4,
+    "interpretation": "V2 must add at least three net correct bindings, reduce wrong bindings, retain at least 10 of 11 V1 correct episodes, and recover at least four V1 non-correct episodes."
+  },
+  "signal_floor": {
+    "minimum_correct_bindings": 12,
+    "maximum_wrong_bindings": 3
+  },
+  "retention_policy": {
+    "keep": "V2 protocol, evaluator, detailed result, cleanup receipt, updated decision, hashes, V1 baseline, and source archive.",
+    "delete": "Any reconstructible panorama extraction, viewport, OCR tile, raster mask image, overlay, model scratch output, cache, or task temporary directory after result verification.",
+    "implementation": "The evaluator performs all image, tile, and mask operations in memory and writes only the result JSON."
+  },
+  "stop_rule": "Run the frozen 24 episodes once. Do not change tiling, resize, OCR match, mask de-duplication, topology, scoring, gate, model, or action after observing the result. Any successor requires a new protocol version.",
+  "non_claims": [
+    "autonomous action selection",
+    "held-out or source-disjoint confirmation",
+    "Panoramax or OSM entrance confirmation",
+    "street-name OCR",
+    "continuous sidestep or pedestrian motion",
+    "metric depth or collision-free traversability",
+    "public or legal access",
+    "metric arrival",
+    "HANDOFF_READY",
+    "user task completion",
+    "product benefit",
+    "mobility safety"
+  ]
+}
