@@ -28,8 +28,10 @@ Current route snapshot:
 - L10 PanoLab active entrance-ray recovery passed `4/4`; this does not establish
   a pixel portal. Generic Panoramax pixel-portal mining is closed.
 - The SEVN address-door backend now admits and replays 24 distinct metadata
-  episodes (`0/24` HOLD, `24/24` annotation oracle); the 1.86 GB image payload
-  remains pending, so pixel inference has not run.
+  episodes (`0/24` HOLD, `24/24` annotation oracle). Its first hash-verified
+  high-resolution pixel canary reads `16/22` visible house numbers and binds
+  `11/24` correct target doors, but `3` wrong bindings exceed the frozen maximum
+  of `2`; retain the pixel mechanism signal without advancing the gate.
 - Hypersim established a synthetic posed-portal mechanism ceiling. SceneNN real
   RGB-D strict-triangle visibility repaired the local reference plane but did
   not meet the transfer gate because the credential still lacked complete

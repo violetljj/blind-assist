@@ -11,7 +11,9 @@ Status: `L10_R0_ACTIVE / DTR_R2_DYNAMIC_RETAINED`
   pixel-portal identity.
 - **L10 SEVN bridge:** 24 address-disjoint annotation/graph episodes now replay
   through the PanoLab action contract (`0/24` HOLD, `24/24` one-step oracle).
-  The 1.86 GB image payload is still absent, so pixel inference remains `NOT_RUN`.
+  The first high-resolution pixel canary reads `16/22` visible house numbers and
+  binds `11/24` correct target doors, but `3` wrong bindings exceed the frozen
+  maximum of `2`; retain a mechanism signal without advancing the pixel gate.
 - **L10 pixel/posed portal line:** generic Panoramax pixel-portal mining is
   closed (`0/3` joint width-first admissions). Hypersim met a synthetic posed
   transfer gate, while real SceneNN terminates at
@@ -990,12 +992,23 @@ action, and image locator to runtime; and keeps all door boxes and binding
 states evaluator-only. The frozen 24-address panel produces `0/24` correct HOLD
 bindings, `16/24` under fixed SWEEP, and `24/24` under the one-step annotation
 oracle (`8` left pan, `8` right pan, `8` graph approach), with zero wrong-unique
-outcomes. Record
-`L10_SEVN_METADATA_ACTION_ADAPTER_READY_IMAGE_PAYLOAD_PENDING`. This is source
-integration and metadata-grounded mechanism evidence, not a pixel-derived
-portal result or confirmation of the Panoramax/OSM line. The next executable
-question is whether the hash-verified SEVN `images.hdf5` can support the same
-frozen episodes without evaluator labels.
+outcomes.
+
+The image question has now run against the hash-verified 27.8 GB high-resolution
+archive. A 135-degree/1440-pixel renderer streams only the 24 designated
+action-result panoramas and writes no intermediate images. Evaluator truth fixes
+the action before inference; the runtime receives only the target house number
+and pixels, so this isolates perception and does not test action selection. Exact
+RapidOCR reads `16/22` truth-visible numbers; a fixed number-to-generic-portal
+association produces `11/24` correct target-door bindings, `3/24` wrong, and
+`10/24` UNKNOWN. OCR and minimum-correct gates pass, but the maximum-two-wrong
+gate fails. Record
+`L10_SEVN_HIGHRES_PIXEL_ADDRESS_DOOR_SIGNAL_ONLY_GATE_NOT_MET` and do not alter
+the consumed thresholds or post-hoc scoring. The next representation-changing
+question is multi-scale number OCR plus mask-level credential-to-portal topology,
+not another threshold sweep. This remains curated SEVN Development, not a
+learned action policy, Panoramax/OSM confirmation, arrival, handoff, or safety
+evidence.
 
 Three source-changing Panoramax successors have now localized that missing
 credential. Entrance-node text on eight exact nodes and 22 real views produced

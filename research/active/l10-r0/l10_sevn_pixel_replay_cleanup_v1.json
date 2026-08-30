@@ -1,0 +1,48 @@
+{
+  "schema": "blindassist-task-retention-cleanup-receipt-v1",
+  "generated_at_utc": "2026-08-30T18:19:14.2148883Z",
+  "task": "L10 SEVN high-resolution pixel replay v1",
+  "retained": {
+    "protocol": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_replay_protocol_v1.json",
+      "sha256": "2e02b055d3c0e39837559c58d20c959b465f157678a892d54a86969bc5d891ec"
+    },
+    "result": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_replay_result_v1.json",
+      "sha256": "7c8ffe37f141d6770993cb891a6228f48572a7772516cb2eba2fbe337b25fbdf",
+      "normalization": "The Windows-generated JSON was mechanically normalized from CRLF to the repository-required LF without changing parsed content before the durable hash was recorded."
+    },
+    "source_archive": {
+      "path": "F:\\ba-data\\SEVN\\high-res-panos.zip",
+      "bytes": 27819151974,
+      "md5": "1e46ca1de01cdba68b0e9ff7de6dc3df",
+      "exists_after_cleanup": true
+    }
+  },
+  "formal_run": {
+    "panorama_or_viewport_files_written": 0,
+    "reconstructible_intermediate_images_retained": 0,
+    "method": "The evaluator decoded 24 selected ZIP members in memory and wrote only the result JSON."
+  },
+  "deleted": {
+    "files": [
+      "F:\\ba-data\\SEVN\\.work-l10-pixel-v1\\sample_crop.png",
+      "F:\\ba-data\\SEVN\\.work-l10-pixel-v1\\panos\\pano_128472.png",
+      "research/active/l10-r0/__pycache__/l10_sevn_panolab.cpython-311.pyc",
+      "research/active/l10-r0/__pycache__/l10_sevn_pixel_replay.cpython-311.pyc"
+    ],
+    "directories": [
+      "F:\\ba-data\\SEVN\\.work-l10-pixel-v1\\panos",
+      "F:\\ba-data\\SEVN\\.work-l10-pixel-v1"
+    ],
+    "bytes": 8015674,
+    "mib": 7.644,
+    "recoverability": "Reconstructible from the retained source archive and evaluator."
+  },
+  "verification": {
+    "all_named_intermediates_absent": true,
+    "durable_result_exists": true,
+    "source_archive_exists": true,
+    "f_drive_free_gib_after": 259.725
+  }
+}

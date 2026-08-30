@@ -1,0 +1,4572 @@
+{
+  "schema": "blindassist-l10-sevn-highres-pixel-replay-result-v1",
+  "generated_at_utc": "2026-08-30T18:16:41.333436Z",
+  "decision": "L10_SEVN_HIGHRES_PIXEL_ADDRESS_DOOR_SIGNAL_ONLY_GATE_NOT_MET",
+  "claim_scope": "CURATED_SEVN_HIGH_RESOLUTION_PIXEL_ASSOCIATION_DEVELOPMENT_CANARY",
+  "question": "After one frozen evaluator-selected PAN or APPROACH observation, can a label-blind pixel pipeline find the requested house number and bind it to the correct visible door proposal on the same 24 SEVN episodes?",
+  "inputs": {
+    "protocol": {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_sevn_pixel_replay_protocol_v1.json",
+      "sha256": "2e02b055d3c0e39837559c58d20c959b465f157678a892d54a86969bc5d891ec"
+    },
+    "public_source": {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_sevn_panolab_source_v1.json",
+      "sha256": "a6478c29610f986fc50dd101de378f187f7ba9e69c201cc31d3b12b6cf7912da"
+    },
+    "evaluator_truth": {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_sevn_panolab_truth_v1.json",
+      "sha256": "bced8f620a55b04ebe2402cf8ee9d25e55f8839e9c5b2e8a9e785cbd65462387"
+    },
+    "high_resolution_archive": {
+      "path": "F:\\ba-data\\SEVN\\high-res-panos.zip",
+      "bytes": 27819151974,
+      "md5": "1e46ca1de01cdba68b0e9ff7de6dc3df"
+    },
+    "evaluator": {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_sevn_pixel_replay.py",
+      "sha256": "d20f714af0a5448b0917267211d9c51d42c7ee411d9ad5776a40438bea0c4bb2"
+    }
+  },
+  "runtime": {
+    "versions": {
+      "torch": "2.11.0+cu130",
+      "ultralytics": "8.4.102",
+      "rapidocr": "3.9.2",
+      "onnxruntime": "1.27.0",
+      "opencv-python": "5.0.0.93",
+      "numpy": "2.4.4"
+    },
+    "torch_cuda": "13.0",
+    "device": "cuda:0",
+    "device_name": "NVIDIA GeForce RTX 5060 Laptop GPU"
+  },
+  "action_boundary": "This run tests pixel-derived address-to-door binding after a prescribed active observation. It does not test or claim learned action selection.",
+  "metrics": {
+    "episode_count": 24,
+    "truth_visible_house_number_opportunities": 22,
+    "exact_target_text": 16,
+    "exact_target_text_rate": 0.666667,
+    "exact_target_text_when_truth_visible": 16,
+    "exact_target_text_when_truth_visible_rate": 0.727273,
+    "portal_proposal": 24,
+    "portal_proposal_rate": 1.0,
+    "joined_text_portal_proposal": 14,
+    "joined_text_portal_proposal_rate": 0.583333,
+    "correct_target_door_bindings": 11,
+    "correct_target_door_binding_rate": 0.458333,
+    "wrong_door_bindings": 3,
+    "unknown": 10,
+    "unknown_rate": 0.416667
+  },
+  "scenario_metrics": {
+    "APPROACH_ADDRESS_DOOR_RECOVERY": {
+      "episodes": 8,
+      "correct_target_door": 3,
+      "wrong_door": 1,
+      "unknown": 4,
+      "exact_target_text": 5
+    },
+    "PAN_LEFT_ADDRESS_DOOR_RECOVERY": {
+      "episodes": 8,
+      "correct_target_door": 6,
+      "wrong_door": 0,
+      "unknown": 2,
+      "exact_target_text": 7
+    },
+    "PAN_RIGHT_ADDRESS_DOOR_RECOVERY": {
+      "episodes": 8,
+      "correct_target_door": 2,
+      "wrong_door": 2,
+      "unknown": 4,
+      "exact_target_text": 4
+    }
+  },
+  "gates": {
+    "all_episodes_rendered": true,
+    "minimum_visible_text_exact_ocr": true,
+    "minimum_correct_target_door_bindings": true,
+    "maximum_wrong_door_bindings": false
+  },
+  "gate_met": false,
+  "wall_seconds": 19.2971,
+  "episode_results": [
+    {
+      "episode_id": "SEVN001",
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "PAN_LEFT",
+      "observation_id": "SEVN001_PAN_LEFT",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "26"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 354.078883,
+        "viewport_heading_degrees": 258.453883,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 2940.0,
+        "start_x_unwrapped": 2220,
+        "viewport_pixel_sha256": "bb04ba79761240d456c3415dd5d1c289e0ac336b640785fbaf8e1cebd9869994",
+        "archive_member": "panos/pano_128472.png",
+        "archive_member_crc32": "b1cb145c",
+        "archive_member_bytes": 5534315,
+        "archive_member_sha256": "c0eaab1850cc22cfc1ca665cb81e94cd54bc248269c2502fe3c2f2f8f365563d"
+      },
+      "runtime_output": {
+        "state": "PIXEL_BOUND_PORTAL_PROPOSAL",
+        "target_house_number_canonical": "26",
+        "exact_target_text_candidates": [
+          {
+            "text": "26",
+            "canonical": "26",
+            "score": 0.99999,
+            "box_xyxy": [
+              745.0,
+              352.0,
+              790.0,
+              397.0
+            ]
+          }
+        ],
+        "ocr_detections": [
+          {
+            "text": "OUVE",
+            "canonical": "OUVE",
+            "score": 0.99883,
+            "box_xyxy": [
+              419.0,
+              281.0,
+              549.0,
+              340.0
+            ],
+            "words": [
+              {
+                "text": "OUVE",
+                "canonical": "OUVE",
+                "score": 0.99662,
+                "box_xyxy": [
+                  435.0,
+                  281.0,
+                  549.0,
+                  339.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "26",
+            "canonical": "26",
+            "score": 0.99998,
+            "box_xyxy": [
+              739.0,
+              352.0,
+              793.0,
+              398.0
+            ],
+            "words": [
+              {
+                "text": "26",
+                "canonical": "26",
+                "score": 0.99999,
+                "box_xyxy": [
+                  745.0,
+                  352.0,
+                  790.0,
+                  397.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "30",
+            "canonical": "30",
+            "score": 0.99997,
+            "box_xyxy": [
+              864.0,
+              375.0,
+              917.0,
+              422.0
+            ],
+            "words": [
+              {
+                "text": "30",
+                "canonical": "30",
+                "score": 0.99996,
+                "box_xyxy": [
+                  879.0,
+                  377.0,
+                  912.0,
+                  421.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "oYel",
+            "canonical": "OYEL",
+            "score": 0.8313,
+            "box_xyxy": [
+              473.0,
+              482.0,
+              523.0,
+              513.0
+            ],
+            "words": [
+              {
+                "text": "oYel",
+                "canonical": "OYEL",
+                "score": 0.52311,
+                "box_xyxy": [
+                  478.0,
+                  482.0,
+                  523.0,
+                  513.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "Digicel",
+            "canonical": "DIGICEL",
+            "score": 0.99994,
+            "box_xyxy": [
+              426.0,
+              588.0,
+              558.0,
+              644.0
+            ],
+            "words": [
+              {
+                "text": "Digicel",
+                "canonical": "DIGICEL",
+                "score": 0.99991,
+                "box_xyxy": [
+                  438.0,
+                  588.0,
+                  557.0,
+                  643.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.18857820332050323,
+            "box_xyxy": [
+              286.1964111328125,
+              328.44622802734375,
+              690.9259643554688,
+              1059.6669921875
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.16898119449615479,
+            "box_xyxy": [
+              281.2774963378906,
+              386.16265869140625,
+              684.232666015625,
+              1187.24267578125
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.16039486229419708,
+            "box_xyxy": [
+              1239.5606689453125,
+              530.1265258789062,
+              1326.4808349609375,
+              911.0297241210938
+            ]
+          }
+        ],
+        "selected_binding": {
+          "normalized_box_gap": 0.05317641,
+          "text": {
+            "text": "26",
+            "canonical": "26",
+            "score": 0.99999,
+            "box_xyxy": [
+              745.0,
+              352.0,
+              790.0,
+              397.0
+            ]
+          },
+          "portal": {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.18857820332050323,
+            "box_xyxy": [
+              286.1964111328125,
+              328.44622802734375,
+              690.9259643554688,
+              1059.6669921875
+            ]
+          }
+        },
+        "runtime_receipt": {
+          "ocr_seconds": 0.719618,
+          "portal_seconds": 1.250134,
+          "raw_portal_model_detection_count": 33
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": true,
+        "target_door_box_xyxy": [
+          282.857143,
+          411.428571,
+          677.142857,
+          853.333333
+        ],
+        "selected_portal_center_in_target_box": true,
+        "selected_portal_iou_with_target_box": 0.58086129,
+        "outcome": "CORRECT_TARGET_DOOR"
+      }
+    },
+    {
+      "episode_id": "SEVN002",
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "PAN_LEFT",
+      "observation_id": "SEVN002_PAN_LEFT",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "30"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 356.925397,
+        "viewport_heading_degrees": 251.65754,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 3042.857141,
+        "start_x_unwrapped": 2323,
+        "viewport_pixel_sha256": "9422e30585c110a36053f2794a7ec7ddafc1b3a0887c051f1e28405ed1a581fc",
+        "archive_member": "panos/pano_128450.png",
+        "archive_member_crc32": "eee97576",
+        "archive_member_bytes": 5702826,
+        "archive_member_sha256": "bad84e36910ea678b1b63e02c9e9dd621ce35a0254dee046785421ebf22b1d4c"
+      },
+      "runtime_output": {
+        "state": "UNKNOWN_UNJOINED_TEXT_AND_PORTAL",
+        "target_house_number_canonical": "30",
+        "exact_target_text_candidates": [
+          {
+            "text": "30",
+            "canonical": "30",
+            "score": 0.99975,
+            "box_xyxy": [
+              228.0,
+              384.0,
+              273.0,
+              429.0
+            ]
+          }
+        ],
+        "ocr_detections": [
+          {
+            "text": "30",
+            "canonical": "30",
+            "score": 0.99985,
+            "box_xyxy": [
+              171.0,
+              384.0,
+              273.0,
+              433.0
+            ],
+            "words": [
+              {
+                "text": "30",
+                "canonical": "30",
+                "score": 0.99975,
+                "box_xyxy": [
+                  228.0,
+                  384.0,
+                  273.0,
+                  429.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "26",
+            "canonical": "26",
+            "score": 0.99997,
+            "box_xyxy": [
+              133.0,
+              404.0,
+              174.0,
+              438.0
+            ],
+            "words": [
+              {
+                "text": "26",
+                "canonical": "26",
+                "score": 0.99998,
+                "box_xyxy": [
+                  141.0,
+                  404.0,
+                  164.0,
+                  438.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "34",
+            "canonical": "34",
+            "score": 0.99995,
+            "box_xyxy": [
+              853.0,
+              430.0,
+              904.0,
+              478.0
+            ],
+            "words": [
+              {
+                "text": "34",
+                "canonical": "34",
+                "score": 0.99992,
+                "box_xyxy": [
+                  859.0,
+                  431.0,
+                  904.0,
+                  478.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "RC",
+            "canonical": "RC",
+            "score": 0.99802,
+            "box_xyxy": [
+              762.0,
+              972.0,
+              801.0,
+              1001.0
+            ],
+            "words": [
+              {
+                "text": "RC",
+                "canonical": "RC",
+                "score": 0.99699,
+                "box_xyxy": [
+                  770.0,
+                  972.0,
+                  797.0,
+                  999.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "175",
+            "canonical": "175",
+            "score": 0.99936,
+            "box_xyxy": [
+              761.0,
+              987.0,
+              812.0,
+              1020.0
+            ],
+            "words": [
+              {
+                "text": "175",
+                "canonical": "175",
+                "score": 0.99855,
+                "box_xyxy": [
+                  770.0,
+                  987.0,
+                  807.0,
+                  1018.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.14641322195529938,
+            "box_xyxy": [
+              825.958740234375,
+              485.5372009277344,
+              1075.5804443359375,
+              1057.6832275390625
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.13482679426670074,
+            "box_xyxy": [
+              875.4443359375,
+              478.72943115234375,
+              1074.6597900390625,
+              1096.27880859375
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.1212303638458252,
+            "box_xyxy": [
+              881.2620849609375,
+              452.8443298339844,
+              1294.3583984375,
+              1115.210205078125
+            ]
+          }
+        ],
+        "selected_binding": null,
+        "runtime_receipt": {
+          "ocr_seconds": 0.591879,
+          "portal_seconds": 0.0444,
+          "raw_portal_model_detection_count": 43
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": true,
+        "target_door_box_xyxy": [
+          265.571429,
+          426.666667,
+          694.142857,
+          853.333333
+        ],
+        "selected_portal_center_in_target_box": false,
+        "selected_portal_iou_with_target_box": 0.0,
+        "outcome": "UNKNOWN"
+      }
+    },
+    {
+      "episode_id": "SEVN003",
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "PAN_LEFT",
+      "observation_id": "SEVN003_PAN_LEFT",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "34"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 3.350864,
+        "viewport_heading_degrees": 242.81515,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 3205.714283,
+        "start_x_unwrapped": 2486,
+        "viewport_pixel_sha256": "060907fcafaf4102e9283d720b4bcd326851a3661457156170cf9bc5c0732d86",
+        "archive_member": "panos/pano_128429.png",
+        "archive_member_crc32": "34e7925b",
+        "archive_member_bytes": 5171036,
+        "archive_member_sha256": "4437d3b71ebd8072eb29cce0e87ba5ced14c51336c559612c360f8f5f46657ef"
+      },
+      "runtime_output": {
+        "state": "PIXEL_BOUND_PORTAL_PROPOSAL",
+        "target_house_number_canonical": "34",
+        "exact_target_text_candidates": [
+          {
+            "text": "34",
+            "canonical": "34",
+            "score": 0.99994,
+            "box_xyxy": [
+              221.0,
+              362.0,
+              262.0,
+              403.0
+            ]
+          }
+        ],
+        "ocr_detections": [
+          {
+            "text": "34",
+            "canonical": "34",
+            "score": 0.99996,
+            "box_xyxy": [
+              215.0,
+              362.0,
+              264.0,
+              403.0
+            ],
+            "words": [
+              {
+                "text": "34",
+                "canonical": "34",
+                "score": 0.99994,
+                "box_xyxy": [
+                  221.0,
+                  362.0,
+                  262.0,
+                  403.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "RC",
+            "canonical": "RC",
+            "score": 0.97619,
+            "box_xyxy": [
+              139.0,
+              923.0,
+              176.0,
+              956.0
+            ],
+            "words": [
+              {
+                "text": "RC",
+                "canonical": "RC",
+                "score": 0.96105,
+                "box_xyxy": [
+                  147.0,
+                  923.0,
+                  169.0,
+                  956.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "174",
+            "canonical": "174",
+            "score": 0.99975,
+            "box_xyxy": [
+              129.0,
+              939.0,
+              176.0,
+              977.0
+            ],
+            "words": [
+              {
+                "text": "174",
+                "canonical": "174",
+                "score": 0.99983,
+                "box_xyxy": [
+                  135.0,
+                  940.0,
+                  170.0,
+                  975.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.32514792680740356,
+            "box_xyxy": [
+              332.10589599609375,
+              271.6087646484375,
+              932.2981567382812,
+              901.1016845703125
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.12391660362482071,
+            "box_xyxy": [
+              0.6855511665344238,
+              303.0528259277344,
+              88.3669662475586,
+              759.5574951171875
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.11877159774303436,
+            "box_xyxy": [
+              356.4648132324219,
+              374.7334899902344,
+              772.6082763671875,
+              1176.568115234375
+            ]
+          }
+        ],
+        "selected_binding": {
+          "normalized_box_gap": 0.06292076,
+          "text": {
+            "text": "34",
+            "canonical": "34",
+            "score": 0.99994,
+            "box_xyxy": [
+              221.0,
+              362.0,
+              262.0,
+              403.0
+            ]
+          },
+          "portal": {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.32514792680740356,
+            "box_xyxy": [
+              332.10589599609375,
+              271.6087646484375,
+              932.2981567382812,
+              901.1016845703125
+            ]
+          }
+        },
+        "runtime_receipt": {
+          "ocr_seconds": 0.704741,
+          "portal_seconds": 0.039992,
+          "raw_portal_model_detection_count": 38
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": true,
+        "target_door_box_xyxy": [
+          274.0,
+          411.428571,
+          685.428571,
+          838.095238
+        ],
+        "selected_portal_center_in_target_box": true,
+        "selected_portal_iou_with_target_box": 0.37443561,
+        "outcome": "CORRECT_TARGET_DOOR"
+      }
+    },
+    {
+      "episode_id": "SEVN004",
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "PAN_LEFT",
+      "observation_id": "SEVN004_PAN_LEFT",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "36"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 355.796797,
+        "viewport_heading_degrees": 248.921797,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 3060.0,
+        "start_x_unwrapped": 2340,
+        "viewport_pixel_sha256": "b0d5d243d3f9061f6a0ba42fff909538b927a603c1b37e76afe3e88187c69261",
+        "archive_member": "panos/pano_128261.png",
+        "archive_member_crc32": "46c2b2fa",
+        "archive_member_bytes": 5352079,
+        "archive_member_sha256": "8aaf5e7382e07d7e20b9cc57de14f44badfbf505f6f79ef09290c05805f1369a"
+      },
+      "runtime_output": {
+        "state": "PIXEL_BOUND_PORTAL_PROPOSAL",
+        "target_house_number_canonical": "36",
+        "exact_target_text_candidates": [
+          {
+            "text": "36",
+            "canonical": "36",
+            "score": 0.99991,
+            "box_xyxy": [
+              735.0,
+              473.0,
+              766.0,
+              516.0
+            ]
+          }
+        ],
+        "ocr_detections": [
+          {
+            "text": "40",
+            "canonical": "40",
+            "score": 0.99996,
+            "box_xyxy": [
+              929.0,
+              461.0,
+              1008.0,
+              521.0
+            ],
+            "words": [
+              {
+                "text": "40",
+                "canonical": "40",
+                "score": 0.99998,
+                "box_xyxy": [
+                  929.0,
+                  461.0,
+                  1008.0,
+                  521.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "36",
+            "canonical": "36",
+            "score": 0.99992,
+            "box_xyxy": [
+              725.0,
+              472.0,
+              769.0,
+              517.0
+            ],
+            "words": [
+              {
+                "text": "36",
+                "canonical": "36",
+                "score": 0.99991,
+                "box_xyxy": [
+                  735.0,
+                  473.0,
+                  766.0,
+                  516.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "2",
+            "canonical": "2",
+            "score": 0.79571,
+            "box_xyxy": [
+              360.0,
+              684.0,
+              415.0,
+              730.0
+            ],
+            "words": [
+              {
+                "text": "2",
+                "canonical": "2",
+                "score": 0.79571,
+                "box_xyxy": [
+                  360.0,
+                  684.0,
+                  414.0,
+                  730.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.5888245105743408,
+            "box_xyxy": [
+              871.5155639648438,
+              532.010986328125,
+              1022.7573852539062,
+              1057.0142822265625
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.43548789620399475,
+            "box_xyxy": [
+              0.0,
+              423.6540222167969,
+              229.9180450439453,
+              949.0364990234375
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.24829238653182983,
+            "box_xyxy": [
+              309.5024719238281,
+              425.75604248046875,
+              677.6824340820312,
+              1087.259765625
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.19962885975837708,
+            "box_xyxy": [
+              330.3690490722656,
+              322.70062255859375,
+              693.8193969726562,
+              916.46142578125
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.16336239874362946,
+            "box_xyxy": [
+              0.0,
+              326.0602722167969,
+              348.4765625,
+              824.5704956054688
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.12484988570213318,
+            "box_xyxy": [
+              1378.2542724609375,
+              664.1973266601562,
+              1412.045654296875,
+              717.5146484375
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.11265494674444199,
+            "box_xyxy": [
+              373.49871826171875,
+              289.5917053222656,
+              692.3057861328125,
+              1023.3748779296875
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.11135619133710861,
+            "box_xyxy": [
+              0.0,
+              345.32757568359375,
+              243.26910400390625,
+              940.786865234375
+            ]
+          }
+        ],
+        "selected_binding": {
+          "normalized_box_gap": 0.03936153,
+          "text": {
+            "text": "36",
+            "canonical": "36",
+            "score": 0.99991,
+            "box_xyxy": [
+              735.0,
+              473.0,
+              766.0,
+              516.0
+            ]
+          },
+          "portal": {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.19962885975837708,
+            "box_xyxy": [
+              330.3690490722656,
+              322.70062255859375,
+              693.8193969726562,
+              916.46142578125
+            ]
+          }
+        },
+        "runtime_receipt": {
+          "ocr_seconds": 0.522392,
+          "portal_seconds": 0.050376,
+          "raw_portal_model_detection_count": 60
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": true,
+        "target_door_box_xyxy": [
+          300.0,
+          457.142857,
+          660.0,
+          838.095238
+        ],
+        "selected_portal_center_in_target_box": true,
+        "selected_portal_iou_with_target_box": 0.55228367,
+        "outcome": "CORRECT_TARGET_DOOR"
+      }
+    },
+    {
+      "episode_id": "SEVN005",
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "PAN_LEFT",
+      "observation_id": "SEVN005_PAN_LEFT",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "40"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 0.596564,
+        "viewport_heading_degrees": 250.507278,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 3094.285717,
+        "start_x_unwrapped": 2374,
+        "viewport_pixel_sha256": "2f2a34fd01f8ca2e1ce14320cdafd141c897099ce065e8b89991e0da7b2d7cfd",
+        "archive_member": "panos/pano_128235.png",
+        "archive_member_crc32": "5d036de2",
+        "archive_member_bytes": 5328577,
+        "archive_member_sha256": "c29764d75ad364bd9d0e783f463a7e7b662a2124919d8d91ae8cdc1a70ad1d9a"
+      },
+      "runtime_output": {
+        "state": "PIXEL_BOUND_PORTAL_PROPOSAL",
+        "target_house_number_canonical": "40",
+        "exact_target_text_candidates": [
+          {
+            "text": "40",
+            "canonical": "40",
+            "score": 0.99999,
+            "box_xyxy": [
+              280.0,
+              438.0,
+              306.0,
+              477.0
+            ]
+          }
+        ],
+        "ocr_detections": [
+          {
+            "text": "30",
+            "canonical": "30",
+            "score": 0.99991,
+            "box_xyxy": [
+              87.0,
+              0.0,
+              264.0,
+              134.0
+            ],
+            "words": [
+              {
+                "text": "30",
+                "canonical": "30",
+                "score": 0.9999,
+                "box_xyxy": [
+                  70.0,
+                  8.0,
+                  288.0,
+                  203.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "40",
+            "canonical": "40",
+            "score": 0.99982,
+            "box_xyxy": [
+              459.0,
+              368.0,
+              598.0,
+              437.0
+            ],
+            "words": [
+              {
+                "text": "4",
+                "canonical": "4",
+                "score": 0.99999,
+                "box_xyxy": [
+                  459.0,
+                  368.0,
+                  527.0,
+                  431.0
+                ]
+              },
+              {
+                "text": "0",
+                "canonical": "0",
+                "score": 0.99965,
+                "box_xyxy": [
+                  522.0,
+                  373.0,
+                  589.0,
+                  436.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "36",
+            "canonical": "36",
+            "score": 0.99997,
+            "box_xyxy": [
+              144.0,
+              445.0,
+              181.0,
+              480.0
+            ],
+            "words": [
+              {
+                "text": "36",
+                "canonical": "36",
+                "score": 0.99996,
+                "box_xyxy": [
+                  152.0,
+                  445.0,
+                  176.0,
+                  480.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "40",
+            "canonical": "40",
+            "score": 0.99999,
+            "box_xyxy": [
+              258.0,
+              438.0,
+              312.0,
+              477.0
+            ],
+            "words": [
+              {
+                "text": "40",
+                "canonical": "40",
+                "score": 0.99999,
+                "box_xyxy": [
+                  280.0,
+                  438.0,
+                  306.0,
+                  477.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.31294506788253784,
+            "box_xyxy": [
+              352.09783935546875,
+              485.89312744140625,
+              646.372314453125,
+              993.6674194335938
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.21975912153720856,
+            "box_xyxy": [
+              1322.294921875,
+              655.6719360351562,
+              1359.968017578125,
+              715.3006591796875
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.20888566970825195,
+            "box_xyxy": [
+              307.1829833984375,
+              430.4480895996094,
+              662.9479370117188,
+              1087.613037109375
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.14014646410942078,
+            "box_xyxy": [
+              354.1988830566406,
+              447.14697265625,
+              685.3001708984375,
+              1094.236083984375
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.13834066689014435,
+            "box_xyxy": [
+              834.3452758789062,
+              516.3260498046875,
+              972.7353515625,
+              1020.6791381835938
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.10147552192211151,
+            "box_xyxy": [
+              835.0706787109375,
+              523.3035888671875,
+              970.6633911132812,
+              1019.6637573242188
+            ]
+          }
+        ],
+        "selected_binding": {
+          "normalized_box_gap": 0.00984929,
+          "text": {
+            "text": "40",
+            "canonical": "40",
+            "score": 0.99999,
+            "box_xyxy": [
+              280.0,
+              438.0,
+              306.0,
+              477.0
+            ]
+          },
+          "portal": {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.20888566970825195,
+            "box_xyxy": [
+              307.1829833984375,
+              430.4480895996094,
+              662.9479370117188,
+              1087.613037109375
+            ]
+          }
+        },
+        "runtime_receipt": {
+          "ocr_seconds": 0.447897,
+          "portal_seconds": 0.035167,
+          "raw_portal_model_detection_count": 47
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": true,
+        "target_door_box_xyxy": [
+          300.285714,
+          457.142857,
+          660.285714,
+          838.095238
+        ],
+        "selected_portal_center_in_target_box": true,
+        "selected_portal_iou_with_target_box": 0.56895851,
+        "outcome": "CORRECT_TARGET_DOOR"
+      }
+    },
+    {
+      "episode_id": "SEVN006",
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "PAN_LEFT",
+      "observation_id": "SEVN006_PAN_LEFT",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "44"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 356.318048,
+        "viewport_heading_degrees": 271.139476,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 2828.571435,
+        "start_x_unwrapped": 2109,
+        "viewport_pixel_sha256": "365f158c8036e0288e78ad161b0ed71ed359968dc07fe77a303e59da1daefb52",
+        "archive_member": "panos/pano_128199.png",
+        "archive_member_crc32": "5394ffd0",
+        "archive_member_bytes": 5201872,
+        "archive_member_sha256": "814ef2ce1da9fae8009e630705a57d9f4f4344f4dbd9c58ea5b48f149beb9cbb"
+      },
+      "runtime_output": {
+        "state": "PIXEL_BOUND_PORTAL_PROPOSAL",
+        "target_house_number_canonical": "44",
+        "exact_target_text_candidates": [
+          {
+            "text": "44",
+            "canonical": "44",
+            "score": 0.99998,
+            "box_xyxy": [
+              280.0,
+              482.0,
+              314.0,
+              517.0
+            ]
+          }
+        ],
+        "ocr_detections": [
+          {
+            "text": "44",
+            "canonical": "44",
+            "score": 0.99998,
+            "box_xyxy": [
+              275.0,
+              482.0,
+              314.0,
+              517.0
+            ],
+            "words": [
+              {
+                "text": "44",
+                "canonical": "44",
+                "score": 0.99998,
+                "box_xyxy": [
+                  280.0,
+                  482.0,
+                  314.0,
+                  517.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "限",
+            "canonical": "",
+            "score": 0.71488,
+            "box_xyxy": [
+              552.0,
+              718.0,
+              618.0,
+              771.0
+            ],
+            "words": [
+              {
+                "text": "限",
+                "canonical": "",
+                "score": 0.71488,
+                "box_xyxy": [
+                  552.0,
+                  718.0,
+                  615.0,
+                  770.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "口",
+            "canonical": "",
+            "score": 0.82336,
+            "box_xyxy": [
+              465.0,
+              757.0,
+              496.0,
+              787.0
+            ],
+            "words": [
+              {
+                "text": "口",
+                "canonical": "",
+                "score": 0.82336,
+                "box_xyxy": [
+                  467.0,
+                  757.0,
+                  496.0,
+                  787.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.42692986130714417,
+            "box_xyxy": [
+              586.2418823242188,
+              372.118896484375,
+              1132.79833984375,
+              1048.063720703125
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.2815909683704376,
+            "box_xyxy": [
+              649.475341796875,
+              369.94757080078125,
+              1121.3216552734375,
+              954.3532104492188
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.2069135457277298,
+            "box_xyxy": [
+              37.30226516723633,
+              416.8591003417969,
+              190.3425750732422,
+              970.9774169921875
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.18889689445495605,
+            "box_xyxy": [
+              318.4203796386719,
+              388.2629699707031,
+              674.5559692382812,
+              882.2943115234375
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.18339987099170685,
+            "box_xyxy": [
+              639.5264282226562,
+              365.0697021484375,
+              1168.713623046875,
+              912.915283203125
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.1645987331867218,
+            "box_xyxy": [
+              53.427391052246094,
+              525.419677734375,
+              183.41964721679688,
+              953.5189208984375
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.15474599599838257,
+            "box_xyxy": [
+              331.2965393066406,
+              320.0042724609375,
+              831.3234252929688,
+              1003.3824462890625
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.11053408682346344,
+            "box_xyxy": [
+              342.81939697265625,
+              377.87872314453125,
+              664.0746459960938,
+              948.8848876953125
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.1073467880487442,
+            "box_xyxy": [
+              819.4607543945312,
+              483.04541015625,
+              1299.189208984375,
+              1010.1383666992188
+            ]
+          }
+        ],
+        "selected_binding": {
+          "normalized_box_gap": 0.01487526,
+          "text": {
+            "text": "44",
+            "canonical": "44",
+            "score": 0.99998,
+            "box_xyxy": [
+              280.0,
+              482.0,
+              314.0,
+              517.0
+            ]
+          },
+          "portal": {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.18889689445495605,
+            "box_xyxy": [
+              318.4203796386719,
+              388.2629699707031,
+              674.5559692382812,
+              882.2943115234375
+            ]
+          }
+        },
+        "runtime_receipt": {
+          "ocr_seconds": 0.444473,
+          "portal_seconds": 0.0324,
+          "raw_portal_model_detection_count": 40
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": true,
+        "target_door_box_xyxy": [
+          308.142857,
+          487.619048,
+          651.0,
+          838.095238
+        ],
+        "selected_portal_center_in_target_box": true,
+        "selected_portal_iou_with_target_box": 0.64920648,
+        "outcome": "CORRECT_TARGET_DOOR"
+      }
+    },
+    {
+      "episode_id": "SEVN007",
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "PAN_LEFT",
+      "observation_id": "SEVN007_PAN_LEFT",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "51"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 178.941224,
+        "viewport_heading_degrees": 72.869795,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 3051.428576,
+        "start_x_unwrapped": 2331,
+        "viewport_pixel_sha256": "4ad38c44d6bd9a93ef4dd8934b1802b33f8ec3a5984cc24fcc58fcb59b95969f",
+        "archive_member": "panos/pano_040349.png",
+        "archive_member_crc32": "f13f5678",
+        "archive_member_bytes": 5630542,
+        "archive_member_sha256": "7f73eb9f78440c1bcf66e8a953e5a08aa5f60db95f61741368d4150e6a936a5f"
+      },
+      "runtime_output": {
+        "state": "PIXEL_BOUND_PORTAL_PROPOSAL",
+        "target_house_number_canonical": "51",
+        "exact_target_text_candidates": [
+          {
+            "text": "51",
+            "canonical": "51",
+            "score": 0.99989,
+            "box_xyxy": [
+              476.0,
+              466.0,
+              505.0,
+              495.0
+            ]
+          }
+        ],
+        "ocr_detections": [
+          {
+            "text": "51",
+            "canonical": "51",
+            "score": 0.9992,
+            "box_xyxy": [
+              472.0,
+              466.0,
+              507.0,
+              495.0
+            ],
+            "words": [
+              {
+                "text": "51",
+                "canonical": "51",
+                "score": 0.99989,
+                "box_xyxy": [
+                  476.0,
+                  466.0,
+                  505.0,
+                  495.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.5109504461288452,
+            "box_xyxy": [
+              387.5289306640625,
+              542.4262084960938,
+              592.7923583984375,
+              961.3214111328125
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.12091359496116638,
+            "box_xyxy": [
+              588.2259521484375,
+              535.2462768554688,
+              681.9114990234375,
+              976.5346069335938
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.10833340138196945,
+            "box_xyxy": [
+              298.978759765625,
+              529.3672485351562,
+              395.1296691894531,
+              951.2481689453125
+            ]
+          }
+        ],
+        "selected_binding": {
+          "normalized_box_gap": 0.04837985,
+          "text": {
+            "text": "51",
+            "canonical": "51",
+            "score": 0.99989,
+            "box_xyxy": [
+              476.0,
+              466.0,
+              505.0,
+              495.0
+            ]
+          },
+          "portal": {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.5109504461288452,
+            "box_xyxy": [
+              387.5289306640625,
+              542.4262084960938,
+              592.7923583984375,
+              961.3214111328125
+            ]
+          }
+        },
+        "runtime_receipt": {
+          "ocr_seconds": 0.419635,
+          "portal_seconds": 0.029394,
+          "raw_portal_model_detection_count": 28
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": true,
+        "target_door_box_xyxy": [
+          360.428571,
+          502.857143,
+          600.428571,
+          761.904762
+        ],
+        "selected_portal_center_in_target_box": true,
+        "selected_portal_iou_with_target_box": 0.4369448,
+        "outcome": "CORRECT_TARGET_DOOR"
+      }
+    },
+    {
+      "episode_id": "SEVN008",
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "PAN_LEFT",
+      "observation_id": "SEVN008_PAN_LEFT",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "90"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 1.232873,
+        "viewport_heading_degrees": 274.447159,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 2845.714283,
+        "start_x_unwrapped": 2126,
+        "viewport_pixel_sha256": "a517ab74fafb353960061a070ab64836c70688a012265843b83ab51494207371",
+        "archive_member": "panos/pano_041691.png",
+        "archive_member_crc32": "2124a7dc",
+        "archive_member_bytes": 5057683,
+        "archive_member_sha256": "a08ebbb2f01c12086d8c34fd7ed210671165bf3f4e398a37b607078f869aa0e7"
+      },
+      "runtime_output": {
+        "state": "UNKNOWN_TARGET_TEXT",
+        "target_house_number_canonical": "90",
+        "exact_target_text_candidates": [],
+        "ocr_detections": [],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.8529646396636963,
+            "box_xyxy": [
+              321.7524719238281,
+              563.2808837890625,
+              441.57470703125,
+              920.0950927734375
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.781614363193512,
+            "box_xyxy": [
+              484.07171630859375,
+              568.4688720703125,
+              635.4400024414062,
+              955.0711059570312
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.6595767140388489,
+            "box_xyxy": [
+              900.3590087890625,
+              558.505126953125,
+              1086.060546875,
+              964.2471923828125
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.17087052762508392,
+            "box_xyxy": [
+              664.2059936523438,
+              530.1443481445312,
+              902.8676147460938,
+              976.7506103515625
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.1156860813498497,
+            "box_xyxy": [
+              1427.9886474609375,
+              640.4073486328125,
+              1439.658935546875,
+              778.0064697265625
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.1121828705072403,
+            "box_xyxy": [
+              294.1026306152344,
+              538.3253173828125,
+              465.00543212890625,
+              922.9825439453125
+            ]
+          }
+        ],
+        "selected_binding": null,
+        "runtime_receipt": {
+          "ocr_seconds": 0.438561,
+          "portal_seconds": 0.029366,
+          "raw_portal_model_detection_count": 25
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": false,
+        "target_door_box_xyxy": [
+          291.142857,
+          502.857143,
+          668.285714,
+          761.904762
+        ],
+        "selected_portal_center_in_target_box": false,
+        "selected_portal_iou_with_target_box": 0.0,
+        "outcome": "UNKNOWN"
+      }
+    },
+    {
+      "episode_id": "SEVN009",
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "PAN_RIGHT",
+      "observation_id": "SEVN009_PAN_RIGHT",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "95"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 175.857254,
+        "viewport_heading_degrees": 105.142969,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 2674.285707,
+        "start_x_unwrapped": 1954,
+        "viewport_pixel_sha256": "b5f4c7b02006f2fc86b544c402b324b6fda28cf7dec0749877e5dc175c20837c",
+        "archive_member": "panos/pano_040809.png",
+        "archive_member_crc32": "75fed243",
+        "archive_member_bytes": 5534513,
+        "archive_member_sha256": "b9a602de3729b2881fd5279cb1da15dc997d8fd76e8902637bc41e3a2e2aea57"
+      },
+      "runtime_output": {
+        "state": "PIXEL_BOUND_PORTAL_PROPOSAL",
+        "target_house_number_canonical": "95",
+        "exact_target_text_candidates": [
+          {
+            "text": "95",
+            "canonical": "95",
+            "score": 1.0,
+            "box_xyxy": [
+              961.0,
+              325.0,
+              1057.0,
+              421.0
+            ]
+          }
+        ],
+        "ocr_detections": [
+          {
+            "text": "OUALITY",
+            "canonical": "OUALITY",
+            "score": 0.95053,
+            "box_xyxy": [
+              950.0,
+              256.0,
+              1076.0,
+              302.0
+            ],
+            "words": [
+              {
+                "text": "OUALITY",
+                "canonical": "OUALITY",
+                "score": 0.65397,
+                "box_xyxy": [
+                  957.0,
+                  257.0,
+                  1071.0,
+                  301.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "SHOPPING",
+            "canonical": "SHOPPING",
+            "score": 0.95974,
+            "box_xyxy": [
+              926.0,
+              273.0,
+              1091.0,
+              332.0
+            ],
+            "words": [
+              {
+                "text": "SHO",
+                "canonical": "SHO",
+                "score": 0.99997,
+                "box_xyxy": [
+                  933.0,
+                  274.0,
+                  995.0,
+                  314.0
+                ]
+              },
+              {
+                "text": "PPING",
+                "canonical": "PPING",
+                "score": 0.99988,
+                "box_xyxy": [
+                  1002.0,
+                  286.0,
+                  1085.0,
+                  330.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "95",
+            "canonical": "95",
+            "score": 1.0,
+            "box_xyxy": [
+              934.0,
+              322.0,
+              1075.0,
+              424.0
+            ],
+            "words": [
+              {
+                "text": "95",
+                "canonical": "95",
+                "score": 1.0,
+                "box_xyxy": [
+                  961.0,
+                  325.0,
+                  1057.0,
+                  421.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "Beaubien O",
+            "canonical": "BEAUBIENO",
+            "score": 0.99321,
+            "box_xyxy": [
+              887.0,
+              399.0,
+              1093.0,
+              465.0
+            ],
+            "words": [
+              {
+                "text": "Beaubien",
+                "canonical": "BEAUBIEN",
+                "score": 0.99997,
+                "box_xyxy": [
+                  897.0,
+                  400.0,
+                  1056.0,
+                  459.0
+                ]
+              },
+              {
+                "text": "O",
+                "canonical": "O",
+                "score": 0.99996,
+                "box_xyxy": [
+                  1063.0,
+                  424.0,
+                  1087.0,
+                  464.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "GEORGE",
+            "canonical": "GEORGE",
+            "score": 0.98554,
+            "box_xyxy": [
+              105.0,
+              559.0,
+              242.0,
+              600.0
+            ],
+            "words": [
+              {
+                "text": "GEORGE",
+                "canonical": "GEORGE",
+                "score": 0.99925,
+                "box_xyxy": [
+                  110.0,
+                  559.0,
+                  240.0,
+                  599.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.2967449128627777,
+            "box_xyxy": [
+              853.0859375,
+              213.96615600585938,
+              1363.1739501953125,
+              940.7032470703125
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.10496935993432999,
+            "box_xyxy": [
+              846.8340454101562,
+              708.7583618164062,
+              861.2411499023438,
+              792.9086303710938
+            ]
+          }
+        ],
+        "selected_binding": {
+          "normalized_box_gap": 0.0,
+          "text": {
+            "text": "95",
+            "canonical": "95",
+            "score": 1.0,
+            "box_xyxy": [
+              961.0,
+              325.0,
+              1057.0,
+              421.0
+            ]
+          },
+          "portal": {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.2967449128627777,
+            "box_xyxy": [
+              853.0859375,
+              213.96615600585938,
+              1363.1739501953125,
+              940.7032470703125
+            ]
+          }
+        },
+        "runtime_receipt": {
+          "ocr_seconds": 0.489383,
+          "portal_seconds": 0.033864,
+          "raw_portal_model_detection_count": 21
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": true,
+        "target_door_box_xyxy": [
+          823.142857,
+          441.904762,
+          1097.428571,
+          807.619048
+        ],
+        "selected_portal_center_in_target_box": false,
+        "selected_portal_iou_with_target_box": 0.23413986,
+        "outcome": "WRONG_DOOR"
+      }
+    },
+    {
+      "episode_id": "SEVN010",
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "PAN_RIGHT",
+      "observation_id": "SEVN010_PAN_RIGHT",
+      "mission": {
+        "street_name": "beaumont",
+        "house_number": "51"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 185.369574,
+        "viewport_heading_degrees": 121.887431,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 2597.142859,
+        "start_x_unwrapped": 1877,
+        "viewport_pixel_sha256": "adf7cc17f7df4ef508c8ef75e472275d9f895fc4c0af5bf92e80617446616922",
+        "archive_member": "panos/pano_080615.png",
+        "archive_member_crc32": "19149350",
+        "archive_member_bytes": 6679788,
+        "archive_member_sha256": "02f36159d100514ef4fe4359658280e9e3f911e953c3795defd74778410641e4"
+      },
+      "runtime_output": {
+        "state": "PIXEL_BOUND_PORTAL_PROPOSAL",
+        "target_house_number_canonical": "51",
+        "exact_target_text_candidates": [
+          {
+            "text": "51",
+            "canonical": "51",
+            "score": 0.99624,
+            "box_xyxy": [
+              1079.0,
+              617.0,
+              1107.0,
+              659.0
+            ]
+          }
+        ],
+        "ocr_detections": [
+          {
+            "text": "51",
+            "canonical": "51",
+            "score": 0.95086,
+            "box_xyxy": [
+              1069.0,
+              617.0,
+              1115.0,
+              659.0
+            ],
+            "words": [
+              {
+                "text": "51",
+                "canonical": "51",
+                "score": 0.99624,
+                "box_xyxy": [
+                  1079.0,
+                  617.0,
+                  1107.0,
+                  659.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.6510649919509888,
+            "box_xyxy": [
+              885.6506958007812,
+              541.3309936523438,
+              1053.63134765625,
+              828.73046875
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.22711946070194244,
+            "box_xyxy": [
+              976.7266845703125,
+              565.1762084960938,
+              1053.6392822265625,
+              827.7561645507812
+            ]
+          }
+        ],
+        "selected_binding": {
+          "normalized_box_gap": 0.02733383,
+          "text": {
+            "text": "51",
+            "canonical": "51",
+            "score": 0.99624,
+            "box_xyxy": [
+              1079.0,
+              617.0,
+              1107.0,
+              659.0
+            ]
+          },
+          "portal": {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.22711946070194244,
+            "box_xyxy": [
+              976.7266845703125,
+              565.1762084960938,
+              1053.6392822265625,
+              827.7561645507812
+            ]
+          }
+        },
+        "runtime_receipt": {
+          "ocr_seconds": 0.441372,
+          "portal_seconds": 0.040218,
+          "raw_portal_model_detection_count": 47
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": true,
+        "target_door_box_xyxy": [
+          883.0,
+          502.857143,
+          1037.285714,
+          670.47619
+        ],
+        "selected_portal_center_in_target_box": false,
+        "selected_portal_iou_with_target_box": 0.16070701,
+        "outcome": "WRONG_DOOR"
+      }
+    },
+    {
+      "episode_id": "SEVN011",
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "PAN_RIGHT",
+      "observation_id": "SEVN011_PAN_RIGHT",
+      "mission": {
+        "street_name": "beaumont",
+        "house_number": "69"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 185.154791,
+        "viewport_heading_degrees": 124.083363,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 2571.428565,
+        "start_x_unwrapped": 1851,
+        "viewport_pixel_sha256": "0c13ced8f9ccff37874e8a4aa1cb6b75f2dc3471b6d7966315c0c633ed641dee",
+        "archive_member": "panos/pano_081507.png",
+        "archive_member_crc32": "ab25a85d",
+        "archive_member_bytes": 5583682,
+        "archive_member_sha256": "830f1817dd4e7846a55ecff451df38357d049f0cbd1e34d8e9e2b16d31afbd13"
+      },
+      "runtime_output": {
+        "state": "UNKNOWN_TARGET_TEXT",
+        "target_house_number_canonical": "69",
+        "exact_target_text_candidates": [],
+        "ocr_detections": [
+          {
+            "text": "16h-23h",
+            "canonical": "16H23H",
+            "score": 0.96481,
+            "box_xyxy": [
+              549.0,
+              324.0,
+              643.0,
+              351.0
+            ],
+            "words": [
+              {
+                "text": "16h-23h",
+                "canonical": "16H23H",
+                "score": 0.82561,
+                "box_xyxy": [
+                  553.0,
+                  324.0,
+                  643.0,
+                  351.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "72",
+            "canonical": "72",
+            "score": 0.99992,
+            "box_xyxy": [
+              608.0,
+              368.0,
+              641.0,
+              391.0
+            ],
+            "words": [
+              {
+                "text": "72",
+                "canonical": "72",
+                "score": 0.9999,
+                "box_xyxy": [
+                  615.0,
+                  368.0,
+                  638.0,
+                  391.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "EXCEPTE",
+            "canonical": "EXCEPTE",
+            "score": 0.95869,
+            "box_xyxy": [
+              574.0,
+              425.0,
+              619.0,
+              439.0
+            ],
+            "words": [
+              {
+                "text": "EXCEPTE",
+                "canonical": "EXCEPTE",
+                "score": 0.97354,
+                "box_xyxy": [
+                  574.0,
+                  425.0,
+                  619.0,
+                  439.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.3757253587245941,
+            "box_xyxy": [
+              918.7100830078125,
+              585.103515625,
+              1055.9100341796875,
+              877.5906372070312
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.10548575967550278,
+            "box_xyxy": [
+              1133.48974609375,
+              391.59088134765625,
+              1440.0,
+              845.4825439453125
+            ]
+          }
+        ],
+        "selected_binding": null,
+        "runtime_receipt": {
+          "ocr_seconds": 0.470391,
+          "portal_seconds": 0.031973,
+          "raw_portal_model_detection_count": 11
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": false,
+        "target_door_box_xyxy": [
+          874.714286,
+          533.333333,
+          1046.142857,
+          685.714286
+        ],
+        "selected_portal_center_in_target_box": false,
+        "selected_portal_iou_with_target_box": 0.0,
+        "outcome": "UNKNOWN"
+      }
+    },
+    {
+      "episode_id": "SEVN012",
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "PAN_RIGHT",
+      "observation_id": "SEVN012_PAN_RIGHT",
+      "mission": {
+        "street_name": "beaumont",
+        "house_number": "80"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 97.426806,
+        "viewport_heading_degrees": 7.426806,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 2880.0,
+        "start_x_unwrapped": 2160,
+        "viewport_pixel_sha256": "32830190689f4f16cf73bfe285692be8b262b13d3abcec52cc2909de906b45f9",
+        "archive_member": "panos/pano_070569.png",
+        "archive_member_crc32": "3165ccd4",
+        "archive_member_bytes": 6102526,
+        "archive_member_sha256": "d7c98d8cb2e8e58ceb43f0eda36101fc2548c800341f37b763a1b12992fac288"
+      },
+      "runtime_output": {
+        "state": "UNKNOWN_TARGET_TEXT",
+        "target_house_number_canonical": "80",
+        "exact_target_text_candidates": [],
+        "ocr_detections": [],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.7862662672996521,
+            "box_xyxy": [
+              218.1584014892578,
+              580.2189331054688,
+              285.65057373046875,
+              665.8724365234375
+            ]
+          }
+        ],
+        "selected_binding": null,
+        "runtime_receipt": {
+          "ocr_seconds": 0.586672,
+          "portal_seconds": 0.035599,
+          "raw_portal_model_detection_count": 14
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": false,
+        "target_door_box_xyxy": [
+          857.142857,
+          502.857143,
+          1062.857143,
+          761.904762
+        ],
+        "selected_portal_center_in_target_box": false,
+        "selected_portal_iou_with_target_box": 0.0,
+        "outcome": "UNKNOWN"
+      }
+    },
+    {
+      "episode_id": "SEVN013",
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "PAN_RIGHT",
+      "observation_id": "SEVN013_PAN_RIGHT",
+      "mission": {
+        "street_name": "beaumont",
+        "house_number": "81"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 183.232264,
+        "viewport_heading_degrees": 135.82155,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 2425.714283,
+        "start_x_unwrapped": 1706,
+        "viewport_pixel_sha256": "a142d37657c9ac23ad9dbd09f9d1e273215f72ea229a33b74eb0922369bb690d",
+        "archive_member": "panos/pano_070967.png",
+        "archive_member_crc32": "8d8e0da9",
+        "archive_member_bytes": 7234365,
+        "archive_member_sha256": "6ec528a10d58984e6296a45c83bd0eb41e09563549c8161778e170a99bcb1e61"
+      },
+      "runtime_output": {
+        "state": "UNKNOWN_TARGET_TEXT",
+        "target_house_number_canonical": "81",
+        "exact_target_text_candidates": [],
+        "ocr_detections": [],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.8181836009025574,
+            "box_xyxy": [
+              931.0642700195312,
+              691.1997680664062,
+              1016.7037963867188,
+              849.726806640625
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.3077167868614197,
+            "box_xyxy": [
+              619.7278442382812,
+              662.2227783203125,
+              669.1596069335938,
+              751.80712890625
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.19962184131145477,
+            "box_xyxy": [
+              1177.89697265625,
+              248.70294189453125,
+              1241.2938232421875,
+              345.1990966796875
+            ]
+          }
+        ],
+        "selected_binding": null,
+        "runtime_receipt": {
+          "ocr_seconds": 0.625023,
+          "portal_seconds": 0.036917,
+          "raw_portal_model_detection_count": 16
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": false,
+        "target_door_box_xyxy": [
+          916.857143,
+          594.285714,
+          1002.571429,
+          685.714286
+        ],
+        "selected_portal_center_in_target_box": false,
+        "selected_portal_iou_with_target_box": 0.0,
+        "outcome": "UNKNOWN"
+      }
+    },
+    {
+      "episode_id": "SEVN014",
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "PAN_RIGHT",
+      "observation_id": "SEVN014_PAN_RIGHT",
+      "mission": {
+        "street_name": "clark",
+        "house_number": "6505"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 82.306543,
+        "viewport_heading_degrees": 42.127972,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 2348.571424,
+        "start_x_unwrapped": 1629,
+        "viewport_pixel_sha256": "f337088d1eed41738876d4a826a58149990e387d075abcecf9cc7c2d23398efb",
+        "archive_member": "panos/pano_016140.png",
+        "archive_member_crc32": "f80b81a8",
+        "archive_member_bytes": 5900818,
+        "archive_member_sha256": "d9c400cb6453d3418bf1340909180c7302f487b2830df19c6f4b0e1d0d35b4e7"
+      },
+      "runtime_output": {
+        "state": "PIXEL_BOUND_PORTAL_PROPOSAL",
+        "target_house_number_canonical": "6505",
+        "exact_target_text_candidates": [
+          {
+            "text": "6505",
+            "canonical": "6505",
+            "score": 0.99992,
+            "box_xyxy": [
+              797.0,
+              493.0,
+              844.0,
+              531.0
+            ]
+          }
+        ],
+        "ocr_detections": [
+          {
+            "text": "6505",
+            "canonical": "6505",
+            "score": 0.99994,
+            "box_xyxy": [
+              789.0,
+              493.0,
+              851.0,
+              532.0
+            ],
+            "words": [
+              {
+                "text": "6505",
+                "canonical": "6505",
+                "score": 0.99992,
+                "box_xyxy": [
+                  797.0,
+                  493.0,
+                  844.0,
+                  531.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "OUVERT",
+            "canonical": "OUVERT",
+            "score": 0.97751,
+            "box_xyxy": [
+              452.0,
+              529.0,
+              548.0,
+              571.0
+            ],
+            "words": [
+              {
+                "text": "OUVERT",
+                "canonical": "OUVERT",
+                "score": 0.87803,
+                "box_xyxy": [
+                  459.0,
+                  529.0,
+                  546.0,
+                  570.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "PIZZA",
+            "canonical": "PIZZA",
+            "score": 0.93833,
+            "box_xyxy": [
+              401.0,
+              740.0,
+              444.0,
+              765.0
+            ],
+            "words": [
+              {
+                "text": "PIZZA",
+                "canonical": "PIZZA",
+                "score": 0.99869,
+                "box_xyxy": [
+                  407.0,
+                  741.0,
+                  442.0,
+                  764.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "6126",
+            "canonical": "6126",
+            "score": 0.9997,
+            "box_xyxy": [
+              402.0,
+              751.0,
+              466.0,
+              789.0
+            ],
+            "words": [
+              {
+                "text": "6126",
+                "canonical": "6126",
+                "score": 0.9999,
+                "box_xyxy": [
+                  409.0,
+                  752.0,
+                  463.0,
+                  788.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.34006407856941223,
+            "box_xyxy": [
+              28.553680419921875,
+              543.8905639648438,
+              59.58657455444336,
+              725.3312377929688
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.16573099792003632,
+            "box_xyxy": [
+              1394.3701171875,
+              705.3211059570312,
+              1439.6927490234375,
+              748.0821533203125
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.14577007293701172,
+            "box_xyxy": [
+              841.1517333984375,
+              489.1212158203125,
+              1097.0594482421875,
+              933.5824584960938
+            ]
+          }
+        ],
+        "selected_binding": {
+          "normalized_box_gap": 0.01434148,
+          "text": {
+            "text": "6505",
+            "canonical": "6505",
+            "score": 0.99992,
+            "box_xyxy": [
+              797.0,
+              493.0,
+              844.0,
+              531.0
+            ]
+          },
+          "portal": {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.14577007293701172,
+            "box_xyxy": [
+              841.1517333984375,
+              489.1212158203125,
+              1097.0594482421875,
+              933.5824584960938
+            ]
+          }
+        },
+        "runtime_receipt": {
+          "ocr_seconds": 0.739337,
+          "portal_seconds": 0.142861,
+          "raw_portal_model_detection_count": 22
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": true,
+        "target_door_box_xyxy": [
+          839.571429,
+          472.380952,
+          1079.571429,
+          746.666667
+        ],
+        "selected_portal_center_in_target_box": true,
+        "selected_portal_iou_with_target_box": 0.51964229,
+        "outcome": "CORRECT_TARGET_DOOR"
+      }
+    },
+    {
+      "episode_id": "SEVN015",
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "PAN_RIGHT",
+      "observation_id": "SEVN015_PAN_RIGHT",
+      "mission": {
+        "street_name": "clark",
+        "house_number": "6508"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 267.660329,
+        "viewport_heading_degrees": 207.392472,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 2562.857141,
+        "start_x_unwrapped": 1843,
+        "viewport_pixel_sha256": "4b21bafd471512b09cd7e751ed4d163608437eed4aeb389ca5b236dfb13a66c6",
+        "archive_member": "panos/pano_014517.png",
+        "archive_member_crc32": "930a0998",
+        "archive_member_bytes": 5952809,
+        "archive_member_sha256": "5cfdfbe8e4b662104a1f132e47d9b00b4a11c3b29022ae0d5b168108dd435d76"
+      },
+      "runtime_output": {
+        "state": "PIXEL_BOUND_PORTAL_PROPOSAL",
+        "target_house_number_canonical": "6508",
+        "exact_target_text_candidates": [
+          {
+            "text": "6508",
+            "canonical": "6508",
+            "score": 0.85969,
+            "box_xyxy": [
+              801.0,
+              522.0,
+              842.0,
+              555.0
+            ]
+          }
+        ],
+        "ocr_detections": [
+          {
+            "text": "6508",
+            "canonical": "6508",
+            "score": 0.86887,
+            "box_xyxy": [
+              789.0,
+              522.0,
+              850.0,
+              557.0
+            ],
+            "words": [
+              {
+                "text": "6508",
+                "canonical": "6508",
+                "score": 0.85969,
+                "box_xyxy": [
+                  801.0,
+                  522.0,
+                  842.0,
+                  555.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.8035191893577576,
+            "box_xyxy": [
+              872.8704223632812,
+              528.0371704101562,
+              1061.6943359375,
+              933.8994140625
+            ]
+          }
+        ],
+        "selected_binding": {
+          "normalized_box_gap": 0.0356739,
+          "text": {
+            "text": "6508",
+            "canonical": "6508",
+            "score": 0.85969,
+            "box_xyxy": [
+              801.0,
+              522.0,
+              842.0,
+              555.0
+            ]
+          },
+          "portal": {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.8035191893577576,
+            "box_xyxy": [
+              872.8704223632812,
+              528.0371704101562,
+              1061.6943359375,
+              933.8994140625
+            ]
+          }
+        },
+        "runtime_receipt": {
+          "ocr_seconds": 0.738718,
+          "portal_seconds": 0.036511,
+          "raw_portal_model_detection_count": 36
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": true,
+        "target_door_box_xyxy": [
+          865.571429,
+          487.619048,
+          1054.142857,
+          731.428571
+        ],
+        "selected_portal_center_in_target_box": true,
+        "selected_portal_iou_with_target_box": 0.42999849,
+        "outcome": "CORRECT_TARGET_DOOR"
+      }
+    },
+    {
+      "episode_id": "SEVN016",
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "PAN_RIGHT",
+      "observation_id": "SEVN016_PAN_RIGHT",
+      "mission": {
+        "street_name": "clark",
+        "house_number": "6509"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 85.926767,
+        "viewport_heading_degrees": 12.801767,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 2700.0,
+        "start_x_unwrapped": 1980,
+        "viewport_pixel_sha256": "a9cadc5afcd50469ee030449b4110b15f20adc381ff25dd433a2b81db69246fe",
+        "archive_member": "panos/pano_016275.png",
+        "archive_member_crc32": "7942ade3",
+        "archive_member_bytes": 6370490,
+        "archive_member_sha256": "be5381a2d168bc1928d155194c2f08148b98e7820e71750c1f73f43ae9854de4"
+      },
+      "runtime_output": {
+        "state": "UNKNOWN_TARGET_TEXT",
+        "target_house_number_canonical": "6509",
+        "exact_target_text_candidates": [],
+        "ocr_detections": [
+          {
+            "text": "650S",
+            "canonical": "650S",
+            "score": 0.81562,
+            "box_xyxy": [
+              763.0,
+              455.0,
+              826.0,
+              491.0
+            ],
+            "words": [
+              {
+                "text": "650S",
+                "canonical": "650S",
+                "score": 0.74125,
+                "box_xyxy": [
+                  770.0,
+                  455.0,
+                  824.0,
+                  490.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.21904093027114868,
+            "box_xyxy": [
+              833.9456787109375,
+              429.58648681640625,
+              1096.8023681640625,
+              977.8418579101562
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.14503777027130127,
+            "box_xyxy": [
+              835.2700805664062,
+              466.6852111816406,
+              1096.52587890625,
+              978.0668334960938
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.11668731272220612,
+            "box_xyxy": [
+              855.0818481445312,
+              450.6582946777344,
+              1097.04736328125,
+              962.1385498046875
+            ]
+          }
+        ],
+        "selected_binding": null,
+        "runtime_receipt": {
+          "ocr_seconds": 0.612709,
+          "portal_seconds": 0.03058,
+          "raw_portal_model_detection_count": 19
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": false,
+        "target_door_box_xyxy": [
+          848.571429,
+          457.142857,
+          1071.428571,
+          746.666667
+        ],
+        "selected_portal_center_in_target_box": false,
+        "selected_portal_iou_with_target_box": 0.0,
+        "outcome": "UNKNOWN"
+      }
+    },
+    {
+      "episode_id": "SEVN017",
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "APPROACH",
+      "observation_id": "SEVN017_APPROACH",
+      "mission": {
+        "street_name": "clark",
+        "house_number": "6889"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 92.322785,
+        "viewport_heading_degrees": 90.0,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 1944.776373,
+        "start_x_unwrapped": 1225,
+        "viewport_pixel_sha256": "60af631acc421ae7574595f6a03ee51aaed968e8f9dfc4b6719fbc59b29c8ab6",
+        "archive_member": "panos/pano_144627.png",
+        "archive_member_crc32": "69c672e8",
+        "archive_member_bytes": 6534952,
+        "archive_member_sha256": "5dbd79ffa6c822bd76132655aab72636e71322dbebfa65909daebc23bd3597fe"
+      },
+      "runtime_output": {
+        "state": "UNKNOWN_TARGET_TEXT",
+        "target_house_number_canonical": "6889",
+        "exact_target_text_candidates": [],
+        "ocr_detections": [],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.833375871181488,
+            "box_xyxy": [
+              154.0269775390625,
+              665.04541015625,
+              216.86856079101562,
+              820.939208984375
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.7139458656311035,
+            "box_xyxy": [
+              207.5227813720703,
+              659.8662719726562,
+              255.1150360107422,
+              779.2872924804688
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.6426351070404053,
+            "box_xyxy": [
+              337.1363830566406,
+              635.7997436523438,
+              367.6928405761719,
+              716.2813720703125
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.48469972610473633,
+            "box_xyxy": [
+              1227.241943359375,
+              527.5977783203125,
+              1388.87939453125,
+              858.7496337890625
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.2963935434818268,
+            "box_xyxy": [
+              1224.1693115234375,
+              478.0142822265625,
+              1402.126220703125,
+              852.261962890625
+            ]
+          }
+        ],
+        "selected_binding": null,
+        "runtime_receipt": {
+          "ocr_seconds": 0.760772,
+          "portal_seconds": 0.038129,
+          "raw_portal_model_detection_count": 31
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": false,
+        "target_door_box_xyxy": [
+          1209.285714,
+          502.857143,
+          1397.857143,
+          700.952381
+        ],
+        "selected_portal_center_in_target_box": false,
+        "selected_portal_iou_with_target_box": 0.0,
+        "outcome": "UNKNOWN"
+      }
+    },
+    {
+      "episode_id": "SEVN018",
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "APPROACH",
+      "observation_id": "SEVN018_APPROACH",
+      "mission": {
+        "street_name": "clark",
+        "house_number": "6932"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 268.958929,
+        "viewport_heading_degrees": 270.0,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 1908.895243,
+        "start_x_unwrapped": 1189,
+        "viewport_pixel_sha256": "2bb0c52137c07a3e77f086b17b2b6a9f6c47429d834a7fd9e5785fcd052af293",
+        "archive_member": "panos/pano_147174.png",
+        "archive_member_crc32": "0e9b249f",
+        "archive_member_bytes": 6062773,
+        "archive_member_sha256": "0ae992c32a62d97401f06a05c18ed54d205ae170a48a59719925288bf8d2a545"
+      },
+      "runtime_output": {
+        "state": "UNKNOWN_TARGET_TEXT",
+        "target_house_number_canonical": "6932",
+        "exact_target_text_candidates": [],
+        "ocr_detections": [
+          {
+            "text": "SIR63",
+            "canonical": "SIR63",
+            "score": 0.5219,
+            "box_xyxy": [
+              1130.0,
+              738.0,
+              1184.0,
+              769.0
+            ],
+            "words": [
+              {
+                "text": "SIR63",
+                "canonical": "SIR63",
+                "score": 0.99576,
+                "box_xyxy": [
+                  1135.0,
+                  739.0,
+                  1174.0,
+                  767.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.8005027770996094,
+            "box_xyxy": [
+              1009.5712280273438,
+              453.93206787109375,
+              1330.712646484375,
+              1129.6759033203125
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.33862990140914917,
+            "box_xyxy": [
+              667.9952392578125,
+              441.0634460449219,
+              812.30419921875,
+              944.1593627929688
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.31831294298171997,
+            "box_xyxy": [
+              663.30859375,
+              504.0030212402344,
+              810.96484375,
+              947.1714477539062
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.10257039219141006,
+            "box_xyxy": [
+              668.373779296875,
+              443.5146789550781,
+              808.617919921875,
+              933.9321899414062
+            ]
+          }
+        ],
+        "selected_binding": null,
+        "runtime_receipt": {
+          "ocr_seconds": 0.598277,
+          "portal_seconds": 0.036147,
+          "raw_portal_model_detection_count": 16
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": false,
+        "exact_target_text": false,
+        "target_door_box_xyxy": [
+          988.142857,
+          441.904762,
+          1313.857143,
+          853.333333
+        ],
+        "selected_portal_center_in_target_box": false,
+        "selected_portal_iou_with_target_box": 0.0,
+        "outcome": "UNKNOWN"
+      }
+    },
+    {
+      "episode_id": "SEVN019",
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "APPROACH",
+      "observation_id": "SEVN019_APPROACH",
+      "mission": {
+        "street_name": "clark",
+        "house_number": "6934"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 274.064164,
+        "viewport_heading_degrees": 225.0,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 2443.351083,
+        "start_x_unwrapped": 1723,
+        "viewport_pixel_sha256": "1424511eae8ea947ff7d9b9c08885ddbc17150af970994c406402bf791962829",
+        "archive_member": "panos/pano_147015.png",
+        "archive_member_crc32": "c5bff022",
+        "archive_member_bytes": 5124999,
+        "archive_member_sha256": "8cf193d697249dd17279718e3fb903929896c2ad87f3dacfbc2e312ca72f213d"
+      },
+      "runtime_output": {
+        "state": "PIXEL_BOUND_PORTAL_PROPOSAL",
+        "target_house_number_canonical": "6934",
+        "exact_target_text_candidates": [
+          {
+            "text": "6934",
+            "canonical": "6934",
+            "score": 0.99992,
+            "box_xyxy": [
+              919.0,
+              476.0,
+              1003.0,
+              532.0
+            ]
+          }
+        ],
+        "ocr_detections": [
+          {
+            "text": "ree",
+            "canonical": "REE",
+            "score": 0.61263,
+            "box_xyxy": [
+              1164.0,
+              0.0,
+              1254.0,
+              58.0
+            ],
+            "words": [
+              {
+                "text": "ree",
+                "canonical": "REE",
+                "score": 0.91871,
+                "box_xyxy": [
+                  1169.0,
+                  6.0,
+                  1264.0,
+                  88.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "6934",
+            "canonical": "6934",
+            "score": 0.99996,
+            "box_xyxy": [
+              912.0,
+              475.0,
+              1010.0,
+              534.0
+            ],
+            "words": [
+              {
+                "text": "6934",
+                "canonical": "6934",
+                "score": 0.99992,
+                "box_xyxy": [
+                  919.0,
+                  476.0,
+                  1003.0,
+                  532.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "Tre",
+            "canonical": "TRE",
+            "score": 0.97081,
+            "box_xyxy": [
+              914.0,
+              532.0,
+              983.0,
+              578.0
+            ],
+            "words": [
+              {
+                "text": "Tre",
+                "canonical": "TRE",
+                "score": 0.91895,
+                "box_xyxy": [
+                  925.0,
+                  534.0,
+                  974.0,
+                  576.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "Marie",
+            "canonical": "MARIE",
+            "score": 0.99049,
+            "box_xyxy": [
+              890.0,
+              557.0,
+              1022.0,
+              618.0
+            ],
+            "words": [
+              {
+                "text": "Marie",
+                "canonical": "MARIE",
+                "score": 0.96096,
+                "box_xyxy": [
+                  909.0,
+                  558.0,
+                  1006.0,
+                  616.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "GERACE",
+            "canonical": "GERACE",
+            "score": 0.70759,
+            "box_xyxy": [
+              439.0,
+              655.0,
+              516.0,
+              700.0
+            ],
+            "words": [
+              {
+                "text": "GERACE",
+                "canonical": "GERACE",
+                "score": 0.27761,
+                "box_xyxy": [
+                  444.0,
+                  656.0,
+                  516.0,
+                  700.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "Tre Mlaarie",
+            "canonical": "TREMLAARIE",
+            "score": 0.78936,
+            "box_xyxy": [
+              427.0,
+              671.0,
+              527.0,
+              743.0
+            ],
+            "words": [
+              {
+                "text": "Tre",
+                "canonical": "TRE",
+                "score": 0.85925,
+                "box_xyxy": [
+                  432.0,
+                  672.0,
+                  471.0,
+                  724.0
+                ]
+              },
+              {
+                "text": "Mla",
+                "canonical": "MLA",
+                "score": 0.99884,
+                "box_xyxy": [
+                  469.0,
+                  685.0,
+                  507.0,
+                  736.0
+                ]
+              },
+              {
+                "text": "arie",
+                "canonical": "ARIE",
+                "score": 0.99129,
+                "box_xyxy": [
+                  512.0,
+                  699.0,
+                  711.0,
+                  803.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.5060537457466125,
+            "box_xyxy": [
+              806.45849609375,
+              452.2618713378906,
+              1090.569091796875,
+              1017.415771484375
+            ]
+          }
+        ],
+        "selected_binding": {
+          "normalized_box_gap": 0.0,
+          "text": {
+            "text": "6934",
+            "canonical": "6934",
+            "score": 0.99992,
+            "box_xyxy": [
+              919.0,
+              476.0,
+              1003.0,
+              532.0
+            ]
+          },
+          "portal": {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.5060537457466125,
+            "box_xyxy": [
+              806.45849609375,
+              452.2618713378906,
+              1090.569091796875,
+              1017.415771484375
+            ]
+          }
+        },
+        "runtime_receipt": {
+          "ocr_seconds": 0.60298,
+          "portal_seconds": 0.114363,
+          "raw_portal_model_detection_count": 13
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": true,
+        "target_door_box_xyxy": [
+          779.857143,
+          426.666667,
+          1105.571429,
+          792.380952
+        ],
+        "selected_portal_center_in_target_box": true,
+        "selected_portal_iou_with_target_box": 0.52788733,
+        "outcome": "CORRECT_TARGET_DOOR"
+      }
+    },
+    {
+      "episode_id": "SEVN020",
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "APPROACH",
+      "observation_id": "SEVN020_APPROACH",
+      "mission": {
+        "street_name": "clark",
+        "house_number": "7010"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 276.068814,
+        "viewport_heading_degrees": 90.0,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 64.734016,
+        "start_x_unwrapped": -655,
+        "viewport_pixel_sha256": "e5939cfcdeb8761e3a72c94874ed614a462e2f871706ca5c9a8e5dcc35eaf516",
+        "archive_member": "panos/pano_200807.png",
+        "archive_member_crc32": "5ed83670",
+        "archive_member_bytes": 5615685,
+        "archive_member_sha256": "14b08c3701afc21e2e399df4808e3b8a6316907b77f84f4850464ab0632de502"
+      },
+      "runtime_output": {
+        "state": "UNKNOWN_TARGET_TEXT",
+        "target_house_number_canonical": "7010",
+        "exact_target_text_candidates": [],
+        "ocr_detections": [
+          {
+            "text": "SALON",
+            "canonical": "SALON",
+            "score": 0.9999,
+            "box_xyxy": [
+              356.0,
+              266.0,
+              451.0,
+              345.0
+            ],
+            "words": [
+              {
+                "text": "SALON",
+                "canonical": "SALON",
+                "score": 0.99995,
+                "box_xyxy": [
+                  365.0,
+                  272.0,
+                  444.0,
+                  341.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "DRAKE",
+            "canonical": "DRAKE",
+            "score": 0.99992,
+            "box_xyxy": [
+              345.0,
+              290.0,
+              459.0,
+              385.0
+            ],
+            "words": [
+              {
+                "text": "DRAKE",
+                "canonical": "DRAKE",
+                "score": 0.9999,
+                "box_xyxy": [
+                  357.0,
+                  298.0,
+                  451.0,
+                  382.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "RT",
+            "canonical": "RT",
+            "score": 0.99969,
+            "box_xyxy": [
+              960.0,
+              322.0,
+              1001.0,
+              349.0
+            ],
+            "words": [
+              {
+                "text": "RT",
+                "canonical": "RT",
+                "score": 0.99976,
+                "box_xyxy": [
+                  968.0,
+                  322.0,
+                  995.0,
+                  349.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "0",
+            "canonical": "0",
+            "score": 0.50781,
+            "box_xyxy": [
+              937.0,
+              584.0,
+              972.0,
+              599.0
+            ],
+            "words": [
+              {
+                "text": "0",
+                "canonical": "0",
+                "score": 0.50781,
+                "box_xyxy": [
+                  948.0,
+                  584.0,
+                  972.0,
+                  599.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "NOTS",
+            "canonical": "NOTS",
+            "score": 0.96727,
+            "box_xyxy": [
+              291.0,
+              600.0,
+              329.0,
+              619.0
+            ],
+            "words": [
+              {
+                "text": "NOTS",
+                "canonical": "NOTS",
+                "score": 0.99796,
+                "box_xyxy": [
+                  294.0,
+                  600.0,
+                  328.0,
+                  619.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "Ongles-Spoy lon",
+            "canonical": "ONGLESSPOYLON",
+            "score": 0.75975,
+            "box_xyxy": [
+              431.0,
+              602.0,
+              515.0,
+              641.0
+            ],
+            "words": [
+              {
+                "text": "Ongles-Spoy",
+                "canonical": "ONGLESSPOY",
+                "score": 0.73353,
+                "box_xyxy": [
+                  433.0,
+                  602.0,
+                  501.0,
+                  638.0
+                ]
+              },
+              {
+                "text": "lo",
+                "canonical": "LO",
+                "score": 0.99096,
+                "box_xyxy": [
+                  500.0,
+                  614.0,
+                  513.0,
+                  640.0
+                ]
+              },
+              {
+                "text": "n",
+                "canonical": "N",
+                "score": 0.9194,
+                "box_xyxy": [
+                  511.0,
+                  616.0,
+                  590.0,
+                  654.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "DRAKE",
+            "canonical": "DRAKE",
+            "score": 0.99902,
+            "box_xyxy": [
+              287.0,
+              611.0,
+              332.0,
+              636.0
+            ],
+            "words": [
+              {
+                "text": "DRAKE",
+                "canonical": "DRAKE",
+                "score": 0.99643,
+                "box_xyxy": [
+                  293.0,
+                  611.0,
+                  327.0,
+                  635.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.26440808176994324,
+            "box_xyxy": [
+              1340.06396484375,
+              680.5263671875,
+              1440.0,
+              798.6249389648438
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.14806632697582245,
+            "box_xyxy": [
+              0.0,
+              464.71636962890625,
+              131.80062866210938,
+              864.5917358398438
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.11060003191232681,
+            "box_xyxy": [
+              1341.7239990234375,
+              680.3543090820312,
+              1440.0,
+              801.6041259765625
+            ]
+          }
+        ],
+        "selected_binding": null,
+        "runtime_receipt": {
+          "ocr_seconds": 0.710892,
+          "portal_seconds": 0.181587,
+          "raw_portal_model_detection_count": 37
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": false,
+        "exact_target_text": false,
+        "target_door_box_xyxy": [
+          243.571429,
+          457.142857,
+          363.571429,
+          700.952381
+        ],
+        "selected_portal_center_in_target_box": false,
+        "selected_portal_iou_with_target_box": 0.0,
+        "outcome": "UNKNOWN"
+      }
+    },
+    {
+      "episode_id": "SEVN021",
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "APPROACH",
+      "observation_id": "SEVN021_APPROACH",
+      "mission": {
+        "street_name": "jean_talon",
+        "house_number": "50"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 355.234546,
+        "viewport_heading_degrees": 0.0,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 1869.168491,
+        "start_x_unwrapped": 1149,
+        "viewport_pixel_sha256": "bbdcb72b7b55ee7f0fce0e7e5c58652ba95c0a2f5ddad6a16cacdf4986515261",
+        "archive_member": "panos/pano_264807.png",
+        "archive_member_crc32": "2a08c652",
+        "archive_member_bytes": 5584155,
+        "archive_member_sha256": "05184377e49906990273deb12d1f760064abd03d09d700e78d34aee266a062c1"
+      },
+      "runtime_output": {
+        "state": "UNKNOWN_UNJOINED_TEXT_AND_PORTAL",
+        "target_house_number_canonical": "50",
+        "exact_target_text_candidates": [
+          {
+            "text": "50",
+            "canonical": "50",
+            "score": 0.99999,
+            "box_xyxy": [
+              1396.0,
+              373.0,
+              1439.0,
+              422.0
+            ]
+          }
+        ],
+        "ocr_detections": [
+          {
+            "text": "50",
+            "canonical": "50",
+            "score": 0.99998,
+            "box_xyxy": [
+              1389.0,
+              373.0,
+              1439.0,
+              423.0
+            ],
+            "words": [
+              {
+                "text": "50",
+                "canonical": "50",
+                "score": 0.99999,
+                "box_xyxy": [
+                  1396.0,
+                  373.0,
+                  1439.0,
+                  422.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.3164289891719818,
+            "box_xyxy": [
+              297.6687316894531,
+              657.135986328125,
+              339.72698974609375,
+              702.5
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.11888481676578522,
+            "box_xyxy": [
+              281.8694152832031,
+              658.5686645507812,
+              317.3004455566406,
+              702.8469848632812
+            ]
+          }
+        ],
+        "selected_binding": null,
+        "runtime_receipt": {
+          "ocr_seconds": 0.572676,
+          "portal_seconds": 0.117661,
+          "raw_portal_model_detection_count": 15
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": true,
+        "target_door_box_xyxy": [
+          1113.857143,
+          396.190476,
+          1353.857143,
+          792.380952
+        ],
+        "selected_portal_center_in_target_box": false,
+        "selected_portal_iou_with_target_box": 0.0,
+        "outcome": "UNKNOWN"
+      }
+    },
+    {
+      "episode_id": "SEVN022",
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "APPROACH",
+      "observation_id": "SEVN022_APPROACH",
+      "mission": {
+        "street_name": "jean_talon",
+        "house_number": "95"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 174.408272,
+        "viewport_heading_degrees": 67.5,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 3060.354901,
+        "start_x_unwrapped": 2340,
+        "viewport_pixel_sha256": "63fe7c3f8b3d523c0bee9a0ce79bb3bd12131bfa178fcec0b57d52a9b56580cf",
+        "archive_member": "panos/pano_268338.png",
+        "archive_member_crc32": "489aebf2",
+        "archive_member_bytes": 5283212,
+        "archive_member_sha256": "86f03f2d1a6ffb9db2dc10c18c01b0b3e410f7c7d2b24d43837b01764a5887ef"
+      },
+      "runtime_output": {
+        "state": "PIXEL_BOUND_PORTAL_PROPOSAL",
+        "target_house_number_canonical": "95",
+        "exact_target_text_candidates": [
+          {
+            "text": "95",
+            "canonical": "95",
+            "score": 0.99947,
+            "box_xyxy": [
+              689.0,
+              618.0,
+              708.0,
+              647.0
+            ]
+          }
+        ],
+        "ocr_detections": [
+          {
+            "text": "95",
+            "canonical": "95",
+            "score": 0.99969,
+            "box_xyxy": [
+              682.0,
+              618.0,
+              715.0,
+              647.0
+            ],
+            "words": [
+              {
+                "text": "95",
+                "canonical": "95",
+                "score": 0.99947,
+                "box_xyxy": [
+                  689.0,
+                  618.0,
+                  708.0,
+                  647.0
+                ]
+              }
+            ]
+          },
+          {
+            "text": "四",
+            "canonical": "",
+            "score": 0.9205,
+            "box_xyxy": [
+              770.0,
+              639.0,
+              808.0,
+              686.0
+            ],
+            "words": [
+              {
+                "text": "四",
+                "canonical": "",
+                "score": 0.9205,
+                "box_xyxy": [
+                  771.0,
+                  639.0,
+                  808.0,
+                  686.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.44061827659606934,
+            "box_xyxy": [
+              754.8859252929688,
+              448.30999755859375,
+              927.8344116210938,
+              933.73681640625
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.14747381210327148,
+            "box_xyxy": [
+              1330.3084716796875,
+              525.6346435546875,
+              1351.1339111328125,
+              779.7476806640625
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.11324569582939148,
+            "box_xyxy": [
+              1362.8277587890625,
+              556.319091796875,
+              1378.9521484375,
+              758.7258911132812
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.10676782578229904,
+            "box_xyxy": [
+              94.56037139892578,
+              603.2733764648438,
+              131.38340759277344,
+              648.702392578125
+            ]
+          }
+        ],
+        "selected_binding": {
+          "normalized_box_gap": 0.03915689,
+          "text": {
+            "text": "95",
+            "canonical": "95",
+            "score": 0.99947,
+            "box_xyxy": [
+              689.0,
+              618.0,
+              708.0,
+              647.0
+            ]
+          },
+          "portal": {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.44061827659606934,
+            "box_xyxy": [
+              754.8859252929688,
+              448.30999755859375,
+              927.8344116210938,
+              933.73681640625
+            ]
+          }
+        },
+        "runtime_receipt": {
+          "ocr_seconds": 0.644545,
+          "portal_seconds": 0.0323,
+          "raw_portal_model_detection_count": 25
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": true,
+        "target_door_box_xyxy": [
+          711.428571,
+          441.904762,
+          934.285714,
+          761.904762
+        ],
+        "selected_portal_center_in_target_box": true,
+        "selected_portal_iou_with_target_box": 0.53681543,
+        "outcome": "CORRECT_TARGET_DOOR"
+      }
+    },
+    {
+      "episode_id": "SEVN023",
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "APPROACH",
+      "observation_id": "SEVN023_APPROACH",
+      "mission": {
+        "street_name": "saint_laurent",
+        "house_number": "6536"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 265.389893,
+        "viewport_heading_degrees": 247.5,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 2110.825525,
+        "start_x_unwrapped": 1391,
+        "viewport_pixel_sha256": "dbb89330034adfac65b06d7f649feab82ce13c08d590016938033716ce1f7c6b",
+        "archive_member": "panos/pano_115185.png",
+        "archive_member_crc32": "e76d7d53",
+        "archive_member_bytes": 5567461,
+        "archive_member_sha256": "d576ea30cbd7e45faa8a3c9e2fcb1011d96e50f5b8928738ec2bcdea8390462d"
+      },
+      "runtime_output": {
+        "state": "PIXEL_BOUND_PORTAL_PROPOSAL",
+        "target_house_number_canonical": "6536",
+        "exact_target_text_candidates": [
+          {
+            "text": "6536",
+            "canonical": "6536",
+            "score": 0.99999,
+            "box_xyxy": [
+              1174.0,
+              438.0,
+              1247.0,
+              475.0
+            ]
+          }
+        ],
+        "ocr_detections": [
+          {
+            "text": "6536",
+            "canonical": "6536",
+            "score": 0.99999,
+            "box_xyxy": [
+              1168.0,
+              438.0,
+              1253.0,
+              476.0
+            ],
+            "words": [
+              {
+                "text": "6536",
+                "canonical": "6536",
+                "score": 0.99999,
+                "box_xyxy": [
+                  1174.0,
+                  438.0,
+                  1247.0,
+                  475.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.8994425535202026,
+            "box_xyxy": [
+              1084.13134765625,
+              446.0407409667969,
+              1341.521728515625,
+              1032.5653076171875
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.6854255199432373,
+            "box_xyxy": [
+              51.51103973388672,
+              705.3585205078125,
+              140.36831665039062,
+              866.7631225585938
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.5195636749267578,
+            "box_xyxy": [
+              51.07405090332031,
+              700.4326171875,
+              165.67726135253906,
+              865.7940063476562
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.25678640604019165,
+            "box_xyxy": [
+              1034.2467041015625,
+              183.36061096191406,
+              1368.434326171875,
+              892.6232299804688
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.22658252716064453,
+            "box_xyxy": [
+              120.99279022216797,
+              700.0540771484375,
+              169.29116821289062,
+              820.065185546875
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.17848141491413116,
+            "box_xyxy": [
+              146.5624542236328,
+              699.973876953125,
+              193.7559814453125,
+              779.5078125
+            ]
+          }
+        ],
+        "selected_binding": {
+          "normalized_box_gap": 0.0,
+          "text": {
+            "text": "6536",
+            "canonical": "6536",
+            "score": 0.99999,
+            "box_xyxy": [
+              1174.0,
+              438.0,
+              1247.0,
+              475.0
+            ]
+          },
+          "portal": {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.8994425535202026,
+            "box_xyxy": [
+              1084.13134765625,
+              446.0407409667969,
+              1341.521728515625,
+              1032.5653076171875
+            ]
+          }
+        },
+        "runtime_receipt": {
+          "ocr_seconds": 0.575316,
+          "portal_seconds": 0.035438,
+          "raw_portal_model_detection_count": 31
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": true,
+        "target_door_box_xyxy": [
+          1077.571429,
+          441.904762,
+          1334.714286,
+          792.380952
+        ],
+        "selected_portal_center_in_target_box": true,
+        "selected_portal_iou_with_target_box": 0.56245124,
+        "outcome": "CORRECT_TARGET_DOOR"
+      }
+    },
+    {
+      "episode_id": "SEVN024",
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "frozen_action": "APPROACH",
+      "observation_id": "SEVN024_APPROACH",
+      "mission": {
+        "street_name": "saint_laurent",
+        "house_number": "6758"
+      },
+      "render_receipt": {
+        "source_shape_hwc": [
+          1280,
+          3840,
+          3
+        ],
+        "viewport_shape_hwc": [
+          1280,
+          1440,
+          3
+        ],
+        "panorama_angle_degrees": 268.904513,
+        "viewport_heading_degrees": 270.0,
+        "horizontal_fov_degrees": 135.0,
+        "center_x_unwrapped": 1908.314805,
+        "start_x_unwrapped": 1188,
+        "viewport_pixel_sha256": "bbc3255dac248299980500282f59db0d2b3e03df759b6ef24032afb7a67f8e18",
+        "archive_member": "panos/pano_167970.png",
+        "archive_member_crc32": "9e6b971f",
+        "archive_member_bytes": 6721338,
+        "archive_member_sha256": "834d0be29b9bb607bf086e763a3c6022ad4782213748f7345bff65d8b453860f"
+      },
+      "runtime_output": {
+        "state": "PIXEL_BOUND_PORTAL_PROPOSAL",
+        "target_house_number_canonical": "6758",
+        "exact_target_text_candidates": [
+          {
+            "text": "6758·",
+            "canonical": "6758",
+            "score": 1.0,
+            "box_xyxy": [
+              1159.0,
+              372.0,
+              1311.0,
+              425.0
+            ]
+          }
+        ],
+        "ocr_detections": [
+          {
+            "text": "6758·",
+            "canonical": "6758",
+            "score": 0.91212,
+            "box_xyxy": [
+              1146.0,
+              372.0,
+              1311.0,
+              425.0
+            ],
+            "words": [
+              {
+                "text": "6758·",
+                "canonical": "6758",
+                "score": 1.0,
+                "box_xyxy": [
+                  1159.0,
+                  372.0,
+                  1311.0,
+                  425.0
+                ]
+              }
+            ]
+          }
+        ],
+        "portal_candidates": [
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.3723062574863434,
+            "box_xyxy": [
+              198.8946990966797,
+              616.8450927734375,
+              224.1094512939453,
+              677.0454711914062
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.3484513461589813,
+            "box_xyxy": [
+              183.83216857910156,
+              619.207763671875,
+              204.37738037109375,
+              678.2548217773438
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.27579835057258606,
+            "box_xyxy": [
+              183.3800048828125,
+              618.2294921875,
+              203.70254516601562,
+              681.99560546875
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.24912776052951813,
+            "box_xyxy": [
+              0.0,
+              629.259765625,
+              86.79307556152344,
+              751.2230224609375
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.23411017656326294,
+            "box_xyxy": [
+              0.0,
+              628.057373046875,
+              87.2850341796875,
+              756.3125
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.1859554946422577,
+            "box_xyxy": [
+              41.679405212402344,
+              630.907470703125,
+              85.99444580078125,
+              726.435546875
+            ]
+          },
+          {
+            "class_id": 1,
+            "class_name": "door",
+            "confidence": 0.17191632091999054,
+            "box_xyxy": [
+              0.183197021484375,
+              628.9072875976562,
+              55.029701232910156,
+              756.6475219726562
+            ]
+          },
+          {
+            "class_id": 0,
+            "class_name": "doorway",
+            "confidence": 0.14205582439899445,
+            "box_xyxy": [
+              736.464599609375,
+              375.0663757324219,
+              969.5677490234375,
+              840.8450317382812
+            ]
+          }
+        ],
+        "selected_binding": {
+          "normalized_box_gap": 0.18432795,
+          "text": {
+            "text": "6758·",
+            "canonical": "6758",
+            "score": 1.0,
+            "box_xyxy": [
+              1159.0,
+              372.0,
+              1311.0,
+              425.0
+            ]
+          },
+          "portal": {
+            "class_id": 0,
+            "class_name": "doorway",
+            "confidence": 0.14205582439899445,
+            "box_xyxy": [
+              736.464599609375,
+              375.0663757324219,
+              969.5677490234375,
+              840.8450317382812
+            ]
+          }
+        },
+        "runtime_receipt": {
+          "ocr_seconds": 0.552309,
+          "portal_seconds": 0.033698,
+          "raw_portal_model_detection_count": 32
+        }
+      },
+      "evaluation": {
+        "truth_binding_state": "CORRECT_UNIQUE",
+        "target_house_number_visible": true,
+        "exact_target_text": true,
+        "target_door_box_xyxy": [
+          989.142857,
+          396.190476,
+          1383.428571,
+          807.619048
+        ],
+        "selected_portal_center_in_target_box": false,
+        "selected_portal_iou_with_target_box": 0.0,
+        "outcome": "WRONG_DOOR"
+      }
+    }
+  ],
+  "retention": {
+    "panorama_or_viewport_files_written": 0,
+    "reconstructible_intermediate_images_retained": 0,
+    "durable_result": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_sevn_pixel_replay_result_v1.json",
+    "source_archive_retained": "F:\\ba-data\\SEVN\\high-res-panos.zip"
+  },
+  "non_claims": [
+    "learned or autonomous action selection",
+    "held-out or source-disjoint confirmation",
+    "Panoramax or OSM entrance confirmation",
+    "street-name OCR",
+    "continuous sidestep or pedestrian motion",
+    "metric depth or collision-free traversability",
+    "public or legal access",
+    "metric arrival",
+    "HANDOFF_READY",
+    "user task completion",
+    "product benefit",
+    "mobility safety"
+  ]
+}

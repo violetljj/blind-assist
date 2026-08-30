@@ -10,9 +10,10 @@ Status: `ACTIVE`
   reciprocal `SIDESTEP_TO_ENTRANCE_FACE` recoveries). This authorizes an exact
   entrance ray geometrically, not a pixel portal.
 - **SEVN backend:** the address-door metadata adapter is ready on 24 distinct
-  addresses (`8` left-pan, `8` right-pan, `8` graph-approach episodes). The
-  annotation oracle changes `0/24` HOLD bindings to `24/24` correct-unique, but
-  the 1.86 GB image payload is not downloaded, so this is not pixel-model evidence.
+  addresses (`8` left-pan, `8` right-pan, `8` graph-approach episodes). The first
+  hash-verified high-resolution pixel replay reads `16/22` visible house numbers
+  exactly and binds `11/24` target doors, with `3` wrong and `10` UNKNOWN. This is
+  a real pixel mechanism signal, but its frozen wrong-binding gate did not pass.
 - **Pixel portal:** generic Panoramax mining is closed after the width-first
   source admitted `0/3` reference, `0/3` query, and `0/3` joint portals. It may
   carry imagery only with independent sub-metre portal registration.
@@ -1946,6 +1947,44 @@ Implementation and receipts: `l10_sevn_panolab.py`,
 `l10_sevn_panolab_requirements.txt`, `l10_sevn_panolab_protocol_v1.json`,
 `l10_sevn_panolab_source_v1.json`, `l10_sevn_panolab_truth_v1.json`, and
 `l10_sevn_panolab_result_v1.json`.
+
+#### PB21 SEVN high-resolution pixel address-door canary
+
+The official 27,819,151,974-byte high-resolution panorama archive is now local
+and reverified at Zenodo MD5 `1e46ca1de01cdba68b0e9ff7de6dc3df`. The frozen
+renderer preserves the existing 135-degree action contract as a 1440-pixel ring
+crop from each 3840x1280 panorama. It streams only the 24 designated action-result
+members directly from the ZIP, so the formal replay writes no extracted panorama,
+viewport, thumbnail, or inference cache.
+
+The canary deliberately isolates perception from action selection. Evaluator
+truth selects the already frozen `PAN_LEFT`, `PAN_RIGHT`, or `APPROACH` action;
+the runtime then receives only the public target house number and resulting
+pixels. Exact RapidOCR tokens are joined to generic doorway/door proposals by a
+fixed nearest-box rule. SEVN annotations enter only after the runtime output is
+complete.
+
+The one-shot result is `16/22` exact OCR among truth-visible house numbers,
+`24/24` with at least one generic portal proposal, `14/24` joined text/portal
+proposals, `11/24` correct target-door bindings, `3/24` wrong bindings, and
+`10/24` UNKNOWN. By action class, correct/wrong/UNKNOWN is `6/0/2` for left pan,
+`2/2/4` for right pan, and `3/1/4` for approach. The OCR and minimum-correct
+gates passed, but the frozen maximum of two wrong bindings did not; record
+`L10_SEVN_HIGHRES_PIXEL_ADDRESS_DOOR_SIGNAL_ONLY_GATE_NOT_MET`.
+
+This is the first real SEVN pixel mechanism signal, not a learned action policy,
+held-out confirmation, or arrival/handoff result. Two wrong-scored proposals
+still overlap their target boxes (IoU `0.2341` and `0.1607`) but miss the frozen
+center-in-box rule; the third has zero overlap. Do not post-hoc rescore or loosen
+the association threshold. A successor should change the representation to
+multi-scale number OCR plus mask-level credential-to-portal topology, then freeze
+a new protocol.
+
+Implementation and durable result: `l10_sevn_pixel_replay.py`,
+`l10_sevn_pixel_replay_protocol_v1.json`, and
+`l10_sevn_pixel_replay_result_v1.json`; cleanup is recorded in
+`l10_sevn_pixel_replay_cleanup_v1.json`. The result SHA-256 is
+`7c8ffe37f141d6770993cb891a6228f48572a7772516cb2eba2fbe337b25fbdf`.
 
 LychSim remains a conditional secondary synthetic lab, not this route's
 replacement. The source/hardware screen and one bounded go/no-go test are in

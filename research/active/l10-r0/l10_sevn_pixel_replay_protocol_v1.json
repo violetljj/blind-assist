@@ -1,0 +1,168 @@
+{
+  "schema": "blindassist-l10-sevn-highres-pixel-replay-protocol-v1",
+  "name": "L10 SEVN high-resolution address-door pixel canary",
+  "evidence_class": "CURATED_REAL_SEVN_HIGH_RESOLUTION_PIXEL_ASSOCIATION_DEVELOPMENT",
+  "question": "After one frozen evaluator-selected PAN or APPROACH observation, can a label-blind pixel pipeline find the requested house number and bind it to the correct visible door proposal on the same 24 SEVN episodes?",
+  "cohort": {
+    "episodes_per_scenario": 8,
+    "episode_count": 24,
+    "address_disjoint": true,
+    "scenario_classes": [
+      "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "APPROACH_ADDRESS_DOOR_RECOVERY"
+    ],
+    "development_note": "SEVN001 was used before freezing for one orientation, annotation-scale, OCR, and portal-threshold smoke check. The complete 24-episode panel is consumed Development and carries no held-out or generalization authority."
+  },
+  "frozen_inputs": {
+    "public_source": {
+      "path": "research/active/l10-r0/l10_sevn_panolab_source_v1.json",
+      "sha256": "a6478c29610f986fc50dd101de378f187f7ba9e69c201cc31d3b12b6cf7912da"
+    },
+    "evaluator_truth": {
+      "path": "research/active/l10-r0/l10_sevn_panolab_truth_v1.json",
+      "sha256": "bced8f620a55b04ebe2402cf8ee9d25e55f8839e9c5b2e8a9e785cbd65462387"
+    }
+  },
+  "high_resolution_archive": {
+    "provider": "SEVN 1.0 / Zenodo 3526490",
+    "record": "https://zenodo.org/records/3526490",
+    "expected_local_path": "F:\\ba-data\\SEVN\\high-res-panos.zip",
+    "bytes": 27819151974,
+    "md5": "1e46ca1de01cdba68b0e9ff7de6dc3df",
+    "member_pattern": "panos/pano_{frame_id:06d}.png",
+    "access": "Read and decode only the 24 action-result members directly from the ZIP; never extract the 4,988-panorama corpus."
+  },
+  "action_control": {
+    "maximum_steps": 1,
+    "scenario_to_action": {
+      "PAN_LEFT_ADDRESS_DOOR_RECOVERY": "PAN_LEFT",
+      "PAN_RIGHT_ADDRESS_DOOR_RECOVERY": "PAN_RIGHT",
+      "APPROACH_ADDRESS_DOOR_RECOVERY": "APPROACH"
+    },
+    "selection_authority": "Evaluator truth selects the already frozen scenario-designated action before inference.",
+    "runtime_observation": "The pixel pipeline receives only the public mission house number and the rendered action-result pixels. It receives no SEVN door, text, address-match, visibility, or binding labels.",
+    "claim_boundary": "This run tests pixel-derived address-to-door binding after a prescribed active observation. It does not test or claim learned action selection."
+  },
+  "render_contract": {
+    "source_projection": "SEVN equirectangular panorama ring crop matching the official environment orientation convention",
+    "panorama_shape_hwc": [
+      1280,
+      3840,
+      3
+    ],
+    "horizontal_fov_degrees": 135.0,
+    "viewport_shape_hwc": [
+      1280,
+      1440,
+      3
+    ],
+    "annotation_canvas_width": 224,
+    "annotation_canvas_height": 84,
+    "center_formula": "x = W - (wrap360(view_heading - panorama_angle + 180) * W / 360)",
+    "crop_rounding": "round center-minus-half-width using Python round, then modulo-index exactly 1440 columns",
+    "why_not_legacy_1280_crop": "A 1280-pixel crop from a 3840-pixel panorama is 120 degrees. This protocol preserves the already frozen 135-degree action contract with a 1440-pixel crop."
+  },
+  "models": {
+    "portal_model": {
+      "model_id": "perseusdg/doorway-door-people-window-seg",
+      "revision": "fc5fb4cc8ccc164d8c8618fc28417ebe98e638e2",
+      "license": "AGPL-3.0; internal research only pending product-integration license review",
+      "weights": {
+        "path": "artifacts.local/models/perseusdg-doorway-door-people-window-seg-fc5fb4c/doorway_seg_yolo26n.pt",
+        "sha256": "4c9c09fd97d151d5e4bb7345b1409017f67d3d8803279334cbabb830dc2a0ce2"
+      },
+      "postprocessor": {
+        "path": "artifacts.local/models/perseusdg-doorway-door-people-window-seg-fc5fb4c/mirror_suppress.py",
+        "sha256": "09138b60eea6810cdfe10ae3596f34b20b50e72521727d12e9ae64a40d8adf89"
+      },
+      "model_card": {
+        "path": "artifacts.local/models/perseusdg-doorway-door-people-window-seg-fc5fb4c/README.md",
+        "sha256": "d2881c70b0bebef5e54f993eb7c3dcdb8c17ab35f4405aa582786f18feb63296"
+      },
+      "candidate_classes": [
+        0,
+        1
+      ]
+    },
+    "ocr": {
+      "backend": "RapidOCR 3.9.2 / PP-OCRv6 small / ONNX Runtime CPUExecutionProvider",
+      "model_root": "artifacts.local/runtime/semantic-anchor-v1/models",
+      "sha256": {
+        "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+        "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+        "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+      }
+    }
+  },
+  "pixel_contract": {
+    "ocr": {
+      "minimum_score": 0.5,
+      "intra_op_threads": 4,
+      "target_match": "Case-insensitive exact alphanumeric token equality after deleting punctuation and spaces; no fuzzy aliases."
+    },
+    "portal_model": {
+      "cuda_device": 0,
+      "image_size": 1280,
+      "predict_confidence": 0.05,
+      "output_confidence": 0.1,
+      "postprocess": "Unmodified model-card mirror suppression and doorway/door cross-class de-duplication; retain class 0 doorway and class 1 door only."
+    },
+    "association": {
+      "ranking": "For every exact target-text and portal pair, minimize normalized Euclidean gap from the text center to the portal box, then prefer portal confidence, OCR confidence, and stable box coordinates.",
+      "maximum_normalized_box_gap": 0.2,
+      "abstention": "No exact target token, no portal, or an excessive text-to-portal gap returns UNKNOWN."
+    },
+    "evaluation": {
+      "correct": "The selected portal box center lies inside the scaled SEVN target-door annotation.",
+      "wrong": "A joined portal is selected but its center lies outside the target-door annotation.",
+      "unknown": "The pixel pipeline abstains before a joined portal proposal."
+    }
+  },
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_sevn_pixel_replay.py",
+    "sha256": "d20f714af0a5448b0917267211d9c51d42c7ee411d9ad5776a40438bea0c4bb2"
+  },
+  "runtime": {
+    "versions": {
+      "torch": "2.11.0+cu130",
+      "ultralytics": "8.4.102",
+      "rapidocr": "3.9.2",
+      "onnxruntime": "1.27.0",
+      "opencv-python": "5.0.0.93",
+      "numpy": "2.4.4"
+    },
+    "portal_backend": "CUDA required with actual-device verification",
+    "ocr_backend": "ONNX Runtime CPU"
+  },
+  "gate": {
+    "episode_count": 24,
+    "minimum_visible_text_exact_ocr": 12,
+    "minimum_correct_target_door_bindings": 8,
+    "maximum_wrong_door_bindings": 2,
+    "interpretation": "A bounded mechanism gate: at least one third of the full panel must produce correct pixel-derived target-door bindings, a majority of truth-visible signs must be read exactly, and wrong bindings remain rare."
+  },
+  "signal_floor": {
+    "minimum_correct_bindings": 4
+  },
+  "retention_policy": {
+    "keep": "Protocol, evaluator, detailed result, hashes, source archive, and documentation decision.",
+    "delete": "Any reconstructible extracted panorama, rendered viewport, thumbnail, debug overlay, decompression cache, or task temporary directory after the result is verified.",
+    "implementation": "The formal evaluator streams ZIP members and writes no intermediate images; any pre-freeze smoke files are deleted separately after the run."
+  },
+  "stop_rule": "Run the frozen 24 episodes once. Do not change the crop, action map, models, thresholds, OCR match, association rule, scoring, or gate after observing the result. A successor must use a new protocol version.",
+  "non_claims": [
+    "learned or autonomous action selection",
+    "held-out or source-disjoint confirmation",
+    "Panoramax or OSM entrance confirmation",
+    "street-name OCR",
+    "continuous sidestep or pedestrian motion",
+    "metric depth or collision-free traversability",
+    "public or legal access",
+    "metric arrival",
+    "HANDOFF_READY",
+    "user task completion",
+    "product benefit",
+    "mobility safety"
+  ]
+}
