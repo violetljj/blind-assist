@@ -11,6 +11,33 @@ function Normalize-PathForGit([string]$Path) {
     return $Path.Replace('\', '/').Trim()
 }
 
+function Get-ReparseTargetPath([System.IO.FileSystemInfo]$Item) {
+    $target = @($Item.Target) | Select-Object -First 1
+    if ([string]::IsNullOrWhiteSpace([string]$target)) {
+        return $null
+    }
+    if ([System.IO.Path]::IsPathRooted([string]$target)) {
+        return [System.IO.Path]::GetFullPath([string]$target)
+    }
+    return [System.IO.Path]::GetFullPath((Join-Path $Item.Parent.FullName ([string]$target)))
+}
+
+function Test-PathAtOrBelow([string]$Candidate, [string]$Root) {
+    $trimChars = [char[]]@(
+        [System.IO.Path]::DirectorySeparatorChar,
+        [System.IO.Path]::AltDirectorySeparatorChar
+    )
+    $candidatePath = [System.IO.Path]::GetFullPath($Candidate).TrimEnd($trimChars)
+    $rootPath = [System.IO.Path]::GetFullPath($Root).TrimEnd($trimChars)
+    return (
+        $candidatePath.Equals($rootPath, [System.StringComparison]::OrdinalIgnoreCase) -or
+        $candidatePath.StartsWith(
+            $rootPath + [System.IO.Path]::DirectorySeparatorChar,
+            [System.StringComparison]::OrdinalIgnoreCase
+        )
+    )
+}
+
 function Get-ChangedPaths {
     if ($AllTracked) {
         return git ls-files | ForEach-Object { Normalize-PathForGit $_ }
@@ -121,6 +148,95 @@ foreach ($rootItem in Get-ChildItem -LiteralPath $repoRoot -Force) {
             "Generated/model artifact must not live at the repository root, even when ignored: $($rootItem.Name). " +
             'Move local payload to artifacts.local/ and keep committed production assets under their owned module.'
         )
+    }
+}
+
+if ($env:OS -eq 'Windows_NT') {
+    $artifactPath = Join-Path $repoRoot 'artifacts.local'
+    $artifactPhysicalRoot = $null
+    if (Test-Path -LiteralPath $artifactPath) {
+        $artifactItem = Get-Item -LiteralPath $artifactPath -Force
+        if (-not ($artifactItem.Attributes -band [System.IO.FileAttributes]::ReparsePoint)) {
+            $failures.Add(
+                'Local artifacts.local must be a junction or symbolic link to the managed artifact volume.'
+            )
+        } else {
+            $artifactPhysicalRoot = Get-ReparseTargetPath $artifactItem
+            if ([string]::IsNullOrWhiteSpace($artifactPhysicalRoot)) {
+                $failures.Add('Local artifacts.local reparse target could not be resolved.')
+            }
+        }
+    }
+
+    if ($artifactPhysicalRoot) {
+        $workspaceRoot = Split-Path -Parent $repoRoot
+        $managedAliases = @(
+            (Join-Path $workspaceRoot 'CARLA'),
+            (Join-Path $workspaceRoot 'artifacts.local'),
+            (Join-Path $workspaceRoot 'tmp'),
+            (Join-Path $repoRoot '.downloads'),
+            (Join-Path $repoRoot 'test-artifacts.local'),
+            (Join-Path $repoRoot 'tmp'),
+            (Join-Path $repoRoot 'work'),
+            (Join-Path $repoRoot '.pytest_cache'),
+            (Join-Path $repoRoot '.ruff_cache'),
+            (Join-Path $repoRoot '.python311'),
+            (Join-Path $repoRoot '.venv-export'),
+            (Join-Path $repoRoot '.venv-export312'),
+            (Join-Path $repoRoot 'python311-local'),
+            (Join-Path $repoRoot 'captures'),
+            (Join-Path $repoRoot 'output')
+        )
+        foreach ($managedAlias in $managedAliases) {
+            if (-not (Test-Path -LiteralPath $managedAlias)) {
+                continue
+            }
+            $aliasItem = Get-Item -LiteralPath $managedAlias -Force
+            if (-not ($aliasItem.Attributes -band [System.IO.FileAttributes]::ReparsePoint)) {
+                $failures.Add("Managed local artifact path must be a reparse point: $managedAlias")
+                continue
+            }
+            $aliasTarget = Get-ReparseTargetPath $aliasItem
+            if (
+                -not $aliasTarget -or
+                -not (
+                    (Test-PathAtOrBelow $aliasTarget $artifactPath) -or
+                    (Test-PathAtOrBelow $aliasTarget $artifactPhysicalRoot)
+                )
+            ) {
+                $failures.Add(
+                    "Managed local artifact path escapes artifacts.local: $managedAlias -> $aliasTarget"
+                )
+            }
+        }
+
+        $worktreeLines = @(& git worktree list --porcelain 2>$null)
+        if ($LASTEXITCODE -eq 0) {
+            foreach ($worktreeLine in $worktreeLines) {
+                if ($worktreeLine -notmatch '^worktree (.+)$') {
+                    continue
+                }
+                $worktreeArtifactPath = Join-Path $Matches[1] 'artifacts.local'
+                if (-not (Test-Path -LiteralPath $worktreeArtifactPath)) {
+                    continue
+                }
+                $worktreeArtifact = Get-Item -LiteralPath $worktreeArtifactPath -Force
+                $worktreeTarget = Get-ReparseTargetPath $worktreeArtifact
+                if (
+                    -not ($worktreeArtifact.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -or
+                    -not $worktreeTarget -or
+                    -not (
+                        (Test-PathAtOrBelow $worktreeTarget $artifactPath) -or
+                        (Test-PathAtOrBelow $worktreeTarget $artifactPhysicalRoot)
+                    )
+                ) {
+                    $failures.Add(
+                        "Git worktree artifacts.local must route to the managed artifact volume: " +
+                        "$worktreeArtifactPath -> $worktreeTarget"
+                    )
+                }
+            }
+        }
     }
 }
 

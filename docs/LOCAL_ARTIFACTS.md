@@ -18,6 +18,10 @@ F:\ba-data\blindassist-artifacts-20260805\
 
 仓库中的 `artifacts.local` 是指向该位置的 Windows junction。因此，新的大下载、数据集、模型、解压缓存、训练/benchmark 输出和临时物化必须继续写入 `artifacts.local/<category>/`，不要新建 E: 下的旁路数据目录；这些写入会自动落到 F:。需要直接指定绝对下载根目录的工具，使用上述 F: 路径，并仍须在 `artifacts.local/` 下保留可发现的 manifest、receipt、hash 与任务记录。
 
+CARLA 算法资产库的兼容路径 `E:\linnan\CARLA` 也是 junction，物理目标为 `artifacts.local/runtime/carla-asset-library/`。已登记 Git worktree 的本地 `artifacts.local/` 必须分别指向 `artifacts.local/worktrees/<worktree>/`；不得在 worktree 内重新创建实体数据目录。
+
+当本机 `artifacts.local/` 是外置 junction 时，Gradle 的 root/module build directory 自动改写到 `artifacts.local/work/gradle-build/`。CI 或没有外置 artifact junction 的普通 clone 仍使用标准 `*/build/` 路径，避免改变发布工作流。
+
 下载、迁移或容量报告必须同时说明逻辑路径和物理目标盘：当目标是 `artifacts.local/...` 时，报告 F: 的可用空间，不能把工作目录位于 E: 或 E: 的剩余空间误报为实际落盘位置。
 
 ## Canonical 结构
@@ -70,6 +74,17 @@ test-artifacts.local -> artifacts.local/evidence
 .downloads           -> artifacts.local/downloads
 work                 -> artifacts.local/work
 tmp                  -> artifacts.local/tmp
+.pytest_cache         -> artifacts.local/cache/pytest
+.ruff_cache           -> artifacts.local/cache/ruff
+.python311            -> artifacts.local/runtime/legacy-python311
+.venv-export          -> artifacts.local/runtime/venv-export
+.venv-export312       -> artifacts.local/runtime/venv-export312
+python311-local       -> artifacts.local/runtime/python311-local
+captures              -> artifacts.local/evidence/captures
+output                -> artifacts.local/work/output
+E:\linnan\CARLA       -> artifacts.local/runtime/carla-asset-library
+E:\linnan\artifacts.local -> artifacts.local/legacy/outer-workspace-artifacts
+E:\linnan\tmp         -> artifacts.local/tmp/outer-workspace
 ```
 
 新脚本和新文档必须直接使用 `artifacts.local/`。旧入口将在对应脚本完成分批迁移和验证后移除。
@@ -109,6 +124,7 @@ E:\codex-tools\projects\blindassist\state\
 
 - 不提交 `artifacts.local/` 下的原图、数据集、日志、模型源文件或设备证据。
 - 新脚本不得在仓库根目录创建新的数据、模型、下载或临时目录。
+- `scripts/check_repo_hygiene.ps1` 在 Windows 本机检查 canonical artifact root、CARLA、兼容别名和所有已登记 worktree；实体目录或逃逸到 artifact volume 之外的 reparse target 会直接失败。
 - 文档引用本地证据时使用 `artifacts.local/evidence/...`。
 - 正式 APK 仍按 [APK_ARCHIVE.md](APK_ARCHIVE.md) 归档，不放入本目录充当发布物。
 - 清理前确认不存在唯一验证证据；目录迁移应先核对文件数量和失败数。
