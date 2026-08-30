@@ -1167,10 +1167,38 @@ registered-geometry ceiling, but failed centroid-inside, the `0.35` IoU gate,
 and metric-centroid error at `3.159 m`. Record
 `L10_3RSCAN_REFERENCE_PIXEL_ENDPOINT_FIELD_DEVELOPMENT_CANARY_NOT_MET`.
 
-Do not tune PF01, its head, probability threshold, or projective decoder. The
-next admissible change is a fresh registered pair and a bounded image-space
-mask/correspondence field whose endpoint is supported by query pixels instead
-of global-homography extrapolation. Do not open active-policy learning yet.
+Do not tune PF01, its head, probability threshold, or projective decoder. Two
+fresh bounded successors have now tested the admissible representation change.
+BRM01 used DINO mutual matches as fixed SAM2.1 point prompts on target
+doorframe 47. It removed coordinate regression and homography completely, and
+both decoded endpoints were actual supported query-mask pixels, but dispersed
+positive matches made SAM select most of the room: complete IoU was `0.1606`,
+only `17.93%` of the `0.8956` registered ceiling, centroid-inside failed, and
+world-centroid error was `1.427 m`. Record
+`L10_3RSCAN_BOUNDED_REFERENCE_ENDPOINT_MASK_DEVELOPMENT_CANARY_NOT_MET`. The
+first execution aborted before SAM when the partial arm had only one mutual
+positive prompt; a mechanical retry only serialized that arm as empty and did
+not change the protocol, frames, prompts, thresholds, models, decoder, or gate.
+
+SRM01 then changed the representation, not those consumed settings. On a new
+reference scene with target doorframe 27 and pre-RGB visibility ratios
+`0.881 / 0.841`, it formed a dense foreground-minus-background similarity
+field, selected one spatially coherent component, and intersected SAM with the
+component-derived bounded ROI. Complete IoU rose to `0.5403`, centroid-inside
+passed, world-centroid error fell to `0.422 m`, and both endpoints remained
+supported query pixels. The gate still did not pass: ceiling retention was
+`56.30%` versus `60%`, and adjacent instance 11 scored `0.6053` versus target
+27 at `0.5403`. The controlled partial arm reached `0.6908`, target Top-1, and
+`0.077 m` error, so the spatial field is a real localization effect but complete
+reference support did not dominate. Record
+`L10_3RSCAN_SPATIAL_REFERENCE_ENDPOINT_MASK_DEVELOPMENT_CANARY_NOT_MET`.
+
+Do not tune BRM01 or SRM01 prompts, margin, component rule, ROI, SAM threshold,
+or gates. The remaining gap is exact-instance/portal-set binding, not another
+unbounded endpoint decoder: even target 27's registered-geometry projection
+overlapped instance 11 at `0.8842`. A fresh successor must add a legal public
+instance binding or explicitly retain a set-valued portal proposal before
+affordance and active observation. Do not open active-policy learning yet.
 
 ## DTR-R2 decision
 

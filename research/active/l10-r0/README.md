@@ -2211,11 +2211,38 @@ extrapolated far outside supported pixels. Record
 `L10_3RSCAN_REFERENCE_PIXEL_ENDPOINT_FIELD_DEVELOPMENT_CANARY_NOT_MET`.
 
 Do not tune the consumed PF01 images, linear head, threshold, or homography.
-The next representation change is a fresh fully visible registered pair with a
-bounded reference-conditioned image-space mask/correspondence field. Endpoint
-estimation must stay supported by query pixels rather than extrapolating a
-global projective map. Active-policy learning remains premature, and generic
-Panoramax stays closed without an independent sub-metre portal anchor.
+BRM01 made the requested structural change on fresh target doorframe 47. DINO
+mutual matches became fixed positive/negative prompts for frozen SAM2.1; the
+extent was the convex hull of one query-mask component, its endpoints were
+actual supported pixels, and neither coordinate regression nor homography was
+present. Dispersed positive matches still caused a room-scale mask: complete
+IoU was `0.1606`, ceiling retention `17.93%`, centroid-inside failed, and metric
+error was `1.427 m`. Record
+`L10_3RSCAN_BOUNDED_REFERENCE_ENDPOINT_MASK_DEVELOPMENT_CANARY_NOT_MET`. A
+first evaluator execution aborted before SAM because the partial arm had only
+one mutual positive prompt; the one mechanical retry merely serialized that
+arm as an empty prediction and kept all frozen decision inputs unchanged.
+
+SRM01 then used a different reference scene and froze target doorframe 27 at
+frames `213 / 174`, with `0.881 / 0.841` depth-visible ratios and zero RGB reads
+before freeze. It replaced dispersed prompts with a dense foreground-minus-
+background DINO field, selected one connected component, and bounded the SAM
+mask by the component's fixed expanded ROI. Complete IoU reached `0.5403`,
+centroid-inside passed, metric error fell to `0.422 m`, and both endpoints were
+supported query pixels. The result remained below gate because it retained
+`56.30%` of the `0.9597` registered ceiling and overlapping instance 11 scored
+`0.6053` versus target 27 at `0.5403`. The partial arm reached `0.6908`, target
+Top-1, and `0.077 m`, demonstrating a strong bounded localization effect but
+not complete-reference dominance. Record
+`L10_3RSCAN_SPATIAL_REFERENCE_ENDPOINT_MASK_DEVELOPMENT_CANARY_NOT_MET`.
+
+Do not tune either consumed bounded cohort. Target 27's registered-geometry
+projection itself overlaps instance 11 at `0.8842`; the remaining information
+gap is exact-instance or set-valued portal binding. A new successor must add a
+legal public binding or preserve the ambiguous portal set before affordance and
+active observation. Another SAM, embedding, threshold, fusion, or projective
+endpoint decoder is not authorized. Generic Panoramax remains closed without
+an independent sub-metre portal anchor.
 
 Registered-extent E0 protocol, executable, frozen cohort, and result:
 `l10_3rscan_registered_extent_protocol_v1.json`,
@@ -2228,6 +2255,18 @@ result: `l10_3rscan_reference_pixel_field_protocol_v1.json`,
 `l10_3rscan_reference_pixel_field.py`,
 `l10_3rscan_reference_pixel_field_cohort_v1.json`, and
 `l10_3rscan_reference_pixel_field_result_v1.json`.
+
+Bounded mutual-match/SAM protocol, executable, frozen cohort, and result:
+`l10_3rscan_bounded_reference_mask_protocol_v1.json`,
+`l10_3rscan_bounded_reference_mask.py`,
+`l10_3rscan_bounded_reference_mask_cohort_v1.json`, and
+`l10_3rscan_bounded_reference_mask_result_v1.json`.
+
+Spatially coherent bounded-field protocol, executable, frozen cohort, and
+result: `l10_3rscan_spatial_reference_mask_protocol_v1.json`,
+`l10_3rscan_spatial_reference_mask.py`,
+`l10_3rscan_spatial_reference_mask_cohort_v1.json`, and
+`l10_3rscan_spatial_reference_mask_result_v1.json`.
 
 Independent-extent protocols, source builders, audits, and results:
 `l10_lod3_panoramax_door_reachability_result_v1.json`,

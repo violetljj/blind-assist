@@ -38,7 +38,12 @@ Current route snapshot:
   `0.3760 m -> 0.1428 m`, and `0/3` wrong doors. Its first frozen RGB successor
   improved one fresh rescan from `0.0706` to `0.3312` IoU with complete reference
   supervision, but missed the canary because the learned coordinate decoder
-  extrapolated outside the door (`3.159 m` centroid error).
+  extrapolated outside the door (`3.159 m` centroid error). A bounded
+  DINO-to-SAM successor removed extrapolation but reached only `0.1606` IoU.
+  Its spatially coherent, source-distinct successor recovered `0.5403` complete
+  IoU with supported endpoints and `0.422 m` centroid error, but remained below
+  the `60%` ceiling-retention gate and confused an overlapping doorframe
+  instance; exact-instance/portal-set binding is now the active gap.
 
 ## Current evidence
 
@@ -929,11 +934,34 @@ decoder extrapolated outside the image: centroid-inside failed and metric error
 was `3.159 m`. Record
 `L10_3RSCAN_REFERENCE_PIXEL_ENDPOINT_FIELD_DEVELOPMENT_CANARY_NOT_MET`.
 
-Do not tune the opened PF01 images, head, threshold, or homography. The next
-admissible representation change is a fresh registered pair with a bounded
-reference-conditioned image-space mask/correspondence field; it must derive
-endpoints from supported query pixels rather than extrapolating a global
-homography. Active-policy learning remains premature.
+Do not tune the opened PF01 images, head, threshold, or homography. BRM01 tested
+the bounded successor on fresh target doorframe 47: DINO mutual matches prompted
+frozen SAM2.1, the endpoint decoder used only supported query-mask pixels, and
+no coordinate regression or homography remained. The complete arm nevertheless
+selected most of the room, reaching only `0.1606` IoU, `17.93%` of its `0.8956`
+registered ceiling, and `1.427 m` centroid error. Record
+`L10_3RSCAN_BOUNDED_REFERENCE_ENDPOINT_MASK_DEVELOPMENT_CANARY_NOT_MET`. Its
+first execution stopped before SAM on one partial positive prompt; the sole
+mechanical retry changed only failure serialization, not any frozen model or
+decision input.
+
+SRM01 then moved to a source-distinct reference scene and added a dense
+foreground-minus-background similarity field, one spatially coherent component,
+and a fixed component-derived ROI. On target doorframe 27, whose reference and
+query visibility ratios were `0.881 / 0.841`, complete IoU reached `0.5403`,
+centroid-inside passed, world-centroid error was `0.422 m`, and both endpoints
+were supported pixels. It still missed the gate: registered-ceiling retention
+was `56.30%` rather than `60%`, and overlapping doorframe 11 scored `0.6053`
+against target 27's `0.5403`. The partial arm reached `0.6908`, target Top-1,
+and `0.077 m`, proving a useful bounded localization effect but not complete-
+reference dominance. Record
+`L10_3RSCAN_SPATIAL_REFERENCE_ENDPOINT_MASK_DEVELOPMENT_CANARY_NOT_MET`.
+
+Do not tune either consumed bounded cohort. Target 27's own registered geometry
+overlapped instance 11 at `0.8842`, so the remaining blocker is legal exact-
+instance or set-valued portal binding, not another SAM, embedding, threshold,
+fusion, or endpoint extrapolator. Affordance, waypoint, arrival, handoff and
+active policy remain separate and unproven.
 
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
