@@ -55,6 +55,11 @@ evidence/resource-fabric/          # catalog、lifecycle、难例、薄实验和
 manifest、参数、小型结果和证据边界，重型媒体、张量和权重通过 resource/cache
 id 引用。
 
+所有稳定历史资产（包括尚未迁入六个 canonical 顶层类别的兼容现场）由
+[资产管理体系](asset-management/README.md) 零拷贝登记。`asset_catalog.py discover`
+只建立 locator、文件清单、分类和生命周期总账，不因建账移动或复制 payload；
+新调用方使用 `resolve --consumer --purpose` 获取路径并自动留下消费记录。
+
 新调用方只能写入上述六个顶层类别，并在其下使用清楚的领域/协议/version 子目录。`tmp/` 不是“随时可清空”的同义词：当前任务可能暂存尚未登记的 lock、audit 或迁移指针；清理必须按精确子目录确认所有者和持久化去向。
 
 ## 本地构建与编译产物

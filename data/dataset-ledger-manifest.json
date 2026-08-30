@@ -3,7 +3,7 @@
   "snapshot_date": "2026-08-26",
   "archive_tag": "archive/pre-agent-surface-2026-08-26",
   "generator": "tools/data/generate_dataset_ledger.py",
-  "materialized_output": "artifacts.local/datasets/ledger/DATASET_MASTER_LEDGER.json",
+  "materialized_output": "artifacts.local/evidence/resource-fabric/reports/dataset-ledger/DATASET_MASTER_LEDGER.json",
   "source_snapshot": {
     "json": {
       "bytes": 569224796,

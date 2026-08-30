@@ -1,5 +1,9 @@
 # Resource fabric
 
+The project-wide authority for discovery, resolution, consumers, derivations,
+and lifecycle is the [BlindAssist asset management system](asset-management/README.md).
+This document covers its content-addressed object/cache layer.
+
 BlindAssist uses one content identity for every immutable raw dataset object or
 model, then reuses that identity across normalization, feature extraction,
 failure mining, regression, and experiments. A Development cohort becoming

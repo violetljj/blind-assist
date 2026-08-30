@@ -1,0 +1,453 @@
+{
+  "schema": "blindassist-asset-management-policy-v1",
+  "catalog_unit": "direct_child",
+  "description": "Zero-copy inventory policy for the canonical BlindAssist artifact root.",
+  "roots": {
+    "datasets": {
+      "asset_kind": "dataset",
+      "asset_class": "data",
+      "evidence_status": "unknown",
+      "storage_status": "shared",
+      "owner": "shared-research",
+      "retention_reason": "Durable source, normalized, or evaluation data"
+    },
+    "downloads": {
+      "asset_kind": "download",
+      "asset_class": "source_payload",
+      "evidence_status": "unknown",
+      "storage_status": "unknown",
+      "owner": "shared-research",
+      "retention_reason": "Downloaded payload pending per-asset provenance and rebuild classification",
+      "exclude_children": [
+        "resource-store"
+      ]
+    },
+    "models": {
+      "asset_kind": "model",
+      "asset_class": "model",
+      "evidence_status": "unknown",
+      "storage_status": "shared",
+      "owner": "shared-research",
+      "retention_reason": "Reusable model weights, exports, and calibration assets",
+      "exclude_children": [
+        "resource-store"
+      ]
+    },
+    "evidence": {
+      "asset_kind": "evidence",
+      "asset_class": "evidence",
+      "evidence_status": "unknown",
+      "storage_status": "active",
+      "owner": "shared-research",
+      "retention_reason": "Research evidence requires route-specific authority classification before cleanup",
+      "exclude_children": [
+        "resource-fabric",
+        "resource-store"
+      ]
+    },
+    "knowledge": {
+      "asset_kind": "knowledge",
+      "asset_class": "knowledge",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "shared-research",
+      "retention_reason": "Reusable research knowledge and retrieval indexes"
+    },
+    "sources": {
+      "asset_kind": "source",
+      "asset_class": "source_payload",
+      "evidence_status": "unknown",
+      "storage_status": "shared",
+      "owner": "shared-research",
+      "retention_reason": "External source snapshots and source-native payloads"
+    },
+    "external": {
+      "asset_kind": "external",
+      "asset_class": "external_dependency",
+      "evidence_status": "unknown",
+      "storage_status": "shared",
+      "owner": "shared-research",
+      "retention_reason": "Project-scoped external assets with existing local consumers"
+    },
+    "synthetic": {
+      "asset_kind": "synthetic_data",
+      "asset_class": "data",
+      "evidence_status": "development_consumed",
+      "storage_status": "shared",
+      "owner": "shared-research",
+      "retention_reason": "Reusable Development mechanism data; never fresh confirmation"
+    },
+    "cleanup-records": {
+      "asset_kind": "governance_record",
+      "asset_class": "governance",
+      "evidence_status": "diagnostic",
+      "storage_status": "sealed_cold",
+      "owner": "workspace-governance",
+      "retention_reason": "Deletion scope, receipts, and recovery evidence"
+    },
+    "migration-records": {
+      "asset_kind": "governance_record",
+      "asset_class": "governance",
+      "evidence_status": "diagnostic",
+      "storage_status": "sealed_cold",
+      "owner": "workspace-governance",
+      "retention_reason": "Asset relocation and compatibility evidence"
+    },
+    "calibration": {
+      "asset_kind": "calibration",
+      "asset_class": "data",
+      "evidence_status": "unknown",
+      "storage_status": "shared",
+      "owner": "shared-research",
+      "retention_reason": "Sensor and model calibration assets"
+    },
+    "references": {
+      "asset_kind": "reference",
+      "asset_class": "knowledge",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "shared-research",
+      "retention_reason": "Reusable reference material"
+    },
+    "providers": {
+      "asset_kind": "provider_asset",
+      "asset_class": "external_dependency",
+      "evidence_status": "unknown",
+      "storage_status": "shared",
+      "owner": "shared-research",
+      "retention_reason": "Provider-local assets and receipts"
+    },
+    "repositories": {
+      "asset_kind": "repository_snapshot",
+      "asset_class": "external_dependency",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "shared-research",
+      "retention_reason": "Pinned external implementation snapshots"
+    },
+    "community-demo": {
+      "asset_kind": "community_asset",
+      "asset_class": "evidence",
+      "evidence_status": "unknown",
+      "storage_status": "active",
+      "owner": "community-route",
+      "retention_reason": "Community demonstration assets and results"
+    },
+    "community-submissions": {
+      "asset_kind": "community_asset",
+      "asset_class": "evidence",
+      "evidence_status": "unknown",
+      "storage_status": "active",
+      "owner": "community-route",
+      "retention_reason": "Submitted community assets and review material"
+    },
+    "counterfactual-capture-smoke": {
+      "asset_kind": "synthetic_data",
+      "asset_class": "data",
+      "evidence_status": "development_consumed",
+      "storage_status": "shared",
+      "owner": "shared-research",
+      "retention_reason": "Reusable Development counterfactual fixture"
+    },
+    "counterfactual-capture-smoke-v1r2": {
+      "asset_kind": "synthetic_data",
+      "asset_class": "data",
+      "evidence_status": "development_consumed",
+      "storage_status": "shared",
+      "owner": "shared-research",
+      "retention_reason": "Reusable Development counterfactual fixture"
+    },
+    "device-audits": {
+      "asset_kind": "device_evidence",
+      "asset_class": "evidence",
+      "evidence_status": "diagnostic",
+      "storage_status": "active",
+      "owner": "device-research",
+      "retention_reason": "Device audit receipts and observations"
+    },
+    "doc-review": {
+      "asset_kind": "review_record",
+      "asset_class": "governance",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "workspace-governance",
+      "retention_reason": "Document review evidence"
+    },
+    "experiments": {
+      "asset_kind": "experiment_record",
+      "asset_class": "evidence",
+      "evidence_status": "unknown",
+      "storage_status": "active",
+      "owner": "shared-research",
+      "retention_reason": "Legacy experiment manifests and outputs"
+    },
+    "exports": {
+      "asset_kind": "derived_output",
+      "asset_class": "derived",
+      "evidence_status": "diagnostic",
+      "storage_status": "unknown",
+      "owner": "shared-research",
+      "retention_reason": "Exported output pending rebuild classification"
+    },
+    "hftf-d7-public-real": {
+      "asset_kind": "route_evidence",
+      "asset_class": "evidence",
+      "evidence_status": "unknown",
+      "storage_status": "active",
+      "owner": "hftf-route",
+      "retention_reason": "HFTF route data and evidence"
+    },
+    "hftf_d7_review_outputs": {
+      "asset_kind": "review_record",
+      "asset_class": "evidence",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "hftf-route",
+      "retention_reason": "HFTF review outputs"
+    },
+    "l10-sevn": {
+      "asset_kind": "route_data",
+      "asset_class": "data",
+      "evidence_status": "development_consumed",
+      "storage_status": "shared",
+      "owner": "l10-r0",
+      "retention_reason": "SEVN Development source and adapter assets"
+    },
+    "legacy": {
+      "asset_kind": "legacy_archive",
+      "asset_class": "archive",
+      "evidence_status": "unknown",
+      "storage_status": "sealed_cold",
+      "owner": "workspace-governance",
+      "retention_reason": "Historical assets retained for traceability"
+    },
+    "maintenance": {
+      "asset_kind": "maintenance_record",
+      "asset_class": "governance",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "workspace-governance",
+      "retention_reason": "Maintenance plans, receipts, and outcomes"
+    },
+    "n4-static-preflight-v3-20260831-0050": {
+      "asset_kind": "route_evidence",
+      "asset_class": "evidence",
+      "evidence_status": "unknown",
+      "storage_status": "active",
+      "owner": "dtr-r0",
+      "retention_reason": "N4 preflight evidence pending route classification"
+    },
+    "openni-1.5.4-audit": {
+      "asset_kind": "audit_evidence",
+      "asset_class": "evidence",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "device-research",
+      "retention_reason": "OpenNI compatibility audit"
+    },
+    "p1_a4": {
+      "asset_kind": "route_evidence",
+      "asset_class": "evidence",
+      "evidence_status": "development_consumed",
+      "storage_status": "shared",
+      "owner": "p1-a4",
+      "retention_reason": "Consumed P1-A4 Development assets and evidence"
+    },
+    "phone-captures": {
+      "asset_kind": "observation_data",
+      "asset_class": "data",
+      "evidence_status": "unknown",
+      "storage_status": "active",
+      "owner": "device-research",
+      "retention_reason": "Phone-captured observations"
+    },
+    "presentations": {
+      "asset_kind": "presentation",
+      "asset_class": "document",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "project",
+      "retention_reason": "Project presentation assets"
+    },
+    "quick-measure-captures": {
+      "asset_kind": "observation_data",
+      "asset_class": "data",
+      "evidence_status": "unknown",
+      "storage_status": "active",
+      "owner": "device-research",
+      "retention_reason": "Quick measurement observations"
+    },
+    "r2a1": {
+      "asset_kind": "route_evidence",
+      "asset_class": "evidence",
+      "evidence_status": "unknown",
+      "storage_status": "active",
+      "owner": "r2a",
+      "retention_reason": "R2A route evidence"
+    },
+    "r2a2": {
+      "asset_kind": "route_evidence",
+      "asset_class": "evidence",
+      "evidence_status": "unknown",
+      "storage_status": "active",
+      "owner": "r2a",
+      "retention_reason": "R2A route evidence"
+    },
+    "r2a3": {
+      "asset_kind": "route_evidence",
+      "asset_class": "evidence",
+      "evidence_status": "unknown",
+      "storage_status": "active",
+      "owner": "r2a",
+      "retention_reason": "R2A route evidence"
+    },
+    "r2a4": {
+      "asset_kind": "route_evidence",
+      "asset_class": "evidence",
+      "evidence_status": "unknown",
+      "storage_status": "active",
+      "owner": "r2a",
+      "retention_reason": "R2A route evidence"
+    },
+    "reports": {
+      "asset_kind": "report",
+      "asset_class": "governance",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "project",
+      "retention_reason": "Generated durable reports"
+    },
+    "research": {
+      "asset_kind": "research_record",
+      "asset_class": "evidence",
+      "evidence_status": "unknown",
+      "storage_status": "active",
+      "owner": "shared-research",
+      "retention_reason": "Legacy research assets"
+    },
+    "results": {
+      "asset_kind": "result",
+      "asset_class": "evidence",
+      "evidence_status": "unknown",
+      "storage_status": "active",
+      "owner": "shared-research",
+      "retention_reason": "Legacy result assets"
+    },
+    "reviews": {
+      "asset_kind": "review_record",
+      "asset_class": "governance",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "workspace-governance",
+      "retention_reason": "Review records"
+    },
+    "scenenn-playback-audit": {
+      "asset_kind": "audit_evidence",
+      "asset_class": "evidence",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "l10-r0",
+      "retention_reason": "SceneNN playback audit assets"
+    },
+    "screenshots": {
+      "asset_kind": "visual_evidence",
+      "asset_class": "evidence",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "project",
+      "retention_reason": "Project screenshots and visual receipts"
+    },
+    "sky_bridge": {
+      "asset_kind": "bridge_record",
+      "asset_class": "governance",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "skydiscover-bridge",
+      "retention_reason": "Isolated SkyDiscover bridge records"
+    },
+    "tests": {
+      "asset_kind": "test_fixture",
+      "asset_class": "data",
+      "evidence_status": "development_consumed",
+      "storage_status": "shared",
+      "owner": "project",
+      "retention_reason": "Reusable test fixtures"
+    },
+    "ui-premium-home-20260827": {
+      "asset_kind": "design_evidence",
+      "asset_class": "evidence",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "ui-route",
+      "retention_reason": "UI design evidence"
+    },
+    "ui-premium-refine-20260827": {
+      "asset_kind": "design_evidence",
+      "asset_class": "evidence",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "ui-route",
+      "retention_reason": "UI design evidence"
+    },
+    "ui-redesign-20260824": {
+      "asset_kind": "design_evidence",
+      "asset_class": "evidence",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "ui-route",
+      "retention_reason": "UI design evidence"
+    },
+    "ui-redesign-20260827": {
+      "asset_kind": "design_evidence",
+      "asset_class": "evidence",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "ui-route",
+      "retention_reason": "UI design evidence"
+    },
+    "ui-reminder-surface-fix-20260828": {
+      "asset_kind": "design_evidence",
+      "asset_class": "evidence",
+      "evidence_status": "diagnostic",
+      "storage_status": "shared",
+      "owner": "ui-route",
+      "retention_reason": "UI design evidence"
+    }
+  },
+  "excluded_roots": {
+    "cache": "Mutable cache; catalog its durable producer inputs instead",
+    "cem_review_tmp_b05_128": "Temporary review workspace",
+    "crash-diagnosis": "Active diagnostic scratch",
+    "failed_runs": "Mutable failed-run scratch; durable terminals belong under evidence",
+    "gradle-home": "Build-system cache",
+    "logs": "Mutable logs",
+    "runtime": "Machine runtime and simulator installation",
+    "runtimes": "Legacy machine runtime",
+    "tmp": "Task-owned temporary state",
+    "tools": "Tool installation or tool cache, not a research asset",
+    "transfer": "In-flight transfer staging",
+    "vendor": "Vendored runtime dependency",
+    "work": "Rebuildable active work and build output",
+    "worktrees": "Concurrent source checkouts and their mutable outputs"
+  },
+  "top_level_file_exclude_globs": [
+    "*.log",
+    "temp_*"
+  ],
+  "top_level_file_rule": {
+    "asset_kind": "loose_record",
+    "asset_class": "governance",
+    "evidence_status": "diagnostic",
+    "storage_status": "shared",
+    "owner": "workspace-governance",
+    "retention_reason": "Stable loose record retained at the artifact root"
+  },
+  "fallback": {
+    "asset_kind": "legacy_asset",
+    "asset_class": "legacy_unclassified",
+    "evidence_status": "unknown",
+    "storage_status": "unknown",
+    "owner": "unclassified",
+    "retention_reason": "Discovered legacy asset pending owner, authority, and rebuild classification"
+  }
+}
