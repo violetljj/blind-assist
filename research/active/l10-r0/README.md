@@ -18,8 +18,10 @@ Status: `ACTIVE`
   carry imagery only with independent sub-metre portal registration.
 - **Posed transfer:** Hypersim met the synthetic Development gate; SceneNN is
   terminal at
-  `L10_SCENENN_REAL_RGBD_PARTIAL_METRIC_PORTAL_TRANSFER_CONFIRMATION_GATE_NOT_MET`
-  because reference-side visibility was not authoritative.
+  `L10_SCENENN_VISIBLE_METRIC_PORTAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET`.
+  Strict-triangle z-buffering repaired reference-plane contamination, but the
+  edge-clipped credential still lacked complete portal extent; 3RScan
+  cross-rescan identity is the next source after access approval.
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -2129,6 +2131,50 @@ z-buffered semantic triangle surface checked against synchronized depth before
 forming the reference credential. Keep query-side RGB/depth evaluator-only and
 retain Panoramax as closed until an independent absolute portal anchor exists.
 
+The strict-triangle v3 successor made exactly that one source change on six
+fresh geometry-only candidates. Before opening RGB-D it froze the top three
+visibility-qualified episodes: `246:3153->4108`, `032:706->2439`, and
+`073:401->4650`. The selector rasterized only faces whose three vertex labels
+equalled the target door ID, then admitted pixels that survived the full-scene
+z-buffer. The implementation, imported v2 helper, synchronized sparse-frame
+extractor source, official SceneNN MD5 values, and all selected masks were
+bound into the cohort. An extractor that reproduces the official 33 ms
+lag-only synchronization loop was byte-for-byte and pixel-for-pixel identical
+to the existing sealed `014` RGB-D pair before the one new replay ran.
+
+| Visible-source metric | SV01 / 246 | SV02 / 032 | SV03 / 073 | aggregate |
+|---|---:|---:|---:|---:|
+| target / selected instance | 1107814 / 1107814 | 483 / 483 | 445 / 258 | 2/3 correct |
+| camera baseline | 2.175 | 2.323 | 1.141 | 2.175 median |
+| reference visible pixels | 20,443 | 17,763 | 10,365 | -- |
+| reference bbox width | 118 | 66 | 67 | all touch right image edge |
+| visible transferred envelope | yes | yes | no | 2/3 |
+| envelope IoU | 0.1197 | 0.0408 | 0.0000 | 0.0408 median |
+| precision / recall | 0.8395 / 0.1215 | 0.5531 / 0.0232 | 0.0000 / 0.0000 | -- |
+| centroid inside target | yes | yes | no | 2/3 |
+| world-centroid error | 0.659 | 0.973 | 0.685 | 0.685 median |
+| reference-plane normal error | 15.97 deg | 1.24 deg | 6.77 deg | 8.00 deg mean |
+
+Record `L10_SCENENN_VISIBLE_METRIC_PORTAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET`.
+The z-buffer change was nevertheless diagnostic: mean reference-plane normal
+error fell from v2's `34.54 deg` to `8.00 deg`, so it removed the foreground
+plane contamination that broke SN01. The remaining information gap is portal
+extent. Every frozen reference credential was an unoccluded but image-edge-
+clipped sliver only `66-118 px` wide; it supplied an accurate local plane but
+not the complete door centre or boundary. The two visible predictions covered
+only `12.15%` and `2.32%` of the query target envelope, while the third
+projected outside the query image.
+
+Do not add a post-result image margin, reselect these scenes, or tune the
+visibility, plane, contour, or decision thresholds. The next stronger source
+is 3RScan cross-rescan identity: freeze a door/doorframe instance shared by a
+reference scan and rescan, use the official scan-to-reference transform and
+stable instance mapping, and evaluate a reference-derived extent against the
+separate rescan geometry. This changes the missing extent source rather than
+rescuing consumed SceneNN. Its data token and per-UUID asset endpoints still
+require Terms-of-Use approval. Generic Panoramax remains closed because it has
+neither this extent authority nor an independent sub-metre portal anchor.
+
 Independent-extent protocols, source builders, audits, and results:
 `l10_lod3_panoramax_door_reachability_result_v1.json`,
 `l10_width_first_perspective_portal_protocol_v1.json`,
@@ -2153,7 +2199,13 @@ and result: `l10_scenenn_full_door_source_result_v1.json`,
 `l10_scenenn_real_posed_portal_protocol_v2.json`,
 `l10_scenenn_real_posed_portal_cohort_v2.json`,
 `l10_scenenn_real_posed_portal_transfer.py`, and
-`l10_scenenn_real_posed_portal_result_v2.json`.
+`l10_scenenn_real_posed_portal_result_v2.json`. The strict visible-surface
+successor adds `l10_scenenn_visible_portal_protocol_v3.json`,
+`l10_scenenn_visible_portal_cohort_v3.json`,
+`l10_scenenn_visible_portal_transfer.py`,
+`l10_scenenn_extract_selected_sync.cpp`,
+`l10_scenenn_visible_portal_rgbd_receipt_v3.json`, and
+`l10_scenenn_visible_portal_result_v3.json`.
 
 Credential successor protocols, evaluators, frozen sources, and results:
 `l10_panolab_node_credential_protocol_v1.json`,
