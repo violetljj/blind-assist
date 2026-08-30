@@ -9,6 +9,7 @@
   "use_state": "active",
   "adoption_mode": "mechanism_adaptation",
   "usage": {
+    "applicability": "Mechanics-only L10 completion contracts using paired motion or independent outcome evidence; no live haptic authority.",
     "source_scope": "用触觉结果回路验证门功能是否真正发生。",
     "project_application": "作为 completion 设计原则并已落入 core:assist：配对 RGB-D 微运动只形成 UNKNOWN/SET_VALUED/LOCKED 动作信念；HANDOFF_READY 还必须联合 position、visibility、grounding、orientation、reachability。",
     "modifications": "BlindAssist 当前无机器人触觉；以 Horn 刚体拟合、实体/帧/时钟/新鲜度准入和显式用户确认替代机器人闭环，不声称可直接实现 DoorBot。",

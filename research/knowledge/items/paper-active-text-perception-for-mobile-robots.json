@@ -13,8 +13,14 @@
       "id": "l10-9",
       "name": "Active text perception for mobile robots — l10:9 route mechanism",
       "description": "宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。",
-      "inputs": [],
-      "outputs": [],
+      "inputs": [
+        "wide-field camera observations with stable text candidates",
+        "matched action-execution receipts and comparable observation outcomes"
+      ],
+      "outputs": [
+        "camera-relative recenter, zoom, or rescan action",
+        "evidence-gap-conditioned observation utility update"
+      ],
       "limitations": "云台室内机器人、静态文字；没有目标语义绑定、身体靠近、到达或交接。"
     }
   ],

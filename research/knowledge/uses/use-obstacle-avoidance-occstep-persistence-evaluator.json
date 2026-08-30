@@ -9,6 +9,7 @@
   "use_state": "planned",
   "adoption_mode": "evaluator",
   "usage": {
+    "applicability": "A future fresh DTR protocol after X31/C11, with fixed actions and scorer plus perturbation-stratified occupancy evaluation.",
     "source_scope": "Perturbation-stratified reactive and action-conditioned proactive occupancy evaluation under dropped frames, semantic errors, and missing or noisy history.",
     "project_application": "For a new protocol after the frozen X31/C11 terminal, hold the DTR scorer and proposed ego action fixed while injecting dropped frames, viewpoint loss, semantic corruption, and history disturbance, then stratify visible and unobservable intervals.",
     "modifications": "Pair occupancy persistence metrics with unchanged DTR event metrics and UNKNOWN handling. Do not modify the currently frozen X31/C11 protocol or treat occupancy IoU as sufficient event evidence.",

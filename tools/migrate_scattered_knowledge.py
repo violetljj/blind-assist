@@ -1403,6 +1403,98 @@ def _serialized(payload: dict[str, Any]) -> str:
     return json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
 
 
+def check_receipt(groups: list[SourceGroup]) -> int:
+    path = KNOWLEDGE_ROOT / "migrations" / f"{MIGRATION_ID}.json"
+    if not path.is_file():
+        print(f"ERROR: missing frozen migration receipt: {path}", file=sys.stderr)
+        return 1
+    manifest = json.loads(path.read_text(encoding="utf-8"))
+    errors: list[str] = []
+    if not isinstance(manifest, dict):
+        print("ERROR: frozen migration receipt must be a JSON object", file=sys.stderr)
+        return 1
+    if manifest.get("schema_version") != 1:
+        errors.append("schema_version must be 1")
+    if manifest.get("id") != MIGRATION_ID:
+        errors.append(f"id must be {MIGRATION_ID}")
+    receipt_groups = manifest.get("source_groups")
+    if not isinstance(receipt_groups, list):
+        errors.append("source_groups must be a list")
+        receipt_groups = []
+
+    expected_by_id = {group.identifier: group for group in groups}
+    receipt_by_id: dict[str, dict[str, Any]] = {}
+    for index, receipt_group in enumerate(receipt_groups):
+        if not isinstance(receipt_group, dict):
+            errors.append(f"source_groups[{index}] must be an object")
+            continue
+        identifier = receipt_group.get("id")
+        if not isinstance(identifier, str) or not identifier:
+            errors.append(f"source_groups[{index}].id must be non-empty")
+            continue
+        if identifier in receipt_by_id:
+            errors.append(f"duplicate source group {identifier}")
+            continue
+        receipt_by_id[identifier] = receipt_group
+
+    missing_groups = sorted(expected_by_id.keys() - receipt_by_id.keys())
+    extra_groups = sorted(receipt_by_id.keys() - expected_by_id.keys())
+    if missing_groups:
+        errors.append(f"missing source groups: {missing_groups}")
+    if extra_groups:
+        errors.append(f"unexpected source groups: {extra_groups}")
+
+    mapping_count = 0
+    for identifier in sorted(expected_by_id.keys() & receipt_by_id.keys()):
+        expected = expected_by_id[identifier]
+        receipt = receipt_by_id[identifier]
+        if receipt.get("source_ref") != expected.source_ref:
+            errors.append(f"{identifier}: source_ref does not match frozen source")
+        if receipt.get("source_sha256") != expected.source_sha256:
+            errors.append(f"{identifier}: source_sha256 does not match frozen source")
+        if receipt.get("expected_entries") != len(expected.entries):
+            errors.append(
+                f"{identifier}: expected_entries must be {len(expected.entries)}"
+            )
+        mappings = receipt.get("mappings")
+        if not isinstance(mappings, list):
+            errors.append(f"{identifier}: mappings must be a list")
+            continue
+        mapping_count += len(mappings)
+        receipt_legacy_ids: list[str] = []
+        for mapping_index, mapping in enumerate(mappings):
+            if not isinstance(mapping, dict):
+                errors.append(f"{identifier}.mappings[{mapping_index}] must be an object")
+                continue
+            legacy_id = mapping.get("legacy_id")
+            if not isinstance(legacy_id, str) or not legacy_id:
+                errors.append(
+                    f"{identifier}.mappings[{mapping_index}].legacy_id must be non-empty"
+                )
+                continue
+            receipt_legacy_ids.append(legacy_id)
+        expected_legacy_ids = [entry.legacy_id for entry in expected.entries]
+        if len(receipt_legacy_ids) != len(set(receipt_legacy_ids)):
+            errors.append(f"{identifier}: duplicate legacy_id in mappings")
+        missing_legacy = sorted(set(expected_legacy_ids) - set(receipt_legacy_ids))
+        extra_legacy = sorted(set(receipt_legacy_ids) - set(expected_legacy_ids))
+        if missing_legacy:
+            errors.append(f"{identifier}: missing legacy mappings {missing_legacy}")
+        if extra_legacy:
+            errors.append(f"{identifier}: unexpected legacy mappings {extra_legacy}")
+
+    if errors:
+        print("Frozen migration receipt check failed:", file=sys.stderr)
+        for error in errors:
+            print(f" - {error}", file=sys.stderr)
+        return 1
+    print(
+        f"PASS frozen migration receipt: source_groups={len(groups)} "
+        f"legacy_mappings={mapping_count}; living item/use records were not reserialized"
+    )
+    return 0
+
+
 def write_or_check(
     items: dict[str, dict[str, Any]],
     uses: dict[str, dict[str, Any]],
@@ -1440,12 +1532,18 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--write", action="store_true", help="write missing or changed migration outputs")
-    mode.add_argument("--check", action="store_true", help="verify outputs match the frozen sources")
+    mode.add_argument(
+        "--check",
+        action="store_true",
+        help="verify frozen source hashes and migration receipt coverage",
+    )
     args = parser.parse_args(argv)
     try:
         groups = load_source_groups()
+        if args.check:
+            return check_receipt(groups)
         items, uses, manifest = build_library(groups)
-        return write_or_check(items, uses, manifest, check=args.check)
+        return write_or_check(items, uses, manifest, check=False)
     except (OSError, RuntimeError, ValueError, json.JSONDecodeError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1

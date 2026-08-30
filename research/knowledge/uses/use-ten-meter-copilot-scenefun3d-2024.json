@@ -9,6 +9,7 @@
   "use_state": "active",
   "adoption_mode": "dataset",
   "usage": {
+    "applicability": "L10 functional-element Development after exact-instance binding; privileged labels remain evaluator or proposal authority only.",
     "source_scope": "面向任务的细粒度功能部件与 affordance 标注。",
     "project_application": "作为 L10 功能落点候选：先绑定正确实例，再在实例内部定位门把手、按钮、座位接触面等真正执行功能的区域。",
     "modifications": "保持现有 exact-instance authority 与候选分母；只新增 functional-element 表示，不允许用父对象 bbox 直接充当动作目标。",

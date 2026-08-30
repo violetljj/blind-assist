@@ -9,6 +9,7 @@
   "use_state": "active",
   "adoption_mode": "mechanism_adaptation",
   "usage": {
+    "applicability": "L10 Development after exact parent-instance lock, using task-conditioned posed RGB-D functional-part proposals.",
     "source_scope": "任务条件、上下文对象、功能部件分割与多视角一致性。",
     "project_application": "用于检验 L10 是否能在已锁定实例内稳定定位功能部件，而不是继续扩大类别或候选搜索。",
     "modifications": "冻结 instance lock；把 LLM 只用于产生任务相关部件提示，不授予它 outcome truth 或完成判定权限。",

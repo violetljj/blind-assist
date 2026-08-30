@@ -7,6 +7,7 @@
   "use_state": "active",
   "adoption_mode": "mechanism_adaptation",
   "usage": {
+    "applicability": "Non-OCR entrance filtering and active reacquisition on source-audited multiview Commons Development data with public target references.",
     "source_scope": "V4/V5/V7 prior-file-disjoint Commons Development batches with human pixel boxes; V7 uses 12 earlier multi-facet reference views, 32 new queries, six target-building positives, and 26 strong negatives.",
     "project_application": "Provide a non-OCR target-to-entrance candidate filter, then convert residual single-frame ambiguity into an explicit closer-view and reacquisition loop before tracking and guidance.",
     "modifications": "Reciprocal native DINO support, distractor subtraction, downward structural rays, set-valued authority, two-consecutive-view commit, and last-bearing reacquisition.",

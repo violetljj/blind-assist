@@ -77,6 +77,13 @@ python tools/knowledge.py diagnose --route goal-copilot-p0 --symptom "near-ident
 `decision/config.json` 持有故障层、双语签名、机制 override 和实验模板；
 `decision/terminals.json` 只保存当前决策所需的窄 terminal 摘要及仓库证据锚点，
 不替代 owning route README；`decision/golden_cases.json` 冻结真实故障回归集。
+编译索引 schema v2 的 `associations` 将同一 run 的重复 ledger 行合并，并稳定保存
+`run_id / use_ids / protocol_id / code_revision / input_fingerprint /
+artifact_refs / decision_id`。只从显式字段、experiment evidence 或完全一致的
+terminal decision 建边；没有权威来源的关联保持 `null`，不靠文本相似度猜测。
+新实验行可显式写 `use_ids`、`protocol_id`、SHA-256 `input_fingerprint`、
+`artifact_refs` 和 `decision_id`；编译器会拒绝未知 use、冲突的稳定字段或一项
+decision 被多个 run 占用。
 
 当 item、use、experiment、配置或 terminal 变化时，重建索引并运行冻结回归：
 
@@ -97,13 +104,14 @@ canonical item，而且清单声明的 use 必须存在并真正属于该 item�
 `list/search --json` 可向路线代码或 agent 返回完整结构化结果。item 的
 canonical id、aliases 和全文字段都能被 `search/show` 解析。
 
-日常算法研究优先使用 `context --route <route>`。它不会把全库直接塞进上下文，
-而是把同一路线的 use 按以下顺序压缩：`active`，已有实验结论或 `rejected`，
-`adopted`，`planned`，`candidate`，最后是 `retired`。默认返回 12 条，先确保每个
-实际存在的优先级层至少出现一个代表，再按顺序补满；同时报告各状态/判定的总数
-和省略数量。用 `--query` 收窄到当前问题，用 `--all` 获取完整路线，用 `--json`
-直接交给路线脚本或 agent。每条精简记录仍保留机制、项目接法、修改、预期/实际
-效果、claim boundary、证据和最近一次更新。
+日常算法研究优先使用 `context --route <route>`。V2 不会把全库直接塞进上下文，
+而是在同一个总预算里先给出最新 current terminal，再按以下顺序压缩 use：已有
+实验结论或 `rejected`，`active / planned`，`adopted`，`candidate`，最后是
+`retired`。默认总共返回 4 条 terminal + use 记录，先确保每个实际存在的 use
+优先级层至少出现一个代表，再按顺序补满；同时报告各状态、判定和省略数量。用
+`--query` 同时收窄 terminal 与 use，用 `--all` 获取完整路线，用 `--json` 直接
+交给路线脚本或 agent。每条精简 use 仍保留 applicability、机制、项目接法、修改、
+预期/实际效果、claim boundary、证据和最近一次更新。
 
 冷启动建议使用文本输出和 `--limit 4`；只有自动化消费者需要完整字段时才加
 `--json`。当前路线目录别名 `dtr-r0`、`l10-r0` 也可用于 `context`、`list`、
@@ -138,7 +146,7 @@ python tools/knowledge.py new-item --id paper-example-2026 --kind paper --title 
 
 ```powershell
 python tools/knowledge.py new-use --id use-example-route-mechanism --item paper-example-2026 --route example-route --mechanism useful-mechanism --source-scope "原作中真正借用的部分。" --project-application "在本路线接到哪里。" --modifications "与原作相比改了什么。" --expected-effect "预期改变哪个可观察量。" --claim-boundary "即使成功也不能推出什么。"
-python tools/knowledge.py update-use use-example-route-mechanism --state active --reproduction partial --verdict mixed --effect "实际观察到的效果。" --metric "metric_name=value on named cohort" --evidence repo research/active/example-route/result.json "可复核结果" --note "完成第一轮复现并更新当前判断。"
+python tools/knowledge.py update-use use-example-route-mechanism --state active --applicability "只用于已冻结输入和命名 cohort 的机制实验。" --reproduction partial --verdict mixed --effect "实际观察到的效果。" --metric "metric_name=value on named cohort" --evidence repo research/active/example-route/result.json "可复核结果" --note "完成第一轮复现并更新当前判断。"
 ```
 
 `update-use` 只改给出的字段，并强制追加一条 history note。证据引用支持：
@@ -148,6 +156,11 @@ python tools/knowledge.py update-use use-example-route-mechanism --state active 
 - `git`：`REVISION:path/in/repo` 的历史锚点；
 - `artifact`：`artifacts.local/...` 下的本地证据；
 - `external`：公开 HTTP 链接。
+
+完整性采用选择性门槛：`candidate / adopted / rejected / retired` 可以保留历史上的
+稀疏机制描述；一旦 use 进入 `planned` 或 `active`，`usage.applicability` 必须明确
+适用条件，而且它引用的每个 mechanism 都必须有非空 `inputs` 和 `outputs`。这只
+约束真正准备投入实验的知识，不批量膨胀旧候选。
 
 ## 路线使用规则
 
@@ -195,6 +208,9 @@ Closing the Gap、Depth Anything V2 和 AI Guide Dog；各路线的判断仍是�
 python tools/migrate_scattered_knowledge.py --check
 ```
 
+该命令只重读冻结来源并核对 `source_ref`、SHA-256、source-group 数量和 legacy-id
+覆盖收据；它不会重新序列化已经在迁移后继续演进的 item/use。当前 item/use 与
+迁移映射是否仍可解析由 `python tools/knowledge.py validate` 独立负责。
 该命令是迁移审计工具，不是日常新增入口。其他机器没有这两份本地深读报告时，
 知识库和 `knowledge.py validate/list/search/show` 仍可正常使用；不要为通过
 `--check` 而伪造报告。后续新知识直接新增 item/use，不追加到旧迁移收据。

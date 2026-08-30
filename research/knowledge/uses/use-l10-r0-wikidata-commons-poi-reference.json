@@ -9,6 +9,7 @@
   "use_state": "active",
   "adoption_mode": "dataset",
   "usage": {
+    "applicability": "Non-OCR named-place identity ranking for source-audited public-reference cohorts before entrance binding.",
     "source_scope": "Six source-audited Hong Kong named entities, 12 public reference images, 6 calibration views, and 11 evaluation views drawn from a frozen 50-image Commons library.",
     "project_application": "Supply a non-OCR identity branch for the find-correct-building stage before entrance binding and temporal guidance.",
     "modifications": "CLIP global reference similarity, DINOv2 pooled appearance, and mutual-patch affine consistency; OCR calls fixed at zero for the first falsifier.",

@@ -87,6 +87,8 @@ class KnowledgeCliTest(unittest.TestCase):
                 "use-smoke-route",
                 "--state",
                 "active",
+                "--applicability",
+                "Only the scoped smoke lifecycle with declared mechanism input and output.",
                 "--reproduction",
                 "partial",
                 "--verdict",
@@ -112,6 +114,7 @@ class KnowledgeCliTest(unittest.TestCase):
                 (root / "uses" / "use-smoke-route.json").read_text(encoding="utf-8")
             )
             self.assertEqual("active", use["use_state"])
+            self.assertIn("smoke lifecycle", use["usage"]["applicability"])
             self.assertEqual("partial", use["evaluation"]["reproduction_status"])
             self.assertEqual("mixed", use["evaluation"]["verdict"])
             self.assertEqual(["smoke=pass"], use["evaluation"]["metrics"])
@@ -296,6 +299,106 @@ class KnowledgeCliTest(unittest.TestCase):
             [entry["use"]["id"] for entry in selected],
         )
 
+    def test_promoted_use_requires_applicability_and_mechanism_io(self) -> None:
+        item = {
+            "id": "paper-promoted",
+            "mechanisms": [
+                {
+                    "id": "promoted-mechanism",
+                    "inputs": [],
+                    "outputs": [],
+                }
+            ],
+        }
+        use = {
+            "schema_version": 1,
+            "id": "use-promoted",
+            "item_id": "paper-promoted",
+            "route": "smoke-route",
+            "mechanism_ids": ["promoted-mechanism"],
+            "use_state": "planned",
+            "adoption_mode": "reference",
+            "usage": {
+                "source_scope": "Scoped source.",
+                "project_application": "Scoped application.",
+                "modifications": "None.",
+                "expected_effect": "Observable effect.",
+            },
+            "evaluation": {
+                "reproduction_status": "not_attempted",
+                "verdict": "not_run",
+                "setup": "",
+                "effect": "",
+                "metrics": [],
+                "claim_boundary": "No route authority.",
+            },
+            "evidence": [],
+            "history": [{"date": "2026-08-31", "change": "Planned."}],
+            "added_at": "2026-08-31",
+            "updated_at": "2026-08-31",
+        }
+        errors = knowledge._validate_use(
+            use,
+            "use promoted",
+            {item["id"]: item},
+            Path("."),
+            set(),
+        )
+        self.assertTrue(any("applicability" in error for error in errors))
+        self.assertTrue(any("non-empty inputs" in error for error in errors))
+        self.assertTrue(any("non-empty outputs" in error for error in errors))
+
+        use["usage"]["applicability"] = "Only the scoped planned experiment."
+        item["mechanisms"][0]["inputs"] = ["input"]
+        item["mechanisms"][0]["outputs"] = ["output"]
+        self.assertEqual(
+            [],
+            knowledge._validate_use(
+                use,
+                "use promoted",
+                {item["id"]: item},
+                Path("."),
+                set(),
+            ),
+        )
+
+    def test_run_associations_merge_duplicate_rows_and_exact_links(self) -> None:
+        rows = [
+            {
+                "id": "run-smoke",
+                "decision": "SMOKE_DECISION",
+                "commit": "abc123",
+                "report": "reports/run-smoke.json",
+            },
+            {
+                "id": "run-smoke",
+                "decision": "SMOKE_DECISION",
+                "commit": "abc123",
+                "report": "reports/run-smoke.md",
+            },
+        ]
+        uses = {
+            "use-smoke": {
+                "id": "use-smoke",
+                "evidence": [
+                    {"kind": "experiment", "ref": "run-smoke", "summary": "Exact."}
+                ],
+            }
+        }
+        terminals = [
+            {"id": "terminal-smoke", "decision": "SMOKE_DECISION"}
+        ]
+        associations = knowledge._build_run_associations(rows, uses, terminals)
+        self.assertEqual(1, len(associations))
+        self.assertEqual("run-smoke", associations[0]["run_id"])
+        self.assertEqual(["use-smoke"], associations[0]["use_ids"])
+        self.assertEqual("terminal-smoke", associations[0]["decision_id"])
+        self.assertEqual(2, associations[0]["source_rows"])
+        self.assertEqual(
+            ["reports/run-smoke.json", "reports/run-smoke.md"],
+            associations[0]["artifact_refs"],
+        )
+
     def test_current_route_aliases_share_one_context_family(self) -> None:
         item = {
             "id": "paper-route-family",
@@ -365,6 +468,49 @@ class KnowledgeCliTest(unittest.TestCase):
             [entry["use"]["id"] for entry in alias["entries"]],
         )
 
+        decision_index = {
+            "experiments": [
+                {
+                    "kind": "current_terminal",
+                    "id": "terminal-route-family",
+                    "status": "closed",
+                    "decision": "ROUTE_FAMILY_CLOSED",
+                    "question": "Current route-family terminal.",
+                    "successor_requires": "Fresh causal evidence.",
+                    "forbidden_repeats": ["alias-only rerun"],
+                    "evidence": ["reports/terminal.md"],
+                    "commit": "abc123",
+                    "routes": ["ten-meter-copilot"],
+                }
+            ],
+            "associations": [
+                {
+                    "run_id": "run-route-family",
+                    "use_ids": ["use-canonical"],
+                    "protocol_id": None,
+                    "code_revision": "abc123",
+                    "input_fingerprint": None,
+                    "artifact_refs": ["reports/terminal.md"],
+                    "decision_id": "terminal-route-family",
+                    "source_rows": 1,
+                }
+            ],
+        }
+        compact = knowledge._build_context(
+            {item["id"]: item},
+            uses,
+            route="l10-r0",
+            query=None,
+            limit=2,
+            decision_index=decision_index,
+        )
+        self.assertEqual(2, compact["summary"]["returned_records"])
+        self.assertEqual("terminal-route-family", compact["terminals"][0]["id"])
+        self.assertEqual(
+            "run-route-family",
+            compact["terminals"][0]["association"]["run_id"],
+        )
+
     def test_query_matching_requires_all_terms_and_normalizes_punctuation(self) -> None:
         searchable = (
             "Mesh z-buffer projection keeps a visible target door face. "
@@ -395,6 +541,9 @@ class KnowledgeCliTest(unittest.TestCase):
         with TemporaryDirectory(prefix="blindassist-decision-test-") as temporary:
             root = Path(temporary) / "research" / "knowledge"
             (root / "decision").mkdir(parents=True)
+            (root / "decision" / "config.json").write_text(
+                "{}\n", encoding="utf-8"
+            )
             experiment_template = {
                 "hypothesis": "Temporal state is missing.",
                 "baseline": "Frozen stateless baseline.",
@@ -406,9 +555,9 @@ class KnowledgeCliTest(unittest.TestCase):
                 "claim_ceiling": "Replay-only temporal evidence.",
             }
             index = {
-                "schema_version": 1,
+                "schema_version": 2,
                 "engine_version": "decision-test",
-                "source_fingerprint": "test-fingerprint",
+                "source_fingerprint": knowledge._decision_source_fingerprint(root),
                 "failure_layers": [
                     {
                         "id": "temporal_belief",
@@ -425,6 +574,7 @@ class KnowledgeCliTest(unittest.TestCase):
                     "UNKNOWN must remain distinct.",
                     "只改变一个 information factor.",
                 ],
+                "associations": [],
                 "mechanisms": [
                     {
                         "id": "paper-temporal#bounded-belief",

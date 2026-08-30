@@ -61,16 +61,28 @@
       "id": "project-guideline-pose-time-alignment",
       "name": "Google Research Project Guideline — project-guideline:pose-time-alignment route mechanism",
       "description": "Project Guideline 的做法。 ARCore 在同一帧时间轴提供相机 pose 和 3D tracking features；GuidanceSystem 对 camera pose 要求对应时间戳，对 features 选择精确或最近 样本 （arcore_motion_tracker.cc； guidance_system.cc）。 BlindAssist 已有对应。 CameraX 已记录 capture/receive 时间、时钟域和坐标帧； [UstrfVioPoseReceipt.kt](../core/ustrf/src/main/java/com/linnan/blindassist/ustrf/UstrfVioPoseReceipt.kt) 已预留 fail-closed VIO 准入合同，要求帧匹配、稳定世界系、时效、置信度、倾角和独立验证 的相机到机身外参。 真实缺口。 当前正式手机链路没有已准入的 ARCore/VIO adapter、稳定 world-frame 政策或独立外参收据；现有合同只是边界，不是设备能力证明。 进入条件。 只有当一个已冻结的手机相机实验明确需要跨帧 metric warp，且能提供 同源时间戳、稳定世界系、跟踪状态、外参、丢跟踪重置规则与离线重放时，才可另立小型 adapter 评估。 停止线。 本审计不添加 ARCore / MediaPipe 依赖，不把 Project Guideline 的腰挂 相机外参迁移到手持手机，不解锁产品或用户反馈权限。",
-      "inputs": [],
-      "outputs": [],
+      "inputs": [
+        "camera frame timestamp and clock domain",
+        "tracked camera pose, world frame, and admitted camera-to-body extrinsic"
+      ],
+      "outputs": [
+        "frame-matched camera pose and tracking-feature sample",
+        "fail-closed cross-frame metric warp eligibility"
+      ],
       "limitations": "The component decision is HOLD. The audit absorbs only the stated engineering boundary; it does not import the full C++/Bazel/MediaPipe/ARCore/Unreal stack or establish dynamic-risk, grounding, user, product, or safety evidence."
     },
     {
       "id": "project-guideline-depth-scale-alignment",
       "name": "Google Research Project Guideline — project-guideline:depth-scale-alignment route mechanism",
       "description": "Project Guideline 的做法。 它用 ARCore 3D tracking features 与相对 ML depth 做 RANSAC，估计 scale + shift 后再生成世界点云 （depth_align_ransac.h； guidance_system.cc）。 BlindAssist 已有对应。 已有相对深度 TFLite 候选和 benchmark 脚手架，但它不是 metric depth。既有 MiDaS 真机 A/B 虽把关键漏报 9 → 7，却把误提醒率 0.037 → 0.185，总 P50/P95 54/56 ms → 276/292 ms，结论为 do_not_promote_depth_fusion （[DETECTOR_BENCHMARK.md](DETECTOR_BENCHMARK.md#单目深度融合候选路线)）。 真实缺口。 缺少与手机相机同帧、已准入的稀疏 metric 3D 特征；没有它，复制 RANSAC 只会产生形式上的 scale，而不是可信尺度。 进入条件。 只有 3.5 的 pose/feature 输入先通过准入，且论文确实需要 metric depth， 才允许一个隔离、小样本、预冻结阈值的 relative depth vs aligned depth 实验。 停止线。 不纳入论文必做项，不接正式提醒，不以 Project Guideline 结果替代本机 准确率、误提醒、延迟和热/功耗测试。",
-      "inputs": [],
-      "outputs": [],
+      "inputs": [
+        "frame-aligned relative depth",
+        "admitted sparse metric 3-D tracking features"
+      ],
+      "outputs": [
+        "RANSAC-estimated depth scale and shift",
+        "metric-aligned depth or world point cloud"
+      ],
       "limitations": "The component decision is HOLD. The audit absorbs only the stated engineering boundary; it does not import the full C++/Bazel/MediaPipe/ARCore/Unreal stack or establish dynamic-risk, grounding, user, product, or safety evidence."
     },
     {

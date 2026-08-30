@@ -7,6 +7,7 @@
   "use_state": "active",
   "adoption_mode": "mechanism_adaptation",
   "usage": {
+    "applicability": "Curated bilingual named-place identity cohorts with audited public identity carriers and explicit wrong-request controls.",
     "source_scope": "Eight entities absent from the PB1/PB2-A/PB3 formal cohorts, split four Development and four test, with one source-audited identity-bearing and one context query per entity.",
     "project_application": "Supply conditional positive named-place authority before a functional portal may bind to the requested entity.",
     "modifications": "Replace whole-alias-only matching with distinctive English/Han/public-mark carriers, fixed traditional/simplified folding, split-local metadata IDF, cross-carrier conflict veto, and an asymmetric proof/appearance join. Missing text remains UNKNOWN.",

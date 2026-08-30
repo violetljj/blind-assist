@@ -9,6 +9,7 @@
   "use_state": "active",
   "adoption_mode": "mechanism_adaptation",
   "usage": {
+    "applicability": "Named-entity entrance binding on source-audited Commons Development cohorts when a public target roster and candidate context are available.",
     "source_scope": "Third prior-file-disjoint Commons batch with 20 images, four human-boxed actionable entrance views, 16 negatives, and six public target reference images.",
     "project_application": "Replace scene-level identity AND entrance gating with candidate-specific target-to-entrance edges before tracking and guidance.",
     "modifications": "Use expanded proposal context, a public target roster, harmonic entrance/identity edge evidence, set-valued ambiguity, and fail-closed search.",

@@ -9,6 +9,7 @@
   "use_state": "planned",
   "adoption_mode": "component",
   "usage": {
+    "applicability": "The next separately authorized real posed-door source, with identity and query transfer frozen before visibility projection.",
     "source_scope": "Official mesh-to-image rasterization, pixel-to-face, z-buffer, 2D instance projection, and object-visibility utilities only.",
     "project_application": "For the next visibility-qualified L10 source, replace SceneNN reference-side envelope depth reads with z-buffer-visible target-instance pixels, depth consistency, and a visible-face plane fit while keeping candidate identity and query transfer fixed.",
     "modifications": "Use the toolkit as deterministic visibility machinery for a door-labeled real posed source. Do not treat ScanNet++ semantic labels as functional entrance, exact public identity, arrival, or user completion truth.",

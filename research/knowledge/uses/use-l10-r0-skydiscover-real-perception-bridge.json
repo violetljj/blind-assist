@@ -7,6 +7,7 @@
   "use_state": "active",
   "adoption_mode": "mechanism_adaptation",
   "usage": {
+    "applicability": "Offline SkyDiscover policy search only for BlindAssist-owned real ordered portal-state evaluators; it is not a perception or route-authority source.",
     "source_scope": "SkyDiscover main merged locally at c475ed4009071159b4d5b777715f1af9202cebba on 2026-08-28. The obsolete oracle L10 benchmark family is excluded from the current route rather than migrated.",
     "project_application": "Use a new evaluator whose only target observations are BlindAssist support-ray and temporal-belief SEARCH, SET_VALUED, COMMIT, and REACQUIRE states from real ordered portal views.",
     "modifications": "Search only the active-observation and commitment policy block. Use AdaEvolve Pareto objectives for correct portal retention/commit/reacquisition versus false commits, instruction burden, and runtime; wrong-portal or premature ARRIVED remains a hard invalidity.",

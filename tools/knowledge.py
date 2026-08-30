@@ -31,6 +31,7 @@ ITEM_KINDS = {
     "other",
 }
 USE_STATES = {"candidate", "planned", "active", "adopted", "rejected", "retired"}
+PROMOTED_USE_STATES = {"planned", "active"}
 ADOPTION_MODES = {
     "reference",
     "mechanism_adaptation",
@@ -61,7 +62,7 @@ EVIDENCE_KINDS = {"repo", "experiment", "git", "artifact", "external"}
 REFERENCE_PREFIXES = ("https://", "http://", "doi:", "repo:", "git:")
 MIGRATION_DISPOSITIONS = {"migrated", "deduplicated", "synthesis"}
 SHA256_PATTERN = re.compile(r"^[0-9a-fA-F]{64}$")
-CONTEXT_DEFAULT_LIMIT = 12
+CONTEXT_DEFAULT_LIMIT = 4
 CONTEXT_VERDICT_PRIORITY = {
     "falsified": 0,
     "negative": 1,
@@ -81,6 +82,7 @@ ROUTE_CANONICAL = {
     for alias in aliases
 }
 DECISION_SCHEMA_VERSION = 1
+DECISION_INDEX_SCHEMA_VERSION = 2
 DECISION_DEFAULT_MECHANISM_LIMIT = 2
 DECISION_DEFAULT_ATTEMPT_LIMIT = 4
 DECISION_CONFIG_RELATIVE = Path("decision") / "config.json"
@@ -322,9 +324,10 @@ def _validate_use(
         context,
         allow_empty=False,
     )
+    valid_mechanisms: dict[str, dict[str, Any]] = {}
     if isinstance(item_id, str) and item_id in items:
         valid_mechanisms = {
-            mechanism["id"]
+            mechanism["id"]: mechanism
             for mechanism in items[item_id].get("mechanisms", [])
             if isinstance(mechanism, dict) and isinstance(mechanism.get("id"), str)
         }
@@ -333,7 +336,8 @@ def _validate_use(
                 errors.append(
                     f"{context}: mechanism {mechanism_id} is not defined by {item_id}"
                 )
-    if record.get("use_state") not in USE_STATES:
+    use_state = record.get("use_state")
+    if use_state not in USE_STATES:
         errors.append(f"{context}: use_state must be one of {sorted(USE_STATES)}")
     if record.get("adoption_mode") not in ADOPTION_MODES:
         errors.append(
@@ -351,6 +355,23 @@ def _validate_use(
             "expected_effect",
         ):
             _check_string(errors, usage, field, f"{context}.usage")
+        if use_state in PROMOTED_USE_STATES:
+            _check_string(errors, usage, "applicability", f"{context}.usage")
+        elif "applicability" in usage:
+            _check_string(errors, usage, "applicability", f"{context}.usage")
+
+    if use_state in PROMOTED_USE_STATES:
+        for mechanism_id in mechanisms:
+            mechanism = valid_mechanisms.get(mechanism_id)
+            if mechanism is None:
+                continue
+            for field in ("inputs", "outputs"):
+                values = mechanism.get(field)
+                if not isinstance(values, list) or not values:
+                    errors.append(
+                        f"{context}: promoted mechanism {item_id}#{mechanism_id} "
+                        f"must declare non-empty {field}"
+                    )
 
     evaluation = record.get("evaluation")
     if not isinstance(evaluation, dict):
@@ -834,15 +855,14 @@ def _command_search(args: argparse.Namespace) -> int:
 def _context_bucket(use: dict[str, Any]) -> int:
     state = use["use_state"]
     verdict = use["evaluation"]["verdict"]
-    if state == "active":
-        return 0
     if verdict != "not_run" or state == "rejected":
+        return 0
+    if state in PROMOTED_USE_STATES:
         return 1
     return {
         "adopted": 2,
-        "planned": 3,
-        "candidate": 4,
-        "retired": 5,
+        "candidate": 3,
+        "retired": 4,
     }.get(state, 6)
 
 
@@ -894,6 +914,8 @@ def _context_sort_key(
 def _select_context_entries(
     entries: list[dict[str, Any]], limit: int | None
 ) -> list[dict[str, Any]]:
+    if limit is not None and limit <= 0:
+        return []
     if limit is None or len(entries) <= limit:
         return entries
 
@@ -914,6 +936,76 @@ def _select_context_entries(
     return [entry for entry in entries if entry["use"]["id"] in selected_ids]
 
 
+def _context_terminal_entry(
+    terminal: dict[str, Any],
+    association: dict[str, Any] | None,
+) -> dict[str, Any]:
+    return {
+        "id": terminal["id"],
+        "status": terminal.get("status"),
+        "decision": terminal.get("decision"),
+        "summary": terminal.get("question"),
+        "successor_requires": terminal.get("successor_requires"),
+        "forbidden_repeats": terminal.get("forbidden_repeats", []),
+        "evidence": terminal.get("evidence", []),
+        "commit": terminal.get("commit"),
+        "association": association,
+    }
+
+
+def _context_terminals(
+    decision_index: dict[str, Any] | None,
+    *,
+    route: str,
+    query: str | None,
+) -> tuple[int, list[dict[str, Any]]]:
+    if decision_index is None:
+        return 0, []
+    associations = {
+        association.get("decision_id"): association
+        for association in decision_index.get("associations", [])
+        if isinstance(association, dict)
+        and _is_nonempty_string(association.get("decision_id"))
+    }
+    route_terminals: list[tuple[int, dict[str, Any]]] = []
+    for position, terminal in enumerate(decision_index.get("experiments", [])):
+        if not isinstance(terminal, dict) or terminal.get("kind") != "current_terminal":
+            continue
+        if not any(
+            _route_matches(candidate, route)
+            for candidate in terminal.get("routes", [])
+        ):
+            continue
+        route_terminals.append(
+            (
+                position,
+                _context_terminal_entry(
+                    terminal, associations.get(terminal.get("id"))
+                ),
+            )
+        )
+
+    route_total = len(route_terminals)
+    ranked: list[tuple[int, int, dict[str, Any]]] = []
+    for position, terminal in route_terminals:
+        primary = " ".join(
+            str(terminal.get(field) or "")
+            for field in (
+                "id",
+                "status",
+                "decision",
+                "summary",
+                "successor_requires",
+            )
+        )
+        score = _record_query_score(query, terminal, primary) if query else 0
+        if query and score == 0:
+            continue
+        ranked.append((score, position, terminal))
+    ranked.sort(key=lambda value: (-value[0], -value[1], value[2]["id"]))
+    return route_total, [value[2] for value in ranked]
+
+
 def _build_context(
     items: dict[str, dict[str, Any]],
     uses: dict[str, dict[str, Any]],
@@ -921,13 +1013,17 @@ def _build_context(
     route: str,
     query: str | None,
     limit: int | None,
+    decision_index: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     canonical_route = _canonical_route(route)
     route_uses = [
         use for use in uses.values() if _route_matches(use.get("route"), route)
     ]
-    if not route_uses:
-        raise KnowledgeError(f"no knowledge uses found for route: {route}")
+    route_terminal_count, terminal_entries = _context_terminals(
+        decision_index, route=route, query=query
+    )
+    if not route_uses and route_terminal_count == 0:
+        raise KnowledgeError(f"no knowledge records found for route: {route}")
 
     entries = [
         _context_entry(items[use["item_id"]], use) for use in route_uses
@@ -960,21 +1056,37 @@ def _build_context(
         entry["use"]["evaluation"]["verdict"] for entry in entries
     )
     matched_count = len(entries)
-    selected = _select_context_entries(entries, limit)
+    matched_terminal_count = len(terminal_entries)
+    if limit is None:
+        selected_terminals = terminal_entries
+        selected = entries
+    else:
+        selected_terminals = terminal_entries[:1]
+        selected = _select_context_entries(entries, limit - len(selected_terminals))
+    returned_records = len(selected_terminals) + len(selected)
+    matched_records = matched_terminal_count + matched_count
     return {
         "route": canonical_route,
         "requested_route": route,
         "query": query,
         "summary": {
+            "route_total_terminals": route_terminal_count,
+            "matched_terminals": matched_terminal_count,
+            "returned_terminals": len(selected_terminals),
+            "omitted_terminals": matched_terminal_count - len(selected_terminals),
             "route_total_uses": len(route_uses),
             "matched_uses": matched_count,
             "returned_uses": len(selected),
             "omitted_uses": matched_count - len(selected),
+            "matched_records": matched_records,
+            "returned_records": returned_records,
+            "omitted_records": matched_records - returned_records,
             "states": dict(sorted(state_counts.items())),
             "verdicts": dict(sorted(verdict_counts.items())),
             "selection_policy": (
-                "represent every present priority tier once, then fill active first; "
-                "evaluated or rejected; adopted, planned, candidate, and retired; "
+                "return the newest current terminal first, then represent every "
+                "present use tier once before filling: evaluated or rejected; "
+                "active or planned; adopted; candidate; retired; "
                 + (
                     "query relevance then stable title order within each tier"
                     if query
@@ -982,6 +1094,7 @@ def _build_context(
                 )
             ),
         },
+        "terminals": selected_terminals,
         "entries": selected,
     }
 
@@ -1002,6 +1115,16 @@ def _print_context(payload: dict[str, Any], as_json: bool) -> None:
     if payload["query"]:
         print(f"Query: {payload['query']}")
     print(
+        f"Records: matched={summary['matched_records']} "
+        f"returned={summary['returned_records']} omitted={summary['omitted_records']}"
+    )
+    print(
+        f"Terminals: route={summary['route_total_terminals']} "
+        f"matched={summary['matched_terminals']} "
+        f"returned={summary['returned_terminals']} "
+        f"omitted={summary['omitted_terminals']}"
+    )
+    print(
         f"Uses: route={summary['route_total_uses']} matched={summary['matched_uses']} "
         f"returned={summary['returned_uses']} omitted={summary['omitted_uses']}"
     )
@@ -1013,6 +1136,32 @@ def _print_context(payload: dict[str, Any], as_json: bool) -> None:
     ) or "none"
     print(f"States: {states}")
     print(f"Verdicts: {verdicts}")
+
+    for terminal in payload["terminals"]:
+        print()
+        print(
+            f"## current terminal / {terminal['status']} — {terminal['id']}"
+        )
+        print(f"- Decision: {_one_line(terminal['decision'])}")
+        print(f"- Summary: {_one_line(terminal['summary'])}")
+        print(f"- Successor requires: {_one_line(terminal['successor_requires'])}")
+        print(
+            "- Forbidden repeats: "
+            + ("; ".join(terminal["forbidden_repeats"]) or "-")
+        )
+        association = terminal.get("association")
+        if association:
+            print(
+                f"- Run association: {association['run_id']} | "
+                f"uses={','.join(association['use_ids']) or '-'}"
+            )
+            print(
+                f"- Revision/input: {association['code_revision'] or '-'} | "
+                f"{association['input_fingerprint'] or '-'}"
+            )
+        else:
+            print(f"- Revision: {terminal['commit'] or '-'}")
+        print(f"- Evidence: {'; '.join(terminal['evidence']) or '-'}")
 
     for entry in payload["entries"]:
         item = entry["item"]
@@ -1032,6 +1181,8 @@ def _print_context(payload: dict[str, Any], as_json: bool) -> None:
             )
             print(f"- Mechanism: {_one_line(mechanism_text)}")
         usage = use["usage"]
+        if usage.get("applicability"):
+            print(f"- Applicability: {_one_line(usage['applicability'])}")
         print(f"- Application: {_one_line(usage['project_application'])}")
         print(f"- Modification: {_one_line(usage['modifications'])}")
         print(f"- Expected effect: {_one_line(usage['expected_effect'])}")
@@ -1055,10 +1206,10 @@ def _print_context(payload: dict[str, Any], as_json: bool) -> None:
                 f"{_one_line(latest['change'])}"
             )
 
-    if summary["omitted_uses"]:
+    if summary["omitted_records"]:
         print()
         print(
-            f"Omitted {summary['omitted_uses']} lower-priority matches. "
+            f"Omitted {summary['omitted_records']} lower-priority matches. "
             "Refine with --query or request the complete route with --all."
         )
 
@@ -1067,12 +1218,18 @@ def _command_context(args: argparse.Namespace) -> int:
     items, uses = _require_valid(args.root)
     if not args.include_all and args.limit < 1:
         raise KnowledgeError("--limit must be at least 1")
+    decision_index = (
+        _load_decision_index(args.root)
+        if _decision_index_path(args.root).is_file()
+        else None
+    )
     payload = _build_context(
         items,
         uses,
         route=args.route,
         query=args.query,
         limit=None if args.include_all else args.limit,
+        decision_index=decision_index,
     )
     _print_context(payload, args.json)
     return 0
@@ -1296,6 +1453,32 @@ def _read_experiment_rows(repo_root: Path) -> list[dict[str, Any]]:
             raise KnowledgeError(f"{path}:{line_number}: {exc}") from exc
         if not isinstance(row, dict) or not _is_nonempty_string(row.get("id")):
             raise KnowledgeError(f"{path}:{line_number}: experiment row needs string id")
+        context = f"{path}:{line_number}"
+        for field in ("protocol_id", "decision_id"):
+            if field in row and row[field] is not None and not _is_nonempty_string(
+                row[field]
+            ):
+                raise KnowledgeError(f"{context}: {field} must be null or non-empty")
+        fingerprint = row.get("input_fingerprint")
+        if fingerprint is not None and (
+            not isinstance(fingerprint, str)
+            or not SHA256_PATTERN.fullmatch(fingerprint)
+        ):
+            raise KnowledgeError(
+                f"{context}: input_fingerprint must be null or a SHA-256 hex digest"
+            )
+        for field in ("use_ids", "artifact_refs"):
+            if field not in row:
+                continue
+            values = row[field]
+            if not isinstance(values, list) or any(
+                not _is_nonempty_string(value) for value in values
+            ):
+                raise KnowledgeError(
+                    f"{context}: {field} must be a list of non-empty strings"
+                )
+            if len(values) != len(set(values)):
+                raise KnowledgeError(f"{context}: {field} contains duplicates")
         rows.append(row)
     return rows
 
@@ -1387,7 +1570,7 @@ def _infer_routes(text: str, route_profiles: dict[str, list[str]]) -> list[str]:
 
 def _compact_use(use: dict[str, Any]) -> dict[str, Any]:
     evaluation = use["evaluation"]
-    return {
+    compact = {
         "id": use["id"],
         "route": use["route"],
         "use_state": use["use_state"],
@@ -1408,6 +1591,111 @@ def _compact_use(use: dict[str, Any]) -> dict[str, Any]:
         ],
         "updated_at": use["updated_at"],
     }
+    applicability = use["usage"].get("applicability")
+    if applicability:
+        compact["applicability"] = applicability
+    return compact
+
+
+def _one_run_value(
+    run_id: str,
+    rows: list[dict[str, Any]],
+    field: str,
+) -> str | None:
+    values = {
+        value
+        for row in rows
+        if _is_nonempty_string(value := row.get(field))
+    }
+    if len(values) > 1:
+        raise KnowledgeError(
+            f"experiment run {run_id}: conflicting {field} values {sorted(values)}"
+        )
+    return next(iter(values), None)
+
+
+def _build_run_associations(
+    experiment_rows: list[dict[str, Any]],
+    uses: dict[str, dict[str, Any]],
+    current_terminals: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    rows_by_run: dict[str, list[dict[str, Any]]] = {}
+    for row in experiment_rows:
+        rows_by_run.setdefault(row["id"], []).append(row)
+
+    uses_by_run: dict[str, set[str]] = {}
+    for use in uses.values():
+        for evidence in use.get("evidence", []):
+            if evidence.get("kind") == "experiment" and _is_nonempty_string(
+                evidence.get("ref")
+            ):
+                uses_by_run.setdefault(evidence["ref"], set()).add(use["id"])
+
+    terminals_by_decision: dict[str, list[str]] = {}
+    for terminal in current_terminals:
+        terminals_by_decision.setdefault(terminal["decision"], []).append(
+            terminal["id"]
+        )
+
+    associations: list[dict[str, Any]] = []
+    for run_id, rows in sorted(rows_by_run.items()):
+        explicit_use_ids = {
+            use_id
+            for row in rows
+            for use_id in row.get("use_ids", [])
+        }
+        unknown_use_ids = sorted(explicit_use_ids - uses.keys())
+        if unknown_use_ids:
+            raise KnowledgeError(
+                f"experiment run {run_id}: unknown use_ids {unknown_use_ids}"
+            )
+        use_ids = sorted(explicit_use_ids | uses_by_run.get(run_id, set()))
+
+        explicit_decision_ids = {
+            row["decision_id"]
+            for row in rows
+            if _is_nonempty_string(row.get("decision_id"))
+        }
+        inferred_decision_ids = {
+            terminal_ids[0]
+            for row in rows
+            if len(
+                terminal_ids := terminals_by_decision.get(row.get("decision"), [])
+            )
+            == 1
+        }
+        decision_ids = explicit_decision_ids | inferred_decision_ids
+        if len(decision_ids) > 1:
+            raise KnowledgeError(
+                f"experiment run {run_id}: conflicting decision links "
+                f"{sorted(decision_ids)}"
+            )
+
+        artifact_refs: list[str] = []
+        for row in rows:
+            for value in (
+                *row.get("artifact_refs", []),
+                row.get("artifacts"),
+                row.get("report"),
+            ):
+                if _is_nonempty_string(value) and value not in artifact_refs:
+                    artifact_refs.append(value)
+
+        associations.append(
+            {
+                "run_id": run_id,
+                "use_ids": use_ids,
+                "protocol_id": _one_run_value(run_id, rows, "protocol_id"),
+                "code_revision": _one_run_value(run_id, rows, "commit"),
+                "input_fingerprint": _one_run_value(
+                    run_id, rows, "input_fingerprint"
+                ),
+                "artifact_refs": artifact_refs,
+                "decision_id": next(iter(decision_ids), None),
+                "source_rows": len(rows),
+            }
+        )
+    return associations
 
 
 def _build_decision_index_payload(
@@ -1448,6 +1736,7 @@ def _build_decision_index_payload(
                 search_parts.extend(
                     [
                         use["route"],
+                        use["usage"].get("applicability", ""),
                         use["usage"]["project_application"],
                         use["usage"]["expected_effect"],
                         use["evaluation"]["effect"],
@@ -1492,6 +1781,15 @@ def _build_decision_index_payload(
     current_terminals = _read_current_terminals(
         root, {layer["id"] for layer in layers}
     )
+    experiment_rows = _read_experiment_rows(repo_root)
+    associations = _build_run_associations(
+        experiment_rows, uses, current_terminals
+    )
+    association_by_decision = {
+        association["decision_id"]: association
+        for association in associations
+        if association["decision_id"] is not None
+    }
     for terminal in current_terminals:
         search_text = " ".join(
             [
@@ -1523,10 +1821,15 @@ def _build_decision_index_payload(
                 "successor_requires": terminal["successor_requires"],
                 "forbidden_repeats": terminal["forbidden_repeats"],
                 "evidence": terminal["evidence"],
+                "association_id": (
+                    association_by_decision[terminal["id"]]["run_id"]
+                    if terminal["id"] in association_by_decision
+                    else None
+                ),
                 "search_text": search_text,
             }
         )
-    for row in _read_experiment_rows(repo_root):
+    for row in experiment_rows:
         search_text = " ".join(
             str(row.get(field) or "")
             for field in (
@@ -1553,6 +1856,7 @@ def _build_decision_index_payload(
                 "report": row.get("report"),
                 "source": row.get("source"),
                 "commit": row.get("commit"),
+                "association_id": row["id"],
                 "routes": _infer_routes(search_text, config["route_profiles"]),
                 "layer_scores": _layer_scores_for_text(
                     search_text,
@@ -1564,7 +1868,7 @@ def _build_decision_index_payload(
         )
 
     return {
-        "schema_version": DECISION_SCHEMA_VERSION,
+        "schema_version": DECISION_INDEX_SCHEMA_VERSION,
         "engine_version": config["engine_version"],
         "generated_at": date.today().isoformat(),
         "source_fingerprint": _decision_source_fingerprint(root),
@@ -1574,12 +1878,14 @@ def _build_decision_index_payload(
             "uses": len(uses),
             "experiments": len(experiments) - len(current_terminals),
             "current_terminals": len(current_terminals),
+            "run_associations": len(associations),
         },
         "failure_layers": layers,
         "route_profiles": config["route_profiles"],
         "global_guardrails": config["global_guardrails"],
         "mechanisms": mechanisms,
         "experiments": experiments,
+        "associations": associations,
     }
 
 
@@ -1594,9 +1900,74 @@ def _command_build_decision_index(args: argparse.Namespace) -> int:
         f"BUILT {path}: layers={counts['failure_layers']} "
         f"mechanisms={counts['mechanisms']} uses={counts['uses']} "
         f"experiments={counts['experiments']} "
-        f"current_terminals={counts['current_terminals']}"
+        f"current_terminals={counts['current_terminals']} "
+        f"run_associations={counts['run_associations']}"
     )
     return 0
+
+
+def _decision_association_errors(payload: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    associations = payload.get("associations")
+    if not isinstance(associations, list):
+        return ["decision index: associations must be a list"]
+    run_ids: set[str] = set()
+    decision_owners: dict[str, str] = {}
+    for index, association in enumerate(associations):
+        context = f"decision index.associations[{index}]"
+        if not isinstance(association, dict):
+            errors.append(f"{context}: must be an object")
+            continue
+        run_id = association.get("run_id")
+        if not _is_nonempty_string(run_id):
+            errors.append(f"{context}: run_id must be a non-empty string")
+        elif run_id in run_ids:
+            errors.append(f"{context}: duplicate run_id {run_id}")
+        else:
+            run_ids.add(run_id)
+        for field in ("use_ids", "artifact_refs"):
+            _check_string_list(
+                errors, association.get(field), field, context
+            )
+        for field in (
+            "protocol_id",
+            "code_revision",
+            "input_fingerprint",
+            "decision_id",
+        ):
+            value = association.get(field)
+            if value is not None and not _is_nonempty_string(value):
+                errors.append(f"{context}: {field} must be null or non-empty")
+        fingerprint = association.get("input_fingerprint")
+        if isinstance(fingerprint, str) and not SHA256_PATTERN.fullmatch(fingerprint):
+            errors.append(f"{context}: input_fingerprint must be a SHA-256 digest")
+        decision_id = association.get("decision_id")
+        if isinstance(decision_id, str):
+            owner = decision_owners.get(decision_id)
+            if owner is not None and owner != run_id:
+                errors.append(
+                    f"{context}: decision_id {decision_id} is already linked to {owner}"
+                )
+            elif isinstance(run_id, str):
+                decision_owners[decision_id] = run_id
+        source_rows = association.get("source_rows")
+        if not isinstance(source_rows, int) or source_rows < 1:
+            errors.append(f"{context}: source_rows must be an integer >= 1")
+
+    experiments = payload.get("experiments")
+    if not isinstance(experiments, list):
+        errors.append("decision index: experiments must be a list")
+        experiments = []
+    for index, experiment in enumerate(experiments):
+        if not isinstance(experiment, dict):
+            continue
+        association_id = experiment.get("association_id")
+        if association_id is not None and association_id not in run_ids:
+            errors.append(
+                f"decision index.experiments[{index}]: unknown association_id "
+                f"{association_id}"
+            )
+    return errors
 
 
 def _decision_index_validation_errors(
@@ -1635,10 +2006,12 @@ def _decision_index_validation_errors(
     except KnowledgeError as exc:
         errors.append(str(exc))
         return errors
-    if payload.get("schema_version") != DECISION_SCHEMA_VERSION:
+    if payload.get("schema_version") != DECISION_INDEX_SCHEMA_VERSION:
         errors.append(
-            f"decision index: schema_version must be {DECISION_SCHEMA_VERSION}"
+            "decision index: schema_version must be "
+            f"{DECISION_INDEX_SCHEMA_VERSION}"
         )
+    errors.extend(_decision_association_errors(payload))
     expected = _decision_source_fingerprint(root)
     if payload.get("source_fingerprint") != expected:
         errors.append("decision index is stale; run build-decision-index")
@@ -1652,13 +2025,22 @@ def _load_decision_index(root: Path) -> dict[str, Any]:
             f"missing decision index: {path}; run build-decision-index"
         )
     payload = _read_json(path)
-    if payload.get("schema_version") != DECISION_SCHEMA_VERSION:
+    if payload.get("schema_version") != DECISION_INDEX_SCHEMA_VERSION:
         raise KnowledgeError(
             f"unsupported decision index schema: {payload.get('schema_version')}"
         )
-    for field in ("failure_layers", "mechanisms", "experiments"):
+    for field in ("failure_layers", "mechanisms", "experiments", "associations"):
         if not isinstance(payload.get(field), list):
             raise KnowledgeError(f"decision index: {field} must be a list")
+    association_errors = _decision_association_errors(payload)
+    if association_errors:
+        raise KnowledgeError(
+            "invalid decision index associations:\n - "
+            + "\n - ".join(association_errors)
+        )
+    expected_fingerprint = _decision_source_fingerprint(root)
+    if payload.get("source_fingerprint") != expected_fingerprint:
+        raise KnowledgeError("decision index is stale; run build-decision-index")
     return payload
 
 
@@ -2630,6 +3012,11 @@ def _command_new_use(args: argparse.Namespace) -> int:
             "project_application": args.project_application,
             "modifications": args.modifications,
             "expected_effect": args.expected_effect,
+            **(
+                {"applicability": args.applicability}
+                if args.applicability is not None
+                else {}
+            ),
         },
         "evaluation": {
             "reproduction_status": "not_attempted",
@@ -2684,6 +3071,7 @@ def _command_update_use(args: argparse.Namespace) -> int:
             args.project_application,
             args.modifications,
             args.expected_effect,
+            args.applicability,
             args.mechanism,
             args.metric,
             args.evidence,
@@ -2707,6 +3095,7 @@ def _command_update_use(args: argparse.Namespace) -> int:
         "project_application": args.project_application,
         "modifications": args.modifications,
         "expected_effect": args.expected_effect,
+        "applicability": args.applicability,
     }
     for field, value in usage_updates.items():
         if value is not None:
@@ -2796,13 +3185,13 @@ def _build_parser() -> argparse.ArgumentParser:
         "--limit",
         type=int,
         default=CONTEXT_DEFAULT_LIMIT,
-        help=f"Maximum returned uses (default: {CONTEXT_DEFAULT_LIMIT}).",
+        help=f"Maximum returned terminal + use records (default: {CONTEXT_DEFAULT_LIMIT}).",
     )
     context_size.add_argument(
         "--all",
         action="store_true",
         dest="include_all",
-        help="Return every matching use for the route.",
+        help="Return every matching terminal and use for the route.",
     )
     context_parser.add_argument("--json", action="store_true")
     context_parser.set_defaults(handler=_command_context)
@@ -2903,6 +3292,10 @@ def _build_parser() -> argparse.ArgumentParser:
     use_parser.add_argument("--project-application", required=True)
     use_parser.add_argument("--modifications", required=True)
     use_parser.add_argument("--expected-effect", required=True)
+    use_parser.add_argument(
+        "--applicability",
+        help="Required when the new use starts in planned or active state.",
+    )
     use_parser.add_argument("--claim-boundary", required=True)
     use_parser.add_argument(
         "--note",
@@ -2928,6 +3321,7 @@ def _build_parser() -> argparse.ArgumentParser:
     update_parser.add_argument("--project-application")
     update_parser.add_argument("--modifications")
     update_parser.add_argument("--expected-effect")
+    update_parser.add_argument("--applicability")
     update_parser.add_argument("--metric", action="append")
     update_parser.add_argument(
         "--evidence",

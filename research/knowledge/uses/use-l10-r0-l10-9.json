@@ -9,6 +9,7 @@
   "use_state": "active",
   "adoption_mode": "mechanism_adaptation",
   "usage": {
+    "applicability": "L10 active-observation policy learning only when action execution has a matched receipt and its outcome is comparable; ambiguous identity remains fail-closed.",
     "source_scope": "宽视野扫描发现稳定文字候选，再递归云台居中/变焦；报告了文字识别增益。",
     "project_application": "已落入 core:assist：补观测动作签发执行回执；缺口×相机方向的上下文 UCB 只从匹配执行确认后的可比较结果学习动作效用，并在硬安全候选集内选择修复动作。",
     "modifications": "把机器人云台动作改为人持手机的相机相对提示；连续性不能取得身份。未确认执行、缺失或无权威结果保持 UNKNOWN 且不更新；回执去重；关联歧义候选集禁止盲目前进；效用策略可跨目标会话共享。",
