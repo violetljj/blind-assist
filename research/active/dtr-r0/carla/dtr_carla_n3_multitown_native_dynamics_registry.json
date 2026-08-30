@@ -1,0 +1,310 @@
+{
+  "schema_version": "dtr-carla-n3-multitown-native-dynamics-registry-v1",
+  "registry_id": "DTR_CARLA_N3_MULTITOWN_NATIVE_DYNAMICS_REGISTRY_V1",
+  "purpose": "seeded_synthetic_development_multitown_native_dynamics",
+  "carla_version": "0.9.16",
+  "duration_seconds": 20.0,
+  "common": {
+    "seed_contract": {
+      "derivation": "sha256_64bit",
+      "subsystems": ["traffic", "crowd", "grouping", "rerouting", "events"]
+    },
+    "crowd": {
+      "blueprint_ids": [
+        "walker.pedestrian.0005",
+        "walker.pedestrian.0006",
+        "walker.pedestrian.0007",
+        "walker.pedestrian.0008",
+        "walker.pedestrian.0024",
+        "walker.pedestrian.0025",
+        "walker.pedestrian.0026",
+        "walker.pedestrian.0027"
+      ],
+      "walking_speed_mps": [0.65, 1.75],
+      "personal_space_m": [0.35, 1.1],
+      "crossing_propensity": [0.12, 0.82],
+      "distraction_probability": 0.24
+    },
+    "grouping": {
+      "membership_probability": 0.72,
+      "group_size_range": [2, 4],
+      "cohesion_range": [0.55, 0.95],
+      "formations": ["abreast", "leader_follower", "loose_cluster"]
+    },
+    "rerouting": {
+      "group_reroute_probability": 0.58,
+      "trigger_time_range_s": [4.2, 6.2],
+      "decision_duration_range_s": [0.8, 1.8],
+      "selection_rule": "seeded_bernoulli_with_first_group_guarantee"
+    },
+    "long_tail_events": [
+      {
+        "type": "occluded_jaywalk",
+        "trigger_time_range_s": [3.0, 3.6],
+        "duration_range_s": [1.2, 1.8],
+        "selection_rule": {
+          "selector": "seeded_choice_from_sorted_eligible_actor_ids",
+          "eligible_actor_kind": "pedestrian",
+          "eligible_profiles": [],
+          "distinct_primary_actor_when_possible": true
+        }
+      },
+      {
+        "type": "sudden_brake",
+        "trigger_time_range_s": [7.0, 7.6],
+        "duration_range_s": [1.0, 1.5],
+        "selection_rule": {
+          "selector": "seeded_choice_from_sorted_eligible_actor_ids",
+          "eligible_actor_kind": "vehicle",
+          "eligible_profiles": ["cautious"],
+          "distinct_primary_actor_when_possible": false
+        }
+      },
+      {
+        "type": "reverse_pullout",
+        "trigger_time_range_s": [11.0, 11.6],
+        "duration_range_s": [1.5, 2.2],
+        "selection_rule": {
+          "selector": "seeded_choice_from_sorted_eligible_actor_ids",
+          "eligible_actor_kind": "vehicle",
+          "eligible_profiles": ["cautious"],
+          "distinct_primary_actor_when_possible": true
+        }
+      },
+      {
+        "type": "door_open",
+        "trigger_time_range_s": [15.0, 15.6],
+        "duration_range_s": [0.8, 1.4],
+        "selection_rule": {
+          "selector": "seeded_choice_from_sorted_eligible_actor_ids",
+          "eligible_actor_kind": "vehicle",
+          "eligible_profiles": ["cautious"],
+          "distinct_primary_actor_when_possible": false
+        }
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "scene_id": "town01_crowded_pedestrians",
+      "master_seed": 2026083101,
+      "map": "Carla/Maps/Town01",
+      "scenario_class": "crowded_pedestrians",
+      "source_scene_id": "c4_layout_08",
+      "anchor": {
+        "center_xy_m": [276.420135498, 195.155105591],
+        "forward_xy": [-0.999999996701, -0.000081226413],
+        "right_xy": [0.000081226413, -0.999999996701],
+        "source": {
+          "kind": "c4_multimap_captured_anchor",
+          "spawn_point_index": 635,
+          "runtime_validation_required": false
+        }
+      },
+      "class_parameters": {
+        "minimum_dynamic_pedestrians": 24,
+        "minimum_dynamic_targets": 29
+      },
+      "crowd_count_range": [24, 28],
+      "crowd_origin_ids": ["south_sidewalk", "market_edge", "east_crossing"],
+      "crowd_destination_ids": ["north_sidewalk", "market_entrance", "west_crossing"],
+      "shared_destination_ids": ["north_sidewalk", "market_entrance", "crossing_plaza"],
+      "blocked_destination_id": "crossing_plaza",
+      "alternative_destination_ids": ["east_crossing", "west_crossing"],
+      "traffic_profiles": {
+        "cautious": {
+          "actor_count": 2,
+          "blueprint_ids": ["vehicle.mercedes.sprinter"],
+          "target_speed_mps": [2.8, 4.0],
+          "following_distance_s": [2.4, 3.2],
+          "max_acceleration_mps2": [1.0, 1.6],
+          "comfort_deceleration_mps2": [1.8, 2.8],
+          "lane_change_probability": 0.04,
+          "intent_modes": ["yield_to_crowd", "slow_curbside_flow"],
+          "destination_ids": ["north_exit", "west_connector"]
+        },
+        "nominal": {
+          "actor_count": 1,
+          "blueprint_ids": ["vehicle.bh.crossbike"],
+          "target_speed_mps": [3.0, 4.5],
+          "following_distance_s": [1.5, 2.2],
+          "max_acceleration_mps2": [1.2, 2.0],
+          "comfort_deceleration_mps2": [2.0, 3.0],
+          "lane_change_probability": 0.16,
+          "intent_modes": ["edge_filter_through_crowd"],
+          "destination_ids": ["north_exit"]
+        },
+        "assertive": {
+          "actor_count": 2,
+          "blueprint_ids": ["vehicle.kawasaki.ninja"],
+          "target_speed_mps": [4.8, 6.5],
+          "following_distance_s": [0.9, 1.4],
+          "max_acceleration_mps2": [2.4, 3.6],
+          "comfort_deceleration_mps2": [3.0, 4.5],
+          "lane_change_probability": 0.38,
+          "intent_modes": ["close_gap_at_crossing"],
+          "destination_ids": ["west_connector"]
+        }
+      },
+      "required_native_vehicle_classes": ["heavy_vehicle", "two_wheeler"],
+      "route_view_distance_m": 4.5,
+      "maximum_event_view_range_m": 12.0,
+      "maximum_wearer_speed_mps": 1.8,
+      "event_actor_bindings": {
+        "occluded_jaywalk": "n1_pedestrian_03",
+        "sudden_brake": "n1_vehicle_cautious_02",
+        "reverse_pullout": "n1_vehicle_cautious_02",
+        "door_open": "n1_vehicle_cautious_02"
+      }
+    },
+    {
+      "scene_id": "town04_bus_stop",
+      "master_seed": 2026083104,
+      "map": "Carla/Maps/Town04",
+      "scenario_class": "bus_stop",
+      "source_scene_id": "c4_layout_04",
+      "anchor": {
+        "center_xy_m": [131.283462524, -182.908676147],
+        "forward_xy": [0.042868546361, -0.99908072133],
+        "right_xy": [0.99908072133, 0.042868546361],
+        "source": {
+          "kind": "c4_multimap_captured_anchor",
+          "spawn_point_index": 5112,
+          "runtime_validation_required": false
+        }
+      },
+      "class_parameters": {
+        "stop_length_m": 18.0,
+        "boarding_zone_width_m": 3.0
+      },
+      "crowd_count_range": [14, 18],
+      "crowd_origin_ids": ["stop_platform", "south_sidewalk", "boarding_queue"],
+      "crowd_destination_ids": ["bus_door_zone", "north_sidewalk", "market_entrance"],
+      "shared_destination_ids": ["bus_door_zone", "north_sidewalk", "boarding_queue"],
+      "blocked_destination_id": "bus_door_zone",
+      "alternative_destination_ids": ["north_sidewalk", "market_entrance"],
+      "traffic_profiles": {
+        "cautious": {
+          "actor_count": 2,
+          "blueprint_ids": ["vehicle.mitsubishi.fusorosa"],
+          "target_speed_mps": [2.5, 3.8],
+          "following_distance_s": [2.8, 3.6],
+          "max_acceleration_mps2": [0.8, 1.4],
+          "comfort_deceleration_mps2": [1.6, 2.5],
+          "lane_change_probability": 0.02,
+          "intent_modes": ["approach_stop", "depart_boarding_zone"],
+          "destination_ids": ["south_exit", "north_exit"]
+        },
+        "nominal": {
+          "actor_count": 1,
+          "blueprint_ids": ["vehicle.diamondback.century"],
+          "target_speed_mps": [3.2, 4.8],
+          "following_distance_s": [1.5, 2.2],
+          "max_acceleration_mps2": [1.2, 2.0],
+          "comfort_deceleration_mps2": [2.0, 3.0],
+          "lane_change_probability": 0.14,
+          "intent_modes": ["pass_boarding_zone"],
+          "destination_ids": ["north_exit"]
+        },
+        "assertive": {
+          "actor_count": 2,
+          "blueprint_ids": ["vehicle.harley-davidson.low_rider"],
+          "target_speed_mps": [4.8, 6.8],
+          "following_distance_s": [0.9, 1.4],
+          "max_acceleration_mps2": [2.4, 3.6],
+          "comfort_deceleration_mps2": [3.0, 4.5],
+          "lane_change_probability": 0.36,
+          "intent_modes": ["filter_past_bus"],
+          "destination_ids": ["south_exit"]
+        }
+      },
+      "required_native_vehicle_classes": ["heavy_vehicle", "two_wheeler"],
+      "route_view_distance_m": 5.0,
+      "maximum_event_view_range_m": 12.0,
+      "maximum_wearer_speed_mps": 1.8,
+      "event_actor_bindings": {
+        "occluded_jaywalk": "n1_pedestrian_04",
+        "sudden_brake": "n1_vehicle_cautious_02",
+        "reverse_pullout": "n1_vehicle_cautious_02",
+        "door_open": "n1_vehicle_cautious_02"
+      }
+    },
+    {
+      "scene_id": "town05_parking_lot",
+      "master_seed": 2026083105,
+      "map": "Carla/Maps/Town05",
+      "scenario_class": "parking_lot",
+      "source_scene_id": "c4_layout_03",
+      "anchor": {
+        "center_xy_m": [74.169708252, 201.937332153],
+        "forward_xy": [0.999987383223, 0.005023285337],
+        "right_xy": [-0.005023285337, 0.999987383223],
+        "source": {
+          "kind": "c4_multimap_captured_anchor",
+          "spawn_point_index": 2700,
+          "runtime_validation_required": false
+        }
+      },
+      "class_parameters": {
+        "parking_aisle_width_m": 6.0,
+        "parked_vehicle_rows": 2
+      },
+      "crowd_count_range": [10, 14],
+      "crowd_origin_ids": ["parking_row_a", "parking_row_b", "store_edge"],
+      "crowd_destination_ids": ["store_entrance", "parking_exit", "cross_aisle"],
+      "shared_destination_ids": ["store_entrance", "cross_aisle", "parking_exit"],
+      "blocked_destination_id": "cross_aisle",
+      "alternative_destination_ids": ["parking_row_a", "parking_row_b"],
+      "traffic_profiles": {
+        "cautious": {
+          "actor_count": 2,
+          "blueprint_ids": ["vehicle.carlamotors.carlacola"],
+          "target_speed_mps": [2.0, 3.2],
+          "following_distance_s": [2.6, 3.4],
+          "max_acceleration_mps2": [0.8, 1.4],
+          "comfort_deceleration_mps2": [1.6, 2.5],
+          "lane_change_probability": 0.02,
+          "intent_modes": ["slow_aisle_entry", "reverse_loading_bay"],
+          "destination_ids": ["parking_exit", "loading_bay"]
+        },
+        "nominal": {
+          "actor_count": 1,
+          "blueprint_ids": ["vehicle.vespa.zx125"],
+          "target_speed_mps": [3.0, 4.5],
+          "following_distance_s": [1.4, 2.1],
+          "max_acceleration_mps2": [1.2, 2.0],
+          "comfort_deceleration_mps2": [2.0, 3.0],
+          "lane_change_probability": 0.16,
+          "intent_modes": ["cross_parking_aisle"],
+          "destination_ids": ["parking_exit"]
+        },
+        "assertive": {
+          "actor_count": 2,
+          "blueprint_ids": ["vehicle.yamaha.yzf"],
+          "target_speed_mps": [4.6, 6.4],
+          "following_distance_s": [0.9, 1.4],
+          "max_acceleration_mps2": [2.4, 3.6],
+          "comfort_deceleration_mps2": [3.0, 4.5],
+          "lane_change_probability": 0.38,
+          "intent_modes": ["cut_across_open_bay"],
+          "destination_ids": ["loading_bay"]
+        }
+      },
+      "required_native_vehicle_classes": ["heavy_vehicle", "two_wheeler"],
+      "route_view_distance_m": 4.5,
+      "maximum_event_view_range_m": 15.0,
+      "maximum_wearer_speed_mps": 1.8,
+      "event_actor_bindings": {
+        "occluded_jaywalk": "n1_pedestrian_11",
+        "sudden_brake": "n1_vehicle_cautious_02",
+        "reverse_pullout": "n1_vehicle_cautious_02",
+        "door_open": "n1_vehicle_cautious_02"
+      }
+    }
+  ],
+  "claim_boundary": [
+    "These are seeded synthetic Development source plans, not observed traffic distributions.",
+    "Event actor identities were frozen after the N3 V2 route-feasibility diagnostic so a bounded-speed wearer route can observe the authored events; this is same-source Development authoring.",
+    "Native controllers and authored long-tail interventions do not establish source-disjoint confirmation, real-world behavior, product benefit, or safety."
+  ]
+}

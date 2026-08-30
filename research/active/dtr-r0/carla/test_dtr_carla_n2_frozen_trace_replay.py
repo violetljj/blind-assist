@@ -62,6 +62,27 @@ class FrozenTraceReplayTest(unittest.TestCase):
         protocol = json.loads(PROTOCOL_PATH.read_text(encoding="utf-8"))
         subject.validate_protocol(protocol)
 
+    def test_frozen_event_bearing_route_protocol_validates(self) -> None:
+        protocol = json.loads(PROTOCOL_PATH.read_text(encoding="utf-8"))
+        protocol["environment"]["map"] = "Carla/Maps/Town01"
+        protocol["source"]["expected_trace_frames"] = 2
+        protocol["capture"]["wearer"] = {
+            "observer_mode": "frozen_event_bearing_route",
+            "route_authority": "TRACE_CONDITIONED_FROZEN_BEFORE_REPLAY",
+            "motion_model": "bounded_speed_planar_wearer_route",
+            "maximum_speed_mps": 2.0,
+            "maximum_event_view_range_m": 12.0,
+            "blueprint": "walker.pedestrian.0001",
+            "surface_offset_m": 0.8,
+            "body_radius_m": 0.45,
+            "route": [
+                {"sample_index": 0, "time_s": 0.0, "x_m": 1.0, "y_m": 2.0, "yaw_degrees": 3.0},
+                {"sample_index": 1, "time_s": 0.05, "x_m": 1.1, "y_m": 2.0, "yaw_degrees": 3.0},
+            ],
+        }
+        protocol["episode"]["issued_plan_authority"] = "FROZEN_EVENT_BEARING_ROUTE"
+        subject.validate_protocol(protocol)
+
     def test_trace_contract_accepts_contiguous_rows(self) -> None:
         summary = subject.validate_trace_rows(
             synthetic_rows(),

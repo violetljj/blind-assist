@@ -20,6 +20,27 @@ PLAN_SCHEMA = "dtr-carla-n1-natural-dynamics-plan-v1"
 RESULT_STATUS = "DTR_CARLA_N1_NATURAL_DYNAMICS_MATERIALIZED"
 FIXED_DELTA_SECONDS = 0.05
 PREVIEW_COUNT = 9
+SUPPORTED_MAPS = {
+    "Carla/Maps/Town10HD_Opt",
+    "Carla/Maps/Town01",
+    "Carla/Maps/Town04",
+    "Carla/Maps/Town05",
+}
+HEAVY_VEHICLE_BLUEPRINTS = {
+    "vehicle.mitsubishi.fusorosa",
+    "vehicle.carlamotors.carlacola",
+    "vehicle.mercedes.sprinter",
+    "vehicle.volkswagen.t2_2021",
+}
+TWO_WHEELER_BLUEPRINTS = {
+    "vehicle.bh.crossbike",
+    "vehicle.diamondback.century",
+    "vehicle.gazelle.omafiets",
+    "vehicle.vespa.zx125",
+    "vehicle.harley-davidson.low_rider",
+    "vehicle.kawasaki.ninja",
+    "vehicle.yamaha.yzf",
+}
 
 
 def parse_args() -> argparse.Namespace:
@@ -79,8 +100,8 @@ def validate_plan(plan: dict[str, Any]) -> None:
         raise ValueError("unexpected N1 evidence role")
     if plan.get("environment", {}).get("carla_version") != "0.9.16":
         raise ValueError("N1 requires CARLA 0.9.16")
-    if plan.get("environment", {}).get("map") != "Carla/Maps/Town10HD_Opt":
-        raise ValueError("N1 pilot is bound to Town10HD_Opt")
+    if plan.get("environment", {}).get("map") not in SUPPORTED_MAPS:
+        raise ValueError("N1/N3 map is unsupported")
     fingerprint = str(plan.get("plan_fingerprint_sha256", ""))
     unhashed = dict(plan)
     unhashed.pop("plan_fingerprint_sha256", None)
@@ -89,8 +110,13 @@ def validate_plan(plan: dict[str, Any]) -> None:
     vehicles = list(plan.get("vehicle_intents", []))
     walkers = list(plan.get("walker_intents", []))
     events = list(plan.get("tail_events", []))
-    if len(vehicles) != 6 or len(walkers) < 12:
-        raise ValueError("N1 pilot actor denominator differs")
+    coverage = plan.get("coverage", {})
+    if (
+        len(vehicles) < 3
+        or len(walkers) < 6
+        or int(coverage.get("actor_count", -1)) != len(vehicles) + len(walkers)
+    ):
+        raise ValueError("N1/N3 actor denominator differs")
     profiles = {str(value["behavior_profile"]) for value in vehicles}
     if profiles != {"cautious", "nominal", "assertive"}:
         raise ValueError("N1 traffic profile coverage differs")
@@ -155,6 +181,14 @@ def transform_dict(value: carla.Transform) -> dict[str, float]:
 def speed_mps(actor: carla.Actor) -> float:
     value = actor.get_velocity()
     return math.sqrt(float(value.x) ** 2 + float(value.y) ** 2 + float(value.z) ** 2)
+
+
+def native_vehicle_class(blueprint_id: str) -> str:
+    if blueprint_id in HEAVY_VEHICLE_BLUEPRINTS:
+        return "heavy_vehicle"
+    if blueprint_id in TWO_WHEELER_BLUEPRINTS:
+        return "two_wheeler"
+    return "passenger_vehicle"
 
 
 def planar_distance(first: carla.Location, second: carla.Location) -> float:
@@ -560,6 +594,7 @@ def main() -> int:
                 "kind": "vehicle",
                 "behavior_profile": str(intent["behavior_profile"]),
                 "blueprint_id": str(actor.type_id),
+                "native_vehicle_class": native_vehicle_class(str(actor.type_id)),
                 "carla_actor_id": int(actor.id),
                 "spawn_point_index": selected_index,
                 "spawn_transform": transform_dict(selected_transform),
@@ -978,16 +1013,28 @@ def main() -> int:
                 for actor_id in vehicle_actors
             }
         )
+        moving_native_classes = sorted(
+            {
+                str(actor_metadata[actor_id]["native_vehicle_class"])
+                for actor_id in moving_vehicles
+            }
+        )
+        required_native_classes = sorted(
+            map(str, plan.get("suite_scene", {}).get("required_native_vehicle_classes", []))
+        )
         checks = {
             "plan_fingerprint_verified": True,
-            "town10hd_map_verified": world.get_map().name
-            == "Carla/Maps/Town10HD_Opt",
+            "configured_map_verified": world.get_map().name
+            == str(plan["environment"]["map"]),
             "actor_denominator_exact": len(vehicle_actors)
             == len(plan["vehicle_intents"])
             and len(walker_actors) == len(plan["walker_intents"]),
             "three_traffic_profiles_realized": profiles
             == ["assertive", "cautious", "nominal"],
             "native_vehicle_motion_observed": len(moving_vehicles) >= 3,
+            "required_native_vehicle_classes_moved": set(required_native_classes).issubset(
+                moving_native_classes
+            ),
             "native_walker_motion_observed": len(moving_walkers) >= 6,
             "group_reroutes_executed": len(reroute_receipts)
             == len(plan["group_reroute_interactions"]),
@@ -1019,6 +1066,8 @@ def main() -> int:
             "traffic_profiles": profiles,
             "moving_vehicle_count": len(moving_vehicles),
             "moving_vehicle_actor_ids": moving_vehicles,
+            "moving_native_vehicle_classes": moving_native_classes,
+            "required_native_vehicle_classes": required_native_classes,
             "moving_walker_count": len(moving_walkers),
             "moving_walker_actor_ids": moving_walkers,
             "walker_close_encounter_pair_count": len(close_encounters),

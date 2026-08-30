@@ -22,6 +22,21 @@ from typing import Any, Iterable, Mapping, Sequence
 REGISTRY_SCHEMA_VERSION = "dtr-carla-n1-natural-dynamics-registry-v1"
 PLAN_SCHEMA_VERSION = "dtr-carla-n1-natural-dynamics-plan-v1"
 CARLA_MAP = "Carla/Maps/Town10HD_Opt"
+SUPPORTED_CARLA_MAPS = (
+    CARLA_MAP,
+    "Carla/Maps/Town01",
+    "Carla/Maps/Town04",
+    "Carla/Maps/Town05",
+)
+SCENARIO_CLASS_PARAMETERS = {
+    "construction_zone": {"chicane_width_m", "barrier_count"},
+    "crowded_pedestrians": {
+        "minimum_dynamic_pedestrians",
+        "minimum_dynamic_targets",
+    },
+    "bus_stop": {"stop_length_m", "boarding_zone_width_m"},
+    "parking_lot": {"parking_aisle_width_m", "parked_vehicle_rows"},
+}
 REQUIRED_DRIVING_PROFILES = ("cautious", "nominal", "assertive")
 REQUIRED_EVENT_TYPES = (
     "occluded_jaywalk",
@@ -163,7 +178,10 @@ def validate_registry(registry: Mapping[str, Any]) -> None:
     carla = _object(registry["carla"], "registry.carla")
     _exact_keys(carla, {"version", "map", "requires_running_server"}, "registry.carla")
     _text(carla["version"], "registry.carla.version")
-    _require(carla["map"] == CARLA_MAP, f"registry.carla.map must be {CARLA_MAP}")
+    _require(
+        carla["map"] in SUPPORTED_CARLA_MAPS,
+        f"registry.carla.map must be one of {list(SUPPORTED_CARLA_MAPS)}",
+    )
     _require(
         carla["requires_running_server"] is False,
         "registry.carla.requires_running_server must be false",
@@ -175,8 +193,12 @@ def validate_registry(registry: Mapping[str, Any]) -> None:
         {"scenario_class", "source_registry", "source_scene_id", "anchor", "class_parameters"},
         "registry.focus",
     )
-    _require(focus["scenario_class"] == "construction_zone", "focus must be construction_zone")
-    _require(focus["source_scene_id"] == "c4_layout_05", "focus must reuse c4_layout_05")
+    scenario_class = _text(focus["scenario_class"], "registry.focus.scenario_class")
+    _require(
+        scenario_class in SCENARIO_CLASS_PARAMETERS,
+        f"unsupported focus scenario_class: {scenario_class}",
+    )
+    _text(focus["source_scene_id"], "registry.focus.source_scene_id")
     _text(focus["source_registry"], "registry.focus.source_registry")
     anchor = _object(focus["anchor"], "registry.focus.anchor")
     _exact_keys(anchor, {"center_xy_m", "forward_xy", "right_xy", "source"}, "registry.focus.anchor")
@@ -189,16 +211,23 @@ def validate_registry(registry: Mapping[str, Any]) -> None:
         {"kind", "spawn_point_index", "runtime_validation_required"},
         "registry.focus.anchor.source",
     )
-    _require(source["kind"] == "c3_captured_anchor", "focus anchor source kind differs")
+    _require(
+        source["kind"] in {"c3_captured_anchor", "c4_multimap_captured_anchor"},
+        "focus anchor source kind differs",
+    )
     _integer(source["spawn_point_index"], "focus anchor spawn_point_index")
     _require(
         source["runtime_validation_required"] is False,
         "captured focus anchor must not claim runtime validation is required",
     )
     class_parameters = _object(focus["class_parameters"], "registry.focus.class_parameters")
-    _exact_keys(class_parameters, {"chicane_width_m", "barrier_count"}, "focus class_parameters")
-    _number(class_parameters["chicane_width_m"], "focus chicane_width_m", minimum=0.1)
-    _integer(class_parameters["barrier_count"], "focus barrier_count", minimum=1)
+    _exact_keys(
+        class_parameters,
+        SCENARIO_CLASS_PARAMETERS[scenario_class],
+        "focus class_parameters",
+    )
+    for name, value in class_parameters.items():
+        _number(value, f"focus class_parameters.{name}", minimum=0.1)
 
     duration_seconds = _number(registry["duration_seconds"], "duration_seconds", minimum=1.0)
     seed_contract = _object(registry["seed_contract"], "registry.seed_contract")
@@ -377,7 +406,8 @@ def _compile_traffic(
     registry: Mapping[str, Any], rng: random.Random
 ) -> list[dict[str, Any]]:
     actors: list[dict[str, Any]] = []
-    lane_ids = ("construction_approach_left", "construction_approach_right")
+    scenario_class = str(registry["focus"]["scenario_class"])
+    lane_ids = (f"{scenario_class}_approach_left", f"{scenario_class}_approach_right")
     for profile_name in REQUIRED_DRIVING_PROFILES:
         profile = registry["traffic_profiles"][profile_name]
         for profile_index in range(1, int(profile["actor_count"]) + 1):
@@ -518,7 +548,10 @@ def _compile_reroutes(
                 "rule": config["selection_rule"],
                 "configured_probability": float(config["group_reroute_probability"]),
                 "first_group_guarantee_applied": group_index == 0,
-                "obstruction": "c4_layout_05_construction_chicane",
+                "obstruction": (
+                    f"{registry['focus']['source_scene_id']}_"
+                    f"{registry['focus']['scenario_class']}_interaction_zone"
+                ),
                 "blocked_waypoint_id": config["blocked_destination_id"],
             },
         }

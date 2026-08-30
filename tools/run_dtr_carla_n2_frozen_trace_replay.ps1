@@ -11,6 +11,7 @@ param(
     [string]$Protocol = 'research/active/dtr-r0/carla/dtr_carla_n2_frozen_trace_replay_protocol.json',
     [string]$HelperScript = 'research/active/dtr-r0/carla/dtr_carla_n2_frozen_trace_replay.py',
     [string]$CaptureScript = 'research/active/dtr-r0/carla/capture_dtr_carla_n2_frozen_trace_replay.py',
+    [string]$StartupEngineIni = '',
     [ValidateRange(1024, 65533)]
     [int]$RpcPort = 26100,
     [ValidateRange(120, 3600)]
@@ -40,6 +41,11 @@ $sourcePath = Resolve-InputPath $SourceRoot
 $protocolPath = Resolve-InputPath $Protocol
 $helperPath = Resolve-InputPath $HelperScript
 $capturePath = Resolve-InputPath $CaptureScript
+$startupEngineIniPath = if ([string]::IsNullOrWhiteSpace($StartupEngineIni)) {
+    ''
+} else {
+    Resolve-InputPath $StartupEngineIni
+}
 $evidenceRootPath = [IO.Path]::GetFullPath($EvidenceRoot).TrimEnd('\', '/')
 $runRoot = [IO.Path]::GetFullPath((Join-Path $evidenceRootPath $RunId))
 $expectedRunPrefix = $evidenceRootPath + [IO.Path]::DirectorySeparatorChar
@@ -53,6 +59,14 @@ foreach ($required in @($carlaExe, $carlaPythonPath, $protocolPath, $helperPath,
         throw "Required file is unavailable: $required"
     }
 }
+if (
+    -not [string]::IsNullOrWhiteSpace($startupEngineIniPath) -and
+    -not (Test-Path -LiteralPath $startupEngineIniPath -PathType Leaf)
+) {
+    throw "Startup Engine.ini is unavailable: $startupEngineIniPath"
+}
+$protocolDocument = Get-Content -LiteralPath $protocolPath -Raw | ConvertFrom-Json -Depth 100
+$protocolMap = [string]$protocolDocument.environment.map
 if (-not (Test-Path -LiteralPath $sourcePath -PathType Container)) {
     throw "Frozen N1 source root is unavailable: $sourcePath"
 }
@@ -66,6 +80,33 @@ function Quote-ProcessArgument {
         throw "Unsupported quote in process argument: $Value"
     }
     return '"' + $Value + '"'
+}
+
+function Get-ExpectedEngineMapObjectPath {
+    param([Parameter(Mandatory = $true)][string]$MapName)
+    $normalized = $MapName.TrimStart('/')
+    if ($normalized -notmatch '^Carla/Maps/(?<leaf>[A-Za-z0-9_]+)$') {
+        throw "Unsupported CARLA startup map identity: $MapName"
+    }
+    return "/Game/$normalized.$($Matches.leaf)"
+}
+
+function Assert-StartupEngineIniMap {
+    param(
+        [Parameter(Mandatory = $true)][string]$Path,
+        [Parameter(Mandatory = $true)][string]$MapName
+    )
+    $expected = Get-ExpectedEngineMapObjectPath -MapName $MapName
+    $content = Get-Content -LiteralPath $Path -Raw
+    foreach ($key in @('GameDefaultMap', 'ServerDefaultMap', 'TransitionMap')) {
+        $matches = @([regex]::Matches(
+            $content,
+            "(?m)^$([regex]::Escape($key))=(?<value>[^\r\n]+)$"
+        ))
+        if ($matches.Count -ne 1 -or [string]$matches[0].Groups['value'].Value -ne $expected) {
+            throw "Startup Engine.ini does not bind $key to $expected"
+        }
+    }
 }
 
 function Get-PortListeners {
@@ -174,18 +215,32 @@ if ($LASTEXITCODE -ne 0) {
 
 $server = $null
 $clientProcess = $null
+$runtimeStartupEngineIniPath = ''
 $primaryFailure = $null
 $cleanupFailure = $null
 try {
+    $serverArguments = [Collections.Generic.List[string]]::new()
+    if (-not [string]::IsNullOrWhiteSpace($startupEngineIniPath)) {
+        Assert-StartupEngineIniMap -Path $startupEngineIniPath -MapName $protocolMap
+        $runtimeStartupEngineIniPath = Join-Path (
+            [IO.Path]::GetTempPath()
+        ) "blindassist-n2-$PID-$RpcPort-$([Guid]::NewGuid().ToString('N')).Engine.ini"
+        Copy-Item -LiteralPath $startupEngineIniPath -Destination $runtimeStartupEngineIniPath
+        Assert-StartupEngineIniMap -Path $runtimeStartupEngineIniPath -MapName $protocolMap
+        $serverArguments.Add("-EngineIni=$runtimeStartupEngineIniPath")
+    }
+    foreach ($argument in @(
+        '-dx12',
+        '-RenderOffScreen',
+        '-nosound',
+        '-quality-level=Epic',
+        "-carla-rpc-port=$RpcPort"
+    )) {
+        $serverArguments.Add($argument)
+    }
     $server = Start-Process `
         -FilePath $carlaExe `
-        -ArgumentList @(
-            '-dx12',
-            '-RenderOffScreen',
-            '-nosound',
-            '-quality-level=Epic',
-            "-carla-rpc-port=$RpcPort"
-        ) `
+        -ArgumentList $serverArguments.ToArray() `
         -WorkingDirectory $carlaInstallRoot `
         -WindowStyle Hidden `
         -RedirectStandardOutput (Join-Path $logRoot 'server.stdout.log') `
@@ -265,6 +320,12 @@ finally {
     }
     catch {
         $cleanupFailure = $_
+    }
+    if (
+        -not [string]::IsNullOrWhiteSpace($runtimeStartupEngineIniPath) -and
+        (Test-Path -LiteralPath $runtimeStartupEngineIniPath -PathType Leaf)
+    ) {
+        Remove-Item -LiteralPath $runtimeStartupEngineIniPath -Force
     }
 }
 

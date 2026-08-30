@@ -90,7 +90,7 @@ class N1NaturalDynamicsTest(unittest.TestCase):
         mutations.append(wrong_version)
 
         wrong_map = copy.deepcopy(self.registry)
-        wrong_map["carla"]["map"] = "Carla/Maps/Town05"
+        wrong_map["carla"]["map"] = "Carla/Maps/Town99"
         mutations.append(wrong_map)
 
         missing_profile = copy.deepcopy(self.registry)

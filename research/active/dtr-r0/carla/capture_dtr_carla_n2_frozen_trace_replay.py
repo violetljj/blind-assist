@@ -83,6 +83,29 @@ def carla_transform(value: dict[str, Any]) -> carla.Transform:
     )
 
 
+def wearer_transform_for_sample(
+    wearer_spec: dict[str, Any], sample_index: int, world_map: carla.Map
+) -> carla.Transform:
+    if str(wearer_spec["observer_mode"]) == "frozen_event_bearing_route":
+        row = wearer_spec["route"][sample_index]
+        x_m = float(row["x_m"])
+        y_m = float(row["y_m"])
+        yaw_degrees = float(row["yaw_degrees"])
+    else:
+        x_m = float(wearer_spec["world_x_m"])
+        y_m = float(wearer_spec["world_y_m"])
+        yaw_degrees = float(wearer_spec["yaw_degrees"])
+    z_m = road_surface_z(
+        world_map,
+        np.asarray([x_m, y_m], dtype=np.float64),
+        float(wearer_spec["surface_offset_m"]),
+    )
+    return carla.Transform(
+        carla.Location(x=x_m, y=y_m, z=z_m),
+        carla.Rotation(yaw=yaw_degrees),
+    )
+
+
 def deterministic_attributes(
     blueprint: carla.ActorBlueprint, role_name: str
 ) -> dict[str, str]:
@@ -267,6 +290,8 @@ def main() -> int:
     maximum_camera_angle_difference_degrees = 0.0
     witness_position_error_m = 0.0
     witness_angle_error_degrees = 0.0
+    maximum_wearer_position_error_m = 0.0
+    maximum_wearer_angle_error_degrees = 0.0
     door_open_calls = 0
     door_close_calls = 0
 
@@ -309,23 +334,17 @@ def main() -> int:
             )
 
         wearer_spec = capture["wearer"]
-        wearer_xy = carla.Location(
-            x=float(wearer_spec["world_x_m"]),
-            y=float(wearer_spec["world_y_m"]),
-            z=0.0,
-        )
-        wearer_z = road_surface_z(
-            world.get_map(),
-            np.asarray([wearer_xy.x, wearer_xy.y], dtype=np.float64),
-            float(wearer_spec["surface_offset_m"]),
-        )
-        wearer_transform = carla.Transform(
-            carla.Location(x=wearer_xy.x, y=wearer_xy.y, z=wearer_z),
-            carla.Rotation(yaw=float(wearer_spec["yaw_degrees"])),
+        wearer_transform = wearer_transform_for_sample(
+            wearer_spec, 0, world.get_map()
         )
         wearer, wearer_manifest = spawn_physics_off_actor(
             world,
-            actor_id="fixed_synthetic_observer",
+            actor_id=(
+                "frozen_event_bearing_observer"
+                if str(wearer_spec["observer_mode"])
+                == "frozen_event_bearing_route"
+                else "fixed_synthetic_observer"
+            ),
             type_id=str(wearer_spec["blueprint"]),
             kind="pedestrian",
             initial_transform=wearer_transform,
@@ -415,6 +434,31 @@ def main() -> int:
         }
         for path in modality_roots.values():
             path.mkdir(parents=True, exist_ok=False)
+        route_mode = str(wearer_spec["observer_mode"]) == "frozen_event_bearing_route"
+        navigation_plan_path: Path | None = None
+        if route_mode:
+            navigation_plan_path = model_root / "navigation_plan.json"
+            write_json_atomic(
+                navigation_plan_path,
+                {
+                    "schema_version": "dtr-carla-n2-frozen-wearer-route-v1",
+                    "plan_id": str(episode["navigation_session_id"]),
+                    "authority": "FROZEN_EVENT_BEARING_ROUTE",
+                    "fixed_delta_seconds": fixed_delta,
+                    "waypoints": wearer_spec["route"],
+                },
+            )
+            issued_plan_reference = {
+                "authority": "FROZEN_EVENT_BEARING_ROUTE",
+                "path": safe_relative(navigation_plan_path, model_root),
+                "receipt_sha256": sha256_file(navigation_plan_path),
+            }
+        else:
+            issued_plan_reference = {
+                "authority": "NO_PLAN",
+                "path": None,
+                "receipt_sha256": None,
+            }
         modality_paths: dict[str, dict[int, Path]] = {
             name: {} for name in SENSOR_ORDER
         }
@@ -423,6 +467,16 @@ def main() -> int:
         evaluator_rows: list[dict[str, Any]] = []
         alignment_rows: list[dict[str, Any]] = []
         replay_event_receipts: list[dict[str, Any]] = []
+        event_visibility: dict[str, dict[str, Any]] = {
+            str(value["event_id"]): {
+                "event_id": str(value["event_id"]),
+                "type": str(value["type"]),
+                "primary_actor_id": str(value["primary_actor_id"]),
+                "visible_frames": 0,
+                "maximum_instance_pixels": 0,
+            }
+            for value in bundle["events"]["tail_events"]
+        }
         frozen_door = door_event(bundle["events"])
         door_actor = actors[str(frozen_door["primary_actor_id"])]
         door_plan = next(
@@ -437,6 +491,9 @@ def main() -> int:
         for source_row in source_rows:
             sample_index = int(source_row["sample_index"])
             logical_time_s = float(source_row["time_s"])
+            wearer_transform = wearer_transform_for_sample(
+                wearer_spec, sample_index, world.get_map()
+            )
             should_open = (
                 float(frozen_door["applied_time_s"]) - 1e-9
                 <= logical_time_s
@@ -550,8 +607,20 @@ def main() -> int:
                 raise RuntimeError("snapshot omitted fixed synthetic observer")
             actual_wearer = wearer_snapshot.get_transform()
             wearer_residual = transform_residual(actual_wearer, wearer_transform)
-            if float(wearer_residual["position_error_m"]) > POSITION_TOLERANCE_M:
-                raise RuntimeError("fixed synthetic observer pose drifted")
+            maximum_wearer_position_error_m = max(
+                maximum_wearer_position_error_m,
+                float(wearer_residual["position_error_m"]),
+            )
+            maximum_wearer_angle_error_degrees = max(
+                maximum_wearer_angle_error_degrees,
+                float(wearer_residual["angle_error_degrees"]),
+            )
+            if (
+                float(wearer_residual["position_error_m"]) > POSITION_TOLERANCE_M
+                or float(wearer_residual["angle_error_degrees"])
+                > ANGLE_TOLERANCE_DEGREES
+            ):
+                raise RuntimeError("synthetic observer route pose drifted")
 
             attached_images = [images[name] for name in ("wearable", "depth", "instance")]
             reference_camera = attached_images[0].transform
@@ -586,6 +655,16 @@ def main() -> int:
                 modality_paths[sensor_name][sample_index] = path
 
             visibility = batched_instance_metrics(images["instance"], actors)
+            active_event_ids = active_tail_event_ids(bundle["events"], logical_time_s)
+            for event_id in active_event_ids:
+                event_metric = event_visibility[event_id]
+                primary_metric = visibility[event_metric["primary_actor_id"]]
+                pixels = int(primary_metric["pixels"])
+                if pixels > 0:
+                    event_metric["visible_frames"] += 1
+                event_metric["maximum_instance_pixels"] = max(
+                    int(event_metric["maximum_instance_pixels"]), pixels
+                )
             contact, minimum_distance, responsible = contact_union(
                 (float(actual_wearer.location.x), float(actual_wearer.location.y)),
                 collision_polygons,
@@ -639,11 +718,7 @@ def main() -> int:
                     "wearer_pose_current": transform_dict(actual_wearer),
                     "navigation": {
                         "navigation_session_id": str(episode["navigation_session_id"]),
-                        "issued_plan": {
-                            "authority": "NO_PLAN",
-                            "path": None,
-                            "receipt_sha256": None,
-                        },
+                        "issued_plan": dict(issued_plan_reference),
                     },
                     "frame_alignment": {
                         "authority": "PENDING_SEAL",
@@ -695,9 +770,7 @@ def main() -> int:
                         "minimum_distance_m": float(minimum_distance),
                         "responsible_assets": responsible,
                         "collision_polygons_xy": collision_polygons,
-                        "active_tail_event_ids": active_tail_event_ids(
-                            bundle["events"], logical_time_s
-                        ),
+                        "active_tail_event_ids": active_event_ids,
                     },
                 }
             )
@@ -744,6 +817,18 @@ def main() -> int:
                 "receipts": replay_event_receipts,
             },
         )
+        event_visibility_path = evaluator_root / "tail_event_visibility.json"
+        event_visibility_rows = [
+            event_visibility[key] for key in sorted(event_visibility)
+        ]
+        write_json_atomic(
+            event_visibility_path,
+            {
+                "schema_version": "dtr-carla-n2-tail-event-visibility-v1",
+                "camera_equivalence": "instance_sensor_rigidly_matches_wearable_rgb",
+                "events": event_visibility_rows,
+            },
+        )
         payload_inventory_path = output_root / "payload_inventory.json"
         write_json_atomic(payload_inventory_path, payload_inventory)
         actor_manifest_path = evaluator_root / "actor_manifest.json"
@@ -775,7 +860,8 @@ def main() -> int:
             {
                 **protocol["model_contract"],
                 "current_actors_enabled": False,
-                "fixed_synthetic_observer": True,
+                "fixed_synthetic_observer": not route_mode,
+                "frozen_wearer_route": route_mode,
                 "source_alignment": {
                     "authority": alignment_receipt["authority"],
                     "receipt_path": safe_relative(alignment_path, model_root),
@@ -798,7 +884,7 @@ def main() -> int:
                 "rgb_payloads": len(model_rows),
                 "depth_payloads": len(model_rows),
                 "navigation_session_id": str(episode["navigation_session_id"]),
-                "issued_plan": {"authority": "NO_PLAN"},
+                "issued_plan": dict(issued_plan_reference),
                 "four_modal_alignment_receipt_sha256": alignment_receipt[
                     "receipt_sha256"
                 ],
@@ -827,6 +913,7 @@ def main() -> int:
                 "frames_sha256": sha256_file(evaluator_frames_path),
                 "actor_manifest_sha256": sha256_file(actor_manifest_path),
                 "replayed_discrete_events_sha256": sha256_file(replay_event_path),
+                "tail_event_visibility_sha256": sha256_file(event_visibility_path),
                 "source_bundle_receipt_sha256": bundle["receipt"]["receipt_sha256"],
             },
         )
@@ -897,6 +984,22 @@ def main() -> int:
             "all_replayed_actor_poses_match_frozen_trace": maximum_position_error_m
             <= POSITION_TOLERANCE_M
             and maximum_angle_error_degrees <= ANGLE_TOLERANCE_DEGREES,
+            "frozen_wearer_route_pose_applied": (
+                not route_mode
+                or (
+                    maximum_wearer_position_error_m <= POSITION_TOLERANCE_M
+                    and maximum_wearer_angle_error_degrees
+                    <= ANGLE_TOLERANCE_DEGREES
+                )
+            ),
+            "all_tail_events_enter_wearable_view": (
+                not route_mode
+                or all(
+                    int(value["visible_frames"]) >= 1
+                    and int(value["maximum_instance_pixels"]) >= 16
+                    for value in event_visibility_rows
+                )
+            ),
             "wearable_depth_instance_camera_transforms_identical": (
                 maximum_camera_position_difference_m <= POSITION_TOLERANCE_M
                 and maximum_camera_angle_difference_degrees
@@ -950,6 +1053,8 @@ def main() -> int:
             "evaluator_frames": len(evaluator_rows),
             "maximum_actor_position_error_m": maximum_position_error_m,
             "maximum_actor_angle_error_degrees": maximum_angle_error_degrees,
+            "maximum_wearer_position_error_m": maximum_wearer_position_error_m,
+            "maximum_wearer_angle_error_degrees": maximum_wearer_angle_error_degrees,
             "maximum_attached_camera_position_difference_m": (
                 maximum_camera_position_difference_m
             ),
@@ -960,6 +1065,12 @@ def main() -> int:
                 "open": door_open_calls,
                 "close": door_close_calls,
             },
+            "tail_event_visibility": event_visibility_rows,
+            "navigation_plan_sha256": (
+                sha256_file(navigation_plan_path)
+                if navigation_plan_path is not None
+                else None
+            ),
             "model_truth_failures": model_truth_failures,
             "payload_inventory_sha256": sha256_file(payload_inventory_path),
             "sealed_model_manifest_sha256": sha256_file(sealed_model_manifest_path),

@@ -29,6 +29,12 @@ SOURCE_FILES = (
     "event_receipts.json",
     "result.json",
 )
+SUPPORTED_MAPS = {
+    "Carla/Maps/Town10HD_Opt",
+    "Carla/Maps/Town01",
+    "Carla/Maps/Town04",
+    "Carla/Maps/Town05",
+}
 
 
 def read_json(path: Path) -> Any:
@@ -70,7 +76,7 @@ def validate_protocol(protocol: dict[str, Any]) -> None:
         "unexpected protocol schema",
     )
     source = protocol["source"]
-    _require(tuple(source["files"]) == SOURCE_FILES, "source file roster/order differs")
+    _require(set(source["files"]) == set(SOURCE_FILES), "source file roster differs")
     for name, digest in source["files"].items():
         _require(name in SOURCE_FILES, f"unknown source file: {name}")
         _require(
@@ -84,9 +90,7 @@ def validate_protocol(protocol: dict[str, Any]) -> None:
 
     environment = protocol["environment"]
     _require(environment["carla_version"] == "0.9.16", "CARLA version differs")
-    _require(
-        environment["map"] == "Carla/Maps/Town10HD_Opt", "CARLA map differs"
-    )
+    _require(environment["map"] in SUPPORTED_MAPS, "CARLA map differs")
     fixed_delta = _finite_number(
         environment["fixed_delta_seconds"], "environment.fixed_delta_seconds"
     )
@@ -100,6 +104,56 @@ def validate_protocol(protocol: dict[str, Any]) -> None:
         capture["witness_transform_authority"] == "source_actor_manifest_camera",
         "witness must bind the source camera transform",
     )
+    wearer = capture["wearer"]
+    observer_mode = str(wearer.get("observer_mode", ""))
+    _require(
+        observer_mode in {"fixed_synthetic_observer", "frozen_event_bearing_route"},
+        "wearer observer mode differs",
+    )
+    if observer_mode == "frozen_event_bearing_route":
+        route = wearer.get("route")
+        _require(isinstance(route, list), "frozen wearer route must be an array")
+        _require(
+            len(route) == int(source["expected_trace_frames"]),
+            "frozen wearer route denominator differs",
+        )
+        for sample_index, row in enumerate(route):
+            _require(
+                isinstance(row, dict) and int(row.get("sample_index", -1)) == sample_index,
+                "frozen wearer route sample index differs",
+            )
+            for key in ("x_m", "y_m", "yaw_degrees"):
+                _finite_number(row.get(key), f"wearer.route[{sample_index}].{key}")
+        _require(
+            wearer.get("motion_model") == "bounded_speed_planar_wearer_route",
+            "frozen wearer motion model differs",
+        )
+        maximum_speed_mps = _finite_number(
+            wearer.get("maximum_speed_mps"), "wearer.maximum_speed_mps"
+        )
+        _require(maximum_speed_mps > 0.0, "wearer speed must be positive")
+        _require(
+            _finite_number(
+                wearer.get("maximum_event_view_range_m"),
+                "wearer.maximum_event_view_range_m",
+            )
+            > 0.0,
+            "wearer event view range must be positive",
+        )
+        maximum_step_m = maximum_speed_mps * fixed_delta
+        for previous, current in zip(route, route[1:]):
+            step_m = math.hypot(
+                float(current["x_m"]) - float(previous["x_m"]),
+                float(current["y_m"]) - float(previous["y_m"]),
+            )
+            _require(
+                step_m <= maximum_step_m + 1e-5,
+                "frozen wearer route exceeds its speed bound",
+            )
+        _require(
+            wearer.get("route_authority") == "TRACE_CONDITIONED_FROZEN_BEFORE_REPLAY",
+            "frozen wearer route authority differs",
+        )
     expected_k = camera_intrinsics(1280, 720, float(capture["fov_degrees"]))
     calibration = capture["camera_calibration"]
     _require(
@@ -122,9 +176,14 @@ def validate_protocol(protocol: dict[str, Any]) -> None:
         protocol["model_contract"]["include_current_actors"] is False,
         "model contract must exclude actors",
     )
+    expected_authority = (
+        "FROZEN_EVENT_BEARING_ROUTE"
+        if observer_mode == "frozen_event_bearing_route"
+        else "NO_PLAN"
+    )
     _require(
-        protocol["episode"]["issued_plan_authority"] == "NO_PLAN",
-        "N2 must not invent a navigation plan",
+        protocol["episode"]["issued_plan_authority"] == expected_authority,
+        "N2 navigation authority differs",
     )
 
 
