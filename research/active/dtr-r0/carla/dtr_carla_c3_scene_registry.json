@@ -1,0 +1,324 @@
+{
+  "schema_version": "dtr-c3-scene-registry-v1",
+  "registry_id": "DTR_CARLA_C3_FORMAL_SCENE_REGISTRY_V1",
+  "asset_registry_id": "DTR_CARLA_C3_FORMAL_ASSET_REGISTRY_V1",
+  "description": "Town10 dense-risk canary with 16 moving risk participants and a truth-blind CONTACT/SAFE occlusion pair.",
+  "claim_boundary": [
+    "All dynamic participants must be visible for at least ten instance-camera frames in each episode and enter the evaluator risk corridor.",
+    "Episode and navigation identifiers are outcome-neutral in the model tree; CONTACT, SAFE, actor identity, and registry truth remain evaluator-only.",
+    "This synthetic Development scene proves source and evaluator coverage, not real-world avoidance safety."
+  ],
+  "trajectories": {
+    "c3_wearer_route": {
+      "start_forward_m": -4.0,
+      "start_right_m": 0.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0},
+        {"start_s": 1.6, "velocity_forward_mps": 1.5, "velocity_right_mps": 0.0}
+      ]
+    },
+    "c3_risk_01_child_crossing": {
+      "start_forward_m": 0.4,
+      "start_right_m": 0.0,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": -0.2, "velocity_right_mps": 0.0}
+      ]
+    },
+    "c3_risk_01_child_contact": {
+      "start_forward_m": 0.4,
+      "start_right_m": 0.0,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": -0.2, "velocity_right_mps": 0.0}
+      ]
+    },
+    "c3_risk_01_child_safe": {
+      "start_forward_m": 0.4,
+      "start_right_m": 0.0,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": -0.2, "velocity_right_mps": 0.0},
+        {"start_s": 2.0, "velocity_forward_mps": -0.2, "velocity_right_mps": 1.5}
+      ]
+    },
+    "c3_risk_02_police_crossing": {
+      "start_forward_m": 0.5,
+      "start_right_m": 3.5,
+      "yaw_offset_degrees": -90.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": -0.25}
+      ]
+    },
+    "c3_risk_03_adult_parallel": {
+      "start_forward_m": 1.5,
+      "start_right_m": -1.3,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": -1.0, "velocity_right_mps": 0.0}
+      ]
+    },
+    "c3_risk_04_adult_crossing": {
+      "start_forward_m": 1.8,
+      "start_right_m": -2.2,
+      "yaw_offset_degrees": 90.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.7}
+      ]
+    },
+    "c3_risk_05_adult_parallel": {
+      "start_forward_m": -2.75,
+      "start_right_m": 0.9,
+      "yaw_offset_degrees": 0.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": 0.65, "velocity_right_mps": 0.0}
+      ]
+    },
+    "c3_risk_06_adult_crossing": {
+      "start_forward_m": 1.1,
+      "start_right_m": 2.8,
+      "yaw_offset_degrees": -90.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": -0.4}
+      ]
+    },
+    "c3_risk_07_adult_approach": {
+      "start_forward_m": 4.5,
+      "start_right_m": -3.2,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": -0.9, "velocity_right_mps": 0.0}
+      ]
+    },
+    "c3_risk_08_adult_receding": {
+      "start_forward_m": -0.2,
+      "start_right_m": 1.2,
+      "yaw_offset_degrees": 0.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": 0.75, "velocity_right_mps": 0.0}
+      ]
+    },
+    "c3_risk_09_adult_crossing": {
+      "start_forward_m": 2.8,
+      "start_right_m": -3.4,
+      "yaw_offset_degrees": 90.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.7}
+      ]
+    },
+    "c3_risk_10_bicycle_parallel": {
+      "start_forward_m": -2.0,
+      "start_right_m": -1.45,
+      "yaw_offset_degrees": 0.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0},
+        {"start_s": 2.1, "velocity_forward_mps": 1.7, "velocity_right_mps": 0.0},
+        {"start_s": 4.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0}
+      ]
+    },
+    "c3_risk_11_motorcycle_crossing": {
+      "start_forward_m": -0.5,
+      "start_right_m": 6.0,
+      "yaw_offset_degrees": -90.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0},
+        {"start_s": 2.0, "velocity_forward_mps": 0.0, "velocity_right_mps": -8.5714285714},
+        {"start_s": 3.4, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0}
+      ]
+    },
+    "c3_risk_12_sedan_approach": {
+      "start_forward_m": 6.0,
+      "start_right_m": 2.25,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0},
+        {"start_s": 2.1, "velocity_forward_mps": -2.8947368421, "velocity_right_mps": 0.0},
+        {"start_s": 4.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0}
+      ]
+    },
+    "c3_risk_13_ambulance_van": {
+      "start_forward_m": -1.5,
+      "start_right_m": 8.0,
+      "yaw_offset_degrees": -90.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0},
+        {"start_s": 0.6, "velocity_forward_mps": 0.0, "velocity_right_mps": -12.0},
+        {"start_s": 1.9, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0}
+      ]
+    },
+    "c3_risk_14_bus": {
+      "start_forward_m": 8.0,
+      "start_right_m": 3.1,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0},
+        {"start_s": 3.7, "velocity_forward_mps": -10.0, "velocity_right_mps": 0.0},
+        {"start_s": 4.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0}
+      ]
+    },
+    "c3_risk_15_hgv": {
+      "start_forward_m": 8.0,
+      "start_right_m": -2.45,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0},
+        {"start_s": 3.5, "velocity_forward_mps": -9.0, "velocity_right_mps": 0.0},
+        {"start_s": 4.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0}
+      ]
+    },
+    "c3_risk_16_emergency_sedan": {
+      "start_forward_m": 6.0,
+      "start_right_m": -3.5,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {"start_s": 0.0, "velocity_forward_mps": -1.0, "velocity_right_mps": 0.0},
+        {"start_s": 4.0, "velocity_forward_mps": 0.0, "velocity_right_mps": 0.0}
+      ]
+    }
+  },
+  "scenes": {
+    "town10_dense_risk_canary": {
+      "status": "FORMAL_CANARY",
+      "map": "Carla/Maps/Town10HD_Opt",
+      "display_name": "Town10 dense dynamic-risk occlusion canary",
+      "weather": "ClearNoon",
+      "duration_seconds": 4.0,
+      "showcase_time_s": 1.25,
+      "anchor": {
+        "center_xy_m": [-46.934195, 36.51329],
+        "forward_xy": [0.999999564, 0.000933925],
+        "right_xy": [-0.000933925, 0.999999564]
+      },
+      "witness": {
+        "forward_m": -4.5,
+        "right_m": -11.0,
+        "z_m": 13.0,
+        "look_at_forward_m": 2.0,
+        "look_at_right_m": 0.0,
+        "look_at_z_m": 1.0
+      },
+      "actors": [
+        {"instance_id": "target_primary", "asset_id": "c3_dynamic_01_child_crossing", "track_id": "d_01", "role": "primary_target", "risk_participation": true, "collision_relevant": true, "trajectory_key": "c3_risk_01_child_crossing"},
+        {"instance_id": "police_crossing", "asset_id": "c3_dynamic_02_police_crossing", "track_id": "d_02", "role": "police_crossing", "risk_participation": true, "collision_relevant": true, "trajectory_ref": "c3_risk_02_police_crossing"},
+        {"instance_id": "adult_parallel_1", "asset_id": "c3_dynamic_03_adult_parallel", "track_id": "d_03", "role": "adult_parallel", "risk_participation": true, "collision_relevant": true, "trajectory_ref": "c3_risk_03_adult_parallel"},
+        {"instance_id": "adult_crossing_1", "asset_id": "c3_dynamic_04_adult_crossing", "track_id": "d_04", "role": "adult_crossing", "risk_participation": true, "collision_relevant": true, "trajectory_ref": "c3_risk_04_adult_crossing"},
+        {"instance_id": "adult_parallel_2", "asset_id": "c3_dynamic_05_adult_parallel", "track_id": "d_05", "role": "adult_parallel", "risk_participation": true, "collision_relevant": true, "trajectory_ref": "c3_risk_05_adult_parallel"},
+        {"instance_id": "adult_crossing_2", "asset_id": "c3_dynamic_06_adult_crossing", "track_id": "d_06", "role": "adult_crossing", "risk_participation": true, "collision_relevant": true, "trajectory_ref": "c3_risk_06_adult_crossing"},
+        {"instance_id": "adult_approach", "asset_id": "c3_dynamic_07_adult_approach", "track_id": "d_07", "role": "adult_approach", "risk_participation": true, "collision_relevant": true, "trajectory_ref": "c3_risk_07_adult_approach"},
+        {"instance_id": "adult_receding", "asset_id": "c3_dynamic_08_adult_receding", "track_id": "d_08", "role": "adult_receding", "risk_participation": true, "collision_relevant": true, "trajectory_ref": "c3_risk_08_adult_receding"},
+        {"instance_id": "adult_crossing_3", "asset_id": "c3_dynamic_09_adult_crossing", "track_id": "d_09", "role": "adult_crossing", "risk_participation": true, "collision_relevant": true, "trajectory_ref": "c3_risk_09_adult_crossing"},
+        {"instance_id": "bicycle_parallel", "asset_id": "c3_dynamic_10_bicycle_parallel", "track_id": "d_10", "role": "bicycle_parallel", "risk_participation": true, "collision_relevant": true, "trajectory_ref": "c3_risk_10_bicycle_parallel"},
+        {"instance_id": "motorcycle_crossing", "asset_id": "c3_dynamic_11_motorcycle_crossing", "track_id": "d_11", "role": "motorcycle_crossing", "risk_participation": true, "collision_relevant": true, "trajectory_ref": "c3_risk_11_motorcycle_crossing"},
+        {"instance_id": "sedan_approach", "asset_id": "c3_dynamic_12_sedan_approach", "track_id": "d_12", "role": "sedan_approach", "risk_participation": true, "collision_relevant": true, "trajectory_ref": "c3_risk_12_sedan_approach"},
+        {"instance_id": "moving_occluder", "asset_id": "c3_dynamic_13_ambulance_van", "track_id": "d_13", "role": "physical_occluder", "risk_participation": true, "collision_relevant": true, "trajectory_ref": "c3_risk_13_ambulance_van"},
+        {"instance_id": "city_bus", "asset_id": "c3_dynamic_14_bus", "track_id": "d_14", "role": "bus_parallel", "risk_participation": true, "collision_relevant": true, "trajectory_ref": "c3_risk_14_bus"},
+        {"instance_id": "delivery_hgv", "asset_id": "c3_dynamic_15_hgv", "track_id": "d_15", "role": "hgv_parallel", "risk_participation": true, "collision_relevant": true, "trajectory_ref": "c3_risk_15_hgv"},
+        {"instance_id": "emergency_sedan", "asset_id": "c3_dynamic_16_emergency_sedan", "track_id": "d_16", "role": "emergency_crossing", "risk_participation": true, "collision_relevant": true, "trajectory_ref": "c3_risk_16_emergency_sedan"},
+        {"instance_id": "walker_hold_1", "asset_id": "c3_static_01_crowd", "track_id": "s_01", "role": "crowd_support", "risk_participation": false, "collision_relevant": true, "fixed_pose": {"forward_m": 4.0, "right_m": 4.8, "yaw_offset_degrees": -90.0}},
+        {"instance_id": "walker_hold_2", "asset_id": "c3_static_02_crowd", "track_id": "s_02", "role": "crowd_support", "risk_participation": false, "collision_relevant": true, "fixed_pose": {"forward_m": 6.0, "right_m": -4.5, "yaw_offset_degrees": 90.0}},
+        {"instance_id": "walker_hold_3", "asset_id": "c3_static_03_crowd", "track_id": "s_03", "role": "crowd_support", "risk_participation": false, "collision_relevant": true, "fixed_pose": {"forward_m": 8.5, "right_m": 5.5, "yaw_offset_degrees": -90.0}},
+        {"instance_id": "walker_hold_4", "asset_id": "c3_static_04_crowd", "track_id": "s_04", "role": "crowd_support", "risk_participation": false, "collision_relevant": true, "fixed_pose": {"forward_m": 10.0, "right_m": -5.0, "yaw_offset_degrees": 90.0}},
+        {"instance_id": "scooter_parked", "asset_id": "c3_static_05_parked_scooter", "track_id": "s_05", "role": "parked_support", "risk_participation": false, "collision_relevant": true, "fixed_pose": {"forward_m": 3.0, "right_m": -6.2, "yaw_offset_degrees": 0.0}},
+        {"instance_id": "microcar_parked", "asset_id": "c3_static_06_parked_microcar", "track_id": "s_06", "role": "parked_support", "risk_participation": false, "collision_relevant": true, "fixed_pose": {"forward_m": 6.5, "right_m": 6.5, "yaw_offset_degrees": 0.0}},
+        {"instance_id": "prius_parked", "asset_id": "c3_static_07_parked_prius", "track_id": "s_07", "role": "parked_support", "risk_participation": false, "collision_relevant": true, "fixed_pose": {"forward_m": 11.0, "right_m": 6.5, "yaw_offset_degrees": 0.0}},
+        {"instance_id": "model3_parked", "asset_id": "c3_static_08_parked_model3", "track_id": "s_08", "role": "parked_support", "risk_participation": false, "collision_relevant": true, "fixed_pose": {"forward_m": 12.0, "right_m": -6.5, "yaw_offset_degrees": 180.0}},
+        {"instance_id": "barrier", "asset_id": "c3_static_09_street_barrier", "track_id": "s_09", "role": "workzone_support", "risk_participation": false, "collision_relevant": true, "fixed_pose": {"forward_m": 3.5, "right_m": 3.0, "yaw_offset_degrees": 90.0}},
+        {"instance_id": "cone", "asset_id": "c3_static_10_construction_cone", "track_id": "s_10", "role": "workzone_support", "risk_participation": false, "collision_relevant": false, "fixed_pose": {"forward_m": 2.5, "right_m": 2.0, "yaw_offset_degrees": 0.0}},
+        {"instance_id": "warning", "asset_id": "c3_static_11_construction_warning", "track_id": "s_11", "role": "workzone_support", "risk_participation": false, "collision_relevant": false, "fixed_pose": {"forward_m": 5.0, "right_m": 3.5, "yaw_offset_degrees": -90.0}},
+        {"instance_id": "container", "asset_id": "c3_static_12_container", "track_id": "s_12", "role": "workzone_support", "risk_participation": false, "collision_relevant": true, "fixed_pose": {"forward_m": 10.0, "right_m": 8.0, "yaw_offset_degrees": 0.0}},
+        {"instance_id": "advertisement", "asset_id": "c3_static_13_advertisement", "track_id": "s_13", "role": "street_support", "risk_participation": false, "collision_relevant": false, "fixed_pose": {"forward_m": 7.0, "right_m": -7.0, "yaw_offset_degrees": 90.0}},
+        {"instance_id": "street_sign", "asset_id": "c3_static_14_street_sign", "track_id": "s_14", "role": "street_support", "risk_participation": false, "collision_relevant": false, "fixed_pose": {"forward_m": 5.0, "right_m": -4.0, "yaw_offset_degrees": 0.0}},
+        {"instance_id": "trashcan", "asset_id": "c3_static_15_trashcan", "track_id": "s_15", "role": "street_support", "risk_participation": false, "collision_relevant": true, "fixed_pose": {"forward_m": 4.5, "right_m": -6.0, "yaw_offset_degrees": 0.0}},
+        {"instance_id": "bench", "asset_id": "c3_static_16_bench", "track_id": "s_16", "role": "street_support", "risk_participation": false, "collision_relevant": true, "fixed_pose": {"forward_m": 8.0, "right_m": -7.0, "yaw_offset_degrees": 90.0}},
+        {"instance_id": "mailbox", "asset_id": "c3_static_17_mailbox", "track_id": "s_17", "role": "street_support", "risk_participation": false, "collision_relevant": true, "fixed_pose": {"forward_m": 2.0, "right_m": -5.0, "yaw_offset_degrees": 0.0}},
+        {"instance_id": "bin", "asset_id": "c3_static_18_bin", "track_id": "s_18", "role": "street_support", "risk_participation": false, "collision_relevant": true, "fixed_pose": {"forward_m": 9.0, "right_m": 5.0, "yaw_offset_degrees": 0.0}},
+        {"instance_id": "chain", "asset_id": "c3_static_19_chain_barrier", "track_id": "s_19", "role": "street_support", "risk_participation": false, "collision_relevant": true, "fixed_pose": {"forward_m": 7.0, "right_m": 3.5, "yaw_offset_degrees": 90.0}},
+        {"instance_id": "chain_end", "asset_id": "c3_static_20_chain_barrier_end", "track_id": "s_20", "role": "street_support", "risk_participation": false, "collision_relevant": true, "fixed_pose": {"forward_m": 7.0, "right_m": 2.5, "yaw_offset_degrees": 90.0}},
+        {"instance_id": "plant", "asset_id": "c3_static_21_plantpot", "track_id": "s_21", "role": "street_support", "risk_participation": false, "collision_relevant": true, "fixed_pose": {"forward_m": 6.0, "right_m": -3.5, "yaw_offset_degrees": 0.0}},
+        {"instance_id": "garbage", "asset_id": "c3_static_22_garbage", "track_id": "s_22", "role": "street_support", "risk_participation": false, "collision_relevant": false, "fixed_pose": {"forward_m": 3.0, "right_m": 5.0, "yaw_offset_degrees": 0.0}},
+        {"instance_id": "warning_alt", "asset_id": "c3_static_23_warning_accident", "track_id": "s_23", "role": "workzone_support", "risk_participation": false, "collision_relevant": false, "fixed_pose": {"forward_m": 8.0, "right_m": 4.0, "yaw_offset_degrees": -90.0}}
+      ],
+      "episodes": [
+        {
+          "episode_id": "c3_town10_e01",
+          "scenario_role": "track_then_occlusion_contact",
+          "twin_role": "contact",
+          "navigation_session_id": "c3_town10_pair",
+          "expected_outcome": "CONTACT",
+          "expected_responsible_assets": ["target_primary"],
+          "wearer_trajectory": "c3_wearer_route",
+          "asset_trajectories": {"target_primary": "c3_risk_01_child_contact"},
+          "issued_plan": {
+            "plan_id": "c3_town10_plan",
+            "session_id": "c3_town10_pair",
+            "issued_at_s": 0.0,
+            "expires_at_s": 4.0,
+            "time_parameterized_waypoints": [
+              {"time_s": 0.0, "forward_m": -4.0, "right_m": 0.0},
+              {"time_s": 1.6, "forward_m": -4.0, "right_m": 0.0},
+              {"time_s": 4.0, "forward_m": -0.4, "right_m": 0.0}
+            ]
+          }
+        },
+        {
+          "episode_id": "c3_town10_e02",
+          "scenario_role": "track_then_occlusion_safe",
+          "twin_role": "safe",
+          "navigation_session_id": "c3_town10_pair",
+          "expected_outcome": "SAFE",
+          "expected_responsible_assets": [],
+          "wearer_trajectory": "c3_wearer_route",
+          "asset_trajectories": {"target_primary": "c3_risk_01_child_safe"},
+          "issued_plan": {
+            "plan_id": "c3_town10_plan",
+            "session_id": "c3_town10_pair",
+            "issued_at_s": 0.0,
+            "expires_at_s": 4.0,
+            "time_parameterized_waypoints": [
+              {"time_s": 0.0, "forward_m": -4.0, "right_m": 0.0},
+              {"time_s": 1.6, "forward_m": -4.0, "right_m": 0.0},
+              {"time_s": 4.0, "forward_m": -0.4, "right_m": 0.0}
+            ]
+          }
+        }
+      ],
+      "occlusion_contract": {
+        "contract_id": "track_then_physical_loss_town10_dense_pair",
+        "episodes": ["c3_town10_e01", "c3_town10_e02"],
+        "target_asset": "target_primary",
+        "occluder_asset": "moving_occluder",
+        "minimum_pre_track_frames": 10,
+        "minimum_post_reappearance_frames": 10,
+        "minimum_trackable_pixel_fraction": 0.0002,
+        "complete_occlusion_pixel_fraction": 0.0,
+        "minimum_complete_occlusion_seconds": 0.3,
+        "maximum_complete_occlusion_seconds": 0.6,
+        "pair_identical_through_seconds": 2.0,
+        "required_outcomes": {"c3_town10_e01": "CONTACT", "c3_town10_e02": "SAFE"}
+      },
+      "twin_contract": {
+        "family": "track_then_physical_occlusion_outcome_twin",
+        "a": "c3_town10_e01",
+        "b": "c3_town10_e02",
+        "identical_before_s": 2.0,
+        "allowed_difference": "target_velocity_after_2s"
+      },
+      "admission": {
+        "capture_seed": 42831,
+        "render_backend": "dx12",
+        "render_quality_level": "Epic",
+        "total_scene_actors_including_wearer": 40,
+        "dynamic_risk_targets": 16,
+        "static_support_actors": 23,
+        "risk_corridor_threshold_m": 3.0,
+        "require_every_dynamic_target_nonzero_motion": true,
+        "require_every_dynamic_target_in_collision_min_distance_and_risk_evaluator": true,
+        "minimum_model_visible_frames_per_dynamic_target_per_episode": 10,
+        "require_static_support_excluded_from_dynamic_risk_denominator": true,
+        "require_exact_contact_responsibility": {"c3_town10_e01": ["target_primary"], "c3_town10_e02": []},
+        "require_track_physical_occlusion_reappearance": true,
+        "require_zero_blueprint_fallbacks": true
+      }
+    }
+  }
+}

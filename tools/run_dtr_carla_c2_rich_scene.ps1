@@ -25,6 +25,7 @@ $script:CarlaHost = '127.0.0.1'
 $script:StartupTimeoutSeconds = 120
 $script:StartupMinimumSeconds = 45
 $script:RenderQualityLevel = 'Epic'
+$script:RenderBackend = 'dx12'
 $script:RawRunPath = ''
 $script:CarlaInstallRootPath = ''
 $script:CarlaPythonPath = ''
@@ -254,7 +255,7 @@ function Invoke-SensorCapture {
         $serverProcess = Start-Process `
             -FilePath $script:CarlaExePath `
             -ArgumentList @(
-                '-dx12',
+                "-$($script:RenderBackend)",
                 '-RenderOffScreen',
                 '-nosound',
                 "-quality-level=$($script:RenderQualityLevel)",
@@ -400,6 +401,12 @@ try {
     }
     if ($script:RenderQualityLevel -notin @('Low', 'Epic')) {
         throw "Unsupported CARLA render quality: $($script:RenderQualityLevel)"
+    }
+    if ($null -ne $protocolValue.capture.render_backend) {
+        $script:RenderBackend = [string]$protocolValue.capture.render_backend
+    }
+    if ($script:RenderBackend -notin @('dx11', 'dx12')) {
+        throw "Unsupported CARLA render backend: $($script:RenderBackend)"
     }
     $script:ExpectedFramesPerSensor = 0
     foreach ($scenario in @($protocolValue.scenarios)) {

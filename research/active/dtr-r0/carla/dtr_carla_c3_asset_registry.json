@@ -1,0 +1,897 @@
+{
+  "schema_version": 1,
+  "registry_id": "DTR_CARLA_C3_FORMAL_ASSET_REGISTRY_V1",
+  "carla_version": "0.9.16",
+  "description": "Exact 40-blueprint C3 canary registry: one wearer, 16 dynamic risk targets, and 23 static support assets.",
+  "claim_boundary": [
+    "Scripted actors disable native CARLA physics and engine collision response for deterministic sensor replay.",
+    "Risk participation and contact remain evaluator-owned geometric judgments from each frame's realized CARLA bounding boxes.",
+    "Registry presence alone is not participation: final admission also requires motion, per-frame risk geometry, risk-corridor entry, and model-camera visibility."
+  ],
+  "scripted_actor_policy": {
+    "simulate_physics": false,
+    "engine_collisions_enabled": false,
+    "risk_contact_authority": "evaluator_collision_polygons_xy"
+  },
+  "assets": {
+    "c3_wearer_00": {
+      "blueprint_id": "walker.pedestrian.0001",
+      "kind": "walker",
+      "role_family": "wearer",
+      "risk_participation": false,
+      "collision_relevant": false,
+      "motion_policy": "scripted_transform_each_fixed_tick",
+      "trajectory_ref": "c3_wearer_route",
+      "physics_policy": {
+        "simulate_physics": false,
+        "walker_control_speed_mps": 0.0
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Sidewalk", "Crosswalk", "Driving"],
+        "surface_offset_m": 0.8,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_wearer_00",
+        "is_invincible": "false"
+      }
+    },
+    "c3_dynamic_01_child_crossing": {
+      "blueprint_id": "walker.pedestrian.0009",
+      "kind": "walker",
+      "role_family": "child",
+      "risk_participation": true,
+      "collision_relevant": true,
+      "motion_policy": "scripted_transform_each_fixed_tick",
+      "trajectory_ref": "c3_risk_01_child_crossing",
+      "physics_policy": {
+        "simulate_physics": false,
+        "walker_control_speed_mps": 0.0
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Sidewalk", "Crosswalk", "Driving"],
+        "surface_offset_m": 0.8,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_dynamic_01",
+        "is_invincible": "false"
+      }
+    },
+    "c3_dynamic_02_police_crossing": {
+      "blueprint_id": "walker.pedestrian.0030",
+      "kind": "walker",
+      "role_family": "police",
+      "risk_participation": true,
+      "collision_relevant": true,
+      "motion_policy": "scripted_transform_each_fixed_tick",
+      "trajectory_ref": "c3_risk_02_police_crossing",
+      "physics_policy": {
+        "simulate_physics": false,
+        "walker_control_speed_mps": 0.0
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Sidewalk", "Crosswalk", "Driving"],
+        "surface_offset_m": 0.8,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_dynamic_02",
+        "is_invincible": "false"
+      }
+    },
+    "c3_dynamic_03_adult_parallel": {
+      "blueprint_id": "walker.pedestrian.0024",
+      "kind": "walker",
+      "role_family": "adult",
+      "risk_participation": true,
+      "collision_relevant": true,
+      "motion_policy": "scripted_transform_each_fixed_tick",
+      "trajectory_ref": "c3_risk_03_adult_parallel",
+      "physics_policy": {
+        "simulate_physics": false,
+        "walker_control_speed_mps": 0.0
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Sidewalk", "Crosswalk"],
+        "surface_offset_m": 0.8,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_dynamic_03",
+        "is_invincible": "false"
+      }
+    },
+    "c3_dynamic_04_adult_crossing": {
+      "blueprint_id": "walker.pedestrian.0025",
+      "kind": "walker",
+      "role_family": "adult",
+      "risk_participation": true,
+      "collision_relevant": true,
+      "motion_policy": "scripted_transform_each_fixed_tick",
+      "trajectory_ref": "c3_risk_04_adult_crossing",
+      "physics_policy": {
+        "simulate_physics": false,
+        "walker_control_speed_mps": 0.0
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Sidewalk", "Crosswalk", "Driving"],
+        "surface_offset_m": 0.8,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_dynamic_04",
+        "is_invincible": "false"
+      }
+    },
+    "c3_dynamic_05_adult_parallel": {
+      "blueprint_id": "walker.pedestrian.0026",
+      "kind": "walker",
+      "role_family": "adult",
+      "risk_participation": true,
+      "collision_relevant": true,
+      "motion_policy": "scripted_transform_each_fixed_tick",
+      "trajectory_ref": "c3_risk_05_adult_parallel",
+      "physics_policy": {
+        "simulate_physics": false,
+        "walker_control_speed_mps": 0.0
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Sidewalk", "Crosswalk"],
+        "surface_offset_m": 0.8,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_dynamic_05",
+        "is_invincible": "false"
+      }
+    },
+    "c3_dynamic_06_adult_crossing": {
+      "blueprint_id": "walker.pedestrian.0027",
+      "kind": "walker",
+      "role_family": "adult",
+      "risk_participation": true,
+      "collision_relevant": true,
+      "motion_policy": "scripted_transform_each_fixed_tick",
+      "trajectory_ref": "c3_risk_06_adult_crossing",
+      "physics_policy": {
+        "simulate_physics": false,
+        "walker_control_speed_mps": 0.0
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Sidewalk", "Crosswalk", "Driving"],
+        "surface_offset_m": 0.8,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_dynamic_06",
+        "is_invincible": "false"
+      }
+    },
+    "c3_dynamic_07_adult_approach": {
+      "blueprint_id": "walker.pedestrian.0028",
+      "kind": "walker",
+      "role_family": "adult",
+      "risk_participation": true,
+      "collision_relevant": true,
+      "motion_policy": "scripted_transform_each_fixed_tick",
+      "trajectory_ref": "c3_risk_07_adult_approach",
+      "physics_policy": {
+        "simulate_physics": false,
+        "walker_control_speed_mps": 0.0
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Sidewalk", "Crosswalk", "Driving"],
+        "surface_offset_m": 0.8,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_dynamic_07",
+        "is_invincible": "false"
+      }
+    },
+    "c3_dynamic_08_adult_receding": {
+      "blueprint_id": "walker.pedestrian.0029",
+      "kind": "walker",
+      "role_family": "adult",
+      "risk_participation": true,
+      "collision_relevant": true,
+      "motion_policy": "scripted_transform_each_fixed_tick",
+      "trajectory_ref": "c3_risk_08_adult_receding",
+      "physics_policy": {
+        "simulate_physics": false,
+        "walker_control_speed_mps": 0.0
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Sidewalk", "Crosswalk"],
+        "surface_offset_m": 0.8,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_dynamic_08",
+        "is_invincible": "false"
+      }
+    },
+    "c3_dynamic_09_adult_crossing": {
+      "blueprint_id": "walker.pedestrian.0031",
+      "kind": "walker",
+      "role_family": "adult",
+      "risk_participation": true,
+      "collision_relevant": true,
+      "motion_policy": "scripted_transform_each_fixed_tick",
+      "trajectory_ref": "c3_risk_09_adult_crossing",
+      "physics_policy": {
+        "simulate_physics": false,
+        "walker_control_speed_mps": 0.0
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Sidewalk", "Crosswalk", "Driving"],
+        "surface_offset_m": 0.8,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_dynamic_09",
+        "is_invincible": "false"
+      }
+    },
+    "c3_dynamic_10_bicycle_parallel": {
+      "blueprint_id": "vehicle.bh.crossbike",
+      "kind": "vehicle",
+      "role_family": "bicycle",
+      "risk_participation": true,
+      "collision_relevant": true,
+      "motion_policy": "scripted_transform_each_fixed_tick",
+      "trajectory_ref": "c3_risk_10_bicycle_parallel",
+      "physics_policy": {
+        "simulate_physics": false,
+        "autopilot": false
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Biking", "Driving"],
+        "surface_offset_m": 0.25,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_dynamic_10"
+      }
+    },
+    "c3_dynamic_11_motorcycle_crossing": {
+      "blueprint_id": "vehicle.harley-davidson.low_rider",
+      "kind": "vehicle",
+      "role_family": "motorcycle",
+      "risk_participation": true,
+      "collision_relevant": true,
+      "motion_policy": "scripted_transform_each_fixed_tick",
+      "trajectory_ref": "c3_risk_11_motorcycle_crossing",
+      "physics_policy": {
+        "simulate_physics": false,
+        "autopilot": false
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Driving"],
+        "surface_offset_m": 0.25,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_dynamic_11"
+      }
+    },
+    "c3_dynamic_12_sedan_approach": {
+      "blueprint_id": "vehicle.audi.a2",
+      "kind": "vehicle",
+      "role_family": "sedan",
+      "risk_participation": true,
+      "collision_relevant": true,
+      "motion_policy": "scripted_transform_each_fixed_tick",
+      "trajectory_ref": "c3_risk_12_sedan_approach",
+      "physics_policy": {
+        "simulate_physics": false,
+        "autopilot": false
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Driving"],
+        "surface_offset_m": 0.3,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_dynamic_12"
+      }
+    },
+    "c3_dynamic_13_ambulance_van": {
+      "blueprint_id": "vehicle.ford.ambulance",
+      "kind": "vehicle",
+      "role_family": "van",
+      "risk_participation": true,
+      "collision_relevant": true,
+      "motion_policy": "scripted_transform_each_fixed_tick",
+      "trajectory_ref": "c3_risk_13_ambulance_van",
+      "physics_policy": {
+        "simulate_physics": false,
+        "autopilot": false
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Driving"],
+        "surface_offset_m": 0.3,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_dynamic_13"
+      }
+    },
+    "c3_dynamic_14_bus": {
+      "blueprint_id": "vehicle.mitsubishi.fusorosa",
+      "kind": "vehicle",
+      "role_family": "bus",
+      "risk_participation": true,
+      "collision_relevant": true,
+      "motion_policy": "scripted_transform_each_fixed_tick",
+      "trajectory_ref": "c3_risk_14_bus",
+      "physics_policy": {
+        "simulate_physics": false,
+        "autopilot": false
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Driving"],
+        "surface_offset_m": 0.3,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_dynamic_14"
+      }
+    },
+    "c3_dynamic_15_hgv": {
+      "blueprint_id": "vehicle.carlamotors.european_hgv",
+      "kind": "vehicle",
+      "role_family": "hgv",
+      "risk_participation": true,
+      "collision_relevant": true,
+      "motion_policy": "scripted_transform_each_fixed_tick",
+      "trajectory_ref": "c3_risk_15_hgv",
+      "physics_policy": {
+        "simulate_physics": false,
+        "autopilot": false
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Driving"],
+        "surface_offset_m": 0.3,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_dynamic_15"
+      }
+    },
+    "c3_dynamic_16_emergency_sedan": {
+      "blueprint_id": "vehicle.dodge.charger_police_2020",
+      "kind": "vehicle",
+      "role_family": "emergency",
+      "risk_participation": true,
+      "collision_relevant": true,
+      "motion_policy": "scripted_transform_each_fixed_tick",
+      "trajectory_ref": "c3_risk_16_emergency_sedan",
+      "physics_policy": {
+        "simulate_physics": false,
+        "autopilot": false
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Driving"],
+        "surface_offset_m": 0.3,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_dynamic_16"
+      }
+    },
+    "c3_static_01_crowd": {
+      "blueprint_id": "walker.pedestrian.0005",
+      "kind": "walker",
+      "role_family": "crowd",
+      "risk_participation": false,
+      "collision_relevant": true,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false,
+        "walker_control_speed_mps": 0.0
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Sidewalk", "Crosswalk"],
+        "surface_offset_m": 0.8,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_01",
+        "is_invincible": "false"
+      }
+    },
+    "c3_static_02_crowd": {
+      "blueprint_id": "walker.pedestrian.0006",
+      "kind": "walker",
+      "role_family": "crowd",
+      "risk_participation": false,
+      "collision_relevant": true,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false,
+        "walker_control_speed_mps": 0.0
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Sidewalk", "Crosswalk"],
+        "surface_offset_m": 0.8,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_02",
+        "is_invincible": "false"
+      }
+    },
+    "c3_static_03_crowd": {
+      "blueprint_id": "walker.pedestrian.0007",
+      "kind": "walker",
+      "role_family": "crowd",
+      "risk_participation": false,
+      "collision_relevant": true,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false,
+        "walker_control_speed_mps": 0.0
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Sidewalk", "Crosswalk"],
+        "surface_offset_m": 0.8,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_03",
+        "is_invincible": "false"
+      }
+    },
+    "c3_static_04_crowd": {
+      "blueprint_id": "walker.pedestrian.0008",
+      "kind": "walker",
+      "role_family": "crowd",
+      "risk_participation": false,
+      "collision_relevant": true,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false,
+        "walker_control_speed_mps": 0.0
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Sidewalk", "Crosswalk"],
+        "surface_offset_m": 0.8,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_04",
+        "is_invincible": "false"
+      }
+    },
+    "c3_static_05_parked_scooter": {
+      "blueprint_id": "vehicle.vespa.zx125",
+      "kind": "vehicle",
+      "role_family": "parked_micromobility",
+      "risk_participation": false,
+      "collision_relevant": true,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false,
+        "autopilot": false
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Biking", "Driving"],
+        "surface_offset_m": 0.25,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_05"
+      }
+    },
+    "c3_static_06_parked_microcar": {
+      "blueprint_id": "vehicle.micro.microlino",
+      "kind": "vehicle",
+      "role_family": "parked_vehicle",
+      "risk_participation": false,
+      "collision_relevant": true,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false,
+        "autopilot": false
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Driving"],
+        "surface_offset_m": 0.3,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_06"
+      }
+    },
+    "c3_static_07_parked_prius": {
+      "blueprint_id": "vehicle.toyota.prius",
+      "kind": "vehicle",
+      "role_family": "parked_vehicle",
+      "risk_participation": false,
+      "collision_relevant": true,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false,
+        "autopilot": false
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Driving"],
+        "surface_offset_m": 0.3,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_07"
+      }
+    },
+    "c3_static_08_parked_model3": {
+      "blueprint_id": "vehicle.tesla.model3",
+      "kind": "vehicle",
+      "role_family": "parked_vehicle",
+      "risk_participation": false,
+      "collision_relevant": true,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false,
+        "autopilot": false
+      },
+      "surface_policy": {
+        "projection": "explicit_lane_waypoint",
+        "allowed_lane_types": ["Driving"],
+        "surface_offset_m": 0.3,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_08"
+      }
+    },
+    "c3_static_09_street_barrier": {
+      "blueprint_id": "static.prop.streetbarrier",
+      "kind": "prop",
+      "role_family": "workzone",
+      "risk_participation": false,
+      "collision_relevant": true,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false
+      },
+      "surface_policy": {
+        "projection": "explicit_verified_world_pose",
+        "allowed_lane_types": ["Driving", "Shoulder"],
+        "surface_offset_m": 0.05,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_09"
+      }
+    },
+    "c3_static_10_construction_cone": {
+      "blueprint_id": "static.prop.constructioncone",
+      "kind": "prop",
+      "role_family": "workzone",
+      "risk_participation": false,
+      "collision_relevant": false,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false
+      },
+      "surface_policy": {
+        "projection": "explicit_verified_world_pose",
+        "allowed_lane_types": ["Driving", "Shoulder"],
+        "surface_offset_m": 0.03,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_10"
+      }
+    },
+    "c3_static_11_construction_warning": {
+      "blueprint_id": "static.prop.warningconstruction",
+      "kind": "prop",
+      "role_family": "workzone",
+      "risk_participation": false,
+      "collision_relevant": false,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false
+      },
+      "surface_policy": {
+        "projection": "explicit_verified_world_pose",
+        "allowed_lane_types": ["Driving", "Shoulder"],
+        "surface_offset_m": 0.05,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_11"
+      }
+    },
+    "c3_static_12_container": {
+      "blueprint_id": "static.prop.container",
+      "kind": "prop",
+      "role_family": "workzone",
+      "risk_participation": false,
+      "collision_relevant": true,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false
+      },
+      "surface_policy": {
+        "projection": "explicit_verified_world_pose",
+        "allowed_lane_types": ["Driving", "Shoulder"],
+        "surface_offset_m": 0.05,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_12"
+      }
+    },
+    "c3_static_13_advertisement": {
+      "blueprint_id": "static.prop.advertisement",
+      "kind": "prop",
+      "role_family": "street_furniture",
+      "risk_participation": false,
+      "collision_relevant": false,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false
+      },
+      "surface_policy": {
+        "projection": "explicit_verified_world_pose",
+        "allowed_lane_types": ["Sidewalk"],
+        "surface_offset_m": 0.05,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_13"
+      }
+    },
+    "c3_static_14_street_sign": {
+      "blueprint_id": "static.prop.streetsign",
+      "kind": "prop",
+      "role_family": "street_furniture",
+      "risk_participation": false,
+      "collision_relevant": false,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false
+      },
+      "surface_policy": {
+        "projection": "explicit_verified_world_pose",
+        "allowed_lane_types": ["Sidewalk"],
+        "surface_offset_m": 0.05,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_14"
+      }
+    },
+    "c3_static_15_trashcan": {
+      "blueprint_id": "static.prop.trashcan01",
+      "kind": "prop",
+      "role_family": "street_furniture",
+      "risk_participation": false,
+      "collision_relevant": true,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false
+      },
+      "surface_policy": {
+        "projection": "explicit_verified_world_pose",
+        "allowed_lane_types": ["Sidewalk"],
+        "surface_offset_m": 0.05,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_15"
+      }
+    },
+    "c3_static_16_bench": {
+      "blueprint_id": "static.prop.bench01",
+      "kind": "prop",
+      "role_family": "street_furniture",
+      "risk_participation": false,
+      "collision_relevant": true,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false
+      },
+      "surface_policy": {
+        "projection": "explicit_verified_world_pose",
+        "allowed_lane_types": ["Sidewalk"],
+        "surface_offset_m": 0.05,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_16"
+      }
+    },
+    "c3_static_17_mailbox": {
+      "blueprint_id": "static.prop.mailbox",
+      "kind": "prop",
+      "role_family": "street_furniture",
+      "risk_participation": false,
+      "collision_relevant": true,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false
+      },
+      "surface_policy": {
+        "projection": "explicit_verified_world_pose",
+        "allowed_lane_types": ["Sidewalk"],
+        "surface_offset_m": 0.05,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_17"
+      }
+    },
+    "c3_static_18_bin": {
+      "blueprint_id": "static.prop.bin",
+      "kind": "prop",
+      "role_family": "street_furniture",
+      "risk_participation": false,
+      "collision_relevant": true,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false
+      },
+      "surface_policy": {
+        "projection": "explicit_verified_world_pose",
+        "allowed_lane_types": ["Sidewalk"],
+        "surface_offset_m": 0.05,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_18"
+      }
+    },
+    "c3_static_19_chain_barrier": {
+      "blueprint_id": "static.prop.chainbarrier",
+      "kind": "prop",
+      "role_family": "street_furniture",
+      "risk_participation": false,
+      "collision_relevant": true,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false
+      },
+      "surface_policy": {
+        "projection": "explicit_verified_world_pose",
+        "allowed_lane_types": ["Sidewalk", "Shoulder"],
+        "surface_offset_m": 0.05,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_19"
+      }
+    },
+    "c3_static_20_chain_barrier_end": {
+      "blueprint_id": "static.prop.chainbarrierend",
+      "kind": "prop",
+      "role_family": "street_furniture",
+      "risk_participation": false,
+      "collision_relevant": true,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false
+      },
+      "surface_policy": {
+        "projection": "explicit_verified_world_pose",
+        "allowed_lane_types": ["Sidewalk", "Shoulder"],
+        "surface_offset_m": 0.05,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_20"
+      }
+    },
+    "c3_static_21_plantpot": {
+      "blueprint_id": "static.prop.plantpot01",
+      "kind": "prop",
+      "role_family": "street_furniture",
+      "risk_participation": false,
+      "collision_relevant": true,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false
+      },
+      "surface_policy": {
+        "projection": "explicit_verified_world_pose",
+        "allowed_lane_types": ["Sidewalk"],
+        "surface_offset_m": 0.05,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_21"
+      }
+    },
+    "c3_static_22_garbage": {
+      "blueprint_id": "static.prop.garbage01",
+      "kind": "prop",
+      "role_family": "street_detail",
+      "risk_participation": false,
+      "collision_relevant": false,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false
+      },
+      "surface_policy": {
+        "projection": "explicit_verified_world_pose",
+        "allowed_lane_types": ["Sidewalk", "Shoulder"],
+        "surface_offset_m": 0.05,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_22"
+      }
+    },
+    "c3_static_23_warning_accident": {
+      "blueprint_id": "static.prop.warningaccident",
+      "kind": "prop",
+      "role_family": "workzone",
+      "risk_participation": false,
+      "collision_relevant": false,
+      "motion_policy": "fixed_transform_reapplied_each_fixed_tick",
+      "trajectory_ref": null,
+      "physics_policy": {
+        "simulate_physics": false
+      },
+      "surface_policy": {
+        "projection": "explicit_verified_world_pose",
+        "allowed_lane_types": ["Driving", "Shoulder"],
+        "surface_offset_m": 0.05,
+        "allow_lane_type_any": false
+      },
+      "attributes": {
+        "role_name": "dtr_c3_static_23"
+      }
+    }
+  }
+}

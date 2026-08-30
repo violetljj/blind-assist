@@ -381,6 +381,11 @@ def spawn_asset(
         actor.set_simulate_physics(False)
     except Exception:
         pass
+    collision_manifest: dict[str, Any] = {}
+    if "collisions_enabled" in asset:
+        collisions_enabled = bool(asset["collisions_enabled"])
+        actor.set_collisions(collisions_enabled)
+        collision_manifest["collisions_enabled"] = collisions_enabled
     if str(asset["kind"]) == "walker":
         try:
             actor.apply_control(carla.WalkerControl(speed=0.0))
@@ -402,6 +407,7 @@ def spawn_asset(
         "carla_actor_id": int(actor.id),
         "bbox_extent": vector_dict(extent.x, extent.y, extent.z),
         "bbox_nonzero": bbox_nonzero(actor),
+        **collision_manifest,
     }
 
 
@@ -504,6 +510,7 @@ def apply_scene(
     center: np.ndarray,
     forward: np.ndarray,
     right: np.ndarray,
+    apply_transforms: bool = True,
 ) -> tuple[dict[str, Any], dict[str, dict[str, Any]]]:
     wearer_pose = pose_for_wearer(
         scenario,
@@ -514,11 +521,12 @@ def apply_scene(
         forward=forward,
         right=right,
     )
-    wearer.set_transform(wearer_pose["transform"])
-    try:
-        wearer.apply_control(carla.WalkerControl(speed=0.0))
-    except Exception:
-        pass
+    if apply_transforms:
+        wearer.set_transform(wearer_pose["transform"])
+        try:
+            wearer.apply_control(carla.WalkerControl(speed=0.0))
+        except Exception:
+            pass
     poses: dict[str, dict[str, Any]] = {}
     for asset in assets:
         key = str(asset["asset_key"])
@@ -532,14 +540,61 @@ def apply_scene(
             forward=forward,
             right=right,
         )
-        actors[key].set_transform(pose["transform"])
-        if str(asset["kind"]) == "walker":
-            try:
-                actors[key].apply_control(carla.WalkerControl(speed=0.0))
-            except Exception:
-                pass
+        if apply_transforms:
+            actors[key].set_transform(pose["transform"])
+            if str(asset["kind"]) == "walker":
+                try:
+                    actors[key].apply_control(carla.WalkerControl(speed=0.0))
+                except Exception:
+                    pass
         poses[key] = pose
     return wearer_pose, poses
+
+
+def tick_scripted_scene(
+    client: carla.Client,
+    world: carla.World,
+    sensor_queue: queue.Queue[carla.SensorData],
+    sensor_name: str,
+    wearer: carla.Actor,
+    actors: dict[str, carla.Actor],
+    wearer_pose: dict[str, Any],
+    poses: dict[str, dict[str, Any]],
+) -> tuple[int, carla.SensorData, dict[str, carla.Transform]]:
+    labels = ["wearer", *sorted(actors)]
+    commands = [carla.command.ApplyTransform(wearer.id, wearer_pose["transform"])]
+    commands.extend(
+        carla.command.ApplyTransform(actors[key].id, poses[key]["transform"])
+        for key in labels[1:]
+    )
+    previous_frame = int(world.get_snapshot().frame)
+    responses = client.apply_batch_sync(commands, do_tick=True)
+    if len(responses) != len(commands):
+        raise RuntimeError(
+            f"scripted pose batch response count differs: {len(responses)} != {len(commands)}"
+        )
+    failures = [
+        {"actor": label, "error": str(response.error)}
+        for label, response in zip(labels, responses, strict=True)
+        if response.has_error()
+    ]
+    if failures:
+        raise RuntimeError(f"scripted pose batch failed: {json.dumps(failures)}")
+    snapshot = world.get_snapshot()
+    world_frame = int(snapshot.frame)
+    if world_frame != previous_frame + 1:
+        raise RuntimeError(
+            f"scripted pose batch advanced unexpected frame: {previous_frame} -> {world_frame}"
+        )
+    image = await_frame(sensor_queue, world_frame, sensor_name)
+    actor_by_label = {"wearer": wearer, **actors}
+    actual: dict[str, carla.Transform] = {}
+    for label in labels:
+        actor_snapshot = snapshot.find(actor_by_label[label].id)
+        if actor_snapshot is None:
+            raise RuntimeError(f"snapshot omitted task-owned actor {label}")
+        actual[label] = actor_snapshot.get_transform()
+    return world_frame, image, actual
 
 
 def weather_parameter(name: str) -> carla.WeatherParameters:
@@ -848,9 +903,18 @@ def main() -> int:
                     center=center,
                     forward=forward,
                     right=right,
+                    apply_transforms=False,
                 )
-                world_frame = world.tick(30.0)
-                image = await_frame(sensor_queue, world_frame, sensor_name)
+                world_frame, image, actual_transforms = tick_scripted_scene(
+                    client,
+                    world,
+                    sensor_queue,
+                    sensor_name,
+                    wearer,
+                    scene_actors,
+                    wearer_pose,
+                    poses,
+                )
                 sensor_alignment_ok = sensor_alignment_ok and int(image.frame) == int(
                     world_frame
                 )
@@ -858,13 +922,9 @@ def main() -> int:
                     raise RuntimeError(
                         f"empty {sensor_name} payload at {episode_id}/{sample_index}"
                     )
-                snapshot = world.get_snapshot()
                 actor_states: dict[str, dict[str, Any]] = {}
                 collision_polygons: dict[str, list[list[float]]] = {}
-                wearer_snapshot = snapshot.find(wearer.id)
-                if wearer_snapshot is None:
-                    raise RuntimeError("snapshot omitted wearer")
-                wearer_transform = wearer_snapshot.get_transform()
+                wearer_transform = actual_transforms["wearer"]
                 actor_states["wearer"] = {
                     "track_id": str(protocol["wearer"]["track_id"]),
                     "asset_key": "wearer",
@@ -886,10 +946,7 @@ def main() -> int:
                 for asset in assets:
                     key = str(asset["asset_key"])
                     actor = scene_actors[key]
-                    actor_snapshot = snapshot.find(actor.id)
-                    if actor_snapshot is None:
-                        raise RuntimeError(f"snapshot omitted task-owned actor {key}")
-                    actual_transform = actor_snapshot.get_transform()
+                    actual_transform = actual_transforms[key]
                     pose = poses[key]
                     actor_states[key] = {
                         "track_id": str(asset["track_id"]),
