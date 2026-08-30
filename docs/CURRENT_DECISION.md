@@ -998,6 +998,26 @@ walkability, collision-free motion, arrival, `HANDOFF_READY`, or safety. A
 pixel-portal successor must add an independent entrance-identity credential;
 do not reopen matcher, threshold, or generic-fusion rescue.
 
+Three source-changing Panoramax successors have now localized that missing
+credential. Entrance-node text on eight exact nodes and 22 real views produced
+zero scene or ray-single-view proofs and only `1/8` multiview proofs, with zero
+wrong proofs and `1/2` same-building distinct credentials recovered. A
+cross-sequence whole-viewport DINO field then retained a ray portal in Top-3 on
+`3/4`, but uniquely bound the correct entrance on only `1/4` while wrong
+entrance references bound the ray portal on `9/12`. Do not tune OCR, DINO,
+viewport, portal lattice, binding thresholds, or fusion on either consumed
+cohort.
+
+The stronger exact-portal-patch successor stopped at source admission on three
+additional way-disjoint, cross-sequence entrances: strict orientation was
+`6/6`, but the independently audited reference side admitted only `1/3` exact
+portals and the disjoint query side admitted `0/3`; joint admission was `0/3`.
+No EfficientLoFTR or other matcher call ran. Record
+`L10_PANOLAB_EXACT_PORTAL_PATCH_SOURCE_NOT_EVALUABLE_REFERENCE_1_OF_3_QUERY_0_OF_3_NO_MATCHER_CALL`.
+The next Panoramax move is asset expansion for closer, independently captured,
+ray-visible entrances; it is not another matcher rescue or a relaxation of
+unique-portal truth.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

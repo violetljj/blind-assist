@@ -1,0 +1,41 @@
+{
+  "schema": "blindassist-l10-panolab-exact-portal-query-source-audit-v1",
+  "role": "QUERY_SOURCE_ADMISSION",
+  "authority": "AGENT_ANNOTATED_EXPLORE_DEVELOPMENT",
+  "source": "research/active/l10-r0/l10_panolab_exact_portal_patch_source_v1.json",
+  "source_sha256": "620701a93a1b0acd6a69bdf7cb5b38fcfa1a112b2b0d740201d455bee3031dab",
+  "annotator_separation": "The query-only annotator received the three query viewport paths and x=512, and was forbidden to open reference pixels, source JSON, or model output.",
+  "episodes": [
+    {
+      "episode_id": "EP01",
+      "item_id": "35c832e9-1276-4e45-8d06-99bae5a34ed1",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.99,
+      "rationale": "The ray crosses trees and open pedestrian space; no visible building entrance portal contains it."
+    },
+    {
+      "episode_id": "EP02",
+      "item_id": "c32e0ffc-a76e-4996-8a52-eb1b0e2770cc",
+      "status": "AMBIGUOUS",
+      "portal_box_xyxy": null,
+      "confidence": 0.90,
+      "rationale": "The ray falls near an occluded building corner with several door-like structures; no unique tight portal can be assigned."
+    },
+    {
+      "episode_id": "EP03",
+      "item_id": "544115f6-b81c-4b3e-8f79-96748bc99b55",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.99,
+      "rationale": "The ray crosses a roadway and parking area; visible facade openings are clearly offset from the ray."
+    }
+  ],
+  "metrics": {
+    "admitted": 0,
+    "not_visible": 2,
+    "ambiguous": 1,
+    "episodes": 3
+  },
+  "query_truth_status": "NOT_CREATED_BECAUSE_SOURCE_ADMISSION_FAILED"
+}

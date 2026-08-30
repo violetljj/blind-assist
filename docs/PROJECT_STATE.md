@@ -762,6 +762,24 @@ walkability, collision-free motion, arrival, `HANDOFF_READY`, product benefit,
 user benefit, or safety. The next pixel-portal route needs independent entrance
 identity evidence, not another matcher or threshold sweep.
 
+That successor was tested through three genuinely different information
+sources. Exact entrance-node text reached `1/8` multiview proofs over eight
+nodes and 22 Panoramax views, with zero wrong proofs; whole-viewport
+cross-sequence DINO reached only `1/4` unique correct portal bindings and made
+`9/12` wrong-reference ray bindings. Both cohorts are consumed Development
+evidence and are closed to OCR, matcher, threshold, viewport, portal-proposer,
+or fusion rescue.
+
+A third cohort changed the source to separately annotated exact portal patches
+on three new target ways. All six images passed strict orientation and all three
+pairs were cross-sequence, but independent source audit admitted only `1/3`
+reference portals and `0/3` query portals. Joint pixel-source admission was
+`0/3`, query truth was not created, and matcher calls were zero. Record
+`L10_PANOLAB_EXACT_PORTAL_PATCH_SOURCE_NOT_EVALUABLE_REFERENCE_1_OF_3_QUERY_0_OF_3_NO_MATCHER_CALL`.
+This is an asset/source ceiling, not an EfficientLoFTR negative. Continue by
+expanding Panoramax to closer, independently captured, ray-visible entrances;
+do not resample the opened ways or weaken unique-portal truth.
+
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
 because the approved AWS profile is absent. That is a source-access condition,

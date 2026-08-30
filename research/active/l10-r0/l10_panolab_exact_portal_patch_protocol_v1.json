@@ -1,0 +1,95 @@
+{
+  "schema": "blindassist-l10-panolab-exact-portal-patch-protocol-v1",
+  "authority": "EXPLORE_DEVELOPMENT",
+  "question": "Can a portal-only reference credential from one Panoramax sequence be geometrically transported onto the exact same entrance portal in another sequence, while portal credentials from every wrong entrance fail?",
+  "source": {
+    "candidates_path": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/candidates.json",
+    "candidates_sha256": "651a2f9c78fcab7c98ea3871f10698772f90cce1af2d884d476400b3c025567a",
+    "orientation_protocol_path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+    "orientation_protocol_sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+    "download_manifests": [
+      "artifacts.local/knowledge/l10-panoray-fresh-source-v1/download-manifest.json",
+      "artifacts.local/knowledge/l10-panoray-fresh-source-v1/download-manifest-v2-visible-recovery.json",
+      "artifacts.local/knowledge/l10-panoray-fresh-source-v1/active-recovery-download-manifest.json"
+    ],
+    "new_asset_root": "artifacts.local/knowledge/l10-panolab-exact-portal-patch-v1",
+    "reference_annotations": "research/active/l10-r0/l10_panolab_exact_portal_reference_annotations_v1.json",
+    "reference_annotations_sha256": "e8465a290eb0dfb6ce7bb1db3da772a1e404895e6e43897396079b74ff93bdd5",
+    "query_source_audit": "research/active/l10-r0/l10_panolab_exact_portal_query_source_audit_v1.json",
+    "query_source_audit_sha256": "1d1d5c76fbb2a442ee47a6466356ae41f86fb7f8ba7d8f7687d60ccc2e00817b",
+    "query_truth": null,
+    "query_truth_sha256": null,
+    "query_truth_status": "NOT_CREATED_BECAUSE_QUERY_SOURCE_ADMISSION_WAS_0_OF_3"
+  },
+  "cohort": {
+    "selected_candidate_indices": [750, 763, 797],
+    "excluded_way_ids": [
+      28709471,
+      66183358,
+      149488817,
+      358423547,
+      84327114,
+      355175795,
+      44333472,
+      43471848,
+      56016854,
+      39224047,
+      1221423767,
+      160165240,
+      190020630,
+      27108404,
+      1184499395
+    ],
+    "selection_provenance": "All three remaining metadata-admitted cross-collection candidates after excluding every prior active-recovery, node-text, and whole-viewport-reference way. No selected pixels or model outcomes were observed before freeze.",
+    "view_pair_rule": "Within every eligible collection choose the strict DIRECT item nearest 40 metres to the entrance, tie by item id. Choose the cross-collection pair with the smallest absolute distance difference, then lexicographic collection and item ids. The lexicographically first collection is reference and the other is query.",
+    "target_camera_distance_m": 40.0
+  },
+  "viewport": {
+    "width_pixels": 1024,
+    "height_pixels": 768,
+    "horizontal_fov_degrees": 90.0,
+    "center_pitch_degrees": -10.0,
+    "jpeg_quality": 95,
+    "projected_entrance_x_pixels": 512.0
+  },
+  "annotation_contract": {
+    "reference": "A reference-only annotator sees no query pixels and marks exactly one portal box containing the projected entrance x coordinate, or marks AMBIGUOUS/NOT_VISIBLE. The box is runtime input authority.",
+    "query": "A disjoint query-only annotator sees no reference pixels and first emits a source-admission audit. Evaluator-private portal boxes are created only if every query is ADMITTED, and are loaded only after every model prediction is complete.",
+    "admission": "All three episodes must have one visible, unambiguous reference portal and one visible, unambiguous query portal. Any missing admission closes this source without model rescue."
+  },
+  "reference_crop": {
+    "context_expansion": 1.25,
+    "rule": "Expand the frozen reference portal box by 1.25 about its centre, clamp to the viewport, and preserve the unexpanded portal corners for transport."
+  },
+  "matcher": {
+    "path": "artifacts.local/models/p1_w2_efficientloftr_face1a79",
+    "weights_sha256": "00a5edc343fa222eba763643553548ad37a05aa3d00d266553c9f6cf67bb0e64",
+    "postprocess_score_threshold": 0.2,
+    "minimum_matches": 8,
+    "homography_ransac_reprojection_pixels": 6.0,
+    "minimum_homography_inliers": 6,
+    "backend_rule": "Profile the frozen pair once on CPU and CUDA with the project research backend, then keep the measured selection for all nine ordered reference-query pairs."
+  },
+  "evaluation": {
+    "target_iou_minimum": 0.35,
+    "target_prediction_must_contain_projected_ray": true,
+    "wrong_reference_false_binding_iou": 0.35,
+    "wrong_reference_pairs": 6,
+    "prediction": "Estimate one reference-crop to full-query homography from EfficientLoFTR correspondences and transport the frozen unexpanded portal quadrilateral. There is no learned portal detector, OCR, threshold sweep, or candidate reranking."
+  },
+  "gate": {
+    "source_admission_required": 3,
+    "strict_orientation_images_required": 6,
+    "cross_collection_episodes_required": 3,
+    "target_portal_transfers_required": 3,
+    "wrong_reference_false_bindings_maximum": 0,
+    "source_and_model_hashes_verified": true
+  },
+  "decision_names": {
+    "met": "L10_PANOLAB_EXACT_PORTAL_PATCH_TRANSFER_DEVELOPMENT_GATE_MET",
+    "not_met": "L10_PANOLAB_EXACT_PORTAL_PATCH_TRANSFER_DEVELOPMENT_GATE_NOT_MET",
+    "source_not_evaluable": "L10_PANOLAB_EXACT_PORTAL_PATCH_SOURCE_NOT_EVALUABLE_REFERENCE_1_OF_3_QUERY_0_OF_3_NO_MATCHER_CALL"
+  },
+  "stop_condition": "Run once after both disjoint annotation manifests and hashes freeze. On failure do not tune crop expansion, matcher threshold, homography, IoU, view pair, model, or cohort; acquire a different entrance credential source or close pixel transfer.",
+  "claim_boundary": "A pass is a three-entrance Development result showing that a separately annotated exact portal patch can be transported across real Panoramax sequences and rejects all wrong entrance patches. It is agent-annotated Development evidence, not independent confirmation, public or legal access, traversability, collision-free motion, metric waypoint or arrival, HANDOFF_READY, product benefit, user benefit, or safety evidence."
+}

@@ -1,0 +1,1339 @@
+{
+  "schema": "blindassist-l10-panolab-reference-portal-result-v1",
+  "decision": "L10_PANOLAB_CROSS_SEQUENCE_REFERENCE_PORTAL_DEVELOPMENT_GATE_NOT_MET",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_reference_portal_protocol_v1.json",
+  "protocol_sha256": "2ca97725519e8aba50631adeff510fa34f008522648bc97b71631d998db1e1e9",
+  "source": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_reference_portal_source_v1.json",
+  "source_sha256": "c5bd913371f3f60dee120193bf100e155a9f4b5c6f131fd7f7e8fd540aea64f6",
+  "execution_backend_receipt": {
+    "schema": "blindassist-execution-backend-v1",
+    "workload": "model-inference",
+    "selection_status": "SELECTED",
+    "selected_backend": "l10-panolab-reference-dinov2-cpu",
+    "selected_device_type": "cpu",
+    "selected_device_name": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel",
+    "selected_framework": "torch-2.11.0+cu130",
+    "selected_providers": [],
+    "selection_reason": "CPU_FASTER_MEASURED",
+    "cpu_fallback": true,
+    "benchmarks": [
+      {
+        "backend": "l10-panolab-reference-dinov2-cpu",
+        "expected_device_type": "cpu",
+        "actual_device_type": "cpu",
+        "actual_device_name": "Intel64 Family 6 Model 198 Stepping 2, GenuineIntel",
+        "framework": "torch-2.11.0+cu130",
+        "providers": [],
+        "samples_seconds": [
+          0.10870179999619722
+        ],
+        "median_seconds": 0.10870179999619722
+      },
+      {
+        "backend": "l10-panolab-reference-dinov2-cuda",
+        "expected_device_type": "cuda",
+        "actual_device_type": "cuda",
+        "actual_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+        "framework": "torch-2.11.0+cu130",
+        "providers": [],
+        "samples_seconds": [
+          0.4446752999792807
+        ],
+        "median_seconds": 0.4446752999792807
+      }
+    ],
+    "runtime_capabilities": {
+      "python": "3.11.9",
+      "python_executable": "E:\\codex-tools\\tools\\venvs\\blindassist-torch-gpu\\Scripts\\python.exe",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "torch": {
+        "available": true,
+        "version": "2.11.0+cu130",
+        "cuda_available": true,
+        "cuda_version": "13.0",
+        "cuda_device_count": 1,
+        "cuda_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU"
+      },
+      "onnxruntime": {
+        "available": true,
+        "version": "1.27.0",
+        "available_providers": [
+          "AzureExecutionProvider",
+          "CPUExecutionProvider"
+        ]
+      }
+    }
+  },
+  "execution_backend_receipt_sha256": "ce7ce1ca80791195090de0aba8f5a6769654a08c3785daa0270811057af07a0a",
+  "configuration": {
+    "portal_lattice": {
+      "minimum_normalized_length": 0.06,
+      "maximum_normalized_length": 0.45,
+      "maximum_horizontal_fraction": 0.18,
+      "endpoint_tolerance": 0.06,
+      "duplicate_x_tolerance": 0.012,
+      "minimum_distinct_posts": 3,
+      "minimum_normalized_span": 0.12,
+      "maximum_normalized_span": 0.92
+    },
+    "support_field": {
+      "minimum_mutual_matches": 4,
+      "ransac_reprojection_threshold": 0.12,
+      "minimum_entrance_score": 0.1,
+      "minimum_support_score": 0.1,
+      "commit_edge_margin": 0.08,
+      "set_edge_margin": 0.03,
+      "maximum_set_size": 3
+    },
+    "viewport": {
+      "projection": "deterministic equirectangular-to-rectilinear remap centered on the strict entrance ray",
+      "width_pixels": 1024,
+      "height_pixels": 768,
+      "horizontal_fov_degrees": 90.0,
+      "center_pitch_degrees": -10.0,
+      "jpeg_quality": 95,
+      "projected_entrance_x_pixels": 512.0
+    }
+  },
+  "metrics": {
+    "episode_count": 4,
+    "strict_orientation_images": 8,
+    "cross_collection_episodes": 4,
+    "portal_top3_ray_retention": 3,
+    "unique_target_reference_portal_tokens": 1,
+    "wrong_reference_replays": 12,
+    "wrong_reference_ray_bindings": 9
+  },
+  "gate": {
+    "strict_orientation_images_required": true,
+    "cross_collection_episodes_required": true,
+    "portal_top3_ray_retention_required": false,
+    "unique_target_reference_portal_tokens_required": false,
+    "wrong_reference_ray_bindings_maximum": false,
+    "source_and_model_hashes_verified": true
+  },
+  "episodes": [
+    {
+      "episode_id": "RP01",
+      "target_way_id": 160165240,
+      "target_entrance_node_id": 11359821739,
+      "reference_item_id": "bf509662-42c8-4417-ad3c-586d0fba47b4",
+      "query_item_id": "bf9d6545-629a-4746-a3c5-fd2d89355a4e",
+      "cross_collection": true,
+      "portal_top3_ray_retained": true,
+      "ray_candidate_ids": [
+        "portal-set-001",
+        "portal-set-002"
+      ],
+      "target_binding_state": "SET_VALUED",
+      "target_active_ids": [
+        "portal-set-001",
+        "portal-set-002"
+      ],
+      "unique_reference_bound_ray_portal": false,
+      "reference_portal_token_sha256": null,
+      "portal_diagnostics": {
+        "raw_vertical_segments": 17,
+        "endpoint_components": 3,
+        "portal_set_proposals": 2,
+        "raw_handle_pairs": 1,
+        "retained_lattice_proposals": 1,
+        "retained_handle_pair_proposals": 1
+      },
+      "portal_proposals": [
+        {
+          "proposal_id": "portal-set-001",
+          "family": "PAIRED_VERTICAL_HANDLE_APERTURE",
+          "observed_post_box_xyxy": [
+            520.1106567382812,
+            158.1035614013672,
+            587.2012634277344,
+            244.37588500976562
+          ],
+          "box_xyxy": [
+            419.47474670410156,
+            29.154537200927734,
+            687.8371734619141,
+            364.60757064819336
+          ],
+          "post_count": 2,
+          "normalized_span": 0.06551817059516907,
+          "normalized_height": 0.43678780396779376,
+          "spacing_regularity": 0.7558202788223554,
+          "horizontal_boundary_support": 0.6136077990134556,
+          "proposal_score": 0.6653695294948732
+        },
+        {
+          "proposal_id": "portal-set-002",
+          "family": "REPEATED_POST_LATTICE",
+          "observed_post_box_xyxy": [
+            521.300048828125,
+            160.83440399169922,
+            905.2693481445312,
+            227.1651611328125
+          ],
+          "box_xyxy": [
+            467.22369384765625,
+            85.84707260131836,
+            959.345703125,
+            302.15249252319336
+          ],
+          "post_count": 4,
+          "normalized_span": 0.374970018863678,
+          "normalized_height": 0.08636817336082458,
+          "spacing_regularity": 0.6288128381116201,
+          "horizontal_boundary_support": 1.0,
+          "proposal_score": 0.6450844933390671
+        }
+      ],
+      "target_binding": {
+        "state": "SET_VALUED",
+        "selected_proposal_id": null,
+        "candidate_set": [
+          "portal-set-001",
+          "portal-set-002"
+        ],
+        "reason": "MULTIPLE_TARGET_SUPPORT_ATTACHED_ENTRANCES",
+        "field_active_patches": 63,
+        "edges": [
+          {
+            "proposal_id": "portal-set-001",
+            "entrance_score": 0.6653695294948732,
+            "support_score": 0.4947207317401387,
+            "support_mass_fraction": 0.1981327311279737,
+            "support_peak": 0.9396027326583862,
+            "support_patch_count": 16,
+            "edge_score": 0.5674939468224904,
+            "attachment_box_xyxy": [
+              352.38414001464844,
+              0.0,
+              754.9277801513672,
+              364.60757064819336
+            ],
+            "box_xyxy": [
+              419.47474670410156,
+              29.154537200927734,
+              687.8371734619141,
+              364.60757064819336
+            ]
+          },
+          {
+            "proposal_id": "portal-set-002",
+            "entrance_score": 0.6450844933390671,
+            "support_score": 0.5042720028477939,
+            "support_mass_fraction": 0.2019439056048844,
+            "support_peak": 0.9577641487121582,
+            "support_patch_count": 15,
+            "edge_score": 0.56605248335284,
+            "attachment_box_xyxy": [
+              344.1931915283203,
+              0.0,
+              1024.0,
+              302.15249252319336
+            ],
+            "box_xyxy": [
+              467.22369384765625,
+              85.84707260131836,
+              959.345703125,
+              302.15249252319336
+            ]
+          }
+        ]
+      },
+      "target_field_diagnostics": {
+        "per_target": {
+          "11359821739": [
+            {
+              "mutual_matches": 81,
+              "inliers": 64,
+              "mean_similarity": 0.8469107747077942
+            }
+          ],
+          "3132861331": [
+            {
+              "mutual_matches": 37,
+              "inliers": 11,
+              "mean_similarity": 0.5825387835502625
+            }
+          ],
+          "8548387877": [
+            {
+              "mutual_matches": 30,
+              "inliers": 13,
+              "mean_similarity": 0.6602974534034729
+            }
+          ],
+          "11001981005": [
+            {
+              "mutual_matches": 31,
+              "inliers": 11,
+              "mean_similarity": 0.6302472352981567
+            }
+          ]
+        },
+        "goal_raw_active_patches": 64,
+        "discriminative_active_patches": 63,
+        "discriminative_mass": 46.47867202758789
+      },
+      "wrong_reference_replays": [
+        {
+          "wrong_entrance_node_id": 3132861331,
+          "binding_state": "SET_VALUED",
+          "active_ids": [
+            "portal-set-002"
+          ],
+          "ray_false_binding_ids": [
+            "portal-set-002"
+          ],
+          "field_diagnostics": {
+            "per_target": {
+              "11359821739": [
+                {
+                  "mutual_matches": 81,
+                  "inliers": 64,
+                  "mean_similarity": 0.8469107747077942
+                }
+              ],
+              "3132861331": [
+                {
+                  "mutual_matches": 37,
+                  "inliers": 11,
+                  "mean_similarity": 0.5825387835502625
+                }
+              ],
+              "8548387877": [
+                {
+                  "mutual_matches": 30,
+                  "inliers": 13,
+                  "mean_similarity": 0.6602974534034729
+                }
+              ],
+              "11001981005": [
+                {
+                  "mutual_matches": 31,
+                  "inliers": 11,
+                  "mean_similarity": 0.6302472352981567
+                }
+              ]
+            },
+            "goal_raw_active_patches": 11,
+            "discriminative_active_patches": 6,
+            "discriminative_mass": 3.270803689956665
+          }
+        },
+        {
+          "wrong_entrance_node_id": 8548387877,
+          "binding_state": "COMMIT",
+          "active_ids": [
+            "portal-set-001"
+          ],
+          "ray_false_binding_ids": [
+            "portal-set-001"
+          ],
+          "field_diagnostics": {
+            "per_target": {
+              "11359821739": [
+                {
+                  "mutual_matches": 81,
+                  "inliers": 64,
+                  "mean_similarity": 0.8469107747077942
+                }
+              ],
+              "3132861331": [
+                {
+                  "mutual_matches": 37,
+                  "inliers": 11,
+                  "mean_similarity": 0.5825387835502625
+                }
+              ],
+              "8548387877": [
+                {
+                  "mutual_matches": 30,
+                  "inliers": 13,
+                  "mean_similarity": 0.6602974534034729
+                }
+              ],
+              "11001981005": [
+                {
+                  "mutual_matches": 31,
+                  "inliers": 11,
+                  "mean_similarity": 0.6302472352981567
+                }
+              ]
+            },
+            "goal_raw_active_patches": 13,
+            "discriminative_active_patches": 6,
+            "discriminative_mass": 3.6740498542785645
+          }
+        },
+        {
+          "wrong_entrance_node_id": 11001981005,
+          "binding_state": "COMMIT",
+          "active_ids": [
+            "portal-set-002"
+          ],
+          "ray_false_binding_ids": [
+            "portal-set-002"
+          ],
+          "field_diagnostics": {
+            "per_target": {
+              "11359821739": [
+                {
+                  "mutual_matches": 81,
+                  "inliers": 64,
+                  "mean_similarity": 0.8469107747077942
+                }
+              ],
+              "3132861331": [
+                {
+                  "mutual_matches": 37,
+                  "inliers": 11,
+                  "mean_similarity": 0.5825387835502625
+                }
+              ],
+              "8548387877": [
+                {
+                  "mutual_matches": 30,
+                  "inliers": 13,
+                  "mean_similarity": 0.6602974534034729
+                }
+              ],
+              "11001981005": [
+                {
+                  "mutual_matches": 31,
+                  "inliers": 11,
+                  "mean_similarity": 0.6302472352981567
+                }
+              ]
+            },
+            "goal_raw_active_patches": 11,
+            "discriminative_active_patches": 8,
+            "discriminative_mass": 3.5766048431396484
+          }
+        }
+      ]
+    },
+    {
+      "episode_id": "RP02",
+      "target_way_id": 190020630,
+      "target_entrance_node_id": 3132861331,
+      "reference_item_id": "bf9d95fe-fc94-4ad9-965d-a372f0581f90",
+      "query_item_id": "c6fd46d9-9513-407b-adc8-419150f56f15",
+      "cross_collection": true,
+      "portal_top3_ray_retained": false,
+      "ray_candidate_ids": [],
+      "target_binding_state": "SEARCH",
+      "target_active_ids": [],
+      "unique_reference_bound_ray_portal": false,
+      "reference_portal_token_sha256": null,
+      "portal_diagnostics": {
+        "raw_vertical_segments": 2,
+        "endpoint_components": 1,
+        "portal_set_proposals": 0,
+        "raw_handle_pairs": 0,
+        "retained_lattice_proposals": 0,
+        "retained_handle_pair_proposals": 0
+      },
+      "portal_proposals": [],
+      "target_binding": {
+        "state": "SEARCH",
+        "selected_proposal_id": null,
+        "candidate_set": [],
+        "reason": "NO_ENTRANCE_ATTACHED_TO_TARGET_SUPPORT",
+        "field_active_patches": 7,
+        "edges": []
+      },
+      "target_field_diagnostics": {
+        "per_target": {
+          "11359821739": [
+            {
+              "mutual_matches": 37,
+              "inliers": 11,
+              "mean_similarity": 0.5731555223464966
+            }
+          ],
+          "3132861331": [
+            {
+              "mutual_matches": 43,
+              "inliers": 8,
+              "mean_similarity": 0.6167132258415222
+            }
+          ],
+          "8548387877": [
+            {
+              "mutual_matches": 39,
+              "inliers": 19,
+              "mean_similarity": 0.6063332557678223
+            }
+          ],
+          "11001981005": [
+            {
+              "mutual_matches": 29,
+              "inliers": 13,
+              "mean_similarity": 0.5820539593696594
+            }
+          ]
+        },
+        "goal_raw_active_patches": 8,
+        "discriminative_active_patches": 7,
+        "discriminative_mass": 4.891307353973389
+      },
+      "wrong_reference_replays": [
+        {
+          "wrong_entrance_node_id": 11359821739,
+          "binding_state": "SEARCH",
+          "active_ids": [],
+          "ray_false_binding_ids": [],
+          "field_diagnostics": {
+            "per_target": {
+              "11359821739": [
+                {
+                  "mutual_matches": 37,
+                  "inliers": 11,
+                  "mean_similarity": 0.5731555223464966
+                }
+              ],
+              "3132861331": [
+                {
+                  "mutual_matches": 43,
+                  "inliers": 8,
+                  "mean_similarity": 0.6167132258415222
+                }
+              ],
+              "8548387877": [
+                {
+                  "mutual_matches": 39,
+                  "inliers": 19,
+                  "mean_similarity": 0.6063332557678223
+                }
+              ],
+              "11001981005": [
+                {
+                  "mutual_matches": 29,
+                  "inliers": 13,
+                  "mean_similarity": 0.5820539593696594
+                }
+              ]
+            },
+            "goal_raw_active_patches": 11,
+            "discriminative_active_patches": 11,
+            "discriminative_mass": 8.24281120300293
+          }
+        },
+        {
+          "wrong_entrance_node_id": 8548387877,
+          "binding_state": "SEARCH",
+          "active_ids": [],
+          "ray_false_binding_ids": [],
+          "field_diagnostics": {
+            "per_target": {
+              "11359821739": [
+                {
+                  "mutual_matches": 37,
+                  "inliers": 11,
+                  "mean_similarity": 0.5731555223464966
+                }
+              ],
+              "3132861331": [
+                {
+                  "mutual_matches": 43,
+                  "inliers": 8,
+                  "mean_similarity": 0.6167132258415222
+                }
+              ],
+              "8548387877": [
+                {
+                  "mutual_matches": 39,
+                  "inliers": 19,
+                  "mean_similarity": 0.6063332557678223
+                }
+              ],
+              "11001981005": [
+                {
+                  "mutual_matches": 29,
+                  "inliers": 13,
+                  "mean_similarity": 0.5820539593696594
+                }
+              ]
+            },
+            "goal_raw_active_patches": 19,
+            "discriminative_active_patches": 17,
+            "discriminative_mass": 11.016100883483887
+          }
+        },
+        {
+          "wrong_entrance_node_id": 11001981005,
+          "binding_state": "SEARCH",
+          "active_ids": [],
+          "ray_false_binding_ids": [],
+          "field_diagnostics": {
+            "per_target": {
+              "11359821739": [
+                {
+                  "mutual_matches": 37,
+                  "inliers": 11,
+                  "mean_similarity": 0.5731555223464966
+                }
+              ],
+              "3132861331": [
+                {
+                  "mutual_matches": 43,
+                  "inliers": 8,
+                  "mean_similarity": 0.6167132258415222
+                }
+              ],
+              "8548387877": [
+                {
+                  "mutual_matches": 39,
+                  "inliers": 19,
+                  "mean_similarity": 0.6063332557678223
+                }
+              ],
+              "11001981005": [
+                {
+                  "mutual_matches": 29,
+                  "inliers": 13,
+                  "mean_similarity": 0.5820539593696594
+                }
+              ]
+            },
+            "goal_raw_active_patches": 13,
+            "discriminative_active_patches": 9,
+            "discriminative_mass": 6.484931945800781
+          }
+        }
+      ]
+    },
+    {
+      "episode_id": "RP03",
+      "target_way_id": 27108404,
+      "target_entrance_node_id": 8548387877,
+      "reference_item_id": "04c459e3-06a0-46e4-9a0f-f4296d1b244c",
+      "query_item_id": "d4eed7ed-0bfb-4571-9d0b-0bf4c22607fa",
+      "cross_collection": true,
+      "portal_top3_ray_retained": true,
+      "ray_candidate_ids": [
+        "portal-set-001",
+        "portal-set-002",
+        "portal-set-004",
+        "portal-set-006"
+      ],
+      "target_binding_state": "SET_VALUED",
+      "target_active_ids": [
+        "portal-set-002",
+        "portal-set-003"
+      ],
+      "unique_reference_bound_ray_portal": false,
+      "reference_portal_token_sha256": null,
+      "portal_diagnostics": {
+        "raw_vertical_segments": 26,
+        "endpoint_components": 8,
+        "portal_set_proposals": 6,
+        "raw_handle_pairs": 8,
+        "retained_lattice_proposals": 2,
+        "retained_handle_pair_proposals": 4
+      },
+      "portal_proposals": [
+        {
+          "proposal_id": "portal-set-001",
+          "family": "PAIRED_VERTICAL_HANDLE_APERTURE",
+          "observed_post_box_xyxy": [
+            505.1341247558594,
+            19.28460121154785,
+            533.0717468261719,
+            71.94345092773438
+          ],
+          "box_xyxy": [
+            463.2276916503906,
+            0.0,
+            574.9781799316406,
+            116.40305042266846
+          ],
+          "post_count": 2,
+          "normalized_span": 0.02728283405303955,
+          "normalized_height": 0.18188556035359701,
+          "spacing_regularity": 0.9271669585850202,
+          "horizontal_boundary_support": 0.9690151462952296,
+          "proposal_score": 0.9621144940228489
+        },
+        {
+          "proposal_id": "portal-set-002",
+          "family": "REPEATED_POST_LATTICE",
+          "observed_post_box_xyxy": [
+            293.94976806640625,
+            246.87403869628906,
+            981.935302734375,
+            304.3804931640625
+          ],
+          "box_xyxy": [
+            265.8645477294922,
+            219.45682525634766,
+            1010.0205230712891,
+            331.7977066040039
+          ],
+          "post_count": 11,
+          "normalized_span": 0.6718608736991882,
+          "normalized_height": 0.07487819592158,
+          "spacing_regularity": 0.8842066116735204,
+          "horizontal_boundary_support": 1.0,
+          "proposal_score": 0.9594723140857322
+        },
+        {
+          "proposal_id": "portal-set-003",
+          "family": "PAIRED_VERTICAL_HANDLE_APERTURE",
+          "observed_post_box_xyxy": [
+            736.3082885742188,
+            246.87403869628906,
+            780.2685241699219,
+            309.3777770996094
+          ],
+          "box_xyxy": [
+            670.3679351806641,
+            168.22810745239258,
+            846.2088775634766,
+            388.0292854309082
+          ],
+          "post_count": 2,
+          "normalized_span": 0.04292991757392883,
+          "normalized_height": 0.2861994504928589,
+          "spacing_regularity": 0.9998110577173658,
+          "horizontal_boundary_support": 0.9185732255379359,
+          "proposal_score": 0.9353748924069476
+        },
+        {
+          "proposal_id": "portal-set-004",
+          "family": "PAIRED_VERTICAL_HANDLE_APERTURE",
+          "observed_post_box_xyxy": [
+            452.0915832519531,
+            189.3763427734375,
+            512.9792327880859,
+            280.51080322265625
+          ],
+          "box_xyxy": [
+            360.7601089477539,
+            80.54890823364258,
+            604.3107070922852,
+            384.98715591430664
+          ],
+          "post_count": 2,
+          "normalized_span": 0.0594605952501297,
+          "normalized_height": 0.396403968334198,
+          "spacing_regularity": 0.8885267325211694,
+          "horizontal_boundary_support": 0.7293766587972641,
+          "proposal_score": 0.8079011017198349
+        },
+        {
+          "proposal_id": "portal-set-005",
+          "family": "PAIRED_VERTICAL_HANDLE_APERTURE",
+          "observed_post_box_xyxy": [
+            872.379638671875,
+            166.8348388671875,
+            927.5949401855469,
+            278.1501159667969
+          ],
+          "box_xyxy": [
+            789.5566864013672,
+            87.56470489501953,
+            1010.4178924560547,
+            363.6412124633789
+          ],
+          "post_count": 2,
+          "normalized_span": 0.05392119288444519,
+          "normalized_height": 0.3594746192296346,
+          "spacing_regularity": 0.8141986950422072,
+          "horizontal_boundary_support": 0.18564508358637488,
+          "proposal_score": 0.5445534843970877
+        },
+        {
+          "proposal_id": "portal-set-006",
+          "family": "REPEATED_POST_LATTICE",
+          "observed_post_box_xyxy": [
+            289.0939636230469,
+            13.339136838912964,
+            964.1246948242188,
+            70.35255813598633
+          ],
+          "box_xyxy": [
+            183.6350555419922,
+            0.0,
+            1024.0,
+            252.76366364955902
+          ],
+          "post_count": 4,
+          "normalized_span": 0.6592097282409668,
+          "normalized_height": 0.07423622564723094,
+          "spacing_regularity": 0.15674350398727888,
+          "horizontal_boundary_support": 0.8100280286515105,
+          "proposal_score": 0.4418658321258497
+        }
+      ],
+      "target_binding": {
+        "state": "SET_VALUED",
+        "selected_proposal_id": null,
+        "candidate_set": [
+          "portal-set-002",
+          "portal-set-003"
+        ],
+        "reason": "MULTIPLE_TARGET_SUPPORT_ATTACHED_ENTRANCES",
+        "field_active_patches": 11,
+        "edges": [
+          {
+            "proposal_id": "portal-set-002",
+            "entrance_score": 0.9594723140857322,
+            "support_score": 0.4894336574371283,
+            "support_mass_fraction": 0.14905609572854714,
+            "support_peak": 1.0,
+            "support_patch_count": 2,
+            "edge_score": 0.6482105162408544,
+            "attachment_box_xyxy": [
+              79.82555389404297,
+              107.1159439086914,
+              1024.0,
+              331.7977066040039
+            ],
+            "box_xyxy": [
+              265.8645477294922,
+              219.45682525634766,
+              1010.0205230712891,
+              331.7977066040039
+            ]
+          },
+          {
+            "proposal_id": "portal-set-003",
+            "entrance_score": 0.9353748924069476,
+            "support_score": 0.4894336574371283,
+            "support_mass_fraction": 0.14905609572854714,
+            "support_peak": 1.0,
+            "support_patch_count": 2,
+            "edge_score": 0.6426182025868564,
+            "attachment_box_xyxy": [
+              626.4076995849609,
+              0.0,
+              890.1691131591797,
+              388.0292854309082
+            ],
+            "box_xyxy": [
+              670.3679351806641,
+              168.22810745239258,
+              846.2088775634766,
+              388.0292854309082
+            ]
+          },
+          {
+            "proposal_id": "portal-set-005",
+            "entrance_score": 0.5445534843970877,
+            "support_score": 0.4894336574371283,
+            "support_mass_fraction": 0.14905609572854714,
+            "support_peak": 1.0,
+            "support_patch_count": 2,
+            "edge_score": 0.5155244059724132,
+            "attachment_box_xyxy": [
+              734.3413848876953,
+              0.0,
+              1024.0,
+              363.6412124633789
+            ],
+            "box_xyxy": [
+              789.5566864013672,
+              87.56470489501953,
+              1010.4178924560547,
+              363.6412124633789
+            ]
+          },
+          {
+            "proposal_id": "portal-set-006",
+            "entrance_score": 0.4418658321258497,
+            "support_score": 0.4870647200603694,
+            "support_mass_fraction": 0.14510786676728227,
+            "support_peak": 1.0,
+            "support_patch_count": 1,
+            "edge_score": 0.4633656570388599,
+            "attachment_box_xyxy": [
+              0.0,
+              0.0,
+              1024.0,
+              252.76366364955902
+            ],
+            "box_xyxy": [
+              183.6350555419922,
+              0.0,
+              1024.0,
+              252.76366364955902
+            ]
+          },
+          {
+            "proposal_id": "portal-set-004",
+            "entrance_score": 0.8079011017198349,
+            "support_score": 0.2570072760639736,
+            "support_mass_fraction": 0.07656842312186116,
+            "support_peak": 0.5276655554771423,
+            "support_patch_count": 1,
+            "edge_score": 0.3899611756538386,
+            "attachment_box_xyxy": [
+              299.8724594116211,
+              0.0,
+              665.198356628418,
+              384.98715591430664
+            ],
+            "box_xyxy": [
+              360.7601089477539,
+              80.54890823364258,
+              604.3107070922852,
+              384.98715591430664
+            ]
+          },
+          {
+            "proposal_id": "portal-set-001",
+            "entrance_score": 0.9621144940228489,
+            "support_score": 0.0,
+            "support_mass_fraction": 0.0,
+            "support_peak": 0.0,
+            "support_patch_count": 0,
+            "edge_score": 0.0,
+            "attachment_box_xyxy": [
+              435.2900695800781,
+              0.0,
+              602.9158020019531,
+              116.40305042266846
+            ],
+            "box_xyxy": [
+              463.2276916503906,
+              0.0,
+              574.9781799316406,
+              116.40305042266846
+            ]
+          }
+        ]
+      },
+      "target_field_diagnostics": {
+        "per_target": {
+          "11359821739": [
+            {
+              "mutual_matches": 23,
+              "inliers": 8,
+              "mean_similarity": 0.5390927791595459
+            }
+          ],
+          "3132861331": [
+            {
+              "mutual_matches": 37,
+              "inliers": 12,
+              "mean_similarity": 0.659824788570404
+            }
+          ],
+          "8548387877": [
+            {
+              "mutual_matches": 41,
+              "inliers": 13,
+              "mean_similarity": 0.6946926712989807
+            }
+          ],
+          "11001981005": [
+            {
+              "mutual_matches": 35,
+              "inliers": 15,
+              "mean_similarity": 0.6671630144119263
+            }
+          ]
+        },
+        "goal_raw_active_patches": 13,
+        "discriminative_active_patches": 11,
+        "discriminative_mass": 6.891425132751465
+      },
+      "wrong_reference_replays": [
+        {
+          "wrong_entrance_node_id": 11359821739,
+          "binding_state": "COMMIT",
+          "active_ids": [
+            "portal-set-005"
+          ],
+          "ray_false_binding_ids": [],
+          "field_diagnostics": {
+            "per_target": {
+              "11359821739": [
+                {
+                  "mutual_matches": 23,
+                  "inliers": 8,
+                  "mean_similarity": 0.5390927791595459
+                }
+              ],
+              "3132861331": [
+                {
+                  "mutual_matches": 37,
+                  "inliers": 12,
+                  "mean_similarity": 0.659824788570404
+                }
+              ],
+              "8548387877": [
+                {
+                  "mutual_matches": 41,
+                  "inliers": 13,
+                  "mean_similarity": 0.6946926712989807
+                }
+              ],
+              "11001981005": [
+                {
+                  "mutual_matches": 35,
+                  "inliers": 15,
+                  "mean_similarity": 0.6671630144119263
+                }
+              ]
+            },
+            "goal_raw_active_patches": 8,
+            "discriminative_active_patches": 6,
+            "discriminative_mass": 3.719085693359375
+          }
+        },
+        {
+          "wrong_entrance_node_id": 3132861331,
+          "binding_state": "SET_VALUED",
+          "active_ids": [
+            "portal-set-002",
+            "portal-set-005",
+            "portal-set-006"
+          ],
+          "ray_false_binding_ids": [
+            "portal-set-002",
+            "portal-set-006"
+          ],
+          "field_diagnostics": {
+            "per_target": {
+              "11359821739": [
+                {
+                  "mutual_matches": 23,
+                  "inliers": 8,
+                  "mean_similarity": 0.5390927791595459
+                }
+              ],
+              "3132861331": [
+                {
+                  "mutual_matches": 37,
+                  "inliers": 12,
+                  "mean_similarity": 0.659824788570404
+                }
+              ],
+              "8548387877": [
+                {
+                  "mutual_matches": 41,
+                  "inliers": 13,
+                  "mean_similarity": 0.6946926712989807
+                }
+              ],
+              "11001981005": [
+                {
+                  "mutual_matches": 35,
+                  "inliers": 15,
+                  "mean_similarity": 0.6671630144119263
+                }
+              ]
+            },
+            "goal_raw_active_patches": 12,
+            "discriminative_active_patches": 11,
+            "discriminative_mass": 7.548305988311768
+          }
+        },
+        {
+          "wrong_entrance_node_id": 11001981005,
+          "binding_state": "SET_VALUED",
+          "active_ids": [
+            "portal-set-002"
+          ],
+          "ray_false_binding_ids": [
+            "portal-set-002"
+          ],
+          "field_diagnostics": {
+            "per_target": {
+              "11359821739": [
+                {
+                  "mutual_matches": 23,
+                  "inliers": 8,
+                  "mean_similarity": 0.5390927791595459
+                }
+              ],
+              "3132861331": [
+                {
+                  "mutual_matches": 37,
+                  "inliers": 12,
+                  "mean_similarity": 0.659824788570404
+                }
+              ],
+              "8548387877": [
+                {
+                  "mutual_matches": 41,
+                  "inliers": 13,
+                  "mean_similarity": 0.6946926712989807
+                }
+              ],
+              "11001981005": [
+                {
+                  "mutual_matches": 35,
+                  "inliers": 15,
+                  "mean_similarity": 0.6671630144119263
+                }
+              ]
+            },
+            "goal_raw_active_patches": 15,
+            "discriminative_active_patches": 14,
+            "discriminative_mass": 7.055661678314209
+          }
+        }
+      ]
+    },
+    {
+      "episode_id": "RP04",
+      "target_way_id": 1184499395,
+      "target_entrance_node_id": 11001981005,
+      "reference_item_id": "71e84883-416a-4184-87b9-c0be89e94d1d",
+      "query_item_id": "e6ad2ab8-d6af-4aee-8588-934ce9f07c40",
+      "cross_collection": true,
+      "portal_top3_ray_retained": true,
+      "ray_candidate_ids": [
+        "portal-set-001"
+      ],
+      "target_binding_state": "COMMIT",
+      "target_active_ids": [
+        "portal-set-001"
+      ],
+      "unique_reference_bound_ray_portal": true,
+      "reference_portal_token_sha256": "24343a1f63c2ef09b43eb838bfe92f62729995e077b10e5273388cdc541e3d1a",
+      "portal_diagnostics": {
+        "raw_vertical_segments": 6,
+        "endpoint_components": 3,
+        "portal_set_proposals": 1,
+        "raw_handle_pairs": 0,
+        "retained_lattice_proposals": 1,
+        "retained_handle_pair_proposals": 0
+      },
+      "portal_proposals": [
+        {
+          "proposal_id": "portal-set-001",
+          "family": "REPEATED_POST_LATTICE",
+          "observed_post_box_xyxy": [
+            390.16070556640625,
+            284.5577392578125,
+            634.4259033203125,
+            339.4092712402344
+          ],
+          "box_xyxy": [
+            329.0944061279297,
+            189.8509063720703,
+            695.4922027587891,
+            434.11610412597656
+          ],
+          "post_count": 3,
+          "normalized_span": 0.23854023218154907,
+          "normalized_height": 0.07142126560211182,
+          "spacing_regularity": 0.6576104542657109,
+          "horizontal_boundary_support": 1.0,
+          "proposal_score": 0.5989136589929989
+        }
+      ],
+      "target_binding": {
+        "state": "COMMIT",
+        "selected_proposal_id": "portal-set-001",
+        "candidate_set": [
+          "portal-set-001"
+        ],
+        "reason": "UNIQUE_TARGET_SUPPORT_ATTACHED_ENTRANCE",
+        "field_active_patches": 14,
+        "edges": [
+          {
+            "proposal_id": "portal-set-001",
+            "entrance_score": 0.5989136589929989,
+            "support_score": 0.42736856854336347,
+            "support_mass_fraction": 0.14672275245813673,
+            "support_peak": 0.8483372926712036,
+            "support_patch_count": 2,
+            "edge_score": 0.4988040643349,
+            "attachment_box_xyxy": [
+              237.49495697021484,
+              0.0,
+              787.0916519165039,
+              434.11610412597656
+            ],
+            "box_xyxy": [
+              329.0944061279297,
+              189.8509063720703,
+              695.4922027587891,
+              434.11610412597656
+            ]
+          }
+        ]
+      },
+      "target_field_diagnostics": {
+        "per_target": {
+          "11359821739": [
+            {
+              "mutual_matches": 33,
+              "inliers": 16,
+              "mean_similarity": 0.7164721488952637
+            }
+          ],
+          "3132861331": [
+            {
+              "mutual_matches": 50,
+              "inliers": 21,
+              "mean_similarity": 0.6278867721557617
+            }
+          ],
+          "8548387877": [
+            {
+              "mutual_matches": 38,
+              "inliers": 14,
+              "mean_similarity": 0.6885662078857422
+            }
+          ],
+          "11001981005": [
+            {
+              "mutual_matches": 47,
+              "inliers": 16,
+              "mean_similarity": 0.7163388133049011
+            }
+          ]
+        },
+        "goal_raw_active_patches": 16,
+        "discriminative_active_patches": 14,
+        "discriminative_mass": 8.269793510437012
+      },
+      "wrong_reference_replays": [
+        {
+          "wrong_entrance_node_id": 11359821739,
+          "binding_state": "COMMIT",
+          "active_ids": [
+            "portal-set-001"
+          ],
+          "ray_false_binding_ids": [
+            "portal-set-001"
+          ],
+          "field_diagnostics": {
+            "per_target": {
+              "11359821739": [
+                {
+                  "mutual_matches": 33,
+                  "inliers": 16,
+                  "mean_similarity": 0.7164721488952637
+                }
+              ],
+              "3132861331": [
+                {
+                  "mutual_matches": 50,
+                  "inliers": 21,
+                  "mean_similarity": 0.6278867721557617
+                }
+              ],
+              "8548387877": [
+                {
+                  "mutual_matches": 38,
+                  "inliers": 14,
+                  "mean_similarity": 0.6885662078857422
+                }
+              ],
+              "11001981005": [
+                {
+                  "mutual_matches": 47,
+                  "inliers": 16,
+                  "mean_similarity": 0.7163388133049011
+                }
+              ]
+            },
+            "goal_raw_active_patches": 16,
+            "discriminative_active_patches": 16,
+            "discriminative_mass": 11.058760643005371
+          }
+        },
+        {
+          "wrong_entrance_node_id": 3132861331,
+          "binding_state": "COMMIT",
+          "active_ids": [
+            "portal-set-001"
+          ],
+          "ray_false_binding_ids": [
+            "portal-set-001"
+          ],
+          "field_diagnostics": {
+            "per_target": {
+              "11359821739": [
+                {
+                  "mutual_matches": 33,
+                  "inliers": 16,
+                  "mean_similarity": 0.7164721488952637
+                }
+              ],
+              "3132861331": [
+                {
+                  "mutual_matches": 50,
+                  "inliers": 21,
+                  "mean_similarity": 0.6278867721557617
+                }
+              ],
+              "8548387877": [
+                {
+                  "mutual_matches": 38,
+                  "inliers": 14,
+                  "mean_similarity": 0.6885662078857422
+                }
+              ],
+              "11001981005": [
+                {
+                  "mutual_matches": 47,
+                  "inliers": 16,
+                  "mean_similarity": 0.7163388133049011
+                }
+              ]
+            },
+            "goal_raw_active_patches": 21,
+            "discriminative_active_patches": 17,
+            "discriminative_mass": 12.15707015991211
+          }
+        },
+        {
+          "wrong_entrance_node_id": 8548387877,
+          "binding_state": "COMMIT",
+          "active_ids": [
+            "portal-set-001"
+          ],
+          "ray_false_binding_ids": [
+            "portal-set-001"
+          ],
+          "field_diagnostics": {
+            "per_target": {
+              "11359821739": [
+                {
+                  "mutual_matches": 33,
+                  "inliers": 16,
+                  "mean_similarity": 0.7164721488952637
+                }
+              ],
+              "3132861331": [
+                {
+                  "mutual_matches": 50,
+                  "inliers": 21,
+                  "mean_similarity": 0.6278867721557617
+                }
+              ],
+              "8548387877": [
+                {
+                  "mutual_matches": 38,
+                  "inliers": 14,
+                  "mean_similarity": 0.6885662078857422
+                }
+              ],
+              "11001981005": [
+                {
+                  "mutual_matches": 47,
+                  "inliers": 16,
+                  "mean_similarity": 0.7163388133049011
+                }
+              ]
+            },
+            "goal_raw_active_patches": 14,
+            "discriminative_active_patches": 12,
+            "discriminative_mass": 5.656930923461914
+          }
+        }
+      ]
+    }
+  ],
+  "wall_s": 2.93,
+  "claim_boundary": "A pass is a four-entrance cross-sequence Development mechanism result: an exact-node-conditioned public reference observation transports discriminative pixels to a unique ray-consistent functional portal while wrong entrance references stay rejected. It is not independent pixel annotation of the exact door, legal or public access, traversability, collision-free motion, metric waypoint or arrival, HANDOFF_READY, product benefit, user benefit, or safety evidence."
+}

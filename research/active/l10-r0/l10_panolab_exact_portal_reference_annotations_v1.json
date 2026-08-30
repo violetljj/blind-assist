@@ -1,0 +1,40 @@
+{
+  "schema": "blindassist-l10-panolab-exact-portal-reference-annotations-v1",
+  "role": "REFERENCE_RUNTIME_INPUT",
+  "authority": "AGENT_ANNOTATED_EXPLORE_DEVELOPMENT",
+  "source": "research/active/l10-r0/l10_panolab_exact_portal_patch_source_v1.json",
+  "source_sha256": "620701a93a1b0acd6a69bdf7cb5b38fcfa1a112b2b0d740201d455bee3031dab",
+  "annotator_separation": "The reference-only annotator received the three reference viewport paths and x=512, and was forbidden to open query pixels, source JSON, or model output.",
+  "episodes": [
+    {
+      "episode_id": "EP01",
+      "item_id": "80001516-a882-48de-995c-7996e3e0824a",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.96,
+      "rationale": "The ray crosses open walking space; trees, distance, and street furniture prevent a unique visible portal on the distant facade."
+    },
+    {
+      "episode_id": "EP02",
+      "item_id": "f5e99d95-4c6c-4dc3-a361-e2d03343afed",
+      "status": "ADMITTED",
+      "portal_box_xyxy": [501, 267, 531, 328],
+      "confidence": 0.90,
+      "rationale": "A unique narrow full-height dark portal on the brick facade contains x=512 and is separable from the adjacent arched opening."
+    },
+    {
+      "episode_id": "EP03",
+      "item_id": "0d5f57e1-1513-4c95-acb0-61bfda35fded",
+      "status": "AMBIGUOUS",
+      "portal_box_xyxy": null,
+      "confidence": 0.94,
+      "rationale": "The ray falls on a multi-bay dark shopfront partly occluded by parked vehicles; no unique pedestrian portal can be assigned."
+    }
+  ],
+  "metrics": {
+    "admitted": 1,
+    "not_visible": 1,
+    "ambiguous": 1,
+    "episodes": 3
+  }
+}

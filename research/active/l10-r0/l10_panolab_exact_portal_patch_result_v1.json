@@ -1,0 +1,35 @@
+{
+  "schema": "blindassist-l10-panolab-exact-portal-patch-result-v1",
+  "decision": "L10_PANOLAB_EXACT_PORTAL_PATCH_SOURCE_NOT_EVALUABLE_REFERENCE_1_OF_3_QUERY_0_OF_3_NO_MATCHER_CALL",
+  "stop_reason": "SOURCE_NOT_EVALUABLE_REFERENCE_OR_QUERY_PORTAL_NOT_UNIQUELY_VISIBLE_NO_MATCHER_CALL",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_exact_portal_patch_protocol_v1.json",
+  "protocol_sha256": "5e485325f6d951c2ff4577c403cef6d5c620014e40a65ad7e22c455f8f6d2d84",
+  "source": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_exact_portal_patch_source_v1.json",
+  "source_sha256": "620701a93a1b0acd6a69bdf7cb5b38fcfa1a112b2b0d740201d455bee3031dab",
+  "reference_annotations_sha256": "e8465a290eb0dfb6ce7bb1db3da772a1e404895e6e43897396079b74ff93bdd5",
+  "query_source_audit_sha256": "1d1d5c76fbb2a442ee47a6466356ae41f86fb7f8ba7d8f7687d60ccc2e00817b",
+  "query_truth_status": "NOT_CREATED_BECAUSE_QUERY_SOURCE_ADMISSION_WAS_0_OF_3",
+  "execution_backend_receipt": null,
+  "metrics": {
+    "episode_count": 3,
+    "reference_source_admitted": 1,
+    "query_source_admitted": 0,
+    "source_admission": 0,
+    "strict_orientation_images": 6,
+    "cross_collection_episodes": 3,
+    "target_portal_transfers": 0,
+    "wrong_reference_replays": 0,
+    "wrong_reference_false_bindings": 0,
+    "matcher_calls": 0
+  },
+  "gate": {
+    "source_admission_required": false,
+    "strict_orientation_images_required": true,
+    "cross_collection_episodes_required": true,
+    "target_portal_transfers_required": false,
+    "wrong_reference_false_bindings_maximum": true,
+    "source_and_model_hashes_verified": true
+  },
+  "wall_s": 0.047,
+  "claim_boundary": "A pass is a three-entrance Development result showing that a separately annotated exact portal patch can be transported across real Panoramax sequences and rejects all wrong entrance patches. It is agent-annotated Development evidence, not independent confirmation, public or legal access, traversability, collision-free motion, metric waypoint or arrival, HANDOFF_READY, product benefit, user benefit, or safety evidence."
+}

@@ -1893,6 +1893,58 @@ Active-recovery evaluator and preserved v1/v2 receipts:
 `l10_panolab_active_ray_recovery_result_v2.json`. The v2 result SHA-256 is
 `abae1ef768ff24ad7771704c34f602d7145b382a8259b4a779b0357960fcd963`.
 
+#### PB19 Panoramax entrance-credential successors
+
+The first successor changed the source from facade appearance to exact OSM
+entrance-node text. Its frozen Development panel contained eight nodes, seven
+target ways, and 22 real Panoramax views. Scene-single-view and
+ray-single-view proofs were both `0/8`; source-blind multiview accumulation
+proved only `1/8`, with zero wrong entrance proofs and `1/2` same-building
+distinct credentials. One selected way had two pixels exposed to an inventory
+agent after metadata selection froze, so the result remains curated
+Development only. Record
+`L10_PANOLAB_NODE_CREDENTIAL_FIELD_DEVELOPMENT_GATE_NOT_MET` and do not tune
+OCR, crop, field order, or thresholds on those pixels.
+
+The next successor replaced text with a query-independent Panoramax sequence
+for the same exact entrance node. Four new target ways supplied eight strict
+views and four cross-collection pairs. A frozen reciprocal native-grid DINO
+field plus portal lattice retained a ray-containing portal in Top-3 on `3/4`,
+but produced only `1/4` unique correct reference-bound portal tokens and
+`9/12` wrong-reference ray bindings. Record
+`L10_PANOLAB_CROSS_SEQUENCE_REFERENCE_PORTAL_DEVELOPMENT_GATE_NOT_MET`.
+The whole viewport is place/facade evidence, not exact-door identity; do not
+tune DINO, viewport, portal lattice, support binding, model, or fusion on this
+cohort.
+
+The exact-portal-patch successor then reserved the final three cross-sequence
+ways from the frozen candidate pool. Reference and query pixels were given to
+disjoint annotators. Strict orientation was `6/6` and cross-sequence pairing
+was `3/3`, but reference source admission was `1/3`, query source admission was
+`0/3`, and joint admission was `0/3`. Query truth was therefore not created and
+EfficientLoFTR calls were exactly zero. Record
+`L10_PANOLAB_EXACT_PORTAL_PATCH_SOURCE_NOT_EVALUABLE_REFERENCE_1_OF_3_QUERY_0_OF_3_NO_MATCHER_CALL`.
+The `DIRECT` geometry label does not imply a uniquely visible portal in pixels.
+The next legal action is to expand the Panoramax asset pool toward closer,
+independently captured, ray-visible entrances; do not resample any opened way,
+relax unique-portal admission, or reopen a matcher rescue.
+
+Credential successor protocols, evaluators, frozen sources, and results:
+`l10_panolab_node_credential_protocol_v1.json`,
+`l10_panolab_node_credential.py`,
+`l10_panolab_node_credential_source_v1.json`,
+`l10_panolab_node_credential_result_v1.json`,
+`l10_panolab_reference_portal_protocol_v1.json`,
+`l10_panolab_reference_portal.py`,
+`l10_panolab_reference_portal_source_v1.json`,
+`l10_panolab_reference_portal_result_v1.json`,
+`l10_panolab_exact_portal_patch_protocol_v1.json`,
+`l10_panolab_exact_portal_patch.py`,
+`l10_panolab_exact_portal_patch_source_v1.json`,
+`l10_panolab_exact_portal_reference_annotations_v1.json`,
+`l10_panolab_exact_portal_query_source_audit_v1.json`, and
+`l10_panolab_exact_portal_patch_result_v1.json`.
+
 Durable PB10 summary:
 `named_poi_trans4trans_glass_door_plane_development_result_v1.json`.
 
