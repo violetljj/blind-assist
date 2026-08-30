@@ -15,6 +15,7 @@ param(
     [int]$CaptureTimeoutSeconds = 3600,
     [ValidateRange(2.0, 16.0)]
     [double]$MinimumFreePhysicalGB = 4.0,
+    [string]$StorageLeaseToken = '',
     [switch]$Resume
 )
 
@@ -36,6 +37,35 @@ $script:RawRunPath = ''
 $script:CarlaInstallRootPath = ''
 $script:CarlaPythonPath = ''
 $script:StartupEngineIniPath = ''
+$script:StorageLeaseHelper = Join-Path $PSScriptRoot 'assert_carla_storage_capacity.ps1'
+$script:StorageLeaseToken = $StorageLeaseToken
+$script:StorageLeaseCarlaRoot = ''
+$script:StorageLeaseOutputRoot = ''
+$script:OwnsStorageLease = $false
+
+function Assert-StorageLease {
+    if ([string]::IsNullOrWhiteSpace($script:StorageLeaseToken)) {
+        throw 'CARLA storage lease is unavailable.'
+    }
+    & $script:StorageLeaseHelper `
+        -Action Check `
+        -CarlaRoot $script:StorageLeaseCarlaRoot `
+        -CarlaPython $script:CarlaPythonPath `
+        -LeaseToken $script:StorageLeaseToken `
+        -OutputRoot $script:StorageLeaseOutputRoot | Out-Null
+}
+
+function Release-StorageLease {
+    if ($script:OwnsStorageLease -and -not [string]::IsNullOrWhiteSpace($script:StorageLeaseToken)) {
+        & $script:StorageLeaseHelper `
+            -Action Release `
+            -CarlaRoot $script:StorageLeaseCarlaRoot `
+            -CarlaPython $script:CarlaPythonPath `
+            -LeaseToken $script:StorageLeaseToken | Out-Null
+        $script:StorageLeaseToken = ''
+        $script:OwnsStorageLease = $false
+    }
+}
 
 function Resolve-LocalPath {
     param(
@@ -592,6 +622,22 @@ try {
     $script:RawRunPath = Get-ContainedRunPath -Root $rawRoot -Child $RunId
     Wait-CarlaCapacity
     Assert-CarlaIdle
+    $script:StorageLeaseCarlaRoot = $script:CarlaLibraryRootPath
+    $script:StorageLeaseOutputRoot = $rawRoot
+    if ([string]::IsNullOrWhiteSpace($script:StorageLeaseToken)) {
+        $storageLease = & $script:StorageLeaseHelper `
+            -Action Acquire `
+            -CarlaRoot $script:CarlaLibraryRootPath `
+            -CarlaPython $script:CarlaPythonPath `
+            -ReservationBytes ([long](8GB)) `
+            -OutputRoot $rawRoot `
+            -LeaseLabel "DTR-CARLA-C2/$RunId" | ConvertFrom-Json -Depth 100
+        $script:StorageLeaseToken = [string]$storageLease.lease_token
+        $script:OwnsStorageLease = $true
+    }
+    else {
+        Assert-StorageLease
+    }
     [IO.Directory]::CreateDirectory($rawRoot) | Out-Null
     if ($Resume) {
         if (-not (Test-Path -LiteralPath $script:RawRunPath -PathType Container)) {
@@ -611,6 +657,7 @@ try {
         if ($Resume -and (Test-Path -LiteralPath $shardResult -PathType Leaf)) {
             Assert-ShardResult -SensorName $sensorName -ExitCode 0
             Write-Output "SKIP verified completed C2 shard $sensorName"
+            Assert-StorageLease
             continue
         }
         if ($Resume -and (Test-Path -LiteralPath $shardRoot -PathType Container)) {
@@ -621,9 +668,13 @@ try {
             Remove-Item -LiteralPath $shardRoot
         }
         Invoke-SensorCapture -SensorName $sensorName
+        Assert-StorageLease
     }
     Assert-CarlaIdle
+    Assert-StorageLease
     Invoke-Join
+    Assert-StorageLease
+    Release-StorageLease
     Write-Output (
         "PASS DTR-CARLA-C2 rich source: sensors=4 resolution=1280x720 " +
         "frames_per_sensor=$($script:ExpectedFramesPerSensor) unique_blueprints>=$($script:MinimumUniqueBlueprints)"
@@ -632,8 +683,10 @@ try {
     exit 0
 }
 catch {
+    $failure = $_
     try { Stop-OwnedPython -Process $null } catch {}
     try { Stop-OwnedCarla } catch {}
-    [Console]::Error.WriteLine("DTR_CARLA_C2_RUNNER_ERROR: $($_.Exception.Message)")
+    try { Release-StorageLease } catch {}
+    [Console]::Error.WriteLine("DTR_CARLA_C2_RUNNER_ERROR: $($failure.Exception.Message)")
     exit 2
 }

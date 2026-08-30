@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import sys
 import tempfile
@@ -838,6 +839,21 @@ class C4MultimapJoinTest(unittest.TestCase):
         )
         self.assertFalse((self.fixture.output_root / "model" / "registries").exists())
         self.assertEqual([], result["model_truth_failures"])
+        first_group = index["map_layout_groups"][0]
+        child_model = (
+            self.fixture.bundle_root
+            / str(first_group["evidence_path"])
+            / "model"
+        )
+        child_payload = next(child_model.glob("episodes/*/rgb/*.png"))
+        packaged_payload = (
+            self.fixture.output_root
+            / "model"
+            / "groups"
+            / str(first_group["group_id"])
+            / child_payload.relative_to(child_model)
+        )
+        self.assertTrue(os.path.samefile(child_payload, packaged_payload))
         for group in index["map_layout_groups"]:
             child_result = (
                 self.fixture.bundle_root

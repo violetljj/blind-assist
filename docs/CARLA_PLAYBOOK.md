@@ -63,6 +63,83 @@ These are mechanism and source Development assets. They are not a frozen X21
 source-disjoint confirmation, natural tracking evidence, real-device evidence,
 or a safety result.
 
+## Bounded experiment storage
+
+`E:\linnan\CARLA` is a compatibility junction. Its physical target is
+`artifacts.local/runtime/carla-asset-library/` on the artifact volume, and all
+capacity decisions must use that resolved volume rather than E:. The canonical
+experiment tree remains `E:\linnan\CARLA\experiments`; moving another physical
+copy beside it is not an archive strategy.
+
+The project-owned policy is
+[`carla_storage_policy.json`](../research/active/dtr-r0/carla/carla_storage_policy.json).
+Official C0, C1, C2, C4, N1, and N2 runners fail closed before creating a new
+run when either of these projected conditions is violated:
+
+- experiment unique bytes, counting each NTFS file identity once, would exceed
+  80 GiB;
+- free space on the resolved backing volume would fall below 100 GiB.
+
+The normal reservation is 8 GiB and C4 reserves 16 GiB. Each runner acquires a
+persistent, atomic lease before creating its output directory, checks the live
+cap again after every sensor/shard/stage boundary, and releases the lease during
+verified cleanup. C4 passes its parent lease to child C2 runs so the same work is
+not reserved twice. A refusal never removes an old or partial cohort. Automatic
+payload deletion is disabled by policy; capacity recovery requires an explicit
+maintenance action with receipts. A crashed runner can leave a lease behind;
+release only that exact token after verifying its owner is no longer running.
+
+C4 child reuse and final packaging use same-volume hard links for regular files
+and copy only when hard links are unavailable. A hard link is a storage view,
+not a second evidence copy: every linked path shares the same bytes. Sealed
+identity therefore remains path plus SHA-256, while storage accounting uses the
+live filesystem identity. Explorer and simple directory-size tools can still
+show the larger logical total because they count every linked path.
+
+Read-only audit and preflight commands are:
+
+```powershell
+E:\linnan\CARLA\client-env\Scripts\python.exe `
+  research/active/dtr-r0/carla/carla_storage.py audit `
+  --root E:\linnan\CARLA\experiments
+
+pwsh -NoProfile -File tools/assert_carla_storage_capacity.ps1 `
+  -ReservationBytes 8GB
+```
+
+Historical exact PNG duplicates can be compacted only when every candidate is
+at least ten minutes old, is explicitly listed by size and SHA-256 in a valid
+ancestor `sealed_evidence_manifest.json`, and that sealed scope also contains a
+terminal `result.json`. The tool rejects named NTFS streams and will link only
+files whose size, SHA-256, timestamp, mode, Windows attributes, and security
+descriptor also match. A dry-run plan must be frozen first:
+
+```powershell
+E:\linnan\CARLA\client-env\Scripts\python.exe `
+  research/active/dtr-r0/carla/carla_storage.py dedupe `
+  --root E:\linnan\CARLA\experiments `
+  --receipt-dir artifacts.local/maintenance/carla-storage/dry-run
+
+# Review dedupe-plan.json, then use a new receipt directory.
+E:\linnan\CARLA\client-env\Scripts\python.exe `
+  research/active/dtr-r0/carla/carla_storage.py dedupe `
+  --root E:\linnan\CARLA\experiments `
+  --apply `
+  --expect-plan-sha256 <reviewed-plan-sha256> `
+  --receipt-dir artifacts.local/maintenance/carla-storage/apply
+```
+
+Apply refuses while any run lease exists, creates a maintenance lock, recomputes
+the plan, and refuses if its hash changed. It creates a temporary hard link and
+atomically replaces only the named duplicate; paths, content, modification
+times, Windows attributes, ACLs, and sealed manifests remain unchanged. If an
+interrupted maintenance run leaves the lock behind, verify that no dedupe
+process or experiment writer exists before removing that one lock and creating
+a fresh dry-run plan.
+
+The 2026-08-31 maintenance outcome and exact local receipt identities are in
+[`CARLA_STORAGE_COMPACTION_2026-08-31.md`](../research/active/dtr-r0/carla/CARLA_STORAGE_COMPACTION_2026-08-31.md).
+
 ## Runnable DTR-CARLA-C0 benchmark
 
 Run a fresh benchmark with a unique `RunId`:

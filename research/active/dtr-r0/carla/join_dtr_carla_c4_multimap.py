@@ -24,6 +24,7 @@ import shutil
 from pathlib import Path
 from typing import Any
 
+from carla_storage import clone_tree
 from dtr_carla_c2_rich_scene import (
     MODEL_TOP_LEVEL_ALLOWLIST,
     plan_waypoints_world,
@@ -1942,7 +1943,7 @@ def _preflight_child_group(
 def _copy_tree(source: Path, destination: Path) -> None:
     if destination.exists():
         raise FileExistsError(f"refusing tree overwrite: {destination}")
-    shutil.copytree(source, destination, copy_function=shutil.copy2)
+    clone_tree(source, destination)
 
 
 def _materialize_outer_package(

@@ -35,6 +35,34 @@ $PSNativeCommandUseErrorActionPreference = $false
 $script:RepoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $script:RunEvidencePath = ''
 $script:CompletedGroups = [Collections.Generic.List[string]]::new()
+$script:StorageLeaseHelper = Join-Path $PSScriptRoot 'assert_carla_storage_capacity.ps1'
+$script:StorageLeaseToken = ''
+$script:StorageLeaseCarlaRoot = ''
+$script:StorageLeasePythonPath = ''
+$script:StorageLeaseOutputRoot = ''
+
+function Assert-StorageLease {
+    if ([string]::IsNullOrWhiteSpace($script:StorageLeaseToken)) {
+        throw 'CARLA storage lease is unavailable.'
+    }
+    & $script:StorageLeaseHelper `
+        -Action Check `
+        -CarlaRoot $script:StorageLeaseCarlaRoot `
+        -CarlaPython $script:StorageLeasePythonPath `
+        -LeaseToken $script:StorageLeaseToken `
+        -OutputRoot $script:StorageLeaseOutputRoot | Out-Null
+}
+
+function Release-StorageLease {
+    if (-not [string]::IsNullOrWhiteSpace($script:StorageLeaseToken)) {
+        & $script:StorageLeaseHelper `
+            -Action Release `
+            -CarlaRoot $script:StorageLeaseCarlaRoot `
+            -CarlaPython $script:StorageLeasePythonPath `
+            -LeaseToken $script:StorageLeaseToken | Out-Null
+        $script:StorageLeaseToken = ''
+    }
+}
 
 function Resolve-TaskPath {
     param(
@@ -485,7 +513,9 @@ function Test-CompletedChild {
 function Import-ReusableChildren {
     param(
         [Parameter(Mandatory = $true)]$Plan,
-        [Parameter(Mandatory = $true)][string]$SourceRunRoot
+        [Parameter(Mandatory = $true)][string]$SourceRunRoot,
+        [Parameter(Mandatory = $true)][string]$PythonPath,
+        [Parameter(Mandatory = $true)][string]$StorageToolPath
     )
     $sourceRoot = (Resolve-Path -LiteralPath $SourceRunRoot).Path
     $destinationRoot = [IO.Path]::GetFullPath($script:RunEvidencePath)
@@ -512,7 +542,14 @@ function Import-ReusableChildren {
             continue
         }
         $sourceResult = Join-Path $source 'result.json'
-        Copy-Item -LiteralPath $source -Destination $destination -Recurse
+        $cloneJson = (& $PythonPath $StorageToolPath clone-tree `
+            --source $source `
+            --destination $destination | Out-String)
+        $cloneExitCode = $LASTEXITCODE
+        if ($cloneExitCode -ne 0) {
+            throw "Reusable child hardlink clone failed with exit code $cloneExitCode"
+        }
+        $cloneReceipt = $cloneJson | ConvertFrom-Json -Depth 100
         if (-not (Test-CompletedChild -Group $group)) {
             throw "Reusable child copy failed validation: $($group.group_id)"
         }
@@ -525,6 +562,7 @@ function Import-ReusableChildren {
             ).Hash
             destination_child_path = $destination
             copy_verified_complete = $true
+            materialization = $cloneReceipt
         })
         Write-Output "REUSE verified C4 child $($group.group_id)"
     }
@@ -545,7 +583,8 @@ function Invoke-C2MapGroup {
         [Parameter(Mandatory = $true)]$Group,
         [Parameter(Mandatory = $true)][string]$C2RunnerPath,
         [Parameter(Mandatory = $true)][string]$CarlaPythonPath,
-        [Parameter(Mandatory = $true)][bool]$C2RunnerSupportsResume
+        [Parameter(Mandatory = $true)][bool]$C2RunnerSupportsResume,
+        [Parameter(Mandatory = $true)][string]$StorageLeaseToken
     )
     $ports = @($Group.ports | ForEach-Object { [int]$_ })
     Assert-PortGroupIdle -Ports $ports
@@ -578,7 +617,8 @@ function Invoke-C2MapGroup {
         '-RpcPort', [string]$Group.rpc_port,
         '-StartupEngineIni', [string]$Group.startup_engine_ini_path,
         '-CaptureTimeoutSeconds', [string]$CaptureTimeoutSeconds,
-        '-MinimumFreePhysicalGB', [string]$MinimumFreePhysicalGB
+        '-MinimumFreePhysicalGB', [string]$MinimumFreePhysicalGB,
+        '-StorageLeaseToken', $StorageLeaseToken
     )
     if ($partialChild) {
         $runnerArguments += '-Resume'
@@ -798,10 +838,19 @@ try {
 
     $c2RunnerPath = Resolve-TaskPath -Value $C2Runner -BasePath $script:RepoRoot
     $joinScriptPath = Resolve-TaskPath -Value $JoinScript -BasePath $script:RepoRoot
+    $storageToolPath = Join-Path `
+        $script:RepoRoot `
+        'research/active/dtr-r0/carla/carla_storage.py'
     Assert-RequiredFile -Path $c2RunnerPath -Label 'C2 compatibility runner'
     Assert-RequiredFile -Path $joinScriptPath -Label 'C4 final join'
+    Assert-RequiredFile -Path $storageToolPath -Label 'CARLA storage tool'
     $runnerCommand = Get-Command -Name $c2RunnerPath -ErrorAction Stop
-    foreach ($parameterName in @('RpcPort', 'StartupEngineIni', 'MinimumFreePhysicalGB')) {
+    foreach ($parameterName in @(
+        'RpcPort',
+        'StartupEngineIni',
+        'MinimumFreePhysicalGB',
+        'StorageLeaseToken'
+    )) {
         if (-not $runnerCommand.Parameters.ContainsKey($parameterName)) {
             throw "The checked-out C2 runner does not support -$parameterName."
         }
@@ -813,6 +862,19 @@ try {
     }
     $rawRoot = Resolve-TaskPath -Value $RawEvidenceRoot -BasePath $script:RepoRoot
     $script:RunEvidencePath = Get-ContainedRunPath -Root $rawRoot -Child $RunId
+    $script:StorageLeaseCarlaRoot = Resolve-TaskPath `
+        -Value $CarlaRoot `
+        -BasePath $script:RepoRoot
+    $script:StorageLeasePythonPath = $carlaPythonPath
+    $script:StorageLeaseOutputRoot = $rawRoot
+    $storageLease = & $script:StorageLeaseHelper `
+        -Action Acquire `
+        -CarlaRoot $script:StorageLeaseCarlaRoot `
+        -CarlaPython $carlaPythonPath `
+        -ReservationBytes ([long](16GB)) `
+        -OutputRoot $rawRoot `
+        -LeaseLabel "DTR-CARLA-C4/$RunId" | ConvertFrom-Json -Depth 100
+    $script:StorageLeaseToken = [string]$storageLease.lease_token
     [IO.Directory]::CreateDirectory($rawRoot) | Out-Null
     $planPath = Join-Path $script:RunEvidencePath 'runner_plan.json'
     if (Test-Path -LiteralPath $script:RunEvidencePath) {
@@ -832,7 +894,11 @@ try {
             $reuseRoot = Resolve-TaskPath `
                 -Value $ReuseChildEvidenceRoot `
                 -BasePath $script:RepoRoot
-            Import-ReusableChildren -Plan $plan -SourceRunRoot $reuseRoot
+            Import-ReusableChildren `
+                -Plan $plan `
+                -SourceRunRoot $reuseRoot `
+                -PythonPath $carlaPythonPath `
+                -StorageToolPath $storageToolPath
         }
     }
 
@@ -841,13 +907,17 @@ try {
             -Group $group `
             -C2RunnerPath $c2RunnerPath `
             -CarlaPythonPath $carlaPythonPath `
-            -C2RunnerSupportsResume $c2RunnerSupportsResume
+            -C2RunnerSupportsResume $c2RunnerSupportsResume `
+            -StorageLeaseToken $script:StorageLeaseToken
+        Assert-StorageLease
     }
     $runtimeCompiledProtocol = New-RuntimeCompiledProtocol -Plan $plan
     $finalRoot = Invoke-C4Join `
         -PythonPath $carlaPythonPath `
         -JoinPath $joinScriptPath `
         -RuntimeCompiledProtocol $runtimeCompiledProtocol
+    Assert-StorageLease
+    Release-StorageLease
     Write-Output (
         "PASS DTR-CARLA-C4 multi-map source: maps=$($plan.map_count) " +
         "layouts=$($plan.layout_count) sensors=4 shards=$($plan.shard_count) resolution=1280x720"
@@ -881,6 +951,7 @@ catch {
         }
         catch {}
     }
+    try { Release-StorageLease } catch {}
     [Console]::Error.WriteLine("DTR_CARLA_C4_RUNNER_ERROR: $($failure.Exception.Message)")
     exit 2
 }

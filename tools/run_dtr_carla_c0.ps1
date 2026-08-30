@@ -25,6 +25,33 @@ $script:CarlaPorts = @(2000, 2001, 2002)
 $script:StartupTimeoutSeconds = 90
 $script:StartupMinimumSeconds = 45
 $script:CarlaHost = '127.0.0.1'
+$script:StorageLeaseHelper = Join-Path $PSScriptRoot 'assert_carla_storage_capacity.ps1'
+$script:StorageLeaseToken = ''
+$script:StorageLeaseCarlaRoot = ''
+$script:StorageLeaseOutputRoot = ''
+
+function Assert-StorageLease {
+    if ([string]::IsNullOrWhiteSpace($script:StorageLeaseToken)) {
+        throw 'CARLA storage lease is unavailable.'
+    }
+    & $script:StorageLeaseHelper `
+        -Action Check `
+        -CarlaRoot $script:StorageLeaseCarlaRoot `
+        -CarlaPython $script:CarlaPythonPath `
+        -LeaseToken $script:StorageLeaseToken `
+        -OutputRoot $script:StorageLeaseOutputRoot | Out-Null
+}
+
+function Release-StorageLease {
+    if (-not [string]::IsNullOrWhiteSpace($script:StorageLeaseToken)) {
+        & $script:StorageLeaseHelper `
+            -Action Release `
+            -CarlaRoot $script:StorageLeaseCarlaRoot `
+            -CarlaPython $script:CarlaPythonPath `
+            -LeaseToken $script:StorageLeaseToken | Out-Null
+        $script:StorageLeaseToken = ''
+    }
+}
 
 function Resolve-LocalPath {
     param(
@@ -549,6 +576,16 @@ try {
         throw "Refusing partial project result or overwrite: $($script:ProjectRunPath)"
     }
     Assert-CarlaIdle
+    $script:StorageLeaseCarlaRoot = $script:CarlaLibraryRootPath
+    $script:StorageLeaseOutputRoot = $rawEvidenceRootPath
+    $storageLease = & $script:StorageLeaseHelper `
+        -Action Acquire `
+        -CarlaRoot $script:CarlaLibraryRootPath `
+        -CarlaPython $script:CarlaPythonPath `
+        -ReservationBytes ([long](8GB)) `
+        -OutputRoot $rawEvidenceRootPath `
+        -LeaseLabel "DTR-CARLA-C0/$RunId" | ConvertFrom-Json -Depth 100
+    $script:StorageLeaseToken = [string]$storageLease.lease_token
 
     [IO.Directory]::CreateDirectory($rawEvidenceRootPath) | Out-Null
     [IO.Directory]::CreateDirectory($projectEvidenceRootPath) | Out-Null
@@ -559,11 +596,13 @@ try {
 
     foreach ($sensorName in $sensorOrder) {
         Invoke-ModalityCapture -SensorName $sensorName
+        Assert-StorageLease
     }
     Assert-CarlaIdle
 
     foreach ($stage in @('join', 'predict', 'score')) {
         Invoke-GpuStage -Stage $stage
+        Assert-StorageLease
     }
     foreach ($artifact in @(
         'join-result.json',
@@ -576,12 +615,15 @@ try {
         Assert-RequiredFile -Path $artifactPath -Label "DTR-CARLA-C0 output $artifact"
     }
 
+    Release-StorageLease
     Write-Output 'PASS DTR-CARLA-C0 run complete'
     Write-Output "raw_evidence: $($script:RawRunPath)"
     Write-Output "project_result: $($script:ProjectRunPath)"
     exit 0
 }
 catch {
-    [Console]::Error.WriteLine("DTR_CARLA_C0_RUNNER_ERROR: $($_.Exception.Message)")
+    $failure = $_
+    try { Release-StorageLease } catch {}
+    [Console]::Error.WriteLine("DTR_CARLA_C0_RUNNER_ERROR: $($failure.Exception.Message)")
     exit 2
 }

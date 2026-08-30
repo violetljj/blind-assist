@@ -28,6 +28,33 @@ $repoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $carlaInstallRoot = [IO.Path]::GetFullPath((Join-Path $CarlaRoot '0.9.16'))
 $carlaExe = Join-Path $carlaInstallRoot 'CarlaUE4.exe'
 $carlaPythonPath = [IO.Path]::GetFullPath($CarlaPython)
+$script:StorageLeaseHelper = Join-Path $PSScriptRoot 'assert_carla_storage_capacity.ps1'
+$script:StorageLeaseToken = ''
+$script:StorageLeaseCarlaRoot = [IO.Path]::GetFullPath($CarlaRoot)
+$script:StorageLeaseOutputRoot = ''
+
+function Assert-StorageLease {
+    if ([string]::IsNullOrWhiteSpace($script:StorageLeaseToken)) {
+        throw 'CARLA storage lease is unavailable.'
+    }
+    & $script:StorageLeaseHelper `
+        -Action Check `
+        -CarlaRoot $script:StorageLeaseCarlaRoot `
+        -CarlaPython $carlaPythonPath `
+        -LeaseToken $script:StorageLeaseToken `
+        -OutputRoot $script:StorageLeaseOutputRoot | Out-Null
+}
+
+function Release-StorageLease {
+    if (-not [string]::IsNullOrWhiteSpace($script:StorageLeaseToken)) {
+        & $script:StorageLeaseHelper `
+            -Action Release `
+            -CarlaRoot $script:StorageLeaseCarlaRoot `
+            -CarlaPython $carlaPythonPath `
+            -LeaseToken $script:StorageLeaseToken | Out-Null
+        $script:StorageLeaseToken = ''
+    }
+}
 
 function Resolve-InputPath {
     param([Parameter(Mandatory = $true)][string]$Value)
@@ -47,6 +74,7 @@ $startupEngineIniPath = if ([string]::IsNullOrWhiteSpace($StartupEngineIni)) {
     Resolve-InputPath $StartupEngineIni
 }
 $evidenceRootPath = [IO.Path]::GetFullPath($EvidenceRoot).TrimEnd('\', '/')
+$script:StorageLeaseOutputRoot = $evidenceRootPath
 $runRoot = [IO.Path]::GetFullPath((Join-Path $evidenceRootPath $RunId))
 $expectedRunPrefix = $evidenceRootPath + [IO.Path]::DirectorySeparatorChar
 $ports = @($RpcPort, $RpcPort + 1, $RpcPort + 2)
@@ -73,7 +101,6 @@ if (-not (Test-Path -LiteralPath $sourcePath -PathType Container)) {
 if (Test-Path -LiteralPath $runRoot) {
     throw "Refusing N2 evidence overwrite: $runRoot"
 }
-
 function Quote-ProcessArgument {
     param([Parameter(Mandatory = $true)][string]$Value)
     if ($Value.Contains('"')) {
@@ -188,37 +215,48 @@ if ($freePhysicalGB -lt $MinimumFreePhysicalGB) {
     throw "Insufficient free physical memory for N2: $([Math]::Round($freePhysicalGB, 2)) GiB"
 }
 
-[IO.Directory]::CreateDirectory($runRoot) | Out-Null
-$inputRoot = Join-Path $runRoot 'inputs'
-$logRoot = Join-Path $runRoot 'logs'
-[IO.Directory]::CreateDirectory($inputRoot) | Out-Null
-[IO.Directory]::CreateDirectory($logRoot) | Out-Null
-$frozenProtocol = Join-Path $runRoot 'frozen_protocol.json'
-Copy-Item -LiteralPath $protocolPath -Destination $frozenProtocol
-foreach ($name in @(
-    'behavior_trace.jsonl',
-    'actor_manifest.json',
-    'frozen_plan.json',
-    'event_receipts.json',
-    'result.json'
-)) {
-    Copy-Item -LiteralPath (Join-Path $sourcePath $name) -Destination (Join-Path $inputRoot $name)
-}
-
-$copiedPreflightOutput = & $carlaPythonPath -B $helperPath `
-    --protocol $frozenProtocol `
-    --source-root $inputRoot `
-    --receipt (Join-Path $runRoot 'preflight_source_bundle_receipt.json') 2>&1
-if ($LASTEXITCODE -ne 0) {
-    throw "Copied N2 source preflight failed: $($copiedPreflightOutput -join [Environment]::NewLine)"
-}
-
 $server = $null
 $clientProcess = $null
 $runtimeStartupEngineIniPath = ''
 $primaryFailure = $null
 $cleanupFailure = $null
+$storageLease = & $script:StorageLeaseHelper `
+    -Action Acquire `
+    -CarlaRoot $script:StorageLeaseCarlaRoot `
+    -CarlaPython $carlaPythonPath `
+    -ReservationBytes ([long](8GB)) `
+    -OutputRoot $evidenceRootPath `
+    -LeaseLabel "DTR-CARLA-N2/$RunId" | ConvertFrom-Json -Depth 100
+$script:StorageLeaseToken = [string]$storageLease.lease_token
+
 try {
+    [IO.Directory]::CreateDirectory($runRoot) | Out-Null
+    $inputRoot = Join-Path $runRoot 'inputs'
+    $logRoot = Join-Path $runRoot 'logs'
+    [IO.Directory]::CreateDirectory($inputRoot) | Out-Null
+    [IO.Directory]::CreateDirectory($logRoot) | Out-Null
+    $frozenProtocol = Join-Path $runRoot 'frozen_protocol.json'
+    Copy-Item -LiteralPath $protocolPath -Destination $frozenProtocol
+    foreach ($name in @(
+        'behavior_trace.jsonl',
+        'actor_manifest.json',
+        'frozen_plan.json',
+        'event_receipts.json',
+        'result.json'
+    )) {
+        Copy-Item `
+            -LiteralPath (Join-Path $sourcePath $name) `
+            -Destination (Join-Path $inputRoot $name)
+    }
+
+    $copiedPreflightOutput = & $carlaPythonPath -B $helperPath `
+        --protocol $frozenProtocol `
+        --source-root $inputRoot `
+        --receipt (Join-Path $runRoot 'preflight_source_bundle_receipt.json') 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        throw "Copied N2 source preflight failed: $($copiedPreflightOutput -join [Environment]::NewLine)"
+    }
+
     $serverArguments = [Collections.Generic.List[string]]::new()
     if (-not [string]::IsNullOrWhiteSpace($startupEngineIniPath)) {
         Assert-StartupEngineIniMap -Path $startupEngineIniPath -MapName $protocolMap
@@ -309,6 +347,7 @@ try {
     ) {
         throw "N2 replay gate failed: $($failedChecks.Name -join ',')"
     }
+    Assert-StorageLease
     Write-Output "PASS N2 frozen trace C2 replay: $resultPath"
 }
 catch {
@@ -320,6 +359,14 @@ finally {
     }
     catch {
         $cleanupFailure = $_
+    }
+    try {
+        Release-StorageLease
+    }
+    catch {
+        if ($null -eq $cleanupFailure) {
+            $cleanupFailure = $_
+        }
     }
     if (
         -not [string]::IsNullOrWhiteSpace($runtimeStartupEngineIniPath) -and

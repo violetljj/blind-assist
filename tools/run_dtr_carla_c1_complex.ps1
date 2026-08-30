@@ -22,6 +22,33 @@ $script:CarlaPorts = @(2000, 2001, 2002)
 $script:StartupTimeoutSeconds = 120
 $script:StartupMinimumSeconds = 45
 $script:CarlaHost = '127.0.0.1'
+$script:StorageLeaseHelper = Join-Path $PSScriptRoot 'assert_carla_storage_capacity.ps1'
+$script:StorageLeaseToken = ''
+$script:StorageLeaseCarlaRoot = ''
+$script:StorageLeaseOutputRoot = ''
+
+function Assert-StorageLease {
+    if ([string]::IsNullOrWhiteSpace($script:StorageLeaseToken)) {
+        throw 'CARLA storage lease is unavailable.'
+    }
+    & $script:StorageLeaseHelper `
+        -Action Check `
+        -CarlaRoot $script:StorageLeaseCarlaRoot `
+        -CarlaPython $script:CarlaPythonPath `
+        -LeaseToken $script:StorageLeaseToken `
+        -OutputRoot $script:StorageLeaseOutputRoot | Out-Null
+}
+
+function Release-StorageLease {
+    if (-not [string]::IsNullOrWhiteSpace($script:StorageLeaseToken)) {
+        & $script:StorageLeaseHelper `
+            -Action Release `
+            -CarlaRoot $script:StorageLeaseCarlaRoot `
+            -CarlaPython $script:CarlaPythonPath `
+            -LeaseToken $script:StorageLeaseToken | Out-Null
+        $script:StorageLeaseToken = ''
+    }
+}
 
 function Resolve-LocalPath {
     param(
@@ -441,6 +468,16 @@ try {
     $rawRoot = Resolve-LocalPath -Value $RawEvidenceRoot -BasePath $script:RepoRoot
     $script:RawRunPath = Get-ContainedRunPath -Root $rawRoot -Child $RunId
     Assert-CarlaIdle
+    $script:StorageLeaseCarlaRoot = $script:CarlaLibraryRootPath
+    $script:StorageLeaseOutputRoot = $rawRoot
+    $storageLease = & $script:StorageLeaseHelper `
+        -Action Acquire `
+        -CarlaRoot $script:CarlaLibraryRootPath `
+        -CarlaPython $script:CarlaPythonPath `
+        -ReservationBytes ([long](8GB)) `
+        -OutputRoot $rawRoot `
+        -LeaseLabel "DTR-CARLA-C1/$RunId" | ConvertFrom-Json -Depth 100
+    $script:StorageLeaseToken = [string]$storageLease.lease_token
     [IO.Directory]::CreateDirectory($rawRoot) | Out-Null
     New-ExclusiveDirectory -Path $script:RawRunPath -Label 'raw C1 evidence run'
     $script:LogRoot = Join-Path $script:RawRunPath 'logs'
@@ -448,14 +485,19 @@ try {
 
     foreach ($sensorName in $sensorOrder) {
         Invoke-SensorCapture -SensorName $sensorName
+        Assert-StorageLease
     }
     Assert-CarlaIdle
     Invoke-Join
+    Assert-StorageLease
+    Release-StorageLease
     Write-Output 'PASS DTR-CARLA-C1 complex scene: 4/4 shards, 8/8 episodes, 15/15 assets'
     Write-Output "evidence: $($script:RawRunPath)"
     exit 0
 }
 catch {
-    [Console]::Error.WriteLine("DTR_CARLA_C1_RUNNER_ERROR: $($_.Exception.Message)")
+    $failure = $_
+    try { Release-StorageLease } catch {}
+    [Console]::Error.WriteLine("DTR_CARLA_C1_RUNNER_ERROR: $($failure.Exception.Message)")
     exit 2
 }

@@ -30,6 +30,33 @@ $repoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $carlaInstallRoot = [IO.Path]::GetFullPath((Join-Path $CarlaRoot '0.9.16'))
 $carlaExe = Join-Path $carlaInstallRoot 'CarlaUE4.exe'
 $carlaPythonPath = [IO.Path]::GetFullPath($CarlaPython)
+$script:StorageLeaseHelper = Join-Path $PSScriptRoot 'assert_carla_storage_capacity.ps1'
+$script:StorageLeaseToken = ''
+$script:StorageLeaseCarlaRoot = [IO.Path]::GetFullPath($CarlaRoot)
+$script:StorageLeaseOutputRoot = ''
+
+function Assert-StorageLease {
+    if ([string]::IsNullOrWhiteSpace($script:StorageLeaseToken)) {
+        throw 'CARLA storage lease is unavailable.'
+    }
+    & $script:StorageLeaseHelper `
+        -Action Check `
+        -CarlaRoot $script:StorageLeaseCarlaRoot `
+        -CarlaPython $carlaPythonPath `
+        -LeaseToken $script:StorageLeaseToken `
+        -OutputRoot $script:StorageLeaseOutputRoot | Out-Null
+}
+
+function Release-StorageLease {
+    if (-not [string]::IsNullOrWhiteSpace($script:StorageLeaseToken)) {
+        & $script:StorageLeaseHelper `
+            -Action Release `
+            -CarlaRoot $script:StorageLeaseCarlaRoot `
+            -CarlaPython $carlaPythonPath `
+            -LeaseToken $script:StorageLeaseToken | Out-Null
+        $script:StorageLeaseToken = ''
+    }
+}
 $planPath = if ([IO.Path]::IsPathRooted($Plan)) {
     [IO.Path]::GetFullPath($Plan)
 } else {
@@ -48,6 +75,7 @@ $startupEngineIniPath = if ([string]::IsNullOrWhiteSpace($StartupEngineIni)) {
     [IO.Path]::GetFullPath((Join-Path $repoRoot $StartupEngineIni))
 }
 $evidenceRoot = [IO.Path]::GetFullPath($RawEvidenceRoot).TrimEnd('\', '/')
+$script:StorageLeaseOutputRoot = $evidenceRoot
 $runRoot = [IO.Path]::GetFullPath((Join-Path $evidenceRoot $RunId))
 $expectedRunPrefix = $evidenceRoot + [IO.Path]::DirectorySeparatorChar
 $ports = @($RpcPort, $RpcPort + 1, $RpcPort + 2, $TrafficManagerPort)
@@ -71,7 +99,6 @@ $protocolMap = [string]$planDocument.environment.map
 if (Test-Path -LiteralPath $runRoot) {
     throw "Refusing evidence overwrite: $runRoot"
 }
-
 function Get-PortListeners {
     @(
         Get-NetTCPConnection `
@@ -182,22 +209,31 @@ if ($freePhysicalGB -lt $MinimumFreePhysicalGB) {
     throw "Insufficient free physical memory for N1: $([Math]::Round($freePhysicalGB, 2)) GiB"
 }
 
-[IO.Directory]::CreateDirectory($runRoot) | Out-Null
-$logRoot = Join-Path $runRoot 'logs'
-[IO.Directory]::CreateDirectory($logRoot) | Out-Null
-$frozenPlan = Join-Path $runRoot 'frozen_plan.json'
-Copy-Item -LiteralPath $planPath -Destination $frozenPlan
-$planHash = (Get-FileHash -LiteralPath $planPath -Algorithm SHA256).Hash
-if ((Get-FileHash -LiteralPath $frozenPlan -Algorithm SHA256).Hash -ne $planHash) {
-    throw 'Frozen N1 plan differs from its source.'
-}
-
 $server = $null
 $clientProcess = $null
 $runtimeStartupEngineIniPath = ''
 $primaryFailure = $null
 $cleanupFailure = $null
+$storageLease = & $script:StorageLeaseHelper `
+    -Action Acquire `
+    -CarlaRoot $script:StorageLeaseCarlaRoot `
+    -CarlaPython $carlaPythonPath `
+    -ReservationBytes ([long](8GB)) `
+    -OutputRoot $evidenceRoot `
+    -LeaseLabel "DTR-CARLA-N1/$RunId" | ConvertFrom-Json -Depth 100
+$script:StorageLeaseToken = [string]$storageLease.lease_token
+
 try {
+    [IO.Directory]::CreateDirectory($runRoot) | Out-Null
+    $logRoot = Join-Path $runRoot 'logs'
+    [IO.Directory]::CreateDirectory($logRoot) | Out-Null
+    $frozenPlan = Join-Path $runRoot 'frozen_plan.json'
+    Copy-Item -LiteralPath $planPath -Destination $frozenPlan
+    $planHash = (Get-FileHash -LiteralPath $planPath -Algorithm SHA256).Hash
+    if ((Get-FileHash -LiteralPath $frozenPlan -Algorithm SHA256).Hash -ne $planHash) {
+        throw 'Frozen N1 plan differs from its source.'
+    }
+
     $serverArguments = [Collections.Generic.List[string]]::new()
     if (-not [string]::IsNullOrWhiteSpace($startupEngineIniPath)) {
         Assert-StartupEngineIniMap -Path $startupEngineIniPath -MapName $protocolMap
@@ -287,6 +323,7 @@ try {
     ) {
         throw "N1 result gate failed: $($failedChecks.Name -join ',')"
     }
+    Assert-StorageLease
     Write-Output "PASS N1 natural dynamics: $resultPath"
 }
 catch {
@@ -298,6 +335,14 @@ finally {
     }
     catch {
         $cleanupFailure = $_
+    }
+    try {
+        Release-StorageLease
+    }
+    catch {
+        if ($null -eq $cleanupFailure) {
+            $cleanupFailure = $_
+        }
     }
     if (
         -not [string]::IsNullOrWhiteSpace($runtimeStartupEngineIniPath) -and
