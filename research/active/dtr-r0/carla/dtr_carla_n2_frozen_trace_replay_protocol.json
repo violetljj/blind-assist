@@ -1,0 +1,97 @@
+{
+  "schema_version": "dtr-carla-n2-frozen-trace-replay-protocol-v1",
+  "experiment_id": "DTR_CARLA_N2_FROZEN_TRACE_C2_REPLAY_V1",
+  "evidence_role": "synthetic_development_source_replay",
+  "source": {
+    "required_result_status": "DTR_CARLA_N1_NATURAL_DYNAMICS_MATERIALIZED",
+    "plan_id": "dtr-carla-n1-seed-20260830",
+    "plan_fingerprint_sha256": "A97BD37A912BD46EEF59DD16A7479CE1EC3FA7E9635F4B7E9C9FF57DD7E219A8",
+    "expected_trace_frames": 481,
+    "expected_actor_count": 21,
+    "files": {
+      "behavior_trace.jsonl": "794C7C909D77976C157A51A6D21A337C1EAB2520CDEAAC00BE59FAF19251E21A",
+      "actor_manifest.json": "0DB62C8BCDE48A7101D48FB46B18DC185B45D700A7DAC8FF15835F8D2E256106",
+      "frozen_plan.json": "3A42971C9CD6E14ECE7DD5A7E65FAB40FE7F8381B21BDA2CFFE951ACAF1B89C1",
+      "event_receipts.json": "7C9EB51EB221C9CFF462EE2339BE942A5F788319E136386D0F939450C8F02211",
+      "result.json": "94B064C0903F6CF6CF46CB1B7F8E3E79A66BEFF5C0F2141D07B638513AAF6F8C"
+    }
+  },
+  "environment": {
+    "carla_version": "0.9.16",
+    "map": "Carla/Maps/Town10HD_Opt",
+    "fixed_delta_seconds": 0.05,
+    "weather": "ClearNoon"
+  },
+  "capture": {
+    "sensor_order": [
+      "instance",
+      "wearable",
+      "depth",
+      "witness"
+    ],
+    "same_world_frame": true,
+    "resolution": [
+      1280,
+      720
+    ],
+    "fov_degrees": 90.0,
+    "wearer": {
+      "observer_mode": "fixed_synthetic_observer",
+      "blueprint": "walker.pedestrian.0001",
+      "world_x_m": -60.92484664916992,
+      "world_y_m": 26.500219345092773,
+      "yaw_degrees": 37.9284553527832,
+      "surface_offset_m": 0.8,
+      "body_radius_m": 0.45
+    },
+    "wearable_relative_transform": {
+      "x_m": 0.08,
+      "y_m": 0.0,
+      "z_m": 0.65,
+      "pitch_degrees": -5.0,
+      "yaw_degrees": 0.0,
+      "roll_degrees": 0.0
+    },
+    "witness_transform_authority": "source_actor_manifest_camera",
+    "camera_calibration": {
+      "intrinsic_convention": "CARLA_PINHOLE_K_WIDTH_OVER_2",
+      "principal_point": [
+        640.0,
+        360.0
+      ],
+      "focal_length_pixels": [
+        640.0,
+        640.0
+      ],
+      "depth_codec": {
+        "name": "CARLA_RGB24_NORMALIZED_DEPTH",
+        "maximum_depth_m": 1000.0,
+        "formula": "meters=1000*(R+256*G+65536*B)/(16777215)"
+      }
+    }
+  },
+  "episode": {
+    "episode_id": "n1_native_trace_01",
+    "layout_id": "n1_town10hd_construction_zone",
+    "navigation_session_id": "n1_native_trace_no_plan",
+    "issued_plan_authority": "NO_PLAN",
+    "future_contact_horizon_seconds": 3.0
+  },
+  "model_contract": {
+    "schema_version": "dtr-c2-model-contract-v2",
+    "include_current_actors": false,
+    "dense_modalities": [
+      "wearable_rgb",
+      "metric_depth"
+    ],
+    "evaluator_modalities": [
+      "instance_segmentation",
+      "witness_rgb"
+    ]
+  },
+  "claim_boundary": [
+    "This is a physics-off replay of one frozen synthetic CARLA Development behavior trace.",
+    "The replay establishes four-modality materialization and alignment, not a natural-traffic distribution.",
+    "It is not an obstacle-algorithm result, source-disjoint confirmation, real-world evidence, product benefit, or safety evidence."
+  ]
+}
