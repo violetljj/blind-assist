@@ -1,0 +1,68 @@
+{
+  "schema": "blindassist-l10-sevn-address-panorama-disjoint-source-protocol-v1",
+  "name": "L10 SEVN address- and panorama-disjoint confirmation source panel",
+  "evidence_class": "METADATA_ONLY_FROZEN_COHORT_SELECTION",
+  "question": "Can the frozen V2 pixel stack be checked on a second SEVN panel whose target addresses and panorama frames do not occur in the consumed first panel?",
+  "materializer": {
+    "path": "research/active/l10-r0/l10_sevn_address_disjoint_panel.py",
+    "sha256": "0c2325e87fb0587b4125e1f37d7ab33ec30b294a730bf63ca630900460ec4ecd"
+  },
+  "frozen_inputs": {
+    "reference_public_source": {
+      "path": "research/active/l10-r0/l10_sevn_panolab_source_v1.json",
+      "sha256": "a6478c29610f986fc50dd101de378f187f7ba9e69c201cc31d3b12b6cf7912da"
+    },
+    "metadata_directory": "F:\\ba-data\\SEVN",
+    "metadata": {
+      "coord.hdf5": {
+        "bytes": 419832,
+        "md5": "9d2d6f17aa31c9cb8309195cf2da00f9"
+      },
+      "label.hdf5": {
+        "bytes": 351434,
+        "md5": "36e24d0ee0b2f351282f3b84aa5d5d56"
+      },
+      "graph.pkl": {
+        "bytes": 2793330,
+        "md5": "f68be888e8f3b964544678070689b777"
+      }
+    }
+  },
+  "reference_panel": {
+    "episodes_per_scenario": 8,
+    "episode_count": 24
+  },
+  "cohort": {
+    "episodes_per_scenario": 7,
+    "episode_count": 21,
+    "feasibility_note": "Before any new pixel was opened, deterministic exhaustive constraint search found no feasible set of 8 APPROACH episodes after excluding all 24 reference addresses, every reference panorama frame, and cross-episode frame reuse. Seven is therefore frozen as the largest balanced per-scenario count under the declared disjointness rules.",
+    "scenario_classes": [
+      "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "APPROACH_ADDRESS_DOOR_RECOVERY"
+    ]
+  },
+  "selection_rule": {
+    "pixel_blind": "Open only coord.hdf5, label.hdf5, graph.pkl, and the consumed public-source manifest. Do not open images.hdf5, high-res-panos.zip, a viewport, or any model output.",
+    "reference_exclusion": "Exclude every canonical street-name plus house-number pair and every panorama frame_id present anywhere in the consumed reference public source.",
+    "within_panel_exclusion": "Use each target address once and prohibit panorama frame reuse across selected episodes; an APPROACH episode reserves both its start and destination frames.",
+    "ordering": "Reserve the more constrained two-frame APPROACH class first using the lexicographically first feasible address/frame-disjoint set over all eligible graph neighbors, then PAN_LEFT and PAN_RIGHT; candidate goals keep the original deterministic street, house-number, frame, x_min order, and the final panel is serialized in PAN_LEFT, PAN_RIGHT, APPROACH order.",
+    "pan_recovery": "Keep the original +/-90 degree start and 67.5 degree prescribed pan construction; require before != CORRECT_UNIQUE and after == CORRECT_UNIQUE from human metadata geometry.",
+    "approach_recovery": "Keep the nearest eligible graph neighbor with quantized neighbor-to-goal heading; require before != CORRECT_UNIQUE and after == CORRECT_UNIQUE from human metadata geometry.",
+    "prohibited_filters": "Do not filter or rank by OCR visibility, image appearance, portal-model output, V2 topology output, or eventual pixel outcome."
+  },
+  "high_resolution_archive": {
+    "expected_local_path": "F:\\ba-data\\SEVN\\high-res-panos.zip",
+    "bytes": 27819151974,
+    "md5": "1e46ca1de01cdba68b0e9ff7de6dc3df",
+    "member_pattern": "panos/pano_{frame_id:06d}.png",
+    "selection_access": "PROHIBITED"
+  },
+  "outputs": {
+    "public_source": "research/active/l10-r0/l10_sevn_address_disjoint_source_v1.json",
+    "evaluator_truth": "research/active/l10-r0/l10_sevn_address_disjoint_truth_v1.json",
+    "selection_receipt": "research/active/l10-r0/l10_sevn_address_disjoint_selection_receipt_v1.json"
+  },
+  "stop_rule": "Materialize the deterministic panel once. Refuse to overwrite any output. Do not replace episodes after pixel outcomes are observed.",
+  "claim_boundary": "This freezes a new address- and panorama-disjoint panel inside the same SEVN source. It is not a source-disjoint, city-disjoint, or product confirmation."
+}

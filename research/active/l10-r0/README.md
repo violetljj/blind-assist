@@ -13,7 +13,10 @@ Status: `ACTIVE`
   addresses (`8` left-pan, `8` right-pan, `8` graph-approach episodes). Frozen V2
   multi-scale OCR plus mask topology reads `19/22` visible house numbers and binds
   `14/24` target doors, with `2` wrong and `8` UNKNOWN. All six Development gates
-  pass, improving the V1 `11/3/10` correct/wrong/UNKNOWN result.
+  pass on that consumed panel, improving the V1 `11/3/10`
+  correct/wrong/UNKNOWN result. A second metadata-selected panel with zero
+  address or panorama-frame overlap did not confirm the gate: visible-number
+  OCR was `12/20` and binding was `9/0/12` correct/wrong/UNKNOWN.
 - **Pixel portal:** generic Panoramax mining is closed after the width-first
   source admitted `0/3` reference, `0/3` query, and `0/3` joint portals. It may
   carry imagery only with independent sub-metre portal registration.
@@ -2022,6 +2025,55 @@ Implementation and durable evidence: `l10_sevn_pixel_topology_replay.py`,
 `l10_sevn_pixel_topology_result_v2.json`, and
 `l10_sevn_pixel_topology_cleanup_v2.json`. The result SHA-256 is
 `b831af55e575030866b4cb7cf8c31d82954630d5c173f39f00409ef8787f5f7e`.
+
+#### PB23 SEVN address- and panorama-disjoint V2 confirmation
+
+The confirmation cohort was selected before opening any new pixel. It excludes
+all 24 first-panel addresses and all 32 first-panel panorama frames, and also
+prohibits frame reuse across new episodes. An exhaustive metadata-only
+constraint search established that eight disjoint `APPROACH` episodes do not
+exist under those rules, so the largest balanced panel was frozen at seven
+`PAN_LEFT`, seven `PAN_RIGHT`, and seven `APPROACH` episodes. The resulting 21
+addresses and 28 frames have zero overlap with the reference panel and zero
+cross-episode frame reuse; 20 prescribed action-result views contain a
+human-labelled visible target house number.
+
+The already frozen V2 evaluator, renderer, seven OCR passes, exact-token rule,
+portal model, mask de-duplication, upper-mask topology, truth scoring, runtime,
+and action map were loaded by hash without modification. The confirmation gate
+required at least 18 visible-number opportunities, at least `80%` exact OCR,
+at least `13/21` correct bindings, at most two wrong bindings, and all three
+disjointness checks.
+
+The one-shot result is `12/20` exact OCR (`60%`) and `9/0/12`
+correct/wrong/UNKNOWN, so record
+`L10_SEVN_V2_ADDRESS_PANORAMA_DISJOINT_SAME_SOURCE_CONFIRMATION_GATE_NOT_MET`.
+By action class, correct/wrong/UNKNOWN is `4/0/3` for left pan, `4/0/3` for
+right pan, and `1/0/6` for approach. All nine emitted mask-topology proposals
+selected the correct target door on this panel, but nine episodes stopped at
+`UNKNOWN_TARGET_TEXT` and three more at
+`UNKNOWN_NO_ADMISSIBLE_MASK_TOPOLOGY`. The gate therefore fails on OCR recall
+and total correct coverage, not wrong-door count.
+
+Do not tune fixed tiles, OCR matching, mask radii, pair ranking, or scoring on
+these consumed 21 views. V2 remains a positive first-panel Development result,
+but it is not confirmed across fresh SEVN addresses and panoramas. A successor
+must change the observation representation on another fresh panel—for example,
+portal-conditioned rectified OCR crops instead of fixed viewport tiles—before
+any new outcome is observed. It still cannot inherit autonomous action,
+cross-source, arrival, handoff, product, or safety authority.
+
+Implementation and durable evidence:
+`l10_sevn_address_disjoint_panel.py`,
+`l10_sevn_address_disjoint_source_protocol_v1.json`,
+`l10_sevn_address_disjoint_source_v1.json`,
+`l10_sevn_address_disjoint_truth_v1.json`,
+`l10_sevn_address_disjoint_selection_receipt_v1.json`,
+`l10_sevn_pixel_topology_confirmation.py`,
+`l10_sevn_pixel_topology_confirmation_protocol_v1.json`,
+`l10_sevn_pixel_topology_confirmation_result_v1.json`, and
+`l10_sevn_pixel_topology_confirmation_cleanup_v1.json`. The result SHA-256 is
+`0f6bda18a8a8fa19f9d4d13a2725f89e20cf5a878e9ac858c1787e65ff592c99`.
 
 LychSim remains a conditional secondary synthetic lab, not this route's
 replacement. The source/hardware screen and one bounded go/no-go test are in

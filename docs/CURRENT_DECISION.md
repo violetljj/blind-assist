@@ -13,7 +13,9 @@ Status: `L10_R0_ACTIVE / DTR_R2_DYNAMIC_RETAINED`
   through the PanoLab action contract (`0/24` HOLD, `24/24` one-step oracle).
   Frozen multi-scale OCR plus mask topology now reads `19/22` visible house
   numbers and binds `14/24` correct target doors with `2` wrong and `8` UNKNOWN;
-  all six Development gates pass over the V1 `11/3/10` result.
+  all six Development gates pass over the V1 `11/3/10` result on that consumed
+  panel. A second panel with zero reference-address or panorama-frame overlap
+  did not confirm it: OCR was `12/20` and binding was `9/0/12`.
 - **L10 pixel/posed portal line:** generic Panoramax pixel-portal mining is
   closed (`0/3` joint width-first admissions). Hypersim met a synthetic posed
   transfer gate, while real SceneNN terminates at
@@ -1020,8 +1022,24 @@ episodes and recovers four V1 failures, including two former wrong bindings, but
 also creates two new wrong bindings. All six frozen gates pass. Record
 `L10_SEVN_MULTISCALE_MASK_TOPOLOGY_DEVELOPMENT_GATE_MET`, freeze this V2 stack,
 and do not tune tiling, mask radii, overlap scoring, OCR matching, or thresholds
-on the consumed panel. The next executable check is one new address-disjoint
-SEVN panel; it remains same-source Development even if it passes.
+on the consumed panel.
+
+That next check has now run without changing V2. Metadata-only selection first
+excluded all 24 consumed addresses, all 32 consumed panorama frames, and any
+cross-episode frame reuse. Eight fully disjoint `APPROACH` rows were not
+feasible, so the largest balanced panel was frozen at `7+7+7`: 21 new addresses
+across 28 new frames, with zero reference overlap and 20 truth-visible target
+numbers. The one-shot frozen result reads only `12/20` (`60%`) and produces
+`9/0/12` correct/wrong/UNKNOWN against gates of at least `80%` OCR, at least 13
+correct, and at most two wrong. All nine emitted proposals were correct, but
+nine rows stopped at missing target text and three at no admissible mask
+topology. Record
+`L10_SEVN_V2_ADDRESS_PANORAMA_DISJOINT_SAME_SOURCE_CONFIRMATION_GATE_NOT_MET`.
+Do not rescue these consumed pixels with tile, OCR, topology, or score tuning.
+The next admissible increment must change the observation representation on a
+fresh address-and-frame-disjoint panel, such as portal-conditioned rectified OCR
+rather than fixed viewport tiles. V2 remains first-panel Development evidence,
+not fresh-panel or cross-source confirmation.
 
 Three source-changing Panoramax successors have now localized that missing
 credential. Entrance-node text on eight exact nodes and 22 real views produced

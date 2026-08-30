@@ -1,0 +1,103 @@
+{
+  "schema": "blindassist-l10-sevn-v2-address-panorama-disjoint-confirmation-protocol-v1",
+  "name": "L10 SEVN V2 address- and panorama-disjoint same-source confirmation",
+  "evidence_class": "SAME_SOURCE_ADDRESS_AND_PANORAMA_DISJOINT_DEVELOPMENT_CONFIRMATION",
+  "question": "Does the already frozen SEVN V2 multi-scale OCR plus mask-topology stack retain its effect on a second metadata-selected panel with no reference target address or panorama frame?",
+  "cohort": {
+    "episodes_per_scenario": 7,
+    "episode_count": 21,
+    "distinct_address_count": 21,
+    "distinct_panorama_frame_count": 28,
+    "scenario_classes": [
+      "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "APPROACH_ADDRESS_DOOR_RECOVERY"
+    ],
+    "selection_boundary": "The panel was frozen from SEVN metadata before any selected high-resolution panorama or V2 output was opened. Seven per scenario is the maximum balanced count under address, reference-frame, and within-panel frame-disjoint constraints."
+  },
+  "reference_panel": {
+    "episodes_per_scenario": 8,
+    "episode_count": 24,
+    "distinct_address_count": 24,
+    "distinct_panorama_frame_count": 32
+  },
+  "frozen_inputs": {
+    "source_protocol": {
+      "path": "research/active/l10-r0/l10_sevn_address_disjoint_source_protocol_v1.json",
+      "sha256": "479dc1b8c66deeed1861643d89d428054b427a9270a073c083a209e7052f85f7"
+    },
+    "source_materializer": {
+      "path": "research/active/l10-r0/l10_sevn_address_disjoint_panel.py",
+      "sha256": "0c2325e87fb0587b4125e1f37d7ab33ec30b294a730bf63ca630900460ec4ecd"
+    },
+    "selection_receipt": {
+      "path": "research/active/l10-r0/l10_sevn_address_disjoint_selection_receipt_v1.json",
+      "sha256": "f78f14e4baaafd4f27e3c332c669526b1a47be2aa2b044487418e95d09daa690"
+    },
+    "public_source": {
+      "path": "research/active/l10-r0/l10_sevn_address_disjoint_source_v1.json",
+      "sha256": "65f0c9108c3d55c101da28cde3dff75ef08a3c910b161cf93ba3bca822ca9acf"
+    },
+    "evaluator_truth": {
+      "path": "research/active/l10-r0/l10_sevn_address_disjoint_truth_v1.json",
+      "sha256": "319fd2d542a0be59c3c8f27c9ea01dd8f89f5b3752ce1b9fa77ab9bc7b03e26a"
+    },
+    "reference_public_source": {
+      "path": "research/active/l10-r0/l10_sevn_panolab_source_v1.json",
+      "sha256": "a6478c29610f986fc50dd101de378f187f7ba9e69c201cc31d3b12b6cf7912da"
+    }
+  },
+  "frozen_v2": {
+    "protocol": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_protocol_v2.json",
+      "sha256": "dca586d98356ce71723d58b4701c93babb0c3bf0608d1f909c8fb741ff7eb175"
+    },
+    "evaluator": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_replay.py",
+      "sha256": "9cc2d79f57401f7b782a0d44c6a3c2b69c0441297ff8c75ebfa6889836037d5a"
+    },
+    "boundary": "Reuse the V2 renderer, full plus six-tile OCR passes, exact token rule, OCR threshold, portal model and hashes, mask reconstruction and de-duplication, upper-mask topology, pair ranking, abstention, truth scoring, runtime versions, CUDA requirement, and scenario-to-action mapping without modification."
+  },
+  "high_resolution_archive": {
+    "expected_local_path": "F:\\ba-data\\SEVN\\high-res-panos.zip",
+    "bytes": 27819151974,
+    "md5": "1e46ca1de01cdba68b0e9ff7de6dc3df",
+    "access": "Stream only the 21 prescribed action-result members. Write no extraction, viewport, OCR tile, mask, or overlay file."
+  },
+  "gate": {
+    "episode_count": 21,
+    "minimum_truth_visible_house_number_opportunities": 18,
+    "minimum_visible_text_exact_ocr_rate": 0.8,
+    "minimum_correct_target_door_bindings": 13,
+    "maximum_wrong_door_bindings": 2,
+    "required_reference_address_overlap": 0,
+    "required_reference_panorama_frame_overlap": 0,
+    "required_within_panel_cross_episode_frame_reuse": 0,
+    "interpretation": "The new panel must preserve strict disjointness, expose at least 18 text-visible opportunities, recover exact target text in at least 80% of those opportunities, correctly bind at least 13 of 21 target doors, and make at most two wrong bindings. The correct-binding requirement is slightly stricter proportionally than the frozen V2 14-of-24 gate."
+  },
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_sevn_pixel_topology_confirmation.py",
+    "sha256": "91bb886f3876c2bca58f2b12ab0890a1d86fda37ea6ec396574ce4b05bdfe5cb"
+  },
+  "retention_policy": {
+    "keep": "Source protocol, materializer, public panel, separated evaluator truth, selection receipt, frozen confirmation protocol, detailed result, cleanup receipt, hashes, source archive, and project decision updates.",
+    "delete": "Any reconstructible extraction, viewport, OCR tile, raster mask image, overlay, bytecode, model scratch output, task cache, or task temporary directory after result verification.",
+    "implementation": "Selection opens no pixels. Confirmation performs panorama, tile, mask, topology, and truth-intersection work in memory and writes only the result JSON."
+  },
+  "stop_rule": "Run the 21 frozen episodes once. Do not replace an episode or alter V2 code, protocol, models, thresholds, action mapping, confirmation gate, or truth scoring after observing any new pixel result.",
+  "claim_boundary": "A pass is address- and panorama-disjoint evidence inside SEVN 1.0 only. It is stronger than replaying the consumed panel but remains same-source Development evidence, not source-disjoint confirmation.",
+  "non_claims": [
+    "source-disjoint or city-disjoint confirmation",
+    "Panoramax or OSM entrance confirmation",
+    "autonomous action selection",
+    "street-name OCR",
+    "continuous sidestep or pedestrian motion",
+    "metric depth or collision-free traversability",
+    "public or legal access",
+    "metric arrival",
+    "HANDOFF_READY",
+    "user task completion",
+    "product benefit",
+    "mobility safety"
+  ]
+}

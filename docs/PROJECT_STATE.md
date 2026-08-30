@@ -31,8 +31,13 @@ Current route snapshot:
   episodes (`0/24` HOLD, `24/24` annotation oracle). Frozen V2 multi-scale OCR
   plus mask topology improves the high-resolution pixel result from `11/3/10`
   to `14/2/8` correct/wrong/UNKNOWN and visible-number OCR from `16/22` to
-  `19/22`; all six Development gates pass. A new address-disjoint same-source
-  panel is now required before any broader claim.
+  `19/22`; all six Development gates pass on that consumed panel. The frozen
+  stack then failed confirmation on 21 new addresses and 28 new panorama frames
+  with zero reference overlap: OCR `12/20`, binding `9/0/12`, against gates of
+  `>=80%` OCR and `>=13` correct. All nine emitted bindings were correct, but
+  abstention recall was insufficient. Do not tune the consumed confirmation
+  panel; a successor must change the OCR observation representation on fresh
+  addresses and frames.
 - Hypersim established a synthetic posed-portal mechanism ceiling. SceneNN real
   RGB-D strict-triangle visibility repaired the local reference plane but did
   not meet the transfer gate because the credential still lacked complete

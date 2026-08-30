@@ -1,0 +1,79 @@
+{
+  "schema": "blindassist-task-retention-cleanup-receipt-v1",
+  "generated_at_utc": "2026-08-30T18:51:46.3709589Z",
+  "task": "L10 SEVN V2 address- and panorama-disjoint same-source confirmation",
+  "retained": {
+    "source_materializer": {
+      "path": "research/active/l10-r0/l10_sevn_address_disjoint_panel.py",
+      "sha256": "0c2325e87fb0587b4125e1f37d7ab33ec30b294a730bf63ca630900460ec4ecd"
+    },
+    "source_protocol": {
+      "path": "research/active/l10-r0/l10_sevn_address_disjoint_source_protocol_v1.json",
+      "sha256": "479dc1b8c66deeed1861643d89d428054b427a9270a073c083a209e7052f85f7"
+    },
+    "public_source": {
+      "path": "research/active/l10-r0/l10_sevn_address_disjoint_source_v1.json",
+      "sha256": "65f0c9108c3d55c101da28cde3dff75ef08a3c910b161cf93ba3bca822ca9acf"
+    },
+    "evaluator_truth": {
+      "path": "research/active/l10-r0/l10_sevn_address_disjoint_truth_v1.json",
+      "sha256": "319fd2d542a0be59c3c8f27c9ea01dd8f89f5b3752ce1b9fa77ab9bc7b03e26a"
+    },
+    "selection_receipt": {
+      "path": "research/active/l10-r0/l10_sevn_address_disjoint_selection_receipt_v1.json",
+      "sha256": "f78f14e4baaafd4f27e3c332c669526b1a47be2aa2b044487418e95d09daa690"
+    },
+    "confirmation_evaluator": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_confirmation.py",
+      "sha256": "91bb886f3876c2bca58f2b12ab0890a1d86fda37ea6ec396574ce4b05bdfe5cb"
+    },
+    "confirmation_protocol": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_confirmation_protocol_v1.json",
+      "sha256": "4bb117bca9daaa8445282a42c3a2408f389865e479774c639d4d16e36c44e9f3"
+    },
+    "confirmation_result": {
+      "path": "research/active/l10-r0/l10_sevn_pixel_topology_confirmation_result_v1.json",
+      "bytes": 254834,
+      "sha256": "0f6bda18a8a8fa19f9d4d13a2725f89e20cf5a878e9ac858c1787e65ff592c99"
+    },
+    "frozen_v2": {
+      "protocol_sha256": "dca586d98356ce71723d58b4701c93babb0c3bf0608d1f909c8fb741ff7eb175",
+      "evaluator_sha256": "9cc2d79f57401f7b782a0d44c6a3c2b69c0441297ff8c75ebfa6889836037d5a"
+    },
+    "source_archive": {
+      "path": "F:\\ba-data\\SEVN\\high-res-panos.zip",
+      "bytes": 27819151974,
+      "md5": "1e46ca1de01cdba68b0e9ff7de6dc3df",
+      "exists_after_cleanup": true
+    }
+  },
+  "formal_run": {
+    "panorama_crop_tile_mask_overlay_or_cache_files_written": 0,
+    "reconstructible_intermediate_files_retained": 0,
+    "method": "All 21 action-result panoramas, 147 OCR observations, raster masks, topology maps, and truth intersections were processed in memory; only the detailed result JSON was written."
+  },
+  "deleted": {
+    "files": [
+      {
+        "path": "research/active/l10-r0/__pycache__/l10_sevn_address_disjoint_panel.cpython-311.pyc",
+        "bytes": 19877,
+        "reason": "Task-created syntax-check bytecode; deleted immediately after detection before source materialization."
+      }
+    ],
+    "directories": [],
+    "bytes": 19877
+  },
+  "shared_cache_boundary": {
+    "uv_content_addressed_dependency_cache": "Left untouched because it is shared machine state and cannot be attributed safely to this task alone.",
+    "source_archive": "Retained as durable upstream input required to reconstruct the result."
+  },
+  "verification": {
+    "task_python_bytecode_absent": true,
+    "active_materializer_or_confirmation_processes": 0,
+    "durable_result_exists": true,
+    "source_archive_exists": true,
+    "result_declares_intermediate_files_written": 0,
+    "f_drive_free_gib_after_snapshot": 311.608,
+    "free_space_note": "Snapshot only; no free-space delta is attributed to the zero-intermediate formal run or to concurrent system activity."
+  }
+}
