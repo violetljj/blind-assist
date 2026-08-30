@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "id": "dataset-multiscan-2022",
+  "kind": "dataset",
+  "title": "MultiScan: Scalable RGBD scanning for 3D environments with articulated objects",
+  "canonical_ref": "https://3dlg-hcvc.github.io/multiscan/",
+  "authors": [
+    "Yongsen Mao",
+    "Yiming Zhang",
+    "Hanxiao Jiang",
+    "Angel X. Chang",
+    "Manolis Savva"
+  ],
+  "year": 2022,
+  "venue": "NeurIPS 2022",
+  "summary": "An indoor scanning dataset with synchronized RGB-D streams, per-frame camera poses, textured 3D surface meshes, and object- and part-level semantic annotations, including door and door_frame labels.",
+  "mechanisms": [
+    {
+      "id": "posed-semantic-door-surface-source",
+      "name": "Posed semantic door-surface source",
+      "description": "Combines RGB-D frames and camera poses with a textured mesh carrying per-face object and part semantics, so a labelled door surface can be rendered into a source view with explicit occlusion handling rather than inferred from a loose 3D envelope.",
+      "inputs": [
+        "RGB-D stream",
+        "per-frame camera intrinsics and poses",
+        "textured surface mesh",
+        "per-face object and part semantic labels"
+      ],
+      "outputs": [
+        "posed labelled door surface",
+        "source-view z-buffer visibility credential"
+      ],
+      "limitations": "MultiScan is an indoor dataset and its annotations do not by themselves establish a valid L10 source-view admission, exact cross-view door selection, traversability, public access, arrival, user benefit, or safety. Dataset access, label coverage, synchronization, and mesh-to-depth consistency still require materialization checks."
+    }
+  ],
+  "tags": [
+    "ten-meter-copilot",
+    "rgb-d",
+    "camera-pose",
+    "semantic-mesh",
+    "door-surface"
+  ],
+  "aliases": [
+    "MultiScan"
+  ],
+  "links": [
+    {
+      "label": "Dataset documentation",
+      "ref": "https://3dlg-hcvc.github.io/multiscan/read-the-docs/dataset/index.html"
+    },
+    {
+      "label": "Official code",
+      "ref": "https://github.com/smartscenes/multiscan"
+    }
+  ],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

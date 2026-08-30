@@ -1,7 +1,21 @@
 # L10-R0 Goal-Lock Copilot
 
-Status: `ACTIVE / L10-SC14 CAUSAL MICRO-MOTION ACTION BELIEF /
-CORE SC1W-SC2 SEEK-GUIDE-REACQUIRE CONTROLLER`
+Status: `ACTIVE`
+
+- **Core controller:** SC1W--SC2 seek/guide/reacquire and the SC14 causal
+  action-belief handoff guard remain implemented; the later SceneFun3D ordinal
+  source line terminates at `SC40_NOT_EVALUABLE_NO_FRESH_DEPTH_VISIBLE_ACTIVE_VIEW`.
+- **Active observation:** PanoLab passed
+  `L10_PANOLAB_ACTIVE_ENTRANCE_RAY_RECOVERY_DEVELOPMENT_GATE_MET` (`4/4`
+  reciprocal `SIDESTEP_TO_ENTRANCE_FACE` recoveries). This authorizes an exact
+  entrance ray geometrically, not a pixel portal.
+- **Pixel portal:** generic Panoramax mining is closed after the width-first
+  source admitted `0/3` reference, `0/3` query, and `0/3` joint portals. It may
+  carry imagery only with independent sub-metre portal registration.
+- **Posed transfer:** Hypersim met the synthetic Development gate; SceneNN is
+  terminal at
+  `L10_SCENENN_REAL_RGBD_PARTIAL_METRIC_PORTAL_TRANSFER_CONFIRMATION_GATE_NOT_MET`
+  because reference-side visibility was not authoritative.
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:

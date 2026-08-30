@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-obstacle-avoidance-chance-constrained-mppi-collision-risk-calibration-2026",
+  "item_id": "paper-chance-constrained-mppi-collision-risk-calibration-2026",
+  "route": "obstacle-avoidance",
+  "mechanism_ids": [
+    "closed-loop-collision-risk-calibration"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "evaluator",
+  "usage": {
+    "source_scope": "The paper's proper-scoring evaluation of collision-risk calibration under state-estimation and dynamic-object prediction uncertainty; the MPPI controller and its reported success rate are not adopted.",
+    "project_application": "Candidate read-only evaluation layer for C11-style collision-risk probabilities on a separately authorized cohort with frozen outcomes, reporting proper scores and calibration failure modes alongside existing event metrics.",
+    "modifications": "Do not refit, rethreshold, replace, or reopen frozen C11 authority. Apply the scoring methodology only after predictions and outcome truth are sealed, preserve UNKNOWN / NOT_EVALUABLE rows, and treat calibration as orthogonal to recall and event timing.",
+    "expected_effect": "Reveal whether apparently useful collision-risk probabilities are systematically overconfident or underconfident, without converting an evaluation result into algorithm authority."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "This is an evaluator candidate only. Adding or later running proper scores does not change frozen C11 authority, restore consumed-cohort authority, authorize threshold tuning, or establish collision avoidance, BLV user benefit, product readiness, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2605.28330",
+      "summary": "Primary preprint reviewed for the proper-scoring calibration methodology and its simulation-only evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-30",
+      "change": "Added as an obstacle-avoidance collision-risk calibration evaluator candidate while explicitly preserving frozen C11 authority."
+    }
+  ],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

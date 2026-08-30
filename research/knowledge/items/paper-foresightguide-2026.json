@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "id": "paper-foresightguide-2026",
+  "kind": "paper",
+  "title": "ForeSightGuide: An Anticipatory Framework toward Accurate and Low-Redundancy Guidance for the Visually Impaired",
+  "canonical_ref": "https://arxiv.org/abs/2608.18993",
+  "authors": [
+    "Zhiyuan Wang",
+    "Xu Li",
+    "Shikang Guo",
+    "Wei Meng",
+    "Quan Liu",
+    "Jie Zuo"
+  ],
+  "year": 2026,
+  "venue": "arXiv preprint",
+  "summary": "An anticipatory assistive-guidance framework that combines semantic scene understanding with predicted obstacle motion to suppress non-threatening objects and produce concise guidance for visually impaired travelers.",
+  "mechanisms": [
+    {
+      "id": "anticipatory-low-redundancy-blv-guidance",
+      "name": "Anticipatory low-redundancy BLV guidance",
+      "description": "Uses predictive hazard assessment rather than reactive object mention alone to filter non-threatening objects and reduce redundant guidance while retaining hazard coverage.",
+      "inputs": [
+        "dynamic scene observations",
+        "semantic scene interpretation",
+        "predicted obstacle motion"
+      ],
+      "outputs": [
+        "anticipated hazard assessment",
+        "concise actionable guidance",
+        "missed-hazard and redundant-alert measurements"
+      ],
+      "limitations": "This is a recent preprint with paper-reported benchmark and dataset results. It has not been independently reproduced for BlindAssist, and low redundancy or a low missed-hazard rate does not establish real-world BLV benefit, product readiness, or safety."
+    }
+  ],
+  "tags": [
+    "obstacle-avoidance",
+    "blv-guidance",
+    "anticipatory-guidance",
+    "low-redundancy",
+    "comparator"
+  ],
+  "aliases": [
+    "arXiv:2608.18993",
+    "ForeSightGuide"
+  ],
+  "links": [],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

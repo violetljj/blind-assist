@@ -17,6 +17,20 @@ that protect interpretation.
 - Android entrypoint: `scripts/run_android_gradle.ps1`
 - Closed experiment lookup: [history-index.md](history-index.md)
 
+Current route snapshot:
+
+- JRDB/public DTR retains R2 and freezes X21 as a same-source Development gate
+  pass pending a genuinely source-disjoint confirmation.
+- CARLA DTR retains X24 as a same-source C2 Development pass; X26 and X30 did
+  not meet their gates, C8--C10 are source-level `NOT_EVALUABLE` terminals with
+  no X31 metrics, and the frozen CARLA C11 source is pending its first capture
+  (`NOT_RUN`).
+- L10 PanoLab active entrance-ray recovery passed `4/4`; this does not establish
+  a pixel portal. Generic Panoramax pixel-portal mining is closed.
+- Hypersim established a synthetic posed-portal mechanism ceiling. SceneNN real
+  RGB-D confirmation did not meet the gate because reference-side visibility
+  was not authoritative; a fresh visibility-qualified real source is required.
+
 ## Current evidence
 
 GRAIL owner orientation is a completed negative-result chain rather than the
@@ -44,15 +58,16 @@ SHA-256, then materializes an ignored project-side context for experiments.
 This makes CARLA available as a synthetic DTR causal lab without adding it to
 Android or treating it as source-disjoint X21 confirmation.
 
-DTR-CARLA-C0 now turns that bridge into a runnable algorithm benchmark: six
+DTR-CARLA-C0 turned that bridge into a runnable algorithm benchmark: six
 causal twin families, 12 episodes, four separately replayed sensor modalities,
 and a truth-blind RGB -> RGB-D -> CARLA-flow-teacher -> privileged-current-state
 comparison through unchanged R2. All arms recalled `7/7` events, but O0 RGB was
 best (`3` false segments, 82.35% event F1); O1/O2T/O3 produced `6/8/7` false
 segments. The route-turn pair failed in all arms and O2T also failed the
 static/dynamic background pair. Therefore no observation-increment effect is
-claimed. The next fresh source is planned future wearer route, not threshold
-tuning on consumed C0 or promotion of CARLA flow to deployment input.
+claimed. The planned-route successor has since run through X24; consumed C0
+still cannot authorize threshold tuning or promotion of CARLA flow to a
+deployment input.
 
 The static CODa ceiling adds causal curved-route and bounded vertical
 occupancy for walls/barriers, fixed structures, and temporary obstacles. It

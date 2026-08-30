@@ -87,15 +87,24 @@ CARLA flow produced eight, and O3 privileged current state produced seven. The
 route-turn pair failed in every arm; teacher flow also broke the static/dynamic
 background pair.
 
-## Next algorithm layer
+## Current algorithm and source line
 
-The completed C0 changes the next question. More current visual information did
-not repair the route twin, even at the privileged-current-state ceiling. The
-next fresh CARLA source should expose the wearer's planned future route to a
-route-conditioned arm and test whether it removes the route-turn false alert
-without sacrificing the contact twin. Do not tune thresholds on consumed C0.
+The planned-route question has now run. X24 combines the immutable issued plan,
+online adherence, truth-blind RGB-D tracking, and bounded occlusion memory; it
+met its same-source C2 Development gate. X26 support consensus and the X27--X30
+occupancy-lineage successor improved some fresh-cohort metrics but did not meet
+their frozen gates. X31 is the frozen ambiguity-preserving transport successor.
 
-CARLA optical flow may first serve as teacher/evaluator evidence. Making flow a
-deployment input or a new threshold gate is a separate source decision. A
-frozen X21 replay also needs an explicit observable-source adapter and remains
-separate from required real source-disjoint confirmation.
+C8, C9, and C10 are terminal source-level `NOT_EVALUABLE` results: respectively
+scripted-pose drift, occluder/wearer route intersection, and a raster-permeable
+occluder stopped admission before any X31 metric result. See
+[`DTR_CARLA_C8_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md`](../research/active/dtr-r0/carla/DTR_CARLA_C8_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md),
+[`DTR_CARLA_C9_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md`](../research/active/dtr-r0/carla/DTR_CARLA_C9_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md), and
+[`DTR_CARLA_C10_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md`](../research/active/dtr-r0/carla/DTR_CARLA_C10_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md).
+
+C11 changes only the occluder to the observed solid-body firetruck and freezes
+one fresh capture in
+[`dtr_carla_c11_x31_solid_body_protocol.json`](../research/active/dtr-r0/carla/dtr_carla_c11_x31_solid_body_protocol.json).
+It is pending and `NOT_RUN`; no source result or X24/X31 metric is claimed.
+The CARLA line remains synthetic Development evidence and is separate from the
+required real source-disjoint X21 confirmation.

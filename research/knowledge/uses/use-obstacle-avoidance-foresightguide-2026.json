@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "use-obstacle-avoidance-foresightguide-2026",
+  "item_id": "paper-foresightguide-2026",
+  "route": "obstacle-avoidance",
+  "mechanism_ids": [
+    "anticipatory-low-redundancy-blv-guidance"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "reference",
+  "usage": {
+    "source_scope": "ForeSightGuide's anticipatory hazard filtering and its joint measurement of missed hazards and redundant guidance; paper-reported headline results are comparator context only.",
+    "project_application": "Candidate comparator for whether BlindAssist obstacle guidance can be anticipatory and low-redundancy: compare missed-hazard rate and redundant alerts per guidance output under the same frozen observation and event contract.",
+    "modifications": "Use the work as a comparator, not as an authority-bearing VLM component. Preserve BlindAssist UNKNOWN / ABSTAIN behavior, event denominators, latency and onset/release measures, and evaluate concise language separately from collision-risk correctness.",
+    "expected_effect": "Expose the tradeoff between anticipatory hazard coverage and guidance redundancy instead of rewarding either verbose object narration or silence in isolation."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Comparator status and any future offline metric comparison cannot establish safe walking, avoided collisions, BLV user benefit, product quality, deployment readiness, or safety. No product or safety claim follows from this knowledge entry."
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://arxiv.org/abs/2608.18993",
+      "summary": "Primary preprint reviewed for anticipatory hazard filtering, low-redundancy guidance, and the strict non-product/non-safety evidence boundary."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-30",
+      "change": "Added as an obstacle-avoidance comparator candidate for anticipatory low-redundancy BLV guidance; no product or safety authority was created."
+    }
+  ],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

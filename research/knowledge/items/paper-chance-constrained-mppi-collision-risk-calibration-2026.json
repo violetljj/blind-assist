@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "id": "paper-chance-constrained-mppi-collision-risk-calibration-2026",
+  "kind": "paper",
+  "title": "Chance-Constrained MPPI under State and Dynamic Object Prediction Uncertainty and the Evaluation of Collision Risk Calibration",
+  "canonical_ref": "https://arxiv.org/abs/2605.28330",
+  "authors": [
+    "Benjamin Serfling",
+    "Konrad Doll",
+    "Kati Radkhah-Lens"
+  ],
+  "year": 2026,
+  "venue": "arXiv preprint; submitted to IROS 2026",
+  "summary": "Introduces a closed-loop collision-risk calibration evaluation using proper scoring rules and a dual-uncertainty chance-constrained MPPI architecture that propagates localization and dynamic-object prediction uncertainty.",
+  "mechanisms": [
+    {
+      "id": "closed-loop-collision-risk-calibration",
+      "name": "Closed-loop collision-risk calibration with proper scoring rules",
+      "description": "Scores predicted collision probabilities against realized collision outcomes during closed-loop execution so overconfidence, underconfidence, freezing, and probability dilution can be distinguished from ordinary ranking or threshold performance.",
+      "inputs": [
+        "predicted collision probabilities",
+        "closed-loop collision outcomes",
+        "state-estimation uncertainty",
+        "dynamic-object prediction uncertainty"
+      ],
+      "outputs": [
+        "proper-scoring-rule values",
+        "collision-risk calibration diagnostics",
+        "overconfidence and underconfidence failure characterization"
+      ],
+      "limitations": "The reported planner results are physics-simulation evidence for an autonomous navigation stack. Proper scores do not by themselves establish useful event timing, BLV mobility benefit, collision avoidance, product readiness, or safety, and they do not validate BlindAssist C11 probabilities without an authorized cohort and outcome contract."
+    }
+  ],
+  "tags": [
+    "obstacle-avoidance",
+    "collision-risk",
+    "calibration",
+    "proper-scoring-rules",
+    "uncertainty"
+  ],
+  "aliases": [
+    "arXiv:2605.28330",
+    "DUCCT-MPPI"
+  ],
+  "links": [],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}

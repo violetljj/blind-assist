@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-28",
+  "updated_at": "2026-08-30",
   "terminals": [
     {
       "id": "terminal-dtr-r6-static-occupancy-unreachable",
@@ -85,6 +85,78 @@
       "forbidden_repeats": ["reordering sequences by event yield", "adding the consumed C0 sequence", "claiming algorithm performance from metadata admission", "using multi-responsible events for single-target dropout", "forecasting or R8", "TeFlow or DeltaFlow training"],
       "evidence": ["docs/CURRENT_DECISION.md", "research/active/dtr-r0/README.md", "research/active/dtr-r0/dtr_c1_fresh_global_obb_roster.json"],
       "commit": "0e0b75d8"
+    },
+    {
+      "id": "terminal-dtr-carla-x24-plan-adherent-development",
+      "route": "obstacle-avoidance",
+      "failure_layers": ["geometry_motion", "temporal_belief", "evaluation_evidence"],
+      "status": "positive",
+      "decision": "DTR_CARLA_X24_PLAN_ADHERENT_DEVELOPMENT_GATE_MET",
+      "summary": "On the same scripted CARLA C2 source, issued-plan adherence plus bounded causal track memory improved complete-occlusion route-risk coverage from 0/8 to 8/8, increased lead from 2.80 s to 2.95 s, added zero post-divergence SAFE false segments, and preserved 62/62 NO_PLAN fallback frames.",
+      "successor_requires": "Freeze X24 and its constants, then run one genuinely source-disjoint confirmation cohort; this same-source Development result does not establish generalization, real-world transfer, product benefit, deployment, or safety.",
+      "forbidden_repeats": ["retuning C2", "relabeling same-source replay as confirmation", "claiming general CARLA robustness", "claiming real-world, product, deployment, or safety benefit"],
+      "evidence": ["research/active/dtr-r0/carla/DTR_CARLA_X24_PLAN_ADHERENT_DEVELOPMENT_RESULT_2026-08-30.md"],
+      "commit": "3b72c4d6"
+    },
+    {
+      "id": "terminal-dtr-carla-x26-support-consensus-gate-not-met",
+      "route": "obstacle-avoidance",
+      "failure_layers": ["geometry_motion", "evaluation_evidence"],
+      "status": "negative",
+      "decision": "DTR_CARLA_X26_SUPPORT_CONSENSUS_DEVELOPMENT_GATE_NOT_MET",
+      "summary": "On fresh CARLA C4, X26 improved frame F1 from 0.5308 to 0.8571 and recall from 47.46% to 96.61%, but produced four false-alert segments across the two fresh SAFE episodes, failing the frozen zero-segment promotion gate.",
+      "successor_requires": "A fresh cohort and a structural occupancy-support authority decomposition that separates ego-carried, static-scene, rigid-dynamic, and unauthorized motion.",
+      "forbidden_repeats": ["route-tube tuning", "confirmation or HOLD tuning", "association-distance tuning", "target or C4 scene changes", "rescuing consumed C4"],
+      "evidence": ["research/active/dtr-r0/carla/DTR_CARLA_X26_SUPPORT_CONSENSUS_DEVELOPMENT_RESULT_2026-08-30.md"],
+      "commit": "5b99dfe7"
+    },
+    {
+      "id": "terminal-dtr-carla-x30-adaptive-surface-gate-not-met",
+      "route": "obstacle-avoidance",
+      "failure_layers": ["geometry_motion", "temporal_belief", "evaluation_evidence"],
+      "status": "negative",
+      "decision": "DTR_CARLA_X30_ADAPTIVE_SURFACE_CONTACT_INTERVAL_SOURCE_DISJOINT_PRETRUTH_DEVELOPMENT_GATE_NOT_MET",
+      "summary": "On fresh CARLA C7, X30 improved F1 from 0.6000 to 0.6376 and removed X24's one SAFE false segment, but completely missed one dynamic CONTACT, retained only 0.3333 future-positive recall on another, and missed the frozen 0.95 precision and 0.80 F1 gates.",
+      "successor_requires": "A fresh X31 cohort using ambiguity-preserving set-valued surface-transport ancestry; C7 remains consumed pre-truth Development rather than pristine confirmation.",
+      "forbidden_repeats": ["detector or route threshold tuning", "confirmation, HOLD, or association tuning", "seed, weather, target, or backbone changes", "iterating on consumed C7", "claiming source-disjoint confirmation"],
+      "evidence": ["research/active/dtr-r0/carla/DTR_CARLA_X27_X30_OCCUPANCY_LINEAGE_RESULTS_2026-08-30.md"],
+      "commit": "2053de3b"
+    },
+    {
+      "id": "terminal-dtr-carla-c8-x31-scripted-pose-drift",
+      "route": "obstacle-avoidance",
+      "failure_layers": ["source_coverage", "authority_truth", "evaluation_evidence"],
+      "status": "not_evaluable",
+      "decision": "DTR_CARLA_C8_X31_TRANSPORT_CONE_SOURCE_NOT_EVALUABLE_SCRIPTED_POSE_DRIFT",
+      "summary": "The sole frozen C8 capture stopped in the first instance shard when CARLA collision response displaced an authoritatively scripted asset; no complete source, model replay, evaluator, or X24/X31 metric result exists.",
+      "successor_requires": "A new source identity that decouples scripted pose authority from engine collision response while keeping rendered geometry, X31, route, detector, and metric gates frozen.",
+      "forbidden_repeats": ["resuming or reseeding C8", "loosening the scripted-pose gate", "scoring the partial source", "interpreting the failure as an X31 false negative"],
+      "evidence": ["research/active/dtr-r0/carla/DTR_CARLA_C8_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md"],
+      "commit": "9479e891"
+    },
+    {
+      "id": "terminal-dtr-carla-c9-x31-occluder-route-intersection",
+      "route": "obstacle-avoidance",
+      "failure_layers": ["source_coverage", "authority_truth", "evaluation_evidence"],
+      "status": "not_evaluable",
+      "decision": "DTR_CARLA_C9_X31_COLLISION_DECOUPLED_SOURCE_NOT_EVALUABLE_OCCLUDER_ROUTE_INTERSECTION",
+      "summary": "C9 removed C8 pose drift, but every SAFE twin became CONTACT because the physical occluder entered the wearer corridor, and the planned occlusion durations also violated the frozen source contract; no model or metric run began.",
+      "successor_requires": "A fresh deterministic early single-pass occluder source that stays outside the wearer corridor and yields the frozen 0.6-1.3 s complete target-loss interval with required pre/post trackability.",
+      "forbidden_repeats": ["resuming, replaying, or reseeding C9", "moving only the consumed occluders", "partially selecting C9", "joining, modeling, or scoring the failed source"],
+      "evidence": ["research/active/dtr-r0/carla/DTR_CARLA_C9_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md"],
+      "commit": "92b84abd"
+    },
+    {
+      "id": "terminal-dtr-carla-c10-x31-raster-permeable-occluder",
+      "route": "obstacle-avoidance",
+      "failure_layers": ["source_coverage", "observation_perception", "evaluation_evidence"],
+      "status": "not_evaluable",
+      "decision": "DTR_CARLA_C10_X31_OPAQUE_SINGLE_PASS_SOURCE_NOT_EVALUABLE_RASTER_PERMEABLE_OCCLUDER",
+      "summary": "C10 fixed C9 route contamination and completed all four sensor shards, but target instance pixels remained visible through the bus silhouette, so the complete physical-occlusion source gate failed and no X24/X31 prediction or score ran.",
+      "successor_requires": "The already frozen fresh C11 solid-body firetruck protocol must run once; it is pending source materialization and is not yet a result or terminal.",
+      "forbidden_repeats": ["resuming, replaying, or reseeding C10", "treating 3-D OBB containment as pixel occlusion", "modeling or scoring the failed source", "representing frozen C11 as a completed result"],
+      "evidence": ["research/active/dtr-r0/carla/DTR_CARLA_C10_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md", "research/active/dtr-r0/carla/dtr_carla_c11_x31_solid_body_protocol.json"],
+      "commit": "f6ac7728"
     },
     {
       "id": "terminal-l10-sc5-set-valued-video17",
@@ -205,6 +277,54 @@
       "forbidden_repeats": ["view-offset sweeps", "edit-distance matching", "vote-count or confidence tuning", "opening a fresh DSText video with SC17"],
       "evidence": ["docs/CURRENT_DECISION.md", "docs/PROJECT_STATE.md", "research/active/l10-r0/README.md"],
       "commit": "2d192300"
+    },
+    {
+      "id": "terminal-l10-panolab-active-entrance-ray-recovery",
+      "route": "ten-meter-copilot",
+      "failure_layers": ["observation_perception", "geometry_motion", "evaluation_evidence"],
+      "status": "positive",
+      "decision": "L10_PANOLAB_ACTIVE_ENTRANCE_RAY_RECOVERY_DEVELOPMENT_GATE_MET",
+      "summary": "Across four fresh provider-adjacent Panoramax episodes, a reciprocal SIDESTEP_TO_ENTRANCE_FACE action changed exact OSM entrance rays from geometry-blocked to geometry-authorized in 4/4 cases, with 4/4 action receipts and zero occluded-state false authorizations.",
+      "successor_requires": "An independent entrance-identity credential before any pixel-portal successor; this real posed-street-sequence Development result establishes only active entrance-ray geometry recovery.",
+      "forbidden_repeats": ["claiming a pixel portal hit", "inferring entrance ownership from pixels", "claiming public access, walkability, arrival, HANDOFF_READY, or safety", "matcher rescue on the consumed source"],
+      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_panolab_active_ray_recovery_result_v2.json"],
+      "commit": "19633a60"
+    },
+    {
+      "id": "terminal-l10-panoramax-generic-pixel-portal-source-closed",
+      "route": "ten-meter-copilot",
+      "failure_layers": ["source_coverage", "identity_binding", "evaluation_evidence"],
+      "status": "not_evaluable",
+      "decision": "L10_WIDTH_FIRST_PERSPECTIVE_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_3_QUERY_0_OF_3_JOINT_0_OF_3_NO_MATCHER_CALL",
+      "summary": "Successive generic Panoramax pixel-portal routes failed source admission even after strict orientation, close-range, federated coverage, and mapped-width improvements; the final width-first audit admitted 0/3 reference and 0/3 query portals, so no matcher call was authorized.",
+      "successor_requires": "Sub-metre camera-to-portal registration or a directly posed portal mask or mesh frozen before pixels; Panoramax may provide imagery but is not the missing entrance-identity source.",
+      "forbidden_repeats": ["mining more generic Panoramax cities", "resampling opened rows", "widening the entrance ray", "narrowing declared camera uncertainty", "matcher, crop, or threshold rescue"],
+      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_panolab_stratified_source_pixel_audit_v1.json", "research/active/l10-r0/l10_panolab_federated_portal_source_admission_result_v1.json", "research/active/l10-r0/l10_width_first_perspective_portal_source_admission_result_v1.json"],
+      "commit": "cac7dd54"
+    },
+    {
+      "id": "terminal-l10-hypersim-posed-portal-transfer",
+      "route": "ten-meter-copilot",
+      "failure_layers": ["identity_binding", "geometry_motion", "evaluation_evidence"],
+      "status": "positive",
+      "decision": "L10_HYPERSIM_POSED_PORTAL_TRANSFER_DEVELOPMENT_GATE_MET",
+      "summary": "A provider-posed Hypersim reference door surface transferred across independent trajectories with 3/3 correct door instances, zero wrong-door commits, 3/3 centroids inside target envelopes, and median envelope IoU 0.7063.",
+      "successor_requires": "Real posed door geometry for confirmation; outdoor use still requires sub-metre imagery co-registered to an independent portal anchor.",
+      "forbidden_repeats": ["promoting synthetic posed-door transfer to real or outdoor confirmation", "treating a semantic door surface as doorway aperture or traversability", "claiming access, arrival, HANDOFF_READY, product, user, or safety authority", "reopening Panoramax without an independent anchor"],
+      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json"],
+      "commit": "7b1c09cb"
+    },
+    {
+      "id": "terminal-l10-scenenn-real-posed-portal-confirmation-gate-not-met",
+      "route": "ten-meter-copilot",
+      "failure_layers": ["observation_perception", "geometry_motion", "evaluation_evidence"],
+      "status": "negative",
+      "decision": "L10_SCENENN_REAL_RGBD_PARTIAL_METRIC_PORTAL_TRANSFER_CONFIRMATION_GATE_NOT_MET",
+      "summary": "On three source-disjoint real SceneNN RGB-D scenes, partial metric portal transfer selected the correct door in 2/3 cases, placed the centroid inside in 1/3, reached median IoU 0.2647, and had 0.985 m median world-centroid error; source-side reference visibility was the decisive failure.",
+      "successor_requires": "A fresh real-scene cohort with source-side visibility authority from a provider 2-D door-instance mask or z-buffered semantic triangle surface checked against synchronized depth before forming the reference credential.",
+      "forbidden_repeats": ["reselecting consumed SceneNN scenes or frames", "changing the 70-percent plane fit", "tuning metric or image gates", "opening query-side RGB or depth to prediction", "reopening Panoramax without an independent absolute portal anchor"],
+      "evidence": ["research/active/l10-r0/README.md", "research/active/l10-r0/l10_scenenn_real_posed_portal_result_v2.json"],
+      "commit": "6cfb781a"
     },
     {
       "id": "terminal-grail-g1-active-multiview-appearance-closed",

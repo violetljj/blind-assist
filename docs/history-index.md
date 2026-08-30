@@ -20,7 +20,8 @@ git worktree remove ..\blindassist-history
 
 ## Searchable ledgers
 
-- `experiments/index.jsonl`: one JSON object per current or closed experiment
+- `experiments/index.jsonl`: one JSON object per indexed current route or
+  canonical closed milestone; owning current documents remain the live authority
 - `data/dataset-ledger-summary.csv`: compact dataset aggregate
 - `data/dataset-ledger-manifest.json`: hashes and row counts for the externalized
   full ledger
@@ -32,7 +33,7 @@ decision that identifies the new information source and claim boundary.
 ## Post-compaction closed routes
 
 Routes completed after the archive tag remain recoverable from their terminal
-commits and are indexed in `experiments/index.jsonl`:
+commits; canonical milestones are indexed in `experiments/index.jsonl`:
 
 - GRAIL R1C-L: `15fddda3a8c58b0287feb04cd20d72ac59934eee`
 - unseen-location router: `ebc003eb427187bf6f5d26fce17dca67cc30abd4`

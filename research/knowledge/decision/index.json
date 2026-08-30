@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "engine_version": "decision-v1",
-  "generated_at": "2026-08-29",
-  "source_fingerprint": "fdab2fcfa6dd3ed961f126e701780c30219d4e001df8dd931109b56634fdf14d",
+  "generated_at": "2026-08-30",
+  "source_fingerprint": "b1f3696489c0e13f25352f4f613be2eab94fef7dcfc1622a2590cad53c01b9f7",
   "counts": {
     "failure_layers": 13,
-    "mechanisms": 260,
-    "uses": 259,
-    "experiments": 206,
-    "current_terminals": 19
+    "mechanisms": 263,
+    "uses": 262,
+    "experiments": 217,
+    "current_terminals": 29
   },
   "failure_layers": [
     {
@@ -1958,6 +1958,75 @@
         }
       ],
       "search_text": "JRDB family 密集人群、遮挡、跟踪断裂与社交动作 dynamic-travel-risk legacy-candidate dtr-r0 JRDB family — dtr:DR24 route mechanism 360° RGB/RGB-D/LiDAR/里程计、2D/3D tracks、动作、pose 和 trajectory forecasting 评测；用于人群/遮挡分层 人体高度机器人仍不是手机/眼镜，且没有用户 intended route 或碰撞事件 truth；下载和许可需现场复核 obstacle-avoidance 360° RGB/RGB-D/LiDAR/里程计、2D/3D tracks、动作、pose 和 trajectory forecasting 评测；用于人群/遮挡分层 360° RGB/RGB-D/LiDAR/里程计、2D/3D tracks、动作、pose 和 trajectory forecasting 评测；用于人群/遮挡分层 人体高度机器人仍不是手机/眼镜，且没有用户 intended route 或碰撞事件 truth；下载和许可需现场复核"
+    },
+    {
+      "id": "dataset-multiscan-2022#posed-semantic-door-surface-source",
+      "item_id": "dataset-multiscan-2022",
+      "mechanism_id": "posed-semantic-door-surface-source",
+      "kind": "dataset",
+      "title": "MultiScan: Scalable RGBD scanning for 3D environments with articulated objects",
+      "canonical_ref": "https://3dlg-hcvc.github.io/multiscan/",
+      "summary": "An indoor scanning dataset with synchronized RGB-D streams, per-frame camera poses, textured 3D surface meshes, and object- and part-level semantic annotations, including door and door_frame labels.",
+      "tags": [
+        "ten-meter-copilot",
+        "rgb-d",
+        "camera-pose",
+        "semantic-mesh",
+        "door-surface"
+      ],
+      "name": "Posed semantic door-surface source",
+      "description": "Combines RGB-D frames and camera poses with a textured mesh carrying per-face object and part semantics, so a labelled door surface can be rendered into a source view with explicit occlusion handling rather than inferred from a loose 3D envelope.",
+      "inputs": [
+        "RGB-D stream",
+        "per-frame camera intrinsics and poses",
+        "textured surface mesh",
+        "per-face object and part semantic labels"
+      ],
+      "outputs": [
+        "posed labelled door surface",
+        "source-view z-buffer visibility credential"
+      ],
+      "limitations": "MultiScan is an indoor dataset and its annotations do not by themselves establish a valid L10 source-view admission, exact cross-view door selection, traversability, public access, arrival, user benefit, or safety. Dataset access, label coverage, synchronization, and mesh-to-depth consistency still require materialization checks.",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 6,
+        "geometry_motion": 9,
+        "handoff_completion": 9,
+        "observation_perception": 6,
+        "source_coverage": 12,
+        "temporal_belief": 3
+      },
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "uses": [
+        {
+          "id": "use-ten-meter-copilot-multiscan-2022",
+          "route": "ten-meter-copilot",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "Highest-priority next L10 source candidate for source-side visible door-surface admission: freeze fresh scenes and source/query views, render labelled door triangles into the source camera with a z-buffer, and check the rendered surface against synchronized source depth before any cross-view transfer.",
+          "expected_effect": "Replace the consumed partial-envelope credential with an occlusion-aware visible door-surface credential, making the next real-scene portal-transfer test evaluable without admitting mesh triangles hidden behind foreground geometry.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "Priority records source fit, not a completed download, admitted cohort, or experiment result. Even a successful source-side z-buffer check would establish only an input credential for a bounded L10 test; it would not prove a traversable aperture, outdoor named-entrance grounding, access, approach, waypoint, arrival, HANDOFF_READY, product benefit, user benefit, or safety.",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://3dlg-hcvc.github.io/multiscan/read-the-docs/dataset/index.html",
+              "summary": "Official documentation for RGB, depth, per-frame camera parameters, textured meshes, and per-face semantic annotation files."
+            },
+            {
+              "kind": "external",
+              "ref": "https://github.com/smartscenes/multiscan",
+              "summary": "Official source repository and benchmark label maps reviewed for object- and part-semantic support."
+            }
+          ],
+          "updated_at": "2026-08-30"
+        }
+      ],
+      "search_text": "MultiScan: Scalable RGBD scanning for 3D environments with articulated objects An indoor scanning dataset with synchronized RGB-D streams, per-frame camera poses, textured 3D surface meshes, and object- and part-level semantic annotations, including door and door_frame labels. ten-meter-copilot rgb-d camera-pose semantic-mesh door-surface Posed semantic door-surface source Combines RGB-D frames and camera poses with a textured mesh carrying per-face object and part semantics, so a labelled door surface can be rendered into a source view with explicit occlusion handling rather than inferred from a loose 3D envelope. RGB-D stream per-frame camera intrinsics and poses textured surface mesh per-face object and part semantic labels posed labelled door surface source-view z-buffer visibility credential MultiScan is an indoor dataset and its annotations do not by themselves establish a valid L10 source-view admission, exact cross-view door selection, traversability, public access, arrival, user benefit, or safety. Dataset access, label coverage, synchronization, and mesh-to-depth consistency still require materialization checks. ten-meter-copilot Highest-priority next L10 source candidate for source-side visible door-surface admission: freeze fresh scenes and source/query views, render labelled door triangles into the source camera with a z-buffer, and check the rendered surface against synchronized source depth before any cross-view transfer. Replace the consumed partial-envelope credential with an occlusion-aware visible door-surface credential, making the next real-scene portal-transfer test evaluable without admitting mesh triangles hidden behind foreground geometry. Priority records source fit, not a completed download, admitted cohort, or experiment result. Even a successful source-side z-buffer check would establish only an input credential for a bounded L10 test; it would not prove a traversable aperture, outdoor named-entrance grounding, access, approach, waypoint, arrival, HANDOFF_READY, product benefit, user benefit, or safety."
     },
     {
       "id": "dataset-pie-scenario-evaluation#dtr-dr13",
@@ -3986,6 +4055,69 @@
         }
       ],
       "search_text": "CapNav CapNav 已建立 capability-conditioned navigation benchmark；“按人体能力判断路径”不能单独作为贡献。 taro adjacent-work taro-r0 CapNav — taro:T06 route mechanism CapNav 已建立 capability-conditioned navigation benchmark；“按人体能力判断路径”不能单独作为贡献。 This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety. taro-r0 CapNav 已建立 capability-conditioned navigation benchmark；“按人体能力判断路径”不能单独作为贡献。 CapNav 已建立 capability-conditioned navigation benchmark；“按人体能力判断路径”不能单独作为贡献。 This adjacent work constrains TARO novelty or supplies a bounded reference. Its source-domain result is not TARO task-functional identifiability, a metric anchor, O0R truth, human-constrained sensing evidence, user benefit, or safety."
+    },
+    {
+      "id": "paper-chance-constrained-mppi-collision-risk-calibration-2026#closed-loop-collision-risk-calibration",
+      "item_id": "paper-chance-constrained-mppi-collision-risk-calibration-2026",
+      "mechanism_id": "closed-loop-collision-risk-calibration",
+      "kind": "paper",
+      "title": "Chance-Constrained MPPI under State and Dynamic Object Prediction Uncertainty and the Evaluation of Collision Risk Calibration",
+      "canonical_ref": "https://arxiv.org/abs/2605.28330",
+      "summary": "Introduces a closed-loop collision-risk calibration evaluation using proper scoring rules and a dual-uncertainty chance-constrained MPPI architecture that propagates localization and dynamic-object prediction uncertainty.",
+      "tags": [
+        "obstacle-avoidance",
+        "collision-risk",
+        "calibration",
+        "proper-scoring-rules",
+        "uncertainty"
+      ],
+      "name": "Closed-loop collision-risk calibration with proper scoring rules",
+      "description": "Scores predicted collision probabilities against realized collision outcomes during closed-loop execution so overconfidence, underconfidence, freezing, and probability dilution can be distinguished from ordinary ranking or threshold performance.",
+      "inputs": [
+        "predicted collision probabilities",
+        "closed-loop collision outcomes",
+        "state-estimation uncertainty",
+        "dynamic-object prediction uncertainty"
+      ],
+      "outputs": [
+        "proper-scoring-rule values",
+        "collision-risk calibration diagnostics",
+        "overconfidence and underconfidence failure characterization"
+      ],
+      "limitations": "The reported planner results are physics-simulation evidence for an autonomous navigation stack. Proper scores do not by themselves establish useful event timing, BLV mobility benefit, collision avoidance, product readiness, or safety, and they do not validate BlindAssist C11 probabilities without an authorized cohort and outcome contract.",
+      "signatures": [],
+      "layer_scores": {
+        "authority_truth": 3,
+        "decision_lifecycle": 9,
+        "evaluation_evidence": 12,
+        "source_coverage": 3
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-chance-constrained-mppi-collision-risk-calibration-2026",
+          "route": "obstacle-avoidance",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "Candidate read-only evaluation layer for C11-style collision-risk probabilities on a separately authorized cohort with frozen outcomes, reporting proper scores and calibration failure modes alongside existing event metrics.",
+          "expected_effect": "Reveal whether apparently useful collision-risk probabilities are systematically overconfident or underconfident, without converting an evaluation result into algorithm authority.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "This is an evaluator candidate only. Adding or later running proper scores does not change frozen C11 authority, restore consumed-cohort authority, authorize threshold tuning, or establish collision avoidance, BLV user benefit, product readiness, or safety.",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2605.28330",
+              "summary": "Primary preprint reviewed for the proper-scoring calibration methodology and its simulation-only evidence boundary."
+            }
+          ],
+          "updated_at": "2026-08-30"
+        }
+      ],
+      "search_text": "Chance-Constrained MPPI under State and Dynamic Object Prediction Uncertainty and the Evaluation of Collision Risk Calibration Introduces a closed-loop collision-risk calibration evaluation using proper scoring rules and a dual-uncertainty chance-constrained MPPI architecture that propagates localization and dynamic-object prediction uncertainty. obstacle-avoidance collision-risk calibration proper-scoring-rules uncertainty Closed-loop collision-risk calibration with proper scoring rules Scores predicted collision probabilities against realized collision outcomes during closed-loop execution so overconfidence, underconfidence, freezing, and probability dilution can be distinguished from ordinary ranking or threshold performance. predicted collision probabilities closed-loop collision outcomes state-estimation uncertainty dynamic-object prediction uncertainty proper-scoring-rule values collision-risk calibration diagnostics overconfidence and underconfidence failure characterization The reported planner results are physics-simulation evidence for an autonomous navigation stack. Proper scores do not by themselves establish useful event timing, BLV mobility benefit, collision avoidance, product readiness, or safety, and they do not validate BlindAssist C11 probabilities without an authorized cohort and outcome contract. obstacle-avoidance Candidate read-only evaluation layer for C11-style collision-risk probabilities on a separately authorized cohort with frozen outcomes, reporting proper scores and calibration failure modes alongside existing event metrics. Reveal whether apparently useful collision-risk probabilities are systematically overconfident or underconfident, without converting an evaluation result into algorithm authority. This is an evaluator candidate only. Adding or later running proper scores does not change frozen C11 authority, restore consumed-cohort authority, authorize threshold tuning, or establish collision avoidance, BLV user benefit, product readiness, or safety."
     },
     {
       "id": "paper-character-region-awareness-for-text-detection#l10-2",
@@ -6209,6 +6341,70 @@
         }
       ],
       "search_text": "FlowVerify — Combining Deep Learning and Verification for Precise Object Instance Detection 理论在“每个 detection 必含已知库物体、存在颜色距离≤γ的模板、正确 flow 完全刚性”等强条件下可推出零 false positive；作者明确说 recall 可任意低，理论还忽略遮挡/背景。实验只报 PR 曲线、mAP 与 maximum precision，没给达到 0.939 时接受了多少，所以高精度确以未知 coverage 和模板可见性换来。官方代码 HardAND 后对通过项只给 detector score 加 1.01，失败项仍在排序中，并非原生拒绝/NONE。 goal-copilot deep-reading paper-38 goal-copilot-p0 FlowVerify — Combining Deep Learning and Verification for Precise Object Instance Detection — goal-audit:38 route mechanism ①TDID 先产生候选；②每个候选对 15 个已知视图运行 FlowMatchNet；③该 FlowNetC 变体用 full cross-correlation 与 CoordConv 预测 template→crop dense flow；④SIMOBJ 检查是否有 IoU≥0.5 的其他 object ID 且分数接近；⑤FCOLOR 计算 warp 后 normalized cross-correlation；⑥FRIGIDITY 以 fundamental-matrix RANSAC inlier ratio 测刚性；⑦FPRECISION/FRECALL 分别测流终点落入 bbox 的比例、流覆盖 bbox 与 detector bbox 的 IoU；⑧五门 hard-AND，任一模板通过即 pass。论文阈值为 rigidity/color/precision/recall 0.9/0.5/0.9/0.3、score margin 0。 理论在“每个 detection 必含已知库物体、存在颜色距离≤γ的模板、正确 flow 完全刚性”等强条件下可推出零 false positive；作者明确说 recall 可任意低，理论还忽略遮挡/背景。实验只报 PR 曲线、mAP 与 maximum precision，没给达到 0.939 时接受了多少，所以高精度确以未知 coverage 和模板可见性换来。官方代码 HardAND 后对通过项只给 detector score 加 1.01，失败项仍在排序中，并非原生拒绝/NONE。 goal-copilot-p0 ①TDID 先产生候选；②每个候选对 15 个已知视图运行 FlowMatchNet；③该 FlowNetC 变体用 full cross-correlation 与 CoordConv 预测 template→crop dense flow；④SIMOBJ 检查是否有 IoU≥0.5 的其他 object ID 且分数接近；⑤FCOLOR 计算 warp 后 normalized cross-correlation；⑥FRIGIDITY 以 fundamental-matrix RANSAC inlier ratio 测刚性；⑦FPRECISION/FRECALL 分别测流终点落入 bbox 的比例、流覆盖 bbox 与 detector bbox 的 IoU；⑧五门 hard-AND，任一模板通过即 pass。论文阈值为 rigidity/color/precision/recall 0.9/0.5/0.9/0.3、score margin 0。 去掉依赖候选间重叠/基础分数的 SIMOBJ，避免顺序或集合耦合；把 reference RGB+mask 当单模板，对每 candidate 独立计算 [color, rigidity, ref-coverage, cand-coverage]，冻结 hard gate，无候选通过即 NONE。必须画 precision–accepted-coverage 与 target-absent FAR，并以 stable same-SKU distractor 为主要负例；若只提高 max precision 却 coverage 接近零，或 same-SKU 仍通过，则失败。 理论在“每个 detection 必含已知库物体、存在颜色距离≤γ的模板、正确 flow 完全刚性”等强条件下可推出零 false positive；作者明确说 recall 可任意低，理论还忽略遮挡/背景。实验只报 PR 曲线、mAP 与 maximum precision，没给达到 0.939 时接受了多少，所以高精度确以未知 coverage 和模板可见性换来。官方代码 HardAND 后对通过项只给 detector score 加 1.01，失败项仍在排序中，并非原生拒绝/NONE。"
+    },
+    {
+      "id": "paper-foresightguide-2026#anticipatory-low-redundancy-blv-guidance",
+      "item_id": "paper-foresightguide-2026",
+      "mechanism_id": "anticipatory-low-redundancy-blv-guidance",
+      "kind": "paper",
+      "title": "ForeSightGuide: An Anticipatory Framework toward Accurate and Low-Redundancy Guidance for the Visually Impaired",
+      "canonical_ref": "https://arxiv.org/abs/2608.18993",
+      "summary": "An anticipatory assistive-guidance framework that combines semantic scene understanding with predicted obstacle motion to suppress non-threatening objects and produce concise guidance for visually impaired travelers.",
+      "tags": [
+        "obstacle-avoidance",
+        "blv-guidance",
+        "anticipatory-guidance",
+        "low-redundancy",
+        "comparator"
+      ],
+      "name": "Anticipatory low-redundancy BLV guidance",
+      "description": "Uses predictive hazard assessment rather than reactive object mention alone to filter non-threatening objects and reduce redundant guidance while retaining hazard coverage.",
+      "inputs": [
+        "dynamic scene observations",
+        "semantic scene interpretation",
+        "predicted obstacle motion"
+      ],
+      "outputs": [
+        "anticipated hazard assessment",
+        "concise actionable guidance",
+        "missed-hazard and redundant-alert measurements"
+      ],
+      "limitations": "This is a recent preprint with paper-reported benchmark and dataset results. It has not been independently reproduced for BlindAssist, and low redundancy or a low missed-hazard rate does not establish real-world BLV benefit, product readiness, or safety.",
+      "signatures": [],
+      "layer_scores": {
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 6,
+        "geometry_motion": 3,
+        "observation_perception": 3,
+        "runtime_infrastructure": 3,
+        "source_coverage": 9
+      },
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "uses": [
+        {
+          "id": "use-obstacle-avoidance-foresightguide-2026",
+          "route": "obstacle-avoidance",
+          "use_state": "candidate",
+          "reproduction_status": "not_attempted",
+          "verdict": "not_run",
+          "project_application": "Candidate comparator for whether BlindAssist obstacle guidance can be anticipatory and low-redundancy: compare missed-hazard rate and redundant alerts per guidance output under the same frozen observation and event contract.",
+          "expected_effect": "Expose the tradeoff between anticipatory hazard coverage and guidance redundancy instead of rewarding either verbose object narration or silence in isolation.",
+          "observed_effect": "",
+          "metrics": [],
+          "claim_boundary": "Comparator status and any future offline metric comparison cannot establish safe walking, avoided collisions, BLV user benefit, product quality, deployment readiness, or safety. No product or safety claim follows from this knowledge entry.",
+          "evidence": [
+            {
+              "kind": "external",
+              "ref": "https://arxiv.org/abs/2608.18993",
+              "summary": "Primary preprint reviewed for anticipatory hazard filtering, low-redundancy guidance, and the strict non-product/non-safety evidence boundary."
+            }
+          ],
+          "updated_at": "2026-08-30"
+        }
+      ],
+      "search_text": "ForeSightGuide: An Anticipatory Framework toward Accurate and Low-Redundancy Guidance for the Visually Impaired An anticipatory assistive-guidance framework that combines semantic scene understanding with predicted obstacle motion to suppress non-threatening objects and produce concise guidance for visually impaired travelers. obstacle-avoidance blv-guidance anticipatory-guidance low-redundancy comparator Anticipatory low-redundancy BLV guidance Uses predictive hazard assessment rather than reactive object mention alone to filter non-threatening objects and reduce redundant guidance while retaining hazard coverage. dynamic scene observations semantic scene interpretation predicted obstacle motion anticipated hazard assessment concise actionable guidance missed-hazard and redundant-alert measurements This is a recent preprint with paper-reported benchmark and dataset results. It has not been independently reproduced for BlindAssist, and low redundancy or a low missed-hazard rate does not establish real-world BLV benefit, product readiness, or safety. obstacle-avoidance Candidate comparator for whether BlindAssist obstacle guidance can be anticipatory and low-redundancy: compare missed-hazard rate and redundant alerts per guidance output under the same frozen observation and event contract. Expose the tradeoff between anticipatory hazard coverage and guidance redundancy instead of rewarding either verbose object narration or silence in isolation. Comparator status and any future offline metric comparison cannot establish safe walking, avoided collisions, BLV user benefit, product quality, deployment readiness, or safety. No product or safety claim follows from this knowledge entry."
     },
     {
       "id": "paper-from-region-arrival-to-instance-level-grounding-in-vision-and-language-n#l10-16",
@@ -16043,6 +16239,200 @@
     },
     {
       "kind": "current_terminal",
+      "id": "terminal-dtr-carla-x24-plan-adherent-development",
+      "status": "positive",
+      "question": "On the same scripted CARLA C2 source, issued-plan adherence plus bounded causal track memory improved complete-occlusion route-risk coverage from 0/8 to 8/8, increased lead from 2.80 s to 2.95 s, added zero post-divergence SAFE false segments, and preserved 62/62 NO_PLAN fallback frames.",
+      "baseline": null,
+      "change": "Freeze X24 and its constants, then run one genuinely source-disjoint confirmation cohort; this same-source Development result does not establish generalization, real-world transfer, product benefit, deployment, or safety.",
+      "primary_metric": null,
+      "decision": "DTR_CARLA_X24_PLAN_ADHERENT_DEVELOPMENT_GATE_MET",
+      "report": "research/active/dtr-r0/carla/DTR_CARLA_X24_PLAN_ADHERENT_DEVELOPMENT_RESULT_2026-08-30.md",
+      "source": "decision/terminals.json",
+      "commit": "3b72c4d6",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 30,
+        "temporal_belief": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Freeze X24 and its constants, then run one genuinely source-disjoint confirmation cohort; this same-source Development result does not establish generalization, real-world transfer, product benefit, deployment, or safety.",
+      "forbidden_repeats": [
+        "retuning C2",
+        "relabeling same-source replay as confirmation",
+        "claiming general CARLA robustness",
+        "claiming real-world, product, deployment, or safety benefit"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/carla/DTR_CARLA_X24_PLAN_ADHERENT_DEVELOPMENT_RESULT_2026-08-30.md"
+      ],
+      "search_text": "terminal-dtr-carla-x24-plan-adherent-development obstacle-avoidance DTR_CARLA_X24_PLAN_ADHERENT_DEVELOPMENT_GATE_MET On the same scripted CARLA C2 source, issued-plan adherence plus bounded causal track memory improved complete-occlusion route-risk coverage from 0/8 to 8/8, increased lead from 2.80 s to 2.95 s, added zero post-divergence SAFE false segments, and preserved 62/62 NO_PLAN fallback frames. Freeze X24 and its constants, then run one genuinely source-disjoint confirmation cohort; this same-source Development result does not establish generalization, real-world transfer, product benefit, deployment, or safety. retuning C2 relabeling same-source replay as confirmation claiming general CARLA robustness claiming real-world, product, deployment, or safety benefit"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-dtr-carla-x26-support-consensus-gate-not-met",
+      "status": "negative",
+      "question": "On fresh CARLA C4, X26 improved frame F1 from 0.5308 to 0.8571 and recall from 47.46% to 96.61%, but produced four false-alert segments across the two fresh SAFE episodes, failing the frozen zero-segment promotion gate.",
+      "baseline": null,
+      "change": "A fresh cohort and a structural occupancy-support authority decomposition that separates ego-carried, static-scene, rigid-dynamic, and unauthorized motion.",
+      "primary_metric": null,
+      "decision": "DTR_CARLA_X26_SUPPORT_CONSENSUS_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/carla/DTR_CARLA_X26_SUPPORT_CONSENSUS_DEVELOPMENT_RESULT_2026-08-30.md",
+      "source": "decision/terminals.json",
+      "commit": "5b99dfe7",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A fresh cohort and a structural occupancy-support authority decomposition that separates ego-carried, static-scene, rigid-dynamic, and unauthorized motion.",
+      "forbidden_repeats": [
+        "route-tube tuning",
+        "confirmation or HOLD tuning",
+        "association-distance tuning",
+        "target or C4 scene changes",
+        "rescuing consumed C4"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/carla/DTR_CARLA_X26_SUPPORT_CONSENSUS_DEVELOPMENT_RESULT_2026-08-30.md"
+      ],
+      "search_text": "terminal-dtr-carla-x26-support-consensus-gate-not-met obstacle-avoidance DTR_CARLA_X26_SUPPORT_CONSENSUS_DEVELOPMENT_GATE_NOT_MET On fresh CARLA C4, X26 improved frame F1 from 0.5308 to 0.8571 and recall from 47.46% to 96.61%, but produced four false-alert segments across the two fresh SAFE episodes, failing the frozen zero-segment promotion gate. A fresh cohort and a structural occupancy-support authority decomposition that separates ego-carried, static-scene, rigid-dynamic, and unauthorized motion. route-tube tuning confirmation or HOLD tuning association-distance tuning target or C4 scene changes rescuing consumed C4"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-dtr-carla-x30-adaptive-surface-gate-not-met",
+      "status": "negative",
+      "question": "On fresh CARLA C7, X30 improved F1 from 0.6000 to 0.6376 and removed X24's one SAFE false segment, but completely missed one dynamic CONTACT, retained only 0.3333 future-positive recall on another, and missed the frozen 0.95 precision and 0.80 F1 gates.",
+      "baseline": null,
+      "change": "A fresh X31 cohort using ambiguity-preserving set-valued surface-transport ancestry; C7 remains consumed pre-truth Development rather than pristine confirmation.",
+      "primary_metric": null,
+      "decision": "DTR_CARLA_X30_ADAPTIVE_SURFACE_CONTACT_INTERVAL_SOURCE_DISJOINT_PRETRUTH_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/carla/DTR_CARLA_X27_X30_OCCUPANCY_LINEAGE_RESULTS_2026-08-30.md",
+      "source": "decision/terminals.json",
+      "commit": "2053de3b",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 30,
+        "temporal_belief": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A fresh X31 cohort using ambiguity-preserving set-valued surface-transport ancestry; C7 remains consumed pre-truth Development rather than pristine confirmation.",
+      "forbidden_repeats": [
+        "detector or route threshold tuning",
+        "confirmation, HOLD, or association tuning",
+        "seed, weather, target, or backbone changes",
+        "iterating on consumed C7",
+        "claiming source-disjoint confirmation"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/carla/DTR_CARLA_X27_X30_OCCUPANCY_LINEAGE_RESULTS_2026-08-30.md"
+      ],
+      "search_text": "terminal-dtr-carla-x30-adaptive-surface-gate-not-met obstacle-avoidance DTR_CARLA_X30_ADAPTIVE_SURFACE_CONTACT_INTERVAL_SOURCE_DISJOINT_PRETRUTH_DEVELOPMENT_GATE_NOT_MET On fresh CARLA C7, X30 improved F1 from 0.6000 to 0.6376 and removed X24's one SAFE false segment, but completely missed one dynamic CONTACT, retained only 0.3333 future-positive recall on another, and missed the frozen 0.95 precision and 0.80 F1 gates. A fresh X31 cohort using ambiguity-preserving set-valued surface-transport ancestry; C7 remains consumed pre-truth Development rather than pristine confirmation. detector or route threshold tuning confirmation, HOLD, or association tuning seed, weather, target, or backbone changes iterating on consumed C7 claiming source-disjoint confirmation"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-dtr-carla-c8-x31-scripted-pose-drift",
+      "status": "not_evaluable",
+      "question": "The sole frozen C8 capture stopped in the first instance shard when CARLA collision response displaced an authoritatively scripted asset; no complete source, model replay, evaluator, or X24/X31 metric result exists.",
+      "baseline": null,
+      "change": "A new source identity that decouples scripted pose authority from engine collision response while keeping rendered geometry, X31, route, detector, and metric gates frozen.",
+      "primary_metric": null,
+      "decision": "DTR_CARLA_C8_X31_TRANSPORT_CONE_SOURCE_NOT_EVALUABLE_SCRIPTED_POSE_DRIFT",
+      "report": "research/active/dtr-r0/carla/DTR_CARLA_C8_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md",
+      "source": "decision/terminals.json",
+      "commit": "9479e891",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 30,
+        "authority_truth": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A new source identity that decouples scripted pose authority from engine collision response while keeping rendered geometry, X31, route, detector, and metric gates frozen.",
+      "forbidden_repeats": [
+        "resuming or reseeding C8",
+        "loosening the scripted-pose gate",
+        "scoring the partial source",
+        "interpreting the failure as an X31 false negative"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/carla/DTR_CARLA_C8_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md"
+      ],
+      "search_text": "terminal-dtr-carla-c8-x31-scripted-pose-drift obstacle-avoidance DTR_CARLA_C8_X31_TRANSPORT_CONE_SOURCE_NOT_EVALUABLE_SCRIPTED_POSE_DRIFT The sole frozen C8 capture stopped in the first instance shard when CARLA collision response displaced an authoritatively scripted asset; no complete source, model replay, evaluator, or X24/X31 metric result exists. A new source identity that decouples scripted pose authority from engine collision response while keeping rendered geometry, X31, route, detector, and metric gates frozen. resuming or reseeding C8 loosening the scripted-pose gate scoring the partial source interpreting the failure as an X31 false negative"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-dtr-carla-c9-x31-occluder-route-intersection",
+      "status": "not_evaluable",
+      "question": "C9 removed C8 pose drift, but every SAFE twin became CONTACT because the physical occluder entered the wearer corridor, and the planned occlusion durations also violated the frozen source contract; no model or metric run began.",
+      "baseline": null,
+      "change": "A fresh deterministic early single-pass occluder source that stays outside the wearer corridor and yields the frozen 0.6-1.3 s complete target-loss interval with required pre/post trackability.",
+      "primary_metric": null,
+      "decision": "DTR_CARLA_C9_X31_COLLISION_DECOUPLED_SOURCE_NOT_EVALUABLE_OCCLUDER_ROUTE_INTERSECTION",
+      "report": "research/active/dtr-r0/carla/DTR_CARLA_C9_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md",
+      "source": "decision/terminals.json",
+      "commit": "92b84abd",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 30,
+        "authority_truth": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A fresh deterministic early single-pass occluder source that stays outside the wearer corridor and yields the frozen 0.6-1.3 s complete target-loss interval with required pre/post trackability.",
+      "forbidden_repeats": [
+        "resuming, replaying, or reseeding C9",
+        "moving only the consumed occluders",
+        "partially selecting C9",
+        "joining, modeling, or scoring the failed source"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/carla/DTR_CARLA_C9_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md"
+      ],
+      "search_text": "terminal-dtr-carla-c9-x31-occluder-route-intersection obstacle-avoidance DTR_CARLA_C9_X31_COLLISION_DECOUPLED_SOURCE_NOT_EVALUABLE_OCCLUDER_ROUTE_INTERSECTION C9 removed C8 pose drift, but every SAFE twin became CONTACT because the physical occluder entered the wearer corridor, and the planned occlusion durations also violated the frozen source contract; no model or metric run began. A fresh deterministic early single-pass occluder source that stays outside the wearer corridor and yields the frozen 0.6-1.3 s complete target-loss interval with required pre/post trackability. resuming, replaying, or reseeding C9 moving only the consumed occluders partially selecting C9 joining, modeling, or scoring the failed source"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-dtr-carla-c10-x31-raster-permeable-occluder",
+      "status": "not_evaluable",
+      "question": "C10 fixed C9 route contamination and completed all four sensor shards, but target instance pixels remained visible through the bus silhouette, so the complete physical-occlusion source gate failed and no X24/X31 prediction or score ran.",
+      "baseline": null,
+      "change": "The already frozen fresh C11 solid-body firetruck protocol must run once; it is pending source materialization and is not yet a result or terminal.",
+      "primary_metric": null,
+      "decision": "DTR_CARLA_C10_X31_OPAQUE_SINGLE_PASS_SOURCE_NOT_EVALUABLE_RASTER_PERMEABLE_OCCLUDER",
+      "report": "research/active/dtr-r0/carla/DTR_CARLA_C10_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md",
+      "source": "decision/terminals.json",
+      "commit": "f6ac7728",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 30,
+        "observation_perception": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "The already frozen fresh C11 solid-body firetruck protocol must run once; it is pending source materialization and is not yet a result or terminal.",
+      "forbidden_repeats": [
+        "resuming, replaying, or reseeding C10",
+        "treating 3-D OBB containment as pixel occlusion",
+        "modeling or scoring the failed source",
+        "representing frozen C11 as a completed result"
+      ],
+      "evidence": [
+        "research/active/dtr-r0/carla/DTR_CARLA_C10_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md",
+        "research/active/dtr-r0/carla/dtr_carla_c11_x31_solid_body_protocol.json"
+      ],
+      "search_text": "terminal-dtr-carla-c10-x31-raster-permeable-occluder obstacle-avoidance DTR_CARLA_C10_X31_OPAQUE_SINGLE_PASS_SOURCE_NOT_EVALUABLE_RASTER_PERMEABLE_OCCLUDER C10 fixed C9 route contamination and completed all four sensor shards, but target instance pixels remained visible through the bus silhouette, so the complete physical-occlusion source gate failed and no X24/X31 prediction or score ran. The already frozen fresh C11 solid-body firetruck protocol must run once; it is pending source materialization and is not yet a result or terminal. resuming, replaying, or reseeding C10 treating 3-D OBB containment as pixel occlusion modeling or scoring the failed source representing frozen C11 as a completed result"
+    },
+    {
+      "kind": "current_terminal",
       "id": "terminal-l10-sc5-set-valued-video17",
       "status": "not_evaluable",
       "question": "On consumed video17, set-valued belief preserved 100% navigation precision and increased coverage from 73.45% to 81.42%; exact-instance identity was not evaluable because each public goal mapped to multiple physical IDs without a public instance reference.",
@@ -16377,6 +16767,142 @@
         "research/active/l10-r0/README.md"
       ],
       "search_text": "terminal-l10-sc17-triview-semantic-consensus-development ten-meter-copilot SC17_TRIVIEW_SEMANTIC_CONSENSUS_DEVELOPMENT_GATE_NOT_MET A fixed exact-normalized majority over views 0/3/6 raised precision only 90.97% to 91.88%, reduced wrong outputs 24.31%, and still formed wrong consensus on 5/49 consumed SC16 tracks. Causal action-outcome feedback or a new independent identity source; no fresh video is authorized for this consensus rule. view-offset sweeps edit-distance matching vote-count or confidence tuning opening a fresh DSText video with SC17"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-panolab-active-entrance-ray-recovery",
+      "status": "positive",
+      "question": "Across four fresh provider-adjacent Panoramax episodes, a reciprocal SIDESTEP_TO_ENTRANCE_FACE action changed exact OSM entrance rays from geometry-blocked to geometry-authorized in 4/4 cases, with 4/4 action receipts and zero occluded-state false authorizations.",
+      "baseline": null,
+      "change": "An independent entrance-identity credential before any pixel-portal successor; this real posed-street-sequence Development result establishes only active entrance-ray geometry recovery.",
+      "primary_metric": null,
+      "decision": "L10_PANOLAB_ACTIVE_ENTRANCE_RAY_RECOVERY_DEVELOPMENT_GATE_MET",
+      "report": "research/active/l10-r0/README.md",
+      "source": "decision/terminals.json",
+      "commit": "19633a60",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "An independent entrance-identity credential before any pixel-portal successor; this real posed-street-sequence Development result establishes only active entrance-ray geometry recovery.",
+      "forbidden_repeats": [
+        "claiming a pixel portal hit",
+        "inferring entrance ownership from pixels",
+        "claiming public access, walkability, arrival, HANDOFF_READY, or safety",
+        "matcher rescue on the consumed source"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_panolab_active_ray_recovery_result_v2.json"
+      ],
+      "search_text": "terminal-l10-panolab-active-entrance-ray-recovery ten-meter-copilot L10_PANOLAB_ACTIVE_ENTRANCE_RAY_RECOVERY_DEVELOPMENT_GATE_MET Across four fresh provider-adjacent Panoramax episodes, a reciprocal SIDESTEP_TO_ENTRANCE_FACE action changed exact OSM entrance rays from geometry-blocked to geometry-authorized in 4/4 cases, with 4/4 action receipts and zero occluded-state false authorizations. An independent entrance-identity credential before any pixel-portal successor; this real posed-street-sequence Development result establishes only active entrance-ray geometry recovery. claiming a pixel portal hit inferring entrance ownership from pixels claiming public access, walkability, arrival, HANDOFF_READY, or safety matcher rescue on the consumed source"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-panoramax-generic-pixel-portal-source-closed",
+      "status": "not_evaluable",
+      "question": "Successive generic Panoramax pixel-portal routes failed source admission even after strict orientation, close-range, federated coverage, and mapped-width improvements; the final width-first audit admitted 0/3 reference and 0/3 query portals, so no matcher call was authorized.",
+      "baseline": null,
+      "change": "Sub-metre camera-to-portal registration or a directly posed portal mask or mesh frozen before pixels; Panoramax may provide imagery but is not the missing entrance-identity source.",
+      "primary_metric": null,
+      "decision": "L10_WIDTH_FIRST_PERSPECTIVE_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_3_QUERY_0_OF_3_JOINT_0_OF_3_NO_MATCHER_CALL",
+      "report": "research/active/l10-r0/README.md",
+      "source": "decision/terminals.json",
+      "commit": "cac7dd54",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "source_coverage": 30,
+        "identity_binding": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Sub-metre camera-to-portal registration or a directly posed portal mask or mesh frozen before pixels; Panoramax may provide imagery but is not the missing entrance-identity source.",
+      "forbidden_repeats": [
+        "mining more generic Panoramax cities",
+        "resampling opened rows",
+        "widening the entrance ray",
+        "narrowing declared camera uncertainty",
+        "matcher, crop, or threshold rescue"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_panolab_stratified_source_pixel_audit_v1.json",
+        "research/active/l10-r0/l10_panolab_federated_portal_source_admission_result_v1.json",
+        "research/active/l10-r0/l10_width_first_perspective_portal_source_admission_result_v1.json"
+      ],
+      "search_text": "terminal-l10-panoramax-generic-pixel-portal-source-closed ten-meter-copilot L10_WIDTH_FIRST_PERSPECTIVE_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_3_QUERY_0_OF_3_JOINT_0_OF_3_NO_MATCHER_CALL Successive generic Panoramax pixel-portal routes failed source admission even after strict orientation, close-range, federated coverage, and mapped-width improvements; the final width-first audit admitted 0/3 reference and 0/3 query portals, so no matcher call was authorized. Sub-metre camera-to-portal registration or a directly posed portal mask or mesh frozen before pixels; Panoramax may provide imagery but is not the missing entrance-identity source. mining more generic Panoramax cities resampling opened rows widening the entrance ray narrowing declared camera uncertainty matcher, crop, or threshold rescue"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-hypersim-posed-portal-transfer",
+      "status": "positive",
+      "question": "A provider-posed Hypersim reference door surface transferred across independent trajectories with 3/3 correct door instances, zero wrong-door commits, 3/3 centroids inside target envelopes, and median envelope IoU 0.7063.",
+      "baseline": null,
+      "change": "Real posed door geometry for confirmation; outdoor use still requires sub-metre imagery co-registered to an independent portal anchor.",
+      "primary_metric": null,
+      "decision": "L10_HYPERSIM_POSED_PORTAL_TRANSFER_DEVELOPMENT_GATE_MET",
+      "report": "research/active/l10-r0/README.md",
+      "source": "decision/terminals.json",
+      "commit": "7b1c09cb",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "identity_binding": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "Real posed door geometry for confirmation; outdoor use still requires sub-metre imagery co-registered to an independent portal anchor.",
+      "forbidden_repeats": [
+        "promoting synthetic posed-door transfer to real or outdoor confirmation",
+        "treating a semantic door surface as doorway aperture or traversability",
+        "claiming access, arrival, HANDOFF_READY, product, user, or safety authority",
+        "reopening Panoramax without an independent anchor"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json"
+      ],
+      "search_text": "terminal-l10-hypersim-posed-portal-transfer ten-meter-copilot L10_HYPERSIM_POSED_PORTAL_TRANSFER_DEVELOPMENT_GATE_MET A provider-posed Hypersim reference door surface transferred across independent trajectories with 3/3 correct door instances, zero wrong-door commits, 3/3 centroids inside target envelopes, and median envelope IoU 0.7063. Real posed door geometry for confirmation; outdoor use still requires sub-metre imagery co-registered to an independent portal anchor. promoting synthetic posed-door transfer to real or outdoor confirmation treating a semantic door surface as doorway aperture or traversability claiming access, arrival, HANDOFF_READY, product, user, or safety authority reopening Panoramax without an independent anchor"
+    },
+    {
+      "kind": "current_terminal",
+      "id": "terminal-l10-scenenn-real-posed-portal-confirmation-gate-not-met",
+      "status": "negative",
+      "question": "On three source-disjoint real SceneNN RGB-D scenes, partial metric portal transfer selected the correct door in 2/3 cases, placed the centroid inside in 1/3, reached median IoU 0.2647, and had 0.985 m median world-centroid error; source-side reference visibility was the decisive failure.",
+      "baseline": null,
+      "change": "A fresh real-scene cohort with source-side visibility authority from a provider 2-D door-instance mask or z-buffered semantic triangle surface checked against synchronized depth before forming the reference credential.",
+      "primary_metric": null,
+      "decision": "L10_SCENENN_REAL_RGBD_PARTIAL_METRIC_PORTAL_TRANSFER_CONFIRMATION_GATE_NOT_MET",
+      "report": "research/active/l10-r0/README.md",
+      "source": "decision/terminals.json",
+      "commit": "6cfb781a",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "observation_perception": 30,
+        "geometry_motion": 30,
+        "evaluation_evidence": 30
+      },
+      "successor_requires": "A fresh real-scene cohort with source-side visibility authority from a provider 2-D door-instance mask or z-buffered semantic triangle surface checked against synchronized depth before forming the reference credential.",
+      "forbidden_repeats": [
+        "reselecting consumed SceneNN scenes or frames",
+        "changing the 70-percent plane fit",
+        "tuning metric or image gates",
+        "opening query-side RGB or depth to prediction",
+        "reopening Panoramax without an independent absolute portal anchor"
+      ],
+      "evidence": [
+        "research/active/l10-r0/README.md",
+        "research/active/l10-r0/l10_scenenn_real_posed_portal_result_v2.json"
+      ],
+      "search_text": "terminal-l10-scenenn-real-posed-portal-confirmation-gate-not-met ten-meter-copilot L10_SCENENN_REAL_RGBD_PARTIAL_METRIC_PORTAL_TRANSFER_CONFIRMATION_GATE_NOT_MET On three source-disjoint real SceneNN RGB-D scenes, partial metric portal transfer selected the correct door in 2/3 cases, placed the centroid inside in 1/3, reached median IoU 0.2647, and had 0.985 m median world-centroid error; source-side reference visibility was the decisive failure. A fresh real-scene cohort with source-side visibility authority from a provider 2-D door-instance mask or z-buffered semantic triangle surface checked against synchronized depth before forming the reference credential. reselecting consumed SceneNN scenes or frames changing the 70-percent plane fit tuning metric or image gates opening query-side RGB or depth to prediction reopening Panoramax without an independent absolute portal anchor"
     },
     {
       "kind": "current_terminal",
@@ -20484,6 +21010,255 @@
         "temporal_belief": 3
       },
       "search_text": "result-typed-semantic-referent-graph-v3-a-result-2026-08-25 Typed Semantic-Referent Graph V3-A Result    状态：`DEVELOPMENT_STANDARD / SYNTHETIC_GRAPH_TRAIN / V2_1_RAPIDOCR_TUNED_ON_DEVELOPMENT / FULL_CORRECT_14_OF_16 / EVALUABLE_TARGET_7_OF_7 / NONE_7_OF_7 / WRONG_LOCK_0 / UNKNOWN_2_OF_2 / NO_RELATION_TARGET_0_OF_7 / V2_BELIEF_FROZEN / NATURAL_PHOTO_NOT_RUN / V3_B_NOT_RUN / V4_NOT_RUN` docs/research/goal-copilot/TYPED_SEMANTIC_REFERENT_GRAPH_V3_A_RESULT_2026-08-25.md goal-copilot"
+    },
+    {
+      "kind": "experiment",
+      "id": "dtr-carla-x24-plan-adherent-development-2026-08-30",
+      "status": "archived",
+      "question": "Can issued-plan adherence plus causal RGB-D tracking preserve route risk through complete occlusion without new post-divergence SAFE alerts?",
+      "baseline": "X23 observed-current-velocity route",
+      "change": "immutable issued-plan route under online adherence with 0.60 s causal memory and X23 fallback",
+      "primary_metric": "complete-occlusion route-risk coverage and new SAFE false-alert segments",
+      "decision": "DTR_CARLA_X24_PLAN_ADHERENT_DEVELOPMENT_GATE_MET",
+      "report": "research/active/dtr-r0/carla/DTR_CARLA_X24_PLAN_ADHERENT_DEVELOPMENT_RESULT_2026-08-30.md",
+      "source": "research/active/dtr-r0/carla",
+      "commit": "3b72c4d6a744126409419a32c0697aea864c39f9",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "identity_binding": 3,
+        "temporal_belief": 9,
+        "decision_lifecycle": 4,
+        "evaluation_evidence": 4
+      },
+      "search_text": "dtr-carla-x24-plan-adherent-development-2026-08-30 Can issued-plan adherence plus causal RGB-D tracking preserve route risk through complete occlusion without new post-divergence SAFE alerts? X23 observed-current-velocity route immutable issued-plan route under online adherence with 0.60 s causal memory and X23 fallback complete-occlusion route-risk coverage and new SAFE false-alert segments DTR_CARLA_X24_PLAN_ADHERENT_DEVELOPMENT_GATE_MET research/active/dtr-r0/carla/DTR_CARLA_X24_PLAN_ADHERENT_DEVELOPMENT_RESULT_2026-08-30.md research/active/dtr-r0/carla"
+    },
+    {
+      "kind": "experiment",
+      "id": "dtr-carla-x26-support-consensus-development-2026-08-30",
+      "status": "archived",
+      "question": "Can opposing footprint-support consensus improve fresh CARLA obstacle-risk recall without SAFE false alerts?",
+      "baseline": "frozen X24 issued-plan arm",
+      "change": "metric quantile-OBB footprint with opposing-boundary support-consensus motion",
+      "primary_metric": "frame F1, fresh-contact lead, and fresh SAFE false-alert segments",
+      "decision": "DTR_CARLA_X26_SUPPORT_CONSENSUS_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/carla/DTR_CARLA_X26_SUPPORT_CONSENSUS_DEVELOPMENT_RESULT_2026-08-30.md",
+      "source": "research/active/dtr-r0/carla",
+      "commit": "5b99dfe7aef74e15cfce3c5f6e8c7f6889174ca4",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "geometry_motion": 3,
+        "decision_lifecycle": 4,
+        "evaluation_evidence": 12
+      },
+      "search_text": "dtr-carla-x26-support-consensus-development-2026-08-30 Can opposing footprint-support consensus improve fresh CARLA obstacle-risk recall without SAFE false alerts? frozen X24 issued-plan arm metric quantile-OBB footprint with opposing-boundary support-consensus motion frame F1, fresh-contact lead, and fresh SAFE false-alert segments DTR_CARLA_X26_SUPPORT_CONSENSUS_DEVELOPMENT_GATE_NOT_MET research/active/dtr-r0/carla/DTR_CARLA_X26_SUPPORT_CONSENSUS_DEVELOPMENT_RESULT_2026-08-30.md research/active/dtr-r0/carla"
+    },
+    {
+      "kind": "experiment",
+      "id": "dtr-carla-x27-x30-occupancy-lineage-2026-08-30",
+      "status": "archived",
+      "question": "Can explicit world-occupancy authority and adaptive surface lineage outperform X24 on a fresh CARLA source?",
+      "baseline": "frozen X24 issued-plan arm",
+      "change": "X27-X30 occupancy-authority, persistent-lineage, and adaptive surface-contact interval sequence",
+      "primary_metric": "frame precision, recall, F1, SAFE risk segments, and per-contact frozen gates",
+      "decision": "DTR_CARLA_X30_ADAPTIVE_SURFACE_CONTACT_INTERVAL_SOURCE_DISJOINT_PRETRUTH_DEVELOPMENT_GATE_NOT_MET",
+      "report": "research/active/dtr-r0/carla/DTR_CARLA_X27_X30_OCCUPANCY_LINEAGE_RESULTS_2026-08-30.md",
+      "source": "research/active/dtr-r0/carla",
+      "commit": "2053de3b2c47fd6089f379c685d7b8ef8ddad46f",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "authority_truth": 3,
+        "source_coverage": 3,
+        "geometry_motion": 3,
+        "evaluation_evidence": 9
+      },
+      "search_text": "dtr-carla-x27-x30-occupancy-lineage-2026-08-30 Can explicit world-occupancy authority and adaptive surface lineage outperform X24 on a fresh CARLA source? frozen X24 issued-plan arm X27-X30 occupancy-authority, persistent-lineage, and adaptive surface-contact interval sequence frame precision, recall, F1, SAFE risk segments, and per-contact frozen gates DTR_CARLA_X30_ADAPTIVE_SURFACE_CONTACT_INTERVAL_SOURCE_DISJOINT_PRETRUTH_DEVELOPMENT_GATE_NOT_MET research/active/dtr-r0/carla/DTR_CARLA_X27_X30_OCCUPANCY_LINEAGE_RESULTS_2026-08-30.md research/active/dtr-r0/carla"
+    },
+    {
+      "kind": "experiment",
+      "id": "dtr-carla-c8-x31-source-not-evaluable-2026-08-30",
+      "status": "archived",
+      "question": "Can the frozen C8 source admit an X31 transport-cone comparison?",
+      "baseline": "C7 X30 source and frozen X24 comparator",
+      "change": "fresh C8 transport-cone source for frozen X31",
+      "primary_metric": "source admission before any X24 or X31 metric",
+      "decision": "DTR_CARLA_C8_X31_TRANSPORT_CONE_SOURCE_NOT_EVALUABLE_SCRIPTED_POSE_DRIFT",
+      "report": "research/active/dtr-r0/carla/DTR_CARLA_C8_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md",
+      "source": "research/active/dtr-r0/carla",
+      "commit": "9479e89173769fe326c4f2afc894af9b2d7feaeb",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "observation_perception": 3,
+        "evaluation_evidence": 7,
+        "runtime_infrastructure": 3
+      },
+      "search_text": "dtr-carla-c8-x31-source-not-evaluable-2026-08-30 Can the frozen C8 source admit an X31 transport-cone comparison? C7 X30 source and frozen X24 comparator fresh C8 transport-cone source for frozen X31 source admission before any X24 or X31 metric DTR_CARLA_C8_X31_TRANSPORT_CONE_SOURCE_NOT_EVALUABLE_SCRIPTED_POSE_DRIFT research/active/dtr-r0/carla/DTR_CARLA_C8_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md research/active/dtr-r0/carla"
+    },
+    {
+      "kind": "experiment",
+      "id": "dtr-carla-c9-x31-source-not-evaluable-2026-08-30",
+      "status": "archived",
+      "question": "Can collision-decoupled scripted assets make the frozen X31 source evaluable?",
+      "baseline": "terminal C8 scripted-pose-drift source",
+      "change": "disable physics collision response for pose-authoritative scripted assets",
+      "primary_metric": "source outcome and physical-occlusion admission before model replay",
+      "decision": "DTR_CARLA_C9_X31_COLLISION_DECOUPLED_SOURCE_NOT_EVALUABLE_OCCLUDER_ROUTE_INTERSECTION",
+      "report": "research/active/dtr-r0/carla/DTR_CARLA_C9_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md",
+      "source": "research/active/dtr-r0/carla",
+      "commit": "92b84abd813145fd133319cad5f7543d9de26de3",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "observation_perception": 3,
+        "temporal_belief": 3,
+        "geometry_motion": 4,
+        "evaluation_evidence": 4
+      },
+      "search_text": "dtr-carla-c9-x31-source-not-evaluable-2026-08-30 Can collision-decoupled scripted assets make the frozen X31 source evaluable? terminal C8 scripted-pose-drift source disable physics collision response for pose-authoritative scripted assets source outcome and physical-occlusion admission before model replay DTR_CARLA_C9_X31_COLLISION_DECOUPLED_SOURCE_NOT_EVALUABLE_OCCLUDER_ROUTE_INTERSECTION research/active/dtr-r0/carla/DTR_CARLA_C9_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md research/active/dtr-r0/carla"
+    },
+    {
+      "kind": "experiment",
+      "id": "dtr-carla-c10-x31-source-not-evaluable-2026-08-30",
+      "status": "archived",
+      "question": "Can an out-of-route single-pass occluder produce the frozen complete-loss source needed for X31?",
+      "baseline": "terminal C9 collision-contaminated source",
+      "change": "route-clear side-facing bus with one analytically timed pass",
+      "primary_metric": "track-then-complete-physical-occlusion source admission before model replay",
+      "decision": "DTR_CARLA_C10_X31_OPAQUE_SINGLE_PASS_SOURCE_NOT_EVALUABLE_RASTER_PERMEABLE_OCCLUDER",
+      "report": "research/active/dtr-r0/carla/DTR_CARLA_C10_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md",
+      "source": "research/active/dtr-r0/carla",
+      "commit": "f6ac7728d87cdf9d8e565b5e9b394f99b536f4d8",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "temporal_belief": 6,
+        "decision_lifecycle": 3,
+        "evaluation_evidence": 4
+      },
+      "search_text": "dtr-carla-c10-x31-source-not-evaluable-2026-08-30 Can an out-of-route single-pass occluder produce the frozen complete-loss source needed for X31? terminal C9 collision-contaminated source route-clear side-facing bus with one analytically timed pass track-then-complete-physical-occlusion source admission before model replay DTR_CARLA_C10_X31_OPAQUE_SINGLE_PASS_SOURCE_NOT_EVALUABLE_RASTER_PERMEABLE_OCCLUDER research/active/dtr-r0/carla/DTR_CARLA_C10_X31_SOURCE_NOT_EVALUABLE_2026-08-30.md research/active/dtr-r0/carla"
+    },
+    {
+      "kind": "experiment",
+      "id": "dtr-carla-c11-x31-solid-body-protocol-2026-08-30",
+      "status": "active",
+      "question": "Can a solid-body single-pass occluder admit one fresh C11 source for the frozen X24/X31 comparison?",
+      "baseline": "terminal C10 raster-permeable source",
+      "change": "replace only the bus with the observed solid-body firetruck and matched crossing dwell",
+      "primary_metric": "source admission followed by the unchanged frozen X24/X31 gates",
+      "decision": "FROZEN_PROTOCOL / NOT_RUN / NO_SOURCE_RESULT / NO_X24_OR_X31_METRICS",
+      "report": "research/active/dtr-r0/carla/dtr_carla_c11_x31_solid_body_protocol.json",
+      "source": "research/active/dtr-r0/carla",
+      "commit": "289676fe8f80e002fbdfb943b46d088129fb4c47",
+      "routes": [
+        "obstacle-avoidance"
+      ],
+      "layer_scores": {
+        "source_coverage": 7,
+        "evaluation_evidence": 10
+      },
+      "search_text": "dtr-carla-c11-x31-solid-body-protocol-2026-08-30 Can a solid-body single-pass occluder admit one fresh C11 source for the frozen X24/X31 comparison? terminal C10 raster-permeable source replace only the bus with the observed solid-body firetruck and matched crossing dwell source admission followed by the unchanged frozen X24/X31 gates FROZEN_PROTOCOL / NOT_RUN / NO_SOURCE_RESULT / NO_X24_OR_X31_METRICS research/active/dtr-r0/carla/dtr_carla_c11_x31_solid_body_protocol.json research/active/dtr-r0/carla"
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-panolab-active-entrance-ray-recovery-2026-08-30",
+      "status": "archived",
+      "question": "Can a reciprocal provider-adjacent sidestep expose an exact entity-owned entrance ray that is initially geometry-blocked?",
+      "baseline": "initial blocked Panoramax view",
+      "change": "SIDESTEP_TO_ENTRANCE_FACE over frozen reciprocal prev/next provider links",
+      "primary_metric": "active entrance-ray recovery, action receipts, and occluded-state false authorization",
+      "decision": "L10_PANOLAB_ACTIVE_ENTRANCE_RAY_RECOVERY_DEVELOPMENT_GATE_MET",
+      "report": "research/active/l10-r0/l10_panolab_active_ray_recovery_result_v2.json",
+      "source": "research/active/l10-r0",
+      "commit": "19633a600fbadd6dd117fbdc9c2daad54c7bd450",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "geometry_motion": 3,
+        "handoff_completion": 3,
+        "evaluation_evidence": 4
+      },
+      "search_text": "l10-panolab-active-entrance-ray-recovery-2026-08-30 Can a reciprocal provider-adjacent sidestep expose an exact entity-owned entrance ray that is initially geometry-blocked? initial blocked Panoramax view SIDESTEP_TO_ENTRANCE_FACE over frozen reciprocal prev/next provider links active entrance-ray recovery, action receipts, and occluded-state false authorization L10_PANOLAB_ACTIVE_ENTRANCE_RAY_RECOVERY_DEVELOPMENT_GATE_MET research/active/l10-r0/l10_panolab_active_ray_recovery_result_v2.json research/active/l10-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-panoramax-width-first-pixel-portal-source-2026-08-30",
+      "status": "archived",
+      "question": "Can independently mapped entrance width overcome Panoramax pose uncertainty and admit exact cross-view portal pixels?",
+      "baseline": "exact entrance point-ray and federated Panoramax source ceilings",
+      "change": "width-first portal interval with full declared camera-accuracy envelope",
+      "primary_metric": "reference, query, and joint portal source admission before matcher calls",
+      "decision": "L10_WIDTH_FIRST_PERSPECTIVE_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_3_QUERY_0_OF_3_JOINT_0_OF_3_NO_MATCHER_CALL / GENERIC_PANORAMAX_MINING_CLOSED",
+      "report": "research/active/l10-r0/l10_width_first_perspective_portal_source_admission_result_v1.json",
+      "source": "research/active/l10-r0",
+      "commit": "cac7dd541affbb2aeb27fd3d6746f18b78ce891e",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "source_coverage": 3,
+        "observation_perception": 3,
+        "evaluation_evidence": 4
+      },
+      "search_text": "l10-panoramax-width-first-pixel-portal-source-2026-08-30 Can independently mapped entrance width overcome Panoramax pose uncertainty and admit exact cross-view portal pixels? exact entrance point-ray and federated Panoramax source ceilings width-first portal interval with full declared camera-accuracy envelope reference, query, and joint portal source admission before matcher calls L10_WIDTH_FIRST_PERSPECTIVE_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_3_QUERY_0_OF_3_JOINT_0_OF_3_NO_MATCHER_CALL / GENERIC_PANORAMAX_MINING_CLOSED research/active/l10-r0/l10_width_first_perspective_portal_source_admission_result_v1.json research/active/l10-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-hypersim-posed-portal-transfer-2026-08-30",
+      "status": "archived",
+      "question": "Is exact pose plus a directly posed reference door surface sufficient for cross-trajectory exact-door transfer?",
+      "baseline": "closed unregistered Panoramax pixel-portal line",
+      "change": "provider world-position reference contour projected with official Hypersim pose",
+      "primary_metric": "exact-door Top-1, wrong-door commits, envelope IoU, and centroid containment",
+      "decision": "L10_HYPERSIM_POSED_PORTAL_TRANSFER_DEVELOPMENT_GATE_MET",
+      "report": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "source": "research/active/l10-r0",
+      "commit": "7b1c09cbe8002fc6d6bf38f837a26da6c56a91c1",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "observation_perception": 3,
+        "geometry_motion": 3,
+        "evaluation_evidence": 4
+      },
+      "search_text": "l10-hypersim-posed-portal-transfer-2026-08-30 Is exact pose plus a directly posed reference door surface sufficient for cross-trajectory exact-door transfer? closed unregistered Panoramax pixel-portal line provider world-position reference contour projected with official Hypersim pose exact-door Top-1, wrong-door commits, envelope IoU, and centroid containment L10_HYPERSIM_POSED_PORTAL_TRANSFER_DEVELOPMENT_GATE_MET research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json research/active/l10-r0"
+    },
+    {
+      "kind": "experiment",
+      "id": "l10-scenenn-real-posed-portal-transfer-2026-08-30",
+      "status": "archived",
+      "question": "Does the frozen posed-reference transfer mechanism confirm on fresh real SceneNN RGB-D scenes?",
+      "baseline": "Hypersim posed-portal Development gate",
+      "change": "real reference RGB-D plane and reconstructed pose with evaluator-only query RGB/depth",
+      "primary_metric": "exact-door Top-1, visible transfer, IoU, centroid containment, and metric-world error",
+      "decision": "L10_SCENENN_REAL_RGBD_PARTIAL_METRIC_PORTAL_TRANSFER_CONFIRMATION_GATE_NOT_MET",
+      "report": "research/active/l10-r0/l10_scenenn_real_posed_portal_result_v2.json",
+      "source": "research/active/l10-r0",
+      "commit": "6cfb781a18556a5046956017a48fe783dc1ceb18",
+      "routes": [
+        "ten-meter-copilot"
+      ],
+      "layer_scores": {
+        "observation_perception": 6,
+        "geometry_motion": 3,
+        "evaluation_evidence": 12
+      },
+      "search_text": "l10-scenenn-real-posed-portal-transfer-2026-08-30 Does the frozen posed-reference transfer mechanism confirm on fresh real SceneNN RGB-D scenes? Hypersim posed-portal Development gate real reference RGB-D plane and reconstructed pose with evaluator-only query RGB/depth exact-door Top-1, visible transfer, IoU, centroid containment, and metric-world error L10_SCENENN_REAL_RGBD_PARTIAL_METRIC_PORTAL_TRANSFER_CONFIRMATION_GATE_NOT_MET research/active/l10-r0/l10_scenenn_real_posed_portal_result_v2.json research/active/l10-r0"
     }
   ]
 }

@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "id": "use-ten-meter-copilot-multiscan-2022",
+  "item_id": "dataset-multiscan-2022",
+  "route": "ten-meter-copilot",
+  "mechanism_ids": [
+    "posed-semantic-door-surface-source"
+  ],
+  "use_state": "candidate",
+  "adoption_mode": "dataset",
+  "usage": {
+    "source_scope": "RGB-D streams, per-frame camera poses, textured meshes, per-face object and part semantics, and the door / door_frame label vocabulary needed to isolate real posed door surfaces.",
+    "project_application": "Highest-priority next L10 source candidate for source-side visible door-surface admission: freeze fresh scenes and source/query views, render labelled door triangles into the source camera with a z-buffer, and check the rendered surface against synchronized source depth before any cross-view transfer.",
+    "modifications": "Use MultiScan only as the proposed source/evaluator substrate. Require source-side visibility authority from z-buffered labelled triangles plus synchronized depth; keep query RGB/depth and query door truth evaluator-only, and preserve the existing referent, affordance, waypoint, arrival, and handoff boundaries.",
+    "expected_effect": "Replace the consumed partial-envelope credential with an occlusion-aware visible door-surface credential, making the next real-scene portal-transfer test evaluable without admitting mesh triangles hidden behind foreground geometry."
+  },
+  "evaluation": {
+    "reproduction_status": "not_attempted",
+    "verdict": "not_run",
+    "setup": "",
+    "effect": "",
+    "metrics": [],
+    "claim_boundary": "Priority records source fit, not a completed download, admitted cohort, or experiment result. Even a successful source-side z-buffer check would establish only an input credential for a bounded L10 test; it would not prove a traversable aperture, outdoor named-entrance grounding, access, approach, waypoint, arrival, HANDOFF_READY, product benefit, user benefit, or safety."
+  },
+  "evidence": [
+    {
+      "kind": "external",
+      "ref": "https://3dlg-hcvc.github.io/multiscan/read-the-docs/dataset/index.html",
+      "summary": "Official documentation for RGB, depth, per-frame camera parameters, textured meshes, and per-face semantic annotation files."
+    },
+    {
+      "kind": "external",
+      "ref": "https://github.com/smartscenes/multiscan",
+      "summary": "Official source repository and benchmark label maps reviewed for object- and part-semantic support."
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-08-30",
+      "change": "Added as the highest-priority L10 source candidate for a fresh source-side visible door-surface and z-buffer admission test; no route authority or experimental result was created."
+    }
+  ],
+  "added_at": "2026-08-30",
+  "updated_at": "2026-08-30"
+}
