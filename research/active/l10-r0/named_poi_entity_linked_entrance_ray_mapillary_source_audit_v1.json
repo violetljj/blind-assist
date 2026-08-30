@@ -1,0 +1,98 @@
+{
+  "schema": "l10-pb19-mapillary-entity-linked-entrance-ray-source-audit-v1",
+  "created_at": "2026-08-30",
+  "decision": "L10_PB19_MAPILLARY_SOURCE_NOT_EVALUABLE_UNIQUE_PORTAL_TRUTH_3_OF_4",
+  "mechanism_not_run": "Entity-owned OSM entrance node plus posed-panorama horizontal ray, authorized only when the camera-to-entrance segment reaches the target entrance before any target-self or non-target building occlusion.",
+  "source_receipts": {
+    "initial_roster": {
+      "path": "artifacts.local/knowledge/named-poi-entity-linked-entrance-ray-fresh-v1/source-roster.json",
+      "bytes": 353866,
+      "sha256": "9df0412ef066c30aaa37092d0cd615742fe7731978ef0df390ca7f89eb468b76"
+    },
+    "initial_roster_summary": {
+      "path": "artifacts.local/knowledge/named-poi-entity-linked-entrance-ray-fresh-v1/source-roster-summary.json",
+      "bytes": 9404,
+      "sha256": "d639555f6e8b23efbe7642ac905c1dcebbd4fd23c52fd6153b62bc2fb8e1bf12"
+    },
+    "direct_repair_roster": {
+      "path": "artifacts.local/knowledge/named-poi-entity-linked-entrance-ray-fresh-v2/direct-source-repair-roster.json",
+      "bytes": 106320,
+      "sha256": "1e764bdeb24a1890dd2b77111ce395a53e8197df0bc3490b5519da48ec357640"
+    },
+    "occlusion_control_roster": {
+      "path": "artifacts.local/knowledge/named-poi-entity-linked-entrance-ray-fresh-v2/occlusion-controls-roster.json",
+      "bytes": 108680,
+      "sha256": "db4c5767a5587bb0051bedd0d36d53f147ddcd714666680e78ddccd79c3837df"
+    },
+    "second_adjudication_blind_list": {
+      "path": "artifacts.local/knowledge/named-poi-entity-linked-entrance-ray-fresh-v2/direct-second-adjudication-blind-list.json",
+      "bytes": 1201,
+      "sha256": "fdd26756c8554001d2341d1eb3d7448bb97ae10915f342ab2e4e7b42d1444968"
+    }
+  },
+  "initial_source_audit": {
+    "distinct_target_ways": 12,
+    "direct": 6,
+    "target_self_occluded": 3,
+    "earlier_non_target_occluded": 3,
+    "preregistered_primary_roles": "4 direct + 2 target-self + 2 non-target",
+    "primary_direct_unique_portal_truth_evaluable": 0,
+    "outcome": "The four preregistered direct panoramas did not permit marker-blind entity-plus-portal truth to be uniquely frozen. This is NOT_EVALUABLE, not an algorithm miss."
+  },
+  "source_repair": {
+    "target_universe": 858,
+    "mechanically_valid_direct_combinations": 74,
+    "whole_panorama_pixel_audits": 32,
+    "pixel_audited_distinct_building_ways": 30,
+    "first_adjudicator_retained_direct": 4,
+    "retained_occlusion_controls": {
+      "target_self_occluded": 2,
+      "earlier_non_target_occluded": 2
+    },
+    "old_way_overlap": [],
+    "old_image_overlap": [],
+    "old_sequence_overlap": [],
+    "bearing_or_relative_compass_computations_before_truth_freeze": 0,
+    "predicted_x_computations_before_truth_freeze": 0,
+    "projection_hit_computations": 0,
+    "formal_evaluator_calls": 0,
+    "ocr_calls": 0,
+    "tested_learning_model_calls": 0
+  },
+  "marker_blind_second_adjudication": [
+    {
+      "key": "R01",
+      "target": "Markthal Rotterdam",
+      "first_interval_x": [1240, 2190],
+      "second_decision": "NOT_EVALUABLE_MULTIPLE_WALKABLE_ENTRANCES",
+      "reason": "The arched glass hall contains multiple walkable door leaves/openings and a separate visible side door, so a unique target portal cannot be frozen from pixels alone."
+    },
+    {
+      "key": "R02",
+      "target": "Oude Kerk",
+      "first_interval_x": [2860, 3070],
+      "second_interval_x": [2985, 3035],
+      "strict_intersection_x": [2985, 3035],
+      "decision": "EVALUABLE"
+    },
+    {
+      "key": "R10",
+      "target": "Ontmoetingskerk",
+      "first_interval_x": [3220, 3320],
+      "second_interval_x": [3250, 3300],
+      "strict_intersection_x": [3250, 3300],
+      "decision": "EVALUABLE"
+    },
+    {
+      "key": "R32",
+      "target": "PKN Kievitkerk",
+      "first_interval_x": [2410, 2530],
+      "second_interval_x": [2420, 2455],
+      "strict_intersection_x": [2420, 2455],
+      "decision": "EVALUABLE"
+    }
+  ],
+  "stop_rule": "The frozen confirmation required four independently evaluable direct portals. A 3/4 source is not converted to 3/3, R01 is not deleted after disagreement, no reserve is selected after seeing a projection, and no marker-visible adjudication is allowed.",
+  "legal_successor": "Keep the entity-owned entrance and explicit occlusion representation unchanged, but change the posed-panorama provider to a separately audited Panoramax source whose public HD panoramas expose unique marker-blind portal truth. Reopen only after the raw-pixel orientation contract is independently fixed.",
+  "claim_boundary": "This is a Mapillary source-admission failure before any PB19 projection or formal evaluator run. It is not evidence that the entrance-ray algorithm misses, succeeds, navigates, establishes public access or traversability, reaches the entrance, authorizes HANDOFF_READY, improves a product, benefits users, or is safe."
+}

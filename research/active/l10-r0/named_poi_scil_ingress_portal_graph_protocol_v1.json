@@ -1,0 +1,139 @@
+{
+  "schema": "l10-named-poi-scil-ingress-portal-graph-protocol-v1",
+  "created_at": "2026-08-30",
+  "mode": "SOURCE_ENTITY_AND_FILE_DISJOINT_FRESH_CONFIRMATION",
+  "mechanism": {
+    "name": "Script-Proved Ingress-Connected Portal Graph",
+    "short_name": "SCIL + SP-ICPG",
+    "description": "SCIL localizes a requested-entity proof carrier; the unchanged structural portal proposer supplies raw candidate regions; a frozen ADE20K semantic graph attaches that proof only to candidates below the carrier that contain functional ingress pixels and intersect the same connected host component.",
+    "single_structural_change": "Replace prior direct door-class, object-state, and frame-global proof attachment with an explicit entity-anchor -> semantic-host-component -> walkable-ingress-candidate ownership graph. The graph transports identity spatially; neither generic portal shape nor semantic walkability alone can name the target.",
+    "information_source_change": "The new information is localized script proof plus broad-domain scene topology and ingress semantics. No PB1-PB17 matcher threshold, seed, backbone, detector prompt, crop, tracker, morphology, fusion-weight, or source-label sweep is reopened."
+  },
+  "source": {
+    "path": "research/active/l10-r0/named_poi_scil_ingress_portal_graph_fresh_cohort_v1.json",
+    "bytes": 8068,
+    "sha256": "c267f0a80cd75ea79b03a3aa9fbf3e73cc26fedf3487af6367fafbae05487956"
+  },
+  "source_receipts": {
+    "selection_spec": {
+      "path": "research/active/l10-r0/named_poi_scil_ingress_portal_graph_source_v1.json",
+      "sha256": "088ce12a1b5125fc4f83ba3797513593268856b4293ffc25fac51e064d2040b3"
+    },
+    "materialized_manifest": {
+      "path": "artifacts.local/knowledge/named-poi-scil-ingress-portal-graph-v1/source_manifest.json",
+      "sha256": "360747de8ddfd4c1a41439d89474d014c4cfd916032e9d9e614ac0f1924bfa14",
+      "inventory_sha256": "f7a4ab25632d074b5bc828a1dcd04c24bb85e4eb016864f5b195fcb1b4283ba4"
+    },
+    "freshness": "Eight entity names, Chinese aliases, and exact filenames had zero hits in PB1-PB17 active sources and local named-poi manifests. Roles and all human target/tenant boxes were frozen on downloaded source pixels before any PB18 OCR, semantic, or proposer call."
+  },
+  "evaluator": {
+    "path": "research/active/l10-r0/named_poi_scil_ingress_portal_graph.py",
+    "bytes": 23409,
+    "sha256": "8bc79f8f4352571ac852111649f96e709562d28d51dcc55d1439ce3b1c3c5f9c"
+  },
+  "frozen_components": {
+    "scil_evaluator": {
+      "path": "research/active/l10-r0/named_poi_biscript_eval.py",
+      "bytes": 25524,
+      "sha256": "49a391ee937ddbd23d48c1f2554d3874d8f1242a9458bdf15ef7a31d0e5c9754"
+    },
+    "portal_proposer": {
+      "path": "research/active/l10-r0/named_poi_portal_lattice.py",
+      "bytes": 16131,
+      "sha256": "2cf6b0d80a5691150f6a70e9a45e2a6136e87480b4e06fa1fa82ea470386ba61"
+    },
+    "semantic_model": {
+      "path": "artifacts.local/models/yolo26-sem-ade20k/yolo26x-sem-ade20k.pt",
+      "bytes": 80929945,
+      "sha256": "aa51833f1aa5dc73b378d7ba99f914ef9fa82e434cb23d7b1705dd24bd33b621"
+    }
+  },
+  "runtime": {
+    "versions": {
+      "python": "3.11.9",
+      "torch": "2.11.0+cu130",
+      "ultralytics": "8.4.102",
+      "opencv": "4.10.0",
+      "numpy": "2.4.4",
+      "rapidocr": "3.9.2"
+    },
+    "semantic_image_size": 640,
+    "semantic_backend": "CUDA-only with fail-closed actual-device verification.",
+    "ocr_backend": "RapidOCR 3.9.2 with ONNX Runtime CPUExecutionProvider.",
+    "ocr_model_root": "artifacts.local/runtime/semantic-anchor-v1/models",
+    "ocr_models": {
+      "PP-OCRv6_det_small.onnx": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+      "PP-OCRv6_rec_small.onnx": "6f327246b50388f3c176ae304bd95767ea6dc0c9ae92153ef8cbe210b3c14884",
+      "ch_ppocr_mobile_v2.0_cls_mobile.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"
+    }
+  },
+  "scil": {
+    "authority": "PB4 Development-selected SCIL thresholds copied exactly and applied once to the eight fresh candidate profiles as a single pack.",
+    "score_threshold": 0.4768178970490568,
+    "margin_threshold": 0.034304215834340235,
+    "localized_carrier_rule": "Enumerate contiguous OCR spans of length one through four and retain the strongest target-specific, conflict-free SCIL carrier by frozen lexicographic order. This localizes already-frozen SCIL evidence; it does not change the global proof thresholds.",
+    "proof_rule": "Only a correct, conflict-free global proof meeting both thresholds may carry target authority. UNKNOWN and wrong proofs authorize no portal."
+  },
+  "graph": {
+    "development_authority": "One discrete rule was selected on the already-consumed PB7 cohort. It produced target-portal Top1 6/6, Top3 6/6, no-portal false authorization 0/2, and balanced accuracy 1.0. The smallest retained positive ingress fraction was 0.04310344827586207; the largest no-portal proposal fraction was 0.0018263561320754718. The fixed 0.01 threshold lies between them and is not swept on PB18.",
+    "host_classes": {
+      "0": "wall",
+      "1": "building",
+      "8": "windowpane",
+      "25": "house",
+      "42": "column",
+      "48": "skyscraper",
+      "147": "glass"
+    },
+    "ingress_classes": {
+      "3": "floor",
+      "11": "sidewalk",
+      "14": "door",
+      "52": "path",
+      "53": "stairs",
+      "58": "screen door",
+      "59": "stairway",
+      "96": "escalator",
+      "121": "step"
+    },
+    "minimum_ingress_fraction": 0.01,
+    "maximum_authorized_candidates": 3,
+    "host_rule": "Union the frozen host classes, form raw eight-connected components, choose the component with maximum overlap with the localized SCIL carrier, or the nearest host pixel if the carrier itself has no host pixels.",
+    "candidate_rule": "In unchanged portal-proposer rank order, retain a candidate only when its center is not above the SCIL carrier center, at least 1% of its semantic crop is an ingress class, and at least one crop pixel belongs to the selected host component. Authorize the first three retained candidates only after correct SCIL proof.",
+    "truth_membership": "A proposal is a target or tenant-decoy member when its center lies inside the corresponding frozen human box and at least half of its own area lies inside that box.",
+    "forbidden_processing": "No source-dependent threshold, class, connectivity, rank, candidate count, morphology, crop, OCR alias, detector, prompt, tracker, or fusion change after this protocol."
+  },
+  "cohort": {
+    "entities": 8,
+    "plain_target_portal_frames": 4,
+    "identity_visible_no_portal_frames": 2,
+    "target_plus_tenant_decoy_frames": 2,
+    "target_portal_opportunities": 6,
+    "negative_opportunities": 4,
+    "negative_definition": "The two no-portal frames contribute frame-level rejection opportunities. The two decoy frames contribute only the explicitly frozen tenant-portal regions as negative opportunities; each also contains a positive target-building portal.",
+    "pre_freeze_model_calls": 0
+  },
+  "metrics": [
+    "SCIL correct proof, wrong proof, and UNKNOWN counts",
+    "target-building portal Top1 and Top3 membership across all six target-portal frames",
+    "false authorization on two identity-visible no-portal frames",
+    "tenant-decoy overlap authorization on two same-frame ownership controls",
+    "exact target-hit and tenant-reject ownership pairs",
+    "opportunity-balanced Top3 accuracy over six positive portal opportunities and four negative no-portal-or-tenant opportunities"
+  ],
+  "promotion_gate": {
+    "identity": "8/8 correct SCIL proofs, zero wrong, zero UNKNOWN.",
+    "target_portal_top1": "6/6 target-building portal Top1 hits.",
+    "target_portal_top3": "6/6 target-building portal Top3 hits.",
+    "no_portal_rejection": "0/2 no-portal false authorizations.",
+    "tenant_ownership": "0/2 tenant-decoy overlap authorizations and 2/2 exact target-hit plus tenant-reject pairs.",
+    "aggregate": "Opportunity-balanced Top3 accuracy must equal 1.0; all evaluator gate clauses are conjunctive."
+  },
+  "formal_output": "artifacts.local/evidence/l10-pb18-scil-ingress-portal-graph/result.json",
+  "stop_rule": "Run exactly once to the absent frozen output. After output, do not alter source files, aliases, roles, human boxes, SCIL thresholds, semantic model/classes, host rule, ingress threshold, candidate rule, membership, rank limit, metrics, or gate on these rows. A failure closes this representation on PB18 rather than triggering a rescue sweep.",
+  "next_step": {
+    "gate_met": "Retain SP-ICPG as conditional current-frame entity-bound portal-set proposal authority. The next new source must measure issued action -> changed active view -> retained/reacquired target portal; do not claim guidance or HANDOFF_READY from PB18.",
+    "gate_not_met": "Close this graph on PB18 and move to an external entity-owned entrance-node plus posed panorama ray source, which changes the information modality rather than tuning this cohort."
+  },
+  "claim_boundary": "A pass is fresh, entity/file-disjoint evidence that localized script identity, broad scene topology, and functional ingress semantics can bind a current-frame target portal set while rejecting same-frame tenant portals on this opportunity-stratified cohort. It does not establish natural prevalence, legal/public access, traversability, active-view causality, temporal persistence, directional guidance, metric arrival, HANDOFF_READY, completion, product benefit, user benefit, or safety."
+}

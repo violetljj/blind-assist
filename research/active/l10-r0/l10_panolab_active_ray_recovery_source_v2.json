@@ -1,0 +1,3200 @@
+{
+  "schema": "blindassist-l10-panolab-active-ray-recovery-source-v2",
+  "status": "FROZEN_READY_FOR_SINGLE_REPLAY",
+  "source_receipts": {
+    "metadata_freeze": {
+      "path": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/active-recovery-metadata-freeze.json",
+      "sha256": "e395faf9f37559419a88ef85cadcfb96bee623ca8229f9fc5a12da9f26e2f7a8"
+    },
+    "download_manifest": {
+      "path": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/active-recovery-download-manifest.json",
+      "sha256": "eb639358da7686342b3b51302711fc0fd0c02ae116859263042e3fa26b0dff4b"
+    },
+    "nearby_geometry": {
+      "path": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/nearby-geometry.json",
+      "sha256": "89f407687f922118eab4f968f0706f6d33976dcf15b6146315e6e90fafa31b4e"
+    },
+    "prior_replay_transport_defect": {
+      "path": "research/active/l10-r0/l10_panolab_active_ray_recovery_result_v1.json",
+      "sha256": "381dac96d45c3f8661b1091c7cdd3a85b35071ded2cf365f959fc9c705ee628a",
+      "defect": "sanitized provider items omitted frozen prev/next links, so the evaluator could not observe reciprocal action receipts",
+      "unchanged_surfaces": [
+        "episodes",
+        "images",
+        "geometry",
+        "orientation gate",
+        "projection formula",
+        "action relation",
+        "decision thresholds"
+      ]
+    }
+  },
+  "contract_receipt": {
+    "episode_count": 4,
+    "image_count": 8,
+    "distinct_target_way_count": 4,
+    "distinct_sequence_count": 4,
+    "role_counts": {
+      "NON_TARGET_BUILDING_OCCLUDED": 2,
+      "TARGET_SELF_OCCLUDED": 2
+    },
+    "reciprocal_provider_adjacency_required": true,
+    "strict_orientation_required_for_both_frames": true,
+    "projection_calls_before_source_freeze": 0
+  },
+  "episodes": [
+    {
+      "episode_id": "AR01",
+      "target": {
+        "entity_name": "La Source",
+        "building": {
+          "id": 358423547,
+          "version": 13,
+          "tags": {
+            "addr:city": "Fontaine",
+            "addr:housenumber": "38",
+            "addr:postcode": "38600",
+            "addr:street": "Avenue Lénine",
+            "admin_level": "8",
+            "amenity": "theatre",
+            "building": "yes",
+            "building:levels": "2",
+            "contact:phone": "+33 4 76 28 76 76",
+            "contact:website": "http://lasource-fontaine.eu/",
+            "government": "culture",
+            "name": "La Source",
+            "opening_hours": "Mo-Fr 16:30-19:30; Tu 14:00-19:30; We 10:00-19:30; SH Mo off; SH Tu-Fr 14:00-18:00",
+            "operator": "Ville de Fontaine",
+            "operator:type": "public",
+            "panoramax": "9f799d0c-80a6-49d4-a597-ea6f5fda21db",
+            "ref:FR:RNB": "1J7TAPC8BAZT",
+            "roof:shape": "flat",
+            "wheelchair": "yes"
+          },
+          "nodes": [
+            {
+              "id": 3633448088,
+              "lon_lat": [
+                5.6877747,
+                45.1905765
+              ]
+            },
+            {
+              "id": 11200780257,
+              "lon_lat": [
+                5.6881755,
+                45.190643
+              ]
+            },
+            {
+              "id": 3633448092,
+              "lon_lat": [
+                5.6882959,
+                45.190663
+              ]
+            },
+            {
+              "id": 805750132,
+              "lon_lat": [
+                5.6883079,
+                45.1906899
+              ]
+            },
+            {
+              "id": 805700931,
+              "lon_lat": [
+                5.6883389,
+                45.1907377
+              ]
+            },
+            {
+              "id": 805665677,
+              "lon_lat": [
+                5.6883696,
+                45.1907844
+              ]
+            },
+            {
+              "id": 805715019,
+              "lon_lat": [
+                5.6884273,
+                45.190874
+              ]
+            },
+            {
+              "id": 3633452286,
+              "lon_lat": [
+                5.6879004,
+                45.1910593
+              ]
+            },
+            {
+              "id": 3633452284,
+              "lon_lat": [
+                5.6878797,
+                45.191025
+              ]
+            },
+            {
+              "id": 3633452285,
+              "lon_lat": [
+                5.6878163,
+                45.1910489
+              ]
+            },
+            {
+              "id": 4459005122,
+              "lon_lat": [
+                5.6877946,
+                45.1910213
+              ]
+            },
+            {
+              "id": 3633452281,
+              "lon_lat": [
+                5.6876997,
+                45.1908804
+              ]
+            },
+            {
+              "id": 3633452282,
+              "lon_lat": [
+                5.687682,
+                45.1908919
+              ]
+            },
+            {
+              "id": 3633452280,
+              "lon_lat": [
+                5.6876274,
+                45.1908097
+              ]
+            },
+            {
+              "id": 3633454894,
+              "lon_lat": [
+                5.6876318,
+                45.1907754
+              ]
+            },
+            {
+              "id": 3633448090,
+              "lon_lat": [
+                5.6877248,
+                45.1906069
+              ]
+            },
+            {
+              "id": 3633448089,
+              "lon_lat": [
+                5.6877447,
+                45.1905802
+              ]
+            },
+            {
+              "id": 3633448087,
+              "lon_lat": [
+                5.687762,
+                45.190575
+              ]
+            },
+            {
+              "id": 3633448088,
+              "lon_lat": [
+                5.6877747,
+                45.1905765
+              ]
+            }
+          ]
+        },
+        "entrance_node": {
+          "id": 4459005122,
+          "version": 1,
+          "tags": {
+            "entrance": "main",
+            "wheelchair": "yes"
+          },
+          "lon_lat": [
+            5.6877946,
+            45.1910213
+          ]
+        }
+      },
+      "sequence_id": "1a557ba8-5055-4ae1-85dd-51b50fcbd1f6",
+      "provider_link_relation": "prev",
+      "camera_displacement_m": 11.168,
+      "start_expected_visibility": "NON_TARGET_BUILDING_OCCLUDED",
+      "start": {
+        "key": "AR01-START",
+        "panorama": {
+          "provider": "Panoramax OSM-FR",
+          "image_id": "80abf3fb-5869-424e-a0de-cad039c1fca8",
+          "sequence_id": "1a557ba8-5055-4ae1-85dd-51b50fcbd1f6",
+          "camera_lon_lat": [
+            5.6875183,
+            45.191388889
+          ],
+          "image_size": [
+            5760,
+            2880
+          ],
+          "local_path": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/images/80abf3fb-5869-424e-a0de-cad039c1fca8.jpg",
+          "image_sha256": "6f17905aa7fb0f9c6dd993d458438cef596f15d782eb6bcbea291b4fcc60d846",
+          "image_bytes": 2633129,
+          "provider_item": {
+            "type": "Feature",
+            "id": "80abf3fb-5869-424e-a0de-cad039c1fca8",
+            "collection": "1a557ba8-5055-4ae1-85dd-51b50fcbd1f6",
+            "geometry": {
+              "coordinates": [
+                5.6875183,
+                45.191388889
+              ],
+              "type": "Point"
+            },
+            "properties": {
+              "view:azimuth": 295,
+              "pers:yaw": 0.0,
+              "pers:pitch": 0.0,
+              "pers:roll": 0.0,
+              "pers:interior_orientation": {
+                "camera_manufacturer": "GoPro",
+                "camera_model": "Max",
+                "field_of_view": 360,
+                "focal_length": 3.0,
+                "sensor_array_dimensions": [
+                  5760,
+                  2880
+                ]
+              },
+              "exif": {
+                "Exif.GPSInfo.GPSImgDirection": "3360709/11389",
+                "Exif.GPSInfo.GPSImgDirectionRef": "T",
+                "Xmp.GPano.PoseHeadingDegrees": "0.0",
+                "Xmp.GPano.PosePitchDegrees": "0.0",
+                "Xmp.GPano.PoseRollDegrees": "0.0",
+                "Xmp.GPano.ProjectionType": "equirectangular"
+              }
+            },
+            "links": [
+              {
+                "rel": "next",
+                "id": "291ff4c6-6cbc-4996-9e9e-c3869f5a007e",
+                "href": "https://panoramax.openstreetmap.fr/api/collections/1a557ba8-5055-4ae1-85dd-51b50fcbd1f6/items/291ff4c6-6cbc-4996-9e9e-c3869f5a007e"
+              },
+              {
+                "rel": "prev",
+                "id": "f4768f56-8427-4bd3-b6c7-8c5d2701dd5d",
+                "href": "https://panoramax.openstreetmap.fr/api/collections/1a557ba8-5055-4ae1-85dd-51b50fcbd1f6/items/f4768f56-8427-4bd3-b6c7-8c5d2701dd5d"
+              }
+            ]
+          }
+        },
+        "target": {
+          "entity_name": "La Source",
+          "building": {
+            "id": 358423547,
+            "version": 13,
+            "tags": {
+              "addr:city": "Fontaine",
+              "addr:housenumber": "38",
+              "addr:postcode": "38600",
+              "addr:street": "Avenue Lénine",
+              "admin_level": "8",
+              "amenity": "theatre",
+              "building": "yes",
+              "building:levels": "2",
+              "contact:phone": "+33 4 76 28 76 76",
+              "contact:website": "http://lasource-fontaine.eu/",
+              "government": "culture",
+              "name": "La Source",
+              "opening_hours": "Mo-Fr 16:30-19:30; Tu 14:00-19:30; We 10:00-19:30; SH Mo off; SH Tu-Fr 14:00-18:00",
+              "operator": "Ville de Fontaine",
+              "operator:type": "public",
+              "panoramax": "9f799d0c-80a6-49d4-a597-ea6f5fda21db",
+              "ref:FR:RNB": "1J7TAPC8BAZT",
+              "roof:shape": "flat",
+              "wheelchair": "yes"
+            },
+            "nodes": [
+              {
+                "id": 3633448088,
+                "lon_lat": [
+                  5.6877747,
+                  45.1905765
+                ]
+              },
+              {
+                "id": 11200780257,
+                "lon_lat": [
+                  5.6881755,
+                  45.190643
+                ]
+              },
+              {
+                "id": 3633448092,
+                "lon_lat": [
+                  5.6882959,
+                  45.190663
+                ]
+              },
+              {
+                "id": 805750132,
+                "lon_lat": [
+                  5.6883079,
+                  45.1906899
+                ]
+              },
+              {
+                "id": 805700931,
+                "lon_lat": [
+                  5.6883389,
+                  45.1907377
+                ]
+              },
+              {
+                "id": 805665677,
+                "lon_lat": [
+                  5.6883696,
+                  45.1907844
+                ]
+              },
+              {
+                "id": 805715019,
+                "lon_lat": [
+                  5.6884273,
+                  45.190874
+                ]
+              },
+              {
+                "id": 3633452286,
+                "lon_lat": [
+                  5.6879004,
+                  45.1910593
+                ]
+              },
+              {
+                "id": 3633452284,
+                "lon_lat": [
+                  5.6878797,
+                  45.191025
+                ]
+              },
+              {
+                "id": 3633452285,
+                "lon_lat": [
+                  5.6878163,
+                  45.1910489
+                ]
+              },
+              {
+                "id": 4459005122,
+                "lon_lat": [
+                  5.6877946,
+                  45.1910213
+                ]
+              },
+              {
+                "id": 3633452281,
+                "lon_lat": [
+                  5.6876997,
+                  45.1908804
+                ]
+              },
+              {
+                "id": 3633452282,
+                "lon_lat": [
+                  5.687682,
+                  45.1908919
+                ]
+              },
+              {
+                "id": 3633452280,
+                "lon_lat": [
+                  5.6876274,
+                  45.1908097
+                ]
+              },
+              {
+                "id": 3633454894,
+                "lon_lat": [
+                  5.6876318,
+                  45.1907754
+                ]
+              },
+              {
+                "id": 3633448090,
+                "lon_lat": [
+                  5.6877248,
+                  45.1906069
+                ]
+              },
+              {
+                "id": 3633448089,
+                "lon_lat": [
+                  5.6877447,
+                  45.1905802
+                ]
+              },
+              {
+                "id": 3633448087,
+                "lon_lat": [
+                  5.687762,
+                  45.190575
+                ]
+              },
+              {
+                "id": 3633448088,
+                "lon_lat": [
+                  5.6877747,
+                  45.1905765
+                ]
+              }
+            ]
+          },
+          "entrance_node": {
+            "id": 4459005122,
+            "version": 1,
+            "tags": {
+              "entrance": "main",
+              "wheelchair": "yes"
+            },
+            "lon_lat": [
+              5.6877946,
+              45.1910213
+            ]
+          }
+        },
+        "occluder_buildings": [
+          {
+            "id": 66595736,
+            "version": 7,
+            "tags": {
+              "amenity": "shelter",
+              "bench": "yes",
+              "building": "roof",
+              "name": "Fontaine - Hôtel de Ville - La Source",
+              "network": "M réso",
+              "operator": "JCDecaux",
+              "shelter_type": "public_transport",
+              "wall": "no"
+            },
+            "nodes": [
+              {
+                "id": 805748114,
+                "lon_lat": [
+                  5.687556,
+                  45.191281
+                ]
+              },
+              {
+                "id": 805693873,
+                "lon_lat": [
+                  5.6876208,
+                  45.1912592
+                ]
+              },
+              {
+                "id": 805705451,
+                "lon_lat": [
+                  5.6876311,
+                  45.1912743
+                ]
+              },
+              {
+                "id": 805690217,
+                "lon_lat": [
+                  5.6875662,
+                  45.1912961
+                ]
+              },
+              {
+                "id": 4829368746,
+                "lon_lat": [
+                  5.6875605,
+                  45.1912876
+                ]
+              },
+              {
+                "id": 805748114,
+                "lon_lat": [
+                  5.687556,
+                  45.191281
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "key": "AR01-AFTER",
+        "panorama": {
+          "provider": "Panoramax OSM-FR",
+          "image_id": "f4768f56-8427-4bd3-b6c7-8c5d2701dd5d",
+          "sequence_id": "1a557ba8-5055-4ae1-85dd-51b50fcbd1f6",
+          "camera_lon_lat": [
+            5.6876475,
+            45.1913465
+          ],
+          "image_size": [
+            5760,
+            2880
+          ],
+          "local_path": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/images/f4768f56-8427-4bd3-b6c7-8c5d2701dd5d.jpg",
+          "image_sha256": "27773129c739e995e582d393c5eb509c05a12ac117f7fec89f0becb54fcbae3c",
+          "image_bytes": 2674607,
+          "provider_item": {
+            "type": "Feature",
+            "id": "f4768f56-8427-4bd3-b6c7-8c5d2701dd5d",
+            "collection": "1a557ba8-5055-4ae1-85dd-51b50fcbd1f6",
+            "geometry": {
+              "coordinates": [
+                5.6876475,
+                45.1913465
+              ],
+              "type": "Point"
+            },
+            "properties": {
+              "view:azimuth": 294,
+              "pers:yaw": 0.0,
+              "pers:pitch": 0.0,
+              "pers:roll": 0.0,
+              "pers:interior_orientation": {
+                "camera_manufacturer": "GoPro",
+                "camera_model": "Max",
+                "field_of_view": 360,
+                "focal_length": 3.0,
+                "sensor_array_dimensions": [
+                  5760,
+                  2880
+                ]
+              },
+              "exif": {
+                "Exif.GPSInfo.GPSImgDirection": "810191/2753",
+                "Exif.GPSInfo.GPSImgDirectionRef": "T",
+                "Xmp.GPano.PoseHeadingDegrees": "0.0",
+                "Xmp.GPano.PosePitchDegrees": "0.0",
+                "Xmp.GPano.PoseRollDegrees": "0.0",
+                "Xmp.GPano.ProjectionType": "equirectangular"
+              }
+            },
+            "links": [
+              {
+                "rel": "next",
+                "id": "80abf3fb-5869-424e-a0de-cad039c1fca8",
+                "href": "https://panoramax.openstreetmap.fr/api/collections/1a557ba8-5055-4ae1-85dd-51b50fcbd1f6/items/80abf3fb-5869-424e-a0de-cad039c1fca8"
+              },
+              {
+                "rel": "prev",
+                "id": "379f99d0-c06c-480c-b4b9-82fd1956c88c",
+                "href": "https://panoramax.openstreetmap.fr/api/collections/1a557ba8-5055-4ae1-85dd-51b50fcbd1f6/items/379f99d0-c06c-480c-b4b9-82fd1956c88c"
+              }
+            ]
+          }
+        },
+        "target": {
+          "entity_name": "La Source",
+          "building": {
+            "id": 358423547,
+            "version": 13,
+            "tags": {
+              "addr:city": "Fontaine",
+              "addr:housenumber": "38",
+              "addr:postcode": "38600",
+              "addr:street": "Avenue Lénine",
+              "admin_level": "8",
+              "amenity": "theatre",
+              "building": "yes",
+              "building:levels": "2",
+              "contact:phone": "+33 4 76 28 76 76",
+              "contact:website": "http://lasource-fontaine.eu/",
+              "government": "culture",
+              "name": "La Source",
+              "opening_hours": "Mo-Fr 16:30-19:30; Tu 14:00-19:30; We 10:00-19:30; SH Mo off; SH Tu-Fr 14:00-18:00",
+              "operator": "Ville de Fontaine",
+              "operator:type": "public",
+              "panoramax": "9f799d0c-80a6-49d4-a597-ea6f5fda21db",
+              "ref:FR:RNB": "1J7TAPC8BAZT",
+              "roof:shape": "flat",
+              "wheelchair": "yes"
+            },
+            "nodes": [
+              {
+                "id": 3633448088,
+                "lon_lat": [
+                  5.6877747,
+                  45.1905765
+                ]
+              },
+              {
+                "id": 11200780257,
+                "lon_lat": [
+                  5.6881755,
+                  45.190643
+                ]
+              },
+              {
+                "id": 3633448092,
+                "lon_lat": [
+                  5.6882959,
+                  45.190663
+                ]
+              },
+              {
+                "id": 805750132,
+                "lon_lat": [
+                  5.6883079,
+                  45.1906899
+                ]
+              },
+              {
+                "id": 805700931,
+                "lon_lat": [
+                  5.6883389,
+                  45.1907377
+                ]
+              },
+              {
+                "id": 805665677,
+                "lon_lat": [
+                  5.6883696,
+                  45.1907844
+                ]
+              },
+              {
+                "id": 805715019,
+                "lon_lat": [
+                  5.6884273,
+                  45.190874
+                ]
+              },
+              {
+                "id": 3633452286,
+                "lon_lat": [
+                  5.6879004,
+                  45.1910593
+                ]
+              },
+              {
+                "id": 3633452284,
+                "lon_lat": [
+                  5.6878797,
+                  45.191025
+                ]
+              },
+              {
+                "id": 3633452285,
+                "lon_lat": [
+                  5.6878163,
+                  45.1910489
+                ]
+              },
+              {
+                "id": 4459005122,
+                "lon_lat": [
+                  5.6877946,
+                  45.1910213
+                ]
+              },
+              {
+                "id": 3633452281,
+                "lon_lat": [
+                  5.6876997,
+                  45.1908804
+                ]
+              },
+              {
+                "id": 3633452282,
+                "lon_lat": [
+                  5.687682,
+                  45.1908919
+                ]
+              },
+              {
+                "id": 3633452280,
+                "lon_lat": [
+                  5.6876274,
+                  45.1908097
+                ]
+              },
+              {
+                "id": 3633454894,
+                "lon_lat": [
+                  5.6876318,
+                  45.1907754
+                ]
+              },
+              {
+                "id": 3633448090,
+                "lon_lat": [
+                  5.6877248,
+                  45.1906069
+                ]
+              },
+              {
+                "id": 3633448089,
+                "lon_lat": [
+                  5.6877447,
+                  45.1905802
+                ]
+              },
+              {
+                "id": 3633448087,
+                "lon_lat": [
+                  5.687762,
+                  45.190575
+                ]
+              },
+              {
+                "id": 3633448088,
+                "lon_lat": [
+                  5.6877747,
+                  45.1905765
+                ]
+              }
+            ]
+          },
+          "entrance_node": {
+            "id": 4459005122,
+            "version": 1,
+            "tags": {
+              "entrance": "main",
+              "wheelchair": "yes"
+            },
+            "lon_lat": [
+              5.6877946,
+              45.1910213
+            ]
+          }
+        },
+        "occluder_buildings": []
+      }
+    },
+    {
+      "episode_id": "AR02",
+      "target": {
+        "entity_name": "La Galerie Saint-Martin-d’Hères",
+        "building": {
+          "id": 28709471,
+          "version": 32,
+          "tags": {
+            "addr:city": "Saint-Martin-d'Hères",
+            "addr:country": "FR",
+            "addr:housenumber": "76",
+            "addr:postcode": "38400",
+            "addr:street": "Avenue Gabriel Péri",
+            "building": "retail",
+            "building:colour": "silver",
+            "building:levels": "3",
+            "diff:ref:FR:RNB": "multiple",
+            "height": "8",
+            "internet_access": "wlan",
+            "name": "La Galerie Saint-Martin-d’Hères",
+            "opening_hours": "Mo-Sa 08:30-21:00",
+            "phone": "+33 1 53 70 56 56",
+            "ref:FR:RNB": "GKGX5EF5B1DS;2SDG5FXEABTR",
+            "roof:colour": "gray",
+            "roof:levels": "0",
+            "roof:shape": "flat",
+            "shop": "mall",
+            "toilets": "yes",
+            "website": "https://www.la-galerie.com/",
+            "wheelchair": "yes"
+          },
+          "nodes": [
+            {
+              "id": 349139212,
+              "lon_lat": [
+                5.7583575,
+                45.1856875
+              ]
+            },
+            {
+              "id": 4962273226,
+              "lon_lat": [
+                5.7583223,
+                45.1856564
+              ]
+            },
+            {
+              "id": 4962273225,
+              "lon_lat": [
+                5.758273,
+                45.1856116
+              ]
+            },
+            {
+              "id": 4962728663,
+              "lon_lat": [
+                5.7582222,
+                45.1855636
+              ]
+            },
+            {
+              "id": 4962728666,
+              "lon_lat": [
+                5.7582058,
+                45.1855478
+              ]
+            },
+            {
+              "id": 2522151934,
+              "lon_lat": [
+                5.7581365,
+                45.1854838
+              ]
+            },
+            {
+              "id": 315585635,
+              "lon_lat": [
+                5.7575867,
+                45.1849661
+              ]
+            },
+            {
+              "id": 315585637,
+              "lon_lat": [
+                5.7576155,
+                45.1848151
+              ]
+            },
+            {
+              "id": 315585638,
+              "lon_lat": [
+                5.7576725,
+                45.1848209
+              ]
+            },
+            {
+              "id": 315585639,
+              "lon_lat": [
+                5.757715,
+                45.184601
+              ]
+            },
+            {
+              "id": 315585641,
+              "lon_lat": [
+                5.7579638,
+                45.1844711
+              ]
+            },
+            {
+              "id": 315585642,
+              "lon_lat": [
+                5.7578799,
+                45.1843896
+              ]
+            },
+            {
+              "id": 315585643,
+              "lon_lat": [
+                5.758525,
+                45.1840532
+              ]
+            },
+            {
+              "id": 6966327030,
+              "lon_lat": [
+                5.7588924,
+                45.1843997
+              ]
+            },
+            {
+              "id": 349139231,
+              "lon_lat": [
+                5.7591349,
+                45.1846277
+              ]
+            },
+            {
+              "id": 2522151920,
+              "lon_lat": [
+                5.7593218,
+                45.1847938
+              ]
+            },
+            {
+              "id": 8004422700,
+              "lon_lat": [
+                5.7593417,
+                45.1848121
+              ]
+            },
+            {
+              "id": 4962728679,
+              "lon_lat": [
+                5.7593612,
+                45.18483
+              ]
+            },
+            {
+              "id": 4962728683,
+              "lon_lat": [
+                5.7594443,
+                45.1849081
+              ]
+            },
+            {
+              "id": 8004422694,
+              "lon_lat": [
+                5.7595016,
+                45.1848757
+              ]
+            },
+            {
+              "id": 315585645,
+              "lon_lat": [
+                5.759696,
+                45.1850521
+              ]
+            },
+            {
+              "id": 12281812513,
+              "lon_lat": [
+                5.7596639,
+                45.185069
+              ]
+            },
+            {
+              "id": 4962728684,
+              "lon_lat": [
+                5.7596341,
+                45.1850846
+              ]
+            },
+            {
+              "id": 349139228,
+              "lon_lat": [
+                5.7594757,
+                45.1851683
+              ]
+            },
+            {
+              "id": 349139229,
+              "lon_lat": [
+                5.7594706,
+                45.1852034
+              ]
+            },
+            {
+              "id": 2522151931,
+              "lon_lat": [
+                5.7594526,
+                45.1852136
+              ]
+            },
+            {
+              "id": 349139230,
+              "lon_lat": [
+                5.7594295,
+                45.1852265
+              ]
+            },
+            {
+              "id": 349139227,
+              "lon_lat": [
+                5.7593787,
+                45.1852222
+              ]
+            },
+            {
+              "id": 8069495286,
+              "lon_lat": [
+                5.7593104,
+                45.1852582
+              ]
+            },
+            {
+              "id": 8069479584,
+              "lon_lat": [
+                5.7592731,
+                45.1852779
+              ]
+            },
+            {
+              "id": 4962424293,
+              "lon_lat": [
+                5.7591974,
+                45.1853178
+              ]
+            },
+            {
+              "id": 4962335140,
+              "lon_lat": [
+                5.7591369,
+                45.1853497
+              ]
+            },
+            {
+              "id": 8069495290,
+              "lon_lat": [
+                5.7590786,
+                45.1853804
+              ]
+            },
+            {
+              "id": 8069495287,
+              "lon_lat": [
+                5.7590411,
+                45.1853998
+              ]
+            },
+            {
+              "id": 4962335141,
+              "lon_lat": [
+                5.7590302,
+                45.1854059
+              ]
+            },
+            {
+              "id": 3235368963,
+              "lon_lat": [
+                5.7590119,
+                45.1854156
+              ]
+            },
+            {
+              "id": 3235368962,
+              "lon_lat": [
+                5.7589937,
+                45.1854252
+              ]
+            },
+            {
+              "id": 11774051470,
+              "lon_lat": [
+                5.7589313,
+                45.1854581
+              ]
+            },
+            {
+              "id": 4962728668,
+              "lon_lat": [
+                5.7588688,
+                45.185491
+              ]
+            },
+            {
+              "id": 3235368666,
+              "lon_lat": [
+                5.7587594,
+                45.1855487
+              ]
+            },
+            {
+              "id": 4962728661,
+              "lon_lat": [
+                5.7587432,
+                45.1855572
+              ]
+            },
+            {
+              "id": 4962728660,
+              "lon_lat": [
+                5.7586664,
+                45.1855977
+              ]
+            },
+            {
+              "id": 4962728659,
+              "lon_lat": [
+                5.75864,
+                45.1856116
+              ]
+            },
+            {
+              "id": 349139219,
+              "lon_lat": [
+                5.7586331,
+                45.1856152
+              ]
+            },
+            {
+              "id": 349139221,
+              "lon_lat": [
+                5.758628,
+                45.1856471
+              ]
+            },
+            {
+              "id": 2522151940,
+              "lon_lat": [
+                5.758608,
+                45.1856581
+              ]
+            },
+            {
+              "id": 349139226,
+              "lon_lat": [
+                5.7585853,
+                45.1856706
+              ]
+            },
+            {
+              "id": 349139222,
+              "lon_lat": [
+                5.7585342,
+                45.1856669
+              ]
+            },
+            {
+              "id": 9998570306,
+              "lon_lat": [
+                5.7584603,
+                45.1857067
+              ]
+            },
+            {
+              "id": 349139224,
+              "lon_lat": [
+                5.7584086,
+                45.1857346
+              ]
+            },
+            {
+              "id": 349139212,
+              "lon_lat": [
+                5.7583575,
+                45.1856875
+              ]
+            }
+          ]
+        },
+        "entrance_node": {
+          "id": 11774051470,
+          "version": 1,
+          "tags": {
+            "entrance": "main"
+          },
+          "lon_lat": [
+            5.7589313,
+            45.1854581
+          ]
+        }
+      },
+      "sequence_id": "4d09a59f-0f8f-4461-a92f-eb2003af9d2d",
+      "provider_link_relation": "prev",
+      "camera_displacement_m": 6.889,
+      "start_expected_visibility": "NON_TARGET_BUILDING_OCCLUDED",
+      "start": {
+        "key": "AR02-START",
+        "panorama": {
+          "provider": "Panoramax OSM-FR",
+          "image_id": "1283796f-0c4b-47b0-987a-d5701ca05b7d",
+          "sequence_id": "4d09a59f-0f8f-4461-a92f-eb2003af9d2d",
+          "camera_lon_lat": [
+            5.759374108,
+            45.185341168
+          ],
+          "image_size": [
+            5760,
+            2880
+          ],
+          "local_path": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/images/1283796f-0c4b-47b0-987a-d5701ca05b7d.jpg",
+          "image_sha256": "1c3666966a9835ec5a0de1e15c51f88016ee8b406aba2e2c7230fe6ba0217536",
+          "image_bytes": 3007774,
+          "provider_item": {
+            "type": "Feature",
+            "id": "1283796f-0c4b-47b0-987a-d5701ca05b7d",
+            "collection": "4d09a59f-0f8f-4461-a92f-eb2003af9d2d",
+            "geometry": {
+              "coordinates": [
+                5.759374108,
+                45.185341168
+              ],
+              "type": "Point"
+            },
+            "properties": {
+              "view:azimuth": 126,
+              "pers:yaw": 0.0,
+              "pers:pitch": 0.0,
+              "pers:roll": 0.0,
+              "pers:interior_orientation": {
+                "camera_manufacturer": "GoPro",
+                "camera_model": "Max",
+                "field_of_view": 360,
+                "focal_length": 3.0,
+                "sensor_array_dimensions": [
+                  5760,
+                  2880
+                ]
+              },
+              "exif": {
+                "Exif.GPSInfo.GPSImgDirection": "1970305/15581",
+                "Exif.GPSInfo.GPSImgDirectionRef": "T",
+                "Xmp.GPano.PoseHeadingDegrees": "0.0",
+                "Xmp.GPano.PosePitchDegrees": "0.0",
+                "Xmp.GPano.PoseRollDegrees": "0.0",
+                "Xmp.GPano.ProjectionType": "equirectangular"
+              }
+            },
+            "links": [
+              {
+                "rel": "next",
+                "id": "8d7ba378-f790-4a45-a937-5059384b50b3",
+                "href": "https://panoramax.openstreetmap.fr/api/collections/4d09a59f-0f8f-4461-a92f-eb2003af9d2d/items/8d7ba378-f790-4a45-a937-5059384b50b3"
+              },
+              {
+                "rel": "prev",
+                "id": "a9a48251-6519-44ec-8985-8dfa6de21b0c",
+                "href": "https://panoramax.openstreetmap.fr/api/collections/4d09a59f-0f8f-4461-a92f-eb2003af9d2d/items/a9a48251-6519-44ec-8985-8dfa6de21b0c"
+              }
+            ]
+          }
+        },
+        "target": {
+          "entity_name": "La Galerie Saint-Martin-d’Hères",
+          "building": {
+            "id": 28709471,
+            "version": 32,
+            "tags": {
+              "addr:city": "Saint-Martin-d'Hères",
+              "addr:country": "FR",
+              "addr:housenumber": "76",
+              "addr:postcode": "38400",
+              "addr:street": "Avenue Gabriel Péri",
+              "building": "retail",
+              "building:colour": "silver",
+              "building:levels": "3",
+              "diff:ref:FR:RNB": "multiple",
+              "height": "8",
+              "internet_access": "wlan",
+              "name": "La Galerie Saint-Martin-d’Hères",
+              "opening_hours": "Mo-Sa 08:30-21:00",
+              "phone": "+33 1 53 70 56 56",
+              "ref:FR:RNB": "GKGX5EF5B1DS;2SDG5FXEABTR",
+              "roof:colour": "gray",
+              "roof:levels": "0",
+              "roof:shape": "flat",
+              "shop": "mall",
+              "toilets": "yes",
+              "website": "https://www.la-galerie.com/",
+              "wheelchair": "yes"
+            },
+            "nodes": [
+              {
+                "id": 349139212,
+                "lon_lat": [
+                  5.7583575,
+                  45.1856875
+                ]
+              },
+              {
+                "id": 4962273226,
+                "lon_lat": [
+                  5.7583223,
+                  45.1856564
+                ]
+              },
+              {
+                "id": 4962273225,
+                "lon_lat": [
+                  5.758273,
+                  45.1856116
+                ]
+              },
+              {
+                "id": 4962728663,
+                "lon_lat": [
+                  5.7582222,
+                  45.1855636
+                ]
+              },
+              {
+                "id": 4962728666,
+                "lon_lat": [
+                  5.7582058,
+                  45.1855478
+                ]
+              },
+              {
+                "id": 2522151934,
+                "lon_lat": [
+                  5.7581365,
+                  45.1854838
+                ]
+              },
+              {
+                "id": 315585635,
+                "lon_lat": [
+                  5.7575867,
+                  45.1849661
+                ]
+              },
+              {
+                "id": 315585637,
+                "lon_lat": [
+                  5.7576155,
+                  45.1848151
+                ]
+              },
+              {
+                "id": 315585638,
+                "lon_lat": [
+                  5.7576725,
+                  45.1848209
+                ]
+              },
+              {
+                "id": 315585639,
+                "lon_lat": [
+                  5.757715,
+                  45.184601
+                ]
+              },
+              {
+                "id": 315585641,
+                "lon_lat": [
+                  5.7579638,
+                  45.1844711
+                ]
+              },
+              {
+                "id": 315585642,
+                "lon_lat": [
+                  5.7578799,
+                  45.1843896
+                ]
+              },
+              {
+                "id": 315585643,
+                "lon_lat": [
+                  5.758525,
+                  45.1840532
+                ]
+              },
+              {
+                "id": 6966327030,
+                "lon_lat": [
+                  5.7588924,
+                  45.1843997
+                ]
+              },
+              {
+                "id": 349139231,
+                "lon_lat": [
+                  5.7591349,
+                  45.1846277
+                ]
+              },
+              {
+                "id": 2522151920,
+                "lon_lat": [
+                  5.7593218,
+                  45.1847938
+                ]
+              },
+              {
+                "id": 8004422700,
+                "lon_lat": [
+                  5.7593417,
+                  45.1848121
+                ]
+              },
+              {
+                "id": 4962728679,
+                "lon_lat": [
+                  5.7593612,
+                  45.18483
+                ]
+              },
+              {
+                "id": 4962728683,
+                "lon_lat": [
+                  5.7594443,
+                  45.1849081
+                ]
+              },
+              {
+                "id": 8004422694,
+                "lon_lat": [
+                  5.7595016,
+                  45.1848757
+                ]
+              },
+              {
+                "id": 315585645,
+                "lon_lat": [
+                  5.759696,
+                  45.1850521
+                ]
+              },
+              {
+                "id": 12281812513,
+                "lon_lat": [
+                  5.7596639,
+                  45.185069
+                ]
+              },
+              {
+                "id": 4962728684,
+                "lon_lat": [
+                  5.7596341,
+                  45.1850846
+                ]
+              },
+              {
+                "id": 349139228,
+                "lon_lat": [
+                  5.7594757,
+                  45.1851683
+                ]
+              },
+              {
+                "id": 349139229,
+                "lon_lat": [
+                  5.7594706,
+                  45.1852034
+                ]
+              },
+              {
+                "id": 2522151931,
+                "lon_lat": [
+                  5.7594526,
+                  45.1852136
+                ]
+              },
+              {
+                "id": 349139230,
+                "lon_lat": [
+                  5.7594295,
+                  45.1852265
+                ]
+              },
+              {
+                "id": 349139227,
+                "lon_lat": [
+                  5.7593787,
+                  45.1852222
+                ]
+              },
+              {
+                "id": 8069495286,
+                "lon_lat": [
+                  5.7593104,
+                  45.1852582
+                ]
+              },
+              {
+                "id": 8069479584,
+                "lon_lat": [
+                  5.7592731,
+                  45.1852779
+                ]
+              },
+              {
+                "id": 4962424293,
+                "lon_lat": [
+                  5.7591974,
+                  45.1853178
+                ]
+              },
+              {
+                "id": 4962335140,
+                "lon_lat": [
+                  5.7591369,
+                  45.1853497
+                ]
+              },
+              {
+                "id": 8069495290,
+                "lon_lat": [
+                  5.7590786,
+                  45.1853804
+                ]
+              },
+              {
+                "id": 8069495287,
+                "lon_lat": [
+                  5.7590411,
+                  45.1853998
+                ]
+              },
+              {
+                "id": 4962335141,
+                "lon_lat": [
+                  5.7590302,
+                  45.1854059
+                ]
+              },
+              {
+                "id": 3235368963,
+                "lon_lat": [
+                  5.7590119,
+                  45.1854156
+                ]
+              },
+              {
+                "id": 3235368962,
+                "lon_lat": [
+                  5.7589937,
+                  45.1854252
+                ]
+              },
+              {
+                "id": 11774051470,
+                "lon_lat": [
+                  5.7589313,
+                  45.1854581
+                ]
+              },
+              {
+                "id": 4962728668,
+                "lon_lat": [
+                  5.7588688,
+                  45.185491
+                ]
+              },
+              {
+                "id": 3235368666,
+                "lon_lat": [
+                  5.7587594,
+                  45.1855487
+                ]
+              },
+              {
+                "id": 4962728661,
+                "lon_lat": [
+                  5.7587432,
+                  45.1855572
+                ]
+              },
+              {
+                "id": 4962728660,
+                "lon_lat": [
+                  5.7586664,
+                  45.1855977
+                ]
+              },
+              {
+                "id": 4962728659,
+                "lon_lat": [
+                  5.75864,
+                  45.1856116
+                ]
+              },
+              {
+                "id": 349139219,
+                "lon_lat": [
+                  5.7586331,
+                  45.1856152
+                ]
+              },
+              {
+                "id": 349139221,
+                "lon_lat": [
+                  5.758628,
+                  45.1856471
+                ]
+              },
+              {
+                "id": 2522151940,
+                "lon_lat": [
+                  5.758608,
+                  45.1856581
+                ]
+              },
+              {
+                "id": 349139226,
+                "lon_lat": [
+                  5.7585853,
+                  45.1856706
+                ]
+              },
+              {
+                "id": 349139222,
+                "lon_lat": [
+                  5.7585342,
+                  45.1856669
+                ]
+              },
+              {
+                "id": 9998570306,
+                "lon_lat": [
+                  5.7584603,
+                  45.1857067
+                ]
+              },
+              {
+                "id": 349139224,
+                "lon_lat": [
+                  5.7584086,
+                  45.1857346
+                ]
+              },
+              {
+                "id": 349139212,
+                "lon_lat": [
+                  5.7583575,
+                  45.1856875
+                ]
+              }
+            ]
+          },
+          "entrance_node": {
+            "id": 11774051470,
+            "version": 1,
+            "tags": {
+              "entrance": "main"
+            },
+            "lon_lat": [
+              5.7589313,
+              45.1854581
+            ]
+          }
+        },
+        "occluder_buildings": [
+          {
+            "id": 1229989074,
+            "version": 2,
+            "tags": {
+              "access": "yes",
+              "amenity": "bicycle_parking",
+              "bicycle_parking": "wall_loops",
+              "building": "roof",
+              "capacity": "4",
+              "covered": "yes",
+              "fee": "no",
+              "surveillance": "yes"
+            },
+            "nodes": [
+              {
+                "id": 11406270904,
+                "lon_lat": [
+                  5.7590486,
+                  45.1854296
+                ]
+              },
+              {
+                "id": 11406270903,
+                "lon_lat": [
+                  5.7590329,
+                  45.1854163
+                ]
+              },
+              {
+                "id": 11406270902,
+                "lon_lat": [
+                  5.7590577,
+                  45.1854017
+                ]
+              },
+              {
+                "id": 11406270901,
+                "lon_lat": [
+                  5.7590735,
+                  45.185415
+                ]
+              },
+              {
+                "id": 11406270904,
+                "lon_lat": [
+                  5.7590486,
+                  45.1854296
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "key": "AR02-AFTER",
+        "panorama": {
+          "provider": "Panoramax OSM-FR",
+          "image_id": "a9a48251-6519-44ec-8985-8dfa6de21b0c",
+          "sequence_id": "4d09a59f-0f8f-4461-a92f-eb2003af9d2d",
+          "camera_lon_lat": [
+            5.759303104,
+            45.18537769
+          ],
+          "image_size": [
+            5760,
+            2880
+          ],
+          "local_path": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/images/a9a48251-6519-44ec-8985-8dfa6de21b0c.jpg",
+          "image_sha256": "21b6bcb8045e31125e853b20e07932b7dc06a68d85438e5501d60e9e06617d1e",
+          "image_bytes": 3068326,
+          "provider_item": {
+            "type": "Feature",
+            "id": "a9a48251-6519-44ec-8985-8dfa6de21b0c",
+            "collection": "4d09a59f-0f8f-4461-a92f-eb2003af9d2d",
+            "geometry": {
+              "coordinates": [
+                5.759303104,
+                45.18537769
+              ],
+              "type": "Point"
+            },
+            "properties": {
+              "view:azimuth": 126,
+              "pers:yaw": 0.0,
+              "pers:pitch": 0.0,
+              "pers:roll": 0.0,
+              "pers:interior_orientation": {
+                "camera_manufacturer": "GoPro",
+                "camera_model": "Max",
+                "field_of_view": 360,
+                "focal_length": 3.0,
+                "sensor_array_dimensions": [
+                  5760,
+                  2880
+                ]
+              },
+              "exif": {
+                "Exif.GPSInfo.GPSImgDirection": "2604257/20646",
+                "Exif.GPSInfo.GPSImgDirectionRef": "T",
+                "Xmp.GPano.PoseHeadingDegrees": "0.0",
+                "Xmp.GPano.PosePitchDegrees": "0.0",
+                "Xmp.GPano.PoseRollDegrees": "0.0",
+                "Xmp.GPano.ProjectionType": "equirectangular"
+              }
+            },
+            "links": [
+              {
+                "rel": "next",
+                "id": "1283796f-0c4b-47b0-987a-d5701ca05b7d",
+                "href": "https://panoramax.openstreetmap.fr/api/collections/4d09a59f-0f8f-4461-a92f-eb2003af9d2d/items/1283796f-0c4b-47b0-987a-d5701ca05b7d"
+              },
+              {
+                "rel": "prev",
+                "id": "da231a15-e071-442e-87a7-4d2921e4b505",
+                "href": "https://panoramax.openstreetmap.fr/api/collections/4d09a59f-0f8f-4461-a92f-eb2003af9d2d/items/da231a15-e071-442e-87a7-4d2921e4b505"
+              }
+            ]
+          }
+        },
+        "target": {
+          "entity_name": "La Galerie Saint-Martin-d’Hères",
+          "building": {
+            "id": 28709471,
+            "version": 32,
+            "tags": {
+              "addr:city": "Saint-Martin-d'Hères",
+              "addr:country": "FR",
+              "addr:housenumber": "76",
+              "addr:postcode": "38400",
+              "addr:street": "Avenue Gabriel Péri",
+              "building": "retail",
+              "building:colour": "silver",
+              "building:levels": "3",
+              "diff:ref:FR:RNB": "multiple",
+              "height": "8",
+              "internet_access": "wlan",
+              "name": "La Galerie Saint-Martin-d’Hères",
+              "opening_hours": "Mo-Sa 08:30-21:00",
+              "phone": "+33 1 53 70 56 56",
+              "ref:FR:RNB": "GKGX5EF5B1DS;2SDG5FXEABTR",
+              "roof:colour": "gray",
+              "roof:levels": "0",
+              "roof:shape": "flat",
+              "shop": "mall",
+              "toilets": "yes",
+              "website": "https://www.la-galerie.com/",
+              "wheelchair": "yes"
+            },
+            "nodes": [
+              {
+                "id": 349139212,
+                "lon_lat": [
+                  5.7583575,
+                  45.1856875
+                ]
+              },
+              {
+                "id": 4962273226,
+                "lon_lat": [
+                  5.7583223,
+                  45.1856564
+                ]
+              },
+              {
+                "id": 4962273225,
+                "lon_lat": [
+                  5.758273,
+                  45.1856116
+                ]
+              },
+              {
+                "id": 4962728663,
+                "lon_lat": [
+                  5.7582222,
+                  45.1855636
+                ]
+              },
+              {
+                "id": 4962728666,
+                "lon_lat": [
+                  5.7582058,
+                  45.1855478
+                ]
+              },
+              {
+                "id": 2522151934,
+                "lon_lat": [
+                  5.7581365,
+                  45.1854838
+                ]
+              },
+              {
+                "id": 315585635,
+                "lon_lat": [
+                  5.7575867,
+                  45.1849661
+                ]
+              },
+              {
+                "id": 315585637,
+                "lon_lat": [
+                  5.7576155,
+                  45.1848151
+                ]
+              },
+              {
+                "id": 315585638,
+                "lon_lat": [
+                  5.7576725,
+                  45.1848209
+                ]
+              },
+              {
+                "id": 315585639,
+                "lon_lat": [
+                  5.757715,
+                  45.184601
+                ]
+              },
+              {
+                "id": 315585641,
+                "lon_lat": [
+                  5.7579638,
+                  45.1844711
+                ]
+              },
+              {
+                "id": 315585642,
+                "lon_lat": [
+                  5.7578799,
+                  45.1843896
+                ]
+              },
+              {
+                "id": 315585643,
+                "lon_lat": [
+                  5.758525,
+                  45.1840532
+                ]
+              },
+              {
+                "id": 6966327030,
+                "lon_lat": [
+                  5.7588924,
+                  45.1843997
+                ]
+              },
+              {
+                "id": 349139231,
+                "lon_lat": [
+                  5.7591349,
+                  45.1846277
+                ]
+              },
+              {
+                "id": 2522151920,
+                "lon_lat": [
+                  5.7593218,
+                  45.1847938
+                ]
+              },
+              {
+                "id": 8004422700,
+                "lon_lat": [
+                  5.7593417,
+                  45.1848121
+                ]
+              },
+              {
+                "id": 4962728679,
+                "lon_lat": [
+                  5.7593612,
+                  45.18483
+                ]
+              },
+              {
+                "id": 4962728683,
+                "lon_lat": [
+                  5.7594443,
+                  45.1849081
+                ]
+              },
+              {
+                "id": 8004422694,
+                "lon_lat": [
+                  5.7595016,
+                  45.1848757
+                ]
+              },
+              {
+                "id": 315585645,
+                "lon_lat": [
+                  5.759696,
+                  45.1850521
+                ]
+              },
+              {
+                "id": 12281812513,
+                "lon_lat": [
+                  5.7596639,
+                  45.185069
+                ]
+              },
+              {
+                "id": 4962728684,
+                "lon_lat": [
+                  5.7596341,
+                  45.1850846
+                ]
+              },
+              {
+                "id": 349139228,
+                "lon_lat": [
+                  5.7594757,
+                  45.1851683
+                ]
+              },
+              {
+                "id": 349139229,
+                "lon_lat": [
+                  5.7594706,
+                  45.1852034
+                ]
+              },
+              {
+                "id": 2522151931,
+                "lon_lat": [
+                  5.7594526,
+                  45.1852136
+                ]
+              },
+              {
+                "id": 349139230,
+                "lon_lat": [
+                  5.7594295,
+                  45.1852265
+                ]
+              },
+              {
+                "id": 349139227,
+                "lon_lat": [
+                  5.7593787,
+                  45.1852222
+                ]
+              },
+              {
+                "id": 8069495286,
+                "lon_lat": [
+                  5.7593104,
+                  45.1852582
+                ]
+              },
+              {
+                "id": 8069479584,
+                "lon_lat": [
+                  5.7592731,
+                  45.1852779
+                ]
+              },
+              {
+                "id": 4962424293,
+                "lon_lat": [
+                  5.7591974,
+                  45.1853178
+                ]
+              },
+              {
+                "id": 4962335140,
+                "lon_lat": [
+                  5.7591369,
+                  45.1853497
+                ]
+              },
+              {
+                "id": 8069495290,
+                "lon_lat": [
+                  5.7590786,
+                  45.1853804
+                ]
+              },
+              {
+                "id": 8069495287,
+                "lon_lat": [
+                  5.7590411,
+                  45.1853998
+                ]
+              },
+              {
+                "id": 4962335141,
+                "lon_lat": [
+                  5.7590302,
+                  45.1854059
+                ]
+              },
+              {
+                "id": 3235368963,
+                "lon_lat": [
+                  5.7590119,
+                  45.1854156
+                ]
+              },
+              {
+                "id": 3235368962,
+                "lon_lat": [
+                  5.7589937,
+                  45.1854252
+                ]
+              },
+              {
+                "id": 11774051470,
+                "lon_lat": [
+                  5.7589313,
+                  45.1854581
+                ]
+              },
+              {
+                "id": 4962728668,
+                "lon_lat": [
+                  5.7588688,
+                  45.185491
+                ]
+              },
+              {
+                "id": 3235368666,
+                "lon_lat": [
+                  5.7587594,
+                  45.1855487
+                ]
+              },
+              {
+                "id": 4962728661,
+                "lon_lat": [
+                  5.7587432,
+                  45.1855572
+                ]
+              },
+              {
+                "id": 4962728660,
+                "lon_lat": [
+                  5.7586664,
+                  45.1855977
+                ]
+              },
+              {
+                "id": 4962728659,
+                "lon_lat": [
+                  5.75864,
+                  45.1856116
+                ]
+              },
+              {
+                "id": 349139219,
+                "lon_lat": [
+                  5.7586331,
+                  45.1856152
+                ]
+              },
+              {
+                "id": 349139221,
+                "lon_lat": [
+                  5.758628,
+                  45.1856471
+                ]
+              },
+              {
+                "id": 2522151940,
+                "lon_lat": [
+                  5.758608,
+                  45.1856581
+                ]
+              },
+              {
+                "id": 349139226,
+                "lon_lat": [
+                  5.7585853,
+                  45.1856706
+                ]
+              },
+              {
+                "id": 349139222,
+                "lon_lat": [
+                  5.7585342,
+                  45.1856669
+                ]
+              },
+              {
+                "id": 9998570306,
+                "lon_lat": [
+                  5.7584603,
+                  45.1857067
+                ]
+              },
+              {
+                "id": 349139224,
+                "lon_lat": [
+                  5.7584086,
+                  45.1857346
+                ]
+              },
+              {
+                "id": 349139212,
+                "lon_lat": [
+                  5.7583575,
+                  45.1856875
+                ]
+              }
+            ]
+          },
+          "entrance_node": {
+            "id": 11774051470,
+            "version": 1,
+            "tags": {
+              "entrance": "main"
+            },
+            "lon_lat": [
+              5.7589313,
+              45.1854581
+            ]
+          }
+        },
+        "occluder_buildings": []
+      }
+    },
+    {
+      "episode_id": "AR03",
+      "target": {
+        "entity_name": "Le Jean Jaurès",
+        "building": {
+          "id": 66183358,
+          "version": 9,
+          "tags": {
+            "building": "apartments",
+            "building:levels": "8",
+            "name": "Le Jean Jaurès",
+            "ref:FR:RNB": "7V793KMJRCTB",
+            "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010"
+          },
+          "nodes": [
+            {
+              "id": 802795806,
+              "lon_lat": [
+                5.697499,
+                45.1827641
+              ]
+            },
+            {
+              "id": 802845312,
+              "lon_lat": [
+                5.6975158,
+                45.1827637
+              ]
+            },
+            {
+              "id": 802861544,
+              "lon_lat": [
+                5.6975139,
+                45.1827163
+              ]
+            },
+            {
+              "id": 802797676,
+              "lon_lat": [
+                5.6974971,
+                45.1827169
+              ]
+            },
+            {
+              "id": 802819307,
+              "lon_lat": [
+                5.6974932,
+                45.1826158
+              ]
+            },
+            {
+              "id": 802856467,
+              "lon_lat": [
+                5.69751,
+                45.1826151
+              ]
+            },
+            {
+              "id": 802839227,
+              "lon_lat": [
+                5.6975082,
+                45.1825679
+              ]
+            },
+            {
+              "id": 802846951,
+              "lon_lat": [
+                5.697491,
+                45.1825683
+              ]
+            },
+            {
+              "id": 802854404,
+              "lon_lat": [
+                5.6974892,
+                45.1825213
+              ]
+            },
+            {
+              "id": 802837781,
+              "lon_lat": [
+                5.6976551,
+                45.1825164
+              ]
+            },
+            {
+              "id": 5661342168,
+              "lon_lat": [
+                5.6976574,
+                45.1825979
+              ]
+            },
+            {
+              "id": 5661342165,
+              "lon_lat": [
+                5.6976627,
+                45.1827347
+              ]
+            },
+            {
+              "id": 802817845,
+              "lon_lat": [
+                5.6976654,
+                45.1828132
+              ]
+            },
+            {
+              "id": 802820317,
+              "lon_lat": [
+                5.697501,
+                45.1828154
+              ]
+            },
+            {
+              "id": 802795806,
+              "lon_lat": [
+                5.697499,
+                45.1827641
+              ]
+            }
+          ]
+        },
+        "entrance_node": {
+          "id": 5661342168,
+          "version": 2,
+          "tags": {
+            "addr:housenumber": "42",
+            "addr:street": "Rue de l'Industrie",
+            "entrance": "main"
+          },
+          "lon_lat": [
+            5.6976574,
+            45.1825979
+          ]
+        }
+      },
+      "sequence_id": "61476443-7195-4fbb-b32b-49333181cdcc",
+      "provider_link_relation": "prev",
+      "camera_displacement_m": 10.052,
+      "start_expected_visibility": "TARGET_SELF_OCCLUDED",
+      "start": {
+        "key": "AR03-START",
+        "panorama": {
+          "provider": "Panoramax OSM-FR",
+          "image_id": "f71339ba-1ce7-45a1-ad37-f19a8d161a98",
+          "sequence_id": "61476443-7195-4fbb-b32b-49333181cdcc",
+          "camera_lon_lat": [
+            5.6976405,
+            45.1824405
+          ],
+          "image_size": [
+            5760,
+            2880
+          ],
+          "local_path": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/images/f71339ba-1ce7-45a1-ad37-f19a8d161a98.jpg",
+          "image_sha256": "10ace6396bcc8662629086d7b9e763e67445b1dac9e27f1254a25bc1472110e1",
+          "image_bytes": 2564826,
+          "provider_item": {
+            "type": "Feature",
+            "id": "f71339ba-1ce7-45a1-ad37-f19a8d161a98",
+            "collection": "61476443-7195-4fbb-b32b-49333181cdcc",
+            "geometry": {
+              "coordinates": [
+                5.6976405,
+                45.1824405
+              ],
+              "type": "Point"
+            },
+            "properties": {
+              "view:azimuth": 273,
+              "pers:yaw": 0.0,
+              "pers:pitch": 0.0,
+              "pers:roll": 0.0,
+              "pers:interior_orientation": {
+                "camera_manufacturer": "GoPro",
+                "camera_model": "Max",
+                "field_of_view": 360,
+                "focal_length": 3.0,
+                "sensor_array_dimensions": [
+                  5760,
+                  2880
+                ]
+              },
+              "exif": {
+                "Exif.GPSInfo.GPSImgDirection": "3621383/13288",
+                "Exif.GPSInfo.GPSImgDirectionRef": "T",
+                "Xmp.GPano.PoseHeadingDegrees": "0.0",
+                "Xmp.GPano.PosePitchDegrees": "0.0",
+                "Xmp.GPano.PoseRollDegrees": "0.0",
+                "Xmp.GPano.ProjectionType": "equirectangular"
+              }
+            },
+            "links": [
+              {
+                "rel": "next",
+                "id": "344820cf-77b5-4958-82bf-58659d1ca6ac",
+                "href": "https://panoramax.openstreetmap.fr/api/collections/61476443-7195-4fbb-b32b-49333181cdcc/items/344820cf-77b5-4958-82bf-58659d1ca6ac"
+              },
+              {
+                "rel": "prev",
+                "id": "5f9cd0df-e958-4741-af31-f98d4ce3c37e",
+                "href": "https://panoramax.openstreetmap.fr/api/collections/61476443-7195-4fbb-b32b-49333181cdcc/items/5f9cd0df-e958-4741-af31-f98d4ce3c37e"
+              }
+            ]
+          }
+        },
+        "target": {
+          "entity_name": "Le Jean Jaurès",
+          "building": {
+            "id": 66183358,
+            "version": 9,
+            "tags": {
+              "building": "apartments",
+              "building:levels": "8",
+              "name": "Le Jean Jaurès",
+              "ref:FR:RNB": "7V793KMJRCTB",
+              "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010"
+            },
+            "nodes": [
+              {
+                "id": 802795806,
+                "lon_lat": [
+                  5.697499,
+                  45.1827641
+                ]
+              },
+              {
+                "id": 802845312,
+                "lon_lat": [
+                  5.6975158,
+                  45.1827637
+                ]
+              },
+              {
+                "id": 802861544,
+                "lon_lat": [
+                  5.6975139,
+                  45.1827163
+                ]
+              },
+              {
+                "id": 802797676,
+                "lon_lat": [
+                  5.6974971,
+                  45.1827169
+                ]
+              },
+              {
+                "id": 802819307,
+                "lon_lat": [
+                  5.6974932,
+                  45.1826158
+                ]
+              },
+              {
+                "id": 802856467,
+                "lon_lat": [
+                  5.69751,
+                  45.1826151
+                ]
+              },
+              {
+                "id": 802839227,
+                "lon_lat": [
+                  5.6975082,
+                  45.1825679
+                ]
+              },
+              {
+                "id": 802846951,
+                "lon_lat": [
+                  5.697491,
+                  45.1825683
+                ]
+              },
+              {
+                "id": 802854404,
+                "lon_lat": [
+                  5.6974892,
+                  45.1825213
+                ]
+              },
+              {
+                "id": 802837781,
+                "lon_lat": [
+                  5.6976551,
+                  45.1825164
+                ]
+              },
+              {
+                "id": 5661342168,
+                "lon_lat": [
+                  5.6976574,
+                  45.1825979
+                ]
+              },
+              {
+                "id": 5661342165,
+                "lon_lat": [
+                  5.6976627,
+                  45.1827347
+                ]
+              },
+              {
+                "id": 802817845,
+                "lon_lat": [
+                  5.6976654,
+                  45.1828132
+                ]
+              },
+              {
+                "id": 802820317,
+                "lon_lat": [
+                  5.697501,
+                  45.1828154
+                ]
+              },
+              {
+                "id": 802795806,
+                "lon_lat": [
+                  5.697499,
+                  45.1827641
+                ]
+              }
+            ]
+          },
+          "entrance_node": {
+            "id": 5661342168,
+            "version": 2,
+            "tags": {
+              "addr:housenumber": "42",
+              "addr:street": "Rue de l'Industrie",
+              "entrance": "main"
+            },
+            "lon_lat": [
+              5.6976574,
+              45.1825979
+            ]
+          }
+        },
+        "occluder_buildings": []
+      },
+      "after": {
+        "key": "AR03-AFTER",
+        "panorama": {
+          "provider": "Panoramax OSM-FR",
+          "image_id": "5f9cd0df-e958-4741-af31-f98d4ce3c37e",
+          "sequence_id": "61476443-7195-4fbb-b32b-49333181cdcc",
+          "camera_lon_lat": [
+            5.6977687,
+            45.1824379
+          ],
+          "image_size": [
+            5760,
+            2880
+          ],
+          "local_path": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/images/5f9cd0df-e958-4741-af31-f98d4ce3c37e.jpg",
+          "image_sha256": "ceb42347c1171410345603056c46cc35980a4c862d6ff9ca0923c318bbf82f09",
+          "image_bytes": 2684886,
+          "provider_item": {
+            "type": "Feature",
+            "id": "5f9cd0df-e958-4741-af31-f98d4ce3c37e",
+            "collection": "61476443-7195-4fbb-b32b-49333181cdcc",
+            "geometry": {
+              "coordinates": [
+                5.6977687,
+                45.1824379
+              ],
+              "type": "Point"
+            },
+            "properties": {
+              "view:azimuth": 272,
+              "pers:yaw": 0.0,
+              "pers:pitch": 0.0,
+              "pers:roll": 0.0,
+              "pers:interior_orientation": {
+                "camera_manufacturer": "GoPro",
+                "camera_model": "Max",
+                "field_of_view": 360,
+                "focal_length": 3.0,
+                "sensor_array_dimensions": [
+                  5760,
+                  2880
+                ]
+              },
+              "exif": {
+                "Exif.GPSInfo.GPSImgDirection": "11402432/41975",
+                "Exif.GPSInfo.GPSImgDirectionRef": "T",
+                "Xmp.GPano.PoseHeadingDegrees": "0.0",
+                "Xmp.GPano.PosePitchDegrees": "0.0",
+                "Xmp.GPano.PoseRollDegrees": "0.0",
+                "Xmp.GPano.ProjectionType": "equirectangular"
+              }
+            },
+            "links": [
+              {
+                "rel": "next",
+                "id": "f71339ba-1ce7-45a1-ad37-f19a8d161a98",
+                "href": "https://panoramax.openstreetmap.fr/api/collections/61476443-7195-4fbb-b32b-49333181cdcc/items/f71339ba-1ce7-45a1-ad37-f19a8d161a98"
+              },
+              {
+                "rel": "prev",
+                "id": "ee8bb6aa-fe94-4c99-bee6-25d5529ccdcd",
+                "href": "https://panoramax.openstreetmap.fr/api/collections/61476443-7195-4fbb-b32b-49333181cdcc/items/ee8bb6aa-fe94-4c99-bee6-25d5529ccdcd"
+              }
+            ]
+          }
+        },
+        "target": {
+          "entity_name": "Le Jean Jaurès",
+          "building": {
+            "id": 66183358,
+            "version": 9,
+            "tags": {
+              "building": "apartments",
+              "building:levels": "8",
+              "name": "Le Jean Jaurès",
+              "ref:FR:RNB": "7V793KMJRCTB",
+              "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010"
+            },
+            "nodes": [
+              {
+                "id": 802795806,
+                "lon_lat": [
+                  5.697499,
+                  45.1827641
+                ]
+              },
+              {
+                "id": 802845312,
+                "lon_lat": [
+                  5.6975158,
+                  45.1827637
+                ]
+              },
+              {
+                "id": 802861544,
+                "lon_lat": [
+                  5.6975139,
+                  45.1827163
+                ]
+              },
+              {
+                "id": 802797676,
+                "lon_lat": [
+                  5.6974971,
+                  45.1827169
+                ]
+              },
+              {
+                "id": 802819307,
+                "lon_lat": [
+                  5.6974932,
+                  45.1826158
+                ]
+              },
+              {
+                "id": 802856467,
+                "lon_lat": [
+                  5.69751,
+                  45.1826151
+                ]
+              },
+              {
+                "id": 802839227,
+                "lon_lat": [
+                  5.6975082,
+                  45.1825679
+                ]
+              },
+              {
+                "id": 802846951,
+                "lon_lat": [
+                  5.697491,
+                  45.1825683
+                ]
+              },
+              {
+                "id": 802854404,
+                "lon_lat": [
+                  5.6974892,
+                  45.1825213
+                ]
+              },
+              {
+                "id": 802837781,
+                "lon_lat": [
+                  5.6976551,
+                  45.1825164
+                ]
+              },
+              {
+                "id": 5661342168,
+                "lon_lat": [
+                  5.6976574,
+                  45.1825979
+                ]
+              },
+              {
+                "id": 5661342165,
+                "lon_lat": [
+                  5.6976627,
+                  45.1827347
+                ]
+              },
+              {
+                "id": 802817845,
+                "lon_lat": [
+                  5.6976654,
+                  45.1828132
+                ]
+              },
+              {
+                "id": 802820317,
+                "lon_lat": [
+                  5.697501,
+                  45.1828154
+                ]
+              },
+              {
+                "id": 802795806,
+                "lon_lat": [
+                  5.697499,
+                  45.1827641
+                ]
+              }
+            ]
+          },
+          "entrance_node": {
+            "id": 5661342168,
+            "version": 2,
+            "tags": {
+              "addr:housenumber": "42",
+              "addr:street": "Rue de l'Industrie",
+              "entrance": "main"
+            },
+            "lon_lat": [
+              5.6976574,
+              45.1825979
+            ]
+          }
+        },
+        "occluder_buildings": []
+      }
+    },
+    {
+      "episode_id": "AR04",
+      "target": {
+        "entity_name": "V and B",
+        "building": {
+          "id": 149488817,
+          "version": 13,
+          "tags": {
+            "addr:housenumber": "28",
+            "addr:street": "Rue des Glairons",
+            "amenity": "bar",
+            "brand": "V and B",
+            "brand:wikidata": "Q100706329",
+            "building": "retail",
+            "building:colour": "brown",
+            "check_date": "2025-03-11",
+            "drink:beer": "yes",
+            "drink:wine": "yes",
+            "name": "V and B",
+            "opening_hours": "Mo 14:30-20:00; Tu,We 10:00-13:00,14:30-20:00; Th 10:00-13:00,14:30-21:30; Fr 10:00-21:30; Sa 10:00-20:00",
+            "outdoor_seating": "no",
+            "payment:cash": "yes",
+            "payment:credit_cards": "yes",
+            "payment:debit_cards": "yes",
+            "ref:FR:RNB": "PM8ZVPTERTWD",
+            "shop": "alcohol",
+            "short_name": "V&B",
+            "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012",
+            "wheelchair": "yes"
+          },
+          "nodes": [
+            {
+              "id": 1624564853,
+              "lon_lat": [
+                5.763329,
+                45.185973
+              ]
+            },
+            {
+              "id": 11412888830,
+              "lon_lat": [
+                5.7633438,
+                45.1860097
+              ]
+            },
+            {
+              "id": 1624564883,
+              "lon_lat": [
+                5.763408,
+                45.186169
+              ]
+            },
+            {
+              "id": 11405492413,
+              "lon_lat": [
+                5.7632746,
+                45.1861941
+              ]
+            },
+            {
+              "id": 1624564894,
+              "lon_lat": [
+                5.763153,
+                45.18622
+              ]
+            },
+            {
+              "id": 1624564855,
+              "lon_lat": [
+                5.763069,
+                45.186026
+              ]
+            },
+            {
+              "id": 1624564849,
+              "lon_lat": [
+                5.763023,
+                45.18592
+              ]
+            },
+            {
+              "id": 1624564848,
+              "lon_lat": [
+                5.763298,
+                45.185862
+              ]
+            },
+            {
+              "id": 1624564850,
+              "lon_lat": [
+                5.763344,
+                45.185969
+              ]
+            },
+            {
+              "id": 1624564853,
+              "lon_lat": [
+                5.763329,
+                45.185973
+              ]
+            }
+          ]
+        },
+        "entrance_node": {
+          "id": 11412888830,
+          "version": 1,
+          "tags": {
+            "entrance": "main"
+          },
+          "lon_lat": [
+            5.7633438,
+            45.1860097
+          ]
+        }
+      },
+      "sequence_id": "81909dbf-a7dd-4d7c-b0c7-8f5340c33798",
+      "provider_link_relation": "next",
+      "camera_displacement_m": 9.467,
+      "start_expected_visibility": "TARGET_SELF_OCCLUDED",
+      "start": {
+        "key": "AR04-START",
+        "panorama": {
+          "provider": "Panoramax OSM-FR",
+          "image_id": "6103b485-8a83-43a1-80eb-1c0d59bc1330",
+          "sequence_id": "81909dbf-a7dd-4d7c-b0c7-8f5340c33798",
+          "camera_lon_lat": [
+            5.763376657,
+            45.186277106
+          ],
+          "image_size": [
+            5760,
+            2880
+          ],
+          "local_path": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/images/6103b485-8a83-43a1-80eb-1c0d59bc1330.jpg",
+          "image_sha256": "3aa04e784b602ad8e90da28917c6107b2756921d60381f18a1ea05c129c204bf",
+          "image_bytes": 2953594,
+          "provider_item": {
+            "type": "Feature",
+            "id": "6103b485-8a83-43a1-80eb-1c0d59bc1330",
+            "collection": "81909dbf-a7dd-4d7c-b0c7-8f5340c33798",
+            "geometry": {
+              "coordinates": [
+                5.763376657,
+                45.186277106
+              ],
+              "type": "Point"
+            },
+            "properties": {
+              "view:azimuth": 105,
+              "pers:yaw": 0.0,
+              "pers:pitch": 0.0,
+              "pers:roll": 0.0,
+              "pers:interior_orientation": {
+                "camera_manufacturer": "GoPro",
+                "camera_model": "Max",
+                "field_of_view": 360,
+                "focal_length": 3.0,
+                "sensor_array_dimensions": [
+                  5760,
+                  2880
+                ]
+              },
+              "exif": {
+                "Exif.GPSInfo.GPSImgDirection": "665644/6341",
+                "Exif.GPSInfo.GPSImgDirectionRef": "T",
+                "Xmp.GPano.PoseHeadingDegrees": "0.0",
+                "Xmp.GPano.PosePitchDegrees": "0.0",
+                "Xmp.GPano.PoseRollDegrees": "0.0",
+                "Xmp.GPano.ProjectionType": "equirectangular"
+              }
+            },
+            "links": [
+              {
+                "rel": "next",
+                "id": "e5adabf8-bf87-40ce-9112-f4f2e8726054",
+                "href": "https://panoramax.openstreetmap.fr/api/collections/81909dbf-a7dd-4d7c-b0c7-8f5340c33798/items/e5adabf8-bf87-40ce-9112-f4f2e8726054"
+              },
+              {
+                "rel": "prev",
+                "id": "1b4ceb9c-18a1-42d8-91b1-8f5d52732780",
+                "href": "https://panoramax.openstreetmap.fr/api/collections/81909dbf-a7dd-4d7c-b0c7-8f5340c33798/items/1b4ceb9c-18a1-42d8-91b1-8f5d52732780"
+              }
+            ]
+          }
+        },
+        "target": {
+          "entity_name": "V and B",
+          "building": {
+            "id": 149488817,
+            "version": 13,
+            "tags": {
+              "addr:housenumber": "28",
+              "addr:street": "Rue des Glairons",
+              "amenity": "bar",
+              "brand": "V and B",
+              "brand:wikidata": "Q100706329",
+              "building": "retail",
+              "building:colour": "brown",
+              "check_date": "2025-03-11",
+              "drink:beer": "yes",
+              "drink:wine": "yes",
+              "name": "V and B",
+              "opening_hours": "Mo 14:30-20:00; Tu,We 10:00-13:00,14:30-20:00; Th 10:00-13:00,14:30-21:30; Fr 10:00-21:30; Sa 10:00-20:00",
+              "outdoor_seating": "no",
+              "payment:cash": "yes",
+              "payment:credit_cards": "yes",
+              "payment:debit_cards": "yes",
+              "ref:FR:RNB": "PM8ZVPTERTWD",
+              "shop": "alcohol",
+              "short_name": "V&B",
+              "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012",
+              "wheelchair": "yes"
+            },
+            "nodes": [
+              {
+                "id": 1624564853,
+                "lon_lat": [
+                  5.763329,
+                  45.185973
+                ]
+              },
+              {
+                "id": 11412888830,
+                "lon_lat": [
+                  5.7633438,
+                  45.1860097
+                ]
+              },
+              {
+                "id": 1624564883,
+                "lon_lat": [
+                  5.763408,
+                  45.186169
+                ]
+              },
+              {
+                "id": 11405492413,
+                "lon_lat": [
+                  5.7632746,
+                  45.1861941
+                ]
+              },
+              {
+                "id": 1624564894,
+                "lon_lat": [
+                  5.763153,
+                  45.18622
+                ]
+              },
+              {
+                "id": 1624564855,
+                "lon_lat": [
+                  5.763069,
+                  45.186026
+                ]
+              },
+              {
+                "id": 1624564849,
+                "lon_lat": [
+                  5.763023,
+                  45.18592
+                ]
+              },
+              {
+                "id": 1624564848,
+                "lon_lat": [
+                  5.763298,
+                  45.185862
+                ]
+              },
+              {
+                "id": 1624564850,
+                "lon_lat": [
+                  5.763344,
+                  45.185969
+                ]
+              },
+              {
+                "id": 1624564853,
+                "lon_lat": [
+                  5.763329,
+                  45.185973
+                ]
+              }
+            ]
+          },
+          "entrance_node": {
+            "id": 11412888830,
+            "version": 1,
+            "tags": {
+              "entrance": "main"
+            },
+            "lon_lat": [
+              5.7633438,
+              45.1860097
+            ]
+          }
+        },
+        "occluder_buildings": []
+      },
+      "after": {
+        "key": "AR04-AFTER",
+        "panorama": {
+          "provider": "Panoramax OSM-FR",
+          "image_id": "e5adabf8-bf87-40ce-9112-f4f2e8726054",
+          "sequence_id": "81909dbf-a7dd-4d7c-b0c7-8f5340c33798",
+          "camera_lon_lat": [
+            5.763493357,
+            45.186255106
+          ],
+          "image_size": [
+            5760,
+            2880
+          ],
+          "local_path": "artifacts.local/knowledge/l10-panoray-fresh-source-v1/images/e5adabf8-bf87-40ce-9112-f4f2e8726054.jpg",
+          "image_sha256": "29de5163b3504af71ccb3cc4ab52a50756e2e2c6bdf65292c69d4d10b428ebc1",
+          "image_bytes": 2998890,
+          "provider_item": {
+            "type": "Feature",
+            "id": "e5adabf8-bf87-40ce-9112-f4f2e8726054",
+            "collection": "81909dbf-a7dd-4d7c-b0c7-8f5340c33798",
+            "geometry": {
+              "coordinates": [
+                5.763493357,
+                45.186255106
+              ],
+              "type": "Point"
+            },
+            "properties": {
+              "view:azimuth": 103,
+              "pers:yaw": 0.0,
+              "pers:pitch": 0.0,
+              "pers:roll": 0.0,
+              "pers:interior_orientation": {
+                "camera_manufacturer": "GoPro",
+                "camera_model": "Max",
+                "field_of_view": 360,
+                "focal_length": 3.0,
+                "sensor_array_dimensions": [
+                  5760,
+                  2880
+                ]
+              },
+              "exif": {
+                "Exif.GPSInfo.GPSImgDirection": "926209/8964",
+                "Exif.GPSInfo.GPSImgDirectionRef": "T",
+                "Xmp.GPano.PoseHeadingDegrees": "0.0",
+                "Xmp.GPano.PosePitchDegrees": "0.0",
+                "Xmp.GPano.PoseRollDegrees": "0.0",
+                "Xmp.GPano.ProjectionType": "equirectangular"
+              }
+            },
+            "links": [
+              {
+                "rel": "next",
+                "id": "f8691f58-35f1-46bf-ad5a-8560e3469c53",
+                "href": "https://panoramax.openstreetmap.fr/api/collections/81909dbf-a7dd-4d7c-b0c7-8f5340c33798/items/f8691f58-35f1-46bf-ad5a-8560e3469c53"
+              },
+              {
+                "rel": "prev",
+                "id": "6103b485-8a83-43a1-80eb-1c0d59bc1330",
+                "href": "https://panoramax.openstreetmap.fr/api/collections/81909dbf-a7dd-4d7c-b0c7-8f5340c33798/items/6103b485-8a83-43a1-80eb-1c0d59bc1330"
+              }
+            ]
+          }
+        },
+        "target": {
+          "entity_name": "V and B",
+          "building": {
+            "id": 149488817,
+            "version": 13,
+            "tags": {
+              "addr:housenumber": "28",
+              "addr:street": "Rue des Glairons",
+              "amenity": "bar",
+              "brand": "V and B",
+              "brand:wikidata": "Q100706329",
+              "building": "retail",
+              "building:colour": "brown",
+              "check_date": "2025-03-11",
+              "drink:beer": "yes",
+              "drink:wine": "yes",
+              "name": "V and B",
+              "opening_hours": "Mo 14:30-20:00; Tu,We 10:00-13:00,14:30-20:00; Th 10:00-13:00,14:30-21:30; Fr 10:00-21:30; Sa 10:00-20:00",
+              "outdoor_seating": "no",
+              "payment:cash": "yes",
+              "payment:credit_cards": "yes",
+              "payment:debit_cards": "yes",
+              "ref:FR:RNB": "PM8ZVPTERTWD",
+              "shop": "alcohol",
+              "short_name": "V&B",
+              "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012",
+              "wheelchair": "yes"
+            },
+            "nodes": [
+              {
+                "id": 1624564853,
+                "lon_lat": [
+                  5.763329,
+                  45.185973
+                ]
+              },
+              {
+                "id": 11412888830,
+                "lon_lat": [
+                  5.7633438,
+                  45.1860097
+                ]
+              },
+              {
+                "id": 1624564883,
+                "lon_lat": [
+                  5.763408,
+                  45.186169
+                ]
+              },
+              {
+                "id": 11405492413,
+                "lon_lat": [
+                  5.7632746,
+                  45.1861941
+                ]
+              },
+              {
+                "id": 1624564894,
+                "lon_lat": [
+                  5.763153,
+                  45.18622
+                ]
+              },
+              {
+                "id": 1624564855,
+                "lon_lat": [
+                  5.763069,
+                  45.186026
+                ]
+              },
+              {
+                "id": 1624564849,
+                "lon_lat": [
+                  5.763023,
+                  45.18592
+                ]
+              },
+              {
+                "id": 1624564848,
+                "lon_lat": [
+                  5.763298,
+                  45.185862
+                ]
+              },
+              {
+                "id": 1624564850,
+                "lon_lat": [
+                  5.763344,
+                  45.185969
+                ]
+              },
+              {
+                "id": 1624564853,
+                "lon_lat": [
+                  5.763329,
+                  45.185973
+                ]
+              }
+            ]
+          },
+          "entrance_node": {
+            "id": 11412888830,
+            "version": 1,
+            "tags": {
+              "entrance": "main"
+            },
+            "lon_lat": [
+              5.7633438,
+              45.1860097
+            ]
+          }
+        },
+        "occluder_buildings": []
+      }
+    }
+  ],
+  "claim_boundary": "real adjacent posed-panorama geometry and action receipts only; no pixel portal identity or safe mobility completion claim"
+}

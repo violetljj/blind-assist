@@ -1,0 +1,156 @@
+{
+  "schema": "blindassist-l10-panolab-source-summary-v1",
+  "status": "PASS",
+  "provider": {
+    "name": "Panoramax OSM-FR",
+    "api": "https://panoramax.openstreetmap.fr/api",
+    "license": "CC-BY-SA-4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/"
+  },
+  "selection": {
+    "osm_entrance_queries": 80,
+    "complete_reciprocal_three_frame_candidates": 30,
+    "metadata_pool_size": 8,
+    "selected_poi_count": 6,
+    "selected_image_count": 18,
+    "image_dimensions": [
+      5760,
+      2880
+    ],
+    "distinct_osm_way_count": 6,
+    "distinct_panoramax_sequence_count": 6,
+    "distinct_panoramax_item_count": 18,
+    "prior_osm_way_overlap_count": 0,
+    "prior_provider_namespace_overlap_count": 0
+  },
+  "contract": {
+    "adjacency": "provider-reciprocal prev-anchor-next links inside one official Panoramax collection/sequence",
+    "camera_pose_present": true,
+    "license_receipt_present": true,
+    "hd_asset_hash_and_size_verified": true,
+    "pixel_visual_inspection_count_before_freeze": 0,
+    "world_bearing_to_raw_x_computation_count": 0,
+    "ocr_or_learning_model_call_count": 0,
+    "world_bearing_to_raw_pixel_contract": "CLOSED"
+  },
+  "durable_raw_source": {
+    "manifest_path": "artifacts.local/knowledge/l10-panolab-source-v1/panolab-source-freeze.json",
+    "manifest_bytes": 497128,
+    "manifest_sha256": "b7c32f6242ac20a069e99ce552475ae54d040117657360752b5dfb48fc116a65",
+    "summary_sha256": "8d047784449945e69751225e500eca43d3e88d709fb51eac026738e23e0286f3",
+    "metadata_pool_sha256": "00719b3dfeccafb00e316e470aa17d9099d8c57063d5f3e60d6b74ffac212f4e",
+    "provider_candidates_sha256": "4c78a518c59f0f24a67faa0986e7e26b9aedede8f72065e43a490fe0a27da9b5",
+    "source_freezer_sha256": "125f789458139f76963b55d15950381ffe57af1eed3e6a090af3bbed7bd92931",
+    "provider_discovery_sha256": "f095442591600d5c08bd8179431a0b3f8f8cce2c9942adade7bc42b070016e5a"
+  },
+  "pois": [
+    {
+      "poi_id": "PL01",
+      "city": "Paris",
+      "target_name": "Théâtre de la Ville",
+      "osm_way": "53582122v17",
+      "osm_entrance": "676860075v6",
+      "panoramax_sequence_id": "e8c9cb14-4d90-4d16-b123-92d5cd1860d4",
+      "item_ids": [
+        "af418194-8740-4ac1-8621-5045ba74f891",
+        "b69f43cb-ef2a-4fa8-bc61-eb507e36335a",
+        "8154bf38-51b4-4ecf-9ba4-40e4669fba04"
+      ],
+      "adjacent_displacements_m": [
+        9.952,
+        10.81
+      ]
+    },
+    {
+      "poi_id": "PL02",
+      "city": "Lyon",
+      "target_name": "Opéra de Lyon",
+      "osm_way": "10061086v19",
+      "osm_entrance": "6178227024v2",
+      "panoramax_sequence_id": "e9ae4ec0-7d55-4a5f-85c3-19c4a9091bf7",
+      "item_ids": [
+        "a48fdae4-a0aa-4942-baad-2c7e8286f194",
+        "8ed5a2c6-70de-47ab-9018-51811a183230",
+        "03f4d133-8c28-48e6-97df-8f437306f54a"
+      ],
+      "adjacent_displacements_m": [
+        7.223,
+        8.038
+      ]
+    },
+    {
+      "poi_id": "PL03",
+      "city": "Nantes",
+      "target_name": "Hôtel Rosmadec",
+      "osm_way": "326896799v7",
+      "osm_entrance": "5244533209v1",
+      "panoramax_sequence_id": "92c4b6d9-3c64-437c-bc09-b031c94612de",
+      "item_ids": [
+        "0ea6104a-e45d-4f2c-bf92-9b08e7f90ac2",
+        "01bb617d-05c3-4e25-889a-ac3c215d58e0",
+        "f99c301d-e254-4a16-806f-ef0418654f8f"
+      ],
+      "adjacent_displacements_m": [
+        10.245,
+        10.588
+      ]
+    },
+    {
+      "poi_id": "PL05",
+      "city": "Montpellier",
+      "target_name": "Musée Sabatier d'Espeyran",
+      "osm_way": "75264144v10",
+      "osm_entrance": "888837073v2",
+      "panoramax_sequence_id": "07e8e595-9266-4c2e-9609-ff3c988ca537",
+      "item_ids": [
+        "d800c134-dfd4-4630-aafb-c31fd74f3995",
+        "6945b4ae-1d6e-4509-b9c2-75eeee4ee4ea",
+        "4e6323b1-5400-425e-98f7-3f3d8d5faf48"
+      ],
+      "adjacent_displacements_m": [
+        11.789,
+        13.777
+      ]
+    },
+    {
+      "poi_id": "PL06",
+      "city": "Tours",
+      "target_name": "Hôtel de Ville",
+      "osm_way": "35827805v22",
+      "osm_entrance": "12917477501v1",
+      "panoramax_sequence_id": "613166fd-02c5-4929-85a4-dbeb4cc95852",
+      "item_ids": [
+        "50a70e5f-3e8e-4e77-abfc-c0af6db8525d",
+        "e55964fb-3c20-45cb-a26b-f3e8da3fe530",
+        "fdc70457-7d93-489b-b0ce-94cf156d190e"
+      ],
+      "adjacent_displacements_m": [
+        7.194,
+        9.241
+      ]
+    },
+    {
+      "poi_id": "PL07",
+      "city": "Paris",
+      "target_name": "Compagnies motocyclistes de la préfecture de police de Paris",
+      "osm_way": "53657334v19",
+      "osm_entrance": "677672424v3",
+      "panoramax_sequence_id": "6b3c90e6-3cd4-443b-90d5-cd2e4725a620",
+      "item_ids": [
+        "e9de836e-a8e9-42bb-829b-881cde6e048d",
+        "e85853db-2668-4401-bad1-4075c3c88eaa",
+        "412ea47a-fffa-4657-8df6-e19476fd6709"
+      ],
+      "adjacent_displacements_m": [
+        8.597,
+        8.609
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "candidate_poi_id": "PL04",
+      "reason": "HD asset decoded as 7680x2840 rather than a complete 2:1 equirectangular image; excluded without weakening the contract"
+    }
+  ]
+}

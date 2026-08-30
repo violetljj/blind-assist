@@ -1,0 +1,122 @@
+{
+  "schema": "l10-pb18-scil-ingress-portal-graph-result-summary-v1",
+  "created_at": "2026-08-30",
+  "decision": "L10_PB18_SCRIPT_PROVED_INGRESS_CONNECTED_PORTAL_GRAPH_GATE_NOT_MET",
+  "formal_output": {
+    "path": "artifacts.local/evidence/l10-pb18-scil-ingress-portal-graph/result.json",
+    "bytes": 99966,
+    "sha256": "03f8b3b59bb1eec21e706d07b751f3edd345b95a998076681d363ba8ed60fbec"
+  },
+  "frozen_inputs": {
+    "protocol_sha256": "671a8c94ce5081797182cb3cc43b81aacdbbf79021d9b99e3240c361002677c8",
+    "cohort_sha256": "c267f0a80cd75ea79b03a3aa9fbf3e73cc26fedf3487af6367fafbae05487956",
+    "evaluator_sha256": "8bc79f8f4352571ac852111649f96e709562d28d51dcc55d1439ce3b1c3c5f9c"
+  },
+  "metrics": {
+    "identity_correct_proofs": 7,
+    "identity_wrong_proofs": 0,
+    "identity_unknown": 1,
+    "target_portal_top1": 1,
+    "target_portal_top3": 4,
+    "core_target_portal_top1": 0,
+    "core_target_portal_top3": 3,
+    "no_portal_false_authorization": 0,
+    "tenant_decoy_overlap_authorization": 1,
+    "tenant_ownership_pair_exact": 0,
+    "opportunity_balanced_accuracy_top3": 0.7083333333333333
+  },
+  "gate": {
+    "identity_8_of_8_correct_zero_wrong_zero_unknown": false,
+    "target_portal_top1_6_of_6": false,
+    "target_portal_top3_6_of_6": false,
+    "zero_no_portal_false_authorization": true,
+    "zero_tenant_decoy_overlap_authorization": false,
+    "tenant_ownership_pair_exact_2_of_2": false,
+    "passed": false
+  },
+  "row_summary": [
+    {
+      "key": "north-point-public-library-entrance",
+      "proof": "CORRECT",
+      "authorized_raw_ranks": [3, 4, 8],
+      "target_member_ranks": [4],
+      "top1_truth": false,
+      "top3_truth": true,
+      "state": "ENTITY_BOUND_INGRESS_PORTAL_SET"
+    },
+    {
+      "key": "henry-g-leong-community-centre-entrance",
+      "proof": "CORRECT",
+      "authorized_raw_ranks": [21],
+      "target_member_ranks": [],
+      "top1_truth": false,
+      "top3_truth": false,
+      "state": "TARGET_PORTAL_TRUTH_MISS"
+    },
+    {
+      "key": "yuen-wo-road-sports-centre-entrance",
+      "proof": "CORRECT",
+      "authorized_raw_ranks": [4, 5, 7],
+      "target_member_ranks": [5],
+      "top1_truth": false,
+      "top3_truth": true,
+      "state": "ENTITY_BOUND_INGRESS_PORTAL_SET"
+    },
+    {
+      "key": "tuen-mun-public-library-entrance",
+      "proof": "CORRECT",
+      "authorized_raw_ranks": [5, 6, 9],
+      "target_member_ranks": [6, 9],
+      "top1_truth": false,
+      "top3_truth": true,
+      "state": "ENTITY_BOUND_INGRESS_PORTAL_SET"
+    },
+    {
+      "key": "aberdeen-public-library-wall-sign",
+      "proof": "CORRECT",
+      "authorized_raw_ranks": [],
+      "no_portal_false_authorization": false,
+      "state": "IDENTITY_PROVED_TARGET_PORTAL_NOT_OBSERVABLE"
+    },
+    {
+      "key": "tiu-keng-leng-sports-centre-wall-sign",
+      "proof": "CORRECT",
+      "authorized_raw_ranks": [],
+      "no_portal_false_authorization": false,
+      "state": "IDENTITY_PROVED_TARGET_PORTAL_NOT_OBSERVABLE"
+    },
+    {
+      "key": "midland-plaza-tenant-decoy",
+      "proof": "UNKNOWN",
+      "authorized_raw_ranks": [],
+      "target_member_ranks": [],
+      "tenant_decoy_member_ranks": [],
+      "state": "IDENTITY_UNKNOWN"
+    },
+    {
+      "key": "fu-moon-building-tenant-decoy",
+      "proof": "CORRECT",
+      "authorized_raw_ranks": [3, 6, 9],
+      "target_member_ranks": [3],
+      "tenant_decoy_member_ranks": [6],
+      "top1_truth": true,
+      "top3_truth": true,
+      "tenant_decoy_overlap_authorization": true,
+      "state": "TENANT_PORTAL_OWNERSHIP_CONFLICT"
+    }
+  ],
+  "runtime": {
+    "python": "3.11.9",
+    "torch": "2.11.0+cu130",
+    "ultralytics": "8.4.102",
+    "opencv": "4.10.0",
+    "numpy": "2.4.4",
+    "rapidocr": "3.9.2",
+    "semantic_device": "cuda:0",
+    "semantic_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "peak_cuda_allocated_bytes": 1701019136
+  },
+  "interpretation": "The graph retained zero authorization on both identity-visible no-portal frames, but same-host overlap and walkable ingress did not express target ownership. One tenant portal entered the authorized set, one decoy frame remained identity-UNKNOWN, and only one of six target portals ranked first. This opened cohort is closed to threshold, class, rank, host, OCR, proposer, or fusion rescue.",
+  "legal_successor": "Change the information modality to an external entity-owned entrance node joined to provider camera pose and explicit line-of-sight occlusion, rather than retuning current-frame visual ownership.",
+  "claim_boundary": "PB18 is a fresh source/entity/file-disjoint current-frame negative for SP-ICPG on this opportunity-stratified cohort. It is not evidence against externally localized portal ownership or active observation, and it establishes no access, traversability, guidance, arrival, HANDOFF_READY, product, user-benefit, or safety claim."
+}

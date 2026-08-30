@@ -1,0 +1,102 @@
+{
+  "schema": "blindassist-l10-panolab-protocol-v1",
+  "name": "L10-PanoLab one-step active-observation Development ceiling",
+  "evidence_class": "CURATED_REAL_PANORAMAX_DEVELOPMENT",
+  "question": "Can one bounded PAN, SWEEP, APPROACH, SIDESTEP, or HOLD action materially improve unique target-entrance binding or loss reacquisition on real posed street-image sequences?",
+  "provider": {
+    "name": "Panoramax OSM-FR",
+    "api": "https://panoramax.openstreetmap.fr/api",
+    "license": "CC-BY-SA-4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/"
+  },
+  "cohort": {
+    "episode_count": 24,
+    "episodes_per_scenario": 6,
+    "scenario_classes": [
+      "TENANT_WRONG_ENTRANCE",
+      "MULTI_ENTRANCE",
+      "TARGET_SELF_OCCLUSION",
+      "OTHER_BUILDING_OCCLUSION_REACQUISITION"
+    ],
+    "panel_design": "stratified causal Development panel; individual causal truth is unchanged, but the same target way is not required to instantiate all four rare conditions",
+    "source_diversity": {
+      "TENANT_WRONG_ENTRANCE": "two strict target ways with three frozen start/tenant/view variants each",
+      "MULTI_ENTRANCE": "six distinct target ways",
+      "TARGET_SELF_OCCLUSION": "six distinct target ways",
+      "OTHER_BUILDING_OCCLUSION_REACQUISITION": "six distinct target ways"
+    },
+    "source_disjointness": "distinct Panoramax image and sequence IDs within each scenario; non-tenant strata use six distinct target ways and exclude PB18, PB19, and the generic PanoLab roster",
+    "truth_freeze": "marker-blind source audit freezes each target entrance, plausible decoy set, visibility, occlusion class, and raw viewport interval before policy replay"
+  },
+  "panel_change_receipt": {
+    "reason": "the crossed same-POI 6-by-4 source was not evaluable: France supplied two of six strict full-matrix ways, while bounded Belgium and Taiwan repairs supplied zero additional ways",
+    "unchanged": "24 total episodes, six episodes per causal class, strict per-episode ownership and occlusion truth, one-step action set, oracle and decision thresholds",
+    "development_limit": "tenant-policy generalization is not source-disjoint beyond two target ways"
+  },
+  "action_set": [
+    "HOLD",
+    "PAN_LEFT",
+    "PAN_RIGHT",
+    "SWEEP",
+    "APPROACH",
+    "SIDESTEP_LEFT",
+    "SIDESTEP_RIGHT"
+  ],
+  "action_contract": {
+    "maximum_steps": 1,
+    "single_view_horizontal_fov_degrees": 90.0,
+    "pan_offset_degrees": 75.0,
+    "sweep_offsets_degrees": [
+      0.0,
+      90.0,
+      180.0,
+      270.0
+    ],
+    "movement_view_rule": "preserve the frozen raw panorama center across sequence items; do not synthesize a world-aligned heading",
+    "movement_availability_rule": "execute movement only on a frozen same-sequence reciprocal prev/next pair; otherwise return the unchanged observation with action_executed=false",
+    "movement_role_rule": "map a frozen pair to APPROACH only when target-building-centroid distance decreases; otherwise map its signed target-relative lateral displacement to exactly one SIDESTEP action without entrance truth",
+    "PAN_LEFT": "rotate the viewport center by -75 raw panorama degrees without using world bearing",
+    "PAN_RIGHT": "rotate the viewport center by +75 raw panorama degrees without using world bearing",
+    "SWEEP": "return four 90-degree viewports at frozen raw offsets 0, 90, 180, and 270 degrees from the starting center",
+    "APPROACH": "move to one frozen adjacent posed image selected from target-centroid geometry without evaluator entrance truth",
+    "SIDESTEP_LEFT": "move to one frozen adjacent posed image on the left side of the sequence path",
+    "SIDESTEP_RIGHT": "move to one frozen adjacent posed image on the right side of the sequence path",
+    "HOLD": "retain the current image and viewport"
+  },
+  "orientation_boundary": {
+    "world_bearing_to_raw_pixel_contract": "CLOSED",
+    "allowed_pan_coordinates": "raw equirectangular image degrees only",
+    "reason": "public Panoramax items do not generally expose enough heading provenance and full yaw-pitch-roll semantics for a universal raw-pixel world-bearing projection"
+  },
+  "metrics": [
+    "correct_unique_rate",
+    "wrong_unique_rate",
+    "ambiguity_reduction_rate",
+    "mean_ambiguity_delta",
+    "reacquisition_rate",
+    "oracle_gain_percentage_points_vs_hold",
+    "best_fixed_to_oracle_gap_percentage_points",
+    "oracle_distinct_action_count",
+    "oracle_action_entropy_bits"
+  ],
+  "oracle": {
+    "scope": "one-step evaluator-only ceiling; never exposed to the runtime policy",
+    "tie_break": "correct unique, target visible, not wrong unique, lower ambiguity, then fixed action order"
+  },
+  "decision_rule": {
+    "minimum_oracle_gain_percentage_points": 8.0,
+    "maximum_fixed_to_oracle_gap_percentage_points": 8.0,
+    "if_oracle_below_minimum": "close active observation on this representation",
+    "if_fixed_within_gap": "retain the best fixed action without training",
+    "otherwise": "open a trainable action selector on a new split"
+  },
+  "non_claims": [
+    "legal or public access",
+    "walkability or collision-free traversability",
+    "metric arrival",
+    "HANDOFF_READY",
+    "user task completion",
+    "product benefit",
+    "mobility safety"
+  ]
+}

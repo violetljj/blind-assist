@@ -1,0 +1,56 @@
+{
+  "schema": "blindassist-l10-panolab-france-strict-source-ceiling-v1",
+  "decision": "L10_PANOLAB_FRANCE_STRICT_TENANT_CAUSAL_SOURCE_CEILING_2_OF_6",
+  "denominator": "six distinct target ways by four causal scenarios",
+  "unchanged_requirements": {
+    "TENANT_WRONG_ENTRANCE": "independently named OSM shop, office, amenity, or tourism entity within 3.0 m of a specific non-main entrance",
+    "MULTI_ENTRANCE": "separate OSM main and non-main entrance nodes on the target way",
+    "TARGET_SELF_OCCLUSION": "target footprint is the first ray intersection more than 0.75 m before the main entrance",
+    "OTHER_BUILDING_OCCLUSION_REACQUISITION": "a non-target building is first, followed by a reciprocal provider-adjacent target-hit frame",
+    "DIRECT": "target footprint first-intersection reaches the main entrance within 0.75 m",
+    "world_bearing_to_raw_pixel_contract": "CLOSED"
+  },
+  "source_search": {
+    "initial_named_multi_entrance_targets": 802,
+    "panoramax_queries": 500,
+    "direct_plus_target_self_targets": 82,
+    "geometry_full_matrix_before_strict_tenant_ownership": 22,
+    "strict_tenant_candidate_rows": 3,
+    "strict_distinct_target_ways": 2,
+    "required_distinct_target_ways": 6,
+    "complete_jpg_count": 0
+  },
+  "admitted_source_targets": [
+    {
+      "target_name": "L'Heure Tranquille",
+      "osm_way_id": 284778200,
+      "strict_tenant_examples": [
+        "H&M",
+        "Le Temps des Cerises",
+        "Mango",
+        "Primark",
+        "New Yorker",
+        "Zara"
+      ]
+    },
+    {
+      "target_name": "World Trade Center",
+      "osm_way_id": 234109119,
+      "strict_tenant_examples": [
+        "Babilou",
+        "Europole - Gare",
+        "Effia gare",
+        "Grenoble École de Management"
+      ]
+    }
+  ],
+  "durable_raw_evidence": {
+    "manifest_path": "artifacts.local/knowledge/l10-panolab-source-v2-france-ceiling/france-strict-tenant-ceiling-manifest.json",
+    "manifest_sha256": "6c3409e73192c142553c4278c454a49a04b878b55c4cfe9c7603e337b14008c7",
+    "summary_sha256": "ef99d6c4cfee9ed35afc629189ef36a5fc4260259799eb98fa0f9edd7999ac0e",
+    "tenant_receipts_sha256": "dd2f5fdb05314e89af081cfe522e37a765595032e2aece19fa2984fb24062156",
+    "tenant_classification_sha256": "5356188f722521774109e25791dae9fdbbaa965c3bc5780df4d49223403d8a1a"
+  },
+  "claim_boundary": "source ceiling only; no panorama pixel audit, action policy, oracle, entrance-binding, access, arrival, handoff, completion, product, or safety result",
+  "next_source": "Panoramax Belgium with the unchanged strict tenant and causal geometry rules"
+}

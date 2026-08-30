@@ -940,6 +940,64 @@ prompt, threshold, processor, or postprocessing and rerun the consumed cohort.
 The next route must add genuinely different observable information on fresh
 pixels rather than try another open-vocabulary door phrasing.
 
+PB18 made that source change on eight fresh real Named-POI images. A localized
+SCIL proof could authorize a structural portal proposal only through the same
+ADE20K host component and a walkable-ingress region. Identity was correct on
+`7/8` with zero wrong proofs and one `UNKNOWN`; target portal Top-1/Top-3 was
+`1/6` / `4/6`; both no-portal frames stayed blocked, but one of two tenant
+portals was authorized and exact target-hit plus tenant-reject ownership was
+`0/2`. Opportunity-balanced Top-3 accuracy was `0.7083`.
+
+Record
+`L10_PB18_SCRIPT_PROVED_INGRESS_CONNECTED_PORTAL_GRAPH_GATE_NOT_MET`. Same-host
+connectivity and generic walkable ingress do not prove which entity owns a
+portal. Do not tune SCIL, semantic classes, connectivity, ingress threshold,
+candidate rank, proposer, or fusion on this opened cohort. The next route may
+join an external entity-owned OSM entrance node to a posed panorama only after
+explicit camera-to-entrance occlusion; this is a new geospatial authority, not
+another current-image ownership matcher.
+
+The first PB19 Mapillary source cannot authorize that test. Its initial 4+2+2
+primary cohort had `0/4` direct frames with uniquely freezeable marker-blind
+portal truth. A bounded repair screened 858 targets, 74 mechanically direct
+combinations, and 32 full panoramas; the first adjudicator retained four, but a
+second independent adjudicator found multiple walkable Markthal entrances.
+Only `3/4` direct rows had overlapping frozen intervals. Record
+`L10_PB19_MAPILLARY_SOURCE_NOT_EVALUABLE_UNIQUE_PORTAL_TRUTH_3_OF_4`.
+No projection or formal evaluator ran. Keep the 4/4 gate, close Mapillary source
+admission, and move the unchanged representation to Panoramax only if its
+raw-pixel orientation convention and heading provenance can be fixed without
+looking at target portal outcomes.
+
+Panoramax has now fixed that seam for a strict zero-pose allowlist. A world
+bearing may be projected only from a full uncropped 2:1 equirectangular image
+whose sensor dimensions match, whose owning item contains true-north EXIF
+`GPSImgDirection` agreeing with `view:azimuth` within one degree, and whose
+yaw/pitch/roll plus XMP pose are explicitly zero and non-conflicting. The first
+24-episode PanoLab pixel source still stopped at `0/12` admitted tenant/multiple
+episodes, before any algorithm or oracle call; facade pixels did not uniquely
+identify the required OSM entrance node.
+
+The causal action question nevertheless passed on a separate fresh four-way
+Panoramax roster. Four distinct target ways and sequences paired an initially
+blocked exact OSM entrance ray with an official reciprocal adjacent image where
+the same ray was exposed. After preserving a v1 source-serialization defect,
+the corrected v2 replay changed no episode, image, geometry, formula, action, or
+threshold and produced: strict orientation `8/8`, correct start role `4/4`,
+reciprocal action receipts `4/4`, occluded false authorization `0/4`, post-action
+authorization `4/4`, and active recovery `4/4` (100%), with mean displacement
+`9.394 m` and mean authority-count delta `+1.0`.
+
+Accept
+`L10_PANOLAB_ACTIVE_ENTRANCE_RAY_RECOVERY_DEVELOPMENT_GATE_MET` as the first
+real posed-street-sequence Development pass for
+`SIDESTEP_TO_ENTRANCE_FACE`: the action changes an entity-owned entrance ray
+from geometry-blocked to geometry-authorized. Advance the active-observation
+mechanism, but do not infer pixel portal identity, public/legal access,
+walkability, collision-free motion, arrival, `HANDOFF_READY`, or safety. A
+pixel-portal successor must add an independent entrance-identity credential;
+do not reopen matcher, threshold, or generic-fusion rescue.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

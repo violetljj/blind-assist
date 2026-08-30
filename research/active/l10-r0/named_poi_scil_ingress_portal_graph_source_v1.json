@@ -1,0 +1,197 @@
+{
+  "schema": "l10-named-poi-scil-ingress-portal-graph-source-v1",
+  "created_at": "2026-08-30",
+  "target_id": "pb18-scil-ingress-portal-graph-fresh-v1",
+  "selection_authority": "Eight exact Wikimedia Commons files were selected by source metadata and source-only pixel audit before any PB18 OCR, ADE20K semantic, or portal-proposer call. Four frames contain an unambiguous target portal, two contain target identity but no portal, and two contain both the target building portal and a separately signed tenant portal as an instance-level ownership decoy. Every exact filename and every frozen English or Chinese entity name had zero hits in the PB1-PB17 active source files and local named-poi manifests.",
+  "cohort": [
+    {
+      "index": 1,
+      "id": "north-point-public-library",
+      "name": "North Point Public Library",
+      "aliases": {
+        "latin": ["North Point Public Library"],
+        "han": ["北角公共圖書館"],
+        "marks": []
+      },
+      "role": "TARGET_PORTAL_PRESENT",
+      "commons_file": "HK North Point 北角公共圖書館 Public Library name sign n entrance 百福道 Pak Fu Road Sept 2017 IX1.jpg",
+      "source_metadata": {
+        "source_page": "https://commons.wikimedia.org/wiki/File:HK_North_Point_%E5%8C%97%E8%A7%92%E5%85%AC%E5%85%B1%E5%9C%96%E6%9B%B8%E9%A4%A8_Public_Library_name_sign_n_entrance_%E7%99%BE%E7%A6%8F%E9%81%93_Pak_Fu_Road_Sept_2017_IX1.jpg",
+        "original_url": "https://upload.wikimedia.org/wikipedia/commons/3/3d/HK_North_Point_%E5%8C%97%E8%A7%92%E5%85%AC%E5%85%B1%E5%9C%96%E6%9B%B8%E9%A4%A8_Public_Library_name_sign_n_entrance_%E7%99%BE%E7%A6%8F%E9%81%93_Pak_Fu_Road_Sept_2017_IX1.jpg",
+        "license": "CC BY-SA 4.0",
+        "original_size": [2048, 1368],
+        "original_bytes": 941479,
+        "commons_sha1": "f1e0cd010163e77ad75214eb488fab6f6b109bff"
+      },
+      "source_audit_note": "The complete bilingual entity name is on the right-hand solid wall; the accessible ramp and open glass library entrance are directly adjacent on the same facade. The generic Hong Kong Public Libraries logo is excluded from aliases."
+    },
+    {
+      "index": 2,
+      "id": "henry-g-leong-yau-ma-tei-community-centre",
+      "name": "Henry G. Leong Yau Ma Tei Community Centre",
+      "aliases": {
+        "latin": ["Henry G. Leong Yau Ma Tei Community Centre", "Henry G. Leong Community Centre"],
+        "han": ["梁顯利油麻地社區中心"],
+        "marks": []
+      },
+      "role": "TARGET_PORTAL_PRESENT",
+      "commons_file": "HK Yau Ma Tei Public Square Street Henry G. Leong Community Centre name sign n entrance Feb-2014 Social Services.JPG",
+      "source_metadata": {
+        "source_page": "https://commons.wikimedia.org/wiki/File:HK_Yau_Ma_Tei_Public_Square_Street_Henry_G._Leong_Community_Centre_name_sign_n_entrance_Feb-2014_Social_Services.JPG",
+        "original_url": "https://upload.wikimedia.org/wikipedia/commons/6/66/HK_Yau_Ma_Tei_Public_Square_Street_Henry_G._Leong_Community_Centre_name_sign_n_entrance_Feb-2014_Social_Services.JPG",
+        "license": "CC BY-SA 3.0",
+        "original_size": [2048, 1536],
+        "original_bytes": 2277278,
+        "commons_sha1": "854ee23e25f76c7bb60e73ca4ea7fa4922508dc2"
+      },
+      "source_audit_note": "The complete bilingual entity sign spans directly above the open double glass entrance."
+    },
+    {
+      "index": 3,
+      "id": "yuen-wo-road-sports-centre",
+      "name": "Yuen Wo Road Sports Centre",
+      "aliases": {
+        "latin": ["Yuen Wo Road Sports Centre"],
+        "han": ["源禾路體育館"],
+        "marks": []
+      },
+      "role": "TARGET_PORTAL_PRESENT",
+      "commons_file": "HK 沙田 Shatin 源禾路 Yuen Wo Road Sports Centre name sign n entrance night April 2017 IX1.jpg",
+      "source_metadata": {
+        "source_page": "https://commons.wikimedia.org/wiki/File:HK_%E6%B2%99%E7%94%B0_Shatin_%E6%BA%90%E7%A6%BE%E8%B7%AF_Yuen_Wo_Road_Sports_Centre_name_sign_n_entrance_night_April_2017_IX1.jpg",
+        "original_url": "https://upload.wikimedia.org/wikipedia/commons/4/49/HK_%E6%B2%99%E7%94%B0_Shatin_%E6%BA%90%E7%A6%BE%E8%B7%AF_Yuen_Wo_Road_Sports_Centre_name_sign_n_entrance_night_April_2017_IX1.jpg",
+        "license": "CC BY-SA 4.0",
+        "original_size": [2048, 1368],
+        "original_bytes": 911219,
+        "commons_sha1": "c72a37be721391757ac15a114dc88d056d6e7857"
+      },
+      "source_audit_note": "The large bilingual entity name is directly above the complete frontal automatic glass entrance; the generic LCSD mark is excluded from aliases."
+    },
+    {
+      "index": 4,
+      "id": "tuen-mun-public-library",
+      "name": "Tuen Mun Public Library",
+      "aliases": {
+        "latin": ["Tuen Mun Public Library"],
+        "han": ["屯門公共圖書館"],
+        "marks": []
+      },
+      "role": "TARGET_PORTAL_PRESENT",
+      "commons_file": "HK 屯門公共圖書館 Tuen Mun Public Library name sign Dec-2017 IX1.jpg",
+      "source_metadata": {
+        "source_page": "https://commons.wikimedia.org/wiki/File:HK_%E5%B1%AF%E9%96%80%E5%85%AC%E5%85%B1%E5%9C%96%E6%9B%B8%E9%A4%A8_Tuen_Mun_Public_Library_name_sign_Dec-2017_IX1.jpg",
+        "original_url": "https://upload.wikimedia.org/wikipedia/commons/8/8c/HK_%E5%B1%AF%E9%96%80%E5%85%AC%E5%85%B1%E5%9C%96%E6%9B%B8%E9%A4%A8_Tuen_Mun_Public_Library_name_sign_Dec-2017_IX1.jpg",
+        "license": "CC BY-SA 4.0",
+        "original_size": [2048, 1368],
+        "original_bytes": 1359474,
+        "commons_sha1": "ec5a2e1f990588d22102c74e53ce064314cfe6d4"
+      },
+      "source_audit_note": "The complete bilingual entity name is on the left wall; the glass entrance in active pedestrian use is on the same continuous facade to the right. The generic library logo is excluded from aliases."
+    },
+    {
+      "index": 5,
+      "id": "aberdeen-public-library",
+      "name": "Aberdeen Public Library",
+      "aliases": {
+        "latin": ["Aberdeen Public Library"],
+        "han": ["香港仔公共圖書館"],
+        "marks": []
+      },
+      "role": "TARGET_PORTAL_NOT_VISIBLE",
+      "commons_file": "HK 香港仔公共圖書館 Aberdeen Pulic Library name sign n logo April 2016 DSC.JPG",
+      "source_metadata": {
+        "source_page": "https://commons.wikimedia.org/wiki/File:HK_%E9%A6%99%E6%B8%AF%E4%BB%94%E5%85%AC%E5%85%B1%E5%9C%96%E6%9B%B8%E9%A4%A8_Aberdeen_Pulic_Library_name_sign_n_logo_April_2016_DSC.JPG",
+        "original_url": "https://upload.wikimedia.org/wikipedia/commons/2/23/HK_%E9%A6%99%E6%B8%AF%E4%BB%94%E5%85%AC%E5%85%B1%E5%9C%96%E6%9B%B8%E9%A4%A8_Aberdeen_Pulic_Library_name_sign_n_logo_April_2016_DSC.JPG",
+        "license": "CC BY-SA 4.0",
+        "original_size": [3648, 2736],
+        "original_bytes": 2290851,
+        "commons_sha1": "bdf43a584b48c6dc18e0a383e134efc89bb274df"
+      },
+      "source_audit_note": "Large bilingual entity text and posters appear on a solid orange wall; no door, doorframe, or traversable opening is visible. The filename misspelling Pulic and generic library logo are excluded from aliases."
+    },
+    {
+      "index": 6,
+      "id": "tiu-keng-leng-sports-centre",
+      "name": "Tiu Keng Leng Sports Centre",
+      "aliases": {
+        "latin": ["Tiu Keng Leng Sports Centre"],
+        "han": ["調景嶺體育館"],
+        "marks": []
+      },
+      "role": "TARGET_PORTAL_NOT_VISIBLE",
+      "commons_file": "HK TKL 調景嶺體育館 Tiu Keng Leng Sports Centre name sign December 2018 SSG 02.jpg",
+      "source_metadata": {
+        "source_page": "https://commons.wikimedia.org/wiki/File:HK_TKL_%E8%AA%BF%E6%99%AF%E5%B6%BA%E9%AB%94%E8%82%B2%E9%A4%A8_Tiu_Keng_Leng_Sports_Centre_name_sign_December_2018_SSG_02.jpg",
+        "original_url": "https://upload.wikimedia.org/wikipedia/commons/1/1b/HK_TKL_%E8%AA%BF%E6%99%AF%E5%B6%BA%E9%AB%94%E8%82%B2%E9%A4%A8_Tiu_Keng_Leng_Sports_Centre_name_sign_December_2018_SSG_02.jpg",
+        "license": "CC BY-SA 4.0",
+        "original_size": [2448, 3264],
+        "original_bytes": 2632494,
+        "commons_sha1": "ab818c7db9092ac7a403c867b3b20ac6cff78128"
+      },
+      "source_audit_note": "The entity sign, camera, planter, and ground warning board appear on a solid brick wall; no door, doorframe, or traversable opening is visible."
+    },
+    {
+      "index": 7,
+      "id": "midland-plaza",
+      "name": "Midland Plaza",
+      "aliases": {
+        "latin": ["Midland Plaza"],
+        "han": ["中原廣場"],
+        "marks": []
+      },
+      "role": "WRONG_PORTAL_DECOY_VISIBLE",
+      "commons_file": "HK 上環 Sheung Wan 皇后大道中 Queen's Road West 中原廣場 Midland Plaza name sign Starbucks Coffee restaurant shop October 2016 DSC.jpg",
+      "source_metadata": {
+        "source_page": "https://commons.wikimedia.org/wiki/File:HK_%E4%B8%8A%E7%92%B0_Sheung_Wan_%E7%9A%87%E5%90%8E%E5%A4%A7%E9%81%93%E4%B8%AD_Queen%27s_Road_West_%E4%B8%AD%E5%8E%9F%E5%BB%A3%E5%A0%B4_Midland_Plaza_name_sign_Starbucks_Coffee_restaurant_shop_October_2016_DSC.jpg",
+        "original_url": "https://upload.wikimedia.org/wikipedia/commons/7/7a/HK_%E4%B8%8A%E7%92%B0_Sheung_Wan_%E7%9A%87%E5%90%8E%E5%A4%A7%E9%81%93%E4%B8%AD_Queen%27s_Road_West_%E4%B8%AD%E5%8E%9F%E5%BB%A3%E5%A0%B4_Midland_Plaza_name_sign_Starbucks_Coffee_restaurant_shop_October_2016_DSC.jpg",
+        "license": "CC BY-SA 4.0",
+        "original_size": [3648, 2736],
+        "original_bytes": 4062489,
+        "commons_sha1": "db2a6d83fda8e567e25fd9f9f30d178f1517a0d4"
+      },
+      "source_audit_note": "The target building name is above the facade and its building entrance is on the right below that sign. The left opening is independently signed STARBUCKS COFFEE and another shop opening is independently signed 力圖樂影音; these are tenant-portal decoys, not target-building portals."
+    },
+    {
+      "index": 8,
+      "id": "fu-moon-building",
+      "name": "Fu Moon Building",
+      "aliases": {
+        "latin": ["Fu Moon Building"],
+        "han": ["富滿大廈"],
+        "marks": []
+      },
+      "role": "WRONG_PORTAL_DECOY_VISIBLE",
+      "commons_file": "HK SYP 皇后大道西 396-400 Queen's Road West 富滿大廈 Fu Moon Building name sign n shop ProKit Solar Film car design Apr-2013.JPG",
+      "source_metadata": {
+        "source_page": "https://commons.wikimedia.org/wiki/File:HK_SYP_%E7%9A%87%E5%90%8B%E5%A4%A7%E9%81%93%E8%A5%BF_396-400_Queen%27s_Road_West_%E5%AF%8C%E6%BB%BF%E5%A4%A7%E5%BB%88_Fu_Moon_Building_name_sign_n_shop_ProKit_Solar_Film_car_design_Apr-2013.JPG",
+        "original_url": "https://upload.wikimedia.org/wikipedia/commons/f/fa/HK_SYP_%E7%9A%87%E5%90%8B%E5%A4%A7%E9%81%93%E8%A5%BF_396-400_Queen%27s_Road_West_%E5%AF%8C%E6%BB%BF%E5%A4%A7%E5%BB%88_Fu_Moon_Building_name_sign_n_shop_ProKit_Solar_Film_car_design_Apr-2013.JPG",
+        "license": "CC BY-SA 3.0",
+        "original_size": [2048, 1536],
+        "original_bytes": 1831865,
+        "commons_sha1": "eb0edc1a7ec9e3bad984441b71b5bf379b58a4ce"
+      },
+      "source_audit_note": "The target bilingual building name and its glass stair entrance are on the right. The left glass-door group is directly under the independent PROKIT Film & Design Ltd sign and is a tenant-portal decoy."
+    }
+  ],
+  "files": [
+    "HK North Point 北角公共圖書館 Public Library name sign n entrance 百福道 Pak Fu Road Sept 2017 IX1.jpg",
+    "HK Yau Ma Tei Public Square Street Henry G. Leong Community Centre name sign n entrance Feb-2014 Social Services.JPG",
+    "HK 沙田 Shatin 源禾路 Yuen Wo Road Sports Centre name sign n entrance night April 2017 IX1.jpg",
+    "HK 屯門公共圖書館 Tuen Mun Public Library name sign Dec-2017 IX1.jpg",
+    "HK 香港仔公共圖書館 Aberdeen Pulic Library name sign n logo April 2016 DSC.JPG",
+    "HK TKL 調景嶺體育館 Tiu Keng Leng Sports Centre name sign December 2018 SSG 02.jpg",
+    "HK 上環 Sheung Wan 皇后大道中 Queen's Road West 中原廣場 Midland Plaza name sign Starbucks Coffee restaurant shop October 2016 DSC.jpg",
+    "HK SYP 皇后大道西 396-400 Queen's Road West 富滿大廈 Fu Moon Building name sign n shop ProKit Solar Film car design Apr-2013.JPG"
+  ],
+  "freeze_rules": {
+    "identity_profiles": "Only the exact entity aliases above are admissible; generic agency logos, tenant names, filename misspellings, street names, and photographer metadata are excluded.",
+    "portal_roles": "Rows 1-4 contain target portals, rows 5-6 contain no visible portal, and rows 7-8 contain both a target portal and a separately signed tenant-portal decoy. The latter are portal-instance ownership controls, never whole-frame negatives.",
+    "model_access": "No OCR, ADE20K semantic model, portal proposer, or identity model may run before local integrity, human target-portal boxes, and human tenant-decoy boxes are frozen."
+  },
+  "model_calls_before_source_freeze": {
+    "ocr": 0,
+    "semantic": 0,
+    "portal_proposer": 0
+  },
+  "claim_boundary": "Deliberately identity-opportunity-stratified, entity/file-disjoint public-image cohort. It can confirm conditional current-frame entity-proof-to-functional-portal binding and reject explicitly labeled tenant portals, not natural prevalence, legal/public access, traversability, active-view causality, metric guidance, arrival, HANDOFF_READY, product benefit, user benefit, or safety."
+}

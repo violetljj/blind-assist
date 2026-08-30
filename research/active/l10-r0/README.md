@@ -1767,6 +1767,132 @@ pixels without repairing the empty-mask contract, prompt, confidence, mask
 threshold, processor, or postprocessing; the successor must add a genuinely
 different observable information source on another fresh cohort.
 
+#### PB18 Script-Proved Ingress-Connected Portal Graph
+
+PB18 returned to real Named-POI images and changed ownership representation
+rather than reopening PB17. Eight entity/file-disjoint Commons frames were
+frozen before any OCR, semantic, or proposer call: four plain target portals,
+two identity-visible no-portal controls, and two target-plus-tenant portal
+ownership controls. The evaluator joined a correct localized SCIL carrier to
+the unchanged portal lattice only through the same ADE20K host component and a
+walkable-ingress semantic region.
+
+| Fresh PB18 metric | result |
+|---|---:|
+| SCIL correct / wrong / `UNKNOWN` | 7 / 0 / 1 |
+| target portal Top-1 / Top-3 | 1/6 / 4/6 |
+| no-portal false authorization | 0/2 |
+| tenant-decoy overlap authorization | 1/2 |
+| exact target-hit plus tenant-reject ownership pair | 0/2 |
+| opportunity-balanced Top-3 accuracy | 0.7083 |
+
+Record
+`L10_PB18_SCRIPT_PROVED_INGRESS_CONNECTED_PORTAL_GRAPH_GATE_NOT_MET`.
+The graph safely retained both no-portal controls, but host connectivity and
+walkable ingress did not express entity ownership: Fu Moon authorized both the
+target-building and tenant portals, Midland remained identity-`UNKNOWN`, and
+only one target portal ranked first. Close this opened cohort to threshold,
+class, rank, host, OCR, proposer, and fusion rescue.
+
+The next admissible information source is an external entity-owned entrance
+node joined to provider camera pose and explicit camera-to-entrance occlusion.
+This changes the modality from current-image ownership inference to a
+geospatially owned endpoint. PB18 establishes no legal/public access,
+traversability, active-view causality, directional guidance, metric arrival,
+`HANDOFF_READY`, completion, product, user-benefit, or safety claim.
+
+PB19 next implemented that entity-linked entrance-ray representation, but its
+Mapillary confirmation never opened. The first 12-way source roster supplied
+six mechanically direct, three self-occluded, and three non-target-occluded
+panoramas; none of the four preregistered direct frames allowed target portal
+truth to be uniquely frozen from marker-blind pixels. A source-only repair then
+screened 858 targets, found 74 mechanically valid direct combinations, and
+blind-audited 32 complete panoramas from 30 building ways. The first adjudicator
+retained four direct frames, but an independent second adjudicator rejected
+Markthal Rotterdam because multiple walkable door leaves/openings remained.
+Only three frames had overlapping independently frozen portal intervals.
+
+Record
+`L10_PB19_MAPILLARY_SOURCE_NOT_EVALUABLE_UNIQUE_PORTAL_TRUTH_3_OF_4`.
+No entrance bearing, relative compass angle, predicted x, projection hit, or
+formal evaluator call occurred. Do not delete the disputed row, reduce the gate
+to `3/3`, or let a visible output marker define truth. The representation may
+move unchanged to a separately audited posed-panorama provider; Panoramax is the
+next source candidate, conditional on an independently fixed raw-pixel
+orientation contract.
+
+#### PB19 Panoramax PanoLab active entrance-ray recovery
+
+Panoramax closed that orientation seam only through a strict source allowlist,
+not from provider `view:azimuth` alone. Projection is authorized for a full,
+uncropped 2:1 equirectangular JPEG whose dimensions match the declared sensor,
+whose owning-instance EXIF supplies true-north `GPSImgDirection`, whose EXIF
+direction agrees with `view:azimuth` within one degree, and whose explicit
+yaw/pitch/roll and XMP pose are zero and non-conflicting. For true entrance
+bearing `B`, image heading `H`, and width `W`, raw horizontal position is
+`W * wrap360(B - H + 180) / 360`. Any failed applicability check leaves the
+world-bearing-to-pixel projection closed.
+
+The first stratified PanoLab source froze 24 episodes over six POIs and four
+causal scenarios, with 42 images from 20 sequences and 20 target ways. Its
+marker-blind pixel audit admitted `0/6` tenant-wrong-entrance and `0/6`
+multi-entrance episodes, so the required 24-way pixel-portal source could not
+open and the remaining 12 occlusion rows stayed unopened. Record
+`L10_PANOLAB_STRATIFIED_PIXEL_SOURCE_NOT_EVALUABLE_TENANT_MULTI_0_OF_12`;
+there were zero OCR/model, projection-marker, algorithm, or oracle calls. This
+is a source ceiling for pixel-owned portal truth, not an active-observation
+negative.
+
+A separate metadata-first roster then froze four real provider-adjacent
+episodes from four target ways and four sequences: two non-target-building
+occlusions and two target-self occlusions. Each episode starts with an exact OSM
+entrance ray blocked by the frozen geometry and follows an official reciprocal
+`prev`/`next` link to a directly exposed ray. The v1 replay preserved the core
+`4/4` recovery effect but failed its action-receipt gate because sanitized source
+items omitted those already-frozen links. V2 restored only the provider link
+fields; episodes, images, geometry, orientation rule, projection formula,
+action, and thresholds were unchanged.
+
+| Fresh PanoLab active-ray metric | result |
+|---|---:|
+| strict-orientation images | 8/8 |
+| initial visibility role correct | 4/4 |
+| reciprocal provider action receipts | 4/4 |
+| occluded-state false authorization | 0/4 |
+| post-action entrance-ray authorization | 4/4 |
+| active entrance-ray recovery | 4/4 (100%) |
+| mean authority-count delta | +1.0 |
+| mean camera displacement | 9.394 m |
+
+Record
+`L10_PANOLAB_ACTIVE_ENTRANCE_RAY_RECOVERY_DEVELOPMENT_GATE_MET`. This is the
+first real posed-street-sequence Development evidence that a
+`SIDESTEP_TO_ENTRANCE_FACE` changes an exact entity-owned entrance ray from
+geometry-blocked to geometry-authorized. It does not prove a pixel portal hit,
+pixel-derived entrance ownership, public/legal access, walkability,
+collision-free motion, arrival, `HANDOFF_READY`, or mobility safety. The active
+observation mechanism may advance; any pixel-portal successor still needs an
+independent entrance-identity credential rather than another matcher rescue.
+
+PanoLab source, pixel-source audits, strict orientation contract, and entrance
+ray evaluators:
+`l10_panolab_source_v1.json`, `l10_panolab_protocol_v1.json`,
+`l10_panolab.py`, `l10_panolab_source_pixel_audit_v1.json`,
+`l10_panolab_stratified_source_pixel_audit_v1.json`,
+`l10_panolab_orientation_projection_protocol_v1.json`,
+`l10_panolab_entrance_ray.py`, and
+`named_poi_entity_linked_entrance_ray.py`.
+
+Active-recovery evaluator and preserved v1/v2 receipts:
+`l10_panolab_active_ray_recovery.py`,
+`l10_panolab_active_ray_recovery_source_v1.json`,
+`l10_panolab_active_ray_recovery_protocol_v1.json`,
+`l10_panolab_active_ray_recovery_result_v1.json`,
+`l10_panolab_active_ray_recovery_source_v2.json`,
+`l10_panolab_active_ray_recovery_protocol_v2.json`, and
+`l10_panolab_active_ray_recovery_result_v2.json`. The v2 result SHA-256 is
+`abae1ef768ff24ad7771704c34f602d7145b382a8259b4a779b0357960fcd963`.
+
 Durable PB10 summary:
 `named_poi_trans4trans_glass_door_plane_development_result_v1.json`.
 
@@ -1820,6 +1946,15 @@ PB17 protocol, frozen cohort, evaluator, and durable partial adjudication:
 `named_poi_sam3_official_door_state_development_result_v1.json`. The result
 SHA-256 is
 `ce644f3763363b201dcf9d4a7f17e2d7bcd05e634ae949fbf5044bab0cd12d6f`.
+
+PB18 source selection, frozen cohort, protocol, evaluator, and durable result:
+`named_poi_scil_ingress_portal_graph_source_v1.json`,
+`named_poi_scil_ingress_portal_graph_fresh_cohort_v1.json`,
+`named_poi_scil_ingress_portal_graph_protocol_v1.json`,
+`named_poi_scil_ingress_portal_graph.py`, and
+`named_poi_scil_ingress_portal_graph_result_v1.json`. The formal raw result is
+SHA-256
+`03f8b3b59bb1eec21e706d07b751f3edd345b95a998076681d363ba8ed60fbec`.
 
 The `x/120` column is not physical target-absence authority. The source audit
 did not exhaustively freeze every gallery building co-visible in dense

@@ -1,0 +1,45 @@
+{
+  "schema": "blindassist-l10-panolab-taiwan-strict-source-ceiling-v1",
+  "decision": "L10_PANOLAB_TAIWAN_STRICT_CAUSAL_SOURCE_CEILING_0_OF_4",
+  "denominator": "four additional distinct full-matrix target ways needed after the frozen France 2-of-6 ceiling",
+  "unchanged_requirements": {
+    "TENANT_WRONG_ENTRANCE": "independently named OSM shop, office, amenity, or tourism entity within 3.0 m of a specific non-main entrance",
+    "MULTI_ENTRANCE": "separate OSM main and non-main entrance nodes on the target way",
+    "TARGET_SELF_OCCLUSION": "the target footprint is the first global ray intersection more than 0.75 m before the main entrance",
+    "OTHER_BUILDING_OCCLUSION_REACQUISITION": "a non-target building is first, followed by a reciprocal provider-adjacent globally direct target frame",
+    "DIRECT": "the target footprint is the first global ray intersection and reaches the main entrance within 0.75 m",
+    "world_bearing_to_raw_pixel_contract": "CLOSED"
+  },
+  "bounded_search": {
+    "area": "Taipei Main Station and Zhongzheng core",
+    "bbox": {
+      "south": 25.038,
+      "west": 121.505,
+      "north": 25.058,
+      "east": 121.53
+    },
+    "strict_way_main_pairs": 1,
+    "strict_distinct_target_ways": 1,
+    "exact_place_position_queries": 1,
+    "exact_query_errors": 0,
+    "queries_with_contract_360_features": 0,
+    "global_full_matrix_distinct_target_ways": 0,
+    "complete_jpg_count": 0
+  },
+  "strict_target": {
+    "target_name": "德立莊酒店",
+    "target_way_id": 270600125,
+    "main_entrance_node_id": 8426944901,
+    "tenant_name": "老虎醬溫州大餛飩",
+    "provider_features_within_4_to_60_m": 0
+  },
+  "durable_raw_evidence": {
+    "bundle_path": "artifacts.local/knowledge/l10-panolab-source-v4-taiwan-ceiling",
+    "run_receipt_sha256": "a0f25dbac79b9ca00609f85032383462aba4c9576a2a0af01ec08313444bd879",
+    "targets_sha256": "a8836244692c3db3606aee6ad4ec8f1fdec0c347b03b4c70b84d8a033aba48fb",
+    "exact_query_receipt_sha256": "f0a7135bc8dd71c0f70d7012604fb30e9f4fe78d56feb6e2bc17d20c50f6ce49",
+    "classified_sha256": "e114b8edcd69e4f5023b97e9d26a1627f6cef3d2a7e96a83691c4caa4f0b6b31"
+  },
+  "claim_boundary": "metadata-only source ceiling; no panorama pixel audit, action policy, oracle, entrance-binding, access, arrival, handoff, completion, product, or safety result",
+  "next_action": "stop city and provider hopping; redesign the 24-episode source panel without lowering any individual causal truth"
+}

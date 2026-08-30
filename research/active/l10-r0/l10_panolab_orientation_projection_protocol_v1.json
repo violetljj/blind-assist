@@ -1,0 +1,116 @@
+{
+  "schema": "blindassist-l10-panolab-orientation-projection-protocol-v1",
+  "name": "L10-PanoLab true-heading entrance-ray projection",
+  "status": "GENERAL_PROJECTION_CLOSED_STRICT_ZERO_POSE_ALLOWLIST_OPEN",
+  "question": "Can an OSM entrance node be projected into a Panoramax equirectangular image using only public camera pose, camera-native true heading, and official viewer coordinate semantics?",
+  "information_change": "open a previously unavailable camera-to-OSM entrance ray; this is a new observation representation, not a matcher or threshold rescue",
+  "official_semantics": {
+    "panoramax_picture_metadata_docs": "https://docs.panoramax.fr/pictures-metadata/tech/api_reference/",
+    "panoramax_photo_api_docs": "https://docs.panoramax.fr/web-viewer/reference/components/ui/Photo/",
+    "panoramax_web_viewer": {
+      "repository": "https://gitlab.com/panoramax/clients/web-viewer",
+      "version": "5.2.0",
+      "commit": "cc0e3437e976176fd189d4db48bb5f26206dd352",
+      "photo_source_path": "src/components/ui/Photo.js",
+      "photo_source_sha256": "22c9c060e0d50c38a72b49c5cfb5589e3cca94a135e5a7598492ca7282271ae9",
+      "picture_source_path": "src/utils/picture.js",
+      "picture_source_sha256": "b241df8084e0d91284fe08fb2a73c4478cc0ba161819d0d9353dc6721536f88e",
+      "semantics": [
+        "getPictureOriginalHeading returns properties view:azimuth",
+        "getXY adds the picture original heading to Photo Sphere Viewer yaw",
+        "setXYZ subtracts the picture original heading before viewer rotation",
+        "for a 360 image, the viewer applies sphere correction only when both pitch and roll are nonzero"
+      ]
+    },
+    "photo_sphere_viewer": {
+      "repository": "https://github.com/mistic100/Photo-Sphere-Viewer",
+      "version": "5.15.1",
+      "commit": "1338477a606b5c68863676f4d3ac3361b365be07",
+      "adapter_source_path": "packages/core/src/adapters/EquirectangularAdapter.ts",
+      "adapter_source_sha256": "eb2200b7d27b1a727f72a8ddec672aa5f0761cfe61ac8cdcf87682590118f535",
+      "data_helper_source_path": "packages/core/src/services/DataHelper.ts",
+      "data_helper_source_sha256": "83dc8cc121f3ea27e49dd7e007f9e2a0ec4f180adf43ecdd4ee3f72383729242",
+      "semantics": [
+        "texture x=0 is viewer yaw 180 degrees",
+        "texture x=full_width/2 is viewer yaw 0 degrees",
+        "spherical-to-texture conversion applies the inverse pose and sphere correction before equirectangular lookup"
+      ]
+    },
+    "panoramax_server": {
+      "api_repository_commit": "https://gitlab.com/panoramax/server/api/-/tree/374f952a86c5627062abe4f34581c001854a388e",
+      "tag_reader_repository_commit": "https://gitlab.com/panoramax/server/geo-picture-tag-reader/-/tree/8dc77517d3195d36111ea887b5d1929576732085",
+      "provenance_boundary": [
+        "the API writes database heading to STAC view:azimuth",
+        "heading may come from GPSImgDirection, Mapillary TrueHeading, GPSTrack, a sequence-derived value, or a later API edit",
+        "therefore view:azimuth alone never opens projection; the owning-instance item must also expose a matching GPSImgDirection with true-north reference"
+      ]
+    }
+  },
+  "applicability_gate": {
+    "provider": "Panoramax OSM-FR",
+    "field_of_view_degrees": 360,
+    "full_equirectangular_image": true,
+    "sensor_width_equals_twice_height": true,
+    "visible_area_must_cover_full_sensor": true,
+    "view_azimuth_required": true,
+    "view_azimuth_meaning": "clockwise degrees from true north for the image center",
+    "camera_native_true_heading_required": true,
+    "accepted_heading_source": "Exif.GPSInfo.GPSImgDirection with Exif.GPSInfo.GPSImgDirectionRef=T",
+    "maximum_circular_difference_between_view_azimuth_and_exif_degrees": 1.0,
+    "explicit_zero_pose_required": true,
+    "pers_yaw_degrees": 0.0,
+    "pers_pitch_degrees": 0.0,
+    "pers_roll_degrees": 0.0,
+    "pose_fields_may_not_be_missing": true,
+    "xmp_pose_heading_pitch_roll_must_not_conflict": true,
+    "projection_type": "equirectangular",
+    "camera_and_osm_coordinates_required": true,
+    "rejection_rule": "if any gate fails, the image has no authorized world-bearing-to-raw-pixel projection"
+  },
+  "projection": {
+    "bearing": "initial geodesic bearing from camera lon/lat to OSM entrance-node lon/lat, clockwise from true north",
+    "relative_viewer_yaw_degrees": "wrap360(bearing_degrees - view_azimuth_degrees)",
+    "raw_x_degrees": "wrap360(relative_viewer_yaw_degrees + 180)",
+    "raw_x_pixels": "raw_x_degrees / 360 * sensor_width_pixels",
+    "world_horizon_raw_y_pixels": "sensor_height_pixels / 2",
+    "rounding": "retain floating-point degrees through selection; round only the final pixel coordinate",
+    "circular_distance": "min(abs(a-b), 360-abs(a-b))"
+  },
+  "fresh_roster_rule": {
+    "pixels_before_metadata_freeze": 0,
+    "exclude_item_ids": "all 42 item IDs in l10-panolab-stratified-source-v1 metadata-freeze",
+    "tenant_and_multi_minimum_main_to_decoy_ray_separation_degrees": 30.0,
+    "self_and_other_pair": "same official sequence with reciprocal provider prev/next links",
+    "self_and_other_camera_displacement_m": [
+      3.0,
+      15.0
+    ],
+    "reacquired_direct_entrance_distance_m": [
+      4.0,
+      40.0
+    ],
+    "selection_order": "scenario, target-way ID, descending ray separation for tenant and multi or descending displacement for occlusion strata, sequence ID, item ID",
+    "pixel_admission_after_freeze": "a marker-blind reviewer must find the claimed portal or claimed occlusion transition inside the frozen projected crop; projection alone is not portal truth"
+  },
+  "diagnostic_calibration": {
+    "source": "four target intervals partially identified during the already-consumed v1 pixel audit",
+    "simple_projection_hits": 3,
+    "simple_projection_total": 4,
+    "eligible_under_this_protocol": 0,
+    "eligible_hits": 0,
+    "excluded_rows": "TEN04, TEN05, TEN06, and MUL01 all lack camera-native EXIF true-heading provenance; TEN05 also missed its interval by more than 20 degrees",
+    "authority": "diagnostic only; not a metric and not roster admission"
+  },
+  "claim_boundary": {
+    "allowed": "projected observation crop and active PAN target for an applicability-gated image",
+    "not_allowed": [
+      "entrance ownership from projection alone",
+      "portal visibility from projection alone",
+      "public or legal access",
+      "walkability or collision-free traversability",
+      "metric arrival",
+      "HANDOFF_READY",
+      "mobility safety"
+    ]
+  }
+}

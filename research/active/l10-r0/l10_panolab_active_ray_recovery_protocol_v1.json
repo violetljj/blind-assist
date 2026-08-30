@@ -1,0 +1,59 @@
+{
+  "schema": "blindassist-l10-panolab-active-ray-recovery-protocol-v1",
+  "result_schema": "blindassist-l10-panolab-active-ray-recovery-result-v1",
+  "source": {
+    "path": "research/active/l10-r0/l10_panolab_active_ray_recovery_source_v1.json",
+    "sha256": "3e1b77b91f1dba9227420c99aa78fbcc689e96ebd9b59775231095542775bede",
+    "bytes": 86757
+  },
+  "evaluator": {
+    "path": "research/active/l10-r0/l10_panolab_active_ray_recovery.py",
+    "sha256": "fc3ad85a9ab9a890515ef5dbc417c9e052f23ce621c4b40616f618f47657ca94"
+  },
+  "orientation_projection": {
+    "protocol": {
+      "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+      "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+      "bytes": 6541
+    },
+    "evaluator": {
+      "path": "research/active/l10-r0/l10_panolab_entrance_ray.py",
+      "sha256": "e91b58dec522a7cd9f36cc7ccfcdffaf292239fe58138d0bf91ced948d12073f"
+    }
+  },
+  "runtime": {
+    "executable": "C:\\Users\\26442\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+    "versions": {
+      "python": "3.12.13",
+      "pillow": "12.3.0"
+    }
+  },
+  "geometry": {
+    "pre_entrance_clearance_m": 0.75
+  },
+  "gate": {
+    "strict_orientation_images": "8/8",
+    "initial_visibility_role_correct": "4/4",
+    "reciprocal_action_receipts": "4/4",
+    "occluded_false_authorizations": 0,
+    "post_action_ray_authorizations": "4/4",
+    "active_recoveries": "4/4"
+  },
+  "decision_names": {
+    "gate_met": "L10_PANOLAB_ACTIVE_ENTRANCE_RAY_RECOVERY_DEVELOPMENT_GATE_MET",
+    "gate_not_met": "L10_PANOLAB_ACTIVE_ENTRANCE_RAY_RECOVERY_DEVELOPMENT_GATE_NOT_MET"
+  },
+  "claim_boundary": {
+    "allowed": "Development evidence that a real provider-adjacent SIDESTEP changes an exact OSM entrance ray from geometry-blocked to geometry-authorized under strict Panoramax orientation",
+    "not_allowed": [
+      "pixel portal hit",
+      "entrance ownership from pixels",
+      "public or legal access",
+      "walkability",
+      "collision-free traversability",
+      "arrival",
+      "HANDOFF_READY",
+      "mobility safety"
+    ]
+  }
+}

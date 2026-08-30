@@ -1,0 +1,49 @@
+{
+  "schema": "blindassist-l10-panolab-belgium-strict-source-ceiling-v1",
+  "decision": "L10_PANOLAB_BELGIUM_STRICT_CAUSAL_SOURCE_CEILING_0_OF_4",
+  "denominator": "four additional distinct full-matrix target ways needed after the frozen France 2-of-6 ceiling",
+  "unchanged_requirements": {
+    "TENANT_WRONG_ENTRANCE": "independently named OSM shop, office, amenity, or tourism entity within 3.0 m of a specific non-main entrance",
+    "MULTI_ENTRANCE": "separate OSM main and non-main entrance nodes on the target way",
+    "TARGET_SELF_OCCLUSION": "the target footprint is the first global ray intersection more than 0.75 m before the main entrance",
+    "OTHER_BUILDING_OCCLUSION_REACQUISITION": "a non-target building is first, followed by a reciprocal provider-adjacent globally direct target frame",
+    "DIRECT": "the target footprint is the first global ray intersection and reaches the main entrance within 0.75 m",
+    "world_bearing_to_raw_pixel_contract": "CLOSED"
+  },
+  "source_search": {
+    "cities": [
+      "Brussels",
+      "Antwerp",
+      "Ghent",
+      "Liege"
+    ],
+    "strict_way_main_pairs": 14,
+    "strict_distinct_target_ways": 13,
+    "exact_place_position_queries": 14,
+    "exact_query_errors": 0,
+    "queries_with_contract_360_features": 2,
+    "target_only_direct_plus_self_rows": 1,
+    "global_full_matrix_distinct_target_ways": 0,
+    "complete_jpg_count": 0
+  },
+  "global_footprint_audit": {
+    "target_name": "Beursschouwburg",
+    "target_way_id": 244955711,
+    "items_classified": 36,
+    "other_building_first_items": 35,
+    "globally_direct_items": 0,
+    "globally_target_self_occluded_items": 0,
+    "adjacent_direct_reacquisition_pairs": 0
+  },
+  "durable_raw_evidence": {
+    "bundle_path": "artifacts.local/knowledge/l10-panolab-source-v3-belgium-ceiling",
+    "bundle_index_sha256": "1dcdcfe9ece27e5489bec0269702d0d4315def4c8f275a5f1be279ba997e0c49",
+    "exact_manifest_sha256": "fb1526b14e790fc0b633b316c2e52c05efcd208b1a28c7289b5aac84556937ec",
+    "exact_summary_sha256": "e7ad1d450d69f6be8680289cfb380b80bb779f95b0eb3a9d187979866f05a57e",
+    "source_first_manifest_sha256": "ccc515ef9c8524183e8e4a78cdba2ec047381fbc949b03f718c177cbc2916f0f",
+    "source_first_summary_sha256": "ff72f8df40ffa346f1f935a459debabf1ac654dfde854a689c4a1820d2211a6b",
+    "invalid_host_filter_artifacts_included": false
+  },
+  "claim_boundary": "metadata-only source ceiling; no panorama pixel audit, action policy, oracle, entrance-binding, access, arrival, handoff, completion, product, or safety result",
+  "next_source": "Panoramax Taiwan bounded source-first audit with the unchanged strict tenant and global causal geometry rules"
+}

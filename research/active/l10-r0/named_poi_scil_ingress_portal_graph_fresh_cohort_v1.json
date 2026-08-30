@@ -1,0 +1,163 @@
+{
+  "schema": "l10-named-poi-scil-ingress-portal-graph-fresh-cohort-v1",
+  "created_at": "2026-08-30",
+  "selection_authority": "Source metadata and source-only pixel ownership audit before any PB18 model call. The four positive, two no-portal, and two same-frame tenant-decoy roles were frozen before OCR, ADE20K semantics, or portal proposals. Exact filenames and aliases were absent from PB1-PB17 active source files and named-poi manifests.",
+  "source_receipts": {
+    "selection": {
+      "path": "research/active/l10-r0/named_poi_scil_ingress_portal_graph_source_v1.json",
+      "bytes": 13278,
+      "sha256": "088ce12a1b5125fc4f83ba3797513593268856b4293ffc25fac51e064d2040b3"
+    },
+    "materialized_manifest": {
+      "path": "artifacts.local/knowledge/named-poi-scil-ingress-portal-graph-v1/source_manifest.json",
+      "bytes": 10417,
+      "sha256": "360747de8ddfd4c1a41439d89474d014c4cfd916032e9d9e614ac0f1924bfa14",
+      "image_count": 8,
+      "image_bytes": 2406669,
+      "inventory_sha256": "f7a4ab25632d074b5bc828a1dcd04c24bb85e4eb016864f5b195fcb1b4283ba4"
+    }
+  },
+  "human_truth_freeze": {
+    "coordinate_space": "Downloaded 1280px Commons source images; XYXY pixels, right and bottom exclusive.",
+    "membership_rule": "A proposal is a member when its center is inside the frozen portal box and at least 50% of the proposal area overlaps that box.",
+    "ownership_rule": "Rows 7-8 contain both the target-building portal and a separately signed tenant portal. Target and decoy boxes are instance labels; those frames are not frame-level negatives.",
+    "audit_artifact": "artifacts.local/knowledge/named-poi-scil-ingress-portal-graph-v1/source-audit",
+    "frozen_before_model_access": true
+  },
+  "model_calls_before_source_freeze": {
+    "ocr": 0,
+    "semantic": 0,
+    "portal_proposer": 0
+  },
+  "frames": [
+    {
+      "key": "north-point-public-library-entrance",
+      "id": "north-point-public-library",
+      "name": "North Point Public Library",
+      "aliases": {
+        "latin": ["North Point Public Library"],
+        "han": ["北角公共圖書館"],
+        "marks": []
+      },
+      "role": "TARGET_PORTAL_PRESENT",
+      "local_path": "artifacts.local/knowledge/named-poi-scil-ingress-portal-graph-v1/images/01.jpg",
+      "image_sha256": "de492815ec53bc285e68fdcd0944ef0949a1cf32fac7630444ad85c4dd405e6a",
+      "image_size": [1280, 855],
+      "target_portal_box_xyxy": [382, 215, 495, 690],
+      "human_label_note": "Open glass library entrance and its threshold, immediately left of the entity wall sign."
+    },
+    {
+      "key": "henry-g-leong-community-centre-entrance",
+      "id": "henry-g-leong-yau-ma-tei-community-centre",
+      "name": "Henry G. Leong Yau Ma Tei Community Centre",
+      "aliases": {
+        "latin": ["Henry G. Leong Yau Ma Tei Community Centre", "Henry G. Leong Community Centre"],
+        "han": ["梁顯利油麻地社區中心"],
+        "marks": []
+      },
+      "role": "TARGET_PORTAL_PRESENT",
+      "local_path": "artifacts.local/knowledge/named-poi-scil-ingress-portal-graph-v1/images/02.jpg",
+      "image_sha256": "a4994909fa78fdf8868f81d924ceab37f16ab1fb96127831bc13d4170be1703e",
+      "image_size": [1280, 960],
+      "target_portal_box_xyxy": [474, 309, 1185, 920],
+      "human_label_note": "Full open double glass community-centre entrance directly below the entity sign."
+    },
+    {
+      "key": "yuen-wo-road-sports-centre-entrance",
+      "id": "yuen-wo-road-sports-centre",
+      "name": "Yuen Wo Road Sports Centre",
+      "aliases": {
+        "latin": ["Yuen Wo Road Sports Centre"],
+        "han": ["源禾路體育館"],
+        "marks": []
+      },
+      "role": "TARGET_PORTAL_PRESENT",
+      "local_path": "artifacts.local/knowledge/named-poi-scil-ingress-portal-graph-v1/images/03.jpg",
+      "image_sha256": "99badfb0ec119d545d4e284b5b4da1183654bb7d81d08f747b4eb9a4363a04e3",
+      "image_size": [1280, 855],
+      "target_portal_box_xyxy": [144, 486, 1148, 822],
+      "human_label_note": "Complete frontal automatic glass door group directly below the entity sign."
+    },
+    {
+      "key": "tuen-mun-public-library-entrance",
+      "id": "tuen-mun-public-library",
+      "name": "Tuen Mun Public Library",
+      "aliases": {
+        "latin": ["Tuen Mun Public Library"],
+        "han": ["屯門公共圖書館"],
+        "marks": []
+      },
+      "role": "TARGET_PORTAL_PRESENT",
+      "local_path": "artifacts.local/knowledge/named-poi-scil-ingress-portal-graph-v1/images/04.jpg",
+      "image_sha256": "0a0f20ce28b90ddda5e1880c6d1cc3c835b42bd09400cf525accce661a921db5",
+      "image_size": [1280, 855],
+      "target_portal_box_xyxy": [620, 278, 840, 747],
+      "human_label_note": "Glass library entrance in active pedestrian use on the same continuous facade as the entity sign."
+    },
+    {
+      "key": "aberdeen-public-library-wall-sign",
+      "id": "aberdeen-public-library",
+      "name": "Aberdeen Public Library",
+      "aliases": {
+        "latin": ["Aberdeen Public Library"],
+        "han": ["香港仔公共圖書館"],
+        "marks": []
+      },
+      "role": "TARGET_PORTAL_NOT_VISIBLE",
+      "local_path": "artifacts.local/knowledge/named-poi-scil-ingress-portal-graph-v1/images/05.jpg",
+      "image_sha256": "75d4239ebfc3978590a6772f3b1634b1d380eb60b7cb8c0a1de350c786da13ca",
+      "image_size": [1280, 960],
+      "human_label_note": "Solid orange identity wall; no door, doorframe, or traversable opening is visible."
+    },
+    {
+      "key": "tiu-keng-leng-sports-centre-wall-sign",
+      "id": "tiu-keng-leng-sports-centre",
+      "name": "Tiu Keng Leng Sports Centre",
+      "aliases": {
+        "latin": ["Tiu Keng Leng Sports Centre"],
+        "han": ["調景嶺體育館"],
+        "marks": []
+      },
+      "role": "TARGET_PORTAL_NOT_VISIBLE",
+      "local_path": "artifacts.local/knowledge/named-poi-scil-ingress-portal-graph-v1/images/06.jpg",
+      "image_sha256": "a1f0a66a81864ac9f22386ef2c3c839b393dc8ff111fb7f963b28499a4de0446",
+      "image_size": [1280, 1707],
+      "human_label_note": "Solid brick identity wall with camera and planters; no door, doorframe, or traversable opening is visible."
+    },
+    {
+      "key": "midland-plaza-tenant-decoy",
+      "id": "midland-plaza",
+      "name": "Midland Plaza",
+      "aliases": {
+        "latin": ["Midland Plaza"],
+        "han": ["中原廣場"],
+        "marks": []
+      },
+      "role": "WRONG_PORTAL_DECOY_VISIBLE",
+      "local_path": "artifacts.local/knowledge/named-poi-scil-ingress-portal-graph-v1/images/07.jpg",
+      "image_sha256": "0ff86c8a1ad5cf36027a18696c3afb73af15fada1ba60d190d5fa344f5294c1c",
+      "image_size": [1280, 960],
+      "target_portal_box_xyxy": [817, 475, 1160, 857],
+      "decoy_portal_box_xyxy": [0, 585, 824, 930],
+      "human_label_note": "Target building passage is at right below Midland Plaza; independently signed Starbucks and 力圖樂 tenant openings form the left decoy union."
+    },
+    {
+      "key": "fu-moon-building-tenant-decoy",
+      "id": "fu-moon-building",
+      "name": "Fu Moon Building",
+      "aliases": {
+        "latin": ["Fu Moon Building"],
+        "han": ["富滿大廈"],
+        "marks": []
+      },
+      "role": "WRONG_PORTAL_DECOY_VISIBLE",
+      "local_path": "artifacts.local/knowledge/named-poi-scil-ingress-portal-graph-v1/images/08.jpg",
+      "image_sha256": "8c17fe75b14c9b56aa391c7f68ffdd5468628a7e617764a7514f38921f9ff078",
+      "image_size": [1280, 960],
+      "target_portal_box_xyxy": [800, 270, 1100, 930],
+      "decoy_portal_box_xyxy": [0, 330, 700, 930],
+      "human_label_note": "Target glass stair entrance is at right below Fu Moon Building; independently signed ProKit glass doors form the left tenant decoy."
+    }
+  ],
+  "claim_boundary": "This opportunity-stratified public-image cohort can test conditional current-frame identity-to-portal ownership. It cannot establish natural prevalence, legal/public access, traversability, active-view causality, metric guidance, arrival, HANDOFF_READY, completion, product benefit, user benefit, or safety."
+}

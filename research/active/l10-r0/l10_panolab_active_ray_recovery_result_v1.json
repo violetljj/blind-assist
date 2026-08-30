@@ -1,0 +1,542 @@
+{
+  "schema": "blindassist-l10-panolab-active-ray-recovery-result-v1",
+  "decision": "L10_PANOLAB_ACTIVE_ENTRANCE_RAY_RECOVERY_DEVELOPMENT_GATE_NOT_MET",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_active_ray_recovery_protocol_v1.json",
+  "protocol_sha256": "21c8c29e54acd731594538e4c31b51237c1f07a893950ad31d21ba945c3e5d90",
+  "source_sha256": "3e1b77b91f1dba9227420c99aa78fbcc689e96ebd9b59775231095542775bede",
+  "evaluator_sha256": "fc3ad85a9ab9a890515ef5dbc417c9e052f23ce621c4b40616f618f47657ca94",
+  "runtime": {
+    "python": "3.12.13",
+    "pillow": "12.3.0"
+  },
+  "metrics": {
+    "strict_orientation_images": 8,
+    "strict_orientation_image_total": 8,
+    "initial_visibility_role_correct": 4,
+    "reciprocal_action_receipts": 0,
+    "occluded_false_authorizations": 0,
+    "post_action_ray_authorizations": 4,
+    "active_recoveries": 4,
+    "active_recovery_rate": 1.0,
+    "mean_authority_count_delta": 1.0,
+    "mean_camera_displacement_m": 9.394
+  },
+  "gate": {
+    "strict_orientation_8_of_8": true,
+    "initial_visibility_role_4_of_4": true,
+    "reciprocal_action_receipt_4_of_4": false,
+    "zero_occluded_false_authorization": true,
+    "post_action_ray_authorization_4_of_4": true,
+    "active_recovery_4_of_4": true,
+    "passed": false
+  },
+  "rows": [
+    {
+      "episode_id": "AR01",
+      "target_name": "La Source",
+      "start_expected_visibility": "NON_TARGET_BUILDING_OCCLUDED",
+      "start_visibility": {
+        "class": "NON_TARGET_BUILDING_OCCLUDED",
+        "camera_to_entrance_distance_m": 46.2547149727379,
+        "target_boundary_parameters": [
+          1.0
+        ],
+        "first_occlusion": {
+          "parameter": 0.27913071275685336,
+          "distance_m": 12.911111558705427,
+          "kind": "NON_TARGET_BUILDING_OCCLUDED",
+          "osm_way_id": 66595736,
+          "osm_way_version": 7,
+          "name": "Fontaine - Hôtel de Ville - La Source"
+        },
+        "all_pre_entrance_intersections": [
+          {
+            "parameter": 0.27913071275685336,
+            "distance_m": 12.911111558705427,
+            "kind": "NON_TARGET_BUILDING_OCCLUDED",
+            "osm_way_id": 66595736,
+            "osm_way_version": 7,
+            "name": "Fontaine - Hôtel de Ville - La Source"
+          },
+          {
+            "parameter": 0.34666236718844473,
+            "distance_m": 16.03476898607612,
+            "kind": "NON_TARGET_BUILDING_OCCLUDED",
+            "osm_way_id": 66595736,
+            "osm_way_version": 7,
+            "name": "Fontaine - Hôtel de Ville - La Source"
+          }
+        ]
+      },
+      "after_visibility": {
+        "class": "VISIBLE_TARGET_ENTRANCE",
+        "camera_to_entrance_distance_m": 37.95354464005753,
+        "target_boundary_parameters": [
+          1.0
+        ],
+        "first_occlusion": null,
+        "all_pre_entrance_intersections": []
+      },
+      "start_visibility_correct": true,
+      "provider_link_relation": "prev",
+      "reciprocal_provider_links_verified": false,
+      "movement_distance_m": 11.168,
+      "action": "SIDESTEP_TO_ENTRANCE_FACE",
+      "start_ray_gate": {
+        "eligible": true,
+        "failures": [],
+        "item_id": "80abf3fb-5869-424e-a0de-cad039c1fca8",
+        "view_azimuth_degrees": 295.0,
+        "camera_native_heading_degrees": 295.08376503643865,
+        "heading_circular_difference_degrees": 0.083765,
+        "pers_yaw_degrees": 0.0,
+        "pers_pitch_degrees": 0.0,
+        "pers_roll_degrees": 0.0,
+        "sensor_width_pixels": 5760,
+        "sensor_height_pixels": 2880,
+        "downloaded_image_size": [
+          5760,
+          2880
+        ]
+      },
+      "after_ray_gate": {
+        "eligible": true,
+        "failures": [],
+        "item_id": "f4768f56-8427-4bd3-b6c7-8c5d2701dd5d",
+        "view_azimuth_degrees": 294.0,
+        "camera_native_heading_degrees": 294.29386124228114,
+        "heading_circular_difference_degrees": 0.293861,
+        "pers_yaw_degrees": 0.0,
+        "pers_pitch_degrees": 0.0,
+        "pers_roll_degrees": 0.0,
+        "sensor_width_pixels": 5760,
+        "sensor_height_pixels": 2880,
+        "downloaded_image_size": [
+          5760,
+          2880
+        ]
+      },
+      "start_ray_authorized": false,
+      "after_ray_authorized": true,
+      "after_entrance_ray": {
+        "schema": "blindassist-l10-panolab-entrance-ray-v1",
+        "item_id": "f4768f56-8427-4bd3-b6c7-8c5d2701dd5d",
+        "entrance_node_id": 4459005122,
+        "camera_lon_lat": [
+          5.6876475,
+          45.1913465
+        ],
+        "entrance_lon_lat": [
+          5.6877946,
+          45.1910213
+        ],
+        "initial_bearing_degrees": 162.318627,
+        "view_azimuth_degrees": 294.0,
+        "relative_viewer_yaw_degrees": 228.318627,
+        "raw_x_degrees": 48.318627,
+        "raw_x_pixels": 773.098036,
+        "world_horizon_raw_y_pixels": 1440,
+        "projection_gate": {
+          "eligible": true,
+          "failures": [],
+          "item_id": "f4768f56-8427-4bd3-b6c7-8c5d2701dd5d",
+          "view_azimuth_degrees": 294.0,
+          "camera_native_heading_degrees": 294.29386124228114,
+          "heading_circular_difference_degrees": 0.293861,
+          "pers_yaw_degrees": 0.0,
+          "pers_pitch_degrees": 0.0,
+          "pers_roll_degrees": 0.0,
+          "sensor_width_pixels": 5760,
+          "sensor_height_pixels": 2880,
+          "downloaded_image_size": [
+            5760,
+            2880
+          ]
+        }
+      },
+      "authority_count_before": 0,
+      "authority_count_after": 1,
+      "active_recovery": true
+    },
+    {
+      "episode_id": "AR02",
+      "target_name": "La Galerie Saint-Martin-d’Hères",
+      "start_expected_visibility": "NON_TARGET_BUILDING_OCCLUDED",
+      "start_visibility": {
+        "class": "NON_TARGET_BUILDING_OCCLUDED",
+        "camera_to_entrance_distance_m": 37.05951709344827,
+        "target_boundary_parameters": [
+          1.0
+        ],
+        "first_occlusion": {
+          "parameter": 0.7177544078139187,
+          "distance_m": 26.59963174527776,
+          "kind": "NON_TARGET_BUILDING_OCCLUDED",
+          "osm_way_id": 1229989074,
+          "osm_way_version": 2,
+          "name": null
+        },
+        "all_pre_entrance_intersections": [
+          {
+            "parameter": 0.7177544078139187,
+            "distance_m": 26.59963174527776,
+            "kind": "NON_TARGET_BUILDING_OCCLUDED",
+            "osm_way_id": 1229989074,
+            "osm_way_version": 2,
+            "name": null
+          },
+          {
+            "parameter": 0.7401304376751545,
+            "distance_m": 27.42887660640374,
+            "kind": "NON_TARGET_BUILDING_OCCLUDED",
+            "osm_way_id": 1229989074,
+            "osm_way_version": 2,
+            "name": null
+          }
+        ]
+      },
+      "after_visibility": {
+        "class": "VISIBLE_TARGET_ENTRANCE",
+        "camera_to_entrance_distance_m": 30.479932181774714,
+        "target_boundary_parameters": [
+          1.0
+        ],
+        "first_occlusion": null,
+        "all_pre_entrance_intersections": []
+      },
+      "start_visibility_correct": true,
+      "provider_link_relation": "prev",
+      "reciprocal_provider_links_verified": false,
+      "movement_distance_m": 6.889,
+      "action": "SIDESTEP_TO_ENTRANCE_FACE",
+      "start_ray_gate": {
+        "eligible": true,
+        "failures": [],
+        "item_id": "1283796f-0c4b-47b0-987a-d5701ca05b7d",
+        "view_azimuth_degrees": 126.0,
+        "camera_native_heading_degrees": 126.45561902316925,
+        "heading_circular_difference_degrees": 0.455619,
+        "pers_yaw_degrees": 0.0,
+        "pers_pitch_degrees": 0.0,
+        "pers_roll_degrees": 0.0,
+        "sensor_width_pixels": 5760,
+        "sensor_height_pixels": 2880,
+        "downloaded_image_size": [
+          5760,
+          2880
+        ]
+      },
+      "after_ray_gate": {
+        "eligible": true,
+        "failures": [],
+        "item_id": "a9a48251-6519-44ec-8985-8dfa6de21b0c",
+        "view_azimuth_degrees": 126.0,
+        "camera_native_heading_degrees": 126.13857405792889,
+        "heading_circular_difference_degrees": 0.138574,
+        "pers_yaw_degrees": 0.0,
+        "pers_pitch_degrees": 0.0,
+        "pers_roll_degrees": 0.0,
+        "sensor_width_pixels": 5760,
+        "sensor_height_pixels": 2880,
+        "downloaded_image_size": [
+          5760,
+          2880
+        ]
+      },
+      "start_ray_authorized": false,
+      "after_ray_authorized": true,
+      "after_entrance_ray": {
+        "schema": "blindassist-l10-panolab-entrance-ray-v1",
+        "item_id": "a9a48251-6519-44ec-8985-8dfa6de21b0c",
+        "entrance_node_id": 11774051470,
+        "camera_lon_lat": [
+          5.759303104,
+          45.18537769
+        ],
+        "entrance_lon_lat": [
+          5.7589313,
+          45.1854581
+        ],
+        "initial_bearing_degrees": 287.058574,
+        "view_azimuth_degrees": 126.0,
+        "relative_viewer_yaw_degrees": 161.058574,
+        "raw_x_degrees": 341.058574,
+        "raw_x_pixels": 5456.937185,
+        "world_horizon_raw_y_pixels": 1440,
+        "projection_gate": {
+          "eligible": true,
+          "failures": [],
+          "item_id": "a9a48251-6519-44ec-8985-8dfa6de21b0c",
+          "view_azimuth_degrees": 126.0,
+          "camera_native_heading_degrees": 126.13857405792889,
+          "heading_circular_difference_degrees": 0.138574,
+          "pers_yaw_degrees": 0.0,
+          "pers_pitch_degrees": 0.0,
+          "pers_roll_degrees": 0.0,
+          "sensor_width_pixels": 5760,
+          "sensor_height_pixels": 2880,
+          "downloaded_image_size": [
+            5760,
+            2880
+          ]
+        }
+      },
+      "authority_count_before": 0,
+      "authority_count_after": 1,
+      "active_recovery": true
+    },
+    {
+      "episode_id": "AR03",
+      "target_name": "Le Jean Jaurès",
+      "start_expected_visibility": "TARGET_SELF_OCCLUDED",
+      "start_visibility": {
+        "class": "TARGET_SELF_OCCLUDED",
+        "camera_to_entrance_distance_m": 17.552154924548415,
+        "target_boundary_parameters": [
+          0.48341755386591523,
+          1.0
+        ],
+        "first_occlusion": {
+          "parameter": 0.48341755386591523,
+          "distance_m": 8.485019798700772,
+          "kind": "TARGET_SELF_OCCLUDED",
+          "osm_way_id": 66183358,
+          "osm_way_version": 9,
+          "name": "Le Jean Jaurès"
+        },
+        "all_pre_entrance_intersections": [
+          {
+            "parameter": 0.48341755386591523,
+            "distance_m": 8.485019798700772,
+            "kind": "TARGET_SELF_OCCLUDED",
+            "osm_way_id": 66183358,
+            "osm_way_version": 9,
+            "name": "Le Jean Jaurès"
+          }
+        ]
+      },
+      "after_visibility": {
+        "class": "VISIBLE_TARGET_ENTRANCE",
+        "camera_to_entrance_distance_m": 19.814696167545577,
+        "target_boundary_parameters": [
+          0.9999999999999998
+        ],
+        "first_occlusion": null,
+        "all_pre_entrance_intersections": []
+      },
+      "start_visibility_correct": true,
+      "provider_link_relation": "prev",
+      "reciprocal_provider_links_verified": false,
+      "movement_distance_m": 10.052,
+      "action": "SIDESTEP_TO_ENTRANCE_FACE",
+      "start_ray_gate": {
+        "eligible": true,
+        "failures": [],
+        "item_id": "f71339ba-1ce7-45a1-ad37-f19a8d161a98",
+        "view_azimuth_degrees": 273.0,
+        "camera_native_heading_degrees": 272.530328115593,
+        "heading_circular_difference_degrees": 0.469672,
+        "pers_yaw_degrees": 0.0,
+        "pers_pitch_degrees": 0.0,
+        "pers_roll_degrees": 0.0,
+        "sensor_width_pixels": 5760,
+        "sensor_height_pixels": 2880,
+        "downloaded_image_size": [
+          5760,
+          2880
+        ]
+      },
+      "after_ray_gate": {
+        "eligible": true,
+        "failures": [],
+        "item_id": "5f9cd0df-e958-4741-af31-f98d4ce3c37e",
+        "view_azimuth_degrees": 272.0,
+        "camera_native_heading_degrees": 271.64817153067304,
+        "heading_circular_difference_degrees": 0.351828,
+        "pers_yaw_degrees": 0.0,
+        "pers_pitch_degrees": 0.0,
+        "pers_roll_degrees": 0.0,
+        "sensor_width_pixels": 5760,
+        "sensor_height_pixels": 2880,
+        "downloaded_image_size": [
+          5760,
+          2880
+        ]
+      },
+      "start_ray_authorized": false,
+      "after_ray_authorized": true,
+      "after_entrance_ray": {
+        "schema": "blindassist-l10-panolab-entrance-ray-v1",
+        "item_id": "5f9cd0df-e958-4741-af31-f98d4ce3c37e",
+        "entrance_node_id": 5661342168,
+        "camera_lon_lat": [
+          5.6977687,
+          45.1824379
+        ],
+        "entrance_lon_lat": [
+          5.6976574,
+          45.1825979
+        ],
+        "initial_bearing_degrees": 333.880783,
+        "view_azimuth_degrees": 272.0,
+        "relative_viewer_yaw_degrees": 61.880783,
+        "raw_x_degrees": 241.880783,
+        "raw_x_pixels": 3870.092534,
+        "world_horizon_raw_y_pixels": 1440,
+        "projection_gate": {
+          "eligible": true,
+          "failures": [],
+          "item_id": "5f9cd0df-e958-4741-af31-f98d4ce3c37e",
+          "view_azimuth_degrees": 272.0,
+          "camera_native_heading_degrees": 271.64817153067304,
+          "heading_circular_difference_degrees": 0.351828,
+          "pers_yaw_degrees": 0.0,
+          "pers_pitch_degrees": 0.0,
+          "pers_roll_degrees": 0.0,
+          "sensor_width_pixels": 5760,
+          "sensor_height_pixels": 2880,
+          "downloaded_image_size": [
+            5760,
+            2880
+          ]
+        }
+      },
+      "authority_count_before": 0,
+      "authority_count_after": 1,
+      "active_recovery": true
+    },
+    {
+      "episode_id": "AR04",
+      "target_name": "V and B",
+      "start_expected_visibility": "TARGET_SELF_OCCLUDED",
+      "start_visibility": {
+        "class": "TARGET_SELF_OCCLUDED",
+        "camera_to_entrance_distance_m": 29.845524451057297,
+        "target_boundary_parameters": [
+          0.3735855921412556,
+          0.9999999999999999
+        ],
+        "first_occlusion": {
+          "parameter": 0.3735855921412556,
+          "distance_m": 11.149857924814562,
+          "kind": "TARGET_SELF_OCCLUDED",
+          "osm_way_id": 149488817,
+          "osm_way_version": 13,
+          "name": "V and B"
+        },
+        "all_pre_entrance_intersections": [
+          {
+            "parameter": 0.3735855921412556,
+            "distance_m": 11.149857924814562,
+            "kind": "TARGET_SELF_OCCLUDED",
+            "osm_way_id": 149488817,
+            "osm_way_version": 13,
+            "name": "V and B"
+          }
+        ]
+      },
+      "after_visibility": {
+        "class": "VISIBLE_TARGET_ENTRANCE",
+        "camera_to_entrance_distance_m": 29.69868232954222,
+        "target_boundary_parameters": [
+          1.0
+        ],
+        "first_occlusion": null,
+        "all_pre_entrance_intersections": []
+      },
+      "start_visibility_correct": true,
+      "provider_link_relation": "next",
+      "reciprocal_provider_links_verified": false,
+      "movement_distance_m": 9.467,
+      "action": "SIDESTEP_TO_ENTRANCE_FACE",
+      "start_ray_gate": {
+        "eligible": true,
+        "failures": [],
+        "item_id": "6103b485-8a83-43a1-80eb-1c0d59bc1330",
+        "view_azimuth_degrees": 105.0,
+        "camera_native_heading_degrees": 104.9746096830153,
+        "heading_circular_difference_degrees": 0.02539,
+        "pers_yaw_degrees": 0.0,
+        "pers_pitch_degrees": 0.0,
+        "pers_roll_degrees": 0.0,
+        "sensor_width_pixels": 5760,
+        "sensor_height_pixels": 2880,
+        "downloaded_image_size": [
+          5760,
+          2880
+        ]
+      },
+      "after_ray_gate": {
+        "eligible": true,
+        "failures": [],
+        "item_id": "e5adabf8-bf87-40ce-9112-f4f2e8726054",
+        "view_azimuth_degrees": 103.0,
+        "camera_native_heading_degrees": 103.32541276215974,
+        "heading_circular_difference_degrees": 0.325413,
+        "pers_yaw_degrees": 0.0,
+        "pers_pitch_degrees": 0.0,
+        "pers_roll_degrees": 0.0,
+        "sensor_width_pixels": 5760,
+        "sensor_height_pixels": 2880,
+        "downloaded_image_size": [
+          5760,
+          2880
+        ]
+      },
+      "start_ray_authorized": false,
+      "after_ray_authorized": true,
+      "after_entrance_ray": {
+        "schema": "blindassist-l10-panolab-entrance-ray-v1",
+        "item_id": "e5adabf8-bf87-40ce-9112-f4f2e8726054",
+        "entrance_node_id": 11412888830,
+        "camera_lon_lat": [
+          5.763493357,
+          45.186255106
+        ],
+        "entrance_lon_lat": [
+          5.7633438,
+          45.1860097
+        ],
+        "initial_bearing_degrees": 203.244913,
+        "view_azimuth_degrees": 103.0,
+        "relative_viewer_yaw_degrees": 100.244913,
+        "raw_x_degrees": 280.244913,
+        "raw_x_pixels": 4483.91861,
+        "world_horizon_raw_y_pixels": 1440,
+        "projection_gate": {
+          "eligible": true,
+          "failures": [],
+          "item_id": "e5adabf8-bf87-40ce-9112-f4f2e8726054",
+          "view_azimuth_degrees": 103.0,
+          "camera_native_heading_degrees": 103.32541276215974,
+          "heading_circular_difference_degrees": 0.325413,
+          "pers_yaw_degrees": 0.0,
+          "pers_pitch_degrees": 0.0,
+          "pers_roll_degrees": 0.0,
+          "sensor_width_pixels": 5760,
+          "sensor_height_pixels": 2880,
+          "downloaded_image_size": [
+            5760,
+            2880
+          ]
+        }
+      },
+      "authority_count_before": 0,
+      "authority_count_after": 1,
+      "active_recovery": true
+    }
+  ],
+  "claim_boundary": {
+    "allowed": "Development evidence that a real provider-adjacent SIDESTEP changes an exact OSM entrance ray from geometry-blocked to geometry-authorized under strict Panoramax orientation",
+    "not_allowed": [
+      "pixel portal hit",
+      "entrance ownership from pixels",
+      "public or legal access",
+      "walkability",
+      "collision-free traversability",
+      "arrival",
+      "HANDOFF_READY",
+      "mobility safety"
+    ]
+  }
+}

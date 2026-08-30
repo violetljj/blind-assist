@@ -703,6 +703,65 @@ cannot be rerun with an empty-output-contract, prompt, threshold, processor, or
 postprocessing repair. A successor must add a distinct observable source on
 fresh pixels.
 
+PB18 then returned to eight entity/file-disjoint real Named-POI images and
+tested a Script-Proved Ingress-Connected Portal Graph. A correct localized SCIL
+carrier could reach a portal proposal only through the same ADE20K host
+component and walkable-ingress pixels. The source produced seven correct
+identity proofs, zero wrong proofs, and one `UNKNOWN`; target portal Top-1/Top-3
+was `1/6` / `4/6`. Both no-portal controls were rejected, but one tenant portal
+was also authorized and neither tenant control achieved an exact target-hit plus
+tenant-reject pair. Opportunity-balanced Top-3 accuracy was `0.7083`.
+
+The terminal is
+`L10_PB18_SCRIPT_PROVED_INGRESS_CONNECTED_PORTAL_GRAPH_GATE_NOT_MET`. Close the
+opened graph to SCIL, semantic-class, connectivity, threshold, rank, proposer,
+and fusion rescue. The admissible successor changes the information source to
+an entity-owned OSM entrance node plus provider pose and explicit line-of-sight
+occlusion on a new cohort; it cannot inherit arrival, access, traversability,
+guidance, `HANDOFF_READY`, product, user-benefit, or safety authority from PB18.
+
+PB19 implemented the external entity-owned entrance plus explicit occlusion
+evaluator, but the Mapillary source stopped before any projection. The initial
+primary direct stratum was marker-blind `NOT_EVALUABLE` on `4/4`. A source-only
+repair screened 858 targets, 74 mechanically valid direct combinations, and 32
+full panoramas. The first adjudicator retained four direct rows; an independent
+second adjudicator rejected Markthal Rotterdam because its hall exposed
+multiple walkable entrances, leaving only three rows with overlapping portal
+intervals. Record
+`L10_PB19_MAPILLARY_SOURCE_NOT_EVALUABLE_UNIQUE_PORTAL_TRUTH_3_OF_4`.
+The 4/4 denominator is unchanged, no output marker was shown, and no bearing,
+relative compass angle, predicted x, projection hit, or formal evaluator call
+was made. Panoramax is the next admissible provider only after source-blind
+orientation/provenance admission; this is not an algorithm negative.
+
+Panoramax then opened a strict orientation allowlist: full uncropped 2:1
+equirectangular pixels, matching sensor dimensions, owning-item true-north EXIF
+heading agreeing with `view:azimuth`, and explicit zero/non-conflicting pose.
+General provider projection remains closed outside that gate. A first 24-episode
+PanoLab source still failed pixel admission at `0/12` across the tenant and
+multi-entrance strata before any algorithm/oracle call, confirming that facade
+pixels alone do not name the intended OSM entrance node.
+
+A separate fresh four-episode active-ray cohort did establish causal action
+value. Four distinct target ways and sequences used official reciprocal
+adjacent images, with two non-target-building occlusions and two target-self
+occlusions. The v2 replay achieved strict orientation `8/8`, correct initial
+visibility roles `4/4`, reciprocal action receipts `4/4`, zero occluded-state
+false authorizations, post-action ray authorization `4/4`, and active recovery
+`4/4` (100%). Mean camera displacement was `9.394 m`; mean authority-count
+change was `+1.0`. The earlier v1 result is retained as a source-serialization
+defect: its sanitized items omitted frozen `prev`/`next` links, while the core
+four recovery outcomes were already unchanged.
+
+The terminal is
+`L10_PANOLAB_ACTIVE_ENTRANCE_RAY_RECOVERY_DEVELOPMENT_GATE_MET`. This advances
+the real active-observation mechanism: `SIDESTEP_TO_ENTRANCE_FACE` can change an
+exact entity-owned entrance ray from geometry-blocked to geometry-authorized.
+It establishes no pixel portal hit or ownership, public/legal access,
+walkability, collision-free motion, arrival, `HANDOFF_READY`, product benefit,
+user benefit, or safety. The next pixel-portal route needs independent entrance
+identity evidence, not another matcher or threshold sweep.
+
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
 because the approved AWS profile is absent. That is a source-access condition,

@@ -1,0 +1,142 @@
+{
+  "schema": "blindassist-l10-panolab-stratified-source-pixel-audit-v1",
+  "decision": "L10_PANOLAB_STRATIFIED_PIXEL_SOURCE_NOT_EVALUABLE_TENANT_MULTI_0_OF_12",
+  "evidence_class": "MARKER_BLIND_SOURCE_ADMISSION",
+  "provider": "Panoramax OSM-FR",
+  "frozen_source": {
+    "bundle_path": "artifacts.local/knowledge/l10-panolab-stratified-source-v1",
+    "bundle_index_sha256": "94e10858342573fc9d3b7abfa97c320f66d399227f2aef32e13e079f6ea98603",
+    "metadata_freeze_sha256": "12b6b78a5d212e3b6fc39ea01a1fd1fee9ba2f901263bd9ddc0e605b21ad64d1",
+    "source_manifest_sha256": "7bb39637188df4d10ff045c13a7d4e81b703325eeda6521b320cbcd86912abf1",
+    "episode_count": 24,
+    "image_count": 42,
+    "distinct_target_way_count": 20
+  },
+  "admission_rule": "each of the four causal scenarios requires six pixel-admitted episodes before any action policy or evaluator oracle may run",
+  "orientation_contract": {
+    "world_bearing_to_raw_pixel": "CLOSED",
+    "raw_x_zero": "left edge of the equirectangular JPEG",
+    "projection_or_prediction_markers_seen": 0,
+    "ocr_or_model_calls": 0
+  },
+  "audited_scenarios": {
+    "TENANT_WRONG_ENTRANCE": {
+      "audited": 6,
+      "admitted": 0
+    },
+    "MULTI_ENTRANCE": {
+      "audited": 6,
+      "admitted": 0
+    }
+  },
+  "rows": [
+    {
+      "episode_id": "TEN01",
+      "verdict": "REJECT",
+      "target_interval_raw_degrees": null,
+      "decoy_intervals_raw_degrees": [],
+      "reason": "WTC and station facades are visible, but no doorway can be uniquely bound to the WTC conference-centre entrance or the Effia gare emergency entrance from pixels alone."
+    },
+    {
+      "episode_id": "TEN02",
+      "verdict": "REJECT",
+      "target_interval_raw_degrees": null,
+      "decoy_intervals_raw_degrees": [],
+      "reason": "Both views contain several WTC and station door groups; neither the target main entrance nor the Europole-Gare emergency entrance is pixel-unique."
+    },
+    {
+      "episode_id": "TEN03",
+      "verdict": "REJECT",
+      "target_interval_raw_degrees": null,
+      "decoy_intervals_raw_degrees": [],
+      "reason": "Buildings, trees, and canopies leave multiple candidates; the WTC main entrance and the Grenoble Ecole de Management staircase entrance cannot be frozen separately."
+    },
+    {
+      "episode_id": "TEN04",
+      "verdict": "REJECT",
+      "target_interval_raw_degrees": [
+        103.0,
+        123.0
+      ],
+      "decoy_intervals_raw_degrees": [],
+      "reason": "The L'Heure Tranquille canopy entrance is identifiable, but no start-image portal can be uniquely bound to Primark's specific non-main entrance."
+    },
+    {
+      "episode_id": "TEN05",
+      "verdict": "REJECT",
+      "target_interval_raw_degrees": [
+        91.0,
+        110.0
+      ],
+      "decoy_intervals_raw_degrees": [],
+      "reason": "The mall entrance is identifiable, but the Zara-specific non-main entrance is not pixel-unique."
+    },
+    {
+      "episode_id": "TEN06",
+      "verdict": "REJECT",
+      "target_interval_raw_degrees": [
+        72.0,
+        92.0
+      ],
+      "decoy_intervals_raw_degrees": [],
+      "reason": "The mall entrance is identifiable, but the H&M-specific non-main entrance is not pixel-unique."
+    },
+    {
+      "episode_id": "MUL01",
+      "verdict": "REJECT",
+      "target_interval_raw_degrees": [
+        332.0,
+        351.0
+      ],
+      "decoy_intervals_raw_degrees": [],
+      "reason": "Lippmann's marked entrance is identifiable, but no second visible portal can be uniquely bound to the OSM exit node."
+    },
+    {
+      "episode_id": "MUL02",
+      "verdict": "REJECT",
+      "target_interval_raw_degrees": null,
+      "decoy_intervals_raw_degrees": [],
+      "reason": "Trees, facade seams, and recesses prevent separate pixel freezes for the gymnasium main and alternative entrances."
+    },
+    {
+      "episode_id": "MUL03",
+      "verdict": "REJECT",
+      "target_interval_raw_degrees": null,
+      "decoy_intervals_raw_degrees": [],
+      "reason": "The Auchan gallery building is clear, but its glazing and side door do not identify the OSM main and emergency nodes."
+    },
+    {
+      "episode_id": "MUL04",
+      "verdict": "REJECT",
+      "target_interval_raw_degrees": null,
+      "decoy_intervals_raw_degrees": [],
+      "reason": "The Rennes station is identifiable, but repeated glass door groups cannot be assigned to the Centre Ville main entrance and an alternative entrance from pixels alone."
+    },
+    {
+      "episode_id": "MUL05",
+      "verdict": "REJECT",
+      "target_interval_raw_degrees": null,
+      "decoy_intervals_raw_degrees": [],
+      "reason": "The IFPS facade is distant and partly occluded; neither its main nor exit portal is pixel-unique."
+    },
+    {
+      "episode_id": "MUL06",
+      "verdict": "REJECT",
+      "target_interval_raw_degrees": null,
+      "decoy_intervals_raw_degrees": [],
+      "reason": "Grand'Place is visible, but pixels do not establish that a portal is Porte de l'Europe or expose a separately bindable service entrance."
+    }
+  ],
+  "early_stop": {
+    "applied": true,
+    "reason": "TENANT_WRONG_ENTRANCE and MULTI_ENTRANCE each require 6/6 admission and both are already 0/6; auditing the remaining twelve occlusion episodes cannot make the 24-episode source evaluable.",
+    "unopened_scenarios": [
+      "TARGET_SELF_OCCLUSION",
+      "OTHER_BUILDING_OCCLUSION_REACQUISITION"
+    ],
+    "algorithm_or_oracle_runs": 0
+  },
+  "download_integrity_note": "The Panoramax HD derivative is complete against its HTTP Content-Length, SHA-256, JPEG type, 2:1 geometry, sensor dimensions, and license. STAC original_file:size describes the uploaded original and is retained as provenance rather than imposed on the recompressed HD derivative.",
+  "claim_boundary": "source admission only; no active-observation, entrance-binding, access, approach, arrival, handoff, completion, product, user-benefit, or safety result",
+  "next_information_source": "freeze an official, testable Panoramax camera-orientation-to-raw-x contract before reopening the unchanged OSM entrance nodes; if that contract cannot be established, close PanoLab rather than infer node identity from facade appearance"
+}

@@ -1,0 +1,87 @@
+{
+  "schema": "blindassist-l10-panolab-source-pixel-audit-v1",
+  "source_manifest_sha256": "b7c32f6242ac20a069e99ce552475ae54d040117657360752b5dfb48fc116a65",
+  "source_manifest_path": "artifacts.local/knowledge/l10-panolab-source-v1/panolab-source-freeze.json",
+  "audit_scope": {
+    "formal_pois": [
+      "PL01",
+      "PL02",
+      "PL03",
+      "PL05",
+      "PL06",
+      "PL07"
+    ],
+    "fixed_first_reserve": "PL08",
+    "images_per_poi": 3,
+    "source_only": true,
+    "prediction_or_marker_views": 0,
+    "world_bearing_to_raw_x_computations": 0,
+    "ocr_or_learning_model_calls": 0,
+    "viewport_contract": {
+      "horizontal_fov_degrees": 90.0,
+      "pan_offsets_degrees": [
+        -75.0,
+        75.0
+      ],
+      "sweep_offsets_degrees": [
+        0.0,
+        90.0,
+        180.0,
+        270.0
+      ],
+      "movement": "preserve raw panorama center across provider-adjacent items"
+    }
+  },
+  "adjudicated_examples": [
+    {
+      "poi_id": "PL01",
+      "target_name": "Théâtre de la Ville",
+      "unique_osm_main_entrance_pixel_binding": false,
+      "reason": "repeated ground-level doors plus tree and vehicle occlusion do not uniquely bind the OSM main node to one visible portal"
+    },
+    {
+      "poi_id": "PL02",
+      "target_name": "Opéra de Lyon",
+      "unique_osm_main_entrance_pixel_binding": false,
+      "reason": "the designated entrance recedes inside the target's colonnade and shadow; a unique portal interval cannot be frozen"
+    },
+    {
+      "poi_id": "PL03",
+      "target_name": "Hôtel Rosmadec",
+      "unique_osm_main_entrance_pixel_binding": true,
+      "reason": "clean single-main-entrance visible control, but it does not supply all four causal roles"
+    },
+    {
+      "poi_id": "PL05",
+      "unique_osm_main_entrance_pixel_binding": "UNKNOWN",
+      "reason": "row-level interval receipt was not completed before the generic source was closed on missing causal roles"
+    },
+    {
+      "poi_id": "PL06",
+      "unique_osm_main_entrance_pixel_binding": "UNKNOWN",
+      "reason": "row-level interval receipt was not completed before the generic source was closed on missing causal roles"
+    },
+    {
+      "poi_id": "PL07",
+      "unique_osm_main_entrance_pixel_binding": "UNKNOWN",
+      "reason": "row-level interval receipt was not completed before the generic source was closed on missing causal roles"
+    },
+    {
+      "poi_id": "PL08",
+      "role": "FIXED_FIRST_RESERVE",
+      "unique_osm_main_entrance_pixel_binding": "UNKNOWN",
+      "reason": "reserve cannot repair the pool-level absence of independently owned tenant and other-building-reacquisition roles"
+    }
+  ],
+  "factorial_support": {
+    "TENANT_WRONG_ENTRANCE": false,
+    "MULTI_ENTRANCE": "PARTIAL",
+    "TARGET_SELF_OCCLUSION": "PARTIAL",
+    "OTHER_BUILDING_OCCLUSION_REACQUISITION": false,
+    "exact_six_pois_by_four_scenarios": false
+  },
+  "decision": "L10_PANOLAB_GENERIC_NEAR_ENTRANCE_SOURCE_NOT_EVALUABLE_CAUSAL_6X4",
+  "decision_reason": "generic near-entrance reciprocal triples do not independently establish tenant-owned wrong entrances or a physical non-target-building occlusion followed by provider-adjacent reacquisition; vehicle occlusion and out-of-view changes are not substituted",
+  "algorithm_or_evaluator_run_count": 0,
+  "next_source_action": "search and freeze by separate tenant, multi-entrance, target-self-occlusion, other-building-reacquisition, and direct support before viewing pixels"
+}
