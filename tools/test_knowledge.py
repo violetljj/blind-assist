@@ -193,6 +193,40 @@ class KnowledgeCliTest(unittest.TestCase):
             )
 
             result, output, stderr = self.run_cli(
+                root,
+                "context",
+                "--route",
+                "smoke-route",
+                "--query",
+                "phrase context candidate-only",
+                "--all",
+                "--json",
+            )
+            self.assertEqual(0, result, stderr)
+            context = json.loads(output)
+            self.assertEqual(1, context["summary"]["matched_uses"])
+            self.assertEqual(
+                "use-smoke-route-candidate",
+                context["entries"][0]["use"]["id"],
+            )
+            self.assertIn(
+                "query relevance",
+                context["summary"]["selection_policy"],
+            )
+
+            result, output, stderr = self.run_cli(
+                root,
+                "search",
+                "context candidate-only phrase",
+                "--json",
+            )
+            self.assertEqual(0, result, stderr)
+            rows = json.loads(output)
+            self.assertEqual(
+                ["project-smoke"], [row["item"]["id"] for row in rows]
+            )
+
+            result, output, stderr = self.run_cli(
                 root, "context", "--route", "smoke-route", "--limit", "0"
             )
             self.assertEqual(2, result)
@@ -230,6 +264,32 @@ class KnowledgeCliTest(unittest.TestCase):
         self.assertEqual(
             ["use-active-a", "use-candidate"],
             [entry["use"]["id"] for entry in selected],
+        )
+
+    def test_query_matching_requires_all_terms_and_normalizes_punctuation(self) -> None:
+        searchable = (
+            "Mesh z-buffer projection keeps a visible target door face. "
+            "存在状态与可见性状态分别记录。"
+        )
+        self.assertGreater(
+            knowledge._query_match_score("door visible z-buffer", searchable),
+            0,
+        )
+        self.assertGreater(
+            knowledge._query_match_score("可见性 存在状态", searchable),
+            0,
+        )
+        exact_score = knowledge._query_match_score(
+            "visible door transfer", "Visible Door Transfer"
+        )
+        scattered_score = knowledge._query_match_score(
+            "visible door transfer",
+            "A visible target supports one door transfer candidate.",
+        )
+        self.assertGreater(exact_score, scattered_score)
+        self.assertEqual(
+            0,
+            knowledge._query_match_score("door missing-term", searchable),
         )
 
     def test_diagnose_builds_fast_decision_card_from_compiled_index(self) -> None:

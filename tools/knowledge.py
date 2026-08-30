@@ -638,6 +638,50 @@ def _resolve_item(
     return None
 
 
+def _normalize_search_text(value: str) -> str:
+    return re.sub(
+        r"[^a-z0-9\u3400-\u9fff]+", " ", value.casefold()
+    ).strip()
+
+
+def _query_match_score(query: str, searchable: str) -> int:
+    """Require every meaningful query term and reward an exact phrase match."""
+    normalized_query = _normalize_search_text(query)
+    normalized_searchable = _normalize_search_text(searchable)
+    if not normalized_query or not normalized_searchable:
+        return 0
+
+    query_terms = list(
+        dict.fromkeys(
+            term
+            for term in normalized_query.split()
+            if len(term) >= 2 or re.search(r"[\u3400-\u9fff]", term)
+        )
+    )
+    if not query_terms:
+        return 0
+
+    searchable_terms = set(normalized_searchable.split())
+
+    def term_matches(term: str) -> bool:
+        if re.search(r"[\u3400-\u9fff]", term):
+            return term in normalized_searchable
+        return term in searchable_terms
+
+    if not all(term_matches(term) for term in query_terms):
+        return 0
+
+    phrase_bonus = 10_000 if normalized_query in normalized_searchable else 0
+    return phrase_bonus + 100 * len(query_terms) + sum(map(len, query_terms))
+
+
+def _record_query_score(query: str, record: dict[str, Any], primary: str) -> int:
+    score = _query_match_score(query, json.dumps(record, ensure_ascii=False))
+    if score:
+        score += 2 * _query_match_score(query, primary)
+    return score
+
+
 def _filtered_rows(
     items: dict[str, dict[str, Any]],
     uses: dict[str, dict[str, Any]],
@@ -648,8 +692,7 @@ def _filtered_rows(
     tag: str | None,
     query: str | None,
 ) -> list[dict[str, Any]]:
-    rows: list[dict[str, Any]] = []
-    query_folded = query.casefold() if query else None
+    scored_rows: list[tuple[int, dict[str, Any]]] = []
     for item in sorted(items.values(), key=lambda value: value["id"]):
         linked_uses = [
             use for use in uses.values() if use.get("item_id") == item.get("id")
@@ -675,12 +718,32 @@ def _filtered_rows(
             "item": {key: value for key, value in item.items() if key != "_path"},
             "uses": _clean_records(sorted(filtered_uses, key=lambda value: value["id"])),
         }
-        if query_folded is not None:
-            searchable = json.dumps(row, ensure_ascii=False).casefold()
-            if query_folded not in searchable:
+        score = 0
+        if query is not None:
+            primary = " ".join(
+                [
+                    item["id"],
+                    item["title"],
+                    *item.get("aliases", []),
+                    *(
+                        mechanism["name"]
+                        for mechanism in item.get("mechanisms", [])
+                    ),
+                ]
+            )
+            score = _record_query_score(query, row, primary)
+            if score == 0:
                 continue
-        rows.append(row)
-    return rows
+        scored_rows.append((score, row))
+    if query is not None:
+        scored_rows.sort(
+            key=lambda value: (
+                -value[0],
+                value[1]["item"]["title"].casefold(),
+                value[1]["item"]["id"],
+            )
+        )
+    return [row for _, row in scored_rows]
 
 
 def _print_rows(rows: list[dict[str, Any]], as_json: bool) -> None:
@@ -793,11 +856,14 @@ def _context_entry(item: dict[str, Any], use: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _context_sort_key(entry: dict[str, Any]) -> tuple[int, int, str, str]:
+def _context_sort_key(
+    entry: dict[str, Any], query_score: int = 0
+) -> tuple[int, int, int, str, str]:
     use = entry["use"]
     return (
         _context_bucket(use),
         CONTEXT_VERDICT_PRIORITY[use["evaluation"]["verdict"]],
+        -query_score,
         entry["item"]["title"].casefold(),
         use["id"],
     )
@@ -841,15 +907,29 @@ def _build_context(
     entries = [
         _context_entry(items[use["item_id"]], use) for use in route_uses
     ]
+    query_scores: dict[str, int] = {}
     if query:
-        query_folded = query.casefold()
-        entries = [
-            entry
-            for entry in entries
-            if query_folded
-            in json.dumps(entry, ensure_ascii=False).casefold()
-        ]
-    entries.sort(key=_context_sort_key)
+        matched_entries: list[dict[str, Any]] = []
+        for entry in entries:
+            primary = " ".join(
+                [
+                    entry["item"]["id"],
+                    entry["item"]["title"],
+                    *entry["item"].get("aliases", []),
+                    *(mechanism["name"] for mechanism in entry["mechanisms"]),
+                ]
+            )
+            score = _record_query_score(query, entry, primary)
+            if score == 0:
+                continue
+            query_scores[entry["use"]["id"]] = score
+            matched_entries.append(entry)
+        entries = matched_entries
+    entries.sort(
+        key=lambda entry: _context_sort_key(
+            entry, query_scores.get(entry["use"]["id"], 0)
+        )
+    )
     state_counts = Counter(entry["use"]["use_state"] for entry in entries)
     verdict_counts = Counter(
         entry["use"]["evaluation"]["verdict"] for entry in entries
@@ -869,7 +949,11 @@ def _build_context(
             "selection_policy": (
                 "represent every present priority tier once, then fill active first; "
                 "evaluated or rejected; adopted, planned, candidate, and retired; "
-                "stable title order within each tier"
+                + (
+                    "query relevance then stable title order within each tier"
+                    if query
+                    else "stable title order within each tier"
+                )
             ),
         },
         "entries": selected,

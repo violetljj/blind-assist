@@ -48,6 +48,12 @@ python tools/knowledge.py show paper-deepsolo-2023
 python tools/knowledge.py show use-grail-r1c-p-orient-anything-v2
 ```
 
+`search` 和 `context --query` 支持自然多关键词：标点与连字符会归一化，所有
+有效关键词都必须命中；同一状态/证据优先级内，题名、别名、机制名和完整短语
+命中更靠前。例如 `search "z-buffer visible door"` 与
+`context --route obstacle-avoidance --query "existence observability"` 不要求原文中
+出现完全相同的连续字符串。
+
 ## 研究决策引擎
 
 日常故障入口是 `diagnose`，不是先搜索更多论文。它从一个预编译 JSON 索引读取
