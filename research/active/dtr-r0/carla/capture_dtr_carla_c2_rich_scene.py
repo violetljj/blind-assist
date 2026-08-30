@@ -37,6 +37,8 @@ SENSOR_TYPES = {
     "witness": "sensor.camera.rgb",
 }
 
+SCRIPTED_POSE_PLANAR_POSITION_TOLERANCE_M = 1e-4
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -90,6 +92,27 @@ def transform_dict(transform: carla.Transform) -> dict[str, float]:
         "pitch": float(transform.rotation.pitch),
         "yaw": float(transform.rotation.yaw),
         "roll": float(transform.rotation.roll),
+    }
+
+
+def angle_error_degrees(actual: float, expected: float) -> float:
+    return abs((float(actual) - float(expected) + 180.0) % 360.0 - 180.0)
+
+
+def transform_residual(
+    actual: carla.Transform, expected: carla.Transform
+) -> dict[str, float]:
+    dx = float(actual.location.x) - float(expected.location.x)
+    dy = float(actual.location.y) - float(expected.location.y)
+    dz = float(actual.location.z) - float(expected.location.z)
+    return {
+        "planar_position_error_m": math.hypot(dx, dy),
+        "position_error_m": math.sqrt(dx * dx + dy * dy + dz * dz),
+        "angle_error_degrees": max(
+            angle_error_degrees(actual.rotation.pitch, expected.rotation.pitch),
+            angle_error_degrees(actual.rotation.yaw, expected.rotation.yaw),
+            angle_error_degrees(actual.rotation.roll, expected.rotation.roll),
+        ),
     }
 
 
@@ -329,15 +352,19 @@ def resolve_blueprint(
 
 
 def deterministic_blueprint_attributes(
-    blueprint: carla.ActorBlueprint, role_name: str
+    blueprint: carla.ActorBlueprint,
+    role_name: str,
+    *,
+    scripted_invincible: bool,
 ) -> dict[str, str]:
     applied: dict[str, str] = {}
     if blueprint.has_attribute("role_name"):
         blueprint.set_attribute("role_name", role_name)
         applied["role_name"] = role_name
     if blueprint.has_attribute("is_invincible"):
-        blueprint.set_attribute("is_invincible", "false")
-        applied["is_invincible"] = "false"
+        value = "true" if scripted_invincible else "false"
+        blueprint.set_attribute("is_invincible", value)
+        applied["is_invincible"] = value
     for name in ("color", "driver_id"):
         if blueprint.has_attribute(name):
             values = list(blueprint.get_attribute(name).recommended_values)
@@ -357,7 +384,9 @@ def spawn_asset(
         world.get_blueprint_library(), list(asset["blueprint_candidates"])
     )
     attributes = deterministic_blueprint_attributes(
-        blueprint, f"dtr_c2_{asset['asset_key']}"
+        blueprint,
+        f"dtr_c2_{asset['asset_key']}",
+        scripted_invincible=bool(asset.get("scripted_invincible", False)),
     )
     actor = world.try_spawn_actor(blueprint, initial_pose["transform"])
     spawn_strategy = "scene_pose"
@@ -504,6 +533,7 @@ def apply_scene(
     center: np.ndarray,
     forward: np.ndarray,
     right: np.ndarray,
+    apply_transforms: bool = True,
 ) -> tuple[dict[str, Any], dict[str, dict[str, Any]]]:
     wearer_pose = pose_for_wearer(
         scenario,
@@ -514,11 +544,12 @@ def apply_scene(
         forward=forward,
         right=right,
     )
-    wearer.set_transform(wearer_pose["transform"])
-    try:
-        wearer.apply_control(carla.WalkerControl(speed=0.0))
-    except Exception:
-        pass
+    if apply_transforms:
+        wearer.set_transform(wearer_pose["transform"])
+        try:
+            wearer.apply_control(carla.WalkerControl(speed=0.0))
+        except Exception:
+            pass
     poses: dict[str, dict[str, Any]] = {}
     for asset in assets:
         key = str(asset["asset_key"])
@@ -532,14 +563,95 @@ def apply_scene(
             forward=forward,
             right=right,
         )
-        actors[key].set_transform(pose["transform"])
-        if str(asset["kind"]) == "walker":
-            try:
-                actors[key].apply_control(carla.WalkerControl(speed=0.0))
-            except Exception:
-                pass
+        if apply_transforms:
+            actors[key].set_transform(pose["transform"])
+            if str(asset["kind"]) == "walker":
+                try:
+                    actors[key].apply_control(carla.WalkerControl(speed=0.0))
+                except Exception:
+                    pass
         poses[key] = pose
     return wearer_pose, poses
+
+
+def tick_scripted_scene(
+    client: carla.Client,
+    world: carla.World,
+    sensor_queue: queue.Queue[carla.SensorData],
+    sensor_name: str,
+    wearer: carla.Actor,
+    actors: dict[str, carla.Actor],
+    wearer_pose: dict[str, Any],
+    poses: dict[str, dict[str, Any]],
+    pose_authority_keys: set[str],
+) -> tuple[
+    int,
+    carla.SensorData,
+    dict[str, carla.Transform],
+    dict[str, dict[str, float]],
+]:
+    labels = ["wearer", *sorted(actors)]
+    commands = [carla.command.ApplyTransform(wearer.id, wearer_pose["transform"])]
+    commands.extend(
+        carla.command.ApplyTransform(actors[key].id, poses[key]["transform"])
+        for key in labels[1:]
+    )
+    previous_frame = int(world.get_snapshot().frame)
+    responses = client.apply_batch_sync(commands, do_tick=True)
+    if len(responses) != len(commands):
+        raise RuntimeError(
+            f"scripted pose batch response count differs: {len(responses)} != {len(commands)}"
+        )
+    failures = [
+        {"actor": label, "error": str(response.error)}
+        for label, response in zip(labels, responses, strict=True)
+        if response.has_error()
+    ]
+    if failures:
+        raise RuntimeError(f"scripted pose batch failed: {json.dumps(failures)}")
+
+    snapshot = world.get_snapshot()
+    world_frame = int(snapshot.frame)
+    if world_frame != previous_frame + 1:
+        raise RuntimeError(
+            f"scripted pose batch advanced unexpected frame: {previous_frame} -> {world_frame}"
+        )
+    image = await_frame(sensor_queue, world_frame, sensor_name)
+
+    expected = {"wearer": wearer_pose["transform"]}
+    expected.update({key: poses[key]["transform"] for key in sorted(actors)})
+    actor_by_label = {"wearer": wearer, **actors}
+    actual: dict[str, carla.Transform] = {}
+    residuals: dict[str, dict[str, float]] = {}
+    pose_failures: list[dict[str, Any]] = []
+    required_labels = {"wearer", *pose_authority_keys}
+    for label in labels:
+        actor_snapshot = snapshot.find(actor_by_label[label].id)
+        if actor_snapshot is None:
+            raise RuntimeError(f"snapshot omitted task-owned actor {label}")
+        actual_transform = actor_snapshot.get_transform()
+        actual[label] = actual_transform
+        residual = transform_residual(actual_transform, expected[label])
+        residuals[label] = residual
+        if (
+            label in required_labels
+            and residual["planar_position_error_m"]
+            > SCRIPTED_POSE_PLANAR_POSITION_TOLERANCE_M
+        ):
+            pose_failures.append(
+                {
+                    "actor": label,
+                    **residual,
+                    "expected": transform_dict(expected[label]),
+                    "actual": transform_dict(actual_transform),
+                }
+            )
+    if pose_failures:
+        raise RuntimeError(
+            "captured frame differs from authoritative scripted pose: "
+            + json.dumps(pose_failures[:5], sort_keys=True)
+        )
+    return world_frame, image, actual, residuals
 
 
 def weather_parameter(name: str) -> carla.WeatherParameters:
@@ -615,6 +727,7 @@ def main() -> int:
     episode_manifests: list[dict[str, Any]] = []
     summaries: list[dict[str, Any]] = []
     sensor_alignment_ok = True
+    max_scripted_pose_planar_position_error_m = 0.0
 
     try:
         apply_settings(
@@ -733,6 +846,11 @@ def main() -> int:
             layout_id = str(scenario["layout_id"])
             layout = protocol["layouts"][layout_id]
             assets = materialize_layout_assets(protocol, layout_id)
+            pose_authority_keys = {
+                str(asset["asset_key"])
+                for asset in assets
+                if bool(asset.get("scripted_pose_authority", False))
+            }
             center, forward, right = normalized_anchor(layout)
 
             if scene_actors:
@@ -848,9 +966,24 @@ def main() -> int:
                     center=center,
                     forward=forward,
                     right=right,
+                    apply_transforms=False,
                 )
-                world_frame = world.tick(30.0)
-                image = await_frame(sensor_queue, world_frame, sensor_name)
+                (
+                    world_frame,
+                    image,
+                    actual_transforms,
+                    pose_residuals,
+                ) = tick_scripted_scene(
+                    client,
+                    world,
+                    sensor_queue,
+                    sensor_name,
+                    wearer,
+                    scene_actors,
+                    wearer_pose,
+                    poses,
+                    pose_authority_keys,
+                )
                 sensor_alignment_ok = sensor_alignment_ok and int(image.frame) == int(
                     world_frame
                 )
@@ -858,13 +991,13 @@ def main() -> int:
                     raise RuntimeError(
                         f"empty {sensor_name} payload at {episode_id}/{sample_index}"
                     )
-                snapshot = world.get_snapshot()
                 actor_states: dict[str, dict[str, Any]] = {}
                 collision_polygons: dict[str, list[list[float]]] = {}
-                wearer_snapshot = snapshot.find(wearer.id)
-                if wearer_snapshot is None:
-                    raise RuntimeError("snapshot omitted wearer")
-                wearer_transform = wearer_snapshot.get_transform()
+                wearer_transform = actual_transforms["wearer"]
+                max_scripted_pose_planar_position_error_m = max(
+                    max_scripted_pose_planar_position_error_m,
+                    pose_residuals["wearer"]["planar_position_error_m"],
+                )
                 actor_states["wearer"] = {
                     "track_id": str(protocol["wearer"]["track_id"]),
                     "asset_key": "wearer",
@@ -873,6 +1006,10 @@ def main() -> int:
                     "actual_blueprint": str(wearer.type_id),
                     "carla_actor_id": int(wearer.id),
                     "transform": transform_dict(wearer_transform),
+                    "scripted_command_transform": transform_dict(
+                        wearer_pose["transform"]
+                    ),
+                    "scripted_pose_residual": pose_residuals["wearer"],
                     "local_position": {
                         "forward_m": float(wearer_pose["local"][0]),
                         "right_m": float(wearer_pose["local"][1]),
@@ -886,11 +1023,14 @@ def main() -> int:
                 for asset in assets:
                     key = str(asset["asset_key"])
                     actor = scene_actors[key]
-                    actor_snapshot = snapshot.find(actor.id)
-                    if actor_snapshot is None:
-                        raise RuntimeError(f"snapshot omitted task-owned actor {key}")
-                    actual_transform = actor_snapshot.get_transform()
                     pose = poses[key]
+                    scripted_transform = pose["transform"]
+                    actual_transform = actual_transforms[key]
+                    if key in pose_authority_keys:
+                        max_scripted_pose_planar_position_error_m = max(
+                            max_scripted_pose_planar_position_error_m,
+                            pose_residuals[key]["planar_position_error_m"],
+                        )
                     actor_states[key] = {
                         "track_id": str(asset["track_id"]),
                         "asset_key": key,
@@ -899,6 +1039,10 @@ def main() -> int:
                         "actual_blueprint": str(actor.type_id),
                         "carla_actor_id": int(actor.id),
                         "transform": transform_dict(actual_transform),
+                        "scripted_command_transform": transform_dict(
+                            scripted_transform
+                        ),
+                        "scripted_pose_residual": pose_residuals[key],
                         "local_position": {
                             "forward_m": float(pose["local"][0]),
                             "right_m": float(pose["local"][1]),
@@ -1019,6 +1163,7 @@ def main() -> int:
                 "sensor": sensor_name,
                 "frames": len(records),
                 "duration_seconds": duration_s,
+                "scripted_pose_authority_assets": sorted(pose_authority_keys),
                 "active_asset_count_including_wearer": len(active_manifest),
                 "unique_actual_blueprints": len(
                     {str(value["actual_blueprint"]) for value in active_manifest}
@@ -1112,6 +1257,10 @@ def main() -> int:
             "all_raw_payloads_materialized": len(payload_inventory)
             == expected_total_frames,
             "sensor_world_frames_aligned": sensor_alignment_ok,
+            "all_captured_frames_match_authoritative_scripted_pose": (
+                max_scripted_pose_planar_position_error_m
+                <= SCRIPTED_POSE_PLANAR_POSITION_TOLERANCE_M
+            ),
             "minimum_active_assets_met": all(
                 int(value["active_asset_count_including_wearer"]) - 1
                 >= int(
@@ -1166,6 +1315,13 @@ def main() -> int:
             "unique_actual_blueprint_count": len(unique_actual_blueprints),
             "unique_actual_blueprints": sorted(unique_actual_blueprints),
             "calibration_sha256": sha256_file(calibration_path),
+            "scripted_pose_application": "atomic_batch_before_sensor_tick",
+            "scripted_pose_planar_position_tolerance_m": (
+                SCRIPTED_POSE_PLANAR_POSITION_TOLERANCE_M
+            ),
+            "maximum_scripted_pose_planar_position_error_m": (
+                max_scripted_pose_planar_position_error_m
+            ),
         }
         write_json_atomic(shard_root / "result.json", result)
         return 0 if all(checks.values()) else 2

@@ -11,7 +11,10 @@ param(
     [ValidateRange(1024, 65533)]
     [int]$RpcPort = 2000,
     [ValidateRange(120, 7200)]
-    [int]$CaptureTimeoutSeconds = 3600
+    [int]$CaptureTimeoutSeconds = 3600,
+    [ValidateRange(2.0, 16.0)]
+    [double]$MinimumFreePhysicalGB = 4.0,
+    [switch]$Resume
 )
 
 Set-StrictMode -Version Latest
@@ -25,6 +28,9 @@ $script:CarlaHost = '127.0.0.1'
 $script:StartupTimeoutSeconds = 120
 $script:StartupMinimumSeconds = 45
 $script:RenderQualityLevel = 'Epic'
+$script:RenderBackend = 'dx12'
+$script:MinimumFreePhysicalGB = $MinimumFreePhysicalGB
+$script:CapacityTimeoutSeconds = 300
 $script:RawRunPath = ''
 $script:CarlaInstallRootPath = ''
 $script:CarlaPythonPath = ''
@@ -120,6 +126,46 @@ function Get-OwnedCarlaProcesses {
     )
 }
 
+function Get-AllCarlaProcesses {
+    $prefix = $script:CarlaInstallRootPath.TrimEnd('\', '/') + [IO.Path]::DirectorySeparatorChar
+    @(
+        Get-CimInstance Win32_Process -ErrorAction Stop |
+            Where-Object {
+                $executable = [string]$_.ExecutablePath
+                -not [string]::IsNullOrWhiteSpace($executable) -and
+                $executable.StartsWith($prefix, [StringComparison]::OrdinalIgnoreCase)
+            }
+    )
+}
+
+function Wait-CarlaCapacity {
+    $deadline = (Get-Date).AddSeconds($script:CapacityTimeoutSeconds)
+    $stableSeconds = 0
+    do {
+        $processes = @(Get-AllCarlaProcesses)
+        $os = Get-CimInstance Win32_OperatingSystem -ErrorAction Stop
+        $freePhysicalGB = [double]$os.FreePhysicalMemory / 1MB
+        if (
+            $processes.Count -eq 0 -and
+            $freePhysicalGB -ge $script:MinimumFreePhysicalGB
+        ) {
+            $stableSeconds += 1
+            if ($stableSeconds -ge 5) {
+                return
+            }
+        }
+        else {
+            $stableSeconds = 0
+        }
+        Start-Sleep -Seconds 1
+    } while ((Get-Date) -lt $deadline)
+    throw (
+        'CARLA capacity did not recover: processes=' +
+        $processes.Count + '; free_physical_gb=' +
+        ([Math]::Round($freePhysicalGB, 2))
+    )
+}
+
 function Get-OwnedPythonProcesses {
     if ([string]::IsNullOrWhiteSpace($script:RawRunPath)) {
         return @()
@@ -149,6 +195,10 @@ function Assert-CarlaIdle {
     $processes = @(Get-OwnedCarlaProcesses)
     if ($processes.Count -ne 0) {
         throw "CARLA is already running on RPC port $($script:RpcPort): $($processes.ProcessId -join ',')"
+    }
+    $allProcesses = @(Get-AllCarlaProcesses)
+    if ($allProcesses.Count -ne 0) {
+        throw "Another CARLA allocation is active: $($allProcesses.ProcessId -join ',')"
     }
 }
 
@@ -235,10 +285,19 @@ function Assert-ShardResult {
             "failed_checks=$($failed.Name -join ',')"
         )
     }
+    $protocolHash = (Get-FileHash -LiteralPath $script:ProtocolPath -Algorithm SHA256).Hash
+    $captureHash = (Get-FileHash -LiteralPath $script:CaptureScriptPath -Algorithm SHA256).Hash
+    if (
+        [string]$result.protocol_sha256 -ne $protocolHash -or
+        [string]$result.capture_script_sha256 -ne $captureHash
+    ) {
+        throw "$SensorName shard source hash mismatch during resume validation."
+    }
 }
 
 function Invoke-SensorCapture {
     param([Parameter(Mandatory = $true)][string]$SensorName)
+    Wait-CarlaCapacity
     Assert-CarlaIdle
     $serverStdout = Join-Path $script:LogRoot "server-$SensorName.stdout.log"
     $serverStderr = Join-Path $script:LogRoot "server-$SensorName.stderr.log"
@@ -254,7 +313,7 @@ function Invoke-SensorCapture {
         $serverProcess = Start-Process `
             -FilePath $script:CarlaExePath `
             -ArgumentList @(
-                '-dx12',
+                "-$($script:RenderBackend)",
                 '-RenderOffScreen',
                 '-nosound',
                 "-quality-level=$($script:RenderQualityLevel)",
@@ -320,6 +379,7 @@ function Invoke-SensorCapture {
     if ($null -ne $primaryFailure) {
         throw $primaryFailure
     }
+    Wait-CarlaCapacity
     Assert-CarlaIdle
 }
 
@@ -401,6 +461,12 @@ try {
     if ($script:RenderQualityLevel -notin @('Low', 'Epic')) {
         throw "Unsupported CARLA render quality: $($script:RenderQualityLevel)"
     }
+    if ($null -ne $protocolValue.capture.render_backend) {
+        $script:RenderBackend = [string]$protocolValue.capture.render_backend
+    }
+    if ($script:RenderBackend -notin @('dx11', 'dx12')) {
+        throw "Unsupported CARLA render backend: $($script:RenderBackend)"
+    }
     $script:ExpectedFramesPerSensor = 0
     foreach ($scenario in @($protocolValue.scenarios)) {
         $layout = $protocolValue.layouts.PSObject.Properties[$scenario.layout_id].Value
@@ -411,13 +477,38 @@ try {
     $script:MinimumUniqueBlueprints = [int]$protocolValue.admission.minimum_unique_actual_blueprints_across_pack
     $rawRoot = Resolve-LocalPath -Value $RawEvidenceRoot -BasePath $script:RepoRoot
     $script:RawRunPath = Get-ContainedRunPath -Root $rawRoot -Child $RunId
+    Wait-CarlaCapacity
     Assert-CarlaIdle
     [IO.Directory]::CreateDirectory($rawRoot) | Out-Null
-    New-ExclusiveDirectory -Path $script:RawRunPath
+    if ($Resume) {
+        if (-not (Test-Path -LiteralPath $script:RawRunPath -PathType Container)) {
+            throw "Resume run is unavailable: $($script:RawRunPath)"
+        }
+        if (Test-Path -LiteralPath (Join-Path $script:RawRunPath 'result.json')) {
+            throw "Refusing to resume a terminal joined run: $($script:RawRunPath)"
+        }
+    }
+    else {
+        New-ExclusiveDirectory -Path $script:RawRunPath
+    }
     $script:LogRoot = Join-Path $script:RawRunPath 'logs'
     [IO.Directory]::CreateDirectory($script:LogRoot) | Out-Null
 
     foreach ($sensorName in $sensorOrder) {
+        $shardRoot = Join-Path $script:RawRunPath "shards/$sensorName"
+        $shardResult = Join-Path $shardRoot 'result.json'
+        if ($Resume -and (Test-Path -LiteralPath $shardResult -PathType Leaf)) {
+            Assert-ShardResult -SensorName $sensorName -ExitCode 0
+            Write-Output "SKIP verified completed C2 shard $sensorName"
+            continue
+        }
+        if ($Resume -and (Test-Path -LiteralPath $shardRoot -PathType Container)) {
+            $partial = @(Get-ChildItem -LiteralPath $shardRoot -Force)
+            if ($partial.Count -ne 0) {
+                throw "Refusing non-empty partial shard during resume: $shardRoot"
+            }
+            Remove-Item -LiteralPath $shardRoot
+        }
         Invoke-SensorCapture -SensorName $sensorName
     }
     Assert-CarlaIdle
