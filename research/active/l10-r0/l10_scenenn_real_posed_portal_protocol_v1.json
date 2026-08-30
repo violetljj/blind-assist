@@ -1,0 +1,179 @@
+{
+  "schema": "blindassist-l10-scenenn-real-posed-portal-protocol-v1",
+  "authority": "FROZEN_REAL_RGBD_SOURCE_DISJOINT_CONFIRMATION_PROTOCOL",
+  "question": "Can one frozen metric portal-plane credential, formed from a sealed reference door envelope plus real synchronized depth, recover the same physical door surface in a later posed view across three SceneNN scenes?",
+  "information_change": "Replace the synthetic world-position image with real Asus Xtion depth while keeping exact camera pose, one reference-side door credential, deterministic geometry, evaluator and gates frozen. Do not sweep scenes, frames, plane estimators, thresholds, seeds, matchers or backbones after RGB-D materialization.",
+  "provider": {
+    "name": "SceneNN",
+    "project": "https://scenenn.net/",
+    "repository": "https://github.com/hkust-vgd/scenenn",
+    "repository_commit": "265446606e5ed4217e2a8c6a4e306367171603ea",
+    "server_root": "https://hkust-vgd.ust.hk/scenenn/main/",
+    "sensor": "Asus Xtion",
+    "image_width": 640,
+    "image_height": 480,
+    "depth_unit": "millimetre",
+    "pose_convention": "trajectory.log transforms camera-space points to world space",
+    "license_boundary": "Free for educational and research use; contact SceneNN before commercial use. Raw assets are not redistributed by BlindAssist."
+  },
+  "frozen_scenes": [
+    {
+      "episode_id": "SN01",
+      "scene_id": "014",
+      "target_door_instance_id": 814659,
+      "target_xml_color_rgb": [177, 87, 62],
+      "target_xml_area": 32054,
+      "files": {
+        "014.ply": {
+          "url": "https://hkust-vgd.ust.hk/scenenn/main/014/014.ply",
+          "content_length": 60932645,
+          "etag": "61a4d45a-3a1c225"
+        },
+        "014.xml": {
+          "url": "https://hkust-vgd.ust.hk/scenenn/main/014/014.xml",
+          "content_length": 33322,
+          "etag": "61a4d45a-822a"
+        },
+        "trajectory.log": {
+          "url": "https://hkust-vgd.ust.hk/scenenn/main/014/trajectory.log",
+          "content_length": 539267,
+          "etag": "61a4d45a-83a83"
+        },
+        "014.oni": {
+          "url": "https://hkust-vgd.ust.hk/scenenn/main/oni/014.oni",
+          "content_length": 595918786,
+          "etag": "61a4d686-2384ffc2"
+        }
+      }
+    },
+    {
+      "episode_id": "SN02",
+      "scene_id": "249",
+      "target_door_instance_id": 889447,
+      "target_xml_color_rgb": [149, 22, 68],
+      "target_xml_area": 32060,
+      "files": {
+        "249.ply": {
+          "url": "https://hkust-vgd.ust.hk/scenenn/main/249/249.ply",
+          "content_length": 57962275,
+          "etag": "61a4d55f-3746f23"
+        },
+        "249.xml": {
+          "url": "https://hkust-vgd.ust.hk/scenenn/main/249/249.xml",
+          "content_length": 17752,
+          "etag": "61a4d55f-4558"
+        },
+        "trajectory.log": {
+          "url": "https://hkust-vgd.ust.hk/scenenn/main/249/trajectory.log",
+          "content_length": 610835,
+          "etag": "61a4d560-95213"
+        },
+        "249.oni": {
+          "url": "https://hkust-vgd.ust.hk/scenenn/main/oni/249.oni",
+          "content_length": 632404992,
+          "etag": "61a4e316-25b1bc00"
+        }
+      }
+    },
+    {
+      "episode_id": "SN03",
+      "scene_id": "521",
+      "target_door_instance_id": 1024952,
+      "target_xml_color_rgb": [210, 246, 33],
+      "target_xml_area": 56446,
+      "files": {
+        "521.ply": {
+          "url": "https://hkust-vgd.ust.hk/scenenn/main/521/521.ply",
+          "content_length": 65638378,
+          "etag": "61a4d5a7-3e98fea"
+        },
+        "521.xml": {
+          "url": "https://hkust-vgd.ust.hk/scenenn/main/521/521.xml",
+          "content_length": 15623,
+          "etag": "61a4d5a7-3d07"
+        },
+        "trajectory.log": {
+          "url": "https://hkust-vgd.ust.hk/scenenn/main/521/trajectory.log",
+          "content_length": 367494,
+          "etag": "61a4d5a7-59b86"
+        },
+        "521.oni": {
+          "url": "https://hkust-vgd.ust.hk/scenenn/main/oni/521.oni",
+          "content_length": 363483393,
+          "etag": "61a4e57e-15aa5101"
+        }
+      }
+    }
+  ],
+  "shared_intrinsic": {
+    "url": "https://hkust-vgd.ust.hk/scenenn/main/intrinsic/asus.ini",
+    "content_length": 253,
+    "etag": "61a4d5fd-fd",
+    "fx": 544.47329,
+    "fy": 544.47329,
+    "cx": 320.0,
+    "cy": 240.0
+  },
+  "pre_rgbd_selector": {
+    "allowed_inputs": [
+      "scene XML instance IDs and labels",
+      "PLY xyz and uint instance label",
+      "trajectory.log camera-to-world matrices",
+      "asus.ini intrinsics"
+    ],
+    "forbidden_before_cohort_freeze": [
+      "ONI color frames",
+      "ONI depth frames",
+      "provider 2D annotations",
+      "rendered mesh previews",
+      "model output"
+    ],
+    "target_rule": "Use the three scene and door-instance IDs frozen above. PLY vertex label must equal the XML instance ID.",
+    "frame_projection_rule": "Transform all target-labelled PLY vertices from world to camera with inverse trajectory pose, retain positive-depth points, project with asus.ini, clip to the 640x480 image, and fill their 2D convex hull.",
+    "eligible_frame": {
+      "minimum_projected_envelope_pixels": 2048,
+      "minimum_bbox_width_pixels": 48,
+      "minimum_bbox_height_pixels": 96,
+      "minimum_bbox_image_margin_pixels": 4,
+      "maximum_projected_image_fraction": 0.35,
+      "maximum_camera_to_target_centroid_metres": 10.0
+    },
+    "pair_rule": "Require reference frame index lower than query frame index and camera-centre baseline at least 0.5 m. Maximize baseline, then maximize the smaller target-envelope pixel count, then minimize reference and query frame indices.",
+    "failure_semantics": "If any frozen scene lacks one eligible ordered pair, return NOT_EVALUABLE for the whole confirmation. Do not replace a scene after RGB-D is opened.",
+    "cohort_size": 3,
+    "rgbd_frames_before_cohort_freeze": 0
+  },
+  "frozen_transfer": {
+    "reference_inputs": [
+      "sealed target door envelope from provider mesh projection",
+      "synchronized 16-bit reference depth",
+      "reference camera-to-world pose",
+      "asus.ini intrinsics"
+    ],
+    "query_inputs": [
+      "query camera-to-world pose",
+      "asus.ini intrinsics"
+    ],
+    "query_evaluator_only": [
+      "query target mesh projection",
+      "query projections of other annotated instances",
+      "query RGB preview"
+    ],
+    "plane_rule": "Back-project every valid depth pixel inside the reference envelope, fit one deterministic robust plane by SVD, retain the 70 percent with smallest absolute residual, and refit once. No randomized RANSAC or threshold search is permitted.",
+    "surface_rule": "Intersect every external reference-envelope contour ray with the fitted plane, transform those metric 3D contour points to world space, project them through the query pose, and fill one convex portal-surface envelope.",
+    "truth_rule": "Fill the convex hull of evaluator-only query target-mesh vertices. Door-surface truth is not promoted to doorway aperture or traversability truth.",
+    "instance_rule": "Rank every visible XML-annotated query instance by IoU between its provider-mesh envelope and the one transferred envelope. No abstention or threshold selection is permitted.",
+    "action_ray_rule": "Use the transferred envelope centroid as the observation ray endpoint and report its query-image error plus the metric world-centroid error of the transported contour.",
+    "occlusion_rule": "No query RGB, query depth, query mesh, XML label or z-buffer is available to the transfer. Occlusion and reconstruction error remain visible in the metrics."
+  },
+  "decision_gate": {
+    "correct_target_instance": "3/3 top-1 among visible annotated instances",
+    "wrong_instance_commit": "0/3",
+    "centroid_inside_target_envelope": "3/3",
+    "median_target_envelope_iou_minimum": 0.5,
+    "median_metric_world_centroid_error_metres_maximum": 0.25,
+    "failure_semantics": "Any failed condition closes this frozen real-RGB-D transfer. Do not tune it on the consumed scenes."
+  },
+  "stop_condition": "One metadata-and-geometry cohort freeze followed by one six-frame RGB-D replay. No scene, frame, target, plane, geometry, threshold, seed, matcher or backbone sweep after RGB-D materialization.",
+  "claim_boundary": "A pass is source-disjoint real indoor RGB-D confirmation that exact reconstructed pose plus a reference-side metric door-surface credential can transfer one physical door across views. SceneNN mesh and poses are reconstructed from the same capture, so this is not external-survey registration. It is not a named entrance, doorway aperture, access, traversability, approach waypoint, arrival, HANDOFF_READY, product benefit, user benefit or mobility-safety result. Panoramax remains closed until an independent sub-metre portal anchor exists."
+}

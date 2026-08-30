@@ -2034,6 +2034,50 @@ co-registered with the existing LoD3 doors. A Panoramax-only relative SfM
 canary is insufficient and stays parked as
 `RELATIVE_REGISTRATION_ONLY / NOT_PORTAL_BOUND`.
 
+#### Real posed RGB-D confirmation
+
+SceneNN then replaced the synthetic world-position credential with real
+handheld RGB-D, reconstructed camera poses, an instance-labelled mesh, and
+three door-disjoint scenes (`014`, `249`, and `521`). The first protocol asked
+for the complete target door inside a four-pixel image margin. Across all
+`9,000` poses it found zero qualifying frames, so record
+`L10_SCENENN_FULL_DOOR_SOURCE_NOT_EVALUABLE_ZERO_FULLY_CONTAINED_TARGET_FRAMES`.
+Before any ONI frame was opened, v2 made one source-level change: carry the
+image-clipped target surface. It froze door IDs `814659`, `889447`, and
+`1024952`, one ordered reference/query pair per scene, and the same plane,
+transfer, ranking, and gate rules.
+
+The one six-frame replay fitted a robust plane from real reference depth and
+projected its contour through the held-out query pose. Query RGB, query depth,
+query mesh labels, and other-instance envelopes did not enter the prediction.
+
+| Real posed-portal metric | SN01 / 014 | SN02 / 249 | SN03 / 521 | aggregate |
+|---|---:|---:|---:|---:|
+| target / selected instance | 814659 / 60040 | 889447 / 889447 | 1024952 / 1024952 | 2/3 correct |
+| camera baseline | 2.277 | 1.147 | 1.010 | 1.147 median |
+| visible transferred envelope | no | yes | yes | 2/3 |
+| envelope IoU | 0.0000 | 0.4719 | 0.2647 | 0.2647 median |
+| precision / recall | 0.0000 / 0.0000 | 0.8760 / 0.5085 | 0.2924 / 0.7110 | -- |
+| centroid inside target | no | yes | no | 1/3 |
+| world-centroid error | 0.985 | 0.683 | 1.457 | 0.985 median |
+| reference-plane normal error | 82.47 deg | 4.55 deg | 16.60 deg | 34.54 deg mean |
+
+Record
+`L10_SCENENN_REAL_RGBD_PARTIAL_METRIC_PORTAL_TRANSFER_CONFIRMATION_GATE_NOT_MET`.
+The decisive error is source visibility, not matcher capacity. In SN01 the
+mesh-projected reference envelope was behind a visible occluder; a plane with
+only `2.5 mm` median residual was nevertheless `82.47 deg` from the target
+door plane and projected entirely outside the query image. SN02 and SN03 still
+selected the correct physical door, but their geometry was not accurate enough
+for the frozen IoU, centroid, or nominal metric-world gates.
+
+Do not reselect these scenes or frames, change the 70-percent plane fit, or
+tune the gates. The next admissible source change is a fresh real-scene cohort
+with source-side visibility authority: a provider 2D door-instance mask or a
+z-buffered semantic triangle surface checked against synchronized depth before
+forming the reference credential. Keep query-side RGB/depth evaluator-only and
+retain Panoramax as closed until an independent absolute portal anchor exists.
+
 Independent-extent protocols, source builders, audits, and results:
 `l10_lod3_panoramax_door_reachability_result_v1.json`,
 `l10_width_first_perspective_portal_protocol_v1.json`,
@@ -2051,6 +2095,14 @@ result: `l10_hypersim_posed_portal_protocol_v1.json`,
 `l10_hypersim_posed_portal_cohort_v1.json`,
 `l10_hypersim_posed_portal_transfer.py`, and
 `l10_hypersim_posed_portal_result_v1.json`.
+
+Real posed-portal source audit, protocols, frozen cohort, replay implementation,
+and result: `l10_scenenn_full_door_source_result_v1.json`,
+`l10_scenenn_real_posed_portal_protocol_v1.json`,
+`l10_scenenn_real_posed_portal_protocol_v2.json`,
+`l10_scenenn_real_posed_portal_cohort_v2.json`,
+`l10_scenenn_real_posed_portal_transfer.py`, and
+`l10_scenenn_real_posed_portal_result_v2.json`.
 
 Credential successor protocols, evaluators, frozen sources, and results:
 `l10_panolab_node_credential_protocol_v1.json`,

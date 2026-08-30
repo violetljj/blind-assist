@@ -1,0 +1,61 @@
+{
+  "schema": "blindassist-l10-scenenn-real-posed-portal-protocol-v2",
+  "authority": "FROZEN_REAL_RGBD_PARTIAL_SURFACE_CONFIRMATION_PROTOCOL",
+  "base_protocol_path": "l10_scenenn_real_posed_portal_protocol_v1.json",
+  "base_protocol_sha256": "93a7258865963d71f69a8d106484b43f73f0647d2c6c067d4805a05f7735a800",
+  "question": "Can one frozen metric portal-plane credential, formed from the visible clipped portion of a real reference door plus synchronized depth, recover the same physical door surface in a later posed view across three SceneNN scenes?",
+  "information_change": "The geometry-only v1 selector established that handheld SceneNN views never contain the full target door with a four-pixel margin. Before any RGB-D was opened, v2 makes one structural change: carry the visible image-clipped door surface instead of requiring the complete door. Scenes, target IDs, metric-plane transfer, gates and no-sweep rule remain fixed.",
+  "pre_rgbd_selector": {
+    "allowed_inputs": [
+      "scene XML instance IDs and labels",
+      "PLY xyz and uint instance label",
+      "trajectory.log camera-to-world matrices",
+      "asus.ini intrinsics"
+    ],
+    "forbidden_before_cohort_freeze": [
+      "ONI color frames",
+      "ONI depth frames",
+      "provider 2D annotations",
+      "rendered mesh previews",
+      "model output"
+    ],
+    "target_rule": "Use the same three scene and door-instance IDs frozen in v1. PLY vertex label must equal the XML instance ID.",
+    "frame_projection_rule": "Transform all target-labelled PLY vertices from world to camera with inverse trajectory pose, retain positive-depth points, project with asus.ini, clip the projected surface to the 640x480 image, and fill its visible 2D convex hull.",
+    "eligible_frame": {
+      "minimum_projected_envelope_pixels": 2048,
+      "minimum_bbox_width_pixels": 48,
+      "minimum_bbox_height_pixels": 96,
+      "maximum_projected_image_fraction": 0.35,
+      "maximum_camera_to_target_centroid_metres": 10.0
+    },
+    "pair_rule": "Require reference frame index lower than query frame index and camera-centre baseline at least 0.5 m. Maximize baseline, then maximize the smaller target-envelope pixel count, then minimize reference and query frame indices.",
+    "failure_semantics": "If any frozen scene lacks one eligible ordered pair, return NOT_EVALUABLE for the whole v2 confirmation. Do not replace a scene or alter partial-surface admission after RGB-D is opened.",
+    "cohort_size": 3,
+    "rgbd_frames_before_cohort_freeze": 0
+  },
+  "frozen_transfer": {
+    "reference_inputs": [
+      "sealed visible target-door envelope from provider mesh projection",
+      "synchronized 16-bit reference depth",
+      "reference camera-to-world pose",
+      "asus.ini intrinsics"
+    ],
+    "query_inputs": [
+      "query camera-to-world pose",
+      "asus.ini intrinsics"
+    ],
+    "query_evaluator_only": [
+      "visible query target-mesh projection",
+      "query projections of other annotated instances",
+      "query RGB preview"
+    ],
+    "plane_rule": "Back-project every valid depth pixel inside the reference envelope, fit one deterministic robust plane by SVD, retain the 70 percent with smallest absolute residual, and refit once. No randomized RANSAC or threshold search is permitted.",
+    "surface_rule": "Intersect every external visible reference-envelope contour ray with the fitted plane, transform those metric 3D contour points to world space, project them through the query pose, clip to the image, and fill one convex portal-surface envelope.",
+    "truth_rule": "Fill the image-clipped convex hull of evaluator-only query target-mesh vertices. Door-surface truth is not promoted to doorway aperture or traversability truth.",
+    "instance_rule": "Rank every visible XML-annotated query instance by IoU between its provider-mesh envelope and the one transferred envelope. No abstention or threshold selection is permitted.",
+    "action_ray_rule": "Use the transferred envelope centroid as the observation ray endpoint and report its query-image error plus the metric world-centroid error of the transported contour.",
+    "occlusion_rule": "No query RGB, query depth, query mesh, XML label or z-buffer is available to the transfer. Occlusion and reconstruction error remain visible in the metrics."
+  },
+  "stop_condition": "One geometry-only partial-surface cohort freeze followed by one six-frame RGB-D replay. No scene, frame, target, plane, geometry, threshold, seed, matcher or backbone sweep after RGB-D materialization.",
+  "claim_boundary": "A pass is source-disjoint real indoor RGB-D confirmation that exact reconstructed pose plus a reference-side metric visible door-surface credential can transfer one physical door across views. SceneNN mesh and poses are reconstructed from the same capture, so this is not external-survey registration. It is not a complete doorway aperture, named entrance, access, traversability, approach waypoint, arrival, HANDOFF_READY, product benefit, user benefit or mobility-safety result. Panoramax remains closed until an independent sub-metre portal anchor exists."
+}

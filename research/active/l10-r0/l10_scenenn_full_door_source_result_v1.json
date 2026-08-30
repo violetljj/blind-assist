@@ -1,0 +1,76 @@
+{
+  "schema": "blindassist-l10-scenenn-full-door-source-result-v1",
+  "authority": "PRE_RGBD_GEOMETRY_ONLY_SOURCE_RESULT",
+  "protocol_path": "l10_scenenn_real_posed_portal_protocol_v1.json",
+  "protocol_sha256": "93a7258865963d71f69a8d106484b43f73f0647d2c6c067d4805a05f7735a800",
+  "conclusion": "L10_SCENENN_FULL_DOOR_SOURCE_NOT_EVALUABLE_ZERO_FULLY_CONTAINED_TARGET_FRAMES",
+  "rgbd_files_opened": 0,
+  "summary": {
+    "scenes": 3,
+    "trajectory_frames": 9000,
+    "fully_contained_eligible_frames": 0,
+    "ordered_pairs": 0,
+    "failure_layer": "full-door image-containment assumption"
+  },
+  "scenes": [
+    {
+      "scene_id": "014",
+      "target_door_instance_id": 814659,
+      "trajectory_frames": 3200,
+      "target_ply_vertices": 37927,
+      "fully_contained_eligible_frames": 0,
+      "otherwise_eligible_partial_frames": 546,
+      "partial_pair_diagnostic_only": {
+        "reference_frame": 2149,
+        "query_frame": 2649,
+        "camera_baseline_m": 2.2774191181972214,
+        "reference_visible_envelope_pixels": 5049,
+        "query_visible_envelope_pixels": 86160
+      }
+    },
+    {
+      "scene_id": "249",
+      "target_door_instance_id": 889447,
+      "trajectory_frames": 3600,
+      "target_ply_vertices": 40755,
+      "fully_contained_eligible_frames": 0,
+      "otherwise_eligible_partial_frames": 468,
+      "partial_pair_diagnostic_only": {
+        "reference_frame": 378,
+        "query_frame": 3328,
+        "camera_baseline_m": 1.1465899334260703,
+        "reference_visible_envelope_pixels": 103600,
+        "query_visible_envelope_pixels": 70571
+      }
+    },
+    {
+      "scene_id": "521",
+      "target_door_instance_id": 1024952,
+      "trajectory_frames": 2200,
+      "target_ply_vertices": 97963,
+      "fully_contained_eligible_frames": 0,
+      "otherwise_eligible_partial_frames": 996,
+      "partial_pair_diagnostic_only": {
+        "reference_frame": 1071,
+        "query_frame": 1749,
+        "camera_baseline_m": 1.0098053497547386,
+        "reference_visible_envelope_pixels": 25758,
+        "query_visible_envelope_pixels": 28031
+      }
+    }
+  ],
+  "source_sha256": {
+    "payload/014/014.ply": "123f01ab16c447d43fbdfeee03ba37f98d6d132cb6b043b9c6b5ae1ee460700e",
+    "payload/014/014.xml": "dba9be12e53b51262e9a891e399de8084deb21b7c0e723d34a5438d59570112b",
+    "payload/014/trajectory.log": "6232355236fd8e32f7d27dfe0f3c28b6c4b1b1af1af3150b5a407a39be6721e8",
+    "payload/249/249.ply": "79bc30e14a9f2a29d91e7ba77b121e22b1952b698f51d354fdaeab23d151d454",
+    "payload/249/249.xml": "fb1f0c425014c3ab8e11c3f02910aabb92c18bcb22ed8435817d065c679c19b5",
+    "payload/249/trajectory.log": "e2ef358d175576f433620d9af97b7e6036a42fd444b2a7f75b706031fdeb814c",
+    "payload/521/521.ply": "19981c4342f670b9a1ad666f5cb73bd1d77b4d268e6f983a7196d5b634491f84",
+    "payload/521/521.xml": "ee00521f74427bc7b96b5abd80335bdb11eb8ecd2ed2db6841ae600f5674c3c0",
+    "payload/521/trajectory.log": "7937fbfd4bac5d8efacd5c8fbae1fd02dfbd2e5bd28cda36b494494f5798c576",
+    "payload/intrinsic/asus.ini": "51a3ccc2fa33ce8600ca423c1bbea4ce8a4fb480ceb170179e4c19bcaf25ff18"
+  },
+  "next_action": "Change the representation once, before opening RGB-D: carry the visible clipped door-surface credential rather than requiring the complete physical door to fit inside both views. Keep the same scenes, target IDs, metric-plane transfer and gates.",
+  "claim_boundary": "This is a source reachability result, not a transfer result. It consumes no RGB or depth and says only that the full-door containment selector is incompatible with these handheld real captures."
+}

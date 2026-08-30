@@ -1,0 +1,397 @@
+{
+  "schema": "blindassist-l10-scenenn-real-posed-portal-cohort-v2",
+  "authority": "FROZEN_PRE_RGBD_REAL_INDOOR_CONFIRMATION_COHORT",
+  "protocol_path": "l10_scenenn_real_posed_portal_protocol_v2.json",
+  "protocol_sha256": "d5ccffea48f0376fc74340aeee7e5508e13ce414c58f63c4977a32d86cab72c6",
+  "source": {
+    "provider": {
+      "name": "SceneNN",
+      "project": "https://scenenn.net/",
+      "repository": "https://github.com/hkust-vgd/scenenn",
+      "repository_commit": "265446606e5ed4217e2a8c6a4e306367171603ea",
+      "server_root": "https://hkust-vgd.ust.hk/scenenn/main/",
+      "sensor": "Asus Xtion",
+      "image_width": 640,
+      "image_height": 480,
+      "depth_unit": "millimetre",
+      "pose_convention": "trajectory.log transforms camera-space points to world space",
+      "license_boundary": "Free for educational and research use; contact SceneNN before commercial use. Raw assets are not redistributed by BlindAssist."
+    },
+    "input_manifest": {
+      "payload/014/014.ply": {
+        "bytes": 60932645,
+        "sha256": "123f01ab16c447d43fbdfeee03ba37f98d6d132cb6b043b9c6b5ae1ee460700e"
+      },
+      "payload/014/014.xml": {
+        "bytes": 33322,
+        "sha256": "dba9be12e53b51262e9a891e399de8084deb21b7c0e723d34a5438d59570112b"
+      },
+      "payload/014/trajectory.log": {
+        "bytes": 539267,
+        "sha256": "6232355236fd8e32f7d27dfe0f3c28b6c4b1b1af1af3150b5a407a39be6721e8"
+      },
+      "payload/intrinsic/asus.ini": {
+        "bytes": 253,
+        "sha256": "51a3ccc2fa33ce8600ca423c1bbea4ce8a4fb480ceb170179e4c19bcaf25ff18"
+      },
+      "payload/249/249.ply": {
+        "bytes": 57962275,
+        "sha256": "79bc30e14a9f2a29d91e7ba77b121e22b1952b698f51d354fdaeab23d151d454"
+      },
+      "payload/249/249.xml": {
+        "bytes": 17752,
+        "sha256": "fb1f0c425014c3ab8e11c3f02910aabb92c18bcb22ed8435817d065c679c19b5"
+      },
+      "payload/249/trajectory.log": {
+        "bytes": 610835,
+        "sha256": "e2ef358d175576f433620d9af97b7e6036a42fd444b2a7f75b706031fdeb814c"
+      },
+      "payload/521/521.ply": {
+        "bytes": 65638378,
+        "sha256": "19981c4342f670b9a1ad666f5cb73bd1d77b4d268e6f983a7196d5b634491f84"
+      },
+      "payload/521/521.xml": {
+        "bytes": 15623,
+        "sha256": "ee00521f74427bc7b96b5abd80335bdb11eb8ecd2ed2db6841ae600f5674c3c0"
+      },
+      "payload/521/trajectory.log": {
+        "bytes": 367494,
+        "sha256": "7937fbfd4bac5d8efacd5c8fbae1fd02dfbd2e5bd28cda36b494494f5798c576"
+      }
+    },
+    "rgbd_files_at_freeze": 0
+  },
+  "selection": {
+    "allowed_inputs": [
+      "scene XML instance IDs and labels",
+      "PLY xyz and uint instance label",
+      "trajectory.log camera-to-world matrices",
+      "asus.ini intrinsics"
+    ],
+    "forbidden_before_cohort_freeze": [
+      "ONI color frames",
+      "ONI depth frames",
+      "provider 2D annotations",
+      "rendered mesh previews",
+      "model output"
+    ],
+    "target_rule": "Use the same three scene and door-instance IDs frozen in v1. PLY vertex label must equal the XML instance ID.",
+    "frame_projection_rule": "Transform all target-labelled PLY vertices from world to camera with inverse trajectory pose, retain positive-depth points, project with asus.ini, clip the projected surface to the 640x480 image, and fill its visible 2D convex hull.",
+    "eligible_frame": {
+      "minimum_projected_envelope_pixels": 2048,
+      "minimum_bbox_width_pixels": 48,
+      "minimum_bbox_height_pixels": 96,
+      "maximum_projected_image_fraction": 0.35,
+      "maximum_camera_to_target_centroid_metres": 10.0
+    },
+    "pair_rule": "Require reference frame index lower than query frame index and camera-centre baseline at least 0.5 m. Maximize baseline, then maximize the smaller target-envelope pixel count, then minimize reference and query frame indices.",
+    "failure_semantics": "If any frozen scene lacks one eligible ordered pair, return NOT_EVALUABLE for the whole v2 confirmation. Do not replace a scene or alter partial-surface admission after RGB-D is opened.",
+    "cohort_size": 3,
+    "rgbd_frames_before_cohort_freeze": 0
+  },
+  "selection_audit": [
+    {
+      "scene_id": "014",
+      "target_door_instance_id": 814659,
+      "trajectory_frames": 3200,
+      "target_ply_vertices": 37927,
+      "target_convex_boundary_vertices": 134,
+      "eligible_frames": 546,
+      "frame_reason_counts": {
+        "ELIGIBLE": 546,
+        "FRACTION": 144,
+        "HEIGHT": 28,
+        "NO_PROJECTED_ENVELOPE": 2410,
+        "PIXELS+HEIGHT": 6,
+        "PIXELS+WIDTH": 5,
+        "PIXELS+WIDTH+HEIGHT": 2,
+        "WIDTH": 59
+      },
+      "ordered_pair_found": true
+    },
+    {
+      "scene_id": "249",
+      "target_door_instance_id": 889447,
+      "trajectory_frames": 3600,
+      "target_ply_vertices": 40755,
+      "target_convex_boundary_vertices": 124,
+      "eligible_frames": 468,
+      "frame_reason_counts": {
+        "ELIGIBLE": 468,
+        "FRACTION": 499,
+        "NO_PROJECTED_ENVELOPE": 2594,
+        "PIXELS+WIDTH": 13,
+        "WIDTH": 26
+      },
+      "ordered_pair_found": true
+    },
+    {
+      "scene_id": "521",
+      "target_door_instance_id": 1024952,
+      "trajectory_frames": 2200,
+      "target_ply_vertices": 97963,
+      "target_convex_boundary_vertices": 141,
+      "eligible_frames": 996,
+      "frame_reason_counts": {
+        "ELIGIBLE": 996,
+        "HEIGHT": 33,
+        "NO_PROJECTED_ENVELOPE": 1093,
+        "PIXELS+WIDTH": 14,
+        "WIDTH": 64
+      },
+      "ordered_pair_found": true
+    }
+  ],
+  "episodes": [
+    {
+      "episode_id": "SN01",
+      "scene_id": "014",
+      "target_door_instance_id": 814659,
+      "target_xml": {
+        "instance_id": 814659,
+        "text": "door",
+        "color_rgb": [
+          177,
+          87,
+          62
+        ],
+        "area": 32054
+      },
+      "target_ply_vertices": 37927,
+      "reference": {
+        "frame": 2149,
+        "trajectory_header": [
+          2149,
+          2149,
+          2150
+        ],
+        "camera_center_world": [
+          0.0568739,
+          1.1483,
+          -0.577685
+        ],
+        "camera_to_target_centroid_m": 2.797081248757881,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "pixels": 5049,
+        "image_fraction": 0.016435546875,
+        "bbox_xyxy": [
+          0,
+          0,
+          102,
+          98
+        ],
+        "bbox_width": 102,
+        "bbox_height": 98,
+        "bbox_margin": 0
+      },
+      "query": {
+        "frame": 2649,
+        "trajectory_header": [
+          2649,
+          2649,
+          2650
+        ],
+        "camera_center_world": [
+          2.2396,
+          1.66217,
+          -0.179838
+        ],
+        "camera_to_target_centroid_m": 1.0922997424952257,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "pixels": 86160,
+        "image_fraction": 0.28046875,
+        "bbox_xyxy": [
+          0,
+          0,
+          294,
+          480
+        ],
+        "bbox_width": 294,
+        "bbox_height": 480,
+        "bbox_margin": 0
+      },
+      "camera_baseline_m": 2.2774191181972214,
+      "playback_mapping": {
+        "reference": "playback frame 02150 -> sealed frame 2149",
+        "query": "playback frame 02650 -> sealed frame 2649"
+      }
+    },
+    {
+      "episode_id": "SN02",
+      "scene_id": "249",
+      "target_door_instance_id": 889447,
+      "target_xml": {
+        "instance_id": 889447,
+        "text": "door",
+        "color_rgb": [
+          149,
+          22,
+          68
+        ],
+        "area": 32060
+      },
+      "target_ply_vertices": 40755,
+      "reference": {
+        "frame": 378,
+        "trajectory_header": [
+          378,
+          378,
+          379
+        ],
+        "camera_center_world": [
+          1.54024,
+          0.956813,
+          -0.0618387
+        ],
+        "camera_to_target_centroid_m": 0.9594921933773046,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "pixels": 103600,
+        "image_fraction": 0.3372395833333333,
+        "bbox_xyxy": [
+          372,
+          0,
+          640,
+          480
+        ],
+        "bbox_width": 268,
+        "bbox_height": 480,
+        "bbox_margin": 0
+      },
+      "query": {
+        "frame": 3328,
+        "trajectory_header": [
+          3328,
+          3328,
+          3329
+        ],
+        "camera_center_world": [
+          0.411363,
+          1.09502,
+          0.0837773
+        ],
+        "camera_to_target_centroid_m": 1.5267771411595945,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "pixels": 70571,
+        "image_fraction": 0.22972330729166668,
+        "bbox_xyxy": [
+          0,
+          0,
+          212,
+          437
+        ],
+        "bbox_width": 212,
+        "bbox_height": 437,
+        "bbox_margin": 0
+      },
+      "camera_baseline_m": 1.1465899334260703,
+      "playback_mapping": {
+        "reference": "playback frame 00379 -> sealed frame 0378",
+        "query": "playback frame 03329 -> sealed frame 3328"
+      }
+    },
+    {
+      "episode_id": "SN03",
+      "scene_id": "521",
+      "target_door_instance_id": 1024952,
+      "target_xml": {
+        "instance_id": 1024952,
+        "text": "door",
+        "color_rgb": [
+          210,
+          246,
+          33
+        ],
+        "area": 56446
+      },
+      "target_ply_vertices": 97963,
+      "reference": {
+        "frame": 1071,
+        "trajectory_header": [
+          1071,
+          1071,
+          1072
+        ],
+        "camera_center_world": [
+          0.188109,
+          1.38674,
+          0.608326
+        ],
+        "camera_to_target_centroid_m": 3.0783107446470375,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "pixels": 25758,
+        "image_fraction": 0.08384765625,
+        "bbox_xyxy": [
+          56,
+          0,
+          185,
+          323
+        ],
+        "bbox_width": 129,
+        "bbox_height": 323,
+        "bbox_margin": 0
+      },
+      "query": {
+        "frame": 1749,
+        "trajectory_header": [
+          1749,
+          1749,
+          1750
+        ],
+        "camera_center_world": [
+          0.960931,
+          1.42657,
+          -0.0404163
+        ],
+        "camera_to_target_centroid_m": 2.2571544462840993,
+        "eligible": true,
+        "reason": "ELIGIBLE",
+        "pixels": 28031,
+        "image_fraction": 0.09124674479166667,
+        "bbox_xyxy": [
+          478,
+          0,
+          618,
+          410
+        ],
+        "bbox_width": 140,
+        "bbox_height": 410,
+        "bbox_margin": 0
+      },
+      "camera_baseline_m": 1.0098053497547386,
+      "playback_mapping": {
+        "reference": "playback frame 01072 -> sealed frame 1071",
+        "query": "playback frame 01750 -> sealed frame 1749"
+      }
+    }
+  ],
+  "materialize_after_freeze": {
+    "oni": [
+      {
+        "scene_id": "014",
+        "url": "https://hkust-vgd.ust.hk/scenenn/main/oni/014.oni",
+        "content_length": 595918786,
+        "etag": "61a4d686-2384ffc2"
+      },
+      {
+        "scene_id": "249",
+        "url": "https://hkust-vgd.ust.hk/scenenn/main/oni/249.oni",
+        "content_length": 632404992,
+        "etag": "61a4e316-25b1bc00"
+      },
+      {
+        "scene_id": "521",
+        "url": "https://hkust-vgd.ust.hk/scenenn/main/oni/521.oni",
+        "content_length": 363483393,
+        "etag": "61a4e57e-15aa5101"
+      }
+    ],
+    "sealed_frame_layout": "payload/<scene>/selected/{image,depth}/frame.<trajectory-index:04d>.png",
+    "playback_index_rule": "Official Playback.exe output index is trajectory frame index plus one."
+  },
+  "claim_boundary": "A pass is source-disjoint real indoor RGB-D confirmation that exact reconstructed pose plus a reference-side metric visible door-surface credential can transfer one physical door across views. SceneNN mesh and poses are reconstructed from the same capture, so this is not external-survey registration. It is not a complete doorway aperture, named entrance, access, traversability, approach waypoint, arrival, HANDOFF_READY, product benefit, user benefit or mobility-safety result. Panoramax remains closed until an independent sub-metre portal anchor exists."
+}

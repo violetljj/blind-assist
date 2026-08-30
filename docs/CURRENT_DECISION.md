@@ -1101,6 +1101,30 @@ obtain sub-metre cameras in the same Ingolstadt LoD3 door frame or another
 directly co-registered portal source. A Panoramax-only SfM canary remains
 `RELATIVE_REGISTRATION_ONLY / NOT_PORTAL_BOUND` and is not the active next run.
 
+The real SceneNN confirmation has now run once and did not confirm that ceiling.
+The full-door v1 selector found zero fully contained target frames across
+`9,000` poses. Before opening RGB-D, v2 changed only the credential to the
+image-clipped target surface and froze scenes `014 / 249 / 521`, door IDs
+`814659 / 889447 / 1024952`, and one ordered view pair per scene. The replay
+used reference RGB-D plus reconstructed pose; query RGB/depth and all query
+instance geometry remained evaluator-only.
+
+Results were exact-door Top-1 `2/3`, wrong commits `1/3`, visible query
+predictions `2/3`, centroid-inside `1/3`, median IoU `0.2647`, and nominal
+metric-world centroid error `0.985` median. SN01 localized the break: its
+provider mesh projection covered an occluder, so a low-residual (`2.5 mm`)
+depth plane was still `82.47 deg` from the door plane and transferred outside
+the query image. Record
+`L10_SCENENN_REAL_RGBD_PARTIAL_METRIC_PORTAL_TRANSFER_CONFIRMATION_GATE_NOT_MET`.
+
+Close this consumed partial-envelope route without frame, plane-retention,
+threshold, or gate tuning. The next L10 portal source must make reference-side
+visibility authoritative on fresh real scenes, using a provider 2D
+door-instance mask or z-buffered labelled triangles checked against synchronized
+depth. Query RGB/depth stays evaluator-only. Generic Panoramax mining and
+Panoramax-only SfM remain closed because neither supplies the missing absolute
+portal anchor.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

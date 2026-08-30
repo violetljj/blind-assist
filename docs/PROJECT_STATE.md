@@ -853,6 +853,20 @@ access is available) is next; outdoor confirmation still requires same-domain
 sub-metre camera-to-LoD3-door registration. Panoramax-only relative SfM is
 parked because it cannot create that absolute portal anchor.
 
+The first real posed RGB-D confirmation is now a frozen negative. SceneNN v1
+found zero fully contained target-door frames across `9,000` poses. Its
+pre-RGB-D v2 successor admitted clipped visible surfaces in three fresh scenes
+and ran exactly one six-frame replay. Exact door selection was `2/3`, wrong
+commits `1/3`, centroid inside `1/3`, median IoU `0.2647`, and nominal
+metric-world centroid error `0.985` median. Record
+`L10_SCENENN_REAL_RGBD_PARTIAL_METRIC_PORTAL_TRANSFER_CONFIRMATION_GATE_NOT_MET`.
+SN01 showed why: mesh projection alone did not encode occlusion, so the
+reference depth plane belonged to foreground content despite a low residual.
+Do not tune the consumed frames, plane fit, or gates. The next real source must
+add source-side visibility authority through a provider 2D instance mask or
+z-buffered labelled mesh/depth consistency on a fresh cohort; generic Panoramax
+and Panoramax-only SfM remain closed.
+
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
 because the approved AWS profile is absent. That is a source-access condition,
