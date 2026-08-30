@@ -671,7 +671,49 @@ def weather_parameter(name: str) -> carla.WeatherParameters:
     value = getattr(carla.WeatherParameters, name, None)
     if value is None:
         raise ValueError(f"unknown CARLA weather preset: {name}")
-    return value
+    return carla.WeatherParameters(
+        cloudiness=float(value.cloudiness),
+        precipitation=float(value.precipitation),
+        precipitation_deposits=float(value.precipitation_deposits),
+        wind_intensity=float(value.wind_intensity),
+        sun_azimuth_angle=float(value.sun_azimuth_angle),
+        sun_altitude_angle=float(value.sun_altitude_angle),
+        fog_density=float(value.fog_density),
+        fog_distance=float(value.fog_distance),
+        fog_falloff=float(value.fog_falloff),
+        wetness=float(value.wetness),
+        scattering_intensity=float(value.scattering_intensity),
+        mie_scattering_scale=float(value.mie_scattering_scale),
+        rayleigh_scattering_scale=float(value.rayleigh_scattering_scale),
+        dust_storm=float(value.dust_storm),
+    )
+
+
+def layout_weather_parameter(layout: dict[str, Any]) -> carla.WeatherParameters:
+    """Materialize the preset plus optional frozen C4 weather overrides."""
+
+    weather = weather_parameter(str(layout["weather"]))
+    overrides = layout.get("c4_weather_parameters")
+    if overrides is None:
+        return weather
+    if not isinstance(overrides, dict):
+        raise ValueError("c4_weather_parameters must be an object")
+    supported = {
+        "cloudiness",
+        "precipitation",
+        "precipitation_deposits",
+        "wind_intensity",
+        "sun_azimuth_angle",
+        "sun_altitude_angle",
+        "fog_density",
+        "wetness",
+    }
+    unknown = sorted(set(overrides) - supported)
+    if unknown:
+        raise ValueError(f"unsupported C4 weather parameters: {unknown}")
+    for name, raw_value in overrides.items():
+        setattr(weather, name, float(raw_value))
+    return weather
 
 
 def main() -> int:
@@ -880,7 +922,7 @@ def main() -> int:
                     except queue.Empty:
                         break
 
-            world.set_weather(weather_parameter(str(layout["weather"])))
+            world.set_weather(layout_weather_parameter(layout))
             initial_wearer_pose = pose_for_wearer(
                 scenario,
                 protocol,

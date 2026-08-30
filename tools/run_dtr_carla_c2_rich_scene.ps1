@@ -8,6 +8,7 @@ param(
     [string]$CarlaPython = 'E:\linnan\CARLA\client-env\Scripts\python.exe',
     [string]$RawEvidenceRoot = 'E:\linnan\CARLA\experiments\dtr-carla-c2-rich-scene\evidence',
     [string]$Protocol = 'research/active/dtr-r0/carla/dtr_carla_c2_rich_scene_protocol.json',
+    [string]$StartupEngineIni = '',
     [ValidateRange(1024, 65533)]
     [int]$RpcPort = 2000,
     [ValidateRange(120, 7200)]
@@ -34,6 +35,7 @@ $script:CapacityTimeoutSeconds = 300
 $script:RawRunPath = ''
 $script:CarlaInstallRootPath = ''
 $script:CarlaPythonPath = ''
+$script:StartupEngineIniPath = ''
 
 function Resolve-LocalPath {
     param(
@@ -94,12 +96,100 @@ function Read-JsonFile {
     return Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json -Depth 100
 }
 
+function Clear-NonTerminalJoinArtifacts {
+    param([Parameter(Mandatory = $true)][string]$RunRoot)
+    $resultPath = Get-ContainedRunPath -Root $RunRoot -Child 'result.json'
+    if (-not (Test-Path -LiteralPath $resultPath -PathType Leaf)) {
+        return
+    }
+    $result = Read-JsonFile -Path $resultPath
+    if ([string]$result.status -eq 'DTR_CARLA_C2_RICH_MULTILAYOUT_SOURCE_COMPLETE') {
+        throw "Refusing to resume a terminal joined run: $RunRoot"
+    }
+    foreach ($relative in @(
+        'model',
+        'evaluator',
+        'sealed_model_manifest.json',
+        'sealed_evidence_manifest.json',
+        'result.json'
+    )) {
+        $target = Get-ContainedRunPath -Root $RunRoot -Child $relative
+        if (Test-Path -LiteralPath $target -PathType Container) {
+            Remove-Item -LiteralPath $target -Recurse -Force
+        }
+        elseif (Test-Path -LiteralPath $target -PathType Leaf) {
+            Remove-Item -LiteralPath $target -Force
+        }
+    }
+    Write-Output 'CLEAR nonterminal C2 join artifacts; immutable sensor shards preserved'
+}
+
 function Quote-ProcessArgument {
     param([Parameter(Mandatory = $true)][string]$Value)
     if ($Value.Contains('"')) {
         throw "Unsupported quote in process argument: $Value"
     }
     return '"' + $Value + '"'
+}
+
+function Get-ExpectedEngineMapObjectPath {
+    param([Parameter(Mandatory = $true)][string]$MapName)
+    $normalized = $MapName.TrimStart('/')
+    if ($normalized -notmatch '^Carla/Maps/(?<leaf>[A-Za-z0-9_]+)$') {
+        throw "Unsupported CARLA startup map identity: $MapName"
+    }
+    return "/Game/$normalized.$($Matches.leaf)"
+}
+
+function Assert-StartupEngineIniMap {
+    param(
+        [Parameter(Mandatory = $true)][string]$Path,
+        [Parameter(Mandatory = $true)][string]$MapName
+    )
+    Assert-RequiredFile -Path $Path -Label 'CARLA startup Engine.ini'
+    $expectedObjectPath = Get-ExpectedEngineMapObjectPath -MapName $MapName
+    $content = Get-Content -LiteralPath $Path -Raw
+    foreach ($key in @('GameDefaultMap', 'ServerDefaultMap', 'TransitionMap')) {
+        $matches = @(
+            [regex]::Matches(
+                $content,
+                "(?m)^$([regex]::Escape($key))=(?<value>[^\r\n]+)$"
+            )
+        )
+        if ($matches.Count -ne 1) {
+            throw "Startup Engine.ini must define $key exactly once: $Path"
+        }
+        if ([string]$matches[0].Groups['value'].Value -ne $expectedObjectPath) {
+            throw (
+                "Startup Engine.ini $key does not bind protocol map: " +
+                "$($matches[0].Groups['value'].Value) != $expectedObjectPath"
+            )
+        }
+    }
+}
+
+function New-RuntimeStartupEngineIni {
+    param([Parameter(Mandatory = $true)][string]$SensorName)
+    Assert-StartupEngineIniMap `
+        -Path $script:StartupEngineIniPath `
+        -MapName ([string]$script:ProtocolMap)
+    $leaf = (
+        "blindassist-c2-$PID-$($script:RpcPort)-$SensorName-" +
+        "$([Guid]::NewGuid().ToString('N')).Engine.ini"
+    )
+    $path = Join-Path ([IO.Path]::GetTempPath()) $leaf
+    Copy-Item -LiteralPath $script:StartupEngineIniPath -Destination $path
+    Assert-StartupEngineIniMap `
+        -Path $path `
+        -MapName ([string]$script:ProtocolMap)
+    return $path
+}
+
+function Remove-RuntimeStartupEngineIni {
+    param([string]$Path)
+    if (-not [string]::IsNullOrWhiteSpace($Path) -and (Test-Path -LiteralPath $Path)) {
+        Remove-Item -LiteralPath $Path -Force
+    }
 }
 
 function Get-CarlaListeners {
@@ -305,20 +395,26 @@ function Invoke-SensorCapture {
     $clientStderr = Join-Path $script:LogRoot "client-$SensorName.stderr.log"
     $serverProcess = $null
     $clientProcess = $null
+    $runtimeStartupEngineIniPath = ''
     $primaryFailure = $null
     $cleanupFailures = [Collections.Generic.List[string]]::new()
     try {
         Write-Output "START C2 1280x720 fresh-server shard $SensorName"
         $serverStartedAt = Get-Date
+        $serverArguments = [Collections.Generic.List[string]]::new()
+        if (-not [string]::IsNullOrWhiteSpace($script:StartupEngineIniPath)) {
+            $runtimeStartupEngineIniPath = New-RuntimeStartupEngineIni `
+                -SensorName $SensorName
+            $serverArguments.Add("-EngineIni=$runtimeStartupEngineIniPath")
+        }
+        $serverArguments.Add("-$($script:RenderBackend)")
+        $serverArguments.Add('-RenderOffScreen')
+        $serverArguments.Add('-nosound')
+        $serverArguments.Add("-quality-level=$($script:RenderQualityLevel)")
+        $serverArguments.Add("-carla-rpc-port=$($script:RpcPort)")
         $serverProcess = Start-Process `
             -FilePath $script:CarlaExePath `
-            -ArgumentList @(
-                "-$($script:RenderBackend)",
-                '-RenderOffScreen',
-                '-nosound',
-                "-quality-level=$($script:RenderQualityLevel)",
-                "-carla-rpc-port=$($script:RpcPort)"
-            ) `
+            -ArgumentList $serverArguments.ToArray() `
             -WorkingDirectory $script:CarlaInstallRootPath `
             -WindowStyle Hidden `
             -RedirectStandardOutput $serverStdout `
@@ -368,6 +464,12 @@ function Invoke-SensorCapture {
     finally {
         try { Stop-OwnedPython -Process $clientProcess } catch { $cleanupFailures.Add($_.Exception.Message) }
         try { Stop-OwnedCarla } catch { $cleanupFailures.Add($_.Exception.Message) }
+        try {
+            Remove-RuntimeStartupEngineIni -Path $runtimeStartupEngineIniPath
+        }
+        catch {
+            $cleanupFailures.Add($_.Exception.Message)
+        }
     }
     if ($cleanupFailures.Count -ne 0) {
         $cleanupText = $cleanupFailures -join '; '
@@ -432,6 +534,11 @@ try {
     $script:CarlaExePath = Join-Path $script:CarlaInstallRootPath 'CarlaUE4.exe'
     $script:CarlaPythonPath = Resolve-LocalPath -Value $CarlaPython -BasePath $script:RepoRoot
     $script:ProtocolPath = Resolve-LocalPath -Value $Protocol -BasePath $script:RepoRoot
+    if (-not [string]::IsNullOrWhiteSpace($StartupEngineIni)) {
+        $script:StartupEngineIniPath = Resolve-LocalPath `
+            -Value $StartupEngineIni `
+            -BasePath $script:RepoRoot
+    }
     $script:CaptureScriptPath = Join-Path $script:RepoRoot 'research/active/dtr-r0/carla/capture_dtr_carla_c2_rich_scene.py'
     $script:JoinScriptPath = Join-Path $script:RepoRoot 'research/active/dtr-r0/carla/join_dtr_carla_c2_rich_scene.py'
     foreach ($required in @(
@@ -446,6 +553,12 @@ try {
     $protocolValue = Read-JsonFile -Path $script:ProtocolPath
     if ([string]$protocolValue.experiment_id -ne 'DTR_CARLA_C2_RICH_MULTILAYOUT_OCCLUSION_SOURCE_V2') {
         throw "Unexpected C2 protocol identity: $($protocolValue.experiment_id)"
+    }
+    $script:ProtocolMap = [string]$protocolValue.environment.map
+    if (-not [string]::IsNullOrWhiteSpace($script:StartupEngineIniPath)) {
+        Assert-StartupEngineIniMap `
+            -Path $script:StartupEngineIniPath `
+            -MapName $script:ProtocolMap
     }
     $resolution = @($protocolValue.capture.resolution | ForEach-Object { [int]$_ })
     if (($resolution -join 'x') -ne '1280x720') {
@@ -484,9 +597,7 @@ try {
         if (-not (Test-Path -LiteralPath $script:RawRunPath -PathType Container)) {
             throw "Resume run is unavailable: $($script:RawRunPath)"
         }
-        if (Test-Path -LiteralPath (Join-Path $script:RawRunPath 'result.json')) {
-            throw "Refusing to resume a terminal joined run: $($script:RawRunPath)"
-        }
+        Clear-NonTerminalJoinArtifacts -RunRoot $script:RawRunPath
     }
     else {
         New-ExclusiveDirectory -Path $script:RawRunPath

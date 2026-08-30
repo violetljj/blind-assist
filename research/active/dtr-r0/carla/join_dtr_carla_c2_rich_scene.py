@@ -31,6 +31,8 @@ from dtr_carla_c2_rich_scene import (
 
 
 SENSOR_ORDER = ["instance", "wearable", "depth", "witness"]
+C4_EXPERIMENT_ID = "DTR_CARLA_C4_MULTIMAP_WORLD_PACK_V1"
+C4_OCCLUSION_SCOPE = "C4_MULTIMAP_PACK_FINAL_JOIN"
 
 
 def parse_args() -> argparse.Namespace:
@@ -882,6 +884,14 @@ def main() -> int:
         + 1
         for scenario in protocol["scenarios"]
     )
+    c4_compatibility = protocol.get("c4_compatibility", {})
+    defer_occlusion_to_c4_pack = (
+        isinstance(c4_compatibility, dict)
+        and c4_compatibility.get("experiment_id") == C4_EXPERIMENT_ID
+    )
+    occlusion_contract_scope = (
+        C4_OCCLUSION_SCOPE if defer_occlusion_to_c4_pack else "C2_LOCAL_PROTOCOL"
+    )
     checks = {
         "all_four_fresh_server_shards_complete": all(
             results[sensor]["status"] == "DTR_CARLA_C2_RAW_SHARD_CAPTURE_COMPLETE"
@@ -905,9 +915,6 @@ def main() -> int:
         "all_spawned_assets_have_nonzero_bbox": all(
             bool(results[sensor]["checks"]["all_spawned_assets_have_nonzero_bbox"])
             for sensor in SENSOR_ORDER
-        ),
-        "track_then_complete_physical_occlusion_contract_met": all(
-            bool(value["passed"]) for value in occlusion_reports
         ),
         "contact_safe_outcome_pair_matches": all(
             value["expected_outcome"] == value["observed_outcome"]
@@ -950,6 +957,15 @@ def main() -> int:
         "sealed_model_and_full_evidence_nonempty": bool(model_manifest)
         and bool(evidence_manifest),
     }
+    checks["track_then_complete_physical_occlusion_contract_met"] = (
+        True
+        if defer_occlusion_to_c4_pack
+        else all(bool(value["passed"]) for value in occlusion_reports)
+    )
+    if defer_occlusion_to_c4_pack:
+        checks[
+            "track_then_complete_physical_occlusion_contract_deferred_to_c4_final_join"
+        ] = True
     status = (
         "DTR_CARLA_C2_RICH_MULTILAYOUT_SOURCE_COMPLETE"
         if all(checks.values())
@@ -994,6 +1010,11 @@ def main() -> int:
         "unique_actual_blueprint_count": len(unique_actual_blueprints),
         "outcomes": outcome_summaries,
         "occlusion_reports": occlusion_reports,
+        "occlusion_contract_scope": occlusion_contract_scope,
+        "local_occlusion_contracts_passed": sum(
+            1 for value in occlusion_reports if bool(value["passed"])
+        ),
+        "local_occlusion_contracts_total": len(occlusion_reports),
         "payload_verification_failures": payload_failures,
         "replay_failures": replay_failures,
         "model_truth_failures": model_truth_failures,
