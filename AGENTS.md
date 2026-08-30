@@ -92,6 +92,7 @@ SkyDiscover is an optional reusable engine agents may invoke without separate pe
 
 - Treat pre-existing/concurrent changes as user-owned. Edit and stage only task-owned paths or hunks; never revert unrelated work.
 - Keep payloads, datasets, checkpoints, logs, screenshots, APKs, caches, SDKs, venvs, and raw outputs out of tracked source; local artifacts belong under ignored `artifacts.local/`.
+- In the managed local Windows workspace, `artifacts.local/` must remain the canonical junction to the managed artifact volume documented in `docs/LOCAL_ARTIFACTS.md`. CARLA assets, registered-worktree artifact roots, Gradle build outputs, local cache/runtime aliases, downloads, models, experiment outputs, and temporary material must stay beneath it; never create a physical workspace-drive bypass directory. After changing any storage path or download destination, run `scripts/check_repo_hygiene.ps1`.
 - Never rewrite history, force-push, delete branches, change remotes, or run destructive Git/file operations without explicit authorization.
 - Deliver routine research directly to the default branch without PR/CI wait unless requested; verify remote parity and never absorb unrelated changes.
 
