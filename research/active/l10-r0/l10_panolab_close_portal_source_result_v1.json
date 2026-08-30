@@ -1,0 +1,92 @@
+{
+  "schema": "blindassist-l10-panolab-close-portal-source-result-v1",
+  "decision": "L10_PANOLAB_CLOSE_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_5_QUERY_1_OF_5_JOINT_0_OF_5_NO_MATCHER_CALL",
+  "stop_reason": "FEWER_THAN_THREE_JOINTLY_VISIBLE_UNIQUE_PORTALS_CURRENT_STRICT_CROSS_COLLECTION_POOL_EXHAUSTED",
+  "protocol": "research/active/l10-r0/l10_panolab_close_portal_source_protocol_v1.json",
+  "protocol_sha256": "5d3cdfbdd1eccabcc35f695b38cc2c469008c05047edc350295d01e5c29298f0",
+  "metadata_freeze": "research/active/l10-r0/l10_panolab_close_portal_freeze_v1.json",
+  "metadata_freeze_sha256": "18fc30c4dec05c34bf2f6b798644201de992231cbb31b073c9674e408d98aadb",
+  "source": "research/active/l10-r0/l10_panolab_close_portal_source_v1.json",
+  "source_sha256": "2d2ef20bf1533d281bc7438b0481b565245a0d21d6c0eb15bb41abd9048e668c",
+  "reference_audit": "research/active/l10-r0/l10_panolab_close_portal_reference_audit_v1.json",
+  "reference_audit_sha256": "96f02ff7bac43d2b8c4ec6187d02fbc8b05a06a445b77578deec03007ae612d3",
+  "query_audit": "research/active/l10-r0/l10_panolab_close_portal_query_audit_v1.json",
+  "query_audit_sha256": "1a46e509162a7d9a547ebd4944b75f0acee49fbb237a31d381f0ae60810d4a57",
+  "implementation": {
+    "path": "research/active/l10-r0/l10_panolab_close_portal_source.py",
+    "sha256_after_materializer_runtime_fix": "11f2ca9bef8168307282ec6d0d8076340d91cd1e7e7635735864c9dbd3870142",
+    "freeze_command": "python research/active/l10-r0/l10_panolab_close_portal_source.py --mode freeze --protocol research/active/l10-r0/l10_panolab_close_portal_source_protocol_v1.json --freeze research/active/l10-r0/l10_panolab_close_portal_freeze_v1.json",
+    "materialize_command": "E:\\codex-tools\\projects\\blindassist\\toolchain\\venv-corridor-causal-py311\\Scripts\\python.exe research/active/l10-r0/l10_panolab_close_portal_source.py --mode materialize --protocol research/active/l10-r0/l10_panolab_close_portal_source_protocol_v1.json --freeze research/active/l10-r0/l10_panolab_close_portal_freeze_v1.json --source research/active/l10-r0/l10_panolab_close_portal_source_v1.json",
+    "runtime_note": "The first materialize attempt stopped before image access because the default Python lacked cv2. The script then gained only local download and deterministic viewport helpers; the existing metadata freeze was not regenerated or reordered."
+  },
+  "metrics": {
+    "candidate_rows_scanned": 111,
+    "eligible_unconsumed_strict_direct_cross_collection_ways": 5,
+    "selected_distinct_target_ways": 5,
+    "selected_distinct_items": 10,
+    "strict_orientation_images": 10,
+    "cross_collection_episodes": 5,
+    "camera_to_entrance_distance_m": {
+      "minimum": 7.29,
+      "maximum": 22.319,
+      "mean": 13.997
+    },
+    "reference_source_admitted": 0,
+    "reference_not_visible": 4,
+    "reference_ambiguous": 1,
+    "query_source_admitted": 1,
+    "query_not_visible": 4,
+    "query_ambiguous": 0,
+    "joint_source_admitted": 0,
+    "formal_joint_admission_required": 3,
+    "remaining_eligible_unconsumed_ways_in_this_pool": 0,
+    "matcher_calls": 0
+  },
+  "episodes": [
+    {
+      "episode_id": "CP01",
+      "target_way_id": 31527837,
+      "reference_status": "NOT_VISIBLE",
+      "query_status": "NOT_VISIBLE",
+      "joint_admitted": false
+    },
+    {
+      "episode_id": "CP02",
+      "target_way_id": 387027570,
+      "reference_status": "NOT_VISIBLE",
+      "query_status": "ADMITTED",
+      "joint_admitted": false
+    },
+    {
+      "episode_id": "CP03",
+      "target_way_id": 85438655,
+      "reference_status": "NOT_VISIBLE",
+      "query_status": "NOT_VISIBLE",
+      "joint_admitted": false
+    },
+    {
+      "episode_id": "CP04",
+      "target_way_id": 5107373,
+      "reference_status": "NOT_VISIBLE",
+      "query_status": "NOT_VISIBLE",
+      "joint_admitted": false
+    },
+    {
+      "episode_id": "CP05",
+      "target_way_id": 31344870,
+      "reference_status": "AMBIGUOUS",
+      "query_status": "NOT_VISIBLE",
+      "joint_admitted": false
+    }
+  ],
+  "gate": {
+    "strict_orientation_images_required": true,
+    "cross_collection_episodes_required": true,
+    "three_joint_source_admissions_required": false,
+    "source_and_annotation_hashes_verified": true,
+    "matcher_remained_closed_on_source_failure": true
+  },
+  "interpretation": "Reducing range from the prior roughly-40-metre cohort to 7.29-22.319 metres did not open exact portal visibility. OSM DIRECT geometry reaches the entrance node but still often lands on a facade divider, vehicle opening, undercroft, or an occluded non-unique boundary in pixels. This is an observation-source result, not a matcher result.",
+  "next_action": "Do not mine or resample the now-exhausted local strict cross-collection pool. Acquire a genuinely new independent Panoramax collection for a near strict-DIRECT single-collection seed, or expand through the federated catalog with per-collection place queries in new coverage. Freeze the new collection before pixels and rerun one role-separated source audit; do not change the matcher or portal thresholds.",
+  "claim_boundary": "This closes the current local close-range Panoramax source for exact portal-patch transfer. It does not negate active entrance-ray recovery, prove that all Panoramax imagery lacks portals, or establish public access, traversability, metric waypoint or arrival, HANDOFF_READY, product benefit, user benefit, or mobility safety."
+}

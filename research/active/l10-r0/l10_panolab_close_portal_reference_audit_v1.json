@@ -1,0 +1,58 @@
+{
+  "schema": "blindassist-l10-panolab-close-portal-reference-audit-v1",
+  "role": "REFERENCE_SOURCE_ADMISSION",
+  "authority": "AGENT_ANNOTATED_EXPLORE_DEVELOPMENT",
+  "source": "research/active/l10-r0/l10_panolab_close_portal_source_v1.json",
+  "source_sha256": "2d2ef20bf1533d281bc7438b0481b565245a0d21d6c0eb15bb41abd9048e668c",
+  "projected_entrance_x_pixels": 512,
+  "annotator_separation": "The reference-only annotator opened only the five frozen reference viewports. Query pixels, source and protocol JSON, full panoramas, model output, and other candidate pixels were not opened.",
+  "admission_rule": "ADMITTED requires exactly one tight, visibly identifiable pedestrian entrance portal containing x=512. A hidden ray is NOT_VISIBLE; multiple plausible portals or non-unique boundaries are AMBIGUOUS. Building identity or scene context cannot substitute for pixel visibility.",
+  "episodes": [
+    {
+      "episode_id": "CP01",
+      "item_id": "6e7f71f4-f662-420a-8be7-d9822a592c88",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.98,
+      "rationale": "x=512 falls on a wall or facade divider; the clear large glazed entrance is left of the ray and does not contain it."
+    },
+    {
+      "episode_id": "CP02",
+      "item_id": "4da25bca-157f-4bad-8903-7fb57cf747c4",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.93,
+      "rationale": "The ray falls on a broad horizontal shutter or closed facade, not a tight visible pedestrian entrance portal."
+    },
+    {
+      "episode_id": "CP03",
+      "item_id": "f1e045e4-4c99-4c32-bd59-d093cdd14e37",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.98,
+      "rationale": "x=512 crosses a parking-garage vehicle opening; the broad opening is not an identifiable pedestrian entrance portal."
+    },
+    {
+      "episode_id": "CP04",
+      "item_id": "c7d9187d-6cfb-4f9a-8388-af491a180d8d",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.96,
+      "rationale": "The ray crosses an overexposed facade and continuous dark panels or garage area, with no independently identifiable tight pedestrian doorway."
+    },
+    {
+      "episode_id": "CP05",
+      "item_id": "268f27de-8ba6-420d-830f-ffbc9465314f",
+      "status": "AMBIGUOUS",
+      "portal_box_xyxy": null,
+      "confidence": 0.91,
+      "rationale": "A tree trunk occludes the ray area and several door-like or glazed divisions remain plausible, so one portal boundary cannot be fixed uniquely."
+    }
+  ],
+  "metrics": {
+    "episodes": 5,
+    "admitted": 0,
+    "not_visible": 4,
+    "ambiguous": 1
+  }
+}

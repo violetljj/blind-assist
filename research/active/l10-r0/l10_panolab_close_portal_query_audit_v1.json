@@ -1,0 +1,58 @@
+{
+  "schema": "blindassist-l10-panolab-close-portal-query-audit-v1",
+  "role": "QUERY_SOURCE_ADMISSION",
+  "authority": "AGENT_ANNOTATED_EXPLORE_DEVELOPMENT",
+  "source": "research/active/l10-r0/l10_panolab_close_portal_source_v1.json",
+  "source_sha256": "2d2ef20bf1533d281bc7438b0481b565245a0d21d6c0eb15bb41abd9048e668c",
+  "projected_entrance_x_pixels": 512,
+  "annotator_separation": "The query-only annotator opened only the five frozen query viewports. Reference pixels, source and protocol JSON, full panoramas, model output, and other candidate pixels were not opened.",
+  "admission_rule": "ADMITTED requires exactly one tight, visibly identifiable pedestrian entrance portal containing x=512. A hidden ray is NOT_VISIBLE; multiple plausible portals or non-unique boundaries are AMBIGUOUS. Building identity or scene context cannot substitute for pixel visibility.",
+  "episodes": [
+    {
+      "episode_id": "CP01",
+      "item_id": "4afdc86f-705d-4d05-b6cf-319f84d587b4",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.97,
+      "rationale": "x=512 falls on the solid wall column or people area left of the glazed entrance; the visible entrance begins to the right of the ray."
+    },
+    {
+      "episode_id": "CP02",
+      "item_id": "abb6498b-cef5-4e15-bcd4-868f6e4d018a",
+      "status": "ADMITTED",
+      "portal_box_xyxy": [319, 252, 615, 400],
+      "confidence": 0.90,
+      "rationale": "x=512 crosses one bounded central entrance; its frame, steps, and accessible ramp give a unique visible portal boundary without using building text."
+    },
+    {
+      "episode_id": "CP03",
+      "item_id": "527ec644-1e63-4522-8ff4-880dbdd95d05",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.99,
+      "rationale": "The ray crosses a wide vehicle-garage opening with a height bar, signs, and roadway, not an identifiable pedestrian entrance."
+    },
+    {
+      "episode_id": "CP04",
+      "item_id": "a2fdfaec-487e-4da4-9c62-61796d91fbdc",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.98,
+      "rationale": "x=512 corresponds to an open dark undercroft or parking space with no tight pedestrian doorway or frame."
+    },
+    {
+      "episode_id": "CP05",
+      "item_id": "0e375402-8774-4e98-a201-533f430102c3",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.99,
+      "rationale": "x=512 falls on solid facade and outdoor seating between two visible doors, and crosses neither entrance."
+    }
+  ],
+  "metrics": {
+    "episodes": 5,
+    "admitted": 1,
+    "not_visible": 4,
+    "ambiguous": 0
+  }
+}

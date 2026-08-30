@@ -1,0 +1,100 @@
+{
+  "schema": "blindassist-l10-panolab-close-portal-source-protocol-v1",
+  "authority": "EXPLORE_DEVELOPMENT_SOURCE_ACQUISITION",
+  "question": "Can substantially closer, previously unconsumed Panoramax observations expose one unique exact entrance portal in both members of a cross-collection pair?",
+  "information_change": "Replace the exhausted roughly-40-metre portal source with previously unconsumed strict DIRECT observations at 4-25 metres; do not change the matcher, portal proposal logic, thresholds, backbone, or tracker.",
+  "source": {
+    "candidates_path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-stratified-source-v1\\single-class-candidates.json",
+    "candidates_sha256": "29c4f1e2662e87bde7c4afbd2f99ebfc6fac297791635cc7e8566e512960aad8",
+    "orientation_protocol_path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+    "orientation_protocol_sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+    "consumed_source_manifests": [
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-stratified-source-v1\\metadata-freeze.json",
+        "sha256": "12b6b78a5d212e3b6fc39ea01a1fd1fee9ba2f901263bd9ddc0e605b21ad64d1"
+      },
+      {
+        "path": "research/active/l10-r0/l10_panolab_active_ray_recovery_source_v2.json",
+        "sha256": "413fbc01398e5819e8b71063b24fa91eeff750d806bfdfe45820ef7e65279ce0"
+      },
+      {
+        "path": "research/active/l10-r0/l10_panolab_node_credential_source_v1.json",
+        "sha256": "3f2471b101867ec1711a874a6f2bb0c136ec84b06ae5ca6fa8ae4681b5458cd2"
+      },
+      {
+        "path": "research/active/l10-r0/l10_panolab_reference_portal_source_v1.json",
+        "sha256": "c5bd913371f3f60dee120193bf100e155a9f4b5c6f131fd7f7e8fd540aea64f6"
+      },
+      {
+        "path": "research/active/l10-r0/l10_panolab_exact_portal_patch_source_v1.json",
+        "sha256": "620701a93a1b0acd6a69bdf7cb5b38fcfa1a112b2b0d740201d455bee3031dab"
+      }
+    ],
+    "download_manifests": [],
+    "new_asset_root": "artifacts.local/knowledge/l10-panolab-close-portal-v1"
+  },
+  "selection": {
+    "camera_distance_m": [4.0, 25.0],
+    "cohort_size": 5,
+    "excluded_way_ids": [
+      27108404,
+      28709471,
+      36386171,
+      39224047,
+      43471848,
+      44333472,
+      55541122,
+      56016854,
+      62346221,
+      66183358,
+      80266163,
+      83867658,
+      84327114,
+      85040828,
+      1111811685,
+      1184499395,
+      1221423767,
+      149488817,
+      150133820,
+      160165240,
+      190020630,
+      217392541,
+      234109119,
+      249738036,
+      264208529,
+      284778200,
+      305144115,
+      310066165,
+      355175795,
+      358423547,
+      378533157,
+      421800231,
+      591246824,
+      851464082,
+      914183873,
+      992322466,
+      1010175032,
+      1184463483,
+      1294928677
+    ],
+    "required_item_gate": "Strict 360-degree 2:1 equirectangular metadata; EXIF true-north heading; view:azimuth within 1 degree of native heading; explicit zero yaw, pitch and roll; DIRECT first global building intersection at the exact entrance node.",
+    "rule": "Remove every consumed item and excluded way. Keep strict DIRECT items at 4-25 metres. For each entrance choose the cross-collection pair by minimum maximum camera distance, then minimum camera-bearing delta, distance delta, collection ids and item ids. Order eligible entrances by the same score and greedily freeze five distinct target ways and item pairs. No raw-x projection or selected pixel access occurs before freeze.",
+    "role_order": "Lexicographic collection id then item id; first is REFERENCE and second is QUERY."
+  },
+  "viewport": {
+    "width_pixels": 1024,
+    "height_pixels": 768,
+    "horizontal_fov_degrees": 90.0,
+    "center_pitch_degrees": -10.0,
+    "jpeg_quality": 95,
+    "projected_entrance_x_pixels": 512.0
+  },
+  "source_admission": {
+    "reference_role": "A reference-only annotator sees only the five reference viewports and x=512. For each row mark exactly one tight visible portal containing x=512, or AMBIGUOUS/NOT_VISIBLE.",
+    "query_role": "A disjoint query-only annotator sees only the five query viewports and x=512 under the same rule.",
+    "formal_episode_count": 3,
+    "formal_rule": "In frozen CP01-CP05 order, retain the first three episodes independently marked ADMITTED in both roles. If fewer than three are jointly admitted, close this source without any matcher call. Do not reorder by model output or tune the cohort."
+  },
+  "stop_condition": "After one role-separated source audit, either advance the first three jointly admitted episodes to the frozen exact-portal patch transfer or replace the observation source again. Do not rescue failures by changing thresholds, matcher, crop expansion, homography, backbone, tracker, or fusion.",
+  "claim_boundary": "This is a Development source-acquisition audit for exact portal visibility in closer Panoramax observations. Admission is not portal transfer, active-view causality, public or legal access, traversability, metric waypoint or arrival, HANDOFF_READY, product benefit, user benefit, or mobility-safety evidence."
+}

@@ -1925,9 +1925,19 @@ was `3/3`, but reference source admission was `1/3`, query source admission was
 EfficientLoFTR calls were exactly zero. Record
 `L10_PANOLAB_EXACT_PORTAL_PATCH_SOURCE_NOT_EVALUABLE_REFERENCE_1_OF_3_QUERY_0_OF_3_NO_MATCHER_CALL`.
 The `DIRECT` geometry label does not imply a uniquely visible portal in pixels.
-The next legal action is to expand the Panoramax asset pool toward closer,
-independently captured, ray-visible entrances; do not resample any opened way,
-relax unique-portal admission, or reopen a matcher rescue.
+The close-range successor then scanned the 111-row unconsumed metadata source
+and froze all five remaining way-disjoint strict-DIRECT cross-collection
+entrances before pixels. Its ten views were `7.290-22.319 m` from the entrance
+(mean `13.997 m`), all passed strict orientation, and all five pairs were from
+different collections. The role-separated audit nevertheless admitted `0/5`
+reference portals and `1/5` query portals, hence `0/5` joint portals. The
+formal three-way source gate failed, the matcher stayed at zero calls, and no
+eligible unconsumed way remains in this local pool. Record
+`L10_PANOLAB_CLOSE_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_5_QUERY_1_OF_5_JOINT_0_OF_5_NO_MATCHER_CALL`.
+Distance alone did not turn the exact OSM node into visible pixel-portal truth.
+Do not resample this pool or reopen a matcher rescue. The next Panoramax action
+requires a genuinely new independent collection for a near strict-DIRECT seed,
+or federated per-collection discovery in new coverage, frozen before pixels.
 
 Credential successor protocols, evaluators, frozen sources, and results:
 `l10_panolab_node_credential_protocol_v1.json`,
@@ -1943,7 +1953,14 @@ Credential successor protocols, evaluators, frozen sources, and results:
 `l10_panolab_exact_portal_patch_source_v1.json`,
 `l10_panolab_exact_portal_reference_annotations_v1.json`,
 `l10_panolab_exact_portal_query_source_audit_v1.json`, and
-`l10_panolab_exact_portal_patch_result_v1.json`.
+`l10_panolab_exact_portal_patch_result_v1.json`, plus
+`l10_panolab_close_portal_source_protocol_v1.json`,
+`l10_panolab_close_portal_source.py`,
+`l10_panolab_close_portal_freeze_v1.json`,
+`l10_panolab_close_portal_source_v1.json`,
+`l10_panolab_close_portal_reference_audit_v1.json`,
+`l10_panolab_close_portal_query_audit_v1.json`, and
+`l10_panolab_close_portal_source_result_v1.json`.
 
 Durable PB10 summary:
 `named_poi_trans4trans_glass_door_plane_development_result_v1.json`.

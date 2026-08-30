@@ -1014,9 +1014,18 @@ additional way-disjoint, cross-sequence entrances: strict orientation was
 portals and the disjoint query side admitted `0/3`; joint admission was `0/3`.
 No EfficientLoFTR or other matcher call ran. Record
 `L10_PANOLAB_EXACT_PORTAL_PATCH_SOURCE_NOT_EVALUABLE_REFERENCE_1_OF_3_QUERY_0_OF_3_NO_MATCHER_CALL`.
-The next Panoramax move is asset expansion for closer, independently captured,
-ray-visible entrances; it is not another matcher rescue or a relaxation of
-unique-portal truth.
+
+That asset expansion is now complete for the existing local strict source. All
+five remaining unconsumed way-disjoint candidates supplied strict-DIRECT
+cross-collection pairs at `7.290-22.319 m` (ten strict images, mean distance
+`13.997 m`). Independent role audit admitted `0/5` reference portals and `1/5`
+query portals, so joint admission was `0/5` and matcher calls remained zero.
+Record
+`L10_PANOLAB_CLOSE_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_5_QUERY_1_OF_5_JOINT_0_OF_5_NO_MATCHER_CALL`.
+The eligible local pool now has zero unconsumed ways. Do not continue mining or
+resampling it, and do not relax unique-portal truth. Continue Panoramax only by
+adding a genuinely new independent collection for a near strict-DIRECT seed or
+by federated per-collection discovery in new coverage, frozen before pixels.
 
 ## DTR-R2 decision
 

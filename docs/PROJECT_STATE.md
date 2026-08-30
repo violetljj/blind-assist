@@ -776,9 +776,19 @@ pairs were cross-sequence, but independent source audit admitted only `1/3`
 reference portals and `0/3` query portals. Joint pixel-source admission was
 `0/3`, query truth was not created, and matcher calls were zero. Record
 `L10_PANOLAB_EXACT_PORTAL_PATCH_SOURCE_NOT_EVALUABLE_REFERENCE_1_OF_3_QUERY_0_OF_3_NO_MATCHER_CALL`.
-This is an asset/source ceiling, not an EfficientLoFTR negative. Continue by
-expanding Panoramax to closer, independently captured, ray-visible entrances;
-do not resample the opened ways or weaken unique-portal truth.
+This was an asset/source ceiling, not an EfficientLoFTR negative.
+
+The close-range source expansion has now consumed the five remaining eligible
+ways from the 111-row local metadata pool. It froze ten strict-orientation
+images into five cross-collection pairs at `7.290-22.319 m` from the exact OSM
+entrance node (mean `13.997 m`). Reference-only source admission was `0/5`,
+query-only admission was `1/5`, and joint admission was `0/5`; no matcher call
+ran. Record
+`L10_PANOLAB_CLOSE_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_5_QUERY_1_OF_5_JOINT_0_OF_5_NO_MATCHER_CALL`.
+The same local rule now has zero unconsumed candidates. Do not resample it or
+weaken unique-portal truth. A Panoramax continuation must add a genuinely new
+independent collection for a near strict-DIRECT seed or discover new federated
+coverage per collection, with metadata selection frozen before pixels.
 
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`

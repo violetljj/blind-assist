@@ -1,0 +1,326 @@
+{
+  "schema": "blindassist-l10-panolab-close-portal-metadata-freeze-v1",
+  "status": "METADATA_FROZEN_BEFORE_ANY_SELECTED_PIXEL_DOWNLOAD_OR_INSPECTION",
+  "protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_close_portal_source_protocol_v1.json",
+  "protocol_sha256": "5d3cdfbdd1eccabcc35f695b38cc2c469008c05047edc350295d01e5c29298f0",
+  "candidates": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-stratified-source-v1\\single-class-candidates.json",
+  "candidates_sha256": "29c4f1e2662e87bde7c4afbd2f99ebfc6fac297791635cc7e8566e512960aad8",
+  "orientation_protocol": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_orientation_projection_protocol_v1.json",
+  "orientation_protocol_sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+  "consumed_source_receipts": [
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-stratified-source-v1\\metadata-freeze.json",
+      "sha256": "12b6b78a5d212e3b6fc39ea01a1fd1fee9ba2f901263bd9ddc0e605b21ad64d1",
+      "explicit_item_ids_added": 42
+    },
+    {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_active_ray_recovery_source_v2.json",
+      "sha256": "413fbc01398e5819e8b71063b24fa91eeff750d806bfdfe45820ef7e65279ce0",
+      "explicit_item_ids_added": 0
+    },
+    {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_node_credential_source_v1.json",
+      "sha256": "3f2471b101867ec1711a874a6f2bb0c136ec84b06ae5ca6fa8ae4681b5458cd2",
+      "explicit_item_ids_added": 22
+    },
+    {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_reference_portal_source_v1.json",
+      "sha256": "c5bd913371f3f60dee120193bf100e155a9f4b5c6f131fd7f7e8fd540aea64f6",
+      "explicit_item_ids_added": 8
+    },
+    {
+      "path": "E:\\linnan\\linnan\\research\\active\\l10-r0\\l10_panolab_exact_portal_patch_source_v1.json",
+      "sha256": "620701a93a1b0acd6a69bdf7cb5b38fcfa1a112b2b0d740201d455bee3031dab",
+      "explicit_item_ids_added": 6
+    }
+  ],
+  "consumed_item_id_count": 78,
+  "excluded_way_id_count": 39,
+  "candidate_count_scanned": 111,
+  "eligible_candidate_count": 5,
+  "selected_episode_count": 5,
+  "strict_orientation_image_count": 10,
+  "cross_collection_episode_count": 5,
+  "pixel_views_before_freeze": 0,
+  "world_bearing_to_raw_pixel_projection_calls_before_freeze": 0,
+  "selection_rule": "Remove every consumed item and excluded way. Keep strict DIRECT items at 4-25 metres. For each entrance choose the cross-collection pair by minimum maximum camera distance, then minimum camera-bearing delta, distance delta, collection ids and item ids. Order eligible entrances by the same score and greedily freeze five distinct target ways and item pairs. No raw-x projection or selected pixel access occurs before freeze.",
+  "formal_source_admission_rule": "In frozen CP01-CP05 order, retain the first three episodes independently marked ADMITTED in both roles. If fewer than three are jointly admitted, close this source without any matcher call. Do not reorder by model output or tune the cohort.",
+  "episodes": [
+    {
+      "query_index": 89,
+      "source_city": "Grenoble",
+      "target_way_id": 31527837,
+      "target_name": "K' Store",
+      "target_entrance_node_id": 2341895485,
+      "strict_direct_item_count_within_distance": 9,
+      "strict_direct_collection_count_within_distance": 2,
+      "reference": {
+        "item_id": "6e7f71f4-f662-420a-8be7-d9822a592c88",
+        "collection": "1597f0ee-3a5f-4f62-b0fa-ef6f69a061ba",
+        "camera_to_entrance_distance_m": 9.418,
+        "camera_to_entrance_bearing_degrees": 9.14064,
+        "orientation_gate": {
+          "eligible": true,
+          "failures": [],
+          "item_id": "6e7f71f4-f662-420a-8be7-d9822a592c88",
+          "view_azimuth_degrees": 264.0,
+          "camera_native_heading_degrees": 263.89424254797876,
+          "heading_circular_difference_degrees": 0.105757,
+          "pers_yaw_degrees": 0.0,
+          "pers_pitch_degrees": 0.0,
+          "pers_roll_degrees": 0.0,
+          "sensor_width_pixels": 5760,
+          "sensor_height_pixels": 2880,
+          "downloaded_image_size": null
+        }
+      },
+      "query": {
+        "item_id": "4afdc86f-705d-4d05-b6cf-319f84d587b4",
+        "collection": "ec7cc7a9-2d41-484a-810b-96210b493e86",
+        "camera_to_entrance_distance_m": 9.81,
+        "camera_to_entrance_bearing_degrees": 343.655376,
+        "orientation_gate": {
+          "eligible": true,
+          "failures": [],
+          "item_id": "4afdc86f-705d-4d05-b6cf-319f84d587b4",
+          "view_azimuth_degrees": 274.0,
+          "camera_native_heading_degrees": 273.5887916431395,
+          "heading_circular_difference_degrees": 0.411208,
+          "pers_yaw_degrees": 0.0,
+          "pers_pitch_degrees": 0.0,
+          "pers_roll_degrees": 0.0,
+          "sensor_width_pixels": 5760,
+          "sensor_height_pixels": 2880,
+          "downloaded_image_size": null
+        }
+      },
+      "episode_id": "CP01",
+      "pair_score": {
+        "maximum_camera_distance_m": 9.81,
+        "camera_bearing_delta_degrees": 25.485264,
+        "camera_distance_delta_m": 0.392
+      }
+    },
+    {
+      "query_index": 310,
+      "source_city": "Grenoble",
+      "target_way_id": 387027570,
+      "target_name": "Maison communale",
+      "target_entrance_node_id": 4398164915,
+      "strict_direct_item_count_within_distance": 9,
+      "strict_direct_collection_count_within_distance": 2,
+      "reference": {
+        "item_id": "4da25bca-157f-4bad-8903-7fb57cf747c4",
+        "collection": "dfcb880b-0dad-46df-9daa-43b30a04b6cb",
+        "camera_to_entrance_distance_m": 7.29,
+        "camera_to_entrance_bearing_degrees": 356.131783,
+        "orientation_gate": {
+          "eligible": true,
+          "failures": [],
+          "item_id": "4da25bca-157f-4bad-8903-7fb57cf747c4",
+          "view_azimuth_degrees": 292.0,
+          "camera_native_heading_degrees": 291.67992446595065,
+          "heading_circular_difference_degrees": 0.320076,
+          "pers_yaw_degrees": 0.0,
+          "pers_pitch_degrees": 0.0,
+          "pers_roll_degrees": 0.0,
+          "sensor_width_pixels": 5760,
+          "sensor_height_pixels": 2880,
+          "downloaded_image_size": null
+        }
+      },
+      "query": {
+        "item_id": "abb6498b-cef5-4e15-bcd4-868f6e4d018a",
+        "collection": "e9db3f30-1dde-4bcb-bf16-deb8538071fc",
+        "camera_to_entrance_distance_m": 9.826,
+        "camera_to_entrance_bearing_degrees": 13.097548,
+        "orientation_gate": {
+          "eligible": true,
+          "failures": [],
+          "item_id": "abb6498b-cef5-4e15-bcd4-868f6e4d018a",
+          "view_azimuth_degrees": 111.0,
+          "camera_native_heading_degrees": 110.97011377143828,
+          "heading_circular_difference_degrees": 0.029886,
+          "pers_yaw_degrees": 0.0,
+          "pers_pitch_degrees": 0.0,
+          "pers_roll_degrees": 0.0,
+          "sensor_width_pixels": 5760,
+          "sensor_height_pixels": 2880,
+          "downloaded_image_size": null
+        }
+      },
+      "episode_id": "CP02",
+      "pair_score": {
+        "maximum_camera_distance_m": 9.826,
+        "camera_bearing_delta_degrees": 16.965765,
+        "camera_distance_delta_m": 2.536
+      }
+    },
+    {
+      "query_index": 230,
+      "source_city": "Nantes",
+      "target_way_id": 85438655,
+      "target_name": "Gare Nord",
+      "target_entrance_node_id": 4678868920,
+      "strict_direct_item_count_within_distance": 11,
+      "strict_direct_collection_count_within_distance": 3,
+      "reference": {
+        "item_id": "f1e045e4-4c99-4c32-bd59-d093cdd14e37",
+        "collection": "bc2277df-6fbd-4d75-b532-d627bf286b94",
+        "camera_to_entrance_distance_m": 10.034,
+        "camera_to_entrance_bearing_degrees": 153.865008,
+        "orientation_gate": {
+          "eligible": true,
+          "failures": [],
+          "item_id": "f1e045e4-4c99-4c32-bd59-d093cdd14e37",
+          "view_azimuth_degrees": 221.0,
+          "camera_native_heading_degrees": 220.67112983300737,
+          "heading_circular_difference_degrees": 0.32887,
+          "pers_yaw_degrees": 0.0,
+          "pers_pitch_degrees": 0.0,
+          "pers_roll_degrees": 0.0,
+          "sensor_width_pixels": 5760,
+          "sensor_height_pixels": 2880,
+          "downloaded_image_size": null
+        }
+      },
+      "query": {
+        "item_id": "527ec644-1e63-4522-8ff4-880dbdd95d05",
+        "collection": "beb70748-2bcb-4201-8017-9e9583a92981",
+        "camera_to_entrance_distance_m": 9.212,
+        "camera_to_entrance_bearing_degrees": 129.085125,
+        "orientation_gate": {
+          "eligible": true,
+          "failures": [],
+          "item_id": "527ec644-1e63-4522-8ff4-880dbdd95d05",
+          "view_azimuth_degrees": 62.0,
+          "camera_native_heading_degrees": 62.06782591010779,
+          "heading_circular_difference_degrees": 0.067826,
+          "pers_yaw_degrees": 0.0,
+          "pers_pitch_degrees": 0.0,
+          "pers_roll_degrees": 0.0,
+          "sensor_width_pixels": 5760,
+          "sensor_height_pixels": 2880,
+          "downloaded_image_size": null
+        }
+      },
+      "episode_id": "CP03",
+      "pair_score": {
+        "maximum_camera_distance_m": 10.034,
+        "camera_bearing_delta_degrees": 24.779883,
+        "camera_distance_delta_m": 0.822
+      }
+    },
+    {
+      "query_index": 153,
+      "source_city": "Grenoble",
+      "target_way_id": 5107373,
+      "target_name": "Musée de Grenoble",
+      "target_entrance_node_id": 4826858334,
+      "strict_direct_item_count_within_distance": 3,
+      "strict_direct_collection_count_within_distance": 2,
+      "reference": {
+        "item_id": "c7d9187d-6cfb-4f9a-8388-af491a180d8d",
+        "collection": "67218402-53b0-48a5-812a-38316518284e",
+        "camera_to_entrance_distance_m": 19.917,
+        "camera_to_entrance_bearing_degrees": 308.162236,
+        "orientation_gate": {
+          "eligible": true,
+          "failures": [],
+          "item_id": "c7d9187d-6cfb-4f9a-8388-af491a180d8d",
+          "view_azimuth_degrees": 42.0,
+          "camera_native_heading_degrees": 42.3069825436409,
+          "heading_circular_difference_degrees": 0.306983,
+          "pers_yaw_degrees": 0.0,
+          "pers_pitch_degrees": 0.0,
+          "pers_roll_degrees": 0.0,
+          "sensor_width_pixels": 5760,
+          "sensor_height_pixels": 2880,
+          "downloaded_image_size": null
+        }
+      },
+      "query": {
+        "item_id": "a2fdfaec-487e-4da4-9c62-61796d91fbdc",
+        "collection": "c704fd58-645e-4165-bd3e-78bea45cbd01",
+        "camera_to_entrance_distance_m": 20.103,
+        "camera_to_entrance_bearing_degrees": 317.414394,
+        "orientation_gate": {
+          "eligible": true,
+          "failures": [],
+          "item_id": "a2fdfaec-487e-4da4-9c62-61796d91fbdc",
+          "view_azimuth_degrees": 43.0,
+          "camera_native_heading_degrees": 42.94402841781874,
+          "heading_circular_difference_degrees": 0.055972,
+          "pers_yaw_degrees": 0.0,
+          "pers_pitch_degrees": 0.0,
+          "pers_roll_degrees": 0.0,
+          "sensor_width_pixels": 5760,
+          "sensor_height_pixels": 2880,
+          "downloaded_image_size": null
+        }
+      },
+      "episode_id": "CP04",
+      "pair_score": {
+        "maximum_camera_distance_m": 20.103,
+        "camera_bearing_delta_degrees": 9.252158,
+        "camera_distance_delta_m": 0.186
+      }
+    },
+    {
+      "query_index": 493,
+      "source_city": "Grenoble",
+      "target_way_id": 31344870,
+      "target_name": "Grenoble Chavant",
+      "target_entrance_node_id": 349101334,
+      "strict_direct_item_count_within_distance": 9,
+      "strict_direct_collection_count_within_distance": 3,
+      "reference": {
+        "item_id": "268f27de-8ba6-420d-830f-ffbc9465314f",
+        "collection": "6c4e5211-5ed6-43c0-b201-ed274b90a0e0",
+        "camera_to_entrance_distance_m": 22.319,
+        "camera_to_entrance_bearing_degrees": 39.788548,
+        "orientation_gate": {
+          "eligible": true,
+          "failures": [],
+          "item_id": "268f27de-8ba6-420d-830f-ffbc9465314f",
+          "view_azimuth_degrees": 288.0,
+          "camera_native_heading_degrees": 287.6666666666667,
+          "heading_circular_difference_degrees": 0.333333,
+          "pers_yaw_degrees": 0.0,
+          "pers_pitch_degrees": 0.0,
+          "pers_roll_degrees": 0.0,
+          "sensor_width_pixels": 5760,
+          "sensor_height_pixels": 2880,
+          "downloaded_image_size": null
+        }
+      },
+      "query": {
+        "item_id": "0e375402-8774-4e98-a201-533f430102c3",
+        "collection": "ba3e2a4a-38da-4ec5-bf38-9da25638069b",
+        "camera_to_entrance_distance_m": 22.037,
+        "camera_to_entrance_bearing_degrees": 34.662017,
+        "orientation_gate": {
+          "eligible": true,
+          "failures": [],
+          "item_id": "0e375402-8774-4e98-a201-533f430102c3",
+          "view_azimuth_degrees": 112.0,
+          "camera_native_heading_degrees": 111.75808816342489,
+          "heading_circular_difference_degrees": 0.241912,
+          "pers_yaw_degrees": 0.0,
+          "pers_pitch_degrees": 0.0,
+          "pers_roll_degrees": 0.0,
+          "sensor_width_pixels": 5760,
+          "sensor_height_pixels": 2880,
+          "downloaded_image_size": null
+        }
+      },
+      "episode_id": "CP05",
+      "pair_score": {
+        "maximum_camera_distance_m": 22.319,
+        "camera_bearing_delta_degrees": 5.126531,
+        "camera_distance_delta_m": 0.282
+      }
+    }
+  ],
+  "claim_boundary": "This is a Development source-acquisition audit for exact portal visibility in closer Panoramax observations. Admission is not portal transfer, active-view causality, public or legal access, traversability, metric waypoint or arrival, HANDOFF_READY, product benefit, user benefit, or mobility-safety evidence."
+}
