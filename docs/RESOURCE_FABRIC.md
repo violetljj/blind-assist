@@ -22,6 +22,12 @@ unique raw data/model store
 The implementation is `tools/data/resource_fabric.py`. It uses only the Python
 standard library and writes generated state below ignored `artifacts.local/`.
 
+`tools/data/asset_runtime.py` closes this flow around official DTR/L10 runs.
+It records inputs before dispatch, executes one native argv without a shell,
+then finalizes the thin experiment, produced caches, hard cases, output
+receipts, catalog lineage, reports, and a terminal run journal. Failed native
+runs are terminal records too; the same run id is not silently replayed.
+
 ## Physical layout
 
 The catalog is logically unified while payloads retain their correct storage
@@ -39,6 +45,7 @@ artifacts.local/
     catalog/                       # object, registration, cache, lifecycle records
     hard-cases/                    # slices referencing objects/caches, no media copies
     experiments/                   # thin experiment directories
+    runs/                          # prepared/running/terminal execution journals
     reports/current/               # generated live utilization report
 ```
 
@@ -73,6 +80,28 @@ safety claims. `UNKNOWN` and `NOT_EVALUABLE` remain distinct from a negative
 case.
 
 ## Commands
+
+The normal path is the governed project entrypoint, not a hand-built sequence
+of fabric commands:
+
+```powershell
+pwsh -NoProfile -File tools\ba.ps1 run research-dtr-r0 `
+  -EventInput artifacts.local\datasets\my-events\events.jsonl `
+  -AssetInput sevn=datasets/sevn#high-resolution-panoramas
+
+pwsh -NoProfile -File tools\ba.ps1 run research-l10-r0 `
+  -AssetInput carla-scenes=runtime/carla-asset-library#dtr-carla-c4-multimap
+```
+
+`-AssetInput alias=<master-selector>` connects existing zero-copy assets such
+as SEVN and CARLA directly to thin manifests, caches, and hard cases. It does
+not copy them into the content-addressed object store. `-CacheInput
+alias=<cache-key>` records a real cache hit and resolves its shared payload.
+`-ResultOutput` is optional; the default is the thin experiment's
+`result.json`.
+
+The low-level commands below remain available for admission, migration, and
+special producers.
 
 Run commands from the repository root with the supported project Python:
 

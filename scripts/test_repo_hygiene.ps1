@@ -199,6 +199,36 @@ function Assert-ExtraBlankLineAtEofFails {
     Write-Host 'PASS: extra-blank-line-at-eof'
 }
 
+function Assert-UngovernedResearchEntrypointFails {
+    $repository = New-TestRepository 'ungoverned-research-entrypoint'
+    Add-TestFile $repository 'tools/ba.ps1' "function Invoke-Run { Write-Host 'direct' }`n"
+
+    $exitCode = Invoke-HygieneCheck $repository
+    if ($exitCode -eq 0) {
+        throw 'A research entrypoint without the asset lifecycle runtime was expected to fail.'
+    }
+    Write-Host 'PASS: ungoverned-research-entrypoint'
+}
+
+function Assert-GovernedResearchEntrypointPasses {
+    $repository = New-TestRepository 'governed-research-entrypoint'
+    Add-TestFile $repository 'tools/data/asset_runtime.py' "# fixture lifecycle runtime`n"
+    Add-TestFile `
+        -Repository $repository `
+        -RelativePath 'tools/ba.ps1' `
+        -Content (
+            "function Invoke-GovernedResearchRun { 'tools/data/asset_runtime.py' }`n" +
+            "if (`$Profile -eq 'research-dtr-r0') { Invoke-GovernedResearchRun }`n" +
+            "if (`$Profile -eq 'research-l10-r0') { Invoke-GovernedResearchRun }`n"
+        )
+
+    $exitCode = Invoke-HygieneCheck $repository
+    if ($exitCode -ne 0) {
+        throw "A research entrypoint wired through the lifecycle runtime was expected to pass but exited with code $exitCode."
+    }
+    Write-Host 'PASS: governed-research-entrypoint'
+}
+
 function Assert-HygieneResult(
     [string]$Name,
     [bool]$ShouldPass,
@@ -280,6 +310,8 @@ try {
         -BuildScript 'configurations.all { resolutionStrategy.cacheChangingModulesFor(0, "seconds") }; dependencies { implementation("com.example:demo:1.2.3") { isChanging = true } }'
     Assert-ExactDependencyPasses
     Assert-ExtraBlankLineAtEofFails
+    Assert-UngovernedResearchEntrypointFails
+    Assert-GovernedResearchEntrypointPasses
 
     Write-Host 'Repository hygiene smoke tests passed.'
 }

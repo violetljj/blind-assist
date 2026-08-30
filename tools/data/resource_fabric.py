@@ -27,6 +27,11 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, Iterable
 
+try:
+    import asset_catalog as master_catalog
+except ModuleNotFoundError:  # package import in tests/tools
+    from . import asset_catalog as master_catalog
+
 
 SCHEMA_VERSION = 1
 DEFAULT_REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -186,6 +191,133 @@ def artifact_relative(path: Path, artifact_root: Path) -> str:
         return resolved.relative_to(root).as_posix()
     except ValueError as exc:
         raise FabricError(f"Path escapes artifacts.local: {resolved}") from exc
+
+
+def master_catalog_path(artifact_root: Path) -> Path:
+    return artifact_root.resolve() / master_catalog.DEFAULT_DATABASE_RELATIVE
+
+
+def resolve_master_asset_input(
+    artifact_root: Path,
+    selector: str,
+    *,
+    consumer: str | None = None,
+    purpose: str | None = None,
+    experiment_id: str | None = None,
+    event_id: str | None = None,
+) -> tuple[dict[str, Any], Path]:
+    """Resolve a zero-copy master-catalog asset into a portable run snapshot."""
+
+    if bool(consumer) != bool(purpose):
+        raise FabricError("Asset input consumer and purpose must be supplied together")
+    database = master_catalog_path(artifact_root)
+    if not database.is_file():
+        raise FabricError(
+            f"Master asset catalog is missing: {database}; run asset_catalog.py discover first"
+        )
+    connection = master_catalog.open_catalog(database)
+    try:
+        asset, component = master_catalog.resolve_asset_target(connection, selector)
+        if asset["state"] != "present":
+            raise FabricError(
+                f"Master asset is not present: {asset['locator']} state={asset['state']}"
+            )
+        resolved = master_catalog.path_for_locator(asset["locator"], artifact_root)
+        if component is not None:
+            if component["state"] != "present":
+                raise FabricError(
+                    f"Master asset component is not present: {selector} "
+                    f"state={component['state']}"
+                )
+            if component["relative_path"] != ".":
+                resolved = resolved.joinpath(*component["relative_path"].split("/"))
+        if not resolved.exists():
+            raise FabricError(f"Resolved master asset path is missing: {resolved}")
+
+        identity_record = component if component is not None else asset
+        content_id = identity_record["content_id"]
+        identity = content_id or f"metadata-sha256:{identity_record['metadata_sha256']}"
+        snapshot: dict[str, Any] = {
+            "requested_key": selector,
+            "asset_id": asset["asset_id"],
+            "locator": asset["locator"],
+            "identity": identity,
+            "identity_strength": identity_record["identity_strength"],
+            "evidence_status": identity_record["evidence_status"],
+            "storage_status": asset["storage_status"],
+            "claim_ceiling": identity_record["claim_ceiling"],
+        }
+        if component is not None:
+            snapshot["component"] = {
+                "component_id": component["component_id"],
+                "component_key": component["component_key"],
+                "component_kind": component["component_kind"],
+                "data_role": component["data_role"],
+                "relative_path": component["relative_path"],
+            }
+        if consumer:
+            metadata = master_catalog.component_usage_metadata(
+                component,
+                {"source": "resource-fabric-master-asset-input", "selector": selector},
+            )
+            with connection:
+                master_catalog.record_usage(
+                    connection,
+                    asset_id=asset["asset_id"],
+                    consumer=consumer,
+                    purpose=purpose or "asset-input",
+                    experiment_id=experiment_id,
+                    access_mode="input",
+                    evidence_effect="none",
+                    metadata=metadata,
+                    event_id=event_id,
+                    ignore_existing=event_id is not None,
+                )
+        return snapshot, resolved
+    except master_catalog.CatalogError as exc:
+        raise FabricError(str(exc)) from exc
+    finally:
+        connection.close()
+
+
+def normalize_asset_inputs(asset_inputs: Iterable[dict[str, Any]] | None) -> list[dict[str, Any]]:
+    values = list(asset_inputs or [])
+    by_reference: dict[str, dict[str, Any]] = {}
+    for value in values:
+        if not isinstance(value, dict) or not value.get("asset_id"):
+            raise FabricError("Asset input snapshots must contain asset_id")
+        component = value.get("component") or {}
+        key = (
+            f"{value['asset_id']}#{component.get('component_key', '')}"
+            f"@{value.get('requested_path', '')}"
+        )
+        existing = by_reference.get(key)
+        if existing is not None and existing != value:
+            raise FabricError(f"Conflicting snapshots for master asset input: {key}")
+        by_reference[key] = value
+    return [by_reference[key] for key in sorted(by_reference)]
+
+
+def resolve_asset_selectors(
+    artifact_root: Path,
+    selectors: Iterable[str],
+    *,
+    consumer: str,
+    purpose: str,
+    experiment_id: str | None = None,
+) -> list[dict[str, Any]]:
+    snapshots = []
+    for index, selector in enumerate(selectors):
+        snapshot, _ = resolve_master_asset_input(
+            artifact_root,
+            selector,
+            consumer=consumer,
+            purpose=purpose,
+            experiment_id=experiment_id,
+            event_id=f"fabric-asset-input:{slug(consumer)}:{index}:{sha256_bytes(selector.encode('utf-8'))[:12]}",
+        )
+        snapshots.append(snapshot)
+    return normalize_asset_inputs(snapshots)
 
 
 def resource_token(resource_id: str) -> str:
@@ -606,7 +738,15 @@ def create_cache(
     mode: str,
     code_sha256: str | None = None,
     config_sha256: str | None = None,
+    asset_inputs: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
+    asset_inputs = normalize_asset_inputs(asset_inputs)
+    asset_inputs = [
+        {key: value for key, value in item.items() if key not in {"alias", "purpose"}}
+        for item in asset_inputs
+    ]
+    if not (source_ids or parent_cache_keys or model_ids or asset_inputs):
+        raise FabricError("A cache requires at least one resource, cache, model, or master asset input")
     for resource_id in source_ids:
         load_object(artifact_root, resource_id)
     for resource_id in model_ids:
@@ -622,6 +762,7 @@ def create_cache(
         "source_ids": sorted(set(source_ids)),
         "parent_cache_keys": sorted(set(parent_cache_keys)),
         "model_ids": sorted(set(model_ids)),
+        "asset_inputs": asset_inputs,
         "transform": transform,
         "transform_version": transform_version,
         "parameters": parameters,
@@ -668,8 +809,15 @@ def create_cache(
 
 
 def cache_put_command(args: argparse.Namespace) -> dict[str, Any]:
+    artifact_root = args.artifact_root.resolve()
+    asset_inputs = resolve_asset_selectors(
+        artifact_root,
+        args.asset,
+        consumer=args.producer,
+        purpose="shared-cache-lineage",
+    )
     return create_cache(
-        args.artifact_root.resolve(),
+        artifact_root,
         layer=args.layer,
         source_ids=args.source_id,
         parent_cache_keys=args.parent_cache_key,
@@ -682,6 +830,7 @@ def cache_put_command(args: argparse.Namespace) -> dict[str, Any]:
         mode=args.mode,
         code_sha256=args.code_sha256,
         config_sha256=args.config_sha256,
+        asset_inputs=asset_inputs,
     )
 
 
@@ -714,29 +863,48 @@ def cache_json_command(args: argparse.Namespace) -> dict[str, Any]:
             shutil.rmtree(temporary_dir)
 
 
-def hard_case_command(args: argparse.Namespace) -> dict[str, Any]:
-    artifact_root = args.artifact_root.resolve()
-    for resource_id in args.source_id:
+def create_hard_case(
+    artifact_root: Path,
+    *,
+    hard_case_id: str,
+    route: str,
+    case_kind: str,
+    failure_layer: str,
+    evidence_split: str,
+    source_ids: list[str],
+    cache_keys: list[str],
+    asset_inputs: list[dict[str, Any]] | None,
+    selector: Any,
+    truth_authority: str,
+    selected_by: str,
+    observed_outcome: str,
+    claim_ceiling: str,
+    allowed_uses: list[str],
+    forbidden_uses: list[str],
+) -> dict[str, Any]:
+    for resource_id in source_ids:
         load_object(artifact_root, resource_id)
-    for cache_key in args.cache_key:
+    for cache_key in cache_keys:
         load_cache(artifact_root, cache_key)
-    forbidden = args.forbidden_use or DEFAULT_CONSUMED_FORBIDDEN
+    asset_inputs = normalize_asset_inputs(asset_inputs)
+    forbidden = forbidden_uses or DEFAULT_CONSUMED_FORBIDDEN
     base_record = {
         "schema": "blindassist-hard-case-v1",
         "schema_version": SCHEMA_VERSION,
-        "id": slug(args.id),
-        "route": slug(args.route),
-        "case_kind": args.case_kind,
-        "failure_layer": args.failure_layer,
-        "evidence_split": args.evidence_split,
-        "source_ids": sorted(set(args.source_id)),
-        "cache_keys": sorted(set(args.cache_key)),
-        "selector": parse_json_value(args.selector_json, default={}),
-        "truth_authority": args.truth_authority,
-        "selected_by": args.selected_by,
-        "observed_outcome": args.observed_outcome,
-        "claim_ceiling": args.claim_ceiling,
-        "reusable_for": sorted(set(args.allowed_use or DEFAULT_CONSUMED_ALLOWED)),
+        "id": slug(hard_case_id),
+        "route": slug(route),
+        "case_kind": case_kind,
+        "failure_layer": failure_layer,
+        "evidence_split": evidence_split,
+        "source_ids": sorted(set(source_ids)),
+        "cache_keys": sorted(set(cache_keys)),
+        "asset_inputs": asset_inputs,
+        "selector": selector,
+        "truth_authority": truth_authority,
+        "selected_by": selected_by,
+        "observed_outcome": observed_outcome,
+        "claim_ceiling": claim_ceiling,
+        "reusable_for": sorted(set(allowed_uses or DEFAULT_CONSUMED_ALLOWED)),
         "forbidden_for": sorted(set(forbidden)),
     }
     path = (
@@ -753,43 +921,82 @@ def hard_case_command(args: argparse.Namespace) -> dict[str, Any]:
     return {"hard_case": artifact_relative(path, artifact_root), "reused": reused, **record}
 
 
+def hard_case_command(args: argparse.Namespace) -> dict[str, Any]:
+    artifact_root = args.artifact_root.resolve()
+    asset_inputs = resolve_asset_selectors(
+        artifact_root,
+        args.asset,
+        consumer=f"hard-case:{args.id}",
+        purpose="hard-case-reference",
+    )
+    return create_hard_case(
+        artifact_root,
+        hard_case_id=args.id,
+        route=args.route,
+        case_kind=args.case_kind,
+        failure_layer=args.failure_layer,
+        evidence_split=args.evidence_split,
+        source_ids=args.source_id,
+        cache_keys=args.cache_key,
+        asset_inputs=asset_inputs,
+        selector=parse_json_value(args.selector_json, default={}),
+        truth_authority=args.truth_authority,
+        selected_by=args.selected_by,
+        observed_outcome=args.observed_outcome,
+        claim_ceiling=args.claim_ceiling,
+        allowed_uses=args.allowed_use,
+        forbidden_uses=args.forbidden_use,
+    )
+
+
 def experiment_directory(artifact_root: Path, route: str, experiment_id: str) -> Path:
     return fabric_root(artifact_root) / "experiments" / slug(route) / slug(experiment_id)
 
 
-def experiment_create_command(args: argparse.Namespace) -> dict[str, Any]:
-    artifact_root = args.artifact_root.resolve()
-    for resource_id in args.source_id:
+def create_experiment(
+    artifact_root: Path,
+    *,
+    experiment_id: str,
+    route: str,
+    question: str,
+    evaluator: str,
+    status: str,
+    source_ids: list[str],
+    cache_keys: list[str],
+    asset_inputs: list[dict[str, Any]] | None,
+    hard_case_ids: list[str],
+    parameters: dict[str, Any],
+    boundary: str,
+) -> dict[str, Any]:
+    for resource_id in source_ids:
         load_object(artifact_root, resource_id)
-    for cache_key in args.cache_key:
+    for cache_key in cache_keys:
         load_cache(artifact_root, cache_key)
+    asset_inputs = normalize_asset_inputs(asset_inputs)
     hard_case_paths = []
-    for hard_case_id in args.hard_case:
-        path = fabric_root(artifact_root) / "hard-cases" / slug(args.route) / f"{slug(hard_case_id)}.json"
+    for hard_case_id in hard_case_ids:
+        path = fabric_root(artifact_root) / "hard-cases" / slug(route) / f"{slug(hard_case_id)}.json"
         if not path.is_file():
-            raise FabricError(f"Unknown hard case for route {args.route}: {hard_case_id}")
+            raise FabricError(f"Unknown hard case for route {route}: {hard_case_id}")
         hard_case_paths.append(artifact_relative(path, artifact_root))
 
-    directory = experiment_directory(artifact_root, args.route, args.id)
-    parameters = parse_json_value(args.parameters_json, default={})
     if not isinstance(parameters, dict):
         raise FabricError("Experiment parameters must be a JSON object")
-    boundary = args.boundary
-    if args.boundary_file:
-        boundary = args.boundary_file.read_text(encoding="utf-8")
     if not boundary:
         raise FabricError("Experiment requires an explicit evidence boundary")
+    directory = experiment_directory(artifact_root, route, experiment_id)
     boundary_text = boundary.rstrip() + "\n"
     manifest_base = {
         "schema": "blindassist-thin-experiment-v1",
         "schema_version": SCHEMA_VERSION,
-        "id": slug(args.id),
-        "route": slug(args.route),
-        "question": args.question,
-        "evaluator": args.evaluator,
-        "status": args.status,
-        "source_ids": sorted(set(args.source_id)),
-        "cache_keys": sorted(set(args.cache_key)),
+        "id": slug(experiment_id),
+        "route": slug(route),
+        "question": question,
+        "evaluator": evaluator,
+        "status": status,
+        "source_ids": sorted(set(source_ids)),
+        "cache_keys": sorted(set(cache_keys)),
+        "asset_inputs": asset_inputs,
         "hard_cases": sorted(hard_case_paths),
         "parameters_path": "parameters.json",
         "evidence_boundary_path": "evidence-boundary.md",
@@ -810,6 +1017,7 @@ def experiment_create_command(args: argparse.Namespace) -> dict[str, Any]:
             "evaluator",
             "source_ids",
             "cache_keys",
+            "asset_inputs",
             "hard_cases",
             "parameters_path",
             "evidence_boundary_path",
@@ -832,19 +1040,57 @@ def experiment_create_command(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
-def experiment_finalize_command(args: argparse.Namespace) -> dict[str, Any]:
+def experiment_create_command(args: argparse.Namespace) -> dict[str, Any]:
     artifact_root = args.artifact_root.resolve()
-    directory = experiment_directory(artifact_root, args.route, args.id)
+    asset_inputs = resolve_asset_selectors(
+        artifact_root,
+        args.asset,
+        consumer=args.id,
+        purpose="thin-experiment-input",
+        experiment_id=args.id,
+    )
+    boundary = args.boundary
+    if args.boundary_file:
+        boundary = args.boundary_file.read_text(encoding="utf-8")
+    return create_experiment(
+        artifact_root,
+        experiment_id=args.id,
+        route=args.route,
+        question=args.question,
+        evaluator=args.evaluator,
+        status=args.status,
+        source_ids=args.source_id,
+        cache_keys=args.cache_key,
+        asset_inputs=asset_inputs,
+        hard_case_ids=args.hard_case,
+        parameters=parse_json_value(args.parameters_json, default={}),
+        boundary=boundary or "",
+    )
+
+
+def finalize_experiment(
+    artifact_root: Path,
+    *,
+    route: str,
+    experiment_id: str,
+    result_json: Path,
+    status: str,
+    produced_cache_keys: list[str] | None = None,
+) -> dict[str, Any]:
+    directory = experiment_directory(artifact_root, route, experiment_id)
     manifest_path = directory / "manifest.json"
     if not manifest_path.is_file():
         raise FabricError(f"Experiment does not exist: {directory}")
-    if args.result_json.stat().st_size > 32 * 1024 * 1024:
+    if result_json.stat().st_size > 32 * 1024 * 1024:
         raise FabricError("Result is larger than 32 MiB; register heavy output as a resource/cache reference")
-    result = read_json(args.result_json.resolve())
+    result = read_json(result_json.resolve())
     result_path = directory / "result.json"
     atomic_write_json(result_path, result)
     manifest = read_json(manifest_path)
-    manifest["status"] = args.status
+    for cache_key in produced_cache_keys or []:
+        load_cache(artifact_root, cache_key)
+    manifest["status"] = status
+    manifest["produced_cache_keys"] = sorted(set(produced_cache_keys or []))
     manifest["result"] = {
         "path": "result.json",
         "sha256": sha256_file(result_path),
@@ -854,9 +1100,20 @@ def experiment_finalize_command(args: argparse.Namespace) -> dict[str, Any]:
     atomic_write_json(manifest_path, manifest)
     return {
         "experiment": artifact_relative(directory, artifact_root),
-        "status": args.status,
+        "status": status,
         "result": manifest["result"],
     }
+
+
+def experiment_finalize_command(args: argparse.Namespace) -> dict[str, Any]:
+    return finalize_experiment(
+        args.artifact_root.resolve(),
+        route=args.route,
+        experiment_id=args.id,
+        result_json=args.result_json,
+        status=args.status,
+        produced_cache_keys=None,
+    )
 
 
 def load_records(directory: Path) -> list[dict[str, Any]]:
@@ -951,16 +1208,29 @@ def report_command(args: argparse.Namespace) -> dict[str, Any]:
     object_by_id = {item["resource_id"]: item for item in objects}
     referenced_resources: set[str] = set()
     referenced_caches: set[str] = set()
+    referenced_master_assets: set[str] = set()
     for cache in caches:
         referenced_resources.update(cache.get("source_ids", []))
         referenced_resources.update(cache.get("model_ids", []))
         referenced_caches.update(cache.get("parent_cache_keys", []))
+        referenced_master_assets.update(
+            item.get("asset_id") for item in cache.get("asset_inputs", []) if item.get("asset_id")
+        )
     for case in hard_cases:
         referenced_resources.update(case.get("source_ids", []))
         referenced_caches.update(case.get("cache_keys", []))
+        referenced_master_assets.update(
+            item.get("asset_id") for item in case.get("asset_inputs", []) if item.get("asset_id")
+        )
     for experiment in experiments:
         referenced_resources.update(experiment.get("source_ids", []))
         referenced_caches.update(experiment.get("cache_keys", []))
+        referenced_caches.update(experiment.get("produced_cache_keys", []))
+        referenced_master_assets.update(
+            item.get("asset_id")
+            for item in experiment.get("asset_inputs", [])
+            if item.get("asset_id")
+        )
 
     evidence_status_bytes: dict[str, int] = defaultdict(int)
     storage_status_bytes: dict[str, int] = defaultdict(int)
@@ -993,6 +1263,7 @@ def report_command(args: argparse.Namespace) -> dict[str, Any]:
             "hard_cases": len(hard_cases),
             "thin_experiments": len(experiments),
             "referenced_resources": len(referenced_resources),
+            "referenced_master_assets": len(referenced_master_assets),
             "unreferenced_resources": len(set(object_by_id) - referenced_resources),
             "referenced_caches": len(referenced_caches),
             "evidence_status_bytes": dict(sorted(evidence_status_bytes.items())),
@@ -1061,6 +1332,54 @@ def report_command(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def verify_master_asset_snapshots(
+    artifact_root: Path,
+    records: Iterable[tuple[str, dict[str, Any]]],
+    errors: list[str],
+) -> int:
+    records = list(records)
+    if not records:
+        return 0
+    database = master_catalog_path(artifact_root)
+    if not database.is_file():
+        errors.append(f"master asset catalog is missing: {database}")
+        return 0
+    connection = master_catalog.open_catalog(database)
+    checked = 0
+    try:
+        for context, snapshot in records:
+            asset_id = snapshot.get("asset_id")
+            if not asset_id:
+                errors.append(f"{context}: master asset snapshot has no asset_id")
+                continue
+            asset = connection.execute(
+                "SELECT asset_id, locator FROM assets WHERE asset_id = ?", (asset_id,)
+            ).fetchone()
+            if asset is None:
+                errors.append(f"{context}: missing master asset {asset_id}")
+                continue
+            if snapshot.get("locator") != asset["locator"]:
+                errors.append(f"{context}: master asset locator mismatch for {asset_id}")
+            component = snapshot.get("component")
+            if component:
+                component_key = component.get("component_key")
+                exists = connection.execute(
+                    """
+                    SELECT 1 FROM asset_components
+                    WHERE asset_id = ? AND component_key = ?
+                    """,
+                    (asset_id, component_key),
+                ).fetchone()
+                if exists is None:
+                    errors.append(
+                        f"{context}: missing master asset component {asset_id}#{component_key}"
+                    )
+            checked += 1
+    finally:
+        connection.close()
+    return checked
+
+
 def verify_command(args: argparse.Namespace) -> dict[str, Any]:
     artifact_root = args.artifact_root.resolve()
     root = fabric_root(artifact_root)
@@ -1083,9 +1402,14 @@ def verify_command(args: argparse.Namespace) -> dict[str, Any]:
             errors.append(f"object {item.get('resource_id')}: {exc}")
 
     caches = load_records(root / "catalog" / "caches")
+    master_snapshots: list[tuple[str, dict[str, Any]]] = []
     cache_keys = {item.get("cache_key") for item in caches}
     cache_by_key = {item.get("cache_key"): item for item in caches}
     for item in caches:
+        master_snapshots.extend(
+            (f"cache {item.get('cache_key')}", snapshot)
+            for snapshot in item.get("asset_inputs", [])
+        )
         for resource_id in item.get("source_ids", []) + item.get("model_ids", []):
             if resource_id not in object_ids:
                 errors.append(f"cache {item.get('cache_key')}: missing source {resource_id}")
@@ -1125,6 +1449,10 @@ def verify_command(args: argparse.Namespace) -> dict[str, Any]:
         for path in (root / "hard-cases").rglob("*.json")
     } if (root / "hard-cases").exists() else set()
     for item in hard_cases:
+        master_snapshots.extend(
+            (f"hard case {item.get('id')}", snapshot)
+            for snapshot in item.get("asset_inputs", [])
+        )
         for resource_id in item.get("source_ids", []):
             if resource_id not in object_ids:
                 errors.append(f"hard case {item.get('id')}: missing source {resource_id}")
@@ -1138,6 +1466,10 @@ def verify_command(args: argparse.Namespace) -> dict[str, Any]:
             experiment_count += 1
             directory = manifest_path.parent
             manifest = read_json(manifest_path)
+            master_snapshots.extend(
+                (f"experiment {manifest.get('id')}", snapshot)
+                for snapshot in manifest.get("asset_inputs", [])
+            )
             extras = {path.name for path in directory.iterdir() if path.is_file()} - ALLOWED_EXPERIMENT_FILES
             if extras:
                 errors.append(f"experiment {manifest.get('id')}: non-thin files {sorted(extras)}")
@@ -1147,6 +1479,11 @@ def verify_command(args: argparse.Namespace) -> dict[str, Any]:
             for cache_key in manifest.get("cache_keys", []):
                 if cache_key not in cache_keys:
                     errors.append(f"experiment {manifest.get('id')}: missing cache {cache_key}")
+            for cache_key in manifest.get("produced_cache_keys", []):
+                if cache_key not in cache_keys:
+                    errors.append(
+                        f"experiment {manifest.get('id')}: missing produced cache {cache_key}"
+                    )
             for hard_case in manifest.get("hard_cases", []):
                 if hard_case not in hard_case_paths:
                     errors.append(f"experiment {manifest.get('id')}: missing hard case {hard_case}")
@@ -1158,6 +1495,9 @@ def verify_command(args: argparse.Namespace) -> dict[str, Any]:
                 elif sha256_file(result_path) != result.get("sha256"):
                     errors.append(f"experiment {manifest.get('id')}: result digest mismatch")
 
+    master_asset_inputs_checked = verify_master_asset_snapshots(
+        artifact_root, master_snapshots, errors
+    )
     result = {
         "status": "PASS" if not errors else "FAIL",
         "objects": len(objects),
@@ -1165,6 +1505,7 @@ def verify_command(args: argparse.Namespace) -> dict[str, Any]:
         "cache_accesses": len(cache_accesses),
         "hard_cases": len(hard_cases),
         "experiments": experiment_count,
+        "master_asset_inputs_checked": master_asset_inputs_checked,
         "deep": bool(args.deep),
         "errors": errors,
     }
@@ -1236,7 +1577,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     cache_put = subparsers.add_parser("cache-put", help="Create or reuse a normalized/feature cache entry")
     cache_put.add_argument("--layer", choices=("normalized", "features"), required=True)
-    cache_put.add_argument("--source-id", action="append", required=True)
+    cache_put.add_argument("--source-id", action="append", default=[])
+    cache_put.add_argument("--asset", action="append", default=[])
     cache_put.add_argument("--parent-cache-key", action="append", default=[])
     cache_put.add_argument("--model-id", action="append", default=[])
     cache_put.add_argument("--transform", required=True)
@@ -1272,6 +1614,7 @@ def build_parser() -> argparse.ArgumentParser:
     hard_case.add_argument("--evidence-split", required=True)
     hard_case.add_argument("--source-id", action="append", default=[])
     hard_case.add_argument("--cache-key", action="append", default=[])
+    hard_case.add_argument("--asset", action="append", default=[])
     hard_case.add_argument("--selector-json")
     hard_case.add_argument("--truth-authority", required=True)
     hard_case.add_argument("--selected-by", required=True)
@@ -1288,6 +1631,7 @@ def build_parser() -> argparse.ArgumentParser:
     experiment.add_argument("--status", default="prepared")
     experiment.add_argument("--source-id", action="append", default=[])
     experiment.add_argument("--cache-key", action="append", default=[])
+    experiment.add_argument("--asset", action="append", default=[])
     experiment.add_argument("--hard-case", action="append", default=[])
     experiment.add_argument("--parameters-json")
     experiment.add_argument("--boundary")

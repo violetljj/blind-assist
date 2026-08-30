@@ -24,6 +24,9 @@ master-assets.sqlite3 权威总账
   派生和生命周期的权威入口。
 - `tools/data/resource_fabric.py` 管理已经进入内容寻址仓的不可变资源、共享缓存、
   难例和薄实验。它的资源、缓存和引用会自动同步进总账。
+- `tools/data/asset_runtime.py` 是事件驱动的运行协调器。官方 DTR/L10 运行会在执行前
+  解析并登记输入，在执行后自动登记结果、共享缓存、难例、输出资产和终态 journal，
+  再做增量同步与校验。
 
 跟踪的分类策略位于 `data/asset-management-policy.json`；生成的数据库与报告位于：
 
@@ -97,6 +100,51 @@ gradle-home/ tools/ vendor/ logs/ failed_runs/ crash-diagnosis/ transfer/
   因此获得证据权限。
 
 ## 建账和报告
+
+### 持续自运转入口
+
+日常实验不再要求操作者手动串联 `resolve / consume / cache-put /
+experiment-finalize / report`。`tools/ba.ps1 run` 已成为闭环入口：
+
+```text
+声明输入资产/路径/缓存
+        -> 运行前解析身份并写 usage/cache-hit
+        -> 无 shell 执行原 evaluator
+        -> 运行后收取小结果、共享 cache 和 hard case
+        -> 增量刷新被触碰的资产单元并同步血缘
+        -> 更新报告、校验总账、写成功或失败终态 journal
+```
+
+```powershell
+pwsh -NoProfile -File tools\ba.ps1 run research-dtr-r0 `
+  -EventInput artifacts.local\datasets\my-events\events.jsonl `
+  -AssetInput sevn-panos=datasets/sevn#high-resolution-panoramas
+
+pwsh -NoProfile -File tools\ba.ps1 run research-l10-r0 `
+  -AssetInput sevn-graph=datasets/sevn#navigation-graph `
+  -CacheInput pano-features=<cache-key> -- --episodes 25
+```
+
+未指定 `-ResultOutput` 时，evaluator 直接写入对应薄实验目录的 `result.json`。
+可用 `-RunId` 固定运行身份；已有终态或 `in_doubt` journal 的 id 会拒绝自动重跑，
+避免一次失败被无声消费两次。若 evaluator 在结果中给出
+`asset_lifecycle.hard_cases`，协调器会把 selector 和资产/cache 引用自动加入难例库；
+原生命令失败也会生成 execution failure 难例，而不会猜测任务领域结论。
+
+日常只同步 resource fabric 和报告，不遍历全部 payload：
+
+```powershell
+pwsh -NoProfile -File tools\ba.ps1 assets base
+```
+
+只有接入一批外部遗留资产或做迁移里程碑时才执行全量发现：
+
+```powershell
+pwsh -NoProfile -File tools\ba.ps1 assets base -- --full
+```
+
+`scripts/check_repo_hygiene.ps1` 会阻止官方 DTR/L10 入口绕过 lifecycle runtime。
+历史上直接调用 evaluator 的脚本仍需逐步迁移；它们不会因本次改造被伪装成已自动纳管。
 
 从仓库根运行：
 

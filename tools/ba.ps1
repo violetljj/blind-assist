@@ -1,7 +1,7 @@
 [CmdletBinding(PositionalBinding = $false)]
 param(
     [Parameter(Position = 0)]
-    [ValidateSet('setup', 'doctor', 'smoke', 'run', 'materialize', 'clean')]
+    [ValidateSet('setup', 'doctor', 'smoke', 'run', 'materialize', 'assets', 'clean')]
     [string]$Command = 'doctor',
     [Parameter(Position = 1)]
     [ValidateSet('base', 'research-dtr-r0', 'research-l10-r0', 'android', 'device', 'export')]
@@ -12,6 +12,11 @@ param(
     [string]$ResultOutput,
     [string]$CanaryManifest,
     [string]$CanaryOutput,
+    [string]$RunId,
+    [string]$RunQuestion,
+    [string]$EvidenceBoundary,
+    [string[]]$AssetInput,
+    [string[]]$CacheInput,
     [Parameter(ValueFromRemainingArguments = $true)]
     [string[]]$Arguments
 )
@@ -239,6 +244,115 @@ function Invoke-Smoke {
     Stop-Ba 'BA_USAGE' 'smoke is defined only for research profiles' 'choose research-dtr-r0 or research-l10-r0'
 }
 
+function ConvertTo-StableId {
+    param([string]$Value)
+    $stable = ($Value.ToLowerInvariant() -replace '[^a-z0-9]+', '-').Trim('-')
+    if ([string]::IsNullOrWhiteSpace($stable)) {
+        Stop-Ba 'BA_USAGE' "value cannot form a stable id: $Value" 'use letters, numbers, dots, underscores, or hyphens'
+    }
+    return $stable
+}
+
+function ConvertTo-AliasValue {
+    param([string]$Value, [string]$Label)
+    $parts = $Value -split '=', 2
+    if ($parts.Count -ne 2 -or [string]::IsNullOrWhiteSpace($parts[0]) -or [string]::IsNullOrWhiteSpace($parts[1])) {
+        Stop-Ba 'BA_USAGE' "$Label must use alias=value: $Value" "pass -$Label alias=value"
+    }
+    return @{ Alias = $parts[0]; Value = $parts[1] }
+}
+
+function Invoke-GovernedResearchRun {
+    param(
+        [hashtable]$Selection,
+        [string[]]$NativeArguments,
+        [object[]]$Inputs,
+        [string]$Question,
+        [string]$Boundary,
+        [string]$Route,
+        [string]$Evaluator
+    )
+    $artifactRoot = Join-Path $RepoRoot 'artifacts.local'
+    $effectiveRunId = $RunId
+    if ([string]::IsNullOrWhiteSpace($effectiveRunId)) {
+        $effectiveRunId = "$Route-$([DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ'))-$([Guid]::NewGuid().ToString('N').Substring(0, 8))"
+    }
+    $stableRunId = ConvertTo-StableId $effectiveRunId
+    $effectiveQuestion = if ([string]::IsNullOrWhiteSpace($RunQuestion)) { $Question } else { $RunQuestion }
+    $effectiveBoundary = if ([string]::IsNullOrWhiteSpace($EvidenceBoundary)) { $Boundary } else { $EvidenceBoundary }
+    $resultPath = if ([string]::IsNullOrWhiteSpace($ResultOutput)) {
+        Join-Path $artifactRoot "evidence/resource-fabric/experiments/$Route/$stableRunId/result.json"
+    } else {
+        Resolve-ConfiguredPath $ResultOutput '__unused__' '__UNUSED__' ''
+    }
+    $declaredInputs = @($Inputs)
+    foreach ($value in @($AssetInput)) {
+        $pair = ConvertTo-AliasValue $value 'AssetInput'
+        $declaredInputs += @{
+            alias = $pair.Alias
+            asset = $pair.Value
+            purpose = 'declared-master-asset-input'
+        }
+    }
+    $declaredCaches = @()
+    foreach ($value in @($CacheInput)) {
+        $pair = ConvertTo-AliasValue $value 'CacheInput'
+        $declaredCaches += @{
+            alias = $pair.Alias
+            cache_key = $pair.Value
+            purpose = 'declared-shared-cache-input'
+        }
+    }
+    $commandLine = @($Selection.Python) + @($NativeArguments | ForEach-Object {
+        if ($_ -eq '__BA_RESULT_OUTPUT__') { '{{output:result}}' } else { $_ }
+    })
+    $spec = [ordered]@{
+        schema = 'blindassist-asset-run-v1'
+        id = $effectiveRunId
+        route = $Route
+        question = $effectiveQuestion
+        evaluator = $Evaluator
+        evidence_boundary = $effectiveBoundary
+        command = $commandLine
+        inputs = $declaredInputs
+        cache_inputs = $declaredCaches
+        outputs = @(@{
+            alias = 'result'
+            path = $resultPath
+            role = 'result'
+            required = $true
+        })
+        result_output = 'result'
+        cache_outputs = @()
+        parameters = @{
+            profile = $Profile
+            forwarded_arguments = @($Arguments | Where-Object { $_ -ne '--' })
+        }
+    }
+    $temporaryRoot = Join-Path $artifactRoot "tmp/asset-runs/$([Guid]::NewGuid().ToString('N'))"
+    $specPath = Join-Path $temporaryRoot 'run.json'
+    $runtime = Join-Path $RepoRoot 'tools/data/asset_runtime.py'
+    $runtimeExit = 2
+    try {
+        [IO.Directory]::CreateDirectory($temporaryRoot) | Out-Null
+        [IO.File]::WriteAllText(
+            $specPath,
+            (($spec | ConvertTo-Json -Depth 12) + [Environment]::NewLine),
+            [Text.UTF8Encoding]::new($false)
+        )
+        & $Selection.Python $runtime 'run' '--spec' $specPath '--repo-root' $RepoRoot '--artifact-root' $artifactRoot
+        $runtimeExit = $LASTEXITCODE
+    } finally {
+        if (Test-Path -LiteralPath $temporaryRoot) {
+            Remove-Item -LiteralPath $temporaryRoot -Recurse -Force
+        }
+        if (Test-Path -LiteralPath $temporaryRoot) {
+            Stop-Ba 'BA_ASSET_RUN_CLEANUP_FAILED' "temporary run spec remains: $temporaryRoot" 'close the process holding the temporary run directory and remove it'
+        }
+    }
+    if ($runtimeExit -ne 0) { exit $runtimeExit }
+}
+
 function Invoke-Run {
     $forward = @($Arguments | Where-Object { $_ -ne '--' })
     switch ($Profile) {
@@ -248,22 +362,34 @@ function Invoke-Run {
                 Stop-Ba 'BA_USAGE' 'DTR-R0 run needs -EventInput' 'tools/ba.ps1 run research-dtr-r0 -EventInput <events.jsonl> -ResultOutput <result.json>'
             }
             $resolvedInput = Resolve-ConfiguredPath $EventInput '__unused__' '__UNUSED__' ''
-            $evaluationArguments = @((Join-Path $DtrActiveRoot 'evaluate.py'), '--input', $resolvedInput)
-            if (-not [string]::IsNullOrWhiteSpace($ResultOutput)) {
-                $resolvedOutput = Resolve-ConfiguredPath $ResultOutput '__unused__' '__UNUSED__' ''
-                $evaluationArguments += @('--output', $resolvedOutput)
-            }
-            Invoke-NativeChecked $selection.Python $evaluationArguments
+            $evaluationArguments = @(
+                (Join-Path $DtrActiveRoot 'evaluate.py'),
+                '--input', '{{input:event-input}}',
+                '--output', '__BA_RESULT_OUTPUT__'
+            ) + $forward
+            Invoke-GovernedResearchRun `
+                -Selection $selection `
+                -NativeArguments $evaluationArguments `
+                -Inputs @(@{ alias = 'event-input'; path = $resolvedInput; purpose = 'dtr-event-stream' }) `
+                -Question 'Can DTR-R0 pass the declared event stream under its frozen Development contract?' `
+                -Boundary 'Development/mechanism evidence only; no deployment safety, source-disjoint confirmation, or user-benefit claim.' `
+                -Route 'dtr-r0' `
+                -Evaluator 'research/active/dtr-r0/evaluate.py'
         }
         'research-l10-r0' {
             $selection = Invoke-DoctorResearch
-            $benchmarkArguments = @((Join-Path $L10ActiveRoot 'benchmark.py'))
-            if (-not [string]::IsNullOrWhiteSpace($ResultOutput)) {
-                $resolvedOutput = Resolve-ConfiguredPath $ResultOutput '__unused__' '__UNUSED__' ''
-                $benchmarkArguments += @('--output', $resolvedOutput)
-            }
-            $benchmarkArguments += $forward
-            Invoke-NativeChecked $selection.Python $benchmarkArguments
+            $benchmarkArguments = @(
+                (Join-Path $L10ActiveRoot 'benchmark.py'),
+                '--output', '__BA_RESULT_OUTPUT__'
+            ) + $forward
+            Invoke-GovernedResearchRun `
+                -Selection $selection `
+                -NativeArguments $benchmarkArguments `
+                -Inputs @() `
+                -Question 'Can L10-R0 pass its declared Development benchmark?' `
+                -Boundary 'Development geometry/action evidence only; no portal ownership, access, arrival, safety, or user-benefit claim.' `
+                -Route 'l10-r0' `
+                -Evaluator 'research/active/l10-r0/benchmark.py'
         }
         'android' { & (Join-Path $RepoRoot 'scripts/run_android_gradle.ps1') @forward; if ($LASTEXITCODE) { exit $LASTEXITCODE } }
         'device' { & (Join-Path $RepoRoot 'scripts/run_android_gradle.ps1') -RequireDevice @forward; if ($LASTEXITCODE) { exit $LASTEXITCODE } }
@@ -296,6 +422,39 @@ function Invoke-Materialize {
             Invoke-NativeChecked $selection.Python $adapterArguments
 }
 
+function Invoke-Assets {
+    if ($Profile -ne 'base') {
+        Stop-Ba 'BA_USAGE' 'asset maintenance uses the base profile' 'tools/ba.ps1 assets base'
+    }
+    $pythonCommand = Get-Command 'blindassist-python.cmd' -ErrorAction SilentlyContinue | Select-Object -First 1
+    if (-not $pythonCommand) {
+        $pythonCommand = Get-Command 'python' -ErrorAction SilentlyContinue | Select-Object -First 1
+    }
+    if (-not $pythonCommand) {
+        Stop-Ba 'BA_ENV_PYTHON_MISSING' 'Python is unavailable for asset maintenance' 'install Python 3.11+ or add it to PATH'
+    }
+    $catalog = Join-Path $RepoRoot 'tools/data/asset_catalog.py'
+    $artifactRoot = Join-Path $RepoRoot 'artifacts.local'
+    $policy = Join-Path $RepoRoot 'data/asset-management-policy.json'
+    $full = @($Arguments | Where-Object { $_ -eq '--full' }).Count -gt 0
+    $catalogArguments = if ($full) {
+        @(
+            'discover',
+            '--artifact-root', $artifactRoot,
+            '--policy', $policy,
+            '--repo-root', $RepoRoot
+        )
+    } else {
+        @(
+            'reconcile',
+            '--artifact-root', $artifactRoot,
+            '--policy', $policy,
+            '--repo-root', $RepoRoot
+        )
+    }
+    Invoke-NativeChecked $pythonCommand.Source (@($catalog) + $catalogArguments)
+}
+
 function Invoke-Clean {
     $target = switch ($Profile) {
         'export' { Join-Path $RepoRoot '.venv-export' }
@@ -320,6 +479,7 @@ try {
         'smoke' { Invoke-Smoke }
         'run' { Invoke-Run }
         'materialize' { Invoke-Materialize }
+        'assets' { Invoke-Assets }
         'clean' { Invoke-Clean }
     }
 } catch {

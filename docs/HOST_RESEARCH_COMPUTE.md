@@ -10,12 +10,18 @@ machine-specific paths or hardware assumptions.
 pwsh -NoProfile -File tools/ba.ps1 doctor research-dtr-r0
 pwsh -NoProfile -File tools/ba.ps1 smoke research-dtr-r0
 pwsh -NoProfile -File tools/ba.ps1 materialize research-dtr-r0 -CanaryManifest <manifest.json> -CanaryOutput <ignored-output-dir>
-pwsh -NoProfile -File tools/ba.ps1 run research-dtr-r0 -EventInput <events.jsonl> -ResultOutput <result.json>
+pwsh -NoProfile -File tools/ba.ps1 run research-dtr-r0 -EventInput <events.jsonl>
 ```
 
 Resolve Python and output paths through the `research-dtr-r0` profile. Keep
 event ledgers, videos, model outputs, logs, progress state, and results under
 ignored `artifacts.local/`.
+
+The research `run` command is lifecycle-governed: it records inputs before
+dispatch and automatically finalizes a thin result, cache/hard-case references,
+output receipts, catalog reports, and a terminal journal. `-ResultOutput` may
+override the thin-result path, while `-AssetInput alias=<asset-selector>` and
+`-CacheInput alias=<cache-key>` declare additional reusable inputs.
 
 `materialize` is the real-input canary adapter. It writes only an observation
 ledger and input-health report; it does not read evaluator truth or run the

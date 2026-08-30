@@ -1653,7 +1653,11 @@ def sync_resource_fabric(
         caches_count += 1
         input_ids = list(cache.get("source_ids", [])) + [
             f"cache:{key}" for key in cache.get("parent_cache_keys", [])
-        ] + list(cache.get("model_ids", []))
+        ] + list(cache.get("model_ids", [])) + [
+            item["asset_id"]
+            for item in cache.get("asset_inputs", [])
+            if item.get("asset_id")
+        ]
         present_inputs = [
             item
             for item in input_ids
@@ -1719,6 +1723,12 @@ def sync_resource_fabric(
             consumer = manifest.get("id", manifest_path.parent.name)
             referenced = list(manifest.get("source_ids", [])) + [
                 f"cache:{key}" for key in manifest.get("cache_keys", [])
+            ] + [
+                f"cache:{key}" for key in manifest.get("produced_cache_keys", [])
+            ] + [
+                item["asset_id"]
+                for item in manifest.get("asset_inputs", [])
+                if item.get("asset_id")
             ]
             for asset_id in referenced:
                 if connection.execute(
@@ -1747,6 +1757,10 @@ def sync_resource_fabric(
             consumer = f"hard-case:{case.get('id', case_path.stem)}"
             referenced = list(case.get("source_ids", [])) + [
                 f"cache:{key}" for key in case.get("cache_keys", [])
+            ] + [
+                item["asset_id"]
+                for item in case.get("asset_inputs", [])
+                if item.get("asset_id")
             ]
             for asset_id in referenced:
                 if connection.execute(
@@ -2191,6 +2205,197 @@ def register_command(args: argparse.Namespace) -> dict[str, Any]:
         return {key: record[key] for key in ("asset_id", "locator", "bytes", "file_count", "identity_strength")}
     finally:
         connection.close()
+
+
+def governed_asset_unit_for_path(
+    path: Path,
+    artifact_root: Path,
+    policy: dict[str, Any],
+) -> tuple[str, dict[str, Any], Path]:
+    """Return the catalog unit that owns one concrete artifact path.
+
+    Full discovery catalogs stable roots by direct child.  Event-driven runs
+    use the same unit boundary so an output refresh never creates overlapping
+    one-file assets or walks unrelated roots.  Exact managed assets are the
+    only allowed units below an otherwise excluded root.
+    """
+
+    locator = locator_for_path(path, artifact_root)
+    parts = locator.split("/")
+    managed_matches = [
+        normalize_locator(candidate)
+        for candidate in policy.get("managed_assets", {})
+        if locator.casefold() == normalize_locator(candidate).casefold()
+        or locator.casefold().startswith(normalize_locator(candidate).casefold() + "/")
+    ]
+    if managed_matches:
+        unit_locator = max(managed_matches, key=lambda item: len(item.split("/")))
+        rule = next(
+            value
+            for candidate, value in policy["managed_assets"].items()
+            if normalize_locator(candidate).casefold() == unit_locator.casefold()
+        )
+        return unit_locator, rule, path_for_locator(unit_locator, artifact_root)
+
+    root_name = parts[0]
+    if root_name in policy.get("excluded_roots", {}):
+        raise CatalogError(
+            f"Artifact path is below excluded root {root_name!r} and has no "
+            f"managed asset rule: {locator}"
+        )
+    root_rule = policy.get("roots", {}).get(root_name, policy["fallback"])
+    if len(parts) == 1:
+        unit_locator = root_name
+        unit_path = path_for_locator(unit_locator, artifact_root)
+        if unit_path.is_dir():
+            raise CatalogError(
+                f"A stable root is not an asset unit; select one child below {root_name}"
+            )
+        return unit_locator, root_rule, unit_path
+
+    child_name = parts[1]
+    excluded_children = {
+        value.casefold() for value in root_rule.get("exclude_children", [])
+    }
+    if child_name.casefold() in excluded_children:
+        raise CatalogError(
+            f"Artifact path is below policy-excluded child {root_name}/{child_name}: "
+            f"{locator}"
+        )
+    rule = next(
+        (
+            override
+            for name, override in root_rule.get("asset_overrides", {}).items()
+            if name.casefold() == child_name.casefold()
+        ),
+        root_rule,
+    )
+    unit_locator = f"{root_name}/{child_name}"
+    return unit_locator, rule, path_for_locator(unit_locator, artifact_root)
+
+
+def reconcile_asset_path(
+    connection: sqlite3.Connection,
+    *,
+    path: Path,
+    artifact_root: Path,
+    repo_root: Path,
+    policy: dict[str, Any],
+    scan_id: str,
+    now: str,
+) -> dict[str, Any]:
+    requested = path.resolve()
+    if not requested.exists():
+        raise CatalogError(f"Cannot reconcile missing artifact path: {requested}")
+    unit_locator, rule, unit_path = governed_asset_unit_for_path(
+        requested, artifact_root, policy
+    )
+    if is_reparse_point(unit_path):
+        raise CatalogError(f"Reconciled asset unit cannot be a reparse point: {unit_path}")
+    scan = scan_asset(unit_path)
+    record = discovered_record(
+        unit_locator,
+        unit_locator.split("/", 1)[0],
+        rule,
+        scan,
+        scan_id,
+        now,
+        discovery="event-reconcile",
+    )
+    upsert_asset(connection, record, scan["entries"])
+    component_count = sync_semantic_profile(
+        connection,
+        record=record,
+        scan=scan,
+        rule=rule,
+        asset_path=unit_path,
+        repo_root=repo_root,
+        scan_id=scan_id,
+        now=now,
+    )
+    requested_relative = (
+        "." if requested == unit_path else requested.relative_to(unit_path).as_posix()
+    )
+    return {
+        "asset_id": record["asset_id"],
+        "locator": unit_locator,
+        "path": str(unit_path),
+        "requested_path": str(requested),
+        "requested_relative_path": requested_relative,
+        "bytes": record["bytes"],
+        "file_count": record["file_count"],
+        "identity_strength": record["identity_strength"],
+        "semantic_components": component_count,
+    }
+
+
+def reconcile_command(args: argparse.Namespace) -> dict[str, Any]:
+    artifact_root = args.artifact_root.resolve()
+    repo_root = args.repo_root.resolve()
+    policy = load_policy(args.policy.resolve())
+    scan_id = f"reconcile:{utc_now()}:{uuid.uuid4().hex[:8]}"
+    now = utc_now()
+    connection = open_catalog(args.database.resolve())
+    reconciled: list[dict[str, Any]] = []
+    try:
+        with connection:
+            for path in args.path:
+                reconciled.append(
+                    reconcile_asset_path(
+                        connection,
+                        path=path,
+                        artifact_root=artifact_root,
+                        repo_root=repo_root,
+                        policy=policy,
+                        scan_id=scan_id,
+                        now=now,
+                    )
+                )
+            fabric_summary = (
+                sync_resource_fabric(connection, artifact_root, scan_id, now)
+                if args.sync_fabric
+                else None
+            )
+    finally:
+        connection.close()
+
+    references = None
+    if args.references:
+        references = references_command(
+            argparse.Namespace(
+                artifact_root=artifact_root,
+                database=args.database.resolve(),
+                repo_root=repo_root,
+            )
+        )
+    report = None
+    if args.report:
+        report = report_command(
+            argparse.Namespace(
+                artifact_root=artifact_root,
+                database=args.database.resolve(),
+                output_dir=artifact_root / DEFAULT_REPORT_RELATIVE,
+            )
+        )
+    verification = None
+    if args.verify:
+        verification = verify_command(
+            argparse.Namespace(
+                artifact_root=artifact_root,
+                database=args.database.resolve(),
+                repo_root=repo_root,
+                deep=False,
+            )
+        )
+    return {
+        "status": "PASS",
+        "scan_id": scan_id,
+        "reconciled": reconciled,
+        "resource_fabric": fabric_summary,
+        "references": references,
+        "report": report,
+        "verification": verification,
+    }
 
 
 def references_command(args: argparse.Namespace) -> dict[str, Any]:
@@ -3590,6 +3795,36 @@ def build_parser() -> argparse.ArgumentParser:
     register.add_argument("--rebuild-command")
     register.add_argument("--rebuild-cost")
     register.set_defaults(func=register_command)
+
+    reconcile = subparsers.add_parser(
+        "reconcile",
+        help="Incrementally refresh run-touched asset units and resource lineage",
+    )
+    add_catalog_arguments(reconcile)
+    reconcile.add_argument("--path", type=Path, action="append", default=[])
+    reconcile.add_argument("--policy", type=Path, default=DEFAULT_POLICY_PATH)
+    reconcile.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
+    reconcile.add_argument(
+        "--sync-fabric",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
+    reconcile.add_argument(
+        "--references",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+    )
+    reconcile.add_argument(
+        "--report",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
+    reconcile.add_argument(
+        "--verify",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
+    reconcile.set_defaults(func=reconcile_command)
 
     references = subparsers.add_parser(
         "references", help="Refresh tracked repository references to cataloged assets"

@@ -104,6 +104,30 @@ if ([string]::IsNullOrWhiteSpace($repoRoot)) {
 }
 $repoRoot = (Resolve-Path -LiteralPath $repoRoot.Trim()).Path
 
+$baEntrypoint = Join-Path $repoRoot 'tools/ba.ps1'
+$assetRuntime = Join-Path $repoRoot 'tools/data/asset_runtime.py'
+if ((Test-Path -LiteralPath $baEntrypoint) -or (Test-Path -LiteralPath $assetRuntime)) {
+    if (-not (Test-Path -LiteralPath $baEntrypoint -PathType Leaf)) {
+        $failures.Add('Asset lifecycle runtime requires the official tools/ba.ps1 entrypoint.')
+    }
+    if (-not (Test-Path -LiteralPath $assetRuntime -PathType Leaf)) {
+        $failures.Add('Official research runs require tools/data/asset_runtime.py.')
+    }
+    if (
+        (Test-Path -LiteralPath $baEntrypoint -PathType Leaf) -and
+        (Test-Path -LiteralPath $assetRuntime -PathType Leaf)
+    ) {
+        $baContent = Get-Content -LiteralPath $baEntrypoint -Raw -Encoding UTF8
+        $governedCalls = [regex]::Matches($baContent, 'Invoke-GovernedResearchRun').Count
+        if ($baContent -notmatch 'tools/data/asset_runtime\.py' -or $governedCalls -lt 3) {
+            $failures.Add(
+                'DTR/L10 official runs must remain wired through asset_runtime.py ' +
+                '(one coordinator definition and both research-profile calls).'
+            )
+        }
+    }
+}
+
 $whitespaceFailures = [System.Collections.Generic.List[string]]::new()
 if ($script:ResolvedBaseRef) {
     $whitespaceOutput = @(
