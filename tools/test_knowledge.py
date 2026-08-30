@@ -399,6 +399,154 @@ class KnowledgeCliTest(unittest.TestCase):
             associations[0]["artifact_refs"],
         )
 
+    def test_register_experiment_writes_p1_and_refreshes_index(self) -> None:
+        with TemporaryDirectory(prefix="blindassist-register-experiment-") as temporary:
+            repo_root = Path(temporary) / "repo"
+            root = repo_root / "research" / "knowledge"
+            (root / "items").mkdir(parents=True)
+            (root / "uses").mkdir()
+            (root / "decision").mkdir()
+            (repo_root / "experiments").mkdir()
+            active = repo_root / "research" / "active" / "smoke"
+            active.mkdir(parents=True)
+
+            result, _, stderr = self.run_cli(
+                root,
+                "new-item",
+                "--id",
+                "paper-register-smoke",
+                "--kind",
+                "paper",
+                "--title",
+                "Register smoke",
+                "--canonical-ref",
+                "https://example.org/register-smoke",
+                "--summary",
+                "A registration smoke source.",
+                "--mechanism-id",
+                "register-mechanism",
+                "--mechanism-name",
+                "Register mechanism",
+                "--mechanism-description",
+                "A mechanism linked to one run.",
+                "--mechanism-input",
+                "input manifest",
+                "--mechanism-output",
+                "named metric",
+                "--mechanism-limitations",
+                "No project claim.",
+            )
+            self.assertEqual(0, result, stderr)
+            result, _, stderr = self.run_cli(
+                root,
+                "new-use",
+                "--id",
+                "use-register-smoke",
+                "--item",
+                "paper-register-smoke",
+                "--route",
+                "smoke-route",
+                "--mechanism",
+                "register-mechanism",
+                "--source-scope",
+                "The named mechanism.",
+                "--project-application",
+                "Exercise P1 registration.",
+                "--modifications",
+                "None.",
+                "--expected-effect",
+                "One linked association.",
+                "--claim-boundary",
+                "Test only.",
+            )
+            self.assertEqual(0, result, stderr)
+
+            source_config = (
+                Path(knowledge.__file__).resolve().parents[1]
+                / "research"
+                / "knowledge"
+                / "decision"
+                / "config.json"
+            )
+            config = json.loads(source_config.read_text(encoding="utf-8"))
+            config["mechanism_overrides"] = {}
+            (root / "decision" / "config.json").write_text(
+                json.dumps(config, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            report_ref = "research/active/smoke/protocol.json"
+            input_ref = "research/active/smoke/input-manifest.json"
+            (repo_root / report_ref).write_text('{"status":"not_run"}\n', encoding="utf-8")
+            (repo_root / input_ref).write_text('{"cohort":"smoke"}\n', encoding="utf-8")
+
+            revision = "a" * 40
+            result, output, stderr = self.run_cli(
+                root,
+                "register-experiment",
+                "--id",
+                "smoke-run-v1",
+                "--status",
+                "active",
+                "--question",
+                "Does the smoke change alter the named metric?",
+                "--baseline",
+                "Frozen smoke baseline.",
+                "--change",
+                "One smoke factor.",
+                "--primary-metric",
+                "smoke_metric",
+                "--decision",
+                "FROZEN_PROTOCOL / NOT_RUN",
+                "--report",
+                report_ref,
+                "--source",
+                "research/active/smoke",
+                "--protocol-id",
+                "smoke-protocol-v1",
+                "--input",
+                input_ref,
+                "--use-id",
+                "use-register-smoke",
+                "--artifact-ref",
+                "artifacts.local/evidence/smoke-run-v1",
+                "--code-revision",
+                revision,
+            )
+            self.assertEqual(0, result, stderr)
+            self.assertIn("decision index refreshed", output)
+
+            rows = knowledge._read_experiment_rows(repo_root)
+            self.assertEqual(1, len(rows))
+            row = rows[0]
+            self.assertEqual(["use-register-smoke"], row["use_ids"])
+            self.assertEqual("smoke-protocol-v1", row["protocol_id"])
+            self.assertEqual(revision, row["code_revision"])
+            self.assertEqual([input_ref], row["input_refs"])
+            self.assertRegex(row["input_fingerprint"], r"^[0-9a-f]{64}$")
+            self.assertEqual(
+                [report_ref, "artifacts.local/evidence/smoke-run-v1"],
+                row["artifact_refs"],
+            )
+            self.assertIsNone(row["decision_id"])
+
+            index = json.loads(
+                (root / "decision" / "index.json").read_text(encoding="utf-8")
+            )
+            association = next(
+                value
+                for value in index["associations"]
+                if value["run_id"] == "smoke-run-v1"
+            )
+            self.assertEqual(["use-register-smoke"], association["use_ids"])
+            self.assertEqual("smoke-protocol-v1", association["protocol_id"])
+            self.assertEqual(revision, association["code_revision"])
+            self.assertEqual(row["input_fingerprint"], association["input_fingerprint"])
+
+            result, _, stderr = self.run_cli(
+                root, "build-decision-index", "--check"
+            )
+            self.assertEqual(0, result, stderr)
+
     def test_current_route_aliases_share_one_context_family(self) -> None:
         item = {
             "id": "paper-route-family",

@@ -25,7 +25,8 @@ foreach ($file in @(
     'research/active/dtr-r0/dtr_r0.py',
     'research/active/dtr-r0/real_observation_adapter.py',
     'research/active/dtr-r0/test_real_observation_adapter.py', 'tools/ba.ps1',
-    'scripts/show_worktree_scope.ps1',
+    'scripts/show_worktree_scope.ps1', 'scripts/refresh_knowledge.ps1',
+    '.githooks/pre-commit',
     'config/local.example.toml', '.codex/environments/environment.toml',
     '.worktreeinclude', 'experiments/index.jsonl',
     'data/dataset-ledger-summary.csv', 'data/dataset-ledger-manifest.json'

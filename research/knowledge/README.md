@@ -85,6 +85,25 @@ terminal decision 建边；没有权威来源的关联保持 `null`，不靠文�
 `artifact_refs` 和 `decision_id`；编译器会拒绝未知 use、冲突的稳定字段或一项
 decision 被多个 run 占用。
 
+新实验不得手工追加 JSONL，统一通过登记命令；它从命名输入文件计算稳定指纹，
+解析完整 Git revision，直接写入全部 P1 字段并同步刷新决策索引：
+
+```powershell
+python tools/knowledge.py register-experiment `
+  --id example-run-2026-08-31 --status active `
+  --question "这个单一变化是否改善命名指标？" `
+  --baseline "冻结 baseline" --change "只改变一个信息因子" `
+  --primary-metric "named_metric" --decision "FROZEN_PROTOCOL / NOT_RUN" `
+  --report research/active/example/protocol.json --source research/active/example `
+  --protocol-id example-protocol-v1 --input research/active/example/input-manifest.json `
+  --use-id use-example-route-mechanism `
+  --artifact-ref artifacts.local/evidence/example-run
+```
+
+`--decision-id` 只在已有 current terminal 时填写；active protocol 可以显式保持
+`null`。`--input` 可重复，指纹绑定排序后的路径和原始文件字节；`--artifact-ref`
+与 `--use-id` 也可重复。
+
 当 item、use、experiment、配置或 terminal 变化时，重建索引并运行冻结回归：
 
 ```powershell
@@ -92,6 +111,20 @@ python tools/knowledge.py build-decision-index
 python tools/knowledge.py evaluate-decision-engine
 python tools/knowledge.py validate
 ```
+
+本地统一入口把重建、知识单测、全库校验和决策 golden cases 合成一个命令：
+
+```powershell
+pwsh -NoProfile -File scripts/refresh_knowledge.ps1
+pwsh -NoProfile -File scripts/refresh_knowledge.ps1 -Check
+pwsh -NoProfile -File scripts/refresh_knowledge.ps1 -InstallHook
+```
+
+`-Check` 只检查、不改文件。`-InstallHook` 为当前 checkout 设置
+`core.hooksPath=.githooks`；此后 pre-commit 只在 staged 路径命中
+`research/knowledge/**`、`experiments/index.jsonl` 或知识工具时运行。它会拒绝混入
+相关的 unstaged/untracked 源文件，安全重建并自动 stage 生成索引；普通代码提交
+直接 `KNOWLEDGE SKIP`，不会承担知识回归成本。没有常驻 watcher 或后台进程。
 
 `validate` 会比较源文件 fingerprint；索引过期时明确失败，不允许悄悄使用旧判断。
 新增知识不是决策引擎的 KPI。只有真实故障暴露召回盲点或 successor 缺少机制时，

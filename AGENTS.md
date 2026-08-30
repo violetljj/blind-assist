@@ -83,6 +83,8 @@ These modes constrain the affected claim/action, not nearby reversible work.
 - Prefer Exa for external search, literature discovery, and multi-source research when available.
 - SkyDiscover is isolated and optional. BlindAssist owns its question, evaluator, evidence, decision, and claim; never mutate/clean SkyDiscover or use it to replace missing or fresh evidence.
 - Run Android/Gradle through `pwsh -NoProfile -File scripts/run_android_gradle.ps1 <tasks...>`.
+- Register new runs with `python tools/knowledge.py register-experiment`; never append `experiments/index.jsonl` manually.
+- Install the local changed-only knowledge hook once with `pwsh -NoProfile -File scripts/refresh_knowledge.ps1 -InstallHook`; run the same script directly for a full refresh.
 - Use `pwsh -NoProfile -File tools/ba.ps1 doctor <profile>` for `base`, both research routes, `android`, `device`, or `export`.
 - Keep machine paths, credentials, and endpoints in CLI arguments, ignored local config, environment variables, or the credential store.
 - Validate only the changed surface with `git diff --check`, structure for layout, and docs index for hot links; broaden only for the named risk.

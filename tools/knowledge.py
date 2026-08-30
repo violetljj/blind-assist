@@ -8,6 +8,7 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 import sys
 import time
 from collections import Counter
@@ -1454,7 +1455,7 @@ def _read_experiment_rows(repo_root: Path) -> list[dict[str, Any]]:
         if not isinstance(row, dict) or not _is_nonempty_string(row.get("id")):
             raise KnowledgeError(f"{path}:{line_number}: experiment row needs string id")
         context = f"{path}:{line_number}"
-        for field in ("protocol_id", "decision_id"):
+        for field in ("protocol_id", "code_revision", "decision_id"):
             if field in row and row[field] is not None and not _is_nonempty_string(
                 row[field]
             ):
@@ -1467,7 +1468,7 @@ def _read_experiment_rows(repo_root: Path) -> list[dict[str, Any]]:
             raise KnowledgeError(
                 f"{context}: input_fingerprint must be null or a SHA-256 hex digest"
             )
-        for field in ("use_ids", "artifact_refs"):
+        for field in ("use_ids", "input_refs", "artifact_refs"):
             if field not in row:
                 continue
             values = row[field]
@@ -1479,6 +1480,24 @@ def _read_experiment_rows(repo_root: Path) -> list[dict[str, Any]]:
                 )
             if len(values) != len(set(values)):
                 raise KnowledgeError(f"{context}: {field} contains duplicates")
+        input_refs = row.get("input_refs")
+        if isinstance(input_refs, list) and input_refs:
+            for reference in input_refs:
+                if not _is_safe_repo_relative(reference):
+                    raise KnowledgeError(
+                        f"{context}: unsafe input_refs path {reference}"
+                    )
+                if not (repo_root / PurePosixPath(reference)).is_file():
+                    raise KnowledgeError(
+                        f"{context}: missing input_refs path {reference}"
+                    )
+            expected_fingerprint = _experiment_input_fingerprint(
+                repo_root, input_refs
+            )
+            if row.get("input_fingerprint") != expected_fingerprint:
+                raise KnowledgeError(
+                    f"{context}: input_fingerprint does not match input_refs"
+                )
         rows.append(row)
     return rows
 
@@ -1681,12 +1700,23 @@ def _build_run_associations(
                 if _is_nonempty_string(value) and value not in artifact_refs:
                     artifact_refs.append(value)
 
+        declared_revision = _one_run_value(run_id, rows, "code_revision")
+        legacy_revision = _one_run_value(run_id, rows, "commit")
+        if (
+            declared_revision is not None
+            and legacy_revision is not None
+            and declared_revision != legacy_revision
+        ):
+            raise KnowledgeError(
+                f"experiment run {run_id}: code_revision does not match commit"
+            )
+
         associations.append(
             {
                 "run_id": run_id,
                 "use_ids": use_ids,
                 "protocol_id": _one_run_value(run_id, rows, "protocol_id"),
-                "code_revision": _one_run_value(run_id, rows, "commit"),
+                "code_revision": declared_revision or legacy_revision,
                 "input_fingerprint": _one_run_value(
                     run_id, rows, "input_fingerprint"
                 ),
@@ -1855,7 +1885,7 @@ def _build_decision_index_payload(
                 "decision": row.get("decision"),
                 "report": row.get("report"),
                 "source": row.get("source"),
-                "commit": row.get("commit"),
+                "commit": row.get("code_revision") or row.get("commit"),
                 "association_id": row["id"],
                 "routes": _infer_routes(search_text, config["route_profiles"]),
                 "layer_scores": _layer_scores_for_text(
@@ -1894,10 +1924,20 @@ def _command_build_decision_index(args: argparse.Namespace) -> int:
     config = _load_decision_config(args.root, items)
     payload = _build_decision_index_payload(args.root, items, uses, config)
     path = _decision_index_path(args.root)
-    _write_json_atomic(path, payload)
+    expected = (
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
+    ).encode("utf-8")
+    if args.check:
+        if not path.is_file() or path.read_bytes() != expected:
+            raise KnowledgeError(
+                "decision index is stale; run scripts/refresh_knowledge.ps1"
+            )
+    else:
+        _write_json_atomic(path, payload)
     counts = payload["counts"]
+    action = "PASS" if args.check else "BUILT"
     print(
-        f"BUILT {path}: layers={counts['failure_layers']} "
+        f"{action} {path}: layers={counts['failure_layers']} "
         f"mechanisms={counts['mechanisms']} uses={counts['uses']} "
         f"experiments={counts['experiments']} "
         f"current_terminals={counts['current_terminals']} "
@@ -3145,6 +3185,174 @@ def _command_update_use(args: argparse.Namespace) -> int:
     return 0
 
 
+def _repo_file_reference(repo_root: Path, reference: str, field: str) -> str:
+    normalized = reference.replace("\\", "/")
+    if not _is_safe_repo_relative(normalized):
+        raise KnowledgeError(f"{field} must be a safe repository-relative path")
+    if not (repo_root / PurePosixPath(normalized)).is_file():
+        raise KnowledgeError(f"{field} does not exist: {normalized}")
+    return normalized
+
+
+def _experiment_input_fingerprint(repo_root: Path, references: list[str]) -> str:
+    digest = hashlib.sha256()
+    for reference in sorted(references):
+        digest.update(reference.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update((repo_root / PurePosixPath(reference)).read_bytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def _current_git_revision(repo_root: Path) -> str:
+    result = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=repo_root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    revision = result.stdout.strip()
+    if result.returncode != 0 or not re.fullmatch(r"[0-9a-fA-F]{40}", revision):
+        raise KnowledgeError("could not resolve a full Git HEAD revision")
+    return revision.lower()
+
+
+def _append_jsonl_atomic(path: Path, row: dict[str, Any]) -> bytes | None:
+    original = path.read_bytes() if path.is_file() else None
+    prefix = original or b""
+    if prefix and not prefix.endswith(b"\n"):
+        prefix += b"\n"
+    serialized = json.dumps(
+        row, ensure_ascii=False, separators=(",", ":")
+    ).encode("utf-8") + b"\n"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    temporary.write_bytes(prefix + serialized)
+    os.replace(temporary, path)
+    return original
+
+
+def _restore_file_bytes(path: Path, original: bytes | None) -> None:
+    if original is None:
+        path.unlink(missing_ok=True)
+        return
+    temporary = path.with_name(f".{path.name}.{os.getpid()}.restore.tmp")
+    temporary.write_bytes(original)
+    os.replace(temporary, path)
+
+
+def _command_register_experiment(args: argparse.Namespace) -> int:
+    items, uses = _require_valid(args.root)
+    repo_root = args.root.parents[1]
+    for field, value in (
+        ("--id", args.id),
+        ("--protocol-id", args.protocol_id),
+    ):
+        if not ID_PATTERN.fullmatch(value):
+            raise KnowledgeError(f"{field} must match {ID_PATTERN.pattern}")
+    if args.decision_id is not None and not ID_PATTERN.fullmatch(args.decision_id):
+        raise KnowledgeError(f"--decision-id must match {ID_PATTERN.pattern}")
+    rows = _read_experiment_rows(repo_root)
+    if any(row["id"] == args.id for row in rows):
+        raise KnowledgeError(f"experiment id already exists: {args.id}")
+
+    use_ids = args.use_id or []
+    if len(use_ids) != len(set(use_ids)):
+        raise KnowledgeError("--use-id contains duplicates")
+    unknown_use_ids = sorted(set(use_ids) - uses.keys())
+    if unknown_use_ids:
+        raise KnowledgeError(f"unknown --use-id values: {unknown_use_ids}")
+
+    input_refs = [
+        _repo_file_reference(repo_root, reference, "--input")
+        for reference in args.input
+    ]
+    if len(input_refs) != len(set(input_refs)):
+        raise KnowledgeError("--input contains duplicates")
+    report = _repo_file_reference(repo_root, args.report, "--report")
+    artifact_refs = [report]
+    for reference in args.artifact_ref or []:
+        normalized = reference.replace("\\", "/")
+        if not normalized.startswith(("https://", "http://")) and not _is_safe_repo_relative(
+            normalized
+        ):
+            raise KnowledgeError(
+                "--artifact-ref must be HTTP(S) or a safe repository-relative path"
+            )
+        if normalized not in artifact_refs:
+            artifact_refs.append(normalized)
+
+    config = _load_decision_config(args.root, items)
+    if args.decision_id is not None:
+        terminals = _read_current_terminals(
+            args.root, {layer["id"] for layer in config["failure_layers"]}
+        )
+        terminal_ids = {terminal["id"] for terminal in terminals}
+        if args.decision_id not in terminal_ids:
+            raise KnowledgeError(f"unknown --decision-id: {args.decision_id}")
+
+    revision = args.code_revision or _current_git_revision(repo_root)
+    if not re.fullmatch(r"[0-9a-fA-F]{40}", revision):
+        raise KnowledgeError("--code-revision must be a full 40-character Git SHA")
+    revision = revision.lower()
+    for field in (
+        "question",
+        "baseline",
+        "change",
+        "primary_metric",
+        "decision",
+        "source",
+    ):
+        if not _is_nonempty_string(getattr(args, field)):
+            raise KnowledgeError(f"--{field.replace('_', '-')} must be non-empty")
+
+    row = {
+        "id": args.id,
+        "status": args.status,
+        "question": args.question,
+        "baseline": args.baseline,
+        "change": args.change,
+        "primary_metric": args.primary_metric,
+        "decision": args.decision,
+        "commit": revision,
+        "code_revision": revision,
+        "tag": args.tag,
+        "report": report,
+        "source": args.source,
+        "artifacts": artifact_refs[1] if len(artifact_refs) > 1 else None,
+        "use_ids": sorted(use_ids),
+        "protocol_id": args.protocol_id,
+        "input_refs": sorted(input_refs),
+        "input_fingerprint": _experiment_input_fingerprint(
+            repo_root, input_refs
+        ),
+        "artifact_refs": artifact_refs,
+        "decision_id": args.decision_id,
+    }
+
+    ledger = repo_root / "experiments" / "index.jsonl"
+    original = _append_jsonl_atomic(ledger, row)
+    try:
+        payload = _build_decision_index_payload(args.root, items, uses, config)
+        association_errors = _decision_association_errors(payload)
+        if association_errors:
+            raise KnowledgeError(
+                "new experiment produced invalid P1 associations:\n - "
+                + "\n - ".join(association_errors)
+            )
+        _write_json_atomic(_decision_index_path(args.root), payload)
+    except Exception:
+        _restore_file_bytes(ledger, original)
+        raise
+
+    print(
+        f"REGISTERED {args.id}: protocol={args.protocol_id} "
+        f"uses={len(use_ids)} artifacts={len(artifact_refs)}; decision index refreshed"
+    )
+    return 0
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Manage the BlindAssist research knowledge reserve."
@@ -3200,7 +3408,41 @@ def _build_parser() -> argparse.ArgumentParser:
         "build-decision-index",
         help="Compile items, uses, and experiments into the fast decision index.",
     )
+    build_decision_parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Fail without writing when the committed index is stale.",
+    )
     build_decision_parser.set_defaults(handler=_command_build_decision_index)
+
+    register_experiment_parser = subparsers.add_parser(
+        "register-experiment",
+        help="Append one experiment with explicit P1 lineage and refresh the index.",
+    )
+    register_experiment_parser.add_argument("--id", required=True)
+    register_experiment_parser.add_argument(
+        "--status", choices=("active", "archived"), required=True
+    )
+    register_experiment_parser.add_argument("--question", required=True)
+    register_experiment_parser.add_argument("--baseline", required=True)
+    register_experiment_parser.add_argument("--change", required=True)
+    register_experiment_parser.add_argument("--primary-metric", required=True)
+    register_experiment_parser.add_argument("--decision", required=True)
+    register_experiment_parser.add_argument("--report", required=True)
+    register_experiment_parser.add_argument("--source", required=True)
+    register_experiment_parser.add_argument("--protocol-id", required=True)
+    register_experiment_parser.add_argument(
+        "--input",
+        action="append",
+        required=True,
+        help="Repository-relative input/manifest file; repeat as needed.",
+    )
+    register_experiment_parser.add_argument("--use-id", action="append")
+    register_experiment_parser.add_argument("--artifact-ref", action="append")
+    register_experiment_parser.add_argument("--decision-id")
+    register_experiment_parser.add_argument("--code-revision")
+    register_experiment_parser.add_argument("--tag")
+    register_experiment_parser.set_defaults(handler=_command_register_experiment)
 
     diagnose_parser = subparsers.add_parser(
         "diagnose",

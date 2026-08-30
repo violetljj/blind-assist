@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+
+repo_root=$(git rev-parse --show-toplevel)
+cd "$repo_root"
+exec pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/refresh_knowledge.ps1 -IfChanged -Staged -StageGenerated
