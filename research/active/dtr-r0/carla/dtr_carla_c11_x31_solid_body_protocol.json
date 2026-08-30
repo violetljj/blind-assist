@@ -1,0 +1,4304 @@
+{
+  "schema_version": 11,
+  "experiment_id": "DTR_CARLA_C2_RICH_MULTILAYOUT_OCCLUSION_SOURCE_V2",
+  "evidence_class": "synthetic_fresh_source_disjoint_x31_solid_body_development_source",
+  "objective": "Run one fresh Development capture with one standardized solid-body firetruck and one monotonic lateral pass per layout, after consumed C10 proved the Fusorosa OBB reachable but its raster silhouette permeable.",
+  "environment": {
+    "carla_version": "0.9.16",
+    "map": "Carla/Maps/Town10HD_Opt",
+    "sample_seconds": 0.1,
+    "fixed_delta_seconds": 0.1,
+    "surface_projection_lane_type": "Any"
+  },
+  "capture": {
+    "seed": 131365,
+    "sensor_order": [
+      "instance",
+      "wearable",
+      "depth",
+      "witness"
+    ],
+    "fresh_server_per_sensor": true,
+    "one_long_lived_camera_per_sensor": true,
+    "resolution": [
+      1280,
+      720
+    ],
+    "fov_degrees": 90.0,
+    "wearable_relative_transform": {
+      "x_m": 0.08,
+      "y_m": 0.0,
+      "z_m": 0.65,
+      "pitch_degrees": -5.0,
+      "yaw_degrees": 0.0,
+      "roll_degrees": 0.0
+    },
+    "camera_calibration": {
+      "intrinsic_convention": "CARLA_PINHOLE_K_WIDTH_OVER_2",
+      "principal_point": [
+        640.0,
+        360.0
+      ],
+      "focal_length_pixels": [
+        640.0,
+        640.0
+      ],
+      "depth_codec": {
+        "name": "CARLA_RGB24_NORMALIZED_DEPTH",
+        "maximum_depth_m": 1000.0,
+        "formula": "meters=1000*(R+256*G+65536*B)/(16777215)"
+      }
+    },
+    "render_quality_level": "Low",
+    "render_backend": "dx12"
+  },
+  "route_contract": {
+    "wearer_body_radius_m": 0.45,
+    "future_horizon_seconds": 3.0
+  },
+  "admission": {
+    "expected_episode_count": 8,
+    "expected_layout_count": 4,
+    "minimum_active_assets_per_layout_excluding_wearer": 28,
+    "minimum_unique_actual_blueprints_across_pack": 60,
+    "required_resolution": [
+      1280,
+      720
+    ],
+    "required_model_modalities": [
+      "wearable",
+      "depth"
+    ],
+    "required_evaluator_modalities": [
+      "instance",
+      "witness"
+    ],
+    "require_zero_blueprint_fallbacks": true,
+    "c11_solid_body_source_gates": {
+      "all_episodes_new_capture": true,
+      "minimum_full_occlusion_frames": 6,
+      "maximum_full_occlusion_frames": 13,
+      "minimum_pre_track_frames": 10,
+      "minimum_post_reappearance_frames": 8,
+      "one_episode_per_occlusion_contract": true,
+      "cross_outcome_occlusion_indices_must_match": false,
+      "same_blueprint_alias_required": true,
+      "alias_and_occluder_must_be_contact_safe": true,
+      "failure_disposition": "WHOLE_COHORT_NOT_EVALUABLE_NO_RESEED_OR_SUBSTITUTION",
+      "all_scripted_pose_assets_explicitly_collision_disabled": true,
+      "maximum_fresh_capture_attempts": 1,
+      "resume_replay_reseed_substitution_or_partial_selection_allowed": false,
+      "all_four_occluders_exact_single_pass_trajectory": true,
+      "static_3d_obb_launch_falsifier_required": true,
+      "static_falsifier_is_not_pixel_or_outcome_proof": true,
+      "formal_instance_pixels_remain_occlusion_authority": true,
+      "all_four_occluders_exact_solid_body_firetruck_blueprint": true,
+      "c10_raster_permeable_bus_representation_removed": true
+    }
+  },
+  "occlusion_contracts": [
+    {
+      "contract_id": "c8_transport_cone_loss_ep_01",
+      "episodes": [
+        "ep_01"
+      ],
+      "target_asset": "c8_l01_target",
+      "occluder_asset": "c8_l01_occluder",
+      "alias_asset": "c8_l01_alias",
+      "pair_index": 1,
+      "minimum_pre_track_frames": 10,
+      "minimum_post_reappearance_frames": 8,
+      "minimum_trackable_pixel_fraction": 0.0002,
+      "complete_occlusion_pixel_fraction": 0.0,
+      "minimum_complete_occlusion_seconds": 0.6,
+      "maximum_complete_occlusion_seconds": 1.3,
+      "required_outcomes": {
+        "ep_01": "CONTACT"
+      },
+      "alias_stress": {
+        "same_exact_blueprint_as_target": true,
+        "minimum_alias_visible_boundary_frames": 4,
+        "minimum_projected_bbox_iou": 0.25,
+        "minimum_bbox_iou_frames": 3,
+        "alias_must_remain_contact_safe": true
+      },
+      "planned_occlusion_window_s": [
+        1.3,
+        2.4
+      ]
+    },
+    {
+      "contract_id": "c8_transport_cone_loss_ep_02",
+      "episodes": [
+        "ep_02"
+      ],
+      "target_asset": "c8_l01_target",
+      "occluder_asset": "c8_l01_occluder",
+      "alias_asset": "c8_l01_alias",
+      "pair_index": 1,
+      "minimum_pre_track_frames": 10,
+      "minimum_post_reappearance_frames": 8,
+      "minimum_trackable_pixel_fraction": 0.0002,
+      "complete_occlusion_pixel_fraction": 0.0,
+      "minimum_complete_occlusion_seconds": 0.6,
+      "maximum_complete_occlusion_seconds": 1.3,
+      "required_outcomes": {
+        "ep_02": "SAFE"
+      },
+      "alias_stress": {
+        "same_exact_blueprint_as_target": true,
+        "minimum_alias_visible_boundary_frames": 4,
+        "minimum_projected_bbox_iou": 0.25,
+        "minimum_bbox_iou_frames": 3,
+        "alias_must_remain_contact_safe": true
+      },
+      "planned_occlusion_window_s": [
+        1.3,
+        2.4
+      ]
+    },
+    {
+      "contract_id": "c8_transport_cone_loss_ep_03",
+      "episodes": [
+        "ep_03"
+      ],
+      "target_asset": "c8_l02_target",
+      "occluder_asset": "c8_l02_occluder",
+      "alias_asset": "c8_l02_alias",
+      "pair_index": 2,
+      "minimum_pre_track_frames": 10,
+      "minimum_post_reappearance_frames": 8,
+      "minimum_trackable_pixel_fraction": 0.0002,
+      "complete_occlusion_pixel_fraction": 0.0,
+      "minimum_complete_occlusion_seconds": 0.6,
+      "maximum_complete_occlusion_seconds": 1.3,
+      "required_outcomes": {
+        "ep_03": "CONTACT"
+      },
+      "alias_stress": {
+        "same_exact_blueprint_as_target": true,
+        "minimum_alias_visible_boundary_frames": 4,
+        "minimum_projected_bbox_iou": 0.25,
+        "minimum_bbox_iou_frames": 3,
+        "alias_must_remain_contact_safe": true
+      },
+      "planned_occlusion_window_s": [
+        1.3,
+        2.4
+      ]
+    },
+    {
+      "contract_id": "c8_transport_cone_loss_ep_04",
+      "episodes": [
+        "ep_04"
+      ],
+      "target_asset": "c8_l02_target",
+      "occluder_asset": "c8_l02_occluder",
+      "alias_asset": "c8_l02_alias",
+      "pair_index": 2,
+      "minimum_pre_track_frames": 10,
+      "minimum_post_reappearance_frames": 8,
+      "minimum_trackable_pixel_fraction": 0.0002,
+      "complete_occlusion_pixel_fraction": 0.0,
+      "minimum_complete_occlusion_seconds": 0.6,
+      "maximum_complete_occlusion_seconds": 1.3,
+      "required_outcomes": {
+        "ep_04": "SAFE"
+      },
+      "alias_stress": {
+        "same_exact_blueprint_as_target": true,
+        "minimum_alias_visible_boundary_frames": 4,
+        "minimum_projected_bbox_iou": 0.25,
+        "minimum_bbox_iou_frames": 3,
+        "alias_must_remain_contact_safe": true
+      },
+      "planned_occlusion_window_s": [
+        1.3,
+        2.4
+      ]
+    },
+    {
+      "contract_id": "c8_transport_cone_loss_ep_05",
+      "episodes": [
+        "ep_05"
+      ],
+      "target_asset": "c8_l03_target",
+      "occluder_asset": "c8_l03_occluder",
+      "alias_asset": "c8_l03_alias",
+      "pair_index": 3,
+      "minimum_pre_track_frames": 10,
+      "minimum_post_reappearance_frames": 8,
+      "minimum_trackable_pixel_fraction": 0.0002,
+      "complete_occlusion_pixel_fraction": 0.0,
+      "minimum_complete_occlusion_seconds": 0.6,
+      "maximum_complete_occlusion_seconds": 1.3,
+      "required_outcomes": {
+        "ep_05": "CONTACT"
+      },
+      "alias_stress": {
+        "same_exact_blueprint_as_target": true,
+        "minimum_alias_visible_boundary_frames": 4,
+        "minimum_projected_bbox_iou": 0.25,
+        "minimum_bbox_iou_frames": 3,
+        "alias_must_remain_contact_safe": true
+      },
+      "planned_occlusion_window_s": [
+        1.2,
+        2.3
+      ]
+    },
+    {
+      "contract_id": "c8_transport_cone_loss_ep_06",
+      "episodes": [
+        "ep_06"
+      ],
+      "target_asset": "c8_l03_target",
+      "occluder_asset": "c8_l03_occluder",
+      "alias_asset": "c8_l03_alias",
+      "pair_index": 3,
+      "minimum_pre_track_frames": 10,
+      "minimum_post_reappearance_frames": 8,
+      "minimum_trackable_pixel_fraction": 0.0002,
+      "complete_occlusion_pixel_fraction": 0.0,
+      "minimum_complete_occlusion_seconds": 0.6,
+      "maximum_complete_occlusion_seconds": 1.3,
+      "required_outcomes": {
+        "ep_06": "SAFE"
+      },
+      "alias_stress": {
+        "same_exact_blueprint_as_target": true,
+        "minimum_alias_visible_boundary_frames": 4,
+        "minimum_projected_bbox_iou": 0.25,
+        "minimum_bbox_iou_frames": 3,
+        "alias_must_remain_contact_safe": true
+      },
+      "planned_occlusion_window_s": [
+        1.2,
+        2.3
+      ]
+    },
+    {
+      "contract_id": "c8_transport_cone_loss_ep_07",
+      "episodes": [
+        "ep_07"
+      ],
+      "target_asset": "c8_l04_target",
+      "occluder_asset": "c8_l04_occluder",
+      "alias_asset": "c8_l04_alias",
+      "pair_index": 4,
+      "minimum_pre_track_frames": 10,
+      "minimum_post_reappearance_frames": 8,
+      "minimum_trackable_pixel_fraction": 0.0002,
+      "complete_occlusion_pixel_fraction": 0.0,
+      "minimum_complete_occlusion_seconds": 0.6,
+      "maximum_complete_occlusion_seconds": 1.3,
+      "required_outcomes": {
+        "ep_07": "CONTACT"
+      },
+      "alias_stress": {
+        "same_exact_blueprint_as_target": true,
+        "minimum_alias_visible_boundary_frames": 4,
+        "minimum_projected_bbox_iou": 0.25,
+        "minimum_bbox_iou_frames": 3,
+        "alias_must_remain_contact_safe": true
+      },
+      "planned_occlusion_window_s": [
+        1.5,
+        2.5
+      ]
+    },
+    {
+      "contract_id": "c8_transport_cone_loss_ep_08",
+      "episodes": [
+        "ep_08"
+      ],
+      "target_asset": "c8_l04_target",
+      "occluder_asset": "c8_l04_occluder",
+      "alias_asset": "c8_l04_alias",
+      "pair_index": 4,
+      "minimum_pre_track_frames": 10,
+      "minimum_post_reappearance_frames": 8,
+      "minimum_trackable_pixel_fraction": 0.0002,
+      "complete_occlusion_pixel_fraction": 0.0,
+      "minimum_complete_occlusion_seconds": 0.6,
+      "maximum_complete_occlusion_seconds": 1.3,
+      "required_outcomes": {
+        "ep_08": "SAFE"
+      },
+      "alias_stress": {
+        "same_exact_blueprint_as_target": true,
+        "minimum_alias_visible_boundary_frames": 4,
+        "minimum_projected_bbox_iou": 0.25,
+        "minimum_bbox_iou_frames": 3,
+        "alias_must_remain_contact_safe": true
+      },
+      "planned_occlusion_window_s": [
+        1.5,
+        2.5
+      ]
+    }
+  ],
+  "wearer": {
+    "asset_key": "wearer",
+    "track_id": "m_00",
+    "role": "wearer",
+    "kind": "walker",
+    "blueprint_candidates": [
+      "walker.pedestrian.0001"
+    ],
+    "surface_offset_m": 0.8,
+    "collision_relevant": false,
+    "scripted_invincible": true
+  },
+  "asset_templates": {
+    "w01": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0002"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w02": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0003"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w03": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0004"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w04": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0005"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w05": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0006"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w06": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0007"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w07": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0008"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w08": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0009"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w09": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0010"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w10": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0011"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w11": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0012"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w12": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0013"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w13": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0014"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w14": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0015"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w15": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0016"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w16": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0017"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w17": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0018"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w18": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0019"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w19": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0020"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w20": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0021"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w21": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0022"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "w22": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0023"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "v_sprinter": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.mercedes.sprinter"
+      ],
+      "surface_offset_m": 0.3,
+      "collision_relevant": true
+    },
+    "v_bus": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.mitsubishi.fusorosa"
+      ],
+      "surface_offset_m": 0.3,
+      "collision_relevant": true
+    },
+    "v_hgv": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.carlamotors.european_hgv"
+      ],
+      "surface_offset_m": 0.3,
+      "collision_relevant": true
+    },
+    "v_cola": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.carlamotors.carlacola"
+      ],
+      "surface_offset_m": 0.3,
+      "collision_relevant": true
+    },
+    "v_micro": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.micro.microlino"
+      ],
+      "surface_offset_m": 0.3,
+      "collision_relevant": true
+    },
+    "v_model3": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.tesla.model3"
+      ],
+      "surface_offset_m": 0.3,
+      "collision_relevant": true
+    },
+    "v_prius": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.toyota.prius"
+      ],
+      "surface_offset_m": 0.3,
+      "collision_relevant": true
+    },
+    "v_police": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.dodge.charger_police_2020"
+      ],
+      "surface_offset_m": 0.3,
+      "collision_relevant": true
+    },
+    "v_ambulance": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.ford.ambulance"
+      ],
+      "surface_offset_m": 0.3,
+      "collision_relevant": true
+    },
+    "v_firetruck": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.carlamotors.firetruck"
+      ],
+      "surface_offset_m": 0.3,
+      "collision_relevant": true
+    },
+    "v_crossbike": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.bh.crossbike"
+      ],
+      "surface_offset_m": 0.25,
+      "collision_relevant": true
+    },
+    "v_diamond": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.diamondback.century"
+      ],
+      "surface_offset_m": 0.25,
+      "collision_relevant": true
+    },
+    "v_gazelle": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.gazelle.omafiets"
+      ],
+      "surface_offset_m": 0.25,
+      "collision_relevant": true
+    },
+    "v_vespa": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.vespa.zx125"
+      ],
+      "surface_offset_m": 0.25,
+      "collision_relevant": true
+    },
+    "v_harley": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.harley-davidson.low_rider"
+      ],
+      "surface_offset_m": 0.25,
+      "collision_relevant": true
+    },
+    "v_kawasaki": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.kawasaki.ninja"
+      ],
+      "surface_offset_m": 0.25,
+      "collision_relevant": true
+    },
+    "p_barrier": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.streetbarrier"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_cone": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.constructioncone"
+      ],
+      "surface_offset_m": 0.03,
+      "collision_relevant": false
+    },
+    "p_warning": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.warningconstruction"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": false
+    },
+    "p_container": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.container"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_ad": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.advertisement"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": false
+    },
+    "p_streetsign": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.streetsign"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": false
+    },
+    "p_trash1": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.trashcan01"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_bench1": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.bench01"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_mailbox": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.mailbox"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_bin": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.bin"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_chain": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.chainbarrier"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_chainend": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.chainbarrierend"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_plant1": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.plantpot01"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_garbage1": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.garbage01"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": false
+    },
+    "p_busstop": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.busstop"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_busstoplb": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.busstoplb"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_bench2": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.bench02"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_bench3": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.bench03"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_vending": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.vendingmachine"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_kiosk": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.kiosk_01"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_cart": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.shoppingcart"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_trolley": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.shoppingtrolley"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_atm": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.atm"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_cloth": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.clothcontainer"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_garbage3": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.garbage03"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": false
+    },
+    "p_foodcart": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.foodcart"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_fountain": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.fountain"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_bbq": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.barbeque"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_table": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.table"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_chair": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.plasticchair"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_streetfountain": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.streetfountain"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_plant4": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.plantpot04"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_plant7": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.plantpot07"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_trash3": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.trashcan03"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "p_pergola": {
+      "kind": "prop",
+      "blueprint_candidates": [
+        "static.prop.pergola"
+      ],
+      "surface_offset_m": 0.05,
+      "collision_relevant": true
+    },
+    "w23": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0024"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "v_c7_audi_tt": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.audi.tt"
+      ],
+      "surface_offset_m": 0.3,
+      "collision_relevant": true
+    },
+    "w_c7_0025": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0025"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "v_c7_kawasaki": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.kawasaki.ninja"
+      ],
+      "surface_offset_m": 0.25,
+      "collision_relevant": true
+    },
+    "w_c8_0044": {
+      "kind": "walker",
+      "blueprint_candidates": [
+        "walker.pedestrian.0044"
+      ],
+      "surface_offset_m": 0.8,
+      "collision_relevant": true
+    },
+    "v_c8_impala": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.chevrolet.impala"
+      ],
+      "surface_offset_m": 0.3,
+      "collision_relevant": true
+    },
+    "v_c8_t2": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.volkswagen.t2"
+      ],
+      "surface_offset_m": 0.3,
+      "collision_relevant": true
+    },
+    "v_c8_charger_police": {
+      "kind": "vehicle",
+      "blueprint_candidates": [
+        "vehicle.dodge.charger_police"
+      ],
+      "surface_offset_m": 0.3,
+      "collision_relevant": true
+    }
+  },
+  "trajectory_library": {
+    "wearer_pair": {
+      "start_forward_m": -4.0,
+      "start_right_m": 0.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 1.6,
+          "velocity_forward_mps": 1.5,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "wearer_showcase": {
+      "start_forward_m": -5.0,
+      "start_right_m": 0.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.35,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "target_contact": {
+      "start_forward_m": 0.0,
+      "start_right_m": 0.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "target_safe": {
+      "start_forward_m": 0.0,
+      "start_right_m": 0.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 2.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 2.0
+        }
+      ]
+    },
+    "moving_occluder_cross": {
+      "start_forward_m": -1.5,
+      "start_right_m": 8.0,
+      "yaw_offset_degrees": -90.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 0.6,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": -12.0
+        },
+        {
+          "start_s": 1.9,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "walker_forward_slow": {
+      "start_forward_m": 4.0,
+      "start_right_m": -5.5,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.5,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "walker_cross_safe": {
+      "start_forward_m": 7.0,
+      "start_right_m": 5.5,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": -0.6
+        }
+      ]
+    },
+    "bike_parallel": {
+      "start_forward_m": 8.0,
+      "start_right_m": -6.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 1.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "wearer_footprint_probe": {
+      "start_forward_m": -6.0,
+      "start_right_m": 0.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 2.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "bus_edge_contact": {
+      "start_forward_m": 8.0,
+      "start_right_m": 2.2,
+      "yaw_offset_degrees": 0.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "bus_edge_safe": {
+      "start_forward_m": 8.0,
+      "start_right_m": 3.0,
+      "yaw_offset_degrees": 0.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "bike_edge_contact": {
+      "start_forward_m": 5.0,
+      "start_right_m": 1.0,
+      "yaw_offset_degrees": 90.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "bike_edge_safe": {
+      "start_forward_m": 5.0,
+      "start_right_m": 1.6,
+      "yaw_offset_degrees": 90.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "hgv_edge_contact": {
+      "start_forward_m": 8.0,
+      "start_right_m": 1.7,
+      "yaw_offset_degrees": 0.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "hgv_edge_safe": {
+      "start_forward_m": 8.0,
+      "start_right_m": 2.5,
+      "yaw_offset_degrees": 0.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "motorcycle_edge_contact": {
+      "start_forward_m": 5.0,
+      "start_right_m": 1.4,
+      "yaw_offset_degrees": 90.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "motorcycle_edge_safe": {
+      "start_forward_m": 5.0,
+      "start_right_m": 2.2,
+      "yaw_offset_degrees": 90.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "sprinter_oncoming_contact": {
+      "start_forward_m": 8.0,
+      "start_right_m": 1.2,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -2.0,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 4.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "sprinter_oncoming_safe": {
+      "start_forward_m": 8.0,
+      "start_right_m": 2.5,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -2.0,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 4.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "walker_oncoming_contact": {
+      "start_forward_m": 8.0,
+      "start_right_m": 0.3,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -2.0,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 4.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "walker_oncoming_safe": {
+      "start_forward_m": 8.0,
+      "start_right_m": 1.15,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -2.0,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 4.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c7_vehicle_contact": {
+      "start_forward_m": 9.0,
+      "start_right_m": 1.1,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -2.2,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 4.2,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c7_vehicle_safe": {
+      "start_forward_m": 9.0,
+      "start_right_m": 2.15,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -2.2,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 4.2,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c7_walker_contact": {
+      "start_forward_m": 8.5,
+      "start_right_m": 0.2,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -1.8,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 4.5,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c7_walker_safe": {
+      "start_forward_m": 8.5,
+      "start_right_m": 1.1,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -1.8,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 4.5,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c7_motorcycle_contact": {
+      "start_forward_m": 9.0,
+      "start_right_m": 0.6,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -2.5,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 4.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c7_motorcycle_safe": {
+      "start_forward_m": 9.0,
+      "start_right_m": 1.45,
+      "yaw_offset_degrees": 180.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -2.5,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 4.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c8_wearer_route": {
+      "start_forward_m": -6.0,
+      "start_right_m": 0.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 1.9,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 1.0,
+          "velocity_forward_mps": 2.05,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 5.0,
+          "velocity_forward_mps": 2.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c8_l01_target_contact": {
+      "start_forward_m": 8.5,
+      "start_right_m": 0.2,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -1.6,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 1.3,
+          "velocity_forward_mps": -2.0,
+          "velocity_right_mps": 0.05
+        },
+        {
+          "start_s": 2.4,
+          "velocity_forward_mps": -1.1,
+          "velocity_right_mps": -0.05
+        },
+        {
+          "start_s": 4.6,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c8_l01_target_safe": {
+      "start_forward_m": 8.5,
+      "start_right_m": 1.45,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -1.6,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 1.3,
+          "velocity_forward_mps": -2.0,
+          "velocity_right_mps": 0.05
+        },
+        {
+          "start_s": 2.4,
+          "velocity_forward_mps": -1.1,
+          "velocity_right_mps": -0.05
+        },
+        {
+          "start_s": 4.6,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c8_l02_target_contact": {
+      "start_forward_m": 10.0,
+      "start_right_m": 0.5,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -2.3,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 1.4,
+          "velocity_forward_mps": -1.6,
+          "velocity_right_mps": -0.1
+        },
+        {
+          "start_s": 2.5,
+          "velocity_forward_mps": -2.4,
+          "velocity_right_mps": 0.1
+        },
+        {
+          "start_s": 4.4,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c8_l02_target_safe": {
+      "start_forward_m": 10.0,
+      "start_right_m": 2.5,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -2.3,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 1.4,
+          "velocity_forward_mps": -1.6,
+          "velocity_right_mps": -0.1
+        },
+        {
+          "start_s": 2.5,
+          "velocity_forward_mps": -2.4,
+          "velocity_right_mps": 0.1
+        },
+        {
+          "start_s": 4.4,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c8_l03_target_contact": {
+      "start_forward_m": 9.2,
+      "start_right_m": -0.45,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -2.0,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 1.2,
+          "velocity_forward_mps": -2.7,
+          "velocity_right_mps": 0.15
+        },
+        {
+          "start_s": 2.2,
+          "velocity_forward_mps": -1.8,
+          "velocity_right_mps": -0.15
+        },
+        {
+          "start_s": 4.5,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c8_l03_target_safe": {
+      "start_forward_m": 9.2,
+      "start_right_m": -2.65,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -2.0,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 1.2,
+          "velocity_forward_mps": -2.7,
+          "velocity_right_mps": 0.15
+        },
+        {
+          "start_s": 2.2,
+          "velocity_forward_mps": -1.8,
+          "velocity_right_mps": -0.15
+        },
+        {
+          "start_s": 4.5,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c8_l04_target_contact": {
+      "start_forward_m": 10.8,
+      "start_right_m": 0.55,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -2.8,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 1.5,
+          "velocity_forward_mps": -1.5,
+          "velocity_right_mps": -0.2
+        },
+        {
+          "start_s": 2.5,
+          "velocity_forward_mps": -2.2,
+          "velocity_right_mps": 0.2
+        },
+        {
+          "start_s": 4.6,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c8_l04_target_safe": {
+      "start_forward_m": 10.8,
+      "start_right_m": 2.95,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -2.8,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 1.5,
+          "velocity_forward_mps": -1.5,
+          "velocity_right_mps": -0.2
+        },
+        {
+          "start_s": 2.5,
+          "velocity_forward_mps": -2.2,
+          "velocity_right_mps": 0.2
+        },
+        {
+          "start_s": 4.6,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c8_l01_alias_safe": {
+      "start_forward_m": 7.9,
+      "start_right_m": -2.2,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -1.4,
+          "velocity_right_mps": 0.05
+        },
+        {
+          "start_s": 1.5,
+          "velocity_forward_mps": -1.0,
+          "velocity_right_mps": 0.2
+        },
+        {
+          "start_s": 2.5,
+          "velocity_forward_mps": -1.5,
+          "velocity_right_mps": -0.2
+        },
+        {
+          "start_s": 4.5,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c8_l02_alias_safe": {
+      "start_forward_m": 8.8,
+      "start_right_m": -3.2,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -1.8,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 1.4,
+          "velocity_forward_mps": -2.2,
+          "velocity_right_mps": 0.15
+        },
+        {
+          "start_s": 2.5,
+          "velocity_forward_mps": -1.3,
+          "velocity_right_mps": -0.15
+        },
+        {
+          "start_s": 4.6,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c8_l03_alias_safe": {
+      "start_forward_m": 10.0,
+      "start_right_m": 3.4,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -2.2,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 1.2,
+          "velocity_forward_mps": -1.5,
+          "velocity_right_mps": -0.2
+        },
+        {
+          "start_s": 2.3,
+          "velocity_forward_mps": -2.4,
+          "velocity_right_mps": 0.2
+        },
+        {
+          "start_s": 4.4,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c8_l04_alias_safe": {
+      "start_forward_m": 9.8,
+      "start_right_m": -3.6,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": -2.0,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 1.5,
+          "velocity_forward_mps": -2.5,
+          "velocity_right_mps": 0.2
+        },
+        {
+          "start_s": 2.6,
+          "velocity_forward_mps": -1.2,
+          "velocity_right_mps": -0.2
+        },
+        {
+          "start_s": 4.5,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c8_l01_occluder_cross": {
+      "start_forward_m": 3.2,
+      "start_right_m": 8.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 0.9,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": -10.0
+        },
+        {
+          "start_s": 2.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c8_l02_occluder_cross": {
+      "start_forward_m": 3.2,
+      "start_right_m": 8.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 0.9,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": -10.0
+        },
+        {
+          "start_s": 2.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c8_l03_occluder_cross": {
+      "start_forward_m": 3.2,
+      "start_right_m": 8.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 0.9,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": -10.0
+        },
+        {
+          "start_s": 2.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    },
+    "c8_l04_occluder_cross": {
+      "start_forward_m": 3.2,
+      "start_right_m": 8.0,
+      "segments": [
+        {
+          "start_s": 0.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        },
+        {
+          "start_s": 0.9,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": -10.0
+        },
+        {
+          "start_s": 2.0,
+          "velocity_forward_mps": 0.0,
+          "velocity_right_mps": 0.0
+        }
+      ]
+    }
+  },
+  "layouts": {
+    "c8_l01": {
+      "display_name": "c8_transport_cone_adult_alias_occlusion",
+      "weather": "HardRainSunset",
+      "duration_seconds": 9.0,
+      "showcase_time_s": 2.0,
+      "anchor": {
+        "center_xy_m": [
+          -46.934195,
+          36.51329
+        ],
+        "forward_xy": [
+          0.999999564,
+          0.000933925
+        ],
+        "right_xy": [
+          -0.000933925,
+          0.999999564
+        ]
+      },
+      "witness": {
+        "forward_m": -4.5,
+        "right_m": -11.0,
+        "z_m": 13.0,
+        "look_at_forward_m": 2.0,
+        "look_at_right_m": 0.0,
+        "look_at_z_m": 1.0
+      },
+      "assets": [
+        {
+          "asset_key": "walker_parallel_1",
+          "track_id": "a_03",
+          "role": "dynamic_distractor",
+          "template": "w02",
+          "trajectory": "walker_forward_slow"
+        },
+        {
+          "asset_key": "walker_cross_1",
+          "track_id": "a_04",
+          "role": "dynamic_distractor",
+          "template": "w03",
+          "trajectory": "walker_cross_safe"
+        },
+        {
+          "asset_key": "walker_hold_1",
+          "track_id": "a_05",
+          "role": "crowd",
+          "template": "w04",
+          "fixed_pose": {
+            "forward_m": 3.8,
+            "right_m": 4.65,
+            "yaw_offset_degrees": -84.0
+          }
+        },
+        {
+          "asset_key": "walker_hold_2",
+          "track_id": "a_06",
+          "role": "crowd",
+          "template": "w05",
+          "fixed_pose": {
+            "forward_m": 5.7,
+            "right_m": -4.3,
+            "yaw_offset_degrees": 85.0
+          }
+        },
+        {
+          "asset_key": "walker_hold_3",
+          "track_id": "a_07",
+          "role": "crowd",
+          "template": "w06",
+          "fixed_pose": {
+            "forward_m": 8.75,
+            "right_m": 5.25,
+            "yaw_offset_degrees": -86.0
+          }
+        },
+        {
+          "asset_key": "walker_hold_4",
+          "track_id": "a_08",
+          "role": "crowd",
+          "template": "w07",
+          "fixed_pose": {
+            "forward_m": 10.15,
+            "right_m": -4.7,
+            "yaw_offset_degrees": 87.0
+          }
+        },
+        {
+          "asset_key": "bike_parallel",
+          "track_id": "a_09",
+          "role": "micromobility",
+          "template": "v_crossbike",
+          "trajectory": "bike_parallel"
+        },
+        {
+          "asset_key": "scooter_parked",
+          "track_id": "a_10",
+          "role": "micromobility",
+          "template": "v_vespa",
+          "fixed_pose": {
+            "forward_m": 2.7,
+            "right_m": -6.0,
+            "yaw_offset_degrees": -5.0
+          }
+        },
+        {
+          "asset_key": "microcar_parked",
+          "track_id": "a_11",
+          "role": "parked_vehicle",
+          "template": "v_micro",
+          "fixed_pose": {
+            "forward_m": 6.75,
+            "right_m": 6.25,
+            "yaw_offset_degrees": 4.0
+          }
+        },
+        {
+          "asset_key": "prius_parked",
+          "track_id": "a_12",
+          "role": "parked_vehicle",
+          "template": "v_prius",
+          "fixed_pose": {
+            "forward_m": 11.15,
+            "right_m": 6.8,
+            "yaw_offset_degrees": -3.0
+          }
+        },
+        {
+          "asset_key": "model3_parked",
+          "track_id": "a_13",
+          "role": "parked_vehicle",
+          "template": "v_model3",
+          "fixed_pose": {
+            "forward_m": 11.8,
+            "right_m": -6.65,
+            "yaw_offset_degrees": 186.0
+          }
+        },
+        {
+          "asset_key": "barrier",
+          "track_id": "a_14",
+          "role": "workzone",
+          "template": "p_barrier",
+          "fixed_pose": {
+            "forward_m": 3.2,
+            "right_m": 3.2,
+            "yaw_offset_degrees": 85.0
+          }
+        },
+        {
+          "asset_key": "cone",
+          "track_id": "a_15",
+          "role": "workzone",
+          "template": "p_cone",
+          "fixed_pose": {
+            "forward_m": 2.75,
+            "right_m": 1.75,
+            "yaw_offset_degrees": 4.0
+          }
+        },
+        {
+          "asset_key": "warning",
+          "track_id": "a_16",
+          "role": "workzone",
+          "template": "p_warning",
+          "fixed_pose": {
+            "forward_m": 5.15,
+            "right_m": 3.8,
+            "yaw_offset_degrees": -93.0
+          }
+        },
+        {
+          "asset_key": "container",
+          "track_id": "a_17",
+          "role": "workzone",
+          "template": "p_container",
+          "fixed_pose": {
+            "forward_m": 9.8,
+            "right_m": 7.85,
+            "yaw_offset_degrees": 6.0
+          }
+        },
+        {
+          "asset_key": "advertisement",
+          "track_id": "a_18",
+          "role": "street_furniture",
+          "template": "p_ad",
+          "fixed_pose": {
+            "forward_m": 6.7,
+            "right_m": -6.8,
+            "yaw_offset_degrees": 85.0
+          }
+        },
+        {
+          "asset_key": "street_sign",
+          "track_id": "a_19",
+          "role": "street_furniture",
+          "template": "p_streetsign",
+          "fixed_pose": {
+            "forward_m": 5.25,
+            "right_m": -4.25,
+            "yaw_offset_degrees": 4.0
+          }
+        },
+        {
+          "asset_key": "trashcan",
+          "track_id": "a_20",
+          "role": "street_furniture",
+          "template": "p_trash1",
+          "fixed_pose": {
+            "forward_m": 4.65,
+            "right_m": -5.7,
+            "yaw_offset_degrees": -3.0
+          }
+        },
+        {
+          "asset_key": "bench",
+          "track_id": "a_21",
+          "role": "street_furniture",
+          "template": "p_bench1",
+          "fixed_pose": {
+            "forward_m": 7.8,
+            "right_m": -7.15,
+            "yaw_offset_degrees": 96.0
+          }
+        },
+        {
+          "asset_key": "mailbox",
+          "track_id": "a_22",
+          "role": "street_furniture",
+          "template": "p_mailbox",
+          "fixed_pose": {
+            "forward_m": 1.7,
+            "right_m": -4.8,
+            "yaw_offset_degrees": -5.0
+          }
+        },
+        {
+          "asset_key": "bin",
+          "track_id": "a_23",
+          "role": "street_furniture",
+          "template": "p_bin",
+          "fixed_pose": {
+            "forward_m": 9.25,
+            "right_m": 4.75,
+            "yaw_offset_degrees": 4.0
+          }
+        },
+        {
+          "asset_key": "chain",
+          "track_id": "a_24",
+          "role": "street_furniture",
+          "template": "p_chain",
+          "fixed_pose": {
+            "forward_m": 7.15,
+            "right_m": 3.8,
+            "yaw_offset_degrees": 87.0
+          }
+        },
+        {
+          "asset_key": "chain_end",
+          "track_id": "a_25",
+          "role": "street_furniture",
+          "template": "p_chainend",
+          "fixed_pose": {
+            "forward_m": 6.8,
+            "right_m": 2.35,
+            "yaw_offset_degrees": 96.0
+          }
+        },
+        {
+          "asset_key": "plant",
+          "track_id": "a_26",
+          "role": "street_furniture",
+          "template": "p_plant1",
+          "fixed_pose": {
+            "forward_m": 5.7,
+            "right_m": -3.3,
+            "yaw_offset_degrees": -5.0
+          }
+        },
+        {
+          "asset_key": "garbage",
+          "track_id": "a_27",
+          "role": "street_detail",
+          "template": "p_garbage1",
+          "fixed_pose": {
+            "forward_m": 3.25,
+            "right_m": 4.75,
+            "yaw_offset_degrees": 4.0
+          }
+        },
+        {
+          "asset_key": "warning_alt",
+          "track_id": "a_28",
+          "role": "workzone",
+          "template": "p_warning",
+          "fixed_pose": {
+            "forward_m": 8.15,
+            "right_m": 4.3,
+            "yaw_offset_degrees": -93.0
+          }
+        },
+        {
+          "asset_key": "c8_l01_target",
+          "track_id": "e_91",
+          "role": "c8_fresh_dynamic_adult_target",
+          "template": "w_c8_0044",
+          "trajectory_key": "c8_l01_target",
+          "scripted_pose_authority": true,
+          "collisions_enabled": false
+        },
+        {
+          "asset_key": "c8_l01_alias",
+          "track_id": "e_92",
+          "role": "c8_same_blueprint_adult_alias",
+          "template": "w_c8_0044",
+          "trajectory_key": "c8_l01_alias",
+          "scripted_pose_authority": true,
+          "collisions_enabled": false
+        },
+        {
+          "asset_key": "c8_l01_occluder",
+          "track_id": "e_93",
+          "role": "c8_physical_transport_cone_occluder",
+          "template": "v_firetruck",
+          "trajectory_key": "c8_l01_occluder",
+          "scripted_pose_authority": true,
+          "collisions_enabled": false
+        }
+      ],
+      "anchor_source": {
+        "map": "Carla/Maps/Town10HD_Opt",
+        "authority": "C7_SOURCE_PROTOCOL_NUMERIC_ANCHOR_REUSE",
+        "base_layout_id": "layout_01",
+        "evidence_or_outcome_consulted": false
+      },
+      "dense_support_rearrangement": {
+        "schema": "dtr-c8-dense-support-rearrangement-v1",
+        "fixed_pose_assets_rearranged": 23,
+        "pattern_forward_right_yaw": [
+          [
+            -0.3,
+            0.2,
+            -5.0
+          ],
+          [
+            0.25,
+            -0.25,
+            4.0
+          ],
+          [
+            0.15,
+            0.3,
+            -3.0
+          ],
+          [
+            -0.2,
+            -0.15,
+            6.0
+          ]
+        ],
+        "prior_evidence_or_outcome_consulted": false
+      },
+      "scripted_pose_collision_policy": {
+        "schema": "dtr-c9-scripted-pose-collision-decoupling-v1",
+        "scripted_pose_assets": 3,
+        "collisions_enabled": false,
+        "visual_presence_unchanged": true,
+        "bbox_and_occlusion_presence_unchanged": true,
+        "evaluator_collision_relevance_unchanged": true
+      }
+    },
+    "c8_l02": {
+      "display_name": "c8_transport_cone_sedan_alias_occlusion",
+      "weather": "WetSunset",
+      "duration_seconds": 9.0,
+      "showcase_time_s": 2.0,
+      "anchor": {
+        "center_xy_m": [
+          -56.87,
+          140.54
+        ],
+        "forward_xy": [
+          0.999981,
+          0.006109
+        ],
+        "right_xy": [
+          -0.006109,
+          0.999981
+        ]
+      },
+      "witness": {
+        "forward_m": -5.0,
+        "right_m": -14.0,
+        "z_m": 15.0,
+        "look_at_forward_m": 5.0,
+        "look_at_right_m": 0.0,
+        "look_at_z_m": 1.0
+      },
+      "assets": [
+        {
+          "asset_key": "commuter_01",
+          "track_id": "b_01",
+          "role": "crowd",
+          "template": "w08",
+          "fixed_pose": {
+            "forward_m": 2.15,
+            "right_m": 8.8,
+            "yaw_offset_degrees": -93.0
+          }
+        },
+        {
+          "asset_key": "commuter_02",
+          "track_id": "b_02",
+          "role": "crowd",
+          "template": "w09",
+          "fixed_pose": {
+            "forward_m": 2.8,
+            "right_m": 8.35,
+            "yaw_offset_degrees": -84.0
+          }
+        },
+        {
+          "asset_key": "commuter_03",
+          "track_id": "b_03",
+          "role": "crowd",
+          "template": "w10",
+          "fixed_pose": {
+            "forward_m": 4.2,
+            "right_m": 8.7,
+            "yaw_offset_degrees": -95.0
+          }
+        },
+        {
+          "asset_key": "commuter_04",
+          "track_id": "b_04",
+          "role": "crowd",
+          "template": "w11",
+          "fixed_pose": {
+            "forward_m": 6.25,
+            "right_m": -4.25,
+            "yaw_offset_degrees": 94.0
+          }
+        },
+        {
+          "asset_key": "commuter_05",
+          "track_id": "b_05",
+          "role": "crowd",
+          "template": "w12",
+          "fixed_pose": {
+            "forward_m": 7.15,
+            "right_m": -4.2,
+            "yaw_offset_degrees": 87.0
+          }
+        },
+        {
+          "asset_key": "commuter_06",
+          "track_id": "b_06",
+          "role": "crowd",
+          "template": "w13",
+          "fixed_pose": {
+            "forward_m": 8.8,
+            "right_m": 8.35,
+            "yaw_offset_degrees": -84.0
+          }
+        },
+        {
+          "asset_key": "commuter_07",
+          "track_id": "b_07",
+          "role": "crowd",
+          "template": "w14",
+          "fixed_pose": {
+            "forward_m": 10.7,
+            "right_m": -3.8,
+            "yaw_offset_degrees": 85.0
+          }
+        },
+        {
+          "asset_key": "delivery_hgv",
+          "track_id": "b_09",
+          "role": "delivery_vehicle",
+          "template": "v_hgv",
+          "fixed_pose": {
+            "forward_m": 23.25,
+            "right_m": 7.75,
+            "yaw_offset_degrees": 4.0
+          }
+        },
+        {
+          "asset_key": "delivery_cola",
+          "track_id": "b_10",
+          "role": "delivery_vehicle",
+          "template": "v_cola",
+          "fixed_pose": {
+            "forward_m": 20.15,
+            "right_m": 7.3,
+            "yaw_offset_degrees": -3.0
+          }
+        },
+        {
+          "asset_key": "police",
+          "track_id": "b_11",
+          "role": "service_vehicle",
+          "template": "v_police",
+          "fixed_pose": {
+            "forward_m": 12.8,
+            "right_m": 6.85,
+            "yaw_offset_degrees": 6.0
+          }
+        },
+        {
+          "asset_key": "ambulance",
+          "track_id": "b_12",
+          "role": "service_vehicle",
+          "template": "v_ambulance",
+          "fixed_pose": {
+            "forward_m": 21.7,
+            "right_m": -6.8,
+            "yaw_offset_degrees": 175.0
+          }
+        },
+        {
+          "asset_key": "delivery_bike",
+          "track_id": "b_13",
+          "role": "micromobility",
+          "template": "v_diamond",
+          "fixed_pose": {
+            "forward_m": 5.75,
+            "right_m": -5.75,
+            "yaw_offset_degrees": 4.0
+          }
+        },
+        {
+          "asset_key": "commuter_bike",
+          "track_id": "b_14",
+          "role": "micromobility",
+          "template": "v_gazelle",
+          "fixed_pose": {
+            "forward_m": 10.15,
+            "right_m": 5.8,
+            "yaw_offset_degrees": 177.0
+          }
+        },
+        {
+          "asset_key": "bus_stop",
+          "track_id": "b_15",
+          "role": "transit_furniture",
+          "template": "p_busstop",
+          "fixed_pose": {
+            "forward_m": 3.8,
+            "right_m": 5.85,
+            "yaw_offset_degrees": 96.0
+          }
+        },
+        {
+          "asset_key": "bus_stop_lb",
+          "track_id": "b_16",
+          "role": "transit_furniture",
+          "template": "p_busstoplb",
+          "fixed_pose": {
+            "forward_m": 11.7,
+            "right_m": 6.2,
+            "yaw_offset_degrees": 85.0
+          }
+        },
+        {
+          "asset_key": "bench_2",
+          "track_id": "b_17",
+          "role": "transit_furniture",
+          "template": "p_bench2",
+          "fixed_pose": {
+            "forward_m": 3.25,
+            "right_m": 4.75,
+            "yaw_offset_degrees": 94.0
+          }
+        },
+        {
+          "asset_key": "bench_3",
+          "track_id": "b_18",
+          "role": "transit_furniture",
+          "template": "p_bench3",
+          "fixed_pose": {
+            "forward_m": 11.15,
+            "right_m": 5.3,
+            "yaw_offset_degrees": 87.0
+          }
+        },
+        {
+          "asset_key": "vending",
+          "track_id": "b_19",
+          "role": "retail_furniture",
+          "template": "p_vending",
+          "fixed_pose": {
+            "forward_m": 6.8,
+            "right_m": 5.35,
+            "yaw_offset_degrees": -84.0
+          }
+        },
+        {
+          "asset_key": "kiosk",
+          "track_id": "b_20",
+          "role": "retail_furniture",
+          "template": "p_kiosk",
+          "fixed_pose": {
+            "forward_m": 14.7,
+            "right_m": 5.7,
+            "yaw_offset_degrees": -95.0
+          }
+        },
+        {
+          "asset_key": "shopping_cart",
+          "track_id": "b_21",
+          "role": "street_clutter",
+          "template": "p_cart",
+          "fixed_pose": {
+            "forward_m": 6.75,
+            "right_m": -4.75,
+            "yaw_offset_degrees": 24.0
+          }
+        },
+        {
+          "asset_key": "shopping_trolley",
+          "track_id": "b_22",
+          "role": "street_clutter",
+          "template": "p_trolley",
+          "fixed_pose": {
+            "forward_m": 8.65,
+            "right_m": -4.2,
+            "yaw_offset_degrees": -23.0
+          }
+        },
+        {
+          "asset_key": "atm",
+          "track_id": "b_23",
+          "role": "retail_furniture",
+          "template": "p_atm",
+          "fixed_pose": {
+            "forward_m": 9.8,
+            "right_m": -5.65,
+            "yaw_offset_degrees": 96.0
+          }
+        },
+        {
+          "asset_key": "cloth_container",
+          "track_id": "b_24",
+          "role": "street_clutter",
+          "template": "p_cloth",
+          "fixed_pose": {
+            "forward_m": 13.7,
+            "right_m": -4.8,
+            "yaw_offset_degrees": 85.0
+          }
+        },
+        {
+          "asset_key": "garbage_3",
+          "track_id": "b_25",
+          "role": "street_detail",
+          "template": "p_garbage3",
+          "fixed_pose": {
+            "forward_m": 2.25,
+            "right_m": -4.75,
+            "yaw_offset_degrees": 4.0
+          }
+        },
+        {
+          "asset_key": "ad_2",
+          "track_id": "b_26",
+          "role": "street_furniture",
+          "template": "p_ad",
+          "fixed_pose": {
+            "forward_m": 18.15,
+            "right_m": -5.2,
+            "yaw_offset_degrees": 87.0
+          }
+        },
+        {
+          "asset_key": "trash_2",
+          "track_id": "b_27",
+          "role": "street_furniture",
+          "template": "p_trash3",
+          "fixed_pose": {
+            "forward_m": 4.8,
+            "right_m": 4.85,
+            "yaw_offset_degrees": 6.0
+          }
+        },
+        {
+          "asset_key": "plant_2",
+          "track_id": "b_28",
+          "role": "street_furniture",
+          "template": "p_plant4",
+          "fixed_pose": {
+            "forward_m": 8.7,
+            "right_m": -4.8,
+            "yaw_offset_degrees": -5.0
+          }
+        },
+        {
+          "asset_key": "mailbox_2",
+          "track_id": "b_29",
+          "role": "street_furniture",
+          "template": "p_mailbox",
+          "fixed_pose": {
+            "forward_m": 12.25,
+            "right_m": -4.75,
+            "yaw_offset_degrees": 4.0
+          }
+        },
+        {
+          "asset_key": "barrier_2",
+          "track_id": "b_30",
+          "role": "curb_control",
+          "template": "p_barrier",
+          "fixed_pose": {
+            "forward_m": 17.15,
+            "right_m": 3.8,
+            "yaw_offset_degrees": 87.0
+          }
+        },
+        {
+          "asset_key": "cone_2",
+          "track_id": "b_31",
+          "role": "curb_control",
+          "template": "p_cone",
+          "fixed_pose": {
+            "forward_m": 15.8,
+            "right_m": 3.35,
+            "yaw_offset_degrees": 6.0
+          }
+        },
+        {
+          "asset_key": "warning_2",
+          "track_id": "b_32",
+          "role": "curb_control",
+          "template": "p_warning",
+          "fixed_pose": {
+            "forward_m": 18.7,
+            "right_m": 3.7,
+            "yaw_offset_degrees": -95.0
+          }
+        },
+        {
+          "asset_key": "c8_l02_target",
+          "track_id": "f_91",
+          "role": "c8_fresh_dynamic_sedan_target",
+          "template": "v_c8_impala",
+          "trajectory_key": "c8_l02_target",
+          "scripted_pose_authority": true,
+          "collisions_enabled": false
+        },
+        {
+          "asset_key": "c8_l02_alias",
+          "track_id": "f_92",
+          "role": "c8_same_blueprint_sedan_alias",
+          "template": "v_c8_impala",
+          "trajectory_key": "c8_l02_alias",
+          "scripted_pose_authority": true,
+          "collisions_enabled": false
+        },
+        {
+          "asset_key": "c8_l02_occluder",
+          "track_id": "f_93",
+          "role": "c8_physical_transport_cone_occluder",
+          "template": "v_firetruck",
+          "trajectory_key": "c8_l02_occluder",
+          "scripted_pose_authority": true,
+          "collisions_enabled": false
+        }
+      ],
+      "anchor_source": {
+        "map": "Carla/Maps/Town10HD_Opt",
+        "authority": "C7_SOURCE_PROTOCOL_NUMERIC_ANCHOR_REUSE",
+        "base_layout_id": "layout_02",
+        "evidence_or_outcome_consulted": false
+      },
+      "dense_support_rearrangement": {
+        "schema": "dtr-c8-dense-support-rearrangement-v1",
+        "fixed_pose_assets_rearranged": 31,
+        "pattern_forward_right_yaw": [
+          [
+            -0.3,
+            0.2,
+            -5.0
+          ],
+          [
+            0.25,
+            -0.25,
+            4.0
+          ],
+          [
+            0.15,
+            0.3,
+            -3.0
+          ],
+          [
+            -0.2,
+            -0.15,
+            6.0
+          ]
+        ],
+        "prior_evidence_or_outcome_consulted": false
+      },
+      "scripted_pose_collision_policy": {
+        "schema": "dtr-c9-scripted-pose-collision-decoupling-v1",
+        "scripted_pose_assets": 3,
+        "collisions_enabled": false,
+        "visual_presence_unchanged": true,
+        "bbox_and_occlusion_presence_unchanged": true,
+        "evaluator_collision_relevance_unchanged": true
+      }
+    },
+    "c8_l03": {
+      "display_name": "c8_transport_cone_van_alias_occlusion",
+      "weather": "MidRainyNoon",
+      "duration_seconds": 9.0,
+      "showcase_time_s": 2.0,
+      "anchor": {
+        "center_xy_m": [
+          99.38,
+          -6.31
+        ],
+        "forward_xy": [
+          -0.006807,
+          0.999977
+        ],
+        "right_xy": [
+          -0.999977,
+          -0.006807
+        ]
+      },
+      "witness": {
+        "forward_m": -5.0,
+        "right_m": -14.0,
+        "z_m": 15.0,
+        "look_at_forward_m": 5.0,
+        "look_at_right_m": 0.0,
+        "look_at_z_m": 1.0
+      },
+      "assets": [
+        {
+          "asset_key": "plaza_person_01",
+          "track_id": "c_01",
+          "role": "crowd",
+          "template": "w15",
+          "fixed_pose": {
+            "forward_m": 1.8,
+            "right_m": 2.85,
+            "yaw_offset_degrees": -84.0
+          }
+        },
+        {
+          "asset_key": "plaza_person_02",
+          "track_id": "c_02",
+          "role": "crowd",
+          "template": "w16",
+          "fixed_pose": {
+            "forward_m": 2.7,
+            "right_m": -3.3,
+            "yaw_offset_degrees": 85.0
+          }
+        },
+        {
+          "asset_key": "plaza_person_03",
+          "track_id": "c_03",
+          "role": "crowd",
+          "template": "w17",
+          "fixed_pose": {
+            "forward_m": 5.25,
+            "right_m": 3.75,
+            "yaw_offset_degrees": -86.0
+          }
+        },
+        {
+          "asset_key": "plaza_person_04",
+          "track_id": "c_04",
+          "role": "crowd",
+          "template": "w18",
+          "fixed_pose": {
+            "forward_m": 6.15,
+            "right_m": -4.2,
+            "yaw_offset_degrees": 87.0
+          }
+        },
+        {
+          "asset_key": "plaza_person_05",
+          "track_id": "c_05",
+          "role": "crowd",
+          "template": "w19",
+          "fixed_pose": {
+            "forward_m": 7.8,
+            "right_m": 4.85,
+            "yaw_offset_degrees": -84.0
+          }
+        },
+        {
+          "asset_key": "plaza_person_06",
+          "track_id": "c_06",
+          "role": "crowd",
+          "template": "w20",
+          "fixed_pose": {
+            "forward_m": 8.7,
+            "right_m": -4.8,
+            "yaw_offset_degrees": 85.0
+          }
+        },
+        {
+          "asset_key": "plaza_person_07",
+          "track_id": "c_07",
+          "role": "crowd",
+          "template": "w21",
+          "fixed_pose": {
+            "forward_m": 11.25,
+            "right_m": 3.75,
+            "yaw_offset_degrees": -86.0
+          }
+        },
+        {
+          "asset_key": "plaza_person_08",
+          "track_id": "c_08",
+          "role": "crowd",
+          "template": "w22",
+          "fixed_pose": {
+            "forward_m": 12.15,
+            "right_m": -3.2,
+            "yaw_offset_degrees": 87.0
+          }
+        },
+        {
+          "asset_key": "firetruck_display",
+          "track_id": "c_09",
+          "role": "service_vehicle",
+          "template": "v_firetruck",
+          "fixed_pose": {
+            "forward_m": 17.8,
+            "right_m": 7.35,
+            "yaw_offset_degrees": 6.0
+          }
+        },
+        {
+          "asset_key": "harley",
+          "track_id": "c_10",
+          "role": "micromobility",
+          "template": "v_harley",
+          "fixed_pose": {
+            "forward_m": 17.7,
+            "right_m": -7.3,
+            "yaw_offset_degrees": 175.0
+          }
+        },
+        {
+          "asset_key": "kawasaki",
+          "track_id": "c_11",
+          "role": "micromobility",
+          "template": "v_kawasaki",
+          "fixed_pose": {
+            "forward_m": 6.25,
+            "right_m": 5.75,
+            "yaw_offset_degrees": 4.0
+          }
+        },
+        {
+          "asset_key": "plaza_bike",
+          "track_id": "c_12",
+          "role": "micromobility",
+          "template": "v_crossbike",
+          "fixed_pose": {
+            "forward_m": 4.65,
+            "right_m": -5.7,
+            "yaw_offset_degrees": 177.0
+          }
+        },
+        {
+          "asset_key": "plaza_scooter",
+          "track_id": "c_13",
+          "role": "micromobility",
+          "template": "v_vespa",
+          "fixed_pose": {
+            "forward_m": 6.8,
+            "right_m": -6.15,
+            "yaw_offset_degrees": 186.0
+          }
+        },
+        {
+          "asset_key": "food_cart",
+          "track_id": "c_14",
+          "role": "cafe",
+          "template": "p_foodcart",
+          "fixed_pose": {
+            "forward_m": 4.7,
+            "right_m": 7.2,
+            "yaw_offset_degrees": -95.0
+          }
+        },
+        {
+          "asset_key": "fountain",
+          "track_id": "c_15",
+          "role": "plaza_landmark",
+          "template": "p_fountain",
+          "fixed_pose": {
+            "forward_m": 20.25,
+            "right_m": -0.25,
+            "yaw_offset_degrees": 4.0
+          }
+        },
+        {
+          "asset_key": "barbeque",
+          "track_id": "c_16",
+          "role": "cafe",
+          "template": "p_bbq",
+          "fixed_pose": {
+            "forward_m": 8.15,
+            "right_m": 7.3,
+            "yaw_offset_degrees": -3.0
+          }
+        },
+        {
+          "asset_key": "table",
+          "track_id": "c_17",
+          "role": "cafe",
+          "template": "p_table",
+          "fixed_pose": {
+            "forward_m": 6.8,
+            "right_m": 2.85,
+            "yaw_offset_degrees": 6.0
+          }
+        },
+        {
+          "asset_key": "chair",
+          "track_id": "c_18",
+          "role": "cafe",
+          "template": "p_chair",
+          "fixed_pose": {
+            "forward_m": 6.2,
+            "right_m": 2.7,
+            "yaw_offset_degrees": 40.0
+          }
+        },
+        {
+          "asset_key": "street_fountain",
+          "track_id": "c_19",
+          "role": "street_furniture",
+          "template": "p_streetfountain",
+          "fixed_pose": {
+            "forward_m": 3.25,
+            "right_m": -5.75,
+            "yaw_offset_degrees": 4.0
+          }
+        },
+        {
+          "asset_key": "plant_4",
+          "track_id": "c_20",
+          "role": "landscaping",
+          "template": "p_plant4",
+          "fixed_pose": {
+            "forward_m": 5.15,
+            "right_m": -2.7,
+            "yaw_offset_degrees": -3.0
+          }
+        },
+        {
+          "asset_key": "plant_7",
+          "track_id": "c_21",
+          "role": "landscaping",
+          "template": "p_plant7",
+          "fixed_pose": {
+            "forward_m": 6.8,
+            "right_m": -3.15,
+            "yaw_offset_degrees": 6.0
+          }
+        },
+        {
+          "asset_key": "trash_3",
+          "track_id": "c_22",
+          "role": "street_furniture",
+          "template": "p_trash3",
+          "fixed_pose": {
+            "forward_m": 2.2,
+            "right_m": 5.2,
+            "yaw_offset_degrees": -5.0
+          }
+        },
+        {
+          "asset_key": "pergola",
+          "track_id": "c_23",
+          "role": "plaza_structure",
+          "template": "p_pergola",
+          "fixed_pose": {
+            "forward_m": 24.25,
+            "right_m": -0.25,
+            "yaw_offset_degrees": 4.0
+          }
+        },
+        {
+          "asset_key": "bench_plaza_1",
+          "track_id": "c_24",
+          "role": "street_furniture",
+          "template": "p_bench1",
+          "fixed_pose": {
+            "forward_m": 11.15,
+            "right_m": 5.8,
+            "yaw_offset_degrees": 87.0
+          }
+        },
+        {
+          "asset_key": "bench_plaza_2",
+          "track_id": "c_25",
+          "role": "street_furniture",
+          "template": "p_bench3",
+          "fixed_pose": {
+            "forward_m": 10.8,
+            "right_m": -5.65,
+            "yaw_offset_degrees": 96.0
+          }
+        },
+        {
+          "asset_key": "kiosk_plaza",
+          "track_id": "c_26",
+          "role": "retail_furniture",
+          "template": "p_kiosk",
+          "fixed_pose": {
+            "forward_m": 14.7,
+            "right_m": -5.8,
+            "yaw_offset_degrees": 85.0
+          }
+        },
+        {
+          "asset_key": "vending_plaza",
+          "track_id": "c_27",
+          "role": "retail_furniture",
+          "template": "p_vending",
+          "fixed_pose": {
+            "forward_m": 13.25,
+            "right_m": 5.75,
+            "yaw_offset_degrees": -86.0
+          }
+        },
+        {
+          "asset_key": "advertisement_plaza",
+          "track_id": "c_28",
+          "role": "street_furniture",
+          "template": "p_ad",
+          "fixed_pose": {
+            "forward_m": 9.15,
+            "right_m": 7.3,
+            "yaw_offset_degrees": -93.0
+          }
+        },
+        {
+          "asset_key": "shopping_cart_plaza",
+          "track_id": "c_29",
+          "role": "street_clutter",
+          "template": "p_cart",
+          "fixed_pose": {
+            "forward_m": 7.8,
+            "right_m": -7.15,
+            "yaw_offset_degrees": 21.0
+          }
+        },
+        {
+          "asset_key": "mailbox_plaza",
+          "track_id": "c_30",
+          "role": "street_furniture",
+          "template": "p_mailbox",
+          "fixed_pose": {
+            "forward_m": 3.7,
+            "right_m": -4.3,
+            "yaw_offset_degrees": -5.0
+          }
+        },
+        {
+          "asset_key": "c8_l03_target",
+          "track_id": "g_91",
+          "role": "c8_fresh_dynamic_van_target",
+          "template": "v_c8_t2",
+          "trajectory_key": "c8_l03_target",
+          "scripted_pose_authority": true,
+          "collisions_enabled": false
+        },
+        {
+          "asset_key": "c8_l03_alias",
+          "track_id": "g_92",
+          "role": "c8_same_blueprint_van_alias",
+          "template": "v_c8_t2",
+          "trajectory_key": "c8_l03_alias",
+          "scripted_pose_authority": true,
+          "collisions_enabled": false
+        },
+        {
+          "asset_key": "c8_l03_occluder",
+          "track_id": "g_93",
+          "role": "c8_physical_transport_cone_occluder",
+          "template": "v_firetruck",
+          "trajectory_key": "c8_l03_occluder",
+          "scripted_pose_authority": true,
+          "collisions_enabled": false
+        }
+      ],
+      "anchor_source": {
+        "map": "Carla/Maps/Town10HD_Opt",
+        "authority": "C7_SOURCE_PROTOCOL_NUMERIC_ANCHOR_REUSE",
+        "base_layout_id": "layout_03",
+        "evidence_or_outcome_consulted": false
+      },
+      "dense_support_rearrangement": {
+        "schema": "dtr-c8-dense-support-rearrangement-v1",
+        "fixed_pose_assets_rearranged": 30,
+        "pattern_forward_right_yaw": [
+          [
+            -0.3,
+            0.2,
+            -5.0
+          ],
+          [
+            0.25,
+            -0.25,
+            4.0
+          ],
+          [
+            0.15,
+            0.3,
+            -3.0
+          ],
+          [
+            -0.2,
+            -0.15,
+            6.0
+          ]
+        ],
+        "prior_evidence_or_outcome_consulted": false
+      },
+      "scripted_pose_collision_policy": {
+        "schema": "dtr-c9-scripted-pose-collision-decoupling-v1",
+        "scripted_pose_assets": 3,
+        "collisions_enabled": false,
+        "visual_presence_unchanged": true,
+        "bbox_and_occlusion_presence_unchanged": true,
+        "evaluator_collision_relevance_unchanged": true
+      }
+    },
+    "c8_l04": {
+      "display_name": "c8_transport_cone_emergency_alias_occlusion",
+      "weather": "DustStorm",
+      "duration_seconds": 9.0,
+      "showcase_time_s": 2.0,
+      "anchor": {
+        "center_xy_m": [
+          99.38,
+          -6.31
+        ],
+        "forward_xy": [
+          -0.006807,
+          0.999977
+        ],
+        "right_xy": [
+          -0.999977,
+          -0.006807
+        ]
+      },
+      "witness": {
+        "forward_m": -5.0,
+        "right_m": 14.0,
+        "z_m": 15.0,
+        "look_at_forward_m": 5.0,
+        "look_at_right_m": 0.0,
+        "look_at_z_m": 1.0
+      },
+      "assets": [
+        {
+          "asset_key": "plaza_person_01",
+          "track_id": "c_01",
+          "role": "crowd",
+          "template": "w15",
+          "fixed_pose": {
+            "forward_m": 1.7,
+            "right_m": 3.2,
+            "yaw_offset_degrees": -95.0
+          }
+        },
+        {
+          "asset_key": "plaza_person_02",
+          "track_id": "c_02",
+          "role": "crowd",
+          "template": "w16",
+          "fixed_pose": {
+            "forward_m": 3.25,
+            "right_m": -3.75,
+            "yaw_offset_degrees": 94.0
+          }
+        },
+        {
+          "asset_key": "plaza_person_03",
+          "track_id": "c_03",
+          "role": "crowd",
+          "template": "w17",
+          "fixed_pose": {
+            "forward_m": 5.15,
+            "right_m": 4.3,
+            "yaw_offset_degrees": -93.0
+          }
+        },
+        {
+          "asset_key": "plaza_person_04",
+          "track_id": "c_04",
+          "role": "crowd",
+          "template": "w18",
+          "fixed_pose": {
+            "forward_m": 5.8,
+            "right_m": -4.65,
+            "yaw_offset_degrees": 96.0
+          }
+        },
+        {
+          "asset_key": "plaza_person_05",
+          "track_id": "c_05",
+          "role": "crowd",
+          "template": "w19",
+          "fixed_pose": {
+            "forward_m": 7.7,
+            "right_m": 5.2,
+            "yaw_offset_degrees": -95.0
+          }
+        },
+        {
+          "asset_key": "plaza_person_06",
+          "track_id": "c_06",
+          "role": "crowd",
+          "template": "w20",
+          "fixed_pose": {
+            "forward_m": 9.25,
+            "right_m": -5.25,
+            "yaw_offset_degrees": 94.0
+          }
+        },
+        {
+          "asset_key": "plaza_person_07",
+          "track_id": "c_07",
+          "role": "crowd",
+          "template": "w21",
+          "fixed_pose": {
+            "forward_m": 11.15,
+            "right_m": 4.3,
+            "yaw_offset_degrees": -93.0
+          }
+        },
+        {
+          "asset_key": "plaza_person_08",
+          "track_id": "c_08",
+          "role": "crowd",
+          "template": "w22",
+          "fixed_pose": {
+            "forward_m": 11.8,
+            "right_m": -3.65,
+            "yaw_offset_degrees": 96.0
+          }
+        },
+        {
+          "asset_key": "firetruck_display",
+          "track_id": "c_09",
+          "role": "service_vehicle",
+          "template": "v_firetruck",
+          "fixed_pose": {
+            "forward_m": 17.7,
+            "right_m": 7.7,
+            "yaw_offset_degrees": -5.0
+          }
+        },
+        {
+          "asset_key": "plaza_bike",
+          "track_id": "c_12",
+          "role": "micromobility",
+          "template": "v_crossbike",
+          "fixed_pose": {
+            "forward_m": 4.75,
+            "right_m": -6.25,
+            "yaw_offset_degrees": 184.0
+          }
+        },
+        {
+          "asset_key": "food_cart",
+          "track_id": "c_14",
+          "role": "cafe",
+          "template": "p_foodcart",
+          "fixed_pose": {
+            "forward_m": 5.15,
+            "right_m": 7.3,
+            "yaw_offset_degrees": -93.0
+          }
+        },
+        {
+          "asset_key": "fountain",
+          "track_id": "c_15",
+          "role": "plaza_landmark",
+          "template": "p_fountain",
+          "fixed_pose": {
+            "forward_m": 19.8,
+            "right_m": -0.15,
+            "yaw_offset_degrees": 6.0
+          }
+        },
+        {
+          "asset_key": "barbeque",
+          "track_id": "c_16",
+          "role": "cafe",
+          "template": "p_bbq",
+          "fixed_pose": {
+            "forward_m": 7.7,
+            "right_m": 7.2,
+            "yaw_offset_degrees": -5.0
+          }
+        },
+        {
+          "asset_key": "table",
+          "track_id": "c_17",
+          "role": "cafe",
+          "template": "p_table",
+          "fixed_pose": {
+            "forward_m": 7.25,
+            "right_m": 2.75,
+            "yaw_offset_degrees": 4.0
+          }
+        },
+        {
+          "asset_key": "chair",
+          "track_id": "c_18",
+          "role": "cafe",
+          "template": "p_chair",
+          "fixed_pose": {
+            "forward_m": 6.65,
+            "right_m": 2.8,
+            "yaw_offset_degrees": 42.0
+          }
+        },
+        {
+          "asset_key": "street_fountain",
+          "track_id": "c_19",
+          "role": "street_furniture",
+          "template": "p_streetfountain",
+          "fixed_pose": {
+            "forward_m": 2.8,
+            "right_m": -5.65,
+            "yaw_offset_degrees": 6.0
+          }
+        },
+        {
+          "asset_key": "plant_4",
+          "track_id": "c_20",
+          "role": "landscaping",
+          "template": "p_plant4",
+          "fixed_pose": {
+            "forward_m": 4.7,
+            "right_m": -2.8,
+            "yaw_offset_degrees": -5.0
+          }
+        },
+        {
+          "asset_key": "plant_7",
+          "track_id": "c_21",
+          "role": "landscaping",
+          "template": "p_plant7",
+          "fixed_pose": {
+            "forward_m": 7.25,
+            "right_m": -3.25,
+            "yaw_offset_degrees": 4.0
+          }
+        },
+        {
+          "asset_key": "trash_3",
+          "track_id": "c_22",
+          "role": "street_furniture",
+          "template": "p_trash3",
+          "fixed_pose": {
+            "forward_m": 2.65,
+            "right_m": 5.3,
+            "yaw_offset_degrees": -3.0
+          }
+        },
+        {
+          "asset_key": "pergola",
+          "track_id": "c_23",
+          "role": "plaza_structure",
+          "template": "p_pergola",
+          "fixed_pose": {
+            "forward_m": 23.8,
+            "right_m": -0.15,
+            "yaw_offset_degrees": 6.0
+          }
+        },
+        {
+          "asset_key": "bench_plaza_1",
+          "track_id": "c_24",
+          "role": "street_furniture",
+          "template": "p_bench1",
+          "fixed_pose": {
+            "forward_m": 10.7,
+            "right_m": 5.7,
+            "yaw_offset_degrees": 85.0
+          }
+        },
+        {
+          "asset_key": "bench_plaza_2",
+          "track_id": "c_25",
+          "role": "street_furniture",
+          "template": "p_bench3",
+          "fixed_pose": {
+            "forward_m": 11.25,
+            "right_m": -5.75,
+            "yaw_offset_degrees": 94.0
+          }
+        },
+        {
+          "asset_key": "kiosk_plaza",
+          "track_id": "c_26",
+          "role": "retail_furniture",
+          "template": "p_kiosk",
+          "fixed_pose": {
+            "forward_m": 15.15,
+            "right_m": -5.7,
+            "yaw_offset_degrees": 87.0
+          }
+        },
+        {
+          "asset_key": "vending_plaza",
+          "track_id": "c_27",
+          "role": "retail_furniture",
+          "template": "p_vending",
+          "fixed_pose": {
+            "forward_m": 12.8,
+            "right_m": 5.85,
+            "yaw_offset_degrees": -84.0
+          }
+        },
+        {
+          "asset_key": "advertisement_plaza",
+          "track_id": "c_28",
+          "role": "street_furniture",
+          "template": "p_ad",
+          "fixed_pose": {
+            "forward_m": 8.7,
+            "right_m": 7.2,
+            "yaw_offset_degrees": -95.0
+          }
+        },
+        {
+          "asset_key": "shopping_cart_plaza",
+          "track_id": "c_29",
+          "role": "street_clutter",
+          "template": "p_cart",
+          "fixed_pose": {
+            "forward_m": 8.25,
+            "right_m": -7.25,
+            "yaw_offset_degrees": 19.0
+          }
+        },
+        {
+          "asset_key": "mailbox_plaza",
+          "track_id": "c_30",
+          "role": "street_furniture",
+          "template": "p_mailbox",
+          "fixed_pose": {
+            "forward_m": 4.15,
+            "right_m": -4.2,
+            "yaw_offset_degrees": -3.0
+          }
+        },
+        {
+          "asset_key": "c8_l04_target",
+          "track_id": "h_91",
+          "role": "c8_fresh_dynamic_emergency_target",
+          "template": "v_c8_charger_police",
+          "trajectory_key": "c8_l04_target",
+          "scripted_pose_authority": true,
+          "collisions_enabled": false
+        },
+        {
+          "asset_key": "c8_l04_alias",
+          "track_id": "h_92",
+          "role": "c8_same_blueprint_emergency_alias",
+          "template": "v_c8_charger_police",
+          "trajectory_key": "c8_l04_alias",
+          "scripted_pose_authority": true,
+          "collisions_enabled": false
+        },
+        {
+          "asset_key": "c8_l04_occluder",
+          "track_id": "h_93",
+          "role": "c8_physical_transport_cone_occluder",
+          "template": "v_firetruck",
+          "trajectory_key": "c8_l04_occluder",
+          "scripted_pose_authority": true,
+          "collisions_enabled": false
+        }
+      ],
+      "anchor_source": {
+        "map": "Carla/Maps/Town10HD_Opt",
+        "authority": "C7_SOURCE_PROTOCOL_NUMERIC_ANCHOR_REUSE",
+        "base_layout_id": "layout_04",
+        "evidence_or_outcome_consulted": false
+      },
+      "dense_support_rearrangement": {
+        "schema": "dtr-c8-dense-support-rearrangement-v1",
+        "fixed_pose_assets_rearranged": 27,
+        "pattern_forward_right_yaw": [
+          [
+            -0.3,
+            0.2,
+            -5.0
+          ],
+          [
+            0.25,
+            -0.25,
+            4.0
+          ],
+          [
+            0.15,
+            0.3,
+            -3.0
+          ],
+          [
+            -0.2,
+            -0.15,
+            6.0
+          ]
+        ],
+        "prior_evidence_or_outcome_consulted": false
+      },
+      "scripted_pose_collision_policy": {
+        "schema": "dtr-c9-scripted-pose-collision-decoupling-v1",
+        "scripted_pose_assets": 3,
+        "collisions_enabled": false,
+        "visual_presence_unchanged": true,
+        "bbox_and_occlusion_presence_unchanged": true,
+        "evaluator_collision_relevance_unchanged": true
+      }
+    }
+  },
+  "scenarios": [
+    {
+      "episode_id": "ep_01",
+      "layout_id": "c8_l01",
+      "scenario_role": "c8_transport_cone_adult_contact",
+      "twin_role": "contact",
+      "navigation_session_id": "session_c8_pair_01",
+      "expected_outcome": "CONTACT",
+      "expected_responsible_assets": [
+        "c8_l01_target"
+      ],
+      "wearer_trajectory": "c8_wearer_route",
+      "asset_trajectories": {
+        "c8_l01_target": "c8_l01_target_contact",
+        "c8_l01_alias": "c8_l01_alias_safe",
+        "c8_l01_occluder": "c8_l01_occluder_cross"
+      },
+      "issued_plan": {
+        "plan_id": "plan_c8_pair_01",
+        "session_id": "session_c8_pair_01",
+        "issued_at_s": 0.0,
+        "expires_at_s": 9.0,
+        "time_parameterized_waypoints": [
+          {
+            "time_s": 0.0,
+            "forward_m": -6.0,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 1.0,
+            "forward_m": -4.1,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 5.0,
+            "forward_m": 4.1,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 9.0,
+            "forward_m": 12.1,
+            "right_m": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "episode_id": "ep_02",
+      "layout_id": "c8_l01",
+      "scenario_role": "c8_transport_cone_adult_safe",
+      "twin_role": "safe",
+      "navigation_session_id": "session_c8_pair_01",
+      "expected_outcome": "SAFE",
+      "expected_responsible_assets": [],
+      "wearer_trajectory": "c8_wearer_route",
+      "asset_trajectories": {
+        "c8_l01_target": "c8_l01_target_safe",
+        "c8_l01_alias": "c8_l01_alias_safe",
+        "c8_l01_occluder": "c8_l01_occluder_cross"
+      },
+      "issued_plan": {
+        "plan_id": "plan_c8_pair_01",
+        "session_id": "session_c8_pair_01",
+        "issued_at_s": 0.0,
+        "expires_at_s": 9.0,
+        "time_parameterized_waypoints": [
+          {
+            "time_s": 0.0,
+            "forward_m": -6.0,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 1.0,
+            "forward_m": -4.1,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 5.0,
+            "forward_m": 4.1,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 9.0,
+            "forward_m": 12.1,
+            "right_m": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "episode_id": "ep_03",
+      "layout_id": "c8_l02",
+      "scenario_role": "c8_transport_cone_sedan_contact",
+      "twin_role": "contact",
+      "navigation_session_id": "session_c8_pair_02",
+      "expected_outcome": "CONTACT",
+      "expected_responsible_assets": [
+        "c8_l02_target"
+      ],
+      "wearer_trajectory": "c8_wearer_route",
+      "asset_trajectories": {
+        "c8_l02_target": "c8_l02_target_contact",
+        "c8_l02_alias": "c8_l02_alias_safe",
+        "c8_l02_occluder": "c8_l02_occluder_cross"
+      },
+      "issued_plan": {
+        "plan_id": "plan_c8_pair_02",
+        "session_id": "session_c8_pair_02",
+        "issued_at_s": 0.0,
+        "expires_at_s": 9.0,
+        "time_parameterized_waypoints": [
+          {
+            "time_s": 0.0,
+            "forward_m": -6.0,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 1.0,
+            "forward_m": -4.1,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 5.0,
+            "forward_m": 4.1,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 9.0,
+            "forward_m": 12.1,
+            "right_m": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "episode_id": "ep_04",
+      "layout_id": "c8_l02",
+      "scenario_role": "c8_transport_cone_sedan_safe",
+      "twin_role": "safe",
+      "navigation_session_id": "session_c8_pair_02",
+      "expected_outcome": "SAFE",
+      "expected_responsible_assets": [],
+      "wearer_trajectory": "c8_wearer_route",
+      "asset_trajectories": {
+        "c8_l02_target": "c8_l02_target_safe",
+        "c8_l02_alias": "c8_l02_alias_safe",
+        "c8_l02_occluder": "c8_l02_occluder_cross"
+      },
+      "issued_plan": {
+        "plan_id": "plan_c8_pair_02",
+        "session_id": "session_c8_pair_02",
+        "issued_at_s": 0.0,
+        "expires_at_s": 9.0,
+        "time_parameterized_waypoints": [
+          {
+            "time_s": 0.0,
+            "forward_m": -6.0,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 1.0,
+            "forward_m": -4.1,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 5.0,
+            "forward_m": 4.1,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 9.0,
+            "forward_m": 12.1,
+            "right_m": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "episode_id": "ep_05",
+      "layout_id": "c8_l03",
+      "scenario_role": "c8_transport_cone_van_contact",
+      "twin_role": "contact",
+      "navigation_session_id": "session_c8_pair_03",
+      "expected_outcome": "CONTACT",
+      "expected_responsible_assets": [
+        "c8_l03_target"
+      ],
+      "wearer_trajectory": "c8_wearer_route",
+      "asset_trajectories": {
+        "c8_l03_target": "c8_l03_target_contact",
+        "c8_l03_alias": "c8_l03_alias_safe",
+        "c8_l03_occluder": "c8_l03_occluder_cross"
+      },
+      "issued_plan": {
+        "plan_id": "plan_c8_pair_03",
+        "session_id": "session_c8_pair_03",
+        "issued_at_s": 0.0,
+        "expires_at_s": 9.0,
+        "time_parameterized_waypoints": [
+          {
+            "time_s": 0.0,
+            "forward_m": -6.0,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 1.0,
+            "forward_m": -4.1,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 5.0,
+            "forward_m": 4.1,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 9.0,
+            "forward_m": 12.1,
+            "right_m": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "episode_id": "ep_06",
+      "layout_id": "c8_l03",
+      "scenario_role": "c8_transport_cone_van_safe",
+      "twin_role": "safe",
+      "navigation_session_id": "session_c8_pair_03",
+      "expected_outcome": "SAFE",
+      "expected_responsible_assets": [],
+      "wearer_trajectory": "c8_wearer_route",
+      "asset_trajectories": {
+        "c8_l03_target": "c8_l03_target_safe",
+        "c8_l03_alias": "c8_l03_alias_safe",
+        "c8_l03_occluder": "c8_l03_occluder_cross"
+      },
+      "issued_plan": {
+        "plan_id": "plan_c8_pair_03",
+        "session_id": "session_c8_pair_03",
+        "issued_at_s": 0.0,
+        "expires_at_s": 9.0,
+        "time_parameterized_waypoints": [
+          {
+            "time_s": 0.0,
+            "forward_m": -6.0,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 1.0,
+            "forward_m": -4.1,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 5.0,
+            "forward_m": 4.1,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 9.0,
+            "forward_m": 12.1,
+            "right_m": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "episode_id": "ep_07",
+      "layout_id": "c8_l04",
+      "scenario_role": "c8_transport_cone_emergency_contact",
+      "twin_role": "contact",
+      "navigation_session_id": "session_c8_pair_04",
+      "expected_outcome": "CONTACT",
+      "expected_responsible_assets": [
+        "c8_l04_target"
+      ],
+      "wearer_trajectory": "c8_wearer_route",
+      "asset_trajectories": {
+        "c8_l04_target": "c8_l04_target_contact",
+        "c8_l04_alias": "c8_l04_alias_safe",
+        "c8_l04_occluder": "c8_l04_occluder_cross"
+      },
+      "issued_plan": {
+        "plan_id": "plan_c8_pair_04",
+        "session_id": "session_c8_pair_04",
+        "issued_at_s": 0.0,
+        "expires_at_s": 9.0,
+        "time_parameterized_waypoints": [
+          {
+            "time_s": 0.0,
+            "forward_m": -6.0,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 1.0,
+            "forward_m": -4.1,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 5.0,
+            "forward_m": 4.1,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 9.0,
+            "forward_m": 12.1,
+            "right_m": 0.0
+          }
+        ]
+      }
+    },
+    {
+      "episode_id": "ep_08",
+      "layout_id": "c8_l04",
+      "scenario_role": "c8_transport_cone_emergency_safe",
+      "twin_role": "safe",
+      "navigation_session_id": "session_c8_pair_04",
+      "expected_outcome": "SAFE",
+      "expected_responsible_assets": [],
+      "wearer_trajectory": "c8_wearer_route",
+      "asset_trajectories": {
+        "c8_l04_target": "c8_l04_target_safe",
+        "c8_l04_alias": "c8_l04_alias_safe",
+        "c8_l04_occluder": "c8_l04_occluder_cross"
+      },
+      "issued_plan": {
+        "plan_id": "plan_c8_pair_04",
+        "session_id": "session_c8_pair_04",
+        "issued_at_s": 0.0,
+        "expires_at_s": 9.0,
+        "time_parameterized_waypoints": [
+          {
+            "time_s": 0.0,
+            "forward_m": -6.0,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 1.0,
+            "forward_m": -4.1,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 5.0,
+            "forward_m": 4.1,
+            "right_m": 0.0
+          },
+          {
+            "time_s": 9.0,
+            "forward_m": 12.1,
+            "right_m": 0.0
+          }
+        ]
+      }
+    }
+  ],
+  "twin_contracts": [],
+  "model_contract": {
+    "dense_modalities": [
+      "wearable_rgb",
+      "metric_depth"
+    ],
+    "include_current_camera_world_transform": true,
+    "include_wearer_current_pose": true,
+    "include_rigid_camera_extrinsic": true,
+    "include_current_actors": false,
+    "evaluator_only": [
+      "instance_segmentation",
+      "witness_rgb",
+      "actor_ids",
+      "actor_states",
+      "semantic_roles",
+      "occlusion_labels",
+      "contact_truth",
+      "responsible_assets",
+      "realized_future"
+    ]
+  },
+  "claim_boundary": [
+    "C10 is terminal SOURCE_NOT_EVALUABLE and is not resumed, replayed, reseeded, substituted, or partially selected.",
+    "C10 failure result and instance JSONL were accessed only for C11 source-representation reachability design.",
+    "No C10 algorithm model run, scorer, X24 outcome, or X31 outcome existed or was accessed.",
+    "C9 firetruck instance rows were accessed only as solid-body source reachability evidence; no C9 algorithm outcome existed or was accessed.",
+    "C11 changes only the physical-occluder representation and matched crossing dwell: every layout uses the exact solid-body firetruck and exact single monotonic pass.",
+    "Targets, aliases, wearer, map, weather, scenarios, expected labels, collision disable policy, X31, detector, model, route thresholds, and evaluation gates remain frozen.",
+    "The static 3-D OBB construction is a prelaunch falsifier only; formal instance pixels remain the occlusion authority.",
+    "C11 is fresh Development only and can never count as confirmation.",
+    "No result establishes real-world, product, deployment, user-benefit, reliability, or safety authority."
+  ],
+  "cohort_id": "DTR_CARLA_C11_X31_SOLID_BODY_SOURCE_DISJOINT_V1",
+  "evaluation_contract": {
+    "truth_tail_seconds": 3.0,
+    "future_truth_rule": "SCORE_ONLY_FRAMES_WITH_FULL_CAPTURED_HORIZON",
+    "score_window_end_seconds": {
+      "ep_01": 6.0,
+      "ep_02": 6.0,
+      "ep_03": 6.0,
+      "ep_04": 6.0,
+      "ep_05": 6.0,
+      "ep_06": 6.0,
+      "ep_07": 6.0,
+      "ep_08": 6.0
+    },
+    "contact_episodes": [
+      "ep_01",
+      "ep_03",
+      "ep_05",
+      "ep_07"
+    ],
+    "safe_episodes": [
+      "ep_02",
+      "ep_04",
+      "ep_06",
+      "ep_08"
+    ],
+    "fresh_dynamic_contact_episodes": [
+      "ep_01",
+      "ep_03",
+      "ep_05",
+      "ep_07"
+    ],
+    "fresh_dynamic_safe_episodes": [
+      "ep_02",
+      "ep_04",
+      "ep_06",
+      "ep_08"
+    ],
+    "retained_occlusion_episodes": [],
+    "safe_segment_start_seconds": {
+      "ep_02": 0.0,
+      "ep_04": 0.0,
+      "ep_06": 0.0,
+      "ep_08": 0.0
+    },
+    "dynamic_pairs": [
+      {
+        "family": "adult",
+        "contact_episode": "ep_01",
+        "safe_episode": "ep_02",
+        "layout_id": "c8_l01",
+        "target_asset": "c8_l01_target",
+        "alias_asset": "c8_l01_alias",
+        "occluder_asset": "c8_l01_occluder",
+        "target_blueprint": "walker.pedestrian.0044",
+        "pair_difference": "TARGET_INITIAL_LATERAL_POSITION_ONLY",
+        "target_velocity_segments_identical": true,
+        "causally_distinguishable_from_s": 0.0,
+        "planned_occlusion_window_s": [
+          1.3,
+          2.4
+        ],
+        "expected_contact_time_s": 4.15
+      },
+      {
+        "family": "sedan",
+        "contact_episode": "ep_03",
+        "safe_episode": "ep_04",
+        "layout_id": "c8_l02",
+        "target_asset": "c8_l02_target",
+        "alias_asset": "c8_l02_alias",
+        "occluder_asset": "c8_l02_occluder",
+        "target_blueprint": "vehicle.chevrolet.impala",
+        "pair_difference": "TARGET_INITIAL_LATERAL_POSITION_ONLY",
+        "target_velocity_segments_identical": true,
+        "causally_distinguishable_from_s": 0.0,
+        "planned_occlusion_window_s": [
+          1.3,
+          2.4
+        ],
+        "expected_contact_time_s": 3.87
+      },
+      {
+        "family": "van",
+        "contact_episode": "ep_05",
+        "safe_episode": "ep_06",
+        "layout_id": "c8_l03",
+        "target_asset": "c8_l03_target",
+        "alias_asset": "c8_l03_alias",
+        "occluder_asset": "c8_l03_occluder",
+        "target_blueprint": "vehicle.volkswagen.t2",
+        "pair_difference": "TARGET_INITIAL_LATERAL_POSITION_ONLY",
+        "target_velocity_segments_identical": true,
+        "causally_distinguishable_from_s": 0.0,
+        "planned_occlusion_window_s": [
+          1.2,
+          2.3
+        ],
+        "expected_contact_time_s": 3.7
+      },
+      {
+        "family": "emergency",
+        "contact_episode": "ep_07",
+        "safe_episode": "ep_08",
+        "layout_id": "c8_l04",
+        "target_asset": "c8_l04_target",
+        "alias_asset": "c8_l04_alias",
+        "occluder_asset": "c8_l04_occluder",
+        "target_blueprint": "vehicle.dodge.charger_police",
+        "pair_difference": "TARGET_INITIAL_LATERAL_POSITION_ONLY",
+        "target_velocity_segments_identical": true,
+        "causally_distinguishable_from_s": 0.0,
+        "planned_occlusion_window_s": [
+          1.5,
+          2.5
+        ],
+        "expected_contact_time_s": 3.97
+      }
+    ],
+    "all_physical_obstacles_are_truth_relevant": true,
+    "transport_cone_falsification": {
+      "contact_pre_loss_future_positive_risk_required": true,
+      "zero_future_positive_risk_gaps_during_full_loss": true,
+      "first_reappearance_future_positive_risk_required": true,
+      "post_loss_risk_branch_must_descend_from_pre_loss_authorized_branch": true,
+      "single_conflicting_shift_must_not_revoke_compatible_branch": true,
+      "safe_alias_confirmed_risk_frames_maximum": 0
+    },
+    "frozen_thresholds": {
+      "minimum_dynamic_contact_lead_seconds": 2.0,
+      "minimum_dynamic_contact_future_positive_recall": 0.8,
+      "maximum_safe_risk_segments": 0,
+      "minimum_aggregate_precision": 0.95,
+      "minimum_aggregate_f1": 0.8,
+      "x31_f1_must_strictly_exceed_x24": true
+    }
+  },
+  "source_disjoint_contract": {
+    "parent_cohort_id": "DTR_CARLA_C10_X31_OPAQUE_SINGLE_PASS_SOURCE_DISJOINT_V1",
+    "parent_protocol_sha256": "255402227C86133B95706F7B49957F9AB463A146EDC3D266853381794BC5078B",
+    "parent_protocol_canonical_sha256": "A6AF4BA1B931AAE5502925904B11D96FDA4825DD0D90237B228241015723E951",
+    "predecessor_c10_disposition": {
+      "cohort_id": "DTR_CARLA_C10_X31_OPAQUE_SINGLE_PASS_SOURCE_DISJOINT_V1",
+      "protocol_sha256": "255402227C86133B95706F7B49957F9AB463A146EDC3D266853381794BC5078B",
+      "run_id": "c10-x31-opaque-20260830-203500",
+      "status": "DTR_CARLA_C2_RICH_MULTILAYOUT_SOURCE_NOT_EVALUABLE",
+      "terminal_stage": "JOINED_SOURCE_PHYSICAL_OCCLUSION_ADMISSION",
+      "result_sha256": "CD8F1C6043B4687044CF568C626ADCF54359DE63B35EA6A5317007C4721A363B",
+      "instance_result_present": true,
+      "instance_jsonl_and_manifests_present": true,
+      "instance_source_outcome_accessed_for_c11_geometry_design": true,
+      "instance_jsonl_and_manifests_accessed_for_c11_geometry_design": true,
+      "source_model_package_present": true,
+      "source_evaluator_truth_present": true,
+      "algorithm_model_run_present": false,
+      "scorer_result_present": false,
+      "x24_or_x31_outcome_present": false,
+      "algorithm_model_scorer_x24_or_x31_outcome_accessed": false,
+      "resume_replay_reseed_substitution_or_partial_selection_authorized": false
+    },
+    "confirmation_episodes": [],
+    "development_episodes": [
+      "ep_01",
+      "ep_02",
+      "ep_03",
+      "ep_04",
+      "ep_05",
+      "ep_06",
+      "ep_07",
+      "ep_08"
+    ],
+    "retained_regression_episodes": [],
+    "map": "Carla/Maps/Town10HD_Opt",
+    "map_disjoint_from_predecessor": false,
+    "same_map_numeric_anchor_witness_weather_and_dense_support_reuse": true,
+    "new_capture_seed": 131365,
+    "predecessor_capture_seed": 130365,
+    "weather_by_layout": {
+      "c8_l01": "HardRainSunset",
+      "c8_l02": "WetSunset",
+      "c8_l03": "MidRainyNoon",
+      "c8_l04": "DustStorm"
+    },
+    "dynamic_pairs": [
+      {
+        "family": "adult",
+        "contact_episode": "ep_01",
+        "safe_episode": "ep_02",
+        "layout_id": "c8_l01",
+        "target_asset": "c8_l01_target",
+        "alias_asset": "c8_l01_alias",
+        "occluder_asset": "c8_l01_occluder",
+        "target_blueprint": "walker.pedestrian.0044",
+        "pair_difference": "TARGET_INITIAL_LATERAL_POSITION_ONLY",
+        "target_velocity_segments_identical": true,
+        "causally_distinguishable_from_s": 0.0,
+        "planned_occlusion_window_s": [
+          1.3,
+          2.4
+        ],
+        "expected_contact_time_s": 4.15
+      },
+      {
+        "family": "sedan",
+        "contact_episode": "ep_03",
+        "safe_episode": "ep_04",
+        "layout_id": "c8_l02",
+        "target_asset": "c8_l02_target",
+        "alias_asset": "c8_l02_alias",
+        "occluder_asset": "c8_l02_occluder",
+        "target_blueprint": "vehicle.chevrolet.impala",
+        "pair_difference": "TARGET_INITIAL_LATERAL_POSITION_ONLY",
+        "target_velocity_segments_identical": true,
+        "causally_distinguishable_from_s": 0.0,
+        "planned_occlusion_window_s": [
+          1.3,
+          2.4
+        ],
+        "expected_contact_time_s": 3.87
+      },
+      {
+        "family": "van",
+        "contact_episode": "ep_05",
+        "safe_episode": "ep_06",
+        "layout_id": "c8_l03",
+        "target_asset": "c8_l03_target",
+        "alias_asset": "c8_l03_alias",
+        "occluder_asset": "c8_l03_occluder",
+        "target_blueprint": "vehicle.volkswagen.t2",
+        "pair_difference": "TARGET_INITIAL_LATERAL_POSITION_ONLY",
+        "target_velocity_segments_identical": true,
+        "causally_distinguishable_from_s": 0.0,
+        "planned_occlusion_window_s": [
+          1.2,
+          2.3
+        ],
+        "expected_contact_time_s": 3.7
+      },
+      {
+        "family": "emergency",
+        "contact_episode": "ep_07",
+        "safe_episode": "ep_08",
+        "layout_id": "c8_l04",
+        "target_asset": "c8_l04_target",
+        "alias_asset": "c8_l04_alias",
+        "occluder_asset": "c8_l04_occluder",
+        "target_blueprint": "vehicle.dodge.charger_police",
+        "pair_difference": "TARGET_INITIAL_LATERAL_POSITION_ONLY",
+        "target_velocity_segments_identical": true,
+        "causally_distinguishable_from_s": 0.0,
+        "planned_occlusion_window_s": [
+          1.5,
+          2.5
+        ],
+        "expected_contact_time_s": 3.97
+      }
+    ],
+    "reused_from_c10": [
+      "MAP",
+      "NUMERIC_ANCHORS",
+      "WITNESSES",
+      "WEATHER",
+      "TARGET_ALIAS_BLUEPRINTS",
+      "TARGET_ALIAS_WEARER_TRAJECTORIES",
+      "DENSE_SUPPORT_POSES",
+      "EPISODE_PAIRING",
+      "SCENARIO_EXPECTED_LABELS",
+      "OCCLUSION_CONTRACTS",
+      "MODEL_DETECTOR_X31_ROUTE_THRESHOLDS",
+      "EVALUATION_AND_SCORE_GATES",
+      "SCRIPTED_COLLISION_DISABLE_POLICY"
+    ],
+    "structural_source_change": "RASTER_PERMEABLE_BUS_TO_SOLID_BODY_FIRETRUCK_SINGLE_PASS",
+    "changed_occluder_assets": [
+      "c8_l01_occluder",
+      "c8_l02_occluder",
+      "c8_l03_occluder",
+      "c8_l04_occluder"
+    ],
+    "fresh_capture_identity": "SEED_131365_ONE_COMPLETE_CAPTURE_ONLY",
+    "predecessor_instance_source_outcome_accessed_for_geometry_reachability": true,
+    "predecessor_instance_jsonl_and_manifests_accessed_for_geometry_reachability": true,
+    "predecessor_algorithm_model_scorer_x24_or_x31_outcome_existed": false,
+    "predecessor_algorithm_model_scorer_x24_or_x31_outcome_accessed": false,
+    "c9_firetruck_instance_jsonl_accessed_for_solid_body_reachability": true,
+    "c9_algorithm_model_evaluator_scorer_x24_or_x31_outcome_existed": false,
+    "c9_algorithm_model_evaluator_scorer_x24_or_x31_outcome_accessed": false,
+    "development_only_never_confirmation": true,
+    "one_fresh_capture_only": true,
+    "resume_replay_reseed_substitution_or_partial_selection_allowed": false
+  },
+  "capture_compatibility_contract": {
+    "protocol_schema_compatible_with_c2_rich_capture": true,
+    "numeric_anchor_fields_complete": true,
+    "requested_server_map": "Carla/Maps/Town10HD_Opt",
+    "generic_runner_launches_without_explicit_map_argument": true,
+    "installed_runner_default_map_matches_protocol": true,
+    "capture_entrypoint_rejects_map_mismatch": true,
+    "capture_ready_with_current_generic_runner": true,
+    "required_pre_capture_check": "CAPTURE_ENTRYPOINT_WORLD_MAP_NAME_MUST_MATCH_PROTOCOL",
+    "scripted_asset_collisions_enabled_flag_supported": true
+  },
+  "scripted_pose_collision_policy_contract": {
+    "schema": "dtr-c9-scripted-pose-collision-decoupling-v1",
+    "scope": "EVERY_LAYOUT_ASSET_WITH_SCRIPTED_POSE_AUTHORITY_TRUE",
+    "required_collisions_enabled": false,
+    "expected_scripted_asset_count": 12,
+    "physics_collision_response_only": true,
+    "visual_rendering_unchanged": true,
+    "projected_bbox_unchanged": true,
+    "physical_occlusion_evaluation_unchanged": true,
+    "evaluator_collision_relevance_unchanged": true,
+    "asset_template_collision_relevant_fields_unchanged": true
+  },
+  "c11_static_launch_falsifier": {
+    "schema": "dtr-c11-static-solid-body-single-pass-launch-falsifier-v1",
+    "authority": "PRELAUNCH_FALSIFIER_NOT_PIXEL_OR_OUTCOME_PROOF",
+    "source_run_id": "c10-x31-opaque-20260830-203500",
+    "source_result_sha256": "CD8F1C6043B4687044CF568C626ADCF54359DE63B35EA6A5317007C4721A363B",
+    "sample_seconds": 0.1,
+    "frames_per_episode": 91,
+    "camera_model": {
+      "relative_forward_m": 0.08,
+      "relative_right_m": 0.0,
+      "height_above_local_surface_m": 1.45,
+      "pitch_degrees": -5.0,
+      "fov_degrees": 90.0
+    },
+    "solid_body_occluder": {
+      "template": "v_firetruck",
+      "blueprint": "vehicle.carlamotors.firetruck",
+      "surface_offset_m": 0.3,
+      "bbox_location": [
+        -0.25344201922416687,
+        0.005309276282787323,
+        1.91335928440094
+      ],
+      "bbox_extent": [
+        4.234020709991455,
+        1.4455441236495972,
+        1.9137061834335327
+      ],
+      "bbox_rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "c9_instance_pixel_occlusion_evidence": "FIRETRUCK_SOLID_BODY_OBSERVED",
+      "c10_bus_raster_permeability_removed": true
+    },
+    "target_bbox_by_layout": {
+      "c8_l01": {
+        "blueprint": "walker.pedestrian.0044",
+        "surface_offset_m": 0.8,
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "extent": [
+          0.18767888844013214,
+          0.18767888844013214,
+          0.9300000071525574
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "c8_l02": {
+        "blueprint": "vehicle.chevrolet.impala",
+        "surface_offset_m": 0.3,
+        "location": [
+          5.974524901830591e-05,
+          0.001786777633242309,
+          0.7014925479888916
+        ],
+        "extent": [
+          2.6787397861480713,
+          1.0166014432907104,
+          0.7053293585777283
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "c8_l03": {
+        "blueprint": "vehicle.volkswagen.t2",
+        "surface_offset_m": 0.3,
+        "location": [
+          0.0013318287674337626,
+          -0.0005364218377508223,
+          1.0144717693328857
+        ],
+        "extent": [
+          2.2402184009552,
+          1.034657597541809,
+          1.0188959836959839
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "c8_l04": {
+        "blueprint": "vehicle.dodge.charger_police",
+        "surface_offset_m": 0.3,
+        "location": [
+          0.023636838421225548,
+          0.0006008386262692511,
+          0.7926706671714783
+        ],
+        "extent": [
+          2.487122058868408,
+          1.0192005634307861,
+          0.7710590958595276
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "expected_single_containment_runs_inclusive": {
+      "ep_01": [
+        14,
+        19
+      ],
+      "ep_02": [
+        13,
+        19
+      ],
+      "ep_03": [
+        14,
+        19
+      ],
+      "ep_04": [
+        13,
+        19
+      ],
+      "ep_05": [
+        14,
+        19
+      ],
+      "ep_06": [
+        16,
+        21
+      ],
+      "ep_07": [
+        14,
+        19
+      ],
+      "ep_08": [
+        12,
+        19
+      ]
+    },
+    "required_duration_seconds": [
+      0.6,
+      1.3
+    ],
+    "required_pre_track_frames": 10,
+    "required_post_reappearance_frames": 8,
+    "minimum_xy_clearance_beyond_wearer_radius_m": 0.25,
+    "expected_minimum_xy_clearance_beyond_wearer_radius_m": 1.099147,
+    "expected_final_right_m": -3.0,
+    "formal_instance_pixels_remain_authority": true
+  }
+}
