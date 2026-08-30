@@ -1,0 +1,153 @@
+{
+  "schema_version": "dtr-carla-n1-natural-dynamics-registry-v1",
+  "registry_id": "DTR_CARLA_N1_NATURAL_DYNAMICS_REGISTRY_V1",
+  "purpose": "seeded_synthetic_development_world_planning",
+  "carla": {
+    "version": "0.9.16",
+    "map": "Carla/Maps/Town10HD_Opt",
+    "requires_running_server": false
+  },
+  "focus": {
+    "scenario_class": "construction_zone",
+    "source_registry": "dtr_carla_c4_scene_registry.json",
+    "source_scene_id": "c4_layout_05",
+    "anchor": {
+      "center_xy_m": [-46.934195, 36.51329],
+      "forward_xy": [0.999999564, 0.000933925],
+      "right_xy": [-0.000933925, 0.999999564],
+      "source": {
+        "kind": "c3_captured_anchor",
+        "spawn_point_index": 13,
+        "runtime_validation_required": false
+      }
+    },
+    "class_parameters": {
+      "chicane_width_m": 2.4,
+      "barrier_count": 6
+    }
+  },
+  "duration_seconds": 24.0,
+  "seed_contract": {
+    "derivation": "sha256_64bit",
+    "subsystems": ["traffic", "crowd", "grouping", "rerouting", "events"]
+  },
+  "traffic_profiles": {
+    "cautious": {
+      "actor_count": 2,
+      "blueprint_ids": ["vehicle.toyota.prius", "vehicle.micro.microlino"],
+      "target_speed_mps": [3.8, 5.4],
+      "following_distance_s": [2.5, 3.4],
+      "max_acceleration_mps2": [1.0, 1.7],
+      "comfort_deceleration_mps2": [1.8, 2.8],
+      "lane_change_probability": 0.06,
+      "intent_modes": ["yield_before_chicane", "curbside_departure"],
+      "destination_ids": ["north_exit", "east_service_road"]
+    },
+    "nominal": {
+      "actor_count": 2,
+      "blueprint_ids": ["vehicle.audi.a2", "vehicle.tesla.model3"],
+      "target_speed_mps": [5.5, 7.5],
+      "following_distance_s": [1.7, 2.4],
+      "max_acceleration_mps2": [1.8, 2.8],
+      "comfort_deceleration_mps2": [2.4, 3.5],
+      "lane_change_probability": 0.18,
+      "intent_modes": ["follow_chicane_flow", "merge_after_barrier"],
+      "destination_ids": ["north_exit", "west_connector"]
+    },
+    "assertive": {
+      "actor_count": 2,
+      "blueprint_ids": ["vehicle.dodge.charger_police_2020", "vehicle.audi.a2"],
+      "target_speed_mps": [7.2, 9.8],
+      "following_distance_s": [0.9, 1.5],
+      "max_acceleration_mps2": [2.8, 4.0],
+      "comfort_deceleration_mps2": [3.2, 4.8],
+      "lane_change_probability": 0.42,
+      "intent_modes": ["close_gap_before_chicane", "overtake_slow_queue"],
+      "destination_ids": ["north_exit", "west_connector"]
+    }
+  },
+  "crowd": {
+    "count_range": [12, 18],
+    "blueprint_ids": [
+      "walker.pedestrian.0005",
+      "walker.pedestrian.0006",
+      "walker.pedestrian.0007",
+      "walker.pedestrian.0008",
+      "walker.pedestrian.0024",
+      "walker.pedestrian.0025",
+      "walker.pedestrian.0026",
+      "walker.pedestrian.0027"
+    ],
+    "walking_speed_mps": [0.65, 1.85],
+    "personal_space_m": [0.35, 1.1],
+    "crossing_propensity": [0.08, 0.78],
+    "distraction_probability": 0.24,
+    "origin_ids": ["south_sidewalk", "east_workzone_edge", "west_bus_bay"],
+    "destination_ids": ["north_sidewalk", "market_entrance", "west_connector"]
+  },
+  "grouping": {
+    "membership_probability": 0.72,
+    "group_size_range": [2, 4],
+    "cohesion_range": [0.55, 0.95],
+    "formations": ["abreast", "leader_follower", "loose_cluster"],
+    "shared_destination_ids": ["north_sidewalk", "market_entrance", "construction_viewpoint"]
+  },
+  "rerouting": {
+    "group_reroute_probability": 0.58,
+    "trigger_time_range_s": [5.0, 12.0],
+    "decision_duration_range_s": [0.8, 2.2],
+    "blocked_destination_id": "construction_viewpoint",
+    "alternative_destination_ids": ["signed_pedestrian_bypass", "east_workzone_edge"],
+    "selection_rule": "seeded_bernoulli_with_first_group_guarantee"
+  },
+  "long_tail_events": [
+    {
+      "type": "occluded_jaywalk",
+      "trigger_time_range_s": [4.0, 7.0],
+      "duration_range_s": [1.0, 2.4],
+      "selection_rule": {
+        "selector": "seeded_choice_from_sorted_eligible_actor_ids",
+        "eligible_actor_kind": "pedestrian",
+        "eligible_profiles": [],
+        "distinct_primary_actor_when_possible": true
+      }
+    },
+    {
+      "type": "sudden_brake",
+      "trigger_time_range_s": [8.0, 11.0],
+      "duration_range_s": [0.8, 1.8],
+      "selection_rule": {
+        "selector": "seeded_choice_from_sorted_eligible_actor_ids",
+        "eligible_actor_kind": "vehicle",
+        "eligible_profiles": ["nominal", "assertive"],
+        "distinct_primary_actor_when_possible": true
+      }
+    },
+    {
+      "type": "reverse_pullout",
+      "trigger_time_range_s": [12.0, 15.5],
+      "duration_range_s": [1.5, 3.0],
+      "selection_rule": {
+        "selector": "seeded_choice_from_sorted_eligible_actor_ids",
+        "eligible_actor_kind": "vehicle",
+        "eligible_profiles": ["cautious", "nominal"],
+        "distinct_primary_actor_when_possible": true
+      }
+    },
+    {
+      "type": "door_open",
+      "trigger_time_range_s": [17.0, 20.0],
+      "duration_range_s": [0.6, 1.8],
+      "selection_rule": {
+        "selector": "seeded_choice_from_sorted_eligible_actor_ids",
+        "eligible_actor_kind": "vehicle",
+        "eligible_profiles": ["cautious", "nominal", "assertive"],
+        "distinct_primary_actor_when_possible": true
+      }
+    }
+  ],
+  "claim_boundary": [
+    "This seeded output is a synthetic Development input plan, not an observed traffic distribution.",
+    "Randomized plan diversity does not establish source-disjoint confirmation, generalization, product benefit, or safety."
+  ]
+}
