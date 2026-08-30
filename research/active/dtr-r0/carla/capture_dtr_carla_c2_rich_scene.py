@@ -406,10 +406,16 @@ def spawn_asset(
         raise RuntimeError(
             f"failed to spawn {asset['asset_key']} from {asset['blueprint_candidates']}"
         )
+    simulate_physics_disabled = False
     try:
         actor.set_simulate_physics(False)
-    except Exception:
-        pass
+        simulate_physics_disabled = True
+    except Exception as error:
+        if bool(asset.get("scripted_pose_authority", False)):
+            raise RuntimeError(
+                f"failed to disable physics for authoritative scripted asset "
+                f"{asset['asset_key']}"
+            ) from error
     collision_manifest: dict[str, Any] = {}
     if "collisions_enabled" in asset:
         collisions_enabled = bool(asset["collisions_enabled"])
@@ -432,6 +438,7 @@ def spawn_asset(
         "actual_blueprint": str(actor.type_id),
         "fallback_index": int(fallback_index),
         "spawn_strategy": spawn_strategy,
+        "simulate_physics_disabled": simulate_physics_disabled,
         "attributes": attributes,
         "carla_actor_id": int(actor.id),
         "bbox_extent": vector_dict(extent.x, extent.y, extent.z),
