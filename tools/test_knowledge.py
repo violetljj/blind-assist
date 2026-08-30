@@ -232,6 +232,36 @@ class KnowledgeCliTest(unittest.TestCase):
             self.assertEqual(2, result)
             self.assertIn("--limit must be at least 1", stderr)
 
+            result, _, stderr = self.run_cli(
+                root,
+                "new-use",
+                "--id",
+                "use-l10-alias",
+                "--item",
+                "project-smoke",
+                "--route",
+                "l10-r0",
+                "--mechanism",
+                "smoke-mechanism",
+                "--source-scope",
+                "Route normalization test.",
+                "--project-application",
+                "Store a stable route id.",
+                "--modifications",
+                "None.",
+                "--expected-effect",
+                "No new alias route is written.",
+                "--claim-boundary",
+                "Test only.",
+            )
+            self.assertEqual(0, result, stderr)
+            normalized_use = json.loads(
+                (root / "uses" / "use-l10-alias.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual("ten-meter-copilot", normalized_use["route"])
+
     def test_context_limit_keeps_a_representative_from_each_present_tier(self) -> None:
         entries = [
             {
@@ -264,6 +294,75 @@ class KnowledgeCliTest(unittest.TestCase):
         self.assertEqual(
             ["use-active-a", "use-candidate"],
             [entry["use"]["id"] for entry in selected],
+        )
+
+    def test_current_route_aliases_share_one_context_family(self) -> None:
+        item = {
+            "id": "paper-route-family",
+            "kind": "paper",
+            "title": "Route family",
+            "canonical_ref": "https://example.org/route-family",
+            "summary": "Route alias test item.",
+            "aliases": [],
+            "mechanisms": [],
+        }
+        base_use = {
+            "item_id": item["id"],
+            "mechanism_ids": [],
+            "use_state": "candidate",
+            "adoption_mode": "reference",
+            "usage": {
+                "source_scope": "Test only.",
+                "project_application": "Test route-family lookup.",
+                "modifications": "None.",
+                "expected_effect": "Both route names find both records.",
+            },
+            "evaluation": {
+                "reproduction_status": "not_attempted",
+                "verdict": "not_run",
+                "setup": "",
+                "effect": "",
+                "metrics": [],
+                "claim_boundary": "Test only.",
+            },
+            "evidence": [],
+            "history": [],
+            "updated_at": "2026-08-31",
+        }
+        uses = {
+            "use-canonical": {
+                **base_use,
+                "id": "use-canonical",
+                "route": "ten-meter-copilot",
+            },
+            "use-alias": {
+                **base_use,
+                "id": "use-alias",
+                "route": "l10-r0",
+            },
+        }
+
+        canonical = knowledge._build_context(
+            {item["id"]: item},
+            uses,
+            route="ten-meter-copilot",
+            query=None,
+            limit=None,
+        )
+        alias = knowledge._build_context(
+            {item["id"]: item},
+            uses,
+            route="l10-r0",
+            query=None,
+            limit=None,
+        )
+
+        self.assertEqual("ten-meter-copilot", alias["route"])
+        self.assertEqual("l10-r0", alias["requested_route"])
+        self.assertEqual(2, alias["summary"]["route_total_uses"])
+        self.assertEqual(
+            [entry["use"]["id"] for entry in canonical["entries"]],
+            [entry["use"]["id"] for entry in alias["entries"]],
         )
 
     def test_query_matching_requires_all_terms_and_normalizes_punctuation(self) -> None:
@@ -418,6 +517,33 @@ class KnowledgeCliTest(unittest.TestCase):
             )
             self.assertTrue(
                 knowledge._experiment_plan_is_valid(card["minimum_experiment"])
+            )
+
+            index["mechanisms"][0]["routes"] = ["l10-r0"]
+            index["experiments"][0]["routes"] = ["ten-meter-copilot"]
+            (root / "decision" / "index.json").write_text(
+                json.dumps(index, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            result, output, stderr = self.run_cli(
+                root,
+                "diagnose",
+                "--route",
+                "l10-r0",
+                "--symptom",
+                "track dropout after occlusion",
+                "--mechanism-limit",
+                "2",
+                "--json",
+            )
+            self.assertEqual(0, result, stderr)
+            card = json.loads(output)
+            self.assertEqual("ten-meter-copilot", card["route"])
+            self.assertEqual(
+                "paper-temporal#bounded-belief", card["mechanisms"][0]["id"]
+            )
+            self.assertEqual(
+                "terminal-old-dropout", card["prior_attempts"][0]["id"]
             )
 
     def test_migration_receipt_requires_resolvable_alias_and_use(self) -> None:

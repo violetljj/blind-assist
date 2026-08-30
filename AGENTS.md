@@ -13,7 +13,8 @@ Keep module ownership stable: `:app` shell/assets, `:feature:assist` runtime,
 1. Read [project state](docs/PROJECT_STATE.md).
 2. Open only the affected route `CURRENT.md`.
 3. For known-route algorithm/model/data work, run `python tools/knowledge.py
-   context --route <route> --json`; add `--query` for a named mechanism/failure.
+   context --route <obstacle-avoidance|ten-meter-copilot> --limit 4`; add
+   `--query` for a named mechanism/failure and use `--json` only for automation.
 4. Open the detailed route `README.md`, code, test, or contract only as needed.
 5. Check `git status --short`; for several lines, run `pwsh -NoProfile -File scripts/show_worktree_scope.ps1`.
 

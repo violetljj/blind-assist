@@ -38,8 +38,8 @@ manifest 或结果引用。
 
 ```powershell
 python tools/knowledge.py validate
-python tools/knowledge.py context --route obstacle-avoidance
-python tools/knowledge.py context --route goal-copilot-p0 --query "spatial layout" --json
+python tools/knowledge.py context --route obstacle-avoidance --limit 4
+python tools/knowledge.py context --route ten-meter-copilot --limit 4 --query "spatial layout"
 python tools/knowledge.py list
 python tools/knowledge.py list --route ten-meter-copilot
 python tools/knowledge.py list --verdict falsified
@@ -105,6 +105,10 @@ canonical id、aliases 和全文字段都能被 `search/show` 解析。
 直接交给路线脚本或 agent。每条精简记录仍保留机制、项目接法、修改、预期/实际
 效果、claim boundary、证据和最近一次更新。
 
+冷启动建议使用文本输出和 `--limit 4`；只有自动化消费者需要完整字段时才加
+`--json`。当前路线目录别名 `dtr-r0`、`l10-r0` 也可用于 `context`、`list`、
+`search` 和 `diagnose`，分别解析为稳定主线，并合并历史上两种名称下的 use。
+
 ## 状态不是一个混合标签
 
 use 用三个正交字段描述当前判断：
@@ -151,6 +155,8 @@ python tools/knowledge.py update-use use-example-route-mechanism --state active 
 `obstacle-avoidance`（避障）和 `ten-meter-copilot`（十米副驾）。具体实验名只写入
 use id、`evaluation.setup`、evidence、history 或 `experiments/index.jsonl`，不得作为新
 use 的 route。这样实验改名或换代后，同一主线仍能检索全部历史尝试与停止边界。
+读取命令接受 `dtr-r0` / `l10-r0` 作为便捷别名；`new-use` 会自动写成对应稳定主线
+id，避免继续产生分叉。
 
 1. 主线冷启动先读取 `context --route <route>`；开新机制前再按 tag 或问题关键词
    搜索，避免重复探索已消费路线。

@@ -71,6 +71,15 @@ CONTEXT_VERDICT_PRIORITY = {
     "positive": 5,
     "not_run": 6,
 }
+ROUTE_FAMILIES: dict[str, frozenset[str]] = {
+    "obstacle-avoidance": frozenset({"obstacle-avoidance", "dtr-r0"}),
+    "ten-meter-copilot": frozenset({"ten-meter-copilot", "l10-r0"}),
+}
+ROUTE_CANONICAL = {
+    alias: canonical
+    for canonical, aliases in ROUTE_FAMILIES.items()
+    for alias in aliases
+}
 DECISION_SCHEMA_VERSION = 1
 DECISION_DEFAULT_MECHANISM_LIMIT = 2
 DECISION_DEFAULT_ATTEMPT_LIMIT = 4
@@ -82,6 +91,19 @@ DECISION_GOLDEN_RELATIVE = Path("decision") / "golden_cases.json"
 
 class KnowledgeError(RuntimeError):
     """User-facing knowledge library error."""
+
+
+def _canonical_route(route: str) -> str:
+    return ROUTE_CANONICAL.get(route, route)
+
+
+def _route_family(route: str) -> frozenset[str]:
+    canonical = _canonical_route(route)
+    return ROUTE_FAMILIES.get(canonical, frozenset({canonical}))
+
+
+def _route_matches(candidate: Any, requested: str) -> bool:
+    return isinstance(candidate, str) and candidate in _route_family(requested)
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -700,7 +722,7 @@ def _filtered_rows(
         filtered_uses = [
             use
             for use in linked_uses
-            if (route is None or use.get("route") == route)
+            if (route is None or _route_matches(use.get("route"), route))
             and (state is None or use.get("use_state") == state)
             and (
                 verdict is None
@@ -900,7 +922,10 @@ def _build_context(
     query: str | None,
     limit: int | None,
 ) -> dict[str, Any]:
-    route_uses = [use for use in uses.values() if use.get("route") == route]
+    canonical_route = _canonical_route(route)
+    route_uses = [
+        use for use in uses.values() if _route_matches(use.get("route"), route)
+    ]
     if not route_uses:
         raise KnowledgeError(f"no knowledge uses found for route: {route}")
 
@@ -937,7 +962,8 @@ def _build_context(
     matched_count = len(entries)
     selected = _select_context_entries(entries, limit)
     return {
-        "route": route,
+        "route": canonical_route,
+        "requested_route": route,
         "query": query,
         "summary": {
             "route_total_uses": len(route_uses),
@@ -971,6 +997,8 @@ def _print_context(payload: dict[str, Any], as_json: bool) -> None:
 
     summary = payload["summary"]
     print(f"# Route knowledge context: {payload['route']}")
+    if payload["requested_route"] != payload["route"]:
+        print(f"Requested route alias: {payload['requested_route']}")
     if payload["query"]:
         print(f"Query: {payload['query']}")
     print(
@@ -1780,6 +1808,7 @@ def _rank_mechanisms(
     limit: int,
 ) -> list[dict[str, Any]]:
     terms = _query_terms(query_text)
+    route_family = _route_family(route)
     diagnosed_layers = [layer["id"] for layer in diagnosis["layers"]]
     layer_weights = (70, 42, 24)
     ranked: list[tuple[int, str, dict[str, Any]]] = []
@@ -1804,8 +1833,10 @@ def _rank_mechanisms(
         if lexical_hits:
             score += min(36, len(lexical_hits) * 3)
             reasons.append("命中: " + ", ".join(lexical_hits[:5]))
-        route_uses = [use for use in mechanism["uses"] if use["route"] == route]
-        if route in mechanism["routes"]:
+        route_uses = [
+            use for use in mechanism["uses"] if use["route"] in route_family
+        ]
+        if route_family.intersection(mechanism["routes"]):
             score += 28
             reasons.append(f"已有 {route} 使用记录")
         selected_use = None
@@ -1889,6 +1920,7 @@ def _rank_prior_attempts(
     limit: int,
 ) -> list[dict[str, Any]]:
     terms = _query_terms(query_text)
+    route_family = _route_family(route)
     diagnosed_layers = [layer["id"] for layer in diagnosis["layers"]]
     attempts: list[tuple[int, str, dict[str, Any]]] = []
     seen_uses: set[str] = set()
@@ -1927,10 +1959,13 @@ def _rank_prior_attempts(
         )
 
     for experiment in index["experiments"]:
-        if route and experiment["routes"] and route not in experiment["routes"]:
+        experiment_routes = set(experiment["routes"])
+        if route and experiment_routes and not route_family.intersection(
+            experiment_routes
+        ):
             continue
         score = 0
-        if route in experiment["routes"]:
+        if route_family.intersection(experiment_routes):
             score += 45
         for rank, layer_id in enumerate(diagnosed_layers):
             if experiment["layer_scores"].get(layer_id, 0):
@@ -2144,6 +2179,7 @@ def _build_decision_card(
     attempt_limit: int,
 ) -> dict[str, Any]:
     started = time.perf_counter()
+    route = _canonical_route(route)
     query_text = " ".join([symptom, *observations])
     diagnosis = _diagnose_layers(symptom, observations, index["failure_layers"])
     mechanisms = _rank_mechanisms(
@@ -2585,7 +2621,7 @@ def _command_new_use(args: argparse.Namespace) -> int:
         "schema_version": 1,
         "id": args.id,
         "item_id": item["id"],
-        "route": args.route,
+        "route": _canonical_route(args.route),
         "mechanism_ids": args.mechanism,
         "use_state": args.state,
         "adoption_mode": args.mode,

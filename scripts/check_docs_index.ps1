@@ -4,7 +4,7 @@ if (-not $repoRoot) { throw 'Run inside the BlindAssist Git checkout.' }
 $sources = @(
     'README.md', 'docs/README.md', 'docs/PROJECT_STATE.md',
     'docs/CURRENT_DECISION.md', 'docs/DOCUMENT_GOVERNANCE.md',
-    'docs/history-index.md', 'scripts/README.md',
+    'docs/history-index.md', 'docs/CODE_MAP.md', 'scripts/README.md',
     'research/active/l10-r0/CURRENT.md',
     'research/active/dtr-r0/CURRENT.md'
 )
@@ -47,6 +47,8 @@ Require-Literal 'docs/PROJECT_STATE.md' 'DTR_R2_DYNAMIC_RETAINED' 'DTR R2 status
 Require-Literal 'docs/CURRENT_DECISION.md' 'L10_R0_ACTIVE / DTR_R2_DYNAMIC_RETAINED' 'cross-route status'
 Require-Literal 'research/active/l10-r0/CURRENT.md' 'Status: `L10_R0_ACTIVE`' 'L10 route status'
 Require-Literal 'research/active/dtr-r0/CURRENT.md' 'Status: `DTR_R2_DYNAMIC_RETAINED`' 'DTR route status'
+Require-Literal 'docs/CODE_MAP.md' '../research/active/l10-r0/CURRENT.md' 'L10 current-first route link'
+Require-Literal 'docs/CODE_MAP.md' '../research/active/dtr-r0/CURRENT.md' 'DTR current-first route link'
 
 if ($failures.Count) {
     Write-Host 'Documentation index check failed:'

@@ -14,11 +14,14 @@
 
 ## Research
 
-The two current, independent routes are
-[`research/active/l10-r0/`](../research/active/l10-r0/README.md) for ten-meter
-goal completion and
-[`research/active/dtr-r0/`](../research/active/dtr-r0/README.md) for dynamic
-obstacle/risk guidance.
+The two current, independent routes start at
+[L10 current](../research/active/l10-r0/CURRENT.md) for ten-meter goal completion
+and [DTR current](../research/active/dtr-r0/CURRENT.md) for dynamic obstacle/risk
+guidance. Open the route [L10 ledger](../research/active/l10-r0/README.md) or
+[DTR ledger](../research/active/dtr-r0/README.md) only when detailed history,
+metrics, or terminals are needed.
+`l10-r0` and `dtr-r0` are stable historical directory names, not one shared
+project version; each `CURRENT.md` owns the route's actual present status.
 Closed modules and their exact historical paths are searchable in
 `experiments/index.jsonl` and preserved at the archive tag documented in
 [history-index.md](history-index.md).
