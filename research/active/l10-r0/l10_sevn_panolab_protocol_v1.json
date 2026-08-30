@@ -1,0 +1,50 @@
+{
+  "schema": "blindassist-l10-sevn-panolab-protocol-v1",
+  "name": "L10-PanoLab SEVN 1.0 address-door adapter",
+  "evidence_class": "CURATED_REAL_SEVN_HUMAN_ANNOTATION_METADATA_DEVELOPMENT",
+  "question": "Can the original SEVN address-linked door annotations and panorama graph instantiate the L10 one-step PAN, SWEEP, APPROACH, SIDESTEP, and HOLD contract without leaking evaluator door truth into runtime observations?",
+  "provider": {
+    "name": "SEVN 1.0 / Zenodo 3526490",
+    "record": "https://zenodo.org/records/3526490",
+    "license": "MIT"
+  },
+  "cohort": {
+    "episodes_per_scenario": 8,
+    "scenario_classes": [
+      "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "APPROACH_ADDRESS_DOOR_RECOVERY"
+    ],
+    "selection": "deterministic address-disjoint rows sorted by street, house number, frame, and annotation x; each start is not CORRECT_UNIQUE and its named recovery action reaches one address-matched door annotation",
+    "development_limit": "selection uses SEVN human annotations and is an adapter/mechanism panel, not a held-out model evaluation"
+  },
+  "action_contract": {
+    "maximum_steps": 1,
+    "HOLD": "retain the panorama, pose, and 135-degree viewport",
+    "PAN_LEFT": "rotate the SEVN world heading by +67.5 degrees",
+    "PAN_RIGHT": "rotate the SEVN world heading by -67.5 degrees",
+    "SWEEP": "observe four 135-degree viewports separated by 90 degrees on the same panorama",
+    "APPROACH": "move along one frozen SEVN graph edge toward the address-linked goal panorama while retaining the quantized world heading",
+    "SIDESTEP_LEFT": "unavailable no-op because SEVN exposes no lateral-action semantics",
+    "SIDESTEP_RIGHT": "unavailable no-op because SEVN exposes no lateral-action semantics"
+  },
+  "truth_boundary": {
+    "public": "target address, local camera pose, viewport headings, action graph, and image locator",
+    "evaluator_only": "door/text boxes, target visibility, visible-door count, address match count, and binding state",
+    "image_payload": "the 1.86 GB low-resolution images.hdf5 is intentionally deferred until metadata admission and replay succeed"
+  },
+  "successor": "download and hash images.hdf5, render the same frozen 24 episodes, and test a pixel-derived target-door proposal without exposing SEVN labels",
+  "non_claims": [
+    "Panoramax or OSM entrance confirmation",
+    "cross-source generalization",
+    "continuous sidestep or pedestrian motion",
+    "metric depth",
+    "legal or public access",
+    "walkability or collision-free traversability",
+    "metric arrival",
+    "HANDOFF_READY",
+    "user task completion",
+    "product benefit",
+    "mobility safety"
+  ]
+}

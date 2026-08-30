@@ -1,0 +1,1191 @@
+{
+  "schema": "blindassist-l10-sevn-panolab-evaluator-truth-v1",
+  "generated_at_utc": "2026-08-30T16:34:24.757592Z",
+  "truth_authority": "SEVN_HUMAN_DOOR_AND_TEXT_ANNOTATIONS_PLUS_FROZEN_VIEWPORT_GEOMETRY",
+  "episodes": {
+    "SEVN001": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "beaubien",
+        "house_number": "26"
+      },
+      "target_door_annotation": {
+        "frame_id": 128472,
+        "house_number": "26",
+        "street_name": "beaubien",
+        "x_min": 146,
+        "x_max": 169,
+        "y_min": 27,
+        "y_max": 56,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN001_START": {
+          "binding_state": "WRONG_UNIQUE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN001_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN001_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN001_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN002": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "beaubien",
+        "house_number": "30"
+      },
+      "target_door_annotation": {
+        "frame_id": 128450,
+        "house_number": "30",
+        "street_name": "beaubien",
+        "x_min": 151,
+        "x_max": 176,
+        "y_min": 28,
+        "y_max": 56,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN002_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN002_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN002_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN002_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN003": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "beaubien",
+        "house_number": "34"
+      },
+      "target_door_annotation": {
+        "frame_id": 128429,
+        "house_number": "34",
+        "street_name": "beaubien",
+        "x_min": 161,
+        "x_max": 185,
+        "y_min": 27,
+        "y_max": 55,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN003_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN003_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN003_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN003_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN004": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "beaubien",
+        "house_number": "36"
+      },
+      "target_door_annotation": {
+        "frame_id": 128261,
+        "house_number": "36",
+        "street_name": "beaubien",
+        "x_min": 154,
+        "x_max": 175,
+        "y_min": 30,
+        "y_max": 55,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN004_START": {
+          "binding_state": "WRONG_UNIQUE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 1,
+          "target_house_number_visible": false
+        },
+        "SEVN004_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        },
+        "SEVN004_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN004_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 2,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN005": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "beaubien",
+        "house_number": "40"
+      },
+      "target_door_annotation": {
+        "frame_id": 128235,
+        "house_number": "40",
+        "street_name": "beaubien",
+        "x_min": 156,
+        "x_max": 177,
+        "y_min": 30,
+        "y_max": 55,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN005_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN005_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN005_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN005_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN006": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "beaubien",
+        "house_number": "44"
+      },
+      "target_door_annotation": {
+        "frame_id": 128199,
+        "house_number": "44",
+        "street_name": "beaubien",
+        "x_min": 141,
+        "x_max": 161,
+        "y_min": 32,
+        "y_max": 55,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN006_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN006_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN006_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN006_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN007": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "beaubien",
+        "house_number": "51"
+      },
+      "target_door_annotation": {
+        "frame_id": 40349,
+        "house_number": "51",
+        "street_name": "beaubien",
+        "x_min": 157,
+        "x_max": 171,
+        "y_min": 33,
+        "y_max": 50,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN007_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN007_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN007_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN007_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN008": {
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "beaubien",
+        "house_number": "90"
+      },
+      "target_door_annotation": {
+        "frame_id": 41691,
+        "house_number": "90",
+        "street_name": "beaubien",
+        "x_min": 141,
+        "x_max": 163,
+        "y_min": 33,
+        "y_max": 50,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN008_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN008_PAN_LEFT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN008_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN008_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN009": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "beaubien",
+        "house_number": "95"
+      },
+      "target_door_annotation": {
+        "frame_id": 40809,
+        "house_number": "95",
+        "street_name": "beaubien",
+        "x_min": 162,
+        "x_max": 178,
+        "y_min": 29,
+        "y_max": 53,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN009_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN009_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN009_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN009_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN010": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "beaumont",
+        "house_number": "51"
+      },
+      "target_door_annotation": {
+        "frame_id": 80615,
+        "house_number": "51",
+        "street_name": "beaumont",
+        "x_min": 161,
+        "x_max": 170,
+        "y_min": 33,
+        "y_max": 44,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN010_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN010_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN010_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN010_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN011": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "beaumont",
+        "house_number": "69"
+      },
+      "target_door_annotation": {
+        "frame_id": 81507,
+        "house_number": "69",
+        "street_name": "beaumont",
+        "x_min": 159,
+        "x_max": 169,
+        "y_min": 35,
+        "y_max": 45,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN011_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN011_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN011_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN011_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN012": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "beaumont",
+        "house_number": "80"
+      },
+      "target_door_annotation": {
+        "frame_id": 70569,
+        "house_number": "80",
+        "street_name": "beaumont",
+        "x_min": 176,
+        "x_max": 188,
+        "y_min": 33,
+        "y_max": 50,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN012_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN012_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN012_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN012_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN013": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "beaumont",
+        "house_number": "81"
+      },
+      "target_door_annotation": {
+        "frame_id": 70967,
+        "house_number": "81",
+        "street_name": "beaumont",
+        "x_min": 153,
+        "x_max": 158,
+        "y_min": 39,
+        "y_max": 45,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN013_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN013_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN013_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN013_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN014": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6505"
+      },
+      "target_door_annotation": {
+        "frame_id": 16140,
+        "house_number": "6505",
+        "street_name": "clark",
+        "x_min": 144,
+        "x_max": 158,
+        "y_min": 31,
+        "y_max": 49,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN014_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN014_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN014_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN014_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN015": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6508"
+      },
+      "target_door_annotation": {
+        "frame_id": 14517,
+        "house_number": "6508",
+        "street_name": "clark",
+        "x_min": 158,
+        "x_max": 169,
+        "y_min": 32,
+        "y_max": 48,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN015_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN015_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN015_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN015_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN016": {
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6509"
+      },
+      "target_door_annotation": {
+        "frame_id": 16275,
+        "house_number": "6509",
+        "street_name": "clark",
+        "x_min": 165,
+        "x_max": 178,
+        "y_min": 30,
+        "y_max": 49,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN016_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN016_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN016_PAN_RIGHT": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN016_SWEEP": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN017": {
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6889"
+      },
+      "target_door_annotation": {
+        "frame_id": 144627,
+        "house_number": "6889",
+        "street_name": "clark",
+        "x_min": 142,
+        "x_max": 153,
+        "y_min": 33,
+        "y_max": 46,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN017_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": true
+        },
+        "SEVN017_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN017_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": true
+        },
+        "SEVN017_SWEEP": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": true
+        },
+        "SEVN017_APPROACH": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN018": {
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6932"
+      },
+      "target_door_annotation": {
+        "frame_id": 147174,
+        "house_number": "6932",
+        "street_name": "clark",
+        "x_min": 127,
+        "x_max": 146,
+        "y_min": 29,
+        "y_max": 56,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN018_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": true
+        },
+        "SEVN018_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN018_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": true
+        },
+        "SEVN018_SWEEP": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": true
+        },
+        "SEVN018_APPROACH": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": false
+        }
+      }
+    },
+    "SEVN019": {
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "6934"
+      },
+      "target_door_annotation": {
+        "frame_id": 147015,
+        "house_number": "6934",
+        "street_name": "clark",
+        "x_min": 146,
+        "x_max": 165,
+        "y_min": 28,
+        "y_max": 52,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN019_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": true
+        },
+        "SEVN019_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN019_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": true
+        },
+        "SEVN019_SWEEP": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": true
+        },
+        "SEVN019_APPROACH": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN020": {
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "clark",
+        "house_number": "7010"
+      },
+      "target_door_annotation": {
+        "frame_id": 200807,
+        "house_number": "7010",
+        "street_name": "clark",
+        "x_min": 200,
+        "x_max": 207,
+        "y_min": 30,
+        "y_max": 46,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN020_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN020_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN020_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN020_SWEEP": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN020_APPROACH": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": false
+        }
+      }
+    },
+    "SEVN021": {
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "jean_talon",
+        "house_number": "50"
+      },
+      "target_door_annotation": {
+        "frame_id": 264807,
+        "house_number": "50",
+        "street_name": "jean_talon",
+        "x_min": 132,
+        "x_max": 146,
+        "y_min": 26,
+        "y_max": 52,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN021_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN021_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN021_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN021_SWEEP": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN021_APPROACH": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN022": {
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "jean_talon",
+        "house_number": "95"
+      },
+      "target_door_annotation": {
+        "frame_id": 268338,
+        "house_number": "95",
+        "street_name": "jean_talon",
+        "x_min": 178,
+        "x_max": 191,
+        "y_min": 29,
+        "y_max": 50,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN022_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN022_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN022_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN022_SWEEP": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN022_APPROACH": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN023": {
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6536"
+      },
+      "target_door_annotation": {
+        "frame_id": 115185,
+        "house_number": "6536",
+        "street_name": "saint_laurent",
+        "x_min": 144,
+        "x_max": 159,
+        "y_min": 29,
+        "y_max": 52,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN023_START": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": true
+        },
+        "SEVN023_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN023_PAN_RIGHT": {
+          "binding_state": "WRONG_UNIQUE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN023_SWEEP": {
+          "binding_state": "WRONG_UNIQUE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        },
+        "SEVN023_APPROACH": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    },
+    "SEVN024": {
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "target_address": {
+        "street_name": "saint_laurent",
+        "house_number": "6758"
+      },
+      "target_door_annotation": {
+        "frame_id": 167970,
+        "house_number": "6758",
+        "street_name": "saint_laurent",
+        "x_min": 127,
+        "x_max": 150,
+        "y_min": 26,
+        "y_max": 53,
+        "annotation_authority": "SEVN_HUMAN_DOOR_POLYGON_WITH_ADDRESS"
+      },
+      "observations": {
+        "SEVN024_START": {
+          "binding_state": "WRONG_UNIQUE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 1,
+          "target_house_number_visible": false
+        },
+        "SEVN024_PAN_LEFT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 0,
+          "target_house_number_visible": false
+        },
+        "SEVN024_PAN_RIGHT": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 2,
+          "target_house_number_visible": false
+        },
+        "SEVN024_SWEEP": {
+          "binding_state": "NOT_VISIBLE",
+          "target_visible": false,
+          "target_match_count": 0,
+          "visible_door_count": 2,
+          "target_house_number_visible": false
+        },
+        "SEVN024_APPROACH": {
+          "binding_state": "CORRECT_UNIQUE",
+          "target_visible": true,
+          "target_match_count": 1,
+          "visible_door_count": 1,
+          "target_house_number_visible": true
+        }
+      }
+    }
+  }
+}

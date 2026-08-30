@@ -1,0 +1,4 @@
+numpy==1.26.4
+pandas==1.5.3
+tables==3.11.1
+networkx==3.6.1

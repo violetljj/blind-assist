@@ -1,0 +1,4436 @@
+{
+  "schema": "blindassist-l10-sevn-panolab-public-cohort-v1",
+  "generated_at_utc": "2026-08-30T16:34:24.757592Z",
+  "provider": "SEVN 1.0 / Zenodo 3526490",
+  "license": "MIT",
+  "source_receipts": {
+    "coord.hdf5": {
+      "bytes": 419832,
+      "md5": "9d2d6f17aa31c9cb8309195cf2da00f9",
+      "zenodo_content_url": "https://zenodo.org/api/records/3526490/files/coord.hdf5/content"
+    },
+    "label.hdf5": {
+      "bytes": 351434,
+      "md5": "36e24d0ee0b2f351282f3b84aa5d5d56",
+      "zenodo_content_url": "https://zenodo.org/api/records/3526490/files/label.hdf5/content"
+    },
+    "graph.pkl": {
+      "bytes": 2793330,
+      "md5": "f68be888e8f3b964544678070689b777",
+      "zenodo_content_url": "https://zenodo.org/api/records/3526490/files/graph.pkl/content"
+    }
+  },
+  "image_payload": {
+    "available": false,
+    "expected_file": "images.hdf5",
+    "expected_bytes": 1861417787,
+    "expected_md5": "f8e570b8232efba23dfc53cc9c9d0b2c",
+    "status": "NOT_DOWNLOADED_1_86_GB"
+  },
+  "action_set": [
+    "HOLD",
+    "PAN_LEFT",
+    "PAN_RIGHT",
+    "SWEEP",
+    "APPROACH",
+    "SIDESTEP_LEFT",
+    "SIDESTEP_RIGHT"
+  ],
+  "observation_contract": "PUBLIC_MISSION_POSE_VIEWPORT_AND_IMAGE_LOCATOR_ONLY_NO_SEVN_LABELS",
+  "observations": {
+    "SEVN001_START": {
+      "observation_id": "SEVN001_START",
+      "frame_id": 128472,
+      "camera_pose": {
+        "local_xyz_m": [
+          46.653618,
+          -123.738185,
+          0.0
+        ],
+        "panorama_angle_degrees": 354.078883,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        190.953883
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128472,
+        "payload_available": false
+      }
+    },
+    "SEVN001_PAN_LEFT": {
+      "observation_id": "SEVN001_PAN_LEFT",
+      "frame_id": 128472,
+      "camera_pose": {
+        "local_xyz_m": [
+          46.653618,
+          -123.738185,
+          0.0
+        ],
+        "panorama_angle_degrees": 354.078883,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        258.453883
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128472,
+        "payload_available": false
+      }
+    },
+    "SEVN001_PAN_RIGHT": {
+      "observation_id": "SEVN001_PAN_RIGHT",
+      "frame_id": 128472,
+      "camera_pose": {
+        "local_xyz_m": [
+          46.653618,
+          -123.738185,
+          0.0
+        ],
+        "panorama_angle_degrees": 354.078883,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        123.453883
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128472,
+        "payload_available": false
+      }
+    },
+    "SEVN001_SWEEP": {
+      "observation_id": "SEVN001_SWEEP",
+      "frame_id": 128472,
+      "camera_pose": {
+        "local_xyz_m": [
+          46.653618,
+          -123.738185,
+          0.0
+        ],
+        "panorama_angle_degrees": 354.078883,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        190.953883,
+        280.953883,
+        10.953883,
+        100.953883
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128472,
+        "payload_available": false
+      }
+    },
+    "SEVN002_START": {
+      "observation_id": "SEVN002_START",
+      "frame_id": 128450,
+      "camera_pose": {
+        "local_xyz_m": [
+          46.042113,
+          -123.709036,
+          0.0
+        ],
+        "panorama_angle_degrees": 356.925397,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        184.15754
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128450,
+        "payload_available": false
+      }
+    },
+    "SEVN002_PAN_LEFT": {
+      "observation_id": "SEVN002_PAN_LEFT",
+      "frame_id": 128450,
+      "camera_pose": {
+        "local_xyz_m": [
+          46.042113,
+          -123.709036,
+          0.0
+        ],
+        "panorama_angle_degrees": 356.925397,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        251.65754
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128450,
+        "payload_available": false
+      }
+    },
+    "SEVN002_PAN_RIGHT": {
+      "observation_id": "SEVN002_PAN_RIGHT",
+      "frame_id": 128450,
+      "camera_pose": {
+        "local_xyz_m": [
+          46.042113,
+          -123.709036,
+          0.0
+        ],
+        "panorama_angle_degrees": 356.925397,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        116.65754
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128450,
+        "payload_available": false
+      }
+    },
+    "SEVN002_SWEEP": {
+      "observation_id": "SEVN002_SWEEP",
+      "frame_id": 128450,
+      "camera_pose": {
+        "local_xyz_m": [
+          46.042113,
+          -123.709036,
+          0.0
+        ],
+        "panorama_angle_degrees": 356.925397,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        184.15754,
+        274.15754,
+        4.15754,
+        94.15754
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128450,
+        "payload_available": false
+      }
+    },
+    "SEVN003_START": {
+      "observation_id": "SEVN003_START",
+      "frame_id": 128429,
+      "camera_pose": {
+        "local_xyz_m": [
+          45.46079,
+          -123.700243,
+          0.0
+        ],
+        "panorama_angle_degrees": 3.350864,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        175.31515
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128429,
+        "payload_available": false
+      }
+    },
+    "SEVN003_PAN_LEFT": {
+      "observation_id": "SEVN003_PAN_LEFT",
+      "frame_id": 128429,
+      "camera_pose": {
+        "local_xyz_m": [
+          45.46079,
+          -123.700243,
+          0.0
+        ],
+        "panorama_angle_degrees": 3.350864,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        242.81515
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128429,
+        "payload_available": false
+      }
+    },
+    "SEVN003_PAN_RIGHT": {
+      "observation_id": "SEVN003_PAN_RIGHT",
+      "frame_id": 128429,
+      "camera_pose": {
+        "local_xyz_m": [
+          45.46079,
+          -123.700243,
+          0.0
+        ],
+        "panorama_angle_degrees": 3.350864,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        107.81515
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128429,
+        "payload_available": false
+      }
+    },
+    "SEVN003_SWEEP": {
+      "observation_id": "SEVN003_SWEEP",
+      "frame_id": 128429,
+      "camera_pose": {
+        "local_xyz_m": [
+          45.46079,
+          -123.700243,
+          0.0
+        ],
+        "panorama_angle_degrees": 3.350864,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        175.31515,
+        265.31515,
+        355.31515,
+        85.31515
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128429,
+        "payload_available": false
+      }
+    },
+    "SEVN004_START": {
+      "observation_id": "SEVN004_START",
+      "frame_id": 128261,
+      "camera_pose": {
+        "local_xyz_m": [
+          40.903083,
+          -123.463907,
+          0.0
+        ],
+        "panorama_angle_degrees": 355.796797,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        181.421797
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128261,
+        "payload_available": false
+      }
+    },
+    "SEVN004_PAN_LEFT": {
+      "observation_id": "SEVN004_PAN_LEFT",
+      "frame_id": 128261,
+      "camera_pose": {
+        "local_xyz_m": [
+          40.903083,
+          -123.463907,
+          0.0
+        ],
+        "panorama_angle_degrees": 355.796797,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        248.921797
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128261,
+        "payload_available": false
+      }
+    },
+    "SEVN004_PAN_RIGHT": {
+      "observation_id": "SEVN004_PAN_RIGHT",
+      "frame_id": 128261,
+      "camera_pose": {
+        "local_xyz_m": [
+          40.903083,
+          -123.463907,
+          0.0
+        ],
+        "panorama_angle_degrees": 355.796797,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        113.921797
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128261,
+        "payload_available": false
+      }
+    },
+    "SEVN004_SWEEP": {
+      "observation_id": "SEVN004_SWEEP",
+      "frame_id": 128261,
+      "camera_pose": {
+        "local_xyz_m": [
+          40.903083,
+          -123.463907,
+          0.0
+        ],
+        "panorama_angle_degrees": 355.796797,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        181.421797,
+        271.421797,
+        1.421797,
+        91.421797
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128261,
+        "payload_available": false
+      }
+    },
+    "SEVN005_START": {
+      "observation_id": "SEVN005_START",
+      "frame_id": 128235,
+      "camera_pose": {
+        "local_xyz_m": [
+          40.223056,
+          -123.437596,
+          0.0
+        ],
+        "panorama_angle_degrees": 0.596564,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        183.007278
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128235,
+        "payload_available": false
+      }
+    },
+    "SEVN005_PAN_LEFT": {
+      "observation_id": "SEVN005_PAN_LEFT",
+      "frame_id": 128235,
+      "camera_pose": {
+        "local_xyz_m": [
+          40.223056,
+          -123.437596,
+          0.0
+        ],
+        "panorama_angle_degrees": 0.596564,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        250.507278
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128235,
+        "payload_available": false
+      }
+    },
+    "SEVN005_PAN_RIGHT": {
+      "observation_id": "SEVN005_PAN_RIGHT",
+      "frame_id": 128235,
+      "camera_pose": {
+        "local_xyz_m": [
+          40.223056,
+          -123.437596,
+          0.0
+        ],
+        "panorama_angle_degrees": 0.596564,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        115.507278
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128235,
+        "payload_available": false
+      }
+    },
+    "SEVN005_SWEEP": {
+      "observation_id": "SEVN005_SWEEP",
+      "frame_id": 128235,
+      "camera_pose": {
+        "local_xyz_m": [
+          40.223056,
+          -123.437596,
+          0.0
+        ],
+        "panorama_angle_degrees": 0.596564,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        183.007278,
+        273.007278,
+        3.007278,
+        93.007278
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128235,
+        "payload_available": false
+      }
+    },
+    "SEVN006_START": {
+      "observation_id": "SEVN006_START",
+      "frame_id": 128199,
+      "camera_pose": {
+        "local_xyz_m": [
+          39.233247,
+          -123.392142,
+          0.0
+        ],
+        "panorama_angle_degrees": 356.318048,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        203.639476
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128199,
+        "payload_available": false
+      }
+    },
+    "SEVN006_PAN_LEFT": {
+      "observation_id": "SEVN006_PAN_LEFT",
+      "frame_id": 128199,
+      "camera_pose": {
+        "local_xyz_m": [
+          39.233247,
+          -123.392142,
+          0.0
+        ],
+        "panorama_angle_degrees": 356.318048,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        271.139476
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128199,
+        "payload_available": false
+      }
+    },
+    "SEVN006_PAN_RIGHT": {
+      "observation_id": "SEVN006_PAN_RIGHT",
+      "frame_id": 128199,
+      "camera_pose": {
+        "local_xyz_m": [
+          39.233247,
+          -123.392142,
+          0.0
+        ],
+        "panorama_angle_degrees": 356.318048,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        136.139476
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128199,
+        "payload_available": false
+      }
+    },
+    "SEVN006_SWEEP": {
+      "observation_id": "SEVN006_SWEEP",
+      "frame_id": 128199,
+      "camera_pose": {
+        "local_xyz_m": [
+          39.233247,
+          -123.392142,
+          0.0
+        ],
+        "panorama_angle_degrees": 356.318048,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        203.639476,
+        293.639476,
+        23.639476,
+        113.639476
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 128199,
+        "payload_available": false
+      }
+    },
+    "SEVN007_START": {
+      "observation_id": "SEVN007_START",
+      "frame_id": 40349,
+      "camera_pose": {
+        "local_xyz_m": [
+          18.973173,
+          -114.603913,
+          0.0
+        ],
+        "panorama_angle_degrees": 178.941224,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        5.369795
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 40349,
+        "payload_available": false
+      }
+    },
+    "SEVN007_PAN_LEFT": {
+      "observation_id": "SEVN007_PAN_LEFT",
+      "frame_id": 40349,
+      "camera_pose": {
+        "local_xyz_m": [
+          18.973173,
+          -114.603913,
+          0.0
+        ],
+        "panorama_angle_degrees": 178.941224,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        72.869795
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 40349,
+        "payload_available": false
+      }
+    },
+    "SEVN007_PAN_RIGHT": {
+      "observation_id": "SEVN007_PAN_RIGHT",
+      "frame_id": 40349,
+      "camera_pose": {
+        "local_xyz_m": [
+          18.973173,
+          -114.603913,
+          0.0
+        ],
+        "panorama_angle_degrees": 178.941224,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        297.869795
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 40349,
+        "payload_available": false
+      }
+    },
+    "SEVN007_SWEEP": {
+      "observation_id": "SEVN007_SWEEP",
+      "frame_id": 40349,
+      "camera_pose": {
+        "local_xyz_m": [
+          18.973173,
+          -114.603913,
+          0.0
+        ],
+        "panorama_angle_degrees": 178.941224,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        5.369795,
+        95.369795,
+        185.369795,
+        275.369795
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 40349,
+        "payload_available": false
+      }
+    },
+    "SEVN008_START": {
+      "observation_id": "SEVN008_START",
+      "frame_id": 41691,
+      "camera_pose": {
+        "local_xyz_m": [
+          0.335731,
+          -121.784217,
+          0.0
+        ],
+        "panorama_angle_degrees": 1.232873,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        206.947159
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 41691,
+        "payload_available": false
+      }
+    },
+    "SEVN008_PAN_LEFT": {
+      "observation_id": "SEVN008_PAN_LEFT",
+      "frame_id": 41691,
+      "camera_pose": {
+        "local_xyz_m": [
+          0.335731,
+          -121.784217,
+          0.0
+        ],
+        "panorama_angle_degrees": 1.232873,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        274.447159
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 41691,
+        "payload_available": false
+      }
+    },
+    "SEVN008_PAN_RIGHT": {
+      "observation_id": "SEVN008_PAN_RIGHT",
+      "frame_id": 41691,
+      "camera_pose": {
+        "local_xyz_m": [
+          0.335731,
+          -121.784217,
+          0.0
+        ],
+        "panorama_angle_degrees": 1.232873,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        139.447159
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 41691,
+        "payload_available": false
+      }
+    },
+    "SEVN008_SWEEP": {
+      "observation_id": "SEVN008_SWEEP",
+      "frame_id": 41691,
+      "camera_pose": {
+        "local_xyz_m": [
+          0.335731,
+          -121.784217,
+          0.0
+        ],
+        "panorama_angle_degrees": 1.232873,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        206.947159,
+        296.947159,
+        26.947159,
+        116.947159
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 41691,
+        "payload_available": false
+      }
+    },
+    "SEVN009_START": {
+      "observation_id": "SEVN009_START",
+      "frame_id": 40809,
+      "camera_pose": {
+        "local_xyz_m": [
+          7.438884,
+          -114.375259,
+          0.0
+        ],
+        "panorama_angle_degrees": 175.857254,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        172.642969
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 40809,
+        "payload_available": false
+      }
+    },
+    "SEVN009_PAN_LEFT": {
+      "observation_id": "SEVN009_PAN_LEFT",
+      "frame_id": 40809,
+      "camera_pose": {
+        "local_xyz_m": [
+          7.438884,
+          -114.375259,
+          0.0
+        ],
+        "panorama_angle_degrees": 175.857254,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        240.142969
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 40809,
+        "payload_available": false
+      }
+    },
+    "SEVN009_PAN_RIGHT": {
+      "observation_id": "SEVN009_PAN_RIGHT",
+      "frame_id": 40809,
+      "camera_pose": {
+        "local_xyz_m": [
+          7.438884,
+          -114.375259,
+          0.0
+        ],
+        "panorama_angle_degrees": 175.857254,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        105.142969
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 40809,
+        "payload_available": false
+      }
+    },
+    "SEVN009_SWEEP": {
+      "observation_id": "SEVN009_SWEEP",
+      "frame_id": 40809,
+      "camera_pose": {
+        "local_xyz_m": [
+          7.438884,
+          -114.375259,
+          0.0
+        ],
+        "panorama_angle_degrees": 175.857254,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        172.642969,
+        262.642969,
+        352.642969,
+        82.642969
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 40809,
+        "payload_available": false
+      }
+    },
+    "SEVN010_START": {
+      "observation_id": "SEVN010_START",
+      "frame_id": 80615,
+      "camera_pose": {
+        "local_xyz_m": [
+          28.033888,
+          111.042692,
+          0.0
+        ],
+        "panorama_angle_degrees": 185.369574,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        189.387431
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 80615,
+        "payload_available": false
+      }
+    },
+    "SEVN010_PAN_LEFT": {
+      "observation_id": "SEVN010_PAN_LEFT",
+      "frame_id": 80615,
+      "camera_pose": {
+        "local_xyz_m": [
+          28.033888,
+          111.042692,
+          0.0
+        ],
+        "panorama_angle_degrees": 185.369574,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        256.887431
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 80615,
+        "payload_available": false
+      }
+    },
+    "SEVN010_PAN_RIGHT": {
+      "observation_id": "SEVN010_PAN_RIGHT",
+      "frame_id": 80615,
+      "camera_pose": {
+        "local_xyz_m": [
+          28.033888,
+          111.042692,
+          0.0
+        ],
+        "panorama_angle_degrees": 185.369574,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        121.887431
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 80615,
+        "payload_available": false
+      }
+    },
+    "SEVN010_SWEEP": {
+      "observation_id": "SEVN010_SWEEP",
+      "frame_id": 80615,
+      "camera_pose": {
+        "local_xyz_m": [
+          28.033888,
+          111.042692,
+          0.0
+        ],
+        "panorama_angle_degrees": 185.369574,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        189.387431,
+        279.387431,
+        9.387431,
+        99.387431
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 80615,
+        "payload_available": false
+      }
+    },
+    "SEVN011_START": {
+      "observation_id": "SEVN011_START",
+      "frame_id": 81507,
+      "camera_pose": {
+        "local_xyz_m": [
+          4.814485,
+          111.310642,
+          0.0
+        ],
+        "panorama_angle_degrees": 185.154791,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        191.583363
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 81507,
+        "payload_available": false
+      }
+    },
+    "SEVN011_PAN_LEFT": {
+      "observation_id": "SEVN011_PAN_LEFT",
+      "frame_id": 81507,
+      "camera_pose": {
+        "local_xyz_m": [
+          4.814485,
+          111.310642,
+          0.0
+        ],
+        "panorama_angle_degrees": 185.154791,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        259.083363
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 81507,
+        "payload_available": false
+      }
+    },
+    "SEVN011_PAN_RIGHT": {
+      "observation_id": "SEVN011_PAN_RIGHT",
+      "frame_id": 81507,
+      "camera_pose": {
+        "local_xyz_m": [
+          4.814485,
+          111.310642,
+          0.0
+        ],
+        "panorama_angle_degrees": 185.154791,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        124.083363
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 81507,
+        "payload_available": false
+      }
+    },
+    "SEVN011_SWEEP": {
+      "observation_id": "SEVN011_SWEEP",
+      "frame_id": 81507,
+      "camera_pose": {
+        "local_xyz_m": [
+          4.814485,
+          111.310642,
+          0.0
+        ],
+        "panorama_angle_degrees": 185.154791,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        191.583363,
+        281.583363,
+        11.583363,
+        101.583363
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 81507,
+        "payload_available": false
+      }
+    },
+    "SEVN012_START": {
+      "observation_id": "SEVN012_START",
+      "frame_id": 70569,
+      "camera_pose": {
+        "local_xyz_m": [
+          0.59004,
+          103.906809,
+          0.0
+        ],
+        "panorama_angle_degrees": 97.426806,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        74.926806
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 70569,
+        "payload_available": false
+      }
+    },
+    "SEVN012_PAN_LEFT": {
+      "observation_id": "SEVN012_PAN_LEFT",
+      "frame_id": 70569,
+      "camera_pose": {
+        "local_xyz_m": [
+          0.59004,
+          103.906809,
+          0.0
+        ],
+        "panorama_angle_degrees": 97.426806,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        142.426806
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 70569,
+        "payload_available": false
+      }
+    },
+    "SEVN012_PAN_RIGHT": {
+      "observation_id": "SEVN012_PAN_RIGHT",
+      "frame_id": 70569,
+      "camera_pose": {
+        "local_xyz_m": [
+          0.59004,
+          103.906809,
+          0.0
+        ],
+        "panorama_angle_degrees": 97.426806,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        7.426806
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 70569,
+        "payload_available": false
+      }
+    },
+    "SEVN012_SWEEP": {
+      "observation_id": "SEVN012_SWEEP",
+      "frame_id": 70569,
+      "camera_pose": {
+        "local_xyz_m": [
+          0.59004,
+          103.906809,
+          0.0
+        ],
+        "panorama_angle_degrees": 97.426806,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        74.926806,
+        164.926806,
+        254.926806,
+        344.926806
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 70569,
+        "payload_available": false
+      }
+    },
+    "SEVN013_START": {
+      "observation_id": "SEVN013_START",
+      "frame_id": 70967,
+      "camera_pose": {
+        "local_xyz_m": [
+          -2.863128,
+          111.476883,
+          0.0
+        ],
+        "panorama_angle_degrees": 183.232264,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        203.32155
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 70967,
+        "payload_available": false
+      }
+    },
+    "SEVN013_PAN_LEFT": {
+      "observation_id": "SEVN013_PAN_LEFT",
+      "frame_id": 70967,
+      "camera_pose": {
+        "local_xyz_m": [
+          -2.863128,
+          111.476883,
+          0.0
+        ],
+        "panorama_angle_degrees": 183.232264,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        270.82155
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 70967,
+        "payload_available": false
+      }
+    },
+    "SEVN013_PAN_RIGHT": {
+      "observation_id": "SEVN013_PAN_RIGHT",
+      "frame_id": 70967,
+      "camera_pose": {
+        "local_xyz_m": [
+          -2.863128,
+          111.476883,
+          0.0
+        ],
+        "panorama_angle_degrees": 183.232264,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        135.82155
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 70967,
+        "payload_available": false
+      }
+    },
+    "SEVN013_SWEEP": {
+      "observation_id": "SEVN013_SWEEP",
+      "frame_id": 70967,
+      "camera_pose": {
+        "local_xyz_m": [
+          -2.863128,
+          111.476883,
+          0.0
+        ],
+        "panorama_angle_degrees": 183.232264,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        203.32155,
+        293.32155,
+        23.32155,
+        113.32155
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 70967,
+        "payload_available": false
+      }
+    },
+    "SEVN014_START": {
+      "observation_id": "SEVN014_START",
+      "frame_id": 16140,
+      "camera_pose": {
+        "local_xyz_m": [
+          33.783738,
+          -112.611023,
+          0.0
+        ],
+        "panorama_angle_degrees": 82.306543,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        109.627972
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 16140,
+        "payload_available": false
+      }
+    },
+    "SEVN014_PAN_LEFT": {
+      "observation_id": "SEVN014_PAN_LEFT",
+      "frame_id": 16140,
+      "camera_pose": {
+        "local_xyz_m": [
+          33.783738,
+          -112.611023,
+          0.0
+        ],
+        "panorama_angle_degrees": 82.306543,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        177.127972
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 16140,
+        "payload_available": false
+      }
+    },
+    "SEVN014_PAN_RIGHT": {
+      "observation_id": "SEVN014_PAN_RIGHT",
+      "frame_id": 16140,
+      "camera_pose": {
+        "local_xyz_m": [
+          33.783738,
+          -112.611023,
+          0.0
+        ],
+        "panorama_angle_degrees": 82.306543,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        42.127972
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 16140,
+        "payload_available": false
+      }
+    },
+    "SEVN014_SWEEP": {
+      "observation_id": "SEVN014_SWEEP",
+      "frame_id": 16140,
+      "camera_pose": {
+        "local_xyz_m": [
+          33.783738,
+          -112.611023,
+          0.0
+        ],
+        "panorama_angle_degrees": 82.306543,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        109.627972,
+        199.627972,
+        289.627972,
+        19.627972
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 16140,
+        "payload_available": false
+      }
+    },
+    "SEVN015_START": {
+      "observation_id": "SEVN015_START",
+      "frame_id": 14517,
+      "camera_pose": {
+        "local_xyz_m": [
+          26.140722,
+          -104.570493,
+          0.0
+        ],
+        "panorama_angle_degrees": 267.660329,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        274.892472
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 14517,
+        "payload_available": false
+      }
+    },
+    "SEVN015_PAN_LEFT": {
+      "observation_id": "SEVN015_PAN_LEFT",
+      "frame_id": 14517,
+      "camera_pose": {
+        "local_xyz_m": [
+          26.140722,
+          -104.570493,
+          0.0
+        ],
+        "panorama_angle_degrees": 267.660329,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        342.392472
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 14517,
+        "payload_available": false
+      }
+    },
+    "SEVN015_PAN_RIGHT": {
+      "observation_id": "SEVN015_PAN_RIGHT",
+      "frame_id": 14517,
+      "camera_pose": {
+        "local_xyz_m": [
+          26.140722,
+          -104.570493,
+          0.0
+        ],
+        "panorama_angle_degrees": 267.660329,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        207.392472
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 14517,
+        "payload_available": false
+      }
+    },
+    "SEVN015_SWEEP": {
+      "observation_id": "SEVN015_SWEEP",
+      "frame_id": 14517,
+      "camera_pose": {
+        "local_xyz_m": [
+          26.140722,
+          -104.570493,
+          0.0
+        ],
+        "panorama_angle_degrees": 267.660329,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        274.892472,
+        4.892472,
+        94.892472,
+        184.892472
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 14517,
+        "payload_available": false
+      }
+    },
+    "SEVN016_START": {
+      "observation_id": "SEVN016_START",
+      "frame_id": 16275,
+      "camera_pose": {
+        "local_xyz_m": [
+          33.892967,
+          -109.330237,
+          0.0
+        ],
+        "panorama_angle_degrees": 85.926767,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        80.301767
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 16275,
+        "payload_available": false
+      }
+    },
+    "SEVN016_PAN_LEFT": {
+      "observation_id": "SEVN016_PAN_LEFT",
+      "frame_id": 16275,
+      "camera_pose": {
+        "local_xyz_m": [
+          33.892967,
+          -109.330237,
+          0.0
+        ],
+        "panorama_angle_degrees": 85.926767,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        147.801767
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 16275,
+        "payload_available": false
+      }
+    },
+    "SEVN016_PAN_RIGHT": {
+      "observation_id": "SEVN016_PAN_RIGHT",
+      "frame_id": 16275,
+      "camera_pose": {
+        "local_xyz_m": [
+          33.892967,
+          -109.330237,
+          0.0
+        ],
+        "panorama_angle_degrees": 85.926767,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        12.801767
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 16275,
+        "payload_available": false
+      }
+    },
+    "SEVN016_SWEEP": {
+      "observation_id": "SEVN016_SWEEP",
+      "frame_id": 16275,
+      "camera_pose": {
+        "local_xyz_m": [
+          33.892967,
+          -109.330237,
+          0.0
+        ],
+        "panorama_angle_degrees": 85.926767,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        80.301767,
+        170.301767,
+        260.301767,
+        350.301767
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 16275,
+        "payload_available": false
+      }
+    },
+    "SEVN017_START": {
+      "observation_id": "SEVN017_START",
+      "frame_id": 144606,
+      "camera_pose": {
+        "local_xyz_m": [
+          39.415653,
+          126.898091,
+          0.0
+        ],
+        "panorama_angle_degrees": 92.082038,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        90.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 144606,
+        "payload_available": false
+      }
+    },
+    "SEVN017_PAN_LEFT": {
+      "observation_id": "SEVN017_PAN_LEFT",
+      "frame_id": 144606,
+      "camera_pose": {
+        "local_xyz_m": [
+          39.415653,
+          126.898091,
+          0.0
+        ],
+        "panorama_angle_degrees": 92.082038,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        157.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 144606,
+        "payload_available": false
+      }
+    },
+    "SEVN017_PAN_RIGHT": {
+      "observation_id": "SEVN017_PAN_RIGHT",
+      "frame_id": 144606,
+      "camera_pose": {
+        "local_xyz_m": [
+          39.415653,
+          126.898091,
+          0.0
+        ],
+        "panorama_angle_degrees": 92.082038,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        22.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 144606,
+        "payload_available": false
+      }
+    },
+    "SEVN017_SWEEP": {
+      "observation_id": "SEVN017_SWEEP",
+      "frame_id": 144606,
+      "camera_pose": {
+        "local_xyz_m": [
+          39.415653,
+          126.898091,
+          0.0
+        ],
+        "panorama_angle_degrees": 92.082038,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        90.0,
+        180.0,
+        270.0,
+        0.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 144606,
+        "payload_available": false
+      }
+    },
+    "SEVN017_APPROACH": {
+      "observation_id": "SEVN017_APPROACH",
+      "frame_id": 144627,
+      "camera_pose": {
+        "local_xyz_m": [
+          39.418067,
+          127.425675,
+          0.0
+        ],
+        "panorama_angle_degrees": 92.322785,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        90.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 144627,
+        "payload_available": false
+      }
+    },
+    "SEVN018_START": {
+      "observation_id": "SEVN018_START",
+      "frame_id": 147149,
+      "camera_pose": {
+        "local_xyz_m": [
+          32.150594,
+          132.108472,
+          0.0
+        ],
+        "panorama_angle_degrees": 268.072244,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        270.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 147149,
+        "payload_available": false
+      }
+    },
+    "SEVN018_PAN_LEFT": {
+      "observation_id": "SEVN018_PAN_LEFT",
+      "frame_id": 147149,
+      "camera_pose": {
+        "local_xyz_m": [
+          32.150594,
+          132.108472,
+          0.0
+        ],
+        "panorama_angle_degrees": 268.072244,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        337.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 147149,
+        "payload_available": false
+      }
+    },
+    "SEVN018_PAN_RIGHT": {
+      "observation_id": "SEVN018_PAN_RIGHT",
+      "frame_id": 147149,
+      "camera_pose": {
+        "local_xyz_m": [
+          32.150594,
+          132.108472,
+          0.0
+        ],
+        "panorama_angle_degrees": 268.072244,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        202.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 147149,
+        "payload_available": false
+      }
+    },
+    "SEVN018_SWEEP": {
+      "observation_id": "SEVN018_SWEEP",
+      "frame_id": 147149,
+      "camera_pose": {
+        "local_xyz_m": [
+          32.150594,
+          132.108472,
+          0.0
+        ],
+        "panorama_angle_degrees": 268.072244,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        270.0,
+        0.0,
+        90.0,
+        180.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 147149,
+        "payload_available": false
+      }
+    },
+    "SEVN018_APPROACH": {
+      "observation_id": "SEVN018_APPROACH",
+      "frame_id": 147174,
+      "camera_pose": {
+        "local_xyz_m": [
+          32.147762,
+          131.493871,
+          0.0
+        ],
+        "panorama_angle_degrees": 268.958929,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        270.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 147174,
+        "payload_available": false
+      }
+    },
+    "SEVN019_START": {
+      "observation_id": "SEVN019_START",
+      "frame_id": 152114,
+      "camera_pose": {
+        "local_xyz_m": [
+          32.940654,
+          136.272256,
+          0.0
+        ],
+        "panorama_angle_degrees": 226.119572,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        225.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 152114,
+        "payload_available": false
+      }
+    },
+    "SEVN019_PAN_LEFT": {
+      "observation_id": "SEVN019_PAN_LEFT",
+      "frame_id": 152114,
+      "camera_pose": {
+        "local_xyz_m": [
+          32.940654,
+          136.272256,
+          0.0
+        ],
+        "panorama_angle_degrees": 226.119572,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        292.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 152114,
+        "payload_available": false
+      }
+    },
+    "SEVN019_PAN_RIGHT": {
+      "observation_id": "SEVN019_PAN_RIGHT",
+      "frame_id": 152114,
+      "camera_pose": {
+        "local_xyz_m": [
+          32.940654,
+          136.272256,
+          0.0
+        ],
+        "panorama_angle_degrees": 226.119572,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        157.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 152114,
+        "payload_available": false
+      }
+    },
+    "SEVN019_SWEEP": {
+      "observation_id": "SEVN019_SWEEP",
+      "frame_id": 152114,
+      "camera_pose": {
+        "local_xyz_m": [
+          32.940654,
+          136.272256,
+          0.0
+        ],
+        "panorama_angle_degrees": 226.119572,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        225.0,
+        315.0,
+        45.0,
+        135.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 152114,
+        "payload_available": false
+      }
+    },
+    "SEVN019_APPROACH": {
+      "observation_id": "SEVN019_APPROACH",
+      "frame_id": 147015,
+      "camera_pose": {
+        "local_xyz_m": [
+          32.210602,
+          135.485074,
+          0.0
+        ],
+        "panorama_angle_degrees": 274.064164,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        225.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 147015,
+        "payload_available": false
+      }
+    },
+    "SEVN020_START": {
+      "observation_id": "SEVN020_START",
+      "frame_id": 200829,
+      "camera_pose": {
+        "local_xyz_m": [
+          32.137066,
+          144.685675,
+          0.0
+        ],
+        "panorama_angle_degrees": 272.367876,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        90.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 200829,
+        "payload_available": false
+      }
+    },
+    "SEVN020_PAN_LEFT": {
+      "observation_id": "SEVN020_PAN_LEFT",
+      "frame_id": 200829,
+      "camera_pose": {
+        "local_xyz_m": [
+          32.137066,
+          144.685675,
+          0.0
+        ],
+        "panorama_angle_degrees": 272.367876,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        157.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 200829,
+        "payload_available": false
+      }
+    },
+    "SEVN020_PAN_RIGHT": {
+      "observation_id": "SEVN020_PAN_RIGHT",
+      "frame_id": 200829,
+      "camera_pose": {
+        "local_xyz_m": [
+          32.137066,
+          144.685675,
+          0.0
+        ],
+        "panorama_angle_degrees": 272.367876,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        22.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 200829,
+        "payload_available": false
+      }
+    },
+    "SEVN020_SWEEP": {
+      "observation_id": "SEVN020_SWEEP",
+      "frame_id": 200829,
+      "camera_pose": {
+        "local_xyz_m": [
+          32.137066,
+          144.685675,
+          0.0
+        ],
+        "panorama_angle_degrees": 272.367876,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        90.0,
+        180.0,
+        270.0,
+        0.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 200829,
+        "payload_available": false
+      }
+    },
+    "SEVN020_APPROACH": {
+      "observation_id": "SEVN020_APPROACH",
+      "frame_id": 200807,
+      "camera_pose": {
+        "local_xyz_m": [
+          32.141052,
+          145.20705,
+          0.0
+        ],
+        "panorama_angle_degrees": 276.068814,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        90.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 200807,
+        "payload_available": false
+      }
+    },
+    "SEVN021_START": {
+      "observation_id": "SEVN021_START",
+      "frame_id": 264786,
+      "camera_pose": {
+        "local_xyz_m": [
+          29.867538,
+          261.69207,
+          0.0
+        ],
+        "panorama_angle_degrees": 1.846491,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        0.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 264786,
+        "payload_available": false
+      }
+    },
+    "SEVN021_PAN_LEFT": {
+      "observation_id": "SEVN021_PAN_LEFT",
+      "frame_id": 264786,
+      "camera_pose": {
+        "local_xyz_m": [
+          29.867538,
+          261.69207,
+          0.0
+        ],
+        "panorama_angle_degrees": 1.846491,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        67.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 264786,
+        "payload_available": false
+      }
+    },
+    "SEVN021_PAN_RIGHT": {
+      "observation_id": "SEVN021_PAN_RIGHT",
+      "frame_id": 264786,
+      "camera_pose": {
+        "local_xyz_m": [
+          29.867538,
+          261.69207,
+          0.0
+        ],
+        "panorama_angle_degrees": 1.846491,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        292.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 264786,
+        "payload_available": false
+      }
+    },
+    "SEVN021_SWEEP": {
+      "observation_id": "SEVN021_SWEEP",
+      "frame_id": 264786,
+      "camera_pose": {
+        "local_xyz_m": [
+          29.867538,
+          261.69207,
+          0.0
+        ],
+        "panorama_angle_degrees": 1.846491,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        0.0,
+        90.0,
+        180.0,
+        270.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 264786,
+        "payload_available": false
+      }
+    },
+    "SEVN021_APPROACH": {
+      "observation_id": "SEVN021_APPROACH",
+      "frame_id": 264807,
+      "camera_pose": {
+        "local_xyz_m": [
+          30.472421,
+          261.702774,
+          0.0
+        ],
+        "panorama_angle_degrees": 355.234546,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        0.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 264807,
+        "payload_available": false
+      }
+    },
+    "SEVN022_START": {
+      "observation_id": "SEVN022_START",
+      "frame_id": 272724,
+      "camera_pose": {
+        "local_xyz_m": [
+          1.952436,
+          270.423944,
+          0.0
+        ],
+        "panorama_angle_degrees": 250.337259,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        67.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 272724,
+        "payload_available": false
+      }
+    },
+    "SEVN022_PAN_LEFT": {
+      "observation_id": "SEVN022_PAN_LEFT",
+      "frame_id": 272724,
+      "camera_pose": {
+        "local_xyz_m": [
+          1.952436,
+          270.423944,
+          0.0
+        ],
+        "panorama_angle_degrees": 250.337259,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        135.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 272724,
+        "payload_available": false
+      }
+    },
+    "SEVN022_PAN_RIGHT": {
+      "observation_id": "SEVN022_PAN_RIGHT",
+      "frame_id": 272724,
+      "camera_pose": {
+        "local_xyz_m": [
+          1.952436,
+          270.423944,
+          0.0
+        ],
+        "panorama_angle_degrees": 250.337259,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        0.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 272724,
+        "payload_available": false
+      }
+    },
+    "SEVN022_SWEEP": {
+      "observation_id": "SEVN022_SWEEP",
+      "frame_id": 272724,
+      "camera_pose": {
+        "local_xyz_m": [
+          1.952436,
+          270.423944,
+          0.0
+        ],
+        "panorama_angle_degrees": 250.337259,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        67.5,
+        157.5,
+        247.5,
+        337.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 272724,
+        "payload_available": false
+      }
+    },
+    "SEVN022_APPROACH": {
+      "observation_id": "SEVN022_APPROACH",
+      "frame_id": 268338,
+      "camera_pose": {
+        "local_xyz_m": [
+          2.31025,
+          271.233595,
+          0.0
+        ],
+        "panorama_angle_degrees": 174.408272,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        67.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 268338,
+        "payload_available": false
+      }
+    },
+    "SEVN023_START": {
+      "observation_id": "SEVN023_START",
+      "frame_id": 115163,
+      "camera_pose": {
+        "local_xyz_m": [
+          64.184471,
+          -90.206664,
+          0.0
+        ],
+        "panorama_angle_degrees": 259.323336,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        247.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 115163,
+        "payload_available": false
+      }
+    },
+    "SEVN023_PAN_LEFT": {
+      "observation_id": "SEVN023_PAN_LEFT",
+      "frame_id": 115163,
+      "camera_pose": {
+        "local_xyz_m": [
+          64.184471,
+          -90.206664,
+          0.0
+        ],
+        "panorama_angle_degrees": 259.323336,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        315.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 115163,
+        "payload_available": false
+      }
+    },
+    "SEVN023_PAN_RIGHT": {
+      "observation_id": "SEVN023_PAN_RIGHT",
+      "frame_id": 115163,
+      "camera_pose": {
+        "local_xyz_m": [
+          64.184471,
+          -90.206664,
+          0.0
+        ],
+        "panorama_angle_degrees": 259.323336,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        180.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 115163,
+        "payload_available": false
+      }
+    },
+    "SEVN023_SWEEP": {
+      "observation_id": "SEVN023_SWEEP",
+      "frame_id": 115163,
+      "camera_pose": {
+        "local_xyz_m": [
+          64.184471,
+          -90.206664,
+          0.0
+        ],
+        "panorama_angle_degrees": 259.323336,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        247.5,
+        337.5,
+        67.5,
+        157.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 115163,
+        "payload_available": false
+      }
+    },
+    "SEVN023_APPROACH": {
+      "observation_id": "SEVN023_APPROACH",
+      "frame_id": 115185,
+      "camera_pose": {
+        "local_xyz_m": [
+          64.067564,
+          -90.765373,
+          0.0
+        ],
+        "panorama_angle_degrees": 265.389893,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        247.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 115185,
+        "payload_available": false
+      }
+    },
+    "SEVN024_START": {
+      "observation_id": "SEVN024_START",
+      "frame_id": 167949,
+      "camera_pose": {
+        "local_xyz_m": [
+          67.07807,
+          53.618354,
+          0.0
+        ],
+        "panorama_angle_degrees": 267.641813,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        270.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 167949,
+        "payload_available": false
+      }
+    },
+    "SEVN024_PAN_LEFT": {
+      "observation_id": "SEVN024_PAN_LEFT",
+      "frame_id": 167949,
+      "camera_pose": {
+        "local_xyz_m": [
+          67.07807,
+          53.618354,
+          0.0
+        ],
+        "panorama_angle_degrees": 267.641813,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        337.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 167949,
+        "payload_available": false
+      }
+    },
+    "SEVN024_PAN_RIGHT": {
+      "observation_id": "SEVN024_PAN_RIGHT",
+      "frame_id": 167949,
+      "camera_pose": {
+        "local_xyz_m": [
+          67.07807,
+          53.618354,
+          0.0
+        ],
+        "panorama_angle_degrees": 267.641813,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        202.5
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 167949,
+        "payload_available": false
+      }
+    },
+    "SEVN024_SWEEP": {
+      "observation_id": "SEVN024_SWEEP",
+      "frame_id": 167949,
+      "camera_pose": {
+        "local_xyz_m": [
+          67.07807,
+          53.618354,
+          0.0
+        ],
+        "panorama_angle_degrees": 267.641813,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        270.0,
+        0.0,
+        90.0,
+        180.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 167949,
+        "payload_available": false
+      }
+    },
+    "SEVN024_APPROACH": {
+      "observation_id": "SEVN024_APPROACH",
+      "frame_id": 167970,
+      "camera_pose": {
+        "local_xyz_m": [
+          67.027961,
+          52.980312,
+          0.0
+        ],
+        "panorama_angle_degrees": 268.904513,
+        "pose_authority": "SEVN_ORB_SLAM2_LOCAL_COORDINATES"
+      },
+      "viewport_headings_degrees": [
+        270.0
+      ],
+      "horizontal_fov_degrees": 135.0,
+      "image_asset": {
+        "container": "images.hdf5",
+        "dataset": "images",
+        "frame_lookup_dataset": "frames",
+        "frame_id": 167970,
+        "payload_available": false
+      }
+    }
+  },
+  "episodes": [
+    {
+      "episode_id": "SEVN001",
+      "poi_id": "SEVN:beaubien:26",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "26"
+      },
+      "start_observation_id": "SEVN001_START",
+      "transitions": {
+        "SEVN001_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN001_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN001_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN001_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN001_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN001_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN001_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN001_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN001_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN001_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "ACTION_NOT_AVAILABLE_FOR_THIS_FROZEN_EPISODE",
+            "before_observation_id": "SEVN001_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN001_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN001_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN001_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN001_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN002",
+      "poi_id": "SEVN:beaubien:30",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "30"
+      },
+      "start_observation_id": "SEVN002_START",
+      "transitions": {
+        "SEVN002_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN002_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN002_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN002_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN002_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN002_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN002_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN002_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN002_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN002_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "ACTION_NOT_AVAILABLE_FOR_THIS_FROZEN_EPISODE",
+            "before_observation_id": "SEVN002_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN002_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN002_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN002_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN002_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN003",
+      "poi_id": "SEVN:beaubien:34",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "34"
+      },
+      "start_observation_id": "SEVN003_START",
+      "transitions": {
+        "SEVN003_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN003_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN003_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN003_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN003_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN003_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN003_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN003_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN003_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN003_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "ACTION_NOT_AVAILABLE_FOR_THIS_FROZEN_EPISODE",
+            "before_observation_id": "SEVN003_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN003_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN003_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN003_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN003_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN004",
+      "poi_id": "SEVN:beaubien:36",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "36"
+      },
+      "start_observation_id": "SEVN004_START",
+      "transitions": {
+        "SEVN004_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN004_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN004_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN004_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN004_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN004_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN004_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN004_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN004_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN004_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "ACTION_NOT_AVAILABLE_FOR_THIS_FROZEN_EPISODE",
+            "before_observation_id": "SEVN004_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN004_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN004_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN004_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN004_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN005",
+      "poi_id": "SEVN:beaubien:40",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "40"
+      },
+      "start_observation_id": "SEVN005_START",
+      "transitions": {
+        "SEVN005_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN005_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN005_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN005_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN005_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN005_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN005_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN005_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN005_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN005_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "ACTION_NOT_AVAILABLE_FOR_THIS_FROZEN_EPISODE",
+            "before_observation_id": "SEVN005_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN005_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN005_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN005_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN005_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN006",
+      "poi_id": "SEVN:beaubien:44",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "44"
+      },
+      "start_observation_id": "SEVN006_START",
+      "transitions": {
+        "SEVN006_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN006_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN006_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN006_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN006_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN006_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN006_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN006_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN006_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN006_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "ACTION_NOT_AVAILABLE_FOR_THIS_FROZEN_EPISODE",
+            "before_observation_id": "SEVN006_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN006_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN006_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN006_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN006_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN007",
+      "poi_id": "SEVN:beaubien:51",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "51"
+      },
+      "start_observation_id": "SEVN007_START",
+      "transitions": {
+        "SEVN007_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN007_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN007_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN007_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN007_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN007_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN007_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN007_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN007_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN007_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "ACTION_NOT_AVAILABLE_FOR_THIS_FROZEN_EPISODE",
+            "before_observation_id": "SEVN007_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN007_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN007_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN007_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN007_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN008",
+      "poi_id": "SEVN:beaubien:90",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "90"
+      },
+      "start_observation_id": "SEVN008_START",
+      "transitions": {
+        "SEVN008_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN008_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN008_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN008_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN008_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN008_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN008_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN008_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN008_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN008_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "ACTION_NOT_AVAILABLE_FOR_THIS_FROZEN_EPISODE",
+            "before_observation_id": "SEVN008_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN008_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN008_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN008_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN008_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN009",
+      "poi_id": "SEVN:beaubien:95",
+      "mission": {
+        "street_name": "beaubien",
+        "house_number": "95"
+      },
+      "start_observation_id": "SEVN009_START",
+      "transitions": {
+        "SEVN009_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN009_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN009_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN009_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN009_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN009_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN009_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN009_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN009_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN009_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "ACTION_NOT_AVAILABLE_FOR_THIS_FROZEN_EPISODE",
+            "before_observation_id": "SEVN009_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN009_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN009_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN009_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN009_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN010",
+      "poi_id": "SEVN:beaumont:51",
+      "mission": {
+        "street_name": "beaumont",
+        "house_number": "51"
+      },
+      "start_observation_id": "SEVN010_START",
+      "transitions": {
+        "SEVN010_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN010_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN010_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN010_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN010_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN010_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN010_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN010_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN010_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN010_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "ACTION_NOT_AVAILABLE_FOR_THIS_FROZEN_EPISODE",
+            "before_observation_id": "SEVN010_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN010_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN010_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN010_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN010_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN011",
+      "poi_id": "SEVN:beaumont:69",
+      "mission": {
+        "street_name": "beaumont",
+        "house_number": "69"
+      },
+      "start_observation_id": "SEVN011_START",
+      "transitions": {
+        "SEVN011_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN011_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN011_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN011_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN011_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN011_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN011_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN011_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN011_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN011_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "ACTION_NOT_AVAILABLE_FOR_THIS_FROZEN_EPISODE",
+            "before_observation_id": "SEVN011_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN011_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN011_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN011_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN011_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN012",
+      "poi_id": "SEVN:beaumont:80",
+      "mission": {
+        "street_name": "beaumont",
+        "house_number": "80"
+      },
+      "start_observation_id": "SEVN012_START",
+      "transitions": {
+        "SEVN012_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN012_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN012_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN012_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN012_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN012_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN012_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN012_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN012_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN012_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "ACTION_NOT_AVAILABLE_FOR_THIS_FROZEN_EPISODE",
+            "before_observation_id": "SEVN012_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN012_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN012_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN012_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN012_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN013",
+      "poi_id": "SEVN:beaumont:81",
+      "mission": {
+        "street_name": "beaumont",
+        "house_number": "81"
+      },
+      "start_observation_id": "SEVN013_START",
+      "transitions": {
+        "SEVN013_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN013_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN013_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN013_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN013_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN013_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN013_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN013_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN013_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN013_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "ACTION_NOT_AVAILABLE_FOR_THIS_FROZEN_EPISODE",
+            "before_observation_id": "SEVN013_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN013_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN013_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN013_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN013_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN014",
+      "poi_id": "SEVN:clark:6505",
+      "mission": {
+        "street_name": "clark",
+        "house_number": "6505"
+      },
+      "start_observation_id": "SEVN014_START",
+      "transitions": {
+        "SEVN014_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN014_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN014_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN014_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN014_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN014_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN014_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN014_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN014_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN014_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "ACTION_NOT_AVAILABLE_FOR_THIS_FROZEN_EPISODE",
+            "before_observation_id": "SEVN014_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN014_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN014_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN014_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN014_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN015",
+      "poi_id": "SEVN:clark:6508",
+      "mission": {
+        "street_name": "clark",
+        "house_number": "6508"
+      },
+      "start_observation_id": "SEVN015_START",
+      "transitions": {
+        "SEVN015_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN015_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN015_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN015_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN015_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN015_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN015_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN015_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN015_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN015_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "ACTION_NOT_AVAILABLE_FOR_THIS_FROZEN_EPISODE",
+            "before_observation_id": "SEVN015_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN015_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN015_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN015_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN015_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN016",
+      "poi_id": "SEVN:clark:6509",
+      "mission": {
+        "street_name": "clark",
+        "house_number": "6509"
+      },
+      "start_observation_id": "SEVN016_START",
+      "transitions": {
+        "SEVN016_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN016_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN016_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN016_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN016_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN016_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN016_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN016_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN016_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN016_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "ACTION_NOT_AVAILABLE_FOR_THIS_FROZEN_EPISODE",
+            "before_observation_id": "SEVN016_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN016_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN016_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN016_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN016_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN017",
+      "poi_id": "SEVN:clark:6889",
+      "mission": {
+        "street_name": "clark",
+        "house_number": "6889"
+      },
+      "start_observation_id": "SEVN017_START",
+      "transitions": {
+        "SEVN017_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN017_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN017_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN017_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN017_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN017_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN017_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN017_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN017_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN017_APPROACH",
+            "action_executed": true,
+            "movement_distance_m": 0.52759,
+            "provider_transition": "SEVN_GRAPH_EDGE",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN017_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN017_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN017_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN017_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN017_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN018",
+      "poi_id": "SEVN:clark:6932",
+      "mission": {
+        "street_name": "clark",
+        "house_number": "6932"
+      },
+      "start_observation_id": "SEVN018_START",
+      "transitions": {
+        "SEVN018_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN018_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN018_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN018_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN018_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN018_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN018_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN018_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN018_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN018_APPROACH",
+            "action_executed": true,
+            "movement_distance_m": 0.614607,
+            "provider_transition": "SEVN_GRAPH_EDGE",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN018_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN018_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN018_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN018_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN018_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN019",
+      "poi_id": "SEVN:clark:6934",
+      "mission": {
+        "street_name": "clark",
+        "house_number": "6934"
+      },
+      "start_observation_id": "SEVN019_START",
+      "transitions": {
+        "SEVN019_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN019_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN019_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN019_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN019_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN019_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN019_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN019_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN019_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN019_APPROACH",
+            "action_executed": true,
+            "movement_distance_m": 1.073606,
+            "provider_transition": "SEVN_GRAPH_EDGE",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN019_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN019_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN019_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN019_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN019_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN020",
+      "poi_id": "SEVN:clark:7010",
+      "mission": {
+        "street_name": "clark",
+        "house_number": "7010"
+      },
+      "start_observation_id": "SEVN020_START",
+      "transitions": {
+        "SEVN020_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN020_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN020_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN020_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN020_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN020_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN020_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN020_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN020_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN020_APPROACH",
+            "action_executed": true,
+            "movement_distance_m": 0.52139,
+            "provider_transition": "SEVN_GRAPH_EDGE",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN020_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN020_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN020_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN020_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN020_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN021",
+      "poi_id": "SEVN:jean_talon:50",
+      "mission": {
+        "street_name": "jean_talon",
+        "house_number": "50"
+      },
+      "start_observation_id": "SEVN021_START",
+      "transitions": {
+        "SEVN021_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN021_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN021_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN021_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN021_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN021_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN021_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN021_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN021_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN021_APPROACH",
+            "action_executed": true,
+            "movement_distance_m": 0.604977,
+            "provider_transition": "SEVN_GRAPH_EDGE",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN021_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN021_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN021_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN021_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN021_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN022",
+      "poi_id": "SEVN:jean_talon:95",
+      "mission": {
+        "street_name": "jean_talon",
+        "house_number": "95"
+      },
+      "start_observation_id": "SEVN022_START",
+      "transitions": {
+        "SEVN022_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN022_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN022_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN022_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN022_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN022_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN022_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN022_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN022_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN022_APPROACH",
+            "action_executed": true,
+            "movement_distance_m": 0.885192,
+            "provider_transition": "SEVN_GRAPH_EDGE",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN022_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN022_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN022_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN022_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN022_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN023",
+      "poi_id": "SEVN:saint_laurent:6536",
+      "mission": {
+        "street_name": "saint_laurent",
+        "house_number": "6536"
+      },
+      "start_observation_id": "SEVN023_START",
+      "transitions": {
+        "SEVN023_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN023_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN023_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN023_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN023_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN023_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN023_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN023_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN023_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN023_APPROACH",
+            "action_executed": true,
+            "movement_distance_m": 0.570809,
+            "provider_transition": "SEVN_GRAPH_EDGE",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN023_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN023_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN023_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN023_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN023_START"
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "SEVN024",
+      "poi_id": "SEVN:saint_laurent:6758",
+      "mission": {
+        "street_name": "saint_laurent",
+        "house_number": "6758"
+      },
+      "start_observation_id": "SEVN024_START",
+      "transitions": {
+        "SEVN024_START": {
+          "HOLD": {
+            "action": "HOLD",
+            "to_observation_id": "SEVN024_START",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN024_START"
+          },
+          "PAN_LEFT": {
+            "action": "PAN_LEFT",
+            "to_observation_id": "SEVN024_PAN_LEFT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN024_START"
+          },
+          "PAN_RIGHT": {
+            "action": "PAN_RIGHT",
+            "to_observation_id": "SEVN024_PAN_RIGHT",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN024_START"
+          },
+          "SWEEP": {
+            "action": "SWEEP",
+            "to_observation_id": "SEVN024_SWEEP",
+            "action_executed": true,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN024_START"
+          },
+          "APPROACH": {
+            "action": "APPROACH",
+            "to_observation_id": "SEVN024_APPROACH",
+            "action_executed": true,
+            "movement_distance_m": 0.640006,
+            "provider_transition": "SEVN_GRAPH_EDGE",
+            "unavailable_reason": null,
+            "before_observation_id": "SEVN024_START"
+          },
+          "SIDESTEP_LEFT": {
+            "action": "SIDESTEP_LEFT",
+            "to_observation_id": "SEVN024_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN024_START"
+          },
+          "SIDESTEP_RIGHT": {
+            "action": "SIDESTEP_RIGHT",
+            "to_observation_id": "SEVN024_START",
+            "action_executed": false,
+            "movement_distance_m": 0.0,
+            "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+            "unavailable_reason": "SEVN_HAS_NO_LATERAL_SIDESTEP_SEMANTICS",
+            "before_observation_id": "SEVN024_START"
+          }
+        }
+      }
+    }
+  ]
+}

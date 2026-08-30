@@ -1,0 +1,821 @@
+{
+  "schema": "blindassist-l10-sevn-panolab-development-result-v1",
+  "generated_at_utc": "2026-08-30T16:34:25.657771Z",
+  "decision": "L10_SEVN_METADATA_ACTION_ADAPTER_READY_IMAGE_PAYLOAD_PENDING",
+  "claim_scope": "SEVN_1_0_HUMAN_ANNOTATION_AND_GRAPH_METADATA_INTEGRATION_DEVELOPMENT",
+  "provider": "SEVN 1.0 / Zenodo 3526490",
+  "cohort": {
+    "episode_count": 24,
+    "distinct_address_count": 24,
+    "scenario_counts": {
+      "PAN_LEFT_ADDRESS_DOOR_RECOVERY": 8,
+      "PAN_RIGHT_ADDRESS_DOOR_RECOVERY": 8,
+      "APPROACH_ADDRESS_DOOR_RECOVERY": 8
+    }
+  },
+  "image_payload": {
+    "available": false,
+    "expected_file": "images.hdf5",
+    "expected_bytes": 1861417787,
+    "expected_md5": "f8e570b8232efba23dfc53cc9c9d0b2c",
+    "status": "NOT_DOWNLOADED_1_86_GB"
+  },
+  "fixed_policy_metrics": {
+    "HOLD": {
+      "episode_count": 24,
+      "correct_unique": 0,
+      "correct_unique_rate": 0.0,
+      "wrong_unique": 3,
+      "wrong_unique_rate": 0.125,
+      "target_visible": 0,
+      "target_visible_rate": 0.0,
+      "target_house_number_visible": 5,
+      "target_house_number_visible_rate": 0.208333,
+      "action_executed": 24
+    },
+    "PAN_LEFT": {
+      "episode_count": 24,
+      "correct_unique": 8,
+      "correct_unique_rate": 0.333333,
+      "wrong_unique": 0,
+      "wrong_unique_rate": 0.0,
+      "target_visible": 8,
+      "target_visible_rate": 0.333333,
+      "target_house_number_visible": 8,
+      "target_house_number_visible_rate": 0.333333,
+      "action_executed": 24
+    },
+    "PAN_RIGHT": {
+      "episode_count": 24,
+      "correct_unique": 8,
+      "correct_unique_rate": 0.333333,
+      "wrong_unique": 1,
+      "wrong_unique_rate": 0.041667,
+      "target_visible": 8,
+      "target_visible_rate": 0.333333,
+      "target_house_number_visible": 12,
+      "target_house_number_visible_rate": 0.5,
+      "action_executed": 24
+    },
+    "SWEEP": {
+      "episode_count": 24,
+      "correct_unique": 16,
+      "correct_unique_rate": 0.666667,
+      "wrong_unique": 1,
+      "wrong_unique_rate": 0.041667,
+      "target_visible": 16,
+      "target_visible_rate": 0.666667,
+      "target_house_number_visible": 20,
+      "target_house_number_visible_rate": 0.833333,
+      "action_executed": 24
+    },
+    "APPROACH": {
+      "episode_count": 24,
+      "correct_unique": 8,
+      "correct_unique_rate": 0.333333,
+      "wrong_unique": 2,
+      "wrong_unique_rate": 0.083333,
+      "target_visible": 8,
+      "target_visible_rate": 0.333333,
+      "target_house_number_visible": 7,
+      "target_house_number_visible_rate": 0.291667,
+      "action_executed": 8
+    },
+    "SIDESTEP_LEFT": {
+      "episode_count": 24,
+      "correct_unique": 0,
+      "correct_unique_rate": 0.0,
+      "wrong_unique": 3,
+      "wrong_unique_rate": 0.125,
+      "target_visible": 0,
+      "target_visible_rate": 0.0,
+      "target_house_number_visible": 5,
+      "target_house_number_visible_rate": 0.208333,
+      "action_executed": 0
+    },
+    "SIDESTEP_RIGHT": {
+      "episode_count": 24,
+      "correct_unique": 0,
+      "correct_unique_rate": 0.0,
+      "wrong_unique": 3,
+      "wrong_unique_rate": 0.125,
+      "target_visible": 0,
+      "target_visible_rate": 0.0,
+      "target_house_number_visible": 5,
+      "target_house_number_visible_rate": 0.208333,
+      "action_executed": 0
+    }
+  },
+  "oracle_metrics": {
+    "episode_count": 24,
+    "correct_unique": 24,
+    "correct_unique_rate": 1.0,
+    "wrong_unique": 0,
+    "wrong_unique_rate": 0.0,
+    "target_visible": 24,
+    "target_visible_rate": 1.0,
+    "target_house_number_visible": 22,
+    "target_house_number_visible_rate": 0.916667,
+    "action_executed": 24
+  },
+  "oracle_action_distribution": {
+    "PAN_LEFT": 8,
+    "PAN_RIGHT": 8,
+    "APPROACH": 8
+  },
+  "episode_results": [
+    {
+      "episode_id": "SEVN001",
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "action": "PAN_LEFT",
+      "before": {
+        "binding_state": "WRONG_UNIQUE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 2,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "PAN_LEFT",
+        "to_observation_id": "SEVN001_PAN_LEFT",
+        "action_executed": true,
+        "movement_distance_m": 0.0,
+        "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN001_START"
+      }
+    },
+    {
+      "episode_id": "SEVN002",
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "action": "PAN_LEFT",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "PAN_LEFT",
+        "to_observation_id": "SEVN002_PAN_LEFT",
+        "action_executed": true,
+        "movement_distance_m": 0.0,
+        "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN002_START"
+      }
+    },
+    {
+      "episode_id": "SEVN003",
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "action": "PAN_LEFT",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "PAN_LEFT",
+        "to_observation_id": "SEVN003_PAN_LEFT",
+        "action_executed": true,
+        "movement_distance_m": 0.0,
+        "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN003_START"
+      }
+    },
+    {
+      "episode_id": "SEVN004",
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "action": "PAN_LEFT",
+      "before": {
+        "binding_state": "WRONG_UNIQUE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 1,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 2,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "PAN_LEFT",
+        "to_observation_id": "SEVN004_PAN_LEFT",
+        "action_executed": true,
+        "movement_distance_m": 0.0,
+        "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN004_START"
+      }
+    },
+    {
+      "episode_id": "SEVN005",
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "action": "PAN_LEFT",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "PAN_LEFT",
+        "to_observation_id": "SEVN005_PAN_LEFT",
+        "action_executed": true,
+        "movement_distance_m": 0.0,
+        "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN005_START"
+      }
+    },
+    {
+      "episode_id": "SEVN006",
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "action": "PAN_LEFT",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "PAN_LEFT",
+        "to_observation_id": "SEVN006_PAN_LEFT",
+        "action_executed": true,
+        "movement_distance_m": 0.0,
+        "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN006_START"
+      }
+    },
+    {
+      "episode_id": "SEVN007",
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "action": "PAN_LEFT",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "PAN_LEFT",
+        "to_observation_id": "SEVN007_PAN_LEFT",
+        "action_executed": true,
+        "movement_distance_m": 0.0,
+        "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN007_START"
+      }
+    },
+    {
+      "episode_id": "SEVN008",
+      "scenario_class": "PAN_LEFT_ADDRESS_DOOR_RECOVERY",
+      "action": "PAN_LEFT",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "PAN_LEFT",
+        "to_observation_id": "SEVN008_PAN_LEFT",
+        "action_executed": true,
+        "movement_distance_m": 0.0,
+        "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN008_START"
+      }
+    },
+    {
+      "episode_id": "SEVN009",
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "action": "PAN_RIGHT",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "PAN_RIGHT",
+        "to_observation_id": "SEVN009_PAN_RIGHT",
+        "action_executed": true,
+        "movement_distance_m": 0.0,
+        "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN009_START"
+      }
+    },
+    {
+      "episode_id": "SEVN010",
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "action": "PAN_RIGHT",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "PAN_RIGHT",
+        "to_observation_id": "SEVN010_PAN_RIGHT",
+        "action_executed": true,
+        "movement_distance_m": 0.0,
+        "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN010_START"
+      }
+    },
+    {
+      "episode_id": "SEVN011",
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "action": "PAN_RIGHT",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "PAN_RIGHT",
+        "to_observation_id": "SEVN011_PAN_RIGHT",
+        "action_executed": true,
+        "movement_distance_m": 0.0,
+        "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN011_START"
+      }
+    },
+    {
+      "episode_id": "SEVN012",
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "action": "PAN_RIGHT",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "PAN_RIGHT",
+        "to_observation_id": "SEVN012_PAN_RIGHT",
+        "action_executed": true,
+        "movement_distance_m": 0.0,
+        "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN012_START"
+      }
+    },
+    {
+      "episode_id": "SEVN013",
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "action": "PAN_RIGHT",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "PAN_RIGHT",
+        "to_observation_id": "SEVN013_PAN_RIGHT",
+        "action_executed": true,
+        "movement_distance_m": 0.0,
+        "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN013_START"
+      }
+    },
+    {
+      "episode_id": "SEVN014",
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "action": "PAN_RIGHT",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "PAN_RIGHT",
+        "to_observation_id": "SEVN014_PAN_RIGHT",
+        "action_executed": true,
+        "movement_distance_m": 0.0,
+        "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN014_START"
+      }
+    },
+    {
+      "episode_id": "SEVN015",
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "action": "PAN_RIGHT",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "PAN_RIGHT",
+        "to_observation_id": "SEVN015_PAN_RIGHT",
+        "action_executed": true,
+        "movement_distance_m": 0.0,
+        "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN015_START"
+      }
+    },
+    {
+      "episode_id": "SEVN016",
+      "scenario_class": "PAN_RIGHT_ADDRESS_DOOR_RECOVERY",
+      "action": "PAN_RIGHT",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "PAN_RIGHT",
+        "to_observation_id": "SEVN016_PAN_RIGHT",
+        "action_executed": true,
+        "movement_distance_m": 0.0,
+        "provider_transition": "SEVN_SAME_PANORAMA_VIEW",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN016_START"
+      }
+    },
+    {
+      "episode_id": "SEVN017",
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "action": "APPROACH",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": true
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "APPROACH",
+        "to_observation_id": "SEVN017_APPROACH",
+        "action_executed": true,
+        "movement_distance_m": 0.52759,
+        "provider_transition": "SEVN_GRAPH_EDGE",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN017_START"
+      }
+    },
+    {
+      "episode_id": "SEVN018",
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "action": "APPROACH",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": true
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": false
+      },
+      "action_receipt": {
+        "action": "APPROACH",
+        "to_observation_id": "SEVN018_APPROACH",
+        "action_executed": true,
+        "movement_distance_m": 0.614607,
+        "provider_transition": "SEVN_GRAPH_EDGE",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN018_START"
+      }
+    },
+    {
+      "episode_id": "SEVN019",
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "action": "APPROACH",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": true
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "APPROACH",
+        "to_observation_id": "SEVN019_APPROACH",
+        "action_executed": true,
+        "movement_distance_m": 1.073606,
+        "provider_transition": "SEVN_GRAPH_EDGE",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN019_START"
+      }
+    },
+    {
+      "episode_id": "SEVN020",
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "action": "APPROACH",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": false
+      },
+      "action_receipt": {
+        "action": "APPROACH",
+        "to_observation_id": "SEVN020_APPROACH",
+        "action_executed": true,
+        "movement_distance_m": 0.52139,
+        "provider_transition": "SEVN_GRAPH_EDGE",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN020_START"
+      }
+    },
+    {
+      "episode_id": "SEVN021",
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "action": "APPROACH",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "APPROACH",
+        "to_observation_id": "SEVN021_APPROACH",
+        "action_executed": true,
+        "movement_distance_m": 0.604977,
+        "provider_transition": "SEVN_GRAPH_EDGE",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN021_START"
+      }
+    },
+    {
+      "episode_id": "SEVN022",
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "action": "APPROACH",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "APPROACH",
+        "to_observation_id": "SEVN022_APPROACH",
+        "action_executed": true,
+        "movement_distance_m": 0.885192,
+        "provider_transition": "SEVN_GRAPH_EDGE",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN022_START"
+      }
+    },
+    {
+      "episode_id": "SEVN023",
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "action": "APPROACH",
+      "before": {
+        "binding_state": "NOT_VISIBLE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 0,
+        "target_house_number_visible": true
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "APPROACH",
+        "to_observation_id": "SEVN023_APPROACH",
+        "action_executed": true,
+        "movement_distance_m": 0.570809,
+        "provider_transition": "SEVN_GRAPH_EDGE",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN023_START"
+      }
+    },
+    {
+      "episode_id": "SEVN024",
+      "scenario_class": "APPROACH_ADDRESS_DOOR_RECOVERY",
+      "action": "APPROACH",
+      "before": {
+        "binding_state": "WRONG_UNIQUE",
+        "target_visible": false,
+        "target_match_count": 0,
+        "visible_door_count": 1,
+        "target_house_number_visible": false
+      },
+      "after": {
+        "binding_state": "CORRECT_UNIQUE",
+        "target_visible": true,
+        "target_match_count": 1,
+        "visible_door_count": 1,
+        "target_house_number_visible": true
+      },
+      "action_receipt": {
+        "action": "APPROACH",
+        "to_observation_id": "SEVN024_APPROACH",
+        "action_executed": true,
+        "movement_distance_m": 0.640006,
+        "provider_transition": "SEVN_GRAPH_EDGE",
+        "unavailable_reason": null,
+        "before_observation_id": "SEVN024_START"
+      }
+    }
+  ],
+  "non_claims": [
+    "Panoramax or OSM entrance confirmation",
+    "cross-source generalization",
+    "continuous sidestep or pedestrian motion",
+    "metric depth",
+    "legal or public access",
+    "walkability or collision-free traversability",
+    "metric arrival",
+    "HANDOFF_READY",
+    "user task completion",
+    "product benefit",
+    "mobility safety"
+  ],
+  "inputs": {
+    "source_path": "research\\active\\l10-r0\\l10_sevn_panolab_source_v1.json",
+    "source_sha256": "a6478c29610f986fc50dd101de378f187f7ba9e69c201cc31d3b12b6cf7912da",
+    "truth_path": "research\\active\\l10-r0\\l10_sevn_panolab_truth_v1.json",
+    "truth_sha256": "bced8f620a55b04ebe2402cf8ee9d25e55f8839e9c5b2e8a9e785cbd65462387",
+    "protocol_path": "research\\active\\l10-r0\\l10_sevn_panolab_protocol_v1.json",
+    "protocol_sha256": "2c7b73b0d434372682667d659676d71c2471a860653a5843b1aae9e896bbb314"
+  }
+}

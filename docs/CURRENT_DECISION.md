@@ -9,6 +9,9 @@ Status: `L10_R0_ACTIVE / DTR_R2_DYNAMIC_RETAINED`
   `L10_PANOLAB_ACTIVE_ENTRANCE_RAY_RECOVERY_DEVELOPMENT_GATE_MET` with `4/4`
   reciprocal provider-action recoveries; this is entrance-ray geometry, not
   pixel-portal identity.
+- **L10 SEVN bridge:** 24 address-disjoint annotation/graph episodes now replay
+  through the PanoLab action contract (`0/24` HOLD, `24/24` one-step oracle).
+  The 1.86 GB image payload is still absent, so pixel inference remains `NOT_RUN`.
 - **L10 pixel/posed portal line:** generic Panoramax pixel-portal mining is
   closed (`0/3` joint width-first admissions). Hypersim met a synthetic posed
   transfer gate, while real SceneNN terminates at
@@ -973,6 +976,20 @@ mechanism, but do not infer pixel portal identity, public/legal access,
 walkability, collision-free motion, arrival, `HANDOFF_READY`, or safety. A
 pixel-portal successor must add an independent entrance-identity credential;
 do not reopen matcher, threshold, or generic-fusion rescue.
+
+SEVN now supplies a separate Development source with human door polygons bound
+to street and house number. Its metadata adapter verifies the official Zenodo
+coordinate, label, and graph hashes; exposes only mission, pose, viewport,
+action, and image locator to runtime; and keeps all door boxes and binding
+states evaluator-only. The frozen 24-address panel produces `0/24` correct HOLD
+bindings, `16/24` under fixed SWEEP, and `24/24` under the one-step annotation
+oracle (`8` left pan, `8` right pan, `8` graph approach), with zero wrong-unique
+outcomes. Record
+`L10_SEVN_METADATA_ACTION_ADAPTER_READY_IMAGE_PAYLOAD_PENDING`. This is source
+integration and metadata-grounded mechanism evidence, not a pixel-derived
+portal result or confirmation of the Panoramax/OSM line. The next executable
+question is whether the hash-verified SEVN `images.hdf5` can support the same
+frozen episodes without evaluator labels.
 
 Three source-changing Panoramax successors have now localized that missing
 credential. Entrance-node text on eight exact nodes and 22 real views produced

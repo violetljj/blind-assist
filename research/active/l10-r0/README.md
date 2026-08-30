@@ -9,6 +9,10 @@ Status: `ACTIVE`
   `L10_PANOLAB_ACTIVE_ENTRANCE_RAY_RECOVERY_DEVELOPMENT_GATE_MET` (`4/4`
   reciprocal `SIDESTEP_TO_ENTRANCE_FACE` recoveries). This authorizes an exact
   entrance ray geometrically, not a pixel portal.
+- **SEVN backend:** the address-door metadata adapter is ready on 24 distinct
+  addresses (`8` left-pan, `8` right-pan, `8` graph-approach episodes). The
+  annotation oracle changes `0/24` HOLD bindings to `24/24` correct-unique, but
+  the 1.86 GB image payload is not downloaded, so this is not pixel-model evidence.
 - **Pixel portal:** generic Panoramax mining is closed after the width-first
   source admitted `0/3` reference, `0/3` query, and `0/3` joint portals. It may
   carry imagery only with independent sub-metre portal registration.
@@ -1906,6 +1910,39 @@ Active-recovery evaluator and preserved v1/v2 receipts:
 `l10_panolab_active_ray_recovery_protocol_v2.json`, and
 `l10_panolab_active_ray_recovery_result_v2.json`. The v2 result SHA-256 is
 `abae1ef768ff24ad7771704c34f602d7145b382a8259b4a779b0357960fcd963`.
+
+#### PB20 SEVN address-door PanoLab backend
+
+SEVN 1.0 supplies the missing kind of source truth: each human door polygon is
+associated with a street and house number. The adapter verifies the three
+original Zenodo metadata objects by their published byte sizes and MD5 hashes,
+then converts the legacy Pandas/NetworkX files into separated, dependency-free
+public and evaluator JSON. Runtime observations contain only the address
+mission, local pose, viewport, action graph, and image locator; door boxes and
+binding states remain evaluator-only.
+
+The first deterministic panel contains 24 distinct addresses: eight
+`PAN_LEFT`, eight `PAN_RIGHT`, and eight one-edge `APPROACH` recoveries. `HOLD`
+is correct-unique on `0/24`; fixed `SWEEP` is `16/24`; the one-step annotation
+oracle is `24/24` with zero wrong-unique outcomes. A matching house-number box
+is also visible on `22/24`. Record
+`L10_SEVN_METADATA_ACTION_ADAPTER_READY_IMAGE_PAYLOAD_PENDING`.
+
+This proves source admission, legacy-format conversion, action receipts, and
+truth separation only. It is curated SEVN annotation/graph Development, not a
+learned visual result, Panoramax confirmation, continuous sidestep, depth,
+arrival, handoff, or safety evidence. The exact next payload is the official
+1,861,417,787-byte `images.hdf5`; do not claim pixel replay before its published
+MD5 is verified.
+
+Implementation and receipts: `l10_sevn_panolab.py`,
+`l10_sevn_panolab_requirements.txt`, `l10_sevn_panolab_protocol_v1.json`,
+`l10_sevn_panolab_source_v1.json`, `l10_sevn_panolab_truth_v1.json`, and
+`l10_sevn_panolab_result_v1.json`.
+
+LychSim remains a conditional secondary synthetic lab, not this route's
+replacement. The source/hardware screen and one bounded go/no-go test are in
+`L10_LYCHSIM_FEASIBILITY_2026-08-31.md`.
 
 #### PB19 Panoramax entrance-credential successors
 

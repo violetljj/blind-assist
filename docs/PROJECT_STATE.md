@@ -27,6 +27,9 @@ Current route snapshot:
   (`NOT_RUN`).
 - L10 PanoLab active entrance-ray recovery passed `4/4`; this does not establish
   a pixel portal. Generic Panoramax pixel-portal mining is closed.
+- The SEVN address-door backend now admits and replays 24 distinct metadata
+  episodes (`0/24` HOLD, `24/24` annotation oracle); the 1.86 GB image payload
+  remains pending, so pixel inference has not run.
 - Hypersim established a synthetic posed-portal mechanism ceiling. SceneNN real
   RGB-D confirmation did not meet the gate because reference-side visibility
   was not authoritative; a fresh visibility-qualified real source is required.
