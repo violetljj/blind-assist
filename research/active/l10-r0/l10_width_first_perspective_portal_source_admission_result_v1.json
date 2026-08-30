@@ -1,0 +1,56 @@
+{
+  "schema": "blindassist-l10-width-first-perspective-portal-source-admission-result-v1",
+  "decision": "L10_WIDTH_FIRST_PERSPECTIVE_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_3_QUERY_0_OF_3_JOINT_0_OF_3_NO_MATCHER_CALL",
+  "stop_reason": "DECLARED_CAMERA_ACCURACY_BANDS_DO_NOT_UNIQUIFY_PORTALS_NO_MATCHER_CALL",
+  "source": "research/active/l10-r0/l10_width_first_perspective_portal_source_v1.json",
+  "source_sha256": "87d1b7802e2c4aec38c59ed5e2e67bc94e14a03f5369ed314d47f1a6f3130937",
+  "materialized_manifest": "knowledge/l10-width-panoramax-perspective-v1/materialized/manifest.json",
+  "materialized_manifest_sha256": "12b56ec5efc1eb6b640694f1b546b3116ee2cfca7d2c30d7e109a4aad16c1551",
+  "reference_audit": "research/active/l10-r0/l10_width_first_perspective_portal_reference_audit_v1.json",
+  "reference_audit_sha256": "1fd6d911317af7e63edbf98db6642a835ab3ae82fd6443a263011b139b894d24",
+  "query_audit": "research/active/l10-r0/l10_width_first_perspective_portal_query_audit_v1.json",
+  "query_audit_sha256": "f0542037e8d02feb58b3c68eb4afd7914104bae24d3da8351d33687d621751a1",
+  "metrics": {
+    "episode_count": 3,
+    "reference_admitted": 0,
+    "query_admitted": 0,
+    "joint_admitted": 0,
+    "formal_episode_count": 0,
+    "matcher_calls": 0
+  },
+  "formal_episode_ids": [],
+  "episodes": [
+    {
+      "episode_id": "WP01",
+      "target_way_id": 83765633,
+      "target_name": "Avignon-Centre",
+      "reference_status": "AMBIGUOUS",
+      "query_status": "AMBIGUOUS",
+      "joint_admitted": false,
+      "reference_portal_box_xyxy": null,
+      "query_portal_box_xyxy": null
+    },
+    {
+      "episode_id": "WP02",
+      "target_way_id": 67372515,
+      "target_name": "Salle Gilbert Gaillard",
+      "reference_status": "NOT_VISIBLE",
+      "query_status": "AMBIGUOUS",
+      "joint_admitted": false,
+      "reference_portal_box_xyxy": null,
+      "query_portal_box_xyxy": null
+    },
+    {
+      "episode_id": "WP03",
+      "target_way_id": 1383699936,
+      "target_name": "Gare de Jean-Macé",
+      "reference_status": "NOT_VISIBLE",
+      "query_status": "NOT_VISIBLE",
+      "joint_admitted": false,
+      "reference_portal_box_xyxy": null,
+      "query_portal_box_xyxy": null
+    }
+  ],
+  "next_action": "Change the pose or registration source to sub-metre camera-to-portal geometry, or supply a directly posed portal mask or mesh; do not tune matcher, threshold, crop, pose uncertainty or the consumed cohort.",
+  "claim_boundary": "A pass is Development evidence that mapped entrance width can localize a unique portal interval across real Panoramax collections. It is not public/legal access, traversability, collision-free motion, a metric arrival waypoint, HANDOFF_READY, product benefit, user benefit or mobility-safety evidence."
+}

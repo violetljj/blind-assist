@@ -1,0 +1,426 @@
+{
+  "schema": "blindassist-l10-width-first-perspective-portal-source-v1",
+  "authority": "EXPLORE_DEVELOPMENT_SOURCE_ACQUISITION",
+  "protocol": "research/active/l10-r0/l10_width_first_perspective_portal_protocol_v1.json",
+  "protocol_sha256": "8db88be6ea2e8b7787bbed437730aff4f2a1bc190baf57071006a7a6254e3824",
+  "artifact_root": "F:\\ba-data\\blindassist-artifacts-20260805",
+  "roster_receipts": {
+    "federated_roster": {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-federated-portal-v1\\targets.json",
+      "sha256": "d8e77531f793c4da263916dd48cd5fc41e39ef35d3471a93bbebbe3ddd4ee450",
+      "row_count": 215,
+      "layout": "targets"
+    },
+    "stratified_roster": {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\knowledge\\l10-panolab-stratified-source-v1\\osm-target-pool.json",
+      "sha256": "f5865741cb1882c7f8570cfc7e11cecb796952d902933b3afa29f91d0d87a2de",
+      "row_count": 802,
+      "layout": "rows"
+    }
+  },
+  "episodes": [
+    {
+      "episode_id": "WP01",
+      "source_city": "Avignon",
+      "target_way_id": 83765633,
+      "target_name": "Avignon-Centre",
+      "entrance_node_id": 2101160104,
+      "entrance_tags": {
+        "entrance": "main",
+        "level": "0",
+        "panoramax": "b81276d7-8eda-4179-8e07-1f19ba36c0d0",
+        "railway": "train_station_entrance",
+        "source": "survey",
+        "width": "1.6"
+      },
+      "geometry": {
+        "entrance_center_lon_lat": [
+          4.805269,
+          43.9419642
+        ],
+        "width_m": 1.6,
+        "host_vertex_index": 32,
+        "host_vertex_residual_m": 0.0,
+        "wall_tangent_east_north": [
+          -0.9999952270094643,
+          -0.003089653425543737
+        ],
+        "portal_endpoints_lon_lat": [
+          [
+            4.805278991803204,
+            43.941964222228705
+          ],
+          [
+            4.805259008196796,
+            43.9419641777713
+          ]
+        ]
+      },
+      "response_receipt": {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\sources\\l10-width-panoramax-perspective-v1\\avignon-83765633-fov180.json",
+        "sha256": "7d06f3f6b1675fba6099cbaa6c58f610d34fe6a4400558701e8258ed018ee525",
+        "feature_count": 156
+      },
+      "metadata_metrics": {
+        "returned_item_count": 156,
+        "perspective_projectable_item_count": 152,
+        "robust_item_count": 21,
+        "robust_collection_count": 11
+      },
+      "roles": [
+        {
+          "eligible": true,
+          "failures": [],
+          "item_id": "317b8985-1a75-43c2-9ef1-94fcdbb9473c",
+          "collection_id": "506a815c-41d2-49e0-aa63-5d1d8e36b224",
+          "origin_instance": "osm-fr",
+          "license": "CC-BY-SA-4.0",
+          "license_href": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "camera_lon_lat": [
+            4.805033333,
+            43.942166667
+          ],
+          "camera_distance_m": 29.374788850458355,
+          "view_azimuth_degrees": 121.0,
+          "horizontal_accuracy_m": 5.0,
+          "horizontal_fov_degrees": 61.0,
+          "sensor_dimensions": [
+            3264,
+            2448
+          ],
+          "nominal_relative_bearing_interval_degrees": [
+            17.8549046361411,
+            20.25330527022939
+          ],
+          "uncertainty_relative_bearing_interval_degrees": [
+            8.226310690024121,
+            30.226852638771447
+          ],
+          "uncertainty_angular_width_degrees": 22.000541948747326,
+          "nominal_sensor_x_interval": [
+            2524.467459901074,
+            2654.304802176227
+          ],
+          "uncertainty_sensor_x_interval": [
+            2032.5463531937285,
+            3246.2584856392205
+          ],
+          "hd_asset": "https://panoramax.openstreetmap.fr/images/31/7b/89/85/1a75-43c2-9ef1-94fcdbb9473c.jpg",
+          "datetime": "2017-04-03T16:03:01.195000+00:00",
+          "role": "REFERENCE"
+        },
+        {
+          "eligible": true,
+          "failures": [],
+          "item_id": "b600a7b8-a56a-43da-8498-ab99544387f2",
+          "collection_id": "d9f45105-4048-4d20-9433-cea26c46c5ac",
+          "origin_instance": "osm-fr",
+          "license": "CC-BY-SA-4.0",
+          "license_href": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "camera_lon_lat": [
+            4.805321986,
+            43.942228136
+          ],
+          "camera_distance_m": 29.653415126300185,
+          "view_azimuth_degrees": 201.0,
+          "horizontal_accuracy_m": 5.0,
+          "horizontal_fov_degrees": 65.0,
+          "sensor_dimensions": [
+            4128,
+            3096
+          ],
+          "nominal_relative_bearing_interval_degrees": [
+            -14.309666374509447,
+            -11.25204292806339
+          ],
+          "uncertainty_relative_bearing_interval_degrees": [
+            -24.05220210594726,
+            -1.586980578707454
+          ],
+          "uncertainty_angular_width_degrees": 22.465221527239805,
+          "nominal_sensor_x_interval": [
+            1237.595294929643,
+            1419.4374493591636
+          ],
+          "uncertainty_sensor_x_interval": [
+            617.9959152220197,
+            1974.2400873969218
+          ],
+          "hd_asset": "https://panoramax.openstreetmap.fr/images/b6/00/a7/b8/a56a-43da-8498-ab99544387f2.jpg",
+          "datetime": "2017-07-05T06:34:51+00:00",
+          "role": "QUERY"
+        }
+      ]
+    },
+    {
+      "episode_id": "WP02",
+      "source_city": "Clermont-Ferrand",
+      "target_way_id": 67372515,
+      "target_name": "Salle Gilbert Gaillard",
+      "entrance_node_id": 3834202558,
+      "entrance_tags": {
+        "access": "yes",
+        "addr:housenumber": "2",
+        "automatic_door": "no",
+        "door": "double",
+        "entrance": "main",
+        "level": "0",
+        "source": "cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2015",
+        "wheelchair": "no",
+        "width": "2.7"
+      },
+      "geometry": {
+        "entrance_center_lon_lat": [
+          3.0825547,
+          45.7800431
+        ],
+        "width_m": 2.7,
+        "host_vertex_index": 15,
+        "host_vertex_residual_m": 0.0,
+        "wall_tangent_east_north": [
+          0.2272445701921142,
+          -0.9738377202173889
+        ],
+        "portal_endpoints_lon_lat": [
+          [
+            3.082550744052039,
+            45.780054923193255
+          ],
+          [
+            3.0825586559479614,
+            45.780031276806746
+          ]
+        ]
+      },
+      "response_receipt": {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\sources\\l10-width-panoramax-perspective-v1\\clermont-67372515-fov180.json",
+        "sha256": "3703d8ae1ff21721164dc48ea846c3a8a433c8ec7d42f14052e8a7efb97fff96",
+        "feature_count": 28
+      },
+      "metadata_metrics": {
+        "returned_item_count": 28,
+        "perspective_projectable_item_count": 23,
+        "robust_item_count": 13,
+        "robust_collection_count": 2
+      },
+      "roles": [
+        {
+          "eligible": true,
+          "failures": [],
+          "item_id": "f6703f92-5257-4eaa-adb5-d89c491f0440",
+          "collection_id": "21b3b68c-e571-4738-9502-81c454a573b9",
+          "origin_instance": "osm-fr",
+          "license": "CC-BY-SA-4.0",
+          "license_href": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "camera_lon_lat": [
+            3.082288333,
+            45.780228333
+          ],
+          "camera_distance_m": 29.170647759788448,
+          "view_azimuth_degrees": 110.0,
+          "horizontal_accuracy_m": 4.0,
+          "horizontal_fov_degrees": 97.0,
+          "sensor_dimensions": [
+            3840,
+            2880
+          ],
+          "nominal_relative_bearing_interval_degrees": [
+            23.457260243566623,
+            26.267201426647745
+          ],
+          "uncertainty_relative_bearing_interval_degrees": [
+            15.254267574569269,
+            33.846982194563026
+          ],
+          "uncertainty_angular_width_degrees": 18.592714619993757,
+          "nominal_sensor_x_interval": [
+            2657.09762713666,
+            2758.3266723734105
+          ],
+          "uncertainty_sensor_x_interval": [
+            2383.247209796357,
+            3059.1803703463156
+          ],
+          "hd_asset": "https://panoramax.openstreetmap.fr/images/f6/70/3f/92/5257-4eaa-adb5-d89c491f0440.jpg",
+          "datetime": "2012-06-13T09:42:13.500000+00:00",
+          "role": "REFERENCE"
+        },
+        {
+          "eligible": true,
+          "failures": [],
+          "item_id": "b3ddc75e-1fb9-4212-bff1-e613434ecd89",
+          "collection_id": "563ab32e-bcd0-4473-8c60-32c65233192d",
+          "origin_instance": "osm-fr",
+          "license": "CC-BY-SA-4.0",
+          "license_href": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "camera_lon_lat": [
+            3.082349167,
+            45.780243334
+          ],
+          "camera_distance_m": 27.382099119173976,
+          "view_azimuth_degrees": 138.0,
+          "horizontal_accuracy_m": 4.0,
+          "horizontal_fov_degrees": 97.0,
+          "sensor_dimensions": [
+            3840,
+            2880
+          ],
+          "nominal_relative_bearing_interval_degrees": [
+            5.271574888964295,
+            7.434434623892287
+          ],
+          "uncertainty_relative_bearing_interval_degrees": [
+            -3.5303189347027057,
+            15.464267419955661
+          ],
+          "uncertainty_angular_width_degrees": 18.994586354658367,
+          "nominal_sensor_x_interval": [
+            2076.7311394046546,
+            2141.6572390348606
+          ],
+          "uncertainty_sensor_x_interval": [
+            1815.2024683271482,
+            2389.9429211220304
+          ],
+          "hd_asset": "https://panoramax.openstreetmap.fr/images/b3/dd/c7/5e/1fb9-4212-bff1-e613434ecd89.jpg",
+          "datetime": "2012-06-13T15:39:17+00:00",
+          "role": "QUERY"
+        }
+      ]
+    },
+    {
+      "episode_id": "WP03",
+      "source_city": "Lyon",
+      "target_way_id": 1383699936,
+      "target_name": "Gare de Jean-Macé",
+      "entrance_node_id": 8771396563,
+      "entrance_tags": {
+        "door": "sliding",
+        "entrance": "main",
+        "level": "0",
+        "railway": "train_station_entrance",
+        "wheelchair": "yes",
+        "width": "2.4"
+      },
+      "geometry": {
+        "entrance_center_lon_lat": [
+          4.8415893,
+          45.7450422
+        ],
+        "width_m": 2.4,
+        "host_vertex_index": 2,
+        "host_vertex_residual_m": 0.0,
+        "wall_tangent_east_north": [
+          0.38045524687331217,
+          0.9247993323562507
+        ],
+        "portal_endpoints_lon_lat": [
+          [
+            4.841583416501449,
+            45.745032219709536
+          ],
+          [
+            4.8415951834985504,
+            45.745052180290465
+          ]
+        ]
+      },
+      "response_receipt": {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\sources\\l10-width-panoramax-perspective-v1\\fresh-width-nodes\\1383699936-8771396563.json",
+        "sha256": "9806593b330c566e121e613b1d1bb0683fbef61d3992d32c1fc34798f09c7324",
+        "feature_count": 175
+      },
+      "metadata_metrics": {
+        "returned_item_count": 175,
+        "perspective_projectable_item_count": 19,
+        "robust_item_count": 6,
+        "robust_collection_count": 3
+      },
+      "roles": [
+        {
+          "eligible": true,
+          "failures": [],
+          "item_id": "285aa2c6-ffad-4320-b4eb-c163b921c4cb",
+          "collection_id": "1d28d929-32cb-45ac-b34c-450aea916bc1",
+          "origin_instance": "osm-fr",
+          "license": "CC-BY-SA-4.0",
+          "license_href": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "camera_lon_lat": [
+            4.841711,
+            45.7452431
+          ],
+          "camera_distance_m": 24.253188753552344,
+          "view_azimuth_degrees": 207.0,
+          "horizontal_accuracy_m": 4.0,
+          "horizontal_fov_degrees": 92.0,
+          "sensor_dimensions": [
+            5184,
+            3888
+          ],
+          "nominal_relative_bearing_interval_degrees": [
+            -4.110380281121962,
+            -4.055440329430326
+          ],
+          "uncertainty_relative_bearing_interval_degrees": [
+            -14.047500618279656,
+            5.9365478191857335
+          ],
+          "uncertainty_angular_width_degrees": 19.98404843746539,
+          "nominal_sensor_x_interval": [
+            2412.1222314985093,
+            2414.5346079479887
+          ],
+          "uncertainty_sensor_x_interval": [
+            1965.711123396406,
+            2852.280449103891
+          ],
+          "hd_asset": "https://panoramax.openstreetmap.fr/images/28/5a/a2/c6/ffad-4320-b4eb-c163b921c4cb.jpg",
+          "datetime": "2022-07-17T17:42:09.337000+00:00",
+          "role": "REFERENCE"
+        },
+        {
+          "eligible": true,
+          "failures": [],
+          "item_id": "9f7b5a61-ed97-4140-9471-6dc29a1704c9",
+          "collection_id": "2a6e7a1a-8bc8-44a9-b8f1-75f9a6f43e0c",
+          "origin_instance": "osm-fr",
+          "license": "CC-BY-SA-4.0",
+          "license_href": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "camera_lon_lat": [
+            4.8413256,
+            45.7452356
+          ],
+          "camera_distance_m": 29.684746678406903,
+          "view_azimuth_degrees": 105.0,
+          "horizontal_accuracy_m": 4.0,
+          "horizontal_fov_degrees": 92.0,
+          "sensor_dimensions": [
+            5184,
+            3888
+          ],
+          "nominal_relative_bearing_interval_degrees": [
+            29.273804431603935,
+            33.502860785588865
+          ],
+          "uncertainty_relative_bearing_interval_degrees": [
+            21.404898913092467,
+            41.11565685416912
+          ],
+          "uncertainty_angular_width_degrees": 19.71075794107665,
+          "nominal_sensor_x_interval": [
+            3995.150335714713,
+            4248.9225200426645
+          ],
+          "uncertainty_sensor_x_interval": [
+            3573.1874613082364,
+            4776.7678457427555
+          ],
+          "hd_asset": "https://panoramax.openstreetmap.fr/images/9f/7b/5a/61/ed97-4140-9471-6dc29a1704c9.jpg",
+          "datetime": "2026-05-30T05:28:41.738000+00:00",
+          "role": "QUERY"
+        }
+      ]
+    }
+  ],
+  "claim_boundary": "A pass is Development evidence that mapped entrance width can localize a unique portal interval across real Panoramax collections. It is not public/legal access, traversability, collision-free motion, a metric arrival waypoint, HANDOFF_READY, product benefit, user benefit or mobility-safety evidence."
+}

@@ -1,0 +1,82 @@
+{
+  "schema": "blindassist-l10-width-first-perspective-portal-protocol-v1",
+  "authority": "EXPLORE_DEVELOPMENT_SOURCE_ACQUISITION",
+  "question": "Can an independently mapped OSM entrance width plus its host-wall tangent define a portal interval that remains inside two source-disjoint Panoramax perspective images for at least three buildings?",
+  "information_change": "Replace the consumed entrance point ray with a width-first ground-plane interval. Panoramax remains only the real-image carrier. Do not change the portal matcher, crop backbone, threshold, tracker or fusion rule.",
+  "providers": {
+    "federated_search": "https://api.panoramax.xyz/api/search",
+    "search_contract": "place_position=<entrance lon,lat>, place_distance=3-30, place_fov_tolerance=180, limit=1000, sortby=id",
+    "perspective_imagery_spec": "https://github.com/stac-extensions/perspective-imagery",
+    "view_spec": "https://github.com/stac-extensions/view"
+  },
+  "artifact_inputs": {
+    "federated_roster": {
+      "path": "knowledge/l10-panolab-federated-portal-v1/targets.json",
+      "sha256": "d8e77531f793c4da263916dd48cd5fc41e39ef35d3471a93bbebbe3ddd4ee450",
+      "layout": "targets"
+    },
+    "stratified_roster": {
+      "path": "knowledge/l10-panolab-stratified-source-v1/osm-target-pool.json",
+      "sha256": "f5865741cb1882c7f8570cfc7e11cecb796952d902933b3afa29f91d0d87a2de",
+      "layout": "rows"
+    }
+  },
+  "frozen_targets": [
+    {
+      "episode_id": "WP01",
+      "roster": "federated_roster",
+      "target_way_id": 83765633,
+      "entrance_node_id": 2101160104,
+      "response_path": "sources/l10-width-panoramax-perspective-v1/avignon-83765633-fov180.json",
+      "response_sha256": "7d06f3f6b1675fba6099cbaa6c58f610d34fe6a4400558701e8258ed018ee525"
+    },
+    {
+      "episode_id": "WP02",
+      "roster": "federated_roster",
+      "target_way_id": 67372515,
+      "entrance_node_id": 3834202558,
+      "response_path": "sources/l10-width-panoramax-perspective-v1/clermont-67372515-fov180.json",
+      "response_sha256": "3703d8ae1ff21721164dc48ea846c3a8a433c8ec7d42f14052e8a7efb97fff96"
+    },
+    {
+      "episode_id": "WP03",
+      "roster": "stratified_roster",
+      "target_way_id": 1383699936,
+      "entrance_node_id": 8771396563,
+      "response_path": "sources/l10-width-panoramax-perspective-v1/fresh-width-nodes/1383699936-8771396563.json",
+      "response_sha256": "9806593b330c566e121e613b1d1bb0683fbef61d3992d32c1fc34798f09c7324"
+    }
+  ],
+  "geometry": {
+    "width_parse": "Accept decimal point or decimal comma from the frozen OSM width tag; units are metres.",
+    "wall_tangent": "Use the normalized chord from the previous to the next host-building vertex around the exact entrance vertex.",
+    "portal_interval": "entrance centre plus or minus width/2 along the host-wall tangent",
+    "entrance_vertex_tolerance_m": 0.05
+  },
+  "projection": {
+    "eligible_sensor": "Perspective items only: 0 < pers:interior_orientation.field_of_view < 180, declared sensor columns/rows, view:azimuth, quality:horizontal_accuracy and an HD asset.",
+    "horizontal_field_of_view_semantics": "STAC Perspective Imagery field_of_view is the horizontal observable extent in degrees.",
+    "bearing_semantics": "STAC view:azimuth is true-north clockwise.",
+    "camera_uncertainty": "Sample the full declared horizontal-accuracy circle at one-degree increments and project both width endpoints from every sampled camera position.",
+    "robust_visibility": "The camera uncertainty circle must not contain the entrance, and the complete endpoint-bearing envelope must remain inside the reported horizontal field of view.",
+    "pinhole_x": "x = W/2 + tan(relative_bearing)/tan(HFOV/2) * W/2",
+    "uncertainty_samples": 360
+  },
+  "selection": {
+    "cohort_size": 3,
+    "minimum_distinct_collections_per_target": 2,
+    "per_collection_item": "Minimize endpoint-bearing uncertainty width, then camera distance, then item UUID.",
+    "pair_rule": "Across distinct collections minimize the larger uncertainty width, then their sum, then collection UUIDs and item UUIDs.",
+    "role_order": "Lexicographic collection UUID then item UUID; first is REFERENCE and second is QUERY.",
+    "pixels_before_freeze": 0
+  },
+  "pixel_admission": {
+    "review_surface": "Each reviewer sees only its three role-specific images with the frozen uncertainty band and nominal width interval overlaid.",
+    "admitted": "Exactly one functional pedestrian entrance portal intersects the nominal interval and remains the unique plausible portal inside the full uncertainty band.",
+    "ambiguous": "More than one plausible portal lies in the band, or the band/occlusion does not support one unique portal.",
+    "not_visible": "No functional pedestrian entrance portal is visible in the band.",
+    "formal_rule": "Run one disjoint three-episode role audit. Continue to the unchanged portal-transfer matcher only if all three episodes are ADMITTED in both roles; otherwise close without matcher tuning."
+  },
+  "stop_condition": "One frozen metadata replay and one disjoint pixel admission. Do not tune source geometry, pose uncertainty, pairing or matcher after pixels.",
+  "claim_boundary": "A pass is Development evidence that mapped entrance width can localize a unique portal interval across real Panoramax collections. It is not public/legal access, traversability, collision-free motion, a metric arrival waypoint, HANDOFF_READY, product benefit, user benefit or mobility-safety evidence."
+}

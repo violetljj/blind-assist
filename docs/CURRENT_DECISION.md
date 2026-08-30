@@ -1043,6 +1043,35 @@ whose entrance extent or portal interval is supplied independently and frozen
 before pixels. Panoramax may still supply imagery, but it is no longer the
 information source being optimized.
 
+That independent-extent step has now run through two bounded source changes.
+The SAVeNoW/TUM LoD3 model supplied 61 unique door polygons, but 74 Panoramax
+items across four collections supplied zero near, directionally usable door
+pairs. Minimum camera-to-door distance was `68.866 m`, minimum directionally
+possible distance was `175.052 m`, and zero pixels were opened. Record
+`L10_LOD3_PANORAMAX_DOOR_REACHABILITY_GATE_NOT_MET_ZERO_NEAR_VISIBLE_DOOR_PAIRS`.
+This closes that geographic pairing, not LoD3 portal geometry generally; its
+published `1-3 cm` relative model accuracy is not Door-to-Panoramax global
+registration.
+
+The width-first successor then froze the mapped entrance centre plus/minus
+half-width along the host-wall tangent before pixels. Three building-disjoint
+targets returned 359 catalog items; 194 were perspective-projectable and 40
+kept the complete portal interval inside the field of view under the full
+declared camera-horizontal-accuracy circle. Six images from six collections
+were frozen. Record
+`L10_WIDTH_FIRST_PERSPECTIVE_PORTAL_METADATA_GATE_MET_3_OF_3_BUILDINGS_6_DISTINCT_COLLECTIONS`.
+The disjoint audit admitted `0/3` reference portals and `0/3` query portals,
+hence `0/3` joint portals and zero matcher calls. Record
+`L10_WIDTH_FIRST_PERSPECTIVE_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_3_QUERY_0_OF_3_JOINT_0_OF_3_NO_MATCHER_CALL`.
+
+Stop generic Panoramax mining. Do not narrow the declared `4-5 m` camera error
+after pixel inspection, reselect this consumed cohort, or tune the matcher. The
+next Development source must add sub-metre camera-to-portal pose/registration
+or a directly posed portal mask/mesh. Panoramax may remain the image carrier
+only when paired with that independent geometric authority. These results do
+not establish access, traversability, arrival, `HANDOFF_READY`, product benefit,
+user benefit, or mobility-safety evidence.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

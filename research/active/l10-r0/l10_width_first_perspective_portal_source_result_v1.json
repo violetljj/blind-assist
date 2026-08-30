@@ -1,0 +1,42 @@
+{
+  "schema": "blindassist-l10-width-first-perspective-portal-metadata-result-v1",
+  "authority": "EXPLORE_DEVELOPMENT_SOURCE_ACQUISITION",
+  "status": "L10_WIDTH_FIRST_PERSPECTIVE_PORTAL_METADATA_GATE_MET_3_OF_3_BUILDINGS_6_DISTINCT_COLLECTIONS",
+  "protocol": "research/active/l10-r0/l10_width_first_perspective_portal_protocol_v1.json",
+  "protocol_sha256": "8db88be6ea2e8b7787bbed437730aff4f2a1bc190baf57071006a7a6254e3824",
+  "source": "research/active/l10-r0/l10_width_first_perspective_portal_source_v1.json",
+  "source_sha256": "87d1b7802e2c4aec38c59ed5e2e67bc94e14a03f5369ed314d47f1a6f3130937",
+  "metrics": {
+    "building_disjoint_episode_count": 3,
+    "selected_role_image_count": 6,
+    "selected_distinct_collection_count": 6,
+    "returned_item_count": 359,
+    "perspective_projectable_item_count": 194,
+    "declared_accuracy_robust_item_count": 40,
+    "per_episode": [
+      {
+        "episode_id": "WP01",
+        "returned_item_count": 156,
+        "perspective_projectable_item_count": 152,
+        "robust_item_count": 21,
+        "robust_collection_count": 11
+      },
+      {
+        "episode_id": "WP02",
+        "returned_item_count": 28,
+        "perspective_projectable_item_count": 23,
+        "robust_item_count": 13,
+        "robust_collection_count": 2
+      },
+      {
+        "episode_id": "WP03",
+        "returned_item_count": 175,
+        "perspective_projectable_item_count": 19,
+        "robust_item_count": 6,
+        "robust_collection_count": 3
+      }
+    ]
+  },
+  "next_action": "Materialize only the six frozen HD assets and run one disjoint role audit. Run the unchanged portal-transfer matcher only if all three episodes are jointly ADMITTED.",
+  "claim_boundary": "A pass is Development evidence that mapped entrance width can localize a unique portal interval across real Panoramax collections. It is not public/legal access, traversability, collision-free motion, a metric arrival waypoint, HANDOFF_READY, product benefit, user benefit or mobility-safety evidence."
+}

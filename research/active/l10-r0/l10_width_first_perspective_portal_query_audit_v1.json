@@ -1,0 +1,49 @@
+{
+  "schema": "blindassist-l10-width-first-perspective-portal-role-audit-v1",
+  "source": "research/active/l10-r0/l10_width_first_perspective_portal_source_v1.json",
+  "source_sha256": "87d1b7802e2c4aec38c59ed5e2e67bc94e14a03f5369ed314d47f1a6f3130937",
+  "materialized_manifest_sha256": "12b56ec5efc1eb6b640694f1b546b3116ee2cfca7d2c30d7e109a4aad16c1551",
+  "role": "QUERY",
+  "audit_boundary": "Blind role-separated audit of only the three frozen query review images. Cyan lines are the nominal mapped-width endpoints and the orange band is the full declared camera-horizontal-accuracy envelope. ADMITTED requires exactly one functional pedestrian portal intersecting the nominal interval and remaining unique inside the full band; no reference pixels or matcher evidence were available to the auditor.",
+  "episodes": [
+    {
+      "episode_id": "WP01",
+      "item_id": "b600a7b8-a56a-43da-8498-ab99544387f2",
+      "review_image_sha256": "70dc41ddbd0e8847aeb93e5d20295ca9002965635ef41f1620c4b068e28dcc45",
+      "review_image_dimensions": [
+        1800,
+        1350
+      ],
+      "status": "AMBIGUOUS",
+      "portal_box_xyxy": null,
+      "confidence": 0.97,
+      "rationale": "The declared-accuracy band covers multiple adjacent station-facade portals and partial occlusion, so it does not support one unique portal."
+    },
+    {
+      "episode_id": "WP02",
+      "item_id": "b3ddc75e-1fb9-4212-bff1-e613434ecd89",
+      "review_image_sha256": "bc3ba783d522aed5de67ee31e62d8f933866549a1ac86bb62af9b873ae1a82bb",
+      "review_image_dimensions": [
+        1800,
+        1350
+      ],
+      "status": "AMBIGUOUS",
+      "portal_box_xyxy": null,
+      "confidence": 0.95,
+      "rationale": "The band spans multiple storefront and boundary entrance candidates; the mapped interval cannot uniquely bind the intended functional portal."
+    },
+    {
+      "episode_id": "WP03",
+      "item_id": "9f7b5a61-ed97-4140-9471-6dc29a1704c9",
+      "review_image_sha256": "e33e18eeb432189ffdd16b6bec7f0f8af42894c44ffa97ad0b2eec82bf3c687d",
+      "review_image_dimensions": [
+        1800,
+        1350
+      ],
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.99,
+      "rationale": "The complete band lies on a solid wall and contains no visible functional pedestrian portal."
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "blindassist-l10-lod3-panoramax-door-reachability-result-v1",
+  "authority": "EXPLORE_DEVELOPMENT_SOURCE_PREFLIGHT",
+  "status": "L10_LOD3_PANORAMAX_DOOR_REACHABILITY_GATE_NOT_MET_ZERO_NEAR_VISIBLE_DOOR_PAIRS",
+  "question": "Does the SAVeNoW/TUM LoD3 door geometry overlap close, directionally usable, cross-collection Panoramax imagery without opening pixels?",
+  "information_change": "Add independently modeled centimetre-scale LoD3 door polygons while keeping Panoramax only as the real-image carrier.",
+  "sources": {
+    "lod3_repository": "https://github.com/savenow/lod3-road-space-models",
+    "lod3_commit": "4e5c4d4ba32f05bba302d2820cc5e61857aac0b6",
+    "lod3_license": "CC-BY-SA-4.0",
+    "panoramax_search": "https://api.panoramax.xyz/api/search?bbox=11.419322,48.757679,11.428463,48.763846&limit=1000&sortby=id",
+    "panoramax_response_path": "E:/linnan/linnan/artifacts.local/sources/l10-lod3-panoramax-door-v1/panoramax-search-preflight.json",
+    "panoramax_response_sha256": "4cc955ac6e9d78a4a5c315d94d493dc12d273bb965e03a4b8b693a9759b74ddb"
+  },
+  "geometry_identity": {
+    "citygml_2_combined_crs": "EPSG:25832",
+    "citygml_2_individual_crs": "EPSG:32632",
+    "crs_rule": "Preserve and transform the declared source CRS; never silently treat the combined and individual declarations as identical.",
+    "combined_building_count": 59,
+    "combined_building_part_count": 1,
+    "door_count": 61,
+    "unique_door_id_count": 61,
+    "door_id_set_sha256": "86da060e93daeb8c8802cd708e480fb0f1fa010fc7306312886341eab1ba3e07",
+    "citygml_2_door_type": "bldg:Door",
+    "citygml_3_door_type": "con:DoorSurface",
+    "individual_file_count": 55,
+    "individual_files_with_door_count": 38,
+    "individual_files_without_door_count": 17
+  },
+  "metrics": {
+    "panoramax_item_count": 74,
+    "panoramax_collection_count": 4,
+    "ign_item_count": 65,
+    "osm_fr_item_count": 9,
+    "camera_points_inside_lod3_root_envelope": 16,
+    "camera_points_inside_door_xy_envelope": 0,
+    "minimum_camera_to_door_polygon_distance_m": 68.866,
+    "median_nearest_camera_to_door_polygon_distance_m": 175.052,
+    "minimum_directionally_possible_door_distance_m": 175.052,
+    "best_cross_collection_pair_distances_m": [
+      221.951,
+      232.29
+    ],
+    "near_visible_door_pair_count": 0,
+    "pixel_requests": 0
+  },
+  "decision": "Close this pairing without pixel requests. The model contains stable, detailed portal geometry, but the available Panoramax cameras are too far away or face away; regional bbox overlap is not door-image reachability.",
+  "next_action": "Keep the independent-extent principle but change the entrance cohort to mapped OSM widths with close Panoramax perspective carriers and freeze the width interval before pixels.",
+  "claim_boundary": "LoD3 door polygons establish a referent and geometric extent only. The published 1-3 cm figure is relative modeling accuracy, not Door-to-Panoramax global registration. This result is not portal visibility, public/legal access, traversability, arrival, HANDOFF_READY, product benefit, user benefit or mobility-safety evidence."
+}

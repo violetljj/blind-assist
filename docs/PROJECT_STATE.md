@@ -805,6 +805,33 @@ next fresh source must freeze an independently measured entrance extent or
 portal interval before pixels; Panoramax can remain a pixel provider but is not
 the missing entrance-identity credential.
 
+That independent-extent successor is now evaluated. A SAVeNoW/TUM LoD3
+preflight found 61 unique door polygons and 74 Panoramax items across four
+collections, but zero near, directionally usable door pairs. Minimum
+camera-to-door distance was `68.866 m`, minimum directionally possible distance
+was `175.052 m`, and pixel requests stayed at zero. Record
+`L10_LOD3_PANORAMAX_DOOR_REACHABILITY_GATE_NOT_MET_ZERO_NEAR_VISIBLE_DOOR_PAIRS`.
+The geographic pairing is closed; the LoD3 model's published `1-3 cm` relative
+accuracy is not global Door-to-Panoramax registration.
+
+The width-first route then froze an OSM-mapped entrance width and host-wall
+tangent for three building-disjoint targets. Of 359 returned images, 194 were
+perspective-projectable and 40 remained in field of view under the complete
+declared camera-horizontal-accuracy circle; six images from six distinct
+collections were frozen. Record
+`L10_WIDTH_FIRST_PERSPECTIVE_PORTAL_METADATA_GATE_MET_3_OF_3_BUILDINGS_6_DISTINCT_COLLECTIONS`.
+Reference-only and query-only portal admission were both `0/3`, so joint
+admission was `0/3` and no matcher ran. Record
+`L10_WIDTH_FIRST_PERSPECTIVE_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_3_QUERY_0_OF_3_JOINT_0_OF_3_NO_MATCHER_CALL`.
+Mapped width improved metadata reachability but did not overcome `4-5 m`
+camera-position uncertainty and grazing/off-facade views. Do not narrow the
+declared error, reselect the consumed cohort, or tune the matcher. Generic
+Panoramax mining is closed; the next fresh source must supply sub-metre
+camera-to-portal registration or a directly posed portal mask/mesh, with
+Panoramax retained only as the pixel carrier. This is not access,
+traversability, arrival, `HANDOFF_READY`, product, user-benefit, or safety
+evidence.
+
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
 because the approved AWS profile is absent. That is a source-access condition,

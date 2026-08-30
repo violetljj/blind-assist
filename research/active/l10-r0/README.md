@@ -1959,6 +1959,51 @@ opened rows. The next fresh cohort must add an independently measured entrance
 extent or portal interval and freeze that geometry before pixels; Panoramax may
 remain an image provider but is not the missing entrance-identity source.
 
+#### Independent portal extent with Panoramax imagery
+
+Two source-changing successors tested that requirement without touching the
+matcher. The first paired the SAVeNoW/TUM LoD3 model with the local Panoramax
+catalog. The frozen model supplied 61 unique door polygons, but the 74 catalog
+images across four collections supplied zero near, directionally visible door
+pairs: the minimum camera-to-door distance was `68.866 m`, the minimum
+directionally possible distance was `175.052 m`, and pixel requests remained
+zero. Record
+`L10_LOD3_PANORAMAX_DOOR_REACHABILITY_GATE_NOT_MET_ZERO_NEAR_VISIBLE_DOOR_PAIRS`.
+The published `1-3 cm` LoD3 figure is relative modeling accuracy, not global
+Door-to-Panoramax registration. Also preserve the declared CRS split: the
+combined CityGML2 file is `EPSG:25832`, while the individual files declare
+`EPSG:32632`; never silently treat them as identical.
+
+The second successor replaced the point ray with a frozen width interval from
+an independently mapped OSM entrance width and host-wall tangent. Across three
+building-disjoint targets, the metadata replay reduced 359 returned items to
+194 perspective-projectable and 40 robust under each image's full declared
+horizontal-accuracy circle, then froze six images from six distinct
+collections. Record
+`L10_WIDTH_FIRST_PERSPECTIVE_PORTAL_METADATA_GATE_MET_3_OF_3_BUILDINGS_6_DISTINCT_COLLECTIONS`.
+The one role-separated pixel audit admitted `0/3` reference portals and `0/3`
+query portals, hence `0/3` joint portals and zero matcher calls. Record
+`L10_WIDTH_FIRST_PERSPECTIVE_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_3_QUERY_0_OF_3_JOINT_0_OF_3_NO_MATCHER_CALL`.
+The mapped width improved metadata reachability, but the declared `4-5 m`
+camera-position envelopes remained too broad and some views were grazing or
+off-facade. Do not narrow those declared envelopes or reselect the consumed
+cohort after pixels. The next source change must add sub-metre
+camera-to-portal registration or a directly posed portal mask/mesh. Panoramax
+may carry the pixels only when that independent pose/registration is supplied;
+generic Panoramax mining is closed.
+
+Independent-extent protocols, source builders, audits, and results:
+`l10_lod3_panoramax_door_reachability_result_v1.json`,
+`l10_width_first_perspective_portal_protocol_v1.json`,
+`l10_width_first_perspective_portal_source.py`,
+`l10_width_first_perspective_portal_source_result_v1.json`,
+`l10_width_first_perspective_portal_source_v1.json`,
+`l10_width_first_perspective_portal_materialize.py`,
+`l10_width_first_perspective_portal_reference_audit_v1.json`,
+`l10_width_first_perspective_portal_query_audit_v1.json`,
+`l10_width_first_perspective_portal_adjudicate.py`, and
+`l10_width_first_perspective_portal_source_admission_result_v1.json`.
+
 Credential successor protocols, evaluators, frozen sources, and results:
 `l10_panolab_node_credential_protocol_v1.json`,
 `l10_panolab_node_credential.py`,

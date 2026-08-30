@@ -1,0 +1,49 @@
+{
+  "schema": "blindassist-l10-width-first-perspective-portal-role-audit-v1",
+  "source": "research/active/l10-r0/l10_width_first_perspective_portal_source_v1.json",
+  "source_sha256": "87d1b7802e2c4aec38c59ed5e2e67bc94e14a03f5369ed314d47f1a6f3130937",
+  "materialized_manifest_sha256": "12b56ec5efc1eb6b640694f1b546b3116ee2cfca7d2c30d7e109a4aad16c1551",
+  "role": "REFERENCE",
+  "audit_boundary": "Blind role-separated audit of only the three frozen reference review images. Cyan lines are the nominal mapped-width endpoints and the orange band is the full declared camera-horizontal-accuracy envelope. ADMITTED requires exactly one functional pedestrian portal intersecting the nominal interval and remaining unique inside the full band; no query pixels or matcher evidence were available to the auditor.",
+  "episodes": [
+    {
+      "episode_id": "WP01",
+      "item_id": "317b8985-1a75-43c2-9ef1-94fcdbb9473c",
+      "review_image_sha256": "d3d795bd6cd30451770a4fe86ccb3e05a67f2b2d249f9b7296c86336783e4f54",
+      "review_image_dimensions": [
+        1800,
+        1350
+      ],
+      "status": "AMBIGUOUS",
+      "portal_box_xyxy": null,
+      "confidence": 0.98,
+      "rationale": "The declared-accuracy band covers multiple adjacent station-facade portal candidates, so the mapped width does not identify one unique pedestrian portal."
+    },
+    {
+      "episode_id": "WP02",
+      "item_id": "f6703f92-5257-4eaa-adb5-d89c491f0440",
+      "review_image_sha256": "85bd7e7d4f40ccb581e88816278d50be6fb2dcd522a61d0698efdb24f2ff06fa",
+      "review_image_dimensions": [
+        1800,
+        1350
+      ],
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.99,
+      "rationale": "The nominal interval crosses sky and sidewalk beyond the building corner; no functional pedestrian portal is visible inside the band."
+    },
+    {
+      "episode_id": "WP03",
+      "item_id": "285aa2c6-ffad-4320-b4eb-c163b921c4cb",
+      "review_image_sha256": "ee2ebe3b6bf241cf5272fa37c0b7323625282ee58779911fd4f3da2d9363ea9b",
+      "review_image_dimensions": [
+        1800,
+        1350
+      ],
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.99,
+      "rationale": "The band falls in the vehicle underpass and roadway rather than on a pedestrian entrance portal."
+    }
+  ]
+}
