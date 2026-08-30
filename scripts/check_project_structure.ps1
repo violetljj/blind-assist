@@ -25,6 +25,7 @@ foreach ($file in @(
     'research/active/dtr-r0/dtr_r0.py',
     'research/active/dtr-r0/real_observation_adapter.py',
     'research/active/dtr-r0/test_real_observation_adapter.py', 'tools/ba.ps1',
+    'scripts/show_worktree_scope.ps1',
     'config/local.example.toml', '.codex/environments/environment.toml',
     '.worktreeinclude', 'experiments/index.jsonl',
     'data/dataset-ledger-summary.csv', 'data/dataset-ledger-manifest.json'
@@ -43,8 +44,8 @@ $agents = Join-Path $repoRoot 'AGENTS.md'
 if (Test-Path $agents) {
     $agentLines = [IO.File]::ReadAllLines($agents).Count
     $agentBytes = (Get-Item $agents).Length
-    if ($agentLines -gt 150 -or $agentBytes -gt 10240) {
-        $failures.Add("AGENTS.md exceeds 150 lines or 10 KiB ($agentLines lines, $agentBytes bytes).")
+    if ($agentLines -gt 120 -or $agentBytes -gt 8192) {
+        $failures.Add("AGENTS.md exceeds 120 lines or 8 KiB ($agentLines lines, $agentBytes bytes).")
     }
 }
 

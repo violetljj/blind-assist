@@ -20,7 +20,7 @@ by the archive tag documented in [history-index.md](history-index.md).
 
 - one active directory per explicitly parallel product line under
   `research/active/`;
-- `AGENTS.md` at most 150 lines and 10 KiB;
+- `AGENTS.md` at most 120 lines and 8 KiB;
 - `docs/PROJECT_STATE.md` and `docs/CURRENT_DECISION.md` each at most 200 lines
   and 20 KiB;
 - each route `CURRENT.md` at most 150 lines and 16 KiB;

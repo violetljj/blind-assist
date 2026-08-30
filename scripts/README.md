@@ -6,6 +6,7 @@ Only cross-project entrypoints remain here.
 - `project.ps1`: compatibility shim to `tools/ba.ps1`
 - `check_project_structure.ps1`: active-surface and repository-layout gate
 - `check_docs_index.ps1`: hot-document link gate
+- `show_worktree_scope.ps1`: read-only branch, lane, and authority-WIP summary
 - `check_repo_hygiene.ps1`: generated file, secret, and dependency hygiene
 - `check_open_source_readiness.ps1`: public release metadata checks
 - `generate_release_manifest.ps1`: release manifest generator

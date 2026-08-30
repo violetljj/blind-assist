@@ -2,98 +2,97 @@
 
 ## Project
 
-BlindAssist is an Android showcase research prototype and thesis project. Optimize for genuine technical effect, controlled metrics, demo stability, and a clear algorithmic contribution. It is not a certified mobility product or a substitute for human safety judgment.
+BlindAssist is an Android showcase research prototype and thesis project. Optimize for genuine
+technical effect, controlled metrics, demo stability, and a clear algorithmic contribution; it is not a certified mobility or safety product.
 
-Keep the module boundaries stable: `:app` owns the shell/assets, `:feature:assist` runtime coordination, `:core:assist` pure risk logic, `:core:vision` detection, `:core:device` Android adapters, and `:core:ui` UI state/rendering.
+Keep module ownership stable: `:app` shell/assets, `:feature:assist` runtime,
+`:core:assist` risk, `:core:vision` detection, `:core:device` adapters, and `:core:ui` UI.
 
-## Start here
+## Load order
 
 1. Read [project state](docs/PROJECT_STATE.md).
-2. Open only the one route `CURRENT.md` that matches the task.
-3. For algorithm, model, training, benchmark, or dataset work with a known route, run `python tools/knowledge.py context --route <route> --json`; add `--query` for a named mechanism or failure.
-4. Read its detailed `README.md`, code, test, or contract only when needed.
-5. Check `git status --short` before editing and preserve all unrelated work.
+2. Open only the affected route `CURRENT.md`.
+3. For known-route algorithm/model/data work, run `python tools/knowledge.py
+   context --route <route> --json`; add `--query` for a named mechanism/failure.
+4. Open the detailed route `README.md`, code, test, or contract only as needed.
+5. Check `git status --short`; for several lines, run `pwsh -NoProfile -File scripts/show_worktree_scope.ps1`.
 
-Knowledge context is a compact reusable-mechanism/prior-result view; it does not replace route authority or reopen a retired, rejected, consumed, or closed experiment.
+Knowledge context does not replace route authority or reopen retired, rejected,
+consumed, or closed work. Avoid archives, full logs, generated outputs, and
+unrelated routes unless audit/reproduction requires them. Currents own active
+status; route ledgers/result files own detailed metrics and terminals.
 
-Do not scan archives, snapshots, complete logs, `artifacts.local/`, generated outputs, or unrelated routes unless history, reproduction, or audit requires it. Dynamic status and successors belong in compact route currents linked by `PROJECT_STATE.md`; detailed metrics and terminals belong in the route ledger or result file.
+## Execution policy
 
-## Default execution policy
-
-Default research mode is `EXPLORE` for thesis, demo, algorithm, training, and benchmark work. Ordinary engineering uses the same loop: one question, credible baseline, meaningful change, observable metric/check, and stop condition.
-
-Implement and run the smallest meaningful change before adding process. Use the smallest falsifying check; when none exists, inspect the scoped diff or output.
+Default research mode is `EXPLORE`: one question, credible baseline, meaningful
+change, observable check, and stop condition. Implement first, then run the
+smallest falsifying check.
 
 In `EXPLORE`:
 
-- Development data and transparently curated controlled scenarios are allowed;
-- a failed experiment normally needs one concise current/ledger update, not a new governance layer;
-- add protocols, schemas, validators, gates, receipts, audits, handoffs, broad tests, or frameworks only when they change the next decision or cover a named material risk;
-- missing device, safety, release, or production evidence limits the claim but does not block an honestly labeled reversible experiment;
-- historical terminals stay true but do not forbid a versioned Development experiment that discloses reused evidence.
+- transparently curated Development data and controlled scenarios are allowed;
+- a failed experiment needs one concise current/ledger update, not new governance;
+- add process only for a named material risk or decision-changing evidence gap;
+- missing deployment/safety evidence limits claims, not reversible experiments;
+- reused evidence may support disclosed Development, never fresh confirmation.
 
-Default to end-to-end autonomous low-risk work without human queues or gates. Ordinary public data may enter isolated internal research with source/provenance; public availability does not grant redistribution, promotion, consent, or license rights.
+Prefer code and observed results over process documents. Update the owning
+current only when status, claim, successor, forbidden action, or next decision
+changes; undecided ideas stay in `idea.md`. Ordinary public data may enter
+isolated internal research with provenance, but public access grants no
+redistribution, promotion, consent, or license rights.
 
-Prefer code and observed results over process documents. Update the owning current only when status, claim, successor, forbidden action, or next decision changes; undecided ideas stay in `idea.md`.
-
-## Escalation
-
-Use `FINAL` only before opening protected final/blind outcomes, producing a claim-critical terminal, or placing a number in a final paper table. Follow the owning current and [research governance](docs/formal/RESEARCH_GOVERNANCE.md), freezing only what protects that claim.
-
-Use `EXTERNAL` only for release, deployment, credentials, privacy, destructive external actions, default-App promotion, or real-user/product-safety claims; follow the routed document and focused checks for the named risk.
-
-Formal/external rules constrain the affected claim or action, not nearby reversible research.
+Use `FINAL` only before protected blind/final access or a claim-critical paper
+number; follow [research governance](docs/formal/RESEARCH_GOVERNANCE.md). Use
+`EXTERNAL` only for release, deployment, credentials, privacy, destructive
+external actions, default-App promotion, or real-user/product-safety claims.
+These modes constrain the affected claim/action, not nearby reversible work.
 
 ## Integrity and evidence
 
-- Never fabricate measurements, provenance, labels, licenses, credentials, consent, user decisions, authorization, or objective truth.
-- Keep public goal identity, private evaluator truth, proposal, selection, and handoff/persistence as separate authority layers.
+- Never fabricate measurements, provenance, labels, licenses, credentials,
+  consent, user decisions, authorization, or objective truth.
+- Keep public goal identity, evaluator-only truth, proposal, selection, and
+  handoff/persistence as separate authorities.
 - `UNKNOWN` and `NOT_EVALUABLE` are not negative evidence.
-- Name synthetic, replay, pseudo-labeled, model-reviewed, device, and natural evidence accurately; curated Development is not universal real-world, product, or safety performance.
-- Preserve failed/consumed terminals. Reuse may support diagnostics, regression, or disclosed Development, never fresh confirmation authority.
-- Do not leak protected outcomes, change denominators silently, hide collapsed coverage, or read evaluator-only truth from observations.
+- Name synthetic, replay, pseudo-labeled, model-reviewed, device, and natural
+  evidence accurately; curated Development is not universal product or safety
+  performance.
+- Preserve failed/consumed terminals. Reuse permits diagnostics, regression, or
+  disclosed Development, never fresh confirmation authority.
+- Do not leak protected outcomes, silently change denominators, hide collapsed
+  coverage, or read evaluator truth from observations.
 
 ## Task routing
 
-After `PROJECT_STATE.md`, read only the route needed for the task:
-
-| Task | Route |
+| Task | Read next |
 | --- | --- |
-| Algorithm, model, training, benchmark, or dataset exploration | One classification current, then its single owning route/code entry; full governance is not required for `EXPLORE` |
-| Protected final/blind evaluation or claim-critical protocol | [research governance](docs/formal/RESEARCH_GOVERNANCE.md) and the owning current contract |
-| Android, CameraX, UI, or module code | [code map](docs/CODE_MAP.md), affected implementation, and focused test |
-| Device, ADB, streaming, latency, or stability | [device regression](docs/DEVICE_REGRESSION.md) and the affected device contract |
-| Release, versioning, APK delivery, or archive | [release and verification](docs/RELEASE_AND_VERIFICATION.md) |
-| Hardware, glasses, ESP32, Bluetooth, or network | [hardware route](docs/GLASSES_HARDWARE_ROUTE.md) |
-| Documentation, index, project layout, or artifact path | [document governance](docs/DOCUMENT_GOVERNANCE.md) and the affected index |
-| Long or remote compute | [host research compute](docs/HOST_RESEARCH_COMPUTE.md) |
-| Open-ended algorithm search or candidate improvement with SkyDiscover | [SkyDiscover playbook](docs/SKYDISCOVER_PLAYBOOK.md), then the owning BlindAssist route and evidence contract |
+| Algorithm/model/data experiment | One route current, then its owning code/result |
+| Protected blind/final claim | [Research governance](docs/formal/RESEARCH_GOVERNANCE.md) |
+| Android/CameraX/UI/module code | [Code map](docs/CODE_MAP.md) |
+| Device/ADB/latency/stability | [Device regression](docs/DEVICE_REGRESSION.md) |
+| Release/APK/archive | [Release and verification](docs/RELEASE_AND_VERIFICATION.md) |
+| Hardware/glasses/ESP32/network | [Hardware route](docs/GLASSES_HARDWARE_ROUTE.md) |
+| Documentation/layout/artifacts | [Document governance](docs/DOCUMENT_GOVERNANCE.md) |
+| Long/remote compute | [Host research compute](docs/HOST_RESEARCH_COMPUTE.md) |
+| SkyDiscover search | [SkyDiscover playbook](docs/SKYDISCOVER_PLAYBOOK.md) plus the owning route |
 
-## External search and research discovery
+## Tools and compute
 
-For external web search, literature discovery, and multi-source research, actively prefer and make liberal use of the `Exa` plugin when it can improve recall, coverage, or research depth. Fall back to other search tools when Exa is unavailable or not well suited to the task.
+- Prefer Exa for external search, literature discovery, and multi-source research when available.
+- SkyDiscover is isolated and optional. BlindAssist owns its question, evaluator, evidence, decision, and claim; never mutate/clean SkyDiscover or use it to replace missing or fresh evidence.
+- Run Android/Gradle through `pwsh -NoProfile -File scripts/run_android_gradle.ps1 <tasks...>`.
+- Use `pwsh -NoProfile -File tools/ba.ps1 doctor <profile>` for `base`, both research routes, `android`, `device`, or `export`.
+- Keep machine paths, credentials, and endpoints in CLI arguments, ignored local config, environment variables, or the credential store.
+- Validate only the changed surface with `git diff --check`, structure for layout, and docs index for hot links; broaden only for the named risk.
+- GPU-helpful work is GPU-first. Record actual backend/device/providers and timings; benchmark equivalent CPU/GPU batch or point-cloud work. CPU requires `CPU_FASTER_MEASURED`, `TASK_NOT_GPU_SUITABLE`, `ACCELERATOR_UNAVAILABLE`, `GPU_BACKEND_UNAVAILABLE`, or `FROZEN_PROTOCOL_CPU_ONLY`. Small scalar/metadata work stays on CPU. Reuse `tools/research_backend.py`; never claim CUDA from CPU execution.
 
-## SkyDiscover auxiliary-system contract
+## Ownership and delivery
 
-SkyDiscover is an optional reusable engine agents may invoke without separate permission. BlindAssist owns the question, evaluator, evidence, decision, and claim; candidates remain proposals until route validation. Use the playbook's isolated launcher/task output. Never mutate or clean SkyDiscover's checkout, environment, runs, or caches. It cannot supply missing information, reopen consumed evidence, access protected outcomes, replace fresh confirmation, or exceed its input/evaluator evidence.
+- Pre-existing/concurrent changes are user-owned; edit/stage only task-owned paths or hunks and never revert/reclassify unrelated work.
+- Uncommitted files and untracked candidates are WIP, not route authority.
+- Payloads and generated outputs stay under ignored `artifacts.local/`; on managed Windows it remains the canonical junction in [local artifacts](docs/LOCAL_ARTIFACTS.md). Never create a physical workspace-drive bypass; run hygiene after storage-path changes.
+- Never rewrite history, force-push, delete branches, change remotes, or perform destructive actions without explicit authorization.
+- Deliver routine research directly to the default branch unless requested otherwise; verify remote parity and never absorb unrelated changes.
 
-## Commands and validation
-
-- Android/Gradle: use `pwsh -NoProfile -File scripts/run_android_gradle.ps1 <tasks...>`; do not replace its toolchain.
-- Readiness: use `pwsh -NoProfile -File tools/ba.ps1 doctor <profile>` with `base`, `research-dtr-r0`, `research-l10-r0`, `android`, `device`, or `export`. DTR/L10 GPU work must use its profile Python, whose doctor probes real Torch/CuPy/Numba CUDA kernels and critical imports.
-- Keep machine/SDK/Python/CUDA paths, credentials, and endpoints in CLI arguments, ignored local config, environment variables, or the credential store.
-- Validate the changed surface only: `git diff --check` for text, `scripts/check_project_structure.ps1` for layout, and `scripts/check_docs_index.ps1` for hot links. Broaden only for the changed risk or an explicit gate.
-- GPU-helpful work is GPU-first. Before launch verify availability/backend/device; after launch record framework placement plus observed utilization/memory. Configuration or startup alone is not proof; report idle GPU, CPU execution, or fallback. Speed is not algorithmic evidence.
-- For inference, batch tensors, or large point-cloud matching, probe equivalent CPU/GPU work and select the faster backend, preferring GPU on a tie. Downloads, archives, metadata, and small scalar scoring stay on CPU without a benchmark.
-- CPU selection for GPU-first work requires `CPU_FASTER_MEASURED`, `TASK_NOT_GPU_SUITABLE`, `ACCELERATOR_UNAVAILABLE`, `GPU_BACKEND_UNAVAILABLE`, or `FROZEN_PROTOCOL_CPU_ONLY`; measured choice records both timings.
-- GPU-capable results persist actual device/name/providers, selection reason, and timings. CPU tensors or only `CPUExecutionProvider` under a declared CUDA backend fail launch. Reuse `tools/research_backend.py`.
-
-## Workspace ownership and delivery
-
-- Treat pre-existing/concurrent changes as user-owned. Edit and stage only task-owned paths or hunks; never revert unrelated work.
-- Keep payloads, datasets, checkpoints, logs, screenshots, APKs, caches, SDKs, venvs, and raw outputs out of tracked source; local artifacts belong under ignored `artifacts.local/`.
-- In the managed local Windows workspace, `artifacts.local/` must remain the canonical junction to the managed artifact volume documented in `docs/LOCAL_ARTIFACTS.md`. CARLA assets, registered-worktree artifact roots, Gradle build outputs, local cache/runtime aliases, downloads, models, experiment outputs, and temporary material must stay beneath it; never create a physical workspace-drive bypass directory. After changing any storage path or download destination, run `scripts/check_repo_hygiene.ps1`.
-- Never rewrite history, force-push, delete branches, change remotes, or run destructive Git/file operations without explicit authorization.
-- Deliver routine research directly to the default branch without PR/CI wait unless requested; verify remote parity and never absorb unrelated changes.
-
-Completion means the outcome exists, its narrow falsification check passes or the gap is stated, the scoped diff is reviewed, and task-owned resources are released. Stop without speculative polish.
+Completion means the outcome exists, its narrow check passes or the gap is stated, the scoped diff is reviewed, task-owned resources are released, and no speculative polish remains.
