@@ -1,0 +1,183 @@
+{
+  "schema": "blindassist-l10-3rscan-registered-extent-cohort-v1",
+  "authority": "FROZEN_PRE_RGB_REGISTERED_ENDPOINT_EXTENT_COHORT",
+  "protocol_path": "l10_3rscan_registered_extent_protocol_v1.json",
+  "protocol_sha256": "646243ac709be0e5ea18fa625e5e63486fdf65f0955f37d45a7756e3d81d6ff0",
+  "entrypoint_path": "l10_3rscan_registered_extent_ceiling.py",
+  "entrypoint_sha256": "fc03bd1e9d80e46f37ac1c4a590d6350f603a69a99af88df28dda13a88c2149a",
+  "source_root": "F:\\ba-data\\blindassist-artifacts-20260805\\datasets\\3rscan",
+  "metadata": {
+    "path": "3RScan.json",
+    "bytes": 3155995,
+    "sha256": "674a00f50f76b198b9de44efd86c390fea3da37ba8f12cf8ccd00045e265fa64"
+  },
+  "candidate_count": 6,
+  "episodes": [
+    {
+      "episode_id": "RE01",
+      "reference_scan_id": "0ad2d399-79e2-2212-99cf-7a3512734bd7",
+      "rescan_id": "0ad2d384-79e2-2212-9b18-72b44eb5463f",
+      "target_instance_id": 12,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        12,
+        15,
+        25,
+        46
+      ],
+      "area_proxy": 2.0871132664494723,
+      "transform": [
+        0.9996605515480042,
+        0.026049913838505745,
+        0,
+        0,
+        -0.026049913838505745,
+        0.9996605515480042,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0.2733461558818817,
+        -0.8614078164100647,
+        0,
+        1
+      ],
+      "reference_target_vertices": 1707,
+      "rescan_target_vertices": 1899,
+      "files": {
+        "reference_semseg": {
+          "path": "0ad2d399-79e2-2212-99cf-7a3512734bd7/semseg.v2.json",
+          "bytes": 27575,
+          "sha256": "10a405c99df5a49ecd96e016049c00ac7ac2f265558f97dd6026ba73149853ba"
+        },
+        "reference_instances": {
+          "path": "0ad2d399-79e2-2212-99cf-7a3512734bd7/labels.instances.annotated.v2.ply",
+          "bytes": 4334603,
+          "sha256": "0536ab75c7c9816e4adefa085544906d70656641cd0b0058426dc4c81bbee9fd"
+        },
+        "rescan_semseg": {
+          "path": "0ad2d384-79e2-2212-9b18-72b44eb5463f/semseg.v2.json",
+          "bytes": 25376,
+          "sha256": "b4fb0a269770a2c1d8c4d1dd57a7a80a1554d0c429d31aa24923fc9cdf05108c"
+        },
+        "rescan_instances": {
+          "path": "0ad2d384-79e2-2212-9b18-72b44eb5463f/labels.instances.annotated.v2.ply",
+          "bytes": 4010423,
+          "sha256": "64d0cf7f212cec09a6f4a0e37b071a2a5a4eaaffadae20c0ba461cad069e5b9e"
+        }
+      }
+    },
+    {
+      "episode_id": "RE02",
+      "reference_scan_id": "0ad2d382-79e2-2212-98b3-641bf9d552c1",
+      "rescan_id": "dcb6a329-5526-23f1-9d81-7718f682269c",
+      "target_instance_id": 28,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        28,
+        42
+      ],
+      "area_proxy": 1.843613706239012,
+      "transform": [
+        -0.3323163390159607,
+        -0.9430748820304871,
+        0.013266079127788544,
+        0,
+        0.9431644678115845,
+        -0.33224475383758545,
+        0.007332905661314726,
+        0,
+        -0.0025078938342630863,
+        0.014948934316635132,
+        0.999885082244873,
+        0,
+        -0.4575995206832886,
+        -0.5762677788734436,
+        -0.08042591065168381,
+        1
+      ],
+      "reference_target_vertices": 1900,
+      "rescan_target_vertices": 3867,
+      "files": {
+        "reference_semseg": {
+          "path": "0ad2d382-79e2-2212-98b3-641bf9d552c1/semseg.v2.json",
+          "bytes": 43676,
+          "sha256": "4b5a5399be45fedb4774663508837c19d92f4aed28fe4a92b4eacd3f347bf88b"
+        },
+        "reference_instances": {
+          "path": "0ad2d382-79e2-2212-98b3-641bf9d552c1/labels.instances.annotated.v2.ply",
+          "bytes": 8757333,
+          "sha256": "4c6077a23ad3434a59e777a9cfd824bd32e5ce6e2e3b12ffc4a99e8b42e3a53c"
+        },
+        "rescan_semseg": {
+          "path": "dcb6a329-5526-23f1-9d81-7718f682269c/semseg.v2.json",
+          "bytes": 36785,
+          "sha256": "936483557cb060a6210236123857985d91d1342ded9c66b9e21fb9f497723170"
+        },
+        "rescan_instances": {
+          "path": "dcb6a329-5526-23f1-9d81-7718f682269c/labels.instances.annotated.v2.ply",
+          "bytes": 7768819,
+          "sha256": "5fe3fabfd32b385e81c096fa5b1d0214f935d49529e0e2519e60cf818abffd5b"
+        }
+      }
+    },
+    {
+      "episode_id": "RE03",
+      "reference_scan_id": "10b17936-3938-2467-88ba-ba5fe2debf14",
+      "rescan_id": "c92fb5b1-f771-2064-8492-1233552bf94d",
+      "target_instance_id": 24,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        16,
+        24
+      ],
+      "area_proxy": 1.714661574053278,
+      "transform": [
+        0.4151972830295563,
+        -0.9097248911857605,
+        -0.003446482354775071,
+        0,
+        0.9095720052719116,
+        0.41505059599876404,
+        0.020294442772865295,
+        0,
+        -0.017031894996762276,
+        -0.011561020277440548,
+        0.9997881650924683,
+        0,
+        -0.016401255503296852,
+        0.8303563594818115,
+        0.033152226358652115,
+        1
+      ],
+      "reference_target_vertices": 3643,
+      "rescan_target_vertices": 856,
+      "files": {
+        "reference_semseg": {
+          "path": "10b17936-3938-2467-88ba-ba5fe2debf14/semseg.v2.json",
+          "bytes": 37135,
+          "sha256": "39886c9183ff4622f829208626b5496f0b3cb7da526c60b8dcc7bc0c05cad604"
+        },
+        "reference_instances": {
+          "path": "10b17936-3938-2467-88ba-ba5fe2debf14/labels.instances.annotated.v2.ply",
+          "bytes": 5964474,
+          "sha256": "b53b160dc7ee8440672acddf7e309f0c0666a9fbe9b7039e1d7faee2d2a36505"
+        },
+        "rescan_semseg": {
+          "path": "c92fb5b1-f771-2064-8492-1233552bf94d/semseg.v2.json",
+          "bytes": 29473,
+          "sha256": "86b44507071af7d93e24b91335544d60657957e24fd1a6bef11bc1ddaa3473f5"
+        },
+        "rescan_instances": {
+          "path": "c92fb5b1-f771-2064-8492-1233552bf94d/labels.instances.annotated.v2.ply",
+          "bytes": 6114381,
+          "sha256": "a6b1f36e1968e8117de2fd4a8e717b35394e7011d65ef91cf445502327864286"
+        }
+      }
+    }
+  ],
+  "rgb_or_depth_opened": false,
+  "claim_boundary": "A pass is a real indoor cross-rescan provider-geometry Development ceiling showing that complete registered extent carries decision-changing endpoint-centre and boundary information. Both prediction and evaluation use privileged 3RScan geometry and official registration. It is not RGB perception, reference-coordinate learning, doorway aperture, opening state, access, traversability, approach waypoint, arrival, HANDOFF_READY, product benefit, user benefit, or mobility-safety evidence."
+}

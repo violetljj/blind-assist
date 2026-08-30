@@ -17,7 +17,9 @@ Status: `L10_R0_ACTIVE / DTR_R2_DYNAMIC_RETAINED`
   transfer gate, while real SceneNN terminates at
   `L10_SCENENN_VISIBLE_METRIC_PORTAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET`:
   z-buffer visibility repaired local plane authority, but all frozen references
-  were edge-clipped fragments without complete portal extent.
+  were edge-clipped fragments without complete portal extent. 3RScan registered-
+  extent E0 then met its Development gate: median planar IoU `0.2727 -> 0.7688`,
+  median centroid error `0.3760 m -> 0.1428 m`, and `0/3` wrong doors.
 - **DTR JRDB/public line:** X21 is frozen at
   `DTR_X21_TRACK_CARRIED_COMPONENT_ANCESTRY_GATE_MET` for Development only; a
   new source-disjoint confirmation remains required.
@@ -1133,10 +1135,25 @@ foreground depth contamination. All three reference masks, however, touched
 the right image edge and were only `66-118 px` wide. The credential therefore
 carried a correct local plane fragment without the complete portal extent;
 query target recall was only `0.1215 / 0.0232 / 0.0000`. Do not add a margin or
-retune consumed SceneNN. The next active source change is a fresh 3RScan
-reference/rescan pair with stable door or doorframe instance identity and the
-official scan-to-reference transform, subject to dataset access approval.
-Panoramax remains closed until independently registered portal extent exists.
+retune consumed SceneNN. The next active source change used fresh 3RScan
+reference/rescan pairs with stable door identity and the official scan-to-
+reference transform. Panoramax remains closed until independently registered
+portal extent exists.
+
+The one frozen E0 replay compared a deterministic 25-percent horizontal
+fragment with the complete registered instance on three train-split endpoints
+from distinct reference scenes. Both arms retained `3/3` target Top-1, `0/3`
+wrong commits and `3/3` centroid-inside. Complete extent improved median planar
+IoU `0.2727 -> 0.7688` (`+0.4961`) and median world-centroid error
+`0.3760 m -> 0.1428 m` (`-0.2332 m`), meeting every condition. Record
+`L10_3RSCAN_REGISTERED_ENDPOINT_EXTENT_DEVELOPMENT_GATE_MET`.
+
+The effect is not per-example dominance: RE03 complete-centroid error was
+`0.3168 m` versus partial `0.1570 m`, while IoU still improved and target
+identity remained correct. This is privileged provider-geometry Development
+evidence, not RGB perception, an aperture, waypoint, arrival or handoff result.
+The next admissible experiment is one reference-conditioned pixel-transfer
+successor on registered endpoints; do not open active-policy learning yet.
 
 ## DTR-R2 decision
 

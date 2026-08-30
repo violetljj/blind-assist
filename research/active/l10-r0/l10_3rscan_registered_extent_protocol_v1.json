@@ -1,0 +1,88 @@
+{
+  "schema": "blindassist-l10-3rscan-registered-extent-protocol-v1",
+  "authority": "EXPLORE_FROZEN_BEFORE_3RSCAN_DATA_ACCESS",
+  "question": "On real cross-rescan indoor geometry, does a complete registered door or doorframe extent repair the portal-IoU and centroid failure caused by an edge-clipped reference fragment?",
+  "predecessor": {
+    "result": "L10_SCENENN_VISIBLE_METRIC_PORTAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET",
+    "observed_gap": "Strict z-buffer visibility repaired the local reference plane, but every selected SceneNN reference credential was an image-edge-clipped 66-118 px fragment without the complete portal centre or boundary."
+  },
+  "information_change": "Replace only the incomplete reference extent with a complete provider-annotated door or doorframe instance shared between a 3RScan reference scan and rescan. Use the official scan-to-reference transform. Do not add an RGB matcher, learned coordinate field, policy learner, or query-side correction.",
+  "provider": {
+    "name": "3RScan / RIO",
+    "project_url": "https://waldjohannau.github.io/RIO/",
+    "repository_url": "https://github.com/WaldJohannaU/3RScan",
+    "repository_commit_verified": "12f040d3dc849e394ed366acd7b54e63acb49205",
+    "official_download_script": "https://gist.github.com/WaldJohannaU/55f5e35992ea91157b789b15eac4d432",
+    "terms_url": "https://forms.gle/NvL5dvB4tSFrHfQH6",
+    "access_boundary": "The researcher must personally accept the non-commercial research Terms of Use and receive access approval. BlindAssist does not accept terms on the researcher's behalf and does not redistribute raw assets.",
+    "geometry_unit": "metre",
+    "upright_axis": "+Z",
+    "transform_semantics": "Interpret the flat JSON transform with the official C++ Eigen column-major assignment and apply it as rescan-to-reference matrix times homogeneous point."
+  },
+  "source_selector": {
+    "split": "train",
+    "cohort_size": 3,
+    "inventory_pairs": 6,
+    "one_endpoint_per_reference_scene": true,
+    "allowed_labels_normalized": [
+      "door",
+      "door frame",
+      "doorframe"
+    ],
+    "minimum_rescan_doors": 2,
+    "stable_identity_rule": "The same local objectId and allowed semantic label must exist in the reference and rescan, and the instance must not occur in removed, nonrigid, rigid, or ambiguity metadata.",
+    "required_geometry": [
+      "3RScan.json",
+      "objects.json or per-scan semseg.v2.json for metadata inventory",
+      "reference semseg.v2.json",
+      "reference labels.instances.annotated.v2.ply",
+      "rescan semseg.v2.json",
+      "rescan labels.instances.annotated.v2.ply"
+    ],
+    "ranking": "Rank stable candidates by the smaller reference/rescan OBB two-largest-axis area descending, then reference scan ID, rescan ID, and instance ID ascending; greedily retain one endpoint per reference scene.",
+    "forbidden_before_freeze": [
+      "RGB frames",
+      "depth frames",
+      "rendered instance images",
+      "learned model output"
+    ]
+  },
+  "arms": {
+    "partial_fragment": {
+      "meaning": "Controlled ablation of the SceneNN extent failure, not a claimed sensor-visible mask.",
+      "rule": "Fit one deterministic upright portal frame from the complete reference instance and retain only the positive-edge 25 percent of its horizontal width.",
+      "retained_width_fraction": 0.25
+    },
+    "complete_credential": {
+      "meaning": "Registered endpoint extent oracle.",
+      "rule": "Use every provider-labelled reference instance vertex without query-side fitting or correction."
+    }
+  },
+  "evaluator": {
+    "query_truth": "Transform the complete provider-labelled rescan target instance into the reference coordinate system. Query target geometry and other rescan door instances are evaluator-only.",
+    "portal_frame": "Use +Z as vertical and the dominant XY principal direction of the complete reference instance as horizontal.",
+    "extent_metric": "Convex planar extent IoU in the frozen reference portal frame.",
+    "identity_metric": "Rank all rescan door or doorframe instances by 3D centroid distance from the predicted portal centre.",
+    "reported_metrics": [
+      "target Top-1",
+      "wrong-instance commit",
+      "centroid inside target extent",
+      "median planar extent IoU",
+      "median world centroid error",
+      "complete-minus-partial IoU gain",
+      "partial-minus-complete centroid-error reduction"
+    ]
+  },
+  "decision_gate": {
+    "complete_target_top1": "3/3",
+    "complete_wrong_instance_commit": 0,
+    "complete_centroid_inside": "3/3",
+    "complete_median_planar_extent_iou_minimum": 0.5,
+    "complete_median_world_centroid_error_metres_maximum": 0.3,
+    "minimum_median_iou_gain_over_partial": 0.2,
+    "minimum_median_centroid_error_reduction_metres": 0.2,
+    "failure_semantics": "If the complete arm fails, do not train a coordinate field on this source. Diagnose endpoint definition, annotation correspondence, or transform semantics. If it passes, open one reference-conditioned pixel-transfer successor."
+  },
+  "stop_condition": "One metadata-and-geometry source freeze over the authorized train split, then one three-endpoint replay. Do not repeat Hypersim, inspect the 3RScan test split, tune the crop fraction or gates, or train a learned transfer before this result.",
+  "claim_boundary": "A pass is a real indoor cross-rescan provider-geometry Development ceiling showing that complete registered extent carries decision-changing endpoint-centre and boundary information. Both prediction and evaluation use privileged 3RScan geometry and official registration. It is not RGB perception, reference-coordinate learning, doorway aperture, opening state, access, traversability, approach waypoint, arrival, HANDOFF_READY, product benefit, user benefit, or mobility-safety evidence."
+}

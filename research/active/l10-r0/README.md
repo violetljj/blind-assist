@@ -20,8 +20,10 @@ Status: `ACTIVE`
   terminal at
   `L10_SCENENN_VISIBLE_METRIC_PORTAL_TRANSFER_DEVELOPMENT_GATE_NOT_MET`.
   Strict-triangle z-buffering repaired reference-plane contamination, but the
-  edge-clipped credential still lacked complete portal extent; 3RScan
-  cross-rescan identity is the next source after access approval.
+  edge-clipped credential still lacked complete portal extent. 3RScan E0 then
+  met `L10_3RSCAN_REGISTERED_ENDPOINT_EXTENT_DEVELOPMENT_GATE_MET`: complete
+  registered extent raised median planar IoU `0.2727 -> 0.7688` and reduced
+  median world-centroid error `0.3760 m -> 0.1428 m` with `0/3` wrong doors.
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -2166,14 +2168,36 @@ only `12.15%` and `2.32%` of the query target envelope, while the third
 projected outside the query image.
 
 Do not add a post-result image margin, reselect these scenes, or tune the
-visibility, plane, contour, or decision thresholds. The next stronger source
-is 3RScan cross-rescan identity: freeze a door/doorframe instance shared by a
-reference scan and rescan, use the official scan-to-reference transform and
-stable instance mapping, and evaluate a reference-derived extent against the
-separate rescan geometry. This changes the missing extent source rather than
-rescuing consumed SceneNN. Its data token and per-UUID asset endpoints still
-require Terms-of-Use approval. Generic Panoramax remains closed because it has
-neither this extent authority nor an independent sub-metre portal anchor.
+visibility, plane, contour, or decision thresholds. 3RScan E0 made the next
+source change: freeze a door instance shared by a reference scan and rescan,
+use the official scan-to-reference transform and stable instance mapping, and
+evaluate a reference-derived extent against separate rescan geometry. This
+changes the missing extent source rather than rescuing consumed SceneNN.
+
+The one same-source ablation retained the positive-edge 25 percent of each
+reference door in the partial arm and carried the complete provider instance in
+the registered arm. Across three train-split endpoints from distinct reference
+scenes, both arms kept target Top-1 at `3/3`, wrong commits at `0/3`, and
+centroid-inside at `3/3`. Complete extent raised median planar IoU from `0.2727`
+to `0.7688` (`+0.4961`) and reduced median world-centroid error from `0.3760 m`
+to `0.1428 m` (`-0.2332 m`), meeting every frozen E0 condition. Record
+`L10_3RSCAN_REGISTERED_ENDPOINT_EXTENT_DEVELOPMENT_GATE_MET`.
+
+This effect is aggregate rather than universal: on RE03 the complete arm had
+`0.3168 m` centroid error versus the partial arm's `0.1570 m`, although its IoU
+rose `0.4046 -> 0.4898` and it retained the correct door. E0 therefore supports
+complete registered extent as the missing information source on this narrow
+real-geometry Development cohort; it does not establish per-door dominance or
+an RGB method. The next admissible experiment is one reference-conditioned
+pixel-transfer successor on registered endpoints. Do not open active-policy
+learning yet, and keep generic Panoramax closed without an independent
+sub-metre portal anchor.
+
+Registered-extent E0 protocol, executable, frozen cohort, and result:
+`l10_3rscan_registered_extent_protocol_v1.json`,
+`l10_3rscan_registered_extent_ceiling.py`,
+`l10_3rscan_registered_extent_cohort_v1.json`, and
+`l10_3rscan_registered_extent_result_v1.json`.
 
 Independent-extent protocols, source builders, audits, and results:
 `l10_lod3_panoramax_door_reachability_result_v1.json`,

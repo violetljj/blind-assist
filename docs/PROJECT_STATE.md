@@ -33,8 +33,9 @@ Current route snapshot:
 - Hypersim established a synthetic posed-portal mechanism ceiling. SceneNN real
   RGB-D strict-triangle visibility repaired the local reference plane but did
   not meet the transfer gate because the credential still lacked complete
-  portal extent; 3RScan cross-rescan stable identity is the next source after
-  access approval.
+  portal extent. 3RScan registered-extent E0 then met its Development gate:
+  median planar IoU `0.2727 -> 0.7688`, median world-centroid error
+  `0.3760 m -> 0.1428 m`, and `0/3` wrong doors.
 
 ## Current evidence
 
@@ -899,10 +900,21 @@ gate: correct door `2/3`, wrong commit `1/3`, centroid-inside `2/3`, median IoU
 All three reference credentials were unoccluded but image-edge-clipped portal
 fragments only `66-118 px` wide. Source visibility is therefore repaired, while
 source extent remains missing. Do not tune an image margin or reuse these
-scenes. The next L10 real-source successor is 3RScan cross-rescan stable
-door/doorframe identity plus the official scan-to-reference transform, after
-Terms-of-Use access; Panoramax remains parked without independent sub-metre
-portal extent.
+scenes. The next L10 real-source successor used 3RScan cross-rescan stable door
+identity plus the official scan-to-reference transform; Panoramax remains
+parked without independent sub-metre portal extent.
+
+The one E0 replay froze three train-split, reference-scene-disjoint endpoints
+before RGB/depth, compared a controlled 25-percent partial extent with the
+complete registered instance, and evaluated both against separate rescan
+geometry. Both arms kept `3/3` target Top-1, `0/3` wrong commits and `3/3`
+centroid-inside. Complete extent improved median planar IoU by `+0.4961` and
+reduced median metric-centroid error by `0.2332 m`, so record
+`L10_3RSCAN_REGISTERED_ENDPOINT_EXTENT_DEVELOPMENT_GATE_MET`. RE03 remains an
+important non-uniform row: complete extent improved IoU but worsened centroid
+error. This is a narrow privileged-geometry effect, not per-door dominance or
+RGB perception. The next step is one registered reference-conditioned pixel-
+transfer experiment, not active-policy learning.
 
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
