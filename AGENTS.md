@@ -9,14 +9,14 @@ Keep the module boundaries stable: `:app` owns the shell/assets, `:feature:assis
 ## Start here
 
 1. Read [project state](docs/PROJECT_STATE.md).
-2. Open only the one classification current that matches the task.
+2. Open only the one route `CURRENT.md` that matches the task.
 3. For algorithm, model, training, benchmark, or dataset work with a known route, run `python tools/knowledge.py context --route <route> --json`; add `--query` for a named mechanism or failure.
-4. Read one directly affected route, code, test, or contract entry.
+4. Read its detailed `README.md`, code, test, or contract only when needed.
 5. Check `git status --short` before editing and preserve all unrelated work.
 
 Knowledge context is a compact reusable-mechanism/prior-result view; it does not replace route authority or reopen a retired, rejected, consumed, or closed experiment.
 
-Do not scan archives, snapshots, complete logs, `artifacts.local/`, generated outputs, or unrelated routes unless history, reproduction, or audit requires it. Dynamic routes, metrics, terminals, and successors belong only in current documents linked by `PROJECT_STATE.md`.
+Do not scan archives, snapshots, complete logs, `artifacts.local/`, generated outputs, or unrelated routes unless history, reproduction, or audit requires it. Dynamic status and successors belong in compact route currents linked by `PROJECT_STATE.md`; detailed metrics and terminals belong in the route ledger or result file.
 
 ## Default execution policy
 

@@ -15,7 +15,9 @@ function Require-Path([string]$Relative, [string]$Type = 'Leaf') {
 foreach ($file in @(
     'AGENTS.md', 'docs/PROJECT_STATE.md', 'docs/CURRENT_DECISION.md',
     'docs/history-index.md', 'research/active/dtr-r0/README.md',
+    'research/active/dtr-r0/CURRENT.md',
     'research/active/l10-r0/README.md',
+    'research/active/l10-r0/CURRENT.md',
     'research/active/l10-r0/l10_r0.py',
     'research/active/l10-r0/benchmark.py',
     'research/active/l10-r0/artvideo_replay.py',
@@ -46,6 +48,22 @@ if (Test-Path $agents) {
     }
 }
 
+$compactBudgets = @(
+    [pscustomobject]@{ Path = 'docs/PROJECT_STATE.md'; Lines = 200; Bytes = 20480 },
+    [pscustomobject]@{ Path = 'docs/CURRENT_DECISION.md'; Lines = 200; Bytes = 20480 },
+    [pscustomobject]@{ Path = 'research/active/l10-r0/CURRENT.md'; Lines = 150; Bytes = 16384 },
+    [pscustomobject]@{ Path = 'research/active/dtr-r0/CURRENT.md'; Lines = 150; Bytes = 16384 }
+)
+foreach ($budget in $compactBudgets) {
+    $path = Join-Path $repoRoot $budget.Path
+    if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { continue }
+    $lineCount = [IO.File]::ReadAllLines($path).Count
+    $byteCount = (Get-Item -LiteralPath $path).Length
+    if ($lineCount -gt $budget.Lines -or $byteCount -gt $budget.Bytes) {
+        $failures.Add("Compact current exceeds budget: $($budget.Path) ($lineCount lines, $byteCount bytes).")
+    }
+}
+
 $log = Join-Path $repoRoot 'DEVELOPMENT_LOG.md'
 if (Test-Path $log) {
     $logLines = [IO.File]::ReadAllLines($log).Count
@@ -69,8 +87,8 @@ if ($topDocs.Count -gt 25) { $failures.Add("Top-level docs exceed 25 files: $($t
 
 $hotFiles = @(
     'AGENTS.md', 'README.md', 'docs/PROJECT_STATE.md',
-    'docs/CURRENT_DECISION.md', 'research/active/dtr-r0/README.md',
-    'research/active/l10-r0/README.md',
+    'docs/CURRENT_DECISION.md', 'research/active/dtr-r0/CURRENT.md',
+    'research/active/l10-r0/CURRENT.md',
     'config/local.example.toml'
 )
 foreach ($relative in $hotFiles) {

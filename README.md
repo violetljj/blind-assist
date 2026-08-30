@@ -9,12 +9,13 @@ not a certified mobility or safety product.
 
 - Current project state: [docs/PROJECT_STATE.md](docs/PROJECT_STATE.md)
 - Current research decision: [docs/CURRENT_DECISION.md](docs/CURRENT_DECISION.md)
-- Active experiment: [research/active/dtr-r0/README.md](research/active/dtr-r0/README.md)
+- L10-R0 current: [research/active/l10-r0/CURRENT.md](research/active/l10-r0/CURRENT.md)
+- DTR-R2 current: [research/active/dtr-r0/CURRENT.md](research/active/dtr-r0/CURRENT.md)
 - Code ownership: [docs/CODE_MAP.md](docs/CODE_MAP.md)
 - Documentation map: [docs/README.md](docs/README.md)
 - Historical lookup: [docs/history-index.md](docs/history-index.md)
 
-Only one tracked research route is operational in the current branch. Closed
+Two tracked research routes are operational in the current branch. Closed
 experiments are summarized in `experiments/index.jsonl` and remain recoverable
 from the remote tag `archive/pre-agent-surface-2026-08-26` or the terminal
 commits listed in `docs/history-index.md`.
@@ -29,8 +30,9 @@ pwsh -NoProfile -File tools/ba.ps1 setup base
 pwsh -NoProfile -File tools/ba.ps1 doctor base
 ```
 
-Profiles are independent: `base`, `research-dtr-r0`, `android`, `device`, and
-`export`. Research setup does not install or probe Android tooling.
+Profiles are independent: `base`, `research-l10-r0`, `research-dtr-r0`,
+`android`, `device`, and `export`. Research setup does not install or probe
+Android tooling.
 
 ```powershell
 pwsh -NoProfile -File tools/ba.ps1 setup research-dtr-r0

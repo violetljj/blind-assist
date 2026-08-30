@@ -147,7 +147,7 @@ runner reproduces the frozen result from the cached OCR boxes and embeddings:
 
 ```powershell
 $env:PYTHONPATH='artifacts.local/runtime/semantic-anchor-v1/site-packages'
-& 'E:/codex-tools/bin/blindassist-python.cmd' -B `
+blindassist-python.cmd -B `
   research/active/l10-r0/artvideo_semantic_visual_replay.py `
   --dataset artifacts.local/datasets/artvideo-l10-r0 `
   --ocr-cache artifacts.local/evidence/l10-r0/artvideo-proposal-free-text-v0/ocr-cache.json `
@@ -250,7 +250,7 @@ recomputation:
 
 ```powershell
 $env:PYTHONPATH='artifacts.local/runtime/semantic-anchor-v1/site-packages'
-& 'E:/codex-tools/bin/blindassist-python.cmd' -B `
+blindassist-python.cmd -B `
   research/active/l10-r0/artvideo_dual_state_replay.py `
   --dataset artifacts.local/datasets/artvideo-l10-r0 `
   --ocr-cache artifacts.local/evidence/l10-r4/rapidocr-ctc-word-carrier-v0/ocr-cache.json `

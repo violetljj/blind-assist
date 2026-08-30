@@ -5,7 +5,8 @@ $sources = @(
     'README.md', 'docs/README.md', 'docs/PROJECT_STATE.md',
     'docs/CURRENT_DECISION.md', 'docs/DOCUMENT_GOVERNANCE.md',
     'docs/history-index.md', 'scripts/README.md',
-    'research/active/dtr-r0/README.md'
+    'research/active/l10-r0/CURRENT.md',
+    'research/active/dtr-r0/CURRENT.md'
 )
 $failures = [Collections.Generic.List[string]]::new()
 $checked = 0
@@ -28,6 +29,24 @@ foreach ($relative in $sources) {
         }
     }
 }
+
+function Require-Literal([string]$Relative, [string]$Needle, [string]$Description) {
+    $path = Join-Path $repoRoot $Relative
+    if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { return }
+    $text = Get-Content -LiteralPath $path -Raw -Encoding utf8
+    if (-not $text.Contains($Needle)) {
+        $script:failures.Add("Semantic drift in $Relative`: missing $Description")
+    }
+}
+
+Require-Literal 'README.md' 'research/active/l10-r0/CURRENT.md' 'L10 compact-current link'
+Require-Literal 'README.md' 'research/active/dtr-r0/CURRENT.md' 'DTR compact-current link'
+Require-Literal 'docs/README.md' 'Current Dynamic Travel Risk R2 route' 'DTR R2 route label'
+Require-Literal 'docs/PROJECT_STATE.md' 'L10_R0_ACTIVE' 'L10 active status'
+Require-Literal 'docs/PROJECT_STATE.md' 'DTR_R2_DYNAMIC_RETAINED' 'DTR R2 status'
+Require-Literal 'docs/CURRENT_DECISION.md' 'L10_R0_ACTIVE / DTR_R2_DYNAMIC_RETAINED' 'cross-route status'
+Require-Literal 'research/active/l10-r0/CURRENT.md' 'Status: `L10_R0_ACTIVE`' 'L10 route status'
+Require-Literal 'research/active/dtr-r0/CURRENT.md' 'Status: `DTR_R2_DYNAMIC_RETAINED`' 'DTR route status'
 
 if ($failures.Count) {
     Write-Host 'Documentation index check failed:'
