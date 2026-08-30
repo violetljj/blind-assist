@@ -552,6 +552,45 @@ def load_cache(artifact_root: Path, cache_key: str) -> dict[str, Any]:
     return read_json(path)
 
 
+def cache_access_path(artifact_root: Path, cache_key: str, event_id: str) -> Path:
+    return (
+        fabric_root(artifact_root)
+        / "catalog"
+        / "accesses"
+        / cache_key
+        / f"{slug(event_id)}.json"
+    )
+
+
+def cache_use_command(args: argparse.Namespace) -> dict[str, Any]:
+    artifact_root = args.artifact_root.resolve()
+    cache = load_cache(artifact_root, args.cache_key)
+    payload = (artifact_root / cache["payload_path"]).resolve()
+    if not payload.exists():
+        raise FabricError(f"Cataloged cache payload is missing: {payload}")
+    event, replayed = write_timestamped_record(
+        cache_access_path(artifact_root, args.cache_key, args.event_id),
+        {
+            "schema": "blindassist-resource-cache-access-v1",
+            "schema_version": SCHEMA_VERSION,
+            "event_id": slug(args.event_id),
+            "cache_key": args.cache_key,
+            "consumer": args.consumer,
+            "purpose": args.purpose,
+            "experiment_id": args.experiment_id,
+            "outcome": "cache_hit",
+            "payload_path": cache["payload_path"],
+            "payload_bytes": int(cache.get("payload_bytes", 0)),
+        },
+        timestamp_field="recorded_at",
+    )
+    return {
+        **event,
+        "event_replayed": replayed,
+        "resolved_payload": str(payload),
+    }
+
+
 def create_cache(
     artifact_root: Path,
     *,
@@ -893,12 +932,21 @@ def report_command(args: argparse.Namespace) -> dict[str, Any]:
     objects = load_records(root / "catalog" / "objects")
     registrations = load_records(root / "catalog" / "registrations")
     caches = load_records(root / "catalog" / "caches")
+    cache_accesses = load_records(root / "catalog" / "accesses")
     hard_cases = load_records(root / "hard-cases")
     experiments = [
         read_json(path)
         for path in sorted((root / "experiments").rglob("manifest.json"))
     ] if (root / "experiments").exists() else []
     lifecycle = current_lifecycle(artifact_root)
+
+    access_consumers = {
+        item.get("consumer") for item in cache_accesses if item.get("consumer")
+    }
+    consumers_by_cache: dict[str, set[str]] = defaultdict(set)
+    for item in cache_accesses:
+        if item.get("cache_key") and item.get("consumer"):
+            consumers_by_cache[item["cache_key"]].add(item["consumer"])
 
     object_by_id = {item["resource_id"]: item for item in objects}
     referenced_resources: set[str] = set()
@@ -933,6 +981,15 @@ def report_command(args: argparse.Namespace) -> dict[str, Any]:
             "registrations": len(registrations),
             "shared_caches": len(caches),
             "shared_cache_bytes": sum(int(item.get("payload_bytes", 0)) for item in caches),
+            "cache_access_events": len(cache_accesses),
+            "cache_access_consumers": len(access_consumers),
+            "caches_with_recorded_reuse": len(consumers_by_cache),
+            "multi_consumer_caches": sum(
+                1 for consumers in consumers_by_cache.values() if len(consumers) > 1
+            ),
+            "avoided_recompute_bytes": sum(
+                int(item.get("payload_bytes", 0)) for item in cache_accesses
+            ),
             "hard_cases": len(hard_cases),
             "thin_experiments": len(experiments),
             "referenced_resources": len(referenced_resources),
@@ -945,6 +1002,7 @@ def report_command(args: argparse.Namespace) -> dict[str, Any]:
         "resources": objects,
         "registrations": registrations,
         "caches": caches,
+        "cache_accesses": cache_accesses,
         "hard_cases": hard_cases,
         "experiments": experiments,
     }
@@ -1026,6 +1084,7 @@ def verify_command(args: argparse.Namespace) -> dict[str, Any]:
 
     caches = load_records(root / "catalog" / "caches")
     cache_keys = {item.get("cache_key") for item in caches}
+    cache_by_key = {item.get("cache_key"): item for item in caches}
     for item in caches:
         for resource_id in item.get("source_ids", []) + item.get("model_ids", []):
             if resource_id not in object_ids:
@@ -1045,6 +1104,20 @@ def verify_command(args: argparse.Namespace) -> dict[str, Any]:
                     errors.append(f"cache {item.get('cache_key')}: payload digest mismatch")
             except FabricError as exc:
                 errors.append(f"cache {item.get('cache_key')}: {exc}")
+
+    cache_accesses = load_records(root / "catalog" / "accesses")
+    for item in cache_accesses:
+        cache_key = item.get("cache_key")
+        cache = cache_by_key.get(cache_key)
+        if cache is None:
+            errors.append(f"cache access {item.get('event_id')}: unknown cache {cache_key}")
+            continue
+        if item.get("outcome") != "cache_hit":
+            errors.append(f"cache access {item.get('event_id')}: invalid outcome")
+        if item.get("payload_path") != cache.get("payload_path"):
+            errors.append(f"cache access {item.get('event_id')}: payload path mismatch")
+        if int(item.get("payload_bytes", -1)) != int(cache.get("payload_bytes", 0)):
+            errors.append(f"cache access {item.get('event_id')}: payload byte mismatch")
 
     hard_cases = load_records(root / "hard-cases")
     hard_case_paths = {
@@ -1089,6 +1162,7 @@ def verify_command(args: argparse.Namespace) -> dict[str, Any]:
         "status": "PASS" if not errors else "FAIL",
         "objects": len(objects),
         "caches": len(caches),
+        "cache_accesses": len(cache_accesses),
         "hard_cases": len(hard_cases),
         "experiments": experiment_count,
         "deep": bool(args.deep),
@@ -1178,6 +1252,17 @@ def build_parser() -> argparse.ArgumentParser:
     cache_json = subparsers.add_parser("cache-json", help="Canonicalize a JSON resource into the shared normalized cache")
     cache_json.add_argument("source_id")
     cache_json.set_defaults(func=cache_json_command)
+
+    cache_use = subparsers.add_parser(
+        "cache-use",
+        help="Resolve a shared cache and append an auditable reuse event",
+    )
+    cache_use.add_argument("cache_key")
+    cache_use.add_argument("--event-id", required=True)
+    cache_use.add_argument("--consumer", required=True)
+    cache_use.add_argument("--purpose", required=True)
+    cache_use.add_argument("--experiment-id")
+    cache_use.set_defaults(func=cache_use_command)
 
     hard_case = subparsers.add_parser("hard-case", help="Register a reusable failure/hard-case slice by reference")
     hard_case.add_argument("--id", required=True)

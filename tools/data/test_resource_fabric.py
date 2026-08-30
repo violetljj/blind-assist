@@ -90,6 +90,33 @@ class ResourceFabricTest(unittest.TestCase):
         self.assertTrue(second["object_reused"])
 
         cache = self.run_cli("cache-json", first["resource_id"])
+        first_cache_use = self.run_cli(
+            "cache-use",
+            cache["cache_key"],
+            "--event-id",
+            "fixture-evaluator-cache-hit",
+            "--consumer",
+            "fixture-experiment-v1",
+            "--purpose",
+            "normalized-input",
+            "--experiment-id",
+            "fixture-experiment-v1",
+        )
+        second_cache_use = self.run_cli(
+            "cache-use",
+            cache["cache_key"],
+            "--event-id",
+            "fixture-diagnostic-cache-hit",
+            "--consumer",
+            "fixture-diagnostic-v1",
+            "--purpose",
+            "failure-analysis",
+        )
+        self.assertEqual("cache_hit", first_cache_use["outcome"])
+        self.assertEqual(cache["payload_bytes"], first_cache_use["payload_bytes"])
+        self.assertNotEqual(
+            first_cache_use["event_id"], second_cache_use["event_id"]
+        )
         hard_case = self.run_cli(
             "hard-case",
             "--id",
@@ -174,6 +201,11 @@ class ResourceFabricTest(unittest.TestCase):
         self.assertEqual(1, report["unique_resources"])
         self.assertEqual(2, report["registrations"])
         self.assertEqual(1, report["shared_caches"])
+        self.assertEqual(2, report["cache_access_events"])
+        self.assertEqual(2, report["cache_access_consumers"])
+        self.assertEqual(1, report["caches_with_recorded_reuse"])
+        self.assertEqual(1, report["multi_consumer_caches"])
+        self.assertEqual(2 * cache["payload_bytes"], report["avoided_recompute_bytes"])
         self.assertEqual(1, report["hard_cases"])
         self.assertEqual(1, report["thin_experiments"])
         self.assertEqual(0, report["unreferenced_resources"])

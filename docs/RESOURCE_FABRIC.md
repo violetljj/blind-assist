@@ -99,8 +99,21 @@ E:\codex-tools\bin\python.cmd tools\data\resource_fabric.py `
   cache-put --layer features --source-id sha256:<digest> `
   --transform dino-crop --transform-version rev-123 `
   --parameters-json '{"size":518}' --producer research/active/l10-r0/producer.py `
-  --payload artifacts.local\tmp\task\features.npz
+  --payload artifacts.local\tmp\my-task\features.npz
 ```
+
+Consumers resolve the cache through an auditable hit instead of opening the
+producer experiment directory directly:
+
+```powershell
+E:\codex-tools\bin\python.cmd tools\data\resource_fabric.py `
+  cache-use <cache-key> --event-id l10-evaluator-feature-hit `
+  --consumer l10-evaluator-v2 --purpose feature-input `
+  --experiment-id l10-evaluator-v2
+```
+
+The returned `resolved_payload` is the shared payload path. Replaying the same
+event id is idempotent; a different consumer or run uses a new event id.
 
 Register a consumed failure slice without copying its frames:
 
@@ -129,7 +142,7 @@ E:\codex-tools\bin\python.cmd tools\data\resource_fabric.py `
 
 E:\codex-tools\bin\python.cmd tools\data\resource_fabric.py `
   experiment-finalize --id l10-example-v1 --route l10-r0 `
-  --result-json artifacts.local\tmp\task\result.json --status GATE_NOT_MET
+  --result-json artifacts.local\tmp\my-task\result.json --status GATE_NOT_MET
 ```
 
 The experiment directory may contain only `manifest.json`, `parameters.json`,
@@ -158,7 +171,10 @@ E:\codex-tools\bin\python.cmd tools\data\resource_fabric.py `
 Omit `--inventory-root` for the fast daily report. The full logical inventory
 walks every physical file below the artifact target and is intended for
 migration milestones; files that disappear during an active build are counted
-as vanished entries instead of aborting the report.
+as vanished entries instead of aborting the report. The fast report also shows
+`cache_access_events`, `multi_consumer_caches`, and
+`avoided_recompute_bytes`; these measure recorded reuse, not merely registered
+cache capacity.
 
 ## Existing assets
 
@@ -176,12 +192,26 @@ is disposable from age, extension, or a failed result. This fabric changes
 reuse and identity first; storage reclamation follows only from verified
 lineage and explicit target-level authorization.
 
-The first non-destructive adoption is the existing L10 SEVN metadata/action
+The first non-destructive adoption was the existing L10 SEVN metadata/action
 adapter. `research/active/l10-r0/l10_sevn_panolab_source_v1.json` resolves to
 `sha256:a6478c29610f986fc50dd101de378f187f7ba9e69c201cc31d3b12b6cf7912da`;
 its canonical JSON cache key is
 `ca8ed54969814e315c6b279a8943dd62e502b3139744b18d74e201a950451d76`.
-The local fabric records the missing `images.hdf5` payload as a reusable
-evidence-gap case and references the existing result from a thin experiment.
-The cohort remains `development_consumed`; this adoption adds no pixel,
-fresh-confirmation, generalization, or safety authority.
+The full SEVN source is now available as `datasets/sevn`: its six files are
+same-volume hardlinks to the legacy `F:\ba-data\SEVN` names, so both locators
+address the same `29,684,140,135` logical bytes with zero duplicate payload
+bytes. The content identity is
+`tree-sha256:2b2c9f42ec4daf217af9287b70ef04312498429c6918905f82b47588c9d427b3`.
+The earlier missing-image case remains a historical gap observation; it is not
+the current availability state. The cohort remains `development_consumed`;
+this adoption adds no fresh-confirmation, generalization, or safety authority.
+
+SEVN and CARLA composite assets also expose component-level selectors through
+the master catalog. For example, consumers resolve
+`datasets/sevn#high-resolution-panoramas`,
+`datasets/sevn#navigation-graph`, or
+`runtime/carla-asset-library#dtr-carla-c4-multimap`. A selector records the
+actual component role and boundary in the usage event while retaining one
+zero-copy physical parent. The tracked semantic profiles are
+`data/asset-profiles/sevn-1.0.json` and
+`data/asset-profiles/carla-0.9.16-local.json`.

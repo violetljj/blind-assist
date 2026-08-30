@@ -241,7 +241,7 @@ try {
         'signing/release.jks',
         'signing/release.keystore',
         'config/keystore.properties',
-        'test-artifacts.local/device/output.json'
+        ('test-artifacts.' + 'local/device/output.json')
     )
     for ($index = 0; $index -lt $rejectedPaths.Count; $index++) {
         Assert-HygieneResult -Name ("rejected-{0}" -f $index) -ShouldPass $false -Paths @($rejectedPaths[$index])

@@ -6,15 +6,29 @@
     "datasets": {
       "asset_kind": "dataset",
       "asset_class": "data",
-      "evidence_status": "unknown",
+      "evidence_status": "source_material",
       "storage_status": "shared",
       "owner": "shared-research",
-      "retention_reason": "Durable source, normalized, or evaluation data"
+      "retention_reason": "Durable source, normalized, or evaluation data",
+      "asset_overrides": {
+        "sevn": {
+          "asset_kind": "route_data",
+          "asset_class": "data",
+          "evidence_status": "development_consumed",
+          "storage_status": "shared",
+          "owner": "l10-r0",
+          "retention_reason": "Zero-copy canonical link to the SEVN 1.0 source payload used by the consumed V1 and address/panorama-disjoint V2 Development panels",
+          "source_uri": "https://zenodo.org/records/3526490",
+          "license_id": "MIT",
+          "semantic_profile": "data/asset-profiles/sevn-1.0.json",
+          "claim_ceiling": "CONSUMED_SAME_SOURCE_SEVN_DEVELOPMENT_INPUT_NO_FRESH_CONFIRMATION_AUTHORITY"
+        }
+      }
     },
     "downloads": {
       "asset_kind": "download",
       "asset_class": "source_payload",
-      "evidence_status": "unknown",
+      "evidence_status": "source_material",
       "storage_status": "unknown",
       "owner": "shared-research",
       "retention_reason": "Downloaded payload pending per-asset provenance and rebuild classification",
@@ -25,7 +39,7 @@
     "models": {
       "asset_kind": "model",
       "asset_class": "model",
-      "evidence_status": "unknown",
+      "evidence_status": "not_applicable",
       "storage_status": "shared",
       "owner": "shared-research",
       "retention_reason": "Reusable model weights, exports, and calibration assets",
@@ -56,7 +70,7 @@
     "sources": {
       "asset_kind": "source",
       "asset_class": "source_payload",
-      "evidence_status": "unknown",
+      "evidence_status": "source_material",
       "storage_status": "shared",
       "owner": "shared-research",
       "retention_reason": "External source snapshots and source-native payloads"
@@ -64,7 +78,7 @@
     "external": {
       "asset_kind": "external",
       "asset_class": "external_dependency",
-      "evidence_status": "unknown",
+      "evidence_status": "not_applicable",
       "storage_status": "shared",
       "owner": "shared-research",
       "retention_reason": "Project-scoped external assets with existing local consumers"
@@ -96,7 +110,7 @@
     "calibration": {
       "asset_kind": "calibration",
       "asset_class": "data",
-      "evidence_status": "unknown",
+      "evidence_status": "source_material",
       "storage_status": "shared",
       "owner": "shared-research",
       "retention_reason": "Sensor and model calibration assets"
@@ -112,7 +126,7 @@
     "providers": {
       "asset_kind": "provider_asset",
       "asset_class": "external_dependency",
-      "evidence_status": "unknown",
+      "evidence_status": "not_applicable",
       "storage_status": "shared",
       "owner": "shared-research",
       "retention_reason": "Provider-local assets and receipts"
@@ -256,7 +270,7 @@
     "phone-captures": {
       "asset_kind": "observation_data",
       "asset_class": "data",
-      "evidence_status": "unknown",
+      "evidence_status": "source_material",
       "storage_status": "active",
       "owner": "device-research",
       "retention_reason": "Phone-captured observations"
@@ -272,7 +286,7 @@
     "quick-measure-captures": {
       "asset_kind": "observation_data",
       "asset_class": "data",
-      "evidence_status": "unknown",
+      "evidence_status": "source_material",
       "storage_status": "active",
       "owner": "device-research",
       "retention_reason": "Quick measurement observations"
@@ -413,6 +427,142 @@
       "owner": "ui-route",
       "retention_reason": "UI design evidence"
     }
+  },
+  "managed_assets": {
+    "runtime/carla-asset-library": {
+      "asset_kind": "simulator_asset_library",
+      "asset_class": "data",
+      "evidence_status": "development_consumed",
+      "storage_status": "shared",
+      "owner": "dtr-r0",
+      "retention_reason": "Reusable CARLA 0.9.16 maps, actor assets, scenario registries, synthetic sensor sources, and their internal authority manifest; mutable sibling runtime roots remain excluded",
+      "source_uri": "https://github.com/carla-simulator/carla/releases/tag/0.9.16",
+      "semantic_profile": "data/asset-profiles/carla-0.9.16-local.json",
+      "claim_ceiling": "COMPOSITE_CONSUMED_SYNTHETIC_CARLA_DEVELOPMENT_ASSET_NO_REAL_WORLD_CONFIRMATION_OR_SAFETY_AUTHORITY"
+    }
+  },
+  "authority_classification": {
+    "schema": "blindassist-evidence-authority-classification-v1",
+    "description": "Fail-closed migration rules for legacy unknown evidence authority. Automatic rules never assign reserved, fresh, or sealed_final.",
+    "current_authority_sources": [
+      "docs/PROJECT_STATE.md",
+      "docs/CURRENT_DECISION.md",
+      "research/active/dtr-r0/README.md",
+      "research/active/l10-r0/README.md"
+    ],
+    "outcome_reference_markers": [
+      "result",
+      "results",
+      "prediction",
+      "predictions",
+      "metric",
+      "metrics",
+      "scorecard",
+      "verdict",
+      "observation",
+      "observations",
+      "provider",
+      "ledger",
+      "ledgers",
+      "receipt",
+      "review",
+      "report",
+      "summary",
+      "terminal"
+    ],
+    "artifact_assertion_text_extensions": [
+      ".json",
+      ".jsonl",
+      ".md",
+      ".txt",
+      ".csv",
+      ".toml",
+      ".yaml",
+      ".yml",
+      ".log"
+    ],
+    "artifact_assertion_max_bytes": 1048576,
+    "protected_authority_tokens": [
+      "sealed_final"
+    ],
+    "current_outcome_reference_rule": {
+      "rule_id": "current-authority-outcome-reference-v1",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "DEVELOPMENT_ONLY_NO_FRESH_CONFIRMATION_AUTHORITY",
+      "reason": "A current authority document directly cites an outcome-bearing locator inside this evidence asset."
+    },
+    "artifact_assertion_rules": [
+      {
+        "rule_id": "artifact-explicit-development-consumed-v1",
+        "evidence_status": "development_consumed",
+        "claim_ceiling": "DEVELOPMENT_ONLY_NO_FRESH_CONFIRMATION_AUTHORITY",
+        "reason": "An outcome/receipt artifact explicitly declares consumed or Development-only authority.",
+        "tokens": [
+          "development_consumed",
+          "development_only",
+          "development-only",
+          "consumed"
+        ]
+      },
+      {
+        "rule_id": "artifact-explicit-diagnostic-only-v1",
+        "evidence_status": "diagnostic",
+        "claim_ceiling": "DIAGNOSTIC_ONLY_NO_FRESH_CONFIRMATION_AUTHORITY",
+        "reason": "An outcome/receipt artifact explicitly declares diagnostic-only authority.",
+        "tokens": [
+          "diagnostic_only",
+          "diagnostic-only"
+        ]
+      }
+    ],
+    "static_type_rules": [
+      {
+        "rule_id": "static-source-material-v1",
+        "asset_classes": [
+          "data",
+          "source_payload"
+        ],
+        "evidence_status": "source_material",
+        "claim_ceiling": "SOURCE_MATERIAL_ONLY_NO_FRESH_OR_CONFIRMATION_AUTHORITY",
+        "reason": "The asset is source/observation material; claim-specific admission and run consumption are separate events."
+      },
+      {
+        "rule_id": "static-not-applicable-v1",
+        "asset_classes": [
+          "model",
+          "external_dependency"
+        ],
+        "evidence_status": "not_applicable",
+        "claim_ceiling": "EVIDENCE_AUTHORITY_NOT_APPLICABLE",
+        "reason": "The asset is a model or external dependency, not an evaluation cohort or outcome-bearing evidence asset."
+      }
+    ],
+    "exact_rules": [
+      {
+        "rule_id": "exact-artvideo-development-input-v1",
+        "locator": "datasets/artvideo-l10-r0",
+        "evidence_status": "development_consumed",
+        "claim_ceiling": "DEVELOPMENT_ONLY_NO_FRESH_CONFIRMATION_AUTHORITY",
+        "reason": "The current L10 authority route records this exact dataset as input to completed cached Development results.",
+        "authority_source": "research/active/l10-r0/README.md",
+        "authority_anchors": [
+          "--dataset artifacts.local/datasets/artvideo-l10-r0",
+          "The cached Development result can be reproduced"
+        ]
+      },
+      {
+        "rule_id": "exact-dtr-r0-jrdb-bridge-consumed-v1",
+        "locator": "datasets/dtr-r0-jrdb-rgb-bridge-v1",
+        "evidence_status": "development_consumed",
+        "claim_ceiling": "DEVELOPMENT_ONLY_NO_FRESH_CONFIRMATION_AUTHORITY",
+        "reason": "The current DTR authority route records this exact source pack as input to the completed consumed M1/C1 chain.",
+        "authority_source": "research/active/dtr-r0/README.md",
+        "authority_anchors": [
+          "--labels-zip artifacts.local/datasets/dtr-r0-jrdb-rgb-bridge-v1/train_labels.zip",
+          "DTR_M1_O_POINT_VELOCITY_ORACLE_CEILING_NOT_MET_CLOSE_SCENE_FLOW_ROUTE"
+        ]
+      }
+    ]
   },
   "excluded_roots": {
     "cache": "Mutable cache; catalog its durable producer inputs instead",

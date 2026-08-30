@@ -27,7 +27,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 3
 DEFAULT_REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_ARTIFACT_ROOT = DEFAULT_REPO_ROOT / "artifacts.local"
 DEFAULT_POLICY_PATH = DEFAULT_REPO_ROOT / "data" / "asset-management-policy.json"
@@ -39,7 +39,15 @@ VALID_EVIDENCE_STATUSES = {
     "development_consumed",
     "sealed_final",
     "diagnostic",
+    "source_material",
+    "not_applicable",
     "unknown",
+}
+AUTOMATIC_AUTHORITY_STATUSES = {
+    "development_consumed",
+    "diagnostic",
+    "source_material",
+    "not_applicable",
 }
 VALID_STORAGE_STATUSES = {
     "active",
@@ -165,7 +173,29 @@ def load_policy(path: Path) -> dict[str, Any]:
         raise CatalogError(f"Unsupported asset policy schema: {policy.get('schema')}")
     for name, rule in policy.get("roots", {}).items():
         validate_rule(name, rule)
+        overrides = rule.get("asset_overrides", {})
+        if not isinstance(overrides, dict):
+            raise CatalogError(f"Policy rule {name} asset_overrides must be an object")
+        for child_name, child_rule in overrides.items():
+            if (
+                not isinstance(child_name, str)
+                or not child_name
+                or "/" in child_name
+                or "\\" in child_name
+                or child_name in {".", ".."}
+            ):
+                raise CatalogError(
+                    f"Policy rule {name} has invalid direct-child override {child_name!r}"
+                )
+            validate_rule(f"{name}/asset_overrides/{child_name}", child_rule)
+    managed_assets = policy.get("managed_assets", {})
+    if not isinstance(managed_assets, dict):
+        raise CatalogError("managed_assets must be an object keyed by locator")
+    for locator, rule in managed_assets.items():
+        normalize_locator(locator)
+        validate_rule(f"managed_assets/{locator}", rule)
     validate_rule("fallback", policy.get("fallback", {}))
+    validate_authority_classification(policy.get("authority_classification"))
     return policy
 
 
@@ -185,6 +215,94 @@ def validate_rule(name: str, rule: dict[str, Any]) -> None:
         raise CatalogError(f"Invalid evidence status in policy rule {name}")
     if rule["storage_status"] not in VALID_STORAGE_STATUSES:
         raise CatalogError(f"Invalid storage status in policy rule {name}")
+    semantic_profile = rule.get("semantic_profile")
+    if semantic_profile is not None and (
+        not isinstance(semantic_profile, str) or not semantic_profile.strip()
+    ):
+        raise CatalogError(
+            f"Policy rule {name} semantic_profile must be a repository-relative path"
+        )
+
+
+def validate_authority_classification(config: Any) -> None:
+    if config is None:
+        return
+    if not isinstance(config, dict):
+        raise CatalogError("authority_classification must be an object")
+    if config.get("schema") != "blindassist-evidence-authority-classification-v1":
+        raise CatalogError(
+            "Unsupported authority classification schema: "
+            f"{config.get('schema')}"
+        )
+    sources = config.get("current_authority_sources", [])
+    if not isinstance(sources, list) or not all(
+        isinstance(item, str) and item for item in sources
+    ):
+        raise CatalogError("current_authority_sources must be a list of paths")
+    markers = config.get("outcome_reference_markers", [])
+    if not isinstance(markers, list) or not all(
+        isinstance(item, str) and item for item in markers
+    ):
+        raise CatalogError("outcome_reference_markers must be a list of tokens")
+    for collection_name in (
+        "static_type_rules",
+        "artifact_assertion_rules",
+        "exact_rules",
+    ):
+        rules = config.get(collection_name, [])
+        if not isinstance(rules, list):
+            raise CatalogError(f"{collection_name} must be a list")
+        seen: set[str] = set()
+        for rule in rules:
+            if not isinstance(rule, dict):
+                raise CatalogError(f"{collection_name} entries must be objects")
+            rule_id = rule.get("rule_id")
+            if not isinstance(rule_id, str) or not rule_id or rule_id in seen:
+                raise CatalogError(f"Invalid or duplicate rule_id in {collection_name}")
+            seen.add(rule_id)
+            status = rule.get("evidence_status")
+            if status not in AUTOMATIC_AUTHORITY_STATUSES:
+                raise CatalogError(
+                    f"Automatic authority rule {rule_id} cannot assign {status!r}; "
+                    "reserved, fresh, and sealed_final require explicit manual authority"
+                )
+            for required in ("reason", "claim_ceiling"):
+                if not isinstance(rule.get(required), str) or not rule[required]:
+                    raise CatalogError(
+                        f"Authority rule {rule_id} requires non-empty {required}"
+                    )
+            if collection_name == "static_type_rules":
+                selectors = (
+                    "root_names",
+                    "asset_kinds",
+                    "asset_classes",
+                    "entry_types",
+                )
+                if not any(rule.get(name) for name in selectors):
+                    raise CatalogError(
+                        f"Static authority rule {rule_id} needs at least one selector"
+                    )
+            elif collection_name == "artifact_assertion_rules":
+                tokens = rule.get("tokens", [])
+                if not isinstance(tokens, list) or not all(
+                    isinstance(item, str) and item for item in tokens
+                ):
+                    raise CatalogError(
+                        f"Artifact assertion rule {rule_id} needs token strings"
+                    )
+            else:
+                for required in ("locator", "authority_source", "authority_anchors"):
+                    if required not in rule:
+                        raise CatalogError(
+                            f"Exact authority rule {rule_id} is missing {required}"
+                        )
+                anchors = rule["authority_anchors"]
+                if not isinstance(anchors, list) or not all(
+                    isinstance(item, str) and item for item in anchors
+                ):
+                    raise CatalogError(
+                        f"Exact authority rule {rule_id} needs authority_anchors"
+                    )
 
 
 SCHEMA_SQL = """
@@ -271,6 +389,49 @@ CREATE TABLE IF NOT EXISTS asset_files (
 CREATE INDEX IF NOT EXISTS asset_files_size_index ON asset_files(bytes);
 CREATE INDEX IF NOT EXISTS asset_files_hash_index ON asset_files(sha256);
 
+CREATE TABLE IF NOT EXISTS asset_semantic_profiles (
+    asset_id TEXT PRIMARY KEY REFERENCES assets(asset_id) ON DELETE CASCADE,
+    profile_id TEXT NOT NULL UNIQUE,
+    profile_path TEXT NOT NULL,
+    profile_sha256 TEXT NOT NULL,
+    title TEXT NOT NULL,
+    summary TEXT NOT NULL,
+    facts_json TEXT NOT NULL,
+    last_scan_id TEXT NOT NULL,
+    last_seen_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS asset_components (
+    component_id TEXT PRIMARY KEY,
+    asset_id TEXT NOT NULL REFERENCES assets(asset_id) ON DELETE CASCADE,
+    component_key TEXT NOT NULL,
+    logical_name TEXT NOT NULL,
+    relative_path TEXT NOT NULL,
+    component_kind TEXT NOT NULL,
+    data_role TEXT NOT NULL,
+    entry_type TEXT NOT NULL,
+    state TEXT NOT NULL,
+    bytes INTEGER NOT NULL,
+    file_count INTEGER NOT NULL,
+    metadata_sha256 TEXT NOT NULL,
+    content_id TEXT,
+    identity_strength TEXT NOT NULL,
+    evidence_status TEXT NOT NULL,
+    claim_ceiling TEXT NOT NULL,
+    description TEXT NOT NULL,
+    facts_json TEXT NOT NULL,
+    profile_sha256 TEXT NOT NULL,
+    last_scan_id TEXT NOT NULL,
+    UNIQUE(asset_id, component_key)
+);
+
+CREATE INDEX IF NOT EXISTS asset_component_asset_index
+ON asset_components(asset_id, component_key);
+CREATE INDEX IF NOT EXISTS asset_component_kind_index
+ON asset_components(component_kind, data_role);
+CREATE INDEX IF NOT EXISTS asset_component_content_index
+ON asset_components(content_id);
+
 CREATE TABLE IF NOT EXISTS usage_events (
     event_id TEXT PRIMARY KEY,
     asset_id TEXT NOT NULL REFERENCES assets(asset_id),
@@ -312,6 +473,24 @@ CREATE TABLE IF NOT EXISTS lifecycle_events (
 );
 
 CREATE INDEX IF NOT EXISTS lifecycle_asset_index ON lifecycle_events(asset_id, recorded_at);
+
+CREATE TABLE IF NOT EXISTS authority_classifications (
+    classification_id TEXT PRIMARY KEY,
+    asset_id TEXT NOT NULL REFERENCES assets(asset_id),
+    prior_evidence_status TEXT NOT NULL,
+    assigned_evidence_status TEXT NOT NULL,
+    rule_id TEXT NOT NULL,
+    source TEXT NOT NULL,
+    reason TEXT NOT NULL,
+    evidence_json TEXT NOT NULL,
+    policy_sha256 TEXT NOT NULL,
+    applied_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS authority_classification_asset_index
+ON authority_classifications(asset_id, applied_at);
+CREATE INDEX IF NOT EXISTS authority_classification_rule_index
+ON authority_classifications(rule_id, applied_at);
 
 CREATE TABLE IF NOT EXISTS derivations (
     derivation_id TEXT PRIMARY KEY,
@@ -550,6 +729,8 @@ def discovered_record(
     scan: dict[str, Any],
     scan_id: str,
     now: str,
+    *,
+    discovery: str = "zero-copy",
 ) -> dict[str, Any]:
     return {
         "asset_id": asset_id_for_locator(locator),
@@ -579,7 +760,7 @@ def discovered_record(
         "last_scan_id": scan_id,
         "metadata_json": json.dumps(
             {
-                "discovery": "zero-copy",
+                "discovery": discovery,
                 "vanished_entries": scan["vanished_entries"],
                 "reparse_entries": scan["reparse_entries"],
             },
@@ -587,6 +768,255 @@ def discovered_record(
             sort_keys=True,
         ),
     }
+
+
+def normalize_component_path(value: str) -> str:
+    normalized = value.replace("\\", "/").strip("/")
+    if normalized in {"", "."}:
+        return "."
+    if re.match(r"^[A-Za-z]:", normalized) or normalized.startswith("/"):
+        raise CatalogError(f"Semantic component path must be relative: {value}")
+    if any(part in {"", ".", ".."} for part in normalized.split("/")):
+        raise CatalogError(f"Invalid semantic component path: {value}")
+    return normalized
+
+
+def sync_semantic_profile(
+    connection: sqlite3.Connection,
+    *,
+    record: dict[str, Any],
+    scan: dict[str, Any],
+    rule: dict[str, Any],
+    asset_path: Path,
+    repo_root: Path,
+    scan_id: str,
+    now: str,
+) -> int:
+    profile_reference = rule.get("semantic_profile")
+    if profile_reference is None:
+        connection.execute(
+            "DELETE FROM asset_components WHERE asset_id = ?",
+            (record["asset_id"],),
+        )
+        connection.execute(
+            "DELETE FROM asset_semantic_profiles WHERE asset_id = ?",
+            (record["asset_id"],),
+        )
+        return 0
+
+    repository = repo_root.resolve()
+    profile_path = (repository / profile_reference).resolve()
+    try:
+        relative_profile = profile_path.relative_to(repository).as_posix()
+    except ValueError as exc:
+        raise CatalogError(
+            f"Semantic profile escapes repository: {profile_reference}"
+        ) from exc
+    profile = read_json(profile_path)
+    if not isinstance(profile, dict) or profile.get("schema") != "blindassist-asset-semantic-profile-v1":
+        raise CatalogError(
+            f"Unsupported semantic profile schema in {relative_profile}: "
+            f"{profile.get('schema') if isinstance(profile, dict) else type(profile).__name__}"
+        )
+    for required in ("profile_id", "asset_locator", "title", "summary", "components"):
+        if required not in profile:
+            raise CatalogError(f"Semantic profile {relative_profile} is missing {required}")
+    if normalize_locator(str(profile["asset_locator"])) != record["locator"]:
+        raise CatalogError(
+            f"Semantic profile locator mismatch: {relative_profile} targets "
+            f"{profile['asset_locator']!r}, discovered {record['locator']!r}"
+        )
+    if not all(
+        isinstance(profile.get(name), str) and profile[name]
+        for name in ("profile_id", "title", "summary")
+    ):
+        raise CatalogError(f"Semantic profile {relative_profile} has empty identity fields")
+    components = profile["components"]
+    if not isinstance(components, list) or not components:
+        raise CatalogError(f"Semantic profile {relative_profile} needs components")
+
+    profile_sha256 = sha256_file(profile_path)
+    asset_resolved = asset_path.resolve()
+    component_rows: list[tuple[Any, ...]] = []
+    seen_keys: set[str] = set()
+    for component in components:
+        if not isinstance(component, dict):
+            raise CatalogError(f"Semantic profile {relative_profile} has a non-object component")
+        component_key = component.get("component_key")
+        if (
+            not isinstance(component_key, str)
+            or not re.fullmatch(r"[a-z0-9][a-z0-9._-]*", component_key)
+            or component_key in seen_keys
+        ):
+            raise CatalogError(
+                f"Semantic profile {relative_profile} has invalid or duplicate component_key "
+                f"{component_key!r}"
+            )
+        seen_keys.add(component_key)
+        for required in (
+            "path",
+            "component_kind",
+            "data_role",
+            "evidence_status",
+            "claim_ceiling",
+            "description",
+        ):
+            if not isinstance(component.get(required), str) or not component[required]:
+                raise CatalogError(
+                    f"Semantic component {component_key} requires non-empty {required}"
+                )
+        evidence_status = component["evidence_status"]
+        if evidence_status not in AUTOMATIC_AUTHORITY_STATUSES:
+            raise CatalogError(
+                f"Semantic profile component {component_key} cannot grant protected "
+                f"evidence status {evidence_status!r}"
+            )
+        facts = component.get("facts", {})
+        if not isinstance(facts, dict):
+            raise CatalogError(f"Semantic component {component_key} facts must be an object")
+        relative_path = normalize_component_path(component["path"])
+        component_path = (
+            asset_resolved
+            if relative_path == "."
+            else asset_resolved.joinpath(*relative_path.split("/")).resolve()
+        )
+        try:
+            component_path.relative_to(asset_resolved)
+        except ValueError as exc:
+            raise CatalogError(
+                f"Semantic component escapes asset {record['locator']}: {relative_path}"
+            ) from exc
+        required_component = bool(component.get("required", True))
+        present = component_path.exists()
+        if required_component and not present:
+            raise CatalogError(
+                f"Required semantic component is missing: {record['locator']}#{component_key} "
+                f"path={relative_path}"
+            )
+        entry_type = (
+            "file" if present and component_path.is_file()
+            else "directory" if present and component_path.is_dir()
+            else "missing"
+        )
+        prefix = "" if relative_path == "." else relative_path.rstrip("/") + "/"
+        matched_entries: list[dict[str, Any]] = []
+        for item in scan["entries"]:
+            item_path = item["relative_path"]
+            if relative_path == ".":
+                component_relative = item_path
+            elif item_path.casefold() == relative_path.casefold():
+                component_relative = "."
+            elif item_path.casefold().startswith(prefix.casefold()):
+                component_relative = item_path[len(prefix):]
+            else:
+                continue
+            matched_entries.append({**item, "component_relative_path": component_relative})
+        if present and entry_type == "file" and len(matched_entries) != 1:
+            raise CatalogError(
+                f"Semantic file component is absent from asset inventory: "
+                f"{record['locator']}#{component_key}"
+            )
+        fingerprint = hashlib.sha256()
+        fingerprint.update(b"blindassist-component-metadata-v1\0")
+        for item in matched_entries:
+            fingerprint.update(item["component_relative_path"].encode("utf-8"))
+            fingerprint.update(b"\0")
+            fingerprint.update(str(item["bytes"]).encode("ascii"))
+            fingerprint.update(b"\0")
+            fingerprint.update(str(item.get("mtime_ns", 0)).encode("ascii"))
+            fingerprint.update(b"\n")
+        content_id = None
+        if matched_entries and all(item.get("sha256") for item in matched_entries):
+            if entry_type == "file":
+                content_id = f"sha256:{matched_entries[0]['sha256']}"
+            else:
+                content_id = "tree-sha256:" + sha256_bytes(
+                    canonical_json_bytes(
+                        {
+                            "algorithm": "blindassist-tree-sha256-v1",
+                            "files": [
+                                {
+                                    "path": item["component_relative_path"],
+                                    "bytes": item["bytes"],
+                                    "sha256": item["sha256"],
+                                }
+                                for item in matched_entries
+                            ],
+                        }
+                    )
+                )
+        component_id = f"{record['asset_id']}#component:{component_key}"
+        component_rows.append(
+            (
+                component_id,
+                record["asset_id"],
+                component_key,
+                component.get("logical_name", component_key),
+                relative_path,
+                component["component_kind"],
+                component["data_role"],
+                entry_type,
+                "present" if present else "missing",
+                sum(int(item["bytes"]) for item in matched_entries),
+                len(matched_entries),
+                fingerprint.hexdigest(),
+                content_id,
+                "content" if content_id else "metadata",
+                evidence_status,
+                component["claim_ceiling"],
+                component["description"],
+                json.dumps(facts, ensure_ascii=False, sort_keys=True),
+                profile_sha256,
+                scan_id,
+            )
+        )
+
+    profile_facts = {
+        key: value
+        for key, value in profile.items()
+        if key not in {"schema", "profile_id", "asset_locator", "title", "summary", "components"}
+    }
+    connection.execute("DELETE FROM asset_components WHERE asset_id = ?", (record["asset_id"],))
+    connection.execute(
+        """
+        INSERT INTO asset_semantic_profiles(
+            asset_id, profile_id, profile_path, profile_sha256, title,
+            summary, facts_json, last_scan_id, last_seen_at
+        ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(asset_id) DO UPDATE SET
+            profile_id=excluded.profile_id,
+            profile_path=excluded.profile_path,
+            profile_sha256=excluded.profile_sha256,
+            title=excluded.title,
+            summary=excluded.summary,
+            facts_json=excluded.facts_json,
+            last_scan_id=excluded.last_scan_id,
+            last_seen_at=excluded.last_seen_at
+        """,
+        (
+            record["asset_id"],
+            profile["profile_id"],
+            relative_profile,
+            profile_sha256,
+            profile["title"],
+            profile["summary"],
+            json.dumps(profile_facts, ensure_ascii=False, sort_keys=True),
+            scan_id,
+            now,
+        ),
+    )
+    connection.executemany(
+        """
+        INSERT INTO asset_components(
+            component_id, asset_id, component_key, logical_name, relative_path,
+            component_kind, data_role, entry_type, state, bytes, file_count,
+            metadata_sha256, content_id, identity_strength, evidence_status,
+            claim_ceiling, description, facts_json, profile_sha256, last_scan_id
+        ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        component_rows,
+    )
+    return len(component_rows)
 
 
 def upsert_root(
@@ -806,6 +1236,58 @@ def resolve_asset(connection: sqlite3.Connection, key: str) -> sqlite3.Row:
     return equally_ranked[0]
 
 
+def resolve_asset_target(
+    connection: sqlite3.Connection, key: str
+) -> tuple[sqlite3.Row, sqlite3.Row | None]:
+    if "#" not in key:
+        return resolve_asset(connection, key), None
+    asset_key, component_key = key.rsplit("#", 1)
+    if not asset_key or not component_key:
+        raise CatalogError(f"Invalid semantic component key: {key}")
+    asset = resolve_asset(connection, asset_key)
+    component = connection.execute(
+        """
+        SELECT * FROM asset_components
+        WHERE asset_id = ? AND component_key = ?
+        """,
+        (asset["asset_id"], component_key),
+    ).fetchone()
+    if component is None:
+        choices = [
+            row["component_key"]
+            for row in connection.execute(
+                """
+                SELECT component_key FROM asset_components
+                WHERE asset_id = ? ORDER BY component_key LIMIT 30
+                """,
+                (asset["asset_id"],),
+            )
+        ]
+        raise CatalogError(
+            f"Semantic component not found: {key}; available components: {choices}"
+        )
+    return asset, component
+
+
+def component_usage_metadata(
+    component: sqlite3.Row | None, metadata: Any
+) -> dict[str, Any]:
+    if not isinstance(metadata, dict):
+        raise CatalogError("Usage metadata must be a JSON object")
+    if component is None:
+        return metadata
+    return {
+        **metadata,
+        "semantic_component": {
+            "component_id": component["component_id"],
+            "component_key": component["component_key"],
+            "component_kind": component["component_kind"],
+            "data_role": component["data_role"],
+            "relative_path": component["relative_path"],
+        },
+    }
+
+
 REFERENCE_EXTENSIONS = {
     ".bat",
     ".cmd",
@@ -824,7 +1306,7 @@ REFERENCE_EXTENSIONS = {
     ".yml",
 }
 ARTIFACT_REFERENCE_PATTERN = re.compile(
-    r"artifacts\.local[\\/][^\s'\"`<>(){}\[\],;]+",
+    r"(?:test-)?artifacts\.local[\\/][^\s'\"`<>(){}\[\],;]+",
     re.IGNORECASE,
 )
 
@@ -877,9 +1359,14 @@ def import_repository_references(
         key=lambda item: len(item[0]),
         reverse=True,
     )
-    root_names = {
+    root_rows = connection.execute(
+        "SELECT root_name, disposition FROM roots"
+    ).fetchall()
+    root_names = {row["root_name"] for row in root_rows}
+    excluded_roots = {
         row["root_name"]
-        for row in connection.execute("SELECT root_name FROM roots")
+        for row in root_rows
+        if row["disposition"] == "excluded"
     }
     observations: list[
         tuple[str, str | None, str | None, str, int, str, str, str, str]
@@ -894,11 +1381,19 @@ def import_repository_references(
         for line_number, line in enumerate(text.splitlines(), start=1):
             for occurrence, match in enumerate(ARTIFACT_REFERENCE_PATTERN.finditer(line)):
                 raw = match.group(0).rstrip(".:")
-                marker_index = raw.casefold().index("artifacts.local")
-                locator = raw[marker_index + len("artifacts.local"):].lstrip("\\/")
-                locator = locator.replace("\\", "/").strip("/")
-                if not locator:
+                marker = (
+                    "test-artifacts.local"
+                    if raw.casefold().startswith("test-artifacts.local")
+                    else "artifacts.local"
+                )
+                marker_index = raw.casefold().index(marker)
+                raw_locator = raw[marker_index + len(marker):].lstrip("\\/")
+                raw_locator = raw_locator.replace("\\", "/").strip("/")
+                if not raw_locator:
                     continue
+                locator = re.sub(r"/+", "/", raw_locator)
+                if marker == "test-artifacts.local":
+                    locator = f"evidence/{locator}"
                 asset_id = None
                 locator_folded = locator.casefold()
                 for candidate, candidate_id in locator_rows:
@@ -928,6 +1423,11 @@ def import_repository_references(
                     resolution = "root"
                 elif known_root and locator == known_root:
                     resolution = "root"
+                elif (
+                    known_root in excluded_roots
+                    and (artifact_root / Path(locator)).exists()
+                ):
+                    resolution = "root"
                 elif known_root:
                     resolution = "missing_within_root"
                 else:
@@ -937,7 +1437,7 @@ def import_repository_references(
                         "source_file": source_file,
                         "line": line_number,
                         "occurrence": occurrence,
-                        "locator": locator,
+                        "locator": raw_locator,
                     }
                 )
                 reference_id = f"reference:{sha256_bytes(identity)}"
@@ -948,7 +1448,7 @@ def import_repository_references(
                         known_root,
                         source_file,
                         line_number,
-                        locator,
+                        raw_locator,
                         resolution,
                         scan_id,
                         now,
@@ -1000,6 +1500,10 @@ def sync_resource_fabric(
         return {"resources": 0, "caches": 0, "uses": 0, "derivations": 0}
 
     registrations = fabric_records(fabric, "catalog/registrations")
+    cache_accesses = fabric_records(fabric, "catalog/accesses")
+    accesses_by_cache: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for access in cache_accesses:
+        accesses_by_cache[access.get("cache_key", "")].append(access)
     registration_by_resource: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for registration in registrations:
         registration_by_resource[registration.get("resource_id", "")].append(registration)
@@ -1185,6 +1689,28 @@ def sync_resource_fabric(
                 (derivation_id, input_id),
             )
         derivations_count += 1
+        for access in accesses_by_cache.get(cache_key, []):
+            consumer = access.get("consumer")
+            event_id = access.get("event_id")
+            if not consumer or not event_id:
+                continue
+            record_usage(
+                connection,
+                asset_id=asset_id,
+                consumer=consumer,
+                purpose=access.get("purpose", "shared-cache-input"),
+                experiment_id=access.get("experiment_id"),
+                access_mode="cache_hit",
+                evidence_effect="none",
+                metadata={
+                    "source": "resource-fabric-cache-access",
+                    "payload_bytes": int(access.get("payload_bytes", 0)),
+                },
+                event_id=f"fabric-cache-access:{cache_key}:{event_id}",
+                recorded_at=access.get("recorded_at"),
+                ignore_existing=True,
+            )
+            uses += 1
 
     experiment_root = fabric / "experiments"
     if experiment_root.exists():
@@ -1272,6 +1798,8 @@ def discover_command(args: argparse.Namespace) -> dict[str, Any]:
     bytes_seen = 0
     vanished_total = 0
     reparse_total = 0
+    managed_assets_seen = 0
+    semantic_components_seen = 0
     errors: list[dict[str, str]] = []
     scanned_roots: set[str] = set()
     top_level_file_assets: list[Path] = []
@@ -1406,9 +1934,29 @@ def discover_command(args: argparse.Namespace) -> dict[str, Any]:
                         continue
                     scan = scan_asset(child_path)
                     locator = locator_for_path(child_path, artifact_root)
-                    record = discovered_record(locator, root_name, rule, scan, scan_id, now)
+                    child_rule = next(
+                        (
+                            override
+                            for name, override in rule.get("asset_overrides", {}).items()
+                            if name.casefold() == child.name.casefold()
+                        ),
+                        rule,
+                    )
+                    record = discovered_record(
+                        locator, root_name, child_rule, scan, scan_id, now
+                    )
                     with connection:
                         upsert_asset(connection, record, scan["entries"])
+                        semantic_components_seen += sync_semantic_profile(
+                            connection,
+                            record=record,
+                            scan=scan,
+                            rule=child_rule,
+                            asset_path=child_path,
+                            repo_root=args.repo_root.resolve(),
+                            scan_id=scan_id,
+                            now=now,
+                        )
                     root_assets += 1
                     root_files += scan["file_count"]
                     root_bytes += scan["bytes"]
@@ -1487,6 +2035,72 @@ def discover_command(args: argparse.Namespace) -> dict[str, Any]:
                 now=now,
             )
 
+        # A stable asset may deliberately live below an otherwise excluded root.
+        # Exact policy locators let us govern that asset without opening mutable
+        # siblings such as runtime caches, environments, or process state.
+        for locator, rule in sorted(
+            policy.get("managed_assets", {}).items(),
+            key=lambda item: item[0].casefold(),
+        ):
+            normalized = normalize_locator(locator)
+            path = path_for_locator(normalized, artifact_root)
+            asset_id = asset_id_for_locator(normalized)
+            if not path.exists():
+                connection.execute(
+                    "UPDATE assets SET state = 'missing' WHERE asset_id = ?",
+                    (asset_id,),
+                )
+                connection.execute(
+                    "DELETE FROM asset_components WHERE asset_id = ?",
+                    (asset_id,),
+                )
+                connection.execute(
+                    "DELETE FROM asset_semantic_profiles WHERE asset_id = ?",
+                    (asset_id,),
+                )
+                continue
+            try:
+                if is_reparse_point(path):
+                    raise CatalogError(
+                        f"Managed asset cannot be a reparse point: {normalized}"
+                    )
+                scan = scan_asset(path)
+                record = discovered_record(
+                    normalized,
+                    normalized.split("/", 1)[0],
+                    rule,
+                    scan,
+                    scan_id,
+                    now,
+                    discovery="policy-managed-excluded-root",
+                )
+                with connection:
+                    upsert_asset(connection, record, scan["entries"])
+                    semantic_components_seen += sync_semantic_profile(
+                        connection,
+                        record=record,
+                        scan=scan,
+                        rule=rule,
+                        asset_path=path,
+                        repo_root=args.repo_root.resolve(),
+                        scan_id=scan_id,
+                        now=now,
+                    )
+                assets_seen += 1
+                managed_assets_seen += 1
+                files_seen += scan["file_count"]
+                bytes_seen += scan["bytes"]
+                vanished_total += scan["vanished_entries"]
+                reparse_total += scan["reparse_entries"]
+                print(
+                    f"[asset-catalog] managed asset={normalized} "
+                    f"files={scan['file_count']} bytes={scan['bytes']}",
+                    file=sys.stderr,
+                    flush=True,
+                )
+            except (CatalogError, OSError) as exc:
+                errors.append({"locator": normalized, "error": str(exc)})
+
         if scanned_roots:
             placeholders = ",".join("?" for _ in scanned_roots)
             connection.execute(
@@ -1531,6 +2145,8 @@ def discover_command(args: argparse.Namespace) -> dict[str, Any]:
             "assets_seen": assets_seen,
             "files_seen": files_seen,
             "bytes_seen": bytes_seen,
+            "managed_assets_seen": managed_assets_seen,
+            "semantic_components_seen": semantic_components_seen,
             "vanished_entries": vanished_total,
             "reparse_entries": reparse_total,
             "errors": errors,
@@ -1636,13 +2252,61 @@ def list_command(args: argparse.Namespace) -> dict[str, Any]:
         connection.close()
 
 
-def resolve_command(args: argparse.Namespace) -> dict[str, Any]:
+def components_command(args: argparse.Namespace) -> dict[str, Any]:
     connection = open_catalog(args.database.resolve())
     try:
         asset = resolve_asset(connection, args.key)
+        profile = connection.execute(
+            "SELECT * FROM asset_semantic_profiles WHERE asset_id = ?",
+            (asset["asset_id"],),
+        ).fetchone()
+        if profile is None:
+            raise CatalogError(f"Asset has no semantic profile: {asset['locator']}")
+        components = connection.execute(
+            """
+            SELECT component_id, component_key, logical_name, relative_path,
+                   component_kind, data_role, entry_type, state, bytes,
+                   file_count, content_id, identity_strength, evidence_status,
+                   claim_ceiling, description, facts_json
+            FROM asset_components WHERE asset_id = ?
+            ORDER BY component_kind, component_key
+            """,
+            (asset["asset_id"],),
+        ).fetchall()
+        return {
+            "asset_id": asset["asset_id"],
+            "locator": asset["locator"],
+            "profile": {
+                "profile_id": profile["profile_id"],
+                "profile_path": profile["profile_path"],
+                "profile_sha256": profile["profile_sha256"],
+                "title": profile["title"],
+                "summary": profile["summary"],
+                "facts": json.loads(profile["facts_json"]),
+            },
+            "components": [
+                {**dict(row), "facts": json.loads(row["facts_json"])}
+                for row in components
+            ],
+        }
+    finally:
+        connection.close()
+
+
+def resolve_command(args: argparse.Namespace) -> dict[str, Any]:
+    connection = open_catalog(args.database.resolve())
+    try:
+        asset, component = resolve_asset_target(connection, args.key)
         if asset["state"] != "present" and not args.allow_missing:
             raise CatalogError(f"Asset is not present: {asset['locator']} state={asset['state']}")
         path = path_for_locator(asset["locator"], args.artifact_root.resolve())
+        if component is not None:
+            if component["state"] != "present" and not args.allow_missing:
+                raise CatalogError(
+                    f"Semantic component is not present: {args.key} state={component['state']}"
+                )
+            if component["relative_path"] != ".":
+                path = path.joinpath(*component["relative_path"].split("/"))
         if not path.exists() and not args.allow_missing:
             raise CatalogError(f"Asset locator is missing: {path}")
         event_id = None
@@ -1658,21 +2322,41 @@ def resolve_command(args: argparse.Namespace) -> dict[str, Any]:
                     experiment_id=args.experiment_id,
                     access_mode=args.access_mode,
                     evidence_effect=args.evidence_effect,
-                    metadata=parse_json(args.metadata_json, default={}),
+                    metadata=component_usage_metadata(
+                        component, parse_json(args.metadata_json, default={})
+                    ),
                 )
             asset = resolve_asset(connection, asset["asset_id"])
-        return {
+        result = {
             "asset_id": asset["asset_id"],
             "logical_name": asset["logical_name"],
             "locator": asset["locator"],
             "path": str(path),
-            "content_id": asset["content_id"],
-            "identity_strength": asset["identity_strength"],
-            "evidence_status": asset["evidence_status"],
+            "content_id": component["content_id"] if component is not None else asset["content_id"],
+            "identity_strength": (
+                component["identity_strength"] if component is not None
+                else asset["identity_strength"]
+            ),
+            "evidence_status": (
+                component["evidence_status"] if component is not None
+                else asset["evidence_status"]
+            ),
             "storage_status": asset["storage_status"],
-            "claim_ceiling": asset["claim_ceiling"],
+            "claim_ceiling": (
+                component["claim_ceiling"] if component is not None
+                else asset["claim_ceiling"]
+            ),
             "usage_event_id": event_id,
         }
+        if component is not None:
+            result["component"] = {
+                "component_id": component["component_id"],
+                "component_key": component["component_key"],
+                "logical_name": component["logical_name"],
+                "component_kind": component["component_kind"],
+                "data_role": component["data_role"],
+            }
+        return result
     finally:
         connection.close()
 
@@ -1680,7 +2364,7 @@ def resolve_command(args: argparse.Namespace) -> dict[str, Any]:
 def consume_command(args: argparse.Namespace) -> dict[str, Any]:
     connection = open_catalog(args.database.resolve())
     try:
-        asset = resolve_asset(connection, args.key)
+        asset, component = resolve_asset_target(connection, args.key)
         with connection:
             event_id = record_usage(
                 connection,
@@ -1690,13 +2374,16 @@ def consume_command(args: argparse.Namespace) -> dict[str, Any]:
                 experiment_id=args.experiment_id,
                 access_mode=args.access_mode,
                 evidence_effect=args.evidence_effect,
-                metadata=parse_json(args.metadata_json, default={}),
+                metadata=component_usage_metadata(
+                    component, parse_json(args.metadata_json, default={})
+                ),
                 event_id=args.event_id,
             )
         updated = resolve_asset(connection, asset["asset_id"])
         return {
             "event_id": event_id,
             "asset_id": asset["asset_id"],
+            "component_key": component["component_key"] if component is not None else None,
             "evidence_status": updated["evidence_status"],
             "storage_status": updated["storage_status"],
         }
@@ -1725,6 +2412,528 @@ def transition_command(args: argparse.Namespace) -> dict[str, Any]:
             "evidence_status": updated["evidence_status"],
             "storage_status": updated["storage_status"],
             "claim_ceiling": updated["claim_ceiling"],
+        }
+    finally:
+        connection.close()
+
+
+def authority_queue_reason(asset: sqlite3.Row) -> tuple[str, str]:
+    if int(asset["file_count"]) == 0:
+        return (
+            "empty_asset_no_authority_evidence",
+            "The catalog unit is empty, so it has no inspectable authority assertion.",
+        )
+    if asset["asset_class"] == "evidence":
+        return (
+            "evidence_authority_not_cited_or_asserted",
+            "No current authority outcome reference or explicit consumed/diagnostic assertion was found.",
+        )
+    if asset["asset_class"] in {"archive", "legacy_unclassified"}:
+        return (
+            "legacy_authority_requires_manual_adjudication",
+            "Legacy/archive contents need an owner and an explicit authority decision.",
+        )
+    return (
+        "no_matching_auditable_authority_rule",
+        "No high-confidence static type, current authority reference, or artifact assertion matched.",
+    )
+
+
+def build_authority_queue(
+    connection: sqlite3.Connection,
+    *,
+    exclude_asset_ids: set[str] | None = None,
+) -> dict[str, Any]:
+    excluded = exclude_asset_ids or set()
+    rows = connection.execute(
+        """
+        SELECT asset_id, locator, root_name, asset_kind, asset_class,
+               entry_type, bytes, file_count, owner, claim_ceiling
+        FROM assets
+        WHERE state = 'present' AND evidence_status = 'unknown'
+        ORDER BY locator
+        """
+    ).fetchall()
+    groups: dict[str, dict[str, Any]] = {}
+    assets: list[dict[str, Any]] = []
+    for asset in rows:
+        if asset["asset_id"] in excluded:
+            continue
+        reason_code, reason = authority_queue_reason(asset)
+        item = dict(asset)
+        item["reason_code"] = reason_code
+        item["reason"] = reason
+        assets.append(item)
+        group = groups.setdefault(
+            reason_code,
+            {
+                "reason": reason,
+                "assets": 0,
+                "bytes": 0,
+                "files": 0,
+                "locators": [],
+            },
+        )
+        group["assets"] += 1
+        group["bytes"] += int(asset["bytes"])
+        group["files"] += int(asset["file_count"])
+        group["locators"].append(asset["locator"])
+    return {
+        "assets": len(assets),
+        "bytes": sum(int(item["bytes"]) for item in assets),
+        "files": sum(int(item["file_count"]) for item in assets),
+        "groups": dict(sorted(groups.items())),
+        "items": assets,
+    }
+
+
+def authority_queue_markdown(queue: dict[str, Any], generated_at: str) -> str:
+    lines = [
+        "# BlindAssist evidence authority adjudication queue",
+        "",
+        f"Generated: `{generated_at}`",
+        "",
+        "This is a non-destructive decision queue, not a deletion list. Every locator",
+        "below remains `unknown`; no name-only inference grants fresh, sealed, or final authority.",
+        "",
+        "## Summary",
+        "",
+        "| Reason | Assets | Files | Bytes |",
+        "| --- | ---: | ---: | ---: |",
+    ]
+    for reason_code, group in queue["groups"].items():
+        lines.append(
+            f"| `{reason_code}` | `{group['assets']}` | `{group['files']}` | `{group['bytes']}` |"
+        )
+    for reason_code, group in queue["groups"].items():
+        lines.extend(
+            [
+                "",
+                f"## `{reason_code}`",
+                "",
+                group["reason"],
+                "",
+            ]
+        )
+        lines.extend(f"- `{locator}`" for locator in group["locators"])
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def authority_marker_match(value: str, markers: Iterable[str]) -> bool:
+    for component in value.replace("\\", "/").split("/"):
+        for marker in markers:
+            if re.search(
+                rf"(?<![A-Za-z0-9]){re.escape(marker)}(?![A-Za-z0-9])",
+                component,
+                re.IGNORECASE,
+            ):
+                return True
+    return False
+
+
+def authority_token_match(text: str, tokens: Iterable[str]) -> str | None:
+    for token in tokens:
+        matches = re.finditer(
+            rf"(?<![A-Za-z0-9]){re.escape(token)}(?![A-Za-z0-9])",
+            text,
+            re.IGNORECASE,
+        )
+        for match in matches:
+            if token.casefold() == "consumed":
+                prefix = text[max(0, match.start() - 48):match.start()]
+                if re.search(
+                    r"\b(?:not|never|without)\b[^.;:\n]{0,32}$",
+                    prefix,
+                    re.IGNORECASE,
+                ):
+                    continue
+            return match.group(0)
+    return None
+
+
+def static_authority_rule_matches(rule: dict[str, Any], asset: sqlite3.Row) -> bool:
+    selectors = {
+        "root_names": "root_name",
+        "asset_kinds": "asset_kind",
+        "asset_classes": "asset_class",
+        "entry_types": "entry_type",
+    }
+    for selector, column in selectors.items():
+        allowed = rule.get(selector)
+        if allowed and asset[column] not in allowed:
+            return False
+    if rule.get("requires_nonempty") and int(asset["file_count"]) == 0:
+        return False
+    return True
+
+
+def authority_classification_decisions(
+    connection: sqlite3.Connection,
+    *,
+    config: dict[str, Any],
+    policy_sha256: str,
+    artifact_root: Path,
+    repo_root: Path,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    assets = {
+        row["asset_id"]: row
+        for row in connection.execute(
+            """
+            SELECT * FROM assets
+            WHERE state = 'present' AND evidence_status = 'unknown'
+            ORDER BY locator
+            """
+        )
+    }
+    assets_by_locator = {row["locator"]: row for row in assets.values()}
+    decisions: dict[str, dict[str, Any]] = {}
+    holds: list[dict[str, Any]] = []
+
+    def propose(
+        asset: sqlite3.Row,
+        rule: dict[str, Any],
+        *,
+        source: str,
+        evidence: dict[str, Any],
+        priority: int,
+    ) -> None:
+        existing = decisions.get(asset["asset_id"])
+        if existing and int(existing["priority"]) >= priority:
+            return
+        decisions[asset["asset_id"]] = {
+            "asset_id": asset["asset_id"],
+            "locator": asset["locator"],
+            "prior_evidence_status": asset["evidence_status"],
+            "evidence_status": rule["evidence_status"],
+            "claim_ceiling": rule["claim_ceiling"],
+            "rule_id": rule["rule_id"],
+            "source": source,
+            "reason": rule["reason"],
+            "evidence": evidence,
+            "policy_sha256": policy_sha256,
+            "priority": priority,
+        }
+
+    for rule in config.get("exact_rules", []):
+        source_path = (repo_root / rule["authority_source"]).resolve()
+        try:
+            source_path.relative_to(repo_root.resolve())
+        except ValueError as exc:
+            raise CatalogError(
+                f"Exact authority source escapes repository: {rule['authority_source']}"
+            ) from exc
+        try:
+            authority_text = source_path.read_text(encoding="utf-8")
+        except OSError as exc:
+            raise CatalogError(
+                f"Cannot read exact authority source {rule['authority_source']}: {exc}"
+            ) from exc
+        missing = [
+            anchor for anchor in rule["authority_anchors"] if anchor not in authority_text
+        ]
+        if missing:
+            raise CatalogError(
+                f"Exact authority rule {rule['rule_id']} has stale anchors: {missing}"
+            )
+        asset = assets_by_locator.get(normalize_locator(rule["locator"]))
+        if asset is None:
+            continue
+        propose(
+            asset,
+            rule,
+            source=rule["authority_source"],
+            evidence={
+                "authority_anchors": rule["authority_anchors"],
+                "authority_source_sha256": sha256_file(source_path),
+            },
+            priority=400,
+        )
+
+    authority_sources = set(config.get("current_authority_sources", []))
+    outcome_markers = config.get("outcome_reference_markers", [])
+    reference_rule = config.get("current_outcome_reference_rule")
+    source_snapshots: dict[str, tuple[str, list[str]]] = {}
+    if reference_rule:
+        for reference in connection.execute(
+            """
+            SELECT a.*, r.source_file, r.line_number, r.raw_locator
+            FROM assets a JOIN asset_references r ON r.asset_id = a.asset_id
+            WHERE a.state = 'present' AND a.evidence_status = 'unknown'
+              AND a.asset_class = 'evidence' AND r.resolution = 'asset'
+            ORDER BY a.locator, r.source_file, r.line_number
+            """
+        ):
+            if reference["source_file"] not in authority_sources:
+                continue
+            if not authority_marker_match(reference["raw_locator"], outcome_markers):
+                continue
+            source_file = reference["source_file"]
+            if source_file not in source_snapshots:
+                source_path = (repo_root / source_file).resolve()
+                try:
+                    source_path.relative_to(repo_root.resolve())
+                except ValueError as exc:
+                    raise CatalogError(
+                        f"Authority source escapes repository: {source_file}"
+                    ) from exc
+                source_text = source_path.read_text(encoding="utf-8")
+                source_snapshots[source_file] = (
+                    sha256_file(source_path),
+                    source_text.splitlines(),
+                )
+            source_sha256, source_lines = source_snapshots[source_file]
+            needle = re.sub(
+                r"/+",
+                "/",
+                reference["raw_locator"].replace("\\", "/"),
+            ).casefold()
+            actual_line_number = next(
+                (
+                    index
+                    for index, line in enumerate(source_lines, start=1)
+                    if needle
+                    in re.sub(r"/+", "/", line.replace("\\", "/")).casefold()
+                ),
+                None,
+            )
+            if actual_line_number is None:
+                continue
+            propose(
+                reference,
+                reference_rule,
+                source=f"{source_file}:{actual_line_number}",
+                evidence={
+                    "raw_locator": reference["raw_locator"],
+                    "authority_source_sha256": source_sha256,
+                },
+                priority=300,
+            )
+
+    assertion_rules = config.get("artifact_assertion_rules", [])
+    if assertion_rules:
+        text_extensions = {
+            item.casefold()
+            for item in config.get(
+                "artifact_assertion_text_extensions",
+                [".json", ".jsonl", ".md", ".txt", ".csv", ".toml", ".yaml", ".yml", ".log"],
+            )
+        }
+        maximum_bytes = int(config.get("artifact_assertion_max_bytes", 1_048_576))
+        protected_tokens = config.get("protected_authority_tokens", ["sealed_final"])
+        assertions: dict[str, dict[str, Any]] = {}
+        protected_assets: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        file_rows = connection.execute(
+            """
+            SELECT a.asset_id, a.locator, a.entry_type, f.relative_path, f.bytes
+            FROM assets a JOIN asset_files f ON f.asset_id = a.asset_id
+            WHERE a.state = 'present' AND a.evidence_status = 'unknown'
+              AND a.asset_class = 'evidence' AND f.bytes <= ?
+            ORDER BY a.locator, f.relative_path
+            """,
+            (maximum_bytes,),
+        ).fetchall()
+        for item in file_rows:
+            candidate_name = (
+                Path(item["locator"]).name
+                if item["entry_type"] == "file"
+                else Path(item["relative_path"]).name
+            )
+            if Path(candidate_name).suffix.casefold() not in text_extensions:
+                continue
+            if not authority_marker_match(candidate_name, outcome_markers):
+                continue
+            asset_path = path_for_locator(item["locator"], artifact_root)
+            evidence_path = (
+                asset_path
+                if item["entry_type"] == "file"
+                else asset_path.joinpath(*item["relative_path"].split("/"))
+            )
+            try:
+                text = evidence_path.read_text(encoding="utf-8", errors="ignore")
+            except OSError:
+                continue
+            protected = authority_token_match(text, protected_tokens)
+            if protected:
+                protected_assets[item["asset_id"]].append(
+                    {
+                        "relative_path": item["relative_path"],
+                        "token": protected,
+                    }
+                )
+            for index, rule in enumerate(assertion_rules):
+                matched = authority_token_match(text, rule["tokens"])
+                if not matched:
+                    continue
+                priority = 250 if rule["evidence_status"] == "development_consumed" else 240
+                current = assertions.get(item["asset_id"])
+                if current and int(current["priority"]) >= priority:
+                    continue
+                assertions[item["asset_id"]] = {
+                    "rule": rule,
+                    "priority": priority,
+                    "source": f"asset:{item['locator']}/{item['relative_path']}",
+                    "evidence": {
+                        "relative_path": item["relative_path"],
+                        "matched_token": matched,
+                        "assertion_file_sha256": sha256_file(evidence_path),
+                    },
+                }
+        for asset_id, assertion in assertions.items():
+            if asset_id in protected_assets:
+                holds.append(
+                    {
+                        "asset_id": asset_id,
+                        "locator": assets[asset_id]["locator"],
+                        "reason_code": "conflicting_protected_authority_assertion",
+                        "reason": "A protected authority token conflicts with an automatic assertion.",
+                        "evidence": protected_assets[asset_id],
+                    }
+                )
+                continue
+            propose(
+                assets[asset_id],
+                assertion["rule"],
+                source=assertion["source"],
+                evidence=assertion["evidence"],
+                priority=int(assertion["priority"]),
+            )
+
+    for asset in assets.values():
+        for rule in config.get("static_type_rules", []):
+            if static_authority_rule_matches(rule, asset):
+                propose(
+                    asset,
+                    rule,
+                    source=(
+                        "data/asset-management-policy.json#"
+                        f"authority_classification/static_type_rules/{rule['rule_id']}"
+                    ),
+                    evidence={
+                        "asset_kind": asset["asset_kind"],
+                        "asset_class": asset["asset_class"],
+                        "entry_type": asset["entry_type"],
+                    },
+                    priority=100,
+                )
+                break
+
+    ordered = sorted(decisions.values(), key=lambda item: item["locator"])
+    for item in ordered:
+        item.pop("priority", None)
+    return ordered, sorted(holds, key=lambda item: item["locator"])
+
+
+def classify_authority_command(args: argparse.Namespace) -> dict[str, Any]:
+    policy = load_policy(args.policy.resolve())
+    config = policy.get("authority_classification")
+    if not config:
+        raise CatalogError("Policy does not define authority_classification")
+    policy_sha256 = sha256_bytes(canonical_json_bytes(policy))
+    connection = open_catalog(args.database.resolve())
+    try:
+        before = connection.execute(
+            "SELECT COUNT(*) FROM assets WHERE state = 'present' AND evidence_status = 'unknown'"
+        ).fetchone()[0]
+        decisions, holds = authority_classification_decisions(
+            connection,
+            config=config,
+            policy_sha256=policy_sha256,
+            artifact_root=args.artifact_root.resolve(),
+            repo_root=args.repo_root.resolve(),
+        )
+        by_status: dict[str, int] = defaultdict(int)
+        by_rule: dict[str, int] = defaultdict(int)
+        for decision in decisions:
+            by_status[decision["evidence_status"]] += 1
+            by_rule[decision["rule_id"]] += 1
+        applied = 0
+        if args.apply:
+            applied_at = utc_now()
+            with connection:
+                for decision in decisions:
+                    material = {
+                        "asset_id": decision["asset_id"],
+                        "rule_id": decision["rule_id"],
+                        "assigned_evidence_status": decision["evidence_status"],
+                        "source": decision["source"],
+                        "evidence": decision["evidence"],
+                        "policy_sha256": policy_sha256,
+                    }
+                    classification_id = (
+                        "authority-classification:"
+                        + sha256_bytes(canonical_json_bytes(material))
+                    )
+                    transition_asset(
+                        connection,
+                        asset_id=decision["asset_id"],
+                        evidence_status=decision["evidence_status"],
+                        storage_status=None,
+                        reason=(
+                            f"Authority classification {decision['rule_id']}: "
+                            f"{decision['reason']} Source: {decision['source']}"
+                        ),
+                        claim_ceiling=decision["claim_ceiling"],
+                        event_id=f"{classification_id}:lifecycle",
+                        recorded_at=applied_at,
+                    )
+                    connection.execute(
+                        """
+                        INSERT INTO authority_classifications(
+                            classification_id, asset_id, prior_evidence_status,
+                            assigned_evidence_status, rule_id, source, reason,
+                            evidence_json, policy_sha256, applied_at
+                        ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        """,
+                        (
+                            classification_id,
+                            decision["asset_id"],
+                            decision["prior_evidence_status"],
+                            decision["evidence_status"],
+                            decision["rule_id"],
+                            decision["source"],
+                            decision["reason"],
+                            json.dumps(
+                                decision["evidence"],
+                                ensure_ascii=False,
+                                sort_keys=True,
+                            ),
+                            policy_sha256,
+                            applied_at,
+                        ),
+                    )
+                    applied += 1
+        after = connection.execute(
+            "SELECT COUNT(*) FROM assets WHERE state = 'present' AND evidence_status = 'unknown'"
+        ).fetchone()[0]
+        queue = build_authority_queue(
+            connection,
+            exclude_asset_ids=(
+                {item["asset_id"] for item in decisions} if not args.apply else None
+            ),
+        )
+        return {
+            "status": "APPLIED" if args.apply else "DRY_RUN",
+            "policy_sha256": policy_sha256,
+            "unknown_before": int(before),
+            "unknown_after": int(after),
+            "projected_unknown_after": int(before) - len(decisions),
+            "classified": len(decisions),
+            "applied": applied,
+            "classified_by_status": dict(sorted(by_status.items())),
+            "classified_by_rule": dict(sorted(by_rule.items())),
+            "protected_holds": holds,
+            "remaining_queue": {
+                "assets": queue["assets"],
+                "groups": {
+                    key: {
+                        "assets": value["assets"],
+                        "bytes": value["bytes"],
+                        "files": value["files"],
+                        "reason": value["reason"],
+                    }
+                    for key, value in queue["groups"].items()
+                },
+            },
         }
     finally:
         connection.close()
@@ -1939,6 +3148,15 @@ def report_command(args: argparse.Namespace) -> dict[str, Any]:
         usage_count = connection.execute("SELECT COUNT(*) FROM usage_events").fetchone()[0]
         consumers = connection.execute("SELECT COUNT(DISTINCT consumer) FROM usage_events").fetchone()[0]
         derivations = connection.execute("SELECT COUNT(*) FROM derivations").fetchone()[0]
+        semantic_profile_count = connection.execute(
+            "SELECT COUNT(*) FROM asset_semantic_profiles"
+        ).fetchone()[0]
+        semantic_component_count = connection.execute(
+            "SELECT COUNT(*) FROM asset_components"
+        ).fetchone()[0]
+        authority_classification_count = connection.execute(
+            "SELECT COUNT(*) FROM authority_classifications"
+        ).fetchone()[0]
         reference_row = connection.execute(
             """
             SELECT COUNT(*) AS reference_count,
@@ -2014,6 +3232,51 @@ def report_command(args: argparse.Namespace) -> dict[str, Any]:
         scans = [dict(row) for row in connection.execute(
             "SELECT * FROM scan_runs ORDER BY started_at DESC LIMIT 10"
         )]
+        authority_classifications = [dict(row) for row in connection.execute(
+            """
+            SELECT classification_id, asset_id, prior_evidence_status,
+                   assigned_evidence_status, rule_id, source, reason,
+                   evidence_json, policy_sha256, applied_at
+            FROM authority_classifications
+            ORDER BY applied_at DESC, classification_id LIMIT 1000
+            """
+        )]
+        authority_queue = build_authority_queue(connection)
+        semantic_profiles: list[dict[str, Any]] = []
+        for profile_row in connection.execute(
+            """
+            SELECT p.*, a.locator FROM asset_semantic_profiles p
+            JOIN assets a ON a.asset_id = p.asset_id
+            ORDER BY a.locator
+            """
+        ):
+            component_rows = connection.execute(
+                """
+                SELECT component_id, component_key, logical_name, relative_path,
+                       component_kind, data_role, entry_type, state, bytes,
+                       file_count, content_id, identity_strength, evidence_status,
+                       claim_ceiling, description, facts_json
+                FROM asset_components WHERE asset_id = ?
+                ORDER BY component_kind, component_key
+                """,
+                (profile_row["asset_id"],),
+            ).fetchall()
+            semantic_profiles.append(
+                {
+                    "asset_id": profile_row["asset_id"],
+                    "locator": profile_row["locator"],
+                    "profile_id": profile_row["profile_id"],
+                    "profile_path": profile_row["profile_path"],
+                    "profile_sha256": profile_row["profile_sha256"],
+                    "title": profile_row["title"],
+                    "summary": profile_row["summary"],
+                    "facts": json.loads(profile_row["facts_json"]),
+                    "components": [
+                        {**dict(row), "facts": json.loads(row["facts_json"])}
+                        for row in component_rows
+                    ],
+                }
+            )
         summary = {
             "assets": int(summary_row["assets"] or 0),
             "catalog_records": int(catalog_records),
@@ -2028,6 +3291,10 @@ def report_command(args: argparse.Namespace) -> dict[str, Any]:
             "usage_events": int(usage_count),
             "consumers": int(consumers),
             "derivations": int(derivations),
+            "semantic_profiles": int(semantic_profile_count),
+            "semantic_components": int(semantic_component_count),
+            "authority_classification_events": int(authority_classification_count),
+            "remaining_authority_queue_assets": int(authority_queue["assets"]),
             "repository_references": int(reference_row["reference_count"] or 0),
             "resolved_repository_references": int(reference_row["resolved_assets"] or 0),
             "root_scoped_repository_references": int(reference_row["root_scoped"] or 0),
@@ -2064,12 +3331,29 @@ def report_command(args: argparse.Namespace) -> dict[str, Any]:
             "unconsumed_assets": [dict(row) for row in unconsumed],
             "unresolved_repository_references": [dict(row) for row in unresolved_references],
             "duplicate_content_groups": [dict(row) for row in duplicates],
+            "authority_classifications": authority_classifications,
+            "evidence_authority_queue": authority_queue,
+            "semantic_profiles": semantic_profiles,
         }
         output_dir = args.output_dir.resolve()
         output_dir.mkdir(parents=True, exist_ok=True)
         json_path = output_dir / "master-asset-report.json"
         markdown_path = output_dir / "master-asset-report.md"
+        authority_queue_json_path = output_dir / "evidence-authority-queue.json"
+        authority_queue_markdown_path = output_dir / "evidence-authority-queue.md"
         atomic_write_json(json_path, report)
+        atomic_write_json(
+            authority_queue_json_path,
+            {
+                "schema": "blindassist-evidence-authority-queue-v1",
+                "generated_at": report["generated_at"],
+                **authority_queue,
+            },
+        )
+        atomic_write_text(
+            authority_queue_markdown_path,
+            authority_queue_markdown(authority_queue, report["generated_at"]),
+        )
         lines = [
             "# BlindAssist master asset report",
             "",
@@ -2110,10 +3394,41 @@ def report_command(args: argparse.Namespace) -> dict[str, Any]:
                 f"`{item['bytes']}` | `{item['file_count']}` | `{item['identity_strength']}` | "
                 f"`{item['evidence_status']}` | `{item['storage_status']}` |"
             )
+        lines.extend([
+            "",
+            "## Semantic asset components",
+            "",
+            "| Asset | Component | Kind | Role | Bytes | Files | Identity | Evidence |",
+            "| --- | --- | --- | --- | ---: | ---: | --- | --- |",
+        ])
+        for profile in semantic_profiles:
+            for component in profile["components"]:
+                lines.append(
+                    f"| `{profile['locator']}` | `{component['component_key']}` | "
+                    f"`{component['component_kind']}` | `{component['data_role']}` | "
+                    f"`{component['bytes']}` | `{component['file_count']}` | "
+                    f"`{component['identity_strength']}` | `{component['evidence_status']}` |"
+                )
+        lines.extend([
+            "",
+            "## Evidence authority adjudication queue",
+            "",
+            "Unknown assets remain fail-closed and are grouped in "
+            "`evidence-authority-queue.json` and `evidence-authority-queue.md`.",
+            "",
+            "| Reason | Assets | Files | Bytes |",
+            "| --- | ---: | ---: | ---: |",
+        ])
+        for reason_code, group in authority_queue["groups"].items():
+            lines.append(
+                f"| `{reason_code}` | `{group['assets']}` | `{group['files']}` | `{group['bytes']}` |"
+            )
         atomic_write_text(markdown_path, "\n".join(lines).rstrip() + "\n")
         return {
             "report_json": str(json_path),
             "report_markdown": str(markdown_path),
+            "authority_queue_json": str(authority_queue_json_path),
+            "authority_queue_markdown": str(authority_queue_markdown_path),
             **summary,
         }
     finally:
@@ -2122,6 +3437,7 @@ def report_command(args: argparse.Namespace) -> dict[str, Any]:
 
 def verify_command(args: argparse.Namespace) -> dict[str, Any]:
     artifact_root = args.artifact_root.resolve()
+    repo_root = args.repo_root.resolve()
     connection = open_catalog(args.database.resolve())
     errors: list[str] = []
     try:
@@ -2131,10 +3447,70 @@ def verify_command(args: argparse.Namespace) -> dict[str, Any]:
         foreign_keys = connection.execute("PRAGMA foreign_key_check").fetchall()
         if foreign_keys:
             errors.append(f"foreign key failures: {len(foreign_keys)}")
+        profile_checked = 0
+        component_checked = 0
+        for profile in connection.execute(
+            """
+            SELECT p.*, a.locator FROM asset_semantic_profiles p
+            JOIN assets a ON a.asset_id = p.asset_id
+            ORDER BY a.locator
+            """
+        ):
+            try:
+                profile_path = (repo_root / profile["profile_path"]).resolve()
+                profile_path.relative_to(repo_root)
+                if not profile_path.is_file():
+                    errors.append(f"missing semantic profile: {profile['profile_path']}")
+                    continue
+                if sha256_file(profile_path) != profile["profile_sha256"]:
+                    errors.append(f"semantic profile drift: {profile['profile_path']}")
+                asset_path = path_for_locator(profile["locator"], artifact_root)
+                for component in connection.execute(
+                    "SELECT * FROM asset_components WHERE asset_id = ? ORDER BY component_key",
+                    (profile["asset_id"],),
+                ):
+                    if component["evidence_status"] not in AUTOMATIC_AUTHORITY_STATUSES:
+                        errors.append(
+                            f"invalid semantic component evidence status "
+                            f"{profile['locator']}#{component['component_key']}: "
+                            f"{component['evidence_status']}"
+                        )
+                    component_path = (
+                        asset_path
+                        if component["relative_path"] == "."
+                        else asset_path.joinpath(*component["relative_path"].split("/"))
+                    )
+                    if component["state"] == "present" and not component_path.exists():
+                        errors.append(
+                            f"missing semantic component: "
+                            f"{profile['locator']}#{component['component_key']}"
+                        )
+                    if (
+                        component["state"] == "present"
+                        and component["entry_type"] == "file"
+                        and component_path.is_file()
+                        and int(component_path.stat().st_size) != int(component["bytes"])
+                    ):
+                        errors.append(
+                            f"semantic component size drift: "
+                            f"{profile['locator']}#{component['component_key']}"
+                        )
+                    component_checked += 1
+                profile_checked += 1
+            except (CatalogError, OSError, ValueError, json.JSONDecodeError) as exc:
+                errors.append(f"semantic profile {profile['profile_id']}: {exc}")
         assets = connection.execute("SELECT * FROM assets ORDER BY locator").fetchall()
         deep_checked = 0
         for asset in assets:
             try:
+                if asset["evidence_status"] not in VALID_EVIDENCE_STATUSES:
+                    errors.append(
+                        f"invalid evidence status {asset['locator']}: {asset['evidence_status']}"
+                    )
+                if asset["storage_status"] not in VALID_STORAGE_STATUSES:
+                    errors.append(
+                        f"invalid storage status {asset['locator']}: {asset['storage_status']}"
+                    )
                 path = path_for_locator(asset["locator"], artifact_root)
                 if asset["state"] == "present" and not path.exists():
                     errors.append(f"missing present asset: {asset['locator']}")
@@ -2169,6 +3545,8 @@ def verify_command(args: argparse.Namespace) -> dict[str, Any]:
             "assets": len(assets),
             "deep": bool(args.deep),
             "deep_checked": deep_checked,
+            "semantic_profiles_checked": profile_checked,
+            "semantic_components_checked": component_checked,
             "errors": errors,
         }
         if errors:
@@ -2233,6 +3611,13 @@ def build_parser() -> argparse.ArgumentParser:
     list_parser.add_argument("--limit", type=int, default=100)
     list_parser.set_defaults(func=list_command)
 
+    components = subparsers.add_parser(
+        "components", help="Inspect the semantic components of one physical asset"
+    )
+    add_catalog_arguments(components)
+    components.add_argument("key")
+    components.set_defaults(func=components_command)
+
     resolve = subparsers.add_parser("resolve", help="Resolve an asset and optionally record its consumer")
     add_catalog_arguments(resolve)
     resolve.add_argument("key")
@@ -2275,6 +3660,20 @@ def build_parser() -> argparse.ArgumentParser:
     transition.add_argument("--event-id")
     transition.set_defaults(func=transition_command)
 
+    classify_authority = subparsers.add_parser(
+        "classify-authority",
+        help="Audit unknown evidence authority and optionally append classification events",
+    )
+    add_catalog_arguments(classify_authority)
+    classify_authority.add_argument("--policy", type=Path, default=DEFAULT_POLICY_PATH)
+    classify_authority.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
+    classify_authority.add_argument(
+        "--apply",
+        action="store_true",
+        help="Apply high-confidence decisions; default is a read-only dry run",
+    )
+    classify_authority.set_defaults(func=classify_authority_command)
+
     hash_parser = subparsers.add_parser("hash", help="Promote one immutable asset to content identity")
     add_catalog_arguments(hash_parser)
     hash_parser.add_argument("key")
@@ -2310,6 +3709,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     verify = subparsers.add_parser("verify", help="Verify catalog integrity and asset resolution")
     add_catalog_arguments(verify)
+    verify.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
     verify.add_argument("--deep", action="store_true")
     verify.set_defaults(func=verify_command)
     return parser

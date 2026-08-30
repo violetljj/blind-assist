@@ -1,0 +1,1128 @@
+{
+  "schema": "blindassist-asset-reference-migration-v1",
+  "baseline": {
+    "source": "master-asset-report.json",
+    "report_file_mtime_local": "2026-08-31 02:51:06 +08:00",
+    "repository_references": 706,
+    "missing_locator_references": 80,
+    "unknown_root_references": 26,
+    "unresolved_repository_references": 106
+  },
+  "invariants": [
+    "No asset payload was moved, copied, deleted, or synthesized.",
+    "Sealed and historical result files remain byte-for-byte unchanged.",
+    "old_locator and baseline_line preserve the original report caller identity; current line numbers may move after edits.",
+    "A canonical locator is asserted only when physical presence or an explicit output contract was verified."
+  ],
+  "alias_rules": [
+    {
+      "id": "test-artifacts-evidence-compat",
+      "from_prefix_tokens": [
+        "test-artifacts",
+        "local"
+      ],
+      "canonical_locator_prefix": "evidence",
+      "rule": "The compatibility junction maps legacy test evidence into the canonical evidence root; raw locators remain auditable."
+    },
+    {
+      "id": "duplicate-separator-normalization",
+      "rule": "Repeated slash or backslash separators are collapsed only for resolution; raw locators remain auditable."
+    },
+    {
+      "id": "present-excluded-root",
+      "roots": [
+        "cache",
+        "runtime",
+        "tmp",
+        "work"
+      ],
+      "rule": "A physically present path below a policy-excluded dynamic root is root-scoped, not a durable catalog asset and not missing."
+    }
+  ],
+  "classification_counts": {
+    "historical_present_normalized": 27,
+    "present_excluded": 31,
+    "active_compat_alias_migrated": 9,
+    "historical_compat_alias": 19,
+    "active_missing_dependency_property_gated": 3,
+    "active_path_migrated": 3,
+    "planned_output": 5,
+    "historical_missing": 5,
+    "template_or_test": 4
+  },
+  "active_metrics": {
+    "stale_hardcoded_active_callers_after_migration": 0,
+    "unavailable_active_dependencies_requiring_explicit_property_or_rebuild": 3,
+    "planned_outputs_not_counted_as_missing_dependencies": 6
+  },
+  "post_migration_report": {
+    "repository_references": 705,
+    "missing_locator_references": 11,
+    "unknown_root_references": 0,
+    "unresolved_repository_references": 11,
+    "unresolved_breakdown": {
+      "planned_outputs": 6,
+      "historical_missing": 5,
+      "active_stale_callers": 0
+    }
+  },
+  "entries": [
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 47,
+      "old_resolution": "missing_within_root",
+      "old_locator": "results//l10-hypersim-posed-portals-v1//hp01-posed-portal-transfer.jpg",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "results/l10-hypersim-posed-portals-v1/hp01-posed-portal-transfer.jpg",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 95,
+      "old_resolution": "missing_within_root",
+      "old_locator": "results//l10-hypersim-posed-portals-v1//hp02-posed-portal-transfer.jpg",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "results/l10-hypersim-posed-portals-v1/hp02-posed-portal-transfer.jpg",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 141,
+      "old_resolution": "missing_within_root",
+      "old_locator": "results//l10-hypersim-posed-portals-v1//hp03-posed-portal-transfer.jpg",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "results/l10-hypersim-posed-portals-v1/hp03-posed-portal-transfer.jpg",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 190,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//_detail//cam_00//camera_keyframe_frame_indices.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/_detail/cam_00/camera_keyframe_frame_indices.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 191,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//_detail//cam_00//camera_keyframe_orientations.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/_detail/cam_00/camera_keyframe_orientations.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 192,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//_detail//cam_00//camera_keyframe_positions.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/_detail/cam_00/camera_keyframe_positions.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 193,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//_detail//cam_01//camera_keyframe_frame_indices.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/_detail/cam_01/camera_keyframe_frame_indices.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 194,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//_detail//cam_01//camera_keyframe_orientations.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/_detail/cam_01/camera_keyframe_orientations.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 195,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//_detail//cam_01//camera_keyframe_positions.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/_detail/cam_01/camera_keyframe_positions.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 196,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//_detail//cam_02//camera_keyframe_frame_indices.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/_detail/cam_02/camera_keyframe_frame_indices.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 197,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//_detail//cam_02//camera_keyframe_orientations.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/_detail/cam_02/camera_keyframe_orientations.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 198,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//_detail//cam_02//camera_keyframe_positions.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/_detail/cam_02/camera_keyframe_positions.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 199,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//images//scene_cam_00_final_preview//frame.0002.color.jpg",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/images/scene_cam_00_final_preview/frame.0002.color.jpg",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 200,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//images//scene_cam_00_final_preview//frame.0013.color.jpg",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/images/scene_cam_00_final_preview/frame.0013.color.jpg",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 201,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//images//scene_cam_00_final_preview//frame.0089.color.jpg",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/images/scene_cam_00_final_preview/frame.0089.color.jpg",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 202,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//images//scene_cam_00_geometry_hdf5//frame.0002.position.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0002.position.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 203,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//images//scene_cam_00_geometry_hdf5//frame.0002.semantic_instance.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0002.semantic_instance.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 204,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//images//scene_cam_00_geometry_hdf5//frame.0013.position.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0013.position.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 205,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//images//scene_cam_00_geometry_hdf5//frame.0013.semantic_instance.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0013.semantic_instance.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 206,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//images//scene_cam_00_geometry_hdf5//frame.0089.position.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0089.position.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 207,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//images//scene_cam_00_geometry_hdf5//frame.0089.semantic_instance.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/images/scene_cam_00_geometry_hdf5/frame.0089.semantic_instance.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 208,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//images//scene_cam_01_final_preview//frame.0051.color.jpg",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/images/scene_cam_01_final_preview/frame.0051.color.jpg",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 209,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//images//scene_cam_01_final_preview//frame.0066.color.jpg",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/images/scene_cam_01_final_preview/frame.0066.color.jpg",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 210,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//images//scene_cam_01_geometry_hdf5//frame.0051.semantic_instance.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/images/scene_cam_01_geometry_hdf5/frame.0051.semantic_instance.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 211,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//images//scene_cam_01_geometry_hdf5//frame.0066.semantic_instance.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/images/scene_cam_01_geometry_hdf5/frame.0066.semantic_instance.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 212,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//images//scene_cam_02_final_preview//frame.0022.color.jpg",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/images/scene_cam_02_final_preview/frame.0022.color.jpg",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_hypersim_posed_portal_result_v1.json",
+      "baseline_line": 213,
+      "old_resolution": "missing_within_root",
+      "old_locator": "sources//l10-hypersim-posed-portals-v1//payload//ai_034_001//images//scene_cam_02_geometry_hdf5//frame.0022.semantic_instance.hdf5",
+      "classification": "historical_present_normalized",
+      "canonical_locator": "sources/l10-hypersim-posed-portals-v1/payload/ai_034_001/images/scene_cam_02_geometry_hdf5/frame.0022.semantic_instance.hdf5",
+      "disposition": "Importer normalizes separators; sealed result bytes remain unchanged.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/CARLA_PLAYBOOK.md",
+      "baseline_line": 69,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/carla-asset-library",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/carla-asset-library",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/LOCAL_ARTIFACTS.md",
+      "baseline_line": 21,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/carla-asset-library",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/carla-asset-library",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/LOCAL_ARTIFACTS.md",
+      "baseline_line": 23,
+      "old_resolution": "missing_within_root",
+      "old_locator": "work/gradle-build",
+      "classification": "present_excluded",
+      "canonical_locator": "work/gradle-build",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/LOCAL_ARTIFACTS.md",
+      "baseline_line": 101,
+      "old_resolution": "missing_within_root",
+      "old_locator": "cache/pytest",
+      "classification": "present_excluded",
+      "canonical_locator": "cache/pytest",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/LOCAL_ARTIFACTS.md",
+      "baseline_line": 102,
+      "old_resolution": "missing_within_root",
+      "old_locator": "cache/ruff",
+      "classification": "present_excluded",
+      "canonical_locator": "cache/ruff",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/LOCAL_ARTIFACTS.md",
+      "baseline_line": 103,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/legacy-python311",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/legacy-python311",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/LOCAL_ARTIFACTS.md",
+      "baseline_line": 104,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/venv-export",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/venv-export",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/LOCAL_ARTIFACTS.md",
+      "baseline_line": 105,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/venv-export312",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/venv-export312",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/LOCAL_ARTIFACTS.md",
+      "baseline_line": 106,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/python311-local",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/python311-local",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/LOCAL_ARTIFACTS.md",
+      "baseline_line": 108,
+      "old_resolution": "missing_within_root",
+      "old_locator": "work/output",
+      "classification": "present_excluded",
+      "canonical_locator": "work/output",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/LOCAL_ARTIFACTS.md",
+      "baseline_line": 109,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/carla-asset-library",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/carla-asset-library",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/LOCAL_ARTIFACTS.md",
+      "baseline_line": 111,
+      "old_resolution": "missing_within_root",
+      "old_locator": "tmp/outer-workspace",
+      "classification": "present_excluded",
+      "canonical_locator": "tmp/outer-workspace",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/LOCAL_ARTIFACTS.md",
+      "baseline_line": 145,
+      "old_resolution": "missing_within_root",
+      "old_locator": "work/codex-handoffs/INDEX.md",
+      "classification": "present_excluded",
+      "canonical_locator": "work/codex-handoffs/INDEX.md",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/dtr-r0/carla/DTR_CARLA_N1_NATIVE_DYNAMICS_PILOT_RESULT_2026-08-30.md",
+      "baseline_line": 84,
+      "old_resolution": "missing_within_root",
+      "old_locator": "tmp/dtr-carla-n1-plan-20260830.json",
+      "classification": "present_excluded",
+      "canonical_locator": "tmp/dtr-carla-n1-plan-20260830.json",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/dtr-r0/carla/DTR_CARLA_N1_NATIVE_DYNAMICS_PILOT_RESULT_2026-08-30.md",
+      "baseline_line": 92,
+      "old_resolution": "missing_within_root",
+      "old_locator": "tmp/dtr-carla-n1-plan-20260830.json",
+      "classification": "present_excluded",
+      "canonical_locator": "tmp/dtr-carla-n1-plan-20260830.json",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_panolab_node_credential_protocol_v1.json",
+      "baseline_line": 43,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/semantic-anchor-v1/models",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/semantic-anchor-v1/models",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_sevn_pixel_replay_protocol_v1.json",
+      "baseline_line": 90,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/semantic-anchor-v1/models",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/semantic-anchor-v1/models",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/l10_sevn_pixel_topology_protocol_v2.json",
+      "baseline_line": 84,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/semantic-anchor-v1/models",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/semantic-anchor-v1/models",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/named_poi_ade20k_portal_fresh_protocol_v1.json",
+      "baseline_line": 90,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/semantic-anchor-v1/models",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/semantic-anchor-v1/models",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/named_poi_biscript_eval.py",
+      "baseline_line": 625,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/semantic-anchor-v1/models",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/semantic-anchor-v1/models",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/named_poi_geolex_eval.py",
+      "baseline_line": 379,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/semantic-anchor-v1/models",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/semantic-anchor-v1/models",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/named_poi_scil_ingress_portal_graph_protocol_v1.json",
+      "baseline_line": 63,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/semantic-anchor-v1/models",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/semantic-anchor-v1/models",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/named_poi_semantic_portal_fresh_protocol_v1.json",
+      "baseline_line": 95,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/semantic-anchor-v1/models",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/semantic-anchor-v1/models",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/named_poi_text_tiling_diagnostic.py",
+      "baseline_line": 129,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/semantic-anchor-v1/models",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/semantic-anchor-v1/models",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/prepare_egotracks_sc7.ps1",
+      "baseline_line": 12,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/ego4d-cli-pydeps",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/ego4d-cli-pydeps",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/README.md",
+      "baseline_line": 85,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/semantic-anchor-v1/site-packages",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/semantic-anchor-v1/site-packages",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/README.md",
+      "baseline_line": 86,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/artvideo-l10-ocr-probe/.venv/Scripts/python.exe",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/artvideo-l10-ocr-probe/.venv/Scripts/python.exe",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/README.md",
+      "baseline_line": 89,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/semantic-anchor-v1/models",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/semantic-anchor-v1/models",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/README.md",
+      "baseline_line": 146,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/semantic-anchor-v1/site-packages",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/semantic-anchor-v1/site-packages",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/README.md",
+      "baseline_line": 249,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/semantic-anchor-v1/site-packages",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/semantic-anchor-v1/site-packages",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "research/active/l10-r0/README.md",
+      "baseline_line": 256,
+      "old_resolution": "missing_within_root",
+      "old_locator": "runtime/semantic-anchor-v1/models",
+      "classification": "present_excluded",
+      "canonical_locator": "runtime/semantic-anchor-v1/models",
+      "disposition": "Physical path exists below a policy-excluded dynamic root; importer records it as root-scoped, not as a durable asset.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "apps/benchmarks/device-benchmark/build.gradle.kts",
+      "baseline_line": 21,
+      "old_resolution": "missing_within_root",
+      "old_locator": "datasets/blindassist-evalset-20260527-impl",
+      "classification": "active_compat_alias_migrated",
+      "canonical_locator": "evidence/datasets/blindassist-evalset-20260527-impl",
+      "disposition": "Caller or current instructions migrated to the canonical evidence locator; importer alias remains for historical text.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "apps/benchmarks/device-benchmark/src/main/java/com/linnan/blindassist/benchmark/DetectorAbDeviceBenchmarkTest.kt",
+      "baseline_line": 161,
+      "old_resolution": "missing_within_root",
+      "old_locator": "datasets/blindassist-evalset-20260527-impl",
+      "classification": "active_compat_alias_migrated",
+      "canonical_locator": "evidence/datasets/blindassist-evalset-20260527-impl",
+      "disposition": "Caller or current instructions migrated to the canonical evidence locator; importer alias remains for historical text.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/APK_ARCHIVE.md",
+      "baseline_line": 67,
+      "old_resolution": "unknown_root",
+      "old_locator": "device-regression",
+      "classification": "active_compat_alias_migrated",
+      "canonical_locator": "evidence/device-regression",
+      "disposition": "Caller or current instructions migrated to the canonical evidence locator; importer alias remains for historical text.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/BLINDASSIST_EVALSET.md",
+      "baseline_line": 103,
+      "old_resolution": "missing_within_root",
+      "old_locator": "datasets/blindassist-evalset-20260527-impl",
+      "classification": "active_compat_alias_migrated",
+      "canonical_locator": "evidence/datasets/blindassist-evalset-20260527-impl",
+      "disposition": "Caller or current instructions migrated to the canonical evidence locator; importer alias remains for historical text.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 24,
+      "old_resolution": "missing_within_root",
+      "old_locator": "datasets/sanpo-v3-regression-90f",
+      "classification": "active_compat_alias_migrated",
+      "canonical_locator": "evidence/datasets/sanpo-v3-regression-90f",
+      "disposition": "Caller or current instructions migrated to the canonical evidence locator; importer alias remains for historical text.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 112,
+      "old_resolution": "missing_within_root",
+      "old_locator": "datasets/blindassist-evalset-20260527-impl",
+      "classification": "active_compat_alias_migrated",
+      "canonical_locator": "evidence/datasets/blindassist-evalset-20260527-impl",
+      "disposition": "Caller or current instructions migrated to the canonical evidence locator; importer alias remains for historical text.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 171,
+      "old_resolution": "unknown_root",
+      "old_locator": "detector-benchmark",
+      "classification": "active_compat_alias_migrated",
+      "canonical_locator": "evidence/detector-benchmark",
+      "disposition": "Caller or current instructions migrated to the canonical evidence locator; importer alias remains for historical text.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/DEVICE_REGRESSION.md",
+      "baseline_line": 18,
+      "old_resolution": "unknown_root",
+      "old_locator": "device-regression",
+      "classification": "active_compat_alias_migrated",
+      "canonical_locator": "evidence/device-regression",
+      "disposition": "Caller or current instructions migrated to the canonical evidence locator; importer alias remains for historical text.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "scripts/run_device_regression.ps1",
+      "baseline_line": 293,
+      "old_resolution": "unknown_root",
+      "old_locator": "device-regression",
+      "classification": "active_compat_alias_migrated",
+      "canonical_locator": "evidence/device-regression",
+      "disposition": "Caller or current instructions migrated to the canonical evidence locator; importer alias remains for historical text.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "CHANGELOG.md",
+      "baseline_line": 25,
+      "old_resolution": "unknown_root",
+      "old_locator": "detector-ab-device-benchmark/20260711-205209",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/detector-ab-device-benchmark/20260711-205209",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "CHANGELOG.md",
+      "baseline_line": 25,
+      "old_resolution": "unknown_root",
+      "old_locator": "device-regression/20260711-205421",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/device-regression/20260711-205421",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "CHANGELOG.md",
+      "baseline_line": 87,
+      "old_resolution": "missing_within_root",
+      "old_locator": "datasets/blindassist-evalset-20260527-impl",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/datasets/blindassist-evalset-20260527-impl",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "CHANGELOG.md",
+      "baseline_line": 87,
+      "old_resolution": "unknown_root",
+      "old_locator": "detector-ab-device-benchmark/20260612-135829",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/detector-ab-device-benchmark/20260612-135829",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "CHANGELOG.md",
+      "baseline_line": 88,
+      "old_resolution": "unknown_root",
+      "old_locator": "device-regression/20260612-140055",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/device-regression/20260612-140055",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "CHANGELOG.md",
+      "baseline_line": 109,
+      "old_resolution": "unknown_root",
+      "old_locator": "device-regression/20260611-173421",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/device-regression/20260611-173421",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 54,
+      "old_resolution": "unknown_root",
+      "old_locator": "depth-fusion/20260611-depth-anything-v2-small-pytorch-smoke.json",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/depth-fusion/20260611-depth-anything-v2-small-pytorch-smoke.json",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 58,
+      "old_resolution": "unknown_root",
+      "old_locator": "depth-fusion/inspect-ipdla-midas-depth-model.json",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/depth-fusion/inspect-ipdla-midas-depth-model.json",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 59,
+      "old_resolution": "unknown_root",
+      "old_locator": "depth-fusion/smoke-ipdla-midas-depth-model.json",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/depth-fusion/smoke-ipdla-midas-depth-model.json",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 69,
+      "old_resolution": "unknown_root",
+      "old_locator": "depth-fusion-benchmark/20260612-002427",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/depth-fusion-benchmark/20260612-002427",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 122,
+      "old_resolution": "unknown_root",
+      "old_locator": "detector-ab-device-benchmark/20260527-175312",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/detector-ab-device-benchmark/20260527-175312",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 123,
+      "old_resolution": "unknown_root",
+      "old_locator": "detector-ab-device-benchmark/20260527-175312/device-detector-ab-benchmark/20260527-175403",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/detector-ab-device-benchmark/20260527-175312/device-detector-ab-benchmark/20260527-175403",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 124,
+      "old_resolution": "unknown_root",
+      "old_locator": "device-regression/20260527-175552",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/device-regression/20260527-175552",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 138,
+      "old_resolution": "unknown_root",
+      "old_locator": "detector-ab-device-benchmark/20260527-022312",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/detector-ab-device-benchmark/20260527-022312",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 139,
+      "old_resolution": "unknown_root",
+      "old_locator": "detector-ab-device-benchmark/20260527-022312/device-detector-ab-benchmark/20260527-022419",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/detector-ab-device-benchmark/20260527-022312/device-detector-ab-benchmark/20260527-022419",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 140,
+      "old_resolution": "unknown_root",
+      "old_locator": "device-regression/20260527-022510",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/device-regression/20260527-022510",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 214,
+      "old_resolution": "unknown_root",
+      "old_locator": "detector-benchmark/20260527-010222",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/detector-benchmark/20260527-010222",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 262,
+      "old_resolution": "unknown_root",
+      "old_locator": "yolo26n-device-benchmark/20260527-015039",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/yolo26n-device-benchmark/20260527-015039",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 270,
+      "old_resolution": "unknown_root",
+      "old_locator": "device-regression/20260527-015153",
+      "classification": "historical_compat_alias",
+      "canonical_locator": "evidence/device-regression/20260527-015153",
+      "disposition": "Historical text is unchanged; importer resolves the compatibility alias to the canonical evidence locator.",
+      "actionability": "none"
+    },
+    {
+      "source_file": "apps/benchmarks/device-benchmark/build.gradle.kts",
+      "baseline_line": 18,
+      "old_resolution": "missing_within_root",
+      "old_locator": "experiments/qnn-preprocess-fusion-v1",
+      "classification": "active_missing_dependency_property_gated",
+      "actionability": "backlog",
+      "reason": "The old QNN preprocess candidate directory is absent and no byte-equivalent catalog asset was proven.",
+      "next_action": "Rebuild or locate the exact candidate and pass -PqnnPreprocessCandidateDir=<verified path>; the stale default was removed."
+    },
+    {
+      "source_file": "apps/benchmarks/device-benchmark/build.gradle.kts",
+      "baseline_line": 141,
+      "old_resolution": "missing_within_root",
+      "old_locator": "experiments/secondary-corridor-causal/event-head-tcn-int8-v0-20260718/android/app/src/main/assets",
+      "classification": "active_missing_dependency_property_gated",
+      "actionability": "backlog",
+      "reason": "The event-head model bundle is absent and no equivalent catalog asset was proven.",
+      "next_action": "Recover the exact three-file bundle with provenance and pass -PeventHeadSourceDir=<verified directory>; the stale default was removed."
+    },
+    {
+      "source_file": "apps/demos/hftf-depth-demo-app/build.gradle.kts",
+      "baseline_line": 15,
+      "old_resolution": "missing_within_root",
+      "old_locator": "work/dav2-qnn-native-cached-context-r0/model-sm8650-cached.dlc",
+      "classification": "active_missing_dependency_property_gated",
+      "actionability": "backlog",
+      "reason": "The device-specific cached-context DLC is absent; the existing TFLite/ONNX DAV2 assets are not equivalent.",
+      "next_action": "Regenerate or recover the verified SM8650 cached-context DLC and pass -Pdav2CachedDlcPath=<file>; the build now fails with an explicit property request."
+    },
+    {
+      "source_file": "scripts/run_android_gradle.ps1",
+      "baseline_line": 308,
+      "old_resolution": "unknown_root",
+      "old_locator": "state/gradle",
+      "classification": "active_path_migrated",
+      "canonical_locator": "gradle-home",
+      "actionability": "none",
+      "disposition": "Dead fallback migrated to the existing policy-excluded Gradle state root."
+    },
+    {
+      "source_file": "scripts/run_android_gradle.ps1",
+      "baseline_line": 314,
+      "old_resolution": "unknown_root",
+      "old_locator": "state/android-home",
+      "classification": "active_path_migrated",
+      "actionability": "none",
+      "disposition": "Dead second fallback removed; the existing repo-local .android-home candidate remains authoritative."
+    },
+    {
+      "source_file": "tools/run_dtr_carla_c3_dynamic_risk.ps1",
+      "baseline_line": 57,
+      "old_resolution": "unknown_root",
+      "old_locator": "carla-c3-compiled",
+      "classification": "active_path_migrated",
+      "canonical_locator": "work/carla-c3-compiled",
+      "actionability": "none",
+      "disposition": "Compile workspace moved below the canonical task-owned work root."
+    },
+    {
+      "source_file": "docs/CARLA_PLAYBOOK.md",
+      "baseline_line": 112,
+      "old_resolution": "missing_within_root",
+      "old_locator": "maintenance/carla-storage/dry-run",
+      "classification": "planned_output",
+      "canonical_locator": "maintenance/carla-storage-20260831/dry-run-v2",
+      "actionability": "none",
+      "disposition": "Caller line moved under concurrent CARLA work; current receipt target is a planned output and should use the existing dated maintenance asset."
+    },
+    {
+      "source_file": "docs/CARLA_PLAYBOOK.md",
+      "baseline_line": 120,
+      "old_resolution": "missing_within_root",
+      "old_locator": "maintenance/carla-storage/apply",
+      "classification": "planned_output",
+      "canonical_locator": "maintenance/carla-storage-20260831/apply-v2",
+      "actionability": "none",
+      "disposition": "Caller line moved under concurrent CARLA work; current receipt target is a planned output and should use the existing dated maintenance asset."
+    },
+    {
+      "source_file": "research/active/l10-r0/prepare_egotracks_sc7.ps1",
+      "baseline_line": 13,
+      "old_resolution": "missing_within_root",
+      "old_locator": "datasets/l10-sc7-egotracks",
+      "classification": "planned_output",
+      "canonical_locator": "datasets/l10-sc7-egotracks",
+      "actionability": "none",
+      "disposition": "Declared output is created by the preparation script; absence before running is expected."
+    },
+    {
+      "source_file": "research/knowledge/README.md",
+      "baseline_line": 66,
+      "old_resolution": "missing_within_root",
+      "old_locator": "knowledge/decision/near-id-plan.json",
+      "classification": "planned_output",
+      "canonical_locator": "knowledge/decision/near-id-plan.json",
+      "actionability": "none",
+      "disposition": "Command example declares a generated plan output; absence before execution is expected."
+    },
+    {
+      "source_file": "tools/knowledge.py",
+      "baseline_line": 2130,
+      "old_resolution": "missing_within_root",
+      "old_locator": "knowledge/decision",
+      "classification": "planned_output",
+      "canonical_locator": "knowledge/decision",
+      "actionability": "none",
+      "disposition": "Default output directory is created when a decision plan is written; absence beforehand is expected."
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 203,
+      "old_resolution": "missing_within_root",
+      "old_locator": "downloads/detector-lab/exports/yolo12n_fp16_320.tflite",
+      "classification": "historical_missing",
+      "actionability": "backlog",
+      "reason": "Documented export is absent from the retained detector-lab download asset.",
+      "next_action": "Re-export or redownload the exact model with provenance, then update the command to its verified catalog locator; do not substitute another YOLO version."
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 203,
+      "old_resolution": "missing_within_root",
+      "old_locator": "downloads/detector-lab/exports/yolo26n_fp16_320.tflite",
+      "classification": "historical_missing",
+      "actionability": "backlog",
+      "reason": "Documented export is absent from the retained detector-lab download asset.",
+      "next_action": "Re-export or redownload the exact model with provenance, then update the command to its verified catalog locator; do not substitute another YOLO version."
+    },
+    {
+      "source_file": "docs/DETECTOR_BENCHMARK.md",
+      "baseline_line": 203,
+      "old_resolution": "missing_within_root",
+      "old_locator": "downloads/detector-lab/exports/yolov10n_fp16_320.tflite",
+      "classification": "historical_missing",
+      "actionability": "backlog",
+      "reason": "Documented export is absent from the retained detector-lab download asset.",
+      "next_action": "Re-export or redownload the exact model with provenance, then update the command to its verified catalog locator; do not substitute another YOLO version."
+    },
+    {
+      "source_file": "experiments/index.jsonl",
+      "baseline_line": 2,
+      "old_resolution": "missing_within_root",
+      "old_locator": "evidence/grail-r1cl",
+      "classification": "historical_missing",
+      "actionability": "backlog",
+      "reason": "Archived experiment index points to a removed evidence payload; datasets/grail-r1cl and evidence/grail-r1cl-v3 are not proven equivalents.",
+      "next_action": "Use the retained GRAIL archive checksum/cleanup record and frozen commit to identify the exact historical evidence locator; do not rewrite the archived experiment row meanwhile."
+    },
+    {
+      "source_file": "SOURCE_ROLE_CONFLICTS.md",
+      "baseline_line": 25,
+      "old_resolution": "missing_within_root",
+      "old_locator": "work/invalid-pre-freeze-learned-component-validator-prepared-20260801",
+      "classification": "historical_missing",
+      "actionability": "backlog",
+      "reason": "Generated role-conflict snapshot names a removed work payload; no equivalent durable asset was proven.",
+      "next_action": "Trace the originating conflict scan/cleanup record and either bind its retained receipt or leave the historical missing marker explicit; do not recreate payload bytes."
+    },
+    {
+      "source_file": "docs/RESOURCE_FABRIC.md",
+      "baseline_line": 102,
+      "old_resolution": "missing_within_root",
+      "old_locator": "tmp/task/features.npz",
+      "classification": "template_or_test",
+      "canonical_locator": "tmp/my-task/features.npz",
+      "actionability": "none",
+      "disposition": "Example migrated to an explicit template locator."
+    },
+    {
+      "source_file": "docs/RESOURCE_FABRIC.md",
+      "baseline_line": 132,
+      "old_resolution": "missing_within_root",
+      "old_locator": "tmp/task/result.json",
+      "classification": "template_or_test",
+      "canonical_locator": "tmp/my-task/result.json",
+      "actionability": "none",
+      "disposition": "Example migrated to an explicit template locator."
+    },
+    {
+      "source_file": "scripts/test_repo_hygiene.ps1",
+      "baseline_line": 244,
+      "old_resolution": "unknown_root",
+      "old_locator": "device/output.json",
+      "classification": "template_or_test",
+      "actionability": "none",
+      "disposition": "Synthetic hygiene fixture is assembled at runtime so repository reference discovery no longer treats it as an asset caller."
+    },
+    {
+      "source_file": "tools/data/test_asset_catalog.py",
+      "baseline_line": 123,
+      "old_resolution": "missing_within_root",
+      "old_locator": "datasets/source/a.txt",
+      "classification": "template_or_test",
+      "actionability": "none",
+      "disposition": "Synthetic catalog fixture is assembled at runtime so the master repository scan no longer treats it as a real asset caller."
+    }
+  ]
+}

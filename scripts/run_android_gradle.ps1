@@ -305,13 +305,12 @@ $gradleUserHome = Resolve-StateDirectory (
     "BLINDASSIST_GRADLE_USER_HOME"
 ) @(
     "E:\codex-tools\projects\blindassist\state\gradle",
-    (Join-Path $repoRoot "artifacts.local\state\gradle")
+    (Join-Path $repoRoot "artifacts.local\gradle-home")
 )
 $androidUserHome = Resolve-StateDirectory (
     "BLINDASSIST_ANDROID_USER_HOME"
 ) @(
-    (Join-Path $repoRoot ".android-home"),
-    (Join-Path $repoRoot "artifacts.local\state\android-home")
+    (Join-Path $repoRoot ".android-home")
 )
 
 $env:JAVA_HOME = $java.home

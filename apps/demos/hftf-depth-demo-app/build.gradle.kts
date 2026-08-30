@@ -10,11 +10,6 @@ val localQairtRuntimeAvailable = Path.of(qairtRoot.get())
     .toFile()
     .isFile
 val dav2CachedDlc = providers.gradleProperty("dav2CachedDlcPath")
-    .orElse(
-        rootProject.file(
-            "artifacts.local/work/dav2-qnn-native-cached-context-r0/model-sm8650-cached.dlc",
-        ).absolutePath,
-    )
 
 plugins {
     alias(libs.plugins.android.application)
@@ -36,10 +31,15 @@ val prepareQairtRuntimeJni by tasks.registering(Sync::class) {
 val prepareDav2DemoModelAsset by tasks.registering(Sync::class) {
     val generatedRoot = layout.buildDirectory.dir("generated/dav2DemoAssets")
     into(generatedRoot)
-    from(dav2CachedDlc.map(::file)) {
-        rename { "model-sm8650-cached.dlc" }
+    dav2CachedDlc.orNull?.let { dlcPath ->
+        from(file(dlcPath)) {
+            rename { "model-sm8650-cached.dlc" }
+        }
     }
     doFirst {
+        check(dav2CachedDlc.isPresent) {
+            "Set -Pdav2CachedDlcPath=<file> to a verified DAV2 QNN cached-context DLC."
+        }
         check(file(dav2CachedDlc.get()).isFile) {
             "Missing local cached DLC: ${dav2CachedDlc.get()}"
         }

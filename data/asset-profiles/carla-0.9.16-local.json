@@ -1,0 +1,357 @@
+{
+  "schema": "blindassist-asset-semantic-profile-v1",
+  "profile_id": "blindassist-carla-0.9.16-local-semantic-profile-v1",
+  "asset_locator": "runtime/carla-asset-library",
+  "title": "BlindAssist CARLA 0.9.16 simulator, scene, and captured-data library",
+  "summary": "A layered local library containing the CARLA runtime and world assets, 21 scenario/experiment packages, synchronized sensor captures, actor and scene registries, and bounded Development evidence.",
+  "physical_layers": {
+    "runtime_and_world_assets": "CARLA 0.9.16 executable, Unreal maps, OpenDRIVE, HD maps, blueprints, meshes, materials, vehicles, walkers, props, weather, and PythonAPI.",
+    "scenario_definitions": "Versioned protocols, trajectories, actor registries, scene registries, layout contracts, and capture scripts.",
+    "captured_data": "Wearable RGB, metric depth, instance segmentation, witness RGB, actor state, camera calibration and pose, route-plan receipts, contact/visibility/occlusion truth.",
+    "evidence": "Results, manifests, payload closures, audits, model/evaluator separation, and explicit claim ceilings."
+  },
+  "runtime_inventory": {
+    "carla_version": "0.9.16",
+    "release_files": 31417,
+    "release_bytes": 19398059218,
+    "packaged_world_maps": ["Town01", "Town01_Opt", "Town02", "Town02_Opt", "Town03", "Town03_Opt", "Town04", "Town04_Opt", "Town05", "Town05_Opt", "Town10HD", "Town10HD_Opt"],
+    "additional_opendrive_assets": ["Town06", "Town06_Opt", "Town07", "Town07_Opt", "TownBig"],
+    "hd_point_cloud_maps": ["Town01", "Town02", "Town03", "Town04", "Town05", "Town06", "Town07"],
+    "blueprint_categories": ["Game", "LevelDesign", "Lights", "Props", "Tools", "TrafficLight", "Vehicles", "Walkers", "Weather"],
+    "static_asset_families": ["Bicycle", "Bridge", "Building", "Bus", "Car", "Decals", "Fence", "Ground", "GuardRail", "Motorcycle", "Pedestrian", "Pole", "RailTrack", "Road", "RoadLine", "SideWalk", "StreetLight", "Terrain", "TrafficLight", "TrafficSign", "Truck", "Vegetation", "Wall", "Water"]
+  },
+  "canonical_scene_pack": {
+    "asset_id": "c4-multimap-world-pack-v1",
+    "maps": ["Town01", "Town02", "Town03_Opt", "Town04", "Town05", "Town10HD_Opt"],
+    "scene_classes": ["narrow_alley", "mall_exit", "parking_lot", "bus_stop", "construction_zone", "rainy_night", "backlight", "crowded_pedestrians"],
+    "layout_families": 8,
+    "episodes": 16,
+    "fresh_server_sensor_shards": 24,
+    "modalities": ["wearable_rgb", "metric_depth", "instance_segmentation", "witness_rgb"],
+    "resolution": [1280, 720],
+    "sample_seconds": 0.05,
+    "registered_asset_types": {"wearer": 1, "dynamic_risk": 16, "static_support": 23, "total": 40},
+    "actor_placements": {"wearer": 8, "dynamic_risk": 68, "static_support": 43, "total": 119},
+    "dynamic_visibility_checks": {"passed": 136, "total": 136},
+    "sealed_model_files": 2665,
+    "sealed_evidence_files": 5333,
+    "qualifying_contact_safe_physical_occlusion_pairs": 2,
+    "truth_boundary": "Actor identity, scenario class, outcomes, trajectories, collision geometry, visibility, and physical-occlusion truth are evaluator-only and absent from the model tree."
+  },
+  "internal_authority_catalog": {
+    "catalog_id": "linnan-carla-algorithm-assets",
+    "catalog_path": "asset-catalog.json",
+    "canonical_chain": ["c2-v16-payload-authority", "c2-v17-footprint-guarded"],
+    "logical_entries": ["c2-v10-physical-source", "c2-v11-hard-negative-ancestry", "c2-v12-censored-same-id", "c2-v16-payload-authority", "c2-v17-footprint-guarded", "c4-multimap-world-pack-v1"]
+  },
+  "evidence_boundary": {
+    "status": "development_consumed",
+    "reason": "The scenario packages and their evaluator outcomes have been opened throughout the DTR Development route. They remain reusable synthetic sources and regression assets, but are not source-disjoint real confirmation or safety evidence."
+  },
+  "inventory_counting": "Component bytes and file counts are computed from each live catalog scan; this profile stores semantic invariants rather than copied snapshot counts.",
+  "excluded_subtrees": {
+    "cache": "mutable and rebuildable",
+    "runtime": "task/runtime support rather than durable scene data",
+    "tests": "test harness material",
+    "tools": "library-local control utilities"
+  },
+  "components": [
+    {
+      "component_key": "simulator-release",
+      "logical_name": "CARLA 0.9.16 runtime and world assets",
+      "path": "0.9.16",
+      "component_kind": "simulator_release",
+      "data_role": "runtime_world_and_blueprint_dependency",
+      "evidence_status": "not_applicable",
+      "claim_ceiling": "RUNTIME_DEPENDENCY_NO_EVIDENCE_AUTHORITY",
+      "description": "Executable CARLA distribution with Unreal world maps, OpenDRIVE, HD maps, blueprints, static meshes/materials, PythonAPI, and sensor/runtime support.",
+      "facts": {"version": "0.9.16", "validated_default_world": "Town10HD_Opt"}
+    },
+    {
+      "component_key": "client-environment",
+      "logical_name": "CARLA Python client environment",
+      "path": "client-env",
+      "component_kind": "runtime_environment",
+      "data_role": "simulator_client_dependency",
+      "evidence_status": "not_applicable",
+      "claim_ceiling": "RUNTIME_DEPENDENCY_NO_EVIDENCE_AUTHORITY",
+      "description": "Pinned Python client environment for CARLA 0.9.16 control and offline replay.",
+      "facts": {"carla": "0.9.16", "numpy": "1.26.4", "pygame": "2.6.1"}
+    },
+    {
+      "component_key": "authority-catalog",
+      "logical_name": "CARLA internal algorithm asset catalog",
+      "path": "asset-catalog.json",
+      "component_kind": "semantic_registry",
+      "data_role": "lineage_and_claim_boundary",
+      "evidence_status": "diagnostic",
+      "claim_ceiling": "CATALOG_METADATA_ONLY",
+      "description": "Machine-readable logical entries, dependencies, artifact hashes, results, reuse boundaries, and claim ceilings for the CARLA Development chain.",
+      "facts": {"logical_entries": 6}
+    },
+    {
+      "component_key": "setup-receipt",
+      "logical_name": "CARLA setup manifest",
+      "path": "setup-manifest.json",
+      "component_kind": "installation_receipt",
+      "data_role": "runtime_provenance",
+      "evidence_status": "diagnostic",
+      "claim_ceiling": "INSTALLATION_AND_SMOKE_METADATA_ONLY",
+      "description": "Release URL, archive identity, extracted file inventory, client versions, and bounded launch/smoke receipt.",
+      "facts": {"version": "0.9.16", "platform": "Windows"}
+    },
+    {
+      "component_key": "operational-profile",
+      "logical_name": "CARLA current operating profile",
+      "path": "operational-profile.json",
+      "component_kind": "runtime_profile",
+      "data_role": "reusable_execution_configuration",
+      "evidence_status": "diagnostic",
+      "claim_ceiling": "HOST_OPERATION_METADATA_ONLY",
+      "description": "Current validated launch, map-loading, sensor-join, and host operating constraints.",
+      "facts": {}
+    },
+    {
+      "component_key": "smoke-evidence",
+      "logical_name": "CARLA multi-sensor smoke evidence",
+      "path": "evidence/smoke",
+      "component_kind": "runtime_smoke_evidence",
+      "data_role": "runtime_diagnostic",
+      "evidence_status": "diagnostic",
+      "claim_ceiling": "RUNTIME_SMOKE_ONLY_NO_ALGORITHM_AUTHORITY",
+      "description": "Bounded evidence that the local server and aligned RGB/depth/instance/optical-flow sensors ran; not an algorithm result.",
+      "facts": {"captured_frames": 12, "modalities": ["rgb", "depth", "instance_segmentation", "optical_flow"]}
+    },
+    {
+      "component_key": "c0-crossing-v1",
+      "logical_name": "C0 crossing scene source",
+      "path": "experiments/c0-crossing-v1",
+      "component_kind": "scenario_data_package",
+      "data_role": "scripted_crossing_source_and_evidence",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SYNTHETIC_DEVELOPMENT_ONLY",
+      "description": "Early scripted crossing captures and derived inputs.",
+      "facts": {}
+    },
+    {
+      "component_key": "c1-physical-occlusion-v1",
+      "logical_name": "C1 physical-occlusion protocol package",
+      "path": "experiments/c1-physical-occlusion-v1",
+      "component_kind": "scenario_protocol_package",
+      "data_role": "physical_occlusion_contract",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SYNTHETIC_DEVELOPMENT_ONLY",
+      "description": "Physical-occlusion scenario contracts and receipts.",
+      "facts": {}
+    },
+    {
+      "component_key": "c2-wearable-occlusion-source-v1",
+      "logical_name": "C2 wearable occlusion source and mechanism chain",
+      "path": "experiments/c2-wearable-occlusion-source-v1",
+      "component_kind": "scenario_data_and_evidence_package",
+      "data_role": "canonical_c2_source_mechanism_and_payload_authority",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_PRIVILEGED_SYNTHETIC_DEVELOPMENT_ONLY",
+      "description": "Four-scenario wearable depth/instance source plus V10/V11/V12/V16/V17 protocols, 1,608-file payload closure, mechanism results, manifests, and evaluator-only truth.",
+      "facts": {"canonical_source": "c2-v16-payload-authority", "current_mechanism_result": "c2-v17-footprint-guarded"}
+    },
+    {
+      "component_key": "dtr-carla-c0",
+      "logical_name": "DTR CARLA C0 crossing capture package",
+      "path": "experiments/dtr-carla-c0",
+      "component_kind": "scenario_data_package",
+      "data_role": "baseline_multimodal_crossing_source",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SYNTHETIC_DEVELOPMENT_ONLY",
+      "description": "Baseline DTR crossing scenarios with aligned sensor captures and receipts.",
+      "facts": {}
+    },
+    {
+      "component_key": "dtr-carla-c1-complex",
+      "logical_name": "DTR CARLA C1 complex scenes",
+      "path": "experiments/dtr-carla-c1-complex",
+      "component_kind": "scenario_data_package",
+      "data_role": "complex_scene_source",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SYNTHETIC_DEVELOPMENT_ONLY",
+      "description": "Complex multi-actor scene captures with trajectory and truth sidecars.",
+      "facts": {}
+    },
+    {
+      "component_key": "dtr-carla-c2-rich-scene",
+      "logical_name": "DTR CARLA C2 rich-scene source",
+      "path": "experiments/dtr-carla-c2-rich-scene",
+      "component_kind": "scenario_data_package",
+      "data_role": "rich_multiactor_occlusion_source",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SYNTHETIC_DEVELOPMENT_ONLY",
+      "description": "High-volume rich-scene captures with multiple dynamic/static actors and evaluator truth.",
+      "facts": {}
+    },
+    {
+      "component_key": "dtr-carla-c3-dynamic-risk",
+      "logical_name": "DTR CARLA C3 dynamic-risk scenes",
+      "path": "experiments/dtr-carla-c3-dynamic-risk",
+      "component_kind": "scenario_data_and_registry_package",
+      "data_role": "dynamic_risk_actor_source",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SYNTHETIC_DEVELOPMENT_ONLY",
+      "description": "Dynamic-risk scene captures and actor/trajectory registrations used by later multi-map packs.",
+      "facts": {}
+    },
+    {
+      "component_key": "dtr-carla-c3-rigid-footprint",
+      "logical_name": "DTR CARLA C3 rigid-footprint scenes",
+      "path": "experiments/dtr-carla-c3-rigid-footprint",
+      "component_kind": "scenario_data_package",
+      "data_role": "rigid_footprint_mechanism_source",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SYNTHETIC_DEVELOPMENT_ONLY",
+      "description": "Rigid-footprint variants and synchronized sensor/evaluator records.",
+      "facts": {}
+    },
+    {
+      "component_key": "dtr-carla-c4-multimap",
+      "logical_name": "DTR CARLA C4 six-map world pack",
+      "path": "experiments/dtr-carla-c4-multimap",
+      "component_kind": "multimap_scenario_dataset",
+      "data_role": "canonical_reusable_multimap_rgbd_risk_source",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "SEALED_SCRIPTED_CARLA_DEVELOPMENT_SOURCE_NO_REAL_CONFIRMATION",
+      "description": "Six maps, eight scene classes, 16 episodes and four aligned 1280x720 modalities with sealed model/evaluator trees, scene/asset registries and occlusion audits.",
+      "facts": {"maps": 6, "scene_classes": 8, "episodes": 16, "sensor_shards": 24}
+    },
+    {
+      "component_key": "dtr-carla-c4-support-consensus",
+      "logical_name": "DTR CARLA C4 support-consensus package",
+      "path": "experiments/dtr-carla-c4-support-consensus",
+      "component_kind": "scenario_data_and_evidence_package",
+      "data_role": "static_support_consensus_source",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SYNTHETIC_DEVELOPMENT_ONLY",
+      "description": "Static-support consensus variants derived from CARLA scene sources.",
+      "facts": {}
+    },
+    {
+      "component_key": "dtr-carla-c5-dynamic-core",
+      "logical_name": "DTR CARLA C5 dynamic-core package",
+      "path": "experiments/dtr-carla-c5-dynamic-core",
+      "component_kind": "scenario_data_and_evidence_package",
+      "data_role": "dynamic_core_source",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SYNTHETIC_DEVELOPMENT_ONLY",
+      "description": "Dynamic-core scene captures and route-specific evidence.",
+      "facts": {}
+    },
+    {
+      "component_key": "dtr-carla-c6-x29-source-disjoint",
+      "logical_name": "DTR CARLA C6 X29 source-disjoint package",
+      "path": "experiments/dtr-carla-c6-x29-source-disjoint",
+      "component_kind": "scenario_data_and_evidence_package",
+      "data_role": "synthetic_source_disjoint_check",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SYNTHETIC_DEVELOPMENT_ONLY",
+      "description": "X29 CARLA source-disjoint synthetic scene package.",
+      "facts": {}
+    },
+    {
+      "component_key": "dtr-carla-c7-x30-source-disjoint",
+      "logical_name": "DTR CARLA C7 X30 source-disjoint package",
+      "path": "experiments/dtr-carla-c7-x30-source-disjoint",
+      "component_kind": "scenario_data_and_evidence_package",
+      "data_role": "synthetic_source_disjoint_check",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SYNTHETIC_DEVELOPMENT_ONLY",
+      "description": "X30 CARLA source-disjoint synthetic scene package.",
+      "facts": {}
+    },
+    {
+      "component_key": "dtr-carla-c8-x31-transport-cone",
+      "logical_name": "DTR CARLA C8 X31 transport-cone package",
+      "path": "experiments/dtr-carla-c8-x31-transport-cone",
+      "component_kind": "mechanism_evidence_package",
+      "data_role": "transport_cone_probe",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SYNTHETIC_DEVELOPMENT_ONLY",
+      "description": "Small X31 transport-cone probe and visual evidence.",
+      "facts": {}
+    },
+    {
+      "component_key": "dtr-carla-c9-x31-collision-decoupled",
+      "logical_name": "DTR CARLA C9 X31 collision-decoupled package",
+      "path": "experiments/dtr-carla-c9-x31-collision-decoupled",
+      "component_kind": "scenario_data_and_evidence_package",
+      "data_role": "collision_decoupling_probe",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SYNTHETIC_DEVELOPMENT_ONLY",
+      "description": "Collision-decoupled X31 scenarios and evidence.",
+      "facts": {}
+    },
+    {
+      "component_key": "dtr-carla-c10-x31-opaque-single-pass",
+      "logical_name": "DTR CARLA C10 X31 opaque single-pass package",
+      "path": "experiments/dtr-carla-c10-x31-opaque-single-pass",
+      "component_kind": "scenario_data_and_evidence_package",
+      "data_role": "opaque_observation_probe",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SYNTHETIC_DEVELOPMENT_ONLY",
+      "description": "Opaque single-pass X31 captures and evaluator evidence.",
+      "facts": {}
+    },
+    {
+      "component_key": "dtr-carla-c11-x31-solid-body",
+      "logical_name": "DTR CARLA C11 X31 solid-body package",
+      "path": "experiments/dtr-carla-c11-x31-solid-body",
+      "component_kind": "scenario_data_and_evidence_package",
+      "data_role": "solid_body_observation_probe",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SYNTHETIC_DEVELOPMENT_ONLY",
+      "description": "Solid-body X31 captures and evaluator evidence.",
+      "facts": {}
+    },
+    {
+      "component_key": "dtr-carla-n1-natural-dynamics",
+      "logical_name": "DTR CARLA N1 natural-dynamics probe",
+      "path": "experiments/dtr-carla-n1-natural-dynamics",
+      "component_kind": "natural_dynamics_probe_package",
+      "data_role": "native_dynamic_behavior_probe",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_CARLA_DEVELOPMENT_ONLY",
+      "description": "Small native/natural dynamics probe with receipts and sample frames.",
+      "facts": {}
+    },
+    {
+      "component_key": "dtr-carla-n2-frozen-trace-replay",
+      "logical_name": "DTR CARLA N2 frozen-trace replay",
+      "path": "experiments/dtr-carla-n2-frozen-trace-replay",
+      "component_kind": "replay_dataset_package",
+      "data_role": "frozen_trace_replay_source",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_CARLA_DEVELOPMENT_REPLAY_ONLY",
+      "description": "Frozen CARLA trace replay source and captured outputs.",
+      "facts": {}
+    },
+    {
+      "component_key": "dtr-carla-n3-multitown-native-dynamics",
+      "logical_name": "DTR CARLA N3 multi-town native-dynamics package",
+      "path": "experiments/dtr-carla-n3-multitown-native-dynamics",
+      "component_kind": "multimap_dynamics_probe_package",
+      "data_role": "multitown_native_dynamics_probe",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_CARLA_DEVELOPMENT_ONLY",
+      "description": "Multi-town native-dynamics protocols, receipts, and bounded captures.",
+      "facts": {}
+    },
+    {
+      "component_key": "dtr-carla-n4-multitown-frozen-replay",
+      "logical_name": "DTR CARLA N4 multi-town frozen replay",
+      "path": "experiments/dtr-carla-n4-multitown-frozen-replay",
+      "component_kind": "multimap_replay_dataset_package",
+      "data_role": "multitown_frozen_replay_source",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_CARLA_DEVELOPMENT_REPLAY_ONLY",
+      "description": "Multi-town frozen replay scenes and synchronized captured outputs.",
+      "facts": {}
+    }
+  ]
+}

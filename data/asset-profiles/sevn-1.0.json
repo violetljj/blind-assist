@@ -1,0 +1,137 @@
+{
+  "schema": "blindassist-asset-semantic-profile-v1",
+  "profile_id": "sevn-1.0-semantic-profile-v1",
+  "asset_locator": "datasets/sevn",
+  "title": "SEVN 1.0 sidewalk visual-navigation dataset",
+  "summary": "One frame-aligned real-street panorama corpus with low- and high-resolution pixels, local camera poses, a connected navigation graph, evaluator annotations, and an upstream provenance receipt.",
+  "source": {
+    "name": "Sidewalk Environment for Visual Navigation",
+    "version": "1.0",
+    "doi": "10.5281/zenodo.3526490",
+    "license": "MIT",
+    "upstream_description": "Low- and high-resolution panoramic images, coordinates, labels, and a connectivity graph for simulated sidewalk visual navigation."
+  },
+  "alignment_contract": {
+    "frame_count": 4988,
+    "frame_key": "SEVN frame id",
+    "verified_equal_frame_sets": [
+      "coord.hdf5",
+      "images.hdf5/frames",
+      "high-res-panos.zip member ids",
+      "graph.pkl nodes"
+    ],
+    "note": "Annotations cover a subset of frames; they are evaluator truth, not runtime observations."
+  },
+  "evidence_boundary": {
+    "status": "development_consumed",
+    "reason": "The V1 24-address panel and the address/panorama-disjoint V2 same-source panel have both been opened. The package remains reusable for Development, regression, feature caching, and hard-case analysis, but is not fresh confirmation data.",
+    "current_authority": "research/active/l10-r0/CURRENT.md"
+  },
+  "components": [
+    {
+      "component_key": "camera-poses",
+      "logical_name": "SEVN frame coordinates and camera poses",
+      "path": "coord.hdf5",
+      "component_kind": "camera_pose_table",
+      "data_role": "public_observation_metadata",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SEVN_SAME_SOURCE_DEVELOPMENT_METADATA",
+      "description": "PyTables frame table linking every panorama frame to local ORB-SLAM2 coordinates, heading, timestamp, node type, and trajectory group.",
+      "facts": {
+        "rows": 4988,
+        "columns": ["x", "y", "z", "angle", "timestamp", "type", "group"],
+        "node_type_counts": {"intersection": 753, "street_segment": 4235},
+        "trajectory_groups": 37,
+        "coordinate_authority": "local metric ORB-SLAM2 coordinates; not global GPS"
+      }
+    },
+    {
+      "component_key": "navigation-graph",
+      "logical_name": "SEVN sidewalk connectivity graph",
+      "path": "graph.pkl",
+      "component_kind": "navigation_graph",
+      "data_role": "public_transition_topology",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SEVN_SAME_SOURCE_DEVELOPMENT_TOPOLOGY",
+      "description": "Connected undirected NetworkX graph whose nodes are the same 4,988 frame ids and whose edges define allowed sidewalk transitions.",
+      "facts": {
+        "nodes": 4988,
+        "edges": 6366,
+        "connected_components": 1,
+        "degree_min": 2,
+        "degree_max": 6,
+        "degree_mean": 2.5525260625501205
+      }
+    },
+    {
+      "component_key": "evaluator-labels",
+      "logical_name": "SEVN door, house-number, and street-sign annotations",
+      "path": "label.hdf5",
+      "component_kind": "bounding_box_annotation_table",
+      "data_role": "evaluator_truth",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SEVN_EVALUATOR_TRUTH_NO_RUNTIME_ACCESS",
+      "description": "Frame-indexed bounding boxes and address linkage used to score door binding and text visibility; this component must stay outside runtime observations.",
+      "facts": {
+        "annotation_rows": 3259,
+        "labeled_frames": 1570,
+        "object_type_counts": {"door": 1303, "house_number": 1743, "street_sign": 213},
+        "goal_doors": 470,
+        "unique_address_pairs": 485,
+        "unique_streets": 11,
+        "columns": ["obj_type", "house_number", "street_name", "is_goal", "x_min", "x_max", "y_min", "y_max", "area"]
+      }
+    },
+    {
+      "component_key": "low-resolution-panoramas",
+      "logical_name": "SEVN low-resolution panorama tensor",
+      "path": "images.hdf5",
+      "component_kind": "panorama_tensor_store",
+      "data_role": "model_observation_pixels",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SEVN_SAME_SOURCE_DEVELOPMENT_PIXELS",
+      "description": "Gzip-compressed HDF5 tensor containing one 84x224 RGB panorama for each frame id.",
+      "facts": {
+        "shape": [4988, 84, 224, 3],
+        "dtype": "float64",
+        "compression": "gzip",
+        "frame_lookup_dataset": "frames",
+        "upstream_md5": "f8e570b8232efba23dfc53cc9c9d0b2c"
+      }
+    },
+    {
+      "component_key": "high-resolution-panoramas",
+      "logical_name": "SEVN high-resolution panorama archive",
+      "path": "high-res-panos.zip",
+      "component_kind": "panorama_archive",
+      "data_role": "model_observation_pixels",
+      "evidence_status": "development_consumed",
+      "claim_ceiling": "CONSUMED_SEVN_SAME_SOURCE_DEVELOPMENT_PIXELS",
+      "description": "ZIP archive with one RGB PNG panorama per frame; this is the pixel source used by the V2 OCR and mask-topology evaluation.",
+      "facts": {
+        "members": 4988,
+        "member_pattern": "panos/pano_{frame_id:06d}.png",
+        "image_size": [3840, 1280],
+        "image_mode": "RGB",
+        "uncompressed_member_bytes": 30833576066,
+        "upstream_md5": "1e46ca1de01cdba68b0e9ff7de6dc3df"
+      }
+    },
+    {
+      "component_key": "upstream-provenance",
+      "logical_name": "SEVN Zenodo record snapshot",
+      "path": "zenodo-record-3526490.json",
+      "component_kind": "source_receipt",
+      "data_role": "provenance_and_license",
+      "evidence_status": "diagnostic",
+      "claim_ceiling": "SOURCE_IDENTITY_AND_LICENSE_METADATA_ONLY",
+      "description": "Local snapshot of the Zenodo record with title, authors, DOI, version, license, file sizes, checksums, and download URLs.",
+      "facts": {
+        "record_id": 3526490,
+        "doi": "10.5281/zenodo.3526490",
+        "version": "1.0",
+        "license": "MIT"
+      }
+    }
+  ]
+}

@@ -158,7 +158,10 @@ class DetectorAbDeviceBenchmarkTest {
                 .put("segmentation_model", segmentationModelAsset)
                 .put("images", ".downloads/detector-lab/datasets/coco100/images")
                 .put("annotations", ".downloads/detector-lab/datasets/coco100/coco100_annotations.json")
-                .put("blindassist_evalset", "test-artifacts.local/datasets/blindassist-evalset-20260527-impl")
+                .put(
+                    "blindassist_evalset",
+                    "artifacts.local/evidence/datasets/blindassist-evalset-20260527-impl",
+                )
                 .put("labels", "app/src/main/assets/coco_labels.txt"))
 
         File(artifactDir, "benchmark.json").writeText(payload.toString(2), Charsets.UTF_8)

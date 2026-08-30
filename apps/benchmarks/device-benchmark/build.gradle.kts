@@ -15,10 +15,10 @@ val eventHeadBenchmarkAssetsDir = layout.buildDirectory.dir("generated/eventHead
 val ustrfR12DetectorAssetsDir = layout.buildDirectory.dir("generated/ustrfR12DetectorAssets")
 val qnnPreprocessCandidateDir = providers
     .gradleProperty("qnnPreprocessCandidateDir")
-    .orElse("artifacts.local/experiments/qnn-preprocess-fusion-v1")
+val eventHeadSourceDir = providers.gradleProperty("eventHeadSourceDir")
 val blindAssistEvalSetDir = providers
     .gradleProperty("blindAssistEvalSetDir")
-    .orElse("test-artifacts.local/datasets/blindassist-evalset-20260527-impl")
+    .orElse("artifacts.local/evidence/datasets/blindassist-evalset-20260527-impl")
 val eventLifecycleDatasetDir = providers
     .gradleProperty("eventLifecycleDatasetDir")
     .orElse("artifacts.local/evidence/datasets/sanpo-v3-regression-90f")
@@ -91,10 +91,12 @@ val prepareDetectorBenchmarkAssets = tasks.register<Sync>("prepareDetectorBenchm
         include("images/**")
         into("public_video_inference")
     }
-    from(qnnPreprocessCandidateDir.map { rootProject.file(it) }) {
-        include("rgba640x480_rot90_letterbox320.tflite")
-        include("contract.json")
-        into("qnn_preprocess")
+    qnnPreprocessCandidateDir.orNull?.let { candidateDir ->
+        from(rootProject.file(candidateDir)) {
+            include("rgba640x480_rot90_letterbox320.tflite")
+            include("contract.json")
+            into("qnn_preprocess")
+        }
     }
     into(detectorBenchmarkAssetsDir)
 }
@@ -138,10 +140,12 @@ val prepareSparseLkBenchmarkAssets = tasks.register<Sync>("prepareSparseLkBenchm
 }
 
 val prepareEventHeadBenchmarkAssets = tasks.register<Sync>("prepareEventHeadBenchmarkAssets") {
-    from(rootProject.file("artifacts.local/experiments/secondary-corridor-causal/event-head-tcn-int8-v0-20260718/android/app/src/main/assets")) {
-        include("corridor_causal_tcn_int8_v0.tflite")
-        include("corridor_causal_tcn_int8_v0_contract.json")
-        include("corridor_causal_tcn_int8_v0_golden.json")
+    eventHeadSourceDir.orNull?.let { sourceDir ->
+        from(rootProject.file(sourceDir)) {
+            include("corridor_causal_tcn_int8_v0.tflite")
+            include("corridor_causal_tcn_int8_v0_contract.json")
+            include("corridor_causal_tcn_int8_v0_golden.json")
+        }
     }
     into(eventHeadBenchmarkAssetsDir)
 }
