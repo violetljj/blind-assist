@@ -23,7 +23,10 @@ Status: `ACTIVE`
   edge-clipped credential still lacked complete portal extent. 3RScan E0 then
   met `L10_3RSCAN_REGISTERED_ENDPOINT_EXTENT_DEVELOPMENT_GATE_MET`: complete
   registered extent raised median planar IoU `0.2727 -> 0.7688` and reduced
-  median world-centroid error `0.3760 m -> 0.1428 m` with `0/3` wrong doors.
+  median world-centroid error `0.3760 m -> 0.1428 m` with `0/3` wrong doors. The
+  first learned RGB successor improved one fresh rescan `0.0706 -> 0.3312` IoU,
+  but its coordinate homography extrapolated outside the door and did not meet
+  the canary.
 
 L10-R0 is the ten-meter copilot line. It does not depend on GRAIL owner
 orientation. The first targets are deliberately legible and demonstrable:
@@ -2188,16 +2191,43 @@ This effect is aggregate rather than universal: on RE03 the complete arm had
 rose `0.4046 -> 0.4898` and it retained the correct door. E0 therefore supports
 complete registered extent as the missing information source on this narrow
 real-geometry Development cohort; it does not establish per-door dominance or
-an RGB method. The next admissible experiment is one reference-conditioned
-pixel-transfer successor on registered endpoints. Do not open active-policy
-learning yet, and keep generic Panoramax closed without an independent
-sub-metre portal anchor.
+an RGB method.
+
+The first pixel successor froze the only new stable door among the 12 locally
+materialized scans whose complete instance was inside both reference and rescan
+images. The selector read `4,828` pose/depth members and zero RGB members before
+freezing PF01. It then used a frozen DINOv2-S `36 x 20` feature grid and trained
+one reference-only linear mask plus canonical-coordinate head per arm. Query
+pose, depth, instance geometry, labels, and registration remained evaluator-only
+until both RGB predictions were sealed.
+
+Complete reference supervision raised held-out rescan IoU from `0.0706` to
+`0.3312` (`+0.2607`), kept the correct instance Top-1, and retained `47.45%` of
+the `0.6980` registered-geometry ceiling. This was a real signal, but not a gate
+pass: IoU remained below `0.35`, the predicted centroid fell outside the target,
+and its evaluator-lifted world error was `3.159 m`. The learned query coordinate
+range covered only part of the canonical width, so the global homography
+extrapolated far outside supported pixels. Record
+`L10_3RSCAN_REFERENCE_PIXEL_ENDPOINT_FIELD_DEVELOPMENT_CANARY_NOT_MET`.
+
+Do not tune the consumed PF01 images, linear head, threshold, or homography.
+The next representation change is a fresh fully visible registered pair with a
+bounded reference-conditioned image-space mask/correspondence field. Endpoint
+estimation must stay supported by query pixels rather than extrapolating a
+global projective map. Active-policy learning remains premature, and generic
+Panoramax stays closed without an independent sub-metre portal anchor.
 
 Registered-extent E0 protocol, executable, frozen cohort, and result:
 `l10_3rscan_registered_extent_protocol_v1.json`,
 `l10_3rscan_registered_extent_ceiling.py`,
 `l10_3rscan_registered_extent_cohort_v1.json`, and
 `l10_3rscan_registered_extent_result_v1.json`.
+
+Reference-conditioned pixel-field protocol, executable, frozen cohort, and
+result: `l10_3rscan_reference_pixel_field_protocol_v1.json`,
+`l10_3rscan_reference_pixel_field.py`,
+`l10_3rscan_reference_pixel_field_cohort_v1.json`, and
+`l10_3rscan_reference_pixel_field_result_v1.json`.
 
 Independent-extent protocols, source builders, audits, and results:
 `l10_lod3_panoramax_door_reachability_result_v1.json`,

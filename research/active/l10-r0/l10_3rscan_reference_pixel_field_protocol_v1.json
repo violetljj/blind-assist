@@ -1,0 +1,101 @@
+{
+  "schema": "blindassist-l10-3rscan-reference-pixel-field-protocol-v1",
+  "mode": "DEVELOPMENT_SINGLE_PAIR_REFERENCE_CONDITIONED_PIXEL_FIELD_CANARY",
+  "question": "Can a frozen learned RGB backbone plus a reference-trained endpoint-coordinate head recover a complete registered door extent in a separate real rescan?",
+  "predecessor": {
+    "entrypoint": "l10_3rscan_registered_extent_ceiling.py",
+    "entrypoint_sha256": "fc03bd1e9d80e46f37ac1c4a590d6350f603a69a99af88df28dda13a88c2149a",
+    "cohort": "l10_3rscan_registered_extent_cohort_v1.json",
+    "cohort_sha256": "7cd908c02198f1deeb0c02d7e7d6727935431c4d0d5e9108f3e6e58d2d09c56a",
+    "result": "l10_3rscan_registered_extent_result_v1.json",
+    "result_sha256": "d6fe7a3514bca51c89eaf15da4726aff75e05c76417a8a562b0d89dda71fcacd",
+    "required_status": "L10_3RSCAN_REGISTERED_ENDPOINT_EXTENT_DEVELOPMENT_GATE_MET"
+  },
+  "storage": {
+    "artifact_root_argument_must_resolve_to_drive": "F:",
+    "dataset_relative_path": "datasets/3rscan",
+    "model_relative_path": "models/p1_a2_dinov2_small_ed25f3a",
+    "no_dataset_payload_on_repository_drive": true
+  },
+  "source_selector": {
+    "cohort_size": 1,
+    "exclude_predecessor_target_triples": true,
+    "candidate_order": "registered stable-door rows ordered by provider OBB area, scan IDs, and instance ID",
+    "selection_inputs": [
+      "3RScan metadata and stable instance IDs",
+      "instance-labelled geometry",
+      "camera intrinsics and poses",
+      "depth consistency"
+    ],
+    "rgb_members_read_before_freeze": 0,
+    "frame_rules": {
+      "minimum_inside_vertex_fraction": 0.98,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 8.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "depth_consistency_metres": 0.15,
+      "frame_ranking": "visible vertices, visible ratio, projected area, image margin, then earlier frame"
+    }
+  },
+  "backbone": {
+    "name": "facebook/dinov2-small",
+    "weights_sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1",
+    "frozen": true,
+    "input_height": 280,
+    "input_width": 504,
+    "patch_size": 14,
+    "normalization_mean": [0.485, 0.456, 0.406],
+    "normalization_std": [0.229, 0.224, 0.225]
+  },
+  "arms": {
+    "partial_reference": {
+      "retained_width_fraction": 0.25,
+      "description": "Train only from the positive-edge quarter of the registered reference endpoint."
+    },
+    "complete_reference": {
+      "retained_width_fraction": 1.0,
+      "description": "Train from the complete registered reference endpoint."
+    }
+  },
+  "learned_field": {
+    "head": "per-reference linear mask-logit plus two-channel canonical portal-coordinate regression",
+    "epochs": 200,
+    "learning_rate": 0.02,
+    "weight_decay": 0.0001,
+    "coordinate_loss_weight": 0.5,
+    "seed": 20260831,
+    "mask_probability_threshold": 0.5,
+    "valid_coordinate_minimum": -0.25,
+    "valid_coordinate_maximum": 1.25,
+    "minimum_component_patches": 4,
+    "homography_ransac_threshold_pixels": 32.0,
+    "decoder": "largest probability-mass component, then project the canonical complete reference hull through the learned query coordinate field"
+  },
+  "query_input_contract": {
+    "allowed": [
+      "query RGB",
+      "frozen DINOv2 weights",
+      "head trained only on the paired reference RGB and registered reference supervision"
+    ],
+    "forbidden": [
+      "query depth",
+      "query pose",
+      "query instance geometry",
+      "query target or distractor labels",
+      "registered scan transform"
+    ],
+    "note": "Forbidden query fields remain evaluator-only and are read only after the RGB prediction is sealed in memory."
+  },
+  "decision_gate": {
+    "complete_target_top1_required": true,
+    "complete_centroid_inside_required": true,
+    "complete_pixel_iou_minimum": 0.35,
+    "complete_world_centroid_error_metres_maximum": 0.5,
+    "complete_to_registered_ceiling_iou_ratio_minimum": 0.45,
+    "minimum_complete_iou_gain_over_partial": 0.05
+  },
+  "stop_rule": "Run the frozen single-pair canary once. Do not tune the opened RGB frames, threshold, head, decoder, or gate afterward.",
+  "claim_boundary": "One real indoor 3RScan stable-door Development canary. A pass would establish only that complete registered reference supervision can be converted into a learned RGB endpoint-coordinate field on one held-out rescan. It does not establish multi-scene generalization, exact physical identity under distractors, doorway aperture, access, traversability, waypoint, arrival, HANDOFF_READY, product benefit, user benefit, or safety."
+}

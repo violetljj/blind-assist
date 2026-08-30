@@ -19,7 +19,10 @@ Status: `L10_R0_ACTIVE / DTR_R2_DYNAMIC_RETAINED`
   z-buffer visibility repaired local plane authority, but all frozen references
   were edge-clipped fragments without complete portal extent. 3RScan registered-
   extent E0 then met its Development gate: median planar IoU `0.2727 -> 0.7688`,
-  median centroid error `0.3760 m -> 0.1428 m`, and `0/3` wrong doors.
+  median centroid error `0.3760 m -> 0.1428 m`, and `0/3` wrong doors. The first
+  fresh RGB endpoint-field canary improved IoU `0.0706 -> 0.3312` but did not
+  meet its gate because its global coordinate homography extrapolated outside
+  the door (`3.159 m` centroid error).
 - **DTR JRDB/public line:** X21 is frozen at
   `DTR_X21_TRACK_CARRIED_COMPONENT_ANCESTRY_GATE_MET` for Development only; a
   new source-disjoint confirmation remains required.
@@ -1152,8 +1155,22 @@ The effect is not per-example dominance: RE03 complete-centroid error was
 `0.3168 m` versus partial `0.1570 m`, while IoU still improved and target
 identity remained correct. This is privileged provider-geometry Development
 evidence, not RGB perception, an aperture, waypoint, arrival or handoff result.
-The next admissible experiment is one reference-conditioned pixel-transfer
-successor on registered endpoints; do not open active-policy learning yet.
+
+The next frozen canary used one fresh stable door that was fully contained in
+both reference and rescan RGB. Geometry and depth selected frames `60 / 392`
+before opening pixels; the freeze read zero RGB members and all dataset/model
+payloads resolved to drive `F:`. A frozen DINOv2-S grid and per-reference linear
+mask/canonical-coordinate head raised held-out rescan IoU from `0.0706` with a
+25-percent reference fragment to `0.3312` with complete reference supervision.
+The complete arm kept target Top-1 and retained `47.45%` of the `0.6980`
+registered-geometry ceiling, but failed centroid-inside, the `0.35` IoU gate,
+and metric-centroid error at `3.159 m`. Record
+`L10_3RSCAN_REFERENCE_PIXEL_ENDPOINT_FIELD_DEVELOPMENT_CANARY_NOT_MET`.
+
+Do not tune PF01, its head, probability threshold, or projective decoder. The
+next admissible change is a fresh registered pair and a bounded image-space
+mask/correspondence field whose endpoint is supported by query pixels instead
+of global-homography extrapolation. Do not open active-policy learning yet.
 
 ## DTR-R2 decision
 

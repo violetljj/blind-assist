@@ -1,0 +1,155 @@
+{
+  "schema": "blindassist-l10-3rscan-reference-pixel-field-cohort-v1",
+  "authority": "FROZEN_PRE_RGB_REFERENCE_CONDITIONED_ENDPOINT_FIELD_CANARY",
+  "protocol_path": "l10_3rscan_reference_pixel_field_protocol_v1.json",
+  "protocol_sha256": "0c0b2ab3fbad27869981d35f31417b4701d9999b4f5d18be99409c85d0c1da5e",
+  "entrypoint_sha256": "b97438a9755c35b056092cd932e7798a4118aba1a55c9c2993b1c2ff157b406e",
+  "storage": {
+    "artifact_drive": "F:",
+    "dataset_relative_path": "datasets/3rscan",
+    "repository_drive_payload_bytes": 0
+  },
+  "predecessor_cohort_sha256": "7cd908c02198f1deeb0c02d7e7d6727935431c4d0d5e9108f3e6e58d2d09c56a",
+  "selection": {
+    "candidate_rows_with_downloaded_geometry": 14,
+    "candidate_rows_considered": 8,
+    "excluded_predecessor_target_triples": 3,
+    "opened_members": {
+      "pose_members": 4828,
+      "depth_members": 4828,
+      "rgb_members": 0
+    },
+    "rules": {
+      "minimum_inside_vertex_fraction": 0.98,
+      "minimum_projected_area_pixels": 2000.0,
+      "minimum_image_margin_pixels": 8.0,
+      "minimum_depth_compared_vertices": 16,
+      "minimum_depth_visible_vertices": 16,
+      "minimum_depth_visible_ratio": 0.15,
+      "depth_consistency_metres": 0.15,
+      "frame_ranking": "visible vertices, visible ratio, projected area, image margin, then earlier frame"
+    }
+  },
+  "source_manifest": {
+    "10b17971-3938-2467-8a86-2b42613aa7ec/labels.instances.annotated.v2.ply": {
+      "path": "datasets/3rscan/10b17971-3938-2467-8a86-2b42613aa7ec/labels.instances.annotated.v2.ply",
+      "bytes": 8285967,
+      "sha256": "bd4f7fef00b37b6b3d7fd2009c305e988f917fb0f21d8eb13c603a54f0cd5ca3"
+    },
+    "10b17971-3938-2467-8a86-2b42613aa7ec/semseg.v2.json": {
+      "path": "datasets/3rscan/10b17971-3938-2467-8a86-2b42613aa7ec/semseg.v2.json",
+      "bytes": 56163,
+      "sha256": "46d295951d916b56612cc8938f07c1d5c75cbbb125dee39e995975380e97e5bb"
+    },
+    "10b17971-3938-2467-8a86-2b42613aa7ec/sequence.zip": {
+      "path": "datasets/3rscan/10b17971-3938-2467-8a86-2b42613aa7ec/sequence.zip",
+      "bytes": 82374195,
+      "sha256": "37fa9c8a4d3a79db0ecf3010c87439d37e963c4e3fc2c256c78c0d69b2d2eb8b"
+    },
+    "10b17973-3938-2467-8906-5ba39b48458d/labels.instances.annotated.v2.ply": {
+      "path": "datasets/3rscan/10b17973-3938-2467-8906-5ba39b48458d/labels.instances.annotated.v2.ply",
+      "bytes": 7205517,
+      "sha256": "172b259f143c10271ee648f42ca87ae6bbf732daac9c11edc0812331fd906407"
+    },
+    "10b17973-3938-2467-8906-5ba39b48458d/semseg.v2.json": {
+      "path": "datasets/3rscan/10b17973-3938-2467-8906-5ba39b48458d/semseg.v2.json",
+      "bytes": 50487,
+      "sha256": "49b6835ea7bb9f98cc46d9c95f825f2a8ee6e5e6da7cb1f0c4c7c0d9a89273b7"
+    },
+    "10b17973-3938-2467-8906-5ba39b48458d/sequence.zip": {
+      "path": "datasets/3rscan/10b17973-3938-2467-8906-5ba39b48458d/sequence.zip",
+      "bytes": 74249012,
+      "sha256": "3b0a5a3614842ddf3f2c54a232c0bf179cc0db41c24c9f17481ecfc22e0c2831"
+    },
+    "3RScan.json": {
+      "path": "datasets/3rscan/3RScan.json",
+      "bytes": 3155995,
+      "sha256": "674a00f50f76b198b9de44efd86c390fea3da37ba8f12cf8ccd00045e265fa64"
+    },
+    "objects.json": {
+      "path": "datasets/3rscan/objects.json",
+      "bytes": 20096813,
+      "sha256": "113a64f3330a271b4238b851037c3130a6770f07bb05aa59659b958a9f09db47"
+    }
+  },
+  "model": {
+    "path": "models/p1_a2_dinov2_small_ed25f3a/model.safetensors",
+    "bytes": 88249960,
+    "sha256": "ae1e99fcefd534ed978cdeb8326f08030c96e28b7a81ffcbc98a857c84d14be1"
+  },
+  "episodes": [
+    {
+      "episode_id": "PF01",
+      "reference_scan_id": "10b17971-3938-2467-8a86-2b42613aa7ec",
+      "rescan_id": "10b17973-3938-2467-8906-5ba39b48458d",
+      "target_instance_id": 31,
+      "target_label": "door",
+      "rescan_door_instance_ids": [
+        11,
+        14,
+        31,
+        47
+      ],
+      "area_proxy": 1.8054437728604826,
+      "transform": [
+        -0.5212498307228088,
+        0.8533350229263306,
+        0.010859614238142967,
+        0,
+        -0.8533095717430115,
+        -0.5213393568992615,
+        0.00826006755232811,
+        0,
+        0.012710143812000751,
+        -0.004961049649864435,
+        0.9999067783355713,
+        0,
+        -0.5691895484924316,
+        -0.002667017048224807,
+        -0.09342552721500397,
+        1
+      ],
+      "reference": {
+        "frame": 60,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 778,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 118304.54441325716,
+        "image_margin_pixels": 76.50542449951172,
+        "bbox_xyxy": [
+          212.20944213867188,
+          76.50542449951172,
+          725.6194458007812,
+          327.20965576171875
+        ],
+        "depth_compared_vertices": 776,
+        "depth_visible_vertices": 718,
+        "depth_visible_ratio": 0.9252577319587629
+      },
+      "query": {
+        "frame": 392,
+        "color_size": [
+          960,
+          540
+        ],
+        "inside_vertices": 1512,
+        "inside_vertex_fraction": 1.0,
+        "projected_area_pixels": 80940.20625749766,
+        "image_margin_pixels": 162.17520141601562,
+        "bbox_xyxy": [
+          185.3347930908203,
+          162.17520141601562,
+          681.511962890625,
+          352.3927307128906
+        ],
+        "depth_compared_vertices": 1512,
+        "depth_visible_vertices": 1209,
+        "depth_visible_ratio": 0.7996031746031746
+      }
+    }
+  ],
+  "claim_boundary": "One real indoor 3RScan stable-door Development canary. A pass would establish only that complete registered reference supervision can be converted into a learned RGB endpoint-coordinate field on one held-out rescan. It does not establish multi-scene generalization, exact physical identity under distractors, doorway aperture, access, traversability, waypoint, arrival, HANDOFF_READY, product benefit, user benefit, or safety."
+}

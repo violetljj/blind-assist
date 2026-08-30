@@ -35,7 +35,10 @@ Current route snapshot:
   not meet the transfer gate because the credential still lacked complete
   portal extent. 3RScan registered-extent E0 then met its Development gate:
   median planar IoU `0.2727 -> 0.7688`, median world-centroid error
-  `0.3760 m -> 0.1428 m`, and `0/3` wrong doors.
+  `0.3760 m -> 0.1428 m`, and `0/3` wrong doors. Its first frozen RGB successor
+  improved one fresh rescan from `0.0706` to `0.3312` IoU with complete reference
+  supervision, but missed the canary because the learned coordinate decoder
+  extrapolated outside the door (`3.159 m` centroid error).
 
 ## Current evidence
 
@@ -913,8 +916,24 @@ reduced median metric-centroid error by `0.2332 m`, so record
 `L10_3RSCAN_REGISTERED_ENDPOINT_EXTENT_DEVELOPMENT_GATE_MET`. RE03 remains an
 important non-uniform row: complete extent improved IoU but worsened centroid
 error. This is a narrow privileged-geometry effect, not per-door dominance or
-RGB perception. The next step is one registered reference-conditioned pixel-
-transfer experiment, not active-policy learning.
+RGB perception.
+
+The registered reference-conditioned RGB canary then froze the only fresh
+stable door among the 12 locally materialized scans that was fully visible in
+both reference and rescan. Before freeze it read `4,828` pose/depth members and
+zero RGB members. A frozen DINOv2-S feature grid plus a per-reference linear
+mask/coordinate head improved query IoU from `0.0706` partial supervision to
+`0.3312` complete supervision and retained `47.45%` of the `0.6980` registered
+geometry ceiling. It kept the target as Top-1, but the projective coordinate
+decoder extrapolated outside the image: centroid-inside failed and metric error
+was `3.159 m`. Record
+`L10_3RSCAN_REFERENCE_PIXEL_ENDPOINT_FIELD_DEVELOPMENT_CANARY_NOT_MET`.
+
+Do not tune the opened PF01 images, head, threshold, or homography. The next
+admissible representation change is a fresh registered pair with a bounded
+reference-conditioned image-space mask/correspondence field; it must derive
+endpoints from supported query pixels rather than extrapolating a global
+homography. Active-policy learning remains premature.
 
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
