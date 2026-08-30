@@ -1027,6 +1027,22 @@ resampling it, and do not relax unique-portal truth. Continue Panoramax only by
 adding a genuinely new independent collection for a near strict-DIRECT seed or
 by federated per-collection discovery in new coverage, frozen before pixels.
 
+That bounded continuation is complete. The five-city federated discovery and
+official web-viewer 5.2.0 effective-zero pose contract scanned 215 frozen
+targets: strict projection found 25 cross-collection targets, the successor
+found 32, and global geometry retained 18 DIRECT ways before five episodes were
+frozen, with zero search or geometry errors. Record
+`L10_PANOLAB_FEDERATED_VIEWER_EQUIVALENT_PORTAL_METADATA_GATE_MET`. Independent
+role audit then admitted `0/5` reference portals and `2/5` query portals, hence
+`0/5` joint portals and zero matcher calls. Record
+`L10_PANOLAB_FEDERATED_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_5_QUERY_2_OF_5_JOINT_0_OF_5_NO_MATCHER_CALL`.
+
+Stop further Panoramax city mining and do not widen or resample the exact point
+ray on these opened rows. The next Development source change is a fresh cohort
+whose entrance extent or portal interval is supplied independently and frozen
+before pixels. Panoramax may still supply imagery, but it is no longer the
+information source being optimized.
+
 ## DTR-R2 decision
 
 Accept R2 as the current dynamic-track algorithm. It combines robust

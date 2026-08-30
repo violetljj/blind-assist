@@ -790,6 +790,21 @@ weaken unique-portal truth. A Panoramax continuation must add a genuinely new
 independent collection for a near strict-DIRECT seed or discover new federated
 coverage per collection, with metadata selection frozen before pixels.
 
+That federated continuation has now run once and is closed. Five new-city
+catalog searches plus the exact Panoramax web-viewer 5.2.0 effective-zero pose
+contract scanned 215 frozen targets. Strict projection supplied 25
+cross-collection targets, viewer-equivalent projection supplied 32, and global
+geometry retained 18 DIRECT ways before freezing five episodes, with zero
+search or geometry errors. Record
+`L10_PANOLAB_FEDERATED_VIEWER_EQUIVALENT_PORTAL_METADATA_GATE_MET`. The disjoint
+pixel audit then admitted `0/5` reference portals and `2/5` query portals, so
+joint admission was `0/5` and matcher calls remained zero. Record
+`L10_PANOLAB_FEDERATED_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_5_QUERY_2_OF_5_JOINT_0_OF_5_NO_MATCHER_CALL`.
+Do not continue city mining or widen the point ray on this consumed cohort. The
+next fresh source must freeze an independently measured entrance extent or
+portal interval before pixels; Panoramax can remain a pixel provider but is not
+the missing entrance-identity credential.
+
 SC7 freezes a zero-OCR, provider-neutral reference-bound door-instance route on
 Ego4D EgoTracks, but real execution is `NOT_EVALUABLE_CREDENTIALS_PENDING`
 because the approved AWS profile is absent. That is a source-access condition,

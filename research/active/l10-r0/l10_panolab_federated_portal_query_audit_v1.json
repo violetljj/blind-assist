@@ -1,0 +1,59 @@
+{
+  "schema": "blindassist-l10-panolab-federated-portal-role-audit-v1",
+  "source": "research/active/l10-r0/l10_panolab_federated_portal_source_v1.json",
+  "source_sha256": "c96379d01e59f8eed1820441c604936513244f0d00232fec944c24404178f6d4",
+  "role": "QUERY",
+  "audit_boundary": "Blind role-separated audit of only the five frozen query viewports. ADMITTED requires exactly one tight visible pedestrian portal containing the fixed x=512 entrance ray; no reference pixels or matcher evidence were available to the auditor.",
+  "episodes": [
+    {
+      "episode_id": "FP01",
+      "item_id": "c5ede0c0-1137-4151-9a34-783dfde19f5e",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.99,
+      "rationale": "The fixed ray crosses a broad sectional vehicle door, not a tight pedestrian entrance portal."
+    },
+    {
+      "episode_id": "FP02",
+      "item_id": "47c3de20-4e47-4db1-bcd2-c0ae7ec9d644",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.97,
+      "rationale": "The only discernible glazed pedestrian door is right of center; x=512 lands outside its frame on wall and vegetation."
+    },
+    {
+      "episode_id": "FP03",
+      "item_id": "6239a34e-c663-44d8-a83d-38dd95ffe090",
+      "status": "ADMITTED",
+      "portal_box_xyxy": [
+        484,
+        231,
+        611,
+        393
+      ],
+      "confidence": 0.9,
+      "rationale": "The fixed ray crosses the sole clear glazed pedestrian door; a person partly occludes its lower portion but the frame and opening remain unambiguous."
+    },
+    {
+      "episode_id": "FP04",
+      "item_id": "753fadcb-f5ca-49f3-bf6a-08059131a662",
+      "status": "ADMITTED",
+      "portal_box_xyxy": [
+        405,
+        210,
+        550,
+        370
+      ],
+      "confidence": 0.95,
+      "rationale": "The fixed ray crosses the sole double glazed pedestrian entrance with clear frame, threshold and opening extent."
+    },
+    {
+      "episode_id": "FP05",
+      "item_id": "c7b0510f-735d-4bea-9bb2-965e79b631fd",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.99,
+      "rationale": "The fixed ray lands on a building corner or open gap; the visible door openings lie off-center."
+    }
+  ]
+}

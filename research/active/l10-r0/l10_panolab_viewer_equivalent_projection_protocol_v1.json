@@ -1,0 +1,45 @@
+{
+  "schema": "blindassist-l10-panolab-viewer-equivalent-projection-protocol-v1",
+  "name": "L10-PanoLab official viewer-equivalent effective-zero projection",
+  "status": "DEVELOPMENT_SOURCE_SUCCESSOR_FROZEN_BEFORE_NEW_PIXELS",
+  "question": "Can the official Panoramax viewer's effective-zero pose semantics unlock independent collections that the explicit-zero metadata gate could not evaluate?",
+  "information_change": "Replace the explicit-field requirement with the exact effective pose resolved by Panoramax web-viewer 5.2.0. Keep full 360-degree 2:1 pixels, true-north native heading, view-azimuth agreement, full-sensor visibility and equirectangular projection unchanged.",
+  "baseline": {
+    "path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+    "sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d"
+  },
+  "official_viewer": {
+    "repository": "https://gitlab.com/panoramax/clients/web-viewer",
+    "version": "5.2.0",
+    "commit": "cc0e3437e976176fd189d4db48bb5f26206dd352",
+    "source_path": "src/utils/picture.js",
+    "source_url": "https://gitlab.com/panoramax/clients/web-viewer/-/raw/cc0e3437e976176fd189d4db48bb5f26206dd352/src/utils/picture.js",
+    "source_sha256": "b241df8084e0d91284fe08fb2a73c4478cc0ba161819d0d9353dc6721536f88e",
+    "frozen_semantics": [
+      "getSphereCorrection resolves pers:yaw, pers:pitch and pers:roll through their documented EXIF fallbacks",
+      "each still-unresolved pose component defaults to zero",
+      "for a 360-degree image sphere correction is empty unless both effective pitch and roll are non-zero"
+    ]
+  },
+  "admission": {
+    "retained_baseline_requirements": [
+      "field_of_view=360",
+      "full uncropped 2:1 equirectangular sensor",
+      "view:azimuth present",
+      "Exif.GPSInfo.GPSImgDirection present with Ref=T",
+      "view:azimuth and GPSImgDirection circular difference <=1 degree",
+      "camera and OSM coordinates present"
+    ],
+    "effective_pose_rule": "Resolve STAC pose first, then the exact official EXIF fallback order, then zero. Admit only when all three effective components are zero.",
+    "explicit_nonzero_pose": "REJECT",
+    "mixed_or_nonzero_sphere_correction": "REJECT",
+    "raw_x_projection": "unchanged from l10_panolab_orientation_projection_protocol_v1.json"
+  },
+  "frozen_comparison": {
+    "primary": "viewer-equivalent eligible cross-collection DIRECT target ways",
+    "counterfactual": "same target/item roster under the prior strict explicit-zero gate",
+    "no_pixel_before_metadata_freeze": true
+  },
+  "stop_condition": "Run one federated metadata discovery and one role-separated pixel admission on a frozen cohort. Do not tune heading tolerance, distance, matcher, crop, backbone, tracker or portal truth after seeing outcomes.",
+  "claim_boundary": "This contract authorizes only the raw-x projection used by the official viewer for effective-zero 360 imagery. It is not a physical camera-pose estimate, portal visibility, entrance ownership, access, traversability, waypoint, arrival, handoff, product, user-benefit or safety evidence."
+}

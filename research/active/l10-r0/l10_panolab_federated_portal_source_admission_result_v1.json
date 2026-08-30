@@ -1,0 +1,84 @@
+{
+  "schema": "blindassist-l10-panolab-federated-portal-source-admission-result-v1",
+  "decision": "L10_PANOLAB_FEDERATED_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_5_QUERY_2_OF_5_JOINT_0_OF_5_NO_MATCHER_CALL",
+  "stop_reason": "FEWER_THAN_THREE_JOINTLY_VISIBLE_UNIQUE_PORTALS_NO_MATCHER_CALL",
+  "source": "research/active/l10-r0/l10_panolab_federated_portal_source_v1.json",
+  "source_sha256": "c96379d01e59f8eed1820441c604936513244f0d00232fec944c24404178f6d4",
+  "reference_audit": "research/active/l10-r0/l10_panolab_federated_portal_reference_audit_v1.json",
+  "reference_audit_sha256": "7fbf86a68d83ef72f94fa2fdcd128577b0e757aa959a1fe8fd5ce46939590c41",
+  "query_audit": "research/active/l10-r0/l10_panolab_federated_portal_query_audit_v1.json",
+  "query_audit_sha256": "431e2a6281e77b917a8b7704b45e87d1c2c79a3f9353a642d7f3b53ce2f1d7ba",
+  "metrics": {
+    "episode_count": 5,
+    "reference_admitted": 0,
+    "query_admitted": 2,
+    "joint_admitted": 0,
+    "formal_episode_count": 0,
+    "matcher_calls": 0
+  },
+  "formal_episode_ids": [],
+  "episodes": [
+    {
+      "episode_id": "FP01",
+      "target_way_id": 155636324,
+      "target_name": "Euromaster",
+      "reference_status": "NOT_VISIBLE",
+      "query_status": "NOT_VISIBLE",
+      "joint_admitted": false,
+      "reference_portal_box_xyxy": null,
+      "query_portal_box_xyxy": null
+    },
+    {
+      "episode_id": "FP02",
+      "target_way_id": 155700593,
+      "target_name": "Bibliothèque de Caen - Maladrerie",
+      "reference_status": "NOT_VISIBLE",
+      "query_status": "NOT_VISIBLE",
+      "joint_admitted": false,
+      "reference_portal_box_xyxy": null,
+      "query_portal_box_xyxy": null
+    },
+    {
+      "episode_id": "FP03",
+      "target_way_id": 155636992,
+      "target_name": "Le Pavillon",
+      "reference_status": "NOT_VISIBLE",
+      "query_status": "ADMITTED",
+      "joint_admitted": false,
+      "reference_portal_box_xyxy": null,
+      "query_portal_box_xyxy": [
+        484,
+        231,
+        611,
+        393
+      ]
+    },
+    {
+      "episode_id": "FP04",
+      "target_way_id": 756359489,
+      "target_name": "Capella",
+      "reference_status": "NOT_VISIBLE",
+      "query_status": "ADMITTED",
+      "joint_admitted": false,
+      "reference_portal_box_xyxy": null,
+      "query_portal_box_xyxy": [
+        405,
+        210,
+        550,
+        370
+      ]
+    },
+    {
+      "episode_id": "FP05",
+      "target_way_id": 155677465,
+      "target_name": "Église Réformée de France",
+      "reference_status": "NOT_VISIBLE",
+      "query_status": "NOT_VISIBLE",
+      "joint_admitted": false,
+      "reference_portal_box_xyxy": null,
+      "query_portal_box_xyxy": null
+    }
+  ],
+  "next_action": "Replace the observation source; do not tune matcher, crop, threshold or cohort.",
+  "claim_boundary": "This is Development source acquisition. Metadata admission is not portal visibility or transfer, active-view causality, public/legal access, traversability, waypoint, arrival, HANDOFF_READY, product benefit, user benefit or mobility-safety evidence."
+}

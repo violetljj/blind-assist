@@ -1,0 +1,80 @@
+{
+  "schema": "blindassist-l10-panolab-federated-portal-source-protocol-v1",
+  "authority": "EXPLORE_DEVELOPMENT_SOURCE_ACQUISITION",
+  "question": "Can new federated Panoramax coverage plus the official viewer-equivalent effective-zero pose contract supply at least three close, globally DIRECT, cross-collection exact entrance pairs?",
+  "information_change": "Change the observation source twice but keep portal truth fixed: add five high-coverage French cities from the live federated catalog, and replace explicit pose-field presence with Panoramax web-viewer 5.2.0's exact effective-zero resolution. Do not change the matcher, threshold, crop, backbone, tracker or portal definition.",
+  "providers": {
+    "federated_search": "https://api.panoramax.xyz/api/search",
+    "federated_instances": "https://api.panoramax.xyz/api/instances",
+    "federation_docs": "https://docs.panoramax.fr/federated-catalog/overview/",
+    "openapi": "https://api.panoramax.xyz/openapi.json",
+    "overpass_targets": "https://overpass-api.de/api/interpreter",
+    "overpass_geometry": "https://overpass.openstreetmap.fr/api/interpreter"
+  },
+  "projection": {
+    "strict_protocol_path": "research/active/l10-r0/l10_panolab_orientation_projection_protocol_v1.json",
+    "strict_protocol_sha256": "2b85fdb6d64d6eec00f9fdefc6672bc2bf429744b31695390b93d028b9de813d",
+    "successor_protocol_path": "research/active/l10-r0/l10_panolab_viewer_equivalent_projection_protocol_v1.json",
+    "successor_protocol_sha256": "05c4f07ad92791d3861fd6fe0d230949b7b98e60730701048ada5fd3e49eed6e",
+    "comparison": "Run every returned item through both gates; select only with the successor and retain the strict counts as the unchanged counterfactual."
+  },
+  "targets": {
+    "fixed_targets": [
+      {
+        "source_city": "Nantes",
+        "target_name": "Auditorium Brigitte Engerer",
+        "target_way_id": 307329924,
+        "main_entrance_node": {"id": 3132015581, "lon": -1.5339233, "lat": 47.207716}
+      },
+      {
+        "source_city": "Nantes",
+        "target_name": "Le Chronographe",
+        "target_way_id": 454524397,
+        "main_entrance_node": {"id": 8959780699, "lon": -1.564848, "lat": 47.1916948}
+      },
+      {
+        "source_city": "Nantes",
+        "target_name": "Capella",
+        "target_way_id": 756359489,
+        "main_entrance_node": {"id": 11281721652, "lon": -1.5345693, "lat": 47.2066449}
+      }
+    ],
+    "city_rule": "For each bbox query named building ways with entrance=main, choose the lowest-ID main entrance per way, prioritize amenity/tourism/shop/office/leisure/healthcare/historic-tagged ways, then way ID and entrance ID. Freeze the first 80 before any Panoramax search.",
+    "cities": [
+      {"name": "Avignon", "bbox": [4.743113, 43.904384, 4.867887, 43.994216], "target_limit": 80},
+      {"name": "Caen", "bbox": [-0.439415, 49.137984, -0.301985, 49.227816], "target_limit": 80},
+      {"name": "Saint-Etienne", "bbox": [4.323187, 45.394784, 4.451213, 45.484616], "target_limit": 80},
+      {"name": "Clermont-Ferrand", "bbox": [3.0226, 45.732284, 3.1514, 45.822116], "target_limit": 80},
+      {"name": "Angers", "bbox": [-0.629656, 47.433484, -0.496744, 47.523316], "target_limit": 80}
+    ]
+  },
+  "selection": {
+    "camera_distance_m": [4, 25],
+    "search_limit": 1000,
+    "cohort_size": 5,
+    "minimum_episode_count": 3,
+    "excluded_way_ids": [27108404, 28709471, 36386171, 39224047, 43471848, 44333472, 55541122, 56016854, 62346221, 66183358, 80266163, 83867658, 84327114, 85040828, 1111811685, 1184499395, 1221423767, 149488817, 150133820, 160165240, 190020630, 217392541, 234109119, 249738036, 264208529, 284778200, 305144115, 310066165, 355175795, 358423547, 378533157, 421800231, 591246824, 851464082, 914183873, 992322466, 1010175032, 1184463483, 1294928677],
+    "pair_rule": "After global geometry, keep DIRECT items only. For each entrance choose a pair from distinct collection UUIDs by minimum maximum distance, then camera-bearing delta, distance delta, collection IDs and item IDs. Select five distinct ways in the same order.",
+    "role_order": "Lexicographic collection ID then item ID; first is REFERENCE and second is QUERY."
+  },
+  "geometry": {
+    "building_radius_m": 60,
+    "direct_entrance_tolerance_m": 0.75,
+    "owner_tie_tolerance_m": 0.25,
+    "rule": "Camera must be outside the target. The target way must be the unique first global building-boundary owner and its first intersection must be within 0.75 m of the exact entrance node. Owner ties within 0.25 m are excluded."
+  },
+  "execution": {
+    "network_workers": 4,
+    "geometry_workers": 1,
+    "pixels_before_metadata_freeze": 0,
+    "raw_response_receipts": true
+  },
+  "source_admission": {
+    "viewport": "Reuse the frozen 1024x768, 90-degree horizontal FOV, -10-degree pitch and x=512 portal ray from l10_panolab_close_portal_source_protocol_v1.json.",
+    "reference_role": "Reference-only reviewer sees only the five frozen reference viewports and x=512.",
+    "query_role": "Disjoint query-only reviewer sees only the five frozen query viewports and x=512.",
+    "formal_rule": "Retain the first three episodes independently ADMITTED in both roles. If fewer than three are joint, close without a matcher call."
+  },
+  "stop_condition": "After this one metadata discovery, either materialize its frozen cohort or replace the observation source. After one role-separated pixel audit, either run the unchanged exact-portal patch transfer or close without matcher tuning.",
+  "claim_boundary": "This is Development source acquisition. Metadata admission is not portal visibility or transfer, active-view causality, public/legal access, traversability, waypoint, arrival, HANDOFF_READY, product benefit, user benefit or mobility-safety evidence."
+}

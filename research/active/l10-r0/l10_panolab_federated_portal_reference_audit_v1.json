@@ -1,0 +1,49 @@
+{
+  "schema": "blindassist-l10-panolab-federated-portal-role-audit-v1",
+  "source": "research/active/l10-r0/l10_panolab_federated_portal_source_v1.json",
+  "source_sha256": "c96379d01e59f8eed1820441c604936513244f0d00232fec944c24404178f6d4",
+  "role": "REFERENCE",
+  "audit_boundary": "Blind role-separated audit of only the five frozen reference viewports. ADMITTED requires exactly one tight visible pedestrian portal containing the fixed x=512 entrance ray; no matcher evidence was available to the auditor.",
+  "episodes": [
+    {
+      "episode_id": "FP01",
+      "item_id": "3b1e6678-abcc-4282-8b31-3460f8c7229c",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.99,
+      "rationale": "The fixed ray crosses roadway and distant vegetation; the visible entrances are off-ray."
+    },
+    {
+      "episode_id": "FP02",
+      "item_id": "42e96c48-04c5-496f-ab97-6635c3470eff",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.99,
+      "rationale": "The fixed ray crosses a solid wall and sign rather than the windows visible to the right."
+    },
+    {
+      "episode_id": "FP03",
+      "item_id": "343bdccc-3523-4ea1-b631-6acd4aae844f",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.97,
+      "rationale": "A clear glazed doorway is left of the ray; x=512 crosses the adjacent dark wall."
+    },
+    {
+      "episode_id": "FP04",
+      "item_id": "b6160828-d68d-46b6-9823-b281d9a8fcd2",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.98,
+      "rationale": "A glazed double door is left of center while the fixed ray crosses neighboring glazing."
+    },
+    {
+      "episode_id": "FP05",
+      "item_id": "77b9e7cf-c8c0-422f-b89e-ca94513d9d32",
+      "status": "NOT_VISIBLE",
+      "portal_box_xyxy": null,
+      "confidence": 0.98,
+      "rationale": "A doorway is immediately right of center while the fixed ray crosses wall and downpipe."
+    }
+  ]
+}

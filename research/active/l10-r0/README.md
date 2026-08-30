@@ -1939,6 +1939,26 @@ Do not resample this pool or reopen a matcher rescue. The next Panoramax action
 requires a genuinely new independent collection for a near strict-DIRECT seed,
 or federated per-collection discovery in new coverage, frozen before pixels.
 
+That bounded federated successor is now complete. It added five high-coverage
+French cities and, before opening selected pixels, froze the official Panoramax
+web-viewer 5.2.0 effective-zero pose semantics while retaining the full-sensor
+2:1, true-north heading, azimuth-agreement, distance, global-DIRECT and exact
+entrance-ray rules. Across 215 frozen named-building targets, strict projection
+found 25 cross-collection targets and the viewer-equivalent contract found 32.
+Global geometry retained 18 distinct cross-collection DIRECT ways and froze the
+first five, with zero search or geometry errors. Record
+`L10_PANOLAB_FEDERATED_VIEWER_EQUIVALENT_PORTAL_METADATA_GATE_MET`.
+
+The single role-separated pixel audit did not convert that coverage into a
+transfer source: reference admission was `0/5`, query admission was `2/5`, joint
+admission was `0/5`, and matcher calls remained zero. Record
+`L10_PANOLAB_FEDERATED_PORTAL_SOURCE_NOT_EVALUABLE_REFERENCE_0_OF_5_QUERY_2_OF_5_JOINT_0_OF_5_NO_MATCHER_CALL`.
+Federated coverage and optional-pose metadata are therefore no longer the active
+bottleneck. Do not mine more Panoramax cities, widen the ray, or resample these
+opened rows. The next fresh cohort must add an independently measured entrance
+extent or portal interval and freeze that geometry before pixels; Panoramax may
+remain an image provider but is not the missing entrance-identity source.
+
 Credential successor protocols, evaluators, frozen sources, and results:
 `l10_panolab_node_credential_protocol_v1.json`,
 `l10_panolab_node_credential.py`,
@@ -1960,7 +1980,18 @@ Credential successor protocols, evaluators, frozen sources, and results:
 `l10_panolab_close_portal_source_v1.json`,
 `l10_panolab_close_portal_reference_audit_v1.json`,
 `l10_panolab_close_portal_query_audit_v1.json`, and
-`l10_panolab_close_portal_source_result_v1.json`.
+`l10_panolab_close_portal_source_result_v1.json`, plus
+`l10_panolab_viewer_equivalent_projection_protocol_v1.json`,
+`l10_panolab_viewer_equivalent_projection.py`,
+`l10_panolab_federated_portal_source_protocol_v1.json`,
+`l10_panolab_federated_portal_source.py`,
+`l10_panolab_federated_portal_source_result_v1.json`,
+`l10_panolab_federated_portal_materialize.py`,
+`l10_panolab_federated_portal_source_v1.json`,
+`l10_panolab_federated_portal_reference_audit_v1.json`,
+`l10_panolab_federated_portal_query_audit_v1.json`,
+`l10_panolab_federated_portal_adjudicate.py`, and
+`l10_panolab_federated_portal_source_admission_result_v1.json`.
 
 Durable PB10 summary:
 `named_poi_trans4trans_glass_door_plane_development_result_v1.json`.
