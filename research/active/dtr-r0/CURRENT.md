@@ -74,7 +74,19 @@ future obstacle occupancy intersects the wearer's route, while preserving
   Parent-hull reconstruction was exercised on six frames, all primary transfer
   checks passed, and all required authority invariants remained zero. Accept
   `DTR_CARLA_C35_X73_GENERALIZATION_GATE_MET` as source-disjoint synthetic
-  Development confirmation within the frozen same-map/scripted boundary.
+  Development confirmation within the frozen same-map/scripted boundary. C35
+  post-confirmation diagnosis then exposed six false-positive frames from one
+  X57 metric handback whose stale `truck` identity disagreed with the nearest
+  current, non-route X25 `person` footprint. X74 clears only when every
+  confirmed carrier is such a metric handback, the nearest current measured
+  rigid footprint is inside the inherited association radius, that footprint
+  is not itself a route candidate, and its detector class differs. Across
+  consumed C26/C27/C28/C32/C34/C35, X74 changed only those six C35 false
+  positives: pooled `795 TP / 63 FP / 240 FN` at
+  `92.66/76.81/83.99%`, or `0 TP / -6 FP / +0.27 pp F1` over X73. The other
+  five cohorts were classification-neutral and all required authority
+  invariants remained zero. X74 is the strongest current six-cohort CARLA
+  Development arm, but only C35 exercised it; it is not freshly confirmed.
 - **CARLA occlusion-source line:** C8 through C11 did not admit an evaluable X31
   source. C11 improved full disappearance coverage to `1/8`, but failed the
   frozen physical-occlusion source gate; no X31 prediction or metric was run.
@@ -92,12 +104,12 @@ future obstacle occupancy intersects the wearer's route, while preserving
    favorable episodes.
 3. A new N4 replay requires a new versioned authority. The consumed incomplete
    invocation cannot be resumed or reported as a three-town result.
-4. Do not rerun or tune C35 as confirmation. Unchanged X73 is now positively
-   confirmed on one genuinely new synthetic source after its four-cohort
-   consumed effect. Use C35 only for post-confirmation diagnosis against its
-   remaining `40 FN / 18 FP`; do not weaken X69 release or X73 rigid-center
-   containment. A successor needs a visible multi-cohort Development effect
-   and a later new source before inheriting confirmation authority.
+4. Do not rerun or tune C35 as confirmation. Unchanged X73 is positively
+   confirmed there; C35 is now consumed Development evidence for X74. Freeze
+   unchanged X74 before one genuinely new source. Require exercised class
+   contradiction, zero TP loss versus X73, zero required authority-invariant
+   violations, and the inherited contact/safe constraints. Until then X73,
+   not X74, retains source-disjoint confirmation authority.
 
 Local uncommitted candidates and outputs are work in progress, not route
 authority. This page changes only in the scoped delivery that accepts or closes
