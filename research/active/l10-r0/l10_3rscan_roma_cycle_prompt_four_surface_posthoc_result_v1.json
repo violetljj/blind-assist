@@ -1,0 +1,384 @@
+{
+  "schema": "blindassist-l10-3rscan-roma-cycle-prompt-four-surface-posthoc-result-v1",
+  "authority": "CONSUMED_POSTHOC_FOUR_SURFACE_RESPONSIBILITY_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_3rscan_roma_cycle_prompt_four_surface_posthoc_protocol_v1.json",
+  "protocol_sha256": "a1f1e1c200c847aec9d62ead68953906a03d182e8d1315e81efca8636ce782dd",
+  "implementation": {
+    "path": "l10_3rscan_roma_cycle_prompt_four_surface_posthoc.py",
+    "sha256": "c6a74499414bccafd36079bd9ddf948834beff912d775461394ac31e04ad9b2f"
+  },
+  "predecessor_result_path": "l10_3rscan_roma_cycle_prompt_dual_surface_confirmation_result_v1.json",
+  "predecessor_result_sha256": "e6903068ac35f812d9b362ffaf3a12a0205744b5b3a3789267f32a1c224d92c1",
+  "conclusion": "L10_3RSCAN_ROMA_CYCLE_PROMPT_FOUR_SURFACE_POSTHOC_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "metrics": {
+    "target_pairs": 3,
+    "minimum_query_extent_target_bbox_iou": 0.7667750117158524,
+    "bilateral_absolute_support": 3,
+    "minimum_query_support_bbox_iou_diagnostic_only": 0.3710536075586204
+  },
+  "pairs": {
+    "DR01": {
+      "reference_identity_support": {
+        "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+        "mask_sha256": "8d8a34e137f86ccbd2d7e81139501656d29829ed3811ef86d48e715cb7617316",
+        "mask_pixels": 129509,
+        "mask_bbox_xyxy": [
+          132.0,
+          192.0,
+          880.0,
+          464.0
+        ],
+        "binding_bbox_iou": 0.9446928032595592,
+        "binding_bbox_recall": 0.9446928032595592,
+        "reference_mask_bbox_precision": 1.0,
+        "masker": {
+          "input_box_count": 1,
+          "input_boxes_shape": [
+            1,
+            1,
+            4
+          ],
+          "raw_pred_masks_shape": [
+            1,
+            1,
+            1,
+            256,
+            256
+          ],
+          "raw_iou_scores_shape": [
+            1,
+            1,
+            1
+          ],
+          "native_masks_shape": [
+            1,
+            1,
+            540,
+            960
+          ],
+          "native_masks_dtype": "torch.bool",
+          "multimask_output": false,
+          "iou_scores_ignored": true,
+          "postprocess": {
+            "mask_threshold": 0.0,
+            "binarize": true,
+            "max_hole_area": 0.0,
+            "max_sprinkle_area": 0.0,
+            "apply_non_overlapping_constraints": false
+          },
+          "inference_and_postprocess_seconds": 1.0133173000067472
+        }
+      },
+      "reference_geometric_extent_xyxy": [
+        131.38795471191406,
+        185.80502319335938,
+        888.7009887695312,
+        470.1885681152344
+      ],
+      "query_identity_support": {
+        "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_REFERENCE_CONDITIONED_CYCLE_AFFINE_BOX",
+        "mask_sha256": "a4a5f7ae4b7b48b117105dd6e7b8f22dedcb0e0538f7802a1a9a1b63e4a036f2",
+        "mask_pixels": 40549,
+        "mask_bbox_xyxy": [
+          207.0,
+          201.0,
+          666.0,
+          361.0
+        ],
+        "target_bbox_iou_evaluation_only": 0.873004502229335,
+        "target_bbox_recall_evaluation_only": 0.9033378001592896,
+        "proposal_bbox_precision_evaluation_only": 0.9629608021322679,
+        "masker": {
+          "input_box_count": 1,
+          "input_boxes_shape": [
+            1,
+            1,
+            4
+          ],
+          "raw_pred_masks_shape": [
+            1,
+            1,
+            1,
+            256,
+            256
+          ],
+          "raw_iou_scores_shape": [
+            1,
+            1,
+            1
+          ],
+          "native_masks_shape": [
+            1,
+            1,
+            540,
+            960
+          ],
+          "native_masks_dtype": "torch.bool",
+          "multimask_output": false,
+          "iou_scores_ignored": true,
+          "postprocess": {
+            "mask_threshold": 0.0,
+            "binarize": true,
+            "max_hole_area": 0.0,
+            "max_sprinkle_area": 0.0,
+            "apply_non_overlapping_constraints": false
+          },
+          "inference_and_postprocess_seconds": 0.18669719999888912
+        }
+      },
+      "query_geometric_extent_xyxy": [
+        199.63473903397886,
+        195.73281634641654,
+        672.294289766938,
+        363.16986916880967
+      ],
+      "query_extent_target_bbox_iou_evaluation_only": 0.8707310571607639,
+      "query_extent_target_bbox_recall_evaluation_only": 0.9359734166434807,
+      "query_support_bbox_iou_diagnostic_only": 0.873004502229335,
+      "bilateral_absolute_support": true
+    },
+    "DR02": {
+      "reference_identity_support": {
+        "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+        "mask_sha256": "93d3c9bd12b377a4a0b6af47fe1f238da6aed77c069145e6fed92ae806f30932",
+        "mask_pixels": 17131,
+        "mask_bbox_xyxy": [
+          71.0,
+          196.0,
+          486.0,
+          321.0
+        ],
+        "binding_bbox_iou": 0.9332445422333268,
+        "binding_bbox_recall": 0.9384641674895213,
+        "reference_mask_bbox_precision": 0.9940755835805873,
+        "masker": {
+          "input_box_count": 1,
+          "input_boxes_shape": [
+            1,
+            1,
+            4
+          ],
+          "raw_pred_masks_shape": [
+            1,
+            1,
+            1,
+            256,
+            256
+          ],
+          "raw_iou_scores_shape": [
+            1,
+            1,
+            1
+          ],
+          "native_masks_shape": [
+            1,
+            1,
+            540,
+            960
+          ],
+          "native_masks_dtype": "torch.bool",
+          "multimask_output": false,
+          "iou_scores_ignored": true,
+          "postprocess": {
+            "mask_threshold": 0.0,
+            "binarize": true,
+            "max_hole_area": 0.0,
+            "max_sprinkle_area": 0.0,
+            "apply_non_overlapping_constraints": false
+          },
+          "inference_and_postprocess_seconds": 0.16078310000011697
+        }
+      },
+      "reference_geometric_extent_xyxy": [
+        72.55022430419922,
+        196.27464294433594,
+        510.0476379394531,
+        321.87310791015625
+      ],
+      "query_identity_support": {
+        "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_REFERENCE_CONDITIONED_CYCLE_AFFINE_BOX",
+        "mask_sha256": "57ee8f3fb6fd7281367cc4070ce4ee1ec4e9864c9506594e5e218c5a64d7182f",
+        "mask_pixels": 27184,
+        "mask_bbox_xyxy": [
+          438.0,
+          195.0,
+          840.0,
+          274.0
+        ],
+        "target_bbox_iou_evaluation_only": 0.3710536075586204,
+        "target_bbox_recall_evaluation_only": 0.3994945160407246,
+        "proposal_bbox_precision_evaluation_only": 0.8390211274352255,
+        "masker": {
+          "input_box_count": 1,
+          "input_boxes_shape": [
+            1,
+            1,
+            4
+          ],
+          "raw_pred_masks_shape": [
+            1,
+            1,
+            1,
+            256,
+            256
+          ],
+          "raw_iou_scores_shape": [
+            1,
+            1,
+            1
+          ],
+          "native_masks_shape": [
+            1,
+            1,
+            540,
+            960
+          ],
+          "native_masks_dtype": "torch.bool",
+          "multimask_output": false,
+          "iou_scores_ignored": true,
+          "postprocess": {
+            "mask_threshold": 0.0,
+            "binarize": true,
+            "max_hole_area": 0.0,
+            "max_sprinkle_area": 0.0,
+            "apply_non_overlapping_constraints": false
+          },
+          "inference_and_postprocess_seconds": 0.11463849997380748
+        }
+      },
+      "query_geometric_extent_xyxy": [
+        428.2998192510518,
+        193.16509090522283,
+        868.161644044191,
+        349.82058698068465
+      ],
+      "query_extent_target_bbox_iou_evaluation_only": 0.7667750117158524,
+      "query_extent_target_bbox_recall_evaluation_only": 0.882363718285613,
+      "query_support_bbox_iou_diagnostic_only": 0.3710536075586204,
+      "bilateral_absolute_support": true
+    },
+    "DR03": {
+      "reference_identity_support": {
+        "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_PRIVILEGED_INITIAL_REFERENCE_BBOX",
+        "mask_sha256": "4c52a44d8ce2c476273439d736709b8a326e6f0a206feaf7f7e53cdc5cbad20d",
+        "mask_pixels": 81464,
+        "mask_bbox_xyxy": [
+          194.0,
+          214.0,
+          635.0,
+          419.0
+        ],
+        "binding_bbox_iou": 0.8867422184793721,
+        "binding_bbox_recall": 0.8867422184793721,
+        "reference_mask_bbox_precision": 1.0,
+        "masker": {
+          "input_box_count": 1,
+          "input_boxes_shape": [
+            1,
+            1,
+            4
+          ],
+          "raw_pred_masks_shape": [
+            1,
+            1,
+            1,
+            256,
+            256
+          ],
+          "raw_iou_scores_shape": [
+            1,
+            1,
+            1
+          ],
+          "native_masks_shape": [
+            1,
+            1,
+            540,
+            960
+          ],
+          "native_masks_dtype": "torch.bool",
+          "multimask_output": false,
+          "iou_scores_ignored": true,
+          "postprocess": {
+            "mask_threshold": 0.0,
+            "binarize": true,
+            "max_hole_area": 0.0,
+            "max_sprinkle_area": 0.0,
+            "apply_non_overlapping_constraints": false
+          },
+          "inference_and_postprocess_seconds": 0.1148852999904193
+        }
+      },
+      "reference_geometric_extent_xyxy": [
+        193.1242218017578,
+        205.3146514892578,
+        653.947998046875,
+        426.5528869628906
+      ],
+      "query_identity_support": {
+        "selection_authority": "ONE_NATIVE_SAM2_MASK_FROM_REFERENCE_CONDITIONED_CYCLE_AFFINE_BOX",
+        "mask_sha256": "89938a5bf74adfd4cfc0593859b0411dcf68b89ebe2bd34a27bcca60a299b235",
+        "mask_pixels": 86863,
+        "mask_bbox_xyxy": [
+          316.0,
+          94.0,
+          769.0,
+          300.0
+        ],
+        "target_bbox_iou_evaluation_only": 0.9016893986870452,
+        "target_bbox_recall_evaluation_only": 0.9016893986870452,
+        "proposal_bbox_precision_evaluation_only": 1.0,
+        "masker": {
+          "input_box_count": 1,
+          "input_boxes_shape": [
+            1,
+            1,
+            4
+          ],
+          "raw_pred_masks_shape": [
+            1,
+            1,
+            1,
+            256,
+            256
+          ],
+          "raw_iou_scores_shape": [
+            1,
+            1,
+            1
+          ],
+          "native_masks_shape": [
+            1,
+            1,
+            540,
+            960
+          ],
+          "native_masks_dtype": "torch.bool",
+          "multimask_output": false,
+          "iou_scores_ignored": true,
+          "postprocess": {
+            "mask_threshold": 0.0,
+            "binarize": true,
+            "max_hole_area": 0.0,
+            "max_sprinkle_area": 0.0,
+            "apply_non_overlapping_constraints": false
+          },
+          "inference_and_postprocess_seconds": 0.11589919996913522
+        }
+      },
+      "query_geometric_extent_xyxy": [
+        303.1877361888219,
+        76.86566122818327,
+        778.2393668841464,
+        311.3056665414676
+      ],
+      "query_extent_target_bbox_iou_evaluation_only": 0.9195504169682919,
+      "query_extent_target_bbox_recall_evaluation_only": 0.9945582479550775,
+      "query_support_bbox_iou_diagnostic_only": 0.9016893986870452,
+      "bilateral_absolute_support": true
+    }
+  },
+  "model_calls": 0,
+  "claim_boundary": "A pass is consumed posthoc Development evidence that a four-surface state representation preserves correct target-conditioned extent and identity support on the already opened physical-target-disjoint 3RScan cohort. It does not retroactively convert the failed single-mask output gate into fresh confirmation, does not establish pixel-accurate segmentation, and still depends on privileged initial reference bboxes, same-provider geometry, only three targets and desktop GPU predecessor calls. It is not raw-camera initial binding, provider-independent generalization, open-world absence authority, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, Android deployment, user benefit, reliability or safety."
+}

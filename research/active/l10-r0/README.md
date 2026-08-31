@@ -3869,14 +3869,43 @@ cycle, component, SAM postprocess, frame, target, or gate changed. Record
 `L10_3RSCAN_ROMA_CYCLE_PROMPT_DUAL_SURFACE_POSTHOC_DEVELOPMENT_GATE_MET` and
 retain it as `COMPONENT_OR_CHALLENGER / CHALLENGER`.
 
-This is a substantive multi-door target-selection mechanism result, but only on
-three consumed physical targets and two scan families with a privileged initial
-reference bbox. It does not establish raw-camera initial referent discovery,
-open-world absence authority, named entrance, ownership, public access,
-traversability, waypoint, arrival, `HANDOFF_READY`, Android deployment, user
-benefit, reliability, or safety. The next claim-changing step is unchanged
-physically target-disjoint confirmation; raw-camera initial binding remains a
-separate problem.
+The first pre-RGB physical-target-disjoint cohort selected instances `36/37/28`
+after excluding every physical target in five consumed cohorts. Transported
+extent IoU was `0.767-0.920` and bilateral support passed `3/3`, but DR02 native
+query SAM undersegmentation produced bbox IoU `0.371`. This failed the frozen
+single-mask geometric-output gate while preserving target selection. A zero-
+model-call four-surface posthoc split assigned reference/query SAM masks only to
+identity support and reference/transported boxes only to geometric extent.
+
+The four-surface rule then ran unchanged on a second pre-RGB cohort containing
+new instances `35/15/4`. All extents reached IoU `0.738-0.793`; all query SAM
+support bboxes reached `0.724-0.870`. Legacy global high-certainty purity still
+supported only `2/3`: DR03 was `0.473/0.422` despite a `17,624`-pixel coherent
+cycle component and low affine residual. This froze whole-mask global purity as
+a negative control rather than lowering its `0.5` gate.
+
+The structural successor made support spatial: keep the unchanged `0.01`
+reference cycle opportunity and require the largest 8-connected component to
+contain a majority (`>=0.5`) of all valid bidirectional cycles. On the opened
+cohort it reached `3/3`, with minimum cycle fraction `0.242` and dominance
+`0.653`, versus legacy `2/3`. The unchanged rule then ran on a third pre-RGB
+physical-target-disjoint cohort containing instances `18/34/12`. It passed:
+extent IoU `0.532-0.851`, query-support bbox IoU `0.542-0.915`, minimum cycle
+fraction `0.508`, minimum component dominance `0.825`, and coherent support
+`3/3`; legacy global purity again reached only `2/3`. Record
+`L10_3RSCAN_CYCLE_COMPONENT_SUPPORT_PHYSICAL_TARGET_DISJOINT_CONFIRMATION_GATE_MET`
+and retain the four-surface/coherent-cycle rule as
+`COMPONENT_OR_CHALLENGER / COMPONENT` for same-provider Development.
+
+Across the three successive target-disjoint panels, nine new physical targets
+were selected before RGB/model access. Scan families and backgrounds still
+overlap, initial reference boxes remain privileged, and no negative-pair or
+open-world absence gate was run. This does not establish raw-camera initial
+referent discovery, provider-independent generalization, named entrance,
+ownership, public access, traversability, waypoint, arrival, `HANDOFF_READY`,
+Android deployment, user benefit, reliability, or safety. Stop tuning positive
+3RScan targets; the next claim-changing source must address initial binding or
+negative-pair/open-world rejection.
 
 Evidence:
 
@@ -3912,6 +3941,35 @@ Evidence:
   `c2abf48e21a984b5085ccc696f6a9f01f3f0f818f8d7e9bb1d2feb4bbb83b841`,
   `6229bebf245622a9e10e50f4df1dfa6fed3c66ff87f8ded7033e7a41a72f5b31`,
   and `a85344095cc4dc5789ec4bba18055fd24075ed644a2a827589857508a131e740`;
+- first target-disjoint source protocol/cohort and dual-surface confirmation
+  implementation/protocol/result SHA-256:
+  `5452888bbacb384d223c409893b2175f395f07131ec3a0a20fc9e2a7b7e3a5ab`,
+  `a99eb59bcf2959e1bbc3b3aaddaa7a7c8cf4f285a3eee5b6f554657989501198`,
+  `0fe49882bbdfedaa373ffa1c219f635af27d61abd47c12d3cf0a34399cd68ea8`,
+  `664b5e0638ecea9bbc7be70f7f38d843c120facc4eb70f4dbe3cea36459a45c0`,
+  and `e6903068ac35f812d9b362ffaf3a12a0205744b5b3a3789267f32a1c224d92c1`;
+- four-surface posthoc implementation/protocol/result SHA-256:
+  `c6a74499414bccafd36079bd9ddf948834beff912d775461394ac31e04ad9b2f`,
+  `a1f1e1c200c847aec9d62ead68953906a03d182e8d1315e81efca8636ce782dd`,
+  and `19f5c390c7d252c5908c43613cfc610e5a704195a2bc119459a11eeb041ecc34`;
+- second target-disjoint source protocol/cohort and four-surface confirmation
+  implementation/protocol/result SHA-256:
+  `a0544a49bdd1c8cb399d26aeac732b2e2a784826874707b42d8be6334917f63f`,
+  `9aa5addeabea11e7bda7765b20b99fc7f6e44cea0c3fa300f1cc63600a66bd3d`,
+  `e3f2040d031b04d6d9420d8d9b1ba21a4d76e0e6c4fd8610f7df18dc31db3072`,
+  `0aa217491a11551a2fc41c2ec34990023be67e0660cbb1d4099ab20fddffa5eb`,
+  and `01ac4318e70ee5e92e2eb058ad25168d9e11416fc39fdd86bff2eda376bb79e6`;
+- coherent-cycle posthoc implementation/protocol/result SHA-256:
+  `a04ac3bb438895a209979649661df99a92122bf73fa80fc81fc9b4e13e4e00d0`,
+  `c12ab9d319514db87e9135898345eb04767e9b30146e0e2084200a4cb3333528`,
+  and `1ac8e33fe87f489140f8519d628e77e4fb737f9239f520099fd2dda1b5d3b840`;
+- third target-disjoint source protocol/cohort and coherent-cycle confirmation
+  implementation/protocol/result SHA-256:
+  `009702146e61f33f6f2e9fd531ede652fca2d36bb6b2b1fcd291f7d1ce24ea06`,
+  `ee1f57ff7a6d71e0fcba0b27ccea86a1b5af11a100b8c1ee5fc1e83e22a7aae1`,
+  `9716169ba05b6457e9ef4a966b384d8d48917a30c292959c942a479171a0cc3a`,
+  `7407631cfc9f5354e9614a8dc9a7357638ffba55409f4ae34c012ac7de901c90`,
+  and `b8d8a7b47d08f5998afc3bdca9b03bac74ee39eb5c65a04d63e37619d61a06d0`;
 - open-roster appearance protocol/cohort/result/evaluator SHA-256:
   `7813213a2dee008f868131a6772cd1e85d047f64e02ed8be42b2cbb0bcc5cbaf`,
   `4a96770b7939d4f32cf3ab84bb235dbd7d4082a41f224b457cb6f9e51a9044e0`,

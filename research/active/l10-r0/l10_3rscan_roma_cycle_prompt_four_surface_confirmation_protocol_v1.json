@@ -1,0 +1,89 @@
+{
+  "schema": "blindassist-l10-3rscan-roma-cycle-prompt-four-surface-confirmation-protocol-v1",
+  "protocol_id": "l10-3rscan-roma-cycle-prompt-four-surface-confirmation-protocol-v1",
+  "frozen_at": "2026-09-01T15:05:00+08:00",
+  "question": "Does the unchanged four-surface state confirm directly on a second three-target cohort frozen before RGB and model access?",
+  "implementation": {
+    "path": "l10_3rscan_roma_cycle_prompt_four_surface_confirmation.py",
+    "sha256": "e3f2040d031b04d6d9420d8d9b1ba21a4d76e0e6c4fd8610f7df18dc31db3072"
+  },
+  "dependencies": [
+    {"path": "l10_3rscan_roma_cycle_prompt_dual_surface_confirmation.py", "sha256": "0fe49882bbdfedaa373ffa1c219f635af27d61abd47c12d3cf0a34399cd68ea8"},
+    {"path": "l10_3rscan_roma_cycle_prompt_dual_surface_posthoc.py", "sha256": "c2abf48e21a984b5085ccc696f6a9f01f3f0f818f8d7e9bb1d2feb4bbb83b841"},
+    {"path": "l10_3rscan_roma_cycle_prompt_sam_posthoc.py", "sha256": "a417f3f87ebcc45a063dfdbd0378eb705baafce5cf8cb651b6f9f0463aded5af"},
+    {"path": "l10_3rscan_roma_cycle_prompt_sam_reference_mask_posthoc.py", "sha256": "9a8c5dd3bcb7a437ce3ad397d98a81961f045f3dee0db0e838f77bdb17bec0d0"},
+    {"path": "l10_scenenn_roma_full_context_mask_posthoc.py", "sha256": "0cf433128109bea9664991ddeec7dc1a3f2a8a5cebefac57bc95bfb765beb95a"},
+    {"path": "named_poi_grounded_sam_multiscale_part_topology.py", "sha256": "7a5ee3a2c96e07fb528d4bf2b4ee1e03669d81b8cd75d1e936cbb5c291c50051"}
+  ],
+  "predecessor": {
+    "result_path": "l10_3rscan_roma_cycle_prompt_four_surface_posthoc_result_v1.json",
+    "result_sha256": "19f5c390c7d252c5908c43613cfc610e5a704195a2bc119459a11eeb041ecc34",
+    "required_conclusion": "L10_3RSCAN_ROMA_CYCLE_PROMPT_FOUR_SURFACE_POSTHOC_DEVELOPMENT_GATE_MET",
+    "single_change": "Replace the opened posthoc cohort with the second pre-RGB, model-blind physical-target-disjoint cohort. Keep all four surface responsibilities, models, masks, cycle thresholds, component selection, affine transport and extent gate unchanged."
+  },
+  "source": {
+    "authority": "SECOND_PRE_RGB_PHYSICAL_TARGET_DISJOINT_SAME_PROVIDER_CONFIRMATION_DEVELOPMENT",
+    "source_protocol_path": "l10_3rscan_four_surface_confirmation_source_protocol_v1.json",
+    "source_protocol_sha256": "a0544a49bdd1c8cb399d26aeac732b2e2a784826874707b42d8be6334917f63f",
+    "source_freeze_path": "l10_3rscan_dual_surface_confirmation_freeze.py",
+    "source_freeze_sha256": "7db491b3d18969081a9ae862ed014029cc810f59d26407d420527f7b772e737d",
+    "cohort_path": "l10_3rscan_four_surface_confirmation_cohort_v1.json",
+    "cohort_sha256": "9aa5addeabea11e7bda7765b20b99fc7f6e44cea0c3fa300f1cc63600a66bd3d",
+    "artifact_root": "artifacts.local",
+    "sequence_zips": [
+      {"path": "datasets/3rscan/198aaa74-0ba3-26f6-8792-66b6388b17ca/sequence.zip", "bytes": 77742167, "sha256": "7520e06c26cf44c8cfb778dd70baf2b7604b69b040a9c7d4bb398123d2d6b9f9"},
+      {"path": "datasets/3rscan/198aaa76-0ba3-26f6-84de-6c13263a60bc/sequence.zip", "bytes": 98742525, "sha256": "7d7bfc58609f3d1c0cd652f9d31fe5d4a57d92a1a7d560f72fc8e785cc94de16"},
+      {"path": "datasets/3rscan/4a9a43d6-7736-2874-84c3-86ec156a3b2d/sequence.zip", "bytes": 75831367, "sha256": "04c91d4a1216e90a8792aa9c1e153e74168f9c6ca5850d6ab10b8b80c16dbfd0"},
+      {"path": "datasets/3rscan/8eabc428-5af7-2f32-8659-97a21d90a06b/sequence.zip", "bytes": 31139000, "sha256": "bedbd32a4279e78005bdaa8a073af1b39da1e23b0a63e88fc4628a76742e1c89"},
+      {"path": "datasets/3rscan/8eabc42c-5af7-2f32-87c4-bf646779aa62/sequence.zip", "bytes": 46320073, "sha256": "5117d7df4980ad35b976d85ccd52c8350d690cd9510a611742f5b9c53a7069da"}
+    ],
+    "target_scope": "New physical targets 35, 15 and 4 were selected after excluding all targets in six prior cohorts. Selection considered frozen geometry order, opened 9471 pose/depth members, zero RGB and zero models. The cohort shares scan families and backgrounds with prior Development."
+  },
+  "models": {
+    "masker": {"path": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03/model.safetensors", "sha256": "0a4067b11ce1e23d5229203f11c718a823060d15a4b23fa2372a7d4b77cbbc60"},
+    "matcher": {"path": "artifacts.local/models/roma-indoor-v1/roma_indoor.pth", "sha256": "4d3dca889ae1ef245123dc62aab914475c7bbf41f2c8002606450fb6cf2d91e6"},
+    "matcher_backbone": {"path": "artifacts.local/models/roma-indoor-v1/dinov2_vitl14_pretrain.pth", "sha256": "d5383ea8f4877b2472eb973e0fd72d557c7da5d3611bd527ceeb1d7162cbf428"}
+  },
+  "reference_binding": {
+    "authority": "PRIVILEGED_INITIAL_REFERENCE_BINDING_FOR_DEVELOPMENT_ONLY",
+    "support_surface": "One native reference SAM2 mask from the provider reference bbox.",
+    "extent_surface": "The provider reference bbox used only as the complete reference extent.",
+    "query_truth_isolation": "Query bbox opens only after the transported extent is frozen and is used only for evaluation."
+  },
+  "proposal": {
+    "masker_root": "artifacts.local/models/facebook--sam2.1-hiera-small/snapshots/ee5bba1d82bb8749febdf90f45e84b687142ba03",
+    "transport": "Unchanged full-frame symmetric RoMa, 0.05 bilateral certainty, in-bounds target, 0.013888888888888888 round-trip error, largest 8-connected reference support component, ordinary least-squares affine map and transported bound-extent corners.",
+    "component_tie_break": "Maximum component area then lowest label; no fallback.",
+    "mask": "One native reference SAM2 support mask and one native query SAM2 support mask; no selection, morphology, expansion or retry.",
+    "query_extent": "The transported bbox is the geometric output; the query SAM2 mask is identity support only."
+  },
+  "matcher": {
+    "path": "artifacts.local/models/roma-indoor-v1",
+    "variant": "roma_indoor symmetric",
+    "coarse_resolution": 560,
+    "upsample_resolution": 864,
+    "upsample_predictions": true,
+    "custom_correlation": false,
+    "official_certainty_threshold": 0.05,
+    "maximum_cycle_error_pixels": 6.0,
+    "maximum_cycle_error_normalized": 0.013888888888888888,
+    "minimum_directional_cycle_fraction": 0.01,
+    "minimum_directional_cycle_purity": 0.5,
+    "absolute_support": "Unchanged bilateral one-percent identity-support cycle fraction and majority purity."
+  },
+  "decision_gate": {
+    "required_prompt_boxes": 3,
+    "required_sam_masks": 3,
+    "minimum_prompt_target_bbox_iou": 0.5,
+    "minimum_sam_target_bbox_iou": 0.0,
+    "minimum_true_pairs_with_absolute_support": 3
+  },
+  "forbidden_after_freeze": [
+    "change any surface role, model, threshold, component, affine fit, frame, target or gate",
+    "use query truth to generate or select the extent",
+    "treat support-mask bbox IoU as a required geometric output or hide it as a diagnostic",
+    "retry or replace a failed sample",
+    "claim same-provider confirmation raw-camera binding, provider independence, named entrance, ownership, access, traversability, arrival, handoff, Android, benefit, reliability or safety"
+  ],
+  "claim_boundary": "A pass is second-cohort physical-target-disjoint same-provider Development confirmation that the frozen four-surface component transfers to three new door/doorframe targets. It still uses privileged initial reference bboxes, shares scan families/backgrounds, tests only three targets, and runs desktop GPU models. The query SAM mask is identity support rather than a pixel-accurate geometric output. It is not raw-camera initial binding, provider-independent generalization, open-world absence authority, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, Android deployment, user benefit, reliability or safety."
+}

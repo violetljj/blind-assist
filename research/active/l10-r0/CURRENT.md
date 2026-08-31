@@ -97,8 +97,27 @@ contract.
   query-mask bbox IoU `0.582-0.909`, and absolute support `3/3`; record
   `L10_3RSCAN_ROMA_CYCLE_PROMPT_DUAL_SURFACE_POSTHOC_DEVELOPMENT_GATE_MET` and
   retain it as `COMPONENT_OR_CHALLENGER / CHALLENGER`. This is consumed posthoc
-  evidence with privileged initial binding; correspondence still proves no
-  named entrance, ownership, access, waypoint, arrival, or handoff.
+  evidence with privileged initial binding. The first pre-RGB physical-target-
+  disjoint cohort retained transported-extent IoU `0.767-0.920` and bilateral
+  support `3/3`, but native query SAM undersegmentation made the overloaded
+  mask-as-extent gate fail at IoU `0.371`. A four-surface split retained SAM
+  masks only for identity support and bound/transported boxes only for extent.
+  On a second new-target cohort, extent IoU was `0.738-0.793` and support-mask
+  bbox IoU `0.724-0.870`, but whole-mask global purity supported only `2/3`.
+  The spatially coherent successor kept the unchanged `0.01` cycle opportunity
+  and required the largest 8-connected cycle component to contain at least half
+  of all valid cycles. Its posthoc minimum dominance was `0.653`. The unchanged
+  rule then confirmed on a third pre-RGB physical-target-disjoint cohort:
+  extent IoU `0.532-0.851`, support-mask bbox IoU `0.542-0.915`, cycle
+  opportunity at least `0.508`, dominant-component fraction at least `0.825`,
+  and coherent support `3/3`; legacy global purity again reached only `2/3`.
+  Record
+  `L10_3RSCAN_CYCLE_COMPONENT_SUPPORT_PHYSICAL_TARGET_DISJOINT_CONFIRMATION_GATE_MET`
+  and retain the four-surface/coherent-cycle mechanism as
+  `COMPONENT_OR_CHALLENGER / COMPONENT` for same-provider Development. Stop
+  spending 3RScan positive targets on tuning; next address privileged initial
+  binding or frozen negative-pair/open-world rejection. Correspondence still
+  proves no named entrance, ownership, access, waypoint, arrival, or handoff.
 - **PanoLab active observation:** entrance-ray recovery passed `4/4`. This
   authorizes an entrance ray geometrically, not a pixel portal or arrival.
 - **PanoLab referent-candidate router:** the earlier exact-token/appearance
@@ -406,3 +425,9 @@ contract.
   [l10_3rscan_roma_cycle_prompt_sam_reference_mask_posthoc_result_v1.json](l10_3rscan_roma_cycle_prompt_sam_reference_mask_posthoc_result_v1.json)
 - 3RScan dual-surface proposal result:
   [l10_3rscan_roma_cycle_prompt_dual_surface_posthoc_result_v1.json](l10_3rscan_roma_cycle_prompt_dual_surface_posthoc_result_v1.json)
+- 3RScan first physical-target-disjoint dual-surface result:
+  [l10_3rscan_roma_cycle_prompt_dual_surface_confirmation_result_v1.json](l10_3rscan_roma_cycle_prompt_dual_surface_confirmation_result_v1.json)
+- 3RScan four-surface physical-target-disjoint result:
+  [l10_3rscan_roma_cycle_prompt_four_surface_confirmation_result_v1.json](l10_3rscan_roma_cycle_prompt_four_surface_confirmation_result_v1.json)
+- 3RScan coherent-cycle physical-target-disjoint confirmation:
+  [l10_3rscan_cycle_component_support_confirmation_result_v1.json](l10_3rscan_cycle_component_support_confirmation_result_v1.json)

@@ -1,0 +1,44 @@
+{
+  "schema": "blindassist-l10-3rscan-center-target-door-retrieval-protocol-v2",
+  "base_protocol_path": "l10_3rscan_center_target_door_retrieval_protocol_v1.json",
+  "base_protocol_sha256": "ea8c633f129c457b89c350a3cfbb3e706191023a3c0489f098ba3d9b258328d5",
+  "freeze_implementation": {
+    "path": "l10_3rscan_dual_surface_confirmation_freeze.py",
+    "sha256": "7db491b3d18969081a9ae862ed014029cc810f59d26407d420527f7b772e737d"
+  },
+  "frozen_at": "2026-09-01T14:10:00+08:00",
+  "reason": "Freeze the next three fully visible physical door targets after excluding every physical (reference_scan_id, target_instance_id) used by the five predecessor 3RScan cohorts, including the consumed dual-surface Development source. Selection remains pre-RGB and model-blind.",
+  "overrides": {
+    "authority": "PHYSICAL_TARGET_DISJOINT_DUAL_SURFACE_CONFIRMATION_SOURCE_ADMISSION",
+    "question": "Can the frozen dual-surface reference-conditioned proposal mechanism transfer unchanged to three different physical 3RScan doors selected before RGB or model access?",
+    "source": {
+      "consumed_target_cohorts": [
+        {
+          "path": "l10_3rscan_bounded_reference_mask_cohort_v1.json",
+          "sha256": "67f916184b0ab51ca81269cd53549099bd09ba4cf3a0d85ce1f3c52625feb614"
+        },
+        {
+          "path": "l10_3rscan_reference_pixel_field_cohort_v1.json",
+          "sha256": "7435d5f71ecfb0b21fc946550ccc4dfe64e34d8a54ef291c112afd084bb65512"
+        },
+        {
+          "path": "l10_3rscan_registered_extent_cohort_v1.json",
+          "sha256": "7cd908c02198f1deeb0c02d7e7d6727935431c4d0d5e9108f3e6e58d2d09c56a"
+        },
+        {
+          "path": "l10_3rscan_spatial_reference_mask_cohort_v1.json",
+          "sha256": "38a046d69e3fe68f3cdb807ec582b28c2af52dd01b47aebb7d398a278c6b2c18"
+        },
+        {
+          "path": "l10_3rscan_center_target_door_retrieval_cohort_v2.json",
+          "sha256": "5e2b35c0920119a98d8c321918413187f50be2c096cf05d237b5791944022866"
+        }
+      ]
+    },
+    "frozen_cohort": {
+      "selection_order": "Use candidate_protocol rows in frozen descending area_proxy order. Exclude every physical (reference_scan_id, target_instance_id) present in any consumed_target_cohort regardless of rescan; require unique physical targets inside this cohort; allow at most two targets per reference scan; select the first three whose reference and rescan pass unchanged frame_rules. Pose, depth and instance geometry may open during freeze; RGB members and all models remain unopened.",
+      "maximum_targets_per_reference_scan": 2
+    },
+    "claim_boundary": "This source admission is pre-RGB and model-blind and excludes all previously consumed physical 3RScan door targets. The source remains 3RScan provider data and uses privileged mesh, pose, depth and semantic geometry to select fully visible reference/query frames. A later unchanged pass can establish only physical-target-disjoint same-provider Development confirmation of the dual-surface component, not raw-camera initial binding, provider-independent generalization, named entrance, ownership, access, traversability, waypoint, arrival, handoff, Android deployment, benefit, reliability or safety."
+  }
+}

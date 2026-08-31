@@ -1,0 +1,56 @@
+{
+  "schema": "blindassist-l10-3rscan-cycle-component-support-posthoc-result-v1",
+  "authority": "CONSUMED_POSTHOC_SPATIALLY_COHERENT_CYCLE_COMPONENT_DEVELOPMENT_RESULT",
+  "protocol_path": "l10_3rscan_cycle_component_support_posthoc_protocol_v1.json",
+  "protocol_sha256": "c12ab9d319514db87e9135898345eb04767e9b30146e0e2084200a4cb3333528",
+  "implementation": {
+    "path": "l10_3rscan_cycle_component_support_posthoc.py",
+    "sha256": "a04ac3bb438895a209979649661df99a92122bf73fa80fc81fc9b4e13e4e00d0"
+  },
+  "predecessor_result_path": "l10_3rscan_roma_cycle_prompt_four_surface_confirmation_result_v1.json",
+  "predecessor_result_sha256": "01ac4318e70ee5e92e2eb058ad25168d9e11416fc39fdd86bff2eda376bb79e6",
+  "conclusion": "L10_3RSCAN_CYCLE_COMPONENT_SUPPORT_POSTHOC_DEVELOPMENT_GATE_MET",
+  "gate_met": true,
+  "metrics": {
+    "target_pairs": 3,
+    "minimum_query_extent_target_bbox_iou": 0.7377350355075001,
+    "coherent_component_support": 3,
+    "minimum_reference_cycle_fraction": 0.24240791140093235,
+    "minimum_dominant_component_cycle_fraction": 0.6530309767303987,
+    "legacy_bilateral_global_purity_support": 2
+  },
+  "pairs": {
+    "DR01": {
+      "query_extent_target_bbox_iou_evaluation_only": 0.7929327106482842,
+      "reference_cycle_fraction": 0.604114147423616,
+      "dominant_component_cycle_fraction": 0.9923551994658655,
+      "dominant_component_pixels": 29726,
+      "affine_mean_residual_normalized": 0.02545958360772701,
+      "coherent_component_support": true,
+      "legacy_bilateral_global_purity_support_diagnostic_only": true,
+      "query_sam_support_bbox_iou_diagnostic_only": 0.8704698434117574
+    },
+    "DR02": {
+      "query_extent_target_bbox_iou_evaluation_only": 0.7377350355075001,
+      "reference_cycle_fraction": 0.36032001155797955,
+      "dominant_component_cycle_fraction": 0.7058941459502807,
+      "dominant_component_pixels": 14084,
+      "affine_mean_residual_normalized": 0.003104341002170676,
+      "coherent_component_support": true,
+      "legacy_bilateral_global_purity_support_diagnostic_only": true,
+      "query_sam_support_bbox_iou_diagnostic_only": 0.8083208897802218
+    },
+    "DR03": {
+      "query_extent_target_bbox_iou_evaluation_only": 0.7551469199117956,
+      "reference_cycle_fraction": 0.24240791140093235,
+      "dominant_component_cycle_fraction": 0.6530309767303987,
+      "dominant_component_pixels": 17624,
+      "affine_mean_residual_normalized": 0.002079763689799925,
+      "coherent_component_support": true,
+      "legacy_bilateral_global_purity_support_diagnostic_only": false,
+      "query_sam_support_bbox_iou_diagnostic_only": 0.7244425509289109
+    }
+  },
+  "model_calls": 0,
+  "claim_boundary": "A pass is consumed posthoc Development evidence that spatial dominance among already valid bidirectional cycles is a better support representation than global high-certainty purity for these three opened targets. It does not establish negative-pair rejection, fresh confirmation, pixel-accurate segmentation, raw-camera initial binding, provider-independent generalization, open-world absence authority, named entrance, ownership, access, traversability, waypoint, arrival, handoff, Android deployment, user benefit, reliability or safety."
+}

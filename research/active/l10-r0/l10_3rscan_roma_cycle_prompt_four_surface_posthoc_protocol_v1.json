@@ -1,0 +1,50 @@
+{
+  "schema": "blindassist-l10-3rscan-roma-cycle-prompt-four-surface-posthoc-protocol-v1",
+  "protocol_id": "l10-3rscan-roma-cycle-prompt-four-surface-posthoc-protocol-v1",
+  "frozen_at": "2026-09-01T14:40:00+08:00",
+  "question": "Does assigning query SAM2 masks only to identity support and transported boxes only to geometric extent retain all physical-target-disjoint correspondence and localization evidence?",
+  "implementation": {
+    "path": "l10_3rscan_roma_cycle_prompt_four_surface_posthoc.py",
+    "sha256": "c6a74499414bccafd36079bd9ddf948834beff912d775461394ac31e04ad9b2f"
+  },
+  "predecessor": {
+    "result_path": "l10_3rscan_roma_cycle_prompt_dual_surface_confirmation_result_v1.json",
+    "result_sha256": "e6903068ac35f812d9b362ffaf3a12a0205744b5b3a3789267f32a1c224d92c1",
+    "required_conclusion": "L10_3RSCAN_ROMA_CYCLE_PROMPT_DUAL_SURFACE_PHYSICAL_TARGET_DISJOINT_CONFIRMATION_GATE_NOT_MET",
+    "observed_boundary": "Transported query boxes localized all three new targets at IoU 0.767-0.920 and bilateral absolute support passed 3/3, but treating the query SAM support mask as the complete geometric output failed because DR02 support-mask bbox IoU was 0.371."
+  },
+  "frozen_inputs": [
+    {
+      "path": "l10_3rscan_roma_cycle_prompt_dual_surface_confirmation_protocol_v1.json",
+      "sha256": "664b5e0638ecea9bbc7be70f7f38d843c120facc4eb70f4dbe3cea36459a45c0"
+    },
+    {
+      "path": "l10_3rscan_roma_cycle_prompt_dual_surface_confirmation_result_v1.json",
+      "sha256": "e6903068ac35f812d9b362ffaf3a12a0205744b5b3a3789267f32a1c224d92c1"
+    },
+    {
+      "path": "l10_3rscan_dual_surface_confirmation_cohort_v1.json",
+      "sha256": "a99eb59bcf2959e1bbc3b3aaddaa7a7c8cf4f285a3eee5b6f554657989501198"
+    }
+  ],
+  "single_change": "Mirror the reference-side responsibility split on the query: the native query SAM2 mask remains the identity-support domain used by bilateral cycles, while the already frozen transported query box is the complete geometric extent. Do not change or rerun any model, frame, prompt, mask, correspondence, threshold or target.",
+  "representation": {
+    "reference_identity_support": "Frozen native reference SAM2 mask.",
+    "reference_geometric_extent": "Frozen privileged initial reference bbox.",
+    "query_identity_support": "Frozen native query SAM2 mask; pixel accuracy is diagnostic only.",
+    "query_geometric_extent": "Frozen cycle-affine transported bbox; evaluated against query target bbox only after generation."
+  },
+  "decision_gate": {
+    "required_target_pairs": 3,
+    "minimum_query_extent_target_bbox_iou": 0.5,
+    "minimum_bilateral_absolute_support": 3
+  },
+  "forbidden_after_freeze": [
+    "rerun RoMa or SAM2 or modify any stored prompt, mask, support score or target",
+    "change the 0.5 extent IoU or three-of-three bilateral support gates",
+    "use the query truth bbox to change an extent",
+    "claim pixel-accurate query segmentation from a geometric-extent pass",
+    "call consumed posthoc reinterpretation fresh confirmation, raw-camera binding, named entrance, ownership, access, traversability, arrival, handoff, Android, benefit, reliability or safety"
+  ],
+  "claim_boundary": "A pass is consumed posthoc Development evidence that a four-surface state representation preserves correct target-conditioned extent and identity support on the already opened physical-target-disjoint 3RScan cohort. It does not retroactively convert the failed single-mask output gate into fresh confirmation, does not establish pixel-accurate segmentation, and still depends on privileged initial reference bboxes, same-provider geometry, only three targets and desktop GPU predecessor calls. It is not raw-camera initial binding, provider-independent generalization, open-world absence authority, named entrance, ownership, access, traversability, waypoint, arrival, HANDOFF_READY, Android deployment, user benefit, reliability or safety."
+}
